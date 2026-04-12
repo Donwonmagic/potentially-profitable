@@ -3,21 +3,21 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Muntin Digital — Custom websites, built and cared for by one person</title>
-<meta name="description" content="Muntin Digital is a fully-remote web studio for restaurants, local businesses, and growing brands. One developer-manager designs, builds, and maintains your site end-to-end." />
+<title>Muntin Digital — Your complete online presence, handled by one person</title>
+<meta name="description" content="Muntin Digital is a fully-remote digital studio for restaurants, local businesses, and growing brands. Brand identity, custom websites, social media management, and ongoing care — all through one relationship." />
 <meta name="theme-color" content="#1F4E5B" />
 
 <!-- Open Graph -->
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Muntin Digital — Custom websites, built and cared for by one person" />
-<meta property="og:description" content="A fully-remote web studio for restaurants, local businesses, and growing brands. You work with me directly — not a dashboard, not a project manager." />
+<meta property="og:title" content="Muntin Digital — Your complete online presence, handled by one person" />
+<meta property="og:description" content="Brand identity, custom websites, social media management, and ongoing care for small businesses. One person, end-to-end." />
 <meta property="og:url" content="https://muntin.digital/" />
 <meta property="og:site_name" content="Muntin Digital" />
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Muntin Digital — Custom websites, built and cared for by one person" />
-<meta name="twitter:description" content="A fully-remote web studio for restaurants, local businesses, and growing brands. One developer-manager, end-to-end." />
+<meta name="twitter:title" content="Muntin Digital — Your complete online presence, handled by one person" />
+<meta name="twitter:description" content="Brand identity, custom websites, social media, and ongoing care for small businesses. One person, end-to-end." />
 
 <!-- Favicon: asymmetric muntin window (see /brand/favicon.svg) -->
 <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg" />
@@ -29,13 +29,13 @@
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
   "name": "Muntin Digital",
-  "description": "A fully-remote web studio for restaurants, local businesses, and growing brands. One developer-manager designs, builds, and maintains your site end-to-end.",
+  "description": "A fully-remote digital studio for restaurants, local businesses, and growing brands. Brand identity, custom websites, social media management, and ongoing care — all through one relationship.",
   "url": "https://muntin.digital/",
   "email": "don@muntindigital.com",
-  "slogan": "The connective tissue between small businesses and the modern web.",
+  "slogan": "Structure Brings Clarity.",
   "priceRange": "$$",
   "areaServed": "United States",
-  "serviceType": ["Web Design", "Web Development", "Website Maintenance"]
+  "serviceType": ["Web Design", "Web Development", "Website Maintenance", "Social Media Management", "Brand Identity Design", "Graphic Design"]
 }
 </script>
 
@@ -827,6 +827,42 @@
     line-height: 1.6;
   }
 
+  /* Bundle bar */
+  .bundle-bar {
+    margin-top: 48px;
+  }
+  .bundle-inner {
+    background: var(--teal);
+    color: var(--cream);
+    padding: 22px 32px;
+    border-radius: var(--r-md);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .bundle-inner strong {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+  .bundle-inner span {
+    color: rgba(250, 247, 242, 0.85);
+  }
+  .bundle-link {
+    color: var(--cream) !important;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: opacity var(--t-fast) var(--ease);
+  }
+  .bundle-link:hover { opacity: 0.8; }
+
   /* Final CTA */
   .final {
     background: var(--ink);
@@ -1033,9 +1069,10 @@
       Muntin Digital
     </a>
     <nav class="nav-links" aria-label="Primary">
-      <a href="#work">Work</a>
       <a href="#services">Services</a>
-      <a href="#care">Care Plans</a>
+      <a href="#social">Social Media</a>
+      <a href="#design">Brand &amp; Design</a>
+      <a href="#work">Work</a>
       <a href="#about">About</a>
     </nav>
     <a class="btn btn-primary js-book" href="#contact">Book a call
@@ -1046,9 +1083,10 @@
     </button>
   </div>
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
-    <a href="#work">Work</a>
     <a href="#services">Services</a>
-    <a href="#care">Care Plans</a>
+    <a href="#social">Social Media</a>
+    <a href="#design">Brand &amp; Design</a>
+    <a href="#work">Work</a>
     <a href="#about">About</a>
     <a class="btn btn-primary js-book" href="#contact">Book a 20-min call</a>
   </nav>
@@ -1060,12 +1098,12 @@
 <section class="hero">
   <div class="container hero-grid">
     <div>
-      <span class="eyebrow">A web studio of one</span>
+      <span class="eyebrow">A digital studio of one</span>
       <h1>
-        Custom websites for small businesses, <span class="serif-italic">built and cared for</span> by one person.
+        Your complete online presence, <span class="serif-italic">handled</span> by one person.
       </h1>
       <p class="hero-sub">
-        Muntin Digital is a fully-remote studio for restaurants, local businesses, and growing brands. You work with me directly — not a dashboard, not a project manager — and I design, build, and maintain your site end-to-end.
+        Brand identity, custom websites, social media, and ongoing care — all through a single relationship. You work with me directly, not a dashboard, not a project manager.
       </p>
       <div class="hero-ctas">
         <a class="btn btn-primary js-book" href="#contact">Book a 20-min call
@@ -1121,39 +1159,39 @@
   <div class="container">
     <div class="section-header reveal">
       <span class="eyebrow">The gap Muntin fills</span>
-      <h2>There are two ways to get a website.<br>Neither works for most small businesses.</h2>
-      <p>DIY builders trade quality for convenience. Traditional agencies are priced for enterprises and treat small clients as an afterthought. Muntin is the third option — real engineering, real relationships, built for the way small businesses actually run.</p>
+      <h2>Most small businesses are juggling<br>too many disconnected vendors.</h2>
+      <p>A logo from Fiverr. A template website. A nephew doing Instagram. Nothing matches, nothing connects, and nobody's looking at the big picture. Muntin is the single partner who owns it all.</p>
     </div>
 
     <div class="compare">
       <div class="card reveal">
-        <h3>DIY Builders</h3>
-        <div class="price-tag">Wix, Squarespace, GoDaddy</div>
+        <h3>The Patchwork</h3>
+        <div class="price-tag">DIY + freelancers + Canva</div>
         <ul>
-          <li>Template-limited, generic by design</li>
-          <li>Slower on mobile, worse for SEO</li>
+          <li>Logo from Fiverr, site from Wix, social from… nobody</li>
+          <li>Nothing looks consistent or connected</li>
           <li>You do the work — and the troubleshooting</li>
-          <li>Help center articles instead of a human</li>
+          <li>No strategy tying any of it together</li>
         </ul>
       </div>
       <div class="card reveal">
-        <h3>Traditional Agencies</h3>
-        <div class="price-tag">$15k–$100k+ builds</div>
+        <h3>The Agency Route</h3>
+        <div class="price-tag">$15k site + $5k/mo social + $10k branding</div>
         <ul>
+          <li>Three vendors who never talk to each other</li>
           <li>Priced for enterprise, not main street</li>
           <li>Project managers, contractors, handoffs</li>
-          <li>Hourly retainers after launch</li>
-          <li>You're a small fish in their pipeline</li>
+          <li>You're a small fish in every pipeline</li>
         </ul>
       </div>
       <div class="card muntin reveal">
-        <h3>Muntin Digital</h3>
-        <div class="price-tag">$2.5k–$15k build · from $125/mo care</div>
+        <h3>The Muntin Way</h3>
+        <div class="price-tag">Brand + site + social + care — one partner</div>
         <ul>
-          <li>Custom-coded, fast, mobile-first</li>
-          <li>One developer-manager, end-to-end</li>
+          <li>Brand identity, website, social — designed together</li>
+          <li>One person, end-to-end, every touchpoint</li>
           <li>Monthly care plan — a real person, every time</li>
-          <li>You own your site. No lock-in, ever.</li>
+          <li>You own everything. No lock-in, ever.</li>
         </ul>
       </div>
     </div>
@@ -1164,8 +1202,8 @@
 <section class="block" id="services">
   <div class="container">
     <div class="section-header reveal">
-      <span class="eyebrow">What you get</span>
-      <h2>Three ways to build. One relationship.</h2>
+      <span class="eyebrow">Web Builds</span>
+      <h2>Custom websites,<br>transparent pricing.</h2>
       <p>Pick the build that fits today. Every project ends with a launch — and the option to stay on a Care Plan so it keeps getting better, not worse.</p>
     </div>
 
@@ -1226,22 +1264,22 @@
       <div class="step reveal">
         <div class="num">01</div>
         <h3>Conversation</h3>
-        <p>A 20-minute call. I ask about your business, your goals, and your frustrations with your current site. You ask anything.</p>
+        <p>A 20-minute Zoom call. I ask about your business, your goals, and what's not working. You ask anything.</p>
       </div>
       <div class="step reveal">
         <div class="num">02</div>
-        <h3>Proposal</h3>
-        <p>Within 48 hours, a written plan. Scope, timeline, price, and exactly what we'll launch — in plain English.</p>
+        <h3>Brand &amp; design</h3>
+        <p>Logo, colors, typography — a cohesive identity. Or we work with what you have and make sure everything matches.</p>
       </div>
       <div class="step reveal">
         <div class="num">03</div>
-        <h3>Build</h3>
-        <p>I design and build. You see progress weekly. Feedback happens in shared previews, not in meetings you don't have time for.</p>
+        <h3>Build &amp; launch</h3>
+        <p>Custom-coded website on a modern stack. You see progress weekly. We launch together when it's right.</p>
       </div>
       <div class="step reveal">
         <div class="num">04</div>
-        <h3>Launch &amp; care</h3>
-        <p>We launch together. If you stay on a Care Plan, I keep your site fast, secure, and up to date — indefinitely.</p>
+        <h3>Social &amp; care</h3>
+        <p>Ongoing social media management + monthly care plan. Same person, every touchpoint, indefinitely.</p>
       </div>
     </div>
   </div>
@@ -1295,6 +1333,117 @@
   </div>
 </section>
 
+<!-- ============ SOCIAL MEDIA ============ -->
+<section class="block" id="social">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow" style="color:var(--rust)">Social Media</span>
+      <h2>Keep your audience engaged,<br>consistently.</h2>
+      <p>Your social media should tell the same story as your website. Because one person creates both, it always will.</p>
+    </div>
+
+    <div class="services">
+      <div class="service reveal">
+        <div class="label" style="color:var(--rust)">You post</div>
+        <h3>Content Kit</h3>
+        <div class="price">$500<small>–$800/mo</small></div>
+        <p class="desc">Branded graphics, captions, and a content calendar — you handle the posting.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>12–16 branded graphics/month</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Captions &amp; hashtag strategy</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Monthly content calendar</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>2–3 platforms (IG, FB, GBP)</li>
+        </ul>
+      </div>
+
+      <div class="service reveal">
+        <div class="label" style="color:var(--rust)">We post</div>
+        <h3>Presence</h3>
+        <div class="price">$1,200<small>–$1,800/mo</small></div>
+        <p class="desc">Full posting and scheduling across your platforms, with approval flow and performance tracking.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>16–20 posts/month, 3 platforms</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Content calendar + approval flow</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Basic community engagement</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Monthly performance snapshot</li>
+        </ul>
+      </div>
+
+      <div class="service reveal">
+        <div class="label" style="color:var(--rust)">We manage</div>
+        <h3>Full Management</h3>
+        <div class="price">$2,500<small>–$3,500/mo</small></div>
+        <p class="desc">Everything in Presence plus community management, analytics, and quarterly strategy.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Comments, DMs, review management</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Monthly analytics + recommendations</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Quarterly strategy refresh</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Ad-hoc story &amp; reel content</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BRAND & DESIGN ============ -->
+<section class="block bg-cream2" id="design">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow" style="color:#7A5C3E">Brand &amp; Design</span>
+      <h2>Look professional<br>from day one.</h2>
+      <p>A cohesive brand identity that carries across every touchpoint — logo, website, social, print. Designed together by the same person who builds everything else.</p>
+    </div>
+
+    <div class="services">
+      <div class="service reveal">
+        <div class="label" style="color:#7A5C3E">Foundation</div>
+        <h3>Brand Identity</h3>
+        <div class="price">$1,500<small>–$3,000</small></div>
+        <p class="desc">Everything you need to look like a real business. Logo, colors, typography, and a brand board that ties it all together.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Logo design (2–3 concepts, 2 revisions)</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Color palette + typography selection</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Mark variations (icon, stacked, horizontal)</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Brand board PDF</li>
+        </ul>
+      </div>
+
+      <div class="service reveal">
+        <div class="label" style="color:#7A5C3E">Touchpoints</div>
+        <h3>Collateral Kit</h3>
+        <div class="price">$800<small>–$1,500</small></div>
+        <p class="desc">The supporting pieces that make your brand feel real in the world — cards, templates, social graphics.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Business card + letterhead</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Email signature design</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Social media profile &amp; cover graphics</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Presentation template</li>
+        </ul>
+      </div>
+
+      <div class="service reveal">
+        <div class="label" style="color:#7A5C3E">As needed</div>
+        <h3>À La Carte</h3>
+        <div class="price" style="font-size:clamp(24px,3vw,34px)">Per project</div>
+        <p class="desc">One-off design work for existing clients. Menus, flyers, signage, packaging — whatever you need, on brand.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Menu refresh: $200–$400</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Flyer / promo graphic: $150–$300</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Signage / banner: $250–$500</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Packaging / label: $400–$800</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="bundle-bar reveal">
+      <div class="bundle-inner">
+        <strong>Bundle &amp; Save</strong>
+        <span>Web + Brand Identity: 15% off identity &nbsp;·&nbsp; Web + Social: 10% off first 3 months &nbsp;·&nbsp; All three? <a href="#contact" class="bundle-link">Let's talk →</a></span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ ABOUT ============ -->
 <section class="block" id="about">
   <div class="container about-grid">
@@ -1306,10 +1455,10 @@
       <h2 style="margin-top:16px">A muntin is the slender strip that holds a window together.</h2>
       <p>Small, quiet, and the reason the whole thing stands up.</p>
       <p>
-        I'm Don. I started Muntin Digital because I kept watching small business owners get stuck between two bad options — DIY builders that trade quality for convenience, and agencies priced for enterprises that treat them as an afterthought.
+        I'm Don. I started Muntin Digital because I kept watching small business owners juggle four different vendors who never talked to each other — a designer, a developer, a social media person, and a hosting company — and nothing matched.
       </p>
       <p>
-        I build custom websites end-to-end, one client at a time, and then I stick around. That's the whole idea. No ticket queues, no handoffs, no dashboards you have to learn. Just a real person holding the pieces together.
+        I design brands, build custom websites, manage social media, and stick around to keep it all running. One person, end-to-end, every touchpoint. No ticket queues, no handoffs, no dashboards. Just a real person holding the pieces together.
       </p>
       <p class="signature">— Don</p>
     </div>
@@ -1395,6 +1544,14 @@
         <h3>Can you handle something more complex later?</h3>
         <p>Yes. Muntin starts with marketing sites and restaurant builds, but the stack scales up to e-commerce, integrations, and more complex applications as you grow. You don't outgrow your web partner six months in.</p>
       </div>
+      <div class="faq-item reveal">
+        <h3>Why bundle social media with my web developer?</h3>
+        <p>Because your website and social media should tell the same story. When one person knows your brand, your voice, and your goals, everything stays consistent instead of fragmented across vendors. Plus, coordinated web + social campaigns convert better than either channel alone.</p>
+      </div>
+      <div class="faq-item reveal">
+        <h3>I already have a logo. Do I need Brand Identity?</h3>
+        <p>If you love it, we'll work with it. But if it doesn't translate well to your website, social profiles, and business cards, you're fighting your own brand at every touchpoint. A Brand Identity package gives you a system that works everywhere — not just a logo file.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -1403,8 +1560,8 @@
 <section class="block final" id="contact">
   <div class="container">
     <span class="eyebrow">Let's build something</span>
-    <h2>Tell me about your business. <em>I'll tell you what your site could do.</em></h2>
-    <p class="final-sub">A 20-minute call, no pitch deck, no pressure. You'll leave with a clear sense of what's possible and what it would cost — whether you hire me or not.</p>
+    <h2>Tell me about your business. <em>I'll tell you what we can build together.</em></h2>
+    <p class="final-sub">A 20-minute Zoom call, no pitch deck, no pressure. We'll talk about your brand, your website, your social media — and you'll leave with a clear sense of what's possible.</p>
     <div class="hero-ctas">
       <a class="btn btn-primary js-book" href="#contact">Book a 20-min call
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -1421,7 +1578,7 @@
   <div class="container foot">
     <div>
       <div class="foot-logo">Muntin Digital</div>
-      <div style="margin-top:6px">The connective tissue between small businesses and the modern web.</div>
+      <div style="margin-top:6px">Structure Brings Clarity.</div>
     </div>
     <div>
       <div style="color:var(--cream); margin-bottom:4px">don@muntindigital.com</div>
@@ -1434,8 +1591,8 @@
   // ============================================================
   // CONFIG — change this one line when your Cal.com link is live
   // ============================================================
-  const BOOKING_URL = 'https://cal.com/muntin-digital/intro'; // TODO: replace with your real Cal.com or SavvyCal URL
-  const EMAIL       = 'don@muntindigital.com';                  // TODO: replace if your address differs
+  const BOOKING_URL = 'https://calendly.com/dongoldstein-accts/muntinconsult';
+  const EMAIL       = 'don@muntindigital.com';
 
   // Rewrite all "Book a call" CTAs to the real booking URL
   document.querySelectorAll('.js-book').forEach((el) => {
