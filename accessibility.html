@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Accessibility Statement for Muntin Digital, a fully-remote digital studio committed to WCAG 2.1 AA standards.">
+  <title>Accessibility Statement | Muntin Digital™</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@6..72,400;6..72,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #FAF7F2;
+      --ink: #14161A;
+      --teal: #1F4E5B;
+      --rust: #B8541A;
+      --stone: #6B6B6B;
+      --line: #E8E2D6;
+      --line-dark: #D4CCBC;
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--cream);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      padding: 24px 20px;
+      position: sticky;
+      top: 0;
+      background-color: var(--cream);
+      z-index: 100;
+    }
+
+    nav {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .muntin-mark {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .muntin-mark svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .muntin-mark a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      outline: 2px solid transparent;
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    .muntin-mark a:focus {
+      outline: 2px solid var(--teal);
+    }
+
+    .site-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ink);
+      text-decoration: none;
+      outline: 2px solid transparent;
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    .site-title:focus {
+      outline: 2px solid var(--teal);
+    }
+
+    .site-title:hover {
+      color: var(--teal);
+    }
+
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 60px 20px;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: 42px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    .meta {
+      color: var(--stone);
+      font-size: 14px;
+      margin-bottom: 48px;
+    }
+
+    h2 {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-top: 48px;
+      margin-bottom: 24px;
+      line-height: 1.2;
+    }
+
+    h2:first-of-type {
+      margin-top: 0;
+    }
+
+    p {
+      margin-bottom: 20px;
+      color: var(--ink);
+    }
+
+    ul, ol {
+      margin-left: 24px;
+      margin-bottom: 20px;
+    }
+
+    li {
+      margin-bottom: 12px;
+      color: var(--ink);
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration: underline;
+      outline: 2px solid transparent;
+      outline-offset: 2px;
+    }
+
+    a:focus {
+      outline: 2px solid var(--teal);
+    }
+
+    a:hover {
+      color: var(--rust);
+      text-decoration: none;
+    }
+
+    .contact-box {
+      background-color: white;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 28px;
+      margin: 40px 0;
+    }
+
+    .contact-box p {
+      margin-bottom: 16px;
+    }
+
+    .contact-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 40px 20px;
+      background-color: white;
+      margin-top: 80px;
+    }
+
+    .footer-content {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+      margin-bottom: 32px;
+      font-size: 14px;
+    }
+
+    .footer-links a {
+      color: var(--teal);
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: var(--rust);
+      text-decoration: underline;
+    }
+
+    .footer-links a:focus {
+      outline: 2px solid var(--teal);
+    }
+
+    .footer-text {
+      color: var(--stone);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .footer-text p {
+      margin-bottom: 12px;
+    }
+
+    .footer-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 32px;
+      }
+
+      h2 {
+        font-size: 22px;
+      }
+
+      .footer-links {
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="muntin-mark">
+        <a href="/">
+          <svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="18" y="18" width="92" height="92" fill="none" stroke="#1F4E5B" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"/>
+            <line x1="64" y1="18" x2="64" y2="110" stroke="#1F4E5B" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"/>
+            <line x1="18" y1="49" x2="110" y2="49" stroke="#1F4E5B" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"/>
+          </svg>
+        </a>
+      </div>
+      <a href="/" class="site-title">Muntin Digital™</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Accessibility Statement</h1>
+    <div class="meta">Effective April 2026</div>
+
+    <h2>Our Commitment</h2>
+    <p>Muntin Digital™ is committed to ensuring digital accessibility for people with disabilities. We aim to meet or exceed the Web Content Accessibility Guidelines (WCAG) 2.1 Level AA standard, the internationally recognized benchmark for web accessibility.</p>
+    <p>This commitment applies to our website, all client work we produce, and the services we provide. We believe that accessible design benefits everyone, making our content clearer, more usable, and more inclusive.</p>
+
+    <h2>What We Do</h2>
+    <p>Accessibility is built into our design and development process from the start. Here's how we approach it:</p>
+    <ul>
+      <li><strong>Semantic HTML</strong>: We use proper heading hierarchies, landmark regions, and semantic elements so assistive technologies can understand the structure of our pages.</li>
+      <li><strong>Keyboard Navigation</strong>: All interactive elements are accessible via keyboard. Users can navigate and interact with our sites without a mouse.</li>
+      <li><strong>Color Contrast</strong>: Text meets WCAG AA standards for color contrast, ensuring readability for people with low vision or color blindness.</li>
+      <li><strong>Alt Text for Images</strong>: Meaningful descriptions are provided for all images so screen reader users understand the content.</li>
+      <li><strong>Responsive Design</strong>: Our sites work well on all screen sizes, from mobile phones to desktop displays.</li>
+      <li><strong>Focus Indicators</strong>: Clear, visible focus states help keyboard and screen reader users understand where they are on the page.</li>
+      <li><strong>Form Accessibility</strong>: Forms include clear labels, error messages, and instructions that are associated with their input fields.</li>
+      <li><strong>Video & Audio Captions</strong>: When we use multimedia, we provide captions and transcripts where needed.</li>
+    </ul>
+
+    <h2>What We Build for Clients</h2>
+    <p>We apply the same accessibility standards to all work we build for our clients. Whether we're designing a website, creating digital content, or building a web application, accessibility is a core requirement, not an afterthought.</p>
+    <p>We work with clients to understand their audiences and ensure the digital experiences we create are usable by everyone, regardless of ability.</p>
+
+    <h2>Known Limitations</h2>
+    <p>We continuously work to improve our accessibility. If you find content that doesn't meet our standards, please let us know. We're committed to addressing accessibility issues as quickly as possible.</p>
+    <p>Some third-party tools and services we may use (like calendar scheduling or form services) may have their own accessibility characteristics. We choose vendors who prioritize accessibility, but we can't always control all aspects of third-party content.</p>
+
+    <h2>Feedback & Contact</h2>
+    <div class="contact-box">
+      <p>If you experience difficulty accessing any part of this website, or if you have suggestions for improvement, please contact us:</p>
+      <p><strong>Email:</strong> <a href="mailto:don@muntindigital.com">don@muntindigital.com</a></p>
+      <p>We commit to reviewing accessibility feedback within 2 business days and working with you to find a solution.</p>
+    </div>
+
+    <h2>Continuous Improvement</h2>
+    <p>Accessibility is an ongoing process. We regularly audit our work against WCAG 2.1 AA standards, stay current with best practices, and update our sites and processes to reflect new accessibility knowledge and technologies.</p>
+    <p>We also engage with the accessibility community to learn from others and contribute to the broader effort of making the web more inclusive.</p>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-links">
+        <a href="/terms.html">Terms</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/accessibility.html">Accessibility</a>
+        <a href="/cookies.html">Cookies</a>
+      </div>
+      <div class="footer-text">
+        <p>Muntin Digital™ — a fully-remote digital studio</p>
+        <p>Don Goldstein Bushman &nbsp;|&nbsp; <a href="mailto:don@muntindigital.com">don@muntindigital.com</a></p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
