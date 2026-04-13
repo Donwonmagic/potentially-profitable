@@ -37,22 +37,35 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "ProfessionalService",
+      "@type": ["ProfessionalService", "LocalBusiness"],
       "@id": "https://muntin.digital/#business",
       "name": "Muntin Digital",
       "alternateName": ["MuntinDigital", "Muntin.digital", "Muntin"],
-      "description": "A one-person digital studio building custom websites, brand identity, and social media for restaurants, local businesses, and growing brands.",
+      "description": "A Silver Spring, Maryland-based one-person digital studio building custom websites, brand identity, and social media for restaurants, local businesses, and growing brands across the DMV and nationwide.",
       "url": "https://muntin.digital/",
       "email": "don@muntindigital.com",
       "slogan": "Structure Brings Clarity.",
       "priceRange": "$$",
-      "areaServed": {
-        "@type": "Country",
-        "name": "United States"
-      },
+      "areaServed": [
+        { "@type": "City", "name": "Silver Spring" },
+        { "@type": "City", "name": "Takoma Park" },
+        { "@type": "City", "name": "Bethesda" },
+        { "@type": "City", "name": "Washington" },
+        { "@type": "AdministrativeArea", "name": "Maryland" },
+        { "@type": "AdministrativeArea", "name": "District of Columbia" },
+        { "@type": "AdministrativeArea", "name": "Virginia" },
+        { "@type": "Country", "name": "United States" }
+      ],
       "address": {
         "@type": "PostalAddress",
+        "addressLocality": "Silver Spring",
+        "addressRegion": "MD",
         "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 38.9907,
+        "longitude": -77.0261
       },
       "logo": "https://muntin.digital/brand/mark/mark-square-ink.svg",
       "image": "https://muntin.digital/brand/og-image.png",
@@ -327,7 +340,7 @@
   <div class="container proof-inner">
     <div class="proof-label">Built for</div>
     <div class="proof-logos" aria-label="Industries we serve">
-      <span>Restaurants</span>
+      <span><a href="/for/restaurants/" style="color:inherit; text-decoration:none; border-bottom:1px dashed currentColor;">Restaurants&nbsp;→</a></span>
       <span>Local Service</span>
       <span>Wellness</span>
       <span>Boutique E-commerce</span>
