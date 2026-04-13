@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Writing — Notes from the Studio | Muntin Digital</title>
+<meta name="description" content="Honest essays about building websites for small businesses. Written by Don at Muntin Digital — a one-person studio in Silver Spring, MD." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/blog/" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Writing — Notes from the Studio | Muntin Digital" />
+<meta property="og:description" content="Honest essays about building websites for small businesses. Written by Don at Muntin Digital." />
+<meta property="og:url" content="https://muntin.digital/blog/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/blog.svg" />
+<meta property="og:image:type" content="image/svg+xml" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Writing — Notes from the Studio | Muntin Digital" />
+<meta name="twitter:description" content="Honest essays about building websites for small businesses." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/blog.svg" />
+
+<link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Blog",
+      "@id": "https://muntin.digital/blog/#blog",
+      "name": "Muntin Digital — Writing",
+      "description": "Honest essays about building websites for small businesses.",
+      "url": "https://muntin.digital/blog/",
+      "author": { "@id": "https://muntin.digital/#business" },
+      "publisher": { "@id": "https://muntin.digital/#business" },
+      "inLanguage": "en-US",
+      "isPartOf": { "@id": "https://muntin.digital/#website" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
+        { "@type": "ListItem", "position": 2, "name": "Writing", "item": "https://muntin.digital/blog/" }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&amp;family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+
+<link rel="stylesheet" href="/assets/site.css">
+
+<style>
+  /* ============ BLOG INDEX + POST LAYOUT STYLES ============ */
+  /* These live on the blog pages only for now; if we add more posts I'll
+     promote them into /assets/site.css. */
+
+  .post-list {
+    display: grid;
+    gap: 4px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .post-card {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 32px;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+    color: inherit;
+    transition: opacity var(--t-fast) var(--ease);
+  }
+  .post-card:hover { opacity: 0.72; }
+  .post-card:first-of-type { border-top: 1px solid var(--line); }
+  .post-card .meta {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--stone);
+    padding-top: 6px;
+  }
+  .post-card .meta .date { display: block; color: var(--teal); margin-bottom: 4px; }
+  .post-card h3 {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 2.6vw, 34px);
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--ink);
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+  }
+  .post-card p {
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--stone);
+    margin: 0;
+  }
+  @media (max-width: 680px) {
+    .post-card { grid-template-columns: 1fr; gap: 10px; padding: 24px 0; }
+    .post-card .meta { padding-top: 0; }
+  }
+
+  /* Empty state */
+  .post-empty {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 56px 40px;
+    background: var(--cream-2);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    text-align: center;
+  }
+  .post-empty .eyebrow {
+    color: var(--teal);
+    margin-bottom: 18px;
+    display: inline-block;
+  }
+  .post-empty h3 {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 2.6vw, 30px);
+    font-weight: 500;
+    margin: 0 0 14px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .post-empty p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin: 0 auto;
+    max-width: 520px;
+  }
+  .post-empty p a {
+    color: var(--teal);
+    font-weight: 600;
+    border-bottom: 1px dashed currentColor;
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm">™</sup>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/#services">Services</a>
+      <a href="/for/restaurants/">Restaurants</a>
+      <a href="/work/">Work</a>
+      <a href="/blog/">Blog</a>
+      <a href="/#about">About</a>
+    </nav>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/#services">Services</a>
+    <a href="/for/restaurants/">Restaurants</a>
+    <a href="/work/">Work</a>
+    <a href="/blog/">Blog</a>
+    <a href="/#about">About</a>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call</a>
+  </nav>
+</header>
+
+<main id="main">
+
+<!-- ============ HERO ============ -->
+<section class="hero" style="padding-bottom:40px;">
+  <div class="container">
+    <div style="max-width:780px; margin:0 auto; text-align:center;">
+      <span class="eyebrow">Writing</span>
+      <h1 style="margin-top:20px;">
+        Notes<br>
+        <span class="serif-italic">from the studio.</span>
+      </h1>
+      <p class="hero-sub" style="margin:24px auto 0; max-width:620px;">
+        Honest essays about building websites for small businesses — real numbers, real tradeoffs, real opinions. Written by Don, not by a content team, and priced for reading, not for skimming.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ POST LIST (currently empty state) ============ -->
+<section class="block">
+  <div class="container">
+    <div class="post-empty">
+      <span class="eyebrow">First post in progress</span>
+      <h3>The first essay is being written.</h3>
+      <p>
+        It's called <strong>"How Much Does a Custom Restaurant Website Cost in 2026?"</strong> — a fully-priced, honest breakdown of what an independent restaurant should actually budget for a custom build, where the numbers come from, and what's worth paying for (and what isn't). It'll land at <a href="/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/">/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/</a> shortly. In the meantime, if you want specifics for your own project, <a href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">book a 20-minute call</a>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="block bg-cream2 final">
+  <div class="container">
+    <div class="section-header reveal" style="text-align:center;">
+      <span class="eyebrow">Before the blog catches up</span>
+      <h2>Questions that<br>need real answers?</h2>
+      <p class="final-sub">The posts here will eventually answer most of the common questions small business owners ask me. If yours is urgent, skip the queue and ask me directly on a short call — same honest answer, same afternoon.</p>
+    </div>
+
+    <div class="hero-ctas reveal" style="justify-content:center; margin-top:32px;">
+      <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      </a>
+      <a class="btn btn-ghost" href="/resources/restaurant-website-checklist/">Read the free checklist</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container foot">
+    <div>
+      <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53">
+      <div style="margin-top:6px">Structure Brings Clarity.</div>
+    </div>
+    <div style="text-align:right">
+      <div style="color:var(--cream); margin-bottom:4px">don@muntindigital.com</div>
+      <nav class="foot-legal" aria-label="Legal">
+        <a href="/terms.html">Terms of Service</a>
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="/accessibility.html">Accessibility</a>
+        <a href="/cookies.html">Cookie Policy</a>
+      </nav>
+      <div>© 2026 Muntin Digital™ · Maryland LLC · Based in Silver Spring, MD · Serving US small businesses</div>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/site.js" defer></script>
+</body>
+</html>
