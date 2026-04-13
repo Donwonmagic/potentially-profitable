@@ -742,6 +742,141 @@
     return audits && audits[key] ? audits[key] : { displayValue: '—', numericValue: null };
   }
 
+  /* -------- Restaurant-priority checks -------- */
+
+  // Each definition maps a Lighthouse audit ID to restaurant-owner language
+  // and a link back into the matching checklist category.
+  var PRIORITY_CHECKS = [
+    {
+      audit: 'viewport',
+      anchor: '#mobile',
+      pass: 'Mobile viewport is set correctly',
+      passNote: 'Your pages render at device width — which is table stakes for any mobile-friendly experience.',
+      fail: 'Your site is missing a mobile viewport tag',
+      failNote: 'Without it, mobile browsers render at desktop width and break every mobile check that follows. It is a one-line fix in your <head>.'
+    },
+    {
+      audit: 'is-on-https',
+      anchor: '#trust',
+      pass: 'Served over HTTPS',
+      passNote: 'Your site is secure and Google treats it as trustworthy.',
+      fail: 'Your site is still on HTTP',
+      failNote: 'Modern browsers flag HTTP sites as "Not secure" in the address bar. Switch to a host that offers free HTTPS.'
+    },
+    {
+      audit: 'document-title',
+      anchor: '#findability',
+      pass: 'Your homepage has a title tag',
+      passNote: 'The title tag is what Google shows in the search result — make sure it names your cuisine and city.',
+      fail: 'Your homepage is missing a title tag',
+      failNote: 'Google will invent one for you, and it will be worse. Add a <title> that includes restaurant name + cuisine + city.'
+    },
+    {
+      audit: 'meta-description',
+      anchor: '#findability',
+      pass: 'Your homepage has a meta description',
+      passNote: 'This is the snippet Google shows under your link in search results — make it compelling.',
+      fail: 'Your homepage is missing a meta description',
+      failNote: 'Google will auto-generate a snippet from your page copy, usually poorly. Write one that sells in under 160 characters.'
+    },
+    {
+      audit: 'image-alt',
+      anchor: '#findability',
+      pass: 'All images have descriptive alt text',
+      passNote: 'Good alt text is accessibility + SEO in one. Screen readers understand your images and so does Google.',
+      fail: 'Some images are missing alt text',
+      failNote: 'Alt text helps screen readers and Google Image Search. Replace empty or "IMG_2041.jpg" attributes with real descriptions.'
+    },
+    {
+      audit: 'font-size',
+      anchor: '#mobile',
+      pass: 'Body text is legible on mobile',
+      passNote: 'Visitors can read your menu without pinch-zooming, which is the bar for a mobile restaurant site.',
+      fail: 'Body text is too small on mobile',
+      failNote: 'More than 40% of your text is under the readable threshold, forcing visitors to zoom. Set body font-size to at least 16px.'
+    },
+    {
+      audit: 'tap-targets',
+      anchor: '#mobile',
+      pass: 'Tap targets are thumb-friendly',
+      passNote: 'Your buttons and links are large enough to tap without missing on a phone.',
+      fail: 'Some tap targets are too small',
+      failNote: 'Buttons and links under 44×44px create fat-finger failures on mobile. Pad them out or increase the font size.'
+    },
+    {
+      audit: 'color-contrast',
+      anchor: '#trust',
+      pass: 'Text has sufficient contrast against its background',
+      passNote: 'Nobody has to squint to read your menu descriptions.',
+      fail: 'Some text has poor contrast',
+      failNote: 'Light gray on white or cream on beige is unreadable for anyone older than 40. Fix the contrast ratios (Lighthouse lists which).'
+    },
+    {
+      audit: 'is-crawlable',
+      anchor: '#findability',
+      pass: 'Search engines can crawl your site',
+      passNote: 'Nothing is blocking Google from indexing your pages — a prerequisite for ranking at all.',
+      fail: 'Search engines are blocked',
+      failNote: 'A robots.txt entry or meta tag is telling Google not to index your site. This kills findability instantly — check your robots.txt and meta robots tags.'
+    },
+    {
+      audit: 'uses-responsive-images',
+      anchor: '#mobile',
+      pass: 'Images are sized appropriately for mobile',
+      passNote: 'You are not shipping desktop-sized photos to phone screens.',
+      fail: 'Images are heavier than they need to be on mobile',
+      failNote: 'Serving full-resolution photos to mobile costs load time and data. Use responsive image techniques (srcset, modern formats).'
+    }
+  ];
+
+  // Map a Lighthouse 0-1 score to a mark letter and class
+  // (score === 1 pass, >= 0.5 warn, else fail; null means skip entirely)
+  function scoreToMark(score) {
+    if (score === null || typeof score === 'undefined') return null;
+    if (score >= 0.9) return { cls: 'pass', ch: '✓' };
+    if (score >= 0.5) return { cls: 'warn', ch: '!' };
+    return { cls: 'fail', ch: '✗' };
+  }
+
+  function renderPriorityChecks(audits) {
+    var container = document.getElementById('priorityItems');
+    if (!container) return;
+    container.innerHTML = '';
+    var passCount = 0, totalCount = 0;
+
+    PRIORITY_CHECKS.forEach(function(def){
+      var audit = audits && audits[def.audit];
+      if (!audit) return; // audit not present in this run — skip
+
+      // scoreDisplayMode "notApplicable" or "informative" with null score → skip
+      if (audit.scoreDisplayMode === 'notApplicable') return;
+      var mark = scoreToMark(audit.score);
+      if (!mark) return;
+
+      totalCount++;
+      if (mark.cls === 'pass') passCount++;
+
+      var isPass = mark.cls === 'pass';
+      var title = isPass ? def.pass : def.fail;
+      var note  = isPass ? def.passNote : def.failNote;
+
+      var row = document.createElement('div');
+      row.className = 'priority-item';
+      row.innerHTML =
+        '<div class="mark ' + mark.cls + '" aria-hidden="true">' + mark.ch + '</div>' +
+        '<div class="body"><strong>' + title + '</strong><span>' + note + '</span></div>' +
+        '<a class="link" href="/resources/restaurant-website-checklist/' + def.anchor + '">Learn more →</a>';
+      container.appendChild(row);
+    });
+
+    var tally = document.getElementById('priorityTally');
+    if (tally) {
+      tally.textContent = totalCount
+        ? passCount + ' of ' + totalCount + ' passed'
+        : 'No restaurant-priority data available';
+    }
+  }
+
   function renderReport(data, auditedUrl) {
     var lh = data && data.lighthouseResult;
     if (!lh || !lh.categories) throw new Error('Unexpected PageSpeed response shape.');
@@ -775,7 +910,10 @@
     setVital('tbt', tbt.displayValue, tbt.numericValue);
     setVital('fcp', fcp.displayValue, fcp.numericValue);
 
-    // Expose the raw audits object for sprint 18's priority-check translation.
+    // Restaurant-priority checks (sprint 18)
+    renderPriorityChecks(audits);
+
+    // Expose raw audits for future consumers
     window.__auditLastResult = { audits: audits, overall: overall, url: auditedUrl };
 
     showOnly(reportEl);
