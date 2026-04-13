@@ -439,6 +439,123 @@
     .priority-item { grid-template-columns: 28px 1fr; }
     .priority-item .link { grid-column: 2; padding-top: 0; }
   }
+
+  /* Share link button */
+  .share-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid var(--line-dark);
+    border-radius: 999px;
+    background: var(--white);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+    transition: all var(--t-fast) var(--ease);
+  }
+  .share-btn:hover { background: var(--cream-2); border-color: var(--teal); color: var(--teal); }
+  .share-btn svg { width: 15px; height: 15px; }
+  .share-toast {
+    font-size: 12px;
+    color: #1f9d55;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity var(--t-fast) var(--ease);
+  }
+  .share-toast.visible { opacity: 1; }
+
+  /* Email report form */
+  .email-report {
+    margin-top: 32px;
+    padding: 40px 44px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+  }
+  .email-report header {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .email-report h3 {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 2.4vw, 28px);
+    font-weight: 500;
+    margin: 0;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .email-report p {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--stone);
+    margin: 0;
+    flex: 1;
+    min-width: 240px;
+  }
+  .email-form {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    max-width: 560px;
+  }
+  .email-form input[type="email"] {
+    padding: 14px 18px;
+    border: 1px solid var(--line-dark);
+    border-radius: 12px;
+    font: inherit;
+    font-size: 15px;
+    background: var(--cream);
+    color: var(--ink);
+  }
+  .email-form input[type="email"]:focus {
+    outline: 2px solid var(--teal);
+    outline-offset: 0;
+    background: var(--white);
+  }
+  .email-form button {
+    padding: 14px 22px;
+    border-radius: 12px;
+    background: var(--teal);
+    color: var(--cream);
+    font: inherit;
+    font-weight: 600;
+    font-size: 14px;
+    border: 0;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .email-form button:hover { background: var(--teal-dark); }
+  .email-form button:disabled { background: var(--stone-2); cursor: not-allowed; }
+  .email-report-success {
+    margin-top: 16px;
+    padding: 18px 22px;
+    background: #e6f4ec;
+    border: 1px solid #bfe0cb;
+    border-radius: 12px;
+    color: #0f6b35;
+    font-size: 14px;
+  }
+  .email-disclaimer {
+    font-size: 12px;
+    color: var(--stone);
+    margin-top: 12px;
+  }
+  @media (max-width: 520px) {
+    .email-form { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
@@ -550,6 +667,13 @@
           <h2 id="scoreHeadline">Your overall score</h2>
           <div class="url">Audited: <strong id="auditedUrl">—</strong></div>
           <p class="verdict" id="verdictCopy">Verdict copy populates here after a run — explains what the score means and what to focus on first.</p>
+          <div class="share-row">
+            <button type="button" class="share-btn" id="shareBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+              Copy shareable link
+            </button>
+            <span class="share-toast" id="shareToast" aria-live="polite">Link copied!</span>
+          </div>
         </div>
       </div>
 
@@ -611,8 +735,61 @@
           <!-- Populated by sprint 17/18 JavaScript -->
         </div>
       </div>
+
+      <!-- Email me the report -->
+      <div class="email-report">
+        <header>
+          <h3>Email me this report.</h3>
+          <p>Drop your email and I'll send over a clean copy you can forward to your team or keep for your records. I'll also throw in a personal note with the two biggest things I'd fix first — no drip, no newsletter, just a real reply.</p>
+        </header>
+
+        <form id="emailReportForm" action="https://formspree.io/f/xkgrgzqo" method="POST" class="email-form">
+          <input type="hidden" name="_subject" value="Restaurant Audit — report requested" />
+          <input type="hidden" name="interest" value="restaurant-audit-report" />
+          <input type="hidden" name="source" value="/audit/restaurants/" />
+          <input type="hidden" name="audited_url" id="emailReportUrl" value="" />
+          <input type="hidden" name="overall_score" id="emailReportScore" value="" />
+          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+
+          <input
+            type="email"
+            name="email"
+            required
+            autocomplete="email"
+            placeholder="you@yourrestaurant.com"
+            aria-label="Your email address"
+          />
+          <button type="submit">Email me the report →</button>
+        </form>
+        <p class="email-disclaimer">
+          Your email stays with me. No list, no marketing drip.
+        </p>
+
+        <div class="email-report-success" id="emailReportSuccess" hidden role="status" aria-live="polite">
+          Got it — I'll email you within 24 hours with the report and the two biggest wins for your site.
+        </div>
+      </div>
+
     </div>
 
+  </div>
+</section>
+
+<!-- ============ ALWAYS-VISIBLE FINAL CTA ============ -->
+<section class="block bg-cream2 final">
+  <div class="container">
+    <div class="section-header reveal" style="text-align:center;">
+      <span class="eyebrow">Want the real fix?</span>
+      <h2>I build restaurant websites<br>that don't need this audit.</h2>
+      <p class="final-sub">If the audit found more red than you're comfortable with, let's talk. Twenty minutes on Zoom, I'll walk through your results live, tell you what I'd do in what order, and give you a realistic budget and timeline. No pitch, no pressure.</p>
+    </div>
+
+    <div class="hero-ctas reveal" style="justify-content:center; margin-top:32px;">
+      <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      </a>
+      <a class="btn btn-ghost" href="/for/restaurants/">See restaurant services</a>
+    </div>
   </div>
 </section>
 
@@ -918,6 +1095,12 @@
     // Expose raw audits for future consumers
     window.__auditLastResult = { audits: audits, overall: overall, url: auditedUrl };
 
+    // Pre-fill email-the-report hidden fields with this run's context
+    var emailUrlField   = document.getElementById('emailReportUrl');
+    var emailScoreField = document.getElementById('emailReportScore');
+    if (emailUrlField)   emailUrlField.value   = auditedUrl;
+    if (emailScoreField) emailScoreField.value = String(overall);
+
     showOnly(reportEl);
     // Scroll the report into view
     setTimeout(function(){
@@ -1017,6 +1200,83 @@
     if (window.plausible) window.plausible('Audit Started');
     runAudit(url);
   });
+
+  /* -------- Share button: builds ?url=... and copies to clipboard -------- */
+  var shareBtn   = document.getElementById('shareBtn');
+  var shareToast = document.getElementById('shareToast');
+  if (shareBtn) {
+    shareBtn.addEventListener('click', function(){
+      var last = window.__auditLastResult;
+      if (!last || !last.url) return;
+      var shareUrl = location.origin + location.pathname + '?url=' + encodeURIComponent(last.url);
+      var showToast = function(){
+        if (!shareToast) return;
+        shareToast.classList.add('visible');
+        setTimeout(function(){ shareToast.classList.remove('visible'); }, 2000);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(shareUrl).then(showToast, function(){
+          // Fallback: select into a temp input
+          fallbackCopy(shareUrl);
+          showToast();
+        });
+      } else {
+        fallbackCopy(shareUrl);
+        showToast();
+      }
+      if (window.plausible) window.plausible('Audit Shared');
+    });
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  /* -------- Email-the-report form handler -------- */
+  var emailForm    = document.getElementById('emailReportForm');
+  var emailSuccess = document.getElementById('emailReportSuccess');
+  if (emailForm) {
+    emailForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      var btn = emailForm.querySelector('button[type="submit"]');
+      if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+      var data = new FormData(emailForm);
+      fetch(emailForm.action, { method:'POST', body:data, headers:{'Accept':'application/json'} })
+        .then(function(res){
+          if (!res.ok) throw new Error('Formspree returned ' + res.status);
+          emailForm.hidden = true;
+          if (emailSuccess) emailSuccess.hidden = false;
+          if (window.plausible) window.plausible('Audit Report Emailed');
+        })
+        .catch(function(){
+          if (btn) { btn.disabled = false; btn.textContent = 'Email me the report →'; }
+          alert('Something went wrong. Please email don@muntindigital.com directly.');
+        });
+    });
+  }
+
+  /* -------- URL-param auto-run for shareable links -------- */
+  (function autoRunFromParam(){
+    try {
+      var params = new URLSearchParams(location.search);
+      var preset = params.get('url');
+      if (!preset) return;
+      var normalized = normalizeUrl(preset);
+      if (!normalized) return;
+      input.value = normalized;
+      // Brief delay so the page finishes painting before we kick off the fetch
+      setTimeout(function(){
+        if (window.plausible) window.plausible('Audit Auto-run');
+        runAudit(normalized);
+      }, 300);
+    } catch (e) { /* no-op */ }
+  })();
 })();
 </script>
 
