@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="Muntin Digital — Structure Brings Clarity.">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FAF7F2"/>
+      <stop offset="100%" stop-color="#F3EEE3"/>
+    </linearGradient>
+    <linearGradient id="tealGlow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1F4E5B" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#1F4E5B" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="rustGlow" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#B8541A" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#B8541A" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+  <rect width="1200" height="630" fill="url(#tealGlow)"/>
+  <rect width="1200" height="630" fill="url(#rustGlow)"/>
+
+  <!-- Subtle border -->
+  <rect x="24" y="24" width="1152" height="582" rx="18" ry="18" fill="none" stroke="#E8E2D6" stroke-width="2"/>
+
+  <!-- Left side: text block -->
+  <g transform="translate(90,120)">
+    <!-- Eyebrow with leading rule -->
+    <g>
+      <line x1="0" y1="16" x2="52" y2="16" stroke="#1F4E5B" stroke-width="2"/>
+      <text x="68" y="22" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="22" font-weight="500" fill="#1F4E5B" letter-spacing="3">A DIGITAL STUDIO OF ONE</text>
+    </g>
+
+    <!-- Headline -->
+    <text x="0" y="110" font-family="Fraunces, Georgia, serif" font-size="84" font-weight="500" fill="#14161A" letter-spacing="-2">Your complete</text>
+    <text x="0" y="200" font-family="Fraunces, Georgia, serif" font-size="84" font-weight="500" fill="#14161A" letter-spacing="-2">online presence,</text>
+    <text x="0" y="290" font-family="Fraunces, Georgia, serif" font-size="84" font-weight="500" font-style="italic" fill="#B8541A" letter-spacing="-2">handled</text>
+    <text x="325" y="290" font-family="Fraunces, Georgia, serif" font-size="84" font-weight="500" fill="#14161A" letter-spacing="-2">by one person.</text>
+
+    <!-- Sub-tagline -->
+    <text x="0" y="360" font-family="Inter, -apple-system, sans-serif" font-size="26" font-weight="400" fill="#2A2D33">Brand · Websites · Social · Care — one partner.</text>
+  </g>
+
+  <!-- Right side: muntin window graphic -->
+  <g transform="translate(820,135)">
+    <!-- Frame shadow -->
+    <rect x="8" y="16" width="290" height="360" rx="6" fill="#14161A" opacity="0.08"/>
+    <!-- Window frame -->
+    <rect x="0" y="0" width="290" height="360" rx="6" fill="#FFFFFF" stroke="#14161A" stroke-width="5"/>
+    <!-- Panes backdrop (teal tint) -->
+    <rect x="5" y="5" width="280" height="350" rx="3" fill="#E8F1F3"/>
+    <!-- Asymmetric muntin bars -->
+    <!-- Vertical bar slightly left of center -->
+    <line x1="120" y1="5" x2="120" y2="355" stroke="#14161A" stroke-width="9" stroke-linecap="square"/>
+    <!-- Horizontal bar in upper third -->
+    <line x1="5" y1="110" x2="285" y2="110" stroke="#14161A" stroke-width="9" stroke-linecap="square"/>
+  </g>
+
+  <!-- Bottom bar: wordmark + tagline -->
+  <g transform="translate(90,540)">
+    <!-- Wordmark with small muntin mark -->
+    <g transform="translate(0,-30)">
+      <rect x="0" y="0" width="38" height="38" fill="none" stroke="#14161A" stroke-width="4"/>
+      <line x1="19" y1="0" x2="19" y2="38" stroke="#14161A" stroke-width="4"/>
+      <line x1="0" y1="12" x2="38" y2="12" stroke="#14161A" stroke-width="4"/>
+    </g>
+    <text x="54" y="0" font-family="Fraunces, Georgia, serif" font-size="34" font-weight="600" fill="#14161A" letter-spacing="-0.5">Muntin Digital</text>
+    <text x="290" y="0" font-family="Inter, -apple-system, sans-serif" font-size="20" font-weight="500" fill="#6B6B6B" letter-spacing="1">STRUCTURE BRINGS CLARITY.</text>
+    <!-- URL right aligned -->
+    <text x="1020" y="0" font-family="Inter, -apple-system, sans-serif" font-size="20" font-weight="500" fill="#1F4E5B">muntin.digital</text>
+  </g>
+</svg>
