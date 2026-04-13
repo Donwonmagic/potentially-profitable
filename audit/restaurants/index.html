@@ -879,6 +879,13 @@
   if (!form) return;
 
   var PSI_ENDPOINT = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed';
+  // Google Cloud API key scoped to:
+  //   - Application: HTTP referrer restricted to muntin.digital/*
+  //   - API:         PageSpeed Insights API only
+  // This is the documented pattern for embedding a Google API key in
+  // client-side JavaScript. Anyone who copies the key out of this HTML
+  // and calls it from a different origin receives 403 from Google.
+  var PSI_API_KEY  = 'AIzaSyBTnABfW9D83-50L2svV7MOcyx9RCPPN30';
   var CATEGORIES   = ['performance', 'accessibility', 'best-practices', 'seo'];
   var submitOriginalHTML = submitBtn.innerHTML;
 
@@ -1197,6 +1204,9 @@
     params.append('url', url);
     params.append('strategy', 'mobile');
     CATEGORIES.forEach(function(c){ params.append('category', c); });
+    // Authenticated tier: lifts anonymous rate limits and gives us
+    // the free-tier 25k-requests/day quota.
+    if (PSI_API_KEY) params.append('key', PSI_API_KEY);
 
     fetch(PSI_ENDPOINT + '?' + params.toString())
       .then(function(res){
