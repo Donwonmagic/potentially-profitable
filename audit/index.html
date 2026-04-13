@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Free Restaurant Website Audit — Score Your Site in 20 Seconds | Muntin Digital</title>
-<meta name="description" content="Drop your URL and get an instant, honest audit of your restaurant website — performance, mobile speed, SEO, accessibility, and restaurant-specific checks. Free, no sign-up. By Muntin Digital, Silver Spring MD." />
+<title>Free Website Audit Tools | Muntin Digital</title>
+<meta name="description" content="Free client-side website audit tools from Muntin Digital, purpose-built for specific industries. Restaurant audit is live now. Wellness, boutique e-commerce, and brand audits are in development." />
 <meta name="theme-color" content="#1F4E5B" />
 <link rel="canonical" href="https://muntin.digital/audit/" />
 
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Free Restaurant Website Audit — Score Your Site in 20 Seconds" />
-<meta property="og:description" content="Drop your URL and get an instant, honest audit of your restaurant website. Performance, mobile speed, SEO, accessibility. Free, no sign-up." />
+<meta property="og:title" content="Free Website Audit Tools | Muntin Digital" />
+<meta property="og:description" content="Free client-side website audit tools, purpose-built for specific industries. Restaurant audit is live now." />
 <meta property="og:url" content="https://muntin.digital/audit/" />
 <meta property="og:site_name" content="Muntin Digital" />
 <meta property="og:image" content="https://muntin.digital/brand/og-image.png" />
@@ -19,8 +19,8 @@
 <meta property="og:image:height" content="630" />
 
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Free Restaurant Website Audit — Score Your Site in 20 Seconds" />
-<meta name="twitter:description" content="Drop your URL and get an instant, honest audit of your restaurant website." />
+<meta name="twitter:title" content="Free Website Audit Tools | Muntin Digital" />
+<meta name="twitter:description" content="Free client-side website audit tools, purpose-built for specific industries." />
 <meta name="twitter:image" content="https://muntin.digital/brand/og-image.png" />
 
 <link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
@@ -30,21 +30,19 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "WebApplication",
-      "@id": "https://muntin.digital/audit/#app",
-      "name": "Restaurant Website Audit",
-      "applicationCategory": "BusinessApplication",
-      "operatingSystem": "Web",
+      "@type": "CollectionPage",
+      "@id": "https://muntin.digital/audit/#collection",
+      "name": "Muntin Digital — Free Audit Tools",
+      "description": "Free client-side website audit tools, each purpose-built for a specific industry.",
       "url": "https://muntin.digital/audit/",
-      "description": "A free client-side tool that runs Google PageSpeed Insights against a restaurant website and returns an honest, plain-English audit card.",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "creator": { "@id": "https://muntin.digital/#business" }
+      "isPartOf": { "@id": "https://muntin.digital/#website" },
+      "about": { "@id": "https://muntin.digital/#business" }
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
-        { "@type": "ListItem", "position": 2, "name": "Restaurant Website Audit", "item": "https://muntin.digital/audit/" }
+        { "@type": "ListItem", "position": 2, "name": "Audit Tools", "item": "https://muntin.digital/audit/" }
       ]
     }
   ]
@@ -53,7 +51,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&amp;family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&amp;family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
 <script>
@@ -64,379 +62,95 @@
 <link rel="stylesheet" href="/assets/site.css">
 
 <style>
-  /* ============ AUDIT TOOL STYLES ============ */
+  .tool-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 56px;
+  }
+  @media (max-width: 760px) { .tool-grid { grid-template-columns: 1fr; } }
 
-  /* Input form */
-  .audit-hero {
-    text-align: center;
-    max-width: 780px;
-    margin: 0 auto;
-  }
-  .audit-form {
+  .tool-card {
     display: flex;
-    gap: 12px;
-    max-width: 620px;
-    margin: 40px auto 0;
-    padding: 8px;
+    flex-direction: column;
+    padding: 36px 32px;
     background: var(--white);
-    border: 1px solid var(--line-dark);
-    border-radius: 999px;
-    box-shadow: 0 10px 30px rgba(20, 22, 26, 0.06);
-    transition: border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out), border-color var(--t-fast);
+    position: relative;
+    overflow: hidden;
   }
-  .audit-form:focus-within {
+  .tool-card.live:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(20, 22, 26, 0.08);
     border-color: var(--teal);
-    box-shadow: 0 10px 40px rgba(31, 78, 91, 0.12);
   }
-  .audit-form input[type="url"] {
-    flex: 1;
-    padding: 14px 20px;
-    font: inherit;
-    font-size: 16px;
-    border: 0;
-    background: transparent;
-    color: var(--ink);
-    outline: none;
-    min-width: 0;
+  .tool-card.soon {
+    cursor: default;
+    background: var(--cream-2);
+    color: var(--stone);
   }
-  .audit-form input[type="url"]::placeholder { color: var(--stone-2); }
-  .audit-form button {
-    padding: 14px 28px;
-    border-radius: 999px;
-    background: var(--teal);
-    color: var(--cream);
-    font-weight: 600;
-    font-size: 15px;
-    border: 0;
-    cursor: pointer;
-    transition: background var(--t-fast) var(--ease);
+  .tool-card .status {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    white-space: nowrap;
-  }
-  .audit-form button:hover { background: var(--teal-dark); }
-  .audit-form button:disabled { background: var(--stone-2); cursor: not-allowed; }
-  @media (max-width: 560px) {
-    .audit-form { flex-direction: column; border-radius: 20px; }
-    .audit-form button { border-radius: 14px; justify-content: center; }
-  }
-
-  .audit-note {
-    font-size: 13px;
-    color: var(--stone);
-    margin-top: 20px;
-  }
-  .audit-note code {
-    font-size: 12px;
-    background: var(--cream-2);
-    padding: 2px 8px;
-    border-radius: 4px;
-  }
-
-  /* Loading state */
-  .audit-loading {
-    max-width: 520px;
-    margin: 48px auto 0;
-    text-align: center;
-    padding: 40px;
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-radius: 20px;
-  }
-  .audit-loading-ring {
-    width: 56px;
-    height: 56px;
-    margin: 0 auto 24px;
-    border: 3px solid var(--line);
-    border-top-color: var(--teal);
-    border-radius: 50%;
-    animation: audit-spin 1s linear infinite;
-  }
-  @keyframes audit-spin { to { transform: rotate(360deg); } }
-  .audit-loading h3 {
-    font-family: var(--font-display);
-    font-size: 24px;
-    font-weight: 500;
-    margin: 0 0 8px;
-    letter-spacing: -0.01em;
-  }
-  .audit-loading p {
-    margin: 0;
-    color: var(--stone);
-    font-size: 14px;
-    min-height: 1.5em;
-  }
-
-  /* Error state */
-  .audit-error {
-    max-width: 520px;
-    margin: 48px auto 0;
-    padding: 28px 32px;
-    background: var(--white);
-    border: 1px solid var(--rust);
-    border-left: 4px solid var(--rust);
-    border-radius: 14px;
-    text-align: left;
-  }
-  .audit-error h3 {
-    font-family: var(--font-display);
-    font-size: 22px;
-    font-weight: 500;
-    margin: 0 0 10px;
-    color: var(--rust);
-  }
-  .audit-error p { margin: 0 0 8px; color: var(--ink-soft); font-size: 15px; line-height: 1.55; }
-  .audit-error p:last-child { margin: 0; }
-
-  /* Report card — overall score */
-  .audit-report { margin-top: 64px; }
-  .audit-summary {
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    gap: 48px;
-    align-items: center;
-    padding: 48px;
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-radius: 24px;
-    margin-bottom: 32px;
-  }
-  @media (max-width: 720px) {
-    .audit-summary { grid-template-columns: 1fr; gap: 24px; padding: 32px 24px; text-align: center; }
-  }
-
-  .score-ring {
-    width: 200px;
-    height: 200px;
-    position: relative;
-    margin: 0 auto;
-  }
-  .score-ring svg {
-    width: 100%;
-    height: 100%;
-    transform: rotate(-90deg);
-  }
-  .score-ring circle {
-    fill: none;
-    stroke-width: 12;
-  }
-  .score-ring .bg { stroke: var(--line); }
-  .score-ring .fg {
-    stroke: var(--teal);
-    stroke-linecap: round;
-    transition: stroke-dashoffset 1.2s var(--ease-out);
-  }
-  .score-ring.grade-good .fg  { stroke: #1f9d55; }
-  .score-ring.grade-ok   .fg  { stroke: #d97706; }
-  .score-ring.grade-bad  .fg  { stroke: var(--rust); }
-  .score-ring .text {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-display);
-    font-weight: 500;
-  }
-  .score-ring .value {
-    font-size: 72px;
-    line-height: 1;
-    color: var(--ink);
-    letter-spacing: -0.03em;
-  }
-  .score-ring .max {
-    font-size: 14px;
-    color: var(--stone);
-    margin-top: 4px;
-    letter-spacing: 0.05em;
-  }
-
-  .audit-summary-meta h2 {
-    font-family: var(--font-display);
-    font-size: clamp(28px, 3.4vw, 42px);
-    font-weight: 500;
-    line-height: 1.1;
-    margin: 0 0 12px;
-    color: var(--ink);
-    letter-spacing: -0.01em;
-  }
-  .audit-summary-meta .url {
-    font-size: 14px;
-    color: var(--stone);
-    word-break: break-all;
-  }
-  .audit-summary-meta .url strong { color: var(--ink); font-weight: 600; }
-  .audit-summary-meta .verdict {
-    font-size: 15.5px;
-    line-height: 1.65;
-    color: var(--ink-soft);
-    margin: 16px 0 0;
-  }
-
-  /* Four category gauges */
-  .category-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    margin-bottom: 32px;
-  }
-  @media (max-width: 860px) { .category-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 420px) { .category-grid { grid-template-columns: 1fr; } }
-
-  .category-card {
-    padding: 24px;
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    text-align: center;
-  }
-  .category-card .label {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--stone);
-    margin-bottom: 12px;
-  }
-  .category-card .cat-value {
-    font-family: var(--font-display);
-    font-size: 52px;
-    font-weight: 500;
-    line-height: 1;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-  }
-  .category-card .bar {
-    height: 6px;
-    background: var(--line);
-    border-radius: 4px;
-    margin-top: 16px;
-    overflow: hidden;
-  }
-  .category-card .bar .fill {
-    height: 100%;
-    border-radius: 4px;
-    transition: width 1.2s var(--ease-out);
-  }
-  .category-card.grade-good .fill { background: #1f9d55; }
-  .category-card.grade-ok   .fill { background: #d97706; }
-  .category-card.grade-bad  .fill { background: var(--rust); }
-
-  /* Core Web Vitals strip */
-  .vitals-strip {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2px;
-    background: var(--line);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    overflow: hidden;
-    margin-bottom: 32px;
-  }
-  @media (max-width: 720px) { .vitals-strip { grid-template-columns: repeat(2, 1fr); } }
-  .vitals-strip > div {
-    background: var(--white);
-    padding: 20px;
-    text-align: center;
-  }
-  .vitals-strip .label {
+    padding: 4px 12px;
+    border-radius: 999px;
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
+    margin-bottom: 20px;
+    align-self: flex-start;
+  }
+  .tool-card.live .status {
+    background: #e6f4ec;
+    color: #1f9d55;
+  }
+  .tool-card.live .status::before {
+    content: ''; width: 7px; height: 7px; border-radius: 50%;
+    background: #1f9d55;
+    box-shadow: 0 0 0 3px rgba(31, 157, 85, 0.18);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(31, 157, 85, 0.18); }
+    50%      { box-shadow: 0 0 0 5px rgba(31, 157, 85, 0.10); }
+  }
+  .tool-card.soon .status {
+    background: var(--line);
     color: var(--stone);
-    margin-bottom: 8px;
   }
-  .vitals-strip .v {
+  .tool-card h3 {
     font-family: var(--font-display);
-    font-size: 22px;
+    font-size: clamp(24px, 2.6vw, 32px);
     font-weight: 500;
+    letter-spacing: -0.01em;
     color: var(--ink);
-    line-height: 1.1;
+    margin: 0 0 10px;
   }
-  .vitals-strip .v.grade-good { color: #1f9d55; }
-  .vitals-strip .v.grade-ok   { color: #d97706; }
-  .vitals-strip .v.grade-bad  { color: var(--rust); }
-  .vitals-strip .hint {
-    font-size: 11px;
-    color: var(--stone-2);
-    margin-top: 4px;
-  }
-
-  /* Restaurant-priority checks list */
-  .priority-list {
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    overflow: hidden;
-    margin-bottom: 32px;
-  }
-  .priority-list header {
-    padding: 20px 24px;
-    border-bottom: 1px solid var(--line);
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  .priority-list header h3 {
-    font-family: var(--font-display);
-    font-size: 22px;
-    font-weight: 500;
-    margin: 0;
-    color: var(--ink);
-  }
-  .priority-list header .tally {
-    font-size: 12px;
-    color: var(--stone);
-    font-weight: 500;
-  }
-  .priority-item {
-    display: grid;
-    grid-template-columns: 32px 1fr auto;
-    gap: 16px;
-    align-items: start;
-    padding: 18px 24px;
-    border-top: 1px solid var(--line);
+  .tool-card.soon h3 { color: var(--ink-soft); }
+  .tool-card p {
     font-size: 15px;
+    line-height: 1.6;
+    color: var(--stone);
+    margin: 0 0 24px;
+    flex: 1;
   }
-  .priority-item:first-of-type { border-top: 0; }
-  .priority-item .mark {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
+  .tool-card .cta {
+    font-family: var(--font-body);
     font-size: 14px;
-    font-weight: 700;
-  }
-  .priority-item .mark.pass { background: #e6f4ec; color: #1f9d55; }
-  .priority-item .mark.fail { background: #fce9e1; color: var(--rust); }
-  .priority-item .mark.warn { background: #fdf1dc; color: #b45309; }
-  .priority-item .body strong {
-    display: block;
-    color: var(--ink);
-    margin-bottom: 3px;
-  }
-  .priority-item .body span { color: var(--stone); font-size: 13.5px; line-height: 1.5; }
-  .priority-item .body a { color: var(--teal); border-bottom: 1px dashed currentColor; }
-  .priority-item .link {
-    font-size: 12px;
     font-weight: 600;
     color: var(--teal);
-    text-decoration: none;
-    white-space: nowrap;
-    padding-top: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
   }
-  .priority-item .link:hover { color: var(--teal-dark); }
-  @media (max-width: 560px) {
-    .priority-item { grid-template-columns: 28px 1fr; }
-    .priority-item .link { grid-column: 2; padding-top: 0; }
-  }
+  .tool-card.soon .cta { color: var(--stone-2); }
+  .tool-card .cta svg { width: 16px; height: 16px; }
 </style>
 </head>
 <body>
@@ -481,542 +195,75 @@
 
 <main id="main">
 
-<!-- ============ HERO + FORM ============ -->
-<section class="hero" style="padding-bottom:40px;">
+<section class="hero" style="padding-bottom:32px;">
   <div class="container">
-    <div class="audit-hero">
-      <span class="eyebrow">Free tool · Powered by Google Lighthouse</span>
+    <div style="max-width:780px; margin:0 auto; text-align:center;">
+      <span class="eyebrow">Free tools</span>
       <h1 style="margin-top:20px;">
-        How is your<br>
-        <span class="serif-italic">restaurant website</span><br>
-        actually doing?
+        Honest website audits,<br>
+        <span class="serif-italic">one industry at a time.</span>
       </h1>
-      <p class="hero-sub" style="margin:24px auto 0; max-width:580px;">
-        Drop your URL below and I'll run a real mobile audit in about twenty seconds — performance, SEO, accessibility, and the specific checks that matter for a restaurant. No sign-up, no email required, no tracking.
-      </p>
-
-      <form class="audit-form" id="auditForm" novalidate>
-        <input
-          type="url"
-          id="auditUrl"
-          name="url"
-          placeholder="https://yourrestaurant.com"
-          autocomplete="url"
-          required
-          aria-label="Your restaurant website URL"
-        />
-        <button type="submit" id="auditSubmit">
-          Run audit
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
-        </button>
-      </form>
-
-      <p class="audit-note">
-        Runs a real mobile Lighthouse audit via Google PageSpeed Insights. Try it on <code>irishinnglenecho.com</code> or any restaurant site you're curious about.
+      <p class="hero-sub" style="margin:24px auto 0; max-width:620px;">
+        Generic SEO audit tools give you a PDF full of abstractions. These tools are different: each one is purpose-built for a specific kind of business, and each one translates the findings into the language the owner actually uses. Pick yours.
       </p>
     </div>
-
-    <!-- Loading state (hidden until fetch starts) -->
-    <div class="audit-loading" id="auditLoading" hidden aria-live="polite">
-      <div class="audit-loading-ring" aria-hidden="true"></div>
-      <h3>Running your audit…</h3>
-      <p id="auditLoadingStatus">Contacting Google Lighthouse.</p>
-    </div>
-
-    <!-- Error state (hidden until an error occurs) -->
-    <div class="audit-error" id="auditError" hidden role="alert">
-      <h3 id="auditErrorHeading">We couldn't audit that URL.</h3>
-      <p id="auditErrorBody">Check the address and try again. The site needs to be publicly reachable — if it's behind a login or a local network, the audit can't see it.</p>
-    </div>
-
-    <!-- Report card (hidden until a result renders) -->
-    <div class="audit-report" id="auditReport" hidden>
-
-      <!-- Summary with overall score ring -->
-      <div class="audit-summary">
-        <div class="score-ring" id="scoreRing">
-          <svg viewBox="0 0 120 120" aria-hidden="true">
-            <circle class="bg" cx="60" cy="60" r="52"></circle>
-            <circle class="fg" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"></circle>
-          </svg>
-          <div class="text">
-            <span class="value" id="scoreValue">—</span>
-            <span class="max">/ 100</span>
-          </div>
-        </div>
-        <div class="audit-summary-meta">
-          <h2 id="scoreHeadline">Your overall score</h2>
-          <div class="url">Audited: <strong id="auditedUrl">—</strong></div>
-          <p class="verdict" id="verdictCopy">Verdict copy populates here after a run — explains what the score means and what to focus on first.</p>
-        </div>
-      </div>
-
-      <!-- Four category gauges -->
-      <div class="category-grid">
-        <div class="category-card" data-cat="performance">
-          <div class="label">Performance</div>
-          <div class="cat-value">—</div>
-          <div class="bar"><div class="fill" style="width:0%"></div></div>
-        </div>
-        <div class="category-card" data-cat="accessibility">
-          <div class="label">Accessibility</div>
-          <div class="cat-value">—</div>
-          <div class="bar"><div class="fill" style="width:0%"></div></div>
-        </div>
-        <div class="category-card" data-cat="best-practices">
-          <div class="label">Best Practices</div>
-          <div class="cat-value">—</div>
-          <div class="bar"><div class="fill" style="width:0%"></div></div>
-        </div>
-        <div class="category-card" data-cat="seo">
-          <div class="label">SEO</div>
-          <div class="cat-value">—</div>
-          <div class="bar"><div class="fill" style="width:0%"></div></div>
-        </div>
-      </div>
-
-      <!-- Core Web Vitals strip -->
-      <div class="vitals-strip">
-        <div>
-          <div class="label">LCP</div>
-          <div class="v" data-vital="lcp">—</div>
-          <div class="hint">Largest Contentful Paint</div>
-        </div>
-        <div>
-          <div class="label">CLS</div>
-          <div class="v" data-vital="cls">—</div>
-          <div class="hint">Cumulative Layout Shift</div>
-        </div>
-        <div>
-          <div class="label">TBT</div>
-          <div class="v" data-vital="tbt">—</div>
-          <div class="hint">Total Blocking Time</div>
-        </div>
-        <div>
-          <div class="label">FCP</div>
-          <div class="v" data-vital="fcp">—</div>
-          <div class="hint">First Contentful Paint</div>
-        </div>
-      </div>
-
-      <!-- Restaurant-priority checks list -->
-      <div class="priority-list">
-        <header>
-          <h3>Restaurant-priority checks</h3>
-          <span class="tally" id="priorityTally">—</span>
-        </header>
-        <div id="priorityItems">
-          <!-- Populated by sprint 17/18 JavaScript -->
-        </div>
-      </div>
-    </div>
-
   </div>
 </section>
 
-<!-- ============ AUDIT TOOL SCRIPT ============ -->
-<script>
-(function(){
-  var form          = document.getElementById('auditForm');
-  var input         = document.getElementById('auditUrl');
-  var submitBtn     = document.getElementById('auditSubmit');
-  var loadingEl     = document.getElementById('auditLoading');
-  var loadingStatus = document.getElementById('auditLoadingStatus');
-  var errorEl       = document.getElementById('auditError');
-  var errorHeading  = document.getElementById('auditErrorHeading');
-  var errorBody     = document.getElementById('auditErrorBody');
-  var reportEl      = document.getElementById('auditReport');
+<section class="block">
+  <div class="container" style="max-width:1000px;">
+    <div class="tool-grid">
 
-  if (!form) return;
+      <a href="/audit/restaurants/" class="tool-card live">
+        <span class="status">Live now</span>
+        <h3>Restaurant Website Audit</h3>
+        <p>Drop your restaurant URL and get a real mobile Lighthouse audit in about twenty seconds — performance, SEO, accessibility, Core Web Vitals, and ten restaurant-priority checks translated into plain English.</p>
+        <span class="cta">Run the restaurant audit
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </span>
+      </a>
 
-  var PSI_ENDPOINT = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed';
-  var CATEGORIES   = ['performance', 'accessibility', 'best-practices', 'seo'];
-  var submitOriginalHTML = submitBtn.innerHTML;
+      <div class="tool-card soon" aria-disabled="true">
+        <span class="status">In development</span>
+        <h3>Wellness Studio Audit</h3>
+        <p>A future audit tool built for yoga studios, massage practices, and boutique fitness spaces. Focused on class scheduling UX, first-visit conversion, instructor bios, and the specific mobile flows wellness customers use most.</p>
+        <span class="cta">Coming soon</span>
+      </div>
 
-  var loadingMessages = [
-    'Contacting Google Lighthouse…',
-    'Loading your homepage on a simulated 4G connection…',
-    'Measuring paint timings and layout shifts…',
-    'Scoring mobile speed…',
-    'Checking for common SEO issues…',
-    'Scoring accessibility…',
-    'Writing your report card…'
-  ];
-  var loadingInterval = null;
+      <div class="tool-card soon" aria-disabled="true">
+        <span class="status">In development</span>
+        <h3>Boutique E-commerce Audit</h3>
+        <p>A future audit tool for independent online stores — product page speed, mobile checkout friction, image weight, Shopify vs custom diagnostics, and the small-catalog conversion patterns template analyzers miss.</p>
+        <span class="cta">Coming soon</span>
+      </div>
 
-  function normalizeUrl(raw) {
-    if (!raw) return null;
-    raw = raw.trim();
-    if (!raw) return null;
-    if (!/^https?:\/\//i.test(raw)) raw = 'https://' + raw;
-    try {
-      var u = new URL(raw);
-      if (u.protocol !== 'http:' && u.protocol !== 'https:') return null;
-      if (!u.hostname || u.hostname.indexOf('.') === -1) return null;
-      return u.href;
-    } catch (e) { return null; }
-  }
+      <div class="tool-card soon" aria-disabled="true">
+        <span class="status">In development</span>
+        <h3>Brand Launch Site Audit</h3>
+        <p>A future audit tool built for pre-launch brand sites — narrative flow, email capture effectiveness, typography hierarchy, above-the-fold story clarity, and the design-system consistency checks that make a launch site feel considered.</p>
+        <span class="cta">Coming soon</span>
+      </div>
 
-  function showOnly(which) {
-    loadingEl.hidden = true;
-    errorEl.hidden   = true;
-    reportEl.hidden  = true;
-    if (which) which.hidden = false;
-  }
+    </div>
+  </div>
+</section>
 
-  function cycleLoading() {
-    var i = 0;
-    loadingStatus.textContent = loadingMessages[i];
-    loadingInterval = setInterval(function(){
-      i = (i + 1) % loadingMessages.length;
-      loadingStatus.textContent = loadingMessages[i];
-    }, 3500);
-  }
-  function stopCycling() {
-    if (loadingInterval) { clearInterval(loadingInterval); loadingInterval = null; }
-  }
+<section class="block bg-cream2 final">
+  <div class="container">
+    <div class="section-header reveal" style="text-align:center;">
+      <span class="eyebrow">Need one sooner?</span>
+      <h2>Want me to audit<br>your site personally?</h2>
+      <p class="final-sub">If your industry isn't live yet and you'd rather skip the tool, I'll run a manual audit during a free twenty-minute Zoom call. Same rigor, specific to your business, and you walk away with a punch list you can act on — no commitment required.</p>
+    </div>
 
-  function gradeScore(score) {
-    if (score >= 90) return 'grade-good';
-    if (score >= 50) return 'grade-ok';
-    return 'grade-bad';
-  }
-
-  function gradeVital(key, n) {
-    if (typeof n !== 'number' || isNaN(n)) return '';
-    switch (key) {
-      case 'lcp': return n <= 2500  ? 'grade-good' : n <= 4000  ? 'grade-ok' : 'grade-bad';
-      case 'cls': return n <= 0.1   ? 'grade-good' : n <= 0.25  ? 'grade-ok' : 'grade-bad';
-      case 'tbt': return n <= 200   ? 'grade-good' : n <= 600   ? 'grade-ok' : 'grade-bad';
-      case 'fcp': return n <= 1800  ? 'grade-good' : n <= 3000  ? 'grade-ok' : 'grade-bad';
-    }
-    return '';
-  }
-
-  function verdictFor(score) {
-    if (score >= 90) return "Your site is in great shape. Most restaurants would be thrilled to hit this score. Small polish items may remain — check the breakdown below.";
-    if (score >= 70) return "Solid foundation with room to tighten up. Focus on the red and amber items below — most are mechanical fixes that move you into the 90s.";
-    if (score >= 50) return "The site works, but it's leaking conversions. The good news: the wins here — load speed, image alt text, meta tags, schema — take days, not months.";
-    return "There's real work to do. Scores in this range usually track with a template site hitting its ceiling. The fastest path forward is often a fresh build — happy to walk through options on a 20-minute call.";
-  }
-
-  function setScoreRing(score) {
-    var ring = document.getElementById('scoreRing');
-    var value = document.getElementById('scoreValue');
-    var fg = ring.querySelector('circle.fg');
-    var r = 52;
-    var circumference = 2 * Math.PI * r; // ~326.7
-    var offset = circumference - (score / 100) * circumference;
-    ring.classList.remove('grade-good','grade-ok','grade-bad');
-    ring.classList.add(gradeScore(score));
-    value.textContent = score;
-    fg.setAttribute('stroke-dasharray', circumference.toFixed(2));
-    fg.setAttribute('stroke-dashoffset', circumference.toFixed(2));
-    // Force reflow so the animation runs
-    void fg.getBoundingClientRect();
-    fg.setAttribute('stroke-dashoffset', offset.toFixed(2));
-  }
-
-  function setCategory(cat, score) {
-    var card = document.querySelector('.category-card[data-cat="' + cat + '"]');
-    if (!card) return;
-    card.classList.remove('grade-good','grade-ok','grade-bad');
-    card.classList.add(gradeScore(score));
-    card.querySelector('.cat-value').textContent = score;
-    var fill = card.querySelector('.bar .fill');
-    fill.style.width = '0%';
-    void fill.getBoundingClientRect();
-    fill.style.width = score + '%';
-  }
-
-  function setVital(key, displayValue, numericValue) {
-    var el = document.querySelector('.vitals-strip .v[data-vital="' + key + '"]');
-    if (!el) return;
-    el.textContent = displayValue || '—';
-    el.classList.remove('grade-good','grade-ok','grade-bad');
-    var grade = gradeVital(key, numericValue);
-    if (grade) el.classList.add(grade);
-  }
-
-  function safeAudit(audits, key) {
-    return audits && audits[key] ? audits[key] : { displayValue: '—', numericValue: null };
-  }
-
-  /* -------- Restaurant-priority checks -------- */
-
-  // Each definition maps a Lighthouse audit ID to restaurant-owner language
-  // and a link back into the matching checklist category.
-  var PRIORITY_CHECKS = [
-    {
-      audit: 'viewport',
-      anchor: '#mobile',
-      pass: 'Mobile viewport is set correctly',
-      passNote: 'Your pages render at device width — which is table stakes for any mobile-friendly experience.',
-      fail: 'Your site is missing a mobile viewport tag',
-      failNote: 'Without it, mobile browsers render at desktop width and break every mobile check that follows. It is a one-line fix in your <head>.'
-    },
-    {
-      audit: 'is-on-https',
-      anchor: '#trust',
-      pass: 'Served over HTTPS',
-      passNote: 'Your site is secure and Google treats it as trustworthy.',
-      fail: 'Your site is still on HTTP',
-      failNote: 'Modern browsers flag HTTP sites as "Not secure" in the address bar. Switch to a host that offers free HTTPS.'
-    },
-    {
-      audit: 'document-title',
-      anchor: '#findability',
-      pass: 'Your homepage has a title tag',
-      passNote: 'The title tag is what Google shows in the search result — make sure it names your cuisine and city.',
-      fail: 'Your homepage is missing a title tag',
-      failNote: 'Google will invent one for you, and it will be worse. Add a <title> that includes restaurant name + cuisine + city.'
-    },
-    {
-      audit: 'meta-description',
-      anchor: '#findability',
-      pass: 'Your homepage has a meta description',
-      passNote: 'This is the snippet Google shows under your link in search results — make it compelling.',
-      fail: 'Your homepage is missing a meta description',
-      failNote: 'Google will auto-generate a snippet from your page copy, usually poorly. Write one that sells in under 160 characters.'
-    },
-    {
-      audit: 'image-alt',
-      anchor: '#findability',
-      pass: 'All images have descriptive alt text',
-      passNote: 'Good alt text is accessibility + SEO in one. Screen readers understand your images and so does Google.',
-      fail: 'Some images are missing alt text',
-      failNote: 'Alt text helps screen readers and Google Image Search. Replace empty or "IMG_2041.jpg" attributes with real descriptions.'
-    },
-    {
-      audit: 'font-size',
-      anchor: '#mobile',
-      pass: 'Body text is legible on mobile',
-      passNote: 'Visitors can read your menu without pinch-zooming, which is the bar for a mobile restaurant site.',
-      fail: 'Body text is too small on mobile',
-      failNote: 'More than 40% of your text is under the readable threshold, forcing visitors to zoom. Set body font-size to at least 16px.'
-    },
-    {
-      audit: 'tap-targets',
-      anchor: '#mobile',
-      pass: 'Tap targets are thumb-friendly',
-      passNote: 'Your buttons and links are large enough to tap without missing on a phone.',
-      fail: 'Some tap targets are too small',
-      failNote: 'Buttons and links under 44×44px create fat-finger failures on mobile. Pad them out or increase the font size.'
-    },
-    {
-      audit: 'color-contrast',
-      anchor: '#trust',
-      pass: 'Text has sufficient contrast against its background',
-      passNote: 'Nobody has to squint to read your menu descriptions.',
-      fail: 'Some text has poor contrast',
-      failNote: 'Light gray on white or cream on beige is unreadable for anyone older than 40. Fix the contrast ratios (Lighthouse lists which).'
-    },
-    {
-      audit: 'is-crawlable',
-      anchor: '#findability',
-      pass: 'Search engines can crawl your site',
-      passNote: 'Nothing is blocking Google from indexing your pages — a prerequisite for ranking at all.',
-      fail: 'Search engines are blocked',
-      failNote: 'A robots.txt entry or meta tag is telling Google not to index your site. This kills findability instantly — check your robots.txt and meta robots tags.'
-    },
-    {
-      audit: 'uses-responsive-images',
-      anchor: '#mobile',
-      pass: 'Images are sized appropriately for mobile',
-      passNote: 'You are not shipping desktop-sized photos to phone screens.',
-      fail: 'Images are heavier than they need to be on mobile',
-      failNote: 'Serving full-resolution photos to mobile costs load time and data. Use responsive image techniques (srcset, modern formats).'
-    }
-  ];
-
-  // Map a Lighthouse 0-1 score to a mark letter and class
-  // (score === 1 pass, >= 0.5 warn, else fail; null means skip entirely)
-  function scoreToMark(score) {
-    if (score === null || typeof score === 'undefined') return null;
-    if (score >= 0.9) return { cls: 'pass', ch: '✓' };
-    if (score >= 0.5) return { cls: 'warn', ch: '!' };
-    return { cls: 'fail', ch: '✗' };
-  }
-
-  function renderPriorityChecks(audits) {
-    var container = document.getElementById('priorityItems');
-    if (!container) return;
-    container.innerHTML = '';
-    var passCount = 0, totalCount = 0;
-
-    PRIORITY_CHECKS.forEach(function(def){
-      var audit = audits && audits[def.audit];
-      if (!audit) return; // audit not present in this run — skip
-
-      // scoreDisplayMode "notApplicable" or "informative" with null score → skip
-      if (audit.scoreDisplayMode === 'notApplicable') return;
-      var mark = scoreToMark(audit.score);
-      if (!mark) return;
-
-      totalCount++;
-      if (mark.cls === 'pass') passCount++;
-
-      var isPass = mark.cls === 'pass';
-      var title = isPass ? def.pass : def.fail;
-      var note  = isPass ? def.passNote : def.failNote;
-
-      var row = document.createElement('div');
-      row.className = 'priority-item';
-      row.innerHTML =
-        '<div class="mark ' + mark.cls + '" aria-hidden="true">' + mark.ch + '</div>' +
-        '<div class="body"><strong>' + title + '</strong><span>' + note + '</span></div>' +
-        '<a class="link" href="/resources/restaurant-website-checklist/' + def.anchor + '">Learn more →</a>';
-      container.appendChild(row);
-    });
-
-    var tally = document.getElementById('priorityTally');
-    if (tally) {
-      tally.textContent = totalCount
-        ? passCount + ' of ' + totalCount + ' passed'
-        : 'No restaurant-priority data available';
-    }
-  }
-
-  function renderReport(data, auditedUrl) {
-    var lh = data && data.lighthouseResult;
-    if (!lh || !lh.categories) throw new Error('Unexpected PageSpeed response shape.');
-
-    var cats = lh.categories;
-    var audits = lh.audits || {};
-
-    var perf = Math.round(((cats.performance && cats.performance.score) || 0) * 100);
-    var a11y = Math.round(((cats.accessibility && cats.accessibility.score) || 0) * 100);
-    var bp   = Math.round(((cats['best-practices'] && cats['best-practices'].score) || 0) * 100);
-    var seo  = Math.round(((cats.seo && cats.seo.score) || 0) * 100);
-    var overall = Math.round((perf + a11y + bp + seo) / 4);
-
-    // Strip protocol from displayed URL for readability
-    var displayUrl = auditedUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
-    document.getElementById('auditedUrl').textContent = displayUrl;
-    document.getElementById('verdictCopy').textContent = verdictFor(overall);
-
-    setScoreRing(overall);
-    setCategory('performance',   perf);
-    setCategory('accessibility', a11y);
-    setCategory('best-practices', bp);
-    setCategory('seo',           seo);
-
-    var lcp = safeAudit(audits, 'largest-contentful-paint');
-    var cls = safeAudit(audits, 'cumulative-layout-shift');
-    var tbt = safeAudit(audits, 'total-blocking-time');
-    var fcp = safeAudit(audits, 'first-contentful-paint');
-    setVital('lcp', lcp.displayValue, lcp.numericValue);
-    setVital('cls', cls.displayValue, cls.numericValue);
-    setVital('tbt', tbt.displayValue, tbt.numericValue);
-    setVital('fcp', fcp.displayValue, fcp.numericValue);
-
-    // Restaurant-priority checks (sprint 18)
-    renderPriorityChecks(audits);
-
-    // Expose raw audits for future consumers
-    window.__auditLastResult = { audits: audits, overall: overall, url: auditedUrl };
-
-    showOnly(reportEl);
-    // Scroll the report into view
-    setTimeout(function(){
-      reportEl.scrollIntoView({behavior:'smooth', block:'start'});
-    }, 80);
-  }
-
-  function showError(heading, body) {
-    errorHeading.textContent = heading;
-    errorBody.textContent = body;
-    showOnly(errorEl);
-  }
-
-  function runAudit(url) {
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Running…';
-    showOnly(loadingEl);
-    cycleLoading();
-
-    var params = new URLSearchParams();
-    params.append('url', url);
-    params.append('strategy', 'mobile');
-    CATEGORIES.forEach(function(c){ params.append('category', c); });
-
-    fetch(PSI_ENDPOINT + '?' + params.toString())
-      .then(function(res){
-        if (!res.ok) {
-          return res.json().then(function(body){
-            var msg = (body && body.error && body.error.message) || ('PageSpeed returned ' + res.status);
-            var err = new Error(msg);
-            err.status = res.status;
-            throw err;
-          }, function(){
-            var err = new Error('PageSpeed returned ' + res.status);
-            err.status = res.status;
-            throw err;
-          });
-        }
-        return res.json();
-      })
-      .then(function(data){
-        stopCycling();
-        try {
-          renderReport(data, url);
-          if (window.plausible) window.plausible('Audit Completed');
-        } catch (e) {
-          console.error('[audit] render failed', e);
-          showError(
-            "We got a reply, but couldn't read it.",
-            "Google Lighthouse returned a result we couldn't parse. Try running the audit again, or email don@muntindigital.com and I'll run it manually."
-          );
-        }
-      })
-      .catch(function(err){
-        stopCycling();
-        console.error('[audit] fetch failed', err);
-        var msg = (err && err.message) || '';
-        if (/unable to process|fetched.*failed|lighthouse returned error|chrome.*crashed/i.test(msg)) {
-          showError(
-            "We couldn't reach that site.",
-            "Google Lighthouse couldn't load the URL. Make sure it's publicly accessible — no login wall, no staging environment, and no rate limiter blocking bots."
-          );
-        } else if (/quota|rate|exceed/i.test(msg) || err.status === 429) {
-          showError(
-            "We're a little rate-limited right now.",
-            "Google's free tier is temporarily throttled. Try again in a minute, or email don@muntindigital.com for a manual audit."
-          );
-        } else if (err.status === 400) {
-          showError(
-            "That URL didn't work.",
-            "Check the address and try again. PageSpeed rejected the request — usually that means a typo, a redirect loop, or a site that blocks the Lighthouse crawler."
-          );
-        } else {
-          showError(
-            "Something went sideways.",
-            "Technical details: " + (msg || 'unknown error') + ". Try again, or email don@muntindigital.com."
-          );
-        }
-      })
-      .then(function(){
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = submitOriginalHTML;
-      });
-  }
-
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    var url = normalizeUrl(input.value);
-    if (!url) {
-      showError(
-        "That doesn't look like a valid URL.",
-        "Try something like yourrestaurant.com or https://yourrestaurant.com — a full web address, not a search term."
-      );
-      return;
-    }
-    input.value = url;
-    if (window.plausible) window.plausible('Audit Started');
-    runAudit(url);
-  });
-})();
-</script>
+    <div class="hero-ctas reveal" style="justify-content:center; margin-top:32px;">
+      <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      </a>
+      <a class="btn btn-ghost" href="/">Back to home</a>
+    </div>
+  </div>
+</section>
 
 </main>
 
