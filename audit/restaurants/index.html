@@ -1256,6 +1256,12 @@
             "That URL didn't work.",
             "Check the address and try again. PageSpeed rejected the request — usually that means a typo, a redirect loop, or a site that blocks the Lighthouse crawler."
           );
+        } else if (/referer.*blocked|referrer.*blocked|api[- ]key.*referer|forbidden.*referer/i.test(msg) || err.status === 403) {
+          showError(
+            "We hit a configuration snag.",
+            "This is a temporary issue on our end, not with your site. Try again in a few minutes, or email don@muntindigital.com and I'll run the audit manually."
+          );
+          if (window.plausible) window.plausible('Audit Error: Referrer Blocked');
         } else {
           showError(
             "Something went sideways.",
