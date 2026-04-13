@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- DRAFT — scheduled for release on 2026-04-19. Held back by the noindex tag below. -->
+<meta name="robots" content="noindex,nofollow" />
+<title>Wix vs. Custom for Restaurants: What Breaks First | Muntin Digital</title>
+<meta name="description" content="An honest comparison of Wix and a custom-built restaurant website. Six places Wix runs out of room for an independent restaurant, the ROI math that makes the switch worth it, and when Wix is actually the right call." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/blog/wix-vs-custom-for-restaurants/" />
+
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Wix vs. Custom for Restaurants: What Breaks First" />
+<meta property="og:description" content="Six places Wix breaks for independent restaurants, the ROI math that makes a custom site worth it, and when Wix is actually the right call." />
+<meta property="og:url" content="https://muntin.digital/blog/wix-vs-custom-for-restaurants/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/blog-wix-vs-custom.svg" />
+<meta property="og:image:type" content="image/svg+xml" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-04-19" />
+<meta property="article:author" content="Don Goldstein" />
+<meta property="article:section" content="Comparison" />
+<meta property="article:tag" content="Restaurant websites" />
+<meta property="article:tag" content="Wix" />
+<meta property="article:tag" content="Custom development" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Wix vs. Custom for Restaurants: What Breaks First" />
+<meta name="twitter:description" content="Six places Wix breaks for independent restaurants, with the ROI math and the case for (and against) switching." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/blog-wix-vs-custom.svg" />
+
+<link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://muntin.digital/blog/wix-vs-custom-for-restaurants/#article",
+      "headline": "Wix vs. Custom for Restaurants: What Breaks First",
+      "description": "An honest comparison of Wix and custom-built restaurant websites, with six specific failure points and the ROI math.",
+      "image": "https://muntin.digital/brand/og/blog-wix-vs-custom.svg",
+      "url": "https://muntin.digital/blog/wix-vs-custom-for-restaurants/",
+      "datePublished": "2026-04-19",
+      "dateModified": "2026-04-19",
+      "inLanguage": "en-US",
+      "wordCount": 1700,
+      "author": {
+        "@type": "Person",
+        "name": "Don Goldstein",
+        "jobTitle": "Founder, Muntin Digital",
+        "worksFor": { "@id": "https://muntin.digital/#business" }
+      },
+      "publisher": { "@id": "https://muntin.digital/#business" },
+      "isPartOf": { "@id": "https://muntin.digital/blog/#blog" },
+      "mainEntityOfPage": "https://muntin.digital/blog/wix-vs-custom-for-restaurants/",
+      "about": [
+        { "@type": "Thing", "name": "Restaurant website platforms" },
+        { "@type": "Thing", "name": "Wix" },
+        { "@type": "Thing", "name": "Custom web development" }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
+        { "@type": "ListItem", "position": 2, "name": "Writing", "item": "https://muntin.digital/blog/" },
+        { "@type": "ListItem", "position": 3, "name": "Wix vs. Custom for Restaurants: What Breaks First", "item": "https://muntin.digital/blog/wix-vs-custom-for-restaurants/" }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&amp;family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+
+<link rel="stylesheet" href="/assets/site.css">
+
+<style>
+  /* ============ BLOG POST LAYOUT STYLES ============ */
+  /* Duplicated from /blog/how-much-does-a-custom-restaurant-website-cost-in-2026/
+     — will extract to /assets/site.css in a future refactor once more posts exist. */
+  .post-hero { max-width: 760px; margin: 0 auto; text-align: center; padding-bottom: 24px; }
+  .post-hero .eyebrow { margin-bottom: 24px; display: inline-block; }
+  .post-hero h1 { margin-bottom: 28px; }
+  .post-dek {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(22px, 2.6vw, 28px);
+    line-height: 1.35;
+    color: var(--stone);
+    max-width: 620px;
+    margin: 0 auto 32px;
+    font-weight: 400;
+  }
+  .post-meta {
+    font-size: 13px;
+    color: var(--stone);
+    letter-spacing: 0.05em;
+    margin: 32px auto 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    max-width: 440px;
+  }
+  .post-meta strong { color: var(--ink); font-weight: 600; }
+  .post-meta time { color: var(--teal); font-weight: 600; }
+
+  .article-body { max-width: 680px; margin: 0 auto; }
+  .article-body h2 {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3vw, 36px);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 72px 0 20px;
+  }
+  .article-body h2:first-child { margin-top: 0; }
+  .article-body h3 {
+    font-family: var(--font-display);
+    font-size: clamp(20px, 2.2vw, 24px);
+    font-weight: 500;
+    color: var(--ink);
+    margin: 44px 0 12px;
+    letter-spacing: -0.005em;
+  }
+  .article-body p {
+    font-size: 18px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    margin: 0 0 24px;
+  }
+  .article-body p strong { color: var(--ink); }
+  .article-body p em { color: var(--teal); font-style: italic; }
+  .article-body ul, .article-body ol {
+    font-size: 18px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    margin: 0 0 28px;
+    padding-left: 28px;
+  }
+  .article-body li { margin-bottom: 10px; }
+  .article-body li::marker { color: var(--teal); }
+  .article-body a {
+    color: var(--teal);
+    border-bottom: 1px dashed currentColor;
+    font-weight: 500;
+  }
+  .article-body a:hover { color: var(--teal-dark); }
+  .article-body hr { border: 0; border-top: 1px solid var(--line); margin: 56px 0; }
+
+  .pull-quote {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(24px, 2.8vw, 30px);
+    line-height: 1.35;
+    color: var(--teal);
+    max-width: 580px;
+    margin: 56px auto;
+    text-align: center;
+    padding: 36px 24px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .inline-cta {
+    margin: 56px 0;
+    padding: 36px 40px;
+    background: var(--cream-2);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    text-align: center;
+  }
+  .inline-cta h4 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 500;
+    margin: 0 0 10px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .inline-cta p {
+    font-size: 15px !important;
+    color: var(--stone) !important;
+    margin: 0 0 20px !important;
+    line-height: 1.6 !important;
+  }
+
+  .further-reading {
+    max-width: 680px;
+    margin: 80px auto 0;
+    padding-top: 40px;
+    border-top: 1px solid var(--line);
+  }
+  .further-reading .label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 20px;
+  }
+  .further-reading a {
+    display: block;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+    color: inherit;
+    transition: opacity var(--t-fast) var(--ease);
+  }
+  .further-reading a:hover { opacity: 0.7; }
+  .further-reading a:last-child { border-bottom: 0; }
+  .further-reading h4 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0 0 4px;
+    color: var(--ink);
+  }
+  .further-reading p { font-size: 14px; color: var(--stone); margin: 0; }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm">™</sup>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/#services">Services</a>
+      <a href="/for/restaurants/">Restaurants</a>
+      <a href="/work/">Work</a>
+      <a href="/blog/">Blog</a>
+      <a href="/#about">About</a>
+    </nav>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/#services">Services</a>
+    <a href="/for/restaurants/">Restaurants</a>
+    <a href="/work/">Work</a>
+    <a href="/blog/">Blog</a>
+    <a href="/#about">About</a>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call</a>
+  </nav>
+</header>
+
+<main id="main">
+
+<!-- ============ POST HERO ============ -->
+<section class="hero" style="padding-bottom:32px;">
+  <div class="container">
+    <div class="post-hero">
+      <span class="eyebrow">Muntin Digital · Writing</span>
+      <h1>
+        Wix vs. custom<br>
+        <span class="serif-italic">for restaurants:</span> what breaks first?
+      </h1>
+      <p class="post-dek">
+        An honest comparison — including the six places Wix runs out of room for an independent restaurant, the ROI math that makes switching worth it, and when Wix is actually the right call.
+      </p>
+      <p class="post-meta">
+        <time datetime="2026-04-19">April 19, 2026</time>  ·  9 min read  ·  By <strong>Don</strong>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ARTICLE BODY (filled in sprints 26c–26e) ============ -->
+<section class="block">
+  <div class="container">
+    <article class="article-body" id="post-body">
+      <p>I don't hate Wix. I've built things on Wix. For a lot of small businesses it's genuinely the right answer — the first day is easy, the monthly cost is small, and the result is "a site that exists," which is better than "no site at all." But restaurants are a specific kind of small business, and they hit Wix's walls faster than almost any other industry I work with. This post is the honest version of the comparison: <strong>six places Wix breaks for independent restaurants, the ROI math, and when Wix is actually the right call</strong>.</p>
+
+      <h2>Where Wix actually wins</h2>
+      <p>Let me be fair about this first, because the rest of the post is going to feel lopsided if I don't:</p>
+      <ul>
+        <li><strong>You can launch in a weekend</strong> with no developer — a real, live, mobile-friendly-ish site from zero in about forty hours of your own time.</li>
+        <li><strong>The templates are genuinely better</strong> than the 2015 versions. They have modern typography, reasonable default colors, and don't make you immediately embarrassed.</li>
+        <li><strong>Hosting and SSL are included</strong> in the monthly fee, so you never deal with them.</li>
+        <li><strong>You own the updates.</strong> In theory, you can change your menu or your hours without calling anyone — and for a lot of owners, that's the whole pitch.</li>
+        <li><strong>It's cheap enough to be disposable.</strong> If you open a pop-up and you don't know whether it'll still be there next spring, $25 a month is the right budget.</li>
+      </ul>
+      <p>If you're brand new, cash is tight, and you can genuinely accept that the site is a placeholder — not a reflection of the room — Wix is fine. This post is not for you. Everything below is for the restaurant that's been open a year or more, has regulars, has a menu worth photographing, and is starting to notice that the site is a problem.</p>
+
+      <h2>Break #1 — Menu management is a trap</h2>
+      <p>Wix has a "menu" widget. It looks great in the template preview. You drop in your categories, your dishes, your prices, and it renders a clean card layout on the page.</p>
+      <p>Here's what you don't see until you've lived with it: <strong>your menu is inside Wix's closed system, not inside real HTML on your page.</strong> That sounds like a technicality. It isn't.</p>
+      <p>What it means in practice: Google can't cleanly crawl individual dish descriptions, so you don't rank for "chicken parm near me" the way you could. Diners can't tap a dish to share it with a friend. When you update the menu on Wix, you still have to update it again on Google Business Profile, on DoorDash, on Yelp, and anywhere else your menu lives — because nothing auto-syncs. The "easy updates" pitch quietly becomes "four separate places to update every time you change a price."</p>
+      <p>A custom site with a real menu CMS updates once and pushes everywhere that's wired up. A Wix menu updates in one place and leaves the other four stale.</p>
+
+      <h2>Break #2 — Mobile load speed is always slower than it should be</h2>
+      <p>This is the one I can prove with a URL: run any Wix restaurant site through <a href="/audit/restaurants/">the free Restaurant Website Audit</a> and look at the Performance score. You'll almost always see something in the 40s or 50s out of 100. That's not the restaurant's fault — it's the platform.</p>
+      <p>Wix ships a lot of JavaScript by default. A typical Wix homepage downloads two to four megabytes of scripts before the page starts rendering, which on a 4G connection outside your restaurant feels like an eternity. Google's research says every extra second past two costs you about ten percent of mobile visitors. A Wix site loading at four or five seconds is quietly losing a third of its hungry mobile traffic before they ever see the menu.</p>
+      <h2>Break #3 — Reservations integration is hostage to whatever Wix has deals with</h2>
+      <p>Wix pushes OpenTable hard because Wix gets referral revenue every time a restaurant signs up through their integration. That's fine — OpenTable works. But if your restaurant is on <strong>Resy, Tock, SevenRooms, or Square Reservations</strong>, you'll find that the "integration" is usually a generic iframe embed or a link-out. Nothing lives inside your page, nothing matches your brand, nothing tracks back into analytics cleanly, and when the third-party provider changes their embed URL two years from now you find out because your reservation button silently broke on a Friday night.</p>
+      <p>A custom site lets you pick the reservation system that actually fits your workflow and wire it in cleanly. Wix lets you pick whichever reservation system has the best deal with Wix this quarter.</p>
+
+      <h2>Break #4 — SEO is "template-good," not "actually good"</h2>
+      <p>Wix will tell you its SEO is strong. Technically it's not wrong: title tags exist, a sitemap gets generated, pages are indexable. That's the floor. It's not the ceiling.</p>
+      <p>Where Wix consistently falls short for restaurants:</p>
+      <ul>
+        <li><strong>Restaurant schema markup</strong> (the JSON-LD that tells Google your cuisine, hours, price range, menu URL, and reviews) is either missing entirely or filled with empty placeholders you have to hunt down through a settings panel.</li>
+        <li><strong>Meta descriptions</strong> are auto-generated from page copy unless you manually override every page. Most owners don't. You end up with Google search snippets that read like "Welcome to Our Home Page — We are excited to share…"</li>
+        <li><strong>Image alt text</strong> defaults to the filename. Every photo you upload comes in as <code>IMG_2041.jpg</code> and stays that way forever, invisible to Google Image Search.</li>
+        <li><strong>Site speed</strong> — already covered in Break #2 — is itself a ranking factor, and Wix is slow enough to demote you on mobile-first indexing.</li>
+      </ul>
+      <p>The net effect: you rank for your own restaurant name (which anyone can do), and you don't rank for "[cuisine] near me" or "best [dish] in [city]," which is where the new customers come from.</p>
+
+      <h2>Break #5 — You can't do anything custom without hiring a Wix Partner</h2>
+      <p>Sooner or later, every restaurant wants something the template doesn't do. A menu layout that matches a printed card. A reservation flow that checks against a private event calendar. A catering inquiry that routes to a different inbox. A "specials this week" module that updates from a spreadsheet.</p>
+      <p>On Wix, every one of those requires either Wix Studio (their pro-tier developer mode) or a Wix Partner — a contractor Wix certifies who charges custom-build rates to work inside a platform still constrained by Wix's architecture. You end up paying agency prices for a site that still has Wix's ceilings.</p>
+      <p>On a custom build, "we want a specials module that updates from a spreadsheet" is a half-day of work, not a renegotiation.</p>
+
+      <h2>Break #6 — Exit costs are real, and you don't see them until you try to leave</h2>
+      <p>Here is the one that nobody tells you about when you're signing up. <strong>If you ever want to leave Wix, you can export almost nothing useful.</strong></p>
+      <p>Your content isn't in HTML files you can pick up and move somewhere else. Your images live in Wix's media library. Your menu lives in their widget. The whole thing is a closed system where you are a tenant, not an owner, and the day you try to move is the day you realize you either stay forever or you pay someone to rebuild from scratch.</p>
+      <p>The rebuild is almost always the right move — but it's a rebuild. Two or three years of content you thought you owned, effectively starts over. A custom site built on real HTML can be picked up, hosted anywhere, edited by anyone with a text editor, and moved between providers in an afternoon. That ownership is a feature the monthly Wix fee doesn't buy you.</p>
+      <h2>The math that almost always works</h2>
+      <p>Here is the comparison most restaurant owners never actually do:</p>
+      <ul>
+        <li><strong>Wix over two years:</strong> ~$25 a month × 24 months = <strong>$600</strong>, plus roughly 120 hours of your own time keeping it updated (at even a conservative $25/hour opportunity cost, that's another $3,000). Two-year real total: about <strong>$3,600</strong>.</li>
+        <li><strong>Custom site over two years:</strong> $2,500 upfront (Starter tier from Muntin) + $125/month care plan × 24 months ($3,000). Two-year total: <strong>$5,500</strong>.</li>
+      </ul>
+      <p>The raw difference is about $1,900 over two years. That's real money. Now layer in the thing the Wix math conveniently leaves out:</p>
+      <p>A Wix site loading slowly on mobile, with no schema, and no structured menu data, realistically loses a restaurant <strong>three to five reservations a week</strong> compared to what a properly-built site would convert — people who tapped the link, waited three seconds, got a pinch-zoomable PDF menu, and booked somewhere else. At an average cover of $55, three lost reservations a week is <strong>$8,580 a year</strong> in gross revenue that never walked through the door.</p>
+      <p>The custom site pays for itself somewhere in the first four months of recovered reservations. Everything after that is pure delta.</p>
+
+      <p class="pull-quote">The custom site pays for itself in the first four months of recovered reservations. Everything after that is pure delta.</p>
+
+      <h2>So when is Wix actually the right call?</h2>
+      <p>I meant what I said in the intro — Wix isn't evil, and it's the right answer in a few specific situations:</p>
+      <ul>
+        <li><strong>You just opened.</strong> The menu is still settling, you don't know what Tuesdays look like yet, and spending $5,000 on a website before you know whether the concept works is the wrong bet. A Wix placeholder is fine for the first six to twelve months.</li>
+        <li><strong>You're a pop-up or seasonal concept.</strong> The whole thing might not exist next spring. Disposability is a feature.</li>
+        <li><strong>You genuinely only need a phone number and hours.</strong> If your whole menu is "we serve whatever the chef feels like" and your whole booking system is "call us," a one-page Wix site does the job.</li>
+        <li><strong>You are a single owner-operator doing everything yourself</strong> and the website is the thirtieth thing on your list. A placeholder that exists is better than a custom site that gets delayed by six months because you don't have time to hire a studio.</li>
+      </ul>
+      <p>Everyone else — the established restaurant with regulars, a photographed menu, and an actual brand — is usually past Wix's ceiling and paying more than they think to stay there.</p>
+
+      <h2>The real test</h2>
+      <p>Here's the question I use when I'm trying to figure out whether someone's Wix site is actually working or just technically online: <em>would you be proud to hand this URL to a food critic?</em></p>
+      <p>If the answer is no, no template upgrade is going to fix that. And the hours you'd spend trying to make it yes — learning the menu widget, fighting the layout, watching your Lighthouse score refuse to improve — are almost always more than the cost of just building the right thing.</p>
+
+      <div class="inline-cta">
+        <h4>On Wix and ready to see the math for your restaurant?</h4>
+        <p>Twenty minutes on Zoom. I'll audit your current Wix site live, show you exactly what's leaking conversions, and give you a realistic budget and timeline to replace it. No pitch, no pressure.</p>
+        <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </a>
+      </div>
+    </article>
+
+    <aside class="further-reading">
+      <p class="label">Further reading</p>
+      <a href="/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/">
+        <h4>How Much Does a Custom Restaurant Website Cost in 2026?</h4>
+        <p>The full pricing breakdown — real line items, real numbers, and what you're paying for that doesn't appear on the invoice.</p>
+      </a>
+      <a href="/resources/restaurant-website-checklist/">
+        <h4>The Restaurant Website Checklist</h4>
+        <p>Twenty-three things your restaurant website should do in 2026. Run it on your own Wix site in about ten minutes — the failing items will map directly to the six breaks above.</p>
+      </a>
+      <a href="/audit/restaurants/">
+        <h4>Free Restaurant Website Audit</h4>
+        <p>Drop your Wix URL and get a real Lighthouse audit in twenty seconds. This is the fastest way to see Break #2 for yourself, in numbers.</p>
+      </a>
+      <a href="/blog/">
+        <h4>Back to Writing</h4>
+        <p>More notes from the studio.</p>
+      </a>
+    </aside>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container foot">
+    <div>
+      <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53">
+      <div style="margin-top:6px">Structure Brings Clarity.</div>
+    </div>
+    <div style="text-align:right">
+      <div style="color:var(--cream); margin-bottom:4px">don@muntindigital.com</div>
+      <nav class="foot-legal" aria-label="Legal">
+        <a href="/terms.html">Terms of Service</a>
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="/accessibility.html">Accessibility</a>
+        <a href="/cookies.html">Cookie Policy</a>
+      </nav>
+      <div>© 2026 Muntin Digital™ · Maryland LLC · Based in Silver Spring, MD · Serving US small businesses</div>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/site.js" defer></script>
+</body>
+</html>
