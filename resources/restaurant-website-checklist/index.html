@@ -581,7 +581,121 @@
   </div>
 </section>
 
-<!-- ============ CONTINUES IN SPRINT 14b ============ -->
+<!-- ============ CATEGORY 4: FINDABILITY ============ -->
+<section class="block">
+  <div class="container" style="max-width:860px;">
+    <div class="cat-block" id="findability" style="margin-top:0;">
+      <div class="cat-header">
+        <h2>Findability.</h2>
+        <span class="cat-label">Category 4 of 5 · 5 items</span>
+      </div>
+
+      <div class="check-item">
+        <div class="check-num">15</div>
+        <div class="check-body">
+          <h3>You have a claimed, verified Google Business Profile.</h3>
+          <div class="field"><div class="k">Why</div><div class="v">Roughly 60% of restaurant discovery now happens in Google Maps — the "local pack" of three map results that sits above the regular search results. If you don't have a claimed Business Profile, you're invisible to every hungry stranger searching for "[cuisine] near me."</div></div>
+          <div class="field"><div class="k">10-sec test</div><div class="v">Search your restaurant name in Google Maps. Is there a claimed listing with correct hours, photos, menu link, and category? Does it show a "claimed" badge or let you edit it?</div></div>
+          <div class="field"><div class="k">Fix</div><div class="v">Claim yours at <code>google.com/business</code>. Free. Setup takes thirty minutes, verification by postcard or phone takes a week. Then fill in hours, categories, photos, menu URL, and service areas. Post at least once a month.</div></div>
+        </div>
+      </div>
+
+      <div class="check-item">
+        <div class="check-num">16</div>
+        <div class="check-body">
+          <h3>Your &lt;title&gt; tag names both your restaurant and your cuisine.</h3>
+          <div class="field"><div class="k">Why</div><div class="v">The title tag is the single strongest on-page SEO signal you have. "Home | Joe's" tells Google nothing. "Joe's Trattoria — Handmade Italian in Silver Spring, MD" tells it exactly what to rank you for.</div></div>
+          <div class="field"><div class="k">10-sec test</div><div class="v">View the source of your homepage and find the <code>&lt;title&gt;</code> tag. Does it contain your cuisine and your city? Is it under 60 characters?</div></div>
+          <div class="field"><div class="k">Fix</div><div class="v">Rewrite your title to include restaurant name + cuisine + city. Keep it under 60 characters or Google will truncate it in the search results.</div></div>
+        </div>
+      </div>
+
+      <div class="check-item">
+        <div class="check-num">17</div>
+        <div class="check-body">
+          <h3>You have Restaurant schema markup in JSON-LD.</h3>
+          <div class="field"><div class="k">Why</div><div class="v">Schema tells Google your hours, menu, price range, cuisine, and phone number in a structured way it can actually read. That's how Google builds the rich result panel with your star rating, hours, and menu — the thing that sits above the organic search results and earns most of the clicks.</div></div>
+          <div class="field"><div class="k">10-sec test</div><div class="v">Run your URL through <code>search.google.com/test/rich-results</code>. Look for a "Restaurant" or "LocalBusiness" detection. No detection means no rich result.</div></div>
+          <div class="field"><div class="k">Fix</div><div class="v">Add a <code>&lt;script type="application/ld+json"&gt;</code> block with a Restaurant schema including <code>name</code>, <code>address</code>, <code>servesCuisine</code>, <code>priceRange</code>, <code>telephone</code>, and <code>openingHours</code>. Copy the skeleton from Google's documentation and fill in the real values.</div></div>
+        </div>
+      </div>
+
+      <div class="check-item">
+        <div class="check-num">18</div>
+        <div class="check-body">
+          <h3>Every important image has meaningful alt text.</h3>
+          <div class="field"><div class="k">Why</div><div class="v">Alt text describes images to screen readers — that's the accessibility case. It also tells Google what the image is — that's the SEO case. "IMG_2041.jpg" helps nobody. "A plate of handmade ravioli with sage brown butter at Joe's Trattoria in Silver Spring" helps both.</div></div>
+          <div class="field"><div class="k">10-sec test</div><div class="v">Inspect each photo on your homepage in your browser's dev tools. Does each <code>&lt;img&gt;</code> have an <code>alt</code> attribute that actually describes the image?</div></div>
+          <div class="field"><div class="k">Fix</div><div class="v">Rewrite alt text as real sentences. Describe what's in the photo and — where it's natural — name your restaurant and city. Decorative images can have <code>alt=""</code>, but nothing should be missing the attribute entirely.</div></div>
+        </div>
+      </div>
+
+      <div class="check-item">
+        <div class="check-num">19</div>
+        <div class="check-body">
+          <h3>You have a sitemap.xml submitted to Google Search Console.</h3>
+          <div class="field"><div class="k">Why</div><div class="v">Sitemaps tell Google what pages exist and how often they change. Not strictly required, but a big accelerant for new or small sites — and Search Console is the only place you can actually see which keywords are bringing people to you.</div></div>
+          <div class="field"><div class="k">10-sec test</div><div class="v">Visit <code>yoursite.com/sitemap.xml</code>. If it 404s, you don't have one. Then log into Search Console and check the "Sitemaps" section.</div></div>
+          <div class="field"><div class="k">Fix</div><div class="v">Generate a sitemap (most static site generators and CMSes do this automatically; there are also free online tools for handwritten sites). Upload to your site root. Verify your domain in Google Search Console and submit the sitemap URL.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CATEGORY 5: TRUST ============ -->
+<section class="block bg-cream2">
+  <div class="container" style="max-width:860px;">
+    <div class="cat-block" id="trust" style="margin-top:0;">
+      <div class="cat-header">
+        <h2>Trust.</h2>
+        <span class="cat-label">Category 5 of 5 · 4 items</span>
+      </div>
+
+      <div class="check-item">
+        <div class="check-num">20</div>
+        <div class="check-body">
+          <h3>Your site is served over HTTPS with a valid SSL certificate.</h3>
+          <div class="field"><div class="k">Why</div><div class="v">Modern browsers show "Not secure" warnings on any site still running HTTP. Visitors don't read the warning — they just leave. And Google demotes insecure sites in local search.</div></div>
+          <div class="field"><div class="k">10-sec test</div><div class="v">Load your site and look at the URL bar. Is there a padlock icon? Is the URL <code>https://</code> not <code>http://</code>? No warning banner?</div></div>
+          <div class="field"><div class="k">Fix</div><div class="v">If your host doesn't offer free HTTPS (via Let's Encrypt or Cloudflare) in 2026, switch hosts. Immediately. There is no good excuse left.</div></div>
+        </div>
+      </div>
+
+      <div class="check-item">
+        <div class="check-num">21</div>
+        <div class="check-body">
+          <h3>Your menu prices are visible — not "Ask your server."</h3>
+          <div class="field"><div class="k">Why</div><div class="v">Hidden prices signal that you're embarrassed about them. First-time diners who can't see what the check will be leave to find a place where they can. Even high-end restaurants benefit from honest prices online — the right customer filters themselves in, not out.</div></div>
+          <div class="field"><div class="k">10-sec test</div><div class="v">Open your menu page. Can you see the price of every dish without clicking through to a PDF or a separate page?</div></div>
+          <div class="field"><div class="k">Fix</div><div class="v">Show the prices. If you're prix fixe or tasting-menu only, state the total price prominently. If you're a pub with forty items and weekly rotation, keep the top sellers priced and update them in under a minute.</div></div>
+        </div>
+      </div>
+
+      <div class="check-item">
+        <div class="check-num">22</div>
+        <div class="check-body">
+          <h3>Your site has a visible "last updated" signal — or seasonal content.</h3>
+          <div class="field"><div class="k">Why</div><div class="v">Stale sites feel closed. A homepage that hasn't changed since 2019 makes visitors wonder if the restaurant is even still open. A visible date, a seasonal menu, or a "this week" section tells them you're still here.</div></div>
+          <div class="field"><div class="k">10-sec test</div><div class="v">Look at your homepage. Is there anything — a date, a seasonal badge, an event, a weekly feature — that proves the site was touched in the last three months?</div></div>
+          <div class="field"><div class="k">Fix</div><div class="v">Add "Seasonal menu · Fall 2026" to your menu header. Keep a small "This week" section on the homepage with a rotating special or event. Or display the last content update date in the footer.</div></div>
+        </div>
+      </div>
+
+      <div class="check-item">
+        <div class="check-num">23</div>
+        <div class="check-body">
+          <h3>Your contact form actually sends emails you actually read.</h3>
+          <div class="field"><div class="k">Why</div><div class="v">An unread contact form is worse than no contact form — it's a silent trust-poisoning failure. A private event inquiry that never gets a reply becomes a public Google review that definitely does.</div></div>
+          <div class="field"><div class="k">10-sec test</div><div class="v">Fill out your own contact form with a real test message. Does it land in your inbox within five minutes? Is that inbox actually checked every day?</div></div>
+          <div class="field"><div class="k">Fix</div><div class="v">Test it every week. If the form isn't delivering reliably, rip it out and replace it with a <code>mailto:</code> link and your phone number. A working simple thing beats a broken sophisticated thing every time.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTINUES IN SPRINT 14c ============ -->
 
 </main>
 
