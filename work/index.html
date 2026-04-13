@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Work — Selected Case Studies | Muntin Digital</title>
+<meta name="description" content="Selected independent case studies from Muntin Digital — a Glen Echo dining landmark redesigned from the ground up, and a pre-launch narrative site for a lifestyle brand built around intentional rest." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/work/" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Work — Selected Case Studies | Muntin Digital" />
+<meta property="og:description" content="Two independent case studies showing range: a historic restaurant redesign and a pre-launch lifestyle brand narrative site." />
+<meta property="og:url" content="https://muntin.digital/work/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og-image.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Work — Selected Case Studies | Muntin Digital" />
+<meta name="twitter:description" content="Two independent case studies showing range: a historic restaurant redesign and a pre-launch lifestyle brand narrative site." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og-image.png" />
+
+<link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "https://muntin.digital/work/#collection",
+      "name": "Muntin Digital — Selected Work",
+      "description": "Selected independent case studies from Muntin Digital.",
+      "url": "https://muntin.digital/work/",
+      "isPartOf": { "@id": "https://muntin.digital/#website" },
+      "about": { "@id": "https://muntin.digital/#business" }
+    },
+    {
+      "@type": "ItemList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "url": "https://muntin.digital/work/irish-inn-glen-echo/",
+          "name": "The Irish Inn at Glen Echo"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "url": "https://muntin.digital/work/off-day-collective/",
+          "name": "Off Day Collective"
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
+        { "@type": "ListItem", "position": 2, "name": "Work", "item": "https://muntin.digital/work/" }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&amp;family=Inter:wght@400;500;600&amp;family=Playfair+Display:ital,wght@0,700;1,400&amp;family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+
+<link rel="stylesheet" href="/assets/site.css">
+
+<style>
+  /* ============ WORK GALLERY PAGE STYLES ============ */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    margin-top: 48px;
+  }
+  @media (max-width: 860px) { .gallery-grid { grid-template-columns: 1fr; } }
+
+  .gallery-card {
+    display: flex;
+    flex-direction: column;
+    border-radius: 18px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid var(--line);
+    background: var(--white);
+    transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out);
+  }
+  .gallery-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(20, 22, 26, 0.08);
+  }
+
+  /* Thumbnail — stylized brand preview, no screenshots */
+  .gallery-thumb {
+    aspect-ratio: 16 / 10;
+    padding: 48px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .gallery-thumb .phase {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .gallery-thumb h3 {
+    font-size: clamp(32px, 4vw, 54px);
+    line-height: 1;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .gallery-thumb h3 em {
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  /* Irish Inn thumb — green/gold/cream, Playfair Display */
+  .gallery-thumb.irish-inn {
+    background: linear-gradient(160deg, #123821 0%, #1a472a 100%);
+    color: #f9f7f2;
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+  .gallery-thumb.irish-inn .phase { color: #c5a059; font-family: 'Inter', sans-serif; }
+  .gallery-thumb.irish-inn h3 em { color: #c5a059; }
+  .gallery-thumb.irish-inn::after {
+    content: '';
+    position: absolute;
+    right: -60px; bottom: -60px;
+    width: 220px; height: 220px;
+    border: 2px solid rgba(197, 160, 89, 0.25);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* ODC thumb — warm near-black, gold accent, Cormorant italic */
+  .gallery-thumb.odc {
+    background: #0D0C0A;
+    color: #F9F7F2;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-style: italic;
+    font-weight: 300;
+  }
+  .gallery-thumb.odc .phase {
+    color: #C9A84C;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+  }
+  .gallery-thumb.odc h3 {
+    font-weight: 300;
+  }
+  .gallery-thumb.odc::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 80% 20%, rgba(201, 168, 76, 0.08), transparent 55%);
+    pointer-events: none;
+  }
+
+  /* Card body */
+  .gallery-body {
+    padding: 32px 32px 36px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .gallery-body h4 {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+  .gallery-body p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--stone);
+    margin: 0 0 20px;
+  }
+  .gallery-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .gallery-tag {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: var(--cream-2);
+    color: var(--ink-soft);
+    border: 1px solid var(--line);
+  }
+  .gallery-cta {
+    margin-top: auto;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--teal);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .gallery-card:hover .gallery-cta { color: var(--teal-dark); }
+  .gallery-cta svg { width: 16px; height: 16px; }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm">™</sup>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/#services">Services</a>
+      <a href="/for/restaurants/">Restaurants</a>
+      <a href="/#social">Social Media</a>
+      <a href="/#design">Brand &amp; Design</a>
+      <a href="/#about">About</a>
+    </nav>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/#services">Services</a>
+    <a href="/for/restaurants/">Restaurants</a>
+    <a href="/#social">Social Media</a>
+    <a href="/#design">Brand &amp; Design</a>
+    <a href="/#about">About</a>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call</a>
+  </nav>
+</header>
+
+<main id="main">
+
+<!-- ============ HERO ============ -->
+<section class="hero" style="padding-bottom:16px;">
+  <div class="container">
+    <div style="max-width:820px; margin:0 auto; text-align:center;">
+      <span class="eyebrow">Selected work</span>
+      <h1 style="margin-top:16px;">
+        Two studies.<br>
+        <span class="serif-italic">Different rooms.</span>
+      </h1>
+      <p class="hero-sub" style="margin:24px auto 0; max-width:640px;">
+        A studio of one, across different kinds of brands. A historic Glen Echo dining landmark and a pre-launch lifestyle brand built around intentional rest — both independent design studies, both rendered in pure HTML/CSS/JS. Pick one to read.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section class="block">
+  <div class="container">
+    <div class="gallery-grid">
+      <a href="/work/irish-inn-glen-echo/" class="gallery-card">
+        <div class="gallery-thumb irish-inn" aria-hidden="true">
+          <span class="phase">Redesign Study · Restaurant</span>
+          <h3>Stewards of<br><em>History.</em></h3>
+        </div>
+        <div class="gallery-body">
+          <h4>The Irish Inn at Glen Echo</h4>
+          <p>A redesign study for a 1931 Washington-area dining landmark. Split pub/dining hero, sourcing pillars, and a press ticker from the Washington Post, Bethesda Magazine, and Washingtonian.</p>
+          <div class="gallery-tags">
+            <span class="gallery-tag">Restaurant</span>
+            <span class="gallery-tag">Redesign</span>
+            <span class="gallery-tag">Glen Echo, MD</span>
+          </div>
+          <span class="gallery-cta">
+            Read the case study
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+          </span>
+        </div>
+      </a>
+
+      <a href="/work/off-day-collective/" class="gallery-card">
+        <div class="gallery-thumb odc" aria-hidden="true">
+          <span class="phase">Brand Launch · Lifestyle</span>
+          <h3>Silence is<br>a luxury.</h3>
+        </div>
+        <div class="gallery-body">
+          <h4>Off Day Collective</h4>
+          <p>A pre-launch narrative site for a lifestyle brand positioning rest as a ritual practice. Cormorant Garamond on warm near-black, a three-tempo phase system, and an email capture earned through editorial discipline.</p>
+          <div class="gallery-tags">
+            <span class="gallery-tag">Lifestyle</span>
+            <span class="gallery-tag">Brand Launch</span>
+            <span class="gallery-tag">Pre-launch</span>
+          </div>
+          <span class="gallery-cta">
+            Read the case study
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+          </span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CLOSING CTA ============ -->
+<section class="block bg-cream2 final">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">Your project</span>
+      <h2>Want something<br>like this?</h2>
+      <p class="final-sub">If you're building a brand — or rebuilding one — and you want this level of design thinking on it, let's talk. Twenty minutes on Zoom, no pitch, just a conversation about what's possible.</p>
+    </div>
+
+    <div class="hero-ctas reveal" style="justify-content:center; margin-top:32px;">
+      <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      </a>
+      <a class="btn btn-ghost" href="/">Back to home</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container foot">
+    <div>
+      <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53">
+      <div style="margin-top:6px">Structure Brings Clarity.</div>
+    </div>
+    <div style="text-align:right">
+      <div style="color:var(--cream); margin-bottom:4px">don@muntindigital.com</div>
+      <nav class="foot-legal" aria-label="Legal">
+        <a href="/terms.html">Terms of Service</a>
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="/accessibility.html">Accessibility</a>
+        <a href="/cookies.html">Cookie Policy</a>
+      </nav>
+      <div>© 2026 Muntin Digital™ · Maryland LLC · Based in Silver Spring, MD · Serving US small businesses</div>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/site.js" defer></script>
+</body>
+</html>

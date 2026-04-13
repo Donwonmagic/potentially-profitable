@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Case Study: Off Day Collective — Silence, Curated | Muntin Digital</title>
+<meta name="description" content="An independent design and development study for Off Day Collective, a pre-launch lifestyle brand positioning rest as a ritual practice. Cormorant Garamond and Inter, cream-and-gold palette, three-tempo phase system." />
+<meta name="theme-color" content="#0D0C0A" />
+<link rel="canonical" href="https://muntin.digital/work/off-day-collective/" />
+
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Off Day Collective — Silence, Curated" />
+<meta property="og:description" content="Case study by Muntin Digital: a pre-launch narrative site for a lifestyle brand built around rest as a ritual practice." />
+<meta property="og:url" content="https://muntin.digital/work/off-day-collective/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og-image.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Off Day Collective — Silence, Curated" />
+<meta name="twitter:description" content="A pre-launch narrative site for a lifestyle brand built around rest as a ritual practice." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og-image.png" />
+
+<link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CreativeWork",
+      "@id": "https://muntin.digital/work/off-day-collective/#work",
+      "name": "Off Day Collective — Narrative Launch Site",
+      "creator": { "@id": "https://muntin.digital/#business" },
+      "about": "Independent design and development study for a pre-launch lifestyle brand positioning rest as a ritual practice.",
+      "url": "https://muntin.digital/work/off-day-collective/",
+      "dateCreated": "2026",
+      "genre": "Brand Launch Site",
+      "inLanguage": "en-US"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
+        { "@type": "ListItem", "position": 2, "name": "Work", "item": "https://muntin.digital/work/" },
+        { "@type": "ListItem", "position": 3, "name": "Off Day Collective", "item": "https://muntin.digital/work/off-day-collective/" }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&amp;family=Inter:wght@300;400;500;600&amp;family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+
+<link rel="stylesheet" href="/assets/site.css">
+
+<style>
+  /* ============ OFF DAY COLLECTIVE CASE STUDY PAGE-SPECIFIC STYLES ============ */
+  :root {
+    --odc-cream: #F9F7F2;
+    --odc-parchment: #EDE9E0;
+    --odc-walnut: #3D2B1F;
+    --odc-charcoal: #1A1A1A;
+    --odc-ink: #0D0C0A;
+    --odc-gold: #C9A84C;
+    --odc-gold-pale: #E8D5A0;
+    --odc-gold-dim: #7A6428;
+    --odc-sage: #7D8E7E;
+    --odc-tempo-morning: #C9A84C;
+    --odc-tempo-journey: #7BAF71;
+    --odc-tempo-evening: #9490C8;
+    --odc-display: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+    --odc-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .case-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 14px;
+    border: 1px solid var(--line-dark);
+    border-radius: 999px;
+    font-size: 12px; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--stone);
+  }
+  .case-eyebrow::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--rust);
+  }
+  .case-meta {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px;
+    padding: 32px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    margin-top: 48px;
+  }
+  .case-meta > div > .label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--stone); margin-bottom: 6px;
+  }
+  .case-meta > div > .value { font-size: 16px; color: var(--ink); }
+  @media (max-width: 720px) {
+    .case-meta { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  }
+
+  /* Overview */
+  .overview-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 24px; margin-top: 32px;
+  }
+  .overview-card {
+    padding: 28px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--white);
+  }
+  .overview-card .label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 12px;
+  }
+  .overview-card h4 {
+    font-family: var(--font-display);
+    font-size: 22px; font-weight: 500; color: var(--ink);
+    margin: 0 0 12px; letter-spacing: -0.01em;
+  }
+  .overview-card p {
+    font-size: 15px; line-height: 1.65; color: var(--stone); margin: 0;
+  }
+  @media (max-width: 860px) { .overview-grid { grid-template-columns: 1fr; } }
+
+  /* ODC palette — two rows */
+  .odc-palette {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 16px; margin-top: 32px;
+  }
+  .odc-swatch {
+    aspect-ratio: 1 / 1.15;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.08);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 12px;
+    font-family: var(--odc-body);
+  }
+  .odc-swatch .hex {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .odc-swatch .name { font-size: 10px; opacity: 0.85; margin-top: 2px; }
+  @media (max-width: 860px) { .odc-palette { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 520px) { .odc-palette { grid-template-columns: repeat(2, 1fr); } }
+
+  /* Type specimen */
+  .odc-type {
+    background: var(--odc-ink);
+    color: var(--odc-cream);
+    border-radius: 16px;
+    padding: 72px 48px;
+    margin-top: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .odc-type::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle at 50% 50%, rgba(201, 168, 76, 0.06), transparent 60%);
+    pointer-events: none;
+  }
+  .odc-type .label {
+    font-family: var(--odc-body);
+    font-size: 10px; font-weight: 400;
+    letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--odc-gold); margin: 0 0 16px;
+  }
+  .odc-type .display-sample {
+    font-family: var(--odc-display);
+    font-weight: 300; font-style: italic;
+    font-size: clamp(48px, 8vw, 104px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--odc-cream);
+    margin: 0 0 48px;
+    position: relative;
+  }
+  .odc-type .body-sample {
+    font-family: var(--odc-body);
+    font-weight: 300;
+    font-size: 16px; line-height: 1.85;
+    color: rgba(249, 247, 242, 0.78);
+    max-width: 560px;
+    margin: 0;
+    position: relative;
+  }
+  .odc-type > * + .label { margin-top: 56px; }
+
+  /* Three tempos */
+  .tempo-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 20px; margin-top: 32px;
+  }
+  .tempo-card {
+    padding: 40px 32px;
+    border-radius: 16px;
+    background: var(--odc-ink);
+    color: var(--odc-cream);
+    font-family: var(--odc-body);
+    position: relative;
+    overflow: hidden;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .tempo-card.morning { border-top: 3px solid var(--odc-tempo-morning); }
+  .tempo-card.journey { border-top: 3px solid var(--odc-tempo-journey); }
+  .tempo-card.evening { border-top: 3px solid var(--odc-tempo-evening); }
+  .tempo-card .phase {
+    font-size: 10px; font-weight: 400;
+    letter-spacing: 0.35em; text-transform: uppercase;
+    margin: 0 0 16px;
+  }
+  .tempo-card.morning .phase { color: var(--odc-tempo-morning); }
+  .tempo-card.journey .phase { color: var(--odc-tempo-journey); }
+  .tempo-card.evening .phase { color: var(--odc-tempo-evening); }
+  .tempo-card h5 {
+    font-family: var(--odc-display);
+    font-weight: 300; font-style: italic;
+    font-size: clamp(28px, 3vw, 40px);
+    line-height: 1.05;
+    margin: 0 0 16px;
+    color: var(--odc-cream);
+  }
+  .tempo-card p {
+    font-size: 14px; font-weight: 300;
+    line-height: 1.7;
+    color: rgba(249, 247, 242, 0.72);
+    margin: 0 0 24px;
+  }
+  .tempo-card .time {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(249, 247, 242, 0.5);
+  }
+  @media (max-width: 860px) { .tempo-grid { grid-template-columns: 1fr; } }
+
+  /* Signature phrase quote block */
+  .odc-quotes {
+    background: var(--odc-parchment);
+    border-radius: 16px;
+    padding: 72px 48px;
+    margin-top: 32px;
+    border: 1px solid rgba(0,0,0,0.04);
+  }
+  .odc-quotes .label {
+    font-family: var(--odc-body);
+    font-size: 10px; letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--odc-gold-dim);
+    margin: 0 0 40px;
+    text-align: center;
+  }
+  .odc-quotes-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .odc-quotes-list q {
+    font-family: var(--odc-display);
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(22px, 2.6vw, 34px);
+    line-height: 1.25;
+    color: var(--odc-walnut);
+    display: block;
+    quotes: none;
+    text-align: center;
+  }
+  .odc-quotes-list q::before,
+  .odc-quotes-list q::after { content: ''; }
+  .odc-quotes-list q + q { border-top: 1px solid rgba(0,0,0,0.08); padding-top: 28px; }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm">™</sup>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/#services">Services</a>
+      <a href="/for/restaurants/">Restaurants</a>
+      <a href="/#social">Social Media</a>
+      <a href="/#design">Brand &amp; Design</a>
+      <a href="/#about">About</a>
+    </nav>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/#services">Services</a>
+    <a href="/for/restaurants/">Restaurants</a>
+    <a href="/#social">Social Media</a>
+    <a href="/#design">Brand &amp; Design</a>
+    <a href="/#about">About</a>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call</a>
+  </nav>
+</header>
+
+<main id="main">
+
+<!-- ============ HERO ============ -->
+<section class="hero" style="padding-bottom:40px;">
+  <div class="container">
+    <div style="max-width:880px; margin:0 auto; text-align:center;">
+      <span class="case-eyebrow">Case Study · Independent Brand Launch Study</span>
+      <h1 style="margin-top:28px;">
+        Off Day Collective.<br>
+        <span class="serif-italic">Silence, curated.</span>
+      </h1>
+      <p class="hero-sub" style="margin:24px auto 0; max-width:680px;">
+        A pre-launch narrative site for a lifestyle brand positioning rest as a ritual practice. Cormorant Garamond and Inter, cream-and-gold on warm near-black, a three-tempo phase system, and copy written like the back of a quietly confident book.
+      </p>
+    </div>
+
+    <div class="case-meta">
+      <div>
+        <div class="label">Client</div>
+        <div class="value">Off Day Collective</div>
+      </div>
+      <div>
+        <div class="label">Type</div>
+        <div class="value">Independent study</div>
+      </div>
+      <div>
+        <div class="label">Scope</div>
+        <div class="value">Brand site &amp; narrative IA</div>
+      </div>
+      <div>
+        <div class="label">Status</div>
+        <div class="value">Pre-launch · Volume 01 · Fall 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OVERVIEW ============ -->
+<section class="block">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">Project overview</span>
+      <h2>Not a product site.<br>A practice.</h2>
+      <p>Off Day Collective is a pre-launch lifestyle brand building a category around intentional downtime — curated objects, ritual guides, and peer-reviewed education, sold as a single integrated system. The site doesn't exist to sell product yet. It exists to build a waitlist before Volume 01 ships.</p>
+    </div>
+
+    <div class="overview-grid reveal">
+      <div class="overview-card">
+        <div class="label">The challenge</div>
+        <h4>Teach a new category, not sell a product</h4>
+        <p>Nobody is searching for "off day rituals" yet — the category doesn't exist. The site has to create the vocabulary, justify the premise, and earn the email address, all before the shop opens. That's a narrative site, not a product page.</p>
+      </div>
+      <div class="overview-card">
+        <div class="label">The approach</div>
+        <h4>A single-page cinematic experience</h4>
+        <p>CSS scroll snapping, parallax typography, expanding product tiles, and a dark editorial palette that treats the visitor like a reader, not a conversion target. Fully vanilla HTML/CSS/JS for sub-second load and accessibility from the first frame.</p>
+      </div>
+      <div class="overview-card">
+        <div class="label">The outcome</div>
+        <h4>A brand site that reads like a book</h4>
+        <p>Three daily tempos (Morning, Journey, Evening), a library of free peer-reviewed reading, a philosophy section, and a single email capture at the end. Every element earns its place by advancing the argument for intentional rest.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PALETTE ============ -->
+<section class="block bg-cream2">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">Brand palette</span>
+      <h2>Warm darks.<br>Muted gold. No noise.</h2>
+      <p>The palette avoids every saturated or cool tone on the wheel. Cream and parchment carry the light surfaces. Walnut, charcoal, and warm near-black carry the dark surfaces. Muted gold is the only accent — the same color as late-afternoon light through a window.</p>
+    </div>
+
+    <div class="odc-palette reveal" role="list" aria-label="Off Day Collective color palette">
+      <div class="odc-swatch" style="background:#F9F7F2; color:#1A1A1A; border-color:rgba(0,0,0,0.1);" role="listitem">
+        <div class="hex">#F9F7F2</div><div class="name">Cream</div>
+      </div>
+      <div class="odc-swatch" style="background:#EDE9E0; color:#1A1A1A; border-color:rgba(0,0,0,0.1);" role="listitem">
+        <div class="hex">#EDE9E0</div><div class="name">Parchment</div>
+      </div>
+      <div class="odc-swatch" style="background:#3D2B1F; color:#F9F7F2;" role="listitem">
+        <div class="hex">#3D2B1F</div><div class="name">Walnut</div>
+      </div>
+      <div class="odc-swatch" style="background:#1A1A1A; color:#F9F7F2;" role="listitem">
+        <div class="hex">#1A1A1A</div><div class="name">Charcoal</div>
+      </div>
+      <div class="odc-swatch" style="background:#0D0C0A; color:#F9F7F2;" role="listitem">
+        <div class="hex">#0D0C0A</div><div class="name">Ink</div>
+      </div>
+      <div class="odc-swatch" style="background:#C9A84C; color:#0D0C0A;" role="listitem">
+        <div class="hex">#C9A84C</div><div class="name">Gold</div>
+      </div>
+      <div class="odc-swatch" style="background:#E8D5A0; color:#3D2B1F;" role="listitem">
+        <div class="hex">#E8D5A0</div><div class="name">Gold pale</div>
+      </div>
+      <div class="odc-swatch" style="background:#7D8E7E; color:#F9F7F2;" role="listitem">
+        <div class="hex">#7D8E7E</div><div class="name">Sage</div>
+      </div>
+      <div class="odc-swatch" style="background:#7BAF71; color:#0D0C0A;" role="listitem">
+        <div class="hex">#7BAF71</div><div class="name">Tempo · journey</div>
+      </div>
+      <div class="odc-swatch" style="background:#9490C8; color:#0D0C0A;" role="listitem">
+        <div class="hex">#9490C8</div><div class="name">Tempo · evening</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TYPE SPECIMEN ============ -->
+<section class="block">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">Typography</span>
+      <h2>Cormorant Garamond<br>and Inter.</h2>
+      <p>A tightly tracked Cormorant Garamond in weight 300 italic carries every display line — a letterform that whispers instead of declares. Inter at the same weight handles the body, labels, and clinical copy. The pairing reads like an essay, not an ad.</p>
+    </div>
+
+    <div class="odc-type reveal">
+      <p class="label">Display · Cormorant Garamond · 300 Italic</p>
+      <h3 class="display-sample">Silence is a luxury.</h3>
+
+      <p class="label">Body · Inter · 300</p>
+      <p class="body-sample">That person standing still while the world moves around them? That's who you are on your best off day. We're building everything you need to get there — curated objects, guided rituals, and peer-reviewed reading, sold as a single system.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THREE TEMPOS ============ -->
+<section class="block bg-cream2">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">Information architecture</span>
+      <h2>Three tempos.<br>Three states of mind.</h2>
+      <p>The site breaks the day into three phases, each with its own accent color, its own ritual, and its own library article. Every product, practice, and reading is filed under one of them. Visitors don't browse a store — they walk through a day.</p>
+    </div>
+
+    <div class="tempo-grid reveal">
+      <div class="tempo-card morning">
+        <div>
+          <p class="phase">Phase I · Clarity</p>
+          <h5>Morning Stillness</h5>
+          <p>Protecting the first ninety minutes post-waking from your inbox, your newsfeed, and your own restlessness. Rituals built around the cortisol awakening response, warm drinks, and analog tools.</p>
+        </div>
+        <span class="time">06:00 – 08:30</span>
+      </div>
+      <div class="tempo-card journey">
+        <div>
+          <p class="phase">Phase II · Momentum</p>
+          <h5>Day's Journey</h5>
+          <p>Midday movement, creative idling, and the hours where the off day actually earns its name. Guided practices that pair walking, reading, and staring at nothing on purpose.</p>
+        </div>
+        <span class="time">10:00 – 16:00</span>
+      </div>
+      <div class="tempo-card evening">
+        <div>
+          <p class="phase">Phase III · Reflection</p>
+          <h5>Evening Release</h5>
+          <p>A wind-down practice grounded in sleep science — glymphatic recovery, circadian lighting, and the rituals that close the day instead of just ending it.</p>
+        </div>
+        <span class="time">19:00 – 22:30</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SIGNATURE VOICE ============ -->
+<section class="block">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">Voice</span>
+      <h2>Every sentence<br>earns its place.</h2>
+      <p>The copy was written like a magazine pull-quote wall — short, declarative, warm enough to trust, confident enough to earn the email. Here are the lines that anchor the whole site.</p>
+    </div>
+
+    <div class="odc-quotes reveal">
+      <p class="label">Signature phrases · Cormorant Garamond · 300 italic</p>
+      <div class="odc-quotes-list">
+        <q>Silence is a luxury.</q>
+        <q>The modern world is weightless. We curate gravity.</q>
+        <q>Rest is productive.</q>
+        <q>Science you can feel — and take to your doctor.</q>
+        <q>Curated objects. Guided rituals. Weekends that restore.</q>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OUTCOME / CTA ============ -->
+<section class="block final">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">What's next for this study</span>
+      <h2>Launching a brand<br>that feels this way?</h2>
+      <p class="final-sub">Off Day Collective is a pre-launch narrative experience — Volume 01 ships Fall 2026. If you're building a brand that needs to teach before it sells, and you want this level of design discipline on it, let's talk. Twenty minutes on Zoom, no pitch.</p>
+    </div>
+
+    <div class="hero-ctas reveal" style="justify-content:center; margin-top:32px;">
+      <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      </a>
+      <a class="btn btn-ghost" href="/#design">See brand &amp; design services</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container foot">
+    <div>
+      <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53">
+      <div style="margin-top:6px">Structure Brings Clarity.</div>
+    </div>
+    <div style="text-align:right">
+      <div style="color:var(--cream); margin-bottom:4px">don@muntindigital.com</div>
+      <nav class="foot-legal" aria-label="Legal">
+        <a href="/terms.html">Terms of Service</a>
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="/accessibility.html">Accessibility</a>
+        <a href="/cookies.html">Cookie Policy</a>
+      </nav>
+      <div>© 2026 Muntin Digital™ · Maryland LLC · Based in Silver Spring, MD · Serving US small businesses</div>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/site.js" defer></script>
+</body>
+</html>
