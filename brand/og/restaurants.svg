@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#1F4E5B"/>
+
+  <!-- Subtle cream border rule, inside a margin -->
+  <rect x="40" y="40" width="1120" height="550" fill="none" stroke="#FAF7F2" stroke-width="1.5" opacity="0.18"/>
+
+  <!-- Window mark, small, top-left of inner frame -->
+  <g transform="translate(88, 88)" stroke="#C5A059" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter" fill="none">
+    <rect x="0" y="0" width="56" height="56"/>
+    <line x1="28" y1="0" x2="28" y2="56"/>
+    <line x1="0" y1="20" x2="56" y2="20"/>
+  </g>
+
+  <!-- Eyebrow, centered -->
+  <text x="600" y="152" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" fill="#C5A059" letter-spacing="4">FOR RESTAURANTS  ·  SILVER SPRING, MD</text>
+
+  <!-- Title block -->
+  <text x="600" y="280" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="78" font-weight="500" fill="#FAF7F2" letter-spacing="-2">Restaurant Website</text>
+  <text x="600" y="360" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="78" font-weight="500" fill="#FAF7F2" letter-spacing="-2">Design,</text>
+
+  <!-- Italic emphasis -->
+  <text x="600" y="450" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="54" font-weight="400" fill="#C5A059">handled by one person.</text>
+
+  <!-- Bottom tagline -->
+  <text x="600" y="552" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="500" fill="#E8F1F3" letter-spacing="2" opacity="0.8">MUNTIN DIGITAL  ·  muntin.digital/for/restaurants</text>
+</svg>

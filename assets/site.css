@@ -1224,6 +1224,14 @@
     font-family: var(--font-body);
     font-size: 15px;
   }
+  /* Mobile-menu CTA pill must keep its own btn-primary colors, not
+     inherit .mobile-menu a's dark ink color (same color as the btn
+     background, which made it unreadable). */
+  .mobile-menu a.btn-primary,
+  .mobile-menu a.btn-primary:hover,
+  .mobile-menu a.btn-primary:focus {
+    color: var(--cream);
+  }
   .mobile-menu[hidden] { display: none; }
 
   @media (max-width: 820px) {
