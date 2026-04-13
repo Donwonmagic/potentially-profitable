@@ -614,9 +614,271 @@
   </div>
 </section>
 
-<!-- ============ SCRIPT HOOK FOR SPRINT 17 ============ -->
-<!-- sprint 17 adds the JavaScript that wires up the form, fetches PSI,
-     and populates the report card elements above. -->
+<!-- ============ AUDIT TOOL SCRIPT ============ -->
+<script>
+(function(){
+  var form          = document.getElementById('auditForm');
+  var input         = document.getElementById('auditUrl');
+  var submitBtn     = document.getElementById('auditSubmit');
+  var loadingEl     = document.getElementById('auditLoading');
+  var loadingStatus = document.getElementById('auditLoadingStatus');
+  var errorEl       = document.getElementById('auditError');
+  var errorHeading  = document.getElementById('auditErrorHeading');
+  var errorBody     = document.getElementById('auditErrorBody');
+  var reportEl      = document.getElementById('auditReport');
+
+  if (!form) return;
+
+  var PSI_ENDPOINT = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed';
+  var CATEGORIES   = ['performance', 'accessibility', 'best-practices', 'seo'];
+  var submitOriginalHTML = submitBtn.innerHTML;
+
+  var loadingMessages = [
+    'Contacting Google Lighthouse…',
+    'Loading your homepage on a simulated 4G connection…',
+    'Measuring paint timings and layout shifts…',
+    'Scoring mobile speed…',
+    'Checking for common SEO issues…',
+    'Scoring accessibility…',
+    'Writing your report card…'
+  ];
+  var loadingInterval = null;
+
+  function normalizeUrl(raw) {
+    if (!raw) return null;
+    raw = raw.trim();
+    if (!raw) return null;
+    if (!/^https?:\/\//i.test(raw)) raw = 'https://' + raw;
+    try {
+      var u = new URL(raw);
+      if (u.protocol !== 'http:' && u.protocol !== 'https:') return null;
+      if (!u.hostname || u.hostname.indexOf('.') === -1) return null;
+      return u.href;
+    } catch (e) { return null; }
+  }
+
+  function showOnly(which) {
+    loadingEl.hidden = true;
+    errorEl.hidden   = true;
+    reportEl.hidden  = true;
+    if (which) which.hidden = false;
+  }
+
+  function cycleLoading() {
+    var i = 0;
+    loadingStatus.textContent = loadingMessages[i];
+    loadingInterval = setInterval(function(){
+      i = (i + 1) % loadingMessages.length;
+      loadingStatus.textContent = loadingMessages[i];
+    }, 3500);
+  }
+  function stopCycling() {
+    if (loadingInterval) { clearInterval(loadingInterval); loadingInterval = null; }
+  }
+
+  function gradeScore(score) {
+    if (score >= 90) return 'grade-good';
+    if (score >= 50) return 'grade-ok';
+    return 'grade-bad';
+  }
+
+  function gradeVital(key, n) {
+    if (typeof n !== 'number' || isNaN(n)) return '';
+    switch (key) {
+      case 'lcp': return n <= 2500  ? 'grade-good' : n <= 4000  ? 'grade-ok' : 'grade-bad';
+      case 'cls': return n <= 0.1   ? 'grade-good' : n <= 0.25  ? 'grade-ok' : 'grade-bad';
+      case 'tbt': return n <= 200   ? 'grade-good' : n <= 600   ? 'grade-ok' : 'grade-bad';
+      case 'fcp': return n <= 1800  ? 'grade-good' : n <= 3000  ? 'grade-ok' : 'grade-bad';
+    }
+    return '';
+  }
+
+  function verdictFor(score) {
+    if (score >= 90) return "Your site is in great shape. Most restaurants would be thrilled to hit this score. Small polish items may remain — check the breakdown below.";
+    if (score >= 70) return "Solid foundation with room to tighten up. Focus on the red and amber items below — most are mechanical fixes that move you into the 90s.";
+    if (score >= 50) return "The site works, but it's leaking conversions. The good news: the wins here — load speed, image alt text, meta tags, schema — take days, not months.";
+    return "There's real work to do. Scores in this range usually track with a template site hitting its ceiling. The fastest path forward is often a fresh build — happy to walk through options on a 20-minute call.";
+  }
+
+  function setScoreRing(score) {
+    var ring = document.getElementById('scoreRing');
+    var value = document.getElementById('scoreValue');
+    var fg = ring.querySelector('circle.fg');
+    var r = 52;
+    var circumference = 2 * Math.PI * r; // ~326.7
+    var offset = circumference - (score / 100) * circumference;
+    ring.classList.remove('grade-good','grade-ok','grade-bad');
+    ring.classList.add(gradeScore(score));
+    value.textContent = score;
+    fg.setAttribute('stroke-dasharray', circumference.toFixed(2));
+    fg.setAttribute('stroke-dashoffset', circumference.toFixed(2));
+    // Force reflow so the animation runs
+    void fg.getBoundingClientRect();
+    fg.setAttribute('stroke-dashoffset', offset.toFixed(2));
+  }
+
+  function setCategory(cat, score) {
+    var card = document.querySelector('.category-card[data-cat="' + cat + '"]');
+    if (!card) return;
+    card.classList.remove('grade-good','grade-ok','grade-bad');
+    card.classList.add(gradeScore(score));
+    card.querySelector('.cat-value').textContent = score;
+    var fill = card.querySelector('.bar .fill');
+    fill.style.width = '0%';
+    void fill.getBoundingClientRect();
+    fill.style.width = score + '%';
+  }
+
+  function setVital(key, displayValue, numericValue) {
+    var el = document.querySelector('.vitals-strip .v[data-vital="' + key + '"]');
+    if (!el) return;
+    el.textContent = displayValue || '—';
+    el.classList.remove('grade-good','grade-ok','grade-bad');
+    var grade = gradeVital(key, numericValue);
+    if (grade) el.classList.add(grade);
+  }
+
+  function safeAudit(audits, key) {
+    return audits && audits[key] ? audits[key] : { displayValue: '—', numericValue: null };
+  }
+
+  function renderReport(data, auditedUrl) {
+    var lh = data && data.lighthouseResult;
+    if (!lh || !lh.categories) throw new Error('Unexpected PageSpeed response shape.');
+
+    var cats = lh.categories;
+    var audits = lh.audits || {};
+
+    var perf = Math.round(((cats.performance && cats.performance.score) || 0) * 100);
+    var a11y = Math.round(((cats.accessibility && cats.accessibility.score) || 0) * 100);
+    var bp   = Math.round(((cats['best-practices'] && cats['best-practices'].score) || 0) * 100);
+    var seo  = Math.round(((cats.seo && cats.seo.score) || 0) * 100);
+    var overall = Math.round((perf + a11y + bp + seo) / 4);
+
+    // Strip protocol from displayed URL for readability
+    var displayUrl = auditedUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
+    document.getElementById('auditedUrl').textContent = displayUrl;
+    document.getElementById('verdictCopy').textContent = verdictFor(overall);
+
+    setScoreRing(overall);
+    setCategory('performance',   perf);
+    setCategory('accessibility', a11y);
+    setCategory('best-practices', bp);
+    setCategory('seo',           seo);
+
+    var lcp = safeAudit(audits, 'largest-contentful-paint');
+    var cls = safeAudit(audits, 'cumulative-layout-shift');
+    var tbt = safeAudit(audits, 'total-blocking-time');
+    var fcp = safeAudit(audits, 'first-contentful-paint');
+    setVital('lcp', lcp.displayValue, lcp.numericValue);
+    setVital('cls', cls.displayValue, cls.numericValue);
+    setVital('tbt', tbt.displayValue, tbt.numericValue);
+    setVital('fcp', fcp.displayValue, fcp.numericValue);
+
+    // Expose the raw audits object for sprint 18's priority-check translation.
+    window.__auditLastResult = { audits: audits, overall: overall, url: auditedUrl };
+
+    showOnly(reportEl);
+    // Scroll the report into view
+    setTimeout(function(){
+      reportEl.scrollIntoView({behavior:'smooth', block:'start'});
+    }, 80);
+  }
+
+  function showError(heading, body) {
+    errorHeading.textContent = heading;
+    errorBody.textContent = body;
+    showOnly(errorEl);
+  }
+
+  function runAudit(url) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Running…';
+    showOnly(loadingEl);
+    cycleLoading();
+
+    var params = new URLSearchParams();
+    params.append('url', url);
+    params.append('strategy', 'mobile');
+    CATEGORIES.forEach(function(c){ params.append('category', c); });
+
+    fetch(PSI_ENDPOINT + '?' + params.toString())
+      .then(function(res){
+        if (!res.ok) {
+          return res.json().then(function(body){
+            var msg = (body && body.error && body.error.message) || ('PageSpeed returned ' + res.status);
+            var err = new Error(msg);
+            err.status = res.status;
+            throw err;
+          }, function(){
+            var err = new Error('PageSpeed returned ' + res.status);
+            err.status = res.status;
+            throw err;
+          });
+        }
+        return res.json();
+      })
+      .then(function(data){
+        stopCycling();
+        try {
+          renderReport(data, url);
+          if (window.plausible) window.plausible('Audit Completed');
+        } catch (e) {
+          console.error('[audit] render failed', e);
+          showError(
+            "We got a reply, but couldn't read it.",
+            "Google Lighthouse returned a result we couldn't parse. Try running the audit again, or email don@muntindigital.com and I'll run it manually."
+          );
+        }
+      })
+      .catch(function(err){
+        stopCycling();
+        console.error('[audit] fetch failed', err);
+        var msg = (err && err.message) || '';
+        if (/unable to process|fetched.*failed|lighthouse returned error|chrome.*crashed/i.test(msg)) {
+          showError(
+            "We couldn't reach that site.",
+            "Google Lighthouse couldn't load the URL. Make sure it's publicly accessible — no login wall, no staging environment, and no rate limiter blocking bots."
+          );
+        } else if (/quota|rate|exceed/i.test(msg) || err.status === 429) {
+          showError(
+            "We're a little rate-limited right now.",
+            "Google's free tier is temporarily throttled. Try again in a minute, or email don@muntindigital.com for a manual audit."
+          );
+        } else if (err.status === 400) {
+          showError(
+            "That URL didn't work.",
+            "Check the address and try again. PageSpeed rejected the request — usually that means a typo, a redirect loop, or a site that blocks the Lighthouse crawler."
+          );
+        } else {
+          showError(
+            "Something went sideways.",
+            "Technical details: " + (msg || 'unknown error') + ". Try again, or email don@muntindigital.com."
+          );
+        }
+      })
+      .then(function(){
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = submitOriginalHTML;
+      });
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var url = normalizeUrl(input.value);
+    if (!url) {
+      showError(
+        "That doesn't look like a valid URL.",
+        "Try something like yourrestaurant.com or https://yourrestaurant.com — a full web address, not a search term."
+      );
+      return;
+    }
+    input.value = url;
+    if (window.plausible) window.plausible('Audit Started');
+    runAudit(url);
+  });
+})();
+</script>
 
 </main>
 
