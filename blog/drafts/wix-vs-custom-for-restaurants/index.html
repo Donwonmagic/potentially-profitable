@@ -317,8 +317,31 @@
       <h2>Break #2 — Mobile load speed is always slower than it should be</h2>
       <p>This is the one I can prove with a URL: run any Wix restaurant site through <a href="/audit/restaurants/">the free Restaurant Website Audit</a> and look at the Performance score. You'll almost always see something in the 40s or 50s out of 100. That's not the restaurant's fault — it's the platform.</p>
       <p>Wix ships a lot of JavaScript by default. A typical Wix homepage downloads two to four megabytes of scripts before the page starts rendering, which on a 4G connection outside your restaurant feels like an eternity. Google's research says every extra second past two costs you about ten percent of mobile visitors. A Wix site loading at four or five seconds is quietly losing a third of its hungry mobile traffic before they ever see the menu.</p>
-      <p class="pull-quote">A Wix site loading at four seconds is quietly losing a third of its mobile traffic before they ever see the menu.</p>
-      <p><em>(Sprints 26d and 26e continue with breaks 3–6, the ROI math, and the closing.)</em></p>
+      <h2>Break #3 — Reservations integration is hostage to whatever Wix has deals with</h2>
+      <p>Wix pushes OpenTable hard because Wix gets referral revenue every time a restaurant signs up through their integration. That's fine — OpenTable works. But if your restaurant is on <strong>Resy, Tock, SevenRooms, or Square Reservations</strong>, you'll find that the "integration" is usually a generic iframe embed or a link-out. Nothing lives inside your page, nothing matches your brand, nothing tracks back into analytics cleanly, and when the third-party provider changes their embed URL two years from now you find out because your reservation button silently broke on a Friday night.</p>
+      <p>A custom site lets you pick the reservation system that actually fits your workflow and wire it in cleanly. Wix lets you pick whichever reservation system has the best deal with Wix this quarter.</p>
+
+      <h2>Break #4 — SEO is "template-good," not "actually good"</h2>
+      <p>Wix will tell you its SEO is strong. Technically it's not wrong: title tags exist, a sitemap gets generated, pages are indexable. That's the floor. It's not the ceiling.</p>
+      <p>Where Wix consistently falls short for restaurants:</p>
+      <ul>
+        <li><strong>Restaurant schema markup</strong> (the JSON-LD that tells Google your cuisine, hours, price range, menu URL, and reviews) is either missing entirely or filled with empty placeholders you have to hunt down through a settings panel.</li>
+        <li><strong>Meta descriptions</strong> are auto-generated from page copy unless you manually override every page. Most owners don't. You end up with Google search snippets that read like "Welcome to Our Home Page — We are excited to share…"</li>
+        <li><strong>Image alt text</strong> defaults to the filename. Every photo you upload comes in as <code>IMG_2041.jpg</code> and stays that way forever, invisible to Google Image Search.</li>
+        <li><strong>Site speed</strong> — already covered in Break #2 — is itself a ranking factor, and Wix is slow enough to demote you on mobile-first indexing.</li>
+      </ul>
+      <p>The net effect: you rank for your own restaurant name (which anyone can do), and you don't rank for "[cuisine] near me" or "best [dish] in [city]," which is where the new customers come from.</p>
+
+      <h2>Break #5 — You can't do anything custom without hiring a Wix Partner</h2>
+      <p>Sooner or later, every restaurant wants something the template doesn't do. A menu layout that matches a printed card. A reservation flow that checks against a private event calendar. A catering inquiry that routes to a different inbox. A "specials this week" module that updates from a spreadsheet.</p>
+      <p>On Wix, every one of those requires either Wix Studio (their pro-tier developer mode) or a Wix Partner — a contractor Wix certifies who charges custom-build rates to work inside a platform still constrained by Wix's architecture. You end up paying agency prices for a site that still has Wix's ceilings.</p>
+      <p>On a custom build, "we want a specials module that updates from a spreadsheet" is a half-day of work, not a renegotiation.</p>
+
+      <h2>Break #6 — Exit costs are real, and you don't see them until you try to leave</h2>
+      <p>Here is the one that nobody tells you about when you're signing up. <strong>If you ever want to leave Wix, you can export almost nothing useful.</strong></p>
+      <p>Your content isn't in HTML files you can pick up and move somewhere else. Your images live in Wix's media library. Your menu lives in their widget. The whole thing is a closed system where you are a tenant, not an owner, and the day you try to move is the day you realize you either stay forever or you pay someone to rebuild from scratch.</p>
+      <p>The rebuild is almost always the right move — but it's a rebuild. Two or three years of content you thought you owned, effectively starts over. A custom site built on real HTML can be picked up, hosted anywhere, edited by anyone with a text editor, and moved between providers in an afternoon. That ownership is a feature the monthly Wix fee doesn't buy you.</p>
+      <p><em>(Sprint 26e closes with the ROI math and the honest recommendation.)</em></p>
     </article>
   </div>
 </section>
