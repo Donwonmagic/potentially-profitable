@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Free Website Audit Tools | Muntin Digital</title>
+<meta name="description" content="Free client-side website audit tools from Muntin Digital, purpose-built for specific industries. Restaurant audit is live now. Wellness, boutique e-commerce, and brand audits are in development." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/audit/" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Free Website Audit Tools | Muntin Digital" />
+<meta property="og:description" content="Free client-side website audit tools, purpose-built for specific industries. Restaurant audit is live now." />
+<meta property="og:url" content="https://muntin.digital/audit/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og-image.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Free Website Audit Tools | Muntin Digital" />
+<meta name="twitter:description" content="Free client-side website audit tools, purpose-built for specific industries." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og-image.png" />
+
+<link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "https://muntin.digital/audit/#collection",
+      "name": "Muntin Digital — Free Audit Tools",
+      "description": "Free client-side website audit tools, each purpose-built for a specific industry.",
+      "url": "https://muntin.digital/audit/",
+      "isPartOf": { "@id": "https://muntin.digital/#website" },
+      "about": { "@id": "https://muntin.digital/#business" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
+        { "@type": "ListItem", "position": 2, "name": "Audit Tools", "item": "https://muntin.digital/audit/" }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&amp;family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+
+<link rel="stylesheet" href="/assets/site.css">
+
+<style>
+  .tool-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 56px;
+  }
+  @media (max-width: 760px) { .tool-grid { grid-template-columns: 1fr; } }
+
+  .tool-card {
+    display: flex;
+    flex-direction: column;
+    padding: 36px 32px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out), border-color var(--t-fast);
+    position: relative;
+    overflow: hidden;
+  }
+  .tool-card.live:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(20, 22, 26, 0.08);
+    border-color: var(--teal);
+  }
+  .tool-card.soon {
+    cursor: default;
+    background: var(--cream-2);
+    color: var(--stone);
+  }
+  .tool-card .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    align-self: flex-start;
+  }
+  .tool-card.live .status {
+    background: #e6f4ec;
+    color: #1f9d55;
+  }
+  .tool-card.live .status::before {
+    content: ''; width: 7px; height: 7px; border-radius: 50%;
+    background: #1f9d55;
+    box-shadow: 0 0 0 3px rgba(31, 157, 85, 0.18);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(31, 157, 85, 0.18); }
+    50%      { box-shadow: 0 0 0 5px rgba(31, 157, 85, 0.10); }
+  }
+  .tool-card.soon .status {
+    background: var(--line);
+    color: var(--stone);
+  }
+  .tool-card h3 {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 2.6vw, 32px);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 0 0 10px;
+  }
+  .tool-card.soon h3 { color: var(--ink-soft); }
+  .tool-card p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--stone);
+    margin: 0 0 24px;
+    flex: 1;
+  }
+  .tool-card .cta {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--teal);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tool-card.soon .cta { color: var(--stone-2); }
+  .tool-card .cta svg { width: 16px; height: 16px; }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm">™</sup>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/#services">Services</a>
+      <a href="/for/restaurants/">Restaurants</a>
+      <a href="/work/">Work</a>
+      <a href="/resources/restaurant-website-checklist/">Checklist</a>
+      <a href="/#about">About</a>
+    </nav>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/#services">Services</a>
+    <a href="/for/restaurants/">Restaurants</a>
+    <a href="/work/">Work</a>
+    <a href="/resources/restaurant-website-checklist/">Checklist</a>
+    <a href="/#about">About</a>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call</a>
+  </nav>
+</header>
+
+<main id="main">
+
+<section class="hero" style="padding-bottom:32px;">
+  <div class="container">
+    <div style="max-width:780px; margin:0 auto; text-align:center;">
+      <span class="eyebrow">Free tools</span>
+      <h1 style="margin-top:20px;">
+        Honest website audits,<br>
+        <span class="serif-italic">one industry at a time.</span>
+      </h1>
+      <p class="hero-sub" style="margin:24px auto 0; max-width:620px;">
+        Generic SEO audit tools give you a PDF full of abstractions. These tools are different: each one is purpose-built for a specific kind of business, and each one translates the findings into the language the owner actually uses. Pick yours.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container" style="max-width:1000px;">
+    <div class="tool-grid">
+
+      <a href="/audit/restaurants/" class="tool-card live">
+        <span class="status">Live now</span>
+        <h3>Restaurant Website Audit</h3>
+        <p>Drop your restaurant URL and get a real mobile Lighthouse audit in about twenty seconds — performance, SEO, accessibility, Core Web Vitals, and ten restaurant-priority checks translated into plain English.</p>
+        <span class="cta">Run the restaurant audit
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </span>
+      </a>
+
+      <div class="tool-card soon" aria-disabled="true">
+        <span class="status">In development</span>
+        <h3>Wellness Studio Audit</h3>
+        <p>A future audit tool built for yoga studios, massage practices, and boutique fitness spaces. Focused on class scheduling UX, first-visit conversion, instructor bios, and the specific mobile flows wellness customers use most.</p>
+        <span class="cta">Coming soon</span>
+      </div>
+
+      <div class="tool-card soon" aria-disabled="true">
+        <span class="status">In development</span>
+        <h3>Boutique E-commerce Audit</h3>
+        <p>A future audit tool for independent online stores — product page speed, mobile checkout friction, image weight, Shopify vs custom diagnostics, and the small-catalog conversion patterns template analyzers miss.</p>
+        <span class="cta">Coming soon</span>
+      </div>
+
+      <div class="tool-card soon" aria-disabled="true">
+        <span class="status">In development</span>
+        <h3>Brand Launch Site Audit</h3>
+        <p>A future audit tool built for pre-launch brand sites — narrative flow, email capture effectiveness, typography hierarchy, above-the-fold story clarity, and the design-system consistency checks that make a launch site feel considered.</p>
+        <span class="cta">Coming soon</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="block bg-cream2 final">
+  <div class="container">
+    <div class="section-header reveal" style="text-align:center;">
+      <span class="eyebrow">Need one sooner?</span>
+      <h2>Want me to audit<br>your site personally?</h2>
+      <p class="final-sub">If your industry isn't live yet and you'd rather skip the tool, I'll run a manual audit during a free twenty-minute Zoom call. Same rigor, specific to your business, and you walk away with a punch list you can act on — no commitment required.</p>
+    </div>
+
+    <div class="hero-ctas reveal" style="justify-content:center; margin-top:32px;">
+      <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      </a>
+      <a class="btn btn-ghost" href="/">Back to home</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container foot">
+    <div>
+      <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53">
+      <div style="margin-top:6px">Structure Brings Clarity.</div>
+    </div>
+    <div style="text-align:right">
+      <div style="color:var(--cream); margin-bottom:4px">don@muntindigital.com</div>
+      <nav class="foot-legal" aria-label="Legal">
+        <a href="/terms.html">Terms of Service</a>
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="/accessibility.html">Accessibility</a>
+        <a href="/cookies.html">Cookie Policy</a>
+      </nav>
+      <div>© 2026 Muntin Digital™ · Maryland LLC · Based in Silver Spring, MD · Serving US small businesses</div>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/site.js" defer></script>
+</body>
+</html>
