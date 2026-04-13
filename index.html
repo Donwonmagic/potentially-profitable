@@ -3,14 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Muntin Digital — Your complete online presence, handled by one person</title>
-<meta name="description" content="Muntin Digital is a fully-remote digital studio for restaurants, local businesses, and growing brands. Brand identity, custom websites, social media management, and ongoing care — all through one relationship." />
+<title>Muntin Digital — Web Design, Branding & Social Media for Small Businesses</title>
+<meta name="description" content="Muntin Digital is a one-person studio building custom websites, brand identity, and social media for restaurants and local businesses. Launch in 2–6 weeks." />
 <meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/" />
 
 <!-- Open Graph -->
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Muntin Digital — Your complete online presence, handled by one person" />
-<meta property="og:description" content="Brand identity, custom websites, social media management, and ongoing care for small businesses. One person, end-to-end." />
+<meta property="og:title" content="Muntin Digital — A one-person studio for small business web & social" />
+<meta property="og:description" content="Custom websites, brand identity, and social media management — designed together, handled by the same person, end to end." />
 <meta property="og:url" content="https://muntin.digital/" />
 <meta property="og:site_name" content="Muntin Digital" />
 <meta property="og:image" content="https://muntin.digital/brand/og-image.svg" />
@@ -20,8 +21,8 @@
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Muntin Digital — Your complete online presence, handled by one person" />
-<meta name="twitter:description" content="Brand identity, custom websites, social media, and ongoing care for small businesses. One person, end-to-end." />
+<meta name="twitter:title" content="Muntin Digital — Web, branding & social, handled by one person" />
+<meta name="twitter:description" content="A one-person digital studio for restaurants, local businesses, and growing brands." />
 <meta name="twitter:image" content="https://muntin.digital/brand/og-image.svg" />
 <meta name="twitter:image:alt" content="Muntin Digital — Structure Brings Clarity." />
 
@@ -29,19 +30,182 @@
 <link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
 <link rel="apple-touch-icon" href="/brand/mark/mark-square-ink.svg" />
 
-<!-- JSON-LD: ProfessionalService -->
+<!-- JSON-LD: entity graph -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  "name": "Muntin Digital",
-  "description": "A fully-remote digital studio for restaurants, local businesses, and growing brands. Brand identity, custom websites, social media management, and ongoing care — all through one relationship.",
-  "url": "https://muntin.digital/",
-  "email": "don@muntindigital.com",
-  "slogan": "Structure Brings Clarity.",
-  "priceRange": "$$",
-  "areaServed": "United States",
-  "serviceType": ["Web Design", "Web Development", "Website Maintenance", "Social Media Management", "Brand Identity Design", "Graphic Design"]
+  "@graph": [
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://muntin.digital/#business",
+      "name": "Muntin Digital",
+      "alternateName": ["MuntinDigital", "Muntin.digital", "Muntin"],
+      "description": "A one-person digital studio building custom websites, brand identity, and social media for restaurants, local businesses, and growing brands.",
+      "url": "https://muntin.digital/",
+      "email": "don@muntindigital.com",
+      "slogan": "Structure Brings Clarity.",
+      "priceRange": "$$",
+      "areaServed": {
+        "@type": "Country",
+        "name": "United States"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "US"
+      },
+      "logo": "https://muntin.digital/brand/mark/mark-square-ink.svg",
+      "image": "https://muntin.digital/brand/og-image.svg",
+      "founder": {
+        "@type": "Person",
+        "name": "Don Goldstein",
+        "jobTitle": "Founder & Lead Designer",
+        "worksFor": { "@id": "https://muntin.digital/#business" }
+      },
+      "serviceType": [
+        "Web Design",
+        "Web Development",
+        "Website Maintenance",
+        "Social Media Management",
+        "Brand Identity Design",
+        "Graphic Design"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Muntin Digital Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "name": "Starter Website",
+            "priceSpecification": {
+              "@type": "PriceSpecification",
+              "priceCurrency": "USD",
+              "minPrice": 2500,
+              "maxPrice": 4000
+            }
+          },
+          {
+            "@type": "Offer",
+            "name": "Signature Website",
+            "priceSpecification": {
+              "@type": "PriceSpecification",
+              "priceCurrency": "USD",
+              "minPrice": 5000,
+              "maxPrice": 9000
+            }
+          },
+          {
+            "@type": "Offer",
+            "name": "Commerce Website",
+            "priceSpecification": {
+              "@type": "PriceSpecification",
+              "priceCurrency": "USD",
+              "minPrice": 8000,
+              "maxPrice": 15000
+            }
+          },
+          {
+            "@type": "Offer",
+            "name": "Brand Identity",
+            "priceSpecification": {
+              "@type": "PriceSpecification",
+              "priceCurrency": "USD",
+              "minPrice": 1500,
+              "maxPrice": 3000
+            }
+          }
+        ]
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://muntin.digital/#website",
+      "url": "https://muntin.digital/",
+      "name": "Muntin Digital",
+      "description": "Web design, branding, and social media for small businesses — handled by one person.",
+      "publisher": { "@id": "https://muntin.digital/#business" },
+      "inLanguage": "en-US"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://muntin.digital/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Why not just use Wix or Squarespace?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can, and for some businesses it's enough. But when a template caps how fast your pages load, how customers find you, or how your brand feels, you're stuck. Muntin builds a real custom site without that ceiling."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Isn't a real developer expensive?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Not when one person handles design, build, and social. Starter sites launch at $2,500 — roughly what a monthly agency retainer costs, for a site you own forever."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens after launch?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Every client is offered a Care Plan: hosting, backups, monitoring, security patches, and content edits, handled by the same person who built the site."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I own my site?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — every line of code, every asset, every domain. No lock-in, no multi-year contract."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How long does a build take?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Starter sites launch in 2–3 weeks, Signature in 4–6, Commerce in 6–10. Only two active builds run at a time."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you handle something more complex later?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The stack scales from marketing sites to e-commerce and custom web apps, so you don't outgrow your web partner six months in."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why bundle social media with my web developer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Because your website and your Instagram should sound like the same brand. One person building both keeps voice, visuals, and goals aligned — and coordinated campaigns convert better than siloed ones."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "I already have a logo. Do I need Brand Identity?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "If it works everywhere, no. But if your logo doesn't translate to your website, social avatars, and print, the Brand Identity package gives you a full system, not just a file."
+          }
+        }
+      ]
+    }
+  ]
 }
 </script>
 
@@ -1364,12 +1528,12 @@
 <section class="hero">
   <div class="container hero-grid">
     <div>
-      <span class="eyebrow">A digital studio of one</span>
+      <span class="eyebrow">Muntin Digital · A studio of one</span>
       <h1>
-        Your complete online presence, <span class="serif-italic">handled</span> by one person.
+        Web design, branding, and social media — <span class="serif-italic">handled</span> by one person.
       </h1>
       <p class="hero-sub">
-        Brand identity, custom websites, social media, and ongoing care — all through a single relationship. You work with me directly, not a dashboard, not a project manager.
+        One partner for your brand, website, and social. You work with me directly — no dashboards, no project managers, no handoffs.
       </p>
       <div class="hero-ctas">
         <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
@@ -1426,7 +1590,7 @@
     <div class="section-header reveal">
       <span class="eyebrow">The gap Muntin fills</span>
       <h2>Most small businesses are juggling<br>too many disconnected vendors.</h2>
-      <p>A logo from Fiverr. A template website. A nephew doing Instagram. Nothing matches, nothing connects, and nobody's looking at the big picture. Muntin is the single partner who owns it all.</p>
+      <p>Restaurants, wellness studios, local service businesses, boutique e-commerce — most run on a patchwork of freelancers with nothing tying it together. A logo from Fiverr, a template site, a nephew doing Instagram. Muntin is the single partner who owns the whole picture.</p>
     </div>
 
     <div class="compare">
@@ -1469,7 +1633,7 @@
   <div class="container">
     <div class="section-header reveal">
       <span class="eyebrow">Web Builds</span>
-      <h2>Custom websites,<br>transparent pricing.</h2>
+      <h2>Custom website design,<br>with pricing you can see.</h2>
       <p>Pick the build that fits today. Every project ends with a launch — and the option to stay on a Care Plan so it keeps getting better, not worse.</p>
     </div>
 
@@ -1604,7 +1768,7 @@
   <div class="container">
     <div class="section-header reveal">
       <span class="eyebrow" style="color:var(--rust)">Social Media</span>
-      <h2>Keep your audience engaged,<br>consistently.</h2>
+      <h2>Social media management<br>that matches your website.</h2>
       <p>Your social media should tell the same story as your website. Because one person creates both, it always will.</p>
     </div>
 
@@ -1656,7 +1820,7 @@
   <div class="container">
     <div class="section-header reveal">
       <span class="eyebrow" style="color:#7A5C3E">Brand &amp; Design</span>
-      <h2>Look professional<br>from day one.</h2>
+      <h2>Brand identity design<br>for small businesses.</h2>
       <p>A cohesive brand identity that carries across every touchpoint — logo, website, social, print. Designed together by the same person who builds everything else.</p>
     </div>
 
@@ -1717,7 +1881,7 @@
       <div class="portrait" aria-hidden="true">D</div>
     </div>
     <div class="about-copy reveal">
-      <span class="eyebrow">About</span>
+      <span class="eyebrow">About Muntin Digital</span>
       <h2 style="margin-top:16px">A muntin is the slender strip that holds a window together.</h2>
       <p>Small, quiet, and the reason the whole thing stands up.</p>
       <p>
@@ -1766,35 +1930,35 @@
     <div class="faq-grid">
       <div class="faq-item reveal">
         <h3>Why not just use Wix or Squarespace?</h3>
-        <p>You can — and for some businesses, it's fine. But when your template starts limiting how customers find you, how fast pages load, or how your brand feels, you're stuck. Muntin gives you a real, custom-coded site without the DIY ceiling.</p>
+        <p>You can, and for some businesses it's enough. But when a template caps how fast your pages load, how customers find you, or how your brand feels, you're stuck. Muntin builds a real custom site without that ceiling.</p>
       </div>
       <div class="faq-item reveal">
         <h3>Isn't a real developer expensive?</h3>
-        <p>Agencies are. A single developer-manager isn't. Muntin builds on modern tools that cut the cost of custom work without cutting quality — starting at $2.5k for a launch-ready site.</p>
+        <p>Not when one person handles design, build, and social. Starter sites launch at $2,500 — roughly what a monthly agency retainer costs, for a site you own forever.</p>
       </div>
       <div class="faq-item reveal">
         <h3>What happens after launch?</h3>
-        <p>Every client is offered a Care Plan. For a flat monthly fee you get hosting, backups, monitoring, security updates, content edits, and priority response — all from the same person who built your site.</p>
+        <p>Every client is offered a Care Plan: hosting, backups, monitoring, security patches, and content edits, handled by the same person who built the site.</p>
       </div>
       <div class="faq-item reveal">
         <h3>Do I own my site?</h3>
-        <p>Yes, completely. Your code, your domain, your content. No proprietary lock-in, no multi-year contracts. If we ever part ways, you keep everything.</p>
+        <p>Yes — every line of code, every asset, every domain. No lock-in, no multi-year contract.</p>
       </div>
       <div class="faq-item reveal">
         <h3>How long does a build take?</h3>
-        <p>Starter builds launch in 2–3 weeks. Signature builds, 4–6 weeks. Commerce builds, 6–10. I only take on as many projects as I can fully commit to — usually two active builds at a time.</p>
+        <p>Starter sites launch in 2–3 weeks, Signature in 4–6, Commerce in 6–10. Only two active builds run at a time.</p>
       </div>
       <div class="faq-item reveal">
         <h3>Can you handle something more complex later?</h3>
-        <p>Yes. Muntin starts with marketing sites and restaurant builds, but the stack scales up to e-commerce, integrations, and more complex applications as you grow. You don't outgrow your web partner six months in.</p>
+        <p>Yes. The stack scales from marketing sites to e-commerce and custom web apps, so you don't outgrow your web partner six months in.</p>
       </div>
       <div class="faq-item reveal">
         <h3>Why bundle social media with my web developer?</h3>
-        <p>Because your website and social media should tell the same story. When one person knows your brand, your voice, and your goals, everything stays consistent instead of fragmented across vendors. Plus, coordinated web + social campaigns convert better than either channel alone.</p>
+        <p>Because your website and your Instagram should sound like the same brand. One person building both keeps voice, visuals, and goals aligned — and coordinated campaigns convert better than siloed ones.</p>
       </div>
       <div class="faq-item reveal">
         <h3>I already have a logo. Do I need Brand Identity?</h3>
-        <p>If you love it, we'll work with it. But if it doesn't translate well to your website, social profiles, and business cards, you're fighting your own brand at every touchpoint. A Brand Identity package gives you a system that works everywhere — not just a logo file.</p>
+        <p>If it works everywhere, no. But if your logo doesn't translate to your website, social avatars, and print, the Brand Identity package gives you a full system, not just a file.</p>
       </div>
     </div>
   </div>
