@@ -1922,7 +1922,7 @@
       pass: 'Maps & directions are embedded',
       passNote: '{detected} detected on your site — first-time visitors can tap once to get turn-by-turn directions to your door.',
       fail: 'No map or directions embed detected',
-      failNote: 'We did not see an embedded map service on your page. A plain-text address still gets most phone visitors directions when tapped, but a real map embed (Google Maps, Apple Maps, or Mapbox) makes the path from "I might check this place out" to "I am driving there" exactly one tap shorter. If you use a smaller map service we do not scan for yet, email don@muntindigital.com and it gets added to the list.'
+      failNote: 'We did not see an embedded map service on your page. A plain-text address still gets most phone visitors directions when tapped, but a real map embed (Google Maps, Apple Maps, or Mapbox) makes the path from "I might check this place out" to "I am driving there" exactly one tap shorter. If you use a smaller map service we do not scan for yet, email don@muntin.digital and it gets added to the list.'
     },
     {
       type: 'platform',
@@ -1934,7 +1934,7 @@
       pass: 'Online ordering or reservations detected',
       passNote: '{detected} is integrated on your site — direct online conversions keep commission-hungry marketplaces out of your margins.',
       fail: "Couldn't detect a known ordering or reservation platform",
-      failNote: 'We scan for 30+ of the major ordering, reservation, and POS platforms — including BentoBox, Popmenu, Toast, Square, ChowNow, OpenTable, Resy, Tock, Hostme, ResDiary, and international services like Deliveroo and Flipdish. If you use a smaller regional platform we have not learned yet, take bookings by phone, or are takeout-only with a different setup, this check may not apply to you. Email don@muntindigital.com with what you use and we will add it to the scanner.'
+      failNote: 'We scan for 30+ of the major ordering, reservation, and POS platforms — including BentoBox, Popmenu, Toast, Square, ChowNow, OpenTable, Resy, Tock, Hostme, ResDiary, and international services like Deliveroo and Flipdish. If you use a smaller regional platform we have not learned yet, take bookings by phone, or are takeout-only with a different setup, this check may not apply to you. Email don@muntin.digital with what you use and we will add it to the scanner.'
     }
   ];
 
@@ -2292,7 +2292,7 @@
           console.error('[audit] render failed', e);
           showError(
             "We got a reply, but couldn't read it.",
-            "Google Lighthouse returned a result we couldn't parse. Try running the audit again, or email don@muntindigital.com and I'll run it manually."
+            "Google Lighthouse returned a result we couldn't parse. Try running the audit again, or email don@muntin.digital and I'll run it manually."
           );
         }
       })
@@ -2308,7 +2308,7 @@
         } else if (/quota|rate|exceed/i.test(msg) || err.status === 429) {
           showError(
             "We're a little rate-limited right now.",
-            "Google's free tier is temporarily throttled. Try again in a minute, or email don@muntindigital.com for a manual audit."
+            "Google's free tier is temporarily throttled. Try again in a minute, or email don@muntin.digital for a manual audit."
           );
         } else if (err.status === 400) {
           showError(
@@ -2318,13 +2318,13 @@
         } else if (/referer.*blocked|referrer.*blocked|api[- ]key.*referer|forbidden.*referer/i.test(msg) || err.status === 403) {
           showError(
             "We hit a configuration snag.",
-            "This is a temporary issue on our end, not with your site. Try again in a few minutes, or email don@muntindigital.com and I'll run the audit manually."
+            "This is a temporary issue on our end, not with your site. Try again in a few minutes, or email don@muntin.digital and I'll run the audit manually."
           );
           if (window.plausible) window.plausible('Audit Error: Referrer Blocked');
         } else {
           showError(
             "Something went sideways.",
-            "Technical details: " + (msg || 'unknown error') + ". Try again, or email don@muntindigital.com."
+            "Technical details: " + (msg || 'unknown error') + ". Try again, or email don@muntin.digital."
           );
         }
       })
@@ -2520,7 +2520,7 @@
             emailError.hidden = false;
             emailError.textContent = "We couldn't send the report just now. " +
               (err && err.message ? "(" + err.message + ") " : "") +
-              "Email don@muntindigital.com directly and I'll send it over manually.";
+              "Email don@muntin.digital directly and I'll send it over manually.";
           }
           if (window.plausible) window.plausible('Audit Report Email Failed');
         });
@@ -2555,7 +2555,7 @@
       <div style="margin-top:6px">Structure Brings Clarity.</div>
     </div>
     <div style="text-align:right">
-      <div style="color:var(--cream); margin-bottom:4px">don@muntindigital.com</div>
+      <div style="color:var(--cream); margin-bottom:4px">don@muntin.digital</div>
       <nav class="foot-legal" aria-label="Legal">
         <a href="/terms.html">Terms of Service</a>
         <a href="/privacy.html">Privacy Policy</a>
