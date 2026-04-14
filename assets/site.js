@@ -229,17 +229,35 @@
     });
   }
 
-  // Subtle tilt on the hero window (desktop only, respects reduced motion)
+  // Subtle tilt on the hero window (desktop only, respects reduced motion).
+  // Caches getBoundingClientRect() between invalidating events instead of
+  // reading it on every mousemove — the previous implementation caused a
+  // read-after-write layout thrash flagged by Lighthouse as "Forced reflow".
+  // rAF batches the transform write so we never force sync layout inside
+  // the mousemove handler.
   const win = document.querySelector('.window');
   const canHover = window.matchMedia('(hover: hover)').matches;
   const reduced  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (win && canHover && !reduced) {
-    const rect = () => win.getBoundingClientRect();
+    let cachedRect = null;
+    let rafPending = false;
+    const refreshRect = () => { cachedRect = win.getBoundingClientRect(); };
+    win.addEventListener('mouseenter', refreshRect);
+    window.addEventListener('resize', refreshRect, { passive: true });
+    window.addEventListener('scroll', refreshRect, { passive: true });
     win.addEventListener('mousemove', (e) => {
-      const r = rect();
-      const x = (e.clientX - r.left) / r.width - 0.5;
-      const y = (e.clientY - r.top) / r.height - 0.5;
-      win.style.transform = `perspective(1200px) rotateX(${-y * 3}deg) rotateY(${x * 3}deg) translateZ(0)`;
+      if (!cachedRect || rafPending) return;
+      rafPending = true;
+      const cx = e.clientX;
+      const cy = e.clientY;
+      requestAnimationFrame(() => {
+        rafPending = false;
+        const r = cachedRect;
+        if (!r) return;
+        const x = (cx - r.left) / r.width - 0.5;
+        const y = (cy - r.top) / r.height - 0.5;
+        win.style.transform = `perspective(1200px) rotateX(${-y * 3}deg) rotateY(${x * 3}deg) translateZ(0)`;
+      });
     });
     win.addEventListener('mouseleave', () => {
       win.style.transform = 'perspective(1200px) rotateX(0) rotateY(0)';
