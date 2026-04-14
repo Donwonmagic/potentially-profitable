@@ -228,6 +228,150 @@
     color: var(--ink);
   }
   .further-reading p { font-size: 14px; color: var(--stone); margin: 0; }
+
+  /* ============ INLINE GRAPHICS FOR POST #2 ============ */
+  .article-figure {
+    margin: 56px -40px;
+    padding: 40px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+  }
+  .article-figure figcaption {
+    font-size: 11px;
+    color: var(--stone);
+    font-family: var(--font-body);
+    margin-top: 20px;
+    text-align: center;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  @media (max-width: 720px) {
+    .article-figure { margin: 40px -16px; padding: 24px 20px; border-radius: 14px; }
+  }
+
+  /* Closed vs open menu-system comparison (Break #1) */
+  .closed-vs-open {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    font-family: var(--font-body);
+  }
+  .cvo-side {
+    padding: 28px 24px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+  }
+  .cvo-side.wix { background: var(--cream-2); }
+  .cvo-side.open { background: var(--white); border-color: var(--teal); }
+  .cvo-side .cvo-subtitle {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin: 0 0 6px;
+  }
+  .cvo-side h4.cvo-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0 0 18px;
+    letter-spacing: -0.01em;
+  }
+  .cvo-side ul {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-size: 14.5px !important;
+    line-height: 1.5 !important;
+  }
+  .cvo-side li {
+    display: grid !important;
+    grid-template-columns: 18px 1fr;
+    gap: 10px;
+    padding: 10px 0;
+    border-top: 1px solid var(--line);
+    margin: 0 !important;
+    color: var(--ink-soft);
+  }
+  .cvo-side li:first-child { border-top: 0; padding-top: 4px; }
+  .cvo-side li::marker { content: ''; }
+  .cvo-side .mark { font-weight: 700; font-family: var(--font-body); }
+  .cvo-side.wix .mark { color: var(--rust); }
+  .cvo-side.open .mark { color: #1f9d55; }
+  @media (max-width: 600px) {
+    .closed-vs-open { grid-template-columns: 1fr; }
+  }
+
+  /* Lighthouse score comparison bar chart (Break #2) */
+  .lh-chart {
+    display: grid;
+    gap: 20px;
+    font-family: var(--font-body);
+  }
+  .lh-row {
+    display: grid;
+    grid-template-columns: 200px 1fr 60px;
+    gap: 18px;
+    align-items: center;
+  }
+  .lh-row .lh-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .lh-row .lh-label small {
+    display: block;
+    font-weight: 400;
+    color: var(--stone);
+    font-size: 11px;
+    margin-top: 2px;
+  }
+  .lh-bar-wrap {
+    height: 38px;
+    background: var(--cream-2);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .lh-bar {
+    height: 100%;
+    border-radius: 6px;
+  }
+  .lh-bar.grade-bad  { background: linear-gradient(90deg, var(--rust), #d86a1e); }
+  .lh-bar.grade-good { background: linear-gradient(90deg, #1f9d55, #2ebf6f); }
+  .lh-row .lh-score {
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--ink);
+    text-align: right;
+    letter-spacing: -0.02em;
+  }
+  .lh-markers {
+    display: grid;
+    grid-template-columns: 200px 1fr 60px;
+    gap: 18px;
+    margin-top: -4px;
+  }
+  .lh-markers .band {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--stone);
+    padding: 0 4px;
+  }
+  @media (max-width: 600px) {
+    .lh-row, .lh-markers { grid-template-columns: 1fr; gap: 8px; }
+    .lh-row .lh-score { text-align: left; }
+    .lh-markers { display: none; }
+  }
 </style>
 </head>
 <body>
@@ -314,9 +458,63 @@
       <p>What it means in practice: Google can't cleanly crawl individual dish descriptions, so you don't rank for "chicken parm near me" the way you could. Diners can't tap a dish to share it with a friend. When you update the menu on Wix, you still have to update it again on Google Business Profile, on DoorDash, on Yelp, and anywhere else your menu lives — because nothing auto-syncs. The "easy updates" pitch quietly becomes "four separate places to update every time you change a price."</p>
       <p>A custom site with a real menu CMS updates once and pushes everywhere that's wired up. A Wix menu updates in one place and leaves the other four stale.</p>
 
+      <figure class="article-figure">
+        <div class="closed-vs-open" role="img" aria-label="Comparison of how menu data flows in a closed platform versus a real HTML menu">
+          <div class="cvo-side wix">
+            <div class="cvo-subtitle">Wix menu widget</div>
+            <h4 class="cvo-title">Closed system</h4>
+            <ul>
+              <li><span class="mark">✕</span><span>Not crawlable by Google as Restaurant schema</span></li>
+              <li><span class="mark">✕</span><span>Diners can't tap a dish to share the link</span></li>
+              <li><span class="mark">✕</span><span>Won't sync to Google Business or delivery apps</span></li>
+              <li><span class="mark">✕</span><span>Requires the Wix editor for every edit</span></li>
+              <li><span class="mark">✕</span><span>Lives inside Wix — not portable</span></li>
+            </ul>
+          </div>
+          <div class="cvo-side open">
+            <div class="cvo-subtitle">Custom HTML menu</div>
+            <h4 class="cvo-title">Open system</h4>
+            <ul>
+              <li><span class="mark">✓</span><span>Crawlable as Google Restaurant schema</span></li>
+              <li><span class="mark">✓</span><span>Each dish has a shareable anchor link</span></li>
+              <li><span class="mark">✓</span><span>Same source of truth feeds other channels</span></li>
+              <li><span class="mark">✓</span><span>Edit from a CMS, spreadsheet, or text editor</span></li>
+              <li><span class="mark">✓</span><span>You own the data — portable across hosts</span></li>
+            </ul>
+          </div>
+        </div>
+        <figcaption>How menu data flows — closed platform vs. real HTML</figcaption>
+      </figure>
+
       <h2>Break #2 — Mobile load speed is always slower than it should be</h2>
       <p>This is the one I can prove with a URL: run any Wix restaurant site through <a href="/audit/restaurants/">the free Restaurant Website Audit</a> and look at the Performance score. You'll almost always see something in the 40s or 50s out of 100. That's not the restaurant's fault — it's the platform.</p>
       <p>Wix templates ship a lot of JavaScript by default — enough that, in my audit experience, Lighthouse performance scores on mobile Wix restaurant sites consistently land below 60. On a 4G connection outside your restaurant, that often translates into a first-contentful-paint that runs four seconds or longer. Google's <a href="https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/" target="_blank" rel="noopener">2017 mobile page speed research</a> found that 53% of mobile visitors bounce from pages that take longer than three seconds to load — which means a slow Wix site is quietly losing a meaningful portion of its hungry mobile traffic before anyone ever sees the menu.</p>
+
+      <figure class="article-figure">
+        <div class="lh-chart" role="img" aria-label="Illustrative mobile Lighthouse performance scores: a typical Wix restaurant template scores about 45 out of 100, while a well-built custom site scores about 95">
+          <div class="lh-row">
+            <div class="lh-label">Typical Wix template<small>mobile Lighthouse score</small></div>
+            <div class="lh-bar-wrap"><div class="lh-bar grade-bad" style="width:45%;"></div></div>
+            <div class="lh-score">45</div>
+          </div>
+          <div class="lh-row">
+            <div class="lh-label">Well-built custom site<small>mobile Lighthouse score</small></div>
+            <div class="lh-bar-wrap"><div class="lh-bar grade-good" style="width:95%;"></div></div>
+            <div class="lh-score">95</div>
+          </div>
+          <div class="lh-markers">
+            <div></div>
+            <div class="band">
+              <span>0</span>
+              <span>Poor · 49</span>
+              <span>Needs work · 89</span>
+              <span>Good · 100</span>
+            </div>
+            <div></div>
+          </div>
+        </div>
+        <figcaption>Illustrative mobile Lighthouse scores · typical values observed in restaurant audits</figcaption>
+      </figure>
       <h2>Break #3 — Reservations integration is hostage to whatever Wix has deals with</h2>
       <p>Wix's restaurant templates lean heavily on OpenTable — it's the default integration in most of them, and OpenTable works fine if OpenTable is also your preference. But if your restaurant is on <strong>Resy, Tock, SevenRooms, or Square Reservations</strong>, in my audit experience you'll usually find that the "integration" is a generic iframe embed or a link-out. Nothing lives inside your page, nothing matches your brand, nothing tracks back into analytics cleanly, and when the third-party provider changes their embed URL two years from now you find out because your reservation button silently broke on a Friday night.</p>
       <p>A custom site lets you pick the reservation system that actually fits your workflow and wire it in cleanly — whichever platform that happens to be.</p>
