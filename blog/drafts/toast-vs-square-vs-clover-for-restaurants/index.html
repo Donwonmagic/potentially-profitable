@@ -507,7 +507,111 @@
 
       <p>In my audit experience: <strong>Clover is the right call when you need specific hardware Clover makes and the others don't</strong> — handheld tableside for a high-volume bar, an integrated scale for a butcher counter, a kiosk for a fast-casual line — or when the merchant services provider relationship itself is valuable (for example, when your local bank bundled the POS with a business loan or line of credit). For pure website-integration quality, it's my third pick of the three. But "third pick" here still means "legitimately usable" — just that Toast and Square are usually easier starting points if you have a free choice.</p>
 
-      <p><em>(Sprint 29d ships the full comparison table, the three-card recommendation grid, the closing CTA, and the sources list.)</em></p>
+      <h2>Side by side</h2>
+      <p>Here's the same question answered across ten features, in one glance. <strong>Green</strong> is a confident yes. <strong>Amber</strong> is a partial or "depends on your plan." <strong>Rust</strong> is a meaningful gap worth knowing about before you sign a contract.</p>
+
+      <figure style="margin:48px 0;">
+        <div class="pos-table-wrap">
+          <table class="pos-table">
+            <thead>
+              <tr>
+                <th class="feature-col">Feature</th>
+                <th>Toast</th>
+                <th>Square</th>
+                <th>Clover</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="feature-name">Native online ordering<span class="note">Built into the POS, not a tablet handoff</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark partial" aria-label="Partial">~</span></td>
+              </tr>
+              <tr>
+                <td class="feature-name">Automatic menu sync<span class="note">POS → website, including images and modifiers</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark partial" aria-label="Partial">~</span></td>
+              </tr>
+              <tr>
+                <td class="feature-name">Real-time 86 of out-of-stock<span class="note">POS change propagates to the site immediately</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark partial" aria-label="Partial">~</span></td>
+                <td><span class="mark partial" aria-label="Partial">~</span></td>
+              </tr>
+              <tr>
+                <td class="feature-name">Direct kitchen ticket pipeline<span class="note">Web orders land on the KDS with no intermediate tablet</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark partial" aria-label="Partial">~</span></td>
+              </tr>
+              <tr>
+                <td class="feature-name">Public developer API<span class="note">Clean, documented, actively supported</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark partial" aria-label="Partial">~</span></td>
+              </tr>
+              <tr>
+                <td class="feature-name">Public, transparent pricing<span class="note">Rates published on the provider's own site</span></td>
+                <td><span class="mark no" aria-label="No">✕</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark no" aria-label="No">✕</span></td>
+              </tr>
+              <tr>
+                <td class="feature-name">Works with a fully custom website<span class="note">Clean pairing with a Muntin-style custom build</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark partial" aria-label="Partial">~</span></td>
+              </tr>
+              <tr>
+                <td class="feature-name">Hardware variety<span class="note">Station, handheld, kiosk, scale, compact</span></td>
+                <td><span class="mark partial" aria-label="Partial">~</span></td>
+                <td><span class="mark partial" aria-label="Partial">~</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+              </tr>
+              <tr>
+                <td class="feature-name">Contract flexibility<span class="note">Short or month-to-month, low switching cost</span></td>
+                <td><span class="mark no" aria-label="No">✕</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark partial" aria-label="Partial">~</span></td>
+              </tr>
+              <tr>
+                <td class="feature-name">Restaurant-specific from day one<span class="note">Built for restaurants, not retrofitted from retail</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark partial" aria-label="Partial">~</span></td>
+                <td><span class="mark partial" aria-label="Partial">~</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <figcaption style="font-size:11px; color:var(--stone); text-align:center; margin-top:16px; letter-spacing:0.15em; text-transform:uppercase; font-weight:600;">
+          Comparison based on each provider's public documentation · your specific plan and contract may vary
+        </figcaption>
+      </figure>
+
+      <h2>Which one I'd pick, by restaurant type</h2>
+      <p>Here's how I'd match each POS to a restaurant type, based on what I see in audits. These are opinions, not rules — your actual best fit depends on variables I can't see from a blog post, so treat this as a starting point for your own evaluation, not a verdict.</p>
+
+      <div class="recommend-grid">
+        <div class="recommend-card">
+          <span class="badge">Single-location independent</span>
+          <h4>Square for Restaurants</h4>
+          <p>Clean API, public flat-rate pricing, short contracts, and a lower switching cost if you outgrow the fit. You get the website-integration quality you need for a first custom rebuild without committing to a walled garden before you're sure you want to stay.</p>
+        </div>
+        <div class="recommend-card">
+          <span class="badge">Growing 2–5 location group</span>
+          <h4>Toast</h4>
+          <p>Native ordering pipeline, mature menu sync, real-time 86, and a developer API that scales alongside the group. The "it just works" factor is genuine when multi-location operations are on the line and you need every integration to survive a Saturday rush.</p>
+        </div>
+        <div class="recommend-card">
+          <span class="badge">Hardware-heavy or hybrid</span>
+          <h4>Clover</h4>
+          <p>Widest hardware selection, handheld tableside, kiosk variants, integrated scales, app marketplace depth. If a specific physical configuration or a merchant services relationship matters more than pure developer ergonomics, Clover earns its place.</p>
+        </div>
+      </div>
+
+      <p><em>(Sprint 29e adds the "what to ask before you sign" section, closing CTA, further reading, and sources.)</em></p>
     </article>
   </div>
 </section>
