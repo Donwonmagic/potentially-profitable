@@ -427,7 +427,48 @@
 <section class="block">
   <div class="container">
     <article class="article-body" id="post-body">
-      <p><em>Body content ships across sprints 29b, 29c, and 29d. This file is a draft — noindex'd and not linked from the blog index.</em></p>
+      <p>Every restaurant has a POS. And sooner or later — usually a few months after the hardware's already paid for — every restaurant owner realizes that their POS choice affects their website in ways nobody told them about during the sales pitch. Menu sync, online ordering, reservation handoff, loyalty programs, receipt links — all of it runs through the POS. If you picked the POS based on the cashier hardware and the transaction fee alone, you probably discovered the website-side limitations the hard way.</p>
+
+      <p>This post compares the three POS systems I see most often in independent restaurant audits: <strong>Toast</strong>, <strong>Square for Restaurants</strong>, and <strong>Clover</strong>. I'll walk through what each one does well for website integration, where each one quietly limits you, and — in the closing — which one I'd pick for which restaurant type. If you're about to sign a POS contract, this is the post I'd want you to read first.</p>
+
+      <p>A quick note upfront: all three are legitimate products run by real companies, and all three have customers who love them and customers who regret the choice. I'm not here to crown a winner or dunk on a loser — the question is which one fits <em>your</em> restaurant.</p>
+
+      <h2>What "POS integration with your website" actually means</h2>
+      <p>Before we get into the comparison, it's worth being specific about what we're comparing. "POS integration" is really three different things stacked on top of each other, and every POS handles each layer at a different quality level.</p>
+
+      <h3>1. Menu sync</h3>
+      <p>Your POS knows what's on the menu. Your website also needs to know. Can the POS push its menu data to your website so you only maintain it in one place? Does the push include dish descriptions, images, modifiers, allergens, and prices? What happens when you 86 a dish mid-service — does your site update in real time, or is someone eating two-hour-old availability data?</p>
+
+      <h3>2. Order-taking</h3>
+      <p>The website takes online orders and those orders have to land in your kitchen somehow. Does the order flow directly into the POS ticket queue, or does it land in a separate tablet the host has to check? Does it respect your real-time inventory? Can customers order items you've just run out of?</p>
+
+      <h3>3. Reservation and guest data flow</h3>
+      <p>When a guest books a table, does the reservation show up on your POS's floor map? Does the guest history — visit count, allergies, birthday, favorite table — flow between the reservation platform and the POS so a returning customer gets recognized and greeted by name?</p>
+
+      <p>Most POS marketing pages talk about "website integration" as if it's one switch you flip. In practice, the three layers above are built at different times, by different teams, and each has its own quality ceiling. The right POS for your restaurant depends on which of the three layers matters most for how you actually operate.</p>
+
+      <h2>Toast</h2>
+      <p>Toast is the biggest restaurant-specific POS in the US market and the one I see most often on independent full-service restaurants. According to <a href="https://pos.toasttab.com/" target="_blank" rel="noopener">Toast's own product documentation</a>, the platform is purpose-built for full-service, quick-service, and counter-service restaurants, and includes native online ordering, menu management, and a third-party developer API.</p>
+
+      <h3>What Toast does well for website integration</h3>
+      <ul>
+        <li><strong>Native online ordering</strong> with a direct pipeline from website checkout to kitchen ticket — no separate tablet handoff required.</li>
+        <li><strong>Automatic menu sync</strong> from Toast's menu editor to their website widgets, including images, modifiers, and allergen tags.</li>
+        <li><strong>Real-time 86ing</strong> — when you mark a dish out of stock on the POS, the change propagates to the online menu immediately.</li>
+        <li><strong>A mature developer API</strong> that lets a custom-built website (not Toast's own templates) tap into the same order, menu, and guest data Toast's native surfaces use. This is the part I care most about in my audits — it means you can have a custom site on a modern stack and still use Toast as the engine.</li>
+      </ul>
+
+      <h3>Where Toast's website story gets complicated</h3>
+      <ul>
+        <li>Toast's own hosted restaurant sites are functional but template-bound. In my audit experience, sites built on Toast's native website templates share a recognizable layout and typography system — they "look like a Toast restaurant site" even when the colors are different.</li>
+        <li>Transaction fees on delivery and pickup orders routed through Toast's integrated ordering can stack up compared to a custom checkout running on your own payment processor. The exact numbers depend on your Toast contract tier, so check <a href="https://pos.toasttab.com/pricing" target="_blank" rel="noopener">Toast's current pricing page</a> for your situation.</li>
+        <li>"Powered by Toast" branding in the checkout flow is difficult to fully remove without moving to a higher contract tier.</li>
+        <li>Contract commitments tend to run multi-year, which matters if you're not sure which POS will still fit your operation three years from now.</li>
+      </ul>
+
+      <p>In my audit experience: <strong>Toast is the strongest choice if you want "it all just works" from day one</strong> and you accept the tradeoffs of a walled garden. And if you have a custom-built website and want Toast to be the kitchen-side engine, their API is mature enough to support that — just expect to pay a developer to wire it up cleanly.</p>
+
+      <p><em>(Sprint 29c covers the Square and Clover sections with the same rhythm.)</em></p>
     </article>
   </div>
 </section>
