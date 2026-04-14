@@ -375,23 +375,35 @@
     margin: 0 auto;
     max-width: 560px;
   }
+  /* Each category is a native <details> element so it can collapse
+     and expand without JavaScript. The summary shows the score + a
+     chevron; the list of findings is the expanded body. */
   .opp-section {
     background: var(--white);
     border: 1px solid var(--line);
     border-left: 4px solid var(--line);
     border-radius: 12px;
-    padding: 18px 22px;
     margin-bottom: 14px;
+    overflow: hidden;
   }
   .opp-section.grade-good { border-left-color: #1f9d55; }
   .opp-section.grade-ok   { border-left-color: #d97706; }
   .opp-section.grade-bad  { border-left-color: var(--rust); }
-  .opp-section-header {
+  .opp-section > summary.opp-section-header {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     gap: 12px;
-    margin-bottom: 10px;
+    padding: 18px 22px;
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+    transition: background 140ms ease;
+  }
+  .opp-section > summary.opp-section-header::-webkit-details-marker { display: none; }
+  .opp-section > summary.opp-section-header:hover { background: rgba(31, 78, 91, 0.035); }
+  .opp-section[open] > summary.opp-section-header {
+    border-bottom: 1px solid var(--line);
   }
   .opp-section-header h4 {
     font-family: var(--font-display);
@@ -400,6 +412,36 @@
     color: var(--ink);
     margin: 0;
     letter-spacing: -0.005em;
+    display: inline;
+  }
+  .opp-section-title {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .opp-count {
+    font-family: var(--font-body);
+    font-size: 11.5px;
+    color: var(--stone-2);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .opp-section-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .opp-chevron {
+    font-size: 14px;
+    color: var(--stone-2);
+    transition: transform 180ms ease;
+    display: inline-block;
+    line-height: 1;
+  }
+  .opp-section[open] .opp-chevron {
+    transform: rotate(180deg);
   }
   .opp-score {
     font-family: var(--font-body);
@@ -412,7 +454,7 @@
   }
   .opp-list {
     list-style: none;
-    padding: 0;
+    padding: 8px 22px 18px;
     margin: 0;
   }
   .opp-item {
@@ -459,8 +501,10 @@
   .opp-item-desc a:hover { color: var(--teal-dark); }
   @media (max-width: 620px) {
     .opportunities-head h3 { font-size: 20px; }
-    .opp-section { padding: 16px 18px; }
+    .opp-section > summary.opp-section-header { padding: 14px 16px; }
+    .opp-list { padding: 8px 16px 16px; }
     .opp-section-header h4 { font-size: 17px; }
+    .opp-section-title { gap: 6px; }
     .opp-item-head { flex-direction: column; gap: 4px; }
   }
 
@@ -1298,16 +1342,27 @@
     return items;
   }
 
-  function renderOpportunitySection(catLabel, catScore, items) {
-    var section = document.createElement('section');
-    section.className = 'opp-section ' + gradeScore(catScore);
+  function renderOpportunitySection(catLabel, catScore, items, defaultOpen) {
+    // Each category is now a native <details> — collapsible, a11y-free,
+    // keyboard-accessible, and zero-JS. The caller picks which section
+    // defaults to open (usually the lowest-scoring one).
+    var details = document.createElement('details');
+    details.className = 'opp-section ' + gradeScore(catScore);
+    if (defaultOpen) details.open = true;
 
-    var header = document.createElement('div');
-    header.className = 'opp-section-header';
-    header.innerHTML =
-      '<h4>' + escapeHtml(catLabel) + '</h4>' +
-      '<span class="opp-score">' + catScore + ' / 100</span>';
-    section.appendChild(header);
+    var summary = document.createElement('summary');
+    summary.className = 'opp-section-header';
+    var plural = items.length === 1 ? 'finding' : 'findings';
+    summary.innerHTML =
+      '<span class="opp-section-title">' +
+        '<h4>' + escapeHtml(catLabel) + '</h4>' +
+        '<span class="opp-count">' + items.length + ' ' + plural + '</span>' +
+      '</span>' +
+      '<span class="opp-section-meta">' +
+        '<span class="opp-score">' + catScore + ' / 100</span>' +
+        '<span class="opp-chevron" aria-hidden="true">▾</span>' +
+      '</span>';
+    details.appendChild(summary);
 
     var list = document.createElement('ul');
     list.className = 'opp-list';
@@ -1336,8 +1391,8 @@
       list.appendChild(li);
     });
 
-    section.appendChild(list);
-    return section;
+    details.appendChild(list);
+    return details;
   }
 
   function renderOpportunities(cats, audits) {
@@ -1347,18 +1402,35 @@
     body.innerHTML = '';
     wrap.hidden = true;
 
-    var anyItems = false;
+    // First pass: collect which categories have failing findings.
+    var sections = [];
     OPP_CATEGORY_ORDER.forEach(function(cat) {
       var lhCat = cats[cat.key];
       if (!lhCat) return;
       var items = collectOpportunityItems(lhCat, audits);
       if (!items.length) return;
-      anyItems = true;
-      var catScore = Math.round((lhCat.score || 0) * 100);
-      body.appendChild(renderOpportunitySection(cat.label, catScore, items));
+      sections.push({
+        label: cat.label,
+        score: Math.round((lhCat.score || 0) * 100),
+        items: items
+      });
     });
 
-    wrap.hidden = !anyItems;
+    if (!sections.length) { wrap.hidden = true; return; }
+
+    // Default-open the lowest-scoring category so visitors see the
+    // worst offender immediately. Ties go to the first category in
+    // OPP_CATEGORY_ORDER (Performance wins ties).
+    var lowestIdx = 0;
+    for (var i = 1; i < sections.length; i++) {
+      if (sections[i].score < sections[lowestIdx].score) lowestIdx = i;
+    }
+
+    sections.forEach(function(s, i) {
+      body.appendChild(renderOpportunitySection(s.label, s.score, s.items, i === lowestIdx));
+    });
+
+    wrap.hidden = false;
   }
 
   function gradeVital(key, n) {
@@ -1434,90 +1506,183 @@
     return audits && audits[key] ? audits[key] : { displayValue: '—', numericValue: null };
   }
 
-  /* -------- Restaurant-priority checks -------- */
+  /* -------- Restaurant-priority checks --------
+     Two types of checks live in the same array:
 
-  // Each definition maps a Lighthouse audit ID to restaurant-owner language
-  // and a link back into the matching checklist category.
+       'audit'    — maps to a Lighthouse audit ID. The 4 Lighthouse
+                    audits below were chosen because they matter
+                    disproportionately to restaurant sites (whose
+                    traffic is overwhelmingly mobile-phone-based
+                    "where am I eating tonight" decisions).
+
+       'platform' — scans the PSI network-requests audit for hostnames
+                    belonging to ordering, reservation, or maps
+                    platforms. These are signals that ONLY show up
+                    on restaurant sites — a dentist doesn't load
+                    OpenTable; a law firm doesn't embed Toast. Using
+                    the platforms the site actually integrates with
+                    gives us genuinely restaurant-specific checks
+                    without needing to parse the HTML directly. */
+
+  // Lookup map: what hostnames indicate which platform, and what
+  // pretty display name to use when we match. One entry per product.
+  var PLATFORM_PATTERNS = {
+    ordering: {
+      label: 'Online ordering',
+      hosts: [
+        { pattern: 'toasttab',       name: 'Toast' },
+        { pattern: 'toastpos',       name: 'Toast' },
+        { pattern: 'toast.chow',     name: 'Toast' },
+        { pattern: 'square.site',    name: 'Square' },
+        { pattern: 'squareup',       name: 'Square' },
+        { pattern: 'squarecdn',      name: 'Square' },
+        { pattern: 'clover.com',     name: 'Clover' },
+        { pattern: 'clovercdn',      name: 'Clover' },
+        { pattern: 'chownow',        name: 'ChowNow' },
+        { pattern: 'cnstatic',       name: 'ChowNow' },
+        { pattern: 'menufy',         name: 'Menufy' },
+        { pattern: 'slicelife',      name: 'Slice' },
+        { pattern: 'olo.com',        name: 'Olo' },
+        { pattern: 'grubhub',        name: 'Grubhub' },
+        { pattern: 'doordash',       name: 'DoorDash' },
+        { pattern: 'ubereats',       name: 'Uber Eats' },
+        { pattern: 'postmates',      name: 'Postmates' }
+      ]
+    },
+    reservations: {
+      label: 'Online reservations',
+      hosts: [
+        { pattern: 'opentable',      name: 'OpenTable' },
+        { pattern: 'otrestaurant',   name: 'OpenTable' },
+        { pattern: 'resy.com',       name: 'Resy' },
+        { pattern: 'resy.network',   name: 'Resy' },
+        { pattern: 'exploretock',    name: 'Tock' },
+        { pattern: 'tock.app',       name: 'Tock' },
+        { pattern: 'sevenrooms',     name: 'SevenRooms' }
+      ]
+    },
+    maps: {
+      label: 'Maps / directions',
+      hosts: [
+        { pattern: 'maps.google',        name: 'Google Maps' },
+        { pattern: 'maps.googleapis',    name: 'Google Maps' },
+        { pattern: 'maps.gstatic',       name: 'Google Maps' },
+        { pattern: 'gstatic.com/maps',   name: 'Google Maps' },
+        { pattern: 'google.com/maps',    name: 'Google Maps' },
+        { pattern: 'mapbox.com',         name: 'Mapbox' },
+        { pattern: 'api.mapbox',         name: 'Mapbox' }
+      ]
+    }
+  };
+
+  function extractNetworkUrls(audits) {
+    var urls = [];
+    var na = audits && audits['network-requests'];
+    if (na && na.details && na.details.items && na.details.items.length) {
+      for (var i = 0; i < na.details.items.length; i++) {
+        var item = na.details.items[i];
+        if (item && item.url) urls.push(String(item.url).toLowerCase());
+      }
+    }
+    return urls;
+  }
+
+  // Scan networkUrls for any host pattern belonging to any of the
+  // platform keys listed. Returns the set of detected platform names,
+  // deduplicated. `keys` is an array so callers can accept "ordering OR
+  // reservations" in a single check (takeout-only restaurants don't
+  // need reservations; fine-dining doesn't need ordering).
+  function detectPlatforms(keys, networkUrls) {
+    var found = [];
+    var seen = {};
+    for (var k = 0; k < keys.length; k++) {
+      var group = PLATFORM_PATTERNS[keys[k]];
+      if (!group) continue;
+      for (var i = 0; i < group.hosts.length; i++) {
+        var h = group.hosts[i];
+        for (var j = 0; j < networkUrls.length; j++) {
+          if (networkUrls[j].indexOf(h.pattern) !== -1) {
+            if (!seen[h.name]) {
+              seen[h.name] = true;
+              found.push({ label: group.label, name: h.name });
+            }
+            break;
+          }
+        }
+      }
+    }
+    return { detected: found.length > 0, found: found };
+  }
+
+  // Turn a list of detections into a readable phrase:
+  //   []                        -> ''
+  //   [{name: 'Toast'}]         -> 'Toast'
+  //   [{Toast}, {OpenTable}]    -> 'Toast and OpenTable'
+  //   [{Toast}, {Resy}, {Olo}]  -> 'Toast, Resy, and Olo'
+  function formatPlatformList(found) {
+    if (!found || !found.length) return '';
+    if (found.length === 1) return found[0].name;
+    if (found.length === 2) return found[0].name + ' and ' + found[1].name;
+    var all = found.map(function(f){ return f.name; });
+    return all.slice(0, -1).join(', ') + ', and ' + all[all.length - 1];
+  }
+
   var PRIORITY_CHECKS = [
     {
+      type: 'audit',
       audit: 'viewport',
       anchor: '#mobile',
-      pass: 'Mobile viewport is set correctly',
-      passNote: 'Your pages render at device width — which is table stakes for any mobile-friendly experience.',
-      fail: 'Your site is missing a mobile viewport tag',
-      failNote: 'Without it, mobile browsers render at desktop width and break every mobile check that follows. It is a one-line fix in your <head>.'
+      pass: 'Mobile viewport is configured',
+      passNote: 'Your pages render at device width — table stakes for a site where most visitors are on a phone deciding where to eat tonight.',
+      fail: 'Mobile viewport tag is missing',
+      failNote: 'Without a viewport meta tag, mobile browsers render your site at desktop width and every phone visitor leaves in frustration. One-line fix in your <head>.'
     },
     {
-      audit: 'is-on-https',
-      anchor: '#trust',
-      pass: 'Served over HTTPS',
-      passNote: 'Your site is secure and Google treats it as trustworthy.',
-      fail: 'Your site is still on HTTP',
-      failNote: 'Modern browsers flag HTTP sites as "Not secure" in the address bar. Switch to a host that offers free HTTPS.'
-    },
-    {
-      audit: 'document-title',
-      anchor: '#findability',
-      pass: 'Your homepage has a title tag',
-      passNote: 'The title tag is what Google shows in the search result — make sure it names your cuisine and city.',
-      fail: 'Your homepage is missing a title tag',
-      failNote: 'Google will invent one for you, and it will be worse. Add a <title> that includes restaurant name + cuisine + city.'
-    },
-    {
-      audit: 'meta-description',
-      anchor: '#findability',
-      pass: 'Your homepage has a meta description',
-      passNote: 'This is the snippet Google shows under your link in search results — make it compelling.',
-      fail: 'Your homepage is missing a meta description',
-      failNote: 'Google will auto-generate a snippet from your page copy, usually poorly. Write one that sells in under 160 characters.'
-    },
-    {
-      audit: 'image-alt',
-      anchor: '#findability',
-      pass: 'All images have descriptive alt text',
-      passNote: 'Good alt text is accessibility + SEO in one. Screen readers understand your images and so does Google.',
-      fail: 'Some images are missing alt text',
-      failNote: 'Alt text helps screen readers and Google Image Search. Replace empty or "IMG_2041.jpg" attributes with real descriptions.'
-    },
-    {
-      audit: 'font-size',
-      anchor: '#mobile',
-      pass: 'Body text is legible on mobile',
-      passNote: 'Visitors can read your menu without pinch-zooming, which is the bar for a mobile restaurant site.',
-      fail: 'Body text is too small on mobile',
-      failNote: 'More than 40% of your text is under the readable threshold, forcing visitors to zoom. Set body font-size to at least 16px.'
-    },
-    {
+      type: 'audit',
       audit: 'tap-targets',
       anchor: '#mobile',
-      pass: 'Tap targets are thumb-friendly',
-      passNote: 'Your buttons and links are large enough to tap without missing on a phone.',
+      pass: 'Reserve / Order buttons are thumb-friendly',
+      passNote: 'Your action buttons are big enough to hit on the first try with a thumb holding a phone in one hand.',
       fail: 'Some tap targets are too small',
-      failNote: 'Buttons and links under 44×44px create fat-finger failures on mobile. Pad them out or increase the font size.'
+      failNote: 'Action buttons under 44×44px cause fat-finger misses. On a restaurant site, a missed "Reserve" tap is a lost booking walking out the door.'
     },
     {
+      type: 'audit',
       audit: 'color-contrast',
       anchor: '#trust',
-      pass: 'Text has sufficient contrast against its background',
-      passNote: 'Nobody has to squint to read your menu descriptions.',
-      fail: 'Some text has poor contrast',
-      failNote: 'Light gray on white or cream on beige is unreadable for anyone older than 40. Fix the contrast ratios (Lighthouse lists which).'
+      pass: 'Menu text has readable contrast',
+      passNote: 'A 55-year-old standing in bright sunlight can read your menu descriptions. That is the actual bar for a mobile restaurant menu.',
+      fail: 'Some menu text has poor contrast',
+      failNote: 'Light gray on cream or dark-on-dark is invisible to anyone over 40 or outside in the sun. Most of your weekday lunch crowd is one of those.'
     },
     {
-      audit: 'is-crawlable',
-      anchor: '#findability',
-      pass: 'Search engines can crawl your site',
-      passNote: 'Nothing is blocking Google from indexing your pages — a prerequisite for ranking at all.',
-      fail: 'Search engines are blocked',
-      failNote: 'A robots.txt entry or meta tag is telling Google not to index your site. This kills findability instantly — check your robots.txt and meta robots tags.'
-    },
-    {
-      audit: 'uses-responsive-images',
+      type: 'audit',
+      audit: 'font-size',
       anchor: '#mobile',
-      pass: 'Images are sized appropriately for mobile',
-      passNote: 'You are not shipping desktop-sized photos to phone screens.',
-      fail: 'Images are heavier than they need to be on mobile',
-      failNote: 'Serving full-resolution photos to mobile costs load time and data. Use responsive image techniques (srcset, modern formats).'
+      pass: 'Menu text is legible without zooming',
+      passNote: 'Your body text is above the mobile readability threshold — visitors do not have to pinch-zoom to read the menu.',
+      fail: 'Menu text is too small on mobile',
+      failNote: 'More than 40% of your text is below the legibility threshold. Visitors give up before finding their entree. Set body font-size to at least 16px.'
+    },
+    {
+      type: 'platform',
+      platforms: ['maps'],
+      anchor: '#trust',
+      pass: 'Maps & directions are embedded',
+      passNote: '{detected} detected on your site — first-time visitors can tap once to get turn-by-turn directions to your door.',
+      fail: 'No map or directions link detected',
+      failNote: 'First-time visitors almost always tap the address for directions. Embed a Google Maps iframe, or at minimum link your full address to maps.google.com so a tap opens the native map app.'
+    },
+    {
+      type: 'platform',
+      // Either counts: takeout-only spots only need ordering;
+      // fine-dining only needs reservations; many restaurants have both.
+      platforms: ['ordering', 'reservations'],
+      anchor: '#trust',
+      pass: 'Online ordering or reservations detected',
+      passNote: '{detected} is integrated on your site — direct online conversions keep commission-hungry marketplaces out of your margins.',
+      fail: 'No ordering or reservation platform detected',
+      failNote: 'In 2026, "can I just order or book this online" is table stakes. Toast, Square, ChowNow, and Clover all have free or low-tier ordering plans; OpenTable, Resy, and Tock all have small-restaurant tiers for reservations. Pick one that matches how you actually take bookings.'
     }
   ];
 
@@ -1530,38 +1695,65 @@
     return { cls: 'fail', ch: '✗' };
   }
 
+  function evaluatePriorityCheck(def, audits, networkUrls) {
+    // Returns { mark, title, note } or null if the check can't run.
+    if (def.type === 'audit') {
+      var audit = audits && audits[def.audit];
+      if (!audit) return null;
+      if (audit.scoreDisplayMode === 'notApplicable') return null;
+      var mark = scoreToMark(audit.score);
+      if (!mark) return null;
+      var isPass = mark.cls === 'pass';
+      return {
+        mark: mark,
+        title: isPass ? def.pass : def.fail,
+        note:  isPass ? def.passNote : def.failNote
+      };
+    }
+
+    if (def.type === 'platform') {
+      var detection = detectPlatforms(def.platforms, networkUrls);
+      // Detected -> pass. Missing -> warn (not fail): many restaurants
+      // legitimately don't use one platform or the other, so we give
+      // half credit and explain what they might consider adding.
+      var pMark = detection.detected
+        ? { cls: 'pass', ch: '✓' }
+        : { cls: 'warn', ch: '!' };
+      var pTitle = detection.detected ? def.pass : def.fail;
+      var pNote  = detection.detected ? def.passNote : def.failNote;
+      if (detection.detected) {
+        pNote = pNote.replace('{detected}', escapeHtml(formatPlatformList(detection.found)));
+      }
+      return { mark: pMark, title: pTitle, note: pNote };
+    }
+
+    return null;
+  }
+
   function renderPriorityChecks(audits) {
     var container = document.getElementById('priorityItems');
     if (!container) return { score: 0, passCount: 0, totalCount: 0 };
     container.innerHTML = '';
     var passCount = 0, totalCount = 0, creditSum = 0;
+    var networkUrls = extractNetworkUrls(audits);
 
     PRIORITY_CHECKS.forEach(function(def){
-      var audit = audits && audits[def.audit];
-      if (!audit) return; // audit not present in this run — skip
-
-      // scoreDisplayMode "notApplicable" or "informative" with null score → skip
-      if (audit.scoreDisplayMode === 'notApplicable') return;
-      var mark = scoreToMark(audit.score);
-      if (!mark) return;
+      var result = evaluatePriorityCheck(def, audits, networkUrls);
+      if (!result) return;
 
       totalCount++;
       // Weighted credit toward the Restaurant Readiness score:
-      // pass (Lighthouse ≥ 0.9) = 1.0, warn (0.5–0.89) = 0.5, fail (< 0.5) = 0
+      // pass = 1.0, warn = 0.5, fail = 0
       var credit = 0;
-      if (mark.cls === 'pass') { passCount++; credit = 1.0; }
-      else if (mark.cls === 'warn') { credit = 0.5; }
+      if (result.mark.cls === 'pass') { passCount++; credit = 1.0; }
+      else if (result.mark.cls === 'warn') { credit = 0.5; }
       creditSum += credit;
-
-      var isPass = mark.cls === 'pass';
-      var title = isPass ? def.pass : def.fail;
-      var note  = isPass ? def.passNote : def.failNote;
 
       var row = document.createElement('div');
       row.className = 'priority-item';
       row.innerHTML =
-        '<div class="mark ' + mark.cls + '" aria-hidden="true">' + mark.ch + '</div>' +
-        '<div class="body"><strong>' + title + '</strong><span>' + note + '</span></div>' +
+        '<div class="mark ' + result.mark.cls + '" aria-hidden="true">' + result.mark.ch + '</div>' +
+        '<div class="body"><strong>' + escapeHtml(result.title) + '</strong><span>' + result.note + '</span></div>' +
         '<a class="link" href="/resources/restaurant-website-checklist/' + def.anchor + '">Learn more →</a>';
       container.appendChild(row);
     });
