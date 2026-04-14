@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- DRAFT — scheduled for release on 2026-05-17. Held back by the noindex tag below. -->
+<meta name="robots" content="noindex,nofollow" />
+<title>Toast vs. Square vs. Clover: Which POS Integrates Best With a Restaurant Website? | Muntin Digital</title>
+<meta name="description" content="An honest comparison of how Toast, Square, and Clover — the three dominant restaurant POS systems — integrate with a real restaurant website. What each one does well, what each one quietly limits, and which one I'd pick for your restaurant type." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/blog/toast-vs-square-vs-clover-for-restaurants/" />
+
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Toast vs. Square vs. Clover: Which POS Integrates Best With a Restaurant Website?" />
+<meta property="og:description" content="Honest comparison of how the three dominant restaurant POS systems integrate with a real website — what each does well, what each quietly limits, which I'd pick." />
+<meta property="og:url" content="https://muntin.digital/blog/toast-vs-square-vs-clover-for-restaurants/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/blog-pos-comparison.svg" />
+<meta property="og:image:type" content="image/svg+xml" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-05-17" />
+<meta property="article:author" content="Don Goldstein" />
+<meta property="article:section" content="Comparison" />
+<meta property="article:tag" content="Restaurant POS" />
+<meta property="article:tag" content="Toast" />
+<meta property="article:tag" content="Square" />
+<meta property="article:tag" content="Clover" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Toast vs. Square vs. Clover: Which POS Integrates Best With a Restaurant Website?" />
+<meta name="twitter:description" content="Honest comparison of the three dominant restaurant POS systems and how each one integrates with a real restaurant website." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/blog-pos-comparison.svg" />
+
+<link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://muntin.digital/blog/toast-vs-square-vs-clover-for-restaurants/#article",
+      "headline": "Toast vs. Square vs. Clover: Which POS Integrates Best With a Restaurant Website?",
+      "description": "An honest comparison of how Toast, Square, and Clover integrate with independent restaurant websites — strengths, quiet limitations, and which one fits which restaurant type.",
+      "image": "https://muntin.digital/brand/og/blog-pos-comparison.svg",
+      "url": "https://muntin.digital/blog/toast-vs-square-vs-clover-for-restaurants/",
+      "datePublished": "2026-05-17",
+      "dateModified": "2026-05-17",
+      "inLanguage": "en-US",
+      "wordCount": 1900,
+      "author": {
+        "@type": "Person",
+        "name": "Don Goldstein",
+        "jobTitle": "Founder, Muntin Digital",
+        "worksFor": { "@id": "https://muntin.digital/#business" }
+      },
+      "publisher": { "@id": "https://muntin.digital/#business" },
+      "isPartOf": { "@id": "https://muntin.digital/blog/#blog" },
+      "mainEntityOfPage": "https://muntin.digital/blog/toast-vs-square-vs-clover-for-restaurants/",
+      "about": [
+        { "@type": "Thing", "name": "Restaurant POS systems" },
+        { "@type": "Thing", "name": "Toast POS" },
+        { "@type": "Thing", "name": "Square for Restaurants" },
+        { "@type": "Thing", "name": "Clover POS" },
+        { "@type": "Thing", "name": "Restaurant website integration" }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
+        { "@type": "ListItem", "position": 2, "name": "Writing", "item": "https://muntin.digital/blog/" },
+        { "@type": "ListItem", "position": 3, "name": "Toast vs. Square vs. Clover: Which POS Integrates Best With a Restaurant Website?", "item": "https://muntin.digital/blog/toast-vs-square-vs-clover-for-restaurants/" }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&amp;family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+
+<link rel="stylesheet" href="/assets/site.css">
+
+<style>
+  /* ============ BLOG POST LAYOUT STYLES ============ */
+  .post-hero { max-width: 760px; margin: 0 auto; text-align: center; padding-bottom: 24px; }
+  .post-hero .eyebrow { margin-bottom: 24px; display: inline-block; }
+  .post-hero h1 { margin-bottom: 28px; }
+  .post-dek {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(22px, 2.6vw, 28px);
+    line-height: 1.35;
+    color: var(--stone);
+    max-width: 640px;
+    margin: 0 auto 32px;
+    font-weight: 400;
+  }
+  .post-meta {
+    font-size: 13px;
+    color: var(--stone);
+    letter-spacing: 0.05em;
+    margin: 32px auto 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    max-width: 440px;
+  }
+  .post-meta strong { color: var(--ink); font-weight: 600; }
+  .post-meta time { color: var(--teal); font-weight: 600; }
+
+  .article-body { max-width: 720px; margin: 0 auto; }
+  .article-body h2 {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3vw, 36px);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 72px 0 20px;
+  }
+  .article-body h2:first-child { margin-top: 0; }
+  .article-body h3 {
+    font-family: var(--font-display);
+    font-size: clamp(20px, 2.2vw, 24px);
+    font-weight: 500;
+    color: var(--ink);
+    margin: 44px 0 12px;
+    letter-spacing: -0.005em;
+  }
+  .article-body p {
+    font-size: 18px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    margin: 0 0 24px;
+  }
+  .article-body p strong { color: var(--ink); }
+  .article-body p em { color: var(--teal); font-style: italic; }
+  .article-body ul, .article-body ol {
+    font-size: 18px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    margin: 0 0 28px;
+    padding-left: 28px;
+  }
+  .article-body li { margin-bottom: 10px; }
+  .article-body li::marker { color: var(--teal); }
+  .article-body a {
+    color: var(--teal);
+    border-bottom: 1px dashed currentColor;
+    font-weight: 500;
+  }
+  .article-body a:hover { color: var(--teal-dark); }
+
+  .pull-quote {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(24px, 2.8vw, 30px);
+    line-height: 1.35;
+    color: var(--teal);
+    max-width: 600px;
+    margin: 56px auto;
+    text-align: center;
+    padding: 36px 24px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .inline-cta {
+    margin: 56px 0;
+    padding: 36px 40px;
+    background: var(--cream-2);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    text-align: center;
+  }
+  .inline-cta h4 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 500;
+    margin: 0 0 10px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .inline-cta p {
+    font-size: 15px !important;
+    color: var(--stone) !important;
+    margin: 0 0 20px !important;
+    line-height: 1.6 !important;
+  }
+
+  .further-reading {
+    max-width: 720px;
+    margin: 80px auto 0;
+    padding-top: 40px;
+    border-top: 1px solid var(--line);
+  }
+  .further-reading .label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 20px;
+  }
+  .further-reading a {
+    display: block;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+    color: inherit;
+    transition: opacity var(--t-fast) var(--ease);
+  }
+  .further-reading a:hover { opacity: 0.7; }
+  .further-reading a:last-child { border-bottom: 0; }
+  .further-reading h4 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0 0 4px;
+    color: var(--ink);
+  }
+  .further-reading p { font-size: 14px; color: var(--stone); margin: 0; }
+
+  /* ============ POS COMPARISON TABLE ============ */
+  /* The signature visual for this post — a clean feature-comparison
+     table with three columns (Toast, Square, Clover) and pill-shaped
+     indicator marks. Sits full-width inside the prose column. */
+  .pos-table-wrap {
+    margin: 56px -20px;
+    overflow-x: auto;
+  }
+  .pos-table {
+    width: 100%;
+    min-width: 540px;
+    border-collapse: collapse;
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  .pos-table thead th {
+    text-align: left;
+    padding: 18px 14px;
+    background: var(--cream-2);
+    border-bottom: 2px solid var(--ink);
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .pos-table thead th.feature-col {
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--stone);
+    width: 38%;
+  }
+  .pos-table tbody td {
+    padding: 14px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+    color: var(--ink-soft);
+    font-size: 14.5px;
+  }
+  .pos-table tbody tr:last-child td { border-bottom: 0; }
+  .pos-table tbody td.feature-name {
+    font-weight: 500;
+    color: var(--ink);
+    font-size: 14px;
+  }
+  .pos-table .mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: var(--font-body);
+  }
+  .pos-table .mark.yes     { background: #e6f4ec; color: #1f9d55; }
+  .pos-table .mark.partial { background: #fdf1dc; color: #b45309; }
+  .pos-table .mark.no      { background: #fce9e1; color: var(--rust); }
+  .pos-table .note {
+    display: block;
+    font-size: 12px;
+    color: var(--stone);
+    margin-top: 4px;
+    line-height: 1.4;
+    font-weight: 400;
+  }
+  @media (max-width: 600px) {
+    .pos-table-wrap { margin: 40px -16px; }
+    .pos-table tbody td, .pos-table thead th { padding: 10px 8px; }
+    .pos-table thead th { font-size: 15px; }
+    .pos-table { font-size: 13px; }
+  }
+
+  /* Summary recommendation callout at the end */
+  .recommend-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 56px 0;
+  }
+  @media (max-width: 720px) { .recommend-grid { grid-template-columns: 1fr; } }
+  .recommend-card {
+    padding: 28px 24px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--white);
+  }
+  .recommend-card .badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--cream-2);
+    color: var(--stone);
+    margin-bottom: 12px;
+  }
+  .recommend-card h4 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0 0 10px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .recommend-card p {
+    font-size: 14.5px !important;
+    line-height: 1.6 !important;
+    color: var(--stone) !important;
+    margin: 0 !important;
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm">™</sup>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/#services">Services</a>
+      <a href="/for/restaurants/">Restaurants</a>
+      <a href="/work/">Work</a>
+      <a href="/blog/">Blog</a>
+      <a href="/#about">About</a>
+    </nav>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/#services">Services</a>
+    <a href="/for/restaurants/">Restaurants</a>
+    <a href="/work/">Work</a>
+    <a href="/blog/">Blog</a>
+    <a href="/#about">About</a>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call</a>
+  </nav>
+</header>
+
+<main id="main">
+
+<!-- ============ POST HERO ============ -->
+<section class="hero" style="padding-bottom:32px;">
+  <div class="container">
+    <div class="post-hero">
+      <span class="eyebrow">Muntin Digital · Writing</span>
+      <h1>
+        Toast vs. Square vs. Clover:<br>
+        <span class="serif-italic">which POS</span> integrates best?
+      </h1>
+      <p class="post-dek">
+        An honest comparison of how the three dominant restaurant POS systems integrate with a real restaurant website — what each one does well, what each one quietly limits, and which one I'd pick for your restaurant type.
+      </p>
+      <p class="post-meta">
+        <time datetime="2026-05-17">May 17, 2026</time>  ·  11 min read  ·  By <strong>Don</strong>
+      </p>
+      <div style="margin-top:24px; display:flex; justify-content:center;">
+        <button type="button" id="listen-btn" class="listen-btn" aria-pressed="false" data-state="idle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+          </svg>
+          <span class="listen-label">Listen to this article</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ARTICLE BODY (filled in sprints 29b–29d) ============ -->
+<section class="block">
+  <div class="container">
+    <article class="article-body" id="post-body">
+      <p>Every restaurant has a POS. And sooner or later — usually a few months after the hardware's already paid for — every restaurant owner realizes that their POS choice affects their website in ways nobody told them about during the sales pitch. Menu sync, online ordering, reservation handoff, loyalty programs, receipt links — all of it runs through the POS. If you picked the POS based on the cashier hardware and the transaction fee alone, you probably discovered the website-side limitations the hard way.</p>
+
+      <p>This post compares the three POS systems I see most often in independent restaurant audits: <strong>Toast</strong>, <strong>Square for Restaurants</strong>, and <strong>Clover</strong>. I'll walk through what each one does well for website integration, where each one quietly limits you, and — in the closing — which one I'd pick for which restaurant type. If you're about to sign a POS contract, this is the post I'd want you to read first.</p>
+
+      <p>A quick note upfront: all three are legitimate products run by real companies, and all three have customers who love them and customers who regret the choice. I'm not here to crown a winner or dunk on a loser — the question is which one fits <em>your</em> restaurant.</p>
+
+      <h2>What "POS integration with your website" actually means</h2>
+      <p>Before we get into the comparison, it's worth being specific about what we're comparing. "POS integration" is really three different things stacked on top of each other, and every POS handles each layer at a different quality level.</p>
+
+      <h3>1. Menu sync</h3>
+      <p>Your POS knows what's on the menu. Your website also needs to know. Can the POS push its menu data to your website so you only maintain it in one place? Does the push include dish descriptions, images, modifiers, allergens, and prices? What happens when you 86 a dish mid-service — does your site update in real time, or is someone eating two-hour-old availability data?</p>
+
+      <h3>2. Order-taking</h3>
+      <p>The website takes online orders and those orders have to land in your kitchen somehow. Does the order flow directly into the POS ticket queue, or does it land in a separate tablet the host has to check? Does it respect your real-time inventory? Can customers order items you've just run out of?</p>
+
+      <h3>3. Reservation and guest data flow</h3>
+      <p>When a guest books a table, does the reservation show up on your POS's floor map? Does the guest history — visit count, allergies, birthday, favorite table — flow between the reservation platform and the POS so a returning customer gets recognized and greeted by name?</p>
+
+      <p>Most POS marketing pages talk about "website integration" as if it's one switch you flip. In practice, the three layers above are built at different times, by different teams, and each has its own quality ceiling. The right POS for your restaurant depends on which of the three layers matters most for how you actually operate.</p>
+
+      <h2>Toast</h2>
+      <p>Toast is the biggest restaurant-specific POS in the US market and the one I see most often on independent full-service restaurants. According to <a href="https://pos.toasttab.com/" target="_blank" rel="noopener">Toast's own product documentation</a>, the platform is purpose-built for full-service, quick-service, and counter-service restaurants, and includes native online ordering, menu management, and a third-party developer API.</p>
+
+      <h3>What Toast does well for website integration</h3>
+      <ul>
+        <li><strong>Native online ordering</strong> with a direct pipeline from website checkout to kitchen ticket — no separate tablet handoff required.</li>
+        <li><strong>Automatic menu sync</strong> from Toast's menu editor to their website widgets, including images, modifiers, and allergen tags.</li>
+        <li><strong>Real-time 86ing</strong> — when you mark a dish out of stock on the POS, the change propagates to the online menu immediately.</li>
+        <li><strong>A mature developer API</strong> that lets a custom-built website (not Toast's own templates) tap into the same order, menu, and guest data Toast's native surfaces use. This is the part I care most about in my audits — it means you can have a custom site on a modern stack and still use Toast as the engine.</li>
+      </ul>
+
+      <h3>Where Toast's website story gets complicated</h3>
+      <ul>
+        <li>Toast's own hosted restaurant sites are functional but template-bound. In my audit experience, sites built on Toast's native website templates share a recognizable layout and typography system — they "look like a Toast restaurant site" even when the colors are different.</li>
+        <li>Transaction fees on delivery and pickup orders routed through Toast's integrated ordering can stack up compared to a custom checkout running on your own payment processor. The exact numbers depend on your Toast contract tier, so check <a href="https://pos.toasttab.com/pricing" target="_blank" rel="noopener">Toast's current pricing page</a> for your situation.</li>
+        <li>"Powered by Toast" branding in the checkout flow is difficult to fully remove without moving to a higher contract tier.</li>
+        <li>Contract commitments tend to run multi-year, which matters if you're not sure which POS will still fit your operation three years from now.</li>
+      </ul>
+
+      <p>In my audit experience: <strong>Toast is the strongest choice if you want "it all just works" from day one</strong> and you accept the tradeoffs of a walled garden. And if you have a custom-built website and want Toast to be the kitchen-side engine, their API is mature enough to support that — just expect to pay a developer to wire it up cleanly.</p>
+
+      <h2>Square for Restaurants</h2>
+      <p>Square's approach is almost the opposite of Toast's. Where Toast is restaurant-specific from the ground up, Square started as a general retail and payments platform and added restaurant-specific features on top of its broader product. That shows up as both a strength and a limitation. According to <a href="https://squareup.com/us/en/point-of-sale/restaurants" target="_blank" rel="noopener">Square's own product documentation</a>, Square for Restaurants includes menu management, online ordering, table management, and loyalty — all with the same public, flat-rate pricing structure Square is known for in retail.</p>
+
+      <h3>What Square does well for website integration</h3>
+      <ul>
+        <li><strong>A clean, well-documented public API.</strong> For a custom-built website that wants to pull catalog data, send orders, or look up customer history, <a href="https://developer.squareup.com/docs" target="_blank" rel="noopener">Square's developer docs</a> are among the best in the POS space — clear, current, and actively supported.</li>
+        <li><strong>Public, flat-rate pricing.</strong> Square's processing fees and monthly costs are published openly on their site. No contract-tier dance, no "call us for a quote," no negotiated surprises.</li>
+        <li><strong>Square Online</strong> can spin up a functional restaurant site in an afternoon, with menu data automatically synced from the POS. Not a replacement for a custom site, but genuinely useful for operators who aren't ready for one yet.</li>
+        <li><strong>Lower vendor lock-in</strong> than Toast — hardware costs are lower, contracts are shorter, data export is more straightforward. Switching cost is lower if you outgrow the fit.</li>
+      </ul>
+
+      <h3>Where Square's website story gets complicated</h3>
+      <ul>
+        <li>Square for Restaurants is younger and less restaurant-dedicated than Toast. In my audit experience, some features a full-service restaurant wants — server-by-server sales reports for a fine-dining room, deep modifier chains, complex coursing — are thinner or absent compared to Toast's restaurant-native implementation.</li>
+        <li>Square Online's ordering flow feels retail-first. It works, but the visual and interaction rhythm doesn't quite match the vibe of a tablecloth room — Square Online looks like Square Online.</li>
+        <li>Menu sync from Square to a custom external website requires you to write the API bridge. Square provides the pipe; you build what runs through it. This is fine if you have a developer; it's a blocker if you don't.</li>
+      </ul>
+
+      <p>In my audit experience: <strong>Square is the strongest pick for a single-location independent restaurant that wants a clean API, fair public fees, and the flexibility to switch tools later without regret.</strong> The developer-friendliness makes it the easiest POS in this trio to pair with a fully custom site.</p>
+
+      <h2>Clover</h2>
+      <p>Clover is the widest-distributed POS system of the three, because it's sold through merchant services providers — banks, payment processors, and local ISOs — in addition to direct from Clover itself. That distribution model is Clover's biggest strength and its biggest source of confusion, simultaneously. According to <a href="https://www.clover.com/restaurants" target="_blank" rel="noopener">Clover's own restaurant product page</a>, the restaurant offering includes menu management, online ordering, table management, and third-party delivery integrations — though the specific feature set you see depends on which distribution channel you bought through.</p>
+
+      <h3>What Clover does well</h3>
+      <ul>
+        <li><strong>Widest hardware selection.</strong> Clover Station, Mini, Flex, Kiosk, and handheld units cover nearly every physical configuration a restaurant might need — including a couple (like the kiosk and the integrated-scale variants) the other two don't directly offer. The hardware itself is well-built.</li>
+        <li><strong>Flexible — sometimes too flexible.</strong> Because Clover distributes through multiple merchant services providers, the exact feature set, fee structure, and contract terms you get depend on which bank or ISO sold you the system. This can be a strength (your local bank may have negotiated a better rate than the public one) or a source of frustration (your neighbor's Clover might have features yours doesn't).</li>
+        <li><strong>The largest app marketplace</strong> in the POS space, which means niche restaurant features — specific loyalty programs, specific delivery integrations, specific back-office tools — tend to be available as add-ons when you can't find them native.</li>
+      </ul>
+
+      <h3>Where Clover's website story gets complicated</h3>
+      <ul>
+        <li><strong>Fragmented ecosystem.</strong> Clover Dining, Clover Register, Clover Go, Clover Compact, Clover Station, Clover Mini — each variant has a slightly different feature set, and understanding which variant your merchant provider sold you is a small research project on its own. In my audits, I've lost hours to "does this Clover have native online ordering enabled?" and the answer was "depends on your plan tier."</li>
+        <li><strong>The developer API exists but is less mature</strong> than Square's or Toast's. Integrating Clover into a custom website often requires more plumbing work than either alternative, in my experience.</li>
+        <li><strong>Pricing lives in your contract, not on a page.</strong> Transaction fees and monthly costs depend heavily on the specific merchant services contract you signed, not on a public pricing page. Before you commit, read the fee schedule in your actual contract — I've seen identical Clover setups running 30% apart in monthly cost at different restaurants.</li>
+      </ul>
+
+      <p>In my audit experience: <strong>Clover is the right call when you need specific hardware Clover makes and the others don't</strong> — handheld tableside for a high-volume bar, an integrated scale for a butcher counter, a kiosk for a fast-casual line — or when the merchant services provider relationship itself is valuable (for example, when your local bank bundled the POS with a business loan or line of credit). For pure website-integration quality, it's my third pick of the three. But "third pick" here still means "legitimately usable" — just that Toast and Square are usually easier starting points if you have a free choice.</p>
+
+      <h2>Side by side</h2>
+      <p>Here's the same question answered across ten features, in one glance. <strong>Green</strong> is a confident yes. <strong>Amber</strong> is a partial or "depends on your plan." <strong>Rust</strong> is a meaningful gap worth knowing about before you sign a contract.</p>
+
+      <figure style="margin:48px 0;">
+        <div class="pos-table-wrap">
+          <table class="pos-table">
+            <thead>
+              <tr>
+                <th class="feature-col">Feature</th>
+                <th>Toast</th>
+                <th>Square</th>
+                <th>Clover</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="feature-name">Native online ordering<span class="note">Built into the POS, not a tablet handoff</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark partial" aria-label="Partial">~</span></td>
+              </tr>
+              <tr>
+                <td class="feature-name">Automatic menu sync<span class="note">POS → website, including images and modifiers</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark partial" aria-label="Partial">~</span></td>
+              </tr>
+              <tr>
+                <td class="feature-name">Real-time 86 of out-of-stock<span class="note">POS change propagates to the site immediately</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark partial" aria-label="Partial">~</span></td>
+                <td><span class="mark partial" aria-label="Partial">~</span></td>
+              </tr>
+              <tr>
+                <td class="feature-name">Direct kitchen ticket pipeline<span class="note">Web orders land on the KDS with no intermediate tablet</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark partial" aria-label="Partial">~</span></td>
+              </tr>
+              <tr>
+                <td class="feature-name">Public developer API<span class="note">Clean, documented, actively supported</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark partial" aria-label="Partial">~</span></td>
+              </tr>
+              <tr>
+                <td class="feature-name">Public, transparent pricing<span class="note">Rates published on the provider's own site</span></td>
+                <td><span class="mark no" aria-label="No">✕</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark no" aria-label="No">✕</span></td>
+              </tr>
+              <tr>
+                <td class="feature-name">Works with a fully custom website<span class="note">Clean pairing with a Muntin-style custom build</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark partial" aria-label="Partial">~</span></td>
+              </tr>
+              <tr>
+                <td class="feature-name">Hardware variety<span class="note">Station, handheld, kiosk, scale, compact</span></td>
+                <td><span class="mark partial" aria-label="Partial">~</span></td>
+                <td><span class="mark partial" aria-label="Partial">~</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+              </tr>
+              <tr>
+                <td class="feature-name">Contract flexibility<span class="note">Short or month-to-month, low switching cost</span></td>
+                <td><span class="mark no" aria-label="No">✕</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark partial" aria-label="Partial">~</span></td>
+              </tr>
+              <tr>
+                <td class="feature-name">Restaurant-specific from day one<span class="note">Built for restaurants, not retrofitted from retail</span></td>
+                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td><span class="mark partial" aria-label="Partial">~</span></td>
+                <td><span class="mark partial" aria-label="Partial">~</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <figcaption style="font-size:11px; color:var(--stone); text-align:center; margin-top:16px; letter-spacing:0.15em; text-transform:uppercase; font-weight:600;">
+          Comparison based on each provider's public documentation · your specific plan and contract may vary
+        </figcaption>
+      </figure>
+
+      <h2>Which one I'd pick, by restaurant type</h2>
+      <p>Here's how I'd match each POS to a restaurant type, based on what I see in audits. These are opinions, not rules — your actual best fit depends on variables I can't see from a blog post, so treat this as a starting point for your own evaluation, not a verdict.</p>
+
+      <div class="recommend-grid">
+        <div class="recommend-card">
+          <span class="badge">Single-location independent</span>
+          <h4>Square for Restaurants</h4>
+          <p>Clean API, public flat-rate pricing, short contracts, and a lower switching cost if you outgrow the fit. You get the website-integration quality you need for a first custom rebuild without committing to a walled garden before you're sure you want to stay.</p>
+        </div>
+        <div class="recommend-card">
+          <span class="badge">Growing 2–5 location group</span>
+          <h4>Toast</h4>
+          <p>Native ordering pipeline, mature menu sync, real-time 86, and a developer API that scales alongside the group. The "it just works" factor is genuine when multi-location operations are on the line and you need every integration to survive a Saturday rush.</p>
+        </div>
+        <div class="recommend-card">
+          <span class="badge">Hardware-heavy or hybrid</span>
+          <h4>Clover</h4>
+          <p>Widest hardware selection, handheld tableside, kiosk variants, integrated scales, app marketplace depth. If a specific physical configuration or a merchant services relationship matters more than pure developer ergonomics, Clover earns its place.</p>
+        </div>
+      </div>
+
+      <h2>What to ask your POS provider before you build a website</h2>
+      <p>Whichever POS you're evaluating, there are six questions I'd ask the sales rep before you sign anything. Write these down, email them to your rep, and save the reply — the answers will tell you more about the integration quality you're signing up for than any glossy product page will.</p>
+
+      <ol>
+        <li><strong>"Can I run a custom website on a modern stack and still use your POS as the engine?"</strong> This is the developer-ecosystem test. If the answer is "well, we have our own templates" — that's a no. You want a confident yes with a specific reference to their API documentation, and ideally an example of a custom site already doing it.</li>
+        <li><strong>"What exactly is in the monthly fee, and what's billed per transaction?"</strong> POS pricing is a hall of mirrors. Get the answer in writing, annotated, with examples calculated against your typical weekly volume. If the rep hesitates or falls back on "it depends," ask for a sample invoice from a restaurant similar to yours.</li>
+        <li><strong>"When I mark a dish 86'd on the POS, how long until the online menu reflects it?"</strong> The answer you want is "seconds" or "within one minute." If it's "next day" or "after a sync job runs overnight," your customers will keep ordering things you don't have — and your host stand will be the one apologizing for it.</li>
+        <li><strong>"What happens to my data if I leave in three years?"</strong> Every POS rep will promise you'll never want to leave. That's not the answer. The real question is: can I export menu, order history, customer profiles, and reservation data in a standard format (CSV, JSON), and does that export include everything I'd need to rebuild elsewhere without starting from zero?</li>
+        <li><strong>"Is there a cancellation fee or early termination clause — and can I see it in writing before I sign?"</strong> Read the small print. The three POS providers in this post have very different answers, and the answer matters a lot two years in, if the fit stops working.</li>
+        <li><strong>"If I wanted to integrate a custom website with your POS, what's the typical setup time?"</strong> This is my favorite question, because the answer tells you how often the rep has actually done it. Toast reps typically answer in weeks with a project outline. Square reps usually answer in days and point at the API docs. Clover reps sometimes have to ask a developer-relations person and get back to you — which is itself useful information.</li>
+      </ol>
+
+      <p>Take notes on the <em>shape</em> of each answer, not just the content. A confident, specific answer with documentation is a good sign. A confident answer with no documentation is a warning sign. A vague answer with a promise to follow up is a red flag — and the follow-up almost never comes.</p>
+
+      <p class="pull-quote">Take notes on the shape of each answer, not just the content.</p>
+
+      <h2>The POS and the website are one system</h2>
+      <p>The mistake I see most often in restaurant audits isn't picking the wrong POS. It's picking the POS without involving the person who's going to build the website — and then discovering the integration limits on launch week, when the options are all expensive. By the time you're wiring up the reservation flow, you're already locked into whatever the POS supports, and "we'll make it work" becomes a lot more expensive than a five-minute conversation at the POS evaluation stage would have been.</p>
+
+      <p>If you're mid-POS evaluation right now, bring your website strategy to the same meeting. If you're mid-website project with the POS already chosen, bring the POS's developer docs to the kickoff. The integration quality between these two systems matters more than either system alone — and the only way to get it right is to design them as one thing, up front.</p>
+
+      <div class="inline-cta">
+        <h4>Stuck between POS choices for your restaurant?</h4>
+        <p>Twenty minutes on Zoom. I'll walk through the specific POS question you're weighing, tell you how it maps to a real website build for your restaurant type, and give you an honest read on which tradeoffs you'll actually feel in year two. No pitch.</p>
+        <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </a>
+      </div>
+    </article>
+
+    <aside class="further-reading">
+      <p class="label">Further reading</p>
+      <a href="/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/">
+        <h4>How Much Does a Custom Restaurant Website Cost in 2026?</h4>
+        <p>The full pricing breakdown — real line items, real examples, and what you're paying for that doesn't appear on the invoice.</p>
+      </a>
+      <a href="/blog/wix-vs-custom-for-restaurants/">
+        <h4>Wix vs. Custom for Restaurants: What Breaks First</h4>
+        <p>Six places Wix breaks for independent restaurants, the ROI math, and when Wix is actually the right call.</p>
+      </a>
+      <a href="/blog/why-your-restaurant-loses-reservations-every-night/">
+        <h4>Why Your Restaurant Loses Reservations Every Night</h4>
+        <p>The reservation funnel most restaurant sites leak through — six leaks, citations, and the fix for each one.</p>
+      </a>
+      <a href="/resources/restaurant-website-checklist/">
+        <h4>The Restaurant Website Checklist</h4>
+        <p>Twenty-three checks you can run on your own site in ten minutes.</p>
+      </a>
+      <a href="/audit/restaurants/">
+        <h4>Free Restaurant Website Audit</h4>
+        <p>Drop your URL and get a real mobile Lighthouse audit in about twenty seconds.</p>
+      </a>
+    </aside>
+
+    <aside class="sources" style="max-width:720px; margin:72px auto 0; padding-top:32px; border-top:1px solid var(--line); font-family:var(--font-body);">
+      <p style="font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--stone); margin:0 0 16px;">Sources</p>
+      <ol style="padding-left:24px; font-size:14px; line-height:1.7; color:var(--stone); margin:0;">
+        <li style="margin-bottom:10px;">Toast Inc., <cite>"Toast POS — product overview,"</cite> Toast. <a href="https://pos.toasttab.com/" target="_blank" rel="noopener" style="color:var(--teal);">pos.toasttab.com</a></li>
+        <li style="margin-bottom:10px;">Toast Inc., <cite>"Toast POS pricing,"</cite> Toast. <a href="https://pos.toasttab.com/pricing" target="_blank" rel="noopener" style="color:var(--teal);">pos.toasttab.com/pricing</a></li>
+        <li style="margin-bottom:10px;">Block, Inc., <cite>"Square for Restaurants,"</cite> Square. <a href="https://squareup.com/us/en/point-of-sale/restaurants" target="_blank" rel="noopener" style="color:var(--teal);">squareup.com</a></li>
+        <li style="margin-bottom:10px;">Block, Inc., <cite>"Square Developer Documentation,"</cite> Square Developer. <a href="https://developer.squareup.com/docs" target="_blank" rel="noopener" style="color:var(--teal);">developer.squareup.com</a></li>
+        <li style="margin-bottom:0;">Clover Network, <cite>"Clover for Restaurants,"</cite> Clover. <a href="https://www.clover.com/restaurants" target="_blank" rel="noopener" style="color:var(--teal);">clover.com/restaurants</a></li>
+      </ol>
+    </aside>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container foot">
+    <div>
+      <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53">
+      <div style="margin-top:6px">Structure Brings Clarity.</div>
+    </div>
+    <div style="text-align:right">
+      <div style="color:var(--cream); margin-bottom:4px">don@muntindigital.com</div>
+      <nav class="foot-legal" aria-label="Legal">
+        <a href="/terms.html">Terms of Service</a>
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="/accessibility.html">Accessibility</a>
+        <a href="/cookies.html">Cookie Policy</a>
+      </nav>
+      <div>© 2026 Muntin Digital™ · Maryland LLC · Based in Silver Spring, MD · Serving US small businesses</div>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/site.js" defer></script>
+</body>
+</html>

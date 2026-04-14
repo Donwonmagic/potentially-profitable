@@ -245,3 +245,164 @@
       win.style.transform = 'perspective(1200px) rotateX(0) rotateY(0)';
     });
   }
+
+  /* ============ READ ALOUD ============ */
+  /* Uses the browser's native SpeechSynthesis API to read blog posts
+   * out loud. Free, no backend, no third-party service. Auto-attaches
+   * when the current page has both a #listen-btn button and an
+   * #post-body article container.
+   */
+  (function initReadAloud(){
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+
+    const listenBtn = document.getElementById('listen-btn');
+    const postBody  = document.getElementById('post-body');
+    if (!listenBtn || !postBody) return;
+
+    let state = 'idle'; // 'idle' | 'playing' | 'paused'
+    let chunks = [];
+    let currentIndex = 0;
+    let currentElement = null;
+    let heartbeatTimer = null;
+
+    // Chrome has a long-standing bug where speechSynthesis will silently
+    // stop after ~15 seconds of continuous speech. Ping pause/resume on
+    // an interval to keep it alive during long utterances.
+    function startHeartbeat() {
+      stopHeartbeat();
+      heartbeatTimer = setInterval(() => {
+        if (state === 'playing' && window.speechSynthesis.speaking) {
+          window.speechSynthesis.pause();
+          window.speechSynthesis.resume();
+        }
+      }, 10000);
+    }
+    function stopHeartbeat() {
+      if (heartbeatTimer) { clearInterval(heartbeatTimer); heartbeatTimer = null; }
+    }
+
+    function collectChunks() {
+      const nodes = postBody.querySelectorAll('h2, h3, p, li, .pull-quote');
+      chunks = [];
+      nodes.forEach((el) => {
+        // Skip anything inside a non-readable container
+        if (el.closest('.inline-cta')) return;
+        if (el.closest('figure'))       return;
+        if (el.closest('.further-reading')) return;
+        if (el.closest('.sources'))     return;
+        const raw = (el.innerText || el.textContent || '').trim();
+        if (raw.length < 2) return;
+        chunks.push({ text: raw, element: el });
+      });
+    }
+
+    function updateButtonLabel(label) {
+      const textEl = listenBtn.querySelector('.listen-label');
+      if (textEl) textEl.textContent = label;
+      listenBtn.setAttribute('data-state', state);
+      listenBtn.setAttribute('aria-pressed', state === 'playing' ? 'true' : 'false');
+    }
+
+    function setCurrent(el) {
+      if (currentElement) currentElement.classList.remove('is-reading');
+      currentElement = el;
+      if (el) {
+        el.classList.add('is-reading');
+        // Scroll the current paragraph into view smoothly, but only if
+        // the user hasn't scrolled away from the reading area.
+        const rect = el.getBoundingClientRect();
+        const isOutOfView = rect.top < 80 || rect.bottom > window.innerHeight - 80;
+        if (isOutOfView) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    function pickVoice() {
+      const voices = window.speechSynthesis.getVoices();
+      if (!voices || !voices.length) return null;
+      // Prefer natural-sounding English voices if the OS exposes them
+      return voices.find((v) => v.lang && v.lang.startsWith('en') && /Natural|Google|Samantha|Alex|Daniel|Enhanced/i.test(v.name))
+          || voices.find((v) => v.lang && v.lang.startsWith('en'))
+          || null;
+    }
+
+    function speakChunk(idx) {
+      if (idx >= chunks.length) {
+        finishPlayback();
+        if (window.plausible) window.plausible('Post Listened: Completed');
+        return;
+      }
+      currentIndex = idx;
+      const chunk = chunks[idx];
+      setCurrent(chunk.element);
+
+      const utterance = new SpeechSynthesisUtterance(chunk.text);
+      utterance.rate   = 1.0;
+      utterance.pitch  = 1.0;
+      utterance.volume = 1.0;
+      const voice = pickVoice();
+      if (voice) utterance.voice = voice;
+
+      utterance.onend = () => {
+        if (state === 'playing') speakChunk(idx + 1);
+      };
+      utterance.onerror = (e) => {
+        console.warn('[readAloud] utterance error', e);
+        if (state === 'playing') speakChunk(idx + 1);
+      };
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function startPlayback() {
+      if (state === 'paused') {
+        window.speechSynthesis.resume();
+        state = 'playing';
+        updateButtonLabel('Pause');
+        startHeartbeat();
+        return;
+      }
+      collectChunks();
+      if (!chunks.length) return;
+      state = 'playing';
+      updateButtonLabel('Pause');
+      startHeartbeat();
+      speakChunk(0);
+      if (window.plausible) window.plausible('Post Listened');
+    }
+
+    function pausePlayback() {
+      if (state !== 'playing') return;
+      window.speechSynthesis.pause();
+      state = 'paused';
+      updateButtonLabel('Resume');
+      stopHeartbeat();
+    }
+
+    function finishPlayback() {
+      window.speechSynthesis.cancel();
+      state = 'idle';
+      currentIndex = 0;
+      setCurrent(null);
+      updateButtonLabel('Listen to this article');
+      stopHeartbeat();
+    }
+
+    listenBtn.addEventListener('click', () => {
+      if      (state === 'idle')    startPlayback();
+      else if (state === 'playing') pausePlayback();
+      else if (state === 'paused')  startPlayback();
+    });
+
+    // Clean up if the visitor navigates away mid-read
+    window.addEventListener('beforeunload', () => {
+      if (state !== 'idle') window.speechSynthesis.cancel();
+    });
+
+    // Some browsers load the voices list asynchronously
+    if (window.speechSynthesis.getVoices().length === 0 && 'onvoiceschanged' in window.speechSynthesis) {
+      window.speechSynthesis.onvoiceschanged = () => { /* voices now ready */ };
+    }
+
+    // Expose minimal public surface for any custom stop button
+    window.MuntinReadAloud = { stop: finishPlayback };
+  })();

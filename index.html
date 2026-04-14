@@ -29,7 +29,24 @@
 
 <!-- Favicon: muntin window mark on ink tile -->
 <link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
-<link rel="apple-touch-icon" href="/brand/mark/mark-square-ink.svg" />
+<!-- Favicons: SVG for modern browsers, PNG set for Google Search results
+     and older browsers. PNG + ICO files live at /brand/favicons/ and are
+     generated via favicon.io from /brand/mark/mark-square-ink.svg — see
+     /brand/favicons/README.md (sprint 30c) for the generation recipe. -->
+<link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="48x48" href="/brand/favicons/favicon-48x48.png" />
+<link rel="icon" type="image/png" sizes="96x96" href="/brand/favicons/favicon-96x96.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
+<link rel="icon" type="image/png" sizes="512x512" href="/brand/favicons/android-chrome-512x512.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+
+<!-- Application/entity hints for modern browsers and Google Search -->
+<meta name="application-name" content="Muntin Digital" />
+<meta name="apple-mobile-web-app-title" content="Muntin Digital" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
 <!-- JSON-LD: entity graph -->
 <script type="application/ld+json">
@@ -75,9 +92,27 @@
         "jobTitle": "Founder & Lead Designer",
         "worksFor": { "@id": "https://muntin.digital/#business" }
       },
+      "foundingDate": "2026",
+      "knowsAbout": [
+        "Restaurant website design",
+        "Small business website design",
+        "Brand identity design",
+        "Custom web development",
+        "Social media management",
+        "Google Business Profile optimization",
+        "Website accessibility",
+        "Website maintenance and care plans",
+        "Silver Spring Maryland",
+        "Washington DC metro area"
+      ],
       "sameAs": [
         "https://www.instagram.com/muntin.digital/"
       ],
+      "brand": {
+        "@type": "Brand",
+        "name": "Muntin Digital",
+        "slogan": "Structure Brings Clarity."
+      },
       "serviceType": [
         "Web Design",
         "Web Development",
@@ -138,9 +173,38 @@
       "@id": "https://muntin.digital/#website",
       "url": "https://muntin.digital/",
       "name": "Muntin Digital",
+      "alternateName": ["MuntinDigital", "Muntin.digital"],
       "description": "Web design, branding, and social media for small businesses — handled by one person.",
       "publisher": { "@id": "https://muntin.digital/#business" },
+      "copyrightHolder": { "@id": "https://muntin.digital/#business" },
       "inLanguage": "en-US"
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://muntin.digital/#organization",
+      "name": "Muntin Digital",
+      "alternateName": ["MuntinDigital", "Muntin.digital", "Muntin"],
+      "url": "https://muntin.digital/",
+      "logo": {
+        "@type": "ImageObject",
+        "@id": "https://muntin.digital/#logo",
+        "url": "https://muntin.digital/brand/mark/mark-square-ink.svg",
+        "caption": "Muntin Digital"
+      },
+      "sameAs": [
+        "https://www.instagram.com/muntin.digital/"
+      ],
+      "founder": {
+        "@type": "Person",
+        "name": "Don Goldstein"
+      },
+      "foundingLocation": {
+        "@type": "Place",
+        "name": "Silver Spring, Maryland, United States"
+      },
+      "email": "don@muntindigital.com",
+      "description": "A one-person digital studio in Silver Spring, Maryland — custom websites, brand identity, and social media for restaurants and small businesses.",
+      "isPartOf": { "@id": "https://muntin.digital/#business" }
     },
     {
       "@type": "BreadcrumbList",
@@ -228,7 +292,13 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&amp;family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Google Fonts — loaded non-render-blocking via the media="print" + onload
+     swap trick. This prevents the CSS from holding up first paint; fallback
+     system fonts render immediately, then swap to Fraunces/Inter once the
+     stylesheet loads. Paired with &display=swap in the URL so no FOIT. -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&amp;family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&amp;family=Inter:wght@400;500;600&display=swap" media="print" onload="this.onload=null;this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&amp;family=Inter:wght@400;500;600&display=swap"></noscript>
 
 <!-- Privacy-friendly analytics by Plausible -->
 <script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
@@ -851,7 +921,7 @@
 <footer>
   <div class="container foot">
     <div>
-      <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53">
+      <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
       <div style="margin-top:6px">Structure Brings Clarity.</div>
     </div>
     <div style="text-align:right">
