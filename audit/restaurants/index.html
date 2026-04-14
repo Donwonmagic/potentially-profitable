@@ -838,6 +838,9 @@
         <div class="email-report-success" id="emailReportSuccess" hidden role="status" aria-live="polite">
           Got it — I'll email you within 24 hours with the report and the two biggest wins for your site.
         </div>
+
+        <div id="emailReportError" hidden role="alert"
+             style="margin-top:16px; padding:18px 22px; background:#fce9e1; border:1px solid #f4b69e; border-left-width:4px; border-left-color:#B8541A; border-radius:12px; color:#8a3010; font-size:14px; line-height:1.55;"></div>
       </div>
 
     </div>
@@ -1405,22 +1408,65 @@
   /* -------- Email-the-report form handler -------- */
   var emailForm    = document.getElementById('emailReportForm');
   var emailSuccess = document.getElementById('emailReportSuccess');
+  var emailError   = document.getElementById('emailReportError');
   if (emailForm) {
     emailForm.addEventListener('submit', function(e){
       e.preventDefault();
       var btn = emailForm.querySelector('button[type="submit"]');
       if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
-      var data = new FormData(emailForm);
-      fetch(emailForm.action, { method:'POST', body:data, headers:{'Accept':'application/json'} })
+      if (emailError) { emailError.hidden = true; emailError.textContent = ''; }
+
+      // Build a plain JSON payload instead of multipart FormData —
+      // Formspree handles both but JSON is more reliable with their
+      // AJAX endpoint and surfaces structured errors.
+      var payload = {};
+      new FormData(emailForm).forEach(function(value, key){ payload[key] = value; });
+
+      fetch(emailForm.action, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      })
         .then(function(res){
-          if (!res.ok) throw new Error('Formspree returned ' + res.status);
-          emailForm.hidden = true;
-          if (emailSuccess) emailSuccess.hidden = false;
-          if (window.plausible) window.plausible('Audit Report Emailed');
+          if (res.ok) {
+            emailForm.hidden = true;
+            if (emailSuccess) emailSuccess.hidden = false;
+            if (window.plausible) window.plausible('Audit Report Emailed');
+            return;
+          }
+          // Non-2xx — try to parse a Formspree error body for a real message
+          return res.json().then(function(body){
+            var msg;
+            if (body && body.error) {
+              msg = body.error;
+            } else if (body && Array.isArray(body.errors) && body.errors.length) {
+              msg = body.errors.map(function(e){ return e.message || JSON.stringify(e); }).join(', ');
+            } else {
+              msg = 'Formspree returned HTTP ' + res.status;
+            }
+            var err = new Error(msg);
+            err.status = res.status;
+            err.body = body;
+            throw err;
+          }, function(){
+            var err = new Error('Formspree returned HTTP ' + res.status + ' (non-JSON response)');
+            err.status = res.status;
+            throw err;
+          });
         })
-        .catch(function(){
+        .catch(function(err){
+          console.error('[audit email]', err);
           if (btn) { btn.disabled = false; btn.textContent = 'Email me the report →'; }
-          alert('Something went wrong. Please email don@muntindigital.com directly.');
+          if (emailError) {
+            emailError.hidden = false;
+            emailError.textContent = "We couldn't send the report just now. " +
+              (err && err.message ? "(" + err.message + ") " : "") +
+              "Email don@muntindigital.com directly and I'll send it over manually.";
+          }
+          if (window.plausible) window.plausible('Audit Report Email Failed');
         });
     });
   }
