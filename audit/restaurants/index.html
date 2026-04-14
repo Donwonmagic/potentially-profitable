@@ -345,6 +345,125 @@
     font-weight: 500;
   }
 
+  /* Opportunities drill-down — a per-category list of the specific
+     Lighthouse audits that didn't pass, with estimated savings and
+     plain-English descriptions. Hidden by default; revealed in JS
+     only when the audit finds failing items. */
+  .opportunities-wrap {
+    max-width: 760px;
+    margin: 28px auto 8px;
+    padding: 0;
+  }
+  .opportunities-head {
+    text-align: center;
+    margin-bottom: 18px;
+    padding: 0 16px;
+  }
+  .opportunities-head h3 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+  }
+  .opportunities-head p {
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--stone);
+    margin: 0 auto;
+    max-width: 560px;
+  }
+  .opp-section {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 14px;
+  }
+  .opp-section.grade-good { border-left-color: #1f9d55; }
+  .opp-section.grade-ok   { border-left-color: #d97706; }
+  .opp-section.grade-bad  { border-left-color: var(--rust); }
+  .opp-section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .opp-section-header h4 {
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0;
+    letter-spacing: -0.005em;
+  }
+  .opp-score {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--stone);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .opp-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .opp-item {
+    padding: 12px 0;
+    border-top: 1px solid var(--line);
+    font-family: var(--font-body);
+  }
+  .opp-item:first-child { border-top: none; padding-top: 4px; }
+  .opp-item-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .opp-item-head strong {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+  .opp-savings {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--teal);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    background: rgba(31, 78, 91, 0.08);
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+  .opp-item-desc {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--stone);
+    margin: 6px 0 0;
+  }
+  .opp-item-desc a {
+    color: var(--teal);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .opp-item-desc a:hover { color: var(--teal-dark); }
+  @media (max-width: 620px) {
+    .opportunities-head h3 { font-size: 20px; }
+    .opp-section { padding: 16px 18px; }
+    .opp-section-header h4 { font-size: 17px; }
+    .opp-item-head { flex-direction: column; gap: 4px; }
+  }
+
   /* Metric glossary — expandable "What these mean" section under the
      category grid. Uses native <details>/<summary> so it's accessible
      and zero-JS. */
@@ -870,6 +989,17 @@
         </div>
       </div>
 
+      <!-- Per-category opportunity drill-down — the specific Lighthouse
+           audits that failed, grouped by category, sorted by impact.
+           Populated from the raw PSI response in renderOpportunities(). -->
+      <div class="opportunities-wrap" id="opportunitiesWrap" hidden>
+        <div class="opportunities-head">
+          <h3>What's actually dragging your score down</h3>
+          <p>Every finding below comes straight from Google Lighthouse. They're grouped by category and sorted by estimated impact — fix the top items first.</p>
+        </div>
+        <div id="opportunitiesBody"></div>
+      </div>
+
       <!-- Expandable glossary: plain-English explanations of each metric -->
       <details class="metric-glossary">
         <summary>What do these numbers actually mean?</summary>
@@ -1072,6 +1202,163 @@
     if (score >= 90) return 'grade-good';
     if (score >= 50) return 'grade-ok';
     return 'grade-bad';
+  }
+
+  /* -------- Opportunities drill-down --------
+     Walks every Lighthouse category's auditRefs, pulls the failing/
+     warning audits out of the audits map, sorts by impact, and renders
+     a per-category card listing the specific items Google flagged.
+     Anything passing (score >= 0.9) or not-applicable is skipped. */
+
+  var OPP_CATEGORY_ORDER = [
+    { key: 'performance',    label: 'Performance' },
+    { key: 'accessibility',  label: 'Accessibility' },
+    { key: 'best-practices', label: 'Best Practices' },
+    { key: 'seo',            label: 'SEO' }
+  ];
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function formatMs(ms) {
+    if (ms >= 1000) return (ms / 1000).toFixed(1) + ' s';
+    return Math.round(ms / 10) * 10 + ' ms';
+  }
+
+  function formatBytes(b) {
+    if (b >= 1024 * 1024) return (b / 1024 / 1024).toFixed(1) + ' MB';
+    if (b >= 1024) return Math.round(b / 1024) + ' KB';
+    return b + ' B';
+  }
+
+  // Lighthouse descriptions are markdown. Escape HTML, then rehydrate
+  // [label](https://...) as real anchors — the brackets and parens
+  // survive escaping intact, so this regex still matches.
+  function cleanDescription(desc) {
+    var safe = escapeHtml(desc);
+    safe = safe.replace(
+      /\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g,
+      '<a href="$2" target="_blank" rel="noopener">$1</a>'
+    );
+    return safe;
+  }
+
+  function collectOpportunityItems(lhCat, audits) {
+    if (!lhCat || !lhCat.auditRefs) return [];
+    var items = [];
+    lhCat.auditRefs.forEach(function(ref) {
+      var audit = audits[ref.id];
+      if (!audit) return;
+      var mode = audit.scoreDisplayMode;
+      // Skip things that aren't pass/fail gradeable
+      if (mode === 'notApplicable' || mode === 'informative' ||
+          mode === 'manual' || mode === 'error') return;
+      // Skip passing audits (>= 0.9 is the Lighthouse green threshold)
+      if (audit.score === null || audit.score === undefined) return;
+      if (audit.score >= 0.9) return;
+
+      var savingsMs = 0;
+      var savingsBytes = 0;
+      if (audit.details) {
+        if (typeof audit.details.overallSavingsMs === 'number') {
+          savingsMs = audit.details.overallSavingsMs;
+        }
+        if (typeof audit.details.overallSavingsBytes === 'number') {
+          savingsBytes = audit.details.overallSavingsBytes;
+        }
+      }
+
+      items.push({
+        id: audit.id,
+        title: audit.title || audit.id,
+        description: audit.description || '',
+        displayValue: audit.displayValue || '',
+        score: audit.score,
+        weight: ref.weight || 0,
+        savingsMs: savingsMs,
+        savingsBytes: savingsBytes
+      });
+    });
+
+    // Sort by: biggest time savings → biggest byte savings → heaviest
+    // weight in the category → lowest score.
+    items.sort(function(a, b) {
+      if (b.savingsMs !== a.savingsMs)       return b.savingsMs - a.savingsMs;
+      if (b.savingsBytes !== a.savingsBytes) return b.savingsBytes - a.savingsBytes;
+      if (b.weight !== a.weight)             return b.weight - a.weight;
+      return a.score - b.score;
+    });
+
+    return items;
+  }
+
+  function renderOpportunitySection(catLabel, catScore, items) {
+    var section = document.createElement('section');
+    section.className = 'opp-section ' + gradeScore(catScore);
+
+    var header = document.createElement('div');
+    header.className = 'opp-section-header';
+    header.innerHTML =
+      '<h4>' + escapeHtml(catLabel) + '</h4>' +
+      '<span class="opp-score">' + catScore + ' / 100</span>';
+    section.appendChild(header);
+
+    var list = document.createElement('ul');
+    list.className = 'opp-list';
+    // Cap at 8 per category so we don't bury the lede
+    items.slice(0, 8).forEach(function(item) {
+      var li = document.createElement('li');
+      li.className = 'opp-item';
+
+      var savingsHtml = '';
+      if (item.savingsMs >= 100) {
+        savingsHtml = '<span class="opp-savings">Est. savings: ' + formatMs(item.savingsMs) + '</span>';
+      } else if (item.savingsBytes >= 1024) {
+        savingsHtml = '<span class="opp-savings">Est. savings: ' + formatBytes(item.savingsBytes) + '</span>';
+      } else if (item.displayValue) {
+        savingsHtml = '<span class="opp-savings">' + escapeHtml(item.displayValue) + '</span>';
+      }
+
+      li.innerHTML =
+        '<div class="opp-item-head">' +
+          '<strong>' + escapeHtml(item.title) + '</strong>' +
+          savingsHtml +
+        '</div>' +
+        (item.description
+          ? '<p class="opp-item-desc">' + cleanDescription(item.description) + '</p>'
+          : '');
+      list.appendChild(li);
+    });
+
+    section.appendChild(list);
+    return section;
+  }
+
+  function renderOpportunities(cats, audits) {
+    var wrap = document.getElementById('opportunitiesWrap');
+    var body = document.getElementById('opportunitiesBody');
+    if (!wrap || !body) return;
+    body.innerHTML = '';
+    wrap.hidden = true;
+
+    var anyItems = false;
+    OPP_CATEGORY_ORDER.forEach(function(cat) {
+      var lhCat = cats[cat.key];
+      if (!lhCat) return;
+      var items = collectOpportunityItems(lhCat, audits);
+      if (!items.length) return;
+      anyItems = true;
+      var catScore = Math.round((lhCat.score || 0) * 100);
+      body.appendChild(renderOpportunitySection(cat.label, catScore, items));
+    });
+
+    wrap.hidden = !anyItems;
   }
 
   function gradeVital(key, n) {
@@ -1427,6 +1714,10 @@
     } else {
       setCategoryNA('restaurant');
     }
+
+    // Drill-down: list every failing Lighthouse audit under the right
+    // category, sorted by impact. Auto-hides if nothing is failing.
+    renderOpportunities(cats, audits);
 
     var lcp = safeAudit(audits, 'largest-contentful-paint');
     var cls = safeAudit(audits, 'cumulative-layout-shift');
