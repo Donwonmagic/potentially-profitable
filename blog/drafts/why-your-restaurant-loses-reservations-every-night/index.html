@@ -500,7 +500,34 @@
 
       <p>For most independent restaurants, that number is larger than the cost of a full custom rebuild, a year of ongoing care, and a professional photographer combined. And the loss is happening every night, quietly, while you're in the kitchen focused on service — which means it's the easiest kind of revenue recovery there is, because the customers already <em>wanted</em> to book. They just couldn't.</p>
 
-      <p><em>(Sprints 27c and 27d continue with the seven specific leak points and their fixes, plus the closing CTA and further reading.)</em></p>
+      <h2>The seven leaks, in order</h2>
+      <p>Here's what's actually going wrong at each drop point, and how to plug it. I'll walk through the first four — they're the ones that account for most of the loss — and cover the rest in the next section.</p>
+
+      <h3>Leak #1 — Your site is slow on a phone</h3>
+      <p>If your homepage takes longer than three seconds to load on a phone, you've probably already lost about half of the people who tapped your link. That's not my number — it's Google's. Their <a href="https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/" target="_blank" rel="noopener">2017 mobile page-speed benchmark research</a> found that <strong>53% of mobile visitors bounce from a page that takes more than three seconds to load</strong>, and every additional second after that makes the bounce rate climb sharply.</p>
+      <p>Most restaurant sites I audit load in four to seven seconds on a real 4G connection. Sometimes ten. The owner almost never knows, because they've only ever loaded their site from their desk, on office wifi, already cached in their browser.</p>
+      <p><strong>How to test it in thirty seconds:</strong> pull up your site on your phone. Use cellular data, not wifi. Start timing the moment you tap the link, stop timing the moment you can see and tap the "Reserve" button. If it's more than three seconds, you've got Leak #1 — and you can confirm the exact number in our <a href="/audit/restaurants/">free Restaurant Website Audit</a>.</p>
+      <p><strong>The fix:</strong> on a template like Wix or Squarespace, you can compress images and disable decorative widgets, but you're eventually bumping into the platform's ceiling. On a custom site, sub-two-second mobile load isn't an upgrade — it's the starting point.</p>
+
+      <h3>Leak #2 — Your menu is a PDF</h3>
+      <p>Here's the fun part about PDFs: technically they're documents, not web pages. Safari on iPhone has to download them, hand them to a separate PDF viewer, and then render them at desktop size — which means your customer sees a tiny wall of unreadable text and has to pinch-zoom to read a single dish name. If they're walking somewhere hungry on a Tuesday night, they don't do that work. They just close the tab and try the next place on Google Maps.</p>
+      <p>PDF menus exist because they're easy for <em>restaurants</em> to produce. You export the printed menu from Illustrator, upload it, link to it. Done. But "easy for the restaurant" and "easy for the customer" are not the same thing — and the customer is the one with the credit card.</p>
+      <p><strong>How to test it in thirty seconds:</strong> open your menu link on your phone. Can you read the name <em>and</em> the price of the first dish without pinching to zoom? If no — Leak #2.</p>
+      <p><strong>The fix:</strong> replace the PDF with a real HTML menu page. Yes, it means you now have to maintain two versions (the printed card and the web page), but a well-built custom site can drive both from one source of truth — you update a Google Sheet or a CMS, and both the web menu and the print export refresh together. That's a half-day of setup that pays for itself every week after.</p>
+
+      <h3>Leak #3 — Your hours are hiding</h3>
+      <p>The single most common question on a restaurant website is "are you open right now?" — and most sites answer it by burying the hours in the footer, hiding them behind a "Visit" tab, or showing them only on a separate Contact page. The visitor rarely clicks. They just switch back to Google and book somewhere else.</p>
+      <p>This isn't my hunch. <a href="https://www.nngroup.com/articles/local-business/" target="_blank" rel="noopener">Nielsen Norman Group's research on local business websites</a> has repeatedly found that hours and location are the most-searched-for information on small-business sites — and the most frequently hidden. Owners often think the hours live "in the footer, where people will find them," without testing what happens when a first-time visitor, who's never seen the footer exist, tries to find them in five seconds.</p>
+      <p><strong>How to test it in thirty seconds:</strong> open your site cold. Time how many seconds pass before you can see <em>today's</em> hours without scrolling or clicking anything. If it's more than five, you've got Leak #3.</p>
+      <p><strong>The fix:</strong> put hours in the hero, or in a sticky header, or in a small "OPEN NOW · until 10 PM" badge that auto-updates based on the current time. The badge is my favorite — it takes about thirty lines of JavaScript and it reassures the visitor at exactly the moment they need it.</p>
+
+      <h3>Leak #4 — The reservation button is buried or missing</h3>
+      <p>Some restaurant sites don't have a reservation button on the homepage at all. Others have one, but it's in a dropdown menu at the top right, or it's a small text link at the bottom of a long hero, or it only lives on the "Contact" page. This is the leak that frustrates me the most, because the fix is so cheap and the impact is so obvious.</p>
+      <p>There's a well-established UX principle here — <a href="https://www.nngroup.com/articles/fittss-law/" target="_blank" rel="noopener">Fitts's Law</a>, which in plain English says: <em>the harder a button is to reach, the less often people press it</em>. A reservation button at the top of a nav that requires a tap to open and then a second tap to select is twice as hard to hit as a button that's permanently visible at the bottom of the screen. You lose conversion at every step of the tap path.</p>
+      <p><strong>How to test it in thirty seconds:</strong> open your homepage on your phone. Without scrolling or opening any menus, can you tap "Reserve" in a single gesture? If not — Leak #4.</p>
+      <p><strong>The fix:</strong> add a sticky bottom-of-screen reservation CTA on every mobile page. It's maybe an hour of work on a custom site. On most template builders you can approximate it with a floating widget. Either way, it's the single highest-ROI change you can make for conversion — and most of the restaurants I've audited have never even considered it.</p>
+
+      <p><em>(Sprint 27d covers leaks 5–7, the closing CTA, further reading, and a Sources section with full citations.)</em></p>
     </article>
   </div>
 </section>
