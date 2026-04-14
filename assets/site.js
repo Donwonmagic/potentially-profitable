@@ -1,6 +1,6 @@
   // Booking URL is now hard-coded on each .js-book anchor so that CTAs work
   // even with JavaScript disabled. This block is intentionally small.
-  const EMAIL = 'don@muntindigital.com';
+  const EMAIL = 'don@muntin.digital';
   document.querySelectorAll('.js-email').forEach((el) => {
     el.setAttribute('href', 'mailto:' + EMAIL);
     el.textContent = EMAIL;
@@ -224,7 +224,7 @@
       } catch (err) {
         formSubmit.classList.remove('is-loading');
         formSubmit.disabled = false;
-        showSubmitError('Something went wrong. Please try again or email don@muntindigital.com directly.');
+        showSubmitError('Something went wrong. Please try again or email don@muntin.digital directly.');
       }
     });
   }
