@@ -336,6 +336,84 @@
     line-height: 1.6;
   }
   .category-card.grade-na .bar .fill { background: var(--line-dark); width: 0% !important; }
+  .category-card .sublabel {
+    margin-top: 10px;
+    font-size: 11px;
+    line-height: 1.35;
+    color: var(--stone);
+    font-family: var(--font-body);
+    font-weight: 500;
+  }
+
+  /* Metric glossary — expandable "What these mean" section under the
+     category grid. Uses native <details>/<summary> so it's accessible
+     and zero-JS. */
+  .metric-glossary {
+    max-width: 680px;
+    margin: 24px auto 32px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--white);
+    overflow: hidden;
+  }
+  .metric-glossary summary {
+    padding: 18px 24px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+  }
+  .metric-glossary summary::-webkit-details-marker { display: none; }
+  .metric-glossary summary::after {
+    content: '+';
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--teal);
+    line-height: 1;
+  }
+  .metric-glossary[open] summary::after { content: '−'; }
+  .metric-glossary .glossary-body {
+    padding: 6px 24px 24px;
+    font-family: var(--font-body);
+    border-top: 1px solid var(--line);
+  }
+  .metric-glossary .glossary-body h4 {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 22px 0 6px;
+    letter-spacing: -0.005em;
+  }
+  .metric-glossary .glossary-body h4:first-child { margin-top: 14px; }
+  .metric-glossary .glossary-body p {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--stone);
+    margin: 0 0 10px;
+  }
+  .metric-glossary .glossary-body ul {
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--stone);
+    padding-left: 22px;
+    margin: 0 0 6px;
+  }
+  .metric-glossary .glossary-body li { margin-bottom: 6px; }
+  .metric-glossary .glossary-body strong { color: var(--ink); font-weight: 600; }
+  .metric-glossary .glossary-body .ranges {
+    font-size: 12px;
+    color: var(--stone-2);
+    font-family: var(--font-body);
+    margin-top: 4px;
+  }
 
   /* Core Web Vitals strip */
   .vitals-strip {
@@ -764,28 +842,67 @@
           <div class="label">Performance</div>
           <div class="cat-value">—</div>
           <div class="bar"><div class="fill" style="width:0%"></div></div>
+          <div class="sublabel">How fast pages load on a phone</div>
         </div>
         <div class="category-card" data-cat="accessibility">
           <div class="label">Accessibility</div>
           <div class="cat-value">—</div>
           <div class="bar"><div class="fill" style="width:0%"></div></div>
+          <div class="sublabel">Usable for every visitor</div>
         </div>
         <div class="category-card" data-cat="best-practices">
           <div class="label">Best Practices</div>
           <div class="cat-value">—</div>
           <div class="bar"><div class="fill" style="width:0%"></div></div>
+          <div class="sublabel">Modern, secure web standards</div>
         </div>
         <div class="category-card" data-cat="seo">
           <div class="label">SEO</div>
           <div class="cat-value">—</div>
           <div class="bar"><div class="fill" style="width:0%"></div></div>
+          <div class="sublabel">Whether Google can find you</div>
         </div>
         <div class="category-card" data-cat="restaurant">
           <div class="label">Restaurant</div>
           <div class="cat-value">—</div>
           <div class="bar"><div class="fill" style="width:0%"></div></div>
+          <div class="sublabel">Restaurant-specific checks</div>
         </div>
       </div>
+
+      <!-- Expandable glossary: plain-English explanations of each metric -->
+      <details class="metric-glossary">
+        <summary>What do these numbers actually mean?</summary>
+        <div class="glossary-body">
+          <h4>Performance (0–100)</h4>
+          <p>How fast your pages load and become usable on a phone. This is the metric that quietly costs restaurants the most money — Google's own research found that 53% of mobile visitors leave a page that takes longer than three seconds to load. A higher score means more people stick around long enough to see your menu.</p>
+          <p class="ranges"><strong>Good:</strong> 90+ &nbsp;·&nbsp; <strong>Needs work:</strong> 50–89 &nbsp;·&nbsp; <strong>Failing:</strong> &lt;50</p>
+
+          <h4>Accessibility (0–100)</h4>
+          <p>Whether people with vision impairments, motor differences, or screen readers can actually use your site. Half of this is legally required in many states. The other half is just good manners — about one in five of your customers benefits directly from an accessible site, and everyone benefits indirectly (better text contrast makes your site easier to read in sunlight too).</p>
+          <p class="ranges"><strong>Target:</strong> 100. Anything less means real people are being shut out.</p>
+
+          <h4>Best Practices (0–100)</h4>
+          <p>Whether your site follows modern, secure web standards — HTTPS, no vulnerable dependencies, no deprecated APIs. A well-built site should score 100 by default. A score under 90 usually points at a specific security or compatibility issue worth fixing.</p>
+          <p class="ranges"><strong>Target:</strong> 100.</p>
+
+          <h4>SEO (0–100)</h4>
+          <p>The technical SEO fundamentals — a working title tag, a meta description, a crawlable URL, a mobile-friendly viewport, structured data. This score measures whether Google <em>can</em> rank your site. It doesn't measure whether you <em>do</em> rank for specific keywords — that's a longer-term question about content and inbound links.</p>
+          <p class="ranges"><strong>Target:</strong> 100. Anything less is leaving ranking signals on the table.</p>
+
+          <h4>Restaurant Readiness (0–100)</h4>
+          <p>Our own rubric, specific to independent restaurant websites. Tracks ten things that matter for turning a mobile visitor into a booked table: menu readability, reservation visibility, hours, Google Business Profile, mobile speed, tap targets, image alt text, text contrast, crawlability, and responsive images. Each check is weighted — a confident pass is worth 1 point, a partial pass is worth 0.5, a failure is worth 0 — averaged into a 0–100 score. Non-restaurant sites show "N/A" here and don't count this category toward their overall score.</p>
+
+          <h4>Core Web Vitals</h4>
+          <p>Four specific timing and stability measurements Google uses for mobile performance ranking. These are the individual numbers that make up (most of) the Performance score above.</p>
+          <ul>
+            <li><strong>LCP — Largest Contentful Paint.</strong> How long until the biggest visible thing on the page (usually a hero image or headline) shows up. <em>Good: under 2.5s · Poor: over 4s.</em></li>
+            <li><strong>CLS — Cumulative Layout Shift.</strong> How much the page jumps around while loading. Shifting layouts are the reason you sometimes tap "Reserve" and accidentally hit an ad because the ad loaded a second late and pushed everything down. <em>Good: under 0.1 · Poor: over 0.25.</em></li>
+            <li><strong>TBT — Total Blocking Time.</strong> How long the page is frozen, unable to respond to taps or scrolls, while JavaScript runs. <em>Good: under 200ms · Poor: over 600ms.</em></li>
+            <li><strong>FCP — First Contentful Paint.</strong> How long until the very first pixel renders. Often earlier than LCP — this is "the page is doing something" versus "the page is usable." <em>Good: under 1.8s · Poor: over 3s.</em></li>
+          </ul>
+        </div>
+      </details>
 
       <!-- Core Web Vitals strip -->
       <div class="vitals-strip">
