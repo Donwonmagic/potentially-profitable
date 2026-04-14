@@ -986,7 +986,7 @@
   <div class="container">
     <div class="section-header reveal" style="text-align:center;">
       <span class="eyebrow">Want the real fix?</span>
-      <h2>I build restaurant websites<br>that don't need this audit.</h2>
+      <h2>I build restaurant websites<br>that ace this audit.</h2>
       <p class="final-sub">If the audit found more red than you're comfortable with, let's talk. Twenty minutes on Zoom, I'll walk through your results live, tell you what I'd do in what order, and give you a realistic budget and timeline. No pitch, no pressure.</p>
     </div>
 
@@ -1087,7 +1087,7 @@
 
   function verdictFor(score) {
     if (score >= 90) return "Your site is in great shape. Most restaurants would be thrilled to hit this score. Small polish items may remain — check the breakdown below.";
-    if (score >= 70) return "Solid foundation with room to tighten up. Focus on the red and amber items below — most are mechanical fixes that move you into the 90s.";
+    if (score >= 70) return "Solid foundation with room to tighten up. Focus on the red and amber items below — most are mechanical fixes that push your scores into the green (90+) zone.";
     if (score >= 50) return "The site works, but it's leaking conversions. The good news: the wins here — load speed, image alt text, meta tags, schema — take days, not months.";
     return "There's real work to do. Scores in this range usually track with a template site hitting its ceiling. The fastest path forward is often a fresh build — happy to walk through options on a 20-minute call.";
   }
@@ -1292,29 +1292,93 @@
   }
 
   // Best-effort heuristic: is the audited URL actually a restaurant site?
-  // We look at whether enough of the menu/ordering/reservation-specific
-  // audits are even RELEVANT in the result. For sites that aren't
-  // restaurants (say, muntin.digital itself), most of the Lighthouse
-  // audits still apply, but the "restaurant" framing doesn't — so we
-  // show "N/A" and EXCLUDE the restaurant category from the overall
-  // average. This prevents the tool from scoring non-restaurant sites
-  // poorly on the wrong rubric (including muntin.digital when curious
-  // visitors run the tool on us out of curiosity).
+  // Combines three signals:
+  //   1. An explicit deny list for sites we know aren't restaurants
+  //      (muntin.digital itself — prevents the self-credibility problem
+  //      where our own site scores poorly on our own tool).
+  //   2. A keyword match against the URL hostname, the page title as
+  //      reported by Lighthouse, and the meta description. We look for
+  //      cuisine words, service language, and booking-platform names
+  //      that only appear on restaurant sites.
+  //   3. A default of FALSE when no signals fire — so a random tech
+  //      company or blog gets "N/A" on Restaurant Readiness instead of
+  //      a misleading 0.
+  //
+  // This is a heuristic, not a classifier. False positives are rare
+  // (mostly on food blogs, which is close enough) and false negatives
+  // just mean a real restaurant occasionally sees N/A when their site
+  // is missing obvious restaurant keywords — a fixable UX problem if
+  // it comes up in real usage.
   function looksLikeRestaurant(auditedUrl, audits) {
-    if (!auditedUrl) return true;
+    if (!auditedUrl) return false;
+
+    // 1) Explicit deny list
+    var host = '';
     try {
-      var host = new URL(auditedUrl).hostname.toLowerCase();
-      // Non-restaurant domains we explicitly opt out of Restaurant
-      // Readiness scoring on — prevents the "our own site scores
-      // poorly on our own tool" credibility problem.
-      var NON_RESTAURANT_DOMAINS = ['muntin.digital', 'muntindigital.com'];
-      for (var i = 0; i < NON_RESTAURANT_DOMAINS.length; i++) {
-        if (host === NON_RESTAURANT_DOMAINS[i] || host.endsWith('.' + NON_RESTAURANT_DOMAINS[i])) {
-          return false;
-        }
+      host = new URL(auditedUrl).hostname.toLowerCase();
+    } catch (e) {
+      return false;
+    }
+    var NON_RESTAURANT_DOMAINS = ['muntin.digital', 'muntindigital.com'];
+    for (var i = 0; i < NON_RESTAURANT_DOMAINS.length; i++) {
+      if (host === NON_RESTAURANT_DOMAINS[i] || host.endsWith('.' + NON_RESTAURANT_DOMAINS[i])) {
+        return false;
       }
-    } catch (e) { /* fall through to default true */ }
-    return true;
+    }
+
+    // 2) Build a haystack from hostname + page title + meta description
+    //    Each Lighthouse audit exposes its related snippet differently,
+    //    so we reach for everything that might contain readable text.
+    var haystack = host;
+    function pluck(audit) {
+      if (!audit) return '';
+      var parts = [];
+      if (audit.displayValue) parts.push(String(audit.displayValue));
+      if (audit.title)        parts.push(String(audit.title));
+      if (audit.description)  parts.push(String(audit.description));
+      if (audit.details && audit.details.items && audit.details.items.length) {
+        audit.details.items.forEach(function(item){
+          if (!item) return;
+          if (item.snippet)     parts.push(String(item.snippet));
+          if (item.description) parts.push(String(item.description));
+          if (item.source && item.source.snippet) parts.push(String(item.source.snippet));
+        });
+      }
+      return parts.join(' ');
+    }
+    if (audits) {
+      haystack += ' ' + pluck(audits['document-title']);
+      haystack += ' ' + pluck(audits['meta-description']);
+    }
+    haystack = haystack.toLowerCase();
+
+    // 3) Keyword match against a curated list of strong restaurant
+    //    indicators. Each term is unambiguous enough that a single
+    //    match reliably identifies the site as a restaurant. Ambiguous
+    //    short words (bar, pub) are deliberately excluded to avoid
+    //    false positives like "barcamp" or "barry".
+    var RESTAURANT_TERMS = [
+      // Business-type words
+      'restaurant', 'restaurants', 'eatery', 'bistro', 'trattoria', 'osteria',
+      'brasserie', 'gastropub', 'pizzeria', 'taqueria', 'cantina', 'tavern',
+      'diner', 'bakery', 'patisserie', 'creamery', 'teahouse', 'steakhouse',
+      'cafe', 'café', 'chophouse', 'smokehouse',
+      // Cuisine words (unambiguous food signals)
+      'pizza', 'sushi', 'ramen', 'taco', 'burger', 'barbecue', 'bbq',
+      'seafood', 'dumpling', 'noodle', 'kebab', 'pho',
+      // Service and menu language
+      'prix fixe', 'tasting menu', 'chef', 'sommelier', 'menu', 'reservation',
+      'reservations', 'dine-in', 'dine in', 'brunch', 'happy hour',
+      'catering', 'takeout', 'take-out', 'table', 'dining room',
+      // Reservation / ordering platforms (site-level integrations)
+      'opentable', 'resy', 'tock.app', 'grubhub', 'doordash', 'ubereats',
+      'uber eats', 'chownow', 'toasttab'
+    ];
+
+    for (var j = 0; j < RESTAURANT_TERMS.length; j++) {
+      if (haystack.indexOf(RESTAURANT_TERMS[j]) !== -1) return true;
+    }
+    return false;
   }
 
   function renderReport(data, auditedUrl) {
