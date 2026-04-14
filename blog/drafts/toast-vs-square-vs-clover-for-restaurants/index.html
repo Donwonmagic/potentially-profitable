@@ -611,8 +611,70 @@
         </div>
       </div>
 
-      <p><em>(Sprint 29e adds the "what to ask before you sign" section, closing CTA, further reading, and sources.)</em></p>
+      <h2>What to ask your POS provider before you build a website</h2>
+      <p>Whichever POS you're evaluating, there are six questions I'd ask the sales rep before you sign anything. Write these down, email them to your rep, and save the reply — the answers will tell you more about the integration quality you're signing up for than any glossy product page will.</p>
+
+      <ol>
+        <li><strong>"Can I run a custom website on a modern stack and still use your POS as the engine?"</strong> This is the developer-ecosystem test. If the answer is "well, we have our own templates" — that's a no. You want a confident yes with a specific reference to their API documentation, and ideally an example of a custom site already doing it.</li>
+        <li><strong>"What exactly is in the monthly fee, and what's billed per transaction?"</strong> POS pricing is a hall of mirrors. Get the answer in writing, annotated, with examples calculated against your typical weekly volume. If the rep hesitates or falls back on "it depends," ask for a sample invoice from a restaurant similar to yours.</li>
+        <li><strong>"When I mark a dish 86'd on the POS, how long until the online menu reflects it?"</strong> The answer you want is "seconds" or "within one minute." If it's "next day" or "after a sync job runs overnight," your customers will keep ordering things you don't have — and your host stand will be the one apologizing for it.</li>
+        <li><strong>"What happens to my data if I leave in three years?"</strong> Every POS rep will promise you'll never want to leave. That's not the answer. The real question is: can I export menu, order history, customer profiles, and reservation data in a standard format (CSV, JSON), and does that export include everything I'd need to rebuild elsewhere without starting from zero?</li>
+        <li><strong>"Is there a cancellation fee or early termination clause — and can I see it in writing before I sign?"</strong> Read the small print. The three POS providers in this post have very different answers, and the answer matters a lot two years in, if the fit stops working.</li>
+        <li><strong>"If I wanted to integrate a custom website with your POS, what's the typical setup time?"</strong> This is my favorite question, because the answer tells you how often the rep has actually done it. Toast reps typically answer in weeks with a project outline. Square reps usually answer in days and point at the API docs. Clover reps sometimes have to ask a developer-relations person and get back to you — which is itself useful information.</li>
+      </ol>
+
+      <p>Take notes on the <em>shape</em> of each answer, not just the content. A confident, specific answer with documentation is a good sign. A confident answer with no documentation is a warning sign. A vague answer with a promise to follow up is a red flag — and the follow-up almost never comes.</p>
+
+      <p class="pull-quote">Take notes on the shape of each answer, not just the content.</p>
+
+      <h2>The POS and the website are one system</h2>
+      <p>The mistake I see most often in restaurant audits isn't picking the wrong POS. It's picking the POS without involving the person who's going to build the website — and then discovering the integration limits on launch week, when the options are all expensive. By the time you're wiring up the reservation flow, you're already locked into whatever the POS supports, and "we'll make it work" becomes a lot more expensive than a five-minute conversation at the POS evaluation stage would have been.</p>
+
+      <p>If you're mid-POS evaluation right now, bring your website strategy to the same meeting. If you're mid-website project with the POS already chosen, bring the POS's developer docs to the kickoff. The integration quality between these two systems matters more than either system alone — and the only way to get it right is to design them as one thing, up front.</p>
+
+      <div class="inline-cta">
+        <h4>Stuck between POS choices for your restaurant?</h4>
+        <p>Twenty minutes on Zoom. I'll walk through the specific POS question you're weighing, tell you how it maps to a real website build for your restaurant type, and give you an honest read on which tradeoffs you'll actually feel in year two. No pitch.</p>
+        <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </a>
+      </div>
     </article>
+
+    <aside class="further-reading">
+      <p class="label">Further reading</p>
+      <a href="/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/">
+        <h4>How Much Does a Custom Restaurant Website Cost in 2026?</h4>
+        <p>The full pricing breakdown — real line items, real examples, and what you're paying for that doesn't appear on the invoice.</p>
+      </a>
+      <a href="/blog/wix-vs-custom-for-restaurants/">
+        <h4>Wix vs. Custom for Restaurants: What Breaks First</h4>
+        <p>Six places Wix breaks for independent restaurants, the ROI math, and when Wix is actually the right call.</p>
+      </a>
+      <a href="/blog/why-your-restaurant-loses-reservations-every-night/">
+        <h4>Why Your Restaurant Loses Reservations Every Night</h4>
+        <p>The reservation funnel most restaurant sites leak through — six leaks, citations, and the fix for each one.</p>
+      </a>
+      <a href="/resources/restaurant-website-checklist/">
+        <h4>The Restaurant Website Checklist</h4>
+        <p>Twenty-three checks you can run on your own site in ten minutes.</p>
+      </a>
+      <a href="/audit/restaurants/">
+        <h4>Free Restaurant Website Audit</h4>
+        <p>Drop your URL and get a real mobile Lighthouse audit in about twenty seconds.</p>
+      </a>
+    </aside>
+
+    <aside class="sources" style="max-width:720px; margin:72px auto 0; padding-top:32px; border-top:1px solid var(--line); font-family:var(--font-body);">
+      <p style="font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--stone); margin:0 0 16px;">Sources</p>
+      <ol style="padding-left:24px; font-size:14px; line-height:1.7; color:var(--stone); margin:0;">
+        <li style="margin-bottom:10px;">Toast Inc., <cite>"Toast POS — product overview,"</cite> Toast. <a href="https://pos.toasttab.com/" target="_blank" rel="noopener" style="color:var(--teal);">pos.toasttab.com</a></li>
+        <li style="margin-bottom:10px;">Toast Inc., <cite>"Toast POS pricing,"</cite> Toast. <a href="https://pos.toasttab.com/pricing" target="_blank" rel="noopener" style="color:var(--teal);">pos.toasttab.com/pricing</a></li>
+        <li style="margin-bottom:10px;">Block, Inc., <cite>"Square for Restaurants,"</cite> Square. <a href="https://squareup.com/us/en/point-of-sale/restaurants" target="_blank" rel="noopener" style="color:var(--teal);">squareup.com</a></li>
+        <li style="margin-bottom:10px;">Block, Inc., <cite>"Square Developer Documentation,"</cite> Square Developer. <a href="https://developer.squareup.com/docs" target="_blank" rel="noopener" style="color:var(--teal);">developer.squareup.com</a></li>
+        <li style="margin-bottom:0;">Clover Network, <cite>"Clover for Restaurants,"</cite> Clover. <a href="https://www.clover.com/restaurants" target="_blank" rel="noopener" style="color:var(--teal);">clover.com/restaurants</a></li>
+      </ol>
+    </aside>
   </div>
 </section>
 
