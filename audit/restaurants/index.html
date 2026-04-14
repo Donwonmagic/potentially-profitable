@@ -1711,6 +1711,111 @@
     return urls;
   }
 
+  // Extract every scrap of readable text we can pull out of the PSI
+  // response. Used as a fallback signal for self-hosted restaurant
+  // actions — catches sites like Tacombi that run ordering on their
+  // own domain (tacombi.com/order) with no recognizable third-party
+  // platform hostname to detect. If the page title is "Order Online |
+  // Tacombi", or an anchor snippet contains "Reserve a Table", or the
+  // meta description talks about "order your favorite tacos online",
+  // we see the phrase and classify it correctly even though no
+  // known platform was loaded.
+  function extractPageText(audits) {
+    if (!audits) return '';
+    var parts = [];
+    function pluck(audit) {
+      if (!audit) return;
+      if (audit.displayValue) parts.push(String(audit.displayValue));
+      if (audit.title)        parts.push(String(audit.title));
+      if (audit.description)  parts.push(String(audit.description));
+      if (audit.details && audit.details.items && audit.details.items.length) {
+        for (var i = 0; i < audit.details.items.length; i++) {
+          var item = audit.details.items[i];
+          if (!item) continue;
+          if (typeof item.text === 'string')    parts.push(item.text);
+          if (typeof item.label === 'string')   parts.push(item.label);
+          if (typeof item.snippet === 'string') parts.push(item.snippet);
+          if (item.node) {
+            if (typeof item.node.nodeLabel === 'string') parts.push(item.node.nodeLabel);
+            if (typeof item.node.snippet === 'string')   parts.push(item.node.snippet);
+          }
+        }
+      }
+    }
+    pluck(audits['document-title']);
+    pluck(audits['meta-description']);
+    // These audits often surface anchor snippets with text content
+    pluck(audits['link-text']);
+    pluck(audits['crawlable-anchors']);
+    pluck(audits['link-name']);
+    pluck(audits['tap-targets']);
+    pluck(audits['color-contrast']);
+    return parts.join(' ').toLowerCase();
+  }
+
+  // Text patterns that almost exclusively indicate restaurant actions.
+  // Used as a fallback when no known third-party platform was detected,
+  // to catch self-hosted ordering/reservation systems whose only signal
+  // is the button text ("ORDER ONLINE") rather than a third-party
+  // hostname. Each phrase is multi-word and specific enough that false
+  // positives on non-restaurant sites are rare (a blog post about
+  // "order a book online" won't match "order online" because the
+  // pattern requires the phrase as a contiguous action phrase, not
+  // substring-of-other-content).
+  var SELF_HOSTED_PATTERNS = {
+    ordering: [
+      /\border\s+online\b/,
+      /\border\s+now\b/,
+      /\bonline\s+ordering\b/,
+      /\bplace\s+an?\s+order\b/,
+      /\bstart\s+an?\s+order\b/,
+      /\border\s+here\b/,
+      /\border\s+for\s+(?:pickup|delivery|takeout|take[- ]out)\b/,
+      /\border\s+ahead\b/,
+      /\border\s+takeout\b/,
+      /\border\s+delivery\b/
+    ],
+    reservations: [
+      /\breserve\s+a\s+table\b/,
+      /\bbook\s+a\s+table\b/,
+      /\bmake\s+a\s+reservation\b/,
+      /\bmake\s+reservations\b/,
+      /\breserve\s+your\s+table\b/,
+      /\bbook\s+your\s+table\b/,
+      /\breservation\s+request\b/,
+      /\brequest\s+a\s+reservation\b/,
+      /\bbook\s+now\b/,
+      /\breserve\s+now\b/
+    ]
+  };
+
+  // Text-based fallback detection: if no known third-party platform
+  // matched via URL, scan the combined page text for action phrases.
+  // Returns the same shape as detectPlatforms() so callers can
+  // drop-in substitute the result.
+  function detectSelfHostedActions(keys, pageText) {
+    if (!pageText || !keys || !keys.length) return { detected: false, found: [] };
+    var found = [];
+    var seen = {};
+    for (var k = 0; k < keys.length; k++) {
+      var patterns = SELF_HOSTED_PATTERNS[keys[k]];
+      if (!patterns) continue;
+      var label;
+      if (keys[k] === 'ordering')          label = 'Self-hosted ordering';
+      else if (keys[k] === 'reservations') label = 'Self-hosted reservations';
+      else continue;
+      if (seen[label]) continue;
+      for (var p = 0; p < patterns.length; p++) {
+        if (patterns[p].test(pageText)) {
+          seen[label] = true;
+          found.push({ label: label, name: label });
+          break;
+        }
+      }
+    }
+    return { detected: found.length > 0, found: found };
+  }
+
   // Scan networkUrls for any host pattern belonging to any of the
   // platform keys listed. Returns the set of detected platform names,
   // deduplicated. `keys` is an array so callers can accept "ordering OR
@@ -1842,7 +1947,7 @@
     return { cls: 'fail', ch: '✗' };
   }
 
-  function evaluatePriorityCheck(def, audits, allUrls) {
+  function evaluatePriorityCheck(def, audits, allUrls, pageText) {
     // Returns { mark, title, note } or null if the check can't run.
     if (def.type === 'audit') {
       var audit = audits && audits[def.audit];
@@ -1860,6 +1965,26 @@
 
     if (def.type === 'platform') {
       var detection = detectPlatforms(def.platforms, allUrls);
+
+      // Fallback: if no known third-party platform was matched AND the
+      // check covers ordering or reservations, try the text-based
+      // detection for self-hosted restaurant actions. Catches sites
+      // like Tacombi that run their own ordering on their own domain
+      // with no recognizable platform hostname — the "ORDER ONLINE"
+      // anchor text or page title is still a strong restaurant signal.
+      if (!detection.detected && pageText) {
+        var textKeys = [];
+        for (var k = 0; k < def.platforms.length; k++) {
+          if (def.platforms[k] === 'ordering' || def.platforms[k] === 'reservations') {
+            textKeys.push(def.platforms[k]);
+          }
+        }
+        if (textKeys.length) {
+          var textDetection = detectSelfHostedActions(textKeys, pageText);
+          if (textDetection.detected) detection = textDetection;
+        }
+      }
+
       // Detected -> pass. Missing -> warn (not fail): many restaurants
       // legitimately don't use one platform or the other, so we give
       // half credit and explain what they might consider adding.
@@ -1877,11 +2002,12 @@
     return null;
   }
 
-  function renderPriorityChecks(audits, allUrls) {
+  function renderPriorityChecks(audits, allUrls, pageText) {
     var container = document.getElementById('priorityItems');
     if (!container) return { score: 0, passCount: 0, totalCount: 0 };
     container.innerHTML = '';
-    if (!allUrls) allUrls = extractAllUrls(audits);
+    if (!allUrls)  allUrls  = extractAllUrls(audits);
+    if (!pageText) pageText = extractPageText(audits);
     var passCount = 0, totalCount = 0;
     // Weighted rollup: each check contributes (credit × weight) to the
     // numerator and (weight) to the denominator. Final readiness is
@@ -1890,7 +2016,7 @@
     var weightedCredit = 0, totalWeight = 0;
 
     PRIORITY_CHECKS.forEach(function(def){
-      var result = evaluatePriorityCheck(def, audits, allUrls);
+      var result = evaluatePriorityCheck(def, audits, allUrls, pageText);
       if (!result) return;
 
       totalCount++;
@@ -2044,17 +2170,21 @@
     var seo  = Math.round(((cats.seo && cats.seo.score) || 0) * 100);
 
     // Extract the combined URL list (network-requests + anchor hrefs
-    // from every audit's detail snippets) ONCE per audit run. Used by
-    // both the priority checks (to detect ordering/reservation/phone/
-    // maps integrations) and looksLikeRestaurant (which uses platform
-    // hits as its most reliable "is this a restaurant" signal).
-    var allUrls = extractAllUrls(audits);
+    // from every audit's detail snippets) and the combined readable
+    // page text (title + meta description + audit snippets) ONCE
+    // per audit run. Used by both the priority checks (to detect
+    // ordering/reservation/phone/maps integrations with platform
+    // and self-hosted-text fallback) and looksLikeRestaurant (which
+    // uses platform hits as its most reliable "is this a restaurant"
+    // signal).
+    var allUrls  = extractAllUrls(audits);
+    var pageText = extractPageText(audits);
 
     // Compute Restaurant Readiness score from the priority checks
     // BEFORE the overall — we want it to contribute to the average
     // for real restaurant sites, but be excluded for non-restaurants
     // (like muntin.digital itself) so we don't look bad on our own tool.
-    var priorityResult  = renderPriorityChecks(audits, allUrls);
+    var priorityResult  = renderPriorityChecks(audits, allUrls, pageText);
     var isRestaurantSite = looksLikeRestaurant(auditedUrl, audits, allUrls);
     var restaurantScore = priorityResult.score;
 
