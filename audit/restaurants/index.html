@@ -1624,6 +1624,16 @@
         { pattern: 'openstreetmap',    name: 'OpenStreetMap' },
         { pattern: 'maplibre',         name: 'MapLibre' }
       ]
+    },
+    // Click-to-call phone. tel: hrefs never show up in network-requests
+    // (nothing is actually fetched), so this only matches against the
+    // combined URL list that includes anchor hrefs pulled from audit
+    // detail snippets.
+    phone: {
+      label: 'Click-to-call',
+      hosts: [
+        { pattern: 'tel:',  name: 'Click-to-call' }
+      ]
     }
   };
 
@@ -1634,6 +1644,68 @@
       for (var i = 0; i < na.details.items.length; i++) {
         var item = na.details.items[i];
         if (item && item.url) urls.push(String(item.url).toLowerCase());
+      }
+    }
+    return urls;
+  }
+
+  // Walk every audit's details.items looking for anchor hrefs. Lighthouse's
+  // accessibility, SEO, and linking audits surface flagged elements with
+  // either an explicit `href` field or an outerHTML `snippet` string —
+  // together these give us a much fuller picture of the page's outbound
+  // links than network-requests alone, which only captures auto-loaded
+  // resources. A site with a "RESERVE A TABLE" button pointing at
+  // opentable.com shows up here even though Lighthouse never fetches the
+  // link target. Also captures tel: click-to-call hrefs which never
+  // appear in network-requests at all.
+  function extractAnchorHrefs(audits) {
+    var hrefs = [];
+    var seen = {};
+    if (!audits) return hrefs;
+    var HREF_RE = /href\s*=\s*["']([^"']+)["']/gi;
+    function addHref(raw) {
+      if (!raw) return;
+      var h = String(raw).toLowerCase();
+      if (!seen[h]) { seen[h] = true; hrefs.push(h); }
+    }
+    function scanSnippet(snippet) {
+      if (!snippet) return;
+      var m;
+      HREF_RE.lastIndex = 0;
+      while ((m = HREF_RE.exec(snippet)) !== null) addHref(m[1]);
+    }
+    function walkItem(item) {
+      if (!item) return;
+      if (typeof item.href === 'string') addHref(item.href);
+      if (item.node && typeof item.node.snippet === 'string') scanSnippet(item.node.snippet);
+      if (typeof item.snippet === 'string') scanSnippet(item.snippet);
+      if (item.source && typeof item.source.snippet === 'string') scanSnippet(item.source.snippet);
+      if (item.subItems && Array.isArray(item.subItems.items)) {
+        for (var s = 0; s < item.subItems.items.length; s++) walkItem(item.subItems.items[s]);
+      }
+    }
+    for (var key in audits) {
+      var audit = audits[key];
+      if (!audit || !audit.details || !audit.details.items) continue;
+      var items = audit.details.items;
+      for (var i = 0; i < items.length; i++) walkItem(items[i]);
+    }
+    return hrefs;
+  }
+
+  // Combined URL list: every network request + every anchor href we can
+  // extract from audit detail snippets. detectPlatforms() doesn't care
+  // about source — an OpenTable <script> fetch and an OpenTable <a href>
+  // are equally valid signals that the site uses OpenTable.
+  function extractAllUrls(audits) {
+    var urls = extractNetworkUrls(audits);
+    var seen = {};
+    for (var i = 0; i < urls.length; i++) seen[urls[i]] = true;
+    var hrefs = extractAnchorHrefs(audits);
+    for (var j = 0; j < hrefs.length; j++) {
+      if (!seen[hrefs[j]]) {
+        seen[hrefs[j]] = true;
+        urls.push(hrefs[j]);
       }
     }
     return urls;
@@ -1679,10 +1751,18 @@
     return all.slice(0, -1).join(', ') + ', and ' + all[all.length - 1];
   }
 
+  // Each check carries a `weight` used for the Restaurant Readiness
+  // score. A missing viewport tag is catastrophic (every phone visitor
+  // sees a broken desktop site), while a missing online-ordering
+  // platform might just mean "we're a takeout-only spot with a phone
+  // number" — so they should NOT cost the same in the rollup. Weights
+  // reflect how much each check actually drives restaurant conversions
+  // in practice.
   var PRIORITY_CHECKS = [
     {
       type: 'audit',
       audit: 'viewport',
+      weight: 2.0, // catastrophic if missing — site is unusable on phones
       anchor: '#mobile',
       pass: 'Mobile viewport is configured',
       passNote: 'Your pages render at device width — table stakes for a site where most visitors are on a phone deciding where to eat tonight.',
@@ -1692,6 +1772,7 @@
     {
       type: 'audit',
       audit: 'tap-targets',
+      weight: 1.0,
       anchor: '#mobile',
       pass: 'Reserve / Order buttons are thumb-friendly',
       passNote: 'Your action buttons are big enough to hit on the first try with a thumb holding a phone in one hand.',
@@ -1701,6 +1782,7 @@
     {
       type: 'audit',
       audit: 'color-contrast',
+      weight: 1.0,
       anchor: '#trust',
       pass: 'Menu text has readable contrast',
       passNote: 'A 55-year-old standing in bright sunlight can read your menu descriptions. That is the actual bar for a mobile restaurant menu.',
@@ -1710,6 +1792,7 @@
     {
       type: 'audit',
       audit: 'font-size',
+      weight: 1.0,
       anchor: '#mobile',
       pass: 'Menu text is legible without zooming',
       passNote: 'Your body text is above the mobile readability threshold — visitors do not have to pinch-zoom to read the menu.',
@@ -1718,7 +1801,18 @@
     },
     {
       type: 'platform',
+      platforms: ['phone'],
+      weight: 1.5, // real conversion driver for takeout / walk-in
+      anchor: '#trust',
+      pass: 'Click-to-call phone is present',
+      passNote: 'A tappable tel: link is on your page — mobile visitors can call you with one tap, which matters for takeout orders, reservation questions, and "are you still open" calls.',
+      fail: 'No click-to-call phone detected',
+      failNote: "We did not find a tel: link on your page. Every restaurant gets calls, and on mobile a plain-text phone number is a wasted tap — wrap it in <a href=\"tel:+1...\"> so visitors can call with one thumb. If you intentionally don't accept phone calls, ignore this check."
+    },
+    {
+      type: 'platform',
       platforms: ['maps'],
+      weight: 1.0,
       anchor: '#trust',
       pass: 'Maps & directions are embedded',
       passNote: '{detected} detected on your site — first-time visitors can tap once to get turn-by-turn directions to your door.',
@@ -1730,6 +1824,7 @@
       // Either counts: takeout-only spots only need ordering;
       // fine-dining only needs reservations; many restaurants have both.
       platforms: ['ordering', 'reservations'],
+      weight: 1.5, // the single biggest direct-conversion lever
       anchor: '#trust',
       pass: 'Online ordering or reservations detected',
       passNote: '{detected} is integrated on your site — direct online conversions keep commission-hungry marketplaces out of your margins.',
@@ -1747,7 +1842,7 @@
     return { cls: 'fail', ch: '✗' };
   }
 
-  function evaluatePriorityCheck(def, audits, networkUrls) {
+  function evaluatePriorityCheck(def, audits, allUrls) {
     // Returns { mark, title, note } or null if the check can't run.
     if (def.type === 'audit') {
       var audit = audits && audits[def.audit];
@@ -1764,7 +1859,7 @@
     }
 
     if (def.type === 'platform') {
-      var detection = detectPlatforms(def.platforms, networkUrls);
+      var detection = detectPlatforms(def.platforms, allUrls);
       // Detected -> pass. Missing -> warn (not fail): many restaurants
       // legitimately don't use one platform or the other, so we give
       // half credit and explain what they might consider adding.
@@ -1782,24 +1877,31 @@
     return null;
   }
 
-  function renderPriorityChecks(audits) {
+  function renderPriorityChecks(audits, allUrls) {
     var container = document.getElementById('priorityItems');
     if (!container) return { score: 0, passCount: 0, totalCount: 0 };
     container.innerHTML = '';
-    var passCount = 0, totalCount = 0, creditSum = 0;
-    var networkUrls = extractNetworkUrls(audits);
+    if (!allUrls) allUrls = extractAllUrls(audits);
+    var passCount = 0, totalCount = 0;
+    // Weighted rollup: each check contributes (credit × weight) to the
+    // numerator and (weight) to the denominator. Final readiness is
+    // (sumCredit / sumWeight) × 100 so a missing viewport (weight 2.0)
+    // costs twice as much as a missing font-size check (weight 1.0).
+    var weightedCredit = 0, totalWeight = 0;
 
     PRIORITY_CHECKS.forEach(function(def){
-      var result = evaluatePriorityCheck(def, audits, networkUrls);
+      var result = evaluatePriorityCheck(def, audits, allUrls);
       if (!result) return;
 
       totalCount++;
-      // Weighted credit toward the Restaurant Readiness score:
+      var w = typeof def.weight === 'number' ? def.weight : 1.0;
+      totalWeight += w;
+
       // pass = 1.0, warn = 0.5, fail = 0
       var credit = 0;
       if (result.mark.cls === 'pass') { passCount++; credit = 1.0; }
       else if (result.mark.cls === 'warn') { credit = 0.5; }
-      creditSum += credit;
+      weightedCredit += credit * w;
 
       var row = document.createElement('div');
       row.className = 'priority-item';
@@ -1810,7 +1912,9 @@
       container.appendChild(row);
     });
 
-    var restaurantScore = totalCount ? Math.round((creditSum / totalCount) * 100) : 0;
+    var restaurantScore = totalWeight > 0
+      ? Math.round((weightedCredit / totalWeight) * 100)
+      : 0;
 
     var tally = document.getElementById('priorityTally');
     if (tally) {
@@ -1823,24 +1927,29 @@
   }
 
   // Best-effort heuristic: is the audited URL actually a restaurant site?
-  // Combines three signals:
+  // Combines four signals in order of reliability:
   //   1. An explicit deny list for sites we know aren't restaurants
   //      (muntin.digital itself — prevents the self-credibility problem
   //      where our own site scores poorly on our own tool).
-  //   2. A keyword match against the URL hostname, the page title as
-  //      reported by Lighthouse, and the meta description. We look for
-  //      cuisine words, service language, and booking-platform names
-  //      that only appear on restaurant sites.
-  //   3. A default of FALSE when no signals fire — so a random tech
+  //   2. Platform detection in network requests + anchor hrefs. If the
+  //      site loads or links to Toast, Square, OpenTable, Resy, Tock,
+  //      BentoBox, Popmenu, or any other platform from PLATFORM_PATTERNS'
+  //      ordering/reservations groups — it's a restaurant, full stop.
+  //      This is the most reliable single signal we have; a dentist
+  //      doesn't integrate OpenTable, an accountant doesn't load Toast.
+  //   3. A keyword match against the URL hostname, the page title as
+  //      reported by Lighthouse, and the meta description. Catches
+  //      restaurants whose site doesn't auto-load a platform widget
+  //      (e.g. a single-location spot with only a phone number).
+  //   4. A default of FALSE when no signals fire — so a random tech
   //      company or blog gets "N/A" on Restaurant Readiness instead of
   //      a misleading 0.
   //
-  // This is a heuristic, not a classifier. False positives are rare
-  // (mostly on food blogs, which is close enough) and false negatives
-  // just mean a real restaurant occasionally sees N/A when their site
-  // is missing obvious restaurant keywords — a fixable UX problem if
-  // it comes up in real usage.
-  function looksLikeRestaurant(auditedUrl, audits) {
+  // Adding signal 2 (platform detection) on top of the original keyword
+  // heuristic catches restaurants whose name is a surname ("romanos.com",
+  // "garcia.com") or whose meta description doesn't include obvious
+  // cuisine words — previously we'd wrongly mark them N/A.
+  function looksLikeRestaurant(auditedUrl, audits, allUrls) {
     if (!auditedUrl) return false;
 
     // 1) Explicit deny list
@@ -1857,7 +1966,17 @@
       }
     }
 
-    // 2) Build a haystack from hostname + page title + meta description
+    // 2) Platform signal: if we see any ordering or reservation platform
+    //    in the combined URL list, it's a restaurant. We deliberately
+    //    exclude the 'maps' and 'phone' categories from this signal —
+    //    every local business embeds Google Maps, every local business
+    //    has a phone number, neither alone is a restaurant tell.
+    if (allUrls && allUrls.length) {
+      var rd = detectPlatforms(['ordering', 'reservations'], allUrls);
+      if (rd.detected) return true;
+    }
+
+    // 3) Build a haystack from hostname + page title + meta description
     //    Each Lighthouse audit exposes its related snippet differently,
     //    so we reach for everything that might contain readable text.
     var haystack = host;
@@ -1883,7 +2002,7 @@
     }
     haystack = haystack.toLowerCase();
 
-    // 3) Keyword match against a curated list of strong restaurant
+    // 4) Keyword match against a curated list of strong restaurant
     //    indicators. Each term is unambiguous enough that a single
     //    match reliably identifies the site as a restaurant. Ambiguous
     //    short words (bar, pub) are deliberately excluded to avoid
@@ -1924,12 +2043,19 @@
     var bp   = Math.round(((cats['best-practices'] && cats['best-practices'].score) || 0) * 100);
     var seo  = Math.round(((cats.seo && cats.seo.score) || 0) * 100);
 
+    // Extract the combined URL list (network-requests + anchor hrefs
+    // from every audit's detail snippets) ONCE per audit run. Used by
+    // both the priority checks (to detect ordering/reservation/phone/
+    // maps integrations) and looksLikeRestaurant (which uses platform
+    // hits as its most reliable "is this a restaurant" signal).
+    var allUrls = extractAllUrls(audits);
+
     // Compute Restaurant Readiness score from the priority checks
     // BEFORE the overall — we want it to contribute to the average
     // for real restaurant sites, but be excluded for non-restaurants
     // (like muntin.digital itself) so we don't look bad on our own tool.
-    var priorityResult  = renderPriorityChecks(audits);
-    var isRestaurantSite = looksLikeRestaurant(auditedUrl, audits);
+    var priorityResult  = renderPriorityChecks(audits, allUrls);
+    var isRestaurantSite = looksLikeRestaurant(auditedUrl, audits, allUrls);
     var restaurantScore = priorityResult.score;
 
     var overall;
