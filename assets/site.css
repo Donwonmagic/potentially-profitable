@@ -27,7 +27,7 @@ p{margin:0}
 .logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:22px;font-weight:600;letter-spacing:-0.02em}
 .logo-mark{width:28px;height:28px;flex:0 0 28px}
 .tm{font-size:0.4em;vertical-align:super;font-weight:400;opacity:0.5;letter-spacing:0;margin-left:1px}
-.tm[aria-hidden="true"]{font-size:16px;opacity:0.6;margin-left:3px}
+.tm[aria-hidden="true"]{font-size:16px;opacity:0.7;margin-left:-12px;margin-top:10px}
 .nav-links{display:flex;gap:36px;font-size:15px;color:var(--ink-soft)}
 .nav-links a{position:relative;transition:color var(--t-fast) var(--ease)}
 .nav-links a::after{content:'';position:absolute;left:0;right:0;bottom:-6px;height:1px;background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform var(--t-med) var(--ease-out)}
@@ -204,6 +204,13 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 .contact-detail svg{color:var(--teal);flex:0 0 20px}
 .contact-detail a{color:var(--ink-soft);transition:color var(--t-fast) var(--ease)}
 .contact-detail a:hover{color:var(--teal)}
+/* Contact details sit inside the .final section which is dark-ink. Scope
+   cream text + accent-colored icons so the contact info is legible on a
+   dark background. */
+.final .contact-detail{color:rgba(250,247,242,0.78)}
+.final .contact-detail svg{color:#E8A87C}
+.final .contact-detail a{color:var(--cream)}
+.final .contact-detail a:hover{color:#E8A87C}
 .contact-form-wrap{position:relative}
 .intake-form{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(28px,4vw,44px);box-shadow:0 30px 70px -30px rgba(20,22,26,0.12)}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -229,10 +236,10 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 .check-label input{display:none}
 .check-label:has(input:checked){background:var(--teal);color:var(--cream);border-color:var(--teal)}
 .form-submit{width:100%;justify-content:center;padding:16px 28px;margin-top:4px}
-.form-submit .btn-loading{display:inline-flex}
+.form-submit .btn-loading{display:none}
 .form-submit .btn-arrow{transition:transform var(--t-med) var(--ease-out)}
 .form-submit.is-loading .btn-text,.form-submit.is-loading .btn-arrow{display:none}
-.form-submit.is-loading .btn-loading{display:inline-flex !important}
+.form-submit.is-loading .btn-loading{display:inline-flex}
 .form-note{margin-top:14px;font-size:13px;color:var(--stone);text-align:center}
 .form-success{text-align:center;padding:60px 40px;background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:0 30px 70px -30px rgba(20,22,26,0.12)}
 .success-icon{color:var(--teal);margin-bottom:20px;animation:pop-in 500ms var(--ease-out)}
