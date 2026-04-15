@@ -1,0 +1,94 @@
+# ============================================================
+# Cloudflare Pages headers file
+# ============================================================
+#
+# This file configures HTTP response headers for assets served
+# by Cloudflare Pages. It is processed at deploy time by the
+# Cloudflare Pages build pipeline and is completely ignored by
+# GitHub Pages — so it's safe to keep this file in the repo
+# during a parallel-hosting period.
+#
+# Syntax reference:
+#   https://developers.cloudflare.com/pages/configuration/headers/
+#
+# Rule order matters: more specific paths should be declared
+# BEFORE more general ones, because Pages applies the first
+# matching rule for headers that share the same key.
+#
+# Editing this file:
+#   1. Update the rules below
+#   2. Commit + push — Cloudflare Pages triggers a redeploy
+#      automatically and purges its edge cache for changed
+#      assets
+#   3. If visitors are seeing stale content after an update,
+#      manually purge cache in Cloudflare dashboard:
+#      Caching -> Configuration -> Purge Everything
+#
+# ============================================================
+
+
+# ------------------------------------------------------------
+# Static assets (CSS, JS)
+# ------------------------------------------------------------
+# 30-day browser cache. We don't fingerprint filenames, so the
+# tradeoff is: visitors pick up site.css updates within a month
+# without action; if you need an immediate refresh, either
+# purge Cloudflare cache in the dashboard or bump a ?v=N query
+# parameter on the <link> tag in the HTML.
+/assets/*
+  Cache-Control: public, max-age=2592000
+
+
+# ------------------------------------------------------------
+# Brand assets (SVGs, PNGs, logo marks)
+# ------------------------------------------------------------
+# Same 30-day browser cache. These rarely change — when they
+# do (new logo, new OG card), same refresh instructions apply.
+/brand/*
+  Cache-Control: public, max-age=2592000
+
+
+# ------------------------------------------------------------
+# Favicons and web manifest
+# ------------------------------------------------------------
+# 7-day cache. Favicons are the most visible to Google Search
+# indexing, so we want a reasonable refresh window without
+# forcing re-downloads on every visit.
+/favicon.ico
+  Cache-Control: public, max-age=604800
+
+/brand/favicons/*
+  Cache-Control: public, max-age=604800
+
+
+# ------------------------------------------------------------
+# HTML pages
+# ------------------------------------------------------------
+# Short browser cache (10 min) and a slightly longer edge
+# cache (1 hour) so content updates propagate fast. The
+# `stale-while-revalidate` tells browsers it's OK to show
+# the cached copy while silently fetching a fresh one in
+# the background — gives us instant perceived loads without
+# blocking the update path.
+/
+  Cache-Control: public, max-age=600, s-maxage=3600, stale-while-revalidate=86400
+
+/*.html
+  Cache-Control: public, max-age=600, s-maxage=3600, stale-while-revalidate=86400
+
+
+# ------------------------------------------------------------
+# Security headers — applied to EVERY response
+# ------------------------------------------------------------
+# These are the defensive baseline every production static
+# site should have. None of them change how the site behaves
+# for normal visitors, but they reduce the blast radius of
+# the most common attack categories: clickjacking, MIME
+# sniffing, referrer leakage, and overly permissive browser
+# API access.
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
