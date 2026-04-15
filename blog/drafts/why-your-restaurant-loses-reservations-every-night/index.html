@@ -416,7 +416,7 @@
 <main id="main">
 
 <!-- ============ POST HERO ============ -->
-<section class="hero" style="padding-bottom:32px;">
+<section class="hero hero-tight">
   <div class="container">
     <div class="post-hero">
       <span class="eyebrow">Muntin Digital · Writing</span>
@@ -431,7 +431,7 @@
       <p class="post-meta">
         <time datetime="2026-05-03">May 3, 2026</time>  ·  10 min read  ·  By <strong>Don</strong>
       </p>
-      <div style="margin-top:24px; display:flex; justify-content:center;">
+      <div class="row-center">
         <button type="button" id="listen-btn" class="listen-btn" aria-pressed="false" data-state="idle">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/>
@@ -583,13 +583,13 @@
       </a>
     </aside>
 
-    <aside class="sources" style="max-width:680px; margin:72px auto 0; padding-top:32px; border-top:1px solid var(--line); font-family:var(--font-body);">
-      <p style="font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--stone); margin:0 0 16px;">Sources</p>
-      <ol style="padding-left:24px; font-size:14px; line-height:1.7; color:var(--stone); margin:0;">
-        <li style="margin-bottom:10px;">Daniel An, <cite>"Find out how you stack up to new industry benchmarks for mobile page speed,"</cite> Think with Google, February 2017. <a href="https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/" target="_blank" rel="noopener" style="color:var(--teal);">thinkwithgoogle.com</a></li>
-        <li style="margin-bottom:10px;">Jakob Nielsen and Kara Pernice, <cite>"Usability of Local Business Websites,"</cite> Nielsen Norman Group. <a href="https://www.nngroup.com/articles/local-business/" target="_blank" rel="noopener" style="color:var(--teal);">nngroup.com</a></li>
-        <li style="margin-bottom:10px;">Raluca Budiu, <cite>"Fitts's Law and Its Applications in UX,"</cite> Nielsen Norman Group. <a href="https://www.nngroup.com/articles/fittss-law/" target="_blank" rel="noopener" style="color:var(--teal);">nngroup.com</a></li>
-        <li style="margin-bottom:0;">Baymard Institute, <cite>"48 Cart Abandonment Rate Statistics,"</cite> Baymard Research. <a href="https://baymard.com/lists/cart-abandonment-rate" target="_blank" rel="noopener" style="color:var(--teal);">baymard.com</a></li>
+    <aside class="sources">
+      <p class="sources-label">Sources</p>
+      <ol>
+        <li>Daniel An, <cite>"Find out how you stack up to new industry benchmarks for mobile page speed,"</cite> Think with Google, February 2017. <a href="https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/" target="_blank" rel="noopener">thinkwithgoogle.com</a></li>
+        <li>Jakob Nielsen and Kara Pernice, <cite>"Usability of Local Business Websites,"</cite> Nielsen Norman Group. <a href="https://www.nngroup.com/articles/local-business/" target="_blank" rel="noopener">nngroup.com</a></li>
+        <li>Raluca Budiu, <cite>"Fitts's Law and Its Applications in UX,"</cite> Nielsen Norman Group. <a href="https://www.nngroup.com/articles/fittss-law/" target="_blank" rel="noopener">nngroup.com</a></li>
+        <li>Baymard Institute, <cite>"48 Cart Abandonment Rate Statistics,"</cite> Baymard Research. <a href="https://baymard.com/lists/cart-abandonment-rate" target="_blank" rel="noopener">baymard.com</a></li>
       </ol>
     </aside>
   </div>
@@ -598,23 +598,57 @@
 </main>
 
 <footer>
-  <div class="container foot">
-    <div>
-      <span style="display:inline-flex;align-items:flex-start;gap:2px">
-        <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53">
-        <sup class="tm" aria-hidden="true">™</sup>
-      </span>
-      <div style="margin-top:6px">Structure Brings Clarity.</div>
+  <div class="container">
+    <div class="foot-cta">
+      <div class="foot-cta-text">Ready to build something worth the time?</div>
+      <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      </a>
     </div>
-    <div style="text-align:right">
-      <div style="color:var(--cream); margin-bottom:4px">don@muntin.digital</div>
+
+    <div class="foot-grid">
+      <div class="foot-col foot-brand">
+        <a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home">
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <sup class="tm" aria-hidden="true">&#8482;</sup>
+        </a>
+        <p class="foot-tagline">Structure Brings Clarity.</p>
+        <p class="foot-blurb">A one-person studio in Silver Spring, MD, building custom websites, brands, and social media for independent restaurants and lifestyle brands across the DMV and beyond.</p>
+      </div>
+
+      <div class="foot-col">
+        <h4 class="foot-heading">Explore</h4>
+        <ul class="foot-links">
+          <li><a href="/#services">Services</a></li>
+          <li><a href="/for/restaurants/">For restaurants</a></li>
+          <li><a href="/work/">Work</a></li>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/#about">About</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4 class="foot-heading">Free tools</h4>
+        <ul class="foot-links">
+          <li><a href="/tools/restaurant-audit/">Restaurant audit</a></li>
+          <li><a href="/resources/restaurant-website-checklist/">Website checklist</a></li>
+        </ul>
+        <h4 class="foot-heading foot-heading-sub">Contact</h4>
+        <ul class="foot-links">
+          <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
+          <li><a href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a call</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <p class="foot-copy">&copy; 2026 Muntin Digital&#8482; &middot; Maryland LLC &middot; Silver Spring, MD</p>
       <nav class="foot-legal" aria-label="Legal">
-        <a href="/terms.html">Terms of Service</a>
-        <a href="/privacy.html">Privacy Policy</a>
+        <a href="/terms.html">Terms</a>
+        <a href="/privacy.html">Privacy</a>
         <a href="/accessibility.html">Accessibility</a>
-        <a href="/cookies.html">Cookie Policy</a>
+        <a href="/cookies.html">Cookies</a>
       </nav>
-      <div>© 2026 Muntin Digital™ · Maryland LLC · Based in Silver Spring, MD · Serving US small businesses</div>
     </div>
   </div>
 </footer>

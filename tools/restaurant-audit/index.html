@@ -855,6 +855,17 @@
     color: #0f6b35;
     font-size: 14px;
   }
+  .email-report-error {
+    margin-top: 16px;
+    padding: 18px 22px;
+    background: #fce9e1;
+    border: 1px solid #f4b69e;
+    border-left: 4px solid #B8541A;
+    border-radius: 12px;
+    color: #8a3010;
+    font-size: 14px;
+    line-height: 1.55;
+  }
   .email-disclaimer {
     font-size: 12px;
     color: var(--stone);
@@ -916,11 +927,11 @@
 </nav>
 
 <!-- ============ HERO + FORM ============ -->
-<section class="hero" style="padding-bottom:40px;">
+<section class="hero hero-medium">
   <div class="container">
     <div class="audit-hero">
       <span class="eyebrow">Free tool · Powered by Google Lighthouse</span>
-      <h1 style="margin-top:20px;">
+      <h1 class="mt-20">
         How is your<br>
         <span class="serif-italic">restaurant website</span><br>
         actually doing?
@@ -1141,7 +1152,7 @@
           <input type="hidden" name="source" value="/tools/restaurant-audit/" />
           <input type="hidden" name="audited_url" id="emailReportUrl" value="" />
           <input type="hidden" name="overall_score" id="emailReportScore" value="" />
-          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+          <input type="text" name="_gotcha" class="honeypot" tabindex="-1" autocomplete="off" />
 
           <input
             type="email"
@@ -1161,8 +1172,7 @@
           Got it — I'll email you within 24 hours with the report and the two biggest wins for your site.
         </div>
 
-        <div id="emailReportError" hidden role="alert"
-             style="margin-top:16px; padding:18px 22px; background:#fce9e1; border:1px solid #f4b69e; border-left-width:4px; border-left-color:#B8541A; border-radius:12px; color:#8a3010; font-size:14px; line-height:1.55;"></div>
+        <div id="emailReportError" class="email-report-error" hidden role="alert"></div>
       </div>
 
     </div>
@@ -1173,13 +1183,13 @@
 <!-- ============ ALWAYS-VISIBLE FINAL CTA ============ -->
 <section class="block bg-cream2 final">
   <div class="container">
-    <div class="section-header reveal" style="text-align:center;">
+    <div class="section-header reveal section-center">
       <span class="eyebrow">Want the real fix?</span>
       <h2>I build restaurant websites<br>that ace this audit.</h2>
       <p class="final-sub">If the audit found more red than you're comfortable with, let's talk. Twenty minutes on Zoom, I'll walk through your results live, tell you what I'd do in what order, and give you a realistic budget and timeline. No pitch, no pressure.</p>
     </div>
 
-    <div class="hero-ctas reveal" style="justify-content:center; margin-top:32px;">
+    <div class="hero-ctas reveal hero-ctas-center">
       <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </a>
@@ -1903,7 +1913,7 @@
       type: 'audit',
       audit: 'color-contrast',
       weight: 1.0,
-      anchor: '#mobile',
+      anchor: '#trust',
       pass: 'Menu text has readable contrast',
       passNote: 'A 55-year-old standing in bright sunlight can read your menu descriptions. That is the actual bar for a mobile restaurant menu.',
       fail: 'Some menu text has poor contrast',
