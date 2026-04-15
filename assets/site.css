@@ -26,7 +26,15 @@ p{margin:0}
 .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px}
 .logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:22px;font-weight:600;letter-spacing:-0.02em}
 .logo-mark{width:28px;height:28px;flex:0 0 28px}
-.tm{font-size:0.4em;vertical-align:super;font-weight:400;opacity:0.5;letter-spacing:0;margin-left:1px}
+/* Trademark mark attached to 'Muntin Digital' wordmarks. Used in the
+   top nav (plain <sup class="tm">) and the footer (with aria-hidden="true"
+   because the footer's lockup image already has 'Muntin Digital' as alt
+   text, so screen readers should not read 'trademark' twice).
+   vertical-align: text-top anchors the character's top edge to the top
+   of the parent's cap letters, so the TM sits above the 'M' / 'D' rather
+   than floating at the baseline. Larger 0.55em font size makes it more
+   visible in the nav context. */
+.tm{font-size:0.55em;vertical-align:text-top;font-weight:400;opacity:0.55;letter-spacing:0;margin-left:2px;line-height:1}
 .tm[aria-hidden="true"]{font-size:16px;opacity:0.7;margin-left:-12px;margin-top:10px}
 .nav-links{display:flex;gap:36px;font-size:15px;color:var(--ink-soft)}
 .nav-links a{position:relative;transition:color var(--t-fast) var(--ease)}
