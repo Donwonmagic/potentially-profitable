@@ -1,3 +1,21 @@
+  // Opt out of the browser's automatic scroll restoration so that navigating
+  // to a new page from low on the previous page doesn't leave the new page
+  // scrolled to an arbitrary offset. We handle hash targets ourselves below;
+  // for all other loads, start at the top.
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  window.addEventListener('pageshow', () => {
+    if (window.location.hash) {
+      const target = document.querySelector(window.location.hash);
+      if (target) {
+        target.scrollIntoView();
+        return;
+      }
+    }
+    window.scrollTo(0, 0);
+  });
+
   // Booking URL is now hard-coded on each .js-book anchor so that CTAs work
   // even with JavaScript disabled. This block is intentionally small.
   const EMAIL = 'don@muntin.digital';

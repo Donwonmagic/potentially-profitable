@@ -1895,7 +1895,7 @@
       type: 'audit',
       audit: 'color-contrast',
       weight: 1.0,
-      anchor: '#trust',
+      anchor: '#mobile',
       pass: 'Menu text has readable contrast',
       passNote: 'A 55-year-old standing in bright sunlight can read your menu descriptions. That is the actual bar for a mobile restaurant menu.',
       fail: 'Some menu text has poor contrast',
@@ -1915,7 +1915,7 @@
       type: 'platform',
       platforms: ['phone'],
       weight: 1.5, // real conversion driver for takeout / walk-in
-      anchor: '#trust',
+      anchor: '#basics',
       pass: 'Click-to-call phone is present',
       passNote: 'A tappable tel: link is on your page — mobile visitors can call you with one tap, which matters for takeout orders, reservation questions, and "are you still open" calls.',
       fail: 'No click-to-call phone detected',
@@ -1925,7 +1925,7 @@
       type: 'platform',
       platforms: ['maps'],
       weight: 1.0,
-      anchor: '#trust',
+      anchor: '#conversions',
       pass: 'Maps & directions are embedded',
       passNote: '{detected} detected on your site — first-time visitors can tap once to get turn-by-turn directions to your door.',
       fail: 'No map or directions embed detected',
@@ -1937,7 +1937,7 @@
       // fine-dining only needs reservations; many restaurants have both.
       platforms: ['ordering', 'reservations'],
       weight: 1.5, // the single biggest direct-conversion lever
-      anchor: '#trust',
+      anchor: '#conversions',
       pass: 'Online ordering or reservations detected',
       passNote: '{detected} is integrated on your site — direct online conversions keep commission-hungry marketplaces out of your margins.',
       fail: "Couldn't detect a known ordering or reservation platform",
