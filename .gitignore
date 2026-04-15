@@ -4,3 +4,7 @@
 !.dev.vars.example
 .env*
 !.env.example
+
+# Cloudflare Workers staging directory — populated at build time by the
+# rsync command in wrangler.jsonc. Never checked in.
+/dist/
