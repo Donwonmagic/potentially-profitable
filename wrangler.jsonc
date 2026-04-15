@@ -8,28 +8,32 @@
   // Cloudflare Workers with Static Assets refuses to treat the repo
   // root as an assets directory (it would try to upload wrangler.jsonc,
   // .git/, .github/workflows/, docs/, and everything else). We stage a
-  // clean dist/ subdirectory at build time via rsync — copying every
-  // file that should be served as a static asset and excluding everything
-  // that shouldn't — and point the assets directive at dist/ instead.
+  // clean dist/ subdirectory at build time by tarring the repo (with
+  // excludes) and extracting into dist/.
   //
-  // The rsync excludes cover:
-  //   dist/             — the staging target itself (avoid infinite loop)
-  //   .git/             — source control metadata
-  //   .github/          — GitHub Actions workflows (never served)
-  //   docs/             — developer runbooks, not user-facing
-  //   node_modules/     — not present today, exclude defensively
-  //   .wrangler/        — Wrangler's local cache
-  //   .env*             — any secrets files
-  //   wrangler.jsonc    — this config file itself (not a static asset)
-  //   package*.json     — defensive exclude if we ever add Node tooling
-  //   .gitignore        — git metadata
+  // Why tar and not rsync: Cloudflare's build container is minimal and
+  // does NOT have rsync installed. It DOES have tar, mkdir, and sh.
+  // The pipe `tar -cf - ... | tar -xf - -C dist` is the POSIX-standard
+  // way to do a selective directory copy without external tools.
+  //
+  // The excludes cover:
+  //   dist          — the staging target itself (avoid infinite loop)
+  //   .git          — source control metadata
+  //   .github       — GitHub Actions workflows (never served)
+  //   docs          — developer runbooks, not user-facing
+  //   node_modules  — not present today, exclude defensively
+  //   .wrangler     — Wrangler's local cache
+  //   .env*         — any secrets files
+  //   wrangler.jsonc — this config file itself (not a static asset)
+  //   package*.json — defensive exclude if we ever add Node tooling
+  //   .gitignore    — git metadata
   //
   // The _headers file at the repo root IS copied into dist/ because it's
   // a static asset that Workers Static Assets interprets at deploy time
   // for per-path cache and security headers. Same with /favicon.ico,
   // /sitemap.xml, /robots.txt, /CNAME.
   "build": {
-    "command": "mkdir -p dist && rsync -a --delete --exclude='dist/' --exclude='.git/' --exclude='.github/' --exclude='docs/' --exclude='node_modules/' --exclude='.wrangler/' --exclude='.env*' --exclude='wrangler.jsonc' --exclude='package.json' --exclude='package-lock.json' --exclude='.gitignore' . dist/"
+    "command": "mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md . | tar -xf - -C dist"
   },
   "assets": {
     "directory": "./dist"
