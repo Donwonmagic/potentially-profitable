@@ -86,9 +86,37 @@
 # the most common attack categories: clickjacking, MIME
 # sniffing, referrer leakage, and overly permissive browser
 # API access.
+#
+# Content-Security-Policy rationale:
+#   default-src 'self'             — by default, only load from our origin
+#   script-src                     — self for /assets/site.js, plausible.io
+#                                    for analytics, 'unsafe-inline' because
+#                                    we still use inline JSON-LD blocks and
+#                                    the Plausible init shim
+#   style-src                      — self + fonts.googleapis.com (the four
+#                                    pages still on Google Fonts) + inline
+#                                    since we use style attributes and
+#                                    page-level <style> blocks
+#   font-src                       — self (/assets/fonts/*) + gstatic.com
+#                                    for the four remaining Google-Fonts
+#                                    pages
+#   img-src                        — self + data: URIs for the inline SVGs
+#                                    we use in the form select dropdown
+#                                    and various small icons
+#   connect-src                    — self + formspree.io (contact + checklist
+#                                    forms) + plausible.io (analytics beacons)
+#                                    + googleapis.com for the PageSpeed
+#                                    Insights API the audit tool calls
+#   form-action 'self' formspree   — forms can only submit to us or formspree
+#   frame-ancestors 'none'         — reinforces X-Frame-Options: DENY
+#   frame-src 'none'               — we don't embed anything in iframes
+#   object-src 'none'              — no legacy plugins allowed
+#   base-uri 'self'                — prevents <base href> injection
+#   upgrade-insecure-requests      — auto-upgrade any stray http:// refs
 /*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://formspree.io https://plausible.io https://www.googleapis.com; form-action 'self' https://formspree.io; frame-ancestors 'none'; frame-src 'none'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests

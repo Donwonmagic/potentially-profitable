@@ -88,14 +88,14 @@ Priority URLs to request, in this order:
 ```
 https://muntin.digital/
 https://muntin.digital/for/restaurants/
-https://muntin.digital/audit/restaurants/
+https://muntin.digital/tools/restaurant-audit/
 https://muntin.digital/resources/restaurant-website-checklist/
 https://muntin.digital/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/
 https://muntin.digital/work/
 https://muntin.digital/work/irish-inn-glen-echo/
 https://muntin.digital/work/off-day-collective/
 https://muntin.digital/blog/
-https://muntin.digital/audit/
+https://muntin.digital/tools/
 ```
 
 Google caps manual indexing requests to about **10 per day** per

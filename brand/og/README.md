@@ -20,8 +20,8 @@ pages fall back to `/brand/og-image.png` (the master card).
 | `work-irish-inn.svg` | `work-irish-inn.png` | `/work/irish-inn-glen-echo/` |
 | `work-off-day-collective.svg` | `work-off-day-collective.png` | `/work/off-day-collective/` |
 | `checklist.svg` | `checklist.png` | `/resources/restaurant-website-checklist/` |
-| `audit.svg` | `audit.png` | `/audit/` |
-| `audit-restaurants.svg` | `audit-restaurants.png` | `/audit/restaurants/` |
+| `audit.svg` | `audit.png` | `/tools/` |
+| `audit-restaurants.svg` | `audit-restaurants.png` | `/tools/restaurant-audit/` |
 
 ## Why SVG + PNG
 
