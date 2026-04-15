@@ -1,4 +1,16 @@
-:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--teal-dark:#143640;--teal-tint:#E8F1F3;--rust:#B8541A;--stone:#6B6B6B;--stone-2:#9A958B;--line:#E8E2D6;--line-dark:#D4CCBC;--white:#FFFFFF;--font-display:'Fraunces',Georgia,'Times New Roman',serif;--font-body:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--max:1200px;--pad-x:clamp(20px,4vw,64px);--ease:cubic-bezier(.22,.61,.36,1);--ease-out:cubic-bezier(.16,1,.3,1);--t-fast:180ms;--t-med:420ms;--t-slow:900ms;--r-sm:8px;--r-md:14px;--r-lg:22px}
+:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--teal-dark:#143640;--teal-tint:#E8F1F3;--rust:#B8541A;--stone:#6B6B6B;--stone-2:#9A958B;--line:#E8E2D6;--line-dark:#D4CCBC;--white:#FFFFFF;--font-display:'Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;--font-body:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--max:1200px;--pad-x:clamp(20px,4vw,64px);--ease:cubic-bezier(.22,.61,.36,1);--ease-out:cubic-bezier(.16,1,.3,1);--t-fast:180ms;--t-med:420ms;--t-slow:900ms;--r-sm:8px;--r-md:14px;--r-lg:22px}
+/* Web font CLS prevention. Fraunces (display) and Inter (body) load
+   asynchronously from Google Fonts, so the browser first paints text in
+   the fallback font and then swaps when the web font arrives. That swap
+   causes Cumulative Layout Shift unless the fallback font has the same
+   character metrics as the web font. These @font-face rules create
+   metric-matched aliases of Georgia and Arial that occupy the same
+   space as Fraunces and Inter respectively — so the swap is invisible
+   in the layout. The fallback names are inserted into the --font-display
+   and --font-body chains above so the cascade picks them up before
+   falling through to system fonts. */
+@font-face{font-family:'Fraunces Fallback';src:local('Georgia');size-adjust:105%;ascent-override:92%;descent-override:24%;line-gap-override:0%}
+@font-face{font-family:'Inter Fallback';src:local('Arial');size-adjust:107%;ascent-override:90%;descent-override:22%;line-gap-override:0%}
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{margin:0;font-family:var(--font-body);font-size:17px;line-height:1.6;color:var(--ink);background:var(--cream);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
