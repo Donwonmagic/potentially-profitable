@@ -102,7 +102,7 @@ Open that URL in a fresh incognito window and verify:
 
 - [ ] Homepage loads with correct content, colors, fonts
 - [ ] Navigation works (click around to Services, Restaurants, Work, Blog)
-- [ ] `https://muntin-digital.pages.dev/tools/restaurant-audit/` loads and the audit form accepts a URL
+- [ ] `https://muntin-digital.pages.dev/tools/audits/restaurant/` loads and the audit form accepts a URL
 - [ ] Running a real audit on the pages.dev version returns results
 - [ ] `https://muntin-digital.pages.dev/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/` loads the cost post
 - [ ] `https://muntin-digital.pages.dev/resources/restaurant-website-checklist/` loads the checklist

@@ -88,7 +88,7 @@ Priority URLs to request, in this order:
 ```
 https://muntin.digital/
 https://muntin.digital/for/restaurants/
-https://muntin.digital/tools/restaurant-audit/
+https://muntin.digital/tools/audits/restaurant/
 https://muntin.digital/resources/restaurant-website-checklist/
 https://muntin.digital/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/
 https://muntin.digital/work/
