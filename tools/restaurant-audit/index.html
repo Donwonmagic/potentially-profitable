@@ -702,6 +702,54 @@
   }
   .priority-item .body span { color: var(--stone); font-size: 13.5px; line-height: 1.5; }
   .priority-item .body a { color: var(--teal); border-bottom: 1px dashed currentColor; }
+  /* Effort + time chips — shown on actionable items (fail + unverified)
+     so the owner sees at a glance whether they can fix it themselves
+     today or need to put it on a developer's ticket. */
+  .priority-item .body .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    border-radius: 999px;
+    border: 1px solid var(--line-dark);
+    white-space: nowrap;
+  }
+  .chip-self     { background: #e6f4ec; border-color: #bfe0cb; color: #0f6b35; }
+  .chip-self::before { content: '●'; color: #1f9d55; font-size: 9px; }
+  .chip-dev      { background: #eef4fa; border-color: #c9d9ea; color: #2a5285; }
+  .chip-dev::before  { content: '●'; color: #3b7bc4; font-size: 9px; }
+  .chip-rebuild  { background: #fce9e1; border-color: #f4b69e; color: #8a3010; }
+  .chip-rebuild::before { content: '●'; color: var(--rust); font-size: 9px; }
+  .chip-time     { background: var(--cream-2); color: var(--stone); }
+
+  /* "Why this matters" — one-line impact framing, subtle but present.
+     Helps owners prioritize by consequence, not by test order. */
+  .priority-item .body .impact-note {
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: rgba(31, 78, 91, 0.035);
+    border-left: 2px solid var(--teal);
+    border-radius: 0 6px 6px 0;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .impact-note .impact-label {
+    font-weight: 600;
+    color: var(--teal);
+    letter-spacing: 0.02em;
+  }
+
   /* Inline "Is this right?" feedback UI — renders under the note for
      any check we couldn't verify. Clicking Yes/No overrides the result
      locally, fires a Plausible event, and re-renders. */
@@ -2098,6 +2146,9 @@
       audit: 'viewport',
       weight: 2.0, // catastrophic if missing — site is unusable on phones
       anchor: '#mobile',
+      effort: 'dev',       // 'self' | 'dev' | 'rebuild'
+      minutes: 5,          // rough time-to-fix
+      impact: 'Without a viewport tag, every phone visitor sees a broken desktop layout. Roughly 70% of restaurant traffic is mobile, which means a missing viewport is 70% of your traffic bouncing on contact.',
       pass: 'Your site fits on a phone screen',
       passNote: 'Your pages render at phone width automatically — the single most important mobile-readiness check, and you pass it.',
       fail: 'Your site is not set up for phones',
@@ -2110,6 +2161,9 @@
       audit: 'tap-targets',
       weight: 1.0,
       anchor: '#mobile',
+      effort: 'dev',
+      minutes: 20,
+      impact: "Every missed tap is a frustrated customer. On a restaurant site where the most-tapped button is usually Reserve or Order, small tap targets translate directly into lost bookings.",
       pass: 'Your buttons are big enough to tap',
       passNote: 'Your action buttons are big enough to hit on the first try with a thumb holding a phone in one hand.',
       fail: 'Some of your buttons are too small to tap reliably',
@@ -2122,6 +2176,9 @@
       audit: 'color-contrast',
       weight: 1.0,
       anchor: '#trust',
+      effort: 'dev',
+      minutes: 15,
+      impact: "Roughly 1 in 4 adults over 40 has some form of age-related vision difficulty. If your menu text fails contrast, you're leaving money on the table from the exact demographic that dines out most.",
       pass: 'Your menu text is readable for everyone',
       passNote: 'A 55-year-old standing in bright sunlight can read your menu descriptions. That is the actual bar for a mobile restaurant menu — and you meet it.',
       fail: 'Some of your text is hard to read',
@@ -2134,6 +2191,9 @@
       audit: 'font-size',
       weight: 1.0,
       anchor: '#mobile',
+      effort: 'dev',
+      minutes: 10,
+      impact: "Text below 16px forces iOS to zoom on focus and frustrates every mobile reader. Menu descriptions that look fine on a laptop are often unreadable on a phone at arm's length.",
       pass: 'Your text is legible without pinch-zooming',
       passNote: 'Your body text is above the mobile readability threshold — visitors do not have to pinch-zoom to read the menu.',
       fail: 'Your text is too small on a phone',
@@ -2145,6 +2205,9 @@
       type: 'phone',
       weight: 1.5, // real conversion driver for takeout / walk-in
       anchor: '#basics',
+      effort: 'self',
+      minutes: 2,
+      impact: "On mobile, every tap that requires copying and pasting instead of tapping costs you customers. Phone calls are still how most takeout orders and reservation questions reach independent restaurants.",
       pass: 'Visitors can tap your phone number to call',
       passNote: 'A tappable phone number is on your page — mobile visitors can call you with one tap, which matters for takeout orders, reservation questions, and "are you still open" calls.',
       passNoteText: 'We found a phone number in your page text, but it is not wrapped in a clickable <code>tel:</code> link. Mobile visitors have to copy the number into their dialer manually instead of tapping to call. Ask your developer to wrap the number in <code>&lt;a href="tel:+1..."&gt;</code>.',
@@ -2158,6 +2221,9 @@
       platforms: ['maps'],
       weight: 1.0,
       anchor: '#conversions',
+      effort: 'dev',
+      minutes: 15,
+      impact: "The path from 'I might check this place out' to 'I am driving there' should be one tap. An embedded map or a Maps link cuts directions friction to zero — plain-text addresses add a whole copy-paste flow before the customer even arrives.",
       pass: 'Visitors can get directions with one tap',
       passNote: '{detected} is on your site — first-time visitors can tap once to get turn-by-turn directions to your door.',
       fail: null, // never fail this check — absence is always unverified
@@ -2172,6 +2238,9 @@
       platforms: ['ordering', 'reservations'],
       weight: 1.5, // the single biggest direct-conversion lever
       anchor: '#conversions',
+      effort: 'dev',
+      minutes: 60,
+      impact: "This is the single biggest direct-conversion lever on a restaurant website. Every reservation taken on your own site (instead of OpenTable) keeps the full booking. Every order through your own Toast or Square checkout (instead of DoorDash) keeps the full margin.",
       pass: 'Visitors can order or book a table online',
       passNote: '{detected} on your site — direct online conversions keep commission-hungry marketplaces out of your margins.',
       passNoteText: "We found text that strongly suggests self-hosted ordering or reservations on your site (something like 'ORDER ONLINE' or 'RESERVE A TABLE'). We couldn't tie it to a specific platform we recognize, but the signal is there.",
@@ -2184,6 +2253,9 @@
       type: 'menu-format',
       weight: 1.0,
       anchor: '#basics',
+      effort: 'rebuild',
+      minutes: 240,
+      impact: "PDF menus are the most common mobile-UX sin on restaurant sites. They don't zoom gracefully, they don't link to online ordering, and they make every menu update (new special, changed price) dependent on a developer with InDesign. Replacing a PDF menu with a real HTML menu page typically lifts mobile dwell time by 30-50%.",
       pass: 'Your menu opens as a real HTML page',
       passNote: 'Visitors can read your menu on a phone without downloading a PDF or pinching to zoom. This is table stakes for mobile restaurant UX.',
       fail: 'Your menu is a PDF or an image',
@@ -2195,6 +2267,9 @@
       type: 'schema',
       weight: 0.5, // bonus — nice to have, not critical
       anchor: '#findability',
+      effort: 'dev',
+      minutes: 20,
+      impact: "Restaurant schema markup is how Google learns your hours, cuisine, and price range for local search. Restaurants with proper schema show up in the 'restaurants near me' rich results with photos and ratings — restaurants without it get a plain blue link. The difference in click-through rate is meaningful.",
       pass: 'Google knows your site is a restaurant',
       passNote: 'Your site publishes Restaurant schema markup (structured data that tells Google exactly what kind of business you are). This helps you show up in Google\'s "restaurants near me" Rich Results with hours, price range, and menu snippets.',
       fail: null,
@@ -2424,11 +2499,53 @@
         ? '<span class="override-badge">You confirmed</span>'
         : '';
 
+      // Chips row: only shown on actionable items (fail + unverified).
+      // Passes don't need "fix yourself in 2 minutes" because there's
+      // nothing to fix. An unverified item shows its chips because the
+      // owner might click "No I don't have this" and immediately want
+      // to know how hard it is to fix.
+      var chipsHtml = '';
+      if (result.mark.cls !== 'pass' && (def.effort || def.minutes)) {
+        var chips = [];
+        if (def.effort === 'self') {
+          chips.push('<span class="chip chip-effort chip-self" title="You can usually do this yourself">Fix yourself</span>');
+        } else if (def.effort === 'dev') {
+          chips.push('<span class="chip chip-effort chip-dev" title="Your developer or site maintainer needs to handle this">Ask your developer</span>');
+        } else if (def.effort === 'rebuild') {
+          chips.push('<span class="chip chip-effort chip-rebuild" title="This usually requires rebuilding or redesigning a section of the site">Rebuild needed</span>');
+        }
+        if (typeof def.minutes === 'number') {
+          var timeLabel;
+          if (def.minutes < 10)        timeLabel = '~' + def.minutes + ' min';
+          else if (def.minutes < 60)   timeLabel = '~' + def.minutes + ' min';
+          else if (def.minutes < 180)  timeLabel = '~' + Math.round(def.minutes / 60) + ' hr';
+          else                         timeLabel = 'Half-day project';
+          chips.push('<span class="chip chip-time">' + timeLabel + '</span>');
+        }
+        if (chips.length) {
+          chipsHtml = '<div class="chips">' + chips.join('') + '</div>';
+        }
+      }
+
+      // Impact / "why this matters" copy: only shown on actionable
+      // items (fail + unverified). Non-alarming, framed in lost
+      // customers or lost revenue, not in Lighthouse numbers.
+      var impactHtml = '';
+      if (result.mark.cls !== 'pass' && def.impact) {
+        impactHtml =
+          '<div class="impact-note">' +
+            '<span class="impact-label">Why this matters:</span> ' +
+            escapeHtml(def.impact) +
+          '</div>';
+      }
+
       row.innerHTML =
         '<div class="mark ' + result.mark.cls + '" aria-hidden="true">' + result.mark.ch + '</div>' +
         '<div class="body">' +
           '<strong>' + escapeHtml(result.title) + overrideBadge + '</strong>' +
           '<span>' + result.note + '</span>' +
+          chipsHtml +
+          impactHtml +
           feedbackHtml +
         '</div>' +
         '<a class="link" href="/resources/restaurant-website-checklist/' + def.anchor + '">Learn more →</a>';
@@ -2463,12 +2580,19 @@
     var tally = document.getElementById('priorityTally');
     if (tally) {
       if (totalCount) {
-        var parts = [passCount + ' of ' + (totalCount - unverifiedCount) + ' confirmed checks passed'];
-        if (unverifiedCount > 0) {
-          parts.push(unverifiedCount + ' couldn\'t be verified');
+        var confirmedCount = totalCount - unverifiedCount;
+        var failCount = confirmedCount - passCount;
+        // Lead with the honest phrasing: what we CONFIRMED, not a
+        // scary abstract score. Readiness comes last as a summary.
+        var pieces = [];
+        if (confirmedCount > 0) {
+          pieces.push(passCount + ' of ' + confirmedCount + ' confirmed checks passed');
         }
-        parts.push('readiness ' + restaurantScore + '/100');
-        tally.textContent = parts.join(' · ');
+        if (unverifiedCount > 0) {
+          pieces.push(unverifiedCount + ' couldn\'t be verified — answer the "is this right?" questions below to refine your score');
+        }
+        pieces.push('restaurant readiness: ' + restaurantScore + '/100');
+        tally.textContent = pieces.join(' · ');
       } else {
         tally.textContent = 'No restaurant-priority data available';
       }
@@ -2527,7 +2651,17 @@
       if (rd.detected) return true;
     }
 
-    // 3) Build a haystack from hostname + page title + meta description
+    // 3) Schema.org signal: if the site publishes JSON-LD markup with
+    //    @type Restaurant / FoodEstablishment / Bakery / CafeOrCoffeeShop
+    //    etc., or any LocalBusiness with a servesCuisine field, it's
+    //    telling Google explicitly "this is a restaurant". Catches sites
+    //    that have no recognized ordering platform but correctly mark
+    //    themselves up for local SEO — which is exactly the pattern a
+    //    well-built small restaurant site tends to follow.
+    var schemaPageText = extractPageText(audits);
+    if (detectRestaurantSchema(schemaPageText, allUrls)) return true;
+
+    // 4) Build a haystack from hostname + page title + meta description
     //    Each Lighthouse audit exposes its related snippet differently,
     //    so we reach for everything that might contain readable text.
     var haystack = host;
@@ -2553,7 +2687,7 @@
     }
     haystack = haystack.toLowerCase();
 
-    // 4) Keyword match against a curated list of strong restaurant
+    // 5) Keyword match against a curated list of strong restaurant
     //    indicators. Each term is unambiguous enough that a single
     //    match reliably identifies the site as a restaurant. Ambiguous
     //    short words (bar, pub) are deliberately excluded to avoid
