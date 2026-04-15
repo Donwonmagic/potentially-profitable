@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Cookie Policy for Muntin Digital, detailing how we use cookies and your privacy choices.">
   <title>Cookie Policy | Muntin Digital™</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
-  <link rel="apple-touch-icon" href="/brand/mark/mark-square-ink.svg" />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@6..72,400;6..72,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Self-hosted fonts. @font-face rules live in site.css; preload only
+       the two critical above-the-fold weights (Fraunces 500 for the display
+       headline and Inter 400 for body copy) to keep first paint fast without
+       over-fetching. Metric-matched fallbacks in site.css prevent CLS. -->
+  <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
   <!-- Privacy-friendly analytics by Plausible -->
   <script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
   <script>

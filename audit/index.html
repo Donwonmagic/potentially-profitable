@@ -49,9 +49,12 @@
 }
 </script>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&amp;family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Self-hosted fonts. @font-face rules live in site.css; preload only
+     the two critical above-the-fold weights (Fraunces 500 for the display
+     headline and Inter 400 for body copy) to keep first paint fast without
+     over-fetching. Metric-matched fallbacks in site.css prevent CLS. -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
 
 <script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
 <script>
