@@ -1,3 +1,21 @@
+  // Opt out of the browser's automatic scroll restoration so that navigating
+  // to a new page from low on the previous page doesn't leave the new page
+  // scrolled to an arbitrary offset. We handle hash targets ourselves below;
+  // for all other loads, start at the top.
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  window.addEventListener('pageshow', () => {
+    if (window.location.hash) {
+      const target = document.querySelector(window.location.hash);
+      if (target) {
+        target.scrollIntoView();
+        return;
+      }
+    }
+    window.scrollTo(0, 0);
+  });
+
   // Booking URL is now hard-coded on each .js-book anchor so that CTAs work
   // even with JavaScript disabled. This block is intentionally small.
   const EMAIL = 'don@muntin.digital';
@@ -126,6 +144,29 @@
         }
       });
     });
+
+    // Toggle the submit button's .ready state whenever the form's
+    // completeness could have changed. This does not run validation or
+    // surface any errors — it just signals visually that the button is
+    // ready to accept a submit.
+    function checkFormReady() {
+      if (!formSubmit) return;
+      const required = intakeForm.querySelectorAll('input[required], textarea[required]');
+      let allFilled = true;
+      for (const f of required) {
+        if (!f.value.trim()) { allFilled = false; break; }
+        if (f.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.value)) {
+          allFilled = false; break;
+        }
+      }
+      const hasService = intakeForm.querySelectorAll('input[name="services"]:checked').length > 0;
+      formSubmit.classList.toggle('ready', allFilled && hasService);
+    }
+    intakeForm.querySelectorAll('input, textarea, select').forEach((field) => {
+      field.addEventListener('input', checkFormReady);
+      field.addEventListener('change', checkFormReady);
+    });
+    checkFormReady();
 
     function validateField(field) {
       const errId = field.getAttribute('aria-describedby');
