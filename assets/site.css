@@ -255,11 +255,17 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 .check-label:hover{border-color:var(--teal);background:var(--teal-tint)}
 .check-label input{display:none}
 .check-label:has(input:checked){background:var(--teal);color:var(--cream);border-color:var(--teal)}
-.form-submit{width:100%;justify-content:center;padding:16px 28px;margin-top:4px}
+.form-submit{width:100%;justify-content:center;padding:16px 28px;margin-top:4px;transition:background var(--t-med) var(--ease),color var(--t-med) var(--ease),box-shadow var(--t-med) var(--ease),transform var(--t-fast) var(--ease)}
 .form-submit .btn-loading{display:none}
 .form-submit .btn-arrow{transition:transform var(--t-med) var(--ease-out)}
 .form-submit.is-loading .btn-text,.form-submit.is-loading .btn-arrow{display:none}
 .form-submit.is-loading .btn-loading{display:inline-flex}
+/* Ready state — toggled by site.js when every required field has a
+   valid value. Signals "the form is complete, you can click me now." */
+.form-submit.ready{background:var(--teal);color:var(--cream);box-shadow:0 14px 36px -12px rgba(31,78,91,0.45)}
+.form-submit.ready:hover{background:var(--teal);transform:translateY(-1px);box-shadow:0 18px 42px -10px rgba(31,78,91,0.55)}
+.form-submit.ready .btn-arrow{transform:translateX(2px)}
+@media (prefers-reduced-motion:reduce){.form-submit{transition:none}.form-submit.ready .btn-arrow{transform:none}}
 .form-note{margin-top:14px;font-size:13px;color:var(--stone);text-align:center}
 .form-success{text-align:center;padding:60px 40px;background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:0 30px 70px -30px rgba(20,22,26,0.12)}
 .success-icon{color:var(--teal);margin-bottom:20px;animation:pop-in 500ms var(--ease-out)}
@@ -339,6 +345,22 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 @media (prefers-reduced-motion:reduce){.listen-btn[data-state="playing"] svg path{animation:none}
 .article-body .is-reading{transition:none}
 }
+
+/* ============ BREADCRUMBS ============
+   Visual counterpart to the BreadcrumbList schema already present in
+   JSON-LD on secondary pages. Sits between the nav and the page hero,
+   small and muted so it provides orientation without competing with
+   the h1. Container is the same .container width as the rest of the
+   page so edges align.
+*/
+.breadcrumb{padding:24px 0 0;font-size:13px;color:var(--stone);letter-spacing:0.01em;margin:0 auto}
+.breadcrumb ol{display:flex;flex-wrap:wrap;gap:8px;align-items:center;list-style:none;padding:0;margin:0}
+.breadcrumb li{display:flex;align-items:center;gap:8px;min-width:0}
+.breadcrumb li:not(:last-child)::after{content:'›';color:var(--stone-2);font-size:15px;line-height:1}
+.breadcrumb a{color:var(--stone);transition:color var(--t-fast) var(--ease);white-space:nowrap}
+.breadcrumb a:hover{color:var(--teal)}
+.breadcrumb [aria-current="page"]{color:var(--ink);overflow:hidden;text-overflow:ellipsis}
+@media (max-width:640px){.breadcrumb{font-size:12px;padding-top:18px}}
 
 /* ============ HOMEPAGE UTILITY CLASSES ============
    Extracted from inline style= attributes during the Sprint 1 cleanup.

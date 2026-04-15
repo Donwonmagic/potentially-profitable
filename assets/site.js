@@ -145,6 +145,29 @@
       });
     });
 
+    // Toggle the submit button's .ready state whenever the form's
+    // completeness could have changed. This does not run validation or
+    // surface any errors — it just signals visually that the button is
+    // ready to accept a submit.
+    function checkFormReady() {
+      if (!formSubmit) return;
+      const required = intakeForm.querySelectorAll('input[required], textarea[required]');
+      let allFilled = true;
+      for (const f of required) {
+        if (!f.value.trim()) { allFilled = false; break; }
+        if (f.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.value)) {
+          allFilled = false; break;
+        }
+      }
+      const hasService = intakeForm.querySelectorAll('input[name="services"]:checked').length > 0;
+      formSubmit.classList.toggle('ready', allFilled && hasService);
+    }
+    intakeForm.querySelectorAll('input, textarea, select').forEach((field) => {
+      field.addEventListener('input', checkFormReady);
+      field.addEventListener('change', checkFormReady);
+    });
+    checkFormReady();
+
     function validateField(field) {
       const errId = field.getAttribute('aria-describedby');
       const err = errId ? document.getElementById(errId) : field.parentElement.querySelector('.field-error');
