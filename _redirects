@@ -1,0 +1,11 @@
+# Cloudflare Pages _redirects
+# https://developers.cloudflare.com/pages/configuration/redirects/
+#
+# The /audit/ URL structure was renamed to /tools/ so the free tools section
+# can expand beyond audits (generators, converters, etc.) without a second
+# restructure. 301 redirects preserve any external backlinks to the old URLs
+# and pass full SEO equity to the new paths.
+
+/audit/restaurants/   /tools/restaurant-audit/   301
+/audit/               /tools/                    301
+/audit/*              /tools/:splat              301
