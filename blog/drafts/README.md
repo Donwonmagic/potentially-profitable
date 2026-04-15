@@ -71,12 +71,16 @@ is live within a minute or two of the commit.
 
 ## Current schedule
 
+Compressed to a weekly cadence — for a new domain, content volume beats
+drip-spacing because Google needs crawlable surfaces to build freshness
+signals.
+
 | Post | Slug | Release date | Status |
 |---|---|---|---|
 | How Much Does a Custom Restaurant Website Cost in 2026? | `how-much-does-a-custom-restaurant-website-cost-in-2026` | Apr 13, 2026 | **Live** |
-| Wix vs. Custom for Restaurants: What Breaks First | `wix-vs-custom-for-restaurants` | Apr 19, 2026 | Drafting |
-| Why Your Restaurant Loses Reservations Every Night | TBD | May 3, 2026 | Queued |
-| Toast, Square, Clover: Which POS Integrates Best? | TBD | May 17, 2026 | Queued |
+| Wix vs. Custom for Restaurants: What Breaks First | `wix-vs-custom-for-restaurants` | Apr 15, 2026 | **Live** |
+| Why Your Restaurant Loses Reservations Every Night | `why-your-restaurant-loses-reservations-every-night` | Apr 22, 2026 | Queued |
+| Toast, Square, Clover: Which POS Integrates Best? | `toast-vs-square-vs-clover-for-restaurants` | Apr 29, 2026 | Queued |
 
 ## Why a drafts directory and not a separate branch
 
