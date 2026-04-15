@@ -520,7 +520,7 @@
         <div class="check-body">
           <h3>Your homepage loads in under 2 seconds on 4G.</h3>
           <div class="field"><div class="k">Why</div><div class="v">Every second past two seconds loses roughly 10% of mobile visitors to the back button. Google also ranks fast sites higher in local search, so slow = invisible.</div></div>
-          <div class="field"><div class="k">10-sec test</div><div class="v">Run your URL through <code>pagespeed.web.dev</code>. Look at the mobile "Largest Contentful Paint" metric. Under 2.5 seconds passes. Over 4 is an emergency.</div></div>
+          <div class="field"><div class="k">10-sec test</div><div class="v">Go to <a href="https://pagespeed.web.dev" target="_blank" rel="noopener"><code>pagespeed.web.dev</code></a>, paste your homepage URL, and click Analyze. When the results load, find the "Largest Contentful Paint" number under Mobile. Under 2.5 seconds passes. Over 4 seconds is an emergency. Google built this tool specifically to test mobile sites — it's free and takes a minute.</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Compress hero images to WebP or AVIF. Defer non-critical JavaScript. Remove render-blocking web fonts. If your site is on Wix or Squarespace and still slow, you've hit the template ceiling and it's time for a custom build.</div></div>
         </div>
       </div>
@@ -548,10 +548,10 @@
       <div class="check-item">
         <div class="check-num">09</div>
         <div class="check-body">
-          <h3>Your site has a proper viewport meta tag.</h3>
-          <div class="field"><div class="k">Why</div><div class="v">Without it, mobile browsers render the page at desktop width and zoom out, breaking every other mobile check on this list in one go. It's a one-line fix that nobody should skip, and some template sites still get it wrong.</div></div>
-          <div class="field"><div class="k">10-sec test</div><div class="v">View the source of your homepage and search for the word "viewport." If it's missing — or reads <code>width=1024</code> or similar — you fail.</div></div>
-          <div class="field"><div class="k">Fix</div><div class="v">Add this to your <code>&lt;head&gt;</code>: <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</code>. That's it.</div></div>
+          <h3>Your site doesn't load zoomed-out on a phone.</h3>
+          <div class="field"><div class="k">Why</div><div class="v">Behind the scenes, this is about a single line of code called the "viewport" tag. Without it, mobile browsers render your site at desktop width and then shrink the whole thing down to fit — which breaks every other mobile check on this list in one go. Some template and DIY sites still get this wrong.</div></div>
+          <div class="field"><div class="k">10-sec test</div><div class="v">Open your homepage on your phone. When it loads, is everything already sized for the screen — or do you see a tiny desktop layout that you have to pinch and zoom just to read? If it's the second one, you fail this check.</div></div>
+          <div class="field"><div class="k">Fix</div><div class="v">Ask whoever built your site to add this line to the <code>&lt;head&gt;</code> of every page: <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</code>. It's a one-minute fix. If your site is on a modern custom build, this is already handled.</div></div>
         </div>
       </div>
     </div>
