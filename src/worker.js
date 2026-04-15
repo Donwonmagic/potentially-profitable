@@ -13,47 +13,54 @@
 //      which serves the corresponding file from /dist
 //
 // Before Sprint 7 the site had no Worker script at all — wrangler
-// just uploaded the static assets. Sprint 7 adds this script so we
+// just uploaded the static assets. Sprint 7 added this script so we
 // can replace the three Formspree endpoints (new-project intake,
 // restaurant-website-checklist PDF request, and audit-report-email)
 // with self-hosted form handlers that cost zero and give us
 // automated responses without the Formspree subscription.
 //
-// Sprint 7 is broken into four sub-sprints so each piece ships
-// independently and the site never goes into a broken state:
+// Sprint 7 progression:
 //
-//   7a (THIS SPRINT)  — Scaffold + routing. /api/* returns stub
-//                       501 responses so we can verify routing
-//                       works end-to-end before wiring real logic.
-//   7b               — Email library + templates (Resend adapter,
-//                       notification + auto-responder templates,
-//                       validation + honeypot helpers). Pure
-//                       library code — not wired yet.
-//   7c               — Handlers wired: /api/intake, /api/checklist,
-//                       /api/audit-report each send a real
-//                       notification email + auto-responder.
-//   7d               — Deployment guide + HTML form cutover
-//                       (Formspree retirement).
+//   7a  — Scaffold + routing. /api/* returns stub 501 responses.
+//   7b  — Email library + templates (pure library, not wired).
+//   7c (THIS SPRINT) — Handlers wired. Each endpoint validates the
+//        body, checks the honeypot, builds notification + auto-
+//        responder emails from templates.js, and sends both via
+//        sendEmail() in parallel. Partial failures are surfaced:
+//        notification failure = 500 back to user (their message
+//        didn't get through); notification ok but auto-responder
+//        failure = 200 to user + console.error for us.
+//   7d  — Deployment guide + HTML form cutover (Formspree retirement)
 //
-// None of the sub-sprints touch production forms until 7d. Until
-// then, the existing Formspree endpoints keep running and this
-// Worker just handles stub /api/* requests.
+// Handlers are STILL not called by the production forms — those
+// still post to Formspree. Sprint 7d cuts them over. Until then
+// /api/* is only reachable by curl or a manual test.
+
+import { sendEmail } from './lib/email.js';
+import {
+  isValidEmail,
+  isSpamHoneypot,
+  requireFields,
+  enforceMaxLengths,
+} from './lib/validation.js';
+import {
+  intakeNotification,
+  intakeAutoResponder,
+  checklistNotification,
+  checklistAutoResponder,
+  auditReportNotification,
+  auditReportAutoResponder,
+} from './lib/templates.js';
+
 
 // ------------------------------------------------------------
 // API route table
 // ------------------------------------------------------------
-//
-// Each entry maps a path to a handler function. Paths are matched
-// exactly (not as prefixes) so /api/intake matches only /api/intake
-// — not /api/intake/sub. Add new endpoints here.
 
 const API_ROUTES = {
   '/api/intake':        handleIntake,
   '/api/checklist':     handleChecklist,
   '/api/audit-report':  handleAuditReport,
-  // Small ping endpoint so you can verify the Worker is live and
-  // the API router is hooked up without hitting a real handler.
-  // Returns JSON with sprint info + current timestamp.
   '/api/ping':          handlePing,
 };
 
@@ -61,18 +68,6 @@ const API_ROUTES = {
 // ------------------------------------------------------------
 // Worker entry point
 // ------------------------------------------------------------
-//
-// Modern Cloudflare Workers use the ES Module default export.
-// The fetch handler receives (request, env, ctx):
-//   request — standard Request
-//   env     — bindings from wrangler.jsonc, including env.ASSETS
-//             (the static-asset binding automatically provided by
-//             the "assets" config block)
-//   ctx     — execution context (waitUntil, passThroughOnException)
-//
-// For /api/* we always return a JSON response with a consistent
-// shape. For everything else we fall through to the static asset
-// server.
 
 export default {
   async fetch(request, env, ctx) {
@@ -84,17 +79,10 @@ export default {
       const handler = API_ROUTES[pathname];
       if (!handler) {
         return jsonResponse(
-          {
-            ok: false,
-            error: 'Unknown API endpoint',
-            path: pathname,
-          },
+          { ok: false, error: 'Unknown API endpoint', path: pathname },
           404
         );
       }
-      // Only allow POST for form submissions, GET for ping. Reject
-      // everything else with a 405 so casual GETs of the intake
-      // endpoint don't show a misleading "missing field" error.
       if (pathname === '/api/ping') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
@@ -102,10 +90,7 @@ export default {
       } else {
         if (request.method !== 'POST') {
           return jsonResponse(
-            {
-              ok: false,
-              error: 'Method not allowed — form endpoints accept POST only',
-            },
+            { ok: false, error: 'Method not allowed — form endpoints accept POST only' },
             405
           );
         }
@@ -113,123 +98,265 @@ export default {
       try {
         return await handler(request, env, ctx);
       } catch (err) {
-        // Anything uncaught becomes a 500. Errors are logged to
-        // Workers' observability so we can diagnose later.
         console.error('[api]', pathname, err && err.stack ? err.stack : err);
         return jsonResponse(
-          {
-            ok: false,
-            error: 'Internal error — please try again in a moment',
-          },
+          { ok: false, error: 'Internal error — please try again in a moment' },
           500
         );
       }
     }
 
     // Not an API route — fall through to the static-asset server.
-    // env.ASSETS is injected automatically because wrangler.jsonc
-    // has an "assets" block.
     return env.ASSETS.fetch(request);
   },
 };
 
 
-// ------------------------------------------------------------
-// Sprint 7a stub handlers
-// ------------------------------------------------------------
+// ============================================================
+// Sprint 7c: real form handlers
+// ============================================================
 //
-// These return a shape identical to what Sprint 7c's real handlers
-// will return, minus the side effects. Lets us verify routing,
-// content-type handling, and error paths end-to-end before wiring
-// the email provider.
+// All three handlers follow the same pipeline:
 //
-// Each stub returns 501 Not Implemented because the endpoint
-// exists but doesn't do anything useful yet. Swap in real logic
-// in Sprint 7c.
+//   1. Parse body (supports urlencoded, multipart, and JSON)
+//   2. Check the honeypot — silently drop spam submissions with a
+//      fake-success 200 so bots get no signal
+//   3. Validate: required fields, email format, length guards
+//   4. Build notification (to Don) + auto-responder (to the user)
+//      from the templates module
+//   5. Send both in parallel via Promise.allSettled so one failing
+//      doesn't block the other
+//   6. Decide outcome:
+//        - Notification failed → 500 to user. The message didn't
+//          reach Don so we have to tell them. They can email him
+//          directly as a fallback
+//        - Notification ok, auto-responder failed → 200 to user.
+//          Their message went through; they just won't see a
+//          confirmation email. We console.error for observability
+//          so we can fix the issue later
+//        - Both ok → 200 to user
+//
+// The consistent shape returned to the client is:
+//   { ok: true,  status: "sent"  | "sent-without-confirmation" }
+//   { ok: false, error: "..." }
+
 
 async function handleIntake(request, env, ctx) {
-  // Parse the body so we verify form POSTs reach this handler and
-  // the Content-Type parsing path works. Don't keep the data —
-  // this is a stub.
-  let body;
-  try {
-    body = await parseFormBody(request);
-  } catch (err) {
-    return jsonResponse(
-      { ok: false, error: 'Could not parse request body: ' + err.message },
-      400
-    );
+  const body = await parseFormBody(request);
+
+  // Silently accept spam so bots get no signal
+  if (isSpamHoneypot(body)) {
+    return jsonResponse({ ok: true, status: 'sent' }, 200);
   }
-  return jsonResponse(
-    {
-      ok: false,
-      error: 'Intake endpoint not yet implemented (Sprint 7c)',
-      sprint: '7a',
-      fields_received: Object.keys(body).length,
-    },
-    501
-  );
+
+  // Required fields: name, email, services, goals. Business,
+  // website, budget, and referral are optional per the form HTML.
+  const required = requireFields(body, ['name', 'email', 'services', 'goals']);
+  if (!required.ok) {
+    return jsonResponse({ ok: false, error: required.error }, 400);
+  }
+  if (!isValidEmail(body.email)) {
+    return jsonResponse({ ok: false, error: 'Please enter a valid email address' }, 400);
+  }
+  const lengths = enforceMaxLengths(body);
+  if (!lengths.ok) {
+    return jsonResponse({ ok: false, error: lengths.error }, 400);
+  }
+
+  const notificationTmpl = intakeNotification(body);
+  const autoReplyTmpl    = intakeAutoResponder(body);
+
+  return await sendPair({
+    env,
+    userEmail: body.email.trim(),
+    notification: notificationTmpl,
+    autoReply:    autoReplyTmpl,
+    endpoint:     'intake',
+  });
 }
+
 
 async function handleChecklist(request, env, ctx) {
-  let body;
-  try {
-    body = await parseFormBody(request);
-  } catch (err) {
-    return jsonResponse(
-      { ok: false, error: 'Could not parse request body: ' + err.message },
-      400
-    );
+  const body = await parseFormBody(request);
+
+  if (isSpamHoneypot(body)) {
+    return jsonResponse({ ok: true, status: 'sent' }, 200);
   }
-  return jsonResponse(
-    {
-      ok: false,
-      error: 'Checklist endpoint not yet implemented (Sprint 7c)',
-      sprint: '7a',
-      fields_received: Object.keys(body).length,
-    },
-    501
-  );
+
+  const required = requireFields(body, ['email']);
+  if (!required.ok) {
+    return jsonResponse({ ok: false, error: required.error }, 400);
+  }
+  if (!isValidEmail(body.email)) {
+    return jsonResponse({ ok: false, error: 'Please enter a valid email address' }, 400);
+  }
+  const lengths = enforceMaxLengths(body);
+  if (!lengths.ok) {
+    return jsonResponse({ ok: false, error: lengths.error }, 400);
+  }
+
+  const notificationTmpl = checklistNotification(body);
+  const autoReplyTmpl    = checklistAutoResponder(body);
+
+  return await sendPair({
+    env,
+    userEmail: body.email.trim(),
+    notification: notificationTmpl,
+    autoReply:    autoReplyTmpl,
+    endpoint:     'checklist',
+  });
 }
 
+
 async function handleAuditReport(request, env, ctx) {
-  let body;
-  try {
-    body = await parseFormBody(request);
-  } catch (err) {
+  const body = await parseFormBody(request);
+
+  if (isSpamHoneypot(body)) {
+    return jsonResponse({ ok: true, status: 'sent' }, 200);
+  }
+
+  const required = requireFields(body, ['email']);
+  if (!required.ok) {
+    return jsonResponse({ ok: false, error: required.error }, 400);
+  }
+  if (!isValidEmail(body.email)) {
+    return jsonResponse({ ok: false, error: 'Please enter a valid email address' }, 400);
+  }
+  const lengths = enforceMaxLengths(body);
+  if (!lengths.ok) {
+    return jsonResponse({ ok: false, error: lengths.error }, 400);
+  }
+
+  const notificationTmpl = auditReportNotification(body);
+  const autoReplyTmpl    = auditReportAutoResponder(body);
+
+  return await sendPair({
+    env,
+    userEmail: body.email.trim(),
+    notification: notificationTmpl,
+    autoReply:    autoReplyTmpl,
+    endpoint:     'audit-report',
+  });
+}
+
+
+// ------------------------------------------------------------
+// Shared send-pair helper
+// ------------------------------------------------------------
+//
+// Handles the common "send notification to Don + send auto-responder
+// to user" flow. Every handler calls this with its already-built
+// templates. All error surfacing, outcome classification, and
+// response shaping lives here so the handlers above stay focused
+// on validation and template assembly.
+
+async function sendPair({ env, userEmail, notification, autoReply, endpoint }) {
+  if (!env.RESEND_API_KEY) {
+    // Misconfiguration — the Worker was deployed without the
+    // RESEND_API_KEY secret being set. This should never happen
+    // in production (the deploy guide tells you to set it first)
+    // but surface it clearly so the fix is obvious.
+    console.error('[api]', endpoint, 'RESEND_API_KEY secret is not configured');
     return jsonResponse(
-      { ok: false, error: 'Could not parse request body: ' + err.message },
-      400
+      { ok: false, error: "We're having a configuration issue on our end. Please email don@muntin.digital directly and I'll take care of you." },
+      500
     );
   }
-  return jsonResponse(
-    {
-      ok: false,
-      error: 'Audit-report endpoint not yet implemented (Sprint 7c)',
-      sprint: '7a',
-      fields_received: Object.keys(body).length,
-    },
-    501
-  );
+
+  const fromEmail   = env.FROM_EMAIL   || 'Muntin Digital <don@muntin.digital>';
+  const notifyEmail = env.NOTIFY_EMAIL || 'don@muntin.digital';
+
+  // Fire both in parallel. Promise.allSettled so one failing doesn't
+  // short-circuit the other.
+  const [notifyResult, autoResult] = await Promise.allSettled([
+    sendEmail(
+      {
+        to:      notifyEmail,
+        from:    fromEmail,
+        // Reply-To set to the user's email so Don can just hit Reply
+        // in his inbox to respond directly. This is the single most
+        // important piece of ergonomics on the notification email.
+        replyTo: userEmail,
+        subject: notification.subject,
+        html:    notification.html,
+        text:    notification.text,
+      },
+      env.RESEND_API_KEY
+    ),
+    sendEmail(
+      {
+        to:      userEmail,
+        from:    fromEmail,
+        // Reply-To the real inbox so if the user hits Reply to the
+        // auto-responder, their message lands with Don, not nowhere.
+        replyTo: notifyEmail,
+        subject: autoReply.subject,
+        html:    autoReply.html,
+        text:    autoReply.text,
+      },
+      env.RESEND_API_KEY
+    ),
+  ]);
+
+  const notifySent = notifyResult.status === 'fulfilled' && notifyResult.value && notifyResult.value.ok;
+  const autoSent   = autoResult.status === 'fulfilled' && autoResult.value && autoResult.value.ok;
+
+  if (!notifySent) {
+    // Notification failed — the submission didn't reach Don. We
+    // HAVE to tell the user. They can email him directly as a
+    // fallback path (mentioned in the error copy).
+    const reason = notifyResult.status === 'fulfilled'
+      ? (notifyResult.value && notifyResult.value.error)
+      : (notifyResult.reason && notifyResult.reason.message);
+    console.error('[api]', endpoint, 'notification failed:', reason);
+    return jsonResponse(
+      {
+        ok: false,
+        error: "We couldn't deliver your message just now. Please email don@muntin.digital directly — I'll get it from there.",
+      },
+      500
+    );
+  }
+
+  if (!autoSent) {
+    // Notification went through but the auto-responder failed.
+    // The user's message still reached Don — we don't want to
+    // scare them with an error here. Log it so we can investigate
+    // (maybe the user's address bounced, maybe Resend flagged it
+    // as a dupe of the notification) and return success.
+    const reason = autoResult.status === 'fulfilled'
+      ? (autoResult.value && autoResult.value.error)
+      : (autoResult.reason && autoResult.reason.message);
+    console.error('[api]', endpoint, 'auto-responder failed:', reason);
+    return jsonResponse(
+      { ok: true, status: 'sent-without-confirmation' },
+      200
+    );
+  }
+
+  // Both succeeded — the happy path
+  return jsonResponse({ ok: true, status: 'sent' }, 200);
 }
+
 
 // ------------------------------------------------------------
 // Diagnostic: /api/ping
 // ------------------------------------------------------------
-//
-// GET-only. Returns { ok, sprint, timestamp } so you can verify
-// from a browser address bar or curl that the Worker is live and
-// the API router is hooked up correctly. Good smoke test after a
-// deploy.
 
 async function handlePing(request, env, ctx) {
   return jsonResponse(
     {
       ok: true,
       service: 'muntin-digital forms api',
-      sprint: '7a',
+      sprint: '7c',
       timestamp: new Date().toISOString(),
       routes: Object.keys(API_ROUTES),
+      // Configuration readiness without leaking the actual key
+      configured: {
+        resend:  Boolean(env.RESEND_API_KEY),
+        from:    Boolean(env.FROM_EMAIL),
+        notify:  Boolean(env.NOTIFY_EMAIL),
+      },
     },
     200
   );
@@ -240,18 +367,12 @@ async function handlePing(request, env, ctx) {
 // Shared helpers
 // ------------------------------------------------------------
 
-// Wrap a payload in a standard JSON Response with sensible
-// security + caching headers. API responses should never be
-// cached by browsers or CDNs — they contain per-request state.
 function jsonResponse(payload, status) {
   return new Response(JSON.stringify(payload), {
     status: status || 200,
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Cache-Control': 'no-store, no-cache, must-revalidate',
-      // CORS: allow our own origin (same-origin requests don't need
-      // this header but curl / test clients benefit from an explicit
-      // allow). We never send credentials so the wildcard is safe.
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
@@ -259,16 +380,6 @@ function jsonResponse(payload, status) {
   });
 }
 
-// Parse a form POST body. Accepts either
-//   application/x-www-form-urlencoded  (native HTML form POSTs)
-//   multipart/form-data                (HTML form with file input)
-//   application/json                   (fetch() calls from site.js)
-//
-// Returns a plain object {fieldName: value}. Multi-value fields
-// (like a checkbox group) are joined with ", " — the only form that
-// has one is the intake form's services checkbox group, and joining
-// with a comma is how Formspree surfaced it too, so downstream
-// notification emails read the same.
 async function parseFormBody(request) {
   const contentType = (request.headers.get('content-type') || '').toLowerCase();
 
@@ -276,11 +387,9 @@ async function parseFormBody(request) {
     return await request.json();
   }
 
-  // formData() handles both urlencoded and multipart
   const formData = await request.formData();
   const obj = {};
   for (const [key, value] of formData.entries()) {
-    // Skip File entries (we don't handle file uploads in Sprint 7)
     if (typeof value !== 'string') continue;
     if (key in obj) {
       obj[key] = obj[key] + ', ' + value;

@@ -50,5 +50,18 @@
     // fall through to it for non-/api/* paths. Default binding name
     // is ASSETS but making it explicit for clarity.
     "binding": "ASSETS"
+  },
+  // Non-secret environment variables consumed by the Sprint 7c form
+  // handlers. FROM_EMAIL is the sender address that shows up in the
+  // notification + auto-responder emails — must be on a verified
+  // domain in Resend (set up during Sprint 7d deploy). NOTIFY_EMAIL
+  // is where form submissions are forwarded (Don's real inbox).
+  //
+  // The RESEND_API_KEY is a SECRET, not a var, and is injected via
+  // `wrangler secret put RESEND_API_KEY` during deploy. It must
+  // never appear in this file or the git history.
+  "vars": {
+    "FROM_EMAIL":   "Don Goldstein <don@muntin.digital>",
+    "NOTIFY_EMAIL": "don@muntin.digital"
   }
 }
