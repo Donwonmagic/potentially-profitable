@@ -496,13 +496,24 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
    the h1. Uses direct anchors + inline span separators (not an <ol>)
    so the markup degrades gracefully during any FOUC window — no list
    bullets or numbering to leak through before CSS applies.
+
+   The top padding needs to clear the fixed .nav at the top of the
+   viewport (position:fixed; top:0; 18px+logo+18px ≈ 64-80px tall
+   depending on scrolled state). Using ~100px of top padding on the
+   breadcrumb pushes its content below the nav's visual footprint.
 */
-.breadcrumb{padding:24px 0 0;font-size:13px;color:var(--stone);letter-spacing:0.01em;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+.breadcrumb{padding:100px 0 16px;font-size:13px;color:var(--stone);letter-spacing:0.01em;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:4px}
 .breadcrumb a{color:var(--stone);transition:color var(--t-fast) var(--ease);white-space:nowrap}
 .breadcrumb a:hover{color:var(--teal)}
 .breadcrumb-sep{display:inline-block;margin:0 6px;color:var(--stone-2);font-size:15px;line-height:1;user-select:none}
 .breadcrumb [aria-current="page"]{color:var(--ink)}
-@media (max-width:640px){.breadcrumb{font-size:12px;padding-top:18px}.breadcrumb-sep{margin:0 4px}}
+/* When a hero directly follows a breadcrumb, the breadcrumb has
+   already cleared the fixed nav with 100px of top padding, so the
+   hero's default 160px top padding becomes ~260px of empty space
+   before content. Reset the hero top padding to a comfortable
+   residual (40px) when preceded by a breadcrumb. */
+.breadcrumb + .hero{padding-top:40px}
+@media (max-width:640px){.breadcrumb{font-size:12px;padding:88px 0 12px}.breadcrumb-sep{margin:0 4px}.breadcrumb + .hero{padding-top:24px}}
 
 /* ============ HOMEPAGE UTILITY CLASSES ============
    Extracted from inline style= attributes during the Sprint 1 cleanup.
