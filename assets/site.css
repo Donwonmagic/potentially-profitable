@@ -105,24 +105,48 @@ p{margin:0}
 .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px}
 .logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:22px;font-weight:600;letter-spacing:-0.02em}
 .logo-mark{width:28px;height:28px;flex:0 0 28px}
-/* Trademark mark attached to 'Muntin Digital' wordmarks. Used in the
-   top nav (plain <sup class="tm">) and the footer (with aria-hidden="true"
-   because the footer's lockup image already has 'Muntin Digital' as alt
-   text, so screen readers should not read 'trademark' twice).
-   vertical-align: text-top anchors the character's top edge to the top
-   of the parent's cap letters, so the TM sits above the 'M' / 'D' rather
-   than floating at the baseline. Larger 0.55em font size makes it more
-   visible in the nav context. */
-/* Nav logo trademark — superscript sits at the top-right edge of
-   "Muntin Digital", close enough to read as part of the mark but
-   still perceptibly smaller. line-height:0 prevents the sup from
-   inflating the line box. */
-.tm{font-size:0.5em;font-weight:400;opacity:0.55;letter-spacing:0;margin-left:1px;line-height:0;vertical-align:super}
-/* Footer lockup trademark — image-adjacent superscript. Sits at the
-   top-right corner of the lockup image inside .foot-lockup-wrap,
-   which is display:inline-flex with align-items:flex-start, so no
-   manual offset is needed. */
-.tm[aria-hidden="true"]{font-size:11px;font-weight:400;line-height:1;margin-top:4px;margin-left:1px;opacity:1}
+/* Trademark mark attached to 'Muntin Digital' wordmarks. Used in
+   two places, both served by this one declaration set:
+     1. Top nav — <sup class="tm">™</sup> after the logo text
+     2. Footer lockup — <sup class="tm" aria-hidden="true">™</sup>
+        next to the logo IMAGE (aria-hidden because the lockup's alt
+        text already says "Muntin Digital", and a screen reader
+        shouldn't say "trademark" twice)
+
+   Sizing: 0.6em in the nav = 13.2px at 22px wordmark. Big enough
+   to read as a real mark, small enough to look like a mark and
+   not a letter. Line-height:0 keeps the sup from stretching the
+   parent line box. vertical-align:top + position relative top
+   offset puts it at the cap-height of the wordmark's capital
+   letters instead of floating mid-text. */
+.tm{
+  font-size:0.6em;
+  font-weight:400;
+  opacity:0.55;
+  letter-spacing:0;
+  margin-left:2px;
+  line-height:0;
+  vertical-align:top;
+  position:relative;
+  top:0.25em;
+}
+/* Footer lockup trademark — next to a 240×53 logo image inside a
+   display:inline-flex wrapper. Larger absolute size (15px) because
+   it's competing visually with a big lockup, not with 22px text.
+   The flex wrapper has align-items:flex-start so the sup's top
+   aligns with the top of the image; a small top nudge pulls it
+   down just past the image's top stroke so it reads as a mark
+   attached to "Muntin Digital", not a floating asterisk. */
+.foot-lockup-wrap .tm[aria-hidden="true"]{
+  font-size:15px;
+  font-weight:400;
+  line-height:1;
+  margin-top:3px;
+  margin-left:2px;
+  opacity:0.85;
+  vertical-align:top;
+  top:0;
+}
 .nav-links{display:flex;gap:36px;font-size:15px;color:var(--ink-soft)}
 .nav-links a{position:relative;transition:color var(--t-fast) var(--ease)}
 .nav-links a::after{content:'';position:absolute;left:0;right:0;bottom:-6px;height:1px;background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform var(--t-med) var(--ease-out)}
@@ -496,13 +520,24 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
    the h1. Uses direct anchors + inline span separators (not an <ol>)
    so the markup degrades gracefully during any FOUC window — no list
    bullets or numbering to leak through before CSS applies.
+
+   The top padding needs to clear the fixed .nav at the top of the
+   viewport (position:fixed; top:0; 18px+logo+18px ≈ 64-80px tall
+   depending on scrolled state). Using ~100px of top padding on the
+   breadcrumb pushes its content below the nav's visual footprint.
 */
-.breadcrumb{padding:24px 0 0;font-size:13px;color:var(--stone);letter-spacing:0.01em;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+.breadcrumb{padding:100px 0 16px;font-size:13px;color:var(--stone);letter-spacing:0.01em;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:4px}
 .breadcrumb a{color:var(--stone);transition:color var(--t-fast) var(--ease);white-space:nowrap}
 .breadcrumb a:hover{color:var(--teal)}
 .breadcrumb-sep{display:inline-block;margin:0 6px;color:var(--stone-2);font-size:15px;line-height:1;user-select:none}
 .breadcrumb [aria-current="page"]{color:var(--ink)}
-@media (max-width:640px){.breadcrumb{font-size:12px;padding-top:18px}.breadcrumb-sep{margin:0 4px}}
+/* When a hero directly follows a breadcrumb, the breadcrumb has
+   already cleared the fixed nav with 100px of top padding, so the
+   hero's default 160px top padding becomes ~260px of empty space
+   before content. Reset the hero top padding to a comfortable
+   residual (40px) when preceded by a breadcrumb. */
+.breadcrumb + .hero{padding-top:40px}
+@media (max-width:640px){.breadcrumb{font-size:12px;padding:88px 0 12px}.breadcrumb-sep{margin:0 4px}.breadcrumb + .hero{padding-top:24px}}
 
 /* ============ HOMEPAGE UTILITY CLASSES ============
    Extracted from inline style= attributes during the Sprint 1 cleanup.

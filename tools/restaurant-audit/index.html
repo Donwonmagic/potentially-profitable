@@ -136,38 +136,113 @@
     border-radius: 4px;
   }
 
-  /* Loading state */
+  /* Loading state — stepwise progress indicator.
+     Sprint 6c replaced the old "one big spinner + cycling message"
+     with a real step list that shows what phase the audit is actually
+     in. The top phases are tied to real milestones (submit request,
+     Lighthouse running, scoring, render); the progress bar uses
+     elapsed time as a proxy for Lighthouse progress because PSI
+     doesn't expose internal progress to clients. */
   .audit-loading {
-    max-width: 520px;
+    max-width: 560px;
     margin: 48px auto 0;
-    text-align: center;
-    padding: 40px;
+    padding: 36px 40px;
     background: var(--white);
     border: 1px solid var(--line);
     border-radius: 20px;
   }
-  .audit-loading-ring {
-    width: 56px;
-    height: 56px;
-    margin: 0 auto 24px;
-    border: 3px solid var(--line);
-    border-top-color: var(--teal);
-    border-radius: 50%;
-    animation: audit-spin 1s linear infinite;
-  }
-  @keyframes audit-spin { to { transform: rotate(360deg); } }
   .audit-loading h3 {
     font-family: var(--font-display);
     font-size: 24px;
     font-weight: 500;
-    margin: 0 0 8px;
+    margin: 0 0 4px;
     letter-spacing: -0.01em;
+    text-align: center;
   }
-  .audit-loading p {
-    margin: 0;
+  .audit-loading-sub {
+    margin: 0 0 28px;
     color: var(--stone);
     font-size: 14px;
-    min-height: 1.5em;
+    text-align: center;
+  }
+  .audit-progress-bar {
+    height: 6px;
+    background: var(--line);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+  .audit-progress-bar .fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--teal) 0%, var(--teal-dark) 100%);
+    border-radius: 999px;
+    transition: width 0.4s var(--ease-out);
+  }
+  .audit-steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .audit-step {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 14px;
+    align-items: center;
+    font-size: 14px;
+    color: var(--stone-2);
+    transition: color var(--t-fast) var(--ease);
+  }
+  .audit-step .step-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--line-dark);
+    background: var(--white);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--stone-2);
+    transition: all var(--t-fast) var(--ease);
+  }
+  .audit-step.active {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .audit-step.active .step-indicator {
+    border-color: var(--teal);
+    background: var(--teal);
+    color: var(--cream);
+    box-shadow: 0 0 0 4px rgba(31, 78, 91, 0.12);
+    animation: audit-step-pulse 1.6s ease-in-out infinite;
+  }
+  .audit-step.done {
+    color: var(--ink-soft);
+  }
+  .audit-step.done .step-indicator {
+    border-color: #1f9d55;
+    background: #1f9d55;
+    color: var(--cream);
+  }
+  .audit-step.done .step-indicator::before {
+    content: '✓';
+  }
+  .audit-step.active .step-indicator::before,
+  .audit-step .step-indicator::before {
+    display: block;
+  }
+  @keyframes audit-step-pulse {
+    0%, 100% { box-shadow: 0 0 0 4px rgba(31, 78, 91, 0.12); }
+    50%      { box-shadow: 0 0 0 7px rgba(31, 78, 91, 0.06); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .audit-progress-bar .fill { transition: none; }
+    .audit-step.active .step-indicator { animation: none; }
   }
 
   /* Error state */
@@ -190,6 +265,38 @@
   }
   .audit-error p { margin: 0 0 8px; color: var(--ink-soft); font-size: 15px; line-height: 1.55; }
   .audit-error p:last-child { margin: 0; }
+  .audit-error-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+  }
+  .audit-error-btn {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--line-dark);
+    background: var(--white);
+    color: var(--ink);
+    cursor: pointer;
+    transition: all var(--t-fast) var(--ease);
+  }
+  .audit-error-btn:hover {
+    border-color: var(--teal);
+    color: var(--teal);
+  }
+  .audit-error-btn-primary {
+    background: var(--teal);
+    color: var(--cream);
+    border-color: var(--teal);
+  }
+  .audit-error-btn-primary:hover {
+    background: var(--teal-dark);
+    color: var(--cream);
+    border-color: var(--teal-dark);
+  }
 
   /* Report card — overall score */
   .audit-report { margin-top: 64px; }
@@ -702,6 +809,54 @@
   }
   .priority-item .body span { color: var(--stone); font-size: 13.5px; line-height: 1.5; }
   .priority-item .body a { color: var(--teal); border-bottom: 1px dashed currentColor; }
+  /* Effort + time chips — shown on actionable items (fail + unverified)
+     so the owner sees at a glance whether they can fix it themselves
+     today or need to put it on a developer's ticket. */
+  .priority-item .body .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    border-radius: 999px;
+    border: 1px solid var(--line-dark);
+    white-space: nowrap;
+  }
+  .chip-self     { background: #e6f4ec; border-color: #bfe0cb; color: #0f6b35; }
+  .chip-self::before { content: '●'; color: #1f9d55; font-size: 9px; }
+  .chip-dev      { background: #eef4fa; border-color: #c9d9ea; color: #2a5285; }
+  .chip-dev::before  { content: '●'; color: #3b7bc4; font-size: 9px; }
+  .chip-rebuild  { background: #fce9e1; border-color: #f4b69e; color: #8a3010; }
+  .chip-rebuild::before { content: '●'; color: var(--rust); font-size: 9px; }
+  .chip-time     { background: var(--cream-2); color: var(--stone); }
+
+  /* "Why this matters" — one-line impact framing, subtle but present.
+     Helps owners prioritize by consequence, not by test order. */
+  .priority-item .body .impact-note {
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: rgba(31, 78, 91, 0.035);
+    border-left: 2px solid var(--teal);
+    border-radius: 0 6px 6px 0;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .impact-note .impact-label {
+    font-weight: 600;
+    color: var(--teal);
+    letter-spacing: 0.02em;
+  }
+
   /* Inline "Is this right?" feedback UI — renders under the note for
      any check we couldn't verify. Clicking Yes/No overrides the result
      locally, fires a Plausible event, and re-renders. */
@@ -830,6 +985,242 @@
     background: var(--teal-dark);
     border-color: var(--teal-dark);
     color: var(--cream);
+  }
+
+  /* ============ SPRINT 6d: COMPETITOR COMPARISON ============
+     Side-by-side audit comparison. Same visual language as the rest
+     of the report — cream cards, teal accents, same priority-item
+     spacing — so it feels like a natural extension of the report,
+     not a bolted-on feature. */
+  .audit-compare {
+    margin-top: 48px;
+    padding: 32px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+  }
+  .audit-compare header { margin-bottom: 20px; }
+  .audit-compare header h3 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 0 0 6px;
+  }
+  .audit-compare header p {
+    font-size: 14px;
+    color: var(--stone);
+    margin: 0;
+    line-height: 1.55;
+  }
+  .audit-compare-form {
+    display: block;
+  }
+  .compare-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .compare-input-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .compare-input-row input[type="url"] {
+    flex: 1;
+    padding: 12px 16px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    border: 1px solid var(--line-dark);
+    border-radius: 999px;
+    background: var(--cream);
+    color: var(--ink);
+    transition: border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+  }
+  .compare-input-row input[type="url"]:focus {
+    outline: none;
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(31, 78, 91, 0.12);
+  }
+  .compare-input-row .compare-remove {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--line-dark);
+    background: var(--white);
+    color: var(--stone);
+    font-size: 16px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all var(--t-fast) var(--ease);
+  }
+  .compare-input-row .compare-remove:hover {
+    color: var(--rust);
+    border-color: var(--rust);
+  }
+  .compare-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .compare-add-btn {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--teal);
+    background: transparent;
+    border: 1px dashed var(--line-dark);
+    border-radius: 999px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all var(--t-fast) var(--ease);
+  }
+  .compare-add-btn:hover { border-color: var(--teal); background: var(--teal-tint); }
+  .compare-add-btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+  .compare-run-btn {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--cream);
+    background: var(--teal);
+    border: 1px solid var(--teal);
+    border-radius: 999px;
+    padding: 10px 22px;
+    cursor: pointer;
+    transition: all var(--t-fast) var(--ease);
+    margin-left: auto;
+  }
+  .compare-run-btn:hover { background: var(--teal-dark); border-color: var(--teal-dark); }
+  .compare-run-btn[disabled] { opacity: 0.6; cursor: not-allowed; }
+
+  /* Compare status (during sequential competitor runs) */
+  .compare-status {
+    margin-top: 24px;
+    padding: 20px;
+    background: var(--cream-2);
+    border-radius: 12px;
+  }
+  .compare-status-heading {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0 0 12px;
+  }
+  .compare-status-sub {
+    font-size: 13px;
+    color: var(--stone);
+    margin: 12px 0 0;
+    line-height: 1.5;
+  }
+
+  /* Compare results table */
+  .compare-results {
+    margin-top: 28px;
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+  }
+  .compare-table-wrap {
+    overflow-x: auto;
+    margin: 0 -8px;
+    padding: 0 8px;
+  }
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .compare-table th,
+  .compare-table td {
+    padding: 12px 14px;
+    text-align: center;
+    border-bottom: 1px solid var(--line);
+  }
+  .compare-table th {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--stone);
+    background: var(--cream-2);
+    white-space: nowrap;
+  }
+  .compare-table th.compare-label-col,
+  .compare-table td.compare-label-col {
+    text-align: left;
+    font-weight: 600;
+    color: var(--ink);
+    min-width: 140px;
+  }
+  .compare-table th.compare-you {
+    color: var(--teal);
+    background: var(--teal-tint);
+  }
+  .compare-table td.compare-you {
+    font-weight: 700;
+    color: var(--teal);
+  }
+  .compare-table td.compare-win {
+    color: #0f6b35;
+    font-weight: 600;
+  }
+  .compare-table td.compare-loss {
+    color: var(--rust);
+    font-weight: 600;
+  }
+  .compare-table td.compare-fail {
+    color: var(--stone-2);
+    font-style: italic;
+  }
+  .compare-table .domain-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--stone);
+    text-transform: none;
+    letter-spacing: 0;
+    margin-top: 2px;
+    white-space: nowrap;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .compare-verdict {
+    margin: 20px 0 0;
+    padding: 14px 18px;
+    background: rgba(31, 78, 91, 0.05);
+    border-left: 3px solid var(--teal);
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+  .compare-verdict strong { color: var(--teal); }
+
+  /* Compare error */
+  .compare-error {
+    margin-top: 20px;
+    padding: 16px;
+    background: #fce9e1;
+    border: 1px solid #f4b69e;
+    border-left: 4px solid var(--rust);
+    border-radius: 12px;
+    color: #8a3010;
+  }
+  .compare-error p {
+    margin: 0 0 12px;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 640px) {
+    .audit-compare { padding: 24px 20px; }
+    .compare-actions { flex-direction: column; align-items: stretch; }
+    .compare-run-btn { margin-left: 0; }
   }
 
   /* Email report form */
@@ -1021,15 +1412,27 @@
 
     <!-- Loading state (hidden until fetch starts) -->
     <div class="audit-loading" id="auditLoading" hidden aria-live="polite">
-      <div class="audit-loading-ring" aria-hidden="true"></div>
       <h3>Running your audit…</h3>
-      <p id="auditLoadingStatus">Contacting Google Lighthouse.</p>
+      <p class="audit-loading-sub" id="auditLoadingSub">This usually takes 15–40 seconds.</p>
+      <div class="audit-progress-bar" aria-hidden="true">
+        <div class="fill" id="auditProgressFill"></div>
+      </div>
+      <ol class="audit-steps" id="auditSteps">
+        <li class="audit-step" data-step="1"><span class="step-indicator">1</span><span>Sending your URL to Google Lighthouse</span></li>
+        <li class="audit-step" data-step="2"><span class="step-indicator">2</span><span>Running Lighthouse on a simulated phone</span></li>
+        <li class="audit-step" data-step="3"><span class="step-indicator">3</span><span>Detecting restaurant platforms and scoring readiness</span></li>
+        <li class="audit-step" data-step="4"><span class="step-indicator">4</span><span>Writing your report</span></li>
+      </ol>
     </div>
 
     <!-- Error state (hidden until an error occurs) -->
     <div class="audit-error" id="auditError" hidden role="alert">
       <h3 id="auditErrorHeading">We couldn't audit that URL.</h3>
       <p id="auditErrorBody">Check the address and try again. The site needs to be publicly reachable — if it's behind a login or a local network, the audit can't see it.</p>
+      <div class="audit-error-actions">
+        <button type="button" id="auditRetryBtn" class="audit-error-btn audit-error-btn-primary">Try again</button>
+        <button type="button" id="auditNewUrlBtn" class="audit-error-btn">Use a different URL</button>
+      </div>
     </div>
 
     <!-- Report card (hidden until a result renders) -->
@@ -1197,6 +1600,67 @@
         </div>
       </div>
 
+      <!-- ============ SPRINT 6d: COMPETITOR COMPARISON ============
+           After the owner sees their own report, the next question is
+           always the same: "How does this compare to the restaurants
+           I'm actually competing with?" This section lets them drop in
+           up to 3 competitor URLs and runs a full audit on each,
+           showing the results side-by-side. Uses the same PSI endpoint
+           as the main audit; each competitor is a separate sequential
+           fetch so we don't hammer Google's rate limits. -->
+      <div class="audit-compare" id="auditCompare">
+        <header>
+          <h3>How do you stack up?</h3>
+          <p>Add up to three competitor restaurants and we'll audit each one side-by-side. Lets you see exactly where you're winning and where they're beating you.</p>
+        </header>
+
+        <form id="auditCompareForm" class="audit-compare-form">
+          <div class="compare-inputs" id="compareInputs">
+            <div class="compare-input-row">
+              <label for="compareUrl0" class="visually-hidden">Competitor 1</label>
+              <input type="url" id="compareUrl0" name="competitor0" placeholder="competitor1.com" autocomplete="off" spellcheck="false" />
+            </div>
+          </div>
+          <div class="compare-actions">
+            <button type="button" id="compareAddBtn" class="compare-add-btn">+ Add another competitor</button>
+            <button type="submit" id="compareRunBtn" class="compare-run-btn">Run comparison</button>
+          </div>
+        </form>
+
+        <!-- Live status + step list during competitor runs -->
+        <div class="compare-status" id="compareStatus" hidden aria-live="polite">
+          <p class="compare-status-heading" id="compareStatusHeading">Auditing competitor 1 of 3…</p>
+          <div class="audit-progress-bar" aria-hidden="true">
+            <div class="fill" id="compareProgressFill"></div>
+          </div>
+          <p class="compare-status-sub" id="compareStatusSub">Each competitor takes 15–40 seconds. We run them one at a time so Google doesn't rate-limit us.</p>
+        </div>
+
+        <!-- Comparison results table (populated after runs) -->
+        <div class="compare-results" id="compareResults" hidden>
+          <div class="compare-table-wrap">
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th scope="col" class="compare-label-col">Metric</th>
+                  <!-- columns injected dynamically -->
+                </tr>
+              </thead>
+              <tbody id="compareTableBody">
+                <!-- rows injected dynamically -->
+              </tbody>
+            </table>
+          </div>
+          <p class="compare-verdict" id="compareVerdict"></p>
+        </div>
+
+        <!-- Error state if one competitor fails -->
+        <div class="compare-error" id="compareError" hidden role="alert">
+          <p id="compareErrorText">Something went wrong.</p>
+          <button type="button" id="compareRetryBtn" class="compare-run-btn">Try again</button>
+        </div>
+      </div>
+
       <!-- Email me the report -->
       <div class="email-report">
         <header>
@@ -1210,6 +1674,12 @@
           <input type="hidden" name="source" value="/tools/restaurant-audit/" />
           <input type="hidden" name="audited_url" id="emailReportUrl" value="" />
           <input type="hidden" name="overall_score" id="emailReportScore" value="" />
+          <input type="hidden" name="restaurant_readiness" id="emailReportReadiness" value="" />
+          <input type="hidden" name="shareable_link" id="emailReportShareLink" value="" />
+          <input type="hidden" name="summary" id="emailReportSummary" value="" />
+          <input type="hidden" name="failing_checks" id="emailReportFailing" value="" />
+          <input type="hidden" name="unverified_checks" id="emailReportUnverified" value="" />
+          <input type="hidden" name="user_corrections" id="emailReportCorrections" value="" />
           <input type="text" name="_gotcha" class="honeypot" tabindex="-1" autocomplete="off" />
 
           <input
@@ -1263,7 +1733,9 @@
   var input         = document.getElementById('auditUrl');
   var submitBtn     = document.getElementById('auditSubmit');
   var loadingEl     = document.getElementById('auditLoading');
-  var loadingStatus = document.getElementById('auditLoadingStatus');
+  var loadingSubEl  = document.getElementById('auditLoadingSub');
+  var stepsEl       = document.getElementById('auditSteps');
+  var progressFill  = document.getElementById('auditProgressFill');
   var errorEl       = document.getElementById('auditError');
   var errorHeading  = document.getElementById('auditErrorHeading');
   var errorBody     = document.getElementById('auditErrorBody');
@@ -1282,16 +1754,22 @@
   var CATEGORIES   = ['performance', 'accessibility', 'best-practices', 'seo'];
   var submitOriginalHTML = submitBtn.innerHTML;
 
-  var loadingMessages = [
-    'Contacting Google Lighthouse…',
-    'Loading your homepage on a simulated 4G connection…',
-    'Measuring paint timings and layout shifts…',
-    'Scoring mobile speed…',
-    'Checking for common SEO issues…',
-    'Scoring accessibility…',
-    'Writing your report card…'
-  ];
-  var loadingInterval = null;
+  // Stepwise progress state. The audit has four logical phases:
+  //   1. Submitting the URL to PSI (< 1s)
+  //   2. Lighthouse running on PSI side (the long wait, ~15-40s)
+  //   3. Response parsed, running platform detection + scoring (~1s)
+  //   4. Rendering the report (< 1s)
+  // Phases 1 and 4 are near-instant. Phase 2 is the one that
+  // actually takes time; we drive the progress bar during it using
+  // elapsed-time as a proxy since PSI doesn't expose internal
+  // progress. The bar starts slow, accelerates through the middle,
+  // and caps at 90% so it doesn't appear "done" while we're still
+  // waiting on Google.
+  var currentStep = 0;
+  var progressTimer = null;
+  var progressStartTime = null;
+  var PROGRESS_TARGET_SECONDS = 28; // typical PSI call duration
+  var loadingInterval = null; // kept for back-compat with older callers
 
   function normalizeUrl(raw) {
     if (!raw) return null;
@@ -1313,17 +1791,68 @@
     if (which) which.hidden = false;
   }
 
-  function cycleLoading() {
-    var i = 0;
-    loadingStatus.textContent = loadingMessages[i];
-    loadingInterval = setInterval(function(){
-      i = (i + 1) % loadingMessages.length;
-      loadingStatus.textContent = loadingMessages[i];
-    }, 3500);
+  // Set the active step by number (1-4). Previous steps get marked
+  // done with a check, future steps stay neutral. Called at real
+  // milestones in the audit pipeline.
+  function setStep(n) {
+    if (!stepsEl) return;
+    currentStep = n;
+    var steps = stepsEl.querySelectorAll('.audit-step');
+    steps.forEach(function(el, idx){
+      var stepNum = idx + 1;
+      el.classList.remove('active', 'done');
+      if (stepNum < n) {
+        el.classList.add('done');
+      } else if (stepNum === n) {
+        el.classList.add('active');
+      }
+    });
   }
-  function stopCycling() {
-    if (loadingInterval) { clearInterval(loadingInterval); loadingInterval = null; }
+
+  // Drive the progress bar based on elapsed time during step 2
+  // (the long Lighthouse wait). Uses an ease-out curve so the bar
+  // moves fast at first (giving the user immediate visual feedback)
+  // and slows down as it approaches the target, which psychologically
+  // masks variable network latency. Caps at 90% until a real
+  // milestone fires.
+  function startProgress() {
+    progressStartTime = Date.now();
+    if (progressFill) progressFill.style.width = '4%';
+    progressTimer = setInterval(function(){
+      var elapsed = (Date.now() - progressStartTime) / 1000;
+      var t = Math.min(elapsed / PROGRESS_TARGET_SECONDS, 1);
+      // Ease out: fast start, slow finish. 1 - (1-t)^2
+      var eased = 1 - (1 - t) * (1 - t);
+      var pct = Math.min(eased * 90, 90); // cap at 90% until real done
+      if (progressFill) progressFill.style.width = pct.toFixed(1) + '%';
+
+      // Update the "this usually takes X seconds" subcopy with a
+      // countdown after we've run longer than expected so the user
+      // knows we haven't stalled.
+      if (loadingSubEl && elapsed > PROGRESS_TARGET_SECONDS + 5) {
+        loadingSubEl.textContent = "Google is taking longer than usual on this one — still running…";
+      }
+    }, 200);
   }
+
+  function finishProgress() {
+    if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
+    if (progressFill) progressFill.style.width = '100%';
+  }
+
+  function resetProgress() {
+    if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
+    progressStartTime = null;
+    if (progressFill) progressFill.style.width = '0%';
+    if (loadingSubEl) loadingSubEl.textContent = 'This usually takes 15–40 seconds.';
+    setStep(0);
+  }
+
+  // Kept for back-compat with any code that still calls cycleLoading/
+  // stopCycling — in Sprint 6c these are thin wrappers around the
+  // new stepwise API.
+  function cycleLoading() { setStep(1); setTimeout(function(){ setStep(2); startProgress(); }, 400); }
+  function stopCycling() { finishProgress(); }
 
   function gradeScore(score) {
     if (score >= 90) return 'grade-good';
@@ -2098,6 +2627,9 @@
       audit: 'viewport',
       weight: 2.0, // catastrophic if missing — site is unusable on phones
       anchor: '#mobile',
+      effort: 'dev',       // 'self' | 'dev' | 'rebuild'
+      minutes: 5,          // rough time-to-fix
+      impact: 'Without a viewport tag, every phone visitor sees a broken desktop layout. Roughly 70% of restaurant traffic is mobile, which means a missing viewport is 70% of your traffic bouncing on contact.',
       pass: 'Your site fits on a phone screen',
       passNote: 'Your pages render at phone width automatically — the single most important mobile-readiness check, and you pass it.',
       fail: 'Your site is not set up for phones',
@@ -2110,6 +2642,9 @@
       audit: 'tap-targets',
       weight: 1.0,
       anchor: '#mobile',
+      effort: 'dev',
+      minutes: 20,
+      impact: "Every missed tap is a frustrated customer. On a restaurant site where the most-tapped button is usually Reserve or Order, small tap targets translate directly into lost bookings.",
       pass: 'Your buttons are big enough to tap',
       passNote: 'Your action buttons are big enough to hit on the first try with a thumb holding a phone in one hand.',
       fail: 'Some of your buttons are too small to tap reliably',
@@ -2122,6 +2657,9 @@
       audit: 'color-contrast',
       weight: 1.0,
       anchor: '#trust',
+      effort: 'dev',
+      minutes: 15,
+      impact: "Roughly 1 in 4 adults over 40 has some form of age-related vision difficulty. If your menu text fails contrast, you're leaving money on the table from the exact demographic that dines out most.",
       pass: 'Your menu text is readable for everyone',
       passNote: 'A 55-year-old standing in bright sunlight can read your menu descriptions. That is the actual bar for a mobile restaurant menu — and you meet it.',
       fail: 'Some of your text is hard to read',
@@ -2134,6 +2672,9 @@
       audit: 'font-size',
       weight: 1.0,
       anchor: '#mobile',
+      effort: 'dev',
+      minutes: 10,
+      impact: "Text below 16px forces iOS to zoom on focus and frustrates every mobile reader. Menu descriptions that look fine on a laptop are often unreadable on a phone at arm's length.",
       pass: 'Your text is legible without pinch-zooming',
       passNote: 'Your body text is above the mobile readability threshold — visitors do not have to pinch-zoom to read the menu.',
       fail: 'Your text is too small on a phone',
@@ -2145,6 +2686,9 @@
       type: 'phone',
       weight: 1.5, // real conversion driver for takeout / walk-in
       anchor: '#basics',
+      effort: 'self',
+      minutes: 2,
+      impact: "On mobile, every tap that requires copying and pasting instead of tapping costs you customers. Phone calls are still how most takeout orders and reservation questions reach independent restaurants.",
       pass: 'Visitors can tap your phone number to call',
       passNote: 'A tappable phone number is on your page — mobile visitors can call you with one tap, which matters for takeout orders, reservation questions, and "are you still open" calls.',
       passNoteText: 'We found a phone number in your page text, but it is not wrapped in a clickable <code>tel:</code> link. Mobile visitors have to copy the number into their dialer manually instead of tapping to call. Ask your developer to wrap the number in <code>&lt;a href="tel:+1..."&gt;</code>.',
@@ -2158,6 +2702,9 @@
       platforms: ['maps'],
       weight: 1.0,
       anchor: '#conversions',
+      effort: 'dev',
+      minutes: 15,
+      impact: "The path from 'I might check this place out' to 'I am driving there' should be one tap. An embedded map or a Maps link cuts directions friction to zero — plain-text addresses add a whole copy-paste flow before the customer even arrives.",
       pass: 'Visitors can get directions with one tap',
       passNote: '{detected} is on your site — first-time visitors can tap once to get turn-by-turn directions to your door.',
       fail: null, // never fail this check — absence is always unverified
@@ -2172,6 +2719,9 @@
       platforms: ['ordering', 'reservations'],
       weight: 1.5, // the single biggest direct-conversion lever
       anchor: '#conversions',
+      effort: 'dev',
+      minutes: 60,
+      impact: "This is the single biggest direct-conversion lever on a restaurant website. Every reservation taken on your own site (instead of OpenTable) keeps the full booking. Every order through your own Toast or Square checkout (instead of DoorDash) keeps the full margin.",
       pass: 'Visitors can order or book a table online',
       passNote: '{detected} on your site — direct online conversions keep commission-hungry marketplaces out of your margins.',
       passNoteText: "We found text that strongly suggests self-hosted ordering or reservations on your site (something like 'ORDER ONLINE' or 'RESERVE A TABLE'). We couldn't tie it to a specific platform we recognize, but the signal is there.",
@@ -2184,6 +2734,9 @@
       type: 'menu-format',
       weight: 1.0,
       anchor: '#basics',
+      effort: 'rebuild',
+      minutes: 240,
+      impact: "PDF menus are the most common mobile-UX sin on restaurant sites. They don't zoom gracefully, they don't link to online ordering, and they make every menu update (new special, changed price) dependent on a developer with InDesign. Replacing a PDF menu with a real HTML menu page typically lifts mobile dwell time by 30-50%.",
       pass: 'Your menu opens as a real HTML page',
       passNote: 'Visitors can read your menu on a phone without downloading a PDF or pinching to zoom. This is table stakes for mobile restaurant UX.',
       fail: 'Your menu is a PDF or an image',
@@ -2195,6 +2748,9 @@
       type: 'schema',
       weight: 0.5, // bonus — nice to have, not critical
       anchor: '#findability',
+      effort: 'dev',
+      minutes: 20,
+      impact: "Restaurant schema markup is how Google learns your hours, cuisine, and price range for local search. Restaurants with proper schema show up in the 'restaurants near me' rich results with photos and ratings — restaurants without it get a plain blue link. The difference in click-through rate is meaningful.",
       pass: 'Google knows your site is a restaurant',
       passNote: 'Your site publishes Restaurant schema markup (structured data that tells Google exactly what kind of business you are). This helps you show up in Google\'s "restaurants near me" Rich Results with hours, price range, and menu snippets.',
       fail: null,
@@ -2343,7 +2899,58 @@
   // are 'pass' (user said yes, we had it), 'fail' (user said no, we
   // were right to flag), or undefined (no feedback yet). Keeps the
   // corrections alive if the user re-renders without re-running PSI.
+  //
+  // Sprint 6c: overrides are also encoded in the URL query string as
+  // `&ov=0p,3f,5p` so a shared report link preserves any corrections
+  // the original user made. That way "here's my audit" link becomes
+  // "here's my audit after I told it what it got wrong" — which is
+  // much more useful to forward to a developer.
   var USER_OVERRIDES = {};
+
+  // Encode an overrides object into the compact URL-param format.
+  //   {0: 'pass', 3: 'fail'} -> '0p,3f'
+  function encodeOverrides(overrides) {
+    var keys = Object.keys(overrides);
+    if (!keys.length) return '';
+    keys.sort(function(a, b){ return parseInt(a, 10) - parseInt(b, 10); });
+    return keys.map(function(k){
+      var v = overrides[k];
+      var letter = (v === 'pass') ? 'p' : (v === 'fail' ? 'f' : '');
+      return k + letter;
+    }).filter(function(s){ return s.length > 0; }).join(',');
+  }
+
+  // Decode the URL-param format back into an overrides object.
+  //   '0p,3f,5p' -> {0: 'pass', 3: 'fail', 5: 'pass'}
+  // Silently ignores malformed entries so a corrupted URL still loads.
+  function decodeOverrides(str) {
+    var out = {};
+    if (!str) return out;
+    var parts = str.split(',');
+    for (var i = 0; i < parts.length; i++) {
+      var m = parts[i].match(/^(\d+)([pf])$/);
+      if (!m) continue;
+      out[m[1]] = (m[2] === 'p') ? 'pass' : 'fail';
+    }
+    return out;
+  }
+
+  // Update the URL in the address bar to include the current audit's
+  // URL + any overrides, without navigating. Uses history.replaceState
+  // so the back button still works. Called whenever the overrides map
+  // changes so a user who shares their URL at any point gets an
+  // accurate snapshot of what they're looking at.
+  function updateUrlState(auditedUrl) {
+    try {
+      var params = new URLSearchParams();
+      if (auditedUrl) params.set('url', auditedUrl);
+      var ov = encodeOverrides(USER_OVERRIDES);
+      if (ov) params.set('ov', ov);
+      var qs = params.toString();
+      var newUrl = location.pathname + (qs ? '?' + qs : '');
+      window.history.replaceState(null, '', newUrl);
+    } catch (e) { /* history API unavailable — silently skip */ }
+  }
 
   function renderPriorityChecks(audits, allUrls, pageText) {
     var container = document.getElementById('priorityItems');
@@ -2424,11 +3031,53 @@
         ? '<span class="override-badge">You confirmed</span>'
         : '';
 
+      // Chips row: only shown on actionable items (fail + unverified).
+      // Passes don't need "fix yourself in 2 minutes" because there's
+      // nothing to fix. An unverified item shows its chips because the
+      // owner might click "No I don't have this" and immediately want
+      // to know how hard it is to fix.
+      var chipsHtml = '';
+      if (result.mark.cls !== 'pass' && (def.effort || def.minutes)) {
+        var chips = [];
+        if (def.effort === 'self') {
+          chips.push('<span class="chip chip-effort chip-self" title="You can usually do this yourself">Fix yourself</span>');
+        } else if (def.effort === 'dev') {
+          chips.push('<span class="chip chip-effort chip-dev" title="Your developer or site maintainer needs to handle this">Ask your developer</span>');
+        } else if (def.effort === 'rebuild') {
+          chips.push('<span class="chip chip-effort chip-rebuild" title="This usually requires rebuilding or redesigning a section of the site">Rebuild needed</span>');
+        }
+        if (typeof def.minutes === 'number') {
+          var timeLabel;
+          if (def.minutes < 10)        timeLabel = '~' + def.minutes + ' min';
+          else if (def.minutes < 60)   timeLabel = '~' + def.minutes + ' min';
+          else if (def.minutes < 180)  timeLabel = '~' + Math.round(def.minutes / 60) + ' hr';
+          else                         timeLabel = 'Half-day project';
+          chips.push('<span class="chip chip-time">' + timeLabel + '</span>');
+        }
+        if (chips.length) {
+          chipsHtml = '<div class="chips">' + chips.join('') + '</div>';
+        }
+      }
+
+      // Impact / "why this matters" copy: only shown on actionable
+      // items (fail + unverified). Non-alarming, framed in lost
+      // customers or lost revenue, not in Lighthouse numbers.
+      var impactHtml = '';
+      if (result.mark.cls !== 'pass' && def.impact) {
+        impactHtml =
+          '<div class="impact-note">' +
+            '<span class="impact-label">Why this matters:</span> ' +
+            escapeHtml(def.impact) +
+          '</div>';
+      }
+
       row.innerHTML =
         '<div class="mark ' + result.mark.cls + '" aria-hidden="true">' + result.mark.ch + '</div>' +
         '<div class="body">' +
           '<strong>' + escapeHtml(result.title) + overrideBadge + '</strong>' +
           '<span>' + result.note + '</span>' +
+          chipsHtml +
+          impactHtml +
           feedbackHtml +
         '</div>' +
         '<a class="link" href="/resources/restaurant-website-checklist/' + def.anchor + '">Learn more →</a>';
@@ -2452,7 +3101,18 @@
           var checkName = (def && (def.audit || def.type)) || 'check-' + idx;
           window.plausible('Audit Feedback', { props: { check: checkName, correction: action } });
         }
+        // Reflect the correction in the URL so a user sharing their
+        // current screen gets their overrides preserved in the link.
+        var last = window.__auditLastResult;
+        if (last && last.url) updateUrlState(last.url);
+        // Update share links so buildShareContext() picks up the new URL.
+        if (typeof updateShareLinks === 'function') updateShareLinks();
+        // Re-render the priority checks with the new override applied.
         renderPriorityChecks(audits, allUrls, pageText);
+        // Recompute the overall score ring and the Restaurant Readiness
+        // category card LIVE so the user sees their correction change
+        // the headline number immediately — no re-audit needed.
+        recomputeOverallFromCurrentState();
       });
     });
 
@@ -2463,12 +3123,19 @@
     var tally = document.getElementById('priorityTally');
     if (tally) {
       if (totalCount) {
-        var parts = [passCount + ' of ' + (totalCount - unverifiedCount) + ' confirmed checks passed'];
-        if (unverifiedCount > 0) {
-          parts.push(unverifiedCount + ' couldn\'t be verified');
+        var confirmedCount = totalCount - unverifiedCount;
+        var failCount = confirmedCount - passCount;
+        // Lead with the honest phrasing: what we CONFIRMED, not a
+        // scary abstract score. Readiness comes last as a summary.
+        var pieces = [];
+        if (confirmedCount > 0) {
+          pieces.push(passCount + ' of ' + confirmedCount + ' confirmed checks passed');
         }
-        parts.push('readiness ' + restaurantScore + '/100');
-        tally.textContent = parts.join(' · ');
+        if (unverifiedCount > 0) {
+          pieces.push(unverifiedCount + ' couldn\'t be verified — answer the "is this right?" questions below to refine your score');
+        }
+        pieces.push('restaurant readiness: ' + restaurantScore + '/100');
+        tally.textContent = pieces.join(' · ');
       } else {
         tally.textContent = 'No restaurant-priority data available';
       }
@@ -2527,7 +3194,17 @@
       if (rd.detected) return true;
     }
 
-    // 3) Build a haystack from hostname + page title + meta description
+    // 3) Schema.org signal: if the site publishes JSON-LD markup with
+    //    @type Restaurant / FoodEstablishment / Bakery / CafeOrCoffeeShop
+    //    etc., or any LocalBusiness with a servesCuisine field, it's
+    //    telling Google explicitly "this is a restaurant". Catches sites
+    //    that have no recognized ordering platform but correctly mark
+    //    themselves up for local SEO — which is exactly the pattern a
+    //    well-built small restaurant site tends to follow.
+    var schemaPageText = extractPageText(audits);
+    if (detectRestaurantSchema(schemaPageText, allUrls)) return true;
+
+    // 4) Build a haystack from hostname + page title + meta description
     //    Each Lighthouse audit exposes its related snippet differently,
     //    so we reach for everything that might contain readable text.
     var haystack = host;
@@ -2553,7 +3230,7 @@
     }
     haystack = haystack.toLowerCase();
 
-    // 4) Keyword match against a curated list of strong restaurant
+    // 5) Keyword match against a curated list of strong restaurant
     //    indicators. Each term is unambiguous enough that a single
     //    match reliably identifies the site as a restaurant. Ambiguous
     //    short words (bar, pub) are deliberately excluded to avoid
@@ -2613,6 +3290,17 @@
     var isRestaurantSite = looksLikeRestaurant(auditedUrl, audits, allUrls);
     var restaurantScore = priorityResult.score;
 
+    // Cache the four Lighthouse category scores + the restaurant flag
+    // so recomputeOverall() (fired by user feedback clicks) can update
+    // the overall score ring and the restaurant category card without
+    // needing to re-fetch from PSI.
+    window.__auditScoreState = {
+      perf: perf, a11y: a11y, bp: bp, seo: seo,
+      isRestaurant: isRestaurantSite,
+      audits: audits, allUrls: allUrls, pageText: pageText,
+      auditedUrl: auditedUrl
+    };
+
     var overall;
     if (isRestaurantSite) {
       // Real restaurant site: weight restaurant readiness as a 5th category
@@ -2656,11 +3344,80 @@
     // Expose raw audits for future consumers
     window.__auditLastResult = { audits: audits, overall: overall, url: auditedUrl, restaurant: isRestaurantSite ? restaurantScore : null };
 
-    // Pre-fill email-the-report hidden fields with this run's context
-    var emailUrlField   = document.getElementById('emailReportUrl');
-    var emailScoreField = document.getElementById('emailReportScore');
+    // Update the address bar so "copy link" gives you the audited
+    // URL (and any live overrides). Uses history.replaceState so
+    // the back button still works.
+    updateUrlState(auditedUrl);
+
+    // Pre-fill email-the-report hidden fields with this run's context.
+    // Sprint 6c: richer payload so the email is a real deliverable,
+    // not just "someone wanted their report." Includes the overall
+    // score, restaurant readiness, a shareable link with any current
+    // overrides baked in, a human-readable summary, the list of
+    // failing and unverified check names, and any user corrections.
+    var emailUrlField        = document.getElementById('emailReportUrl');
+    var emailScoreField      = document.getElementById('emailReportScore');
+    var emailReadinessField  = document.getElementById('emailReportReadiness');
+    var emailShareLinkField  = document.getElementById('emailReportShareLink');
+    var emailSummaryField    = document.getElementById('emailReportSummary');
+    var emailFailingField    = document.getElementById('emailReportFailing');
+    var emailUnverifiedField = document.getElementById('emailReportUnverified');
+    var emailCorrectionsField= document.getElementById('emailReportCorrections');
     if (emailUrlField)   emailUrlField.value   = auditedUrl;
     if (emailScoreField) emailScoreField.value = String(overall);
+    if (emailReadinessField) {
+      emailReadinessField.value = isRestaurantSite ? String(restaurantScore) : 'N/A';
+    }
+    // Build a shareable link that preserves any current overrides.
+    try {
+      var shareParams = new URLSearchParams();
+      shareParams.set('url', auditedUrl);
+      var ovStr = encodeOverrides(USER_OVERRIDES);
+      if (ovStr) shareParams.set('ov', ovStr);
+      if (emailShareLinkField) {
+        emailShareLinkField.value = location.origin + location.pathname + '?' + shareParams.toString();
+      }
+    } catch (e) { /* no-op */ }
+    // Walk the rendered results to build failing / unverified lists
+    // and a plain-English summary the email reader can scan.
+    try {
+      var failingChecks = [];
+      var unverifiedChecks = [];
+      PRIORITY_CHECKS.forEach(function(def, idx){
+        var result = evaluatePriorityCheck(def, audits, allUrls, pageText);
+        if (!result) return;
+        if (USER_OVERRIDES[idx] === 'pass' && result.mark.cls === 'unverified') return;
+        if (USER_OVERRIDES[idx] === 'fail' && result.mark.cls === 'unverified') {
+          result = makeResult(def, 'fail');
+        }
+        var title = result.title ? String(result.title).replace(/<[^>]*>/g, '') : 'check ' + (idx + 1);
+        if (result.mark.cls === 'fail') failingChecks.push(title);
+        else if (result.mark.cls === 'unverified') unverifiedChecks.push(title);
+      });
+      if (emailFailingField)    emailFailingField.value    = failingChecks.join('; ');
+      if (emailUnverifiedField) emailUnverifiedField.value = unverifiedChecks.join('; ');
+      if (emailCorrectionsField) {
+        var corr = [];
+        Object.keys(USER_OVERRIDES).forEach(function(k){
+          var def = PRIORITY_CHECKS[parseInt(k, 10)];
+          if (!def) return;
+          var name = def.audit || def.type || 'check-' + k;
+          corr.push(name + '=' + USER_OVERRIDES[k]);
+        });
+        emailCorrectionsField.value = corr.join('; ');
+      }
+      if (emailSummaryField) {
+        var parts = [
+          'Overall score: ' + overall + '/100',
+          isRestaurantSite ? 'Restaurant readiness: ' + restaurantScore + '/100' : null,
+          failingChecks.length ? failingChecks.length + ' failing checks' : 'No failing checks',
+          unverifiedChecks.length ? unverifiedChecks.length + ' couldn\'t be verified' : null
+        ].filter(function(p){ return p; });
+        emailSummaryField.value = parts.join(' · ');
+      }
+    } catch (e) {
+      console.warn('[audit] email payload build failed', e);
+    }
 
     // Populate per-platform share links for the current result
     updateShareLinks();
@@ -2670,6 +3427,55 @@
     setTimeout(function(){
       reportEl.scrollIntoView({behavior:'smooth', block:'start'});
     }, 80);
+  }
+
+  // Live-update the overall score ring and the Restaurant Readiness
+  // category card WITHOUT re-fetching from PSI. Called every time a
+  // user clicks a feedback button so their corrections reshape the
+  // headline number in real time — no re-audit required.
+  //
+  // Reads the cached Lighthouse category scores from
+  // window.__auditScoreState (set by renderReport) and the current
+  // USER_OVERRIDES state to recompute restaurant readiness, then
+  // reassembles the overall score using the same formula
+  // renderReport uses on first run. The score ring's stroke-dashoffset
+  // transition animates the change, so the user sees the needle slide
+  // as they click.
+  function recomputeOverallFromCurrentState() {
+    var state = window.__auditScoreState;
+    if (!state) return;
+    // Re-run the priority checks to pick up current USER_OVERRIDES
+    // state. renderPriorityChecks returns the updated restaurant score.
+    var priorityResult = renderPriorityChecks(state.audits, state.allUrls, state.pageText);
+    var newRestaurantScore = priorityResult.score;
+
+    var overall;
+    if (state.isRestaurant) {
+      overall = Math.round((state.perf + state.a11y + state.bp + state.seo + newRestaurantScore) / 5);
+    } else {
+      overall = Math.round((state.perf + state.a11y + state.bp + state.seo) / 4);
+    }
+
+    // Update the score ring (stroke-dashoffset transition handles
+    // the animation), verdict copy, Restaurant Readiness category
+    // card, and the cached last-result so future share/email/copy
+    // actions see the corrected score.
+    setScoreRing(overall);
+    var verdictEl = document.getElementById('verdictCopy');
+    if (verdictEl) verdictEl.textContent = verdictFor(overall);
+    if (state.isRestaurant) setCategory('restaurant', newRestaurantScore);
+
+    if (window.__auditLastResult) {
+      window.__auditLastResult.overall = overall;
+      window.__auditLastResult.restaurant = state.isRestaurant ? newRestaurantScore : null;
+    }
+
+    // Update the email form hidden fields so an email sent AFTER
+    // corrections carries the corrected score + readiness.
+    var emailScoreField     = document.getElementById('emailReportScore');
+    var emailReadinessField = document.getElementById('emailReportReadiness');
+    if (emailScoreField)     emailScoreField.value     = String(overall);
+    if (emailReadinessField) emailReadinessField.value = state.isRestaurant ? String(newRestaurantScore) : 'N/A';
   }
 
   function showError(heading, body) {
@@ -2682,7 +3488,10 @@
     submitBtn.disabled = true;
     submitBtn.textContent = 'Running…';
     showOnly(loadingEl);
-    cycleLoading();
+    resetProgress();
+
+    // Step 1: submitting the request to PSI
+    setStep(1);
 
     var params = new URLSearchParams();
     params.append('url', url);
@@ -2691,6 +3500,15 @@
     // Authenticated tier: lifts anonymous rate limits and gives us
     // the free-tier 25k-requests/day quota.
     if (PSI_API_KEY) params.append('key', PSI_API_KEY);
+
+    // A tiny delay before moving to step 2 so the user perceives the
+    // submit phase as a real step — otherwise steps 1 and 2 flip so
+    // fast that the UI looks glitchy. The progress bar then animates
+    // for the duration of the actual Lighthouse call.
+    setTimeout(function(){
+      setStep(2);
+      startProgress();
+    }, 350);
 
     fetch(PSI_ENDPOINT + '?' + params.toString())
       .then(function(res){
@@ -2709,12 +3527,22 @@
         return res.json();
       })
       .then(function(data){
-        stopCycling();
+        // Step 3: Lighthouse response received, scoring restaurant checks
+        setStep(3);
+        return new Promise(function(resolve){
+          setTimeout(function(){ resolve(data); }, 250);
+        });
+      })
+      .then(function(data){
+        // Step 4: rendering
+        setStep(4);
         try {
           renderReport(data, url);
+          finishProgress();
           if (window.plausible) window.plausible('Audit Completed');
         } catch (e) {
           console.error('[audit] render failed', e);
+          finishProgress();
           showError(
             "We got a reply, but couldn't read it.",
             "Google Lighthouse returned a result we couldn't parse. Try running the audit again, or email don@muntin.digital and I'll run it manually."
@@ -2722,7 +3550,7 @@
         }
       })
       .catch(function(err){
-        stopCycling();
+        finishProgress();
         console.error('[audit] fetch failed', err);
         var msg = (err && err.message) || '';
         if (/unable to process|fetched.*failed|lighthouse returned error|chrome.*crashed/i.test(msg)) {
@@ -2759,6 +3587,10 @@
       });
   }
 
+  // Track the most recent audit URL so the error-panel "Try again"
+  // button can re-run the same audit without the user retyping it.
+  var lastAuditUrl = null;
+
   form.addEventListener('submit', function(e){
     e.preventDefault();
     var url = normalizeUrl(input.value);
@@ -2770,15 +3602,50 @@
       return;
     }
     input.value = url;
+    lastAuditUrl = url;
     if (window.plausible) window.plausible('Audit Started');
     runAudit(url);
   });
+
+  // Error-panel action handlers
+  var retryBtn  = document.getElementById('auditRetryBtn');
+  var newUrlBtn = document.getElementById('auditNewUrlBtn');
+  if (retryBtn) {
+    retryBtn.addEventListener('click', function(){
+      if (!lastAuditUrl) {
+        // No previous audit — just focus the input
+        showOnly(null); // hide everything
+        if (input) input.focus();
+        return;
+      }
+      if (window.plausible) window.plausible('Audit Retry');
+      runAudit(lastAuditUrl);
+    });
+  }
+  if (newUrlBtn) {
+    newUrlBtn.addEventListener('click', function(){
+      showOnly(null);
+      if (input) {
+        input.value = '';
+        input.focus();
+      }
+    });
+  }
 
   /* -------- Build a share context from the last audit result -------- */
   function buildShareContext() {
     var last = window.__auditLastResult;
     if (!last || !last.url) return null;
-    var shareUrl = location.origin + location.pathname + '?url=' + encodeURIComponent(last.url);
+    // Include any current user overrides in the share URL so the
+    // recipient opens the audit pre-corrected. This is the fix that
+    // makes "forward this audit to your developer" actually preserve
+    // the conversation: if the owner clicked "Yes I have ordering"
+    // before sharing, the shared link shows ordering as a pass.
+    var params = new URLSearchParams();
+    params.set('url', last.url);
+    var ov = encodeOverrides(USER_OVERRIDES);
+    if (ov) params.set('ov', ov);
+    var shareUrl = location.origin + location.pathname + '?' + params.toString();
     var pretty = last.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
     var text = pretty + ' scored ' + last.overall + '/100 on the free Restaurant Website Audit from Muntin Digital. Run yours:';
     var subject = 'Restaurant Website Audit — ' + pretty + ' scored ' + last.overall + '/100';
@@ -2952,6 +3819,335 @@
     });
   }
 
+  /* ============ SPRINT 6d: COMPETITOR COMPARISON ============ */
+  (function initCompareMode(){
+    var compareSection  = document.getElementById('auditCompare');
+    var compareForm     = document.getElementById('auditCompareForm');
+    var compareInputs   = document.getElementById('compareInputs');
+    var compareAddBtn   = document.getElementById('compareAddBtn');
+    var compareRunBtn   = document.getElementById('compareRunBtn');
+    var compareStatus   = document.getElementById('compareStatus');
+    var compareStatusH  = document.getElementById('compareStatusHeading');
+    var compareStatusS  = document.getElementById('compareStatusSub');
+    var compareProgress = document.getElementById('compareProgressFill');
+    var compareResults  = document.getElementById('compareResults');
+    var compareTbody    = document.getElementById('compareTableBody');
+    var compareVerdict  = document.getElementById('compareVerdict');
+    var compareError    = document.getElementById('compareError');
+    var compareErrorTxt = document.getElementById('compareErrorText');
+    var compareRetryBtn = document.getElementById('compareRetryBtn');
+    if (!compareSection || !compareForm) return;
+
+    var MAX_COMPETITORS = 3;
+    var competitorResults = [];
+
+    // ---- URL input management (+ add another / remove) ----
+    function urlInputCount() {
+      return compareInputs.querySelectorAll('input[type="url"]').length;
+    }
+    function addUrlInput() {
+      var count = urlInputCount();
+      if (count >= MAX_COMPETITORS) return;
+      var row = document.createElement('div');
+      row.className = 'compare-input-row';
+      var labelId = 'compareUrl' + count;
+      row.innerHTML =
+        '<label for="' + labelId + '" class="visually-hidden">Competitor ' + (count + 1) + '</label>' +
+        '<input type="url" id="' + labelId + '" name="competitor' + count + '" placeholder="competitor' + (count + 1) + '.com" autocomplete="off" spellcheck="false" />' +
+        '<button type="button" class="compare-remove" aria-label="Remove this competitor">×</button>';
+      compareInputs.appendChild(row);
+      var removeBtn = row.querySelector('.compare-remove');
+      if (removeBtn) {
+        removeBtn.addEventListener('click', function(){
+          row.remove();
+          compareAddBtn.disabled = false;
+        });
+      }
+      if (urlInputCount() >= MAX_COMPETITORS) compareAddBtn.disabled = true;
+    }
+    if (compareAddBtn) compareAddBtn.addEventListener('click', addUrlInput);
+
+    // ---- Sequential PSI runner ----
+    // Reuses the same PSI_ENDPOINT + PSI_API_KEY as the main audit.
+    // Fetches are SEQUENTIAL (not parallel) to stay well under
+    // Google's per-minute free-tier rate limit. Each fetch returns
+    // a small shape with just the scores we need for the comparison
+    // table — we don't keep the full Lighthouse audit for
+    // competitors because we're not rendering their priority checks.
+    function fetchCompetitor(url) {
+      var params = new URLSearchParams();
+      params.append('url', url);
+      params.append('strategy', 'mobile');
+      CATEGORIES.forEach(function(c){ params.append('category', c); });
+      if (PSI_API_KEY) params.append('key', PSI_API_KEY);
+      return fetch(PSI_ENDPOINT + '?' + params.toString())
+        .then(function(res){
+          if (!res.ok) {
+            return res.json().then(function(body){
+              var msg = (body && body.error && body.error.message) || ('PageSpeed returned ' + res.status);
+              var err = new Error(msg);
+              err.status = res.status;
+              throw err;
+            }, function(){
+              var err = new Error('PageSpeed returned ' + res.status);
+              err.status = res.status;
+              throw err;
+            });
+          }
+          return res.json();
+        })
+        .then(function(data){
+          var lh = data && data.lighthouseResult;
+          if (!lh || !lh.categories) throw new Error('Unexpected PSI response shape');
+          var cats = lh.categories;
+          var audits = lh.audits || {};
+          var perf = Math.round(((cats.performance && cats.performance.score) || 0) * 100);
+          var a11y = Math.round(((cats.accessibility && cats.accessibility.score) || 0) * 100);
+          var bp   = Math.round(((cats['best-practices'] && cats['best-practices'].score) || 0) * 100);
+          var seo  = Math.round(((cats.seo && cats.seo.score) || 0) * 100);
+
+          // Compute restaurant readiness using the same logic as
+          // renderPriorityChecks but without touching the DOM (we're
+          // rendering a TABLE for competitors, not full priority items).
+          var allUrls  = extractAllUrls(audits);
+          var pageText = extractPageText(audits);
+          var isRestaurant = looksLikeRestaurant(url, audits, allUrls);
+          var restaurantScore = 0;
+          if (isRestaurant) {
+            var totalWeight = 0, weightedCredit = 0;
+            PRIORITY_CHECKS.forEach(function(def){
+              var result = evaluatePriorityCheck(def, audits, allUrls, pageText);
+              if (!result) return;
+              if (result.mark.cls === 'unverified') return; // excluded from score
+              var w = typeof def.weight === 'number' ? def.weight : 1.0;
+              totalWeight += w;
+              if (result.mark.cls === 'pass') weightedCredit += w;
+            });
+            restaurantScore = totalWeight > 0 ? Math.round((weightedCredit / totalWeight) * 100) : 0;
+          }
+          var overall = isRestaurant
+            ? Math.round((perf + a11y + bp + seo + restaurantScore) / 5)
+            : Math.round((perf + a11y + bp + seo) / 4);
+          return {
+            url: url,
+            pretty: url.replace(/^https?:\/\//, '').replace(/\/$/, ''),
+            perf: perf, a11y: a11y, bp: bp, seo: seo,
+            isRestaurant: isRestaurant,
+            restaurant: isRestaurant ? restaurantScore : null,
+            overall: overall
+          };
+        });
+    }
+
+    // Run a list of competitor URLs sequentially, updating the
+    // progress UI between each. Returns a promise that resolves
+    // with an array of results (successes) or rejects on any
+    // individual failure.
+    function runCompetitorsSequential(urls) {
+      competitorResults = [];
+      var i = 0;
+      function next() {
+        if (i >= urls.length) return Promise.resolve(competitorResults);
+        var url = urls[i];
+        var displayIdx = i + 1;
+        compareStatusH.textContent = 'Auditing competitor ' + displayIdx + ' of ' + urls.length + '…';
+        var baseProgress = ((displayIdx - 1) / urls.length) * 100;
+        var nextProgress = (displayIdx / urls.length) * 100;
+        compareProgress.style.width = baseProgress + '%';
+        // Animate the progress bar for this competitor while its
+        // fetch is in flight. Uses the same ease-out curve as the
+        // main audit for consistency.
+        var startTime = Date.now();
+        var bgTimer = setInterval(function(){
+          var elapsed = (Date.now() - startTime) / 1000;
+          var t = Math.min(elapsed / PROGRESS_TARGET_SECONDS, 1);
+          var eased = 1 - (1 - t) * (1 - t);
+          var progress = baseProgress + (eased * 0.9) * (nextProgress - baseProgress);
+          compareProgress.style.width = progress.toFixed(1) + '%';
+        }, 200);
+        return fetchCompetitor(url)
+          .then(function(result){
+            clearInterval(bgTimer);
+            competitorResults.push(result);
+            compareProgress.style.width = nextProgress + '%';
+            i++;
+            return next();
+          })
+          .catch(function(err){
+            clearInterval(bgTimer);
+            err.competitorIndex = displayIdx;
+            err.competitorUrl = url;
+            throw err;
+          });
+      }
+      return next();
+    }
+
+    // ---- Render the side-by-side comparison table ----
+    function renderCompareTable() {
+      var yourResult = window.__auditLastResult;
+      if (!yourResult || !competitorResults.length) return;
+
+      // Build the header row: "Metric | You | Competitor 1 | Competitor 2 | ..."
+      var thead = compareForm.parentNode.querySelector('.compare-table thead tr');
+      thead.innerHTML = '<th scope="col" class="compare-label-col">Metric</th>';
+      var yourTh = document.createElement('th');
+      yourTh.scope = 'col';
+      yourTh.className = 'compare-you';
+      var yourPretty = yourResult.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+      yourTh.innerHTML = 'Your site<span class="domain-label">' + escapeHtml(yourPretty) + '</span>';
+      thead.appendChild(yourTh);
+      competitorResults.forEach(function(c, idx){
+        var th = document.createElement('th');
+        th.scope = 'col';
+        th.innerHTML = 'Competitor ' + (idx + 1) + '<span class="domain-label">' + escapeHtml(c.pretty) + '</span>';
+        thead.appendChild(th);
+      });
+
+      // For each row, compute whether your site is the winner and
+      // annotate the corresponding cell. "Winner" = highest score.
+      // On a tie, nobody gets the win color.
+      function addRow(label, yourScore, getScoreFn) {
+        var tr = document.createElement('tr');
+        var tdLabel = document.createElement('td');
+        tdLabel.className = 'compare-label-col';
+        tdLabel.textContent = label;
+        tr.appendChild(tdLabel);
+
+        var allScores = [yourScore].concat(competitorResults.map(function(c){ return getScoreFn(c); }));
+        var numericScores = allScores.filter(function(s){ return typeof s === 'number'; });
+        var max = numericScores.length ? Math.max.apply(null, numericScores) : null;
+
+        var tdYou = document.createElement('td');
+        tdYou.className = 'compare-you';
+        if (typeof yourScore === 'number') {
+          tdYou.textContent = yourScore + '/100';
+          if (max !== null && yourScore === max && numericScores.filter(function(s){ return s === max; }).length === 1) {
+            tdYou.classList.add('compare-win');
+          }
+        } else {
+          tdYou.textContent = 'N/A';
+          tdYou.classList.add('compare-fail');
+        }
+        tr.appendChild(tdYou);
+
+        competitorResults.forEach(function(c){
+          var td = document.createElement('td');
+          var s = getScoreFn(c);
+          if (typeof s === 'number') {
+            td.textContent = s + '/100';
+            if (max !== null && s === max && numericScores.filter(function(x){ return x === max; }).length === 1) {
+              td.classList.add('compare-win');
+            }
+            if (typeof yourScore === 'number' && s > yourScore) td.classList.add('compare-loss');
+          } else {
+            td.textContent = 'N/A';
+            td.classList.add('compare-fail');
+          }
+          tr.appendChild(td);
+        });
+        compareTbody.appendChild(tr);
+      }
+
+      compareTbody.innerHTML = '';
+      var yourCached = window.__auditScoreState || {};
+      addRow('Overall',             yourResult.overall,          function(c){ return c.overall; });
+      addRow('Performance',         yourCached.perf,             function(c){ return c.perf; });
+      addRow('Accessibility',       yourCached.a11y,             function(c){ return c.a11y; });
+      addRow('Best practices',      yourCached.bp,               function(c){ return c.bp; });
+      addRow('SEO',                 yourCached.seo,              function(c){ return c.seo; });
+      addRow('Restaurant readiness', yourResult.restaurant,      function(c){ return c.restaurant; });
+
+      // Build a plain-English verdict based on how many categories
+      // the user beats each competitor in. Keeps it honest: if the
+      // user is losing on a dimension, we say so.
+      var verdictParts = [];
+      var yourCats = { perf: yourCached.perf, a11y: yourCached.a11y, bp: yourCached.bp, seo: yourCached.seo, restaurant: yourResult.restaurant, overall: yourResult.overall };
+      competitorResults.forEach(function(c, idx){
+        var wins = 0, losses = 0, ties = 0;
+        ['perf', 'a11y', 'bp', 'seo', 'overall'].forEach(function(k){
+          if (typeof yourCats[k] === 'number' && typeof c[k] === 'number') {
+            if (yourCats[k] > c[k]) wins++;
+            else if (yourCats[k] < c[k]) losses++;
+            else ties++;
+          }
+        });
+        var name = c.pretty;
+        var line;
+        if (wins > losses) {
+          line = 'You beat <strong>' + escapeHtml(name) + '</strong> in ' + wins + ' of ' + (wins+losses+ties) + ' categories.';
+        } else if (losses > wins) {
+          line = '<strong>' + escapeHtml(name) + '</strong> is ahead of you in ' + losses + ' of ' + (wins+losses+ties) + ' categories.';
+        } else {
+          line = 'You and <strong>' + escapeHtml(name) + '</strong> are roughly tied.';
+        }
+        verdictParts.push(line);
+      });
+      compareVerdict.innerHTML = verdictParts.join(' ');
+
+      compareStatus.hidden = true;
+      compareError.hidden = true;
+      compareResults.hidden = false;
+    }
+
+    // ---- Form submission ----
+    compareForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      if (!window.__auditLastResult) {
+        compareError.hidden = false;
+        compareErrorTxt.textContent = 'Run an audit on your own site first — then we can compare it against competitors.';
+        return;
+      }
+      // Collect all non-empty URL inputs
+      var inputs = compareInputs.querySelectorAll('input[type="url"]');
+      var urls = [];
+      for (var i = 0; i < inputs.length; i++) {
+        var raw = inputs[i].value.trim();
+        if (!raw) continue;
+        var normalized = normalizeUrl(raw);
+        if (normalized) urls.push(normalized);
+      }
+      if (!urls.length) {
+        compareError.hidden = false;
+        compareErrorTxt.textContent = 'Add at least one competitor URL to compare.';
+        return;
+      }
+      if (window.plausible) window.plausible('Audit Comparison Run', { props: { count: urls.length } });
+      compareError.hidden = true;
+      compareResults.hidden = true;
+      compareStatus.hidden = false;
+      compareProgress.style.width = '0%';
+      compareRunBtn.disabled = true;
+      compareRunBtn.textContent = 'Running…';
+
+      runCompetitorsSequential(urls)
+        .then(function(){
+          compareRunBtn.disabled = false;
+          compareRunBtn.textContent = 'Run comparison';
+          compareProgress.style.width = '100%';
+          renderCompareTable();
+        })
+        .catch(function(err){
+          console.error('[audit compare]', err);
+          compareRunBtn.disabled = false;
+          compareRunBtn.textContent = 'Run comparison';
+          compareStatus.hidden = true;
+          compareError.hidden = false;
+          var which = err.competitorIndex ? 'Competitor ' + err.competitorIndex : 'One of the competitors';
+          var reason = (err && err.message) || 'unknown error';
+          compareErrorTxt.textContent = which + " couldn't be audited (" + reason + "). Check the URL and try again, or remove it and run the rest.";
+          if (window.plausible) window.plausible('Audit Comparison Error');
+        });
+    });
+
+    if (compareRetryBtn) {
+      compareRetryBtn.addEventListener('click', function(){
+        compareError.hidden = true;
+        compareForm.dispatchEvent(new Event('submit', { cancelable: true }));
+      });
+    }
+  })();
+
   /* -------- URL-param auto-run for shareable links -------- */
   (function autoRunFromParam(){
     try {
@@ -2961,6 +4157,15 @@
       var normalized = normalizeUrl(preset);
       if (!normalized) return;
       input.value = normalized;
+      lastAuditUrl = normalized;
+      // Hydrate any saved user overrides from the URL before the
+      // audit runs. The renderer picks them up automatically when
+      // it reaches the feedback section of each unverified check.
+      var ov = params.get('ov');
+      if (ov) {
+        var decoded = decodeOverrides(ov);
+        Object.keys(decoded).forEach(function(k){ USER_OVERRIDES[k] = decoded[k]; });
+      }
       // Brief delay so the page finishes painting before we kick off the fetch
       setTimeout(function(){
         if (window.plausible) window.plausible('Audit Auto-run');
