@@ -668,9 +668,33 @@
     font-size: 14px;
     font-weight: 700;
   }
-  .priority-item .mark.pass { background: #e6f4ec; color: #1f9d55; }
-  .priority-item .mark.fail { background: #fce9e1; color: var(--rust); }
-  .priority-item .mark.warn { background: #fdf1dc; color: #b45309; }
+  .priority-item .mark.pass       { background: #e6f4ec; color: #1f9d55; }
+  .priority-item .mark.fail       { background: #fce9e1; color: var(--rust); }
+  .priority-item .mark.warn       { background: #fdf1dc; color: #b45309; }
+  .priority-item .mark.unverified { background: #eef1f4; color: #6b7a8a; }
+  /* Subtle left-edge accent on unverified items — visually signals
+     "we don't know" without the alarming red of a fail. Owners need
+     to see these distinctly so they know where to give feedback. */
+  .priority-item.unverified {
+    background: linear-gradient(to right, rgba(107, 122, 138, 0.04), transparent 40%);
+    border-left: 3px solid rgba(107, 122, 138, 0.35);
+    padding-left: 21px;
+  }
+  .priority-item.overridden .mark.pass { background: #e6f4ec; color: #1f9d55; }
+  .priority-item.overridden .mark.fail { background: #fce9e1; color: var(--rust); }
+  .override-badge {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 1px 8px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--teal);
+    background: var(--teal-tint);
+    border-radius: 999px;
+    vertical-align: middle;
+  }
   .priority-item .body strong {
     display: block;
     color: var(--ink);
@@ -678,6 +702,40 @@
   }
   .priority-item .body span { color: var(--stone); font-size: 13.5px; line-height: 1.5; }
   .priority-item .body a { color: var(--teal); border-bottom: 1px dashed currentColor; }
+  /* Inline "Is this right?" feedback UI — renders under the note for
+     any check we couldn't verify. Clicking Yes/No overrides the result
+     locally, fires a Plausible event, and re-renders. */
+  .priority-feedback {
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 13px;
+  }
+  .priority-feedback .feedback-label {
+    color: var(--stone);
+    font-weight: 500;
+    margin-right: 4px;
+  }
+  .feedback-btn {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--teal);
+    background: transparent;
+    border: 1px solid var(--line-dark);
+    border-radius: 999px;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: all var(--t-fast) var(--ease);
+  }
+  .feedback-btn:hover {
+    background: var(--teal-tint);
+    border-color: var(--teal);
+  }
+  .feedback-btn[data-action="fail"] { color: var(--rust); }
+  .feedback-btn[data-action="fail"]:hover { background: #fce9e1; border-color: var(--rust); }
   .priority-item .link {
     font-size: 12px;
     font-weight: 600;
@@ -1566,6 +1624,7 @@
         { pattern: 'toasttab',        name: 'Toast' },
         { pattern: 'toastpos',        name: 'Toast' },
         { pattern: 'toast.chow',      name: 'Toast' },
+        { pattern: 'toastorder',      name: 'Toast' },
         { pattern: 'square.site',     name: 'Square' },
         { pattern: 'squareup',        name: 'Square' },
         { pattern: 'squarecdn',       name: 'Square' },
@@ -1573,11 +1632,12 @@
         { pattern: 'clovercdn',       name: 'Clover' },
         { pattern: 'chownow',         name: 'ChowNow' },
         { pattern: 'cnstatic',        name: 'ChowNow' },
-        // --- Independent-restaurant-focused builders ---
+        // --- Independent-restaurant-focused builders + middleware ---
         // These are the ones small restaurants actually use.
         { pattern: 'bentobox',        name: 'BentoBox' },
         { pattern: 'getbento',        name: 'BentoBox' },
         { pattern: 'popmenu',         name: 'Popmenu' },
+        { pattern: 'popmenu-cdn',     name: 'Popmenu' },
         { pattern: 'lunchbox.io',     name: 'Lunchbox' },
         { pattern: 'gloriafood',      name: 'GloriaFood' },
         { pattern: 'owner.com',       name: 'Owner' },
@@ -1585,20 +1645,58 @@
         { pattern: 'spoton',          name: 'SpotOn' },
         { pattern: 'menufy',          name: 'Menufy' },
         { pattern: 'slicelife',       name: 'Slice' },
+        { pattern: 'slicehost',       name: 'Slice' },
         { pattern: 'olo.com',         name: 'Olo' },
+        { pattern: 'ololabs',         name: 'Olo' },
+        { pattern: 'deliverect',      name: 'Deliverect' },
+        { pattern: 'otter.com',       name: 'Otter' },
+        { pattern: 'tryotter',        name: 'Otter' },
+        { pattern: 'spoonity',        name: 'Spoonity' },
+        { pattern: 'bikky',           name: 'Bikky' },
+        { pattern: 'fishbowl',        name: 'Fishbowl' },
+        { pattern: 'getslerp',        name: 'Slerp' },
+        { pattern: 'slerp.com',       name: 'Slerp' },
+        { pattern: 'incentivio',      name: 'Incentivio' },
+        { pattern: 'checkmate.co',    name: 'Checkmate' },
+        { pattern: 'itsacheckmate',   name: 'Checkmate' },
+        { pattern: 'craver',          name: 'Craver' },
+        { pattern: 'sauce.app',       name: 'Sauce' },
+        { pattern: 'trysauce',        name: 'Sauce' },
+        { pattern: 'tiqets',          name: 'Tiqets' },
+        { pattern: 'goparrot',        name: 'GoParrot' },
+        { pattern: 'ordrslip',        name: 'Ordrslip' },
+        { pattern: 'orderease',       name: 'OrderEase' },
+        { pattern: 'ordrai',          name: 'Ordr.ai' },
         // --- US marketplaces / aggregators ---
         { pattern: 'grubhub',         name: 'Grubhub' },
         { pattern: 'doordash',        name: 'DoorDash' },
         { pattern: 'ubereats',        name: 'Uber Eats' },
+        { pattern: 'ubercdn',         name: 'Uber Eats' },
         { pattern: 'postmates',       name: 'Postmates' },
+        { pattern: 'caviar',          name: 'Caviar' },
+        { pattern: 'seamless',        name: 'Seamless' },
+        { pattern: 'ezcater',         name: 'ezCater' },
+        { pattern: 'catertrax',       name: 'CaterTrax' },
+        { pattern: 'tripleseat',      name: 'Tripleseat' },
         // --- International marketplaces + builders ---
         { pattern: 'deliveroo',       name: 'Deliveroo' },
         { pattern: 'just-eat',        name: 'Just Eat' },
+        { pattern: 'justeat',         name: 'Just Eat' },
         { pattern: 'justeattakeaway', name: 'Just Eat Takeaway' },
         { pattern: 'ifood.com',       name: 'iFood' },
         { pattern: 'rappi.com',       name: 'Rappi' },
         { pattern: 'skipthedishes',   name: 'SkipTheDishes' },
         { pattern: 'foodora',         name: 'Foodora' },
+        { pattern: 'foodpanda',       name: 'Foodpanda' },
+        { pattern: 'menulog',         name: 'Menulog' },
+        { pattern: 'grabfood',        name: 'GrabFood' },
+        { pattern: 'wolt',            name: 'Wolt' },
+        { pattern: 'getir',           name: 'Getir' },
+        { pattern: 'stuart.com',      name: 'Stuart' },
+        { pattern: 'talabat',         name: 'Talabat' },
+        { pattern: 'careem',          name: 'Careem' },
+        { pattern: 'glovoapp',        name: 'Glovo' },
+        { pattern: 'hungryhouse',     name: 'Hungryhouse' },
         { pattern: 'flipdish',        name: 'Flipdish' }
       ]
     },
@@ -1608,17 +1706,25 @@
         // --- Major US + international booking platforms ---
         { pattern: 'opentable',       name: 'OpenTable' },
         { pattern: 'otrestaurant',    name: 'OpenTable' },
+        { pattern: 'opentablecdn',    name: 'OpenTable' },
         { pattern: 'resy.com',        name: 'Resy' },
         { pattern: 'resy.network',    name: 'Resy' },
         { pattern: 'exploretock',     name: 'Tock' },
         { pattern: 'tock.app',        name: 'Tock' },
         { pattern: 'sevenrooms',      name: 'SevenRooms' },
+        { pattern: '7rooms',          name: 'SevenRooms' },
         // Yelp's reservation product (formerly Nowait)
         { pattern: 'yelpreservations', name: 'Yelp Reservations' },
         { pattern: 'nowait.com',      name: 'Yelp Reservations' },
+        // --- US/EU smaller booking platforms ---
+        { pattern: 'eatapp.co',       name: 'Eat App' },
+        { pattern: 'umaiapp',         name: 'Umai' },
+        { pattern: 'tablein',         name: 'TableIn' },
+        { pattern: 'waitwhile',       name: 'Waitwhile' },
+        { pattern: 'nextme',          name: 'NextMe' },
+        { pattern: 'tablecheck',      name: 'TableCheck' },
+        { pattern: 'tablelist',       name: 'Tablelist' },
         // --- Smaller + regional booking platforms ---
-        // These matter for independent restaurants outside the US
-        // or at price points the big-three don't serve.
         { pattern: 'eveve',           name: 'Eveve' },
         { pattern: 'resdiary',        name: 'ResDiary' },
         { pattern: 'hostmeapp',       name: 'Hostme' },
@@ -1626,7 +1732,11 @@
         { pattern: 'getwisely',       name: 'Wisely' },
         { pattern: 'quandoo',         name: 'Quandoo' },
         { pattern: 'formitable',      name: 'Formitable' },
-        { pattern: 'bookatable',      name: 'Bookatable' }
+        { pattern: 'bookatable',      name: 'Bookatable' },
+        { pattern: 'lafourchette',    name: 'TheFork' },
+        { pattern: 'thefork',         name: 'TheFork' },
+        { pattern: 'dineseed',        name: 'Dineseed' },
+        { pattern: 'dinebook',        name: 'DineBook' }
       ]
     },
     maps: {
@@ -1637,17 +1747,22 @@
         { pattern: 'maps.gstatic',     name: 'Google Maps' },
         { pattern: 'gstatic.com/maps', name: 'Google Maps' },
         { pattern: 'google.com/maps',  name: 'Google Maps' },
+        { pattern: 'goo.gl/maps',      name: 'Google Maps' },
         { pattern: 'mapbox.com',       name: 'Mapbox' },
         { pattern: 'api.mapbox',       name: 'Mapbox' },
         // Apple Maps (embedded via MapKit JS)
         { pattern: 'apple.com/maps',   name: 'Apple Maps' },
         { pattern: 'mapkit.js',        name: 'Apple Maps' },
+        { pattern: 'maps.apple.com',   name: 'Apple Maps' },
         // Bing Maps (uses virtualearth.net under the hood)
         { pattern: 'bing.com/maps',    name: 'Bing Maps' },
         { pattern: 'virtualearth.net', name: 'Bing Maps' },
         // Open-source mapping
         { pattern: 'openstreetmap',    name: 'OpenStreetMap' },
-        { pattern: 'maplibre',         name: 'MapLibre' }
+        { pattern: 'maplibre',         name: 'MapLibre' },
+        { pattern: 'leafletjs',        name: 'Leaflet' },
+        { pattern: 'unpkg.com/leaflet',name: 'Leaflet' },
+        { pattern: 'waze.com',         name: 'Waze' }
       ]
     },
     // Click-to-call phone. tel: hrefs never show up in network-requests
@@ -1814,6 +1929,81 @@
     ]
   };
 
+  // Plain-text phone number detection. The old tel:-only check missed
+  // any restaurant whose site shows its phone as a text block instead
+  // of a clickable anchor — which is most of them, honestly, because
+  // half of restaurant sites are on templates that don't wrap phone
+  // numbers in tel: hrefs even when the text is right there. This
+  // catches North American 10-digit numbers in the common formats:
+  //   (202) 555-1234
+  //   202-555-1234
+  //   202.555.1234
+  //   +1 202 555 1234
+  //   2025551234
+  // Requires at least one separator between area code and the rest
+  // so we don't match random 10-digit strings like SKU numbers.
+  var PHONE_RE = /(?:\+?1[\s\-.]?)?(?:\(\s*\d{3}\s*\)|\d{3})[\s\-.]\d{3}[\s\-.]\d{4}/;
+  function detectPhoneInText(pageText) {
+    if (!pageText) return false;
+    return PHONE_RE.test(pageText);
+  }
+
+  // Restaurant schema.org detection. A site that publishes JSON-LD
+  // with @type Restaurant (or FoodEstablishment, or LocalBusiness
+  // with a servesCuisine field) is telling Google explicitly "this
+  // is a restaurant" — which is one of the strongest possible signals
+  // for the audit's is-this-a-restaurant heuristic AND a real SEO
+  // benefit worth flagging as a passing check on its own. Lighthouse's
+  // `structured-data` audit surfaces JSON-LD snippets in its details;
+  // we also scan the generic page text as a fallback.
+  var SCHEMA_RESTAURANT_RE = /"@type"\s*:\s*"(?:Restaurant|FoodEstablishment|Bakery|BarOrPub|CafeOrCoffeeShop|FastFoodRestaurant|IceCreamShop|Winery|Brewery|Distillery)"/i;
+  var SCHEMA_CUISINE_RE    = /"servesCuisine"\s*:/i;
+  function detectRestaurantSchema(pageText, allUrls) {
+    if (!pageText) return false;
+    if (SCHEMA_RESTAURANT_RE.test(pageText)) return true;
+    if (SCHEMA_CUISINE_RE.test(pageText))    return true;
+    return false;
+  }
+
+  // Menu format check: is the restaurant's menu an HTML page or a
+  // PDF/image that forces a download or an in-browser viewer? PDF
+  // menus are one of the most common mobile usability sins — they
+  // don't zoom gracefully, they don't link to online ordering, and
+  // they make the "update a price" workflow depend on a developer.
+  // Returns:
+  //   'html'     — menu link points to an HTML page (good)
+  //   'pdf'      — menu link points to a .pdf (bad)
+  //   'image'    — menu link points to a .jpg / .png (bad)
+  //   'missing'  — no link with "menu" in the text or url at all
+  //   'unknown'  — we saw a menu link but couldn't classify
+  var MENU_HREF_RE = /menu/i;
+  function detectMenuFormat(allUrls, pageText) {
+    if (!allUrls || !allUrls.length) return 'unknown';
+    // Walk hrefs looking for one with "menu" in the path and classify
+    // by extension. PDF/image wins if found, otherwise HTML wins.
+    var sawMenu = false;
+    var sawHtmlMenu = false;
+    var sawPdfMenu = false;
+    var sawImageMenu = false;
+    for (var i = 0; i < allUrls.length; i++) {
+      var u = allUrls[i];
+      if (!MENU_HREF_RE.test(u)) continue;
+      sawMenu = true;
+      if (/\.pdf(\?|$|#)/.test(u))                     sawPdfMenu = true;
+      else if (/\.(?:jpg|jpeg|png|webp|gif)(\?|$|#)/.test(u)) sawImageMenu = true;
+      else                                             sawHtmlMenu = true;
+    }
+    if (sawPdfMenu)   return 'pdf';
+    if (sawImageMenu) return 'image';
+    if (sawHtmlMenu)  return 'html';
+    if (sawMenu)      return 'unknown';
+    // No menu-flavoured URL found. Fall back: does the page TEXT
+    // at least mention a menu? If yes, we say "unknown" (menu exists
+    // but we can't classify); if no, "missing".
+    if (pageText && /\bmenu\b/.test(pageText)) return 'unknown';
+    return 'missing';
+  }
+
   // Text-based fallback detection: if no known third-party platform
   // matched via URL, scan the combined page text for action phrases.
   // Returns the same shape as detectPlatforms() so callers can
@@ -1888,116 +2078,218 @@
   // number" — so they should NOT cost the same in the rollup. Weights
   // reflect how much each check actually drives restaurant conversions
   // in practice.
+  //
+  // Each check has THREE possible result states:
+  //   - 'pass'       → we confirmed this is working
+  //   - 'fail'       → we confirmed this is broken / missing
+  //   - 'unverified' → we honestly couldn't tell either way
+  //
+  // The 'unverified' state is the single most important upgrade in
+  // Sprint 6a. Previously, the tool said "fail" whenever a signal
+  // wasn't found — which meant Tacombi (running its own custom
+  // ordering on its own domain) showed as "no ordering detected"
+  // when the real story was "we didn't know where to look". Owners
+  // rightly lost trust. Now an unverified check renders as a neutral
+  // question mark with a "Is this right?" feedback button that lets
+  // the owner correct us inline.
   var PRIORITY_CHECKS = [
     {
       type: 'audit',
       audit: 'viewport',
       weight: 2.0, // catastrophic if missing — site is unusable on phones
       anchor: '#mobile',
-      pass: 'Mobile viewport is configured',
-      passNote: 'Your pages render at device width — table stakes for a site where most visitors are on a phone deciding where to eat tonight.',
-      fail: 'Mobile viewport tag is missing',
-      failNote: 'Without a viewport meta tag, mobile browsers render your site at desktop width and every phone visitor leaves in frustration. One-line fix in your <head>.'
+      pass: 'Your site fits on a phone screen',
+      passNote: 'Your pages render at phone width automatically — the single most important mobile-readiness check, and you pass it.',
+      fail: 'Your site is not set up for phones',
+      failNote: 'Without a viewport meta tag, mobile browsers render your site at desktop width and then zoom out to fit. Everything looks tiny and the whole mobile experience breaks. This is a one-line fix for whoever maintains your site — ask them to add <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</code> to the &lt;head&gt;.',
+      unverified: "We couldn't check if your site fits on a phone",
+      unverifiedNote: "Lighthouse couldn't evaluate the viewport tag on this run. Re-audit in a few seconds and this usually resolves."
     },
     {
       type: 'audit',
       audit: 'tap-targets',
       weight: 1.0,
       anchor: '#mobile',
-      pass: 'Reserve / Order buttons are thumb-friendly',
+      pass: 'Your buttons are big enough to tap',
       passNote: 'Your action buttons are big enough to hit on the first try with a thumb holding a phone in one hand.',
-      fail: 'Some tap targets are too small',
-      failNote: 'Action buttons under 44×44px cause fat-finger misses. On a restaurant site, a missed "Reserve" tap is a lost booking walking out the door.'
+      fail: 'Some of your buttons are too small to tap reliably',
+      failNote: 'Action buttons under 44×44 pixels cause fat-finger misses. On a restaurant site, a missed "Reserve" tap is a lost booking walking out the door. Bump button padding to 12px on every side, and give links at least 44px of vertical space around them.',
+      unverified: "We couldn't check your buttons' tap-friendliness",
+      unverifiedNote: "Lighthouse couldn't evaluate tap targets on this run. Re-audit in a few seconds and this usually resolves."
     },
     {
       type: 'audit',
       audit: 'color-contrast',
       weight: 1.0,
       anchor: '#trust',
-      pass: 'Menu text has readable contrast',
-      passNote: 'A 55-year-old standing in bright sunlight can read your menu descriptions. That is the actual bar for a mobile restaurant menu.',
-      fail: 'Some menu text has poor contrast',
-      failNote: 'Light gray on cream or dark-on-dark is invisible to anyone over 40 or outside in the sun. Most of your weekday lunch crowd is one of those.'
+      pass: 'Your menu text is readable for everyone',
+      passNote: 'A 55-year-old standing in bright sunlight can read your menu descriptions. That is the actual bar for a mobile restaurant menu — and you meet it.',
+      fail: 'Some of your text is hard to read',
+      failNote: 'Light gray on cream or dark-on-dark is invisible to anyone over 40 or anyone standing outside in the sun. Most of your weekday lunch crowd is one of those people. Darken your body text or lift the background — aim for at least the WCAG AA contrast ratio (4.5:1 for normal text).',
+      unverified: "We couldn't check your menu text contrast",
+      unverifiedNote: "Lighthouse couldn't evaluate color contrast on this run. Re-audit in a few seconds and this usually resolves."
     },
     {
       type: 'audit',
       audit: 'font-size',
       weight: 1.0,
       anchor: '#mobile',
-      pass: 'Menu text is legible without zooming',
+      pass: 'Your text is legible without pinch-zooming',
       passNote: 'Your body text is above the mobile readability threshold — visitors do not have to pinch-zoom to read the menu.',
-      fail: 'Menu text is too small on mobile',
-      failNote: 'More than 40% of your text is below the legibility threshold. Visitors give up before finding their entree. Set body font-size to at least 16px.'
+      fail: 'Your text is too small on a phone',
+      failNote: 'More than 40% of your text is below the legibility threshold. Visitors give up before finding their entree. Set body font-size to at least 16px — for menu descriptions and anything a hungry customer actually has to read, 17 or 18 px is better.',
+      unverified: "We couldn't check your text size",
+      unverifiedNote: "Lighthouse couldn't evaluate font sizes on this run. Re-audit in a few seconds and this usually resolves."
     },
     {
-      type: 'platform',
-      platforms: ['phone'],
+      type: 'phone',
       weight: 1.5, // real conversion driver for takeout / walk-in
       anchor: '#basics',
-      pass: 'Click-to-call phone is present',
-      passNote: 'A tappable tel: link is on your page — mobile visitors can call you with one tap, which matters for takeout orders, reservation questions, and "are you still open" calls.',
-      fail: 'No click-to-call phone detected',
-      failNote: "We did not find a tel: link on your page. Every restaurant gets calls, and on mobile a plain-text phone number is a wasted tap — wrap it in <a href=\"tel:+1...\"> so visitors can call with one thumb. If you intentionally don't accept phone calls, ignore this check."
+      pass: 'Visitors can tap your phone number to call',
+      passNote: 'A tappable phone number is on your page — mobile visitors can call you with one tap, which matters for takeout orders, reservation questions, and "are you still open" calls.',
+      passNoteText: 'We found a phone number in your page text, but it is not wrapped in a clickable <code>tel:</code> link. Mobile visitors have to copy the number into their dialer manually instead of tapping to call. Ask your developer to wrap the number in <code>&lt;a href="tel:+1..."&gt;</code>.',
+      fail: "We couldn't find a phone number on your site",
+      failNote: "No click-to-call link and no visible phone number in the page text. Every restaurant gets calls — about 'are you open now', about table availability, about special requests — and if your site doesn't make calling one tap, you are losing those conversations. Add a phone number to your site and wrap it in a <code>tel:</code> link.",
+      unverified: "We couldn't confirm whether you have a phone number",
+      unverifiedNote: "We only see the parts of your page that Lighthouse surfaces to us — sometimes phone numbers get missed. Check that yours is visible on every page and wrapped in a <code>tel:</code> link so mobile visitors can tap to call."
     },
     {
       type: 'platform',
       platforms: ['maps'],
       weight: 1.0,
       anchor: '#conversions',
-      pass: 'Maps & directions are embedded',
-      passNote: '{detected} detected on your site — first-time visitors can tap once to get turn-by-turn directions to your door.',
-      fail: 'No map or directions embed detected',
-      failNote: 'We did not see an embedded map service on your page. A plain-text address still gets most phone visitors directions when tapped, but a real map embed (Google Maps, Apple Maps, or Mapbox) makes the path from "I might check this place out" to "I am driving there" exactly one tap shorter. If you use a smaller map service we do not scan for yet, email don@muntin.digital and it gets added to the list.'
+      pass: 'Visitors can get directions with one tap',
+      passNote: '{detected} is on your site — first-time visitors can tap once to get turn-by-turn directions to your door.',
+      fail: null, // never fail this check — absence is always unverified
+      failNote: null,
+      unverified: "We didn't see a map on your site — is this right?",
+      unverifiedNote: "We scan for Google Maps, Apple Maps, Mapbox, Bing Maps, OpenStreetMap, Waze, and Leaflet. If your site uses one of those, great — we just couldn't find it on this run. If your address is plain text only, consider wrapping it in a Google Maps link so visitors can launch directions in one tap."
     },
     {
-      type: 'platform',
+      type: 'conversions',
       // Either counts: takeout-only spots only need ordering;
       // fine-dining only needs reservations; many restaurants have both.
       platforms: ['ordering', 'reservations'],
       weight: 1.5, // the single biggest direct-conversion lever
       anchor: '#conversions',
-      pass: 'Online ordering or reservations detected',
-      passNote: '{detected} is integrated on your site — direct online conversions keep commission-hungry marketplaces out of your margins.',
-      fail: "Couldn't detect a known ordering or reservation platform",
-      failNote: 'We scan for 30+ of the major ordering, reservation, and POS platforms — including BentoBox, Popmenu, Toast, Square, ChowNow, OpenTable, Resy, Tock, Hostme, ResDiary, and international services like Deliveroo and Flipdish. If you use a smaller regional platform we have not learned yet, take bookings by phone, or are takeout-only with a different setup, this check may not apply to you. Email don@muntin.digital with what you use and we will add it to the scanner.'
+      pass: 'Visitors can order or book a table online',
+      passNote: '{detected} on your site — direct online conversions keep commission-hungry marketplaces out of your margins.',
+      passNoteText: "We found text that strongly suggests self-hosted ordering or reservations on your site (something like 'ORDER ONLINE' or 'RESERVE A TABLE'). We couldn't tie it to a specific platform we recognize, but the signal is there.",
+      fail: null, // never fail — a restaurant might legitimately only take walk-ins
+      failNote: null,
+      unverified: "We couldn't detect online ordering or reservations — is this right?",
+      unverifiedNote: "We scan for 100+ major ordering and reservation platforms, including Toast, Square, ChowNow, OpenTable, Resy, Tock, BentoBox, Popmenu, SevenRooms, TheFork, Deliveroo, and dozens more. If you use one of those and we missed it, tell us below and we will add it to the scanner. If you take orders or bookings over the phone only, that is a legitimate choice — just mark it so."
+    },
+    {
+      type: 'menu-format',
+      weight: 1.0,
+      anchor: '#basics',
+      pass: 'Your menu opens as a real HTML page',
+      passNote: 'Visitors can read your menu on a phone without downloading a PDF or pinching to zoom. This is table stakes for mobile restaurant UX.',
+      fail: 'Your menu is a PDF or an image',
+      failNote: 'PDF menus are the single most common restaurant mobile UX sin. They do not zoom gracefully on phones, they do not link to online ordering, and they make the "update a price" workflow depend on a developer. Replace it with a real HTML menu page.',
+      unverified: "We couldn't find a menu link — is this right?",
+      unverifiedNote: "We looked for a link containing 'menu' in its path and didn't find one. If your menu is reachable but named something else (like 'food', 'dining', 'kitchen'), the scanner missed it — tell us below and we'll improve it."
+    },
+    {
+      type: 'schema',
+      weight: 0.5, // bonus — nice to have, not critical
+      anchor: '#findability',
+      pass: 'Google knows your site is a restaurant',
+      passNote: 'Your site publishes Restaurant schema markup (structured data that tells Google exactly what kind of business you are). This helps you show up in Google\'s "restaurants near me" Rich Results with hours, price range, and menu snippets.',
+      fail: null,
+      failNote: null,
+      unverified: "Google doesn't know your site is a restaurant",
+      unverifiedNote: "Your site is missing the Restaurant schema markup Google uses to show rich listings in Maps and Search. Ask your developer to add a JSON-LD block with <code>@type: \"Restaurant\"</code>, your address, opening hours, and cuisine — it's a 10-line change and meaningful for local SEO."
     }
   ];
 
-  // Map a Lighthouse 0-1 score to a mark letter and class
-  // (score === 1 pass, >= 0.5 warn, else fail; null means skip entirely)
+  // Map a Lighthouse 0-1 score to one of the three tiers.
+  // score >= 0.9         -> pass    (green check)
+  // 0.5 <= score < 0.9   -> fail    (we saw the check run and fall short)
+  // score < 0.5          -> fail
+  // score === null       -> unverified (Lighthouse couldn't evaluate it)
+  //
+  // The old implementation had an intermediate 'warn' tier for 0.5-0.9
+  // scores. Sprint 6a collapses that down: if Lighthouse saw enough to
+  // give a score below 0.9, we call it a fail, because "warn" never
+  // gave owners actionable guidance — it was just an anxious middle.
   function scoreToMark(score) {
-    if (score === null || typeof score === 'undefined') return null;
+    if (score === null || typeof score === 'undefined') {
+      return { cls: 'unverified', ch: '?' };
+    }
     if (score >= 0.9) return { cls: 'pass', ch: '✓' };
-    if (score >= 0.5) return { cls: 'warn', ch: '!' };
     return { cls: 'fail', ch: '✗' };
   }
 
+  // Result factory: every check returns the same shape so renderer
+  // can treat them uniformly. If a check is skipped entirely (e.g.,
+  // a Lighthouse audit the current run didn't produce), return null.
+  function makeResult(def, state, detected) {
+    var mark;
+    var title;
+    var note;
+    if (state === 'pass') {
+      mark = { cls: 'pass', ch: '✓' };
+      title = def.pass;
+      note = def.passNote;
+    } else if (state === 'pass-text') {
+      // Softer pass variant — we detected the thing via a fallback
+      // signal rather than a primary one. Used for phone-text and
+      // self-hosted ordering/reservations detection.
+      mark = { cls: 'pass', ch: '✓' };
+      title = def.pass;
+      note = def.passNoteText || def.passNote;
+    } else if (state === 'fail') {
+      mark = { cls: 'fail', ch: '✗' };
+      title = def.fail;
+      note = def.failNote;
+    } else { // 'unverified'
+      mark = { cls: 'unverified', ch: '?' };
+      title = def.unverified;
+      note = def.unverifiedNote;
+    }
+    if (note && detected) {
+      note = note.replace('{detected}', escapeHtml(formatPlatformList(detected)));
+    }
+    return { mark: mark, title: title, note: note, state: state };
+  }
+
   function evaluatePriorityCheck(def, audits, allUrls, pageText) {
-    // Returns { mark, title, note } or null if the check can't run.
+    // ---- Lighthouse-backed audit check ----
     if (def.type === 'audit') {
       var audit = audits && audits[def.audit];
       if (!audit) return null;
       if (audit.scoreDisplayMode === 'notApplicable') return null;
-      var mark = scoreToMark(audit.score);
-      if (!mark) return null;
-      var isPass = mark.cls === 'pass';
-      return {
-        mark: mark,
-        title: isPass ? def.pass : def.fail,
-        note:  isPass ? def.passNote : def.failNote
-      };
+      if (audit.score === null || typeof audit.score === 'undefined') {
+        return makeResult(def, 'unverified');
+      }
+      return makeResult(def, audit.score >= 0.9 ? 'pass' : 'fail');
     }
 
-    if (def.type === 'platform') {
-      var detection = detectPlatforms(def.platforms, allUrls);
+    // ---- Phone check: tel: link OR phone number in text ----
+    if (def.type === 'phone') {
+      var telDetection = detectPlatforms(['phone'], allUrls);
+      if (telDetection.detected) return makeResult(def, 'pass');
+      if (detectPhoneInText(pageText)) return makeResult(def, 'pass-text');
+      // Distinguish between "page has clear business-info text but no
+      // phone" (fail) and "we couldn't extract enough text to tell"
+      // (unverified). Heuristic: if pageText is very short, we didn't
+      // see enough to call it a fail.
+      if (!pageText || pageText.length < 200) return makeResult(def, 'unverified');
+      return makeResult(def, 'fail');
+    }
 
-      // Fallback: if no known third-party platform was matched AND the
-      // check covers ordering or reservations, try the text-based
-      // detection for self-hosted restaurant actions. Catches sites
-      // like Tacombi that run their own ordering on their own domain
-      // with no recognizable platform hostname — the "ORDER ONLINE"
-      // anchor text or page title is still a strong restaurant signal.
-      if (!detection.detected && pageText) {
+    // ---- Ordering / reservations with platform + text fallback ----
+    if (def.type === 'conversions') {
+      var detection = detectPlatforms(def.platforms, allUrls);
+      if (detection.detected) {
+        return makeResult(def, 'pass', detection.found);
+      }
+      // Text fallback — catches self-hosted restaurants like Tacombi
+      // whose ordering lives on their own domain with no recognizable
+      // platform hostname.
+      if (pageText) {
         var textKeys = [];
         for (var k = 0; k < def.platforms.length; k++) {
           if (def.platforms[k] === 'ordering' || def.platforms[k] === 'reservations') {
@@ -2006,26 +2298,52 @@
         }
         if (textKeys.length) {
           var textDetection = detectSelfHostedActions(textKeys, pageText);
-          if (textDetection.detected) detection = textDetection;
+          if (textDetection.detected) {
+            return makeResult(def, 'pass-text', textDetection.found);
+          }
         }
       }
+      // Neither platform nor text signal — honestly unverified, not fail.
+      return makeResult(def, 'unverified');
+    }
 
-      // Detected -> pass. Missing -> warn (not fail): many restaurants
-      // legitimately don't use one platform or the other, so we give
-      // half credit and explain what they might consider adding.
-      var pMark = detection.detected
-        ? { cls: 'pass', ch: '✓' }
-        : { cls: 'warn', ch: '!' };
-      var pTitle = detection.detected ? def.pass : def.fail;
-      var pNote  = detection.detected ? def.passNote : def.failNote;
-      if (detection.detected) {
-        pNote = pNote.replace('{detected}', escapeHtml(formatPlatformList(detection.found)));
+    // ---- Map / directions check ----
+    if (def.type === 'platform') {
+      var mapDetection = detectPlatforms(def.platforms, allUrls);
+      if (mapDetection.detected) {
+        return makeResult(def, 'pass', mapDetection.found);
       }
-      return { mark: pMark, title: pTitle, note: pNote };
+      return makeResult(def, 'unverified');
+    }
+
+    // ---- Menu format check ----
+    if (def.type === 'menu-format') {
+      var format = detectMenuFormat(allUrls, pageText);
+      if (format === 'html')     return makeResult(def, 'pass');
+      if (format === 'pdf' || format === 'image') return makeResult(def, 'fail');
+      return makeResult(def, 'unverified');
+    }
+
+    // ---- Restaurant schema.org check ----
+    if (def.type === 'schema') {
+      if (detectRestaurantSchema(pageText, allUrls)) {
+        return makeResult(def, 'pass');
+      }
+      // Absence of schema isn't "unverified" — it's honestly missing.
+      // But we still render it as unverified tone because it's a bonus
+      // check, not a catastrophe.
+      return makeResult(def, 'unverified');
     }
 
     return null;
   }
+
+  // Track which checks the user has corrected via the "Is this right?"
+  // feedback UI. Keyed by the check's index in PRIORITY_CHECKS, values
+  // are 'pass' (user said yes, we had it), 'fail' (user said no, we
+  // were right to flag), or undefined (no feedback yet). Keeps the
+  // corrections alive if the user re-renders without re-running PSI.
+  var USER_OVERRIDES = {};
 
   function renderPriorityChecks(audits, allUrls, pageText) {
     var container = document.getElementById('priorityItems');
@@ -2033,34 +2351,109 @@
     container.innerHTML = '';
     if (!allUrls)  allUrls  = extractAllUrls(audits);
     if (!pageText) pageText = extractPageText(audits);
-    var passCount = 0, totalCount = 0;
+    var passCount = 0, totalCount = 0, unverifiedCount = 0;
     // Weighted rollup: each check contributes (credit × weight) to the
     // numerator and (weight) to the denominator. Final readiness is
     // (sumCredit / sumWeight) × 100 so a missing viewport (weight 2.0)
     // costs twice as much as a missing font-size check (weight 1.0).
+    //
+    // Unverified checks are EXCLUDED from both numerator and
+    // denominator. They don't cost the owner any score — we honestly
+    // couldn't tell, so we don't pretend to.
     var weightedCredit = 0, totalWeight = 0;
 
-    PRIORITY_CHECKS.forEach(function(def){
+    // Sort passes + fails + unverified in a consistent reading order:
+    // failures first (most actionable), then unverified questions,
+    // then passes (celebratory tail). This matters more than grouping
+    // by check type because owners scan top-down and want their
+    // problems near the top.
+    var results = [];
+    PRIORITY_CHECKS.forEach(function(def, idx){
       var result = evaluatePriorityCheck(def, audits, allUrls, pageText);
       if (!result) return;
+      // Apply any user override from the feedback UI.
+      if (USER_OVERRIDES[idx] === 'pass' && result.mark.cls === 'unverified') {
+        result = makeResult(def, 'pass');
+        result.overridden = true;
+      } else if (USER_OVERRIDES[idx] === 'fail' && result.mark.cls === 'unverified') {
+        result = makeResult(def, 'fail');
+        result.overridden = true;
+      }
+      results.push({ def: def, result: result, idx: idx });
+    });
+    // Stable sort: fail → unverified → pass
+    results.sort(function(a, b){
+      var rank = { fail: 0, unverified: 1, pass: 2 };
+      return rank[a.result.mark.cls] - rank[b.result.mark.cls];
+    });
 
+    results.forEach(function(entry){
+      var def = entry.def;
+      var result = entry.result;
       totalCount++;
       var w = typeof def.weight === 'number' ? def.weight : 1.0;
-      totalWeight += w;
 
-      // pass = 1.0, warn = 0.5, fail = 0
       var credit = 0;
-      if (result.mark.cls === 'pass') { passCount++; credit = 1.0; }
-      else if (result.mark.cls === 'warn') { credit = 0.5; }
-      weightedCredit += credit * w;
+      if (result.mark.cls === 'pass') {
+        passCount++;
+        credit = 1.0;
+        totalWeight += w;
+        weightedCredit += credit * w;
+      } else if (result.mark.cls === 'fail') {
+        credit = 0;
+        totalWeight += w;
+      } else {
+        // unverified: excluded from the score rollup entirely
+        unverifiedCount++;
+      }
 
       var row = document.createElement('div');
-      row.className = 'priority-item';
+      row.className = 'priority-item ' + result.mark.cls;
+      if (result.overridden) row.className += ' overridden';
+
+      var feedbackHtml = '';
+      if (result.mark.cls === 'unverified') {
+        feedbackHtml =
+          '<div class="priority-feedback" data-check-idx="' + entry.idx + '">' +
+            '<span class="feedback-label">Is this right?</span>' +
+            '<button type="button" class="feedback-btn" data-action="pass">Yes, I have this</button>' +
+            '<button type="button" class="feedback-btn" data-action="fail">No, I don\'t</button>' +
+          '</div>';
+      }
+      var overrideBadge = result.overridden
+        ? '<span class="override-badge">You confirmed</span>'
+        : '';
+
       row.innerHTML =
         '<div class="mark ' + result.mark.cls + '" aria-hidden="true">' + result.mark.ch + '</div>' +
-        '<div class="body"><strong>' + escapeHtml(result.title) + '</strong><span>' + result.note + '</span></div>' +
+        '<div class="body">' +
+          '<strong>' + escapeHtml(result.title) + overrideBadge + '</strong>' +
+          '<span>' + result.note + '</span>' +
+          feedbackHtml +
+        '</div>' +
         '<a class="link" href="/resources/restaurant-website-checklist/' + def.anchor + '">Learn more →</a>';
       container.appendChild(row);
+    });
+
+    // Wire up feedback button click handlers. Each click records an
+    // override in USER_OVERRIDES, re-renders the checks, and fires a
+    // Plausible event so we get aggregate signal on which checks
+    // miss most often (product feedback loop with no backend).
+    container.querySelectorAll('.feedback-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var group = btn.closest('.priority-feedback');
+        if (!group) return;
+        var idx = parseInt(group.getAttribute('data-check-idx'), 10);
+        var action = btn.getAttribute('data-action');
+        if (isNaN(idx) || !action) return;
+        USER_OVERRIDES[idx] = action;
+        if (window.plausible) {
+          var def = PRIORITY_CHECKS[idx];
+          var checkName = (def && (def.audit || def.type)) || 'check-' + idx;
+          window.plausible('Audit Feedback', { props: { check: checkName, correction: action } });
+        }
+        renderPriorityChecks(audits, allUrls, pageText);
+      });
     });
 
     var restaurantScore = totalWeight > 0
@@ -2069,9 +2462,16 @@
 
     var tally = document.getElementById('priorityTally');
     if (tally) {
-      tally.textContent = totalCount
-        ? passCount + ' of ' + totalCount + ' passed · readiness ' + restaurantScore + '/100'
-        : 'No restaurant-priority data available';
+      if (totalCount) {
+        var parts = [passCount + ' of ' + (totalCount - unverifiedCount) + ' confirmed checks passed'];
+        if (unverifiedCount > 0) {
+          parts.push(unverifiedCount + ' couldn\'t be verified');
+        }
+        parts.push('readiness ' + restaurantScore + '/100');
+        tally.textContent = parts.join(' · ');
+      } else {
+        tally.textContent = 'No restaurant-priority data available';
+      }
     }
 
     return { score: restaurantScore, passCount: passCount, totalCount: totalCount };
