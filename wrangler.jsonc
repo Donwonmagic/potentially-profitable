@@ -5,6 +5,13 @@
   "observability": {
     "enabled": true
   },
+  // Worker entry point. Sprint 7a introduces a small Worker script
+  // at src/worker.js that handles /api/* routes for form submissions
+  // (intake, checklist PDF, audit-report email) and falls through to
+  // env.ASSETS.fetch() for every other request. Before Sprint 7 the
+  // site was pure-static with no Worker code; this line turns it
+  // into a Worker that ALSO serves static assets.
+  "main": "./src/worker.js",
   // Cloudflare Workers with Static Assets refuses to treat the repo
   // root as an assets directory (it would try to upload wrangler.jsonc,
   // .git/, .github/workflows/, docs/, and everything else). We stage a
@@ -27,15 +34,34 @@
   //   wrangler.jsonc — this config file itself (not a static asset)
   //   package*.json — defensive exclude if we ever add Node tooling
   //   .gitignore    — git metadata
+  //   src           — Sprint 7a: Worker source (referenced by "main"
+  //                   above, NOT a static asset)
   //
   // The _headers file at the repo root IS copied into dist/ because it's
   // a static asset that Workers Static Assets interprets at deploy time
   // for per-path cache and security headers. Same with /favicon.ico,
   // /sitemap.xml, /robots.txt, /CNAME.
   "build": {
-    "command": "mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md . | tar -xf - -C dist"
+    "command": "mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md --exclude=src . | tar -xf - -C dist"
   },
   "assets": {
-    "directory": "./dist"
+    "directory": "./dist",
+    // Bind the static-asset server to env.ASSETS so the Worker can
+    // fall through to it for non-/api/* paths. Default binding name
+    // is ASSETS but making it explicit for clarity.
+    "binding": "ASSETS"
+  },
+  // Non-secret environment variables consumed by the Sprint 7c form
+  // handlers. FROM_EMAIL is the sender address that shows up in the
+  // notification + auto-responder emails — must be on a verified
+  // domain in Resend (set up during Sprint 7d deploy). NOTIFY_EMAIL
+  // is where form submissions are forwarded (Don's real inbox).
+  //
+  // The RESEND_API_KEY is a SECRET, not a var, and is injected via
+  // `wrangler secret put RESEND_API_KEY` during deploy. It must
+  // never appear in this file or the git history.
+  "vars": {
+    "FROM_EMAIL":   "Don Goldstein <don@muntin.digital>",
+    "NOTIFY_EMAIL": "don@muntin.digital"
   }
 }
