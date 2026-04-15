@@ -465,3 +465,156 @@
     // Expose minimal public surface for any custom stop button
     window.MuntinReadAloud = { stop: finishPlayback };
   })();
+
+  /* ============ INTERACTIVE CHECKLIST ============
+   * Progressive-enhancement layer for the restaurant website checklist.
+   * Each <label class="check-item" data-check-id="NN"> wraps a hidden
+   * <input type="checkbox" class="check-toggle">. State persists in
+   * localStorage under a single key so revisits restore the user's
+   * progress. Progress bar + completion celebration + reset button +
+   * social share dropdown are all driven from this block. Auto-attaches
+   * only when the required DOM nodes exist; safe to include everywhere.
+   */
+  (function initChecklist() {
+    const items = document.querySelectorAll('.check-item[data-check-id]');
+    if (!items.length) return;
+
+    const STORAGE_KEY = 'muntin:checklist:restaurant';
+    const progressFill = document.getElementById('progressFill');
+    const progressCountEl = document.getElementById('progressCount');
+    const resetBtn = document.getElementById('progressReset');
+    const celebration = document.getElementById('checklistCelebration');
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch (e) {
+        return {};
+      }
+    }
+    function saveState(state) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+      catch (e) { /* quota / private mode — silently skip */ }
+    }
+
+    const state = loadState();
+    const total = items.length;
+
+    function updateProgress() {
+      let done = 0;
+      items.forEach((item) => {
+        const input = item.querySelector('.check-toggle');
+        if (input && input.checked) done++;
+      });
+      const pct = total ? Math.round((done / total) * 100) : 0;
+      if (progressFill) progressFill.style.width = pct + '%';
+      if (progressCountEl) {
+        const strong = progressCountEl.querySelector('strong') || progressCountEl;
+        strong.textContent = String(done);
+        // Keep the rest of the phrasing in the parent if it was split
+        if (progressCountEl.querySelector('strong')) {
+          // Ensure the suffix text stays correct
+          const html = '<strong>' + done + '</strong> of ' + total + ' complete';
+          if (progressCountEl.innerHTML !== html) progressCountEl.innerHTML = html;
+        }
+      }
+      if (resetBtn) resetBtn.hidden = done === 0;
+      if (celebration) {
+        const isDone = done === total && total > 0;
+        celebration.hidden = !isDone;
+        if (isDone && !celebration.dataset.fired && window.plausible) {
+          celebration.dataset.fired = '1';
+          window.plausible('Checklist Completed');
+        }
+      }
+    }
+
+    // Hydrate checkbox state from storage
+    items.forEach((item) => {
+      const id = item.getAttribute('data-check-id');
+      const input = item.querySelector('.check-toggle');
+      if (!input) return;
+      if (state[id]) input.checked = true;
+      input.addEventListener('change', () => {
+        if (input.checked) state[id] = 1;
+        else delete state[id];
+        saveState(state);
+        updateProgress();
+      });
+    });
+
+    updateProgress();
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        items.forEach((item) => {
+          const input = item.querySelector('.check-toggle');
+          if (input) input.checked = false;
+        });
+        Object.keys(state).forEach((k) => delete state[k]);
+        saveState(state);
+        updateProgress();
+      });
+    }
+
+    /* ---- Share dropdown ---- */
+    const shareBtn = document.getElementById('shareBtn');
+    const shareMenu = document.getElementById('shareMenu');
+    const copyBtn = document.getElementById('copyLinkBtn');
+
+    function closeShare() {
+      if (!shareMenu || !shareBtn) return;
+      shareMenu.hidden = true;
+      shareBtn.setAttribute('aria-expanded', 'false');
+    }
+    function openShare() {
+      if (!shareMenu || !shareBtn) return;
+      shareMenu.hidden = false;
+      shareBtn.setAttribute('aria-expanded', 'true');
+    }
+    if (shareBtn && shareMenu) {
+      shareBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        // On mobile, prefer the native share sheet if available
+        if (navigator.share && window.matchMedia('(max-width: 820px)').matches) {
+          navigator.share({
+            title: 'The Restaurant Website Checklist',
+            text: '23 things your restaurant website should do in 2026. Free, takes 10 minutes.',
+            url: 'https://muntin.digital/resources/restaurant-website-checklist/'
+          }).catch(() => { openShare(); });
+          return;
+        }
+        if (shareMenu.hidden) openShare();
+        else closeShare();
+      });
+      document.addEventListener('click', (e) => {
+        if (!shareMenu.contains(e.target) && e.target !== shareBtn) closeShare();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !shareMenu.hidden) {
+          closeShare();
+          shareBtn.focus();
+        }
+      });
+    }
+
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        const url = 'https://muntin.digital/resources/restaurant-website-checklist/';
+        try {
+          await navigator.clipboard.writeText(url);
+          const original = copyBtn.textContent;
+          copyBtn.textContent = 'Link copied ✓';
+          copyBtn.classList.add('copied');
+          setTimeout(() => {
+            copyBtn.textContent = original;
+            copyBtn.classList.remove('copied');
+            closeShare();
+          }, 1500);
+        } catch (e) {
+          copyBtn.textContent = 'Copy failed — select the URL manually';
+        }
+      });
+    }
+  })();
