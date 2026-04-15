@@ -811,6 +811,13 @@
     gap: 12px;
     max-width: 560px;
   }
+  /* Explicit [hidden] rule — the default user-agent `display: none` for
+     the `hidden` attribute gets overridden by `display: grid` above, so
+     setting emailForm.hidden = true in JS wouldn't actually hide the
+     form and the success path's 'button stuck on Sending…' became a
+     ghost bug. This single-rule bump wins on specificity and restores
+     the expected hide behavior. */
+  .email-form[hidden] { display: none; }
   .email-form input[type="email"] {
     padding: 14px 18px;
     border: 1px solid var(--line-dark);
@@ -931,7 +938,7 @@
       </form>
 
       <p class="audit-note">
-        Runs a real mobile Lighthouse audit via Google PageSpeed Insights. Try it on <code>irishinnglenecho.com</code> or any restaurant site you're curious about.
+        Powered by Google's PageSpeed Insights API plus our own restaurant-specific scanner — ordering platforms, reservation widgets, maps, click-to-call, and mobile menu readability. Works on any publicly accessible URL (no staging environments or login walls).
       </p>
     </div>
 
