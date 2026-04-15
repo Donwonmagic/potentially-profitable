@@ -307,7 +307,7 @@ the assistant will make one commit that:
     - `formspree.io/f/mqewawro` → `/api/checklist`
     - `formspree.io/f/mlgadaqy` → `/api/audit-report`
 2. Updates the existing fetch() handlers in `assets/site.js` and
-   `tools/restaurant-audit/index.html` to expect the new response
+   `tools/audits/restaurant/index.html` to expect the new response
    shape (`{ok, status}` instead of Formspree's `{ok, next}`)
 3. Removes the Formspree paragraph from `privacy.html`
 4. Adds a small note to `docs/` that the migration is complete
@@ -425,6 +425,6 @@ User → https://muntin.digital/api/intake (POST)
 |---|---|
 | `index.html` | Intake form `action` |
 | `resources/restaurant-website-checklist/index.html` | Checklist form `action` |
-| `tools/restaurant-audit/index.html` | Audit-report form `action` + success/error handlers |
+| `tools/audits/restaurant/index.html` | Audit-report form `action` + success/error handlers |
 | `assets/site.js` | Intake form submit handler (response shape) |
 | `privacy.html` | Remove Formspree paragraph |

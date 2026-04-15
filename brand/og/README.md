@@ -21,7 +21,7 @@ pages fall back to `/brand/og-image.png` (the master card).
 | `work-off-day-collective.svg` | `work-off-day-collective.png` | `/work/off-day-collective/` |
 | `checklist.svg` | `checklist.png` | `/resources/restaurant-website-checklist/` |
 | `audit.svg` | `audit.png` | `/tools/` |
-| `audit-restaurants.svg` | `audit-restaurants.png` | `/tools/restaurant-audit/` |
+| `audit-restaurants.svg` | `audit-restaurants.png` | `/tools/audits/restaurant/` |
 
 ## Why SVG + PNG
 
