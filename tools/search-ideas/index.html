@@ -34,5 +34,64 @@
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
 <link rel="stylesheet" href="/assets/site.css">
 </head>
-<body><!-- NEXT --></body>
+<style>
+  .si-hero{max-width:680px;margin:0 auto;text-align:center}
+  .si-form{display:flex;gap:10px;max-width:560px;margin:32px auto 0}
+  .si-form input{flex:1;padding:14px 18px;border:2px solid var(--line-dark);border-radius:12px;font:inherit;font-size:16px;background:var(--white);color:var(--ink)}
+  .si-form input:focus{border-color:var(--teal);outline:none}
+  .si-form button{padding:14px 24px;border:0;border-radius:12px;background:var(--teal);color:var(--cream);font:inherit;font-size:15px;font-weight:600;cursor:pointer;white-space:nowrap}
+  .si-form button:hover{background:var(--teal-dark)}
+  @media(max-width:520px){.si-form{flex-direction:column}}
+  .si-note{font-size:13px;color:var(--stone);margin-top:14px;text-align:center}
+  .si-result{display:none;max-width:600px;margin:40px auto 0}
+  .si-result.visible{display:block}
+  .si-group{margin-bottom:28px}
+  .si-group-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
+  .si-items{list-style:none;padding:0;margin:0}
+  .si-items li{padding:12px 16px;border:1px solid var(--line);border-radius:8px;background:var(--white);margin-bottom:6px;font-size:15px;color:var(--ink);display:flex;align-items:center;gap:10px}
+  .si-items .q{color:var(--stone);font-size:14px;flex:0 0 20px}
+  .si-items strong{color:var(--teal)}
+  .si-tip{font-size:14px;color:var(--ink-soft);line-height:1.6;padding:16px;background:var(--cream-2);border:1px solid var(--line);border-radius:10px;margin-top:20px}
+  .si-tip strong{color:var(--ink)}
+  .si-cta{margin-top:28px;padding:28px 32px;background:var(--cream-2);border:1px solid var(--line);border-radius:14px;text-align:center}
+  .si-cta p{font-size:15px;color:var(--stone);margin:0 0 16px}
+</style>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="nav" id="nav"><div class="container nav-inner">
+  <a href="/" class="logo" aria-label="Muntin Digital home"><svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true"><g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"><rect x="18" y="18" width="92" height="92"/><line x1="64" y1="18" x2="64" y2="110"/><line x1="18" y1="49" x2="110" y2="49"/></g></svg>Muntin Digital<sup class="tm">&#8482;</sup></a>
+  <nav class="nav-links" aria-label="Primary"><a href="/#services">Services</a><a href="/for/restaurants/">Restaurants</a><a href="/work/">Work</a><a href="/blog/">Blog</a><a href="/#about">About</a></nav>
+  <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
+  <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false"><span></span><span></span><span></span></button>
+</div><nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden><a href="/#services">Services</a><a href="/for/restaurants/">Restaurants</a><a href="/work/">Work</a><a href="/blog/">Blog</a><a href="/#about">About</a><a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call</a></nav></header>
+
+<main id="main">
+<nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><a href="/tools/">Tools</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><span aria-current="page">Search Ideas</span></nav>
+
+<section class="hero hero-tight"><div class="container"><div class="si-hero">
+  <span class="eyebrow">Free tool &middot; Instant</span>
+  <h1>What are people searching for<br><span class="serif-italic">near you?</span></h1>
+  <p class="hero-sub" style="margin:20px auto 0;max-width:560px;">Type your business type and your city. We'll show you the search queries real people type into Google — so you know exactly what your website and Google Business Profile should be talking about.</p>
+  <div class="si-form">
+    <input type="text" id="siType" placeholder="yoga studio" aria-label="Your business type" />
+    <input type="text" id="siCity" placeholder="Bethesda, MD" aria-label="Your city" />
+    <button type="button" id="siSubmit">Show me</button>
+  </div>
+  <p class="si-note">Generates the most common search patterns for your business type + location. Instant — no API call needed.</p>
+  <div class="si-result" id="siResult" aria-live="polite"></div>
+</div></div></section>
+</main>
+
+<footer><div class="container">
+  <div class="foot-cta"><div class="foot-cta-text">Ready to build something worth the time?</div><a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a></div>
+  <div class="foot-grid">
+    <div class="foot-col foot-brand"><a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home"><img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async"><sup class="tm" aria-hidden="true">&#8482;</sup></a><p class="foot-tagline">Structure Brings Clarity.</p><p class="foot-blurb">A one-person studio in Silver Spring, MD, building custom websites, brands, and social media for independent restaurants and lifestyle brands across the DMV and beyond.</p></div>
+    <nav class="foot-col" aria-labelledby="foot-explore"><h4 class="foot-heading" id="foot-explore">Explore</h4><ul class="foot-links"><li><a href="/#services">Services</a></li><li><a href="/for/restaurants/">For restaurants</a></li><li><a href="/work/">Work</a></li><li><a href="/blog/">Blog</a></li><li><a href="/#about">About Don</a></li></ul></nav>
+    <nav class="foot-col" aria-labelledby="foot-tools"><h4 class="foot-heading" id="foot-tools">Free tools</h4><ul class="foot-links"><li><a href="/tools/">All tools</a></li><li><a href="/tools/speed-test/">Speed test</a></li><li><a href="/tools/seo-grader/">SEO grader</a></li><li><a href="/tools/mobile-check/">Mobile check</a></li><li><a href="/tools/schema-check/">Schema check</a></li><li><a href="/tools/tech-stack/">Tech stack</a></li><li><a href="/tools/search-ideas/">Search ideas</a></li></ul></nav>
+    <nav class="foot-col foot-contact" aria-labelledby="foot-contact"><h4 class="foot-heading" id="foot-contact">Contact</h4><ul class="foot-links"><li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li><li><a href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call</a></li><li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram</a></li></ul><p class="foot-trust"><strong>Reply time:</strong> under 4 hours, Mon&ndash;Fri</p></nav>
+  </div>
+  <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital&#8482; &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
+</div></footer>
+<script src="/assets/site.js" defer></script>
+<!-- JS NEXT -->
 </html>
