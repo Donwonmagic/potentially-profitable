@@ -93,5 +93,81 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital&#8482; &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js" defer></script>
-<!-- JS NEXT -->
+<script>
+(function(){
+  var btn=document.getElementById('siSubmit');
+  var typeInput=document.getElementById('siType');
+  var cityInput=document.getElementById('siCity');
+  var result=document.getElementById('siResult');
+
+  // Search pattern templates grouped by intent category
+  var PATTERNS=[
+    {cat:'Discovery — how people find you',templates:[
+      'best {type} in {city}',
+      'best {type} near me',
+      '{type} near {city}',
+      '{type} {city}',
+      'top rated {type} {city}',
+      '{type} open now near me',
+      '{type} open late {city}',
+      'new {type} in {city}'
+    ]},
+    {cat:'Pricing — what they want to know before booking',templates:[
+      'how much does {type} cost in {city}',
+      '{type} prices {city}',
+      'affordable {type} {city}',
+      'cheap {type} near me',
+      '{type} membership prices {city}',
+      '{type} first visit free {city}'
+    ]},
+    {cat:'Specifics — the long-tail queries with real intent',templates:[
+      '{type} with parking {city}',
+      '{type} for beginners {city}',
+      '{type} for kids {city}',
+      '{type} gift card {city}',
+      '{type} private event {city}',
+      '{type} group booking {city}',
+      '{type} walk-ins welcome {city}',
+      '{type} reviews {city}'
+    ]},
+    {cat:'Comparison — you vs. the competition',templates:[
+      '{type} vs {type} {city}',
+      'best {type} in {city} reddit',
+      '{type} {city} google reviews',
+      '{type} {city} yelp',
+      'is {type} worth it {city}'
+    ]}
+  ];
+
+  function generate(type,city){
+    var html='';
+    PATTERNS.forEach(function(group){
+      html+='<div class="si-group"><p class="si-group-label">'+group.cat+'</p><ul class="si-items">';
+      group.templates.forEach(function(t){
+        var q=t.replace(/\{type\}/g,type).replace(/\{city\}/g,city);
+        html+='<li><span class="q">🔍</span> '+q+'</li>';
+      });
+      html+='</ul></div>';
+    });
+    html+='<div class="si-tip"><strong>How to use these:</strong> Each query above is something real people type into Google. If your website and Google Business Profile don\'t contain the words in these searches, you\'re invisible for them. Add the relevant terms to your title tag, meta description, services page, and GBP description — that\'s how you start showing up.</div>';
+    html+='<div class="si-cta"><p>Want to see how your site scores on the checks that matter?</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><a class="btn btn-primary" href="/tools/audits/restaurant/">Restaurant audit</a><a class="btn btn-ghost" href="/tools/audits/wellness/">Wellness audit</a></div></div>';
+    return html;
+  }
+
+  btn.addEventListener('click',function(){
+    var type=typeInput.value.trim().toLowerCase();
+    var city=cityInput.value.trim();
+    if(!type){typeInput.focus();return}
+    if(!city){cityInput.focus();return}
+    result.innerHTML=generate(type,city);
+    result.classList.add('visible');
+    result.scrollIntoView({behavior:'smooth',block:'start'});
+    if(window.plausible)window.plausible('Search Ideas',{props:{type:type,city:city}});
+  });
+
+  // Enter key triggers
+  typeInput.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();btn.click()}});
+  cityInput.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();btn.click()}});
+})();
+</script>
 </html>
