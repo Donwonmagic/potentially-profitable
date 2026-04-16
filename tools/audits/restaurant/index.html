@@ -786,6 +786,57 @@
     margin-top: 4px;
   }
 
+  /* Not-a-restaurant notice. Replaces the priority-list for sites
+     we didn't classify as restaurants. Matches the priority-list's
+     card chrome (white background, same border/radius) so it reads
+     as "this slot, different content" rather than "broken render". */
+  .not-restaurant-notice {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .not-restaurant-notice .nrn-body h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0 0 10px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .not-restaurant-notice .nrn-body p {
+    margin: 0 0 10px;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+  .not-restaurant-notice .nrn-body .nrn-sub {
+    color: var(--stone);
+    font-size: 13.5px;
+  }
+  .not-restaurant-notice .nrn-btn {
+    align-self: flex-start;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: var(--teal);
+    color: var(--cream);
+    font: inherit;
+    font-weight: 600;
+    font-size: 14px;
+    border: 0;
+    cursor: pointer;
+    transition: background var(--t-fast) var(--ease);
+  }
+  .not-restaurant-notice .nrn-btn:hover { background: var(--teal-dark); }
+  .not-restaurant-notice .nrn-btn em {
+    font-style: italic;
+    font-weight: 600;
+  }
+
   /* Restaurant-priority checks list */
   .priority-list {
     background: var(--white);
@@ -1677,8 +1728,25 @@
         </div>
       </div>
 
+      <!-- Not-a-restaurant notice. Shown when looksLikeRestaurant()
+           returns false, hides the priority-list below, and offers an
+           override button so an owner of a restaurant we mis-classified
+           can tell us and run the restaurant-specific checks anyway.
+           The override persists via ?r=1 in the URL so a shared link
+           preserves the correction. -->
+      <div class="not-restaurant-notice" id="notRestaurantNotice" hidden>
+        <div class="nrn-body">
+          <h3>We didn't classify this as a restaurant site</h3>
+          <p>The four Lighthouse categories above (Performance, Accessibility, Best Practices, SEO) still apply — they're universal. We just didn't find the signals we look for to confirm a restaurant: a known ordering or reservation platform (Toast, OpenTable, Resy…), Restaurant schema markup, or clear restaurant language on the page.</p>
+          <p class="nrn-sub">If this <em>is</em> a restaurant and we got it wrong, tell us and we'll run the restaurant-specific checks on it.</p>
+        </div>
+        <button type="button" class="nrn-btn" id="forceRestaurantBtn">
+          This <em>is</em> a restaurant — show me the checks
+        </button>
+      </div>
+
       <!-- Restaurant-priority checks list -->
-      <div class="priority-list">
+      <div class="priority-list" id="priorityListWrap">
         <header>
           <h3>Restaurant-priority checks</h3>
           <span class="tally" id="priorityTally">—</span>
@@ -3205,6 +3273,25 @@
   // much more useful to forward to a developer.
   var USER_OVERRIDES = {};
 
+  // Owner override for restaurant classification. When looksLikeRestaurant
+  // returns false (non-restaurant site, or a restaurant we failed to
+  // detect), the priority-check section is hidden and an override
+  // button ("This IS a restaurant") reveals it. The override persists
+  // via ?r=1 in the URL so a corrected shared link keeps the
+  // classification. Never flips restaurants BACK to non-restaurant —
+  // the classifier's positive result wins.
+  var userForcedRestaurant = false;
+
+  // Toggle the not-a-restaurant notice vs the priority-checks section.
+  // Called from renderReport once the effective classification is known
+  // and from the override button's click handler.
+  function toggleRestaurantUi(effectiveIsRestaurant) {
+    var notice = document.getElementById('notRestaurantNotice');
+    var list   = document.getElementById('priorityListWrap');
+    if (notice) notice.hidden = !!effectiveIsRestaurant;
+    if (list)   list.hidden   = !effectiveIsRestaurant;
+  }
+
   // Encode an overrides object into the compact URL-param format.
   //   {0: 'pass', 3: 'fail'} -> '0p,3f'
   function encodeOverrides(overrides) {
@@ -3244,6 +3331,7 @@
       if (auditedUrl) params.set('url', auditedUrl);
       var ov = encodeOverrides(USER_OVERRIDES);
       if (ov) params.set('ov', ov);
+      if (userForcedRestaurant) params.set('r', '1');
       var qs = params.toString();
       var newUrl = location.pathname + (qs ? '?' + qs : '');
       window.history.replaceState(null, '', newUrl);
@@ -3676,12 +3764,26 @@
     var allUrls  = extractAllUrls(audits);
     var pageText = extractPageText(audits);
 
-    // Compute Restaurant Readiness score from the priority checks
-    // BEFORE the overall — we want it to contribute to the average
-    // for real restaurant sites, but be excluded for non-restaurants
-    // (like muntin.digital itself) so we don't look bad on our own tool.
-    var priorityResult  = renderPriorityChecks(audits, allUrls, pageText);
-    var isRestaurantSite = looksLikeRestaurant(auditedUrl, audits, allUrls);
+    // Effective classification combines the automatic signal with any
+    // owner-applied override (?r=1 in URL, or "this IS a restaurant"
+    // button click). If either says yes, treat as restaurant. The
+    // override is one-way: we never flip a detected restaurant to
+    // non-restaurant.
+    var detectedRestaurant = looksLikeRestaurant(auditedUrl, audits, allUrls);
+    var isRestaurantSite   = detectedRestaurant || userForcedRestaurant;
+
+    // Only populate the priority-check list when we're actually
+    // displaying it. For non-restaurant sites the section is hidden
+    // and the DOM mutations would be wasted work — plus the mass of
+    // unverified checks could confuse screen-readers scanning the
+    // hidden node.
+    var priorityResult;
+    if (isRestaurantSite) {
+      priorityResult = renderPriorityChecks(audits, allUrls, pageText);
+    } else {
+      priorityResult = { score: 0, passCount: 0, totalCount: 0, confirmedCount: 0, lowConfidence: true };
+    }
+    toggleRestaurantUi(isRestaurantSite);
     var restaurantScore = priorityResult.score;
 
     // Cache the four Lighthouse category scores + the restaurant flag
@@ -3691,6 +3793,7 @@
     window.__auditScoreState = {
       perf: perf, a11y: a11y, bp: bp, seo: seo,
       isRestaurant: isRestaurantSite,
+      detectedRestaurant: detectedRestaurant,
       audits: audits, allUrls: allUrls, pageText: pageText,
       auditedUrl: auditedUrl
     };
@@ -3796,21 +3899,27 @@
       }
     } catch (e) { /* no-op */ }
     // Walk the rendered results to build failing / unverified lists
-    // and a plain-English summary the email reader can scan.
+    // and a plain-English summary the email reader can scan. On
+    // non-restaurant sites the restaurant-specific checks are hidden
+    // in the UI, so we leave the failing/unverified lists empty
+    // instead of emailing a wall of "unverified phone / menu /
+    // reservations" that doesn't apply to the audited site.
     try {
       var failingChecks = [];
       var unverifiedChecks = [];
-      PRIORITY_CHECKS.forEach(function(def, idx){
-        var result = evaluatePriorityCheck(def, audits, allUrls, pageText);
-        if (!result) return;
-        if (USER_OVERRIDES[idx] === 'pass' && result.mark.cls === 'unverified') return;
-        if (USER_OVERRIDES[idx] === 'fail' && result.mark.cls === 'unverified') {
-          result = makeResult(def, 'fail');
-        }
-        var title = result.title ? String(result.title).replace(/<[^>]*>/g, '') : 'check ' + (idx + 1);
-        if (result.mark.cls === 'fail') failingChecks.push(title);
-        else if (result.mark.cls === 'unverified') unverifiedChecks.push(title);
-      });
+      if (isRestaurantSite) {
+        PRIORITY_CHECKS.forEach(function(def, idx){
+          var result = evaluatePriorityCheck(def, audits, allUrls, pageText);
+          if (!result) return;
+          if (USER_OVERRIDES[idx] === 'pass' && result.mark.cls === 'unverified') return;
+          if (USER_OVERRIDES[idx] === 'fail' && result.mark.cls === 'unverified') {
+            result = makeResult(def, 'fail');
+          }
+          var title = result.title ? String(result.title).replace(/<[^>]*>/g, '') : 'check ' + (idx + 1);
+          if (result.mark.cls === 'fail') failingChecks.push(title);
+          else if (result.mark.cls === 'unverified') unverifiedChecks.push(title);
+        });
+      }
       if (emailFailingField)    emailFailingField.value    = failingChecks.join('; ');
       if (emailUnverifiedField) emailUnverifiedField.value = unverifiedChecks.join('; ');
       if (emailCorrectionsField) {
@@ -4130,6 +4239,26 @@
         input.value = '';
         input.focus();
       }
+    });
+  }
+
+  // "This is a restaurant — show me the checks" override. Flips
+  // userForcedRestaurant on, re-runs the priority checks against the
+  // same cached PSI result, and refreshes the score ring so readiness
+  // joins the overall average. Persists via ?r=1 in the URL so a
+  // forwarded audit link keeps the classification correction.
+  var forceBtn = document.getElementById('forceRestaurantBtn');
+  if (forceBtn) {
+    forceBtn.addEventListener('click', function(){
+      var state = window.__auditScoreState;
+      if (!state) return;
+      userForcedRestaurant = true;
+      state.isRestaurant = true;
+      toggleRestaurantUi(true);
+      renderPriorityChecks(state.audits, state.allUrls, state.pageText);
+      recomputeOverallFromCurrentState();
+      updateUrlState(state.auditedUrl);
+      if (window.plausible) window.plausible('Audit Classification Overridden');
     });
   }
 
@@ -4769,6 +4898,11 @@
         var decoded = decodeOverrides(ov);
         Object.keys(decoded).forEach(function(k){ USER_OVERRIDES[k] = decoded[k]; });
       }
+      // Hydrate the restaurant-classification override (?r=1). A
+      // recipient of a shared link that was corrected by the owner
+      // gets the priority-check section visible from the first render
+      // instead of having to click the override button themselves.
+      if (params.get('r') === '1') userForcedRestaurant = true;
       // Brief delay so the page finishes painting before we kick off the fetch
       setTimeout(function(){
         if (window.plausible) window.plausible('Audit Auto-run');
