@@ -394,6 +394,30 @@
     color: var(--ink-soft);
     margin: 16px 0 0;
   }
+  /* Override banner: visible only when the visitor has confirmed one or
+     more unverified checks. Signals (both to the original owner and to
+     anyone they forward the share link to) that the score contains
+     self-attested data, not only tool-verified results. Without this,
+     a forwarded audit could plausibly be read as fully empirical. */
+  .score-override-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 14px 0 0;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: rgba(31, 78, 91, 0.08);
+    border: 1px solid rgba(31, 78, 91, 0.18);
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--ink-soft);
+  }
+  .score-override-banner svg {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    color: var(--teal);
+  }
 
   /* Four category gauges */
   .category-grid {
@@ -1467,6 +1491,10 @@
           <h2 id="scoreHeadline">Your overall score</h2>
           <div class="url">Audited: <strong id="auditedUrl">—</strong></div>
           <p class="verdict" id="verdictCopy">Verdict copy populates here after a run — explains what the score means and what to focus on first.</p>
+          <div class="score-override-banner" id="scoreOverrideBanner" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span id="scoreOverrideText">This score includes owner-confirmed checks.</span>
+          </div>
           <div class="share-row">
             <button type="button" class="share-btn" id="shareBtn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M9 4H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2"/></svg>
@@ -2117,6 +2145,26 @@
     card.classList.remove('grade-good','grade-ok','grade-bad');
     card.classList.add('grade-na');
     card.querySelector('.cat-value').textContent = 'N/A';
+    var valueEl = card.querySelector('.cat-value');
+    if (valueEl) valueEl.removeAttribute('title');
+    var fill = card.querySelector('.bar .fill');
+    fill.style.width = '0%';
+  }
+
+  // Render a category card in a "low signal" state — used when the
+  // category applies but we don't have enough confirmed checks to
+  // put a number on it honestly. Visually a muted '?' so the owner
+  // knows this is pending their feedback, not a broken check.
+  function setCategoryLowSignal(cat) {
+    var card = document.querySelector('.category-card[data-cat="' + cat + '"]');
+    if (!card) return;
+    card.classList.remove('grade-good','grade-ok','grade-bad');
+    card.classList.add('grade-na');
+    var valueEl = card.querySelector('.cat-value');
+    if (valueEl) {
+      valueEl.textContent = '?';
+      valueEl.title = 'Not enough confirmed signal yet. Answer the "Is this right?" questions below and this score will update live.';
+    }
     var fill = card.querySelector('.bar .fill');
     fill.style.width = '0%';
   }
@@ -3216,10 +3264,21 @@
       ? Math.round((weightedCredit / totalWeight) * 100)
       : 0;
 
+    // Confidence gate: the weighted rollup honestly excludes unverified
+    // checks, but that means a site with one confirmed pass and eight
+    // unverifieds renders as 100/100 readiness — misleading to anyone
+    // glancing at the number. Suppress the score when we don't have
+    // enough confirmed signal. Threshold: at least 3 confirmed, AND
+    // at least 40% of total checks confirmed. For a 9-check rubric
+    // that means we need 4+ confirmed pass/fails before we'll put a
+    // number on readiness at all.
+    var confirmedCount = totalCount - unverifiedCount;
+    var CONFIDENCE_FLOOR = Math.max(3, Math.ceil(totalCount * 0.4));
+    var lowConfidence   = totalCount > 0 && confirmedCount < CONFIDENCE_FLOOR;
+
     var tally = document.getElementById('priorityTally');
     if (tally) {
       if (totalCount) {
-        var confirmedCount = totalCount - unverifiedCount;
         var failCount = confirmedCount - passCount;
         // Lead with the honest phrasing: what we CONFIRMED, not a
         // scary abstract score. Readiness comes last as a summary.
@@ -3230,14 +3289,24 @@
         if (unverifiedCount > 0) {
           pieces.push(unverifiedCount + ' couldn\'t be verified — answer the "is this right?" questions below to refine your score');
         }
-        pieces.push('restaurant readiness: ' + restaurantScore + '/100');
+        if (lowConfidence) {
+          pieces.push('readiness: not enough confirmed signal to score yet');
+        } else {
+          pieces.push('restaurant readiness: ' + restaurantScore + '/100');
+        }
         tally.textContent = pieces.join(' · ');
       } else {
         tally.textContent = 'No restaurant-priority data available';
       }
     }
 
-    return { score: restaurantScore, passCount: passCount, totalCount: totalCount };
+    return {
+      score: restaurantScore,
+      passCount: passCount,
+      totalCount: totalCount,
+      confirmedCount: confirmedCount,
+      lowConfidence: lowConfidence
+    };
   }
 
   // Best-effort heuristic: is the audited URL actually a restaurant site?
@@ -3384,6 +3453,25 @@
     return false;
   }
 
+  // Weighted overall-score calculation. Performance gets 2× the weight
+  // of Accessibility / Best Practices / SEO / Restaurant Readiness.
+  // When readinessInRollup is false (non-restaurant site OR low-signal
+  // readiness), readiness is excluded from both numerator and
+  // denominator so it doesn't drag the number down.
+  //
+  // Denominator is 2 + 1 + 1 + 1 (+ 1 if readiness counts) so the
+  // final number still lives on the 0–100 scale regardless of tier.
+  function computeOverall(perf, a11y, bp, seo, readiness, readinessInRollup) {
+    var PERF_WEIGHT = 2;
+    var numer = perf * PERF_WEIGHT + a11y + bp + seo;
+    var denom = PERF_WEIGHT + 3;
+    if (readinessInRollup) {
+      numer += readiness;
+      denom += 1;
+    }
+    return Math.round(numer / denom);
+  }
+
   function renderReport(data, auditedUrl) {
     var lh = data && data.lighthouseResult;
     if (!lh || !lh.categories) throw new Error('Unexpected PageSpeed response shape.');
@@ -3426,16 +3514,22 @@
       auditedUrl: auditedUrl
     };
 
-    var overall;
-    if (isRestaurantSite) {
-      // Real restaurant site: weight restaurant readiness as a 5th category
-      overall = Math.round((perf + a11y + bp + seo + restaurantScore) / 5);
-    } else {
-      // Non-restaurant site: average only the 4 Lighthouse categories,
-      // and mark restaurant readiness as N/A so the visitor understands
-      // why that card is excluded.
-      overall = Math.round((perf + a11y + bp + seo) / 4);
-    }
+    // Readiness is only included in the overall rollup when (a) this
+    // is a restaurant site AND (b) we have enough confirmed checks to
+    // trust the number. Otherwise we fall through to the 4-category
+    // average so one detected platform + eight unverifieds doesn't
+    // inflate the overall score via a 100/100 readiness phantom.
+    //
+    // Weighting: Performance carries 2× the weight of the other four
+    // categories. A slow mobile site is materially worse for a
+    // restaurant than an imperfect SEO score — 53% of mobile visitors
+    // bounce from pages that take more than 3s to load (Google, 2018).
+    // Best Practices and SEO both regularly score 100 by default on
+    // even mediocre sites, which otherwise lets a site with perf 40
+    // cruise to an 81 overall. Double-weighting performance stops the
+    // overall number from lying about the most important axis.
+    var readinessInRollup = isRestaurantSite && !priorityResult.lowConfidence;
+    var overall = computeOverall(perf, a11y, bp, seo, restaurantScore, readinessInRollup);
 
     // Strip protocol from displayed URL for readability
     var displayUrl = auditedUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
@@ -3447,11 +3541,14 @@
     setCategory('accessibility', a11y);
     setCategory('best-practices', bp);
     setCategory('seo',           seo);
-    if (isRestaurantSite) {
-      setCategory('restaurant', restaurantScore);
-    } else {
+    if (!isRestaurantSite) {
       setCategoryNA('restaurant');
+    } else if (priorityResult.lowConfidence) {
+      setCategoryLowSignal('restaurant');
+    } else {
+      setCategory('restaurant', restaurantScore);
     }
+    updateOverrideBanner();
 
     // Drill-down: list every failing Lighthouse audit under the right
     // category, sorted by impact. Auto-hides if nothing is failing.
@@ -3491,7 +3588,9 @@
     if (emailUrlField)   emailUrlField.value   = auditedUrl;
     if (emailScoreField) emailScoreField.value = String(overall);
     if (emailReadinessField) {
-      emailReadinessField.value = isRestaurantSite ? String(restaurantScore) : 'N/A';
+      if (!isRestaurantSite)             emailReadinessField.value = 'N/A';
+      else if (priorityResult.lowConfidence) emailReadinessField.value = 'Insufficient signal';
+      else                                emailReadinessField.value = String(restaurantScore);
     }
     // Build a shareable link that preserves any current overrides.
     try {
@@ -3532,9 +3631,15 @@
         emailCorrectionsField.value = corr.join('; ');
       }
       if (emailSummaryField) {
+        var readinessLine = null;
+        if (isRestaurantSite) {
+          readinessLine = priorityResult.lowConfidence
+            ? 'Restaurant readiness: insufficient signal (too many unverified checks)'
+            : 'Restaurant readiness: ' + restaurantScore + '/100';
+        }
         var parts = [
           'Overall score: ' + overall + '/100',
-          isRestaurantSite ? 'Restaurant readiness: ' + restaurantScore + '/100' : null,
+          readinessLine,
           failingChecks.length ? failingChecks.length + ' failing checks' : 'No failing checks',
           unverifiedChecks.length ? unverifiedChecks.length + ' couldn\'t be verified' : null
         ].filter(function(p){ return p; });
@@ -3573,34 +3678,69 @@
     // state. renderPriorityChecks returns the updated restaurant score.
     var priorityResult = renderPriorityChecks(state.audits, state.allUrls, state.pageText);
     var newRestaurantScore = priorityResult.score;
+    var readinessInRollup = state.isRestaurant && !priorityResult.lowConfidence;
 
-    var overall;
-    if (state.isRestaurant) {
-      overall = Math.round((state.perf + state.a11y + state.bp + state.seo + newRestaurantScore) / 5);
-    } else {
-      overall = Math.round((state.perf + state.a11y + state.bp + state.seo) / 4);
-    }
+    var overall = computeOverall(
+      state.perf, state.a11y, state.bp, state.seo, newRestaurantScore, readinessInRollup
+    );
 
     // Update the score ring (stroke-dashoffset transition handles
     // the animation), verdict copy, Restaurant Readiness category
     // card, and the cached last-result so future share/email/copy
-    // actions see the corrected score.
+    // actions see the corrected score. If the user just clicked
+    // "I have this" on enough unverifieds to cross the confidence
+    // threshold, the restaurant card transitions from '?' to a
+    // real score on this pass.
     setScoreRing(overall);
     var verdictEl = document.getElementById('verdictCopy');
     if (verdictEl) verdictEl.textContent = verdictFor(overall);
-    if (state.isRestaurant) setCategory('restaurant', newRestaurantScore);
+    if (!state.isRestaurant) {
+      setCategoryNA('restaurant');
+    } else if (priorityResult.lowConfidence) {
+      setCategoryLowSignal('restaurant');
+    } else {
+      setCategory('restaurant', newRestaurantScore);
+    }
 
     if (window.__auditLastResult) {
       window.__auditLastResult.overall = overall;
-      window.__auditLastResult.restaurant = state.isRestaurant ? newRestaurantScore : null;
+      window.__auditLastResult.restaurant = readinessInRollup ? newRestaurantScore : null;
     }
+    updateOverrideBanner();
 
     // Update the email form hidden fields so an email sent AFTER
     // corrections carries the corrected score + readiness.
     var emailScoreField     = document.getElementById('emailReportScore');
     var emailReadinessField = document.getElementById('emailReportReadiness');
     if (emailScoreField)     emailScoreField.value     = String(overall);
-    if (emailReadinessField) emailReadinessField.value = state.isRestaurant ? String(newRestaurantScore) : 'N/A';
+    if (emailReadinessField) {
+      if (!state.isRestaurant)           emailReadinessField.value = 'N/A';
+      else if (priorityResult.lowConfidence) emailReadinessField.value = 'Insufficient signal';
+      else                                emailReadinessField.value = String(newRestaurantScore);
+    }
+  }
+
+  // Toggle the "score includes owner-confirmed checks" banner based on
+  // how many USER_OVERRIDES are active. Called from both renderReport
+  // (initial paint, picks up overrides hydrated from the URL) and
+  // recomputeOverallFromCurrentState (after every feedback click) so
+  // the banner appears the moment a user (or the recipient of a
+  // shared link) first sees a mutated score.
+  function updateOverrideBanner() {
+    var banner = document.getElementById('scoreOverrideBanner');
+    var textEl = document.getElementById('scoreOverrideText');
+    if (!banner) return;
+    var keys = Object.keys(USER_OVERRIDES);
+    if (!keys.length) {
+      banner.hidden = true;
+      return;
+    }
+    banner.hidden = false;
+    if (textEl) {
+      var noun = keys.length === 1 ? 'check' : 'checks';
+      textEl.textContent = 'This score includes ' + keys.length +
+        ' owner-confirmed ' + noun + '. Remove the ?ov=… parameter from the URL to see the fully tool-verified score.';
+    }
   }
 
   function showError(heading, body) {
@@ -4148,27 +4288,40 @@
           var pageText = extractPageText(audits);
           var isRestaurant = looksLikeRestaurant(url, audits, allUrls);
           var restaurantScore = 0;
+          var totalCount = 0, unverifiedCount = 0;
           if (isRestaurant) {
             var totalWeight = 0, weightedCredit = 0;
             PRIORITY_CHECKS.forEach(function(def){
               var result = evaluatePriorityCheck(def, audits, allUrls, pageText);
               if (!result) return;
-              if (result.mark.cls === 'unverified') return; // excluded from score
+              totalCount++;
+              if (result.mark.cls === 'unverified') {
+                unverifiedCount++;
+                return; // excluded from score
+              }
               var w = typeof def.weight === 'number' ? def.weight : 1.0;
               totalWeight += w;
               if (result.mark.cls === 'pass') weightedCredit += w;
             });
             restaurantScore = totalWeight > 0 ? Math.round((weightedCredit / totalWeight) * 100) : 0;
           }
-          var overall = isRestaurant
-            ? Math.round((perf + a11y + bp + seo + restaurantScore) / 5)
-            : Math.round((perf + a11y + bp + seo) / 4);
+          // Apply the same confidence gate the main audit uses, so
+          // competitors with only one confirmed pass don't show up as
+          // 100/100 readiness in the comparison table.
+          var competitorConfirmed = totalCount - unverifiedCount;
+          var competitorFloor     = Math.max(3, Math.ceil(totalCount * 0.4));
+          var lowConfidence       = totalCount > 0 && competitorConfirmed < competitorFloor;
+          var readinessInRollup   = isRestaurant && !lowConfidence;
+          var overall = computeOverall(perf, a11y, bp, seo, restaurantScore, readinessInRollup);
           return {
             url: url,
             pretty: url.replace(/^https?:\/\//, '').replace(/\/$/, ''),
             perf: perf, a11y: a11y, bp: bp, seo: seo,
             isRestaurant: isRestaurant,
-            restaurant: isRestaurant ? restaurantScore : null,
+            // Only surface a competitor readiness number when we had
+            // enough confirmed signal to trust it; otherwise the
+            // comparison table shows N/A for that row.
+            restaurant: readinessInRollup ? restaurantScore : null,
             overall: overall
           };
         });
