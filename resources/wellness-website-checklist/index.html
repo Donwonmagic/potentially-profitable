@@ -62,7 +62,7 @@
         { "@type": "HowToStep", "position": 14, "name": "Surface social proof above the fold", "text": "Move a review quote, press mention, or star rating into the hero or immediately beneath it — not buried on a testimonials page.", "url": "https://muntin.digital/resources/wellness-website-checklist/#conversions" },
         { "@type": "HowToStep", "position": 15, "name": "Claim a Google Business Profile", "text": "60% of restaurant discovery happens in Google Maps. Claim your listing at google.com/business, fill in hours, categories, photos, and menu link.", "url": "https://muntin.digital/resources/wellness-website-checklist/#findability" },
         { "@type": "HowToStep", "position": 16, "name": "Name your restaurant and cuisine in the title tag", "text": "Rewrite your title tag to include restaurant name, cuisine, and city. Keep it under 60 characters so Google doesn't truncate it.", "url": "https://muntin.digital/resources/wellness-website-checklist/#findability" },
-        { "@type": "HowToStep", "position": 17, "name": "Add Restaurant JSON-LD schema", "text": "Add a Restaurant schema in a script application ld+json tag including name, address, servesCuisine, priceRange, telephone, and openingHours. Test with Google's Rich Results Test.", "url": "https://muntin.digital/resources/wellness-website-checklist/#findability" },
+        { "@type": "HowToStep", "position": 17, "name": "Add wellness-specific schema markup", "text": "Add JSON-LD structured data with a type like HealthAndBeautyBusiness, DaySpa, or SportsActivityLocation — including name, address, telephone, and openingHours. Test with Google's Rich Results Test.", "url": "https://muntin.digital/resources/wellness-website-checklist/#findability" },
         { "@type": "HowToStep", "position": 18, "name": "Write meaningful alt text for every image", "text": "Replace filenames like IMG_2041.jpg with real descriptive sentences. Name the dish, the room, and where appropriate the restaurant and city.", "url": "https://muntin.digital/resources/wellness-website-checklist/#findability" },
         { "@type": "HowToStep", "position": 19, "name": "Publish a sitemap and submit it to Search Console", "text": "Generate a sitemap.xml, upload to your site root, verify your domain in Google Search Console, and submit the sitemap URL.", "url": "https://muntin.digital/resources/wellness-website-checklist/#findability" },
         { "@type": "HowToStep", "position": 20, "name": "Serve the site over HTTPS", "text": "Modern browsers flag HTTP sites as Not secure. If your host does not offer free HTTPS via Let's Encrypt or Cloudflare, change hosts.", "url": "https://muntin.digital/resources/wellness-website-checklist/#trust" },
@@ -122,6 +122,9 @@
 <style>
   /* ============ CHECKLIST PAGE STYLES ============ */
 
+  /* Override .hero overflow:hidden from site.css so the share
+     dropdown can extend below the toolbar without clipping. */
+  .hero { overflow: visible; }
   .checklist-hero {
     text-align: center;
     max-width: 780px;
@@ -616,7 +619,9 @@
     justify-content: center;
     flex-wrap: wrap;
     margin-top: 28px;
+    margin-bottom: 20px;
     position: relative;
+    overflow: visible;
   }
 
   /* ============ SHARE DROPDOWN ============ */
@@ -998,24 +1003,24 @@
         The Wellness Website Checklist.<br>
         <span class="serif-italic">Twenty things your site should do in 2026.</span>
       </h1>
-      <p class="hero-sub">
+      <p class="hero-sub" style="margin:24px auto 0; max-width:680px; text-align:center;">
         A free, honest audit for independent wellness business websites. Run it on your own site in about ten minutes and see where you're leaving bookings on the table. Written for studio owners, not developers.
       </p>
       <div class="checklist-toolbar">
         <button type="button" class="print-cta" onclick="window.print()">
-          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
           Print or save as PDF
         </button>
         <div class="share-dropdown" id="shareDropdown">
           <button type="button" class="print-cta" id="shareBtn" aria-haspopup="true" aria-expanded="false" aria-controls="shareMenu">
-            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             Share
           </button>
           <div class="share-menu" id="shareMenu" hidden role="menu" aria-labelledby="shareBtn">
-            <a role="menuitem" class="share-item" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fmuntin.digital%2Fresources%2Fwellness-website-checklist%2F&amp;text=The%20Restaurant%20Website%20Checklist%20%E2%80%94%2020%20things%20your%20site%20should%20do%20in%202026.%20Score%20yours%20in%2010%20minutes." target="_blank" rel="noopener">Share on X</a>
+            <a role="menuitem" class="share-item" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fmuntin.digital%2Fresources%2Fwellness-website-checklist%2F&amp;text=The%20Wellness%20Website%20Checklist%20%E2%80%94%2020%20things%20your%20site%20should%20do%20in%202026.%20Score%20yours%20in%2010%20minutes." target="_blank" rel="noopener">Share on X</a>
             <a role="menuitem" class="share-item" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fmuntin.digital%2Fresources%2Fwellness-website-checklist%2F" target="_blank" rel="noopener">Share on LinkedIn</a>
             <a role="menuitem" class="share-item" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fmuntin.digital%2Fresources%2Fwellness-website-checklist%2F" target="_blank" rel="noopener">Share on Facebook</a>
-            <a role="menuitem" class="share-item" href="mailto:?subject=The%20Restaurant%20Website%20Checklist&amp;body=Free%2020-item%20audit%20for%20restaurant%20websites%3A%20https%3A%2F%2Fmuntin.digital%2Fresources%2Fwellness-website-checklist%2F" target="_blank">Share via email</a>
+            <a role="menuitem" class="share-item" href="mailto:?subject=The%20Wellness%20Website%20Checklist&amp;body=Free%2020-item%20audit%20for%20wellness%20websites%3A%20https%3A%2F%2Fmuntin.digital%2Fresources%2Fwellness-website-checklist%2F" target="_blank">Share via email</a>
             <button type="button" role="menuitem" class="share-item" id="copyLinkBtn">Copy link</button>
           </div>
         </div>
@@ -1527,7 +1532,7 @@
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
-        <h4 class="foot-heading" id="foot-explore">Explore</h4>
+        <p class="foot-heading" id="foot-explore">Explore</p>
         <ul class="foot-links">
           <li><a href="/#services">Services</a></li>
           <li><a href="/for/restaurants/">For restaurants</a></li>
@@ -1538,7 +1543,7 @@
       </nav>
 
       <nav class="foot-col" aria-labelledby="foot-tools">
-        <h4 class="foot-heading" id="foot-tools">Free tools</h4>
+        <p class="foot-heading" id="foot-tools">Free tools</p>
         <ul class="foot-links">
           <li><a href="/tools/">All tools</a></li>
           <li><a href="/tools/audits/restaurant/">Restaurant audit</a></li>
@@ -1549,7 +1554,7 @@
       </nav>
 
       <nav class="foot-col foot-contact" aria-labelledby="foot-contact">
-        <h4 class="foot-heading" id="foot-contact">Contact</h4>
+        <p class="foot-heading" id="foot-contact">Contact</p>
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
           <li><a href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call</a></li>

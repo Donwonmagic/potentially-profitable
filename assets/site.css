@@ -253,7 +253,7 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 .step{background:var(--ink);padding:40px 28px 44px;position:relative}
 .step .num{font-family:var(--font-display);font-size:58px;font-weight:400;font-style:italic;color:var(--teal);line-height:1}
 .step h3{margin-top:18px;color:var(--cream);font-size:22px}
-.step p{margin-top:12px;color:rgba(250,247,242,0.72);font-size:14.5px;line-height:1.55}
+.step p{margin-top:12px;color:rgba(250,247,242,0.78);font-size:14.5px;line-height:1.55}
 .care{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 @media (max-width:900px){.care{grid-template-columns:1fr}
 }
@@ -462,14 +462,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
 .foot-contact .foot-links a[href^="mailto:"],
 .foot-contact .foot-links a[href*="calendly"]{display:inline-flex;align-items:center;min-height:28px}
-.foot-trust{margin:18px 0 0;font-size:12.5px;line-height:1.5;color:rgba(250,247,242,0.6);padding-top:14px;border-top:1px solid rgba(250,247,242,0.08)}
+.foot-trust{margin:18px 0 0;font-size:12.5px;line-height:1.5;color:rgba(250,247,242,0.65);padding-top:14px;border-top:1px solid rgba(250,247,242,0.08)}
 .foot-trust strong{color:rgba(250,247,242,0.85);font-weight:600}
 
 /* Bottom row */
 .foot-bottom{display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap}
-.foot-copy{font-size:12.5px;color:rgba(250,247,242,0.45);letter-spacing:0.01em;margin:0}
+.foot-copy{font-size:12.5px;color:rgba(250,247,242,0.6);letter-spacing:0.01em;margin:0}
 .foot-legal{display:flex;gap:20px;flex-wrap:wrap;margin:0}
-.foot-legal a{font-size:12.5px;color:rgba(250,247,242,0.45);transition:color var(--t-fast) var(--ease)}
+.foot-legal a{font-size:12.5px;color:rgba(250,247,242,0.6);transition:color var(--t-fast) var(--ease)}
 .foot-legal a:hover{color:var(--cream)}
 @media (max-width:520px){.foot-bottom{flex-direction:column;align-items:flex-start;gap:14px}}
 
