@@ -498,6 +498,36 @@
     const resetBtn = document.getElementById('progressReset');
     const celebration = document.getElementById('checklistCelebration');
 
+    /* ---- Floating score pill ---- */
+    const pill = document.getElementById('scorePill');
+    const pillBtn = document.getElementById('scorePillBtn');
+    const pillNum = document.getElementById('scorePillNum');
+    const pillLabel = document.getElementById('scorePillLabel');
+    const pillRing = pill ? pill.querySelector('.score-ring-fill') : null;
+    // Precomputed circumference: 2 * Math.PI * r, where r = 19 in the
+    // SVG viewBox. Keep this in sync with the stroke-dasharray in the
+    // inline CSS above.
+    const RING_CIRC = 2 * Math.PI * 19;
+    if (pill) pill.hidden = false;
+    // Reveal with a one-tick delay so the opacity transition runs
+    // (the pill starts at opacity:0 and transitions to 1 via the
+    // .is-visible class).
+    if (pill) {
+      requestAnimationFrame(() => pill.classList.add('is-visible'));
+    }
+
+    /* Maps a raw count to the three feedback bands used elsewhere on
+     * the page (0-8 failing, 9-16 middling, 17-24 solid), plus two
+     * extra states for the zero and 100% cases. Labels are short
+     * enough to fit the pill's text slot without wrapping. */
+    function scoreBandFor(done, total) {
+      if (done === 0)       return { band: 'idle',      label: 'Not started' };
+      if (done <= 8)        return { band: 'failing',   label: 'Failing' };
+      if (done <= 16)       return { band: 'middling',  label: 'Middling' };
+      if (done < total)     return { band: 'solid',     label: 'Solid' };
+      return                       { band: 'complete',  label: 'All 24 — nice' };
+    }
+
     function loadState() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
@@ -541,6 +571,47 @@
           window.plausible('Checklist Completed');
         }
       }
+
+      // Floating score pill: band color, count, ring fill.
+      if (pill) {
+        const { band, label } = scoreBandFor(done, total);
+        pill.dataset.band = band;
+        if (pillLabel) pillLabel.textContent = label;
+        if (pillBtn) {
+          pillBtn.setAttribute(
+            'aria-label',
+            'Jump to checklist progress bar. ' + done + ' of ' + total + ' complete. ' + label + '.'
+          );
+        }
+        if (pillRing) {
+          const offset = RING_CIRC * (1 - (done / total));
+          pillRing.style.strokeDashoffset = String(offset);
+        }
+        if (pillNum) {
+          const prev = pillNum.textContent;
+          const next = String(done);
+          if (prev !== next) {
+            pillNum.textContent = next;
+            // Restart the bump animation on every change by toggling
+            // the class off, forcing a reflow, then back on.
+            pillNum.classList.remove('bumping');
+            void pillNum.offsetWidth;
+            pillNum.classList.add('bumping');
+          }
+        }
+      }
+    }
+
+    if (pillBtn) {
+      pillBtn.addEventListener('click', () => {
+        const section = document.querySelector('.checklist-progress-section');
+        if (section) {
+          section.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
     }
 
     // Hydrate checkbox state from storage
