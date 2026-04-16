@@ -3106,14 +3106,13 @@
       }
     }
 
-    // 2) Platform signal: if we see any ordering or reservation platform
-    //    in the combined URL list, it's a wellness business. We deliberately
-    //    exclude the 'maps' and 'phone' categories from this signal —
-    //    every local business embeds Google Maps, every local business
-    //    has a phone number, neither alone is a wellness business tell.
+    // 2) Platform signal: if we see any dedicated wellness booking
+    //    platform in the combined URL list, it's a wellness business.
+    //    We exclude maps and phone (every local business has those)
+    //    and exclude ambiguous platforms (Calendly alone ≠ wellness).
     if (allUrls && allUrls.length) {
-      var rd = detectPlatforms(['ordering', 'appointments'], allUrls);
-      if (rd.detected) return true;
+      var rd = detectPlatforms(['booking'], allUrls);
+      if (rd.detected && !hasOnlyAmbiguousBooking(rd.found)) return true;
     }
 
     // 3) Schema.org signal: if the site publishes JSON-LD markup with
@@ -3152,21 +3151,36 @@
     }
     haystack = haystack.toLowerCase();
 
-    // 5) Keyword match against a curated list of strong restaurant
-    //    indicators. Each term is unambiguous enough that a single
-    //    match reliably identifies the site as a wellness business. Ambiguous
-    //    short words (bar, pub) are deliberately excluded to avoid
-    //    false positives like "barcamp" or "barry".
+    // 5) Keyword match against a curated list of wellness indicators.
+    //    STRONG terms: unambiguous enough that a single match reliably
+    //    identifies the site as a wellness business.
+    //    REMOVED (too generic, cause false positives):
+    //      "studio" (music, art, recording, design studios)
+    //      "therapy" (psychotherapy, physical therapy, speech therapy)
+    //      "training" (dog training, corporate training)
+    //      "color" (web design, paint, etc.)
+    //      "extensions" (browser extensions, hair extensions is too broad)
+    //      "hair" alone (too short — "hair" appears in many contexts)
+    //    KEPT WITH QUALIFICATION (multi-word to disambiguate):
+    //      "yoga studio", "pilates studio", "fitness studio" (studio
+    //      is only counted when paired with a wellness qualifier)
+    //      "hair salon", "nail salon" (salon is only counted when paired)
     var WELLNESS_TERMS = [
-      'yoga', 'pilates', 'spa', 'salon', 'wellness', 'massage', 'meditation',
-      'fitness', 'gym', 'studio', 'beauty', 'skincare', 'facial', 'manicure',
-      'pedicure', 'nail', 'hair', 'barber', 'esthetics', 'aesthetics',
-      'acupuncture', 'chiropractic', 'therapy', 'healing', 'reiki',
-      'barre', 'crossfit', 'boxing', 'cycling', 'spin', 'bootcamp',
-      'personal training', 'trainer', 'instructor', 'practitioner',
-      'treatment', 'holistic', 'ayurveda', 'float', 'sauna', 'cryotherapy',
-      'stretch', 'recovery', 'bodywork', 'waxing', 'lash', 'brow',
-      'blowout', 'color', 'highlights', 'extensions'
+      // Unambiguous single words
+      'yoga', 'pilates', 'spa', 'wellness', 'massage', 'meditation',
+      'skincare', 'facial', 'manicure', 'pedicure', 'barber',
+      'esthetics', 'aesthetics', 'acupuncture', 'chiropractic',
+      'reiki', 'barre', 'crossfit', 'bootcamp', 'holistic',
+      'ayurveda', 'cryotherapy', 'bodywork', 'waxing',
+      'sauna', 'float tank',
+      // Multi-word: only match as phrases to avoid false positives
+      'yoga studio', 'pilates studio', 'fitness studio',
+      'hair salon', 'nail salon', 'beauty salon', 'day spa',
+      'yoga class', 'fitness class', 'spin class',
+      'personal training', 'personal trainer',
+      'lash extensions', 'brow bar', 'blowout bar',
+      // Platform-specific terms
+      'mindbody', 'vagaro', 'fresha', 'booksy'
     ];
 
     for (var j = 0; j < WELLNESS_TERMS.length; j++) {
