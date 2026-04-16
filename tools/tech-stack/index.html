@@ -78,7 +78,7 @@
     <input type="url" id="tsUrl" placeholder="https://yourbusiness.com" autocomplete="url" required aria-label="Your website URL" />
     <button type="submit" id="tsSubmit">Detect</button>
   </form>
-  <p class="ts-note">Scans the URLs and scripts loaded by your page. Takes about 10–20 seconds.</p>
+  <p class="ts-note">Scans the URLs and scripts loaded during a mobile page load. Takes about 10–20 seconds. Note: this detects technologies loaded on the initial page — scripts that load lazily or after user interaction may not appear.</p>
   <div class="ts-result" id="tsResult" aria-live="polite"></div>
 </div></div></section>
 </main>
@@ -218,6 +218,9 @@
           var ctx=CMS_CONTEXT[cmsGroup.items[0]];
           if(ctx)html+='<div class="ts-context">'+ctx+'</div>';
         }
+      }
+      if(groups.length>0){
+        html+='<p style="font-size:13px;color:var(--stone);margin:16px 0 0;text-align:center;">This scan detects technologies loaded during the initial mobile page load. Some tools (lazy-loaded widgets, login-gated features) may not appear.</p>';
       }
       html+='<div class="ts-cta"><p>Want the full picture? The industry audits go deeper.</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><a class="btn btn-primary" href="/tools/audits/restaurant/">Restaurant audit</a><a class="btn btn-ghost" href="/tools/audits/wellness/">Wellness audit</a></div></div>';
 
