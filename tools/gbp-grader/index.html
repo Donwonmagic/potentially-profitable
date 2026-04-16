@@ -35,10 +35,34 @@
 <link rel="stylesheet" href="/assets/site.css">
 <style>
   .gbp-hero{max-width:680px;margin:0 auto;text-align:center}
-  .gbp-coming{margin:40px auto;max-width:520px;padding:40px 32px;background:var(--cream-2);border:1px solid var(--line);border-radius:16px;text-align:center}
-  .gbp-coming h3{font-family:var(--font-display);font-size:24px;font-weight:500;margin:0 0 12px;color:var(--ink)}
-  .gbp-coming p{font-size:16px;color:var(--stone);line-height:1.6;margin:0 0 20px}
-  .gbp-coming .badge{display:inline-block;padding:6px 14px;border:1px solid var(--teal);border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal)}
+  .gbp-form{display:flex;gap:10px;max-width:560px;margin:32px auto 0}
+  .gbp-form input{flex:1;padding:16px 20px;border:2px solid var(--line-dark);border-radius:12px;font:inherit;font-size:17px;background:var(--white);color:var(--ink)}
+  .gbp-form input:focus{border-color:var(--teal);outline:none}
+  .gbp-form button{padding:16px 28px;border:0;border-radius:12px;background:var(--teal);color:var(--cream);font:inherit;font-size:16px;font-weight:600;cursor:pointer;white-space:nowrap}
+  .gbp-form button:hover{background:var(--teal-dark)}
+  .gbp-form button:disabled{opacity:.5;cursor:wait}
+  @media(max-width:520px){.gbp-form{flex-direction:column}}
+  .gbp-note{font-size:13px;color:var(--stone);margin-top:14px;text-align:center}
+  .gbp-result{display:none;max-width:560px;margin:48px auto 0}
+  .gbp-result.visible{display:block}
+  .gbp-biz{text-align:center;margin-bottom:28px}
+  .gbp-biz h2{font-family:var(--font-display);font-size:28px;font-weight:500;margin:0 0 4px;color:var(--ink)}
+  .gbp-biz p{font-size:14px;color:var(--stone);margin:0}
+  .gbp-stars{font-size:32px;margin:12px 0 4px;letter-spacing:2px}
+  .gbp-stars .filled{color:#C28B2E}
+  .gbp-stars .empty{color:var(--line-dark)}
+  .gbp-rating{font-family:var(--font-display);font-size:40px;font-weight:500;color:var(--ink)}
+  .gbp-reviews{font-size:15px;color:var(--stone);margin-top:2px}
+  .gbp-checks{display:flex;flex-direction:column;gap:10px;margin-top:24px}
+  .gbp-check{display:flex;gap:14px;padding:18px;border:1px solid var(--line);border-radius:10px;background:var(--white);align-items:flex-start}
+  .gbp-check .mark{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 32px;font-size:16px;font-weight:700}
+  .gbp-check .mark.pass{background:rgba(31,157,85,.1);color:#1f9d55}
+  .gbp-check .mark.warn{background:rgba(194,139,46,.1);color:#8A6018}
+  .gbp-check .mark.fail{background:rgba(184,84,26,.08);color:var(--rust)}
+  .gbp-check h3{font-size:15px;font-weight:600;color:var(--ink);margin:0 0 4px}
+  .gbp-check p{font-size:13.5px;line-height:1.5;color:var(--ink-soft);margin:0}
+  .gbp-cta{margin-top:28px;padding:28px 32px;background:var(--cream-2);border:1px solid var(--line);border-radius:14px;text-align:center}
+  .gbp-cta p{font-size:15px;color:var(--stone);margin:0 0 16px}
 </style>
 </head>
 <body>
