@@ -668,6 +668,18 @@
     text-underline-offset: 2px;
   }
   .opp-item-desc a:hover { color: var(--teal-dark); }
+  .opp-item-overflow {
+    background: var(--cream-2);
+    text-align: center;
+    padding: 14px 16px;
+  }
+  .opp-more-link {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--teal);
+    text-decoration: none;
+  }
+  .opp-more-link:hover { color: var(--teal-dark); text-decoration: underline; }
   @media (max-width: 620px) {
     .opportunities-head h3 { font-size: 20px; }
     .opp-section > summary.opp-section-header { padding: 14px 16px; }
@@ -750,7 +762,7 @@
   /* Core Web Vitals strip */
   .vitals-strip {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 2px;
     background: var(--line);
     border: 1px solid var(--line);
@@ -758,10 +770,11 @@
     overflow: hidden;
     margin-bottom: 32px;
   }
-  @media (max-width: 720px) { .vitals-strip { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 900px) { .vitals-strip { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 560px) { .vitals-strip { grid-template-columns: repeat(2, 1fr); } }
   .vitals-strip > div {
     background: var(--white);
-    padding: 20px;
+    padding: 20px 16px;
     text-align: center;
   }
   .vitals-strip .label {
@@ -782,6 +795,18 @@
   .vitals-strip .v.grade-good { color: #1f9d55; }
   .vitals-strip .v.grade-ok   { color: #d97706; }
   .vitals-strip .v.grade-bad  { color: var(--rust); }
+  .vitals-strip .v-source {
+    margin-top: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--stone-2);
+    min-height: 12px;
+  }
+  .vitals-strip .v-source.v-source-field   { color: var(--teal); }
+  .vitals-strip .v-source.v-source-lab     { color: var(--stone-2); }
+  .vitals-strip .v-source.v-source-missing { color: var(--stone-2); opacity: 0.7; }
   .vitals-strip .hint {
     font-size: 11px;
     color: var(--stone-2);
@@ -1673,36 +1698,51 @@
           <p>Our own rubric, specific to independent wellness businesses (yoga studios, spas, salons, boutique fitness, etc.). Covers nine checks that matter for turning a mobile visitor into a booked appointment or class: a working mobile viewport, tap-target size, text contrast, legible font sizes, a tappable phone number, an embedded map or directions link, a booking path (either a known platform like Mindbody/Acuity or a self-hosted equivalent), a readable services or class-schedule page (not a PDF or image), and LocalBusiness / health-and-beauty schema.org markup for local search. Each check is weighted by its conversion impact — a pass earns full weight, a fail earns zero. Anything we honestly couldn't verify is excluded from both sides of the average, so "unknown" never penalizes you. Non-wellness sites show "N/A" here and don't count this category toward their overall score.</p>
 
           <h4>Core Web Vitals</h4>
-          <p>Four specific timing and stability measurements Google uses for mobile performance ranking. These are the individual numbers that make up (most of) the Performance score above.</p>
+          <p>Five specific timing and interactivity measurements. Three of them (LCP, CLS, INP) are the current Core Web Vitals Google uses for mobile search ranking. Each card shows either <em>real-user data</em> (the 28-day median of actual visitor experiences that Google collects from Chrome) or a <em>lab estimate</em> (a simulated mobile run) — real-user data is preferred when available, since it reflects the site your clients actually experience. New or low-traffic wellness sites usually only have lab data until they accumulate enough visits.</p>
           <ul>
             <li><strong>LCP — Largest Contentful Paint.</strong> How long until the biggest visible thing on the page (usually a hero image or headline) shows up. <em>Good: under 2.5s · Poor: over 4s.</em></li>
-            <li><strong>CLS — Cumulative Layout Shift.</strong> How much the page jumps around while loading. Shifting layouts are the reason you sometimes tap "Reserve" and accidentally hit an ad because the ad loaded a second late and pushed everything down. <em>Good: under 0.1 · Poor: over 0.25.</em></li>
-            <li><strong>TBT — Total Blocking Time.</strong> How long the page is frozen, unable to respond to taps or scrolls, while JavaScript runs. <em>Good: under 200ms · Poor: over 600ms.</em></li>
+            <li><strong>CLS — Cumulative Layout Shift.</strong> How much the page jumps around while loading. Shifting layouts are the reason you sometimes tap "Book" and accidentally hit an ad because the ad loaded a second late and pushed everything down. <em>Good: under 0.1 · Poor: over 0.25.</em></li>
+            <li><strong>INP — Interaction to Next Paint.</strong> How long the page takes to respond to a tap or click — the third Core Web Vital, replacing FID in 2024. Field-only: requires enough real visits to report. <em>Good: under 200ms · Poor: over 500ms.</em></li>
+            <li><strong>TBT — Total Blocking Time.</strong> The lab-only proxy for INP. How long the page is frozen while JavaScript runs during the simulated load. Useful when CrUX hasn't collected INP yet. <em>Good: under 200ms · Poor: over 600ms.</em></li>
             <li><strong>FCP — First Contentful Paint.</strong> How long until the very first pixel renders. Often earlier than LCP — this is "the page is doing something" versus "the page is usable." <em>Good: under 1.8s · Poor: over 3s.</em></li>
           </ul>
         </div>
       </details>
 
-      <!-- Core Web Vitals strip -->
+      <!-- Core Web Vitals strip. Each card shows either CrUX 28-day p75
+           real-user data (when Google has enough traffic to publish it)
+           or the Lighthouse lab estimate; a small source caption tells
+           the viewer which. INP replaced FID as a Core Web Vital in
+           March 2024; TBT is kept as the lab proxy for new sites. -->
       <div class="vitals-strip">
-        <div>
+        <div data-vital-card="lcp">
           <div class="label">LCP</div>
           <div class="v" data-vital="lcp">—</div>
+          <div class="v-source"></div>
           <div class="hint">Largest Contentful Paint</div>
         </div>
-        <div>
+        <div data-vital-card="cls">
           <div class="label">CLS</div>
           <div class="v" data-vital="cls">—</div>
+          <div class="v-source"></div>
           <div class="hint">Cumulative Layout Shift</div>
         </div>
-        <div>
+        <div data-vital-card="inp">
+          <div class="label">INP</div>
+          <div class="v" data-vital="inp">—</div>
+          <div class="v-source"></div>
+          <div class="hint">Interaction to Next Paint</div>
+        </div>
+        <div data-vital-card="tbt">
           <div class="label">TBT</div>
           <div class="v" data-vital="tbt">—</div>
+          <div class="v-source"></div>
           <div class="hint">Total Blocking Time</div>
         </div>
-        <div>
+        <div data-vital-card="fcp">
           <div class="label">FCP</div>
           <div class="v" data-vital="fcp">—</div>
+          <div class="v-source"></div>
           <div class="hint">First Contentful Paint</div>
         </div>
       </div>
@@ -2109,7 +2149,9 @@
     return items;
   }
 
-  function renderOpportunitySection(catLabel, catScore, items, isPriority) {
+  var OPP_PER_CATEGORY_CAP = 8;
+
+  function renderOpportunitySection(catLabel, catScore, items, isPriority, auditedUrl) {
     // Each category is a native <details> — collapsible, a11y-free,
     // keyboard-accessible, and zero-JS. All sections start closed; the
     // lowest-scoring one gets a "Start here" pill so the user sees
@@ -2139,8 +2181,8 @@
 
     var list = document.createElement('ul');
     list.className = 'opp-list';
-    // Cap at 8 per category so we don't bury the lede
-    items.slice(0, 8).forEach(function(item) {
+    // Cap at OPP_PER_CATEGORY_CAP per category so we don't bury the lede
+    items.slice(0, OPP_PER_CATEGORY_CAP).forEach(function(item) {
       var li = document.createElement('li');
       li.className = 'opp-item';
 
@@ -2164,11 +2206,29 @@
       list.appendChild(li);
     });
 
+    // Overflow link: when we capped the list, link visitors to the
+    // full Lighthouse report on Google's PSI page so they know there's
+    // more and can see the full detail. Previously we silently hid
+    // findings 9+, which made the top-8 look exhaustive.
+    if (items.length > OPP_PER_CATEGORY_CAP && auditedUrl) {
+      var remaining = items.length - OPP_PER_CATEGORY_CAP;
+      var overflow  = document.createElement('li');
+      overflow.className = 'opp-item opp-item-overflow';
+      var psiUrl = 'https://pagespeed.web.dev/analysis?url=' +
+        encodeURIComponent(auditedUrl) + '&form_factor=mobile';
+      overflow.innerHTML =
+        '<a class="opp-more-link" href="' + escapeHtml(psiUrl) + '" target="_blank" rel="noopener">' +
+          '+ ' + remaining + ' more ' + (remaining === 1 ? 'finding' : 'findings') +
+          ' — view the full Lighthouse report →' +
+        '</a>';
+      list.appendChild(overflow);
+    }
+
     details.appendChild(list);
     return details;
   }
 
-  function renderOpportunities(cats, audits) {
+  function renderOpportunities(cats, audits, auditedUrl) {
     var wrap = document.getElementById('opportunitiesWrap');
     var body = document.getElementById('opportunitiesBody');
     if (!wrap || !body) return;
@@ -2200,21 +2260,59 @@
     }
 
     sections.forEach(function(s, i) {
-      body.appendChild(renderOpportunitySection(s.label, s.score, s.items, i === lowestIdx));
+      body.appendChild(renderOpportunitySection(s.label, s.score, s.items, i === lowestIdx, auditedUrl));
     });
 
     wrap.hidden = false;
   }
 
+  // Web Vitals thresholds. LCP/CLS/INP are the three Core Web Vitals
+  // Google uses for ranking. INP replaced FID in March 2024 — the
+  // web.dev thresholds are ≤200ms good / ≤500ms ok / >500ms poor.
   function gradeVital(key, n) {
     if (typeof n !== 'number' || isNaN(n)) return '';
     switch (key) {
       case 'lcp': return n <= 2500  ? 'grade-good' : n <= 4000  ? 'grade-ok' : 'grade-bad';
       case 'cls': return n <= 0.1   ? 'grade-good' : n <= 0.25  ? 'grade-ok' : 'grade-bad';
+      case 'inp': return n <= 200   ? 'grade-good' : n <= 500   ? 'grade-ok' : 'grade-bad';
       case 'tbt': return n <= 200   ? 'grade-good' : n <= 600   ? 'grade-ok' : 'grade-bad';
       case 'fcp': return n <= 1800  ? 'grade-good' : n <= 3000  ? 'grade-ok' : 'grade-bad';
     }
     return '';
+  }
+
+  function formatCls(v) {
+    if (typeof v !== 'number' || isNaN(v)) return '—';
+    return v.toFixed(2);
+  }
+
+  // Read CrUX field data from the PSI response. Prefers URL-level
+  // data; falls back to origin-level (aggregated across the whole
+  // domain) when the specific URL doesn't have 28 days of traffic.
+  // CLS percentile is reported in hundredths (10 = 0.10), so divide
+  // by 100 to get the real CLS number.
+  function extractFieldMetrics(data) {
+    var le  = data && data.loadingExperience;
+    var ole = data && data.originLoadingExperience;
+    var source = null;
+    if (le && le.metrics && Object.keys(le.metrics).length) {
+      source = { metrics: le.metrics, scope: 'url' };
+    } else if (ole && ole.metrics && Object.keys(ole.metrics).length) {
+      source = { metrics: ole.metrics, scope: 'origin' };
+    }
+    if (!source) return null;
+    var m = source.metrics;
+    function pct(k) {
+      return (m[k] && typeof m[k].percentile === 'number') ? m[k].percentile : null;
+    }
+    var clsRaw = pct('CUMULATIVE_LAYOUT_SHIFT_SCORE');
+    return {
+      scope: source.scope,
+      lcp: pct('LARGEST_CONTENTFUL_PAINT_MS'),
+      cls: clsRaw !== null ? clsRaw / 100 : null,
+      inp: pct('INTERACTION_TO_NEXT_PAINT'),
+      fcp: pct('FIRST_CONTENTFUL_PAINT_MS')
+    };
   }
 
   function verdictFor(score) {
@@ -2288,13 +2386,37 @@
     fill.style.width = '0%';
   }
 
-  function setVital(key, displayValue, numericValue) {
-    var el = document.querySelector('.vitals-strip .v[data-vital="' + key + '"]');
-    if (!el) return;
-    el.textContent = displayValue || '—';
-    el.classList.remove('grade-good','grade-ok','grade-bad');
+  // Render one vital card. `source` marks the value as field (CrUX
+  // real-user data) or lab (simulated mobile run) so the viewer can
+  // tell which they're looking at — the numbers can differ wildly.
+  // `scope` further qualifies field data as URL-specific or origin-
+  // wide, because low-traffic wellness sites often only have
+  // origin-level CrUX data.
+  function setVital(key, displayValue, numericValue, source, scope) {
+    var card = document.querySelector('.vitals-strip [data-vital-card="' + key + '"]');
+    if (!card) return;
+    var valueEl = card.querySelector('.v');
+    var srcEl   = card.querySelector('.v-source');
+    if (!valueEl) return;
+    valueEl.textContent = displayValue || '—';
+    valueEl.classList.remove('grade-good','grade-ok','grade-bad');
     var grade = gradeVital(key, numericValue);
-    if (grade) el.classList.add(grade);
+    if (grade) valueEl.classList.add(grade);
+    if (srcEl) {
+      if (source === 'field') {
+        srcEl.textContent = scope === 'origin' ? 'Real users (origin)' : 'Real users';
+        srcEl.className = 'v-source v-source-field';
+      } else if (source === 'lab') {
+        srcEl.textContent = 'Lab estimate';
+        srcEl.className = 'v-source v-source-lab';
+      } else if (source === 'missing') {
+        srcEl.textContent = 'No real-user data';
+        srcEl.className = 'v-source v-source-missing';
+      } else {
+        srcEl.textContent = '';
+        srcEl.className = 'v-source';
+      }
+    }
   }
 
   function safeAudit(audits, key) {
@@ -3733,16 +3855,27 @@
 
     // Drill-down: list every failing Lighthouse audit under the right
     // category, sorted by impact. Auto-hides if nothing is failing.
-    renderOpportunities(cats, audits);
+    renderOpportunities(cats, audits, auditedUrl);
 
-    var lcp = safeAudit(audits, 'largest-contentful-paint');
-    var cls = safeAudit(audits, 'cumulative-layout-shift');
-    var tbt = safeAudit(audits, 'total-blocking-time');
-    var fcp = safeAudit(audits, 'first-contentful-paint');
-    setVital('lcp', lcp.displayValue, lcp.numericValue);
-    setVital('cls', cls.displayValue, cls.numericValue);
-    setVital('tbt', tbt.displayValue, tbt.numericValue);
-    setVital('fcp', fcp.displayValue, fcp.numericValue);
+    var lcp   = safeAudit(audits, 'largest-contentful-paint');
+    var cls   = safeAudit(audits, 'cumulative-layout-shift');
+    var tbt   = safeAudit(audits, 'total-blocking-time');
+    var fcp   = safeAudit(audits, 'first-contentful-paint');
+    var field = extractFieldMetrics(data);
+    var fieldScope = field ? field.scope : null;
+    // Prefer field (CrUX 28-day p75) for the three Core Web Vitals
+    // and FCP when available; fall back to lab. TBT is always lab.
+    // INP is field-only — show '—' with a "No real-user data" caption
+    // when CrUX hasn't collected enough visits yet.
+    if (field && field.lcp !== null) setVital('lcp', formatMs(field.lcp), field.lcp, 'field', fieldScope);
+    else                              setVital('lcp', lcp.displayValue, lcp.numericValue, 'lab');
+    if (field && field.cls !== null) setVital('cls', formatCls(field.cls), field.cls, 'field', fieldScope);
+    else                              setVital('cls', cls.displayValue, cls.numericValue, 'lab');
+    if (field && field.inp !== null) setVital('inp', formatMs(field.inp), field.inp, 'field', fieldScope);
+    else                              setVital('inp', '—', null, 'missing');
+    setVital('tbt', tbt.displayValue, tbt.numericValue, 'lab');
+    if (field && field.fcp !== null) setVital('fcp', formatMs(field.fcp), field.fcp, 'field', fieldScope);
+    else                              setVital('fcp', fcp.displayValue, fcp.numericValue, 'lab');
 
     // Expose raw audits for future consumers
     window.__auditLastResult = { audits: audits, overall: overall, url: auditedUrl, wellness: isWellnessSite ? wellnessScore : null };
@@ -3987,9 +4120,12 @@
             "Google Lighthouse couldn't load the URL. Make sure it's publicly accessible — no login wall, no staging environment, and no rate limiter blocking bots."
           );
         } else if (/quota|rate|exceed/i.test(msg) || err.status === 429) {
+          // Start a 30-second cooldown so rapid retries don't compound
+          // rate-limit pressure on Google's shared free tier.
+          startCooldown(30);
           showError(
             "We're a little rate-limited right now.",
-            "Google's free tier is temporarily throttled. Try again in a minute, or email don@muntin.digital for a manual audit."
+            "Google's free tier is temporarily throttled. Give it about 30 seconds before trying again, or email don@muntin.digital for a manual audit."
           );
         } else if (err.status === 400) {
           showError(
@@ -4010,8 +4146,15 @@
         }
       })
       .then(function(){
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = submitOriginalHTML;
+        // If a rate-limit cooldown is active, leave the button in its
+        // countdown state — updateCooldownUI() will restore the label
+        // when the cooldown ends.
+        if (cooldownRemaining() > 0) {
+          updateCooldownUI();
+        } else {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = submitOriginalHTML;
+        }
       });
   }
 
@@ -4019,8 +4162,51 @@
   // button can re-run the same audit without the user retyping it.
   var lastAuditUrl = null;
 
+  // Rate-limit backoff. If Google returns 429 / quota-exceeded, we
+  // set a cooldown ms timestamp — any submit (form, retry button,
+  // URL-param auto-run) before the cooldown expires is intercepted
+  // with a countdown message. Without this, a user who hits
+  // "Try again" six times in six seconds compounds the rate-limit
+  // pressure on Google's shared free tier.
+  var cooldownUntil = 0;
+  var cooldownTimer = null;
+  function startCooldown(seconds) {
+    cooldownUntil = Date.now() + seconds * 1000;
+    updateCooldownUI();
+    if (cooldownTimer) clearInterval(cooldownTimer);
+    cooldownTimer = setInterval(function(){
+      if (Date.now() >= cooldownUntil) {
+        clearInterval(cooldownTimer);
+        cooldownTimer = null;
+      }
+      updateCooldownUI();
+    }, 500);
+  }
+  function cooldownRemaining() {
+    var remain = cooldownUntil - Date.now();
+    return remain > 0 ? Math.ceil(remain / 1000) : 0;
+  }
+  function updateCooldownUI() {
+    var remain = cooldownRemaining();
+    if (remain > 0) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Wait ' + remain + 's';
+    } else if (submitBtn.disabled && submitBtn.textContent && submitBtn.textContent.indexOf('Wait') === 0) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = submitOriginalHTML;
+    }
+  }
+
   form.addEventListener('submit', function(e){
     e.preventDefault();
+    var remain = cooldownRemaining();
+    if (remain > 0) {
+      showError(
+        "Still cooling down.",
+        "Google's API is rate-limiting us. Try again in " + remain + " second" + (remain === 1 ? '' : 's') + "."
+      );
+      return;
+    }
     var url = normalizeUrl(input.value);
     if (!url) {
       showError(
@@ -4044,6 +4230,14 @@
         // No previous audit — just focus the input
         showOnly(null); // hide everything
         if (input) input.focus();
+        return;
+      }
+      var retryRemain = cooldownRemaining();
+      if (retryRemain > 0) {
+        showError(
+          "Still cooling down.",
+          "Google's API is rate-limiting us. Try again in " + retryRemain + " second" + (retryRemain === 1 ? '' : 's') + "."
+        );
         return;
       }
       if (window.plausible) window.plausible('Audit Retry');
