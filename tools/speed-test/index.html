@@ -344,6 +344,7 @@
   }
 
   function explainScore(score, lcp) {
+    if (lcp == null) return '<strong>Performance score: ' + score + '/100.</strong> We couldn\'t measure your exact load time on this run, but the score gives you the picture. Under 90 means there\'s room to improve.';
     var lcpSec = (lcp / 1000).toFixed(1);
     if (score >= 90) {
       return '<strong>Your site is fast.</strong> It loads in about ' + lcpSec + ' seconds on a phone — faster than most small business sites. Visitors see your content almost instantly. This is what good looks like.';
@@ -377,9 +378,11 @@
       .then(function(r) { return r.json(); })
       .then(function(data) {
         if (data.error) throw new Error(data.error.message || 'API error');
+        if (!data.lighthouseResult) throw new Error('No Lighthouse data returned. The URL may be unreachable.');
 
         var perf = data.lighthouseResult;
-        var score = Math.round((perf.categories.performance.score || 0) * 100);
+        var rawScore = perf.categories && perf.categories.performance ? perf.categories.performance.score : null;
+        var score = rawScore != null ? Math.round(rawScore * 100) : 0;
         var audits = perf.audits || {};
         var lcp = audits['largest-contentful-paint'] ? audits['largest-contentful-paint'].numericValue : null;
         var fcp = audits['first-contentful-paint'] ? audits['first-contentful-paint'].numericValue : null;
@@ -394,12 +397,12 @@
         fillEl.style.strokeDashoffset = String(offset);
 
         // Explain
-        explain.innerHTML = explainScore(score, lcp || 0);
+        explain.innerHTML = explainScore(score, lcp);
 
         // Metrics
-        document.getElementById('metricLCP').textContent = formatMs(lcp ? Math.round(lcp) : null);
-        document.getElementById('metricFCP').textContent = formatMs(fcp ? Math.round(fcp) : null);
-        document.getElementById('metricTBT').textContent = formatMs(tbt ? Math.round(tbt) : null);
+        document.getElementById('metricLCP').textContent = formatMs(lcp != null ? Math.round(lcp) : null);
+        document.getElementById('metricFCP').textContent = formatMs(fcp != null ? Math.round(fcp) : null);
+        document.getElementById('metricTBT').textContent = formatMs(tbt != null ? Math.round(tbt) : null);
         document.getElementById('metricCLS').textContent = cls != null ? cls.toFixed(3) : '—';
 
         result.classList.add('visible');
