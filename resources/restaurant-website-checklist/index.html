@@ -1076,7 +1076,7 @@
       <p>Drop your email and I'll send over a printable PDF you can pass around the kitchen, mark up during a planning meeting, or keep on a clipboard behind the host stand. No drip campaign, no newsletter — just the file.</p>
     </div>
 
-    <form id="checklistForm" class="reveal" action="https://formspree.io/f/mqewawro" method="POST"
+    <form id="checklistForm" class="reveal" action="/api/checklist" method="POST"
           style="margin-top:32px; display:grid; gap:16px; max-width:520px; margin-left:auto; margin-right:auto;">
       <input type="hidden" name="_subject" value="Restaurant Website Checklist — PDF request" />
       <input type="hidden" name="interest" value="restaurant-website-checklist" />
@@ -1138,19 +1138,33 @@
       var btn = form.querySelector('button[type="submit"]');
       if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
       var data = new FormData(form);
+      // POSTs to the Cloudflare Worker at /api/checklist (see
+      // src/worker.js handleChecklist) which validates, sends a
+      // notification to Don + an auto-responder back to the user,
+      // and returns a structured JSON payload we can surface.
       fetch(form.action, { method:'POST', body:data, headers:{'Accept':'application/json'} })
         .then(function(res){
-          if (res.ok) {
+          return res.json().then(function(body){
+            return { ok: res.ok && body && body.ok, body: body };
+          }, function(){
+            return { ok: false, body: null };
+          });
+        })
+        .then(function(result){
+          if (result.ok) {
             form.hidden = true;
             success.hidden = false;
             success.scrollIntoView({behavior:'smooth', block:'center'});
           } else {
-            throw new Error('Formspree returned ' + res.status);
+            var msg = (result.body && result.body.error)
+              ? result.body.error
+              : 'Something went wrong. Please email don@muntin.digital directly.';
+            throw new Error(msg);
           }
         })
-        .catch(function(){
+        .catch(function(err){
           if (btn) { btn.disabled = false; btn.textContent = 'Email me the PDF'; }
-          alert('Something went wrong. Please email don@muntin.digital directly.');
+          alert((err && err.message) || 'Something went wrong. Please email don@muntin.digital directly.');
         });
     });
   })();
