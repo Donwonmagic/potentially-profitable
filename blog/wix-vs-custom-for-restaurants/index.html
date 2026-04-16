@@ -519,7 +519,16 @@
 
       <h2>Break #2 — Mobile load speed is always slower than it should be</h2>
       <p>This is the one I can prove with a URL: run any Wix restaurant site through <a href="/tools/audits/restaurant/">the free Restaurant Website Audit</a> and look at the Performance score. You'll almost always see something in the 40s or 50s out of 100. That's not the restaurant's fault — it's the platform.</p>
-      <p>Wix templates ship a lot of JavaScript by default — enough that, in my audit experience, Lighthouse performance scores on mobile Wix restaurant sites consistently land below 60. On a 4G connection outside your restaurant, that often translates into a first-contentful-paint that runs four seconds or longer. Google's <a href="https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/" target="_blank" rel="noopener">2017 mobile page speed research</a> found that 53% of mobile visitors bounce from pages that take longer than three seconds to load — which means a slow Wix site is quietly losing a meaningful portion of its hungry mobile traffic before anyone ever sees the menu.</p>
+      <p>Wix templates ship a lot of JavaScript by default — enough that, in my audit experience, Lighthouse performance scores on mobile Wix restaurant sites consistently land below 60. On a 4G connection outside your restaurant, that often translates into a first-contentful-paint that runs four seconds or longer. Google's 2017 mobile page-speed research found that <strong>53% of mobile visitors bounce from pages that take longer than three seconds to load</strong> — which means a slow Wix site is quietly losing a meaningful portion of its hungry mobile traffic before anyone ever sees the menu.</p>
+
+      <details class="cite">
+        <summary>Source: Google / SOASTA, 2017</summary>
+        <div class="cite-body">
+          <p><span class="cite-source">Think with Google</span> — "Find Out How You Stack Up to New Industry Benchmarks for Mobile Page Speed"</p>
+          <p>A large-scale study of mobile page loads across 11.8 million ad landing pages found that 53% of visits were abandoned if a mobile page took over 3 seconds to load. The probability of bounce increased 90% as page load went from 1 to 5 seconds. Note: this study is from 2017 — mobile networks and devices have improved since, but user expectations have also risen.</p>
+          <a href="https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/" target="_blank" rel="noopener">Read the full study on Think with Google</a>
+        </div>
+      </details>
 
       <figure class="article-figure">
         <div class="lh-chart" role="img" aria-label="Illustrative mobile Lighthouse performance scores: a typical Wix restaurant template scores about 45 out of 100, while a well-built custom site scores about 95">
@@ -546,6 +555,16 @@
         </div>
         <figcaption>Illustrative mobile Lighthouse scores · typical values observed in restaurant audits</figcaption>
       </figure>
+
+      <details class="cite">
+        <summary>Source: Google Lighthouse scoring</summary>
+        <div class="cite-body">
+          <p><span class="cite-source">Google Chrome Developers</span> — Lighthouse Performance Scoring</p>
+          <p>Lighthouse scores 0–49 as "Poor" (red), 50–89 as "Needs Improvement" (orange), and 90–100 as "Good" (green). The scores shown above are illustrative — typical values I've observed running the Muntin Digital restaurant audit tool against Wix templates vs. hand-built custom sites. Your results will vary by page weight, hosting, and network conditions.</p>
+          <a href="https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/" target="_blank" rel="noopener">Lighthouse scoring documentation</a>
+        </div>
+      </details>
+
       <h2>Break #3 — Reservations integration is hostage to whatever Wix has deals with</h2>
       <p>Wix's restaurant templates lean heavily on OpenTable — it's the default integration in most of them, and OpenTable works fine if OpenTable is also your preference. But if your restaurant is on <strong>Resy, Tock, SevenRooms, or Square Reservations</strong>, in my audit experience you'll usually find that the "integration" is a generic iframe embed or a link-out. Nothing lives inside your page, nothing matches your brand, nothing tracks back into analytics cleanly, and when the third-party provider changes their embed URL two years from now you find out because your reservation button silently broke on a Friday night.</p>
       <p>A custom site lets you pick the reservation system that actually fits your workflow and wire it in cleanly — whichever platform that happens to be.</p>
@@ -576,6 +595,16 @@
         <li><strong>Wix over two years:</strong> ~$25 a month × 24 months = <strong>$600</strong>, plus roughly 120 hours of your own time keeping it updated (at even a conservative $25/hour opportunity cost, that's another $3,000). Two-year real total: about <strong>$3,600</strong>.</li>
         <li><strong>Custom site over two years:</strong> $2,500 upfront (Essentials tier from Muntin) + $125–$350/month care plan × 24 months ($3,000–$8,400). Two-year total: <strong>$5,500–$10,900</strong>.</li>
       </ul>
+      <details class="cite">
+        <summary>Source: Wix pricing + Muntin pricing</summary>
+        <div class="cite-body">
+          <p><span class="cite-source">Wix.com</span> — As of early 2025, Wix business plans range from ~$17/month (Light) to ~$29/month (Core). "$25/month" is an approximation for a restaurant needing business features. Wix changes pricing frequently; check the current page.</p>
+          <a href="https://www.wix.com/upgrade/website" target="_blank" rel="noopener">Wix pricing page</a>
+          <p style="margin-top:10px;"><span class="cite-source">Muntin Digital</span> — Essentials tier starts at $2,500; care plans range $125–$350/month depending on scope. See the pricing breakdown post for the full line-item table.</p>
+          <a href="/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/">How much does a custom restaurant website cost?</a>
+        </div>
+      </details>
+
       <p>The raw difference is about $1,900 over two years. That's real money. Now layer in the thing the Wix math conveniently leaves out:</p>
       <p>A Wix site loading slowly on mobile, with thin schema and a hard-to-read menu, in my audit experience can easily cost a restaurant <strong>several reservations a week</strong> compared to what a well-built site would convert — people who tapped the link, waited three seconds, couldn't read the menu on their phone, and booked somewhere else. At an average cover of $55, even three lost reservations a week works out to roughly <strong>$8,500 a year</strong> in gross revenue that never walked through the door. (Your actual numbers will depend on your volume and menu, but the direction is always the same.)</p>
       <p>The custom site pays for itself somewhere in the first four months of recovered reservations. Everything after that is pure delta.</p>

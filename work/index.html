@@ -184,6 +184,24 @@
     pointer-events: none;
   }
 
+  .gallery-thumb.tacombi {
+    background: linear-gradient(160deg, #E63226 0%, #c42a20 100%);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+  }
+  .gallery-thumb.tacombi .phase { color: rgba(255,255,255,0.8); font-family: 'Inter', sans-serif; }
+  .gallery-thumb.tacombi h3 { font-weight: 700; letter-spacing: 0.01em; }
+  .gallery-thumb.tacombi h3 em { font-style: normal; color: rgba(255,255,255,0.7); font-weight: 400; }
+  .gallery-thumb.tacombi::after {
+    content: '';
+    position: absolute;
+    right: -40px; bottom: -40px;
+    width: 180px; height: 180px;
+    border: 2px solid rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
   /* Card body */
   .gallery-body {
     padding: 32px 32px 36px;
@@ -307,19 +325,39 @@
     <div class="gallery-grid">
       <a href="/work/irish-inn-glen-echo/" class="gallery-card">
         <div class="gallery-thumb irish-inn" aria-hidden="true">
-          <span class="phase">Redesign Study · Restaurant</span>
+          <span class="phase">In-House · Restaurant</span>
           <h3>Stewards of<br><em>History.</em></h3>
         </div>
         <div class="gallery-body">
           <h4>The Irish Inn at Glen Echo</h4>
-          <p>A redesign study for a 1931 Washington-area dining landmark. Split pub/dining hero, sourcing pillars, and a press ticker from the Washington Post, Bethesda Magazine, and Washingtonian.</p>
+          <p>A year and a half of in-house work at a 1931 Washington-area dining landmark. Menu design, logo development, seasonal campaigns, and a website redesign concept — built from inside the kitchen.</p>
           <div class="gallery-tags">
             <span class="gallery-tag">Restaurant</span>
-            <span class="gallery-tag">Redesign</span>
+            <span class="gallery-tag">In-House</span>
             <span class="gallery-tag">Glen Echo, MD</span>
           </div>
           <span class="gallery-cta">
             Read the case study
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+          </span>
+        </div>
+      </a>
+
+      <a href="/work/tacombi/" class="gallery-card">
+        <div class="gallery-thumb tacombi" aria-hidden="true">
+          <span class="phase">In-House · Restaurant</span>
+          <h3>Mexico in<br><em>minutes.</em></h3>
+        </div>
+        <div class="gallery-body">
+          <h4>Tacombi</h4>
+          <p>Three years of in-house marketing and community engagement for Tacombi's DMV locations. Neighborhood campaigns, cross-promotions with Landmark Theaters, the Taco Taco Club loyalty program, and print collateral — designed from behind the counter.</p>
+          <div class="gallery-tags">
+            <span class="gallery-tag">Restaurant</span>
+            <span class="gallery-tag">In-House</span>
+            <span class="gallery-tag">Bethesda &middot; Arlington</span>
+          </div>
+          <span class="gallery-cta">
+            See the work
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
           </span>
         </div>
