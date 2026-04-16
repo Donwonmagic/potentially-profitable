@@ -2366,6 +2366,12 @@
   // will all match. We also catch "modalities" (massage/acupuncture
   // sites), "programs" (fitness studios), and "workshops" (yoga).
   var SERVICES_HREF_RE = /services|classes|schedule|treatments|offerings|menu|pricing|rates|modalities|programs|workshops|packages|sessions|training|courses|membership/i;
+  var PHONE_RE = /(?:\+?1[\s\-.]?)?(?:\(\s*\d{3}\s*\)|\d{3})[\s\-.]\d{3}[\s\-.]\d{4}/;
+  function detectPhoneInText(pageText) {
+    if (!pageText) return false;
+    return PHONE_RE.test(pageText);
+  }
+
   function extractNetworkUrls(audits) {
     var urls = [];
     var na = audits && audits['network-requests'];
