@@ -193,7 +193,7 @@
     {
       id: 'tap-targets',
       title: 'Buttons are big enough to tap',
-      passText: 'Your buttons and links are at least 44×44 pixels — no fat-finger misses. The "Book" button, the phone number, the nav links — all tappable on the first try.',
+      passText: 'Your buttons and links are at least 44×44 pixels — tappable on the first try with a thumb.',
       failText: 'Some buttons or links are too small. Anything under 44×44 pixels causes missed taps on phones. Add padding to your buttons and space out your nav links.',
       nullText: 'Couldn\'t check this — try re-running the test.'
     },
@@ -225,30 +225,47 @@
 
         var audits = data.lighthouseResult.audits || {};
         var passCount = 0;
+        var failCount = 0;
+        var unknownCount = 0;
         var results = [];
 
         CHECKS.forEach(function(check) {
           var a = audits[check.id];
           var score = a ? a.score : null;
           var passed = score !== null && score >= 0.9;
+          var isNull = score === null;
           if (passed) passCount++;
+          else if (isNull) unknownCount++;
+          else failCount++;
           results.push({
             title: check.title,
             passed: passed,
-            isNull: score === null,
-            text: score === null ? check.nullText : (passed ? check.passText : check.failText)
+            isNull: isNull,
+            text: isNull ? check.nullText : (passed ? check.passText : check.failText)
           });
         });
 
         var allPass = passCount === CHECKS.length;
+        var verdictIcon = allPass ? 'pass' : 'fail';
+        var verdictMark = allPass ? '&#10003;' : '&#10005;';
+        var verdictTitle, verdictDesc;
+        if (allPass) {
+          verdictTitle = 'Yes — your site is mobile-friendly.';
+          verdictDesc = 'All three mobile checks passed. Your visitors can use your site on a phone without fighting it.';
+        } else if (failCount > 0) {
+          verdictTitle = 'Not yet — ' + failCount + ' of 3 checks failed.';
+          verdictDesc = 'Your site has mobile issues that are costing you visitors. The good news: every one of these is fixable.';
+          if (unknownCount > 0) verdictDesc += ' (' + unknownCount + ' check' + (unknownCount > 1 ? 's' : '') + ' couldn\'t be measured — see details below.)';
+        } else {
+          verdictTitle = 'We couldn\'t fully check your site.';
+          verdictDesc = unknownCount + ' of 3 checks returned inconclusive results. This sometimes happens with sites behind firewalls or aggressive bot protection. Try re-running the test.';
+          verdictIcon = 'fail'; verdictMark = '?';
+        }
 
-        verdict.innerHTML = '<div class="icon ' + (allPass ? 'pass' : 'fail') + '">'
-          + (allPass ? '&#10003;' : '&#10005;') + '</div>'
-          + '<h2>' + (allPass ? 'Yes — your site is mobile-friendly.' : 'Not yet — ' + (CHECKS.length - passCount) + ' of 3 checks failed.') + '</h2>'
-          + '<p>' + (allPass
-            ? 'All three mobile checks passed. Your visitors can use your site on a phone without fighting it.'
-            : 'Your site has mobile issues that are costing you visitors. The good news: every one of these is fixable.')
-          + '</p>';
+        verdict.innerHTML = '<div class="icon ' + verdictIcon + '">'
+          + verdictMark + '</div>'
+          + '<h2>' + verdictTitle + '</h2>'
+          + '<p>' + verdictDesc + '</p>';
 
         checksEl.innerHTML = '';
         results.forEach(function(r) {
