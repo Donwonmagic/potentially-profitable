@@ -394,6 +394,28 @@
     color: var(--ink-soft);
     margin: 16px 0 0;
   }
+  /* Override banner: visible only when the visitor has confirmed one
+     or more unverified checks. Signals that the score contains
+     self-attested data, not only tool-verified results. */
+  .score-override-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 14px 0 0;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: rgba(31, 78, 91, 0.08);
+    border: 1px solid rgba(31, 78, 91, 0.18);
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--ink-soft);
+  }
+  .score-override-banner svg {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    color: var(--teal);
+  }
 
   /* Four category gauges */
   .category-grid {
@@ -646,6 +668,18 @@
     text-underline-offset: 2px;
   }
   .opp-item-desc a:hover { color: var(--teal-dark); }
+  .opp-item-overflow {
+    background: var(--cream-2);
+    text-align: center;
+    padding: 14px 16px;
+  }
+  .opp-more-link {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--teal);
+    text-decoration: none;
+  }
+  .opp-more-link:hover { color: var(--teal-dark); text-decoration: underline; }
   @media (max-width: 620px) {
     .opportunities-head h3 { font-size: 20px; }
     .opp-section > summary.opp-section-header { padding: 14px 16px; }
@@ -728,7 +762,7 @@
   /* Core Web Vitals strip */
   .vitals-strip {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 2px;
     background: var(--line);
     border: 1px solid var(--line);
@@ -736,10 +770,11 @@
     overflow: hidden;
     margin-bottom: 32px;
   }
-  @media (max-width: 720px) { .vitals-strip { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 900px) { .vitals-strip { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 560px) { .vitals-strip { grid-template-columns: repeat(2, 1fr); } }
   .vitals-strip > div {
     background: var(--white);
-    padding: 20px;
+    padding: 20px 16px;
     text-align: center;
   }
   .vitals-strip .label {
@@ -760,10 +795,128 @@
   .vitals-strip .v.grade-good { color: #1f9d55; }
   .vitals-strip .v.grade-ok   { color: #d97706; }
   .vitals-strip .v.grade-bad  { color: var(--rust); }
+  .vitals-strip .v-source {
+    margin-top: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--stone-2);
+    min-height: 12px;
+  }
+  .vitals-strip .v-source.v-source-field   { color: var(--teal); }
+  .vitals-strip .v-source.v-source-lab     { color: var(--stone-2); }
+  .vitals-strip .v-source.v-source-missing { color: var(--stone-2); opacity: 0.7; }
   .vitals-strip .hint {
     font-size: 11px;
     color: var(--stone-2);
     margin-top: 4px;
+  }
+
+  /* Not-a-wellness notice. Replaces the priority-list for sites we
+     didn't classify as wellness. Matches the priority-list's card
+     chrome so it reads as "this slot, different content". */
+  .not-wellness-notice {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .not-wellness-notice .nrn-body h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0 0 10px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .not-wellness-notice .nrn-body p {
+    margin: 0 0 10px;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+  .not-wellness-notice .nrn-body .nrn-sub {
+    color: var(--stone);
+    font-size: 13.5px;
+  }
+  .not-wellness-notice .nrn-btn {
+    align-self: flex-start;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: var(--teal);
+    color: var(--cream);
+    font: inherit;
+    font-weight: 600;
+    font-size: 14px;
+    border: 0;
+    cursor: pointer;
+    transition: background var(--t-fast) var(--ease);
+  }
+  .not-wellness-notice .nrn-btn:hover { background: var(--teal-dark); }
+  .not-wellness-notice .nrn-btn em { font-style: italic; font-weight: 600; }
+
+  /* Business-type card (Phase 1 — display + correction). Sits above
+     the priority-list on wellness sites so the owner sees what we
+     classified them as and can correct it if wrong. Not a modal; the
+     dropdown is always visible and editable. */
+  .business-type-card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .business-type-card .btc-left {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .business-type-card .btc-label {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--stone);
+  }
+  .business-type-card .btc-select {
+    font: inherit;
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--cream-2);
+    border: 1px solid var(--line-dark);
+    border-radius: 8px;
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: border-color var(--t-fast) var(--ease);
+  }
+  .business-type-card .btc-select:hover,
+  .business-type-card .btc-select:focus {
+    border-color: var(--teal);
+    outline: none;
+  }
+  .business-type-card .btc-sub {
+    flex: 1;
+    min-width: 240px;
+    margin: 0;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--stone);
+  }
+  @media (max-width: 560px) {
+    .business-type-card { padding: 14px 16px; gap: 10px; }
+    .business-type-card .btc-sub { font-size: 12px; min-width: 0; }
   }
 
   /* Wellness-priority checks list */
@@ -1428,7 +1581,7 @@
         actually doing?
       </h1>
       <p class="hero-sub" style="margin:24px auto 0; max-width:580px;">
-        Drop your URL below and I'll run a real mobile audit in about twenty seconds — performance, SEO, accessibility, and the specific checks that matter for a wellness studio, spa, salon, or fitness space. No sign-up, no email required, no tracking.
+        Drop your URL below and I'll run a real mobile audit in about thirty seconds — performance, SEO, accessibility, and the specific checks that matter for a wellness studio, spa, salon, or fitness space. No sign-up, no email required to see your results, no tracking.
       </p>
 
       <form class="audit-form" id="auditForm" novalidate>
@@ -1496,6 +1649,10 @@
           <h2 id="scoreHeadline">Your overall score</h2>
           <div class="url">Audited: <strong id="auditedUrl">—</strong></div>
           <p class="verdict" id="verdictCopy">Verdict copy populates here after a run — explains what the score means and what to focus on first.</p>
+          <div class="score-override-banner" id="scoreOverrideBanner" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span id="scoreOverrideText">This score includes owner-confirmed checks.</span>
+          </div>
           <div class="share-row">
             <button type="button" class="share-btn" id="shareBtn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M9 4H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2"/></svg>
@@ -1597,45 +1754,96 @@
           <p class="ranges"><strong>Target:</strong> 100. Anything less is leaving ranking signals on the table.</p>
 
           <h4>Wellness Readiness (0–100)</h4>
-          <p>Our own rubric, specific to independent wellness business websites. Tracks nine things that matter for turning a mobile visitor into a booked appointment: service menu readability, booking visibility, phone access, maps, mobile speed, tap targets, text contrast, font size, and business schema. Each check is weighted — a confident pass is worth 1 point, a partial pass is worth 0.5, a failure is worth 0 — averaged into a 0–100 score.</p>
+          <p>Our own rubric, specific to independent wellness businesses (yoga studios, spas, salons, boutique fitness, etc.). Covers nine checks that matter for turning a mobile visitor into a booked appointment or class: a working mobile viewport, tap-target size, text contrast, legible font sizes, a tappable phone number, an embedded map or directions link, a booking path (either a known platform like Mindbody/Acuity or a self-hosted equivalent), a readable services or class-schedule page (not a PDF or image), and LocalBusiness / health-and-beauty schema.org markup for local search. Each check is weighted by its conversion impact — a pass earns full weight, a fail earns zero. Anything we honestly couldn't verify is excluded from both sides of the average, so "unknown" never penalizes you. Non-wellness sites show "N/A" here and don't count this category toward their overall score.</p>
 
           <h4>Core Web Vitals</h4>
-          <p>Four specific timing and stability measurements Google uses for mobile performance ranking. These are the individual numbers that make up (most of) the Performance score above.</p>
+          <p>Five specific timing and interactivity measurements. Three of them (LCP, CLS, INP) are the current Core Web Vitals Google uses for mobile search ranking. Each card shows either <em>real-user data</em> (the 28-day median of actual visitor experiences that Google collects from Chrome) or a <em>lab estimate</em> (a simulated mobile run) — real-user data is preferred when available, since it reflects the site your clients actually experience. New or low-traffic wellness sites usually only have lab data until they accumulate enough visits.</p>
           <ul>
             <li><strong>LCP — Largest Contentful Paint.</strong> How long until the biggest visible thing on the page (usually a hero image or headline) shows up. <em>Good: under 2.5s · Poor: over 4s.</em></li>
-            <li><strong>CLS — Cumulative Layout Shift.</strong> How much the page jumps around while loading. Shifting layouts are the reason you sometimes tap "Reserve" and accidentally hit an ad because the ad loaded a second late and pushed everything down. <em>Good: under 0.1 · Poor: over 0.25.</em></li>
-            <li><strong>TBT — Total Blocking Time.</strong> How long the page is frozen, unable to respond to taps or scrolls, while JavaScript runs. <em>Good: under 200ms · Poor: over 600ms.</em></li>
+            <li><strong>CLS — Cumulative Layout Shift.</strong> How much the page jumps around while loading. Shifting layouts are the reason you sometimes tap "Book" and accidentally hit an ad because the ad loaded a second late and pushed everything down. <em>Good: under 0.1 · Poor: over 0.25.</em></li>
+            <li><strong>INP — Interaction to Next Paint.</strong> How long the page takes to respond to a tap or click — the third Core Web Vital, replacing FID in 2024. Field-only: requires enough real visits to report. <em>Good: under 200ms · Poor: over 500ms.</em></li>
+            <li><strong>TBT — Total Blocking Time.</strong> The lab-only proxy for INP. How long the page is frozen while JavaScript runs during the simulated load. Useful when CrUX hasn't collected INP yet. <em>Good: under 200ms · Poor: over 600ms.</em></li>
             <li><strong>FCP — First Contentful Paint.</strong> How long until the very first pixel renders. Often earlier than LCP — this is "the page is doing something" versus "the page is usable." <em>Good: under 1.8s · Poor: over 3s.</em></li>
           </ul>
         </div>
       </details>
 
-      <!-- Core Web Vitals strip -->
+      <!-- Core Web Vitals strip. Each card shows either CrUX 28-day p75
+           real-user data (when Google has enough traffic to publish it)
+           or the Lighthouse lab estimate; a small source caption tells
+           the viewer which. INP replaced FID as a Core Web Vital in
+           March 2024; TBT is kept as the lab proxy for new sites. -->
       <div class="vitals-strip">
-        <div>
+        <div data-vital-card="lcp">
           <div class="label">LCP</div>
           <div class="v" data-vital="lcp">—</div>
+          <div class="v-source"></div>
           <div class="hint">Largest Contentful Paint</div>
         </div>
-        <div>
+        <div data-vital-card="cls">
           <div class="label">CLS</div>
           <div class="v" data-vital="cls">—</div>
+          <div class="v-source"></div>
           <div class="hint">Cumulative Layout Shift</div>
         </div>
-        <div>
+        <div data-vital-card="inp">
+          <div class="label">INP</div>
+          <div class="v" data-vital="inp">—</div>
+          <div class="v-source"></div>
+          <div class="hint">Interaction to Next Paint</div>
+        </div>
+        <div data-vital-card="tbt">
           <div class="label">TBT</div>
           <div class="v" data-vital="tbt">—</div>
+          <div class="v-source"></div>
           <div class="hint">Total Blocking Time</div>
         </div>
-        <div>
+        <div data-vital-card="fcp">
           <div class="label">FCP</div>
           <div class="v" data-vital="fcp">—</div>
+          <div class="v-source"></div>
           <div class="hint">First Contentful Paint</div>
         </div>
       </div>
 
+      <!-- Not-a-wellness notice. Shown when looksLikeWellness()
+           returns false, hides the priority-list below, and offers an
+           override button so an owner of a wellness business we
+           mis-classified can tell us and run the wellness-specific
+           checks anyway. The override persists via ?w=1 in the URL so
+           a shared link preserves the correction. -->
+      <div class="not-wellness-notice" id="notWellnessNotice" hidden>
+        <div class="nrn-body">
+          <h3>We didn't classify this as a wellness business</h3>
+          <p>The four Lighthouse categories above (Performance, Accessibility, Best Practices, SEO) still apply — they're universal. We just didn't find the signals we look for to confirm a wellness business: a known booking platform (Mindbody, Acuity, Vagaro, Fresha…), wellness-specific schema markup, or clear wellness language on the page.</p>
+          <p class="nrn-sub">If this <em>is</em> a wellness business and we got it wrong, tell us and we'll run the wellness-specific checks on it.</p>
+        </div>
+        <button type="button" class="nrn-btn" id="forceWellnessBtn">
+          This <em>is</em> a wellness business — show me the checks
+        </button>
+      </div>
+
+      <!-- Business-type auto-detection. Phase 1: display + correction
+           only; the detected type does NOT influence the Wellness
+           Readiness score in this release. Persisted via ?bt= in the
+           URL so a corrected shared link keeps the classification. -->
+      <div class="business-type-card" id="businessTypeCard" hidden>
+        <div class="btc-left">
+          <div class="btc-label">We detected:</div>
+          <select id="btcSelect" class="btc-select" aria-label="Business type">
+            <option value="yoga">Yoga or pilates studio</option>
+            <option value="fitness">Gym or fitness studio</option>
+            <option value="salon">Hair or nail salon</option>
+            <option value="spa">Spa or massage practice</option>
+            <option value="barber">Barbershop</option>
+            <option value="wellness">Other wellness business</option>
+          </select>
+        </div>
+        <p class="btc-sub" id="btcSub">Auto-detected from schema markup, booking platform, and page content. If we got it wrong, pick the right one — we'll use it to tailor future improvements to this audit.</p>
+      </div>
+
       <!-- Wellness-priority checks list -->
-      <div class="priority-list">
+      <div class="priority-list" id="priorityListWrap">
         <header>
           <h3>Wellness-priority checks</h3>
           <span class="tally" id="priorityTally">—</span>
@@ -2019,7 +2227,9 @@
     return items;
   }
 
-  function renderOpportunitySection(catLabel, catScore, items, isPriority) {
+  var OPP_PER_CATEGORY_CAP = 8;
+
+  function renderOpportunitySection(catLabel, catScore, items, isPriority, auditedUrl) {
     // Each category is a native <details> — collapsible, a11y-free,
     // keyboard-accessible, and zero-JS. All sections start closed; the
     // lowest-scoring one gets a "Start here" pill so the user sees
@@ -2049,8 +2259,8 @@
 
     var list = document.createElement('ul');
     list.className = 'opp-list';
-    // Cap at 8 per category so we don't bury the lede
-    items.slice(0, 8).forEach(function(item) {
+    // Cap at OPP_PER_CATEGORY_CAP per category so we don't bury the lede
+    items.slice(0, OPP_PER_CATEGORY_CAP).forEach(function(item) {
       var li = document.createElement('li');
       li.className = 'opp-item';
 
@@ -2074,11 +2284,29 @@
       list.appendChild(li);
     });
 
+    // Overflow link: when we capped the list, link visitors to the
+    // full Lighthouse report on Google's PSI page so they know there's
+    // more and can see the full detail. Previously we silently hid
+    // findings 9+, which made the top-8 look exhaustive.
+    if (items.length > OPP_PER_CATEGORY_CAP && auditedUrl) {
+      var remaining = items.length - OPP_PER_CATEGORY_CAP;
+      var overflow  = document.createElement('li');
+      overflow.className = 'opp-item opp-item-overflow';
+      var psiUrl = 'https://pagespeed.web.dev/analysis?url=' +
+        encodeURIComponent(auditedUrl) + '&form_factor=mobile';
+      overflow.innerHTML =
+        '<a class="opp-more-link" href="' + escapeHtml(psiUrl) + '" target="_blank" rel="noopener">' +
+          '+ ' + remaining + ' more ' + (remaining === 1 ? 'finding' : 'findings') +
+          ' — view the full Lighthouse report →' +
+        '</a>';
+      list.appendChild(overflow);
+    }
+
     details.appendChild(list);
     return details;
   }
 
-  function renderOpportunities(cats, audits) {
+  function renderOpportunities(cats, audits, auditedUrl) {
     var wrap = document.getElementById('opportunitiesWrap');
     var body = document.getElementById('opportunitiesBody');
     if (!wrap || !body) return;
@@ -2110,28 +2338,66 @@
     }
 
     sections.forEach(function(s, i) {
-      body.appendChild(renderOpportunitySection(s.label, s.score, s.items, i === lowestIdx));
+      body.appendChild(renderOpportunitySection(s.label, s.score, s.items, i === lowestIdx, auditedUrl));
     });
 
     wrap.hidden = false;
   }
 
+  // Web Vitals thresholds. LCP/CLS/INP are the three Core Web Vitals
+  // Google uses for ranking. INP replaced FID in March 2024 — the
+  // web.dev thresholds are ≤200ms good / ≤500ms ok / >500ms poor.
   function gradeVital(key, n) {
     if (typeof n !== 'number' || isNaN(n)) return '';
     switch (key) {
       case 'lcp': return n <= 2500  ? 'grade-good' : n <= 4000  ? 'grade-ok' : 'grade-bad';
       case 'cls': return n <= 0.1   ? 'grade-good' : n <= 0.25  ? 'grade-ok' : 'grade-bad';
+      case 'inp': return n <= 200   ? 'grade-good' : n <= 500   ? 'grade-ok' : 'grade-bad';
       case 'tbt': return n <= 200   ? 'grade-good' : n <= 600   ? 'grade-ok' : 'grade-bad';
       case 'fcp': return n <= 1800  ? 'grade-good' : n <= 3000  ? 'grade-ok' : 'grade-bad';
     }
     return '';
   }
 
+  function formatCls(v) {
+    if (typeof v !== 'number' || isNaN(v)) return '—';
+    return v.toFixed(2);
+  }
+
+  // Read CrUX field data from the PSI response. Prefers URL-level
+  // data; falls back to origin-level (aggregated across the whole
+  // domain) when the specific URL doesn't have 28 days of traffic.
+  // CLS percentile is reported in hundredths (10 = 0.10), so divide
+  // by 100 to get the real CLS number.
+  function extractFieldMetrics(data) {
+    var le  = data && data.loadingExperience;
+    var ole = data && data.originLoadingExperience;
+    var source = null;
+    if (le && le.metrics && Object.keys(le.metrics).length) {
+      source = { metrics: le.metrics, scope: 'url' };
+    } else if (ole && ole.metrics && Object.keys(ole.metrics).length) {
+      source = { metrics: ole.metrics, scope: 'origin' };
+    }
+    if (!source) return null;
+    var m = source.metrics;
+    function pct(k) {
+      return (m[k] && typeof m[k].percentile === 'number') ? m[k].percentile : null;
+    }
+    var clsRaw = pct('CUMULATIVE_LAYOUT_SHIFT_SCORE');
+    return {
+      scope: source.scope,
+      lcp: pct('LARGEST_CONTENTFUL_PAINT_MS'),
+      cls: clsRaw !== null ? clsRaw / 100 : null,
+      inp: pct('INTERACTION_TO_NEXT_PAINT'),
+      fcp: pct('FIRST_CONTENTFUL_PAINT_MS')
+    };
+  }
+
   function verdictFor(score) {
     if (score >= 90) return "Your site is in great shape. Most wellness businesses would be thrilled to hit this score. Small polish items may remain — check the breakdown below.";
     if (score >= 70) return "Solid foundation with room to tighten up. Focus on the red and amber items below — most are mechanical fixes that push your scores into the green (90+) zone.";
-    if (score >= 50) return "The site works, but it's leaking conversions. The good news: the wins here — load speed, image alt text, meta tags, schema — take days, not months.";
-    return "There's real work to do. Scores in this range usually track with a template site hitting its ceiling. The fastest path forward is often a fresh build — happy to walk through options on a 20-minute call.";
+    if (score >= 50) return "The site works, but it's leaking bookings. The good news: the wins here — load speed, image alt text, meta tags, schema — take days, not months, and they're listed in priority order below.";
+    return "There's real work to do. Scores in this range usually track with a template site hitting its ceiling — font sizes, tap targets, page speed, and schema markup all tend to be fixable, but they add up. Start with the failing items below, in the order they're listed.";
   }
 
   function setScoreRing(score) {
@@ -2171,18 +2437,64 @@
     if (!card) return;
     card.classList.remove('grade-good','grade-ok','grade-bad');
     card.classList.add('grade-na');
-    card.querySelector('.cat-value').textContent = 'N/A';
+    var valueEl = card.querySelector('.cat-value');
+    if (valueEl) {
+      valueEl.textContent = 'N/A';
+      valueEl.removeAttribute('title');
+    }
     var fill = card.querySelector('.bar .fill');
     fill.style.width = '0%';
   }
 
-  function setVital(key, displayValue, numericValue) {
-    var el = document.querySelector('.vitals-strip .v[data-vital="' + key + '"]');
-    if (!el) return;
-    el.textContent = displayValue || '—';
-    el.classList.remove('grade-good','grade-ok','grade-bad');
+  // Render a category card in a "low signal" state — used when the
+  // category applies but we don't have enough confirmed checks to
+  // put a number on it honestly. Visually a muted '?' so the owner
+  // knows this is pending their feedback, not a broken check.
+  function setCategoryLowSignal(cat) {
+    var card = document.querySelector('.category-card[data-cat="' + cat + '"]');
+    if (!card) return;
+    card.classList.remove('grade-good','grade-ok','grade-bad');
+    card.classList.add('grade-na');
+    var valueEl = card.querySelector('.cat-value');
+    if (valueEl) {
+      valueEl.textContent = '?';
+      valueEl.title = 'Not enough confirmed signal yet. Answer the "Is this right?" questions below and this score will update live.';
+    }
+    var fill = card.querySelector('.bar .fill');
+    fill.style.width = '0%';
+  }
+
+  // Render one vital card. `source` marks the value as field (CrUX
+  // real-user data) or lab (simulated mobile run) so the viewer can
+  // tell which they're looking at — the numbers can differ wildly.
+  // `scope` further qualifies field data as URL-specific or origin-
+  // wide, because low-traffic wellness sites often only have
+  // origin-level CrUX data.
+  function setVital(key, displayValue, numericValue, source, scope) {
+    var card = document.querySelector('.vitals-strip [data-vital-card="' + key + '"]');
+    if (!card) return;
+    var valueEl = card.querySelector('.v');
+    var srcEl   = card.querySelector('.v-source');
+    if (!valueEl) return;
+    valueEl.textContent = displayValue || '—';
+    valueEl.classList.remove('grade-good','grade-ok','grade-bad');
     var grade = gradeVital(key, numericValue);
-    if (grade) el.classList.add(grade);
+    if (grade) valueEl.classList.add(grade);
+    if (srcEl) {
+      if (source === 'field') {
+        srcEl.textContent = scope === 'origin' ? 'Real users (origin)' : 'Real users';
+        srcEl.className = 'v-source v-source-field';
+      } else if (source === 'lab') {
+        srcEl.textContent = 'Lab estimate';
+        srcEl.className = 'v-source v-source-lab';
+      } else if (source === 'missing') {
+        srcEl.textContent = 'No real-user data';
+        srcEl.className = 'v-source v-source-missing';
+      } else {
+        srcEl.textContent = '';
+        srcEl.className = 'v-source';
+      }
+    }
   }
 
   function safeAudit(audits, key) {
@@ -2407,6 +2719,167 @@
     return false;
   }
 
+  // =================================================================
+  // BUSINESS-TYPE DETECTION (Phase 1 — display only, no scoring change)
+  // =================================================================
+  // Tiered signals:
+  //   Schema.org @type — strongest (the owner intentionally declared it)
+  //   Booking platform — strong (they pay for a platform that serves a
+  //                     specific segment: Fresha = salons, Booksy =
+  //                     barbers, Glofox = fitness, etc.)
+  //   Keyword co-occurrence — weakest (least reliable; used as a
+  //                     tiebreaker and for sites without schema/platform)
+  //
+  // Detection intentionally does NOT affect the Wellness Readiness
+  // score in this phase. The owner sees the detected type, can
+  // correct it via a dropdown (persisted via ?bt= in the URL), and
+  // the correction is recorded as analytics signal. Once detection
+  // accuracy is proven in the field, a later phase can apply
+  // type-specific weights to the rubric.
+  var BUSINESS_TYPE_DEFS = {
+    yoga: {
+      label: 'Yoga or pilates studio',
+      schemaTypes: ['YogaCenter'],
+      platformHints: { mindbody: 2, zingfit: 3, momoyoga: 4 },
+      keywordPatterns: [
+        /\byoga\b/i, /\bpilates\b/i, /\bvinyasa\b/i, /\bhatha\b/i,
+        /\basana\b/i, /\bashtanga\b/i, /\bmeditation\b/i, /\bbarre\b/i,
+        /\breformer\b/i
+      ]
+    },
+    fitness: {
+      label: 'Gym or fitness studio',
+      schemaTypes: ['ExerciseGym', 'HealthClub', 'SportsActivityLocation', 'SportsClub'],
+      platformHints: { mindbody: 1, glofox: 4, clubready: 4, 'wodify': 4, mariana: 3 },
+      keywordPatterns: [
+        /\bgym\b/i, /\bcrossfit\b/i, /\bbootcamp\b/i, /\bhiit\b/i,
+        /\bspin\s+class\b/i, /\bstrength\s+training\b/i, /\bworkout\b/i,
+        /\bpersonal\s+train(?:er|ing)\b/i, /\bmembership\s+(?:plans?|tiers?|options?)\b/i
+      ]
+    },
+    salon: {
+      label: 'Hair or nail salon',
+      schemaTypes: ['HairSalon', 'NailSalon', 'BeautySalon'],
+      platformHints: { vagaro: 3, fresha: 3, booksy: 1, 'squareappointments': 1, phorest: 4, salonbiz: 4, shortcuts: 3 },
+      keywordPatterns: [
+        /\bhair\s*cut\b/i, /\bhaircut\b/i, /\bbalayage\b/i, /\bhighlights\b/i,
+        /\bstylist\b/i, /\bmanicure\b/i, /\bpedicure\b/i, /\bnail\s+art\b/i,
+        /\bblowout\b/i, /\bgel\s+(?:manicure|polish)\b/i, /\blash\s+extensions\b/i,
+        /\bwaxing\b/i
+      ]
+    },
+    spa: {
+      label: 'Spa or massage practice',
+      schemaTypes: ['DaySpa'],
+      platformHints: { vagaro: 1, fresha: 1, mindbody: 1 },
+      keywordPatterns: [
+        /\bmassage\s+therapy\b/i, /\bmassage\s+therapist\b/i,
+        /\bfacial\b/i, /\bspa\s+treatment\b/i,
+        /\bbody\s+treatment\b/i, /\bhot\s+stone\b/i, /\bswedish\s+massage\b/i,
+        /\bdeep\s+tissue\b/i, /\baromatherapy\b/i, /\bday\s+spa\b/i,
+        /\breflexology\b/i, /\breiki\b/i
+      ]
+    },
+    barber: {
+      label: 'Barbershop',
+      schemaTypes: [], // schema.org lacks a BarberShop type
+      platformHints: { booksy: 4, squire: 5 },
+      keywordPatterns: [
+        /\bbarber(?:shop)?\b/i, /\bfade\b/i, /\bbeard\s+trim\b/i,
+        /\bstraight\s+razor\b/i, /\bhot\s+(?:towel\s+)?shave\b/i
+      ]
+    }
+  };
+
+  // Resolve a priority-check definition for the effective business type.
+  // Returns a shallow-merged object where byType[type] wins over the
+  // base fields. Checks without byType, and types without an override,
+  // return the base def unchanged. Used by renderPriorityChecks so
+  // type-specific copy (e.g. "class schedule" for yoga vs "services
+  // menu" for salon) surfaces on every affected check.
+  function resolveCheckForType(def, businessType) {
+    if (!def || !def.byType || !businessType) return def;
+    var override = def.byType[businessType];
+    if (!override) return def;
+    var merged = {};
+    for (var k in def) if (def.hasOwnProperty(k) && k !== 'byType') merged[k] = def[k];
+    for (var k2 in override) if (override.hasOwnProperty(k2)) merged[k2] = override[k2];
+    return merged;
+  }
+
+  // Single source of truth for "what kind of wellness business is
+  // this?" — used for type-aware copy resolution. Resolves from, in
+  // order: (1) owner dropdown correction, (2) auto-detection cached
+  // on __auditScoreState, (3) generic 'wellness' fallback.
+  function effectiveBusinessType() {
+    if (userBusinessType) return userBusinessType;
+    var s = window.__auditScoreState;
+    if (s && s.businessType && s.businessType.type) return s.businessType.type;
+    return 'wellness';
+  }
+
+  // Returns { type, label, confidence, scores } where:
+  //   type       — 'yoga' | 'fitness' | 'salon' | 'spa' | 'barber' | 'wellness'
+  //   label      — human-readable name
+  //   confidence — 'high' | 'medium' | 'low' (low => fall through to 'wellness')
+  //   scores     — per-type score breakdown (for debugging / future weighting)
+  function detectBusinessType(audits, allUrls, pageText) {
+    var scores = { yoga: 0, fitness: 0, salon: 0, spa: 0, barber: 0 };
+    var text = String(pageText || '');
+
+    Object.keys(BUSINESS_TYPE_DEFS).forEach(function(type){
+      var def = BUSINESS_TYPE_DEFS[type];
+      // Schema.org @type — strongest, worth 5 points per match.
+      def.schemaTypes.forEach(function(t){
+        var re = new RegExp('"@type"\\s*:\\s*"' + t + '"', 'i');
+        if (re.test(text)) scores[type] += 5;
+      });
+      // Keyword matches — 1 point per distinct pattern hit, capped at 4
+      // so a yoga-heavy page doesn't steamroll a legitimate spa signal.
+      var keywordHits = 0;
+      for (var p = 0; p < def.keywordPatterns.length; p++) {
+        if (def.keywordPatterns[p].test(text)) keywordHits++;
+      }
+      scores[type] += Math.min(keywordHits, 4);
+    });
+
+    // Platform hints — iterate actually-detected booking platforms and
+    // apply their type weights. Platforms serve specific segments
+    // (Fresha/Phorest = salon; Glofox/Wodify = fitness; Squire = barber).
+    if (allUrls && allUrls.length) {
+      var detected = detectPlatforms(['booking'], allUrls);
+      if (detected && detected.found) {
+        detected.found.forEach(function(p){
+          var name = String(p.name || '').toLowerCase().replace(/\s+/g, '');
+          Object.keys(BUSINESS_TYPE_DEFS).forEach(function(type){
+            var hints = BUSINESS_TYPE_DEFS[type].platformHints || {};
+            if (hints[name]) scores[type] += hints[name];
+          });
+        });
+      }
+    }
+
+    // Pick the winner. Require the top score to (a) exceed 2 absolute
+    // points AND (b) beat runner-up by at least 2 for HIGH confidence.
+    // Below that floor, fall through to generic 'wellness' so the tool
+    // doesn't confidently mislabel a site it can't actually identify.
+    var sortedTypes = Object.keys(scores).sort(function(a, b){ return scores[b] - scores[a]; });
+    var topType    = sortedTypes[0];
+    var topScore   = scores[topType];
+    var secondScore = scores[sortedTypes[1]] || 0;
+
+    if (topScore < 2) {
+      return { type: 'wellness', label: 'Wellness business', confidence: 'low', scores: scores };
+    }
+    var confidence = (topScore - secondScore >= 2 && topScore >= 4) ? 'high' : 'medium';
+    return {
+      type: topType,
+      label: BUSINESS_TYPE_DEFS[topType].label,
+      confidence: confidence,
+      scores: scores
+    };
+  }
+
   // services page check: does the wellness business have a services
   // or class schedule page as real HTML, or is it a PDF/image? PDF
   // service menus are common on spa and salon sites — they don't
@@ -2423,7 +2896,15 @@
   // path, so "yoga-classes" or "our-services" or "class-schedule"
   // will all match. We also catch "modalities" (massage/acupuncture
   // sites), "programs" (fitness studios), and "workshops" (yoga).
-  var SERVICES_HREF_RE = /services|classes|schedule|treatments|offerings|menu|pricing|rates|modalities|programs|workshops|packages|sessions|training|courses|membership/i;
+  // The old implementation used the bare regex above as a substring
+  // check anywhere in any URL, which wrongly flagged UI assets like
+  // /assets/menu-icon.svg, /icons/menu.svg, and /js/mobile-menu.js
+  // as services-page hits. SERVICES_PATH_RE now requires a service-
+  // synonym word to appear as a real path component (separated by
+  // /, -, _, ., or #), and SERVICES_EXCLUSIONS_RE skips URLs that
+  // match common UI-chrome filename patterns or pure SVG assets.
+  var SERVICES_PATH_RE = /(?:^|[\/._\-#])(?:services|classes|schedule|treatments|offerings|menu|pricing|rates|modalities|programs|workshops|packages|sessions|training|courses|membership)s?(?:$|[\/._?#\-])/i;
+  var SERVICES_EXCLUSIONS_RE = /menu[-_]?(?:icon|toggle|button|bar|arrow|close|open|dropdown|trigger)|hamburger|\/icons?\/|\.svg(?:[\/?#]|$)/i;
   var PHONE_RE = /(?:\+?1[\s\-.]?)?(?:\(\s*\d{3}\s*\)|\d{3})[\s\-.]\d{3}[\s\-.]\d{4}/;
   function detectPhoneInText(pageText) {
     if (!pageText) return false;
@@ -2521,18 +3002,21 @@
   }
 
   function detectMenuFormat(allUrls, pageText) {
-    if (!allUrls || !allUrls.length) return 'unknown';
+    var hasUrls = allUrls && allUrls.length;
     var sawServices = false;
     var sawHtmlServices = false;
     var sawPdfServices = false;
     var sawImageServices = false;
-    for (var i = 0; i < allUrls.length; i++) {
-      var u = allUrls[i];
-      if (!SERVICES_HREF_RE.test(u)) continue;
-      sawServices = true;
-      if (/\.pdf(\?|$|#)/.test(u))                     sawPdfServices = true;
-      else if (/\.(?:jpg|jpeg|png|webp|gif)(\?|$|#)/.test(u)) sawImageServices = true;
-      else                                             sawHtmlServices = true;
+    if (hasUrls) {
+      for (var i = 0; i < allUrls.length; i++) {
+        var u = allUrls[i];
+        if (!SERVICES_PATH_RE.test(u))      continue;
+        if (SERVICES_EXCLUSIONS_RE.test(u)) continue;
+        sawServices = true;
+        if (/\.pdf(?:[\/?#]|$)/.test(u))                         sawPdfServices = true;
+        else if (/\.(?:jpe?g|png|webp|gif)(?:[\/?#]|$)/.test(u)) sawImageServices = true;
+        else                                                     sawHtmlServices = true;
+      }
     }
     if (sawPdfServices)   return 'pdf';
     if (sawImageServices) return 'image';
@@ -2636,16 +3120,79 @@
   // deduplicated. `keys` is an array so callers can accept "ordering OR
   // appointments" in a single check (takeout-only restaurants don't
   // need appointments; fine-dining doesn't need ordering).
+  // Tiered pattern matching to avoid the blog-post false positive
+  // (a wellness studio's "Why we left Mindbody" blog post at
+  // /blog/mindbody-review flipping the Mindbody pass flag):
+  //   - Scheme patterns ('tel:')          → match only if URL starts with it
+  //   - Path-bearing patterns ('x.com/y') → match against hostname + pathname,
+  //                                         anchored at a '.', '/', ':', or
+  //                                         start-of-string boundary
+  //   - Hostname-only patterns            → match against the parsed hostname
+  //                                         ONLY, so path-level mentions
+  //                                         don't count as integrations
+  //
+  // Protocol-relative hrefs (//cdn.mindbodyonline.com/...) are
+  // normalized to https:// before parsing so legitimate integrations
+  // don't get silently dropped.
+  function boundaryIndexOf(target, pattern) {
+    if (!target || !pattern) return -1;
+    var idx = target.indexOf(pattern);
+    while (idx !== -1) {
+      var before = idx === 0 ? '' : target.charAt(idx - 1);
+      if (idx === 0 || before === '.' || before === '/' || before === ':' || before === '-') {
+        return idx;
+      }
+      idx = target.indexOf(pattern, idx + 1);
+    }
+    return -1;
+  }
+  function parseForDetection(raw) {
+    if (!raw) return null;
+    if (/^(?:tel|mailto|sms):/i.test(raw)) {
+      return { scheme: true, full: raw.toLowerCase() };
+    }
+    var url = raw;
+    if (url.length > 1 && url.charAt(0) === '/' && url.charAt(1) === '/') {
+      url = 'https:' + url;
+    }
+    try {
+      if (url.charAt(0) === '/') {
+        return { host: '', hostPath: url.toLowerCase(), full: url.toLowerCase() };
+      }
+      var p = new URL(url);
+      var host = p.hostname.toLowerCase();
+      return { host: host, hostPath: host + p.pathname.toLowerCase(), full: url.toLowerCase() };
+    } catch (e) {
+      return { host: '', hostPath: raw.toLowerCase(), full: raw.toLowerCase() };
+    }
+  }
   function detectPlatforms(keys, networkUrls) {
     var found = [];
     var seen = {};
+    var parsed = [];
+    for (var u = 0; u < networkUrls.length; u++) {
+      var p = parseForDetection(networkUrls[u]);
+      if (p) parsed.push(p);
+    }
     for (var k = 0; k < keys.length; k++) {
       var group = PLATFORM_PATTERNS[keys[k]];
       if (!group) continue;
       for (var i = 0; i < group.hosts.length; i++) {
         var h = group.hosts[i];
-        for (var j = 0; j < networkUrls.length; j++) {
-          if (networkUrls[j].indexOf(h.pattern) !== -1) {
+        var pat = h.pattern.toLowerCase();
+        var isScheme = pat.charAt(pat.length - 1) === ':';
+        var hasPath  = pat.indexOf('/') !== -1;
+        for (var j = 0; j < parsed.length; j++) {
+          var pp = parsed[j];
+          var matched = false;
+          if (isScheme) {
+            matched = pp.full && pp.full.indexOf(pat) === 0;
+          } else if (hasPath) {
+            matched = boundaryIndexOf(pp.hostPath, pat) !== -1;
+          } else {
+            matched = boundaryIndexOf(pp.host, pat) !== -1;
+          }
+          if (matched) {
             if (!seen[h.name]) {
               seen[h.name] = true;
               found.push({ label: group.label, name: h.name });
@@ -2721,7 +3268,29 @@
       fail: 'Some of your buttons are too small to tap reliably',
       failNote: 'Buttons under 44×44 pixels cause misses. Bump padding to at least 12px on every side, especially on your "Book" and "Schedule" buttons.',
       unverified: "We couldn't check your buttons",
-      unverifiedNote: "Lighthouse couldn't evaluate tap targets. Re-audit in a few seconds."
+      unverifiedNote: "Lighthouse couldn't evaluate tap targets. Re-audit in a few seconds.",
+      byType: {
+        yoga: {
+          impact: 'Every missed tap is a missed class reservation. "Book a Class" and "View Schedule" are the most-tapped buttons on a yoga site — if they\'re too small, your schedule page never loads.',
+          failNote: 'Buttons under 44×44 pixels cause misses. Your "Book a Class" button is the one that matters most — bump its padding to at least 12px on every side.'
+        },
+        fitness: {
+          impact: 'Every missed tap is a missed class signup or trial. "Book a Class", "Start Trial", and "View Schedule" buttons are the primary conversion points on a fitness site.',
+          failNote: 'Buttons under 44×44 pixels cause misses. Focus on your "Book", "Schedule", and "Start Trial" buttons first — those are the ones earning you money.'
+        },
+        salon: {
+          impact: 'Every missed tap is a missed appointment. "Book Now" is the most important button on a salon site — if clients can\'t hit it cleanly on a phone, they\'ll close the tab and go elsewhere.',
+          failNote: 'Buttons under 44×44 pixels cause misses. The "Book Now" button is the critical one — bump its padding to at least 12px on every side, and give it enough breathing room that thumbs don\'t accidentally hit something else.'
+        },
+        spa: {
+          impact: 'Every missed tap is a lost booking. "Book a Treatment" and "Gift Cards" are the buttons that pay for themselves — they need to be thumb-friendly.',
+          failNote: 'Buttons under 44×44 pixels cause misses. Prioritize your "Book", "Gift Cards", and "Services" buttons — those carry the most conversion weight.'
+        },
+        barber: {
+          impact: 'Every missed tap is a walk-in you could have pre-booked. "Book a Cut" is the highest-value button on a barbershop site.',
+          failNote: 'Buttons under 44×44 pixels cause misses. Your booking button matters most — bump it to at least 48×48 px with real padding around it.'
+        }
+      }
     },
     {
       type: 'audit',
@@ -2736,7 +3305,29 @@
       fail: 'Some of your text is hard to read',
       failNote: 'Light text on light backgrounds is a common wellness-site aesthetic choice that costs readability. Darken your body text — aim for WCAG AA (4.5:1 ratio for normal text).',
       unverified: "We couldn't check your text contrast",
-      unverifiedNote: "Lighthouse couldn't evaluate color contrast. Re-audit in a few seconds."
+      unverifiedNote: "Lighthouse couldn't evaluate color contrast. Re-audit in a few seconds.",
+      byType: {
+        yoga: {
+          impact: 'Yoga clients read your class schedule on their phone while walking to the studio. Grey-on-white class names and instructor bios fail contrast for anyone over 40 or anyone in direct sunlight.',
+          failNote: 'Soft-neutral palettes are the default yoga aesthetic, and they cost readability. Your class schedule and instructor bios need darker body text — aim for WCAG AA (4.5:1 ratio).'
+        },
+        fitness: {
+          impact: 'Clients scan class schedules, pricing tables, and membership tiers fast. Low-contrast text turns a 5-second decision into a 30-second squint.',
+          failNote: 'Pricing tables and class-schedule text are where contrast matters most. Darken your body text — WCAG AA (4.5:1 ratio) is the floor for normal text.'
+        },
+        salon: {
+          impact: 'Salon clients scan service and pricing lists to compare before they book. Grey-on-cream prices look elegant but fail contrast — visitors give up and call someone else.',
+          failNote: 'Service lists and pricing tables are the highest-impact place for contrast fixes. Your prices especially need to be unambiguously readable — darken them to WCAG AA (4.5:1 ratio).'
+        },
+        spa: {
+          impact: 'Spa clients read your treatment menu carefully before picking one. Low-contrast descriptions of what a hot-stone massage actually includes cost you bookings.',
+          failNote: 'Treatment descriptions are where contrast matters. Soft palettes are on-brand for spas, but the text needs to meet WCAG AA (4.5:1 ratio) or visitors give up.'
+        },
+        barber: {
+          impact: 'Clients scan your service list (cut, fade, beard, shave) and their prices in seconds. Low-contrast pricing means they can\'t actually read it.',
+          failNote: 'Your pricing list is the critical contrast item — clients need to see what a cut costs before they book. Aim for WCAG AA (4.5:1 ratio).'
+        }
+      }
     },
     {
       type: 'audit',
@@ -2751,7 +3342,29 @@
       fail: 'Your text is too small on a phone',
       failNote: 'More than 40% of your text is below the legibility threshold. Set body font-size to at least 16px.',
       unverified: "We couldn't check your text size",
-      unverifiedNote: "Lighthouse couldn't evaluate font sizes. Re-audit in a few seconds."
+      unverifiedNote: "Lighthouse couldn't evaluate font sizes. Re-audit in a few seconds.",
+      byType: {
+        yoga: {
+          impact: 'Class names, instructor bios, and schedule times are the most-read text on a yoga site. Tiny text means clients pinch-zoom to find the 6pm Vinyasa — and some give up.',
+          failNote: 'Your class-schedule and instructor-bio text is what this check cares about most. Set body font-size to at least 16px — for the schedule itself, 17 or 18px is better.'
+        },
+        fitness: {
+          impact: 'Pricing tables, membership tiers, and class schedules are where tiny text hurts most. Members already know the site; prospects need to read it once, clearly.',
+          failNote: 'Set body font-size to at least 16px. Pricing tables especially — tiny numbers in a pricing table are where clients give up.'
+        },
+        salon: {
+          impact: 'Service names and prices are what visitors scan first. Text under 16px forces iOS to zoom on focus and turns a 5-second decision into a frustrating pinch-and-drag.',
+          failNote: 'Your service and pricing list is the priority. Set body font-size to at least 16px — 17 or 18px is better for pricing rows.'
+        },
+        spa: {
+          impact: 'Treatment menus are the highest-value text on a spa site. Small descriptions of what a 90-minute deep-tissue actually includes make clients second-guess booking.',
+          failNote: 'Treatment descriptions and durations need to be comfortably readable. Set body font-size to at least 16px — 17 or 18px for treatment-menu items.'
+        },
+        barber: {
+          impact: 'Your services list and prices are the two bits of text that matter. Tiny pricing = frustrated walk-ins who just call a different shop.',
+          failNote: 'Set body font-size to at least 16px. Your price list especially should be unambiguously readable without zooming.'
+        }
+      }
     },
     {
       type: 'phone',
@@ -2766,7 +3379,29 @@
       fail: "We couldn't find a phone number on your site",
       failNote: 'No click-to-call link and no visible phone number. Wellness clients call with questions before their first visit — give them a number.',
       unverified: "We couldn't confirm whether you have a phone number",
-      unverifiedNote: "We might have missed it. Check that your number is visible and wrapped in a <code>tel:</code> link."
+      unverifiedNote: "We might have missed it. Check that your number is visible and wrapped in a <code>tel:</code> link.",
+      byType: {
+        yoga: {
+          impact: '"Is the 6pm still on if it\'s raining?" "Can I drop in without a membership?" "Is the room heated today?" These are the pre-class calls that studios get daily. A tappable number keeps them from becoming lost bookings.',
+          failNote: 'No click-to-call link. Yoga clients call with pre-class questions (first-timer concerns, weather, substitutions) — make it one tap to reach you.'
+        },
+        fitness: {
+          impact: 'First-time prospects call to ask about trial classes, membership options, and personal-training pricing. A missing phone number sends that call to a competitor.',
+          failNote: 'No click-to-call link. Trial-class and membership questions are where phone calls close deals for gyms — give prospects a one-tap way to ask.'
+        },
+        salon: {
+          impact: 'Salon clients call constantly — to confirm a time, check if their stylist is in, ask about gray-coverage color, or fit in a last-minute appointment. A missing phone number is a missing book.',
+          failNote: 'This is critical for salons. Clients CALL to book, confirm, and ask questions every day — if your phone number isn\'t a one-tap link at the top of your page, you\'re losing revenue hourly.'
+        },
+        spa: {
+          impact: 'Spa clients call to ask about treatment details, pregnancy safety, gift certificates, and group bookings. Those calls convert at a much higher rate than form-fills — make the number easy.',
+          failNote: 'No click-to-call link. Spa bookings often start with a question ("Is deep-tissue okay if I\'m 5 months pregnant?") — answer it on a call, not a contact form.'
+        },
+        barber: {
+          impact: '"How long is the wait?" and "Are you open?" are the two most common barber-site calls. A tap-to-call phone number is the single most important element after the address.',
+          failNote: 'Non-negotiable for barbershops. Clients call before walking in to check the wait. If your phone number isn\'t a tap-to-call link right at the top, you\'re losing walk-ins to shops whose phones are easier to find.'
+        }
+      }
     },
     {
       type: 'platform',
@@ -2781,7 +3416,24 @@
       fail: null,
       failNote: null,
       unverified: "We didn't see a map on your site",
-      unverifiedNote: "We scan for Google Maps, Apple Maps, Mapbox, and others. If your address is plain text only, consider wrapping it in a Google Maps link."
+      unverifiedNote: "We scan for Google Maps, Apple Maps, Mapbox, and others. If your address is plain text only, consider wrapping it in a Google Maps link.",
+      byType: {
+        yoga: {
+          impact: 'First-time students are already nervous walking into a yoga studio. "Where is it actually?" shouldn\'t add to the friction — a tappable map lets them focus on the class.'
+        },
+        fitness: {
+          impact: 'Prospects comparing gyms care about location as much as price. A one-tap map showing proximity and parking is a quiet trust signal.'
+        },
+        salon: {
+          impact: 'New clients heading to a first appointment want turn-by-turn directions without copying an address into another app. An embedded map or a map link does that in one tap.'
+        },
+        spa: {
+          impact: 'Spa guests often arrive right after work with little margin. A tappable map (showing parking, valet, entrance location) is the difference between arriving relaxed and arriving flustered.'
+        },
+        barber: {
+          impact: 'Barbershop walk-ins find you on their phone and expect to be driving 30 seconds later. A one-tap directions link is the table-stakes navigation flow.'
+        }
+      }
     },
     {
       type: 'conversions',
@@ -2797,7 +3449,49 @@
       fail: null,
       failNote: null,
       unverified: "We couldn't detect online booking",
-      unverifiedNote: "We scan for 50+ booking platforms including Mindbody, Vagaro, Fresha, Booksy, Acuity, Square Appointments, WellnessLiving, Glofox, Pike13, and more. If yours is on the list and we missed it, tell us below."
+      unverifiedNote: "We scan for 50+ booking platforms including Mindbody, Vagaro, Fresha, Booksy, Acuity, Square Appointments, WellnessLiving, Glofox, Pike13, and more. If yours is on the list and we missed it, tell us below.",
+      byType: {
+        yoga: {
+          impact: 'Class reservations need to be a one-tap experience. A yoga client deciding on the walk to work whether to hit the 6pm won\'t bother if they have to email for a spot.',
+          pass: 'Clients can book a class online',
+          passNote: '{detected} on your site — students can reserve their mat directly without calling or emailing.',
+          passNoteText: "We found text that suggests class reservations (like 'Book a Class' or 'Reserve Your Mat') but couldn't match it to a specific platform.",
+          unverified: "We couldn't detect class-booking on your site",
+          unverifiedNote: "We scan for yoga-friendly platforms like Mindbody, Glofox, Momoyoga, Zingfit, Acuity, Pike13, and more. If yours is on the list and we missed it, tell us below — classes that can only be booked by email or phone lose a lot of drop-in traffic."
+        },
+        fitness: {
+          impact: 'Class signups, PT sessions, and trial-class bookings all need to be online. Every call-to-book is a client who might not bother — especially a first-timer comparing your gym to three others.',
+          pass: 'Clients can book classes and sessions online',
+          passNote: '{detected} on your site — members and prospects can book classes, sessions, or trials directly.',
+          passNoteText: "We found text suggesting online class/session booking but couldn't match it to a specific platform.",
+          unverified: "We couldn't detect class or session booking",
+          unverifiedNote: "We scan for fitness-focused platforms like Mindbody, Glofox, Wodify, ClubReady, Mariana, Pike13, and more. If yours is on the list and we missed it, tell us below — prospects comparing gyms expect to be able to book a trial without calling."
+        },
+        salon: {
+          impact: 'Online booking is the single biggest conversion lever for a salon. The client who has to call during business hours is the client who calls a salon with Fresha instead.',
+          pass: 'Clients can book appointments online',
+          passNote: '{detected} on your site — clients can book with their preferred stylist 24/7 without calling.',
+          passNoteText: "We found text that suggests online appointment booking but couldn't match it to a specific platform.",
+          unverified: "We couldn't detect online appointment booking",
+          unverifiedNote: "We scan for salon-focused platforms like Fresha, Vagaro, Booksy, Phorest, SalonBiz, Square Appointments, and more. If yours is on the list and we missed it, tell us below. Salons without online booking lose bookings to competitors with it, every single day."
+        },
+        spa: {
+          impact: 'Spa bookings often happen on a phone, at 10pm, when the visitor is decompressing from a stressful day. Make them call back tomorrow and they\'ll forget — online booking captures the impulse.',
+          pass: 'Clients can book treatments online',
+          passNote: '{detected} on your site — clients can book treatments at any hour without calling.',
+          passNoteText: "We found text that suggests online treatment booking but couldn't match it to a specific platform.",
+          unverified: "We couldn't detect online treatment booking",
+          unverifiedNote: "We scan for spa-friendly platforms like Mindbody, Vagaro, Fresha, Booker, Square Appointments, and more. Missing online booking is a meaningful conversion leak for spas specifically — late-night impulse bookings are a big share of revenue."
+        },
+        barber: {
+          impact: 'Walk-ins are great, but online booking captures the "I want a cut before my 3pm meeting" client who won\'t roll the dice on availability. Booksy and Squire exist specifically for this — clients expect it.',
+          pass: 'Clients can book a cut online',
+          passNote: '{detected} on your site — clients can reserve a chair without calling or risking a walk-in wait.',
+          passNoteText: "We found text that suggests online booking but couldn't match it to a specific platform.",
+          unverified: "We couldn't detect online booking",
+          unverifiedNote: "We scan for barber-focused platforms like Booksy, Squire, Fresha, Vagaro, and more. If you still run walk-in-only, that\'s legitimate — but any shop that offers chairs by appointment should have online booking now; clients expect it."
+        }
+      }
     },
     {
       type: 'services',
@@ -2811,7 +3505,54 @@
       fail: 'Your services page is a PDF or image',
       failNote: 'PDF service menus don\'t scale on phones and can\'t be crawled effectively by Google. Replace it with a real HTML page.',
       unverified: "We couldn't find a services or class schedule page",
-      unverifiedNote: "We looked for links containing 'services', 'classes', 'schedule', 'treatments', 'menu', or 'offerings'. If yours is named differently, we missed it."
+      unverifiedNote: "We looked for links containing 'services', 'classes', 'schedule', 'treatments', 'menu', or 'offerings'. If yours is named differently, we missed it.",
+      byType: {
+        yoga: {
+          impact: 'The class schedule is the most-visited page on every yoga site after the homepage. It needs to be a real, filterable HTML page — not a PDF, not an image, not "email us for the schedule."',
+          pass: 'Your class schedule is a real HTML page',
+          passNote: 'Your class schedule is accessible as an HTML page — students can see the 6pm Vinyasa on their phone without downloading anything.',
+          fail: 'Your class schedule is a PDF or image',
+          failNote: 'A PDF class schedule is the single most common yoga-site mistake. Students want to filter by time, instructor, or style — a PDF doesn\'t let them. Rebuild it as a real HTML schedule (most platforms like Mindbody embed this for you).',
+          unverified: "We couldn't find a class schedule page",
+          unverifiedNote: "We looked for links containing 'schedule', 'classes', 'class list', or similar. If your schedule lives at a different URL (or is only on your booking platform), the check missed it — tell us so we can improve it."
+        },
+        fitness: {
+          impact: 'Prospects want to see the class schedule AND pricing/membership tiers before they commit. Both need to be real HTML pages — fast to load, easy to scan, trivial to share.',
+          pass: 'Your class schedule and pricing are real HTML pages',
+          passNote: 'Schedule and pricing are accessible as HTML pages — prospects can scan both on a phone before deciding.',
+          fail: 'Your schedule or pricing is a PDF or image',
+          failNote: 'PDF schedules and image-based pricing tables fail on phones and kill conversions. Rebuild both as real HTML — clients should be able to scan class times and pricing tiers in under 10 seconds.',
+          unverified: "We couldn't find a class schedule or pricing page",
+          unverifiedNote: "We looked for links like 'schedule', 'classes', 'pricing', 'membership', 'programs'. If yours is named differently, we missed it."
+        },
+        salon: {
+          impact: 'The services + pricing list is the most-viewed page on every salon site. New clients compare prices across 3-5 salons before booking; a PDF or image-based list is functionally invisible in that comparison.',
+          pass: 'Your services and pricing list is a real HTML page',
+          passNote: 'Your services and pricing are accessible as an HTML page — clients can scan prices at a glance on their phone before booking.',
+          fail: 'Your services list is a PDF or image',
+          failNote: 'PDF and image service menus hide your prices from Google and force clients to pinch-zoom on their phones. Rebuild it as a real HTML page with a service-by-service pricing table — clients should see prices before they need to tap anything.',
+          unverified: "We couldn't find a services or pricing page",
+          unverifiedNote: "We looked for links containing 'services', 'pricing', 'menu', 'rates', or similar. If yours is named differently (like 'offerings' or 'salon'), we may have missed it."
+        },
+        spa: {
+          impact: 'The treatment menu is the closing copy of a spa site. Descriptions, durations, and pricing all need to be visible before a client books a 90-minute deep-tissue on their lunch break.',
+          pass: 'Your treatment menu is a real HTML page',
+          passNote: 'Your treatment menu is accessible as an HTML page — clients can read descriptions, compare durations, and see pricing on their phone before booking.',
+          fail: 'Your treatment menu is a PDF or image',
+          failNote: 'A PDF treatment menu is the single most common spa-site mistake. Clients want to read what a "Himalayan Salt Stone" treatment actually involves; a PDF they have to download and pinch-zoom doesn\'t deliver. Rebuild as HTML.',
+          unverified: "We couldn't find a treatment menu page",
+          unverifiedNote: "We looked for links containing 'treatments', 'services', 'menu', 'offerings', or 'modalities'. If yours is named differently, we missed it."
+        },
+        barber: {
+          impact: 'Your services list is three or four lines: cut, fade, beard, shave — each with a price. Simple, yes, but it needs to be real HTML so Google indexes it and phones render it instantly.',
+          pass: 'Your services list is a real HTML page',
+          passNote: 'Your services and pricing list is HTML — clients can scan "haircut — $40, fade — $45, beard trim — $20" in under three seconds.',
+          fail: 'Your services list is a PDF or image',
+          failNote: 'Barbershop pricing lists especially should never be PDFs — the whole point is instant scanning. Rebuild it as a simple HTML table: service name on the left, price on the right.',
+          unverified: "We couldn't find a services page",
+          unverifiedNote: "We looked for a 'services', 'pricing', or 'rates' link. If you only list services on your homepage (totally fine for a barbershop), tell us and we'll mark it as a pass."
+        }
+      }
     },
     {
       type: 'schema',
@@ -2983,6 +3724,29 @@
   // much more useful to forward to a developer.
   var USER_OVERRIDES = {};
 
+  // Owner override for wellness classification. When looksLikeWellness
+  // returns false (non-wellness site, or a wellness business we
+  // failed to detect), the priority-check section is hidden and an
+  // override button ("This IS a wellness business") reveals it. The
+  // override persists via ?w=1 in the URL so a corrected shared link
+  // keeps the classification. One-way: a positive classifier result
+  // always wins.
+  var userForcedWellness = false;
+
+  // Owner override for business type (yoga/fitness/salon/spa/barber/
+  // wellness). When set, supersedes the auto-detection so a corrected
+  // classification persists through shared links (?bt=...). Set by
+  // the dropdown in the business-type card and hydrated on load.
+  var userBusinessType = null;
+
+  // Toggle the not-a-wellness notice vs the priority-checks section.
+  function toggleWellnessUi(effectiveIsWellness) {
+    var notice = document.getElementById('notWellnessNotice');
+    var list   = document.getElementById('priorityListWrap');
+    if (notice) notice.hidden = !!effectiveIsWellness;
+    if (list)   list.hidden   = !effectiveIsWellness;
+  }
+
   // Encode an overrides object into the compact URL-param format.
   //   {0: 'pass', 3: 'fail'} -> '0p,3f'
   function encodeOverrides(overrides) {
@@ -3022,10 +3786,47 @@
       if (auditedUrl) params.set('url', auditedUrl);
       var ov = encodeOverrides(USER_OVERRIDES);
       if (ov) params.set('ov', ov);
+      if (userForcedWellness) params.set('w', '1');
+      if (userBusinessType)   params.set('bt', userBusinessType);
       var qs = params.toString();
       var newUrl = location.pathname + (qs ? '?' + qs : '');
       window.history.replaceState(null, '', newUrl);
     } catch (e) { /* history API unavailable — silently skip */ }
+  }
+
+  // Render the business-type card: populate the dropdown with the
+  // effective type (owner override if set, else auto-detected) and
+  // hide the card entirely on non-wellness sites. Detection result
+  // is passed in so the caller can reuse it; the select's onchange
+  // handler is attached once (see initBusinessTypeCard below).
+  var ALLOWED_BUSINESS_TYPES = ['yoga','fitness','salon','spa','barber','wellness'];
+  function renderBusinessTypeCard(isWellness, detection) {
+    var card   = document.getElementById('businessTypeCard');
+    var select = document.getElementById('btcSelect');
+    var sub    = document.getElementById('btcSub');
+    if (!card || !select) return;
+    if (!isWellness) {
+      card.hidden = true;
+      return;
+    }
+    card.hidden = false;
+    // Effective type = owner override > auto-detected
+    var effective = userBusinessType || (detection && detection.type) || 'wellness';
+    // Validate against the allowed set; a corrupted ?bt= value falls
+    // back to generic wellness rather than a broken select state.
+    if (ALLOWED_BUSINESS_TYPES.indexOf(effective) === -1) effective = 'wellness';
+    select.value = effective;
+    if (sub) {
+      if (userBusinessType) {
+        sub.textContent = "You told us what kind of business this is — we'll use it to tailor future improvements to this audit.";
+      } else if (detection && detection.confidence === 'low') {
+        sub.textContent = "We couldn't tell what kind of wellness business this is from the page. Pick the closest match so the audit can get smarter over time.";
+      } else if (detection && detection.confidence === 'medium') {
+        sub.textContent = "Our best guess from schema markup, booking platform, and page content. If we got it wrong, pick the right one.";
+      } else {
+        sub.textContent = "Auto-detected from schema markup, booking platform, and page content. If we got it wrong, pick the right one — we'll use it to tailor future improvements to this audit.";
+      }
+    }
   }
 
   function renderPriorityChecks(audits, allUrls, pageText) {
@@ -3050,19 +3851,30 @@
     // then passes (celebratory tail). This matters more than grouping
     // by check type because owners scan top-down and want their
     // problems near the top.
+    //
+    // Type-aware copy: each PRIORITY_CHECKS entry can carry a byType
+    // map (yoga/fitness/salon/spa/barber). We resolve the effective
+    // definition once per check so impact, pass/fail titles, and
+    // notes speak the owner's dialect — a yoga studio sees "class
+    // schedule" and a salon sees "services menu" on the same
+    // underlying check. Resolution falls through to the generic
+    // 'wellness' copy when the detected/selected type doesn't have
+    // an override or the check isn't type-sensitive.
+    var btype = effectiveBusinessType();
     var results = [];
     PRIORITY_CHECKS.forEach(function(def, idx){
-      var result = evaluatePriorityCheck(def, audits, allUrls, pageText);
+      var resolvedDef = resolveCheckForType(def, btype);
+      var result = evaluatePriorityCheck(resolvedDef, audits, allUrls, pageText);
       if (!result) return;
       // Apply any user override from the feedback UI.
       if (USER_OVERRIDES[idx] === 'pass' && result.mark.cls === 'unverified') {
-        result = makeResult(def, 'pass');
+        result = makeResult(resolvedDef, 'pass');
         result.overridden = true;
       } else if (USER_OVERRIDES[idx] === 'fail' && result.mark.cls === 'unverified') {
-        result = makeResult(def, 'fail');
+        result = makeResult(resolvedDef, 'fail');
         result.overridden = true;
       }
-      results.push({ def: def, result: result, idx: idx });
+      results.push({ def: resolvedDef, result: result, idx: idx });
     });
     // Stable sort: fail → unverified → pass
     results.sort(function(a, b){
@@ -3196,10 +4008,19 @@
       ? Math.round((weightedCredit / totalWeight) * 100)
       : 0;
 
+    // Confidence gate: the weighted rollup honestly excludes unverified
+    // checks, but that means a site with one confirmed pass and eight
+    // unverifieds renders as 100/100 readiness — misleading to anyone
+    // glancing at the number. Suppress the score when we don't have
+    // enough confirmed signal. Threshold: at least 3 confirmed, AND
+    // at least 40% of total checks confirmed.
+    var confirmedCount = totalCount - unverifiedCount;
+    var CONFIDENCE_FLOOR = Math.max(3, Math.ceil(totalCount * 0.4));
+    var lowConfidence   = totalCount > 0 && confirmedCount < CONFIDENCE_FLOOR;
+
     var tally = document.getElementById('priorityTally');
     if (tally) {
       if (totalCount) {
-        var confirmedCount = totalCount - unverifiedCount;
         var failCount = confirmedCount - passCount;
         // Lead with the honest phrasing: what we CONFIRMED, not a
         // scary abstract score. Readiness comes last as a summary.
@@ -3210,14 +4031,24 @@
         if (unverifiedCount > 0) {
           pieces.push(unverifiedCount + ' couldn\'t be verified — answer the "is this right?" questions below to refine your score');
         }
-        pieces.push('wellness readiness: ' + wellnessScore + '/100');
+        if (lowConfidence) {
+          pieces.push('readiness: not enough confirmed signal to score yet');
+        } else {
+          pieces.push('wellness readiness: ' + wellnessScore + '/100');
+        }
         tally.textContent = pieces.join(' · ');
       } else {
         tally.textContent = 'No wellness-priority data available';
       }
     }
 
-    return { score: wellnessScore, passCount: passCount, totalCount: totalCount };
+    return {
+      score: wellnessScore,
+      passCount: passCount,
+      totalCount: totalCount,
+      confirmedCount: confirmedCount,
+      lowConfidence: lowConfidence
+    };
   }
 
   // Best-effort heuristic: is the audited URL actually a wellness business site?
@@ -3269,19 +4100,41 @@
       if (rd.detected && !hasOnlyAmbiguousBooking(rd.found)) return true;
     }
 
-    // 3) Schema.org signal: if the site publishes JSON-LD markup with
-    //    @type Restaurant / FoodEstablishment / Bakery / CafeOrCoffeeShop
-    //    etc., or any LocalBusiness with a servesCuisine field, it's
-    //    telling Google explicitly "this is a wellness business". Catches sites
-    //    that have no recognized booking platform but correctly mark
-    //    themselves up for local SEO — which is exactly the pattern a
-    //    well-built small wellness site tends to follow.
+    // Rich text extraction: pulls title + meta-description + link-text
+    // + crawlable-anchor snippets + tap-target nodes. Reused for the
+    // schema check, the self-hosted-action fallback, and the keyword
+    // match below. Previously the keyword match only saw hostname +
+    // document-title + meta-description, which missed wellness sites
+    // whose brand names don't contain cuisine-adjacent words but
+    // whose nav labels say "Book a Class", "View Schedule", "Our
+    // Services" etc.
     var schemaPageText = extractPageText(audits);
+
+    // 3) Schema.org signal: if the site publishes JSON-LD markup with
+    //    a wellness @type (HealthAndBeautyBusiness, DaySpa, BeautySalon,
+    //    HairSalon, NailSalon, ExerciseGym, HealthClub, etc.), it's
+    //    telling Google explicitly "this is a wellness business".
+    //    Catches well-SEO'd small studios that don't load a recognized
+    //    booking platform.
     if (detectWellnessSchema(schemaPageText, allUrls)) return true;
 
-    // 4) Build a haystack from hostname + page title + meta description
-    //    Each Lighthouse audit exposes its related snippet differently,
-    //    so we reach for everything that might contain readable text.
+    // 4) Self-hosted action signal: a site whose page text contains a
+    //    clear wellness action phrase ("book a class", "view schedule",
+    //    "reserve a spot") is almost certainly a wellness business —
+    //    even if it self-hosts booking on its own domain with no
+    //    recognizable platform hostname. Uses the same text patterns
+    //    the booking priority-check uses downstream, so classification
+    //    and scoring stay in sync.
+    if (schemaPageText) {
+      var sh = detectSelfHostedActions(['booking'], schemaPageText);
+      if (sh.detected) return true;
+    }
+
+    // 5) Build a haystack from hostname + page title + meta description
+    //    + the rich pageText (link labels, anchor snippets, tap-target
+    //    nodes). Widening beyond title + meta-description catches
+    //    studios whose real classification signals live in nav labels
+    //    like "Yoga Schedule" or "Massage Services".
     var haystack = host;
     function pluck(audit) {
       if (!audit) return '';
@@ -3302,10 +4155,11 @@
     if (audits) {
       haystack += ' ' + pluck(audits['document-title']);
       haystack += ' ' + pluck(audits['meta-description']);
+      haystack += ' ' + schemaPageText;
     }
     haystack = haystack.toLowerCase();
 
-    // 5) Keyword match against a curated list of wellness indicators.
+    // 6) Keyword match against a curated list of wellness indicators.
     //    STRONG terms: unambiguous enough that a single match reliably
     //    identifies the site as a wellness business.
     //    REMOVED (too generic, cause false positives):
@@ -3319,28 +4173,76 @@
     //      "yoga studio", "pilates studio", "fitness studio" (studio
     //      is only counted when paired with a wellness qualifier)
     //      "hair salon", "nail salon" (salon is only counted when paired)
-    var WELLNESS_TERMS = [
-      // Unambiguous single words
-      'yoga', 'pilates', 'spa', 'wellness', 'massage', 'meditation',
-      'skincare', 'facial', 'manicure', 'pedicure', 'barber',
-      'esthetics', 'aesthetics', 'acupuncture', 'chiropractic',
-      'reiki', 'barre', 'crossfit', 'bootcamp', 'holistic',
-      'ayurveda', 'cryotherapy', 'bodywork', 'waxing',
-      'sauna', 'float tank',
-      // Multi-word: only match as phrases to avoid false positives
-      'yoga studio', 'pilates studio', 'fitness studio',
+    // Keyword match, split into STRONG and WEAK tiers.
+    // The previous implementation used indexOf substring matching
+    // against a flat list that included ambiguous short words like
+    // 'spa' (matches "spacious", "spatial"), 'salon' (matches
+    // "Salon.com", "saloon"), 'barber' (matches "Barberton"), and
+    // 'wellness' (matches corporate "employee wellness programs").
+    // Every page with those substrings in an unrelated context was
+    // being classified as a wellness business — then silently scored
+    // 0 on Wellness Readiness and dragged down in the overall.
+    //
+    // Fix: word-boundary regex matching + STRONG/WEAK split.
+    //   STRONG — one distinct match classifies. Phrases and words
+    //            that essentially only appear on wellness sites
+    //            ('pilates', 'acupuncture', 'yoga class', 'mindbody').
+    //   WEAK   — individually ambiguous. Two distinct weak matches
+    //            required, so a corporate "wellness program" page
+    //            alone no longer trips the rule.
+    function escRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+    function matchCount(terms, text) {
+      var seen = {};
+      for (var i = 0; i < terms.length; i++) {
+        var re = new RegExp('\\b' + escRe(terms[i]) + '\\b', 'i');
+        if (re.test(text)) seen[terms[i]] = true;
+      }
+      return Object.keys(seen).length;
+    }
+
+    var STRONG_TERMS = [
+      // Unambiguous wellness-specific single words
+      'yoga', 'pilates', 'massage', 'meditation', 'skincare',
+      'manicure', 'pedicure', 'esthetics', 'acupuncture', 'chiropractic',
+      'reiki', 'barre', 'crossfit', 'ayurveda', 'cryotherapy',
+      'sauna', 'holistic',
+      // Multi-word phrases (specific enough to stand alone)
+      'float tank', 'yoga studio', 'pilates studio', 'fitness studio',
       'hair salon', 'nail salon', 'beauty salon', 'day spa',
       'yoga class', 'fitness class', 'spin class',
       'personal training', 'personal trainer',
       'lash extensions', 'brow bar', 'blowout bar',
-      // Platform-specific terms
+      // Platform-specific terms (only wellness sites load these)
       'mindbody', 'vagaro', 'fresha', 'booksy'
     ];
 
-    for (var j = 0; j < WELLNESS_TERMS.length; j++) {
-      if (haystack.indexOf(WELLNESS_TERMS[j]) !== -1) return true;
-    }
+    var WEAK_TERMS = [
+      'spa', 'salon', 'barber', 'facial', 'wellness',
+      'waxing', 'bodywork', 'aesthetics', 'bootcamp'
+    ];
+
+    if (matchCount(STRONG_TERMS, haystack) >= 1) return true;
+    if (matchCount(WEAK_TERMS, haystack) >= 2) return true;
     return false;
+  }
+
+  // Weighted overall-score calculation. Performance gets 2× the weight
+  // of Accessibility / Best Practices / SEO / Wellness Readiness.
+  // When readinessInRollup is false (non-wellness site OR low-signal
+  // readiness), readiness is excluded from both numerator and
+  // denominator so it doesn't drag the number down.
+  //
+  // Denominator is 2 + 1 + 1 + 1 (+ 1 if readiness counts) so the
+  // final number still lives on the 0–100 scale regardless of tier.
+  function computeOverall(perf, a11y, bp, seo, readiness, readinessInRollup) {
+    var PERF_WEIGHT = 2;
+    var numer = perf * PERF_WEIGHT + a11y + bp + seo;
+    var denom = PERF_WEIGHT + 3;
+    if (readinessInRollup) {
+      numer += readiness;
+      denom += 1;
+    }
+    return Math.round(numer / denom);
   }
 
   function renderReport(data, auditedUrl) {
@@ -3366,35 +4268,66 @@
     var allUrls  = extractAllUrls(audits);
     var pageText = extractPageText(audits);
 
-    // Compute Wellness Readiness score from the priority checks
-    // BEFORE the overall — we want it to contribute to the average
-    // for real wellness sites, but be excluded for non-wellnesss
-    // (like muntin.digital itself) so we don't look bad on our own tool.
-    var priorityResult  = renderPriorityChecks(audits, allUrls, pageText);
-    var isWellnessSite = looksLikeWellness(auditedUrl, audits, allUrls);
+    // Effective classification combines the automatic signal with any
+    // owner-applied override (?w=1 in URL, or "this IS a wellness
+    // business" button click). The override is one-way: we never
+    // flip a detected wellness site back to non-wellness.
+    var detectedWellness = looksLikeWellness(auditedUrl, audits, allUrls);
+    var isWellnessSite   = detectedWellness || userForcedWellness;
+
+    // Only populate the priority-check list when we're actually
+    // displaying it. For non-wellness sites the section is hidden
+    // and the DOM mutations would be wasted work — plus the mass of
+    // unverified checks could confuse screen-readers scanning the
+    // hidden node.
+    var priorityResult;
+    if (isWellnessSite) {
+      priorityResult = renderPriorityChecks(audits, allUrls, pageText);
+    } else {
+      priorityResult = { score: 0, passCount: 0, totalCount: 0, confirmedCount: 0, lowConfidence: true };
+    }
+    toggleWellnessUi(isWellnessSite);
     var wellnessScore = priorityResult.score;
 
-    // Cache the four Lighthouse category scores + the wellness business flag
+    // Auto-detect business type (Phase 1 — display + correction only,
+    // no scoring impact). Only meaningful on wellness sites; non-
+    // wellness renders hide the card entirely.
+    var businessType = isWellnessSite
+      ? detectBusinessType(audits, allUrls, pageText)
+      : null;
+    renderBusinessTypeCard(isWellnessSite, businessType);
+
+    // Cache the four Lighthouse category scores + the wellness flag
     // so recomputeOverall() (fired by user feedback clicks) can update
-    // the overall score ring and the wellness business category card without
+    // the overall score ring and the wellness category card without
     // needing to re-fetch from PSI.
     window.__auditScoreState = {
       perf: perf, a11y: a11y, bp: bp, seo: seo,
       isWellness: isWellnessSite,
+      detectedWellness: detectedWellness,
+      businessType: businessType,
       audits: audits, allUrls: allUrls, pageText: pageText,
       auditedUrl: auditedUrl
     };
 
-    var overall;
-    if (isWellnessSite) {
-      // Real wellness site: weight wellness readiness as a 5th category
-      overall = Math.round((perf + a11y + bp + seo + wellnessScore) / 5);
-    } else {
-      // Non-wellness site: average only the 4 Lighthouse categories,
-      // and mark wellness readiness as N/A so the visitor understands
-      // why that card is excluded.
-      overall = Math.round((perf + a11y + bp + seo) / 4);
-    }
+    // Readiness is only included in the overall rollup when (a) this
+    // is a wellness site AND (b) we have enough confirmed checks to
+    // trust the number. Otherwise we fall through to the 4-category
+    // average so one detected platform + eight unverifieds doesn't
+    // inflate the overall score via a 100/100 readiness phantom.
+    //
+    // Weighting: Performance carries 2× the weight of the other four
+    // categories. A slow mobile site is materially worse for a
+    // wellness business than an imperfect SEO score — a studio's
+    // class-schedule page is the most-visited URL after the homepage,
+    // and 53% of mobile visitors bounce from pages that take more
+    // than 3s to load (Google, 2018). Best Practices and SEO both
+    // regularly score 100 by default on mediocre sites, which lets
+    // a site with perf 40 cruise to an 81 overall. Double-weighting
+    // performance stops the overall number from lying about the most
+    // important axis.
+    var readinessInRollup = isWellnessSite && !priorityResult.lowConfidence;
+    var overall = computeOverall(perf, a11y, bp, seo, wellnessScore, readinessInRollup);
 
     // Strip protocol from displayed URL for readability
     var displayUrl = auditedUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
@@ -3406,24 +4339,38 @@
     setCategory('accessibility', a11y);
     setCategory('best-practices', bp);
     setCategory('seo',           seo);
-    if (isWellnessSite) {
-      setCategory('wellness', wellnessScore);
-    } else {
+    if (!isWellnessSite) {
       setCategoryNA('wellness');
+    } else if (priorityResult.lowConfidence) {
+      setCategoryLowSignal('wellness');
+    } else {
+      setCategory('wellness', wellnessScore);
     }
+    updateOverrideBanner();
 
     // Drill-down: list every failing Lighthouse audit under the right
     // category, sorted by impact. Auto-hides if nothing is failing.
-    renderOpportunities(cats, audits);
+    renderOpportunities(cats, audits, auditedUrl);
 
-    var lcp = safeAudit(audits, 'largest-contentful-paint');
-    var cls = safeAudit(audits, 'cumulative-layout-shift');
-    var tbt = safeAudit(audits, 'total-blocking-time');
-    var fcp = safeAudit(audits, 'first-contentful-paint');
-    setVital('lcp', lcp.displayValue, lcp.numericValue);
-    setVital('cls', cls.displayValue, cls.numericValue);
-    setVital('tbt', tbt.displayValue, tbt.numericValue);
-    setVital('fcp', fcp.displayValue, fcp.numericValue);
+    var lcp   = safeAudit(audits, 'largest-contentful-paint');
+    var cls   = safeAudit(audits, 'cumulative-layout-shift');
+    var tbt   = safeAudit(audits, 'total-blocking-time');
+    var fcp   = safeAudit(audits, 'first-contentful-paint');
+    var field = extractFieldMetrics(data);
+    var fieldScope = field ? field.scope : null;
+    // Prefer field (CrUX 28-day p75) for the three Core Web Vitals
+    // and FCP when available; fall back to lab. TBT is always lab.
+    // INP is field-only — show '—' with a "No real-user data" caption
+    // when CrUX hasn't collected enough visits yet.
+    if (field && field.lcp !== null) setVital('lcp', formatMs(field.lcp), field.lcp, 'field', fieldScope);
+    else                              setVital('lcp', lcp.displayValue, lcp.numericValue, 'lab');
+    if (field && field.cls !== null) setVital('cls', formatCls(field.cls), field.cls, 'field', fieldScope);
+    else                              setVital('cls', cls.displayValue, cls.numericValue, 'lab');
+    if (field && field.inp !== null) setVital('inp', formatMs(field.inp), field.inp, 'field', fieldScope);
+    else                              setVital('inp', '—', null, 'missing');
+    setVital('tbt', tbt.displayValue, tbt.numericValue, 'lab');
+    if (field && field.fcp !== null) setVital('fcp', formatMs(field.fcp), field.fcp, 'field', fieldScope);
+    else                              setVital('fcp', fcp.displayValue, fcp.numericValue, 'lab');
 
     // Expose raw audits for future consumers
     window.__auditLastResult = { audits: audits, overall: overall, url: auditedUrl, wellness: isWellnessSite ? wellnessScore : null };
@@ -3450,7 +4397,9 @@
     if (emailUrlField)   emailUrlField.value   = auditedUrl;
     if (emailScoreField) emailScoreField.value = String(overall);
     if (emailReadinessField) {
-      emailReadinessField.value = isWellnessSite ? String(wellnessScore) : 'N/A';
+      if (!isWellnessSite)               emailReadinessField.value = 'N/A';
+      else if (priorityResult.lowConfidence) emailReadinessField.value = 'Insufficient signal';
+      else                                emailReadinessField.value = String(wellnessScore);
     }
     // Build a shareable link that preserves any current overrides.
     try {
@@ -3458,26 +4407,33 @@
       shareParams.set('url', auditedUrl);
       var ovStr = encodeOverrides(USER_OVERRIDES);
       if (ovStr) shareParams.set('ov', ovStr);
+      if (userForcedWellness) shareParams.set('w', '1');
       if (emailShareLinkField) {
         emailShareLinkField.value = location.origin + location.pathname + '?' + shareParams.toString();
       }
     } catch (e) { /* no-op */ }
     // Walk the rendered results to build failing / unverified lists
-    // and a plain-English summary the email reader can scan.
+    // and a plain-English summary the email reader can scan. Skip on
+    // non-wellness sites so the recipient doesn't get eight
+    // "unverified" wellness checks in an email that doesn't apply.
     try {
       var failingChecks = [];
       var unverifiedChecks = [];
-      PRIORITY_CHECKS.forEach(function(def, idx){
-        var result = evaluatePriorityCheck(def, audits, allUrls, pageText);
-        if (!result) return;
-        if (USER_OVERRIDES[idx] === 'pass' && result.mark.cls === 'unverified') return;
-        if (USER_OVERRIDES[idx] === 'fail' && result.mark.cls === 'unverified') {
-          result = makeResult(def, 'fail');
-        }
-        var title = result.title ? String(result.title).replace(/<[^>]*>/g, '') : 'check ' + (idx + 1);
-        if (result.mark.cls === 'fail') failingChecks.push(title);
-        else if (result.mark.cls === 'unverified') unverifiedChecks.push(title);
-      });
+      if (isWellnessSite) {
+        var emailType = effectiveBusinessType();
+        PRIORITY_CHECKS.forEach(function(def, idx){
+          var resolvedDef = resolveCheckForType(def, emailType);
+          var result = evaluatePriorityCheck(resolvedDef, audits, allUrls, pageText);
+          if (!result) return;
+          if (USER_OVERRIDES[idx] === 'pass' && result.mark.cls === 'unverified') return;
+          if (USER_OVERRIDES[idx] === 'fail' && result.mark.cls === 'unverified') {
+            result = makeResult(resolvedDef, 'fail');
+          }
+          var title = result.title ? String(result.title).replace(/<[^>]*>/g, '') : 'check ' + (idx + 1);
+          if (result.mark.cls === 'fail') failingChecks.push(title);
+          else if (result.mark.cls === 'unverified') unverifiedChecks.push(title);
+        });
+      }
       if (emailFailingField)    emailFailingField.value    = failingChecks.join('; ');
       if (emailUnverifiedField) emailUnverifiedField.value = unverifiedChecks.join('; ');
       if (emailCorrectionsField) {
@@ -3491,9 +4447,15 @@
         emailCorrectionsField.value = corr.join('; ');
       }
       if (emailSummaryField) {
+        var readinessLine = null;
+        if (isWellnessSite) {
+          readinessLine = priorityResult.lowConfidence
+            ? 'Wellness readiness: insufficient signal (too many unverified checks)'
+            : 'Wellness readiness: ' + wellnessScore + '/100';
+        }
         var parts = [
           'Overall score: ' + overall + '/100',
-          isWellnessSite ? 'Wellness readiness: ' + wellnessScore + '/100' : null,
+          readinessLine,
           failingChecks.length ? failingChecks.length + ' failing checks' : 'No failing checks',
           unverifiedChecks.length ? unverifiedChecks.length + ' couldn\'t be verified' : null
         ].filter(function(p){ return p; });
@@ -3529,37 +4491,70 @@
     var state = window.__auditScoreState;
     if (!state) return;
     // Re-run the priority checks to pick up current USER_OVERRIDES
-    // state. renderPriorityChecks returns the updated restaurant score.
+    // state. renderPriorityChecks returns the updated wellness score.
     var priorityResult = renderPriorityChecks(state.audits, state.allUrls, state.pageText);
     var newWellnessScore = priorityResult.score;
-
-    var overall;
-    if (state.isWellness) {
-      overall = Math.round((state.perf + state.a11y + state.bp + state.seo + newWellnessScore) / 5);
-    } else {
-      overall = Math.round((state.perf + state.a11y + state.bp + state.seo) / 4);
-    }
+    var readinessInRollup = state.isWellness && !priorityResult.lowConfidence;
+    var overall = computeOverall(
+      state.perf, state.a11y, state.bp, state.seo, newWellnessScore, readinessInRollup
+    );
 
     // Update the score ring (stroke-dashoffset transition handles
     // the animation), verdict copy, Wellness Readiness category
     // card, and the cached last-result so future share/email/copy
-    // actions see the corrected score.
+    // actions see the corrected score. If the user just clicked
+    // "I have this" on enough unverifieds to cross the confidence
+    // threshold, the wellness card transitions from '?' to a real
+    // score on this pass.
     setScoreRing(overall);
     var verdictEl = document.getElementById('verdictCopy');
     if (verdictEl) verdictEl.textContent = verdictFor(overall);
-    if (state.isWellness) setCategory('wellness', newWellnessScore);
+    if (!state.isWellness) {
+      setCategoryNA('wellness');
+    } else if (priorityResult.lowConfidence) {
+      setCategoryLowSignal('wellness');
+    } else {
+      setCategory('wellness', newWellnessScore);
+    }
 
     if (window.__auditLastResult) {
       window.__auditLastResult.overall = overall;
-      window.__auditLastResult.wellness = state.isWellness ? newWellnessScore : null;
+      window.__auditLastResult.wellness = readinessInRollup ? newWellnessScore : null;
     }
+    updateOverrideBanner();
 
     // Update the email form hidden fields so an email sent AFTER
     // corrections carries the corrected score + readiness.
     var emailScoreField     = document.getElementById('emailReportScore');
     var emailReadinessField = document.getElementById('emailReportReadiness');
     if (emailScoreField)     emailScoreField.value     = String(overall);
-    if (emailReadinessField) emailReadinessField.value = state.isWellness ? String(newWellnessScore) : 'N/A';
+    if (emailReadinessField) {
+      if (!state.isWellness)              emailReadinessField.value = 'N/A';
+      else if (priorityResult.lowConfidence) emailReadinessField.value = 'Insufficient signal';
+      else                                emailReadinessField.value = String(newWellnessScore);
+    }
+  }
+
+  // Toggle the "score includes owner-confirmed checks" banner based on
+  // how many USER_OVERRIDES are active. Called from renderReport
+  // (initial paint) and recomputeOverallFromCurrentState (after
+  // feedback clicks) so the banner appears the moment a mutated
+  // score is first visible.
+  function updateOverrideBanner() {
+    var banner = document.getElementById('scoreOverrideBanner');
+    var textEl = document.getElementById('scoreOverrideText');
+    if (!banner) return;
+    var keys = Object.keys(USER_OVERRIDES);
+    if (!keys.length) {
+      banner.hidden = true;
+      return;
+    }
+    banner.hidden = false;
+    if (textEl) {
+      var noun = keys.length === 1 ? 'check' : 'checks';
+      textEl.textContent = 'This score includes ' + keys.length +
+        ' owner-confirmed ' + noun + '. Remove the ?ov=… parameter from the URL to see the fully tool-verified score.';
+    }
   }
 
   function showError(heading, body) {
@@ -3622,9 +4617,12 @@
             "Google Lighthouse couldn't load the URL. Make sure it's publicly accessible — no login wall, no staging environment, and no rate limiter blocking bots."
           );
         } else if (/quota|rate|exceed/i.test(msg) || err.status === 429) {
+          // Start a 30-second cooldown so rapid retries don't compound
+          // rate-limit pressure on Google's shared free tier.
+          startCooldown(30);
           showError(
             "We're a little rate-limited right now.",
-            "Google's free tier is temporarily throttled. Try again in a minute, or email don@muntin.digital for a manual audit."
+            "Google's free tier is temporarily throttled. Give it about 30 seconds before trying again, or email don@muntin.digital for a manual audit."
           );
         } else if (err.status === 400) {
           showError(
@@ -3645,8 +4643,15 @@
         }
       })
       .then(function(){
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = submitOriginalHTML;
+        // If a rate-limit cooldown is active, leave the button in its
+        // countdown state — updateCooldownUI() will restore the label
+        // when the cooldown ends.
+        if (cooldownRemaining() > 0) {
+          updateCooldownUI();
+        } else {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = submitOriginalHTML;
+        }
       });
   }
 
@@ -3654,8 +4659,51 @@
   // button can re-run the same audit without the user retyping it.
   var lastAuditUrl = null;
 
+  // Rate-limit backoff. If Google returns 429 / quota-exceeded, we
+  // set a cooldown ms timestamp — any submit (form, retry button,
+  // URL-param auto-run) before the cooldown expires is intercepted
+  // with a countdown message. Without this, a user who hits
+  // "Try again" six times in six seconds compounds the rate-limit
+  // pressure on Google's shared free tier.
+  var cooldownUntil = 0;
+  var cooldownTimer = null;
+  function startCooldown(seconds) {
+    cooldownUntil = Date.now() + seconds * 1000;
+    updateCooldownUI();
+    if (cooldownTimer) clearInterval(cooldownTimer);
+    cooldownTimer = setInterval(function(){
+      if (Date.now() >= cooldownUntil) {
+        clearInterval(cooldownTimer);
+        cooldownTimer = null;
+      }
+      updateCooldownUI();
+    }, 500);
+  }
+  function cooldownRemaining() {
+    var remain = cooldownUntil - Date.now();
+    return remain > 0 ? Math.ceil(remain / 1000) : 0;
+  }
+  function updateCooldownUI() {
+    var remain = cooldownRemaining();
+    if (remain > 0) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Wait ' + remain + 's';
+    } else if (submitBtn.disabled && submitBtn.textContent && submitBtn.textContent.indexOf('Wait') === 0) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = submitOriginalHTML;
+    }
+  }
+
   form.addEventListener('submit', function(e){
     e.preventDefault();
+    var remain = cooldownRemaining();
+    if (remain > 0) {
+      showError(
+        "Still cooling down.",
+        "Google's API is rate-limiting us. Try again in " + remain + " second" + (remain === 1 ? '' : 's') + "."
+      );
+      return;
+    }
     var url = normalizeUrl(input.value);
     if (!url) {
       showError(
@@ -3681,6 +4729,14 @@
         if (input) input.focus();
         return;
       }
+      var retryRemain = cooldownRemaining();
+      if (retryRemain > 0) {
+        showError(
+          "Still cooling down.",
+          "Google's API is rate-limiting us. Try again in " + retryRemain + " second" + (retryRemain === 1 ? '' : 's') + "."
+        );
+        return;
+      }
       if (window.plausible) window.plausible('Audit Retry');
       runAudit(lastAuditUrl);
     });
@@ -3691,6 +4747,64 @@
       if (input) {
         input.value = '';
         input.focus();
+      }
+    });
+  }
+
+  // "This IS a wellness business" classification override. Flips
+  // userForcedWellness on, re-runs the priority checks against the
+  // same cached PSI result, and refreshes the score ring so readiness
+  // joins the overall average. Persists via ?w=1 in the URL so a
+  // forwarded audit link keeps the classification correction.
+  var forceWellnessBtn = document.getElementById('forceWellnessBtn');
+  if (forceWellnessBtn) {
+    forceWellnessBtn.addEventListener('click', function(){
+      var state = window.__auditScoreState;
+      if (!state) return;
+      userForcedWellness = true;
+      state.isWellness = true;
+      toggleWellnessUi(true);
+      renderPriorityChecks(state.audits, state.allUrls, state.pageText);
+      // Also re-detect the business type on the fly — the user just
+      // told us this IS a wellness business, so surface the card.
+      var bt = detectBusinessType(state.audits, state.allUrls, state.pageText);
+      state.businessType = bt;
+      renderBusinessTypeCard(true, bt);
+      recomputeOverallFromCurrentState();
+      updateUrlState(state.auditedUrl);
+      if (window.plausible) window.plausible('Audit Classification Overridden');
+    });
+  }
+
+  // Business-type dropdown. Fires on every change; records the
+  // correction as an analytics signal, persists via ?bt= in the URL,
+  // and refreshes the subcopy so the card reflects the confirmed
+  // state. Detection itself is unchanged — the owner's pick wins.
+  var btcSelect = document.getElementById('btcSelect');
+  if (btcSelect) {
+    btcSelect.addEventListener('change', function(){
+      var newType = btcSelect.value;
+      if (ALLOWED_BUSINESS_TYPES.indexOf(newType) === -1) return;
+      userBusinessType = newType;
+      var state = window.__auditScoreState;
+      if (state) {
+        renderBusinessTypeCard(true, state.businessType);
+        // Re-render priority checks so the type-specific copy updates
+        // live — a salon owner correcting us from "fitness" to "salon"
+        // sees "Is your services menu an HTML page?" instead of
+        // "Is your class schedule a PDF?" without a page reload.
+        // The underlying pass/fail state doesn't change (only copy
+        // varies by type), so no recomputeOverall is needed.
+        if (state.isWellness) {
+          renderPriorityChecks(state.audits, state.allUrls, state.pageText);
+        }
+        updateUrlState(state.auditedUrl);
+      }
+      if (window.plausible) {
+        var detectedType = (state && state.businessType && state.businessType.type) || 'unknown';
+        window.plausible('Audit Business Type Corrected', {
+          props: { detected: detectedType, corrected_to: newType }
+        });
       }
     });
   }
@@ -3787,13 +4901,28 @@
       if (!last || !last.url) return;
       var pretty = last.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
       var score = last.overall || 0;
+      // Reuse the cached allUrls / pageText that renderReport computed
+      // so the image reflects the exact evaluation state on screen,
+      // including any overrides the owner confirmed via feedback
+      // clicks. Also handles evaluatePriorityCheck returning null for
+      // audits PSI didn't produce — those rows are simply omitted.
       var checks = [];
       if (last.audits) {
-        PRIORITY_CHECKS.forEach(function(def) {
-          var result = evaluatePriorityCheck(def, last.audits,
-            extractAllUrls(last.audits), extractPageText(last.audits));
-          var mark = result.cls === 'pass' ? '✓' : result.cls === 'fail' ? '✗' : '?';
-          checks.push({ mark: mark, cls: result.cls, label: result.passLabel || result.failLabel || def.pass });
+        var state = window.__auditScoreState || {};
+        var shareUrls = state.allUrls || extractAllUrls(last.audits);
+        var shareText = state.pageText || extractPageText(last.audits);
+        PRIORITY_CHECKS.forEach(function(def, idx) {
+          var result = evaluatePriorityCheck(def, last.audits, shareUrls, shareText);
+          if (!result) return;
+          if (USER_OVERRIDES[idx] === 'pass' && result.mark.cls === 'unverified') {
+            result = makeResult(def, 'pass');
+          } else if (USER_OVERRIDES[idx] === 'fail' && result.mark.cls === 'unverified') {
+            result = makeResult(def, 'fail');
+          }
+          var cls = result.mark.cls;
+          var mark = cls === 'pass' ? '✓' : cls === 'fail' ? '✗' : '?';
+          var label = result.title || def.pass || def.fail || 'Check';
+          checks.push({ mark: mark, cls: cls, label: label });
         });
       }
       var W = 1200, H = 630;
@@ -4012,27 +5141,39 @@
           var pageText = extractPageText(audits);
           var isWellness = looksLikeWellness(url, audits, allUrls);
           var wellnessScore = 0;
+          var totalCount = 0, unverifiedCount = 0;
           if (isWellness) {
             var totalWeight = 0, weightedCredit = 0;
             PRIORITY_CHECKS.forEach(function(def){
               var result = evaluatePriorityCheck(def, audits, allUrls, pageText);
               if (!result) return;
-              if (result.mark.cls === 'unverified') return; // excluded from score
+              totalCount++;
+              if (result.mark.cls === 'unverified') {
+                unverifiedCount++;
+                return; // excluded from score
+              }
               var w = typeof def.weight === 'number' ? def.weight : 1.0;
               totalWeight += w;
               if (result.mark.cls === 'pass') weightedCredit += w;
             });
             wellnessScore = totalWeight > 0 ? Math.round((weightedCredit / totalWeight) * 100) : 0;
           }
-          var overall = isWellness
-            ? Math.round((perf + a11y + bp + seo + wellnessScore) / 5)
-            : Math.round((perf + a11y + bp + seo) / 4);
+          // Apply the same confidence gate the main audit uses, so
+          // competitors with only one confirmed pass don't show up as
+          // 100/100 readiness in the comparison table.
+          var competitorConfirmed = totalCount - unverifiedCount;
+          var competitorFloor     = Math.max(3, Math.ceil(totalCount * 0.4));
+          var lowConfidence       = totalCount > 0 && competitorConfirmed < competitorFloor;
+          var readinessInRollup   = isWellness && !lowConfidence;
+          var overall = computeOverall(perf, a11y, bp, seo, wellnessScore, readinessInRollup);
           return {
             url: url,
             pretty: url.replace(/^https?:\/\//, '').replace(/\/$/, ''),
             perf: perf, a11y: a11y, bp: bp, seo: seo,
             isWellness: isWellness,
-            wellness: isWellness ? wellnessScore : null,
+            // Only surface a competitor readiness number when we had
+            // enough confirmed signal to trust it.
+            wellness: readinessInRollup ? wellnessScore : null,
             overall: overall
           };
         });
@@ -4264,6 +5405,16 @@
       if (ov) {
         var decoded = decodeOverrides(ov);
         Object.keys(decoded).forEach(function(k){ USER_OVERRIDES[k] = decoded[k]; });
+      }
+      // Hydrate the wellness-classification override (?w=1). A
+      // recipient of a shared link that was corrected by the owner
+      // gets the priority-check section visible from the first render.
+      if (params.get('w') === '1') userForcedWellness = true;
+      // Hydrate the business-type correction (?bt=yoga|fitness|…).
+      // Ignored silently if the value isn't in the allowed set.
+      var btParam = params.get('bt');
+      if (btParam && ALLOWED_BUSINESS_TYPES.indexOf(btParam) !== -1) {
+        userBusinessType = btParam;
       }
       // Brief delay so the page finishes painting before we kick off the fetch
       setTimeout(function(){
