@@ -1495,6 +1495,9 @@
             <button type="button" class="share-platform share-native" id="shareNative" aria-label="Open native share sheet" title="More share options" hidden>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>
             </button>
+            <button type="button" class="share-platform" id="shareImage" aria-label="Download result card as image" title="Download image">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </button>
           </div>
         </div>
       </div>
@@ -3740,6 +3743,62 @@
       }).then(function(){
         if (window.plausible) window.plausible('Audit Shared: Native');
       }).catch(function(){ /* user cancelled the share sheet — no-op */ });
+    });
+  }
+
+  /* -------- Download result card as image -------- */
+  var shareImageBtn = document.getElementById('shareImage');
+  if (shareImageBtn) {
+    shareImageBtn.addEventListener('click', function() {
+      var last = window.__auditLastResult;
+      if (!last || !last.url) return;
+      var pretty = last.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+      var score = last.overall || 0;
+      var checks = [];
+      if (last.audits) {
+        PRIORITY_CHECKS.forEach(function(def) {
+          var result = evaluatePriorityCheck(def, last.audits,
+            extractAllUrls(last.audits), extractPageText(last.audits));
+          var mark = result.cls === 'pass' ? '✓' : result.cls === 'fail' ? '✗' : '?';
+          checks.push({ mark: mark, cls: result.cls, label: result.passLabel || result.failLabel || def.pass });
+        });
+      }
+      var W = 1200, H = 630;
+      var c = document.createElement('canvas');
+      c.width = W; c.height = H;
+      var g = c.getContext('2d');
+      g.fillStyle = '#FAF7F2'; g.fillRect(0, 0, W, H);
+      g.fillStyle = score >= 90 ? '#1f9d55' : score >= 50 ? '#C28B2E' : '#B8541A';
+      g.fillRect(0, 0, 8, H);
+      var cx = 140, cy = 200;
+      g.beginPath(); g.arc(cx, cy, 80, 0, Math.PI * 2);
+      g.strokeStyle = '#E8E2D6'; g.lineWidth = 10; g.stroke();
+      g.beginPath(); g.arc(cx, cy, 80, -Math.PI/2, -Math.PI/2 + (Math.PI*2*score/100));
+      g.strokeStyle = score >= 90 ? '#1f9d55' : score >= 50 ? '#C28B2E' : '#B8541A';
+      g.lineWidth = 10; g.stroke();
+      g.fillStyle = '#14161A'; g.font = '600 64px Fraunces, Georgia, serif';
+      g.textAlign = 'center'; g.fillText(String(score), cx, cy + 22);
+      g.fillStyle = '#6B6B6B'; g.font = '500 18px Inter, Arial, sans-serif';
+      g.textAlign = 'left'; g.fillText(pretty, 60, 360);
+      g.fillStyle = '#14161A'; g.font = '500 32px Fraunces, Georgia, serif';
+      g.fillText('Wellness Studio Website Audit', 60, 400);
+      var startX = 500, startY = 60;
+      checks.forEach(function(ch, i) {
+        var y = startY + i * 42;
+        g.fillStyle = ch.cls === 'pass' ? '#1f9d55' : ch.cls === 'fail' ? '#B8541A' : '#6B6B6B';
+        g.font = '700 20px Inter, Arial, sans-serif'; g.fillText(ch.mark, startX, y + 18);
+        g.fillStyle = '#14161A'; g.font = '500 16px Inter, Arial, sans-serif';
+        var label = ch.label.length > 45 ? ch.label.substring(0, 42) + '…' : ch.label;
+        g.fillText(label, startX + 30, y + 18);
+      });
+      g.fillStyle = '#E8E2D6'; g.fillRect(0, H - 50, W, 50);
+      g.fillStyle = '#6B6B6B'; g.font = '600 14px Inter, Arial, sans-serif';
+      g.textAlign = 'left'; g.fillText('MUNTIN DIGITAL', 60, H - 20);
+      g.textAlign = 'right'; g.fillText('muntin.digital/tools/audits/wellness', W - 60, H - 20);
+      var link = document.createElement('a');
+      link.download = 'audit-' + pretty.replace(/[^a-z0-9]/gi, '-') + '.png';
+      link.href = c.toDataURL('image/png'); link.click();
+      if (window.plausible) window.plausible('Audit Shared: Image');
     });
   }
 
