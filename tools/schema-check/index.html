@@ -167,16 +167,19 @@
 
     var api='https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url='+encodeURIComponent(url)+'&strategy=mobile&category=seo';
 
+    // Two-pass approach: first try Lighthouse, then fall back to
+    // our own Worker proxy if Lighthouse didn't return schema data.
+    // This eliminates the false-negative where Lighthouse's
+    // structured-data audit is absent from the response.
     fetch(api).then(function(r){return r.json()}).then(function(data){
       if(data.error)throw new Error(data.error.message||'API error');
 
-      var audits=data.lighthouseResult.audits||{};
+      var audits=(data.lighthouseResult||{}).audits||{};
       var sd=audits['structured-data'];
       var foundTypes=[];
       var seen={};
 
-      // Extract @type values from the structured-data audit details
-      // and from the raw page text (Lighthouse exposes snippets)
+      // Try Lighthouse first
       var searchText='';
       if(sd&&sd.details&&sd.details.items){
         sd.details.items.forEach(function(item){
@@ -184,16 +187,12 @@
           if(item.description)searchText+=item.description+' ';
         });
       }
-      // Note: document-title audit does not contain schema data,
-      // removed misleading fallback that scanned it for @type values.
 
-      // Parse @type values from the text
       var typeRe=/"@type"\s*:\s*"([A-Za-z]+)"/g;
       var m;
       while((m=typeRe.exec(searchText))!==null){
         if(!seen[m[1]]){seen[m[1]]=true;foundTypes.push(m[1])}
       }
-      // Also try array format: "@type": ["Thing","LocalBusiness"]
       var arrayRe=/"@type"\s*:\s*\[([^\]]+)\]/g;
       while((m=arrayRe.exec(searchText))!==null){
         var inner=m[1].match(/"([A-Za-z]+)"/g);
@@ -202,6 +201,20 @@
           if(!seen[t]){seen[t]=true;foundTypes.push(t)}
         });
       }
+
+      // If Lighthouse returned nothing, fall back to our Worker
+      if(foundTypes.length===0){
+        return fetch('/api/schema-check?url='+encodeURIComponent(url))
+          .then(function(r2){return r2.json()})
+          .then(function(d2){
+            if(d2.ok&&d2.types&&d2.types.length){
+              d2.types.forEach(function(t){if(!seen[t]){seen[t]=true;foundTypes.push(t)}});
+            }
+            return foundTypes;
+          });
+      }
+      return foundTypes;
+    }).then(function(foundTypes){
 
       var hasSpecific=foundTypes.some(function(t){return classify(t)==='specific'});
       var hasAny=foundTypes.length>0;
