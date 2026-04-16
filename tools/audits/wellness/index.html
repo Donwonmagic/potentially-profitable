@@ -1428,7 +1428,7 @@
         actually doing?
       </h1>
       <p class="hero-sub" style="margin:24px auto 0; max-width:580px;">
-        Drop your URL below and I'll run a real mobile audit in about twenty seconds — performance, SEO, accessibility, and the specific checks that matter for a wellness studio, spa, salon, or fitness space. No sign-up, no email required, no tracking.
+        Drop your URL below and I'll run a real mobile audit in about thirty seconds — performance, SEO, accessibility, and the specific checks that matter for a wellness studio, spa, salon, or fitness space. No sign-up, no email required to see your results, no tracking.
       </p>
 
       <form class="audit-form" id="auditForm" novalidate>
@@ -1597,7 +1597,7 @@
           <p class="ranges"><strong>Target:</strong> 100. Anything less is leaving ranking signals on the table.</p>
 
           <h4>Wellness Readiness (0–100)</h4>
-          <p>Our own rubric, specific to independent wellness business websites. Tracks nine things that matter for turning a mobile visitor into a booked appointment: service menu readability, booking visibility, phone access, maps, mobile speed, tap targets, text contrast, font size, and business schema. Each check is weighted — a confident pass is worth 1 point, a partial pass is worth 0.5, a failure is worth 0 — averaged into a 0–100 score.</p>
+          <p>Our own rubric, specific to independent wellness businesses (yoga studios, spas, salons, boutique fitness, etc.). Covers nine checks that matter for turning a mobile visitor into a booked appointment or class: a working mobile viewport, tap-target size, text contrast, legible font sizes, a tappable phone number, an embedded map or directions link, a booking path (either a known platform like Mindbody/Acuity or a self-hosted equivalent), a readable services or class-schedule page (not a PDF or image), and LocalBusiness / health-and-beauty schema.org markup for local search. Each check is weighted by its conversion impact — a pass earns full weight, a fail earns zero. Anything we honestly couldn't verify is excluded from both sides of the average, so "unknown" never penalizes you. Non-wellness sites show "N/A" here and don't count this category toward their overall score.</p>
 
           <h4>Core Web Vitals</h4>
           <p>Four specific timing and stability measurements Google uses for mobile performance ranking. These are the individual numbers that make up (most of) the Performance score above.</p>
@@ -2130,8 +2130,8 @@
   function verdictFor(score) {
     if (score >= 90) return "Your site is in great shape. Most wellness businesses would be thrilled to hit this score. Small polish items may remain — check the breakdown below.";
     if (score >= 70) return "Solid foundation with room to tighten up. Focus on the red and amber items below — most are mechanical fixes that push your scores into the green (90+) zone.";
-    if (score >= 50) return "The site works, but it's leaking conversions. The good news: the wins here — load speed, image alt text, meta tags, schema — take days, not months.";
-    return "There's real work to do. Scores in this range usually track with a template site hitting its ceiling. The fastest path forward is often a fresh build — happy to walk through options on a 20-minute call.";
+    if (score >= 50) return "The site works, but it's leaking bookings. The good news: the wins here — load speed, image alt text, meta tags, schema — take days, not months, and they're listed in priority order below.";
+    return "There's real work to do. Scores in this range usually track with a template site hitting its ceiling — font sizes, tap targets, page speed, and schema markup all tend to be fixable, but they add up. Start with the failing items below, in the order they're listed.";
   }
 
   function setScoreRing(score) {
@@ -3787,13 +3787,28 @@
       if (!last || !last.url) return;
       var pretty = last.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
       var score = last.overall || 0;
+      // Reuse the cached allUrls / pageText that renderReport computed
+      // so the image reflects the exact evaluation state on screen,
+      // including any overrides the owner confirmed via feedback
+      // clicks. Also handles evaluatePriorityCheck returning null for
+      // audits PSI didn't produce — those rows are simply omitted.
       var checks = [];
       if (last.audits) {
-        PRIORITY_CHECKS.forEach(function(def) {
-          var result = evaluatePriorityCheck(def, last.audits,
-            extractAllUrls(last.audits), extractPageText(last.audits));
-          var mark = result.cls === 'pass' ? '✓' : result.cls === 'fail' ? '✗' : '?';
-          checks.push({ mark: mark, cls: result.cls, label: result.passLabel || result.failLabel || def.pass });
+        var state = window.__auditScoreState || {};
+        var shareUrls = state.allUrls || extractAllUrls(last.audits);
+        var shareText = state.pageText || extractPageText(last.audits);
+        PRIORITY_CHECKS.forEach(function(def, idx) {
+          var result = evaluatePriorityCheck(def, last.audits, shareUrls, shareText);
+          if (!result) return;
+          if (USER_OVERRIDES[idx] === 'pass' && result.mark.cls === 'unverified') {
+            result = makeResult(def, 'pass');
+          } else if (USER_OVERRIDES[idx] === 'fail' && result.mark.cls === 'unverified') {
+            result = makeResult(def, 'fail');
+          }
+          var cls = result.mark.cls;
+          var mark = cls === 'pass' ? '✓' : cls === 'fail' ? '✗' : '?';
+          var label = result.title || def.pass || def.fail || 'Check';
+          checks.push({ mark: mark, cls: cls, label: label });
         });
       }
       var W = 1200, H = 630;
