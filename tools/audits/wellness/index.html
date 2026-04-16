@@ -2366,6 +2366,41 @@
     return 'missing';
   }
 
+  // ================================================================
+  // SELF-HOSTED BOOKING PATTERNS
+  // ================================================================
+  // Text-based fallback: when no third-party booking platform URL is
+  // found, scan the page text for phrases that indicate self-hosted
+  // or custom booking. These must be STRONG signals — "book a class"
+  // is strong, "book a call" is NOT (that's a sales consultation,
+  // not a class/appointment booking system).
+  //
+  // FALSE POSITIVE GUARD: We exclude generic "book a call" / "schedule
+  // a consultation" / "contact us" patterns because those indicate a
+  // lead form, not a booking system. A wellness site that only has
+  // "Book a free consultation" does NOT have online booking — it has
+  // a contact form with a nicer label.
+  var SELF_HOSTED_PATTERNS = {
+    booking: [
+      /\bbook\s+(?:a\s+)?(?:class|session|appointment|treatment|service|massage|facial|lesson)\b/i,
+      /\bschedule\s+(?:a\s+)?(?:class|session|appointment|treatment|visit)\b/i,
+      /\breserve\s+(?:a\s+)?(?:spot|space|mat|bike|class)\b/i,
+      /\bsign\s+up\s+for\s+(?:a\s+)?(?:class|session|workshop|retreat)\b/i,
+      /\bview\s+(?:class\s+)?schedule\b/i,
+      /\bclass\s+schedule\b/i,
+      /\bbook\s+this\s+class\b/i,
+      /\bbook\s+(?:now|online|today|instantly)\b/i,
+      /\bjoin\s+(?:a\s+)?class\b/i,
+      /\benroll\s+now\b/i,
+      /\bregister\s+for\b/i
+    ]
+  };
+
+  // NEGATIVE patterns — if ONLY these appear (and none of the above),
+  // we do NOT count it as booking. These are sales/lead-gen, not
+  // client booking systems.
+  var BOOKING_FALSE_POSITIVE_RE = /\b(?:book\s+a\s+(?:call|consultation|demo|meeting|tour|intro)|schedule\s+a\s+(?:call|consultation|demo|meeting|tour|chat)|free\s+consultation|contact\s+us)\b/i;
+
   // Text-based fallback detection: if no known third-party platform
   // matched via URL, scan the combined page text for action phrases.
   // Returns the same shape as detectPlatforms() so callers can
@@ -2378,14 +2413,27 @@
       var patterns = SELF_HOSTED_PATTERNS[keys[k]];
       if (!patterns) continue;
       var label;
-      if (keys[k] === 'ordering')          label = 'Self-hosted ordering';
-      else if (keys[k] === 'appointments') label = 'Self-hosted appointments';
+      if (keys[k] === 'booking')           label = 'Self-hosted booking';
       else continue;
       if (seen[label]) continue;
       for (var p = 0; p < patterns.length; p++) {
         if (patterns[p].test(pageText)) {
-          seen[label] = true;
-          found.push({ label: label, name: label });
+          // FALSE POSITIVE GUARD: if the only "booking" text on the
+          // page is consultation/call/demo language, don't count it.
+          // A site that says "Book a free consultation" but NOT "Book
+          // a class" does NOT have online booking.
+          var hasRealBooking = false;
+          for (var q = 0; q < patterns.length; q++) {
+            var match = pageText.match(patterns[q]);
+            if (match && !BOOKING_FALSE_POSITIVE_RE.test(match[0])) {
+              hasRealBooking = true;
+              break;
+            }
+          }
+          if (hasRealBooking) {
+            seen[label] = true;
+            found.push({ label: label, name: label });
+          }
           break;
         }
       }
