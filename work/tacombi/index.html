@@ -68,8 +68,97 @@
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
 <link rel="stylesheet" href="/assets/site.css">
 
-<!-- PAGE PLACEHOLDER — body added in next commit -->
+<style>
+  /* ============ TACOMBI CASE STUDY ============ */
+  .case-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 14px;
+    border: 1px solid var(--line-dark);
+    border-radius: 999px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--stone);
+  }
+  .case-eyebrow::before {
+    content: ''; display: block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #E63226;
+  }
+  .case-meta {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    max-width: 720px;
+    margin: 40px auto 0;
+    text-align: center;
+  }
+  .case-meta > div > .label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--stone); margin-bottom: 6px;
+  }
+  .case-meta > div > .value {
+    font-family: var(--font-display);
+    font-size: 16px; font-weight: 500; color: var(--ink);
+  }
+  @media (max-width: 640px) {
+    .case-meta { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  }
+
+  /* Overview cards */
+  .overview-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 24px; margin-top: 32px;
+  }
+  .overview-card {
+    padding: 28px; border: 1px solid var(--line);
+    border-radius: 12px; background: var(--white);
+  }
+  .overview-card .label {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 12px;
+  }
+  .overview-card h4 {
+    font-family: var(--font-display);
+    font-size: 20px; font-weight: 500;
+    color: var(--ink); margin: 0 0 10px; letter-spacing: -0.01em;
+  }
+  .overview-card p {
+    font-size: 15px; line-height: 1.6; color: var(--ink-soft); margin: 0;
+  }
+  @media (max-width: 760px) {
+    .overview-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Gallery */
+  .gallery-section { margin-top: 32px; }
+  .gallery-label {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--teal); margin: 0 0 16px;
+  }
+  .gallery-row {
+    display: grid; gap: 16px; margin-bottom: 48px;
+  }
+  .gallery-row.cols-2 { grid-template-columns: 1fr 1fr; }
+  .gallery-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  @media (max-width: 640px) {
+    .gallery-row.cols-2,
+    .gallery-row.cols-3 { grid-template-columns: 1fr; }
+  }
+  .gallery-row img {
+    width: 100%; height: auto; display: block;
+    border-radius: 10px; border: 1px solid var(--line);
+  }
+  .gallery-caption {
+    font-size: 13px; color: var(--stone); margin-top: 8px;
+    line-height: 1.45;
+  }
+</style>
 </head>
 <body>
+<!-- BODY ADDED IN NEXT COMMIT -->
 </body>
 </html>
