@@ -245,6 +245,100 @@
     white-space: nowrap;
   }
 
+  /* ============ EDUCATIONAL GRAPHICS ============
+     Matching the visual system from the Wix vs. Custom post:
+     .article-figure bleeds wider than the 680px article column,
+     white bg, rounded corners, figcaption in small-caps. */
+  .article-figure {
+    margin: 56px -40px;
+    padding: 40px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+  }
+  .article-figure figcaption {
+    font-size: 11px;
+    color: var(--stone);
+    font-family: var(--font-body);
+    margin-top: 20px;
+    text-align: center;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  @media (max-width: 720px) {
+    .article-figure { margin: 40px -16px; padding: 24px 20px; border-radius: 14px; }
+  }
+
+  /* -- Four-Options Comparison Grid -- */
+  .options-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    font-family: var(--font-body);
+  }
+  @media (max-width: 800px) { .options-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 460px) { .options-grid { grid-template-columns: 1fr; } }
+  .opt-card {
+    padding: 22px 18px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--cream-2);
+  }
+  .opt-card.recommended { background: var(--white); border-color: var(--teal); border-width: 2px; }
+  .opt-card .opt-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--stone); margin: 0 0 6px; }
+  .opt-card h4 { font-family: var(--font-display); font-size: 17px; font-weight: 500; color: var(--ink); margin: 0 0 4px; letter-spacing: -0.01em; }
+  .opt-card .opt-price { font-family: var(--font-display); font-size: 15px; font-weight: 500; color: var(--teal); margin: 0 0 14px; }
+  .opt-card dl { margin: 0; font-size: 12.5px; line-height: 1.4; }
+  .opt-card dt { font-weight: 700; color: var(--stone); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 10px; }
+  .opt-card dt:first-of-type { margin-top: 0; }
+  .opt-card dd { margin: 2px 0 0; color: var(--ink-soft); }
+  .opt-card .opt-tag { display: inline-block; margin-top: 14px; padding: 4px 10px; border-radius: 999px; font-size: 10.5px; font-weight: 600; letter-spacing: 0.02em; }
+  .opt-tag.green { background: rgba(31,157,85,0.1); color: #1f9d55; }
+  .opt-tag.amber { background: rgba(194,139,46,0.1); color: #8A6018; }
+  .opt-tag.red { background: rgba(184,84,26,0.08); color: var(--rust); }
+
+  /* -- Example Bundles -- */
+  .bundles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    font-family: var(--font-body);
+  }
+  @media (max-width: 640px) { .bundles-grid { grid-template-columns: 1fr; } }
+  .bundle-card { padding: 24px 20px; border-radius: 12px; border: 1px solid var(--line); background: var(--cream-2); }
+  .bundle-card .bundle-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--stone); margin: 0 0 6px; }
+  .bundle-card h4 { font-family: var(--font-display); font-size: 17px; font-weight: 500; color: var(--ink); margin: 0 0 4px; letter-spacing: -0.01em; }
+  .bundle-card .bundle-price { font-family: var(--font-display); font-size: 24px; font-weight: 500; color: var(--teal); margin: 0 0 14px; letter-spacing: -0.02em; }
+  .bundle-card ul { list-style: none !important; padding: 0 !important; margin: 0 !important; font-size: 13px; line-height: 1.5; }
+  .bundle-card li { display: grid; grid-template-columns: 16px 1fr; gap: 8px; padding: 7px 0; border-top: 1px solid var(--line); color: var(--ink-soft); margin: 0 !important; }
+  .bundle-card li:first-child { border-top: 0; padding-top: 0; }
+  .bundle-card .ck { color: #1f9d55; font-weight: 700; }
+
+  /* -- Red Flags Side-by-Side -- */
+  .flags-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; font-family: var(--font-body); }
+  @media (max-width: 600px) { .flags-grid { grid-template-columns: 1fr; } }
+  .flag-side { padding: 28px 24px; border-radius: 12px; border: 1px solid var(--line); background: var(--cream-2); }
+  .flag-side .flag-subtitle { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--stone); margin: 0 0 6px; }
+  .flag-side h4 { font-family: var(--font-display); font-size: 22px; font-weight: 500; color: var(--ink); margin: 0 0 18px; letter-spacing: -0.01em; }
+  .flag-side ul { list-style: none !important; padding: 0 !important; margin: 0 !important; font-size: 14px; line-height: 1.5; }
+  .flag-side li { display: grid; grid-template-columns: 18px 1fr; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); color: var(--ink-soft); margin: 0 !important; }
+  .flag-side li:first-child { border-top: 0; padding-top: 4px; }
+  .flag-side .warn { color: var(--rust); font-weight: 700; }
+
+  /* -- Project Timeline -- */
+  .timeline-track { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; font-family: var(--font-body); }
+  @media (max-width: 640px) { .timeline-track { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 400px) { .timeline-track { grid-template-columns: 1fr 1fr; } }
+  .tl-week { padding: 16px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--cream-2); }
+  .tl-week .tl-num { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--stone); margin: 0 0 6px; }
+  .tl-week h5 { font-family: var(--font-display); font-size: 14px; font-weight: 500; color: var(--ink); margin: 0 0 4px; letter-spacing: -0.01em; }
+  .tl-week p { font-size: 11.5px !important; line-height: 1.45 !important; color: var(--stone) !important; margin: 0 !important; }
+  .tl-week.phase-discover { border-top: 3px solid var(--teal); }
+  .tl-week.phase-design { border-top: 3px solid #C28B2E; }
+  .tl-week.phase-build { border-top: 3px solid var(--rust); }
+  .tl-week.phase-launch { border-top: 3px solid #1f9d55; }
+
   /* Related posts / further reading */
   .further-reading {
     max-width: 680px;
@@ -385,6 +479,76 @@
       <h2>The four real options</h2>
       <p>People talk about restaurant websites like there are a dozen paths, but there are really four. Here they are, honestly:</p>
 
+      <figure class="article-figure">
+        <div class="options-grid" role="img" aria-label="Comparison of four restaurant website options: DIY template at $200-$400 per year, freelancer at $500-$2,500, small studio at $2,500-$15,000, and full agency at $15,000-$80,000+. Small studio is recommended for most independent restaurants.">
+          <div class="opt-card">
+            <div class="opt-label">Option 1</div>
+            <h4>DIY Template</h4>
+            <div class="opt-price">$200–$400/yr</div>
+            <dl>
+              <dt>Timeline</dt>
+              <dd>15–40 hrs setup</dd>
+              <dt>Quality</dt>
+              <dd>Looks like 10,000 other sites</dd>
+              <dt>Maintained by</dt>
+              <dd>You, ongoing</dd>
+              <dt>Best for</dt>
+              <dd>Brand-new restaurants, placeholder sites</dd>
+            </dl>
+            <span class="opt-tag amber">Ceiling risk</span>
+          </div>
+          <div class="opt-card">
+            <div class="opt-label">Option 2</div>
+            <h4>Freelancer</h4>
+            <div class="opt-price">$500–$2,500</div>
+            <dl>
+              <dt>Timeline</dt>
+              <dd>Varies widely</dd>
+              <dt>Quality</dt>
+              <dd>Unpredictable</dd>
+              <dt>Maintained by</dt>
+              <dd>Nobody, usually</dd>
+              <dt>Best for</dt>
+              <dd>Clear specs + vetted portfolio</dd>
+            </dl>
+            <span class="opt-tag red">Handoff risk</span>
+          </div>
+          <div class="opt-card recommended">
+            <div class="opt-label">Option 3</div>
+            <h4>Small Studio</h4>
+            <div class="opt-price">$2,500–$15,000</div>
+            <dl>
+              <dt>Timeline</dt>
+              <dd>4–6 weeks</dd>
+              <dt>Quality</dt>
+              <dd>Studio-grade, one person accountable</dd>
+              <dt>Maintained by</dt>
+              <dd>The studio (care plan)</dd>
+              <dt>Best for</dt>
+              <dd>Most independents</dd>
+            </dl>
+            <span class="opt-tag green">Recommended</span>
+          </div>
+          <div class="opt-card">
+            <div class="opt-label">Option 4</div>
+            <h4>Full Agency</h4>
+            <div class="opt-price">$15,000–$80,000+</div>
+            <dl>
+              <dt>Timeline</dt>
+              <dd>3–9 months</dd>
+              <dt>Quality</dt>
+              <dd>Enterprise-grade</dd>
+              <dt>Maintained by</dt>
+              <dd>Their team, at scale rates</dd>
+              <dt>Best for</dt>
+              <dd>5+ location groups</dd>
+            </dl>
+            <span class="opt-tag amber">Overhead risk</span>
+          </div>
+        </div>
+        <figcaption>Four paths to a restaurant website — at a glance</figcaption>
+      </figure>
+
       <h3>Option 1 — DIY on a template (Wix, Squarespace, Weebly)</h3>
       <p><strong>$200–$400/year</strong> including hosting, plus your time. Budget fifteen to forty hours to get it looking decent, and another five to ten hours a month to keep it current.</p>
       <p>What you get: a working site that looks like ten thousand other restaurant sites, loads slower than it should on a phone, and hits a ceiling the moment you want to do something the template didn't anticipate.</p>
@@ -437,6 +601,43 @@
         <li>A two-location group adding multi-location routing and direct POS integration lands around <strong>$11,000</strong>.</li>
       </ul>
 
+      <figure class="article-figure">
+        <div class="bundles-grid" role="img" aria-label="Three example restaurant website bundles showing what drives the price: Neighborhood Italian at $3,400 (base build plus reservation integration plus photo direction), Bistro at $6,500 (base build plus menu CMS, online ordering, and Google Business Profile), Two-Location Group at $11,000 (base build plus multi-location routing plus direct POS integration).">
+          <div class="bundle-card">
+            <div class="bundle-label">Example 1</div>
+            <h4>Neighborhood Italian</h4>
+            <div class="bundle-price">~$3,400</div>
+            <ul>
+              <li><span class="ck">&#10003;</span> <span>Base build</span></li>
+              <li><span class="ck">&#10003;</span> <span>Reservation integration</span></li>
+              <li><span class="ck">&#10003;</span> <span>Photo direction</span></li>
+            </ul>
+          </div>
+          <div class="bundle-card">
+            <div class="bundle-label">Example 2</div>
+            <h4>Bistro</h4>
+            <div class="bundle-price">~$6,500</div>
+            <ul>
+              <li><span class="ck">&#10003;</span> <span>Base build</span></li>
+              <li><span class="ck">&#10003;</span> <span>Self-serve menu CMS</span></li>
+              <li><span class="ck">&#10003;</span> <span>Online ordering</span></li>
+              <li><span class="ck">&#10003;</span> <span>Google Business Profile</span></li>
+            </ul>
+          </div>
+          <div class="bundle-card">
+            <div class="bundle-label">Example 3</div>
+            <h4>Two-Location Group</h4>
+            <div class="bundle-price">~$11,000</div>
+            <ul>
+              <li><span class="ck">&#10003;</span> <span>Base build</span></li>
+              <li><span class="ck">&#10003;</span> <span>Multi-location routing</span></li>
+              <li><span class="ck">&#10003;</span> <span>Direct POS integration</span></li>
+            </ul>
+          </div>
+        </div>
+        <figcaption>Three real-world bundles — same line items, different scope</figcaption>
+      </figure>
+
       <h2>What you're actually paying for</h2>
       <p>The line items above are only half the story. The other half is the work that never shows up on an invoice, but shows up in the finished product anyway:</p>
 
@@ -460,22 +661,32 @@
 
       <h2>Red flags on both ends</h2>
 
-      <h3>Too cheap</h3>
-      <ul>
-        <li>"$500 restaurant website!" — almost always a template you could have bought yourself for $200</li>
-        <li>No mention of mobile load speed, accessibility, or SEO anywhere in the proposal</li>
-        <li>No contract, no scope document, no written timeline</li>
-        <li>A portfolio where every site looks identical — they're shipping the same template in different colors</li>
-        <li>Offshore "agency" with a generic Gmail contact and no street address</li>
-      </ul>
-
-      <h3>Too expensive</h3>
-      <ul>
-        <li>$25,000+ for a single-location restaurant, unless you're doing something genuinely custom (like a native app integration or a complex catering platform)</li>
-        <li>Six-month timelines where the first three months are "discovery"</li>
-        <li>Kickoff meetings with six people, none of whom will actually build your site</li>
-        <li>Vague deliverables paired with "unlimited revisions" — unlimited revisions is what sub-standard studios offer instead of an opinion</li>
-      </ul>
+      <figure class="article-figure">
+        <div class="flags-grid" role="img" aria-label="Red flags to watch for: five signs a website quote is suspiciously cheap, and four signs it's overpriced.">
+          <div class="flag-side">
+            <div class="flag-subtitle">Watch for these</div>
+            <h4>Too cheap</h4>
+            <ul>
+              <li><span class="warn">&#9888;</span> <span>"$500 restaurant website!" — almost always a template you could buy yourself for $200</span></li>
+              <li><span class="warn">&#9888;</span> <span>No mention of mobile speed, accessibility, or SEO anywhere in the proposal</span></li>
+              <li><span class="warn">&#9888;</span> <span>No contract, no scope document, no written timeline</span></li>
+              <li><span class="warn">&#9888;</span> <span>Portfolio where every site looks identical — same template, different colors</span></li>
+              <li><span class="warn">&#9888;</span> <span>Offshore "agency" with a generic Gmail and no street address</span></li>
+            </ul>
+          </div>
+          <div class="flag-side">
+            <div class="flag-subtitle">Watch for these too</div>
+            <h4>Too expensive</h4>
+            <ul>
+              <li><span class="warn">&#9888;</span> <span>$25,000+ for a single-location restaurant (unless genuinely custom — native apps, catering platforms)</span></li>
+              <li><span class="warn">&#9888;</span> <span>Six-month timelines where the first three months are "discovery"</span></li>
+              <li><span class="warn">&#9888;</span> <span>Kickoff meetings with six people, none of whom will actually build your site</span></li>
+              <li><span class="warn">&#9888;</span> <span>Vague deliverables + "unlimited revisions" — that's what sub-standard studios offer instead of an opinion</span></li>
+            </ul>
+          </div>
+        </div>
+        <figcaption>Red flags at both ends of the price spectrum</figcaption>
+      </figure>
 
       <h2>The realistic timeline</h2>
       <p>A good $5,000 to $9,000 custom restaurant website launches in <strong>four to six weeks</strong>. Here's what a real calendar looks like:</p>
@@ -487,6 +698,43 @@
         <li><strong>Week 5 —</strong> Launch prep, final content review, pre-launch accessibility and speed audit.</li>
         <li><strong>Week 6 —</strong> Launch, Google Business Profile updates, handoff documentation, and the first week of live monitoring.</li>
       </ul>
+
+      <figure class="article-figure">
+        <div class="timeline-track" role="img" aria-label="A six-week project timeline for a custom restaurant website: Week 1 Discovery, Week 2 Design, Week 3 Iteration, Week 4 Build, Week 5 Launch Prep, Week 6 Launch.">
+          <div class="tl-week phase-discover">
+            <div class="tl-num">Week 1</div>
+            <h5>Discovery</h5>
+            <p>Kickoff, brand audit, content gathering, photo review, menu + POS + reservation inventory</p>
+          </div>
+          <div class="tl-week phase-design">
+            <div class="tl-num">Week 2</div>
+            <h5>Design</h5>
+            <p>Sitemap, wireframes, first full design pass</p>
+          </div>
+          <div class="tl-week phase-design">
+            <div class="tl-num">Week 3</div>
+            <h5>Iteration</h5>
+            <p>Design feedback, second pass, content entry begins</p>
+          </div>
+          <div class="tl-week phase-build">
+            <div class="tl-num">Week 4</div>
+            <h5>Build</h5>
+            <p>Development, integrations, mobile QA on real devices</p>
+          </div>
+          <div class="tl-week phase-build">
+            <div class="tl-num">Week 5</div>
+            <h5>Launch Prep</h5>
+            <p>Final content review, pre-launch accessibility + speed audit</p>
+          </div>
+          <div class="tl-week phase-launch">
+            <div class="tl-num">Week 6</div>
+            <h5>Launch</h5>
+            <p>Go live, GBP updates, handoff docs, monitoring</p>
+          </div>
+        </div>
+        <figcaption>A realistic six-week calendar for a $5,000–$9,000 custom restaurant site</figcaption>
+      </figure>
+
       <p>Anything faster than three weeks is suspicious — nobody can design, build, and launch a good custom site in two weeks unless it's actually a template with a new logo. Anything slower than eight weeks usually means the scope wasn't clear from day one and the project is bleeding time on revision rounds.</p>
 
       <h2>What to budget for after launch</h2>
