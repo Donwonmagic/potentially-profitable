@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Does Google Understand My Business? Free Schema Check | Muntin Digital</title>
+<meta name="description" content="Check if Google knows what kind of business you are. We scan your site for structured data and tell you what's there, what's missing, and how to fix it. Free, 10 seconds." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/tools/schema-check/" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Does Google Understand My Business?" />
+<meta property="og:description" content="Free schema check. See if Google knows what you are. 10 seconds." />
+<meta property="og:url" content="https://muntin.digital/tools/schema-check/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/audit.svg" />
+<meta property="og:image:type" content="image/svg+xml" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Does Google Understand My Business?" />
+<meta name="twitter:description" content="Free schema check. 10 seconds." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/audit.svg" />
+<!-- Favicons -->
+<link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/brand/favicons/favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/tools/schema-check/#tool","name":"Does Google Understand My Business?","description":"Check your site for structured data and see what Google knows about your business.","url":"https://muntin.digital/tools/schema-check/","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://muntin.digital/tools/"},{"@type":"ListItem","position":3,"name":"Schema Check","item":"https://muntin.digital/tools/schema-check/"}]}]}
+</script>
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
+<style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+  .sch-hero{max-width:680px;margin:0 auto;text-align:center}
+  .sch-form{display:flex;gap:10px;max-width:560px;margin:32px auto 0}
+  .sch-form input{flex:1;padding:16px 20px;border:2px solid var(--line-dark);border-radius:12px;font:inherit;font-size:17px;background:var(--white);color:var(--ink)}
+  .sch-form input:focus{border-color:var(--teal);outline:none}
+  .sch-form button{padding:16px 28px;border:0;border-radius:12px;background:var(--teal);color:var(--cream);font:inherit;font-size:16px;font-weight:600;cursor:pointer;white-space:nowrap}
+  .sch-form button:hover{background:var(--teal-dark)}
+  .sch-form button:disabled{opacity:.5;cursor:wait}
+  @media(max-width:520px){.sch-form{flex-direction:column}}
+  .sch-note{font-size:13px;color:var(--stone);margin-top:14px;text-align:center}
+  .sch-result{display:none;max-width:560px;margin:48px auto 0}
+  .sch-result.visible{display:block}
+  .sch-verdict{text-align:center;margin-bottom:28px}
+  .sch-verdict .icon{width:80px;height:80px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:16px}
+  .sch-verdict .icon.found{background:rgba(31,157,85,.1);color:#1f9d55}
+  .sch-verdict .icon.missing{background:rgba(184,84,26,.08);color:var(--rust)}
+  .sch-verdict h2{font-family:var(--font-display);font-size:28px;font-weight:500;margin:0 0 8px}
+  .sch-verdict p{font-size:16px;color:var(--stone);margin:0}
+  .sch-types{list-style:none;padding:0;margin:0 0 24px}
+  .sch-types li{display:flex;gap:12px;padding:16px;border:1px solid var(--line);border-radius:10px;background:var(--white);margin-bottom:10px;align-items:flex-start}
+  .sch-types .tag{padding:4px 10px;border-radius:6px;font-size:13px;font-weight:600;white-space:nowrap;flex:0 0 auto}
+  .sch-types .tag.good{background:rgba(31,157,85,.1);color:#1f9d55}
+  .sch-types .tag.generic{background:rgba(194,139,46,.1);color:#8A6018}
+  .sch-types .tag.none{background:rgba(184,84,26,.08);color:var(--rust)}
+  .sch-types .detail{font-size:14.5px;color:var(--ink-soft);line-height:1.5}
+  .sch-types .detail strong{color:var(--ink)}
+  .sch-cta{margin-top:28px;padding:28px 32px;background:var(--cream-2);border:1px solid var(--line);border-radius:14px;text-align:center}
+  .sch-cta p{font-size:15px;color:var(--stone);margin:0 0 16px}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="nav" id="nav"><div class="container nav-inner">
+  <a href="/" class="logo" aria-label="Muntin Digital home"><svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true"><g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"><rect x="18" y="18" width="92" height="92"/><line x1="64" y1="18" x2="64" y2="110"/><line x1="18" y1="49" x2="110" y2="49"/></g></svg>Muntin Digital<sup class="tm">&#8482;</sup></a>
+  <nav class="nav-links" aria-label="Primary"><a href="/#services">Services</a><a href="/for/restaurants/">Restaurants</a><a href="/work/">Work</a><a href="/blog/">Blog</a><a href="/#about">About</a></nav>
+  <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
+  <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false"><span></span><span></span><span></span></button>
+</div><nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden><a href="/#services">Services</a><a href="/for/restaurants/">Restaurants</a><a href="/work/">Work</a><a href="/blog/">Blog</a><a href="/#about">About</a><a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call</a></nav></header>
+
+<main id="main">
+<nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><a href="/tools/">Tools</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><span aria-current="page">Schema Check</span></nav>
+
+<section class="hero hero-tight"><div class="container"><div class="sch-hero">
+  <span class="eyebrow">Free tool &middot; 10 seconds</span>
+  <h1>Does Google understand<br><span class="serif-italic">your business?</span></h1>
+  <p class="hero-sub" style="margin:20px auto 0;max-width:540px;">Schema markup tells Google what kind of business you are — your hours, your type, your location. Paste your URL and see what Google sees.</p>
+  <form class="sch-form" id="schForm" novalidate>
+    <input type="url" id="schUrl" placeholder="https://yourbusiness.com" autocomplete="url" required aria-label="Your website URL" />
+    <button type="submit" id="schSubmit">Check it</button>
+  </form>
+  <p class="sch-note">Powered by Google PageSpeed Insights. Takes about 10–20 seconds.</p>
+  <div class="sch-result" id="schResult" aria-live="polite">
+    <div class="sch-verdict" id="schVerdict"></div>
+    <ul class="sch-types" id="schTypes"></ul>
+    <div class="sch-cta">
+      <p>Want the full picture? The industry audits check schema plus speed, booking, mobile, and more.</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <a class="btn btn-primary" href="/tools/audits/restaurant/">Restaurant audit</a>
+        <a class="btn btn-ghost" href="/tools/audits/wellness/">Wellness audit</a>
+      </div>
+    </div>
+  </div>
+</div></div></section>
+</main>
+<footer><div class="container">
+  <div class="foot-cta"><div class="foot-cta-text">Ready to build something worth the time?</div><a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a></div>
+  <div class="foot-grid">
+    <div class="foot-col foot-brand"><a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home"><img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async"><sup class="tm" aria-hidden="true">&#8482;</sup></a><p class="foot-tagline">Structure Brings Clarity.</p><p class="foot-blurb">A one-person studio in Silver Spring, MD, building custom websites, brands, and social media for independent restaurants and lifestyle brands across the DMV and beyond.</p></div>
+    <nav class="foot-col" aria-labelledby="foot-explore"><h4 class="foot-heading" id="foot-explore">Explore</h4><ul class="foot-links"><li><a href="/#services">Services</a></li><li><a href="/for/restaurants/">For restaurants</a></li><li><a href="/work/">Work</a></li><li><a href="/blog/">Blog</a></li><li><a href="/#about">About Don</a></li></ul></nav>
+    <nav class="foot-col" aria-labelledby="foot-tools"><h4 class="foot-heading" id="foot-tools">Free tools</h4><ul class="foot-links"><li><a href="/tools/">All tools</a></li><li><a href="/tools/audits/restaurant/">Restaurant audit</a></li><li><a href="/tools/audits/wellness/">Wellness audit</a></li><li><a href="/tools/speed-test/">Speed test</a></li><li><a href="/tools/seo-grader/">SEO grader</a></li><li><a href="/tools/mobile-check/">Mobile check</a></li><li><a href="/tools/schema-check/">Schema check</a></li></ul></nav>
+    <nav class="foot-col foot-contact" aria-labelledby="foot-contact"><h4 class="foot-heading" id="foot-contact">Contact</h4><ul class="foot-links"><li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li><li><a href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call</a></li><li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram</a></li></ul><p class="foot-trust"><strong>Reply time:</strong> under 4 hours, Mon&ndash;Fri</p></nav>
+  </div>
+  <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital&#8482; &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
+</div></footer>
+<script src="/assets/site.js" defer></script>
+<script>
+(function(){
+  var form=document.getElementById('schForm');
+  var input=document.getElementById('schUrl');
+  var btn=document.getElementById('schSubmit');
+  var result=document.getElementById('schResult');
+  var verdict=document.getElementById('schVerdict');
+  var typesList=document.getElementById('schTypes');
+
+  function norm(u){u=u.trim();if(!u)return'';if(!/^https?:\/\//i.test(u))u='https://'+u;try{new URL(u)}catch(e){return''}return u}
+
+  // Known schema types grouped by quality for a local business
+  var SPECIFIC={
+    'Restaurant':1,'FoodEstablishment':1,'Bakery':1,'BarOrPub':1,'CafeOrCoffeeShop':1,
+    'FastFoodRestaurant':1,'IceCreamShop':1,'Winery':1,'Brewery':1,'Distillery':1,
+    'HealthAndBeautyBusiness':1,'BeautySalon':1,'DaySpa':1,'HairSalon':1,'NailSalon':1,
+    'SportsActivityLocation':1,'ExerciseGym':1,'HealthClub':1,
+    'Store':1,'AutoRepair':1,'Dentist':1,'MedicalBusiness':1,'LegalService':1,
+    'RealEstateAgent':1,'FinancialService':1,'AccountingService':1,
+    'ProfessionalService':1,'HomeAndConstructionBusiness':1,'Plumber':1,'Electrician':1
+  };
+  var GENERIC={'LocalBusiness':1,'Organization':1,'Place':1,'WebSite':1,'WebPage':1,'Thing':1};
+
+  function classify(t){
+    if(SPECIFIC[t])return'specific';
+    if(GENERIC[t])return'generic';
+    return'other';
+  }
+
+  function friendlyName(t){
+    // Insert spaces before caps: "HealthAndBeautyBusiness" -> "Health And Beauty Business"
+    return t.replace(/([a-z])([A-Z])/g,'$1 $2');
+  }
+
+  function advice(t){
+    var map={
+      'Restaurant':'Google knows you\'re a restaurant. This helps you appear in "restaurants near me" searches with rich details.',
+      'HealthAndBeautyBusiness':'Google knows you\'re a health and beauty business. Add more specific types (DaySpa, BeautySalon) for better matching.',
+      'BeautySalon':'Google knows you\'re a beauty salon. You\'ll show up in salon-specific searches.',
+      'DaySpa':'Google knows you\'re a day spa. You\'ll show up in spa-specific searches.',
+      'SportsActivityLocation':'Google knows you\'re a fitness/sports location. Add specific sub-types if applicable.',
+      'LocalBusiness':'Google knows you\'re a local business, but not WHAT KIND. Add a more specific type (Restaurant, BeautySalon, DaySpa, etc.) so Google can match you to the right searches.',
+      'Organization':'This tells Google you\'re an organization, but not a local business. If you serve customers at a physical location, use LocalBusiness or a more specific type instead.',
+      'WebSite':'This describes your website, not your business. Add a separate LocalBusiness or industry-specific schema block.',
+      'WebPage':'This describes the page, not your business. Add a separate LocalBusiness or industry-specific schema block.'
+    };
+    return map[t]||'Google sees this type on your site. If you\'re a local business, make sure you also have a LocalBusiness (or more specific) schema type.';
+  }
+
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var url=norm(input.value);
+    if(!url){input.focus();return}
+    btn.disabled=true;btn.textContent='Checking…';
+    result.classList.remove('visible');
+
+    var api='https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url='+encodeURIComponent(url)+'&strategy=mobile&category=seo';
+
+    // Two-pass approach: first try Lighthouse, then fall back to
+    // our own Worker proxy if Lighthouse didn't return schema data.
+    // This eliminates the false-negative where Lighthouse's
+    // structured-data audit is absent from the response.
+    fetch(api).then(function(r){return r.json()}).then(function(data){
+      if(data.error)throw new Error(data.error.message||'API error');
+
+      var audits=(data.lighthouseResult||{}).audits||{};
+      var sd=audits['structured-data'];
+      var foundTypes=[];
+      var seen={};
+
+      // Try Lighthouse first
+      var searchText='';
+      if(sd&&sd.details&&sd.details.items){
+        sd.details.items.forEach(function(item){
+          if(item.snippet)searchText+=item.snippet+' ';
+          if(item.description)searchText+=item.description+' ';
+        });
+      }
+
+      var typeRe=/"@type"\s*:\s*"([A-Za-z]+)"/g;
+      var m;
+      while((m=typeRe.exec(searchText))!==null){
+        if(!seen[m[1]]){seen[m[1]]=true;foundTypes.push(m[1])}
+      }
+      var arrayRe=/"@type"\s*:\s*\[([^\]]+)\]/g;
+      while((m=arrayRe.exec(searchText))!==null){
+        var inner=m[1].match(/"([A-Za-z]+)"/g);
+        if(inner)inner.forEach(function(t){
+          t=t.replace(/"/g,'');
+          if(!seen[t]){seen[t]=true;foundTypes.push(t)}
+        });
+      }
+
+      // If Lighthouse returned nothing, fall back to our Worker
+      if(foundTypes.length===0){
+        return fetch('/api/schema-check?url='+encodeURIComponent(url))
+          .then(function(r2){return r2.json()})
+          .then(function(d2){
+            if(d2.ok&&d2.types&&d2.types.length){
+              d2.types.forEach(function(t){if(!seen[t]){seen[t]=true;foundTypes.push(t)}});
+            }
+            return foundTypes;
+          });
+      }
+      return foundTypes;
+    }).then(function(foundTypes){
+
+      var hasSpecific=foundTypes.some(function(t){return classify(t)==='specific'});
+      var hasAny=foundTypes.length>0;
+
+      // Render verdict
+      if(hasSpecific){
+        verdict.innerHTML='<div class="icon found">&#10003;</div><h2>Yes — Google understands your business.</h2><p>Your site has specific structured data telling Google what kind of business you are.</p>';
+      } else if(hasAny){
+        verdict.innerHTML='<div class="icon missing">~</div><h2>Partially — Google sees your site, but not what you DO.</h2><p>You have some structured data, but it\'s too generic. Google knows you exist but can\'t match you to specific searches like "yoga near me" or "best salon in Bethesda."</p>';
+      } else {
+        verdict.innerHTML='<div class="icon missing">&#10005;</div><h2>No — Google doesn\'t know what your business is.</h2><p>Your site has no structured data. Google can\'t tell if you\'re a restaurant, a yoga studio, a salon, or a law firm. Adding schema markup is a 10-line code change with real SEO impact.</p>';
+      }
+
+      // Render types
+      typesList.innerHTML='';
+      if(foundTypes.length===0){
+        typesList.innerHTML='<li><span class="tag none">Missing</span><span class="detail"><strong>No schema found.</strong> Ask your developer to add a JSON-LD block with your business type, address, hours, and phone. This is a 10-minute fix that directly improves your local search visibility.</span></li>';
+      } else {
+        foundTypes.forEach(function(t){
+          var c=classify(t);
+          var tagCls=c==='specific'?'good':(c==='generic'?'generic':'good');
+          var tagText=c==='specific'?'Business type':(c==='generic'?'Too generic':'Supplemental');
+          typesList.innerHTML+='<li><span class="tag '+tagCls+'">'+tagText+'</span><span class="detail"><strong>@type: '+friendlyName(t)+'</strong><br>'+advice(t)+'</span></li>';
+        });
+      }
+
+      result.classList.add('visible');
+      result.scrollIntoView({behavior:'smooth',block:'start'});
+      if(window.plausible)window.plausible('Schema Check',{props:{types:foundTypes.join(','),url:url}});
+    }).catch(function(err){
+      alert('Could not check that URL. '+(err.message||'Please try again.'));
+    }).finally(function(){
+      btn.disabled=false;btn.textContent='Check it';
+    });
+  });
+})();
+</script>
+</body>
+</html>

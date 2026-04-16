@@ -62,6 +62,9 @@ const API_ROUTES = {
   '/api/checklist':     handleChecklist,
   '/api/audit-report':  handleAuditReport,
   '/api/ping':          handlePing,
+  '/api/gbp-lookup':    handleGbpLookup,
+  '/api/seo-check':     handleSeoCheck,
+  '/api/schema-check':  handleSchemaCheck,
 };
 
 
@@ -83,7 +86,7 @@ export default {
           404
         );
       }
-      if (pathname === '/api/ping') {
+      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
         }
@@ -360,6 +363,179 @@ async function handlePing(request, env, ctx) {
     },
     200
   );
+}
+
+
+// ------------------------------------------------------------
+// GBP Lookup — proxies Google Places API, keeping the key
+// server-side. Client sends GET /api/gbp-lookup?q=business+name
+// and receives a JSON payload with rating, review count, types,
+// hours, photos count, and address.
+// ------------------------------------------------------------
+
+async function handleGbpLookup(request, env, ctx) {
+  const apiKey = env.GOOGLE_PLACES_KEY;
+  if (!apiKey) {
+    return jsonResponse({ ok: false, error: 'Google Places API key not configured' }, 503);
+  }
+
+  const url = new URL(request.url);
+  const query = (url.searchParams.get('q') || '').trim();
+  if (!query) {
+    return jsonResponse({ ok: false, error: 'Missing ?q= parameter — pass your business name + city' }, 400);
+  }
+
+  try {
+    // Step 1: Text Search to find the place
+    const searchRes = await fetch(
+      'https://places.googleapis.com/v1/places:searchText',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Goog-Api-Key': apiKey,
+          'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.types,places.regularOpeningHours,places.photos,places.websiteUri,places.googleMapsUri'
+        },
+        body: JSON.stringify({ textQuery: query, maxResultCount: 1 })
+      }
+    );
+
+    if (!searchRes.ok) {
+      const errBody = await searchRes.text();
+      console.error('[gbp-lookup] Places API error:', searchRes.status, errBody);
+      return jsonResponse({ ok: false, error: 'Google Places API returned an error' }, 502);
+    }
+
+    const searchData = await searchRes.json();
+    const places = searchData.places || [];
+    if (!places.length) {
+      return jsonResponse({ ok: false, error: 'No business found for that search. Try adding your city name.' }, 404);
+    }
+
+    const p = places[0];
+
+    // Build a clean response
+    const result = {
+      ok: true,
+      name: p.displayName ? p.displayName.text : null,
+      address: p.formattedAddress || null,
+      rating: p.rating || null,
+      reviewCount: p.userRatingCount || 0,
+      types: (p.types || []).slice(0, 5),
+      photoCount: p.photos ? p.photos.length : 0,
+      hasHours: !!(p.regularOpeningHours && p.regularOpeningHours.periods && p.regularOpeningHours.periods.length),
+      website: p.websiteUri || null,
+      mapsUrl: p.googleMapsUri || null,
+    };
+
+    return jsonResponse(result, 200);
+  } catch (err) {
+    console.error('[gbp-lookup] exception:', err && err.stack ? err.stack : err);
+    return jsonResponse({ ok: false, error: 'Failed to reach Google Places API' }, 502);
+  }
+}
+
+
+// ------------------------------------------------------------
+// SEO Check — fetches a page server-side and extracts the
+// <title> and <meta name="description"> content that Lighthouse
+// doesn't reliably expose in its audit details.
+// ------------------------------------------------------------
+
+async function handleSeoCheck(request, env, ctx) {
+  const url = new URL(request.url);
+  const target = (url.searchParams.get('url') || '').trim();
+  if (!target) {
+    return jsonResponse({ ok: false, error: 'Missing ?url= parameter' }, 400);
+  }
+
+  try {
+    const res = await fetch(target, {
+      headers: { 'User-Agent': 'MuntinDigital-SEO-Check/1.0' },
+      redirect: 'follow',
+    });
+    if (!res.ok) {
+      return jsonResponse({ ok: false, error: 'Could not fetch the page (HTTP ' + res.status + ')' }, 502);
+    }
+
+    const html = await res.text();
+
+    // Extract <title>
+    const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+    const title = titleMatch ? titleMatch[1].replace(/\s+/g, ' ').trim() : null;
+
+    // Extract <meta name="description" content="...">
+    const descMatch = html.match(/<meta[^>]*name\s*=\s*["']description["'][^>]*content\s*=\s*["']([\s\S]*?)["'][^>]*>/i)
+      || html.match(/<meta[^>]*content\s*=\s*["']([\s\S]*?)["'][^>]*name\s*=\s*["']description["'][^>]*>/i);
+    const description = descMatch ? descMatch[1].replace(/\s+/g, ' ').trim() : null;
+
+    return jsonResponse({ ok: true, title, description }, 200);
+  } catch (err) {
+    console.error('[seo-check] exception:', err && err.stack ? err.stack : err);
+    return jsonResponse({ ok: false, error: 'Failed to fetch the page' }, 502);
+  }
+}
+
+
+// ------------------------------------------------------------
+// Schema Check — fetches a page server-side and extracts all
+// JSON-LD @type values from <script type="application/ld+json">
+// blocks. Fallback for when Lighthouse's structured-data audit
+// doesn't return data.
+// ------------------------------------------------------------
+
+async function handleSchemaCheck(request, env, ctx) {
+  const url = new URL(request.url);
+  const target = (url.searchParams.get('url') || '').trim();
+  if (!target) {
+    return jsonResponse({ ok: false, error: 'Missing ?url= parameter' }, 400);
+  }
+
+  try {
+    const res = await fetch(target, {
+      headers: { 'User-Agent': 'MuntinDigital-Schema-Check/1.0' },
+      redirect: 'follow',
+    });
+    if (!res.ok) {
+      return jsonResponse({ ok: false, error: 'Could not fetch the page (HTTP ' + res.status + ')' }, 502);
+    }
+
+    const html = await res.text();
+
+    // Extract all <script type="application/ld+json"> blocks
+    const ldBlocks = [];
+    const ldRe = /<script[^>]*type\s*=\s*["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+    let m;
+    while ((m = ldRe.exec(html)) !== null) {
+      ldBlocks.push(m[1]);
+    }
+
+    // Parse @type values from all blocks
+    const types = [];
+    const seen = {};
+    const combined = ldBlocks.join(' ');
+
+    // Single type: "@type": "Restaurant"
+    const typeRe = /"@type"\s*:\s*"([A-Za-z]+)"/g;
+    while ((m = typeRe.exec(combined)) !== null) {
+      if (!seen[m[1]]) { seen[m[1]] = true; types.push(m[1]); }
+    }
+
+    // Array type: "@type": ["Restaurant", "LocalBusiness"]
+    const arrayRe = /"@type"\s*:\s*\[([^\]]+)\]/g;
+    while ((m = arrayRe.exec(combined)) !== null) {
+      const inner = m[1].match(/"([A-Za-z]+)"/g);
+      if (inner) inner.forEach(t => {
+        t = t.replace(/"/g, '');
+        if (!seen[t]) { seen[t] = true; types.push(t); }
+      });
+    }
+
+    return jsonResponse({ ok: true, types, blockCount: ldBlocks.length }, 200);
+  } catch (err) {
+    console.error('[schema-check] exception:', err && err.stack ? err.stack : err);
+    return jsonResponse({ ok: false, error: 'Failed to fetch the page' }, 502);
+  }
 }
 
 
