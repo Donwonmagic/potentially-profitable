@@ -520,7 +520,17 @@
       <p>Here's what's actually going wrong at each drop point, and how to plug it.</p>
 
       <h3>Leak #1 — Your site is slow on a phone</h3>
-      <p>If your homepage takes longer than three seconds to load on a phone, you've probably already lost about half of the people who tapped your link. That's not my number — it's Google's. Their <a href="https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/" target="_blank" rel="noopener">2017 mobile page-speed benchmark research</a> found that <strong>53% of mobile visitors bounce from a page that takes more than three seconds to load</strong>, and every additional second after that makes the bounce rate climb sharply.</p>
+      <p>If your homepage takes longer than three seconds to load on a phone, you've probably already lost about half of the people who tapped your link. That's not my number — it's Google's. Their 2017 mobile page-speed benchmark research found that <strong>53% of mobile visitors bounce from a page that takes more than three seconds to load</strong>, and every additional second after that makes the bounce rate climb sharply.</p>
+
+      <details class="cite">
+        <summary>Source: Google / SOASTA, 2017</summary>
+        <div class="cite-body">
+          <p><span class="cite-source">Think with Google</span> — "Find Out How You Stack Up to New Industry Benchmarks for Mobile Page Speed"</p>
+          <p>Study of 11.8 million mobile ad landing pages. 53% of visits abandoned at 3+ seconds; bounce probability increased 90% as load time went from 1 to 5 seconds. Note: this data is from 2017 — mobile networks have improved since, but user expectations have also risen.</p>
+          <a href="https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/" target="_blank" rel="noopener">Read the full study on Think with Google</a>
+        </div>
+      </details>
+
       <p>Most restaurant sites I audit load in four to seven seconds on a real 4G connection. Sometimes ten. The owner almost never knows, because they've only ever loaded their site from their desk, on office wifi, already cached in their browser.</p>
       <p><strong>How to test it in thirty seconds:</strong> pull up your site on your phone. Use cellular data, not wifi. Start timing the moment you tap the link, stop timing the moment you can see and tap the "Reserve" button. If it's more than three seconds, you've got Leak #1 — and you can confirm the exact number in our <a href="/tools/audits/restaurant/">free Restaurant Website Audit</a>.</p>
       <p><strong>The fix:</strong> on a template like Wix or Squarespace, you can compress images and disable decorative widgets, but you're eventually bumping into the platform's ceiling. On a custom site, sub-two-second mobile load isn't an upgrade — it's the starting point.</p>
@@ -546,7 +556,17 @@
       <h3>Leak #5 — Reservation flow friction</h3>
       <p>This is where most restaurant reservation funnels actually fall apart. The visitor tapped "Reserve," which means they're <em>in</em> — the conversion is one or two clicks from happening. And most restaurant sites use a booking platform that turns those one or two clicks into seven.</p>
       <p>Here's what a typical reservation widget asks for: party size, date, time, alternative time, name, phone, email, password for the account you're being quietly signed up for, phone-verification code, "agree to terms," sometimes a credit card held as collateral, sometimes a captcha to prove you're human. By step seven, the customer has forgotten why they wanted Italian food.</p>
-      <p><a href="https://baymard.com/lists/cart-abandonment-rate" target="_blank" rel="noopener">Baymard Institute's research on e-commerce checkout abandonment</a> finds that the average cart-abandonment rate in online retail hovers around <strong>70%</strong>, and one of the top reasons cited by shoppers is "the site wanted me to create an account." Reservation forms are checkout forms wearing a different hat, and they suffer the same dynamic: every additional field, every unnecessary account, every extra screen correlates directly with people dropping out.</p>
+      <p>Baymard Institute's research on e-commerce checkout abandonment finds that the average cart-abandonment rate in online retail hovers around <strong>70%</strong>, and one of the top reasons cited by shoppers is "the site wanted me to create an account." Reservation forms are checkout forms wearing a different hat, and they suffer the same dynamic: every additional field, every unnecessary account, every extra screen correlates directly with people dropping out.</p>
+
+      <details class="cite">
+        <summary>Source: Baymard Institute, ongoing</summary>
+        <div class="cite-body">
+          <p><span class="cite-source">Baymard Institute</span> — "49 Cart Abandonment Rate Statistics"</p>
+          <p>A meta-analysis of 49 studies on online shopping cart abandonment, updated regularly. The average rate across all studies is approximately 70%. "Account creation required" is consistently one of the top 2–3 reasons cited by shoppers who abandoned during checkout. While the data is from e-commerce (not reservations), the UX friction pattern — more fields = more dropoff — applies directly to any multi-step form.</p>
+          <a href="https://baymard.com/lists/cart-abandonment-rate" target="_blank" rel="noopener">Baymard cart abandonment research</a>
+        </div>
+      </details>
+
       <p><strong>How to test it in thirty seconds:</strong> pretend you're a first-time customer and actually book a table at your own restaurant end-to-end. Count the distinct screens and required fields. If you got past six, that's Leak #5 — and most restaurants I audit land between eight and twelve.</p>
       <p><strong>The fix:</strong> pick a reservation platform whose default flow has fewer steps (the major players vary a lot), or — if your volume is low enough — use a simple embedded form that asks for name, date, time, party size, and email, and emails your host stand. When your volume grows, you revisit the platform decision. Don't pay a complex system for simple bookings.</p>
 
