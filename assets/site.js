@@ -670,7 +670,7 @@
             title: 'The Restaurant Website Checklist',
             text: '24 things your restaurant website should do in 2026. Free, takes 10 minutes.',
             url: 'https://muntin.digital/resources/restaurant-website-checklist/'
-          }).catch(() => { openShare(); });
+          }).catch(() => { /* user dismissed — do nothing */ });
           return;
         }
         if (shareMenu.hidden) openShare();
