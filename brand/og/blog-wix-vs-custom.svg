@@ -1,36 +1,30 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
   <rect width="1200" height="630" fill="#FAF7F2"/>
+  <rect x="0" y="0" width="6" height="630" fill="#B8541A"/>
 
-  <!-- Window mark top-left -->
-  <g transform="translate(72, 72)" stroke="#14161A" stroke-width="7" stroke-linecap="square" stroke-linejoin="miter" fill="none">
-    <rect x="0" y="0" width="60" height="60"/>
-    <line x1="30" y1="0" x2="30" y2="60"/>
-    <line x1="0" y1="22" x2="60" y2="22"/>
+  <text x="72" y="90" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#B8541A" letter-spacing="5">COMPARISON · PLATFORMS</text>
+
+  <text x="72" y="200" font-family="Fraunces, Georgia, serif" font-size="60" font-weight="500" fill="#14161A" letter-spacing="-2">Wix vs. Custom</text>
+  <text x="72" y="275" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="52" font-weight="400" fill="#1F4E5B" letter-spacing="-2">for restaurants:</text>
+  <text x="72" y="345" font-family="Fraunces, Georgia, serif" font-size="52" font-weight="500" fill="#14161A" letter-spacing="-2">what breaks first?</text>
+
+  <!-- Right: two score bars (Wix vs Custom) -->
+  <g transform="translate(830, 150)">
+    <text x="0" y="0" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#6B6B6B" letter-spacing="2">MOBILE LIGHTHOUSE</text>
+    <text x="0" y="40" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#6B6B6B">Wix template</text>
+    <rect x="0" y="52" width="300" height="24" rx="4" fill="#E8E2D6"/>
+    <rect x="0" y="52" width="135" height="24" rx="4" fill="#B8541A"/>
+    <text x="305" y="70" font-family="Fraunces, Georgia, serif" font-size="22" font-weight="500" fill="#B8541A">45</text>
+
+    <text x="0" y="115" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#6B6B6B">Custom build</text>
+    <rect x="0" y="127" width="300" height="24" rx="4" fill="#E8E2D6"/>
+    <rect x="0" y="127" width="285" height="24" rx="4" fill="#1F4E5B"/>
+    <text x="305" y="145" font-family="Fraunces, Georgia, serif" font-size="22" font-weight="500" fill="#1F4E5B">95</text>
   </g>
 
-  <!-- Eyebrow top-right -->
-  <text x="1128" y="108" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#6B6B6B" letter-spacing="4">MUNTIN DIGITAL · WRITING</text>
+  <text x="72" y="430" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="500" fill="#6B6B6B">Six places Wix breaks. The ROI math. When Wix is actually fine.</text>
 
-  <!-- Title block -->
-  <text x="600" y="240" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="92" font-weight="500" fill="#14161A" letter-spacing="-3">Wix vs. Custom</text>
-  <text x="600" y="322" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="72" font-weight="400" fill="#1F4E5B" letter-spacing="-2">for restaurants:</text>
-
-  <!-- Subheading -->
-  <text x="600" y="412" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="48" font-weight="500" fill="#14161A" letter-spacing="-1">what breaks first?</text>
-
-  <!-- Six-break counter row: six small teal dots with rust accent on one -->
-  <g transform="translate(600, 482)">
-    <circle cx="-100" cy="0" r="8" fill="#1F4E5B"/>
-    <circle cx="-60"  cy="0" r="8" fill="#1F4E5B"/>
-    <circle cx="-20"  cy="0" r="8" fill="#1F4E5B"/>
-    <circle cx="20"   cy="0" r="8" fill="#1F4E5B"/>
-    <circle cx="60"   cy="0" r="8" fill="#1F4E5B"/>
-    <circle cx="100"  cy="0" r="8" fill="#B8541A"/>
-  </g>
-
-  <!-- Label under dots -->
-  <text x="600" y="524" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#6B6B6B" letter-spacing="4">SIX PLACES WIX BREAKS FOR RESTAURANTS</text>
-
-  <!-- URL bottom -->
-  <text x="600" y="574" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="500" fill="#6B6B6B" letter-spacing="1">muntin.digital/blog</text>
+  <line x1="0" y1="590" x2="1200" y2="590" stroke="#E8E2D6" stroke-width="1"/>
+  <text x="72" y="616" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#6B6B6B" letter-spacing="2">MUNTIN DIGITAL</text>
+  <text x="1128" y="616" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#6B6B6B" letter-spacing="1">muntin.digital/blog</text>
 </svg>
