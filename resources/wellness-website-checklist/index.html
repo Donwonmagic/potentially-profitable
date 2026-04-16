@@ -386,7 +386,9 @@
   @media print {
     @page {
       size: Letter;
-      margin: 0.55in 0.55in 0.75in;
+      /* Generous bottom margin so the running footer has its own
+         reserved strip and doesn't collide with body text. */
+      margin: 0.55in 0.55in 0.95in;
     }
 
     html, body {
@@ -435,17 +437,34 @@
     main, .block, .hero { padding: 0 !important; margin: 0 !important; background: transparent !important; }
     .container { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
 
-    /* ---- Masthead: double rule, serif h1, "Audit sheet" eyebrow,
-       and a Site / Audited by / Date fill-in line. */
+    /* ---- Masthead: eyebrow strip → double rule → serif h1 over the
+       full width → italic subtitle → Site/Audited by/Date fill-in
+       row → thin closing rule. */
     .hero {
       display: block !important;
       position: relative;
-      margin: 0 0 0.2in !important;
-      padding: 0.16in 0 0.12in !important;
-      border-top: 3pt double #111 !important;
-      border-bottom: 0.6pt solid #111 !important;
+      margin: 0 0 0.18in !important;
+      padding: 0 !important;
     }
-    .checklist-hero { max-width: 100% !important; text-align: left !important; }
+    .hero::before {
+      content: 'Audit sheet \00B7 muntin.digital';
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 7.5pt;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #555;
+      text-align: right;
+      padding: 2pt 0 4pt;
+      border-bottom: 3pt double #111;
+    }
+    .checklist-hero {
+      max-width: 100% !important;
+      text-align: left !important;
+      padding: 0.12in 0 0.1in !important;
+      border-bottom: 0.6pt solid #111;
+    }
     .checklist-hero h1 {
       font-family: 'Fraunces', Georgia, serif;
       font-size: 22pt;
@@ -453,8 +472,8 @@
       color: #111 !important;
       margin: 0 !important;
       letter-spacing: -0.014em;
-      line-height: 1.05;
-      padding-right: 1.6in;
+      line-height: 1.08;
+      padding: 0 !important;
     }
     .checklist-hero h1 br { display: none; }
     .checklist-hero h1 .serif-italic {
@@ -466,22 +485,11 @@
       margin-top: 3pt;
       letter-spacing: 0;
     }
-    .checklist-hero::after {
-      content: 'Audit sheet \00B7 muntin.digital';
-      position: absolute;
-      top: 0.18in;
-      right: 0;
-      font-family: 'Inter', sans-serif;
-      font-size: 7.5pt;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: #555;
-    }
+    .checklist-hero::after { content: none !important; }
     .checklist-hero::before {
       content: 'Site  ____________________________________    Audited by  ______________________    Date  _____________';
       display: block;
-      margin-top: 14pt;
+      margin-top: 10pt;
       font-family: 'Inter', sans-serif;
       font-size: 9pt;
       font-weight: 500;
@@ -608,20 +616,11 @@
     a { color: #111 !important; text-decoration: none !important; }
     h1, h2, h3 { color: #111 !important; }
 
-    /* ---- Page footer ---- */
-    body::after {
-      position: fixed;
-      left: 0; right: 0; bottom: 0.22in;
-      font-family: 'Inter', sans-serif;
-      font-size: 7.5pt;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #555;
-      padding-top: 4pt;
-      border-top: 1pt double #111;
-      content: 'Muntin Digital \2003 \00B7 \2003 muntin.digital \2003 \00B7 \2003 Score  ________';
-      text-align: center;
-    }
+    /* Running footer handled by the PDF pipeline (Puppeteer
+       footerTemplate) rather than CSS — Chrome's print engine does
+       not reserve page space for position:fixed content, so a
+       CSS-only footer would overlay body text at the page break. */
+    body::after { display: none !important; }
   }
 
   /* ============ INTERACTIVE TOOLBAR ============ */
@@ -1210,9 +1209,13 @@
         A free, honest audit for independent wellness business websites. Run it on your own site in about ten minutes and see where you're leaving bookings on the table. Written for studio owners, not developers.
       </p>
       <div class="checklist-toolbar">
+        <a class="print-cta" href="/resources/wellness-website-checklist/muntin-wellness-website-checklist.pdf" download>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download the PDF
+        </a>
         <button type="button" class="print-cta" onclick="window.print()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-          Print or save as PDF
+          Print my marked-up copy
         </button>
         <div class="share-dropdown" id="shareDropdown">
           <button type="button" class="print-cta" id="shareBtn" aria-haspopup="true" aria-expanded="false" aria-controls="shareMenu">
@@ -1646,9 +1649,20 @@
   <div class="container" style="max-width:680px;">
     <div class="section-header reveal" style="text-align:center;">
       <span class="eyebrow">Save it for later</span>
-      <h2>Want the PDF<br>to share with your team?</h2>
-      <p>Drop your email and I'll send over a printable PDF you can pin to the front-desk board, mark up during a planning meeting, or pass around the team. No drip campaign, no newsletter — just the file.</p>
+      <h2>Download the PDF<br>to share with your team.</h2>
+      <p>A printable, pen-friendly audit sheet. Pin it to the front-desk board, mark it up during a planning meeting, or pass it around the team.</p>
     </div>
+
+    <div class="reveal" style="text-align:center; margin-top:28px;">
+      <a class="btn btn-primary" href="/resources/wellness-website-checklist/muntin-wellness-website-checklist.pdf" download style="justify-content:center;">
+        Download the PDF
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </a>
+      <p style="font-size:13px; color:var(--stone); margin:12px 0 0;">Letter-size PDF · a couple of pages · no signup required.</p>
+    </div>
+
+    <details class="reveal" style="max-width:520px; margin:32px auto 0; border-top:1px solid var(--line); padding-top:24px;">
+      <summary style="cursor:pointer; font-family:var(--font-body); font-size:13px; color:var(--stone); text-align:center; list-style:none;">Or have me email a copy to your inbox</summary>
 
     <form id="checklistForm" class="reveal" action="/api/checklist" method="POST"
           style="margin-top:32px; display:grid; gap:16px; max-width:520px; margin-left:auto; margin-right:auto;">
@@ -1680,6 +1694,7 @@
       <div style="font-family:var(--font-display); font-size:20px; font-weight:500; color:var(--ink); margin-bottom:8px;">Got it — thanks!</div>
       <p style="margin:0; color:var(--stone);">I'll email the PDF within 24 hours. If you don't see it, check spam or email <a href="mailto:don@muntin.digital" style="color:var(--teal);">don@muntin.digital</a>.</p>
     </div>
+    </details>
   </div>
 </section>
 
