@@ -94,6 +94,142 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital&#8482; &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js" defer></script>
-<!-- JS NEXT -->
+<script>
+(function(){
+  var form=document.getElementById('tsForm'),input=document.getElementById('tsUrl'),btn=document.getElementById('tsSubmit'),result=document.getElementById('tsResult');
+  function norm(u){u=u.trim();if(!u)return'';if(!/^https?:\/\//i.test(u))u='https://'+u;try{new URL(u)}catch(e){return''}return u}
+
+  // Detection patterns grouped by category
+  var DETECT=[
+    {cat:'CMS / Platform',patterns:[
+      {p:'wix.com',n:'Wix'},{p:'wixstatic',n:'Wix'},{p:'parastorage.com',n:'Wix'},
+      {p:'squarespace',n:'Squarespace'},{p:'sqspcdn',n:'Squarespace'},
+      {p:'wp-content',n:'WordPress'},{p:'wp-includes',n:'WordPress'},{p:'wordpress',n:'WordPress'},
+      {p:'shopify',n:'Shopify'},{p:'myshopify',n:'Shopify'},{p:'cdn.shopify',n:'Shopify'},
+      {p:'weebly',n:'Weebly'},{p:'godaddy',n:'GoDaddy'},{p:'webflow',n:'Webflow'},
+      {p:'ghost.io',n:'Ghost'},{p:'netlify',n:'Netlify'},{p:'vercel',n:'Vercel'},
+      {p:'pages.dev',n:'Cloudflare Pages'},{p:'workers.dev',n:'Cloudflare Workers'},
+      {p:'framer.com',n:'Framer'},{p:'cargo.site',n:'Cargo'},
+      {p:'duda.co',n:'Duda'},{p:'jimdo',n:'Jimdo'},{p:'format.com',n:'Format'},
+      {p:'bentobox',n:'BentoBox'},{p:'getbento',n:'BentoBox'},
+      {p:'popmenu',n:'Popmenu'},{p:'owner.com',n:'Owner.com'}
+    ]},
+    {cat:'Analytics',patterns:[
+      {p:'google-analytics',n:'Google Analytics'},{p:'googletagmanager',n:'Google Tag Manager'},
+      {p:'gtag/js',n:'Google Analytics 4'},{p:'analytics.google',n:'Google Analytics'},
+      {p:'plausible.io',n:'Plausible'},{p:'fathom',n:'Fathom'},
+      {p:'hotjar',n:'Hotjar'},{p:'clarity.ms',n:'Microsoft Clarity'},
+      {p:'facebook.net/en_US/fbevents',n:'Meta Pixel'},{p:'connect.facebook',n:'Meta Pixel'},
+      {p:'snap.licdn',n:'LinkedIn Insight'},{p:'ads.linkedin',n:'LinkedIn Insight'},
+      {p:'tiktok.com/i18n',n:'TikTok Pixel'}
+    ]},
+    {cat:'Booking / Scheduling',patterns:[
+      {p:'mindbody',n:'Mindbody'},{p:'healcode',n:'Mindbody (HealCode)'},
+      {p:'vagaro',n:'Vagaro'},{p:'fresha',n:'Fresha'},{p:'booksy',n:'Booksy'},
+      {p:'acuityscheduling',n:'Acuity'},{p:'calendly',n:'Calendly'},
+      {p:'opentable',n:'OpenTable'},{p:'resy.com',n:'Resy'},{p:'exploretock',n:'Tock'},
+      {p:'toasttab',n:'Toast'},{p:'squareup',n:'Square'},{p:'chownow',n:'ChowNow'},
+      {p:'wellnessliving',n:'WellnessLiving'},{p:'glofox',n:'Glofox'},
+      {p:'pike13',n:'Pike13'},{p:'zenoti',n:'Zenoti'},{p:'boulevard.io',n:'Boulevard'}
+    ]},
+    {cat:'Payments',patterns:[
+      {p:'stripe.com',n:'Stripe'},{p:'js.stripe',n:'Stripe'},
+      {p:'paypal',n:'PayPal'},{p:'braintree',n:'Braintree'},
+      {p:'square.com',n:'Square Payments'}
+    ]},
+    {cat:'Chat / Support',patterns:[
+      {p:'intercom',n:'Intercom'},{p:'drift.com',n:'Drift'},
+      {p:'tawk.to',n:'Tawk.to'},{p:'crisp.chat',n:'Crisp'},
+      {p:'livechat',n:'LiveChat'},{p:'zendesk',n:'Zendesk'}
+    ]},
+    {cat:'Maps',patterns:[
+      {p:'maps.googleapis',n:'Google Maps'},{p:'maps.google',n:'Google Maps'},
+      {p:'mapbox',n:'Mapbox'}
+    ]}
+  ];
+
+  // CMS context: what does this platform mean for the owner?
+  var CMS_CONTEXT={
+    'Wix':'<strong>Wix</strong> — a template builder. Easy to start, but has speed ceilings and limited customization. If you\'re hitting walls, a custom build may be the next step.',
+    'Squarespace':'<strong>Squarespace</strong> — polished templates, decent for simple sites. Limited booking integrations and slower mobile performance than custom builds.',
+    'WordPress':'<strong>WordPress</strong> — flexible and powerful, but requires maintenance (updates, security patches, plugin compatibility). You own the code.',
+    'Shopify':'<strong>Shopify</strong> — purpose-built for e-commerce. Overkill if you\'re not selling products online, but excellent if you are.',
+    'Webflow':'<strong>Webflow</strong> — a design tool with hosting. More flexible than Wix/Squarespace but with a steeper learning curve.',
+    'BentoBox':'<strong>BentoBox</strong> — built specifically for restaurants. Good integration story but you\'re on their platform.',
+    'Popmenu':'<strong>Popmenu</strong> — restaurant-specific with AI menu features. Platform lock-in applies.',
+    'Cloudflare Pages':'<strong>Cloudflare Pages</strong> — fast, modern hosting. Usually means a custom-built site.',
+    'Netlify':'<strong>Netlify</strong> — modern static/JAMstack hosting. Usually means a custom or developer-built site.',
+    'Vercel':'<strong>Vercel</strong> — modern hosting, often Next.js. Developer-built site.'
+  };
+
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var url=norm(input.value);if(!url){input.focus();return}
+    btn.disabled=true;btn.textContent='Detecting…';
+    result.classList.remove('visible');result.innerHTML='';
+
+    var api='https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url='+encodeURIComponent(url)+'&strategy=mobile&category=performance';
+
+    fetch(api).then(function(r){return r.json()}).then(function(data){
+      if(data.error)throw new Error(data.error.message||'API error');
+
+      // Collect all URLs from network requests
+      var audits=data.lighthouseResult.audits||{};
+      var urls=[];
+      ['network-requests','script-treemap-data','third-party-summary','bootup-time'].forEach(function(key){
+        var a=audits[key];
+        if(!a||!a.details||!a.details.items)return;
+        a.details.items.forEach(function(item){
+          if(item.url)urls.push(item.url.toLowerCase());
+          if(item.entity)urls.push(String(item.entity).toLowerCase());
+        });
+      });
+      // Also check the final URL
+      if(data.lighthouseResult.finalUrl)urls.push(data.lighthouseResult.finalUrl.toLowerCase());
+
+      // Detect
+      var found={};var groups=[];
+      DETECT.forEach(function(group){
+        var hits=[];var seen={};
+        group.patterns.forEach(function(pat){
+          if(seen[pat.n])return;
+          for(var i=0;i<urls.length;i++){
+            if(urls[i].indexOf(pat.p)!==-1){seen[pat.n]=true;hits.push(pat.n);break}
+          }
+        });
+        if(hits.length)groups.push({cat:group.cat,items:hits});
+      });
+
+      // Render
+      var html='';
+      if(groups.length===0){
+        html='<div class="ts-empty">We couldn\'t detect any known platforms. This might mean your site is custom-built — or the scan didn\'t pick up all resources. Try the full <a href="/tools/audits/restaurant/" style="color:var(--teal)">industry audit</a> for a deeper look.</div>';
+      } else {
+        groups.forEach(function(g){
+          html+='<div class="ts-group"><p class="ts-group-label">'+g.cat+'</p><div class="ts-items">';
+          g.items.forEach(function(name){
+            html+='<div class="ts-item"><span class="name">'+name+'</span><span class="cat">'+g.cat+'</span></div>';
+          });
+          html+='</div></div>';
+        });
+        // Add context for the CMS if detected
+        var cmsGroup=groups.find(function(g){return g.cat==='CMS / Platform'});
+        if(cmsGroup&&cmsGroup.items.length){
+          var ctx=CMS_CONTEXT[cmsGroup.items[0]];
+          if(ctx)html+='<div class="ts-context">'+ctx+'</div>';
+        }
+      }
+      html+='<div class="ts-cta"><p>Want the full picture? The industry audits go deeper.</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><a class="btn btn-primary" href="/tools/audits/restaurant/">Restaurant audit</a><a class="btn btn-ghost" href="/tools/audits/wellness/">Wellness audit</a></div></div>';
+
+      result.innerHTML=html;
+      result.classList.add('visible');
+      result.scrollIntoView({behavior:'smooth',block:'start'});
+      if(window.plausible)window.plausible('Tech Stack',{props:{stack:groups.map(function(g){return g.items.join(',')}).join(';'),url:url}});
+    }).catch(function(err){
+      alert('Could not scan that URL. '+(err.message||'Please try again.'));
+    }).finally(function(){btn.disabled=false;btn.textContent='Detect'});
+  });
+})();
+</script>
 </body>
 </html>
