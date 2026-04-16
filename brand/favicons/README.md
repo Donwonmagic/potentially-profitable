@@ -15,12 +15,18 @@ the Muntin Digital search result currently shows no icon next to
 the URL. Google supports SVG favicons in the browser tab, but
 the search-result favicon pipeline prefers raster.
 
-Sprint 30b already wired the HTML `<link rel="icon">` tags to
-expect PNG files at the paths listed below. Until the actual PNG
-files exist in this directory, browsers fall back to the SVG
-(which still works everywhere) and Google Search shows no icon.
-Dropping the generated files in place fixes both issues in one
-step — no HTML change needed.
+The full PNG + ICO set has now been generated (ink variant, to
+match the existing SVG mark) and lives in this directory. See
+"Files expected" below for the current state. All 16 pages in
+the site reference a canonical 6-line favicon block, standardized
+in the "canonical favicon block" commit after the files landed.
+
+Note: the previous version of this README asked for `favicon-48x48.png`
+and `favicon-96x96.png`, but the favicon.io output doesn't ship
+those sizes. Google Search is happy with 32×32 as the smallest
+advertised PNG provided the SVG and apple-touch-icon (180×180)
+are also present. The HTML references reflect the files that
+actually exist, not the wishlist.
 
 ## Generation recipe (3 minutes, no install)
 
@@ -45,20 +51,28 @@ step — no HTML change needed.
    tag is set. Old browsers, email clients, feed readers, and
    some link-preview scrapers still use this path.
 
-## Files expected at the end
+## Files currently in place
 
 ```
-/favicon.ico
+/favicon.ico                                ← ink variant, 15 KB
 /brand/favicons/
+  favicon.ico                               ← ink variant, 15 KB
   favicon-16x16.png
   favicon-32x32.png
-  favicon-48x48.png
-  favicon-96x96.png
   android-chrome-192x192.png
   android-chrome-512x512.png
-  apple-touch-icon.png
+  apple-touch-icon.png                       (180×180)
   site.webmanifest
+/brand/mark/favicon_cream/                  ← alternate (cream bg)
+/brand/mark/favicon_ink/                    ← alternate (ink bg) — active
+/brand/mark/favicon_teal/                   ← alternate (teal bg)
 ```
+
+The ink variant was chosen as the active set because it matches
+`/brand/mark/mark-square-ink.svg` (the SVG favicon already used
+site-wide) — a cream glyph on an ink background. The cream and
+teal variants are kept in `/brand/mark/favicon_*/` as brand
+reference in case a future dark-mode or seasonal swap is needed.
 
 The HTML is already wired to reference every one of these paths
 on the homepage, so no additional code change is needed after
