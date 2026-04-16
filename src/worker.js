@@ -65,6 +65,7 @@ const API_ROUTES = {
   '/api/gbp-lookup':    handleGbpLookup,
   '/api/seo-check':     handleSeoCheck,
   '/api/schema-check':  handleSchemaCheck,
+  '/api/psi':           handlePsi,
 };
 
 
@@ -86,7 +87,7 @@ export default {
           404
         );
       }
-      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check') {
+      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/psi') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
         }
@@ -359,6 +360,8 @@ async function handlePing(request, env, ctx) {
         resend:  Boolean(env.RESEND_API_KEY),
         from:    Boolean(env.FROM_EMAIL),
         notify:  Boolean(env.NOTIFY_EMAIL),
+        psi:     Boolean(env.PSI_API_KEY),
+        places:  Boolean(env.GOOGLE_PLACES_KEY),
       },
     },
     200
@@ -540,6 +543,86 @@ async function handleSchemaCheck(request, env, ctx) {
   } catch (err) {
     console.error('[schema-check] exception:', err && err.stack ? err.stack : err);
     return jsonResponse({ ok: false, error: 'Failed to fetch the page' }, 502);
+  }
+}
+
+
+// ------------------------------------------------------------
+// PageSpeed Insights proxy
+// ------------------------------------------------------------
+// Client-facing audit tools (restaurant + wellness) used to call PSI
+// directly with an HTTP-referrer-restricted API key embedded in the
+// HTML. That pattern is documented by Google for client-side keys,
+// but (a) the key lives in git history forever, (b) referrer
+// enforcement is spoofable, and (c) a key rotation has to fan out
+// to every HTML page. This proxy keeps the key in env.PSI_API_KEY
+// and forwards the client's request parameters to PSI unchanged.
+//
+// Behavior:
+//   GET /api/psi?url=...&strategy=mobile&category=performance&...
+//     → 200 with the full PSI JSON response on success
+//     → 503 with error='psi-proxy-unconfigured' when env.PSI_API_KEY
+//       is not set (lets the client detect this and transparently
+//       fall back to the direct-PSI path during the migration
+//       window; once the secret is set, the fallback dead-codes)
+//     → 400 on missing/bad `url` parameter
+//     → 4xx/5xx from PSI passed through with the error body
+//
+// Rate limiting: not enforced in this Worker — rely on Cloudflare's
+// edge rate-limiting rules (configured in the dashboard) and on
+// Google's own per-key quotas. Adding KV-backed per-IP limits here
+// would require a KV namespace binding; that's a future upgrade.
+async function handlePsi(request, env, ctx) {
+  if (!env.PSI_API_KEY) {
+    return jsonResponse(
+      { ok: false, error: 'psi-proxy-unconfigured' },
+      503
+    );
+  }
+
+  const incoming = new URL(request.url);
+  const target   = (incoming.searchParams.get('url') || '').trim();
+  if (!target) {
+    return jsonResponse({ ok: false, error: 'Missing ?url= parameter' }, 400);
+  }
+  // Require http(s) — don't let the client coax us into hitting
+  // javascript:, data:, file:, or internal http://10.x URLs via PSI
+  let parsedTarget;
+  try {
+    parsedTarget = new URL(target);
+  } catch (e) {
+    return jsonResponse({ ok: false, error: 'Invalid URL' }, 400);
+  }
+  if (parsedTarget.protocol !== 'http:' && parsedTarget.protocol !== 'https:') {
+    return jsonResponse({ ok: false, error: 'Only http(s) URLs are supported' }, 400);
+  }
+
+  // Pass through all the audit's forwarded params; just swap in our key.
+  const upstream = new URL('https://www.googleapis.com/pagespeedonline/v5/runPagespeed');
+  incoming.searchParams.forEach((value, key) => {
+    if (key === 'key') return; // never honor a client-supplied key
+    upstream.searchParams.append(key, value);
+  });
+  upstream.searchParams.set('key', env.PSI_API_KEY);
+
+  try {
+    const res  = await fetch(upstream.toString(), {
+      headers: { 'Accept': 'application/json' }
+    });
+    const body = await res.text();
+    // Pass through status + JSON body so the client can see PSI's
+    // structured error shape (body.error.message) unchanged.
+    return new Response(body, {
+      status: res.status,
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Access-Control-Allow-Origin': '*',
+      }
+    });
+  } catch (err) {
+    console.error('[psi] upstream fetch failed:', err && err.stack ? err.stack : err);
+    return jsonResponse({ ok: false, error: 'Failed to reach PageSpeed Insights' }, 502);
   }
 }
 

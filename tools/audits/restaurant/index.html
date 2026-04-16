@@ -1832,14 +1832,77 @@
   if (!form) return;
 
   var PSI_ENDPOINT = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed';
-  // Google Cloud API key scoped to:
-  //   - Application: HTTP referrer restricted to muntin.digital/*
-  //   - API:         PageSpeed Insights API only
-  // This is the documented pattern for embedding a Google API key in
-  // client-side JavaScript. Anyone who copies the key out of this HTML
-  // and calls it from a different origin receives 403 from Google.
+  var PSI_PROXY_ENDPOINT = '/api/psi';
+  // Legacy client-side key, referrer-restricted to muntin.digital/*.
+  // Still present so the tool keeps working in the window between
+  // Sprint 5 shipping and env.PSI_API_KEY being set in the Worker —
+  // the client calls /api/psi first and only falls back to this
+  // embedded key when the proxy returns 503:psi-proxy-unconfigured.
+  // Safe to remove once the proxy is confirmed live in production.
   var PSI_API_KEY  = 'AIzaSyBTnABfW9D83-50L2svV7MOcyx9RCPPN30';
   var CATEGORIES   = ['performance', 'accessibility', 'best-practices', 'seo'];
+
+  // Single PSI caller used by runAudit and the competitor compare.
+  // Prefers the same-origin /api/psi proxy (which adds the API key
+  // server-side) and transparently falls back to the direct PSI call
+  // with the embedded client key if the proxy isn't configured yet.
+  function callPsi(targetUrl) {
+    var params = new URLSearchParams();
+    params.append('url', targetUrl);
+    params.append('strategy', 'mobile');
+    CATEGORIES.forEach(function(c){ params.append('category', c); });
+
+    function parseOrThrow(res) {
+      if (res.ok) return res.json();
+      return res.json().then(function(body){
+        var msg = (body && body.error && body.error.message)
+               || (body && body.error)
+               || ('PageSpeed returned ' + res.status);
+        var err = new Error(String(msg));
+        err.status = res.status;
+        err.body = body;
+        throw err;
+      }, function(){
+        var err = new Error('PageSpeed returned ' + res.status);
+        err.status = res.status;
+        throw err;
+      });
+    }
+
+    function directCall() {
+      var direct = new URLSearchParams();
+      direct.append('url', targetUrl);
+      direct.append('strategy', 'mobile');
+      CATEGORIES.forEach(function(c){ direct.append('category', c); });
+      if (PSI_API_KEY) direct.append('key', PSI_API_KEY);
+      return fetch(PSI_ENDPOINT + '?' + direct.toString()).then(parseOrThrow);
+    }
+
+    return fetch(PSI_PROXY_ENDPOINT + '?' + params.toString())
+      .then(function(res){
+        // Only the specific "proxy not configured" 503 triggers the
+        // direct-PSI fallback. Any other 503 or error status is a
+        // real failure and should NOT leak traffic to the direct path.
+        if (res.status === 503) {
+          return res.json().catch(function(){ return null; }).then(function(body){
+            if (body && body.error === 'psi-proxy-unconfigured') return { fallback: true };
+            var err = new Error((body && body.error) || 'PSI proxy unavailable');
+            err.status = 503;
+            throw err;
+          });
+        }
+        return parseOrThrow(res).then(function(data){ return { data: data }; });
+      })
+      .then(function(wrapper){
+        return wrapper.fallback ? directCall() : wrapper.data;
+      })
+      .catch(function(err){
+        // Network-layer failure reaching the proxy (offline, DNS, etc.)
+        // also warrants a fallback attempt against Google directly.
+        if (err && !err.status) return directCall();
+        throw err;
+      });
+  }
   var submitOriginalHTML = submitBtn.innerHTML;
 
   // Stepwise progress state. The audit has four logical phases:
@@ -3901,16 +3964,9 @@
     showOnly(loadingEl);
     resetProgress();
 
-    // Step 1: submitting the request to PSI
+    // Step 1: submitting the request to PSI (via same-origin proxy,
+    // with transparent fallback to the direct call — see callPsi).
     setStep(1);
-
-    var params = new URLSearchParams();
-    params.append('url', url);
-    params.append('strategy', 'mobile');
-    CATEGORIES.forEach(function(c){ params.append('category', c); });
-    // Authenticated tier: lifts anonymous rate limits and gives us
-    // the free-tier 25k-requests/day quota.
-    if (PSI_API_KEY) params.append('key', PSI_API_KEY);
 
     // A tiny delay before moving to step 2 so the user perceives the
     // submit phase as a real step — otherwise steps 1 and 2 flip so
@@ -3921,22 +3977,7 @@
       startProgress();
     }, 350);
 
-    fetch(PSI_ENDPOINT + '?' + params.toString())
-      .then(function(res){
-        if (!res.ok) {
-          return res.json().then(function(body){
-            var msg = (body && body.error && body.error.message) || ('PageSpeed returned ' + res.status);
-            var err = new Error(msg);
-            err.status = res.status;
-            throw err;
-          }, function(){
-            var err = new Error('PageSpeed returned ' + res.status);
-            err.status = res.status;
-            throw err;
-          });
-        }
-        return res.json();
-      })
+    callPsi(url)
       .then(function(data){
         // Step 3: Lighthouse response received, scoring restaurant checks
         setStep(3);
@@ -4396,27 +4437,7 @@
     // table — we don't keep the full Lighthouse audit for
     // competitors because we're not rendering their priority checks.
     function fetchCompetitor(url) {
-      var params = new URLSearchParams();
-      params.append('url', url);
-      params.append('strategy', 'mobile');
-      CATEGORIES.forEach(function(c){ params.append('category', c); });
-      if (PSI_API_KEY) params.append('key', PSI_API_KEY);
-      return fetch(PSI_ENDPOINT + '?' + params.toString())
-        .then(function(res){
-          if (!res.ok) {
-            return res.json().then(function(body){
-              var msg = (body && body.error && body.error.message) || ('PageSpeed returned ' + res.status);
-              var err = new Error(msg);
-              err.status = res.status;
-              throw err;
-            }, function(){
-              var err = new Error('PageSpeed returned ' + res.status);
-              err.status = res.status;
-              throw err;
-            });
-          }
-          return res.json();
-        })
+      return callPsi(url)
         .then(function(data){
           var lh = data && data.lighthouseResult;
           if (!lh || !lh.categories) throw new Error('Unexpected PSI response shape');
