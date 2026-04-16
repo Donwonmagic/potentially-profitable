@@ -66,6 +66,105 @@
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
 <link rel="stylesheet" href="/assets/site.css">
-<!-- CSS + BODY IN NEXT COMMIT -->
+<style>
+  .mob-hero { max-width: 680px; margin: 0 auto; text-align: center; }
+  .mob-form { display: flex; gap: 10px; max-width: 560px; margin: 32px auto 0; }
+  .mob-form input { flex: 1; padding: 16px 20px; border: 2px solid var(--line-dark); border-radius: 12px; font: inherit; font-size: 17px; background: var(--white); color: var(--ink); }
+  .mob-form input:focus { border-color: var(--teal); outline: none; }
+  .mob-form button { padding: 16px 28px; border: 0; border-radius: 12px; background: var(--teal); color: var(--cream); font: inherit; font-size: 16px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+  .mob-form button:hover { background: var(--teal-dark); }
+  .mob-form button:disabled { opacity: 0.5; cursor: wait; }
+  @media (max-width: 520px) { .mob-form { flex-direction: column; } }
+  .mob-note { font-size: 13px; color: var(--stone); margin-top: 14px; text-align: center; }
+
+  .mob-result { display: none; max-width: 560px; margin: 48px auto 0; }
+  .mob-result.visible { display: block; }
+  .mob-verdict { text-align: center; margin-bottom: 32px; }
+  .mob-verdict .icon { width: 80px; height: 80px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 40px; margin-bottom: 16px; }
+  .mob-verdict .icon.pass { background: rgba(31,157,85,0.1); color: #1f9d55; }
+  .mob-verdict .icon.fail { background: rgba(184,84,26,0.08); color: var(--rust); }
+  .mob-verdict h2 { font-family: var(--font-display); font-size: 28px; font-weight: 500; margin: 0 0 8px; }
+  .mob-verdict p { font-size: 16px; color: var(--stone); margin: 0; }
+
+  .mob-checks { display: flex; flex-direction: column; gap: 14px; }
+  .mob-check { display: flex; gap: 16px; padding: 22px; border: 1px solid var(--line); border-radius: 12px; background: var(--white); align-items: flex-start; }
+  .mob-check .mark { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex: 0 0 36px; font-size: 18px; font-weight: 700; }
+  .mob-check .mark.pass { background: rgba(31,157,85,0.1); color: #1f9d55; }
+  .mob-check .mark.fail { background: rgba(184,84,26,0.08); color: var(--rust); }
+  .mob-check .mark.unknown { background: var(--cream-2); color: var(--stone); }
+  .mob-check h3 { font-family: var(--font-display); font-size: 18px; font-weight: 500; margin: 0 0 6px; color: var(--ink); }
+  .mob-check p { font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); margin: 0; }
+
+  .mob-cta { margin-top: 32px; padding: 28px 32px; background: var(--cream-2); border: 1px solid var(--line); border-radius: 14px; text-align: center; }
+  .mob-cta p { font-size: 15px; color: var(--stone); margin: 0 0 16px; }
+</style>
 </head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true"><g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"><rect x="18" y="18" width="92" height="92"/><line x1="64" y1="18" x2="64" y2="110"/><line x1="18" y1="49" x2="110" y2="49"/></g></svg>
+      Muntin Digital<sup class="tm">&#8482;</sup>
+    </a>
+    <nav class="nav-links" aria-label="Primary"><a href="/#services">Services</a><a href="/for/restaurants/">Restaurants</a><a href="/work/">Work</a><a href="/blog/">Blog</a><a href="/#about">About</a></nav>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden><a href="/#services">Services</a><a href="/for/restaurants/">Restaurants</a><a href="/work/">Work</a><a href="/blog/">Blog</a><a href="/#about">About</a><a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call</a></nav>
+</header>
+
+<main id="main">
+<nav class="breadcrumb container" aria-label="Breadcrumb">
+  <a href="/">Home</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span>
+  <a href="/tools/">Tools</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span>
+  <span aria-current="page">Mobile Check</span>
+</nav>
+
+<section class="hero hero-tight">
+  <div class="container">
+    <div class="mob-hero">
+      <span class="eyebrow">Free tool &middot; 10 seconds</span>
+      <h1>Is your website<br><span class="serif-italic">mobile-friendly?</span></h1>
+      <p class="hero-sub" style="margin:20px auto 0; max-width:520px;">
+        Three checks that matter: does it fit on a phone, can you tap the buttons, can you read the text. Paste your URL and find out.
+      </p>
+      <form class="mob-form" id="mobForm" novalidate>
+        <input type="url" id="mobUrl" placeholder="https://yourbusiness.com" autocomplete="url" required aria-label="Your website URL" />
+        <button type="submit" id="mobSubmit">Check it</button>
+      </form>
+      <p class="mob-note">Powered by Google Lighthouse. Takes about 10–20 seconds.</p>
+
+      <div class="mob-result" id="mobResult" aria-live="polite">
+        <div class="mob-verdict" id="mobVerdict"></div>
+        <div class="mob-checks" id="mobChecks"></div>
+        <div class="mob-cta">
+          <p>Want the full picture? The industry audits check mobile plus speed, booking, schema, and more.</p>
+          <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+            <a class="btn btn-primary" href="/tools/audits/restaurant/">Restaurant audit</a>
+            <a class="btn btn-ghost" href="/tools/audits/wellness/">Wellness audit</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="foot-cta"><div class="foot-cta-text">Ready to build something worth the time?</div><a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a></div>
+    <div class="foot-grid">
+      <div class="foot-col foot-brand"><a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home"><img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async"><sup class="tm" aria-hidden="true">&#8482;</sup></a><p class="foot-tagline">Structure Brings Clarity.</p><p class="foot-blurb">A one-person studio in Silver Spring, MD, building custom websites, brands, and social media for independent restaurants and lifestyle brands across the DMV and beyond.</p></div>
+      <nav class="foot-col" aria-labelledby="foot-explore"><h4 class="foot-heading" id="foot-explore">Explore</h4><ul class="foot-links"><li><a href="/#services">Services</a></li><li><a href="/for/restaurants/">For restaurants</a></li><li><a href="/work/">Work</a></li><li><a href="/blog/">Blog</a></li><li><a href="/#about">About Don</a></li></ul></nav>
+      <nav class="foot-col" aria-labelledby="foot-tools"><h4 class="foot-heading" id="foot-tools">Free tools</h4><ul class="foot-links"><li><a href="/tools/">All tools</a></li><li><a href="/tools/audits/restaurant/">Restaurant audit</a></li><li><a href="/tools/audits/wellness/">Wellness audit</a></li><li><a href="/tools/speed-test/">Speed test</a></li><li><a href="/tools/seo-grader/">SEO grader</a></li><li><a href="/tools/mobile-check/">Mobile check</a></li></ul></nav>
+      <nav class="foot-col foot-contact" aria-labelledby="foot-contact"><h4 class="foot-heading" id="foot-contact">Contact</h4><ul class="foot-links"><li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li><li><a href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call</a></li><li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram</a></li></ul><p class="foot-trust"><strong>Reply time:</strong> under 4 hours, Mon&ndash;Fri</p></nav>
+    </div>
+    <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital&#8482; &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
+  </div>
+</footer>
+<script src="/assets/site.js" defer></script>
+<!-- JS IN NEXT COMMIT -->
+</body>
 </html>
