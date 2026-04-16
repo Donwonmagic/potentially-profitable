@@ -659,12 +659,16 @@
     }
     if (shareBtn && shareMenu) {
       shareBtn.addEventListener('click', (e) => {
+        // Prevent the document-level "click outside" listener from
+        // immediately closing the menu on the same tick.
         e.stopPropagation();
-        // On mobile, prefer the native share sheet if available
+        // On mobile, prefer the native share sheet if available.
+        // If the user dismisses it (AbortError) or it isn't supported,
+        // fall back to the custom dropdown.
         if (navigator.share && window.matchMedia('(max-width: 820px)').matches) {
           navigator.share({
             title: 'The Restaurant Website Checklist',
-            text: '23 things your restaurant website should do in 2026. Free, takes 10 minutes.',
+            text: '24 things your restaurant website should do in 2026. Free, takes 10 minutes.',
             url: 'https://muntin.digital/resources/restaurant-website-checklist/'
           }).catch(() => { openShare(); });
           return;
@@ -672,8 +676,14 @@
         if (shareMenu.hidden) openShare();
         else closeShare();
       });
+      // Close when clicking outside. Use closest() so clicks on the
+      // SVG icon INSIDE the button (where e.target is the <svg> or
+      // <path>, not the button itself) still count as "on the button"
+      // and don't accidentally close a just-opened menu.
       document.addEventListener('click', (e) => {
-        if (!shareMenu.contains(e.target) && e.target !== shareBtn) closeShare();
+        if (shareMenu.hidden) return;
+        const clickedDropdown = e.target.closest && e.target.closest('#shareDropdown');
+        if (!clickedDropdown) closeShare();
       });
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && !shareMenu.hidden) {
