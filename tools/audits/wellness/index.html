@@ -42,10 +42,10 @@
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Web",
       "url": "https://muntin.digital/tools/audits/wellness/",
-      "description": "A free client-side audit tool purpose-built for restaurant websites. Runs Google PageSpeed Insights and translates the results into plain-English pass/fail items for independent restaurant owners.",
+      "description": "A free client-side audit tool purpose-built for wellness studio, spa, salon, and fitness websites. Runs Google PageSpeed Insights and translates the results into plain-English pass/fail items for independent wellness business owners.",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
       "creator": { "@id": "https://muntin.digital/#business" },
-      "audience": { "@type": "BusinessAudience", "audienceType": "Restaurant owner" }
+      "audience": { "@type": "BusinessAudience", "audienceType": "Wellness business owner" }
     },
     {
       "@type": "BreadcrumbList",
@@ -737,7 +737,7 @@
     margin-top: 4px;
   }
 
-  /* Restaurant-priority checks list */
+  /* Wellness-priority checks list */
   .priority-list {
     background: var(--white);
     border: 1px solid var(--line);
@@ -1433,7 +1433,7 @@
       <ol class="audit-steps" id="auditSteps">
         <li class="audit-step" data-step="1"><span class="step-indicator">1</span><span>Sending your URL to Google Lighthouse</span></li>
         <li class="audit-step" data-step="2"><span class="step-indicator">2</span><span>Running Lighthouse on a simulated phone</span></li>
-        <li class="audit-step" data-step="3"><span class="step-indicator">3</span><span>Detecting restaurant platforms and scoring readiness</span></li>
+        <li class="audit-step" data-step="3"><span class="step-indicator">3</span><span>Detecting wellness platforms and scoring readiness</span></li>
         <li class="audit-step" data-step="4"><span class="step-indicator">4</span><span>Writing your report</span></li>
       </ol>
     </div>
@@ -1499,7 +1499,7 @@
         </div>
       </div>
 
-      <!-- Five category gauges — four from Lighthouse + Restaurant Readiness from priority checks -->
+      <!-- Five category gauges — four from Lighthouse + Wellness Readiness from priority checks -->
       <div class="category-grid">
         <div class="category-card" data-cat="performance">
           <div class="label">Performance</div>
@@ -1525,11 +1525,11 @@
           <div class="bar"><div class="fill" style="width:0%"></div></div>
           <div class="sublabel">Whether Google can find you</div>
         </div>
-        <div class="category-card" data-cat="restaurant">
-          <div class="label">Restaurant</div>
+        <div class="category-card" data-cat="wellness">
+          <div class="label">Wellness</div>
           <div class="cat-value">—</div>
           <div class="bar"><div class="fill" style="width:0%"></div></div>
-          <div class="sublabel">Restaurant-specific checks</div>
+          <div class="sublabel">Wellness-specific checks</div>
         </div>
       </div>
 
@@ -1549,7 +1549,7 @@
         <summary>What do these numbers actually mean?</summary>
         <div class="glossary-body">
           <h4>Performance (0–100)</h4>
-          <p>How fast your pages load and become usable on a phone. This is the metric that quietly costs restaurants the most money — Google's own research found that 53% of mobile visitors leave a page that takes longer than three seconds to load. A higher score means more people stick around long enough to see your menu.</p>
+          <p>How fast your pages load and become usable on a phone. This is the metric that quietly costs wellness businesses the most money — Google's own research found that 53% of mobile visitors leave a page that takes longer than three seconds to load. A higher score means more people stick around long enough to see your services.</p>
           <p class="ranges"><strong>Good:</strong> 90+ &nbsp;·&nbsp; <strong>Needs work:</strong> 50–89 &nbsp;·&nbsp; <strong>Failing:</strong> &lt;50</p>
 
           <h4>Accessibility (0–100)</h4>
@@ -1564,8 +1564,8 @@
           <p>The technical SEO fundamentals — a working title tag, a meta description, a crawlable URL, a mobile-friendly viewport, structured data. This score measures whether Google <em>can</em> rank your site. It doesn't measure whether you <em>do</em> rank for specific keywords — that's a longer-term question about content and inbound links.</p>
           <p class="ranges"><strong>Target:</strong> 100. Anything less is leaving ranking signals on the table.</p>
 
-          <h4>Restaurant Readiness (0–100)</h4>
-          <p>Our own rubric, specific to independent restaurant websites. Tracks ten things that matter for turning a mobile visitor into a booked table: service menu readability, reservation visibility, hours, Google Business Profile, mobile speed, tap targets, image alt text, text contrast, crawlability, and responsive images. Each check is weighted — a confident pass is worth 1 point, a partial pass is worth 0.5, a failure is worth 0 — averaged into a 0–100 score. Non-restaurant sites show "N/A" here and don't count this category toward their overall score.</p>
+          <h4>Wellness Readiness (0–100)</h4>
+          <p>Our own rubric, specific to independent wellness business websites. Tracks nine things that matter for turning a mobile visitor into a booked appointment: service menu readability, booking visibility, phone access, maps, mobile speed, tap targets, text contrast, font size, and business schema. Each check is weighted — a confident pass is worth 1 point, a partial pass is worth 0.5, a failure is worth 0 — averaged into a 0–100 score.</p>
 
           <h4>Core Web Vitals</h4>
           <p>Four specific timing and stability measurements Google uses for mobile performance ranking. These are the individual numbers that make up (most of) the Performance score above.</p>
@@ -1602,10 +1602,10 @@
         </div>
       </div>
 
-      <!-- Restaurant-priority checks list -->
+      <!-- Wellness-priority checks list -->
       <div class="priority-list">
         <header>
-          <h3>Restaurant-priority checks</h3>
+          <h3>Wellness-priority checks</h3>
           <span class="tally" id="priorityTally">—</span>
         </header>
         <div id="priorityItems">
@@ -1615,7 +1615,7 @@
 
       <!-- ============ SPRINT 6d: COMPETITOR COMPARISON ============
            After the owner sees their own report, the next question is
-           always the same: "How does this compare to the restaurants
+           always the same: "How does this compare to the wellness businesses
            I'm actually competing with?" This section lets them drop in
            up to 3 competitor URLs and runs a full audit on each,
            showing the results side-by-side. Uses the same PSI endpoint
@@ -1682,12 +1682,12 @@
         </header>
 
         <form id="emailReportForm" action="/api/audit-report" method="POST" class="email-form">
-          <input type="hidden" name="_subject" value="Restaurant Audit — report requested" />
-          <input type="hidden" name="interest" value="restaurant-audit-report" />
+          <input type="hidden" name="_subject" value="Wellness Audit — report requested" />
+          <input type="hidden" name="interest" value="wellness-audit-report" />
           <input type="hidden" name="source" value="/tools/audits/wellness/" />
           <input type="hidden" name="audited_url" id="emailReportUrl" value="" />
           <input type="hidden" name="overall_score" id="emailReportScore" value="" />
-          <input type="hidden" name="restaurant_readiness" id="emailReportReadiness" value="" />
+          <input type="hidden" name="wellness_readiness" id="emailReportReadiness" value="" />
           <input type="hidden" name="shareable_link" id="emailReportShareLink" value="" />
           <input type="hidden" name="summary" id="emailReportSummary" value="" />
           <input type="hidden" name="failing_checks" id="emailReportFailing" value="" />
@@ -1700,7 +1700,7 @@
             name="email"
             required
             autocomplete="email"
-            placeholder="you@yourrestaurant.com"
+            placeholder="you@yourstudio.com"
             aria-label="Your email address"
           />
           <button type="submit">Email me the report →</button>
@@ -1726,7 +1726,7 @@
   <div class="container">
     <div class="section-header reveal section-center">
       <span class="eyebrow">Want the real fix?</span>
-      <h2>I build restaurant websites<br>that ace this audit.</h2>
+      <h2>I build wellness websites<br>that ace this audit.</h2>
       <p class="final-sub">If the audit found more red than you're comfortable with, let's talk. Twenty minutes on Zoom, I'll walk through your results live, tell you what I'd do in what order, and give you a realistic budget and timeline. No pitch, no pressure.</p>
     </div>
 
@@ -1734,7 +1734,7 @@
       <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </a>
-      <a class="btn btn-ghost" href="/for/restaurants/">See restaurant services</a>
+      <a class="btn btn-ghost" href="/for/restaurants/">Book a 20-min call</a>
     </div>
   </div>
 </section>
@@ -2070,7 +2070,7 @@
   }
 
   function verdictFor(score) {
-    if (score >= 90) return "Your site is in great shape. Most restaurants would be thrilled to hit this score. Small polish items may remain — check the breakdown below.";
+    if (score >= 90) return "Your site is in great shape. Most wellness businesses would be thrilled to hit this score. Small polish items may remain — check the breakdown below.";
     if (score >= 70) return "Solid foundation with room to tighten up. Focus on the red and amber items below — most are mechanical fixes that push your scores into the green (90+) zone.";
     if (score >= 50) return "The site works, but it's leaking conversions. The good news: the wins here — load speed, image alt text, meta tags, schema — take days, not months.";
     return "There's real work to do. Scores in this range usually track with a template site hitting its ceiling. The fastest path forward is often a fresh build — happy to walk through options on a 20-minute call.";
@@ -2106,8 +2106,8 @@
   }
 
   // Render a category card in "N/A" state — used when the category
-  // doesn't apply to the site being audited (e.g. Restaurant Readiness
-  // on a non-restaurant site). No score, no bar fill, muted styling.
+  // doesn't apply to the site being audited (e.g. Wellness Readiness
+  // on a non-wellness site). No score, no bar fill, muted styling.
   function setCategoryNA(cat) {
     var card = document.querySelector('.category-card[data-cat="' + cat + '"]');
     if (!card) return;
@@ -2131,19 +2131,19 @@
     return audits && audits[key] ? audits[key] : { displayValue: '—', numericValue: null };
   }
 
-  /* -------- Restaurant-priority checks --------
+  /* -------- Wellness-priority checks --------
      Two types of checks live in the same array:
 
        'audit'    — maps to a Lighthouse audit ID. The 4 Lighthouse
                     audits below were chosen because they matter
-                    disproportionately to restaurant sites (whose
+                    disproportionately to wellness sites (whose
                     traffic is overwhelmingly mobile-phone-based
                     "where am I eating tonight" decisions).
 
        'platform' — scans the PSI network-requests audit for hostnames
                     belonging to ordering, reservation, or maps
                     platforms. These are signals that ONLY show up
-                    on restaurant sites — a dentist doesn't load
+                    on wellness sites — a dentist doesn't load
                     OpenTable; a law firm doesn't embed Toast. Using
                     the platforms the site actually integrates with
                     gives us genuinely wellness-specific checks
@@ -2154,7 +2154,7 @@
   // toward small-business-friendly platforms (BentoBox, Popmenu,
   // GloriaFood, Owner, Hostme, ResDiary, Flipdish) alongside the
   // big US names — because Muntin's actual client base is
-  // independent restaurants, and a false negative ("we didn't
+  // independent wellness businesses, and a false negative ("we didn't
   // detect your booking platform") is worse than detecting one
   // we don't recognize. Add new patterns here as real restaurant
   // sites surface them in the wild.
@@ -2315,11 +2315,11 @@
    * Effort tells the owner who can fix it (self / dev / rebuild).
    */
 
-  // Restaurant schema.org detection. A site that publishes JSON-LD
+  // Wellness schema.org detection. A site that publishes JSON-LD
   // with @type Restaurant (or FoodEstablishment, or LocalBusiness
   // with a servesCuisine field) is telling Google explicitly "this
-  // is a restaurant" — which is one of the strongest possible signals
-  // for the audit's is-this-a-restaurant heuristic AND a real SEO
+  // is a wellness business" — which is one of the strongest possible signals
+  // for the audit's is-this-a-wellness-business heuristic AND a real SEO
   // benefit worth flagging as a passing check on its own. Lighthouse's
   // `structured-data` audit surfaces JSON-LD snippets in its details;
   // we also scan the generic page text as a fallback.
@@ -2433,12 +2433,12 @@
     return all.slice(0, -1).join(', ') + ', and ' + all[all.length - 1];
   }
 
-  // Each check carries a `weight` used for the Restaurant Readiness
+  // Each check carries a `weight` used for the Wellness Readiness
   // score. A missing viewport tag is catastrophic (every phone visitor
   // sees a broken desktop site), while a missing online-ordering
   // platform might just mean "we're a takeout-only spot with a phone
   // number" — so they should NOT cost the same in the rollup. Weights
-  // reflect how much each check actually drives restaurant conversions
+  // reflect how much each check actually drives wellness conversions
   // in practice.
   //
   // Each check has THREE possible result states:
@@ -2673,7 +2673,7 @@
       if (detection.detected) {
         return makeResult(def, 'pass', detection.found);
       }
-      // Text fallback — catches self-hosted restaurants like Tacombi
+      // Text fallback — catches self-hosted wellness sites
       // whose ordering lives on their own domain with no recognizable
       // platform hostname.
       if (pageText) {
@@ -2711,7 +2711,7 @@
       return makeResult(def, 'unverified');
     }
 
-    // ---- Restaurant schema.org check ----
+    // ---- Wellness schema.org check ----
     if (def.type === 'schema') {
       if (detectWellnessSchema(pageText, allUrls)) {
         return makeResult(def, 'pass');
@@ -2911,7 +2911,7 @@
           impactHtml +
           feedbackHtml +
         '</div>' +
-        '<a class="link" href="/resources/restaurant-website-checklist/' + def.anchor + '">Learn more →</a>';
+        '<a class="link" href="/tools/audits/wellness/' + def.anchor + '">Learn more →</a>';
       container.appendChild(row);
     });
 
@@ -2940,14 +2940,14 @@
         if (typeof updateShareLinks === 'function') updateShareLinks();
         // Re-render the priority checks with the new override applied.
         renderPriorityChecks(audits, allUrls, pageText);
-        // Recompute the overall score ring and the Restaurant Readiness
+        // Recompute the overall score ring and the Wellness Readiness
         // category card LIVE so the user sees their correction change
         // the headline number immediately — no re-audit needed.
         recomputeOverallFromCurrentState();
       });
     });
 
-    var restaurantScore = totalWeight > 0
+    var wellnessScore = totalWeight > 0
       ? Math.round((weightedCredit / totalWeight) * 100)
       : 0;
 
@@ -2965,40 +2965,40 @@
         if (unverifiedCount > 0) {
           pieces.push(unverifiedCount + ' couldn\'t be verified — answer the "is this right?" questions below to refine your score');
         }
-        pieces.push('restaurant readiness: ' + restaurantScore + '/100');
+        pieces.push('wellness readiness: ' + wellnessScore + '/100');
         tally.textContent = pieces.join(' · ');
       } else {
-        tally.textContent = 'No restaurant-priority data available';
+        tally.textContent = 'No wellness-priority data available';
       }
     }
 
-    return { score: restaurantScore, passCount: passCount, totalCount: totalCount };
+    return { score: wellnessScore, passCount: passCount, totalCount: totalCount };
   }
 
-  // Best-effort heuristic: is the audited URL actually a restaurant site?
+  // Best-effort heuristic: is the audited URL actually a wellness business site?
   // Combines four signals in order of reliability:
-  //   1. An explicit deny list for sites we know aren't restaurants
+  //   1. An explicit deny list for sites we know aren't wellness businesses
   //      (muntin.digital itself — prevents the self-credibility problem
   //      where our own site scores poorly on our own tool).
   //   2. Platform detection in network requests + anchor hrefs. If the
   //      site loads or links to Toast, Square, OpenTable, Resy, Tock,
   //      BentoBox, Popmenu, or any other platform from PLATFORM_PATTERNS'
-  //      ordering/appointments groups — it's a restaurant, full stop.
+  //      ordering/appointments groups — it's a wellness business, full stop.
   //      This is the most reliable single signal we have; a dentist
   //      doesn't integrate OpenTable, an accountant doesn't load Toast.
   //   3. A keyword match against the URL hostname, the page title as
   //      reported by Lighthouse, and the meta description. Catches
-  //      restaurants whose site doesn't auto-load a platform widget
+  //      wellness businesses whose site doesn't auto-load a platform widget
   //      (e.g. a single-location spot with only a phone number).
   //   4. A default of FALSE when no signals fire — so a random tech
-  //      company or blog gets "N/A" on Restaurant Readiness instead of
+  //      company or blog gets "N/A" on Wellness Readiness instead of
   //      a misleading 0.
   //
   // Adding signal 2 (platform detection) on top of the original keyword
-  // heuristic catches restaurants whose name is a surname ("romanos.com",
+  // heuristic catches wellness businesses whose name is a surname ("romanos.com",
   // "garcia.com") or whose meta description doesn't include obvious
   // cuisine words — previously we'd wrongly mark them N/A.
-  function looksLikeRestaurant(auditedUrl, audits, allUrls) {
+  function looksLikeWellness(auditedUrl, audits, allUrls) {
     if (!auditedUrl) return false;
 
     // 1) Explicit deny list
@@ -3008,18 +3008,18 @@
     } catch (e) {
       return false;
     }
-    var NON_RESTAURANT_DOMAINS = ['muntin.digital', 'muntindigital.com'];
-    for (var i = 0; i < NON_RESTAURANT_DOMAINS.length; i++) {
-      if (host === NON_RESTAURANT_DOMAINS[i] || host.endsWith('.' + NON_RESTAURANT_DOMAINS[i])) {
+    var NON_WELLNESS_DOMAINS = ['muntin.digital', 'muntindigital.com'];
+    for (var i = 0; i < NON_WELLNESS_DOMAINS.length; i++) {
+      if (host === NON_WELLNESS_DOMAINS[i] || host.endsWith('.' + NON_WELLNESS_DOMAINS[i])) {
         return false;
       }
     }
 
     // 2) Platform signal: if we see any ordering or reservation platform
-    //    in the combined URL list, it's a restaurant. We deliberately
+    //    in the combined URL list, it's a wellness business. We deliberately
     //    exclude the 'maps' and 'phone' categories from this signal —
     //    every local business embeds Google Maps, every local business
-    //    has a phone number, neither alone is a restaurant tell.
+    //    has a phone number, neither alone is a wellness business tell.
     if (allUrls && allUrls.length) {
       var rd = detectPlatforms(['ordering', 'appointments'], allUrls);
       if (rd.detected) return true;
@@ -3028,10 +3028,10 @@
     // 3) Schema.org signal: if the site publishes JSON-LD markup with
     //    @type Restaurant / FoodEstablishment / Bakery / CafeOrCoffeeShop
     //    etc., or any LocalBusiness with a servesCuisine field, it's
-    //    telling Google explicitly "this is a restaurant". Catches sites
+    //    telling Google explicitly "this is a wellness business". Catches sites
     //    that have no recognized booking platform but correctly mark
     //    themselves up for local SEO — which is exactly the pattern a
-    //    well-built small restaurant site tends to follow.
+    //    well-built small wellness site tends to follow.
     var schemaPageText = extractPageText(audits);
     if (detectWellnessSchema(schemaPageText, allUrls)) return true;
 
@@ -3063,29 +3063,23 @@
 
     // 5) Keyword match against a curated list of strong restaurant
     //    indicators. Each term is unambiguous enough that a single
-    //    match reliably identifies the site as a restaurant. Ambiguous
+    //    match reliably identifies the site as a wellness business. Ambiguous
     //    short words (bar, pub) are deliberately excluded to avoid
     //    false positives like "barcamp" or "barry".
-    var RESTAURANT_TERMS = [
-      // Business-type words
-      'restaurant', 'restaurants', 'eatery', 'bistro', 'trattoria', 'osteria',
-      'brasserie', 'gastropub', 'pizzeria', 'taqueria', 'cantina', 'tavern',
-      'diner', 'bakery', 'patisserie', 'creamery', 'teahouse', 'steakhouse',
-      'cafe', 'café', 'chophouse', 'smokehouse',
-      // Cuisine words (unambiguous food signals)
-      'pizza', 'sushi', 'ramen', 'taco', 'burger', 'barbecue', 'bbq',
-      'seafood', 'dumpling', 'noodle', 'kebab', 'pho',
-      // Service and menu language
-      'prix fixe', 'tasting menu', 'chef', 'sommelier', 'menu', 'reservation',
-      'appointments', 'dine-in', 'dine in', 'brunch', 'happy hour',
-      'catering', 'takeout', 'take-out', 'table', 'dining room',
-      // Reservation / booking platforms (site-level integrations)
-      'opentable', 'resy', 'tock.app', 'grubhub', 'doordash', 'ubereats',
-      'uber eats', 'chownow', 'toasttab'
+    var WELLNESS_TERMS = [
+      'yoga', 'pilates', 'spa', 'salon', 'wellness', 'massage', 'meditation',
+      'fitness', 'gym', 'studio', 'beauty', 'skincare', 'facial', 'manicure',
+      'pedicure', 'nail', 'hair', 'barber', 'esthetics', 'aesthetics',
+      'acupuncture', 'chiropractic', 'therapy', 'healing', 'reiki',
+      'barre', 'crossfit', 'boxing', 'cycling', 'spin', 'bootcamp',
+      'personal training', 'trainer', 'instructor', 'practitioner',
+      'treatment', 'holistic', 'ayurveda', 'float', 'sauna', 'cryotherapy',
+      'stretch', 'recovery', 'bodywork', 'waxing', 'lash', 'brow',
+      'blowout', 'color', 'highlights', 'extensions'
     ];
 
-    for (var j = 0; j < RESTAURANT_TERMS.length; j++) {
-      if (haystack.indexOf(RESTAURANT_TERMS[j]) !== -1) return true;
+    for (var j = 0; j < WELLNESS_TERMS.length; j++) {
+      if (haystack.indexOf(WELLNESS_TERMS[j]) !== -1) return true;
     }
     return false;
   }
@@ -3107,38 +3101,38 @@
     // page text (title + meta description + audit snippets) ONCE
     // per audit run. Used by both the priority checks (to detect
     // ordering/reservation/phone/maps integrations with platform
-    // and self-hosted-text fallback) and looksLikeRestaurant (which
-    // uses platform hits as its most reliable "is this a restaurant"
+    // and self-hosted-text fallback) and looksLikeWellness (which
+    // uses platform hits as its most reliable "is this a wellness business"
     // signal).
     var allUrls  = extractAllUrls(audits);
     var pageText = extractPageText(audits);
 
-    // Compute Restaurant Readiness score from the priority checks
+    // Compute Wellness Readiness score from the priority checks
     // BEFORE the overall — we want it to contribute to the average
-    // for real restaurant sites, but be excluded for non-restaurants
+    // for real wellness sites, but be excluded for non-wellnesss
     // (like muntin.digital itself) so we don't look bad on our own tool.
     var priorityResult  = renderPriorityChecks(audits, allUrls, pageText);
-    var isRestaurantSite = looksLikeRestaurant(auditedUrl, audits, allUrls);
-    var restaurantScore = priorityResult.score;
+    var isWellnessSite = looksLikeWellness(auditedUrl, audits, allUrls);
+    var wellnessScore = priorityResult.score;
 
-    // Cache the four Lighthouse category scores + the restaurant flag
+    // Cache the four Lighthouse category scores + the wellness business flag
     // so recomputeOverall() (fired by user feedback clicks) can update
-    // the overall score ring and the restaurant category card without
+    // the overall score ring and the wellness business category card without
     // needing to re-fetch from PSI.
     window.__auditScoreState = {
       perf: perf, a11y: a11y, bp: bp, seo: seo,
-      isRestaurant: isRestaurantSite,
+      isWellness: isWellnessSite,
       audits: audits, allUrls: allUrls, pageText: pageText,
       auditedUrl: auditedUrl
     };
 
     var overall;
-    if (isRestaurantSite) {
-      // Real restaurant site: weight restaurant readiness as a 5th category
-      overall = Math.round((perf + a11y + bp + seo + restaurantScore) / 5);
+    if (isWellnessSite) {
+      // Real wellness site: weight wellness readiness as a 5th category
+      overall = Math.round((perf + a11y + bp + seo + wellnessScore) / 5);
     } else {
-      // Non-restaurant site: average only the 4 Lighthouse categories,
-      // and mark restaurant readiness as N/A so the visitor understands
+      // Non-wellness site: average only the 4 Lighthouse categories,
+      // and mark wellness readiness as N/A so the visitor understands
       // why that card is excluded.
       overall = Math.round((perf + a11y + bp + seo) / 4);
     }
@@ -3153,10 +3147,10 @@
     setCategory('accessibility', a11y);
     setCategory('best-practices', bp);
     setCategory('seo',           seo);
-    if (isRestaurantSite) {
-      setCategory('restaurant', restaurantScore);
+    if (isWellnessSite) {
+      setCategory('wellness', wellnessScore);
     } else {
-      setCategoryNA('restaurant');
+      setCategoryNA('wellness');
     }
 
     // Drill-down: list every failing Lighthouse audit under the right
@@ -3173,7 +3167,7 @@
     setVital('fcp', fcp.displayValue, fcp.numericValue);
 
     // Expose raw audits for future consumers
-    window.__auditLastResult = { audits: audits, overall: overall, url: auditedUrl, restaurant: isRestaurantSite ? restaurantScore : null };
+    window.__auditLastResult = { audits: audits, overall: overall, url: auditedUrl, wellness: isWellnessSite ? wellnessScore : null };
 
     // Update the address bar so "copy link" gives you the audited
     // URL (and any live overrides). Uses history.replaceState so
@@ -3183,7 +3177,7 @@
     // Pre-fill email-the-report hidden fields with this run's context.
     // Sprint 6c: richer payload so the email is a real deliverable,
     // not just "someone wanted their report." Includes the overall
-    // score, restaurant readiness, a shareable link with any current
+    // score, wellness readiness, a shareable link with any current
     // overrides baked in, a human-readable summary, the list of
     // failing and unverified check names, and any user corrections.
     var emailUrlField        = document.getElementById('emailReportUrl');
@@ -3197,7 +3191,7 @@
     if (emailUrlField)   emailUrlField.value   = auditedUrl;
     if (emailScoreField) emailScoreField.value = String(overall);
     if (emailReadinessField) {
-      emailReadinessField.value = isRestaurantSite ? String(restaurantScore) : 'N/A';
+      emailReadinessField.value = isWellnessSite ? String(wellnessScore) : 'N/A';
     }
     // Build a shareable link that preserves any current overrides.
     try {
@@ -3240,7 +3234,7 @@
       if (emailSummaryField) {
         var parts = [
           'Overall score: ' + overall + '/100',
-          isRestaurantSite ? 'Restaurant readiness: ' + restaurantScore + '/100' : null,
+          isWellnessSite ? 'Wellness readiness: ' + wellnessScore + '/100' : null,
           failingChecks.length ? failingChecks.length + ' failing checks' : 'No failing checks',
           unverifiedChecks.length ? unverifiedChecks.length + ' couldn\'t be verified' : null
         ].filter(function(p){ return p; });
@@ -3260,14 +3254,14 @@
     }, 80);
   }
 
-  // Live-update the overall score ring and the Restaurant Readiness
+  // Live-update the overall score ring and the Wellness Readiness
   // category card WITHOUT re-fetching from PSI. Called every time a
   // user clicks a feedback button so their corrections reshape the
   // headline number in real time — no re-audit required.
   //
   // Reads the cached Lighthouse category scores from
   // window.__auditScoreState (set by renderReport) and the current
-  // USER_OVERRIDES state to recompute restaurant readiness, then
+  // USER_OVERRIDES state to recompute wellness readiness, then
   // reassembles the overall score using the same formula
   // renderReport uses on first run. The score ring's stroke-dashoffset
   // transition animates the change, so the user sees the needle slide
@@ -3278,27 +3272,27 @@
     // Re-run the priority checks to pick up current USER_OVERRIDES
     // state. renderPriorityChecks returns the updated restaurant score.
     var priorityResult = renderPriorityChecks(state.audits, state.allUrls, state.pageText);
-    var newRestaurantScore = priorityResult.score;
+    var newWellnessScore = priorityResult.score;
 
     var overall;
-    if (state.isRestaurant) {
-      overall = Math.round((state.perf + state.a11y + state.bp + state.seo + newRestaurantScore) / 5);
+    if (state.isWellness) {
+      overall = Math.round((state.perf + state.a11y + state.bp + state.seo + newWellnessScore) / 5);
     } else {
       overall = Math.round((state.perf + state.a11y + state.bp + state.seo) / 4);
     }
 
     // Update the score ring (stroke-dashoffset transition handles
-    // the animation), verdict copy, Restaurant Readiness category
+    // the animation), verdict copy, Wellness Readiness category
     // card, and the cached last-result so future share/email/copy
     // actions see the corrected score.
     setScoreRing(overall);
     var verdictEl = document.getElementById('verdictCopy');
     if (verdictEl) verdictEl.textContent = verdictFor(overall);
-    if (state.isRestaurant) setCategory('restaurant', newRestaurantScore);
+    if (state.isWellness) setCategory('wellness', newWellnessScore);
 
     if (window.__auditLastResult) {
       window.__auditLastResult.overall = overall;
-      window.__auditLastResult.restaurant = state.isRestaurant ? newRestaurantScore : null;
+      window.__auditLastResult.wellness = state.isWellness ? newWellnessScore : null;
     }
 
     // Update the email form hidden fields so an email sent AFTER
@@ -3306,7 +3300,7 @@
     var emailScoreField     = document.getElementById('emailReportScore');
     var emailReadinessField = document.getElementById('emailReportReadiness');
     if (emailScoreField)     emailScoreField.value     = String(overall);
-    if (emailReadinessField) emailReadinessField.value = state.isRestaurant ? String(newRestaurantScore) : 'N/A';
+    if (emailReadinessField) emailReadinessField.value = state.isWellness ? String(newWellnessScore) : 'N/A';
   }
 
   function showError(heading, body) {
@@ -3358,7 +3352,7 @@
         return res.json();
       })
       .then(function(data){
-        // Step 3: Lighthouse response received, scoring restaurant checks
+        // Step 3: Lighthouse response received, scoring wellness checks
         setStep(3);
         return new Promise(function(resolve){
           setTimeout(function(){ resolve(data); }, 250);
@@ -3428,7 +3422,7 @@
     if (!url) {
       showError(
         "That doesn't look like a valid URL.",
-        "Try something like yourrestaurant.com or https://yourrestaurant.com — a full web address, not a search term."
+        "Try something like yourstudio.com or https://yourstudio.com — a full web address, not a search term."
       );
       return;
     }
@@ -3737,14 +3731,14 @@
           var bp   = Math.round(((cats['best-practices'] && cats['best-practices'].score) || 0) * 100);
           var seo  = Math.round(((cats.seo && cats.seo.score) || 0) * 100);
 
-          // Compute restaurant readiness using the same logic as
+          // Compute wellness readiness using the same logic as
           // renderPriorityChecks but without touching the DOM (we're
           // rendering a TABLE for competitors, not full priority items).
           var allUrls  = extractAllUrls(audits);
           var pageText = extractPageText(audits);
-          var isRestaurant = looksLikeRestaurant(url, audits, allUrls);
-          var restaurantScore = 0;
-          if (isRestaurant) {
+          var isWellness = looksLikeWellness(url, audits, allUrls);
+          var wellnessScore = 0;
+          if (isWellness) {
             var totalWeight = 0, weightedCredit = 0;
             PRIORITY_CHECKS.forEach(function(def){
               var result = evaluatePriorityCheck(def, audits, allUrls, pageText);
@@ -3754,17 +3748,17 @@
               totalWeight += w;
               if (result.mark.cls === 'pass') weightedCredit += w;
             });
-            restaurantScore = totalWeight > 0 ? Math.round((weightedCredit / totalWeight) * 100) : 0;
+            wellnessScore = totalWeight > 0 ? Math.round((weightedCredit / totalWeight) * 100) : 0;
           }
-          var overall = isRestaurant
-            ? Math.round((perf + a11y + bp + seo + restaurantScore) / 5)
+          var overall = isWellness
+            ? Math.round((perf + a11y + bp + seo + wellnessScore) / 5)
             : Math.round((perf + a11y + bp + seo) / 4);
           return {
             url: url,
             pretty: url.replace(/^https?:\/\//, '').replace(/\/$/, ''),
             perf: perf, a11y: a11y, bp: bp, seo: seo,
-            isRestaurant: isRestaurant,
-            restaurant: isRestaurant ? restaurantScore : null,
+            isWellness: isWellness,
+            wellness: isWellness ? wellnessScore : null,
             overall: overall
           };
         });
@@ -3887,13 +3881,13 @@
       addRow('Accessibility',       yourCached.a11y,             function(c){ return c.a11y; });
       addRow('Best practices',      yourCached.bp,               function(c){ return c.bp; });
       addRow('SEO',                 yourCached.seo,              function(c){ return c.seo; });
-      addRow('Restaurant readiness', yourResult.restaurant,      function(c){ return c.restaurant; });
+      addRow('Wellness readiness', yourResult.wellness,      function(c){ return c.wellness; });
 
       // Build a plain-English verdict based on how many categories
       // the user beats each competitor in. Keeps it honest: if the
       // user is losing on a dimension, we say so.
       var verdictParts = [];
-      var yourCats = { perf: yourCached.perf, a11y: yourCached.a11y, bp: yourCached.bp, seo: yourCached.seo, restaurant: yourResult.restaurant, overall: yourResult.overall };
+      var yourCats = { perf: yourCached.perf, a11y: yourCached.a11y, bp: yourCached.bp, seo: yourCached.seo, wellness: yourResult.wellness, overall: yourResult.overall };
       competitorResults.forEach(function(c, idx){
         var wins = 0, losses = 0, ties = 0;
         ['perf', 'a11y', 'bp', 'seo', 'overall'].forEach(function(k){
@@ -4025,7 +4019,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">Structure Brings Clarity.</p>
-        <p class="foot-blurb">A one-person studio in Silver Spring, MD, building custom websites, brands, and social media for independent restaurants and lifestyle brands across the DMV and beyond.</p>
+        <p class="foot-blurb">A one-person studio in Silver Spring, MD, building custom websites, brands, and social media for independent wellness businesses and lifestyle brands across the DMV and beyond.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
