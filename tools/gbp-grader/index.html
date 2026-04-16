@@ -78,17 +78,27 @@
 <nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><a href="/tools/">Tools</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><span aria-current="page">GBP Grader</span></nav>
 
 <section class="hero hero-tight"><div class="container"><div class="gbp-hero">
-  <span class="eyebrow">Free tool &middot; Coming soon</span>
+  <span class="eyebrow">Free tool &middot; 10 seconds</span>
   <h1>Grade your<br><span class="serif-italic">Google Business Profile.</span></h1>
-  <p class="hero-sub" style="margin:20px auto 0;max-width:540px;">Search for your business and see how your profile stacks up — review count, photo count, categories, hours, and completeness — with specific fixes for what's missing.</p>
+  <p class="hero-sub" style="margin:20px auto 0;max-width:540px;">Search for your business name and see how your profile stacks up — rating, review count, photos, hours, categories — with specific fixes for what's missing.</p>
 
-  <div class="gbp-coming">
-    <h3>This tool needs one more piece.</h3>
-    <p>The GBP Grader pulls real data from Google's Places API — your rating, review count, photos, hours, and business categories. To go live, it needs a Google Cloud API key configured in the Cloudflare Worker backend.</p>
-    <span class="badge">Coming soon</span>
+  <form class="gbp-form" id="gbpForm" novalidate>
+    <input type="text" id="gbpQuery" placeholder="Your Business Name, City" autocomplete="off" required aria-label="Your business name and city" />
+    <button type="submit" id="gbpSubmit">Grade it</button>
+  </form>
+  <p class="gbp-note">Powered by Google Places API. Type your business name + city for best results.</p>
+
+  <div class="gbp-result" id="gbpResult" aria-live="polite">
+    <div class="gbp-biz" id="gbpBiz"></div>
+    <div class="gbp-checks" id="gbpChecks"></div>
+    <div class="gbp-cta">
+      <p>Want to optimize your profile? Read the <a href="/blog/how-to-set-up-google-business-profile-for-your-restaurant/" style="color:var(--teal);font-weight:500;border-bottom:1px dashed currentColor;">complete GBP setup guide</a> for step-by-step instructions.</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <a class="btn btn-primary" href="/tools/audits/restaurant/">Restaurant audit</a>
+        <a class="btn btn-ghost" href="/tools/audits/wellness/">Wellness audit</a>
+      </div>
+    </div>
   </div>
-
-  <p style="font-size:15px;color:var(--stone);max-width:480px;margin:24px auto 0;line-height:1.6;">In the meantime, you can check your Google Business Profile yourself with the <a href="/blog/how-to-set-up-google-business-profile-for-your-restaurant/" style="color:var(--teal);font-weight:500;border-bottom:1px dashed currentColor;">complete GBP setup guide</a> — it covers everything this tool will eventually automate.</p>
 </div></div></section>
 </main>
 
