@@ -385,6 +385,13 @@
         var titleResult = gradeTitle(data.title || '');
         var descResult = gradeDesc(data.description || '');
 
+        // If both are empty, the site may use JS rendering (React, Next.js)
+        // where the title is set client-side and our server fetch sees nothing.
+        if (!data.title && !data.description) {
+          titleResult.checks.push({ pass: false, text: 'Note: your site may use JavaScript rendering (React, Next.js, etc.) which sets the title after the page loads. Our scanner reads the raw HTML — if your title is set by JavaScript, we can\'t see it. Check your page source directly to confirm.' });
+          descResult.checks.push({ pass: false, text: 'Same note applies — if your site is JavaScript-rendered, the meta description may exist in the rendered page but not in the raw HTML we scan.' });
+        }
+
         renderCard('title', titleResult, titleResult.title);
         renderCard('desc', descResult, descResult.desc);
 
