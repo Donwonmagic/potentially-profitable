@@ -2327,12 +2327,25 @@
   // benefit worth flagging as a passing check on its own. Lighthouse's
   // `structured-data` audit surfaces JSON-LD snippets in its details;
   // we also scan the generic page text as a fallback.
-  var SCHEMA_WELLNESS_RE = /"@type"\s*:\s*"(?:HealthAndBeautyBusiness|BeautySalon|DaySpa|HairSalon|NailSalon|SportsActivityLocation|ExerciseGym|HealthClub|YogaStudio|PilatesStudio|FitnessCenter|MassageTherapy)"/i;
+  // SPECIFIC wellness schema types — strong signal. If any of these
+  // appear, the site is explicitly telling Google "I am a wellness
+  // business." This earns a confident 'pass'.
+  var SCHEMA_WELLNESS_RE = /"@type"\s*:\s*"(?:HealthAndBeautyBusiness|BeautySalon|DaySpa|HairSalon|NailSalon|SportsActivityLocation|ExerciseGym|HealthClub)"/i;
+
+  // GENERIC schema types — weak signal. LocalBusiness alone doesn't
+  // tell us it's a wellness business (could be a plumber, a dentist,
+  // a lawyer). We only count LocalBusiness as a pass if the page
+  // ALSO contains wellness-related keywords, preventing false
+  // positives from non-wellness local businesses.
   var SCHEMA_LOCAL_BIZ_RE = /"@type"\s*:\s*"LocalBusiness"/i;
+  var SCHEMA_WELLNESS_KEYWORD_RE = /\b(?:yoga|pilates|spa|salon|wellness|massage|fitness|gym|beauty|skincare|facial|meditation|barre|cycling|spin|stretch|holistic|acupuncture|chiropractic|treatment|waxing|lash|hair\s*cut|blowout|manicure|pedicure)\b/i;
+
   function detectWellnessSchema(pageText, allUrls) {
     if (!pageText) return false;
+    // Strong signal: explicit wellness schema type
     if (SCHEMA_WELLNESS_RE.test(pageText)) return true;
-    if (SCHEMA_LOCAL_BIZ_RE.test(pageText)) return true;
+    // Weak signal: LocalBusiness + wellness keywords on the page
+    if (SCHEMA_LOCAL_BIZ_RE.test(pageText) && SCHEMA_WELLNESS_KEYWORD_RE.test(pageText)) return true;
     return false;
   }
 
