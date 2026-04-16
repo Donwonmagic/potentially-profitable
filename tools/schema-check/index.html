@@ -109,6 +109,140 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital&#8482; &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js" defer></script>
-<!-- JS NEXT -->
+<script>
+(function(){
+  var form=document.getElementById('schForm');
+  var input=document.getElementById('schUrl');
+  var btn=document.getElementById('schSubmit');
+  var result=document.getElementById('schResult');
+  var verdict=document.getElementById('schVerdict');
+  var typesList=document.getElementById('schTypes');
+
+  function norm(u){u=u.trim();if(!u)return'';if(!/^https?:\/\//i.test(u))u='https://'+u;try{new URL(u)}catch(e){return''}return u}
+
+  // Known schema types grouped by quality for a local business
+  var SPECIFIC={
+    'Restaurant':1,'FoodEstablishment':1,'Bakery':1,'BarOrPub':1,'CafeOrCoffeeShop':1,
+    'FastFoodRestaurant':1,'IceCreamShop':1,'Winery':1,'Brewery':1,'Distillery':1,
+    'HealthAndBeautyBusiness':1,'BeautySalon':1,'DaySpa':1,'HairSalon':1,'NailSalon':1,
+    'SportsActivityLocation':1,'ExerciseGym':1,'HealthClub':1,
+    'Store':1,'AutoRepair':1,'Dentist':1,'MedicalBusiness':1,'LegalService':1,
+    'RealEstateAgent':1,'FinancialService':1,'AccountingService':1,
+    'ProfessionalService':1,'HomeAndConstructionBusiness':1,'Plumber':1,'Electrician':1
+  };
+  var GENERIC={'LocalBusiness':1,'Organization':1,'Place':1,'WebSite':1,'WebPage':1,'Thing':1};
+
+  function classify(t){
+    if(SPECIFIC[t])return'specific';
+    if(GENERIC[t])return'generic';
+    return'other';
+  }
+
+  function friendlyName(t){
+    // Insert spaces before caps: "HealthAndBeautyBusiness" -> "Health And Beauty Business"
+    return t.replace(/([a-z])([A-Z])/g,'$1 $2');
+  }
+
+  function advice(t){
+    var map={
+      'Restaurant':'Google knows you\'re a restaurant. This helps you appear in "restaurants near me" searches with rich details.',
+      'HealthAndBeautyBusiness':'Google knows you\'re a health and beauty business. Add more specific types (DaySpa, BeautySalon) for better matching.',
+      'BeautySalon':'Google knows you\'re a beauty salon. You\'ll show up in salon-specific searches.',
+      'DaySpa':'Google knows you\'re a day spa. You\'ll show up in spa-specific searches.',
+      'SportsActivityLocation':'Google knows you\'re a fitness/sports location. Add specific sub-types if applicable.',
+      'LocalBusiness':'Google knows you\'re a local business, but not WHAT KIND. Add a more specific type (Restaurant, BeautySalon, DaySpa, etc.) so Google can match you to the right searches.',
+      'Organization':'This tells Google you\'re an organization, but not a local business. If you serve customers at a physical location, use LocalBusiness or a more specific type instead.',
+      'WebSite':'This describes your website, not your business. Add a separate LocalBusiness or industry-specific schema block.',
+      'WebPage':'This describes the page, not your business. Add a separate LocalBusiness or industry-specific schema block.'
+    };
+    return map[t]||'Google sees this type on your site. If you\'re a local business, make sure you also have a LocalBusiness (or more specific) schema type.';
+  }
+
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var url=norm(input.value);
+    if(!url){input.focus();return}
+    btn.disabled=true;btn.textContent='Checking…';
+    result.classList.remove('visible');
+
+    var api='https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url='+encodeURIComponent(url)+'&strategy=mobile&category=seo';
+
+    fetch(api).then(function(r){return r.json()}).then(function(data){
+      if(data.error)throw new Error(data.error.message||'API error');
+
+      var audits=data.lighthouseResult.audits||{};
+      var sd=audits['structured-data'];
+      var foundTypes=[];
+      var seen={};
+
+      // Extract @type values from the structured-data audit details
+      // and from the raw page text (Lighthouse exposes snippets)
+      var searchText='';
+      if(sd&&sd.details&&sd.details.items){
+        sd.details.items.forEach(function(item){
+          if(item.snippet)searchText+=item.snippet+' ';
+          if(item.description)searchText+=item.description+' ';
+        });
+      }
+      // Also check document-title audit for page text
+      var dt=audits['document-title'];
+      if(dt&&dt.details&&dt.details.items){
+        dt.details.items.forEach(function(item){
+          if(item.snippet)searchText+=item.snippet+' ';
+        });
+      }
+
+      // Parse @type values from the text
+      var typeRe=/"@type"\s*:\s*"([A-Za-z]+)"/g;
+      var m;
+      while((m=typeRe.exec(searchText))!==null){
+        if(!seen[m[1]]){seen[m[1]]=true;foundTypes.push(m[1])}
+      }
+      // Also try array format: "@type": ["Thing","LocalBusiness"]
+      var arrayRe=/"@type"\s*:\s*\[([^\]]+)\]/g;
+      while((m=arrayRe.exec(searchText))!==null){
+        var inner=m[1].match(/"([A-Za-z]+)"/g);
+        if(inner)inner.forEach(function(t){
+          t=t.replace(/"/g,'');
+          if(!seen[t]){seen[t]=true;foundTypes.push(t)}
+        });
+      }
+
+      var hasSpecific=foundTypes.some(function(t){return classify(t)==='specific'});
+      var hasAny=foundTypes.length>0;
+
+      // Render verdict
+      if(hasSpecific){
+        verdict.innerHTML='<div class="icon found">&#10003;</div><h2>Yes — Google understands your business.</h2><p>Your site has specific structured data telling Google what kind of business you are.</p>';
+      } else if(hasAny){
+        verdict.innerHTML='<div class="icon missing">~</div><h2>Partially — Google sees your site, but not what you DO.</h2><p>You have some structured data, but it\'s too generic. Google knows you exist but can\'t match you to specific searches like "yoga near me" or "best salon in Bethesda."</p>';
+      } else {
+        verdict.innerHTML='<div class="icon missing">&#10005;</div><h2>No — Google doesn\'t know what your business is.</h2><p>Your site has no structured data. Google can\'t tell if you\'re a restaurant, a yoga studio, a salon, or a law firm. Adding schema markup is a 10-line code change with real SEO impact.</p>';
+      }
+
+      // Render types
+      typesList.innerHTML='';
+      if(foundTypes.length===0){
+        typesList.innerHTML='<li><span class="tag none">Missing</span><span class="detail"><strong>No schema found.</strong> Ask your developer to add a JSON-LD block with your business type, address, hours, and phone. This is a 10-minute fix that directly improves your local search visibility.</span></li>';
+      } else {
+        foundTypes.forEach(function(t){
+          var c=classify(t);
+          var tagCls=c==='specific'?'good':'generic';
+          var tagText=c==='specific'?'Specific':'Generic';
+          typesList.innerHTML+='<li><span class="tag '+tagCls+'">'+tagText+'</span><span class="detail"><strong>@type: '+friendlyName(t)+'</strong><br>'+advice(t)+'</span></li>';
+        });
+      }
+
+      result.classList.add('visible');
+      result.scrollIntoView({behavior:'smooth',block:'start'});
+      if(window.plausible)window.plausible('Schema Check',{props:{types:foundTypes.join(','),url:url}});
+    }).catch(function(err){
+      alert('Could not check that URL. '+(err.message||'Please try again.'));
+    }).finally(function(){
+      btn.disabled=false;btn.textContent='Check it';
+    });
+  });
+})();
+</script>
 </body>
 </html>
