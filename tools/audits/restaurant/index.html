@@ -2521,22 +2521,33 @@
   //   'image'    — menu link points to a .jpg / .png (bad)
   //   'missing'  — no link with "menu" in the text or url at all
   //   'unknown'  — we saw a menu link but couldn't classify
-  var MENU_HREF_RE = /menu/i;
+  //
+  // The old implementation used /menu/i as a blanket substring check,
+  // which wrongly flagged hamburger-menu icons (/assets/menu-icon.svg,
+  // /icons/menu.svg, /mobile-menu-toggle.js) as restaurant menu
+  // images. MENU_PATH_RE now requires "menu" to appear as a real path
+  // component (separated by /, -, _, ., or #), and MENU_EXCLUSIONS_RE
+  // skips URLs that match common UI-chrome filename patterns even if
+  // they contain "menu" — that's how we stop flagging WordPress
+  // navigation assets as restaurant menus.
+  var MENU_PATH_RE = /(?:^|[\/._\-#])menus?(?:$|[\/._?#\-])/i;
+  var MENU_EXCLUSIONS_RE = /menu[-_]?(?:icon|toggle|button|bar|arrow|close|open|dropdown|trigger)|hamburger|\/icons?\/|\.svg(?:[\/?#]|$)/i;
   function detectMenuFormat(allUrls, pageText) {
-    if (!allUrls || !allUrls.length) return 'unknown';
-    // Walk hrefs looking for one with "menu" in the path and classify
-    // by extension. PDF/image wins if found, otherwise HTML wins.
+    var hasUrls = allUrls && allUrls.length;
     var sawMenu = false;
     var sawHtmlMenu = false;
     var sawPdfMenu = false;
     var sawImageMenu = false;
-    for (var i = 0; i < allUrls.length; i++) {
-      var u = allUrls[i];
-      if (!MENU_HREF_RE.test(u)) continue;
-      sawMenu = true;
-      if (/\.pdf(\?|$|#)/.test(u))                     sawPdfMenu = true;
-      else if (/\.(?:jpg|jpeg|png|webp|gif)(\?|$|#)/.test(u)) sawImageMenu = true;
-      else                                             sawHtmlMenu = true;
+    if (hasUrls) {
+      for (var i = 0; i < allUrls.length; i++) {
+        var u = allUrls[i];
+        if (!MENU_PATH_RE.test(u))      continue;
+        if (MENU_EXCLUSIONS_RE.test(u)) continue;
+        sawMenu = true;
+        if (/\.pdf(?:[\/?#]|$)/.test(u))                       sawPdfMenu = true;
+        else if (/\.(?:jpe?g|png|webp|gif)(?:[\/?#]|$)/.test(u)) sawImageMenu = true;
+        else                                                    sawHtmlMenu = true;
+      }
     }
     if (sawPdfMenu)   return 'pdf';
     if (sawImageMenu) return 'image';
@@ -2581,16 +2592,85 @@
   // deduplicated. `keys` is an array so callers can accept "ordering OR
   // reservations" in a single check (takeout-only restaurants don't
   // need reservations; fine-dining doesn't need ordering).
+  //
+  // Matching rules are tiered by pattern shape to avoid the classic
+  // blog-post false positive (a restaurant's "Why we left OpenTable"
+  // post at /blog/opentable-review flipping the OpenTable pass flag):
+  //
+  //   - Scheme patterns ('tel:')          → match only if URL starts with it
+  //   - Path-bearing patterns ('x.com/y') → match against hostname + pathname,
+  //                                         anchored at a '.', '/', ':', or
+  //                                         start-of-string boundary
+  //   - Hostname-only patterns            → match against the parsed hostname
+  //                                         ONLY, so path-level mentions
+  //                                         don't count as integrations
+  //
+  // Protocol-relative hrefs (//cdn.toasttab.com/...) are normalized to
+  // https:// before parsing so legitimate Toast integrations don't get
+  // silently dropped.
+  function boundaryIndexOf(target, pattern) {
+    if (!target || !pattern) return -1;
+    var idx = target.indexOf(pattern);
+    while (idx !== -1) {
+      var before = idx === 0 ? '' : target.charAt(idx - 1);
+      if (idx === 0 || before === '.' || before === '/' || before === ':' || before === '-') {
+        return idx;
+      }
+      idx = target.indexOf(pattern, idx + 1);
+    }
+    return -1;
+  }
+  function parseForDetection(raw) {
+    if (!raw) return null;
+    if (/^(?:tel|mailto|sms):/i.test(raw)) {
+      return { scheme: true, full: raw.toLowerCase() };
+    }
+    var url = raw;
+    // Protocol-relative → promote to https so URL parsing succeeds
+    if (url.length > 1 && url.charAt(0) === '/' && url.charAt(1) === '/') {
+      url = 'https:' + url;
+    }
+    try {
+      // Root-relative (/foo) has no host we can attribute. Skip it —
+      // pure hostname patterns shouldn't match path-only strings.
+      if (url.charAt(0) === '/') {
+        return { host: '', hostPath: url.toLowerCase(), full: url.toLowerCase() };
+      }
+      var p = new URL(url);
+      var host = p.hostname.toLowerCase();
+      return { host: host, hostPath: host + p.pathname.toLowerCase(), full: url.toLowerCase() };
+    } catch (e) {
+      return { host: '', hostPath: raw.toLowerCase(), full: raw.toLowerCase() };
+    }
+  }
   function detectPlatforms(keys, networkUrls) {
     var found = [];
     var seen = {};
+    // Parse each URL once per call rather than once per pattern.
+    var parsed = [];
+    for (var u = 0; u < networkUrls.length; u++) {
+      var p = parseForDetection(networkUrls[u]);
+      if (p) parsed.push(p);
+    }
     for (var k = 0; k < keys.length; k++) {
       var group = PLATFORM_PATTERNS[keys[k]];
       if (!group) continue;
       for (var i = 0; i < group.hosts.length; i++) {
         var h = group.hosts[i];
-        for (var j = 0; j < networkUrls.length; j++) {
-          if (networkUrls[j].indexOf(h.pattern) !== -1) {
+        var pat = h.pattern.toLowerCase();
+        var isScheme = pat.charAt(pat.length - 1) === ':';
+        var hasPath  = pat.indexOf('/') !== -1;
+        for (var j = 0; j < parsed.length; j++) {
+          var pp = parsed[j];
+          var matched = false;
+          if (isScheme) {
+            matched = pp.full && pp.full.indexOf(pat) === 0;
+          } else if (hasPath) {
+            matched = boundaryIndexOf(pp.hostPath, pat) !== -1;
+          } else {
+            matched = boundaryIndexOf(pp.host, pat) !== -1;
+          }
+          if (matched) {
             if (!seen[h.name]) {
               seen[h.name] = true;
               found.push({ label: group.label, name: h.name });
@@ -3246,32 +3326,61 @@
     }
     haystack = haystack.toLowerCase();
 
-    // 5) Keyword match against a curated list of strong restaurant
-    //    indicators. Each term is unambiguous enough that a single
-    //    match reliably identifies the site as a restaurant. Ambiguous
-    //    short words (bar, pub) are deliberately excluded to avoid
-    //    false positives like "barcamp" or "barry".
-    var RESTAURANT_TERMS = [
+    // 5) Keyword match, split into STRONG and WEAK tiers.
+    //    The previous implementation used indexOf substring matching
+    //    against a flat list that included ambiguous words like
+    //    'menu', 'table', 'chef', 'brunch', 'catering'. Every
+    //    WordPress site with a nav labelled "menu", every corporate
+    //    page that mentioned "brunch event catering", and every
+    //    furniture blog with "coffee table" was being classified as
+    //    a restaurant — then silently scored 0 on Restaurant
+    //    Readiness and dragged down in the overall score.
+    //
+    //    Fix: use word-boundary regex matching (so 'menu' in
+    //    'submenu' or 'table' in 'hashtable' no longer hits), and
+    //    split terms into two tiers:
+    //
+    //      STRONG — one distinct match is enough. These are phrases
+    //               that essentially only appear on restaurant sites
+    //               ('pizzeria', 'tasting menu', 'doordash').
+    //      WEAK   — individually ambiguous. We require TWO distinct
+    //               weak matches to classify, so a corporate
+    //               "catering" page alone no longer trips the rule.
+    function escRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+    function matchCount(terms, text) {
+      var seen = {};
+      for (var i = 0; i < terms.length; i++) {
+        var re = new RegExp('\\b' + escRe(terms[i]) + '\\b', 'i');
+        if (re.test(text)) seen[terms[i]] = true;
+      }
+      return Object.keys(seen).length;
+    }
+
+    var STRONG_TERMS = [
       // Business-type words
       'restaurant', 'restaurants', 'eatery', 'bistro', 'trattoria', 'osteria',
       'brasserie', 'gastropub', 'pizzeria', 'taqueria', 'cantina', 'tavern',
       'diner', 'bakery', 'patisserie', 'creamery', 'teahouse', 'steakhouse',
-      'cafe', 'café', 'chophouse', 'smokehouse',
+      'cafe', 'chophouse', 'smokehouse',
       // Cuisine words (unambiguous food signals)
-      'pizza', 'sushi', 'ramen', 'taco', 'burger', 'barbecue', 'bbq',
-      'seafood', 'dumpling', 'noodle', 'kebab', 'pho',
-      // Service and menu language
-      'prix fixe', 'tasting menu', 'chef', 'sommelier', 'menu', 'reservation',
-      'reservations', 'dine-in', 'dine in', 'brunch', 'happy hour',
-      'catering', 'takeout', 'take-out', 'table', 'dining room',
+      'pizza', 'sushi', 'ramen', 'taco', 'tacos', 'burger', 'burgers',
+      'barbecue', 'bbq', 'seafood', 'dumpling', 'dumplings', 'noodle',
+      'noodles', 'kebab', 'pho', 'ceviche', 'tapas',
+      // Phrases that almost exclusively appear on restaurant sites
+      'prix fixe', 'tasting menu', 'dine-in', 'dine in', 'happy hour',
+      'dining room', 'takeout', 'take-out', 'sommelier',
       // Reservation / ordering platforms (site-level integrations)
       'opentable', 'resy', 'tock.app', 'grubhub', 'doordash', 'ubereats',
       'uber eats', 'chownow', 'toasttab'
     ];
 
-    for (var j = 0; j < RESTAURANT_TERMS.length; j++) {
-      if (haystack.indexOf(RESTAURANT_TERMS[j]) !== -1) return true;
-    }
+    var WEAK_TERMS = [
+      'menu', 'reservation', 'reservations', 'chef', 'brunch',
+      'catering', 'table', 'dining'
+    ];
+
+    if (matchCount(STRONG_TERMS, haystack) >= 1) return true;
+    if (matchCount(WEAK_TERMS, haystack) >= 2) return true;
     return false;
   }
 
