@@ -148,6 +148,10 @@
     return'<tr><td class="metric">'+label+'</td>'+f(v1,c1)+f(v2,c2)+'</tr>';
   }
 
+  // Enter key triggers compare from either input
+  url1.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();btn.click()}});
+  url2.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();btn.click()}});
+
   btn.addEventListener('click',function(){
     var u1=norm(url1.value),u2=norm(url2.value);
     if(!u1){url1.focus();return}
