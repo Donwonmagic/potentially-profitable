@@ -545,6 +545,35 @@
     font-weight: 500;
     white-space: nowrap;
   }
+  /* Priority marker on the lowest-scoring opportunity section. Sits in
+     the summary row so the user can see which drawer to open first
+     WITHOUT the section auto-opening into the middle of a long list. */
+  .opp-priority-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 9px;
+    border-radius: 999px;
+    background: rgba(184, 84, 26, 0.12);
+    color: var(--rust);
+    font-family: var(--font-body);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .opp-priority-pill::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--rust);
+    display: inline-block;
+  }
+  .opp-section.opp-priority {
+    border-left-width: 5px;
+  }
   .opp-section-meta {
     display: inline-flex;
     align-items: center;
@@ -1759,15 +1788,35 @@
 
   if (!form) return;
 
-  var PSI_ENDPOINT = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed';
-  // Google Cloud API key scoped to:
-  //   - Application: HTTP referrer restricted to muntin.digital/*
-  //   - API:         PageSpeed Insights API only
-  // This is the documented pattern for embedding a Google API key in
-  // client-side JavaScript. Anyone who copies the key out of this HTML
-  // and calls it from a different origin receives 403 from Google.
-  var PSI_API_KEY  = 'AIzaSyBTnABfW9D83-50L2svV7MOcyx9RCPPN30';
+  var PSI_PROXY_ENDPOINT = '/api/psi';
   var CATEGORIES   = ['performance', 'accessibility', 'best-practices', 'seo'];
+
+  // Single PSI caller used by runAudit and the competitor compare.
+  // All traffic goes through the same-origin /api/psi worker, which
+  // adds the PSI API key server-side from env.PSI_API_KEY. Neither
+  // the client code nor the static HTML ever sees the key.
+  function callPsi(targetUrl) {
+    var params = new URLSearchParams();
+    params.append('url', targetUrl);
+    params.append('strategy', 'mobile');
+    CATEGORIES.forEach(function(c){ params.append('category', c); });
+    return fetch(PSI_PROXY_ENDPOINT + '?' + params.toString()).then(function(res){
+      if (res.ok) return res.json();
+      return res.json().then(function(body){
+        var msg = (body && body.error && body.error.message)
+               || (body && body.error)
+               || ('PageSpeed returned ' + res.status);
+        var err = new Error(String(msg));
+        err.status = res.status;
+        err.body = body;
+        throw err;
+      }, function(){
+        var err = new Error('PageSpeed returned ' + res.status);
+        err.status = res.status;
+        throw err;
+      });
+    });
+  }
   var submitOriginalHTML = submitBtn.innerHTML;
 
   // Stepwise progress state. The audit has four logical phases:
@@ -1970,21 +2019,27 @@
     return items;
   }
 
-  function renderOpportunitySection(catLabel, catScore, items, defaultOpen) {
-    // Each category is now a native <details> — collapsible, a11y-free,
-    // keyboard-accessible, and zero-JS. The caller picks which section
-    // defaults to open (usually the lowest-scoring one).
+  function renderOpportunitySection(catLabel, catScore, items, isPriority) {
+    // Each category is a native <details> — collapsible, a11y-free,
+    // keyboard-accessible, and zero-JS. All sections start closed; the
+    // lowest-scoring one gets a "Start here" pill so the user sees
+    // where to click without being dropped into the middle of a long
+    // list on initial render.
     var details = document.createElement('details');
     details.className = 'opp-section ' + gradeScore(catScore);
-    if (defaultOpen) details.open = true;
+    if (isPriority) details.className += ' opp-priority';
 
     var summary = document.createElement('summary');
     summary.className = 'opp-section-header';
     var plural = items.length === 1 ? 'finding' : 'findings';
+    var priorityPill = isPriority
+      ? '<span class="opp-priority-pill">Start here</span>'
+      : '';
     summary.innerHTML =
       '<span class="opp-section-title">' +
         '<h4>' + escapeHtml(catLabel) + '</h4>' +
         '<span class="opp-count">' + items.length + ' ' + plural + '</span>' +
+        priorityPill +
       '</span>' +
       '<span class="opp-section-meta">' +
         '<span class="opp-score">' + catScore + ' / 100</span>' +
@@ -3519,16 +3574,9 @@
     showOnly(loadingEl);
     resetProgress();
 
-    // Step 1: submitting the request to PSI
+    // Step 1: submitting the request through the same-origin /api/psi
+    // proxy (which adds the PSI API key server-side — see callPsi).
     setStep(1);
-
-    var params = new URLSearchParams();
-    params.append('url', url);
-    params.append('strategy', 'mobile');
-    CATEGORIES.forEach(function(c){ params.append('category', c); });
-    // Authenticated tier: lifts anonymous rate limits and gives us
-    // the free-tier 25k-requests/day quota.
-    if (PSI_API_KEY) params.append('key', PSI_API_KEY);
 
     // A tiny delay before moving to step 2 so the user perceives the
     // submit phase as a real step — otherwise steps 1 and 2 flip so
@@ -3539,22 +3587,7 @@
       startProgress();
     }, 350);
 
-    fetch(PSI_ENDPOINT + '?' + params.toString())
-      .then(function(res){
-        if (!res.ok) {
-          return res.json().then(function(body){
-            var msg = (body && body.error && body.error.message) || ('PageSpeed returned ' + res.status);
-            var err = new Error(msg);
-            err.status = res.status;
-            throw err;
-          }, function(){
-            var err = new Error('PageSpeed returned ' + res.status);
-            err.status = res.status;
-            throw err;
-          });
-        }
-        return res.json();
-      })
+    callPsi(url)
       .then(function(data){
         // Step 3: Lighthouse response received, scoring wellness checks
         setStep(3);
@@ -3954,34 +3987,14 @@
     if (compareAddBtn) compareAddBtn.addEventListener('click', addUrlInput);
 
     // ---- Sequential PSI runner ----
-    // Reuses the same PSI_ENDPOINT + PSI_API_KEY as the main audit.
+    // Reuses the same /api/psi proxy as the main audit (callPsi).
     // Fetches are SEQUENTIAL (not parallel) to stay well under
     // Google's per-minute free-tier rate limit. Each fetch returns
     // a small shape with just the scores we need for the comparison
     // table — we don't keep the full Lighthouse audit for
     // competitors because we're not rendering their priority checks.
     function fetchCompetitor(url) {
-      var params = new URLSearchParams();
-      params.append('url', url);
-      params.append('strategy', 'mobile');
-      CATEGORIES.forEach(function(c){ params.append('category', c); });
-      if (PSI_API_KEY) params.append('key', PSI_API_KEY);
-      return fetch(PSI_ENDPOINT + '?' + params.toString())
-        .then(function(res){
-          if (!res.ok) {
-            return res.json().then(function(body){
-              var msg = (body && body.error && body.error.message) || ('PageSpeed returned ' + res.status);
-              var err = new Error(msg);
-              err.status = res.status;
-              throw err;
-            }, function(){
-              var err = new Error('PageSpeed returned ' + res.status);
-              err.status = res.status;
-              throw err;
-            });
-          }
-          return res.json();
-        })
+      return callPsi(url)
         .then(function(data){
           var lh = data && data.lighthouseResult;
           if (!lh || !lh.categories) throw new Error('Unexpected PSI response shape');
