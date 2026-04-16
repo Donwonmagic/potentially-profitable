@@ -103,6 +103,92 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital&#8482; &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js" defer></script>
-<!-- JS NEXT -->
+<script>
+(function(){
+  var btn=document.getElementById('cmpSubmit');
+  var url1=document.getElementById('cmpUrl1');
+  var url2=document.getElementById('cmpUrl2');
+  var status=document.getElementById('cmpStatus');
+  var result=document.getElementById('cmpResult');
+
+  function norm(u){u=u.trim();if(!u)return'';if(!/^https?:\/\//i.test(u))u='https://'+u;try{new URL(u)}catch(e){return''}return u}
+  function short(u){try{return new URL(u).hostname.replace(/^www\./,'')}catch(e){return u}}
+  function s(v){return v!=null?Math.round(v*100):null}
+
+  function fetchScores(url){
+    var api='https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url='+encodeURIComponent(url)+'&strategy=mobile&category=performance&category=accessibility&category=seo&category=best-practices';
+    return fetch(api).then(function(r){return r.json()}).then(function(d){
+      if(d.error)throw new Error(d.error.message);
+      var c=d.lighthouseResult.categories;
+      var a=d.lighthouseResult.audits||{};
+      var lcp=a['largest-contentful-paint']?a['largest-contentful-paint'].numericValue:null;
+      return{
+        url:url,host:short(url),
+        perf:s(c.performance?c.performance.score:null),
+        a11y:s(c.accessibility?c.accessibility.score:null),
+        seo:s(c.seo?c.seo.score:null),
+        bp:s(c['best-practices']?c['best-practices'].score:null),
+        lcp:lcp?Math.round(lcp):null
+      };
+    });
+  }
+
+  function cls(a,b){
+    if(a==null||b==null)return'tie';
+    if(a>b)return'win';if(a<b)return'lose';return'tie';
+  }
+
+  function row(label,v1,v2,suffix,higher){
+    suffix=suffix||'';
+    // higher=true means higher is better (default). false=lower is better (LCP)
+    var c1,c2;
+    if(higher===false){c1=cls(v2,v1);c2=cls(v1,v2)}
+    else{c1=cls(v1,v2);c2=cls(v2,v1)}
+    var f=function(v,c){return v!=null?'<td class="'+c+'">'+v+suffix+'</td>':'<td class="tie">—</td>'};
+    return'<tr><td class="metric">'+label+'</td>'+f(v1,c1)+f(v2,c2)+'</tr>';
+  }
+
+  btn.addEventListener('click',function(){
+    var u1=norm(url1.value),u2=norm(url2.value);
+    if(!u1){url1.focus();return}
+    if(!u2){url2.focus();return}
+    btn.disabled=true;btn.textContent='Comparing…';
+    status.hidden=false;status.textContent='Running two audits in parallel — about 20 seconds…';
+    result.classList.remove('visible');result.innerHTML='';
+
+    Promise.all([fetchScores(u1),fetchScores(u2)]).then(function(r){
+      var a=r[0],b=r[1];
+      var html='<table class="cmp-table"><thead><tr><th>Metric</th><th>'+a.host+'</th><th>'+b.host+'</th></tr></thead><tbody>';
+      html+=row('Performance',a.perf,b.perf,'/100');
+      html+=row('Accessibility',a.a11y,b.a11y,'/100');
+      html+=row('SEO',a.seo,b.seo,'/100');
+      html+=row('Best Practices',a.bp,b.bp,'/100');
+      html+=row('Load Time (LCP)',a.lcp,b.lcp,' ms',false);
+      html+='</tbody></table>';
+
+      // Overall winner
+      var aTotal=(a.perf||0)+(a.a11y||0)+(a.seo||0)+(a.bp||0);
+      var bTotal=(b.perf||0)+(b.a11y||0)+(b.seo||0)+(b.bp||0);
+      if(aTotal>bTotal){
+        html+='<div class="cmp-winner"><h3>'+a.host+' wins overall</h3><p>Combined score: '+aTotal+' vs '+bTotal+'. But check the individual rows — you might be losing on the metric that matters most for your business.</p></div>';
+      }else if(bTotal>aTotal){
+        html+='<div class="cmp-winner"><h3>'+b.host+' wins overall</h3><p>Combined score: '+bTotal+' vs '+aTotal+'. But the gap might be in a category you can fix quickly.</p></div>';
+      }else{
+        html+='<div class="cmp-winner"><h3>It\'s a tie.</h3><p>Combined scores are equal. Look at the individual rows to find where you can pull ahead.</p></div>';
+      }
+      html+='<div class="cmp-cta"><p>Want to go deeper? The industry-specific audits check 9+ additional items.</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><a class="btn btn-primary" href="/tools/audits/restaurant/">Restaurant audit</a><a class="btn btn-ghost" href="/tools/audits/wellness/">Wellness audit</a></div></div>';
+
+      result.innerHTML=html;
+      result.classList.add('visible');
+      status.hidden=true;
+      result.scrollIntoView({behavior:'smooth',block:'start'});
+      if(window.plausible)window.plausible('Compare',{props:{url1:u1,url2:u2}});
+    }).catch(function(err){
+      alert('Could not compare. '+(err.message||'Check both URLs and try again.'));
+      status.hidden=true;
+    }).finally(function(){btn.disabled=false;btn.textContent='Compare'});
+  });
+})();
+</script>
 </body>
 </html>
