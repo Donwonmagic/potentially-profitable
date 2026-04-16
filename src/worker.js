@@ -62,6 +62,7 @@ const API_ROUTES = {
   '/api/checklist':     handleChecklist,
   '/api/audit-report':  handleAuditReport,
   '/api/ping':          handlePing,
+  '/api/gbp-lookup':    handleGbpLookup,
 };
 
 
@@ -83,7 +84,7 @@ export default {
           404
         );
       }
-      if (pathname === '/api/ping') {
+      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
         }
@@ -360,6 +361,76 @@ async function handlePing(request, env, ctx) {
     },
     200
   );
+}
+
+
+// ------------------------------------------------------------
+// GBP Lookup — proxies Google Places API, keeping the key
+// server-side. Client sends GET /api/gbp-lookup?q=business+name
+// and receives a JSON payload with rating, review count, types,
+// hours, photos count, and address.
+// ------------------------------------------------------------
+
+async function handleGbpLookup(request, env, ctx) {
+  const apiKey = env.GOOGLE_PLACES_KEY;
+  if (!apiKey) {
+    return jsonResponse({ ok: false, error: 'Google Places API key not configured' }, 503);
+  }
+
+  const url = new URL(request.url);
+  const query = (url.searchParams.get('q') || '').trim();
+  if (!query) {
+    return jsonResponse({ ok: false, error: 'Missing ?q= parameter — pass your business name + city' }, 400);
+  }
+
+  try {
+    // Step 1: Text Search to find the place
+    const searchRes = await fetch(
+      'https://places.googleapis.com/v1/places:searchText',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Goog-Api-Key': apiKey,
+          'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.types,places.regularOpeningHours,places.photos,places.websiteUri,places.googleMapsUri'
+        },
+        body: JSON.stringify({ textQuery: query, maxResultCount: 1 })
+      }
+    );
+
+    if (!searchRes.ok) {
+      const errBody = await searchRes.text();
+      console.error('[gbp-lookup] Places API error:', searchRes.status, errBody);
+      return jsonResponse({ ok: false, error: 'Google Places API returned an error' }, 502);
+    }
+
+    const searchData = await searchRes.json();
+    const places = searchData.places || [];
+    if (!places.length) {
+      return jsonResponse({ ok: false, error: 'No business found for that search. Try adding your city name.' }, 404);
+    }
+
+    const p = places[0];
+
+    // Build a clean response
+    const result = {
+      ok: true,
+      name: p.displayName ? p.displayName.text : null,
+      address: p.formattedAddress || null,
+      rating: p.rating || null,
+      reviewCount: p.userRatingCount || 0,
+      types: (p.types || []).slice(0, 5),
+      photoCount: p.photos ? p.photos.length : 0,
+      hasHours: !!(p.regularOpeningHours && p.regularOpeningHours.periods && p.regularOpeningHours.periods.length),
+      website: p.websiteUri || null,
+      mapsUrl: p.googleMapsUri || null,
+    };
+
+    return jsonResponse(result, 200);
+  } catch (err) {
+    console.error('[gbp-lookup] exception:', err && err.stack ? err.stack : err);
+    return jsonResponse({ ok: false, error: 'Failed to reach Google Places API' }, 502);
+  }
 }
 
 
