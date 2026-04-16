@@ -64,6 +64,7 @@ const API_ROUTES = {
   '/api/ping':          handlePing,
   '/api/gbp-lookup':    handleGbpLookup,
   '/api/seo-check':     handleSeoCheck,
+  '/api/schema-check':  handleSchemaCheck,
 };
 
 
@@ -85,7 +86,7 @@ export default {
           404
         );
       }
-      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check') {
+      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
         }
@@ -471,6 +472,68 @@ async function handleSeoCheck(request, env, ctx) {
     return jsonResponse({ ok: true, title, description }, 200);
   } catch (err) {
     console.error('[seo-check] exception:', err && err.stack ? err.stack : err);
+    return jsonResponse({ ok: false, error: 'Failed to fetch the page' }, 502);
+  }
+}
+
+
+// ------------------------------------------------------------
+// Schema Check — fetches a page server-side and extracts all
+// JSON-LD @type values from <script type="application/ld+json">
+// blocks. Fallback for when Lighthouse's structured-data audit
+// doesn't return data.
+// ------------------------------------------------------------
+
+async function handleSchemaCheck(request, env, ctx) {
+  const url = new URL(request.url);
+  const target = (url.searchParams.get('url') || '').trim();
+  if (!target) {
+    return jsonResponse({ ok: false, error: 'Missing ?url= parameter' }, 400);
+  }
+
+  try {
+    const res = await fetch(target, {
+      headers: { 'User-Agent': 'MuntinDigital-Schema-Check/1.0' },
+      redirect: 'follow',
+    });
+    if (!res.ok) {
+      return jsonResponse({ ok: false, error: 'Could not fetch the page (HTTP ' + res.status + ')' }, 502);
+    }
+
+    const html = await res.text();
+
+    // Extract all <script type="application/ld+json"> blocks
+    const ldBlocks = [];
+    const ldRe = /<script[^>]*type\s*=\s*["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+    let m;
+    while ((m = ldRe.exec(html)) !== null) {
+      ldBlocks.push(m[1]);
+    }
+
+    // Parse @type values from all blocks
+    const types = [];
+    const seen = {};
+    const combined = ldBlocks.join(' ');
+
+    // Single type: "@type": "Restaurant"
+    const typeRe = /"@type"\s*:\s*"([A-Za-z]+)"/g;
+    while ((m = typeRe.exec(combined)) !== null) {
+      if (!seen[m[1]]) { seen[m[1]] = true; types.push(m[1]); }
+    }
+
+    // Array type: "@type": ["Restaurant", "LocalBusiness"]
+    const arrayRe = /"@type"\s*:\s*\[([^\]]+)\]/g;
+    while ((m = arrayRe.exec(combined)) !== null) {
+      const inner = m[1].match(/"([A-Za-z]+)"/g);
+      if (inner) inner.forEach(t => {
+        t = t.replace(/"/g, '');
+        if (!seen[t]) { seen[t] = true; types.push(t); }
+      });
+    }
+
+    return jsonResponse({ ok: true, types, blockCount: ldBlocks.length }, 200);
+  } catch (err) {
+    console.error('[schema-check] exception:', err && err.stack ? err.stack : err);
     return jsonResponse({ ok: false, error: 'Failed to fetch the page' }, 502);
   }
 }
