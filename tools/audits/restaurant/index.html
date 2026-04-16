@@ -1448,7 +1448,7 @@
         actually doing?
       </h1>
       <p class="hero-sub" style="margin:24px auto 0; max-width:580px;">
-        Drop your URL below and I'll run a real mobile audit in about thirty seconds — performance, SEO, accessibility, and the specific checks that matter for a restaurant. No sign-up, no email required, no tracking.
+        Drop your URL below and I'll run a real mobile audit in about thirty seconds — performance, SEO, accessibility, and the specific checks that matter for a restaurant. No sign-up, no email required to see your results, no tracking.
       </p>
 
       <form class="audit-form" id="auditForm" novalidate>
@@ -2275,8 +2275,8 @@
   function verdictFor(score) {
     if (score >= 90) return "Your site is in great shape. Most restaurants would be thrilled to hit this score. Small polish items may remain — check the breakdown below.";
     if (score >= 70) return "Solid foundation with room to tighten up. Focus on the red and amber items below — most are mechanical fixes that push your scores into the green (90+) zone.";
-    if (score >= 50) return "The site works, but it's leaking conversions. The good news: the wins here — load speed, image alt text, meta tags, schema — take days, not months.";
-    return "There's real work to do. Scores in this range usually track with a template site hitting its ceiling. The fastest path forward is often a fresh build — happy to walk through options on a 20-minute call.";
+    if (score >= 50) return "The site works, but it's leaking conversions. The good news: the wins here — load speed, image alt text, meta tags, schema — take days, not months, and they're listed in priority order below.";
+    return "There's real work to do. Scores in this range usually track with a template site hitting its ceiling — font sizes, tap targets, page speed, and schema markup all tend to be fixable, but they add up. Start with the failing items below, in the order they're listed.";
   }
 
   function setScoreRing(score) {
@@ -4012,9 +4012,14 @@
             "Google Lighthouse couldn't load the URL. Make sure it's publicly accessible — no login wall, no staging environment, and no rate limiter blocking bots."
           );
         } else if (/quota|rate|exceed/i.test(msg) || err.status === 429) {
+          // Start a 30-second cooldown so rapid retries don't compound
+          // the rate-limit pressure. The submit button shows a
+          // countdown and the Try-again button short-circuits with
+          // the remaining time.
+          startCooldown(30);
           showError(
             "We're a little rate-limited right now.",
-            "Google's free tier is temporarily throttled. Try again in a minute, or email don@muntin.digital for a manual audit."
+            "Google's free tier is temporarily throttled. Give it about 30 seconds before trying again, or email don@muntin.digital for a manual audit."
           );
         } else if (err.status === 400) {
           showError(
@@ -4035,8 +4040,15 @@
         }
       })
       .then(function(){
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = submitOriginalHTML;
+        // If a rate-limit cooldown is active, leave the button in its
+        // countdown state — updateCooldownUI() will restore the label
+        // when the cooldown ends.
+        if (cooldownRemaining() > 0) {
+          updateCooldownUI();
+        } else {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = submitOriginalHTML;
+        }
       });
   }
 
@@ -4044,8 +4056,52 @@
   // button can re-run the same audit without the user retyping it.
   var lastAuditUrl = null;
 
+  // Rate-limit backoff. If Google returns 429 / quota-exceeded, we
+  // set a cooldown ms timestamp — any submit (form, retry button,
+  // URL-param auto-run) before the cooldown expires is intercepted
+  // with a countdown message instead of hitting PSI again. Without
+  // this, a user who hits "Try again" six times in six seconds
+  // compounds the rate-limit pressure on a shared API quota.
+  var cooldownUntil = 0;
+  var cooldownTimer = null;
+  function startCooldown(seconds) {
+    cooldownUntil = Date.now() + seconds * 1000;
+    updateCooldownUI();
+    if (cooldownTimer) clearInterval(cooldownTimer);
+    cooldownTimer = setInterval(function(){
+      if (Date.now() >= cooldownUntil) {
+        clearInterval(cooldownTimer);
+        cooldownTimer = null;
+      }
+      updateCooldownUI();
+    }, 500);
+  }
+  function cooldownRemaining() {
+    var remain = cooldownUntil - Date.now();
+    return remain > 0 ? Math.ceil(remain / 1000) : 0;
+  }
+  function updateCooldownUI() {
+    var remain = cooldownRemaining();
+    if (remain > 0) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Wait ' + remain + 's';
+    } else if (submitBtn.disabled && submitBtn.textContent && submitBtn.textContent.indexOf('Wait') === 0) {
+      // Cooldown just ended — restore original label
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = submitOriginalHTML;
+    }
+  }
+
   form.addEventListener('submit', function(e){
     e.preventDefault();
+    var remain = cooldownRemaining();
+    if (remain > 0) {
+      showError(
+        "Still cooling down.",
+        "Google's API is rate-limiting us. Try again in " + remain + " second" + (remain === 1 ? '' : 's') + "."
+      );
+      return;
+    }
     var url = normalizeUrl(input.value);
     if (!url) {
       showError(
@@ -4069,6 +4125,14 @@
         // No previous audit — just focus the input
         showOnly(null); // hide everything
         if (input) input.focus();
+        return;
+      }
+      var retryRemain = cooldownRemaining();
+      if (retryRemain > 0) {
+        showError(
+          "Still cooling down.",
+          "Google's API is rate-limiting us. Try again in " + retryRemain + " second" + (retryRemain === 1 ? '' : 's') + "."
+        );
         return;
       }
       if (window.plausible) window.plausible('Audit Retry');
