@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Free Restaurant Website Audit — Score Your Site in 20 Seconds | Muntin Digital</title>
+<title>Free Restaurant Website Audit — Score Your Site in 30 Seconds | Muntin Digital</title>
 <meta name="description" content="Audit your restaurant website in 30 seconds. Mobile speed, menu legibility, click-to-call, online ordering and reservation detection, Google Business Profile — a real restaurant-specific audit, not a generic Lighthouse score. Free, no signup." />
 <meta name="theme-color" content="#1F4E5B" />
 <link rel="canonical" href="https://muntin.digital/tools/audits/restaurant/" />
 
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Free Restaurant Website Audit — Score Your Site in 20 Seconds" />
+<meta property="og:title" content="Free Restaurant Website Audit — Score Your Site in 30 Seconds" />
 <meta property="og:description" content="Audit your restaurant website in 30 seconds. Mobile speed, menu legibility, online ordering and reservation detection, and more — a real restaurant audit, not a generic Lighthouse score. Free, no signup." />
 <meta property="og:url" content="https://muntin.digital/tools/audits/restaurant/" />
 <meta property="og:site_name" content="Muntin Digital" />
@@ -19,7 +19,7 @@
 <meta property="og:image:height" content="630" />
 
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Free Restaurant Website Audit — Score Your Site in 20 Seconds" />
+<meta name="twitter:title" content="Free Restaurant Website Audit — Score Your Site in 30 Seconds" />
 <meta name="twitter:description" content="Audit your restaurant website in 30 seconds. Mobile, menus, ordering, reservations — free, no signup." />
 <meta name="twitter:image" content="https://muntin.digital/brand/og/audit-restaurants.svg" />
 
@@ -1399,7 +1399,7 @@
         actually doing?
       </h1>
       <p class="hero-sub" style="margin:24px auto 0; max-width:580px;">
-        Drop your URL below and I'll run a real mobile audit in about twenty seconds — performance, SEO, accessibility, and the specific checks that matter for a restaurant. No sign-up, no email required, no tracking.
+        Drop your URL below and I'll run a real mobile audit in about thirty seconds — performance, SEO, accessibility, and the specific checks that matter for a restaurant. No sign-up, no email required, no tracking.
       </p>
 
       <form class="audit-form" id="auditForm" novalidate>
@@ -1568,7 +1568,7 @@
           <p class="ranges"><strong>Target:</strong> 100. Anything less is leaving ranking signals on the table.</p>
 
           <h4>Restaurant Readiness (0–100)</h4>
-          <p>Our own rubric, specific to independent restaurant websites. Tracks ten things that matter for turning a mobile visitor into a booked table: menu readability, reservation visibility, hours, Google Business Profile, mobile speed, tap targets, image alt text, text contrast, crawlability, and responsive images. Each check is weighted — a confident pass is worth 1 point, a partial pass is worth 0.5, a failure is worth 0 — averaged into a 0–100 score. Non-restaurant sites show "N/A" here and don't count this category toward their overall score.</p>
+          <p>Our own rubric, specific to independent restaurant websites. Covers nine checks that matter for turning a mobile visitor into a booked table: a working mobile viewport, tap-target size, text contrast, legible font sizes, a tappable phone number, an embedded map or directions link, online ordering or reservations (either a known platform like Toast/OpenTable or a self-hosted equivalent), an HTML menu (not a PDF or image), and Restaurant schema.org markup for local search. Each check is weighted by its conversion impact — a pass earns full weight, a fail earns zero. Anything we honestly couldn't verify is excluded from both sides of the average, so "unknown" never penalizes you. Non-restaurant sites show "N/A" here and don't count this category toward their overall score.</p>
 
           <h4>Core Web Vitals</h4>
           <p>Four specific timing and stability measurements Google uses for mobile performance ranking. These are the individual numbers that make up (most of) the Performance score above.</p>
@@ -3741,13 +3741,30 @@
       if (!last || !last.url) return;
       var pretty = last.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
       var score = last.overall || 0;
+      // Reuse the cached allUrls / pageText that renderReport computed
+      // so the image reflects the exact same evaluation state the user
+      // is looking at on screen (including any overrides they've
+      // confirmed). Also handles evaluatePriorityCheck returning null
+      // for audits PSI didn't produce — those are simply omitted.
       var checks = [];
       if (last.audits) {
-        PRIORITY_CHECKS.forEach(function(def) {
-          var result = evaluatePriorityCheck(def, last.audits,
-            extractAllUrls(last.audits), extractPageText(last.audits));
-          var mark = result.cls === 'pass' ? '✓' : result.cls === 'fail' ? '✗' : '?';
-          checks.push({ mark: mark, cls: result.cls, label: result.passLabel || result.failLabel || def.pass });
+        var state = window.__auditScoreState || {};
+        var shareUrls = state.allUrls || extractAllUrls(last.audits);
+        var shareText = state.pageText || extractPageText(last.audits);
+        PRIORITY_CHECKS.forEach(function(def, idx) {
+          var result = evaluatePriorityCheck(def, last.audits, shareUrls, shareText);
+          if (!result) return;
+          // Apply any owner overrides so the image matches what's on
+          // screen — same logic as renderPriorityChecks.
+          if (USER_OVERRIDES[idx] === 'pass' && result.mark.cls === 'unverified') {
+            result = makeResult(def, 'pass');
+          } else if (USER_OVERRIDES[idx] === 'fail' && result.mark.cls === 'unverified') {
+            result = makeResult(def, 'fail');
+          }
+          var cls = result.mark.cls;
+          var mark = cls === 'pass' ? '✓' : cls === 'fail' ? '✗' : '?';
+          var label = result.title || def.pass || def.fail || 'Check';
+          checks.push({ mark: mark, cls: cls, label: label });
         });
       }
 
