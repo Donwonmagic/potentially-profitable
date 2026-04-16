@@ -394,6 +394,28 @@
     color: var(--ink-soft);
     margin: 16px 0 0;
   }
+  /* Override banner: visible only when the visitor has confirmed one
+     or more unverified checks. Signals that the score contains
+     self-attested data, not only tool-verified results. */
+  .score-override-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 14px 0 0;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: rgba(31, 78, 91, 0.08);
+    border: 1px solid rgba(31, 78, 91, 0.18);
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--ink-soft);
+  }
+  .score-override-banner svg {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    color: var(--teal);
+  }
 
   /* Four category gauges */
   .category-grid {
@@ -765,6 +787,53 @@
     color: var(--stone-2);
     margin-top: 4px;
   }
+
+  /* Not-a-wellness notice. Replaces the priority-list for sites we
+     didn't classify as wellness. Matches the priority-list's card
+     chrome so it reads as "this slot, different content". */
+  .not-wellness-notice {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .not-wellness-notice .nrn-body h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0 0 10px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .not-wellness-notice .nrn-body p {
+    margin: 0 0 10px;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+  .not-wellness-notice .nrn-body .nrn-sub {
+    color: var(--stone);
+    font-size: 13.5px;
+  }
+  .not-wellness-notice .nrn-btn {
+    align-self: flex-start;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: var(--teal);
+    color: var(--cream);
+    font: inherit;
+    font-weight: 600;
+    font-size: 14px;
+    border: 0;
+    cursor: pointer;
+    transition: background var(--t-fast) var(--ease);
+  }
+  .not-wellness-notice .nrn-btn:hover { background: var(--teal-dark); }
+  .not-wellness-notice .nrn-btn em { font-style: italic; font-weight: 600; }
 
   /* Wellness-priority checks list */
   .priority-list {
@@ -1496,6 +1565,10 @@
           <h2 id="scoreHeadline">Your overall score</h2>
           <div class="url">Audited: <strong id="auditedUrl">—</strong></div>
           <p class="verdict" id="verdictCopy">Verdict copy populates here after a run — explains what the score means and what to focus on first.</p>
+          <div class="score-override-banner" id="scoreOverrideBanner" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span id="scoreOverrideText">This score includes owner-confirmed checks.</span>
+          </div>
           <div class="share-row">
             <button type="button" class="share-btn" id="shareBtn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M9 4H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2"/></svg>
@@ -1634,8 +1707,25 @@
         </div>
       </div>
 
+      <!-- Not-a-wellness notice. Shown when looksLikeWellness()
+           returns false, hides the priority-list below, and offers an
+           override button so an owner of a wellness business we
+           mis-classified can tell us and run the wellness-specific
+           checks anyway. The override persists via ?w=1 in the URL so
+           a shared link preserves the correction. -->
+      <div class="not-wellness-notice" id="notWellnessNotice" hidden>
+        <div class="nrn-body">
+          <h3>We didn't classify this as a wellness business</h3>
+          <p>The four Lighthouse categories above (Performance, Accessibility, Best Practices, SEO) still apply — they're universal. We just didn't find the signals we look for to confirm a wellness business: a known booking platform (Mindbody, Acuity, Vagaro, Fresha…), wellness-specific schema markup, or clear wellness language on the page.</p>
+          <p class="nrn-sub">If this <em>is</em> a wellness business and we got it wrong, tell us and we'll run the wellness-specific checks on it.</p>
+        </div>
+        <button type="button" class="nrn-btn" id="forceWellnessBtn">
+          This <em>is</em> a wellness business — show me the checks
+        </button>
+      </div>
+
       <!-- Wellness-priority checks list -->
-      <div class="priority-list">
+      <div class="priority-list" id="priorityListWrap">
         <header>
           <h3>Wellness-priority checks</h3>
           <span class="tally" id="priorityTally">—</span>
@@ -2171,7 +2261,29 @@
     if (!card) return;
     card.classList.remove('grade-good','grade-ok','grade-bad');
     card.classList.add('grade-na');
-    card.querySelector('.cat-value').textContent = 'N/A';
+    var valueEl = card.querySelector('.cat-value');
+    if (valueEl) {
+      valueEl.textContent = 'N/A';
+      valueEl.removeAttribute('title');
+    }
+    var fill = card.querySelector('.bar .fill');
+    fill.style.width = '0%';
+  }
+
+  // Render a category card in a "low signal" state — used when the
+  // category applies but we don't have enough confirmed checks to
+  // put a number on it honestly. Visually a muted '?' so the owner
+  // knows this is pending their feedback, not a broken check.
+  function setCategoryLowSignal(cat) {
+    var card = document.querySelector('.category-card[data-cat="' + cat + '"]');
+    if (!card) return;
+    card.classList.remove('grade-good','grade-ok','grade-bad');
+    card.classList.add('grade-na');
+    var valueEl = card.querySelector('.cat-value');
+    if (valueEl) {
+      valueEl.textContent = '?';
+      valueEl.title = 'Not enough confirmed signal yet. Answer the "Is this right?" questions below and this score will update live.';
+    }
     var fill = card.querySelector('.bar .fill');
     fill.style.width = '0%';
   }
@@ -3057,6 +3169,23 @@
   // much more useful to forward to a developer.
   var USER_OVERRIDES = {};
 
+  // Owner override for wellness classification. When looksLikeWellness
+  // returns false (non-wellness site, or a wellness business we
+  // failed to detect), the priority-check section is hidden and an
+  // override button ("This IS a wellness business") reveals it. The
+  // override persists via ?w=1 in the URL so a corrected shared link
+  // keeps the classification. One-way: a positive classifier result
+  // always wins.
+  var userForcedWellness = false;
+
+  // Toggle the not-a-wellness notice vs the priority-checks section.
+  function toggleWellnessUi(effectiveIsWellness) {
+    var notice = document.getElementById('notWellnessNotice');
+    var list   = document.getElementById('priorityListWrap');
+    if (notice) notice.hidden = !!effectiveIsWellness;
+    if (list)   list.hidden   = !effectiveIsWellness;
+  }
+
   // Encode an overrides object into the compact URL-param format.
   //   {0: 'pass', 3: 'fail'} -> '0p,3f'
   function encodeOverrides(overrides) {
@@ -3096,6 +3225,7 @@
       if (auditedUrl) params.set('url', auditedUrl);
       var ov = encodeOverrides(USER_OVERRIDES);
       if (ov) params.set('ov', ov);
+      if (userForcedWellness) params.set('w', '1');
       var qs = params.toString();
       var newUrl = location.pathname + (qs ? '?' + qs : '');
       window.history.replaceState(null, '', newUrl);
@@ -3270,10 +3400,19 @@
       ? Math.round((weightedCredit / totalWeight) * 100)
       : 0;
 
+    // Confidence gate: the weighted rollup honestly excludes unverified
+    // checks, but that means a site with one confirmed pass and eight
+    // unverifieds renders as 100/100 readiness — misleading to anyone
+    // glancing at the number. Suppress the score when we don't have
+    // enough confirmed signal. Threshold: at least 3 confirmed, AND
+    // at least 40% of total checks confirmed.
+    var confirmedCount = totalCount - unverifiedCount;
+    var CONFIDENCE_FLOOR = Math.max(3, Math.ceil(totalCount * 0.4));
+    var lowConfidence   = totalCount > 0 && confirmedCount < CONFIDENCE_FLOOR;
+
     var tally = document.getElementById('priorityTally');
     if (tally) {
       if (totalCount) {
-        var confirmedCount = totalCount - unverifiedCount;
         var failCount = confirmedCount - passCount;
         // Lead with the honest phrasing: what we CONFIRMED, not a
         // scary abstract score. Readiness comes last as a summary.
@@ -3284,14 +3423,24 @@
         if (unverifiedCount > 0) {
           pieces.push(unverifiedCount + ' couldn\'t be verified — answer the "is this right?" questions below to refine your score');
         }
-        pieces.push('wellness readiness: ' + wellnessScore + '/100');
+        if (lowConfidence) {
+          pieces.push('readiness: not enough confirmed signal to score yet');
+        } else {
+          pieces.push('wellness readiness: ' + wellnessScore + '/100');
+        }
         tally.textContent = pieces.join(' · ');
       } else {
         tally.textContent = 'No wellness-priority data available';
       }
     }
 
-    return { score: wellnessScore, passCount: passCount, totalCount: totalCount };
+    return {
+      score: wellnessScore,
+      passCount: passCount,
+      totalCount: totalCount,
+      confirmedCount: confirmedCount,
+      lowConfidence: lowConfidence
+    };
   }
 
   // Best-effort heuristic: is the audited URL actually a wellness business site?
@@ -3469,6 +3618,25 @@
     return false;
   }
 
+  // Weighted overall-score calculation. Performance gets 2× the weight
+  // of Accessibility / Best Practices / SEO / Wellness Readiness.
+  // When readinessInRollup is false (non-wellness site OR low-signal
+  // readiness), readiness is excluded from both numerator and
+  // denominator so it doesn't drag the number down.
+  //
+  // Denominator is 2 + 1 + 1 + 1 (+ 1 if readiness counts) so the
+  // final number still lives on the 0–100 scale regardless of tier.
+  function computeOverall(perf, a11y, bp, seo, readiness, readinessInRollup) {
+    var PERF_WEIGHT = 2;
+    var numer = perf * PERF_WEIGHT + a11y + bp + seo;
+    var denom = PERF_WEIGHT + 3;
+    if (readinessInRollup) {
+      numer += readiness;
+      denom += 1;
+    }
+    return Math.round(numer / denom);
+  }
+
   function renderReport(data, auditedUrl) {
     var lh = data && data.lighthouseResult;
     if (!lh || !lh.categories) throw new Error('Unexpected PageSpeed response shape.');
@@ -3492,35 +3660,57 @@
     var allUrls  = extractAllUrls(audits);
     var pageText = extractPageText(audits);
 
-    // Compute Wellness Readiness score from the priority checks
-    // BEFORE the overall — we want it to contribute to the average
-    // for real wellness sites, but be excluded for non-wellnesss
-    // (like muntin.digital itself) so we don't look bad on our own tool.
-    var priorityResult  = renderPriorityChecks(audits, allUrls, pageText);
-    var isWellnessSite = looksLikeWellness(auditedUrl, audits, allUrls);
+    // Effective classification combines the automatic signal with any
+    // owner-applied override (?w=1 in URL, or "this IS a wellness
+    // business" button click). The override is one-way: we never
+    // flip a detected wellness site back to non-wellness.
+    var detectedWellness = looksLikeWellness(auditedUrl, audits, allUrls);
+    var isWellnessSite   = detectedWellness || userForcedWellness;
+
+    // Only populate the priority-check list when we're actually
+    // displaying it. For non-wellness sites the section is hidden
+    // and the DOM mutations would be wasted work — plus the mass of
+    // unverified checks could confuse screen-readers scanning the
+    // hidden node.
+    var priorityResult;
+    if (isWellnessSite) {
+      priorityResult = renderPriorityChecks(audits, allUrls, pageText);
+    } else {
+      priorityResult = { score: 0, passCount: 0, totalCount: 0, confirmedCount: 0, lowConfidence: true };
+    }
+    toggleWellnessUi(isWellnessSite);
     var wellnessScore = priorityResult.score;
 
-    // Cache the four Lighthouse category scores + the wellness business flag
+    // Cache the four Lighthouse category scores + the wellness flag
     // so recomputeOverall() (fired by user feedback clicks) can update
-    // the overall score ring and the wellness business category card without
+    // the overall score ring and the wellness category card without
     // needing to re-fetch from PSI.
     window.__auditScoreState = {
       perf: perf, a11y: a11y, bp: bp, seo: seo,
       isWellness: isWellnessSite,
+      detectedWellness: detectedWellness,
       audits: audits, allUrls: allUrls, pageText: pageText,
       auditedUrl: auditedUrl
     };
 
-    var overall;
-    if (isWellnessSite) {
-      // Real wellness site: weight wellness readiness as a 5th category
-      overall = Math.round((perf + a11y + bp + seo + wellnessScore) / 5);
-    } else {
-      // Non-wellness site: average only the 4 Lighthouse categories,
-      // and mark wellness readiness as N/A so the visitor understands
-      // why that card is excluded.
-      overall = Math.round((perf + a11y + bp + seo) / 4);
-    }
+    // Readiness is only included in the overall rollup when (a) this
+    // is a wellness site AND (b) we have enough confirmed checks to
+    // trust the number. Otherwise we fall through to the 4-category
+    // average so one detected platform + eight unverifieds doesn't
+    // inflate the overall score via a 100/100 readiness phantom.
+    //
+    // Weighting: Performance carries 2× the weight of the other four
+    // categories. A slow mobile site is materially worse for a
+    // wellness business than an imperfect SEO score — a studio's
+    // class-schedule page is the most-visited URL after the homepage,
+    // and 53% of mobile visitors bounce from pages that take more
+    // than 3s to load (Google, 2018). Best Practices and SEO both
+    // regularly score 100 by default on mediocre sites, which lets
+    // a site with perf 40 cruise to an 81 overall. Double-weighting
+    // performance stops the overall number from lying about the most
+    // important axis.
+    var readinessInRollup = isWellnessSite && !priorityResult.lowConfidence;
+    var overall = computeOverall(perf, a11y, bp, seo, wellnessScore, readinessInRollup);
 
     // Strip protocol from displayed URL for readability
     var displayUrl = auditedUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
@@ -3532,11 +3722,14 @@
     setCategory('accessibility', a11y);
     setCategory('best-practices', bp);
     setCategory('seo',           seo);
-    if (isWellnessSite) {
-      setCategory('wellness', wellnessScore);
-    } else {
+    if (!isWellnessSite) {
       setCategoryNA('wellness');
+    } else if (priorityResult.lowConfidence) {
+      setCategoryLowSignal('wellness');
+    } else {
+      setCategory('wellness', wellnessScore);
     }
+    updateOverrideBanner();
 
     // Drill-down: list every failing Lighthouse audit under the right
     // category, sorted by impact. Auto-hides if nothing is failing.
@@ -3576,7 +3769,9 @@
     if (emailUrlField)   emailUrlField.value   = auditedUrl;
     if (emailScoreField) emailScoreField.value = String(overall);
     if (emailReadinessField) {
-      emailReadinessField.value = isWellnessSite ? String(wellnessScore) : 'N/A';
+      if (!isWellnessSite)               emailReadinessField.value = 'N/A';
+      else if (priorityResult.lowConfidence) emailReadinessField.value = 'Insufficient signal';
+      else                                emailReadinessField.value = String(wellnessScore);
     }
     // Build a shareable link that preserves any current overrides.
     try {
@@ -3584,26 +3779,31 @@
       shareParams.set('url', auditedUrl);
       var ovStr = encodeOverrides(USER_OVERRIDES);
       if (ovStr) shareParams.set('ov', ovStr);
+      if (userForcedWellness) shareParams.set('w', '1');
       if (emailShareLinkField) {
         emailShareLinkField.value = location.origin + location.pathname + '?' + shareParams.toString();
       }
     } catch (e) { /* no-op */ }
     // Walk the rendered results to build failing / unverified lists
-    // and a plain-English summary the email reader can scan.
+    // and a plain-English summary the email reader can scan. Skip on
+    // non-wellness sites so the recipient doesn't get eight
+    // "unverified" wellness checks in an email that doesn't apply.
     try {
       var failingChecks = [];
       var unverifiedChecks = [];
-      PRIORITY_CHECKS.forEach(function(def, idx){
-        var result = evaluatePriorityCheck(def, audits, allUrls, pageText);
-        if (!result) return;
-        if (USER_OVERRIDES[idx] === 'pass' && result.mark.cls === 'unverified') return;
-        if (USER_OVERRIDES[idx] === 'fail' && result.mark.cls === 'unverified') {
-          result = makeResult(def, 'fail');
-        }
-        var title = result.title ? String(result.title).replace(/<[^>]*>/g, '') : 'check ' + (idx + 1);
-        if (result.mark.cls === 'fail') failingChecks.push(title);
-        else if (result.mark.cls === 'unverified') unverifiedChecks.push(title);
-      });
+      if (isWellnessSite) {
+        PRIORITY_CHECKS.forEach(function(def, idx){
+          var result = evaluatePriorityCheck(def, audits, allUrls, pageText);
+          if (!result) return;
+          if (USER_OVERRIDES[idx] === 'pass' && result.mark.cls === 'unverified') return;
+          if (USER_OVERRIDES[idx] === 'fail' && result.mark.cls === 'unverified') {
+            result = makeResult(def, 'fail');
+          }
+          var title = result.title ? String(result.title).replace(/<[^>]*>/g, '') : 'check ' + (idx + 1);
+          if (result.mark.cls === 'fail') failingChecks.push(title);
+          else if (result.mark.cls === 'unverified') unverifiedChecks.push(title);
+        });
+      }
       if (emailFailingField)    emailFailingField.value    = failingChecks.join('; ');
       if (emailUnverifiedField) emailUnverifiedField.value = unverifiedChecks.join('; ');
       if (emailCorrectionsField) {
@@ -3617,9 +3817,15 @@
         emailCorrectionsField.value = corr.join('; ');
       }
       if (emailSummaryField) {
+        var readinessLine = null;
+        if (isWellnessSite) {
+          readinessLine = priorityResult.lowConfidence
+            ? 'Wellness readiness: insufficient signal (too many unverified checks)'
+            : 'Wellness readiness: ' + wellnessScore + '/100';
+        }
         var parts = [
           'Overall score: ' + overall + '/100',
-          isWellnessSite ? 'Wellness readiness: ' + wellnessScore + '/100' : null,
+          readinessLine,
           failingChecks.length ? failingChecks.length + ' failing checks' : 'No failing checks',
           unverifiedChecks.length ? unverifiedChecks.length + ' couldn\'t be verified' : null
         ].filter(function(p){ return p; });
@@ -3655,37 +3861,70 @@
     var state = window.__auditScoreState;
     if (!state) return;
     // Re-run the priority checks to pick up current USER_OVERRIDES
-    // state. renderPriorityChecks returns the updated restaurant score.
+    // state. renderPriorityChecks returns the updated wellness score.
     var priorityResult = renderPriorityChecks(state.audits, state.allUrls, state.pageText);
     var newWellnessScore = priorityResult.score;
-
-    var overall;
-    if (state.isWellness) {
-      overall = Math.round((state.perf + state.a11y + state.bp + state.seo + newWellnessScore) / 5);
-    } else {
-      overall = Math.round((state.perf + state.a11y + state.bp + state.seo) / 4);
-    }
+    var readinessInRollup = state.isWellness && !priorityResult.lowConfidence;
+    var overall = computeOverall(
+      state.perf, state.a11y, state.bp, state.seo, newWellnessScore, readinessInRollup
+    );
 
     // Update the score ring (stroke-dashoffset transition handles
     // the animation), verdict copy, Wellness Readiness category
     // card, and the cached last-result so future share/email/copy
-    // actions see the corrected score.
+    // actions see the corrected score. If the user just clicked
+    // "I have this" on enough unverifieds to cross the confidence
+    // threshold, the wellness card transitions from '?' to a real
+    // score on this pass.
     setScoreRing(overall);
     var verdictEl = document.getElementById('verdictCopy');
     if (verdictEl) verdictEl.textContent = verdictFor(overall);
-    if (state.isWellness) setCategory('wellness', newWellnessScore);
+    if (!state.isWellness) {
+      setCategoryNA('wellness');
+    } else if (priorityResult.lowConfidence) {
+      setCategoryLowSignal('wellness');
+    } else {
+      setCategory('wellness', newWellnessScore);
+    }
 
     if (window.__auditLastResult) {
       window.__auditLastResult.overall = overall;
-      window.__auditLastResult.wellness = state.isWellness ? newWellnessScore : null;
+      window.__auditLastResult.wellness = readinessInRollup ? newWellnessScore : null;
     }
+    updateOverrideBanner();
 
     // Update the email form hidden fields so an email sent AFTER
     // corrections carries the corrected score + readiness.
     var emailScoreField     = document.getElementById('emailReportScore');
     var emailReadinessField = document.getElementById('emailReportReadiness');
     if (emailScoreField)     emailScoreField.value     = String(overall);
-    if (emailReadinessField) emailReadinessField.value = state.isWellness ? String(newWellnessScore) : 'N/A';
+    if (emailReadinessField) {
+      if (!state.isWellness)              emailReadinessField.value = 'N/A';
+      else if (priorityResult.lowConfidence) emailReadinessField.value = 'Insufficient signal';
+      else                                emailReadinessField.value = String(newWellnessScore);
+    }
+  }
+
+  // Toggle the "score includes owner-confirmed checks" banner based on
+  // how many USER_OVERRIDES are active. Called from renderReport
+  // (initial paint) and recomputeOverallFromCurrentState (after
+  // feedback clicks) so the banner appears the moment a mutated
+  // score is first visible.
+  function updateOverrideBanner() {
+    var banner = document.getElementById('scoreOverrideBanner');
+    var textEl = document.getElementById('scoreOverrideText');
+    if (!banner) return;
+    var keys = Object.keys(USER_OVERRIDES);
+    if (!keys.length) {
+      banner.hidden = true;
+      return;
+    }
+    banner.hidden = false;
+    if (textEl) {
+      var noun = keys.length === 1 ? 'check' : 'checks';
+      textEl.textContent = 'This score includes ' + keys.length +
+        ' owner-confirmed ' + noun + '. Remove the ?ov=… parameter from the URL to see the fully tool-verified score.';
+    }
   }
 
   function showError(heading, body) {
@@ -3818,6 +4057,26 @@
         input.value = '';
         input.focus();
       }
+    });
+  }
+
+  // "This IS a wellness business" classification override. Flips
+  // userForcedWellness on, re-runs the priority checks against the
+  // same cached PSI result, and refreshes the score ring so readiness
+  // joins the overall average. Persists via ?w=1 in the URL so a
+  // forwarded audit link keeps the classification correction.
+  var forceWellnessBtn = document.getElementById('forceWellnessBtn');
+  if (forceWellnessBtn) {
+    forceWellnessBtn.addEventListener('click', function(){
+      var state = window.__auditScoreState;
+      if (!state) return;
+      userForcedWellness = true;
+      state.isWellness = true;
+      toggleWellnessUi(true);
+      renderPriorityChecks(state.audits, state.allUrls, state.pageText);
+      recomputeOverallFromCurrentState();
+      updateUrlState(state.auditedUrl);
+      if (window.plausible) window.plausible('Audit Classification Overridden');
     });
   }
 
@@ -4153,27 +4412,39 @@
           var pageText = extractPageText(audits);
           var isWellness = looksLikeWellness(url, audits, allUrls);
           var wellnessScore = 0;
+          var totalCount = 0, unverifiedCount = 0;
           if (isWellness) {
             var totalWeight = 0, weightedCredit = 0;
             PRIORITY_CHECKS.forEach(function(def){
               var result = evaluatePriorityCheck(def, audits, allUrls, pageText);
               if (!result) return;
-              if (result.mark.cls === 'unverified') return; // excluded from score
+              totalCount++;
+              if (result.mark.cls === 'unverified') {
+                unverifiedCount++;
+                return; // excluded from score
+              }
               var w = typeof def.weight === 'number' ? def.weight : 1.0;
               totalWeight += w;
               if (result.mark.cls === 'pass') weightedCredit += w;
             });
             wellnessScore = totalWeight > 0 ? Math.round((weightedCredit / totalWeight) * 100) : 0;
           }
-          var overall = isWellness
-            ? Math.round((perf + a11y + bp + seo + wellnessScore) / 5)
-            : Math.round((perf + a11y + bp + seo) / 4);
+          // Apply the same confidence gate the main audit uses, so
+          // competitors with only one confirmed pass don't show up as
+          // 100/100 readiness in the comparison table.
+          var competitorConfirmed = totalCount - unverifiedCount;
+          var competitorFloor     = Math.max(3, Math.ceil(totalCount * 0.4));
+          var lowConfidence       = totalCount > 0 && competitorConfirmed < competitorFloor;
+          var readinessInRollup   = isWellness && !lowConfidence;
+          var overall = computeOverall(perf, a11y, bp, seo, wellnessScore, readinessInRollup);
           return {
             url: url,
             pretty: url.replace(/^https?:\/\//, '').replace(/\/$/, ''),
             perf: perf, a11y: a11y, bp: bp, seo: seo,
             isWellness: isWellness,
-            wellness: isWellness ? wellnessScore : null,
+            // Only surface a competitor readiness number when we had
+            // enough confirmed signal to trust it.
+            wellness: readinessInRollup ? wellnessScore : null,
             overall: overall
           };
         });
@@ -4406,6 +4677,10 @@
         var decoded = decodeOverrides(ov);
         Object.keys(decoded).forEach(function(k){ USER_OVERRIDES[k] = decoded[k]; });
       }
+      // Hydrate the wellness-classification override (?w=1). A
+      // recipient of a shared link that was corrected by the owner
+      // gets the priority-check section visible from the first render.
+      if (params.get('w') === '1') userForcedWellness = true;
       // Brief delay so the page finishes painting before we kick off the fetch
       setTimeout(function(){
         if (window.plausible) window.plausible('Audit Auto-run');
