@@ -375,33 +375,39 @@
     .check-body .field { grid-template-columns: 1fr; gap: 4px; }
   }
 
-  /* ============ PRINT CSS — compact one-page reference ============
-     The interactive version of this page is intentionally long: each
-     check has a Why / 10-sec test / Fix block so visitors can act on
-     it without reading the whole thing. Printing all of that produces
-     a 17-page document nobody will ever pin up.
+  /* ============ PRINT CSS — "drafting plate" audit sheet ============
+     The goal is an analogue artifact: something that looks like a
+     draftsman's or architect's checklist a visitor can print, tack
+     to a wall, and mark up with a ballpoint. The visual language is
+     deliberately general-purpose — a double rule at the top, a serif
+     masthead, fill-in-the-blank fields for site/auditor/date, Roman
+     numeral category markers with rules, dotted leaders between each
+     item title and its checkbox, a small score field on each page.
+     Both the restaurant and wellness checklists share this design
+     so the brand feels like a single family of tools.
 
-     Print output is a different deliverable: a single-sheet reference
-     a restaurant owner can stick on a host stand, mark with a pen,
-     and hand off to a designer. Hide everything except a compact
-     header and the 24 h3 titles, laid out as a two-column grid with
-     category labels inline and checkboxes sized for a ballpoint pen. */
+     The interactive page is long because each check has Why / test /
+     fix content. The printed deliverable intentionally strips all
+     of that: this sheet is a reference to mark, not a document to
+     read. The full write-up lives at the URL printed in the footer. */
   @media print {
     @page {
       size: Letter;
-      margin: 0.5in 0.5in 0.55in;
+      margin: 0.55in 0.55in 0.75in;
     }
 
-    /* Reset background, color, fonts for ink economy */
+    /* Paper-like background; full ink; serif + sans available. */
     html, body {
-      background: #fff !important;
-      color: #000 !important;
-      font-size: 9.5pt;
-      line-height: 1.35;
+      background: #fdfcf8 !important;
+      color: #111 !important;
+      font-size: 10pt;
+      line-height: 1.38;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
     body { font-family: 'Inter', system-ui, sans-serif; }
 
-    /* Hide everything that isn't the compact checklist */
+    /* Hide every non-sheet chrome element. */
     header.nav,
     footer,
     .nav-toggle,
@@ -416,6 +422,11 @@
     .toc,
     .checklist-progress-section,
     .checklist-celebration,
+    .checklist-tailor-section,
+    .first-hint,
+    .progress-toolbar,
+    .cat-done,
+    .cat-header .cat-label,
     .services,
     #checklistForm,
     #checklistFormSuccess,
@@ -423,187 +434,239 @@
     .faq,
     .section-header,
     .check-body .field,
-    .cat-header .cat-label,
     .score-pill,
     .foot-grid,
     .foot-bottom,
     .foot-cta { display: none !important; }
 
-    /* The intro + self-scoring + PDF + FAQ sections are entire
-       <section class="block"> blocks that we want gone from the
-       printed page too. Nuke them by matching the siblings AFTER
-       the last .cat-block. A small JS tag on body would be cleaner,
-       but a targeted structural rule keeps the fix fully in CSS. */
+    /* Nuke every sibling <section.block> that doesn't hold a
+       category — i.e. intro, self-score, PDF capture, final CTA. */
     main > section.block:not(:has(.cat-block)) { display: none !important; }
 
-    /* Collapse layout containers to full width */
-    main, .block, .hero { padding: 0 !important; margin: 0 !important; }
+    /* Collapse layout containers down to the full page width. */
+    main, .block, .hero { padding: 0 !important; margin: 0 !important; background: transparent !important; }
     .container { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
 
-    /* Compact header: title + attribution on a single line */
-    .hero { display: block !important; margin-bottom: 0.22in !important; padding-bottom: 0.1in !important; border-bottom: 1.5pt solid #000; }
+    /* ---- Masthead ----
+       Double rule top, thin rule bottom, serif h1 ranged left,
+       "Audit sheet" eyebrow top-right, and a three-field fill-in
+       row (Site / Audited by / Date) rendered via generated text
+       with underscored runs so it prints with real ruled lines. */
+    .hero {
+      display: block !important;
+      position: relative;
+      margin: 0 0 0.2in !important;
+      padding: 0.16in 0 0.12in !important;
+      border-top: 3pt double #111 !important;
+      border-bottom: 0.6pt solid #111 !important;
+    }
+    .checklist-hero {
+      max-width: 100% !important;
+      text-align: left !important;
+    }
     .checklist-hero h1 {
       font-family: 'Fraunces', Georgia, serif;
-      font-size: 16pt;
-      font-weight: 600;
-      color: #000 !important;
-      margin: 0 0 2pt;
-      letter-spacing: -0.01em;
-      line-height: 1.15;
+      font-size: 22pt;
+      font-weight: 500;
+      color: #111 !important;
+      margin: 0 !important;
+      letter-spacing: -0.014em;
+      line-height: 1.05;
+      padding-right: 1.6in;
     }
     .checklist-hero h1 br { display: none; }
     .checklist-hero h1 .serif-italic {
-      display: inline;
+      display: block;
       font-style: italic;
       font-weight: 400;
-      font-size: 11pt;
-      color: #444 !important;
-    }
-    .checklist-hero h1 .serif-italic::before { content: ' — '; }
-    .checklist-hero::after {
-      content: 'muntin.digital · 24 checks · Category shown left of each item';
-      display: block;
-      font-size: 8pt;
-      color: #666;
+      font-size: 11.5pt;
+      color: #555 !important;
       margin-top: 3pt;
+      letter-spacing: 0;
+    }
+    .checklist-hero::after {
+      content: 'Audit sheet \00B7 muntin.digital';
+      position: absolute;
+      top: 0.18in;
+      right: 0;
       font-family: 'Inter', sans-serif;
+      font-size: 7.5pt;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #555;
+    }
+    /* Fill-in-the-blank row. The three fields share one line at
+       typical margins; on narrow printers the underscores wrap. */
+    .checklist-hero::before {
+      content: 'Site  ____________________________________    Audited by  ______________________    Date  _____________';
+      display: block;
+      margin-top: 14pt;
+      font-family: 'Inter', sans-serif;
+      font-size: 9pt;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: #333;
     }
 
-    /* Two-column grid across all category blocks */
+    /* ---- Category blocks ----
+       Each block wears a small Roman numeral + category label as an
+       eyebrow (top rule above it) and a serif h2 under a thin rule.
+       The first block sits tight against the masthead. */
     main > section.block:has(.cat-block) {
       display: block !important;
+      background: transparent !important;
       padding: 0 !important;
       margin: 0 !important;
-      background: transparent !important;
     }
     .cat-block {
-      display: contents !important;
-      page-break-before: auto !important;
-      break-before: auto !important;
+      display: block !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      break-inside: auto;
     }
-    .cat-header { display: none !important; }
+    .cat-block::before {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 7.5pt;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #555;
+      padding: 10pt 0 3pt;
+      margin-top: 6pt;
+      border-top: 0.5pt solid #bbb;
+      break-after: avoid-page;
+      page-break-after: avoid;
+    }
+    #basics.cat-block::before       { content: 'I   The basics'; }
+    #mobile.cat-block::before       { content: 'II   Mobile experience'; }
+    #conversions.cat-block::before  { content: 'III   Conversions'; }
+    #findability.cat-block::before  { content: 'IV   Findability'; }
+    #trust.cat-block::before        { content: 'V   Trust'; }
+    /* First category sits flush under the masthead — no top rule */
+    #basics.cat-block::before { border-top: 0; padding-top: 0; margin-top: 0; }
 
-    /* The actual print grid — column-count gives us automatic
-       balancing and lets the list overflow to a second sheet cleanly
-       if a user's browser margins make 24 items on one page too
-       tight. Tested in Chrome, Safari, Firefox. */
-    main {
-      column-count: 2;
-      column-gap: 0.35in;
-      column-fill: balance;
+    .cat-header {
+      display: block !important;
+      margin: 0 0 4pt !important;
+      padding: 0 0 4pt !important;
+      border-bottom: 0.5pt solid #111 !important;
+    }
+    .cat-header h2 {
+      font-family: 'Fraunces', Georgia, serif !important;
+      font-size: 13pt !important;
+      font-weight: 500 !important;
+      color: #111 !important;
+      margin: 0 !important;
+      letter-spacing: -0.01em !important;
     }
 
-    /* Check item — compact two-line row with a pen-sized checkbox,
-       a category tag, and the h3 as plain text. */
+    /* ---- Items ----
+       Three-column grid: item number (serif), title (sans) with a
+       dotted leader drawn as a continuous bottom border, and a
+       ballpoint-pen-size checkbox at the right edge. Each row holds
+       together across page breaks. */
     .check-item {
       display: grid !important;
-      grid-template-columns: 14pt 1fr !important;
-      gap: 6pt !important;
-      padding: 4pt 0 !important;
+      grid-template-columns: 20pt 1fr 14pt !important;
+      column-gap: 8pt !important;
+      align-items: baseline !important;
+      padding: 6pt 0 4pt !important;
       margin: 0 !important;
       border: 0 !important;
-      border-bottom: 0.5pt dotted #bbb !important;
+      border-bottom: 0.4pt dotted #999 !important;
       break-inside: avoid;
       page-break-inside: avoid;
       background: transparent !important;
     }
     .check-item:last-child { border-bottom: 0 !important; }
+
     .check-num {
-      font-family: 'Inter', sans-serif !important;
-      font-size: 7pt !important;
-      font-weight: 700 !important;
-      color: #666 !important;
+      font-family: 'Fraunces', Georgia, serif !important;
+      font-size: 11.5pt !important;
+      font-weight: 500 !important;
+      color: #555 !important;
       text-align: right !important;
-      padding-top: 3.5pt !important;
-      letter-spacing: 0 !important;
+      padding: 0 !important;
+      letter-spacing: -0.01em !important;
+      line-height: 1 !important;
     }
-    /* Pen-sized square checkbox rendered purely from the grid cell */
-    .check-num::after {
-      content: '';
-      display: inline-block;
-      width: 10pt;
-      height: 10pt;
-      border: 1pt solid #000;
-      border-radius: 1pt;
-      margin-left: 3pt;
-      vertical-align: -2pt;
-    }
-    /* Strip the existing interactive :checked transforms */
-    .check-item:has(.check-toggle:checked) .check-num { color: #666 !important; }
-    .check-item:has(.check-toggle:checked) .check-num::before,
-    .check-item:has(.check-toggle:checked) .check-num::after { content: none; background: none; border: 0; }
-    .check-item:has(.check-toggle:checked) .check-num::after {
-      content: '';
-      display: inline-block;
-      width: 10pt;
-      height: 10pt;
-      border: 1pt solid #000;
-      border-radius: 1pt;
-      margin-left: 3pt;
-      vertical-align: -2pt;
-      background: #000;
-    }
-    .check-item:has(.check-toggle:checked) .check-body h3 {
-      text-decoration: line-through !important;
+    /* Strip the interactive :checked transforms (colored circle +
+       check); the print version uses a blank pen-box so the user
+       marks it by hand. */
+    .check-item:has(.check-toggle:checked) .check-num {
       color: #555 !important;
     }
-    .check-body { padding: 0 !important; }
+    .check-item:has(.check-toggle:checked) .check-num::before,
+    .check-item:has(.check-toggle:checked) .check-num::after {
+      content: none !important;
+      background: none !important;
+      border: 0 !important;
+    }
+    .check-item:has(.check-toggle:checked) .check-body h3 {
+      text-decoration: none !important;
+      color: #111 !important;
+    }
+
+    .check-body {
+      display: block !important;
+      padding: 0 !important;
+    }
     .check-body h3 {
-      font-family: 'Fraunces', Georgia, serif !important;
-      font-size: 9pt !important;
+      font-family: 'Inter', sans-serif !important;
+      font-size: 10pt !important;
       font-weight: 500 !important;
-      line-height: 1.25 !important;
-      color: #000 !important;
+      line-height: 1.35 !important;
+      color: #111 !important;
       margin: 0 !important;
       letter-spacing: 0 !important;
     }
+    /* Hide the N/A badge in print — the sheet is a clean record. */
+    .check-item.is-na .check-body h3::after { display: none !important; }
+    .check-item.is-na { opacity: 0.55 !important; }
 
-    /* Category eyebrow inserted before each cat-block's first item
-       via a CSS generated-content trick. We can't wrap .cat-block
-       children because display:contents dissolves the container,
-       so attach the label to each category's FIRST .check-item. */
-    #basics .check-item:first-of-type::before,
-    #mobile .check-item:first-of-type::before,
-    #conversions .check-item:first-of-type::before,
-    #findability .check-item:first-of-type::before,
-    #trust .check-item:first-of-type::before {
-      grid-column: 1 / -1;
+    /* Pen-square checkbox: appears in the third grid column of
+       every .check-item via generated content. Large enough for a
+       ballpoint, squared corners, hairline border. */
+    .check-item > .check-body + * { display: none; }
+    .check-item::after {
+      content: '';
       display: block;
-      font-family: 'Inter', sans-serif;
-      font-size: 7pt;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #000;
-      padding: 6pt 0 2pt;
-      border-top: 0.5pt solid #000;
-      margin-top: 4pt;
-      break-after: avoid-column;
-      page-break-after: avoid;
+      justify-self: end;
+      align-self: center;
+      grid-column: 3;
+      width: 11pt;
+      height: 11pt;
+      border: 0.8pt solid #111;
+      border-radius: 1pt;
+      background: #fff;
     }
-    #basics .check-item:first-of-type::before       { content: 'The basics · 1–5'; }
-    #mobile .check-item:first-of-type::before       { content: 'Mobile experience · 6–9'; }
-    #conversions .check-item:first-of-type::before  { content: 'Conversions · 10–14'; }
-    #findability .check-item:first-of-type::before  { content: 'Findability · 15–19'; }
-    #trust .check-item:first-of-type::before        { content: 'Trust signals · 20–24'; }
-    /* First category sits tight against the header */
-    #basics .check-item:first-of-type::before { border-top: 0; margin-top: 0; padding-top: 0; }
 
-    /* Strip links of underlines + color so they print as plain text */
-    a { color: #000 !important; text-decoration: none !important; }
-    h1, h2, h3 { color: #000 !important; }
+    /* Strip link chrome so it prints as plain ink. */
+    a { color: #111 !important; text-decoration: none !important; }
+    h1, h2, h3 { color: #111 !important; }
 
-    /* Footer mark on each printed page */
+    /* ---- Page footer ----
+       Bottom-of-page signature line (fixed to the page via body::after
+       under a traditional running-footer pattern) with attribution and
+       an inline score field the user fills in at the end. The double
+       rule above and the small-caps typography echo the masthead. */
     body::after {
       position: fixed;
-      bottom: 0.2in;
-      left: 0;
-      right: 0;
-      text-align: center;
-      font-size: 7pt;
-      color: #888;
-      content: 'Muntin Digital · muntin.digital/resources/restaurant-website-checklist · Score: ___ of 24';
+      left: 0; right: 0; bottom: 0.22in;
       font-family: 'Inter', sans-serif;
+      font-size: 7.5pt;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #555;
+      padding-top: 4pt;
+      border-top: 1pt double #111;
+      display: flex;
+      justify-content: space-between;
+      gap: 12pt;
+      content: 'Muntin Digital \2003 \00B7 \2003 muntin.digital \2003 \00B7 \2003 Score  ________';
+      text-align: center;
     }
   }
 
@@ -921,9 +984,204 @@
   /* Don't print the pill or cover the final CTA buttons when the
      visitor reaches the score bands at the bottom of the page. */
   @media print { .score-pill { display: none !important; } }
+
+  /* ============ SUBTYPE TAILOR FILTER ============
+     A filter row above the sticky progress bar. Users pick their kind of
+     restaurant (fine dining, food truck, etc.) and items that don't apply
+     to that kind dim to an "N/A for your kind" badge and drop out of the
+     score denominator. Selection persists in localStorage. */
+  .checklist-tailor-section { padding: 28px 0 4px; }
+  .checklist-tailor {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding: 14px 18px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+  }
+  .checklist-tailor-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--stone);
+    flex-shrink: 0;
+  }
+  .checklist-tailor-pills { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
+  .tailor-pill {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    background: var(--cream-2);
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: all var(--t-fast) var(--ease);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .tailor-pill:hover { background: var(--cream); border-color: var(--line-dark); }
+  .tailor-pill.is-active { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+  .tailor-pill.is-active:hover { background: var(--ink); }
+
+  /* ============ PER-CATEGORY PROGRESS ============ */
+  .toc li .count[data-cat-count] { font-variant-numeric: tabular-nums; color: var(--stone); transition: color var(--t-fast) var(--ease); }
+  .toc li .count[data-cat-count].is-complete { color: var(--teal); font-weight: 600; }
+  .cat-done {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--stone);
+    font-variant-numeric: tabular-nums;
+    padding: 4px 10px;
+    background: var(--cream-2);
+    border-radius: 999px;
+    transition: color var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+    flex-shrink: 0;
+  }
+  .cat-done.is-complete { color: var(--teal); background: var(--teal-tint); }
+
+  /* ============ PROGRESS TOOLBAR ============ */
+  .progress-toolbar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .progress-toggle {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--stone);
+    background: transparent;
+    border: 1px solid var(--line-dark);
+    border-radius: 999px;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: all var(--t-fast) var(--ease);
+    letter-spacing: 0.02em;
+  }
+  .progress-toggle:hover { border-color: var(--teal); color: var(--teal); }
+  .progress-toggle[aria-pressed="true"] { background: var(--teal); color: var(--cream); border-color: var(--teal); }
+
+  /* ============ FIRST-VISIT HINT ============ */
+  .first-hint {
+    margin: 12px auto 0;
+    max-width: 640px;
+    padding: 10px 14px;
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--ink-soft);
+    background: var(--cream-2);
+    border-left: 3px solid var(--teal);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .first-hint[hidden] { display: none; }
+  .first-hint strong { color: var(--ink); font-weight: 600; }
+  .first-hint-dismiss {
+    margin-left: auto;
+    background: transparent;
+    border: 0;
+    color: var(--stone);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .first-hint-dismiss:hover { color: var(--ink); background: var(--cream); }
+
+  /* ============ N/A (SUBTYPE-DIMMED) STATE ============
+     Items that don't apply to the selected subtype stay visible — they
+     just dim and carry a small N/A badge, and are excluded from the
+     count. We deliberately don't hide them: a fine-dining owner glancing
+     at 'Order online' may still find useful context there. */
+  .check-item.is-na { opacity: 0.52; cursor: default; }
+  .check-item.is-na:hover { background-color: transparent; }
+  .check-item.is-na .check-body h3::after {
+    content: 'N/A for your kind';
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+    padding: 2px 8px;
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--stone);
+    background: var(--cream-2);
+    border: 1px dashed var(--line-dark);
+    border-radius: 999px;
+  }
+
+  /* ============ HIDE-CHECKED / COMPACT MODE ============ */
+  body.hide-checked .check-item:has(.check-toggle:checked) { display: none; }
+  body.compact-mode .check-body .field { display: none; }
+  body.compact-mode .check-body h3 { margin-bottom: 0; }
+  body.compact-mode .check-item { padding-top: 16px; padding-bottom: 16px; }
+
+  /* ============ BAND-AWARE PROGRESS BAR ============ */
+  .checklist-progress-section[data-band="failing"] .progress-fill {
+    background: linear-gradient(90deg, var(--rust) 0%, #C05A45 100%);
+  }
+  .checklist-progress-section[data-band="middling"] .progress-fill {
+    background: linear-gradient(90deg, #C28B2E 0%, #A5762A 100%);
+  }
+  .checklist-progress-section[data-band="solid"] .progress-fill,
+  .checklist-progress-section[data-band="complete"] .progress-fill {
+    background: linear-gradient(90deg, var(--teal) 0%, var(--teal-dark) 100%);
+  }
+
+  /* ============ BAND HIGHLIGHT ON SCORE-YOURSELF CARDS ============ */
+  .service[data-band] { position: relative; transition: transform 240ms var(--ease-out), box-shadow 240ms var(--ease), background var(--t-fast) var(--ease); }
+  .service[data-band].is-current-band {
+    transform: translateY(-4px);
+    box-shadow: 0 24px 48px -18px rgba(20, 22, 26, 0.22), 0 8px 16px -6px rgba(20, 22, 26, 0.08);
+    background: var(--white);
+  }
+  .service[data-band].is-current-band::after {
+    content: 'You\2019re here';
+    position: absolute;
+    top: -12px;
+    right: 20px;
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: var(--ink);
+    border-radius: 999px;
+    padding: 4px 10px;
+  }
+
+  @media (max-width: 680px) {
+    .checklist-tailor { padding: 12px 14px; gap: 10px; }
+    .checklist-tailor-label { font-size: 10px; }
+    .tailor-pill { font-size: 12px; padding: 6px 11px; }
+    .cat-done { font-size: 11px; padding: 3px 8px; }
+    .cat-header { gap: 10px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .service[data-band] { transition: none; }
+    .tailor-pill, .progress-toggle { transition: none; }
+  }
+
+  @media print {
+    .checklist-tailor-section, .first-hint, .progress-toolbar, .cat-done { display: none !important; }
+  }
 </style>
 </head>
-<body>
+<body data-checklist-kind="restaurant" data-checklist-key="muntin:checklist:restaurant">
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
@@ -1042,12 +1300,32 @@
     <div class="toc">
       <h2>Jump to a category</h2>
       <ol>
-        <li><a href="#basics">The basics</a><span class="count">5 items</span></li>
-        <li><a href="#mobile">Mobile experience</a><span class="count">4 items</span></li>
-        <li><a href="#conversions">Conversions</a><span class="count">5 items</span></li>
-        <li><a href="#findability">Findability</a><span class="count">5 items</span></li>
-        <li><a href="#trust">Trust</a><span class="count">4 items</span></li>
+        <li><a href="#basics">The basics</a><span class="count" data-cat-count="basics">5 items</span></li>
+        <li><a href="#mobile">Mobile experience</a><span class="count" data-cat-count="mobile">4 items</span></li>
+        <li><a href="#conversions">Conversions</a><span class="count" data-cat-count="conversions">5 items</span></li>
+        <li><a href="#findability">Findability</a><span class="count" data-cat-count="findability">5 items</span></li>
+        <li><a href="#trust">Trust</a><span class="count" data-cat-count="trust">5 items</span></li>
       </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SUBTYPE TAILOR FILTER ============
+     Sits above the sticky progress bar. Picking a kind tags items that
+     don't apply to that format as N/A and rebalances the score. -->
+<section class="checklist-tailor-section" aria-label="Tailor the checklist to your kind of restaurant">
+  <div class="container" style="max-width:860px;">
+    <div class="checklist-tailor">
+      <span class="checklist-tailor-label">Tailor&nbsp;to</span>
+      <div class="checklist-tailor-pills" role="group" aria-label="Restaurant kind filter" id="tailorPills">
+        <button type="button" class="tailor-pill is-active" data-subtype="all">Everyone</button>
+        <button type="button" class="tailor-pill" data-subtype="fine-dining">Fine dining</button>
+        <button type="button" class="tailor-pill" data-subtype="casual">Casual / neighborhood</button>
+        <button type="button" class="tailor-pill" data-subtype="fast-casual">Fast-casual</button>
+        <button type="button" class="tailor-pill" data-subtype="bar">Bar / cocktail</button>
+        <button type="button" class="tailor-pill" data-subtype="cafe">Cafe / bakery</button>
+        <button type="button" class="tailor-pill" data-subtype="truck">Food truck / pop-up</button>
+      </div>
     </div>
   </div>
 </section>
@@ -1059,7 +1337,15 @@
       <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
       <div class="progress-meta">
         <p class="progress-count" id="progressCount" aria-live="polite" aria-atomic="true"><strong>0</strong> of 24 complete</p>
-        <button type="button" class="progress-reset" id="progressReset" hidden>Reset checklist</button>
+        <div class="progress-toolbar">
+          <button type="button" class="progress-toggle" id="toggleCompact" aria-pressed="false" title="Show only the headlines, hide Why / test / fix">Compact</button>
+          <button type="button" class="progress-toggle" id="toggleHide" aria-pressed="false" title="Hide items you've already checked off">Hide done</button>
+          <button type="button" class="progress-reset" id="progressReset" hidden>Reset</button>
+        </div>
+      </div>
+      <div class="first-hint" id="firstHint" hidden>
+        <span><strong>Tip:</strong> tap any row to check it — progress saves on this device.</span>
+        <button type="button" class="first-hint-dismiss" id="firstHintDismiss" aria-label="Dismiss tip">×</button>
       </div>
     </div>
     <div class="checklist-celebration" id="checklistCelebration" hidden>
@@ -1082,6 +1368,7 @@
       <div class="cat-header">
         <h2>The basics.</h2>
         <span class="cat-label">Category 1 of 5 · 5 items</span>
+        <span class="cat-done" data-cat-done="basics">0 / 5</span>
       </div>
 
       <label class="check-item" data-check-id="01">
@@ -1149,6 +1436,7 @@
       <div class="cat-header">
         <h2>Mobile experience.</h2>
         <span class="cat-label">Category 2 of 5 · 4 items</span>
+        <span class="cat-done" data-cat-done="mobile">0 / 4</span>
       </div>
 
       <label class="check-item" data-check-id="06">
@@ -1205,9 +1493,10 @@
       <div class="cat-header">
         <h2>Conversions.</h2>
         <span class="cat-label">Category 3 of 5 · 5 items</span>
+        <span class="cat-done" data-cat-done="conversions">0 / 5</span>
       </div>
 
-      <label class="check-item" data-check-id="10">
+      <label class="check-item" data-check-id="10" data-na="fast-casual truck cafe">
         <input type="checkbox" class="check-toggle" aria-label="Mark item 10 complete">
         <div class="check-num">10</div>
         <div class="check-body">
@@ -1218,7 +1507,7 @@
         </div>
       </label>
 
-      <label class="check-item" data-check-id="11">
+      <label class="check-item" data-check-id="11" data-na="fine-dining bar">
         <input type="checkbox" class="check-toggle" aria-label="Mark item 11 complete">
         <div class="check-num">11</div>
         <div class="check-body">
@@ -1229,7 +1518,7 @@
         </div>
       </label>
 
-      <label class="check-item" data-check-id="12">
+      <label class="check-item" data-check-id="12" data-na="truck">
         <input type="checkbox" class="check-toggle" aria-label="Mark item 12 complete">
         <div class="check-num">12</div>
         <div class="check-body">
@@ -1272,6 +1561,7 @@
       <div class="cat-header">
         <h2>Findability.</h2>
         <span class="cat-label">Category 4 of 5 · 5 items</span>
+        <span class="cat-done" data-cat-done="findability">0 / 5</span>
       </div>
 
       <label class="check-item" data-check-id="15">
@@ -1339,6 +1629,7 @@
       <div class="cat-header">
         <h2>Trust.</h2>
         <span class="cat-label">Category 5 of 5 · 5 items</span>
+        <span class="cat-done" data-cat-done="trust">0 / 5</span>
       </div>
 
       <label class="check-item" data-check-id="20">
@@ -1408,8 +1699,8 @@
       <p>Add up the checks you passed. One point each, out of twenty-four. Then read the band that matches — it's an honest answer, not a polite one.</p>
     </div>
 
-    <div class="services reveal" style="margin-top:48px;">
-      <div class="service" style="border-top:3px solid var(--rust);">
+    <div class="services reveal" style="margin-top:48px;" id="scoreBands">
+      <div class="service" data-band="failing" style="border-top:3px solid var(--rust);">
         <div class="label" style="color:var(--rust);">0 – 8 passes</div>
         <h3>Failing</h3>
         <p class="desc">Your website is actively losing you customers every week. Most of these fixes cost nothing but attention, and the ones that do cost something pay back within a month. Start with the basics category — even fixing those five alone will move the needle.</p>
@@ -1419,7 +1710,7 @@
           <li>Budget a custom rebuild within 90 days</li>
         </ul>
       </div>
-      <div class="service" style="border-top:3px solid var(--stone-2);">
+      <div class="service" data-band="middling" style="border-top:3px solid var(--stone-2);">
         <div class="label" style="color:var(--stone);">9 – 16 passes</div>
         <h3>Middling</h3>
         <p class="desc">The basics are mostly in place, but the site isn't earning its keep. You're getting some reservations from the site but leaving more on the table. The missing items are usually in Findability and Trust — the ones that turn a passable site into one that ranks and converts.</p>
@@ -1429,7 +1720,7 @@
           <li>Refresh photography if it's over two years old</li>
         </ul>
       </div>
-      <div class="service" style="border-top:3px solid var(--teal);">
+      <div class="service" data-band="solid" style="border-top:3px solid var(--teal);">
         <div class="label" style="color:var(--teal);">17 – 24 passes</div>
         <h3>Solid</h3>
         <p class="desc">You're in the top 10% of independent restaurant websites. Now it's a maintenance game — keep the photos fresh, rotate the press quotes, monitor page speed, update the seasonal menu every quarter. The leverage is in staying disciplined, not rebuilding.</p>
