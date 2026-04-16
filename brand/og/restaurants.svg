@@ -1,26 +1,33 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
   <rect width="1200" height="630" fill="#1F4E5B"/>
+  <defs>
+    <radialGradient id="tglow" cx="85%" cy="25%" r="50%">
+      <stop offset="0%" stop-color="#FAF7F2" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#1F4E5B" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#tglow)" opacity="0.5"/>
 
-  <!-- Subtle cream border rule, inside a margin -->
-  <rect x="40" y="40" width="1120" height="550" fill="none" stroke="#FAF7F2" stroke-width="1.5" opacity="0.18"/>
+  <text x="72" y="100" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#FAF7F2" letter-spacing="5" opacity="0.5">MUNTIN DIGITAL · FOR RESTAURANTS</text>
 
-  <!-- Window mark, small, top-left of inner frame -->
-  <g transform="translate(88, 88)" stroke="#C5A059" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter" fill="none">
-    <rect x="0" y="0" width="56" height="56"/>
-    <line x1="28" y1="0" x2="28" y2="56"/>
-    <line x1="0" y1="20" x2="56" y2="20"/>
+  <text x="72" y="220" font-family="Fraunces, Georgia, serif" font-size="72" font-weight="500" fill="#FAF7F2" letter-spacing="-2">Your restaurant</text>
+  <text x="72" y="300" font-family="Fraunces, Georgia, serif" font-size="72" font-weight="500" fill="#FAF7F2" letter-spacing="-2">deserves a website</text>
+  <text x="72" y="375" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="64" font-weight="400" fill="#FAF7F2" letter-spacing="-2" opacity="0.7">that matches the room.</text>
+
+  <rect x="72" y="430" width="160" height="36" rx="18" fill="none" stroke="#FAF7F2" stroke-width="1.5" opacity="0.4"/>
+  <text x="152" y="454" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#FAF7F2" letter-spacing="2" opacity="0.6">WEBSITES</text>
+  <rect x="248" y="430" width="150" height="36" rx="18" fill="none" stroke="#FAF7F2" stroke-width="1.5" opacity="0.4"/>
+  <text x="323" y="454" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#FAF7F2" letter-spacing="2" opacity="0.6">BRANDING</text>
+  <rect x="414" y="430" width="200" height="36" rx="18" fill="none" stroke="#FAF7F2" stroke-width="1.5" opacity="0.4"/>
+  <text x="514" y="454" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#FAF7F2" letter-spacing="2" opacity="0.6">SOCIAL MEDIA</text>
+
+  <g transform="translate(920, 140)" stroke="#FAF7F2" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter" fill="none" opacity="0.08">
+    <rect x="0" y="0" width="220" height="220"/>
+    <line x1="110" y1="0" x2="110" y2="220"/>
+    <line x1="0" y1="77" x2="220" y2="77"/>
   </g>
 
-  <!-- Eyebrow, centered -->
-  <text x="600" y="152" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" fill="#C5A059" letter-spacing="4">FOR RESTAURANTS  ·  SILVER SPRING, MD</text>
-
-  <!-- Title block -->
-  <text x="600" y="280" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="78" font-weight="500" fill="#FAF7F2" letter-spacing="-2">Restaurant Website</text>
-  <text x="600" y="360" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="78" font-weight="500" fill="#FAF7F2" letter-spacing="-2">Design,</text>
-
-  <!-- Italic emphasis -->
-  <text x="600" y="450" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="54" font-weight="400" fill="#C5A059">handled by one person.</text>
-
-  <!-- Bottom tagline -->
-  <text x="600" y="552" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="500" fill="#E8F1F3" letter-spacing="2" opacity="0.8">MUNTIN DIGITAL  ·  muntin.digital/for/restaurants</text>
+  <rect y="580" width="1200" height="50" fill="#14161A" opacity="0.3"/>
+  <text x="72" y="612" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#FAF7F2" letter-spacing="2" opacity="0.6">BOOK A 20-MIN CALL · NO PITCH</text>
+  <text x="1128" y="612" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600" fill="#FAF7F2" letter-spacing="1" opacity="0.7">muntin.digital</text>
 </svg>

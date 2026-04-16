@@ -1,24 +1,43 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
-  <rect width="1200" height="630" fill="#FAF7F2"/>
+  <rect width="1200" height="630" fill="#1F4E5B"/>
+  <defs>
+    <radialGradient id="aglow" cx="80%" cy="40%" r="45%">
+      <stop offset="0%" stop-color="#FAF7F2" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#1F4E5B" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#aglow)"/>
 
-  <!-- Mock score ring, right side, stopped at ~74 (amber) -->
-  <g transform="translate(950, 315)">
-    <circle cx="0" cy="0" r="180" fill="none" stroke="#E8E2D6" stroke-width="18"/>
-    <circle cx="0" cy="0" r="180" fill="none" stroke="#D97706" stroke-width="18" stroke-dasharray="1130" stroke-dashoffset="294" stroke-linecap="round" transform="rotate(-90)"/>
-    <text x="0" y="14" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="124" font-weight="500" fill="#14161A" letter-spacing="-4">74</text>
-    <text x="0" y="60" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="500" fill="#6B6B6B" letter-spacing="3">/ 100</text>
+  <text x="72" y="90" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#FAF7F2" letter-spacing="5" opacity="0.5">FREE · 30 SECONDS · NO SIGNUP</text>
+
+  <text x="72" y="200" font-family="Fraunces, Georgia, serif" font-size="64" font-weight="500" fill="#FAF7F2" letter-spacing="-2">Restaurant</text>
+  <text x="72" y="275" font-family="Fraunces, Georgia, serif" font-size="64" font-weight="500" fill="#FAF7F2" letter-spacing="-2">Website Audit</text>
+  <text x="72" y="340" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="500" fill="#FAF7F2" opacity="0.55">Mobile speed · Menu readability · Ordering detection</text>
+  <text x="72" y="372" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="500" fill="#FAF7F2" opacity="0.55">Google Business Profile · Reservations · Schema</text>
+
+  <!-- Right: three result indicators -->
+  <g transform="translate(880, 150)">
+    <!-- Pass -->
+    <rect x="0" y="0" width="240" height="52" rx="8" fill="#FAF7F2" opacity="0.1"/>
+    <circle cx="32" cy="26" r="10" fill="#1f9d55"/>
+    <path d="M27 26 L30 29 L37 22" stroke="#FAF7F2" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <text x="54" y="31" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600" fill="#FAF7F2" opacity="0.8">Mobile-friendly menu</text>
+
+    <!-- Fail -->
+    <rect x="0" y="64" width="240" height="52" rx="8" fill="#FAF7F2" opacity="0.1"/>
+    <circle cx="32" cy="90" r="10" fill="#B8541A"/>
+    <text x="28" y="95" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#FAF7F2">&#10005;</text>
+    <text x="54" y="95" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600" fill="#FAF7F2" opacity="0.8">Schema markup</text>
+
+    <!-- Pass -->
+    <rect x="0" y="128" width="240" height="52" rx="8" fill="#FAF7F2" opacity="0.1"/>
+    <circle cx="32" cy="154" r="10" fill="#1f9d55"/>
+    <path d="M27 154 L30 157 L37 150" stroke="#FAF7F2" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <text x="54" y="159" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600" fill="#FAF7F2" opacity="0.8">Online ordering</text>
   </g>
 
-  <!-- Eyebrow -->
-  <text x="100" y="160" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#1F4E5B" letter-spacing="4">FREE TOOL  ·  POWERED BY LIGHTHOUSE</text>
-
-  <!-- Title -->
-  <text x="100" y="272" font-family="Fraunces, Georgia, serif" font-size="64" font-weight="500" fill="#14161A" letter-spacing="-1">Restaurant</text>
-  <text x="100" y="340" font-family="Fraunces, Georgia, serif" font-size="64" font-weight="500" fill="#14161A" letter-spacing="-1">Website Audit.</text>
-
-  <!-- Italic subtitle -->
-  <text x="100" y="420" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="38" font-weight="400" fill="#1F4E5B">Score your site in 20 seconds.</text>
-
-  <!-- Bottom -->
-  <text x="100" y="560" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="500" fill="#6B6B6B" letter-spacing="1">muntin.digital/audit/restaurants</text>
+  <!-- Bottom bar -->
+  <rect y="580" width="1200" height="50" fill="#14161A" opacity="0.3"/>
+  <text x="72" y="612" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#FAF7F2" letter-spacing="2" opacity="0.6">DROP YOUR URL · GET RESULTS IN 30 SECONDS</text>
+  <text x="1128" y="612" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600" fill="#FAF7F2" letter-spacing="1" opacity="0.7">muntin.digital</text>
 </svg>

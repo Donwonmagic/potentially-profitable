@@ -1,21 +1,28 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
   <rect width="1200" height="630" fill="#FAF7F2"/>
-  <g transform="translate(72, 72)" stroke="#14161A" stroke-width="7" stroke-linecap="square" stroke-linejoin="miter" fill="none">
-    <rect x="0" y="0" width="60" height="60"/>
-    <line x1="30" y1="0" x2="30" y2="60"/>
-    <line x1="0" y1="22" x2="60" y2="22"/>
+  <rect x="0" y="0" width="6" height="630" fill="#1F4E5B"/>
+
+  <text x="72" y="90" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#1F4E5B" letter-spacing="5">PLANNING · WEBSITE STRUCTURE</text>
+
+  <text x="72" y="200" font-family="Fraunces, Georgia, serif" font-size="56" font-weight="500" fill="#14161A" letter-spacing="-2">What Should Be on a</text>
+  <text x="72" y="272" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="60" font-weight="400" fill="#1F4E5B" letter-spacing="-2">Restaurant Website?</text>
+  <text x="72" y="336" font-family="Fraunces, Georgia, serif" font-size="44" font-weight="500" fill="#14161A" letter-spacing="-1">The 7 Pages That Matter</text>
+
+  <!-- Right: mini sitemap tree -->
+  <g transform="translate(880, 150)">
+    <text x="0" y="0" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#6B6B6B" letter-spacing="2">THE SITEMAP</text>
+    <rect x="0" y="16" width="240" height="30" rx="5" fill="#1F4E5B"/><text x="12" y="36" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#FAF7F2">1. Homepage</text>
+    <rect x="0" y="52" width="240" height="30" rx="5" fill="#1F4E5B" opacity="0.8"/><text x="12" y="72" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#FAF7F2">2. Menu</text>
+    <rect x="0" y="88" width="240" height="30" rx="5" fill="#1F4E5B" opacity="0.65"/><text x="12" y="108" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#FAF7F2">3. About</text>
+    <rect x="0" y="124" width="240" height="30" rx="5" fill="#1F4E5B" opacity="0.5"/><text x="12" y="144" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#FAF7F2">4. Reservations</text>
+    <rect x="0" y="160" width="240" height="30" rx="5" fill="#1F4E5B" opacity="0.4"/><text x="12" y="180" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#FAF7F2">5. Private Events</text>
+    <rect x="0" y="196" width="240" height="30" rx="5" fill="#1F4E5B" opacity="0.3"/><text x="12" y="216" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#FAF7F2">6. Location</text>
+    <rect x="0" y="232" width="240" height="30" rx="5" fill="#1F4E5B" opacity="0.2"/><text x="12" y="252" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#FAF7F2">7. Contact</text>
   </g>
-  <text x="1128" y="108" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#6B6B6B" letter-spacing="4">MUNTIN DIGITAL · WRITING</text>
-  <text x="600" y="220" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="60" font-weight="500" fill="#14161A" letter-spacing="-2">What Should Be on a</text>
-  <text x="600" y="310" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="76" font-weight="400" fill="#1F4E5B" letter-spacing="-2">Restaurant Website?</text>
-  <text x="600" y="400" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="48" font-weight="500" fill="#14161A" letter-spacing="-1">The 7 Pages That Matter</text>
-  <!-- Seven small page icons -->
-  <g transform="translate(600, 470)" fill="none" stroke="#1F4E5B" stroke-width="2">
-    <rect x="-126" y="-12" width="24" height="32" rx="2"/><rect x="-84" y="-12" width="24" height="32" rx="2"/>
-    <rect x="-42" y="-12" width="24" height="32" rx="2"/><rect x="0" y="-12" width="24" height="32" rx="2" fill="#1F4E5B" fill-opacity="0.1"/>
-    <rect x="42" y="-12" width="24" height="32" rx="2"/><rect x="84" y="-12" width="24" height="32" rx="2"/>
-    <rect x="126" y="-12" width="24" height="32" rx="2" stroke="#B8541A"/>
-  </g>
-  <text x="600" y="534" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#6B6B6B" letter-spacing="4">STRUCTURE THAT EARNS ITS KEEP</text>
-  <text x="600" y="584" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="500" fill="#6B6B6B" letter-spacing="1">muntin.digital/blog</text>
+
+  <text x="72" y="420" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="500" fill="#6B6B6B">Not twelve. Not twenty. Seven — each one earning its keep.</text>
+
+  <line x1="0" y1="590" x2="1200" y2="590" stroke="#E8E2D6" stroke-width="1"/>
+  <text x="72" y="616" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#6B6B6B" letter-spacing="2">MUNTIN DIGITAL</text>
+  <text x="1128" y="616" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#6B6B6B" letter-spacing="1">muntin.digital/blog</text>
 </svg>

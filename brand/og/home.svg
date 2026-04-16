@@ -1,25 +1,36 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
-  <rect width="1200" height="630" fill="#FAF7F2"/>
+  <!-- Dark premium background with subtle teal gradient -->
+  <rect width="1200" height="630" fill="#14161A"/>
+  <rect width="1200" height="630" fill="url(#glow)" opacity="0.6"/>
+  <defs>
+    <radialGradient id="glow" cx="80%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#1F4E5B" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#14161A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
 
-  <!-- Window mark, top-left -->
-  <g transform="translate(72, 72)" stroke="#14161A" stroke-width="7" stroke-linecap="square" stroke-linejoin="miter" fill="none">
-    <rect x="0" y="0" width="80" height="80"/>
-    <line x1="40" y1="0" x2="40" y2="80"/>
-    <line x1="0" y1="28" x2="80" y2="28"/>
+  <!-- Large window mark, left side -->
+  <g transform="translate(72, 160)" stroke="#FAF7F2" stroke-width="8" stroke-linecap="square" stroke-linejoin="miter" fill="none" opacity="0.15">
+    <rect x="0" y="0" width="200" height="200"/>
+    <line x1="100" y1="0" x2="100" y2="200"/>
+    <line x1="0" y1="70" x2="200" y2="70"/>
   </g>
 
-  <!-- Location tag, top-right -->
-  <text x="1128" y="120" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="600" fill="#6B6B6B" letter-spacing="3">SILVER SPRING, MD</text>
+  <!-- Eyebrow -->
+  <text x="72" y="100" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#FAF7F2" letter-spacing="5" opacity="0.5">A DIGITAL STUDIO OF ONE</text>
 
   <!-- Main title -->
-  <text x="600" y="320" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="112" font-weight="500" fill="#14161A" letter-spacing="-3">Muntin Digital</text>
+  <text x="320" y="265" font-family="Fraunces, Georgia, serif" font-size="88" font-weight="500" fill="#FAF7F2" letter-spacing="-3">Muntin Digital</text>
 
-  <!-- Italic subtitle -->
-  <text x="600" y="400" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="50" font-weight="400" fill="#1F4E5B">Handled by one person.</text>
+  <!-- Tagline -->
+  <text x="320" y="340" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="40" font-weight="400" fill="#FAF7F2" opacity="0.7">Structure Brings Clarity.</text>
 
-  <!-- Service strip -->
-  <text x="600" y="490" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="500" fill="#6B6B6B" letter-spacing="3">WEB DESIGN  ·  BRANDING  ·  SOCIAL MEDIA</text>
+  <!-- Value prop -->
+  <text x="320" y="420" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="500" fill="#FAF7F2" opacity="0.55">Web design, branding, and social media</text>
+  <text x="320" y="448" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="500" fill="#FAF7F2" opacity="0.55">for restaurants and small businesses.</text>
 
-  <!-- URL -->
-  <text x="600" y="572" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="600" fill="#14161A" letter-spacing="1">muntin.digital</text>
+  <!-- Bottom bar -->
+  <rect y="580" width="1200" height="50" fill="#1F4E5B" opacity="0.3"/>
+  <text x="72" y="612" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600" fill="#FAF7F2" letter-spacing="2" opacity="0.7">SILVER SPRING, MD</text>
+  <text x="1128" y="612" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600" fill="#FAF7F2" letter-spacing="1" opacity="0.7">muntin.digital</text>
 </svg>
