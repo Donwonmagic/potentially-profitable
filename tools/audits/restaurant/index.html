@@ -569,6 +569,37 @@
     font-weight: 500;
     white-space: nowrap;
   }
+  /* Priority marker on the lowest-scoring opportunity section. Sits in
+     the summary row next to the category title so the user can see
+     which drawer to open first WITHOUT us auto-opening one for them.
+     Styled as a small rust-tinted pill to echo the grade-bad accent
+     the section border already uses on a failing category. */
+  .opp-priority-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 9px;
+    border-radius: 999px;
+    background: rgba(184, 84, 26, 0.12);
+    color: var(--rust);
+    font-family: var(--font-body);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .opp-priority-pill::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--rust);
+    display: inline-block;
+  }
+  .opp-section.opp-priority {
+    border-left-width: 5px;
+  }
   .opp-section-meta {
     display: inline-flex;
     align-items: center;
@@ -2132,21 +2163,29 @@
 
   var OPP_PER_CATEGORY_CAP = 8;
 
-  function renderOpportunitySection(catLabel, catScore, items, defaultOpen, auditedUrl) {
-    // Each category is now a native <details> — collapsible, a11y-free,
-    // keyboard-accessible, and zero-JS. The caller picks which section
-    // defaults to open (usually the lowest-scoring one).
+  function renderOpportunitySection(catLabel, catScore, items, isPriority, auditedUrl) {
+    // Each category is a native <details> — collapsible, a11y-free,
+    // keyboard-accessible, and zero-JS. All sections now start CLOSED
+    // so the user sees the full scope of categories at a glance. The
+    // lowest-scoring section gets a visible "Start here" pill so the
+    // user still knows where to click first — previously that section
+    // was auto-opened, which dropped the user into the middle of a
+    // long list before they'd seen the summary row at all.
     var details = document.createElement('details');
     details.className = 'opp-section ' + gradeScore(catScore);
-    if (defaultOpen) details.open = true;
+    if (isPriority) details.className += ' opp-priority';
 
     var summary = document.createElement('summary');
     summary.className = 'opp-section-header';
     var plural = items.length === 1 ? 'finding' : 'findings';
+    var priorityPill = isPriority
+      ? '<span class="opp-priority-pill">Start here</span>'
+      : '';
     summary.innerHTML =
       '<span class="opp-section-title">' +
         '<h4>' + escapeHtml(catLabel) + '</h4>' +
         '<span class="opp-count">' + items.length + ' ' + plural + '</span>' +
+        priorityPill +
       '</span>' +
       '<span class="opp-section-meta">' +
         '<span class="opp-score">' + catScore + ' / 100</span>' +
@@ -2226,9 +2265,11 @@
 
     if (!sections.length) { wrap.hidden = true; return; }
 
-    // Default-open the lowest-scoring category so visitors see the
-    // worst offender immediately. Ties go to the first category in
-    // OPP_CATEGORY_ORDER (Performance wins ties).
+    // Mark the lowest-scoring category as the priority "Start here"
+    // drawer — it renders with a rust-tinted pill in the summary so
+    // the user knows where to click first, but (unlike the previous
+    // auto-open behavior) the drawer itself stays closed. Ties go to
+    // the first category in OPP_CATEGORY_ORDER (Performance wins).
     var lowestIdx = 0;
     for (var i = 1; i < sections.length; i++) {
       if (sections[i].score < sections[lowestIdx].score) lowestIdx = i;
