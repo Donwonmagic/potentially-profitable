@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Free Restaurant Website Audit — Score Your Site in 20 Seconds | Muntin Digital</title>
+<title>Free Restaurant Website Audit — Score Your Site in 30 Seconds | Muntin Digital</title>
 <meta name="description" content="Audit your restaurant website in 30 seconds. Mobile speed, menu legibility, click-to-call, online ordering and reservation detection, Google Business Profile — a real restaurant-specific audit, not a generic Lighthouse score. Free, no signup." />
 <meta name="theme-color" content="#1F4E5B" />
 <link rel="canonical" href="https://muntin.digital/tools/audits/restaurant/" />
 
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Free Restaurant Website Audit — Score Your Site in 20 Seconds" />
+<meta property="og:title" content="Free Restaurant Website Audit — Score Your Site in 30 Seconds" />
 <meta property="og:description" content="Audit your restaurant website in 30 seconds. Mobile speed, menu legibility, online ordering and reservation detection, and more — a real restaurant audit, not a generic Lighthouse score. Free, no signup." />
 <meta property="og:url" content="https://muntin.digital/tools/audits/restaurant/" />
 <meta property="og:site_name" content="Muntin Digital" />
@@ -19,7 +19,7 @@
 <meta property="og:image:height" content="630" />
 
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Free Restaurant Website Audit — Score Your Site in 20 Seconds" />
+<meta name="twitter:title" content="Free Restaurant Website Audit — Score Your Site in 30 Seconds" />
 <meta name="twitter:description" content="Audit your restaurant website in 30 seconds. Mobile, menus, ordering, reservations — free, no signup." />
 <meta name="twitter:image" content="https://muntin.digital/brand/og/audit-restaurants.svg" />
 
@@ -394,6 +394,30 @@
     color: var(--ink-soft);
     margin: 16px 0 0;
   }
+  /* Override banner: visible only when the visitor has confirmed one or
+     more unverified checks. Signals (both to the original owner and to
+     anyone they forward the share link to) that the score contains
+     self-attested data, not only tool-verified results. Without this,
+     a forwarded audit could plausibly be read as fully empirical. */
+  .score-override-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 14px 0 0;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: rgba(31, 78, 91, 0.08);
+    border: 1px solid rgba(31, 78, 91, 0.18);
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--ink-soft);
+  }
+  .score-override-banner svg {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    color: var(--teal);
+  }
 
   /* Four category gauges */
   .category-grid {
@@ -617,6 +641,18 @@
     text-underline-offset: 2px;
   }
   .opp-item-desc a:hover { color: var(--teal-dark); }
+  .opp-item-overflow {
+    background: var(--cream-2);
+    text-align: center;
+    padding: 14px 16px;
+  }
+  .opp-more-link {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--teal);
+    text-decoration: none;
+  }
+  .opp-more-link:hover { color: var(--teal-dark); text-decoration: underline; }
   @media (max-width: 620px) {
     .opportunities-head h3 { font-size: 20px; }
     .opp-section > summary.opp-section-header { padding: 14px 16px; }
@@ -699,7 +735,7 @@
   /* Core Web Vitals strip */
   .vitals-strip {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 2px;
     background: var(--line);
     border: 1px solid var(--line);
@@ -707,10 +743,11 @@
     overflow: hidden;
     margin-bottom: 32px;
   }
-  @media (max-width: 720px) { .vitals-strip { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 900px) { .vitals-strip { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 560px) { .vitals-strip { grid-template-columns: repeat(2, 1fr); } }
   .vitals-strip > div {
     background: var(--white);
-    padding: 20px;
+    padding: 20px 16px;
     text-align: center;
   }
   .vitals-strip .label {
@@ -731,6 +768,18 @@
   .vitals-strip .v.grade-good { color: #1f9d55; }
   .vitals-strip .v.grade-ok   { color: #d97706; }
   .vitals-strip .v.grade-bad  { color: var(--rust); }
+  .vitals-strip .v-source {
+    margin-top: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--stone-2);
+    min-height: 12px;
+  }
+  .vitals-strip .v-source.v-source-field   { color: var(--teal); }
+  .vitals-strip .v-source.v-source-lab     { color: var(--stone-2); }
+  .vitals-strip .v-source.v-source-missing { color: var(--stone-2); opacity: 0.7; }
   .vitals-strip .hint {
     font-size: 11px;
     color: var(--stone-2);
@@ -1399,7 +1448,7 @@
         actually doing?
       </h1>
       <p class="hero-sub" style="margin:24px auto 0; max-width:580px;">
-        Drop your URL below and I'll run a real mobile audit in about twenty seconds — performance, SEO, accessibility, and the specific checks that matter for a restaurant. No sign-up, no email required, no tracking.
+        Drop your URL below and I'll run a real mobile audit in about thirty seconds — performance, SEO, accessibility, and the specific checks that matter for a restaurant. No sign-up, no email required to see your results, no tracking.
       </p>
 
       <form class="audit-form" id="auditForm" novalidate>
@@ -1467,6 +1516,10 @@
           <h2 id="scoreHeadline">Your overall score</h2>
           <div class="url">Audited: <strong id="auditedUrl">—</strong></div>
           <p class="verdict" id="verdictCopy">Verdict copy populates here after a run — explains what the score means and what to focus on first.</p>
+          <div class="score-override-banner" id="scoreOverrideBanner" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span id="scoreOverrideText">This score includes owner-confirmed checks.</span>
+          </div>
           <div class="share-row">
             <button type="button" class="share-btn" id="shareBtn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M9 4H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2"/></svg>
@@ -1568,39 +1621,58 @@
           <p class="ranges"><strong>Target:</strong> 100. Anything less is leaving ranking signals on the table.</p>
 
           <h4>Restaurant Readiness (0–100)</h4>
-          <p>Our own rubric, specific to independent restaurant websites. Tracks ten things that matter for turning a mobile visitor into a booked table: menu readability, reservation visibility, hours, Google Business Profile, mobile speed, tap targets, image alt text, text contrast, crawlability, and responsive images. Each check is weighted — a confident pass is worth 1 point, a partial pass is worth 0.5, a failure is worth 0 — averaged into a 0–100 score. Non-restaurant sites show "N/A" here and don't count this category toward their overall score.</p>
+          <p>Our own rubric, specific to independent restaurant websites. Covers nine checks that matter for turning a mobile visitor into a booked table: a working mobile viewport, tap-target size, text contrast, legible font sizes, a tappable phone number, an embedded map or directions link, online ordering or reservations (either a known platform like Toast/OpenTable or a self-hosted equivalent), an HTML menu (not a PDF or image), and Restaurant schema.org markup for local search. Each check is weighted by its conversion impact — a pass earns full weight, a fail earns zero. Anything we honestly couldn't verify is excluded from both sides of the average, so "unknown" never penalizes you. Non-restaurant sites show "N/A" here and don't count this category toward their overall score.</p>
 
           <h4>Core Web Vitals</h4>
-          <p>Four specific timing and stability measurements Google uses for mobile performance ranking. These are the individual numbers that make up (most of) the Performance score above.</p>
+          <p>Five specific timing and interactivity measurements. Three of them (LCP, CLS, INP) are the current Core Web Vitals Google uses for mobile search ranking. Each card shows either <em>real-user data</em> (the 28-day median of actual visitor experiences that Google collects from Chrome) or a <em>lab estimate</em> (a simulated mobile run) — real-user data is preferred when available, since it reflects the site your customers actually experience. New or low-traffic restaurant sites usually only have lab data until they accumulate enough visits.</p>
           <ul>
             <li><strong>LCP — Largest Contentful Paint.</strong> How long until the biggest visible thing on the page (usually a hero image or headline) shows up. <em>Good: under 2.5s · Poor: over 4s.</em></li>
             <li><strong>CLS — Cumulative Layout Shift.</strong> How much the page jumps around while loading. Shifting layouts are the reason you sometimes tap "Reserve" and accidentally hit an ad because the ad loaded a second late and pushed everything down. <em>Good: under 0.1 · Poor: over 0.25.</em></li>
-            <li><strong>TBT — Total Blocking Time.</strong> How long the page is frozen, unable to respond to taps or scrolls, while JavaScript runs. <em>Good: under 200ms · Poor: over 600ms.</em></li>
+            <li><strong>INP — Interaction to Next Paint.</strong> How long the page takes to respond to a tap or click — the third Core Web Vital, replacing FID in 2024. Field-only: requires enough real visits to report. <em>Good: under 200ms · Poor: over 500ms.</em></li>
+            <li><strong>TBT — Total Blocking Time.</strong> The lab-only proxy for INP. How long the page is frozen while JavaScript runs during the simulated load. Useful when CrUX hasn't collected INP yet. <em>Good: under 200ms · Poor: over 600ms.</em></li>
             <li><strong>FCP — First Contentful Paint.</strong> How long until the very first pixel renders. Often earlier than LCP — this is "the page is doing something" versus "the page is usable." <em>Good: under 1.8s · Poor: over 3s.</em></li>
           </ul>
         </div>
       </details>
 
-      <!-- Core Web Vitals strip -->
+      <!-- Core Web Vitals strip.
+           Each card shows either the CrUX 28-day p75 number (real-user
+           field data, when Google has enough traffic to publish it for
+           this URL or origin) or the Lighthouse simulated mobile
+           estimate. A small source caption tells the viewer which,
+           because the two can diverge meaningfully on slow or
+           JS-heavy sites. INP replaced FID as a Core Web Vital in
+           March 2024; TBT is kept as the lab proxy for INP because
+           new/low-traffic restaurant sites often lack CrUX data. -->
       <div class="vitals-strip">
-        <div>
+        <div data-vital-card="lcp">
           <div class="label">LCP</div>
           <div class="v" data-vital="lcp">—</div>
+          <div class="v-source"></div>
           <div class="hint">Largest Contentful Paint</div>
         </div>
-        <div>
+        <div data-vital-card="cls">
           <div class="label">CLS</div>
           <div class="v" data-vital="cls">—</div>
+          <div class="v-source"></div>
           <div class="hint">Cumulative Layout Shift</div>
         </div>
-        <div>
+        <div data-vital-card="inp">
+          <div class="label">INP</div>
+          <div class="v" data-vital="inp">—</div>
+          <div class="v-source"></div>
+          <div class="hint">Interaction to Next Paint</div>
+        </div>
+        <div data-vital-card="tbt">
           <div class="label">TBT</div>
           <div class="v" data-vital="tbt">—</div>
+          <div class="v-source"></div>
           <div class="hint">Total Blocking Time</div>
         </div>
-        <div>
+        <div data-vital-card="fcp">
           <div class="label">FCP</div>
           <div class="v" data-vital="fcp">—</div>
+          <div class="v-source"></div>
           <div class="hint">First Contentful Paint</div>
         </div>
       </div>
@@ -1760,14 +1832,77 @@
   if (!form) return;
 
   var PSI_ENDPOINT = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed';
-  // Google Cloud API key scoped to:
-  //   - Application: HTTP referrer restricted to muntin.digital/*
-  //   - API:         PageSpeed Insights API only
-  // This is the documented pattern for embedding a Google API key in
-  // client-side JavaScript. Anyone who copies the key out of this HTML
-  // and calls it from a different origin receives 403 from Google.
+  var PSI_PROXY_ENDPOINT = '/api/psi';
+  // Legacy client-side key, referrer-restricted to muntin.digital/*.
+  // Still present so the tool keeps working in the window between
+  // Sprint 5 shipping and env.PSI_API_KEY being set in the Worker —
+  // the client calls /api/psi first and only falls back to this
+  // embedded key when the proxy returns 503:psi-proxy-unconfigured.
+  // Safe to remove once the proxy is confirmed live in production.
   var PSI_API_KEY  = 'AIzaSyBTnABfW9D83-50L2svV7MOcyx9RCPPN30';
   var CATEGORIES   = ['performance', 'accessibility', 'best-practices', 'seo'];
+
+  // Single PSI caller used by runAudit and the competitor compare.
+  // Prefers the same-origin /api/psi proxy (which adds the API key
+  // server-side) and transparently falls back to the direct PSI call
+  // with the embedded client key if the proxy isn't configured yet.
+  function callPsi(targetUrl) {
+    var params = new URLSearchParams();
+    params.append('url', targetUrl);
+    params.append('strategy', 'mobile');
+    CATEGORIES.forEach(function(c){ params.append('category', c); });
+
+    function parseOrThrow(res) {
+      if (res.ok) return res.json();
+      return res.json().then(function(body){
+        var msg = (body && body.error && body.error.message)
+               || (body && body.error)
+               || ('PageSpeed returned ' + res.status);
+        var err = new Error(String(msg));
+        err.status = res.status;
+        err.body = body;
+        throw err;
+      }, function(){
+        var err = new Error('PageSpeed returned ' + res.status);
+        err.status = res.status;
+        throw err;
+      });
+    }
+
+    function directCall() {
+      var direct = new URLSearchParams();
+      direct.append('url', targetUrl);
+      direct.append('strategy', 'mobile');
+      CATEGORIES.forEach(function(c){ direct.append('category', c); });
+      if (PSI_API_KEY) direct.append('key', PSI_API_KEY);
+      return fetch(PSI_ENDPOINT + '?' + direct.toString()).then(parseOrThrow);
+    }
+
+    return fetch(PSI_PROXY_ENDPOINT + '?' + params.toString())
+      .then(function(res){
+        // Only the specific "proxy not configured" 503 triggers the
+        // direct-PSI fallback. Any other 503 or error status is a
+        // real failure and should NOT leak traffic to the direct path.
+        if (res.status === 503) {
+          return res.json().catch(function(){ return null; }).then(function(body){
+            if (body && body.error === 'psi-proxy-unconfigured') return { fallback: true };
+            var err = new Error((body && body.error) || 'PSI proxy unavailable');
+            err.status = 503;
+            throw err;
+          });
+        }
+        return parseOrThrow(res).then(function(data){ return { data: data }; });
+      })
+      .then(function(wrapper){
+        return wrapper.fallback ? directCall() : wrapper.data;
+      })
+      .catch(function(err){
+        // Network-layer failure reaching the proxy (offline, DNS, etc.)
+        // also warrants a fallback attempt against Google directly.
+        if (err && !err.status) return directCall();
+        throw err;
+      });
+  }
   var submitOriginalHTML = submitBtn.innerHTML;
 
   // Stepwise progress state. The audit has four logical phases:
@@ -1970,7 +2105,9 @@
     return items;
   }
 
-  function renderOpportunitySection(catLabel, catScore, items, defaultOpen) {
+  var OPP_PER_CATEGORY_CAP = 8;
+
+  function renderOpportunitySection(catLabel, catScore, items, defaultOpen, auditedUrl) {
     // Each category is now a native <details> — collapsible, a11y-free,
     // keyboard-accessible, and zero-JS. The caller picks which section
     // defaults to open (usually the lowest-scoring one).
@@ -1994,8 +2131,8 @@
 
     var list = document.createElement('ul');
     list.className = 'opp-list';
-    // Cap at 8 per category so we don't bury the lede
-    items.slice(0, 8).forEach(function(item) {
+    // Cap at OPP_PER_CATEGORY_CAP per category so we don't bury the lede
+    items.slice(0, OPP_PER_CATEGORY_CAP).forEach(function(item) {
       var li = document.createElement('li');
       li.className = 'opp-item';
 
@@ -2019,11 +2156,29 @@
       list.appendChild(li);
     });
 
+    // Overflow link: when we capped the list, link visitors to the full
+    // Lighthouse report on Google's PSI page so they know there's more
+    // (and can see the full detail for their developer). Previously we
+    // silently hid findings 9+, which made the top-8 look exhaustive.
+    if (items.length > OPP_PER_CATEGORY_CAP && auditedUrl) {
+      var remaining = items.length - OPP_PER_CATEGORY_CAP;
+      var overflow  = document.createElement('li');
+      overflow.className = 'opp-item opp-item-overflow';
+      var psiUrl = 'https://pagespeed.web.dev/analysis?url=' +
+        encodeURIComponent(auditedUrl) + '&form_factor=mobile';
+      overflow.innerHTML =
+        '<a class="opp-more-link" href="' + escapeHtml(psiUrl) + '" target="_blank" rel="noopener">' +
+          '+ ' + remaining + ' more ' + (remaining === 1 ? 'finding' : 'findings') +
+          ' — view the full Lighthouse report →' +
+        '</a>';
+      list.appendChild(overflow);
+    }
+
     details.appendChild(list);
     return details;
   }
 
-  function renderOpportunities(cats, audits) {
+  function renderOpportunities(cats, audits, auditedUrl) {
     var wrap = document.getElementById('opportunitiesWrap');
     var body = document.getElementById('opportunitiesBody');
     if (!wrap || !body) return;
@@ -2055,28 +2210,73 @@
     }
 
     sections.forEach(function(s, i) {
-      body.appendChild(renderOpportunitySection(s.label, s.score, s.items, i === lowestIdx));
+      body.appendChild(renderOpportunitySection(s.label, s.score, s.items, i === lowestIdx, auditedUrl));
     });
 
     wrap.hidden = false;
   }
 
+  // Web Vitals thresholds. LCP/CLS/INP are the three Core Web Vitals
+  // Google uses for ranking. INP replaced FID in March 2024 — the
+  // ≤200ms good / ≤500ms needs-improvement / >500ms poor cutoffs
+  // come from web.dev/inp. TBT is the lab proxy for INP and is kept
+  // as an additional data point; FCP is a supporting metric.
   function gradeVital(key, n) {
     if (typeof n !== 'number' || isNaN(n)) return '';
     switch (key) {
       case 'lcp': return n <= 2500  ? 'grade-good' : n <= 4000  ? 'grade-ok' : 'grade-bad';
       case 'cls': return n <= 0.1   ? 'grade-good' : n <= 0.25  ? 'grade-ok' : 'grade-bad';
+      case 'inp': return n <= 200   ? 'grade-good' : n <= 500   ? 'grade-ok' : 'grade-bad';
       case 'tbt': return n <= 200   ? 'grade-good' : n <= 600   ? 'grade-ok' : 'grade-bad';
       case 'fcp': return n <= 1800  ? 'grade-good' : n <= 3000  ? 'grade-ok' : 'grade-bad';
     }
     return '';
   }
 
+  // Format a CLS number for display (two decimals, no unit).
+  function formatCls(v) {
+    if (typeof v !== 'number' || isNaN(v)) return '—';
+    return v.toFixed(2);
+  }
+
+  // Read CrUX field data from the PSI response. Prefers URL-level
+  // data; falls back to origin-level (aggregated across the whole
+  // domain) when the specific URL doesn't have 28 days of traffic.
+  // Returns null if no CrUX data is available at all — common for
+  // new or low-traffic restaurant sites, in which case the vitals
+  // strip falls through to lab data.
+  //
+  // PSI quirk: CLS percentile is reported in hundredths (e.g. 10
+  // means 0.10), so we divide by 100 to get the real CLS number.
+  function extractFieldMetrics(data) {
+    var le  = data && data.loadingExperience;
+    var ole = data && data.originLoadingExperience;
+    var source = null;
+    if (le && le.metrics && Object.keys(le.metrics).length) {
+      source = { metrics: le.metrics, scope: 'url' };
+    } else if (ole && ole.metrics && Object.keys(ole.metrics).length) {
+      source = { metrics: ole.metrics, scope: 'origin' };
+    }
+    if (!source) return null;
+    var m = source.metrics;
+    function pct(k) {
+      return (m[k] && typeof m[k].percentile === 'number') ? m[k].percentile : null;
+    }
+    var clsRaw = pct('CUMULATIVE_LAYOUT_SHIFT_SCORE');
+    return {
+      scope: source.scope,
+      lcp: pct('LARGEST_CONTENTFUL_PAINT_MS'),
+      cls: clsRaw !== null ? clsRaw / 100 : null,
+      inp: pct('INTERACTION_TO_NEXT_PAINT'),
+      fcp: pct('FIRST_CONTENTFUL_PAINT_MS')
+    };
+  }
+
   function verdictFor(score) {
     if (score >= 90) return "Your site is in great shape. Most restaurants would be thrilled to hit this score. Small polish items may remain — check the breakdown below.";
     if (score >= 70) return "Solid foundation with room to tighten up. Focus on the red and amber items below — most are mechanical fixes that push your scores into the green (90+) zone.";
-    if (score >= 50) return "The site works, but it's leaking conversions. The good news: the wins here — load speed, image alt text, meta tags, schema — take days, not months.";
-    return "There's real work to do. Scores in this range usually track with a template site hitting its ceiling. The fastest path forward is often a fresh build — happy to walk through options on a 20-minute call.";
+    if (score >= 50) return "The site works, but it's leaking conversions. The good news: the wins here — load speed, image alt text, meta tags, schema — take days, not months, and they're listed in priority order below.";
+    return "There's real work to do. Scores in this range usually track with a template site hitting its ceiling — font sizes, tap targets, page speed, and schema markup all tend to be fixable, but they add up. Start with the failing items below, in the order they're listed.";
   }
 
   function setScoreRing(score) {
@@ -2117,17 +2317,62 @@
     card.classList.remove('grade-good','grade-ok','grade-bad');
     card.classList.add('grade-na');
     card.querySelector('.cat-value').textContent = 'N/A';
+    var valueEl = card.querySelector('.cat-value');
+    if (valueEl) valueEl.removeAttribute('title');
     var fill = card.querySelector('.bar .fill');
     fill.style.width = '0%';
   }
 
-  function setVital(key, displayValue, numericValue) {
-    var el = document.querySelector('.vitals-strip .v[data-vital="' + key + '"]');
-    if (!el) return;
-    el.textContent = displayValue || '—';
-    el.classList.remove('grade-good','grade-ok','grade-bad');
+  // Render a category card in a "low signal" state — used when the
+  // category applies but we don't have enough confirmed checks to
+  // put a number on it honestly. Visually a muted '?' so the owner
+  // knows this is pending their feedback, not a broken check.
+  function setCategoryLowSignal(cat) {
+    var card = document.querySelector('.category-card[data-cat="' + cat + '"]');
+    if (!card) return;
+    card.classList.remove('grade-good','grade-ok','grade-bad');
+    card.classList.add('grade-na');
+    var valueEl = card.querySelector('.cat-value');
+    if (valueEl) {
+      valueEl.textContent = '?';
+      valueEl.title = 'Not enough confirmed signal yet. Answer the "Is this right?" questions below and this score will update live.';
+    }
+    var fill = card.querySelector('.bar .fill');
+    fill.style.width = '0%';
+  }
+
+  // Render one vital card. `source` marks the value as field (CrUX
+  // real-user data) or lab (simulated mobile run) so the viewer can
+  // tell which they're looking at — the numbers can differ wildly.
+  // `scope` further qualifies field data as URL-specific or origin-
+  // wide, because low-traffic restaurant sites often only have
+  // origin-level CrUX data (Google falls back to whole-domain
+  // aggregates when a specific URL doesn't have 28 days of visits).
+  function setVital(key, displayValue, numericValue, source, scope) {
+    var card = document.querySelector('.vitals-strip [data-vital-card="' + key + '"]');
+    if (!card) return;
+    var valueEl = card.querySelector('.v');
+    var srcEl   = card.querySelector('.v-source');
+    if (!valueEl) return;
+    valueEl.textContent = displayValue || '—';
+    valueEl.classList.remove('grade-good','grade-ok','grade-bad');
     var grade = gradeVital(key, numericValue);
-    if (grade) el.classList.add(grade);
+    if (grade) valueEl.classList.add(grade);
+    if (srcEl) {
+      if (source === 'field') {
+        srcEl.textContent = scope === 'origin' ? 'Real users (origin)' : 'Real users';
+        srcEl.className = 'v-source v-source-field';
+      } else if (source === 'lab') {
+        srcEl.textContent = 'Lab estimate';
+        srcEl.className = 'v-source v-source-lab';
+      } else if (source === 'missing') {
+        srcEl.textContent = 'No real-user data';
+        srcEl.className = 'v-source v-source-missing';
+      } else {
+        srcEl.textContent = '';
+        srcEl.className = 'v-source';
+      }
+    }
   }
 
   function safeAudit(audits, key) {
@@ -2521,22 +2766,33 @@
   //   'image'    — menu link points to a .jpg / .png (bad)
   //   'missing'  — no link with "menu" in the text or url at all
   //   'unknown'  — we saw a menu link but couldn't classify
-  var MENU_HREF_RE = /menu/i;
+  //
+  // The old implementation used /menu/i as a blanket substring check,
+  // which wrongly flagged hamburger-menu icons (/assets/menu-icon.svg,
+  // /icons/menu.svg, /mobile-menu-toggle.js) as restaurant menu
+  // images. MENU_PATH_RE now requires "menu" to appear as a real path
+  // component (separated by /, -, _, ., or #), and MENU_EXCLUSIONS_RE
+  // skips URLs that match common UI-chrome filename patterns even if
+  // they contain "menu" — that's how we stop flagging WordPress
+  // navigation assets as restaurant menus.
+  var MENU_PATH_RE = /(?:^|[\/._\-#])menus?(?:$|[\/._?#\-])/i;
+  var MENU_EXCLUSIONS_RE = /menu[-_]?(?:icon|toggle|button|bar|arrow|close|open|dropdown|trigger)|hamburger|\/icons?\/|\.svg(?:[\/?#]|$)/i;
   function detectMenuFormat(allUrls, pageText) {
-    if (!allUrls || !allUrls.length) return 'unknown';
-    // Walk hrefs looking for one with "menu" in the path and classify
-    // by extension. PDF/image wins if found, otherwise HTML wins.
+    var hasUrls = allUrls && allUrls.length;
     var sawMenu = false;
     var sawHtmlMenu = false;
     var sawPdfMenu = false;
     var sawImageMenu = false;
-    for (var i = 0; i < allUrls.length; i++) {
-      var u = allUrls[i];
-      if (!MENU_HREF_RE.test(u)) continue;
-      sawMenu = true;
-      if (/\.pdf(\?|$|#)/.test(u))                     sawPdfMenu = true;
-      else if (/\.(?:jpg|jpeg|png|webp|gif)(\?|$|#)/.test(u)) sawImageMenu = true;
-      else                                             sawHtmlMenu = true;
+    if (hasUrls) {
+      for (var i = 0; i < allUrls.length; i++) {
+        var u = allUrls[i];
+        if (!MENU_PATH_RE.test(u))      continue;
+        if (MENU_EXCLUSIONS_RE.test(u)) continue;
+        sawMenu = true;
+        if (/\.pdf(?:[\/?#]|$)/.test(u))                       sawPdfMenu = true;
+        else if (/\.(?:jpe?g|png|webp|gif)(?:[\/?#]|$)/.test(u)) sawImageMenu = true;
+        else                                                    sawHtmlMenu = true;
+      }
     }
     if (sawPdfMenu)   return 'pdf';
     if (sawImageMenu) return 'image';
@@ -2581,16 +2837,85 @@
   // deduplicated. `keys` is an array so callers can accept "ordering OR
   // reservations" in a single check (takeout-only restaurants don't
   // need reservations; fine-dining doesn't need ordering).
+  //
+  // Matching rules are tiered by pattern shape to avoid the classic
+  // blog-post false positive (a restaurant's "Why we left OpenTable"
+  // post at /blog/opentable-review flipping the OpenTable pass flag):
+  //
+  //   - Scheme patterns ('tel:')          → match only if URL starts with it
+  //   - Path-bearing patterns ('x.com/y') → match against hostname + pathname,
+  //                                         anchored at a '.', '/', ':', or
+  //                                         start-of-string boundary
+  //   - Hostname-only patterns            → match against the parsed hostname
+  //                                         ONLY, so path-level mentions
+  //                                         don't count as integrations
+  //
+  // Protocol-relative hrefs (//cdn.toasttab.com/...) are normalized to
+  // https:// before parsing so legitimate Toast integrations don't get
+  // silently dropped.
+  function boundaryIndexOf(target, pattern) {
+    if (!target || !pattern) return -1;
+    var idx = target.indexOf(pattern);
+    while (idx !== -1) {
+      var before = idx === 0 ? '' : target.charAt(idx - 1);
+      if (idx === 0 || before === '.' || before === '/' || before === ':' || before === '-') {
+        return idx;
+      }
+      idx = target.indexOf(pattern, idx + 1);
+    }
+    return -1;
+  }
+  function parseForDetection(raw) {
+    if (!raw) return null;
+    if (/^(?:tel|mailto|sms):/i.test(raw)) {
+      return { scheme: true, full: raw.toLowerCase() };
+    }
+    var url = raw;
+    // Protocol-relative → promote to https so URL parsing succeeds
+    if (url.length > 1 && url.charAt(0) === '/' && url.charAt(1) === '/') {
+      url = 'https:' + url;
+    }
+    try {
+      // Root-relative (/foo) has no host we can attribute. Skip it —
+      // pure hostname patterns shouldn't match path-only strings.
+      if (url.charAt(0) === '/') {
+        return { host: '', hostPath: url.toLowerCase(), full: url.toLowerCase() };
+      }
+      var p = new URL(url);
+      var host = p.hostname.toLowerCase();
+      return { host: host, hostPath: host + p.pathname.toLowerCase(), full: url.toLowerCase() };
+    } catch (e) {
+      return { host: '', hostPath: raw.toLowerCase(), full: raw.toLowerCase() };
+    }
+  }
   function detectPlatforms(keys, networkUrls) {
     var found = [];
     var seen = {};
+    // Parse each URL once per call rather than once per pattern.
+    var parsed = [];
+    for (var u = 0; u < networkUrls.length; u++) {
+      var p = parseForDetection(networkUrls[u]);
+      if (p) parsed.push(p);
+    }
     for (var k = 0; k < keys.length; k++) {
       var group = PLATFORM_PATTERNS[keys[k]];
       if (!group) continue;
       for (var i = 0; i < group.hosts.length; i++) {
         var h = group.hosts[i];
-        for (var j = 0; j < networkUrls.length; j++) {
-          if (networkUrls[j].indexOf(h.pattern) !== -1) {
+        var pat = h.pattern.toLowerCase();
+        var isScheme = pat.charAt(pat.length - 1) === ':';
+        var hasPath  = pat.indexOf('/') !== -1;
+        for (var j = 0; j < parsed.length; j++) {
+          var pp = parsed[j];
+          var matched = false;
+          if (isScheme) {
+            matched = pp.full && pp.full.indexOf(pat) === 0;
+          } else if (hasPath) {
+            matched = boundaryIndexOf(pp.hostPath, pat) !== -1;
+          } else {
+            matched = boundaryIndexOf(pp.host, pat) !== -1;
+          }
+          if (matched) {
             if (!seen[h.name]) {
               seen[h.name] = true;
               found.push({ label: group.label, name: h.name });
@@ -3136,10 +3461,21 @@
       ? Math.round((weightedCredit / totalWeight) * 100)
       : 0;
 
+    // Confidence gate: the weighted rollup honestly excludes unverified
+    // checks, but that means a site with one confirmed pass and eight
+    // unverifieds renders as 100/100 readiness — misleading to anyone
+    // glancing at the number. Suppress the score when we don't have
+    // enough confirmed signal. Threshold: at least 3 confirmed, AND
+    // at least 40% of total checks confirmed. For a 9-check rubric
+    // that means we need 4+ confirmed pass/fails before we'll put a
+    // number on readiness at all.
+    var confirmedCount = totalCount - unverifiedCount;
+    var CONFIDENCE_FLOOR = Math.max(3, Math.ceil(totalCount * 0.4));
+    var lowConfidence   = totalCount > 0 && confirmedCount < CONFIDENCE_FLOOR;
+
     var tally = document.getElementById('priorityTally');
     if (tally) {
       if (totalCount) {
-        var confirmedCount = totalCount - unverifiedCount;
         var failCount = confirmedCount - passCount;
         // Lead with the honest phrasing: what we CONFIRMED, not a
         // scary abstract score. Readiness comes last as a summary.
@@ -3150,14 +3486,24 @@
         if (unverifiedCount > 0) {
           pieces.push(unverifiedCount + ' couldn\'t be verified — answer the "is this right?" questions below to refine your score');
         }
-        pieces.push('restaurant readiness: ' + restaurantScore + '/100');
+        if (lowConfidence) {
+          pieces.push('readiness: not enough confirmed signal to score yet');
+        } else {
+          pieces.push('restaurant readiness: ' + restaurantScore + '/100');
+        }
         tally.textContent = pieces.join(' · ');
       } else {
         tally.textContent = 'No restaurant-priority data available';
       }
     }
 
-    return { score: restaurantScore, passCount: passCount, totalCount: totalCount };
+    return {
+      score: restaurantScore,
+      passCount: passCount,
+      totalCount: totalCount,
+      confirmedCount: confirmedCount,
+      lowConfidence: lowConfidence
+    };
   }
 
   // Best-effort heuristic: is the audited URL actually a restaurant site?
@@ -3246,33 +3592,81 @@
     }
     haystack = haystack.toLowerCase();
 
-    // 5) Keyword match against a curated list of strong restaurant
-    //    indicators. Each term is unambiguous enough that a single
-    //    match reliably identifies the site as a restaurant. Ambiguous
-    //    short words (bar, pub) are deliberately excluded to avoid
-    //    false positives like "barcamp" or "barry".
-    var RESTAURANT_TERMS = [
+    // 5) Keyword match, split into STRONG and WEAK tiers.
+    //    The previous implementation used indexOf substring matching
+    //    against a flat list that included ambiguous words like
+    //    'menu', 'table', 'chef', 'brunch', 'catering'. Every
+    //    WordPress site with a nav labelled "menu", every corporate
+    //    page that mentioned "brunch event catering", and every
+    //    furniture blog with "coffee table" was being classified as
+    //    a restaurant — then silently scored 0 on Restaurant
+    //    Readiness and dragged down in the overall score.
+    //
+    //    Fix: use word-boundary regex matching (so 'menu' in
+    //    'submenu' or 'table' in 'hashtable' no longer hits), and
+    //    split terms into two tiers:
+    //
+    //      STRONG — one distinct match is enough. These are phrases
+    //               that essentially only appear on restaurant sites
+    //               ('pizzeria', 'tasting menu', 'doordash').
+    //      WEAK   — individually ambiguous. We require TWO distinct
+    //               weak matches to classify, so a corporate
+    //               "catering" page alone no longer trips the rule.
+    function escRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+    function matchCount(terms, text) {
+      var seen = {};
+      for (var i = 0; i < terms.length; i++) {
+        var re = new RegExp('\\b' + escRe(terms[i]) + '\\b', 'i');
+        if (re.test(text)) seen[terms[i]] = true;
+      }
+      return Object.keys(seen).length;
+    }
+
+    var STRONG_TERMS = [
       // Business-type words
       'restaurant', 'restaurants', 'eatery', 'bistro', 'trattoria', 'osteria',
       'brasserie', 'gastropub', 'pizzeria', 'taqueria', 'cantina', 'tavern',
       'diner', 'bakery', 'patisserie', 'creamery', 'teahouse', 'steakhouse',
-      'cafe', 'café', 'chophouse', 'smokehouse',
+      'cafe', 'chophouse', 'smokehouse',
       // Cuisine words (unambiguous food signals)
-      'pizza', 'sushi', 'ramen', 'taco', 'burger', 'barbecue', 'bbq',
-      'seafood', 'dumpling', 'noodle', 'kebab', 'pho',
-      // Service and menu language
-      'prix fixe', 'tasting menu', 'chef', 'sommelier', 'menu', 'reservation',
-      'reservations', 'dine-in', 'dine in', 'brunch', 'happy hour',
-      'catering', 'takeout', 'take-out', 'table', 'dining room',
+      'pizza', 'sushi', 'ramen', 'taco', 'tacos', 'burger', 'burgers',
+      'barbecue', 'bbq', 'seafood', 'dumpling', 'dumplings', 'noodle',
+      'noodles', 'kebab', 'pho', 'ceviche', 'tapas',
+      // Phrases that almost exclusively appear on restaurant sites
+      'prix fixe', 'tasting menu', 'dine-in', 'dine in', 'happy hour',
+      'dining room', 'takeout', 'take-out', 'sommelier',
       // Reservation / ordering platforms (site-level integrations)
       'opentable', 'resy', 'tock.app', 'grubhub', 'doordash', 'ubereats',
       'uber eats', 'chownow', 'toasttab'
     ];
 
-    for (var j = 0; j < RESTAURANT_TERMS.length; j++) {
-      if (haystack.indexOf(RESTAURANT_TERMS[j]) !== -1) return true;
-    }
+    var WEAK_TERMS = [
+      'menu', 'reservation', 'reservations', 'chef', 'brunch',
+      'catering', 'table', 'dining'
+    ];
+
+    if (matchCount(STRONG_TERMS, haystack) >= 1) return true;
+    if (matchCount(WEAK_TERMS, haystack) >= 2) return true;
     return false;
+  }
+
+  // Weighted overall-score calculation. Performance gets 2× the weight
+  // of Accessibility / Best Practices / SEO / Restaurant Readiness.
+  // When readinessInRollup is false (non-restaurant site OR low-signal
+  // readiness), readiness is excluded from both numerator and
+  // denominator so it doesn't drag the number down.
+  //
+  // Denominator is 2 + 1 + 1 + 1 (+ 1 if readiness counts) so the
+  // final number still lives on the 0–100 scale regardless of tier.
+  function computeOverall(perf, a11y, bp, seo, readiness, readinessInRollup) {
+    var PERF_WEIGHT = 2;
+    var numer = perf * PERF_WEIGHT + a11y + bp + seo;
+    var denom = PERF_WEIGHT + 3;
+    if (readinessInRollup) {
+      numer += readiness;
+      denom += 1;
+    }
+    return Math.round(numer / denom);
   }
 
   function renderReport(data, auditedUrl) {
@@ -3317,16 +3711,22 @@
       auditedUrl: auditedUrl
     };
 
-    var overall;
-    if (isRestaurantSite) {
-      // Real restaurant site: weight restaurant readiness as a 5th category
-      overall = Math.round((perf + a11y + bp + seo + restaurantScore) / 5);
-    } else {
-      // Non-restaurant site: average only the 4 Lighthouse categories,
-      // and mark restaurant readiness as N/A so the visitor understands
-      // why that card is excluded.
-      overall = Math.round((perf + a11y + bp + seo) / 4);
-    }
+    // Readiness is only included in the overall rollup when (a) this
+    // is a restaurant site AND (b) we have enough confirmed checks to
+    // trust the number. Otherwise we fall through to the 4-category
+    // average so one detected platform + eight unverifieds doesn't
+    // inflate the overall score via a 100/100 readiness phantom.
+    //
+    // Weighting: Performance carries 2× the weight of the other four
+    // categories. A slow mobile site is materially worse for a
+    // restaurant than an imperfect SEO score — 53% of mobile visitors
+    // bounce from pages that take more than 3s to load (Google, 2018).
+    // Best Practices and SEO both regularly score 100 by default on
+    // even mediocre sites, which otherwise lets a site with perf 40
+    // cruise to an 81 overall. Double-weighting performance stops the
+    // overall number from lying about the most important axis.
+    var readinessInRollup = isRestaurantSite && !priorityResult.lowConfidence;
+    var overall = computeOverall(perf, a11y, bp, seo, restaurantScore, readinessInRollup);
 
     // Strip protocol from displayed URL for readability
     var displayUrl = auditedUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
@@ -3338,24 +3738,39 @@
     setCategory('accessibility', a11y);
     setCategory('best-practices', bp);
     setCategory('seo',           seo);
-    if (isRestaurantSite) {
-      setCategory('restaurant', restaurantScore);
-    } else {
+    if (!isRestaurantSite) {
       setCategoryNA('restaurant');
+    } else if (priorityResult.lowConfidence) {
+      setCategoryLowSignal('restaurant');
+    } else {
+      setCategory('restaurant', restaurantScore);
     }
+    updateOverrideBanner();
 
     // Drill-down: list every failing Lighthouse audit under the right
     // category, sorted by impact. Auto-hides if nothing is failing.
-    renderOpportunities(cats, audits);
+    renderOpportunities(cats, audits, auditedUrl);
 
-    var lcp = safeAudit(audits, 'largest-contentful-paint');
-    var cls = safeAudit(audits, 'cumulative-layout-shift');
-    var tbt = safeAudit(audits, 'total-blocking-time');
-    var fcp = safeAudit(audits, 'first-contentful-paint');
-    setVital('lcp', lcp.displayValue, lcp.numericValue);
-    setVital('cls', cls.displayValue, cls.numericValue);
-    setVital('tbt', tbt.displayValue, tbt.numericValue);
-    setVital('fcp', fcp.displayValue, fcp.numericValue);
+    var lcp   = safeAudit(audits, 'largest-contentful-paint');
+    var cls   = safeAudit(audits, 'cumulative-layout-shift');
+    var tbt   = safeAudit(audits, 'total-blocking-time');
+    var fcp   = safeAudit(audits, 'first-contentful-paint');
+    var field = extractFieldMetrics(data);
+    var fieldScope = field ? field.scope : null;
+    // Prefer field (CrUX 28-day p75) for the three Core Web Vitals
+    // and FCP when available; fall back to lab. TBT is always lab
+    // (Lighthouse-only metric). INP is field-only — show '—' with
+    // a "No real-user data" caption when CrUX hasn't collected
+    // enough visits yet.
+    if (field && field.lcp !== null) setVital('lcp', formatMs(field.lcp), field.lcp, 'field', fieldScope);
+    else                              setVital('lcp', lcp.displayValue, lcp.numericValue, 'lab');
+    if (field && field.cls !== null) setVital('cls', formatCls(field.cls), field.cls, 'field', fieldScope);
+    else                              setVital('cls', cls.displayValue, cls.numericValue, 'lab');
+    if (field && field.inp !== null) setVital('inp', formatMs(field.inp), field.inp, 'field', fieldScope);
+    else                              setVital('inp', '—', null, 'missing');
+    setVital('tbt', tbt.displayValue, tbt.numericValue, 'lab');
+    if (field && field.fcp !== null) setVital('fcp', formatMs(field.fcp), field.fcp, 'field', fieldScope);
+    else                              setVital('fcp', fcp.displayValue, fcp.numericValue, 'lab');
 
     // Expose raw audits for future consumers
     window.__auditLastResult = { audits: audits, overall: overall, url: auditedUrl, restaurant: isRestaurantSite ? restaurantScore : null };
@@ -3382,7 +3797,9 @@
     if (emailUrlField)   emailUrlField.value   = auditedUrl;
     if (emailScoreField) emailScoreField.value = String(overall);
     if (emailReadinessField) {
-      emailReadinessField.value = isRestaurantSite ? String(restaurantScore) : 'N/A';
+      if (!isRestaurantSite)             emailReadinessField.value = 'N/A';
+      else if (priorityResult.lowConfidence) emailReadinessField.value = 'Insufficient signal';
+      else                                emailReadinessField.value = String(restaurantScore);
     }
     // Build a shareable link that preserves any current overrides.
     try {
@@ -3423,9 +3840,15 @@
         emailCorrectionsField.value = corr.join('; ');
       }
       if (emailSummaryField) {
+        var readinessLine = null;
+        if (isRestaurantSite) {
+          readinessLine = priorityResult.lowConfidence
+            ? 'Restaurant readiness: insufficient signal (too many unverified checks)'
+            : 'Restaurant readiness: ' + restaurantScore + '/100';
+        }
         var parts = [
           'Overall score: ' + overall + '/100',
-          isRestaurantSite ? 'Restaurant readiness: ' + restaurantScore + '/100' : null,
+          readinessLine,
           failingChecks.length ? failingChecks.length + ' failing checks' : 'No failing checks',
           unverifiedChecks.length ? unverifiedChecks.length + ' couldn\'t be verified' : null
         ].filter(function(p){ return p; });
@@ -3464,34 +3887,69 @@
     // state. renderPriorityChecks returns the updated restaurant score.
     var priorityResult = renderPriorityChecks(state.audits, state.allUrls, state.pageText);
     var newRestaurantScore = priorityResult.score;
+    var readinessInRollup = state.isRestaurant && !priorityResult.lowConfidence;
 
-    var overall;
-    if (state.isRestaurant) {
-      overall = Math.round((state.perf + state.a11y + state.bp + state.seo + newRestaurantScore) / 5);
-    } else {
-      overall = Math.round((state.perf + state.a11y + state.bp + state.seo) / 4);
-    }
+    var overall = computeOverall(
+      state.perf, state.a11y, state.bp, state.seo, newRestaurantScore, readinessInRollup
+    );
 
     // Update the score ring (stroke-dashoffset transition handles
     // the animation), verdict copy, Restaurant Readiness category
     // card, and the cached last-result so future share/email/copy
-    // actions see the corrected score.
+    // actions see the corrected score. If the user just clicked
+    // "I have this" on enough unverifieds to cross the confidence
+    // threshold, the restaurant card transitions from '?' to a
+    // real score on this pass.
     setScoreRing(overall);
     var verdictEl = document.getElementById('verdictCopy');
     if (verdictEl) verdictEl.textContent = verdictFor(overall);
-    if (state.isRestaurant) setCategory('restaurant', newRestaurantScore);
+    if (!state.isRestaurant) {
+      setCategoryNA('restaurant');
+    } else if (priorityResult.lowConfidence) {
+      setCategoryLowSignal('restaurant');
+    } else {
+      setCategory('restaurant', newRestaurantScore);
+    }
 
     if (window.__auditLastResult) {
       window.__auditLastResult.overall = overall;
-      window.__auditLastResult.restaurant = state.isRestaurant ? newRestaurantScore : null;
+      window.__auditLastResult.restaurant = readinessInRollup ? newRestaurantScore : null;
     }
+    updateOverrideBanner();
 
     // Update the email form hidden fields so an email sent AFTER
     // corrections carries the corrected score + readiness.
     var emailScoreField     = document.getElementById('emailReportScore');
     var emailReadinessField = document.getElementById('emailReportReadiness');
     if (emailScoreField)     emailScoreField.value     = String(overall);
-    if (emailReadinessField) emailReadinessField.value = state.isRestaurant ? String(newRestaurantScore) : 'N/A';
+    if (emailReadinessField) {
+      if (!state.isRestaurant)           emailReadinessField.value = 'N/A';
+      else if (priorityResult.lowConfidence) emailReadinessField.value = 'Insufficient signal';
+      else                                emailReadinessField.value = String(newRestaurantScore);
+    }
+  }
+
+  // Toggle the "score includes owner-confirmed checks" banner based on
+  // how many USER_OVERRIDES are active. Called from both renderReport
+  // (initial paint, picks up overrides hydrated from the URL) and
+  // recomputeOverallFromCurrentState (after every feedback click) so
+  // the banner appears the moment a user (or the recipient of a
+  // shared link) first sees a mutated score.
+  function updateOverrideBanner() {
+    var banner = document.getElementById('scoreOverrideBanner');
+    var textEl = document.getElementById('scoreOverrideText');
+    if (!banner) return;
+    var keys = Object.keys(USER_OVERRIDES);
+    if (!keys.length) {
+      banner.hidden = true;
+      return;
+    }
+    banner.hidden = false;
+    if (textEl) {
+      var noun = keys.length === 1 ? 'check' : 'checks';
+      textEl.textContent = 'This score includes ' + keys.length +
+        ' owner-confirmed ' + noun + '. Remove the ?ov=… parameter from the URL to see the fully tool-verified score.';
+    }
   }
 
   function showError(heading, body) {
@@ -3506,16 +3964,9 @@
     showOnly(loadingEl);
     resetProgress();
 
-    // Step 1: submitting the request to PSI
+    // Step 1: submitting the request to PSI (via same-origin proxy,
+    // with transparent fallback to the direct call — see callPsi).
     setStep(1);
-
-    var params = new URLSearchParams();
-    params.append('url', url);
-    params.append('strategy', 'mobile');
-    CATEGORIES.forEach(function(c){ params.append('category', c); });
-    // Authenticated tier: lifts anonymous rate limits and gives us
-    // the free-tier 25k-requests/day quota.
-    if (PSI_API_KEY) params.append('key', PSI_API_KEY);
 
     // A tiny delay before moving to step 2 so the user perceives the
     // submit phase as a real step — otherwise steps 1 and 2 flip so
@@ -3526,22 +3977,7 @@
       startProgress();
     }, 350);
 
-    fetch(PSI_ENDPOINT + '?' + params.toString())
-      .then(function(res){
-        if (!res.ok) {
-          return res.json().then(function(body){
-            var msg = (body && body.error && body.error.message) || ('PageSpeed returned ' + res.status);
-            var err = new Error(msg);
-            err.status = res.status;
-            throw err;
-          }, function(){
-            var err = new Error('PageSpeed returned ' + res.status);
-            err.status = res.status;
-            throw err;
-          });
-        }
-        return res.json();
-      })
+    callPsi(url)
       .then(function(data){
         // Step 3: Lighthouse response received, scoring restaurant checks
         setStep(3);
@@ -3576,9 +4012,14 @@
             "Google Lighthouse couldn't load the URL. Make sure it's publicly accessible — no login wall, no staging environment, and no rate limiter blocking bots."
           );
         } else if (/quota|rate|exceed/i.test(msg) || err.status === 429) {
+          // Start a 30-second cooldown so rapid retries don't compound
+          // the rate-limit pressure. The submit button shows a
+          // countdown and the Try-again button short-circuits with
+          // the remaining time.
+          startCooldown(30);
           showError(
             "We're a little rate-limited right now.",
-            "Google's free tier is temporarily throttled. Try again in a minute, or email don@muntin.digital for a manual audit."
+            "Google's free tier is temporarily throttled. Give it about 30 seconds before trying again, or email don@muntin.digital for a manual audit."
           );
         } else if (err.status === 400) {
           showError(
@@ -3599,8 +4040,15 @@
         }
       })
       .then(function(){
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = submitOriginalHTML;
+        // If a rate-limit cooldown is active, leave the button in its
+        // countdown state — updateCooldownUI() will restore the label
+        // when the cooldown ends.
+        if (cooldownRemaining() > 0) {
+          updateCooldownUI();
+        } else {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = submitOriginalHTML;
+        }
       });
   }
 
@@ -3608,8 +4056,52 @@
   // button can re-run the same audit without the user retyping it.
   var lastAuditUrl = null;
 
+  // Rate-limit backoff. If Google returns 429 / quota-exceeded, we
+  // set a cooldown ms timestamp — any submit (form, retry button,
+  // URL-param auto-run) before the cooldown expires is intercepted
+  // with a countdown message instead of hitting PSI again. Without
+  // this, a user who hits "Try again" six times in six seconds
+  // compounds the rate-limit pressure on a shared API quota.
+  var cooldownUntil = 0;
+  var cooldownTimer = null;
+  function startCooldown(seconds) {
+    cooldownUntil = Date.now() + seconds * 1000;
+    updateCooldownUI();
+    if (cooldownTimer) clearInterval(cooldownTimer);
+    cooldownTimer = setInterval(function(){
+      if (Date.now() >= cooldownUntil) {
+        clearInterval(cooldownTimer);
+        cooldownTimer = null;
+      }
+      updateCooldownUI();
+    }, 500);
+  }
+  function cooldownRemaining() {
+    var remain = cooldownUntil - Date.now();
+    return remain > 0 ? Math.ceil(remain / 1000) : 0;
+  }
+  function updateCooldownUI() {
+    var remain = cooldownRemaining();
+    if (remain > 0) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Wait ' + remain + 's';
+    } else if (submitBtn.disabled && submitBtn.textContent && submitBtn.textContent.indexOf('Wait') === 0) {
+      // Cooldown just ended — restore original label
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = submitOriginalHTML;
+    }
+  }
+
   form.addEventListener('submit', function(e){
     e.preventDefault();
+    var remain = cooldownRemaining();
+    if (remain > 0) {
+      showError(
+        "Still cooling down.",
+        "Google's API is rate-limiting us. Try again in " + remain + " second" + (remain === 1 ? '' : 's') + "."
+      );
+      return;
+    }
     var url = normalizeUrl(input.value);
     if (!url) {
       showError(
@@ -3633,6 +4125,14 @@
         // No previous audit — just focus the input
         showOnly(null); // hide everything
         if (input) input.focus();
+        return;
+      }
+      var retryRemain = cooldownRemaining();
+      if (retryRemain > 0) {
+        showError(
+          "Still cooling down.",
+          "Google's API is rate-limiting us. Try again in " + retryRemain + " second" + (retryRemain === 1 ? '' : 's') + "."
+        );
         return;
       }
       if (window.plausible) window.plausible('Audit Retry');
@@ -3741,13 +4241,30 @@
       if (!last || !last.url) return;
       var pretty = last.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
       var score = last.overall || 0;
+      // Reuse the cached allUrls / pageText that renderReport computed
+      // so the image reflects the exact same evaluation state the user
+      // is looking at on screen (including any overrides they've
+      // confirmed). Also handles evaluatePriorityCheck returning null
+      // for audits PSI didn't produce — those are simply omitted.
       var checks = [];
       if (last.audits) {
-        PRIORITY_CHECKS.forEach(function(def) {
-          var result = evaluatePriorityCheck(def, last.audits,
-            extractAllUrls(last.audits), extractPageText(last.audits));
-          var mark = result.cls === 'pass' ? '✓' : result.cls === 'fail' ? '✗' : '?';
-          checks.push({ mark: mark, cls: result.cls, label: result.passLabel || result.failLabel || def.pass });
+        var state = window.__auditScoreState || {};
+        var shareUrls = state.allUrls || extractAllUrls(last.audits);
+        var shareText = state.pageText || extractPageText(last.audits);
+        PRIORITY_CHECKS.forEach(function(def, idx) {
+          var result = evaluatePriorityCheck(def, last.audits, shareUrls, shareText);
+          if (!result) return;
+          // Apply any owner overrides so the image matches what's on
+          // screen — same logic as renderPriorityChecks.
+          if (USER_OVERRIDES[idx] === 'pass' && result.mark.cls === 'unverified') {
+            result = makeResult(def, 'pass');
+          } else if (USER_OVERRIDES[idx] === 'fail' && result.mark.cls === 'unverified') {
+            result = makeResult(def, 'fail');
+          }
+          var cls = result.mark.cls;
+          var mark = cls === 'pass' ? '✓' : cls === 'fail' ? '✗' : '?';
+          var label = result.title || def.pass || def.fail || 'Check';
+          checks.push({ mark: mark, cls: cls, label: label });
         });
       }
 
@@ -3984,27 +4501,7 @@
     // table — we don't keep the full Lighthouse audit for
     // competitors because we're not rendering their priority checks.
     function fetchCompetitor(url) {
-      var params = new URLSearchParams();
-      params.append('url', url);
-      params.append('strategy', 'mobile');
-      CATEGORIES.forEach(function(c){ params.append('category', c); });
-      if (PSI_API_KEY) params.append('key', PSI_API_KEY);
-      return fetch(PSI_ENDPOINT + '?' + params.toString())
-        .then(function(res){
-          if (!res.ok) {
-            return res.json().then(function(body){
-              var msg = (body && body.error && body.error.message) || ('PageSpeed returned ' + res.status);
-              var err = new Error(msg);
-              err.status = res.status;
-              throw err;
-            }, function(){
-              var err = new Error('PageSpeed returned ' + res.status);
-              err.status = res.status;
-              throw err;
-            });
-          }
-          return res.json();
-        })
+      return callPsi(url)
         .then(function(data){
           var lh = data && data.lighthouseResult;
           if (!lh || !lh.categories) throw new Error('Unexpected PSI response shape');
@@ -4022,27 +4519,40 @@
           var pageText = extractPageText(audits);
           var isRestaurant = looksLikeRestaurant(url, audits, allUrls);
           var restaurantScore = 0;
+          var totalCount = 0, unverifiedCount = 0;
           if (isRestaurant) {
             var totalWeight = 0, weightedCredit = 0;
             PRIORITY_CHECKS.forEach(function(def){
               var result = evaluatePriorityCheck(def, audits, allUrls, pageText);
               if (!result) return;
-              if (result.mark.cls === 'unverified') return; // excluded from score
+              totalCount++;
+              if (result.mark.cls === 'unverified') {
+                unverifiedCount++;
+                return; // excluded from score
+              }
               var w = typeof def.weight === 'number' ? def.weight : 1.0;
               totalWeight += w;
               if (result.mark.cls === 'pass') weightedCredit += w;
             });
             restaurantScore = totalWeight > 0 ? Math.round((weightedCredit / totalWeight) * 100) : 0;
           }
-          var overall = isRestaurant
-            ? Math.round((perf + a11y + bp + seo + restaurantScore) / 5)
-            : Math.round((perf + a11y + bp + seo) / 4);
+          // Apply the same confidence gate the main audit uses, so
+          // competitors with only one confirmed pass don't show up as
+          // 100/100 readiness in the comparison table.
+          var competitorConfirmed = totalCount - unverifiedCount;
+          var competitorFloor     = Math.max(3, Math.ceil(totalCount * 0.4));
+          var lowConfidence       = totalCount > 0 && competitorConfirmed < competitorFloor;
+          var readinessInRollup   = isRestaurant && !lowConfidence;
+          var overall = computeOverall(perf, a11y, bp, seo, restaurantScore, readinessInRollup);
           return {
             url: url,
             pretty: url.replace(/^https?:\/\//, '').replace(/\/$/, ''),
             perf: perf, a11y: a11y, bp: bp, seo: seo,
             isRestaurant: isRestaurant,
-            restaurant: isRestaurant ? restaurantScore : null,
+            // Only surface a competitor readiness number when we had
+            // enough confirmed signal to trust it; otherwise the
+            // comparison table shows N/A for that row.
+            restaurant: readinessInRollup ? restaurantScore : null,
             overall: overall
           };
         });
