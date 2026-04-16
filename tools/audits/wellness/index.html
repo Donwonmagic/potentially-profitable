@@ -3473,9 +3473,10 @@
         } catch (e) {
           console.error('[audit] render failed', e);
           finishProgress();
+          var errDetail = e && e.message ? ' (' + e.message + ')' : '';
           showError(
-            "We got a reply, but couldn't read it.",
-            "Google Lighthouse returned a result we couldn't parse. Try running the audit again, or email don@muntin.digital and I'll run it manually."
+            "We got a reply, but something went wrong.",
+            "This can happen if the site uses unusual technology, blocks automated scans, or if Google's API returned an unexpected format. Try running it again — the API is sometimes flaky on the first try." + errDetail
           );
         }
       })
