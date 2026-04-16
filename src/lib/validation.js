@@ -86,6 +86,7 @@ export function enforceMaxLengths(body, limits) {
     budget: 60,
     referral: 200,
     restaurant: 180,
+    subtype: 40,
     services: 400,
     audited_url: 500,
     overall_score: 10,

@@ -567,6 +567,40 @@
     const state = loadState();
     let activeSubtype = safeGet(SUBTYPE_KEY) || 'all';
 
+    /* ---- Subtype-aware voice ----
+     * Each subtype has its own noun (singular + plural) so the
+     * on-page copy, the N/A badge, and the hidden form field that
+     * travels with the PDF-request email all read right for the
+     * kind of business the user picked. `all` is the generic
+     * default that matches the HTML as written.
+     *
+     * New subtypes: add an entry here + a data-subtype="..." pill
+     * in the page + (optionally) a matching entry on the server in
+     * src/lib/templates.js -> checklistKind(body) so the email
+     * auto-reply voices the same noun. */
+    const RESTAURANT_VOICE = {
+      'all':          { noun: 'restaurant',           nounPlural: 'restaurant',          naLabel: 'N/A for your kind' },
+      'fine-dining':  { noun: 'restaurant',           nounPlural: 'fine-dining',         naLabel: 'N/A for fine dining' },
+      'casual':       { noun: 'restaurant',           nounPlural: 'casual',              naLabel: 'N/A for casual spots' },
+      'fast-casual':  { noun: 'spot',                 nounPlural: 'fast-casual',         naLabel: 'N/A for fast-casuals' },
+      'bar':          { noun: 'bar',                  nounPlural: 'bar & cocktail',      naLabel: 'N/A for bars' },
+      'cafe':         { noun: 'cafe',                 nounPlural: 'cafe & bakery',       naLabel: 'N/A for cafes' },
+      'truck':        { noun: 'truck',                nounPlural: 'food truck & pop-up', naLabel: 'N/A for food trucks' },
+    };
+    const WELLNESS_VOICE = {
+      'all':          { noun: 'wellness',             nounPlural: 'wellness',            naLabel: 'N/A for your kind' },
+      'studio':       { noun: 'studio',               nounPlural: 'yoga & fitness studio', naLabel: 'N/A for studios' },
+      'spa':          { noun: 'spa',                  nounPlural: 'spa',                 naLabel: 'N/A for spas' },
+      'salon':        { noun: 'salon',                nounPlural: 'salon & barber',      naLabel: 'N/A for salons' },
+      'medspa':       { noun: 'med-spa',              nounPlural: 'med-spa',             naLabel: 'N/A for med-spas' },
+      'gym':          { noun: 'gym',                  nounPlural: 'gym',                 naLabel: 'N/A for gyms' },
+    };
+    const VOICE_MAP = kind === 'wellness' ? WELLNESS_VOICE : RESTAURANT_VOICE;
+
+    function currentVoice() {
+      return VOICE_MAP[activeSubtype] || VOICE_MAP.all;
+    }
+
     function itemNAList(item) {
       return (item.getAttribute('data-na') || '').split(/\s+/).filter(Boolean);
     }
@@ -576,19 +610,42 @@
     }
 
     function applySubtypeState() {
+      const voice = currentVoice();
+
       items.forEach((item) => {
         const na = isItemNA(item);
         item.classList.toggle('is-na', na);
         const input = item.querySelector('.check-toggle');
-        if (!input) return;
-        input.disabled = na;
-        if (na && input.checked) input.checked = false;
+        if (input) {
+          input.disabled = na;
+          if (na && input.checked) input.checked = false;
+        }
+        if (na) item.setAttribute('data-na-label', voice.naLabel);
+        else    item.removeAttribute('data-na-label');
       });
+
       if (tailorPills) {
         tailorPills.querySelectorAll('.tailor-pill').forEach((p) => {
           p.classList.toggle('is-active', p.dataset.subtype === activeSubtype);
         });
       }
+
+      // Swap every tokenised span on the page to the subtype's noun.
+      // The default text in the HTML is already the 'all'-subtype
+      // value, so this is effectively idempotent when subtype === all.
+      document.querySelectorAll('[data-token]').forEach((el) => {
+        const token = el.dataset.token;
+        const value = voice[token];
+        if (typeof value === 'string') el.textContent = value;
+      });
+
+      // Mirror the active subtype into the hidden form field so the
+      // worker's auto-reply can personalize by subtype, not just kind.
+      const hiddenSubtype = document.getElementById('cl-subtype');
+      if (hiddenSubtype) hiddenSubtype.value = activeSubtype;
+
+      // Advertise the active subtype on <body> for CSS hooks.
+      body.dataset.activeSubtype = activeSubtype;
     }
 
     function countActive() {

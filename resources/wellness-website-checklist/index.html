@@ -1058,7 +1058,11 @@
   .check-item.is-na { opacity: 0.52; cursor: default; }
   .check-item.is-na:hover { background-color: transparent; }
   .check-item.is-na .check-body h3::after {
-    content: 'N/A for your kind';
+    /* Label is populated by site.js via data-na-label on each .is-na
+       item — "N/A for med-spas", "N/A for gyms", etc. Falls back to
+       a literal "N/A" if the attribute isn't set for any reason
+       (e.g. JS disabled) so the badge never reads empty. */
+    content: attr(data-na-label);
     display: inline-block;
     vertical-align: middle;
     margin-left: 10px;
@@ -1073,6 +1077,7 @@
     border: 1px dashed var(--line-dark);
     border-radius: 999px;
   }
+  .check-item.is-na:not([data-na-label]) .check-body h3::after { content: 'N/A'; }
 
   /* ============ HIDE-CHECKED / COMPACT MODE ============ */
   body.hide-checked .check-item:has(.check-toggle:checked) { display: none; }
@@ -1206,7 +1211,7 @@
         <span class="serif-italic">Twenty things your site should do in 2026.</span>
       </h1>
       <p class="hero-sub" style="margin:24px auto 0; max-width:680px; text-align:center;">
-        A free, honest audit for independent wellness business websites. Run it on your own site in about ten minutes and see where you're leaving bookings on the table. Written for studio owners, not developers.
+        A free, honest audit for independent <span data-token="nounPlural">wellness</span> websites. Run it on your own site in about ten minutes and see where you're leaving bookings on the table. Written for owners, not developers.
       </p>
       <div class="checklist-toolbar">
         <a class="print-cta" href="/resources/wellness-website-checklist/muntin-wellness-website-checklist.pdf" download>
@@ -1245,7 +1250,7 @@
 <section class="block">
   <div class="container" style="max-width:760px;">
     <p style="font-size:17px; line-height:1.8; color:var(--ink-soft); margin-bottom:20px;">
-      Most independent wellness websites fail quietly. Not with a bang — with a booking button that doesn't work, a services page that won't open on an iPhone, a reservation button that lands on a broken form. Nobody complains; they just go somewhere else. This checklist walks you through the twenty checks I run first on every wellness site I'm asked to audit. Score your own — 1 point for each "yes" — and see where you stand at the end. It takes about ten minutes.
+      Most independent <span data-token="nounPlural">wellness</span> websites fail quietly. Not with a bang — with a booking button that doesn't work, a services page that won't open on an iPhone, a reservation button that lands on a broken form. Nobody complains; they just go somewhere else. This checklist walks you through the twenty checks I run first on every <span data-token="noun">wellness</span> site I'm asked to audit. Score your own — 1 point for each "yes" — and see where you stand at the end. It takes about ten minutes.
     </p>
 
     <p style="font-size:14px; line-height:1.7; color:var(--stone); margin-bottom:48px; padding:16px 20px; background:var(--cream-2); border-radius:10px; border-left:3px solid var(--teal);">
@@ -1307,7 +1312,7 @@
         <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
       </div>
       <h3>All 20 checks passed.</h3>
-      <p>Your wellness site is in genuinely good shape. If you want a second set of eyes on what's left, a 20-minute call can confirm — or find the things a checklist can't catch.</p>
+      <p>Your <span data-token="noun">wellness</span> site is in genuinely good shape. If you want a second set of eyes on what's left, a 20-minute call can confirm — or find the things a checklist can't catch.</p>
       <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
         <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </a>
@@ -1605,7 +1610,7 @@
   <div class="container" style="max-width:860px;">
     <div class="section-header reveal" style="text-align:center;">
       <span class="eyebrow">Score yourself</span>
-      <h2>How did your<br>wellness website do?</h2>
+      <h2>How did your<br><span data-token="noun">wellness</span> website do?</h2>
       <p>Add up the checks you passed. One point each, out of twenty. Then read the band that matches — it's an honest answer, not a polite one.</p>
     </div>
 
@@ -1633,7 +1638,7 @@
       <div class="service" data-band="solid" style="border-top:3px solid var(--teal);">
         <div class="label" style="color:var(--teal);">15 – 20 passes</div>
         <h3>Solid</h3>
-        <p class="desc">You're in the top 10% of independent wellness websites. Now it's a maintenance game — keep the photos fresh, rotate the testimonials, monitor page speed, update your services page every quarter. The leverage is in staying disciplined, not rebuilding.</p>
+        <p class="desc">You're in the top 10% of independent <span data-token="nounPlural">wellness</span> websites. Now it's a maintenance game — keep the photos fresh, rotate the testimonials, monitor page speed, update your services page every quarter. The leverage is in staying disciplined, not rebuilding.</p>
         <ul>
           <li>Schedule a quarterly review of every item</li>
           <li>Consider a Care Plan so the site doesn't rot</li>
@@ -1669,6 +1674,11 @@
       <input type="hidden" name="_subject" value="Wellness Website Checklist — PDF request" />
       <input type="hidden" name="interest" value="wellness-website-checklist" />
       <input type="hidden" name="source" value="/resources/wellness-website-checklist/" />
+      <!-- Carries the active "Tailor to" subtype through to the
+           worker so the auto-reply can address the right kind of
+           business (studio, spa, salon, med-spa, gym) in the
+           subject and body. Populated by site.js on every change. -->
+      <input type="hidden" name="subtype" id="cl-subtype" value="all" />
       <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
 
       <label for="cl-email" style="font-size:11px; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(--stone); display:block;">Your email <span style="color:var(--rust);">*</span></label>
@@ -1704,7 +1714,7 @@
     <div class="section-header reveal" style="text-align:center;">
       <span class="eyebrow">Need a hand?</span>
       <h2>Want me to fix<br>your failing items?</h2>
-      <p class="final-sub">I build websites for wellness studios, spas, and salons in Silver Spring, DC, and the DMV. If you ran this checklist and found more "no" answers than you're comfortable with, let's talk — twenty minutes on Zoom, no pitch.</p>
+      <p class="final-sub">I build <span data-token="nounPlural">wellness</span> websites for independent operators in Silver Spring, DC, and the DMV. If you ran this checklist and found more "no" answers than you're comfortable with, let's talk — twenty minutes on Zoom, no pitch.</p>
     </div>
 
     <div class="hero-ctas reveal" style="justify-content:center; margin-top:32px;">

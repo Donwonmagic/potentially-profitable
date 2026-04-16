@@ -158,8 +158,31 @@ export function intakeAutoResponder(body) {
 // and body can address the person's actual studio / shop / salon
 // / restaurant instead of a generic "Thanks for asking".
 
-// Shared dispatch — resolves kind + personalization fields from a
-// form body. Keeps the switch in one place so both notification
+// Subtype voice maps — keep in lockstep with VOICE_MAP in assets/site.js.
+// Each row gives a noun for the subject line ("Your <subjectNoun>
+// website checklist"), a phrase for the opener ("tailored to
+// <tailoredTo>"), and a full human label that shows up on Don's
+// notification email so the triage line gets the specific kind.
+const RESTAURANT_SUBTYPES = {
+  'all':          { subjectNoun: 'restaurant',        tailoredTo: '',                          label: 'Restaurant' },
+  'fine-dining':  { subjectNoun: 'restaurant',        tailoredTo: 'fine-dining rooms',         label: 'Fine dining' },
+  'casual':       { subjectNoun: 'restaurant',        tailoredTo: 'casual / neighborhood spots', label: 'Casual / neighborhood' },
+  'fast-casual':  { subjectNoun: 'fast-casual',       tailoredTo: 'fast-casual restaurants',   label: 'Fast-casual' },
+  'bar':          { subjectNoun: 'bar',               tailoredTo: 'bars & cocktail rooms',     label: 'Bar / cocktail' },
+  'cafe':         { subjectNoun: 'cafe',              tailoredTo: 'cafes & bakeries',          label: 'Cafe / bakery' },
+  'truck':        { subjectNoun: 'food truck',        tailoredTo: 'food trucks & pop-ups',     label: 'Food truck / pop-up' },
+};
+const WELLNESS_SUBTYPES = {
+  'all':          { subjectNoun: 'wellness',          tailoredTo: '',                          label: 'Wellness' },
+  'studio':       { subjectNoun: 'studio',            tailoredTo: 'yoga & fitness studios',    label: 'Yoga / fitness studio' },
+  'spa':          { subjectNoun: 'spa',               tailoredTo: 'day spas & wellness centers', label: 'Day spa / wellness' },
+  'salon':        { subjectNoun: 'salon',             tailoredTo: 'salons & barbershops',      label: 'Salon / barber' },
+  'medspa':       { subjectNoun: 'med-spa',           tailoredTo: 'med-spas',                  label: 'Med-spa' },
+  'gym':          { subjectNoun: 'gym',               tailoredTo: 'gyms & fitness clubs',      label: 'Gym / fitness club' },
+};
+
+// Shared dispatch — resolves kind + subtype + personalization fields
+// from a form body. Keeps the switch in one place so both notification
 // and auto-responder templates stay in lockstep.
 function checklistKind(body) {
   const interest = String(body.interest || '').trim();
@@ -170,11 +193,24 @@ function checklistKind(body) {
   // doesn't blank the personalization.
   const businessField = String(body.business || body.restaurant || '').trim();
 
+  // The site's "Tailor to" pill row rides along via a hidden
+  // subtype input. Unknown values fall back to 'all' so a stray
+  // subtype doesn't blank the email.
+  const subtypeMap = isWellness ? WELLNESS_SUBTYPES : RESTAURANT_SUBTYPES;
+  const rawSubtype = String(body.subtype || 'all').trim();
+  const subtype    = subtypeMap[rawSubtype] ? rawSubtype : 'all';
+  const voice      = subtypeMap[subtype];
+
+  const titleLead  = 'Your ' + voice.subjectNoun + ' website checklist';
+
   if (isWellness) {
     return {
       kind:          'wellness',
-      titleLead:     'Your wellness website checklist',
-      voice:         'your studio',
+      subtype,
+      subtypeLabel:  voice.label,
+      tailoredTo:    voice.tailoredTo,
+      titleLead,
+      subjectNoun:   voice.subjectNoun,
       businessLabel: 'Studio, spa, or salon',
       businessField,
       items:         20,
@@ -186,8 +222,11 @@ function checklistKind(body) {
 
   return {
     kind:          'restaurant',
-    titleLead:     'Your restaurant website checklist',
-    voice:         'your restaurant',
+    subtype,
+    subtypeLabel:  voice.label,
+    tailoredTo:    voice.tailoredTo,
+    titleLead,
+    subjectNoun:   voice.subjectNoun,
     businessLabel: 'Restaurant',
     businessField,
     items:         24,
@@ -201,16 +240,20 @@ export function checklistNotification(body) {
   const email = String(body.email || '—').trim();
   const k     = checklistKind(body);
 
-  // Tag the subject with kind + business name so the inbox preview
-  // carries the full signal — Don doesn't need to open to triage.
-  const kindLabel = k.kind === 'wellness' ? 'wellness' : 'restaurant';
-  const subject = 'Checklist PDF requested (' + kindLabel + ')' + (k.businessField ? ' — ' + k.businessField : '');
+  // Inbox-preview-friendly subject: kind + subtype label + business.
+  // The subtype gives Don a stronger lead signal — a med-spa or food
+  // truck requester is often a narrower win than a generic one.
+  const subtypeTag = k.subtype === 'all'
+    ? (k.kind === 'wellness' ? 'wellness' : 'restaurant')
+    : k.subtypeLabel.toLowerCase();
+  const subject = 'Checklist PDF requested (' + subtypeTag + ')' + (k.businessField ? ' — ' + k.businessField : '');
 
   const html = htmlShell(
     (k.kind === 'wellness' ? 'Wellness' : 'Restaurant') + ' Website Checklist — PDF request',
     [
       field('From',     escapeHtml(email)),
       field('Kind',     k.kind === 'wellness' ? 'Wellness' : 'Restaurant'),
+      k.subtype !== 'all' ? field('Subtype', escapeHtml(k.subtypeLabel)) : '',
       k.businessField ? field(k.businessLabel, escapeHtml(k.businessField)) : '',
       '<p style="margin:24px 0 0;font-size:13px;color:#6B6B6B;">Auto-responder with the PDF link already sent to the user. No manual follow-up required unless you want to nurture this lead.</p>',
     ].join('\n')
@@ -221,6 +264,7 @@ export function checklistNotification(body) {
     '',
     'From: ' + email,
     'Kind: ' + (k.kind === 'wellness' ? 'Wellness' : 'Restaurant'),
+    k.subtype !== 'all' ? 'Subtype: ' + k.subtypeLabel : '',
     k.businessField ? k.businessLabel + ': ' + k.businessField : '',
     '',
     '--',
@@ -234,21 +278,34 @@ export function checklistAutoResponder(body) {
   const k = checklistKind(body);
   const biz = k.businessField;
 
-  // Subject + opening line are personalized with the business name
-  // when it was provided on the form. Falling back to a neutral
-  // phrasing when it wasn't — never address them as "there" for
-  // this flow since we don't ask for a name.
+  // Subject personalization: business name if given, subtype noun
+  // always ("Your food truck website checklist — Bessie Burger").
   const subject = biz
     ? k.titleLead + ' — ' + biz
     : k.titleLead;
 
+  // Opener: addresses the business by name + explicitly calls out
+  // that the PDF is tailored to the subtype when one was picked.
+  // When the user left subtype as 'all' we keep the copy neutral so
+  // it doesn't sound like we're making something up.
+  const tailoredLine = k.tailoredTo
+    ? ' tailored for <strong>' + escapeHtml(k.tailoredTo) + '</strong>'
+    : '';
+  const tailoredLineTxt = k.tailoredTo
+    ? ' tailored for ' + k.tailoredTo
+    : '';
+
   const opening = biz
-    ? 'Here\'s the PDF for <strong>' + escapeHtml(biz) + '</strong>. Print it, pin it to the back-office board, or pass it around the team at your next staff meeting — it\'s built to be marked up with a pen.'
-    : 'Here\'s your PDF. Print it, pin it to the back-office board, or pass it around the team at your next staff meeting — it\'s built to be marked up with a pen.';
+    ? 'Here\'s the PDF for <strong>' + escapeHtml(biz) + '</strong>' + tailoredLine + '. Print it, pin it to the back-office board, or pass it around the team at your next staff meeting — it\'s built to be marked up with a pen.'
+    : 'Here\'s your PDF' + tailoredLine + '. Print it, pin it to the back-office board, or pass it around the team at your next staff meeting — it\'s built to be marked up with a pen.';
 
   const openingTxt = biz
-    ? 'Here\'s the PDF for ' + biz + '. Print it, pin it to the back-office board, or pass it around the team at your next staff meeting — it\'s built to be marked up with a pen.'
-    : 'Here\'s your PDF. Print it, pin it to the back-office board, or pass it around the team at your next staff meeting — it\'s built to be marked up with a pen.';
+    ? 'Here\'s the PDF for ' + biz + tailoredLineTxt + '. Print it, pin it to the back-office board, or pass it around the team at your next staff meeting — it\'s built to be marked up with a pen.'
+    : 'Here\'s your PDF' + tailoredLineTxt + '. Print it, pin it to the back-office board, or pass it around the team at your next staff meeting — it\'s built to be marked up with a pen.';
+
+  const kindsLine = k.kind === 'wellness'
+    ? 'wellness business (studio, spa, salon, gym, med-spa)'
+    : 'restaurant (fine dining, casual, bar, cafe, food truck)';
 
   const html = htmlShell(
     k.titleLead + (biz ? ' — ' + biz : ''),
@@ -261,7 +318,7 @@ export function checklistAutoResponder(body) {
       '</p>',
       '<p style="margin:0 0 22px;font-size:13px;color:#6B6B6B;">Letter-size · ' + k.items + ' checks · opens in your browser.</p>',
 
-      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">If you\'d rather check items off on screen, the interactive version keeps your progress on your device and lets you tailor the checklist to your kind of ' + (k.kind === 'wellness' ? 'wellness business (studio, spa, salon, gym, med-spa)' : 'restaurant (fine dining, casual, bar, cafe, food truck)') + ' so N/A items drop out of your score:</p>',
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">If you\'d rather check items off on screen, the interactive version keeps your progress on your device and lets you tailor the checklist to your kind of ' + kindsLine + ' so N/A items drop out of your score:</p>',
       '<p style="margin:0 0 24px;"><a href="' + k.pageUrl + '" style="color:#1F4E5B;font-weight:600;">Open the interactive checklist &rarr;</a></p>',
 
       '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Want a human second opinion after you run it? Reply to this email with your URL and I\'ll take a real look — no list, no drip, no newsletter, just a response from me.</p>',
@@ -276,7 +333,7 @@ export function checklistAutoResponder(body) {
     'Download the PDF: ' + k.pdfUrl,
     '(Letter-size · ' + k.items + ' checks)',
     '',
-    'Or open the interactive version — it keeps your progress on your device and lets you tailor the checklist to your kind of ' + (k.kind === 'wellness' ? 'wellness business (studio, spa, salon, gym, med-spa)' : 'restaurant (fine dining, casual, bar, cafe, food truck)') + ' so N/A items drop out of your score:',
+    'Or open the interactive version — it keeps your progress on your device and lets you tailor the checklist to your kind of ' + kindsLine + ' so N/A items drop out of your score:',
     k.pageUrl,
     '',
     'Want a human second opinion after you run it? Reply to this email with your URL and I\'ll take a real look — no list, no drip, no newsletter, just a response from me.',
