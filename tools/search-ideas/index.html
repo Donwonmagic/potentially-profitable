@@ -131,15 +131,18 @@
       '{type} reviews {city}'
     ]},
     {cat:'Comparison — you vs. the competition',templates:[
-      '{type} vs {type} {city}',
+      'best {type} {city} compared',
       'best {type} in {city} reddit',
       '{type} {city} google reviews',
       '{type} {city} yelp',
-      'is {type} worth it {city}'
+      '{type} recommendations {city}'
     ]}
   ];
 
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
   function generate(type,city){
+    type=esc(type);city=esc(city);
     var html='';
     PATTERNS.forEach(function(group){
       html+='<div class="si-group"><p class="si-group-label">'+group.cat+'</p><ul class="si-items">';

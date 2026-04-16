@@ -184,13 +184,8 @@
           if(item.description)searchText+=item.description+' ';
         });
       }
-      // Also check document-title audit for page text
-      var dt=audits['document-title'];
-      if(dt&&dt.details&&dt.details.items){
-        dt.details.items.forEach(function(item){
-          if(item.snippet)searchText+=item.snippet+' ';
-        });
-      }
+      // Note: document-title audit does not contain schema data,
+      // removed misleading fallback that scanned it for @type values.
 
       // Parse @type values from the text
       var typeRe=/"@type"\s*:\s*"([A-Za-z]+)"/g;
@@ -227,8 +222,8 @@
       } else {
         foundTypes.forEach(function(t){
           var c=classify(t);
-          var tagCls=c==='specific'?'good':'generic';
-          var tagText=c==='specific'?'Specific':'Generic';
+          var tagCls=c==='specific'?'good':(c==='generic'?'generic':'good');
+          var tagText=c==='specific'?'Business type':(c==='generic'?'Too generic':'Supplemental');
           typesList.innerHTML+='<li><span class="tag '+tagCls+'">'+tagText+'</span><span class="detail"><strong>@type: '+friendlyName(t)+'</strong><br>'+advice(t)+'</span></li>';
         });
       }
