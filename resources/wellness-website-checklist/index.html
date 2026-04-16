@@ -1250,17 +1250,39 @@
     <div class="cat-block" id="findability" style="margin-top:0;">
       <div class="cat-header">
         <h2>Findability.</h2>
-        <span class="cat-label">Category 4 of 5 · 5 items</span>
+        <span class="cat-label">Category 4 of 5 · 4 items</span>
       </div>
+
+      <label class="check-item" data-check-id="13">
+        <input type="checkbox" class="check-toggle" aria-label="Mark item 13 complete">
+        <div class="check-num">13</div>
+        <div class="check-body">
+          <h3>You've claimed your Google Business Profile.</h3>
+          <div class="field"><div class="k">Why</div><div class="v">Most wellness discovery happens in Google Maps. If your listing isn't claimed, you can't respond to reviews, add photos, update hours, or post updates — and you rank lower than studios that do. It's free and takes 30 minutes.</div></div>
+          <div class="field"><div class="k">10-sec test</div><div class="v">Google your studio name. Does your listing show up with correct hours, photos you uploaded, and a "Reserve" or website button? If not, claim it at <a href="https://business.google.com" target="_blank" rel="noopener">business.google.com</a>.</div></div>
+          <div class="field"><div class="k">Fix</div><div class="v">Claim or create your profile. Add your categories (Yoga Studio, Day Spa, Hair Salon — be specific), upload 10+ photos, fill in every attribute, and add your booking link.</div></div>
+        </div>
+      </label>
+
+      <label class="check-item" data-check-id="14">
+        <input type="checkbox" class="check-toggle" aria-label="Mark item 14 complete">
+        <div class="check-num">14</div>
+        <div class="check-body">
+          <h3>Your business name and type are in the title tag.</h3>
+          <div class="field"><div class="k">Why</div><div class="v">The title tag is the blue link in Google search results. "Home — My Website" tells Google nothing. "Serenity Yoga — Hot Yoga Studio in Bethesda, MD" tells Google exactly what you are, where you are, and what you offer.</div></div>
+          <div class="field"><div class="k">10-sec test</div><div class="v">Google your studio. What does the blue link say? If it says your business name + type + city, you pass. If it says "Home" or "Welcome," you fail.</div></div>
+          <div class="field"><div class="k">Fix</div><div class="v">Rewrite your title tag to include business name, service type, and city. Keep it under 60 characters so Google doesn't truncate it.</div></div>
+        </div>
+      </label>
 
       <label class="check-item" data-check-id="15">
         <input type="checkbox" class="check-toggle" aria-label="Mark item 15 complete">
         <div class="check-num">15</div>
         <div class="check-body">
-          <h3>You have a claimed, verified Google Business Profile.</h3>
-          <div class="field"><div class="k">Why</div><div class="v">Roughly 60% of restaurant discovery now happens in Google Maps — the "local pack" of three map results that sits above the regular search results. If you don't have a claimed Business Profile, you're invisible to every hungry stranger searching for "[cuisine] near me."</div></div>
-          <div class="field"><div class="k">10-sec test</div><div class="v">Search your restaurant name in Google Maps. Is there a claimed listing with correct hours, photos, menu link, and category? Does it show a "claimed" badge or let you edit it?</div></div>
-          <div class="field"><div class="k">Fix</div><div class="v">Claim yours at <code>google.com/business</code>. Free. Setup takes thirty minutes, verification by postcard or phone takes a week. Then fill in hours, categories, photos, menu URL, and service areas. Post at least once a month.</div></div>
+          <h3>Your site has wellness-specific schema markup.</h3>
+          <div class="field"><div class="k">Why</div><div class="v">Schema markup is structured data that tells Google exactly what kind of business you are. A yoga studio with <code>@type: "SportsActivityLocation"</code> or a spa with <code>@type: "DaySpa"</code> shows up in rich results with hours, ratings, and service types. Without it, you get a plain blue link.</div></div>
+          <div class="field"><div class="k">10-sec test</div><div class="v">View your page source (right-click → View Source) and search for "schema" or "@type". If you see HealthAndBeautyBusiness, DaySpa, BeautySalon, SportsActivityLocation, or similar — you pass.</div></div>
+          <div class="field"><div class="k">Fix</div><div class="v">Add a JSON-LD block to your homepage with your business type, address, hours, phone, and URL. Test it with <a href="https://search.google.com/test/rich-results" target="_blank" rel="noopener">Google's Rich Results Test</a>.</div></div>
         </div>
       </label>
 
@@ -1268,43 +1290,10 @@
         <input type="checkbox" class="check-toggle" aria-label="Mark item 16 complete">
         <div class="check-num">16</div>
         <div class="check-body">
-          <h3>Your &lt;title&gt; tag names both your restaurant and your cuisine.</h3>
-          <div class="field"><div class="k">Why</div><div class="v">The title tag is the single strongest on-page SEO signal you have. "Home | Joe's" tells Google nothing. "Joe's Trattoria — Handmade Italian in Silver Spring, MD" tells it exactly what to rank you for.</div></div>
-          <div class="field"><div class="k">10-sec test</div><div class="v">View the source of your homepage and find the <code>&lt;title&gt;</code> tag. Does it contain your cuisine and your city? Is it under 60 characters?</div></div>
-          <div class="field"><div class="k">Fix</div><div class="v">Rewrite your title to include restaurant name + cuisine + city. Keep it under 60 characters or Google will truncate it in the search results.</div></div>
-        </div>
-      </label>
-
-      <label class="check-item" data-check-id="17">
-        <input type="checkbox" class="check-toggle" aria-label="Mark item 17 complete">
-        <div class="check-num">17</div>
-        <div class="check-body">
-          <h3>You have Restaurant schema markup in JSON-LD.</h3>
-          <div class="field"><div class="k">Why</div><div class="v">Schema tells Google your hours, menu, price range, cuisine, and phone number in a structured way it can actually read. That's how Google builds the rich result panel with your star rating, hours, and menu — the thing that sits above the organic search results and earns most of the clicks.</div></div>
-          <div class="field"><div class="k">10-sec test</div><div class="v">Run your URL through <code>search.google.com/test/rich-results</code>. Look for a "Restaurant" or "LocalBusiness" detection. No detection means no rich result.</div></div>
-          <div class="field"><div class="k">Fix</div><div class="v">Add a <code>&lt;script type="application/ld+json"&gt;</code> block with a Restaurant schema including <code>name</code>, <code>address</code>, <code>servesCuisine</code>, <code>priceRange</code>, <code>telephone</code>, and <code>openingHours</code>. Copy the skeleton from Google's documentation and fill in the real values.</div></div>
-        </div>
-      </label>
-
-      <label class="check-item" data-check-id="18">
-        <input type="checkbox" class="check-toggle" aria-label="Mark item 18 complete">
-        <div class="check-num">18</div>
-        <div class="check-body">
-          <h3>Every important image has meaningful alt text.</h3>
-          <div class="field"><div class="k">Why</div><div class="v">Alt text describes images to screen readers — that's the accessibility case. It also tells Google what the image is — that's the SEO case. "IMG_2041.jpg" helps nobody. "A plate of handmade ravioli with sage brown butter at Joe's Trattoria in Silver Spring" helps both.</div></div>
-          <div class="field"><div class="k">10-sec test</div><div class="v">Inspect each photo on your homepage in your browser's dev tools. Does each <code>&lt;img&gt;</code> have an <code>alt</code> attribute that actually describes the image?</div></div>
-          <div class="field"><div class="k">Fix</div><div class="v">Rewrite alt text as real sentences. Describe what's in the photo and — where it's natural — name your restaurant and city. Decorative images can have <code>alt=""</code>, but nothing should be missing the attribute entirely.</div></div>
-        </div>
-      </label>
-
-      <label class="check-item" data-check-id="19">
-        <input type="checkbox" class="check-toggle" aria-label="Mark item 19 complete">
-        <div class="check-num">19</div>
-        <div class="check-body">
-          <h3>You have a sitemap.xml submitted to Google Search Console.</h3>
-          <div class="field"><div class="k">Why</div><div class="v">Sitemaps tell Google what pages exist and how often they change. Not strictly required, but a big accelerant for new or small sites — and Search Console is the only place you can actually see which keywords are bringing people to you.</div></div>
-          <div class="field"><div class="k">10-sec test</div><div class="v">Visit <code>yoursite.com/sitemap.xml</code>. If it 404s, you don't have one. Then log into Search Console and check the "Sitemaps" section.</div></div>
-          <div class="field"><div class="k">Fix</div><div class="v">Generate a sitemap (most static site generators and CMSes do this automatically; there are also free online tools for handwritten sites). Upload to your site root. Verify your domain in Google Search Console and submit the sitemap URL.</div></div>
+          <h3>Every image has meaningful alt text.</h3>
+          <div class="field"><div class="k">Why</div><div class="v">Alt text makes your images visible to Google Image Search and accessible to screen readers. "IMG_4021.jpg" is invisible to both. "Hot yoga class in progress at Serenity Yoga, Bethesda MD" is a search query someone actually types.</div></div>
+          <div class="field"><div class="k">10-sec test</div><div class="v">Right-click any image on your site → Inspect. Look for the <code>alt</code> attribute. If it's empty, a filename, or missing entirely, you fail this check.</div></div>
+          <div class="field"><div class="k">Fix</div><div class="v">Write descriptive alt text for every image. Name the service, the space, and where appropriate the studio and city.</div></div>
         </div>
       </label>
     </div>
