@@ -64,6 +64,10 @@
   plausible.init()
 </script>
 
+<!-- FOUC guard: keep breadcrumb hidden until site.css applies.
+     Without this, a slow stylesheet fetch briefly renders the raw
+     'Home > Page' links at the top-left of the viewport. -->
+<style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
 <link rel="stylesheet" href="/assets/site.css">
 
 <style>
@@ -287,29 +291,35 @@
         <p class="foot-blurb">A one-person studio in Silver Spring, MD, building custom websites, brands, and social media for independent restaurants and lifestyle brands across the DMV and beyond.</p>
       </div>
 
-      <div class="foot-col">
-        <h4 class="foot-heading">Explore</h4>
+      <nav class="foot-col" aria-labelledby="foot-explore">
+        <h4 class="foot-heading" id="foot-explore">Explore</h4>
         <ul class="foot-links">
           <li><a href="/#services">Services</a></li>
           <li><a href="/for/restaurants/">For restaurants</a></li>
           <li><a href="/work/">Work</a></li>
           <li><a href="/blog/">Blog</a></li>
-          <li><a href="/#about">About</a></li>
+          <li><a href="/#about">About Don</a></li>
         </ul>
-      </div>
+      </nav>
 
-      <div class="foot-col">
-        <h4 class="foot-heading">Free tools</h4>
+      <nav class="foot-col" aria-labelledby="foot-tools">
+        <h4 class="foot-heading" id="foot-tools">Free tools</h4>
         <ul class="foot-links">
+          <li><a href="/tools/">All tools</a></li>
           <li><a href="/tools/audits/restaurant/">Restaurant audit</a></li>
           <li><a href="/resources/restaurant-website-checklist/">Website checklist</a></li>
         </ul>
-        <h4 class="foot-heading foot-heading-sub">Contact</h4>
+      </nav>
+
+      <nav class="foot-col foot-contact" aria-labelledby="foot-contact">
+        <h4 class="foot-heading" id="foot-contact">Contact</h4>
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
-          <li><a href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a call</a></li>
+          <li><a href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call</a></li>
+          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram</a></li>
         </ul>
-      </div>
+        <p class="foot-trust"><strong>Reply time:</strong> under 4 hours, Mon–Fri</p>
+      </nav>
     </div>
 
     <div class="foot-bottom">

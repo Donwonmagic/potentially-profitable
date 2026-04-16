@@ -106,46 +106,43 @@ p{margin:0}
 .logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:22px;font-weight:600;letter-spacing:-0.02em}
 .logo-mark{width:28px;height:28px;flex:0 0 28px}
 /* Trademark mark attached to 'Muntin Digital' wordmarks. Used in
-   two places, both served by this one declaration set:
+   two places:
      1. Top nav — <sup class="tm">™</sup> after the logo text
      2. Footer lockup — <sup class="tm" aria-hidden="true">™</sup>
-        next to the logo IMAGE (aria-hidden because the lockup's alt
-        text already says "Muntin Digital", and a screen reader
-        shouldn't say "trademark" twice)
+        absolutely positioned next to the logo IMAGE (aria-hidden
+        because the lockup's alt text already says "Muntin Digital",
+        and a screen reader shouldn't say "trademark" twice)
 
-   Sizing: 0.6em in the nav = 13.2px at 22px wordmark. Big enough
-   to read as a real mark, small enough to look like a mark and
-   not a letter. Line-height:0 keeps the sup from stretching the
-   parent line box. vertical-align:top + position relative top
-   offset puts it at the cap-height of the wordmark's capital
-   letters instead of floating mid-text. */
+   Nav TM: use a length-based vertical-align so the sup's baseline
+   sits at ~0.55em above the wordmark baseline, which for a 22px
+   Fraunces wordmark puts the top of the sup right at cap height.
+   line-height:0 prevents the sup from stretching the parent line
+   box. 0.5em size = 11px, readable but still clearly a mark. */
 .tm{
-  font-size:0.6em;
+  font-size:0.5em;
   font-weight:400;
-  opacity:0.55;
+  opacity:0.6;
   letter-spacing:0;
   margin-left:2px;
   line-height:0;
-  vertical-align:top;
-  position:relative;
-  top:0.25em;
+  vertical-align:0.55em;
 }
-/* Footer lockup trademark — next to a 240×53 logo image inside a
-   display:inline-flex wrapper. Larger absolute size (15px) because
-   it's competing visually with a big lockup, not with 22px text.
-   The flex wrapper has align-items:flex-start so the sup's top
-   aligns with the top of the image; a small top nudge pulls it
-   down just past the image's top stroke so it reads as a mark
-   attached to "Muntin Digital", not a floating asterisk. */
+/* Footer lockup trademark — absolutely positioned at the top-right
+   corner of the lockup image. Using inline-flex for this previously
+   caused the sup to drift below the image on narrow viewports
+   because the flex row couldn't fit both children. Absolute
+   positioning off a relative parent is deterministic at every
+   viewport. */
 .foot-lockup-wrap .tm[aria-hidden="true"]{
-  font-size:15px;
+  position:absolute;
+  left:100%;
+  top:2px;
+  margin-left:3px;
+  font-size:12px;
   font-weight:400;
   line-height:1;
-  margin-top:3px;
-  margin-left:2px;
-  opacity:0.85;
-  vertical-align:top;
-  top:0;
+  opacity:0.7;
+  vertical-align:baseline;
 }
 .nav-links{display:flex;gap:36px;font-size:15px;color:var(--ink-soft)}
 .nav-links a{position:relative;transition:color var(--t-fast) var(--ease)}
@@ -444,22 +441,29 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 @media (max-width:620px){.foot-cta{flex-direction:column;align-items:flex-start;gap:20px}}
 
 /* Main 3-column grid */
-.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:clamp(32px,5vw,72px);padding-bottom:48px;margin-bottom:32px;border-bottom:1px solid rgba(250,247,242,0.08)}
-@media (max-width:780px){.foot-grid{grid-template-columns:1fr 1fr;gap:40px}.foot-brand{grid-column:1 / -1}}
-@media (max-width:520px){.foot-grid{grid-template-columns:1fr}.foot-brand{grid-column:auto}}
+.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.1fr;gap:clamp(28px,4vw,56px);padding-bottom:48px;margin-bottom:32px;border-bottom:1px solid rgba(250,247,242,0.08)}
+@media (max-width:960px){.foot-grid{grid-template-columns:1fr 1fr 1fr;gap:40px}.foot-brand{grid-column:1 / -1}}
+@media (max-width:640px){.foot-grid{grid-template-columns:1fr 1fr}.foot-brand{grid-column:1 / -1}}
+@media (max-width:460px){.foot-grid{grid-template-columns:1fr}.foot-brand{grid-column:auto}}
 
 .foot-brand{display:block}
-.foot-lockup-wrap{display:inline-flex;align-items:flex-start;gap:2px}
+.foot-lockup-wrap{position:relative;display:inline-block}
 .foot-lockup{display:block;width:220px;height:auto;max-width:60vw}
 .foot-tagline{color:var(--cream);font-family:var(--font-display);font-style:italic;font-size:18px;margin:20px 0 14px;font-weight:400}
-.foot-blurb{font-size:14px;line-height:1.65;max-width:440px;color:rgba(250,247,242,0.58);margin:0}
+.foot-blurb{font-size:14px;line-height:1.65;max-width:440px;color:rgba(250,247,242,0.68);margin:0}
 
+.foot-col{min-width:0}
 .foot-heading{color:var(--cream);font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;margin:0 0 18px}
 .foot-heading-sub{margin-top:32px}
 
 .foot-links{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:11px}
-.foot-links a{font-size:14.5px;color:rgba(250,247,242,0.72);transition:color var(--t-fast) var(--ease)}
+.foot-links a{font-size:14.5px;color:rgba(250,247,242,0.80);transition:color var(--t-fast) var(--ease)}
 .foot-links a:hover{color:var(--cream)}
+
+.foot-contact .foot-links a[href^="mailto:"],
+.foot-contact .foot-links a[href*="calendly"]{display:inline-flex;align-items:center;min-height:28px}
+.foot-trust{margin:18px 0 0;font-size:12.5px;line-height:1.5;color:rgba(250,247,242,0.6);padding-top:14px;border-top:1px solid rgba(250,247,242,0.08)}
+.foot-trust strong{color:rgba(250,247,242,0.85);font-weight:600}
 
 /* Bottom row */
 .foot-bottom{display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap}
@@ -526,7 +530,7 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
    depending on scrolled state). Using ~100px of top padding on the
    breadcrumb pushes its content below the nav's visual footprint.
 */
-.breadcrumb{padding:100px 0 16px;font-size:13px;color:var(--stone);letter-spacing:0.01em;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+.breadcrumb{visibility:visible;padding:100px 0 16px;font-size:13px;color:var(--stone);letter-spacing:0.01em;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:4px}
 .breadcrumb a{color:var(--stone);transition:color var(--t-fast) var(--ease);white-space:nowrap}
 .breadcrumb a:hover{color:var(--teal)}
 .breadcrumb-sep{display:inline-block;margin:0 6px;color:var(--stone-2);font-size:15px;line-height:1;user-select:none}
