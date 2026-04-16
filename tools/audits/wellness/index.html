@@ -860,6 +860,65 @@
   .not-wellness-notice .nrn-btn:hover { background: var(--teal-dark); }
   .not-wellness-notice .nrn-btn em { font-style: italic; font-weight: 600; }
 
+  /* Business-type card (Phase 1 — display + correction). Sits above
+     the priority-list on wellness sites so the owner sees what we
+     classified them as and can correct it if wrong. Not a modal; the
+     dropdown is always visible and editable. */
+  .business-type-card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .business-type-card .btc-left {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .business-type-card .btc-label {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--stone);
+  }
+  .business-type-card .btc-select {
+    font: inherit;
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--cream-2);
+    border: 1px solid var(--line-dark);
+    border-radius: 8px;
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: border-color var(--t-fast) var(--ease);
+  }
+  .business-type-card .btc-select:hover,
+  .business-type-card .btc-select:focus {
+    border-color: var(--teal);
+    outline: none;
+  }
+  .business-type-card .btc-sub {
+    flex: 1;
+    min-width: 240px;
+    margin: 0;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--stone);
+  }
+  @media (max-width: 560px) {
+    .business-type-card { padding: 14px 16px; gap: 10px; }
+    .business-type-card .btc-sub { font-size: 12px; min-width: 0; }
+  }
+
   /* Wellness-priority checks list */
   .priority-list {
     background: var(--white);
@@ -1764,6 +1823,25 @@
         </button>
       </div>
 
+      <!-- Business-type auto-detection. Phase 1: display + correction
+           only; the detected type does NOT influence the Wellness
+           Readiness score in this release. Persisted via ?bt= in the
+           URL so a corrected shared link keeps the classification. -->
+      <div class="business-type-card" id="businessTypeCard" hidden>
+        <div class="btc-left">
+          <div class="btc-label">We detected:</div>
+          <select id="btcSelect" class="btc-select" aria-label="Business type">
+            <option value="yoga">Yoga or pilates studio</option>
+            <option value="fitness">Gym or fitness studio</option>
+            <option value="salon">Hair or nail salon</option>
+            <option value="spa">Spa or massage practice</option>
+            <option value="barber">Barbershop</option>
+            <option value="wellness">Other wellness business</option>
+          </select>
+        </div>
+        <p class="btc-sub" id="btcSub">Auto-detected from schema markup, booking platform, and page content. If we got it wrong, pick the right one — we'll use it to tailor future improvements to this audit.</p>
+      </div>
+
       <!-- Wellness-priority checks list -->
       <div class="priority-list" id="priorityListWrap">
         <header>
@@ -2641,6 +2719,140 @@
     return false;
   }
 
+  // =================================================================
+  // BUSINESS-TYPE DETECTION (Phase 1 — display only, no scoring change)
+  // =================================================================
+  // Tiered signals:
+  //   Schema.org @type — strongest (the owner intentionally declared it)
+  //   Booking platform — strong (they pay for a platform that serves a
+  //                     specific segment: Fresha = salons, Booksy =
+  //                     barbers, Glofox = fitness, etc.)
+  //   Keyword co-occurrence — weakest (least reliable; used as a
+  //                     tiebreaker and for sites without schema/platform)
+  //
+  // Detection intentionally does NOT affect the Wellness Readiness
+  // score in this phase. The owner sees the detected type, can
+  // correct it via a dropdown (persisted via ?bt= in the URL), and
+  // the correction is recorded as analytics signal. Once detection
+  // accuracy is proven in the field, a later phase can apply
+  // type-specific weights to the rubric.
+  var BUSINESS_TYPE_DEFS = {
+    yoga: {
+      label: 'Yoga or pilates studio',
+      schemaTypes: ['YogaCenter'],
+      platformHints: { mindbody: 2, zingfit: 3, momoyoga: 4 },
+      keywordPatterns: [
+        /\byoga\b/i, /\bpilates\b/i, /\bvinyasa\b/i, /\bhatha\b/i,
+        /\basana\b/i, /\bashtanga\b/i, /\bmeditation\b/i, /\bbarre\b/i,
+        /\breformer\b/i
+      ]
+    },
+    fitness: {
+      label: 'Gym or fitness studio',
+      schemaTypes: ['ExerciseGym', 'HealthClub', 'SportsActivityLocation', 'SportsClub'],
+      platformHints: { mindbody: 1, glofox: 4, clubready: 4, 'wodify': 4, mariana: 3 },
+      keywordPatterns: [
+        /\bgym\b/i, /\bcrossfit\b/i, /\bbootcamp\b/i, /\bhiit\b/i,
+        /\bspin\s+class\b/i, /\bstrength\s+training\b/i, /\bworkout\b/i,
+        /\bpersonal\s+train(?:er|ing)\b/i, /\bmembership\s+(?:plans?|tiers?|options?)\b/i
+      ]
+    },
+    salon: {
+      label: 'Hair or nail salon',
+      schemaTypes: ['HairSalon', 'NailSalon', 'BeautySalon'],
+      platformHints: { vagaro: 3, fresha: 3, booksy: 1, 'squareappointments': 1, phorest: 4, salonbiz: 4, shortcuts: 3 },
+      keywordPatterns: [
+        /\bhair\s*cut\b/i, /\bhaircut\b/i, /\bbalayage\b/i, /\bhighlights\b/i,
+        /\bstylist\b/i, /\bmanicure\b/i, /\bpedicure\b/i, /\bnail\s+art\b/i,
+        /\bblowout\b/i, /\bgel\s+(?:manicure|polish)\b/i, /\blash\s+extensions\b/i,
+        /\bwaxing\b/i
+      ]
+    },
+    spa: {
+      label: 'Spa or massage practice',
+      schemaTypes: ['DaySpa'],
+      platformHints: { vagaro: 1, fresha: 1, mindbody: 1 },
+      keywordPatterns: [
+        /\bmassage\s+therapy\b/i, /\bmassage\s+therapist\b/i,
+        /\bfacial\b/i, /\bspa\s+treatment\b/i,
+        /\bbody\s+treatment\b/i, /\bhot\s+stone\b/i, /\bswedish\s+massage\b/i,
+        /\bdeep\s+tissue\b/i, /\baromatherapy\b/i, /\bday\s+spa\b/i,
+        /\breflexology\b/i, /\breiki\b/i
+      ]
+    },
+    barber: {
+      label: 'Barbershop',
+      schemaTypes: [], // schema.org lacks a BarberShop type
+      platformHints: { booksy: 4, squire: 5 },
+      keywordPatterns: [
+        /\bbarber(?:shop)?\b/i, /\bfade\b/i, /\bbeard\s+trim\b/i,
+        /\bstraight\s+razor\b/i, /\bhot\s+(?:towel\s+)?shave\b/i
+      ]
+    }
+  };
+
+  // Returns { type, label, confidence, scores } where:
+  //   type       — 'yoga' | 'fitness' | 'salon' | 'spa' | 'barber' | 'wellness'
+  //   label      — human-readable name
+  //   confidence — 'high' | 'medium' | 'low' (low => fall through to 'wellness')
+  //   scores     — per-type score breakdown (for debugging / future weighting)
+  function detectBusinessType(audits, allUrls, pageText) {
+    var scores = { yoga: 0, fitness: 0, salon: 0, spa: 0, barber: 0 };
+    var text = String(pageText || '');
+
+    Object.keys(BUSINESS_TYPE_DEFS).forEach(function(type){
+      var def = BUSINESS_TYPE_DEFS[type];
+      // Schema.org @type — strongest, worth 5 points per match.
+      def.schemaTypes.forEach(function(t){
+        var re = new RegExp('"@type"\\s*:\\s*"' + t + '"', 'i');
+        if (re.test(text)) scores[type] += 5;
+      });
+      // Keyword matches — 1 point per distinct pattern hit, capped at 4
+      // so a yoga-heavy page doesn't steamroll a legitimate spa signal.
+      var keywordHits = 0;
+      for (var p = 0; p < def.keywordPatterns.length; p++) {
+        if (def.keywordPatterns[p].test(text)) keywordHits++;
+      }
+      scores[type] += Math.min(keywordHits, 4);
+    });
+
+    // Platform hints — iterate actually-detected booking platforms and
+    // apply their type weights. Platforms serve specific segments
+    // (Fresha/Phorest = salon; Glofox/Wodify = fitness; Squire = barber).
+    if (allUrls && allUrls.length) {
+      var detected = detectPlatforms(['booking'], allUrls);
+      if (detected && detected.found) {
+        detected.found.forEach(function(p){
+          var name = String(p.name || '').toLowerCase().replace(/\s+/g, '');
+          Object.keys(BUSINESS_TYPE_DEFS).forEach(function(type){
+            var hints = BUSINESS_TYPE_DEFS[type].platformHints || {};
+            if (hints[name]) scores[type] += hints[name];
+          });
+        });
+      }
+    }
+
+    // Pick the winner. Require the top score to (a) exceed 2 absolute
+    // points AND (b) beat runner-up by at least 2 for HIGH confidence.
+    // Below that floor, fall through to generic 'wellness' so the tool
+    // doesn't confidently mislabel a site it can't actually identify.
+    var sortedTypes = Object.keys(scores).sort(function(a, b){ return scores[b] - scores[a]; });
+    var topType    = sortedTypes[0];
+    var topScore   = scores[topType];
+    var secondScore = scores[sortedTypes[1]] || 0;
+
+    if (topScore < 2) {
+      return { type: 'wellness', label: 'Wellness business', confidence: 'low', scores: scores };
+    }
+    var confidence = (topScore - secondScore >= 2 && topScore >= 4) ? 'high' : 'medium';
+    return {
+      type: topType,
+      label: BUSINESS_TYPE_DEFS[topType].label,
+      confidence: confidence,
+      scores: scores
+    };
+  }
+
   // services page check: does the wellness business have a services
   // or class schedule page as real HTML, or is it a PDF/image? PDF
   // service menus are common on spa and salon sites — they don't
@@ -3300,6 +3512,12 @@
   // always wins.
   var userForcedWellness = false;
 
+  // Owner override for business type (yoga/fitness/salon/spa/barber/
+  // wellness). When set, supersedes the auto-detection so a corrected
+  // classification persists through shared links (?bt=...). Set by
+  // the dropdown in the business-type card and hydrated on load.
+  var userBusinessType = null;
+
   // Toggle the not-a-wellness notice vs the priority-checks section.
   function toggleWellnessUi(effectiveIsWellness) {
     var notice = document.getElementById('notWellnessNotice');
@@ -3348,10 +3566,46 @@
       var ov = encodeOverrides(USER_OVERRIDES);
       if (ov) params.set('ov', ov);
       if (userForcedWellness) params.set('w', '1');
+      if (userBusinessType)   params.set('bt', userBusinessType);
       var qs = params.toString();
       var newUrl = location.pathname + (qs ? '?' + qs : '');
       window.history.replaceState(null, '', newUrl);
     } catch (e) { /* history API unavailable — silently skip */ }
+  }
+
+  // Render the business-type card: populate the dropdown with the
+  // effective type (owner override if set, else auto-detected) and
+  // hide the card entirely on non-wellness sites. Detection result
+  // is passed in so the caller can reuse it; the select's onchange
+  // handler is attached once (see initBusinessTypeCard below).
+  var ALLOWED_BUSINESS_TYPES = ['yoga','fitness','salon','spa','barber','wellness'];
+  function renderBusinessTypeCard(isWellness, detection) {
+    var card   = document.getElementById('businessTypeCard');
+    var select = document.getElementById('btcSelect');
+    var sub    = document.getElementById('btcSub');
+    if (!card || !select) return;
+    if (!isWellness) {
+      card.hidden = true;
+      return;
+    }
+    card.hidden = false;
+    // Effective type = owner override > auto-detected
+    var effective = userBusinessType || (detection && detection.type) || 'wellness';
+    // Validate against the allowed set; a corrupted ?bt= value falls
+    // back to generic wellness rather than a broken select state.
+    if (ALLOWED_BUSINESS_TYPES.indexOf(effective) === -1) effective = 'wellness';
+    select.value = effective;
+    if (sub) {
+      if (userBusinessType) {
+        sub.textContent = "You told us what kind of business this is — we'll use it to tailor future improvements to this audit.";
+      } else if (detection && detection.confidence === 'low') {
+        sub.textContent = "We couldn't tell what kind of wellness business this is from the page. Pick the closest match so the audit can get smarter over time.";
+      } else if (detection && detection.confidence === 'medium') {
+        sub.textContent = "Our best guess from schema markup, booking platform, and page content. If we got it wrong, pick the right one.";
+      } else {
+        sub.textContent = "Auto-detected from schema markup, booking platform, and page content. If we got it wrong, pick the right one — we'll use it to tailor future improvements to this audit.";
+      }
+    }
   }
 
   function renderPriorityChecks(audits, allUrls, pageText) {
@@ -3803,6 +4057,14 @@
     toggleWellnessUi(isWellnessSite);
     var wellnessScore = priorityResult.score;
 
+    // Auto-detect business type (Phase 1 — display + correction only,
+    // no scoring impact). Only meaningful on wellness sites; non-
+    // wellness renders hide the card entirely.
+    var businessType = isWellnessSite
+      ? detectBusinessType(audits, allUrls, pageText)
+      : null;
+    renderBusinessTypeCard(isWellnessSite, businessType);
+
     // Cache the four Lighthouse category scores + the wellness flag
     // so recomputeOverall() (fired by user feedback clicks) can update
     // the overall score ring and the wellness category card without
@@ -3811,6 +4073,7 @@
       perf: perf, a11y: a11y, bp: bp, seo: seo,
       isWellness: isWellnessSite,
       detectedWellness: detectedWellness,
+      businessType: businessType,
       audits: audits, allUrls: allUrls, pageText: pageText,
       auditedUrl: auditedUrl
     };
@@ -4268,9 +4531,38 @@
       state.isWellness = true;
       toggleWellnessUi(true);
       renderPriorityChecks(state.audits, state.allUrls, state.pageText);
+      // Also re-detect the business type on the fly — the user just
+      // told us this IS a wellness business, so surface the card.
+      var bt = detectBusinessType(state.audits, state.allUrls, state.pageText);
+      state.businessType = bt;
+      renderBusinessTypeCard(true, bt);
       recomputeOverallFromCurrentState();
       updateUrlState(state.auditedUrl);
       if (window.plausible) window.plausible('Audit Classification Overridden');
+    });
+  }
+
+  // Business-type dropdown. Fires on every change; records the
+  // correction as an analytics signal, persists via ?bt= in the URL,
+  // and refreshes the subcopy so the card reflects the confirmed
+  // state. Detection itself is unchanged — the owner's pick wins.
+  var btcSelect = document.getElementById('btcSelect');
+  if (btcSelect) {
+    btcSelect.addEventListener('change', function(){
+      var newType = btcSelect.value;
+      if (ALLOWED_BUSINESS_TYPES.indexOf(newType) === -1) return;
+      userBusinessType = newType;
+      var state = window.__auditScoreState;
+      if (state) {
+        renderBusinessTypeCard(true, state.businessType);
+        updateUrlState(state.auditedUrl);
+      }
+      if (window.plausible) {
+        var detectedType = (state && state.businessType && state.businessType.type) || 'unknown';
+        window.plausible('Audit Business Type Corrected', {
+          props: { detected: detectedType, corrected_to: newType }
+        });
+      }
     });
   }
 
@@ -4875,6 +5167,12 @@
       // recipient of a shared link that was corrected by the owner
       // gets the priority-check section visible from the first render.
       if (params.get('w') === '1') userForcedWellness = true;
+      // Hydrate the business-type correction (?bt=yoga|fitness|…).
+      // Ignored silently if the value isn't in the allowed set.
+      var btParam = params.get('bt');
+      if (btParam && ALLOWED_BUSINESS_TYPES.indexOf(btParam) !== -1) {
+        userBusinessType = btParam;
+      }
       // Brief delay so the page finishes painting before we kick off the fetch
       setTimeout(function(){
         if (window.plausible) window.plausible('Audit Auto-run');
