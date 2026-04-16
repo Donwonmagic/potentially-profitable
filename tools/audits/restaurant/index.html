@@ -3513,6 +3513,17 @@
       if (rd.detected) return true;
     }
 
+    // Rich text extraction: pulls title + meta-description + link-text
+    // + crawlable-anchor snippets + tap-target nodes. Reused for schema
+    // detection (below), the self-hosted-action fallback, and the
+    // keyword match. Previously the keyword match only saw hostname +
+    // document-title + meta-description, which missed cases like
+    // Tacombi where the brand name contains "taco" but doesn't match
+    // \\btaco\\b (no word boundary between "taco" and "mbi"), and
+    // where the real restaurant signals ("Tacos", "Order Online",
+    // "Reserve a Table") live in nav labels and anchor text.
+    var schemaPageText = extractPageText(audits);
+
     // 3) Schema.org signal: if the site publishes JSON-LD markup with
     //    @type Restaurant / FoodEstablishment / Bakery / CafeOrCoffeeShop
     //    etc., or any LocalBusiness with a servesCuisine field, it's
@@ -3520,12 +3531,27 @@
     //    that have no recognized ordering platform but correctly mark
     //    themselves up for local SEO — which is exactly the pattern a
     //    well-built small restaurant site tends to follow.
-    var schemaPageText = extractPageText(audits);
     if (detectRestaurantSchema(schemaPageText, allUrls)) return true;
 
-    // 4) Build a haystack from hostname + page title + meta description
-    //    Each Lighthouse audit exposes its related snippet differently,
-    //    so we reach for everything that might contain readable text.
+    // 4) Self-hosted action signal: catches sites like Tacombi that
+    //    self-host ordering on their own domain (tacombi.com/order)
+    //    with no third-party platform hostname to detect. If the page
+    //    text contains a clear restaurant action phrase ("order online",
+    //    "reserve a table", "book a table"), that's a strong enough
+    //    classifier on its own — and it's the same text fallback the
+    //    priority-check logic uses downstream. Classifying from it here
+    //    means the Restaurant Readiness card actually renders for these
+    //    sites instead of silently being dropped.
+    if (schemaPageText) {
+      var sh = detectSelfHostedActions(['ordering', 'reservations'], schemaPageText);
+      if (sh.detected) return true;
+    }
+
+    // 5) Build a haystack from hostname + page title + meta description
+    //    + the rich pageText (link text, anchor snippets, tap-target
+    //    nodes). Each Lighthouse audit exposes its related snippet
+    //    differently, so we reach for everything that might contain
+    //    readable text.
     var haystack = host;
     function pluck(audit) {
       if (!audit) return '';
@@ -3546,10 +3572,11 @@
     if (audits) {
       haystack += ' ' + pluck(audits['document-title']);
       haystack += ' ' + pluck(audits['meta-description']);
+      haystack += ' ' + schemaPageText;
     }
     haystack = haystack.toLowerCase();
 
-    // 5) Keyword match, split into STRONG and WEAK tiers.
+    // 6) Keyword match, split into STRONG and WEAK tiers.
     //    The previous implementation used indexOf substring matching
     //    against a flat list that included ambiguous words like
     //    'menu', 'table', 'chef', 'brunch', 'catering'. Every
