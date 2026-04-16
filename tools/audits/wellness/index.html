@@ -2423,7 +2423,15 @@
   // path, so "yoga-classes" or "our-services" or "class-schedule"
   // will all match. We also catch "modalities" (massage/acupuncture
   // sites), "programs" (fitness studios), and "workshops" (yoga).
-  var SERVICES_HREF_RE = /services|classes|schedule|treatments|offerings|menu|pricing|rates|modalities|programs|workshops|packages|sessions|training|courses|membership/i;
+  // The old implementation used the bare regex above as a substring
+  // check anywhere in any URL, which wrongly flagged UI assets like
+  // /assets/menu-icon.svg, /icons/menu.svg, and /js/mobile-menu.js
+  // as services-page hits. SERVICES_PATH_RE now requires a service-
+  // synonym word to appear as a real path component (separated by
+  // /, -, _, ., or #), and SERVICES_EXCLUSIONS_RE skips URLs that
+  // match common UI-chrome filename patterns or pure SVG assets.
+  var SERVICES_PATH_RE = /(?:^|[\/._\-#])(?:services|classes|schedule|treatments|offerings|menu|pricing|rates|modalities|programs|workshops|packages|sessions|training|courses|membership)s?(?:$|[\/._?#\-])/i;
+  var SERVICES_EXCLUSIONS_RE = /menu[-_]?(?:icon|toggle|button|bar|arrow|close|open|dropdown|trigger)|hamburger|\/icons?\/|\.svg(?:[\/?#]|$)/i;
   var PHONE_RE = /(?:\+?1[\s\-.]?)?(?:\(\s*\d{3}\s*\)|\d{3})[\s\-.]\d{3}[\s\-.]\d{4}/;
   function detectPhoneInText(pageText) {
     if (!pageText) return false;
@@ -2521,18 +2529,21 @@
   }
 
   function detectMenuFormat(allUrls, pageText) {
-    if (!allUrls || !allUrls.length) return 'unknown';
+    var hasUrls = allUrls && allUrls.length;
     var sawServices = false;
     var sawHtmlServices = false;
     var sawPdfServices = false;
     var sawImageServices = false;
-    for (var i = 0; i < allUrls.length; i++) {
-      var u = allUrls[i];
-      if (!SERVICES_HREF_RE.test(u)) continue;
-      sawServices = true;
-      if (/\.pdf(\?|$|#)/.test(u))                     sawPdfServices = true;
-      else if (/\.(?:jpg|jpeg|png|webp|gif)(\?|$|#)/.test(u)) sawImageServices = true;
-      else                                             sawHtmlServices = true;
+    if (hasUrls) {
+      for (var i = 0; i < allUrls.length; i++) {
+        var u = allUrls[i];
+        if (!SERVICES_PATH_RE.test(u))      continue;
+        if (SERVICES_EXCLUSIONS_RE.test(u)) continue;
+        sawServices = true;
+        if (/\.pdf(?:[\/?#]|$)/.test(u))                         sawPdfServices = true;
+        else if (/\.(?:jpe?g|png|webp|gif)(?:[\/?#]|$)/.test(u)) sawImageServices = true;
+        else                                                     sawHtmlServices = true;
+      }
     }
     if (sawPdfServices)   return 'pdf';
     if (sawImageServices) return 'image';
@@ -2636,16 +2647,79 @@
   // deduplicated. `keys` is an array so callers can accept "ordering OR
   // appointments" in a single check (takeout-only restaurants don't
   // need appointments; fine-dining doesn't need ordering).
+  // Tiered pattern matching to avoid the blog-post false positive
+  // (a wellness studio's "Why we left Mindbody" blog post at
+  // /blog/mindbody-review flipping the Mindbody pass flag):
+  //   - Scheme patterns ('tel:')          → match only if URL starts with it
+  //   - Path-bearing patterns ('x.com/y') → match against hostname + pathname,
+  //                                         anchored at a '.', '/', ':', or
+  //                                         start-of-string boundary
+  //   - Hostname-only patterns            → match against the parsed hostname
+  //                                         ONLY, so path-level mentions
+  //                                         don't count as integrations
+  //
+  // Protocol-relative hrefs (//cdn.mindbodyonline.com/...) are
+  // normalized to https:// before parsing so legitimate integrations
+  // don't get silently dropped.
+  function boundaryIndexOf(target, pattern) {
+    if (!target || !pattern) return -1;
+    var idx = target.indexOf(pattern);
+    while (idx !== -1) {
+      var before = idx === 0 ? '' : target.charAt(idx - 1);
+      if (idx === 0 || before === '.' || before === '/' || before === ':' || before === '-') {
+        return idx;
+      }
+      idx = target.indexOf(pattern, idx + 1);
+    }
+    return -1;
+  }
+  function parseForDetection(raw) {
+    if (!raw) return null;
+    if (/^(?:tel|mailto|sms):/i.test(raw)) {
+      return { scheme: true, full: raw.toLowerCase() };
+    }
+    var url = raw;
+    if (url.length > 1 && url.charAt(0) === '/' && url.charAt(1) === '/') {
+      url = 'https:' + url;
+    }
+    try {
+      if (url.charAt(0) === '/') {
+        return { host: '', hostPath: url.toLowerCase(), full: url.toLowerCase() };
+      }
+      var p = new URL(url);
+      var host = p.hostname.toLowerCase();
+      return { host: host, hostPath: host + p.pathname.toLowerCase(), full: url.toLowerCase() };
+    } catch (e) {
+      return { host: '', hostPath: raw.toLowerCase(), full: raw.toLowerCase() };
+    }
+  }
   function detectPlatforms(keys, networkUrls) {
     var found = [];
     var seen = {};
+    var parsed = [];
+    for (var u = 0; u < networkUrls.length; u++) {
+      var p = parseForDetection(networkUrls[u]);
+      if (p) parsed.push(p);
+    }
     for (var k = 0; k < keys.length; k++) {
       var group = PLATFORM_PATTERNS[keys[k]];
       if (!group) continue;
       for (var i = 0; i < group.hosts.length; i++) {
         var h = group.hosts[i];
-        for (var j = 0; j < networkUrls.length; j++) {
-          if (networkUrls[j].indexOf(h.pattern) !== -1) {
+        var pat = h.pattern.toLowerCase();
+        var isScheme = pat.charAt(pat.length - 1) === ':';
+        var hasPath  = pat.indexOf('/') !== -1;
+        for (var j = 0; j < parsed.length; j++) {
+          var pp = parsed[j];
+          var matched = false;
+          if (isScheme) {
+            matched = pp.full && pp.full.indexOf(pat) === 0;
+          } else if (hasPath) {
+            matched = boundaryIndexOf(pp.hostPath, pat) !== -1;
+          } else {
+            matched = boundaryIndexOf(pp.host, pat) !== -1;
+          }
+          if (matched) {
             if (!seen[h.name]) {
               seen[h.name] = true;
               found.push({ label: group.label, name: h.name });
@@ -3269,19 +3343,41 @@
       if (rd.detected && !hasOnlyAmbiguousBooking(rd.found)) return true;
     }
 
-    // 3) Schema.org signal: if the site publishes JSON-LD markup with
-    //    @type Restaurant / FoodEstablishment / Bakery / CafeOrCoffeeShop
-    //    etc., or any LocalBusiness with a servesCuisine field, it's
-    //    telling Google explicitly "this is a wellness business". Catches sites
-    //    that have no recognized booking platform but correctly mark
-    //    themselves up for local SEO — which is exactly the pattern a
-    //    well-built small wellness site tends to follow.
+    // Rich text extraction: pulls title + meta-description + link-text
+    // + crawlable-anchor snippets + tap-target nodes. Reused for the
+    // schema check, the self-hosted-action fallback, and the keyword
+    // match below. Previously the keyword match only saw hostname +
+    // document-title + meta-description, which missed wellness sites
+    // whose brand names don't contain cuisine-adjacent words but
+    // whose nav labels say "Book a Class", "View Schedule", "Our
+    // Services" etc.
     var schemaPageText = extractPageText(audits);
+
+    // 3) Schema.org signal: if the site publishes JSON-LD markup with
+    //    a wellness @type (HealthAndBeautyBusiness, DaySpa, BeautySalon,
+    //    HairSalon, NailSalon, ExerciseGym, HealthClub, etc.), it's
+    //    telling Google explicitly "this is a wellness business".
+    //    Catches well-SEO'd small studios that don't load a recognized
+    //    booking platform.
     if (detectWellnessSchema(schemaPageText, allUrls)) return true;
 
-    // 4) Build a haystack from hostname + page title + meta description
-    //    Each Lighthouse audit exposes its related snippet differently,
-    //    so we reach for everything that might contain readable text.
+    // 4) Self-hosted action signal: a site whose page text contains a
+    //    clear wellness action phrase ("book a class", "view schedule",
+    //    "reserve a spot") is almost certainly a wellness business —
+    //    even if it self-hosts booking on its own domain with no
+    //    recognizable platform hostname. Uses the same text patterns
+    //    the booking priority-check uses downstream, so classification
+    //    and scoring stay in sync.
+    if (schemaPageText) {
+      var sh = detectSelfHostedActions(['booking'], schemaPageText);
+      if (sh.detected) return true;
+    }
+
+    // 5) Build a haystack from hostname + page title + meta description
+    //    + the rich pageText (link labels, anchor snippets, tap-target
+    //    nodes). Widening beyond title + meta-description catches
+    //    studios whose real classification signals live in nav labels
+    //    like "Yoga Schedule" or "Massage Services".
     var haystack = host;
     function pluck(audit) {
       if (!audit) return '';
@@ -3302,10 +3398,11 @@
     if (audits) {
       haystack += ' ' + pluck(audits['document-title']);
       haystack += ' ' + pluck(audits['meta-description']);
+      haystack += ' ' + schemaPageText;
     }
     haystack = haystack.toLowerCase();
 
-    // 5) Keyword match against a curated list of wellness indicators.
+    // 6) Keyword match against a curated list of wellness indicators.
     //    STRONG terms: unambiguous enough that a single match reliably
     //    identifies the site as a wellness business.
     //    REMOVED (too generic, cause false positives):
@@ -3319,27 +3416,56 @@
     //      "yoga studio", "pilates studio", "fitness studio" (studio
     //      is only counted when paired with a wellness qualifier)
     //      "hair salon", "nail salon" (salon is only counted when paired)
-    var WELLNESS_TERMS = [
-      // Unambiguous single words
-      'yoga', 'pilates', 'spa', 'wellness', 'massage', 'meditation',
-      'skincare', 'facial', 'manicure', 'pedicure', 'barber',
-      'esthetics', 'aesthetics', 'acupuncture', 'chiropractic',
-      'reiki', 'barre', 'crossfit', 'bootcamp', 'holistic',
-      'ayurveda', 'cryotherapy', 'bodywork', 'waxing',
-      'sauna', 'float tank',
-      // Multi-word: only match as phrases to avoid false positives
-      'yoga studio', 'pilates studio', 'fitness studio',
+    // Keyword match, split into STRONG and WEAK tiers.
+    // The previous implementation used indexOf substring matching
+    // against a flat list that included ambiguous short words like
+    // 'spa' (matches "spacious", "spatial"), 'salon' (matches
+    // "Salon.com", "saloon"), 'barber' (matches "Barberton"), and
+    // 'wellness' (matches corporate "employee wellness programs").
+    // Every page with those substrings in an unrelated context was
+    // being classified as a wellness business — then silently scored
+    // 0 on Wellness Readiness and dragged down in the overall.
+    //
+    // Fix: word-boundary regex matching + STRONG/WEAK split.
+    //   STRONG — one distinct match classifies. Phrases and words
+    //            that essentially only appear on wellness sites
+    //            ('pilates', 'acupuncture', 'yoga class', 'mindbody').
+    //   WEAK   — individually ambiguous. Two distinct weak matches
+    //            required, so a corporate "wellness program" page
+    //            alone no longer trips the rule.
+    function escRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+    function matchCount(terms, text) {
+      var seen = {};
+      for (var i = 0; i < terms.length; i++) {
+        var re = new RegExp('\\b' + escRe(terms[i]) + '\\b', 'i');
+        if (re.test(text)) seen[terms[i]] = true;
+      }
+      return Object.keys(seen).length;
+    }
+
+    var STRONG_TERMS = [
+      // Unambiguous wellness-specific single words
+      'yoga', 'pilates', 'massage', 'meditation', 'skincare',
+      'manicure', 'pedicure', 'esthetics', 'acupuncture', 'chiropractic',
+      'reiki', 'barre', 'crossfit', 'ayurveda', 'cryotherapy',
+      'sauna', 'holistic',
+      // Multi-word phrases (specific enough to stand alone)
+      'float tank', 'yoga studio', 'pilates studio', 'fitness studio',
       'hair salon', 'nail salon', 'beauty salon', 'day spa',
       'yoga class', 'fitness class', 'spin class',
       'personal training', 'personal trainer',
       'lash extensions', 'brow bar', 'blowout bar',
-      // Platform-specific terms
+      // Platform-specific terms (only wellness sites load these)
       'mindbody', 'vagaro', 'fresha', 'booksy'
     ];
 
-    for (var j = 0; j < WELLNESS_TERMS.length; j++) {
-      if (haystack.indexOf(WELLNESS_TERMS[j]) !== -1) return true;
-    }
+    var WEAK_TERMS = [
+      'spa', 'salon', 'barber', 'facial', 'wellness',
+      'waxing', 'bodywork', 'aesthetics', 'bootcamp'
+    ];
+
+    if (matchCount(STRONG_TERMS, haystack) >= 1) return true;
+    if (matchCount(WEAK_TERMS, haystack) >= 2) return true;
     return false;
   }
 
