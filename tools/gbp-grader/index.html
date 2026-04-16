@@ -113,5 +113,85 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital&#8482; &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js" defer></script>
+<script>
+(function(){
+  var form=document.getElementById('gbpForm');
+  var input=document.getElementById('gbpQuery');
+  var btn=document.getElementById('gbpSubmit');
+  var result=document.getElementById('gbpResult');
+  var bizEl=document.getElementById('gbpBiz');
+  var checksEl=document.getElementById('gbpChecks');
+
+  function stars(rating){
+    var full=Math.floor(rating||0);
+    var html='<div class="gbp-stars">';
+    for(var i=0;i<5;i++)html+='<span class="'+(i<full?'filled':'empty')+'">&#9733;</span>';
+    html+='</div>';
+    return html;
+  }
+
+  function check(pass,title,text){
+    var cls=pass===true?'pass':pass===false?'fail':'warn';
+    var mark=pass===true?'&#10003;':pass===false?'&#10005;':'~';
+    return'<div class="gbp-check"><div class="mark '+cls+'">'+mark+'</div><div><h3>'+title+'</h3><p>'+text+'</p></div></div>';
+  }
+
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var q=input.value.trim();
+    if(!q){input.focus();return}
+    btn.disabled=true;btn.textContent='Looking up…';
+    result.classList.remove('visible');
+
+    fetch('/api/gbp-lookup?q='+encodeURIComponent(q))
+    .then(function(r){return r.json()})
+    .then(function(d){
+      if(!d.ok)throw new Error(d.error||'Lookup failed');
+
+      // Business card
+      bizEl.innerHTML=stars(d.rating)
+        +'<div class="gbp-rating">'+(d.rating||'—')+'</div>'
+        +'<div class="gbp-reviews">'+d.reviewCount+' reviews</div>'
+        +'<h2>'+d.name+'</h2>'
+        +'<p>'+d.address+'</p>';
+
+      // Grade checks
+      var html='';
+
+      // Reviews
+      if(d.reviewCount>=100)html+=check(true,'Strong review count ('+d.reviewCount+')','You have over 100 reviews — that puts you ahead of most local businesses. Keep the velocity up with a review system.');
+      else if(d.reviewCount>=30)html+=check(null,'Decent review count ('+d.reviewCount+')','You\'re above zero, but 100+ is where you start dominating local search. A QR review postcard program can accelerate this.');
+      else html+=check(false,'Low review count ('+d.reviewCount+')','Under 30 reviews makes it hard to rank in the local pack. Most competitors have more. Start a systematic review program — <a href="/blog/how-to-get-more-google-reviews-for-your-restaurant/" style="color:var(--teal)">here\'s how</a>.');
+
+      // Rating
+      if(d.rating>=4.5)html+=check(true,'Excellent rating ('+d.rating+')','4.5+ tells customers and Google you\'re worth the visit.');
+      else if(d.rating>=4.0)html+=check(null,'Good rating ('+d.rating+')','Solid, but there\'s room to climb. Respond to every review — especially the critical ones.');
+      else if(d.rating)html+=check(false,'Rating needs work ('+d.rating+')','Below 4.0 is a red flag for most customers searching locally. Read your 1-3 star reviews for patterns and address the root causes.');
+
+      // Photos
+      if(d.photoCount>=10)html+=check(true,'Good photo count ('+d.photoCount+')','Google says businesses with photos get 42% more direction requests. You\'re well above the minimum.');
+      else if(d.photoCount>=3)html+=check(null,'Some photos ('+d.photoCount+')','You have a few, but aim for 10+. Add interior shots, team photos, and your best work. Upload new ones monthly.');
+      else html+=check(false,'Few or no photos ('+d.photoCount+')','Listings without photos get significantly less engagement. Upload at least 10: interior, exterior, team, products/services.');
+
+      // Hours
+      html+=d.hasHours
+        ?check(true,'Hours are set','Your listing shows when you\'re open. Make sure they match your website and update them for holidays.')
+        :check(false,'Hours missing','No hours on your listing means customers don\'t know when you\'re open. Add them immediately — this is one of the most common reasons people skip a business on Maps.');
+
+      // Website
+      html+=d.website
+        ?check(true,'Website linked','Your listing links to <a href="'+d.website+'" target="_blank" rel="noopener" style="color:var(--teal)">'+d.website.replace(/^https?:\/\//,'').replace(/\/$/,'')+'</a>.')
+        :check(false,'No website linked','Your listing has no website URL. Even a simple one-page site is better than nothing — it\'s where Google sends people who want to learn more.');
+
+      checksEl.innerHTML=html;
+      result.classList.add('visible');
+      result.scrollIntoView({behavior:'smooth',block:'start'});
+      if(window.plausible)window.plausible('GBP Grader',{props:{rating:d.rating,reviews:d.reviewCount,q:q}});
+    }).catch(function(err){
+      alert(err.message||'Could not look up that business. Try adding your city name.');
+    }).finally(function(){btn.disabled=false;btn.textContent='Grade it'});
+  });
+})();
+</script>
 </body>
 </html>
