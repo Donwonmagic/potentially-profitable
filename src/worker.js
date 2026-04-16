@@ -63,6 +63,7 @@ const API_ROUTES = {
   '/api/audit-report':  handleAuditReport,
   '/api/ping':          handlePing,
   '/api/gbp-lookup':    handleGbpLookup,
+  '/api/seo-check':     handleSeoCheck,
 };
 
 
@@ -84,7 +85,7 @@ export default {
           404
         );
       }
-      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup') {
+      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
         }
@@ -430,6 +431,47 @@ async function handleGbpLookup(request, env, ctx) {
   } catch (err) {
     console.error('[gbp-lookup] exception:', err && err.stack ? err.stack : err);
     return jsonResponse({ ok: false, error: 'Failed to reach Google Places API' }, 502);
+  }
+}
+
+
+// ------------------------------------------------------------
+// SEO Check — fetches a page server-side and extracts the
+// <title> and <meta name="description"> content that Lighthouse
+// doesn't reliably expose in its audit details.
+// ------------------------------------------------------------
+
+async function handleSeoCheck(request, env, ctx) {
+  const url = new URL(request.url);
+  const target = (url.searchParams.get('url') || '').trim();
+  if (!target) {
+    return jsonResponse({ ok: false, error: 'Missing ?url= parameter' }, 400);
+  }
+
+  try {
+    const res = await fetch(target, {
+      headers: { 'User-Agent': 'MuntinDigital-SEO-Check/1.0' },
+      redirect: 'follow',
+    });
+    if (!res.ok) {
+      return jsonResponse({ ok: false, error: 'Could not fetch the page (HTTP ' + res.status + ')' }, 502);
+    }
+
+    const html = await res.text();
+
+    // Extract <title>
+    const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+    const title = titleMatch ? titleMatch[1].replace(/\s+/g, ' ').trim() : null;
+
+    // Extract <meta name="description" content="...">
+    const descMatch = html.match(/<meta[^>]*name\s*=\s*["']description["'][^>]*content\s*=\s*["']([\s\S]*?)["'][^>]*>/i)
+      || html.match(/<meta[^>]*content\s*=\s*["']([\s\S]*?)["'][^>]*name\s*=\s*["']description["'][^>]*>/i);
+    const description = descMatch ? descMatch[1].replace(/\s+/g, ' ').trim() : null;
+
+    return jsonResponse({ ok: true, title, description }, 200);
+  } catch (err) {
+    console.error('[seo-check] exception:', err && err.stack ? err.stack : err);
+    return jsonResponse({ ok: false, error: 'Failed to fetch the page' }, 502);
   }
 }
 
