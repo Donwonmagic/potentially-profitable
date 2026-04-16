@@ -253,19 +253,32 @@
           body: data,
           headers: { 'Accept': 'application/json' },
         });
-        if (res.ok) {
+        // Try to parse the response body as JSON regardless of status.
+        // The Cloudflare Worker at /api/intake always responds with a
+        // structured { ok, status | error } payload, so a 400 validation
+        // failure surfaces a real "please enter a valid email" message
+        // to the user instead of a generic "something went wrong".
+        let body = null;
+        try { body = await res.json(); } catch (e) { /* non-JSON body */ }
+        if (res.ok && body && body.ok) {
           intakeForm.hidden = true;
           formSuccess.hidden = false;
           formSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
           const heading = document.getElementById('formSuccessHeading');
           if (heading) setTimeout(() => heading.focus(), 300);
         } else {
-          throw new Error('Form submission failed');
+          const msg = (body && body.error)
+            ? body.error
+            : 'Something went wrong. Please try again or email don@muntin.digital directly.';
+          throw new Error(msg);
         }
       } catch (err) {
         formSubmit.classList.remove('is-loading');
         formSubmit.disabled = false;
-        showSubmitError('Something went wrong. Please try again or email don@muntin.digital directly.');
+        showSubmitError(
+          (err && err.message) ||
+          'Something went wrong. Please try again or email don@muntin.digital directly.'
+        );
       }
     });
   }
