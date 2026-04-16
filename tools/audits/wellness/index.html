@@ -2791,6 +2791,33 @@
     }
   };
 
+  // Resolve a priority-check definition for the effective business type.
+  // Returns a shallow-merged object where byType[type] wins over the
+  // base fields. Checks without byType, and types without an override,
+  // return the base def unchanged. Used by renderPriorityChecks so
+  // type-specific copy (e.g. "class schedule" for yoga vs "services
+  // menu" for salon) surfaces on every affected check.
+  function resolveCheckForType(def, businessType) {
+    if (!def || !def.byType || !businessType) return def;
+    var override = def.byType[businessType];
+    if (!override) return def;
+    var merged = {};
+    for (var k in def) if (def.hasOwnProperty(k) && k !== 'byType') merged[k] = def[k];
+    for (var k2 in override) if (override.hasOwnProperty(k2)) merged[k2] = override[k2];
+    return merged;
+  }
+
+  // Single source of truth for "what kind of wellness business is
+  // this?" — used for type-aware copy resolution. Resolves from, in
+  // order: (1) owner dropdown correction, (2) auto-detection cached
+  // on __auditScoreState, (3) generic 'wellness' fallback.
+  function effectiveBusinessType() {
+    if (userBusinessType) return userBusinessType;
+    var s = window.__auditScoreState;
+    if (s && s.businessType && s.businessType.type) return s.businessType.type;
+    return 'wellness';
+  }
+
   // Returns { type, label, confidence, scores } where:
   //   type       — 'yoga' | 'fitness' | 'salon' | 'spa' | 'barber' | 'wellness'
   //   label      — human-readable name
@@ -3241,7 +3268,29 @@
       fail: 'Some of your buttons are too small to tap reliably',
       failNote: 'Buttons under 44×44 pixels cause misses. Bump padding to at least 12px on every side, especially on your "Book" and "Schedule" buttons.',
       unverified: "We couldn't check your buttons",
-      unverifiedNote: "Lighthouse couldn't evaluate tap targets. Re-audit in a few seconds."
+      unverifiedNote: "Lighthouse couldn't evaluate tap targets. Re-audit in a few seconds.",
+      byType: {
+        yoga: {
+          impact: 'Every missed tap is a missed class reservation. "Book a Class" and "View Schedule" are the most-tapped buttons on a yoga site — if they\'re too small, your schedule page never loads.',
+          failNote: 'Buttons under 44×44 pixels cause misses. Your "Book a Class" button is the one that matters most — bump its padding to at least 12px on every side.'
+        },
+        fitness: {
+          impact: 'Every missed tap is a missed class signup or trial. "Book a Class", "Start Trial", and "View Schedule" buttons are the primary conversion points on a fitness site.',
+          failNote: 'Buttons under 44×44 pixels cause misses. Focus on your "Book", "Schedule", and "Start Trial" buttons first — those are the ones earning you money.'
+        },
+        salon: {
+          impact: 'Every missed tap is a missed appointment. "Book Now" is the most important button on a salon site — if clients can\'t hit it cleanly on a phone, they\'ll close the tab and go elsewhere.',
+          failNote: 'Buttons under 44×44 pixels cause misses. The "Book Now" button is the critical one — bump its padding to at least 12px on every side, and give it enough breathing room that thumbs don\'t accidentally hit something else.'
+        },
+        spa: {
+          impact: 'Every missed tap is a lost booking. "Book a Treatment" and "Gift Cards" are the buttons that pay for themselves — they need to be thumb-friendly.',
+          failNote: 'Buttons under 44×44 pixels cause misses. Prioritize your "Book", "Gift Cards", and "Services" buttons — those carry the most conversion weight.'
+        },
+        barber: {
+          impact: 'Every missed tap is a walk-in you could have pre-booked. "Book a Cut" is the highest-value button on a barbershop site.',
+          failNote: 'Buttons under 44×44 pixels cause misses. Your booking button matters most — bump it to at least 48×48 px with real padding around it.'
+        }
+      }
     },
     {
       type: 'audit',
@@ -3256,7 +3305,29 @@
       fail: 'Some of your text is hard to read',
       failNote: 'Light text on light backgrounds is a common wellness-site aesthetic choice that costs readability. Darken your body text — aim for WCAG AA (4.5:1 ratio for normal text).',
       unverified: "We couldn't check your text contrast",
-      unverifiedNote: "Lighthouse couldn't evaluate color contrast. Re-audit in a few seconds."
+      unverifiedNote: "Lighthouse couldn't evaluate color contrast. Re-audit in a few seconds.",
+      byType: {
+        yoga: {
+          impact: 'Yoga clients read your class schedule on their phone while walking to the studio. Grey-on-white class names and instructor bios fail contrast for anyone over 40 or anyone in direct sunlight.',
+          failNote: 'Soft-neutral palettes are the default yoga aesthetic, and they cost readability. Your class schedule and instructor bios need darker body text — aim for WCAG AA (4.5:1 ratio).'
+        },
+        fitness: {
+          impact: 'Clients scan class schedules, pricing tables, and membership tiers fast. Low-contrast text turns a 5-second decision into a 30-second squint.',
+          failNote: 'Pricing tables and class-schedule text are where contrast matters most. Darken your body text — WCAG AA (4.5:1 ratio) is the floor for normal text.'
+        },
+        salon: {
+          impact: 'Salon clients scan service and pricing lists to compare before they book. Grey-on-cream prices look elegant but fail contrast — visitors give up and call someone else.',
+          failNote: 'Service lists and pricing tables are the highest-impact place for contrast fixes. Your prices especially need to be unambiguously readable — darken them to WCAG AA (4.5:1 ratio).'
+        },
+        spa: {
+          impact: 'Spa clients read your treatment menu carefully before picking one. Low-contrast descriptions of what a hot-stone massage actually includes cost you bookings.',
+          failNote: 'Treatment descriptions are where contrast matters. Soft palettes are on-brand for spas, but the text needs to meet WCAG AA (4.5:1 ratio) or visitors give up.'
+        },
+        barber: {
+          impact: 'Clients scan your service list (cut, fade, beard, shave) and their prices in seconds. Low-contrast pricing means they can\'t actually read it.',
+          failNote: 'Your pricing list is the critical contrast item — clients need to see what a cut costs before they book. Aim for WCAG AA (4.5:1 ratio).'
+        }
+      }
     },
     {
       type: 'audit',
@@ -3271,7 +3342,29 @@
       fail: 'Your text is too small on a phone',
       failNote: 'More than 40% of your text is below the legibility threshold. Set body font-size to at least 16px.',
       unverified: "We couldn't check your text size",
-      unverifiedNote: "Lighthouse couldn't evaluate font sizes. Re-audit in a few seconds."
+      unverifiedNote: "Lighthouse couldn't evaluate font sizes. Re-audit in a few seconds.",
+      byType: {
+        yoga: {
+          impact: 'Class names, instructor bios, and schedule times are the most-read text on a yoga site. Tiny text means clients pinch-zoom to find the 6pm Vinyasa — and some give up.',
+          failNote: 'Your class-schedule and instructor-bio text is what this check cares about most. Set body font-size to at least 16px — for the schedule itself, 17 or 18px is better.'
+        },
+        fitness: {
+          impact: 'Pricing tables, membership tiers, and class schedules are where tiny text hurts most. Members already know the site; prospects need to read it once, clearly.',
+          failNote: 'Set body font-size to at least 16px. Pricing tables especially — tiny numbers in a pricing table are where clients give up.'
+        },
+        salon: {
+          impact: 'Service names and prices are what visitors scan first. Text under 16px forces iOS to zoom on focus and turns a 5-second decision into a frustrating pinch-and-drag.',
+          failNote: 'Your service and pricing list is the priority. Set body font-size to at least 16px — 17 or 18px is better for pricing rows.'
+        },
+        spa: {
+          impact: 'Treatment menus are the highest-value text on a spa site. Small descriptions of what a 90-minute deep-tissue actually includes make clients second-guess booking.',
+          failNote: 'Treatment descriptions and durations need to be comfortably readable. Set body font-size to at least 16px — 17 or 18px for treatment-menu items.'
+        },
+        barber: {
+          impact: 'Your services list and prices are the two bits of text that matter. Tiny pricing = frustrated walk-ins who just call a different shop.',
+          failNote: 'Set body font-size to at least 16px. Your price list especially should be unambiguously readable without zooming.'
+        }
+      }
     },
     {
       type: 'phone',
@@ -3286,7 +3379,29 @@
       fail: "We couldn't find a phone number on your site",
       failNote: 'No click-to-call link and no visible phone number. Wellness clients call with questions before their first visit — give them a number.',
       unverified: "We couldn't confirm whether you have a phone number",
-      unverifiedNote: "We might have missed it. Check that your number is visible and wrapped in a <code>tel:</code> link."
+      unverifiedNote: "We might have missed it. Check that your number is visible and wrapped in a <code>tel:</code> link.",
+      byType: {
+        yoga: {
+          impact: '"Is the 6pm still on if it\'s raining?" "Can I drop in without a membership?" "Is the room heated today?" These are the pre-class calls that studios get daily. A tappable number keeps them from becoming lost bookings.',
+          failNote: 'No click-to-call link. Yoga clients call with pre-class questions (first-timer concerns, weather, substitutions) — make it one tap to reach you.'
+        },
+        fitness: {
+          impact: 'First-time prospects call to ask about trial classes, membership options, and personal-training pricing. A missing phone number sends that call to a competitor.',
+          failNote: 'No click-to-call link. Trial-class and membership questions are where phone calls close deals for gyms — give prospects a one-tap way to ask.'
+        },
+        salon: {
+          impact: 'Salon clients call constantly — to confirm a time, check if their stylist is in, ask about gray-coverage color, or fit in a last-minute appointment. A missing phone number is a missing book.',
+          failNote: 'This is critical for salons. Clients CALL to book, confirm, and ask questions every day — if your phone number isn\'t a one-tap link at the top of your page, you\'re losing revenue hourly.'
+        },
+        spa: {
+          impact: 'Spa clients call to ask about treatment details, pregnancy safety, gift certificates, and group bookings. Those calls convert at a much higher rate than form-fills — make the number easy.',
+          failNote: 'No click-to-call link. Spa bookings often start with a question ("Is deep-tissue okay if I\'m 5 months pregnant?") — answer it on a call, not a contact form.'
+        },
+        barber: {
+          impact: '"How long is the wait?" and "Are you open?" are the two most common barber-site calls. A tap-to-call phone number is the single most important element after the address.',
+          failNote: 'Non-negotiable for barbershops. Clients call before walking in to check the wait. If your phone number isn\'t a tap-to-call link right at the top, you\'re losing walk-ins to shops whose phones are easier to find.'
+        }
+      }
     },
     {
       type: 'platform',
@@ -3301,7 +3416,24 @@
       fail: null,
       failNote: null,
       unverified: "We didn't see a map on your site",
-      unverifiedNote: "We scan for Google Maps, Apple Maps, Mapbox, and others. If your address is plain text only, consider wrapping it in a Google Maps link."
+      unverifiedNote: "We scan for Google Maps, Apple Maps, Mapbox, and others. If your address is plain text only, consider wrapping it in a Google Maps link.",
+      byType: {
+        yoga: {
+          impact: 'First-time students are already nervous walking into a yoga studio. "Where is it actually?" shouldn\'t add to the friction — a tappable map lets them focus on the class.'
+        },
+        fitness: {
+          impact: 'Prospects comparing gyms care about location as much as price. A one-tap map showing proximity and parking is a quiet trust signal.'
+        },
+        salon: {
+          impact: 'New clients heading to a first appointment want turn-by-turn directions without copying an address into another app. An embedded map or a map link does that in one tap.'
+        },
+        spa: {
+          impact: 'Spa guests often arrive right after work with little margin. A tappable map (showing parking, valet, entrance location) is the difference between arriving relaxed and arriving flustered.'
+        },
+        barber: {
+          impact: 'Barbershop walk-ins find you on their phone and expect to be driving 30 seconds later. A one-tap directions link is the table-stakes navigation flow.'
+        }
+      }
     },
     {
       type: 'conversions',
@@ -3317,7 +3449,49 @@
       fail: null,
       failNote: null,
       unverified: "We couldn't detect online booking",
-      unverifiedNote: "We scan for 50+ booking platforms including Mindbody, Vagaro, Fresha, Booksy, Acuity, Square Appointments, WellnessLiving, Glofox, Pike13, and more. If yours is on the list and we missed it, tell us below."
+      unverifiedNote: "We scan for 50+ booking platforms including Mindbody, Vagaro, Fresha, Booksy, Acuity, Square Appointments, WellnessLiving, Glofox, Pike13, and more. If yours is on the list and we missed it, tell us below.",
+      byType: {
+        yoga: {
+          impact: 'Class reservations need to be a one-tap experience. A yoga client deciding on the walk to work whether to hit the 6pm won\'t bother if they have to email for a spot.',
+          pass: 'Clients can book a class online',
+          passNote: '{detected} on your site — students can reserve their mat directly without calling or emailing.',
+          passNoteText: "We found text that suggests class reservations (like 'Book a Class' or 'Reserve Your Mat') but couldn't match it to a specific platform.",
+          unverified: "We couldn't detect class-booking on your site",
+          unverifiedNote: "We scan for yoga-friendly platforms like Mindbody, Glofox, Momoyoga, Zingfit, Acuity, Pike13, and more. If yours is on the list and we missed it, tell us below — classes that can only be booked by email or phone lose a lot of drop-in traffic."
+        },
+        fitness: {
+          impact: 'Class signups, PT sessions, and trial-class bookings all need to be online. Every call-to-book is a client who might not bother — especially a first-timer comparing your gym to three others.',
+          pass: 'Clients can book classes and sessions online',
+          passNote: '{detected} on your site — members and prospects can book classes, sessions, or trials directly.',
+          passNoteText: "We found text suggesting online class/session booking but couldn't match it to a specific platform.",
+          unverified: "We couldn't detect class or session booking",
+          unverifiedNote: "We scan for fitness-focused platforms like Mindbody, Glofox, Wodify, ClubReady, Mariana, Pike13, and more. If yours is on the list and we missed it, tell us below — prospects comparing gyms expect to be able to book a trial without calling."
+        },
+        salon: {
+          impact: 'Online booking is the single biggest conversion lever for a salon. The client who has to call during business hours is the client who calls a salon with Fresha instead.',
+          pass: 'Clients can book appointments online',
+          passNote: '{detected} on your site — clients can book with their preferred stylist 24/7 without calling.',
+          passNoteText: "We found text that suggests online appointment booking but couldn't match it to a specific platform.",
+          unverified: "We couldn't detect online appointment booking",
+          unverifiedNote: "We scan for salon-focused platforms like Fresha, Vagaro, Booksy, Phorest, SalonBiz, Square Appointments, and more. If yours is on the list and we missed it, tell us below. Salons without online booking lose bookings to competitors with it, every single day."
+        },
+        spa: {
+          impact: 'Spa bookings often happen on a phone, at 10pm, when the visitor is decompressing from a stressful day. Make them call back tomorrow and they\'ll forget — online booking captures the impulse.',
+          pass: 'Clients can book treatments online',
+          passNote: '{detected} on your site — clients can book treatments at any hour without calling.',
+          passNoteText: "We found text that suggests online treatment booking but couldn't match it to a specific platform.",
+          unverified: "We couldn't detect online treatment booking",
+          unverifiedNote: "We scan for spa-friendly platforms like Mindbody, Vagaro, Fresha, Booker, Square Appointments, and more. Missing online booking is a meaningful conversion leak for spas specifically — late-night impulse bookings are a big share of revenue."
+        },
+        barber: {
+          impact: 'Walk-ins are great, but online booking captures the "I want a cut before my 3pm meeting" client who won\'t roll the dice on availability. Booksy and Squire exist specifically for this — clients expect it.',
+          pass: 'Clients can book a cut online',
+          passNote: '{detected} on your site — clients can reserve a chair without calling or risking a walk-in wait.',
+          passNoteText: "We found text that suggests online booking but couldn't match it to a specific platform.",
+          unverified: "We couldn't detect online booking",
+          unverifiedNote: "We scan for barber-focused platforms like Booksy, Squire, Fresha, Vagaro, and more. If you still run walk-in-only, that\'s legitimate — but any shop that offers chairs by appointment should have online booking now; clients expect it."
+        }
+      }
     },
     {
       type: 'services',
@@ -3331,7 +3505,54 @@
       fail: 'Your services page is a PDF or image',
       failNote: 'PDF service menus don\'t scale on phones and can\'t be crawled effectively by Google. Replace it with a real HTML page.',
       unverified: "We couldn't find a services or class schedule page",
-      unverifiedNote: "We looked for links containing 'services', 'classes', 'schedule', 'treatments', 'menu', or 'offerings'. If yours is named differently, we missed it."
+      unverifiedNote: "We looked for links containing 'services', 'classes', 'schedule', 'treatments', 'menu', or 'offerings'. If yours is named differently, we missed it.",
+      byType: {
+        yoga: {
+          impact: 'The class schedule is the most-visited page on every yoga site after the homepage. It needs to be a real, filterable HTML page — not a PDF, not an image, not "email us for the schedule."',
+          pass: 'Your class schedule is a real HTML page',
+          passNote: 'Your class schedule is accessible as an HTML page — students can see the 6pm Vinyasa on their phone without downloading anything.',
+          fail: 'Your class schedule is a PDF or image',
+          failNote: 'A PDF class schedule is the single most common yoga-site mistake. Students want to filter by time, instructor, or style — a PDF doesn\'t let them. Rebuild it as a real HTML schedule (most platforms like Mindbody embed this for you).',
+          unverified: "We couldn't find a class schedule page",
+          unverifiedNote: "We looked for links containing 'schedule', 'classes', 'class list', or similar. If your schedule lives at a different URL (or is only on your booking platform), the check missed it — tell us so we can improve it."
+        },
+        fitness: {
+          impact: 'Prospects want to see the class schedule AND pricing/membership tiers before they commit. Both need to be real HTML pages — fast to load, easy to scan, trivial to share.',
+          pass: 'Your class schedule and pricing are real HTML pages',
+          passNote: 'Schedule and pricing are accessible as HTML pages — prospects can scan both on a phone before deciding.',
+          fail: 'Your schedule or pricing is a PDF or image',
+          failNote: 'PDF schedules and image-based pricing tables fail on phones and kill conversions. Rebuild both as real HTML — clients should be able to scan class times and pricing tiers in under 10 seconds.',
+          unverified: "We couldn't find a class schedule or pricing page",
+          unverifiedNote: "We looked for links like 'schedule', 'classes', 'pricing', 'membership', 'programs'. If yours is named differently, we missed it."
+        },
+        salon: {
+          impact: 'The services + pricing list is the most-viewed page on every salon site. New clients compare prices across 3-5 salons before booking; a PDF or image-based list is functionally invisible in that comparison.',
+          pass: 'Your services and pricing list is a real HTML page',
+          passNote: 'Your services and pricing are accessible as an HTML page — clients can scan prices at a glance on their phone before booking.',
+          fail: 'Your services list is a PDF or image',
+          failNote: 'PDF and image service menus hide your prices from Google and force clients to pinch-zoom on their phones. Rebuild it as a real HTML page with a service-by-service pricing table — clients should see prices before they need to tap anything.',
+          unverified: "We couldn't find a services or pricing page",
+          unverifiedNote: "We looked for links containing 'services', 'pricing', 'menu', 'rates', or similar. If yours is named differently (like 'offerings' or 'salon'), we may have missed it."
+        },
+        spa: {
+          impact: 'The treatment menu is the closing copy of a spa site. Descriptions, durations, and pricing all need to be visible before a client books a 90-minute deep-tissue on their lunch break.',
+          pass: 'Your treatment menu is a real HTML page',
+          passNote: 'Your treatment menu is accessible as an HTML page — clients can read descriptions, compare durations, and see pricing on their phone before booking.',
+          fail: 'Your treatment menu is a PDF or image',
+          failNote: 'A PDF treatment menu is the single most common spa-site mistake. Clients want to read what a "Himalayan Salt Stone" treatment actually involves; a PDF they have to download and pinch-zoom doesn\'t deliver. Rebuild as HTML.',
+          unverified: "We couldn't find a treatment menu page",
+          unverifiedNote: "We looked for links containing 'treatments', 'services', 'menu', 'offerings', or 'modalities'. If yours is named differently, we missed it."
+        },
+        barber: {
+          impact: 'Your services list is three or four lines: cut, fade, beard, shave — each with a price. Simple, yes, but it needs to be real HTML so Google indexes it and phones render it instantly.',
+          pass: 'Your services list is a real HTML page',
+          passNote: 'Your services and pricing list is HTML — clients can scan "haircut — $40, fade — $45, beard trim — $20" in under three seconds.',
+          fail: 'Your services list is a PDF or image',
+          failNote: 'Barbershop pricing lists especially should never be PDFs — the whole point is instant scanning. Rebuild it as a simple HTML table: service name on the left, price on the right.',
+          unverified: "We couldn't find a services page",
+          unverifiedNote: "We looked for a 'services', 'pricing', or 'rates' link. If you only list services on your homepage (totally fine for a barbershop), tell us and we'll mark it as a pass."
+        }
+      }
     },
     {
       type: 'schema',
@@ -3630,19 +3851,30 @@
     // then passes (celebratory tail). This matters more than grouping
     // by check type because owners scan top-down and want their
     // problems near the top.
+    //
+    // Type-aware copy: each PRIORITY_CHECKS entry can carry a byType
+    // map (yoga/fitness/salon/spa/barber). We resolve the effective
+    // definition once per check so impact, pass/fail titles, and
+    // notes speak the owner's dialect — a yoga studio sees "class
+    // schedule" and a salon sees "services menu" on the same
+    // underlying check. Resolution falls through to the generic
+    // 'wellness' copy when the detected/selected type doesn't have
+    // an override or the check isn't type-sensitive.
+    var btype = effectiveBusinessType();
     var results = [];
     PRIORITY_CHECKS.forEach(function(def, idx){
-      var result = evaluatePriorityCheck(def, audits, allUrls, pageText);
+      var resolvedDef = resolveCheckForType(def, btype);
+      var result = evaluatePriorityCheck(resolvedDef, audits, allUrls, pageText);
       if (!result) return;
       // Apply any user override from the feedback UI.
       if (USER_OVERRIDES[idx] === 'pass' && result.mark.cls === 'unverified') {
-        result = makeResult(def, 'pass');
+        result = makeResult(resolvedDef, 'pass');
         result.overridden = true;
       } else if (USER_OVERRIDES[idx] === 'fail' && result.mark.cls === 'unverified') {
-        result = makeResult(def, 'fail');
+        result = makeResult(resolvedDef, 'fail');
         result.overridden = true;
       }
-      results.push({ def: def, result: result, idx: idx });
+      results.push({ def: resolvedDef, result: result, idx: idx });
     });
     // Stable sort: fail → unverified → pass
     results.sort(function(a, b){
@@ -4188,12 +4420,14 @@
       var failingChecks = [];
       var unverifiedChecks = [];
       if (isWellnessSite) {
+        var emailType = effectiveBusinessType();
         PRIORITY_CHECKS.forEach(function(def, idx){
-          var result = evaluatePriorityCheck(def, audits, allUrls, pageText);
+          var resolvedDef = resolveCheckForType(def, emailType);
+          var result = evaluatePriorityCheck(resolvedDef, audits, allUrls, pageText);
           if (!result) return;
           if (USER_OVERRIDES[idx] === 'pass' && result.mark.cls === 'unverified') return;
           if (USER_OVERRIDES[idx] === 'fail' && result.mark.cls === 'unverified') {
-            result = makeResult(def, 'fail');
+            result = makeResult(resolvedDef, 'fail');
           }
           var title = result.title ? String(result.title).replace(/<[^>]*>/g, '') : 'check ' + (idx + 1);
           if (result.mark.cls === 'fail') failingChecks.push(title);
@@ -4555,6 +4789,15 @@
       var state = window.__auditScoreState;
       if (state) {
         renderBusinessTypeCard(true, state.businessType);
+        // Re-render priority checks so the type-specific copy updates
+        // live — a salon owner correcting us from "fitness" to "salon"
+        // sees "Is your services menu an HTML page?" instead of
+        // "Is your class schedule a PDF?" without a page reload.
+        // The underlying pass/fail state doesn't change (only copy
+        // varies by type), so no recomputeOverall is needed.
+        if (state.isWellness) {
+          renderPriorityChecks(state.audits, state.allUrls, state.pageText);
+        }
         updateUrlState(state.auditedUrl);
       }
       if (window.plausible) {
