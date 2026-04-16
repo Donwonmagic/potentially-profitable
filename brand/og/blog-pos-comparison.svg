@@ -1,52 +1,34 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
   <rect width="1200" height="630" fill="#FAF7F2"/>
+  <rect x="0" y="0" width="6" height="630" fill="#C28B2E"/>
 
-  <!-- Window mark top-left -->
-  <g transform="translate(72, 72)" stroke="#14161A" stroke-width="7" stroke-linecap="square" stroke-linejoin="miter" fill="none">
-    <rect x="0" y="0" width="60" height="60"/>
-    <line x1="30" y1="0" x2="30" y2="60"/>
-    <line x1="0" y1="22" x2="60" y2="22"/>
+  <text x="72" y="90" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#C28B2E" letter-spacing="5">COMPARISON · POS SYSTEMS</text>
+
+  <text x="72" y="200" font-family="Fraunces, Georgia, serif" font-size="56" font-weight="500" fill="#14161A" letter-spacing="-2">Toast vs. Square</text>
+  <text x="72" y="272" font-family="Fraunces, Georgia, serif" font-size="56" font-weight="500" fill="#14161A" letter-spacing="-2">vs. Clover</text>
+  <text x="72" y="340" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="36" font-weight="400" fill="#1F4E5B">Which POS integrates best with your site?</text>
+
+  <!-- Right: three POS indicator cards -->
+  <g transform="translate(850, 150)">
+    <rect x="0" y="0" width="280" height="56" rx="8" fill="#FFFFFF" stroke="#E8E2D6" stroke-width="1.5"/>
+    <circle cx="32" cy="28" r="10" fill="#1f9d55"/>
+    <text x="54" y="33" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="600" fill="#14161A">Square</text>
+    <text x="240" y="33" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#6B6B6B">Best API</text>
+
+    <rect x="0" y="68" width="280" height="56" rx="8" fill="#FFFFFF" stroke="#E8E2D6" stroke-width="1.5"/>
+    <circle cx="32" cy="96" r="10" fill="#1F4E5B"/>
+    <text x="54" y="101" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="600" fill="#14161A">Toast</text>
+    <text x="240" y="101" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#6B6B6B">Restaurant-built</text>
+
+    <rect x="0" y="136" width="280" height="56" rx="8" fill="#FFFFFF" stroke="#E8E2D6" stroke-width="1.5"/>
+    <circle cx="32" cy="164" r="10" fill="#C28B2E"/>
+    <text x="54" y="169" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="600" fill="#14161A">Clover</text>
+    <text x="240" y="169" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#6B6B6B">Most hardware</text>
   </g>
 
-  <!-- Eyebrow top-right -->
-  <text x="1128" y="108" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#6B6B6B" letter-spacing="4">MUNTIN DIGITAL · WRITING</text>
+  <text x="72" y="430" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="500" fill="#6B6B6B">Strengths, quiet limitations, and which one fits your restaurant.</text>
 
-  <!-- Title — main comparison -->
-  <text x="600" y="218" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="72" font-weight="500" fill="#14161A" letter-spacing="-2">Toast · Square · Clover</text>
-
-  <!-- Italic subtitle -->
-  <text x="600" y="282" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="44" font-weight="400" fill="#1F4E5B" letter-spacing="-1">Which POS integrates best?</text>
-
-  <!-- Three recommendation cards: Square / Toast / Clover -->
-  <g transform="translate(130, 352)">
-    <!-- Card 1: Single-location → Square -->
-    <g>
-      <rect x="0" y="0" width="300" height="156" rx="14" fill="#FFFFFF" stroke="#E8E2D6" stroke-width="1.5"/>
-      <text x="150" y="36" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#6B6B6B" letter-spacing="3">SINGLE LOCATION</text>
-      <line x1="60" y1="52" x2="240" y2="52" stroke="#E8E2D6" stroke-width="1"/>
-      <text x="150" y="100" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="38" font-weight="500" fill="#14161A" letter-spacing="-1">Square</text>
-      <text x="150" y="128" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#6B6B6B">Clean API · fair fees</text>
-    </g>
-
-    <!-- Card 2: 2–5 locations → Toast (featured) -->
-    <g transform="translate(320, 0)">
-      <rect x="0" y="0" width="300" height="156" rx="14" fill="#FFFFFF" stroke="#1F4E5B" stroke-width="2"/>
-      <text x="150" y="36" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#1F4E5B" letter-spacing="3">2–5 LOCATIONS</text>
-      <line x1="60" y1="52" x2="240" y2="52" stroke="#1F4E5B" stroke-width="1" opacity="0.3"/>
-      <text x="150" y="100" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="38" font-weight="500" fill="#14161A" letter-spacing="-1">Toast</text>
-      <text x="150" y="128" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#6B6B6B">Native ordering · mature</text>
-    </g>
-
-    <!-- Card 3: Hardware-heavy → Clover -->
-    <g transform="translate(640, 0)">
-      <rect x="0" y="0" width="300" height="156" rx="14" fill="#FFFFFF" stroke="#E8E2D6" stroke-width="1.5"/>
-      <text x="150" y="36" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#6B6B6B" letter-spacing="3">HARDWARE-HEAVY</text>
-      <line x1="60" y1="52" x2="240" y2="52" stroke="#E8E2D6" stroke-width="1"/>
-      <text x="150" y="100" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="38" font-weight="500" fill="#14161A" letter-spacing="-1">Clover</text>
-      <text x="150" y="128" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#6B6B6B">Widest hardware · apps</text>
-    </g>
-  </g>
-
-  <!-- URL bottom -->
-  <text x="600" y="580" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="500" fill="#6B6B6B" letter-spacing="2">muntin.digital/blog</text>
+  <line x1="0" y1="590" x2="1200" y2="590" stroke="#E8E2D6" stroke-width="1"/>
+  <text x="72" y="616" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#6B6B6B" letter-spacing="2">MUNTIN DIGITAL</text>
+  <text x="1128" y="616" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#6B6B6B" letter-spacing="1">muntin.digital/blog</text>
 </svg>
