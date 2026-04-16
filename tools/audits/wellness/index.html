@@ -2209,8 +2209,12 @@
         { pattern: 'teamup',           name: 'TeamUp' },
         { pattern: 'fitsw',            name: 'FitSW' },
         { pattern: 'arketa',           name: 'Arketa' },
-        // --- General scheduling (also used by wellness businesses) ---
-        { pattern: 'calendly',         name: 'Calendly' },
+        // --- General scheduling tools ---
+        // These are AMBIGUOUS — often used for sales calls, not
+        // client booking. Flagged with "(scheduling)" suffix so the
+        // render logic can show a softer "unverified" result with a
+        // note asking the owner to confirm.
+        { pattern: 'calendly',         name: 'Calendly (scheduling)' },
         { pattern: 'setmore',          name: 'Setmore' },
         { pattern: 'appointy',         name: 'Appointy' },
         { pattern: 'youcanbook.me',    name: 'YouCanBookMe' },
@@ -2343,7 +2347,12 @@
   //   'image'    — services link points to a .jpg / .png (bad)
   //   'missing'  — no link with services/classes/schedule/treatments found
   //   'unknown'  — we saw a services link but couldn't classify
-  var SERVICES_HREF_RE = /services|classes|schedule|treatments|offerings|menu|pricing|rates/i;
+  // Broadened from restaurants — wellness sites use many names for
+  // their service pages. Each pattern is tested against the full URL
+  // path, so "yoga-classes" or "our-services" or "class-schedule"
+  // will all match. We also catch "modalities" (massage/acupuncture
+  // sites), "programs" (fitness studios), and "workshops" (yoga).
+  var SERVICES_HREF_RE = /services|classes|schedule|treatments|offerings|menu|pricing|rates|modalities|programs|workshops|packages|sessions|training|courses|membership/i;
   function detectMenuFormat(allUrls, pageText) {
     if (!allUrls || !allUrls.length) return 'unknown';
     var sawServices = false;
@@ -2362,7 +2371,7 @@
     if (sawImageServices) return 'image';
     if (sawHtmlServices)  return 'html';
     if (sawServices)      return 'unknown';
-    if (pageText && /\b(?:services|classes|schedule|treatments)\b/i.test(pageText)) return 'unknown';
+    if (pageText && /\b(?:services|classes|schedule|treatments|offerings|modalities|programs|workshops|packages)\b/i.test(pageText)) return 'unknown';
     return 'missing';
   }
 
@@ -2400,6 +2409,20 @@
   // we do NOT count it as booking. These are sales/lead-gen, not
   // client booking systems.
   var BOOKING_FALSE_POSITIVE_RE = /\b(?:book\s+a\s+(?:call|consultation|demo|meeting|tour|intro)|schedule\s+a\s+(?:call|consultation|demo|meeting|tour|chat)|free\s+consultation|contact\s+us)\b/i;
+
+  // Platforms that are ambiguous for wellness — they're often used
+  // for consultations/calls, not actual class/appointment booking.
+  // When ONLY these are detected (no Mindbody, Vagaro, etc.), we
+  // return 'unverified' instead of 'pass'.
+  var AMBIGUOUS_BOOKING_NAMES = ['Calendly (scheduling)', 'Setmore', 'Appointy', 'YouCanBookMe', 'SimplyBook.me', 'Reserva'];
+
+  function hasOnlyAmbiguousBooking(found) {
+    if (!found || !found.length) return false;
+    for (var i = 0; i < found.length; i++) {
+      if (AMBIGUOUS_BOOKING_NAMES.indexOf(found[i].name) === -1) return false;
+    }
+    return true; // every detected platform is ambiguous
+  }
 
   // Text-based fallback detection: if no known third-party platform
   // matched via URL, scan the combined page text for action phrases.
@@ -2715,19 +2738,26 @@
       return makeResult(def, 'fail');
     }
 
-    // ---- Ordering / appointments with platform + text fallback ----
+    // ---- Booking with platform + text fallback ----
     if (def.type === 'conversions') {
       var detection = detectPlatforms(def.platforms, allUrls);
       if (detection.detected) {
+        // AMBIGUOUS GUARD: if the ONLY detected platform is a generic
+        // scheduling tool (Calendly, Setmore, etc.), return unverified
+        // instead of pass — it might be a consultation form, not a
+        // real class/appointment booking system.
+        if (hasOnlyAmbiguousBooking(detection.found)) {
+          return makeResult(def, 'unverified', detection.found);
+        }
         return makeResult(def, 'pass', detection.found);
       }
       // Text fallback — catches self-hosted wellness sites
-      // whose ordering lives on their own domain with no recognizable
+      // whose booking lives on their own domain with no recognizable
       // platform hostname.
       if (pageText) {
         var textKeys = [];
         for (var k = 0; k < def.platforms.length; k++) {
-          if (def.platforms[k] === 'ordering' || def.platforms[k] === 'appointments') {
+          if (def.platforms[k] === 'booking') {
             textKeys.push(def.platforms[k]);
           }
         }
