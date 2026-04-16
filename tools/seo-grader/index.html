@@ -403,7 +403,12 @@
         }
       })
       .catch(function(err) {
-        alert('Could not grade that URL. ' + (err.message || 'Please check the address and try again.'));
+        var msg = err.message || '';
+        if (/522|timeout|abort/i.test(msg)) {
+          alert('The site took too long to respond. Some sites block automated scans or are behind Cloudflare protection. Try a different URL, or check the site manually.');
+        } else {
+          alert('Could not grade that URL. ' + (msg || 'Please check the address and try again.'));
+        }
       })
       .finally(function() {
         btn.disabled = false;

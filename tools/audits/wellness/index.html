@@ -2366,6 +2366,96 @@
   // will all match. We also catch "modalities" (massage/acupuncture
   // sites), "programs" (fitness studios), and "workshops" (yoga).
   var SERVICES_HREF_RE = /services|classes|schedule|treatments|offerings|menu|pricing|rates|modalities|programs|workshops|packages|sessions|training|courses|membership/i;
+  function extractNetworkUrls(audits) {
+    var urls = [];
+    var na = audits && audits['network-requests'];
+    if (na && na.details && na.details.items && na.details.items.length) {
+      for (var i = 0; i < na.details.items.length; i++) {
+        var item = na.details.items[i];
+        if (item && item.url) urls.push(String(item.url).toLowerCase());
+      }
+    }
+    return urls;
+  }
+
+  function extractAnchorHrefs(audits) {
+    var hrefs = [];
+    var seen = {};
+    if (!audits) return hrefs;
+    var HREF_RE = /href\s*=\s*["']([^"']+)["']/gi;
+    function addHref(raw) {
+      if (!raw) return;
+      var h = String(raw).toLowerCase();
+      if (!seen[h]) { seen[h] = true; hrefs.push(h); }
+    }
+    function scanSnippet(snippet) {
+      if (!snippet) return;
+      var m;
+      HREF_RE.lastIndex = 0;
+      while ((m = HREF_RE.exec(snippet)) !== null) addHref(m[1]);
+    }
+    function walkItem(item) {
+      if (!item) return;
+      if (typeof item.href === 'string') addHref(item.href);
+      if (item.node && typeof item.node.snippet === 'string') scanSnippet(item.node.snippet);
+      if (typeof item.snippet === 'string') scanSnippet(item.snippet);
+      if (item.source && typeof item.source.snippet === 'string') scanSnippet(item.source.snippet);
+      if (item.subItems && Array.isArray(item.subItems.items)) {
+        for (var s = 0; s < item.subItems.items.length; s++) walkItem(item.subItems.items[s]);
+      }
+    }
+    for (var key in audits) {
+      var audit = audits[key];
+      if (!audit || !audit.details || !audit.details.items) continue;
+      var items = audit.details.items;
+      for (var i = 0; i < items.length; i++) walkItem(items[i]);
+    }
+    return hrefs;
+  }
+
+  function extractAllUrls(audits) {
+    var urls = extractNetworkUrls(audits);
+    var seen = {};
+    for (var i = 0; i < urls.length; i++) seen[urls[i]] = true;
+    var hrefs = extractAnchorHrefs(audits);
+    for (var j = 0; j < hrefs.length; j++) {
+      if (!seen[hrefs[j]]) { seen[hrefs[j]] = true; urls.push(hrefs[j]); }
+    }
+    return urls;
+  }
+
+  function extractPageText(audits) {
+    if (!audits) return '';
+    var parts = [];
+    function pluck(audit) {
+      if (!audit) return;
+      if (audit.displayValue) parts.push(String(audit.displayValue));
+      if (audit.title) parts.push(String(audit.title));
+      if (audit.description) parts.push(String(audit.description));
+      if (audit.details && audit.details.items && audit.details.items.length) {
+        for (var i = 0; i < audit.details.items.length; i++) {
+          var item = audit.details.items[i];
+          if (!item) continue;
+          if (typeof item.text === 'string') parts.push(item.text);
+          if (typeof item.label === 'string') parts.push(item.label);
+          if (typeof item.snippet === 'string') parts.push(item.snippet);
+          if (item.node) {
+            if (typeof item.node.nodeLabel === 'string') parts.push(item.node.nodeLabel);
+            if (typeof item.node.snippet === 'string') parts.push(item.node.snippet);
+          }
+        }
+      }
+    }
+    pluck(audits['document-title']);
+    pluck(audits['meta-description']);
+    pluck(audits['link-text']);
+    pluck(audits['crawlable-anchors']);
+    pluck(audits['link-name']);
+    pluck(audits['tap-targets']);
+    pluck(audits['color-contrast']);
+    return parts.join(' ').toLowerCase();
+  }
+
   function detectMenuFormat(allUrls, pageText) {
     if (!allUrls || !allUrls.length) return 'unknown';
     var sawServices = false;

@@ -450,10 +450,14 @@ async function handleSeoCheck(request, env, ctx) {
   }
 
   try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
     const res = await fetch(target, {
       headers: { 'User-Agent': 'MuntinDigital-SEO-Check/1.0' },
       redirect: 'follow',
+      signal: controller.signal,
     });
+    clearTimeout(timeout);
     if (!res.ok) {
       return jsonResponse({ ok: false, error: 'Could not fetch the page (HTTP ' + res.status + ')' }, 502);
     }
@@ -495,6 +499,7 @@ async function handleSchemaCheck(request, env, ctx) {
     const res = await fetch(target, {
       headers: { 'User-Agent': 'MuntinDigital-Schema-Check/1.0' },
       redirect: 'follow',
+      signal: AbortSignal.timeout(8000),
     });
     if (!res.ok) {
       return jsonResponse({ ok: false, error: 'Could not fetch the page (HTTP ' + res.status + ')' }, 502);
