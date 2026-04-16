@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>How Fast Is My Website? Free Mobile Speed Test | Muntin Digital</title>
+<meta name="description" content="Test your website's mobile speed in 10 seconds. One number, one grade, one plain-English explanation of what it means for your customers. Free, no signup." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/tools/speed-test/" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="How Fast Is My Website? Free Mobile Speed Test" />
+<meta property="og:description" content="Test your website's mobile speed in 10 seconds. One number, plain English. Free." />
+<meta property="og:url" content="https://muntin.digital/tools/speed-test/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/audit.svg" />
+<meta property="og:image:type" content="image/svg+xml" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="How Fast Is My Website?" />
+<meta name="twitter:description" content="Free mobile speed test. 10 seconds, plain English." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/audit.svg" />
+
+<!-- Favicons -->
+<link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/brand/favicons/favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<link rel="shortcut icon" href="/favicon.ico" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://muntin.digital/tools/speed-test/#tool",
+      "name": "How Fast Is My Website? — Free Mobile Speed Test",
+      "description": "Paste any URL and see your mobile load time in plain English. Powered by Google PageSpeed Insights.",
+      "url": "https://muntin.digital/tools/speed-test/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "creator": { "@id": "https://muntin.digital/#business" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
+        { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://muntin.digital/tools/" },
+        { "@type": "ListItem", "position": 3, "name": "Speed Test", "item": "https://muntin.digital/tools/speed-test/" }
+      ]
+    }
+  ]
+}
+</script>
+
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+
+<style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
+<link rel="stylesheet" href="/assets/site.css">
+
+<style>
+  .speed-hero { max-width: 680px; margin: 0 auto; text-align: center; }
+  .speed-form { display: flex; gap: 10px; max-width: 560px; margin: 32px auto 0; }
+  .speed-form input {
+    flex: 1; padding: 16px 20px; border: 2px solid var(--line-dark);
+    border-radius: 12px; font: inherit; font-size: 17px;
+    background: var(--white); color: var(--ink);
+  }
+  .speed-form input:focus { border-color: var(--teal); outline: none; }
+  .speed-form button {
+    padding: 16px 28px; border: 0; border-radius: 12px;
+    background: var(--teal); color: var(--cream); font: inherit;
+    font-size: 16px; font-weight: 600; cursor: pointer;
+    white-space: nowrap; transition: background 200ms;
+  }
+  .speed-form button:hover { background: var(--teal-dark); }
+  .speed-form button:disabled { opacity: 0.5; cursor: wait; }
+  @media (max-width: 520px) {
+    .speed-form { flex-direction: column; }
+  }
+  .speed-note { font-size: 13px; color: var(--stone); margin-top: 14px; text-align: center; }
+
+  /* Result */
+  .speed-result { display: none; max-width: 560px; margin: 48px auto 0; text-align: center; }
+  .speed-result.visible { display: block; }
+  .speed-dial { position: relative; width: 200px; height: 200px; margin: 0 auto 24px; }
+  .speed-dial svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .speed-dial .track { fill: none; stroke: var(--line); stroke-width: 10; }
+  .speed-dial .fill { fill: none; stroke-width: 10; stroke-linecap: round;
+    stroke-dasharray: 502.65; stroke-dashoffset: 502.65;
+    transition: stroke-dashoffset 1.2s ease-out, stroke 0.4s ease; }
+  .speed-dial .score-text {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .speed-dial .score-num {
+    font-family: var(--font-display); font-size: 56px; font-weight: 500;
+    color: var(--ink); line-height: 1; letter-spacing: -0.02em;
+  }
+  .speed-dial .score-label {
+    font-size: 13px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.1em; margin-top: 4px;
+  }
+  .speed-grade-good .fill { stroke: #1f9d55; }
+  .speed-grade-good .score-label { color: #1f9d55; }
+  .speed-grade-mid .fill { stroke: #C28B2E; }
+  .speed-grade-mid .score-label { color: #8A6018; }
+  .speed-grade-bad .fill { stroke: var(--rust); }
+  .speed-grade-bad .score-label { color: var(--rust); }
+
+  .speed-explain { font-size: 18px; line-height: 1.65; color: var(--ink-soft); margin: 0 0 16px; }
+  .speed-explain strong { color: var(--ink); }
+  .speed-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 32px 0; }
+  .speed-metric {
+    padding: 20px; border: 1px solid var(--line); border-radius: 10px;
+    background: var(--white); text-align: center;
+  }
+  .speed-metric .val {
+    font-family: var(--font-display); font-size: 28px; font-weight: 500;
+    color: var(--ink); letter-spacing: -0.02em;
+  }
+  .speed-metric .lbl { font-size: 12px; color: var(--stone); margin-top: 4px;
+    font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+  @media (max-width: 400px) { .speed-metrics { grid-template-columns: 1fr; } }
+
+  .speed-cta { margin-top: 40px; padding: 28px 32px; background: var(--cream-2);
+    border: 1px solid var(--line); border-radius: 14px; text-align: center; }
+  .speed-cta p { font-size: 15px; color: var(--stone); margin: 0 0 16px; }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm">&#8482;</sup>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/#services">Services</a>
+      <a href="/for/restaurants/">Restaurants</a>
+      <a href="/work/">Work</a>
+      <a href="/blog/">Blog</a>
+      <a href="/#about">About</a>
+    </nav>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/#services">Services</a>
+    <a href="/for/restaurants/">Restaurants</a>
+    <a href="/work/">Work</a>
+    <a href="/blog/">Blog</a>
+    <a href="/#about">About</a>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call</a>
+  </nav>
+</header>
+
+<main id="main">
+
+<nav class="breadcrumb container" aria-label="Breadcrumb">
+  <a href="/">Home</a>
+  <span class="breadcrumb-sep" aria-hidden="true">&#8250;</span>
+  <a href="/tools/">Tools</a>
+  <span class="breadcrumb-sep" aria-hidden="true">&#8250;</span>
+  <span aria-current="page">Speed Test</span>
+</nav>
+
+<section class="hero hero-tight">
+  <div class="container">
+    <div class="speed-hero">
+      <span class="eyebrow">Free tool &middot; 10 seconds</span>
+      <h1>How fast is your<br><span class="serif-italic">website?</span></h1>
+      <p class="hero-sub" style="margin:20px auto 0; max-width:520px;">
+        Paste your URL and see your mobile load time — one number, one grade, plain English. Powered by Google PageSpeed Insights.
+      </p>
+
+      <form class="speed-form" id="speedForm" novalidate>
+        <input type="url" id="speedUrl" placeholder="https://yourbusiness.com" autocomplete="url" required aria-label="Your website URL" />
+        <button type="submit" id="speedSubmit">Test speed</button>
+      </form>
+      <p class="speed-note">Works on any publicly accessible URL. Takes about 10–20 seconds.</p>
+
+      <!-- Result -->
+      <div class="speed-result" id="speedResult" aria-live="polite">
+        <div class="speed-dial" id="speedDial">
+          <svg viewBox="0 0 180 180">
+            <circle class="track" cx="90" cy="90" r="80" />
+            <circle class="fill" id="speedFill" cx="90" cy="90" r="80" />
+          </svg>
+          <div class="score-text">
+            <div class="score-num" id="speedScoreNum">—</div>
+            <div class="score-label" id="speedScoreLabel">loading</div>
+          </div>
+        </div>
+
+        <p class="speed-explain" id="speedExplain"></p>
+
+        <div class="speed-metrics">
+          <div class="speed-metric">
+            <div class="val" id="metricLCP">—</div>
+            <div class="lbl">Largest Contentful Paint</div>
+          </div>
+          <div class="speed-metric">
+            <div class="val" id="metricFCP">—</div>
+            <div class="lbl">First Contentful Paint</div>
+          </div>
+          <div class="speed-metric">
+            <div class="val" id="metricTBT">—</div>
+            <div class="lbl">Total Blocking Time</div>
+          </div>
+          <div class="speed-metric">
+            <div class="val" id="metricCLS">—</div>
+            <div class="lbl">Cumulative Layout Shift</div>
+          </div>
+        </div>
+
+        <div class="speed-cta">
+          <p>Want the full picture? The industry-specific audits check mobile speed plus booking flow, service menus, schema, and more.</p>
+          <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+            <a class="btn btn-primary" href="/tools/audits/restaurant/">Restaurant audit</a>
+            <a class="btn btn-ghost" href="/tools/audits/wellness/">Wellness audit</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="foot-cta">
+      <div class="foot-cta-text">Ready to build something worth the time?</div>
+      <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      </a>
+    </div>
+    <div class="foot-grid">
+      <div class="foot-col foot-brand">
+        <a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home">
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <sup class="tm" aria-hidden="true">&#8482;</sup>
+        </a>
+        <p class="foot-tagline">Structure Brings Clarity.</p>
+        <p class="foot-blurb">A one-person studio in Silver Spring, MD, building custom websites, brands, and social media for independent restaurants and lifestyle brands across the DMV and beyond.</p>
+      </div>
+      <nav class="foot-col" aria-labelledby="foot-explore">
+        <h4 class="foot-heading" id="foot-explore">Explore</h4>
+        <ul class="foot-links">
+          <li><a href="/#services">Services</a></li>
+          <li><a href="/for/restaurants/">For restaurants</a></li>
+          <li><a href="/work/">Work</a></li>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/#about">About Don</a></li>
+        </ul>
+      </nav>
+      <nav class="foot-col" aria-labelledby="foot-tools">
+        <h4 class="foot-heading" id="foot-tools">Free tools</h4>
+        <ul class="foot-links">
+          <li><a href="/tools/">All tools</a></li>
+          <li><a href="/tools/audits/restaurant/">Restaurant audit</a></li>
+          <li><a href="/tools/audits/wellness/">Wellness audit</a></li>
+          <li><a href="/tools/speed-test/">Speed test</a></li>
+        </ul>
+      </nav>
+      <nav class="foot-col foot-contact" aria-labelledby="foot-contact">
+        <h4 class="foot-heading" id="foot-contact">Contact</h4>
+        <ul class="foot-links">
+          <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
+          <li><a href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call</a></li>
+          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram</a></li>
+        </ul>
+        <p class="foot-trust"><strong>Reply time:</strong> under 4 hours, Mon&ndash;Fri</p>
+      </nav>
+    </div>
+    <div class="foot-bottom">
+      <p class="foot-copy">&copy; 2026 Muntin Digital&#8482; &middot; Maryland LLC &middot; Silver Spring, MD</p>
+      <nav class="foot-legal" aria-label="Legal">
+        <a href="/terms.html">Terms</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/accessibility.html">Accessibility</a>
+        <a href="/cookies.html">Cookies</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/site.js" defer></script>
+<script>
+(function() {
+  var form = document.getElementById('speedForm');
+  var input = document.getElementById('speedUrl');
+  var btn = document.getElementById('speedSubmit');
+  var result = document.getElementById('speedResult');
+  var dial = document.getElementById('speedDial');
+  var fillEl = document.getElementById('speedFill');
+  var scoreNum = document.getElementById('speedScoreNum');
+  var scoreLabel = document.getElementById('speedScoreLabel');
+  var explain = document.getElementById('speedExplain');
+
+  var CIRC = 2 * Math.PI * 80; // 502.65
+
+  function normalizeUrl(raw) {
+    var u = raw.trim();
+    if (!u) return '';
+    if (!/^https?:\/\//i.test(u)) u = 'https://' + u;
+    try { new URL(u); } catch(e) { return ''; }
+    return u;
+  }
+
+  function gradeClass(score) {
+    if (score >= 90) return 'speed-grade-good';
+    if (score >= 50) return 'speed-grade-mid';
+    return 'speed-grade-bad';
+  }
+
+  function gradeLabel(score) {
+    if (score >= 90) return 'Fast';
+    if (score >= 50) return 'Needs work';
+    return 'Slow';
+  }
+
+  function explainScore(score, lcp) {
+    var lcpSec = (lcp / 1000).toFixed(1);
+    if (score >= 90) {
+      return '<strong>Your site is fast.</strong> It loads in about ' + lcpSec + ' seconds on a phone — faster than most small business sites. Visitors see your content almost instantly. This is what good looks like.';
+    }
+    if (score >= 50) {
+      return '<strong>Your site is okay, but not great.</strong> It takes about ' + lcpSec + ' seconds to load on a phone. That\'s long enough to lose impatient visitors — especially on slower connections. Compressing images and deferring scripts usually gets you into the green.';
+    }
+    return '<strong>Your site is slow on phones.</strong> At ' + lcpSec + ' seconds to load, you\'re losing a meaningful percentage of visitors before they ever see your content. Google\'s research shows 53% of mobile visitors leave after 3 seconds. Image compression, script deferral, and possibly a hosting change can fix this.';
+  }
+
+  function formatMs(ms) {
+    if (ms == null) return '—';
+    if (ms < 1000) return ms + ' ms';
+    return (ms / 1000).toFixed(1) + ' s';
+  }
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var url = normalizeUrl(input.value);
+    if (!url) { input.focus(); return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Testing…';
+    result.classList.remove('visible');
+    dial.className = 'speed-dial';
+
+    var api = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url='
+      + encodeURIComponent(url) + '&strategy=mobile&category=performance';
+
+    fetch(api)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.error) throw new Error(data.error.message || 'API error');
+
+        var perf = data.lighthouseResult;
+        var score = Math.round((perf.categories.performance.score || 0) * 100);
+        var audits = perf.audits || {};
+        var lcp = audits['largest-contentful-paint'] ? audits['largest-contentful-paint'].numericValue : null;
+        var fcp = audits['first-contentful-paint'] ? audits['first-contentful-paint'].numericValue : null;
+        var tbt = audits['total-blocking-time'] ? audits['total-blocking-time'].numericValue : null;
+        var cls = audits['cumulative-layout-shift'] ? audits['cumulative-layout-shift'].numericValue : null;
+
+        // Animate dial
+        scoreNum.textContent = score;
+        scoreLabel.textContent = gradeLabel(score);
+        dial.classList.add(gradeClass(score));
+        var offset = CIRC * (1 - score / 100);
+        fillEl.style.strokeDashoffset = String(offset);
+
+        // Explain
+        explain.innerHTML = explainScore(score, lcp || 0);
+
+        // Metrics
+        document.getElementById('metricLCP').textContent = formatMs(lcp ? Math.round(lcp) : null);
+        document.getElementById('metricFCP').textContent = formatMs(fcp ? Math.round(fcp) : null);
+        document.getElementById('metricTBT').textContent = formatMs(tbt ? Math.round(tbt) : null);
+        document.getElementById('metricCLS').textContent = cls != null ? cls.toFixed(3) : '—';
+
+        result.classList.add('visible');
+        result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        if (window.plausible) {
+          window.plausible('Speed Test', { props: { score: score, url: url } });
+        }
+      })
+      .catch(function(err) {
+        alert('Could not test that URL. ' + (err.message || 'Please check the address and try again.'));
+      })
+      .finally(function() {
+        btn.disabled = false;
+        btn.textContent = 'Test speed';
+      });
+  });
+})();
+</script>
+</body>
+</html>
