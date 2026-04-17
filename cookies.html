@@ -1,332 +1,88 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Cookie Policy for Muntin Digital, detailing how we use cookies and your privacy choices.">
-  <title>Cookie Policy | Muntin Digital™</title>
-  <!-- Self-hosted fonts. @font-face rules live in site.css; preload only
-       the two critical above-the-fold weights (Fraunces 500 for the display
-       headline and Inter 400 for body copy) to keep first paint fast without
-       over-fetching. Metric-matched fallbacks in site.css prevent CLS. -->
-  <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
-  <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
-  <!-- Privacy-friendly analytics by Plausible -->
-  <script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
-  <script>
-    window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-    plausible.init()
-  </script>
-  <style>
-    :root {
-      --cream: #FAF7F2;
-      --ink: #14161A;
-      --teal: #1F4E5B;
-      --rust: #B8541A;
-      --stone: #6B6B6B;
-      --line: #E8E2D6;
-      --line-dark: #D4CCBC;
-      --font-display: 'Fraunces', Georgia, serif;
-      --font-body: 'Inter', sans-serif;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cookie Policy | Muntin Digital™</title>
+<meta name="description" content="Cookie Policy for Muntin Digital, detailing how we use cookies and your privacy choices." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/cookies.html" />
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<!-- Favicons -->
+<link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/brand/favicons/favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<link rel="shortcut icon" href="/favicon.ico" />
 
-    html {
-      scroll-behavior: smooth;
-    }
+<!-- Application/entity hints for modern browsers and Google Search -->
+<meta name="application-name" content="Muntin Digital" />
+<meta name="apple-mobile-web-app-title" content="Muntin Digital" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
-    body {
-      font-family: var(--font-body);
-      background-color: var(--cream);
-      color: var(--ink);
-      line-height: 1.6;
-      font-size: 16px;
-    }
+<!-- Self-hosted fonts. @font-face rules live in site.css; preload only
+     the two critical above-the-fold weights (Fraunces 500 for the display
+     headline and Inter 400 for body copy) to keep first paint fast without
+     over-fetching. Metric-matched fallbacks in site.css prevent CLS. -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
 
-    header {
-      border-bottom: 1px solid var(--line);
-      padding: 24px 20px;
-      position: sticky;
-      top: 0;
-      background-color: var(--cream);
-      z-index: 100;
-    }
-
-    nav {
-      max-width: 760px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .muntin-mark {
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .muntin-mark svg {
-      width: 100%;
-      height: 100%;
-    }
-
-    .muntin-mark a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      outline: 2px solid transparent;
-      outline-offset: 2px;
-      border-radius: 2px;
-    }
-
-    .muntin-mark a:focus {
-      outline: 2px solid var(--teal);
-    }
-
-    .site-title {
-      font-family: var(--font-display);
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--ink);
-      text-decoration: none;
-      outline: 2px solid transparent;
-      outline-offset: 2px;
-      border-radius: 2px;
-    }
-
-    .site-title:focus {
-      outline: 2px solid var(--teal);
-    }
-
-    .site-title:hover {
-      color: var(--teal);
-    }
-
-    main {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 60px 20px;
-    }
-
-    h1 {
-      font-family: var(--font-display);
-      font-size: 42px;
-      font-weight: 600;
-      color: var(--ink);
-      margin-bottom: 16px;
-      line-height: 1.2;
-    }
-
-    .meta {
-      color: var(--stone);
-      font-size: 14px;
-      margin-bottom: 48px;
-    }
-
-    h2 {
-      font-family: var(--font-display);
-      font-size: 28px;
-      font-weight: 600;
-      color: var(--ink);
-      margin-top: 48px;
-      margin-bottom: 24px;
-      line-height: 1.2;
-    }
-
-    h2:first-of-type {
-      margin-top: 0;
-    }
-
-    h3 {
-      font-family: var(--font-display);
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--ink);
-      margin-top: 32px;
-      margin-bottom: 16px;
-    }
-
-    p {
-      margin-bottom: 20px;
-      color: var(--ink);
-    }
-
-    ul, ol {
-      margin-left: 24px;
-      margin-bottom: 20px;
-    }
-
-    li {
-      margin-bottom: 12px;
-      color: var(--ink);
-    }
-
-    a {
-      color: var(--teal);
-      text-decoration: underline;
-      outline: 2px solid transparent;
-      outline-offset: 2px;
-    }
-
-    a:focus {
-      outline: 2px solid var(--teal);
-    }
-
-    a:hover {
-      color: var(--rust);
-      text-decoration: none;
-    }
-
-    .cookie-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 32px 0;
-      font-size: 14px;
-    }
-
-    .cookie-table thead {
-      background-color: white;
-      border-bottom: 2px solid var(--line-dark);
-    }
-
-    .cookie-table th {
-      padding: 12px 16px;
-      text-align: left;
-      font-weight: 600;
-      color: var(--ink);
-    }
-
-    .cookie-table td {
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .cookie-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    .contact-box {
-      background-color: white;
-      border: 1px solid var(--line);
-      border-radius: 4px;
-      padding: 28px;
-      margin: 40px 0;
-    }
-
-    .contact-box p {
-      margin-bottom: 16px;
-    }
-
-    .contact-box p:last-child {
-      margin-bottom: 0;
-    }
-
-    footer {
-      border-top: 1px solid var(--line);
-      padding: 40px 20px;
-      background-color: white;
-      margin-top: 80px;
-    }
-
-    .footer-content {
-      max-width: 760px;
-      margin: 0 auto;
-    }
-
-    .footer-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 28px;
-      margin-bottom: 32px;
-      font-size: 14px;
-    }
-
-    .footer-links a {
-      color: var(--teal);
-      text-decoration: none;
-    }
-
-    .footer-links a:hover {
-      color: var(--rust);
-      text-decoration: underline;
-    }
-
-    .footer-links a:focus {
-      outline: 2px solid var(--teal);
-    }
-
-    .footer-text {
-      color: var(--stone);
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    .footer-text p {
-      margin-bottom: 12px;
-    }
-
-    .footer-text p:last-child {
-      margin-bottom: 0;
-    }
-
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 32px;
-      }
-
-      h2 {
-        font-size: 22px;
-      }
-
-      h3 {
-        font-size: 18px;
-      }
-
-      .cookie-table {
-        font-size: 13px;
-      }
-
-      .cookie-table th,
-      .cookie-table td {
-        padding: 10px 12px;
-      }
-
-      .footer-links {
-        flex-direction: column;
-        gap: 12px;
-      }
-    }
-  </style>
+<!-- Privacy-friendly analytics by Plausible -->
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+<link rel="preload" as="style" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/site.css" fetchpriority="high">
 </head>
 <body>
-  <header>
-    <nav>
-      <div class="muntin-mark">
-        <a href="/">
-          <svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="18" y="18" width="92" height="92" fill="none" stroke="#1F4E5B" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"/>
-            <line x1="64" y1="18" x2="64" y2="110" stroke="#1F4E5B" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"/>
-            <line x1="18" y1="49" x2="110" y2="49" stroke="#1F4E5B" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"/>
-          </svg>
-        </a>
-      </div>
-      <a href="/" class="site-title">Muntin Digital™</a>
-    </nav>
-  </header>
 
-  <main>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm">™</sup>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/#services">Services</a>
+      <a href="/for/restaurants/">Restaurants</a>
+      <a href="/work/">Work</a>
+      <a href="/blog/">Blog</a>
+      <a href="/#about">About</a>
+    </nav>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/#services">Services</a>
+    <a href="/for/restaurants/">Restaurants</a>
+    <a href="/work/">Work</a>
+    <a href="/blog/">Blog</a>
+    <a href="/#about">About</a>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call</a>
+  </nav>
+</header>
+
+<main id="main">
+  <article class="legal legal-cookies">
     <h1>Cookie Policy</h1>
-    <div class="meta">Effective April 2026</div>
+    <p class="meta">Effective April 2026</p>
 
     <h2>What Are Cookies?</h2>
     <p>Cookies are small text files that are stored on your device when you visit a website. They help websites remember information about you and your preferences, making your experience better on repeat visits.</p>
@@ -343,8 +99,8 @@
     </ul>
 
     <h3>Analytics — No Cookies Used</h3>
-    <p>We use <a href="https://plausible.io/privacy-focused-web-analytics">Plausible Analytics</a>, a privacy-friendly analytics service, to understand how visitors interact with our website in aggregate. Plausible is <strong>cookieless</strong> — it does not set any cookies and does not collect personal data or cross-site identifiers. No data is shared with third parties or used for advertising.</p>
-    <p>Plausible reports basic, anonymous information such as the page you visited, the referring site, the device type, and the country of origin. You can review their data policy at <a href="https://plausible.io/data-policy">plausible.io/data-policy</a>.</p>
+    <p>We use <a href="https://plausible.io/privacy-focused-web-analytics" target="_blank" rel="noopener">Plausible Analytics</a>, a privacy-friendly analytics service, to understand how visitors interact with our website in aggregate. Plausible is <strong>cookieless</strong> — it does not set any cookies and does not collect personal data or cross-site identifiers. No data is shared with third parties or used for advertising.</p>
+    <p>Plausible reports basic, anonymous information such as the page you visited, the referring site, the device type, and the country of origin. You can review their data policy at <a href="https://plausible.io/data-policy" target="_blank" rel="noopener">plausible.io/data-policy</a>.</p>
 
     <h3>Third-Party Cookies</h3>
     <p>We use select third-party services that may set their own cookies:</p>
@@ -358,10 +114,10 @@
     <p>You have control over cookie settings in your browser. Most browsers allow you to refuse cookies or alert you when a cookie is being set. You can also delete cookies that have already been set.</p>
     <p>Here are links to cookie control settings for major browsers:</p>
     <ul>
-      <li><a href="https://support.google.com/chrome/answer/95647">Google Chrome</a></li>
-      <li><a href="https://support.apple.com/en-us/105082">Apple Safari</a></li>
-      <li><a href="https://support.mozilla.org/en-US/kb/enhanced-tracking-protection-firefox-desktop">Mozilla Firefox</a></li>
-      <li><a href="https://support.microsoft.com/en-us/windows/delete-and-manage-cookies">Microsoft Edge</a></li>
+      <li><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener">Google Chrome</a></li>
+      <li><a href="https://support.apple.com/en-us/105082" target="_blank" rel="noopener">Apple Safari</a></li>
+      <li><a href="https://support.mozilla.org/en-US/kb/enhanced-tracking-protection-firefox-desktop" target="_blank" rel="noopener">Mozilla Firefox</a></li>
+      <li><a href="https://support.microsoft.com/en-us/windows/delete-and-manage-cookies" target="_blank" rel="noopener">Microsoft Edge</a></li>
     </ul>
     <p>Please note that disabling cookies may affect the functionality of our website. Some features may not work as intended if cookies are blocked.</p>
 
@@ -383,12 +139,14 @@
     <div class="contact-box">
       <p>If you have questions about our use of cookies or this policy, please contact us:</p>
       <p><strong>Email:</strong> <a href="mailto:don@muntin.digital">don@muntin.digital</a></p>
-      <p><strong>Website:</strong> <a href="https://muntin.digital">muntin.digital</a></p>
+      <p><strong>Website:</strong> <a href="https://muntin.digital" target="_blank" rel="noopener">muntin.digital</a></p>
       <p>We're happy to answer your questions and address any concerns about how we use cookies.</p>
     </div>
-  </main>
+  </article>
+</main>
 
-  <footer>
+<!-- ============ FOOTER ============ -->
+<footer>
   <div class="container">
     <div class="foot-cta">
       <div class="foot-cta-text">Ready to build something worth the time?</div>
@@ -396,6 +154,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </a>
     </div>
+
     <div class="foot-grid">
       <div class="foot-col foot-brand">
         <a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home">
@@ -405,6 +164,7 @@
         <p class="foot-tagline">Structure Brings Clarity.</p>
         <p class="foot-blurb">A one-person studio in Silver Spring, MD, building custom websites, brands, and social media for independent restaurants and lifestyle brands across the DMV and beyond.</p>
       </div>
+
       <nav class="foot-col" aria-labelledby="foot-explore">
         <p class="foot-heading" id="foot-explore">Explore</p>
         <ul class="foot-links">
@@ -415,6 +175,7 @@
           <li><a href="/#about">About Don</a></li>
         </ul>
       </nav>
+
       <nav class="foot-col" aria-labelledby="foot-tools">
         <p class="foot-heading" id="foot-tools">Free tools</p>
         <ul class="foot-links">
@@ -425,6 +186,7 @@
           <li><a href="/resources/wellness-website-checklist/">Wellness checklist</a></li>
         </ul>
       </nav>
+
       <nav class="foot-col foot-contact" aria-labelledby="foot-contact">
         <p class="foot-heading" id="foot-contact">Contact</p>
         <ul class="foot-links">
@@ -435,6 +197,7 @@
         <p class="foot-trust"><strong>Reply time:</strong> under 4 hours, Mon–Fri</p>
       </nav>
     </div>
+
     <div class="foot-bottom">
       <p class="foot-copy">&copy; 2026 Muntin Digital&#8482; &middot; Maryland LLC &middot; Silver Spring, MD</p>
       <nav class="foot-legal" aria-label="Legal">
@@ -446,5 +209,7 @@
     </div>
   </div>
 </footer>
+
+<script src="/assets/site.js" defer></script>
 </body>
 </html>
