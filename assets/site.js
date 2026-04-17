@@ -854,12 +854,20 @@
     const title = (titleEl && titleEl.content) || (document.title || '').split(' | ')[0] || 'Muntin Digital';
 
     const enc = encodeURIComponent;
+    // Microblog networks accept "text" as a single field; messengers are
+    // a mix; Facebook/LinkedIn only accept a URL (they scrape og:* on
+    // their end). Mastodon is federated — toot.kytta.dev is a neutral
+    // instance picker so the user can pick their home server.
     const intents = {
       x:        'https://twitter.com/intent/tweet?url=' + enc(url) + '&text=' + enc(title),
+      bluesky:  'https://bsky.app/intent/compose?text=' + enc(title + ' ' + url),
+      threads:  'https://www.threads.net/intent/post?text=' + enc(title + ' ' + url),
+      mastodon: 'https://toot.kytta.dev/?text=' + enc(title + ' ' + url),
       linkedin: 'https://www.linkedin.com/sharing/share-offsite/?url=' + enc(url),
       facebook: 'https://www.facebook.com/sharer/sharer.php?u=' + enc(url),
       reddit:   'https://www.reddit.com/submit?url=' + enc(url) + '&title=' + enc(title),
       whatsapp: 'https://api.whatsapp.com/send?text=' + enc(title + ' ' + url),
+      telegram: 'https://t.me/share/url?url=' + enc(url) + '&text=' + enc(title),
       email:    'mailto:?subject=' + enc(title) + '&body=' + enc(url),
     };
 
