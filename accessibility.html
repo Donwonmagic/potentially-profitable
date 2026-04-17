@@ -22,6 +22,33 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
+<!-- JSON-LD: page + breadcrumb -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://muntin.digital/accessibility.html#webpage",
+      "name": "Accessibility Statement",
+      "description": "Accessibility Statement for Muntin Digital, a fully-remote digital studio committed to WCAG 2.1 AA standards.",
+      "url": "https://muntin.digital/accessibility.html",
+      "inLanguage": "en-US",
+      "isPartOf": { "@id": "https://muntin.digital/#website" },
+      "publisher": { "@id": "https://muntin.digital/#business" },
+      "dateModified": "2026-04-01"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
+        { "@type": "ListItem", "position": 2, "name": "Accessibility Statement", "item": "https://muntin.digital/accessibility.html" }
+      ]
+    }
+  ]
+}
+</script>
+
 <!-- Self-hosted fonts. @font-face rules live in site.css; preload only
      the two critical above-the-fold weights (Fraunces 500 for the display
      headline and Inter 400 for body copy) to keep first paint fast without

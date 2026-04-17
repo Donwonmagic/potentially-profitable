@@ -22,6 +22,33 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
+<!-- JSON-LD: page + breadcrumb -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://muntin.digital/terms.html#webpage",
+      "name": "Terms of Service",
+      "description": "Terms of Service for Muntin Digital — project proposals, payment terms, IP, care plans, and governing law.",
+      "url": "https://muntin.digital/terms.html",
+      "inLanguage": "en-US",
+      "isPartOf": { "@id": "https://muntin.digital/#website" },
+      "publisher": { "@id": "https://muntin.digital/#business" },
+      "dateModified": "2026-04-01"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
+        { "@type": "ListItem", "position": 2, "name": "Terms of Service", "item": "https://muntin.digital/terms.html" }
+      ]
+    }
+  ]
+}
+</script>
+
 <!-- Self-hosted fonts. @font-face rules live in site.css; preload only
      the two critical above-the-fold weights (Fraunces 500 for the display
      headline and Inter 400 for body copy) to keep first paint fast without
