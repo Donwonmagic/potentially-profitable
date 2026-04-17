@@ -158,7 +158,7 @@
           <line x1="18" y1="49" x2="110" y2="49"/>
         </g>
       </svg>
-      Muntin Digital<sup class="tm">&#8482;</sup>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
     <nav class="nav-links" aria-label="Primary">
       <a href="/#services">Services</a>
@@ -167,7 +167,7 @@
       <a href="/blog/">Blog</a>
       <a href="/#about">About</a>
     </nav>
-    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
@@ -180,7 +180,7 @@
     <a href="/work/">Work</a>
     <a href="/blog/">Blog</a>
     <a href="/#about">About</a>
-    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call</a>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a>
   </nav>
 </header>
 
@@ -198,7 +198,7 @@
   <div class="container">
     <div class="speed-hero">
       <span class="eyebrow">Free tool &middot; 10 seconds</span>
-      <h1>How fast is your<br><span class="serif-italic">website?</span></h1>
+      <h1>How fast is your <span class="serif-italic">website?</span></h1>
       <p class="hero-sub" style="margin:20px auto 0; max-width:520px;">
         Paste your URL and see your mobile load time — one number, one grade, plain English. Powered by Google PageSpeed Insights.
       </p>
@@ -210,9 +210,10 @@
       <p class="speed-note">Works on any publicly accessible URL. Takes about 10–20 seconds.</p>
 
       <!-- Result -->
-      <div class="speed-result" id="speedResult" aria-live="polite">
+      <div class="speed-result" id="speedResult" role="region" aria-labelledby="speedResultHeading" aria-live="polite">
+        <h2 id="speedResultHeading" tabindex="-1" class="sr-only">Speed test results</h2>
         <div class="speed-dial" id="speedDial">
-          <svg viewBox="0 0 180 180">
+          <svg viewBox="0 0 180 180" aria-hidden="true">
             <circle class="track" cx="90" cy="90" r="80" />
             <circle class="fill" id="speedFill" cx="90" cy="90" r="80" />
           </svg>
@@ -261,7 +262,7 @@
   <div class="container">
     <div class="foot-cta">
       <div class="foot-cta-text">Ready to build something worth the time?</div>
-      <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
+      <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </a>
     </div>
@@ -297,14 +298,14 @@
         <p class="foot-heading" id="foot-contact">Contact</p>
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
-          <li><a href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call</a></li>
-          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a></li>
+          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
         <p class="foot-trust"><strong>Reply time:</strong> under 4 hours, Mon&ndash;Fri</p>
       </nav>
     </div>
     <div class="foot-bottom">
-      <p class="foot-copy">&copy; 2026 Muntin Digital&#8482; &middot; Maryland LLC &middot; Silver Spring, MD</p>
+      <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p>
       <nav class="foot-legal" aria-label="Legal">
         <a href="/terms.html">Terms</a>
         <a href="/privacy.html">Privacy</a>
@@ -414,6 +415,10 @@
 
         result.classList.add('visible');
         result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Move focus to the results heading so keyboard + AT users land
+        // on the output instead of the bottom of the form.
+        var resultHeading = document.getElementById('speedResultHeading');
+        if (resultHeading) setTimeout(function(){ resultHeading.focus(); }, 300);
 
         if (window.plausible) {
           window.plausible('Speed Test', { props: { score: score, url: url } });
