@@ -868,6 +868,64 @@
     font-weight: 600;
   }
 
+  /* Business-type card (Phase B — detection + type-aware copy). Sits
+     above the priority-list on restaurant sites so the owner sees
+     what subtype we classified them as and can correct it. */
+  .business-type-card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .business-type-card .btc-left {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .business-type-card .btc-label {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--stone);
+  }
+  .business-type-card .btc-select {
+    font: inherit;
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--cream-2);
+    border: 1px solid var(--line-dark);
+    border-radius: 8px;
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: border-color var(--t-fast) var(--ease);
+  }
+  .business-type-card .btc-select:hover,
+  .business-type-card .btc-select:focus {
+    border-color: var(--teal);
+    outline: none;
+  }
+  .business-type-card .btc-sub {
+    flex: 1;
+    min-width: 240px;
+    margin: 0;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--stone);
+  }
+  @media (max-width: 560px) {
+    .business-type-card { padding: 14px 16px; gap: 10px; }
+    .business-type-card .btc-sub { font-size: 12px; min-width: 0; }
+  }
+
   /* Restaurant-priority checks list */
   .priority-list {
     background: var(--white);
@@ -1774,6 +1832,24 @@
         <button type="button" class="nrn-btn" id="forceRestaurantBtn">
           This <em>is</em> a restaurant — show me the checks
         </button>
+      </div>
+
+      <!-- Business-type auto-detection. Phase B: detect + adapt copy,
+           no scoring change. Persisted via ?bt= in the URL so a
+           corrected shared link keeps the classification. -->
+      <div class="business-type-card" id="businessTypeCard" hidden>
+        <div class="btc-left">
+          <div class="btc-label">We detected:</div>
+          <select id="btcSelect" class="btc-select" aria-label="Restaurant type">
+            <option value="fine-dining">Fine-dining restaurant</option>
+            <option value="casual-dining">Casual / full-service restaurant</option>
+            <option value="fast-casual">Fast-casual or quick-service</option>
+            <option value="cafe-bakery">Café or bakery</option>
+            <option value="bar-pub">Bar or pub</option>
+            <option value="restaurant">Other restaurant</option>
+          </select>
+        </div>
+        <p class="btc-sub" id="btcSub">Auto-detected from schema markup, ordering/reservation platform, and page content. If we got it wrong, pick the right one — the checks below will update live.</p>
       </div>
 
       <!-- Restaurant-priority checks list -->
@@ -2821,6 +2897,168 @@
     return false;
   }
 
+  // =================================================================
+  // RESTAURANT SUBTYPE DETECTION (Phase B — display + type-aware copy)
+  // =================================================================
+  // Signals in priority order: schema.org @type → booking/ordering
+  // platform fingerprint → keyword co-occurrence. Platforms carry
+  // strong segment signals (Resy/Tock = fine dining; ChowNow/Slice =
+  // fast-casual takeout; OpenTable = generalist). Schema is strongest
+  // when present — @type "CafeOrCoffeeShop" is an intentional owner
+  // declaration. Keyword matches are the weakest tier and serve as
+  // tiebreaker + fallback for sites without schema or platform.
+  //
+  // Detection drives type-aware COPY only in this release. The 9
+  // priority checks, their weights, and pass/fail logic are unchanged.
+  // A future phase can add segment-specific weights once detection
+  // accuracy is confirmed via the Plausible correction-rate signal.
+  var BUSINESS_TYPE_DEFS = {
+    // IMPORTANT: platformHints keys must match the NORMALIZED platform
+    // names returned by detectPlatforms (lowercased, whitespace
+    // stripped), not the raw pattern strings. Toast patterns resolve
+    // to name 'Toast' → normalize to 'toast'; Slice patterns resolve
+    // to 'Slice' → 'slice'; etc. See PLATFORM_PATTERNS above for the
+    // authoritative name-per-pattern mapping.
+    'fine-dining': {
+      label: 'Fine-dining restaurant',
+      schemaTypes: [],
+      platformHints: { resy: 4, tock: 5, sevenrooms: 4 },
+      keywordPatterns: [
+        /\btasting\s+menu\b/i, /\bprix\s+fixe\b/i, /\bsommelier\b/i,
+        /\bchef['’]s\s+(?:counter|table)\b/i, /\bwine\s+pairing\b/i,
+        /\bdegustation\b/i, /\bamuse[-\s]?bouche\b/i, /\bmichelin\b/i,
+        /\bmulti[-\s]?course\b/i, /\bomakase\b/i
+      ]
+    },
+    'casual-dining': {
+      label: 'Casual / full-service restaurant',
+      schemaTypes: ['Restaurant', 'FoodEstablishment'],
+      platformHints: { opentable: 1, yelpreservations: 1 },
+      keywordPatterns: [
+        /\bdining\s+room\b/i, /\bfull\s+bar\b/i,
+        /\blunch\s+and\s+dinner\b/i, /\bsignature\s+dishes?\b/i,
+        /\bfamily[-\s]friendly\b/i, /\bneighborhood\s+(?:spot|restaurant|favorite)\b/i
+      ]
+    },
+    'fast-casual': {
+      label: 'Fast-casual or quick-service',
+      schemaTypes: ['FastFoodRestaurant'],
+      platformHints: { toast: 2, chownow: 3, square: 1, bentobox: 2, slice: 4, menufy: 3, olo: 2, lunchbox: 2, checkmate: 2, popmenu: 1 },
+      keywordPatterns: [
+        /\border\s+online\b/i, /\border\s+for\s+(?:pickup|delivery|takeout|take[-\s]out)\b/i,
+        /\bgrab\s+(?:and|&)\s+go\b/i, /\bfast[-\s]casual\b/i,
+        /\bcounter\s+service\b/i, /\bdrive[-\s]thru\b/i, /\bcurbside\s+pickup\b/i
+      ]
+    },
+    'cafe-bakery': {
+      label: 'Café or bakery',
+      schemaTypes: ['CafeOrCoffeeShop', 'Bakery', 'IceCreamShop'],
+      platformHints: { square: 1 },
+      keywordPatterns: [
+        /\b(?:espresso|cappuccino|latte|cortado|pour[-\s]over)\b/i,
+        /\b(?:pastries|croissant|muffins?|scones?)\b/i,
+        /\bbakery\b/i, /\bbaked\s+goods\b/i, /\bpatisserie\b/i,
+        /\bcoffee\s+shop\b/i, /\bartisan\s+(?:bread|coffee)\b/i
+      ]
+    },
+    'bar-pub': {
+      label: 'Bar or pub',
+      schemaTypes: ['BarOrPub', 'Brewery', 'Winery', 'Distillery'],
+      platformHints: { tripleseat: 2 },
+      keywordPatterns: [
+        /\bcocktails?\b/i, /\bcraft\s+beer\b/i, /\bon\s+tap\b/i,
+        /\b(?:draft|draught)\s+(?:beer|list)\b/i, /\bhappy\s+hour\b/i,
+        /\b(?:gastro)?pub\b/i, /\btaproom\b/i, /\bwhiskey\s+(?:bar|list)\b/i,
+        /\bwine\s+bar\b/i, /\bspeakeasy\b/i
+      ]
+    }
+  };
+
+  var ALLOWED_BUSINESS_TYPES = ['fine-dining','casual-dining','fast-casual','cafe-bakery','bar-pub','restaurant'];
+
+  // Returns { type, label, confidence, scores }
+  //   type       — 'fine-dining' | 'casual-dining' | 'fast-casual' | 'cafe-bakery' | 'bar-pub' | 'restaurant'
+  //   confidence — 'high' | 'medium' | 'low' (low => fall through to generic 'restaurant')
+  function detectBusinessType(audits, allUrls, pageText) {
+    var scores = { 'fine-dining': 0, 'casual-dining': 0, 'fast-casual': 0, 'cafe-bakery': 0, 'bar-pub': 0 };
+    var text = String(pageText || '');
+
+    Object.keys(BUSINESS_TYPE_DEFS).forEach(function(type){
+      var def = BUSINESS_TYPE_DEFS[type];
+      // Schema.org @type — strongest signal (5 pts per match).
+      def.schemaTypes.forEach(function(t){
+        var re = new RegExp('"@type"\\s*:\\s*"' + t + '"', 'i');
+        if (re.test(text)) scores[type] += 5;
+      });
+      // Keyword matches — 1 pt per distinct pattern hit, capped at 4
+      // so a pizza-heavy casual restaurant doesn't over-score on one
+      // axis versus a legitimate bar signal.
+      var keywordHits = 0;
+      for (var p = 0; p < def.keywordPatterns.length; p++) {
+        if (def.keywordPatterns[p].test(text)) keywordHits++;
+      }
+      scores[type] += Math.min(keywordHits, 4);
+    });
+
+    // Platform hints — iterate actually-detected ordering/reservation
+    // platforms and apply their segment weights. Tock → fine dining;
+    // Slice → fast-casual takeout; OpenTable → generalist.
+    if (allUrls && allUrls.length) {
+      var booking = detectPlatforms(['ordering', 'reservations'], allUrls);
+      if (booking && booking.found) {
+        booking.found.forEach(function(p){
+          var name = String(p.name || '').toLowerCase().replace(/\s+/g, '');
+          Object.keys(BUSINESS_TYPE_DEFS).forEach(function(type){
+            var hints = BUSINESS_TYPE_DEFS[type].platformHints || {};
+            if (hints[name]) scores[type] += hints[name];
+          });
+        });
+      }
+    }
+
+    var sortedTypes  = Object.keys(scores).sort(function(a, b){ return scores[b] - scores[a]; });
+    var topType      = sortedTypes[0];
+    var topScore     = scores[topType];
+    var secondScore  = scores[sortedTypes[1]] || 0;
+
+    // Require ≥2 absolute pts to classify at all; ≥4 pts AND a 2-pt
+    // lead for HIGH confidence. Below the floor, fall through to
+    // generic 'restaurant' so we don't confidently mislabel.
+    if (topScore < 2) {
+      return { type: 'restaurant', label: 'Restaurant', confidence: 'low', scores: scores };
+    }
+    var confidence = (topScore - secondScore >= 2 && topScore >= 4) ? 'high' : 'medium';
+    return {
+      type: topType,
+      label: BUSINESS_TYPE_DEFS[topType].label,
+      confidence: confidence,
+      scores: scores
+    };
+  }
+
+  // Shallow-merge byType[type] over the base check def. Returns the
+  // base unchanged when no override applies. Used by renderPriorityChecks
+  // so type-specific copy ("tasting menu" for fine dining vs "order
+  // online" for fast-casual) surfaces on each type-sensitive check.
+  function resolveCheckForType(def, businessType) {
+    if (!def || !def.byType || !businessType) return def;
+    var override = def.byType[businessType];
+    if (!override) return def;
+    var merged = {};
+    for (var k in def) if (def.hasOwnProperty(k) && k !== 'byType') merged[k] = def[k];
+    for (var k2 in override) if (override.hasOwnProperty(k2)) merged[k2] = override[k2];
+    return merged;
+  }
+
+  // Single source of truth: owner correction wins over auto-detection
+  // wins over generic 'restaurant' fallback.
+  function effectiveBusinessType() {
+    if (userBusinessType) return userBusinessType;
+    var s = window.__auditScoreState;
+    if (s && s.businessType && s.businessType.type) return s.businessType.type;
+    return 'restaurant';
+  }
+
   // Menu format check: is the restaurant's menu an HTML page or a
   // PDF/image that forces a download or an in-browser viewer? PDF
   // menus are one of the most common mobile usability sins — they
@@ -3057,7 +3295,25 @@
       fail: 'Some of your buttons are too small to tap reliably',
       failNote: 'Action buttons under 44×44 pixels cause fat-finger misses. On a restaurant site, a missed "Reserve" tap is a lost booking walking out the door. Bump button padding to 12px on every side, and give links at least 44px of vertical space around them.',
       unverified: "We couldn't check your buttons' tap-friendliness",
-      unverifiedNote: "Lighthouse couldn't evaluate tap targets on this run. Re-audit in a few seconds and this usually resolves."
+      unverifiedNote: "Lighthouse couldn't evaluate tap targets on this run. Re-audit in a few seconds and this usually resolves.",
+      byType: {
+        'fine-dining': {
+          impact: 'On a fine-dining site the "Reserve" button carries almost the entire booking funnel — it\'s the one tap between "I\'m curious" and "I\'m on the books for Saturday." Small or crowded, and you lose the reservation.',
+          failNote: 'Action buttons under 44×44 pixels cause fat-finger misses. The "Reserve" button is the one that matters — give it at least 48×48 px and plenty of breathing room so the Saturday-night impulse actually books.'
+        },
+        'fast-casual': {
+          impact: 'Fast-casual traffic is almost all mobile and overwhelmingly intent-driven — someone is ordering lunch from their phone while walking to the office. "Order Online" is the most-tapped button on your site. If it\'s small, they give up and open DoorDash.',
+          failNote: 'Buttons under 44×44 pixels cause misses. "Order Online" is the critical button — bump its padding to at least 12px on every side and keep it visually distinct from secondary links.'
+        },
+        'cafe-bakery': {
+          impact: 'Most café traffic is hours-and-location intent: "is it open?" and "where is it?" The hours block and the map pin need to be tappable without zooming — a missed tap sends the customer to a competing shop around the corner.',
+          failNote: 'Hours, phone number, and map links are the three tap-target priorities for a café. They don\'t need to be huge buttons — just give them enough padding (12px) that a thumb reliably hits them.'
+        },
+        'bar-pub': {
+          impact: 'Bar traffic is often late-night and last-minute — "is happy hour still on?", "are they open?", "is there a cover?" A tappable phone and a tappable map are the two buttons that earn their space.',
+          failNote: 'Buttons under 44×44 pixels cause misses. On a bar site the phone number and map links are what visitors actually tap — make sure those in particular have 12px+ padding and aren\'t crowded by other links.'
+        }
+      }
     },
     {
       type: 'audit',
@@ -3072,7 +3328,29 @@
       fail: 'Some of your text is hard to read',
       failNote: 'Light gray on cream or dark-on-dark is invisible to anyone over 40 or anyone standing outside in the sun. Most of your weekday lunch crowd is one of those people. Darken your body text or lift the background — aim for at least the WCAG AA contrast ratio (4.5:1 for normal text).',
       unverified: "We couldn't check your menu text contrast",
-      unverifiedNote: "Lighthouse couldn't evaluate color contrast on this run. Re-audit in a few seconds and this usually resolves."
+      unverifiedNote: "Lighthouse couldn't evaluate color contrast on this run. Re-audit in a few seconds and this usually resolves.",
+      byType: {
+        'fine-dining': {
+          impact: 'Fine-dining menus live and die on careful description — a 55-year-old guest skimming the tasting-menu copy on their phone in a taxi needs every word to be legible. Thin serifs on cream backgrounds are a common culprit.',
+          passNote: 'Your tasting-menu and wine-list copy meets contrast thresholds — readable without squinting, even for the demographic that actually fills your dining room.',
+          failNote: 'Fine-dining menu aesthetics frequently use thin grey serifs on cream or dark-on-dark cards — elegant on-screen, unreadable on a phone. Darken body text to meet WCAG AA (4.5:1 ratio), especially menu descriptions and wine notes.'
+        },
+        'fast-casual': {
+          impact: 'Fast-casual decisions happen in 20 seconds on a phone at lunchtime. Low-contrast item names or prices mean the visitor bounces to an ordering aggregator where the same menu is clearer.',
+          passNote: 'Your item names and prices are readable at a glance — which is what a lunch-break ordering decision actually requires.',
+          failNote: 'Menu item names and prices especially need high contrast. Thin grey text over beige backgrounds is the most common fast-casual contrast failure — darken the body text to meet WCAG AA (4.5:1 ratio).'
+        },
+        'cafe-bakery': {
+          impact: 'Café customers read your hours, menu, and address more than anything else. Soft-palette café branding often puts those three items in light grey — elegant on a laptop, invisible on a phone in sunlight.',
+          passNote: 'Hours, items, and address all meet contrast thresholds — readable at a glance, even in direct light.',
+          failNote: 'Hours and address are the most-read text on a café site. Pale grey on cream looks on-brand but fails contrast — darken these two specifically to WCAG AA (4.5:1 ratio).'
+        },
+        'bar-pub': {
+          impact: 'Bar sites are often dark-themed by default, and legibility takes a hit. Guests checking happy-hour times or the cocktail list on a phone at the curb outside shouldn\'t have to squint.',
+          passNote: 'Your dark-theme copy still meets WCAG AA contrast ratios — happy-hour hours and the cocktail list are readable without zooming.',
+          failNote: 'Dark-theme bar sites fail contrast most often on mid-grey text over black. Lift your body-text brightness (or shift to near-white) until it meets WCAG AA (4.5:1 ratio) — especially for hours, happy-hour times, and the cocktail list.'
+        }
+      }
     },
     {
       type: 'audit',
@@ -3087,7 +3365,25 @@
       fail: 'Your text is too small on a phone',
       failNote: 'More than 40% of your text is below the legibility threshold. Visitors give up before finding their entree. Set body font-size to at least 16px — for menu descriptions and anything a hungry customer actually has to read, 17 or 18 px is better.',
       unverified: "We couldn't check your text size",
-      unverifiedNote: "Lighthouse couldn't evaluate font sizes on this run. Re-audit in a few seconds and this usually resolves."
+      unverifiedNote: "Lighthouse couldn't evaluate font sizes on this run. Re-audit in a few seconds and this usually resolves.",
+      byType: {
+        'fine-dining': {
+          impact: 'Tasting-menu descriptions, wine-list notes, and chef\'s-counter blurbs are the highest-value text on your site. Set too small, they force a pinch-zoom that breaks the whole luxe experience.',
+          failNote: 'Set body font-size to at least 16px. For the tasting menu and wine list specifically, 17 or 18px is the floor — those blocks of descriptive copy are what convinces a guest to book.'
+        },
+        'fast-casual': {
+          impact: 'Customers scan your menu on a phone mid-walk. Small item names and prices turn a 10-second decision into a 30-second squint — and they close the tab and reopen DoorDash.',
+          failNote: 'Set body font-size to at least 16px. Item names and prices specifically should be 17 or 18px — the menu is your conversion page.'
+        },
+        'cafe-bakery': {
+          impact: 'Hours and location are read more than anything else on a café site. Tiny type below 16px forces iOS to zoom on focus and makes "are they open?" a frustrating question.',
+          failNote: 'Set body font-size to at least 16px. The hours block specifically should be 17 or 18px — it\'s the first thing most café visitors look for.'
+        },
+        'bar-pub': {
+          impact: 'Cocktail lists, draft lists, and happy-hour details are the bar\'s menu. Small type on a phone in a dim Uber ride is a usability tax guests won\'t pay.',
+          failNote: 'Set body font-size to at least 16px. The cocktail/draft list and happy-hour times deserve 17 or 18px — those are the conversion paragraphs for a bar site.'
+        }
+      }
     },
     {
       type: 'phone',
@@ -3102,7 +3398,25 @@
       fail: "We couldn't find a phone number on your site",
       failNote: "No click-to-call link and no visible phone number in the page text. Every restaurant gets calls — about 'are you open now', about table availability, about special requests — and if your site doesn't make calling one tap, you are losing those conversations. Add a phone number to your site and wrap it in a <code>tel:</code> link.",
       unverified: "We couldn't confirm whether you have a phone number",
-      unverifiedNote: "We only see the parts of your page that Lighthouse surfaces to us — sometimes phone numbers get missed. Check that yours is visible on every page and wrapped in a <code>tel:</code> link so mobile visitors can tap to call."
+      unverifiedNote: "We only see the parts of your page that Lighthouse surfaces to us — sometimes phone numbers get missed. Check that yours is visible on every page and wrapped in a <code>tel:</code> link so mobile visitors can tap to call.",
+      byType: {
+        'fine-dining': {
+          impact: 'Guests calling a fine-dining restaurant usually have a high-value question: a special-occasion menu, a large-party booking, a dietary accommodation. A missing phone number or a broken tel: link sends those calls — and reservations — to a competitor.',
+          failNote: 'Special-occasion and large-party bookings almost always start with a phone call. Add a phone number and wrap it in a <code>tel:</code> link so the concierge-level conversation can actually happen.'
+        },
+        'fast-casual': {
+          impact: 'Fast-casual traffic is mostly online ordering, but a phone number still closes the edge cases: "is there parking?", "do you cater?", "do you have gluten-free?" A tappable number keeps those from becoming a one-star review.',
+          failNote: 'Even if online ordering drives most of your conversion, add a tappable phone number. Catering, dietary questions, and "is my order ready?" calls all need a one-tap path — and they convert at a much higher rate than form-fills.'
+        },
+        'cafe-bakery': {
+          impact: 'Café and bakery customers call to check hours, to ask about custom cake orders, and to reserve whole pies or catering trays. A missing phone number is a missing revenue channel — custom-order margins especially.',
+          failNote: 'Custom-order inquiries (birthday cakes, catering trays, wholesale) come in by phone. Add a tappable phone number — a <code>tel:</code> link at the top of every page is the bar for a café or bakery.'
+        },
+        'bar-pub': {
+          impact: 'Bar calls are time-sensitive: "are you open?", "is happy hour still on?", "do I need a reservation tonight?" A missing tap-to-call number means those visitors go to a bar with an easier phone number.',
+          failNote: 'Non-negotiable for bars. Guests check "is happy hour still running?" on the curb outside. Add a phone number and wrap it in a <code>tel:</code> link so the call is one tap, not a copy-paste flow.'
+        }
+      }
     },
     {
       type: 'platform',
@@ -3117,7 +3431,21 @@
       fail: null, // never fail this check — absence is always unverified
       failNote: null,
       unverified: "We didn't see a map on your site — is this right?",
-      unverifiedNote: "We scan for Google Maps, Apple Maps, Mapbox, Bing Maps, OpenStreetMap, Waze, and Leaflet. If your site uses one of those, great — we just couldn't find it on this run. If your address is plain text only, consider wrapping it in a Google Maps link so visitors can launch directions in one tap."
+      unverifiedNote: "We scan for Google Maps, Apple Maps, Mapbox, Bing Maps, OpenStreetMap, Waze, and Leaflet. If your site uses one of those, great — we just couldn't find it on this run. If your address is plain text only, consider wrapping it in a Google Maps link so visitors can launch directions in one tap.",
+      byType: {
+        'fine-dining': {
+          impact: 'First-time guests heading to a fine-dining reservation want turn-by-turn directions, not a copy-paste address. A tappable map is part of the concierge experience — and it\'s expected.'
+        },
+        'fast-casual': {
+          impact: 'Fast-casual traffic is often "food near me" intent — visitors are already on their phone deciding where to walk or drive. A one-tap map shaves 15 seconds off the decision and keeps them from comparison-shopping another block over.'
+        },
+        'cafe-bakery': {
+          impact: 'Café and bakery traffic is overwhelmingly local and walk-in driven. A one-tap directions link (especially for the pickup address on a catering or custom order) removes the "wait, where is this place again?" moment.'
+        },
+        'bar-pub': {
+          impact: 'Bar hopping happens on the phone. A tappable map — especially for a bar tucked down a side street or into a basement — can be the difference between a visitor finding you or ending up at whichever place Google Maps surfaces first.'
+        }
+      }
     },
     {
       type: 'conversions',
@@ -3135,7 +3463,42 @@
       fail: null, // never fail — a restaurant might legitimately only take walk-ins
       failNote: null,
       unverified: "We couldn't detect online ordering or reservations — is this right?",
-      unverifiedNote: "We scan for 100+ major ordering and reservation platforms, including Toast, Square, ChowNow, OpenTable, Resy, Tock, BentoBox, Popmenu, SevenRooms, TheFork, Deliveroo, and dozens more. If you use one of those and we missed it, tell us below and we will add it to the scanner. If you take orders or bookings over the phone only, that is a legitimate choice — just mark it so."
+      unverifiedNote: "We scan for 100+ major ordering and reservation platforms, including Toast, Square, ChowNow, OpenTable, Resy, Tock, BentoBox, Popmenu, SevenRooms, TheFork, Deliveroo, and dozens more. If you use one of those and we missed it, tell us below and we will add it to the scanner. If you take orders or bookings over the phone only, that is a legitimate choice — just mark it so.",
+      byType: {
+        'fine-dining': {
+          impact: 'Reservations are the entire business model for fine dining. Every booking taken on your site (via Resy, Tock, SevenRooms, or an embedded widget) keeps the relationship — and the deposit, for prix-fixe reservations — instead of sending it through OpenTable.',
+          pass: 'Guests can reserve a table online',
+          passNote: '{detected} on your site — guests can book directly, and you keep the relationship (and any deposit) instead of paying per-cover fees to a marketplace.',
+          passNoteText: "We found text that suggests self-hosted reservations ('RESERVE A TABLE', 'Book Your Seat') but couldn't match it to a specific platform.",
+          unverified: "We couldn't detect online reservations — is this right?",
+          unverifiedNote: "We scan for reservation platforms including Resy, Tock, SevenRooms, OpenTable, Yelp Reservations, TheFork, and more. Fine-dining restaurants that don\'t take online reservations are leaving money on the table — every phone-only booking is a guest who might not bother."
+        },
+        'casual-dining': {
+          impact: 'Casual dining lives in both worlds — reservations for dinner rushes, online ordering for takeout and delivery. Missing either one sends revenue to OpenTable, DoorDash, or a competitor that has both.',
+          pass: 'Guests can reserve or order online',
+          passNote: '{detected} on your site — guests can book a table or place a takeout order directly, which is the pattern that wins for casual-dining restaurants.'
+        },
+        'fast-casual': {
+          impact: 'Online ordering IS the business model for fast-casual. Every order through your own Toast or ChowNow checkout keeps the 30% DoorDash commission in your pocket. A site without direct ordering is a site that hands margin to marketplaces every day.',
+          pass: 'Customers can order online',
+          passNote: '{detected} on your site — direct orders keep the full margin, and you own the customer data.',
+          passNoteText: "We found text that suggests self-hosted ordering ('ORDER ONLINE', 'Order for Pickup') but couldn't match it to a specific platform.",
+          unverified: "We couldn't detect online ordering — is this right?",
+          unverifiedNote: "We scan for ordering platforms including Toast, Square, ChowNow, BentoBox, Olo, Lunchbox, Slice, Menufy, and dozens more. Fast-casual restaurants without direct online ordering are sending 20–30% of every order to DoorDash/Grubhub as commission."
+        },
+        'cafe-bakery': {
+          impact: 'Direct online ordering matters even for small cafés — pre-orders for commuters, whole-cake orders for birthdays, catering trays for offices. Square and Toast make this table stakes; a site without ordering sends those conversions through Grubhub.',
+          pass: 'Customers can order online',
+          passNote: '{detected} on your site — commuter pre-orders, custom-cake inquiries, and catering tray orders all flow to you directly instead of a commissioned aggregator.',
+          unverifiedNote: "We scan for café-friendly platforms like Square, Toast, ChowNow, and more. Even a simple online-order page for pre-orders, custom cakes, or catering is a meaningful revenue channel for cafés and bakeries."
+        },
+        'bar-pub': {
+          impact: 'Bars and pubs vary — some take reservations, most take walk-ins. But even walk-in bars benefit from event bookings (private parties, tastings, brunches) and gift-card purchases. Tripleseat and similar platforms are common; a direct booking flow converts better than an email inquiry.',
+          pass: 'Guests can book events or reservations online',
+          passNote: '{detected} on your site — event bookings and reservations can be handled without a back-and-forth email thread, which is where most bar-inquiry revenue falls through.',
+          unverifiedNote: "We scan for reservation and event-booking platforms including OpenTable, Resy, Tripleseat, and more. Not every bar needs online booking (walk-ins are legitimate) — but event and private-party inquiries almost always benefit from a direct booking flow."
+        }
+      }
     },
     {
       type: 'menu-format',
@@ -3149,7 +3512,37 @@
       fail: 'Your menu is a PDF or an image',
       failNote: 'PDF menus are the single most common restaurant mobile UX sin. They do not zoom gracefully on phones, they do not link to online ordering, and they make the "update a price" workflow depend on a developer. Replace it with a real HTML menu page.',
       unverified: "We couldn't find a menu link — is this right?",
-      unverifiedNote: "We looked for a link containing 'menu' in its path and didn't find one. If your menu is reachable but named something else (like 'food', 'dining', 'kitchen'), the scanner missed it — tell us below and we'll improve it."
+      unverifiedNote: "We looked for a link containing 'menu' in its path and didn't find one. If your menu is reachable but named something else (like 'food', 'dining', 'kitchen'), the scanner missed it — tell us below and we'll improve it.",
+      byType: {
+        'fine-dining': {
+          impact: 'Fine-dining menus are part of the marketing pitch — prospective guests decide whether to book based on how the tasting menu reads. A PDF (especially one styled for print) flattens on mobile and breaks that pitch completely.',
+          pass: 'Your tasting menu opens as a real HTML page',
+          passNote: 'Your tasting menu and wine list render as HTML — guests can browse on a phone while deciding whether to book, without downloading a file.',
+          fail: 'Your tasting menu is a PDF or an image',
+          failNote: 'PDF tasting menus look designed, but they break the Saturday-afternoon "should I book this place?" decision flow on mobile. Rebuild as an HTML page so the copy is indexable by Google, legible on phones, and updatable without a designer.'
+        },
+        'fast-casual': {
+          impact: 'Fast-casual menus ARE the conversion page — prices, item names, and a one-tap "Order" button all need to live on the same scrollable page. A PDF kills the ordering flow and sends the customer to an aggregator.',
+          pass: 'Your menu opens as a real HTML page',
+          passNote: 'Your menu renders as HTML alongside your order button — which is the pattern that actually converts for fast-casual traffic.',
+          fail: 'Your menu is a PDF or an image',
+          failNote: 'PDF menus on a fast-casual site are a conversion killer. Your menu, prices, and "Order Online" button need to live on one scrollable HTML page — that\'s the ChowNow/Toast/Square pattern and it outperforms PDFs by wide margins.'
+        },
+        'cafe-bakery': {
+          impact: 'Café menus change often — daily specials, seasonal drinks, weekly bakes. A PDF menu means every tweak is a developer ticket; an HTML page means the barista can update prices between the morning and afternoon rush.',
+          pass: 'Your menu opens as a real HTML page',
+          passNote: 'Your menu is an HTML page — which means you can update seasonal drinks, daily specials, and prices without emailing a designer.',
+          fail: 'Your menu is a PDF or an image',
+          failNote: 'Café menus change weekly (or daily); PDFs lock you into a once-a-month update cadence. Rebuild as HTML so seasonal items, specials, and price changes can ship the same afternoon they\'re decided.'
+        },
+        'bar-pub': {
+          impact: 'Cocktail lists and draft lists rotate constantly — a PDF list goes stale within weeks, and nobody wants to read a PDF on a phone at the bar anyway. HTML lists are faster to update, easier to share, and readable without a download.',
+          pass: 'Your drink list opens as a real HTML page',
+          passNote: 'Your cocktail and draft lists render as HTML — which means visitors can scan them on a phone outside, and staff can rotate the list without a design sprint.',
+          fail: 'Your drink list is a PDF or an image',
+          failNote: 'PDF cocktail lists age poorly — by the time the designer ships the update, the beer\'s out of the keg. Rebuild as an HTML list (bar → pub → taproom style) so rotations happen the same day the barback swaps the tap.'
+        }
+      }
     },
     {
       type: 'schema',
@@ -3323,6 +3716,13 @@
   // the classifier's positive result wins.
   var userForcedRestaurant = false;
 
+  // Owner override for restaurant subtype (fine-dining/casual-dining/
+  // fast-casual/cafe-bakery/bar-pub/restaurant). When set, supersedes
+  // auto-detection so a corrected classification persists through
+  // shared links via ?bt=... in the URL. Set by the dropdown in the
+  // business-type card and hydrated on load.
+  var userBusinessType = null;
+
   // Toggle the not-a-restaurant notice vs the priority-checks section.
   // Called from renderReport once the effective classification is known
   // and from the override button's click handler.
@@ -3373,10 +3773,42 @@
       var ov = encodeOverrides(USER_OVERRIDES);
       if (ov) params.set('ov', ov);
       if (userForcedRestaurant) params.set('r', '1');
+      if (userBusinessType)     params.set('bt', userBusinessType);
       var qs = params.toString();
       var newUrl = location.pathname + (qs ? '?' + qs : '');
       window.history.replaceState(null, '', newUrl);
     } catch (e) { /* history API unavailable — silently skip */ }
+  }
+
+  // Render the business-type card (detected subtype + dropdown to
+  // correct). Hidden entirely on non-restaurant sites. Subcopy
+  // adapts to confidence so owners understand whether we're guessing
+  // or confident — "auto-detected" / "best guess" / "we couldn't
+  // tell, please pick" / "you told us".
+  function renderBusinessTypeCard(isRestaurant, detection) {
+    var card   = document.getElementById('businessTypeCard');
+    var select = document.getElementById('btcSelect');
+    var sub    = document.getElementById('btcSub');
+    if (!card || !select) return;
+    if (!isRestaurant) {
+      card.hidden = true;
+      return;
+    }
+    card.hidden = false;
+    var effective = userBusinessType || (detection && detection.type) || 'restaurant';
+    if (ALLOWED_BUSINESS_TYPES.indexOf(effective) === -1) effective = 'restaurant';
+    select.value = effective;
+    if (sub) {
+      if (userBusinessType) {
+        sub.textContent = "You told us what kind of restaurant this is — we're using it to tailor the checks below to your segment.";
+      } else if (detection && detection.confidence === 'low') {
+        sub.textContent = "We couldn't tell what kind of restaurant this is from the page. Pick the closest match and the checks below will speak your dialect.";
+      } else if (detection && detection.confidence === 'medium') {
+        sub.textContent = "Our best guess from schema markup, platform, and page content. If we got it wrong, pick the right one — the checks below will update live.";
+      } else {
+        sub.textContent = "Auto-detected from schema markup, ordering/reservation platform, and page content. If we got it wrong, pick the right one — the checks below will update live.";
+      }
+    }
   }
 
   function renderPriorityChecks(audits, allUrls, pageText) {
@@ -3398,22 +3830,31 @@
 
     // Sort passes + fails + unverified in a consistent reading order:
     // failures first (most actionable), then unverified questions,
-    // then passes (celebratory tail). This matters more than grouping
-    // by check type because owners scan top-down and want their
-    // problems near the top.
+    // then passes (celebratory tail).
+    //
+    // Type-aware copy: each PRIORITY_CHECKS entry can carry a byType
+    // map (fine-dining / casual-dining / fast-casual / cafe-bakery /
+    // bar-pub). We resolve the effective definition once per check so
+    // impact, pass/fail titles, and notes speak the owner's dialect —
+    // fine-dining sees "Your tasting menu opens as a real HTML page"
+    // where fast-casual sees the same check framed as "Your menu
+    // opens as a real HTML page" alongside an Order button. The
+    // underlying pass/fail logic is unchanged.
+    var btype = effectiveBusinessType();
     var results = [];
     PRIORITY_CHECKS.forEach(function(def, idx){
-      var result = evaluatePriorityCheck(def, audits, allUrls, pageText);
+      var resolvedDef = resolveCheckForType(def, btype);
+      var result = evaluatePriorityCheck(resolvedDef, audits, allUrls, pageText);
       if (!result) return;
       // Apply any user override from the feedback UI.
       if (USER_OVERRIDES[idx] === 'pass' && result.mark.cls === 'unverified') {
-        result = makeResult(def, 'pass');
+        result = makeResult(resolvedDef, 'pass');
         result.overridden = true;
       } else if (USER_OVERRIDES[idx] === 'fail' && result.mark.cls === 'unverified') {
-        result = makeResult(def, 'fail');
+        result = makeResult(resolvedDef, 'fail');
         result.overridden = true;
       }
-      results.push({ def: def, result: result, idx: idx });
+      results.push({ def: resolvedDef, result: result, idx: idx });
     });
     // Stable sort: fail → unverified → pass
     results.sort(function(a, b){
@@ -3813,6 +4254,24 @@
     var detectedRestaurant = looksLikeRestaurant(auditedUrl, audits, allUrls);
     var isRestaurantSite   = detectedRestaurant || userForcedRestaurant;
 
+    // Auto-detect restaurant subtype (fine-dining/casual-dining/
+    // fast-casual/cafe-bakery/bar-pub) on wellness sites. Phase B:
+    // drives type-aware COPY only; the 9 priority checks and their
+    // weights are unchanged. Seed the state cache BEFORE calling
+    // renderPriorityChecks so effectiveBusinessType() resolves
+    // correctly during render.
+    var businessType = isRestaurantSite
+      ? detectBusinessType(audits, allUrls, pageText)
+      : null;
+    window.__auditScoreState = {
+      perf: perf, a11y: a11y, bp: bp, seo: seo,
+      isRestaurant: isRestaurantSite,
+      detectedRestaurant: detectedRestaurant,
+      businessType: businessType,
+      audits: audits, allUrls: allUrls, pageText: pageText,
+      auditedUrl: auditedUrl
+    };
+
     // Only populate the priority-check list when we're actually
     // displaying it. For non-restaurant sites the section is hidden
     // and the DOM mutations would be wasted work — plus the mass of
@@ -3825,19 +4284,8 @@
       priorityResult = { score: 0, passCount: 0, totalCount: 0, confirmedCount: 0, lowConfidence: true };
     }
     toggleRestaurantUi(isRestaurantSite);
+    renderBusinessTypeCard(isRestaurantSite, businessType);
     var restaurantScore = priorityResult.score;
-
-    // Cache the four Lighthouse category scores + the restaurant flag
-    // so recomputeOverall() (fired by user feedback clicks) can update
-    // the overall score ring and the restaurant category card without
-    // needing to re-fetch from PSI.
-    window.__auditScoreState = {
-      perf: perf, a11y: a11y, bp: bp, seo: seo,
-      isRestaurant: isRestaurantSite,
-      detectedRestaurant: detectedRestaurant,
-      audits: audits, allUrls: allUrls, pageText: pageText,
-      auditedUrl: auditedUrl
-    };
 
     // Readiness is only included in the overall rollup when (a) this
     // is a restaurant site AND (b) we have enough confirmed checks to
@@ -3949,12 +4397,14 @@
       var failingChecks = [];
       var unverifiedChecks = [];
       if (isRestaurantSite) {
+        var emailType = effectiveBusinessType();
         PRIORITY_CHECKS.forEach(function(def, idx){
-          var result = evaluatePriorityCheck(def, audits, allUrls, pageText);
+          var resolvedDef = resolveCheckForType(def, emailType);
+          var result = evaluatePriorityCheck(resolvedDef, audits, allUrls, pageText);
           if (!result) return;
           if (USER_OVERRIDES[idx] === 'pass' && result.mark.cls === 'unverified') return;
           if (USER_OVERRIDES[idx] === 'fail' && result.mark.cls === 'unverified') {
-            result = makeResult(def, 'fail');
+            result = makeResult(resolvedDef, 'fail');
           }
           var title = result.title ? String(result.title).replace(/<[^>]*>/g, '') : 'check ' + (idx + 1);
           if (result.mark.cls === 'fail') failingChecks.push(title);
@@ -4296,10 +4746,45 @@
       userForcedRestaurant = true;
       state.isRestaurant = true;
       toggleRestaurantUi(true);
+      // Re-detect subtype on the fly — the user just told us this
+      // IS a restaurant, so surface the business-type card.
+      var bt = detectBusinessType(state.audits, state.allUrls, state.pageText);
+      state.businessType = bt;
+      renderBusinessTypeCard(true, bt);
       renderPriorityChecks(state.audits, state.allUrls, state.pageText);
       recomputeOverallFromCurrentState();
       updateUrlState(state.auditedUrl);
       if (window.plausible) window.plausible('Audit Classification Overridden');
+    });
+  }
+
+  // Business-type dropdown. Fires on every change; records the
+  // correction as an analytics signal, persists via ?bt= in the URL,
+  // and re-renders the priority checks so the type-aware copy
+  // updates live — a fine-dining restaurant reclassified as
+  // fast-casual sees the check wording flip from "Your tasting menu"
+  // to "Your menu" without a page reload. Pass/fail logic and
+  // weights are identical, so no recomputeOverall is needed.
+  var btcSelect = document.getElementById('btcSelect');
+  if (btcSelect) {
+    btcSelect.addEventListener('change', function(){
+      var newType = btcSelect.value;
+      if (ALLOWED_BUSINESS_TYPES.indexOf(newType) === -1) return;
+      userBusinessType = newType;
+      var state = window.__auditScoreState;
+      if (state) {
+        renderBusinessTypeCard(true, state.businessType);
+        if (state.isRestaurant) {
+          renderPriorityChecks(state.audits, state.allUrls, state.pageText);
+        }
+        updateUrlState(state.auditedUrl);
+      }
+      if (window.plausible) {
+        var detectedType = (state && state.businessType && state.businessType.type) || 'unknown';
+        window.plausible('Audit Business Type Corrected', {
+          props: { detected: detectedType, corrected_to: newType }
+        });
+      }
     });
   }
 
@@ -4944,6 +5429,13 @@
       // gets the priority-check section visible from the first render
       // instead of having to click the override button themselves.
       if (params.get('r') === '1') userForcedRestaurant = true;
+      // Hydrate the restaurant-subtype correction (?bt=fine-dining|
+      // casual-dining|fast-casual|cafe-bakery|bar-pub|restaurant).
+      // Ignored silently if the value isn't in the allowed set.
+      var btParam = params.get('bt');
+      if (btParam && ALLOWED_BUSINESS_TYPES.indexOf(btParam) !== -1) {
+        userBusinessType = btParam;
+      }
       // Brief delay so the page finishes painting before we kick off the fetch
       setTimeout(function(){
         if (window.plausible) window.plausible('Audit Auto-run');
