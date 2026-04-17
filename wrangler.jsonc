@@ -36,13 +36,23 @@
   //   .gitignore    — git metadata
   //   src           — Sprint 7a: Worker source (referenced by "main"
   //                   above, NOT a static asset)
+  //   scripts       — build-time Node scripts (sync-includes.mjs,
+  //                   render-checklist-pdfs.mjs). Referenced by the
+  //                   build command, never served to users.
+  //   _includes     — canonical HTML partials (nav, footer) consumed
+  //                   by scripts/sync-includes.mjs. Not user-facing.
   //
   // The _headers file at the repo root IS copied into dist/ because it's
   // a static asset that Workers Static Assets interprets at deploy time
   // for per-path cache and security headers. Same with /favicon.ico,
   // /sitemap.xml, /robots.txt, /CNAME.
+  //
+  // The `node scripts/sync-includes.mjs` step stamps the canonical nav
+  // and footer from _includes/ into every HTML page before the tar.
+  // It's idempotent — a no-op if source is already in sync — and
+  // guarantees that a stale page can't ship.
   "build": {
-    "command": "mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md --exclude=src . | tar -xf - -C dist"
+    "command": "node scripts/sync-includes.mjs && mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md --exclude=src --exclude=scripts --exclude=_includes . | tar -xf - -C dist"
   },
   "assets": {
     "directory": "./dist",
