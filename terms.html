@@ -1,10 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms of Service — Muntin Digital™</title>
-    <meta name="description" content="Terms of Service for Muntin Digital — our policies on services, payments, intellectual property, warranties, and client responsibilities.">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Terms of Service | Muntin Digital™</title>
+<meta name="description" content="Terms of Service for Muntin Digital — project proposals, payment terms, IP, care plans, and governing law." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/terms.html" />
+
 <!-- Favicons -->
 <link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
@@ -12,367 +15,216 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 <link rel="shortcut icon" href="/favicon.ico" />
-    <!-- Self-hosted fonts. @font-face rules live in site.css; preload only
-         the two critical above-the-fold weights (Fraunces 500 for the display
-         headline and Inter 400 for body copy) to keep first paint fast without
-         over-fetching. Metric-matched fallbacks in site.css prevent CLS. -->
-    <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
-    <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
-    <!-- Privacy-friendly analytics by Plausible -->
-    <script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
-    <script>
-      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-      plausible.init()
-    </script>
-    <style>
-        :root {
-            --cream: #FAF7F2;
-            --ink: #14161A;
-            --teal: #1F4E5B;
-            --rust: #B8541A;
-            --stone: #6B6B6B;
-            --line: #E8E2D6;
-            --line-dark: #D4CCBC;
-            --font-display: 'Fraunces', Georgia, serif;
-            --font-body: 'Inter', sans-serif;
-        }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<!-- Application/entity hints for modern browsers and Google Search -->
+<meta name="application-name" content="Muntin Digital" />
+<meta name="apple-mobile-web-app-title" content="Muntin Digital" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
-        html {
-            scroll-behavior: smooth;
-        }
+<!-- JSON-LD: page + breadcrumb -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://muntin.digital/terms.html#webpage",
+      "name": "Terms of Service",
+      "description": "Terms of Service for Muntin Digital — project proposals, payment terms, IP, care plans, and governing law.",
+      "url": "https://muntin.digital/terms.html",
+      "inLanguage": "en-US",
+      "isPartOf": { "@id": "https://muntin.digital/#website" },
+      "publisher": { "@id": "https://muntin.digital/#business" },
+      "dateModified": "2026-04-01"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
+        { "@type": "ListItem", "position": 2, "name": "Terms of Service", "item": "https://muntin.digital/terms.html" }
+      ]
+    }
+  ]
+}
+</script>
 
-        body {
-            font-family: var(--font-body);
-            color: var(--ink);
-            background-color: var(--cream);
-            line-height: 1.6;
-        }
+<!-- Self-hosted fonts. @font-face rules live in site.css; preload only
+     the two critical above-the-fold weights (Fraunces 500 for the display
+     headline and Inter 400 for body copy) to keep first paint fast without
+     over-fetching. Metric-matched fallbacks in site.css prevent CLS. -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
 
-        /* Navigation */
-        nav {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1.5rem 2rem;
-            background-color: var(--cream);
-            border-bottom: 1px solid var(--line);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        nav a {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            text-decoration: none;
-            color: var(--ink);
-            font-weight: 500;
-            transition: color 0.2s ease;
-        }
-
-        nav a:hover {
-            color: var(--teal);
-        }
-
-        .muntin-mark {
-            width: 32px;
-            height: 32px;
-        }
-
-        .muntin-mark svg {
-            width: 100%;
-            height: 100%;
-            stroke: var(--ink);
-        }
-
-        /* Main Content */
-        main {
-            max-width: 760px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-        }
-
-        h1 {
-            font-family: var(--font-display);
-            font-size: 2.5rem;
-            line-height: 1.1;
-            margin-bottom: 0.5rem;
-            color: var(--ink);
-        }
-
-        .meta {
-            color: var(--stone);
-            font-size: 0.95rem;
-            margin-bottom: 2rem;
-            border-bottom: 1px solid var(--line);
-            padding-bottom: 1.5rem;
-        }
-
-        h2 {
-            font-family: var(--font-display);
-            font-size: 1.5rem;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            color: var(--teal);
-        }
-
-        h3 {
-            font-family: var(--font-body);
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-top: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--ink);
-        }
-
-        p {
-            margin-bottom: 1rem;
-        }
-
-        ul, ol {
-            margin-left: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        li {
-            margin-bottom: 0.5rem;
-        }
-
-        strong {
-            color: var(--rust);
-            font-weight: 600;
-        }
-
-        em {
-            font-style: italic;
-            color: var(--stone);
-        }
-
-        a {
-            color: var(--teal);
-            text-decoration: underline;
-            transition: color 0.2s ease;
-        }
-
-        a:hover {
-            color: var(--rust);
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--ink);
-            color: var(--cream);
-            padding: 2rem;
-            margin-top: 3rem;
-            border-top: 1px solid var(--line-dark);
-        }
-
-        footer .container {
-            max-width: 760px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 2rem;
-        }
-
-        footer h4 {
-            font-family: var(--font-display);
-            font-size: 1rem;
-            margin-bottom: 0.75rem;
-            color: var(--cream);
-        }
-
-        footer a {
-            color: var(--cream);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.2s ease;
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        footer a:hover {
-            color: var(--teal);
-        }
-
-        .footer-divider {
-            grid-column: 1 / -1;
-            height: 1px;
-            background-color: rgba(250, 247, 242, 0.2);
-            margin-top: 1rem;
-        }
-
-        .footer-meta {
-            grid-column: 1 / -1;
-            font-size: 0.85rem;
-            color: rgba(250, 247, 242, 0.7);
-            padding-top: 1rem;
-        }
-
-        .footer-meta p {
-            margin-bottom: 0.25rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 1.75rem;
-            }
-
-            main {
-                padding: 2rem 1.5rem;
-            }
-
-            nav {
-                padding: 1rem 1.5rem;
-            }
-        }
-    </style>
+<!-- Privacy-friendly analytics by Plausible -->
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+<link rel="preload" as="style" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/site.css" fetchpriority="high">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <a href="/" class="muntin-mark">
-            <svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
-                <rect x="18" y="18" width="92" height="92" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"/>
-                <line x1="64" y1="18" x2="64" y2="110" stroke="currentColor" stroke-width="9" stroke-linecap="square"/>
-                <line x1="18" y1="49" x2="110" y2="49" stroke="currentColor" stroke-width="9" stroke-linecap="square"/>
-            </svg>
-        </a>
-        <a href="/">Muntin Digital™</a>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm">&#8482;</sup>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/#services">Services</a>
+      <a href="/for/restaurants/">Restaurants</a>
+      <a href="/work/">Work</a>
+      <a href="/blog/">Blog</a>
+      <a href="/#about">About</a>
     </nav>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/#services">Services</a>
+    <a href="/for/restaurants/">Restaurants</a>
+    <a href="/work/">Work</a>
+    <a href="/blog/">Blog</a>
+    <a href="/#about">About</a>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call</a>
+  </nav>
+</header>
 
-    <!-- Main Content -->
-    <main>
-        <h1>Terms of Service</h1>
-        <div class="meta">
-            <p><strong>Muntin Digital™</strong><br>
-            Effective Date: April 2026<br>
-            <a href="mailto:don@muntin.digital">don@muntin.digital</a></p>
-        </div>
+<main id="main">
+  <article class="legal legal-terms">
+    <h1>Terms of Service</h1>
+    <p class="meta"><strong>Muntin Digital™</strong> · Effective April 2026 · <a href="mailto:don@muntin.digital">don@muntin.digital</a></p>
 
-        <h2>1. Acceptance of Terms</h2>
-        <p>By engaging with Muntin Digital™ for any services, you agree to these Terms of Service. These terms apply to all projects, services, and deliverables provided by Muntin Digital™, a Maryland LLC operated by Donald Goldstein Bushman as a fully-remote digital studio.</p>
-        <p>If you do not agree with any part of these terms, please do not proceed with our services.</p>
+    <h2>1. Acceptance of Terms</h2>
+    <p>By engaging with Muntin Digital™ for any services, you agree to these Terms of Service. These terms apply to all projects, services, and deliverables provided by Muntin Digital™, a Maryland LLC operated by Donald Goldstein Bushman as a fully-remote digital studio.</p>
+    <p>If you do not agree with any part of these terms, please do not proceed with our services.</p>
 
-        <h2>2. Services Description</h2>
-        <p>Muntin Digital™ provides the following services:</p>
-        <ul>
-            <li><strong>Web Development</strong>: Custom website design, development, deployment, and technical implementation</li>
-            <li><strong>Social Media Management</strong>: Account strategy, content creation, posting, community engagement, and performance analysis</li>
-            <li><strong>Brand Identity & Design</strong>: Logo design, color palettes, typography systems, brand guidelines, and visual asset creation</li>
-            <li><strong>Ongoing Care Plans</strong>: Monthly maintenance, updates, content publishing, and continuous optimization for active projects</li>
-        </ul>
-        <p>All services are customized to your needs and outlined in a written project proposal.</p>
+    <h2>2. Services Description</h2>
+    <p>Muntin Digital™ provides the following services:</p>
+    <ul>
+      <li><strong>Web Development</strong>: Custom website design, development, deployment, and technical implementation</li>
+      <li><strong>Social Media Management</strong>: Account strategy, content creation, posting, community engagement, and performance analysis</li>
+      <li><strong>Brand Identity & Design</strong>: Logo design, color palettes, typography systems, brand guidelines, and visual asset creation</li>
+      <li><strong>Ongoing Care Plans</strong>: Monthly maintenance, updates, content publishing, and continuous optimization for active projects</li>
+    </ul>
+    <p>All services are customized to your needs and outlined in a written project proposal.</p>
 
-        <h2>3. Project Proposals & Agreements</h2>
-        <p>Before work begins, Muntin Digital™ will provide a written project proposal that includes:</p>
-        <ul>
-            <li>Scope of work and deliverables</li>
-            <li>Project timeline and key milestones</li>
-            <li>Service fees and payment schedule</li>
-            <li>Any assumptions or limitations</li>
-        </ul>
-        <p>Your agreement to this proposal constitutes acceptance of the project terms. Any changes to scope after proposal acceptance will be treated as a change order (see section 7).</p>
+    <h2>3. Project Proposals & Agreements</h2>
+    <p>Before work begins, Muntin Digital™ will provide a written project proposal that includes:</p>
+    <ul>
+      <li>Scope of work and deliverables</li>
+      <li>Project timeline and key milestones</li>
+      <li>Service fees and payment schedule</li>
+      <li>Any assumptions or limitations</li>
+    </ul>
+    <p>Your agreement to this proposal constitutes acceptance of the project terms. Any changes to scope after proposal acceptance will be treated as a change order (see section 7).</p>
 
-        <h2>4. Payment Terms</h2>
-        <h3>Project Work</h3>
-        <p>For project-based engagements, payment follows this structure:</p>
-        <ul>
-            <li><strong>50% deposit</strong> due upon proposal acceptance to secure your project start date</li>
-            <li><strong>Milestone payments</strong> due upon completion of agreed-upon project phases</li>
-            <li><strong>Final balance</strong> due upon project delivery</li>
-        </ul>
-        <p>All invoices are due within 15 days of invoice date (Net 15). Payments should be made via the method specified in your invoice.</p>
+    <h2>4. Payment Terms</h2>
+    <h3>Project Work</h3>
+    <p>For project-based engagements, payment follows this structure:</p>
+    <ul>
+      <li><strong>50% deposit</strong> due upon proposal acceptance to secure your project start date</li>
+      <li><strong>Milestone payments</strong> due upon completion of agreed-upon project phases</li>
+      <li><strong>Final balance</strong> due upon project delivery</li>
+    </ul>
+    <p>All invoices are due within 15 days of invoice date (Net 15). Payments should be made via the method specified in your invoice.</p>
 
-        <h3>Recurring Services (Care Plans)</h3>
-        <p>Monthly care plans are billed on a recurring basis, typically due on the first of each month. Your care plan agreement will specify the billing date and amount.</p>
+    <h3>Recurring Services (Care Plans)</h3>
+    <p>Monthly care plans are billed on a recurring basis, typically due on the first of each month. Your care plan agreement will specify the billing date and amount.</p>
 
-        <h3>Late Payment</h3>
-        <p>Work on your project may be paused if payment is more than 15 days overdue. Muntin Digital™ reserves the right to charge interest on late payments at 1.5% per month or the maximum rate allowed by law, whichever is less.</p>
+    <h3>Late Payment</h3>
+    <p>Work on your project may be paused if payment is more than 15 days overdue. Muntin Digital™ reserves the right to charge interest on late payments at 1.5% per month or the maximum rate allowed by law, whichever is less.</p>
 
-        <h2>5. Intellectual Property</h2>
-        <p><strong>Client Ownership:</strong> Upon full payment, you own all deliverables, including design files, website code, brand assets, and content created specifically for your project.</p>
-        <p><strong>Muntin Digital™ Portfolio Rights:</strong> You grant Muntin Digital™ the right to display your project (or portions thereof) in our portfolio, case studies, and marketing materials, with appropriate credit and respect for any confidentiality requirements you specify.</p>
-        <p><strong>Third-Party Materials:</strong> Any fonts, icons, stock imagery, or third-party code included in deliverables are licensed according to their original terms. You are responsible for maintaining compliance with these licenses.</p>
-        <p><strong>Pre-Existing Materials:</strong> Muntin Digital™ retains ownership of templates, frameworks, processes, and proprietary tools used to create your work.</p>
+    <h2>5. Intellectual Property</h2>
+    <p><strong>Client Ownership:</strong> Upon full payment, you own all deliverables, including design files, website code, brand assets, and content created specifically for your project.</p>
+    <p><strong>Muntin Digital™ Portfolio Rights:</strong> You grant Muntin Digital™ the right to display your project (or portions thereof) in our portfolio, case studies, and marketing materials, with appropriate credit and respect for any confidentiality requirements you specify.</p>
+    <p><strong>Third-Party Materials:</strong> Any fonts, icons, stock imagery, or third-party code included in deliverables are licensed according to their original terms. You are responsible for maintaining compliance with these licenses.</p>
+    <p><strong>Pre-Existing Materials:</strong> Muntin Digital™ retains ownership of templates, frameworks, processes, and proprietary tools used to create your work.</p>
 
-        <h2>6. Client Responsibilities</h2>
-        <p>For projects to proceed smoothly, we ask that you:</p>
-        <ul>
-            <li>Provide timely, clear feedback on deliverables</li>
-            <li>Supply all content, brand materials, and assets needed for the project on schedule</li>
-            <li>Approve designs and functionality within agreed-upon timeframes</li>
-            <li>Communicate project priorities and changes as soon as possible</li>
-            <li>Ensure you have the authority to grant permissions for content and third-party integrations</li>
-        </ul>
-        <p>Project delays caused by client non-response may result in timeline adjustments or additional fees.</p>
+    <h2>6. Client Responsibilities</h2>
+    <p>For projects to proceed smoothly, we ask that you:</p>
+    <ul>
+      <li>Provide timely, clear feedback on deliverables</li>
+      <li>Supply all content, brand materials, and assets needed for the project on schedule</li>
+      <li>Approve designs and functionality within agreed-upon timeframes</li>
+      <li>Communicate project priorities and changes as soon as possible</li>
+      <li>Ensure you have the authority to grant permissions for content and third-party integrations</li>
+    </ul>
+    <p>Project delays caused by client non-response may result in timeline adjustments or additional fees.</p>
 
-        <h2>7. Revisions & Change Orders</h2>
-        <p><strong>Included Revisions:</strong> Each service tier includes a specific number of revision rounds for design and content. Details are outlined in your project proposal.</p>
-        <p><strong>Additional Revisions:</strong> Revisions beyond the included rounds are billed at an hourly rate of $75–$125 per hour, depending on complexity and service type.</p>
-        <p><strong>Change Orders:</strong> Any changes to project scope, timeline, or deliverables require a written change order that specifies the adjustment and any associated cost or timeline impact. Work on changes will not begin until the change order is signed and any required payment is received.</p>
+    <h2>7. Revisions & Change Orders</h2>
+    <p><strong>Included Revisions:</strong> Each service tier includes a specific number of revision rounds for design and content. Details are outlined in your project proposal.</p>
+    <p><strong>Additional Revisions:</strong> Revisions beyond the included rounds are billed at an hourly rate of $75–$125 per hour, depending on complexity and service type.</p>
+    <p><strong>Change Orders:</strong> Any changes to project scope, timeline, or deliverables require a written change order that specifies the adjustment and any associated cost or timeline impact. Work on changes will not begin until the change order is signed and any required payment is received.</p>
 
-        <h2>8. Care Plans & Recurring Services</h2>
-        <p>Monthly care plans provide ongoing support, updates, and maintenance for your digital presence. Plans are customized to your needs and may include:</p>
-        <ul>
-            <li>Regular content publishing and scheduling</li>
-            <li>Website security updates and backups</li>
-            <li>Social media community management</li>
-            <li>Analytics reporting and optimization</li>
-            <li>Emergency technical support</li>
-        </ul>
-        <p><strong>Billing:</strong> Care plans renew monthly and are billed in advance. You may cancel with 30 days written notice.</p>
-        <p><strong>Cancellation:</strong> Upon cancellation, Muntin Digital™ will provide transition support and documentation for up to 30 days or one final billing cycle, whichever is shorter.</p>
+    <h2>8. Care Plans & Recurring Services</h2>
+    <p>Monthly care plans provide ongoing support, updates, and maintenance for your digital presence. Plans are customized to your needs and may include:</p>
+    <ul>
+      <li>Regular content publishing and scheduling</li>
+      <li>Website security updates and backups</li>
+      <li>Social media community management</li>
+      <li>Analytics reporting and optimization</li>
+      <li>Emergency technical support</li>
+    </ul>
+    <p><strong>Billing:</strong> Care plans renew monthly and are billed in advance. You may cancel with 30 days written notice.</p>
+    <p><strong>Cancellation:</strong> Upon cancellation, Muntin Digital™ will provide transition support and documentation for up to 30 days or one final billing cycle, whichever is shorter.</p>
 
-        <h2>9. Social Media Specific Terms</h2>
-        <p>If your engagement includes social media management:</p>
-        <ul>
-            <li><strong>Account Access:</strong> You must provide (or grant) Muntin Digital™ with appropriate access to manage your social media accounts, such as admin or editor permissions</li>
-            <li><strong>Content Approval:</strong> You remain responsible for approving all content before it is posted. We will provide a content calendar and approval process for your review</li>
-            <li><strong>Account Ownership:</strong> All social media accounts remain your property. Muntin Digital™ does not claim ownership of accounts or follower bases</li>
-            <li><strong>Policy Compliance:</strong> You are responsible for ensuring all content complies with platform guidelines and applicable laws</li>
-            <li><strong>Analytics & Reporting:</strong> We will provide regular reports on engagement, reach, and performance metrics</li>
-        </ul>
+    <h2>9. Social Media Specific Terms</h2>
+    <p>If your engagement includes social media management:</p>
+    <ul>
+      <li><strong>Account Access:</strong> You must provide (or grant) Muntin Digital™ with appropriate access to manage your social media accounts, such as admin or editor permissions</li>
+      <li><strong>Content Approval:</strong> You remain responsible for approving all content before it is posted. We will provide a content calendar and approval process for your review</li>
+      <li><strong>Account Ownership:</strong> All social media accounts remain your property. Muntin Digital™ does not claim ownership of accounts or follower bases</li>
+      <li><strong>Policy Compliance:</strong> You are responsible for ensuring all content complies with platform guidelines and applicable laws</li>
+      <li><strong>Analytics & Reporting:</strong> We will provide regular reports on engagement, reach, and performance metrics</li>
+    </ul>
 
-        <h2>10. Limitation of Liability</h2>
-        <p>To the maximum extent permitted by law, Muntin Digital™ is not liable for any indirect, incidental, special, or consequential damages arising from your use of our services, including loss of revenue, data, or business opportunities—even if we have been advised of the possibility of such damages.</p>
-        <p>Our total liability for any claim is limited to the amount you have paid to Muntin Digital™ in the 12 months prior to the claim.</p>
+    <h2>10. Limitation of Liability</h2>
+    <p>To the maximum extent permitted by law, Muntin Digital™ is not liable for any indirect, incidental, special, or consequential damages arising from your use of our services, including loss of revenue, data, or business opportunities—even if we have been advised of the possibility of such damages.</p>
+    <p>Our total liability for any claim is limited to the amount you have paid to Muntin Digital™ in the 12 months prior to the claim.</p>
 
-        <h2>11. Termination</h2>
-        <p><strong>By You:</strong> You may terminate a project or care plan with 30 days written notice to don@muntin.digital. You remain responsible for payment of all work completed up to the termination date.</p>
-        <p><strong>By Muntin Digital™:</strong> We may terminate a project or care plan with 30 days written notice if you breach these terms and do not cure the breach within 15 days of written notice, or if payment is 30 days overdue.</p>
-        <p><strong>Upon Termination:</strong> We will provide deliverables completed to date, transition support, and documentation as outlined in your specific engagement.</p>
+    <h2>11. Termination</h2>
+    <p><strong>By You:</strong> You may terminate a project or care plan with 30 days written notice to don@muntin.digital. You remain responsible for payment of all work completed up to the termination date.</p>
+    <p><strong>By Muntin Digital™:</strong> We may terminate a project or care plan with 30 days written notice if you breach these terms and do not cure the breach within 15 days of written notice, or if payment is 30 days overdue.</p>
+    <p><strong>Upon Termination:</strong> We will provide deliverables completed to date, transition support, and documentation as outlined in your specific engagement.</p>
 
-        <h2>12. Governing Law</h2>
-        <p>These Terms of Service are governed by the laws of the State of Maryland, without regard to its conflict of laws principles. Any legal action or proceeding related to this agreement shall be brought exclusively in the state or federal courts located in Maryland.</p>
+    <h2>12. Governing Law</h2>
+    <p>These Terms of Service are governed by the laws of the State of Maryland, without regard to its conflict of laws principles. Any legal action or proceeding related to this agreement shall be brought exclusively in the state or federal courts located in Maryland.</p>
 
-        <h2>13. Changes to These Terms</h2>
-        <p>Muntin Digital™ may update these Terms of Service from time to time. We will notify you of significant changes by email or by updating the "Effective Date" at the top of this page. Your continued use of our services after changes are posted constitutes acceptance of the updated terms.</p>
+    <h2>13. Changes to These Terms</h2>
+    <p>Muntin Digital™ may update these Terms of Service from time to time. We will notify you of significant changes by email or by updating the "Effective Date" at the top of this page. Your continued use of our services after changes are posted constitutes acceptance of the updated terms.</p>
 
-        <h2>14. Contact Information</h2>
-        <p>If you have questions about these Terms of Service, or if you wish to provide notice of termination or other legal matters, please contact:</p>
-        <p>
-            <strong>Muntin Digital™</strong><br>
-            Donald Goldstein Bushman<br>
-            <a href="mailto:don@muntin.digital">don@muntin.digital</a><br>
-            <a href="https://muntin.digital">muntin.digital</a>
-        </p>
+    <h2>14. Contact Information</h2>
+    <p>If you have questions about these Terms of Service, or if you wish to provide notice of termination or other legal matters, please contact:</p>
+    <div class="contact-box">
+      <p><strong>Muntin Digital™</strong></p>
+      <p>Donald Goldstein Bushman</p>
+      <p>Email: <a href="mailto:don@muntin.digital">don@muntin.digital</a></p>
+      <p>Website: <a href="https://muntin.digital" target="_blank" rel="noopener">muntin.digital</a></p>
+    </div>
 
-        <hr style="margin: 2rem 0; border: none; height: 1px; background-color: var(--line);">
+    <p>These terms apply to all services provided by Muntin Digital™ as of April 2026. By engaging our services, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service.</p>
+  </article>
+</main>
 
-        <p style="color: var(--stone); font-size: 0.9rem; margin-top: 2rem;">These terms apply to all services provided by Muntin Digital™ as of April 2026. By engaging our services, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service.</p>
-    </main>
-
-    <!-- Footer -->
-    <footer>
+<!-- ============ FOOTER ============ -->
+<footer>
   <div class="container">
     <div class="foot-cta">
       <div class="foot-cta-text">Ready to build something worth the time?</div>
@@ -380,6 +232,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </a>
     </div>
+
     <div class="foot-grid">
       <div class="foot-col foot-brand">
         <a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home">
@@ -389,6 +242,7 @@
         <p class="foot-tagline">Structure Brings Clarity.</p>
         <p class="foot-blurb">A one-person studio in Silver Spring, MD, building custom websites, brands, and social media for independent restaurants and lifestyle brands across the DMV and beyond.</p>
       </div>
+
       <nav class="foot-col" aria-labelledby="foot-explore">
         <p class="foot-heading" id="foot-explore">Explore</p>
         <ul class="foot-links">
@@ -399,6 +253,7 @@
           <li><a href="/#about">About Don</a></li>
         </ul>
       </nav>
+
       <nav class="foot-col" aria-labelledby="foot-tools">
         <p class="foot-heading" id="foot-tools">Free tools</p>
         <ul class="foot-links">
@@ -409,6 +264,7 @@
           <li><a href="/resources/wellness-website-checklist/">Wellness checklist</a></li>
         </ul>
       </nav>
+
       <nav class="foot-col foot-contact" aria-labelledby="foot-contact">
         <p class="foot-heading" id="foot-contact">Contact</p>
         <ul class="foot-links">
@@ -416,9 +272,10 @@
           <li><a href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram</a></li>
         </ul>
-        <p class="foot-trust"><strong>Reply time:</strong> under 4 hours, Mon–Fri</p>
+        <p class="foot-trust"><strong>Reply time:</strong> under 4 hours, Mon&#8211;Fri</p>
       </nav>
     </div>
+
     <div class="foot-bottom">
       <p class="foot-copy">&copy; 2026 Muntin Digital&#8482; &middot; Maryland LLC &middot; Silver Spring, MD</p>
       <nav class="foot-legal" aria-label="Legal">
@@ -430,5 +287,7 @@
     </div>
   </div>
 </footer>
+
+<script src="/assets/site.js" defer></script>
 </body>
 </html>
