@@ -78,6 +78,30 @@
    falling through to system fonts. */
 @font-face{font-family:'Fraunces Fallback';src:local('Georgia');size-adjust:105%;ascent-override:92%;descent-override:24%;line-gap-override:0%}
 @font-face{font-family:'Inter Fallback';src:local('Arial');size-adjust:107%;ascent-override:90%;descent-override:22%;line-gap-override:0%}
+
+/* ============ BREAKPOINT SCALE ============
+   The site transitions at exactly these widths, everywhere:
+
+     640px  — mobile / tablet boundary. Below this, multi-column layouts
+              typically collapse to a single column; toolbars and buttons
+              stack; gaps tighten.
+     960px  — tablet / desktop boundary. Below this, multi-column desktop
+              grids compress to fewer columns; heroes reduce top padding.
+
+   Two secondary breakpoints exist for specific, local needs:
+
+     420px  — ultra-narrow phones. Used only when a layout still feels
+              cramped at 640 → 1-col and needs one more squeeze.
+     820px  — nav-specific. The desktop .nav-links hide and the Calendly
+              button moves into the hamburger menu because the header
+              runs out of horizontal room. Not a general-purpose layout
+              breakpoint — do not add unrelated rules here.
+
+   If a new rule needs a breakpoint other than 420, 640, 820, or 960,
+   re-tune the layout instead — the vast majority of "this element
+   squeezes at 760" problems are solved by auto-fit + minmax() or by
+   clamp() on padding/font-size, not by a new breakpoint. */
+
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{margin:0;font-family:var(--font-body);font-size:17px;line-height:1.6;color:var(--ink);background:var(--cream);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
@@ -216,7 +240,7 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 .section-header p{margin-top:20px;font-size:19px;line-height:1.55;color:var(--ink-soft);max-width:640px}
 .bg-cream2{background:var(--cream-2)}
 .compare{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-@media (max-width:900px){.compare{grid-template-columns:1fr}
+@media (max-width:960px){.compare{grid-template-columns:1fr}
 }
 .compare .card{background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);padding:36px;transition:transform var(--t-med) var(--ease),box-shadow var(--t-med) var(--ease)}
 .compare .card.muntin{background:var(--ink);color:var(--cream);border-color:var(--ink);position:relative;overflow:hidden}
@@ -230,7 +254,7 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 .compare .card.muntin li{color:rgba(250,247,242,0.85)}
 .compare .card li::before{content:'';position:absolute;left:0;top:9px;width:14px;height:1px;background:currentColor;opacity:0.5}
 .services{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-@media (max-width:900px){.services{grid-template-columns:1fr}
+@media (max-width:960px){.services{grid-template-columns:1fr}
 }
 .service{background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);padding:38px 34px;position:relative;transition:transform var(--t-med) var(--ease),border-color var(--t-med) var(--ease),box-shadow var(--t-med) var(--ease);display:flex;flex-direction:column}
 .service:hover{transform:translateY(-4px);border-color:var(--teal);box-shadow:0 30px 60px -30px rgba(31,78,91,0.25)}
@@ -248,14 +272,14 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 .process .eyebrow::before{background:var(--cream)}
 .process .section-header p{color:rgba(250,247,242,0.78)}
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(250,247,242,0.12);border-top:1px solid rgba(250,247,242,0.12);border-bottom:1px solid rgba(250,247,242,0.12)}
-@media (max-width:900px){.steps{grid-template-columns:1fr}
+@media (max-width:960px){.steps{grid-template-columns:1fr}
 }
 .step{background:var(--ink);padding:40px 28px 44px;position:relative}
 .step .num{font-family:var(--font-display);font-size:58px;font-weight:400;font-style:italic;color:var(--teal);line-height:1}
 .step h3{margin-top:18px;color:var(--cream);font-size:22px}
 .step p{margin-top:12px;color:rgba(250,247,242,0.78);font-size:14.5px;line-height:1.55}
 .care{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-@media (max-width:900px){.care{grid-template-columns:1fr}
+@media (max-width:960px){.care{grid-template-columns:1fr}
 }
 .plan{background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);padding:36px 32px;position:relative;transition:transform var(--t-med) var(--ease),box-shadow var(--t-med) var(--ease),border-color var(--t-med) var(--ease)}
 .plan.featured{background:var(--teal-tint);border-color:var(--teal)}
@@ -268,7 +292,7 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 .plan li{padding:9px 0;border-bottom:1px solid var(--line)}
 .plan li:last-child{border:0}
 .about-grid{display:grid;grid-template-columns:0.9fr 1.1fr;gap:80px;align-items:center}
-@media (max-width:900px){.about-grid{grid-template-columns:1fr;gap:48px}
+@media (max-width:960px){.about-grid{grid-template-columns:1fr;gap:48px}
 }
 .portrait{width:100%;aspect-ratio:4/5;background:linear-gradient(135deg,rgba(31,78,91,0.55) 0%,rgba(20,54,64,0.35) 100%),radial-gradient(100% 80% at 30% 20%,#FBEFE3 0%,var(--cream-2) 40%,var(--teal-tint) 100%);border-radius:var(--r-lg);border:1px solid var(--line-dark);position:relative;overflow:hidden;display:grid;place-items:center;color:var(--cream);font-family:var(--font-display);font-size:120px;font-weight:500;font-style:italic;letter-spacing:-0.03em}
 .portrait::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,transparent 33%,rgba(20,22,26,0.15) 33%,rgba(20,22,26,0.15) calc(33%+2px),transparent calc(33%+2px)),linear-gradient(to right,transparent 66%,rgba(20,22,26,0.15) 66%,rgba(20,22,26,0.15) calc(66%+2px),transparent calc(66%+2px)),linear-gradient(to bottom,transparent 50%,rgba(20,22,26,0.15) 50%,rgba(20,22,26,0.15) calc(50%+2px),transparent calc(50%+2px));pointer-events:none}
@@ -281,7 +305,7 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 .work-item:nth-child(2){grid-column:span 5}
 .work-item:nth-child(3){grid-column:span 5}
 .work-item:nth-child(4){grid-column:span 7}
-@media (max-width:900px){.work-item{grid-column:span 12 !important}
+@media (max-width:960px){.work-item{grid-column:span 12 !important}
 }
 .work-item:hover{transform:translateY(-4px);box-shadow:0 40px 80px -40px rgba(20,22,26,0.25)}
 .work-thumb{aspect-ratio:16/10;position:relative;overflow:hidden}
@@ -354,7 +378,7 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 .coming-soon-card h3{font-size:clamp(22px,2.5vw,28px)}
 .coming-soon-card p{margin-top:14px;color:var(--ink-soft);font-size:16px;line-height:1.6}
 .contact-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:clamp(40px,6vw,80px);align-items:start}
-@media (max-width:900px){.contact-grid{grid-template-columns:1fr}
+@media (max-width:960px){.contact-grid{grid-template-columns:1fr}
 }
 .contact-details{margin-top:36px;display:flex;flex-direction:column;gap:14px}
 .contact-detail{display:flex;align-items:center;gap:12px;color:var(--ink-soft);font-size:15px}
@@ -371,7 +395,7 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 .contact-form-wrap{position:relative}
 .intake-form{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(28px,4vw,44px);box-shadow:0 30px 70px -30px rgba(20,22,26,0.12)}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media (max-width:600px){.form-row{grid-template-columns:1fr}
+@media (max-width:640px){.form-row{grid-template-columns:1fr}
 }
 .form-group{margin-bottom:20px}
 .form-group label{display:block;font-size:13px;font-weight:500;color:var(--ink);margin-bottom:6px;letter-spacing:0.01em}
@@ -440,13 +464,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .foot-cta-text{color:var(--cream);font-family:var(--font-display);font-size:clamp(22px,2.6vw,30px);line-height:1.2;letter-spacing:-0.01em;max-width:460px}
 .foot-cta .btn-primary{flex:0 0 auto;background:var(--teal);color:var(--cream)}
 .foot-cta .btn-primary:hover{background:var(--teal-dark);transform:translateY(-1px);box-shadow:0 16px 36px -12px rgba(31,78,91,0.55)}
-@media (max-width:620px){.foot-cta{flex-direction:column;align-items:flex-start;gap:20px}}
+@media (max-width:640px){.foot-cta{flex-direction:column;align-items:flex-start;gap:20px}}
 
 /* Main 3-column grid */
 .foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.1fr;gap:clamp(28px,4vw,56px);padding-bottom:48px;margin-bottom:32px;border-bottom:1px solid rgba(250,247,242,0.08)}
 @media (max-width:960px){.foot-grid{grid-template-columns:1fr 1fr 1fr;gap:40px}.foot-brand{grid-column:1 / -1}}
 @media (max-width:640px){.foot-grid{grid-template-columns:1fr 1fr}.foot-brand{grid-column:1 / -1}}
-@media (max-width:460px){.foot-grid{grid-template-columns:1fr}.foot-brand{grid-column:auto}}
+@media (max-width:420px){.foot-grid{grid-template-columns:1fr}.foot-brand{grid-column:auto}}
 
 .foot-brand{display:block}
 .foot-lockup-wrap{position:relative;display:inline-block}
@@ -473,7 +497,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .foot-legal{display:flex;gap:20px;flex-wrap:wrap;margin:0}
 .foot-legal a{font-size:12.5px;color:rgba(250,247,242,0.6);transition:color var(--t-fast) var(--ease)}
 .foot-legal a:hover{color:var(--cream)}
-@media (max-width:520px){.foot-bottom{flex-direction:column;align-items:flex-start;gap:14px}}
+@media (max-width:640px){.foot-bottom{flex-direction:column;align-items:flex-start;gap:14px}}
 
 /* ============ CITATION DRAWER ============
    <details class="cite"> with a <summary> trigger and a body
@@ -524,6 +548,19 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 }
 .hero h1{text-wrap:balance;max-width:14ch}
 .compare .card:hover,.service:hover,.plan:hover,.work-item:hover{transform:translateY(-4px)}
+/* Share widget. One instance = one <div class="share-dropdown" data-share>.
+   The JS initializer in site.js populates the menu hrefs at runtime from
+   the page's canonical URL and og:title, and tries navigator.share() first
+   so the native OS share sheet opens on any device that supports it. */
+.share-dropdown{position:relative;display:inline-block}
+.share-btn{display:inline-flex;align-items:center;gap:10px;padding:10px 18px;border:1px solid var(--line-dark);border-radius:999px;font:inherit;font-size:13px;font-weight:600;color:var(--ink);background:var(--white);cursor:pointer;transition:all var(--t-fast) var(--ease)}
+.share-btn:hover{border-color:var(--teal);background:var(--cream-2);color:var(--teal)}
+.share-btn svg{width:16px;height:16px;flex:none}
+.share-menu{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);min-width:220px;z-index:50;background:var(--white);border:1px solid var(--line);border-radius:12px;padding:6px;box-shadow:0 20px 40px -12px rgba(20,22,26,0.18);display:flex;flex-direction:column}
+.share-menu[hidden]{display:none}
+.share-item{display:block;width:100%;text-align:left;padding:10px 14px;font-family:var(--font-body);font-size:14px;color:var(--ink);background:transparent;border:0;border-radius:8px;cursor:pointer;transition:background-color var(--t-fast) var(--ease)}
+.share-item:hover,.share-item:focus-visible{background-color:var(--cream-2);outline:none}
+.share-item.copied{color:var(--teal);font-weight:600}
 .listen-btn{display:inline-flex;align-items:center;gap:10px;padding:10px 18px;border:1px solid var(--line-dark);border-radius:999px;font:inherit;font-size:13px;font-weight:600;color:var(--ink);background:var(--white);cursor:pointer;transition:all var(--t-fast) var(--ease)}
 .listen-btn:hover{border-color:var(--teal);background:var(--cream-2);color:var(--teal)}
 .listen-btn svg{width:16px;height:16px;flex:none}
@@ -597,7 +634,7 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 .section-center{text-align:center;margin-left:auto;margin-right:auto}
 .container-wide{max-width:1000px}
 .mt-20{margin-top:20px}
-.row-center{display:flex;justify-content:center;margin-top:24px}
+.row-center{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:24px}
 /* Sources / citations block — used at the end of blog posts that cite
    external research. Kept in global CSS so the pattern is consistent
    across posts and releases are easy to ship. */
@@ -640,7 +677,7 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 .legal .cookie-table th{padding:12px 16px;text-align:left;font-weight:600;color:var(--ink)}
 .legal .cookie-table td{padding:12px 16px;border-bottom:1px solid var(--line);color:var(--ink-soft);vertical-align:top}
 .legal .cookie-table tr:last-child td{border-bottom:0}
-@media (max-width:720px){
+@media (max-width:960px){
   .legal{padding-top:calc(64px + 40px)}
   .legal .cookie-table{display:block;overflow-x:auto}
 }
