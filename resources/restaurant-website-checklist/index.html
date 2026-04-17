@@ -682,42 +682,8 @@
     position: relative;
   }
 
-  /* ============ SHARE DROPDOWN ============ */
-  .share-dropdown { position: relative; }
-  .share-menu {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%);
-    min-width: 200px;
-    z-index: 30;
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 6px;
-    box-shadow: 0 20px 40px -12px rgba(20, 22, 26, 0.18);
-    z-index: 50;
-    display: flex;
-    flex-direction: column;
-  }
-  .share-menu[hidden] { display: none; }
-  .share-item {
-    display: block;
-    width: 100%;
-    text-align: left;
-    padding: 10px 14px;
-    font-family: var(--font-body);
-    font-size: 14px;
-    color: var(--ink);
-    background: transparent;
-    border: 0;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color var(--t-fast) var(--ease);
-  }
-  .share-item:hover,
-  .share-item:focus-visible { background-color: var(--cream-2); outline: none; }
-  .share-item.copied { color: var(--teal); font-weight: 600; }
+  /* Share dropdown styles live in /assets/site.css and are wired by
+     initShare() in /assets/site.js — shared with the blog posts. */
 
   /* ============ PROGRESS BAR ============ */
   .checklist-progress-section {
@@ -1273,17 +1239,19 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
           Print my marked-up copy
         </button>
-        <div class="share-dropdown" id="shareDropdown">
-          <button type="button" class="print-cta" id="shareBtn" aria-haspopup="true" aria-expanded="false" aria-controls="shareMenu">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-            Share
+        <div class="share-dropdown" data-share>
+          <button type="button" class="share-btn" aria-haspopup="true" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            <span>Share</span>
           </button>
-          <div class="share-menu" id="shareMenu" hidden role="menu" aria-labelledby="shareBtn">
-            <a role="menuitem" class="share-item" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fmuntin.digital%2Fresources%2Frestaurant-website-checklist%2F&amp;text=The%20Restaurant%20Website%20Checklist%20%E2%80%94%2024%20things%20your%20site%20should%20do%20in%202026.%20Score%20yours%20in%2010%20minutes." target="_blank" rel="noopener">Share on X</a>
-            <a role="menuitem" class="share-item" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fmuntin.digital%2Fresources%2Frestaurant-website-checklist%2F" target="_blank" rel="noopener">Share on LinkedIn</a>
-            <a role="menuitem" class="share-item" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fmuntin.digital%2Fresources%2Frestaurant-website-checklist%2F" target="_blank" rel="noopener">Share on Facebook</a>
-            <a role="menuitem" class="share-item" href="mailto:?subject=The%20Restaurant%20Website%20Checklist&amp;body=Free%2024-item%20audit%20for%20restaurant%20websites%3A%20https%3A%2F%2Fmuntin.digital%2Fresources%2Frestaurant-website-checklist%2F" target="_blank">Share via email</a>
-            <button type="button" role="menuitem" class="share-item" id="copyLinkBtn">Copy link</button>
+          <div class="share-menu" hidden role="menu">
+            <a role="menuitem" class="share-item" data-share-to="x"        href="#" target="_blank" rel="noopener">Share on X</a>
+            <a role="menuitem" class="share-item" data-share-to="linkedin" href="#" target="_blank" rel="noopener">Share on LinkedIn</a>
+            <a role="menuitem" class="share-item" data-share-to="facebook" href="#" target="_blank" rel="noopener">Share on Facebook</a>
+            <a role="menuitem" class="share-item" data-share-to="reddit"   href="#" target="_blank" rel="noopener">Share on Reddit</a>
+            <a role="menuitem" class="share-item" data-share-to="whatsapp" href="#" target="_blank" rel="noopener">Share on WhatsApp</a>
+            <a role="menuitem" class="share-item" data-share-to="email"    href="#">Share via email</a>
+            <button type="button" role="menuitem" class="share-item" data-share-to="copy">Copy link</button>
           </div>
         </div>
         <a href="/for/restaurants/" class="btn btn-ghost">See restaurant services</a>

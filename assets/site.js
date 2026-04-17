@@ -825,79 +825,126 @@
       });
     }
 
-    /* ---- Share dropdown ---- */
-    const shareBtn = document.getElementById('shareBtn');
-    const shareMenu = document.getElementById('shareMenu');
-    const copyBtn = document.getElementById('copyLinkBtn');
+    // Share widget used to live inline here with hand-coded share URLs
+    // and element IDs. It's now a generic [data-share] component wired up
+    // by initShare() at the end of this file, so the checklist uses the
+    // same code path as the blog posts.
+  })();
 
-    // Derive share text from the page so one block serves both the
-    // restaurant and wellness pages. Total is the raw item count (not
-    // the subtype-filtered total), to match the canonical headline.
-    const shareTitle = (document.title || '').split(' | ')[0] || 'Muntin Digital Checklist';
-    const shareUrl = window.location.origin + window.location.pathname;
-    const shareText = items.length + ' things your ' + kind + ' website should do in 2026. Free, takes 10 minutes.';
+  /* =========================================================
+     SHARE WIDGET
+     One initializer for every share widget on the page.
+     Markup contract: any element with [data-share] carrying a
+     .share-btn and a .share-menu with .share-item children that
+     each declare data-share-to="x|linkedin|facebook|reddit|
+     whatsapp|email|copy".
+     The widget prefers navigator.share() (native OS share sheet)
+     when available — that's the real "share anywhere" — and
+     falls back to the dropdown menu when it isn't (Firefox).
+     ========================================================= */
+  (function initShare(){
+    const roots = document.querySelectorAll('[data-share]');
+    if (!roots.length) return;
 
-    function closeShare() {
-      if (!shareMenu || !shareBtn) return;
-      shareMenu.hidden = true;
-      shareBtn.setAttribute('aria-expanded', 'false');
+    // One page = one canonical URL + og:title. Read once; every
+    // widget on the page reuses them.
+    const urlEl   = document.querySelector('link[rel="canonical"]');
+    const titleEl = document.querySelector('meta[property="og:title"]');
+    const url   = (urlEl && urlEl.href) || window.location.href;
+    const title = (titleEl && titleEl.content) || (document.title || '').split(' | ')[0] || 'Muntin Digital';
+
+    const enc = encodeURIComponent;
+    const intents = {
+      x:        'https://twitter.com/intent/tweet?url=' + enc(url) + '&text=' + enc(title),
+      linkedin: 'https://www.linkedin.com/sharing/share-offsite/?url=' + enc(url),
+      facebook: 'https://www.facebook.com/sharer/sharer.php?u=' + enc(url),
+      reddit:   'https://www.reddit.com/submit?url=' + enc(url) + '&title=' + enc(title),
+      whatsapp: 'https://api.whatsapp.com/send?text=' + enc(title + ' ' + url),
+      email:    'mailto:?subject=' + enc(title) + '&body=' + enc(url),
+    };
+
+    function track(target){
+      if (typeof window.plausible === 'function') {
+        window.plausible('Share', { props: { target: target, page: window.location.pathname } });
+      }
     }
-    function openShare() {
-      if (!shareMenu || !shareBtn) return;
-      shareMenu.hidden = false;
-      shareBtn.setAttribute('aria-expanded', 'true');
-    }
-    if (shareBtn && shareMenu) {
-      shareBtn.addEventListener('click', (e) => {
-        // Prevent the document-level "click outside" listener from
-        // immediately closing the menu on the same tick.
+
+    roots.forEach((root) => {
+      const btn  = root.querySelector('.share-btn');
+      const menu = root.querySelector('.share-menu');
+      if (!btn || !menu) return;
+
+      const items = root.querySelectorAll('[data-share-to]');
+      items.forEach((el) => {
+        const target = el.getAttribute('data-share-to');
+        if (target === 'copy') {
+          el.addEventListener('click', async () => {
+            try {
+              await navigator.clipboard.writeText(url);
+              const original = el.textContent;
+              el.textContent = 'Link copied ✓';
+              el.classList.add('copied');
+              track('copy');
+              setTimeout(() => {
+                el.textContent = original;
+                el.classList.remove('copied');
+                closeMenu();
+              }, 1500);
+            } catch (_) {
+              el.textContent = 'Copy failed — select the URL manually';
+            }
+          });
+        } else if (intents[target]) {
+          el.setAttribute('href', intents[target]);
+          el.addEventListener('click', () => {
+            track(target);
+            // Close shortly after so the new tab has already opened.
+            setTimeout(closeMenu, 50);
+          });
+        }
+      });
+
+      function openMenu(){
+        menu.hidden = false;
+        btn.setAttribute('aria-expanded', 'true');
+      }
+      function closeMenu(){
+        menu.hidden = true;
+        btn.setAttribute('aria-expanded', 'false');
+      }
+
+      btn.addEventListener('click', (e) => {
+        // Stop the document-level outside-click handler from closing on
+        // the same tick as opening.
         e.stopPropagation();
-        // On mobile, prefer the native share sheet if available.
-        // If the user dismisses it (AbortError) or it isn't supported,
-        // fall back to the custom dropdown.
-        if (navigator.share && window.matchMedia('(max-width: 820px)').matches) {
-          navigator.share({
-            title: shareTitle,
-            text: shareText,
-            url: shareUrl
-          }).catch(() => { /* user dismissed — do nothing */ });
+
+        // Prefer the native OS share sheet (iOS, Android, macOS Safari,
+        // Edge on Windows). It opens the user's full app list — WhatsApp,
+        // Messages, Signal, Notes, Mail, any installed app — which is
+        // what "share anywhere" actually means.
+        if (navigator.share) {
+          navigator.share({ title, url })
+            .then(() => track('native'))
+            .catch(() => { /* user dismissed; nothing to do */ });
           return;
         }
-        if (shareMenu.hidden) openShare();
-        else closeShare();
-      });
-      // Close when clicking outside. Use closest() so clicks on the
-      // SVG icon INSIDE the button (where e.target is the <svg> or
-      // <path>, not the button itself) still count as "on the button"
-      // and don't accidentally close a just-opened menu.
-      document.addEventListener('click', (e) => {
-        if (shareMenu.hidden) return;
-        const clickedDropdown = e.target.closest && e.target.closest('#shareDropdown');
-        if (!clickedDropdown) closeShare();
-      });
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !shareMenu.hidden) {
-          closeShare();
-          shareBtn.focus();
-        }
-      });
-    }
 
-    if (copyBtn) {
-      copyBtn.addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(shareUrl);
-          const original = copyBtn.textContent;
-          copyBtn.textContent = 'Link copied ✓';
-          copyBtn.classList.add('copied');
-          setTimeout(() => {
-            copyBtn.textContent = original;
-            copyBtn.classList.remove('copied');
-            closeShare();
-          }, 1500);
-        } catch (e) {
-          copyBtn.textContent = 'Copy failed — select the URL manually';
+        // Firefox / older browsers: toggle the in-page menu.
+        if (menu.hidden) openMenu(); else closeMenu();
+      });
+
+      // Click outside closes. closest() catches clicks on the button's
+      // SVG child whose target is the <svg>/<path>, not the button.
+      document.addEventListener('click', (e) => {
+        if (menu.hidden) return;
+        if (!root.contains(e.target)) closeMenu();
+      });
+
+      root.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !menu.hidden) {
+          closeMenu();
+          btn.focus();
         }
       });
-    }
+    });
   })();

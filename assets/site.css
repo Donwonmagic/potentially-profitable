@@ -548,6 +548,19 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 }
 .hero h1{text-wrap:balance;max-width:14ch}
 .compare .card:hover,.service:hover,.plan:hover,.work-item:hover{transform:translateY(-4px)}
+/* Share widget. One instance = one <div class="share-dropdown" data-share>.
+   The JS initializer in site.js populates the menu hrefs at runtime from
+   the page's canonical URL and og:title, and tries navigator.share() first
+   so the native OS share sheet opens on any device that supports it. */
+.share-dropdown{position:relative;display:inline-block}
+.share-btn{display:inline-flex;align-items:center;gap:10px;padding:10px 18px;border:1px solid var(--line-dark);border-radius:999px;font:inherit;font-size:13px;font-weight:600;color:var(--ink);background:var(--white);cursor:pointer;transition:all var(--t-fast) var(--ease)}
+.share-btn:hover{border-color:var(--teal);background:var(--cream-2);color:var(--teal)}
+.share-btn svg{width:16px;height:16px;flex:none}
+.share-menu{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);min-width:220px;z-index:50;background:var(--white);border:1px solid var(--line);border-radius:12px;padding:6px;box-shadow:0 20px 40px -12px rgba(20,22,26,0.18);display:flex;flex-direction:column}
+.share-menu[hidden]{display:none}
+.share-item{display:block;width:100%;text-align:left;padding:10px 14px;font-family:var(--font-body);font-size:14px;color:var(--ink);background:transparent;border:0;border-radius:8px;cursor:pointer;transition:background-color var(--t-fast) var(--ease)}
+.share-item:hover,.share-item:focus-visible{background-color:var(--cream-2);outline:none}
+.share-item.copied{color:var(--teal);font-weight:600}
 .listen-btn{display:inline-flex;align-items:center;gap:10px;padding:10px 18px;border:1px solid var(--line-dark);border-radius:999px;font:inherit;font-size:13px;font-weight:600;color:var(--ink);background:var(--white);cursor:pointer;transition:all var(--t-fast) var(--ease)}
 .listen-btn:hover{border-color:var(--teal);background:var(--cream-2);color:var(--teal)}
 .listen-btn svg{width:16px;height:16px;flex:none}
@@ -621,7 +634,7 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 .section-center{text-align:center;margin-left:auto;margin-right:auto}
 .container-wide{max-width:1000px}
 .mt-20{margin-top:20px}
-.row-center{display:flex;justify-content:center;margin-top:24px}
+.row-center{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:24px}
 /* Sources / citations block — used at the end of blog posts that cite
    external research. Kept in global CSS so the pattern is consistent
    across posts and releases are easy to ship. */
