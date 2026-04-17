@@ -24,12 +24,19 @@
 <meta name="twitter:image" content="https://muntin.digital/brand/og/checklist.svg" />
 
 <!-- Favicons -->
-<link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
+<!-- Favicons. Order matters: SVG first for high-DPI scalable, then a
+     192x192 PNG (Google Search's preferred favicon size — multiples
+     of 48 only, per Google's docs at developers.google.com/search/
+     docs/appearance/favicon-in-search), then 32 + 16 for browser
+     tabs. The legacy "shortcut icon" rel was dropped — modern
+     crawlers ignore it. /favicon.ico is still served at the root
+     for older browsers that pre-fetch it without reading <link>. -->
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
 <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="/brand/favicons/favicon-16x16.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
-<link rel="shortcut icon" href="/favicon.ico" />
 
 <script type="application/ld+json">
 {
@@ -1603,6 +1610,10 @@
           <li>Claim your Google Business Profile (item 13)</li>
           <li>Budget a custom rebuild within 90 days</li>
         </ul>
+        <a class="btn btn-primary js-book band-cta" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener" style="margin-top:16px; justify-content:center;">
+          Have me fix this for you
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </a>
       </div>
       <div class="service" data-band="middling" style="border-top:3px solid var(--stone-2);">
         <div class="label" style="color:var(--stone);">8 – 14 passes</div>
@@ -1613,6 +1624,10 @@
           <li>Add wellness schema and alt text</li>
           <li>Refresh photography if it's over two years old</li>
         </ul>
+        <a class="btn btn-ghost js-book band-cta" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener" style="margin-top:16px; justify-content:center;">
+          Get a second pair of eyes
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </a>
       </div>
       <div class="service" data-band="solid" style="border-top:3px solid var(--teal);">
         <div class="label" style="color:var(--teal);">15 – 20 passes</div>
@@ -1623,6 +1638,10 @@
           <li>Consider a Care Plan so the site doesn't rot</li>
           <li>Add a blog or workshops page for recurring freshness</li>
         </ul>
+        <a class="btn btn-ghost js-book band-cta" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener" style="margin-top:16px; justify-content:center;">
+          Talk about a Care Plan
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </a>
       </div>
     </div>
   </div>
@@ -1681,7 +1700,12 @@
     <div id="checklistFormSuccess" hidden role="status" aria-live="polite"
          style="margin-top:32px; padding:28px; background:var(--white); border:1px solid var(--line); border-radius:12px; text-align:center;">
       <div style="font-family:var(--font-display); font-size:20px; font-weight:500; color:var(--ink); margin-bottom:8px;">Sent — check your inbox.</div>
-      <p style="margin:0; color:var(--stone);">The PDF link is on its way. If it's not there in a minute, check spam or email <a href="mailto:don@muntin.digital" style="color:var(--teal);">don@muntin.digital</a>.</p>
+      <p style="margin:0 0 16px; color:var(--stone);">The PDF link is on its way. If it's not there in a minute, check spam or email <a href="mailto:don@muntin.digital" style="color:var(--teal);">don@muntin.digital</a>.</p>
+      <p style="margin:0 0 12px; font-size:14px; color:var(--ink);">While you wait — if you'd rather have me run the checks for you:</p>
+      <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener" style="justify-content:center;">
+        Book a 20-min call
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      </a>
     </div>
     </details>
   </div>

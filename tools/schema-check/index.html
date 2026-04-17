@@ -21,12 +21,19 @@
 <meta name="twitter:description" content="Free schema check. 10 seconds." />
 <meta name="twitter:image" content="https://muntin.digital/brand/og/audit.svg" />
 <!-- Favicons -->
-<link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
+<!-- Favicons. Order matters: SVG first for high-DPI scalable, then a
+     192x192 PNG (Google Search's preferred favicon size — multiples
+     of 48 only, per Google's docs at developers.google.com/search/
+     docs/appearance/favicon-in-search), then 32 + 16 for browser
+     tabs. The legacy "shortcut icon" rel was dropped — modern
+     crawlers ignore it. /favicon.ico is still served at the root
+     for older browsers that pre-fetch it without reading <link>. -->
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
 <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="/brand/favicons/favicon-16x16.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
-<link rel="shortcut icon" href="/favicon.ico" />
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/tools/schema-check/#tool","name":"Does Google Understand My Business?","description":"Check your site for structured data and see what Google knows about your business.","url":"https://muntin.digital/tools/schema-check/","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://muntin.digital/tools/"},{"@type":"ListItem","position":3,"name":"Schema Check","item":"https://muntin.digital/tools/schema-check/"}]}]}
 </script>

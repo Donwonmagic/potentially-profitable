@@ -322,6 +322,13 @@ export function checklistAutoResponder(body) {
       '<p style="margin:0 0 24px;"><a href="' + k.pageUrl + '" style="color:#1F4E5B;font-weight:600;">Open the interactive checklist &rarr;</a></p>',
 
       '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Want a human second opinion after you run it? Reply to this email with your URL and I\'ll take a real look — no list, no drip, no newsletter, just a response from me.</p>',
+      // Soft conversion nudge — the bread-and-butter of the studio
+      // is custom builds + Care Plans. Putting Calendly here gives
+      // the user a clear next move without making the email feel
+      // sales-pitchy: it sits AFTER the deliverable + the
+      // reply-with-questions invitation.
+      '<p style="margin:0 0 8px;font-size:15px;line-height:1.55;color:#2A2D33;">Or if you\'d rather have me run the checks for you and write the fix list:</p>',
+      '<p style="margin:0 0 20px;"><a href="https://calendly.com/dongoldstein-accts/muntinconsult" style="display:inline-block;padding:10px 18px;background:#FAF7F2;color:#1F4E5B;text-decoration:none;border:1px solid #1F4E5B;border-radius:999px;font-weight:600;font-size:14px;">Book a 20-min call &rarr;</a></p>',
 
       '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">— Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital · Silver Spring, MD</span></p>',
     ].join('\n')
@@ -337,6 +344,9 @@ export function checklistAutoResponder(body) {
     k.pageUrl,
     '',
     'Want a human second opinion after you run it? Reply to this email with your URL and I\'ll take a real look — no list, no drip, no newsletter, just a response from me.',
+    '',
+    'Or if you\'d rather have me run the checks for you and write the fix list, book a 20-min call:',
+    'https://calendly.com/dongoldstein-accts/muntinconsult',
     '',
     '— Don',
     'Muntin Digital · Silver Spring, MD',
