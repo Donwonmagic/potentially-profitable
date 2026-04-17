@@ -619,8 +619,10 @@
       border: 0 !important;
     }
     .check-item:has(.check-toggle:checked) .check-body h3 {
-      text-decoration: none !important;
-      color: #111 !important;
+      text-decoration: line-through;
+      text-decoration-color: #888;
+      text-decoration-thickness: 0.6pt;
+      color: #333 !important;
     }
 
     .check-body {
@@ -655,6 +657,11 @@
       border: 0.8pt solid #111;
       border-radius: 1pt;
       background: #fff;
+    }
+    /* Honour the "Print my marked-up copy" button: checked items get a
+       solid pen-box on paper so the user's marks survive the print. */
+    .check-item:has(.check-toggle:checked)::after {
+      background: #111 !important;
     }
 
     /* Strip link chrome so it prints as plain ink. */

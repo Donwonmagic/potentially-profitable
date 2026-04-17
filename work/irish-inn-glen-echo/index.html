@@ -122,7 +122,9 @@
   /* Project meta strip under hero */
   .case-meta {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    /* auto-fit lets the row drop cleanly from four columns on desktop to
+       three on tablet to two on narrow phones without extra breakpoints. */
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 32px;
     padding: 32px 0;
     border-top: 1px solid var(--line);
@@ -142,7 +144,7 @@
     color: var(--ink);
   }
   @media (max-width: 720px) {
-    .case-meta { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .case-meta { gap: 20px; }
   }
 
   /* Palette swatches */
@@ -473,7 +475,7 @@
 <!-- ============ HERO ============ -->
 <section class="hero" style="padding-bottom:40px;">
   <div class="container">
-    <div style="max-width:880px; margin:0 auto; text-align:center;">
+    <div class="hero-center">
       <span class="case-eyebrow">In-House Work &middot; Restaurant</span>
       <h1 style="margin-top:28px;">
         The Irish Inn at Glen Echo.<br>
