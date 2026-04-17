@@ -8,3 +8,9 @@
 # Cloudflare Workers staging directory — populated at build time by the
 # rsync command in wrangler.jsonc. Never checked in.
 /dist/
+
+# node_modules from running scripts/ locally (e.g. the checklist PDF
+# renderer in scripts/render-checklist-pdfs.mjs which needs puppeteer).
+node_modules/
+package-lock.json
+package.json

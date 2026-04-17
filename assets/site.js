@@ -480,103 +480,245 @@
   })();
 
   /* ============ INTERACTIVE CHECKLIST ============
-   * Progressive-enhancement layer for the restaurant website checklist.
-   * Each <label class="check-item" data-check-id="NN"> wraps a hidden
-   * <input type="checkbox" class="check-toggle">. State persists in
-   * localStorage under a single key so revisits restore the user's
-   * progress. Progress bar + completion celebration + reset button +
-   * social share dropdown are all driven from this block. Auto-attaches
-   * only when the required DOM nodes exist; safe to include everywhere.
+   * Progressive-enhancement layer for the restaurant + wellness
+   * checklists. Both pages share this block; page-specific concerns
+   * (storage key, total, share text) come from data-* attributes on
+   * <body> and on individual items, so this file stays generic.
+   *
+   * Features, roughly in order of visibility to the user:
+   *   1. Persistent checkbox state (localStorage, per page).
+   *   2. Sticky progress bar with band-aware color.
+   *   3. Floating score pill with animated ring + count.
+   *   4. Per-category counters in the TOC and each cat-header.
+   *   5. Subtype "Tailor to" filter — items with data-na="foo bar"
+   *      dim and drop out of the score denominator when foo or bar
+   *      is selected.
+   *   6. "Compact" and "Hide done" toggles on the progress toolbar.
+   *   7. First-visit tip under the progress bar (dismissible).
+   *   8. "You're here" ribbon on the matching Score-yourself card.
+   *   9. Completion celebration + Plausible event.
+   *  10. Share dropdown with native-share fallback on small screens.
    */
   (function initChecklist() {
-    const items = document.querySelectorAll('.check-item[data-check-id]');
+    const items = Array.from(document.querySelectorAll('.check-item[data-check-id]'));
     if (!items.length) return;
 
-    const STORAGE_KEY = 'muntin:checklist:restaurant';
-    const progressFill = document.getElementById('progressFill');
+    const body = document.body;
+    const kind = body.dataset.checklistKind || 'restaurant';
+    const STORAGE_KEY = body.dataset.checklistKey || ('muntin:checklist:' + kind);
+    const SUBTYPE_KEY = STORAGE_KEY + ':subtype';
+    const HIDE_KEY    = STORAGE_KEY + ':hide';
+    const COMPACT_KEY = STORAGE_KEY + ':compact';
+    const HINT_KEY    = STORAGE_KEY + ':hint-dismissed';
+
+    const progressSection = document.querySelector('.checklist-progress-section');
+    const progressFill    = document.getElementById('progressFill');
     const progressCountEl = document.getElementById('progressCount');
-    const resetBtn = document.getElementById('progressReset');
-    const celebration = document.getElementById('checklistCelebration');
+    const resetBtn        = document.getElementById('progressReset');
+    const celebration     = document.getElementById('checklistCelebration');
+    const tailorPills     = document.getElementById('tailorPills');
+    const toggleCompact   = document.getElementById('toggleCompact');
+    const toggleHide      = document.getElementById('toggleHide');
+    const firstHint       = document.getElementById('firstHint');
+    const firstHintDismiss= document.getElementById('firstHintDismiss');
+    const scoreBands      = document.getElementById('scoreBands');
 
     /* ---- Floating score pill ---- */
-    const pill = document.getElementById('scorePill');
-    const pillBtn = document.getElementById('scorePillBtn');
-    const pillNum = document.getElementById('scorePillNum');
+    const pill      = document.getElementById('scorePill');
+    const pillBtn   = document.getElementById('scorePillBtn');
+    const pillNum   = document.getElementById('scorePillNum');
     const pillLabel = document.getElementById('scorePillLabel');
-    const pillRing = pill ? pill.querySelector('.score-ring-fill') : null;
-    // Precomputed circumference: 2 * Math.PI * r, where r = 19 in the
-    // SVG viewBox. Keep this in sync with the stroke-dasharray in the
-    // inline CSS above.
+    const pillRing  = pill ? pill.querySelector('.score-ring-fill') : null;
+    const pillTotalEl = pill ? pill.querySelector('.score-pill-total') : null;
     const RING_CIRC = 2 * Math.PI * 19;
-    if (pill) pill.hidden = false;
-    // Reveal with a one-tick delay so the opacity transition runs
-    // (the pill starts at opacity:0 and transitions to 1 via the
-    // .is-visible class).
     if (pill) {
+      pill.hidden = false;
       requestAnimationFrame(() => pill.classList.add('is-visible'));
     }
 
-    /* Maps a raw count to the three feedback bands used elsewhere on
-     * the page (0-8 failing, 9-16 middling, 17-24 solid), plus two
-     * extra states for the zero and 100% cases. Labels are short
-     * enough to fit the pill's text slot without wrapping. */
+    /* Proportional bands — ratio-based so the same thresholds work
+     * on the 24-item restaurant checklist and the 20-item wellness
+     * one, AND continue to work when the subtype filter trims the
+     * denominator. Thresholds match the copy on the three
+     * "Score yourself" cards at the bottom of each page. */
     function scoreBandFor(done, total) {
-      if (done === 0)       return { band: 'idle',      label: 'Not started' };
-      if (done <= 8)        return { band: 'failing',   label: 'Failing' };
-      if (done <= 16)       return { band: 'middling',  label: 'Middling' };
-      if (done < total)     return { band: 'solid',     label: 'Solid' };
-      return                       { band: 'complete',  label: 'All 24 — nice' };
+      if (done === 0 || total === 0)   return { band: 'idle',     label: 'Not started' };
+      if (done === total)              return { band: 'complete', label: 'All ' + total + ' — nice' };
+      const ratio = done / total;
+      if (ratio < 1 / 3)               return { band: 'failing',  label: 'Failing' };
+      if (ratio < 2 / 3)               return { band: 'middling', label: 'Middling' };
+      return                                 { band: 'solid',    label: 'Solid' };
     }
 
+    function safeGet(key) {
+      try { return localStorage.getItem(key); } catch (e) { return null; }
+    }
+    function safeSet(key, val) {
+      try { localStorage.setItem(key, val); } catch (e) { /* quota/private */ }
+    }
     function loadState() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : {};
-      } catch (e) {
-        return {};
-      }
+      const raw = safeGet(STORAGE_KEY);
+      try { return raw ? JSON.parse(raw) : {}; } catch (e) { return {}; }
     }
     function saveState(state) {
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-      catch (e) { /* quota / private mode — silently skip */ }
+      safeSet(STORAGE_KEY, JSON.stringify(state));
     }
 
     const state = loadState();
-    const total = items.length;
+    let activeSubtype = safeGet(SUBTYPE_KEY) || 'all';
 
-    function updateProgress() {
-      let done = 0;
+    /* ---- Subtype-aware voice ----
+     * Each subtype has its own noun (singular + plural) so the
+     * on-page copy, the N/A badge, and the hidden form field that
+     * travels with the PDF-request email all read right for the
+     * kind of business the user picked. `all` is the generic
+     * default that matches the HTML as written.
+     *
+     * New subtypes: add an entry here + a data-subtype="..." pill
+     * in the page + (optionally) a matching entry on the server in
+     * src/lib/templates.js -> checklistKind(body) so the email
+     * auto-reply voices the same noun. */
+    const RESTAURANT_VOICE = {
+      'all':          { noun: 'restaurant',           nounPlural: 'restaurant',          naLabel: 'N/A for your kind' },
+      'fine-dining':  { noun: 'restaurant',           nounPlural: 'fine-dining',         naLabel: 'N/A for fine dining' },
+      'casual':       { noun: 'restaurant',           nounPlural: 'casual',              naLabel: 'N/A for casual spots' },
+      'fast-casual':  { noun: 'spot',                 nounPlural: 'fast-casual',         naLabel: 'N/A for fast-casuals' },
+      'bar':          { noun: 'bar',                  nounPlural: 'bar & cocktail',      naLabel: 'N/A for bars' },
+      'cafe':         { noun: 'cafe',                 nounPlural: 'cafe & bakery',       naLabel: 'N/A for cafes' },
+      'truck':        { noun: 'truck',                nounPlural: 'food truck & pop-up', naLabel: 'N/A for food trucks' },
+    };
+    const WELLNESS_VOICE = {
+      'all':          { noun: 'wellness',             nounPlural: 'wellness',            naLabel: 'N/A for your kind' },
+      'studio':       { noun: 'studio',               nounPlural: 'yoga & fitness studio', naLabel: 'N/A for studios' },
+      'spa':          { noun: 'spa',                  nounPlural: 'spa',                 naLabel: 'N/A for spas' },
+      'salon':        { noun: 'salon',                nounPlural: 'salon & barber',      naLabel: 'N/A for salons' },
+      'medspa':       { noun: 'med-spa',              nounPlural: 'med-spa',             naLabel: 'N/A for med-spas' },
+      'gym':          { noun: 'gym',                  nounPlural: 'gym',                 naLabel: 'N/A for gyms' },
+    };
+    const VOICE_MAP = kind === 'wellness' ? WELLNESS_VOICE : RESTAURANT_VOICE;
+
+    function currentVoice() {
+      return VOICE_MAP[activeSubtype] || VOICE_MAP.all;
+    }
+
+    function itemNAList(item) {
+      return (item.getAttribute('data-na') || '').split(/\s+/).filter(Boolean);
+    }
+    function isItemNA(item) {
+      if (activeSubtype === 'all') return false;
+      return itemNAList(item).indexOf(activeSubtype) !== -1;
+    }
+
+    function applySubtypeState() {
+      const voice = currentVoice();
+
       items.forEach((item) => {
+        const na = isItemNA(item);
+        item.classList.toggle('is-na', na);
+        const input = item.querySelector('.check-toggle');
+        if (input) {
+          input.disabled = na;
+          if (na && input.checked) input.checked = false;
+        }
+        if (na) item.setAttribute('data-na-label', voice.naLabel);
+        else    item.removeAttribute('data-na-label');
+      });
+
+      if (tailorPills) {
+        tailorPills.querySelectorAll('.tailor-pill').forEach((p) => {
+          p.classList.toggle('is-active', p.dataset.subtype === activeSubtype);
+        });
+      }
+
+      // Swap every tokenised span on the page to the subtype's noun.
+      // The default text in the HTML is already the 'all'-subtype
+      // value, so this is effectively idempotent when subtype === all.
+      document.querySelectorAll('[data-token]').forEach((el) => {
+        const token = el.dataset.token;
+        const value = voice[token];
+        if (typeof value === 'string') el.textContent = value;
+      });
+
+      // Mirror the active subtype into the hidden form field so the
+      // worker's auto-reply can personalize by subtype, not just kind.
+      const hiddenSubtype = document.getElementById('cl-subtype');
+      if (hiddenSubtype) hiddenSubtype.value = activeSubtype;
+
+      // Advertise the active subtype on <body> for CSS hooks.
+      body.dataset.activeSubtype = activeSubtype;
+    }
+
+    function countActive() {
+      let total = 0, done = 0;
+      items.forEach((item) => {
+        if (isItemNA(item)) return;
+        total++;
         const input = item.querySelector('.check-toggle');
         if (input && input.checked) done++;
       });
+      return { total: total, done: done };
+    }
+
+    function countInBlock(id) {
+      const block = document.getElementById(id);
+      if (!block) return { total: 0, done: 0 };
+      let total = 0, done = 0;
+      block.querySelectorAll('.check-item').forEach((item) => {
+        if (item.classList.contains('is-na')) return;
+        total++;
+        const input = item.querySelector('.check-toggle');
+        if (input && input.checked) done++;
+      });
+      return { total: total, done: done };
+    }
+
+    function updateCatCounters() {
+      document.querySelectorAll('[data-cat-count]').forEach((el) => {
+        const { total, done } = countInBlock(el.dataset.catCount);
+        el.textContent = done + ' / ' + total;
+        el.classList.toggle('is-complete', total > 0 && done === total);
+      });
+      document.querySelectorAll('[data-cat-done]').forEach((el) => {
+        const { total, done } = countInBlock(el.dataset.catDone);
+        el.textContent = done + ' / ' + total + ' done';
+        el.classList.toggle('is-complete', total > 0 && done === total);
+      });
+    }
+
+    function updateProgress() {
+      const { total, done } = countActive();
       const pct = total ? Math.round((done / total) * 100) : 0;
+
       if (progressFill) progressFill.style.width = pct + '%';
       if (progressCountEl) {
-        const strong = progressCountEl.querySelector('strong') || progressCountEl;
-        strong.textContent = String(done);
-        // Keep the rest of the phrasing in the parent if it was split
-        if (progressCountEl.querySelector('strong')) {
-          // Ensure the suffix text stays correct
-          const html = '<strong>' + done + '</strong> of ' + total + ' complete';
-          if (progressCountEl.innerHTML !== html) progressCountEl.innerHTML = html;
-        }
+        const html = '<strong>' + done + '</strong> of ' + total + ' complete';
+        if (progressCountEl.innerHTML !== html) progressCountEl.innerHTML = html;
       }
       if (resetBtn) resetBtn.hidden = done === 0;
+
+      const { band, label } = scoreBandFor(done, total);
+      if (progressSection) progressSection.dataset.band = band;
+
       if (celebration) {
         const isDone = done === total && total > 0;
         celebration.hidden = !isDone;
         if (isDone && !celebration.dataset.fired && window.plausible) {
           celebration.dataset.fired = '1';
-          window.plausible('Checklist Completed');
+          window.plausible('Checklist Completed', { props: { kind: kind, subtype: activeSubtype } });
         }
       }
 
-      // Floating score pill: band color, count, ring fill.
+      if (scoreBands) {
+        scoreBands.querySelectorAll('.service[data-band]').forEach((card) => {
+          const active = done > 0 && card.dataset.band === band;
+          card.classList.toggle('is-current-band', active);
+        });
+      }
+
       if (pill) {
-        const { band, label } = scoreBandFor(done, total);
         pill.dataset.band = band;
         if (pillLabel) pillLabel.textContent = label;
+        if (pillTotalEl) pillTotalEl.textContent = '/' + total;
         if (pillBtn) {
           pillBtn.setAttribute(
             'aria-label',
@@ -584,7 +726,7 @@
           );
         }
         if (pillRing) {
-          const offset = RING_CIRC * (1 - (done / total));
+          const offset = total ? RING_CIRC * (1 - (done / total)) : RING_CIRC;
           pillRing.style.strokeDashoffset = String(offset);
         }
         if (pillNum) {
@@ -592,35 +734,75 @@
           const next = String(done);
           if (prev !== next) {
             pillNum.textContent = next;
-            // Restart the bump animation on every change by toggling
-            // the class off, forcing a reflow, then back on.
             pillNum.classList.remove('bumping');
             void pillNum.offsetWidth;
             pillNum.classList.add('bumping');
           }
         }
       }
+
+      updateCatCounters();
+    }
+
+    /* ---- Progress toolbar toggles ---- */
+    function bindToggle(btn, bodyClass, storageKey) {
+      if (!btn) return;
+      const on = safeGet(storageKey) === '1';
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      body.classList.toggle(bodyClass, on);
+      btn.addEventListener('click', () => {
+        const next = btn.getAttribute('aria-pressed') !== 'true';
+        btn.setAttribute('aria-pressed', next ? 'true' : 'false');
+        body.classList.toggle(bodyClass, next);
+        safeSet(storageKey, next ? '1' : '0');
+      });
+    }
+    bindToggle(toggleCompact, 'compact-mode', COMPACT_KEY);
+    bindToggle(toggleHide,    'hide-checked', HIDE_KEY);
+
+    /* ---- First-visit hint ---- */
+    if (firstHint && safeGet(HINT_KEY) !== '1') {
+      firstHint.hidden = false;
+    }
+    if (firstHintDismiss) {
+      firstHintDismiss.addEventListener('click', () => {
+        if (firstHint) firstHint.hidden = true;
+        safeSet(HINT_KEY, '1');
+      });
+    }
+
+    /* ---- Subtype pills ---- */
+    if (tailorPills) {
+      tailorPills.addEventListener('click', (e) => {
+        const btn = e.target.closest('.tailor-pill');
+        if (!btn) return;
+        const next = btn.dataset.subtype || 'all';
+        if (next === activeSubtype) return;
+        activeSubtype = next;
+        safeSet(SUBTYPE_KEY, next);
+        applySubtypeState();
+        updateProgress();
+        if (window.plausible) {
+          window.plausible('Checklist Subtype', { props: { kind: kind, subtype: next } });
+        }
+      });
     }
 
     if (pillBtn) {
       pillBtn.addEventListener('click', () => {
         const section = document.querySelector('.checklist-progress-section');
-        if (section) {
-          section.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
+        if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     }
 
-    // Hydrate checkbox state from storage
+    /* ---- Hydrate checkbox state ---- */
     items.forEach((item) => {
       const id = item.getAttribute('data-check-id');
       const input = item.querySelector('.check-toggle');
       if (!input) return;
       if (state[id]) input.checked = true;
       input.addEventListener('change', () => {
+        if (input.disabled) { input.checked = false; return; }
         if (input.checked) state[id] = 1;
         else delete state[id];
         saveState(state);
@@ -628,6 +810,7 @@
       });
     });
 
+    applySubtypeState();
     updateProgress();
 
     if (resetBtn) {
@@ -646,6 +829,13 @@
     const shareBtn = document.getElementById('shareBtn');
     const shareMenu = document.getElementById('shareMenu');
     const copyBtn = document.getElementById('copyLinkBtn');
+
+    // Derive share text from the page so one block serves both the
+    // restaurant and wellness pages. Total is the raw item count (not
+    // the subtype-filtered total), to match the canonical headline.
+    const shareTitle = (document.title || '').split(' | ')[0] || 'Muntin Digital Checklist';
+    const shareUrl = window.location.origin + window.location.pathname;
+    const shareText = items.length + ' things your ' + kind + ' website should do in 2026. Free, takes 10 minutes.';
 
     function closeShare() {
       if (!shareMenu || !shareBtn) return;
@@ -667,9 +857,9 @@
         // fall back to the custom dropdown.
         if (navigator.share && window.matchMedia('(max-width: 820px)').matches) {
           navigator.share({
-            title: 'The Restaurant Website Checklist',
-            text: '24 things your restaurant website should do in 2026. Free, takes 10 minutes.',
-            url: 'https://muntin.digital/resources/restaurant-website-checklist/'
+            title: shareTitle,
+            text: shareText,
+            url: shareUrl
           }).catch(() => { /* user dismissed — do nothing */ });
           return;
         }
@@ -695,9 +885,8 @@
 
     if (copyBtn) {
       copyBtn.addEventListener('click', async () => {
-        const url = 'https://muntin.digital/resources/restaurant-website-checklist/';
         try {
-          await navigator.clipboard.writeText(url);
+          await navigator.clipboard.writeText(shareUrl);
           const original = copyBtn.textContent;
           copyBtn.textContent = 'Link copied ✓';
           copyBtn.classList.add('copied');
