@@ -1,4 +1,4 @@
-:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--teal-dark:#143640;--teal-tint:#E8F1F3;--rust:#B8541A;--stone:#6B6B6B;--stone-2:#9A958B;--line:#E8E2D6;--line-dark:#D4CCBC;--white:#FFFFFF;--font-display:'Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;--font-body:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--max:1200px;--pad-x:clamp(20px,4vw,64px);--ease:cubic-bezier(.22,.61,.36,1);--ease-out:cubic-bezier(.16,1,.3,1);--t-fast:180ms;--t-med:420ms;--t-slow:900ms;--r-sm:8px;--r-md:14px;--r-lg:22px}
+:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--teal-dark:#143640;--teal-tint:#E8F1F3;--rust:#B8541A;--stone:#6B6B6B;--stone-2:#9A958B;--line:#E8E2D6;--line-dark:#D4CCBC;--line-input:#8A8378;--white:#FFFFFF;--font-display:'Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;--font-body:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--max:1200px;--pad-x:clamp(20px,4vw,64px);--ease:cubic-bezier(.22,.61,.36,1);--ease-out:cubic-bezier(.16,1,.3,1);--t-fast:180ms;--t-med:420ms;--t-slow:900ms;--r-sm:8px;--r-md:14px;--r-lg:22px}
 
 /* ============ SELF-HOSTED WEB FONTS ============
    Fraunces (display) and Inter (body) are served from /assets/fonts/
@@ -201,24 +201,33 @@ p{margin:0}
 .muntins .h2{top:50%;left:0;right:0;height:3px;transform-origin:left}
 .muntins .h3{top:75%;left:0;right:0;height:3px;transform-origin:left}
 .muntins .frame{position:absolute;inset:0;border:3px solid var(--ink);border-radius:6px}
-.window .v1,.window .v2{transform:scaleY(0);animation:draw-v 900ms var(--ease-out) 200ms forwards}
-.window .v2{animation-delay:340ms}
-.window .h1,.window .h2,.window .h3{transform:scaleX(0);animation:draw-h 900ms var(--ease-out) 480ms forwards}
-.window .h2{animation-delay:620ms}
-.window .h3{animation-delay:760ms}
-.window .pane{opacity:0;animation:fade-pane 700ms var(--ease-out) forwards}
-.window .pane:nth-child(1){animation-delay:900ms}
-.window .pane:nth-child(2){animation-delay:960ms}
-.window .pane:nth-child(3){animation-delay:1020ms}
-.window .pane:nth-child(4){animation-delay:1080ms}
-.window .pane:nth-child(5){animation-delay:1140ms}
-.window .pane:nth-child(6){animation-delay:1200ms}
-.window .pane:nth-child(7){animation-delay:1260ms}
-.window .pane:nth-child(8){animation-delay:1320ms}
-.window .pane:nth-child(9){animation-delay:1380ms}
-.window .pane:nth-child(10){animation-delay:1440ms}
-.window .pane:nth-child(11){animation-delay:1500ms}
-.window .pane:nth-child(12){animation-delay:1560ms}
+/* Window intro animation. Base rules set the final state so that users
+   with `prefers-reduced-motion: reduce` — where the global rule below
+   neutralises `animation` — see the composed window, not an empty grid. */
+.window .v1,.window .v2{transform-origin:top}
+.window .h1,.window .h2,.window .h3{transform-origin:left}
+@media (prefers-reduced-motion:no-preference){
+  .window .v1,.window .v2{transform:scaleY(0);animation:draw-v 900ms var(--ease-out) 200ms forwards}
+  .window .v2{animation-delay:340ms}
+  .window .h1,.window .h2,.window .h3{transform:scaleX(0);animation:draw-h 900ms var(--ease-out) 480ms forwards}
+  .window .h2{animation-delay:620ms}
+  .window .h3{animation-delay:760ms}
+  .window .pane{opacity:0;animation:fade-pane 700ms var(--ease-out) forwards}
+}
+@media (prefers-reduced-motion:no-preference){
+  .window .pane:nth-child(1){animation-delay:900ms}
+  .window .pane:nth-child(2){animation-delay:960ms}
+  .window .pane:nth-child(3){animation-delay:1020ms}
+  .window .pane:nth-child(4){animation-delay:1080ms}
+  .window .pane:nth-child(5){animation-delay:1140ms}
+  .window .pane:nth-child(6){animation-delay:1200ms}
+  .window .pane:nth-child(7){animation-delay:1260ms}
+  .window .pane:nth-child(8){animation-delay:1320ms}
+  .window .pane:nth-child(9){animation-delay:1380ms}
+  .window .pane:nth-child(10){animation-delay:1440ms}
+  .window .pane:nth-child(11){animation-delay:1500ms}
+  .window .pane:nth-child(12){animation-delay:1560ms}
+}
 @keyframes draw-v{to{transform:scaleY(1)}
 }
 @keyframes draw-h{to{transform:scaleX(1)}
@@ -398,6 +407,12 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 @media (max-width:640px){.form-row{grid-template-columns:1fr}
 }
 .form-group{margin-bottom:20px}
+/* <fieldset class="form-fieldset"> is used for grouped controls
+   (e.g. the services checkbox cluster) so the `<legend>` is announced
+   as the group label. Reset the browser default fieldset chrome so the
+   visual treatment matches .form-group. */
+.form-fieldset{border:0;padding:0;min-width:0}
+.form-fieldset>.form-label,.form-fieldset>legend{padding:0;display:block}
 .form-group label{display:block;font-size:13px;font-weight:500;color:var(--ink);margin-bottom:6px;letter-spacing:0.01em}
 .req{color:var(--rust)}
 .opt{color:var(--stone);font-weight:400;font-size:12px;letter-spacing:0;margin-left:4px}
@@ -405,18 +420,26 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 #f-services-group.invalid .check-label{border-color:var(--rust)}
 .form-submit-error{margin-top:12px;padding:12px 16px;border-radius:var(--r-sm);background:rgba(184,84,26,0.08);border:1px solid rgba(184,84,26,0.3);color:var(--rust);font-size:14px;text-align:center}
 /* 16px font-size stops iOS from zooming on focus; 44px min-height clears
-   the WCAG 2.5.5 (Target Size) minimum for comfortable touch on mobile. */
-.form-group input,.form-group textarea,.form-group select{width:100%;padding:12px 14px;border:1px solid var(--line-dark);border-radius:var(--r-sm);font-family:var(--font-body);font-size:16px;min-height:44px;color:var(--ink);background:var(--cream);transition:border-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease);outline:none}
-.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(31,78,91,0.12)}
-.form-group input.invalid,.form-group textarea.invalid{border-color:var(--rust);box-shadow:0 0 0 3px rgba(184,84,26,0.1)}
+   the WCAG 2.5.5 (Target Size) minimum for comfortable touch on mobile.
+   --line-input (not --line-dark) is used for the idle border so the
+   control's visible boundary clears the 3:1 Non-text Contrast threshold
+   from WCAG 1.4.11 on both cream and white backgrounds. */
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:12px 14px;border:1px solid var(--line-input);border-radius:var(--r-sm);font-family:var(--font-body);font-size:16px;min-height:44px;color:var(--ink);background:var(--cream);transition:border-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease);outline:none}
+.form-group input:focus-visible,.form-group textarea:focus-visible,.form-group select:focus-visible{border-color:var(--teal);box-shadow:0 0 0 3px rgba(31,78,91,0.45);outline:2px solid var(--teal);outline-offset:1px}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(31,78,91,0.45)}
+.form-group input.invalid,.form-group textarea.invalid{border-color:var(--rust);box-shadow:0 0 0 3px rgba(184,84,26,0.25)}
 .form-group input::placeholder,.form-group textarea::placeholder{color:var(--stone-2)}
 .form-group textarea{resize:vertical;min-height:100px}
 .form-group select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
 .field-error{display:block;font-size:12px;color:var(--rust);margin-top:4px;min-height:16px}
 .checkbox-group{display:flex;flex-wrap:wrap;gap:10px}
-.check-label{display:flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid var(--line-dark);border-radius:999px;font-size:14px;color:var(--ink-soft);cursor:pointer;transition:all var(--t-fast) var(--ease);user-select:none}
+.check-label{display:flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid var(--line-input);border-radius:999px;font-size:14px;color:var(--ink-soft);cursor:pointer;transition:all var(--t-fast) var(--ease);user-select:none;position:relative}
 .check-label:hover{border-color:var(--teal);background:var(--teal-tint)}
-.check-label input{display:none}
+/* Visually hide the native checkbox while keeping it focusable and in the
+   accessibility tree. Previously `display:none` removed it from the tab
+   order entirely — a WCAG 2.1.1 Keyboard failure. */
+.check-label input{position:absolute;width:1px;height:1px;opacity:0;clip:rect(0 0 0 0);overflow:hidden;white-space:nowrap;margin:0;pointer-events:none}
+.check-label:has(input:focus-visible){outline:2px solid var(--teal);outline-offset:3px}
 .check-label:has(input:checked){background:var(--teal);color:var(--cream);border-color:var(--teal)}
 .form-submit{width:100%;justify-content:center;padding:16px 28px;margin-top:4px;transition:background var(--t-med) var(--ease),color var(--t-med) var(--ease),box-shadow var(--t-med) var(--ease),transform var(--t-fast) var(--ease)}
 .form-submit .btn-loading{display:none}
@@ -494,8 +517,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 /* Bottom row */
 .foot-bottom{display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap}
 .foot-copy{font-size:12.5px;color:rgba(250,247,242,0.6);letter-spacing:0.01em;margin:0}
-.foot-legal{display:flex;gap:20px;flex-wrap:wrap;margin:0}
-.foot-legal a{font-size:12.5px;color:rgba(250,247,242,0.6);transition:color var(--t-fast) var(--ease)}
+.foot-legal{display:flex;gap:12px;flex-wrap:wrap;margin:0}
+/* Inline padding + negative margin gives legal links a ≥24×24 hit area
+   (WCAG 2.5.8 Target Size, Minimum) without changing the visible rhythm
+   of the row. */
+.foot-legal a{font-size:12.5px;color:rgba(250,247,242,0.6);transition:color var(--t-fast) var(--ease);padding:8px 6px;margin:-8px -6px;border-radius:4px}
 .foot-legal a:hover{color:var(--cream)}
 @media (max-width:640px){.foot-bottom{flex-direction:column;align-items:flex-start;gap:14px}}
 
@@ -531,6 +557,11 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 .final a:focus-visible,.process a:focus-visible,footer a:focus-visible{outline-color:var(--cream)}
 .skip-link{position:absolute;left:-9999px;top:0;background:var(--ink);color:var(--cream);padding:12px 20px;border-radius:0 0 8px 0;font-size:14px;font-weight:500;z-index:100}
 .skip-link:focus{left:0;outline:2px solid var(--cream);outline-offset:2px}
+/* Screen-reader-only text. Used to annotate icon-only buttons and links
+   whose visible text doesn't fully describe them (e.g. "opens in a new
+   tab" on external links). Keeps a 1px footprint so the browser keeps
+   it in the focus/tab order. */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .nav-toggle{display:none;width:44px;height:44px;flex-direction:column;justify-content:center;align-items:center;gap:5px;border-radius:8px;padding:0;margin-left:8px}
 .nav-toggle span{display:block;width:22px;height:2px;background:var(--ink);transition:transform var(--t-med) var(--ease),opacity var(--t-fast) var(--ease)}
 .nav.menu-open .nav-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg)}
@@ -546,7 +577,7 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 .mobile-menu:not([hidden]){display:flex}
 .nav.menu-open{background:var(--cream);border-bottom-color:var(--line)}
 }
-.hero h1{text-wrap:balance;max-width:14ch}
+.hero h1{text-wrap:balance;max-width:18ch}
 .compare .card:hover,.service:hover,.plan:hover,.work-item:hover{transform:translateY(-4px)}
 /* Share widget. One instance = one <div class="share-dropdown" data-share>.
    The JS initializer in site.js populates the menu hrefs at runtime from

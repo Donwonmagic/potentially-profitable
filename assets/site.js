@@ -82,15 +82,16 @@
     });
   }
 
-  // Move focus to target section on in-page anchor clicks (SR + keyboard users)
+  // Move focus to target section on in-page anchor clicks (SR + keyboard users).
+  // Skip links short-circuit the smooth-scroll delay — keyboard users expect
+  // the focus shift to be immediate (WCAG 2.4.1 Bypass Blocks).
   document.querySelectorAll('a[href^="#"]').forEach((a) => {
     a.addEventListener('click', (e) => {
       const id = a.getAttribute('href');
       if (!id || id.length < 2) return;
       const target = document.querySelector(id);
       if (!target) return;
-      // Let native smooth scroll run, then move focus without re-scrolling
-      setTimeout(() => {
+      const moveFocus = () => {
         const prev = target.getAttribute('tabindex');
         if (prev === null) target.setAttribute('tabindex', '-1');
         target.focus({ preventScroll: true });
@@ -100,7 +101,10 @@
             target.removeEventListener('blur', onBlur);
           });
         }
-      }, 400);
+      };
+      if (a.classList.contains('skip-link')) { moveFocus(); return; }
+      // Let native smooth scroll run, then move focus without re-scrolling
+      setTimeout(moveFocus, 400);
     });
   });
 
