@@ -8,7 +8,6 @@
 <meta name="theme-color" content="#1F4E5B" />
 <link rel="canonical" href="https://muntin.digital/privacy.html" />
 
-<!-- Favicons -->
 <!-- Favicons. Order matters: SVG first for high-DPI scalable, then a
      192x192 PNG (Google Search's preferred favicon size — multiples
      of 48 only, per Google's docs at developers.google.com/search/
@@ -22,220 +21,6 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/brand/favicons/favicon-16x16.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
-    <!-- Self-hosted fonts. @font-face rules live in site.css; preload only
-         the two critical above-the-fold weights (Fraunces 500 for the display
-         headline and Inter 400 for body copy) to keep first paint fast without
-         over-fetching. Metric-matched fallbacks in site.css prevent CLS. -->
-    <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
-    <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
-    <!-- Privacy-friendly analytics by Plausible -->
-    <script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
-    <script>
-      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-      plausible.init()
-    </script>
-    <style>
-        :root {
-            --cream: #FAF7F2;
-            --ink: #14161A;
-            --teal: #1F4E5B;
-            --rust: #B8541A;
-            --stone: #6B6B6B;
-            --line: #E8E2D6;
-            --line-dark: #D4CCBC;
-            --font-display: 'Fraunces', Georgia, serif;
-            --font-body: 'Inter', sans-serif;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            background-color: var(--cream);
-            color: var(--ink);
-        }
-
-        body {
-            font-family: var(--font-body);
-            line-height: 1.6;
-            color: var(--ink);
-            background-color: var(--cream);
-        }
-
-        /* Navigation */
-        nav {
-            background-color: var(--cream);
-            border-bottom: 2px solid var(--line);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        nav > div {
-            max-width: 760px;
-            margin: 0 auto;
-            padding: 1.5rem 2rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        nav a {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            text-decoration: none;
-            color: var(--ink);
-            transition: opacity 0.2s;
-        }
-
-        nav a:hover {
-            opacity: 0.7;
-        }
-
-        .muntin-mark {
-            width: 32px;
-            height: 32px;
-            flex-shrink: 0;
-        }
-
-        .muntin-mark svg {
-            width: 100%;
-            height: 100%;
-            stroke: var(--ink);
-            fill: none;
-        }
-
-        nav a span {
-            font-family: var(--font-display);
-            font-size: 1.125rem;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-        }
-
-        /* Main content */
-        main {
-            max-width: 760px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-        }
-
-        h1 {
-            font-family: var(--font-display);
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            line-height: 1.2;
-            letter-spacing: -0.02em;
-        }
-
-        .page-meta {
-            color: var(--stone);
-            font-size: 0.9rem;
-            margin-bottom: 2rem;
-        }
-
-        h2 {
-            font-family: var(--font-display);
-            font-size: 1.375rem;
-            font-weight: 600;
-            margin-top: 2.5rem;
-            margin-bottom: 1rem;
-            letter-spacing: -0.02em;
-            color: var(--teal);
-        }
-
-        h2:first-of-type {
-            margin-top: 0;
-        }
-
-        p {
-            margin-bottom: 1rem;
-            font-size: 1rem;
-        }
-
-        ul {
-            margin-left: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        li {
-            margin-bottom: 0.5rem;
-        }
-
-        strong {
-            font-weight: 600;
-            color: var(--ink);
-        }
-
-        a {
-            color: var(--rust);
-            text-decoration: underline;
-            transition: opacity 0.2s;
-        }
-
-        a:hover {
-            opacity: 0.7;
-        }
-
-        .contact-box {
-            background-color: #FFF;
-            border: 2px solid var(--line);
-            border-radius: 4px;
-            padding: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .contact-box p {
-            margin-bottom: 0.5rem;
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--ink);
-            color: var(--cream);
-            margin-top: 4rem;
-        }
-
-        footer > div {
-            max-width: 760px;
-            margin: 0 auto;
-            padding: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        footer p {
-            font-size: 0.9rem;
-            margin: 0;
-        }
-
-        footer a {
-            color: var(--cream);
-            text-decoration: underline;
-            font-size: 0.9rem;
-        }
-
-        footer a:hover {
-            opacity: 0.8;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        @media (max-width: 640px) {
-            h1 {
-                font-size: 1.5rem;
-            }
 
 <!-- Application/entity hints for modern browsers and Google Search -->
 <meta name="application-name" content="Muntin Digital" />
@@ -332,15 +117,15 @@
     <h1>Privacy Policy</h1>
     <p class="meta">Effective April 2026</p>
 
-    <p>Muntin Digital™ ("we," "us," "our," or "Company") respects your privacy. This Privacy Policy explains how we collect, use, share, and protect your personal information when you visit our website, use our services, or interact with us.</p>
+    <p>Muntin Digital&#8482; ("we," "us," "our," or "Company") respects your privacy. This Privacy Policy explains how we collect, use, share, and protect your personal information when you visit our website, use our services, or interact with us.</p>
 
     <h2>Information We Collect</h2>
     <p>We collect information in a few different ways:</p>
     <ul>
       <li><strong>From your inquiries:</strong> When you submit our intake form or contact us via email, we collect your name, email address, company information, project details, and any other information you choose to share with us.</li>
       <li><strong>From scheduling:</strong> When you book a meeting through Calendly, we receive your name, email, and calendar information related to the meeting.</li>
-      <li><strong>Website analytics:</strong> We use Plausible Analytics — a privacy-friendly, cookieless analytics service — to understand aggregate site usage: pages visited, referring sites, device type, and country-level location. No personally identifying information or cross-site tracking is collected.</li>
-      <li><strong>Cookies:</strong> See the "Cookies & Tracking" section below. Our own analytics do not use cookies.</li>
+      <li><strong>Website analytics:</strong> We use Plausible Analytics &#8212; a privacy-friendly, cookieless analytics service &#8212; to understand aggregate site usage: pages visited, referring sites, device type, and country-level location. No personally identifying information or cross-site tracking is collected.</li>
+      <li><strong>Cookies:</strong> See the "Cookies &amp; Tracking" section below. Our own analytics do not use cookies.</li>
     </ul>
 
     <h2>How We Use Your Information</h2>
@@ -362,7 +147,7 @@
       <li><strong>Hosting Provider:</strong> Our website is hosted on a secure server. Your data in transit is protected by SSL encryption.</li>
     </ul>
 
-    <h2>Cookies & Tracking</h2>
+    <h2>Cookies &amp; Tracking</h2>
     <p>We keep cookie usage to an absolute minimum:</p>
     <ul>
       <li><strong>Our analytics do not use cookies.</strong> Plausible Analytics is cookieless and does not set any first-party or third-party cookies.</li>
@@ -403,18 +188,18 @@
     <p>Our website and services are not directed at children under the age of 13. We do not knowingly collect personal information from children under 13. If we learn that we have collected personal information from a child under 13 without parental consent, we will promptly delete that information. Please contact us if you believe we have inadvertently collected information from a child.</p>
 
     <h2>Changes to This Privacy Policy</h2>
-    <p>Muntin Digital™ may update this Privacy Policy from time to time to reflect changes in our practices, technology, or legal requirements. We will notify you of any material changes by updating the "Effective" date at the top of this policy. Your continued use of our website following the posting of changes constitutes your acceptance of the updated policy.</p>
+    <p>Muntin Digital&#8482; may update this Privacy Policy from time to time to reflect changes in our practices, technology, or legal requirements. We will notify you of any material changes by updating the "Effective" date at the top of this policy. Your continued use of our website following the posting of changes constitutes your acceptance of the updated policy.</p>
 
     <h2>Contact Us</h2>
     <div class="contact-box">
-      <p><strong>Muntin Digital™</strong></p>
-      <p>Maryland LLC · Fully-remote digital studio</p>
+      <p><strong>Muntin Digital&#8482;</strong></p>
+      <p>Maryland LLC &middot; Fully-remote digital studio</p>
       <p>Email: <a href="mailto:don@muntin.digital">don@muntin.digital</a></p>
       <p>Website: <a href="https://muntin.digital" target="_blank" rel="noopener">muntin.digital</a></p>
       <p>If you have any questions about this Privacy Policy or how we handle your personal information, please don't hesitate to reach out.</p>
     </div>
 
-    <p>Thank you for trusting Muntin Digital™ with your information. We're committed to being transparent about how we work with your data.</p>
+    <p>Thank you for trusting Muntin Digital&#8482; with your information. We're committed to being transparent about how we work with your data.</p>
   </article>
 </main>
 
