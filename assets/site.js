@@ -2177,8 +2177,8 @@
       if (bodyEl)  bodyEl.textContent  = body;
       if (glossaryEl) {
         glossaryEl.href = glossaryId
-          ? '/resources/glossary/#' + glossaryId
-          : '/resources/glossary/';
+          ? '/glossary/#' + glossaryId
+          : '/glossary/';
       }
       if (auditEl) {
         if (auditTo) {
