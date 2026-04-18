@@ -427,7 +427,15 @@ function extractChunks(html) {
 }
 
 function stripTags(s) {
-  return normalizeForSpeech(decodeEntities(s.replace(/<[^>]+>/g, ' '))
+  return normalizeForSpeech(decodeEntities(s
+    // Inline pronunciation overrides: <span data-say="liv">live</span>
+    // keeps the visible word but feeds the TTS the phonetic respelling.
+    // Useful for English heteronyms ("live" the verb vs. "live" the
+    // adjective, "read" past vs. present, "lead" the noun vs. verb)
+    // where Kokoro guesses wrong from context. Replace before the
+    // generic tag strip so the override value survives.
+    .replace(/<([a-z]+)\b[^>]*\sdata-say="([^"]*)"[^>]*>[\s\S]*?<\/\1>/gi, ' $2 ')
+    .replace(/<[^>]+>/g, ' '))
     .replace(/\s+/g, ' ')
     .trim());
 }

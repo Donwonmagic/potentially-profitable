@@ -553,13 +553,13 @@
           text = el.getAttribute('aria-label').trim();
           kind = 'figure';
         } else if (el.matches('figcaption')) {
-          text = (el.innerText || el.textContent || '').trim();
+          text = spokenText(el);
           kind = 'figure';
         } else if (el.matches('h2, h3')) {
-          text = (el.innerText || el.textContent || '').trim();
+          text = spokenText(el);
           kind = 'heading';
         } else {
-          text = (el.innerText || el.textContent || '').trim();
+          text = spokenText(el);
           kind = inferKind(el, 'body');
         }
 
@@ -613,6 +613,26 @@
         .replace(/[\u00A0\u202F]/g, ' ')
         .replace(/\s+/g, ' ')
         .trim();
+    }
+
+    // Walk an element's text, substituting any inline element that
+    // carries data-say="..." with its data-say value. This is the
+    // runtime twin of the extractor's data-say handling — used so the
+    // Web Speech fallback says English heteronyms ("live" the verb,
+    // "read" past tense, "lead" the noun) the way the writer meant.
+    function spokenText(el) {
+      const parts = [];
+      el.childNodes.forEach((node) => {
+        if (node.nodeType === 3) { // text
+          parts.push(node.textContent);
+          return;
+        }
+        if (node.nodeType !== 1) return;
+        const say = node.getAttribute && node.getAttribute('data-say');
+        if (say) { parts.push(' ' + say + ' '); return; }
+        parts.push(spokenText(node));
+      });
+      return parts.join('').replace(/\s+/g, ' ').trim();
     }
 
     function inferKind(el, fallback) {
@@ -889,6 +909,7 @@
     }
 
     function startPlayback() {
+      ensureMediaSession();
       if (engine === 'audio') return startStudioPlayback();
       if (state === 'paused') {
         window.speechSynthesis.resume();
@@ -979,6 +1000,7 @@
     }
 
     async function startStudioPlayback() {
+      ensureMediaSession();
       // Fast path: already loaded and just paused — just resume.
       if (state === 'paused' && audioEl) {
         audioEl.playbackRate = currentRate();
@@ -1017,6 +1039,7 @@
       currentIndex = 0;
       setCurrent(null, null);
       setState('idle');
+      syncMediaSessionPosition();
       if (window.plausible && audioEl && audioEl.duration && audioEl.currentTime >= audioEl.duration - 0.5) {
         window.plausible('Post Listened: Completed');
       }
@@ -1044,6 +1067,7 @@
       if (prevBtn) prevBtn.disabled = currentIndex <= 0;
       if (nextBtn) nextBtn.disabled = currentIndex >= chunks.length - 1;
       updateSkipButtons();
+      syncMediaSessionPosition();
       chunkTimer = requestAnimationFrame(tickStudio);
     }
 
@@ -1071,6 +1095,7 @@
     /* ---- State machine ---- */
     function setState(next) {
       state = next;
+      syncMediaSessionState();
       card.root.setAttribute('data-state', next);
       const pressed = next === 'playing' ? 'true' : 'false';
       playBtn.setAttribute('aria-pressed', pressed);
@@ -1270,6 +1295,85 @@
         </button>
       `;
       return { root };
+    }
+
+    /* ---- Media Session API (iOS / Android lock screen + headphones) ---- */
+    // When audio plays, iOS / Android show generic "Audio playing"
+    // chrome on the lock screen unless we tell them what's playing.
+    // navigator.mediaSession lets us fill in title, artist, artwork
+    // and bind hardware/lock-screen buttons (play, pause, skip ±15s,
+    // previous/next paragraph, scrub) directly to our controls.
+    //
+    // We set the metadata once, lazily, on first play — iOS only
+    // honours media session when invoked from a real user gesture.
+    let mediaSessionWired = false;
+
+    function ensureMediaSession() {
+      if (mediaSessionWired) return;
+      if (typeof navigator === 'undefined' || !('mediaSession' in navigator)) return;
+      mediaSessionWired = true;
+
+      const h1   = document.querySelector('.post-hero h1');
+      const meta = document.querySelector('meta[property="article:author"]');
+      const og   = document.querySelector('meta[property="og:image"]');
+      const title  = h1 ? (h1.innerText || h1.textContent || '').replace(/\s+/g, ' ').trim()
+                        : document.title;
+      const author = (meta && meta.getAttribute('content')) || 'Muntin Digital';
+      // Per-post cover lives at /brand/og/<slug>-cover.png — derived
+      // from the existing og:image meta. Fall back to the og image
+      // itself if the cover wasn't generated for this post.
+      const ogSrc  = og ? og.getAttribute('content') : '';
+      const cover  = ogSrc.endsWith('.svg') ? ogSrc.replace(/\.svg$/, '-cover.png') : ogSrc;
+      const artwork = cover ? [
+        { src: cover, sizes: '512x512', type: 'image/png' },
+      ] : [];
+
+      try {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title,
+          artist: author + ' · Muntin Digital',
+          album: 'Audio edition',
+          artwork,
+        });
+      } catch (_) { /* MediaMetadata may not exist in older browsers */ }
+
+      // Action handlers — every one of these maps to an existing
+      // engine method. Wrap in try/catch because some browsers throw
+      // for unsupported actions (e.g. seekto on iOS < 15.4).
+      const bind = (action, fn) => {
+        try { navigator.mediaSession.setActionHandler(action, fn); }
+        catch (_) {}
+      };
+      bind('play',          () => { if (state !== 'playing') startPlayback(); });
+      bind('pause',         () => { if (state === 'playing') pausePlayback(); });
+      bind('stop',          () => finishPlayback());
+      bind('seekbackward',  (d) => seekBy(-(d && d.seekOffset ? d.seekOffset : 15)));
+      bind('seekforward',   (d) => seekBy(  d && d.seekOffset ? d.seekOffset : 15));
+      bind('previoustrack', () => skipTo(currentIndex - 1));
+      bind('nexttrack',     () => skipTo(currentIndex + 1));
+      bind('seekto',        (d) => {
+        if (engine !== 'audio' || !audioEl || d == null || d.seekTime == null) return;
+        audioEl.currentTime = Math.max(0, Math.min(audioEl.duration || 0, d.seekTime));
+      });
+    }
+
+    function syncMediaSessionState() {
+      if (typeof navigator === 'undefined' || !('mediaSession' in navigator)) return;
+      navigator.mediaSession.playbackState =
+        state === 'playing' ? 'playing' :
+        state === 'paused'  ? 'paused'  : 'none';
+    }
+
+    function syncMediaSessionPosition() {
+      if (typeof navigator === 'undefined' || !('mediaSession' in navigator)) return;
+      if (engine !== 'audio' || !audioEl || !audioEl.duration) return;
+      try {
+        navigator.mediaSession.setPositionState({
+          duration: audioEl.duration,
+          playbackRate: audioEl.playbackRate || 1,
+          position: Math.min(audioEl.currentTime, audioEl.duration),
+        });
+      } catch (_) {}
     }
 
     window.MuntinReadAloud = { stop: finishPlayback, toggle };
