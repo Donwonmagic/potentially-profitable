@@ -193,3 +193,83 @@ var RESTAURANT_MAP_HOSTS = [
 var RESTAURANT_PHONE_HOSTS = [
   { pattern: 'tel:', name: 'Click-to-call' }
 ];
+
+// ---------------------------------------------------------------------------
+// Business-type / cuisine detection
+// ---------------------------------------------------------------------------
+// Each subtype carries three detection surfaces:
+//   schemaTypes    — JSON-LD @type strings that imply the subtype outright
+//   platformHints  — normalized platform keys (lowercased `name` from the
+//                    hosts arrays above) with a confidence weight. E.g.
+//                    tock → fine-dining (5), slice → fast-casual (4).
+//   keywordPatterns — regexes run against visible page text for hedged
+//                    signals ('tasting menu', 'espresso', 'taproom').
+//
+// IMPORTANT: platformHints keys must match the NORMALIZED platform names
+// returned by detectPlatforms (lowercased, whitespace stripped), NOT the
+// raw pattern strings. Toast patterns resolve to name 'Toast' → normalize
+// to 'toast'; Slice patterns resolve to 'Slice' → 'slice'; etc. See the
+// hosts arrays above for the authoritative name-per-pattern mapping.
+//
+// Phase B expands this registry to ~10 subtypes via src/lib/subtypes.js;
+// the current five map 1:1 into the new taxonomy.
+
+var RESTAURANT_BUSINESS_TYPE_DEFS = {
+  'fine-dining': {
+    label: 'Fine-dining restaurant',
+    schemaTypes: [],
+    platformHints: { resy: 4, tock: 5, sevenrooms: 4 },
+    keywordPatterns: [
+      /\btasting\s+menu\b/i, /\bprix\s+fixe\b/i, /\bsommelier\b/i,
+      /\bchef['’]s\s+(?:counter|table)\b/i, /\bwine\s+pairing\b/i,
+      /\bdegustation\b/i, /\bamuse[-\s]?bouche\b/i, /\bmichelin\b/i,
+      /\bmulti[-\s]?course\b/i, /\bomakase\b/i
+    ]
+  },
+  'casual-dining': {
+    label: 'Casual / full-service restaurant',
+    schemaTypes: ['Restaurant', 'FoodEstablishment'],
+    platformHints: { opentable: 1, yelpreservations: 1 },
+    keywordPatterns: [
+      /\bdining\s+room\b/i, /\bfull\s+bar\b/i,
+      /\blunch\s+and\s+dinner\b/i, /\bsignature\s+dishes?\b/i,
+      /\bfamily[-\s]friendly\b/i, /\bneighborhood\s+(?:spot|restaurant|favorite)\b/i
+    ]
+  },
+  'fast-casual': {
+    label: 'Fast-casual or quick-service',
+    schemaTypes: ['FastFoodRestaurant'],
+    platformHints: { toast: 2, chownow: 3, square: 1, bentobox: 2, slice: 4, menufy: 3, olo: 2, lunchbox: 2, checkmate: 2, popmenu: 1 },
+    keywordPatterns: [
+      /\border\s+online\b/i, /\border\s+for\s+(?:pickup|delivery|takeout|take[-\s]out)\b/i,
+      /\bgrab\s+(?:and|&)\s+go\b/i, /\bfast[-\s]casual\b/i,
+      /\bcounter\s+service\b/i, /\bdrive[-\s]thru\b/i, /\bcurbside\s+pickup\b/i
+    ]
+  },
+  'cafe-bakery': {
+    label: 'Café or bakery',
+    schemaTypes: ['CafeOrCoffeeShop', 'Bakery', 'IceCreamShop'],
+    platformHints: { square: 1 },
+    keywordPatterns: [
+      /\b(?:espresso|cappuccino|latte|cortado|pour[-\s]over)\b/i,
+      /\b(?:pastries|croissant|muffins?|scones?)\b/i,
+      /\bbakery\b/i, /\bbaked\s+goods\b/i, /\bpatisserie\b/i,
+      /\bcoffee\s+shop\b/i, /\bartisan\s+(?:bread|coffee)\b/i
+    ]
+  },
+  'bar-pub': {
+    label: 'Bar or pub',
+    schemaTypes: ['BarOrPub', 'Brewery', 'Winery', 'Distillery'],
+    platformHints: { tripleseat: 2 },
+    keywordPatterns: [
+      /\bcocktails?\b/i, /\bcraft\s+beer\b/i, /\bon\s+tap\b/i,
+      /\b(?:draft|draught)\s+(?:beer|list)\b/i, /\bhappy\s+hour\b/i,
+      /\b(?:gastro)?pub\b/i, /\btaproom\b/i, /\bwhiskey\s+(?:bar|list)\b/i,
+      /\bwine\s+bar\b/i, /\bspeakeasy\b/i
+    ]
+  }
+};
+
+var RESTAURANT_ALLOWED_BUSINESS_TYPES = [
+  'fine-dining', 'casual-dining', 'fast-casual', 'cafe-bakery', 'bar-pub', 'restaurant'
+];
