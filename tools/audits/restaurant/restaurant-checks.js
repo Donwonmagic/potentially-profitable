@@ -952,6 +952,39 @@ var RESTAURANT_PRIORITY_CHECKS = [
     failNote: null,
     unverified: 'We didn\'t see a delivery-only marker — is this right?',
     unverifiedNote: 'We look for "virtual kitchen", "ghost kitchen", "delivery only", "no dine-in", "delivery & pickup only" copy. If yours is phrased differently, let us know. If your site reads as a dine-in restaurant but you\'re actually ghost/delivery-only, add a banner — the 20-minute fix deflects a common one-star review.'
+  },
+  {
+    // Phase H9: Wholesale / custom-order intake presence.
+    // Subtypes.js gives bakery weight 2.0 and cafe weight 1.0;
+    // other subtypes default to 1.0 (not suppressed).
+    type: 'wholesale-custom-orders',
+    weight: 1.0,
+    anchor: '#conversions',
+    effort: 'dev',
+    minutes: 120,
+    impact: 'For bakeries and cafes, custom orders and wholesale accounts are margin multipliers — a single wedding-cake order can match a week of walk-in revenue, and a standing wholesale account compounds month over month.',
+    pass: 'Your site promotes wholesale / custom orders',
+    passNote: 'Your site surfaces custom-order or wholesale intake — the margin-rich orders that don\'t happen without explicit copy and a form.',
+    fail: null,
+    failNote: null,
+    unverified: 'We didn\'t see wholesale / custom-order copy — is this right?',
+    unverifiedNote: 'We look for "custom order", "wholesale", "wedding cakes", "corporate orders", "bulk orders", "order in advance", "special orders". If yours is phrased differently, let us know. For bakeries specifically, a dedicated "Custom Orders" page with a structured intake form pays for itself fast.'
+  },
+  {
+    // Phase H10: Delivery-radius info presence. Subtypes.js
+    // gives pizzeria weight 1.5; other subtypes 1.0.
+    type: 'delivery-radius',
+    weight: 1.0,
+    anchor: '#conversions',
+    effort: 'self',
+    minutes: 30,
+    impact: 'Showing your delivery area saves every "do you deliver to me?" phone call. For pizzerias specifically, explicit zone info matters more than the map pin — a customer two neighborhoods over gives up if you look ambiguous.',
+    pass: 'Your site shows delivery area / zone',
+    passNote: 'Your site explicitly says where you deliver — customers self-qualify without tying up your phone line.',
+    fail: null,
+    failNote: null,
+    unverified: 'We didn\'t find delivery-area info — is this right?',
+    unverifiedNote: 'We look for "delivery radius", "we deliver to [list]", "delivery zone / area", "zip codes we serve", or "delivery within N miles". If yours is on an order-platform page we didn\'t reach, let us know. For pizzerias especially, a simple neighborhood / zip-code list is worth a line of copy on the homepage.'
   }
 ];
 
@@ -1257,6 +1290,47 @@ function detectGhostKitchenPattern(pageText) {
   ];
   for (var i = 0; i < markers.length; i++) {
     if (markers[i].test(pageText)) return { present: true };
+  }
+  return { present: false };
+}
+
+// H9: Wholesale / custom-order intake detection. Bakeries and
+// cafes earn significant revenue from special orders (weddings,
+// corporate catering, custom cakes); the check just looks for
+// explicit "custom order" / "wholesale" / "cake order" language.
+var WHOLESALE_CUSTOM_PATTERNS = [
+  /\bwholesale\b/i,
+  /\bcustom\s+(?:cake|order|cakes|orders)\b/i,
+  /\bwedding\s+cakes?\b/i,
+  /\bcorporate\s+(?:orders?|gifting|gifts)\b/i,
+  /\bbulk\s+orders?\b/i,
+  /\border\s+in\s+advance\b/i,
+  /\bspecial\s+orders?\b/i,
+  /\bcustom\s+designs?\b/i
+];
+function detectWholesaleCustomOrders(pageText) {
+  if (!pageText) return { present: false };
+  for (var i = 0; i < WHOLESALE_CUSTOM_PATTERNS.length; i++) {
+    if (WHOLESALE_CUSTOM_PATTERNS[i].test(pageText)) return { present: true };
+  }
+  return { present: false };
+}
+
+// H10: Delivery radius / zone detection. Pizzerias and ghost
+// kitchens benefit from explicit "we deliver to" zone info to
+// deflect the "do you deliver here?" phone calls.
+var DELIVERY_RADIUS_PATTERNS = [
+  /\bdelivery\s+(?:radius|zone|area|zones|areas)\b/i,
+  /\bwe\s+deliver\s+to\b/i,
+  /\bdelivering\s+to\b/i,
+  /\bzip\s+codes?\s+(?:we\s+)?serve\b/i,
+  /\bdelivery\s+within\s+\d+\s+miles?\b/i,
+  /\bour\s+delivery\s+area\b/i
+];
+function detectDeliveryRadius(pageText) {
+  if (!pageText) return { present: false };
+  for (var i = 0; i < DELIVERY_RADIUS_PATTERNS.length; i++) {
+    if (DELIVERY_RADIUS_PATTERNS[i].test(pageText)) return { present: true };
   }
   return { present: false };
 }

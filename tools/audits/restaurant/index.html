@@ -3426,6 +3426,38 @@
       return makeResult(def, 'unverified');
     }
 
+    // ---- Wholesale / custom-order intake (Phase H9) ----
+    if (def.type === 'wholesale-custom-orders') {
+      if (typeof detectWholesaleCustomOrders !== 'function') return makeResult(def, 'unverified');
+      var wcText = String(pageText || '');
+      var wcCrawl = window.__auditCrawl;
+      if (wcCrawl && Array.isArray(wcCrawl.pages)) {
+        for (var wi = 0; wi < wcCrawl.pages.length; wi++) {
+          var wp = wcCrawl.pages[wi];
+          if (wp && typeof wp.html === 'string') wcText += '\n' + wp.html;
+        }
+      }
+      var wc = detectWholesaleCustomOrders(wcText);
+      if (wc.present) return makeResult(def, 'pass');
+      return makeResult(def, 'unverified');
+    }
+
+    // ---- Delivery radius / zone (Phase H10) ----
+    if (def.type === 'delivery-radius') {
+      if (typeof detectDeliveryRadius !== 'function') return makeResult(def, 'unverified');
+      var drText = String(pageText || '');
+      var drCrawl = window.__auditCrawl;
+      if (drCrawl && Array.isArray(drCrawl.pages)) {
+        for (var di2 = 0; di2 < drCrawl.pages.length; di2++) {
+          var dp = drCrawl.pages[di2];
+          if (dp && typeof dp.html === 'string') drText += '\n' + dp.html;
+        }
+      }
+      var dr = detectDeliveryRadius(drText);
+      if (dr.present) return makeResult(def, 'pass');
+      return makeResult(def, 'unverified');
+    }
+
     // ---- Food-truck schedule presence (Phase H7) ----
     if (def.type === 'food-truck-schedule') {
       if (typeof detectFoodTruckSchedule !== 'function') return makeResult(def, 'unverified');
