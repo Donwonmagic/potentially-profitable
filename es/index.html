@@ -213,8 +213,154 @@
 
 <main id="main">
 
-<!-- Body sections (hero, tool CTA, comparison, services teaser, about teaser,
-     work, FAQ, final CTA + intake form) land in Sprints 4b-4d. -->
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow">Muntin Digital · Un estudio de una sola persona</span>
+      <h1>
+        Diseño web, marca y redes sociales — <span class="serif-italic">hechos</span> por una sola persona.
+      </h1>
+      <p class="hero-sub">
+        Un único socio para tu marca, tu sitio y tus redes. Trabajas directamente conmigo — sin tableros, sin jefes de proyecto, sin entregas que pierden el hilo.
+      </p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Agenda una llamada de 20 min<span class="sr-only"> (se abre en una pestaña nueva)</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="#services">Ver qué incluye</a>
+      </div>
+      <div class="hero-meta">
+        <div class="avatar" aria-hidden="true">D</div>
+        <div>
+          Vas a trabajar con <strong class="text-ink">Don</strong> en persona, no con una cola de tickets.<br>
+          <span class="hero-meta-sub">Tiempo de respuesta: menos de 4 horas, lun–vie · Acepto 2 proyectos nuevos por mes · Atención en español e inglés.</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="window" aria-hidden="true">
+        <div class="pane"></div><div class="pane"></div><div class="pane"></div>
+        <div class="pane"></div><div class="pane"></div><div class="pane"></div>
+        <div class="pane"></div><div class="pane"></div><div class="pane"></div>
+        <div class="pane"></div><div class="pane"></div><div class="pane"></div>
+        <div class="muntins">
+          <div class="bar v1"></div><div class="bar v2"></div>
+          <div class="bar h1"></div><div class="bar h2"></div><div class="bar h3"></div>
+          <div class="frame"></div>
+        </div>
+      </div>
+      <div class="window-caption">
+        <span lang="en">mun·tin / sustantivo</span>
+        <span>el tejido que sostiene una ventana</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRIMARY TOOL CTA ============ -->
+<section class="tool-cta" aria-labelledby="tool-cta-heading">
+  <div class="container tool-cta-inner">
+    <div class="tool-cta-text">
+      <span class="eyebrow">Diagnóstico gratis · 30 segundos · sin registro</span>
+      <h2 id="tool-cta-heading">¿Tu sitio te está costando<br>clientes en silencio?</h2>
+      <p class="tool-cta-lede">Pega la URL. Corremos 23 chequeos específicos de restaurantes — velocidad móvil, legibilidad del menú, pedidos en línea, reservas, Google Business Profile, marcadores dietéticos, páginas de catering y más — y te damos una puntuación contra sitios típicos de tu segmento. En unos 30 segundos vas a ver las 3 correcciones prioritarias, ordenadas por impacto.</p>
+      <form class="tool-cta-form" id="toolCtaForm" action="/tools/audits/restaurant/" method="GET" role="search">
+        <label for="tool-cta-url" class="sr-only">URL del sitio de tu restaurante</label>
+        <input type="text" id="tool-cta-url" name="url" placeholder="turestaurante.com" required autocomplete="url" autocapitalize="off" spellcheck="false" inputmode="url" />
+        <button type="submit">Diagnosticar mi sitio <span aria-hidden="true">→</span></button>
+      </form>
+      <script>
+        // Accept bare domains (turestaurante.com) AND full URLs — mirror
+        // of the English home's normalization, localized input placeholder.
+        (function(){
+          var form  = document.getElementById('toolCtaForm');
+          var input = document.getElementById('tool-cta-url');
+          if (!form || !input) return;
+          form.addEventListener('submit', function(){
+            var v = (input.value || '').trim();
+            if (!v) return;
+            if (!/^https?:\/\//i.test(v)) input.value = 'https://' + v;
+          });
+        }());
+      </script>
+      <ul class="tool-cta-chips" aria-label="Tipos de restaurante para los que el diagnóstico está afinado">
+        <li>Alta cocina</li>
+        <li>Casual</li>
+        <li>Fast-casual</li>
+        <li>Café</li>
+        <li>Panadería</li>
+        <li>Bar / pub</li>
+        <li>Pizzería</li>
+        <li>Food truck</li>
+        <li>Cocina fantasma</li>
+        <li>Solo catering</li>
+      </ul>
+    </div>
+    <div class="tool-cta-visual" aria-hidden="true">
+      <div class="tool-cta-ring">
+        <svg viewBox="0 0 120 120">
+          <circle class="bg" cx="60" cy="60" r="52"></circle>
+          <circle class="fg" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="92"></circle>
+        </svg>
+        <div class="tool-cta-ring-text">
+          <span class="value">72</span>
+          <span class="max">/ 100</span>
+        </div>
+      </div>
+      <ul class="tool-cta-preview">
+        <li><strong>Puntuación general</strong> — velocidad móvil, accesibilidad, SEO y disponibilidad específica de restaurantes en un solo número</li>
+        <li><strong>Las 3 correcciones prioritarias</strong> — ordenadas por impacto para tu segmento, con estimado de esfuerzo y tiempo</li>
+        <li><strong>Reporte detallado</strong> — desglose de los 23 chequeos, PDF imprimible, enviado por correo a pedido</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROBLEM / COMPARISON ============ -->
+<section class="block bg-cream2" id="why" aria-labelledby="why-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">El hueco que Muntin llena</span>
+      <h2 id="why-heading">La mayoría de los negocios pequeños están haciendo malabares con demasiados proveedores sueltos.</h2>
+      <p>Los restaurantes independientes avanzan con un mosaico de freelancers que no se hablan entre sí. Un logo de Fiverr, un sitio-plantilla del primo, las redes las lleva el gerente en sus noches libres. Muntin es el único socio que se hace cargo del panorama completo — marca, sitio y el cuidado continuo que mantiene todo en movimiento.</p>
+    </div>
+
+    <div class="compare">
+      <div class="card reveal">
+        <h3>El mosaico</h3>
+        <div class="price-tag">Hazlo tú + freelancers + Canva</div>
+        <ul>
+          <li>Logo de Fiverr, sitio de Wix, redes de… nadie</li>
+          <li>Nada se ve consistente ni conectado</li>
+          <li>Tú haces el trabajo — y resuelves cuando algo falla</li>
+          <li>Ninguna estrategia que ate los cabos</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <h3>La ruta de agencia</h3>
+        <div class="price-tag">USD 15k el sitio + USD 5k/mes de redes + USD 10k de marca</div>
+        <ul>
+          <li>Tres proveedores que nunca se hablan</li>
+          <li>Precios pensados para empresas grandes, no para la cuadra</li>
+          <li>Jefes de proyecto, contratistas, entregas</li>
+          <li>Eres un pez chico en cada tubería</li>
+        </ul>
+      </div>
+      <div class="card muntin reveal">
+        <h3>La forma Muntin</h3>
+        <div class="price-tag">Marca + sitio + redes + cuidado — un solo socio</div>
+        <ul>
+          <li>Identidad de marca, sitio y redes — diseñados juntos</li>
+          <li>Una persona, de punta a punta, en cada punto de contacto</li>
+          <li>Plan de cuidado mensual — una persona real, siempre</li>
+          <li>Todo es tuyo. Sin ataduras. Punto.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
 </main>
 
