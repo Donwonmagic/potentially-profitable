@@ -67,9 +67,11 @@
 }
 </script>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&amp;family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Fraunces + Inter are served from /assets/fonts/ (see site.css
+     @font-face rules). No Google Fonts round-trip needed, which
+     keeps the page off a third-party CDN and improves first-paint
+     reliability on slow or censored networks. -->
+
 
 <script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
 <script>
@@ -2729,6 +2731,29 @@
       if (!jsPDF) return null;
 
       var doc = new jsPDF({ unit: 'pt', format: 'letter' });
+      // Document metadata. Embedded in the /Info dictionary of the
+      // PDF so assistive tech (screen readers, PDF readers' "document
+      // properties" panel) can announce the file with a real title and
+      // language hint instead of "Untitled". Author/Creator identifies
+      // the source when the file is re-shared or forwarded.
+      try {
+        var __urlForTitle = (last.url || '')
+          .replace(/^https?:\/\//, '').replace(/\/$/, '');
+        doc.setProperties({
+          title:    'Muntin Digital \u2014 Website Audit for ' + (__urlForTitle || 'your site'),
+          subject:  'Custom restaurant website audit report from Muntin Digital',
+          author:   'Muntin Digital',
+          creator:  'Muntin Digital audit tool',
+          keywords: 'restaurant website audit, Muntin Digital, performance, accessibility, SEO'
+        });
+        // /Lang hint for assistive-tech language announcement. jsPDF
+        // 2.5 exposes this via setLanguage; set based on the detected
+        // UI locale so Spanish readers hear the file announced in
+        // Spanish (see the lang detection block below).
+        if (typeof doc.setLanguage === 'function') {
+          doc.setLanguage((window.__muntinLang === 'es') ? 'es' : 'en-US');
+        }
+      } catch (_) { /* metadata is best-effort */ }
       var PAGE_W = 612, PAGE_H = 792;
       var MARGIN = 48;
       var COL_W = PAGE_W - MARGIN * 2;
