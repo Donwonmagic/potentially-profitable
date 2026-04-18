@@ -583,6 +583,13 @@ var RESTAURANT_PRIORITY_CHECKS = [
         passNote: '{detected} on your site — pre-orders, custom-cake inquiries, and whole-pie bookings all flow to you directly instead of becoming DMs your staff has to answer by hand.',
         unverifiedNote: "We scan for bakery-friendly platforms (Square, Toast) plus generic order-ahead widgets. Even a simple HTML pre-order page for custom cakes or catering is a real revenue channel for bakeries and pâtisseries."
       },
+      'pizzeria': {
+        impact: 'Online ordering IS the business model for a pizzeria. Every order that flows through Slice, DoorDash, or Grubhub costs you 20-30% commission — on a $25 pie that is $5-7 of margin walking out the door. A direct Toast or ChowNow flow (or even a Slice "direct" storefront) can cut that commission in half, and owning the customer data is worth even more than the commission saved.',
+        pass: 'Customers can order delivery / pickup online',
+        passNote: '{detected} on your site — every direct order keeps 20-30% more margin than a Slice or DoorDash order AND builds a repeat-customer list you own.',
+        passNoteText: "We found 'Order Online' / 'Order Delivery' / 'Start a Pickup Order' copy but could not pin it to a specific platform.",
+        unverifiedNote: "We scan for pizzeria-heavy platforms including Slice, Toast, ChowNow, Square, Olo, Menufy, and the major aggregators (DoorDash, Grubhub, Uber Eats). If you only take phone orders today, every online order you add is commission-free margin."
+      },
       'bar-pub': {
         impact: 'Bars and pubs vary — some take reservations, most take walk-ins. But even walk-in bars benefit from event bookings (private parties, tastings, brunches) and gift-card purchases. Tripleseat and similar platforms are common; a direct booking flow converts better than an email inquiry.',
         pass: 'Guests can book events or reservations online',
@@ -632,6 +639,13 @@ var RESTAURANT_PRIORITY_CHECKS = [
         passNote: 'Your daily, seasonal, and custom-order menus render as HTML — which means the holiday lineup ships the morning you decide it, and each item can link to its own pre-order.',
         fail: 'Your menu is a PDF or an image',
         failNote: 'Bakery menus rotate weekly (or daily); PDFs lock you into a monthly update cadence and cannot link to a per-item "Pre-order this" button. Rebuild as HTML so seasonal and custom items ship the same day they\'re decided.'
+      },
+      'pizzeria': {
+        impact: 'Pizzeria menus are the conversion page — a PDF menu cannot link each pie to an "Add to Cart" button, which is precisely the flow that makes Slice work and kills most independent pizzerias\' direct-ordering conversion. Every PDF-menu pizzeria is effectively handing its best customers to an aggregator.',
+        pass: 'Your menu opens as a real HTML page',
+        passNote: 'Your menu renders as HTML — each pie can link to its own "Order This" button, and price updates ship without a designer.',
+        fail: 'Your menu is a PDF or an image',
+        failNote: 'PDF menus break the pizzeria ordering flow completely — they can\'t link to per-pie order buttons or pass a pre-selected pie to your online checkout. Rebuild as an HTML page with one-tap "Order This" links per item; that\'s the pattern Slice uses and it\'s why Slice is taking your orders.'
       },
       'bar-pub': {
         impact: 'Cocktail lists and draft lists rotate constantly — a PDF list goes stale within weeks, and nobody wants to read a PDF on a phone at the bar anyway. HTML lists are faster to update, easier to share, and readable without a download.',
