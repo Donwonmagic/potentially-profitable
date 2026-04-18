@@ -6031,6 +6031,59 @@
     });
   }
 
+  /* -------- Phase J2: Deep-gate form submit → unlock ------- */
+  var deepGateForm = document.getElementById('deepGateForm');
+  if (deepGateForm) {
+    deepGateForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      var toast = document.getElementById('deepGateToast');
+      var submit = deepGateForm.querySelector('button[type="submit"]');
+      var emailInput = document.getElementById('deepGateEmail');
+      var email = (emailInput && emailInput.value || '').trim();
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        if (toast) {
+          toast.textContent = 'Enter a valid email to unlock.';
+          toast.classList.add('is-error');
+        }
+        if (emailInput) emailInput.focus();
+        return;
+      }
+      if (toast) {
+        toast.textContent = 'Unlocking…';
+        toast.classList.remove('is-error');
+      }
+      if (submit) { submit.disabled = true; submit.textContent = 'Sending…'; }
+
+      var fd = new FormData(deepGateForm);
+      fetch('/api/audit-report', { method: 'POST', body: fd })
+        .then(function(res){ return res.json().catch(function(){ return { ok: res.ok }; }); })
+        .then(function(body){
+          if (!body || body.ok !== true) {
+            throw new Error((body && body.error) || 'send-failed');
+          }
+          // Persist the unlock so subsequent audits on this
+          // browser skip the gate. Best-effort; private-browsing
+          // flavors of localStorage will just be forgotten.
+          try { localStorage.setItem('muntin.deepReport.unlocked', '1'); } catch (e) {}
+          if (toast) {
+            toast.textContent = 'Unlocked — the deep report is below, and a copy is on its way to your inbox.';
+            toast.classList.remove('is-error');
+          }
+          if (submit) { submit.disabled = false; submit.textContent = 'Unlock deep report'; }
+          applyDeepGateState((window.__auditLastResult && window.__auditLastResult.url) || '');
+          if (window.plausible) window.plausible('Audit Deep Report Unlocked');
+        })
+        .catch(function(err){
+          if (toast) {
+            toast.textContent = 'Sorry, that didn\'t go through. Try again, or email don@muntin.digital directly.';
+            toast.classList.add('is-error');
+          }
+          if (submit) { submit.disabled = false; submit.textContent = 'Unlock deep report'; }
+          console.error('[deep-gate] submit failed:', err);
+        });
+    });
+  }
+
   /* -------- Phase I7: Download share-card PNG -------- */
   var shareCardBtn = document.getElementById('shareCardBtn');
   if (shareCardBtn) {
