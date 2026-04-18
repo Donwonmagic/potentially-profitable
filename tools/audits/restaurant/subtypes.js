@@ -290,6 +290,21 @@ function detectSubtype(signals) {
     }
   }
 
+  // Platform-hint hits. See src/lib/subtypes.js for the rationale.
+  var platforms = (signals && Object.prototype.toString.call(signals.platforms) === '[object Array]')
+    ? signals.platforms : [];
+  for (var p = 0; p < platforms.length; p++) {
+    var pname = String(platforms[p] || '').toLowerCase().replace(/^\s+|\s+$/g, '');
+    if (!pname) continue;
+    for (var m = 0; m < RESTAURANT_SUBTYPES.length; m++) {
+      var sub = RESTAURANT_SUBTYPES[m];
+      var hint = sub.platformHints && sub.platformHints[pname];
+      if (typeof hint === 'number' && hint > 0) {
+        scores[sub.id] += hint;
+      }
+    }
+  }
+
   return rankSubtypeScores(scores);
 }
 
