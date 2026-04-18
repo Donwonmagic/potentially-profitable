@@ -476,5 +476,58 @@ var RESTAURANT_PRIORITY_CHECKS = [
         impact: 'Bar hopping happens on the phone. A tappable map — especially for a bar tucked down a side street or into a basement — can be the difference between a visitor finding you or ending up at whichever place Google Maps surfaces first.'
       }
     }
+  },
+  {
+    type: 'conversions',
+    // Either counts: takeout-only spots only need ordering;
+    // fine-dining only needs reservations; many restaurants have both.
+    platforms: ['ordering', 'reservations'],
+    weight: 1.5, // the single biggest direct-conversion lever
+    anchor: '#conversions',
+    effort: 'dev',
+    minutes: 60,
+    impact: "This is the single biggest direct-conversion lever on a restaurant website. Every reservation taken on your own site (instead of OpenTable) keeps the full booking. Every order through your own Toast or Square checkout (instead of DoorDash) keeps the full margin.",
+    pass: 'Visitors can order or book a table online',
+    passNote: '{detected} on your site — direct online conversions keep commission-hungry marketplaces out of your margins.',
+    passNoteText: "We found text that strongly suggests self-hosted ordering or reservations on your site (something like 'ORDER ONLINE' or 'RESERVE A TABLE'). We couldn't tie it to a specific platform we recognize, but the signal is there.",
+    fail: null, // never fail — a restaurant might legitimately only take walk-ins
+    failNote: null,
+    unverified: "We couldn't detect online ordering or reservations — is this right?",
+    unverifiedNote: "We scan for 100+ major ordering and reservation platforms, including Toast, Square, ChowNow, OpenTable, Resy, Tock, BentoBox, Popmenu, SevenRooms, TheFork, Deliveroo, and dozens more. If you use one of those and we missed it, tell us below and we will add it to the scanner. If you take orders or bookings over the phone only, that is a legitimate choice — just mark it so.",
+    byType: {
+      'fine-dining': {
+        impact: 'Reservations are the entire business model for fine dining. Every booking taken on your site (via Resy, Tock, SevenRooms, or an embedded widget) keeps the relationship — and the deposit, for prix-fixe reservations — instead of sending it through OpenTable.',
+        pass: 'Guests can reserve a table online',
+        passNote: '{detected} on your site — guests can book directly, and you keep the relationship (and any deposit) instead of paying per-cover fees to a marketplace.',
+        passNoteText: "We found text that suggests self-hosted reservations ('RESERVE A TABLE', 'Book Your Seat') but couldn't match it to a specific platform.",
+        unverified: "We couldn't detect online reservations — is this right?",
+        unverifiedNote: "We scan for reservation platforms including Resy, Tock, SevenRooms, OpenTable, Yelp Reservations, TheFork, and more. Fine-dining restaurants that don\'t take online reservations are leaving money on the table — every phone-only booking is a guest who might not bother."
+      },
+      'casual-dining': {
+        impact: 'Casual dining lives in both worlds — reservations for dinner rushes, online ordering for takeout and delivery. Missing either one sends revenue to OpenTable, DoorDash, or a competitor that has both.',
+        pass: 'Guests can reserve or order online',
+        passNote: '{detected} on your site — guests can book a table or place a takeout order directly, which is the pattern that wins for casual-dining restaurants.'
+      },
+      'fast-casual': {
+        impact: 'Online ordering IS the business model for fast-casual. Every order through your own Toast or ChowNow checkout keeps the 30% DoorDash commission in your pocket. A site without direct ordering is a site that hands margin to marketplaces every day.',
+        pass: 'Customers can order online',
+        passNote: '{detected} on your site — direct orders keep the full margin, and you own the customer data.',
+        passNoteText: "We found text that suggests self-hosted ordering ('ORDER ONLINE', 'Order for Pickup') but couldn't match it to a specific platform.",
+        unverified: "We couldn't detect online ordering — is this right?",
+        unverifiedNote: "We scan for ordering platforms including Toast, Square, ChowNow, BentoBox, Olo, Lunchbox, Slice, Menufy, and dozens more. Fast-casual restaurants without direct online ordering are sending 20–30% of every order to DoorDash/Grubhub as commission."
+      },
+      'cafe-bakery': {
+        impact: 'Direct online ordering matters even for small cafés — pre-orders for commuters, whole-cake orders for birthdays, catering trays for offices. Square and Toast make this table stakes; a site without ordering sends those conversions through Grubhub.',
+        pass: 'Customers can order online',
+        passNote: '{detected} on your site — commuter pre-orders, custom-cake inquiries, and catering tray orders all flow to you directly instead of a commissioned aggregator.',
+        unverifiedNote: "We scan for café-friendly platforms like Square, Toast, ChowNow, and more. Even a simple online-order page for pre-orders, custom cakes, or catering is a meaningful revenue channel for cafés and bakeries."
+      },
+      'bar-pub': {
+        impact: 'Bars and pubs vary — some take reservations, most take walk-ins. But even walk-in bars benefit from event bookings (private parties, tastings, brunches) and gift-card purchases. Tripleseat and similar platforms are common; a direct booking flow converts better than an email inquiry.',
+        pass: 'Guests can book events or reservations online',
+        passNote: '{detected} on your site — event bookings and reservations can be handled without a back-and-forth email thread, which is where most bar-inquiry revenue falls through.',
+        unverifiedNote: "We scan for reservation and event-booking platforms including OpenTable, Resy, Tripleseat, and more. Not every bar needs online booking (walk-ins are legitimate) — but event and private-party inquiries almost always benefit from a direct booking flow."
+      }
+    }
   }
 ];
