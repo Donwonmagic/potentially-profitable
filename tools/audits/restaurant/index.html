@@ -2106,6 +2106,35 @@
         <ol class="top-fixes-list" id="topFixesList"></ol>
       </section>
 
+      <!-- Phase J1: Email-gate wrapper. Everything after the
+           score / exec summary / top-3 lives inside #reportDeep
+           and is hidden by default on the first render of a
+           shareable link. The deepGate block above offers the
+           email form that unlocks it; once unlocked we set a
+           localStorage flag so the owner's own browser remembers.
+           Phase J2 adds the form + unlock logic. -->
+      <section class="deep-gate" id="deepGate" hidden>
+        <div class="deep-gate-head">
+          <div class="deep-gate-label">Want the full deep-dive?</div>
+          <p class="deep-gate-sub">Drop your email and we'll unlock the Lighthouse opportunities list, every restaurant-priority check with subtype-specific fixes, and mail you a printable PDF of the full report.</p>
+        </div>
+        <form class="deep-gate-form" id="deepGateForm" action="/api/audit-report" method="POST" novalidate>
+          <input type="hidden" name="interest" value="restaurant-audit-deep-report" />
+          <input type="hidden" name="_gotcha" value="" />
+          <input type="hidden" name="audited_url" id="deepGateUrl" value="" />
+          <input type="hidden" name="subtype" id="deepGateSubtype" value="" />
+          <input type="hidden" name="overall_score" id="deepGateScore" value="" />
+          <input type="hidden" name="shareable_link" id="deepGateShareLink" value="" />
+          <label class="deep-gate-field">
+            <span>Your email</span>
+            <input type="email" name="email" id="deepGateEmail" required autocomplete="email" placeholder="you@restaurant.com" />
+          </label>
+          <button type="submit" class="deep-gate-submit">Unlock deep report</button>
+          <p class="deep-gate-toast" id="deepGateToast" aria-live="polite"></p>
+        </form>
+      </section>
+      <div id="reportDeep" hidden>
+
       <!-- Per-category opportunity drill-down — the specific Lighthouse
            audits that failed, grouped by category, sorted by impact.
            Populated from the raw PSI response in renderOpportunities(). -->
@@ -2380,6 +2409,8 @@
 
         <div id="emailReportError" class="email-report-error" hidden role="alert"></div>
       </div>
+
+      </div><!-- /#reportDeep (Phase J1) -->
 
     </div>
 
