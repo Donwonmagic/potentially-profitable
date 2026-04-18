@@ -356,13 +356,19 @@ async function handlePing(request, env, ctx) {
       sprint: '7c',
       timestamp: new Date().toISOString(),
       routes: Object.keys(API_ROUTES),
-      // Configuration readiness without leaking the actual key
+      // Configuration readiness without leaking the actual key.
+      // A false value here means the corresponding feature will
+      // fall back to its unconfigured branch (PSI direct-call
+      // fallback, Places lookup disabled, Yelp lookup disabled,
+      // email send disabled, …) so ops can verify secrets are
+      // plumbed without actually exercising the upstreams.
       configured: {
         resend:  Boolean(env.RESEND_API_KEY),
         from:    Boolean(env.FROM_EMAIL),
         notify:  Boolean(env.NOTIFY_EMAIL),
         psi:     Boolean(env.PSI_API_KEY),
         places:  Boolean(env.GOOGLE_PLACES_KEY),
+        yelp:    Boolean(env.YELP_API_KEY),
       },
     },
     200

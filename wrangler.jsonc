@@ -70,6 +70,20 @@
   // The RESEND_API_KEY is a SECRET, not a var, and is injected via
   // `wrangler secret put RESEND_API_KEY` during deploy. It must
   // never appear in this file or the git history.
+  //
+  // Other secrets consumed by the Worker (set via `wrangler secret
+  // put X`; never committed):
+  //   PSI_API_KEY        — Google PageSpeed Insights proxy (/api/psi)
+  //   GOOGLE_PLACES_KEY  — Google Places v1 lookup (/api/gbp-lookup)
+  //   RESEND_API_KEY     — Resend transactional email (lib/email.js)
+  //   YELP_API_KEY       — Yelp Fusion v3 lookup (/api/yelp-lookup,
+  //                        added in Phase G2). Optional: when missing,
+  //                        /api/yelp-lookup returns `yelp-unconfigured`
+  //                        and the client falls through to the
+  //                        on-page review-widget scan only.
+  //
+  // /api/ping exposes a boolean for each configured secret so ops
+  // can verify plumbing without exercising the upstream.
   "vars": {
     "FROM_EMAIL":   "Don Goldstein <don@muntin.digital>",
     "NOTIFY_EMAIL": "don@muntin.digital"
