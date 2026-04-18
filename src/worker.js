@@ -50,6 +50,8 @@ import {
   checklistAutoResponder,
   auditReportNotification,
   auditReportAutoResponder,
+  auditDeepReportNotification,
+  auditDeepReportAutoResponder,
 } from './lib/templates.js';
 
 
@@ -233,15 +235,26 @@ async function handleAuditReport(request, env, ctx) {
     return jsonResponse({ ok: false, error: lengths.error }, 400);
   }
 
-  const notificationTmpl = auditReportNotification(body);
-  const autoReplyTmpl    = auditReportAutoResponder(body);
+  // Phase J5: dispatch on body.interest so the deep-gate unlock
+  // flow gets its own subtype-voiced template pair from the J3
+  // additions in templates.js. Legacy 'email me this report'
+  // submissions (no interest or any other value) keep the
+  // original templates for backward compatibility with already-
+  // rendered UIs that predate the split.
+  const isDeepReport = String(body.interest || '').trim() === 'restaurant-audit-deep-report';
+  const notificationTmpl = isDeepReport
+    ? auditDeepReportNotification(body)
+    : auditReportNotification(body);
+  const autoReplyTmpl = isDeepReport
+    ? auditDeepReportAutoResponder(body)
+    : auditReportAutoResponder(body);
 
   return await sendPair({
     env,
     userEmail: body.email.trim(),
     notification: notificationTmpl,
     autoReply:    autoReplyTmpl,
-    endpoint:     'audit-report',
+    endpoint:     isDeepReport ? 'audit-deep-report' : 'audit-report',
   });
 }
 
