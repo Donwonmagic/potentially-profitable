@@ -656,6 +656,142 @@ function isValidHttpUrl(s) {
   } catch (e) { return false; }
 }
 
+// ------------------------------------------------------------
+// Schema-vs-Places hours cross-check — Phase F5
+// ------------------------------------------------------------
+// Compares what the site publishes in JSON-LD vs what Google Places
+// has on file for the same business. Stale schema is a real-world
+// problem: a restaurant updates its hours on Google Business Profile
+// but not in its website's schema markup, and the Rich Results
+// snippet then serves Sunday-closed to customers who could have
+// walked in.
+//
+// Inputs:
+//   schemaOpeningHours - validation.openingHours from
+//                        validateRestaurantSchema (F2). Uses the
+//                        raw restaurantObjects to rebuild per-day
+//                        coverage if needed.
+//   placesRegularHours - the Places v1 regularOpeningHours shape:
+//                        { periods: [{ open: {day,...}, close: {day,...} }], ... }
+//                        day is 0-6 with SUN=0 per Google's convention.
+//
+// Output:
+//   {
+//     checkable:     boolean,        // both sources present
+//     schemaDays:    string[],       // ['Mo','Tu','We',...] from schema
+//     placesDays:    string[],       // ditto from Places
+//     agreed:        string[],       // days both agree are OPEN
+//     onlyInSchema:  string[],       // days schema says open, Places silent
+//     onlyInPlaces:  string[],       // days Places says open, schema silent
+//     match:         boolean         // no disagreement
+//   }
+function compareSchemaVsPlacesHours(restaurantObjects, placesRegularHours) {
+  const schemaDays = schemaDaysFromObjects(restaurantObjects);
+  const placesDays = placesDaysFromRegularHours(placesRegularHours);
+
+  const checkable = schemaDays.length > 0 && placesDays.length > 0;
+  const onlyInSchema = schemaDays.filter(function(d){ return placesDays.indexOf(d) < 0; });
+  const onlyInPlaces = placesDays.filter(function(d){ return schemaDays.indexOf(d) < 0; });
+  const agreed       = schemaDays.filter(function(d){ return placesDays.indexOf(d) >= 0; });
+
+  return {
+    checkable:    checkable,
+    schemaDays:   schemaDays,
+    placesDays:   placesDays,
+    agreed:       agreed,
+    onlyInSchema: onlyInSchema,
+    onlyInPlaces: onlyInPlaces,
+    match:        checkable && onlyInSchema.length === 0 && onlyInPlaces.length === 0
+  };
+}
+
+// Extract the set of 'Mo'/'Tu'/.../'Su' codes that schema covers.
+// Mirrors the day-name parsing in validateOpeningHours but returns
+// the set directly instead of the {present,dayCount,complete,…} summary.
+function schemaDaysFromObjects(restaurantObjects) {
+  const DAY_NAMES = {
+    'monday':'Mo','mo':'Mo','mon':'Mo',
+    'tuesday':'Tu','tu':'Tu','tue':'Tu','tues':'Tu',
+    'wednesday':'We','we':'We','wed':'We',
+    'thursday':'Th','th':'Th','thu':'Th','thur':'Th','thurs':'Th',
+    'friday':'Fr','fr':'Fr','fri':'Fr',
+    'saturday':'Sa','sa':'Sa','sat':'Sa',
+    'sunday':'Su','su':'Su','sun':'Su'
+  };
+  const covered = Object.create(null);
+  function addDay(raw) {
+    if (!raw) return;
+    const s = String(raw).toLowerCase().replace(/^https?:\/\/schema\.org\//, '').trim();
+    if (DAY_NAMES[s]) { covered[DAY_NAMES[s]] = true; return; }
+    const tail = s.split('/').pop();
+    if (DAY_NAMES[tail]) { covered[DAY_NAMES[tail]] = true; }
+  }
+  (restaurantObjects || []).forEach(function(obj){
+    const spec = obj.openingHoursSpecification;
+    if (Array.isArray(spec)) spec.forEach(function(e){
+      if (!e) return;
+      const d = e.dayOfWeek;
+      if (Array.isArray(d)) d.forEach(addDay);
+      else addDay(d);
+    });
+    else if (spec && typeof spec === 'object') {
+      const d = spec.dayOfWeek;
+      if (Array.isArray(d)) d.forEach(addDay);
+      else addDay(d);
+    }
+    const legacy = obj.openingHours;
+    if (typeof legacy === 'string' || Array.isArray(legacy)) {
+      const strs = Array.isArray(legacy) ? legacy : [legacy];
+      const rangeRe = /\b(Mo|Tu|We|Th|Fr|Sa|Su)(?:\s*-\s*(Mo|Tu|We|Th|Fr|Sa|Su))?\b/g;
+      const order = ['Mo','Tu','We','Th','Fr','Sa','Su'];
+      strs.forEach(function(s){
+        let m;
+        while ((m = rangeRe.exec(s)) !== null) {
+          const start = order.indexOf(m[1]);
+          const end   = m[2] ? order.indexOf(m[2]) : start;
+          if (start < 0 || end < 0) continue;
+          let i = start;
+          while (true) {
+            covered[order[i]] = true;
+            if (i === end) break;
+            i = (i + 1) % 7;
+          }
+        }
+      });
+    }
+  });
+  return Object.keys(covered);
+}
+
+// Map Places v1 regularOpeningHours.periods to day codes. Google
+// convention: periods[].open.day is 0-6 with SUNDAY = 0. We also
+// honor the legacy Places v0 shape where period.open.day is 0-6
+// via the same offset, and periods that carry a string day like
+// 'MONDAY'.
+function placesDaysFromRegularHours(regularOpeningHours) {
+  const INDEX_TO_CODE = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+  const STR_TO_CODE = {
+    'sunday':'Su','monday':'Mo','tuesday':'Tu','wednesday':'We',
+    'thursday':'Th','friday':'Fr','saturday':'Sa'
+  };
+  const covered = Object.create(null);
+  const periods = regularOpeningHours && regularOpeningHours.periods;
+  if (!Array.isArray(periods)) return [];
+  periods.forEach(function(p){
+    const open = p && p.open;
+    if (!open) return;
+    if (typeof open.day === 'number' && open.day >= 0 && open.day <= 6) {
+      covered[INDEX_TO_CODE[open.day]] = true;
+      return;
+    }
+    if (typeof open.day === 'string') {
+      const code = STR_TO_CODE[open.day.toLowerCase()];
+      if (code) covered[code] = true;
+    }
+  });
+  return Object.keys(covered);
+}
+
 // F3: priceRange validation. Schema.org priceRange is free-form but
 // Google's Rich Results docs strongly prefer the $-symbol form
 // ('$', '$$', '$$$', '$$$$'). We accept numeric-range strings too
