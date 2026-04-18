@@ -584,10 +584,45 @@ async function handlePageCrawl(request, env, ctx) {
   }
 
   // Sprint E2: rank up to 5 internal-link candidates from the
-  // homepage HTML. Fetching the candidates is Sprint E3; for now
-  // we return them as `candidates` so callers can see what we'd
-  // fetch next without committing to the latency cost.
+  // homepage HTML.
   const candidates = extractInternalLinkCandidates(homepage.html, homepage.url);
+
+  // Sprint E3: fetch the candidates in parallel, 6s per-URL, with
+  // a 15s global cap. We use Promise.allSettled so one slow/broken
+  // page cannot starve the whole batch, plus a Promise.race against
+  // a timer so the WHOLE operation cannot exceed the cap even if
+  // AbortController support drifts across Workers runtimes.
+  const CRAWL_PER_URL_TIMEOUT_MS = 6000;
+  const CRAWL_GLOBAL_CAP_MS = 15000;
+  const fetches = candidates.map(function(c){
+    return fetchPageForCrawl(c.url, CRAWL_PER_URL_TIMEOUT_MS)
+      .then(function(r){ return { slot: c.slot, url: c.url, result: r }; });
+  });
+  const globalCap = new Promise(function(resolve){
+    setTimeout(function(){ resolve(null); }, CRAWL_GLOBAL_CAP_MS);
+  });
+  const settled = await Promise.race([
+    Promise.allSettled(fetches),
+    globalCap.then(function(){ return null; })
+  ]);
+  const pages = [];
+  if (Array.isArray(settled)) {
+    for (let i = 0; i < settled.length; i++) {
+      const entry = settled[i];
+      if (entry.status === 'fulfilled' && entry.value) {
+        const v = entry.value;
+        if (v.result && v.result.ok) {
+          pages.push({ slot: v.slot, url: v.url, status: v.result.status, html: v.result.html });
+        } else {
+          pages.push({ slot: v.slot, url: v.url, status: (v.result && v.result.status) || 0, html: null, error: (v.result && v.result.error) || 'fetch-failed' });
+        }
+      }
+    }
+  }
+  // If the global cap won the race, fall back to reporting an
+  // empty pages list — caller still has a usable homepage + the
+  // candidate URLs they can retry against later.
+  const capHit = !Array.isArray(settled);
 
   return jsonResponse({
     ok: true,
@@ -597,7 +632,8 @@ async function handlePageCrawl(request, env, ctx) {
       html: homepage.html
     },
     candidates: candidates,
-    pages: []
+    pages: pages,
+    capHit: capHit
   }, 200);
 }
 
@@ -685,12 +721,14 @@ function extractInternalLinkCandidates(html, baseUrlString) {
   return candidates;
 }
 
-// Shared single-URL fetch helper. Same shape/timeout as the other
-// page-reading endpoints; broken out so Phase E3 can call it
-// concurrently for up to 5 internal-link candidates.
-async function fetchPageForCrawl(target) {
+// Shared single-URL fetch helper. Same shape as the other page-
+// reading endpoints. Timeout is configurable so Phase E3 can use a
+// tighter 6s per follow-up fetch while the homepage gets the
+// default 8s — the homepage is the one we can't proceed without.
+async function fetchPageForCrawl(target, timeoutMs) {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 8000);
+  const ms = (typeof timeoutMs === 'number' && timeoutMs > 0) ? timeoutMs : 8000;
+  const timeout = setTimeout(() => controller.abort(), ms);
   try {
     const res = await fetch(target, {
       headers: { 'User-Agent': 'MuntinDigital-PageCrawl/1.0' },
