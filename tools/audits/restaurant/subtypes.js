@@ -233,3 +233,29 @@ var RESTAURANT_SUBTYPE_ALIASES = {
 
 // Flat id array for enum validation.
 var RESTAURANT_SUBTYPE_IDS = RESTAURANT_SUBTYPES.map(function(s){ return s.id; });
+
+/**
+ * Resolve a caller-supplied subtype id (possibly legacy) to the
+ * canonical id. Returns null for unknown ids so the caller can fall
+ * back to detection rather than silently mis-routing.
+ */
+function canonicalSubtypeId(id) {
+  if (!id || typeof id !== 'string') return null;
+  if (RESTAURANT_SUBTYPE_IDS.indexOf(id) >= 0) return id;
+  var aliased = RESTAURANT_SUBTYPE_ALIASES[id];
+  if (aliased && RESTAURANT_SUBTYPE_IDS.indexOf(aliased) >= 0) return aliased;
+  return null;
+}
+
+/**
+ * Look up a subtype by id. Returns the full registry entry or null.
+ * Handles legacy ids transparently via canonicalSubtypeId.
+ */
+function getSubtype(id) {
+  var canon = canonicalSubtypeId(id);
+  if (!canon) return null;
+  for (var i = 0; i < RESTAURANT_SUBTYPES.length; i++) {
+    if (RESTAURANT_SUBTYPES[i].id === canon) return RESTAURANT_SUBTYPES[i];
+  }
+  return null;
+}
