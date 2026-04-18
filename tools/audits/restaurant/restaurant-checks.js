@@ -804,6 +804,40 @@ var RESTAURANT_PRIORITY_CHECKS = [
         impact: 'Ghost-kitchen customers rarely inspect the site before ordering — but the ones who DO are usually dietary-restricted and comparing brands before committing. Clear dietary markers on your brand page move those orders into your funnel instead of a competing aggregator listing.'
       }
     }
+  },
+  {
+    // Phase H2: Gift-card presence. Evaluator branch uses
+    // detectGiftCardPresence(pageText, allUrls). Never fail —
+    // absence is a missed revenue lever, not a broken site.
+    type: 'gift-cards',
+    weight: 0.5,
+    anchor: '#conversions',
+    effort: 'dev',
+    minutes: 30,
+    impact: 'Gift cards are the highest-margin line on a restaurant site. Every \$50 gift card sold brings in \$50 of revenue AND a future customer; roughly 20-30% of gift cards go unredeemed, which is pure revenue. A visible "Gift Cards" CTA converts more than you would expect, especially around November-December.',
+    pass: 'Your site sells gift cards',
+    passNote: '{detected} on your site — gift-card sales are some of the highest-margin revenue a restaurant can earn, and you already have the flow.',
+    fail: null,
+    failNote: null,
+    unverified: 'We didn\'t spot gift-card sales — is this right?',
+    unverifiedNote: 'We scan for gift-card text ("Gift Card", "Gift Certificate", "e-Gift") plus major platforms (Toast Gift Cards, Square Gift Cards, Yiftee, GiftUp, Factor4). If you sell via a platform we missed, tell us and we will add it. If you do not sell gift cards today, adding a simple checkout page is a high-ROI, once-a-quarter project.',
+    byType: {
+      'fine-dining': {
+        impact: 'Gift cards at fine-dining restaurants are the "special occasion" present par excellence — anniversaries, birthdays, holiday gifts. Redemption rates run higher than casual dining but unredeemed balances are still pure margin. Physical printed cards are a nice upsell for corporate gifts.',
+        unverifiedNote: 'A gift-card page on a fine-dining site pays for itself during the holidays. Tock, Resy, and SevenRooms all integrate gift cards; Toast does too if you are on their POS.'
+      },
+      'bar-pub': {
+        impact: 'Bars and pubs over-index on gift cards — stocking-stuffers, birthday presents, thank-you gifts from corporate accounts. Every unredeemed card is pure revenue; every redeemed one brings in a customer plus whatever they spend above the card value.',
+        unverifiedNote: 'Bar gift cards especially benefit from a simple online checkout. Square and Toast both do this well; Tripleseat if you already use it for events.'
+      },
+      'bakery': {
+        impact: 'Bakery gift cards convert well for birthday presents, corporate gifts, and the "sorry I forgot the birthday cake" save. They are also one of the easiest ways to capture a repeat customer from a one-time visitor.',
+        unverifiedNote: 'A gift-card purchase page on your bakery site with $25, $50, $100 presets is the baseline. Square and Toast both handle this natively; email-delivered e-cards make same-day gift purchases possible.'
+      },
+      'ghost-kitchen': {
+        impact: 'Gift cards matter less for ghost kitchens (customers who never visit are unlikely to gift-card-gift the experience), but digital e-cards still add revenue around holidays — and matter for corporate catering accounts.'
+      }
+    }
   }
 ];
 
@@ -974,6 +1008,30 @@ var DIETARY_MARKER_PATTERNS = [
   { marker: 'paleo',           regex: /\bpaleo\b/i },
   { marker: 'allergen-notes',  regex: /\ballergen(?:s)?\b|\bcontains:\s+(?:nuts|dairy|soy|gluten)\b/i }
 ];
+
+// H2: Gift-card presence. Detects gift-card commerce either by
+// visible text ('gift card', 'gift certificate', 'e-gift') or by
+// known gift-card platform links (Toast gift cards, Square gift
+// cards, Yiftee, GiftUp, Factor4, etc.). Gift cards are the
+// highest-margin line on a restaurant site — every $50 sale that
+// doesn't convert into a redemption is pure revenue.
+var GIFT_CARD_PATTERNS = {
+  keywords: /\bgift\s+(?:card|cards|certificate|certificates)\b|\be[-\s]?gift\s+card\b|\bgift\s+voucher\b/i,
+  hosts: ['yiftee', 'giftup', 'factor4', 'toasttab.com/gift', 'square.site/gift', 'gift.squareup', 'giftly', 'giftfly', 'rewardsnetwork']
+};
+function detectGiftCardPresence(pageText, allUrls) {
+  var viaText = pageText ? GIFT_CARD_PATTERNS.keywords.test(pageText) : false;
+  var viaHosts = false;
+  if (Array.isArray(allUrls)) {
+    for (var i = 0; i < allUrls.length && !viaHosts; i++) {
+      var u = String(allUrls[i] || '').toLowerCase();
+      for (var j = 0; j < GIFT_CARD_PATTERNS.hosts.length; j++) {
+        if (u.indexOf(GIFT_CARD_PATTERNS.hosts[j]) >= 0) { viaHosts = true; break; }
+      }
+    }
+  }
+  return { present: viaText || viaHosts, viaText: viaText, viaHosts: viaHosts };
+}
 
 function detectDietaryMarkers(pageText) {
   if (!pageText || typeof pageText !== 'string') return { present: false, markers: [] };

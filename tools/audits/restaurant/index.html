@@ -3426,6 +3426,28 @@
       return makeResult(def, 'unverified');
     }
 
+    // ---- Gift-card presence (Phase H2) ----
+    if (def.type === 'gift-cards') {
+      if (typeof detectGiftCardPresence !== 'function') return makeResult(def, 'unverified');
+      // Search across homepage + crawl bundle, since gift-card
+      // pages are routinely a separate link we detect in the crawl.
+      var gcText = String(pageText || '');
+      var gcUrls = (allUrls || []).slice();
+      var crawlGc = window.__auditCrawl;
+      if (crawlGc && Array.isArray(crawlGc.pages)) {
+        for (var gi = 0; gi < crawlGc.pages.length; gi++) {
+          var pgc = crawlGc.pages[gi];
+          if (pgc && typeof pgc.html === 'string') gcText += '\n' + pgc.html;
+          if (pgc && typeof pgc.url === 'string')   gcUrls.push(pgc.url);
+        }
+      }
+      var gc = detectGiftCardPresence(gcText, gcUrls);
+      if (gc.present) {
+        return makeResult(def, 'pass', [{ name: gc.viaHosts ? 'Gift-card platform' : 'Gift-card page' }]);
+      }
+      return makeResult(def, 'unverified');
+    }
+
     // ---- Dietary / allergen signal presence (Phase H1) ----
     if (def.type === 'dietary') {
       if (typeof detectDietaryMarkers !== 'function') return makeResult(def, 'unverified');
