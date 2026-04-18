@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-18T02:30:06.816Z",
+  "generatedAt": "2026-04-18T03:44:56.054Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "am_fenrir",
-  "total": 698.26,
+  "total": 698.38,
   "chunks": [
     {
       "id": 0,
@@ -218,177 +218,177 @@
       "id": 26,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(19)",
-      "text": "This isn't my hunch. Nielsen Norman Group's research on local business websites has repeatedly found that hours and location are the most-searched-for information on small-business sites — and the most frequently hidden. Owners often think the hours live \"in the footer, where people will find them,\" without testing what happens when a first-time visitor, who's never seen the footer exist, tries to find them in five seconds.",
+      "text": "This isn't my hunch. Nielsen Norman Group's research on local business websites has repeatedly found that hours and location are the most-searched-for information on small-business sites — and the most frequently hidden. Owners often think the hours liv \"in the footer, where people will find them,\" without testing what happens when a first-time visitor, who's never seen the footer exist, tries to find them in five seconds.",
       "start": 354.84,
-      "end": 374.23
+      "end": 374.35
     },
     {
       "id": 27,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(20)",
       "text": "How to test it in thirty seconds: open your site cold. Time how many seconds pass before you can see today's hours without scrolling or clicking anything. If it's more than five, you've got Leak number 3.",
-      "start": 374.55,
-      "end": 386.75
+      "start": 374.67,
+      "end": 386.87
     },
     {
       "id": 28,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(21)",
       "text": "The fix: put hours in the hero, or in a sticky header, or in a small \"OPEN NOW · until 10 PM\" badge that auto-updates based on the current time. The badge is my favorite — it takes about thirty lines of JavaScript and it reassures the visitor at exactly the moment they need it.",
-      "start": 387.07,
-      "end": 403.78
+      "start": 387.19,
+      "end": 403.9
     },
     {
       "id": 29,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(4)",
       "text": "Leak number 4 — The reservation button is buried or missing.",
-      "start": 404.58,
-      "end": 407.97
+      "start": 404.7,
+      "end": 408.09
     },
     {
       "id": 30,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(22)",
       "text": "Some restaurant sites don't have a reservation button on the homepage at all. Others have one, but it's in a dropdown menu at the top right, or it's a small text link at the bottom of a long hero, or it only lives on the \"Contact\" page. This is the leak that frustrates me the most, because the fix is so cheap and the impact is so obvious.",
-      "start": 408.42,
-      "end": 426.38
+      "start": 408.54,
+      "end": 426.5
     },
     {
       "id": 31,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(23)",
       "text": "There's a well-established U X principle here — Fitts's Law , which in plain English says: the harder a button is to reach, the less often people press it . A reservation button at the top of a nav that requires a tap to open and then a second tap to select is twice as hard to hit as a button that's permanently visible at the bottom of the screen. You lose conversion at every step of the tap path.",
-      "start": 426.7,
-      "end": 445.56
+      "start": 426.82,
+      "end": 445.68
     },
     {
       "id": 32,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(24)",
       "text": "How to test it in thirty seconds: open your homepage on your phone. Without scrolling or opening any menus, can you tap \"Reserve\" in a single gesture? If not — Leak number 4.",
-      "start": 445.88,
-      "end": 456.56
+      "start": 446,
+      "end": 456.68
     },
     {
       "id": 33,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(25)",
       "text": "The fix: add a sticky bottom-of-screen reservation C T A on every mobile page. It's maybe an hour of work on a custom site. On most template builders you can approximate it with a floating widget. Either way, it's the single highest-R O I change you can make for conversion — and most of the restaurants I've audited have never even considered it.",
-      "start": 456.88,
-      "end": 475.48
+      "start": 457,
+      "end": 475.6
     },
     {
       "id": 34,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(5)",
       "text": "Leak number 5 — Reservation flow friction.",
-      "start": 476.28,
-      "end": 478.81
+      "start": 476.4,
+      "end": 478.93
     },
     {
       "id": 35,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(26)",
       "text": "This is where most restaurant reservation funnels actually fall apart. The visitor tapped \"Reserve,\" which means they're in — the conversion is one or two clicks from happening. And most restaurant sites use a booking platform that turns those one or two clicks into seven.",
-      "start": 479.26,
-      "end": 495.04
+      "start": 479.38,
+      "end": 495.16
     },
     {
       "id": 36,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(27)",
       "text": "Here's what a typical reservation widget asks for: party size, date, time, alternative time, name, phone, email, password for the account you're being quietly signed up for, phone-verification code, \"agree to terms,\" sometimes a credit card held as collateral, sometimes a captcha to prove you're human. By step seven, the customer has forgotten why they wanted Italian food.",
-      "start": 495.36,
-      "end": 514.27
+      "start": 495.48,
+      "end": 514.39
     },
     {
       "id": 37,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(28)",
       "text": "Baymard Institute's research on e-commerce checkout abandonment finds that the average cart-abandonment rate in online retail hovers around 70% , and one of the top reasons cited by shoppers is \"the site wanted me to create an account.\" Reservation forms are checkout forms wearing a different hat, and they suffer the same dynamic: every additional field, every unnecessary account, every extra screen correlates directly with people dropping out.",
-      "start": 514.59,
-      "end": 535.67
+      "start": 514.71,
+      "end": 535.79
     },
     {
       "id": 38,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(29)",
       "text": "How to test it in thirty seconds: pretend you're a first-time customer and actually book a table at your own restaurant end-to-end. Count the distinct screens and required fields. If you got past six, that's Leak number 5 — and most restaurants I audit land between eight and twelve.",
-      "start": 535.99,
-      "end": 552.21
+      "start": 536.11,
+      "end": 552.33
     },
     {
       "id": 39,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(30)",
       "text": "The fix: pick a reservation platform whose default flow has fewer steps (the major players vary a lot), or — if your volume is low enough — use a simple embedded form that asks for name, date, time, party size, and email, and emails your host stand. When your volume grows, you revisit the platform decision. Don't pay a complex system for simple bookings.",
-      "start": 552.53,
-      "end": 571.12
+      "start": 552.65,
+      "end": 571.24
     },
     {
       "id": 40,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(6)",
       "text": "Leak number 6 — Confirmation anxiety.",
-      "start": 571.92,
-      "end": 574.09
+      "start": 572.04,
+      "end": 574.21
     },
     {
       "id": 41,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(31)",
       "text": "This one is small on the funnel (about three people out of a hundred) but it's nasty because it's invisible to you. Here's what happens: the customer completes the booking, the reservation widget flashes a \"thanks!\" screen, and then... nothing. No email. No text message. No paper trail. They wait a few hours, start to doubt the booking went through, and quietly call somewhere else \"just in case.\" Sometimes they show up expecting a table that doesn't exist in the system. Either outcome is a worse experience than if they'd never tried to book at all.",
-      "start": 574.54,
-      "end": 599.1
+      "start": 574.66,
+      "end": 599.22
     },
     {
       "id": 42,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(32)",
       "text": "How to test it in thirty seconds: book a real reservation at your own restaurant right now. Does a confirmation email arrive within a minute? Is it from your restaurant's name, or a generic \"OpenTable Reservations\" address? Does it clearly state the date, time, party size, and how to modify or cancel? Is it signed by the restaurant — or does it feel like a robot wrote it?",
-      "start": 599.42,
-      "end": 617.92
+      "start": 599.54,
+      "end": 618.04
     },
     {
       "id": 43,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(33)",
       "text": "The fix: it's pure operations. Make sure your reservation system sends an instant, well-formatted confirmation email. Customize the sender name to be the restaurant, not the platform. Add a reminder email the day-of. If your current platform won't let you customize the confirmation, ask your provider — most will turn it on when asked. If they won't, that's a reason to change platforms.",
-      "start": 618.24,
-      "end": 637.26
+      "start": 618.36,
+      "end": 637.38
     },
     {
       "id": 44,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(4)",
       "text": "The fix math.",
-      "start": 638.06,
-      "end": 638.79
+      "start": 638.18,
+      "end": 638.91
     },
     {
       "id": 45,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(34)",
       "text": "Here's the thing that usually surprises restaurant owners most: fixing the top four leaks — slow load, P D F menu, hidden hours, and missing reservation button — typically takes a single focused afternoon on a custom-built site. Four of the six leaks, closed in one session, for the cost of an audit plus a few hours of work. On a template site like Wix or Squarespace, three of the four aren't really fixable without a rebuild, which is the quiet cost of the \"cheap\" platform — you can't close the leaks even after you find them.",
-      "start": 639.24,
-      "end": 665.07
+      "start": 639.36,
+      "end": 665.19
     },
     {
       "id": 46,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(35)",
       "text": "The remaining two leaks (reservation flow friction and confirmation anxiety) usually aren't code problems at all — they're platform-choice or operational problems. They take longer to address, but they're almost always worth the effort.",
-      "start": 665.39,
-      "end": 679.21
+      "start": 665.51,
+      "end": 679.33
     },
     {
       "id": 47,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(36)",
       "text": "If you close all six, you'll probably recover somewhere between 30 and 50% of the traffic you're losing today. Your actual recovery will depend on your menu, your clientele, and how badly the site was leaking to start with — but the direction is one-way, and the compounding is real. Every month you leave the leaks in place, you're lighting money on fire that the customer was already holding out to you.",
-      "start": 679.53,
-      "end": 698.26
+      "start": 679.65,
+      "end": 698.38
     }
   ]
 }
