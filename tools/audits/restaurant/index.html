@@ -4020,10 +4020,50 @@
       if (ov) params.set('ov', ov);
       if (userForcedRestaurant) params.set('r', '1');
       if (userBusinessType)     params.set('bt', userBusinessType);
+      // Phase I8: if we have a CURRENT result, encode it as a
+      // compact baseline so any link shared now, re-opened later,
+      // renders a re-scan diff. Format:
+      //   bl=<overall>.<perf>.<a11y>.<bp>.<seo>.<readiness>
+      // All five integers (readiness may be null → -).
+      var last = window.__auditLastResult;
+      if (last && typeof last.overall === 'number') {
+        var baseline = [
+          Math.round(last.overall),
+          last.perf != null ? Math.round(last.perf) : '-',
+          last.a11y != null ? Math.round(last.a11y) : '-',
+          last.bp   != null ? Math.round(last.bp)   : '-',
+          last.seo  != null ? Math.round(last.seo)  : '-',
+          last.restaurant != null ? Math.round(last.restaurant) : '-'
+        ].join('.');
+        params.set('bl', baseline);
+      }
       var qs = params.toString();
       var newUrl = location.pathname + (qs ? '?' + qs : '');
       window.history.replaceState(null, '', newUrl);
     } catch (e) { /* history API unavailable — silently skip */ }
+  }
+
+  // Phase I8: parse a baseline string carried in ?bl= back into a
+  // structured snapshot. Any component that is '-' returns null so
+  // downstream code can distinguish "we didn't measure it" from
+  // "we measured it as 0."
+  function parseBaselineParam(raw) {
+    if (!raw || typeof raw !== 'string') return null;
+    var parts = raw.split('.');
+    if (parts.length !== 6) return null;
+    function toN(s) {
+      if (s === '-' || s === '') return null;
+      var n = parseInt(s, 10);
+      return isNaN(n) ? null : n;
+    }
+    return {
+      overall:    toN(parts[0]),
+      perf:       toN(parts[1]),
+      a11y:       toN(parts[2]),
+      bp:         toN(parts[3]),
+      seo:        toN(parts[4]),
+      restaurant: toN(parts[5])
+    };
   }
 
   // Render the business-type card (detected subtype + dropdown to
@@ -4237,6 +4277,19 @@
     if (priorityResult && priorityResult.totalCount &&
         priorityResult.unverifiedCount / priorityResult.totalCount > 0.33) {
       intro += ' A third of the restaurant-specific checks couldn\'t be fully verified on this run — answering the "is this right?" questions below will sharpen the number.';
+    }
+
+    // Phase I8: re-scan diff — if a baseline from a prior run
+    // was hydrated from ?bl=, surface the delta inline.
+    var baseline = window.__auditBaseline;
+    if (baseline && typeof baseline.overall === 'number') {
+      var deltaO = overall - baseline.overall;
+      if (Math.abs(deltaO) >= 1) {
+        var sign = deltaO > 0 ? '+' : '';
+        intro += ' Since the last saved scan, your overall score moved from ' + baseline.overall + ' to ' + overall + ' (' + sign + deltaO + ').';
+      } else {
+        intro += ' Since the last saved scan, your overall score is essentially unchanged (' + overall + ' vs ' + baseline.overall + ').';
+      }
     }
 
     body.textContent = intro;
@@ -6303,6 +6356,14 @@
           ? canonicalSubtypeId(btParam)
           : null;
         userBusinessType = canonicalBt || btParam;
+      }
+      // Phase I8: hydrate a prior-run baseline from ?bl=o.p.a.b.s.r
+      // so a re-visit of a shared link shows the delta from when
+      // the link was created to the current re-scan.
+      var blParam = params.get('bl');
+      if (blParam) {
+        var baseline = parseBaselineParam(blParam);
+        if (baseline) window.__auditBaseline = baseline;
       }
       // Brief delay so the page finishes painting before we kick off the fetch
       setTimeout(function(){
