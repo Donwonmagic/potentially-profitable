@@ -325,6 +325,19 @@ function detectSubtype(signals) {
 var SUBTYPE_KEYWORD_WEIGHT = 1;
 var SUBTYPE_KEYWORD_CAP = 5;
 
+/**
+ * Resolve a subtype-specific weight override for a given check id.
+ * Returns the number (>=0) if overridden, or null to use the check's
+ * default weight. 0 is meaningful — "irrelevant for this subtype."
+ * See src/lib/subtypes.js for the full spec.
+ */
+function subtypeWeights(id, checkId) {
+  var sub = getSubtype(id);
+  if (!sub || !sub.weights) return null;
+  var val = sub.weights[checkId];
+  return (typeof val === 'number') ? val : null;
+}
+
 // Shared ranking helper. Phase B4/B5 will call this after contributing
 // their own signals to the same score map.
 function rankSubtypeScores(scores) {
