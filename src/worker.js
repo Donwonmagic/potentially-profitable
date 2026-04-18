@@ -65,6 +65,7 @@ const API_ROUTES = {
   '/api/gbp-lookup':    handleGbpLookup,
   '/api/seo-check':     handleSeoCheck,
   '/api/schema-check':  handleSchemaCheck,
+  '/api/page-crawl':    handlePageCrawl,
   '/api/psi':           handlePsi,
 };
 
@@ -87,7 +88,7 @@ export default {
           404
         );
       }
-      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/psi') {
+      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
         }
@@ -543,6 +544,78 @@ async function handleSchemaCheck(request, env, ctx) {
   } catch (err) {
     console.error('[schema-check] exception:', err && err.stack ? err.stack : err);
     return jsonResponse({ ok: false, error: 'Failed to fetch the page' }, 502);
+  }
+}
+
+
+// ------------------------------------------------------------
+// Multi-page crawl — Phase E
+// ------------------------------------------------------------
+// Fetches the target homepage plus up to 5 key internal pages so the
+// restaurant audit can evaluate menu-format / conversions / schema /
+// NAP-consistency against the page that's ACTUALLY responsible for
+// each check, not just the homepage.
+//
+// Phase E1 (this commit) ships the skeleton: a single-URL fetch that
+// returns { url, status, html }. Phase E2 will extract internal-link
+// candidates from the homepage HTML; E3 will fetch them in parallel
+// with per-URL timeouts and a global cap; E4 will return the final
+// structured bundle shape.
+//
+//   GET /api/page-crawl?url=https://example.com/
+//     → 200 { ok:true, homepage: { url, status, html } }
+//     → 400 missing/bad url
+//     → 502 fetch failed / non-2xx upstream / upstream timeout
+//
+// Same 8s fetch timeout as /api/seo-check and /api/schema-check so
+// misbehaving targets can't hang the Worker. HTML is returned raw
+// (not base64) so client-side parsing stays straightforward; Worker
+// memory budget easily handles a homepage + 5 follow-up pages.
+async function handlePageCrawl(request, env, ctx) {
+  const url = new URL(request.url);
+  const target = (url.searchParams.get('url') || '').trim();
+  if (!target) {
+    return jsonResponse({ ok: false, error: 'Missing ?url= parameter' }, 400);
+  }
+
+  const homepage = await fetchPageForCrawl(target);
+  if (!homepage.ok) {
+    return jsonResponse({ ok: false, error: homepage.error || 'Fetch failed' }, 502);
+  }
+
+  return jsonResponse({
+    ok: true,
+    homepage: {
+      url: homepage.url,
+      status: homepage.status,
+      html: homepage.html
+    },
+    pages: []
+  }, 200);
+}
+
+// Shared single-URL fetch helper. Same shape/timeout as the other
+// page-reading endpoints; broken out so Phase E3 can call it
+// concurrently for up to 5 internal-link candidates.
+async function fetchPageForCrawl(target) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
+  try {
+    const res = await fetch(target, {
+      headers: { 'User-Agent': 'MuntinDigital-PageCrawl/1.0' },
+      redirect: 'follow',
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+    if (!res.ok) {
+      return { ok: false, url: target, status: res.status, error: 'HTTP ' + res.status };
+    }
+    const html = await res.text();
+    return { ok: true, url: res.url || target, status: res.status, html: html };
+  } catch (err) {
+    clearTimeout(timeout);
+    const msg = (err && err.name === 'AbortError') ? 'Fetch timed out' : 'Fetch failed';
+    return { ok: false, url: target, status: 0, error: msg };
   }
 }
 
