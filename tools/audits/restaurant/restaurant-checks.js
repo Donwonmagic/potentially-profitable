@@ -916,6 +916,42 @@ var RESTAURANT_PRIORITY_CHECKS = [
     failNote: null,
     unverified: 'We didn\'t spot an age-gate — is this right?',
     unverifiedNote: 'We look for "are you 21 or older", "confirm your age", "verify your age" modals. If your age-gate is conditional on a country param or lives in a script we didn\'t render, let us know — and if you don\'t have one yet, this is a 45-minute developer task worth prioritizing.'
+  },
+  {
+    // Phase H7: Food-truck schedule page presence. Food trucks
+    // move; a schedule page IS the site's primary purpose.
+    // Subtypes.js weights this 2.0 for food-truck and 0 for
+    // every other subtype.
+    type: 'food-truck-schedule',
+    weight: 1.0,
+    anchor: '#basics',
+    effort: 'dev',
+    minutes: 60,
+    impact: 'Every food-truck customer arrives with the same question: "where are you today?" A visible weekly schedule, a today\'s-location block, or at minimum a "Find us" page with your Instagram feed is the primary job of a food-truck website.',
+    pass: 'Your site shows a schedule / location',
+    passNote: 'Your site answers "where are you today?" directly — customers can find you without scrolling to your Instagram.',
+    fail: null,
+    failNote: null,
+    unverified: 'We didn\'t find a schedule / location page — is this right?',
+    unverifiedNote: 'We look for "today\'s location", "this week\'s schedule", "find us at", "catch us at" copy. If your schedule lives inline on the homepage or in an Instagram embed we didn\'t render, let us know. If you don\'t publish a schedule today — publishing one is the single highest-ROI change you can make on a food-truck site.'
+  },
+  {
+    // Phase H8: Ghost-kitchen / delivery-only explicit marker.
+    // Subtypes.js weights this 2.0 for ghost-kitchen and 0
+    // elsewhere. A ghost kitchen that doesn't SAY "delivery
+    // only" confuses customers who arrive expecting dine-in.
+    type: 'aggregator-only',
+    weight: 1.0,
+    anchor: '#conversions',
+    effort: 'self',
+    minutes: 20,
+    impact: 'Ghost kitchens that don\'t explicitly mark "delivery only" or "no dine-in" get customers showing up in person to an empty storefront — worse, getting a one-star review for "I drove there and it was closed." A single visible "Delivery & Pickup Only" banner deflects that confusion.',
+    pass: 'Your site marks delivery-only clearly',
+    passNote: 'Your site explicitly states "delivery only" / "virtual kitchen" so customers don\'t show up expecting dine-in.',
+    fail: null,
+    failNote: null,
+    unverified: 'We didn\'t see a delivery-only marker — is this right?',
+    unverifiedNote: 'We look for "virtual kitchen", "ghost kitchen", "delivery only", "no dine-in", "delivery & pickup only" copy. If yours is phrased differently, let us know. If your site reads as a dine-in restaurant but you\'re actually ghost/delivery-only, add a banner — the 20-minute fix deflects a common one-star review.'
   }
 ];
 
@@ -1177,6 +1213,50 @@ function detectAgeGate(html) {
   if (!html || typeof html !== 'string') return { present: false };
   for (var i = 0; i < AGE_GATE_PATTERNS.length; i++) {
     if (AGE_GATE_PATTERNS[i].test(html)) return { present: true };
+  }
+  return { present: false };
+}
+
+// H7: Food-truck schedule detection. Food-trucks MOVE, so the
+// primary navigational question is "where are you today/this
+// week?" A truck site without a schedule page fails its primary
+// job. Detects either a schedule-named crawl slot OR visible
+// text patterns on any crawled page.
+var FOOD_TRUCK_SCHEDULE_PATTERNS = [
+  /\btoday['’]s\s+location\b/i,
+  /\bthis\s+week['’]s\s+schedule\b/i,
+  /\bweekly\s+schedule\b/i,
+  /\bfind\s+us\s+(?:at|this)\b/i,
+  /\bcatch\s+us\s+(?:at|this)\b/i,
+  /\btruck\s+schedule\b/i,
+  /\blocation\s+calendar\b/i,
+  /\bwhere\s+we\s+(?:are|will\s+be)\b/i
+];
+function detectFoodTruckSchedule(pageText) {
+  if (!pageText) return { present: false };
+  for (var i = 0; i < FOOD_TRUCK_SCHEDULE_PATTERNS.length; i++) {
+    if (FOOD_TRUCK_SCHEDULE_PATTERNS[i].test(pageText)) return { present: true };
+  }
+  return { present: false };
+}
+
+// H8: Ghost-kitchen / delivery-only signal. Detects the pattern
+// of a site that operates ONLY through delivery aggregators —
+// explicit "virtual kitchen" / "delivery-only" / "no dine-in"
+// copy, or aggregator-only link pattern (2+ aggregators present,
+// no dine-in marker, no reservation platform).
+function detectGhostKitchenPattern(pageText) {
+  if (!pageText) return { present: false };
+  var markers = [
+    /\bghost\s+kitchen\b/i,
+    /\bvirtual\s+(?:kitchen|restaurant|brand)\b/i,
+    /\bdelivery[-\s]only\b/i,
+    /\bcloud\s+kitchen\b/i,
+    /\bno\s+dine[-\s]in\b/i,
+    /\bdelivery\s+&?\s*pickup\s+only\b/i
+  ];
+  for (var i = 0; i < markers.length; i++) {
+    if (markers[i].test(pageText)) return { present: true };
   }
   return { present: false };
 }

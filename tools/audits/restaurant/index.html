@@ -3426,6 +3426,35 @@
       return makeResult(def, 'unverified');
     }
 
+    // ---- Food-truck schedule presence (Phase H7) ----
+    if (def.type === 'food-truck-schedule') {
+      if (typeof detectFoodTruckSchedule !== 'function') return makeResult(def, 'unverified');
+      var ftText = String(pageText || '');
+      var ftCrawl = window.__auditCrawl;
+      if (ftCrawl && Array.isArray(ftCrawl.pages)) {
+        for (var fi = 0; fi < ftCrawl.pages.length; fi++) {
+          var fp = ftCrawl.pages[fi];
+          if (fp && typeof fp.html === 'string') ftText += '\n' + fp.html;
+        }
+      }
+      var ft = detectFoodTruckSchedule(ftText);
+      if (ft.present) return makeResult(def, 'pass');
+      return makeResult(def, 'unverified');
+    }
+
+    // ---- Ghost-kitchen / aggregator-only marker (Phase H8) ----
+    if (def.type === 'aggregator-only') {
+      if (typeof detectGhostKitchenPattern !== 'function') return makeResult(def, 'unverified');
+      var gkText = String(pageText || '');
+      var gkCrawl = window.__auditCrawl;
+      if (gkCrawl && gkCrawl.homepage && typeof gkCrawl.homepage.html === 'string') {
+        gkText += '\n' + gkCrawl.homepage.html;
+      }
+      var gk = detectGhostKitchenPattern(gkText);
+      if (gk.present) return makeResult(def, 'pass');
+      return makeResult(def, 'unverified');
+    }
+
     // ---- Catering / events page presence (Phase H5) ----
     if (def.type === 'catering-page') {
       var cpCrawl = window.__auditCrawl;
