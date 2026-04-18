@@ -1770,92 +1770,10 @@
     .email-form { grid-template-columns: 1fr; }
   }
 
-  /* -------------------------------------------------------------
-     Phase J1: Deep-report email gate
-     -------------------------------------------------------------
-     Warm, CTA-style card. Lives between the Quick tier and the
-     hidden #reportDeep wrapper. Cream background with teal
-     accent matches the executive-summary visual weight so the
-     gate feels like a natural continuation of the report, not
-     an intrusive paywall. */
-  .deep-gate {
-    margin: 24px 0 0;
-    padding: 28px 28px;
-    background: var(--cream-2, #faf6ee);
-    border: 1px solid var(--line, #E6DFCE);
-    border-left: 4px solid var(--teal, #1F4E5B);
-    border-radius: 14px;
-  }
-  .deep-gate[hidden] { display: none; }
-  .deep-gate-head { margin-bottom: 14px; }
-  .deep-gate-label {
-    font-family: var(--font-display, var(--font-body));
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 6px;
-  }
-  .deep-gate-sub {
-    font-size: 14px;
-    color: var(--stone);
-    line-height: 1.55;
-    margin: 0;
-  }
-  .deep-gate-form {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 10px;
-    align-items: end;
-  }
-  .deep-gate-field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .deep-gate-field span {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--stone);
-  }
-  .deep-gate-field input[type="email"] {
-    font: inherit;
-    font-size: 15px;
-    padding: 12px 14px;
-    border-radius: 10px;
-    border: 1px solid var(--line-dark);
-    background: #fff;
-    color: var(--ink);
-  }
-  .deep-gate-field input[type="email"]:focus {
-    outline: 2px solid var(--teal, #1F4E5B);
-    outline-offset: -1px;
-  }
-  .deep-gate-submit {
-    font: inherit;
-    font-weight: 600;
-    padding: 12px 20px;
-    border-radius: 10px;
-    background: var(--ink, #14161A);
-    color: #fff;
-    border: 1px solid var(--ink, #14161A);
-    cursor: pointer;
-    transition: background 180ms ease;
-  }
-  .deep-gate-submit:hover    { background: var(--teal, #1F4E5B); }
-  .deep-gate-submit:disabled { background: var(--stone-2, #9e9a89); border-color: var(--stone-2); cursor: not-allowed; }
-  .deep-gate-toast {
-    grid-column: 1 / -1;
-    margin: 0;
-    font-size: 13px;
-    color: var(--teal, #1F4E5B);
-  }
-  .deep-gate-toast.is-error { color: var(--rust, #B8541A); }
-  @media (max-width: 640px) {
-    .deep-gate { padding: 20px; }
-    .deep-gate-form { grid-template-columns: 1fr; }
-  }
+  /* Phase L1: deep-gate CSS removed — the gate itself is retired;
+     the existing #emailReportForm (bottom of the deep tier) is now
+     the single email-capture surface and gains a PDF attachment in
+     Phase L3. */
 
   /* -------------------------------------------------------------
      Phase I6: Print-friendly layout
@@ -2193,34 +2111,12 @@
         <ol class="top-fixes-list" id="topFixesList"></ol>
       </section>
 
-      <!-- Phase J1: Email-gate wrapper. Everything after the
-           score / exec summary / top-3 lives inside #reportDeep
-           and is hidden by default on the first render of a
-           shareable link. The deepGate block above offers the
-           email form that unlocks it; once unlocked we set a
-           localStorage flag so the owner's own browser remembers.
-           Phase J2 adds the form + unlock logic. -->
-      <section class="deep-gate" id="deepGate" hidden>
-        <div class="deep-gate-head">
-          <div class="deep-gate-label">Want the full deep-dive?</div>
-          <p class="deep-gate-sub">Drop your email and we'll unlock the Lighthouse opportunities list, every restaurant-priority check with subtype-specific fixes, and mail you a printable PDF of the full report.</p>
-        </div>
-        <form class="deep-gate-form" id="deepGateForm" action="/api/audit-report" method="POST" novalidate>
-          <input type="hidden" name="interest" value="restaurant-audit-deep-report" />
-          <input type="hidden" name="_gotcha" value="" />
-          <input type="hidden" name="audited_url" id="deepGateUrl" value="" />
-          <input type="hidden" name="subtype" id="deepGateSubtype" value="" />
-          <input type="hidden" name="overall_score" id="deepGateScore" value="" />
-          <input type="hidden" name="shareable_link" id="deepGateShareLink" value="" />
-          <label class="deep-gate-field">
-            <span>Your email</span>
-            <input type="email" name="email" id="deepGateEmail" required autocomplete="email" placeholder="you@restaurant.com" />
-          </label>
-          <button type="submit" class="deep-gate-submit">Unlock deep report</button>
-          <p class="deep-gate-toast" id="deepGateToast" aria-live="polite"></p>
-        </form>
-      </section>
-      <div id="reportDeep" hidden>
+      <!-- Phase L1: Email gate retired. Deep tier now renders
+           immediately after the audit runs. The single email-
+           capture surface is the existing #emailReportForm at
+           the bottom of this wrapper, which in Phase L3+ also
+           attaches a custom PDF of the audit. -->
+      <div id="reportDeep">
 
       <!-- Per-category opportunity drill-down — the specific Lighthouse
            audits that failed, grouped by category, sorted by impact.
@@ -4493,72 +4389,12 @@
     el.hidden = false;
   }
 
-  // Phase J1: show/hide the #deepGate vs #reportDeep split based
-  // on whether this browser has already unlocked, or the URL
-  // includes a ?deep=1 bypass (used for owner self-audits and
-  // for the printable permalink from Phase J6).
-  function applyDeepGateState(auditedUrl) {
-    var gate     = document.getElementById('deepGate');
-    var wrapper  = document.getElementById('reportDeep');
-    if (!gate || !wrapper) return;
-    var urlParams = new URLSearchParams(location.search || '');
-    var bypass = urlParams.get('deep') === '1';
-    var unlocked = false;
-    try { unlocked = !!localStorage.getItem('muntin.deepReport.unlocked'); }
-    catch (e) { /* localStorage blocked — treat as locked */ }
-    if (bypass || unlocked) {
-      gate.hidden    = true;
-      wrapper.hidden = false;
-      return;
-    }
-    // Pre-populate the hidden fields on the gate form so the
-    // server-side handler has everything it needs when the
-    // visitor drops their email.
-    var urlField      = document.getElementById('deepGateUrl');
-    var subtypeField  = document.getElementById('deepGateSubtype');
-    var scoreField    = document.getElementById('deepGateScore');
-    var linkField     = document.getElementById('deepGateShareLink');
-    if (urlField)     urlField.value     = auditedUrl || '';
-    if (subtypeField) subtypeField.value = effectiveBusinessType() || '';
-    if (scoreField) {
-      var last = window.__auditLastResult;
-      scoreField.value = (last && typeof last.overall === 'number')
-        ? String(Math.round(last.overall)) : '';
-    }
-    if (linkField) {
-      // Phase J6: encode EVERYTHING the printable permalink
-      // needs so the email recipient can land on a fully-
-      // unlocked, benchmark-anchored, re-scan-diffable view:
-      //   url     — the audited site
-      //   bt      — effective subtype (owner override > detection)
-      //   bl      — baseline snapshot (Phase I8) so the diff
-      //             block fires as 'no change' on first re-open
-      //             and as a real delta when the owner re-audits
-      //             later from the same link
-      //   deep=1  — bypasses the email gate so the link opens
-      //             straight to the deep tier
-      var params = new URLSearchParams();
-      if (auditedUrl) params.set('url', auditedUrl);
-      var bt = effectiveBusinessType();
-      if (bt && bt !== 'restaurant') params.set('bt', bt);
-      var last = window.__auditLastResult;
-      if (last && typeof last.overall === 'number') {
-        var baseline = [
-          Math.round(last.overall),
-          last.perf != null ? Math.round(last.perf) : '-',
-          last.a11y != null ? Math.round(last.a11y) : '-',
-          last.bp   != null ? Math.round(last.bp)   : '-',
-          last.seo  != null ? Math.round(last.seo)  : '-',
-          last.restaurant != null ? Math.round(last.restaurant) : '-'
-        ].join('.');
-        params.set('bl', baseline);
-      }
-      params.set('deep', '1');
-      linkField.value = location.origin + location.pathname + '?' + params.toString();
-    }
-    gate.hidden    = false;
-    wrapper.hidden = true;
-  }
+  // Phase L1: email gate retired. The deep tier always renders
+  // immediately after the audit runs. The single email-capture
+  // surface is #emailReportForm at the bottom of the report,
+  // which in Phase L3 also attaches a custom PDF build of the
+  // audit. applyDeepGateState() is gone; nothing else in the
+  // IIFE needs to toggle visibility on the deep wrapper.
 
   // Phase I7: Canvas-rendered 1200×630 share card. Draws the
   // overall score (big ring + number), subtype chip, audited
@@ -5486,10 +5322,7 @@
     var scBtn = document.getElementById('shareCardBtn');
     if (scBtn) scBtn.hidden = false;
 
-    // Phase J1: show the deep-gate on the Quick tier UNLESS the
-    // owner has already unlocked once (localStorage flag) or
-    // the URL carries ?deep=1 (explicit self-audit bypass).
-    applyDeepGateState(auditedUrl);
+    // Phase L1: no gate to toggle; deep tier is always visible.
 
     showOnly(reportEl);
     // Scroll the report into view
@@ -6036,58 +5869,9 @@
     });
   }
 
-  /* -------- Phase J2: Deep-gate form submit → unlock ------- */
-  var deepGateForm = document.getElementById('deepGateForm');
-  if (deepGateForm) {
-    deepGateForm.addEventListener('submit', function(e){
-      e.preventDefault();
-      var toast = document.getElementById('deepGateToast');
-      var submit = deepGateForm.querySelector('button[type="submit"]');
-      var emailInput = document.getElementById('deepGateEmail');
-      var email = (emailInput && emailInput.value || '').trim();
-      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        if (toast) {
-          toast.textContent = 'Enter a valid email to unlock.';
-          toast.classList.add('is-error');
-        }
-        if (emailInput) emailInput.focus();
-        return;
-      }
-      if (toast) {
-        toast.textContent = 'Unlocking…';
-        toast.classList.remove('is-error');
-      }
-      if (submit) { submit.disabled = true; submit.textContent = 'Sending…'; }
-
-      var fd = new FormData(deepGateForm);
-      fetch('/api/audit-report', { method: 'POST', body: fd })
-        .then(function(res){ return res.json().catch(function(){ return { ok: res.ok }; }); })
-        .then(function(body){
-          if (!body || body.ok !== true) {
-            throw new Error((body && body.error) || 'send-failed');
-          }
-          // Persist the unlock so subsequent audits on this
-          // browser skip the gate. Best-effort; private-browsing
-          // flavors of localStorage will just be forgotten.
-          try { localStorage.setItem('muntin.deepReport.unlocked', '1'); } catch (e) {}
-          if (toast) {
-            toast.textContent = 'Unlocked — the deep report is below, and a copy is on its way to your inbox.';
-            toast.classList.remove('is-error');
-          }
-          if (submit) { submit.disabled = false; submit.textContent = 'Unlock deep report'; }
-          applyDeepGateState((window.__auditLastResult && window.__auditLastResult.url) || '');
-          if (window.plausible) window.plausible('Audit Deep Report Unlocked');
-        })
-        .catch(function(err){
-          if (toast) {
-            toast.textContent = 'Sorry, that didn\'t go through. Try again, or email don@muntin.digital directly.';
-            toast.classList.add('is-error');
-          }
-          if (submit) { submit.disabled = false; submit.textContent = 'Unlock deep report'; }
-          console.error('[deep-gate] submit failed:', err);
-        });
-    });
-  }
+  /* Phase L1: deep-gate submit handler retired — the gate itself
+   * is gone. The PDF-attaching "Email me this report" form is wired
+   * separately (Sprint L3) using the existing #emailReportForm. */
 
   /* -------- Phase I7: Download share-card PNG -------- */
   var shareCardBtn = document.getElementById('shareCardBtn');
