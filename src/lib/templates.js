@@ -461,6 +461,127 @@ export function auditReportAutoResponder(body) {
 
 
 // ------------------------------------------------------------
+// Phase J3: auditDeepReport templates (notification + auto-reply)
+// ------------------------------------------------------------
+// Triggered when the client-side deep-gate form (/api/audit-report
+// with interest === 'restaurant-audit-deep-report') unlocks the
+// full deep-tier report. Same envelope as auditReport but with:
+//
+//   - subtype-aware intro paragraph (each of the 10 canonical
+//     subtypes gets a dedicated opening line via
+//     AUDIT_DEEP_REPORT_INTROS below).
+//   - a prominent link to the printable permalink (Phase J6
+//     encodes the report payload into the URL so the owner can
+//     print / save as PDF directly from a browser tab).
+//   - longer auto-responder body since the owner traded email
+//     for it; we want to earn the conversion with useful content.
+
+const AUDIT_DEEP_REPORT_INTROS = {
+  'fine-dining':    'For fine-dining restaurants, the first thing I look for is whether reservations are staying on your own site (Resy, Tock, SevenRooms, or an embedded widget) instead of routing entirely through OpenTable — that\'s where booking margin and first-party customer data live.',
+  'casual-dining':  'For casual-dining restaurants, the audit flags whether you\'re capturing BOTH reservations AND direct online ordering. Missing either one sends revenue to OpenTable, DoorDash, or a competitor that has both.',
+  'fast-casual':    'For fast-casual restaurants, the audit is almost entirely about direct online ordering. Every order that flows through Toast or ChowNow instead of DoorDash keeps the 20-30% commission in your pocket AND builds a first-party customer list.',
+  'cafe':           'For cafes, the audit leans hardest on hours clarity, a tappable phone and map, and a menu that reads cleanly on a phone in sunlight. That\'s ~80% of what your morning traffic actually needs.',
+  'bakery':         'For bakeries, the audit\'s biggest signal is whether custom-cake and wedding-cake intake has a home on your site. Those $500-$2000 orders rarely convert through Instagram DMs — a dedicated intake form pays for itself fast.',
+  'bar-pub':        'For bars and pubs, the audit looks hardest at event / private-party booking flows, happy-hour visibility, and the cocktail / draft-list rotation cadence. Age-gating and press mentions are trust signals we also flag.',
+  'pizzeria':       'For pizzerias, the audit is about direct ordering and delivery-zone clarity. Every Slice / DoorDash / Grubhub pie costs you 20-30% commission; a direct Toast or ChowNow flow cuts that in half and owns the customer.',
+  'food-truck':     'For food trucks, the audit prioritizes a visible schedule / today\'s-location page and catering inquiry intake. Instagram drives discovery, but the site\'s job is to convert a curious visitor into a catering booking or a lunch pickup.',
+  'ghost-kitchen':  'For ghost kitchens, the audit flags whether aggregator links are prominent and whether the site explicitly states delivery-only so customers don\'t drive to a closed storefront. Clear menu-to-aggregator parity is the hidden conversion lever.',
+  'catering-only':  'For catering-only businesses, the audit is about one thing: whether your site converts an event planner into a structured quote request. ezCater, CaterTrax, Tripleseat, or a custom RFQ form - without one, planners comparing vendors leave for a competitor with clearer info.',
+  'restaurant':     'This is a restaurant-specific audit — the priority checks below are the ones that actually move customer behavior in our experience of building sites for independent restaurants.'
+};
+
+function deepReportIntroFor(subtypeId) {
+  if (subtypeId && AUDIT_DEEP_REPORT_INTROS[subtypeId]) {
+    return AUDIT_DEEP_REPORT_INTROS[subtypeId];
+  }
+  return AUDIT_DEEP_REPORT_INTROS.restaurant;
+}
+
+export function auditDeepReportNotification(body) {
+  const email       = String(body.email || '—').trim();
+  const auditedUrl  = String(body.audited_url || '').trim();
+  const overall     = String(body.overall_score || '—').trim();
+  const subtype     = String(body.subtype || '').trim();
+  const shareLink   = String(body.shareable_link || '').trim();
+
+  const subject = 'Deep report unlocked — ' + (prettyUrl(auditedUrl) || email) + ' (' + overall + '/100)';
+
+  const html = htmlShell(
+    'Deep report unlocked',
+    [
+      field('From',    escapeHtml(email)),
+      field('Audited', auditedUrl ? '<a href="' + escapeHtml(auditedUrl) + '" style="color:#1F4E5B;">' + escapeHtml(prettyUrl(auditedUrl)) + '</a>' : '—'),
+      field('Overall', escapeHtml(overall) + '/100'),
+      field('Subtype', escapeHtml(subtype || 'restaurant')),
+      shareLink ? '<p style="margin:20px 0 0;"><a href="' + escapeHtml(shareLink) + '" style="color:#1F4E5B;font-weight:600;">Open this audit in the tool →</a></p>' : '',
+    ].join('\n')
+  );
+
+  const txt = [
+    'Deep report unlocked',
+    '',
+    'From: ' + email,
+    auditedUrl ? 'Audited: ' + auditedUrl : '',
+    'Overall: ' + overall + '/100',
+    'Subtype: ' + (subtype || 'restaurant'),
+    '',
+    shareLink ? 'Open in tool: ' + shareLink : '',
+  ].filter(Boolean).join('\n');
+
+  return { subject, html, text: txt };
+}
+
+export function auditDeepReportAutoResponder(body) {
+  const auditedUrl = String(body.audited_url || '').trim();
+  const overall    = String(body.overall_score || '').trim();
+  const subtype    = String(body.subtype || '').trim();
+  const shareLink  = String(body.shareable_link || '').trim();
+  const deepLink   = shareLink ? shareLink + (shareLink.indexOf('?') >= 0 ? '&' : '?') + 'deep=1' : '';
+
+  const pretty = prettyUrl(auditedUrl);
+  const subject = 'Your restaurant website deep audit — ' + (pretty || 'Muntin Digital') + (overall ? ' (' + overall + '/100)' : '');
+
+  const intro = deepReportIntroFor(subtype);
+
+  const html = htmlShell(
+    'Your restaurant website audit',
+    [
+      pretty  ? '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Here\'s the deep report for <strong>' + escapeHtml(pretty) + '</strong>.</p>' : '',
+      overall ? '<p style="margin:0 0 20px;padding:20px;background:#F3EEE3;border-radius:12px;text-align:center;"><span style="display:block;font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#6B6B6B;margin-bottom:8px;">Overall score</span><span style="font-size:48px;font-weight:500;color:#1F4E5B;font-family:Georgia,serif;">' + escapeHtml(overall) + '<span style="font-size:22px;color:#6B6B6B;">/100</span></span></p>' : '',
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">' + escapeHtml(intro) + '</p>',
+      deepLink ? '<p style="margin:0 0 20px;"><a href="' + escapeHtml(deepLink) + '" style="display:inline-block;padding:12px 22px;background:#1F4E5B;color:#FAF7F2;text-decoration:none;border-radius:999px;font-weight:600;font-size:14px;">Open the deep interactive report</a></p>' : '',
+      '<p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#2A2D33;">The deep report link above bypasses the email gate — save it; print it to PDF from your browser if you want something to share with your developer or agency.</p>',
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">If you want a human second opinion on what to fix first, reply to this email with any questions or book a free 20-minute call:</p>',
+      '<p style="margin:0 0 20px;"><a href="https://calendly.com/dongoldstein-accts/muntinconsult" style="color:#1F4E5B;font-weight:600;">Book a 20-min call →</a></p>',
+      '<p style="margin:0 0 16px;font-size:14px;line-height:1.55;color:#6B6B6B;">No marketing list, no drip, no newsletter. I\'ll only email you if you reply to this one.</p>',
+      '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">— Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital · Silver Spring, MD</span></p>',
+    ].filter(Boolean).join('\n')
+  );
+
+  const txt = [
+    pretty  ? 'Here\'s the deep report for ' + pretty + '.' : 'Here\'s your deep audit report.',
+    overall ? 'Overall score: ' + overall + '/100' : '',
+    '',
+    intro,
+    '',
+    deepLink ? 'Open the deep interactive report: ' + deepLink : '',
+    '',
+    'The link above bypasses the email gate — save it, or print to PDF from your browser to share with your developer or agency.',
+    '',
+    'If you want a human second opinion on what to fix first, reply to this email or book a free 20-minute call:',
+    'https://calendly.com/dongoldstein-accts/muntinconsult',
+    '',
+    'No marketing list, no drip, no newsletter. I\'ll only email you if you reply to this one.',
+    '',
+    '— Don',
+    'Muntin Digital · Silver Spring, MD',
+  ].filter(Boolean).join('\n');
+
+  return { subject, html, text: txt };
+}
+
+
+// ------------------------------------------------------------
 // Shared field helper — renders a labeled block in the HTML shell
 // ------------------------------------------------------------
 
