@@ -558,6 +558,74 @@
       manifest = null;
       updateMediaSessionMetadata();
       if (userInitiated) finishPlayback();
+      // Swap the visible prose so a reader can follow along in the
+      // chosen language. This is the difference between "audio
+      // translation as an afterthought" and "intentional multilingual
+      // accessibility" — the listener sees what they're hearing.
+      applyVisualLanguage(lang);
+    }
+
+    /* ---- Visual language swap ---- */
+    // Cache of original-English textContent keyed by the same chunk
+    // selector the audio manifest uses. Populated lazily on first
+    // swap, used to restore the page when the user flips back to
+    // English without requiring a page reload.
+    const originalTextCache = new Map();
+    // Per-language manifest text cache so we don't refetch the JSON
+    // every time the user toggles. The audio.<lang>.json carries the
+    // translated chunk text we need anyway — reuse it for visuals.
+    const translatedTextByLang = new Map();
+
+    async function applyVisualLanguage(lang) {
+      if (lang === 'en') {
+        // Restore every cached element back to its original English.
+        originalTextCache.forEach((original, selector) => {
+          const el = postBody.querySelector(selector);
+          if (el) el.textContent = original;
+        });
+        return;
+      }
+
+      // Fetch and cache the translated manifest if we haven't
+      // already. This call is a small JSON (<30 kB per post) so
+      // loading it on language change is fine even on mobile.
+      let translated = translatedTextByLang.get(lang);
+      if (!translated) {
+        const src = manifestSrcFor(lang);
+        if (!src) return;
+        try {
+          const res = await fetch(src, { credentials: 'omit' });
+          if (!res.ok) throw new Error('manifest ' + res.status);
+          const m = await res.json();
+          translated = m.chunks || [];
+          translatedTextByLang.set(lang, translated);
+        } catch (e) {
+          console.warn('[readAloud] visual translation fetch failed', e);
+          return;
+        }
+      }
+
+      // Apply translation to text-safe chunks only. Figures + callouts
+      // (kind === 'figure') are skipped — translating their visible
+      // text would break the layout around data-audio-alt cards and
+      // infographics. The audio still plays Spanish for them; the
+      // visible design stays as-authored.
+      translated.forEach((chunk) => {
+        if (chunk.kind === 'figure') return;
+        if (!chunk.selector) return;
+        const el = postBody.querySelector(chunk.selector);
+        if (!el) return;
+        // Only cache the original once, even across multiple
+        // language swaps, so flipping en→es→fr→en restores cleanly.
+        if (!originalTextCache.has(chunk.selector)) {
+          originalTextCache.set(chunk.selector, el.textContent);
+        }
+        // Use textContent to avoid accidentally parsing stray HTML
+        // inside the translation result. Inline emphasis (strong/em/a)
+        // is flattened — a known tradeoff of visual translation
+        // without HTML-preserving MT. Audio fidelity is preserved.
+        el.textContent = chunk.text;
+      });
     }
 
     /* ---- Chrome heartbeat (long-utterance bug workaround) ---- */
