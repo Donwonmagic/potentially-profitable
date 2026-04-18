@@ -5115,12 +5115,18 @@
       // gets the priority-check section visible from the first render
       // instead of having to click the override button themselves.
       if (params.get('r') === '1') userForcedRestaurant = true;
-      // Hydrate the restaurant-subtype correction (?bt=fine-dining|
-      // casual-dining|fast-casual|cafe-bakery|bar-pub|restaurant).
-      // Ignored silently if the value isn't in the allowed set.
+      // Hydrate the restaurant-subtype correction from ?bt=... (10
+      // canonical ids plus the two legacy ids, see
+      // RESTAURANT_ALLOWED_BUSINESS_TYPES). Legacy ids route through
+      // canonicalSubtypeId() so a share link that predates the
+      // 10-subtype expansion still lands on the right modern id
+      // (e.g. ?bt=cafe-bakery → userBusinessType='cafe').
       var btParam = params.get('bt');
       if (btParam && ALLOWED_BUSINESS_TYPES.indexOf(btParam) !== -1) {
-        userBusinessType = btParam;
+        var canonicalBt = (typeof canonicalSubtypeId === 'function')
+          ? canonicalSubtypeId(btParam)
+          : null;
+        userBusinessType = canonicalBt || btParam;
       }
       // Brief delay so the page finishes painting before we kick off the fetch
       setTimeout(function(){
