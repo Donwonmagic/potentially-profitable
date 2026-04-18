@@ -447,5 +447,34 @@ var RESTAURANT_PRIORITY_CHECKS = [
         failNote: 'Non-negotiable for bars. Guests check "is happy hour still running?" on the curb outside. Add a phone number and wrap it in a <code>tel:</code> link so the call is one tap, not a copy-paste flow.'
       }
     }
+  },
+  {
+    type: 'platform',
+    platforms: ['maps'],
+    weight: 1.0,
+    anchor: '#conversions',
+    effort: 'dev',
+    minutes: 15,
+    impact: "The path from 'I might check this place out' to 'I am driving there' should be one tap. An embedded map or a Maps link cuts directions friction to zero — plain-text addresses add a whole copy-paste flow before the customer even arrives.",
+    pass: 'Visitors can get directions with one tap',
+    passNote: '{detected} is on your site — first-time visitors can tap once to get turn-by-turn directions to your door.',
+    fail: null, // never fail this check — absence is always unverified
+    failNote: null,
+    unverified: "We didn't see a map on your site — is this right?",
+    unverifiedNote: "We scan for Google Maps, Apple Maps, Mapbox, Bing Maps, OpenStreetMap, Waze, and Leaflet. If your site uses one of those, great — we just couldn't find it on this run. If your address is plain text only, consider wrapping it in a Google Maps link so visitors can launch directions in one tap.",
+    byType: {
+      'fine-dining': {
+        impact: 'First-time guests heading to a fine-dining reservation want turn-by-turn directions, not a copy-paste address. A tappable map is part of the concierge experience — and it\'s expected.'
+      },
+      'fast-casual': {
+        impact: 'Fast-casual traffic is often "food near me" intent — visitors are already on their phone deciding where to walk or drive. A one-tap map shaves 15 seconds off the decision and keeps them from comparison-shopping another block over.'
+      },
+      'cafe-bakery': {
+        impact: 'Café and bakery traffic is overwhelmingly local and walk-in driven. A one-tap directions link (especially for the pickup address on a catering or custom order) removes the "wait, where is this place again?" moment.'
+      },
+      'bar-pub': {
+        impact: 'Bar hopping happens on the phone. A tappable map — especially for a bar tucked down a side street or into a basement — can be the difference between a visitor finding you or ending up at whichever place Google Maps surfaces first.'
+      }
+    }
   }
 ];
