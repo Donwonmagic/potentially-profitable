@@ -305,8 +305,25 @@ function detectSubtype(signals) {
     }
   }
 
+  // Keyword heuristics (capped). See src/lib/subtypes.js for rationale.
+  var pageText = (signals && typeof signals.pageText === 'string') ? signals.pageText : '';
+  if (pageText) {
+    for (var q = 0; q < RESTAURANT_SUBTYPES.length; q++) {
+      var kwEntry = RESTAURANT_SUBTYPES[q];
+      var kwHits = 0;
+      var patterns = kwEntry.keywords || [];
+      for (var r = 0; r < patterns.length; r++) {
+        if (patterns[r].test(pageText)) kwHits++;
+      }
+      scores[kwEntry.id] += Math.min(SUBTYPE_KEYWORD_CAP, kwHits * SUBTYPE_KEYWORD_WEIGHT);
+    }
+  }
+
   return rankSubtypeScores(scores);
 }
+
+var SUBTYPE_KEYWORD_WEIGHT = 1;
+var SUBTYPE_KEYWORD_CAP = 5;
 
 // Shared ranking helper. Phase B4/B5 will call this after contributing
 // their own signals to the same score map.
