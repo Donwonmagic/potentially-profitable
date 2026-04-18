@@ -345,6 +345,25 @@ export function detectSubtype(signals) {
     }
   }
 
+  // Platform-hint hits. Each subtype in the registry carries a
+  // platformHints map (normalized platform name → weight 1..5). A hit
+  // contributes that weight to the subtype's score. Platforms are
+  // routinely shared across subtypes (Toast shows up on fast-casual,
+  // casual-dining, cafes, pizzerias) so this path tilts rather than
+  // decides on its own.
+  var platforms = (signals && Array.isArray(signals.platforms)) ? signals.platforms : [];
+  for (var p = 0; p < platforms.length; p++) {
+    var pname = String(platforms[p] || '').toLowerCase().trim();
+    if (!pname) continue;
+    for (var m = 0; m < RESTAURANT_SUBTYPES.length; m++) {
+      var sub = RESTAURANT_SUBTYPES[m];
+      var hint = sub.platformHints && sub.platformHints[pname];
+      if (typeof hint === 'number' && hint > 0) {
+        scores[sub.id] += hint;
+      }
+    }
+  }
+
   return rankSubtypeScores(scores);
 }
 
