@@ -364,8 +364,33 @@ export function detectSubtype(signals) {
     }
   }
 
+  // Keyword heuristics. The weakest of the three signal paths: visible
+  // page text matched against each subtype's keyword regex list. A hit
+  // contributes KEYWORD_WEIGHT per distinct regex that matched (not
+  // per occurrence — boolean match counts). The per-subtype total is
+  // capped at KEYWORD_CAP so a marketing page that reuses "happy hour"
+  // sixteen times can't drown out a schema signal.
+  var pageText = (signals && typeof signals.pageText === 'string') ? signals.pageText : '';
+  if (pageText) {
+    for (var q = 0; q < RESTAURANT_SUBTYPES.length; q++) {
+      var kwEntry = RESTAURANT_SUBTYPES[q];
+      var kwHits = 0;
+      var patterns = kwEntry.keywords || [];
+      for (var r = 0; r < patterns.length; r++) {
+        if (patterns[r].test(pageText)) kwHits++;
+      }
+      scores[kwEntry.id] += Math.min(KEYWORD_CAP, kwHits * KEYWORD_WEIGHT);
+    }
+  }
+
   return rankSubtypeScores(scores);
 }
+
+// Keyword hits contribute less than schema or platform signals; the
+// cap prevents a single keyword-heavy page (cocktail list reusing
+// "whiskey") from swamping other subtypes' real signals.
+var KEYWORD_WEIGHT = 1;
+var KEYWORD_CAP = 5;
 
 // Shared ranking + shaping helper. Extracted so Phase B4/B5 can call it
 // after adding their own signal contributions to the score map.
