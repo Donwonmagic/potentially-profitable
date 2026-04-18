@@ -4117,6 +4117,105 @@
     el.hidden = false;
   }
 
+  // Phase I2: Top 3 Fixes action card. Ranks the priority-check
+  // results by subtype-effective weight so a pizzeria owner sees
+  // "conversions" (weight 2.0) above "loyalty" (weight 0.4) even
+  // when both are failing. Falls back to the raw def.weight when
+  // subtypeWeights() returns null.
+  function renderTopFixes() {
+    var el   = document.getElementById('topFixes');
+    var list = document.getElementById('topFixesList');
+    if (!el || !list) return;
+    list.innerHTML = '';
+
+    var bundle = window.__auditResults;
+    if (!bundle || !Array.isArray(bundle.entries) || !bundle.entries.length) {
+      el.hidden = true;
+      return;
+    }
+    var subtypeId = bundle.subtypeId || null;
+
+    // Filter to actionable statuses, score by effective weight,
+    // then take the top 3. Failures outrank unverified at the
+    // same weight because a confirmed failure is more urgent
+    // than an uncertain gap.
+    var actionable = bundle.entries
+      .filter(function(e){
+        var cls = e.result && e.result.mark && e.result.mark.cls;
+        return cls === 'fail' || cls === 'unverified';
+      })
+      .map(function(e){
+        var def = e.def || {};
+        var checkId = def.audit || def.type;
+        var w = null;
+        if (subtypeId && typeof subtypeWeights === 'function') {
+          w = subtypeWeights(subtypeId, checkId);
+        }
+        if (typeof w !== 'number') {
+          w = (typeof def.weight === 'number') ? def.weight : 1.0;
+        }
+        var statusRank = (e.result.mark.cls === 'fail') ? 1 : 0;
+        return { entry: e, weight: w, statusRank: statusRank };
+      })
+      .filter(function(e){ return e.weight > 0; }); // suppress zero-weight checks (e.g. age-gate for cafe)
+
+    actionable.sort(function(a, b){
+      if (b.weight !== a.weight) return b.weight - a.weight;
+      if (b.statusRank !== a.statusRank) return b.statusRank - a.statusRank;
+      return 0;
+    });
+    actionable = actionable.slice(0, 3);
+
+    if (!actionable.length) {
+      el.hidden = true;
+      return;
+    }
+
+    actionable.forEach(function(pick){
+      var def = pick.entry.def;
+      var result = pick.entry.result;
+      var li = document.createElement('li');
+
+      var body = document.createElement('div');
+      body.className = 'top-fixes-item-body';
+
+      var title = document.createElement('div');
+      title.className = 'top-fixes-item-title';
+      title.textContent = result.title || def.unverified || def.fail || ('Check: ' + (def.audit || def.type));
+      body.appendChild(title);
+
+      var why = document.createElement('div');
+      why.className = 'top-fixes-item-why';
+      why.textContent = def.impact || '';
+      body.appendChild(why);
+
+      if (def.effort || def.minutes) {
+        var chips = document.createElement('div');
+        chips.className = 'top-fixes-item-chips';
+        if (def.effort === 'self') {
+          chips.innerHTML += '<span class="chip chip-effort-self">Fix yourself</span>';
+        } else if (def.effort === 'dev') {
+          chips.innerHTML += '<span class="chip chip-effort-dev">Ask your developer</span>';
+        } else if (def.effort === 'rebuild') {
+          chips.innerHTML += '<span class="chip chip-effort-rebuild">Rebuild needed</span>';
+        }
+        if (typeof def.minutes === 'number') {
+          var timeLabel;
+          if (def.minutes < 60)        timeLabel = '~' + def.minutes + ' min';
+          else if (def.minutes < 180)  timeLabel = '~' + Math.round(def.minutes / 60) + ' hr';
+          else                         timeLabel = 'Half-day project';
+          chips.innerHTML += '<span class="chip chip-time">' + timeLabel + '</span>';
+        }
+        body.appendChild(chips);
+      }
+
+      li.appendChild(body);
+      list.appendChild(li);
+    });
+
+    el.hidden = false;
+  }
+
   // Subtype-flavored one-liner used at the end of every summary
   // variant. Designed to name the single highest-leverage move
   // for each subtype so the narrative ends on an actionable note.
@@ -4244,6 +4343,14 @@
       var rank = { fail: 0, unverified: 1, pass: 2 };
       return rank[a.result.mark.cls] - rank[b.result.mark.cls];
     });
+    // Phase I2: expose the sorted results so renderTopFixes() can
+    // rank and render the top-3 action card without re-running
+    // the per-check evaluator. btype is the same effective
+    // subtype the priority-check scoring used.
+    window.__auditResults = {
+      entries: results.slice(),
+      subtypeId: btype
+    };
 
     results.forEach(function(entry){
       var def = entry.def;
@@ -4656,6 +4763,9 @@
     if (isRestaurantSite) {
       priorityResult = renderPriorityChecks(audits, allUrls, pageText);
       renderCrawlSummary(window.__auditCrawl);
+      // Phase I2: action card after the main priority list runs
+      // so window.__auditResults is populated.
+      renderTopFixes();
     } else {
       priorityResult = { score: 0, passCount: 0, totalCount: 0, confirmedCount: 0, lowConfidence: true };
     }
