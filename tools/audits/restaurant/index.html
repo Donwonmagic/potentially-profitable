@@ -3426,6 +3426,38 @@
       return makeResult(def, 'unverified');
     }
 
+    // ---- Social proof (Phase H11) ----
+    if (def.type === 'social-proof') {
+      if (typeof detectSocialProof !== 'function') return makeResult(def, 'unverified');
+      var spText = String(pageText || '');
+      var spCrawl = window.__auditCrawl;
+      if (spCrawl && Array.isArray(spCrawl.pages)) {
+        for (var spi = 0; spi < spCrawl.pages.length; spi++) {
+          var spp = spCrawl.pages[spi];
+          if (spp && typeof spp.html === 'string') spText += '\n' + spp.html;
+        }
+      }
+      var sp = detectSocialProof(spText);
+      if (sp.present) return makeResult(def, 'pass');
+      return makeResult(def, 'unverified');
+    }
+
+    // ---- Sustainability / sourcing (Phase H12) ----
+    if (def.type === 'sustainability') {
+      if (typeof detectSustainability !== 'function') return makeResult(def, 'unverified');
+      var ssText = String(pageText || '');
+      var ssCrawl = window.__auditCrawl;
+      if (ssCrawl && Array.isArray(ssCrawl.pages)) {
+        for (var ssi = 0; ssi < ssCrawl.pages.length; ssi++) {
+          var ssp = ssCrawl.pages[ssi];
+          if (ssp && typeof ssp.html === 'string') ssText += '\n' + ssp.html;
+        }
+      }
+      var ss = detectSustainability(ssText);
+      if (ss.present) return makeResult(def, 'pass');
+      return makeResult(def, 'unverified');
+    }
+
     // ---- Wholesale / custom-order intake (Phase H9) ----
     if (def.type === 'wholesale-custom-orders') {
       if (typeof detectWholesaleCustomOrders !== 'function') return makeResult(def, 'unverified');

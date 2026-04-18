@@ -985,6 +985,36 @@ var RESTAURANT_PRIORITY_CHECKS = [
     failNote: null,
     unverified: 'We didn\'t find delivery-area info — is this right?',
     unverifiedNote: 'We look for "delivery radius", "we deliver to [list]", "delivery zone / area", "zip codes we serve", or "delivery within N miles". If yours is on an order-platform page we didn\'t reach, let us know. For pizzerias especially, a simple neighborhood / zip-code list is worth a line of copy on the homepage.'
+  },
+  {
+    // Phase H11: Social proof (press, awards, chef bio).
+    type: 'social-proof',
+    weight: 0.5,
+    anchor: '#trust',
+    effort: 'self',
+    minutes: 45,
+    impact: 'Visible press quotes and awards convert skeptical new diners at measurably higher rates. "Featured in Eater" or a Michelin mention on the homepage is the single highest-credibility signal you can show a first-time visitor deciding whether to book.',
+    pass: 'Your site shows press / awards / chef bio',
+    passNote: 'Your site surfaces social proof (press mentions, awards, or a chef bio) — which converts skeptical first-time visitors into bookings.',
+    fail: null,
+    failNote: null,
+    unverified: 'We didn\'t find press / awards / chef copy — is this right?',
+    unverifiedNote: 'We look for "featured in", "as seen in", "accolades", "Michelin", "James Beard", "Eater", "NYT review", or chef bio copy ("meet the chef", "our chef"). If your press is on an about page we didn\'t reach, let us know. If you have press you\'re not showing — surfacing it on the homepage is free conversion.'
+  },
+  {
+    // Phase H12: Sustainability / sourcing claims.
+    type: 'sustainability',
+    weight: 0.4,
+    anchor: '#trust',
+    effort: 'self',
+    minutes: 30,
+    impact: 'Sustainability claims (locally sourced, farm-to-table, organic, seasonal) signal quality and values in one line of copy. For a meaningful slice of guests this matters MORE than the menu itself — and it raises the perceived average check.',
+    pass: 'Your site makes sourcing / sustainability claims',
+    passNote: 'Your site explicitly surfaces sustainability or sourcing (local farms, seasonal, organic, farm-to-table, etc.) — which raises perceived quality and attracts a loyal segment of diners.',
+    fail: null,
+    failNote: null,
+    unverified: 'We didn\'t find sourcing claims — is this right?',
+    unverifiedNote: 'We look for "locally sourced", "farm-to-table", "organic", "sustainable", "seasonal menu", "single-origin", "grass-fed", and related markers. If your sourcing story lives in a photo caption or on a supplier page, let us know. If you\'re sourcing thoughtfully but not saying so, this is a one-afternoon content change.'
   }
 ];
 
@@ -1331,6 +1361,62 @@ function detectDeliveryRadius(pageText) {
   if (!pageText) return { present: false };
   for (var i = 0; i < DELIVERY_RADIUS_PATTERNS.length; i++) {
     if (DELIVERY_RADIUS_PATTERNS[i].test(pageText)) return { present: true };
+  }
+  return { present: false };
+}
+
+// H11: Social proof detection — press quotes, awards, Michelin,
+// James Beard, chef bios. Restaurants with visible press
+// mentions convert skeptical new diners at meaningfully higher
+// rates; the check measures whether any proof signal is on the page.
+var SOCIAL_PROOF_PATTERNS = [
+  /\bfeatured\s+in\b/i,
+  /\bas\s+seen\s+(?:in|on)\b/i,
+  /\bpress(?:\s+&?\s*accolades|\s+mentions|\s+coverage)?\b/i,
+  /\baccolades\b/i,
+  /\bawards?\s+(?:&|and)\s+(?:press|recognition)\b/i,
+  /\bmichelin(?:\s+(?:star|starred|guide))?\b/i,
+  /\bjames\s+beard\b/i,
+  /\beater\s+\d{4}\b/i,
+  /\b(?:nyt|new\s+york\s+times)\s+review\b/i,
+  /\b(?:best\s+of|top\s+\d+)\s+(?:lists?)?\b/i,
+  /\bchef\s+(?:owner|profile|bio)\b/i,
+  /\bmeet\s+the\s+chef\b/i,
+  /\bour\s+chef\b/i
+];
+function detectSocialProof(pageText) {
+  if (!pageText) return { present: false };
+  for (var i = 0; i < SOCIAL_PROOF_PATTERNS.length; i++) {
+    if (SOCIAL_PROOF_PATTERNS[i].test(pageText)) return { present: true };
+  }
+  return { present: false };
+}
+
+// H12: Sustainability / sourcing claims. Relevant across all
+// subtypes but heavier for fine-dining and cafes where
+// provenance is part of the brand.
+var SUSTAINABILITY_PATTERNS = [
+  /\blocally\s+sourced\b/i,
+  /\blocal\s+farms?\b/i,
+  /\bfarm[-\s]to[-\s]table\b/i,
+  /\bsustainabl(?:e|y)\b/i,
+  /\bsustainability\b/i,
+  /\borganic\b/i,
+  /\bregenerative\b/i,
+  /\bzero[-\s]waste\b/i,
+  /\bcompostable\b/i,
+  /\bcarbon[-\s]neutral\b/i,
+  /\bfair[-\s]trade\b/i,
+  /\bethically\s+sourced\b/i,
+  /\bseasonal\s+(?:menu|ingredients)\b/i,
+  /\bsingle[-\s]origin\b/i,
+  /\bgrass[-\s]fed\b/i,
+  /\bheirloom\b/i
+];
+function detectSustainability(pageText) {
+  if (!pageText) return { present: false };
+  for (var i = 0; i < SUSTAINABILITY_PATTERNS.length; i++) {
+    if (SUSTAINABILITY_PATTERNS[i].test(pageText)) return { present: true };
   }
   return { present: false };
 }
