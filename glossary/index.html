@@ -186,8 +186,10 @@
      click away even after a long scroll. Chips are real buttons so
      they're keyboard + screen-reader navigable without JS. Active
      chip is marked via aria-pressed=true; the visual treatment is
-     driven off that attribute. */
-  .gloss-filters{
+     driven off that attribute. Two chip groups stacked: the first
+     jumps to a category section (anchor links styled as chips); the
+     second filters visible entries by industry. */
+  .gloss-filterbar{
     position:sticky;
     top:64px;
     z-index:5;
@@ -197,12 +199,17 @@
     backdrop-filter:blur(10px);
     -webkit-backdrop-filter:blur(10px);
     border:1px solid var(--line);
-    border-radius:999px;
+    border-radius:22px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    max-width:max-content;
+  }
+  .gloss-filters{
     display:flex;
     align-items:center;
-    gap:12px;
+    gap:10px;
     flex-wrap:wrap;
-    max-width:max-content;
   }
   .gloss-filters-label{
     font-size:11px;
@@ -240,8 +247,41 @@
     border-color:var(--ink);
     color:var(--cream);
   }
+  /* Jump-to-category chips — styled to read as tertiary vs the dark
+     industry chips. Smaller, lighter, still obviously interactive. */
+  .gloss-jump{
+    font:inherit;
+    font-size:13px;
+    font-weight:500;
+    padding:6px 14px;
+    border:1px solid transparent;
+    border-radius:999px;
+    background:var(--cream-2);
+    color:var(--ink-soft);
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    transition:background var(--t-fast) var(--ease),color var(--t-fast) var(--ease);
+    white-space:nowrap;
+  }
+  .gloss-jump:hover{
+    background:var(--teal-tint);
+    color:var(--teal);
+  }
+  .gloss-jump:focus-visible{
+    outline:2px solid var(--teal);
+    outline-offset:2px;
+  }
+  .gloss-hero-invite{
+    margin-top:16px;
+    font-size:14.5px;
+    color:var(--stone);
+    font-style:italic;
+  }
   @media (max-width:640px){
-    .gloss-filters{
+    .gloss-filterbar{
       top:56px;
       max-width:none;
       border-radius:14px;
@@ -249,7 +289,7 @@
     .gloss-filters-label{display:none}
   }
   @media (prefers-reduced-motion:reduce){
-    .gloss-filter{transition:none}
+    .gloss-filter,.gloss-jump{transition:none}
   }
 </style>
 </head>
@@ -305,14 +345,25 @@
   <span class="eyebrow">Muntin Digital · Glossary</span>
   <h1>Plain-English definitions<br>for every term in your audit.</h1>
   <p>Your website audit flags things in the language Google and Lighthouse use — "LCP", "CLS", "schema", "tap targets". Here's what each of those actually means for your business, and why it's worth fixing.</p>
+  <p class="gloss-hero-invite">No test at the end. You don't need to memorize any of this — just know where to find it when your audit (or your developer) throws one of these at you. Every definition lands first, then tells you plainly why you should care.</p>
 </section>
 
 <div class="container">
 
-  <div class="gloss-filters" role="group" aria-label="Filter glossary by industry">
-    <span class="gloss-filters-label">Show terms for</span>
-    <button type="button" class="gloss-filter" data-filter="all" aria-pressed="true">All industries</button>
-    <button type="button" class="gloss-filter" data-filter="restaurants" aria-pressed="false">Restaurants</button>
+  <div class="gloss-filterbar">
+    <nav class="gloss-filters" aria-label="Jump to glossary category">
+      <span class="gloss-filters-label">Jump to</span>
+      <a class="gloss-jump" href="#basics">The basics</a>
+      <a class="gloss-jump" href="#mobile">Mobile &amp; speed</a>
+      <a class="gloss-jump" href="#conversions">Conversions</a>
+      <a class="gloss-jump" href="#trust">Trust</a>
+      <a class="gloss-jump" href="#findability">Findability</a>
+    </nav>
+    <div class="gloss-filters" role="group" aria-label="Filter glossary by industry">
+      <span class="gloss-filters-label">Show terms for</span>
+      <button type="button" class="gloss-filter" data-filter="all" aria-pressed="true">All industries</button>
+      <button type="button" class="gloss-filter" data-filter="restaurants" aria-pressed="false">Restaurants</button>
+    </div>
   </div>
   <p class="sr-only" id="gloss-filter-status" aria-live="polite"></p>
 
@@ -376,6 +427,33 @@
         </div>
         <p class="gloss-term-def">A single sentence — usually in the hero — that tells a first-time visitor your cuisine, neighborhood, and vibe. Example: "Wood-fired Neapolitan pizza in downtown Silver Spring, open late."</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Four seconds after landing, a visitor has either classified your restaurant or left. A pitch sentence does the classifying for them so they don't have to guess from a logo.</p>
+      </article>
+
+      <article class="gloss-term" id="domain-name" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>Domain name<span class="gloss-aka">your web address, your URL</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">The human-readable address people type to reach your site — "rowhousegarden.com". You buy it yearly from a registrar (Namecheap, Google Domains, Cloudflare) and point it at whichever host runs your site.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Your domain is the one piece of your brand that lives on signs, menus, Instagram bios, and printed receipts. Own it outright (not through a builder that "includes" it), keep the yearly renewal on auto-pay, and pick something short enough to say out loud without spelling.</p>
+      </article>
+
+      <article class="gloss-term" id="hosting" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>Web hosting<span class="gloss-aka">where your site actually lives</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">The server, somewhere on the internet, that sends your website to a visitor's phone when they type your domain. Small-business hosting runs $5–$30/month (Cloudflare Pages, Netlify, SiteGround, DreamHost); restaurant-specific builders like Squarespace bundle hosting into their subscription.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Bad hosting makes every other optimization pointless — a fast site on a slow host still loads slowly. Good hosting gives you free HTTPS, free global caching, and 99.9%+ uptime without you thinking about it.</p>
+      </article>
+
+      <article class="gloss-term" id="professional-email" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>Professional email<span class="gloss-aka">you@yourdomain.com</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">Email that runs on your own domain (hello@rowhousegarden.com) rather than a free Gmail or Yahoo address. Usually $6–$12/month per mailbox through Google Workspace or Microsoft 365.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>First impressions aside, free email addresses are five times more likely to land in spam when you reply to reservation inquiries or invoices. A domain-matching email also signals to customers that you actually own your online presence.</p>
       </article>
 
     </div>
@@ -461,6 +539,60 @@
         <p class="gloss-term-why"><strong>Why it matters</strong>Lighthouse is the same engine Google uses to rank your site — so its score isn't advisory, it's the report card. Our restaurant audit runs a real Lighthouse scan on your URL and translates the numbers into specific fixes for your business.</p>
       </article>
 
+      <article class="gloss-term" id="pagespeed-insights" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>PageSpeed Insights<span class="gloss-aka">PSI, pagespeed.web.dev</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">Google's free web tool at pagespeed.web.dev that runs a Lighthouse audit on any URL and shows you your Core Web Vitals plus a prioritized list of fixes. Built on top of the Lighthouse engine.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>PSI is the tool Google itself uses to look at your site, so its score is as close to Google's opinion of you as you can get without working there. Run your site through it once a month; run it again after any big change.</p>
+      </article>
+
+      <article class="gloss-term" id="fcp" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>First Contentful Paint<span class="gloss-aka">FCP</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">The moment the browser paints the <em>first</em> piece of your page — usually a headline, a logo, or a patch of background color. Measured in seconds. Under 1.8s is good, over 3s is poor.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>FCP is the "something is happening" signal. A blank white screen for three seconds reads as broken even if the page is about to load; first paint before 1.8s tells the visitor the site is working and buys you time to finish loading.</p>
+      </article>
+
+      <article class="gloss-term" id="ttfb" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>Time to First Byte<span class="gloss-aka">TTFB, server response time</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">How long it takes your web server to send the very first byte of a page after a visitor requests it. Measured in milliseconds. Under 200ms is good, over 600ms points at a slow host or a misconfigured site.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Bad TTFB is almost always a hosting problem, not a design problem. Every other speed metric inherits it — you can't render what hasn't been sent yet. If your TTFB is poor, switch hosts or add a CDN before optimizing anything else.</p>
+      </article>
+
+      <article class="gloss-term" id="cdn" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>CDN<span class="gloss-aka">Content Delivery Network, "the edge"</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">A global network of servers — Cloudflare, Fastly, AWS CloudFront — that keep cached copies of your site close to every visitor in the world, so the page travels 30 miles instead of 3,000. Most good hosts wire one up for free.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>A CDN is the single biggest "I don't have to think about this" speed upgrade available. Even if half your customers are in one city, the other half get the same fast site, and your origin server does dramatically less work.</p>
+      </article>
+
+      <article class="gloss-term" id="responsive-design" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>Responsive design<span class="gloss-aka">mobile-first, adaptive layout</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">A design approach where the same page automatically rearranges itself to fit whatever screen it lands on — phone, tablet, desktop — without a separate mobile site. The standard since about 2015.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Roughly two-thirds of your visitors arrive on a phone. A non-responsive site treats them as second-class. Google also explicitly penalizes sites that aren't mobile-friendly under its mobile-first indexing rule.</p>
+      </article>
+
+      <article class="gloss-term" id="lazy-loading" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>Lazy loading<span class="gloss-aka">deferred loading, below-the-fold loading</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">A technique where images and videos further down the page don't start downloading until the visitor actually scrolls near them. Built into modern HTML via <code>loading="lazy"</code>.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>A homepage with twelve food photos doesn't need to download all twelve before the top of the page is usable. Lazy loading lets your hero paint in under a second while the bottom of the page gets ready in the background.</p>
+      </article>
+
     </div>
   </section>
 
@@ -526,6 +658,51 @@
         <p class="gloss-term-why"><strong>Why it matters</strong>Strangers trust other strangers more than they trust your marketing copy. One real quote from a real review ("the best carbonara in Bethesda — Washington Post") above the fold does more conversion work than three paragraphs of your own prose.</p>
       </article>
 
+      <article class="gloss-term" id="above-the-fold" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>Above the fold<span class="gloss-aka">the first screen, "what loads first"</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">The part of your homepage a visitor sees without scrolling. The term is borrowed from newspapers — the half of the front page that was visible before you unfolded it. On mobile that's usually the first ~600 pixels of the page.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>A sizable fraction of your visitors never scroll. Whatever you need them to know or do — what you are, where you are, how to book — has to live above the fold, or it might as well not exist.</p>
+      </article>
+
+      <article class="gloss-term" id="bounce-rate" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>Bounce rate</h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">The percentage of visitors who land on your site and leave without clicking anything — no menu page, no reserve button, no second page. A high number means the page didn't answer what they came to ask.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Bounce rate is an honest mirror. 70%+ on your homepage usually means the hero isn't answering the "what is this place" question fast enough, or the thing they came for (menu, hours, reservation link) isn't obvious.</p>
+      </article>
+
+      <article class="gloss-term" id="conversion-rate" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>Conversion rate</h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">The percentage of visitors who do the specific thing you wanted them to do — book a reservation, place an order, fill out a contact form. A 3% reservation conversion rate on a restaurant site is solid; a 10% online-ordering rate on the menu page is excellent.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Traffic is vanity; conversions are revenue. Doubling your conversion rate is usually cheaper than doubling your traffic — and it compounds every time a new visitor shows up.</p>
+      </article>
+
+      <article class="gloss-term" id="funnel" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>Funnel<span class="gloss-aka">the path from visitor to customer</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">The sequence of steps a visitor goes through before becoming a customer — landing page → menu page → reserve button → reservation form → confirmation. "Funnel" because each step loses some of the people at the one before it.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Most conversion problems live at one specific step, not everywhere. Mapping your funnel tells you whether visitors are bailing at the menu, at the reservation form, or at the confirmation email — so you know which one to fix first.</p>
+      </article>
+
+      <article class="gloss-term" id="form-abandonment" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>Form abandonment</h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">When a visitor starts filling out a form — reservation, contact, inquiry — and leaves before submitting. Usually caused by too many required fields, unclear errors, or a form that doesn't work on their phone.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>A visitor who starts a form has already decided they want to give you their business. Losing them halfway through is a uniquely expensive failure. The fixes are almost always smaller forms, clearer labels, and mobile-tested flows.</p>
+      </article>
+
     </div>
   </section>
 
@@ -589,6 +766,42 @@
         </div>
         <p class="gloss-term-def">Photographs of <em>your</em> space, <em>your</em> food, and <em>your</em> team — not royalty-free stock images licensed from an agency.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Visitors can smell stock photography at a glance, and it reads as dishonest — "they wouldn't show their own place unless there was something wrong with it". One two-hour session with a local photographer outperforms a whole library of stock for years.</p>
+      </article>
+
+      <article class="gloss-term" id="ssl-certificate" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>SSL certificate<span class="gloss-aka">TLS certificate, the thing behind the padlock</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">A small file your web server uses to prove it's really you and to encrypt the connection to a visitor's browser. HTTPS is the result; the SSL (or more properly, TLS) certificate is the proof underneath it.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Modern hosts issue these for free and renew them automatically via Let's Encrypt. If someone is quoting you for one — or worse, your certificate has quietly expired and visitors are seeing a scary red warning — both are solved by moving to a better host.</p>
+      </article>
+
+      <article class="gloss-term" id="privacy-policy" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>Privacy policy</h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">A page on your site (usually at /privacy) that plainly states what information you collect from visitors, what you use it for, and how you keep it safe. Legally required in the EU (GDPR), California (CCPA), and a growing list of US states.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Even if you only collect emails through a contact form, a missing privacy policy is a legal exposure and a trust red flag. The good news: a one-page, honest policy satisfies most rules. It doesn't need to be written by a lawyer for a site that just has hours and a menu.</p>
+      </article>
+
+      <article class="gloss-term" id="cookie-banner" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>Cookie banner<span class="gloss-aka">cookie notice, consent banner</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">The small bar or modal at the bottom of a page asking visitors to accept tracking cookies. Required by law in the EU and parts of the US if you run analytics or advertising pixels; unnecessary if you use a privacy-friendly analytics tool (like Plausible) that doesn't set tracking cookies.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Cookie banners get dismissed in milliseconds and hurt your first impression. The cleaner answer for most small businesses is to use analytics that don't require one in the first place — your site stays legal <em>and</em> stays un-nagged.</p>
+      </article>
+
+      <article class="gloss-term" id="terms-of-service" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>Terms of Service<span class="gloss-aka">terms and conditions, ToS</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">A page covering the rules of using your site — reservation cancellation policy, gift-card terms, any disputes. Less strictly required than a privacy policy, but strongly recommended for any business that takes payments or deposits online.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>A clear terms page short-circuits most chargeback disputes and cancellation arguments. Your processor (Stripe, Square) will also ask for a link to it during onboarding.</p>
       </article>
 
     </div>
@@ -663,6 +876,69 @@
         </div>
         <p class="gloss-term-def">The free Google dashboard that shows you which search terms people used to find your site, which pages they landed on, and whether Google has any indexing problems with your pages. Found at search.google.com/search-console.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Search Console is the only way to know what Google actually thinks of your site. Every small business owner running a website should be claimed in it and checking it once a month — that's where you notice drops in traffic before they become problems.</p>
+      </article>
+
+      <article class="gloss-term" id="canonical-url" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>Canonical URL<span class="gloss-aka">rel=canonical, the "official" address</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">A tag in a page's HTML that tells Google "this is the real address for this page, ignore any duplicates". Matters when the same content lives at multiple URLs (with/without www, with/without tracking parameters, printable versions).</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Without canonicals, Google can't tell which version of a page to rank and ends up splitting your SEO signal across three copies. A one-line tag concentrates all your search credit on the version you actually want people to land on.</p>
+      </article>
+
+      <article class="gloss-term" id="robots-txt" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>robots.txt</h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">A tiny plain-text file at <code>/robots.txt</code> on your domain that tells search-engine crawlers which parts of your site they can and can't read. Usually a five-line file; sometimes the quiet reason a page isn't showing up in Google at all.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>A broken or accidentally-restrictive robots.txt is one of the most common "why is my site invisible on Google" causes. Get yours wrong once and half your pages disappear from search overnight.</p>
+      </article>
+
+      <article class="gloss-term" id="open-graph" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>Open Graph<span class="gloss-aka">og:image, social share cards, link previews</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">A set of meta tags that tell Facebook, Instagram, LinkedIn, iMessage, and Slack how to preview your link when someone pastes it — which image to show, which headline, which description.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Without Open Graph tags, a shared link shows as a grey box with your domain name, which people ignore. With a good food photo and a sharp headline, that same link becomes a thumbnail ad every time anyone posts about you.</p>
+      </article>
+
+      <article class="gloss-term" id="rich-results" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>Rich results<span class="gloss-aka">rich snippets, SERP features</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">Enhanced Google search results that show more than a plain blue link — star ratings, hours, prices, FAQ dropdowns, image carousels. Unlocked by having the right schema markup on your page.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>A result with a 4.8-star rating and a "$$" price next to it gets clicked far more often than a text-only result directly above it. Rich results are one of the few SEO levers where a small technical fix produces a visible, front-page win.</p>
+      </article>
+
+      <article class="gloss-term" id="nap-consistency" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>NAP consistency<span class="gloss-aka">name, address, phone — everywhere the same</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">Your business name, address, and phone number written identically across your website, Google Business Profile, Yelp, Apple Maps, Facebook, and every other directory. "Suite 200" vs. "Ste. 200" counts as a mismatch to Google.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Google cross-references your NAP across every mention of your business online and downgrades listings with inconsistent info — it reads as "this business might not be real". One tidy-up, done once, recovers rank you didn't know you'd lost.</p>
+      </article>
+
+      <article class="gloss-term" id="apple-bing-maps" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>Apple Maps &amp; Bing Places</h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">The non-Google map services — Apple Maps Connect (for iPhone users) and Bing Places (for Edge, Cortana, and ChatGPT-style Copilot) — where you can also claim and edit your business listing for free.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Roughly half of US phones are iPhones. An unmaintained Apple Maps listing sends every Siri-asking, iPhone-using customer to the wrong place or to your competition. Claiming these twice-a-year listings is an hour of work for years of payoff.</p>
+      </article>
+
+      <article class="gloss-term" id="mobile-first-indexing" data-industries="all">
+        <div class="gloss-term-head">
+          <h3>Mobile-first indexing</h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">Google's rule, in effect since 2019, that it <em>only</em> looks at the mobile version of your site when deciding how to rank it. Whatever your desktop site does well no longer matters if the mobile version is bad.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Every audit, every fix, every copy tweak has to be tested on a phone first. Desktop is a nice-to-have in 2026; mobile is the thing Google actually scores.</p>
       </article>
 
     </div>
