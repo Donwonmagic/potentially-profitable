@@ -487,6 +487,10 @@ var RESTAURANT_PRIORITY_CHECKS = [
         impact: 'Wedding-cake consultations, dietary-restricted special orders, and catering-tray inquiries almost always start with a phone call — these are the margin-rich orders that rarely convert through a web form. A missing tappable phone on a bakery site is a missing revenue channel, full stop.',
         failNote: 'Custom-cake and catering inquiries come in by phone. Add a tappable phone number at the top of every page — a <code>tel:</code> link beside your "Order Ahead" button is the baseline for any bakery that takes custom work.'
       },
+      'pizzeria': {
+        impact: 'Phone orders still account for roughly 40% of US pizzeria revenue — and every one of those orders that a customer has to manually dial is a customer who might give up and open Slice. Delivery ETA questions ("how long?") and last-minute customizations ("can you add jalapeños?") are one-tap conversations.',
+        failNote: 'Phone ordering is table stakes for pizzerias. Add a tappable phone at the top of every page, and keep it visible next to the "Order Online" button — the two channels complement each other, and ~40% of your revenue still comes in by phone.'
+      },
       'bar-pub': {
         impact: 'Bar calls are time-sensitive: "are you open?", "is happy hour still on?", "do I need a reservation tonight?" A missing tap-to-call number means those visitors go to a bar with an easier phone number.',
         failNote: 'Non-negotiable for bars. Guests check "is happy hour still running?" on the curb outside. Add a phone number and wrap it in a <code>tel:</code> link so the call is one tap, not a copy-paste flow.'
@@ -519,6 +523,9 @@ var RESTAURANT_PRIORITY_CHECKS = [
       },
       'bakery': {
         impact: 'Morning bakery traffic is time-critical — a commuter grabbing croissants at 7:30am does not have time to fumble with a typed address. A one-tap directions link keeps the pickup rush on schedule, and matters double for wholesale or catering customers driving to a pickup address they have never visited.'
+      },
+      'pizzeria': {
+        impact: 'For pizzerias the primary use of a map is communicating DELIVERY ZONE, not just the storefront address. A one-tap Google Maps pin is the bare minimum; a proper delivery-radius overlay (or at least a list of served neighborhoods) saves you from the "do you deliver to me?" phone calls that your phone staff are answering instead of taking orders.'
       },
       'bar-pub': {
         impact: 'Bar hopping happens on the phone. A tappable map — especially for a bar tucked down a side street or into a basement — can be the difference between a visitor finding you or ending up at whichever place Google Maps surfaces first.'
