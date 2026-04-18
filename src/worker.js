@@ -556,21 +556,28 @@ async function handleSchemaCheck(request, env, ctx) {
 // NAP-consistency against the page that's ACTUALLY responsible for
 // each check, not just the homepage.
 //
-// Phase E1 (this commit) ships the skeleton: a single-URL fetch that
-// returns { url, status, html }. Phase E2 will extract internal-link
-// candidates from the homepage HTML; E3 will fetch them in parallel
-// with per-URL timeouts and a global cap; E4 will return the final
-// structured bundle shape.
-//
 //   GET /api/page-crawl?url=https://example.com/
-//     → 200 { ok:true, homepage: { url, status, html } }
+//     → 200 {
+//         ok: true,
+//         homepage: { url, status, html },
+//         candidates: [{ slot, url }, …],   // what we tried
+//         pages: [{ slot, url, status, html, error? }, …], // what we got
+//         capHit: boolean                   // true = 15s global timer fired
+//       }
 //     → 400 missing/bad url
-//     → 502 fetch failed / non-2xx upstream / upstream timeout
+//     → 502 homepage fetch failed / non-2xx / upstream timeout
 //
-// Same 8s fetch timeout as /api/seo-check and /api/schema-check so
-// misbehaving targets can't hang the Worker. HTML is returned raw
-// (not base64) so client-side parsing stays straightforward; Worker
-// memory budget easily handles a homepage + 5 follow-up pages.
+// Budget: 8s homepage + up to 5 × 6s follow-ups (all parallel), with
+// a 15s global cap. HTML bodies are truncated at PAGE_CRAWL_MAX_HTML
+// bytes per page so a pathological CMS page cannot blow the Worker
+// response budget — the client-side checks only need the first
+// chunk of any realistic restaurant page (nav, menu, schema).
+const PAGE_CRAWL_MAX_HTML         = 500_000;  // ~500 KB per page
+const PAGE_CRAWL_MAX_CANDIDATES   = 5;
+const PAGE_CRAWL_PER_URL_TIMEOUT  = 6000;
+const PAGE_CRAWL_GLOBAL_CAP       = 15000;
+const PAGE_CRAWL_HOMEPAGE_TIMEOUT = 8000;
+
 async function handlePageCrawl(request, env, ctx) {
   const url = new URL(request.url);
   const target = (url.searchParams.get('url') || '').trim();
@@ -578,28 +585,27 @@ async function handlePageCrawl(request, env, ctx) {
     return jsonResponse({ ok: false, error: 'Missing ?url= parameter' }, 400);
   }
 
-  const homepage = await fetchPageForCrawl(target);
+  const homepage = await fetchPageForCrawl(target, PAGE_CRAWL_HOMEPAGE_TIMEOUT);
   if (!homepage.ok) {
     return jsonResponse({ ok: false, error: homepage.error || 'Fetch failed' }, 502);
   }
 
-  // Sprint E2: rank up to 5 internal-link candidates from the
-  // homepage HTML.
-  const candidates = extractInternalLinkCandidates(homepage.html, homepage.url);
+  // Sprint E2: rank up to PAGE_CRAWL_MAX_CANDIDATES internal-link
+  // candidates from the homepage HTML.
+  const candidates = extractInternalLinkCandidates(homepage.html, homepage.url)
+    .slice(0, PAGE_CRAWL_MAX_CANDIDATES);
 
-  // Sprint E3: fetch the candidates in parallel, 6s per-URL, with
-  // a 15s global cap. We use Promise.allSettled so one slow/broken
-  // page cannot starve the whole batch, plus a Promise.race against
+  // Sprint E3: fetch the candidates in parallel, per-URL timeout,
+  // with a global cap. Promise.allSettled so one slow/broken page
+  // cannot starve the whole batch, wrapped in Promise.race against
   // a timer so the WHOLE operation cannot exceed the cap even if
   // AbortController support drifts across Workers runtimes.
-  const CRAWL_PER_URL_TIMEOUT_MS = 6000;
-  const CRAWL_GLOBAL_CAP_MS = 15000;
   const fetches = candidates.map(function(c){
-    return fetchPageForCrawl(c.url, CRAWL_PER_URL_TIMEOUT_MS)
+    return fetchPageForCrawl(c.url, PAGE_CRAWL_PER_URL_TIMEOUT)
       .then(function(r){ return { slot: c.slot, url: c.url, result: r }; });
   });
   const globalCap = new Promise(function(resolve){
-    setTimeout(function(){ resolve(null); }, CRAWL_GLOBAL_CAP_MS);
+    setTimeout(function(){ resolve(null); }, PAGE_CRAWL_GLOBAL_CAP);
   });
   const settled = await Promise.race([
     Promise.allSettled(fetches),
@@ -612,16 +618,27 @@ async function handlePageCrawl(request, env, ctx) {
       if (entry.status === 'fulfilled' && entry.value) {
         const v = entry.value;
         if (v.result && v.result.ok) {
-          pages.push({ slot: v.slot, url: v.url, status: v.result.status, html: v.result.html });
+          pages.push({
+            slot: v.slot,
+            url: v.url,
+            status: v.result.status,
+            html: truncateHtml(v.result.html, PAGE_CRAWL_MAX_HTML)
+          });
         } else {
-          pages.push({ slot: v.slot, url: v.url, status: (v.result && v.result.status) || 0, html: null, error: (v.result && v.result.error) || 'fetch-failed' });
+          pages.push({
+            slot: v.slot,
+            url: v.url,
+            status: (v.result && v.result.status) || 0,
+            html: null,
+            error: (v.result && v.result.error) || 'fetch-failed'
+          });
         }
       }
     }
   }
-  // If the global cap won the race, fall back to reporting an
-  // empty pages list — caller still has a usable homepage + the
-  // candidate URLs they can retry against later.
+  // If the global cap won the race, fall back to an empty pages list —
+  // caller still has a usable homepage plus the candidate URLs to
+  // retry against later.
   const capHit = !Array.isArray(settled);
 
   return jsonResponse({
@@ -629,12 +646,23 @@ async function handlePageCrawl(request, env, ctx) {
     homepage: {
       url: homepage.url,
       status: homepage.status,
-      html: homepage.html
+      html: truncateHtml(homepage.html, PAGE_CRAWL_MAX_HTML)
     },
     candidates: candidates,
     pages: pages,
     capHit: capHit
   }, 200);
+}
+
+// Cap each HTML body at maxBytes so a pathological CMS page cannot
+// blow the Worker's response budget. The client-side checks only
+// need the first few-hundred KB of any realistic restaurant page
+// (nav, menu, schema scripts). Returns the original string when it
+// is already under the limit — avoids a copy on the common path.
+function truncateHtml(html, maxBytes) {
+  if (!html || typeof html !== 'string') return html;
+  if (html.length <= maxBytes) return html;
+  return html.slice(0, maxBytes);
 }
 
 // Slot-assigned link-text patterns. Each pattern matches a category
