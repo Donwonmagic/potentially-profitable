@@ -488,6 +488,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .foot-cta .btn-primary{flex:0 0 auto;background:var(--teal);color:var(--cream)}
 .foot-cta .btn-primary:hover{background:var(--teal-dark);transform:translateY(-1px);box-shadow:0 16px 36px -12px rgba(31,78,91,0.55)}
 @media (max-width:640px){.foot-cta{flex-direction:column;align-items:flex-start;gap:20px}}
+/* Suppress the generic footer CTA strip on any page that already has
+   its own designed closing CTA section (.block.final) — otherwise the
+   "Book a 20-min call" button stacks right under the page's own
+   closing CTA, which duplicates the ask. Legal and tool pages that
+   don't have a .block.final keep the strip as a fallback. */
+body:has(.block.final) .foot-cta{display:none}
 
 /* Main 3-column grid */
 .foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.1fr;gap:clamp(28px,4vw,56px);padding-bottom:48px;margin-bottom:32px;border-bottom:1px solid rgba(250,247,242,0.08)}
