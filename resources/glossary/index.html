@@ -609,7 +609,75 @@
               <h2>Findability</h2>
               <p>Most restaurant discovery happens in Google Maps and "restaurants near me" searches. These entries cover the structured signals Google reads from your site to render rich listings and rank you locally.</p>
             </header>
-            <!-- Entries populated in Sprint M3. -->
+
+            <article class="glossary-term" id="google-business-profile">
+              <h3>Google Business Profile <span class="aka">· GBP, formerly Google My Business</span> <a class="glossary-anchor" href="#google-business-profile" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Your free Google listing that shows up in Google Maps, in the "restaurants near me" panel, and in the sidebar of branded search results.</p>
+              <p class="glossary-long">Roughly 60% of restaurant discovery happens inside Google Maps, not on the open web. A claimed, verified, fully-filled Google Business Profile — correct hours, current photos, accurate category, menu link, reservation link — often drives more traffic than the website itself. Claim yours at <code>google.com/business</code>. Consistency with the website's NAP matters; Google uses matching to validate the listing and rank it locally.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: GBP lookup</span>
+                <span class="glossary-meta-chip">Related: <a href="#nap-consistency">NAP consistency</a>, <a href="#hours-accuracy">hours accuracy</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="title-tag">
+              <h3>Title tag <a class="glossary-anchor" href="#title-tag" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">The HTML <code>&lt;title&gt;</code> element that shows up as the headline of your Google search result and the label on every browser tab.</p>
+              <p class="glossary-long">Rewrite it to include restaurant name, cuisine, and city, under 60 characters so Google doesn't truncate it. A great title tag reads as a human sentence, not keyword soup: "Joe's Pizza — Neapolitan Pizza in Silver Spring" beats "Pizza | Italian | Restaurant | Silver Spring MD." Write one unique title per page; boilerplate "Restaurant Name - Home" everywhere tells Google there's no unique content to index.</p>
+              <pre>&lt;title&gt;Joe's Pizza — Neapolitan Pizza in Silver Spring&lt;/title&gt;</pre>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: SEO</span>
+                <span class="glossary-meta-chip">Related: <a href="#cuisine-pitch">cuisine pitch</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="json-ld-schema">
+              <h3>JSON-LD schema <span class="aka">· structured data, Restaurant schema</span> <a class="glossary-anchor" href="#json-ld-schema" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">A hidden <code>&lt;script type="application/ld+json"&gt;</code> block in the page that declares your business to Google in a structured, machine-readable format. For restaurants the key types are <code>Restaurant</code>, <code>FoodEstablishment</code>, <code>Bakery</code>, <code>CafeOrCoffeeShop</code>, and <code>BarOrPub</code>.</p>
+              <p class="glossary-long">Sites with proper Restaurant schema earn rich results — the expanded listing with hours, price range, photos, and menu snippets that sits above plain blue links. Sites without it get the plain blue link. The difference in click-through rate is meaningful. The fields Google actually uses: <code>name</code>, <code>address</code>, <code>telephone</code>, <code>openingHoursSpecification</code> (all seven days), <code>servesCuisine</code>, <code>priceRange</code>, <code>acceptsReservations</code>, <code>hasMenu</code>. Validate with Google's <a href="https://search.google.com/test/rich-results" target="_blank" rel="noopener">Rich Results Test ↗</a>.</p>
+              <pre>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "Joe's Pizza",
+  "address": { "@type": "PostalAddress", ... },
+  "servesCuisine": "Neapolitan Pizza",
+  "priceRange": "$$"
+}
+&lt;/script&gt;</pre>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: schema</span>
+                <span class="glossary-meta-chip">Related: <a href="#nap-consistency">NAP consistency</a>, <a href="#hours-accuracy">hours accuracy</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="alt-text">
+              <h3>Alt text <span class="aka">· image alt attribute</span> <a class="glossary-anchor" href="#alt-text" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">A short text description of an image written in the HTML <code>alt=""</code> attribute. Screen readers read it aloud; Google Images indexes it; browsers show it when an image fails to load.</p>
+              <p class="glossary-long">For restaurant sites alt text does double duty: it's an accessibility requirement AND a meaningful Google Images ranking signal. Replace filenames like <code>IMG_2041.jpg</code> with real sentences: "Cast-iron rockfish with heirloom tomatoes at Joe's, Silver Spring." Name the dish, the technique, and where appropriate the restaurant and city. Purely decorative images (background flourishes, dividers) should use <code>alt=""</code> — the empty attribute tells screen readers to skip them.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: photo-coverage</span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="sitemap-xml">
+              <h3>Sitemap.xml <span class="aka">· XML sitemap</span> <a class="glossary-anchor" href="#sitemap-xml" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">A list of every URL on your site that Google should crawl, served at <code>/sitemap.xml</code> and registered in Google Search Console.</p>
+              <p class="glossary-long">Google will eventually find most pages on its own, but a sitemap accelerates indexing for new pages (a just-launched catering page, a blog post, a seasonal menu) and reminds Google of pages it might otherwise skip. Generate one at build time, upload to the site root, verify your domain in <a href="https://search.google.com/search-console" target="_blank" rel="noopener">Google Search Console ↗</a>, and submit the sitemap URL inside Search Console.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: SEO</span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="hours-accuracy">
+              <h3>Hours accuracy <span class="aka">· site vs GBP vs schema</span> <a class="glossary-anchor" href="#hours-accuracy" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Whether the hours on your site, in your Google Business Profile, and in your <code>openingHoursSpecification</code> schema all say the same thing.</p>
+              <p class="glossary-long">Drift happens constantly: you update GBP after Daylight Saving, but your site still says the old hours; you publish a holiday-hours banner in one place but not the other. Google trusts GBP first, so a mismatched site can trigger a "hours may vary" hint in search results — which tanks click-through. For Google Rich Results, schema's <code>openingHoursSpecification</code> needs an entry for every day of the week (including explicitly-closed days) or Google falls back to the hedged fallback. The audit tool cross-checks all three sources and flags mismatches.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: hours-accuracy</span>
+                <span class="glossary-meta-chip">Related: <a href="#google-business-profile">GBP</a>, <a href="#json-ld-schema">JSON-LD schema</a></span>
+              </div>
+            </article>
           </section>
 
           <!-- ============ TRUST ============ -->
@@ -618,7 +686,30 @@
               <h2>Trust</h2>
               <p>The small signals that tell a visitor your site is current, secure, and run by humans who read their inbox. Absent these, a site can be technically perfect and still feel off.</p>
             </header>
-            <!-- Entries populated in Sprint M3. -->
+
+            <article class="glossary-term" id="https">
+              <h3>HTTPS <span class="aka">· SSL / TLS</span> <a class="glossary-anchor" href="#https" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Encrypted HTTP. Modern browsers flag plain-HTTP sites as "Not secure" in the address bar, which instantly destroys trust.</p>
+              <p class="glossary-long">HTTPS is non-negotiable in 2026 — it's a Google ranking signal, a prerequisite for modern browser features (geolocation, service workers, the Web Share API), and a user-trust baseline. Free certificates via Let's Encrypt (managed by your host) or Cloudflare (automatic when you proxy through them) mean there's zero cost reason not to. If your host doesn't offer free HTTPS, change hosts.</p>
+            </article>
+
+            <article class="glossary-term" id="transparent-pricing">
+              <h3>Transparent menu pricing <a class="glossary-anchor" href="#transparent-pricing" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Every dish on the menu shows its price, or (for tasting-menu formats) the total prix-fixe cost is stated prominently.</p>
+              <p class="glossary-long">Hidden prices ("Market price" for every entrée, "Ask your server" across the board) lose first-time diners before they ever book. The exception is legitimate market-price fluctuation (whole fish, seasonal specialties) where listing a range like "$38-52 market" beats "MP." For tasting menus state the total and what it covers — diners comparing "$165 / seven courses" to a $285 counterpart are making a useful decision. Opaque pricing just makes them bounce.</p>
+            </article>
+
+            <article class="glossary-term" id="freshness-signal">
+              <h3>Freshness signal <span class="aka">· last-updated / seasonal content</span> <a class="glossary-anchor" href="#freshness-signal" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Any visible indicator that the site is actively maintained — a "Spring menu" badge, a "this week" specials block, a dated blog post, a footer last-updated line.</p>
+              <p class="glossary-long">Stale sites read as closed. A visitor who lands on your homepage in May and sees a "Happy New Year" hero from January assumes you shuttered in between. Cheapest fix: a dated specials block in the hero that staff can update weekly. Next cheapest: a "menu updated [date]" line near the menu link. For seasonal restaurants, a "Summer menu — through September" hero banner simultaneously answers "are you open?" and signals current operation.</p>
+            </article>
+
+            <article class="glossary-term" id="working-contact-form">
+              <h3>Working contact form <a class="glossary-anchor" href="#working-contact-form" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">A contact or inquiry form that actually delivers submissions to an inbox someone reads daily, tested end-to-end at least monthly.</p>
+              <p class="glossary-long">Broken forms are common and costly: a visitor fills in a catering inquiry, hits Submit, gets a confirmation page, and the message vanishes into a misconfigured webhook. Test your own form with a real message at least once a month; include a field (like "How did you hear about us?") whose answer will be obvious when you receive it. For high-value forms (catering, private events, press inquiries) consider a fallback <code>mailto:</code> link for visitors whose company firewalls block form submissions.</p>
+            </article>
           </section>
 
           <!-- ============ SUBTYPES ============ -->
