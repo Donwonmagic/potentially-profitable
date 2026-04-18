@@ -2217,6 +2217,32 @@
       .catch(function(){ return { ok: false, homepage: null, pages: [], candidates: [] }; });
   }
 
+  // Phase G3: /api/yelp-lookup caller. Takes a term (business name)
+  // and a location (city / 'City, State' / full address) and
+  // returns Yelp's top match (rating, review count, price,
+  // categories, phone, etc.) or null.
+  //
+  // Failure modes all resolve to { ok: false, match: null }:
+  //   - YELP_API_KEY not configured on the Worker → 503
+  //   - Yelp upstream error / timeout                → 502
+  //   - Network flake                                 → catch
+  //   - No match for this (term, location)           → match:null
+  // The caller should therefore treat a missing match as a
+  // content finding (no Yelp presence = actionable), NOT as a
+  // runtime error.
+  function callYelpLookup(term, location) {
+    var params = new URLSearchParams();
+    params.append('term',     term || '');
+    params.append('location', location || '');
+    return fetch('/api/yelp-lookup?' + params.toString())
+      .then(function(res){ return res.json().catch(function(){ return null; }); })
+      .then(function(data){
+        if (!data || !data.ok) return { ok: false, match: null };
+        return data;
+      })
+      .catch(function(){ return { ok: false, match: null }; });
+  }
+
   var submitOriginalHTML = submitBtn.innerHTML;
 
   // Stepwise progress state. The audit has four logical phases:
