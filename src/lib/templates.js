@@ -239,6 +239,10 @@ function checklistKind(body) {
 }
 
 export function checklistNotification(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.checklistNotification === 'function') {
+    return ES.checklistNotification(body);
+  }
   const email = String(body.email || '—').trim();
   const k     = checklistKind(body);
 
@@ -273,6 +277,10 @@ export function checklistNotification(body) {
 }
 
 export function checklistAutoResponder(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.checklistAutoResponder === 'function') {
+    return ES.checklistAutoResponder(body);
+  }
   const k = checklistKind(body);
   const biz = k.businessField;
 
