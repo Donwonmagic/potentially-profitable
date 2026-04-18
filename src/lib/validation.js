@@ -96,6 +96,11 @@ export function enforceMaxLengths(body, limits) {
     failing_checks: 2000,
     unverified_checks: 2000,
     user_corrections: 400,
+    // Phase J4: new fields that the deep-gate form (and the
+    // emails it triggers) carry alongside the existing payload.
+    interest: 60,            // form-routing hint, e.g. 'restaurant-audit-deep-report'
+    passing_checks: 2000,    // optional: list of checks that passed, for the printable permalink
+    deep_findings: 6000,     // optional: serialized priority results for the printable permalink
   };
   const merged = Object.assign({}, defaults, limits || {});
   for (const key of Object.keys(merged)) {
