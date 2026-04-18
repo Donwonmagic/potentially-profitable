@@ -96,6 +96,19 @@ export function enforceMaxLengths(body, limits) {
     failing_checks: 2000,
     unverified_checks: 2000,
     user_corrections: 400,
+    // Phase J4: new fields that the deep-gate form (and the
+    // emails it triggers) carry alongside the existing payload.
+    interest: 60,            // form-routing hint, e.g. 'restaurant-audit-report'
+    passing_checks: 2000,    // optional: list of checks that passed, for the printable permalink
+    deep_findings: 6000,     // optional: serialized priority results for the printable permalink
+    // Phase L4: PDF attachment payload (Sprint L3c client posts
+    // a base64-encoded jsPDF build of the current audit + its
+    // suggested filename). Cap at 10M chars (~7.5MB PDF) which
+    // gives Resend's 40MB email limit plenty of headroom while
+    // preventing a pathological payload from tying up the Worker.
+    pdf_b64: 10_000_000,
+    pdf_filename: 160,
+    source: 200,
   };
   const merged = Object.assign({}, defaults, limits || {});
   for (const key of Object.keys(merged)) {

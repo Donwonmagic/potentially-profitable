@@ -253,6 +253,7 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 }
 .compare .card{background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);padding:36px;transition:transform var(--t-med) var(--ease),box-shadow var(--t-med) var(--ease)}
 .compare .card.muntin{background:var(--ink);color:var(--cream);border-color:var(--ink);position:relative;overflow:hidden}
+.compare .card.muntin h3{color:var(--cream)}
 .compare .card.muntin::before{content:'';position:absolute;inset:0;background:radial-gradient(600px 300px at 20% 0%,rgba(31,78,91,0.55) 0%,rgba(20,22,26,0) 70%);pointer-events:none}
 .compare .card:hover{transform:translateY(-4px);box-shadow:0 30px 60px -30px rgba(20,22,26,0.2)}
 .compare .card h3{font-size:22px;margin-bottom:8px}
@@ -469,7 +470,7 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 .final .eyebrow::before{background:var(--cream)}
 .final h2{color:var(--cream);margin-top:16px;font-size:clamp(38px,5vw,72px);max-width:900px}
 .final h2 em{font-style:italic;color:#E8A87C;font-weight:400}
-.final .final-sub{margin-top:28px;max-width:580px;font-size:18px;color:rgba(250,247,242,0.78)}
+.final .final-sub{margin:28px auto 0;max-width:580px;font-size:18px;color:rgba(250,247,242,0.78)}
 .final .hero-ctas{margin-top:44px}
 .final .btn-primary{background:var(--cream);color:var(--ink)}
 .final .btn-primary:hover{background:var(--white)}
@@ -488,6 +489,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .foot-cta .btn-primary{flex:0 0 auto;background:var(--teal);color:var(--cream)}
 .foot-cta .btn-primary:hover{background:var(--teal-dark);transform:translateY(-1px);box-shadow:0 16px 36px -12px rgba(31,78,91,0.55)}
 @media (max-width:640px){.foot-cta{flex-direction:column;align-items:flex-start;gap:20px}}
+/* Suppress the generic footer CTA strip on any page that already has
+   its own designed closing CTA section (.block.final) — otherwise the
+   "Book a 20-min call" button stacks right under the page's own
+   closing CTA, which duplicates the ask. Legal and tool pages that
+   don't have a .block.final keep the strip as a fallback. */
+body:has(.block.final) .foot-cta{display:none}
 
 /* Main 3-column grid */
 .foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.1fr;gap:clamp(28px,4vw,56px);padding-bottom:48px;margin-bottom:32px;border-bottom:1px solid rgba(250,247,242,0.08)}
@@ -913,4 +920,195 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 @media (max-width:960px){
   .legal{padding-top:calc(64px + 40px)}
   .legal .cookie-table{display:block;overflow-x:auto}
+}
+
+/* ============================================================
+   Homepage primary tool CTA (restaurant audit)
+   ============================================================
+   Replaces the old .proof strip. Full-width warm cream-2 band
+   between the hero and the problem/comparison block, with a
+   teal accent rail on the left so it reads as a distinct
+   "take action now" moment. Two-column on desktop (text +
+   inline form left, mock score ring right); stacks to a single
+   centered column under 820px; inline form collapses to
+   button-under-input under 540px. */
+
+.tool-cta{
+  position: relative;
+  padding: clamp(56px, 8vw, 112px) 0;
+  background: var(--cream-2);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+}
+.tool-cta::before{
+  content: '';
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 4px;
+  background: var(--teal);
+}
+.tool-cta-inner{
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 72px);
+  align-items: center;
+}
+.tool-cta-text h2{
+  font-size: clamp(32px, 4.5vw, 56px);
+  margin: 14px 0 20px;
+}
+.tool-cta-lede{
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  max-width: 640px;
+  margin: 0 0 28px;
+}
+.tool-cta-form{
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+  background: #fff;
+  border: 1px solid var(--line-dark);
+  border-radius: 999px;
+  box-shadow: 0 10px 30px -15px rgba(20,22,26,0.15);
+  transition: box-shadow 180ms var(--ease-out), border-color 180ms var(--ease-out);
+  max-width: 560px;
+}
+.tool-cta-form:focus-within{
+  border-color: var(--teal);
+  box-shadow: 0 14px 36px -14px rgba(31,78,91,0.35);
+}
+.tool-cta-form input[type="url"],
+.tool-cta-form input[type="text"]{
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  font-size: 16px;
+  padding: 14px 20px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  outline: none;
+}
+.tool-cta-form input[type="url"]::placeholder,
+.tool-cta-form input[type="text"]::placeholder{ color: var(--stone-2); }
+.tool-cta-form button{
+  font: inherit;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 12px 24px;
+  background: var(--ink);
+  color: var(--cream);
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 180ms var(--ease-out), transform 180ms var(--ease-out), box-shadow 180ms var(--ease-out);
+  white-space: nowrap;
+}
+.tool-cta-form button:hover{
+  background: var(--teal);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px -10px rgba(31,78,91,0.45);
+}
+.tool-cta-form button:focus-visible{
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+.tool-cta-chips{
+  list-style: none;
+  padding: 0;
+  margin: 22px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+  font-size: 13px;
+  color: var(--stone);
+}
+.tool-cta-chips li{
+  padding: 5px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--cream);
+  font-weight: 500;
+}
+
+.tool-cta-visual{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+.tool-cta-ring{
+  position: relative;
+  width: clamp(200px, 28vw, 260px);
+  aspect-ratio: 1;
+}
+.tool-cta-ring svg{
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.tool-cta-ring svg .bg{ fill: none; stroke: var(--line-dark); stroke-width: 10; }
+.tool-cta-ring svg .fg{
+  fill: none;
+  stroke: var(--teal);
+  stroke-width: 10;
+  stroke-linecap: round;
+}
+.tool-cta-ring-text{
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center;
+}
+.tool-cta-ring-text .value{
+  font-family: var(--font-display);
+  font-size: clamp(48px, 7vw, 72px);
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1;
+}
+.tool-cta-ring-text .max{
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--stone);
+  margin-top: 6px;
+  letter-spacing: 0.02em;
+}
+.tool-cta-preview{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  width: 100%;
+  max-width: 360px;
+}
+.tool-cta-preview li{
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+.tool-cta-preview li:first-child{ border-top: 0; padding-top: 4px; }
+.tool-cta-preview strong{ color: var(--ink); font-weight: 600; }
+
+@media (max-width: 820px){
+  .tool-cta-inner{
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .tool-cta-visual{ order: -1; }
+  .tool-cta-preview{ max-width: 440px; margin: 0 auto; text-align: center; }
+}
+@media (max-width: 540px){
+  .tool-cta-form{
+    flex-direction: column;
+    border-radius: 20px;
+    padding: 8px;
+  }
+  .tool-cta-form input[type="url"],
+  .tool-cta-form input[type="text"]{ padding: 12px 16px; }
+  .tool-cta-form button{ border-radius: 14px; width: 100%; padding: 14px 24px; }
+  .tool-cta-chips{ font-size: 12px; }
 }

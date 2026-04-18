@@ -30,11 +30,32 @@
 # ------------------------------------------------------------
 # Static assets (CSS, JS)
 # ------------------------------------------------------------
-# 30-day browser cache. We don't fingerprint filenames, so the
-# tradeoff is: visitors pick up site.css updates within a month
-# without action; if you need an immediate refresh, either
-# purge Cloudflare cache in the dashboard or bump a ?v=N query
-# parameter on the <link> tag in the HTML.
+# CSS and JS get a SHORT browser cache (1 day) with a week-long
+# stale-while-revalidate window. Filenames aren't fingerprinted,
+# so a long cache silently breaks returning visitors any time we
+# rename a class, add a new rule, or fix a JS bug — they keep
+# getting old asset against new HTML until cache expires. The 1-
+# day TTL means at worst, a stale visitor sees the bug for a day
+# instead of a month; stale-while-revalidate keeps repeat-visit
+# loads instant by serving cached and refetching in the
+# background.
+#
+# Fonts stay on the long 30-day immutable cache below — woff2
+# filenames embed the version stamp (e.g. fraunces-v38-...) so a
+# stable filename is genuinely stable content.
+#
+# Manual override: bump a ?v=N query parameter on the <link>
+# tag in the HTML for an immediate flush, or purge the
+# Cloudflare edge cache from the dashboard.
+/assets/fonts/*
+  Cache-Control: public, max-age=2592000, immutable
+
+/assets/*.css
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/assets/*.js
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
 /assets/*
   Cache-Control: public, max-age=2592000
 
@@ -102,7 +123,10 @@
 # Content-Security-Policy rationale:
 #   default-src 'self'             — by default, only load from our origin
 #   script-src                     — self for /assets/site.js, plausible.io
-#                                    for analytics, 'unsafe-inline' because
+#                                    for analytics, cdn.jsdelivr.net for
+#                                    the lazy-loaded jsPDF library used by
+#                                    the restaurant-audit PDF-CTA flow
+#                                    (Sprint L3), 'unsafe-inline' because
 #                                    we still use inline JSON-LD blocks and
 #                                    the Plausible init shim
 #   style-src                      — self + fonts.googleapis.com (the four
@@ -134,4 +158,4 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://plausible.io https://www.googleapis.com; form-action 'self'; frame-ancestors 'none'; frame-src 'none'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://plausible.io https://www.googleapis.com; form-action 'self'; frame-ancestors 'none'; frame-src 'none'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests

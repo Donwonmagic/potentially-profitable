@@ -1674,10 +1674,11 @@
   })();
 
   /* ============ INTERACTIVE CHECKLIST ============
-   * Progressive-enhancement layer for the restaurant + wellness
-   * checklists. Both pages share this block; page-specific concerns
-   * (storage key, total, share text) come from data-* attributes on
-   * <body> and on individual items, so this file stays generic.
+   * Progressive-enhancement layer for the restaurant checklist page.
+   * Page-specific concerns (storage key, total, share text) come
+   * from data-* attributes on <body> and on individual items, so
+   * this file stays generic enough to host a second vertical later
+   * without further refactoring if we re-expand.
    *
    * Features, roughly in order of visibility to the user:
    *   1. Persistent checkbox state (localStorage, per page).
@@ -1730,11 +1731,10 @@
       requestAnimationFrame(() => pill.classList.add('is-visible'));
     }
 
-    /* Proportional bands — ratio-based so the same thresholds work
-     * on the 24-item restaurant checklist and the 20-item wellness
-     * one, AND continue to work when the subtype filter trims the
-     * denominator. Thresholds match the copy on the three
-     * "Score yourself" cards at the bottom of each page. */
+    /* Proportional bands — ratio-based so the same thresholds still
+     * work when the subtype filter trims the denominator. Thresholds
+     * match the copy on the three "Score yourself" cards at the
+     * bottom of the checklist page. */
     function scoreBandFor(done, total) {
       if (done === 0 || total === 0)   return { band: 'idle',     label: 'Not started' };
       if (done === total)              return { band: 'complete', label: 'All ' + total + ' — nice' };
@@ -1781,15 +1781,10 @@
       'cafe':         { noun: 'cafe',                 nounPlural: 'cafe & bakery',       naLabel: 'N/A for cafes' },
       'truck':        { noun: 'truck',                nounPlural: 'food truck & pop-up', naLabel: 'N/A for food trucks' },
     };
-    const WELLNESS_VOICE = {
-      'all':          { noun: 'wellness',             nounPlural: 'wellness',            naLabel: 'N/A for your kind' },
-      'studio':       { noun: 'studio',               nounPlural: 'yoga & fitness studio', naLabel: 'N/A for studios' },
-      'spa':          { noun: 'spa',                  nounPlural: 'spa',                 naLabel: 'N/A for spas' },
-      'salon':        { noun: 'salon',                nounPlural: 'salon & barber',      naLabel: 'N/A for salons' },
-      'medspa':       { noun: 'med-spa',              nounPlural: 'med-spa',             naLabel: 'N/A for med-spas' },
-      'gym':          { noun: 'gym',                  nounPlural: 'gym',                 naLabel: 'N/A for gyms' },
-    };
-    const VOICE_MAP = kind === 'wellness' ? WELLNESS_VOICE : RESTAURANT_VOICE;
+    // Wellness voice map retired alongside the wellness checklist.
+    // VOICE_MAP stays as a variable (rather than inlining RESTAURANT_VOICE
+    // everywhere) so a future vertical can plug back in with one line.
+    const VOICE_MAP = RESTAURANT_VOICE;
 
     function currentVoice() {
       return VOICE_MAP[activeSubtype] || VOICE_MAP.all;
