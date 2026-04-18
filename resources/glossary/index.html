@@ -716,9 +716,98 @@
           <section class="glossary-section" id="subtypes">
             <header class="glossary-section-head">
               <h2>Restaurant subtypes</h2>
-              <p>The audit tool tailors scoring and copy to ten segments (fine-dining through catering-only). Each subtype maps to schema.org types, platform hints, and a specific set of priority-check weights. These definitions explain what each segment covers and when it applies.</p>
+              <p>The audit tool tailors scoring and copy to ten segments. Each subtype maps to schema.org types, platform hints, and a specific set of priority-check weights — a pizzeria cares about direct-order commission in ways a fine-dining tasting-menu room doesn't, and vice versa. These definitions explain what each segment covers and when it applies.</p>
             </header>
-            <!-- Entries populated in Sprint M4. -->
+
+            <article class="glossary-term" id="subtype-fine-dining">
+              <h3>Fine-dining <a class="glossary-anchor" href="#subtype-fine-dining" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Tasting-menu or prix-fixe restaurants where the reservation is the conversion, the wine list is marketing, and OpenTable/Resy/Tock integration defines the booking funnel.</p>
+              <p class="glossary-long">The audit weighs <a href="#reservation-cta">reservations</a> at 2.0× for fine-dining and the <a href="#catering-page">private-dining</a> page at 1.5× — a single corporate holiday buyout pays for a slow week. Common platform fingerprints: Resy, Tock, SevenRooms, OpenTable. Keyword signals: "tasting menu," "prix fixe," "chef's counter," "sommelier," "degustation," "Michelin," "omakase."</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Schema: <code>Restaurant</code></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="subtype-casual-dining">
+              <h3>Casual / full-service <a class="glossary-anchor" href="#subtype-casual-dining" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Sit-down restaurants that live in both worlds — reservations for dinner rushes, online ordering for lunch takeout. Neighborhood spots, family-friendly rooms, full-service bistros.</p>
+              <p class="glossary-long">Missing either reservations or direct ordering sends revenue to OpenTable, DoorDash, or a competitor with both. The audit weighs <a href="#reservation-cta">conversions</a> at 1.5× and expects both flows. Common platforms: OpenTable, Yelp Reservations, Toast, Square. Keyword signals: "dining room," "full bar," "lunch and dinner," "signature dishes," "family-friendly," "neighborhood spot."</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Schema: <code>Restaurant</code>, <code>FoodEstablishment</code></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="subtype-fast-casual">
+              <h3>Fast-casual / quick-service <a class="glossary-anchor" href="#subtype-fast-casual" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Counter-service restaurants where online ordering IS the business model. Every order through DoorDash/Grubhub costs 20-30% commission; every order through your own Toast or ChowNow keeps the margin.</p>
+              <p class="glossary-long">The audit weighs <a href="#order-online-link">conversions</a> at 2.0× and <a href="#mobile-readable-menu">menu-format</a> at 1.5× — fast-casual menus ARE the conversion page; prices, item names, and the one-tap Order button need to live together. Platform fingerprints: Toast, ChowNow, Square, BentoBox, Popmenu, Slice, Menufy, Olo, Lunchbox. Keyword signals: "order online," "pickup," "curbside," "grab and go," "fast-casual," "counter service."</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Schema: <code>FastFoodRestaurant</code></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="subtype-cafe">
+              <h3>Café / coffee shop <a class="glossary-anchor" href="#subtype-cafe" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Coffee-led spots where morning traffic is 80% of revenue and the two most-read pieces of content are hours and location.</p>
+              <p class="glossary-long">The audit prioritizes <a href="#above-the-fold-hours">hours visibility</a>, a tappable phone, and a legible menu; reservations are irrelevant, heavy online-ordering flows are nice-to-have but secondary. Platform fingerprints: Square (dominant for café POS), Toast, ChowNow. Keyword signals: "espresso," "cappuccino," "pour-over," "coffee shop," "single-origin," "cold brew." Roasters and bakeries with strong coffee programs usually classify here too.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Schema: <code>CafeOrCoffeeShop</code></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="subtype-bakery">
+              <h3>Bakery / pâtisserie <a class="glossary-anchor" href="#subtype-bakery" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Bakeries, patisseries, and dessert shops where custom-cake intake and wholesale accounts are the margin engine beneath the walk-in counter.</p>
+              <p class="glossary-long">The audit weighs a wholesale / custom-orders flow at 2.0× for bakeries and treats <a href="#dietary-markers">allergen markers</a> as a trust-and-safety signal, not just a marketing one — a customer ordering a wedding cake for a nut-allergic child needs to trust the cross-contamination policy before they book. Platform fingerprints: Square, Toast. Keyword signals: "pastries," "croissants," "sourdough," "patisserie," "custom cake," "wedding cake."</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Schema: <code>Bakery</code>, <code>IceCreamShop</code></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="subtype-bar-pub">
+              <h3>Bar / pub / brewery <a class="glossary-anchor" href="#subtype-bar-pub" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Bars, pubs, taprooms, breweries, wine bars, cocktail rooms — drink-led spots where private-party events and happy-hour clarity drive conversion.</p>
+              <p class="glossary-long">The audit adds an age-gate check (weight 2.0× for bar-pub, 0 for every other subtype) and treats the <a href="#catering-page">private-events</a> page as revenue-critical. Cocktail and draft lists rotate constantly, so the <a href="#mobile-readable-menu">HTML menu</a> check runs heavier here too. Platform fingerprints: Tripleseat for events, OpenTable/Resy/SevenRooms for reservations. Keyword signals: "cocktails," "craft beer," "on tap," "happy hour," "gastropub," "taproom," "speakeasy," "brewery."</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Schema: <code>BarOrPub</code>, <code>Brewery</code>, <code>Winery</code>, <code>Distillery</code></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="subtype-pizzeria">
+              <h3>Pizzeria <a class="glossary-anchor" href="#subtype-pizzeria" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Pizza-first restaurants where ordering IS the business and every Slice/DoorDash/Grubhub pie costs 20-30% in commission.</p>
+              <p class="glossary-long">The audit weighs <a href="#order-online-link">conversions</a> at 2.0× and adds a delivery-radius check at 1.5×. A direct-order flow (Toast, ChowNow, Square, or Slice Direct) vs. routing everything through aggregators is the difference between ~78% and ~55% gross margin on a pie. Platform fingerprints: Slice is the strongest tell, then Toast, ChowNow, DoorDash, Grubhub. Keyword signals: "pizza," "neapolitan," "wood-fired," "coal-fired," "sicilian," "detroit-style," "calzone."</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Schema: <code>Restaurant</code>, <code>FastFoodRestaurant</code></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="subtype-food-truck">
+              <h3>Food truck / pop-up <a class="glossary-anchor" href="#subtype-food-truck" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Mobile kitchens and pop-ups where the primary content question is "where are you today?" — and static storefront maps are worse than no map at all.</p>
+              <p class="glossary-long">The audit weighs the food-truck schedule page at 2.0× for this subtype and downweights <a href="#directions-link">maps</a> because a pinned home address is the wrong answer — a dynamic "today's location" block, an Instagram feed, or a schedule calendar is what customers actually need. Reservations are irrelevant; catering inquiries are the margin-rich lead flow. Keyword signals: "food truck," "today's location," "this week's schedule," "pop-up," "catch us," "mobile kitchen."</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Schema: <code>Restaurant</code>, <code>FastFoodRestaurant</code></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="subtype-ghost-kitchen">
+              <h3>Ghost kitchen / delivery-only <a class="glossary-anchor" href="#subtype-ghost-kitchen" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Virtual brands and cloud kitchens that operate exclusively through aggregators — no dine-in, no pickup window, customers never visit.</p>
+              <p class="glossary-long">The audit weighs the "explicit delivery-only marker" check at 2.0× for this subtype; without a clear "virtual kitchen / no dine-in" banner, customers show up in person to an empty address and leave one-star reviews. Aggregator links (DoorDash, Uber Eats, Grubhub, Caviar, Deliveroo) are the primary conversion; static storefront maps aren't useful. Keyword signals: "ghost kitchen," "virtual kitchen," "delivery only," "cloud kitchen," "no dine-in."</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Schema: <code>Restaurant</code>, <code>FastFoodRestaurant</code></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="subtype-catering-only">
+              <h3>Catering-only / private events <a class="glossary-anchor" href="#subtype-catering-only" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Businesses that exist primarily to serve off-premise events — corporate catering, wedding catering, private-chef work, drop-off catering, pop-up dinners.</p>
+              <p class="glossary-long">The entire site IS the <a href="#catering-page">catering page</a>; the audit weighs that check at 2.5× for this subtype. Event planners comparing vendors search "catering [neighborhood]" and land directly on catering pages — packages, per-head pricing, minimum lead time, and a structured quote-request form are the critical surfaces. Platform fingerprints: ezCater, CaterTrax, Tripleseat. Keyword signals: "catering menu," "private events," "corporate catering," "wedding catering," "drop-off catering," "request a quote," "off-premise."</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Schema: <code>FoodEstablishment</code>, <code>Restaurant</code></span>
+              </div>
+            </article>
           </section>
 
         </div>
