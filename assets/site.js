@@ -1928,3 +1928,89 @@
       });
     });
   })();
+
+  /* ============ PHASE M6: Checklist Learn-more popover ============
+   * Wires the .learn-more-btn buttons on /resources/restaurant-
+   * website-checklist/ to the single shared <dialog id="checklistPopover">
+   * added in Sprint M5. Click a Learn-more button, the handler reads
+   * the button's data-popover-* attributes, populates the dialog's
+   * title / body / glossary link / optional audit link, and calls
+   * dialog.showModal(). Escape-to-close is native to <dialog>;
+   * click-outside (backdrop) is wired manually because the native
+   * backdrop swallows clicks silently by default. Focus returns to
+   * the originating button on close.
+   */
+  (function initChecklistPopover() {
+    const dialog = document.getElementById('checklistPopover');
+    if (!dialog || typeof dialog.showModal !== 'function') return; // SSR/feature-missing: no-op.
+
+    const titleEl    = document.getElementById('checklistPopoverTitle');
+    const bodyEl     = document.getElementById('checklistPopoverBody');
+    const glossaryEl = document.getElementById('checklistPopoverGlossary');
+    const auditEl    = document.getElementById('checklistPopoverAudit');
+    const closeBtn   = dialog.querySelector('.checklist-popover-close');
+    let lastOpener   = null;
+
+    function openPopover(btn) {
+      const title      = btn.getAttribute('data-popover-title')    || 'Learn more';
+      const body       = btn.getAttribute('data-popover-body')     || '';
+      const glossaryId = btn.getAttribute('data-popover-glossary') || '';
+      const auditTo    = btn.getAttribute('data-popover-audit')    || '';
+      if (titleEl) titleEl.textContent = title;
+      if (bodyEl)  bodyEl.textContent  = body;
+      if (glossaryEl) {
+        glossaryEl.href = glossaryId
+          ? '/resources/glossary/#' + glossaryId
+          : '/resources/glossary/';
+      }
+      if (auditEl) {
+        if (auditTo) {
+          auditEl.href   = auditTo === '1' ? '/tools/audits/restaurant/' : auditTo;
+          auditEl.hidden = false;
+        } else {
+          auditEl.hidden = true;
+        }
+      }
+      lastOpener = btn;
+      dialog.showModal();
+      if (window.plausible) window.plausible('Checklist Learn-more', { props: { id: btn.getAttribute('data-popover-glossary') || 'unknown' } });
+    }
+
+    function closePopover() {
+      if (dialog.open) dialog.close();
+    }
+
+    // Delegated handler — one listener on the document handles every
+    // checklist item's Learn-more button, including items added
+    // dynamically (e.g. future subtype filter).
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest && e.target.closest('.learn-more-btn');
+      if (!btn) return;
+      e.preventDefault();
+      openPopover(btn);
+    });
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        closePopover();
+      });
+    }
+
+    // Click-outside (on the backdrop) closes. We detect this by
+    // checking whether the click landed on the dialog element itself
+    // (the backdrop fires a click on the dialog node) rather than on
+    // its .checklist-popover-inner child.
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) closePopover();
+    });
+
+    // Return focus to the originating button on close, so keyboard
+    // users land back where they were.
+    dialog.addEventListener('close', () => {
+      if (lastOpener && typeof lastOpener.focus === 'function') {
+        lastOpener.focus();
+      }
+      lastOpener = null;
+    });
+  })();
