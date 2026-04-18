@@ -840,3 +840,103 @@ function finalizeRestaurantReadinessScore(state) {
     ? Math.round((state.weightedCredit / state.totalWeight) * 100)
     : 0;
 }
+
+// ---------------------------------------------------------------------------
+// Page-signal detectors — Phase G4/G5/G7
+// ---------------------------------------------------------------------------
+// Pure functions that scan raw HTML (homepage and/or follow-up crawl
+// pages) for review-platform widgets, Instagram handles, and social-
+// share meta tags. Each returns a structured finding that Phase H
+// priority checks will consume as a new check entry.
+//
+// All three functions are INPUT-ONLY: they never fetch anything, so
+// they're safe to call any number of times on any body of HTML.
+
+// G4: review-widget detection. Recognizes script / iframe / anchor
+// fingerprints from the major review platforms a restaurant owner
+// might embed. Returns an array of { platform, badge:boolean, link:boolean }
+// so the caller can differentiate 'TripAdvisor badge embedded'
+// from 'link to TripAdvisor profile only'.
+var REVIEW_WIDGET_PATTERNS = [
+  { platform: 'Yelp',          hosts: ['yelp.com/biz',          'yelp.com/widgets',  'yelp-cdn'] },
+  { platform: 'TripAdvisor',   hosts: ['tripadvisor.com',       'jscdn.tripadvisor', 'tacdn.com'] },
+  { platform: 'Google Reviews',hosts: ['google.com/maps/place', 'g.co/kgs',          'goo.gl/maps', 'reviews.google'] },
+  { platform: 'OpenTable',     hosts: ['opentable.com/widget',  'opentable.com/r'] },
+  { platform: 'Resy',          hosts: ['resy.com/cities',       'widgets.resy'] },
+  { platform: 'Facebook',      hosts: ['facebook.com/plugins',  'connect.facebook.net'] },
+  { platform: 'Instagram',     hosts: ['instagram.com/embed',   'cdn.embedded.instagram'] }
+];
+
+function detectReviewWidgets(html) {
+  var out = [];
+  if (!html || typeof html !== 'string') return out;
+  var haystack = html.toLowerCase();
+  REVIEW_WIDGET_PATTERNS.forEach(function(def){
+    var found = false;
+    for (var i = 0; i < def.hosts.length; i++) {
+      if (haystack.indexOf(def.hosts[i]) >= 0) { found = true; break; }
+    }
+    if (found) out.push({ platform: def.platform, present: true });
+  });
+  return out;
+}
+
+// G5: Instagram handle detection. Captures @handles and
+// instagram.com/handle hrefs. Filters out obvious non-profiles
+// ('instagram.com/p/…' for individual posts, '/embed' widgets,
+// '/explore', '/reel'). Dedupes across the page.
+function detectInstagramHandle(html) {
+  if (!html || typeof html !== 'string') return { present: false, handles: [] };
+  var handles = Object.create(null);
+
+  // 1) href="https://instagram.com/handle" or www.instagram.com/handle
+  var hrefRe = /https?:\/\/(?:www\.)?instagram\.com\/([A-Za-z0-9_.]{2,30})(?:\/)?(?=["'?#\s/])/gi;
+  var m;
+  while ((m = hrefRe.exec(html)) !== null) {
+    var h = m[1].toLowerCase();
+    if (h === 'p' || h === 'embed' || h === 'explore' || h === 'reel' || h === 'reels' || h === 'tv') continue;
+    handles[h] = true;
+  }
+  // 2) @handle patterns in visible copy, e.g. "Follow us @thebestspot"
+  //    Guard against email addresses (prefix must be whitespace or '>').
+  var atRe = /(?:^|[\s>(])@([A-Za-z0-9_.]{3,30})\b/g;
+  while ((m = atRe.exec(html)) !== null) {
+    var h2 = m[1].toLowerCase();
+    // Skip obvious non-IG tokens (email fragments, code)
+    if (/^\d+$/.test(h2)) continue;
+    handles[h2] = true;
+  }
+  var list = Object.keys(handles).sort();
+  return { present: list.length > 0, handles: list };
+}
+
+// G7: Open-Graph + Twitter-Card meta presence. Restaurants share links
+// constantly (Instagram story, Messenger, texts, Slack) — every shared
+// link without og:image renders as a grey-box preview, which kills the
+// click-through that restaurant marketing actually runs on.
+function checkOgShareMeta(html) {
+  if (!html || typeof html !== 'string') return {
+    ogTitle: false, ogDescription: false, ogImage: false,
+    twitterCard: false, twitterImage: false, score: 0
+  };
+  function hasMeta(propValue, contentCheck) {
+    var re = new RegExp('<meta[^>]*(?:property|name)\\s*=\\s*["\']' + propValue + '["\'][^>]*content\\s*=\\s*["\']([^"\']*)["\']', 'i');
+    var re2 = new RegExp('<meta[^>]*content\\s*=\\s*["\']([^"\']*)["\'][^>]*(?:property|name)\\s*=\\s*["\']' + propValue + '["\']', 'i');
+    var m = html.match(re) || html.match(re2);
+    if (!m) return false;
+    var val = (m[1] || '').trim();
+    return contentCheck ? contentCheck(val) : val.length > 0;
+  }
+  var nonEmpty = function(v){ return v.length > 0; };
+  var out = {
+    ogTitle:       hasMeta('og:title', nonEmpty),
+    ogDescription: hasMeta('og:description', nonEmpty),
+    ogImage:       hasMeta('og:image', function(v){ return /^https?:\/\//i.test(v); }),
+    twitterCard:   hasMeta('twitter:card', nonEmpty),
+    twitterImage:  hasMeta('twitter:image', function(v){ return /^https?:\/\//i.test(v); })
+  };
+  // Score 0-5, for quick comparison against a subtype benchmark.
+  out.score = (out.ogTitle?1:0) + (out.ogDescription?1:0) + (out.ogImage?1:0) +
+              (out.twitterCard?1:0) + (out.twitterImage?1:0);
+  return out;
+}
