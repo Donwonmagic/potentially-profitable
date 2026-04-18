@@ -1771,6 +1771,93 @@
   }
 
   /* -------------------------------------------------------------
+     Phase J1: Deep-report email gate
+     -------------------------------------------------------------
+     Warm, CTA-style card. Lives between the Quick tier and the
+     hidden #reportDeep wrapper. Cream background with teal
+     accent matches the executive-summary visual weight so the
+     gate feels like a natural continuation of the report, not
+     an intrusive paywall. */
+  .deep-gate {
+    margin: 24px 0 0;
+    padding: 28px 28px;
+    background: var(--cream-2, #faf6ee);
+    border: 1px solid var(--line, #E6DFCE);
+    border-left: 4px solid var(--teal, #1F4E5B);
+    border-radius: 14px;
+  }
+  .deep-gate[hidden] { display: none; }
+  .deep-gate-head { margin-bottom: 14px; }
+  .deep-gate-label {
+    font-family: var(--font-display, var(--font-body));
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .deep-gate-sub {
+    font-size: 14px;
+    color: var(--stone);
+    line-height: 1.55;
+    margin: 0;
+  }
+  .deep-gate-form {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    align-items: end;
+  }
+  .deep-gate-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .deep-gate-field span {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--stone);
+  }
+  .deep-gate-field input[type="email"] {
+    font: inherit;
+    font-size: 15px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--line-dark);
+    background: #fff;
+    color: var(--ink);
+  }
+  .deep-gate-field input[type="email"]:focus {
+    outline: 2px solid var(--teal, #1F4E5B);
+    outline-offset: -1px;
+  }
+  .deep-gate-submit {
+    font: inherit;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-radius: 10px;
+    background: var(--ink, #14161A);
+    color: #fff;
+    border: 1px solid var(--ink, #14161A);
+    cursor: pointer;
+    transition: background 180ms ease;
+  }
+  .deep-gate-submit:hover    { background: var(--teal, #1F4E5B); }
+  .deep-gate-submit:disabled { background: var(--stone-2, #9e9a89); border-color: var(--stone-2); cursor: not-allowed; }
+  .deep-gate-toast {
+    grid-column: 1 / -1;
+    margin: 0;
+    font-size: 13px;
+    color: var(--teal, #1F4E5B);
+  }
+  .deep-gate-toast.is-error { color: var(--rust, #B8541A); }
+  @media (max-width: 640px) {
+    .deep-gate { padding: 20px; }
+    .deep-gate-form { grid-template-columns: 1fr; }
+  }
+
+  /* -------------------------------------------------------------
      Phase I6: Print-friendly layout
      -------------------------------------------------------------
      Optimizes browser "Print" / "Save as PDF" for a restaurant
@@ -4426,6 +4513,48 @@
     el.hidden = false;
   }
 
+  // Phase J1: show/hide the #deepGate vs #reportDeep split based
+  // on whether this browser has already unlocked, or the URL
+  // includes a ?deep=1 bypass (used for owner self-audits and
+  // for the printable permalink from Phase J6).
+  function applyDeepGateState(auditedUrl) {
+    var gate     = document.getElementById('deepGate');
+    var wrapper  = document.getElementById('reportDeep');
+    if (!gate || !wrapper) return;
+    var urlParams = new URLSearchParams(location.search || '');
+    var bypass = urlParams.get('deep') === '1';
+    var unlocked = false;
+    try { unlocked = !!localStorage.getItem('muntin.deepReport.unlocked'); }
+    catch (e) { /* localStorage blocked — treat as locked */ }
+    if (bypass || unlocked) {
+      gate.hidden    = true;
+      wrapper.hidden = false;
+      return;
+    }
+    // Pre-populate the hidden fields on the gate form so the
+    // server-side handler has everything it needs when the
+    // visitor drops their email.
+    var urlField      = document.getElementById('deepGateUrl');
+    var subtypeField  = document.getElementById('deepGateSubtype');
+    var scoreField    = document.getElementById('deepGateScore');
+    var linkField     = document.getElementById('deepGateShareLink');
+    if (urlField)     urlField.value     = auditedUrl || '';
+    if (subtypeField) subtypeField.value = effectiveBusinessType() || '';
+    if (scoreField) {
+      var last = window.__auditLastResult;
+      scoreField.value = (last && typeof last.overall === 'number')
+        ? String(Math.round(last.overall)) : '';
+    }
+    if (linkField) {
+      var params = new URLSearchParams();
+      if (auditedUrl) params.set('url', auditedUrl);
+      if (userBusinessType) params.set('bt', userBusinessType);
+      linkField.value = location.origin + location.pathname + '?' + params.toString();
+    }
+    gate.hidden    = false;
+    wrapper.hidden = true;
+  }
+
   // Phase I7: Canvas-rendered 1200×630 share card. Draws the
   // overall score (big ring + number), subtype chip, audited
   // URL, top-3 fixes as a numbered list, and Muntin brand mark.
@@ -5351,6 +5480,11 @@
     // offer a PNG of nothing when the page first loads).
     var scBtn = document.getElementById('shareCardBtn');
     if (scBtn) scBtn.hidden = false;
+
+    // Phase J1: show the deep-gate on the Quick tier UNLESS the
+    // owner has already unlocked once (localStorage flag) or
+    // the URL carries ?deep=1 (explicit self-audit bypass).
+    applyDeepGateState(auditedUrl);
 
     showOnly(reportEl);
     // Scroll the report into view
