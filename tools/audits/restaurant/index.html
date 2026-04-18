@@ -6494,69 +6494,144 @@
     document.body.removeChild(ta);
   }
 
-  /* -------- Email-the-report form handler -------- */
+  /* -------- Phase L3c: shared PDF-CTA submit handler --------
+   * Both the top pill-form (#pdfCtaTopForm, Sprint L2) and the
+   * bottom email-report card (#emailReportForm, pre-existing)
+   * POST to /api/audit-report with the SAME payload shape and
+   * an attached jsPDF-built custom audit PDF. Keeping one
+   * handler means the PDF attachment logic, the progress copy,
+   * and the success/error plumbing all stay in lockstep.
+   */
+  function submitPdfCtaForm(form, opts) {
+    opts = opts || {};
+    var btn   = form.querySelector('button[type="submit"]');
+    var toast = opts.toastEl || null;
+    var emailInput = form.querySelector('input[type="email"]');
+    var email = (emailInput && emailInput.value || '').trim();
+
+    function showToast(text, kind) {
+      if (!toast) return;
+      toast.textContent = text;
+      toast.classList.remove('is-error', 'is-success');
+      if (kind === 'error')   toast.classList.add('is-error');
+      if (kind === 'success') toast.classList.add('is-success');
+    }
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showToast('Enter a valid email address.', 'error');
+      if (opts.errorEl) {
+        opts.errorEl.hidden = false;
+        opts.errorEl.textContent = 'Enter a valid email address.';
+      }
+      if (emailInput) emailInput.focus();
+      return;
+    }
+    if (opts.errorEl) { opts.errorEl.hidden = true; opts.errorEl.textContent = ''; }
+    if (btn) { btn.disabled = true; btn.dataset.origHtml = btn.innerHTML; btn.textContent = 'Building your PDF…'; }
+    showToast('Building your PDF…');
+
+    // Pre-fill the hidden-field trio on whichever form submitted;
+    // the top CTA only has stubs, the bottom CTA populates most of
+    // these during render but the three below (subtype, overall,
+    // shareable_link) are always refreshed from current state.
+    var last = window.__auditLastResult;
+    var bt = effectiveBusinessType() || '';
+    function setFieldIfPresent(name, value) {
+      var f = form.querySelector('input[name="' + name + '"]');
+      if (f) f.value = value;
+    }
+    setFieldIfPresent('audited_url',    (last && last.url) || '');
+    setFieldIfPresent('subtype',        bt);
+    setFieldIfPresent('overall_score',  (last && typeof last.overall === 'number') ? String(Math.round(last.overall)) : '');
+    setFieldIfPresent('restaurant_readiness', (last && typeof last.restaurant === 'number') ? String(Math.round(last.restaurant)) : '');
+
+    // Build PDF first, then POST. We await the PDF even if it's slow
+    // because the attachment IS the deliverable — no point sending
+    // an email about a PDF without the PDF. buildAuditPdf resolves
+    // to null on failure; in that case we still send the email (just
+    // without the attachment) so the lead isn't lost.
+    buildAuditPdf()
+      .catch(function(){ return null; })
+      .then(function(pdf){
+        if (btn) btn.textContent = 'Sending…';
+        showToast('Sending…');
+        var payload = {};
+        new FormData(form).forEach(function(v, k){ payload[k] = v; });
+        if (pdf && pdf.base64) {
+          payload.pdf_b64      = pdf.base64;
+          payload.pdf_filename = pdf.filename;
+        }
+        return fetch(form.action, {
+          method: 'POST',
+          body: JSON.stringify(payload),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept':       'application/json'
+          }
+        });
+      })
+      .then(function(res){
+        if (!res) throw new Error('PDF build failed');
+        return res.json().then(function(body){
+          if (res.ok && body && body.ok) {
+            if (btn) { btn.disabled = true; btn.textContent = 'Sent — check your inbox'; }
+            showToast('Sent — check your inbox for the PDF.', 'success');
+            if (opts.successEl) {
+              opts.successEl.hidden = false;
+              if (opts.hideFormOnSuccess !== false) form.hidden = true;
+            }
+            if (window.plausible) window.plausible('Audit PDF Emailed', { props: { source: (opts.sourceTag || 'unknown') } });
+            return;
+          }
+          var err = new Error((body && body.error) || 'Request failed with HTTP ' + res.status);
+          err.body = body;
+          throw err;
+        }, function(){
+          throw new Error('Request failed with HTTP ' + res.status + ' (non-JSON response)');
+        });
+      })
+      .catch(function(err){
+        console.error('[pdf-cta]', err);
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = btn.dataset.origHtml || btn.textContent.replace(/^(Sending…|Building your PDF…).*/, 'Try again');
+        }
+        var fallback = "We couldn't send the PDF just now. Email don@muntin.digital directly and I'll send it over manually.";
+        showToast(fallback, 'error');
+        if (opts.errorEl) {
+          opts.errorEl.hidden = false;
+          opts.errorEl.textContent = fallback + (err && err.message ? ' (' + err.message + ')' : '');
+        }
+        if (window.plausible) window.plausible('Audit PDF Email Failed', { props: { source: (opts.sourceTag || 'unknown') } });
+      });
+  }
+
+  /* Top pill-style CTA (Phase L2 markup) */
+  var pdfTopForm = document.getElementById('pdfCtaTopForm');
+  if (pdfTopForm) {
+    pdfTopForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      submitPdfCtaForm(pdfTopForm, {
+        toastEl: document.getElementById('pdfCtaTopToast'),
+        sourceTag: 'top-cta',
+        hideFormOnSuccess: false
+      });
+    });
+  }
+
+  /* Bottom full email-the-report card */
   var emailForm    = document.getElementById('emailReportForm');
   var emailSuccess = document.getElementById('emailReportSuccess');
   var emailError   = document.getElementById('emailReportError');
   if (emailForm) {
     emailForm.addEventListener('submit', function(e){
       e.preventDefault();
-      var btn = emailForm.querySelector('button[type="submit"]');
-      if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
-      if (emailError) { emailError.hidden = true; emailError.textContent = ''; }
-
-      // Build a plain JSON payload. The Worker at /api/audit-report
-      // accepts either urlencoded, multipart, or JSON; JSON keeps the
-      // Sprint 6c payload fields (failing_checks, unverified_checks,
-      // user_corrections, shareable_link, etc.) as discrete strings
-      // instead of URL-encoding them into one giant blob.
-      var payload = {};
-      new FormData(emailForm).forEach(function(value, key){ payload[key] = value; });
-
-      fetch(emailForm.action, {
-        method: 'POST',
-        body: JSON.stringify(payload),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      })
-        .then(function(res){
-          // Worker responds with a structured { ok, status | error }
-          // payload. Check res.ok AND body.ok because a 2xx with
-          // ok:false would be a misconfiguration we still want to
-          // surface to the user.
-          return res.json().then(function(body){
-            if (res.ok && body && body.ok) {
-              emailForm.hidden = true;
-              if (emailSuccess) emailSuccess.hidden = false;
-              if (window.plausible) window.plausible('Audit Report Emailed');
-              return;
-            }
-            var msg = (body && body.error)
-              ? body.error
-              : 'Request failed with HTTP ' + res.status;
-            var err = new Error(msg);
-            err.status = res.status;
-            err.body = body;
-            throw err;
-          }, function(){
-            var err = new Error('Request failed with HTTP ' + res.status + ' (non-JSON response)');
-            err.status = res.status;
-            throw err;
-          });
-        })
-        .catch(function(err){
-          console.error('[audit email]', err);
-          if (btn) { btn.disabled = false; btn.textContent = 'Email me the report →'; }
-          if (emailError) {
-            emailError.hidden = false;
-            emailError.textContent = "We couldn't send the report just now. " +
-              (err && err.message ? "(" + err.message + ") " : "") +
-              "Email don@muntin.digital directly and I'll send it over manually.";
-          }
-          if (window.plausible) window.plausible('Audit Report Email Failed');
-        });
+      submitPdfCtaForm(emailForm, {
+        successEl: emailSuccess,
+        errorEl:   emailError,
+        sourceTag: 'bottom-cta',
+        hideFormOnSuccess: true
+      });
     });
   }
 
