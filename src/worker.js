@@ -200,18 +200,38 @@ async function handleIntake(request, env, ctx) {
     return jsonResponse({ ok: true, status: 'sent' }, 200);
   }
 
+  // Locale comes from a hidden <input name="locale"> on the form.
+  // The Spanish /es/ pages stamp "es"; English pages omit the field
+  // and default to "en". Used here to surface validation errors in
+  // the same language the user is reading. Anything else is treated
+  // as English for safety.
+  const locale = (String(body.locale || '').trim().toLowerCase() === 'es') ? 'es' : 'en';
+  const err = (en, es) => (locale === 'es' ? es : en);
+
   // Required fields: name, email, services, goals. Business,
   // website, budget, and referral are optional per the form HTML.
   const required = requireFields(body, ['name', 'email', 'services', 'goals']);
   if (!required.ok) {
-    return jsonResponse({ ok: false, error: required.error }, 400);
+    // The validation helpers embed the missing field name in English;
+    // we localize the wrapper ("Missing required field") and keep the
+    // field name untouched so the developer can trace form-field
+    // mismatches without a Spanish dictionary.
+    const fieldName = required.error.replace(/^Missing required field:\s*/i, '');
+    const message = err(required.error, 'Falta un campo obligatorio: ' + fieldName);
+    return jsonResponse({ ok: false, error: message }, 400);
   }
   if (!isValidEmail(body.email)) {
-    return jsonResponse({ ok: false, error: 'Please enter a valid email address' }, 400);
+    return jsonResponse({ ok: false, error: err('Please enter a valid email address', 'Ingresa un correo electrónico válido') }, 400);
   }
   const lengths = enforceMaxLengths(body);
   if (!lengths.ok) {
-    return jsonResponse({ ok: false, error: lengths.error }, 400);
+    // enforceMaxLengths embeds a field name + limit. Preserve the
+    // structural details, just localize the framing.
+    const m = lengths.error.match(/^Field '(.+?)' is longer than the (\d+)-character limit$/);
+    const message = (locale === 'es' && m)
+      ? 'El campo «' + m[1] + '» supera el límite de ' + m[2] + ' caracteres.'
+      : lengths.error;
+    return jsonResponse({ ok: false, error: message }, 400);
   }
 
   const notificationTmpl = intakeNotification(body);

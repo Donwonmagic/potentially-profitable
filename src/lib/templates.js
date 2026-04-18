@@ -14,6 +14,30 @@
 // they're the first actual contact with the studio.
 
 import { escapeHtml, prettyUrl } from './validation.js';
+import * as ES from './templates.es.js';
+
+
+// ------------------------------------------------------------
+// Locale dispatch
+// ------------------------------------------------------------
+//
+// Each template below is a thin dispatcher: if the form body
+// carries a recognized non-default locale AND the Spanish
+// module exports a function with the same name, we route to
+// it; otherwise we fall through to the English implementation.
+//
+// This keeps the /api/* worker handlers locale-unaware — they
+// just pass the parsed form body to the template functions,
+// which read body.locale themselves. Adding a third locale is
+// a matter of (1) shipping a templates.<code>.js module with
+// the subset of functions you want translated, and (2) adding
+// the code to SUPPORTED_LOCALES below.
+const SUPPORTED_LOCALES = new Set(['en', 'es']);
+
+export function pickLocale(body) {
+  const raw = String((body && body.locale) || 'en').trim().toLowerCase();
+  return SUPPORTED_LOCALES.has(raw) ? raw : 'en';
+}
 
 
 // ------------------------------------------------------------
@@ -65,6 +89,10 @@ const TXT_DIV = '\n\n--------------------------------\n\n';
 // expectation for the reply window without feeling automated.
 
 export function intakeNotification(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.intakeNotification === 'function') {
+    return ES.intakeNotification(body);
+  }
   const name     = String(body.name || '—').trim();
   const email    = String(body.email || '—').trim();
   const business = String(body.business || '').trim();
@@ -112,6 +140,10 @@ export function intakeNotification(body) {
 }
 
 export function intakeAutoResponder(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.intakeAutoResponder === 'function') {
+    return ES.intakeAutoResponder(body);
+  }
   const firstName = String(body.name || '').trim().split(/\s+/)[0] || 'there';
   const subject = 'Got your note — reply within 24 hours';
 
