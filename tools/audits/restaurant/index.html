@@ -3930,6 +3930,115 @@
     wrap.hidden = false;
   }
 
+  // Phase I1: render the executive-summary narrative above the
+  // opportunities drill-down. Takes the four Lighthouse pillar
+  // scores, the restaurant-readiness rollup, and the priority-
+  // check tally; produces a 2-3 sentence interpretation calibrated
+  // to the owner's subtype so the copy speaks the right dialect
+  // (tasting menu for fine-dining, delivery commission for
+  // pizzerias, etc.).
+  function renderExecutiveSummary(overall, categoryScores, priorityResult) {
+    var el   = document.getElementById('execSummary');
+    var body = document.getElementById('execSummaryBody');
+    if (!el || !body) return;
+    if (typeof overall !== 'number' || isNaN(overall)) {
+      el.hidden = true;
+      return;
+    }
+
+    var subtypeId = effectiveBusinessType() || 'restaurant';
+    var subtype = BUSINESS_TYPE_DEFS[subtypeId] || { label: 'restaurant' };
+    // Pull a lowercase friendly noun from the label ("Fine-dining
+    // restaurant" → "fine-dining restaurant"). Falls back to
+    // "restaurant" for the generic subtype.
+    var noun = (subtype.label || 'restaurant').toLowerCase();
+    if (noun.indexOf('restaurant') === -1 && noun.indexOf('bakery') === -1 &&
+        noun.indexOf('cafe') === -1 && noun.indexOf('café') === -1 &&
+        noun.indexOf('pub') === -1 && noun.indexOf('truck') === -1 &&
+        noun.indexOf('kitchen') === -1 && noun.indexOf('catering') === -1 &&
+        noun.indexOf('pizzeria') === -1) {
+      noun += ' restaurant';
+    }
+
+    // Find the weakest Lighthouse pillar so we can name it
+    // specifically in the mid-score verdict. categoryScores is
+    // { perf, a11y, bp, seo, restaurant } with 0-100 integers.
+    var pillars = [
+      { key: 'perf',       label: 'mobile speed',                score: categoryScores.perf },
+      { key: 'a11y',       label: 'accessibility',               score: categoryScores.a11y },
+      { key: 'bp',         label: 'best-practices / security',   score: categoryScores.bp  },
+      { key: 'seo',        label: 'SEO + local findability',     score: categoryScores.seo },
+      { key: 'restaurant', label: 'restaurant-specific readiness', score: categoryScores.restaurant }
+    ].filter(function(p){ return typeof p.score === 'number' && !isNaN(p.score); })
+     .sort(function(a, b){ return a.score - b.score; });
+    var weakest = pillars[0];
+
+    // Subtype-aware action hint — points at the single biggest
+    // lever for each subtype so the summary ends with something
+    // concrete the owner can act on today.
+    var subtypeHint = executiveSubtypeHint(subtypeId);
+
+    var intro;
+    if (overall >= 90) {
+      intro = 'Your ' + noun + ' is in strong shape — scoring ' + overall + ' overall. Small polish items remain; ' + subtypeHint;
+    } else if (overall >= 70) {
+      intro = 'Your ' + noun + ' scores ' + overall + ' — solid footing with room to tighten up.';
+      if (weakest) {
+        intro += ' Your weakest pillar is ' + weakest.label + ' (' + weakest.score + '/100); ';
+      } else {
+        intro += ' ';
+      }
+      intro += subtypeHint;
+    } else if (overall >= 50) {
+      intro = 'Your ' + noun + ' scores ' + overall + ' — the site works but is leaking conversions';
+      if (weakest) intro += ', particularly on ' + weakest.label;
+      intro += '. The fixes below are mechanical and ship in days, not months. ' + subtypeHint;
+    } else {
+      intro = 'Your ' + noun + ' scores ' + overall + ' — this is a site actively costing you customers. Start with mobile viewport and the conversions row, then everything else compounds. ' + subtypeHint;
+    }
+
+    // Unverified-count honesty: if more than a third of checks
+    // couldn't be confirmed, surface that so the owner knows the
+    // headline number has margin.
+    if (priorityResult && priorityResult.totalCount &&
+        priorityResult.unverifiedCount / priorityResult.totalCount > 0.33) {
+      intro += ' A third of the restaurant-specific checks couldn\'t be fully verified on this run — answering the "is this right?" questions below will sharpen the number.';
+    }
+
+    body.textContent = intro;
+    el.hidden = false;
+  }
+
+  // Subtype-flavored one-liner used at the end of every summary
+  // variant. Designed to name the single highest-leverage move
+  // for each subtype so the narrative ends on an actionable note.
+  function executiveSubtypeHint(subtypeId) {
+    switch (subtypeId) {
+      case 'fine-dining':
+        return 'For fine-dining, the biggest lever is keeping reservations on your own site instead of routing through OpenTable.';
+      case 'casual-dining':
+        return 'For casual dining, the biggest lever is owning both reservations and takeout ordering rather than paying aggregator commission.';
+      case 'fast-casual':
+        return 'For fast-casual, the biggest lever is direct online ordering — every order on Toast or ChowNow keeps the 20-30% DoorDash commission.';
+      case 'cafe':
+        return 'For cafes, the biggest lever is hours clarity plus a one-tap phone and map — that\'s 80% of what your morning traffic actually reads.';
+      case 'bakery':
+        return 'For bakeries, the biggest lever is a dedicated custom-order / wedding-cake intake form — that\'s where margin-rich orders come from.';
+      case 'bar-pub':
+        return 'For bars and pubs, the biggest lever is an events / private-parties booking flow — Tripleseat or a simple inquiry form captures the high-ticket bookings.';
+      case 'pizzeria':
+        return 'For pizzerias, the biggest lever is a direct-order flow on your own site — Slice and DoorDash take 20-30% per pie, and owning the customer is worth more than the commission saved.';
+      case 'food-truck':
+        return 'For food trucks, the biggest lever is a visible schedule / today\'s-location page — that\'s the primary job of a food-truck site.';
+      case 'ghost-kitchen':
+        return 'For ghost kitchens, the biggest lever is clear aggregator links plus an explicit delivery-only marker so dine-in visitors don\'t show up to a closed storefront.';
+      case 'catering-only':
+        return 'For catering-only businesses, the biggest lever is a structured quote-request form — ezCater, CaterTrax, Tripleseat, or a custom RFQ captures the $2K+ bookings that email threads lose.';
+      default:
+        return 'Work the priority checks below in order — each is calibrated to impact for your segment.';
+    }
+  }
+
   // Phase E6: render the 'Also scanned:' chip row from the
   // /api/page-crawl bundle on window.__auditCrawl. Hidden when the
   // crawl returned no follow-up pages (homepage-only audit, global
@@ -4467,6 +4576,15 @@
     var displayUrl = auditedUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
     document.getElementById('auditedUrl').textContent = displayUrl;
     document.getElementById('verdictCopy').textContent = verdictFor(overall);
+
+    // Phase I1: render the narrative executive-summary block
+    // below the category cards. Feeds in all the pillar scores
+    // plus the restaurant-specific rollup so the copy can name
+    // the weakest pillar specifically.
+    renderExecutiveSummary(overall, {
+      perf: perf, a11y: a11y, bp: bp, seo: seo,
+      restaurant: readinessInRollup ? restaurantScore : null
+    }, priorityResult);
 
     setScoreRing(overall);
     setCategory('performance',   perf);
