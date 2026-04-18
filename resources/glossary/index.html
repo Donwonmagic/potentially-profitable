@@ -1,0 +1,884 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Restaurant Website Glossary — Plain-English Definitions | Muntin Digital</title>
+<meta name="description" content="A plain-English glossary for restaurant website terms — from viewport meta tags to JSON-LD schema, page speed, tap targets, WCAG contrast, Google Business Profile, and every concept the Muntin audit tool and checklist reference. Every term has a direct anchor so you can deep-link to one definition at a time." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/resources/glossary/" />
+
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Restaurant Website Glossary — Plain-English Definitions" />
+<meta property="og:description" content="Plain-English definitions for every restaurant-website concept referenced by the Muntin audit tool and checklist. Deep-linkable per-term anchors." />
+<meta property="og:url" content="https://muntin.digital/resources/glossary/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/checklist.svg" />
+<meta property="og:image:type" content="image/svg+xml" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Restaurant Website Glossary — Plain-English Definitions" />
+<meta name="twitter:description" content="Plain-English definitions for every restaurant-website concept referenced by the Muntin audit tool and checklist." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/checklist.svg" />
+
+<!-- Favicons -->
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/brand/favicons/favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "DefinedTermSet",
+      "@id": "https://muntin.digital/resources/glossary/#termset",
+      "name": "Restaurant Website Glossary",
+      "description": "Plain-English definitions of every restaurant-website concept referenced by the Muntin Digital audit tool and checklist.",
+      "inDefinedTermSet": "https://muntin.digital/resources/glossary/"
+    },
+    {
+      "@type": "Article",
+      "@id": "https://muntin.digital/resources/glossary/#article",
+      "headline": "Restaurant Website Glossary",
+      "description": "Plain-English definitions for every restaurant-website term the Muntin audit tool and checklist use.",
+      "author": {
+        "@type": "Person",
+        "name": "Don Goldstein",
+        "worksFor": { "@id": "https://muntin.digital/#business" }
+      },
+      "publisher": { "@id": "https://muntin.digital/#business" },
+      "datePublished": "2026-04-18",
+      "dateModified": "2026-04-18",
+      "image": "https://muntin.digital/brand/og/checklist.svg",
+      "mainEntityOfPage": "https://muntin.digital/resources/glossary/"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
+        { "@type": "ListItem", "position": 2, "name": "Resources", "item": "https://muntin.digital/resources/" },
+        { "@type": "ListItem", "position": 3, "name": "Glossary", "item": "https://muntin.digital/resources/glossary/" }
+      ]
+    }
+  ]
+}
+</script>
+
+<!-- Self-hosted fonts; same pattern as every other page. -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+
+<style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
+<link rel="stylesheet" href="/assets/site.css">
+
+<style>
+  /* ============================================================
+     Glossary page styles
+     ============================================================
+     Structure:
+       .glossary-toc       sticky table of contents (desktop only)
+       .glossary-section   one category heading + many terms
+       .glossary-term      one <article> per definition; the <h3> is
+                           the deep-link anchor (id="term-slug") that
+                           the checklist popovers link into
+
+     Visual family matches the checklist page (cream-2 body cards,
+     teal accent, 14px rounding) so readers moving between the two
+     don't feel a jarring shift. Print layout is enabled at the end
+     so a developer handed the URL can print it straight to PDF. */
+
+  .glossary-wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 48px;
+    align-items: start;
+  }
+  @media (min-width: 960px) {
+    .glossary-wrap {
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 64px;
+    }
+  }
+
+  .glossary-toc {
+    position: sticky;
+    top: 96px;
+    align-self: start;
+    font-size: 14px;
+  }
+  .glossary-toc h2 {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin: 0 0 14px;
+  }
+  .glossary-toc ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .glossary-toc a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px dashed transparent;
+    transition: border-color 160ms ease, color 160ms ease;
+  }
+  .glossary-toc a:hover,
+  .glossary-toc a:focus-visible {
+    color: var(--teal);
+    border-bottom-color: var(--teal);
+    outline: none;
+  }
+  @media (max-width: 959px) {
+    .glossary-toc {
+      position: static;
+      padding: 20px;
+      background: var(--cream-2);
+      border-radius: 14px;
+      border-left: 4px solid var(--teal);
+    }
+  }
+
+  .glossary-section + .glossary-section { margin-top: 56px; }
+  .glossary-section-head {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 14px;
+    margin-bottom: 28px;
+  }
+  .glossary-section-head h2 {
+    font-family: var(--font-display);
+    font-size: clamp(26px, 3vw, 36px);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .glossary-section-head p {
+    margin: 8px 0 0;
+    font-size: 14.5px;
+    color: var(--stone);
+    line-height: 1.55;
+    max-width: 62ch;
+  }
+
+  .glossary-term {
+    padding: 22px 24px;
+    margin: 0 0 16px;
+    background: var(--cream-2);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--teal);
+    border-radius: 14px;
+    scroll-margin-top: 96px; /* anchor offset so the heading isn't hidden behind the nav */
+  }
+  .glossary-term:target {
+    border-color: var(--teal);
+    box-shadow: 0 14px 36px -18px rgba(31,78,91,0.35);
+  }
+  .glossary-term h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 0 0 10px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .glossary-term h3 .aka {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--stone);
+    letter-spacing: 0;
+  }
+  .glossary-term .glossary-short {
+    margin: 0 0 12px;
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  .glossary-term .glossary-long {
+    margin: 0 0 12px;
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+  }
+  .glossary-term ul {
+    margin: 0 0 12px;
+    padding-left: 20px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  .glossary-term code,
+  .glossary-term pre {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 13px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 1px 6px;
+  }
+  .glossary-term pre {
+    display: block;
+    padding: 10px 12px;
+    margin: 10px 0;
+    overflow-x: auto;
+    line-height: 1.5;
+  }
+  .glossary-term .glossary-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 12px 0 0;
+    font-size: 12px;
+    color: var(--stone);
+  }
+  .glossary-term .glossary-meta-chip {
+    padding: 3px 10px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--stone);
+    font-weight: 500;
+  }
+  .glossary-term .glossary-meta-chip a {
+    color: var(--teal);
+    text-decoration: none;
+    border-bottom: 1px dashed currentColor;
+  }
+
+  /* Permalink icon revealed on hover — lets readers grab a direct
+     link to any term for citing/sharing a single definition. */
+  .glossary-term h3 a.glossary-anchor {
+    opacity: 0;
+    text-decoration: none;
+    color: var(--stone);
+    font-weight: 400;
+    font-size: 14px;
+    transition: opacity 160ms ease, color 160ms ease;
+  }
+  .glossary-term:hover h3 a.glossary-anchor,
+  .glossary-term h3 a.glossary-anchor:focus-visible {
+    opacity: 1;
+    color: var(--teal);
+  }
+
+  @media print {
+    .nav, .site-footer, footer, .breadcrumb, .glossary-toc, .glossary-anchor, .skip-link { display: none !important; }
+    .glossary-term {
+      break-inside: avoid;
+      page-break-inside: avoid;
+      background: #fff !important;
+      border-left-color: #1F4E5B !important;
+      box-shadow: none !important;
+    }
+    .glossary-section + .glossary-section { margin-top: 32px; }
+    body, html { background: #fff !important; color: #000 !important; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/for/restaurants/">Restaurants</a>
+      <a href="/work/">Work</a>
+      <a href="/blog/">Blog</a>
+      <a href="/about/">About</a>
+    </nav>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/services/">Services</a>
+    <a href="/for/restaurants/">Restaurants</a>
+    <a href="/work/">Work</a>
+    <a href="/blog/">Blog</a>
+    <a href="/about/">About</a>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a>
+  </nav>
+</header>
+
+<nav class="breadcrumb container" aria-label="Breadcrumb">
+  <a href="/">Home</a>
+  <span class="breadcrumb-sep" aria-hidden="true">›</span>
+  <a href="/resources/restaurant-website-checklist/">Resources</a>
+  <span class="breadcrumb-sep" aria-hidden="true">›</span>
+  <span aria-current="page">Glossary</span>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="checklist-hero">
+      <span class="badge">Reference</span>
+      <h1>
+        Restaurant website glossary.<br>
+        <span class="serif-italic">Plain-English definitions, every term we reference.</span>
+      </h1>
+      <p class="hero-sub">
+        Every concept the Muntin audit tool and the 30-point restaurant checklist lean on has a definition here. Every entry has a stable anchor, so the checklist's "Learn more" pop-overs deep-link straight into the one you need.
+      </p>
+    </div>
+  </div>
+</section>
+
+<main id="main">
+  <section class="block">
+    <div class="container">
+      <div class="glossary-wrap">
+        <aside class="glossary-toc" aria-label="Glossary table of contents">
+          <h2>Sections</h2>
+          <ol>
+            <li><a href="#basics">Basics</a></li>
+            <li><a href="#mobile">Mobile experience</a></li>
+            <li><a href="#conversions">Conversions</a></li>
+            <li><a href="#findability">Findability</a></li>
+            <li><a href="#trust">Trust</a></li>
+            <li><a href="#subtypes">Restaurant subtypes</a></li>
+          </ol>
+        </aside>
+
+        <div class="glossary-body">
+
+          <!-- ============ BASICS ============ -->
+          <section class="glossary-section" id="basics">
+            <header class="glossary-section-head">
+              <h2>Basics</h2>
+              <p>The five things a first-time visitor looks for before anything else: what you are, where you are, when you're open, and how to reach you.</p>
+            </header>
+
+            <article class="glossary-term" id="mobile-readable-menu">
+              <h3>Mobile-readable menu <a class="glossary-anchor" href="#mobile-readable-menu" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">A menu page that renders as real HTML text on a phone — not a PDF, not a JPEG, not a Squarespace image gallery pretending to be a menu.</p>
+              <p class="glossary-long">PDFs open in a separate tab, download to the visitor's camera roll, and do not zoom gracefully. Image menus can't be read by screen readers, can't be searched, and blur when pinch-zoomed. Real HTML menus are indexable by Google, legible on every screen size, and updatable without a designer. For tasting-menu formats where print aesthetics matter, ship BOTH — an HTML page for the site and a separate PDF for guests to download if they want.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Related: <a href="#wcag-contrast">WCAG contrast</a></span>
+                <span class="glossary-meta-chip">Related: <a href="#body-font-size">body font-size</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="above-the-fold-hours">
+              <h3>Above-the-fold hours <a class="glossary-anchor" href="#above-the-fold-hours" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Today's open/close times visible without scrolling when the homepage first loads.</p>
+              <p class="glossary-long">"Are they open right now?" is the single most common question a restaurant site has to answer, and answering it in four seconds is the difference between a walk-in and a Google Maps redirect to a competitor. Hours belong in the hero, in a persistent header, or in a live "Open · until 10" chip. "See our full hours →" on a link is not a substitute; most visitors won't click.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Related: <a href="#nap-consistency">NAP consistency</a></span>
+                <span class="glossary-meta-chip">Related: <a href="#google-business-profile">Google Business Profile</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="copyable-address">
+              <h3>Copyable address <a class="glossary-anchor" href="#copyable-address" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">An address that is selectable, copyable page text — not a baked-in image of an address.</p>
+              <p class="glossary-long">If a visitor can't long-press the address on their phone and hit Copy, they can't paste it into Google Maps, an Uber, or a text to a friend. Images look tidy in a designer's mockup and break every one of those flows. Wrap the real text in a Google Maps link (<code>https://maps.google.com/?q=…</code>) so a tap also launches directions.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Related: <a href="#directions-link">directions link</a></span>
+                <span class="glossary-meta-chip">Related: <a href="#nap-consistency">NAP consistency</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="tel-link">
+              <h3><code>tel:</code> link <span class="aka">· tap-to-call</span> <a class="glossary-anchor" href="#tel-link" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">A phone number wrapped in an HTML anchor with the <code>tel:</code> URI scheme so a phone tap launches the dialer.</p>
+              <p class="glossary-long">The anchor form is <code>&lt;a href="tel:+12125551212"&gt;(212) 555-1212&lt;/a&gt;</code>. Use the full international format (<code>+1</code>-prefixed) so the same markup works for visitors roaming abroad. A plain-text phone number forces visitors to memorize or copy-paste, losing ~15% of takeout orders and reservation calls at the margins.</p>
+              <pre>&lt;a href="tel:+12125551212"&gt;(212) 555-1212&lt;/a&gt;</pre>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Related: <a href="#nap-consistency">NAP consistency</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="cuisine-pitch">
+              <h3>Cuisine pitch <a class="glossary-anchor" href="#cuisine-pitch" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">One sentence under the restaurant name that tells a first-time visitor what you serve, who you serve, and why they should care.</p>
+              <p class="glossary-long">A first-time visitor should be able to classify your restaurant by cuisine, vibe, and neighborhood in about four seconds. "Wood-fired Neapolitan pizza and natural wine in Silver Spring" does that job. "Welcome to our restaurant" does not. The pitch lives as a subhead beneath the restaurant name in the hero, and re-appears in your <code>&lt;title&gt;</code> tag and <code>og:description</code> meta so the same sentence does the same job in search results and social previews.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Related: <a href="#title-tag">title tag</a></span>
+                <span class="glossary-meta-chip">Related: <a href="#json-ld-schema">JSON-LD schema</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="nap-consistency">
+              <h3>NAP consistency <span class="aka">· Name, Address, Phone</span> <a class="glossary-anchor" href="#nap-consistency" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Your name, address, and phone number reading identically across your website, Google Business Profile, Yelp, and every directory that links to you.</p>
+              <p class="glossary-long">Google uses NAP matching as a local-search signal; Yelp and Apple Maps use it for directory confidence. When "Joe's Pizza" on the site reads "Joes Pizza" on GBP and "Joe's Pizzeria" on Yelp, aggregators treat them as three different businesses and rank none of them well. The fix: pick one canonical spelling, update every listing, and publish the canonical values in <a href="#json-ld-schema">JSON-LD schema</a> so every crawler reads them from one source of truth.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Related: <a href="#google-business-profile">Google Business Profile</a></span>
+                <span class="glossary-meta-chip">Related: <a href="#json-ld-schema">JSON-LD schema</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="dietary-markers">
+              <h3>Dietary markers <span class="aka">· allergen callouts</span> <a class="glossary-anchor" href="#dietary-markers" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Per-dish labels — <code>V</code> for vegan, <code>GF</code> for gluten-free, <code>DF</code> for dairy-free, plus halal, kosher, and nut-free callouts — that let dietary-restricted visitors self-qualify the menu.</p>
+              <p class="glossary-long">About 1 in 3 diners avoids at least one food group. When menu items carry visible symbols or a legend, those diners can book with confidence; without them they call to ask, or (more often) choose a competitor whose menu said so plainly. For bakeries, custom-order intake forms should carry an explicit dietary-restriction field because cross-contamination is a food-safety question, not a marketing one.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: Dietary markers</span>
+              </div>
+            </article>
+          </section>
+
+          <!-- ============ MOBILE EXPERIENCE ============ -->
+          <section class="glossary-section" id="mobile">
+            <header class="glossary-section-head">
+              <h2>Mobile experience</h2>
+              <p>~70% of restaurant traffic is on a phone. These are the technical rules a site has to follow to be usable in one hand, in a moving elevator, with the sun on the screen.</p>
+            </header>
+
+            <article class="glossary-term" id="viewport-meta-tag">
+              <h3>Viewport meta tag <a class="glossary-anchor" href="#viewport-meta-tag" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">A one-line <code>&lt;meta&gt;</code> tag in the HTML <code>&lt;head&gt;</code> that tells mobile browsers to render the page at phone width instead of zoomed-out desktop width.</p>
+              <p class="glossary-long">Without it, every mobile browser renders a page at ~980px and scales it down to fit the screen — everything looks tiny, nothing is tappable, and visitors bounce instantly. It is the single most catastrophic missing tag a restaurant site can ship, and the cheapest fix.</p>
+              <pre>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</pre>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: viewport</span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="page-speed">
+              <h3>Page speed <span class="aka">· Core Web Vitals</span> <a class="glossary-anchor" href="#page-speed" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">How fast your homepage becomes usable on a phone on a normal mobile connection — measured by Google's Core Web Vitals (LCP, INP, CLS).</p>
+              <p class="glossary-long">Google's own research: 53% of mobile visitors abandon a page that takes longer than three seconds to load. The three headline metrics:</p>
+              <ul>
+                <li><strong>LCP (Largest Contentful Paint)</strong> — how quickly the biggest above-the-fold element paints. Under 2.5s is good, over 4s is poor.</li>
+                <li><strong>INP (Interaction to Next Paint)</strong> — how quickly the page responds to a tap. Under 200ms is good, over 500ms is poor.</li>
+                <li><strong>CLS (Cumulative Layout Shift)</strong> — how much the page visibly shifts as it loads. Under 0.1 is good, over 0.25 is poor.</li>
+              </ul>
+              <p class="glossary-long">The audit runs a real Lighthouse scan and reports the actual field numbers rather than a vague score.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: performance</span>
+                <span class="glossary-meta-chip">Tool: <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener">pagespeed.web.dev ↗</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="tap-targets">
+              <h3>Tap targets <span class="aka">· 44&times;44 pixel minimum</span> <a class="glossary-anchor" href="#tap-targets" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Any button, link, or form control that a phone visitor might tap needs to be at least 44&times;44 CSS pixels so a thumb can hit it on the first try.</p>
+              <p class="glossary-long">44px is Apple's published human-interface minimum; Google recommends 48px. Smaller targets produce fat-finger misses, and on a restaurant site the most-tapped buttons are usually "Reserve," "Order Online," and the phone number — precisely the surfaces where a miss costs revenue. Pad links generously and give action buttons their own row; don't cram them into dense nav.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: tap-targets</span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="body-font-size">
+              <h3>Body font-size <span class="aka">· 16px minimum</span> <a class="glossary-anchor" href="#body-font-size" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Body copy needs to render at 16px or larger on phones. Anything smaller forces iOS Safari to zoom on input focus and generally reads as tiny.</p>
+              <p class="glossary-long">16px is the baseline. For a restaurant site specifically, menu descriptions and wine lists deserve 17-18px because those paragraphs are the ones convincing a guest to book — they shouldn't require a squint. Use relative units (<code>1rem</code>, <code>1em</code>) in CSS, not fixed px, so the site respects the visitor's browser settings when they've bumped it up for readability.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: font-size</span>
+                <span class="glossary-meta-chip">Related: <a href="#wcag-contrast">WCAG contrast</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="wcag-contrast">
+              <h3>WCAG contrast <span class="aka">· WCAG 2.1 AA</span> <a class="glossary-anchor" href="#wcag-contrast" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">The color contrast standard that makes text readable outdoors, for older eyes, and for visitors with color-vision differences. Body text needs at least a 4.5:1 contrast ratio against its background; large headings can go down to 3:1.</p>
+              <p class="glossary-long">Low-contrast menu text is the #1 design aesthetic that kills conversion on restaurant sites. Thin grey serif on cream looks refined on a designer's laptop and disappears in direct sunlight. Roughly 1 in 4 adults over 40 has some form of age-related vision change; that's the exact demographic that dines out most. Aim for 4.5:1 body text, 3:1 headings, and test outdoors in bright sun before shipping.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: color-contrast</span>
+                <span class="glossary-meta-chip">Tool: <a href="https://webaim.org/resources/contrastchecker/" target="_blank" rel="noopener">WebAIM contrast checker ↗</a></span>
+              </div>
+            </article>
+          </section>
+
+          <!-- ============ CONVERSIONS ============ -->
+          <section class="glossary-section" id="conversions">
+            <header class="glossary-section-head">
+              <h2>Conversions</h2>
+              <p>The site's job is to turn a curious visitor into a reservation, an order, or directions to your door. These entries cover the surfaces that actually do that.</p>
+            </header>
+
+            <article class="glossary-term" id="reservation-cta">
+              <h3>Reservation CTA <a class="glossary-anchor" href="#reservation-cta" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">A "Reserve a table" action visible on every page — in the main nav, in a sticky mobile footer, or both — that launches your reservations flow in one tap.</p>
+              <p class="glossary-long">Fine-dining and casual sites lose reservations when the CTA is only on the homepage. A visitor reading the menu on an inside page still needs a one-tap path to book. Link directly to Resy, Tock, SevenRooms, OpenTable, or an embedded widget — skip interstitials. For subtypes where reservations aren't primary (fast-casual, pizzeria, food-truck), keep the nav space for "Order Online" instead.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: conversions</span>
+                <span class="glossary-meta-chip">Related: <a href="#order-online-link">order online link</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="order-online-link">
+              <h3>Direct-order link <span class="aka">· "Order Online" button</span> <a class="glossary-anchor" href="#order-online-link" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">A homepage button that jumps straight to YOUR checkout on Toast, Square, ChowNow, BentoBox, or your POS — not to an aggregator, and not to an interstitial "choose how to order" page.</p>
+              <p class="glossary-long">Every order placed through DoorDash, Grubhub, or Uber Eats takes 20-30% in commission. Every order placed through your own Toast or ChowNow checkout keeps the full margin AND gives you the customer email. For pizzerias specifically the audit treats this as the #1 revenue lever — a direct-order flow vs. routing every pie through Slice is the difference between a ~78% margin and ~55%.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: conversions</span>
+                <span class="glossary-meta-chip">Related subtypes: <a href="#subtype-fast-casual">fast-casual</a>, <a href="#subtype-pizzeria">pizzeria</a>, <a href="#subtype-ghost-kitchen">ghost-kitchen</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="directions-link">
+              <h3>Directions link <a class="glossary-anchor" href="#directions-link" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">A tappable address or "Directions" button that launches Google Maps or Apple Maps with your restaurant pre-filled as the destination.</p>
+              <p class="glossary-long">Plain-text addresses make the visitor copy, switch apps, and paste — three extra steps that cost you first-time visitors, especially on dim side streets. A <code>https://maps.google.com/?q=…</code> link works on every platform; on iOS it opens Apple Maps by default, on Android it opens Google Maps. Bonus: on a desktop browser it opens web Maps, so the same markup serves both surfaces.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: platform/maps</span>
+                <span class="glossary-meta-chip">Related: <a href="#copyable-address">copyable address</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="food-photography">
+              <h3>Food photography <span class="aka">· real photos, not stock</span> <a class="glossary-anchor" href="#food-photography" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Genuine photos of your room, your food, and your people — shot in the actual space, ideally by a professional.</p>
+              <p class="glossary-long">Stock photography reads as dishonest from the first glance. Grainy phone pics read as amateur. The fix is usually a single two-hour shoot with a local food-and-interior photographer once a year — maybe $800-1500 and you have the entire season's marketing assets. For bakeries the custom-cake gallery carries real weight; for bars, the room at golden hour converts more than the cocktail close-up; for food trucks, candid service shots beat styled plate shots.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: photo-coverage</span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="gift-card-checkout">
+              <h3>Gift-card checkout <a class="glossary-anchor" href="#gift-card-checkout" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">A visible purchase flow for physical or e-gift cards, usually powered by your POS (Toast, Square) or a drop-in provider (Yiftee, GiftUp).</p>
+              <p class="glossary-long">Gift cards are the highest-margin line on a restaurant site. Roughly 20-30% of cards go unredeemed — pure revenue — and every redeemed one brings in the recipient plus whatever they spend above the face value. For bars and fine-dining sites especially, a well-surfaced "Gift cards" link in the nav pays for itself every November-December. Square and Toast make this a no-dev-work checkbox once you're on their POS.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: gift-cards</span>
+                <span class="glossary-meta-chip">Related subtypes: <a href="#subtype-fine-dining">fine-dining</a>, <a href="#subtype-bar-pub">bar/pub</a>, <a href="#subtype-bakery">bakery</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="newsletter-capture">
+              <h3>Newsletter capture <span class="aka">· email signup</span> <a class="glossary-anchor" href="#newsletter-capture" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">An email-input form that adds visitors to your owned marketing list — typically via Mailchimp, Klaviyo, ConvertKit, or Constant Contact.</p>
+              <p class="glossary-long">Your email list is the only marketing channel you own outright. Instagram's algorithm can bury you, Google's rules can change, aggregators can raise commissions — but a list of guests who said "yes" still delivers. Restaurants with a newsletter capture typically see 3-5× higher repeat-visit rates from subscribers vs. non-subscribers. The form should be inline on the homepage AND footer, NOT a modal popup (they're annoying and convert worse than inline placements).</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: email-capture</span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="catering-page">
+              <h3>Catering / private-events page <a class="glossary-anchor" href="#catering-page" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">A dedicated landing page for corporate catering, weddings, private dining, and buyouts — with packages, minimums, lead time, and a quote-request form.</p>
+              <p class="glossary-long">Event planners comparing three caterers on a Tuesday afternoon do not read homepages — they search "catering [neighborhood]" and land directly on catering pages. Without one, you rank for nothing and convert nothing; with one, a single holiday-party booking can pay for the catering-menu shoot. For fine-dining restaurants the private-dining room is the margin engine of a slow week. For bars, private-party bookings via Tripleseat are high-ticket, repeat business.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: catering-page</span>
+                <span class="glossary-meta-chip">Related subtypes: <a href="#subtype-catering-only">catering-only</a>, <a href="#subtype-fine-dining">fine-dining</a>, <a href="#subtype-bar-pub">bar/pub</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="social-proof">
+              <h3>Social proof <span class="aka">· press, awards, reviews</span> <a class="glossary-anchor" href="#social-proof" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Visible credibility signals — a review quote, a press mention, a Michelin star, a James Beard nomination, a chef bio — placed above the fold rather than buried on a testimonials page.</p>
+              <p class="glossary-long">A first-time visitor is trying to answer "is this place any good?" in about four seconds. A single quoted line from Eater or the NYT does that job faster than any carousel. Restaurants with hero-fold social proof convert skeptical visitors at measurably higher rates. For fine-dining sites, a chef bio block (with a real photo) is itself social proof — it says "there is a human accountable to what comes out of this kitchen."</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: social-proof</span>
+              </div>
+            </article>
+          </section>
+
+          <!-- ============ FINDABILITY ============ -->
+          <section class="glossary-section" id="findability">
+            <header class="glossary-section-head">
+              <h2>Findability</h2>
+              <p>Most restaurant discovery happens in Google Maps and "restaurants near me" searches. These entries cover the structured signals Google reads from your site to render rich listings and rank you locally.</p>
+            </header>
+
+            <article class="glossary-term" id="google-business-profile">
+              <h3>Google Business Profile <span class="aka">· GBP, formerly Google My Business</span> <a class="glossary-anchor" href="#google-business-profile" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Your free Google listing that shows up in Google Maps, in the "restaurants near me" panel, and in the sidebar of branded search results.</p>
+              <p class="glossary-long">Roughly 60% of restaurant discovery happens inside Google Maps, not on the open web. A claimed, verified, fully-filled Google Business Profile — correct hours, current photos, accurate category, menu link, reservation link — often drives more traffic than the website itself. Claim yours at <code>google.com/business</code>. Consistency with the website's NAP matters; Google uses matching to validate the listing and rank it locally.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: GBP lookup</span>
+                <span class="glossary-meta-chip">Related: <a href="#nap-consistency">NAP consistency</a>, <a href="#hours-accuracy">hours accuracy</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="title-tag">
+              <h3>Title tag <a class="glossary-anchor" href="#title-tag" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">The HTML <code>&lt;title&gt;</code> element that shows up as the headline of your Google search result and the label on every browser tab.</p>
+              <p class="glossary-long">Rewrite it to include restaurant name, cuisine, and city, under 60 characters so Google doesn't truncate it. A great title tag reads as a human sentence, not keyword soup: "Joe's Pizza — Neapolitan Pizza in Silver Spring" beats "Pizza | Italian | Restaurant | Silver Spring MD." Write one unique title per page; boilerplate "Restaurant Name - Home" everywhere tells Google there's no unique content to index.</p>
+              <pre>&lt;title&gt;Joe's Pizza — Neapolitan Pizza in Silver Spring&lt;/title&gt;</pre>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: SEO</span>
+                <span class="glossary-meta-chip">Related: <a href="#cuisine-pitch">cuisine pitch</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="json-ld-schema">
+              <h3>JSON-LD schema <span class="aka">· structured data, Restaurant schema</span> <a class="glossary-anchor" href="#json-ld-schema" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">A hidden <code>&lt;script type="application/ld+json"&gt;</code> block in the page that declares your business to Google in a structured, machine-readable format. For restaurants the key types are <code>Restaurant</code>, <code>FoodEstablishment</code>, <code>Bakery</code>, <code>CafeOrCoffeeShop</code>, and <code>BarOrPub</code>.</p>
+              <p class="glossary-long">Sites with proper Restaurant schema earn rich results — the expanded listing with hours, price range, photos, and menu snippets that sits above plain blue links. Sites without it get the plain blue link. The difference in click-through rate is meaningful. The fields Google actually uses: <code>name</code>, <code>address</code>, <code>telephone</code>, <code>openingHoursSpecification</code> (all seven days), <code>servesCuisine</code>, <code>priceRange</code>, <code>acceptsReservations</code>, <code>hasMenu</code>. Validate with Google's <a href="https://search.google.com/test/rich-results" target="_blank" rel="noopener">Rich Results Test ↗</a>.</p>
+              <pre>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "Joe's Pizza",
+  "address": { "@type": "PostalAddress", ... },
+  "servesCuisine": "Neapolitan Pizza",
+  "priceRange": "$$"
+}
+&lt;/script&gt;</pre>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: schema</span>
+                <span class="glossary-meta-chip">Related: <a href="#nap-consistency">NAP consistency</a>, <a href="#hours-accuracy">hours accuracy</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="alt-text">
+              <h3>Alt text <span class="aka">· image alt attribute</span> <a class="glossary-anchor" href="#alt-text" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">A short text description of an image written in the HTML <code>alt=""</code> attribute. Screen readers read it aloud; Google Images indexes it; browsers show it when an image fails to load.</p>
+              <p class="glossary-long">For restaurant sites alt text does double duty: it's an accessibility requirement AND a meaningful Google Images ranking signal. Replace filenames like <code>IMG_2041.jpg</code> with real sentences: "Cast-iron rockfish with heirloom tomatoes at Joe's, Silver Spring." Name the dish, the technique, and where appropriate the restaurant and city. Purely decorative images (background flourishes, dividers) should use <code>alt=""</code> — the empty attribute tells screen readers to skip them.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: photo-coverage</span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="sitemap-xml">
+              <h3>Sitemap.xml <span class="aka">· XML sitemap</span> <a class="glossary-anchor" href="#sitemap-xml" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">A list of every URL on your site that Google should crawl, served at <code>/sitemap.xml</code> and registered in Google Search Console.</p>
+              <p class="glossary-long">Google will eventually find most pages on its own, but a sitemap accelerates indexing for new pages (a just-launched catering page, a blog post, a seasonal menu) and reminds Google of pages it might otherwise skip. Generate one at build time, upload to the site root, verify your domain in <a href="https://search.google.com/search-console" target="_blank" rel="noopener">Google Search Console ↗</a>, and submit the sitemap URL inside Search Console.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: SEO</span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="hours-accuracy">
+              <h3>Hours accuracy <span class="aka">· site vs GBP vs schema</span> <a class="glossary-anchor" href="#hours-accuracy" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Whether the hours on your site, in your Google Business Profile, and in your <code>openingHoursSpecification</code> schema all say the same thing.</p>
+              <p class="glossary-long">Drift happens constantly: you update GBP after Daylight Saving, but your site still says the old hours; you publish a holiday-hours banner in one place but not the other. Google trusts GBP first, so a mismatched site can trigger a "hours may vary" hint in search results — which tanks click-through. For Google Rich Results, schema's <code>openingHoursSpecification</code> needs an entry for every day of the week (including explicitly-closed days) or Google falls back to the hedged fallback. The audit tool cross-checks all three sources and flags mismatches.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: hours-accuracy</span>
+                <span class="glossary-meta-chip">Related: <a href="#google-business-profile">GBP</a>, <a href="#json-ld-schema">JSON-LD schema</a></span>
+              </div>
+            </article>
+          </section>
+
+          <!-- ============ TRUST ============ -->
+          <section class="glossary-section" id="trust">
+            <header class="glossary-section-head">
+              <h2>Trust</h2>
+              <p>The small signals that tell a visitor your site is current, secure, and run by humans who read their inbox. Absent these, a site can be technically perfect and still feel off.</p>
+            </header>
+
+            <article class="glossary-term" id="https">
+              <h3>HTTPS <span class="aka">· SSL / TLS</span> <a class="glossary-anchor" href="#https" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Encrypted HTTP. Modern browsers flag plain-HTTP sites as "Not secure" in the address bar, which instantly destroys trust.</p>
+              <p class="glossary-long">HTTPS is non-negotiable in 2026 — it's a Google ranking signal, a prerequisite for modern browser features (geolocation, service workers, the Web Share API), and a user-trust baseline. Free certificates via Let's Encrypt (managed by your host) or Cloudflare (automatic when you proxy through them) mean there's zero cost reason not to. If your host doesn't offer free HTTPS, change hosts.</p>
+            </article>
+
+            <article class="glossary-term" id="transparent-pricing">
+              <h3>Transparent menu pricing <a class="glossary-anchor" href="#transparent-pricing" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Every dish on the menu shows its price, or (for tasting-menu formats) the total prix-fixe cost is stated prominently.</p>
+              <p class="glossary-long">Hidden prices ("Market price" for every entrée, "Ask your server" across the board) lose first-time diners before they ever book. The exception is legitimate market-price fluctuation (whole fish, seasonal specialties) where listing a range like "$38-52 market" beats "MP." For tasting menus state the total and what it covers — diners comparing "$165 / seven courses" to a $285 counterpart are making a useful decision. Opaque pricing just makes them bounce.</p>
+            </article>
+
+            <article class="glossary-term" id="freshness-signal">
+              <h3>Freshness signal <span class="aka">· last-updated / seasonal content</span> <a class="glossary-anchor" href="#freshness-signal" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Any visible indicator that the site is actively maintained — a "Spring menu" badge, a "this week" specials block, a dated blog post, a footer last-updated line.</p>
+              <p class="glossary-long">Stale sites read as closed. A visitor who lands on your homepage in May and sees a "Happy New Year" hero from January assumes you shuttered in between. Cheapest fix: a dated specials block in the hero that staff can update weekly. Next cheapest: a "menu updated [date]" line near the menu link. For seasonal restaurants, a "Summer menu — through September" hero banner simultaneously answers "are you open?" and signals current operation.</p>
+            </article>
+
+            <article class="glossary-term" id="working-contact-form">
+              <h3>Working contact form <a class="glossary-anchor" href="#working-contact-form" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">A contact or inquiry form that actually delivers submissions to an inbox someone reads daily, tested end-to-end at least monthly.</p>
+              <p class="glossary-long">Broken forms are common and costly: a visitor fills in a catering inquiry, hits Submit, gets a confirmation page, and the message vanishes into a misconfigured webhook. Test your own form with a real message at least once a month; include a field (like "How did you hear about us?") whose answer will be obvious when you receive it. For high-value forms (catering, private events, press inquiries) consider a fallback <code>mailto:</code> link for visitors whose company firewalls block form submissions.</p>
+            </article>
+          </section>
+
+          <!-- ============ SUBTYPES ============ -->
+          <section class="glossary-section" id="subtypes">
+            <header class="glossary-section-head">
+              <h2>Restaurant subtypes</h2>
+              <p>The audit tool tailors scoring and copy to ten segments. Each subtype maps to schema.org types, platform hints, and a specific set of priority-check weights — a pizzeria cares about direct-order commission in ways a fine-dining tasting-menu room doesn't, and vice versa. These definitions explain what each segment covers and when it applies.</p>
+            </header>
+
+            <article class="glossary-term" id="subtype-fine-dining">
+              <h3>Fine-dining <a class="glossary-anchor" href="#subtype-fine-dining" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Tasting-menu or prix-fixe restaurants where the reservation is the conversion, the wine list is marketing, and OpenTable/Resy/Tock integration defines the booking funnel.</p>
+              <p class="glossary-long">The audit weighs <a href="#reservation-cta">reservations</a> at 2.0× for fine-dining and the <a href="#catering-page">private-dining</a> page at 1.5× — a single corporate holiday buyout pays for a slow week. Common platform fingerprints: Resy, Tock, SevenRooms, OpenTable. Keyword signals: "tasting menu," "prix fixe," "chef's counter," "sommelier," "degustation," "Michelin," "omakase."</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Schema: <code>Restaurant</code></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="subtype-casual-dining">
+              <h3>Casual / full-service <a class="glossary-anchor" href="#subtype-casual-dining" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Sit-down restaurants that live in both worlds — reservations for dinner rushes, online ordering for lunch takeout. Neighborhood spots, family-friendly rooms, full-service bistros.</p>
+              <p class="glossary-long">Missing either reservations or direct ordering sends revenue to OpenTable, DoorDash, or a competitor with both. The audit weighs <a href="#reservation-cta">conversions</a> at 1.5× and expects both flows. Common platforms: OpenTable, Yelp Reservations, Toast, Square. Keyword signals: "dining room," "full bar," "lunch and dinner," "signature dishes," "family-friendly," "neighborhood spot."</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Schema: <code>Restaurant</code>, <code>FoodEstablishment</code></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="subtype-fast-casual">
+              <h3>Fast-casual / quick-service <a class="glossary-anchor" href="#subtype-fast-casual" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Counter-service restaurants where online ordering IS the business model. Every order through DoorDash/Grubhub costs 20-30% commission; every order through your own Toast or ChowNow keeps the margin.</p>
+              <p class="glossary-long">The audit weighs <a href="#order-online-link">conversions</a> at 2.0× and <a href="#mobile-readable-menu">menu-format</a> at 1.5× — fast-casual menus ARE the conversion page; prices, item names, and the one-tap Order button need to live together. Platform fingerprints: Toast, ChowNow, Square, BentoBox, Popmenu, Slice, Menufy, Olo, Lunchbox. Keyword signals: "order online," "pickup," "curbside," "grab and go," "fast-casual," "counter service."</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Schema: <code>FastFoodRestaurant</code></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="subtype-cafe">
+              <h3>Café / coffee shop <a class="glossary-anchor" href="#subtype-cafe" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Coffee-led spots where morning traffic is 80% of revenue and the two most-read pieces of content are hours and location.</p>
+              <p class="glossary-long">The audit prioritizes <a href="#above-the-fold-hours">hours visibility</a>, a tappable phone, and a legible menu; reservations are irrelevant, heavy online-ordering flows are nice-to-have but secondary. Platform fingerprints: Square (dominant for café POS), Toast, ChowNow. Keyword signals: "espresso," "cappuccino," "pour-over," "coffee shop," "single-origin," "cold brew." Roasters and bakeries with strong coffee programs usually classify here too.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Schema: <code>CafeOrCoffeeShop</code></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="subtype-bakery">
+              <h3>Bakery / pâtisserie <a class="glossary-anchor" href="#subtype-bakery" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Bakeries, patisseries, and dessert shops where custom-cake intake and wholesale accounts are the margin engine beneath the walk-in counter.</p>
+              <p class="glossary-long">The audit weighs a wholesale / custom-orders flow at 2.0× for bakeries and treats <a href="#dietary-markers">allergen markers</a> as a trust-and-safety signal, not just a marketing one — a customer ordering a wedding cake for a nut-allergic child needs to trust the cross-contamination policy before they book. Platform fingerprints: Square, Toast. Keyword signals: "pastries," "croissants," "sourdough," "patisserie," "custom cake," "wedding cake."</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Schema: <code>Bakery</code>, <code>IceCreamShop</code></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="subtype-bar-pub">
+              <h3>Bar / pub / brewery <a class="glossary-anchor" href="#subtype-bar-pub" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Bars, pubs, taprooms, breweries, wine bars, cocktail rooms — drink-led spots where private-party events and happy-hour clarity drive conversion.</p>
+              <p class="glossary-long">The audit adds an age-gate check (weight 2.0× for bar-pub, 0 for every other subtype) and treats the <a href="#catering-page">private-events</a> page as revenue-critical. Cocktail and draft lists rotate constantly, so the <a href="#mobile-readable-menu">HTML menu</a> check runs heavier here too. Platform fingerprints: Tripleseat for events, OpenTable/Resy/SevenRooms for reservations. Keyword signals: "cocktails," "craft beer," "on tap," "happy hour," "gastropub," "taproom," "speakeasy," "brewery."</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Schema: <code>BarOrPub</code>, <code>Brewery</code>, <code>Winery</code>, <code>Distillery</code></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="subtype-pizzeria">
+              <h3>Pizzeria <a class="glossary-anchor" href="#subtype-pizzeria" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Pizza-first restaurants where ordering IS the business and every Slice/DoorDash/Grubhub pie costs 20-30% in commission.</p>
+              <p class="glossary-long">The audit weighs <a href="#order-online-link">conversions</a> at 2.0× and adds a delivery-radius check at 1.5×. A direct-order flow (Toast, ChowNow, Square, or Slice Direct) vs. routing everything through aggregators is the difference between ~78% and ~55% gross margin on a pie. Platform fingerprints: Slice is the strongest tell, then Toast, ChowNow, DoorDash, Grubhub. Keyword signals: "pizza," "neapolitan," "wood-fired," "coal-fired," "sicilian," "detroit-style," "calzone."</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Schema: <code>Restaurant</code>, <code>FastFoodRestaurant</code></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="subtype-food-truck">
+              <h3>Food truck / pop-up <a class="glossary-anchor" href="#subtype-food-truck" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Mobile kitchens and pop-ups where the primary content question is "where are you today?" — and static storefront maps are worse than no map at all.</p>
+              <p class="glossary-long">The audit weighs the food-truck schedule page at 2.0× for this subtype and downweights <a href="#directions-link">maps</a> because a pinned home address is the wrong answer — a dynamic "today's location" block, an Instagram feed, or a schedule calendar is what customers actually need. Reservations are irrelevant; catering inquiries are the margin-rich lead flow. Keyword signals: "food truck," "today's location," "this week's schedule," "pop-up," "catch us," "mobile kitchen."</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Schema: <code>Restaurant</code>, <code>FastFoodRestaurant</code></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="subtype-ghost-kitchen">
+              <h3>Ghost kitchen / delivery-only <a class="glossary-anchor" href="#subtype-ghost-kitchen" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Virtual brands and cloud kitchens that operate exclusively through aggregators — no dine-in, no pickup window, customers never visit.</p>
+              <p class="glossary-long">The audit weighs the "explicit delivery-only marker" check at 2.0× for this subtype; without a clear "virtual kitchen / no dine-in" banner, customers show up in person to an empty address and leave one-star reviews. Aggregator links (DoorDash, Uber Eats, Grubhub, Caviar, Deliveroo) are the primary conversion; static storefront maps aren't useful. Keyword signals: "ghost kitchen," "virtual kitchen," "delivery only," "cloud kitchen," "no dine-in."</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Schema: <code>Restaurant</code>, <code>FastFoodRestaurant</code></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="subtype-catering-only">
+              <h3>Catering-only / private events <a class="glossary-anchor" href="#subtype-catering-only" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Businesses that exist primarily to serve off-premise events — corporate catering, wedding catering, private-chef work, drop-off catering, pop-up dinners.</p>
+              <p class="glossary-long">The entire site IS the <a href="#catering-page">catering page</a>; the audit weighs that check at 2.5× for this subtype. Event planners comparing vendors search "catering [neighborhood]" and land directly on catering pages — packages, per-head pricing, minimum lead time, and a structured quote-request form are the critical surfaces. Platform fingerprints: ezCater, CaterTrax, Tripleseat. Keyword signals: "catering menu," "private events," "corporate catering," "wedding catering," "drop-off catering," "request a quote," "off-premise."</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Schema: <code>FoodEstablishment</code>, <code>Restaurant</code></span>
+              </div>
+            </article>
+          </section>
+
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="foot-cta">
+      <div class="foot-cta-text">Ready to build something worth the time?</div>
+      <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      </a>
+    </div>
+
+    <div class="foot-grid">
+      <div class="foot-col foot-brand">
+        <a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home">
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <sup class="tm" aria-hidden="true">&#8482;</sup>
+        </a>
+        <p class="foot-tagline">Structure Brings Clarity.</p>
+        <p class="foot-blurb">A one-person studio in Silver Spring, MD, building custom websites, brands, and social media for independent restaurants across the DMV and beyond.</p>
+      </div>
+
+      <nav class="foot-col" aria-labelledby="foot-explore">
+        <p class="foot-heading" id="foot-explore">Explore</p>
+        <ul class="foot-links">
+          <li><a href="/services/">Services</a></li>
+          <li><a href="/for/restaurants/">For restaurants</a></li>
+          <li><a href="/work/">Work</a></li>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/about/">About Don</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-tools">
+        <p class="foot-heading" id="foot-tools">Free tools</p>
+        <ul class="foot-links">
+          <li><a href="/tools/">All tools</a></li>
+          <li><a href="/tools/audits/restaurant/">Restaurant audit</a></li>
+          <li><a href="/resources/restaurant-website-checklist/">Restaurant checklist</a></li>
+          <li><a href="/glossary/">Website glossary</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col foot-contact" aria-labelledby="foot-contact">
+        <p class="foot-heading" id="foot-contact">Contact</p>
+        <ul class="foot-links">
+          <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
+          <li><a href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a></li>
+          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
+        </ul>
+        <p class="foot-trust"><strong>Reply time:</strong> under 4 hours, Mon&#8211;Fri</p>
+      </nav>
+    </div>
+
+    <div class="foot-bottom">
+      <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p>
+      <nav class="foot-legal" aria-label="Legal">
+        <a href="/terms.html">Terms</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/accessibility.html">Accessibility</a>
+        <a href="/cookies.html">Cookies</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/site.js" defer></script>
+</body>
+</html>
