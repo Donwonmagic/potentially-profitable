@@ -768,6 +768,155 @@ function schemaDaysFromObjects(restaurantObjects) {
 // honor the legacy Places v0 shape where period.open.day is 0-6
 // via the same offset, and periods that carry a string day like
 // 'MONDAY'.
+// ------------------------------------------------------------
+// NAP (name/address/phone) consistency — Phase F6
+// ------------------------------------------------------------
+// Compares what the site's JSON-LD publishes against what Places
+// has on file. NAP drift (different street address on the website
+// than on Google Business Profile, a phone number that changed on
+// one but not the other) is a classic local-SEO problem — Google
+// trusts Places first, and the drift actively hurts rankings
+// until it's resolved.
+//
+// Inputs:
+//   restaurantObjects - the filtered list from
+//                       validateRestaurantSchema. Uses .name,
+//                       .address.{streetAddress,addressLocality,
+//                       addressRegion,postalCode}, .telephone.
+//   placesData        - the Places v1 shape our /api/gbp-lookup
+//                       already returns: { displayName:{text},
+//                       formattedAddress, nationalPhoneNumber,
+//                       internationalPhoneNumber }.
+//
+// Output: per-field { checkable, match, schemaValue, placesValue }.
+function compareSchemaVsPlacesNap(restaurantObjects, placesData) {
+  const schemaName    = firstStringField(restaurantObjects, 'name');
+  const schemaAddr    = firstAddressField(restaurantObjects);
+  const schemaPhone   = firstStringField(restaurantObjects, 'telephone');
+
+  const placesName    = placesData && placesData.displayName && placesData.displayName.text
+                        ? String(placesData.displayName.text) : null;
+  const placesAddr    = placesData && placesData.formattedAddress
+                        ? String(placesData.formattedAddress) : null;
+  const placesPhone   = (placesData && (placesData.nationalPhoneNumber || placesData.internationalPhoneNumber)) || null;
+
+  return {
+    name:    compareNames(schemaName, placesName),
+    address: compareAddresses(schemaAddr, placesAddr),
+    phone:   comparePhones(schemaPhone, placesPhone)
+  };
+}
+
+function firstStringField(objects, key) {
+  for (let i = 0; i < (objects || []).length; i++) {
+    const v = objects[i][key];
+    if (typeof v === 'string' && v.trim()) return v.trim();
+  }
+  return null;
+}
+
+function firstAddressField(objects) {
+  for (let i = 0; i < (objects || []).length; i++) {
+    const a = objects[i].address;
+    if (a && typeof a === 'object') return a;
+  }
+  return null;
+}
+
+// Normalize: lowercase, strip punctuation + whitespace, drop common
+// suffixes ('restaurant', 'bar & grill') so 'Joe's Pizza' and
+// 'Joes Pizza Restaurant' match. Loose by design — NAP checks
+// should forgive typographic drift, not demand byte-equality.
+function normalizeName(s) {
+  if (!s) return '';
+  return String(s)
+    .toLowerCase()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '')
+    .replace(/(restaurant|bistro|cafe|bar|pizzeria|bakery|kitchen)$/g, '');
+}
+
+function compareNames(schemaName, placesName) {
+  const checkable = !!(schemaName && placesName);
+  const a = normalizeName(schemaName);
+  const b = normalizeName(placesName);
+  let match = false;
+  if (checkable) {
+    // Either fully matches or one contains the other (handles
+    // "Joe's Pizza" vs "Joe's Pizza & Pasta").
+    match = a === b || a.includes(b) || b.includes(a);
+  }
+  return { checkable: checkable, match: match, schemaValue: schemaName, placesValue: placesName };
+}
+
+// Flatten a schema.org PostalAddress into a single string for
+// substring matching. Preserves digits (street numbers, ZIP)
+// because those are the highest-signal fields.
+function flattenSchemaAddress(addr) {
+  if (!addr || typeof addr !== 'object') return '';
+  const parts = [
+    addr.streetAddress,
+    addr.addressLocality,
+    addr.addressRegion,
+    addr.postalCode,
+    addr.addressCountry
+  ];
+  return parts.filter(function(p){ return typeof p === 'string'; }).join(' ');
+}
+
+function normalizeAddress(s) {
+  if (!s) return '';
+  return String(s).toLowerCase()
+    .replace(/\bstreet\b/g, 'st')
+    .replace(/\bavenue\b/g, 'ave')
+    .replace(/\bboulevard\b/g, 'blvd')
+    .replace(/\bsuite\b/g, 'ste')
+    .replace(/\bapartment\b/g, 'apt')
+    .replace(/\bnorth\b/g, 'n')
+    .replace(/\bsouth\b/g, 's')
+    .replace(/\beast\b/g, 'e')
+    .replace(/\bwest\b/g, 'w')
+    .replace(/\b(usa|united states|united states of america)\b/g, '')
+    .replace(/[^a-z0-9]+/g, '');
+}
+
+function compareAddresses(schemaAddr, placesFormattedAddr) {
+  const flat = flattenSchemaAddress(schemaAddr);
+  const checkable = !!(flat && placesFormattedAddr);
+  const a = normalizeAddress(flat);
+  const b = normalizeAddress(placesFormattedAddr);
+  let match = false;
+  if (checkable) {
+    // Substring match handles a schema that omits country or
+    // suite numbers present in Places' formatted string.
+    match = a === b || a.includes(b) || b.includes(a);
+  }
+  return {
+    checkable:   checkable,
+    match:       match,
+    schemaValue: flat || null,
+    placesValue: placesFormattedAddr
+  };
+}
+
+function normalizePhone(s) {
+  if (!s) return '';
+  // Keep only digits; drop leading '1' if present for US-style
+  // numbers so '+1 (212) 555-1212' matches '(212) 555-1212'.
+  let digits = String(s).replace(/\D+/g, '');
+  if (digits.length === 11 && digits[0] === '1') digits = digits.slice(1);
+  return digits;
+}
+
+function comparePhones(schemaPhone, placesPhone) {
+  const a = normalizePhone(schemaPhone);
+  const b = normalizePhone(placesPhone);
+  const checkable = !!(a && b);
+  let match = false;
+  if (checkable) match = a === b;
+  return { checkable: checkable, match: match, schemaValue: schemaPhone, placesValue: placesPhone };
+}
+
 function placesDaysFromRegularHours(regularOpeningHours) {
   const INDEX_TO_CODE = ['Su','Mo','Tu','We','Th','Fr','Sa'];
   const STR_TO_CODE = {
