@@ -359,7 +359,8 @@
     let engine = audioSrc ? 'audio' : 'speech';
     let audioEl = null;       // HTMLAudioElement (studio mode)
     let manifest = null;      // { chunks: [{ id, kind, headingAbove, start, end }], total }
-    let chunkTimer = null;    // rAF handle for studio-mode progress polling
+    // (Studio-mode highlight tracking is event-driven off the audio
+    //  element's timeupdate + seeked events — no rAF loop needed.)
 
     /* ---- Mount the rich player card (replaces the pill button) ---- */
     const card = buildCard();
@@ -381,6 +382,8 @@
     const extrasEl   = card.root.querySelector('.listen-card-extras');
     const prevBtn    = card.root.querySelector('.listen-prev');
     const nextBtn    = card.root.querySelector('.listen-next');
+    const back15Btn  = card.root.querySelector('.listen-back15');
+    const fwd15Btn   = card.root.querySelector('.listen-fwd15');
     const rateSelect = card.root.querySelector('.listen-rate');
     const voiceSelect = card.root.querySelector('.listen-voice');
 
@@ -551,13 +554,13 @@
           text = el.getAttribute('aria-label').trim();
           kind = 'figure';
         } else if (el.matches('figcaption')) {
-          text = (el.innerText || el.textContent || '').trim();
+          text = spokenText(el);
           kind = 'figure';
         } else if (el.matches('h2, h3')) {
-          text = (el.innerText || el.textContent || '').trim();
+          text = spokenText(el);
           kind = 'heading';
         } else {
-          text = (el.innerText || el.textContent || '').trim();
+          text = spokenText(el);
           kind = inferKind(el, 'body');
         }
 
@@ -613,6 +616,26 @@
         .trim();
     }
 
+    // Walk an element's text, substituting any inline element that
+    // carries data-say="..." with its data-say value. This is the
+    // runtime twin of the extractor's data-say handling — used so the
+    // Web Speech fallback says English heteronyms ("live" the verb,
+    // "read" past tense, "lead" the noun) the way the writer meant.
+    function spokenText(el) {
+      const parts = [];
+      el.childNodes.forEach((node) => {
+        if (node.nodeType === 3) { // text
+          parts.push(node.textContent);
+          return;
+        }
+        if (node.nodeType !== 1) return;
+        const say = node.getAttribute && node.getAttribute('data-say');
+        if (say) { parts.push(' ' + say + ' '); return; }
+        parts.push(spokenText(node));
+      });
+      return parts.join('').replace(/\s+/g, ' ').trim();
+    }
+
     function inferKind(el, fallback) {
       if (el.matches('.pull-quote')) return 'quote';
       if (el.closest('figure'))       return 'figure';
@@ -622,10 +645,21 @@
 
     /* ---- Highlight the currently-spoken block ---- */
     function setCurrent(el, chunk) {
-      if (currentElement) currentElement.classList.remove('is-reading');
+      if (currentElement) {
+        currentElement.classList.remove('is-reading');
+        currentElement.classList.remove('is-reading-callout');
+      }
       currentElement = el;
       if (el) {
         el.classList.add('is-reading');
+        // Callouts (.revenue-math, figures, any data-audio-alt block)
+        // already have their own background + foreground treatment;
+        // painting a tint over them kills the designed contrast. We
+        // tag them so the CSS can swap the background flood for a
+        // soft outer accent ring instead.
+        if (chunk && chunk.kind === 'figure') {
+          el.classList.add('is-reading-callout');
+        }
         // Update "now reading" label on the card
         if (chapterEl) chapterEl.textContent = chapterLabel(chunk);
         const rect = el.getBoundingClientRect();
@@ -706,8 +740,24 @@
       if (progressEl) progressEl.setAttribute('aria-valuenow', String(pct));
       if (prevBtn) prevBtn.disabled = currentIndex <= 0;
       if (nextBtn) nextBtn.disabled = currentIndex >= chunks.length - 1;
+      updateSkipButtons();
       updateDockProgress(pct);
       updateDockChapter(chunks[currentIndex]);
+    }
+
+    // Enable the ±15 buttons whenever there's something to seek
+    // through. In studio mode we check real audio bounds; in the speech
+    // fallback the buttons step by paragraph, so they follow the
+    // paragraph-skip availability.
+    function updateSkipButtons() {
+      if (!back15Btn || !fwd15Btn) return;
+      if (engine === 'audio' && audioEl && audioEl.duration) {
+        back15Btn.disabled = audioEl.currentTime <= 0.1;
+        fwd15Btn.disabled  = audioEl.currentTime >= audioEl.duration - 0.1;
+      } else {
+        back15Btn.disabled = currentIndex <= 0;
+        fwd15Btn.disabled  = currentIndex >= chunks.length - 1;
+      }
     }
 
     function revealPlayerChrome() {
@@ -728,15 +778,105 @@
     }
     if (prevBtn) prevBtn.addEventListener('click', () => skipTo(currentIndex - 1));
     if (nextBtn) nextBtn.addEventListener('click', () => skipTo(currentIndex + 1));
+    if (back15Btn) back15Btn.addEventListener('click', () => seekBy(-15));
+    if (fwd15Btn)  fwd15Btn.addEventListener('click',  () => seekBy(+15));
 
-    // Click-to-seek on the progress bar. Maps pointer x → chunk index.
-    if (progressEl) {
-      progressEl.addEventListener('click', (e) => {
+    // ±15 seconds relative seek. Studio mode uses clock-time; speech
+    // fallback has no clock, so we approximate by stepping one chunk.
+    function seekBy(seconds) {
+      if (!chunks.length) return;
+      if (engine === 'audio' && audioEl && audioEl.duration) {
+        const t = Math.max(0, Math.min(audioEl.duration, audioEl.currentTime + seconds));
+        // Find the chunk whose [start,end] spans t so the highlight
+        // and currentIndex update in one step — without this, the
+        // tick loop catches up but currentIndex can be stale if the
+        // user double-taps.
+        let idx = 0;
+        for (let i = 0; i < chunks.length; i++) {
+          if ((chunks[i].start || 0) <= t) idx = i; else break;
+        }
+        audioEl.currentTime = t;
+        currentIndex = idx;
+        setCurrent(chunks[idx].element, chunks[idx]);
+        const pct = (t / audioEl.duration) * 100;
+        if (progressFill) progressFill.style.width = pct.toFixed(2) + '%';
+        if (progressEl) progressEl.setAttribute('aria-valuenow', String(Math.round(pct)));
+        updateDockProgress(pct, t, audioEl.duration);
+        updateDockChapter(chunks[idx]);
+      } else {
+        // Speech fallback: 15s ≈ 1 paragraph
+        skipTo(currentIndex + (seconds > 0 ? 1 : -1));
+      }
+    }
+
+    // Scrub on the progress bar. Supports both click-to-seek and
+    // drag-to-scrub via Pointer Events (unifies mouse + touch). While
+    // dragging we continuously update audio.currentTime and the UI
+    // so the listener hears + sees the position changing; on release
+    // we snap to the nearest chunk boundary so the highlight lines up.
+    if (progressEl) attachScrub(progressEl);
+
+    function attachScrub(bar) {
+      let dragging = false;
+      let pointerId = null;
+
+      function seekToPointer(clientX, release) {
         if (!chunks.length) return;
-        const rect = progressEl.getBoundingClientRect();
-        const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-        skipTo(Math.floor(ratio * chunks.length));
+        const rect = bar.getBoundingClientRect();
+        const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+        if (engine === 'audio' && audioEl && audioEl.duration) {
+          const t = ratio * audioEl.duration;
+          // Keep the audio at the scrub position live so the user
+          // hears where they are.
+          audioEl.currentTime = t;
+          // Paint progress + update highlight on every move; snap to
+          // nearest chunk boundary on release so the visual anchor
+          // lines up with a paragraph.
+          let idx = 0;
+          for (let i = 0; i < chunks.length; i++) {
+            if ((chunks[i].start || 0) <= t) idx = i; else break;
+          }
+          const pct = (t / audioEl.duration) * 100;
+          if (progressFill) progressFill.style.width = pct.toFixed(2) + '%';
+          if (progressEl) progressEl.setAttribute('aria-valuenow', String(Math.round(pct)));
+          updateDockProgress(pct, t, audioEl.duration);
+          updateDockChapter(chunks[idx]);
+          if (idx !== currentIndex || release) {
+            currentIndex = idx;
+            setCurrent(chunks[idx].element, chunks[idx]);
+          }
+          if (release) {
+            // Snap to chunk start so chaptered progress feels stable
+            audioEl.currentTime = chunks[idx].start || 0;
+          }
+        } else {
+          const idx = Math.floor(ratio * chunks.length);
+          if (release) skipTo(idx);
+        }
+      }
+
+      bar.addEventListener('pointerdown', (e) => {
+        dragging = true;
+        pointerId = e.pointerId;
+        try { bar.setPointerCapture(pointerId); } catch (_) {}
+        bar.classList.add('is-scrubbing');
+        seekToPointer(e.clientX, false);
+        e.preventDefault();
       });
+      bar.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        seekToPointer(e.clientX, false);
+      });
+      function endDrag(e) {
+        if (!dragging) return;
+        dragging = false;
+        bar.classList.remove('is-scrubbing');
+        try { bar.releasePointerCapture(pointerId); } catch (_) {}
+        pointerId = null;
+        seekToPointer(e.clientX, true);
+      }
+      bar.addEventListener('pointerup', endDrag);
+      bar.addEventListener('pointercancel', endDrag);
     }
 
     /* ---- Playback ---- */
@@ -770,6 +910,7 @@
     }
 
     function startPlayback() {
+      ensureMediaSession();
       if (engine === 'audio') return startStudioPlayback();
       if (state === 'paused') {
         window.speechSynthesis.resume();
@@ -833,6 +974,16 @@
           engine = 'speech';
           finishStudioPlayback();
         });
+        // Drive the chunk highlight + progress UI from audio events
+        // rather than a rAF loop. timeupdate fires regardless of tab
+        // focus (rAF freezes when the document is hidden), so the
+        // highlight stays in sync if the user switches tabs and comes
+        // back, and the lock-screen position state keeps updating.
+        // seeked fires after every scrub for instant response.
+        audioEl.addEventListener('timeupdate', tickStudio);
+        audioEl.addEventListener('seeked',     tickStudio);
+        audioEl.addEventListener('play',       () => syncMediaSessionState());
+        audioEl.addEventListener('pause',      () => syncMediaSessionState());
       }
       // Resolve manifest chunk anchors against the document. Each
       // manifest entry has a `selector` (stable CSS path) we use to
@@ -860,6 +1011,7 @@
     }
 
     async function startStudioPlayback() {
+      ensureMediaSession();
       // Fast path: already loaded and just paused — just resume.
       if (state === 'paused' && audioEl) {
         audioEl.playbackRate = currentRate();
@@ -893,18 +1045,22 @@
 
     function finishStudioPlayback() {
       if (audioEl) { try { audioEl.pause(); } catch (_) {} audioEl.currentTime = 0; }
-      if (chunkTimer) cancelAnimationFrame(chunkTimer);
-      chunkTimer = null;
       currentIndex = 0;
       setCurrent(null, null);
       setState('idle');
+      syncMediaSessionPosition();
       if (window.plausible && audioEl && audioEl.duration && audioEl.currentTime >= audioEl.duration - 0.5) {
         window.plausible('Post Listened: Completed');
       }
     }
 
+    // Event-driven tick: registered as the timeupdate + seeked
+    // listener on the <audio> element rather than a rAF loop. Fires
+    // ~4x/sec while playing (browser-determined), continues firing
+    // when the tab is backgrounded, and runs once on every seek for
+    // instant scrubber response.
     function tickStudio() {
-      if (state !== 'playing' || !audioEl) { chunkTimer = null; return; }
+      if (!audioEl) return;
       const t = audioEl.currentTime;
       // Find the chunk whose [start, end) contains t. Chunks are sorted
       // so a short linear scan from the current position is adequate.
@@ -924,20 +1080,35 @@
       updateDockChapter(chunks[currentIndex]);
       if (prevBtn) prevBtn.disabled = currentIndex <= 0;
       if (nextBtn) nextBtn.disabled = currentIndex >= chunks.length - 1;
-      chunkTimer = requestAnimationFrame(tickStudio);
+      updateSkipButtons();
+      syncMediaSessionPosition();
     }
 
-    // Studio-mode seek by chunk
+    // Studio-mode seek by chunk. We update the highlight + dock
+    // progress *immediately* — without this, the next tickStudio
+    // iteration sees currentIndex unchanged (we just set it) and
+    // skips its own highlight update, so the blue reading box gets
+    // stuck on the pre-seek paragraph until the user pauses.
     function studioSkipTo(idx) {
       if (!audioEl || !chunks.length) return;
       idx = Math.max(0, Math.min(chunks.length - 1, idx));
-      audioEl.currentTime = chunks[idx].start || 0;
+      const chunk = chunks[idx];
+      audioEl.currentTime = chunk.start || 0;
       currentIndex = idx;
+      setCurrent(chunk.element, chunk);
+      const pct = audioEl.duration ? ((chunk.start || 0) / audioEl.duration) * 100 : 0;
+      if (progressFill) progressFill.style.width = pct.toFixed(2) + '%';
+      if (progressEl) progressEl.setAttribute('aria-valuenow', String(Math.round(pct)));
+      updateDockProgress(pct, chunk.start || 0, audioEl.duration || 0);
+      updateDockChapter(chunk);
+      if (prevBtn) prevBtn.disabled = currentIndex <= 0;
+      if (nextBtn) nextBtn.disabled = currentIndex >= chunks.length - 1;
     }
 
     /* ---- State machine ---- */
     function setState(next) {
       state = next;
+      syncMediaSessionState();
       card.root.setAttribute('data-state', next);
       const pressed = next === 'playing' ? 'true' : 'false';
       playBtn.setAttribute('aria-pressed', pressed);
@@ -950,9 +1121,12 @@
       listenBtn.setAttribute('data-state', next);
       listenBtn.setAttribute('aria-pressed', pressed);
       updateDockState();
-      // Reset dismissal at the start of each new playback so returning
-      // users get the dock back on the next play.
-      if (next === 'idle') dockDismissed = false;
+      // Reset the collapsed state at the start of each new playback
+      // so returning users get the full dock by default.
+      if (next === 'idle') {
+        dockCollapsed = false;
+        dock.root.setAttribute('data-collapsed', 'false');
+      }
       updateDockVisibility();
     }
 
@@ -975,14 +1149,16 @@
 
     /* ---- Floating dock ---- */
     // Mirrors the card's state; only shown when (a) audio is active and
-    // (b) the card is scrolled out of view. Dismiss is "for this
-    // playback only" — on the next play it comes back. The dock carries
-    // its own skip + seek + time controls so the user never has to
-    // scroll back to the card during playback.
+    // (b) the card is scrolled out of view. The header close button
+    // collapses the dock to a compact pill (user can expand it again
+    // via the chevron); the stop button is the actual "end playback"
+    // action — hides the dock and returns to idle.
     const dock = buildDock();
     document.body.appendChild(dock.root);
     const dockPlayBtn = dock.root.querySelector('.listen-dock-play');
-    const dockClose   = dock.root.querySelector('.listen-dock-close');
+    const dockCollapse = dock.root.querySelector('.listen-dock-collapse');
+    const dockStop    = dock.root.querySelector('.listen-dock-stop');
+    const dockExpand  = dock.root.querySelector('.listen-dock-expand');
     const dockTitleEl = dock.root.querySelector('.listen-dock-title');
     const dockChapter = dock.root.querySelector('.listen-dock-chapter');
     const dockFill    = dock.root.querySelector('.listen-dock-progress-fill');
@@ -991,29 +1167,36 @@
     const dockNextBtn = dock.root.querySelector('.listen-dock-next');
     const dockTimeNow = dock.root.querySelector('.listen-dock-time-now');
     const dockTimeEnd = dock.root.querySelector('.listen-dock-time-end');
-    let dockDismissed = false;
+    let dockCollapsed = false;
     let cardInView = true;
 
     dockPlayBtn.addEventListener('click', toggle);
-    dockClose.addEventListener('click', () => {
-      dockDismissed = true;
-      updateDockVisibility();
+    // Collapse / expand is a presentational toggle only — playback
+    // keeps running in the background. Only the Stop control ends
+    // audio. This separation means a user who wants the dock out of
+    // the way but audio still playing doesn't have to choose between
+    // the two.
+    dockCollapse.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dockCollapsed = true;
+      dock.root.setAttribute('data-collapsed', 'true');
+    });
+    dockExpand.addEventListener('click', () => {
+      dockCollapsed = false;
+      dock.root.setAttribute('data-collapsed', 'false');
+    });
+    dockStop.addEventListener('click', (e) => {
+      e.stopPropagation();
+      // Full stop — kills audio, returns to idle; updateDockVisibility
+      // will then hide the dock because state is no longer active.
+      finishPlayback();
     });
     if (dockPrevBtn) dockPrevBtn.addEventListener('click', () => skipTo(currentIndex - 1));
     if (dockNextBtn) dockNextBtn.addEventListener('click', () => skipTo(currentIndex + 1));
-    if (dockProgEl) {
-      dockProgEl.addEventListener('click', (e) => {
-        if (!chunks.length) return;
-        const rect = dockProgEl.getBoundingClientRect();
-        const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-        // In studio mode seek by time; in speech mode seek by chunk.
-        if (engine === 'audio' && audioEl && audioEl.duration) {
-          audioEl.currentTime = ratio * audioEl.duration;
-        } else {
-          skipTo(Math.floor(ratio * chunks.length));
-        }
-      });
-    }
+    // Same scrub helper handles click + drag for the dock's bar, so
+    // the scrubbing UX is identical whether the player card is
+    // on-screen or the user's deep into the post.
+    if (dockProgEl) attachScrub(dockProgEl);
 
     let footerInView = false;
     if ('IntersectionObserver' in window) {
@@ -1038,7 +1221,7 @@
     }
 
     function updateDockVisibility() {
-      const shouldShow = !dockDismissed && !cardInView && !footerInView
+      const shouldShow = !cardInView && !footerInView
         && (state === 'playing' || state === 'paused');
       dock.root.setAttribute('data-visible', shouldShow ? 'true' : 'false');
     }
@@ -1091,6 +1274,7 @@
       root.setAttribute('aria-label', 'Audio player controls');
       root.setAttribute('data-state', 'idle');
       root.setAttribute('data-visible', 'false');
+      root.setAttribute('data-collapsed', 'false');
       root.innerHTML = `
         <button type="button" class="listen-dock-play" aria-label="Resume audio">
           <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.54.84l10-6.5a1 1 0 0 0 0-1.68l-10-6.5A1 1 0 0 0 8 5.5z"/></svg>
@@ -1100,9 +1284,14 @@
           <span class="listen-dock-title">Audio edition</span>
           <span class="listen-dock-chapter"></span>
         </div>
-        <button type="button" class="listen-dock-close" aria-label="Hide audio controls">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
-        </button>
+        <div class="listen-dock-header-actions">
+          <button type="button" class="listen-dock-stop" aria-label="Stop audio and close">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="1.5"/></svg>
+          </button>
+          <button type="button" class="listen-dock-collapse" aria-label="Minimize audio controls">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
         <button type="button" class="listen-dock-skip listen-dock-prev" aria-label="Previous paragraph" disabled>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="19 20 9 12 19 4 19 20" fill="currentColor"/><line x1="5" y1="5" x2="5" y2="19"/></svg>
         </button>
@@ -1114,8 +1303,90 @@
         <button type="button" class="listen-dock-skip listen-dock-next" aria-label="Next paragraph" disabled>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 4 15 12 5 20 5 4" fill="currentColor"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
         </button>
+        <button type="button" class="listen-dock-expand" aria-label="Expand audio controls" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
+        </button>
       `;
       return { root };
+    }
+
+    /* ---- Media Session API (iOS / Android lock screen + headphones) ---- */
+    // When audio plays, iOS / Android show generic "Audio playing"
+    // chrome on the lock screen unless we tell them what's playing.
+    // navigator.mediaSession lets us fill in title, artist, artwork
+    // and bind hardware/lock-screen buttons (play, pause, skip ±15s,
+    // previous/next paragraph, scrub) directly to our controls.
+    //
+    // We set the metadata once, lazily, on first play — iOS only
+    // honours media session when invoked from a real user gesture.
+    let mediaSessionWired = false;
+
+    function ensureMediaSession() {
+      if (mediaSessionWired) return;
+      if (typeof navigator === 'undefined' || !('mediaSession' in navigator)) return;
+      mediaSessionWired = true;
+
+      const h1   = document.querySelector('.post-hero h1');
+      const meta = document.querySelector('meta[property="article:author"]');
+      const og   = document.querySelector('meta[property="og:image"]');
+      const title  = h1 ? (h1.innerText || h1.textContent || '').replace(/\s+/g, ' ').trim()
+                        : document.title;
+      const author = (meta && meta.getAttribute('content')) || 'Muntin Digital';
+      // Per-post cover lives at /brand/og/<slug>-cover.png — derived
+      // from the existing og:image meta. Fall back to the og image
+      // itself if the cover wasn't generated for this post.
+      const ogSrc  = og ? og.getAttribute('content') : '';
+      const cover  = ogSrc.endsWith('.svg') ? ogSrc.replace(/\.svg$/, '-cover.png') : ogSrc;
+      const artwork = cover ? [
+        { src: cover, sizes: '512x512', type: 'image/png' },
+      ] : [];
+
+      try {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title,
+          artist: author + ' · Muntin Digital',
+          album: 'Audio edition',
+          artwork,
+        });
+      } catch (_) { /* MediaMetadata may not exist in older browsers */ }
+
+      // Action handlers — every one of these maps to an existing
+      // engine method. Wrap in try/catch because some browsers throw
+      // for unsupported actions (e.g. seekto on iOS < 15.4).
+      const bind = (action, fn) => {
+        try { navigator.mediaSession.setActionHandler(action, fn); }
+        catch (_) {}
+      };
+      bind('play',          () => { if (state !== 'playing') startPlayback(); });
+      bind('pause',         () => { if (state === 'playing') pausePlayback(); });
+      bind('stop',          () => finishPlayback());
+      bind('seekbackward',  (d) => seekBy(-(d && d.seekOffset ? d.seekOffset : 15)));
+      bind('seekforward',   (d) => seekBy(  d && d.seekOffset ? d.seekOffset : 15));
+      bind('previoustrack', () => skipTo(currentIndex - 1));
+      bind('nexttrack',     () => skipTo(currentIndex + 1));
+      bind('seekto',        (d) => {
+        if (engine !== 'audio' || !audioEl || d == null || d.seekTime == null) return;
+        audioEl.currentTime = Math.max(0, Math.min(audioEl.duration || 0, d.seekTime));
+      });
+    }
+
+    function syncMediaSessionState() {
+      if (typeof navigator === 'undefined' || !('mediaSession' in navigator)) return;
+      navigator.mediaSession.playbackState =
+        state === 'playing' ? 'playing' :
+        state === 'paused'  ? 'paused'  : 'none';
+    }
+
+    function syncMediaSessionPosition() {
+      if (typeof navigator === 'undefined' || !('mediaSession' in navigator)) return;
+      if (engine !== 'audio' || !audioEl || !audioEl.duration) return;
+      try {
+        navigator.mediaSession.setPositionState({
+          duration: audioEl.duration,
+          playbackRate: audioEl.playbackRate || 1,
+          position: Math.min(audioEl.currentTime, audioEl.duration),
+        });
+      } catch (_) {}
     }
 
     window.MuntinReadAloud = { stop: finishPlayback, toggle };
@@ -1151,6 +1422,14 @@
           <div class="listen-card-skips">
             <button type="button" class="listen-iconbtn listen-prev" aria-label="Previous paragraph" disabled>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="19 20 9 12 19 4 19 20" fill="currentColor"/><line x1="5" y1="5" x2="5" y2="19"/></svg>
+            </button>
+            <button type="button" class="listen-iconbtn listen-back15" aria-label="Back 15 seconds" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><polyline points="3 4 3 8 7 8"/></svg>
+              <span class="listen-iconbtn-label">15</span>
+            </button>
+            <button type="button" class="listen-iconbtn listen-fwd15" aria-label="Forward 15 seconds" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 4 21 8 17 8"/></svg>
+              <span class="listen-iconbtn-label">15</span>
             </button>
             <button type="button" class="listen-iconbtn listen-next" aria-label="Next paragraph" disabled>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 4 15 12 5 20 5 4" fill="currentColor"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
