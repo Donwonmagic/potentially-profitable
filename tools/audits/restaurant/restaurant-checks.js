@@ -589,3 +589,51 @@ var RESTAURANT_PRIORITY_CHECKS = [
     unverifiedNote: "Your site is missing the Restaurant schema markup Google uses to show rich listings in Maps and Search. Ask your developer to add a JSON-LD block with <code>@type: \"Restaurant\"</code>, your address, opening hours, and cuisine — it's a 10-line change and meaningful for local SEO."
   }
 ];
+
+// ---------------------------------------------------------------------------
+// Restaurant readiness scoring
+// ---------------------------------------------------------------------------
+// The inline check renderer walks RESTAURANT_PRIORITY_CHECKS and assigns
+// each check one of three statuses: 'pass', 'fail', 'unverified'. The
+// readiness score is a weighted-pass rollup that HONESTLY excludes
+// unverified checks from both the numerator and denominator — that way
+// a site we can't fully scan isn't punished for gaps we can't confirm.
+//
+//   weight   (per check) — defaults to 1.0; see RESTAURANT_PRIORITY_CHECKS.
+//   'pass'   — adds full credit, counted in denominator.
+//   'fail'   — adds zero credit, counted in denominator.
+//   'unverified' — ignored entirely.
+//
+// Phase B-H will extend the scoring to honor subtype-weight overrides
+// via subtypeWeights(id, checkId); for now these helpers preserve the
+// exact math the inline renderer currently runs in two places.
+
+function createRestaurantReadinessState() {
+  return {
+    totalCount: 0,
+    passCount: 0,
+    unverifiedCount: 0,
+    totalWeight: 0,
+    weightedCredit: 0
+  };
+}
+
+function accumulateRestaurantReadiness(state, def, status) {
+  var w = typeof def.weight === 'number' ? def.weight : 1.0;
+  state.totalCount++;
+  if (status === 'pass') {
+    state.passCount++;
+    state.totalWeight += w;
+    state.weightedCredit += w; // credit = 1.0 on pass
+  } else if (status === 'fail') {
+    state.totalWeight += w;    // credit = 0 on fail
+  } else {
+    state.unverifiedCount++;   // excluded from the rollup
+  }
+}
+
+function finalizeRestaurantReadinessScore(state) {
+  return state.totalWeight > 0
+    ? Math.round((state.weightedCredit / state.totalWeight) * 100)
+    : 0;
+}
