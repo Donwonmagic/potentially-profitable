@@ -2631,6 +2631,38 @@
   // presence is still surfaced via the on-page detectReviewWidgets
   // scan in restaurant-checks.js, which needs no API access.)
 
+  // Phase L3a: lazy jsPDF loader. jsPDF is ~80KB min+gzip - big
+  // enough that we don't want it on every page-load, small enough
+  // that one-off injection on demand is fine. Loaded from jsdelivr's
+  // CDN the first time a PDF CTA is submitted; cached on the
+  // window so subsequent submits reuse the same instance.
+  //
+  // Failure modes all resolve the returned Promise with `null` so
+  // the submit handler can fall back to a no-PDF email if the
+  // CDN is unreachable - education never blocks on a script load.
+  var __pdfLibPromise = null;
+  function loadJsPdf() {
+    if (window.jspdf && window.jspdf.jsPDF) {
+      return Promise.resolve(window.jspdf.jsPDF);
+    }
+    if (__pdfLibPromise) return __pdfLibPromise;
+    __pdfLibPromise = new Promise(function(resolve){
+      var s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js';
+      s.crossOrigin = 'anonymous';
+      s.referrerPolicy = 'no-referrer';
+      s.onload = function(){
+        resolve((window.jspdf && window.jspdf.jsPDF) || null);
+      };
+      s.onerror = function(){
+        __pdfLibPromise = null; // allow a future submit to retry
+        resolve(null);
+      };
+      document.head.appendChild(s);
+    });
+    return __pdfLibPromise;
+  }
+
   var submitOriginalHTML = submitBtn.innerHTML;
 
   // Stepwise progress state. The audit has four logical phases:
