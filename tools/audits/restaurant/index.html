@@ -1770,10 +1770,98 @@
     .email-form { grid-template-columns: 1fr; }
   }
 
-  /* Phase L1: deep-gate CSS removed — the gate itself is retired;
-     the existing #emailReportForm (bottom of the deep tier) is now
-     the single email-capture surface and gains a PDF attachment in
-     Phase L3. */
+  /* Phase L2: compact PDF-CTA card. Two copies of this render -
+     one at the top of #reportDeep and the existing .email-report
+     at the bottom keeps doing the fuller version of the same job.
+     Non-gating; email is optional for the on-screen report. */
+  .pdf-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px 28px;
+    margin: 24px 0 32px;
+    padding: 18px 22px;
+    background: var(--cream-2, #faf6ee);
+    border: 1px solid var(--line, #E6DFCE);
+    border-left: 4px solid var(--teal, #1F4E5B);
+    border-radius: 14px;
+  }
+  .pdf-cta-text {
+    flex: 1 1 260px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .pdf-cta-text strong {
+    font-family: var(--font-display, var(--font-body));
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .pdf-cta-text span {
+    font-size: 13px;
+    color: var(--stone);
+    line-height: 1.5;
+  }
+  .pdf-cta-form {
+    display: flex;
+    flex: 1 1 380px;
+    gap: 8px;
+    padding: 4px;
+    background: #fff;
+    border: 1px solid var(--line-dark);
+    border-radius: 999px;
+    transition: border-color 180ms ease, box-shadow 180ms ease;
+    position: relative;
+  }
+  .pdf-cta-form:focus-within {
+    border-color: var(--teal, #1F4E5B);
+    box-shadow: 0 10px 26px -14px rgba(31,78,91,0.35);
+  }
+  .pdf-cta-form input[type="email"] {
+    flex: 1;
+    min-width: 0;
+    font: inherit;
+    font-size: 14.5px;
+    padding: 10px 14px;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    outline: none;
+  }
+  .pdf-cta-form input[type="email"]::placeholder { color: var(--stone-2, #9e9a89); }
+  .pdf-cta-form button[type="submit"] {
+    font: inherit;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 18px;
+    background: var(--ink, #14161A);
+    color: var(--cream, #FAF7F2);
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 180ms ease, transform 180ms ease;
+  }
+  .pdf-cta-form button[type="submit"]:hover    { background: var(--teal, #1F4E5B); transform: translateY(-1px); }
+  .pdf-cta-form button[type="submit"]:disabled { background: var(--stone-2, #9e9a89); cursor: not-allowed; transform: none; }
+  .pdf-cta-toast {
+    width: 100%;
+    margin: 6px 0 0;
+    padding: 0 6px;
+    font-size: 12.5px;
+    color: var(--teal, #1F4E5B);
+    line-height: 1.45;
+  }
+  .pdf-cta-toast.is-error   { color: var(--rust, #B8541A); }
+  .pdf-cta-toast.is-success { color: #1F6B3A; }
+  @media (max-width: 640px) {
+    .pdf-cta { padding: 16px 18px; }
+    .pdf-cta-form { flex-wrap: wrap; border-radius: 16px; padding: 6px; }
+    .pdf-cta-form input[type="email"] { flex-basis: 100%; padding: 12px 14px; }
+    .pdf-cta-form button[type="submit"] { flex: 1; border-radius: 12px; padding: 12px 16px; }
+  }
 
   /* -------------------------------------------------------------
      Phase I6: Print-friendly layout
@@ -2112,11 +2200,40 @@
       </section>
 
       <!-- Phase L1: Email gate retired. Deep tier now renders
-           immediately after the audit runs. The single email-
-           capture surface is the existing #emailReportForm at
-           the bottom of this wrapper, which in Phase L3+ also
-           attaches a custom PDF of the audit. -->
+           immediately after the audit runs. Two non-blocking PDF-
+           capture CTAs live inside - one here at the top, one
+           at the bottom in the existing .email-report block - so
+           visitors can grab a takeaway PDF of their audit at either
+           end without having to read the whole thing first, OR
+           without having to scroll all the way down after they have. -->
       <div id="reportDeep">
+
+      <!-- Phase L2: TOP PDF CTA. Compact, warm-cream card with a
+           single-line email + button form. Non-gating: the deep
+           tier below renders regardless of whether the visitor
+           submits this form. Shares its submit handler with the
+           bottom CTA (#emailReportForm); both POST to
+           /api/audit-report with interest=restaurant-audit-report
+           and (in L3+) an attached PDF built from the audit state. -->
+      <aside class="pdf-cta pdf-cta--top">
+        <div class="pdf-cta-text">
+          <strong>Grab a PDF of this audit.</strong>
+          <span>Drop your email — we'll send a clean printable copy to your inbox. No list, no drip.</span>
+        </div>
+        <form id="pdfCtaTopForm" class="pdf-cta-form" action="/api/audit-report" method="POST" novalidate>
+          <input type="hidden" name="interest" value="restaurant-audit-report" />
+          <input type="hidden" name="source"   value="/tools/audits/restaurant/#top-cta" />
+          <input type="hidden" name="_gotcha"  value="" />
+          <input type="hidden" name="audited_url"     id="pdfCtaTopUrl"       value="" />
+          <input type="hidden" name="subtype"         id="pdfCtaTopSubtype"   value="" />
+          <input type="hidden" name="overall_score"   id="pdfCtaTopScore"     value="" />
+          <input type="hidden" name="shareable_link"  id="pdfCtaTopShareLink" value="" />
+          <label for="pdfCtaTopEmail" class="visually-hidden">Your email address</label>
+          <input type="email" id="pdfCtaTopEmail" name="email" required autocomplete="email" placeholder="you@yourrestaurant.com" />
+          <button type="submit">Email me the PDF <span aria-hidden="true">→</span></button>
+          <p class="pdf-cta-toast" id="pdfCtaTopToast" aria-live="polite"></p>
+        </form>
+      </aside>
 
       <!-- Per-category opportunity drill-down — the specific Lighthouse
            audits that failed, grouped by category, sorted by impact.
