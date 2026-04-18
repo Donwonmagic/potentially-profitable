@@ -101,7 +101,7 @@
 </script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260418-i18n">
+<link rel="stylesheet" href="/assets/site.css?v=20260418-langhint">
 
 <style>
   /* ===== SERVICES PAGE LOCAL STYLES ===== */
@@ -169,6 +169,23 @@
     <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a>
     <a href="/es/services/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
+
+  <!-- Opt-in Spanish banner. Rendered hidden by default; site.js
+       removes the hidden attribute only when (a) the reader's browser
+       lists Spanish in navigator.languages, (b) no md_locale cookie
+       has been set yet, and (c) the banner hasn't been dismissed.
+       Speaks directly in Spanish because its audience, by definition,
+       is a Spanish-speaking visitor. Link target is the page's own
+       hreflang="es" alternate from <head>, read at runtime. -->
+  <aside class="lang-hint" id="langHint" role="complementary" aria-label="Sugerencia de idioma" lang="es" hidden>
+    <div class="container lang-hint-inner">
+      <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
+      <a href="/es/services/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
+      <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+      </button>
+    </div>
+  </aside>
 </header>
 
 <main id="main">

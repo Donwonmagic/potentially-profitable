@@ -39,6 +39,43 @@
     });
   });
 
+  // Opt-in Spanish banner. Shown only on English pages when the
+  // reader's browser prefers Spanish and they haven't already set
+  // a locale preference or dismissed the banner. Uses
+  // navigator.languages for the detection (runs client-side with
+  // no server involvement required). The Worker's x-locale-hint
+  // header from src/worker.js is the complementary server-side
+  // signal for caching/analytics; the banner itself works off
+  // the browser-exposed language list.
+  //
+  // Dismissal is sticky for 30 days via a simple functional cookie
+  // so visitors who don't want Spanish aren't nagged on every page.
+  const hint = document.getElementById('langHint');
+  if (hint) {
+    const lang = (document.documentElement.lang || 'en').toLowerCase();
+    const cookies = document.cookie || '';
+    const hasLocalePref  = /(?:^|;\s*)md_locale=/.test(cookies);
+    const hasDismissed   = /(?:^|;\s*)md_hint_dismissed=/.test(cookies);
+    const navLangs       = (navigator.languages && navigator.languages.length)
+      ? navigator.languages
+      : [navigator.language || ''];
+    const prefersSpanish = navLangs.some((l) => String(l).toLowerCase().startsWith('es'));
+    if (lang === 'en' && prefersSpanish && !hasLocalePref && !hasDismissed) {
+      hint.hidden = false;
+    }
+    const dismiss = document.getElementById('langHintDismiss');
+    if (dismiss) {
+      dismiss.addEventListener('click', () => {
+        hint.hidden = true;
+        const secure = location.protocol === 'https:' ? '; Secure' : '';
+        // 30 days — long enough that a repeat visitor isn't nagged,
+        // short enough that someone who changes their browser
+        // language preference will eventually see the banner again.
+        document.cookie = `md_hint_dismissed=1; Path=/; Max-Age=2592000; SameSite=Lax${secure}`;
+      });
+    }
+  }
+
   // Opt out of the browser's automatic scroll restoration so that navigating
   // to a new page from low on the previous page doesn't leave the new page
   // scrolled to an arbitrary offset. We handle hash targets ourselves below;
