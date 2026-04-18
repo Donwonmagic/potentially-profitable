@@ -86,15 +86,16 @@ const optVal = (name) => {
 const engine = (optVal('--engine') || 'kokoro').toLowerCase();
 if (!['kokoro', 'piper'].includes(engine)) fail(`Unknown --engine "${engine}"; must be kokoro or piper.`);
 
-// Languages to render per post. "en" is the source language and
-// always included implicitly; additional BCP-47 language codes
-// (es, fr, it, pt, zh, etc.) trigger a translation pass via
-// scripts/lib/translate.py before the TTS step. Output files are
-// named audio.mp3/json for English (backward compat) and
-// audio.<lang>.mp3/json for every other language.
+// Languages to render per post. "en" is the source language;
+// additional BCP-47 language codes (es, fr, it, pt, zh, etc.)
+// trigger a translation pass via scripts/lib/translate.py before
+// the TTS step. Output files are named audio.mp3/json for English
+// (backward compat) and audio.<lang>.mp3/json for every other
+// language. Default is "en" alone; pass --languages explicitly to
+// render only a specific subset (useful for incremental re-renders
+// that skip languages already on disk).
 const languages = (optVal('--languages') || 'en')
   .split(',').map((s) => s.trim().toLowerCase()).filter(Boolean);
-if (!languages.includes('en')) languages.unshift('en');
 
 // Piper-mode inputs
 const model   = optVal('--model');
