@@ -665,9 +665,9 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 .listen-source-note[data-source="studio"]::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
 
 @media (max-width:640px){
-  .listen-card{grid-template-columns:auto 1fr;grid-template-areas:"play body" "progress progress" "chapter chapter" "extras extras";padding:18px;gap:10px 16px}
-  .listen-card-meta{grid-area:body;align-items:flex-start;flex-direction:row;font-size:11.5px;margin-top:4px}
-  .listen-card-meta strong{margin-right:4px}
+  .listen-card{grid-template-columns:auto 1fr;grid-template-areas:"play body" "meta meta" "progress progress" "chapter chapter" "extras extras";padding:18px;gap:10px 16px}
+  .listen-card-meta{grid-area:meta;align-items:flex-start;flex-direction:row;gap:8px;font-size:11.5px;padding-top:6px;margin-top:2px;border-top:1px dashed var(--line)}
+  .listen-card-meta strong{margin-right:0}
   .listen-card-play{width:56px;height:56px}
   .listen-card-title{font-size:18px}
   .listen-card-extras{justify-content:flex-start}

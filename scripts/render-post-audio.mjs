@@ -301,12 +301,20 @@ function renderSilence(outWav, seconds) {
 // machine treats the first qualifying silence period as "end of
 // audio". The reverse + strip-leading + reverse pattern is the
 // canonical workaround — it handles only leading silence each pass,
-// leaving internal pauses between sentences intact. Threshold of
-// -45dB is well above both piper's and kokoro's noise floors.
+// leaving internal pauses between sentences intact.
+//
+// Parameters tuned conservatively against Kokoro output so trailing
+// consonant tails (like the "-er" in "never") and quiet onsets (the
+// "I'" in "I'm going") are never cut:
+//   threshold=-60dB: Kokoro's noise floor sits around -70dB, and
+//     quietest speech syllables are ~-45dB. -60dB is safely between.
+//   start_duration=0.03: as soon as 30ms of non-silence is seen the
+//     filter stops trimming. Longer durations can chew into real
+//     speech syllables (they're often shorter than 0.1s).
 function trimSilence(inputWav, outWav) {
-  const flt = 'silenceremove=start_periods=1:start_duration=0.08:start_threshold=-45dB:detection=rms,' +
+  const flt = 'silenceremove=start_periods=1:start_duration=0.03:start_threshold=-60dB:detection=rms,' +
               'areverse,' +
-              'silenceremove=start_periods=1:start_duration=0.20:start_threshold=-45dB:detection=rms,' +
+              'silenceremove=start_periods=1:start_duration=0.03:start_threshold=-60dB:detection=rms,' +
               'areverse';
   run('ffmpeg', ['-y', '-i', inputWav, '-af', flt, '-c:a', 'pcm_s16le', outWav]);
 }
