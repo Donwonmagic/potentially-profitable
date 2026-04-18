@@ -234,27 +234,57 @@ async function handleAuditReport(request, env, ctx) {
     return jsonResponse({ ok: false, error: lengths.error }, 400);
   }
 
-  // Phase J5: dispatch on body.interest so the deep-gate unlock
-  // flow gets its own subtype-voiced template pair from the J3
-  // additions in templates.js. Legacy 'email me this report'
-  // submissions (no interest or any other value) keep the
-  // original templates for backward compatibility with already-
-  // rendered UIs that predate the split.
-  const isDeepReport = String(body.interest || '').trim() === 'restaurant-audit-deep-report';
-  const notificationTmpl = isDeepReport
+  // Phase L4: dispatch on body.interest. Phase J retired its
+  // deep-report email gate (Sprint L1); the two live interest
+  // values are now:
+  //   restaurant-audit-report       — top + bottom PDF CTAs
+  //                                   (Sprint L2/L3); the audit
+  //                                   PDF rides along in body.pdf_b64
+  //   restaurant-audit-deep-report  — retained route for any
+  //                                   legacy cached-page submits.
+  //                                   Same templates + same PDF
+  //                                   handling as the main flow.
+  const interestStr = String(body.interest || '').trim();
+  const useDeepTmpl = interestStr === 'restaurant-audit-report' ||
+                      interestStr === 'restaurant-audit-deep-report';
+  const notificationTmpl = useDeepTmpl
     ? auditDeepReportNotification(body)
     : auditReportNotification(body);
-  const autoReplyTmpl = isDeepReport
+  const autoReplyTmpl = useDeepTmpl
     ? auditDeepReportAutoResponder(body)
     : auditReportAutoResponder(body);
+
+  // Phase L4: if the client built a PDF of their audit, forward it
+  // as a Resend attachment on BOTH the notification and the auto-
+  // responder so Don sees the same deliverable the user received.
+  const attachments = buildPdfAttachments(body);
 
   return await sendPair({
     env,
     userEmail: body.email.trim(),
     notification: notificationTmpl,
     autoReply:    autoReplyTmpl,
-    endpoint:     isDeepReport ? 'audit-deep-report' : 'audit-report',
+    attachments:  attachments,
+    endpoint:     useDeepTmpl ? 'audit-deep-report' : 'audit-report',
   });
+}
+
+// Pull pdf_b64 + pdf_filename off the form body and return the
+// Resend-ready attachment array. Returns an empty array when no
+// valid PDF is on the body — callers just pass the result through
+// to sendEmail's opts.attachments without further checks.
+function buildPdfAttachments(body) {
+  const b64  = typeof body.pdf_b64      === 'string' ? body.pdf_b64.trim()      : '';
+  const name = typeof body.pdf_filename === 'string' ? body.pdf_filename.trim() : '';
+  if (!b64) return [];
+  // A PDF starts with 'JVBERi0' in base64 ('%PDF-' decoded). If the
+  // prefix doesn't match we assume the client sent junk and silently
+  // drop the attachment — the email still goes through.
+  if (b64.indexOf('JVBERi0') !== 0 && b64.indexOf('JVBER') !== 0) return [];
+  const safeName = /^[-_.A-Za-z0-9]+$/.test(name) && /\.pdf$/i.test(name)
+    ? name
+    : 'muntin-audit.pdf';
+  return [{ filename: safeName, content: b64 }];
 }
 
 
@@ -268,7 +298,7 @@ async function handleAuditReport(request, env, ctx) {
 // response shaping lives here so the handlers above stay focused
 // on validation and template assembly.
 
-async function sendPair({ env, userEmail, notification, autoReply, endpoint }) {
+async function sendPair({ env, userEmail, notification, autoReply, endpoint, attachments }) {
   if (!env.RESEND_API_KEY) {
     // Misconfiguration — the Worker was deployed without the
     // RESEND_API_KEY secret being set. This should never happen
@@ -298,6 +328,7 @@ async function sendPair({ env, userEmail, notification, autoReply, endpoint }) {
         subject: notification.subject,
         html:    notification.html,
         text:    notification.text,
+        attachments: attachments,
       },
       env.RESEND_API_KEY
     ),
@@ -311,6 +342,7 @@ async function sendPair({ env, userEmail, notification, autoReply, endpoint }) {
         subject: autoReply.subject,
         html:    autoReply.html,
         text:    autoReply.text,
+        attachments: attachments,
       },
       env.RESEND_API_KEY
     ),

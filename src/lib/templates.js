@@ -467,27 +467,33 @@ export function auditDeepReportNotification(body) {
   const overall     = String(body.overall_score || '—').trim();
   const subtype     = String(body.subtype || '').trim();
   const shareLink   = String(body.shareable_link || '').trim();
+  const source      = String(body.source || '').trim();
+  const hasPdf      = typeof body.pdf_b64 === 'string' && body.pdf_b64.length > 0;
 
-  const subject = 'Deep report unlocked — ' + (prettyUrl(auditedUrl) || email) + ' (' + overall + '/100)';
+  const subject = 'Audit PDF requested — ' + (prettyUrl(auditedUrl) || email) + ' (' + overall + '/100)';
 
   const html = htmlShell(
-    'Deep report unlocked',
+    'Audit PDF requested',
     [
       field('From',    escapeHtml(email)),
       field('Audited', auditedUrl ? '<a href="' + escapeHtml(auditedUrl) + '" style="color:#1F4E5B;">' + escapeHtml(prettyUrl(auditedUrl)) + '</a>' : '—'),
       field('Overall', escapeHtml(overall) + '/100'),
       field('Subtype', escapeHtml(subtype || 'restaurant')),
+      source ? field('Source', escapeHtml(source)) : '',
+      hasPdf ? field('PDF', 'Attached to this email — same file the user received.') : field('PDF', '<em style="color:#B8541A;">Not attached — client-side PDF build failed, user still got the HTML body.</em>'),
       shareLink ? '<p style="margin:20px 0 0;"><a href="' + escapeHtml(shareLink) + '" style="color:#1F4E5B;font-weight:600;">Open this audit in the tool →</a></p>' : '',
     ].join('\n')
   );
 
   const txt = [
-    'Deep report unlocked',
+    'Audit PDF requested',
     '',
     'From: ' + email,
     auditedUrl ? 'Audited: ' + auditedUrl : '',
     'Overall: ' + overall + '/100',
     'Subtype: ' + (subtype || 'restaurant'),
+    source ? 'Source: ' + source : '',
+    hasPdf ? 'PDF: attached to this email.' : 'PDF: not attached (client build failed).',
     '',
     shareLink ? 'Open in tool: ' + shareLink : '',
   ].filter(Boolean).join('\n');
@@ -500,21 +506,23 @@ export function auditDeepReportAutoResponder(body) {
   const overall    = String(body.overall_score || '').trim();
   const subtype    = String(body.subtype || '').trim();
   const shareLink  = String(body.shareable_link || '').trim();
-  const deepLink   = shareLink ? shareLink + (shareLink.indexOf('?') >= 0 ? '&' : '?') + 'deep=1' : '';
+  const hasPdf     = typeof body.pdf_b64 === 'string' && body.pdf_b64.length > 0;
 
   const pretty = prettyUrl(auditedUrl);
-  const subject = 'Your restaurant website deep audit — ' + (pretty || 'Muntin Digital') + (overall ? ' (' + overall + '/100)' : '');
+  const subject = 'Your restaurant website audit — ' + (pretty || 'Muntin Digital') + (overall ? ' (' + overall + '/100)' : '');
 
   const intro = deepReportIntroFor(subtype);
 
   const html = htmlShell(
     'Your restaurant website audit',
     [
-      pretty  ? '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Here\'s the deep report for <strong>' + escapeHtml(pretty) + '</strong>.</p>' : '',
+      pretty  ? '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Here\'s your custom audit report for <strong>' + escapeHtml(pretty) + '</strong>. The full PDF is attached to this email — it covers the score, your top three fixes, every restaurant-priority check we ran, and a page of next steps.</p>' : '',
       overall ? '<p style="margin:0 0 20px;padding:20px;background:#F3EEE3;border-radius:12px;text-align:center;"><span style="display:block;font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#6B6B6B;margin-bottom:8px;">Overall score</span><span style="font-size:48px;font-weight:500;color:#1F4E5B;font-family:Georgia,serif;">' + escapeHtml(overall) + '<span style="font-size:22px;color:#6B6B6B;">/100</span></span></p>' : '',
       '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">' + escapeHtml(intro) + '</p>',
-      deepLink ? '<p style="margin:0 0 20px;"><a href="' + escapeHtml(deepLink) + '" style="display:inline-block;padding:12px 22px;background:#1F4E5B;color:#FAF7F2;text-decoration:none;border-radius:999px;font-weight:600;font-size:14px;">Open the deep interactive report</a></p>' : '',
-      '<p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#2A2D33;">The deep report link above bypasses the email gate — save it; print it to PDF from your browser if you want something to share with your developer or agency.</p>',
+      hasPdf
+        ? '<p style="margin:0 0 18px;padding:14px 18px;background:#E8F1F3;border-left:4px solid #1F4E5B;border-radius:8px;font-size:15px;line-height:1.55;color:#14161A;"><strong>Your PDF is attached.</strong><br>Save it, forward it to your developer or marketing agency, or print it out to mark up by hand — it\'s built to be used.</p>'
+        : '',
+      shareLink ? '<p style="margin:0 0 20px;"><a href="' + escapeHtml(shareLink) + '" style="display:inline-block;padding:12px 22px;background:#1F4E5B;color:#FAF7F2;text-decoration:none;border-radius:999px;font-weight:600;font-size:14px;">Open the interactive report</a></p>' : '',
       '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">If you want a human second opinion on what to fix first, reply to this email with any questions or book a free 20-minute call:</p>',
       '<p style="margin:0 0 20px;"><a href="https://calendly.com/dongoldstein-accts/muntinconsult" style="color:#1F4E5B;font-weight:600;">Book a 20-min call →</a></p>',
       '<p style="margin:0 0 16px;font-size:14px;line-height:1.55;color:#6B6B6B;">No marketing list, no drip, no newsletter. I\'ll only email you if you reply to this one.</p>',
@@ -523,14 +531,13 @@ export function auditDeepReportAutoResponder(body) {
   );
 
   const txt = [
-    pretty  ? 'Here\'s the deep report for ' + pretty + '.' : 'Here\'s your deep audit report.',
+    pretty  ? 'Here\'s your custom audit report for ' + pretty + '. The full PDF is attached.' : 'Here\'s your custom audit report. The full PDF is attached.',
     overall ? 'Overall score: ' + overall + '/100' : '',
     '',
     intro,
     '',
-    deepLink ? 'Open the deep interactive report: ' + deepLink : '',
-    '',
-    'The link above bypasses the email gate — save it, or print to PDF from your browser to share with your developer or agency.',
+    hasPdf ? 'Your PDF is attached to this email. Save, forward, or print — built to be used.' : '',
+    shareLink ? 'Open the interactive report: ' + shareLink : '',
     '',
     'If you want a human second opinion on what to fix first, reply to this email or book a free 20-minute call:',
     'https://calendly.com/dongoldstein-accts/muntinconsult',
