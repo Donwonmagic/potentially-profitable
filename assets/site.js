@@ -1982,13 +1982,19 @@
 
     // Delegated handler — one listener on the document handles every
     // checklist item's Learn-more button, including items added
-    // dynamically (e.g. future subtype filter).
+    // dynamically (e.g. future subtype filter). Attached in the
+    // CAPTURE phase so it fires BEFORE the enclosing <label>'s
+    // default checkbox-toggle behavior: each .check-item is a
+    // <label> with a nested <input type=checkbox>, and without
+    // intercepting early, clicking Learn-more would also flip the
+    // item's completion state.
     document.addEventListener('click', (e) => {
       const btn = e.target.closest && e.target.closest('.learn-more-btn');
       if (!btn) return;
       e.preventDefault();
+      e.stopPropagation();
       openPopover(btn);
-    });
+    }, true);
 
     if (closeBtn) {
       closeBtn.addEventListener('click', (e) => {
