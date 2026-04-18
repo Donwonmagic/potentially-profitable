@@ -1431,13 +1431,13 @@
      in real time as the user checks items off. Hidden until JS wires
      it up so there is no empty pill for users without JS. -->
 <aside class="score-pill" id="scorePill" data-band="idle" aria-live="polite" aria-atomic="true" hidden>
-  <button type="button" class="score-pill-btn" id="scorePillBtn" aria-label="Jump to checklist progress bar. 0 of 24 complete.">
+  <button type="button" class="score-pill-btn" id="scorePillBtn" aria-label="Jump to checklist progress bar. 0 of 30 complete.">
     <svg class="score-ring" viewBox="0 0 44 44" aria-hidden="true" focusable="false">
       <circle class="score-ring-track" cx="22" cy="22" r="19"></circle>
       <circle class="score-ring-fill"  cx="22" cy="22" r="19"></circle>
     </svg>
     <span class="score-pill-count">
-      <strong id="scorePillNum">0</strong><span class="score-pill-total">/24</span>
+      <strong id="scorePillNum">0</strong><span class="score-pill-total">/30</span>
     </span>
     <span class="score-pill-label" id="scorePillLabel">Not started</span>
   </button>
@@ -1550,7 +1550,7 @@
     <div class="checklist-progress" id="checklistProgress">
       <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
       <div class="progress-meta">
-        <p class="progress-count" id="progressCount" aria-live="polite" aria-atomic="true"><strong>0</strong> of 24 complete</p>
+        <p class="progress-count" id="progressCount" aria-live="polite" aria-atomic="true"><strong>0</strong> of 30 complete</p>
         <div class="progress-toolbar">
           <button type="button" class="progress-toggle" id="toggleCompact" aria-pressed="false" title="Show only the headlines, hide Why / test / fix">Compact</button>
           <button type="button" class="progress-toggle" id="toggleHide" aria-pressed="false" title="Hide items you've already checked off">Hide done</button>
@@ -1582,7 +1582,7 @@
       <div class="cat-header">
         <h2>The basics.</h2>
         <span class="cat-label">Category 1 of 5 · 6 items</span>
-        <span class="cat-done" data-cat-done="basics">0 / 5</span>
+        <span class="cat-done" data-cat-done="basics">0 / 6</span>
       </div>
 
       <label class="check-item" data-check-id="01">
@@ -1727,7 +1727,7 @@
       <div class="cat-header">
         <h2>Conversions.</h2>
         <span class="cat-label">Category 3 of 5 · 8 items</span>
-        <span class="cat-done" data-cat-done="conversions">0 / 5</span>
+        <span class="cat-done" data-cat-done="conversions">0 / 8</span>
       </div>
 
       <label class="check-item" data-check-id="10" data-na="fast-casual truck cafe">
@@ -1833,7 +1833,7 @@
       <div class="cat-header">
         <h2>Findability.</h2>
         <span class="cat-label">Category 4 of 5 · 6 items</span>
-        <span class="cat-done" data-cat-done="findability">0 / 5</span>
+        <span class="cat-done" data-cat-done="findability">0 / 6</span>
       </div>
 
       <label class="check-item" data-check-id="15">
@@ -1917,7 +1917,7 @@
       <div class="cat-header">
         <h2>Trust.</h2>
         <span class="cat-label">Category 5 of 5 · 6 items</span>
-        <span class="cat-done" data-cat-done="trust">0 / 5</span>
+        <span class="cat-done" data-cat-done="trust">0 / 6</span>
       </div>
 
       <label class="check-item" data-check-id="20">
@@ -2000,16 +2000,16 @@
     <div class="section-header reveal" style="text-align:center;">
       <span class="eyebrow">Score yourself</span>
       <h2>How did your<br><span data-token="noun">restaurant</span> do?</h2>
-      <p>Add up the checks you passed. One point each, out of twenty-four. Then read the band that matches — it's an honest answer, not a polite one.</p>
+      <p>Add up the checks you passed. One point each, out of thirty. Then read the band that matches — it's an honest answer, not a polite one.</p>
     </div>
 
     <div class="services reveal" style="margin-top:48px;" id="scoreBands">
       <div class="service" data-band="failing" style="border-top:3px solid var(--rust);">
-        <div class="label" style="color:var(--rust);">0 – 8 passes</div>
+        <div class="label" style="color:var(--rust);">0 – 9 passes</div>
         <h3>Failing</h3>
-        <p class="desc">Your website is actively losing you customers every week. Most of these fixes cost nothing but attention, and the ones that do cost something pay back within a month. Start with the basics category — even fixing those five alone will move the needle.</p>
+        <p class="desc">Your website is actively losing you customers every week. Most of these fixes cost nothing but attention, and the ones that do cost something pay back within a month. Start with the basics category — even fixing those six alone will move the needle.</p>
         <ul>
-          <li>Fix items 1–5 this week</li>
+          <li>Fix items 1–6 this week</li>
           <li>Claim your Google Business Profile next week</li>
           <li>Budget a custom rebuild within 90 days</li>
         </ul>
@@ -2019,7 +2019,7 @@
         </a>
       </div>
       <div class="service" data-band="middling" style="border-top:3px solid var(--stone-2);">
-        <div class="label" style="color:var(--stone);">9 – 16 passes</div>
+        <div class="label" style="color:var(--stone);">10 – 19 passes</div>
         <h3>Middling</h3>
         <p class="desc">The basics are mostly in place, but the site isn't earning its keep. You're getting some reservations from the site but leaving more on the table. The missing items are usually in Findability and Trust — the ones that turn a passable site into one that ranks and converts.</p>
         <ul>
@@ -2033,7 +2033,7 @@
         </a>
       </div>
       <div class="service" data-band="solid" style="border-top:3px solid var(--teal);">
-        <div class="label" style="color:var(--teal);">17 – 24 passes</div>
+        <div class="label" style="color:var(--teal);">20 – 30 passes</div>
         <h3>Solid</h3>
         <p class="desc">You're in the top 10% of independent <span data-token="nounPlural">restaurant</span> websites. Now it's a maintenance game — keep the photos fresh, rotate the press quotes, monitor page speed, update the seasonal menu every quarter. The leverage is in staying disciplined, not rebuilding.</p>
         <ul>
