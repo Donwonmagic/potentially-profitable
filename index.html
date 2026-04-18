@@ -397,11 +397,33 @@
       <span class="eyebrow">Free restaurant audit · 30 seconds · no signup</span>
       <h2 id="tool-cta-heading">Is your restaurant site<br>quietly costing you customers?</h2>
       <p class="tool-cta-lede">Paste your URL. We'll run 23 restaurant-specific checks — mobile speed, menu legibility, online ordering, reservations, Google Business Profile, dietary markers, catering pages, and more — and score you against typical sites in your segment. You'll see the top 3 fixes ranked by impact in about 30 seconds.</p>
-      <form class="tool-cta-form" action="/tools/audits/restaurant/" method="GET" role="search">
+      <form class="tool-cta-form" id="toolCtaForm" action="/tools/audits/restaurant/" method="GET" role="search">
         <label for="tool-cta-url" class="sr-only">Your restaurant's website URL</label>
-        <input type="url" id="tool-cta-url" name="url" placeholder="https://yourrestaurant.com" required autocomplete="url" spellcheck="false" inputmode="url" />
+        <input type="text" id="tool-cta-url" name="url" placeholder="yourrestaurant.com" required autocomplete="url" autocapitalize="off" spellcheck="false" inputmode="url" />
         <button type="submit">Audit my site <span aria-hidden="true">→</span></button>
       </form>
+      <script>
+        // Accept bare domains (yourrestaurant.com) AND full URLs
+        // (https://www.yourrestaurant.com/foo) on the homepage CTA.
+        // The <input type="url"> native validation rejects anything
+        // without an explicit scheme and pops a persistent "Please
+        // enter a URL" tooltip, which felt heavy-handed for a hero
+        // CTA. We use a text input and normalize on submit: strip
+        // surrounding whitespace, prepend https:// if the scheme is
+        // missing, then let the native GET submit continue. The
+        // audit tool's own hydration path at /tools/audits/
+        // restaurant/ already auto-runs on the ?url= that lands.
+        (function(){
+          var form  = document.getElementById('toolCtaForm');
+          var input = document.getElementById('tool-cta-url');
+          if (!form || !input) return;
+          form.addEventListener('submit', function(){
+            var v = (input.value || '').trim();
+            if (!v) return; // let the `required` attr pop the native message
+            if (!/^https?:\/\//i.test(v)) input.value = 'https://' + v;
+          });
+        }());
+      </script>
       <ul class="tool-cta-chips" aria-label="Restaurant types the audit is tailored for">
         <li>Fine-dining</li>
         <li>Casual</li>
