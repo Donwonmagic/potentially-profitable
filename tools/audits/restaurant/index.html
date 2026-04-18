@@ -3354,6 +3354,8 @@
     var card   = document.getElementById('businessTypeCard');
     var select = document.getElementById('btcSelect');
     var sub    = document.getElementById('btcSub');
+    var labelText  = document.getElementById('btcLabelText');
+    var confPill   = document.getElementById('btcConfidence');
     if (!card || !select) return;
     if (!isRestaurant) {
       card.hidden = true;
@@ -3363,6 +3365,33 @@
     var effective = userBusinessType || (detection && detection.type) || 'restaurant';
     if (ALLOWED_BUSINESS_TYPES.indexOf(effective) === -1) effective = 'restaurant';
     select.value = effective;
+    // Confidence pill. userBusinessType wins (owner explicitly chose) →
+    // "You confirmed". Otherwise mirror the detector's confidence tier
+    // so the owner sees whether we're sure or hedging before they
+    // override. Uses canonicalSubtypeId() to silently repair any stale
+    // legacy-id hydrations from shared URLs.
+    if (confPill) {
+      var pillText = '';
+      var pillShow = true;
+      if (userBusinessType) {
+        pillText = 'You confirmed';
+      } else if (detection && detection.confidence === 'high') {
+        pillText = 'High confidence';
+      } else if (detection && detection.confidence === 'medium') {
+        pillText = 'Best guess';
+      } else if (detection && detection.confidence === 'low') {
+        pillText = 'Uncertain — please pick';
+      } else {
+        pillShow = false;
+      }
+      confPill.textContent = pillText;
+      confPill.hidden = !pillShow;
+    }
+    if (labelText) {
+      labelText.textContent = userBusinessType
+        ? 'You picked:'
+        : 'Detected:';
+    }
     if (sub) {
       if (userBusinessType) {
         sub.textContent = "You told us what kind of restaurant this is — we're using it to tailor the checks below to your segment.";
