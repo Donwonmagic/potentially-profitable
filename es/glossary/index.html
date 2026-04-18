@@ -376,6 +376,7 @@
       <a class="gloss-jump" href="#conversions">Conversiones</a>
       <a class="gloss-jump" href="#trust">Confianza</a>
       <a class="gloss-jump" href="#findability">Que te encuentren</a>
+      <a class="gloss-jump" href="#subtypes">Subtipos</a>
     </nav>
     <div class="gloss-filters" role="group" aria-label="Filtrar glosario por industria">
       <span class="gloss-filters-label">Mostrar términos para</span>
@@ -962,6 +963,108 @@
     </div>
   </section>
 
+  <section class="gloss-section" id="subtypes" aria-labelledby="subtypes-h">
+    <header class="gloss-section-head">
+      <span class="eyebrow">Category</span>
+      <h2 id="subtypes-h">Subtipos de restaurante</h2>
+      <p>El diagnóstico de restaurantes calibra el puntaje y el texto para diez segmentos. Cada subtipo mapea a tipos de schema.org, pistas de plataforma y un conjunto distinto de pesos para las revisiones prioritarias — a una pizzería le importa la comisión de los pedidos directos de una forma que a un comedor de alta cocina con menú de degustación no le importa, y viceversa. Estas entradas explican qué cubre cada segmento y cuándo aplica.</p>
+    </header>
+
+    <div class="gloss-terms">
+
+      <article class="gloss-term" id="subtype-fine-dining" data-industries="restaurants">
+        <div class="gloss-term-head">
+          <h3>Alta cocina<span class="gloss-aka">menús de degustación, prix-fixe, mesa destino</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">Restaurantes de menú de degustación o prix-fixe donde la reserva es la conversión, la carta de vinos es marketing y la integración con OpenTable/Resy/Tock define el embudo de reservas. Schema: <code>Restaurant</code>.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>El diagnóstico pondera las <a href="#reservation-link">reservas</a> con un peso de 2,0× en alta cocina y la página de <a href="#catering-page">eventos privados</a> con 1,5× — un solo alquiler corporativo de fin de año paga una semana floja. Pistas de plataforma comunes: Resy, Tock, SevenRooms, OpenTable. Señales de palabras clave: menú de degustación, prix fixe, barra del chef, sommelier, degustación, Michelin, omakase.</p>
+      </article>
+
+      <article class="gloss-term" id="subtype-casual-dining" data-industries="restaurants">
+        <div class="gloss-term-head">
+          <h3>Casual / servicio completo<span class="gloss-aka">bistró de barrio, comedor familiar</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">Restaurantes de mesa que viven en los dos mundos — reservas para la hora pico de la cena, pedidos en línea para el almuerzo para llevar. Lugares de barrio, comedores para familias, bistrós de servicio completo. Schema: <code>Restaurant</code>, <code>FoodEstablishment</code>.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>Que falten reservas o pedidos directos manda ingresos a OpenTable, a DoorDash o a un competidor que tenga los dos. El diagnóstico pondera las <a href="#reservation-link">conversiones</a> con 1,5× y espera las dos vías. Plataformas comunes: OpenTable, Yelp Reservations, Toast, Square. Señales de palabras clave: comedor, barra completa, almuerzo y cena, platos de la casa, apto para familias, lugar de barrio.</p>
+      </article>
+
+      <article class="gloss-term" id="subtype-fast-casual" data-industries="restaurants">
+        <div class="gloss-term-head">
+          <h3>Fast-casual / servicio rápido<span class="gloss-aka">servicio de mostrador, para llevar</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">Restaurantes de mostrador donde pedir en línea ES el modelo de negocio. Cada pedido por DoorDash/Grubhub cuesta 20–30 % de comisión; cada pedido por tu propio Toast o ChowNow se queda con el margen. Schema: <code>FastFoodRestaurant</code>.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>El diagnóstico pondera las <a href="#online-ordering">conversiones</a> con 2,0× y el <a href="#html-menu">formato del menú</a> con 1,5× — en fast-casual el menú ES la página de conversión; los precios, los nombres de los platos y el botón de "Pedir" de un toque tienen que vivir juntos. Pistas de plataforma: Toast, ChowNow, Square, BentoBox, Popmenu, Slice, Menufy, Olo, Lunchbox. Señales de palabras clave: pedir en línea, recoger, curbside, para llevar, fast-casual, servicio de mostrador.</p>
+      </article>
+
+      <article class="gloss-term" id="subtype-cafe" data-industries="restaurants">
+        <div class="gloss-term-head">
+          <h3>Café / cafetería<span class="gloss-aka">café de especialidad, tráfico de la mañana</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">Lugares con eje en el café donde el tráfico de la mañana es el 80 % de los ingresos y los dos datos que más busca la gente son el horario y la dirección. Schema: <code>CafeOrCoffeeShop</code>.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>El diagnóstico prioriza la <a href="#hours-visibility">visibilidad del horario</a>, un teléfono que se pueda tocar y un menú legible; las reservas no aplican, y los flujos grandes de pedidos en línea son un extra, no lo central. Pistas de plataforma: Square (dominante en el POS de cafés), Toast, ChowNow. Señales de palabras clave: espresso, capuchino, pour-over, cafetería, origen único, cold brew. Las tostadurías y las panaderías con un buen programa de café suelen clasificarse también acá.</p>
+      </article>
+
+      <article class="gloss-term" id="subtype-bakery" data-industries="restaurants">
+        <div class="gloss-term-head">
+          <h3>Panadería / repostería<span class="gloss-aka">viennoiserie, pasteles personalizados, postres</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">Panaderías, pastelerías y dulcerías donde los encargos de pasteles personalizados y las cuentas mayoristas son el motor de margen que hay por debajo del mostrador. Schema: <code>Bakery</code>, <code>IceCreamShop</code>.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>El diagnóstico pondera el flujo de venta mayorista / pedidos personalizados con 2,0× en panaderías y trata las <a href="#dietary-markers">señales de alérgenos</a> como una cuestión de confianza y seguridad, no solo de marketing — un cliente encargando un pastel de boda para un niño con alergia a los frutos secos necesita confiar en la política de contaminación cruzada antes de reservar. Pistas de plataforma: Square, Toast. Señales de palabras clave: pan, croissants, masa madre, pastelería, pastel personalizado, pastel de boda.</p>
+      </article>
+
+      <article class="gloss-term" id="subtype-bar-pub" data-industries="restaurants">
+        <div class="gloss-term-head">
+          <h3>Bar / pub / cervecería<span class="gloss-aka">taproom, gastropub, coctelería</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">Bares, pubs, taprooms, cervecerías, bares de vinos, coctelerías — lugares con eje en las bebidas donde los eventos privados y la claridad del happy hour mueven la conversión. Schema: <code>BarOrPub</code>, <code>Brewery</code>, <code>Winery</code>, <code>Distillery</code>.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>El diagnóstico añade una revisión de aviso de mayoría de edad (peso 2,0× en bar/pub, 0 en cualquier otro subtipo) y trata la página de <a href="#catering-page">eventos privados</a> como crítica para los ingresos. Las cartas de cocteles y de cerveza de barril rotan constantemente, así que la revisión del <a href="#html-menu">menú en HTML</a> también pesa más acá. Pistas de plataforma: Tripleseat para eventos, OpenTable/Resy/SevenRooms para reservas. Señales de palabras clave: cocteles, cerveza artesanal, de barril, happy hour, gastropub, taproom, speakeasy, cervecería.</p>
+      </article>
+
+      <article class="gloss-term" id="subtype-pizzeria" data-industries="restaurants">
+        <div class="gloss-term-head">
+          <h3>Pizzería<span class="gloss-aka">napolitana, Detroit, siciliana, por porción</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">Restaurantes donde la pizza es el eje y pedir ES el negocio — cada pizza por Slice/DoorDash/Grubhub se lleva 20–30 % de comisión. Schema: <code>Restaurant</code>, <code>FastFoodRestaurant</code>.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>El diagnóstico pondera las <a href="#online-ordering">conversiones</a> con 2,0× y añade una revisión del radio de entrega con 1,5×. Un flujo de pedido directo (Toast, ChowNow, Square o Slice Direct) frente a mandar todo por los agregadores es la diferencia entre ~78 % y ~55 % de margen bruto por pizza. Pistas de plataforma: Slice es la señal más clara, después Toast, ChowNow, DoorDash, Grubhub. Señales de palabras clave: pizza, napolitana, horno de leña, carbón, siciliana, estilo Detroit, calzone.</p>
+      </article>
+
+      <article class="gloss-term" id="subtype-food-truck" data-industries="restaurants">
+        <div class="gloss-term-head">
+          <h3>Food truck / pop-up<span class="gloss-aka">cocina móvil, por horario</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">Cocinas móviles y pop-ups donde la pregunta central del contenido es "¿dónde están hoy?" — y un mapa fijo de local es peor que no tener mapa. Schema: <code>Restaurant</code>, <code>FastFoodRestaurant</code>.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>El diagnóstico pondera la página del horario del food truck con 2,0× en este subtipo y le baja el peso al <a href="#click-to-directions">mapa</a> porque una dirección fija del hogar es la respuesta equivocada — un bloque dinámico de "ubicación de hoy", un feed de Instagram o un calendario de horarios es lo que el cliente realmente necesita. Las reservas no aplican; las consultas de catering son la vía de contactos con más margen. Señales de palabras clave: food truck, ubicación de hoy, horario de esta semana, pop-up, dónde estamos hoy, cocina móvil.</p>
+      </article>
+
+      <article class="gloss-term" id="subtype-ghost-kitchen" data-industries="restaurants">
+        <div class="gloss-term-head">
+          <h3>Cocina fantasma / solo entrega<span class="gloss-aka">marca virtual, cloud kitchen</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">Marcas virtuales y cloud kitchens que operan exclusivamente por agregadores — sin mesa, sin ventanilla de recogida, el cliente nunca pisa el lugar. Schema: <code>Restaurant</code>, <code>FastFoodRestaurant</code>.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>El diagnóstico pondera la revisión del "aviso explícito de solo-entrega" con 2,0× en este subtipo; sin un banner claro de "cocina virtual / sin mesa", los clientes se aparecen en persona a una dirección vacía y dejan reseñas de una estrella. Los enlaces a agregadores (DoorDash, Uber Eats, Grubhub, Caviar, Deliveroo) son la conversión principal; los mapas fijos de local no sirven. Señales de palabras clave: cocina fantasma, cocina virtual, solo entrega, cloud kitchen, sin mesa.</p>
+      </article>
+
+      <article class="gloss-term" id="subtype-catering-only" data-industries="restaurants">
+        <div class="gloss-term-head">
+          <h3>Solo catering / eventos privados<span class="gloss-aka">off-premise, drop-off, chef privado</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">Negocios que existen principalmente para servir eventos fuera del local — catering corporativo, catering de bodas, trabajo de chef privado, catering drop-off, cenas pop-up. Schema: <code>FoodEstablishment</code>, <code>Restaurant</code>.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>El sitio entero ES la <a href="#catering-page">página de catering</a>; el diagnóstico pondera esa revisión con 2,5× en este subtipo. Los planificadores de eventos comparando proveedores buscan "catering [barrio]" y aterrizan directo en páginas de catering — los paquetes, el precio por cabeza, el tiempo mínimo de aviso y un formulario estructurado de cotización son las superficies críticas. Pistas de plataforma: ezCater, CaterTrax, Tripleseat. Señales de palabras clave: menú de catering, eventos privados, catering corporativo, catering de bodas, catering drop-off, solicitar cotización, off-premise.</p>
+      </article>
+
+    </div>
+  </section>
+
 </div>
 
 </main>
@@ -1057,9 +1160,10 @@
         chip.setAttribute('aria-pressed', active ? 'true' : 'false');
       });
       if (status) {
+        var labels = { all: 'todos los rubros', restaurants: 'restaurantes' };
         status.textContent = valid === 'all'
-          ? 'Showing glossary terms for all industries.'
-          : 'Showing glossary terms for ' + valid + '.';
+          ? 'Mostrando términos del glosario para todos los rubros.'
+          : 'Mostrando términos del glosario para ' + (labels[valid] || valid) + '.';
       }
       if (options && options.updateUrl){
         var url = new URL(window.location.href);
