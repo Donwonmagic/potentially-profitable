@@ -325,6 +325,35 @@ function detectSubtype(signals) {
 var SUBTYPE_KEYWORD_WEIGHT = 1;
 var SUBTYPE_KEYWORD_CAP = 5;
 
+// Phase I5: rough median scores per subtype, used to contextualize
+// a just-run audit with "typical [subtype] sites score ~X overall."
+// Not a rigorous benchmark — they're tradespeople's estimates from
+// auditing hundreds of restaurant sites, useful for ANCHORING an
+// owner's expectation. Every subtype gets the 5-axis shape so the
+// render code stays identical across subtypes. Order:
+//   overall  — weighted mean of the four PSI pillars
+//   mobile   — PSI mobile performance
+//   a11y     — PSI accessibility
+//   seo      — PSI SEO
+//   readiness — restaurant-specific priority-check rollup
+var RESTAURANT_SUBTYPE_BENCHMARKS = {
+  'fine-dining':    { overall: 68, mobile: 60, a11y: 78, seo: 62, readiness: 55 },
+  'casual-dining':  { overall: 62, mobile: 58, a11y: 74, seo: 58, readiness: 50 },
+  'fast-casual':    { overall: 72, mobile: 70, a11y: 76, seo: 68, readiness: 62 },
+  'cafe':           { overall: 65, mobile: 62, a11y: 72, seo: 60, readiness: 54 },
+  'bakery':         { overall: 60, mobile: 55, a11y: 70, seo: 55, readiness: 45 },
+  'bar-pub':        { overall: 58, mobile: 54, a11y: 68, seo: 52, readiness: 42 },
+  'pizzeria':       { overall: 70, mobile: 68, a11y: 72, seo: 64, readiness: 60 },
+  'food-truck':     { overall: 55, mobile: 54, a11y: 66, seo: 48, readiness: 40 },
+  'ghost-kitchen':  { overall: 65, mobile: 64, a11y: 70, seo: 58, readiness: 52 },
+  'catering-only':  { overall: 60, mobile: 56, a11y: 70, seo: 58, readiness: 48 }
+};
+
+function subtypeBenchmark(id) {
+  var canon = canonicalSubtypeId(id);
+  return (canon && RESTAURANT_SUBTYPE_BENCHMARKS[canon]) || null;
+}
+
 /**
  * Resolve a subtype-specific weight override for a given check id.
  * Returns the number (>=0) if overridden, or null to use the check's
