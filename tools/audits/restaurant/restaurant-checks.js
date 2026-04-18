@@ -838,6 +838,36 @@ var RESTAURANT_PRIORITY_CHECKS = [
         impact: 'Gift cards matter less for ghost kitchens (customers who never visit are unlikely to gift-card-gift the experience), but digital e-cards still add revenue around holidays — and matter for corporate catering accounts.'
       }
     }
+  },
+  {
+    // Phase H3: Loyalty / rewards presence.
+    type: 'loyalty',
+    weight: 0.4,
+    anchor: '#conversions',
+    effort: 'dev',
+    minutes: 120,
+    impact: 'Loyalty programs lift repeat-visit frequency by 15-30% on average — a material difference for a thin-margin business. The modern loyalty tools (Thanx, Paytronix, Square Loyalty) integrate with POS so every visit earns without a punchcard, which is the actual bar for adoption.',
+    pass: 'Your site promotes a loyalty program',
+    passNote: '{detected} on your site — repeat-visit frequency is where restaurant margin lives, and you have the infrastructure to compound it.',
+    fail: null,
+    failNote: null,
+    unverified: 'We didn\'t spot a loyalty program — is this right?',
+    unverifiedNote: 'We scan for loyalty text ("rewards program", "earn points", "join our rewards") and known platforms (Thanx, LevelUp, Paytronix, Como, Fivestars, Loyalzoo). If you run one we missed, tell us. If you do not have one yet, a modern POS-integrated loyalty program pays back in 90-120 days for most casual-dining and fast-casual restaurants.'
+  },
+  {
+    // Phase H4: Email newsletter capture.
+    type: 'email-capture',
+    weight: 0.4,
+    anchor: '#conversions',
+    effort: 'dev',
+    minutes: 60,
+    impact: 'An email list is the only marketing channel you OWN — Instagram can ghost you, Google can change the rules, but your list keeps compounding. Restaurants with a newsletter capture typically see 3-5x higher repeat-visit rates from subscribers vs. non-subscribers.',
+    pass: 'Your site captures newsletter signups',
+    passNote: '{detected} on your site — you are building an owned audience, which is the single most valuable marketing asset a restaurant can accumulate.',
+    fail: null,
+    failNote: null,
+    unverified: 'We didn\'t spot a newsletter capture — is this right?',
+    unverifiedNote: 'We look for an email input paired with newsletter language (subscribe / join our list / newsletter) OR a form action pointing at Mailchimp, Klaviyo, ConvertKit, Constant Contact, or similar. If yours is elsewhere or the form is in a modal we didn\'t render, let us know.'
   }
 ];
 
@@ -1031,6 +1061,59 @@ function detectGiftCardPresence(pageText, allUrls) {
     }
   }
   return { present: viaText || viaHosts, viaText: viaText, viaHosts: viaHosts };
+}
+
+// H3: Loyalty / rewards detection. Text keywords plus known
+// loyalty-platform hosts (Thanx, LevelUp, Paytronix, Como,
+// Fivestars, Loyalzoo, Punchcard, Hang).
+var LOYALTY_PATTERNS = {
+  keywords: /\b(?:loyalty\s+program|rewards\s+program|earn\s+(?:points|rewards)|join\s+our\s+rewards|sign\s+up\s+for\s+rewards|loyalty\s+(?:club|members))\b/i,
+  hosts: ['thanx.com', 'thelevelup', 'paytronix', 'como.com', 'fivestars', 'loyalzoo', 'punchcard', 'hang.com', 'belly', 'spendgo']
+};
+function detectLoyaltyProgram(pageText, allUrls) {
+  var viaText = pageText ? LOYALTY_PATTERNS.keywords.test(pageText) : false;
+  var viaHosts = false;
+  if (Array.isArray(allUrls)) {
+    for (var i = 0; i < allUrls.length && !viaHosts; i++) {
+      var u = String(allUrls[i] || '').toLowerCase();
+      for (var j = 0; j < LOYALTY_PATTERNS.hosts.length; j++) {
+        if (u.indexOf(LOYALTY_PATTERNS.hosts[j]) >= 0) { viaHosts = true; break; }
+      }
+    }
+  }
+  return { present: viaText || viaHosts, viaText: viaText, viaHosts: viaHosts };
+}
+
+// H4: Email newsletter capture detection. Scans HTML for an
+// email <input> inside a form (or a form's action attribute
+// pointing at a known mailing-list platform). The check passes
+// when we see BOTH an email input AND "newsletter / subscribe /
+// join" language, so a contact-form-only site doesn't falsely
+// flag as a newsletter capture.
+var EMAIL_CAPTURE_HOSTS = [
+  'list-manage.com', 'mailchimp.com', 'createsend.com', 'constantcontact.com',
+  'klaviyo.com', 'convertkit.com', 'cmail19.com', 'cmail20.com', 'flodesk.com',
+  'mailerlite.com', 'activehosted.com', 'drip.com', 'hubspot.com'
+];
+function detectEmailCapture(html, allUrls) {
+  if (!html || typeof html !== 'string') return { present: false };
+  var hasEmailInput = /<input[^>]*type\s*=\s*["']email["']/i.test(html) ||
+                      /<input[^>]*name\s*=\s*["']email["']/i.test(html);
+  var hasNewsletterCopy = /\b(?:newsletter|subscribe|join\s+our\s+(?:list|email|community)|stay\s+in\s+the\s+loop|sign\s+up\s+for\s+(?:updates|our))\b/i.test(html);
+  var hasHost = false;
+  if (Array.isArray(allUrls)) {
+    for (var i = 0; i < allUrls.length && !hasHost; i++) {
+      var u = String(allUrls[i] || '').toLowerCase();
+      for (var j = 0; j < EMAIL_CAPTURE_HOSTS.length; j++) {
+        if (u.indexOf(EMAIL_CAPTURE_HOSTS[j]) >= 0) { hasHost = true; break; }
+      }
+    }
+  }
+  // Pass when we have EITHER a recognized provider (hasHost) OR
+  // an email input + newsletter copy pair. An email input alone
+  // is usually a contact-form, which isn't a newsletter capture.
+  var present = hasHost || (hasEmailInput && hasNewsletterCopy);
+  return { present: present, hasEmailInput: hasEmailInput, hasNewsletterCopy: hasNewsletterCopy, hasHost: hasHost };
 }
 
 function detectDietaryMarkers(pageText) {

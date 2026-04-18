@@ -3426,6 +3426,45 @@
       return makeResult(def, 'unverified');
     }
 
+    // ---- Loyalty program (Phase H3) ----
+    if (def.type === 'loyalty') {
+      if (typeof detectLoyaltyProgram !== 'function') return makeResult(def, 'unverified');
+      var lyText = String(pageText || '');
+      var lyUrls = (allUrls || []).slice();
+      var lyCrawl = window.__auditCrawl;
+      if (lyCrawl && Array.isArray(lyCrawl.pages)) {
+        for (var li = 0; li < lyCrawl.pages.length; li++) {
+          var lp = lyCrawl.pages[li];
+          if (lp && typeof lp.html === 'string') lyText += '\n' + lp.html;
+          if (lp && typeof lp.url === 'string')   lyUrls.push(lp.url);
+        }
+      }
+      var ly = detectLoyaltyProgram(lyText, lyUrls);
+      if (ly.present) return makeResult(def, 'pass', [{ name: ly.viaHosts ? 'Loyalty platform' : 'Loyalty program' }]);
+      return makeResult(def, 'unverified');
+    }
+
+    // ---- Email newsletter capture (Phase H4) ----
+    if (def.type === 'email-capture') {
+      if (typeof detectEmailCapture !== 'function') return makeResult(def, 'unverified');
+      var ecHtml = '';
+      var ecUrls = (allUrls || []).slice();
+      var ecCrawl = window.__auditCrawl;
+      if (ecCrawl && ecCrawl.homepage && typeof ecCrawl.homepage.html === 'string') {
+        ecHtml += ecCrawl.homepage.html;
+      }
+      if (ecCrawl && Array.isArray(ecCrawl.pages)) {
+        for (var ei = 0; ei < ecCrawl.pages.length; ei++) {
+          var ep = ecCrawl.pages[ei];
+          if (ep && typeof ep.html === 'string') ecHtml += '\n' + ep.html;
+          if (ep && typeof ep.url === 'string')   ecUrls.push(ep.url);
+        }
+      }
+      var ec = detectEmailCapture(ecHtml, ecUrls);
+      if (ec.present) return makeResult(def, 'pass', [{ name: 'Newsletter' }]);
+      return makeResult(def, 'unverified');
+    }
+
     // ---- Gift-card presence (Phase H2) ----
     if (def.type === 'gift-cards') {
       if (typeof detectGiftCardPresence !== 'function') return makeResult(def, 'unverified');
