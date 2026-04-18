@@ -2713,6 +2713,36 @@
     return __pdfFontsPromise;
   }
 
+  // Phase L4: language detection. The audit PDF is the canonical
+  // Muntin deliverable, so accessibility here matters — a lot of
+  // US restaurant operators speak Spanish at home and are better
+  // served by a PDF in their language. Detection order:
+  //   1. ?lang=es query parameter (explicit opt-in, shareable link)
+  //   2. <html lang="es"> on the tool page (future-proof for a
+  //      per-page localized route)
+  //   3. navigator.language starts with 'es' (browser preference)
+  // Defaults to 'en' when nothing matches. The result is stored on
+  // window.__muntinLang so both the PDF builder and any future tool
+  // UI can read a single source of truth.
+  (function detectLang(){
+    if (window.__muntinLang) return;
+    try {
+      var params = new URLSearchParams(window.location.search || '');
+      var q = (params.get('lang') || '').toLowerCase();
+      if (q === 'es' || q === 'es-mx' || q === 'es-us' || q.indexOf('es-') === 0) {
+        window.__muntinLang = 'es'; return;
+      }
+      if (q === 'en' || q.indexOf('en-') === 0) {
+        window.__muntinLang = 'en'; return;
+      }
+      var htmlLang = (document.documentElement.getAttribute('lang') || '').toLowerCase();
+      if (htmlLang.indexOf('es') === 0) { window.__muntinLang = 'es'; return; }
+      var nav = (navigator.language || navigator.userLanguage || '').toLowerCase();
+      if (nav.indexOf('es') === 0) { window.__muntinLang = 'es'; return; }
+    } catch (_) {}
+    window.__muntinLang = 'en';
+  })();
+
   // Phase L3b: build a custom multi-page PDF of the current audit.
   // Reads from the window-scoped state populated during renderReport:
   //   __auditLastResult   — overall + per-pillar scores + URL
@@ -2730,6 +2760,191 @@
     return loadJsPdf().then(function(jsPDF){
       if (!jsPDF) return null;
 
+      // --- i18n: translation dictionary ------------------------------
+      // The PDF builder carries its own string table (no external i18n
+      // framework) because the tool is a single self-contained page
+      // and the total string count is small. t(key, [vars]) returns
+      // the localized string for the detected language and falls back
+      // to the English key if the translation is missing. Template
+      // vars use {name} placeholders.
+      var LANG = (window.__muntinLang === 'es') ? 'es' : 'en';
+      var STRINGS = {
+        en: {
+          'meta.title':       'Muntin Digital \u2014 Website Audit for {url}',
+          'meta.title.empty': 'Muntin Digital \u2014 Website Audit',
+          'meta.subject':     'Custom restaurant website audit report from Muntin Digital',
+          'meta.keywords':    'restaurant website audit, Muntin Digital, performance, accessibility, SEO',
+          'cover.eyebrow':    'Website Audit',
+          'cover.title':      'Custom website audit for {url}.',
+          'cover.title.fallback': 'Custom website audit for your site.',
+          'cover.overallScore': 'Overall Score',
+          'cover.outOf100':   'out of 100',
+          'cover.byPillar':   'By Pillar',
+          'cover.tagline':    'Structure brings clarity.',
+          'pillar.mobile':    'Mobile performance',
+          'pillar.a11y':      'Accessibility',
+          'pillar.bp':        'Best practices',
+          'pillar.seo':       'SEO',
+          'pillar.rest':      'Restaurant readiness',
+          'exec.eyebrow':     'Executive Summary',
+          'exec.title':       'What this audit found.',
+          'exec.p1':          'Your {segment} at {url} scored {score} out of 100 overall. {total} priority checks were evaluated — {failed} flagged for action, {unverified} need a human to confirm, {passed} passed cleanly.',
+          'exec.p2':          'The highest-leverage moves are on the next page. The full breakdown follows, grouped by status so you can skim failures first and confirm passes last. A scoring-method reference page lives near the end for anyone reading this who did not run the audit.',
+          'exec.headline.clean':   'Your site is in strong shape. Maintain what\u2019s working; sharpen the margins.',
+          'exec.headline.many':    'There is real work to do. Start with the three top fixes \u2014 they carry the most weight.',
+          'exec.headline.solid':   'Solid foundation with a handful of fixable gaps. Ship the top three and re-run.',
+          'exec.headline.gaps':    'Meaningful gaps to close. The top three fixes will move the most revenue.',
+          'exec.kicker.headline':  'THE HEADLINE',
+          'exec.recap.score':      'OVERALL SCORE',
+          'exec.recap.fixes':      'FLAGGED FIXES',
+          'exec.recap.passing':    'PASSING CHECKS',
+          'exec.recap.outOf100':   'out of 100',
+          'exec.recap.item':       'action item',
+          'exec.recap.items':      'action items',
+          'exec.recap.passingSub': 'looking good',
+          'exec.noteFrom':         'Note from the Audit',
+          'fixes.eyebrow':    'Top 3 Fixes',
+          'fixes.title':      'The highest-leverage moves to make next.',
+          'fixes.subhead':    'Ranked by weighted impact for your {segment} segment. Start at the top \u2014 each card tells you what to do, why it matters, and how much effort it takes.',
+          'fixes.none.title': 'No urgent fixes.',
+          'fixes.none.body':  'Every priority check passed or is awaiting confirmation. Scan the full breakdown on the next pages to confirm the unverified items and keep your edge.',
+          'effort.self':      'Fix yourself',
+          'effort.dev':       'Ask your developer',
+          'effort.rebuild':   'Rebuild needed',
+          'time.min':         '~{n} min',
+          'time.hr':          '~{n} hr',
+          'time.halfday':     'Half-day project',
+          'breakdown.eyebrow':  'Priority Checks',
+          'breakdown.title':    'Full {n}-check breakdown.',
+          'breakdown.subhead':  'Grouped by status. Failures first (where the next wins are), unverified items next (worth a human glance), passing checks last (for reference).',
+          'breakdown.englishNote': 'Technical details for each check are presented in English.',
+          'group.failed':      'Failed',
+          'group.unverified':  'Unverified',
+          'group.passed':      'Passing',
+          'method.eyebrow':    'Method',
+          'method.title':      'How we scored it.',
+          'method.col1Head':   'What each pillar measures.',
+          'method.col2Head':   'How to read the score.',
+          'method.pillar.mobile.label': 'MOBILE PERFORMANCE',
+          'method.pillar.mobile.desc':  'Lighthouse mobile speed. Core web vitals: how fast the page paints, how stable the layout is, how quickly it responds.',
+          'method.pillar.a11y.label':   'ACCESSIBILITY',
+          'method.pillar.a11y.desc':    'Can the site be used by everyone, including with assistive tech. Contrast, labels, landmarks, keyboard paths.',
+          'method.pillar.bp.label':     'BEST PRACTICES',
+          'method.pillar.bp.desc':      'Modern security and web hygiene. HTTPS, no console errors, safe deprecated-API use, correct image sizing.',
+          'method.pillar.seo.label':    'SEO',
+          'method.pillar.seo.desc':     'How discoverable you are in search. Meta tags, link targets, structured data, crawlability of key pages.',
+          'method.pillar.rest.label':   'RESTAURANT READINESS',
+          'method.pillar.rest.desc':    'The muntin-specific layer: menu presence, reservations/ordering, hours, directions, review signals \u2014 what converts a search into a seat.',
+          'method.band.strong':     'Strong.',
+          'method.band.fix':        'Fix targets.',
+          'method.band.urgent':     'Urgent.',
+          'method.band.strong.desc':'Maintain what\u2019s working. Reruns will confirm you haven\u2019t regressed.',
+          'method.band.fix.desc':   'Where your next wins live. Most sites spend the most time here.',
+          'method.band.urgent.desc':'These are costing you customers right now. Prioritize.',
+          'method.rerun.head':  'Re-running the audit.',
+          'method.rerun.body':  'The tool is free and open. Re-run it any time you ship a fix \u2014 the shareable ?url= link auto-runs on a fresh visit, so you can bookmark it as your before-and-after.',
+          'hero.eyebrow':       'Next Steps',
+          'hero.title':         'Want a human second opinion?',
+          'hero.body':          'If the audit surfaced more than you want to tackle alone, let\u2019s talk. Twenty minutes on Zoom, walking through your results live \u2014 no pitch, no pressure. One set of hands, restaurant-savvy, here to untangle the structural stuff so your site starts earning.',
+          'hero.button':        'Book a 20-minute call',
+          'hero.subcard.title': 'Run this again any time.',
+          'hero.subcard.body':  'The audit tool is free and open. The ?url= in your shareable link auto-runs on any fresh visit \u2014 bookmark it after you ship a fix to see the delta.',
+          'segment.default':    'restaurant'
+        },
+        es: {
+          'meta.title':       'Muntin Digital \u2014 Auditor\u00eda del sitio web de {url}',
+          'meta.title.empty': 'Muntin Digital \u2014 Auditor\u00eda del sitio web',
+          'meta.subject':     'Informe personalizado de auditor\u00eda del sitio web de restaurante, por Muntin Digital',
+          'meta.keywords':    'auditor\u00eda sitio web restaurante, Muntin Digital, rendimiento, accesibilidad, SEO',
+          'cover.eyebrow':    'Auditor\u00eda del sitio web',
+          'cover.title':      'Auditor\u00eda personalizada del sitio web para {url}.',
+          'cover.title.fallback': 'Auditor\u00eda personalizada para tu sitio web.',
+          'cover.overallScore': 'Puntuaci\u00f3n general',
+          'cover.outOf100':   'de 100',
+          'cover.byPillar':   'Por pilar',
+          'cover.tagline':    'La estructura aporta claridad.',
+          'pillar.mobile':    'Rendimiento m\u00f3vil',
+          'pillar.a11y':      'Accesibilidad',
+          'pillar.bp':        'Mejores pr\u00e1cticas',
+          'pillar.seo':       'SEO',
+          'pillar.rest':      'Preparaci\u00f3n del restaurante',
+          'exec.eyebrow':     'Resumen ejecutivo',
+          'exec.title':       'Lo que encontr\u00f3 esta auditor\u00eda.',
+          'exec.p1':          'Tu {segment} en {url} obtuvo una puntuaci\u00f3n general de {score} de 100. Se evaluaron {total} verificaciones prioritarias: {failed} marcadas para acci\u00f3n, {unverified} requieren verificaci\u00f3n humana y {passed} pasaron sin problemas.',
+          'exec.p2':          'Las acciones de mayor impacto est\u00e1n en la siguiente p\u00e1gina. El desglose completo sigue despu\u00e9s, agrupado por estado para que puedas revisar primero las fallas y confirmar al final las aprobadas. Cerca del final encontrar\u00e1s una p\u00e1gina de referencia del m\u00e9todo de puntuaci\u00f3n para quien no haya ejecutado la auditor\u00eda.',
+          'exec.headline.clean':   'Tu sitio est\u00e1 en buena forma. Mant\u00e9n lo que funciona y afila los detalles.',
+          'exec.headline.many':    'Hay trabajo real por hacer. Empieza por los tres arreglos principales \u2014 son los que m\u00e1s pesan.',
+          'exec.headline.solid':   'Base s\u00f3lida con algunas brechas f\u00e1ciles de cerrar. Ejecuta los tres arreglos principales y vuelve a medir.',
+          'exec.headline.gaps':    'Brechas importantes por cerrar. Los tres arreglos principales mover\u00e1n m\u00e1s ingresos.',
+          'exec.kicker.headline':  'EL TITULAR',
+          'exec.recap.score':      'PUNTUACI\u00d3N GENERAL',
+          'exec.recap.fixes':      'ARREGLOS MARCADOS',
+          'exec.recap.passing':    'VERIFICACIONES APROBADAS',
+          'exec.recap.outOf100':   'de 100',
+          'exec.recap.item':       'acci\u00f3n pendiente',
+          'exec.recap.items':      'acciones pendientes',
+          'exec.recap.passingSub': 'se ven bien',
+          'exec.noteFrom':         'Nota de la auditor\u00eda',
+          'fixes.eyebrow':    'Los 3 principales arreglos',
+          'fixes.title':      'Las acciones de mayor impacto a realizar ahora.',
+          'fixes.subhead':    'Clasificados por impacto ponderado para tu segmento de {segment}. Empieza por el primero \u2014 cada tarjeta te dice qu\u00e9 hacer, por qu\u00e9 importa y cu\u00e1nto esfuerzo implica.',
+          'fixes.none.title': 'No hay arreglos urgentes.',
+          'fixes.none.body':  'Todas las verificaciones prioritarias pasaron o est\u00e1n a la espera de confirmaci\u00f3n. Revisa el desglose completo en las p\u00e1ginas siguientes para confirmar los elementos sin verificar y mantener la ventaja.',
+          'effort.self':      'Arr\u00e9glalo t\u00fa mismo',
+          'effort.dev':       'Pide a tu desarrollador',
+          'effort.rebuild':   'Se necesita reconstruir',
+          'time.min':         '~{n} min',
+          'time.hr':          '~{n} h',
+          'time.halfday':     'Proyecto de medio d\u00eda',
+          'breakdown.eyebrow':  'Verificaciones prioritarias',
+          'breakdown.title':    'Desglose completo de {n} verificaciones.',
+          'breakdown.subhead':  'Agrupado por estado. Primero las fallas (donde est\u00e1n los pr\u00f3ximos triunfos), luego las no verificadas (que merecen una revisi\u00f3n humana) y al final las aprobadas (como referencia).',
+          'breakdown.englishNote': 'Los detalles t\u00e9cnicos de cada verificaci\u00f3n se muestran en ingl\u00e9s.',
+          'group.failed':      'Fallaron',
+          'group.unverified':  'Sin verificar',
+          'group.passed':      'Aprobaron',
+          'method.eyebrow':    'M\u00e9todo',
+          'method.title':      'C\u00f3mo lo calificamos.',
+          'method.col1Head':   'Qu\u00e9 mide cada pilar.',
+          'method.col2Head':   'C\u00f3mo leer la puntuaci\u00f3n.',
+          'method.pillar.mobile.label': 'RENDIMIENTO M\u00d3VIL',
+          'method.pillar.mobile.desc':  'Velocidad m\u00f3vil seg\u00fan Lighthouse. Core Web Vitals: qu\u00e9 tan r\u00e1pido pinta la p\u00e1gina, qu\u00e9 tan estable es el dise\u00f1o y qu\u00e9 tan r\u00e1pido responde.',
+          'method.pillar.a11y.label':   'ACCESIBILIDAD',
+          'method.pillar.a11y.desc':    'Si el sitio puede ser usado por todos, incluidas personas con tecnolog\u00edas de asistencia. Contraste, etiquetas, puntos de referencia, rutas de teclado.',
+          'method.pillar.bp.label':     'MEJORES PR\u00c1CTICAS',
+          'method.pillar.bp.desc':      'Seguridad e higiene web moderna. HTTPS, sin errores de consola, uso seguro de APIs obsoletas y tama\u00f1o correcto de im\u00e1genes.',
+          'method.pillar.seo.label':    'SEO',
+          'method.pillar.seo.desc':     'Qu\u00e9 tan detectable eres en b\u00fasquedas. Metaetiquetas, enlaces, datos estructurados y rastreabilidad de p\u00e1ginas clave.',
+          'method.pillar.rest.label':   'PREPARACI\u00d3N DEL RESTAURANTE',
+          'method.pillar.rest.desc':    'La capa espec\u00edfica de Muntin: presencia del men\u00fa, reservas/pedidos, horarios, direcciones y se\u00f1ales de rese\u00f1as \u2014 lo que convierte una b\u00fasqueda en un cliente sentado.',
+          'method.band.strong':     'S\u00f3lido.',
+          'method.band.fix':        'Objetivos de mejora.',
+          'method.band.urgent':     'Urgente.',
+          'method.band.strong.desc':'Mant\u00e9n lo que funciona. Volver a ejecutar confirmar\u00e1 que no hubo retrocesos.',
+          'method.band.fix.desc':   'Donde est\u00e1n tus pr\u00f3ximos triunfos. La mayor\u00eda de los sitios pasan m\u00e1s tiempo aqu\u00ed.',
+          'method.band.urgent.desc':'Esto te est\u00e1 costando clientes ahora mismo. Priorizalo.',
+          'method.rerun.head':  'Volver a ejecutar la auditor\u00eda.',
+          'method.rerun.body':  'La herramienta es gratuita y abierta. Vuelve a ejecutarla cuando publiques un arreglo \u2014 el enlace compartible con ?url= se ejecuta autom\u00e1ticamente en una visita nueva, as\u00ed que puedes guardarlo como tu antes y despu\u00e9s.',
+          'hero.eyebrow':       'Pr\u00f3ximos pasos',
+          'hero.title':         '\u00bfQuieres una segunda opini\u00f3n humana?',
+          'hero.body':          'Si la auditor\u00eda mostr\u00f3 m\u00e1s de lo que quieres manejar t\u00fa solo, hablemos. Veinte minutos en Zoom, revisando tus resultados en vivo \u2014 sin presentaci\u00f3n comercial, sin presi\u00f3n. Un solo equipo, con experiencia en restaurantes, para desenredar la parte estructural y que tu sitio empiece a rendir.',
+          'hero.button':        'Reserva una llamada de 20 minutos',
+          'hero.subcard.title': 'Ejec\u00fatala cuando quieras.',
+          'hero.subcard.body':  'La herramienta de auditor\u00eda es gratuita y abierta. El par\u00e1metro ?url= en tu enlace se ejecuta autom\u00e1ticamente en una visita nueva \u2014 gu\u00e1rdalo despu\u00e9s de publicar un arreglo para ver la diferencia.',
+          'segment.default':    'restaurante'
+        }
+      };
+      function t(key, vars) {
+        var bundle = STRINGS[LANG] || STRINGS.en;
+        var s = (bundle[key] != null) ? bundle[key] : (STRINGS.en[key] != null ? STRINGS.en[key] : key);
+        if (vars) for (var k in vars) {
+          if (Object.prototype.hasOwnProperty.call(vars, k)) {
+            s = s.split('{' + k + '}').join(String(vars[k]));
+          }
+        }
+        return s;
+      }
+
       var doc = new jsPDF({ unit: 'pt', format: 'letter' });
       // Document metadata. Embedded in the /Info dictionary of the
       // PDF so assistive tech (screen readers, PDF readers' "document
@@ -2740,18 +2955,18 @@
         var __urlForTitle = (last.url || '')
           .replace(/^https?:\/\//, '').replace(/\/$/, '');
         doc.setProperties({
-          title:    'Muntin Digital \u2014 Website Audit for ' + (__urlForTitle || 'your site'),
-          subject:  'Custom restaurant website audit report from Muntin Digital',
+          title:    __urlForTitle ? t('meta.title', { url: __urlForTitle }) : t('meta.title.empty'),
+          subject:  t('meta.subject'),
           author:   'Muntin Digital',
           creator:  'Muntin Digital audit tool',
-          keywords: 'restaurant website audit, Muntin Digital, performance, accessibility, SEO'
+          keywords: t('meta.keywords')
         });
         // /Lang hint for assistive-tech language announcement. jsPDF
         // 2.5 exposes this via setLanguage; set based on the detected
         // UI locale so Spanish readers hear the file announced in
         // Spanish (see the lang detection block below).
         if (typeof doc.setLanguage === 'function') {
-          doc.setLanguage((window.__muntinLang === 'es') ? 'es' : 'en-US');
+          doc.setLanguage(LANG === 'es' ? 'es' : 'en-US');
         }
       } catch (_) { /* metadata is best-effort */ }
       var PAGE_W = 612, PAGE_H = 792;
@@ -3166,11 +3381,11 @@
       // Pillar data, computed once and reused across the cover and
       // the exec summary recap strip.
       var pillars = [
-        { label: 'Mobile performance',    score: last.perf },
-        { label: 'Accessibility',          score: last.a11y },
-        { label: 'Best practices',         score: last.bp },
-        { label: 'SEO',                    score: last.seo },
-        { label: 'Restaurant readiness',   score: last.restaurant }
+        { label: t('pillar.mobile'), score: last.perf },
+        { label: t('pillar.a11y'),   score: last.a11y },
+        { label: t('pillar.bp'),     score: last.bp },
+        { label: t('pillar.seo'),    score: last.seo },
+        { label: t('pillar.rest'),   score: last.restaurant }
       ].filter(function(p){ return typeof p.score === 'number' && !isNaN(p.score); });
 
       var entries = (window.__auditResults && window.__auditResults.entries) || [];
@@ -3186,13 +3401,14 @@
       drawMuntinMark(MARGIN, MARGIN + 4, 28, COL_TEAL);
 
       // Eyebrow row
-      drawEyebrow('Website Audit', MARGIN, MARGIN + 84, COL_TEAL);
+      drawEyebrow(t('cover.eyebrow'), MARGIN, MARGIN + 84, COL_TEAL);
 
       // Monumental title
       setBrandFont(true, 32);
       setColor(COL_INK);
       var titleY = MARGIN + 120;
-      titleY = drawWrappedText('Custom website audit for ' + (url || 'your site') + '.', MARGIN, titleY, COL_W, 36);
+      var coverTitle = url ? t('cover.title', { url: url }) : t('cover.title.fallback');
+      titleY = drawWrappedText(coverTitle, MARGIN, titleY, COL_W, 36);
 
       // Thin divider rule under the title
       setColor(COL_LINE_DK, 'draw');
@@ -3207,7 +3423,7 @@
 
       // Score block (left) + pillar lockups (right)
       var scoreEyebrowY = 320;
-      drawEyebrow('Overall Score', MARGIN, scoreEyebrowY, COL_TEAL);
+      drawEyebrow(t('cover.overallScore'), MARGIN, scoreEyebrowY, COL_TEAL);
 
       var ringCX = MARGIN + 72;
       var ringCY = scoreEyebrowY + 84;
@@ -3217,10 +3433,10 @@
       doc.text(String(overall), ringCX, ringCY + 14, { align: 'center' });
       setBrandFont(false, 10);
       setColor(COL_STONE);
-      doc.text('out of 100', ringCX, ringCY + 34, { align: 'center' });
+      doc.text(t('cover.outOf100'), ringCX, ringCY + 34, { align: 'center' });
 
       // Pillar lockups on the right
-      drawEyebrow('By Pillar', MARGIN + 224, scoreEyebrowY, COL_TEAL);
+      drawEyebrow(t('cover.byPillar'), MARGIN + 224, scoreEyebrowY, COL_TEAL);
       var plY = scoreEyebrowY + 28;
       var plW = COL_W - 224;
       for (var pli = 0; pli < pillars.length; pli++) {
@@ -3233,7 +3449,7 @@
       // Tagline baseline above the footer
       setBrandFont(true, 11);
       setColor(COL_TEAL);
-      doc.text('Structure brings clarity.', MARGIN, PAGE_H - 68);
+      doc.text(t('cover.tagline'), MARGIN, PAGE_H - 68);
 
       // ================================================================
       // PAGE 2 — EXECUTIVE SUMMARY
@@ -3243,39 +3459,43 @@
       paintCreamBackground();
 
       var execY = drawSectionHeader({
-        eyebrow: 'Executive Summary',
+        eyebrow: t('exec.eyebrow'),
         eyebrowColor: COL_TEAL,
-        title: 'What this audit found.',
+        title: t('exec.title'),
         titleSize: 26,
         titleLeading: 30,
         y: MARGIN + 32
       });
 
-      // Narrative paragraphs
+      // Narrative paragraphs. Segment label is lowercased only for
+      // languages that expect it (English); keep as-provided for ES.
       setBrandFont(false, 11);
       setColor(COL_INK_SOFT);
-      var p1 = 'Your ' + (subtype.label || 'restaurant').toLowerCase() +
-               ' at ' + (url || 'the submitted URL') +
-               ' scored ' + overall + ' out of 100 overall. ' +
-               entries.length + ' priority checks were evaluated — ' +
-               grouped.failed.length + ' flagged for action, ' +
-               grouped.unverified.length + ' need a human to confirm, ' +
-               grouped.passed.length + ' passed cleanly.';
+      var segLabel = subtype.label || t('segment.default');
+      if (LANG === 'en') segLabel = segLabel.toLowerCase();
+      var p1 = t('exec.p1', {
+        segment:    segLabel,
+        url:        url || (LANG === 'es' ? 'la URL enviada' : 'the submitted URL'),
+        score:      overall,
+        total:      entries.length,
+        failed:     grouped.failed.length,
+        unverified: grouped.unverified.length,
+        passed:     grouped.passed.length
+      });
       execY = drawWrappedText(p1, MARGIN, execY + 8, COL_W, 16);
 
-      var p2 = 'The highest-leverage moves are on the next page. The full breakdown follows, grouped by status so you can skim failures first and confirm passes last. A scoring-method reference page lives near the end for anyone reading this who did not run the audit.';
-      execY = drawWrappedText(p2, MARGIN, execY + 8, COL_W, 16);
+      execY = drawWrappedText(t('exec.p2'), MARGIN, execY + 8, COL_W, 16);
 
       // Pull-quote callout with the headline takeaway
       var headline;
       if (grouped.failed.length === 0 && grouped.unverified.length <= 2) {
-        headline = 'Your site is in strong shape. Maintain what\u2019s working; sharpen the margins.';
+        headline = t('exec.headline.clean');
       } else if (grouped.failed.length >= 5) {
-        headline = 'There is real work to do. Start with the three top fixes \u2014 they carry the most weight.';
+        headline = t('exec.headline.many');
       } else if (overall >= 75) {
-        headline = 'Solid foundation with a handful of fixable gaps. Ship the top three and re-run.';
+        headline = t('exec.headline.solid');
       } else {
-        headline = 'Meaningful gaps to close. The top three fixes will move the most revenue.';
+        headline = t('exec.headline.gaps');
       }
       var calloutY = execY + 24;
       var calloutH = 80;
@@ -3286,20 +3506,20 @@
       setBrandFont(true, 9);
       setColor(COL_TEAL);
       doc.setCharSpace(1.2);
-      doc.text('THE HEADLINE', MARGIN + 24, calloutY + 22);
+      doc.text(t('exec.kicker.headline'), MARGIN + 24, calloutY + 22);
       doc.setCharSpace(0);
       setBrandFont(false, 13);
       setColor(COL_INK);
       drawWrappedText(headline, MARGIN + 24, calloutY + 44, COL_W - 48, 17);
 
-      // Three-up recap: SCORE / FAILED / QUICK WIN
+      // Three-up recap: SCORE / FAILED / PASSING
       var recapY = calloutY + calloutH + 32;
       var recapW = (COL_W - 24) / 3;
       var recapH = 104;
       var recapItems = [
-        { label: 'OVERALL SCORE', value: String(overall), sub: 'out of 100' },
-        { label: 'FLAGGED FIXES', value: String(grouped.failed.length), sub: grouped.failed.length === 1 ? 'action item' : 'action items' },
-        { label: 'PASSING CHECKS', value: String(grouped.passed.length) + '/' + String(entries.length), sub: 'looking good' }
+        { label: t('exec.recap.score'),   value: String(overall), sub: t('exec.recap.outOf100') },
+        { label: t('exec.recap.fixes'),   value: String(grouped.failed.length), sub: grouped.failed.length === 1 ? t('exec.recap.item') : t('exec.recap.items') },
+        { label: t('exec.recap.passing'), value: String(grouped.passed.length) + '/' + String(entries.length), sub: t('exec.recap.passingSub') }
       ];
       for (var ri = 0; ri < recapItems.length; ri++) {
         var rx = MARGIN + ri * (recapW + 12);
@@ -3322,7 +3542,7 @@
       var sumText = (sumBody && sumBody.textContent || '').trim();
       if (sumText) {
         var noteY = recapY + recapH + 28;
-        drawEyebrow('Note from the Audit', MARGIN, noteY, COL_STONE);
+        drawEyebrow(t('exec.noteFrom'), MARGIN, noteY, COL_STONE);
         setBrandFont(false, 10.5);
         setColor(COL_INK_SOFT);
         drawWrappedText(sumText, MARGIN, noteY + 22, COL_W, 15);
@@ -3336,18 +3556,19 @@
       paintCreamBackground();
 
       var fixY = drawSectionHeader({
-        eyebrow: 'Top 3 Fixes',
+        eyebrow: t('fixes.eyebrow'),
         eyebrowColor: COL_RUST,
-        title: 'The highest-leverage moves to make next.',
+        title: t('fixes.title'),
         titleSize: 26,
         titleLeading: 30,
         y: MARGIN + 32
       });
       setBrandFont(false, 10);
       setColor(COL_STONE);
+      var fixSeg = subtype.label || t('segment.default');
+      if (LANG === 'en') fixSeg = fixSeg.toLowerCase();
       fixY = drawWrappedText(
-        'Ranked by weighted impact for your ' + (subtype.label || 'restaurant').toLowerCase() + ' segment. ' +
-        'Start at the top — each card tells you what to do, why it matters, and how much effort it takes.',
+        t('fixes.subhead', { segment: fixSeg }),
         MARGIN, fixY + 4, COL_W, 14
       );
       fixY += 18;
@@ -3364,11 +3585,11 @@
         doc.text('\u2713', MARGIN + 36, fixY + 44, { align: 'center' });
         setBrandFont(true, 20);
         setColor(COL_INK);
-        doc.text('No urgent fixes.', MARGIN + 64, fixY + 44);
+        doc.text(t('fixes.none.title'), MARGIN + 64, fixY + 44);
         setBrandFont(false, 11);
         setColor(COL_INK_SOFT);
         drawWrappedText(
-          'Every priority check passed or is awaiting confirmation. Scan the full breakdown on the next pages to confirm the unverified items and keep your edge.',
+          t('fixes.none.body'),
           MARGIN + 64, fixY + 72, COL_W - 80, 15
         );
       } else {
@@ -3385,19 +3606,27 @@
       paintCreamBackground();
 
       var brY = drawSectionHeader({
-        eyebrow: 'Priority Checks',
+        eyebrow: t('breakdown.eyebrow'),
         eyebrowColor: COL_TEAL,
-        title: 'Full ' + entries.length + '-check breakdown.',
+        title: t('breakdown.title', { n: entries.length }),
         titleSize: 26,
         titleLeading: 30,
         y: MARGIN + 32
       });
       setBrandFont(false, 10);
       setColor(COL_STONE);
-      brY = drawWrappedText(
-        'Grouped by status. Failures first (where the next wins are), unverified items next (worth a human glance), passing checks last (for reference).',
-        MARGIN, brY + 4, COL_W, 14
-      );
+      brY = drawWrappedText(t('breakdown.subhead'), MARGIN, brY + 4, COL_W, 14);
+
+      // For Spanish readers: clearly note that the per-check technical
+      // language is still English until the check library is
+      // translated. Better than silently presenting mixed languages.
+      if (LANG === 'es') {
+        brY += 2;
+        setColor(COL_TEAL);
+        setBrandFont(true, 9);
+        brY = drawWrappedText('\u00B7 ' + t('breakdown.englishNote'), MARGIN, brY + 10, COL_W, 13);
+      }
+
       brY += 8;
       setColor(COL_LINE_DK, 'draw');
       doc.setLineWidth(0.5);
@@ -3406,9 +3635,9 @@
 
       // Render each status group with its own eyebrow + item flow.
       var groups = [
-        { key: 'failed',     label: 'Failed',     color: COL_RUST,  icon: drawIconCross, items: grouped.failed },
-        { key: 'unverified', label: 'Unverified', color: COL_STONE, icon: drawIconDash,  items: grouped.unverified },
-        { key: 'passed',     label: 'Passing',    color: COL_TEAL,  icon: drawIconCheck, items: grouped.passed }
+        { key: 'failed',     label: t('group.failed'),     color: COL_RUST,  icon: drawIconCross, items: grouped.failed },
+        { key: 'unverified', label: t('group.unverified'), color: COL_STONE, icon: drawIconDash,  items: grouped.unverified },
+        { key: 'passed',     label: t('group.passed'),     color: COL_TEAL,  icon: drawIconCheck, items: grouped.passed }
       ];
       for (var gi = 0; gi < groups.length; gi++) {
         var g = groups[gi];
@@ -3437,9 +3666,9 @@
       paintCreamBackground();
 
       var mY = drawSectionHeader({
-        eyebrow: 'Method',
+        eyebrow: t('method.eyebrow'),
         eyebrowColor: COL_TEAL,
-        title: 'How we scored it.',
+        title: t('method.title'),
         titleSize: 26,
         titleLeading: 30,
         y: MARGIN + 32
@@ -3455,13 +3684,13 @@
       // Left column: what each pillar measures
       setBrandFont(true, 14);
       setColor(COL_INK);
-      doc.text('What each pillar measures.', col1X, mY);
+      doc.text(t('method.col1Head'), col1X, mY);
       var pillarDefs = [
-        { label: 'MOBILE PERFORMANCE', desc: 'Lighthouse mobile speed. Core web vitals: how fast the page paints, how stable the layout is, how quickly it responds.' },
-        { label: 'ACCESSIBILITY',      desc: 'Can the site be used by everyone, including with assistive tech. Contrast, labels, landmarks, keyboard paths.' },
-        { label: 'BEST PRACTICES',     desc: 'Modern security and web hygiene. HTTPS, no console errors, safe deprecated-API use, correct image sizing.' },
-        { label: 'SEO',                desc: 'How discoverable you are in search. Meta tags, link targets, structured data, crawlability of key pages.' },
-        { label: 'RESTAURANT READINESS', desc: 'The muntin-specific layer: menu presence, reservations/ordering, hours, directions, review signals — what converts a search into a seat.' }
+        { label: t('method.pillar.mobile.label'), desc: t('method.pillar.mobile.desc') },
+        { label: t('method.pillar.a11y.label'),   desc: t('method.pillar.a11y.desc')   },
+        { label: t('method.pillar.bp.label'),     desc: t('method.pillar.bp.desc')     },
+        { label: t('method.pillar.seo.label'),    desc: t('method.pillar.seo.desc')    },
+        { label: t('method.pillar.rest.label'),   desc: t('method.pillar.rest.desc')   }
       ];
       var plDescY = mY + 22;
       for (var di = 0; di < pillarDefs.length; di++) {
@@ -3479,11 +3708,11 @@
       // Right column: score bands + re-run note
       setBrandFont(true, 14);
       setColor(COL_INK);
-      doc.text('How to read the score.', col2X, mY);
+      doc.text(t('method.col2Head'), col2X, mY);
       var bands = [
-        { color: COL_GREEN, range: '90 – 100', label: 'Strong.',      desc: 'Maintain what\u2019s working. Reruns will confirm you haven\u2019t regressed.' },
-        { color: COL_AMBER, range: '50 – 89',  label: 'Fix targets.', desc: 'Where your next wins live. Most sites spend the most time here.' },
-        { color: COL_RUST,  range: '0 – 49',   label: 'Urgent.',      desc: 'These are costing you customers right now. Prioritize.' }
+        { color: COL_GREEN, range: '90 \u2013 100', label: t('method.band.strong'), desc: t('method.band.strong.desc') },
+        { color: COL_AMBER, range: '50 \u2013 89',  label: t('method.band.fix'),    desc: t('method.band.fix.desc')    },
+        { color: COL_RUST,  range: '0 \u2013 49',   label: t('method.band.urgent'), desc: t('method.band.urgent.desc') }
       ];
       var bandY = mY + 22;
       for (var bi = 0; bi < bands.length; bi++) {
@@ -3501,13 +3730,10 @@
       bandY += 10;
       setBrandFont(true, 12);
       setColor(COL_INK);
-      doc.text('Re-running the audit.', col2X, bandY);
+      doc.text(t('method.rerun.head'), col2X, bandY);
       setBrandFont(false, 9.5);
       setColor(COL_INK_SOFT);
-      bandY = drawWrappedText(
-        'The tool is free and open. Re-run it any time you ship a fix — the shareable ?url= link auto-runs on a fresh visit, so you can bookmark it as your before-and-after.',
-        col2X, bandY + 18, colW, 13
-      );
+      bandY = drawWrappedText(t('method.rerun.body'), col2X, bandY + 18, colW, 13);
 
       // ================================================================
       // FINAL PAGE — NEXT STEPS HERO (full-bleed ink)
@@ -3520,21 +3746,18 @@
       drawMuntinMark(MARGIN, MARGIN + 4, 32, COL_CREAM);
 
       // Eyebrow (cream variant — rule + label both cream on ink)
-      drawEyebrow('Next Steps', MARGIN, MARGIN + 112, COL_CREAM);
+      drawEyebrow(t('hero.eyebrow'), MARGIN, MARGIN + 112, COL_CREAM);
 
       // Hero H1
       setBrandFont(true, 30);
       setColor(COL_CREAM);
       var hY = MARGIN + 148;
-      hY = drawWrappedText('Want a human second opinion?', MARGIN, hY, COL_W, 34);
+      hY = drawWrappedText(t('hero.title'), MARGIN, hY, COL_W, 34);
 
       // Hero body
       setBrandFont(false, 11.5);
       setColor(COL_LINE);
-      hY = drawWrappedText(
-        'If the audit surfaced more than you want to tackle alone, let\u2019s talk. Twenty minutes on Zoom, walking through your results live \u2014 no pitch, no pressure. One set of hands, restaurant-savvy, here to untangle the structural stuff so your site starts earning.',
-        MARGIN, hY + 18, COL_W, 17
-      );
+      hY = drawWrappedText(t('hero.body'), MARGIN, hY + 18, COL_W, 17);
 
       // Pill button
       var btnX = MARGIN, btnY = hY + 32, btnW = 300, btnH = 44;
@@ -3542,7 +3765,7 @@
       doc.roundedRect(btnX, btnY, btnW, btnH, 22, 22, 'F');
       setBrandFont(true, 12);
       setColor(COL_INK);
-      var btnLabel = 'Book a 20-minute call';
+      var btnLabel = t('hero.button');
       var btnLabelW = doc.getTextWidth(btnLabel);
       var btnLabelX = btnX + (btnW - btnLabelW - 22) / 2;
       doc.text(btnLabel, btnLabelX, btnY + 27);
@@ -3562,13 +3785,10 @@
       doc.rect(MARGIN, subY, 4, subH, 'F');
       setBrandFont(true, 18);
       setColor(COL_CREAM);
-      doc.text('Run this again any time.', MARGIN + 24, subY + 34);
+      doc.text(t('hero.subcard.title'), MARGIN + 24, subY + 34);
       setBrandFont(false, 11);
       setColor(COL_LINE);
-      drawWrappedText(
-        'The audit tool is free and open. The ?url= in your shareable link auto-runs on any fresh visit \u2014 bookmark it after you ship a fix to see the delta.',
-        MARGIN + 24, subY + 60, COL_W - 48, 15
-      );
+      drawWrappedText(t('hero.subcard.body'), MARGIN + 24, subY + 60, COL_W - 48, 15);
       setBrandFont(true, 11);
       setColor(COL_CREAM);
       doc.text('muntin.digital/tools/audits/restaurant/', MARGIN + 24, subY + subH - 18);
@@ -3660,20 +3880,23 @@
         var chipY = afterTitle + 14;
         var chipX = MARGIN + 44;
         if (def.effort) {
-          var effortLabel = def.effort === 'self' ? 'Fix yourself'
-                         : def.effort === 'dev'  ? 'Ask your developer'
-                         : 'Rebuild needed';
+          var effortLabel = def.effort === 'self' ? t('effort.self')
+                         : def.effort === 'dev'  ? t('effort.dev')
+                         : t('effort.rebuild');
           drawIconWrench(chipX, chipY - 9, 13, COL_INK_SOFT);
           chipX += 16;
           chipX = drawPill(effortLabel, chipX, chipY, COL_CREAM2, COL_INK_SOFT);
         }
         if (typeof def.minutes === 'number') {
-          var t = def.minutes < 60 ? '~' + def.minutes + ' min'
-                : def.minutes < 180 ? '~' + Math.round(def.minutes / 60) + ' hr'
-                : 'Half-day project';
+          // Local variable name avoids shadowing the outer t() helper.
+          var timeLabel = def.minutes < 60
+                ? t('time.min', { n: def.minutes })
+                : def.minutes < 180
+                ? t('time.hr',  { n: Math.round(def.minutes / 60) })
+                : t('time.halfday');
           drawIconBolt(chipX, chipY - 9, 13, COL_TEAL);
           chipX += 16;
-          drawPill(t, chipX, chipY, COL_TEAL_TINT, COL_TEAL);
+          drawPill(timeLabel, chipX, chipY, COL_TEAL_TINT, COL_TEAL);
         }
 
         // Hairline divider under the card for visual grouping
