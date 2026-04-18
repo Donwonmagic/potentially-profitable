@@ -1,0 +1,539 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-18T19:21:36.957Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "zm_yunxi",
+  "language": "zh",
+  "total": 889.71,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "每家餐厅都有一个 P O S。迟早（通常是在硬件已付款几个月后），每个餐厅老板都会意识到他们的 P O S 选择会以在推销期间没有人告诉他们的方式影响他们的网站。菜单同步、在线订购、预订交接、忠诚度计划、收据链接——所有这些都通过 P O S 运行。如果您仅根据收银台硬件和交易费用来选择 P O S，您可能会很难发现网站端的限制。",
+      "start": 0,
+      "end": 26.18
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "这篇文章比较了我在独立餐厅审核中最常看到的三个 P O S 系统：Toast、Square（餐厅）和 Clover。我将介绍每种方法在网站集成方面的优势，每种方法都悄悄地限制了您，并且在最后，我会为哪种餐厅类型选择哪一种。如果您即将签署 POS 合同，我希望您首先阅读这篇文章。",
+      "start": 26.4,
+      "end": 48.2
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "预先说明一下：这三个产品都是由真正的公司运营的合法产品，并且这三个产品都有喜欢它们的客户和后悔选择的客户。我来这里不是为了给胜利者加冕，也不是为了打败失败者——问题是哪一个适合你的餐厅。",
+      "start": 48.42,
+      "end": 63.07
+    },
+    {
+      "id": 3,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "“POS 与您的网站集成”的实际含义是什么。",
+      "start": 63.87,
+      "end": 67.79
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "在我们进行比较之前，有必要具体说明我们正在比较的内容。 “POS 集成”实际上是三个不同的东西相互堆叠，每个 P O S 以不同的质量级别处理每一层。",
+      "start": 68.24,
+      "end": 80.66
+    },
+    {
+      "id": 5,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(1)",
+      "text": "1. 菜单同步。",
+      "start": 81.46,
+      "end": 82.57
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "您的销售点知道菜单上有什么。您的网站也需要知道。 POS 能否将其菜单数据推送到您的网站，以便您仅将其维护在一处？推送内容是否包括菜肴描述、图片、修饰语、过敏原和价格？当您在服务中点 86 道菜时会发生什么 - 您的网站是否实时更新，或者有人正在吃两小时前的可用性数据？",
+      "start": 83.02,
+      "end": 107
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(2)",
+      "text": "2. 接单。",
+      "start": 107.8,
+      "end": 108.52
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "该网站接受在线订单，这些订单必须以某种方式到达您的厨房。订单是否直接流入 POS 票据队列，还是落在主机必须检查的单独平板电脑中？它尊重您的实时库存吗？顾客可以订购您刚用完的商品吗？",
+      "start": 108.97,
+      "end": 123.76
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(3)",
+      "text": "3. 预订和宾客数据流。",
+      "start": 124.56,
+      "end": 126.49
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "当客人预订餐桌时，预订是否会显示在您的 POS 楼层地图上？客人历史记录（访问次数、过敏、生日、最喜欢的餐桌）是否在预订平台和 P O S 之间流动，以便回头客能够被识别并通过名字进行问候？",
+      "start": 126.94,
+      "end": 141.71
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "大多数 POS 营销页面都会谈论“网站集成”，就好像它是您按下的一个开关一样。在实践中，以上三层是在不同时间、由不同团队构建的，并且每个层都有自己的质量上限。适合您餐厅的销售点取决于三个层面中哪一个对您的实际运营方式最重要。",
+      "start": 141.93,
+      "end": 161.51
+    },
+    {
+      "id": 12,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "术语编号 011XXZ。",
+      "start": 162.31,
+      "end": 164.75
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Toast 是美国市场上最大的餐厅专用销售点，也是我在独立的全方位服务餐厅中最常看到的销售点。根据Toast自己的产品文档，该平台是专为全方位服务、快速服务和柜台服务餐厅而构建的，包括原生在线订购、菜单管理和第三方开发者API。",
+      "start": 165.2,
+      "end": 185.04
+    },
+    {
+      "id": 14,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(4)",
+      "text": "Toast 在网站集成方面做得很好。",
+      "start": 185.84,
+      "end": 189.11
+    },
+    {
+      "id": 15,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "本地在线订购，具有从网站结帐到厨房门票的直接管道 - 无需单独的平板电脑交接。",
+      "start": 189.56,
+      "end": 197.25
+    },
+    {
+      "id": 16,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "自动菜单从 Toast 的菜单编辑器同步到其网站小部件，包括图像、修饰符和过敏原标签。",
+      "start": 197.47,
+      "end": 206.14
+    },
+    {
+      "id": 17,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "实时 86ing — 当您在 POS 上将某道菜标记为缺货时，更改会立即传播到在线菜单。",
+      "start": 206.36,
+      "end": 215.24
+    },
+    {
+      "id": 18,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "成熟的开发人员 API，允许定制网站（不是 Toast 自己的模板）利用 Toast 的本机表面使用的相同订单、菜单和访客数据。这是我在审核中最关心的部分 - 这意味着您可以在现代堆栈上拥有自定义站点，并且仍然使用 Toast 作为引擎。",
+      "start": 215.46,
+      "end": 233.26
+    },
+    {
+      "id": 19,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(5)",
+      "text": "Toast 的网站故事变得复杂。",
+      "start": 234.06,
+      "end": 236.94
+    },
+    {
+      "id": 20,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Toast 自己的托管餐厅网站功能齐全，但受模板限制。根据我的审核经验，基于 Toast 的本机网站模板构建的网站共享可识别的布局和排版系统 - 即使颜色不同，它们“看起来像 Toast 餐厅网站”。",
+      "start": 237.39,
+      "end": 252.86
+    },
+    {
+      "id": 21,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "与在您自己的支付处理器上运行的自定义结账相比，通过 Toast 的集成订购发送的送货和提货订单的交易费用可能会增加。确切的数字取决于您的 Toast 合同等级，因此请检查 Toast 的当前定价页面以了解您的情况。",
+      "start": 253.08,
+      "end": 269.42
+    },
+    {
+      "id": 22,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "如果不转移到更高的合同级别，结帐流程中的“Powered by Toast”品牌很难完全删除。",
+      "start": 269.64,
+      "end": 277.13
+    },
+    {
+      "id": 23,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "合同承诺往往会持续多年，如果您不确定三年后哪种销售点仍适合您的运营，这一点就很重要。",
+      "start": 277.35,
+      "end": 285.64
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "根据我的审核经验：如果您希望从第一天起“一切正常”并且您接受围墙花园的权衡，那么 Toast 是最强的选择。如果您有一个定制的网站，并希望 Toast 成为厨房端引擎，他们的 API 已经足够成熟，可以支持这一点 - 只需付费给开发人员来将其干净地连接起来即可。",
+      "start": 285.86,
+      "end": 306.21
+    },
+    {
+      "id": 25,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Square 适用于餐厅。",
+      "start": 307.01,
+      "end": 308.7
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Square 的方法几乎与 Toast 相反。 Toast 从一开始就是针对餐厅的，而 Square 最初是一个通用零售和支付平台，并在其更广泛的产品之上添加了餐厅特定的功能。这既是一种优势，也是一种限制。根据 Square 自己的产品文档，Square 餐厅服务包括菜单管理、在线订购、餐桌管理和忠诚度 — 所有这些都具有与 Square 在零售业闻名的相同的公开、统一费率定价结构。",
+      "start": 309.15,
+      "end": 337.47
+    },
+    {
+      "id": 27,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(6)",
+      "text": "Square 在网站集成方面做得很好。",
+      "start": 338.27,
+      "end": 341.37
+    },
+    {
+      "id": 28,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "干净、文档齐全的公共 API。对于想要提取目录数据、发送订单或查找客户历史记录的定制网站，Square 的开发人员文档是 P O S 领域最好的文档之一 — 清晰、最新且得到积极支持。",
+      "start": 341.82,
+      "end": 355.9
+    },
+    {
+      "id": 29,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "公开、统一费率定价。 Square 的处理费和每月费用在其网站上公开发布。没有合同级别的舞蹈，没有“致电我们报价”，没有协商的惊喜。",
+      "start": 356.12,
+      "end": 367.09
+    },
+    {
+      "id": 30,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Square Online 可以在一个下午启动一个功能齐全的餐厅网站，菜单数据自动从 P O S 同步。它不是自定义网站的替代品，但对于尚未准备好使用网站的操作员来说确实有用。",
+      "start": 367.31,
+      "end": 380.96
+    },
+    {
+      "id": 31,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "比 Toast 更低的供应商锁定 — 硬件成本更低、合同更短、数据导出更直接。如果您不再适合，则转换成本会降低。",
+      "start": 381.18,
+      "end": 390.9
+    },
+    {
+      "id": 32,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(7)",
+      "text": "Square 的网站故事变得复杂。",
+      "start": 391.7,
+      "end": 394.48
+    },
+    {
+      "id": 33,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "用于餐厅的 Square 比 Toast 更年轻，而且不太专注于餐厅。根据我的审计经验，与 Toast 的餐厅本地实现相比，全方位服务餐厅想要的一些功能（高级餐厅的逐台服务器销售报告、深度修饰链、复杂的菜品）要少一些或不存在。",
+      "start": 394.93,
+      "end": 410.9
+    },
+    {
+      "id": 34,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "Square Online 的订购流程给人一种零售优先的感觉。它有效，但视觉和交互节奏与桌布房间的氛围不太匹配 - Square Online 看起来像 Square Online。",
+      "start": 411.12,
+      "end": 422.09
+    },
+    {
+      "id": 35,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "从 Square 到自定义外部网站的菜单同步需要您编写 API 桥。 Square 提供管道；你构建贯穿其中的内容。如果您有开发人员，这很好；如果你不这样做，它就是一个拦截器。",
+      "start": 422.31,
+      "end": 435.73
+    },
+    {
+      "id": 36,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "根据我的审核经验：Square 是单一地点独立餐厅的最强选择，该餐厅需要干净的 API、公平的公共费用以及以后可以灵活地切换工具而不会后悔。对开发人员的友好性使其成为这三者中最容易与完全自定义网站配对的 P O S。",
+      "start": 435.95,
+      "end": 453.17
+    },
+    {
+      "id": 37,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "术语号 013XXZ。",
+      "start": 453.97,
+      "end": 456.26
+    },
+    {
+      "id": 38,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Clover 是三者中分布最广泛的 POS 系统，因为它除了直接从 Clover 本身销售外，还通过商业服务提供商（银行、支付处理商和本地 ISO）进行销售。这种分发模式是 Clover 的最大优势，同时也是其最大的混乱根源。根据 Clover 自己的餐厅产品页面，该餐厅提供的服务包括菜单管理、在线订购、餐桌管理和第三方配送集成 - 尽管您看到的具体功能集取决于您通过哪个分销渠道购买。",
+      "start": 456.71,
+      "end": 486.3
+    },
+    {
+      "id": 39,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(8)",
+      "text": "Clover 做得很好。",
+      "start": 487.1,
+      "end": 488.63
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(1)",
+      "text": "最广泛的硬件选择。 Clover Station、Mini、Flex（手持式）和 Kiosk 几乎涵盖了餐厅可能需要的所有物理配置 - 包括其他两个不直接提供的几种配置（如自助服务终端和集成规模配件）。硬件本身构建良好。",
+      "start": 489.08,
+      "end": 504.2
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(2)",
+      "text": "灵活——有时太灵活了。由于 Clover 通过多个商业服务提供商进行分发，因此您获得的确切功能集、费用结构和合同条款取决于向您出售系统的银行或 ISO。这可能是一种优势（您当地的银行可能协商出比公共银行更好的利率），也可能是一种挫败感（您邻居的 Clover 可能具有您没有的功能）。",
+      "start": 504.42,
+      "end": 527
+    },
+    {
+      "id": 42,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(3)",
+      "text": "POS 领域最大的应用程序市场，这意味着利基餐厅功能（特定的忠诚度计划、特定的交付集成、特定的后台工具）在您找不到原生功能时往往会作为附加组件提供。",
+      "start": 527.22,
+      "end": 539.42
+    },
+    {
+      "id": 43,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(9)",
+      "text": "Clover 的网站故事变得复杂。",
+      "start": 540.22,
+      "end": 543.04
+    },
+    {
+      "id": 44,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(1)",
+      "text": "生态系统碎片化。 Clover 硬件方面的 Station、Mini、Flex、Go 和 Kiosk，加上软件方面的餐饮和注册等计划层 - 每种组合的功能集略有不同，了解您的商家提供商向您出售的套餐本身就是一个小型研究项目。在我的审核中，我花了几个小时来思考“这个 Clover 是否启用了本机在线订购？”答案是“取决于您的计划级别”。",
+      "start": 543.49,
+      "end": 569.21
+    },
+    {
+      "id": 45,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(2)",
+      "text": "开发人员 API 已存在，但不如 Square 或 Toast 成熟。根据我的经验，将 Clover 集成到自定义网站中通常需要比任何一种替代方案更多的管道工作。",
+      "start": 569.43,
+      "end": 581.05
+    },
+    {
+      "id": 46,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(3)",
+      "text": "定价存在于您的合同中，而不是在页面上。交易费用和每月费用在很大程度上取决于您签署的具体商户服务合同，而不是公开定价页面。在您做出承诺之前，请阅读实际合同中的费用表 - 我见过相同的 Clover 设置，不同餐厅的每月费用相差 30%。",
+      "start": 581.27,
+      "end": 602.29
+    },
+    {
+      "id": 47,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "根据我的审计经验：当您需要 Clover 制造的特定硬件而其他硬件不需要时（用于大容量酒吧的手持式桌边、用于肉店柜台的集成秤、用于快餐休闲线的自助服务终端）或当商业服务提供商关系本身很有价值时（例如，当您当地的银行将 P O S 与商业贷款或信用额度捆绑在一起时），Clover 是正确的选择。对于纯粹的网站集成质量，这是我在这三个选项中的第三个选择。但这里的“第三选择”仍然意味着“合法可用”——只是如果您有自由选择，Toast 和 Square 通常是更容易的起点。",
+      "start": 602.51,
+      "end": 637.96
+    },
+    {
+      "id": 48,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "并肩。",
+      "start": 638.76,
+      "end": 639.29
+    },
+    {
+      "id": 49,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "一目了然，以下是十个功能中对同一问题的回答。绿色是一个自信的肯定。琥珀色是部分的或“取决于您的计划”。 Rust 是一个值得在签订合同之前了解的有意义的差距。",
+      "start": 639.74,
+      "end": 652.49
+    },
+    {
+      "id": 50,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "根据每个提供商截至 2026 年初的公开文档进行比较 · 功能和定价变化 — 在签署之前与您的提供商进行验证",
+      "start": 653.04,
+      "end": 663.25
+    },
+    {
+      "id": 51,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "根据餐厅类型，我会选择哪一家。",
+      "start": 664.05,
+      "end": 666.67
+    },
+    {
+      "id": 52,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "以下是我根据我在审核中看到的情况将每个 P O S 与餐厅类型相匹配的方法。这些是意见，而不是规则——您的实际最佳适合取决于我无法从博客文章中看到的变量，因此请将其视为您自己评估的起点，而不是结论。",
+      "start": 667.12,
+      "end": 683.31
+    },
+    {
+      "id": 53,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "在建立网站之前要询问您的 POS 提供商什么。",
+      "start": 684.11,
+      "end": 688.82
+    },
+    {
+      "id": 54,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "无论您评估哪种 P O S，在您签署任何内容之前，我都会问销售代表六个问题。把这些写下来，通过电子邮件发送给您的代表，然后保存回复——答案将比任何光鲜亮丽的产品页面告诉您更多有关您所注册的集成质量的信息。",
+      "start": 689.27,
+      "end": 705.78
+    },
+    {
+      "id": 55,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "“我可以在现代堆栈上运行自定义网站并仍然使用您的 P O S 作为引擎吗？”这是开发者生态系统测试。如果答案是“好吧，我们有自己的模板”——那就是“不”。您想要一个自信的“是”，并具体参考他们的 API 文档，最好是一个已经这样做的自定义站点的示例。",
+      "start": 706,
+      "end": 723.86
+    },
+    {
+      "id": 56,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "“月费到底是多少？每笔交易的收费是多少？” POS 定价是一个镜子大厅。以书面形式获得答案，并附注，并附有根据您的典型每周交易量计算的示例。如果销售代表犹豫不决或只能说“这取决于情况”，请向与您的餐厅类似的餐厅索取发票样本。",
+      "start": 724.08,
+      "end": 742.36
+    },
+    {
+      "id": 57,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "“当我在 P O S 上将一道菜标记为 86 时，在线菜单需要多长时间才会反映出来？”你想要的答案是“几秒钟”或“一分钟内”。如果是“第二天”或“同步作业运行一夜之后”，您的客户将继续订购您没有的东西 - 而您的主机摊位将为此道歉。",
+      "start": 742.58,
+      "end": 760.25
+    },
+    {
+      "id": 58,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "“如果我三年后离开，我的数据会怎样？”每个 POS 代表都会保证您永远不想离开。这不是答案。真正的问题是：我可以以标准格式（CSV、JSON）导出菜单、订单历史记录、客户资料和预订数据吗？该导出是否包含我需要在其他地方重建而无需从零开始的所有内容？",
+      "start": 760.47,
+      "end": 779.96
+    },
+    {
+      "id": 59,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "“是否有取消费用或提前终止条款——我可以在签字前查看书面形式吗？”阅读小字。这篇文章中的三个 POS 提供商给出了截然不同的答案，如果这种情况不再有效，那么这个答案在两年后会变得非常重要。",
+      "start": 780.18,
+      "end": 795.4
+    },
+    {
+      "id": 60,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
+      "text": "“如果我想将自定义网站与您的 POS 集成，通常的设置时间是多少？”这是我最喜欢的问题，因为答案可以告诉您销售代表实际执行此操作的频率。 Toast 代表通常会在几周内回复项目大纲。 Square 代表通常会在几天内回复并指出 API 文档。 Clover 代表有时必须询问开发人员关系人员并回复您 - 这本身就是有用的信息。",
+      "start": 795.62,
+      "end": 820.88
+    },
+    {
+      "id": 61,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "记下每个答案的形式，而不仅仅是内容。带有文档的自信、具体的答案是一个好兆头。没有文档的自信答案是一个警告信号。含糊其辞并承诺跟进的答案是一个危险信号——而后续行动几乎永远不会到来。",
+      "start": 821.1,
+      "end": 835.04
+    },
+    {
+      "id": 62,
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "记下每个答案的形式，而不仅仅是内容。",
+      "start": 835.59,
+      "end": 838.87
+    },
+    {
+      "id": 63,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "POS 和网站是一个系统。",
+      "start": 839.67,
+      "end": 842.17
+    },
+    {
+      "id": 64,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "我在餐厅审核中最常看到的错误不是选择了错误的 P O S。而是在没有构建网站的人员参与的情况下选择了 P O S，然后在发布周发现集成限制，当时选项都很昂贵。当您连接预订流程时，您已经锁定了 P O S 支持的任何内容，并且“我们会让它发挥作用”变得比 P O S 评估阶段的五分钟对话要昂贵得多。",
+      "start": 842.62,
+      "end": 866.95
+    },
+    {
+      "id": 65,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "如果您现在正在进行 P O S 评估，请将您的网站策略带到同一次会议上。如果您的中网站项目已经选择了 P O S，请将 P O S 的开发人员文档带入启动阶段。这两个系统之间的集成质量比单独一个系统更重要，而正确实现这一点的唯一方法就是预先将它们设计为一个整体。",
+      "start": 867.17,
+      "end": 889.71
+    }
+  ]
+}

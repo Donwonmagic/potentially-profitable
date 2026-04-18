@@ -688,7 +688,13 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
    aligned if it's ever swapped for "10" or "30". */
 .listen-iconbtn-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-42%);font-family:var(--font-body);font-size:9px;font-weight:700;letter-spacing:0.02em;font-variant-numeric:tabular-nums;pointer-events:none;color:currentColor}
 .listen-back15 svg,.listen-fwd15 svg{width:22px;height:22px}
-.listen-card-selects{display:inline-flex;gap:6px;align-items:center}
+.listen-card-selects{display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap}
+/* Language pill — visually distinct from the speed/voice selects so
+   multilingual readers notice it. Slightly accented border + a small
+   globe glyph before the selected language name. */
+.listen-language-select{position:relative;padding-left:4px}
+.listen-language-select select{padding-left:28px;font-weight:600;color:var(--lc-accent);border-color:var(--lc-accent)}
+.listen-language-select::before{content:"";position:absolute;left:10px;top:50%;width:14px;height:14px;transform:translateY(-50%);background:currentColor;color:var(--lc-accent);-webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><line x1='2' y1='12' x2='22' y2='12'/><path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'/></svg>") no-repeat center/contain;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><line x1='2' y1='12' x2='22' y2='12'/><path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'/></svg>") no-repeat center/contain;pointer-events:none}
 .listen-select{position:relative}
 .listen-select select{appearance:none;-webkit-appearance:none;background:transparent;border:1px solid var(--line-dark);border-radius:999px;padding:6px 28px 6px 12px;font-family:var(--font-body);font-size:12px;font-weight:600;color:var(--ink-soft);cursor:pointer;transition:all var(--t-fast) var(--ease)}
 .listen-select select:hover,.listen-select select:focus-visible{border-color:var(--lc-accent);color:var(--lc-accent);outline:none}

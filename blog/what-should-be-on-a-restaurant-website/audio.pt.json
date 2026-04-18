@@ -1,0 +1,451 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-18T18:47:37.561Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "pm_alex",
+  "language": "pt",
+  "total": 417.52,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Por que sete?",
+      "start": 0,
+      "end": 1
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "A maioria dos sites de restaurantes tem muitas páginas. Uma página de “Carreiras” que ninguém atualiza. Uma página de “Prêmios” com uma lista de três anos atrás. Uma página “Galeria” com quarenta fotos e sem legendas. Cada página morta dilui as páginas que realmente convertem - e confunde Google sobre o que o site realmente trata.",
+      "start": 1.45,
+      "end": 20.38
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Aqui estão as sete páginas que recomendo para quase todos os restaurantes independentes. Cada um tem um trabalho. Se uma página não tiver um emprego, ela não ganhará seu lugar na barra de navegação.",
+      "start": 20.7,
+      "end": 32.23
+    },
+    {
+      "id": 3,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(1)",
+      "text": "1. Página inicial.",
+      "start": 33.03,
+      "end": 34.27
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Trabalho: responda três perguntas em menos de cinco segundos – que tipo de comida, onde e como reservar.",
+      "start": 34.72,
+      "end": 40.54
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Sua página inicial não é sua autobiografia. É uma ferramenta de decisão. Um visitante de primeira viagem está parado na calçada, com o telefone na mão, decidindo entre você e o lugar ao lado. Eles precisam de: tipo de culinária, bairro, clima, horário e um botão de reserva. Todo o resto está abaixo da dobra.",
+      "start": 40.86,
+      "end": 58.2
+    },
+    {
+      "id": 6,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Proposta de uma frase abaixo do seu nome (por exemplo, \"Bairro italiano · Silver Spring · administrado por uma família desde 1998\")",
+      "start": 58.52,
+      "end": 68.66
+    },
+    {
+      "id": 7,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Horário de hoje, visível sem rolar",
+      "start": 68.88,
+      "end": 70.93
+    },
+    {
+      "id": 8,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Botão de reserva ou pedido on-line, visível sem rolagem",
+      "start": 71.15,
+      "end": 74.6
+    },
+    {
+      "id": 9,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Uma foto heróica que mostra o quarto ou a comida - não é uma imagem de banco de dados, nem um logotipo em preto",
+      "start": 74.82,
+      "end": 81.04
+    },
+    {
+      "id": 10,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Um breve sinal de prova social: uma citação de crítica, uma menção à imprensa, uma classificação por estrelas",
+      "start": 81.26,
+      "end": 87.8
+    },
+    {
+      "id": 11,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(2)",
+      "text": "2. Cardápio.",
+      "start": 88.6,
+      "end": 89.62
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Trabalho: deixar alguém decidir o que comer antes de chegar.",
+      "start": 90.07,
+      "end": 93.53
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Esta é a página mais visitada de todos os sites de restaurantes que já auditei. É também aquele que a maioria dos restaurantes erra. O menu deve ser um texto HTML real - não um PDF, nem uma foto de um cartão impresso, nem um iframe de um widget de terceiros. Texto real significa: Google pode rastreá-lo, os telefones podem renderizá-lo em tamanhos legíveis, os leitores de tela podem lê-lo e você pode atualizá-lo em trinta segundos quando alterar o preço fixo.",
+      "start": 93.85,
+      "end": 120.24
+    },
+    {
+      "id": 14,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Nomes, descrições e preços dos pratos em texto real",
+      "start": 120.56,
+      "end": 123.47
+    },
+    {
+      "id": 15,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Organizado por curso ou categoria com títulos claros",
+      "start": 123.69,
+      "end": 126.93
+    },
+    {
+      "id": 16,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Marcadores dietéticos (V, VG, GF), se você os tiver",
+      "start": 127.15,
+      "end": 130.39
+    },
+    {
+      "id": 17,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Uma data de “última atualização” para que os clientes saibam que os preços são atuais",
+      "start": 130.61,
+      "end": 135.25
+    },
+    {
+      "id": 18,
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Se o seu cardápio for um PDF, você já perdeu o cliente que o está lendo no telefone sob a luz direta do sol.",
+      "start": 135.8,
+      "end": 142.12
+    },
+    {
+      "id": 19,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(3)",
+      "text": "3. Sobre/Nossa História.",
+      "start": 142.92,
+      "end": 144.32
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Trabalho: dê a um cliente de primeira viagem um motivo para escolher você em vez do restaurante de aparência idêntica ao lado.",
+      "start": 144.77,
+      "end": 152.29
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Esta página é onde você se diferencia. Não com uma parede de texto sobre a sua “paixão pela comida” – todo restaurante diz isso. Com detalhes: onde você compra, quem cozinha, há quanto tempo você está aqui, como é o quarto, por que esse bairro. Dois parágrafos e uma foto real da equipe valem mais que mil palavras de um texto genérico de “nossa filosofia”.",
+      "start": 152.61,
+      "end": 171.8
+    },
+    {
+      "id": 22,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(4)",
+      "text": "4. Reservas/Encomendas Online.",
+      "start": 172.6,
+      "end": 174.91
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Trabalho: converta intenção em ação com o menor número de cliques possível.",
+      "start": 175.36,
+      "end": 179.52
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Pode ser uma página dedicada ou um botão persistente que fica em todas as páginas – de qualquer forma, o cliente nunca deve estar a mais de um toque de reservar uma mesa ou iniciar um pedido. Se você usar OpenTable, Resy, Tock ou outra plataforma, incorpore o widget diretamente em sua página em vez de vincular. Cada clique fora do seu site é uma chance para o cliente se distrair.",
+      "start": 179.84,
+      "end": 201.03
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Se você faz sua própria retirada ou entrega, encaminhe os pedidos por meio de seu P O S (Toast, Square, ChowNow) em vez de aplicativos de mercado de terceiros. Somente a economia de comissão – geralmente de 15 a 30% por pedido – paga o site em meses.",
+      "start": 201.35,
+      "end": 216.96
+    },
+    {
+      "id": 26,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(5)",
+      "text": "5. Eventos Privados/Catering.",
+      "start": 217.76,
+      "end": 219.8
+    },
+    {
+      "id": 27,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Trabalho: capturar consultas de alto valor que não têm onde morar em Google.",
+      "start": 220.25,
+      "end": 224.4
+    },
+    {
+      "id": 28,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Esta é a página que a maioria dos restaurantes esquece – e geralmente é a página de maior receita do site. Eventos privados, compras, menus de catering e reservas de grupos não possuem o campo Google Business Profile. Se alguém pesquisar “jantar privado Bethesda” e você não tiver uma página com essas palavras, você ficará totalmente invisível para essa pesquisa.",
+      "start": 224.72,
+      "end": 244.76
+    },
+    {
+      "id": 29,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Quais espaços você oferece (sala privada, pátio, restaurante completo)",
+      "start": 245.08,
+      "end": 249.1
+    },
+    {
+      "id": 30,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Faixas de capacidade",
+      "start": 249.32,
+      "end": 250.87
+    },
+    {
+      "id": 31,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Um exemplo de menu de catering ou eventos (mesmo simplificado)",
+      "start": 251.09,
+      "end": 254.68
+    },
+    {
+      "id": 32,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Um formulário de consulta simples: nome, e-mail, data, tamanho do grupo e um campo \"conte-nos mais\"",
+      "start": 254.9,
+      "end": 260.34
+    },
+    {
+      "id": 33,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(6)",
+      "text": "6. Localização e horário.",
+      "start": 261.14,
+      "end": 262.83
+    },
+    {
+      "id": 34,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Trabalho: remover todos os pontos de atrito possíveis entre “Eu quero ir” e “Estou entrando pela porta”.",
+      "start": 263.28,
+      "end": 268.86
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Esta página deve ter: seu endereço completo como texto copiável (não uma imagem), um mapa Google incorporado, horário de hoje exibido em destaque, informações de estacionamento, rotas de transporte público, se aplicável, e seu número de telefone como um link toque para ligar. Se você tiver vários locais, cada um terá sua própria seção com seu próprio mapa e horário.",
+      "start": 269.18,
+      "end": 288.64
+    },
+    {
+      "id": 36,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(7)",
+      "text": "7. Contato.",
+      "start": 289.44,
+      "end": 290.56
+    },
+    {
+      "id": 37,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Trabalho: dar às pessoas uma maneira de entrar em contato com um humano sem ligar durante o horário do jantar.",
+      "start": 291.01,
+      "end": 296.97
+    },
+    {
+      "id": 38,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Um formulário de contato funcional, seu e-mail, telefone e links sociais. Mantenha a simplicidade. O formulário deve pedir nome, email e mensagem – nada mais. Se você deseja capturar diferentes tipos de consultas (imprensa, eventos, geral), um único menu suspenso é suficiente. Não faça as pessoas preencherem um formulário de doze campos para perguntar quando você abrir aos domingos.",
+      "start": 297.29,
+      "end": 318.63
+    },
+    {
+      "id": 39,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Páginas que você provavelmente não precisa.",
+      "start": 319.43,
+      "end": 322.15
+    },
+    {
+      "id": 40,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Corte-os, a menos que você tenha um motivo específico e ativo para mantê-los:",
+      "start": 322.6,
+      "end": 326.85
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "Galeria. Coloque suas três melhores fotos na página inicial e no menu. Uma página de galeria dedicada com quarenta imagens sem rótulo é uma fábrica de rejeição.",
+      "start": 327.07,
+      "end": 336.57
+    },
+    {
+      "id": 42,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "Blogue. A menos que você publique conteúdo real pelo menos uma vez por mês, uma página de blog vazia com uma postagem de dois anos atrás prejudica mais do que ajuda. Ele informa ao Google e aos clientes que o site está negligenciado.",
+      "start": 336.79,
+      "end": 350.23
+    },
+    {
+      "id": 43,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "Prêmios / Imprensa. Coloque uma breve menção na página inicial ou na página Sobre. Uma página inteira dedicada a prêmios parece autocongratulatória, a menos que você a atualize regularmente.",
+      "start": 350.45,
+      "end": 361.66
+    },
+    {
+      "id": 44,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
+      "text": "Carreiras. Use seu Google Business Profile ou uma plataforma de empregos. Uma página “Carreiras” sem listagens parece que você não está contratando ou não está mantendo seu site.",
+      "start": 361.88,
+      "end": 372.27
+    },
+    {
+      "id": 45,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "A estrutura que ganha seu sustento.",
+      "start": 373.07,
+      "end": 375.09
+    },
+    {
+      "id": 46,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Aqui está o mapa do site com o qual começo para a maioria das construções de restaurantes independentes:",
+      "start": 375.54,
+      "end": 381.79
+    },
+    {
+      "id": 47,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Página inicial - culinária, localização, clima, horário, C T A",
+      "start": 382.01,
+      "end": 385.65
+    },
+    {
+      "id": 48,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Menu - H T M L real, organizado, com preço, datado",
+      "start": 385.87,
+      "end": 389.09
+    },
+    {
+      "id": 49,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Sobre - fornecimento, equipe, história, uma boa foto",
+      "start": 389.31,
+      "end": 392.18
+    },
+    {
+      "id": 50,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Reservas / Pedidos – widget incorporado, um toque",
+      "start": 392.4,
+      "end": 395.2
+    },
+    {
+      "id": 51,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Eventos Privados — espaços, capacidade, formulário de consulta",
+      "start": 395.42,
+      "end": 399.09
+    },
+    {
+      "id": 52,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
+      "text": "Localização e horário - mapa, endereço, estacionamento, trânsito",
+      "start": 399.31,
+      "end": 402.89
+    },
+    {
+      "id": 53,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(7)",
+      "text": "Contato - formulário, e-mail, telefone, redes sociais",
+      "start": 403.11,
+      "end": 406.16
+    },
+    {
+      "id": 54,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "Sete páginas. Cada um tem um trabalho. Se o seu site tiver mais do que isso, pergunte-se o que cada página extra está fazendo. Se a resposta for “nada”, corte. Seus visitantes e Google agradecerão.",
+      "start": 406.38,
+      "end": 417.52
+    }
+  ]
+}
