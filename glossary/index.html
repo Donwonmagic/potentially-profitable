@@ -170,10 +170,12 @@
 
   /* Industry filter: when a filter other than "all" is active on the
      filter bar, the <main> gets data-active-filter="<slug>" and any
-     .gloss-term whose data-industries list doesn't contain the slug
-     is hidden. Keeps the filter as pure CSS — JS only toggles the
-     attribute. Entries tagged "all" are always visible. */
-  main[data-active-filter="restaurants"] .gloss-term:not([data-industries~="restaurants"]):not([data-industries~="all"]){display:none}
+     .gloss-term whose data-industries list doesn't contain that slug
+     is hidden. Strict: an entry only tagged "all" is HIDDEN under a
+     specific-industry filter. Tag relevant entries with both tokens
+     ("restaurants all") to keep them visible in both modes. JS only
+     toggles the attribute. */
+  main[data-active-filter="restaurants"] .gloss-term:not([data-industries~="restaurants"]){display:none}
 
   /* Section-level hide: if a section ends up with zero visible terms
      under the active filter, fade its header and show a small note.
@@ -384,37 +386,37 @@
         <p class="gloss-term-why"><strong>Why it matters</strong>PDF menus are the single most common reason a restaurant site loses mobile visitors. They download slowly, open in a separate viewer, force pinch-zoom, and often fail on older phones outright. An HTML menu is searchable, fast, updatable in seconds, and gives Google a crawlable list of what you actually serve.</p>
       </article>
 
-      <article class="gloss-term" id="hero" data-industries="all">
+      <article class="gloss-term" id="hero" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Hero section<span class="gloss-aka">the first block a visitor sees</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">The large top section of your homepage, above everything else. It's the only area most first-time visitors will see before deciding whether to keep reading or leave.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Your hero has about four seconds to answer: what kind of business is this, where is it, and what can I do here right now. If those three answers aren't clear without scrolling, you're losing visitors who were ready to become customers.</p>
       </article>
 
-      <article class="gloss-term" id="click-to-call" data-industries="all">
+      <article class="gloss-term" id="click-to-call" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Click-to-call<span class="gloss-aka">tap-to-call, tel: link</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">A phone number on your site that, when tapped on a phone, opens the dialer with your number pre-filled — instead of being plain text the visitor has to copy. Built with an <code>href="tel:+1555…"</code> link.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>If a customer has to copy your number, switch apps, paste, and dial, many won't. One tap, one ring — that's the shortest path from "I'm hungry" or "I need a haircut" to paying you.</p>
       </article>
 
-      <article class="gloss-term" id="hours-visibility" data-industries="all">
+      <article class="gloss-term" id="hours-visibility" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Hours visibility</h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">Whether today's hours are visible on your homepage within five seconds of landing, without scrolling or clicking. Distinct from just <em>having</em> hours somewhere on the site.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>"Are they open right now?" is the single most common question a visitor asks. Hide the answer three clicks deep and they'll ask your competitor's site instead.</p>
       </article>
 
-      <article class="gloss-term" id="copyable-address" data-industries="all">
+      <article class="gloss-term" id="copyable-address" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Copyable address</h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">Your street address as real, selectable text on the page — not baked into an image or a graphic. Ideally wrapped in a Google Maps link so tapping it opens directions.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>If a customer can't long-press and copy your address on their phone, they can't paste it into Maps, Uber, or a text to a friend. Text addresses also feed search engines' local-business index; image addresses don't.</p>
@@ -447,10 +449,10 @@
         <p class="gloss-term-why"><strong>Why it matters</strong>Bad hosting makes every other optimization pointless — a fast site on a slow host still loads slowly. Good hosting gives you free HTTPS, free global caching, and 99.9%+ uptime without you thinking about it.</p>
       </article>
 
-      <article class="gloss-term" id="professional-email" data-industries="all">
+      <article class="gloss-term" id="professional-email" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Professional email<span class="gloss-aka">you@yourdomain.com</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">Email that runs on your own domain (hello@rowhousegarden.com) rather than a free Gmail or Yahoo address. Usually $6–$12/month per mailbox through Google Workspace or Microsoft 365.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>First impressions aside, free email addresses are five times more likely to land in spam when you reply to reservation inquiries or invoices. A domain-matching email also signals to customers that you actually own your online presence.</p>
@@ -467,28 +469,28 @@
     </header>
     <div class="gloss-terms">
 
-      <article class="gloss-term" id="core-web-vitals" data-industries="all">
+      <article class="gloss-term" id="core-web-vitals" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Core Web Vitals<span class="gloss-aka">CWV</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">Google's three performance scores for a real page load on a phone — one for loading speed (LCP), one for layout stability (CLS), and one for responsiveness (INP). You'll see them as colored bars in any audit report.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Google explicitly uses Core Web Vitals as a search ranking signal. Two restaurants with identical menus and identical Google Business Profiles will rank differently if one's vitals are green and the other's are red.</p>
       </article>
 
-      <article class="gloss-term" id="lcp" data-industries="all">
+      <article class="gloss-term" id="lcp" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Largest Contentful Paint<span class="gloss-aka">LCP</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">How long it takes for the biggest visible chunk of your homepage — usually the hero image or the headline — to finish drawing on a phone. Under 2.5 seconds is "good", over 4 seconds is "poor".</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>LCP is what a visitor feels as "the page loaded". Every extra second pushes more of them to the back button. Google's own research puts the bounce-risk jump at ~32% when load time goes from 1s to 3s.</p>
       </article>
 
-      <article class="gloss-term" id="cls" data-industries="all">
+      <article class="gloss-term" id="cls" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Cumulative Layout Shift<span class="gloss-aka">CLS</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">A score that measures how much your page <em>jumps around</em> as it loads — when a banner slides in, an image arrives late, or a late-loading font nudges text down. Lower is better; under 0.1 is good.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>If a customer taps "Reserve" and the button jumps at the last millisecond because a photo arrived and pushed it down, they tap the wrong thing and leave. A stable layout keeps conversions intact.</p>
@@ -512,37 +514,37 @@
         <p class="gloss-term-why"><strong>Why it matters</strong>Without it, phones render every page as if it were a desktop monitor and shrink it — everything looks tiny, unreadable, unusable. The fix is literally one line; the before-and-after on mobile is night-and-day.</p>
       </article>
 
-      <article class="gloss-term" id="tap-targets" data-industries="all">
+      <article class="gloss-term" id="tap-targets" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Tap targets<span class="gloss-aka">button size on phones</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">Any clickable element — button, link, menu item — that a finger taps on a phone. Google and Apple both recommend a minimum 44×44-pixel tap area with space between neighbors.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Cramped tap targets produce the "fat-finger" tap that opens the wrong thing. After one or two of those, most visitors leave. Bigger targets also make your site usable for older customers and anyone with motor or dexterity limits.</p>
       </article>
 
-      <article class="gloss-term" id="body-text-size" data-industries="all">
+      <article class="gloss-term" id="body-text-size" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Body text size<span class="gloss-aka">minimum readable font size on phones</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">The default size of regular paragraph text on your site. On phones, 16 pixels is the absolute floor; 17–18px is more comfortable for reading menus, descriptions, and post content.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Below 16px, iOS Safari forcibly zooms your input fields when a visitor taps them, which breaks layouts. And anything smaller than that is simply harder to read on a phone in a hurry or in dim light.</p>
       </article>
 
-      <article class="gloss-term" id="lighthouse" data-industries="all">
+      <article class="gloss-term" id="lighthouse" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Lighthouse<span class="gloss-aka">Google's audit engine</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">The open-source auditing tool Google ships inside Chrome and inside PageSpeed Insights. It simulates a mobile page load and scores your site across performance, SEO, accessibility, and best practices.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Lighthouse is the same engine Google uses to rank your site — so its score isn't advisory, it's the report card. Our restaurant audit runs a real Lighthouse scan on your URL and translates the numbers into specific fixes for your business.</p>
       </article>
 
-      <article class="gloss-term" id="pagespeed-insights" data-industries="all">
+      <article class="gloss-term" id="pagespeed-insights" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>PageSpeed Insights<span class="gloss-aka">PSI, pagespeed.web.dev</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">Google's free web tool at pagespeed.web.dev that runs a Lighthouse audit on any URL and shows you your Core Web Vitals plus a prioritized list of fixes. Built on top of the Lighthouse engine.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>PSI is the tool Google itself uses to look at your site, so its score is as close to Google's opinion of you as you can get without working there. Run your site through it once a month; run it again after any big change.</p>
@@ -575,10 +577,10 @@
         <p class="gloss-term-why"><strong>Why it matters</strong>A CDN is the single biggest "I don't have to think about this" speed upgrade available. Even if half your customers are in one city, the other half get the same fast site, and your origin server does dramatically less work.</p>
       </article>
 
-      <article class="gloss-term" id="responsive-design" data-industries="all">
+      <article class="gloss-term" id="responsive-design" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Responsive design<span class="gloss-aka">mobile-first, adaptive layout</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">A design approach where the same page automatically rearranges itself to fit whatever screen it lands on — phone, tablet, desktop — without a separate mobile site. The standard since about 2015.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Roughly two-thirds of your visitors arrive on a phone. A non-responsive site treats them as second-class. Google also explicitly penalizes sites that aren't mobile-friendly under its mobile-first indexing rule.</p>
@@ -604,10 +606,10 @@
     </header>
     <div class="gloss-terms">
 
-      <article class="gloss-term" id="cta" data-industries="all">
+      <article class="gloss-term" id="cta" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Call to action<span class="gloss-aka">CTA</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">The specific button or link that asks a visitor to do the next thing — "Reserve a Table", "Order Online", "Book a Class", "Get a Quote". Usually bright, clearly labeled, and repeated at natural moments on the page.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Traffic without a clear next step converts at a fraction of the rate. Every page should have one unmistakable primary CTA — the one action you'd most like a visitor to take — and it should be visible on the first screen, not hidden at the bottom.</p>
@@ -631,73 +633,73 @@
         <p class="gloss-term-why"><strong>Why it matters</strong>Every extra tap between a hungry visitor and a checkout drops completion rates measurably. Direct checkouts also let you keep more of the margin than marketplace apps like DoorDash or Grubhub.</p>
       </article>
 
-      <article class="gloss-term" id="click-to-directions" data-industries="all">
+      <article class="gloss-term" id="click-to-directions" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Click-to-directions</h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">Tapping your address on a phone should launch Apple Maps or Google Maps with your business pre-filled as the destination. Built with a Google Maps URL (or the native <code>maps:</code> protocol) instead of plain text.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Customers already standing on a sidewalk with your site open shouldn't have to retype your address into their map app. A working directions link is the shortest path from "I'm coming over" to "I'm here".</p>
       </article>
 
-      <article class="gloss-term" id="sticky-footer" data-industries="all">
+      <article class="gloss-term" id="sticky-footer" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Sticky mobile footer<span class="gloss-aka">persistent bottom bar on phones</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">A thin bar pinned to the bottom of every mobile page holding one or two of your most important actions — usually Call, Reserve, or Order. Stays visible even as the visitor scrolls through the menu or the blog.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>A visitor who's sold somewhere in the middle of your menu shouldn't have to scroll back to the top to act. A sticky footer keeps the next step one thumb-tap away at any moment.</p>
       </article>
 
-      <article class="gloss-term" id="social-proof" data-industries="all">
+      <article class="gloss-term" id="social-proof" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Social proof<span class="gloss-aka">reviews, press, star ratings</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">A quote, star rating, or press mention surfaced on your homepage — ideally in or near the hero, not buried on a Testimonials page — that tells a first-time visitor other people have tried and liked this place.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Strangers trust other strangers more than they trust your marketing copy. One real quote from a real review ("the best carbonara in Bethesda — Washington Post") above the fold does more conversion work than three paragraphs of your own prose.</p>
       </article>
 
-      <article class="gloss-term" id="above-the-fold" data-industries="all">
+      <article class="gloss-term" id="above-the-fold" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Above the fold<span class="gloss-aka">the first screen, "what loads first"</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">The part of your homepage a visitor sees without scrolling. The term is borrowed from newspapers — the half of the front page that was visible before you unfolded it. On mobile that's usually the first ~600 pixels of the page.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>A sizable fraction of your visitors never scroll. Whatever you need them to know or do — what you are, where you are, how to book — has to live above the fold, or it might as well not exist.</p>
       </article>
 
-      <article class="gloss-term" id="bounce-rate" data-industries="all">
+      <article class="gloss-term" id="bounce-rate" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Bounce rate</h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">The percentage of visitors who land on your site and leave without clicking anything — no menu page, no reserve button, no second page. A high number means the page didn't answer what they came to ask.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Bounce rate is an honest mirror. 70%+ on your homepage usually means the hero isn't answering the "what is this place" question fast enough, or the thing they came for (menu, hours, reservation link) isn't obvious.</p>
       </article>
 
-      <article class="gloss-term" id="conversion-rate" data-industries="all">
+      <article class="gloss-term" id="conversion-rate" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Conversion rate</h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">The percentage of visitors who do the specific thing you wanted them to do — book a reservation, place an order, fill out a contact form. A 3% reservation conversion rate on a restaurant site is solid; a 10% online-ordering rate on the menu page is excellent.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Traffic is vanity; conversions are revenue. Doubling your conversion rate is usually cheaper than doubling your traffic — and it compounds every time a new visitor shows up.</p>
       </article>
 
-      <article class="gloss-term" id="funnel" data-industries="all">
+      <article class="gloss-term" id="funnel" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Funnel<span class="gloss-aka">the path from visitor to customer</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">The sequence of steps a visitor goes through before becoming a customer — landing page → menu page → reserve button → reservation form → confirmation. "Funnel" because each step loses some of the people at the one before it.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Most conversion problems live at one specific step, not everywhere. Mapping your funnel tells you whether visitors are bailing at the menu, at the reservation form, or at the confirmation email — so you know which one to fix first.</p>
       </article>
 
-      <article class="gloss-term" id="form-abandonment" data-industries="all">
+      <article class="gloss-term" id="form-abandonment" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Form abandonment</h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">When a visitor starts filling out a form — reservation, contact, inquiry — and leaves before submitting. Usually caused by too many required fields, unclear errors, or a form that doesn't work on their phone.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>A visitor who starts a form has already decided they want to give you their business. Losing them halfway through is a uniquely expensive failure. The fixes are almost always smaller forms, clearer labels, and mobile-tested flows.</p>
@@ -714,10 +716,10 @@
     </header>
     <div class="gloss-terms">
 
-      <article class="gloss-term" id="https" data-industries="all">
+      <article class="gloss-term" id="https" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>HTTPS<span class="gloss-aka">SSL certificate, the padlock</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">The little padlock icon in the browser's address bar. It means your site is served over a secure, encrypted connection — everything between the visitor and your server is scrambled in transit.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Modern browsers flag non-HTTPS sites with a big "Not Secure" warning. Google has used HTTPS as a ranking signal since 2014. Most good hosts give it to you for free via Let's Encrypt or Cloudflare; if yours charges extra, move hosts.</p>
@@ -732,37 +734,37 @@
         <p class="gloss-term-why"><strong>Why it matters</strong>First-time diners scanning your menu on a phone interpret hidden prices as either expensive or evasive. Neither wins the booking. Transparency converts better than mystery, every time.</p>
       </article>
 
-      <article class="gloss-term" id="last-updated-signal" data-industries="all">
+      <article class="gloss-term" id="last-updated-signal" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Last-updated signal<span class="gloss-aka">seasonal menu badge, "this week", dated posts</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">Anything on your site that subtly tells a visitor "someone is still running this place" — a seasonal menu badge, a "this week's specials" block, a recent blog post, a dated press mention, or even a visible last-updated stamp in the footer.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>A stale website feels like a closed business. Visitors who aren't sure if you're still operating don't drive over to find out — they pick the place whose site looks maintained.</p>
       </article>
 
-      <article class="gloss-term" id="working-contact-form" data-industries="all">
+      <article class="gloss-term" id="working-contact-form" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Working contact form</h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">A form where a visitor can type a question or an inquiry and actually get a response. "Working" is the important word — the form sends, the email arrives in an inbox someone checks, and a human replies.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Broken contact forms are everywhere, and every one is silently costing someone business. Test your own by sending yourself a message once a quarter. If nothing lands in five minutes in an inbox you actually check, replace it.</p>
       </article>
 
-      <article class="gloss-term" id="wcag-contrast" data-industries="all">
+      <article class="gloss-term" id="wcag-contrast" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>WCAG AA contrast<span class="gloss-aka">accessible color contrast</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">A readability standard that requires body text to contrast at least 4.5:1 against its background, and large text at least 3:1. Light grey on cream looks refined in a design mockup and fails badly in sunlight.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>WCAG AA is the legal accessibility baseline in the US and EU, and it's also simply how readable your menu is on a patio at noon. Failing it shuts out customers with low vision and invites ADA-compliance lawsuits.</p>
       </article>
 
-      <article class="gloss-term" id="real-photos" data-industries="all">
+      <article class="gloss-term" id="real-photos" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Real photos<span class="gloss-aka">not stock photography</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">Photographs of <em>your</em> space, <em>your</em> food, and <em>your</em> team — not royalty-free stock images licensed from an agency.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Visitors can smell stock photography at a glance, and it reads as dishonest — "they wouldn't show their own place unless there was something wrong with it". One two-hour session with a local photographer outperforms a whole library of stock for years.</p>
@@ -777,28 +779,28 @@
         <p class="gloss-term-why"><strong>Why it matters</strong>Modern hosts issue these for free and renew them automatically via Let's Encrypt. If someone is quoting you for one — or worse, your certificate has quietly expired and visitors are seeing a scary red warning — both are solved by moving to a better host.</p>
       </article>
 
-      <article class="gloss-term" id="privacy-policy" data-industries="all">
+      <article class="gloss-term" id="privacy-policy" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Privacy policy</h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">A page on your site (usually at /privacy) that plainly states what information you collect from visitors, what you use it for, and how you keep it safe. Legally required in the EU (GDPR), California (CCPA), and a growing list of US states.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Even if you only collect emails through a contact form, a missing privacy policy is a legal exposure and a trust red flag. The good news: a one-page, honest policy satisfies most rules. It doesn't need to be written by a lawyer for a site that just has hours and a menu.</p>
       </article>
 
-      <article class="gloss-term" id="cookie-banner" data-industries="all">
+      <article class="gloss-term" id="cookie-banner" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Cookie banner<span class="gloss-aka">cookie notice, consent banner</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">The small bar or modal at the bottom of a page asking visitors to accept tracking cookies. Required by law in the EU and parts of the US if you run analytics or advertising pixels; unnecessary if you use a privacy-friendly analytics tool (like Plausible) that doesn't set tracking cookies.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Cookie banners get dismissed in milliseconds and hurt your first impression. The cleaner answer for most small businesses is to use analytics that don't require one in the first place — your site stays legal <em>and</em> stays un-nagged.</p>
       </article>
 
-      <article class="gloss-term" id="terms-of-service" data-industries="all">
+      <article class="gloss-term" id="terms-of-service" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Terms of Service<span class="gloss-aka">terms and conditions, ToS</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">A page covering the rules of using your site — reservation cancellation policy, gift-card terms, any disputes. Less strictly required than a privacy policy, but strongly recommended for any business that takes payments or deposits online.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>A clear terms page short-circuits most chargeback disputes and cancellation arguments. Your processor (Stripe, Square) will also ask for a link to it during onboarding.</p>
@@ -815,64 +817,64 @@
     </header>
     <div class="gloss-terms">
 
-      <article class="gloss-term" id="gbp" data-industries="all">
+      <article class="gloss-term" id="gbp" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Google Business Profile<span class="gloss-aka">GBP, formerly Google My Business</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">Your business's free listing on Google Maps and Google Search — the panel on the right of a search that shows your name, hours, photos, reviews, and a link to your menu or booking. Claim and edit it at google.com/business.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>For most small local businesses, the Google Business Profile drives more discovery than the website itself. A well-tuned profile — right categories, good photos, complete hours, current menu link — is usually the highest-ROI hour anyone will spend on marketing.</p>
       </article>
 
-      <article class="gloss-term" id="title-tag" data-industries="all">
+      <article class="gloss-term" id="title-tag" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Title tag<span class="gloss-aka">the page's &lt;title&gt;</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">The line of text that shows up as the clickable blue headline of your page in Google search results, and as the name of the tab in a browser. Set in the HTML with <code>&lt;title&gt;…&lt;/title&gt;</code>. Under 60 characters, Google doesn't truncate it.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>The title tag is the single biggest on-page SEO signal you control. For a restaurant: restaurant name + cuisine + city is the formula ("Rowhouse &amp; Garden — Italian Restaurant in Silver Spring, MD").</p>
       </article>
 
-      <article class="gloss-term" id="meta-description" data-industries="all">
+      <article class="gloss-term" id="meta-description" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Meta description</h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">The short paragraph of text Google shows underneath the blue headline in a search result. Set in the HTML with <code>&lt;meta name="description" content="…"&gt;</code>. Roughly 150–160 characters; any more gets cut off.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Meta descriptions don't directly affect ranking, but they heavily affect whether someone clicks. A sharp, specific description — with hours, neighborhood, and one differentiator — outperforms a generic one by double-digit percentages.</p>
       </article>
 
-      <article class="gloss-term" id="schema" data-industries="all">
+      <article class="gloss-term" id="schema" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Schema markup<span class="gloss-aka">JSON-LD, structured data, schema.org</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">Invisible tags on your page that spell out, in a format Google can read directly, <em>exactly</em> what kind of business you are — "I'm a Restaurant, here's my cuisine, my address, my hours, my menu URL". Usually written as a JSON-LD script in the page head.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Schema is what lets Google show your hours, price range, and rating in the search result itself (a "rich result"), instead of a plain blue link. Without it you're guessing whether Google understood your business; with it, you're telling it.</p>
       </article>
 
-      <article class="gloss-term" id="alt-text" data-industries="all">
+      <article class="gloss-term" id="alt-text" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Alt text<span class="gloss-aka">image descriptions</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">A short written description of every image, set via the <code>alt="…"</code> attribute in the HTML. Screen readers read it aloud; Google uses it to understand what's in the photo.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Good alt text opens your site to blind and low-vision visitors (legally required in many jurisdictions), helps Google Images send traffic your way, and gives your site a shot at appearing in voice search results. "IMG_2041.jpg" helps nobody.</p>
       </article>
 
-      <article class="gloss-term" id="sitemap" data-industries="all">
+      <article class="gloss-term" id="sitemap" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Sitemap<span class="gloss-aka">sitemap.xml</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">A file at <code>/sitemap.xml</code> on your domain that lists every public page on your site. You submit it once to Google Search Console and Bing Webmaster Tools so they know where to look.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Without a sitemap, Google finds your pages eventually but slowly. With one, new blog posts, new menu pages, and new specials get indexed in days instead of weeks. It's a one-time setup that pays off forever.</p>
       </article>
 
-      <article class="gloss-term" id="search-console" data-industries="all">
+      <article class="gloss-term" id="search-console" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Google Search Console<span class="gloss-aka">GSC</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">The free Google dashboard that shows you which search terms people used to find your site, which pages they landed on, and whether Google has any indexing problems with your pages. Found at search.google.com/search-console.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Search Console is the only way to know what Google actually thinks of your site. Every small business owner running a website should be claimed in it and checking it once a month — that's where you notice drops in traffic before they become problems.</p>
@@ -896,46 +898,46 @@
         <p class="gloss-term-why"><strong>Why it matters</strong>A broken or accidentally-restrictive robots.txt is one of the most common "why is my site invisible on Google" causes. Get yours wrong once and half your pages disappear from search overnight.</p>
       </article>
 
-      <article class="gloss-term" id="open-graph" data-industries="all">
+      <article class="gloss-term" id="open-graph" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Open Graph<span class="gloss-aka">og:image, social share cards, link previews</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">A set of meta tags that tell Facebook, Instagram, LinkedIn, iMessage, and Slack how to preview your link when someone pastes it — which image to show, which headline, which description.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Without Open Graph tags, a shared link shows as a grey box with your domain name, which people ignore. With a good food photo and a sharp headline, that same link becomes a thumbnail ad every time anyone posts about you.</p>
       </article>
 
-      <article class="gloss-term" id="rich-results" data-industries="all">
+      <article class="gloss-term" id="rich-results" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Rich results<span class="gloss-aka">rich snippets, SERP features</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">Enhanced Google search results that show more than a plain blue link — star ratings, hours, prices, FAQ dropdowns, image carousels. Unlocked by having the right schema markup on your page.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>A result with a 4.8-star rating and a "$$" price next to it gets clicked far more often than a text-only result directly above it. Rich results are one of the few SEO levers where a small technical fix produces a visible, front-page win.</p>
       </article>
 
-      <article class="gloss-term" id="nap-consistency" data-industries="all">
+      <article class="gloss-term" id="nap-consistency" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>NAP consistency<span class="gloss-aka">name, address, phone — everywhere the same</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">Your business name, address, and phone number written identically across your website, Google Business Profile, Yelp, Apple Maps, Facebook, and every other directory. "Suite 200" vs. "Ste. 200" counts as a mismatch to Google.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Google cross-references your NAP across every mention of your business online and downgrades listings with inconsistent info — it reads as "this business might not be real". One tidy-up, done once, recovers rank you didn't know you'd lost.</p>
       </article>
 
-      <article class="gloss-term" id="apple-bing-maps" data-industries="all">
+      <article class="gloss-term" id="apple-bing-maps" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Apple Maps &amp; Bing Places</h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">The non-Google map services — Apple Maps Connect (for iPhone users) and Bing Places (for Edge, Cortana, and ChatGPT-style Copilot) — where you can also claim and edit your business listing for free.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Roughly half of US phones are iPhones. An unmaintained Apple Maps listing sends every Siri-asking, iPhone-using customer to the wrong place or to your competition. Claiming these twice-a-year listings is an hour of work for years of payoff.</p>
       </article>
 
-      <article class="gloss-term" id="mobile-first-indexing" data-industries="all">
+      <article class="gloss-term" id="mobile-first-indexing" data-industries="restaurants all">
         <div class="gloss-term-head">
           <h3>Mobile-first indexing</h3>
-          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">Google's rule, in effect since 2019, that it <em>only</em> looks at the mobile version of your site when deciding how to rank it. Whatever your desktop site does well no longer matters if the mobile version is bad.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Every audit, every fix, every copy tweak has to be tested on a phone first. Desktop is a nice-to-have in 2026; mobile is the thing Google actually scores.</p>
