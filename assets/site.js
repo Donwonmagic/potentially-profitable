@@ -729,13 +729,26 @@
     if (prevBtn) prevBtn.addEventListener('click', () => skipTo(currentIndex - 1));
     if (nextBtn) nextBtn.addEventListener('click', () => skipTo(currentIndex + 1));
 
-    // Click-to-seek on the progress bar. Maps pointer x → chunk index.
+    // Click-to-seek on the progress bar. In studio mode we snap to the
+    // nearest chunk boundary by timestamp (so the click lands at the
+    // paragraph whose bar tick was clicked). In speech-fallback mode
+    // there's no timeline, so we map click position → chunk index
+    // linearly.
     if (progressEl) {
       progressEl.addEventListener('click', (e) => {
         if (!chunks.length) return;
         const rect = progressEl.getBoundingClientRect();
         const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-        skipTo(Math.floor(ratio * chunks.length));
+        if (engine === 'audio' && audioEl && audioEl.duration) {
+          const t = ratio * audioEl.duration;
+          let nearest = 0;
+          for (let i = 0; i < chunks.length; i++) {
+            if ((chunks[i].start || 0) <= t) nearest = i; else break;
+          }
+          skipTo(nearest);
+        } else {
+          skipTo(Math.floor(ratio * chunks.length));
+        }
       });
     }
 
@@ -927,12 +940,25 @@
       chunkTimer = requestAnimationFrame(tickStudio);
     }
 
-    // Studio-mode seek by chunk
+    // Studio-mode seek by chunk. We update the highlight + dock
+    // progress *immediately* — without this, the next tickStudio
+    // iteration sees currentIndex unchanged (we just set it) and
+    // skips its own highlight update, so the blue reading box gets
+    // stuck on the pre-seek paragraph until the user pauses.
     function studioSkipTo(idx) {
       if (!audioEl || !chunks.length) return;
       idx = Math.max(0, Math.min(chunks.length - 1, idx));
-      audioEl.currentTime = chunks[idx].start || 0;
+      const chunk = chunks[idx];
+      audioEl.currentTime = chunk.start || 0;
       currentIndex = idx;
+      setCurrent(chunk.element, chunk);
+      const pct = audioEl.duration ? ((chunk.start || 0) / audioEl.duration) * 100 : 0;
+      if (progressFill) progressFill.style.width = pct.toFixed(2) + '%';
+      if (progressEl) progressEl.setAttribute('aria-valuenow', String(Math.round(pct)));
+      updateDockProgress(pct, chunk.start || 0, audioEl.duration || 0);
+      updateDockChapter(chunk);
+      if (prevBtn) prevBtn.disabled = currentIndex <= 0;
+      if (nextBtn) nextBtn.disabled = currentIndex >= chunks.length - 1;
     }
 
     /* ---- State machine ---- */
@@ -1006,9 +1032,17 @@
         if (!chunks.length) return;
         const rect = dockProgEl.getBoundingClientRect();
         const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-        // In studio mode seek by time; in speech mode seek by chunk.
+        // In studio mode we map the click to the nearest chunk so the
+        // highlight snaps to a paragraph rather than a random mid-
+        // sentence timestamp. All seeks go through skipTo so the card
+        // and dock stay in sync.
         if (engine === 'audio' && audioEl && audioEl.duration) {
-          audioEl.currentTime = ratio * audioEl.duration;
+          const t = ratio * audioEl.duration;
+          let nearest = 0;
+          for (let i = 0; i < chunks.length; i++) {
+            if ((chunks[i].start || 0) <= t) nearest = i; else break;
+          }
+          skipTo(nearest);
         } else {
           skipTo(Math.floor(ratio * chunks.length));
         }
