@@ -578,7 +578,61 @@ function validateRestaurantSchema(objects) {
   const restaurantObjects = (objects || []).filter(isRestaurantLikeSchema);
   return {
     restaurantObjectCount: restaurantObjects.length,
-    openingHours: validateOpeningHours(restaurantObjects)
+    openingHours:  validateOpeningHours(restaurantObjects),
+    priceRange:    validatePriceRange(restaurantObjects),
+    servesCuisine: validateServesCuisine(restaurantObjects)
+  };
+}
+
+// F3: priceRange validation. Schema.org priceRange is free-form but
+// Google's Rich Results docs strongly prefer the $-symbol form
+// ('$', '$$', '$$$', '$$$$'). We accept numeric-range strings too
+// ('15-30', '$15 to $30') since they still describe the signal
+// well; the validation just flags 'present + looks reasonable'
+// vs 'present but junk' vs 'missing'.
+function validatePriceRange(restaurantObjects) {
+  let present = false;
+  let wellFormed = false;
+  let value = null;
+  for (let i = 0; i < restaurantObjects.length; i++) {
+    const raw = restaurantObjects[i].priceRange;
+    if (typeof raw !== 'string' || !raw.trim()) continue;
+    present = true;
+    value = value || raw.trim();
+    // Dollar-sign shorthand (1-4 $'s, possibly with hyphen between)
+    if (/^\${1,4}(?:\s*-\s*\${1,4})?$/.test(raw.trim())) wellFormed = true;
+    // Numeric range like '$15-30' or '15-30' or '$15 to $30'
+    else if (/\$?\d+\s*(?:-|to|–)\s*\$?\d+/i.test(raw)) wellFormed = true;
+    // Single number fallback ('$25') — legal but loses the range signal
+    else if (/^\$?\d+(?:\.\d{1,2})?$/.test(raw.trim())) wellFormed = true;
+  }
+  return { present: present, wellFormed: wellFormed, value: value };
+}
+
+// F3: servesCuisine validation. Accepts a single string or an
+// array of strings. Reports count (how many cuisines declared) and
+// a flat list (lowercased, deduped) so downstream callers can
+// cross-reference against menu-text keywords without extra parsing.
+function validateServesCuisine(restaurantObjects) {
+  const seen = Object.create(null);
+  const cuisines = [];
+  for (let i = 0; i < restaurantObjects.length; i++) {
+    const raw = restaurantObjects[i].servesCuisine;
+    if (typeof raw === 'string') {
+      const v = raw.trim().toLowerCase();
+      if (v && !seen[v]) { seen[v] = true; cuisines.push(v); }
+    } else if (Array.isArray(raw)) {
+      raw.forEach(function(x){
+        if (typeof x !== 'string') return;
+        const v = x.trim().toLowerCase();
+        if (v && !seen[v]) { seen[v] = true; cuisines.push(v); }
+      });
+    }
+  }
+  return {
+    present: cuisines.length > 0,
+    count:   cuisines.length,
+    values:  cuisines
   };
 }
 
