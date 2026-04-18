@@ -4342,6 +4342,202 @@
     el.hidden = false;
   }
 
+  // Phase I7: Canvas-rendered 1200×630 share card. Draws the
+  // overall score (big ring + number), subtype chip, audited
+  // URL, top-3 fixes as a numbered list, and Muntin brand mark.
+  // Triggered by the #shareCardBtn click; downloads as a PNG.
+  //
+  // Output is pure Canvas2D — no remote assets, no fonts loaded
+  // at runtime (falls back to system fonts that look reasonable
+  // for a sharing-platform thumbnail). Preview happens in the
+  // browser's download UI, not in-page.
+  function renderShareCardPng() {
+    var last = window.__auditLastResult;
+    if (!last) return null;
+    var overall = last.overall;
+    var url = (last.url || '').replace(/^https?:\/\//, '').replace(/\/$/, '');
+    var subtypeId = effectiveBusinessType() || 'restaurant';
+    var subtypeLabel = (BUSINESS_TYPE_DEFS[subtypeId] && BUSINESS_TYPE_DEFS[subtypeId].label) || 'Restaurant';
+
+    var W = 1200, H = 630;
+    var canvas = document.createElement('canvas');
+    canvas.width = W; canvas.height = H;
+    var ctx = canvas.getContext('2d');
+    if (!ctx) return null;
+
+    // Background — cream with teal accent bar at the bottom.
+    ctx.fillStyle = '#FAF7F2';
+    ctx.fillRect(0, 0, W, H);
+
+    // Top-left: Muntin brand wordmark.
+    ctx.fillStyle = '#1F4E5B';
+    ctx.font = '600 20px "Inter", system-ui, sans-serif';
+    ctx.textBaseline = 'top';
+    ctx.textAlign = 'left';
+    ctx.fillText('MUNTIN DIGITAL · Restaurant Website Audit', 60, 56);
+
+    // Subtype chip (top-right).
+    ctx.save();
+    ctx.font = '600 16px "Inter", system-ui, sans-serif';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'top';
+    var chipText = subtypeLabel;
+    var chipPadX = 14, chipPadY = 8;
+    var chipWidth = ctx.measureText(chipText).width + chipPadX * 2;
+    var chipHeight = 32;
+    var chipX = W - 60 - chipWidth, chipY = 50;
+    ctx.fillStyle = '#E7F1F3';
+    // Rounded rect — Canvas 2D doesn't have a native rounded-rect
+    // primitive in older browsers, so draw the polygon by hand.
+    roundedRect(ctx, chipX, chipY, chipWidth, chipHeight, 999);
+    ctx.fill();
+    ctx.fillStyle = '#1F4E5B';
+    ctx.fillText(chipText, W - 60 - chipPadX, chipY + chipPadY);
+    ctx.restore();
+
+    // Big score ring on the left — mirrors the in-page SVG.
+    var ringX = 220, ringY = 330, ringR = 140, ringW = 22;
+    ctx.save();
+    ctx.translate(ringX, ringY);
+    // Background track.
+    ctx.beginPath();
+    ctx.arc(0, 0, ringR, 0, Math.PI * 2);
+    ctx.strokeStyle = '#E6DFCE';
+    ctx.lineWidth = ringW;
+    ctx.stroke();
+    // Foreground arc — colored by tier, sweep proportional to score.
+    var scoreColor = overall >= 90 ? '#1F6B3A' : overall >= 50 ? '#C1891C' : '#B8541A';
+    var pct = Math.max(0, Math.min(100, overall || 0)) / 100;
+    ctx.beginPath();
+    ctx.arc(0, 0, ringR, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * pct);
+    ctx.strokeStyle = scoreColor;
+    ctx.lineWidth = ringW;
+    ctx.lineCap = 'round';
+    ctx.stroke();
+    // Score number in the center.
+    ctx.fillStyle = '#14161A';
+    ctx.font = '700 88px "Fraunces", "Georgia", serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillText(String(overall || 0), 0, 18);
+    ctx.font = '500 20px "Inter", system-ui, sans-serif';
+    ctx.fillStyle = '#5B5950';
+    ctx.fillText('/ 100', 0, 50);
+    ctx.restore();
+
+    // Right column: URL + top-3 fixes.
+    var colX = 420, colY = 180;
+    ctx.fillStyle = '#5B5950';
+    ctx.font = '500 16px "Inter", system-ui, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.fillText('AUDITED', colX, colY);
+    ctx.fillStyle = '#14161A';
+    ctx.font = '600 28px "Inter", system-ui, sans-serif';
+    ctx.fillText(truncate(url, 40), colX, colY + 22);
+
+    // Top 3 fixes heading + items.
+    ctx.fillStyle = '#5B5950';
+    ctx.font = '500 16px "Inter", system-ui, sans-serif';
+    ctx.fillText('TOP 3 FIXES', colX, colY + 90);
+
+    var bundle = window.__auditResults;
+    var fixes = [];
+    if (bundle && Array.isArray(bundle.entries)) {
+      fixes = bundle.entries
+        .filter(function(e){ var c = e.result && e.result.mark && e.result.mark.cls; return c === 'fail' || c === 'unverified'; })
+        .slice(0, 3)
+        .map(function(e){
+          var t = (e.result && e.result.title) || (e.def && (e.def.unverified || e.def.fail)) || 'Action item';
+          return t;
+        });
+    }
+    if (!fixes.length) {
+      fixes = ['Your site is in strong shape!'];
+    }
+    ctx.fillStyle = '#14161A';
+    var fixY = colY + 118;
+    for (var i = 0; i < fixes.length; i++) {
+      // Number circle
+      ctx.fillStyle = '#B8541A';
+      ctx.beginPath();
+      ctx.arc(colX + 16, fixY + 14, 14, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.font = '700 14px "Inter", system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(String(i + 1), colX + 16, fixY + 19);
+      // Text
+      ctx.fillStyle = '#14161A';
+      ctx.font = '600 20px "Inter", system-ui, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      wrapText(ctx, truncate(fixes[i], 96), colX + 44, fixY + 4, W - colX - 60 - 44, 26);
+      fixY += 60;
+    }
+
+    // Bottom teal accent bar + CTA.
+    ctx.fillStyle = '#1F4E5B';
+    ctx.fillRect(0, H - 46, W, 46);
+    ctx.fillStyle = '#FAF7F2';
+    ctx.font = '600 16px "Inter", system-ui, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Run your own free audit at muntin.digital/tools/audits/restaurant/', 60, H - 23);
+
+    return canvas;
+  }
+
+  // Rounded-rect polygon helper (for older browsers without
+  // ctx.roundRect). Writes its path; caller decides fill/stroke.
+  function roundedRect(ctx, x, y, w, h, r) {
+    r = Math.min(r, w / 2, h / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y,     x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x,     y + h, r);
+    ctx.arcTo(x,     y + h, x,     y,     r);
+    ctx.arcTo(x,     y,     x + w, y,     r);
+    ctx.closePath();
+  }
+
+  // Word-wrap helper for Canvas. Draws lines into the given box;
+  // silently clips at 3 lines to keep the card tidy.
+  function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+    var words = String(text || '').split(/\s+/);
+    var line = '';
+    var lines = 0;
+    for (var i = 0; i < words.length; i++) {
+      var test = line ? line + ' ' + words[i] : words[i];
+      if (ctx.measureText(test).width > maxWidth && line) {
+        ctx.fillText(line, x, y);
+        y += lineHeight;
+        lines++;
+        if (lines >= 2) { // print 3rd line below
+          // truncate remaining words and ellipsize
+          var remaining = words.slice(i).join(' ');
+          if (ctx.measureText(remaining).width > maxWidth) {
+            while (ctx.measureText(remaining + '…').width > maxWidth && remaining.length > 0) {
+              remaining = remaining.slice(0, -1);
+            }
+            remaining += '…';
+          }
+          ctx.fillText(remaining, x, y);
+          return;
+        }
+        line = words[i];
+      } else {
+        line = test;
+      }
+    }
+    if (line) ctx.fillText(line, x, y);
+  }
+
+  function truncate(s, n) {
+    s = String(s || '');
+    return s.length > n ? s.slice(0, n - 1) + '…' : s;
+  }
+
   // Subtype-flavored one-liner used at the end of every summary
   // variant. Designed to name the single highest-leverage move
   // for each subtype so the narrative ends on an actionable note.
@@ -5066,6 +5262,12 @@
     // Populate per-platform share links for the current result
     updateShareLinks();
 
+    // Phase I7: reveal the download-share-card button once an
+    // audit has actually run (so the button doesn't teasingly
+    // offer a PNG of nothing when the page first loads).
+    var scBtn = document.getElementById('shareCardBtn');
+    if (scBtn) scBtn.hidden = false;
+
     showOnly(reportEl);
     // Scroll the report into view
     setTimeout(function(){
@@ -5608,6 +5810,32 @@
       link.click();
 
       if (window.plausible) window.plausible('Audit Shared: Image');
+    });
+  }
+
+  /* -------- Phase I7: Download share-card PNG -------- */
+  var shareCardBtn = document.getElementById('shareCardBtn');
+  if (shareCardBtn) {
+    shareCardBtn.addEventListener('click', function(){
+      var canvas = renderShareCardPng();
+      if (!canvas) return;
+      var link = document.createElement('a');
+      var lastUrl = (window.__auditLastResult && window.__auditLastResult.url) || '';
+      var slug = lastUrl.replace(/^https?:\/\//, '').replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').toLowerCase().slice(0, 40) || 'audit';
+      link.download = 'muntin-audit-' + slug + '.png';
+      if (canvas.toBlob) {
+        canvas.toBlob(function(blob){
+          link.href = URL.createObjectURL(blob);
+          link.click();
+          setTimeout(function(){ URL.revokeObjectURL(link.href); }, 5000);
+          if (window.plausible) window.plausible('Audit Share Card Downloaded');
+        }, 'image/png');
+      } else {
+        // Legacy Safari: fall back to a toDataURL() sync path.
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        if (window.plausible) window.plausible('Audit Share Card Downloaded');
+      }
     });
   }
 
