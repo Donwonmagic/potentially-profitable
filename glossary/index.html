@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Website Glossary — Plain-English Definitions | Muntin Digital</title>
+<meta name="description" content="A plain-English glossary of the website terms your audit flags — Core Web Vitals, schema, tap targets, click-to-call, and more. No jargon, no gatekeeping." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/glossary/" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Website Glossary — Plain-English Definitions | Muntin Digital" />
+<meta property="og:description" content="Every term the audit flags, explained in plain English for owners, not developers." />
+<meta property="og:url" content="https://muntin.digital/glossary/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/audit.svg" />
+<meta property="og:image:type" content="image/svg+xml" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Website Glossary — Plain-English Definitions" />
+<meta name="twitter:description" content="Every term the audit flags, explained in plain English." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/audit.svg" />
+
+<!-- Favicons -->
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/brand/favicons/favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "DefinedTermSet",
+      "@id": "https://muntin.digital/glossary/#glossary",
+      "name": "Muntin Digital Website Glossary",
+      "description": "Plain-English definitions for the web, SEO, mobile, and conversion terms that appear in a Muntin Digital website audit.",
+      "url": "https://muntin.digital/glossary/",
+      "inLanguage": "en-US",
+      "publisher": { "@id": "https://muntin.digital/#business" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
+        { "@type": "ListItem", "position": 2, "name": "Glossary", "item": "https://muntin.digital/glossary/" }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+
+<style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
+<link rel="stylesheet" href="/assets/site.css">
+
+<style>
+  /* Glossary-specific layout. Inline so the page ships self-contained
+     and doesn't balloon site.css for a page only reached from audit
+     "Learn more" links. */
+  .gloss-hero{max-width:780px;margin:0 auto;text-align:center;padding:clamp(32px,5vw,56px) 0 clamp(24px,3vw,40px)}
+  .gloss-hero .eyebrow{justify-content:center}
+  .gloss-hero h1{margin-top:20px;font-size:clamp(40px,5.4vw,64px)}
+  .gloss-hero p{margin:24px auto 0;max-width:620px;font-size:clamp(16px,1.3vw,18px);line-height:1.6;color:var(--ink-soft)}
+
+  .gloss-section{padding:clamp(48px,6vw,80px) 0;border-top:1px solid var(--line)}
+  .gloss-section:first-of-type{border-top:0}
+  .gloss-section-head{max-width:760px;margin-bottom:clamp(28px,3vw,40px)}
+  .gloss-section-head .eyebrow{color:var(--teal)}
+  .gloss-section-head h2{margin-top:14px;font-size:clamp(28px,3.4vw,40px)}
+  .gloss-section-head p{margin-top:14px;font-size:16px;line-height:1.6;color:var(--ink-soft);max-width:620px}
+
+  .gloss-empty{font-size:14px;color:var(--stone);font-style:italic;padding:24px;border:1px dashed var(--line-dark);border-radius:10px;text-align:center}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/for/restaurants/">Restaurants</a>
+      <a href="/work/">Work</a>
+      <a href="/blog/">Blog</a>
+      <a href="/about/">About</a>
+    </nav>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/services/">Services</a>
+    <a href="/for/restaurants/">Restaurants</a>
+    <a href="/work/">Work</a>
+    <a href="/blog/">Blog</a>
+    <a href="/about/">About</a>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a>
+  </nav>
+</header>
+
+<main id="main">
+
+<nav class="breadcrumb container" aria-label="Breadcrumb">
+  <a href="/">Home</a>
+  <span class="breadcrumb-sep" aria-hidden="true">&#8250;</span>
+  <span aria-current="page">Glossary</span>
+</nav>
+
+<section class="container gloss-hero">
+  <span class="eyebrow">Muntin Digital · Glossary</span>
+  <h1>Plain-English definitions<br>for every term in your audit.</h1>
+  <p>Your website audit flags things in the language Google and Lighthouse use — "LCP", "CLS", "schema", "tap targets". Here's what each of those actually means for your business, and why it's worth fixing.</p>
+</section>
+
+<div class="container">
+
+  <section class="gloss-section" id="basics" aria-labelledby="basics-h">
+    <header class="gloss-section-head">
+      <span class="eyebrow">Category</span>
+      <h2 id="basics-h">The basics</h2>
+      <p>The handful of things every small-business website needs before anything else. If these aren't right, nothing else matters.</p>
+    </header>
+    <p class="gloss-empty">Entries coming in the next sprint.</p>
+  </section>
+
+  <section class="gloss-section" id="mobile" aria-labelledby="mobile-h">
+    <header class="gloss-section-head">
+      <span class="eyebrow">Category</span>
+      <h2 id="mobile-h">Mobile &amp; speed</h2>
+      <p>How your site performs on a phone, on cellular, in a real customer's hand. Most of your visitors are here — and Google ranks pages on this first.</p>
+    </header>
+    <p class="gloss-empty">Entries coming in the next sprint.</p>
+  </section>
+
+  <section class="gloss-section" id="conversions" aria-labelledby="conversions-h">
+    <header class="gloss-section-head">
+      <span class="eyebrow">Category</span>
+      <h2 id="conversions-h">Conversions</h2>
+      <p>Turning a visitor into a reservation, an order, or a phone call. The difference between traffic and revenue.</p>
+    </header>
+    <p class="gloss-empty">Entries coming in the next sprint.</p>
+  </section>
+
+  <section class="gloss-section" id="trust" aria-labelledby="trust-h">
+    <header class="gloss-section-head">
+      <span class="eyebrow">Category</span>
+      <h2 id="trust-h">Trust</h2>
+      <p>The signals that tell a first-time visitor you're a real, careful, operating business — not a half-finished side project.</p>
+    </header>
+    <p class="gloss-empty">Entries coming in the next sprint.</p>
+  </section>
+
+  <section class="gloss-section" id="findability" aria-labelledby="findability-h">
+    <header class="gloss-section-head">
+      <span class="eyebrow">Category</span>
+      <h2 id="findability-h">Findability</h2>
+      <p>How Google, Apple Maps, and voice assistants understand what your business is and where it is. Without this, customers don't find you in the first place.</p>
+    </header>
+    <p class="gloss-empty">Entries coming in the next sprint.</p>
+  </section>
+
+</div>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="foot-cta">
+      <div class="foot-cta-text">Ready to build something worth the time?</div>
+      <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      </a>
+    </div>
+
+    <div class="foot-grid">
+      <div class="foot-col foot-brand">
+        <a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home">
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <sup class="tm" aria-hidden="true">&#8482;</sup>
+        </a>
+        <p class="foot-tagline">Structure Brings Clarity.</p>
+        <p class="foot-blurb">A one-person studio in Silver Spring, MD, building custom websites, brands, and social media for independent restaurants across the DMV and beyond.</p>
+      </div>
+
+      <nav class="foot-col" aria-labelledby="foot-explore">
+        <p class="foot-heading" id="foot-explore">Explore</p>
+        <ul class="foot-links">
+          <li><a href="/services/">Services</a></li>
+          <li><a href="/for/restaurants/">For restaurants</a></li>
+          <li><a href="/work/">Work</a></li>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/about/">About Don</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-tools">
+        <p class="foot-heading" id="foot-tools">Free tools</p>
+        <ul class="foot-links">
+          <li><a href="/tools/">All tools</a></li>
+          <li><a href="/tools/audits/restaurant/">Restaurant audit</a></li>
+          <li><a href="/resources/restaurant-website-checklist/">Restaurant checklist</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col foot-contact" aria-labelledby="foot-contact">
+        <p class="foot-heading" id="foot-contact">Contact</p>
+        <ul class="foot-links">
+          <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
+          <li><a href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a></li>
+          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
+        </ul>
+        <p class="foot-trust"><strong>Reply time:</strong> under 4 hours, Mon&#8211;Fri</p>
+      </nav>
+    </div>
+
+    <div class="foot-bottom">
+      <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p>
+      <nav class="foot-legal" aria-label="Legal">
+        <a href="/terms.html">Terms</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/accessibility.html">Accessibility</a>
+        <a href="/cookies.html">Cookies</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/site.js" defer></script>
+</body>
+</html>
