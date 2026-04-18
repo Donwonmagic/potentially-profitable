@@ -903,6 +903,22 @@
     text-transform: uppercase;
     color: var(--stone);
   }
+  /* Confidence pill rendered inline after the "Detected:" label. Hidden
+     until detectSubtype() returns a meaningful score (see C2b). */
+  .business-type-card .btc-confidence {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    background: var(--teal-soft, #E7F1F3);
+    color: var(--teal, #1F4E5B);
+    vertical-align: middle;
+  }
+  .business-type-card .btc-confidence[hidden] { display: none; }
   .business-type-card .btc-select {
     font: inherit;
     font-size: 14.5px;
@@ -1846,7 +1862,15 @@
            corrected shared link keeps the classification. -->
       <div class="business-type-card" id="businessTypeCard" hidden>
         <div class="btc-left">
-          <div class="btc-label">We detected:</div>
+          <!-- The btc-label reads "We detected:" by default; when
+               detectSubtype() returns a confidence score in C2b it
+               becomes "Detected · N% confident" so the owner can see
+               how sure we are before overriding. #btcConfidence is
+               the span we flip in / out when confidence is available. -->
+          <div class="btc-label">
+            <span id="btcLabelText">We detected:</span>
+            <span class="btc-confidence" id="btcConfidence" hidden></span>
+          </div>
           <select id="btcSelect" class="btc-select" aria-label="Restaurant type">
             <!-- Options are kept in sync with RESTAURANT_SUBTYPES in
                  ./subtypes.js. Legacy values (cafe-bakery, restaurant)
