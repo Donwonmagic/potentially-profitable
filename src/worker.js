@@ -583,6 +583,12 @@ async function handlePageCrawl(request, env, ctx) {
     return jsonResponse({ ok: false, error: homepage.error || 'Fetch failed' }, 502);
   }
 
+  // Sprint E2: rank up to 5 internal-link candidates from the
+  // homepage HTML. Fetching the candidates is Sprint E3; for now
+  // we return them as `candidates` so callers can see what we'd
+  // fetch next without committing to the latency cost.
+  const candidates = extractInternalLinkCandidates(homepage.html, homepage.url);
+
   return jsonResponse({
     ok: true,
     homepage: {
@@ -590,8 +596,93 @@ async function handlePageCrawl(request, env, ctx) {
       status: homepage.status,
       html: homepage.html
     },
+    candidates: candidates,
     pages: []
   }, 200);
+}
+
+// Slot-assigned link-text patterns. Each pattern matches a category
+// of page that the audit wants to inspect separately. Order matters:
+// we stop at the first slot that matches a given anchor, so more
+// specific slots ('catering', 'events') should come before generic
+// ones ('menu'). Patterns match against the anchor's visible text
+// AND the href path (e.g. /catering-menu.pdf) so sites that style
+// their nav with icons and aria-labels still classify.
+const PAGE_CRAWL_SLOTS = [
+  { slot: 'reserve',     patterns: [/reserv/i, /book\s*a?\s*table/i, /\bbooking\b/i] },
+  { slot: 'order',       patterns: [/order\s*(online|now|here)?/i, /start\s+(an\s+)?order/i, /\bpickup\b/i, /\bdelivery\b/i] },
+  { slot: 'catering',    patterns: [/\bcatering\b/i, /\bcater\s*your\b/i, /private\s+event/i, /\brfq\b/i] },
+  { slot: 'events',      patterns: [/\bevents?\b/i, /\bparties\b/i, /\bweddings?\b/i, /private\s+dining/i] },
+  { slot: 'menu',        patterns: [/\bmenu\b/i, /\bmenus\b/i, /food\s*&?\s*drink/i, /\bwine\s+list\b/i, /\bdrink\s+list\b/i] },
+  { slot: 'contact',     patterns: [/\bcontact\b/i, /\bvisit\b/i, /location/i, /find\s+us/i, /hours/i] },
+  { slot: 'about',       patterns: [/\babout\b/i, /our\s+story/i, /\bchef\b/i, /\bteam\b/i] }
+];
+
+// Extract up to 5 internal-link candidates from homepage HTML, one
+// per priority slot. Returns an array of { slot, url } pointing at
+// same-origin pages the caller should fetch to enrich the audit.
+//
+// Parsing is regex-based (HTMLRewriter would be more robust but
+// requires streaming semantics this endpoint doesn't need). We
+// capture every <a href="..."> with its inner text, then walk each
+// PAGE_CRAWL_SLOTS entry in order and pick the SHORTEST matching
+// same-origin URL — shortest wins because '/menu' is almost always
+// the canonical menu page and '/menu/lunch-prix-fixe' is a sub-page.
+function extractInternalLinkCandidates(html, baseUrlString) {
+  if (!html || !baseUrlString) return [];
+  let base;
+  try { base = new URL(baseUrlString); } catch (e) { return []; }
+
+  const anchorRe = /<a\s+[^>]*?href\s*=\s*["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
+  const anchors = [];
+  let m;
+  while ((m = anchorRe.exec(html)) !== null) {
+    const href = m[1];
+    // Inner text: strip nested tags, collapse whitespace. Also pick
+    // up aria-label if present in the surrounding <a> open tag.
+    const rawText = m[2].replace(/<[^>]+>/g, ' ').replace(/&[a-z#0-9]+;/gi, ' ');
+    const text = rawText.replace(/\s+/g, ' ').trim();
+    anchors.push({ href: href, text: text });
+  }
+
+  const candidates = [];
+  const usedUrls = new Set();
+  for (let i = 0; i < PAGE_CRAWL_SLOTS.length; i++) {
+    const slotDef = PAGE_CRAWL_SLOTS[i];
+    // Find all anchors whose text OR href matches any pattern in this slot.
+    const matching = anchors.filter(function(a){
+      const haystack = (a.text || '') + ' ' + (a.href || '');
+      return slotDef.patterns.some(function(re){ return re.test(haystack); });
+    });
+    if (!matching.length) continue;
+    // Resolve each match to an absolute URL, filter to same-origin.
+    const resolved = [];
+    for (let j = 0; j < matching.length; j++) {
+      let abs;
+      try { abs = new URL(matching[j].href, base).href; } catch (e) { continue; }
+      const absUrl = new URL(abs);
+      if (absUrl.origin !== base.origin) continue;
+      // Skip the homepage itself (already fetched) and anchor-only links.
+      if (absUrl.pathname === '/' && !absUrl.search) continue;
+      if (absUrl.href === base.href) continue;
+      // Skip file downloads that aren't HTML — PDFs/images aren't
+      // useful for our text-based checks.
+      if (/\.(pdf|jpe?g|png|gif|webp|svg|mp4|mp3|zip)$/i.test(absUrl.pathname)) continue;
+      resolved.push(absUrl.href);
+    }
+    if (!resolved.length) continue;
+    // Prefer the shortest URL for this slot (canonical > sub-page).
+    resolved.sort(function(a, b){ return a.length - b.length; });
+    for (let k = 0; k < resolved.length; k++) {
+      if (!usedUrls.has(resolved[k])) {
+        candidates.push({ slot: slotDef.slot, url: resolved[k] });
+        usedUrls.add(resolved[k]);
+        break;
+      }
+    }
+    if (candidates.length >= 5) break;
+  }
+  return candidates;
 }
 
 // Shared single-URL fetch helper. Same shape/timeout as the other
