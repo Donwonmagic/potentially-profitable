@@ -366,6 +366,10 @@ var RESTAURANT_PRIORITY_CHECKS = [
         impact: 'Food-truck traffic is all mobile and all intent-driven — "where are you today?" "what\'s on the menu right now?" The "See Today\'s Schedule" and Instagram-link buttons carry the entire discovery funnel. A missed tap sends hungry customers to whatever else Google Maps surfaces nearby.',
         failNote: 'The "Today\'s Location" and "See Our Schedule" buttons need 48×48 tap targets and healthy padding. Your Instagram-handle chip belongs in the same priority tier — it\'s where most of your actual schedule updates land.'
       },
+      'ghost-kitchen': {
+        impact: 'Ghost-kitchen sites are discovery pages — customers came to confirm you\'re real before placing an order on DoorDash or Uber Eats. The "Order on DoorDash / Uber Eats / Grubhub" aggregator buttons are the primary conversion. Misses turn into orders for a competing kitchen on the same platform.',
+        failNote: 'Size the aggregator "Order On …" buttons first — they carry almost all your orders. 48×48 with padding, and stack them clearly so a customer on a hungry phone at 9pm can tap the one they prefer without a miss.'
+      },
       'bar-pub': {
         impact: 'Bar traffic is often late-night and last-minute — "is happy hour still on?", "are they open?", "is there a cover?" A tappable phone and a tappable map are the two buttons that earn their space.',
         failNote: 'Buttons under 44×44 pixels cause misses. On a bar site the phone number and map links are what visitors actually tap — make sure those in particular have 12px+ padding and aren\'t crowded by other links.'
@@ -417,6 +421,11 @@ var RESTAURANT_PRIORITY_CHECKS = [
         passNote: 'Your schedule and menu copy meets contrast thresholds — readable at a farmers\' market in bright sun without cupping the screen.',
         failNote: 'Outdoor readability is the bar for a food-truck site. Pale brand colors that look great on Instagram fail WCAG AA (4.5:1) in direct sun — darken your schedule + menu text until they read cleanly at arm\'s length in daylight.'
       },
+      'ghost-kitchen': {
+        impact: 'Ghost-kitchen branding leans heavy on moody photography and low-contrast type — which photographs beautifully and converts terribly. Customers scanning delivery-hours and menu-brand details on a phone at 9pm need copy that reads without effort.',
+        passNote: 'Hours, brand names, and menu descriptions all meet contrast thresholds — a hungry customer can confirm "yes this is a real restaurant" without squinting.',
+        failNote: 'Ghost-kitchen moody-photography branding often fails WCAG AA (4.5:1) — pale type over dark hero images is the most common offender. Darken body text and especially the hours/brand names; these are the copy customers actually read before tapping through to a delivery app.'
+      },
       'bar-pub': {
         impact: 'Bar sites are often dark-themed by default, and legibility takes a hit. Guests checking happy-hour times or the cocktail list on a phone at the curb outside shouldn\'t have to squint.',
         passNote: 'Your dark-theme copy still meets WCAG AA contrast ratios — happy-hour hours and the cocktail list are readable without zooming.',
@@ -462,6 +471,10 @@ var RESTAURANT_PRIORITY_CHECKS = [
       'food-truck': {
         impact: 'Schedule times and today\'s-location copy are the two pieces of content a food-truck customer reads MOST — usually on a phone, outdoors, while walking. Tiny type makes "are they at the brewery tonight?" a harder question than it needs to be.',
         failNote: 'Set body to 16px, and set schedule times and today\'s-location copy to 17-18px. Both belong in a block large enough to read at a glance while walking.'
+      },
+      'ghost-kitchen': {
+        impact: 'Delivery hours, service area, and menu descriptions are the text customers actually read — and for ghost kitchens that text lives in competition with a lot of visual branding. Sub-16px type forces pinch-zooms on the exact decisions ("are they delivering now? to my zip?") that cost you the order.',
+        failNote: 'Set body to 16px, and put delivery-hours + service-area copy at 17-18px. These are the two paragraphs that decide whether the customer taps over to DoorDash at all.'
       },
       'bar-pub': {
         impact: 'Cocktail lists, draft lists, and happy-hour details are the bar\'s menu. Small type on a phone in a dim Uber ride is a usability tax guests won\'t pay.',
