@@ -392,6 +392,27 @@ export function detectSubtype(signals) {
 var KEYWORD_WEIGHT = 1;
 var KEYWORD_CAP = 5;
 
+/**
+ * Resolve a subtype-specific weight override for a given check id.
+ *
+ * Returns the override (>=0) if the subtype has explicitly set one,
+ * or null if the check's default weight should apply. Returning 0 is
+ * meaningful and must not be conflated with null — it means "this
+ * check is irrelevant for this subtype, suppress it entirely."
+ *
+ * @param {string} id       Canonical subtype id (fine-dining, bakery, …).
+ * @param {string} checkId  Priority-check id (viewport, conversions,
+ *                          age-gate, catering-page, …).
+ * @returns {number|null}   Override weight, or null if the subtype
+ *                          does not override this check.
+ */
+export function subtypeWeights(id, checkId) {
+  var sub = getSubtype(id);
+  if (!sub || !sub.weights) return null;
+  var val = sub.weights[checkId];
+  return (typeof val === 'number') ? val : null;
+}
+
 // Shared ranking + shaping helper. Extracted so Phase B4/B5 can call it
 // after adding their own signal contributions to the score map.
 function rankSubtypeScores(scores) {
