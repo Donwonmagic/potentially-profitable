@@ -1,0 +1,296 @@
+// ============================================================
+// Restaurant subtype registry
+// ============================================================
+//
+// Canonical list of ~10 restaurant subtypes we tailor the audit,
+// the deep-report email, and the checklist PDFs to. Each entry
+// carries every surface a caller might need:
+//
+//   id            — stable URL-safe identifier (used in `?s=` share
+//                   links and in template dispatch). Do NOT rename
+//                   an existing id without adding a migration —
+//                   share links in the wild carry these strings.
+//   label         — human-facing label shown in the selector UI.
+//   schemaTypes   — JSON-LD @type values that IMPLY this subtype
+//                   when detected (schema.org LocalBusiness children).
+//   platformHints — normalized platform-name → weight map. Keys are
+//                   the lowercased `name` from RESTAURANT_ORDERING_HOSTS
+//                   / RESTAURANT_RESERVATION_HOSTS in restaurant-checks.js
+//                   (toast, slice, resy, tock, opentable, tripleseat, …).
+//   keywords      — regex patterns run against visible page text.
+//                   Hedged signals — they add to the subtype score
+//                   but rarely decide detection on their own.
+//   weights       — per-check weight overrides. Keys are priority-
+//                   check ids from RESTAURANT_PRIORITY_CHECKS
+//                   (viewport, tap-targets, color-contrast, font-size,
+//                   phone, platform, conversions, menu-format,
+//                   schema, and the Phase H additions). Values replace
+//                   the default weight on the check for this subtype.
+//                   Use 0 to suppress a check entirely for a subtype
+//                   (e.g. age-gate is 0 for everyone but bar-pub).
+//
+// The existing inline detection (BUSINESS_TYPE_DEFS in
+// tools/audits/restaurant/index.html) covered 5 subtypes; this
+// registry extends to 10 and is the single source of truth the
+// audit, the deep-report templates, and the checklist PDFs all
+// dispatch through starting in Phase C.
+//
+// Backward-compat: the three legacy ids (casual-dining, cafe-bakery,
+// plus the generic 'restaurant') are kept alongside the new clean
+// ids so existing share links keep working. RESTAURANT_SUBTYPE_ALIASES
+// below maps legacy → canonical for any caller that wants to collapse
+// them.
+
+export const RESTAURANT_SUBTYPES = [
+  {
+    id: 'fine-dining',
+    label: 'Fine-dining restaurant',
+    schemaTypes: [],
+    platformHints: { resy: 5, tock: 5, sevenrooms: 4, opentable: 2 },
+    keywords: [
+      /\btasting\s+menu\b/i, /\bprix\s+fixe\b/i, /\bsommelier\b/i,
+      /\bchef['’]s\s+(?:counter|table)\b/i, /\bwine\s+pairing\b/i,
+      /\bdegustation\b/i, /\bamuse[-\s]?bouche\b/i, /\bmichelin\b/i,
+      /\bmulti[-\s]?course\b/i, /\bomakase\b/i
+    ],
+    weights: {
+      // Reservations carry the entire funnel; menu-format (tasting
+      // menu PDF) is part of the marketing pitch; age-gate irrelevant.
+      conversions: 2.0,
+      'menu-format': 1.5,
+      'age-gate': 0,
+      'food-truck-schedule': 0,
+      'aggregator-only': 0
+    }
+  },
+  {
+    id: 'casual-dining',
+    label: 'Casual / full-service restaurant',
+    schemaTypes: ['Restaurant', 'FoodEstablishment'],
+    platformHints: { opentable: 3, yelpreservations: 2, toast: 1, square: 1 },
+    keywords: [
+      /\bdining\s+room\b/i, /\bfull\s+bar\b/i,
+      /\blunch\s+and\s+dinner\b/i, /\bsignature\s+dishes?\b/i,
+      /\bfamily[-\s]friendly\b/i, /\bneighborhood\s+(?:spot|restaurant|favorite)\b/i
+    ],
+    weights: {
+      conversions: 1.5,
+      'age-gate': 0,
+      'food-truck-schedule': 0,
+      'aggregator-only': 0
+    }
+  },
+  {
+    id: 'fast-casual',
+    label: 'Fast-casual or quick-service',
+    schemaTypes: ['FastFoodRestaurant'],
+    platformHints: {
+      toast: 3, chownow: 4, square: 1, bentobox: 2, slice: 4,
+      menufy: 3, olo: 2, lunchbox: 2, checkmate: 2, popmenu: 1,
+      doordash: 1, grubhub: 1, 'uber eats': 1
+    },
+    keywords: [
+      /\border\s+online\b/i, /\border\s+for\s+(?:pickup|delivery|takeout|take[-\s]out)\b/i,
+      /\bgrab\s+(?:and|&)\s+go\b/i, /\bfast[-\s]casual\b/i,
+      /\bcounter\s+service\b/i, /\bdrive[-\s]thru\b/i, /\bcurbside\s+pickup\b/i
+    ],
+    weights: {
+      conversions: 2.0,
+      'menu-format': 1.5,
+      'age-gate': 0,
+      'food-truck-schedule': 0,
+      'aggregator-only': 0
+    }
+  },
+  {
+    id: 'cafe',
+    label: 'Café or coffee shop',
+    schemaTypes: ['CafeOrCoffeeShop'],
+    platformHints: { square: 3, toast: 1, chownow: 1 },
+    keywords: [
+      /\b(?:espresso|cappuccino|latte|cortado|pour[-\s]over|americano|macchiato)\b/i,
+      /\bcoffee\s+(?:shop|bar|house)\b/i, /\bcafé\b/i, /\bcafe\b/i,
+      /\bartisan\s+coffee\b/i, /\broastery?\b/i, /\bsingle[-\s]origin\b/i,
+      /\bcold\s+brew\b/i
+    ],
+    weights: {
+      'menu-format': 1.0,
+      conversions: 1.0,
+      'wholesale-custom-orders': 1.0,
+      'age-gate': 0,
+      'food-truck-schedule': 0,
+      'aggregator-only': 0
+    }
+  },
+  {
+    id: 'bakery',
+    label: 'Bakery or pâtisserie',
+    schemaTypes: ['Bakery', 'IceCreamShop'],
+    platformHints: { square: 3, toast: 1 },
+    keywords: [
+      /\b(?:pastries|croissants?|muffins?|scones?|éclairs?|macarons?)\b/i,
+      /\bbakery\b/i, /\bbaked\s+goods\b/i, /\bpâtisserie\b/i, /\bpatisserie\b/i,
+      /\bartisan\s+bread\b/i, /\bsourdough\b/i, /\bcustom\s+(?:cake|cakes|order)\b/i,
+      /\bwedding\s+cakes?\b/i, /\bcake\s+(?:order|orders|pickup)\b/i
+    ],
+    weights: {
+      'wholesale-custom-orders': 2.0,
+      'menu-format': 1.0,
+      conversions: 1.0,
+      'age-gate': 0,
+      'food-truck-schedule': 0,
+      'aggregator-only': 0
+    }
+  },
+  {
+    id: 'bar-pub',
+    label: 'Bar, pub, or brewery',
+    schemaTypes: ['BarOrPub', 'Brewery', 'Winery', 'Distillery'],
+    platformHints: { tripleseat: 3, opentable: 1, resy: 1, sevenrooms: 1 },
+    keywords: [
+      /\bcocktails?\b/i, /\bcraft\s+beer\b/i, /\bon\s+tap\b/i,
+      /\b(?:draft|draught)\s+(?:beer|list)\b/i, /\bhappy\s+hour\b/i,
+      /\b(?:gastro)?pub\b/i, /\btaproom\b/i, /\bwhiskey\s+(?:bar|list)\b/i,
+      /\bwine\s+bar\b/i, /\bspeakeasy\b/i, /\bbrewery\b/i
+    ],
+    weights: {
+      conversions: 1.5, // events + reservations matter
+      'age-gate': 2.0,  // this is the ONLY subtype with non-zero age-gate weight
+      'menu-format': 1.5, // cocktail/draft list rotation is heavy
+      'food-truck-schedule': 0,
+      'aggregator-only': 0
+    }
+  },
+  {
+    id: 'pizzeria',
+    label: 'Pizzeria',
+    schemaTypes: ['Restaurant', 'FastFoodRestaurant'],
+    platformHints: { slice: 5, toast: 2, chownow: 2, doordash: 2, grubhub: 2, square: 1 },
+    keywords: [
+      /\bpizza(?:s|eria)?\b/i, /\bslice(?:s)?\b/i, /\bneapolitan\b/i,
+      /\bwood[-\s]fired\b/i, /\bcoal[-\s]fired\b/i, /\bsicilian\b/i,
+      /\bdetroit[-\s]style\b/i, /\bpepperoni\b/i, /\bcalzone\b/i
+    ],
+    weights: {
+      conversions: 2.0, // ordering IS the business
+      'delivery-radius': 1.5,
+      'menu-format': 1.5,
+      'age-gate': 0,
+      'food-truck-schedule': 0,
+      'aggregator-only': 0
+    }
+  },
+  {
+    id: 'food-truck',
+    label: 'Food truck or pop-up',
+    schemaTypes: ['Restaurant', 'FastFoodRestaurant'],
+    platformHints: { square: 2, toast: 1 },
+    keywords: [
+      /\bfood\s+truck\b/i, /\btruck\s+schedule\b/i, /\bwhere\s+(?:we|are\s+we)\b/i,
+      /\btoday['’]s\s+location\b/i, /\bpop[-\s]?up\b/i, /\bcatch\s+us\b/i,
+      /\bfollow\s+(?:our|us\s+on)\b/i, /\bmobile\s+(?:kitchen|restaurant)\b/i
+    ],
+    weights: {
+      'food-truck-schedule': 2.0, // this subtype's headline check
+      conversions: 0.5, // most trucks take cash/Venmo at the window
+      'menu-format': 1.0,
+      'age-gate': 0,
+      'aggregator-only': 0,
+      // Maps check is less important: trucks MOVE. Schedule page > map.
+      platform: 0.5
+    }
+  },
+  {
+    id: 'ghost-kitchen',
+    label: 'Ghost kitchen / delivery-only',
+    schemaTypes: ['Restaurant', 'FastFoodRestaurant'],
+    platformHints: {
+      doordash: 4, 'uber eats': 4, grubhub: 4, postmates: 2,
+      seamless: 2, caviar: 2, deliveroo: 3, 'just eat': 3,
+      deliverect: 3, otter: 3
+    },
+    keywords: [
+      /\bghost\s+kitchen\b/i, /\bvirtual\s+(?:kitchen|restaurant|brand)\b/i,
+      /\bdelivery[-\s]only\b/i, /\bcloud\s+kitchen\b/i,
+      /\bno\s+dine[-\s]in\b/i, /\bdelivery\s+&\s+pickup\s+only\b/i
+    ],
+    weights: {
+      'aggregator-only': 2.0, // THE headline check
+      conversions: 1.5,
+      'menu-format': 1.0,
+      // No tap-to-call necessarily — most ghost kitchens don't take phone orders
+      phone: 0.5,
+      // Map is less critical; customers never visit
+      platform: 0.5,
+      'age-gate': 0,
+      'food-truck-schedule': 0
+    }
+  },
+  {
+    id: 'catering-only',
+    label: 'Catering-only / private events',
+    schemaTypes: ['FoodEstablishment', 'Restaurant'],
+    platformHints: { ezcater: 5, catertrax: 5, tripleseat: 3, square: 1 },
+    keywords: [
+      /\bcatering\s+(?:menu|services?|packages?)\b/i, /\bprivate\s+(?:events?|dining|parties)\b/i,
+      /\bcorporate\s+catering\b/i, /\bwedding\s+catering\b/i,
+      /\bbuffet\s+catering\b/i, /\bdrop[-\s]off\s+catering\b/i,
+      /\boff[-\s]premise\b/i, /\brequest\s+a\s+quote\b/i,
+      /\bevent\s+planning\b/i
+    ],
+    weights: {
+      'catering-page': 2.5, // headline check — this IS the site
+      conversions: 1.5, // lead form or direct booking
+      'menu-format': 1.5, // catering PDFs ARE the product here (different standard)
+      phone: 2.0,
+      'age-gate': 0,
+      'food-truck-schedule': 0,
+      'aggregator-only': 0
+    }
+  }
+];
+
+// Legacy → canonical id mapping. Share links and old URLs that carry
+// ?bt=cafe-bakery or ?s=casual-dining should still route to a real
+// subtype. The legacy ids are intentionally left ALIVE here (not in
+// the main array) so any code that resolves an id via RESTAURANT_SUBTYPES
+// can fall back through this table when it misses.
+export const RESTAURANT_SUBTYPE_ALIASES = {
+  'cafe-bakery': 'cafe',  // was a single lumped subtype; now split. Default resolve to cafe; bakery heuristics will often re-detect.
+  'casual': 'casual-dining',
+  'restaurant': 'casual-dining',
+  'coffee-shop': 'cafe',
+  'coffeeshop': 'cafe',
+  'brewery': 'bar-pub',
+  'pub': 'bar-pub',
+  'taproom': 'bar-pub'
+};
+
+// Convenience: flat array of ids for enum validation.
+export const RESTAURANT_SUBTYPE_IDS = RESTAURANT_SUBTYPES.map(function(s){ return s.id; });
+
+/**
+ * Resolve a caller-supplied subtype id (possibly legacy) to the
+ * canonical id. Returns null for unknown ids so the caller can fall
+ * back to detection rather than silently mis-routing.
+ */
+export function canonicalSubtypeId(id) {
+  if (!id || typeof id !== 'string') return null;
+  if (RESTAURANT_SUBTYPE_IDS.indexOf(id) >= 0) return id;
+  var aliased = RESTAURANT_SUBTYPE_ALIASES[id];
+  if (aliased && RESTAURANT_SUBTYPE_IDS.indexOf(aliased) >= 0) return aliased;
+  return null;
+}
+
+/**
+ * Look up a subtype by id. Returns the full registry entry or null.
+ * Handles legacy ids transparently via canonicalSubtypeId.
+ */
+export function getSubtype(id) {
+  var canon = canonicalSubtypeId(id);
+  if (!canon) return null;
+  for (var i = 0; i < RESTAURANT_SUBTYPES.length; i++) {
+    if (RESTAURANT_SUBTYPES[i].id === canon) return RESTAURANT_SUBTYPES[i];
+  }
+  return null;
+}
