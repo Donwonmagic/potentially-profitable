@@ -204,7 +204,7 @@ function checklistKindEs(body) {
     subjectNoun:   voice.subjectNoun,
     businessLabel: 'Restaurante',
     businessField,
-    items:         24,
+    items:         30,
     pageUrl:       'https://muntin.digital/es/resources/restaurant-website-checklist/',
     pdfUrl:        'https://muntin.digital/resources/restaurant-website-checklist/muntin-restaurant-website-checklist.pdf',
     auditUrl:      'https://muntin.digital/es/tools/audits/restaurant/',
