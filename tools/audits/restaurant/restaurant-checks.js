@@ -504,6 +504,10 @@ var RESTAURANT_PRIORITY_CHECKS = [
         impact: 'Phone orders still account for roughly 40% of US pizzeria revenue — and every one of those orders that a customer has to manually dial is a customer who might give up and open Slice. Delivery ETA questions ("how long?") and last-minute customizations ("can you add jalapeños?") are one-tap conversations.',
         failNote: 'Phone ordering is table stakes for pizzerias. Add a tappable phone at the top of every page, and keep it visible next to the "Order Online" button — the two channels complement each other, and ~40% of your revenue still comes in by phone.'
       },
+      'food-truck': {
+        impact: 'Food-truck operators usually cannot answer phones during service — the person who answers is the person cooking. A tappable phone still matters for catering and private-event inquiries, which are the margin-rich bookings that keep trucks profitable between rushes.',
+        failNote: 'You probably can\'t answer a phone mid-service, and that\'s fine. Still add a tappable phone for catering and private-event leads; those calls are not lunch-rush traffic — they\'re $500-$3000 bookings you want to return after service.'
+      },
       'bar-pub': {
         impact: 'Bar calls are time-sensitive: "are you open?", "is happy hour still on?", "do I need a reservation tonight?" A missing tap-to-call number means those visitors go to a bar with an easier phone number.',
         failNote: 'Non-negotiable for bars. Guests check "is happy hour still running?" on the curb outside. Add a phone number and wrap it in a <code>tel:</code> link so the call is one tap, not a copy-paste flow.'
@@ -539,6 +543,9 @@ var RESTAURANT_PRIORITY_CHECKS = [
       },
       'pizzeria': {
         impact: 'For pizzerias the primary use of a map is communicating DELIVERY ZONE, not just the storefront address. A one-tap Google Maps pin is the bare minimum; a proper delivery-radius overlay (or at least a list of served neighborhoods) saves you from the "do you deliver to me?" phone calls that your phone staff are answering instead of taking orders.'
+      },
+      'food-truck': {
+        impact: 'Food trucks MOVE, which inverts the usual map-check logic: a static storefront pin is the wrong answer. What customers need is a one-tap map OF TODAY\'S LOCATION (usually a dynamic field on a schedule page), plus a link to your Instagram or Twitter where you post real-time changes. A stale "home address" map is worse than no map at all.'
       },
       'bar-pub': {
         impact: 'Bar hopping happens on the phone. A tappable map — especially for a bar tucked down a side street or into a basement — can be the difference between a visitor finding you or ending up at whichever place Google Maps surfaces first.'
