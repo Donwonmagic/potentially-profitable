@@ -67,6 +67,7 @@ const VALUED = new Set([
   '--engine', '--model', '--speaker',
   '--kokoro-model', '--kokoro-voices', '--kokoro-voice',
   '--kokoro-speed', '--kokoro-lang',
+  '--languages',
 ]);
 const flags = new Set(args.filter((a) => a.startsWith('--') && !VALUED.has(a)));
 const positional = [];
@@ -85,6 +86,17 @@ const optVal = (name) => {
 const engine = (optVal('--engine') || 'kokoro').toLowerCase();
 if (!['kokoro', 'piper'].includes(engine)) fail(`Unknown --engine "${engine}"; must be kokoro or piper.`);
 
+// Languages to render per post. "en" is the source language;
+// additional BCP-47 language codes (es, fr, it, pt, zh, etc.)
+// trigger a translation pass via scripts/lib/translate.py before
+// the TTS step. Output files are named audio.mp3/json for English
+// (backward compat) and audio.<lang>.mp3/json for every other
+// language. Default is "en" alone; pass --languages explicitly to
+// render only a specific subset (useful for incremental re-renders
+// that skip languages already on disk).
+const languages = (optVal('--languages') || 'en')
+  .split(',').map((s) => s.trim().toLowerCase()).filter(Boolean);
+
 // Piper-mode inputs
 const model   = optVal('--model');
 const speaker = optVal('--speaker') || '0';
@@ -95,6 +107,26 @@ const kokoroVoices = optVal('--kokoro-voices');
 const kokoroVoice  = optVal('--kokoro-voice') || 'am_michael';
 const kokoroSpeed  = optVal('--kokoro-speed') || '1.0';
 const kokoroLang   = optVal('--kokoro-lang')  || 'en-us';
+
+// Per-language Kokoro voice + phonemizer tag. Picks a soft male voice
+// where one exists (to match the English am_fenrir character), falling
+// back to the best-rated voice in that language otherwise. Override
+// per language via --kokoro-voice-<lang>; --kokoro-voice still wins
+// for English. Tags are what Kokoro's espeak phonemizer expects.
+const LANG_VOICE = {
+  en: kokoroVoice,                // inherits --kokoro-voice
+  es: optVal('--kokoro-voice-es') || 'em_alex',
+  fr: optVal('--kokoro-voice-fr') || 'ff_siwis',
+  it: optVal('--kokoro-voice-it') || 'im_nicola',
+  pt: optVal('--kokoro-voice-pt') || 'pm_alex',
+  hi: optVal('--kokoro-voice-hi') || 'hm_omega',
+  ja: optVal('--kokoro-voice-ja') || 'jm_kumo',
+  zh: optVal('--kokoro-voice-zh') || 'zm_yunxi',
+};
+const LANG_KOKORO_TAG = {
+  en: 'en-us', es: 'es', fr: 'fr-fr', it: 'it',
+  pt: 'pt-br', hi: 'hi', ja: 'ja', zh: 'cmn',
+};
 
 const dryRun = flags.has('--dry-run');
 if (!dryRun) {
@@ -136,8 +168,25 @@ function renderPost(postDir) {
     return;
   }
 
-  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'audio-render-'));
-  const segments = []; // list of {wav, dur} to concatenate, in order
+  // Render once per requested language. English is synthesized from
+  // the extracted chunks directly; every other language goes through
+  // scripts/lib/translate.py first (document-context batched, with a
+  // glossary that preserves brand + acronym terms). The chunks' kind
+  // and selector are preserved so the runtime's highlight sync lines
+  // up across languages.
+  for (const lang of languages) {
+    let langChunks = chunks;
+    if (lang !== 'en') {
+      console.log(`  · translating ${chunks.length} chunks → ${lang}`);
+      langChunks = translateChunksFor(chunks, lang);
+    }
+    renderLanguage(postDir, langChunks, lang);
+  }
+}
+
+function renderLanguage(postDir, chunks, lang) {
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), `audio-render-${lang}-`));
+  const segments = [];
   const manifestChunks = [];
 
   // Pre-rendered silence buffers at varied durations. Adaptive gaps
@@ -154,18 +203,19 @@ function renderPost(postDir) {
     return p;
   }
   function gapBefore(chunk, prev) {
-    if (!prev) return 0;                                 // first chunk
-    if (chunk.kind === 'heading') return 0.80;           // section break
-    if (chunk.kind === 'figure')  return 0.55;           // before graphic
-    if (prev.kind === 'heading')  return 0.45;           // after heading
-    if (prev.kind === 'figure')   return 0.50;           // after graphic
-    if (chunk.kind === 'list' && prev.kind === 'list') return 0.22; // item to item
+    if (!prev) return 0;
+    if (chunk.kind === 'heading') return 0.80;
+    if (chunk.kind === 'figure')  return 0.55;
+    if (prev.kind === 'heading')  return 0.45;
+    if (prev.kind === 'figure')   return 0.50;
+    if (chunk.kind === 'list' && prev.kind === 'list') return 0.22;
     if (chunk.kind === 'quote' || prev.kind === 'quote') return 0.55;
-    // Sentence-final punctuation in the previous chunk gets a natural
-    // beat; mid-sentence continuations use less silence.
     const prevEndsSentence = /[.!?]$/.test(prev.text);
     return prevEndsSentence ? 0.32 : 0.22;
   }
+
+  const voice = LANG_VOICE[lang] || LANG_VOICE.en;
+  const kokoroTag = LANG_KOKORO_TAG[lang] || 'en-us';
 
   // Batch-synthesize every chunk's raw WAV up front. For Kokoro this
   // keeps the 300 MB model in memory across chunks instead of reloading
@@ -173,17 +223,12 @@ function renderPost(postDir) {
   // shell out in a loop.
   const rawDir = path.join(tmpDir, 'raw');
   fs.mkdirSync(rawDir, { recursive: true });
-  if (engine === 'kokoro') synthesizeKokoro(chunks, rawDir);
+  if (engine === 'kokoro') synthesizeKokoro(chunks, rawDir, { voice, lang: kokoroTag });
   else                     synthesizePiper(chunks, rawDir);
 
   let cursor = 0;
   chunks.forEach((chunk, i) => {
     const rawWav = path.join(rawDir, `c${String(i).padStart(4, '0')}.wav`);
-    // Trim leading/trailing silence the synth adds around each
-    // utterance. Without this, every chunk carries ~150-300 ms of
-    // dead air on each side that compounds into staccato cuts between
-    // paragraphs. After trimming we explicitly insert the gap we
-    // chose above, which the listener hears as deliberate pacing.
     const wav = path.join(tmpDir, `t${String(i).padStart(4, '0')}.wav`);
     trimSilence(rawWav, wav);
     const dur = wavDuration(wav);
@@ -204,14 +249,18 @@ function renderPost(postDir) {
     });
   });
 
-  // Concatenate all the WAVs (gap, chunk, gap, chunk, …) into one file.
   const concatList = path.join(tmpDir, 'concat.txt');
   fs.writeFileSync(concatList,
     segments.map((p) => `file '${p.replace(/'/g, "'\\''")}'`).join('\n'));
   const combinedWav = path.join(tmpDir, '_all.wav');
   run('ffmpeg', ['-y', '-f', 'concat', '-safe', '0', '-i', concatList, '-c', 'copy', combinedWav]);
 
-  const mp3Out = path.join(postDir, 'audio.mp3');
+  // English keeps the legacy audio.mp3 / audio.json filenames for
+  // backward compatibility with existing HTML (data-audio-src="audio.mp3");
+  // other languages get audio.<lang>.mp3 / audio.<lang>.json alongside.
+  const mp3Name  = lang === 'en' ? 'audio.mp3'  : `audio.${lang}.mp3`;
+  const jsonName = lang === 'en' ? 'audio.json' : `audio.${lang}.json`;
+  const mp3Out = path.join(postDir, mp3Name);
   run('ffmpeg', ['-y', '-i', combinedWav, '-codec:a', 'libmp3lame', '-q:a', '4', mp3Out]);
 
   const manifest = {
@@ -219,31 +268,63 @@ function renderPost(postDir) {
     generatedAt: new Date().toISOString(),
     engine: engine,
     model: path.basename(engine === 'piper' ? model : kokoroModel),
-    voice: engine === 'kokoro' ? kokoroVoice : undefined,
+    voice,
+    language: lang,
     total: round(cursor),
     chunks: manifestChunks,
   };
-  fs.writeFileSync(path.join(postDir, 'audio.json'), JSON.stringify(manifest, null, 2));
+  fs.writeFileSync(path.join(postDir, jsonName), JSON.stringify(manifest, null, 2));
 
-  // Clean up tmp; keep intermediates if --keep-tmp was passed (for debug).
   if (!flags.has('--keep-tmp')) fs.rmSync(tmpDir, { recursive: true, force: true });
-  console.log(`  ✓ ${path.relative(repoRoot, mp3Out)}  (${manifest.total.toFixed(1)}s)`);
+  console.log(`  ✓ ${path.relative(repoRoot, mp3Out)}  (${manifest.total.toFixed(1)}s)  voice=${voice}`);
+}
+
+/* -------------------- translation -------------------- */
+function translateChunksFor(chunks, targetLang) {
+  const helper = path.join(repoRoot, 'scripts', 'lib', 'translate.py');
+  const payload = JSON.stringify({
+    target: targetLang,
+    chunks: chunks.map((c) => ({ id: c.id !== undefined ? c.id : chunks.indexOf(c), text: c.text })),
+  });
+  const proc = spawnSync('python3', [helper], {
+    input: payload,
+    encoding: 'utf8',
+    stdio: ['pipe', 'pipe', 'inherit'],
+    maxBuffer: 16 * 1024 * 1024,
+  });
+  if (proc.status !== 0) {
+    fail(`translate helper exited ${proc.status}: ${proc.stdout || '(no stdout)'}`);
+  }
+  let parsed;
+  try { parsed = JSON.parse(proc.stdout); }
+  catch (e) { fail(`translate helper returned non-JSON: ${proc.stdout.slice(0, 200)}`); }
+  if (!parsed.ok) fail(`translate helper failed: ${parsed.error}`);
+  // Merge translated text back onto the original chunks so kind +
+  // selector survive. Index by id so reordering by the translator
+  // (shouldn't happen, but defensive) doesn't scramble the manifest.
+  const byId = new Map(parsed.chunks.map((c) => [c.id, c.text]));
+  return chunks.map((c, i) => ({
+    ...c,
+    text: byId.has(i) ? byId.get(i) : c.text,
+  }));
 }
 
 /* -------------------- synthesis dispatch -------------------- */
 
-function synthesizeKokoro(chunks, outDir) {
+function synthesizeKokoro(chunks, outDir, opts = {}) {
   // Spawn the Python helper once, stream in the chunk list as JSON.
   // Progress lines on stderr are relayed so the operator sees which
   // chunk is being synthesized; final JSON on stdout is ignored here.
+  // voice + lang are per-language so a multilingual render uses the
+  // right Kokoro voice for each language without reloading the model.
   const helper = path.join(repoRoot, 'scripts', 'lib', 'kokoro_render.py');
   const args = [
     helper,
     '--model',      kokoroModel,
     '--voices',     kokoroVoices,
-    '--voice',      kokoroVoice,
+    '--voice',      opts.voice || kokoroVoice,
     '--speed',      kokoroSpeed,
-    '--lang',       kokoroLang,
+    '--lang',       opts.lang  || kokoroLang,
     '--output-dir', outDir,
   ];
   const payload = JSON.stringify({

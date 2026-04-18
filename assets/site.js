@@ -354,8 +354,26 @@
     // rendered MP3 (via data-audio-src) we use the HTMLAudioElement +
     // manifest path for high-quality playback. Otherwise we fall back
     // to the Web Speech API.
-    const audioSrc = listenBtn.getAttribute('data-audio-src');
-    const manifestSrc = listenBtn.getAttribute('data-audio-manifest') || (audioSrc ? audioSrc.replace(/\.mp3$/, '.json') : null);
+    const audioSrcBase = listenBtn.getAttribute('data-audio-src');
+    // Languages available for this post. Authored list (e.g. "en,es")
+    // is the source of truth; the player card only exposes what's
+    // actually rendered. Base English lives at audio.mp3 / audio.json;
+    // additional languages live at audio.<lang>.mp3 / audio.<lang>.json.
+    const availableLanguages = (listenBtn.getAttribute('data-audio-languages') || 'en')
+      .split(',').map((s) => s.trim().toLowerCase()).filter(Boolean);
+    if (!availableLanguages.includes('en')) availableLanguages.unshift('en');
+    // User preference persists across posts via the shared prefs key.
+    let currentLanguage = 'en';
+    function audioSrcFor(lang) {
+      if (!audioSrcBase) return null;
+      return lang === 'en' ? audioSrcBase : audioSrcBase.replace(/\.mp3$/, `.${lang}.mp3`);
+    }
+    function manifestSrcFor(lang) {
+      const a = audioSrcFor(lang);
+      return a ? a.replace(/\.mp3$/, '.json') : null;
+    }
+    let audioSrc = audioSrcFor(currentLanguage);
+    let manifestSrc = manifestSrcFor(currentLanguage);
     let engine = audioSrc ? 'audio' : 'speech';
     let audioEl = null;       // HTMLAudioElement (studio mode)
     let manifest = null;      // { chunks: [{ id, kind, headingAbove, start, end }], total }
@@ -386,6 +404,36 @@
     const fwd15Btn   = card.root.querySelector('.listen-fwd15');
     const rateSelect = card.root.querySelector('.listen-rate');
     const voiceSelect = card.root.querySelector('.listen-voice');
+    const languageSelect = card.root.querySelector('.listen-language');
+    const languageSelectLabel = card.root.querySelector('.listen-language-select');
+
+    // Display names for the language picker. Shown in their own
+    // endonym (Español, not Spanish) so a Spanish-speaking reader
+    // finds their option at a glance.
+    const LANGUAGE_NAMES = {
+      en: 'English',
+      es: 'Español',
+      fr: 'Français',
+      it: 'Italiano',
+      pt: 'Português',
+      hi: 'हिन्दी',
+      ja: '日本語',
+      zh: '中文',
+    };
+
+    // Populate the language dropdown when at least one non-English
+    // language is rendered for this post. If only English exists,
+    // keep the picker hidden (no point showing a one-option select).
+    if (languageSelect && availableLanguages.length > 1) {
+      languageSelect.replaceChildren();
+      availableLanguages.forEach((code) => {
+        const opt = document.createElement('option');
+        opt.value = code;
+        opt.textContent = LANGUAGE_NAMES[code] || code.toUpperCase();
+        languageSelect.appendChild(opt);
+      });
+      if (languageSelectLabel) languageSelectLabel.hidden = false;
+    }
 
     /* ---- User preferences (persist speed + voice across posts) ---- */
     const PREF_KEY = 'muntin.audioPrefs.v1';
@@ -469,6 +517,166 @@
         prefs.voiceURI = voiceSelect.value;
         savePrefs();
         if (state === 'playing') skipTo(currentIndex);
+      });
+    }
+
+    // Restore saved language preference (applies across posts, so a
+    // visitor who picked Spanish on one post lands on Spanish on the
+    // next one too — as long as the next post rendered Spanish).
+    if (prefs.language && availableLanguages.includes(prefs.language)) {
+      currentLanguage = prefs.language;
+      if (languageSelect) languageSelect.value = currentLanguage;
+      applyLanguage(currentLanguage, /* userInitiated */ false);
+    }
+
+    if (languageSelect) {
+      languageSelect.addEventListener('change', () => {
+        const next = languageSelect.value;
+        if (next === currentLanguage) return;
+        prefs.language = next;
+        savePrefs();
+        applyLanguage(next, /* userInitiated */ true);
+      });
+    }
+
+    // Swap the studio-mode source to the chosen language. Stops any
+    // current playback cleanly; the next Play starts the new language
+    // from the top. (Trying to preserve position across languages
+    // would misalign the highlight because chunk timings differ.)
+    function applyLanguage(lang, userInitiated) {
+      currentLanguage = lang;
+      audioSrc = audioSrcFor(lang);
+      manifestSrc = manifestSrcFor(lang);
+      engine = audioSrc ? 'audio' : 'speech';
+      // Tear down cached audio + manifest so the next play fetches
+      // the new language's assets.
+      if (audioEl) {
+        try { audioEl.pause(); } catch (_) {}
+        try { audioEl.removeAttribute('src'); audioEl.load(); } catch (_) {}
+        audioEl = null;
+      }
+      manifest = null;
+      updateMediaSessionMetadata();
+      if (userInitiated) finishPlayback();
+      // Swap the visible prose so a reader can follow along in the
+      // chosen language. This is the difference between "audio
+      // translation as an afterthought" and "intentional multilingual
+      // accessibility" — the listener sees what they're hearing.
+      applyVisualLanguage(lang);
+      // UI translations cover the visible surface outside the article
+      // chunks: infographic labels, callout tags, CTA button copy,
+      // navigation strings, etc. Anything tagged with a .i18n class.
+      applyUITranslations(lang);
+    }
+
+    /* ---- UI translations (infographics, callouts, buttons) ---- */
+    // Designed alongside the article-chunk translation so the whole
+    // surface switches together. Any element with class="i18n" is a
+    // candidate — its English textContent is cached on first swap, and
+    // translations live in <post>/translations.<lang>.json as a flat
+    // map keyed by the original English text. On language change we
+    // fetch the map (if we don't have it yet) and apply in one pass.
+    const originalUICache = new WeakMap();
+    const uiTranslationsByLang = new Map();
+    async function applyUITranslations(lang) {
+      const elements = Array.from(document.querySelectorAll('.i18n'));
+      if (!elements.length) return;
+      if (lang === 'en') {
+        elements.forEach((el) => {
+          const cached = originalUICache.get(el);
+          if (cached != null) el.textContent = cached;
+        });
+        return;
+      }
+      let map = uiTranslationsByLang.get(lang);
+      if (!map) {
+        // Try to find the translations file. Relative to the current
+        // page (works for any post that ships alongside it).
+        try {
+          const res = await fetch(`translations.${lang}.json`, { credentials: 'omit' });
+          if (!res.ok) throw new Error('status ' + res.status);
+          map = await res.json();
+          uiTranslationsByLang.set(lang, map);
+        } catch (e) {
+          console.warn(`[readAloud] ui translations ${lang} not found`, e);
+          uiTranslationsByLang.set(lang, {}); // cache empty to avoid re-fetching
+          map = {};
+        }
+      }
+      elements.forEach((el) => {
+        // Cache the original English textContent the first time we
+        // see this element, so a later switch back to English (or
+        // jump to another language) can restore cleanly.
+        let english = originalUICache.get(el);
+        if (english == null) {
+          english = el.textContent;
+          originalUICache.set(el, english);
+        }
+        const translated = map[english.trim()] || map[english];
+        if (translated) el.textContent = translated;
+      });
+    }
+
+    /* ---- Visual language swap ---- */
+    // Cache of original-English textContent keyed by the same chunk
+    // selector the audio manifest uses. Populated lazily on first
+    // swap, used to restore the page when the user flips back to
+    // English without requiring a page reload.
+    const originalTextCache = new Map();
+    // Per-language manifest text cache so we don't refetch the JSON
+    // every time the user toggles. The audio.<lang>.json carries the
+    // translated chunk text we need anyway — reuse it for visuals.
+    const translatedTextByLang = new Map();
+
+    async function applyVisualLanguage(lang) {
+      if (lang === 'en') {
+        // Restore every cached element back to its original English.
+        originalTextCache.forEach((original, selector) => {
+          const el = postBody.querySelector(selector);
+          if (el) el.textContent = original;
+        });
+        return;
+      }
+
+      // Fetch and cache the translated manifest if we haven't
+      // already. This call is a small JSON (<30 kB per post) so
+      // loading it on language change is fine even on mobile.
+      let translated = translatedTextByLang.get(lang);
+      if (!translated) {
+        const src = manifestSrcFor(lang);
+        if (!src) return;
+        try {
+          const res = await fetch(src, { credentials: 'omit' });
+          if (!res.ok) throw new Error('manifest ' + res.status);
+          const m = await res.json();
+          translated = m.chunks || [];
+          translatedTextByLang.set(lang, translated);
+        } catch (e) {
+          console.warn('[readAloud] visual translation fetch failed', e);
+          return;
+        }
+      }
+
+      // Apply translation to text-safe chunks only. Figures + callouts
+      // (kind === 'figure') are skipped — translating their visible
+      // text would break the layout around data-audio-alt cards and
+      // infographics. The audio still plays Spanish for them; the
+      // visible design stays as-authored.
+      translated.forEach((chunk) => {
+        if (chunk.kind === 'figure') return;
+        if (!chunk.selector) return;
+        const el = postBody.querySelector(chunk.selector);
+        if (!el) return;
+        // Only cache the original once, even across multiple
+        // language swaps, so flipping en→es→fr→en restores cleanly.
+        if (!originalTextCache.has(chunk.selector)) {
+          originalTextCache.set(chunk.selector, el.textContent);
+        }
+        // Use textContent to avoid accidentally parsing stray HTML
+        // inside the translation result. Inline emphasis (strong/em/a)
+        // is flattened — a known tradeoff of visual translation
+        // without HTML-preserving MT. Audio fidelity is preserved.
+        el.textContent = chunk.text;
       });
     }
 
@@ -1326,29 +1534,7 @@
       if (typeof navigator === 'undefined' || !('mediaSession' in navigator)) return;
       mediaSessionWired = true;
 
-      const h1   = document.querySelector('.post-hero h1');
-      const meta = document.querySelector('meta[property="article:author"]');
-      const og   = document.querySelector('meta[property="og:image"]');
-      const title  = h1 ? (h1.innerText || h1.textContent || '').replace(/\s+/g, ' ').trim()
-                        : document.title;
-      const author = (meta && meta.getAttribute('content')) || 'Muntin Digital';
-      // Per-post cover lives at /brand/og/<slug>-cover.png — derived
-      // from the existing og:image meta. Fall back to the og image
-      // itself if the cover wasn't generated for this post.
-      const ogSrc  = og ? og.getAttribute('content') : '';
-      const cover  = ogSrc.endsWith('.svg') ? ogSrc.replace(/\.svg$/, '-cover.png') : ogSrc;
-      const artwork = cover ? [
-        { src: cover, sizes: '512x512', type: 'image/png' },
-      ] : [];
-
-      try {
-        navigator.mediaSession.metadata = new MediaMetadata({
-          title,
-          artist: author + ' · Muntin Digital',
-          album: 'Audio edition',
-          artwork,
-        });
-      } catch (_) { /* MediaMetadata may not exist in older browsers */ }
+      updateMediaSessionMetadata();
 
       // Action handlers — every one of these maps to an existing
       // engine method. Wrap in try/catch because some browsers throw
@@ -1368,6 +1554,34 @@
         if (engine !== 'audio' || !audioEl || d == null || d.seekTime == null) return;
         audioEl.currentTime = Math.max(0, Math.min(audioEl.duration || 0, d.seekTime));
       });
+    }
+
+    // Fills (or refreshes) the lock-screen metadata block. Called
+    // on first play and again whenever the user switches language
+    // so the album line reflects "Audio edition · Español" etc.
+    function updateMediaSessionMetadata() {
+      if (typeof navigator === 'undefined' || !('mediaSession' in navigator)) return;
+      const h1   = document.querySelector('.post-hero h1');
+      const meta = document.querySelector('meta[property="article:author"]');
+      const og   = document.querySelector('meta[property="og:image"]');
+      const title  = h1 ? (h1.innerText || h1.textContent || '').replace(/\s+/g, ' ').trim()
+                        : document.title;
+      const author = (meta && meta.getAttribute('content')) || 'Muntin Digital';
+      const ogSrc  = og ? og.getAttribute('content') : '';
+      const cover  = ogSrc.endsWith('.svg') ? ogSrc.replace(/\.svg$/, '-cover.png') : ogSrc;
+      const artwork = cover ? [{ src: cover, sizes: '512x512', type: 'image/png' }] : [];
+      const langName = LANGUAGE_NAMES[currentLanguage] || currentLanguage.toUpperCase();
+      const albumLabel = currentLanguage === 'en'
+        ? 'Audio edition'
+        : `Audio edition · ${langName}`;
+      try {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title,
+          artist: author + ' · Muntin Digital',
+          album: albumLabel,
+          artwork,
+        });
+      } catch (_) {}
     }
 
     function syncMediaSessionState() {
@@ -1436,6 +1650,9 @@
             </button>
           </div>
           <div class="listen-card-selects">
+            <label class="listen-select listen-language-select" title="Language" hidden><span class="sr-only">Language</span>
+              <select class="listen-language" aria-label="Language"></select>
+            </label>
             <label class="listen-select" title="Playback speed"><span class="sr-only">Playback speed</span>
               <select class="listen-rate" aria-label="Playback speed">
                 <option value="0.9">0.9×</option>
