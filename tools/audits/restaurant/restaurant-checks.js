@@ -154,3 +154,42 @@ var RESTAURANT_RESERVATION_HOSTS = [
   { pattern: 'dineseed',        name: 'Dineseed' },
   { pattern: 'dinebook',        name: 'DineBook' }
 ];
+
+// ---------------------------------------------------------------------------
+// Maps / directions
+// ---------------------------------------------------------------------------
+// Matched against both network-requests and anchor hrefs so both embedded
+// iframes (maps.google/gstatic) and plain "Directions" links (goo.gl/maps,
+// maps.apple.com) register as a map present.
+
+var RESTAURANT_MAP_HOSTS = [
+  { pattern: 'maps.google',      name: 'Google Maps' },
+  { pattern: 'maps.googleapis',  name: 'Google Maps' },
+  { pattern: 'maps.gstatic',     name: 'Google Maps' },
+  { pattern: 'gstatic.com/maps', name: 'Google Maps' },
+  { pattern: 'google.com/maps',  name: 'Google Maps' },
+  { pattern: 'goo.gl/maps',      name: 'Google Maps' },
+  { pattern: 'mapbox.com',       name: 'Mapbox' },
+  { pattern: 'api.mapbox',       name: 'Mapbox' },
+  // Apple Maps (embedded via MapKit JS)
+  { pattern: 'apple.com/maps',   name: 'Apple Maps' },
+  { pattern: 'mapkit.js',        name: 'Apple Maps' },
+  { pattern: 'maps.apple.com',   name: 'Apple Maps' },
+  // Bing Maps (uses virtualearth.net under the hood)
+  { pattern: 'bing.com/maps',    name: 'Bing Maps' },
+  { pattern: 'virtualearth.net', name: 'Bing Maps' },
+  // Open-source mapping
+  { pattern: 'openstreetmap',    name: 'OpenStreetMap' },
+  { pattern: 'maplibre',         name: 'MapLibre' },
+  { pattern: 'leafletjs',        name: 'Leaflet' },
+  { pattern: 'unpkg.com/leaflet',name: 'Leaflet' },
+  { pattern: 'waze.com',         name: 'Waze' }
+];
+
+// Click-to-call phone. `tel:` hrefs never show up in network-requests
+// (nothing is actually fetched), so this only matches against the
+// combined URL list that includes anchor hrefs pulled from audit
+// detail snippets.
+var RESTAURANT_PHONE_HOSTS = [
+  { pattern: 'tel:', name: 'Click-to-call' }
+];
