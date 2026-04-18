@@ -32,17 +32,33 @@ const ROOT = resolve(__dirname, '..');
 const PORT = 8734;
 const BASE = `http://127.0.0.1:${PORT}`;
 
+// Two output targets: the canonical English checklist plus a Spanish
+// sibling rendered from /es/resources/restaurant-website-checklist/
+// (the localized mirror page maintained alongside the EN source).
+// Each target gets its own footer template with a localized "Score"
+// fill-in label so the print chrome matches the sheet's language.
 const targets = [
   {
     url: `${BASE}/resources/restaurant-website-checklist/`,
     out: 'resources/restaurant-website-checklist/muntin-restaurant-website-checklist.pdf',
+    lang: 'en',
+  },
+  {
+    url: `${BASE}/es/resources/restaurant-website-checklist/`,
+    out: 'es/resources/restaurant-website-checklist/muntin-restaurant-website-checklist-es.pdf',
+    lang: 'es',
   },
 ];
 
 // Running footer: attribution + Score fill-in + double rule.
 // Rendered by Chrome in the reserved bottom page margin, so it sits
 // below body content on every page without overlapping.
-const FOOTER = `
+// Footer template factory: identical layout per language, but the
+// "Score" fill-in label localizes so a printed Spanish checklist
+// doesn't mix English chrome into an otherwise all-Spanish sheet.
+function footerFor(lang) {
+  const scoreLabel = lang === 'es' ? 'Puntuaci\u00f3n' : 'Score';
+  return `
 <style>
   .muntin-foot {
     font-family: Inter, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
@@ -69,8 +85,9 @@ const FOOTER = `
   }
 </style>
 <div class="muntin-foot">
-  Muntin Digital<span class="sep">&middot;</span>muntin.digital<span class="sep">&middot;</span>Score<span class="score-line"></span>
+  Muntin Digital<span class="sep">&middot;</span>muntin.digital<span class="sep">&middot;</span>${scoreLabel}<span class="score-line"></span>
 </div>`;
+}
 const HEADER = '<span></span>'; // empty — suppress Chrome's default date/URL stamp
 
 async function main() {
@@ -100,7 +117,7 @@ async function main() {
         printBackground: true,
         displayHeaderFooter: true,
         headerTemplate: HEADER,
-        footerTemplate: FOOTER,
+        footerTemplate: footerFor(t.lang || 'en'),
         // Bottom margin reserves the footer strip; keep in sync with
         // the running footer height above.
         margin: { top: '0.4in', bottom: '0.8in', left: '0.55in', right: '0.55in' },
