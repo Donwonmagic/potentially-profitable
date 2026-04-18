@@ -4671,23 +4671,17 @@
           var pageText = extractPageText(audits);
           var isRestaurant = looksLikeRestaurant(url, audits, allUrls);
           var restaurantScore = 0;
-          var totalCount = 0, unverifiedCount = 0;
+          var readinessState = createRestaurantReadinessState();
           if (isRestaurant) {
-            var totalWeight = 0, weightedCredit = 0;
             PRIORITY_CHECKS.forEach(function(def){
               var result = evaluatePriorityCheck(def, audits, allUrls, pageText);
               if (!result) return;
-              totalCount++;
-              if (result.mark.cls === 'unverified') {
-                unverifiedCount++;
-                return; // excluded from score
-              }
-              var w = typeof def.weight === 'number' ? def.weight : 1.0;
-              totalWeight += w;
-              if (result.mark.cls === 'pass') weightedCredit += w;
+              accumulateRestaurantReadiness(readinessState, def, result.mark.cls);
             });
-            restaurantScore = totalWeight > 0 ? Math.round((weightedCredit / totalWeight) * 100) : 0;
+            restaurantScore = finalizeRestaurantReadinessScore(readinessState);
           }
+          var totalCount      = readinessState.totalCount;
+          var unverifiedCount = readinessState.unverifiedCount;
           // Apply the same confidence gate the main audit uses, so
           // competitors with only one confirmed pass don't show up as
           // 100/100 readiness in the comparison table.
