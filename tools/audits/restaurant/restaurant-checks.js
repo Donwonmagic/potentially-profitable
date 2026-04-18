@@ -414,5 +414,38 @@ var RESTAURANT_PRIORITY_CHECKS = [
         failNote: 'Set body font-size to at least 16px. The cocktail/draft list and happy-hour times deserve 17 or 18px — those are the conversion paragraphs for a bar site.'
       }
     }
+  },
+  {
+    type: 'phone',
+    weight: 1.5, // real conversion driver for takeout / walk-in
+    anchor: '#basics',
+    effort: 'self',
+    minutes: 2,
+    impact: "On mobile, every tap that requires copying and pasting instead of tapping costs you customers. Phone calls are still how most takeout orders and reservation questions reach independent restaurants.",
+    pass: 'Visitors can tap your phone number to call',
+    passNote: 'A tappable phone number is on your page — mobile visitors can call you with one tap, which matters for takeout orders, reservation questions, and "are you still open" calls.',
+    passNoteText: 'We found a phone number in your page text, but it is not wrapped in a clickable <code>tel:</code> link. Mobile visitors have to copy the number into their dialer manually instead of tapping to call. Ask your developer to wrap the number in <code>&lt;a href="tel:+1..."&gt;</code>.',
+    fail: "We couldn't find a phone number on your site",
+    failNote: "No click-to-call link and no visible phone number in the page text. Every restaurant gets calls — about 'are you open now', about table availability, about special requests — and if your site doesn't make calling one tap, you are losing those conversations. Add a phone number to your site and wrap it in a <code>tel:</code> link.",
+    unverified: "We couldn't confirm whether you have a phone number",
+    unverifiedNote: "We only see the parts of your page that Lighthouse surfaces to us — sometimes phone numbers get missed. Check that yours is visible on every page and wrapped in a <code>tel:</code> link so mobile visitors can tap to call.",
+    byType: {
+      'fine-dining': {
+        impact: 'Guests calling a fine-dining restaurant usually have a high-value question: a special-occasion menu, a large-party booking, a dietary accommodation. A missing phone number or a broken tel: link sends those calls — and reservations — to a competitor.',
+        failNote: 'Special-occasion and large-party bookings almost always start with a phone call. Add a phone number and wrap it in a <code>tel:</code> link so the concierge-level conversation can actually happen.'
+      },
+      'fast-casual': {
+        impact: 'Fast-casual traffic is mostly online ordering, but a phone number still closes the edge cases: "is there parking?", "do you cater?", "do you have gluten-free?" A tappable number keeps those from becoming a one-star review.',
+        failNote: 'Even if online ordering drives most of your conversion, add a tappable phone number. Catering, dietary questions, and "is my order ready?" calls all need a one-tap path — and they convert at a much higher rate than form-fills.'
+      },
+      'cafe-bakery': {
+        impact: 'Café and bakery customers call to check hours, to ask about custom cake orders, and to reserve whole pies or catering trays. A missing phone number is a missing revenue channel — custom-order margins especially.',
+        failNote: 'Custom-order inquiries (birthday cakes, catering trays, wholesale) come in by phone. Add a tappable phone number — a <code>tel:</code> link at the top of every page is the bar for a café or bakery.'
+      },
+      'bar-pub': {
+        impact: 'Bar calls are time-sensitive: "are you open?", "is happy hour still on?", "do I need a reservation tonight?" A missing tap-to-call number means those visitors go to a bar with an easier phone number.',
+        failNote: 'Non-negotiable for bars. Guests check "is happy hour still running?" on the curb outside. Add a phone number and wrap it in a <code>tel:</code> link so the call is one tap, not a copy-paste flow.'
+      }
+    }
   }
 ];
