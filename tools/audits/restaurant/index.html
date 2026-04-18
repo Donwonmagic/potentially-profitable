@@ -532,6 +532,101 @@
     .exec-summary-body { font-size: 15px; }
   }
 
+  /* Phase I2: Top 3 Fixes. Warm rust accent (vs teal for I1) so
+     the owner sees two visual layers — "interpret the score" vs
+     "here's what to do about it." Numbered list matches the
+     top-down priority framing. */
+  .top-fixes {
+    margin: 20px 0 0;
+    padding: 20px 24px;
+    background: #fff;
+    border: 1px solid var(--line, #E6DFCE);
+    border-left: 4px solid var(--rust, #B8541A);
+    border-radius: 12px;
+  }
+  .top-fixes[hidden] { display: none; }
+  .top-fixes-head { margin-bottom: 12px; }
+  .top-fixes-label {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--rust, #B8541A);
+    margin-bottom: 4px;
+  }
+  .top-fixes-sub {
+    font-size: 13px;
+    color: var(--stone);
+  }
+  .top-fixes-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: fix-counter;
+  }
+  .top-fixes-list li {
+    counter-increment: fix-counter;
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-top: 1px solid var(--line, #E6DFCE);
+  }
+  .top-fixes-list li:first-child { border-top: none; padding-top: 8px; }
+  .top-fixes-list li::before {
+    content: counter(fix-counter);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px; height: 32px;
+    background: var(--rust, #B8541A);
+    color: #fff;
+    border-radius: 999px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .top-fixes-item-body { flex: 1; min-width: 0; }
+  .top-fixes-item-title {
+    font-family: var(--font-display, var(--font-body));
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .top-fixes-item-why {
+    font-size: 14px;
+    color: var(--stone);
+    line-height: 1.5;
+  }
+  .top-fixes-item-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .top-fixes-item-chips .chip {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .top-fixes-item-chips .chip-effort-self    { background: #E7F5EC; color: #1F6B3A; }
+  .top-fixes-item-chips .chip-effort-dev     { background: #E7F1F3; color: #1F4E5B; }
+  .top-fixes-item-chips .chip-effort-rebuild { background: #F7E7DC; color: #B8541A; }
+  .top-fixes-item-chips .chip-time           { background: var(--cream-2, #faf6ee); color: var(--ink); border: 1px solid var(--line, #E6DFCE); }
+
+  @media (max-width: 640px) {
+    .top-fixes { padding: 16px 18px; }
+    .top-fixes-list li { gap: 10px; }
+    .top-fixes-list li::before { width: 28px; height: 28px; font-size: 13px; }
+    .top-fixes-item-title { font-size: 15px; }
+    .top-fixes-item-why { font-size: 13px; }
+  }
+
   .opportunities-wrap {
     max-width: 760px;
     margin: 28px auto 8px;
@@ -1889,6 +1984,19 @@
       <section class="exec-summary" id="execSummary" hidden aria-live="polite">
         <div class="exec-summary-label">What this means</div>
         <p class="exec-summary-body" id="execSummaryBody">—</p>
+      </section>
+
+      <!-- Phase I2: Top 3 Fixes action card. Shows the three
+           highest-leverage actionable items (failing or unverified
+           checks ordered by subtype-effective weight) with effort
+           and time chips so the owner sees a compact action plan
+           before the full priority list below. -->
+      <section class="top-fixes" id="topFixes" hidden>
+        <div class="top-fixes-head">
+          <div class="top-fixes-label">Top 3 fixes</div>
+          <div class="top-fixes-sub">Ranked by impact for your segment. Work top-down.</div>
+        </div>
+        <ol class="top-fixes-list" id="topFixesList"></ol>
       </section>
 
       <!-- Per-category opportunity drill-down — the specific Lighthouse
