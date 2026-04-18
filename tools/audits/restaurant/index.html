@@ -2060,7 +2060,7 @@
 
     <!-- Loading state (hidden until fetch starts) -->
     <div class="audit-loading" id="auditLoading" hidden aria-live="polite">
-      <h3>Running your audit…</h3>
+      <h2>Running your audit…</h2>
       <p class="audit-loading-sub" id="auditLoadingSub">This usually takes 15–40 seconds.</p>
       <div class="audit-progress-bar" aria-hidden="true">
         <div class="fill" id="auditProgressFill"></div>
@@ -2075,7 +2075,7 @@
 
     <!-- Error state (hidden until an error occurs) -->
     <div class="audit-error" id="auditError" hidden role="alert">
-      <h3 id="auditErrorHeading">We couldn't audit that URL.</h3>
+      <h2 id="auditErrorHeading">We couldn't audit that URL.</h2>
       <p id="auditErrorBody">Check the address and try again. The site needs to be publicly reachable — if it's behind a login or a local network, the audit can't see it.</p>
       <div class="audit-error-actions">
         <button type="button" id="auditRetryBtn" class="audit-error-btn audit-error-btn-primary">Try again</button>
@@ -2495,7 +2495,7 @@
           <input type="hidden" name="failing_checks" id="emailReportFailing" value="" />
           <input type="hidden" name="unverified_checks" id="emailReportUnverified" value="" />
           <input type="hidden" name="user_corrections" id="emailReportCorrections" value="" />
-          <input type="text" name="_gotcha" class="honeypot" tabindex="-1" autocomplete="off" />
+          <input type="text" name="_gotcha" class="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
           <input
             type="email"
@@ -6257,10 +6257,18 @@
           '</div>';
       }
 
+      // Status label for assistive tech. The visible .mark div stays
+      // aria-hidden because its glyph is decorative; the sr-only
+      // preceding span is what screen readers actually announce so a
+      // user hears "Pass: <title>" or "Needs verification: <title>"
+      // instead of just the title with no indication of status.
+      var markLabel = result.mark.cls === 'pass' ? 'Pass'
+                    : result.mark.cls === 'fail' ? 'Fail'
+                    : 'Needs verification';
       row.innerHTML =
         '<div class="mark ' + result.mark.cls + '" aria-hidden="true">' + result.mark.ch + '</div>' +
         '<div class="body">' +
-          '<strong>' + escapeHtml(result.title) + overrideBadge + '</strong>' +
+          '<strong><span class="sr-only">' + markLabel + ': </span>' + escapeHtml(result.title) + overrideBadge + '</strong>' +
           '<span>' + result.note + '</span>' +
           chipsHtml +
           impactHtml +
@@ -6788,9 +6796,18 @@
     // Phase L1: no gate to toggle; deep tier is always visible.
 
     showOnly(reportEl);
-    // Scroll the report into view
+    // Scroll the report into view and move keyboard + screen-reader
+    // focus onto the results headline so assistive-tech users hear
+    // the audit is complete instead of being stranded on the submit
+    // button. tabindex=-1 on the h2 lets us programmatically focus
+    // without making it a tab stop.
     setTimeout(function(){
       reportEl.scrollIntoView({behavior:'smooth', block:'start'});
+      var headline = document.getElementById('scoreHeadline');
+      if (headline) {
+        if (!headline.hasAttribute('tabindex')) headline.setAttribute('tabindex', '-1');
+        try { headline.focus({ preventScroll: true }); } catch (_) { headline.focus(); }
+      }
     }, 80);
   }
 
@@ -7736,16 +7753,22 @@
         var numericScores = allScores.filter(function(s){ return typeof s === 'number'; });
         var max = numericScores.length ? Math.max.apply(null, numericScores) : null;
 
+        // Color-coded win/loss/fail styling alone would leave screen-
+        // reader users with no status. Append an sr-only label on the
+        // row that describes the outcome so the scoreboard is
+        // understandable without color perception.
         var tdYou = document.createElement('td');
         tdYou.className = 'compare-you';
         if (typeof yourScore === 'number') {
           tdYou.textContent = yourScore + '/100';
           if (max !== null && yourScore === max && numericScores.filter(function(s){ return s === max; }).length === 1) {
             tdYou.classList.add('compare-win');
+            tdYou.insertAdjacentHTML('beforeend', ' <span class="sr-only">(top score)</span>');
           }
         } else {
           tdYou.textContent = 'N/A';
           tdYou.classList.add('compare-fail');
+          tdYou.insertAdjacentHTML('beforeend', ' <span class="sr-only">(unavailable)</span>');
         }
         tr.appendChild(tdYou);
 
@@ -7756,11 +7779,16 @@
             td.textContent = s + '/100';
             if (max !== null && s === max && numericScores.filter(function(x){ return x === max; }).length === 1) {
               td.classList.add('compare-win');
+              td.insertAdjacentHTML('beforeend', ' <span class="sr-only">(top score)</span>');
             }
-            if (typeof yourScore === 'number' && s > yourScore) td.classList.add('compare-loss');
+            if (typeof yourScore === 'number' && s > yourScore) {
+              td.classList.add('compare-loss');
+              td.insertAdjacentHTML('beforeend', ' <span class="sr-only">(beats yours)</span>');
+            }
           } else {
             td.textContent = 'N/A';
             td.classList.add('compare-fail');
+            td.insertAdjacentHTML('beforeend', ' <span class="sr-only">(unavailable)</span>');
           }
           tr.appendChild(td);
         });
