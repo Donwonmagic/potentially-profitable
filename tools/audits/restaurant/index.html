@@ -1997,6 +1997,11 @@
 </section>
 
 <!-- ============ AUDIT TOOL SCRIPT ============ -->
+<!-- Shared restaurant detection patterns, checks, and scoring. Loaded
+     as a classic script so its top-level `var` declarations are
+     available to the IIFE below as globals. See ./restaurant-checks.js
+     for the module contract. -->
+<script src="./restaurant-checks.js"></script>
 <script>
 (function(){
   var form          = document.getElementById('auditForm');
