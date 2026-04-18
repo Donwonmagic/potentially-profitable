@@ -4086,11 +4086,30 @@
     // concrete the owner can act on today.
     var subtypeHint = executiveSubtypeHint(subtypeId);
 
+    // Phase I5: subtype benchmark snippet — contextualizes the
+    // owner's overall score against a rough median for their
+    // subtype so "71" reads as "a bit above average for a bakery"
+    // rather than a raw number without anchor.
+    var benchmarkSnippet = '';
+    if (typeof subtypeBenchmark === 'function') {
+      var bench = subtypeBenchmark(subtypeId);
+      if (bench && typeof bench.overall === 'number') {
+        var diff = overall - bench.overall;
+        var diffPhrase;
+        if (diff >= 10)      diffPhrase = 'meaningfully above';
+        else if (diff >= 3)  diffPhrase = 'a bit above';
+        else if (diff >= -2) diffPhrase = 'right at';
+        else if (diff >= -9) diffPhrase = 'a bit below';
+        else                 diffPhrase = 'meaningfully below';
+        benchmarkSnippet = ' Typical ' + noun + ' sites score around ' + bench.overall + ' — you\'re ' + diffPhrase + ' that.';
+      }
+    }
+
     var intro;
     if (overall >= 90) {
-      intro = 'Your ' + noun + ' is in strong shape — scoring ' + overall + ' overall. Small polish items remain; ' + subtypeHint;
+      intro = 'Your ' + noun + ' is in strong shape — scoring ' + overall + ' overall.' + benchmarkSnippet + ' Small polish items remain; ' + subtypeHint;
     } else if (overall >= 70) {
-      intro = 'Your ' + noun + ' scores ' + overall + ' — solid footing with room to tighten up.';
+      intro = 'Your ' + noun + ' scores ' + overall + ' — solid footing with room to tighten up.' + benchmarkSnippet;
       if (weakest) {
         intro += ' Your weakest pillar is ' + weakest.label + ' (' + weakest.score + '/100); ';
       } else {
@@ -4100,9 +4119,9 @@
     } else if (overall >= 50) {
       intro = 'Your ' + noun + ' scores ' + overall + ' — the site works but is leaking conversions';
       if (weakest) intro += ', particularly on ' + weakest.label;
-      intro += '. The fixes below are mechanical and ship in days, not months. ' + subtypeHint;
+      intro += '.' + benchmarkSnippet + ' The fixes below are mechanical and ship in days, not months. ' + subtypeHint;
     } else {
-      intro = 'Your ' + noun + ' scores ' + overall + ' — this is a site actively costing you customers. Start with mobile viewport and the conversions row, then everything else compounds. ' + subtypeHint;
+      intro = 'Your ' + noun + ' scores ' + overall + ' — this is a site actively costing you customers.' + benchmarkSnippet + ' Start with mobile viewport and the conversions row, then everything else compounds. ' + subtypeHint;
     }
 
     // Unverified-count honesty: if more than a third of checks
