@@ -88,22 +88,56 @@ function renderPost(postDir) {
   }
 
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'audio-render-'));
-  const wavs = [];
+  const segments = []; // list of {wav, dur} to concatenate, in order
   const manifestChunks = [];
 
-  let cursor = 0;
-  const GAP = 0.35; // seconds of silence between chunks, for pacing
-  const gapWav = path.join(tmpDir, '_gap.wav');
-  renderSilence(gapWav, GAP);
+  // Pre-rendered silence buffers at varied durations. Adaptive gaps
+  // make transitions feel natural instead of metronomic: a section
+  // break gets a longer pause than a paragraph break, which gets a
+  // longer pause than list-item to list-item.
+  const GAP_CACHE = new Map();
+  function gapWav(seconds) {
+    const key = seconds.toFixed(3);
+    if (GAP_CACHE.has(key)) return GAP_CACHE.get(key);
+    const p = path.join(tmpDir, `_gap_${key}.wav`);
+    renderSilence(p, seconds);
+    GAP_CACHE.set(key, p);
+    return p;
+  }
+  function gapBefore(chunk, prev) {
+    if (!prev) return 0;                                 // first chunk
+    if (chunk.kind === 'heading') return 0.80;           // section break
+    if (chunk.kind === 'figure')  return 0.55;           // before graphic
+    if (prev.kind === 'heading')  return 0.45;           // after heading
+    if (prev.kind === 'figure')   return 0.50;           // after graphic
+    if (chunk.kind === 'list' && prev.kind === 'list') return 0.22; // item to item
+    if (chunk.kind === 'quote' || prev.kind === 'quote') return 0.55;
+    // Sentence-final punctuation in the previous chunk gets a natural
+    // beat; mid-sentence continuations use less silence.
+    const prevEndsSentence = /[.!?]$/.test(prev.text);
+    return prevEndsSentence ? 0.32 : 0.22;
+  }
 
+  let cursor = 0;
   chunks.forEach((chunk, i) => {
-    const wav = path.join(tmpDir, `c${String(i).padStart(4, '0')}.wav`);
-    runPiper(chunk.text, wav);
+    const rawWav = path.join(tmpDir, `c${String(i).padStart(4, '0')}.wav`);
+    runPiper(chunk.text, rawWav);
+    // Trim leading/trailing silence piper adds around each utterance.
+    // This is the single biggest win against "robotic, word-at-a-time"
+    // playback: without trimming, every chunk carries ~150-300 ms of
+    // dead air on each side that compounds into staccato cuts between
+    // paragraphs. After trimming we explicitly insert the gap we chose
+    // above, which the listener hears as deliberate pacing.
+    const wav = path.join(tmpDir, `t${String(i).padStart(4, '0')}.wav`);
+    trimSilence(rawWav, wav);
     const dur = wavDuration(wav);
-    const start = cursor;
+    const gap = gapBefore(chunk, chunks[i - 1]);
+    if (gap > 0) segments.push(gapWav(gap));
+    segments.push(wav);
+
+    const start = cursor + gap;
     const end = start + dur;
-    cursor = end + GAP;
-    wavs.push(wav, gapWav);
+    cursor = end;
     manifestChunks.push({
       id: i,
       kind: chunk.kind,
@@ -116,10 +150,10 @@ function renderPost(postDir) {
   });
   console.log('');
 
-  // Concatenate all the WAVs (chunk + gap, chunk + gap …) then MP3.
+  // Concatenate all the WAVs (gap, chunk, gap, chunk, …) into one file.
   const concatList = path.join(tmpDir, 'concat.txt');
   fs.writeFileSync(concatList,
-    wavs.map((p) => `file '${p.replace(/'/g, "'\\''")}'`).join('\n'));
+    segments.map((p) => `file '${p.replace(/'/g, "'\\''")}'`).join('\n'));
   const combinedWav = path.join(tmpDir, '_all.wav');
   run('ffmpeg', ['-y', '-f', 'concat', '-safe', '0', '-i', concatList, '-c', 'copy', combinedWav]);
 
@@ -141,11 +175,18 @@ function renderPost(postDir) {
 }
 
 function runPiper(text, outWav) {
-  // Piper reads text on stdin, writes WAV to --output_file.
+  // Piper reads text on stdin, writes WAV to --output_file. The
+  // synthesis params below are tuned for slightly longer natural beats
+  // between sentences and a touch more prosodic variation than the
+  // defaults — the result feels more "read aloud" than "announced".
   const proc = spawnSync('piper', [
     '--model', model,
     '--speaker', speaker,
     '--output_file', outWav,
+    '--sentence-silence', '0.30',
+    '--length-scale', '1.0',
+    '--noise-scale', '0.667',
+    '--noise-w-scale', '0.85',
   ], { input: text, encoding: 'utf8' });
   if (proc.status !== 0) {
     fail(`piper failed (${proc.status}): ${proc.stderr || proc.stdout}`);
@@ -155,6 +196,18 @@ function runPiper(text, outWav) {
 function renderSilence(outWav, seconds) {
   run('ffmpeg', ['-y', '-f', 'lavfi', '-i', `anullsrc=r=22050:cl=mono`,
                 '-t', String(seconds), '-c:a', 'pcm_s16le', outWav]);
+}
+
+// Strip leading + trailing silence from a WAV using ffmpeg's
+// silenceremove filter. Thresholds picked for piper's ~-50dB noise
+// floor: anything quieter than -45dB for >0.08s is treated as silence.
+// The re-encode to pcm_s16le matches the piper WAV format so downstream
+// concat doesn't need a re-encode step.
+function trimSilence(inputWav, outWav) {
+  run('ffmpeg', ['-y', '-i', inputWav, '-af',
+    'silenceremove=start_periods=1:start_duration=0.08:start_threshold=-45dB:' +
+    'stop_periods=1:stop_duration=0.08:stop_threshold=-45dB:detection=rms',
+    '-c:a', 'pcm_s16le', outWav]);
 }
 
 function wavDuration(wav) {
@@ -199,7 +252,11 @@ function extractChunks(html) {
     if (/class="[^"]*(inline-cta|further-reading|sources)[^"]*"/i.test(attrBlob)) continue;
 
     if (tag === 'h2' || tag === 'h3') {
-      const t = stripTags(inner);
+      let t = stripTags(inner);
+      // Headings don't end with punctuation in the HTML, which trips
+      // the synth's sentence-final intonation — append a period so the
+      // line lands with a proper fall rather than a declarative drift.
+      if (t.length >= 2 && !/[.!?…]$/.test(t)) t += '.';
       if (t.length >= 2) out.push({ text: t, kind: 'heading', selector: baseSel });
       continue;
     }
@@ -231,8 +288,8 @@ function extractChunks(html) {
       const ariaLabelMatch = /role="img"[^>]*aria-label="([\s\S]*?)"/i.exec(inner);
       const captionMatch   = /<figcaption[^>]*>([\s\S]*?)<\/figcaption>/i.exec(inner);
       let text = '';
-      if (audioAltMatch) text = decodeEntities(audioAltMatch[1]).trim();
-      else if (ariaLabelMatch) text = decodeEntities(ariaLabelMatch[1]).trim();
+      if (audioAltMatch) text = normalizeForSpeech(decodeEntities(audioAltMatch[1]).trim());
+      else if (ariaLabelMatch) text = normalizeForSpeech(decodeEntities(ariaLabelMatch[1]).trim());
       else if (captionMatch)   text = stripTags(captionMatch[1]);
       if (text.length >= 2) out.push({ text, kind: 'figure', selector: baseSel });
       continue;
@@ -242,18 +299,90 @@ function extractChunks(html) {
       if (t.length >= 2) out.push({ text: t, kind: 'quote', selector: baseSel });
       continue;
     }
-    // Plain <div> wrappers (like .callout) — we don't descend. If your
-    // content has speakable text inside a div you don't want missed,
-    // either switch it to a <p> or give the div a data-audio-alt.
+    if (tag === 'div') {
+      // Top-level div wrappers (visual callouts like .revenue-math)
+      // only produce a spoken chunk when the author has opted in with
+      // data-audio-alt. That value is the authored prose version of
+      // the visual block — we emit it as one "figure" chunk so the
+      // runtime highlights the whole box while it's being read.
+      const audioAltMatch = /data-audio-alt="([\s\S]*?)"/i.exec(attrBlob);
+      if (audioAltMatch) {
+        const text = normalizeForSpeech(decodeEntities(audioAltMatch[1]).trim());
+        if (text.length >= 2) out.push({ text, kind: 'figure', selector: baseSel });
+      }
+      continue;
+    }
   }
 
   return out;
 }
 
 function stripTags(s) {
-  return decodeEntities(s.replace(/<[^>]+>/g, ' '))
+  return normalizeForSpeech(decodeEntities(s.replace(/<[^>]+>/g, ' '))
+    .replace(/\s+/g, ' ')
+    .trim());
+}
+
+/* Text → speech normalization.
+ * Piper and most TTS engines read symbols and acronyms literally unless
+ * coached: "#1" becomes "hash one", "SEO" becomes "see-oh", "2026"
+ * becomes "two thousand twenty-six" instead of "twenty twenty-six".
+ * These substitutions coach the synthesizer into the pronunciation a
+ * reader would actually pick given the context of a restaurant-
+ * marketing blog. Keep in sync with the runtime copy in
+ * assets/site.js so Web Speech fallback behaves the same way.
+ */
+function normalizeForSpeech(str) {
+  if (!str) return str;
+
+  // Acronyms the synth otherwise mangles. Spelled out letter-by-letter
+  // with spaces so Piper pronounces each letter. Whole-word only.
+  const ACRONYMS = ['SEO','CTA','URL','PDF','POS','API','DNS','CDN','CMS','DIY','CEO','ROI','UX','UI','HTML','CSS','HTTPS','FAQ','GBP','NAP'];
+  const ACRONYM_RE = new RegExp('\\b(' + ACRONYMS.join('|') + ')\\b', 'g');
+
+  // Short honorifics + common latinisms. Expanded so the synth doesn't
+  // stumble on the abbreviating period.
+  const EXPANSIONS = {
+    'Mr.': 'Mister', 'Mrs.': 'Missus', 'Ms.': 'Miss', 'Dr.': 'Doctor',
+    'vs.': 'versus', 'etc.': 'et cetera', 'i.e.': 'that is',
+    'e.g.': 'for example', 'approx.': 'approximately',
+  };
+
+  return str
+    // "#1" / "# 1" / "#10" → "number 1" (numeric only; leaves hashtags alone)
+    .replace(/#\s*(\d+)/g, 'number $1')
+    // "$33,000" / "$55" → "33,000 dollars" / "55 dollars"
+    .replace(/\$(\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?)/g, '$1 dollars')
+    // "×" → " times " in arithmetic-looking contexts (e.g. "50 × $55")
+    .replace(/(\d)\s*×\s*(\d|\$)/g, '$1 times $2')
+    // "4pm" / "8 AM" / "10p.m." → "4 PM" / "8 AM" / "10 PM" (uppercase
+    // so piper reads it as the abbreviation, not "pm" which slurs)
+    .replace(/(\d)\s*([ap])\.?\s*m\.?\b/gi, (_, n, ap) => `${n} ${ap.toUpperCase()}M`)
+    // Known acronyms — letter-by-letter with spaces so piper spells them
+    .replace(ACRONYM_RE, (w) => w.split('').join(' '))
+    // "2026" / "2024" → "twenty twenty-six" (common-era years in 20xx)
+    .replace(/\b20(\d{2})\b/g, (_, xx) => {
+      const n = parseInt(xx, 10);
+      return 'twenty ' + numberWord(n);
+    })
+    // Honorifics + latinisms
+    .replace(/\b(Mr|Mrs|Ms|Dr|vs|etc|i\.e|e\.g|approx)\.(?=\s|$)/g, (m) => EXPANSIONS[m] || m)
+    // Narrow-no-break-space (U+202F) and non-breaking space (U+00A0)
+    // can trip word boundaries; normalize to plain space.
+    .replace(/[\u00A0\u202F]/g, ' ')
+    // Collapse any whitespace we introduced
     .replace(/\s+/g, ' ')
     .trim();
+}
+
+// Small helper for numberWord up to 99 — enough for year suffix digits
+function numberWord(n) {
+  if (n === 0) return 'hundred';
+  const ones = ['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+  const tens = ['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+  if (n < 20) return ones[n];
+  const t = Math.floor(n / 10), o = n % 10;
+  return o ? tens[t] + '-' + ones[o] : tens[t];
 }
 function decodeEntities(s) {
   return s
