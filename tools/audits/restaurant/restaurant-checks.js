@@ -358,6 +358,10 @@ var RESTAURANT_PRIORITY_CHECKS = [
         impact: 'Bakery traffic skews heavily toward custom-cake inquiries and morning pickup pre-orders — "Order Ahead" and "Request a Custom Cake" are the two buttons that carry $500-2000 wedding orders and $30 croissant pre-orders. A missed tap is a real lost order.',
         failNote: 'Bump the "Order Ahead" and "Custom Cake Inquiry" buttons to 48×48 with 12px+ padding — these are the two that carry almost all of your online revenue. Other links can be smaller.'
       },
+      'pizzeria': {
+        impact: 'On a pizzeria site "Order Delivery" and "Start a Pickup Order" are the conversion. Almost all mobile traffic is hungry-right-now intent, and a missed tap routes that order to Slice or DoorDash (where you pay 20-30% commission) within seconds.',
+        failNote: '"Order Delivery" / "Pickup Order" need 48×48 tap targets and padding to separate them from secondary navigation. Every missed tap at 7pm on a Friday goes to an aggregator — you literally pay commission per miss.'
+      },
       'bar-pub': {
         impact: 'Bar traffic is often late-night and last-minute — "is happy hour still on?", "are they open?", "is there a cover?" A tappable phone and a tappable map are the two buttons that earn their space.',
         failNote: 'Buttons under 44×44 pixels cause misses. On a bar site the phone number and map links are what visitors actually tap — make sure those in particular have 12px+ padding and aren\'t crowded by other links.'
@@ -399,6 +403,11 @@ var RESTAURANT_PRIORITY_CHECKS = [
         passNote: 'Your ingredient and allergen copy meets contrast thresholds — readable on a phone by the guest double-checking a custom-cake spec at 11pm the night before.',
         failNote: 'Ingredient and allergen notes are the highest-stakes copy on a bakery site. Pale grey descriptions over cream fail WCAG AA (4.5:1) and spook nervous custom-cake or dietary-restricted customers. This is a trust issue, not just usability.'
       },
+      'pizzeria': {
+        impact: 'Pizza sites lean on price grids and toppings lists — both of which fail contrast more than you would expect because the branding is often red-on-red or cream-on-cream. A customer can\'t confidently customize a pie if they can\'t read the pepperoni price or the crust options.',
+        passNote: 'Topping prices, crust options, and combo pricing all meet contrast thresholds — customers can customize a pie on a phone without squinting.',
+        failNote: 'Price grids and topping lists are the conversion surface for a pizzeria. Low-contrast cream-on-cream or red-on-red pricing fails WCAG AA (4.5:1) — darken prices and topping labels until they read cleanly on a phone outside.'
+      },
       'bar-pub': {
         impact: 'Bar sites are often dark-themed by default, and legibility takes a hit. Guests checking happy-hour times or the cocktail list on a phone at the curb outside shouldn\'t have to squint.',
         passNote: 'Your dark-theme copy still meets WCAG AA contrast ratios — happy-hour hours and the cocktail list are readable without zooming.',
@@ -436,6 +445,10 @@ var RESTAURANT_PRIORITY_CHECKS = [
       'bakery': {
         impact: 'Ingredient lists, custom-order spec fields, and pickup-date copy are the three things a bakery customer reads MOST carefully. Tiny type forces a pinch-zoom on exactly the moments that require precision.',
         failNote: 'Set body to 16px, and set ingredient lists plus custom-order copy to 17-18px. Customers placing $200+ orders for a specific date want zero ambiguity about what they\'re ordering.'
+      },
+      'pizzeria': {
+        impact: 'Topping lists, allergen notes (gluten / dairy / dairy-free cheese), and delivery-zone details are the make-or-break copy for a pizzeria. Tiny type forces a pinch-zoom on the exact moments a customer is deciding between ordering from you or opening Slice.',
+        failNote: 'Set body to 16px, and set topping lists and delivery-zone copy to 17-18px. The customer picking between "one large pepperoni" and "half-pepperoni half-mushroom" should never have to zoom.'
       },
       'bar-pub': {
         impact: 'Cocktail lists, draft lists, and happy-hour details are the bar\'s menu. Small type on a phone in a dim Uber ride is a usability tax guests won\'t pay.',
