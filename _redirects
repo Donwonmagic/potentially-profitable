@@ -26,3 +26,14 @@
 /audit/                      /tools/                      301
 /audit/*                     /tools/:splat                301
 
+# Wellness retirement (Sprint K): the wellness audit and checklist
+# were removed in favor of a restaurant-first focus. Any inbound
+# link — search-engine index, bookmark, or published citation —
+# that points at the old paths lands on the restaurant-audit home
+# instead of a 404. The restaurant tool is the clear next best
+# action for anyone who was looking at the retired ones.
+/tools/audits/wellness/             /tools/audits/restaurant/    301
+/tools/audits/wellness/*            /tools/audits/restaurant/    301
+/resources/wellness-website-checklist/      /resources/restaurant-website-checklist/    301
+/resources/wellness-website-checklist/*     /resources/restaurant-website-checklist/    301
+
