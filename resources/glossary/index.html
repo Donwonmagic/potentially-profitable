@@ -524,7 +524,83 @@
               <h2>Conversions</h2>
               <p>The site's job is to turn a curious visitor into a reservation, an order, or directions to your door. These entries cover the surfaces that actually do that.</p>
             </header>
-            <!-- Entries populated in Sprint M3. -->
+
+            <article class="glossary-term" id="reservation-cta">
+              <h3>Reservation CTA <a class="glossary-anchor" href="#reservation-cta" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">A "Reserve a table" action visible on every page — in the main nav, in a sticky mobile footer, or both — that launches your reservations flow in one tap.</p>
+              <p class="glossary-long">Fine-dining and casual sites lose reservations when the CTA is only on the homepage. A visitor reading the menu on an inside page still needs a one-tap path to book. Link directly to Resy, Tock, SevenRooms, OpenTable, or an embedded widget — skip interstitials. For subtypes where reservations aren't primary (fast-casual, pizzeria, food-truck), keep the nav space for "Order Online" instead.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: conversions</span>
+                <span class="glossary-meta-chip">Related: <a href="#order-online-link">order online link</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="order-online-link">
+              <h3>Direct-order link <span class="aka">· "Order Online" button</span> <a class="glossary-anchor" href="#order-online-link" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">A homepage button that jumps straight to YOUR checkout on Toast, Square, ChowNow, BentoBox, or your POS — not to an aggregator, and not to an interstitial "choose how to order" page.</p>
+              <p class="glossary-long">Every order placed through DoorDash, Grubhub, or Uber Eats takes 20-30% in commission. Every order placed through your own Toast or ChowNow checkout keeps the full margin AND gives you the customer email. For pizzerias specifically the audit treats this as the #1 revenue lever — a direct-order flow vs. routing every pie through Slice is the difference between a ~78% margin and ~55%.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: conversions</span>
+                <span class="glossary-meta-chip">Related subtypes: <a href="#subtype-fast-casual">fast-casual</a>, <a href="#subtype-pizzeria">pizzeria</a>, <a href="#subtype-ghost-kitchen">ghost-kitchen</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="directions-link">
+              <h3>Directions link <a class="glossary-anchor" href="#directions-link" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">A tappable address or "Directions" button that launches Google Maps or Apple Maps with your restaurant pre-filled as the destination.</p>
+              <p class="glossary-long">Plain-text addresses make the visitor copy, switch apps, and paste — three extra steps that cost you first-time visitors, especially on dim side streets. A <code>https://maps.google.com/?q=…</code> link works on every platform; on iOS it opens Apple Maps by default, on Android it opens Google Maps. Bonus: on a desktop browser it opens web Maps, so the same markup serves both surfaces.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: platform/maps</span>
+                <span class="glossary-meta-chip">Related: <a href="#copyable-address">copyable address</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="food-photography">
+              <h3>Food photography <span class="aka">· real photos, not stock</span> <a class="glossary-anchor" href="#food-photography" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Genuine photos of your room, your food, and your people — shot in the actual space, ideally by a professional.</p>
+              <p class="glossary-long">Stock photography reads as dishonest from the first glance. Grainy phone pics read as amateur. The fix is usually a single two-hour shoot with a local food-and-interior photographer once a year — maybe $800-1500 and you have the entire season's marketing assets. For bakeries the custom-cake gallery carries real weight; for bars, the room at golden hour converts more than the cocktail close-up; for food trucks, candid service shots beat styled plate shots.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: photo-coverage</span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="gift-card-checkout">
+              <h3>Gift-card checkout <a class="glossary-anchor" href="#gift-card-checkout" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">A visible purchase flow for physical or e-gift cards, usually powered by your POS (Toast, Square) or a drop-in provider (Yiftee, GiftUp).</p>
+              <p class="glossary-long">Gift cards are the highest-margin line on a restaurant site. Roughly 20-30% of cards go unredeemed — pure revenue — and every redeemed one brings in the recipient plus whatever they spend above the face value. For bars and fine-dining sites especially, a well-surfaced "Gift cards" link in the nav pays for itself every November-December. Square and Toast make this a no-dev-work checkbox once you're on their POS.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: gift-cards</span>
+                <span class="glossary-meta-chip">Related subtypes: <a href="#subtype-fine-dining">fine-dining</a>, <a href="#subtype-bar-pub">bar/pub</a>, <a href="#subtype-bakery">bakery</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="newsletter-capture">
+              <h3>Newsletter capture <span class="aka">· email signup</span> <a class="glossary-anchor" href="#newsletter-capture" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">An email-input form that adds visitors to your owned marketing list — typically via Mailchimp, Klaviyo, ConvertKit, or Constant Contact.</p>
+              <p class="glossary-long">Your email list is the only marketing channel you own outright. Instagram's algorithm can bury you, Google's rules can change, aggregators can raise commissions — but a list of guests who said "yes" still delivers. Restaurants with a newsletter capture typically see 3-5× higher repeat-visit rates from subscribers vs. non-subscribers. The form should be inline on the homepage AND footer, NOT a modal popup (they're annoying and convert worse than inline placements).</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: email-capture</span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="catering-page">
+              <h3>Catering / private-events page <a class="glossary-anchor" href="#catering-page" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">A dedicated landing page for corporate catering, weddings, private dining, and buyouts — with packages, minimums, lead time, and a quote-request form.</p>
+              <p class="glossary-long">Event planners comparing three caterers on a Tuesday afternoon do not read homepages — they search "catering [neighborhood]" and land directly on catering pages. Without one, you rank for nothing and convert nothing; with one, a single holiday-party booking can pay for the catering-menu shoot. For fine-dining restaurants the private-dining room is the margin engine of a slow week. For bars, private-party bookings via Tripleseat are high-ticket, repeat business.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: catering-page</span>
+                <span class="glossary-meta-chip">Related subtypes: <a href="#subtype-catering-only">catering-only</a>, <a href="#subtype-fine-dining">fine-dining</a>, <a href="#subtype-bar-pub">bar/pub</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="social-proof">
+              <h3>Social proof <span class="aka">· press, awards, reviews</span> <a class="glossary-anchor" href="#social-proof" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Visible credibility signals — a review quote, a press mention, a Michelin star, a James Beard nomination, a chef bio — placed above the fold rather than buried on a testimonials page.</p>
+              <p class="glossary-long">A first-time visitor is trying to answer "is this place any good?" in about four seconds. A single quoted line from Eater or the NYT does that job faster than any carousel. Restaurants with hero-fold social proof convert skeptical visitors at measurably higher rates. For fine-dining sites, a chef bio block (with a real photo) is itself social proof — it says "there is a human accountable to what comes out of this kitchen."</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: social-proof</span>
+              </div>
+            </article>
           </section>
 
           <!-- ============ FINDABILITY ============ -->
