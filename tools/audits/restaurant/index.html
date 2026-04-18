@@ -3426,6 +3426,27 @@
       return makeResult(def, 'unverified');
     }
 
+    // ---- Photo coverage (Phase H13) ----
+    if (def.type === 'photo-coverage') {
+      if (typeof detectPhotoCoverage !== 'function') return makeResult(def, 'unverified');
+      var pcCrawl = window.__auditCrawl;
+      var pcHtml = (pcCrawl && pcCrawl.homepage && typeof pcCrawl.homepage.html === 'string')
+        ? pcCrawl.homepage.html : '';
+      // Without the homepage HTML we can't do the count reliably —
+      // Lighthouse doesn't give us raw <img> tags, only audit details.
+      if (!pcHtml) return makeResult(def, 'unverified');
+      var pc = detectPhotoCoverage(pcHtml);
+      if (pc.imgCount >= 5 && pc.altCoverage >= 0.5) {
+        return makeResult(def, 'pass');
+      }
+      // Low image count OR low alt coverage → fail (strong signal
+      // for a restaurant site that can't afford to be image-light).
+      if (pc.imgCount >= 3) {
+        return makeResult(def, 'fail');
+      }
+      return makeResult(def, 'unverified');
+    }
+
     // ---- Social proof (Phase H11) ----
     if (def.type === 'social-proof') {
       if (typeof detectSocialProof !== 'function') return makeResult(def, 'unverified');

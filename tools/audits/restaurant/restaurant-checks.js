@@ -1015,6 +1015,23 @@ var RESTAURANT_PRIORITY_CHECKS = [
     failNote: null,
     unverified: 'We didn\'t find sourcing claims — is this right?',
     unverifiedNote: 'We look for "locally sourced", "farm-to-table", "organic", "sustainable", "seasonal menu", "single-origin", "grass-fed", and related markers. If your sourcing story lives in a photo caption or on a supplier page, let us know. If you\'re sourcing thoughtfully but not saying so, this is a one-afternoon content change.'
+  },
+  {
+    // Phase H13: Photo coverage. Checks image count + alt-text
+    // coverage. Restaurants need food photography — sparse
+    // imagery kills conversion across every subtype.
+    type: 'photo-coverage',
+    weight: 0.5,
+    anchor: '#mobile',
+    effort: 'self',
+    minutes: 120,
+    impact: 'Food photography is how restaurants sell online — a homepage with 3 images converts worse than one with 10, and alt-text makes those images accessible and SEO-indexable. Empty-alt or broken-alt photos are invisible to Google and to screen readers.',
+    pass: 'Your site has strong photo coverage',
+    passNote: 'Your homepage carries enough photography AND enough alt-text to do both jobs food images are supposed to do: sell the food and rank in Google Images.',
+    fail: 'Your site has sparse or unlabeled photos',
+    failNote: 'Homepages need at least 5 good food photos AND at least half of them need real alt-text ("smoked brisket plate with pickled onions" not "image1.jpg"). Both matter: photography drives conversion; alt-text drives accessibility and Google Images traffic.',
+    unverified: 'We couldn\'t read your image set',
+    unverifiedNote: 'The crawl didn\'t return enough HTML for us to count images reliably. Retry the audit, or paste the homepage URL into our manual-audit queue so we can look by hand.'
   }
 ];
 
@@ -1419,6 +1436,34 @@ function detectSustainability(pageText) {
     if (SUSTAINABILITY_PATTERNS[i].test(pageText)) return { present: true };
   }
   return { present: false };
+}
+
+// H13: Photo coverage. Counts <img> tags and alt-text presence.
+// Restaurants live on food photography — sparse imagery or
+// broken alt-text both signal underinvestment. The check is
+// satisfied when there are >=5 images AND >=50% of them carry
+// a non-empty alt attribute (SEO + accessibility baseline).
+function detectPhotoCoverage(html) {
+  if (!html || typeof html !== 'string') return { imgCount: 0, altCount: 0, altCoverage: 0 };
+  var imgCount = 0;
+  var altCount = 0;
+  var re = /<img\b([^>]*)>/gi;
+  var m;
+  while ((m = re.exec(html)) !== null) {
+    imgCount++;
+    // alt="..." — count as covered if the attribute exists with
+    // non-empty content. alt="" is intentional decorative markup
+    // which, per WCAG, still counts as "handled" — but for
+    // restaurants we want real alt text describing food, so an
+    // empty alt doesn't count toward coverage for this check.
+    var altMatch = m[1].match(/alt\s*=\s*["']([^"']*)["']/i);
+    if (altMatch && altMatch[1].trim().length > 0) altCount++;
+  }
+  return {
+    imgCount:    imgCount,
+    altCount:    altCount,
+    altCoverage: imgCount > 0 ? altCount / imgCount : 0
+  };
 }
 
 function detectDietaryMarkers(pageText) {
