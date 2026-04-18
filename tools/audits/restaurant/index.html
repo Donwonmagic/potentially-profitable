@@ -4255,9 +4255,23 @@
       if (detectRestaurantSchema(pageText, allUrls)) {
         return makeResult(def, 'pass');
       }
-      // Absence of schema isn't "unverified" — it's honestly missing.
-      // But we still render it as unverified tone because it's a bonus
-      // check, not a catastrophe.
+      // Phase L6 accuracy fix: when the subtype detector has
+      // already CONFIDENTLY classified this site as a specific
+      // restaurant segment (fine-dining, pizzeria, bakery, …),
+      // the absence of Restaurant JSON-LD on the page is a real
+      // gap, not an "we couldn't tell" — the previous 'unverified'
+      // state read as internally contradictory (the tool
+      // confirmed the subtype but said "Google doesn't know this
+      // is a restaurant"). Promote to 'fail' so the check tells
+      // the truth: we know what you are, Google can't read it
+      // from your page yet.
+      var bt = window.__auditScoreState && window.__auditScoreState.businessType;
+      var subtypeConfident = bt && bt.type && bt.type !== 'restaurant' &&
+                             (bt.confidence === 'high' || bt.confidence === 'medium');
+      if (subtypeConfident) return makeResult(def, 'fail');
+      // Detector hedged (generic 'restaurant' fallback or low
+      // confidence). Keep the honest "we couldn't confirm" posture
+      // so we don't flag a gap we're not sure exists.
       return makeResult(def, 'unverified');
     }
 
