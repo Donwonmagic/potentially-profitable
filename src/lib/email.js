@@ -47,6 +47,14 @@ const RESEND_ENDPOINT = 'https://api.resend.com/emails';
  * @param {string} opts.html     — HTML body.
  * @param {string} opts.text     — Plain-text body. Always include
  *                                  for accessibility + spam filters.
+ * @param {Array<{filename:string, content:string}>} [opts.attachments]
+ *                                  — Optional attachments array. Each
+ *                                  entry is forwarded to Resend as
+ *                                  { filename, content } with content
+ *                                  as a base64-encoded string. Resend
+ *                                  accepts up to 40MB total email
+ *                                  size, content-type is inferred
+ *                                  from the filename extension.
  * @param {string} apiKey        — Resend API key (env.RESEND_API_KEY)
  *
  * @returns {Promise<{ok: boolean, id?: string, error?: string}>}
@@ -68,6 +76,15 @@ export async function sendEmail(opts, apiKey) {
     text: opts.text,
   };
   if (opts.replyTo) payload.reply_to = opts.replyTo;
+  if (Array.isArray(opts.attachments) && opts.attachments.length) {
+    // Resend expects: [{ filename, content }] with content as
+    // base64 string. Filter out any malformed entries silently so
+    // a bad one doesn't fail the whole send.
+    const filtered = opts.attachments.filter(function(a){
+      return a && typeof a.filename === 'string' && typeof a.content === 'string' && a.content.length > 0;
+    });
+    if (filtered.length) payload.attachments = filtered;
+  }
 
   let res;
   try {

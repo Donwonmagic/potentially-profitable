@@ -1,16 +1,19 @@
 #!/usr/bin/env node
-// Render the restaurant + wellness checklist pages to static PDFs
-// that live alongside each page and are linked as direct downloads
-// from the "Save it for later" section.
+// Render the restaurant checklist page to a static PDF that lives
+// alongside the page and is linked as a direct download from the
+// "Save it for later" section.
 //
 // Run this whenever the checklist content or the print CSS changes:
 //
 //   node scripts/render-checklist-pdfs.mjs
 //
-// Starts a short-lived static server on port 8734, renders both pages
+// Starts a short-lived static server on port 8734, renders the page
 // with Puppeteer's print pipeline (@media print CSS + headerTemplate/
-// footerTemplate running footer), writes Letter-size PDFs next to the
-// source HTML files, then shuts the server down.
+// footerTemplate running footer), writes a Letter-size PDF next to
+// the source HTML, then shuts the server down.
+//
+// The `targets` array stays multi-entry even with one item so a
+// future vertical can re-plug in without refactoring the render loop.
 //
 // Puppeteer draws the running footer via footerTemplate rather than
 // CSS position:fixed — Chrome's print engine doesn't reserve page
@@ -33,10 +36,6 @@ const targets = [
   {
     url: `${BASE}/resources/restaurant-website-checklist/`,
     out: 'resources/restaurant-website-checklist/muntin-restaurant-website-checklist.pdf',
-  },
-  {
-    url: `${BASE}/resources/wellness-website-checklist/`,
-    out: 'resources/wellness-website-checklist/muntin-wellness-website-checklist.pdf',
   },
 ];
 

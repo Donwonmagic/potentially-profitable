@@ -1770,91 +1770,103 @@
     .email-form { grid-template-columns: 1fr; }
   }
 
-  /* -------------------------------------------------------------
-     Phase J1: Deep-report email gate
-     -------------------------------------------------------------
-     Warm, CTA-style card. Lives between the Quick tier and the
-     hidden #reportDeep wrapper. Cream background with teal
-     accent matches the executive-summary visual weight so the
-     gate feels like a natural continuation of the report, not
-     an intrusive paywall. */
-  .deep-gate {
-    margin: 24px 0 0;
-    padding: 28px 28px;
+  /* Phase L2: compact PDF-CTA card. Two copies of this render -
+     one at the top of #reportDeep and the existing .email-report
+     at the bottom keeps doing the fuller version of the same job.
+     Non-gating; email is optional for the on-screen report. */
+  .pdf-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px 28px;
+    margin: 24px 0 32px;
+    padding: 18px 22px;
     background: var(--cream-2, #faf6ee);
     border: 1px solid var(--line, #E6DFCE);
     border-left: 4px solid var(--teal, #1F4E5B);
     border-radius: 14px;
   }
-  .deep-gate[hidden] { display: none; }
-  .deep-gate-head { margin-bottom: 14px; }
-  .deep-gate-label {
-    font-family: var(--font-display, var(--font-body));
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 6px;
-  }
-  .deep-gate-sub {
-    font-size: 14px;
-    color: var(--stone);
-    line-height: 1.55;
-    margin: 0;
-  }
-  .deep-gate-form {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 10px;
-    align-items: end;
-  }
-  .deep-gate-field {
+  .pdf-cta-text {
+    flex: 1 1 260px;
+    min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 3px;
   }
-  .deep-gate-field span {
-    font-size: 12px;
+  .pdf-cta-text strong {
+    font-family: var(--font-display, var(--font-body));
+    font-size: 18px;
     font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--stone);
-  }
-  .deep-gate-field input[type="email"] {
-    font: inherit;
-    font-size: 15px;
-    padding: 12px 14px;
-    border-radius: 10px;
-    border: 1px solid var(--line-dark);
-    background: #fff;
     color: var(--ink);
   }
-  .deep-gate-field input[type="email"]:focus {
-    outline: 2px solid var(--teal, #1F4E5B);
-    outline-offset: -1px;
+  .pdf-cta-text span {
+    font-size: 13px;
+    color: var(--stone);
+    line-height: 1.5;
   }
-  .deep-gate-submit {
+  .pdf-cta-form {
+    display: flex;
+    flex: 1 1 380px;
+    gap: 8px;
+    padding: 4px;
+    background: #fff;
+    border: 1px solid var(--line-dark);
+    border-radius: 999px;
+    transition: border-color 180ms ease, box-shadow 180ms ease;
+    position: relative;
+  }
+  .pdf-cta-form:focus-within {
+    border-color: var(--teal, #1F4E5B);
+    box-shadow: 0 10px 26px -14px rgba(31,78,91,0.35);
+  }
+  .pdf-cta-form input[type="email"] {
+    flex: 1;
+    min-width: 0;
+    font: inherit;
+    font-size: 14.5px;
+    padding: 10px 14px;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    outline: none;
+  }
+  .pdf-cta-form input[type="email"]::placeholder { color: var(--stone-2, #9e9a89); }
+  .pdf-cta-form button[type="submit"] {
     font: inherit;
     font-weight: 600;
-    padding: 12px 20px;
-    border-radius: 10px;
+    font-size: 14px;
+    padding: 10px 18px;
     background: var(--ink, #14161A);
-    color: #fff;
-    border: 1px solid var(--ink, #14161A);
+    color: var(--cream, #FAF7F2);
+    border: 0;
+    border-radius: 999px;
     cursor: pointer;
-    transition: background 180ms ease;
+    white-space: nowrap;
+    transition: background 180ms ease, transform 180ms ease;
   }
-  .deep-gate-submit:hover    { background: var(--teal, #1F4E5B); }
-  .deep-gate-submit:disabled { background: var(--stone-2, #9e9a89); border-color: var(--stone-2); cursor: not-allowed; }
-  .deep-gate-toast {
-    grid-column: 1 / -1;
+  .pdf-cta-form button[type="submit"]:hover    { background: var(--teal, #1F4E5B); transform: translateY(-1px); }
+  .pdf-cta-form button[type="submit"]:disabled { background: var(--stone-2, #9e9a89); cursor: not-allowed; transform: none; }
+  .pdf-cta-toast {
+    /* Sibling of .pdf-cta-form inside the .pdf-cta flex wrapper,
+       forced onto its own row so it doesn't compete with the form's
+       input+button for horizontal space (previous version nested it
+       INSIDE the form and collapsed the email input to 0 width). */
+    flex: 0 0 100%;
     margin: 0;
+    padding: 0 2px;
     font-size: 13px;
     color: var(--teal, #1F4E5B);
+    line-height: 1.45;
+    min-height: 0;
   }
-  .deep-gate-toast.is-error { color: var(--rust, #B8541A); }
+  .pdf-cta-toast:empty { display: none; }
+  .pdf-cta-toast.is-error   { color: var(--rust, #B8541A); }
+  .pdf-cta-toast.is-success { color: #1F6B3A; }
   @media (max-width: 640px) {
-    .deep-gate { padding: 20px; }
-    .deep-gate-form { grid-template-columns: 1fr; }
+    .pdf-cta { padding: 16px 18px; }
+    .pdf-cta-form { flex-wrap: wrap; border-radius: 16px; padding: 6px; }
+    .pdf-cta-form input[type="email"] { flex-basis: 100%; padding: 12px 14px; }
+    .pdf-cta-form button[type="submit"] { flex: 1; border-radius: 12px; padding: 12px 16px; }
   }
 
   /* -------------------------------------------------------------
@@ -2193,34 +2205,41 @@
         <ol class="top-fixes-list" id="topFixesList"></ol>
       </section>
 
-      <!-- Phase J1: Email-gate wrapper. Everything after the
-           score / exec summary / top-3 lives inside #reportDeep
-           and is hidden by default on the first render of a
-           shareable link. The deepGate block above offers the
-           email form that unlocks it; once unlocked we set a
-           localStorage flag so the owner's own browser remembers.
-           Phase J2 adds the form + unlock logic. -->
-      <section class="deep-gate" id="deepGate" hidden>
-        <div class="deep-gate-head">
-          <div class="deep-gate-label">Want the full deep-dive?</div>
-          <p class="deep-gate-sub">Drop your email and we'll unlock the Lighthouse opportunities list, every restaurant-priority check with subtype-specific fixes, and mail you a printable PDF of the full report.</p>
+      <!-- Phase L1: Email gate retired. Deep tier now renders
+           immediately after the audit runs. Two non-blocking PDF-
+           capture CTAs live inside - one here at the top, one
+           at the bottom in the existing .email-report block - so
+           visitors can grab a takeaway PDF of their audit at either
+           end without having to read the whole thing first, OR
+           without having to scroll all the way down after they have. -->
+      <div id="reportDeep">
+
+      <!-- Phase L2: TOP PDF CTA. Compact, warm-cream card with a
+           single-line email + button form. Non-gating: the deep
+           tier below renders regardless of whether the visitor
+           submits this form. Shares its submit handler with the
+           bottom CTA (#emailReportForm); both POST to
+           /api/audit-report with interest=restaurant-audit-report
+           and (in L3+) an attached PDF built from the audit state. -->
+      <aside class="pdf-cta pdf-cta--top">
+        <div class="pdf-cta-text">
+          <strong>Grab a PDF of this audit.</strong>
+          <span>Drop your email — we'll send a clean printable copy to your inbox. No list, no drip.</span>
         </div>
-        <form class="deep-gate-form" id="deepGateForm" action="/api/audit-report" method="POST" novalidate>
-          <input type="hidden" name="interest" value="restaurant-audit-deep-report" />
-          <input type="hidden" name="_gotcha" value="" />
-          <input type="hidden" name="audited_url" id="deepGateUrl" value="" />
-          <input type="hidden" name="subtype" id="deepGateSubtype" value="" />
-          <input type="hidden" name="overall_score" id="deepGateScore" value="" />
-          <input type="hidden" name="shareable_link" id="deepGateShareLink" value="" />
-          <label class="deep-gate-field">
-            <span>Your email</span>
-            <input type="email" name="email" id="deepGateEmail" required autocomplete="email" placeholder="you@restaurant.com" />
-          </label>
-          <button type="submit" class="deep-gate-submit">Unlock deep report</button>
-          <p class="deep-gate-toast" id="deepGateToast" aria-live="polite"></p>
+        <form id="pdfCtaTopForm" class="pdf-cta-form" action="/api/audit-report" method="POST" novalidate>
+          <input type="hidden" name="interest" value="restaurant-audit-report" />
+          <input type="hidden" name="source"   value="/tools/audits/restaurant/#top-cta" />
+          <input type="hidden" name="_gotcha"  value="" />
+          <input type="hidden" name="audited_url"     id="pdfCtaTopUrl"       value="" />
+          <input type="hidden" name="subtype"         id="pdfCtaTopSubtype"   value="" />
+          <input type="hidden" name="overall_score"   id="pdfCtaTopScore"     value="" />
+          <input type="hidden" name="shareable_link"  id="pdfCtaTopShareLink" value="" />
+          <label for="pdfCtaTopEmail" class="sr-only">Your email address</label>
+          <input type="email" id="pdfCtaTopEmail" name="email" required autocomplete="email" placeholder="you@yourrestaurant.com" />
+          <button type="submit">Email me the PDF <span aria-hidden="true">→</span></button>
         </form>
-      </section>
-      <div id="reportDeep" hidden>
+        <p class="pdf-cta-toast" id="pdfCtaTopToast" aria-live="polite"></p>
+      </aside>
 
       <!-- Per-category opportunity drill-down — the specific Lighthouse
            audits that failed, grouped by category, sorted by impact.
@@ -2411,7 +2430,7 @@
         <form id="auditCompareForm" class="audit-compare-form">
           <div class="compare-inputs" id="compareInputs">
             <div class="compare-input-row">
-              <label for="compareUrl0" class="visually-hidden">Competitor 1</label>
+              <label for="compareUrl0" class="sr-only">Competitor 1</label>
               <input type="url" id="compareUrl0" name="competitor0" placeholder="competitor1.com" autocomplete="off" spellcheck="false" />
             </div>
           </div>
@@ -2458,8 +2477,8 @@
       <!-- Email me the report -->
       <div class="email-report">
         <header>
-          <h3>Email me this report.</h3>
-          <p>Drop your email and I'll send over a clean copy you can forward to your team or keep for your records. I'll also throw in a personal note with the two biggest things I'd fix first — no drip, no newsletter, just a real reply.</p>
+          <h3>Email me the PDF.</h3>
+          <p>Drop your email and I'll send the full printable PDF right away, with a short note on what jumped out at me. If something in the audit warrants a longer look, I may follow up personally. No drip, no newsletter.</p>
         </header>
 
         <form id="emailReportForm" action="/api/audit-report" method="POST" class="email-form">
@@ -2484,14 +2503,14 @@
             placeholder="you@yourrestaurant.com"
             aria-label="Your email address"
           />
-          <button type="submit">Email me the report →</button>
+          <button type="submit">Email me the PDF →</button>
         </form>
         <p class="email-disclaimer">
           Your email stays with me. No list, no marketing drip.
         </p>
 
         <div class="email-report-success" id="emailReportSuccess" hidden role="status" aria-live="polite">
-          Got it — I'll email you within 24 hours with the report and the two biggest wins for your site.
+          Sent — the PDF is on its way to your inbox. Check your spam folder if you don't see it in a minute or two.
         </div>
 
         <div id="emailReportError" class="email-report-error" hidden role="alert"></div>
@@ -2617,6 +2636,447 @@
   // proxied endpoint was retired from the Worker. Review-platform
   // presence is still surfaced via the on-page detectReviewWidgets
   // scan in restaurant-checks.js, which needs no API access.)
+
+  // Phase L3a: lazy jsPDF loader. jsPDF is ~80KB min+gzip - big
+  // enough that we don't want it on every page-load, small enough
+  // that one-off injection on demand is fine. Loaded from jsdelivr's
+  // CDN the first time a PDF CTA is submitted; cached on the
+  // window so subsequent submits reuse the same instance.
+  //
+  // Failure modes all resolve the returned Promise with `null` so
+  // the submit handler can fall back to a no-PDF email if the
+  // CDN is unreachable - education never blocks on a script load.
+  var __pdfLibPromise = null;
+  function loadJsPdf() {
+    if (window.jspdf && window.jspdf.jsPDF) {
+      return Promise.resolve(window.jspdf.jsPDF);
+    }
+    if (__pdfLibPromise) return __pdfLibPromise;
+    __pdfLibPromise = new Promise(function(resolve){
+      var s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js';
+      s.crossOrigin = 'anonymous';
+      s.referrerPolicy = 'no-referrer';
+      s.onload = function(){
+        resolve((window.jspdf && window.jspdf.jsPDF) || null);
+      };
+      s.onerror = function(){
+        __pdfLibPromise = null; // allow a future submit to retry
+        resolve(null);
+      };
+      document.head.appendChild(s);
+    });
+    return __pdfLibPromise;
+  }
+
+  // Phase L3b: build a custom multi-page PDF of the current audit.
+  // Reads from the window-scoped state populated during renderReport:
+  //   __auditLastResult   — overall + per-pillar scores + URL
+  //   __auditResults      — sorted priority-check entries + subtype
+  //   __auditCrawl        — optional 'also scanned' pages bundle
+  //
+  // Returns { blob, filename, base64 } or null when jsPDF fails to
+  // load or there's no audit to render. Fully self-contained: no
+  // DOM scraping, no html2canvas, no webfont embedding — pure
+  // text + shape drawing into a Letter-size (612×792 pt) document.
+  function buildAuditPdf() {
+    var last = window.__auditLastResult;
+    if (!last || typeof last.overall !== 'number') return Promise.resolve(null);
+
+    return loadJsPdf().then(function(jsPDF){
+      if (!jsPDF) return null;
+
+      var doc = new jsPDF({ unit: 'pt', format: 'letter' });
+      var PAGE_W = 612, PAGE_H = 792;
+      var MARGIN = 48;
+      var COL_W = PAGE_W - MARGIN * 2;
+
+      // --- color palette (mirrors the brand tokens from site.css) ---
+      var COL_INK    = [20, 22, 26];
+      var COL_SOFT   = [42, 45, 51];
+      var COL_STONE  = [91, 89, 80];
+      var COL_TEAL   = [31, 78, 91];
+      var COL_RUST   = [184, 84, 26];
+      var COL_GREEN  = [31, 107, 58];
+      var COL_CREAM  = [250, 247, 242];
+      var COL_LINE   = [230, 223, 206];
+
+      var overall    = Math.round(last.overall);
+      var subtypeId  = (window.__auditResults && window.__auditResults.subtypeId) || effectiveBusinessType() || 'restaurant';
+      var subtype    = BUSINESS_TYPE_DEFS[subtypeId] || { label: 'Restaurant' };
+      var url        = (last.url || '').replace(/^https?:\/\//, '').replace(/\/$/, '');
+      var today      = new Date().toISOString().slice(0, 10);
+
+      // Shared helpers -------------------------------------------------
+      function setColor(rgb, kind) {
+        if (kind === 'fill') doc.setFillColor(rgb[0], rgb[1], rgb[2]);
+        else if (kind === 'draw') doc.setDrawColor(rgb[0], rgb[1], rgb[2]);
+        else doc.setTextColor(rgb[0], rgb[1], rgb[2]);
+      }
+      function drawWrappedText(text, x, y, maxW, lineH) {
+        var lines = doc.splitTextToSize(String(text || ''), maxW);
+        for (var i = 0; i < lines.length; i++) {
+          doc.text(lines[i], x, y);
+          y += lineH;
+        }
+        return y;
+      }
+      function ensureRoom(y, needed, onNewPage) {
+        if (y + needed > PAGE_H - MARGIN) {
+          doc.addPage();
+          if (typeof onNewPage === 'function') return onNewPage(MARGIN);
+          return MARGIN;
+        }
+        return y;
+      }
+
+      // Running page footer (muntin brand + page number). Drawn last
+      // in an addPage hook via a tracked counter since jsPDF v2 doesn't
+      // fire a native event.
+      function stampFooter(pageNum) {
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        setColor(COL_STONE);
+        doc.text('Muntin Digital · muntin.digital', MARGIN, PAGE_H - 24);
+        doc.text('Page ' + pageNum, PAGE_W - MARGIN, PAGE_H - 24, { align: 'right' });
+      }
+
+      // === PAGE 1: COVER =============================================
+      var y = MARGIN + 8;
+
+      // Top rule + eyebrow
+      setColor(COL_TEAL, 'draw');
+      doc.setLineWidth(2);
+      doc.line(MARGIN, y, MARGIN + 60, y);
+      y += 18;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      setColor(COL_TEAL);
+      doc.text('MUNTIN DIGITAL · RESTAURANT WEBSITE AUDIT', MARGIN, y);
+      y += 28;
+
+      // Title
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(28);
+      setColor(COL_INK);
+      y = drawWrappedText('Custom website audit for ' + (url || 'your site') + '.', MARGIN, y, COL_W, 32);
+      y += 6;
+
+      // Meta strip: URL · subtype · date
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(11);
+      setColor(COL_STONE);
+      doc.text('Audited · ' + (url || '—'), MARGIN, y); y += 14;
+      doc.text('Segment · ' + (subtype.label || subtypeId), MARGIN, y); y += 14;
+      doc.text('Date · ' + today, MARGIN, y); y += 28;
+
+      // Score ring (left) + pillar bars (right)
+      var ringX = MARGIN + 60, ringY = y + 60, ringR = 52;
+      doc.setLineWidth(8);
+      setColor(COL_LINE, 'draw');
+      doc.circle(ringX, ringY, ringR, 'S');
+      var scoreColor = overall >= 90 ? COL_GREEN : overall >= 50 ? [193, 137, 28] : COL_RUST;
+      setColor(scoreColor, 'draw');
+      // Approximate the arc with a short polyline — jsPDF v2 has no
+      // native arc primitive, but a filled wedge drawn via multiple
+      // line segments reads clearly at 52pt radius.
+      var sweep = Math.max(0, Math.min(1, overall / 100));
+      var segs = Math.max(6, Math.round(sweep * 48));
+      for (var s = 0; s < segs; s++) {
+        var a1 = -Math.PI / 2 + (s     / 48) * 2 * Math.PI;
+        var a2 = -Math.PI / 2 + ((s+1) / 48) * 2 * Math.PI;
+        doc.line(
+          ringX + Math.cos(a1) * ringR, ringY + Math.sin(a1) * ringR,
+          ringX + Math.cos(a2) * ringR, ringY + Math.sin(a2) * ringR
+        );
+      }
+      // Score number in the center
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(36);
+      setColor(COL_INK);
+      doc.text(String(overall), ringX, ringY + 8, { align: 'center' });
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      setColor(COL_STONE);
+      doc.text('/ 100', ringX, ringY + 24, { align: 'center' });
+
+      // Pillar bars on the right
+      var barX = MARGIN + 180;
+      var barW = COL_W - 180;
+      var barY = y + 12;
+      var pillars = [
+        { label: 'Mobile performance',    score: last.perf },
+        { label: 'Accessibility',          score: last.a11y },
+        { label: 'Best practices',         score: last.bp },
+        { label: 'SEO',                    score: last.seo },
+        { label: 'Restaurant readiness',   score: last.restaurant }
+      ].filter(function(p){ return typeof p.score === 'number' && !isNaN(p.score); });
+      for (var pi = 0; pi < pillars.length; pi++) {
+        var p = pillars[pi];
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        setColor(COL_SOFT);
+        doc.text(p.label, barX, barY);
+        doc.setFont('helvetica', 'bold');
+        doc.text(String(Math.round(p.score)), barX + barW, barY, { align: 'right' });
+        barY += 6;
+        setColor(COL_LINE, 'fill');
+        doc.rect(barX, barY, barW, 3, 'F');
+        var fillColor = p.score >= 90 ? COL_GREEN : p.score >= 50 ? [193, 137, 28] : COL_RUST;
+        setColor(fillColor, 'fill');
+        doc.rect(barX, barY, barW * Math.max(0, Math.min(1, p.score / 100)), 3, 'F');
+        barY += 16;
+      }
+
+      y = Math.max(ringY + ringR + 30, barY + 20);
+
+      // Executive summary paragraph (reads from the on-page block,
+      // falls back to a composed default if the DOM node isn't set).
+      var sumBody = document.getElementById('execSummaryBody');
+      var sumText = (sumBody && sumBody.textContent || '').trim();
+      if (!sumText) {
+        sumText = 'Your ' + (subtype.label || 'restaurant').toLowerCase() +
+                  ' scores ' + overall + ' overall. See the sections below for ' +
+                  'the top fixes ranked for your segment and the full priority-check breakdown.';
+      }
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      setColor(COL_TEAL);
+      doc.text('WHAT THIS MEANS', MARGIN, y); y += 14;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(11);
+      setColor(COL_SOFT);
+      y = drawWrappedText(sumText, MARGIN, y, COL_W, 15);
+
+      stampFooter(1);
+
+      // === PAGE 2: TOP 3 FIXES =======================================
+      doc.addPage();
+      y = MARGIN;
+      setColor(COL_RUST, 'draw');
+      doc.setLineWidth(2);
+      doc.line(MARGIN, y, MARGIN + 60, y);
+      y += 18;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      setColor(COL_RUST);
+      doc.text('TOP 3 FIXES — RANKED FOR YOUR SEGMENT', MARGIN, y); y += 24;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(22);
+      setColor(COL_INK);
+      doc.text('The three highest-leverage', MARGIN, y); y += 24;
+      doc.text('moves to make next.', MARGIN, y); y += 30;
+
+      var fixes = collectTopFixes();
+      if (!fixes.length) {
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(12);
+        setColor(COL_SOFT);
+        y = drawWrappedText('Your audit returned no actionable items — your site scored cleanly across every priority check. Keep an eye on the full-check breakdown on the next pages.', MARGIN, y, COL_W, 16);
+      } else {
+        for (var fi = 0; fi < fixes.length; fi++) {
+          y = drawFixBlock(fixes[fi], fi + 1, y);
+        }
+      }
+
+      stampFooter(2);
+
+      // === PAGES 3+: ALL PRIORITY CHECKS =============================
+      doc.addPage();
+      y = MARGIN;
+      setColor(COL_TEAL, 'draw');
+      doc.setLineWidth(2);
+      doc.line(MARGIN, y, MARGIN + 60, y);
+      y += 18;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      setColor(COL_TEAL);
+      doc.text('RESTAURANT-PRIORITY CHECKS', MARGIN, y); y += 24;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(22);
+      setColor(COL_INK);
+      doc.text('Full ' + (window.__auditResults ? window.__auditResults.entries.length : 23) + '-check breakdown.', MARGIN, y); y += 26;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      setColor(COL_STONE);
+      y = drawWrappedText('Each item below was evaluated with copy tailored to your segment. Status icons: ✓ pass · ✕ fail · ? unverified. Items marked unverified usually just mean we could not confidently see the signal on this run — they are not automatic failures.', MARGIN, y, COL_W, 13);
+      y += 10;
+
+      var pageNum = 3;
+      var entries = (window.__auditResults && window.__auditResults.entries) || [];
+      for (var ei = 0; ei < entries.length; ei++) {
+        y = drawCheckBlock(entries[ei], y, function(newY){
+          stampFooter(pageNum);
+          pageNum++;
+          return newY;
+        });
+      }
+
+      // === FINAL PAGE: NEXT STEPS ====================================
+      stampFooter(pageNum);
+      doc.addPage();
+      pageNum++;
+      y = MARGIN;
+      setColor(COL_INK, 'fill');
+      doc.rect(MARGIN, y, COL_W, 140, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(20);
+      setColor(COL_CREAM);
+      doc.text('Want a human second opinion?', MARGIN + 24, y + 36);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(12);
+      y = drawWrappedText('If the audit found more than you want to tackle alone, let\'s talk. Twenty minutes on Zoom, walking through your results live — no pitch, no pressure.', MARGIN + 24, y + 60, COL_W - 48, 16);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      setColor(COL_CREAM);
+      doc.text('calendly.com/dongoldstein-accts/muntinconsult', MARGIN + 24, y + 6);
+
+      y = MARGIN + 180;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(14);
+      setColor(COL_INK);
+      doc.text('Run this again any time.', MARGIN, y); y += 20;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(11);
+      setColor(COL_SOFT);
+      y = drawWrappedText('The audit tool is free, open to anyone, and you can re-run it whenever you make a change. The ?url= in your shareable link will auto-run on any fresh visit — bookmark it after you ship a fix to see the delta.', MARGIN, y, COL_W, 15);
+      y += 16;
+      setColor(COL_TEAL);
+      doc.setFont('helvetica', 'bold');
+      doc.text('muntin.digital/tools/audits/restaurant/', MARGIN, y);
+
+      stampFooter(pageNum);
+
+      // Ship it --------------------------------------------------------
+      var blob   = doc.output('blob');
+      var b64    = doc.output('datauristring').split(',').pop() || '';
+      var slug   = (url || 'audit').replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').toLowerCase().slice(0, 48) || 'audit';
+      var filename = 'muntin-audit-' + slug + '-' + today + '.pdf';
+
+      return { blob: blob, base64: b64, filename: filename };
+
+      // --- local helpers --------------------------------------------
+      function collectTopFixes() {
+        var bundle = window.__auditResults;
+        if (!bundle || !Array.isArray(bundle.entries)) return [];
+        var actionable = bundle.entries
+          .filter(function(e){ var c = e.result && e.result.mark && e.result.mark.cls; return c === 'fail' || c === 'unverified'; })
+          .map(function(e){
+            var def = e.def || {};
+            var checkId = def.audit || def.type;
+            var w = null;
+            if (subtypeId && typeof subtypeWeights === 'function') {
+              w = subtypeWeights(subtypeId, checkId);
+            }
+            if (typeof w !== 'number') w = typeof def.weight === 'number' ? def.weight : 1.0;
+            return { entry: e, weight: w, statusRank: e.result.mark.cls === 'fail' ? 1 : 0 };
+          })
+          .filter(function(e){ return e.weight > 0; });
+        actionable.sort(function(a, b){
+          if (b.weight !== a.weight) return b.weight - a.weight;
+          return b.statusRank - a.statusRank;
+        });
+        return actionable.slice(0, 3);
+      }
+
+      function drawFixBlock(pick, num, y) {
+        var def = pick.entry.def;
+        var result = pick.entry.result;
+        y = ensureRoom(y, 110, function(newY){
+          stampFooter(2);
+          return newY;
+        });
+        // Numbered circle
+        setColor(COL_RUST, 'fill');
+        doc.circle(MARGIN + 14, y + 8, 12, 'F');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(12);
+        setColor(COL_CREAM);
+        doc.text(String(num), MARGIN + 14, y + 12, { align: 'center' });
+        // Title
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(14);
+        setColor(COL_INK);
+        var title = (result && result.title) || def.fail || def.unverified || 'Action item';
+        var afterTitle = drawWrappedText(title, MARGIN + 36, y + 12, COL_W - 36, 17);
+        // Why-it-matters
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10.5);
+        setColor(COL_SOFT);
+        afterTitle = drawWrappedText(def.impact || '', MARGIN + 36, afterTitle + 4, COL_W - 36, 14);
+        // Chips
+        var chipY = afterTitle + 6;
+        var chipX = MARGIN + 36;
+        if (def.effort) {
+          var effortLabel = def.effort === 'self' ? 'Fix yourself' : def.effort === 'dev' ? 'Ask your developer' : 'Rebuild needed';
+          chipX = drawPill(effortLabel, chipX, chipY, [242, 238, 227], COL_SOFT);
+        }
+        if (typeof def.minutes === 'number') {
+          var t = def.minutes < 60 ? '~' + def.minutes + ' min' : def.minutes < 180 ? '~' + Math.round(def.minutes / 60) + ' hr' : 'Half-day project';
+          drawPill(t, chipX, chipY, [255, 255, 255], COL_STONE);
+        }
+        return chipY + 30;
+      }
+
+      function drawPill(text, x, y, bg, fg) {
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(9);
+        var w = doc.getTextWidth(text) + 14;
+        setColor(bg, 'fill');
+        doc.roundedRect(x, y - 9, w, 14, 7, 7, 'F');
+        setColor(fg);
+        doc.text(text, x + 7, y);
+        return x + w + 6;
+      }
+
+      function drawCheckBlock(entry, y, onNewPage) {
+        var def = entry.def || {};
+        var result = entry.result || {};
+        var cls = (result.mark && result.mark.cls) || 'unverified';
+        // Need roughly 70pt of space to avoid awkward mid-split
+        y = ensureRoom(y, 70, onNewPage);
+
+        // Status icon
+        var iconColor = cls === 'pass' ? COL_GREEN : cls === 'fail' ? COL_RUST : COL_STONE;
+        var iconChar  = cls === 'pass' ? '\u2713' : cls === 'fail' ? '\u2715' : '?';
+        setColor(iconColor);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(13);
+        doc.text(iconChar, MARGIN + 2, y + 2);
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(12);
+        setColor(COL_INK);
+        var title = (result.title) || def.pass || def.unverified || (def.audit || def.type || 'Check');
+        var afterTitle = drawWrappedText(title, MARGIN + 20, y + 2, COL_W - 20, 15);
+        // Plain-text note under the title
+        var noteText = stripHtml(result.note || '');
+        if (noteText) {
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(10);
+          setColor(COL_SOFT);
+          afterTitle = drawWrappedText(noteText, MARGIN + 20, afterTitle + 2, COL_W - 20, 13);
+        }
+        // Divider
+        setColor(COL_LINE, 'draw');
+        doc.setLineWidth(0.5);
+        doc.line(MARGIN + 20, afterTitle + 8, MARGIN + COL_W, afterTitle + 8);
+        return afterTitle + 18;
+      }
+
+      function stripHtml(s) {
+        return String(s || '')
+          .replace(/<[^>]+>/g, '')
+          .replace(/&amp;/g, '&')
+          .replace(/&lt;/g, '<')
+          .replace(/&gt;/g, '>')
+          .replace(/&quot;/g, '"')
+          .replace(/&#39;/g, "'")
+          .replace(/\s+/g, ' ')
+          .trim();
+      }
+    });
+  }
 
   var submitOriginalHTML = submitBtn.innerHTML;
 
@@ -3795,9 +4255,23 @@
       if (detectRestaurantSchema(pageText, allUrls)) {
         return makeResult(def, 'pass');
       }
-      // Absence of schema isn't "unverified" — it's honestly missing.
-      // But we still render it as unverified tone because it's a bonus
-      // check, not a catastrophe.
+      // Phase L6 accuracy fix: when the subtype detector has
+      // already CONFIDENTLY classified this site as a specific
+      // restaurant segment (fine-dining, pizzeria, bakery, …),
+      // the absence of Restaurant JSON-LD on the page is a real
+      // gap, not an "we couldn't tell" — the previous 'unverified'
+      // state read as internally contradictory (the tool
+      // confirmed the subtype but said "Google doesn't know this
+      // is a restaurant"). Promote to 'fail' so the check tells
+      // the truth: we know what you are, Google can't read it
+      // from your page yet.
+      var bt = window.__auditScoreState && window.__auditScoreState.businessType;
+      var subtypeConfident = bt && bt.type && bt.type !== 'restaurant' &&
+                             (bt.confidence === 'high' || bt.confidence === 'medium');
+      if (subtypeConfident) return makeResult(def, 'fail');
+      // Detector hedged (generic 'restaurant' fallback or low
+      // confidence). Keep the honest "we couldn't confirm" posture
+      // so we don't flag a gap we're not sure exists.
       return makeResult(def, 'unverified');
     }
 
@@ -4493,72 +4967,12 @@
     el.hidden = false;
   }
 
-  // Phase J1: show/hide the #deepGate vs #reportDeep split based
-  // on whether this browser has already unlocked, or the URL
-  // includes a ?deep=1 bypass (used for owner self-audits and
-  // for the printable permalink from Phase J6).
-  function applyDeepGateState(auditedUrl) {
-    var gate     = document.getElementById('deepGate');
-    var wrapper  = document.getElementById('reportDeep');
-    if (!gate || !wrapper) return;
-    var urlParams = new URLSearchParams(location.search || '');
-    var bypass = urlParams.get('deep') === '1';
-    var unlocked = false;
-    try { unlocked = !!localStorage.getItem('muntin.deepReport.unlocked'); }
-    catch (e) { /* localStorage blocked — treat as locked */ }
-    if (bypass || unlocked) {
-      gate.hidden    = true;
-      wrapper.hidden = false;
-      return;
-    }
-    // Pre-populate the hidden fields on the gate form so the
-    // server-side handler has everything it needs when the
-    // visitor drops their email.
-    var urlField      = document.getElementById('deepGateUrl');
-    var subtypeField  = document.getElementById('deepGateSubtype');
-    var scoreField    = document.getElementById('deepGateScore');
-    var linkField     = document.getElementById('deepGateShareLink');
-    if (urlField)     urlField.value     = auditedUrl || '';
-    if (subtypeField) subtypeField.value = effectiveBusinessType() || '';
-    if (scoreField) {
-      var last = window.__auditLastResult;
-      scoreField.value = (last && typeof last.overall === 'number')
-        ? String(Math.round(last.overall)) : '';
-    }
-    if (linkField) {
-      // Phase J6: encode EVERYTHING the printable permalink
-      // needs so the email recipient can land on a fully-
-      // unlocked, benchmark-anchored, re-scan-diffable view:
-      //   url     — the audited site
-      //   bt      — effective subtype (owner override > detection)
-      //   bl      — baseline snapshot (Phase I8) so the diff
-      //             block fires as 'no change' on first re-open
-      //             and as a real delta when the owner re-audits
-      //             later from the same link
-      //   deep=1  — bypasses the email gate so the link opens
-      //             straight to the deep tier
-      var params = new URLSearchParams();
-      if (auditedUrl) params.set('url', auditedUrl);
-      var bt = effectiveBusinessType();
-      if (bt && bt !== 'restaurant') params.set('bt', bt);
-      var last = window.__auditLastResult;
-      if (last && typeof last.overall === 'number') {
-        var baseline = [
-          Math.round(last.overall),
-          last.perf != null ? Math.round(last.perf) : '-',
-          last.a11y != null ? Math.round(last.a11y) : '-',
-          last.bp   != null ? Math.round(last.bp)   : '-',
-          last.seo  != null ? Math.round(last.seo)  : '-',
-          last.restaurant != null ? Math.round(last.restaurant) : '-'
-        ].join('.');
-        params.set('bl', baseline);
-      }
-      params.set('deep', '1');
-      linkField.value = location.origin + location.pathname + '?' + params.toString();
-    }
-    gate.hidden    = false;
-    wrapper.hidden = true;
-  }
+  // Phase L1: email gate retired. The deep tier always renders
+  // immediately after the audit runs. The single email-capture
+  // surface is #emailReportForm at the bottom of the report,
+  // which in Phase L3 also attaches a custom PDF build of the
+  // audit. applyDeepGateState() is gone; nothing else in the
+  // IIFE needs to toggle visibility on the deep wrapper.
 
   // Phase I7: Canvas-rendered 1200×630 share card. Draws the
   // overall score (big ring + number), subtype chip, audited
@@ -5486,10 +5900,7 @@
     var scBtn = document.getElementById('shareCardBtn');
     if (scBtn) scBtn.hidden = false;
 
-    // Phase J1: show the deep-gate on the Quick tier UNLESS the
-    // owner has already unlocked once (localStorage flag) or
-    // the URL carries ?deep=1 (explicit self-audit bypass).
-    applyDeepGateState(auditedUrl);
+    // Phase L1: no gate to toggle; deep tier is always visible.
 
     showOnly(reportEl);
     // Scroll the report into view
@@ -6036,58 +6447,9 @@
     });
   }
 
-  /* -------- Phase J2: Deep-gate form submit → unlock ------- */
-  var deepGateForm = document.getElementById('deepGateForm');
-  if (deepGateForm) {
-    deepGateForm.addEventListener('submit', function(e){
-      e.preventDefault();
-      var toast = document.getElementById('deepGateToast');
-      var submit = deepGateForm.querySelector('button[type="submit"]');
-      var emailInput = document.getElementById('deepGateEmail');
-      var email = (emailInput && emailInput.value || '').trim();
-      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        if (toast) {
-          toast.textContent = 'Enter a valid email to unlock.';
-          toast.classList.add('is-error');
-        }
-        if (emailInput) emailInput.focus();
-        return;
-      }
-      if (toast) {
-        toast.textContent = 'Unlocking…';
-        toast.classList.remove('is-error');
-      }
-      if (submit) { submit.disabled = true; submit.textContent = 'Sending…'; }
-
-      var fd = new FormData(deepGateForm);
-      fetch('/api/audit-report', { method: 'POST', body: fd })
-        .then(function(res){ return res.json().catch(function(){ return { ok: res.ok }; }); })
-        .then(function(body){
-          if (!body || body.ok !== true) {
-            throw new Error((body && body.error) || 'send-failed');
-          }
-          // Persist the unlock so subsequent audits on this
-          // browser skip the gate. Best-effort; private-browsing
-          // flavors of localStorage will just be forgotten.
-          try { localStorage.setItem('muntin.deepReport.unlocked', '1'); } catch (e) {}
-          if (toast) {
-            toast.textContent = 'Unlocked — the deep report is below, and a copy is on its way to your inbox.';
-            toast.classList.remove('is-error');
-          }
-          if (submit) { submit.disabled = false; submit.textContent = 'Unlock deep report'; }
-          applyDeepGateState((window.__auditLastResult && window.__auditLastResult.url) || '');
-          if (window.plausible) window.plausible('Audit Deep Report Unlocked');
-        })
-        .catch(function(err){
-          if (toast) {
-            toast.textContent = 'Sorry, that didn\'t go through. Try again, or email don@muntin.digital directly.';
-            toast.classList.add('is-error');
-          }
-          if (submit) { submit.disabled = false; submit.textContent = 'Unlock deep report'; }
-          console.error('[deep-gate] submit failed:', err);
-        });
-    });
-  }
+  /* Phase L1: deep-gate submit handler retired — the gate itself
+   * is gone. The PDF-attaching "Email me this report" form is wired
+   * separately (Sprint L3) using the existing #emailReportForm. */
 
   /* -------- Phase I7: Download share-card PNG -------- */
   var shareCardBtn = document.getElementById('shareCardBtn');
@@ -6152,69 +6514,144 @@
     document.body.removeChild(ta);
   }
 
-  /* -------- Email-the-report form handler -------- */
+  /* -------- Phase L3c: shared PDF-CTA submit handler --------
+   * Both the top pill-form (#pdfCtaTopForm, Sprint L2) and the
+   * bottom email-report card (#emailReportForm, pre-existing)
+   * POST to /api/audit-report with the SAME payload shape and
+   * an attached jsPDF-built custom audit PDF. Keeping one
+   * handler means the PDF attachment logic, the progress copy,
+   * and the success/error plumbing all stay in lockstep.
+   */
+  function submitPdfCtaForm(form, opts) {
+    opts = opts || {};
+    var btn   = form.querySelector('button[type="submit"]');
+    var toast = opts.toastEl || null;
+    var emailInput = form.querySelector('input[type="email"]');
+    var email = (emailInput && emailInput.value || '').trim();
+
+    function showToast(text, kind) {
+      if (!toast) return;
+      toast.textContent = text;
+      toast.classList.remove('is-error', 'is-success');
+      if (kind === 'error')   toast.classList.add('is-error');
+      if (kind === 'success') toast.classList.add('is-success');
+    }
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showToast('Enter a valid email address.', 'error');
+      if (opts.errorEl) {
+        opts.errorEl.hidden = false;
+        opts.errorEl.textContent = 'Enter a valid email address.';
+      }
+      if (emailInput) emailInput.focus();
+      return;
+    }
+    if (opts.errorEl) { opts.errorEl.hidden = true; opts.errorEl.textContent = ''; }
+    if (btn) { btn.disabled = true; btn.dataset.origHtml = btn.innerHTML; btn.textContent = 'Building your PDF…'; }
+    showToast('Building your PDF…');
+
+    // Pre-fill the hidden-field trio on whichever form submitted;
+    // the top CTA only has stubs, the bottom CTA populates most of
+    // these during render but the three below (subtype, overall,
+    // shareable_link) are always refreshed from current state.
+    var last = window.__auditLastResult;
+    var bt = effectiveBusinessType() || '';
+    function setFieldIfPresent(name, value) {
+      var f = form.querySelector('input[name="' + name + '"]');
+      if (f) f.value = value;
+    }
+    setFieldIfPresent('audited_url',    (last && last.url) || '');
+    setFieldIfPresent('subtype',        bt);
+    setFieldIfPresent('overall_score',  (last && typeof last.overall === 'number') ? String(Math.round(last.overall)) : '');
+    setFieldIfPresent('restaurant_readiness', (last && typeof last.restaurant === 'number') ? String(Math.round(last.restaurant)) : '');
+
+    // Build PDF first, then POST. We await the PDF even if it's slow
+    // because the attachment IS the deliverable — no point sending
+    // an email about a PDF without the PDF. buildAuditPdf resolves
+    // to null on failure; in that case we still send the email (just
+    // without the attachment) so the lead isn't lost.
+    buildAuditPdf()
+      .catch(function(){ return null; })
+      .then(function(pdf){
+        if (btn) btn.textContent = 'Sending…';
+        showToast('Sending…');
+        var payload = {};
+        new FormData(form).forEach(function(v, k){ payload[k] = v; });
+        if (pdf && pdf.base64) {
+          payload.pdf_b64      = pdf.base64;
+          payload.pdf_filename = pdf.filename;
+        }
+        return fetch(form.action, {
+          method: 'POST',
+          body: JSON.stringify(payload),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept':       'application/json'
+          }
+        });
+      })
+      .then(function(res){
+        if (!res) throw new Error('PDF build failed');
+        return res.json().then(function(body){
+          if (res.ok && body && body.ok) {
+            if (btn) { btn.disabled = true; btn.textContent = 'Sent — check your inbox'; }
+            showToast('Your PDF is on its way. If it warrants a longer look, I might follow up personally.', 'success');
+            if (opts.successEl) {
+              opts.successEl.hidden = false;
+              if (opts.hideFormOnSuccess !== false) form.hidden = true;
+            }
+            if (window.plausible) window.plausible('Audit PDF Emailed', { props: { source: (opts.sourceTag || 'unknown') } });
+            return;
+          }
+          var err = new Error((body && body.error) || 'Request failed with HTTP ' + res.status);
+          err.body = body;
+          throw err;
+        }, function(){
+          throw new Error('Request failed with HTTP ' + res.status + ' (non-JSON response)');
+        });
+      })
+      .catch(function(err){
+        console.error('[pdf-cta]', err);
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = btn.dataset.origHtml || btn.textContent.replace(/^(Sending…|Building your PDF…).*/, 'Try again');
+        }
+        var fallback = "We couldn't send the PDF just now. Email don@muntin.digital directly and I'll send it over manually.";
+        showToast(fallback, 'error');
+        if (opts.errorEl) {
+          opts.errorEl.hidden = false;
+          opts.errorEl.textContent = fallback + (err && err.message ? ' (' + err.message + ')' : '');
+        }
+        if (window.plausible) window.plausible('Audit PDF Email Failed', { props: { source: (opts.sourceTag || 'unknown') } });
+      });
+  }
+
+  /* Top pill-style CTA (Phase L2 markup) */
+  var pdfTopForm = document.getElementById('pdfCtaTopForm');
+  if (pdfTopForm) {
+    pdfTopForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      submitPdfCtaForm(pdfTopForm, {
+        toastEl: document.getElementById('pdfCtaTopToast'),
+        sourceTag: 'top-cta',
+        hideFormOnSuccess: false
+      });
+    });
+  }
+
+  /* Bottom full email-the-report card */
   var emailForm    = document.getElementById('emailReportForm');
   var emailSuccess = document.getElementById('emailReportSuccess');
   var emailError   = document.getElementById('emailReportError');
   if (emailForm) {
     emailForm.addEventListener('submit', function(e){
       e.preventDefault();
-      var btn = emailForm.querySelector('button[type="submit"]');
-      if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
-      if (emailError) { emailError.hidden = true; emailError.textContent = ''; }
-
-      // Build a plain JSON payload. The Worker at /api/audit-report
-      // accepts either urlencoded, multipart, or JSON; JSON keeps the
-      // Sprint 6c payload fields (failing_checks, unverified_checks,
-      // user_corrections, shareable_link, etc.) as discrete strings
-      // instead of URL-encoding them into one giant blob.
-      var payload = {};
-      new FormData(emailForm).forEach(function(value, key){ payload[key] = value; });
-
-      fetch(emailForm.action, {
-        method: 'POST',
-        body: JSON.stringify(payload),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      })
-        .then(function(res){
-          // Worker responds with a structured { ok, status | error }
-          // payload. Check res.ok AND body.ok because a 2xx with
-          // ok:false would be a misconfiguration we still want to
-          // surface to the user.
-          return res.json().then(function(body){
-            if (res.ok && body && body.ok) {
-              emailForm.hidden = true;
-              if (emailSuccess) emailSuccess.hidden = false;
-              if (window.plausible) window.plausible('Audit Report Emailed');
-              return;
-            }
-            var msg = (body && body.error)
-              ? body.error
-              : 'Request failed with HTTP ' + res.status;
-            var err = new Error(msg);
-            err.status = res.status;
-            err.body = body;
-            throw err;
-          }, function(){
-            var err = new Error('Request failed with HTTP ' + res.status + ' (non-JSON response)');
-            err.status = res.status;
-            throw err;
-          });
-        })
-        .catch(function(err){
-          console.error('[audit email]', err);
-          if (btn) { btn.disabled = false; btn.textContent = 'Email me the report →'; }
-          if (emailError) {
-            emailError.hidden = false;
-            emailError.textContent = "We couldn't send the report just now. " +
-              (err && err.message ? "(" + err.message + ") " : "") +
-              "Email don@muntin.digital directly and I'll send it over manually.";
-          }
-          if (window.plausible) window.plausible('Audit Report Email Failed');
-        });
+      submitPdfCtaForm(emailForm, {
+        successEl: emailSuccess,
+        errorEl:   emailError,
+        sourceTag: 'bottom-cta',
+        hideFormOnSuccess: true
+      });
     });
   }
 
@@ -6251,7 +6688,7 @@
       row.className = 'compare-input-row';
       var labelId = 'compareUrl' + count;
       row.innerHTML =
-        '<label for="' + labelId + '" class="visually-hidden">Competitor ' + (count + 1) + '</label>' +
+        '<label for="' + labelId + '" class="sr-only">Competitor ' + (count + 1) + '</label>' +
         '<input type="url" id="' + labelId + '" name="competitor' + count + '" placeholder="competitor' + (count + 1) + '.com" autocomplete="off" spellcheck="false" />' +
         '<button type="button" class="compare-remove" aria-label="Remove this competitor">×</button>';
       compareInputs.appendChild(row);
@@ -6616,7 +7053,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">Structure Brings Clarity.</p>
-        <p class="foot-blurb">A one-person studio in Silver Spring, MD, building custom websites, brands, and social media for independent restaurants and lifestyle brands across the DMV and beyond.</p>
+        <p class="foot-blurb">A one-person studio in Silver Spring, MD, building custom websites, brands, and social media for independent restaurants across the DMV and beyond.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -6635,9 +7072,7 @@
         <ul class="foot-links">
           <li><a href="/tools/">All tools</a></li>
           <li><a href="/tools/audits/restaurant/">Restaurant audit</a></li>
-          <li><a href="/tools/audits/wellness/">Wellness audit</a></li>
           <li><a href="/resources/restaurant-website-checklist/">Restaurant checklist</a></li>
-          <li><a href="/resources/wellness-website-checklist/">Wellness checklist</a></li>
         </ul>
       </nav>
 
