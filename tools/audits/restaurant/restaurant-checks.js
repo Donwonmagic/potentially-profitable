@@ -633,8 +633,30 @@ function createRestaurantReadinessState() {
   };
 }
 
-function accumulateRestaurantReadiness(state, def, status) {
-  var w = typeof def.weight === 'number' ? def.weight : 1.0;
+function accumulateRestaurantReadiness(state, def, status, subtypeId) {
+  // Resolve the effective weight:
+  //   1. If a subtypeId is provided AND subtypeWeights() returns a
+  //      number for this (subtype, checkId) pair, that override wins.
+  //      Returning 0 is meaningful — "irrelevant for this subtype" —
+  //      and must not fall through to the default.
+  //   2. Else use def.weight if it's a number.
+  //   3. Else default to 1.0.
+  // checkId is the id we look up in the subtype's weights map. The
+  // priority-check shape uses def.audit for Lighthouse-backed checks
+  // and def.type for the rest (phone, platform, conversions, menu-
+  // format, schema, and the Phase H additions).
+  var w;
+  if (subtypeId && typeof subtypeWeights === 'function') {
+    var checkId = def.audit || def.type;
+    var override = subtypeWeights(subtypeId, checkId);
+    if (typeof override === 'number') {
+      w = override;
+    }
+  }
+  if (typeof w !== 'number') {
+    w = (typeof def.weight === 'number') ? def.weight : 1.0;
+  }
+
   state.totalCount++;
   if (status === 'pass') {
     state.passCount++;
