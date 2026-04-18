@@ -413,6 +413,51 @@ export function subtypeWeights(id, checkId) {
   return (typeof val === 'number') ? val : null;
 }
 
+// ---------------------------------------------------------------------------
+// Subtype-aware copy dispatch (stub — Phase D fills this in)
+// ---------------------------------------------------------------------------
+//
+// subtypeCopy(id, checkId, status) resolves the plain-English copy
+// fragments for a given subtype/check/status triple. It's the server-
+// side counterpart of the client's resolveCheckForType(def, btype)
+// mechanism and will be consumed by the auditDeepReport email
+// templates so each subtype's deep report speaks the owner's dialect.
+//
+// Sprint B7 ships the dispatch SHAPE only: the lookup table lives in
+// SUBTYPE_COPY_TABLE (empty below) and Sprints D1/D2/D3 populate it
+// with per-subtype/per-check entries. Until then the helper returns
+// null for every field, and the email template falls back to the
+// generic copy carried on RESTAURANT_PRIORITY_CHECKS entries.
+//
+// @param {string} id       Canonical subtype id.
+// @param {string} checkId  Priority-check id.
+// @param {'pass'|'fail'|'unverified'} status
+// @returns {{title: string|null, note: string|null, impact: string|null}}
+
+export const SUBTYPE_COPY_TABLE = {
+  // Phase D populates: per-subtype-id → per-check-id → per-status bundles.
+  //   'fine-dining': { viewport: { pass: { title, note }, ... }, ... }
+};
+
+export function subtypeCopy(id, checkId, status) {
+  var canon = canonicalSubtypeId(id);
+  var none = { title: null, note: null, impact: null };
+  if (!canon || !checkId || !status) return none;
+
+  var forSubtype = SUBTYPE_COPY_TABLE[canon];
+  if (!forSubtype) return none;
+  var forCheck = forSubtype[checkId];
+  if (!forCheck) return none;
+  var forStatus = forCheck[status];
+  if (!forStatus) return none;
+
+  return {
+    title:  (typeof forStatus.title  === 'string') ? forStatus.title  : null,
+    note:   (typeof forStatus.note   === 'string') ? forStatus.note   : null,
+    impact: (typeof forStatus.impact === 'string') ? forStatus.impact : null
+  };
+}
+
 // Shared ranking + shaping helper. Extracted so Phase B4/B5 can call it
 // after adding their own signal contributions to the score map.
 function rankSubtypeScores(scores) {
