@@ -381,6 +381,8 @@
     const extrasEl   = card.root.querySelector('.listen-card-extras');
     const prevBtn    = card.root.querySelector('.listen-prev');
     const nextBtn    = card.root.querySelector('.listen-next');
+    const back15Btn  = card.root.querySelector('.listen-back15');
+    const fwd15Btn   = card.root.querySelector('.listen-fwd15');
     const rateSelect = card.root.querySelector('.listen-rate');
     const voiceSelect = card.root.querySelector('.listen-voice');
 
@@ -622,10 +624,21 @@
 
     /* ---- Highlight the currently-spoken block ---- */
     function setCurrent(el, chunk) {
-      if (currentElement) currentElement.classList.remove('is-reading');
+      if (currentElement) {
+        currentElement.classList.remove('is-reading');
+        currentElement.classList.remove('is-reading-callout');
+      }
       currentElement = el;
       if (el) {
         el.classList.add('is-reading');
+        // Callouts (.revenue-math, figures, any data-audio-alt block)
+        // already have their own background + foreground treatment;
+        // painting a tint over them kills the designed contrast. We
+        // tag them so the CSS can swap the background flood for a
+        // soft outer accent ring instead.
+        if (chunk && chunk.kind === 'figure') {
+          el.classList.add('is-reading-callout');
+        }
         // Update "now reading" label on the card
         if (chapterEl) chapterEl.textContent = chapterLabel(chunk);
         const rect = el.getBoundingClientRect();
@@ -706,8 +719,24 @@
       if (progressEl) progressEl.setAttribute('aria-valuenow', String(pct));
       if (prevBtn) prevBtn.disabled = currentIndex <= 0;
       if (nextBtn) nextBtn.disabled = currentIndex >= chunks.length - 1;
+      updateSkipButtons();
       updateDockProgress(pct);
       updateDockChapter(chunks[currentIndex]);
+    }
+
+    // Enable the ±15 buttons whenever there's something to seek
+    // through. In studio mode we check real audio bounds; in the speech
+    // fallback the buttons step by paragraph, so they follow the
+    // paragraph-skip availability.
+    function updateSkipButtons() {
+      if (!back15Btn || !fwd15Btn) return;
+      if (engine === 'audio' && audioEl && audioEl.duration) {
+        back15Btn.disabled = audioEl.currentTime <= 0.1;
+        fwd15Btn.disabled  = audioEl.currentTime >= audioEl.duration - 0.1;
+      } else {
+        back15Btn.disabled = currentIndex <= 0;
+        fwd15Btn.disabled  = currentIndex >= chunks.length - 1;
+      }
     }
 
     function revealPlayerChrome() {
@@ -728,28 +757,105 @@
     }
     if (prevBtn) prevBtn.addEventListener('click', () => skipTo(currentIndex - 1));
     if (nextBtn) nextBtn.addEventListener('click', () => skipTo(currentIndex + 1));
+    if (back15Btn) back15Btn.addEventListener('click', () => seekBy(-15));
+    if (fwd15Btn)  fwd15Btn.addEventListener('click',  () => seekBy(+15));
 
-    // Click-to-seek on the progress bar. In studio mode we snap to the
-    // nearest chunk boundary by timestamp (so the click lands at the
-    // paragraph whose bar tick was clicked). In speech-fallback mode
-    // there's no timeline, so we map click position → chunk index
-    // linearly.
-    if (progressEl) {
-      progressEl.addEventListener('click', (e) => {
+    // ±15 seconds relative seek. Studio mode uses clock-time; speech
+    // fallback has no clock, so we approximate by stepping one chunk.
+    function seekBy(seconds) {
+      if (!chunks.length) return;
+      if (engine === 'audio' && audioEl && audioEl.duration) {
+        const t = Math.max(0, Math.min(audioEl.duration, audioEl.currentTime + seconds));
+        // Find the chunk whose [start,end] spans t so the highlight
+        // and currentIndex update in one step — without this, the
+        // tick loop catches up but currentIndex can be stale if the
+        // user double-taps.
+        let idx = 0;
+        for (let i = 0; i < chunks.length; i++) {
+          if ((chunks[i].start || 0) <= t) idx = i; else break;
+        }
+        audioEl.currentTime = t;
+        currentIndex = idx;
+        setCurrent(chunks[idx].element, chunks[idx]);
+        const pct = (t / audioEl.duration) * 100;
+        if (progressFill) progressFill.style.width = pct.toFixed(2) + '%';
+        if (progressEl) progressEl.setAttribute('aria-valuenow', String(Math.round(pct)));
+        updateDockProgress(pct, t, audioEl.duration);
+        updateDockChapter(chunks[idx]);
+      } else {
+        // Speech fallback: 15s ≈ 1 paragraph
+        skipTo(currentIndex + (seconds > 0 ? 1 : -1));
+      }
+    }
+
+    // Scrub on the progress bar. Supports both click-to-seek and
+    // drag-to-scrub via Pointer Events (unifies mouse + touch). While
+    // dragging we continuously update audio.currentTime and the UI
+    // so the listener hears + sees the position changing; on release
+    // we snap to the nearest chunk boundary so the highlight lines up.
+    if (progressEl) attachScrub(progressEl);
+
+    function attachScrub(bar) {
+      let dragging = false;
+      let pointerId = null;
+
+      function seekToPointer(clientX, release) {
         if (!chunks.length) return;
-        const rect = progressEl.getBoundingClientRect();
-        const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        const rect = bar.getBoundingClientRect();
+        const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
         if (engine === 'audio' && audioEl && audioEl.duration) {
           const t = ratio * audioEl.duration;
-          let nearest = 0;
+          // Keep the audio at the scrub position live so the user
+          // hears where they are.
+          audioEl.currentTime = t;
+          // Paint progress + update highlight on every move; snap to
+          // nearest chunk boundary on release so the visual anchor
+          // lines up with a paragraph.
+          let idx = 0;
           for (let i = 0; i < chunks.length; i++) {
-            if ((chunks[i].start || 0) <= t) nearest = i; else break;
+            if ((chunks[i].start || 0) <= t) idx = i; else break;
           }
-          skipTo(nearest);
+          const pct = (t / audioEl.duration) * 100;
+          if (progressFill) progressFill.style.width = pct.toFixed(2) + '%';
+          if (progressEl) progressEl.setAttribute('aria-valuenow', String(Math.round(pct)));
+          updateDockProgress(pct, t, audioEl.duration);
+          updateDockChapter(chunks[idx]);
+          if (idx !== currentIndex || release) {
+            currentIndex = idx;
+            setCurrent(chunks[idx].element, chunks[idx]);
+          }
+          if (release) {
+            // Snap to chunk start so chaptered progress feels stable
+            audioEl.currentTime = chunks[idx].start || 0;
+          }
         } else {
-          skipTo(Math.floor(ratio * chunks.length));
+          const idx = Math.floor(ratio * chunks.length);
+          if (release) skipTo(idx);
         }
+      }
+
+      bar.addEventListener('pointerdown', (e) => {
+        dragging = true;
+        pointerId = e.pointerId;
+        try { bar.setPointerCapture(pointerId); } catch (_) {}
+        bar.classList.add('is-scrubbing');
+        seekToPointer(e.clientX, false);
+        e.preventDefault();
       });
+      bar.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        seekToPointer(e.clientX, false);
+      });
+      function endDrag(e) {
+        if (!dragging) return;
+        dragging = false;
+        bar.classList.remove('is-scrubbing');
+        try { bar.releasePointerCapture(pointerId); } catch (_) {}
+        pointerId = null;
+        seekToPointer(e.clientX, true);
+      }
+      bar.addEventListener('pointerup', endDrag);
+      bar.addEventListener('pointercancel', endDrag);
     }
 
     /* ---- Playback ---- */
@@ -937,6 +1043,7 @@
       updateDockChapter(chunks[currentIndex]);
       if (prevBtn) prevBtn.disabled = currentIndex <= 0;
       if (nextBtn) nextBtn.disabled = currentIndex >= chunks.length - 1;
+      updateSkipButtons();
       chunkTimer = requestAnimationFrame(tickStudio);
     }
 
@@ -1027,27 +1134,10 @@
     });
     if (dockPrevBtn) dockPrevBtn.addEventListener('click', () => skipTo(currentIndex - 1));
     if (dockNextBtn) dockNextBtn.addEventListener('click', () => skipTo(currentIndex + 1));
-    if (dockProgEl) {
-      dockProgEl.addEventListener('click', (e) => {
-        if (!chunks.length) return;
-        const rect = dockProgEl.getBoundingClientRect();
-        const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-        // In studio mode we map the click to the nearest chunk so the
-        // highlight snaps to a paragraph rather than a random mid-
-        // sentence timestamp. All seeks go through skipTo so the card
-        // and dock stay in sync.
-        if (engine === 'audio' && audioEl && audioEl.duration) {
-          const t = ratio * audioEl.duration;
-          let nearest = 0;
-          for (let i = 0; i < chunks.length; i++) {
-            if ((chunks[i].start || 0) <= t) nearest = i; else break;
-          }
-          skipTo(nearest);
-        } else {
-          skipTo(Math.floor(ratio * chunks.length));
-        }
-      });
-    }
+    // Same scrub helper handles click + drag for the dock's bar, so
+    // the scrubbing UX is identical whether the player card is
+    // on-screen or the user's deep into the post.
+    if (dockProgEl) attachScrub(dockProgEl);
 
     let footerInView = false;
     if ('IntersectionObserver' in window) {
@@ -1185,6 +1275,14 @@
           <div class="listen-card-skips">
             <button type="button" class="listen-iconbtn listen-prev" aria-label="Previous paragraph" disabled>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="19 20 9 12 19 4 19 20" fill="currentColor"/><line x1="5" y1="5" x2="5" y2="19"/></svg>
+            </button>
+            <button type="button" class="listen-iconbtn listen-back15" aria-label="Back 15 seconds" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><polyline points="3 4 3 8 7 8"/></svg>
+              <span class="listen-iconbtn-label">15</span>
+            </button>
+            <button type="button" class="listen-iconbtn listen-fwd15" aria-label="Forward 15 seconds" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 4 21 8 17 8"/></svg>
+              <span class="listen-iconbtn-label">15</span>
             </button>
             <button type="button" class="listen-iconbtn listen-next" aria-label="Next paragraph" disabled>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 4 15 12 5 20 5 4" fill="currentColor"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
