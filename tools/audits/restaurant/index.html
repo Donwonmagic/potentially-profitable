@@ -3608,6 +3608,56 @@
     wrap.hidden = false;
   }
 
+  // Phase E6: render the 'Also scanned:' chip row from the
+  // /api/page-crawl bundle on window.__auditCrawl. Hidden when the
+  // crawl returned no follow-up pages (homepage-only audit, global
+  // timeout, or nothing matched PAGE_CRAWL_SLOTS). One chip per
+  // fetched page; chips for failed fetches carry the .is-error
+  // class and a readable status suffix so owners see explicitly
+  // that the audit tried (and failed at) reading their menu page.
+  function renderCrawlSummary(crawl) {
+    var wrap  = document.getElementById('crawlSummary');
+    var chips = document.getElementById('crawlSummaryChips');
+    if (!wrap || !chips) return;
+    chips.innerHTML = '';
+    if (!crawl || !Array.isArray(crawl.pages) || !crawl.pages.length) {
+      wrap.hidden = true;
+      return;
+    }
+    var added = 0;
+    crawl.pages.forEach(function(page){
+      if (!page || !page.slot) return;
+      var chip = document.createElement('span');
+      chip.className = 'crawl-summary-chip' + (page.html ? '' : ' is-error');
+      var slotLabel = document.createElement('span');
+      slotLabel.className = 'cs-slot';
+      slotLabel.textContent = page.slot;
+      chip.appendChild(slotLabel);
+      var path;
+      try { path = new URL(page.url).pathname; } catch (e) { path = page.url; }
+      if (path && path !== '/') {
+        var pathEl = document.createElement('span');
+        pathEl.className = 'cs-path';
+        pathEl.textContent = path;
+        chip.appendChild(pathEl);
+      }
+      if (!page.html && page.status) {
+        var statusEl = document.createElement('span');
+        statusEl.className = 'cs-path';
+        statusEl.textContent = '(HTTP ' + page.status + ')';
+        chip.appendChild(statusEl);
+      } else if (!page.html) {
+        var errEl = document.createElement('span');
+        errEl.className = 'cs-path';
+        errEl.textContent = '(unreachable)';
+        chip.appendChild(errEl);
+      }
+      chips.appendChild(chip);
+      added++;
+    });
+    wrap.hidden = (added === 0);
+  }
+
   function renderPriorityChecks(audits, allUrls, pageText) {
     var container = document.getElementById('priorityItems');
     if (!container) return { score: 0, passCount: 0, totalCount: 0 };
@@ -4066,6 +4116,7 @@
     var priorityResult;
     if (isRestaurantSite) {
       priorityResult = renderPriorityChecks(audits, allUrls, pageText);
+      renderCrawlSummary(window.__auditCrawl);
     } else {
       priorityResult = { score: 0, passCount: 0, totalCount: 0, confirmedCount: 0, lowConfidence: true };
     }
