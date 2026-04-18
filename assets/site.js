@@ -1,3 +1,44 @@
+  // i18n runtime: a tiny dictionary lookup with English literals as the
+  // fallback. window.__i18n is populated on non-default-locale pages by
+  // a <script> inside the nav partial that sync-includes.mjs stamps
+  // from _includes/i18n.<locale>.json at build time. On English pages
+  // there is no __i18n, so every i18n() call returns the literal and
+  // the site behaves exactly as it did pre-i18n.
+  //
+  // Convention: keys are dotted ("nav.close_menu", "form.invalid_email")
+  // and the English literal is always passed as the second argument so
+  // a missing key is a one-language regression, not a broken UI.
+  //
+  // Named i18n() (not t()) to avoid shadowing collisions — several
+  // nested functions in this file reuse `t` as a local time variable.
+  //
+  // SCOPE: this helper localizes VISUAL UI strings (aria-labels, form
+  // errors, audio player controls, etc.) across the whole site,
+  // including blog pages. The audio-narration VOICE choice (the
+  // .listen-voice <select>) is intentionally INDEPENDENT of the page
+  // locale — a Spanish reader may prefer an English narrator and vice
+  // versa. See the block comment at the listen dock / card definitions.
+  const i18n = (key, en) => {
+    const d = (typeof window !== 'undefined' && window.__i18n) || null;
+    return (d && typeof d[key] === 'string') ? d[key] : en;
+  };
+
+  // Language switcher: clicking the "Español" / "English" anchor in the
+  // nav sets a functional cookie so the server can prefer the chosen
+  // locale on first-load hints (see src/worker.js) and so the user's
+  // preference survives across sessions. The anchor's href still points
+  // to the counterpart page, so JS-off visitors just navigate there;
+  // JS-on visitors additionally get the cookie write. The cookie is
+  // strictly functional (not tracking) — disclosed in /cookies.html.
+  document.querySelectorAll('.js-lang-switch').forEach((el) => {
+    el.addEventListener('click', () => {
+      const locale = el.getAttribute('data-set-locale');
+      if (!locale) return;
+      const secure = location.protocol === 'https:' ? '; Secure' : '';
+      document.cookie = `md_locale=${locale}; Path=/; Max-Age=31536000; SameSite=Lax${secure}`;
+    });
+  });
+
   // Opt out of the browser's automatic scroll restoration so that navigating
   // to a new page from low on the previous page doesn't leave the new page
   // scrolled to an arbitrary offset. We handle hash targets ourselves below;
@@ -43,7 +84,7 @@
       menu.querySelectorAll('a[href], button:not([disabled])');
     const setOpen = (open) => {
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      toggle.setAttribute('aria-label', open ? i18n('nav.close_menu', 'Close menu') : i18n('nav.open_menu', 'Open menu'));
       menu.hidden = !open;
       document.body.style.overflow = open ? 'hidden' : '';
       nav.classList.toggle('menu-open', open);
@@ -177,9 +218,9 @@
       const err = errId ? document.getElementById(errId) : field.parentElement.querySelector('.field-error');
       let msg = '';
       if (field.required && !field.value.trim()) {
-        msg = 'This field is required.';
+        msg = i18n('form.field_required', 'This field is required.');
       } else if (field.type === 'email' && field.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value)) {
-        msg = 'Please enter a valid email address.';
+        msg = i18n('form.invalid_email', 'Please enter a valid email address.');
       }
       field.classList.toggle('invalid', !!msg);
       if (msg) {
@@ -196,7 +237,7 @@
       if (!anyChecked) {
         servicesGroup.classList.add('invalid');
         servicesGroup.setAttribute('aria-invalid', 'true');
-        if (servicesError) servicesError.textContent = 'Please select at least one option.';
+        if (servicesError) servicesError.textContent = i18n('form.services_min_one', 'Please select at least one option.');
       } else {
         clearServicesError();
       }
@@ -273,7 +314,7 @@
         } else {
           const msg = (body && body.error)
             ? body.error
-            : 'Something went wrong. Please try again or email don@muntin.digital directly.';
+            : i18n('form.submit_fallback', 'Something went wrong. Please try again or email don@muntin.digital directly.');
           throw new Error(msg);
         }
       } catch (err) {
@@ -1113,9 +1154,9 @@
       const pressed = next === 'playing' ? 'true' : 'false';
       playBtn.setAttribute('aria-pressed', pressed);
       playBtn.setAttribute('aria-label',
-        next === 'playing' ? 'Pause audio' :
-        next === 'paused'  ? 'Resume audio' :
-                             'Play audio version');
+        next === 'playing' ? i18n('audio.pause',  'Pause audio') :
+        next === 'paused'  ? i18n('audio.resume', 'Resume audio') :
+                             i18n('audio.play',   'Play audio version'));
       // Mirror onto the legacy pill so any integration that watches it
       // (analytics, tests) still sees the same state.
       listenBtn.setAttribute('data-state', next);
@@ -1229,7 +1270,7 @@
     function updateDockState() {
       dock.root.setAttribute('data-state', state);
       dockPlayBtn.setAttribute('aria-label',
-        state === 'playing' ? 'Pause audio' : 'Resume audio');
+        state === 'playing' ? i18n('audio.pause', 'Pause audio') : i18n('audio.resume', 'Resume audio'));
     }
 
     function updateDockChapter(chunk) {
@@ -1267,11 +1308,25 @@
       dockTitleEl.textContent = (postH1.innerText || postH1.textContent || '').replace(/\s+/g, ' ').trim();
     }
 
+    // i18n note for the audio player module (dock + card):
+    // Visual UI labels (aria-labels, progress text, dropdown titles) are
+    // localized via the i18n() helper above. The NARRATION VOICE choice
+    // in .listen-voice <select> is deliberately decoupled from the page
+    // locale — users may want a Spanish page read in an English voice
+    // or the reverse. The voice selector filters available system
+    // voices by each voice's own `v.lang` property, which is
+    // independent of `document.documentElement.lang`. Changing the
+    // site locale never overrides the user's voice pick; changing the
+    // voice never overrides the site locale.
+    //
+    // Deeper blog-audio UI translation (the template-literal strings
+    // below) lives in the sibling "improve blog audio" repo, which
+    // will stamp localized labels into the innerHTML blocks.
     function buildDock() {
       const root = document.createElement('div');
       root.className = 'listen-dock';
       root.setAttribute('role', 'region');
-      root.setAttribute('aria-label', 'Audio player controls');
+      root.setAttribute('aria-label', i18n('audio.controls', 'Audio player controls'));
       root.setAttribute('data-state', 'idle');
       root.setAttribute('data-visible', 'false');
       root.setAttribute('data-collapsed', 'false');
@@ -1396,7 +1451,7 @@
       const root = document.createElement('section');
       root.className = 'listen-card';
       root.setAttribute('data-state', 'idle');
-      root.setAttribute('aria-label', 'Audio edition of this article');
+      root.setAttribute('aria-label', i18n('audio.article_label', 'Audio edition of this article'));
 
       // Reading-time estimate from the post body. Average adult reading
       // pace is ~200 wpm; TTS at 1× is closer to ~155 wpm, so we use

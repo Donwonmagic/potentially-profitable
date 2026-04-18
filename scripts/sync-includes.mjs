@@ -25,6 +25,14 @@ const SKIP_DIRS = new Set([
   'docs', 'src', 'brand', 'assets', 'scripts'
 ]);
 
+// Locales the site ships. English is the default and lives at the repo
+// root; non-default locales live under a top-level directory matching
+// their code (e.g. es/about/index.html). Adding a locale is a matter of
+// (1) creating _includes/<code>/nav.html + footer.html, (2) starting to
+// populate <code>/... pages, and (3) appending the code here.
+const LOCALES = ['en', 'es'];
+const NON_DEFAULT_LOCALES = LOCALES.filter((l) => l !== 'en');
+
 // The nav is shared across every page — sync it everywhere.
 // The footer's "Free tools" column diverges on the tool-utility pages
 // (/tools/compare/, /tools/speed-test/, etc.) which cross-link inside
@@ -44,8 +52,42 @@ const NAV_RE = /<header class="nav" id="nav">[\s\S]*?<\/header>/;
 // body (e.g. a blog post byline footer), if one ever shows up.
 const FOOTER_RE = /<footer>[\s\S]*?<div class="foot-grid">[\s\S]*?<\/footer>/;
 
-const navTemplate    = fs.readFileSync(path.join(repoRoot, '_includes', 'nav.html'), 'utf8').trimEnd();
-const footerTemplate = fs.readFileSync(path.join(repoRoot, '_includes', 'footer.html'), 'utf8').trimEnd();
+// Load one nav + footer partial per locale. English partials live at
+// _includes/nav.html + _includes/footer.html (unchanged for backward
+// compat); every other locale lives under _includes/<code>/. A missing
+// non-default partial throws loudly at build start rather than silently
+// stamping English into ES pages.
+const navTemplates    = {};
+const footerTemplates = {};
+for (const locale of LOCALES) {
+  const dir = locale === 'en' ? '_includes' : path.join('_includes', locale);
+  navTemplates[locale]    = fs.readFileSync(path.join(repoRoot, dir, 'nav.html'),    'utf8').trimEnd();
+  footerTemplates[locale] = fs.readFileSync(path.join(repoRoot, dir, 'footer.html'), 'utf8').trimEnd();
+}
+
+// Back-compat aliases: some scripts may still reference the singular
+// names. Point them at the English partial (the historical default).
+const navTemplate    = navTemplates.en;
+const footerTemplate = footerTemplates.en;
+
+// Per-locale JSON dictionaries for strings that are emitted by JS at
+// runtime (nav toggle aria-labels, form validation messages, the audio
+// player UI). English pages get an empty object — site.js falls back
+// to the English literals baked into the code. Non-default locales
+// get a minified JSON blob stamped into the nav partial via
+// {{I18N_JSON}} so it's available to site.js without a separate
+// network request.
+const i18nDicts = { en: {} };
+for (const locale of NON_DEFAULT_LOCALES) {
+  const p = path.join(repoRoot, '_includes', `i18n.${locale}.json`);
+  if (fs.existsSync(p)) {
+    // Re-serialize via JSON.parse+JSON.stringify so a malformed
+    // dictionary fails the build here rather than at runtime.
+    i18nDicts[locale] = JSON.parse(fs.readFileSync(p, 'utf8'));
+  } else {
+    i18nDicts[locale] = {};
+  }
+}
 
 function collectHtml(dir, out = []) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -60,11 +102,74 @@ function collectHtml(dir, out = []) {
   return out;
 }
 
-function renderNav(relPath) {
-  // index.html at repo root keeps href="#main" so clicking the logo scrolls
-  // to top without a full page reload. Every other page goes home.
-  const logoHref = relPath === 'index.html' ? '#main' : '/';
-  return navTemplate.replaceAll('{{LOGO_HREF}}', logoHref);
+// Normalize a POSIX-style path for the locale logic below. sync-includes
+// runs on Linux (Cloudflare build containers + dev Macs), but guard
+// against Windows backslashes anyway — cheap insurance.
+function toPosix(p) { return p.split(path.sep).join('/'); }
+
+// Detect which locale a page lives under purely from its path. English
+// is the default — everything not under a known locale prefix counts
+// as English, which keeps legacy pages working without rewrites.
+function localeForPath(relPath) {
+  const posix = toPosix(relPath);
+  for (const l of NON_DEFAULT_LOCALES) {
+    if (posix === `${l}/index.html` || posix.startsWith(`${l}/`)) return l;
+  }
+  return 'en';
+}
+
+// For a given page, compute its counterpart URL in the "other" locale
+// so the language switcher can link to it. Today there are only two
+// locales, so "other" is unambiguous. When a third locale lands, the
+// switcher markup in the partials will need to iterate LOCALES instead
+// and this helper will return a map rather than a single URL.
+function counterpartUrl(relPath, pageLocale) {
+  const posix = toPosix(relPath);
+  // Strip an index.html suffix so the URL is the directory form users see.
+  const pretty = posix.endsWith('/index.html')
+    ? '/' + posix.slice(0, -'index.html'.length)
+    : posix === 'index.html'
+      ? '/'
+      : '/' + posix;
+  if (pageLocale === 'en') {
+    // EN page → point to /<otherLocale>/... counterpart.
+    const other = NON_DEFAULT_LOCALES[0];
+    return pretty === '/' ? `/${other}/` : `/${other}${pretty}`;
+  }
+  // Non-default locale → strip the leading /<locale>/ and land at EN.
+  const stripped = pretty.replace(new RegExp(`^/${pageLocale}(/|$)`), '/');
+  return stripped || '/';
+}
+
+// The locale's "home" URL used for the logo link on every page except
+// the locale's own index. EN home is "/"; ES home is "/es/". This keeps
+// "click the logo" predictable regardless of language.
+function localeHomeUrl(locale) {
+  return locale === 'en' ? '/' : `/${locale}/`;
+}
+
+// The set of files that are the locale's own index page — the logo
+// anchor on those keeps its historical "#main" smooth-scroll behavior
+// (no full-page reload).
+const LOCALE_INDEX_PATHS = new Set(
+  LOCALES.map((l) => l === 'en' ? 'index.html' : `${l}/index.html`)
+);
+
+function renderNav(relPath, locale) {
+  const tpl = navTemplates[locale];
+  const logoHref = LOCALE_INDEX_PATHS.has(toPosix(relPath)) ? '#main' : localeHomeUrl(locale);
+  return tpl
+    .replaceAll('{{LOGO_HREF}}',    logoHref)
+    .replaceAll('{{LOCALE_HOME}}',  localeHomeUrl(locale))
+    .replaceAll('{{ALT_URL}}',      counterpartUrl(relPath, locale))
+    .replaceAll('{{I18N_JSON}}',    JSON.stringify(i18nDicts[locale]));
+}
+
+function renderFooter(relPath, locale) {
+  const tpl = footerTemplates[locale];
+  return tpl
+    .replaceAll('{{LOCALE_HOME}}', localeHomeUrl(locale))
+    .replaceAll('{{ALT_URL}}',     counterpartUrl(relPath, locale));
 }
 
 let changed = 0;
@@ -73,8 +178,9 @@ let footerSkipped = 0;
 const problems = [];
 
 for (const file of collectHtml(repoRoot)) {
-  const rel = path.relative(repoRoot, file);
-  const src = fs.readFileSync(file, 'utf8');
+  const rel     = path.relative(repoRoot, file);
+  const locale  = localeForPath(rel);
+  const src     = fs.readFileSync(file, 'utf8');
 
   const hasNav    = NAV_RE.test(src);
   const hasFooter = FOOTER_RE.test(src);
@@ -86,8 +192,8 @@ for (const file of collectHtml(repoRoot)) {
   const footerIsCanonical = hasFooter && src.match(FOOTER_RE)[0].includes(FOOTER_MAIN_FUNNEL_MARKER);
 
   let next = src;
-  if (hasNav)             next = next.replace(NAV_RE, renderNav(rel));
-  if (footerIsCanonical)  next = next.replace(FOOTER_RE, footerTemplate);
+  if (hasNav)             next = next.replace(NAV_RE, renderNav(rel, locale));
+  if (footerIsCanonical)  next = next.replace(FOOTER_RE, renderFooter(rel, locale));
   if (hasFooter && !footerIsCanonical) footerSkipped++;
 
   if (!hasNav || !hasFooter) {

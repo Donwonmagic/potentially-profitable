@@ -82,10 +82,22 @@
 # the cached copy while silently fetching a fresh one in
 # the background — gives us instant perceived loads without
 # blocking the update path.
+#
+# Content-Language: declared per locale so that browsers, CDNs,
+# screen readers, and search engines treat /es/* as the Spanish
+# surface of the site and / as the English surface. Rule order
+# matters — the more specific /es/* block must come before the
+# catch-all /*.html rule so Pages picks the Spanish header first.
+/es/*
+  Content-Language: es
+  Cache-Control: public, max-age=600, s-maxage=3600, stale-while-revalidate=86400
+
 /
+  Content-Language: en
   Cache-Control: public, max-age=600, s-maxage=3600, stale-while-revalidate=86400
 
 /*.html
+  Content-Language: en
   Cache-Control: public, max-age=600, s-maxage=3600, stale-while-revalidate=86400
 
 

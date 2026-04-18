@@ -52,7 +52,20 @@
   // It's idempotent — a no-op if source is already in sync — and
   // guarantees that a stale page can't ship.
   "build": {
-    "command": "node scripts/sync-includes.mjs && mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md --exclude=src --exclude=scripts --exclude=_includes . | tar -xf - -C dist"
+    // i18n build steps run in order BEFORE the tar:
+    //   sync-includes.mjs       — stamps locale-aware nav/footer
+    //                             (English + Spanish partials under
+    //                             _includes/es/) into every HTML page
+    //   stamp-hreflang.mjs      — injects <link rel="alternate"
+    //                             hreflang="..."> + og:locale blocks
+    //                             after each page's canonical tag.
+    //                             Idempotent, safe to re-run
+    //   check-locale-parity.mjs — warns about missing Spanish pages or
+    //                             stale Spanish copies. Uses --check in
+    //                             warn-only mode during rollout; flip
+    //                             to hard-fail once ES coverage is
+    //                             complete (see the script's tail)
+    "command": "node scripts/sync-includes.mjs && node scripts/stamp-hreflang.mjs && node scripts/check-locale-parity.mjs --check && mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md --exclude=src --exclude=scripts --exclude=_includes . | tar -xf - -C dist"
   },
   "assets": {
     "directory": "./dist",

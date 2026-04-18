@@ -1,0 +1,46 @@
+<header class="nav" id="nav">
+  <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
+             Placed inside <header> so sync-includes replaces it atomically
+             along with the rest of the nav block on every build, keeping
+             the partial strictly idempotent. Valid HTML5: <script> may
+             appear in any flow-content context. */
+  window.__i18n=Object.assign(window.__i18n||{},{{I18N_JSON}});</script>
+  <div class="container nav-inner">
+    <a href="{{LOGO_HREF}}" class="logo" aria-label="Muntin Digital — inicio">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
+    </a>
+    <nav class="nav-links" aria-label="Principal">
+      <a href="/es/services/">Servicios</a>
+      <a href="/es/for/restaurants/">Restaurantes</a>
+      <a href="/es/work/">Proyectos</a>
+      <a href="/es/blog/">Blog</a>
+      <a href="/es/about/">Sobre Don</a>
+    </nav>
+    <nav class="lang-switch" aria-label="Idioma">
+      <a href="{{ALT_URL}}" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
+      <span class="lang-switch-current" aria-current="true">ES</span>
+    </nav>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Agenda una llamada de 20 min<span class="sr-only"> (se abre en una pestaña nueva)</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
+    <a href="/es/services/">Servicios</a>
+    <a href="/es/for/restaurants/">Restaurantes</a>
+    <a href="/es/work/">Proyectos</a>
+    <a href="/blog/">Blog</a>
+    <a href="/es/about/">Sobre Don</a>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Agenda una llamada de 20 min<span class="sr-only"> (se abre en una pestaña nueva)</span></a>
+    <a href="{{ALT_URL}}" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
+  </nav>
+</header>
