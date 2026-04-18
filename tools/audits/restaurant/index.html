@@ -2663,6 +2663,415 @@
     return __pdfLibPromise;
   }
 
+  // Phase L3b: build a custom multi-page PDF of the current audit.
+  // Reads from the window-scoped state populated during renderReport:
+  //   __auditLastResult   — overall + per-pillar scores + URL
+  //   __auditResults      — sorted priority-check entries + subtype
+  //   __auditCrawl        — optional 'also scanned' pages bundle
+  //
+  // Returns { blob, filename, base64 } or null when jsPDF fails to
+  // load or there's no audit to render. Fully self-contained: no
+  // DOM scraping, no html2canvas, no webfont embedding — pure
+  // text + shape drawing into a Letter-size (612×792 pt) document.
+  function buildAuditPdf() {
+    var last = window.__auditLastResult;
+    if (!last || typeof last.overall !== 'number') return Promise.resolve(null);
+
+    return loadJsPdf().then(function(jsPDF){
+      if (!jsPDF) return null;
+
+      var doc = new jsPDF({ unit: 'pt', format: 'letter' });
+      var PAGE_W = 612, PAGE_H = 792;
+      var MARGIN = 48;
+      var COL_W = PAGE_W - MARGIN * 2;
+
+      // --- color palette (mirrors the brand tokens from site.css) ---
+      var COL_INK    = [20, 22, 26];
+      var COL_SOFT   = [42, 45, 51];
+      var COL_STONE  = [91, 89, 80];
+      var COL_TEAL   = [31, 78, 91];
+      var COL_RUST   = [184, 84, 26];
+      var COL_GREEN  = [31, 107, 58];
+      var COL_CREAM  = [250, 247, 242];
+      var COL_LINE   = [230, 223, 206];
+
+      var overall    = Math.round(last.overall);
+      var subtypeId  = (window.__auditResults && window.__auditResults.subtypeId) || effectiveBusinessType() || 'restaurant';
+      var subtype    = BUSINESS_TYPE_DEFS[subtypeId] || { label: 'Restaurant' };
+      var url        = (last.url || '').replace(/^https?:\/\//, '').replace(/\/$/, '');
+      var today      = new Date().toISOString().slice(0, 10);
+
+      // Shared helpers -------------------------------------------------
+      function setColor(rgb, kind) {
+        if (kind === 'fill') doc.setFillColor(rgb[0], rgb[1], rgb[2]);
+        else if (kind === 'draw') doc.setDrawColor(rgb[0], rgb[1], rgb[2]);
+        else doc.setTextColor(rgb[0], rgb[1], rgb[2]);
+      }
+      function drawWrappedText(text, x, y, maxW, lineH) {
+        var lines = doc.splitTextToSize(String(text || ''), maxW);
+        for (var i = 0; i < lines.length; i++) {
+          doc.text(lines[i], x, y);
+          y += lineH;
+        }
+        return y;
+      }
+      function ensureRoom(y, needed, onNewPage) {
+        if (y + needed > PAGE_H - MARGIN) {
+          doc.addPage();
+          if (typeof onNewPage === 'function') return onNewPage(MARGIN);
+          return MARGIN;
+        }
+        return y;
+      }
+
+      // Running page footer (muntin brand + page number). Drawn last
+      // in an addPage hook via a tracked counter since jsPDF v2 doesn't
+      // fire a native event.
+      function stampFooter(pageNum) {
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        setColor(COL_STONE);
+        doc.text('Muntin Digital · muntin.digital', MARGIN, PAGE_H - 24);
+        doc.text('Page ' + pageNum, PAGE_W - MARGIN, PAGE_H - 24, { align: 'right' });
+      }
+
+      // === PAGE 1: COVER =============================================
+      var y = MARGIN + 8;
+
+      // Top rule + eyebrow
+      setColor(COL_TEAL, 'draw');
+      doc.setLineWidth(2);
+      doc.line(MARGIN, y, MARGIN + 60, y);
+      y += 18;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      setColor(COL_TEAL);
+      doc.text('MUNTIN DIGITAL · RESTAURANT WEBSITE AUDIT', MARGIN, y);
+      y += 28;
+
+      // Title
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(28);
+      setColor(COL_INK);
+      y = drawWrappedText('Custom website audit for ' + (url || 'your site') + '.', MARGIN, y, COL_W, 32);
+      y += 6;
+
+      // Meta strip: URL · subtype · date
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(11);
+      setColor(COL_STONE);
+      doc.text('Audited · ' + (url || '—'), MARGIN, y); y += 14;
+      doc.text('Segment · ' + (subtype.label || subtypeId), MARGIN, y); y += 14;
+      doc.text('Date · ' + today, MARGIN, y); y += 28;
+
+      // Score ring (left) + pillar bars (right)
+      var ringX = MARGIN + 60, ringY = y + 60, ringR = 52;
+      doc.setLineWidth(8);
+      setColor(COL_LINE, 'draw');
+      doc.circle(ringX, ringY, ringR, 'S');
+      var scoreColor = overall >= 90 ? COL_GREEN : overall >= 50 ? [193, 137, 28] : COL_RUST;
+      setColor(scoreColor, 'draw');
+      // Approximate the arc with a short polyline — jsPDF v2 has no
+      // native arc primitive, but a filled wedge drawn via multiple
+      // line segments reads clearly at 52pt radius.
+      var sweep = Math.max(0, Math.min(1, overall / 100));
+      var segs = Math.max(6, Math.round(sweep * 48));
+      for (var s = 0; s < segs; s++) {
+        var a1 = -Math.PI / 2 + (s     / 48) * 2 * Math.PI;
+        var a2 = -Math.PI / 2 + ((s+1) / 48) * 2 * Math.PI;
+        doc.line(
+          ringX + Math.cos(a1) * ringR, ringY + Math.sin(a1) * ringR,
+          ringX + Math.cos(a2) * ringR, ringY + Math.sin(a2) * ringR
+        );
+      }
+      // Score number in the center
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(36);
+      setColor(COL_INK);
+      doc.text(String(overall), ringX, ringY + 8, { align: 'center' });
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      setColor(COL_STONE);
+      doc.text('/ 100', ringX, ringY + 24, { align: 'center' });
+
+      // Pillar bars on the right
+      var barX = MARGIN + 180;
+      var barW = COL_W - 180;
+      var barY = y + 12;
+      var pillars = [
+        { label: 'Mobile performance',    score: last.perf },
+        { label: 'Accessibility',          score: last.a11y },
+        { label: 'Best practices',         score: last.bp },
+        { label: 'SEO',                    score: last.seo },
+        { label: 'Restaurant readiness',   score: last.restaurant }
+      ].filter(function(p){ return typeof p.score === 'number' && !isNaN(p.score); });
+      for (var pi = 0; pi < pillars.length; pi++) {
+        var p = pillars[pi];
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        setColor(COL_SOFT);
+        doc.text(p.label, barX, barY);
+        doc.setFont('helvetica', 'bold');
+        doc.text(String(Math.round(p.score)), barX + barW, barY, { align: 'right' });
+        barY += 6;
+        setColor(COL_LINE, 'fill');
+        doc.rect(barX, barY, barW, 3, 'F');
+        var fillColor = p.score >= 90 ? COL_GREEN : p.score >= 50 ? [193, 137, 28] : COL_RUST;
+        setColor(fillColor, 'fill');
+        doc.rect(barX, barY, barW * Math.max(0, Math.min(1, p.score / 100)), 3, 'F');
+        barY += 16;
+      }
+
+      y = Math.max(ringY + ringR + 30, barY + 20);
+
+      // Executive summary paragraph (reads from the on-page block,
+      // falls back to a composed default if the DOM node isn't set).
+      var sumBody = document.getElementById('execSummaryBody');
+      var sumText = (sumBody && sumBody.textContent || '').trim();
+      if (!sumText) {
+        sumText = 'Your ' + (subtype.label || 'restaurant').toLowerCase() +
+                  ' scores ' + overall + ' overall. See the sections below for ' +
+                  'the top fixes ranked for your segment and the full priority-check breakdown.';
+      }
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      setColor(COL_TEAL);
+      doc.text('WHAT THIS MEANS', MARGIN, y); y += 14;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(11);
+      setColor(COL_SOFT);
+      y = drawWrappedText(sumText, MARGIN, y, COL_W, 15);
+
+      stampFooter(1);
+
+      // === PAGE 2: TOP 3 FIXES =======================================
+      doc.addPage();
+      y = MARGIN;
+      setColor(COL_RUST, 'draw');
+      doc.setLineWidth(2);
+      doc.line(MARGIN, y, MARGIN + 60, y);
+      y += 18;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      setColor(COL_RUST);
+      doc.text('TOP 3 FIXES — RANKED FOR YOUR SEGMENT', MARGIN, y); y += 24;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(22);
+      setColor(COL_INK);
+      doc.text('The three highest-leverage', MARGIN, y); y += 24;
+      doc.text('moves to make next.', MARGIN, y); y += 30;
+
+      var fixes = collectTopFixes();
+      if (!fixes.length) {
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(12);
+        setColor(COL_SOFT);
+        y = drawWrappedText('Your audit returned no actionable items — your site scored cleanly across every priority check. Keep an eye on the full-check breakdown on the next pages.', MARGIN, y, COL_W, 16);
+      } else {
+        for (var fi = 0; fi < fixes.length; fi++) {
+          y = drawFixBlock(fixes[fi], fi + 1, y);
+        }
+      }
+
+      stampFooter(2);
+
+      // === PAGES 3+: ALL PRIORITY CHECKS =============================
+      doc.addPage();
+      y = MARGIN;
+      setColor(COL_TEAL, 'draw');
+      doc.setLineWidth(2);
+      doc.line(MARGIN, y, MARGIN + 60, y);
+      y += 18;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      setColor(COL_TEAL);
+      doc.text('RESTAURANT-PRIORITY CHECKS', MARGIN, y); y += 24;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(22);
+      setColor(COL_INK);
+      doc.text('Full ' + (window.__auditResults ? window.__auditResults.entries.length : 23) + '-check breakdown.', MARGIN, y); y += 26;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      setColor(COL_STONE);
+      y = drawWrappedText('Each item below was evaluated with copy tailored to your segment. Status icons: ✓ pass · ✕ fail · ? unverified. Items marked unverified usually just mean we could not confidently see the signal on this run — they are not automatic failures.', MARGIN, y, COL_W, 13);
+      y += 10;
+
+      var pageNum = 3;
+      var entries = (window.__auditResults && window.__auditResults.entries) || [];
+      for (var ei = 0; ei < entries.length; ei++) {
+        y = drawCheckBlock(entries[ei], y, function(newY){
+          stampFooter(pageNum);
+          pageNum++;
+          return newY;
+        });
+      }
+
+      // === FINAL PAGE: NEXT STEPS ====================================
+      stampFooter(pageNum);
+      doc.addPage();
+      pageNum++;
+      y = MARGIN;
+      setColor(COL_INK, 'fill');
+      doc.rect(MARGIN, y, COL_W, 140, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(20);
+      setColor(COL_CREAM);
+      doc.text('Want a human second opinion?', MARGIN + 24, y + 36);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(12);
+      y = drawWrappedText('If the audit found more than you want to tackle alone, let\'s talk. Twenty minutes on Zoom, walking through your results live — no pitch, no pressure.', MARGIN + 24, y + 60, COL_W - 48, 16);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      setColor(COL_CREAM);
+      doc.text('calendly.com/dongoldstein-accts/muntinconsult', MARGIN + 24, y + 6);
+
+      y = MARGIN + 180;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(14);
+      setColor(COL_INK);
+      doc.text('Run this again any time.', MARGIN, y); y += 20;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(11);
+      setColor(COL_SOFT);
+      y = drawWrappedText('The audit tool is free, open to anyone, and you can re-run it whenever you make a change. The ?url= in your shareable link will auto-run on any fresh visit — bookmark it after you ship a fix to see the delta.', MARGIN, y, COL_W, 15);
+      y += 16;
+      setColor(COL_TEAL);
+      doc.setFont('helvetica', 'bold');
+      doc.text('muntin.digital/tools/audits/restaurant/', MARGIN, y);
+
+      stampFooter(pageNum);
+
+      // Ship it --------------------------------------------------------
+      var blob   = doc.output('blob');
+      var b64    = doc.output('datauristring').split(',').pop() || '';
+      var slug   = (url || 'audit').replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').toLowerCase().slice(0, 48) || 'audit';
+      var filename = 'muntin-audit-' + slug + '-' + today + '.pdf';
+
+      return { blob: blob, base64: b64, filename: filename };
+
+      // --- local helpers --------------------------------------------
+      function collectTopFixes() {
+        var bundle = window.__auditResults;
+        if (!bundle || !Array.isArray(bundle.entries)) return [];
+        var actionable = bundle.entries
+          .filter(function(e){ var c = e.result && e.result.mark && e.result.mark.cls; return c === 'fail' || c === 'unverified'; })
+          .map(function(e){
+            var def = e.def || {};
+            var checkId = def.audit || def.type;
+            var w = null;
+            if (subtypeId && typeof subtypeWeights === 'function') {
+              w = subtypeWeights(subtypeId, checkId);
+            }
+            if (typeof w !== 'number') w = typeof def.weight === 'number' ? def.weight : 1.0;
+            return { entry: e, weight: w, statusRank: e.result.mark.cls === 'fail' ? 1 : 0 };
+          })
+          .filter(function(e){ return e.weight > 0; });
+        actionable.sort(function(a, b){
+          if (b.weight !== a.weight) return b.weight - a.weight;
+          return b.statusRank - a.statusRank;
+        });
+        return actionable.slice(0, 3);
+      }
+
+      function drawFixBlock(pick, num, y) {
+        var def = pick.entry.def;
+        var result = pick.entry.result;
+        y = ensureRoom(y, 110, function(newY){
+          stampFooter(2);
+          return newY;
+        });
+        // Numbered circle
+        setColor(COL_RUST, 'fill');
+        doc.circle(MARGIN + 14, y + 8, 12, 'F');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(12);
+        setColor(COL_CREAM);
+        doc.text(String(num), MARGIN + 14, y + 12, { align: 'center' });
+        // Title
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(14);
+        setColor(COL_INK);
+        var title = (result && result.title) || def.fail || def.unverified || 'Action item';
+        var afterTitle = drawWrappedText(title, MARGIN + 36, y + 12, COL_W - 36, 17);
+        // Why-it-matters
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10.5);
+        setColor(COL_SOFT);
+        afterTitle = drawWrappedText(def.impact || '', MARGIN + 36, afterTitle + 4, COL_W - 36, 14);
+        // Chips
+        var chipY = afterTitle + 6;
+        var chipX = MARGIN + 36;
+        if (def.effort) {
+          var effortLabel = def.effort === 'self' ? 'Fix yourself' : def.effort === 'dev' ? 'Ask your developer' : 'Rebuild needed';
+          chipX = drawPill(effortLabel, chipX, chipY, [242, 238, 227], COL_SOFT);
+        }
+        if (typeof def.minutes === 'number') {
+          var t = def.minutes < 60 ? '~' + def.minutes + ' min' : def.minutes < 180 ? '~' + Math.round(def.minutes / 60) + ' hr' : 'Half-day project';
+          drawPill(t, chipX, chipY, [255, 255, 255], COL_STONE);
+        }
+        return chipY + 30;
+      }
+
+      function drawPill(text, x, y, bg, fg) {
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(9);
+        var w = doc.getTextWidth(text) + 14;
+        setColor(bg, 'fill');
+        doc.roundedRect(x, y - 9, w, 14, 7, 7, 'F');
+        setColor(fg);
+        doc.text(text, x + 7, y);
+        return x + w + 6;
+      }
+
+      function drawCheckBlock(entry, y, onNewPage) {
+        var def = entry.def || {};
+        var result = entry.result || {};
+        var cls = (result.mark && result.mark.cls) || 'unverified';
+        // Need roughly 70pt of space to avoid awkward mid-split
+        y = ensureRoom(y, 70, onNewPage);
+
+        // Status icon
+        var iconColor = cls === 'pass' ? COL_GREEN : cls === 'fail' ? COL_RUST : COL_STONE;
+        var iconChar  = cls === 'pass' ? '\u2713' : cls === 'fail' ? '\u2715' : '?';
+        setColor(iconColor);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(13);
+        doc.text(iconChar, MARGIN + 2, y + 2);
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(12);
+        setColor(COL_INK);
+        var title = (result.title) || def.pass || def.unverified || (def.audit || def.type || 'Check');
+        var afterTitle = drawWrappedText(title, MARGIN + 20, y + 2, COL_W - 20, 15);
+        // Plain-text note under the title
+        var noteText = stripHtml(result.note || '');
+        if (noteText) {
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(10);
+          setColor(COL_SOFT);
+          afterTitle = drawWrappedText(noteText, MARGIN + 20, afterTitle + 2, COL_W - 20, 13);
+        }
+        // Divider
+        setColor(COL_LINE, 'draw');
+        doc.setLineWidth(0.5);
+        doc.line(MARGIN + 20, afterTitle + 8, MARGIN + COL_W, afterTitle + 8);
+        return afterTitle + 18;
+      }
+
+      function stripHtml(s) {
+        return String(s || '')
+          .replace(/<[^>]+>/g, '')
+          .replace(/&amp;/g, '&')
+          .replace(/&lt;/g, '<')
+          .replace(/&gt;/g, '>')
+          .replace(/&quot;/g, '"')
+          .replace(/&#39;/g, "'")
+          .replace(/\s+/g, ' ')
+          .trim();
+      }
+    });
+  }
+
   var submitOriginalHTML = submitBtn.innerHTML;
 
   // Stepwise progress state. The audit has four logical phases:
