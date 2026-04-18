@@ -68,7 +68,6 @@ const API_ROUTES = {
   '/api/seo-check':     handleSeoCheck,
   '/api/schema-check':  handleSchemaCheck,
   '/api/page-crawl':    handlePageCrawl,
-  '/api/yelp-lookup':   handleYelpLookup,
   '/api/psi':           handlePsi,
 };
 
@@ -91,7 +90,7 @@ export default {
           404
         );
       }
-      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/yelp-lookup' || pathname === '/api/psi') {
+      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
         }
@@ -373,16 +372,15 @@ async function handlePing(request, env, ctx) {
       // Configuration readiness without leaking the actual key.
       // A false value here means the corresponding feature will
       // fall back to its unconfigured branch (PSI direct-call
-      // fallback, Places lookup disabled, Yelp lookup disabled,
-      // email send disabled, …) so ops can verify secrets are
-      // plumbed without actually exercising the upstreams.
+      // fallback, Places lookup disabled, email send disabled,
+      // …) so ops can verify secrets are plumbed without actually
+      // exercising the upstreams.
       configured: {
         resend:  Boolean(env.RESEND_API_KEY),
         from:    Boolean(env.FROM_EMAIL),
         notify:  Boolean(env.NOTIFY_EMAIL),
         psi:     Boolean(env.PSI_API_KEY),
         places:  Boolean(env.GOOGLE_PLACES_KEY),
-        yelp:    Boolean(env.YELP_API_KEY),
       },
     },
     200
@@ -1524,106 +1522,6 @@ async function handlePsi(request, env, ctx) {
   }
 }
 
-
-// ------------------------------------------------------------
-// Yelp Fusion v3 lookup — Phase G2
-// ------------------------------------------------------------
-// Proxies a Yelp business search so the restaurant audit can
-// surface the site's rating, review count, price tier, and
-// categories without shipping the API key to the browser.
-//
-// Behavior mirrors /api/psi:
-//   - Missing env.YELP_API_KEY → 503 { error: 'yelp-unconfigured' }
-//     so the client can treat the feature as optional and fall
-//     back to the on-page review-widget scan (Phase G4).
-//   - Missing `term` or `location` → 400.
-//   - Yelp upstream error → 502 with a scrubbed message.
-//   - Success → 200 with the first match's core fields.
-//
-//   GET /api/yelp-lookup?term=Joe%27s%20Pizza&location=Brooklyn%20NY
-//
-// No caching headers — the caller is expected to handle caching
-// via the shared jsonResponse helper's no-store defaults. Yelp's
-// own rate limit (5000 calls/day on the free tier) is the
-// operational budget.
-async function handleYelpLookup(request, env, ctx) {
-  if (!env.YELP_API_KEY) {
-    return jsonResponse(
-      { ok: false, error: 'yelp-unconfigured' },
-      503
-    );
-  }
-  const url = new URL(request.url);
-  const term     = (url.searchParams.get('term')     || '').trim();
-  const location = (url.searchParams.get('location') || '').trim();
-  if (!term || !location) {
-    return jsonResponse({ ok: false, error: 'Missing term or location parameter' }, 400);
-  }
-
-  const params = new URLSearchParams({
-    term: term,
-    location: location,
-    limit: '1',
-    sort_by: 'best_match'
-  });
-  const endpoint = 'https://api.yelp.com/v3/businesses/search?' + params.toString();
-
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(function(){ controller.abort(); }, 8000);
-    const res = await fetch(endpoint, {
-      headers: {
-        'Authorization': 'Bearer ' + env.YELP_API_KEY,
-        'Accept': 'application/json',
-      },
-      signal: controller.signal,
-    });
-    clearTimeout(timeout);
-
-    if (!res.ok) {
-      // Don't leak Yelp's upstream error body — it can contain
-      // auth debug hints that we don't want to expose to the
-      // browser. Just pass along a scrubbed status.
-      return jsonResponse(
-        { ok: false, error: 'Yelp returned HTTP ' + res.status },
-        502
-      );
-    }
-    const body = await res.json();
-    const first = (body && Array.isArray(body.businesses) && body.businesses[0]) || null;
-    if (!first) {
-      return jsonResponse({ ok: true, match: null }, 200);
-    }
-
-    return jsonResponse({
-      ok: true,
-      match: {
-        id:           first.id || null,
-        name:         first.name || null,
-        url:          first.url || null,
-        rating:       (typeof first.rating === 'number') ? first.rating : null,
-        reviewCount:  (typeof first.review_count === 'number') ? first.review_count : null,
-        price:        first.price || null,
-        categories:   Array.isArray(first.categories)
-                      ? first.categories.map(function(c){ return c && c.title; }).filter(Boolean)
-                      : [],
-        phone:        first.display_phone || first.phone || null,
-        location:     first.location && first.location.display_address
-                      ? first.location.display_address.join(', ') : null,
-        distance:     (typeof first.distance === 'number') ? first.distance : null,
-        imageUrl:     first.image_url || null,
-        closed:       !!first.is_closed
-      }
-    }, 200);
-  } catch (err) {
-    const timedOut = err && err.name === 'AbortError';
-    console.error('[yelp-lookup] upstream failed:', err && err.stack ? err.stack : err);
-    return jsonResponse(
-      { ok: false, error: timedOut ? 'Yelp timed out' : 'Failed to reach Yelp' },
-      502
-    );
-  }
-}
 
 
 // ------------------------------------------------------------
