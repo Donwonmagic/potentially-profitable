@@ -154,134 +154,163 @@ export function intakeAutoResponder(body) {
 
 
 // ============================================================
-// Helper: subtype voice (restaurant flavor used by the /es/
-// checklist). Mirrors the shape of checklistKind() in the EN file
-// so the downstream email code reads identically; only the copy is
-// translated. Kept local to this file on purpose — the subtype
-// vocabulary is email-copy concern, not a shared validation rule.
+// 3. CHECKLIST PDF REQUEST — Spanish auto-responder + notification
 // ============================================================
+//
+// Fires when someone submits the /api/checklist form on
+// /es/resources/restaurant-website-checklist/. The form carries
+// <input name="locale" value="es"> so templates.js dispatches
+// here.
+//
+// Subtype voice map is Spanish-independent — the Spanish
+// operator-facing labels ('Alta cocina', 'Bar / cocteles') match
+// the 'Tailor to' pills on the /es/ checklist page and the
+// Restaurant Subtypes section of /es/glossary/, so the whole
+// Spanish surface of the site speaks one vocabulary. Item count
+// tracks whatever the /es/ page actually has on disk at time
+// of the last sprint — the English page is currently 30 items
+// after a main-branch redesign, but the Spanish page is still
+// the authored 24 and the catch-up sprint (11r) will bring
+// them in sync.
+
 const RESTAURANT_SUBTYPES_ES = {
-  'all':         { label: 'Restaurante',      subjectNoun: 'restaurante',         tailoredTo: null },
-  'fine-dining': { label: 'Alta cocina',      subjectNoun: 'restaurante',         tailoredTo: 'alta cocina' },
-  'casual':      { label: 'Casual / barrio',  subjectNoun: 'restaurante',         tailoredTo: 'restaurante de barrio' },
-  'fast-casual': { label: 'Fast-casual',      subjectNoun: 'restaurante',         tailoredTo: 'fast-casual' },
-  'bar':         { label: 'Bar / coctel',     subjectNoun: 'bar',                 tailoredTo: 'bar' },
-  'cafe':        { label: 'Caf\u00e9 / panader\u00eda', subjectNoun: 'caf\u00e9', tailoredTo: 'caf\u00e9 / panader\u00eda' },
-  'truck':       { label: 'Food truck',       subjectNoun: 'food truck',          tailoredTo: 'food truck' },
+  'all':          { subjectNoun: 'restaurante',    tailoredTo: '',                                    label: 'Restaurante' },
+  'fine-dining':  { subjectNoun: 'restaurante',    tailoredTo: 'salones de alta cocina',              label: 'Alta cocina' },
+  'casual':       { subjectNoun: 'restaurante',    tailoredTo: 'lugares casuales / de barrio',        label: 'Casual / de barrio' },
+  'fast-casual':  { subjectNoun: 'fast-casual',    tailoredTo: 'restaurantes fast-casual',            label: 'Fast-casual' },
+  'bar':          { subjectNoun: 'bar',            tailoredTo: 'bares y coctelerías',                 label: 'Bar / cocteles' },
+  'cafe':         { subjectNoun: 'café',           tailoredTo: 'cafés y panaderías',                  label: 'Café / panadería' },
+  'truck':        { subjectNoun: 'food truck',     tailoredTo: 'food trucks y pop-ups',               label: 'Food truck / pop-up' },
 };
 
 function checklistKindEs(body) {
   const businessField = String(body.restaurant || body.business || '').trim();
   const rawSubtype = String(body.subtype || 'all').trim();
-  const subtype = RESTAURANT_SUBTYPES_ES[rawSubtype] ? rawSubtype : 'all';
-  const voice = RESTAURANT_SUBTYPES_ES[subtype];
+  const subtype    = RESTAURANT_SUBTYPES_ES[rawSubtype] ? rawSubtype : 'all';
+  const voice      = RESTAURANT_SUBTYPES_ES[subtype];
+
+  // Subject noun gets "el/la" agreement — 'café' uses 'el', 'food
+  // truck' and most subtype nouns are masculine, so default to 'el'
+  // and override where needed. Keeps the subject line grammatical
+  // when personalized with the business name.
+  const titleLead = 'Tu checklist para sitios de ' + voice.subjectNoun;
+
   return {
+    kind:          'restaurant',
     subtype,
     subtypeLabel:  voice.label,
     tailoredTo:    voice.tailoredTo,
+    titleLead,
     subjectNoun:   voice.subjectNoun,
-    titleLead:     'Tu lista de verificaci\u00f3n de sitio web de ' + voice.subjectNoun,
     businessLabel: 'Restaurante',
     businessField,
     items:         30,
     pageUrl:       'https://muntin.digital/es/resources/restaurant-website-checklist/',
     pdfUrl:        'https://muntin.digital/es/resources/restaurant-website-checklist/muntin-restaurant-website-checklist-es.pdf',
-    auditUrl:      'https://muntin.digital/tools/audits/restaurant/?lang=es',
+    auditUrl:      'https://muntin.digital/es/tools/audits/restaurant/',
   };
 }
 
-
-// ============================================================
-// 2. CHECKLIST — notification to Don (Spanish request)
-// ============================================================
-
 export function checklistNotification(body) {
-  const email = String(body.email || '\u2014').trim();
-  const k = checklistKindEs(body);
+  const email = String(body.email || '—').trim();
+  const k     = checklistKindEs(body);
+
+  // Don's inbox sees '[ES]' prefix as a glance-level signal that
+  // the lead came from the Spanish surface of the site and his
+  // reply should start in Spanish.
   const subtypeTag = k.subtype === 'all' ? 'restaurante' : k.subtypeLabel.toLowerCase();
-  const subject = 'PDF de checklist solicitado (' + subtypeTag + ')' + (k.businessField ? ' \u2014 ' + k.businessField : '');
+  const subject = '[ES] Checklist PDF solicitado (' + subtypeTag + ')' + (k.businessField ? ' — ' + k.businessField : '');
 
   const html = htmlShell(
-    'Lista de verificaci\u00f3n \u2014 solicitud de PDF',
+    'Checklist de sitio de restaurante — solicitud de PDF',
     [
-      field('De', escapeHtml(email)),
+      field('De',       escapeHtml(email)),
       k.subtype !== 'all' ? field('Subtipo', escapeHtml(k.subtypeLabel)) : '',
       k.businessField ? field(k.businessLabel, escapeHtml(k.businessField)) : '',
-      '<p style="margin:24px 0 0;font-size:13px;color:#6B6B6B;">Auto-respuesta con el enlace al PDF ya enviada. No requiere seguimiento manual salvo que quieras trabajar este lead.</p>',
-    ].filter(Boolean).join('\n')
+      '<p style="margin:24px 0 0;font-size:13px;color:#6B6B6B;">La autorespuesta con el enlace del PDF ya se envió al usuario. No hace falta seguimiento manual, a menos que quieras nutrir el lead. El contacto vino del sitio en español, así que conviene responder en español.</p>',
+    ].join('\n')
   );
 
   const txt = [
-    'Lista de verificaci\u00f3n \u2014 solicitud de PDF',
+    'Checklist de sitio de restaurante — solicitud de PDF',
     '',
     'De: ' + email,
     k.subtype !== 'all' ? 'Subtipo: ' + k.subtypeLabel : '',
     k.businessField ? k.businessLabel + ': ' + k.businessField : '',
     '',
     '--',
-    'Auto-respuesta con el enlace al PDF ya enviada.',
+    'La autorespuesta con el enlace del PDF ya se envió al usuario.',
+    'El contacto vino del sitio en español; conviene responder en español.',
   ].filter(Boolean).join('\n');
 
   return { subject, html, text: txt };
 }
 
-
-// ============================================================
-// 2b. CHECKLIST — auto-responder to the visitor (Spanish)
-// ============================================================
-
 export function checklistAutoResponder(body) {
   const k = checklistKindEs(body);
   const biz = k.businessField;
-  const subject = biz ? k.titleLead + ' \u2014 ' + biz : k.titleLead;
 
-  const tailoredLine = k.tailoredTo ? ' personalizada para <strong>' + escapeHtml(k.tailoredTo) + '</strong>' : '';
-  const tailoredLineTxt = k.tailoredTo ? ' personalizada para ' + k.tailoredTo : '';
+  const subject = biz
+    ? k.titleLead + ' — ' + biz
+    : k.titleLead;
+
+  // Opener: addresses the business by name + calls out that the
+  // PDF is tailored to the subtype when one was picked. When the
+  // subtype stayed 'all', the copy stays neutral.
+  const tailoredLine = k.tailoredTo
+    ? ' hecho a la medida de <strong>' + escapeHtml(k.tailoredTo) + '</strong>'
+    : '';
+  const tailoredLineTxt = k.tailoredTo
+    ? ' hecho a la medida de ' + k.tailoredTo
+    : '';
+
   const opening = biz
-    ? 'Aqu\u00ed est\u00e1 el PDF para <strong>' + escapeHtml(biz) + '</strong>' + tailoredLine + '. Impr\u00edmelo, ponlo en el tablero de la oficina o p\u00e1salo por el equipo en la pr\u00f3xima reuni\u00f3n \u2014 est\u00e1 hecho para marcarse con un boli.'
-    : 'Aqu\u00ed est\u00e1 tu PDF' + tailoredLine + '. Impr\u00edmelo, ponlo en el tablero de la oficina o p\u00e1salo por el equipo en la pr\u00f3xima reuni\u00f3n \u2014 est\u00e1 hecho para marcarse con un boli.';
-  const openingTxt = biz
-    ? 'Aqu\u00ed est\u00e1 el PDF para ' + biz + tailoredLineTxt + '. Impr\u00edmelo, ponlo en el tablero de la oficina o p\u00e1salo por el equipo en la pr\u00f3xima reuni\u00f3n \u2014 est\u00e1 hecho para marcarse con un boli.'
-    : 'Aqu\u00ed est\u00e1 tu PDF' + tailoredLineTxt + '. Impr\u00edmelo, ponlo en el tablero de la oficina o p\u00e1salo por el equipo en la pr\u00f3xima reuni\u00f3n \u2014 est\u00e1 hecho para marcarse con un boli.';
+    ? 'Aquí está el PDF para <strong>' + escapeHtml(biz) + '</strong>' + tailoredLine + '. Imprímelo, clávalo en el tablero de la oficina trasera, o pásalo por el equipo en la próxima reunión de staff — está pensado para marcarse con lápiz.'
+    : 'Aquí está tu PDF' + tailoredLine + '. Imprímelo, clávalo en el tablero de la oficina trasera, o pásalo por el equipo en la próxima reunión de staff — está pensado para marcarse con lápiz.';
 
-  const kindsLine = 'restaurante (alta cocina, casual, bar, caf\u00e9, food truck)';
+  const openingTxt = biz
+    ? 'Aquí está el PDF para ' + biz + tailoredLineTxt + '. Imprímelo, clávalo en el tablero de la oficina trasera, o pásalo por el equipo en la próxima reunión de staff — está pensado para marcarse con lápiz.'
+    : 'Aquí está tu PDF' + tailoredLineTxt + '. Imprímelo, clávalo en el tablero de la oficina trasera, o pásalo por el equipo en la próxima reunión de staff — está pensado para marcarse con lápiz.';
+
+  const kindsLine = 'restaurante (alta cocina, casual, bar, café, food truck)';
 
   const html = htmlShell(
-    k.titleLead + (biz ? ' \u2014 ' + biz : ''),
+    k.titleLead + (biz ? ' — ' + biz : ''),
     [
       '<p style="margin:0 0 20px;font-size:16px;line-height:1.6;color:#2A2D33;">' + opening + '</p>',
+
       '<p style="margin:0 0 10px;">' +
         '<a href="' + k.pdfUrl + '" style="display:inline-block;padding:14px 26px;background:#1F4E5B;color:#FAF7F2;text-decoration:none;border-radius:999px;font-weight:600;font-size:15px;">Descargar el PDF &rarr;</a>' +
       '</p>',
-      '<p style="margin:0 0 22px;font-size:13px;color:#6B6B6B;">Tama\u00f1o carta \u00b7 ' + k.items + ' verificaciones \u00b7 se abre en tu navegador.</p>',
+      '<p style="margin:0 0 22px;font-size:13px;color:#6B6B6B;">Tamaño carta · ' + k.items + ' chequeos · abre en tu navegador.</p>',
 
-      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Si prefieres marcar los \u00edtems en pantalla, la versi\u00f3n interactiva guarda tu progreso en este dispositivo y te deja personalizar la lista seg\u00fan tu tipo de ' + kindsLine + ' para que los \u00edtems N/A salgan de tu puntuaci\u00f3n:</p>',
-      '<p style="margin:0 0 24px;"><a href="' + k.pageUrl + '" style="color:#1F4E5B;font-weight:600;">Abrir la lista interactiva &rarr;</a></p>',
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Si prefieres marcar los ítems en pantalla, la versión interactiva guarda tu avance en este dispositivo y deja que ajustes el checklist a tu tipo de ' + kindsLine + ' para que los ítems N/A salgan del puntaje:</p>',
+      '<p style="margin:0 0 24px;"><a href="' + k.pageUrl + '" style="color:#1F4E5B;font-weight:600;">Abrir el checklist interactivo &rarr;</a></p>',
 
-      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">\u00bfQuieres una segunda opini\u00f3n humana despu\u00e9s de correrla? Responde a este correo con tu URL y la reviso de verdad \u2014 sin lista, sin newsletter, sin drip, solo una respuesta m\u00eda.</p>',
-      '<p style="margin:0 0 8px;font-size:15px;line-height:1.55;color:#2A2D33;">O si prefieres que yo haga las verificaciones y te escriba la lista de arreglos:</p>',
-      '<p style="margin:0 0 20px;"><a href="https://calendly.com/dongoldstein-accts/muntinconsult" style="display:inline-block;padding:10px 18px;background:#FAF7F2;color:#1F4E5B;text-decoration:none;border:1px solid #1F4E5B;border-radius:999px;font-weight:600;font-size:14px;">Reservar una llamada de 20 min &rarr;</a></p>',
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">¿Quieres un segundo par de ojos humanos después de correrlo? Responde a este correo con tu URL y le doy una mirada real — sin lista, sin goteo, sin newsletter, solo una respuesta de mi parte.</p>',
+      '<p style="margin:0 0 8px;font-size:15px;line-height:1.55;color:#2A2D33;">O si prefieres que yo corra los chequeos por ti y te escriba la lista de arreglos:</p>',
+      '<p style="margin:0 0 20px;"><a href="https://calendly.com/dongoldstein-accts/muntinconsult" style="display:inline-block;padding:10px 18px;background:#FAF7F2;color:#1F4E5B;text-decoration:none;border:1px solid #1F4E5B;border-radius:999px;font-weight:600;font-size:14px;">Agenda una llamada de 20 min &rarr;</a></p>',
 
-      '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">\u2014 Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital \u00b7 Silver Spring, MD</span></p>',
+      '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">— Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital · Silver Spring, MD</span></p>',
     ].join('\n')
   );
 
   const txt = [
     openingTxt,
     '',
-    'Descarga el PDF: ' + k.pdfUrl,
-    '(Tama\u00f1o carta \u00b7 ' + k.items + ' verificaciones)',
+    'Descargar el PDF: ' + k.pdfUrl,
+    '(Tamaño carta · ' + k.items + ' chequeos)',
     '',
-    'O abre la versi\u00f3n interactiva \u2014 guarda tu progreso en este dispositivo y te deja personalizar seg\u00fan tu tipo de ' + kindsLine + ':',
+    'O abre la versión interactiva — guarda tu avance en este dispositivo y deja que ajustes el checklist a tu tipo de ' + kindsLine + ' para que los ítems N/A salgan del puntaje:',
     k.pageUrl,
     '',
-    '\u00bfQuieres una segunda opini\u00f3n humana despu\u00e9s de correrla? Responde a este correo con tu URL y la reviso de verdad \u2014 sin lista, sin drip, sin newsletter.',
+    '¿Quieres un segundo par de ojos humanos después de correrlo? Responde a este correo con tu URL y le doy una mirada real — sin lista, sin goteo, sin newsletter, solo una respuesta de mi parte.',
     '',
-    'O si prefieres que yo haga las verificaciones y te escriba la lista de arreglos, reserva una llamada de 20 min:',
+    'O si prefieres que yo corra los chequeos por ti y te escriba la lista de arreglos, agenda una llamada de 20 min:',
     'https://calendly.com/dongoldstein-accts/muntinconsult',
     '',
-    '\u2014 Don',
-    'Muntin Digital \u00b7 Silver Spring, MD',
+    '— Don',
+    'Muntin Digital · Silver Spring, MD',
   ].join('\n');
 
   return { subject, html, text: txt };
@@ -289,12 +318,8 @@ export function checklistAutoResponder(body) {
 
 
 // ============================================================
-// 3. AUDIT REPORT (standard tier) \u2014 notification to Don
+// 4. AUDIT REPORT (standard tier) \u2014 notification to Don
 // ============================================================
-// Triggered when a Spanish-speaking visitor submits the "email me
-// the PDF" form on the audit tool with locale=es. Stays terse and
-// label-driven so Don\u2019s inbox keeps its Spanish/English visual
-// consistency across sources.
 
 export function auditReportNotification(body) {
   const email       = String(body.email || '\u2014').trim();
@@ -307,7 +332,7 @@ export function auditReportNotification(body) {
   const unverified  = String(body.unverified_checks || '').trim();
   const corrections = String(body.user_corrections || '').trim();
 
-  const subject = 'Informe de auditor\u00eda solicitado \u2014 ' + (prettyUrl(auditedUrl) || email) + ' (' + overall + '/100)';
+  const subject = '[ES] Informe de auditor\u00eda solicitado \u2014 ' + (prettyUrl(auditedUrl) || email) + ' (' + overall + '/100)';
 
   const html = htmlShell(
     'Informe de auditor\u00eda solicitado',
@@ -346,10 +371,6 @@ export function auditReportNotification(body) {
 }
 
 
-// ============================================================
-// 3b. AUDIT REPORT (standard tier) \u2014 auto-responder to visitor
-// ============================================================
-
 export function auditReportAutoResponder(body) {
   const auditedUrl = String(body.audited_url || '').trim();
   const overall    = String(body.overall_score || '').trim();
@@ -365,9 +386,9 @@ export function auditReportAutoResponder(body) {
       pretty  ? '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Aqu\u00ed est\u00e1 el informe de auditor\u00eda para <strong>' + escapeHtml(pretty) + '</strong>.</p>' : '',
       overall ? '<p style="margin:0 0 20px;padding:20px;background:#F3EEE3;border-radius:12px;text-align:center;"><span style="display:block;font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#6B6B6B;margin-bottom:8px;">Puntuaci\u00f3n general</span><span style="font-size:48px;font-weight:500;color:#1F4E5B;font-family:Georgia,serif;">' + escapeHtml(overall) + '<span style="font-size:22px;color:#6B6B6B;">/100</span></span>' + (summary ? '<br><span style="font-size:13px;color:#2A2D33;margin-top:8px;display:inline-block;">' + escapeHtml(summary) + '</span>' : '') + '</p>' : '',
       shareLink ? '<p style="margin:0 0 20px;"><a href="' + escapeHtml(shareLink) + '" style="display:inline-block;padding:12px 22px;background:#1F4E5B;color:#FAF7F2;text-decoration:none;border-radius:999px;font-weight:600;font-size:14px;">Abrir el informe interactivo completo</a></p>' : '',
-      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">La herramienta de auditor\u00eda es un esc\u00e1ner \u2014 es buena, pero no soy yo. Si quieres una segunda opini\u00f3n humana sobre qu\u00e9 arreglar primero (y qu\u00e9 ignorar), responde a este correo con tus preguntas o reserva una llamada gratis de 20 minutos:</p>',
-      '<p style="margin:0 0 20px;"><a href="https://calendly.com/dongoldstein-accts/muntinconsult" style="color:#1F4E5B;font-weight:600;">Reservar una llamada de 20 min &rarr;</a></p>',
-      '<p style="margin:0 0 16px;font-size:14px;line-height:1.55;color:#6B6B6B;">Sin lista de marketing, sin drip, sin newsletter. Solo te escribo si respondes a este correo.</p>',
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">La herramienta de auditor\u00eda es un esc\u00e1ner \u2014 es buena, pero no soy yo. Si quieres una segunda opini\u00f3n humana sobre qu\u00e9 arreglar primero (y qu\u00e9 ignorar), responde a este correo con tus preguntas o agenda una llamada gratis de 20 minutos:</p>',
+      '<p style="margin:0 0 20px;"><a href="https://calendly.com/dongoldstein-accts/muntinconsult" style="color:#1F4E5B;font-weight:600;">Agendar una llamada de 20 min &rarr;</a></p>',
+      '<p style="margin:0 0 16px;font-size:14px;line-height:1.55;color:#6B6B6B;">Sin lista de marketing, sin goteo, sin newsletter. Solo te escribo si respondes a este correo.</p>',
       '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">\u2014 Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital \u00b7 Silver Spring, MD</span></p>',
     ].filter(Boolean).join('\n')
   );
@@ -379,11 +400,11 @@ export function auditReportAutoResponder(body) {
     '',
     shareLink ? 'Abrir el informe interactivo completo: ' + shareLink : '',
     '',
-    'La herramienta de auditor\u00eda es un esc\u00e1ner \u2014 es buena, pero no soy yo. Si quieres una segunda opini\u00f3n humana sobre qu\u00e9 arreglar primero, responde a este correo o reserva una llamada gratis de 20 minutos:',
+    'La herramienta de auditor\u00eda es un esc\u00e1ner \u2014 es buena, pero no soy yo. Si quieres una segunda opini\u00f3n humana sobre qu\u00e9 arreglar primero, responde a este correo o agenda una llamada gratis de 20 minutos:',
     '',
     'https://calendly.com/dongoldstein-accts/muntinconsult',
     '',
-    'Sin lista de marketing, sin drip, sin newsletter. Solo te escribo si respondes a este correo.',
+    'Sin lista de marketing, sin goteo, sin newsletter. Solo te escribo si respondes a este correo.',
     '',
     '\u2014 Don',
     'Muntin Digital \u00b7 Silver Spring, MD',
@@ -394,7 +415,7 @@ export function auditReportAutoResponder(body) {
 
 
 // ============================================================
-// 4. AUDIT DEEP REPORT \u2014 notification to Don (with PDF)
+// 5. AUDIT DEEP REPORT \u2014 notification + auto-responder (with PDF)
 // ============================================================
 
 export function auditDeepReportNotification(body) {
@@ -406,7 +427,7 @@ export function auditDeepReportNotification(body) {
   const source      = String(body.source || '').trim();
   const hasPdf      = typeof body.pdf_b64 === 'string' && body.pdf_b64.length > 0;
 
-  const subject = 'PDF de auditor\u00eda solicitado \u2014 ' + (prettyUrl(auditedUrl) || email) + ' (' + overall + '/100)';
+  const subject = '[ES] PDF de auditor\u00eda solicitado \u2014 ' + (prettyUrl(auditedUrl) || email) + ' (' + overall + '/100)';
 
   const html = htmlShell(
     'PDF de auditor\u00eda solicitado',
@@ -438,12 +459,6 @@ export function auditDeepReportNotification(body) {
 }
 
 
-// ============================================================
-// 4b. AUDIT DEEP REPORT \u2014 auto-responder (PDF included)
-// ============================================================
-//
-// Subtype intros mirror the EN AUDIT_DEEP_REPORT_INTROS table.
-// Short, specific, restaurant-operator voice.
 const AUDIT_DEEP_REPORT_INTROS_ES = {
   'fine-dining':    'Para alta cocina, lo primero que miro es si las reservas se quedan en tu propio sitio (Resy, Tock, SevenRooms o un widget embebido) en lugar de pasar todo por OpenTable \u2014 ah\u00ed es donde vive el margen de la reserva y los datos de primera mano del cliente.',
   'casual-dining':  'Para restaurantes casuales, la auditor\u00eda marca si capturas reservas Y pedidos en l\u00ednea directos. Si falta una, el ingreso se va a OpenTable, DoorDash o a un competidor que tiene las dos.',
@@ -487,9 +502,9 @@ export function auditDeepReportAutoResponder(body) {
         ? '<p style="margin:0 0 18px;padding:14px 18px;background:#E8F1F3;border-left:4px solid #1F4E5B;border-radius:8px;font-size:15px;line-height:1.55;color:#14161A;"><strong>Tu PDF est\u00e1 adjunto.</strong><br>Gu\u00e1rdalo, re\u00e9nv\u00edalo a tu desarrollador o agencia de marketing, o impr\u00edmelo para marcarlo a mano \u2014 est\u00e1 hecho para usarse.</p>'
         : '',
       shareLink ? '<p style="margin:0 0 20px;"><a href="' + escapeHtml(shareLink) + '" style="display:inline-block;padding:12px 22px;background:#1F4E5B;color:#FAF7F2;text-decoration:none;border-radius:999px;font-weight:600;font-size:14px;">Abrir el informe interactivo</a></p>' : '',
-      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Si quieres una segunda opini\u00f3n humana sobre qu\u00e9 arreglar primero, responde a este correo con tus preguntas o reserva una llamada gratis de 20 minutos:</p>',
-      '<p style="margin:0 0 20px;"><a href="https://calendly.com/dongoldstein-accts/muntinconsult" style="color:#1F4E5B;font-weight:600;">Reservar una llamada de 20 min &rarr;</a></p>',
-      '<p style="margin:0 0 16px;font-size:14px;line-height:1.55;color:#6B6B6B;">Sin lista de marketing, sin drip, sin newsletter. Solo te escribo si respondes a este correo.</p>',
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Si quieres una segunda opini\u00f3n humana sobre qu\u00e9 arreglar primero, responde a este correo con tus preguntas o agenda una llamada gratis de 20 minutos:</p>',
+      '<p style="margin:0 0 20px;"><a href="https://calendly.com/dongoldstein-accts/muntinconsult" style="color:#1F4E5B;font-weight:600;">Agendar una llamada de 20 min &rarr;</a></p>',
+      '<p style="margin:0 0 16px;font-size:14px;line-height:1.55;color:#6B6B6B;">Sin lista de marketing, sin goteo, sin newsletter. Solo te escribo si respondes a este correo.</p>',
       '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">\u2014 Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital \u00b7 Silver Spring, MD</span></p>',
     ].filter(Boolean).join('\n')
   );
@@ -503,10 +518,10 @@ export function auditDeepReportAutoResponder(body) {
     hasPdf ? 'Tu PDF est\u00e1 adjunto a este correo. Gu\u00e1rdalo, re\u00e9nv\u00edalo o impr\u00edmelo \u2014 est\u00e1 hecho para usarse.' : '',
     shareLink ? 'Abrir el informe interactivo: ' + shareLink : '',
     '',
-    'Si quieres una segunda opini\u00f3n humana sobre qu\u00e9 arreglar primero, responde a este correo o reserva una llamada gratis de 20 minutos:',
+    'Si quieres una segunda opini\u00f3n humana sobre qu\u00e9 arreglar primero, responde a este correo o agenda una llamada gratis de 20 minutos:',
     'https://calendly.com/dongoldstein-accts/muntinconsult',
     '',
-    'Sin lista de marketing, sin drip, sin newsletter. Solo te escribo si respondes a este correo.',
+    'Sin lista de marketing, sin goteo, sin newsletter. Solo te escribo si respondes a este correo.',
     '',
     '\u2014 Don',
     'Muntin Digital \u00b7 Silver Spring, MD',
