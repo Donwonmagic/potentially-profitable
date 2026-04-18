@@ -1,37 +1,51 @@
 #!/usr/bin/env node
-// Pre-render a blog post's "audio edition" MP3 with Piper (open-source
-// neural TTS) and emit a chunk-timing manifest so the runtime player
-// can keep paragraph-level highlighting in sync.
+// Pre-render a blog post's "audio edition" MP3 and emit a chunk-timing
+// manifest so the runtime player can keep paragraph-level highlighting
+// in sync with the narration.
 //
-// Why this exists
-// ---------------
-// The runtime read-aloud feature falls back to the browser's Web Speech
-// API, whose voice quality varies wildly by device. For flagship posts
-// we'd rather ship a branded MP3. Piper is MIT-licensed, runs on CPU,
-// and produces voices on par with cloud TTS — same "free tier" spirit
-// that got us off Formspree. No SaaS, no API keys.
+// Engines
+// -------
+// Two open-source neural TTS engines are supported:
+//
+//   - kokoro (default) — Kokoro 82M via kokoro-onnx. Apache 2.0, runs
+//     on CPU, genuinely fluid sentence-to-sentence narration because
+//     the model attends over multi-sentence input natively. Shells out
+//     to scripts/lib/kokoro_render.py which holds the model in memory
+//     across all chunks of a post.
+//
+//   - piper — Piper neural TTS. MIT-licensed, faster, but narrates one
+//     utterance at a time so it feels more "announced" than read. Kept
+//     as a fallback for machines where Kokoro can't run.
 //
 // Requirements
 // ------------
-//   - piper  (https://github.com/rhasspy/piper) on $PATH
-//   - ffmpeg (for WAV → MP3 transcode) on $PATH
-//   - a .onnx voice model + its .json config
+//   Shared: ffmpeg on $PATH for WAV concat + MP3 transcode.
+//   Kokoro: python3 with kokoro-onnx + soundfile (pip install kokoro-onnx
+//           soundfile), the kokoro-v1.0.onnx model, and the voices-v1.0.bin
+//           file. Both assets come from thewh1teagle/kokoro-onnx GitHub
+//           releases.
+//   Piper:  piper on $PATH plus an .onnx voice model.
 //
 // Usage
 // -----
-//   node scripts/render-post-audio.mjs \
-//     blog/why-your-restaurant-loses-reservations-every-night \
-//     --model voices/en_US-amy-medium.onnx
+//   # Kokoro (default):
+//   node scripts/render-post-audio.mjs blog/<slug> \
+//     --kokoro-model /path/to/kokoro-v1.0.onnx \
+//     --kokoro-voices /path/to/voices-v1.0.bin
 //
-//   # or every post that opts in via the listen button:
-//   node scripts/render-post-audio.mjs --all --model voices/en_US-amy-medium.onnx
+//   # Piper fallback:
+//   node scripts/render-post-audio.mjs blog/<slug> \
+//     --engine piper --model /path/to/voice.onnx
+//
+//   # Every post that opts in via a #listen-btn (drafts included):
+//   node scripts/render-post-audio.mjs --all \
+//     --kokoro-model ... --kokoro-voices ...
 //
 // Writes
 // ------
 //   <post>/audio.mp3   — the narration
 //   <post>/audio.json  — the manifest the runtime fetches
-//   Then wire up the post's #listen-btn with
-//     data-audio-src="audio.mp3"
+//   Then wire up the post's #listen-btn with data-audio-src="audio.mp3"
 //   and site.js automatically switches to studio mode on play.
 //
 // Zero npm deps. POSIX Node only.
@@ -47,20 +61,55 @@ const repoRoot = path.resolve(path.dirname(__filename), '..');
 
 /* -------------------- args -------------------- */
 const args = process.argv.slice(2);
-const flags = new Set(args.filter((a) => a.startsWith('--')));
-const positional = args.filter((a) => !a.startsWith('--'));
+// Options that take a value — their value must be skipped when
+// collecting positional args, otherwise paths get mistaken for posts.
+const VALUED = new Set([
+  '--engine', '--model', '--speaker',
+  '--kokoro-model', '--kokoro-voices', '--kokoro-voice',
+  '--kokoro-speed', '--kokoro-lang',
+]);
+const flags = new Set(args.filter((a) => a.startsWith('--') && !VALUED.has(a)));
+const positional = [];
+for (let i = 0; i < args.length; i++) {
+  const a = args[i];
+  if (a.startsWith('--')) {
+    if (VALUED.has(a)) i++; // skip its value
+    continue;
+  }
+  positional.push(a);
+}
 const optVal = (name) => {
   const idx = args.indexOf(name);
   return idx >= 0 ? args[idx + 1] : null;
 };
-const model = optVal('--model');
+const engine = (optVal('--engine') || 'kokoro').toLowerCase();
+if (!['kokoro', 'piper'].includes(engine)) fail(`Unknown --engine "${engine}"; must be kokoro or piper.`);
+
+// Piper-mode inputs
+const model   = optVal('--model');
 const speaker = optVal('--speaker') || '0';
+
+// Kokoro-mode inputs
+const kokoroModel  = optVal('--kokoro-model');
+const kokoroVoices = optVal('--kokoro-voices');
+const kokoroVoice  = optVal('--kokoro-voice') || 'am_michael';
+const kokoroSpeed  = optVal('--kokoro-speed') || '1.0';
+const kokoroLang   = optVal('--kokoro-lang')  || 'en-us';
+
 const dryRun = flags.has('--dry-run');
 if (!dryRun) {
-  if (!model) fail('--model <path/to/voice.onnx> is required. Download a voice from the Piper releases page.');
-  if (!fs.existsSync(model)) fail(`Model not found at ${model}`);
-  if (!which('piper')) fail('`piper` not found on PATH. Install from https://github.com/rhasspy/piper/releases');
   if (!which('ffmpeg')) fail('`ffmpeg` not found on PATH.');
+  if (engine === 'piper') {
+    if (!model) fail('--model <path/to/voice.onnx> is required for piper engine.');
+    if (!fs.existsSync(model)) fail(`Piper model not found at ${model}`);
+    if (!which('piper')) fail('`piper` not found on PATH. Install from https://github.com/rhasspy/piper/releases');
+  } else {
+    if (!kokoroModel)  fail('--kokoro-model <path/to/kokoro-v1.0.onnx> is required.');
+    if (!kokoroVoices) fail('--kokoro-voices <path/to/voices-v1.0.bin> is required.');
+    if (!fs.existsSync(kokoroModel))  fail(`Kokoro model not found at ${kokoroModel}`);
+    if (!fs.existsSync(kokoroVoices)) fail(`Kokoro voices not found at ${kokoroVoices}`);
+    if (!which('python3')) fail('`python3` not found on PATH.');
+  }
 }
 
 const targets = flags.has('--all') ? findPostsWithListenBtn() : positional;
@@ -118,16 +167,23 @@ function renderPost(postDir) {
     return prevEndsSentence ? 0.32 : 0.22;
   }
 
+  // Batch-synthesize every chunk's raw WAV up front. For Kokoro this
+  // keeps the 300 MB model in memory across chunks instead of reloading
+  // per call. For Piper each utterance is cheap enough that we still
+  // shell out in a loop.
+  const rawDir = path.join(tmpDir, 'raw');
+  fs.mkdirSync(rawDir, { recursive: true });
+  if (engine === 'kokoro') synthesizeKokoro(chunks, rawDir);
+  else                     synthesizePiper(chunks, rawDir);
+
   let cursor = 0;
   chunks.forEach((chunk, i) => {
-    const rawWav = path.join(tmpDir, `c${String(i).padStart(4, '0')}.wav`);
-    runPiper(chunk.text, rawWav);
-    // Trim leading/trailing silence piper adds around each utterance.
-    // This is the single biggest win against "robotic, word-at-a-time"
-    // playback: without trimming, every chunk carries ~150-300 ms of
+    const rawWav = path.join(rawDir, `c${String(i).padStart(4, '0')}.wav`);
+    // Trim leading/trailing silence the synth adds around each
+    // utterance. Without this, every chunk carries ~150-300 ms of
     // dead air on each side that compounds into staccato cuts between
-    // paragraphs. After trimming we explicitly insert the gap we chose
-    // above, which the listener hears as deliberate pacing.
+    // paragraphs. After trimming we explicitly insert the gap we
+    // chose above, which the listener hears as deliberate pacing.
     const wav = path.join(tmpDir, `t${String(i).padStart(4, '0')}.wav`);
     trimSilence(rawWav, wav);
     const dur = wavDuration(wav);
@@ -146,9 +202,7 @@ function renderPost(postDir) {
       start: round(start),
       end:   round(end),
     });
-    process.stdout.write(`  · chunk ${i + 1}/${chunks.length} (${dur.toFixed(2)}s)\r`);
   });
-  console.log('');
 
   // Concatenate all the WAVs (gap, chunk, gap, chunk, …) into one file.
   const concatList = path.join(tmpDir, 'concat.txt');
@@ -163,7 +217,9 @@ function renderPost(postDir) {
   const manifest = {
     version: 1,
     generatedAt: new Date().toISOString(),
-    model: path.basename(model),
+    engine: engine,
+    model: path.basename(engine === 'piper' ? model : kokoroModel),
+    voice: engine === 'kokoro' ? kokoroVoice : undefined,
     total: round(cursor),
     chunks: manifestChunks,
   };
@@ -172,6 +228,46 @@ function renderPost(postDir) {
   // Clean up tmp; keep intermediates if --keep-tmp was passed (for debug).
   if (!flags.has('--keep-tmp')) fs.rmSync(tmpDir, { recursive: true, force: true });
   console.log(`  ✓ ${path.relative(repoRoot, mp3Out)}  (${manifest.total.toFixed(1)}s)`);
+}
+
+/* -------------------- synthesis dispatch -------------------- */
+
+function synthesizeKokoro(chunks, outDir) {
+  // Spawn the Python helper once, stream in the chunk list as JSON.
+  // Progress lines on stderr are relayed so the operator sees which
+  // chunk is being synthesized; final JSON on stdout is ignored here.
+  const helper = path.join(repoRoot, 'scripts', 'lib', 'kokoro_render.py');
+  const args = [
+    helper,
+    '--model',      kokoroModel,
+    '--voices',     kokoroVoices,
+    '--voice',      kokoroVoice,
+    '--speed',      kokoroSpeed,
+    '--lang',       kokoroLang,
+    '--output-dir', outDir,
+  ];
+  const payload = JSON.stringify({
+    chunks: chunks.map((c, i) => ({ id: i, text: c.text })),
+  });
+  const proc = spawnSync('python3', args, {
+    input: payload,
+    encoding: 'utf8',
+    // Piped stderr shows progress; show it live by writing through.
+    stdio: ['pipe', 'pipe', 'inherit'],
+    maxBuffer: 16 * 1024 * 1024,
+  });
+  if (proc.status !== 0) {
+    fail(`kokoro helper failed (${proc.status}): ${proc.stdout || '(no stdout)'}`);
+  }
+}
+
+function synthesizePiper(chunks, outDir) {
+  chunks.forEach((chunk, i) => {
+    const out = path.join(outDir, `c${String(i).padStart(4, '0')}.wav`);
+    runPiper(chunk.text, out);
+    process.stdout.write(`  · chunk ${i + 1}/${chunks.length}\r`);
+  });
+  console.log('');
 }
 
 function runPiper(text, outWav) {
@@ -198,16 +294,21 @@ function renderSilence(outWav, seconds) {
                 '-t', String(seconds), '-c:a', 'pcm_s16le', outWav]);
 }
 
-// Strip leading + trailing silence from a WAV using ffmpeg's
-// silenceremove filter. Thresholds picked for piper's ~-50dB noise
-// floor: anything quieter than -45dB for >0.08s is treated as silence.
-// The re-encode to pcm_s16le matches the piper WAV format so downstream
-// concat doesn't need a re-encode step.
+// Strip leading + trailing silence from a WAV. Done in two passes
+// (strip-leading, reverse, strip-leading, reverse) rather than a
+// single silenceremove call: with stop_periods=1, ffmpeg truncates
+// at the first mid-utterance pause it sees, because its state
+// machine treats the first qualifying silence period as "end of
+// audio". The reverse + strip-leading + reverse pattern is the
+// canonical workaround — it handles only leading silence each pass,
+// leaving internal pauses between sentences intact. Threshold of
+// -45dB is well above both piper's and kokoro's noise floors.
 function trimSilence(inputWav, outWav) {
-  run('ffmpeg', ['-y', '-i', inputWav, '-af',
-    'silenceremove=start_periods=1:start_duration=0.08:start_threshold=-45dB:' +
-    'stop_periods=1:stop_duration=0.08:stop_threshold=-45dB:detection=rms',
-    '-c:a', 'pcm_s16le', outWav]);
+  const flt = 'silenceremove=start_periods=1:start_duration=0.08:start_threshold=-45dB:detection=rms,' +
+              'areverse,' +
+              'silenceremove=start_periods=1:start_duration=0.20:start_threshold=-45dB:detection=rms,' +
+              'areverse';
+  run('ffmpeg', ['-y', '-i', inputWav, '-af', flt, '-c:a', 'pcm_s16le', outWav]);
 }
 
 function wavDuration(wav) {
