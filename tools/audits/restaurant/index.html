@@ -3569,7 +3569,11 @@
     results.forEach(function(entry){
       var def = entry.def;
       var result = entry.result;
-      accumulateRestaurantReadiness(readinessState, def, result.mark.cls);
+      // Pass the effective subtype (owner override or detector result)
+      // so per-subtype weight overrides from subtypes.js apply — e.g.
+      // bar-pub boosts age-gate to 2.0, cafe suppresses it to 0, and
+      // fine-dining boosts conversions to 2.0 over the default 1.5.
+      accumulateRestaurantReadiness(readinessState, def, result.mark.cls, btype);
 
       var row = document.createElement('div');
       row.className = 'priority-item ' + result.mark.cls;
@@ -4852,10 +4856,20 @@
           var restaurantScore = 0;
           var readinessState = createRestaurantReadinessState();
           if (isRestaurant) {
+            // For competitor scoring we use the USER's effective
+            // subtype so all competitors are ranked against the same
+            // yardstick — a pizzeria owner comparing their site to
+            // three others wants "how do I stack up on the pizzeria
+            // weight schedule" not "how do I stack up on each
+            // competitor's own subtype". Detecting each competitor's
+            // subtype separately would make the comparison apples-to-
+            // oranges (a fine-dining competitor with a strong menu-
+            // format score might mislead a fast-casual owner).
+            var userSubtype = effectiveBusinessType();
             PRIORITY_CHECKS.forEach(function(def){
               var result = evaluatePriorityCheck(def, audits, allUrls, pageText);
               if (!result) return;
-              accumulateRestaurantReadiness(readinessState, def, result.mark.cls);
+              accumulateRestaurantReadiness(readinessState, def, result.mark.cls, userSubtype);
             });
             restaurantScore = finalizeRestaurantReadinessScore(readinessState);
           }
