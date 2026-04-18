@@ -399,16 +399,25 @@ function decodeEntities(s) {
 
 /* -------------------- discovery / utils -------------------- */
 function findPostsWithListenBtn() {
-  const blogDir = path.join(repoRoot, 'blog');
-  if (!fs.existsSync(blogDir)) return [];
-  return fs.readdirSync(blogDir, { withFileTypes: true })
-    .filter((d) => d.isDirectory() && d.name !== 'drafts')
-    .map((d) => path.join('blog', d.name))
-    .filter((p) => {
-      const idx = path.join(repoRoot, p, 'index.html');
-      if (!fs.existsSync(idx)) return false;
-      return fs.readFileSync(idx, 'utf8').includes('id="listen-btn"');
-    });
+  // Walk blog/ and blog/drafts/ for any post that has opted into
+  // the audio edition via #listen-btn. Drafts are included so their
+  // audio is pre-rendered and ready the moment they ship.
+  const roots = [path.join(repoRoot, 'blog'), path.join(repoRoot, 'blog', 'drafts')];
+  const out = [];
+  for (const root of roots) {
+    if (!fs.existsSync(root)) continue;
+    for (const d of fs.readdirSync(root, { withFileTypes: true })) {
+      if (!d.isDirectory()) continue;
+      if (d.name === 'drafts') continue; // handled via second root
+      const postDir = path.join(root, d.name);
+      const idx = path.join(postDir, 'index.html');
+      if (!fs.existsSync(idx)) continue;
+      if (fs.readFileSync(idx, 'utf8').includes('id="listen-btn"')) {
+        out.push(path.relative(repoRoot, postDir));
+      }
+    }
+  }
+  return out;
 }
 
 function which(bin) {
