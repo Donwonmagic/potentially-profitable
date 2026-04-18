@@ -370,6 +370,10 @@ var RESTAURANT_PRIORITY_CHECKS = [
         impact: 'Ghost-kitchen sites are discovery pages — customers came to confirm you\'re real before placing an order on DoorDash or Uber Eats. The "Order on DoorDash / Uber Eats / Grubhub" aggregator buttons are the primary conversion. Misses turn into orders for a competing kitchen on the same platform.',
         failNote: 'Size the aggregator "Order On …" buttons first — they carry almost all your orders. 48×48 with padding, and stack them clearly so a customer on a hungry phone at 9pm can tap the one they prefer without a miss.'
       },
+      'catering-only': {
+        impact: 'Catering-only sites convert through two buttons: "Request a Quote" (or "Book Your Event") and a tappable phone. Everything else on the site supports those two. A missed tap on the quote form — especially on a phone from a corporate event planner with 15 caterers in tabs — is a direct loss of a $2,000-$15,000 booking.',
+        failNote: '"Request a Quote" and the tappable phone are the two highest-value buttons on the site. Both need 48×48 targets and enough padding to thumb-tap cleanly. Everything else (gallery, testimonials, package links) can be smaller.'
+      },
       'bar-pub': {
         impact: 'Bar traffic is often late-night and last-minute — "is happy hour still on?", "are they open?", "is there a cover?" A tappable phone and a tappable map are the two buttons that earn their space.',
         failNote: 'Buttons under 44×44 pixels cause misses. On a bar site the phone number and map links are what visitors actually tap — make sure those in particular have 12px+ padding and aren\'t crowded by other links.'
@@ -426,6 +430,11 @@ var RESTAURANT_PRIORITY_CHECKS = [
         passNote: 'Hours, brand names, and menu descriptions all meet contrast thresholds — a hungry customer can confirm "yes this is a real restaurant" without squinting.',
         failNote: 'Ghost-kitchen moody-photography branding often fails WCAG AA (4.5:1) — pale type over dark hero images is the most common offender. Darken body text and especially the hours/brand names; these are the copy customers actually read before tapping through to a delivery app.'
       },
+      'catering-only': {
+        impact: 'Catering sites carry package descriptions, price-per-head tables, dietary-accommodation notes, and lead-time policies — all of which an event planner reads CAREFULLY before requesting a quote. Low-contrast pricing copy breaks trust precisely when a professional buyer is comparing three caterers side by side.',
+        passNote: 'Package prices, head-count math, and dietary-accommodation copy all meet contrast thresholds — readable at-a-glance on the phone of a planner juggling several vendors.',
+        failNote: 'Event planners comparing caterers don\'t squint — they bounce. Pale grey on cream for package descriptions and price tables fails WCAG AA (4.5:1). Darken body text, especially anywhere you list per-head pricing or minimum-headcount rules.'
+      },
       'bar-pub': {
         impact: 'Bar sites are often dark-themed by default, and legibility takes a hit. Guests checking happy-hour times or the cocktail list on a phone at the curb outside shouldn\'t have to squint.',
         passNote: 'Your dark-theme copy still meets WCAG AA contrast ratios — happy-hour hours and the cocktail list are readable without zooming.',
@@ -475,6 +484,10 @@ var RESTAURANT_PRIORITY_CHECKS = [
       'ghost-kitchen': {
         impact: 'Delivery hours, service area, and menu descriptions are the text customers actually read — and for ghost kitchens that text lives in competition with a lot of visual branding. Sub-16px type forces pinch-zooms on the exact decisions ("are they delivering now? to my zip?") that cost you the order.',
         failNote: 'Set body to 16px, and put delivery-hours + service-area copy at 17-18px. These are the two paragraphs that decide whether the customer taps over to DoorDash at all.'
+      },
+      'catering-only': {
+        impact: 'Package descriptions, per-head pricing tables, dietary-accommodation notes, and lead-time rules are the decision-critical text on a catering site. Tiny type on a phone forces the planner — who is already rushed — to pinch-zoom through your rate card, which is a terrible first impression for a $5,000 booking.',
+        failNote: 'Set body to 16px, and set package descriptions + pricing tables to 17-18px. Corporate planners often read on a phone between meetings — make the rate card scannable without zoom.'
       },
       'bar-pub': {
         impact: 'Cocktail lists, draft lists, and happy-hour details are the bar\'s menu. Small type on a phone in a dim Uber ride is a usability tax guests won\'t pay.',
