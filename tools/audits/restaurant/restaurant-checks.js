@@ -1032,6 +1032,27 @@ var RESTAURANT_PRIORITY_CHECKS = [
     failNote: 'Homepages need at least 5 good food photos AND at least half of them need real alt-text ("smoked brisket plate with pickled onions" not "image1.jpg"). Both matter: photography drives conversion; alt-text drives accessibility and Google Images traffic.',
     unverified: 'We couldn\'t read your image set',
     unverifiedNote: 'The crawl didn\'t return enough HTML for us to count images reliably. Retry the audit, or paste the homepage URL into our manual-audit queue so we can look by hand.'
+  },
+  {
+    // Phase H14: Hours accuracy — sources from
+    // /api/schema-check's validation.openingHours (populated by
+    // Phase F2's validateRestaurantSchema). Passes when the
+    // schema declares all 7 days; fails when it declares hours
+    // but not completely; unverified when schema is silent.
+    // Google's Rich Results for restaurants wants every day of
+    // the week listed, even if a day is explicitly closed.
+    type: 'hours-accuracy',
+    weight: 0.6,
+    anchor: '#findability',
+    effort: 'dev',
+    minutes: 30,
+    impact: 'Google Rich Results for restaurants wants a full 7-day hours listing — partial coverage causes the "hours vary" fallback, which erodes trust with "are they open right now?" searchers. Every day needs an entry in openingHoursSpecification, even if opens/closes are null for a closed day.',
+    pass: 'Your schema declares 7-day hours',
+    passNote: 'Your JSON-LD schema publishes hours for every day of the week — Google can render a full hours table in Rich Results and Map snippets.',
+    fail: 'Your schema hours are incomplete',
+    failNote: 'Your site declares hours in schema but not for every day of the week. Google falls back to a "hours vary" hint, which hurts click-through from "restaurants open now" searches. Add an openingHoursSpecification entry for every day of the week in your JSON-LD block (closed days can have opens/closes set to null).',
+    unverified: 'We couldn\'t confirm schema hours',
+    unverifiedNote: 'Your schema markup didn\'t declare opening hours at all (or we couldn\'t read it). Adding a complete openingHoursSpecification block is one of the highest-impact single edits you can make for local-search click-through.'
   }
 ];
 

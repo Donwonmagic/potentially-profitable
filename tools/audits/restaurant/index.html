@@ -2217,6 +2217,23 @@
       .catch(function(){ return { ok: false, homepage: null, pages: [], candidates: [] }; });
   }
 
+  // Phase H14: /api/schema-check caller. Returns the full parsed
+  // JSON-LD plus server-side validation (openingHours, priceRange,
+  // servesCuisine, acceptsReservations, hasMenu) per Sprint F2-F4.
+  // Failure modes resolve to { ok:false, validation:null } so the
+  // hours-accuracy check can gracefully return unverified.
+  function callSchemaCheck(targetUrl) {
+    var params = new URLSearchParams();
+    params.append('url', targetUrl);
+    return fetch('/api/schema-check?' + params.toString())
+      .then(function(res){ return res.json().catch(function(){ return null; }); })
+      .then(function(data){
+        if (!data || !data.ok) return { ok: false, validation: null, objects: [] };
+        return data;
+      })
+      .catch(function(){ return { ok: false, validation: null, objects: [] }; });
+  }
+
   // Phase G3: /api/yelp-lookup caller. Takes a term (business name)
   // and a location (city / 'City, State' / full address) and
   // returns Yelp's top match (rating, review count, price,
@@ -3423,6 +3440,16 @@
       // Absence of schema isn't "unverified" — it's honestly missing.
       // But we still render it as unverified tone because it's a bonus
       // check, not a catastrophe.
+      return makeResult(def, 'unverified');
+    }
+
+    // ---- Hours accuracy from schema validation (Phase H14) ----
+    if (def.type === 'hours-accuracy') {
+      var schema = window.__auditSchema;
+      var oh = schema && schema.validation && schema.validation.openingHours;
+      if (!oh) return makeResult(def, 'unverified');
+      if (oh.complete) return makeResult(def, 'pass');
+      if (oh.present)  return makeResult(def, 'fail');
       return makeResult(def, 'unverified');
     }
 
@@ -4648,14 +4675,17 @@
       startProgress();
     }, 350);
 
-    // Kick off PSI + multi-page crawl in parallel so the crawl's
-    // ~3-15s network time runs BEHIND the 15-40s Lighthouse wait and
-    // adds effectively nothing to perceived latency.
-    Promise.all([callPsi(url), callPageCrawl(url)])
+    // Kick off PSI + multi-page crawl + schema-check in parallel
+    // so all three network calls overlap with the long Lighthouse
+    // wait. The schema-check call also serves the Phase H14
+    // hours-accuracy check; its failure never blocks the audit.
+    Promise.all([callPsi(url), callPageCrawl(url), callSchemaCheck(url)])
       .then(function(results){
         var data = results[0];
         var crawl = results[1];
-        window.__auditCrawl = crawl; // exposed for evaluators + later phases
+        var schema = results[2];
+        window.__auditCrawl  = crawl;  // exposed for evaluators + later phases
+        window.__auditSchema = schema;
         // Step 3: Lighthouse response received, scoring restaurant checks
         setStep(3);
         return new Promise(function(resolve){
