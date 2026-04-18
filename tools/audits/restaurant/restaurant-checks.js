@@ -110,3 +110,47 @@ var RESTAURANT_ORDERING_HOSTS = [
   { pattern: 'hungryhouse',     name: 'Hungryhouse' },
   { pattern: 'flipdish',        name: 'Flipdish' }
 ];
+
+// ---------------------------------------------------------------------------
+// Reservation platforms
+// ---------------------------------------------------------------------------
+// OpenTable dominates US fine-dining; Resy and Tock skew modern/tasting-menu;
+// SevenRooms is large-group / private-dining. Keep an eye on TheFork (EU) and
+// TableCheck (APAC) for international coverage.
+
+var RESTAURANT_RESERVATION_HOSTS = [
+  // --- Major US + international booking platforms ---
+  { pattern: 'opentable',       name: 'OpenTable' },
+  { pattern: 'otrestaurant',    name: 'OpenTable' },
+  { pattern: 'opentablecdn',    name: 'OpenTable' },
+  { pattern: 'resy.com',        name: 'Resy' },
+  { pattern: 'resy.network',    name: 'Resy' },
+  { pattern: 'exploretock',     name: 'Tock' },
+  { pattern: 'tock.app',        name: 'Tock' },
+  { pattern: 'sevenrooms',      name: 'SevenRooms' },
+  { pattern: '7rooms',          name: 'SevenRooms' },
+  // Yelp's reservation product (formerly Nowait)
+  { pattern: 'yelpreservations', name: 'Yelp Reservations' },
+  { pattern: 'nowait.com',      name: 'Yelp Reservations' },
+  // --- US/EU smaller booking platforms ---
+  { pattern: 'eatapp.co',       name: 'Eat App' },
+  { pattern: 'umaiapp',         name: 'Umai' },
+  { pattern: 'tablein',         name: 'TableIn' },
+  { pattern: 'waitwhile',       name: 'Waitwhile' },
+  { pattern: 'nextme',          name: 'NextMe' },
+  { pattern: 'tablecheck',      name: 'TableCheck' },
+  { pattern: 'tablelist',       name: 'Tablelist' },
+  // --- Smaller + regional booking platforms ---
+  { pattern: 'eveve',           name: 'Eveve' },
+  { pattern: 'resdiary',        name: 'ResDiary' },
+  { pattern: 'hostmeapp',       name: 'Hostme' },
+  { pattern: 'wisely.io',       name: 'Wisely' },
+  { pattern: 'getwisely',       name: 'Wisely' },
+  { pattern: 'quandoo',         name: 'Quandoo' },
+  { pattern: 'formitable',      name: 'Formitable' },
+  { pattern: 'bookatable',      name: 'Bookatable' },
+  { pattern: 'lafourchette',    name: 'TheFork' },
+  { pattern: 'thefork',         name: 'TheFork' },
+  { pattern: 'dineseed',        name: 'Dineseed' },
+  { pattern: 'dinebook',        name: 'DineBook' }
+];
