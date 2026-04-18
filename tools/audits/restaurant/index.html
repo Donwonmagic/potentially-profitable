@@ -3457,6 +3457,65 @@
         sub.textContent = "Auto-detected from schema markup, ordering/reservation platform, and page content. If we got it wrong, pick the right one — the checks below will update live.";
       }
     }
+
+    renderBusinessTypeAlternatives(effective, detection);
+  }
+
+  // Render up to 2 runner-up candidates as clickable chips. Hidden when
+  // the owner has confirmed, when detection is low-confidence (we don't
+  // want to flood an uncertain state with guesses), or when no other
+  // subtype scored above zero. Clicking a chip routes through the same
+  // change flow as the dropdown so score, URL, share links, tally, and
+  // Plausible event all stay in lockstep.
+  function renderBusinessTypeAlternatives(effective, detection) {
+    var wrap  = document.getElementById('btcAlternatives');
+    var chips = document.getElementById('btcAltChips');
+    var sel   = document.getElementById('btcSelect');
+    if (!wrap || !chips) return;
+    chips.innerHTML = '';
+
+    if (userBusinessType || !detection || !detection.scores) {
+      wrap.hidden = true;
+      return;
+    }
+    if (detection.confidence === 'low') {
+      wrap.hidden = true;
+      return;
+    }
+
+    var scored = Object.keys(detection.scores)
+      .map(function(k){ return { id: k, score: detection.scores[k] }; })
+      .filter(function(e){ return e.id !== effective && e.score > 0; })
+      .sort(function(a, b){ return b.score - a.score; })
+      .slice(0, 2);
+
+    if (!scored.length) {
+      wrap.hidden = true;
+      return;
+    }
+
+    scored.forEach(function(entry){
+      var def = BUSINESS_TYPE_DEFS[entry.id];
+      var label = (def && def.label) || entry.id;
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btc-alt-chip';
+      btn.setAttribute('data-subtype', entry.id);
+      btn.textContent = label;
+      btn.addEventListener('click', function(){
+        if (!sel) return;
+        sel.value = entry.id;
+        // Use dispatchEvent so the existing change listener (which
+        // updates userBusinessType, tally, URL state, share links,
+        // Plausible event) handles the correction uniformly.
+        var ev;
+        try { ev = new Event('change', { bubbles: true }); }
+        catch (e) { ev = document.createEvent('Event'); ev.initEvent('change', true, true); }
+        sel.dispatchEvent(ev);
+      });
+      chips.appendChild(btn);
+    });
+    wrap.hidden = false;
   }
 
   function renderPriorityChecks(audits, allUrls, pageText) {
