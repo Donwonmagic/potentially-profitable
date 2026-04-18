@@ -1057,7 +1057,7 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 }
 .tool-cta-ring{
   position: relative;
-  width: clamp(200px, 28vw, 260px);
+  width: clamp(160px, 28vw, 240px);
   aspect-ratio: 1;
 }
 .tool-cta-ring svg{
@@ -1079,17 +1079,10 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 }
 .tool-cta-ring-text .value{
   font-family: var(--font-display);
-  font-size: clamp(48px, 7vw, 72px);
+  font-size: clamp(72px, 12vw, 112px);
   font-weight: 500;
-  color: var(--ink);
+  color: var(--teal);
   line-height: 1;
-}
-.tool-cta-ring-text .max{
-  font-family: var(--font-body);
-  font-size: 14px;
-  color: var(--stone);
-  margin-top: 6px;
-  letter-spacing: 0.02em;
 }
 .tool-cta-preview{
   list-style: none;
@@ -1111,9 +1104,9 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 @media (max-width: 820px){
   .tool-cta-inner{
     grid-template-columns: 1fr;
-    gap: 36px;
+    gap: 40px;
   }
-  .tool-cta-visual{ order: -1; }
+  .tool-cta-visual{ gap: 20px; }
   .tool-cta-preview{ max-width: 440px; margin: 0 auto; text-align: center; }
 }
 @media (max-width: 540px){
@@ -1126,4 +1119,6 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
   .tool-cta-form input[type="text"]{ padding: 12px 16px; }
   .tool-cta-form button{ border-radius: 14px; width: 100%; padding: 14px 24px; }
   .tool-cta-chips{ font-size: 12px; }
+  .tool-cta-preview{ font-size: 13.5px; }
+  .tool-cta-preview li{ padding: 8px 0; }
 }
