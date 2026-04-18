@@ -137,6 +137,12 @@
     position: relative;
     overflow: hidden;
   }
+  /* When the thumb is itself an anchor (e.g. ODC card with two
+     actions), strip link styling so it reads as the original tile. */
+  a.gallery-thumb {
+    color: inherit;
+    text-decoration: none;
+  }
   .gallery-thumb .phase {
     font-size: 10px;
     font-weight: 700;
@@ -148,6 +154,7 @@
     line-height: 1;
     margin: 0;
     letter-spacing: -0.02em;
+    color: inherit;
   }
   .gallery-thumb h3 em {
     font-weight: 400;
@@ -266,6 +273,22 @@
   }
   .gallery-card:hover .gallery-cta { color: var(--teal-dark); }
   .gallery-cta svg { width: 16px; height: 16px; }
+
+  /* When a card carries two actions (case study + live site), the
+     CTAs sit in a row sharing the bottom edge with a divider between. */
+  .gallery-actions {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 18px;
+  }
+  .gallery-actions .gallery-cta { margin-top: 0; }
+  .gallery-actions .gallery-cta--ghost {
+    color: var(--stone);
+    font-weight: 500;
+  }
+  .gallery-actions .gallery-cta--ghost:hover { color: var(--teal); }
 </style>
 </head>
 <body>
@@ -375,11 +398,11 @@
         </div>
       </a>
 
-      <a href="/work/off-day-collective/" class="gallery-card">
-        <div class="gallery-thumb odc" aria-hidden="true">
+      <div class="gallery-card">
+        <a href="/work/off-day-collective/" class="gallery-thumb odc" aria-label="Read the Off Day Collective case study">
           <span class="phase">Brand Launch · Lifestyle</span>
           <h3>Silence is<br>a luxury.</h3>
-        </div>
+        </a>
         <div class="gallery-body">
           <h4>Off Day Collective</h4>
           <p>A pre-launch narrative site for a lifestyle brand positioning rest as a ritual practice. Cormorant Garamond on warm near-black, a three-tempo phase system, and an email capture earned through editorial discipline.</p>
@@ -388,12 +411,19 @@
             <span class="gallery-tag">Brand Launch</span>
             <span class="gallery-tag">Pre-launch</span>
           </div>
-          <span class="gallery-cta">
-            Read the case study
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
-          </span>
+          <div class="gallery-actions">
+            <a href="/work/off-day-collective/" class="gallery-cta">
+              Read the case study
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+            </a>
+            <a href="https://offdaycollective.com" target="_blank" rel="noopener" class="gallery-cta gallery-cta--ghost">
+              Visit live site
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="7 17 17 7"/><polyline points="9 7 17 7 17 15"/></svg>
+              <span class="sr-only">(opens in new tab)</span>
+            </a>
+          </div>
         </div>
-      </a>
+      </div>
     </div>
   </div>
 </section>
