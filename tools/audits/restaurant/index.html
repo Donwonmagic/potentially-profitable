@@ -2669,6 +2669,48 @@
     return __pdfLibPromise;
   }
 
+  // Phase L3a': lazy Muntin brand-font loader. Fetches the subset
+  // TTFs at /assets/fonts/pdf/ (Fraunces + Inter) and encodes each to
+  // base64 so jsPDF's addFileToVFS / addFont can register them. First
+  // call fetches in parallel; subsequent calls return a cached
+  // dictionary. Any failure (offline, 404, decode error) short-
+  // circuits to null and the builder falls back to Helvetica — the
+  // PDF still builds, just in a generic sans.
+  var __pdfFontsPromise = null;
+  function loadBrandFonts() {
+    if (window.__muntinPdfFonts) return Promise.resolve(window.__muntinPdfFonts);
+    if (__pdfFontsPromise) return __pdfFontsPromise;
+    var specs = [
+      ['fraunces400', '/assets/fonts/pdf/fraunces-400.ttf'],
+      ['fraunces600', '/assets/fonts/pdf/fraunces-600.ttf'],
+      ['inter400',    '/assets/fonts/pdf/inter-400.ttf'],
+      ['inter600',    '/assets/fonts/pdf/inter-600.ttf']
+    ];
+    __pdfFontsPromise = Promise.all(specs.map(function(s){
+      return fetch(s[1], { cache: 'force-cache' })
+        .then(function(r){ if (!r.ok) throw new Error('font ' + s[1] + ' ' + r.status); return r.arrayBuffer(); })
+        .then(function(buf){
+          // Convert ArrayBuffer to base64 without blowing the stack
+          // on large payloads by chunking the String.fromCharCode call.
+          var bytes = new Uint8Array(buf);
+          var CHUNK = 0x8000, parts = [];
+          for (var i = 0; i < bytes.length; i += CHUNK) {
+            parts.push(String.fromCharCode.apply(null, bytes.subarray(i, i + CHUNK)));
+          }
+          return [s[0], btoa(parts.join(''))];
+        });
+    })).then(function(pairs){
+      var out = {};
+      for (var i = 0; i < pairs.length; i++) out[pairs[i][0]] = pairs[i][1];
+      window.__muntinPdfFonts = out;
+      return out;
+    }).catch(function(){
+      __pdfFontsPromise = null; // allow retry on next build
+      return null;
+    });
+    return __pdfFontsPromise;
+  }
+
   // Phase L3b: build a custom multi-page PDF of the current audit.
   // Reads from the window-scoped state populated during renderReport:
   //   __auditLastResult   — overall + per-pillar scores + URL
@@ -2708,6 +2750,27 @@
       var COL_LINE_DK   = [212, 204, 188]; // --line-dark
       var COL_GREEN     = [ 31, 107,  58]; // passing score band
       var COL_AMBER     = [193, 137,  28]; // middle score band
+
+      // --- Brand typography ------------------------------------------
+      // The PDF embeds the real Muntin typefaces (Fraunces for display,
+      // Inter for body) so the printed report reads in the same voice
+      // as the web. setBrandFont(bold, size) picks the display family
+      // for big-bold text (size ≥ 14) and the body family otherwise —
+      // this matches how Muntin's CSS uses Fraunces for h1–h4 and
+      // Inter for everything else. When the TTFs fail to load (offline
+      // users, 404, etc.) the names fall back to 'helvetica' and the
+      // PDF still builds, just in a generic sans.
+      var FONT_DISPLAY = 'helvetica'; // flipped to 'Fraunces' after load
+      var FONT_BODY    = 'helvetica'; // flipped to 'Inter'    after load
+      function setBrandFont(bold, size) {
+        // Size-based heuristic: anything at 14pt or larger uses the
+        // display serif. Matches the site's type scale (h1–h4 serif).
+        var fam = (bold && size >= 14) ? FONT_DISPLAY : FONT_BODY;
+        var style = bold ? 'bold' : 'normal';
+        try { doc.setFont(fam, style); }
+        catch (_) { doc.setFont('helvetica', style); }
+        doc.setFontSize(size);
+      }
 
       var overall    = Math.round(last.overall);
       var subtypeId  = (window.__auditResults && window.__auditResults.subtypeId) || effectiveBusinessType() || 'restaurant';
@@ -2776,6 +2839,98 @@
         doc.line(x + sw, th, x + size - sw, th);
       }
 
+      // ---- Brand iconography --------------------------------------
+      // Each icon is a pure-vector redraw of the corresponding SVG at
+      // /brand/icons/, normalized to a 24×24 viewBox so a single `s`
+      // scale factor maps SVG coordinates to PDF points. Stroke weight
+      // tracks the 1.75/24 ratio used on the web so icons read the
+      // same at 10pt in a chip and at 22pt in a group header. All
+      // primitives are lines/polylines drawn directly in jsPDF — no
+      // SVG parsing, no raster — so they stay crisp at any zoom and
+      // print cleanly.
+      function iconPrep(color, size) {
+        setColor(color, 'draw');
+        doc.setLineWidth(Math.max(0.6, size * 1.75 / 24));
+        doc.setLineCap('round');
+        doc.setLineJoin('round');
+      }
+      function iconDone() {
+        doc.setLineCap('butt');
+        doc.setLineJoin('miter');
+      }
+      function iconPt(x, y, s, vx, vy) { return [x + vx * s, y + vy * s]; }
+      function iconLine(x, y, s, v1x, v1y, v2x, v2y) {
+        doc.line(x + v1x * s, y + v1y * s, x + v2x * s, y + v2y * s);
+      }
+      function iconPoly(x, y, s, pts) {
+        for (var i = 1; i < pts.length; i++) {
+          iconLine(x, y, s, pts[i-1][0], pts[i-1][1], pts[i][0], pts[i][1]);
+        }
+      }
+
+      function drawIconCheck(x, y, size, color) {
+        iconPrep(color, size); var s = size / 24;
+        iconPoly(x, y, s, [[4, 12], [10, 18], [20, 6]]);
+        iconDone();
+      }
+      function drawIconCross(x, y, size, color) {
+        iconPrep(color, size); var s = size / 24;
+        iconLine(x, y, s, 6, 6, 18, 18);
+        iconLine(x, y, s, 18, 6, 6, 18);
+        iconDone();
+      }
+      function drawIconDash(x, y, size, color) {
+        iconPrep(color, size); var s = size / 24;
+        iconLine(x, y, s, 5, 12, 19, 12);
+        iconDone();
+      }
+      function drawIconArrowRight(x, y, size, color) {
+        iconPrep(color, size); var s = size / 24;
+        iconLine(x, y, s, 4, 12, 20, 12);
+        iconPoly(x, y, s, [[14, 6], [20, 12], [14, 18]]);
+        iconDone();
+      }
+      function drawIconCalendar(x, y, size, color) {
+        iconPrep(color, size); var s = size / 24;
+        // Body
+        doc.roundedRect(x + 3.5 * s, y + 5 * s, 17 * s, 15 * s, 1.5 * s, 1.5 * s, 'S');
+        // Header rule
+        iconLine(x, y, s, 3.5, 10, 20.5, 10);
+        // Tick marks at top
+        iconLine(x, y, s, 8, 3, 8, 7);
+        iconLine(x, y, s, 16, 3, 16, 7);
+        iconDone();
+      }
+      function drawIconBolt(x, y, size, color) {
+        iconPrep(color, size); var s = size / 24;
+        // Closed lightning polygon from /brand/icons/icon-bolt.svg
+        iconPoly(x, y, s, [
+          [13, 2], [4, 14], [11, 14], [10, 22],
+          [20, 10], [13, 10], [14, 2], [13, 2]
+        ]);
+        iconDone();
+      }
+      function drawIconWrench(x, y, size, color) {
+        // Simplified wrench glyph: a circle "head" connected to a
+        // diagonal "shaft". Reads cleanly at chip sizes where the
+        // full SVG wrench would be too dense.
+        iconPrep(color, size); var s = size / 24;
+        doc.circle(x + 17 * s, y + 7 * s, 3.5 * s, 'S');
+        iconLine(x, y, s, 14.5, 9.5, 4, 20);
+        iconDone();
+      }
+      function drawIconShieldCheck(x, y, size, color) {
+        iconPrep(color, size); var s = size / 24;
+        // Shield outline approximated with a polyline.
+        iconPoly(x, y, s, [
+          [12, 3], [20, 6], [20, 12], [16, 19], [12, 21],
+          [8, 19], [4, 12], [4, 6], [12, 3]
+        ]);
+        // Inset check
+        iconPoly(x, y, s, [[9, 12], [11.5, 14.5], [15.5, 10]]);
+        iconDone();
+      }
+
       // A faint repeating muntin-window pattern used as a decorative
       // texture in the bottom-right corner of the cover and the hero
       // closer. The jsPDF GState API supports alpha blending in 2.5.2,
@@ -2813,8 +2968,7 @@
         setColor(color, 'draw');
         doc.setLineWidth(1.5);
         doc.line(x, y - 3, x + 28, y - 3);
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(9);
+        setBrandFont(true, 9);
         setColor(color);
         doc.setCharSpace(1.2);
         doc.text(String(text || '').toUpperCase(), x + 40, y);
@@ -2827,8 +2981,7 @@
         var y = opts.y;
         drawEyebrow(opts.eyebrow, MARGIN, y, opts.eyebrowColor || COL_TEAL);
         y += 30;
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(opts.titleSize || 24);
+        setBrandFont(true, opts.titleSize || 24);
         setColor(COL_INK);
         var lineH = opts.titleLeading || 28;
         y = drawWrappedText(opts.title, MARGIN, y, COL_W, lineH);
@@ -2881,14 +3034,12 @@
       // numeric score on the right, thin color-banded bar below. One
       // block per pillar, stacked.
       function drawPillarLockup(label, score, x, y, w) {
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(8);
+        setBrandFont(true, 8);
         setColor(COL_STONE);
         doc.setCharSpace(0.9);
         doc.text(String(label).toUpperCase(), x, y);
         doc.setCharSpace(0);
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(18);
+        setBrandFont(true, 18);
         setColor(COL_INK);
         doc.text(String(Math.round(score)), x + w, y, { align: 'right' });
         // Track
@@ -2904,8 +3055,7 @@
       // Pill chip (effort tag / time estimate). Returns the x-cursor
       // for chaining chips side-by-side.
       function drawPill(text, x, y, bg, fg) {
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(8.5);
+        setBrandFont(true, 8.5);
         var w = doc.getTextWidth(text) + 16;
         setColor(bg, 'fill');
         doc.roundedRect(x, y - 9, w, 15, 7.5, 7.5, 'F');
@@ -2930,22 +3080,19 @@
 
         // Left: small mark + "Muntin Digital · muntin.digital"
         drawMuntinMark(MARGIN, PAGE_H - 28, 10, markColor);
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(8);
+        setBrandFont(false, 8);
         setColor(textColor);
         doc.text('Muntin Digital · muntin.digital', MARGIN + 16, PAGE_H - 20);
 
         // Center: URL of the audited site (content pages only).
         if (showUrl && url) {
-          doc.setFont('helvetica', 'normal');
-          doc.setFontSize(8);
+          setBrandFont(false, 8);
           setColor(textColor);
           doc.text(url, PAGE_W / 2, PAGE_H - 20, { align: 'center' });
         }
 
         // Right: "page X / Y"
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(8);
+        setBrandFont(true, 8);
         setColor(variant === 'ink' ? COL_CREAM : COL_INK_SOFT);
         doc.text(String(pageN) + '  /  ' + String(total), PAGE_W - MARGIN, PAGE_H - 20, { align: 'right' });
       }
@@ -2969,6 +3116,27 @@
         }
         return out;
       }
+
+      // Register the brand fonts on this doc instance before any
+      // drawing happens. loadBrandFonts() returns a base64 dictionary
+      // or null; on success we flip FONT_DISPLAY/FONT_BODY from the
+      // helvetica fallback to the real Muntin family names so every
+      // subsequent setBrandFont() call uses them.
+      return loadBrandFonts().then(function(fonts){
+        if (fonts) {
+          try {
+            doc.addFileToVFS('Fraunces-400.ttf', fonts.fraunces400);
+            doc.addFont('Fraunces-400.ttf', 'Fraunces', 'normal');
+            doc.addFileToVFS('Fraunces-600.ttf', fonts.fraunces600);
+            doc.addFont('Fraunces-600.ttf', 'Fraunces', 'bold');
+            doc.addFileToVFS('Inter-400.ttf', fonts.inter400);
+            doc.addFont('Inter-400.ttf', 'Inter', 'normal');
+            doc.addFileToVFS('Inter-600.ttf', fonts.inter600);
+            doc.addFont('Inter-600.ttf', 'Inter', 'bold');
+            FONT_DISPLAY = 'Fraunces';
+            FONT_BODY    = 'Inter';
+          } catch (_) { /* stay on helvetica fallback */ }
+        }
 
       // Pillar data, computed once and reused across the cover and
       // the exec summary recap strip.
@@ -2996,8 +3164,7 @@
       drawEyebrow('Website Audit', MARGIN, MARGIN + 84, COL_TEAL);
 
       // Monumental title
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(32);
+      setBrandFont(true, 32);
       setColor(COL_INK);
       var titleY = MARGIN + 120;
       titleY = drawWrappedText('Custom website audit for ' + (url || 'your site') + '.', MARGIN, titleY, COL_W, 36);
@@ -3008,8 +3175,7 @@
       doc.line(MARGIN, titleY + 10, PAGE_W - MARGIN, titleY + 10);
 
       // Meta row (date · segment · url)
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(9);
+      setBrandFont(false, 9);
       setColor(COL_STONE);
       var metaParts = [todayPretty, (subtype.label || subtypeId), (url || '—')];
       doc.text(metaParts.join('  ·  '), MARGIN, titleY + 28);
@@ -3021,12 +3187,10 @@
       var ringCX = MARGIN + 72;
       var ringCY = scoreEyebrowY + 84;
       drawScoreMark(ringCX, ringCY, 56, overall);
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(44);
+      setBrandFont(true, 44);
       setColor(COL_INK);
       doc.text(String(overall), ringCX, ringCY + 14, { align: 'center' });
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(10);
+      setBrandFont(false, 10);
       setColor(COL_STONE);
       doc.text('out of 100', ringCX, ringCY + 34, { align: 'center' });
 
@@ -3042,8 +3206,7 @@
       drawMuntinGridPattern(PAGE_W - 240, PAGE_H - 220, 200, 160, COL_TEAL, 0.07);
 
       // Tagline baseline above the footer
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(11);
+      setBrandFont(true, 11);
       setColor(COL_TEAL);
       doc.text('Structure brings clarity.', MARGIN, PAGE_H - 68);
 
@@ -3064,8 +3227,7 @@
       });
 
       // Narrative paragraphs
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(11);
+      setBrandFont(false, 11);
       setColor(COL_INK_SOFT);
       var p1 = 'Your ' + (subtype.label || 'restaurant').toLowerCase() +
                ' at ' + (url || 'the submitted URL') +
@@ -3096,14 +3258,12 @@
       // Left teal rule inside the callout card
       setColor(COL_TEAL, 'fill');
       doc.rect(MARGIN, calloutY, 4, calloutH, 'F');
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(9);
+      setBrandFont(true, 9);
       setColor(COL_TEAL);
       doc.setCharSpace(1.2);
       doc.text('THE HEADLINE', MARGIN + 24, calloutY + 22);
       doc.setCharSpace(0);
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(13);
+      setBrandFont(false, 13);
       setColor(COL_INK);
       drawWrappedText(headline, MARGIN + 24, calloutY + 44, COL_W - 48, 17);
 
@@ -3119,18 +3279,15 @@
       for (var ri = 0; ri < recapItems.length; ri++) {
         var rx = MARGIN + ri * (recapW + 12);
         drawCard(rx, recapY, recapW, recapH, COL_CREAM2, null, 10);
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(8);
+        setBrandFont(true, 8);
         setColor(COL_TEAL);
         doc.setCharSpace(1.2);
         doc.text(recapItems[ri].label, rx + 16, recapY + 22);
         doc.setCharSpace(0);
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(30);
+        setBrandFont(true, 30);
         setColor(COL_INK);
         doc.text(recapItems[ri].value, rx + 16, recapY + 62);
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(10);
+        setBrandFont(false, 10);
         setColor(COL_STONE);
         doc.text(recapItems[ri].sub, rx + 16, recapY + 84);
       }
@@ -3141,8 +3298,7 @@
       if (sumText) {
         var noteY = recapY + recapH + 28;
         drawEyebrow('Note from the Audit', MARGIN, noteY, COL_STONE);
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(10.5);
+        setBrandFont(false, 10.5);
         setColor(COL_INK_SOFT);
         drawWrappedText(sumText, MARGIN, noteY + 22, COL_W, 15);
       }
@@ -3162,8 +3318,7 @@
         titleLeading: 30,
         y: MARGIN + 32
       });
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(10);
+      setBrandFont(false, 10);
       setColor(COL_STONE);
       fixY = drawWrappedText(
         'Ranked by weighted impact for your ' + (subtype.label || 'restaurant').toLowerCase() + ' segment. ' +
@@ -3179,16 +3334,13 @@
         drawCard(MARGIN, fixY, COL_W, noFixH, COL_CREAM2, null, 10);
         setColor(COL_GREEN, 'fill');
         doc.circle(MARGIN + 36, fixY + 38, 14, 'F');
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(16);
+        setBrandFont(true, 16);
         setColor(COL_CREAM);
         doc.text('\u2713', MARGIN + 36, fixY + 44, { align: 'center' });
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(20);
+        setBrandFont(true, 20);
         setColor(COL_INK);
         doc.text('No urgent fixes.', MARGIN + 64, fixY + 44);
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(11);
+        setBrandFont(false, 11);
         setColor(COL_INK_SOFT);
         drawWrappedText(
           'Every priority check passed or is awaiting confirmation. Scan the full breakdown on the next pages to confirm the unverified items and keep your edge.',
@@ -3215,8 +3367,7 @@
         titleLeading: 30,
         y: MARGIN + 32
       });
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(10);
+      setBrandFont(false, 10);
       setColor(COL_STONE);
       brY = drawWrappedText(
         'Grouped by status. Failures first (where the next wins are), unverified items next (worth a human glance), passing checks last (for reference).',
@@ -3230,9 +3381,9 @@
 
       // Render each status group with its own eyebrow + item flow.
       var groups = [
-        { key: 'failed',     label: 'Failed',       color: COL_RUST,  items: grouped.failed },
-        { key: 'unverified', label: 'Unverified',   color: COL_STONE, items: grouped.unverified },
-        { key: 'passed',     label: 'Passing',      color: COL_TEAL,  items: grouped.passed }
+        { key: 'failed',     label: 'Failed',     color: COL_RUST,  icon: drawIconCross, items: grouped.failed },
+        { key: 'unverified', label: 'Unverified', color: COL_STONE, icon: drawIconDash,  items: grouped.unverified },
+        { key: 'passed',     label: 'Passing',    color: COL_TEAL,  icon: drawIconCheck, items: grouped.passed }
       ];
       for (var gi = 0; gi < groups.length; gi++) {
         var g = groups[gi];
@@ -3240,7 +3391,11 @@
 
         // Need at least ~80pt to start a group cleanly on the page
         brY = ensureRoom(brY, 80);
-        drawEyebrow(g.label + ' (' + g.items.length + ')', MARGIN, brY, g.color);
+        // Group header: vector icon in the group color followed by the
+        // standard eyebrow label + count. The icon gives each group a
+        // distinct visual anchor at a glance when skimming the report.
+        g.icon(MARGIN, brY - 11, 14, g.color);
+        drawEyebrow(g.label + ' (' + g.items.length + ')', MARGIN + 20, brY, g.color);
         brY += 22;
 
         for (var ii = 0; ii < g.items.length; ii++) {
@@ -3273,8 +3428,7 @@
       var colW  = (COL_W - colGap) / 2;
 
       // Left column: what each pillar measures
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(14);
+      setBrandFont(true, 14);
       setColor(COL_INK);
       doc.text('What each pillar measures.', col1X, mY);
       var pillarDefs = [
@@ -3286,22 +3440,19 @@
       ];
       var plDescY = mY + 22;
       for (var di = 0; di < pillarDefs.length; di++) {
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(8);
+        setBrandFont(true, 8);
         setColor(COL_TEAL);
         doc.setCharSpace(1);
         doc.text(pillarDefs[di].label, col1X, plDescY);
         doc.setCharSpace(0);
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(9.5);
+        setBrandFont(false, 9.5);
         setColor(COL_INK_SOFT);
         plDescY = drawWrappedText(pillarDefs[di].desc, col1X, plDescY + 14, colW, 13);
         plDescY += 14;
       }
 
       // Right column: score bands + re-run note
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(14);
+      setBrandFont(true, 14);
       setColor(COL_INK);
       doc.text('How to read the score.', col2X, mY);
       var bands = [
@@ -3313,24 +3464,20 @@
       for (var bi = 0; bi < bands.length; bi++) {
         setColor(bands[bi].color, 'fill');
         doc.rect(col2X, bandY - 9, 12, 12, 'F');
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(10);
+        setBrandFont(true, 10);
         setColor(COL_INK);
         doc.text(bands[bi].range + '   \u00B7   ' + bands[bi].label, col2X + 20, bandY);
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(9.5);
+        setBrandFont(false, 9.5);
         setColor(COL_INK_SOFT);
         bandY = drawWrappedText(bands[bi].desc, col2X + 20, bandY + 14, colW - 20, 13);
         bandY += 14;
       }
 
       bandY += 10;
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(12);
+      setBrandFont(true, 12);
       setColor(COL_INK);
       doc.text('Re-running the audit.', col2X, bandY);
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(9.5);
+      setBrandFont(false, 9.5);
       setColor(COL_INK_SOFT);
       bandY = drawWrappedText(
         'The tool is free and open. Re-run it any time you ship a fix — the shareable ?url= link auto-runs on a fresh visit, so you can bookmark it as your before-and-after.',
@@ -3351,15 +3498,13 @@
       drawEyebrow('Next Steps', MARGIN, MARGIN + 112, COL_CREAM);
 
       // Hero H1
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(30);
+      setBrandFont(true, 30);
       setColor(COL_CREAM);
       var hY = MARGIN + 148;
       hY = drawWrappedText('Want a human second opinion?', MARGIN, hY, COL_W, 34);
 
       // Hero body
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(11.5);
+      setBrandFont(false, 11.5);
       setColor(COL_LINE);
       hY = drawWrappedText(
         'If the audit surfaced more than you want to tackle alone, let\u2019s talk. Twenty minutes on Zoom, walking through your results live \u2014 no pitch, no pressure. One set of hands, restaurant-savvy, here to untangle the structural stuff so your site starts earning.',
@@ -3370,15 +3515,19 @@
       var btnX = MARGIN, btnY = hY + 32, btnW = 300, btnH = 44;
       setColor(COL_CREAM, 'fill');
       doc.roundedRect(btnX, btnY, btnW, btnH, 22, 22, 'F');
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(12);
+      setBrandFont(true, 12);
       setColor(COL_INK);
-      doc.text('Book a 20-minute call  \u2192', btnX + btnW / 2, btnY + 27, { align: 'center' });
+      var btnLabel = 'Book a 20-minute call';
+      var btnLabelW = doc.getTextWidth(btnLabel);
+      var btnLabelX = btnX + (btnW - btnLabelW - 22) / 2;
+      doc.text(btnLabel, btnLabelX, btnY + 27);
+      drawIconArrowRight(btnLabelX + btnLabelW + 6, btnY + 15, 16, COL_INK);
       try { doc.link(btnX, btnY, btnW, btnH, { url: 'https://calendly.com/dongoldstein-accts/muntinconsult' }); } catch (_) {}
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(9);
+      // Calendar icon + URL under the button
+      drawIconCalendar(btnX, btnY + btnH + 6, 12, COL_STONE);
+      setBrandFont(false, 9);
       setColor(COL_STONE);
-      doc.text('calendly.com/dongoldstein-accts/muntinconsult', btnX, btnY + btnH + 16);
+      doc.text('calendly.com/dongoldstein-accts/muntinconsult', btnX + 16, btnY + btnH + 16);
 
       // Sub-card: re-run message on dark-teal
       var subY = btnY + btnH + 52;
@@ -3386,19 +3535,16 @@
       drawCard(MARGIN, subY, COL_W, subH, COL_TEAL_DK, null, 12);
       setColor(COL_CREAM, 'fill');
       doc.rect(MARGIN, subY, 4, subH, 'F');
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(18);
+      setBrandFont(true, 18);
       setColor(COL_CREAM);
       doc.text('Run this again any time.', MARGIN + 24, subY + 34);
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(11);
+      setBrandFont(false, 11);
       setColor(COL_LINE);
       drawWrappedText(
         'The audit tool is free and open. The ?url= in your shareable link auto-runs on any fresh visit \u2014 bookmark it after you ship a fix to see the delta.',
         MARGIN + 24, subY + 60, COL_W - 48, 15
       );
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(11);
+      setBrandFont(true, 11);
       setColor(COL_CREAM);
       doc.text('muntin.digital/tools/audits/restaurant/', MARGIN + 24, subY + subH - 18);
       try { doc.link(MARGIN + 24, subY + subH - 30, 300, 18, { url: 'https://muntin.digital/tools/audits/restaurant/' }); } catch (_) {}
@@ -3425,6 +3571,7 @@
       var filename = 'muntin-audit-' + slug + '-' + today + '.pdf';
 
       return { blob: blob, base64: b64, filename: filename };
+      }); // end loadBrandFonts().then
 
       // --- local helpers --------------------------------------------
       function collectTopFixes() {
@@ -3467,36 +3614,40 @@
         // Numbered rust circle
         setColor(COL_RUST, 'fill');
         doc.circle(MARGIN + 14, y + 14, 14, 'F');
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(13);
+        setBrandFont(true, 13);
         setColor(COL_CREAM);
         doc.text(String(num), MARGIN + 14, y + 18, { align: 'center' });
 
         // Title
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(16);
+        setBrandFont(true, 16);
         setColor(COL_INK);
         var afterTitle = drawWrappedText(title, MARGIN + 44, y + 18, COL_W - 48, 19);
 
         // Body
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(11);
+        setBrandFont(false, 11);
         setColor(COL_INK_SOFT);
         afterTitle = drawWrappedText(body, MARGIN + 44, afterTitle + 6, COL_W - 48, 15);
 
-        // Chip row (effort + time, 6pt gap)
+        // Chip row (effort + time, 6pt gap). Each pill leads with a
+        // small brand-icon glyph: wrench for the effort class, bolt
+        // for the time estimate — visual shorthand for "how" and
+        // "how long".
         var chipY = afterTitle + 14;
         var chipX = MARGIN + 44;
         if (def.effort) {
           var effortLabel = def.effort === 'self' ? 'Fix yourself'
                          : def.effort === 'dev'  ? 'Ask your developer'
                          : 'Rebuild needed';
+          drawIconWrench(chipX, chipY - 9, 13, COL_INK_SOFT);
+          chipX += 16;
           chipX = drawPill(effortLabel, chipX, chipY, COL_CREAM2, COL_INK_SOFT);
         }
         if (typeof def.minutes === 'number') {
           var t = def.minutes < 60 ? '~' + def.minutes + ' min'
                 : def.minutes < 180 ? '~' + Math.round(def.minutes / 60) + ' hr'
                 : 'Half-day project';
+          drawIconBolt(chipX, chipY - 9, 13, COL_TEAL);
+          chipX += 16;
           drawPill(t, chipX, chipY, COL_TEAL_TINT, COL_TEAL);
         }
 
@@ -3528,20 +3679,17 @@
         var iconColor = cls === 'pass' ? COL_GREEN : cls === 'fail' ? COL_RUST : COL_STONE;
         var iconChar  = cls === 'pass' ? '\u2713' : cls === 'fail' ? '\u2715' : '\u2013';
         setColor(iconColor);
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(12);
+        setBrandFont(true, 12);
         doc.text(iconChar, MARGIN + 4, y + 2);
 
         // Title
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(11);
+        setBrandFont(true, 11);
         setColor(COL_INK);
         var afterTitle = drawWrappedText(title, MARGIN + 24, y + 2, COL_W - 28, 14);
 
         // Note
         if (noteRaw) {
-          doc.setFont('helvetica', 'normal');
-          doc.setFontSize(10);
+          setBrandFont(false, 10);
           setColor(COL_INK_SOFT);
           afterTitle = drawWrappedText(noteRaw, MARGIN + 24, afterTitle + 2, COL_W - 28, 13);
         }
