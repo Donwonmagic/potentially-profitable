@@ -102,6 +102,13 @@ GLOSSARY = [
     "Instagram",
     "Facebook",
     "TikTok",
+    "Threads",
+    "Mastodon",
+    "Bluesky",
+    "LinkedIn",
+    "Reddit",
+    "WhatsApp",
+    "Telegram",
     "Apple Maps",
     "Siri",
     # Acronyms

@@ -563,6 +563,58 @@
       // translation as an afterthought" and "intentional multilingual
       // accessibility" — the listener sees what they're hearing.
       applyVisualLanguage(lang);
+      // UI translations cover the visible surface outside the article
+      // chunks: infographic labels, callout tags, CTA button copy,
+      // navigation strings, etc. Anything tagged with a .i18n class.
+      applyUITranslations(lang);
+    }
+
+    /* ---- UI translations (infographics, callouts, buttons) ---- */
+    // Designed alongside the article-chunk translation so the whole
+    // surface switches together. Any element with class="i18n" is a
+    // candidate — its English textContent is cached on first swap, and
+    // translations live in <post>/translations.<lang>.json as a flat
+    // map keyed by the original English text. On language change we
+    // fetch the map (if we don't have it yet) and apply in one pass.
+    const originalUICache = new WeakMap();
+    const uiTranslationsByLang = new Map();
+    async function applyUITranslations(lang) {
+      const elements = Array.from(document.querySelectorAll('.i18n'));
+      if (!elements.length) return;
+      if (lang === 'en') {
+        elements.forEach((el) => {
+          const cached = originalUICache.get(el);
+          if (cached != null) el.textContent = cached;
+        });
+        return;
+      }
+      let map = uiTranslationsByLang.get(lang);
+      if (!map) {
+        // Try to find the translations file. Relative to the current
+        // page (works for any post that ships alongside it).
+        try {
+          const res = await fetch(`translations.${lang}.json`, { credentials: 'omit' });
+          if (!res.ok) throw new Error('status ' + res.status);
+          map = await res.json();
+          uiTranslationsByLang.set(lang, map);
+        } catch (e) {
+          console.warn(`[readAloud] ui translations ${lang} not found`, e);
+          uiTranslationsByLang.set(lang, {}); // cache empty to avoid re-fetching
+          map = {};
+        }
+      }
+      elements.forEach((el) => {
+        // Cache the original English textContent the first time we
+        // see this element, so a later switch back to English (or
+        // jump to another language) can restore cleanly.
+        let english = originalUICache.get(el);
+        if (english == null) {
+          english = el.textContent;
+          originalUICache.set(el, english);
+        }
+        const translated = map[english.trim()] || map[english];
+        if (translated) el.textContent = translated;
+      });
     }
 
     /* ---- Visual language swap ---- */
