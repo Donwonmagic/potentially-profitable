@@ -973,7 +973,8 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
   border-color: var(--teal);
   box-shadow: 0 14px 36px -14px rgba(31,78,91,0.35);
 }
-.tool-cta-form input[type="url"]{
+.tool-cta-form input[type="url"],
+.tool-cta-form input[type="text"]{
   flex: 1;
   min-width: 0;
   font: inherit;
@@ -984,7 +985,8 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
   color: var(--ink);
   outline: none;
 }
-.tool-cta-form input[type="url"]::placeholder{ color: var(--stone-2); }
+.tool-cta-form input[type="url"]::placeholder,
+.tool-cta-form input[type="text"]::placeholder{ color: var(--stone-2); }
 .tool-cta-form button{
   font: inherit;
   font-weight: 600;
@@ -1098,7 +1100,8 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
     border-radius: 20px;
     padding: 8px;
   }
-  .tool-cta-form input[type="url"]{ padding: 12px 16px; }
+  .tool-cta-form input[type="url"],
+  .tool-cta-form input[type="text"]{ padding: 12px 16px; }
   .tool-cta-form button{ border-radius: 14px; width: 100%; padding: 14px 24px; }
   .tool-cta-chips{ font-size: 12px; }
 }
