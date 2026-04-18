@@ -1769,6 +1769,105 @@
   @media (max-width: 640px) {
     .email-form { grid-template-columns: 1fr; }
   }
+
+  /* -------------------------------------------------------------
+     Phase I6: Print-friendly layout
+     -------------------------------------------------------------
+     Optimizes browser "Print" / "Save as PDF" for a restaurant
+     owner who wants to hand the audit report to a developer or
+     a marketing agency. Strategy:
+
+       1. Hide interactive-only surfaces (nav, footer CTAs, share
+          buttons, feedback prompts, re-audit form, email form,
+          competitor comparison — anything that needs a live
+          browser to be meaningful).
+       2. Force every <details> open so every priority finding
+          and opportunity renders as a single continuous document.
+       3. Collapse page chrome into one column, black text on white,
+          so the report reads cleanly on A4 / Letter.
+       4. Preserve the scoring visual: the score ring, category
+          bars, executive summary, top-3-fixes, and priority list
+          all stay — they ARE the report.
+
+     Deliberately NOT hidden: the crawl-summary chip row and the
+     alternatives-chips row, because "here's what else we scanned"
+     is part of the audit evidence a developer will want to see. */
+  @media print {
+    @page { margin: 20mm; }
+    html, body {
+      background: #fff !important;
+      color: #000 !important;
+      font-size: 11pt;
+    }
+    body.is-restaurant-audit .nav,
+    body.is-restaurant-audit .site-footer,
+    header.site-nav,
+    footer.site-footer,
+    nav, footer {
+      display: none !important;
+    }
+    .audit-form,
+    .share-row,
+    .share-btn,
+    .feedback-btn,
+    .priority-feedback,
+    .email-form,
+    .email-section,
+    .not-restaurant,
+    .audit-compare,
+    .exit-audit,
+    button[type="submit"],
+    .btc-alternatives,
+    .compare-form,
+    .audit-loading,
+    .audit-error {
+      display: none !important;
+    }
+    /* Expand every collapsible section so the printed report is
+       self-contained. Phase A refactor kept the accordion UI as
+       native <details>, which print-friendly CSS can reliably
+       force open. */
+    details,
+    details[open],
+    details > summary { display: block !important; }
+    details { open: open; }
+    details summary::-webkit-details-marker { display: none; }
+    details[open] > summary,
+    details > summary {
+      cursor: default;
+      list-style: none;
+    }
+    /* Force all <details> open for print. Browsers that support
+       the `open` attribute already handle this; for older Safari
+       we also override the collapsed state in layout. */
+    details:not([open]) > *:not(summary) { display: block !important; }
+    /* Flatten layered cards to avoid printing giant blank areas
+       of background. Keep borders so the structure still reads. */
+    .category-card,
+    .exec-summary,
+    .top-fixes,
+    .priority-list,
+    .opportunities-wrap {
+      background: #fff !important;
+      box-shadow: none !important;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    /* Avoid awkward breaks inside a single priority item. */
+    .priority-item { break-inside: avoid; page-break-inside: avoid; }
+    /* The score ring is an SVG that prints fine; just force
+       its colors to stay on white. */
+    .score-ring svg .bg { stroke: #ddd !important; }
+    .score-ring svg .fg { stroke: #000 !important; }
+    /* Links: print the URL inline so the PDF is still useful
+       once it's on paper. Limit to nav links + learn-more links
+       so menu-link URLs embedded inside copy don't explode. */
+    .priority-item a.link[href]::after {
+      content: " (" attr(href) ")";
+      font-size: 9pt;
+      color: #555;
+    }
+  }
 </style>
 </head>
 <body>
