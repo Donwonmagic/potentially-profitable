@@ -362,6 +362,10 @@ var RESTAURANT_PRIORITY_CHECKS = [
         impact: 'On a pizzeria site "Order Delivery" and "Start a Pickup Order" are the conversion. Almost all mobile traffic is hungry-right-now intent, and a missed tap routes that order to Slice or DoorDash (where you pay 20-30% commission) within seconds.',
         failNote: '"Order Delivery" / "Pickup Order" need 48×48 tap targets and padding to separate them from secondary navigation. Every missed tap at 7pm on a Friday goes to an aggregator — you literally pay commission per miss.'
       },
+      'food-truck': {
+        impact: 'Food-truck traffic is all mobile and all intent-driven — "where are you today?" "what\'s on the menu right now?" The "See Today\'s Schedule" and Instagram-link buttons carry the entire discovery funnel. A missed tap sends hungry customers to whatever else Google Maps surfaces nearby.',
+        failNote: 'The "Today\'s Location" and "See Our Schedule" buttons need 48×48 tap targets and healthy padding. Your Instagram-handle chip belongs in the same priority tier — it\'s where most of your actual schedule updates land.'
+      },
       'bar-pub': {
         impact: 'Bar traffic is often late-night and last-minute — "is happy hour still on?", "are they open?", "is there a cover?" A tappable phone and a tappable map are the two buttons that earn their space.',
         failNote: 'Buttons under 44×44 pixels cause misses. On a bar site the phone number and map links are what visitors actually tap — make sure those in particular have 12px+ padding and aren\'t crowded by other links.'
@@ -408,6 +412,11 @@ var RESTAURANT_PRIORITY_CHECKS = [
         passNote: 'Topping prices, crust options, and combo pricing all meet contrast thresholds — customers can customize a pie on a phone without squinting.',
         failNote: 'Price grids and topping lists are the conversion surface for a pizzeria. Low-contrast cream-on-cream or red-on-red pricing fails WCAG AA (4.5:1) — darken prices and topping labels until they read cleanly on a phone outside.'
       },
+      'food-truck': {
+        impact: 'Food-truck sites are read OUTSIDE, in bright sun, on phones held at arm\'s length. Low-contrast copy fails instantly in that environment — and schedule + menu are the two things customers are squinting at while deciding whether to walk over.',
+        passNote: 'Your schedule and menu copy meets contrast thresholds — readable at a farmers\' market in bright sun without cupping the screen.',
+        failNote: 'Outdoor readability is the bar for a food-truck site. Pale brand colors that look great on Instagram fail WCAG AA (4.5:1) in direct sun — darken your schedule + menu text until they read cleanly at arm\'s length in daylight.'
+      },
       'bar-pub': {
         impact: 'Bar sites are often dark-themed by default, and legibility takes a hit. Guests checking happy-hour times or the cocktail list on a phone at the curb outside shouldn\'t have to squint.',
         passNote: 'Your dark-theme copy still meets WCAG AA contrast ratios — happy-hour hours and the cocktail list are readable without zooming.',
@@ -449,6 +458,10 @@ var RESTAURANT_PRIORITY_CHECKS = [
       'pizzeria': {
         impact: 'Topping lists, allergen notes (gluten / dairy / dairy-free cheese), and delivery-zone details are the make-or-break copy for a pizzeria. Tiny type forces a pinch-zoom on the exact moments a customer is deciding between ordering from you or opening Slice.',
         failNote: 'Set body to 16px, and set topping lists and delivery-zone copy to 17-18px. The customer picking between "one large pepperoni" and "half-pepperoni half-mushroom" should never have to zoom.'
+      },
+      'food-truck': {
+        impact: 'Schedule times and today\'s-location copy are the two pieces of content a food-truck customer reads MOST — usually on a phone, outdoors, while walking. Tiny type makes "are they at the brewery tonight?" a harder question than it needs to be.',
+        failNote: 'Set body to 16px, and set schedule times and today\'s-location copy to 17-18px. Both belong in a block large enough to read at a glance while walking.'
       },
       'bar-pub': {
         impact: 'Cocktail lists, draft lists, and happy-hour details are the bar\'s menu. Small type on a phone in a dim Uber ride is a usability tax guests won\'t pay.',
