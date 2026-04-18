@@ -573,5 +573,19 @@ var RESTAURANT_PRIORITY_CHECKS = [
         failNote: 'PDF cocktail lists age poorly — by the time the designer ships the update, the beer\'s out of the keg. Rebuild as an HTML list (bar → pub → taproom style) so rotations happen the same day the barback swaps the tap.'
       }
     }
+  },
+  {
+    type: 'schema',
+    weight: 0.5, // bonus — nice to have, not critical
+    anchor: '#findability',
+    effort: 'dev',
+    minutes: 20,
+    impact: "Restaurant schema markup is how Google learns your hours, cuisine, and price range for local search. Restaurants with proper schema show up in the 'restaurants near me' rich results with photos and ratings — restaurants without it get a plain blue link. The difference in click-through rate is meaningful.",
+    pass: 'Google knows your site is a restaurant',
+    passNote: 'Your site publishes Restaurant schema markup (structured data that tells Google exactly what kind of business you are). This helps you show up in Google\'s "restaurants near me" Rich Results with hours, price range, and menu snippets.',
+    fail: null,
+    failNote: null,
+    unverified: "Google doesn't know your site is a restaurant",
+    unverifiedNote: "Your site is missing the Restaurant schema markup Google uses to show rich listings in Maps and Search. Ask your developer to add a JSON-LD block with <code>@type: \"Restaurant\"</code>, your address, opening hours, and cuisine — it's a 10-line change and meaningful for local SEO."
   }
 ];
