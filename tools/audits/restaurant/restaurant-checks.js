@@ -557,6 +557,12 @@ var RESTAURANT_PRIORITY_CHECKS = [
         passNote: '{detected} on your site — commuter pre-orders, custom-cake inquiries, and catering tray orders all flow to you directly instead of a commissioned aggregator.',
         unverifiedNote: "We scan for café-friendly platforms like Square, Toast, ChowNow, and more. Even a simple online-order page for pre-orders, custom cakes, or catering is a meaningful revenue channel for cafés and bakeries."
       },
+      'bakery': {
+        impact: 'Online pre-orders ARE the business model for modern bakeries — customers who cannot pre-order online end up ordering through Instagram DMs or giving up. Custom-cake inquiry forms, wedding-cake intake, and whole-pie pre-orders all belong on your site directly, where the margin stays with you.',
+        pass: 'Customers can pre-order online',
+        passNote: '{detected} on your site — pre-orders, custom-cake inquiries, and whole-pie bookings all flow to you directly instead of becoming DMs your staff has to answer by hand.',
+        unverifiedNote: "We scan for bakery-friendly platforms (Square, Toast) plus generic order-ahead widgets. Even a simple HTML pre-order page for custom cakes or catering is a real revenue channel for bakeries and pâtisseries."
+      },
       'bar-pub': {
         impact: 'Bars and pubs vary — some take reservations, most take walk-ins. But even walk-in bars benefit from event bookings (private parties, tastings, brunches) and gift-card purchases. Tripleseat and similar platforms are common; a direct booking flow converts better than an email inquiry.',
         pass: 'Guests can book events or reservations online',
@@ -599,6 +605,13 @@ var RESTAURANT_PRIORITY_CHECKS = [
         passNote: 'Your menu is an HTML page — which means you can update seasonal drinks, daily specials, and prices without emailing a designer.',
         fail: 'Your menu is a PDF or an image',
         failNote: 'Café menus change weekly (or daily); PDFs lock you into a once-a-month update cadence. Rebuild as HTML so seasonal items, specials, and price changes can ship the same afternoon they\'re decided.'
+      },
+      'bakery': {
+        impact: 'Bakery offerings rotate aggressively — seasonal tarts, weekend-only loaves, holiday cookie lineups. A PDF menu means the baker needs a designer to update the Christmas-cookie list; an HTML page means it ships the same morning, and can link to an "Order this" button per item.',
+        pass: 'Your bakery menu opens as a real HTML page',
+        passNote: 'Your daily, seasonal, and custom-order menus render as HTML — which means the holiday lineup ships the morning you decide it, and each item can link to its own pre-order.',
+        fail: 'Your menu is a PDF or an image',
+        failNote: 'Bakery menus rotate weekly (or daily); PDFs lock you into a monthly update cadence and cannot link to a per-item "Pre-order this" button. Rebuild as HTML so seasonal and custom items ship the same day they\'re decided.'
       },
       'bar-pub': {
         impact: 'Cocktail lists and draft lists rotate constantly — a PDF list goes stale within weeks, and nobody wants to read a PDF on a phone at the bar anyway. HTML lists are faster to update, easier to share, and readable without a download.',
