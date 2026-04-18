@@ -354,6 +354,10 @@ var RESTAURANT_PRIORITY_CHECKS = [
         impact: 'Most café traffic is hours-and-location intent: "is it open?" and "where is it?" The hours block and the map pin need to be tappable without zooming — a missed tap sends the customer to a competing shop around the corner.',
         failNote: 'Hours, phone number, and map links are the three tap-target priorities for a café. They don\'t need to be huge buttons — just give them enough padding (12px) that a thumb reliably hits them.'
       },
+      'bakery': {
+        impact: 'Bakery traffic skews heavily toward custom-cake inquiries and morning pickup pre-orders — "Order Ahead" and "Request a Custom Cake" are the two buttons that carry $500-2000 wedding orders and $30 croissant pre-orders. A missed tap is a real lost order.',
+        failNote: 'Bump the "Order Ahead" and "Custom Cake Inquiry" buttons to 48×48 with 12px+ padding — these are the two that carry almost all of your online revenue. Other links can be smaller.'
+      },
       'bar-pub': {
         impact: 'Bar traffic is often late-night and last-minute — "is happy hour still on?", "are they open?", "is there a cover?" A tappable phone and a tappable map are the two buttons that earn their space.',
         failNote: 'Buttons under 44×44 pixels cause misses. On a bar site the phone number and map links are what visitors actually tap — make sure those in particular have 12px+ padding and aren\'t crowded by other links.'
@@ -390,6 +394,11 @@ var RESTAURANT_PRIORITY_CHECKS = [
         passNote: 'Hours, items, and address all meet contrast thresholds — readable at a glance, even in direct light.',
         failNote: 'Hours and address are the most-read text on a café site. Pale grey on cream looks on-brand but fails contrast — darken these two specifically to WCAG AA (4.5:1 ratio).'
       },
+      'bakery': {
+        impact: 'Bakery menus carry ingredient lists, allergen notes, and custom-order details that customers read CAREFULLY — a guest ordering a wedding cake has to trust every label. Low-contrast allergen copy breaks that trust.',
+        passNote: 'Your ingredient and allergen copy meets contrast thresholds — readable on a phone by the guest double-checking a custom-cake spec at 11pm the night before.',
+        failNote: 'Ingredient and allergen notes are the highest-stakes copy on a bakery site. Pale grey descriptions over cream fail WCAG AA (4.5:1) and spook nervous custom-cake or dietary-restricted customers. This is a trust issue, not just usability.'
+      },
       'bar-pub': {
         impact: 'Bar sites are often dark-themed by default, and legibility takes a hit. Guests checking happy-hour times or the cocktail list on a phone at the curb outside shouldn\'t have to squint.',
         passNote: 'Your dark-theme copy still meets WCAG AA contrast ratios — happy-hour hours and the cocktail list are readable without zooming.',
@@ -423,6 +432,10 @@ var RESTAURANT_PRIORITY_CHECKS = [
       'cafe': {
         impact: 'Hours and location are read more than anything else on a café site. Tiny type below 16px forces iOS to zoom on focus and makes "are they open?" a frustrating question.',
         failNote: 'Set body font-size to at least 16px. The hours block specifically should be 17 or 18px — it\'s the first thing most café visitors look for.'
+      },
+      'bakery': {
+        impact: 'Ingredient lists, custom-order spec fields, and pickup-date copy are the three things a bakery customer reads MOST carefully. Tiny type forces a pinch-zoom on exactly the moments that require precision.',
+        failNote: 'Set body to 16px, and set ingredient lists plus custom-order copy to 17-18px. Customers placing $200+ orders for a specific date want zero ambiguity about what they\'re ordering.'
       },
       'bar-pub': {
         impact: 'Cocktail lists, draft lists, and happy-hour details are the bar\'s menu. Small type on a phone in a dim Uber ride is a usability tax guests won\'t pay.',
