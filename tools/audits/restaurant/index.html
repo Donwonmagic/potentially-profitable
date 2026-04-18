@@ -919,6 +919,50 @@
     vertical-align: middle;
   }
   .business-type-card .btc-confidence[hidden] { display: none; }
+
+  /* Alternative-subtype chips shown below the dropdown when detection
+     surfaces runner-up candidates. Rendered only when at least one
+     alternative scored above zero (see renderBusinessTypeAlternatives). */
+  .business-type-card .btc-alternatives {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    grid-column: 1 / -1;
+  }
+  .business-type-card .btc-alternatives[hidden] { display: none; }
+  .business-type-card .btc-alt-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--stone);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .business-type-card .btc-alt-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .business-type-card .btc-alt-chip {
+    display: inline-block;
+    padding: 6px 12px;
+    border: 1px solid var(--line-dark);
+    background: transparent;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 160ms ease, border-color 160ms ease;
+  }
+  .business-type-card .btc-alt-chip:hover,
+  .business-type-card .btc-alt-chip:focus {
+    background: var(--cream-2);
+    border-color: var(--ink);
+    outline: none;
+  }
   .business-type-card .btc-select {
     font: inherit;
     font-size: 14.5px;
@@ -1891,6 +1935,16 @@
           </select>
         </div>
         <p class="btc-sub" id="btcSub">Auto-detected from schema markup, ordering/reservation platform, and page content. If we got it wrong, pick the right one — the checks below will update live.</p>
+        <!-- Alternative-subtype quick-select. Hidden until detection
+             produces runner-up candidates with non-zero score; see
+             renderBusinessTypeAlternatives in the IIFE below. Each chip
+             sets btcSelect.value and fires its change handler so the
+             full correction flow (tally, share URL, Plausible event,
+             readiness recompute) runs identically to a dropdown change. -->
+        <div class="btc-alternatives" id="btcAlternatives" hidden>
+          <span class="btc-alt-label">Or:</span>
+          <div class="btc-alt-chips" id="btcAltChips"></div>
+        </div>
       </div>
 
       <!-- Restaurant-priority checks list -->
