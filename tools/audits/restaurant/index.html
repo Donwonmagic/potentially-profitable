@@ -3345,16 +3345,13 @@
     container.innerHTML = '';
     if (!allUrls)  allUrls  = extractAllUrls(audits);
     if (!pageText) pageText = extractPageText(audits);
-    var passCount = 0, totalCount = 0, unverifiedCount = 0;
     // Weighted rollup: each check contributes (credit × weight) to the
     // numerator and (weight) to the denominator. Final readiness is
     // (sumCredit / sumWeight) × 100 so a missing viewport (weight 2.0)
     // costs twice as much as a missing font-size check (weight 1.0).
-    //
-    // Unverified checks are EXCLUDED from both numerator and
-    // denominator. They don't cost the owner any score — we honestly
-    // couldn't tell, so we don't pretend to.
-    var weightedCredit = 0, totalWeight = 0;
+    // Unverified checks are EXCLUDED from both numerator and denominator.
+    // Math lives in ./restaurant-checks.js — see accumulateRestaurantReadiness.
+    var readinessState = createRestaurantReadinessState();
 
     // Sort passes + fails + unverified in a consistent reading order:
     // failures first (most actionable), then unverified questions,
@@ -3393,22 +3390,7 @@
     results.forEach(function(entry){
       var def = entry.def;
       var result = entry.result;
-      totalCount++;
-      var w = typeof def.weight === 'number' ? def.weight : 1.0;
-
-      var credit = 0;
-      if (result.mark.cls === 'pass') {
-        passCount++;
-        credit = 1.0;
-        totalWeight += w;
-        weightedCredit += credit * w;
-      } else if (result.mark.cls === 'fail') {
-        credit = 0;
-        totalWeight += w;
-      } else {
-        // unverified: excluded from the score rollup entirely
-        unverifiedCount++;
-      }
+      accumulateRestaurantReadiness(readinessState, def, result.mark.cls);
 
       var row = document.createElement('div');
       row.className = 'priority-item ' + result.mark.cls;
@@ -3512,9 +3494,12 @@
       });
     });
 
-    var restaurantScore = totalWeight > 0
-      ? Math.round((weightedCredit / totalWeight) * 100)
-      : 0;
+    var restaurantScore = finalizeRestaurantReadinessScore(readinessState);
+    // Expose counts as locals so the downstream UI code (confidence-floor
+    // gate, summary blurb, return value) keeps referring to them by name.
+    var passCount       = readinessState.passCount;
+    var totalCount      = readinessState.totalCount;
+    var unverifiedCount = readinessState.unverifiedCount;
 
     // Confidence gate: the weighted rollup honestly excludes unverified
     // checks, but that means a site with one confirmed pass and eight
