@@ -384,17 +384,54 @@
   </div>
 </section>
 
-<!-- ============ PROOF STRIP ============ -->
-<section class="proof">
-  <div class="container proof-inner">
-    <div class="proof-label">Built for</div>
-    <div class="proof-logos" aria-label="Industries we serve">
-      <span><a href="/for/restaurants/" class="link-dashed">Restaurants&nbsp;→</a></span>
-      <span><a href="/work/off-day-collective/" class="link-dashed">Lifestyle&nbsp;brands&nbsp;→</a></span>
+<!-- ============ PRIMARY TOOL CTA ============ -->
+<!-- Replaces the old "Built for" proof strip with a full-width
+     push into the restaurant audit tool. The inline form posts
+     ?url= to /tools/audits/restaurant/, which auto-runs the
+     audit on page load so the flow is one submit → result page.
+     The score-ring mock on the right is a static SVG so there's
+     no runtime cost. -->
+<section class="tool-cta" aria-labelledby="tool-cta-heading">
+  <div class="container tool-cta-inner">
+    <div class="tool-cta-text">
+      <span class="eyebrow">Free restaurant audit · 30 seconds · no signup</span>
+      <h2 id="tool-cta-heading">Is your restaurant site<br>quietly costing you customers?</h2>
+      <p class="tool-cta-lede">Paste your URL. We'll run 23 restaurant-specific checks — mobile speed, menu legibility, online ordering, reservations, Google Business Profile, dietary markers, catering pages, and more — and score you against typical sites in your segment. You'll see the top 3 fixes ranked by impact in about 30 seconds.</p>
+      <form class="tool-cta-form" action="/tools/audits/restaurant/" method="GET" role="search">
+        <label for="tool-cta-url" class="visually-hidden">Your restaurant's website URL</label>
+        <input type="url" id="tool-cta-url" name="url" placeholder="https://yourrestaurant.com" required autocomplete="url" spellcheck="false" inputmode="url" />
+        <button type="submit">Audit my site <span aria-hidden="true">→</span></button>
+      </form>
+      <ul class="tool-cta-chips" aria-label="Restaurant types the audit is tailored for">
+        <li>Fine-dining</li>
+        <li>Casual</li>
+        <li>Fast-casual</li>
+        <li>Café</li>
+        <li>Bakery</li>
+        <li>Bar / pub</li>
+        <li>Pizzeria</li>
+        <li>Food truck</li>
+        <li>Ghost kitchen</li>
+        <li>Catering-only</li>
+      </ul>
     </div>
-  </div>
-  <div class="container proof-audit">
-    <a href="/tools/audits/restaurant/" class="proof-audit-link">Run the free restaurant website audit →</a>
+    <div class="tool-cta-visual" aria-hidden="true">
+      <div class="tool-cta-ring">
+        <svg viewBox="0 0 120 120">
+          <circle class="bg" cx="60" cy="60" r="52"></circle>
+          <circle class="fg" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="92"></circle>
+        </svg>
+        <div class="tool-cta-ring-text">
+          <span class="value">72</span>
+          <span class="max">/ 100</span>
+        </div>
+      </div>
+      <ul class="tool-cta-preview">
+        <li><strong>Overall score</strong> — mobile speed, accessibility, SEO, and restaurant-specific readiness in one number</li>
+        <li><strong>Top 3 fixes</strong> — ranked by impact for your segment, with effort + time estimates</li>
+        <li><strong>Deep report</strong> — full 23-check breakdown, printable PDF, emailed on request</li>
+      </ul>
+    </div>
   </div>
 </section>
 
