@@ -632,9 +632,20 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 .listen-card-meta{grid-area:meta;display:flex;flex-direction:column;align-items:flex-end;gap:4px;font-family:var(--font-body);font-size:12px;color:var(--stone);white-space:nowrap}
 .listen-card-meta strong{font-weight:600;color:var(--ink)}
 
-.listen-card-progress{grid-area:progress;position:relative;height:6px;border-radius:999px;background:var(--line);overflow:hidden;cursor:pointer}
-.listen-card-progress-fill{position:absolute;inset:0;width:0%;background:linear-gradient(90deg,var(--lc-accent),var(--lc-accent-dark));border-radius:inherit;transition:width 0.25s linear}
-.listen-card-progress-ticks{position:absolute;inset:0;display:flex;pointer-events:none}
+/* Outer wrapper that acts as the real hit surface — 24 px tall so
+   a thumb on mobile can grab it without precision aiming. The visible
+   bar inside stays 6 px (8 px while scrubbing so the user gets
+   tactile feedback that the drag is live). Pointer-events sit on the
+   outer wrapper. */
+.listen-card-progress{grid-area:progress;position:relative;height:24px;display:flex;align-items:center;cursor:pointer;touch-action:none;-ms-touch-action:none;user-select:none}
+.listen-card-progress::before{content:"";position:absolute;left:0;right:0;height:6px;background:var(--line);border-radius:999px;transition:height var(--t-fast) var(--ease)}
+.listen-card-progress.is-scrubbing::before,.listen-card-progress:hover::before{height:8px}
+.listen-card-progress-fill{position:absolute;left:0;width:0%;height:6px;background:linear-gradient(90deg,var(--lc-accent),var(--lc-accent-dark));border-radius:999px;transition:width 0.1s linear,height var(--t-fast) var(--ease);pointer-events:none}
+.listen-card-progress.is-scrubbing .listen-card-progress-fill,.listen-card-progress:hover .listen-card-progress-fill{height:8px}
+.listen-card-progress-fill::after{content:"";position:absolute;right:-6px;top:50%;width:12px;height:12px;border-radius:50%;background:var(--lc-accent);transform:translateY(-50%) scale(0);transition:transform var(--t-fast) var(--ease);box-shadow:0 2px 8px -2px rgba(31,78,91,0.5)}
+.listen-card-progress:hover .listen-card-progress-fill::after,.listen-card-progress.is-scrubbing .listen-card-progress-fill::after{transform:translateY(-50%) scale(1)}
+.listen-card-progress-ticks{position:absolute;left:0;right:0;height:6px;display:flex;pointer-events:none}
+.listen-card-progress.is-scrubbing .listen-card-progress-ticks,.listen-card-progress:hover .listen-card-progress-ticks{height:8px}
 .listen-card-progress-ticks span{flex:1;border-right:1px solid rgba(20,22,26,0.06)}
 .listen-card-progress-ticks span:last-child{border-right:0}
 
@@ -645,10 +656,16 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 
 .listen-card-extras{grid-area:extras;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding-top:14px;border-top:1px solid var(--line);margin-top:2px}
 .listen-card-skips{display:inline-flex;gap:6px}
-.listen-iconbtn{width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;background:transparent;border:1px solid var(--line-dark);border-radius:10px;color:var(--ink-soft);cursor:pointer;transition:all var(--t-fast) var(--ease)}
+.listen-iconbtn{position:relative;width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;background:transparent;border:1px solid var(--line-dark);border-radius:10px;color:var(--ink-soft);cursor:pointer;transition:all var(--t-fast) var(--ease)}
 .listen-iconbtn:hover:not(:disabled){border-color:var(--lc-accent);color:var(--lc-accent);background:var(--lc-tint)}
 .listen-iconbtn:disabled{opacity:0.4;cursor:not-allowed}
 .listen-iconbtn svg{width:16px;height:16px}
+/* The ±15s buttons overlay a small number inside the circular-
+   arrow icon — reads as "jump back 15 seconds" / "jump forward 15
+   seconds" without needing a label. Uses tabular-nums so "15" stays
+   aligned if it's ever swapped for "10" or "30". */
+.listen-iconbtn-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-42%);font-family:var(--font-body);font-size:9px;font-weight:700;letter-spacing:0.02em;font-variant-numeric:tabular-nums;pointer-events:none;color:currentColor}
+.listen-back15 svg,.listen-fwd15 svg{width:22px;height:22px}
 .listen-card-selects{display:inline-flex;gap:6px;align-items:center}
 .listen-select{position:relative}
 .listen-select select{appearance:none;-webkit-appearance:none;background:transparent;border:1px solid var(--line-dark);border-radius:999px;padding:6px 28px 6px 12px;font-family:var(--font-body);font-size:12px;font-weight:600;color:var(--ink-soft);cursor:pointer;transition:all var(--t-fast) var(--ease)}
@@ -702,11 +719,15 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 
 .listen-dock-track{grid-area:progress;display:flex;align-items:center;gap:10px;min-width:0}
 .listen-dock-time{font-variant-numeric:tabular-nums;font-size:11px;color:rgba(255,255,255,0.55);flex:none;font-weight:500}
-.listen-dock-progress{flex:1;height:6px;border-radius:999px;background:rgba(255,255,255,0.14);overflow:hidden;cursor:pointer;position:relative;transition:height var(--t-fast) var(--ease)}
-.listen-dock-progress:hover{height:8px}
-.listen-dock-progress-fill{height:100%;width:0%;background:linear-gradient(90deg,rgba(255,255,255,0.85),var(--white));border-radius:inherit;transition:width 0.25s linear;position:relative}
-.listen-dock-progress-fill::after{content:"";position:absolute;right:-4px;top:50%;width:8px;height:8px;border-radius:50%;background:var(--white);transform:translateY(-50%);opacity:0;transition:opacity var(--t-fast) var(--ease)}
-.listen-dock-progress:hover .listen-dock-progress-fill::after{opacity:1}
+/* Same drag-to-scrub treatment as the card — outer wrapper provides
+   a fat touch target, inner bar handles the visual fill. */
+.listen-dock-progress{flex:1;height:18px;display:flex;align-items:center;cursor:pointer;position:relative;touch-action:none;-ms-touch-action:none;user-select:none}
+.listen-dock-progress::before{content:"";position:absolute;left:0;right:0;height:4px;background:rgba(255,255,255,0.14);border-radius:999px;transition:height var(--t-fast) var(--ease)}
+.listen-dock-progress:hover::before,.listen-dock-progress.is-scrubbing::before{height:6px}
+.listen-dock-progress-fill{position:absolute;left:0;width:0%;height:4px;background:linear-gradient(90deg,rgba(255,255,255,0.85),var(--white));border-radius:999px;transition:width 0.1s linear,height var(--t-fast) var(--ease);pointer-events:none}
+.listen-dock-progress:hover .listen-dock-progress-fill,.listen-dock-progress.is-scrubbing .listen-dock-progress-fill{height:6px}
+.listen-dock-progress-fill::after{content:"";position:absolute;right:-5px;top:50%;width:10px;height:10px;border-radius:50%;background:var(--white);transform:translateY(-50%) scale(0);transition:transform var(--t-fast) var(--ease)}
+.listen-dock-progress:hover .listen-dock-progress-fill::after,.listen-dock-progress.is-scrubbing .listen-dock-progress-fill::after{transform:translateY(-50%) scale(1)}
 
 @media (max-width:480px){
   .listen-dock{bottom:12px;padding:10px 12px 12px;row-gap:6px;column-gap:10px;font-size:12px;width:calc(100vw - 20px)}
@@ -738,10 +759,25 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 @keyframes listen-blink{0%,100%{opacity:1}
 50%{opacity:0.3}
 }
-.article-body .is-reading{position:relative;background:var(--teal-tint);border-radius:6px;box-shadow:-12px 0 0 0 var(--teal-tint),12px 0 0 0 var(--teal-tint);transition:background-color 0.25s var(--ease)}
+.article-body .is-reading{position:relative;background:var(--teal-tint);border-radius:6px;box-shadow:-12px 0 0 0 var(--teal-tint),12px 0 0 0 var(--teal-tint);transition:background-color 0.25s var(--ease),box-shadow 0.25s var(--ease)}
 .article-body .is-reading::before{content:'';position:absolute;left:-16px;top:0.35em;bottom:0.35em;width:3px;background:var(--teal);border-radius:2px}
+/* Callouts (figures, data-audio-alt blocks, any visual card) already
+   carry their own background + typography; painting a tint over them
+   would obliterate the designed contrast (the .revenue-math card is
+   dark-on-cream — a teal-tint flood makes its cream text invisible).
+   Instead, replace the flood with a soft outer accent ring and a
+   pulse, so the reading position is still obvious without ruining the
+   element. Overrides reset the left-bar pseudo and the side box-
+   shadows used by the plain-text highlight. */
+.article-body .is-reading.is-reading-callout{background:transparent;box-shadow:0 0 0 2px var(--teal),0 0 0 8px var(--teal-tint);animation:listen-callout-pulse 2.4s var(--ease-out) infinite}
+.article-body .is-reading.is-reading-callout::before{display:none}
 .article-figure.is-reading{background:transparent;box-shadow:none}
 .article-figure.is-reading .funnel,.article-figure.is-reading figcaption{background:var(--teal-tint);border-radius:8px;padding:6px 10px;transition:background-color 0.25s var(--ease)}
+.article-figure.is-reading.is-reading-callout{background:transparent;box-shadow:0 0 0 2px var(--teal),0 0 0 8px var(--teal-tint)}
+.article-figure.is-reading.is-reading-callout .funnel,.article-figure.is-reading.is-reading-callout figcaption{background:transparent;padding:0}
+@keyframes listen-callout-pulse{0%,100%{box-shadow:0 0 0 2px var(--teal),0 0 0 8px var(--teal-tint)}
+50%{box-shadow:0 0 0 2px var(--teal),0 0 0 14px rgba(31,78,91,0.08)}
+}
 @media (prefers-reduced-motion:reduce){.listen-btn[data-state="playing"] svg path,.listen-card-play::after,.listen-card[data-state="loading"] .listen-card-play .icon-loading,.listen-card[data-state="playing"] .listen-card-kicker::before{animation:none}
 .article-body .is-reading{transition:none}
 .listen-dock{transition:opacity var(--t-fast) var(--ease)}
