@@ -2228,7 +2228,7 @@
           <input type="hidden" name="subtype"         id="pdfCtaTopSubtype"   value="" />
           <input type="hidden" name="overall_score"   id="pdfCtaTopScore"     value="" />
           <input type="hidden" name="shareable_link"  id="pdfCtaTopShareLink" value="" />
-          <label for="pdfCtaTopEmail" class="visually-hidden">Your email address</label>
+          <label for="pdfCtaTopEmail" class="sr-only">Your email address</label>
           <input type="email" id="pdfCtaTopEmail" name="email" required autocomplete="email" placeholder="you@yourrestaurant.com" />
           <button type="submit">Email me the PDF <span aria-hidden="true">→</span></button>
           <p class="pdf-cta-toast" id="pdfCtaTopToast" aria-live="polite"></p>
@@ -2424,7 +2424,7 @@
         <form id="auditCompareForm" class="audit-compare-form">
           <div class="compare-inputs" id="compareInputs">
             <div class="compare-input-row">
-              <label for="compareUrl0" class="visually-hidden">Competitor 1</label>
+              <label for="compareUrl0" class="sr-only">Competitor 1</label>
               <input type="url" id="compareUrl0" name="competitor0" placeholder="competitor1.com" autocomplete="off" spellcheck="false" />
             </div>
           </div>
@@ -6668,7 +6668,7 @@
       row.className = 'compare-input-row';
       var labelId = 'compareUrl' + count;
       row.innerHTML =
-        '<label for="' + labelId + '" class="visually-hidden">Competitor ' + (count + 1) + '</label>' +
+        '<label for="' + labelId + '" class="sr-only">Competitor ' + (count + 1) + '</label>' +
         '<input type="url" id="' + labelId + '" name="competitor' + count + '" placeholder="competitor' + (count + 1) + '.com" autocomplete="off" spellcheck="false" />' +
         '<button type="button" class="compare-remove" aria-label="Remove this competitor">×</button>';
       compareInputs.appendChild(row);
