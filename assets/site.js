@@ -323,10 +323,18 @@
   }
 
   /* ============ READ ALOUD ============ */
-  /* Uses the browser's native SpeechSynthesis API to read blog posts
-   * out loud. Free, no backend, no third-party service. Auto-attaches
-   * when the current page has both a #listen-btn button and an
-   * #post-body article container.
+  /* Audio edition of long-form posts. Renders a rich player card under
+   * the post dek and, in later sprints, a floating mini-dock when the
+   * card scrolls out of view. The card is built dynamically so blog
+   * posts only need the legacy #listen-btn as a mount hook / no-JS
+   * fallback.
+   *
+   * Chunk collection includes headings, paragraphs, list items, pull
+   * quotes, figcaptions, and any element carrying a data-audio-alt
+   * attribute (used to describe infographics / charts so audio stays
+   * in parity with the visual version).
+   *
+   * This sprint: Web Speech API only, new card UI, no dock yet.
    */
   (function initReadAloud(){
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
@@ -335,15 +343,117 @@
     const postBody  = document.getElementById('post-body');
     if (!listenBtn || !postBody) return;
 
-    let state = 'idle'; // 'idle' | 'playing' | 'paused'
+    /* ---- State ---- */
+    let state = 'idle'; // 'idle' | 'playing' | 'paused' | 'loading'
     let chunks = [];
     let currentIndex = 0;
     let currentElement = null;
     let heartbeatTimer = null;
 
-    // Chrome has a long-standing bug where speechSynthesis will silently
-    // stop after ~15 seconds of continuous speech. Ping pause/resume on
-    // an interval to keep it alive during long utterances.
+    // Engine selection. If the post's listen button points at a pre-
+    // rendered MP3 (via data-audio-src) we use the HTMLAudioElement +
+    // manifest path for high-quality playback. Otherwise we fall back
+    // to the Web Speech API.
+    const audioSrc = listenBtn.getAttribute('data-audio-src');
+    const manifestSrc = listenBtn.getAttribute('data-audio-manifest') || (audioSrc ? audioSrc.replace(/\.mp3$/, '.json') : null);
+    let engine = audioSrc ? 'audio' : 'speech';
+    let audioEl = null;       // HTMLAudioElement (studio mode)
+    let manifest = null;      // { chunks: [{ id, kind, headingAbove, start, end }], total }
+    let chunkTimer = null;    // rAF handle for studio-mode progress polling
+
+    /* ---- Mount the rich player card (replaces the pill button) ---- */
+    const card = buildCard();
+    listenBtn.setAttribute('data-upgraded', 'true');
+    listenBtn.setAttribute('aria-hidden', 'true');
+    listenBtn.setAttribute('tabindex', '-1');
+    // Insert the card immediately after the row that holds the legacy
+    // button. If the button sits inside a .row-center wrapper, we hop
+    // out one level so the card becomes a block-level element below
+    // the share row rather than a flex child next to it.
+    const rowParent = listenBtn.closest('.row-center') || listenBtn;
+    rowParent.parentNode.insertBefore(card.root, rowParent.nextSibling);
+
+    const playBtn    = card.root.querySelector('.listen-card-play');
+    const chapterEl  = card.root.querySelector('.listen-card-chapter em');
+    const progressEl = card.root.querySelector('.listen-card-progress');
+    const progressFill = card.root.querySelector('.listen-card-progress-fill');
+    const progressTicks = card.root.querySelector('.listen-card-progress-ticks');
+    const extrasEl   = card.root.querySelector('.listen-card-extras');
+    const prevBtn    = card.root.querySelector('.listen-prev');
+    const nextBtn    = card.root.querySelector('.listen-next');
+    const rateSelect = card.root.querySelector('.listen-rate');
+    const voiceSelect = card.root.querySelector('.listen-voice');
+
+    /* ---- User preferences (persist speed + voice across posts) ---- */
+    const PREF_KEY = 'muntin.audioPrefs.v1';
+    const prefs = loadPrefs();
+    if (rateSelect && prefs.rate) rateSelect.value = String(prefs.rate);
+    function loadPrefs() {
+      try { return JSON.parse(localStorage.getItem(PREF_KEY)) || {}; }
+      catch (_) { return {}; }
+    }
+    function savePrefs() {
+      try { localStorage.setItem(PREF_KEY, JSON.stringify(prefs)); } catch (_) {}
+    }
+    function currentRate() {
+      const v = rateSelect ? parseFloat(rateSelect.value) : 1;
+      return isFinite(v) && v > 0 ? v : 1;
+    }
+    function currentVoice() {
+      const voices = window.speechSynthesis.getVoices();
+      if (!voices || !voices.length) return null;
+      if (voiceSelect && voiceSelect.value) {
+        const chosen = voices.find((v) => v.voiceURI === voiceSelect.value);
+        if (chosen) return chosen;
+      }
+      return pickVoice();
+    }
+    function populateVoices() {
+      if (!voiceSelect) return;
+      const voices = window.speechSynthesis.getVoices() || [];
+      const english = voices.filter((v) => v.lang && v.lang.toLowerCase().startsWith('en'));
+      if (!english.length) return;
+      const preferred = pickVoice();
+      voiceSelect.replaceChildren();
+      english.forEach((v) => {
+        const opt = document.createElement('option');
+        opt.value = v.voiceURI;
+        // Strip the "Microsoft"/"Google" prefix to keep the dropdown tidy
+        const nice = v.name.replace(/^(Microsoft|Google)\s+/, '');
+        opt.textContent = nice + (v.localService === false ? ' · cloud' : '');
+        voiceSelect.appendChild(opt);
+      });
+      // Restore the saved choice if it still exists, otherwise default
+      // to whatever pickVoice() returns.
+      const target = (prefs.voiceURI && english.some((v) => v.voiceURI === prefs.voiceURI))
+        ? prefs.voiceURI
+        : (preferred && preferred.voiceURI);
+      if (target) voiceSelect.value = target;
+    }
+    populateVoices();
+
+    if (rateSelect) {
+      rateSelect.addEventListener('change', () => {
+        prefs.rate = currentRate();
+        savePrefs();
+        if (engine === 'audio' && audioEl) {
+          // HTMLAudioElement supports changing playbackRate live
+          audioEl.playbackRate = currentRate();
+        } else if (state === 'playing') {
+          // Web Speech needs a cancel/resume to pick up a new rate
+          skipTo(currentIndex);
+        }
+      });
+    }
+    if (voiceSelect) {
+      voiceSelect.addEventListener('change', () => {
+        prefs.voiceURI = voiceSelect.value;
+        savePrefs();
+        if (state === 'playing') skipTo(currentIndex);
+      });
+    }
+
+    /* ---- Chrome heartbeat (long-utterance bug workaround) ---- */
     function startHeartbeat() {
       stopHeartbeat();
       heartbeatTimer = setInterval(() => {
@@ -357,50 +467,220 @@
       if (heartbeatTimer) { clearInterval(heartbeatTimer); heartbeatTimer = null; }
     }
 
+    /* ---- Chunk collection ---- */
+    // Every spoken unit is a {text, element, kind} triple. `kind` lets
+    // the UI show a helpful chapter label (e.g. "Section", "Figure").
     function collectChunks() {
-      const nodes = postBody.querySelectorAll('h2, h3, p, li, .pull-quote');
       chunks = [];
-      nodes.forEach((el) => {
-        // Skip anything inside a non-readable container
-        if (el.closest('.inline-cta')) return;
-        if (el.closest('figure'))       return;
-        if (el.closest('.further-reading')) return;
-        if (el.closest('.sources'))     return;
-        const raw = (el.innerText || el.textContent || '').trim();
-        if (raw.length < 2) return;
-        chunks.push({ text: raw, element: el });
+
+      // Primary: headings, body paragraphs, list items, pull quotes.
+      // Secondary: figcaptions + elements that carry their own spoken
+      // alt text via data-audio-alt. The aria-label on .funnel[role=img]
+      // is also promoted so infographics get voiced.
+      const selector = [
+        'h2', 'h3',
+        'p', 'li',
+        '.pull-quote',
+        'figcaption',
+        '[data-audio-alt]',
+        '[role="img"][aria-label]'
+      ].join(',');
+
+      const seen = new Set();
+      // Figures can contain several audio-eligible nodes (a
+      // data-audio-alt on the figure, an aria-labelled graphic, a
+      // figcaption). We only want one spoken chunk per figure, and the
+      // branching below prefers data-audio-alt → aria-label → caption.
+      const seenFigures = new Set();
+      postBody.querySelectorAll(selector).forEach((el) => {
+        if (el.closest('.inline-cta'))        return;
+        if (el.closest('.further-reading'))   return;
+        if (el.closest('.sources'))           return;
+        if (seen.has(el)) return;
+        seen.add(el);
+        const fig = el.closest('figure');
+        if (fig) {
+          if (seenFigures.has(fig)) return;
+          seenFigures.add(fig);
+          // Promote the richest available audio description for this
+          // figure, regardless of which element happened to match first.
+          const override = fig.querySelector('[data-audio-alt]') || fig.closest('[data-audio-alt]');
+          const graphic  = fig.querySelector('[role="img"][aria-label]');
+          const caption  = fig.querySelector('figcaption');
+          let text = '';
+          if (override && override.getAttribute('data-audio-alt')) {
+            text = override.getAttribute('data-audio-alt').trim();
+          } else if (graphic) {
+            text = (graphic.getAttribute('aria-label') || '').trim();
+          } else if (caption) {
+            text = (caption.innerText || caption.textContent || '').trim();
+          }
+          if (text.length >= 2) chunks.push({ text, element: fig, kind: 'figure' });
+          return;
+        }
+
+        // Prefer an explicit audio override on the element itself
+        const alt = el.getAttribute('data-audio-alt');
+        let text = '';
+        let kind = 'body';
+
+        if (alt && alt.trim()) {
+          text = alt.trim();
+          kind = inferKind(el, 'figure');
+        } else if (el.matches('[role="img"][aria-label]')) {
+          text = el.getAttribute('aria-label').trim();
+          kind = 'figure';
+        } else if (el.matches('figcaption')) {
+          text = (el.innerText || el.textContent || '').trim();
+          kind = 'figure';
+        } else if (el.matches('h2, h3')) {
+          text = (el.innerText || el.textContent || '').trim();
+          kind = 'heading';
+        } else {
+          text = (el.innerText || el.textContent || '').trim();
+          kind = inferKind(el, 'body');
+        }
+
+        if (text.length < 2) return;
+        // Resolve the visually-highlighted anchor — for figure content
+        // we highlight the whole <figure> rather than just the caption
+        const anchor = el.matches('figcaption, [role="img"], [data-audio-alt]')
+          ? (el.closest('figure') || el)
+          : el;
+        chunks.push({ text, element: anchor, kind });
       });
+
+      // Preserve document order (querySelectorAll already returns in
+      // tree order; selector union preserves it too).
     }
 
-    function updateButtonLabel(label) {
-      const textEl = listenBtn.querySelector('.listen-label');
-      if (textEl) textEl.textContent = label;
-      listenBtn.setAttribute('data-state', state);
-      listenBtn.setAttribute('aria-pressed', state === 'playing' ? 'true' : 'false');
+    function inferKind(el, fallback) {
+      if (el.matches('.pull-quote')) return 'quote';
+      if (el.closest('figure'))       return 'figure';
+      if (el.matches('li'))           return 'list';
+      return fallback;
     }
 
-    function setCurrent(el) {
+    /* ---- Highlight the currently-spoken block ---- */
+    function setCurrent(el, chunk) {
       if (currentElement) currentElement.classList.remove('is-reading');
       currentElement = el;
       if (el) {
         el.classList.add('is-reading');
-        // Scroll the current paragraph into view smoothly, but only if
-        // the user hasn't scrolled away from the reading area.
+        // Update "now reading" label on the card
+        if (chapterEl) chapterEl.textContent = chapterLabel(chunk);
         const rect = el.getBoundingClientRect();
         const isOutOfView = rect.top < 80 || rect.bottom > window.innerHeight - 80;
         if (isOutOfView) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else if (chapterEl) {
+        chapterEl.textContent = '';
       }
     }
 
+    function chapterLabel(chunk) {
+      if (!chunk) return '';
+      if (chunk.kind === 'heading') return trimLabel(chunk.text);
+      if (chunk.kind === 'figure')  return 'Graphic — ' + trimLabel(chunk.text, 80);
+      if (chunk.kind === 'quote')   return 'Pull quote';
+      if (chunk.kind === 'list')    return 'List item';
+      // Use the nearest preceding heading as the section title
+      const h = nearestHeading(chunk.element);
+      return h ? trimLabel(h) : 'Reading…';
+    }
+    function trimLabel(str, max = 60) {
+      const t = (str || '').replace(/\s+/g, ' ').trim();
+      return t.length > max ? t.slice(0, max - 1) + '…' : t;
+    }
+    function nearestHeading(el) {
+      let cur = el;
+      while (cur && cur !== postBody) {
+        let prev = cur.previousElementSibling;
+        while (prev) {
+          if (prev.matches && prev.matches('h2, h3')) {
+            return (prev.innerText || prev.textContent || '').trim();
+          }
+          prev = prev.previousElementSibling;
+        }
+        cur = cur.parentElement;
+      }
+      return '';
+    }
+
+    /* ---- Voice selection ---- */
     function pickVoice() {
       const voices = window.speechSynthesis.getVoices();
       if (!voices || !voices.length) return null;
-      // Prefer natural-sounding English voices if the OS exposes them
       return voices.find((v) => v.lang && v.lang.startsWith('en') && /Natural|Google|Samantha|Alex|Daniel|Enhanced/i.test(v.name))
           || voices.find((v) => v.lang && v.lang.startsWith('en'))
           || null;
     }
 
+    /* ---- Progress + skip controls ---- */
+    function drawTicks() {
+      if (!progressTicks || !chunks.length) return;
+      // One tick per H2 boundary, so the progress bar doubles as a
+      // chapter map. Fall back to a single no-tick bar if the post has
+      // no H2s (short posts).
+      const frag = document.createDocumentFragment();
+      let lastFlex = 0;
+      for (let i = 0; i < chunks.length; i++) {
+        const isBoundary = chunks[i].kind === 'heading' && i > 0;
+        if (isBoundary) {
+          const seg = document.createElement('span');
+          seg.style.flex = String(i - lastFlex);
+          frag.appendChild(seg);
+          lastFlex = i;
+        }
+      }
+      // Final segment through the end
+      const tail = document.createElement('span');
+      tail.style.flex = String(chunks.length - lastFlex);
+      frag.appendChild(tail);
+      progressTicks.replaceChildren(frag);
+    }
+
+    function updateProgress() {
+      if (!progressFill || !chunks.length) return;
+      // Pct based on chunk index so mobile + desktop behave identically
+      const pct = Math.min(100, Math.round(((currentIndex + 1) / chunks.length) * 100));
+      progressFill.style.width = pct + '%';
+      if (progressEl) progressEl.setAttribute('aria-valuenow', String(pct));
+      if (prevBtn) prevBtn.disabled = currentIndex <= 0;
+      if (nextBtn) nextBtn.disabled = currentIndex >= chunks.length - 1;
+      updateDockProgress(pct);
+      updateDockChapter(chunks[currentIndex]);
+    }
+
+    function revealPlayerChrome() {
+      if (progressEl)  progressEl.hidden  = false;
+      if (extrasEl)    extrasEl.hidden    = false;
+    }
+
+    function skipTo(idx) {
+      if (!chunks.length) return;
+      idx = Math.max(0, Math.min(chunks.length - 1, idx));
+      if (engine === 'audio') { studioSkipTo(idx); return; }
+      window.speechSynthesis.cancel();
+      // Force into playing state so onend from the cancelled utterance
+      // doesn't double-advance us past the target chunk.
+      setState('playing');
+      startHeartbeat();
+      speakChunk(idx);
+    }
+    if (prevBtn) prevBtn.addEventListener('click', () => skipTo(currentIndex - 1));
+    if (nextBtn) nextBtn.addEventListener('click', () => skipTo(currentIndex + 1));
+
+    // Click-to-seek on the progress bar. Maps pointer x → chunk index.
+    if (progressEl) {
+      progressEl.addEventListener('click', (e) => {
+        if (!chunks.length) return;
+        const rect = progressEl.getBoundingClientRect();
+        const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        skipTo(Math.floor(ratio * chunks.length));
+      });
+    }
+
+    /* ---- Playback ---- */
     function speakChunk(idx) {
       if (idx >= chunks.length) {
         finishPlayback();
@@ -409,13 +689,14 @@
       }
       currentIndex = idx;
       const chunk = chunks[idx];
-      setCurrent(chunk.element);
+      setCurrent(chunk.element, chunk);
+      updateProgress();
 
       const utterance = new SpeechSynthesisUtterance(chunk.text);
-      utterance.rate   = 1.0;
+      utterance.rate   = currentRate();
       utterance.pitch  = 1.0;
       utterance.volume = 1.0;
-      const voice = pickVoice();
+      const voice = currentVoice();
       if (voice) utterance.voice = voice;
 
       utterance.onend = () => {
@@ -430,57 +711,345 @@
     }
 
     function startPlayback() {
+      if (engine === 'audio') return startStudioPlayback();
       if (state === 'paused') {
         window.speechSynthesis.resume();
-        state = 'playing';
-        updateButtonLabel('Pause');
+        setState('playing');
         startHeartbeat();
         return;
       }
       collectChunks();
       if (!chunks.length) return;
-      state = 'playing';
-      updateButtonLabel('Pause');
+      drawTicks();
+      revealPlayerChrome();
+      setState('playing');
       startHeartbeat();
       speakChunk(0);
       if (window.plausible) window.plausible('Post Listened');
     }
 
     function pausePlayback() {
+      if (engine === 'audio') return pauseStudioPlayback();
       if (state !== 'playing') return;
       window.speechSynthesis.pause();
-      state = 'paused';
-      updateButtonLabel('Resume');
+      setState('paused');
       stopHeartbeat();
     }
 
     function finishPlayback() {
+      if (engine === 'audio') return finishStudioPlayback();
       window.speechSynthesis.cancel();
-      state = 'idle';
+      setState('idle');
       currentIndex = 0;
-      setCurrent(null);
-      updateButtonLabel('Listen to this article');
+      setCurrent(null, null);
       stopHeartbeat();
     }
 
-    listenBtn.addEventListener('click', () => {
+    /* ---- Studio (pre-rendered MP3) engine ---- */
+    // A manifest accompanies the MP3 describing each chunk's start/end
+    // timestamp and its anchor element selector. We poll the audio
+    // element's currentTime (via rAF) and use it to highlight the right
+    // block and update progress.
+    async function ensureStudioReady() {
+      if (audioEl && manifest) return true;
+      if (!audioSrc || !manifestSrc) return false;
+      setState('loading');
+      try {
+        const [manifestRes] = await Promise.all([fetch(manifestSrc, { credentials: 'omit' })]);
+        if (!manifestRes.ok) throw new Error('manifest ' + manifestRes.status);
+        manifest = await manifestRes.json();
+      } catch (e) {
+        console.warn('[readAloud] studio manifest failed, falling back to speech', e);
+        engine = 'speech';
+        setState('idle');
+        return false;
+      }
+      if (!audioEl) {
+        audioEl = new Audio();
+        audioEl.preload = 'metadata';
+        audioEl.src = audioSrc;
+        audioEl.addEventListener('ended', finishStudioPlayback);
+        audioEl.addEventListener('error', () => {
+          console.warn('[readAloud] studio audio error, falling back to speech');
+          engine = 'speech';
+          finishStudioPlayback();
+        });
+      }
+      // Resolve manifest chunk anchors against the document. Each
+      // manifest entry has a `selector` (stable CSS path) we use to
+      // find the element to highlight. Missing anchors are OK — we
+      // simply won't highlight for that chunk.
+      if (Array.isArray(manifest.chunks)) {
+        chunks = manifest.chunks.map((c) => ({
+          text: c.text || '',
+          element: c.selector ? postBody.querySelector(c.selector) : null,
+          kind: c.kind || 'body',
+          start: c.start || 0,
+          end:   c.end   || 0,
+        }));
+      }
+      // Point the source-of-truth note at the branded reader
+      const note = card.root.querySelector('.listen-source-note');
+      if (note) {
+        note.setAttribute('data-source', 'studio');
+        note.textContent = 'Narrated in-house';
+      }
+      // Studio mode uses Audio's native rate; remove the voice picker
+      const voiceLabel = voiceSelect ? voiceSelect.closest('.listen-select') : null;
+      if (voiceLabel) voiceLabel.hidden = true;
+      return true;
+    }
+
+    async function startStudioPlayback() {
+      // Fast path: already loaded and just paused — just resume.
+      if (state === 'paused' && audioEl) {
+        audioEl.playbackRate = currentRate();
+        try { await audioEl.play(); } catch (e) { console.warn('[readAloud] resume rejected', e); return; }
+        setState('playing');
+        tickStudio();
+        return;
+      }
+      const ready = await ensureStudioReady();
+      if (!ready) {
+        // Fell back to speech; re-enter via the speech path
+        return startPlayback();
+      }
+      drawTicks();
+      revealPlayerChrome();
+      audioEl.playbackRate = currentRate();
+      try { await audioEl.play(); } catch (e) {
+        console.warn('[readAloud] audio.play rejected', e);
+        return;
+      }
+      setState('playing');
+      tickStudio();
+      if (window.plausible) window.plausible('Post Listened');
+    }
+
+    function pauseStudioPlayback() {
+      if (!audioEl) return;
+      audioEl.pause();
+      setState('paused');
+    }
+
+    function finishStudioPlayback() {
+      if (audioEl) { try { audioEl.pause(); } catch (_) {} audioEl.currentTime = 0; }
+      if (chunkTimer) cancelAnimationFrame(chunkTimer);
+      chunkTimer = null;
+      currentIndex = 0;
+      setCurrent(null, null);
+      setState('idle');
+      if (window.plausible && audioEl && audioEl.duration && audioEl.currentTime >= audioEl.duration - 0.5) {
+        window.plausible('Post Listened: Completed');
+      }
+    }
+
+    function tickStudio() {
+      if (state !== 'playing' || !audioEl) { chunkTimer = null; return; }
+      const t = audioEl.currentTime;
+      // Find the chunk whose [start, end) contains t. Chunks are sorted
+      // so a short linear scan from the current position is adequate.
+      let idx = currentIndex;
+      while (idx + 1 < chunks.length && t >= chunks[idx + 1].start) idx++;
+      while (idx > 0 && t < chunks[idx].start) idx--;
+      if (idx !== currentIndex || !currentElement) {
+        currentIndex = idx;
+        const chunk = chunks[idx];
+        if (chunk) setCurrent(chunk.element, chunk);
+      }
+      // Progress based on time, not chunk index — smoother on long posts
+      const pct = audioEl.duration ? Math.min(100, (t / audioEl.duration) * 100) : 0;
+      if (progressFill) progressFill.style.width = pct.toFixed(2) + '%';
+      if (progressEl) progressEl.setAttribute('aria-valuenow', String(Math.round(pct)));
+      updateDockProgress(pct);
+      updateDockChapter(chunks[currentIndex]);
+      if (prevBtn) prevBtn.disabled = currentIndex <= 0;
+      if (nextBtn) nextBtn.disabled = currentIndex >= chunks.length - 1;
+      chunkTimer = requestAnimationFrame(tickStudio);
+    }
+
+    // Studio-mode seek by chunk
+    function studioSkipTo(idx) {
+      if (!audioEl || !chunks.length) return;
+      idx = Math.max(0, Math.min(chunks.length - 1, idx));
+      audioEl.currentTime = chunks[idx].start || 0;
+      currentIndex = idx;
+    }
+
+    /* ---- State machine ---- */
+    function setState(next) {
+      state = next;
+      card.root.setAttribute('data-state', next);
+      const pressed = next === 'playing' ? 'true' : 'false';
+      playBtn.setAttribute('aria-pressed', pressed);
+      playBtn.setAttribute('aria-label',
+        next === 'playing' ? 'Pause audio' :
+        next === 'paused'  ? 'Resume audio' :
+                             'Play audio version');
+      // Mirror onto the legacy pill so any integration that watches it
+      // (analytics, tests) still sees the same state.
+      listenBtn.setAttribute('data-state', next);
+      listenBtn.setAttribute('aria-pressed', pressed);
+      updateDockState();
+      // Reset dismissal at the start of each new playback so returning
+      // users get the dock back on the next play.
+      if (next === 'idle') dockDismissed = false;
+      updateDockVisibility();
+    }
+
+    /* ---- Click handling ---- */
+    function toggle() {
       if      (state === 'idle')    startPlayback();
       else if (state === 'playing') pausePlayback();
       else if (state === 'paused')  startPlayback();
-    });
+    }
+    playBtn.addEventListener('click', toggle);
+    listenBtn.addEventListener('click', toggle);
 
-    // Clean up if the visitor navigates away mid-read
     window.addEventListener('beforeunload', () => {
       if (state !== 'idle') window.speechSynthesis.cancel();
     });
 
-    // Some browsers load the voices list asynchronously
-    if (window.speechSynthesis.getVoices().length === 0 && 'onvoiceschanged' in window.speechSynthesis) {
-      window.speechSynthesis.onvoiceschanged = () => { /* voices now ready */ };
+    if ('onvoiceschanged' in window.speechSynthesis) {
+      window.speechSynthesis.addEventListener('voiceschanged', populateVoices);
     }
 
-    // Expose minimal public surface for any custom stop button
-    window.MuntinReadAloud = { stop: finishPlayback };
+    /* ---- Floating dock ---- */
+    // Mirrors the card's state; only shown when (a) audio is active and
+    // (b) the card is scrolled out of view. Dismiss is "for this
+    // playback only" — on the next play it comes back.
+    const dock = buildDock();
+    document.body.appendChild(dock.root);
+    const dockPlayBtn = dock.root.querySelector('.listen-dock-play');
+    const dockClose   = dock.root.querySelector('.listen-dock-close');
+    const dockTitleEl = dock.root.querySelector('.listen-dock-title');
+    const dockChapter = dock.root.querySelector('.listen-dock-chapter');
+    const dockFill    = dock.root.querySelector('.listen-dock-progress-fill');
+    let dockDismissed = false;
+    let cardInView = true;
+
+    dockPlayBtn.addEventListener('click', toggle);
+    dockClose.addEventListener('click', () => {
+      dockDismissed = true;
+      updateDockVisibility();
+    });
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        cardInView = entries[0].isIntersecting;
+        updateDockVisibility();
+      }, { rootMargin: '-40px 0px 0px 0px', threshold: 0 });
+      io.observe(card.root);
+    }
+
+    function updateDockVisibility() {
+      const shouldShow = !dockDismissed && !cardInView && (state === 'playing' || state === 'paused');
+      dock.root.setAttribute('data-visible', shouldShow ? 'true' : 'false');
+    }
+
+    function updateDockState() {
+      dock.root.setAttribute('data-state', state);
+      dockPlayBtn.setAttribute('aria-label',
+        state === 'playing' ? 'Pause audio' : 'Resume audio');
+    }
+
+    function updateDockChapter(chunk) {
+      if (dockChapter) dockChapter.textContent = chunk ? chapterLabel(chunk) : '';
+    }
+
+    function updateDockProgress(pct) {
+      if (dockFill) dockFill.style.width = pct + '%';
+    }
+
+    // Set the dock title once — from the page <h1> — so the user can
+    // glance at it and know which post they're listening to when they've
+    // scrolled far away.
+    const postH1 = document.querySelector('.post-hero h1');
+    if (postH1 && dockTitleEl) {
+      dockTitleEl.textContent = (postH1.innerText || postH1.textContent || '').replace(/\s+/g, ' ').trim();
+    }
+
+    function buildDock() {
+      const root = document.createElement('div');
+      root.className = 'listen-dock';
+      root.setAttribute('role', 'region');
+      root.setAttribute('aria-label', 'Audio player controls');
+      root.setAttribute('data-state', 'idle');
+      root.setAttribute('data-visible', 'false');
+      root.innerHTML = `
+        <button type="button" class="listen-dock-play" aria-label="Resume audio">
+          <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.54.84l10-6.5a1 1 0 0 0 0-1.68l-10-6.5A1 1 0 0 0 8 5.5z"/></svg>
+          <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1"/><rect x="13.5" y="5" width="4" height="14" rx="1"/></svg>
+        </button>
+        <div class="listen-dock-meta">
+          <span class="listen-dock-title">Audio edition</span>
+          <span class="listen-dock-chapter"></span>
+        </div>
+        <div class="listen-dock-progress"><div class="listen-dock-progress-fill"></div></div>
+        <button type="button" class="listen-dock-close" aria-label="Hide audio controls">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+        </button>
+      `;
+      return { root };
+    }
+
+    window.MuntinReadAloud = { stop: finishPlayback, toggle };
+
+    /* ---- Card builder ---- */
+    function buildCard() {
+      const root = document.createElement('section');
+      root.className = 'listen-card';
+      root.setAttribute('data-state', 'idle');
+      root.setAttribute('aria-label', 'Audio edition of this article');
+
+      // Reading-time estimate from the post body. Average adult reading
+      // pace is ~200 wpm; TTS at 1× is closer to ~155 wpm, so we use
+      // 170 as a middle estimate that feels honest without overselling.
+      const words = (postBody.innerText || postBody.textContent || '').trim().split(/\s+/).length;
+      const minutes = Math.max(1, Math.round(words / 170));
+
+      root.innerHTML = `
+        <button type="button" class="listen-card-play" aria-pressed="false" aria-label="Play audio version">
+          <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.54.84l10-6.5a1 1 0 0 0 0-1.68l-10-6.5A1 1 0 0 0 8 5.5z"/></svg>
+          <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1"/><rect x="13.5" y="5" width="4" height="14" rx="1"/></svg>
+          <svg class="icon-loading" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 3a9 9 0 1 1-9 9" opacity="0.9"/></svg>
+        </button>
+        <div class="listen-card-body">
+          <p class="listen-card-kicker"><span>Audio edition</span></p>
+          <h2 class="listen-card-title">Prefer to listen?</h2>
+          <p class="listen-card-sub">Press play and we'll read the whole post aloud — charts and all.</p>
+        </div>
+        <div class="listen-card-meta"><strong>${minutes} min</strong><span>hands-free</span></div>
+        <div class="listen-card-progress" hidden role="progressbar" aria-label="Audio progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="listen-card-progress-fill"></div><div class="listen-card-progress-ticks"></div></div>
+        <p class="listen-card-chapter"><span class="listen-card-chapter-label">Now reading</span><em></em></p>
+        <div class="listen-card-extras" hidden>
+          <div class="listen-card-skips">
+            <button type="button" class="listen-iconbtn listen-prev" aria-label="Previous paragraph" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="19 20 9 12 19 4 19 20" fill="currentColor"/><line x1="5" y1="5" x2="5" y2="19"/></svg>
+            </button>
+            <button type="button" class="listen-iconbtn listen-next" aria-label="Next paragraph" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 4 15 12 5 20 5 4" fill="currentColor"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+            </button>
+          </div>
+          <div class="listen-card-selects">
+            <label class="listen-select" title="Playback speed"><span class="sr-only">Playback speed</span>
+              <select class="listen-rate" aria-label="Playback speed">
+                <option value="0.9">0.9×</option>
+                <option value="1" selected>1×</option>
+                <option value="1.2">1.2×</option>
+                <option value="1.5">1.5×</option>
+              </select>
+            </label>
+            <label class="listen-select" title="Reader voice"><span class="sr-only">Reader voice</span>
+              <select class="listen-voice" aria-label="Reader voice"></select>
+            </label>
+          </div>
+          <span class="listen-source-note" data-source="browser">Read by your browser</span>
+        </div>
+      `;
+
+      return { root };
+    }
   })();
 
   /* ============ INTERACTIVE CHECKLIST ============

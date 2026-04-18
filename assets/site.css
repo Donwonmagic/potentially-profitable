@@ -592,6 +592,105 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 .share-item{display:block;width:100%;text-align:left;padding:10px 14px;font-family:var(--font-body);font-size:14px;color:var(--ink);background:transparent;border:0;border-radius:8px;cursor:pointer;transition:background-color var(--t-fast) var(--ease)}
 .share-item:hover,.share-item:focus-visible{background-color:var(--cream-2);outline:none}
 .share-item.copied{color:var(--teal);font-weight:600}
+/* ============ LISTEN / AUDIO PLAYER ============
+   Two surfaces share one engine:
+   1. .listen-card — the inline "Audio edition" card rendered under the
+      dek on long-form posts. The primary listening UI.
+   2. .listen-dock — a condensed bar that slides up from the bottom of
+      the viewport once the card scrolls out of view, so the controls
+      stay within thumb reach on mobile.
+   The small pill button (.listen-btn) is retained as a hidden progressive-
+   enhancement fallback: if JS fails to upgrade the UI, the old button is
+   still clickable.
+*/
+
+.listen-card{--lc-accent:var(--teal);--lc-accent-dark:var(--teal-dark);--lc-tint:var(--teal-tint);position:relative;display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"play body meta" "play progress progress" "play chapter chapter" "extras extras extras";align-items:center;gap:14px 20px;width:100%;max-width:640px;margin:28px auto 0;padding:22px 24px;background:linear-gradient(180deg,var(--white) 0%,var(--cream) 100%);border:1px solid var(--line-dark);border-radius:20px;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 18px 40px -24px rgba(20,54,64,0.22);text-align:left}
+.listen-card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(160deg,rgba(31,78,91,0.18),rgba(31,78,91,0) 55%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.listen-card[hidden]{display:none}
+
+.listen-card-play{grid-area:play;position:relative;width:64px;height:64px;border-radius:50%;border:0;background:var(--lc-accent);color:var(--white);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 10px 24px -10px rgba(31,78,91,0.55),0 2px 0 rgba(255,255,255,0.4) inset;transition:transform var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
+.listen-card-play:hover{background:var(--lc-accent-dark);transform:translateY(-1px)}
+.listen-card-play:active{transform:translateY(0)}
+.listen-card-play:focus-visible{outline:2px solid var(--lc-accent);outline-offset:3px}
+.listen-card-play svg{width:26px;height:26px;flex:none}
+.listen-card-play .icon-pause,.listen-card-play .icon-loading{display:none}
+.listen-card[data-state="playing"] .listen-card-play .icon-play{display:none}
+.listen-card[data-state="playing"] .listen-card-play .icon-pause{display:block}
+.listen-card[data-state="loading"] .listen-card-play{background:var(--lc-accent-dark)}
+.listen-card[data-state="loading"] .listen-card-play .icon-play{display:none}
+.listen-card[data-state="loading"] .listen-card-play .icon-loading{display:block;animation:listen-spin 0.8s linear infinite}
+.listen-card-play::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--lc-accent);opacity:0;transform:scale(0.9)}
+.listen-card[data-state="playing"] .listen-card-play::after{animation:listen-pulse 2s var(--ease-out) infinite}
+
+.listen-card-body{grid-area:body;min-width:0}
+.listen-card-kicker{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--lc-accent);display:inline-flex;align-items:center;gap:8px;margin:0 0 4px}
+.listen-card-kicker::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--lc-accent);box-shadow:0 0 0 4px rgba(31,78,91,0.12)}
+.listen-card[data-state="playing"] .listen-card-kicker::before{animation:listen-blink 1.4s var(--ease) infinite}
+.listen-card-title{font-family:var(--font-display);font-weight:500;font-size:20px;line-height:1.2;color:var(--ink);margin:0 0 2px}
+.listen-card-sub{font-family:var(--font-body);font-size:13.5px;line-height:1.45;color:var(--stone);margin:0}
+
+.listen-card-meta{grid-area:meta;display:flex;flex-direction:column;align-items:flex-end;gap:4px;font-family:var(--font-body);font-size:12px;color:var(--stone);white-space:nowrap}
+.listen-card-meta strong{font-weight:600;color:var(--ink)}
+
+.listen-card-progress{grid-area:progress;position:relative;height:6px;border-radius:999px;background:var(--line);overflow:hidden;cursor:pointer}
+.listen-card-progress-fill{position:absolute;inset:0;width:0%;background:linear-gradient(90deg,var(--lc-accent),var(--lc-accent-dark));border-radius:inherit;transition:width 0.25s linear}
+.listen-card-progress-ticks{position:absolute;inset:0;display:flex;pointer-events:none}
+.listen-card-progress-ticks span{flex:1;border-right:1px solid rgba(20,22,26,0.06)}
+.listen-card-progress-ticks span:last-child{border-right:0}
+
+.listen-card-chapter{grid-area:chapter;font-family:var(--font-body);font-size:13px;color:var(--stone);line-height:1.4;min-height:1.2em;display:flex;align-items:center;gap:8px;opacity:0;transform:translateY(2px);transition:opacity var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+.listen-card[data-state="playing"] .listen-card-chapter,.listen-card[data-state="paused"] .listen-card-chapter{opacity:1;transform:translateY(0)}
+.listen-card-chapter em{font-style:normal;color:var(--ink);font-weight:500}
+.listen-card-chapter-label{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone-2)}
+
+.listen-card-extras{grid-area:extras;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding-top:14px;border-top:1px solid var(--line);margin-top:2px}
+.listen-card-skips{display:inline-flex;gap:6px}
+.listen-iconbtn{width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;background:transparent;border:1px solid var(--line-dark);border-radius:10px;color:var(--ink-soft);cursor:pointer;transition:all var(--t-fast) var(--ease)}
+.listen-iconbtn:hover:not(:disabled){border-color:var(--lc-accent);color:var(--lc-accent);background:var(--lc-tint)}
+.listen-iconbtn:disabled{opacity:0.4;cursor:not-allowed}
+.listen-iconbtn svg{width:16px;height:16px}
+.listen-card-selects{display:inline-flex;gap:6px;align-items:center}
+.listen-select{position:relative}
+.listen-select select{appearance:none;-webkit-appearance:none;background:transparent;border:1px solid var(--line-dark);border-radius:999px;padding:6px 28px 6px 12px;font-family:var(--font-body);font-size:12px;font-weight:600;color:var(--ink-soft);cursor:pointer;transition:all var(--t-fast) var(--ease)}
+.listen-select select:hover,.listen-select select:focus-visible{border-color:var(--lc-accent);color:var(--lc-accent);outline:none}
+.listen-select::after{content:"";position:absolute;right:10px;top:50%;width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-70%) rotate(45deg);color:var(--stone);pointer-events:none}
+.listen-source-note{font-family:var(--font-body);font-size:11px;color:var(--stone-2);letter-spacing:0.02em;display:inline-flex;align-items:center;gap:6px}
+.listen-source-note[data-source="studio"]{color:var(--lc-accent)}
+.listen-source-note[data-source="studio"]::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+
+@media (max-width:640px){
+  .listen-card{grid-template-columns:auto 1fr;grid-template-areas:"play body" "progress progress" "chapter chapter" "extras extras";padding:18px;gap:10px 16px}
+  .listen-card-meta{grid-area:body;align-items:flex-start;flex-direction:row;font-size:11.5px;margin-top:4px}
+  .listen-card-meta strong{margin-right:4px}
+  .listen-card-play{width:56px;height:56px}
+  .listen-card-title{font-size:18px}
+  .listen-card-extras{justify-content:flex-start}
+}
+
+/* Floating dock — appears once the inline card scrolls out of view */
+.listen-dock{position:fixed;left:50%;bottom:18px;transform:translate(-50%,120%);z-index:60;display:flex;align-items:center;gap:14px;padding:10px 14px 10px 10px;background:rgba(20,22,26,0.94);backdrop-filter:saturate(140%) blur(14px);-webkit-backdrop-filter:saturate(140%) blur(14px);border-radius:999px;border:1px solid rgba(255,255,255,0.08);box-shadow:0 24px 48px -18px rgba(0,0,0,0.55);color:var(--white);font-family:var(--font-body);font-size:13px;transition:transform var(--t-med) var(--ease-out),opacity var(--t-med) var(--ease-out);opacity:0;pointer-events:none;max-width:min(520px,calc(100vw - 24px))}
+.listen-dock[data-visible="true"]{transform:translate(-50%,0);opacity:1;pointer-events:auto}
+.listen-dock-play{width:40px;height:40px;border-radius:50%;border:0;background:var(--white);color:var(--ink);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:none;transition:transform var(--t-fast) var(--ease)}
+.listen-dock-play:hover{transform:scale(1.05)}
+.listen-dock-play .icon-pause{display:none}
+.listen-dock[data-state="playing"] .listen-dock-play .icon-play{display:none}
+.listen-dock[data-state="playing"] .listen-dock-play .icon-pause{display:block}
+.listen-dock-play svg{width:16px;height:16px}
+.listen-dock-meta{min-width:0;flex:1;display:flex;flex-direction:column;gap:2px;line-height:1.25}
+.listen-dock-title{font-weight:600;font-size:13px;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.listen-dock-chapter{font-size:11.5px;color:rgba(255,255,255,0.65);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.listen-dock-progress{width:80px;height:3px;border-radius:999px;background:rgba(255,255,255,0.2);overflow:hidden;flex:none}
+.listen-dock-progress-fill{height:100%;width:0%;background:var(--white);border-radius:inherit;transition:width 0.25s linear}
+.listen-dock-close{width:28px;height:28px;border-radius:50%;border:0;background:transparent;color:rgba(255,255,255,0.6);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex:none;transition:color var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease)}
+.listen-dock-close:hover{color:var(--white);background:rgba(255,255,255,0.08)}
+.listen-dock-close svg{width:14px;height:14px}
+@media (max-width:480px){
+  .listen-dock{bottom:12px;padding:8px 10px 8px 8px;gap:10px;font-size:12px}
+  .listen-dock-progress{display:none}
+}
+
+/* Legacy pill button — kept as no-JS fallback. JS hides it once the
+   rich player card is mounted. */
 .listen-btn{display:inline-flex;align-items:center;gap:10px;padding:10px 18px;border:1px solid var(--line-dark);border-radius:999px;font:inherit;font-size:13px;font-weight:600;color:var(--ink);background:var(--white);cursor:pointer;transition:all var(--t-fast) var(--ease)}
 .listen-btn:hover{border-color:var(--teal);background:var(--cream-2);color:var(--teal)}
 .listen-btn svg{width:16px;height:16px;flex:none}
@@ -600,13 +699,26 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 .listen-btn[data-state="playing"] svg path{animation:listen-wave 1.4s ease-in-out infinite}
 .listen-btn[data-state="playing"] svg path:nth-of-type(2){animation-delay:0.2s}
 .listen-btn[data-state="paused"]{border-color:var(--stone);background:var(--cream-2)}
+.listen-btn[data-upgraded="true"]{display:none}
 @keyframes listen-wave{0%,100%{opacity:1}
 50%{opacity:0.25}
 }
+@keyframes listen-pulse{0%{opacity:0.6;transform:scale(0.9)}
+70%{opacity:0;transform:scale(1.25)}
+100%{opacity:0;transform:scale(1.25)}
+}
+@keyframes listen-spin{to{transform:rotate(360deg)}
+}
+@keyframes listen-blink{0%,100%{opacity:1}
+50%{opacity:0.3}
+}
 .article-body .is-reading{position:relative;background:var(--teal-tint);border-radius:6px;box-shadow:-12px 0 0 0 var(--teal-tint),12px 0 0 0 var(--teal-tint);transition:background-color 0.25s var(--ease)}
 .article-body .is-reading::before{content:'';position:absolute;left:-16px;top:0.35em;bottom:0.35em;width:3px;background:var(--teal);border-radius:2px}
-@media (prefers-reduced-motion:reduce){.listen-btn[data-state="playing"] svg path{animation:none}
+.article-figure.is-reading{background:transparent;box-shadow:none}
+.article-figure.is-reading .funnel,.article-figure.is-reading figcaption{background:var(--teal-tint);border-radius:8px;padding:6px 10px;transition:background-color 0.25s var(--ease)}
+@media (prefers-reduced-motion:reduce){.listen-btn[data-state="playing"] svg path,.listen-card-play::after,.listen-card[data-state="loading"] .listen-card-play .icon-loading,.listen-card[data-state="playing"] .listen-card-kicker::before{animation:none}
 .article-body .is-reading{transition:none}
+.listen-dock{transition:opacity var(--t-fast) var(--ease)}
 }
 
 /* ============ BREADCRUMBS ============
