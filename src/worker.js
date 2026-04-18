@@ -510,41 +510,135 @@ async function handleSchemaCheck(request, env, ctx) {
     }
 
     const html = await res.text();
+    const parsed = extractJsonLd(html);
 
-    // Extract all <script type="application/ld+json"> blocks
-    const ldBlocks = [];
-    const ldRe = /<script[^>]*type\s*=\s*["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
-    let m;
-    while ((m = ldRe.exec(html)) !== null) {
-      ldBlocks.push(m[1]);
-    }
-
-    // Parse @type values from all blocks
-    const types = [];
-    const seen = {};
-    const combined = ldBlocks.join(' ');
-
-    // Single type: "@type": "Restaurant"
-    const typeRe = /"@type"\s*:\s*"([A-Za-z]+)"/g;
-    while ((m = typeRe.exec(combined)) !== null) {
-      if (!seen[m[1]]) { seen[m[1]] = true; types.push(m[1]); }
-    }
-
-    // Array type: "@type": ["Restaurant", "LocalBusiness"]
-    const arrayRe = /"@type"\s*:\s*\[([^\]]+)\]/g;
-    while ((m = arrayRe.exec(combined)) !== null) {
-      const inner = m[1].match(/"([A-Za-z]+)"/g);
-      if (inner) inner.forEach(t => {
-        t = t.replace(/"/g, '');
-        if (!seen[t]) { seen[t] = true; types.push(t); }
-      });
-    }
-
-    return jsonResponse({ ok: true, types, blockCount: ldBlocks.length }, 200);
+    return jsonResponse({
+      ok: true,
+      types: parsed.types,
+      blockCount: parsed.blockCount,
+      parseErrorCount: parsed.parseErrorCount,
+      objects: parsed.objects
+    }, 200);
   } catch (err) {
     console.error('[schema-check] exception:', err && err.stack ? err.stack : err);
     return jsonResponse({ ok: false, error: 'Failed to fetch the page' }, 502);
   }
+}
+
+// ------------------------------------------------------------
+// JSON-LD extraction — Phase F
+// ------------------------------------------------------------
+// Extracts every <script type="application/ld+json"> block and
+// parses each one properly with JSON.parse. Phase F1 replaces the
+// regex-based @type scraper with structured parsing so later
+// sprints can validate field-level content (openingHours,
+// priceRange, servesCuisine, acceptsReservations, hasMenu,
+// address/telephone for NAP consistency).
+//
+// Shape returned:
+//   {
+//     types:            string[],       // unique @type values seen
+//     blockCount:       number,         // total <script> blocks found
+//     parseErrorCount:  number,         // JSON.parse failures
+//     objects: [                        // flattened list of every
+//       {                               // schema object, including
+//         "@type":  string|string[],    // entries from @graph arrays
+//         ...                           // all other schema fields
+//       }
+//     ]
+//   }
+//
+// Regex fallback: if JSON.parse fails on a block (very common with
+// Squarespace/Wix-generated sites that double-encode entities), we
+// still scrape @type values from the raw text so legacy callers
+// that only read `types` keep working. New callers should prefer
+// `objects` for field-level work.
+function extractJsonLd(html) {
+  const blockRe = /<script[^>]*type\s*=\s*["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  const blocks = [];
+  let m;
+  while ((m = blockRe.exec(html)) !== null) blocks.push(m[1]);
+
+  const objects = [];
+  let parseErrorCount = 0;
+  for (let i = 0; i < blocks.length; i++) {
+    const raw = blocks[i].trim();
+    if (!raw) continue;
+    try {
+      const val = JSON.parse(raw);
+      // JSON-LD can be a single object, an array of objects, or
+      // an object with @graph (and sometimes nested arrays). Flatten
+      // aggressively so later validators have a simple list to walk.
+      flattenJsonLd(val, objects);
+    } catch (e) {
+      parseErrorCount++;
+      // Fall back to the old regex scrape for just @type values so
+      // parse errors don't silently delete known types from the
+      // response — the type list stays useful even when strict
+      // parsing can't fully read the block.
+      const fallback = scrapeTypesFromString(raw);
+      fallback.forEach(function(t){ objects.push({ '@type': t, _parseError: true }); });
+    }
+  }
+
+  // Collect unique @type values across all objects.
+  const seen = Object.create(null);
+  const types = [];
+  for (let k = 0; k < objects.length; k++) {
+    const t = objects[k] && objects[k]['@type'];
+    if (Array.isArray(t)) {
+      t.forEach(function(s){ if (typeof s === 'string' && !seen[s]) { seen[s] = true; types.push(s); } });
+    } else if (typeof t === 'string' && !seen[t]) {
+      seen[t] = true; types.push(t);
+    }
+  }
+  return { types: types, blockCount: blocks.length, parseErrorCount: parseErrorCount, objects: objects };
+}
+
+// Walk a parsed JSON-LD value (object, array, or object with
+// @graph) and push every schema object into `out`. Nested
+// schemas like { address: { @type: PostalAddress, ... } } are
+// intentionally NOT flattened — they stay attached to their parent
+// so validators can see the relationship (a Restaurant's address,
+// not a free-floating PostalAddress).
+function flattenJsonLd(val, out) {
+  if (!val) return;
+  if (Array.isArray(val)) {
+    val.forEach(function(v){ flattenJsonLd(v, out); });
+    return;
+  }
+  if (typeof val !== 'object') return;
+  if (Array.isArray(val['@graph'])) {
+    val['@graph'].forEach(function(v){ flattenJsonLd(v, out); });
+    // Drop the @graph wrapper itself but keep any sibling fields
+    // (rare but legal: a top-level context-only object with @graph).
+    const wrapper = {};
+    Object.keys(val).forEach(function(k){ if (k !== '@graph') wrapper[k] = val[k]; });
+    if (Object.keys(wrapper).length) out.push(wrapper);
+    return;
+  }
+  out.push(val);
+}
+
+// Regex fallback for unparseable blocks. Returns every @type
+// string seen in the raw text, single or array form.
+function scrapeTypesFromString(text) {
+  const out = [];
+  const seen = Object.create(null);
+  const typeRe = /"@type"\s*:\s*"([A-Za-z]+)"/g;
+  let m;
+  while ((m = typeRe.exec(text)) !== null) {
+    if (!seen[m[1]]) { seen[m[1]] = true; out.push(m[1]); }
+  }
+  const arrayRe = /"@type"\s*:\s*\[([^\]]+)\]/g;
+  while ((m = arrayRe.exec(text)) !== null) {
+    const inner = m[1].match(/"([A-Za-z]+)"/g);
+    if (inner) inner.forEach(function(t){
+      t = t.replace(/"/g, '');
+      if (!seen[t]) { seen[t] = true; out.push(t); }
+    });
+  }
+  return out;
 }
 
 
