@@ -2948,9 +2948,20 @@
   // base unchanged when no override applies. Used by renderPriorityChecks
   // so type-specific copy ("tasting menu" for fine dining vs "order
   // online" for fast-casual) surfaces on each type-sensitive check.
+  //
+  // Phase D: route the subtype id through canonicalSubtypeId first so
+  // legacy values (cafe-bakery, restaurant, brewery, pub, taproom,
+  // coffee-shop, etc.) resolve to the modern canonical id before the
+  // byType lookup. This lets the priority-check definitions in
+  // restaurant-checks.js use the new canonical keys (cafe, bar-pub,
+  // etc.) while old share URLs still land on the right copy.
   function resolveCheckForType(def, businessType) {
     if (!def || !def.byType || !businessType) return def;
-    var override = def.byType[businessType];
+    var canon = (typeof canonicalSubtypeId === 'function')
+      ? canonicalSubtypeId(businessType)
+      : null;
+    var key = canon || businessType;
+    var override = def.byType[key];
     if (!override) return def;
     var merged = {};
     for (var k in def) if (def.hasOwnProperty(k) && k !== 'byType') merged[k] = def[k];
