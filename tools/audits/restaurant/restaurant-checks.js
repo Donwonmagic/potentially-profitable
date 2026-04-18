@@ -914,6 +914,42 @@ function detectInstagramHandle(html) {
 // constantly (Instagram story, Messenger, texts, Slack) — every shared
 // link without og:image renders as a grey-box preview, which kills the
 // click-through that restaurant marketing actually runs on.
+// H1: Dietary / allergen signal detection. Scans visible page text
+// for dietary markers customers search for (vegan, gluten-free,
+// halal, kosher, nut-free, dairy-free, vegetarian, plant-based,
+// nut allergy) plus schema-like markers (GF badge, V badge).
+// Dedupes across a page and returns a normalized set.
+//
+// Rationale: dietary-aware eaters make decisions based on whether
+// a menu signals that they were CONSIDERED. A single 'GF' label
+// converts more dietary-restricted customers than ten generic
+// 'we can accommodate' paragraphs. This check just measures
+// whether any dietary signal is present and which.
+var DIETARY_MARKER_PATTERNS = [
+  { marker: 'vegan',           regex: /\bvegan\b|\bv(?:gn)?\s*symbol\b|\(v\)/i },
+  { marker: 'vegetarian',      regex: /\bvegetarian\b|\bplant[-\s]?based\b/i },
+  { marker: 'gluten-free',     regex: /\bgluten[-\s]?free\b|\bgluten\s+friendly\b|\bGF\b|\(gf\)/ },
+  { marker: 'dairy-free',      regex: /\bdairy[-\s]?free\b|\blactose[-\s]?free\b/i },
+  { marker: 'nut-free',        regex: /\bnut[-\s]?free\b|\bnut\s+allergy\b|\bpeanut\s+free\b/i },
+  { marker: 'halal',           regex: /\bhalal\b/i },
+  { marker: 'kosher',          regex: /\bkosher\b|\bkeeping\s+kosher\b/i },
+  { marker: 'organic',         regex: /\borganic\b|\busda\s+organic\b/i },
+  { marker: 'keto',            regex: /\bketo\b|\blow[-\s]?carb\b/i },
+  { marker: 'paleo',           regex: /\bpaleo\b/i },
+  { marker: 'allergen-notes',  regex: /\ballergen(?:s)?\b|\bcontains:\s+(?:nuts|dairy|soy|gluten)\b/i }
+];
+
+function detectDietaryMarkers(pageText) {
+  if (!pageText || typeof pageText !== 'string') return { present: false, markers: [] };
+  var found = Object.create(null);
+  for (var i = 0; i < DIETARY_MARKER_PATTERNS.length; i++) {
+    var def = DIETARY_MARKER_PATTERNS[i];
+    if (def.regex.test(pageText)) found[def.marker] = true;
+  }
+  var markers = Object.keys(found).sort();
+  return { present: markers.length > 0, markers: markers, count: markers.length };
+}
+
 function checkOgShareMeta(html) {
   if (!html || typeof html !== 'string') return {
     ogTitle: false, ogDescription: false, ogImage: false,
