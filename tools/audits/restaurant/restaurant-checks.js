@@ -610,6 +610,12 @@ var RESTAURANT_PRIORITY_CHECKS = [
         passNoteText: "We found 'Order Online' / 'Order Delivery' / 'Start a Pickup Order' copy but could not pin it to a specific platform.",
         unverifiedNote: "We scan for pizzeria-heavy platforms including Slice, Toast, ChowNow, Square, Olo, Menufy, and the major aggregators (DoorDash, Grubhub, Uber Eats). If you only take phone orders today, every online order you add is commission-free margin."
       },
+      'food-truck': {
+        impact: 'Day-of ordering from a food-truck site is less common — most trucks take cash or Venmo at the window. Where online ordering DOES matter is pre-orders for group meetups, catering/private-event inquiries, and merchandise (t-shirts, hot sauces, bean subscriptions). Missing a pre-order or inquiry form sends those leads to Instagram DMs where they get buried.',
+        pass: 'Customers can pre-order or inquire online',
+        passNote: '{detected} on your site — group pre-orders and catering inquiries land in a form instead of a DM thread your staff has to untangle.',
+        unverifiedNote: "We scan for food-truck-friendly platforms (Square, Toast) and generic inquiry forms. Day-of ordering is usually not the goal — the high-value flow is a catering/private-event inquiry form, where every submission is a \$500-\$3000 opportunity."
+      },
       'bar-pub': {
         impact: 'Bars and pubs vary — some take reservations, most take walk-ins. But even walk-in bars benefit from event bookings (private parties, tastings, brunches) and gift-card purchases. Tripleseat and similar platforms are common; a direct booking flow converts better than an email inquiry.',
         pass: 'Guests can book events or reservations online',
@@ -666,6 +672,13 @@ var RESTAURANT_PRIORITY_CHECKS = [
         passNote: 'Your menu renders as HTML — each pie can link to its own "Order This" button, and price updates ship without a designer.',
         fail: 'Your menu is a PDF or an image',
         failNote: 'PDF menus break the pizzeria ordering flow completely — they can\'t link to per-pie order buttons or pass a pre-selected pie to your online checkout. Rebuild as an HTML page with one-tap "Order This" links per item; that\'s the pattern Slice uses and it\'s why Slice is taking your orders.'
+      },
+      'food-truck': {
+        impact: 'Food-truck menus rotate constantly — today it\'s barbacoa tacos, tomorrow it\'s carnitas, next week the owner is testing a smashburger. PDFs lock you into whatever was true the last time a designer had time. HTML means the menu matches what\'s actually on the truck, updated from your phone while you prep.',
+        pass: 'Your menu opens as a real HTML page',
+        passNote: 'Your menu is an HTML page — you can update today\'s specials from your phone between prep and service.',
+        fail: 'Your menu is a PDF or an image',
+        failNote: 'Food-truck menus change faster than any other restaurant type. A PDF menu is often DAYS stale by the time someone reads it. Rebuild as HTML so the menu on your site matches the menu on the truck — ideally updated the morning of each service from your phone.'
       },
       'bar-pub': {
         impact: 'Cocktail lists and draft lists rotate constantly — a PDF list goes stale within weeks, and nobody wants to read a PDF on a phone at the bar anyway. HTML lists are faster to update, easier to share, and readable without a download.',
