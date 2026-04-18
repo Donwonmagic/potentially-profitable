@@ -578,10 +578,82 @@ function validateRestaurantSchema(objects) {
   const restaurantObjects = (objects || []).filter(isRestaurantLikeSchema);
   return {
     restaurantObjectCount: restaurantObjects.length,
-    openingHours:  validateOpeningHours(restaurantObjects),
-    priceRange:    validatePriceRange(restaurantObjects),
-    servesCuisine: validateServesCuisine(restaurantObjects)
+    openingHours:        validateOpeningHours(restaurantObjects),
+    priceRange:          validatePriceRange(restaurantObjects),
+    servesCuisine:       validateServesCuisine(restaurantObjects),
+    acceptsReservations: validateAcceptsReservations(restaurantObjects),
+    hasMenu:             validateHasMenu(restaurantObjects)
   };
+}
+
+// F4: acceptsReservations validation. schema.org permits either a
+// boolean or a Reservation type object; we accept both. Missing is
+// meaningful on fine-dining / casual-dining sites but irrelevant
+// for ghost-kitchen / food-truck — the subtype-weight map in
+// subtypes.js already encodes that, so here we just report the
+// raw signal.
+function validateAcceptsReservations(restaurantObjects) {
+  let present = false;
+  let value = null;
+  for (let i = 0; i < restaurantObjects.length; i++) {
+    const raw = restaurantObjects[i].acceptsReservations;
+    if (raw === undefined || raw === null) continue;
+    present = true;
+    value = raw;
+    break;
+  }
+  // Normalize: true/false/'True'/'https://schema.org/True' all
+  // collapse to boolean so the audit can just check `accepts`.
+  let accepts = null;
+  if (typeof value === 'boolean') accepts = value;
+  else if (typeof value === 'string') {
+    const v = value.toLowerCase().replace(/^https?:\/\/schema\.org\//, '').trim();
+    if (v === 'true')  accepts = true;
+    if (v === 'false') accepts = false;
+  } else if (value && typeof value === 'object') {
+    // A Reservation sub-object counts as "yes, we accept"
+    accepts = true;
+  }
+  return { present: present, accepts: accepts, raw: value };
+}
+
+// F4: hasMenu validation. Accepts either a URL string or a
+// { '@type': 'Menu', url: '…' } object. Validates that at least
+// one URL parses as an HTTP(S) URL — we don't fetch it here
+// (that's the crawl endpoint's job), but an unparseable URL
+// is a schema error worth flagging.
+function validateHasMenu(restaurantObjects) {
+  let present = false;
+  let urlValid = false;
+  const urls = [];
+  for (let i = 0; i < restaurantObjects.length; i++) {
+    const raw = restaurantObjects[i].hasMenu;
+    if (raw === undefined || raw === null) continue;
+    present = true;
+    pushMenu(raw);
+  }
+  function pushMenu(val) {
+    if (!val) return;
+    if (typeof val === 'string') {
+      urls.push(val);
+      if (isValidHttpUrl(val)) urlValid = true;
+      return;
+    }
+    if (Array.isArray(val)) { val.forEach(pushMenu); return; }
+    if (typeof val === 'object') {
+      // Menu sub-object — pull its `url` field (or hasPart arrays,
+      // but we keep the shape small for now).
+      if (typeof val.url === 'string') pushMenu(val.url);
+    }
+  }
+  return { present: present, urlValid: urlValid, urls: urls };
+}
+
+function isValidHttpUrl(s) {
+  try {
+    const u = new URL(s);
+    return u.protocol === 'http:' || u.protocol === 'https:';
+  } catch (e) { return false; }
 }
 
 // F3: priceRange validation. Schema.org priceRange is free-form but
