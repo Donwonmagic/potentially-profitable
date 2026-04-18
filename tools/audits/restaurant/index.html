@@ -3426,6 +3426,28 @@
       return makeResult(def, 'unverified');
     }
 
+    // ---- Dietary / allergen signal presence (Phase H1) ----
+    if (def.type === 'dietary') {
+      if (typeof detectDietaryMarkers !== 'function') return makeResult(def, 'unverified');
+      // Combine homepage pageText with any follow-up crawled pages
+      // so the check catches dietary markers on the MENU page even
+      // when the homepage itself stays marketing-y. Menu pages are
+      // typically the ones that carry the (V)/(GF) item callouts.
+      var dietText = String(pageText || '');
+      var crawl = window.__auditCrawl;
+      if (crawl && Array.isArray(crawl.pages)) {
+        for (var di = 0; di < crawl.pages.length; di++) {
+          var p = crawl.pages[di];
+          if (p && typeof p.html === 'string') dietText += '\n' + p.html;
+        }
+      }
+      var diet = detectDietaryMarkers(dietText);
+      if (diet.present) {
+        return makeResult(def, 'pass', diet.markers.map(function(m){ return { name: m }; }));
+      }
+      return makeResult(def, 'unverified');
+    }
+
     return null;
   }
 

@@ -768,6 +768,42 @@ var RESTAURANT_PRIORITY_CHECKS = [
     failNote: null,
     unverified: "Google doesn't know your site is a restaurant",
     unverifiedNote: "Your site is missing the Restaurant schema markup Google uses to show rich listings in Maps and Search. Ask your developer to add a JSON-LD block with <code>@type: \"Restaurant\"</code>, your address, opening hours, and cuisine — it's a 10-line change and meaningful for local SEO."
+  },
+  {
+    // Phase H1: Dietary / allergen signal presence. Evaluated by
+    // evaluatePriorityCheck's 'dietary' branch, which calls
+    // detectDietaryMarkers(pageText) and returns pass/unverified.
+    // Never fail — a steakhouse that doesn't mark vegan items
+    // shouldn't lose score; it's a bonus check.
+    type: 'dietary',
+    weight: 0.75,
+    anchor: '#trust',
+    effort: 'self',
+    minutes: 30,
+    impact: 'Dietary-aware guests make decisions based on whether they see themselves considered. A single "GF" mark or a "vegan" badge reliably converts more dietary-restricted customers than ten paragraphs of "we can accommodate." Even one marker signals that someone on staff has thought about cross-contamination.',
+    pass: 'Your site signals dietary options',
+    passNote: '{detected} visible on your site — guests with dietary restrictions can self-qualify without having to call and ask.',
+    fail: null,
+    failNote: null,
+    unverified: 'We didn\'t spot dietary markers — is this right?',
+    unverifiedNote: 'We scan for vegan, vegetarian, gluten-free, dairy-free, nut-free, halal, kosher, and allergen notes. If your menu marks dietary options with symbols or callouts we didn\'t recognize (or if the markers live on a menu page we didn\'t reach), let us know and we\'ll improve the detector.',
+    byType: {
+      'fine-dining': {
+        impact: 'Fine-dining tasting menus live or die on accommodating dietary restrictions — half the phone calls your host fields are "do you have gluten-free or vegetarian options?" Surfacing answers on the menu page deflects those calls and lets guests book with confidence.',
+        unverifiedNote: 'Tasting-menu dietary accommodations belong on your menu or reservations page in plain English. "Vegetarian tasting available on request" earns bookings; silence sends them to a restaurant that says so.'
+      },
+      'casual-dining': {
+        impact: 'Casual-dining guests often decide between two restaurants based on whether one of them clearly marks vegetarian or gluten-free options. The market of dietary-aware eaters is bigger than most owners realize — about 1 in 3 diners avoids at least one food group.',
+        unverifiedNote: 'Mark a few items with V / GF / DF symbols on the menu page (with a small legend). This is the single highest-ROI content change a casual-dining site can make.'
+      },
+      'bakery': {
+        impact: 'For bakeries dietary markers are not marketing — they are safety. A customer ordering a custom cake for a nut-allergic child trusts whether you\'ve thought about cross-contamination, and your site is where they decide whether to trust you with a birthday.',
+        unverifiedNote: 'Call out cross-contamination policy and clearly mark nut-free / gluten-free / dairy-free bakes on the menu page. For custom-order intake, add a dietary-restriction field to the form. This is a trust-earning change, not a marketing one.'
+      },
+      'ghost-kitchen': {
+        impact: 'Ghost-kitchen customers rarely inspect the site before ordering — but the ones who DO are usually dietary-restricted and comparing brands before committing. Clear dietary markers on your brand page move those orders into your funnel instead of a competing aggregator listing.'
+      }
+    }
   }
 ];
 
