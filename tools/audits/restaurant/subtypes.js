@@ -259,3 +259,53 @@ function getSubtype(id) {
   }
   return null;
 }
+
+// ---------------------------------------------------------------------------
+// Subtype detection — mirrors src/lib/subtypes.js (see that file for the
+// full field-level spec). Phase B3 covers only the schema.org @type path.
+// Phase B4/B5 will layer platform-hint and keyword scoring.
+//
+// signals: { schemaTypes?: string[], platforms?: string[], pageText?: string }
+// returns: { id: string|null, confidence: number, alternatives: [{id, score}] }
+// ---------------------------------------------------------------------------
+
+var SUBTYPE_SCHEMA_TYPE_WEIGHT = 10;
+
+function detectSubtype(signals) {
+  var types = (signals && Object.prototype.toString.call(signals.schemaTypes) === '[object Array]')
+    ? signals.schemaTypes : [];
+  var scores = {};
+  for (var i = 0; i < RESTAURANT_SUBTYPES.length; i++) {
+    scores[RESTAURANT_SUBTYPES[i].id] = 0;
+  }
+
+  for (var j = 0; j < types.length; j++) {
+    var t = String(types[j] || '');
+    if (!t) continue;
+    for (var k = 0; k < RESTAURANT_SUBTYPES.length; k++) {
+      var entry = RESTAURANT_SUBTYPES[k];
+      if (entry.schemaTypes.indexOf(t) >= 0) {
+        scores[entry.id] += SUBTYPE_SCHEMA_TYPE_WEIGHT;
+      }
+    }
+  }
+
+  return rankSubtypeScores(scores);
+}
+
+// Shared ranking helper. Phase B4/B5 will call this after contributing
+// their own signals to the same score map.
+function rankSubtypeScores(scores) {
+  var entries = Object.keys(scores).map(function(id){
+    return { id: id, score: scores[id] };
+  }).sort(function(a, b){ return b.score - a.score; });
+
+  var top = entries[0];
+  if (!top || top.score <= 0) {
+    return { id: null, confidence: 0, alternatives: [] };
+  }
+  var total = entries.reduce(function(sum, e){ return sum + Math.max(0, e.score); }, 0);
+  var confidence = total > 0 ? top.score / total : 0;
+  var alternatives = entries.slice(1, 3).filter(function(e){ return e.score > 0; });
+  return { id: top.id, confidence: confidence, alternatives: alternatives };
+}
