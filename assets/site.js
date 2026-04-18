@@ -354,8 +354,26 @@
     // rendered MP3 (via data-audio-src) we use the HTMLAudioElement +
     // manifest path for high-quality playback. Otherwise we fall back
     // to the Web Speech API.
-    const audioSrc = listenBtn.getAttribute('data-audio-src');
-    const manifestSrc = listenBtn.getAttribute('data-audio-manifest') || (audioSrc ? audioSrc.replace(/\.mp3$/, '.json') : null);
+    const audioSrcBase = listenBtn.getAttribute('data-audio-src');
+    // Languages available for this post. Authored list (e.g. "en,es")
+    // is the source of truth; the player card only exposes what's
+    // actually rendered. Base English lives at audio.mp3 / audio.json;
+    // additional languages live at audio.<lang>.mp3 / audio.<lang>.json.
+    const availableLanguages = (listenBtn.getAttribute('data-audio-languages') || 'en')
+      .split(',').map((s) => s.trim().toLowerCase()).filter(Boolean);
+    if (!availableLanguages.includes('en')) availableLanguages.unshift('en');
+    // User preference persists across posts via the shared prefs key.
+    let currentLanguage = 'en';
+    function audioSrcFor(lang) {
+      if (!audioSrcBase) return null;
+      return lang === 'en' ? audioSrcBase : audioSrcBase.replace(/\.mp3$/, `.${lang}.mp3`);
+    }
+    function manifestSrcFor(lang) {
+      const a = audioSrcFor(lang);
+      return a ? a.replace(/\.mp3$/, '.json') : null;
+    }
+    let audioSrc = audioSrcFor(currentLanguage);
+    let manifestSrc = manifestSrcFor(currentLanguage);
     let engine = audioSrc ? 'audio' : 'speech';
     let audioEl = null;       // HTMLAudioElement (studio mode)
     let manifest = null;      // { chunks: [{ id, kind, headingAbove, start, end }], total }
@@ -386,6 +404,36 @@
     const fwd15Btn   = card.root.querySelector('.listen-fwd15');
     const rateSelect = card.root.querySelector('.listen-rate');
     const voiceSelect = card.root.querySelector('.listen-voice');
+    const languageSelect = card.root.querySelector('.listen-language');
+    const languageSelectLabel = card.root.querySelector('.listen-language-select');
+
+    // Display names for the language picker. Shown in their own
+    // endonym (Español, not Spanish) so a Spanish-speaking reader
+    // finds their option at a glance.
+    const LANGUAGE_NAMES = {
+      en: 'English',
+      es: 'Español',
+      fr: 'Français',
+      it: 'Italiano',
+      pt: 'Português',
+      hi: 'हिन्दी',
+      ja: '日本語',
+      zh: '中文',
+    };
+
+    // Populate the language dropdown when at least one non-English
+    // language is rendered for this post. If only English exists,
+    // keep the picker hidden (no point showing a one-option select).
+    if (languageSelect && availableLanguages.length > 1) {
+      languageSelect.replaceChildren();
+      availableLanguages.forEach((code) => {
+        const opt = document.createElement('option');
+        opt.value = code;
+        opt.textContent = LANGUAGE_NAMES[code] || code.toUpperCase();
+        languageSelect.appendChild(opt);
+      });
+      if (languageSelectLabel) languageSelectLabel.hidden = false;
+    }
 
     /* ---- User preferences (persist speed + voice across posts) ---- */
     const PREF_KEY = 'muntin.audioPrefs.v1';
@@ -470,6 +518,46 @@
         savePrefs();
         if (state === 'playing') skipTo(currentIndex);
       });
+    }
+
+    // Restore saved language preference (applies across posts, so a
+    // visitor who picked Spanish on one post lands on Spanish on the
+    // next one too — as long as the next post rendered Spanish).
+    if (prefs.language && availableLanguages.includes(prefs.language)) {
+      currentLanguage = prefs.language;
+      if (languageSelect) languageSelect.value = currentLanguage;
+      applyLanguage(currentLanguage, /* userInitiated */ false);
+    }
+
+    if (languageSelect) {
+      languageSelect.addEventListener('change', () => {
+        const next = languageSelect.value;
+        if (next === currentLanguage) return;
+        prefs.language = next;
+        savePrefs();
+        applyLanguage(next, /* userInitiated */ true);
+      });
+    }
+
+    // Swap the studio-mode source to the chosen language. Stops any
+    // current playback cleanly; the next Play starts the new language
+    // from the top. (Trying to preserve position across languages
+    // would misalign the highlight because chunk timings differ.)
+    function applyLanguage(lang, userInitiated) {
+      currentLanguage = lang;
+      audioSrc = audioSrcFor(lang);
+      manifestSrc = manifestSrcFor(lang);
+      engine = audioSrc ? 'audio' : 'speech';
+      // Tear down cached audio + manifest so the next play fetches
+      // the new language's assets.
+      if (audioEl) {
+        try { audioEl.pause(); } catch (_) {}
+        try { audioEl.removeAttribute('src'); audioEl.load(); } catch (_) {}
+        audioEl = null;
+      }
+      manifest = null;
+      updateMediaSessionMetadata();
+      if (userInitiated) finishPlayback();
     }
 
     /* ---- Chrome heartbeat (long-utterance bug workaround) ---- */
@@ -1326,29 +1414,7 @@
       if (typeof navigator === 'undefined' || !('mediaSession' in navigator)) return;
       mediaSessionWired = true;
 
-      const h1   = document.querySelector('.post-hero h1');
-      const meta = document.querySelector('meta[property="article:author"]');
-      const og   = document.querySelector('meta[property="og:image"]');
-      const title  = h1 ? (h1.innerText || h1.textContent || '').replace(/\s+/g, ' ').trim()
-                        : document.title;
-      const author = (meta && meta.getAttribute('content')) || 'Muntin Digital';
-      // Per-post cover lives at /brand/og/<slug>-cover.png — derived
-      // from the existing og:image meta. Fall back to the og image
-      // itself if the cover wasn't generated for this post.
-      const ogSrc  = og ? og.getAttribute('content') : '';
-      const cover  = ogSrc.endsWith('.svg') ? ogSrc.replace(/\.svg$/, '-cover.png') : ogSrc;
-      const artwork = cover ? [
-        { src: cover, sizes: '512x512', type: 'image/png' },
-      ] : [];
-
-      try {
-        navigator.mediaSession.metadata = new MediaMetadata({
-          title,
-          artist: author + ' · Muntin Digital',
-          album: 'Audio edition',
-          artwork,
-        });
-      } catch (_) { /* MediaMetadata may not exist in older browsers */ }
+      updateMediaSessionMetadata();
 
       // Action handlers — every one of these maps to an existing
       // engine method. Wrap in try/catch because some browsers throw
@@ -1368,6 +1434,34 @@
         if (engine !== 'audio' || !audioEl || d == null || d.seekTime == null) return;
         audioEl.currentTime = Math.max(0, Math.min(audioEl.duration || 0, d.seekTime));
       });
+    }
+
+    // Fills (or refreshes) the lock-screen metadata block. Called
+    // on first play and again whenever the user switches language
+    // so the album line reflects "Audio edition · Español" etc.
+    function updateMediaSessionMetadata() {
+      if (typeof navigator === 'undefined' || !('mediaSession' in navigator)) return;
+      const h1   = document.querySelector('.post-hero h1');
+      const meta = document.querySelector('meta[property="article:author"]');
+      const og   = document.querySelector('meta[property="og:image"]');
+      const title  = h1 ? (h1.innerText || h1.textContent || '').replace(/\s+/g, ' ').trim()
+                        : document.title;
+      const author = (meta && meta.getAttribute('content')) || 'Muntin Digital';
+      const ogSrc  = og ? og.getAttribute('content') : '';
+      const cover  = ogSrc.endsWith('.svg') ? ogSrc.replace(/\.svg$/, '-cover.png') : ogSrc;
+      const artwork = cover ? [{ src: cover, sizes: '512x512', type: 'image/png' }] : [];
+      const langName = LANGUAGE_NAMES[currentLanguage] || currentLanguage.toUpperCase();
+      const albumLabel = currentLanguage === 'en'
+        ? 'Audio edition'
+        : `Audio edition · ${langName}`;
+      try {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title,
+          artist: author + ' · Muntin Digital',
+          album: albumLabel,
+          artwork,
+        });
+      } catch (_) {}
     }
 
     function syncMediaSessionState() {
@@ -1436,6 +1530,9 @@
             </button>
           </div>
           <div class="listen-card-selects">
+            <label class="listen-select listen-language-select" title="Language" hidden><span class="sr-only">Language</span>
+              <select class="listen-language" aria-label="Language"></select>
+            </label>
             <label class="listen-select" title="Playback speed"><span class="sr-only">Playback speed</span>
               <select class="listen-rate" aria-label="Playback speed">
                 <option value="0.9">0.9×</option>
