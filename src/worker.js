@@ -511,18 +511,161 @@ async function handleSchemaCheck(request, env, ctx) {
 
     const html = await res.text();
     const parsed = extractJsonLd(html);
+    const validation = validateRestaurantSchema(parsed.objects);
 
     return jsonResponse({
       ok: true,
       types: parsed.types,
       blockCount: parsed.blockCount,
       parseErrorCount: parsed.parseErrorCount,
-      objects: parsed.objects
+      objects: parsed.objects,
+      validation: validation
     }, 200);
   } catch (err) {
     console.error('[schema-check] exception:', err && err.stack ? err.stack : err);
     return jsonResponse({ ok: false, error: 'Failed to fetch the page' }, 502);
   }
+}
+
+// Schema types we treat as "Restaurant-like" for validation.
+// Matches the breadth we want the audit to recognize — a bakery
+// with @type: Bakery should still be validated against the
+// Restaurant checklist (hours, address, phone) because the audit
+// cares about local-business signal regardless of subtype.
+const RESTAURANT_LIKE_SCHEMA_TYPES = {
+  'Restaurant':           true,
+  'FastFoodRestaurant':   true,
+  'FoodEstablishment':    true,
+  'CafeOrCoffeeShop':     true,
+  'Cafe':                 true,
+  'Bakery':               true,
+  'BarOrPub':             true,
+  'Brewery':              true,
+  'Winery':               true,
+  'Distillery':           true,
+  'IceCreamShop':         true,
+  'LocalBusiness':        true,
+  'FoodService':          true
+};
+
+// Return true if an object's @type (string or array) includes any
+// Restaurant-like schema type.
+function isRestaurantLikeSchema(obj) {
+  if (!obj) return false;
+  const t = obj['@type'];
+  if (typeof t === 'string') return !!RESTAURANT_LIKE_SCHEMA_TYPES[t];
+  if (Array.isArray(t)) {
+    for (let i = 0; i < t.length; i++) {
+      if (typeof t[i] === 'string' && RESTAURANT_LIKE_SCHEMA_TYPES[t[i]]) return true;
+    }
+  }
+  return false;
+}
+
+// ------------------------------------------------------------
+// Restaurant schema validation — Phase F
+// ------------------------------------------------------------
+// Walks the parsed JSON-LD objects and reports on the fields the
+// restaurant audit cares about. Each sprint in Phase F adds a new
+// field-level check to the returned validation object:
+//
+//   F2: openingHours      — presence + 7-day completeness
+//   F3: priceRange, servesCuisine (planned)
+//   F4: acceptsReservations, hasMenu (planned)
+//   F5: hours mismatch vs Places (planned; consumer-side)
+//   F6: NAP consistency  (planned; consumer-side)
+function validateRestaurantSchema(objects) {
+  const restaurantObjects = (objects || []).filter(isRestaurantLikeSchema);
+  return {
+    restaurantObjectCount: restaurantObjects.length,
+    openingHours: validateOpeningHours(restaurantObjects)
+  };
+}
+
+// F2: openingHoursSpecification validation. Recognizes both the
+// structured form (array of OpeningHoursSpecification entries with
+// dayOfWeek/opens/closes) and the legacy `openingHours: "Mo-Fr
+// 08:00-17:00"` string form some generators still emit.
+//
+// dayCount counts distinct weekdays covered. 7 means the site
+// publishes hours for every day of the week (including explicit
+// "closed" days as opens=null + closes=null or a "Closed" marker).
+// The audit flags <7 as an actionable gap because Google's Rich
+// Results for restaurants wants every day listed.
+function validateOpeningHours(restaurantObjects) {
+  const DAY_NAMES = {
+    'monday':    'Mo', 'mo': 'Mo', 'mon': 'Mo',
+    'tuesday':   'Tu', 'tu': 'Tu', 'tue': 'Tu', 'tues': 'Tu',
+    'wednesday': 'We', 'we': 'We', 'wed': 'We',
+    'thursday':  'Th', 'th': 'Th', 'thu': 'Th', 'thur': 'Th', 'thurs': 'Th',
+    'friday':    'Fr', 'fr': 'Fr', 'fri': 'Fr',
+    'saturday':  'Sa', 'sa': 'Sa', 'sat': 'Sa',
+    'sunday':    'Su', 'su': 'Su', 'sun': 'Su'
+  };
+  const covered = Object.create(null);
+  let found = false;
+  let parseErrors = 0;
+
+  function addDay(raw) {
+    if (!raw) return;
+    const s = String(raw).toLowerCase().replace(/^https?:\/\/schema\.org\//, '').trim();
+    if (DAY_NAMES[s]) { covered[DAY_NAMES[s]] = true; return; }
+    // URI form from schema.org e.g. "https://schema.org/Monday"
+    const tail = s.split('/').pop();
+    if (DAY_NAMES[tail]) { covered[DAY_NAMES[tail]] = true; return; }
+    parseErrors++;
+  }
+
+  restaurantObjects.forEach(function(obj){
+    // Structured form: openingHoursSpecification = [{ dayOfWeek, opens, closes }]
+    const spec = obj.openingHoursSpecification;
+    if (Array.isArray(spec)) {
+      found = true;
+      spec.forEach(function(entry){
+        if (!entry) return;
+        const dow = entry.dayOfWeek;
+        if (Array.isArray(dow)) dow.forEach(addDay);
+        else addDay(dow);
+      });
+    } else if (spec && typeof spec === 'object') {
+      found = true;
+      const dow = spec.dayOfWeek;
+      if (Array.isArray(dow)) dow.forEach(addDay);
+      else addDay(dow);
+    }
+
+    // Legacy string form: openingHours: "Mo-Fr 08:00-17:00 Sa 09:00-13:00"
+    const legacy = obj.openingHours;
+    if (typeof legacy === 'string' || Array.isArray(legacy)) {
+      found = true;
+      const strs = Array.isArray(legacy) ? legacy : [legacy];
+      const rangeRe = /\b(Mo|Tu|We|Th|Fr|Sa|Su)(?:\s*-\s*(Mo|Tu|We|Th|Fr|Sa|Su))?\b/g;
+      const order = ['Mo','Tu','We','Th','Fr','Sa','Su'];
+      strs.forEach(function(s){
+        let m;
+        while ((m = rangeRe.exec(s)) !== null) {
+          const start = order.indexOf(m[1]);
+          const end   = m[2] ? order.indexOf(m[2]) : start;
+          if (start < 0 || end < 0) { parseErrors++; continue; }
+          // Wrap through Sunday if start > end (rare but legal).
+          let i = start;
+          while (true) {
+            covered[order[i]] = true;
+            if (i === end) break;
+            i = (i + 1) % 7;
+          }
+        }
+      });
+    }
+  });
+
+  const dayCount = Object.keys(covered).length;
+  return {
+    present:     found,
+    dayCount:    dayCount,
+    complete:    dayCount === 7,
+    parseErrors: parseErrors
+  };
 }
 
 // ------------------------------------------------------------
