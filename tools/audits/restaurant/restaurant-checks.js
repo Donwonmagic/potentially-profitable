@@ -662,6 +662,12 @@ var RESTAURANT_PRIORITY_CHECKS = [
         passNote: '{detected} on your site — at minimum the aggregator you partner with is one tap from the homepage. A customer scanning your menu lands in an active order funnel, not a dead-end.',
         unverifiedNote: "We scan for every major aggregator (DoorDash, Uber Eats, Grubhub, Postmates, Caviar, Deliveroo, Just Eat, Wolt, etc.) and middleware (Deliverect, Otter). Missing links to your actual aggregators is a conversion cliff — customers assume you\'re not available on their platform."
       },
+      'catering-only': {
+        impact: 'The "conversion" on a catering site is a quote request, not an online order. ezCater, CaterTrax, and Tripleseat all offer structured intake; a custom RFQ form works too, provided it captures head count, event date, dietary restrictions, delivery address, and a phone number. A site without any structured intake is routing bookings through generic email — which wins you nothing and loses you many.',
+        pass: 'Planners can request a quote online',
+        passNote: '{detected} on your site — event planners can start a quote request with their head count, date, and dietary notes in one place, instead of writing a cold email.',
+        unverifiedNote: "We scan for catering-focused platforms (ezCater, CaterTrax, Tripleseat) and generic RFQ/quote forms. A structured intake form is worth several emails of back-and-forth per booking — it\'s the single most impactful addition to a catering-only site without a booking flow."
+      },
       'bar-pub': {
         impact: 'Bars and pubs vary — some take reservations, most take walk-ins. But even walk-in bars benefit from event bookings (private parties, tastings, brunches) and gift-card purchases. Tripleseat and similar platforms are common; a direct booking flow converts better than an email inquiry.',
         pass: 'Guests can book events or reservations online',
@@ -732,6 +738,13 @@ var RESTAURANT_PRIORITY_CHECKS = [
         passNote: 'Your menu renders as HTML — easier to keep aligned with what\'s live on DoorDash / Uber Eats / Grubhub, especially when a price or item changes mid-week.',
         fail: 'Your menu is a PDF or an image',
         failNote: 'Ghost-kitchen menus drift fast across platforms. PDF menus on your site lock you into a stale snapshot; HTML menus can be kept in sync (manually or via Deliverect / Otter / your POS) with whatever is live on your aggregators.'
+      },
+      'catering-only': {
+        impact: 'Catering menus are the sales collateral — package breakdowns, per-head pricing, dietary accommodations, minimum orders, lead times. Unlike dine-in menus where a PDF is merely inconvenient, a catering PDF actually WORKS for one use case: emailing a rate sheet to a planner. The problem is that your site visitor and your planner-email flow have different needs — the planner wants a print-ready PDF; the site visitor wants a scannable HTML page. Offer both.',
+        pass: 'Your catering menu opens as a real HTML page',
+        passNote: 'Your packages and pricing render as HTML — event planners can scan them on a phone between meetings without downloading a file.',
+        fail: 'Your menu is a PDF or an image',
+        failNote: 'On a catering site a PDF menu is better than nothing, but it\'s still a drop-off point for mobile visitors. Ship an HTML package page for browse/discovery, and keep the PDF rate sheet as a download-to-share option for planners who need to forward it to clients — both audiences get what they need.'
       },
       'bar-pub': {
         impact: 'Cocktail lists and draft lists rotate constantly — a PDF list goes stale within weeks, and nobody wants to read a PDF on a phone at the bar anyway. HTML lists are faster to update, easier to share, and readable without a download.',
