@@ -1847,13 +1847,19 @@
   .pdf-cta-form button[type="submit"]:hover    { background: var(--teal, #1F4E5B); transform: translateY(-1px); }
   .pdf-cta-form button[type="submit"]:disabled { background: var(--stone-2, #9e9a89); cursor: not-allowed; transform: none; }
   .pdf-cta-toast {
-    width: 100%;
-    margin: 6px 0 0;
-    padding: 0 6px;
-    font-size: 12.5px;
+    /* Sibling of .pdf-cta-form inside the .pdf-cta flex wrapper,
+       forced onto its own row so it doesn't compete with the form's
+       input+button for horizontal space (previous version nested it
+       INSIDE the form and collapsed the email input to 0 width). */
+    flex: 0 0 100%;
+    margin: 0;
+    padding: 0 2px;
+    font-size: 13px;
     color: var(--teal, #1F4E5B);
     line-height: 1.45;
+    min-height: 0;
   }
+  .pdf-cta-toast:empty { display: none; }
   .pdf-cta-toast.is-error   { color: var(--rust, #B8541A); }
   .pdf-cta-toast.is-success { color: #1F6B3A; }
   @media (max-width: 640px) {
@@ -2231,8 +2237,8 @@
           <label for="pdfCtaTopEmail" class="sr-only">Your email address</label>
           <input type="email" id="pdfCtaTopEmail" name="email" required autocomplete="email" placeholder="you@yourrestaurant.com" />
           <button type="submit">Email me the PDF <span aria-hidden="true">→</span></button>
-          <p class="pdf-cta-toast" id="pdfCtaTopToast" aria-live="polite"></p>
         </form>
+        <p class="pdf-cta-toast" id="pdfCtaTopToast" aria-live="polite"></p>
       </aside>
 
       <!-- Per-category opportunity drill-down — the specific Lighthouse
@@ -2471,8 +2477,8 @@
       <!-- Email me the report -->
       <div class="email-report">
         <header>
-          <h3>Email me this report.</h3>
-          <p>Drop your email and I'll send over a clean copy you can forward to your team or keep for your records. I'll also throw in a personal note with the two biggest things I'd fix first — no drip, no newsletter, just a real reply.</p>
+          <h3>Email me the PDF.</h3>
+          <p>Drop your email and I'll send the full printable PDF right away, with a short note on what jumped out at me. If something in the audit warrants a longer look, I may follow up personally. No drip, no newsletter.</p>
         </header>
 
         <form id="emailReportForm" action="/api/audit-report" method="POST" class="email-form">
@@ -2497,14 +2503,14 @@
             placeholder="you@yourrestaurant.com"
             aria-label="Your email address"
           />
-          <button type="submit">Email me the report →</button>
+          <button type="submit">Email me the PDF →</button>
         </form>
         <p class="email-disclaimer">
           Your email stays with me. No list, no marketing drip.
         </p>
 
         <div class="email-report-success" id="emailReportSuccess" hidden role="status" aria-live="polite">
-          Got it — I'll email you within 24 hours with the report and the two biggest wins for your site.
+          Sent — the PDF is on its way to your inbox. Check your spam folder if you don't see it in a minute or two.
         </div>
 
         <div id="emailReportError" class="email-report-error" hidden role="alert"></div>
@@ -4249,9 +4255,23 @@
       if (detectRestaurantSchema(pageText, allUrls)) {
         return makeResult(def, 'pass');
       }
-      // Absence of schema isn't "unverified" — it's honestly missing.
-      // But we still render it as unverified tone because it's a bonus
-      // check, not a catastrophe.
+      // Phase L6 accuracy fix: when the subtype detector has
+      // already CONFIDENTLY classified this site as a specific
+      // restaurant segment (fine-dining, pizzeria, bakery, …),
+      // the absence of Restaurant JSON-LD on the page is a real
+      // gap, not an "we couldn't tell" — the previous 'unverified'
+      // state read as internally contradictory (the tool
+      // confirmed the subtype but said "Google doesn't know this
+      // is a restaurant"). Promote to 'fail' so the check tells
+      // the truth: we know what you are, Google can't read it
+      // from your page yet.
+      var bt = window.__auditScoreState && window.__auditScoreState.businessType;
+      var subtypeConfident = bt && bt.type && bt.type !== 'restaurant' &&
+                             (bt.confidence === 'high' || bt.confidence === 'medium');
+      if (subtypeConfident) return makeResult(def, 'fail');
+      // Detector hedged (generic 'restaurant' fallback or low
+      // confidence). Keep the honest "we couldn't confirm" posture
+      // so we don't flag a gap we're not sure exists.
       return makeResult(def, 'unverified');
     }
 
@@ -6575,7 +6595,7 @@
         return res.json().then(function(body){
           if (res.ok && body && body.ok) {
             if (btn) { btn.disabled = true; btn.textContent = 'Sent — check your inbox'; }
-            showToast('Sent — check your inbox for the PDF.', 'success');
+            showToast('Your PDF is on its way. If it warrants a longer look, I might follow up personally.', 'success');
             if (opts.successEl) {
               opts.successEl.hidden = false;
               if (opts.hideFormOnSuccess !== false) form.hidden = true;

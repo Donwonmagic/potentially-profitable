@@ -762,12 +762,17 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'dev',
     minutes: 20,
     impact: "Restaurant schema markup is how Google learns your hours, cuisine, and price range for local search. Restaurants with proper schema show up in the 'restaurants near me' rich results with photos and ratings — restaurants without it get a plain blue link. The difference in click-through rate is meaningful.",
-    pass: 'Google knows your site is a restaurant',
-    passNote: 'Your site publishes Restaurant schema markup (structured data that tells Google exactly what kind of business you are). This helps you show up in Google\'s "restaurants near me" Rich Results with hours, price range, and menu snippets.',
-    fail: null,
-    failNote: null,
-    unverified: "Google doesn't know your site is a restaurant",
-    unverifiedNote: "Your site is missing the Restaurant schema markup Google uses to show rich listings in Maps and Search. Ask your developer to add a JSON-LD block with <code>@type: \"Restaurant\"</code>, your address, opening hours, and cuisine — it's a 10-line change and meaningful for local SEO."
+    pass: 'Google can read your site as a restaurant',
+    passNote: 'Your site publishes Restaurant schema markup — the JSON-LD block Google reads to understand your cuisine, hours, price range, and menu URL. This is what earns you rich-result placement in "restaurants near me" searches.',
+    // Phase L6: when the audit CONFIDENTLY detected the subtype
+    // from platforms/keywords but the site still has no schema,
+    // the evaluator promotes this check from 'unverified' to 'fail'
+    // and the title/note swap to the explicit 'we know what you are,
+    // Google can't read it directly from your page yet' framing.
+    fail: 'Your site is missing Restaurant schema markup',
+    failNote: "We detected your segment from platform and keyword signals, but your site isn't publishing the JSON-LD <code>@type: \"Restaurant\"</code> block Google reads for rich-result placement. Without it Google has to infer your category rather than reading it directly — which is the difference between a rich snippet (hours, price, cuisine) and a plain blue link. It's a 10-line change for your developer.",
+    unverified: "We couldn't confirm your Restaurant schema",
+    unverifiedNote: "We couldn't confidently read whether your site publishes Restaurant JSON-LD. If you think it's there, re-audit in a minute — sometimes Lighthouse misses it. If it isn't, adding a JSON-LD block with <code>@type: \"Restaurant\"</code>, your address, opening hours, and cuisine is meaningful for local SEO."
   },
   {
     // Phase H1: Dietary / allergen signal presence. Evaluated by
