@@ -359,7 +359,8 @@
     let engine = audioSrc ? 'audio' : 'speech';
     let audioEl = null;       // HTMLAudioElement (studio mode)
     let manifest = null;      // { chunks: [{ id, kind, headingAbove, start, end }], total }
-    let chunkTimer = null;    // rAF handle for studio-mode progress polling
+    // (Studio-mode highlight tracking is event-driven off the audio
+    //  element's timeupdate + seeked events — no rAF loop needed.)
 
     /* ---- Mount the rich player card (replaces the pill button) ---- */
     const card = buildCard();
@@ -973,6 +974,16 @@
           engine = 'speech';
           finishStudioPlayback();
         });
+        // Drive the chunk highlight + progress UI from audio events
+        // rather than a rAF loop. timeupdate fires regardless of tab
+        // focus (rAF freezes when the document is hidden), so the
+        // highlight stays in sync if the user switches tabs and comes
+        // back, and the lock-screen position state keeps updating.
+        // seeked fires after every scrub for instant response.
+        audioEl.addEventListener('timeupdate', tickStudio);
+        audioEl.addEventListener('seeked',     tickStudio);
+        audioEl.addEventListener('play',       () => syncMediaSessionState());
+        audioEl.addEventListener('pause',      () => syncMediaSessionState());
       }
       // Resolve manifest chunk anchors against the document. Each
       // manifest entry has a `selector` (stable CSS path) we use to
@@ -1034,8 +1045,6 @@
 
     function finishStudioPlayback() {
       if (audioEl) { try { audioEl.pause(); } catch (_) {} audioEl.currentTime = 0; }
-      if (chunkTimer) cancelAnimationFrame(chunkTimer);
-      chunkTimer = null;
       currentIndex = 0;
       setCurrent(null, null);
       setState('idle');
@@ -1045,8 +1054,13 @@
       }
     }
 
+    // Event-driven tick: registered as the timeupdate + seeked
+    // listener on the <audio> element rather than a rAF loop. Fires
+    // ~4x/sec while playing (browser-determined), continues firing
+    // when the tab is backgrounded, and runs once on every seek for
+    // instant scrubber response.
     function tickStudio() {
-      if (state !== 'playing' || !audioEl) { chunkTimer = null; return; }
+      if (!audioEl) return;
       const t = audioEl.currentTime;
       // Find the chunk whose [start, end) contains t. Chunks are sorted
       // so a short linear scan from the current position is adequate.
@@ -1068,7 +1082,6 @@
       if (nextBtn) nextBtn.disabled = currentIndex >= chunks.length - 1;
       updateSkipButtons();
       syncMediaSessionPosition();
-      chunkTimer = requestAnimationFrame(tickStudio);
     }
 
     // Studio-mode seek by chunk. We update the highlight + dock
