@@ -1999,8 +1999,11 @@
 <!-- ============ AUDIT TOOL SCRIPT ============ -->
 <!-- Shared restaurant detection patterns, checks, and scoring. Loaded
      as a classic script so its top-level `var` declarations are
-     available to the IIFE below as globals. See ./restaurant-checks.js
-     for the module contract. -->
+     available to the IIFE below as globals. subtypes.js loads FIRST
+     because restaurant-checks.js and the IIFE both reference it via
+     globals (RESTAURANT_SUBTYPES, canonicalSubtypeId, etc.). See
+     ./restaurant-checks.js and ./subtypes.js for the module contracts. -->
+<script src="./subtypes.js"></script>
 <script src="./restaurant-checks.js"></script>
 <script>
 (function(){
