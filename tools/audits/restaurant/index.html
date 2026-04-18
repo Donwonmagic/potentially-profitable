@@ -2691,23 +2691,37 @@
       var MARGIN = 48;
       var COL_W = PAGE_W - MARGIN * 2;
 
-      // --- color palette (mirrors the brand tokens from site.css) ---
-      var COL_INK    = [20, 22, 26];
-      var COL_SOFT   = [42, 45, 51];
-      var COL_STONE  = [91, 89, 80];
-      var COL_TEAL   = [31, 78, 91];
-      var COL_RUST   = [184, 84, 26];
-      var COL_GREEN  = [31, 107, 58];
-      var COL_CREAM  = [250, 247, 242];
-      var COL_LINE   = [230, 223, 206];
+      // --- Muntin brand palette (mirrors the CSS tokens at
+      // /assets/site.css:1 one-for-one so print matches the web). Every
+      // color used by the PDF is declared here; no ad-hoc rgb arrays
+      // elsewhere in the builder. ---
+      var COL_CREAM     = [250, 247, 242]; // --cream
+      var COL_CREAM2    = [243, 238, 227]; // --cream-2
+      var COL_INK       = [ 20,  22,  26]; // --ink
+      var COL_INK_SOFT  = [ 42,  45,  51]; // --ink-soft
+      var COL_TEAL      = [ 31,  78,  91]; // --teal
+      var COL_TEAL_DK   = [ 20,  54,  64]; // --teal-dark
+      var COL_TEAL_TINT = [232, 241, 243]; // --teal-tint
+      var COL_RUST      = [184,  84,  26]; // --rust
+      var COL_STONE     = [107, 107, 107]; // --stone
+      var COL_LINE      = [232, 226, 214]; // --line
+      var COL_LINE_DK   = [212, 204, 188]; // --line-dark
+      var COL_GREEN     = [ 31, 107,  58]; // passing score band
+      var COL_AMBER     = [193, 137,  28]; // middle score band
 
       var overall    = Math.round(last.overall);
       var subtypeId  = (window.__auditResults && window.__auditResults.subtypeId) || effectiveBusinessType() || 'restaurant';
       var subtype    = BUSINESS_TYPE_DEFS[subtypeId] || { label: 'Restaurant' };
       var url        = (last.url || '').replace(/^https?:\/\//, '').replace(/\/$/, '');
       var today      = new Date().toISOString().slice(0, 10);
+      var todayPretty = formatPrettyDate(today);
+      var pageVariants = []; // 'cream' | 'ink' — consulted by the
+                             // second-pass footer loop so page chrome
+                             // adapts to its page's background.
 
-      // Shared helpers -------------------------------------------------
+      // --- color + text primitives -----------------------------------
+      // All setColor / text drawing goes through these so we can flip
+      // to embedded brand fonts later without touching every caller.
       function setColor(rgb, kind) {
         if (kind === 'fill') doc.setFillColor(rgb[0], rgb[1], rgb[2]);
         else if (kind === 'draw') doc.setDrawColor(rgb[0], rgb[1], rgb[2]);
@@ -2721,89 +2735,243 @@
         }
         return y;
       }
-      function ensureRoom(y, needed, onNewPage) {
-        if (y + needed > PAGE_H - MARGIN) {
+      function measureWrappedHeight(text, maxW, lineH) {
+        var lines = doc.splitTextToSize(String(text || ''), maxW);
+        return lines.length * lineH;
+      }
+      function ensureRoom(y, needed, onOverflow) {
+        if (y + needed > PAGE_H - MARGIN - 32) {
           doc.addPage();
-          if (typeof onNewPage === 'function') return onNewPage(MARGIN);
-          return MARGIN;
+          pageVariants.push('cream');
+          paintCreamBackground();
+          if (typeof onOverflow === 'function') return onOverflow(MARGIN + 32);
+          return MARGIN + 32;
         }
         return y;
       }
+      function paintCreamBackground() {
+        setColor(COL_CREAM, 'fill');
+        doc.rect(0, 0, PAGE_W, PAGE_H, 'F');
+      }
+      function paintInkBackground() {
+        setColor(COL_INK, 'fill');
+        doc.rect(0, 0, PAGE_W, PAGE_H, 'F');
+      }
 
-      // Running page footer (muntin brand + page number). Drawn last
-      // in an addPage hook via a tracked counter since jsPDF v2 doesn't
-      // fire a native event.
-      function stampFooter(pageNum) {
-        doc.setFont('helvetica', 'normal');
+      // --- Muntin-brand drawing helpers ------------------------------
+      // Vector of the window mark at /brand/mark/mark-teal.svg. A
+      // square stroked outline + vertical muntin at 50% + horizontal
+      // transom at ~31% matches the SVG proportions at any size so the
+      // mark renders crisply from 12pt (footer) to 32pt (hero).
+      function drawMuntinMark(x, y, size, color) {
+        var sw = Math.max(1, size * 0.10);
+        setColor(color, 'draw');
+        doc.setLineWidth(sw);
+        doc.setLineCap('butt');
+        doc.rect(x + sw/2, y + sw/2, size - sw, size - sw, 'S');
+        // Vertical muntin
+        doc.line(x + size/2, y + sw, x + size/2, y + size - sw);
+        // Horizontal transom at 31.3% from top (matches SVG anchor).
+        var th = y + size * 0.313;
+        doc.line(x + sw, th, x + size - sw, th);
+      }
+
+      // A faint repeating muntin-window pattern used as a decorative
+      // texture in the bottom-right corner of the cover and the hero
+      // closer. The jsPDF GState API supports alpha blending in 2.5.2,
+      // so we dial opacity down instead of hand-mixing colors — the
+      // effect is printer-friendly because the underlying ink density
+      // stays low.
+      function drawMuntinGridPattern(x, y, w, h, color, opacity) {
+        var tile = 96;
+        var hasG = typeof doc.GState === 'function';
+        if (hasG) {
+          try { doc.setGState(new doc.GState({ opacity: opacity })); }
+          catch (_) { hasG = false; }
+        }
+        setColor(color, 'draw');
+        doc.setLineWidth(0.75);
+        for (var gx = x; gx < x + w; gx += tile) {
+          for (var gy = y; gy < y + h; gy += tile) {
+            var tw = Math.min(tile - 8, x + w - gx - 8);
+            var tht = Math.min(tile - 8, y + h - gy - 8);
+            if (tw <= 0 || tht <= 0) continue;
+            doc.rect(gx + 4, gy + 4, tw, tht, 'S');
+            doc.line(gx + 4 + tw/2, gy + 4, gx + 4 + tw/2, gy + 4 + tht);
+            doc.line(gx + 4, gy + 4 + tht * 0.32, gx + 4 + tw, gy + 4 + tht * 0.32);
+          }
+        }
+        if (hasG) {
+          try { doc.setGState(new doc.GState({ opacity: 1 })); } catch (_) {}
+        }
+      }
+
+      // The eyebrow is the single most recognizable Muntin UI
+      // pattern: a 28pt horizontal rule + uppercase letter-spaced
+      // label in the accent color. Used above every section H1.
+      function drawEyebrow(text, x, y, color) {
+        setColor(color, 'draw');
+        doc.setLineWidth(1.5);
+        doc.line(x, y - 3, x + 28, y - 3);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(9);
+        setColor(color);
+        doc.setCharSpace(1.2);
+        doc.text(String(text || '').toUpperCase(), x + 40, y);
+        doc.setCharSpace(0);
+      }
+
+      // drawSectionHeader is the standard section intro: eyebrow +
+      // large Fraunces-style H1. Returns the y-cursor just below.
+      function drawSectionHeader(opts) {
+        var y = opts.y;
+        drawEyebrow(opts.eyebrow, MARGIN, y, opts.eyebrowColor || COL_TEAL);
+        y += 30;
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(opts.titleSize || 24);
+        setColor(COL_INK);
+        var lineH = opts.titleLeading || 28;
+        y = drawWrappedText(opts.title, MARGIN, y, COL_W, lineH);
+        return y + 8;
+      }
+
+      // A rounded-corner filled (and optionally stroked) rectangle
+      // used for callouts, fix cards, and recap chips.
+      function drawCard(x, y, w, h, fill, border, radius) {
+        radius = radius == null ? 12 : radius;
+        if (fill) {
+          setColor(fill, 'fill');
+          if (border) {
+            setColor(border, 'draw');
+            doc.setLineWidth(0.75);
+            doc.roundedRect(x, y, w, h, radius, radius, 'FD');
+          } else {
+            doc.roundedRect(x, y, w, h, radius, radius, 'F');
+          }
+        } else if (border) {
+          setColor(border, 'draw');
+          doc.setLineWidth(0.75);
+          doc.roundedRect(x, y, w, h, radius, radius, 'S');
+        }
+      }
+
+      // Score ring. Replaces the v1 polyline hack with a cleaner
+      // 48-segment arc at round-capped 6pt, color-banded by score.
+      function drawScoreMark(cx, cy, r, score) {
+        setColor(COL_LINE, 'draw');
+        doc.setLineWidth(6);
+        doc.setLineCap('round');
+        doc.circle(cx, cy, r, 'S');
+        var bandColor = score >= 90 ? COL_GREEN : score >= 50 ? COL_AMBER : COL_RUST;
+        setColor(bandColor, 'draw');
+        var sweep = Math.max(0, Math.min(1, score / 100));
+        var segs = Math.max(0, Math.round(sweep * 48));
+        for (var s = 0; s < segs; s++) {
+          var a1 = -Math.PI/2 + (s     / 48) * 2 * Math.PI;
+          var a2 = -Math.PI/2 + ((s+1) / 48) * 2 * Math.PI;
+          doc.line(
+            cx + Math.cos(a1) * r, cy + Math.sin(a1) * r,
+            cx + Math.cos(a2) * r, cy + Math.sin(a2) * r
+          );
+        }
+        doc.setLineCap('butt');
+      }
+
+      // Horizontal pillar lockup used on the cover: label on the left,
+      // numeric score on the right, thin color-banded bar below. One
+      // block per pillar, stacked.
+      function drawPillarLockup(label, score, x, y, w) {
+        doc.setFont('helvetica', 'bold');
         doc.setFontSize(8);
         setColor(COL_STONE);
-        doc.text('Muntin Digital · muntin.digital', MARGIN, PAGE_H - 24);
-        doc.text('Page ' + pageNum, PAGE_W - MARGIN, PAGE_H - 24, { align: 'right' });
+        doc.setCharSpace(0.9);
+        doc.text(String(label).toUpperCase(), x, y);
+        doc.setCharSpace(0);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(18);
+        setColor(COL_INK);
+        doc.text(String(Math.round(score)), x + w, y, { align: 'right' });
+        // Track
+        setColor(COL_LINE, 'fill');
+        doc.rect(x, y + 8, w, 3, 'F');
+        // Fill
+        var bandColor = score >= 90 ? COL_GREEN : score >= 50 ? COL_AMBER : COL_RUST;
+        setColor(bandColor, 'fill');
+        doc.rect(x, y + 8, w * Math.max(0, Math.min(1, score / 100)), 3, 'F');
+        return y + 28;
       }
 
-      // === PAGE 1: COVER =============================================
-      var y = MARGIN + 8;
-
-      // Top rule + eyebrow
-      setColor(COL_TEAL, 'draw');
-      doc.setLineWidth(2);
-      doc.line(MARGIN, y, MARGIN + 60, y);
-      y += 18;
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(10);
-      setColor(COL_TEAL);
-      doc.text('MUNTIN DIGITAL · RESTAURANT WEBSITE AUDIT', MARGIN, y);
-      y += 28;
-
-      // Title
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(28);
-      setColor(COL_INK);
-      y = drawWrappedText('Custom website audit for ' + (url || 'your site') + '.', MARGIN, y, COL_W, 32);
-      y += 6;
-
-      // Meta strip: URL · subtype · date
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(11);
-      setColor(COL_STONE);
-      doc.text('Audited · ' + (url || '—'), MARGIN, y); y += 14;
-      doc.text('Segment · ' + (subtype.label || subtypeId), MARGIN, y); y += 14;
-      doc.text('Date · ' + today, MARGIN, y); y += 28;
-
-      // Score ring (left) + pillar bars (right)
-      var ringX = MARGIN + 60, ringY = y + 60, ringR = 52;
-      doc.setLineWidth(8);
-      setColor(COL_LINE, 'draw');
-      doc.circle(ringX, ringY, ringR, 'S');
-      var scoreColor = overall >= 90 ? COL_GREEN : overall >= 50 ? [193, 137, 28] : COL_RUST;
-      setColor(scoreColor, 'draw');
-      // Approximate the arc with a short polyline — jsPDF v2 has no
-      // native arc primitive, but a filled wedge drawn via multiple
-      // line segments reads clearly at 52pt radius.
-      var sweep = Math.max(0, Math.min(1, overall / 100));
-      var segs = Math.max(6, Math.round(sweep * 48));
-      for (var s = 0; s < segs; s++) {
-        var a1 = -Math.PI / 2 + (s     / 48) * 2 * Math.PI;
-        var a2 = -Math.PI / 2 + ((s+1) / 48) * 2 * Math.PI;
-        doc.line(
-          ringX + Math.cos(a1) * ringR, ringY + Math.sin(a1) * ringR,
-          ringX + Math.cos(a2) * ringR, ringY + Math.sin(a2) * ringR
-        );
+      // Pill chip (effort tag / time estimate). Returns the x-cursor
+      // for chaining chips side-by-side.
+      function drawPill(text, x, y, bg, fg) {
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(8.5);
+        var w = doc.getTextWidth(text) + 16;
+        setColor(bg, 'fill');
+        doc.roundedRect(x, y - 9, w, 15, 7.5, 7.5, 'F');
+        setColor(fg);
+        doc.text(text, x + 8, y + 1);
+        return x + w + 6;
       }
-      // Score number in the center
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(36);
-      setColor(COL_INK);
-      doc.text(String(overall), ringX, ringY + 8, { align: 'center' });
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(10);
-      setColor(COL_STONE);
-      doc.text('/ 100', ringX, ringY + 24, { align: 'center' });
 
-      // Pillar bars on the right
-      var barX = MARGIN + 180;
-      var barW = COL_W - 180;
-      var barY = y + 12;
+      // Single source of truth for page chrome. Called once per page
+      // in the second pass after all content is rendered — this is
+      // what fixes the v1 double-stamped-footer bug.
+      function stampHeaderFooter(pageN, total, variant, showUrl) {
+        var markColor  = variant === 'ink' ? COL_CREAM : COL_TEAL;
+        var textColor  = variant === 'ink' ? COL_CREAM : COL_STONE;
+        var ruleColor  = variant === 'ink' ? COL_INK_SOFT : COL_LINE;
+        var ruleY      = PAGE_H - 36;
+
+        // Divider rule above the chrome.
+        setColor(ruleColor, 'draw');
+        doc.setLineWidth(0.5);
+        doc.line(MARGIN, ruleY, PAGE_W - MARGIN, ruleY);
+
+        // Left: small mark + "Muntin Digital · muntin.digital"
+        drawMuntinMark(MARGIN, PAGE_H - 28, 10, markColor);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        setColor(textColor);
+        doc.text('Muntin Digital · muntin.digital', MARGIN + 16, PAGE_H - 20);
+
+        // Center: URL of the audited site (content pages only).
+        if (showUrl && url) {
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(8);
+          setColor(textColor);
+          doc.text(url, PAGE_W / 2, PAGE_H - 20, { align: 'center' });
+        }
+
+        // Right: "page X / Y"
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(8);
+        setColor(variant === 'ink' ? COL_CREAM : COL_INK_SOFT);
+        doc.text(String(pageN) + '  /  ' + String(total), PAGE_W - MARGIN, PAGE_H - 20, { align: 'right' });
+      }
+
+      function formatPrettyDate(iso) {
+        try {
+          var d = new Date(iso + 'T12:00:00Z');
+          return d.toLocaleDateString('en-US', {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+          });
+        } catch (_) { return iso; }
+      }
+
+      function groupEntriesByStatus(entries) {
+        var out = { failed: [], unverified: [], passed: [] };
+        for (var i = 0; i < entries.length; i++) {
+          var cls = entries[i].result && entries[i].result.mark && entries[i].result.mark.cls;
+          if (cls === 'fail') out.failed.push(entries[i]);
+          else if (cls === 'pass') out.passed.push(entries[i]);
+          else out.unverified.push(entries[i]);
+        }
+        return out;
+      }
+
+      // Pillar data, computed once and reused across the cover and
+      // the exec summary recap strip.
       var pillars = [
         { label: 'Mobile performance',    score: last.perf },
         { label: 'Accessibility',          score: last.a11y },
@@ -2811,141 +2979,444 @@
         { label: 'SEO',                    score: last.seo },
         { label: 'Restaurant readiness',   score: last.restaurant }
       ].filter(function(p){ return typeof p.score === 'number' && !isNaN(p.score); });
-      for (var pi = 0; pi < pillars.length; pi++) {
-        var p = pillars[pi];
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(9);
-        setColor(COL_SOFT);
-        doc.text(p.label, barX, barY);
-        doc.setFont('helvetica', 'bold');
-        doc.text(String(Math.round(p.score)), barX + barW, barY, { align: 'right' });
-        barY += 6;
-        setColor(COL_LINE, 'fill');
-        doc.rect(barX, barY, barW, 3, 'F');
-        var fillColor = p.score >= 90 ? COL_GREEN : p.score >= 50 ? [193, 137, 28] : COL_RUST;
-        setColor(fillColor, 'fill');
-        doc.rect(barX, barY, barW * Math.max(0, Math.min(1, p.score / 100)), 3, 'F');
-        barY += 16;
-      }
 
-      y = Math.max(ringY + ringR + 30, barY + 20);
+      var entries = (window.__auditResults && window.__auditResults.entries) || [];
+      var grouped = groupEntriesByStatus(entries);
 
-      // Executive summary paragraph (reads from the on-page block,
-      // falls back to a composed default if the DOM node isn't set).
-      var sumBody = document.getElementById('execSummaryBody');
-      var sumText = (sumBody && sumBody.textContent || '').trim();
-      if (!sumText) {
-        sumText = 'Your ' + (subtype.label || 'restaurant').toLowerCase() +
-                  ' scores ' + overall + ' overall. See the sections below for ' +
-                  'the top fixes ranked for your segment and the full priority-check breakdown.';
-      }
+      // ================================================================
+      // PAGE 1 — COVER (editorial, cream background, mark + big title)
+      // ================================================================
+      pageVariants.push('cream');
+      paintCreamBackground();
+
+      // Brand mark top-left
+      drawMuntinMark(MARGIN, MARGIN + 4, 28, COL_TEAL);
+
+      // Eyebrow row
+      drawEyebrow('Website Audit', MARGIN, MARGIN + 84, COL_TEAL);
+
+      // Monumental title
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(11);
-      setColor(COL_TEAL);
-      doc.text('WHAT THIS MEANS', MARGIN, y); y += 14;
+      doc.setFontSize(32);
+      setColor(COL_INK);
+      var titleY = MARGIN + 120;
+      titleY = drawWrappedText('Custom website audit for ' + (url || 'your site') + '.', MARGIN, titleY, COL_W, 36);
+
+      // Thin divider rule under the title
+      setColor(COL_LINE_DK, 'draw');
+      doc.setLineWidth(0.75);
+      doc.line(MARGIN, titleY + 10, PAGE_W - MARGIN, titleY + 10);
+
+      // Meta row (date · segment · url)
       doc.setFont('helvetica', 'normal');
-      doc.setFontSize(11);
-      setColor(COL_SOFT);
-      y = drawWrappedText(sumText, MARGIN, y, COL_W, 15);
+      doc.setFontSize(9);
+      setColor(COL_STONE);
+      var metaParts = [todayPretty, (subtype.label || subtypeId), (url || '—')];
+      doc.text(metaParts.join('  ·  '), MARGIN, titleY + 28);
 
-      stampFooter(1);
+      // Score block (left) + pillar lockups (right)
+      var scoreEyebrowY = 320;
+      drawEyebrow('Overall Score', MARGIN, scoreEyebrowY, COL_TEAL);
 
-      // === PAGE 2: TOP 3 FIXES =======================================
-      doc.addPage();
-      y = MARGIN;
-      setColor(COL_RUST, 'draw');
-      doc.setLineWidth(2);
-      doc.line(MARGIN, y, MARGIN + 60, y);
-      y += 18;
+      var ringCX = MARGIN + 72;
+      var ringCY = scoreEyebrowY + 84;
+      drawScoreMark(ringCX, ringCY, 56, overall);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(10);
-      setColor(COL_RUST);
-      doc.text('TOP 3 FIXES — RANKED FOR YOUR SEGMENT', MARGIN, y); y += 24;
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(22);
+      doc.setFontSize(44);
       setColor(COL_INK);
-      doc.text('The three highest-leverage', MARGIN, y); y += 24;
-      doc.text('moves to make next.', MARGIN, y); y += 30;
-
-      var fixes = collectTopFixes();
-      if (!fixes.length) {
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(12);
-        setColor(COL_SOFT);
-        y = drawWrappedText('Your audit returned no actionable items — your site scored cleanly across every priority check. Keep an eye on the full-check breakdown on the next pages.', MARGIN, y, COL_W, 16);
-      } else {
-        for (var fi = 0; fi < fixes.length; fi++) {
-          y = drawFixBlock(fixes[fi], fi + 1, y);
-        }
-      }
-
-      stampFooter(2);
-
-      // === PAGES 3+: ALL PRIORITY CHECKS =============================
-      doc.addPage();
-      y = MARGIN;
-      setColor(COL_TEAL, 'draw');
-      doc.setLineWidth(2);
-      doc.line(MARGIN, y, MARGIN + 60, y);
-      y += 18;
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(10);
-      setColor(COL_TEAL);
-      doc.text('RESTAURANT-PRIORITY CHECKS', MARGIN, y); y += 24;
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(22);
-      setColor(COL_INK);
-      doc.text('Full ' + (window.__auditResults ? window.__auditResults.entries.length : 23) + '-check breakdown.', MARGIN, y); y += 26;
+      doc.text(String(overall), ringCX, ringCY + 14, { align: 'center' });
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(10);
       setColor(COL_STONE);
-      y = drawWrappedText('Each item below was evaluated with copy tailored to your segment. Status icons: ✓ pass · ✕ fail · ? unverified. Items marked unverified usually just mean we could not confidently see the signal on this run — they are not automatic failures.', MARGIN, y, COL_W, 13);
-      y += 10;
+      doc.text('out of 100', ringCX, ringCY + 34, { align: 'center' });
 
-      var pageNum = 3;
-      var entries = (window.__auditResults && window.__auditResults.entries) || [];
-      for (var ei = 0; ei < entries.length; ei++) {
-        y = drawCheckBlock(entries[ei], y, function(newY){
-          stampFooter(pageNum);
-          pageNum++;
-          return newY;
-        });
+      // Pillar lockups on the right
+      drawEyebrow('By Pillar', MARGIN + 224, scoreEyebrowY, COL_TEAL);
+      var plY = scoreEyebrowY + 28;
+      var plW = COL_W - 224;
+      for (var pli = 0; pli < pillars.length; pli++) {
+        plY = drawPillarLockup(pillars[pli].label, pillars[pli].score, MARGIN + 224, plY, plW);
       }
 
-      // === FINAL PAGE: NEXT STEPS ====================================
-      stampFooter(pageNum);
-      doc.addPage();
-      pageNum++;
-      y = MARGIN;
-      setColor(COL_INK, 'fill');
-      doc.rect(MARGIN, y, COL_W, 140, 'F');
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(20);
-      setColor(COL_CREAM);
-      doc.text('Want a human second opinion?', MARGIN + 24, y + 36);
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(12);
-      y = drawWrappedText('If the audit found more than you want to tackle alone, let\'s talk. Twenty minutes on Zoom, walking through your results live — no pitch, no pressure.', MARGIN + 24, y + 60, COL_W - 48, 16);
+      // Decorative muntin-grid pattern in the bottom-right corner
+      drawMuntinGridPattern(PAGE_W - 240, PAGE_H - 220, 200, 160, COL_TEAL, 0.07);
+
+      // Tagline baseline above the footer
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(11);
-      setColor(COL_CREAM);
-      doc.text('calendly.com/dongoldstein-accts/muntinconsult', MARGIN + 24, y + 6);
+      setColor(COL_TEAL);
+      doc.text('Structure brings clarity.', MARGIN, PAGE_H - 68);
 
-      y = MARGIN + 180;
+      // ================================================================
+      // PAGE 2 — EXECUTIVE SUMMARY
+      // ================================================================
+      doc.addPage();
+      pageVariants.push('cream');
+      paintCreamBackground();
+
+      var execY = drawSectionHeader({
+        eyebrow: 'Executive Summary',
+        eyebrowColor: COL_TEAL,
+        title: 'What this audit found.',
+        titleSize: 26,
+        titleLeading: 30,
+        y: MARGIN + 32
+      });
+
+      // Narrative paragraphs
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(11);
+      setColor(COL_INK_SOFT);
+      var p1 = 'Your ' + (subtype.label || 'restaurant').toLowerCase() +
+               ' at ' + (url || 'the submitted URL') +
+               ' scored ' + overall + ' out of 100 overall. ' +
+               entries.length + ' priority checks were evaluated — ' +
+               grouped.failed.length + ' flagged for action, ' +
+               grouped.unverified.length + ' need a human to confirm, ' +
+               grouped.passed.length + ' passed cleanly.';
+      execY = drawWrappedText(p1, MARGIN, execY + 8, COL_W, 16);
+
+      var p2 = 'The highest-leverage moves are on the next page. The full breakdown follows, grouped by status so you can skim failures first and confirm passes last. A scoring-method reference page lives near the end for anyone reading this who did not run the audit.';
+      execY = drawWrappedText(p2, MARGIN, execY + 8, COL_W, 16);
+
+      // Pull-quote callout with the headline takeaway
+      var headline;
+      if (grouped.failed.length === 0 && grouped.unverified.length <= 2) {
+        headline = 'Your site is in strong shape. Maintain what\u2019s working; sharpen the margins.';
+      } else if (grouped.failed.length >= 5) {
+        headline = 'There is real work to do. Start with the three top fixes \u2014 they carry the most weight.';
+      } else if (overall >= 75) {
+        headline = 'Solid foundation with a handful of fixable gaps. Ship the top three and re-run.';
+      } else {
+        headline = 'Meaningful gaps to close. The top three fixes will move the most revenue.';
+      }
+      var calloutY = execY + 24;
+      var calloutH = 80;
+      drawCard(MARGIN, calloutY, COL_W, calloutH, COL_CREAM2, null, 8);
+      // Left teal rule inside the callout card
+      setColor(COL_TEAL, 'fill');
+      doc.rect(MARGIN, calloutY, 4, calloutH, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      setColor(COL_TEAL);
+      doc.setCharSpace(1.2);
+      doc.text('THE HEADLINE', MARGIN + 24, calloutY + 22);
+      doc.setCharSpace(0);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(13);
+      setColor(COL_INK);
+      drawWrappedText(headline, MARGIN + 24, calloutY + 44, COL_W - 48, 17);
+
+      // Three-up recap: SCORE / FAILED / QUICK WIN
+      var recapY = calloutY + calloutH + 32;
+      var recapW = (COL_W - 24) / 3;
+      var recapH = 104;
+      var recapItems = [
+        { label: 'OVERALL SCORE', value: String(overall), sub: 'out of 100' },
+        { label: 'FLAGGED FIXES', value: String(grouped.failed.length), sub: grouped.failed.length === 1 ? 'action item' : 'action items' },
+        { label: 'PASSING CHECKS', value: String(grouped.passed.length) + '/' + String(entries.length), sub: 'looking good' }
+      ];
+      for (var ri = 0; ri < recapItems.length; ri++) {
+        var rx = MARGIN + ri * (recapW + 12);
+        drawCard(rx, recapY, recapW, recapH, COL_CREAM2, null, 10);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(8);
+        setColor(COL_TEAL);
+        doc.setCharSpace(1.2);
+        doc.text(recapItems[ri].label, rx + 16, recapY + 22);
+        doc.setCharSpace(0);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(30);
+        setColor(COL_INK);
+        doc.text(recapItems[ri].value, rx + 16, recapY + 62);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        setColor(COL_STONE);
+        doc.text(recapItems[ri].sub, rx + 16, recapY + 84);
+      }
+
+      // Optional: pick up any custom exec-summary copy from the page.
+      var sumBody = document.getElementById('execSummaryBody');
+      var sumText = (sumBody && sumBody.textContent || '').trim();
+      if (sumText) {
+        var noteY = recapY + recapH + 28;
+        drawEyebrow('Note from the Audit', MARGIN, noteY, COL_STONE);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10.5);
+        setColor(COL_INK_SOFT);
+        drawWrappedText(sumText, MARGIN, noteY + 22, COL_W, 15);
+      }
+
+      // ================================================================
+      // PAGE 3 — TOP 3 FIXES
+      // ================================================================
+      doc.addPage();
+      pageVariants.push('cream');
+      paintCreamBackground();
+
+      var fixY = drawSectionHeader({
+        eyebrow: 'Top 3 Fixes',
+        eyebrowColor: COL_RUST,
+        title: 'The highest-leverage moves to make next.',
+        titleSize: 26,
+        titleLeading: 30,
+        y: MARGIN + 32
+      });
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      setColor(COL_STONE);
+      fixY = drawWrappedText(
+        'Ranked by weighted impact for your ' + (subtype.label || 'restaurant').toLowerCase() + ' segment. ' +
+        'Start at the top — each card tells you what to do, why it matters, and how much effort it takes.',
+        MARGIN, fixY + 4, COL_W, 14
+      );
+      fixY += 18;
+
+      var fixes = collectTopFixes();
+      if (!fixes.length) {
+        // Zero-fix state: congratulatory card instead of an empty page
+        var noFixH = 130;
+        drawCard(MARGIN, fixY, COL_W, noFixH, COL_CREAM2, null, 10);
+        setColor(COL_GREEN, 'fill');
+        doc.circle(MARGIN + 36, fixY + 38, 14, 'F');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(16);
+        setColor(COL_CREAM);
+        doc.text('\u2713', MARGIN + 36, fixY + 44, { align: 'center' });
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(20);
+        setColor(COL_INK);
+        doc.text('No urgent fixes.', MARGIN + 64, fixY + 44);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(11);
+        setColor(COL_INK_SOFT);
+        drawWrappedText(
+          'Every priority check passed or is awaiting confirmation. Scan the full breakdown on the next pages to confirm the unverified items and keep your edge.',
+          MARGIN + 64, fixY + 72, COL_W - 80, 15
+        );
+      } else {
+        for (var fi = 0; fi < fixes.length; fi++) {
+          fixY = drawFixCard(fixes[fi], fi + 1, fixY);
+        }
+      }
+
+      // ================================================================
+      // PAGE 4+ — PRIORITY CHECKS (grouped breakdown)
+      // ================================================================
+      doc.addPage();
+      pageVariants.push('cream');
+      paintCreamBackground();
+
+      var brY = drawSectionHeader({
+        eyebrow: 'Priority Checks',
+        eyebrowColor: COL_TEAL,
+        title: 'Full ' + entries.length + '-check breakdown.',
+        titleSize: 26,
+        titleLeading: 30,
+        y: MARGIN + 32
+      });
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      setColor(COL_STONE);
+      brY = drawWrappedText(
+        'Grouped by status. Failures first (where the next wins are), unverified items next (worth a human glance), passing checks last (for reference).',
+        MARGIN, brY + 4, COL_W, 14
+      );
+      brY += 8;
+      setColor(COL_LINE_DK, 'draw');
+      doc.setLineWidth(0.5);
+      doc.line(MARGIN, brY, PAGE_W - MARGIN, brY);
+      brY += 20;
+
+      // Render each status group with its own eyebrow + item flow.
+      var groups = [
+        { key: 'failed',     label: 'Failed',       color: COL_RUST,  items: grouped.failed },
+        { key: 'unverified', label: 'Unverified',   color: COL_STONE, items: grouped.unverified },
+        { key: 'passed',     label: 'Passing',      color: COL_TEAL,  items: grouped.passed }
+      ];
+      for (var gi = 0; gi < groups.length; gi++) {
+        var g = groups[gi];
+        if (!g.items.length) continue;
+
+        // Need at least ~80pt to start a group cleanly on the page
+        brY = ensureRoom(brY, 80);
+        drawEyebrow(g.label + ' (' + g.items.length + ')', MARGIN, brY, g.color);
+        brY += 22;
+
+        for (var ii = 0; ii < g.items.length; ii++) {
+          brY = drawCheckItem(g.items[ii], brY);
+        }
+        brY += 10;
+      }
+
+      // ================================================================
+      // PAGE N — SCORING METHOD / GLOSSARY
+      // ================================================================
+      doc.addPage();
+      pageVariants.push('cream');
+      paintCreamBackground();
+
+      var mY = drawSectionHeader({
+        eyebrow: 'Method',
+        eyebrowColor: COL_TEAL,
+        title: 'How we scored it.',
+        titleSize: 26,
+        titleLeading: 30,
+        y: MARGIN + 32
+      });
+      mY += 14;
+
+      // Two-column layout: pillar descriptions (left) / score bands (right)
+      var colGap = 16;
+      var col1X = MARGIN;
+      var col2X = MARGIN + (COL_W + colGap) / 2;
+      var colW  = (COL_W - colGap) / 2;
+
+      // Left column: what each pillar measures
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(14);
       setColor(COL_INK);
-      doc.text('Run this again any time.', MARGIN, y); y += 20;
+      doc.text('What each pillar measures.', col1X, mY);
+      var pillarDefs = [
+        { label: 'MOBILE PERFORMANCE', desc: 'Lighthouse mobile speed. Core web vitals: how fast the page paints, how stable the layout is, how quickly it responds.' },
+        { label: 'ACCESSIBILITY',      desc: 'Can the site be used by everyone, including with assistive tech. Contrast, labels, landmarks, keyboard paths.' },
+        { label: 'BEST PRACTICES',     desc: 'Modern security and web hygiene. HTTPS, no console errors, safe deprecated-API use, correct image sizing.' },
+        { label: 'SEO',                desc: 'How discoverable you are in search. Meta tags, link targets, structured data, crawlability of key pages.' },
+        { label: 'RESTAURANT READINESS', desc: 'The muntin-specific layer: menu presence, reservations/ordering, hours, directions, review signals — what converts a search into a seat.' }
+      ];
+      var plDescY = mY + 22;
+      for (var di = 0; di < pillarDefs.length; di++) {
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(8);
+        setColor(COL_TEAL);
+        doc.setCharSpace(1);
+        doc.text(pillarDefs[di].label, col1X, plDescY);
+        doc.setCharSpace(0);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9.5);
+        setColor(COL_INK_SOFT);
+        plDescY = drawWrappedText(pillarDefs[di].desc, col1X, plDescY + 14, colW, 13);
+        plDescY += 14;
+      }
+
+      // Right column: score bands + re-run note
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(14);
+      setColor(COL_INK);
+      doc.text('How to read the score.', col2X, mY);
+      var bands = [
+        { color: COL_GREEN, range: '90 – 100', label: 'Strong.',      desc: 'Maintain what\u2019s working. Reruns will confirm you haven\u2019t regressed.' },
+        { color: COL_AMBER, range: '50 – 89',  label: 'Fix targets.', desc: 'Where your next wins live. Most sites spend the most time here.' },
+        { color: COL_RUST,  range: '0 – 49',   label: 'Urgent.',      desc: 'These are costing you customers right now. Prioritize.' }
+      ];
+      var bandY = mY + 22;
+      for (var bi = 0; bi < bands.length; bi++) {
+        setColor(bands[bi].color, 'fill');
+        doc.rect(col2X, bandY - 9, 12, 12, 'F');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10);
+        setColor(COL_INK);
+        doc.text(bands[bi].range + '   \u00B7   ' + bands[bi].label, col2X + 20, bandY);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9.5);
+        setColor(COL_INK_SOFT);
+        bandY = drawWrappedText(bands[bi].desc, col2X + 20, bandY + 14, colW - 20, 13);
+        bandY += 14;
+      }
+
+      bandY += 10;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      setColor(COL_INK);
+      doc.text('Re-running the audit.', col2X, bandY);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9.5);
+      setColor(COL_INK_SOFT);
+      bandY = drawWrappedText(
+        'The tool is free and open. Re-run it any time you ship a fix — the shareable ?url= link auto-runs on a fresh visit, so you can bookmark it as your before-and-after.',
+        col2X, bandY + 18, colW, 13
+      );
+
+      // ================================================================
+      // FINAL PAGE — NEXT STEPS HERO (full-bleed ink)
+      // ================================================================
+      doc.addPage();
+      pageVariants.push('ink');
+      paintInkBackground();
+
+      // Cream mark top-left
+      drawMuntinMark(MARGIN, MARGIN + 4, 32, COL_CREAM);
+
+      // Eyebrow (cream variant — rule + label both cream on ink)
+      drawEyebrow('Next Steps', MARGIN, MARGIN + 112, COL_CREAM);
+
+      // Hero H1
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(30);
+      setColor(COL_CREAM);
+      var hY = MARGIN + 148;
+      hY = drawWrappedText('Want a human second opinion?', MARGIN, hY, COL_W, 34);
+
+      // Hero body
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(11.5);
+      setColor(COL_LINE);
+      hY = drawWrappedText(
+        'If the audit surfaced more than you want to tackle alone, let\u2019s talk. Twenty minutes on Zoom, walking through your results live \u2014 no pitch, no pressure. One set of hands, restaurant-savvy, here to untangle the structural stuff so your site starts earning.',
+        MARGIN, hY + 18, COL_W, 17
+      );
+
+      // Pill button
+      var btnX = MARGIN, btnY = hY + 32, btnW = 300, btnH = 44;
+      setColor(COL_CREAM, 'fill');
+      doc.roundedRect(btnX, btnY, btnW, btnH, 22, 22, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      setColor(COL_INK);
+      doc.text('Book a 20-minute call  \u2192', btnX + btnW / 2, btnY + 27, { align: 'center' });
+      try { doc.link(btnX, btnY, btnW, btnH, { url: 'https://calendly.com/dongoldstein-accts/muntinconsult' }); } catch (_) {}
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      setColor(COL_STONE);
+      doc.text('calendly.com/dongoldstein-accts/muntinconsult', btnX, btnY + btnH + 16);
+
+      // Sub-card: re-run message on dark-teal
+      var subY = btnY + btnH + 52;
+      var subH = 132;
+      drawCard(MARGIN, subY, COL_W, subH, COL_TEAL_DK, null, 12);
+      setColor(COL_CREAM, 'fill');
+      doc.rect(MARGIN, subY, 4, subH, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(18);
+      setColor(COL_CREAM);
+      doc.text('Run this again any time.', MARGIN + 24, subY + 34);
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(11);
-      setColor(COL_SOFT);
-      y = drawWrappedText('The audit tool is free, open to anyone, and you can re-run it whenever you make a change. The ?url= in your shareable link will auto-run on any fresh visit — bookmark it after you ship a fix to see the delta.', MARGIN, y, COL_W, 15);
-      y += 16;
-      setColor(COL_TEAL);
+      setColor(COL_LINE);
+      drawWrappedText(
+        'The audit tool is free and open. The ?url= in your shareable link auto-runs on any fresh visit \u2014 bookmark it after you ship a fix to see the delta.',
+        MARGIN + 24, subY + 60, COL_W - 48, 15
+      );
       doc.setFont('helvetica', 'bold');
-      doc.text('muntin.digital/tools/audits/restaurant/', MARGIN, y);
+      doc.setFontSize(11);
+      setColor(COL_CREAM);
+      doc.text('muntin.digital/tools/audits/restaurant/', MARGIN + 24, subY + subH - 18);
+      try { doc.link(MARGIN + 24, subY + subH - 30, 300, 18, { url: 'https://muntin.digital/tools/audits/restaurant/' }); } catch (_) {}
 
-      stampFooter(pageNum);
+      // Decorative muntin-grid on the hero, very faint cream on ink
+      drawMuntinGridPattern(PAGE_W - 260, PAGE_H - 220, 220, 160, COL_CREAM, 0.05);
+
+      // ================================================================
+      // SECOND-PASS FOOTERS — single source of truth for page chrome
+      // ================================================================
+      var totalPages = doc.internal.getNumberOfPages();
+      for (var fp = 1; fp <= totalPages; fp++) {
+        doc.setPage(fp);
+        var variant = pageVariants[fp - 1] || 'cream';
+        // Cover (page 1) suppresses the centered URL since it\u2019s in
+        // the meta row already.
+        stampHeaderFooter(fp, totalPages, variant, fp !== 1);
+      }
 
       // Ship it --------------------------------------------------------
       var blob   = doc.output('blob');
@@ -2979,88 +3450,106 @@
         return actionable.slice(0, 3);
       }
 
-      function drawFixBlock(pick, num, y) {
+      // Fix card: numbered rust circle, Fraunces-weighted title, body
+      // paragraph, and pill chips on their own row. Guarantees a 6pt
+      // gap between chips so they never overlap (the v1 bug).
+      function drawFixCard(pick, num, yIn) {
         var def = pick.entry.def;
         var result = pick.entry.result;
-        y = ensureRoom(y, 110, function(newY){
-          stampFooter(2);
-          return newY;
-        });
-        // Numbered circle
+        var title = (result && result.title) || def.fail || def.unverified || 'Action item';
+        var body  = def.impact || '';
+
+        // Pre-measure so page-breaks land between cards, not inside.
+        var bodyLines = doc.splitTextToSize(body, COL_W - 64);
+        var estH = 40 + Math.max(2, bodyLines.length) * 15 + 40;
+        var y = ensureRoom(yIn, estH);
+
+        // Numbered rust circle
         setColor(COL_RUST, 'fill');
-        doc.circle(MARGIN + 14, y + 8, 12, 'F');
+        doc.circle(MARGIN + 14, y + 14, 14, 'F');
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(12);
+        doc.setFontSize(13);
         setColor(COL_CREAM);
-        doc.text(String(num), MARGIN + 14, y + 12, { align: 'center' });
+        doc.text(String(num), MARGIN + 14, y + 18, { align: 'center' });
+
         // Title
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(14);
+        doc.setFontSize(16);
         setColor(COL_INK);
-        var title = (result && result.title) || def.fail || def.unverified || 'Action item';
-        var afterTitle = drawWrappedText(title, MARGIN + 36, y + 12, COL_W - 36, 17);
-        // Why-it-matters
+        var afterTitle = drawWrappedText(title, MARGIN + 44, y + 18, COL_W - 48, 19);
+
+        // Body
         doc.setFont('helvetica', 'normal');
-        doc.setFontSize(10.5);
-        setColor(COL_SOFT);
-        afterTitle = drawWrappedText(def.impact || '', MARGIN + 36, afterTitle + 4, COL_W - 36, 14);
-        // Chips
-        var chipY = afterTitle + 6;
-        var chipX = MARGIN + 36;
+        doc.setFontSize(11);
+        setColor(COL_INK_SOFT);
+        afterTitle = drawWrappedText(body, MARGIN + 44, afterTitle + 6, COL_W - 48, 15);
+
+        // Chip row (effort + time, 6pt gap)
+        var chipY = afterTitle + 14;
+        var chipX = MARGIN + 44;
         if (def.effort) {
-          var effortLabel = def.effort === 'self' ? 'Fix yourself' : def.effort === 'dev' ? 'Ask your developer' : 'Rebuild needed';
-          chipX = drawPill(effortLabel, chipX, chipY, [242, 238, 227], COL_SOFT);
+          var effortLabel = def.effort === 'self' ? 'Fix yourself'
+                         : def.effort === 'dev'  ? 'Ask your developer'
+                         : 'Rebuild needed';
+          chipX = drawPill(effortLabel, chipX, chipY, COL_CREAM2, COL_INK_SOFT);
         }
         if (typeof def.minutes === 'number') {
-          var t = def.minutes < 60 ? '~' + def.minutes + ' min' : def.minutes < 180 ? '~' + Math.round(def.minutes / 60) + ' hr' : 'Half-day project';
-          drawPill(t, chipX, chipY, [255, 255, 255], COL_STONE);
+          var t = def.minutes < 60 ? '~' + def.minutes + ' min'
+                : def.minutes < 180 ? '~' + Math.round(def.minutes / 60) + ' hr'
+                : 'Half-day project';
+          drawPill(t, chipX, chipY, COL_TEAL_TINT, COL_TEAL);
         }
+
+        // Hairline divider under the card for visual grouping
+        setColor(COL_LINE, 'draw');
+        doc.setLineWidth(0.5);
+        doc.line(MARGIN, chipY + 14, PAGE_W - MARGIN, chipY + 14);
+
         return chipY + 30;
       }
 
-      function drawPill(text, x, y, bg, fg) {
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(9);
-        var w = doc.getTextWidth(text) + 14;
-        setColor(bg, 'fill');
-        doc.roundedRect(x, y - 9, w, 14, 7, 7, 'F');
-        setColor(fg);
-        doc.text(text, x + 7, y);
-        return x + w + 6;
-      }
-
-      function drawCheckBlock(entry, y, onNewPage) {
+      // Single row in the grouped priority-checks breakdown. Smaller
+      // and cleaner than v1: status glyph, title, note, thin divider.
+      function drawCheckItem(entry, yIn) {
         var def = entry.def || {};
         var result = entry.result || {};
         var cls = (result.mark && result.mark.cls) || 'unverified';
-        // Need roughly 70pt of space to avoid awkward mid-split
-        y = ensureRoom(y, 70, onNewPage);
 
-        // Status icon
+        // Pre-measure so page breaks land between items.
+        var title   = (result.title) || def.pass || def.unverified || (def.audit || def.type || 'Check');
+        var noteRaw = stripHtml(result.note || '');
+        var titleLines = doc.splitTextToSize(title, COL_W - 28);
+        var noteLines  = noteRaw ? doc.splitTextToSize(noteRaw, COL_W - 28) : [];
+        var estH = titleLines.length * 14 + noteLines.length * 13 + 20;
+        var y = ensureRoom(yIn, estH);
+
+        // Status glyph — use an em-dash for unverified to avoid the
+        // noisier "?" which reads as broken in print contexts.
         var iconColor = cls === 'pass' ? COL_GREEN : cls === 'fail' ? COL_RUST : COL_STONE;
-        var iconChar  = cls === 'pass' ? '\u2713' : cls === 'fail' ? '\u2715' : '?';
+        var iconChar  = cls === 'pass' ? '\u2713' : cls === 'fail' ? '\u2715' : '\u2013';
         setColor(iconColor);
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(13);
-        doc.text(iconChar, MARGIN + 2, y + 2);
-
-        doc.setFont('helvetica', 'bold');
         doc.setFontSize(12);
+        doc.text(iconChar, MARGIN + 4, y + 2);
+
+        // Title
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
         setColor(COL_INK);
-        var title = (result.title) || def.pass || def.unverified || (def.audit || def.type || 'Check');
-        var afterTitle = drawWrappedText(title, MARGIN + 20, y + 2, COL_W - 20, 15);
-        // Plain-text note under the title
-        var noteText = stripHtml(result.note || '');
-        if (noteText) {
+        var afterTitle = drawWrappedText(title, MARGIN + 24, y + 2, COL_W - 28, 14);
+
+        // Note
+        if (noteRaw) {
           doc.setFont('helvetica', 'normal');
           doc.setFontSize(10);
-          setColor(COL_SOFT);
-          afterTitle = drawWrappedText(noteText, MARGIN + 20, afterTitle + 2, COL_W - 20, 13);
+          setColor(COL_INK_SOFT);
+          afterTitle = drawWrappedText(noteRaw, MARGIN + 24, afterTitle + 2, COL_W - 28, 13);
         }
+
         // Divider
         setColor(COL_LINE, 'draw');
         doc.setLineWidth(0.5);
-        doc.line(MARGIN + 20, afterTitle + 8, MARGIN + COL_W, afterTitle + 8);
+        doc.line(MARGIN + 24, afterTitle + 8, PAGE_W - MARGIN, afterTitle + 8);
         return afterTitle + 18;
       }
 
