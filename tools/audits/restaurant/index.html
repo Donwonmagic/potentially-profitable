@@ -498,6 +498,40 @@
      Lighthouse audits that didn't pass, with estimated savings and
      plain-English descriptions. Hidden by default; revealed in JS
      only when the audit finds failing items. */
+  /* Phase I1: Executive summary. Sits between the category cards
+     and the opportunities drill-down; serves as the "what this
+     means" narrative so owners don't have to translate the score
+     to a plan themselves. Teal accent rail on the left echoes the
+     brand callout style without competing with the score ring. */
+  .exec-summary {
+    margin: 28px 0 0;
+    padding: 20px 24px;
+    background: var(--cream-2, #faf6ee);
+    border-left: 4px solid var(--teal, #1F4E5B);
+    border-radius: 12px;
+  }
+  .exec-summary[hidden] { display: none; }
+  .exec-summary-label {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal, #1F4E5B);
+    margin-bottom: 8px;
+  }
+  .exec-summary-body {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--ink, #14161A);
+  }
+  @media (max-width: 640px) {
+    .exec-summary { padding: 16px 18px; }
+    .exec-summary-body { font-size: 15px; }
+  }
+
   .opportunities-wrap {
     max-width: 760px;
     margin: 28px auto 8px;
@@ -1845,6 +1879,17 @@
           <div class="sublabel">Restaurant-specific checks</div>
         </div>
       </div>
+
+      <!-- Phase I1: Executive summary. A 2-3 sentence narrative
+           that interprets the score in plain English, calls out
+           the subtype's posture, and names the top 1-2 areas to
+           focus on. Populated by renderExecutiveSummary() in
+           I1b. Hidden by default so the layout doesn't reserve
+           empty space on pre-audit page load. -->
+      <section class="exec-summary" id="execSummary" hidden aria-live="polite">
+        <div class="exec-summary-label">What this means</div>
+        <p class="exec-summary-body" id="execSummaryBody">—</p>
+      </section>
 
       <!-- Per-category opportunity drill-down — the specific Lighthouse
            audits that failed, grouped by category, sorted by impact.
