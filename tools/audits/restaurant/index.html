@@ -1973,7 +1973,7 @@
 </head>
 <body>
 
-<a class="skip-link" href="#main">Skip to main content</a>
+<a class="skip-link" href="#main" data-tr="crumb.skip">Skip to main content</a>
 
 <header class="nav" id="nav">
   <div class="container nav-inner">
@@ -1987,53 +1987,53 @@
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
-    <nav class="nav-links" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/for/restaurants/">Restaurants</a>
-      <a href="/work/">Work</a>
-      <a href="/blog/">Blog</a>
-      <a href="/about/">About</a>
+    <nav class="nav-links" aria-label="Primary" data-tr-attr="aria-label:nav.primary">
+      <a href="/services/" data-tr="nav.services">Services</a>
+      <a href="/for/restaurants/" data-tr="nav.restaurants">Restaurants</a>
+      <a href="/work/" data-tr="nav.work">Work</a>
+      <a href="/blog/" data-tr="nav.blog">Blog</a>
+      <a href="/about/" data-tr="nav.about">About</a>
     </nav>
-    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener"><span data-tr="nav.book">Book a 20-min call</span><span class="sr-only" data-tr="nav.bookNewTab"> (opens in new tab)</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
     </a>
-    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false" data-tr-attr="aria-label:nav.openMenu">
       <span></span><span></span><span></span>
     </button>
   </div>
-  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
-    <a href="/services/">Services</a>
-    <a href="/for/restaurants/">Restaurants</a>
-    <a href="/work/">Work</a>
-    <a href="/blog/">Blog</a>
-    <a href="/about/">About</a>
-    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden data-tr-attr="aria-label:nav.mobile">
+    <a href="/services/" data-tr="nav.services">Services</a>
+    <a href="/for/restaurants/" data-tr="nav.restaurants">Restaurants</a>
+    <a href="/work/" data-tr="nav.work">Work</a>
+    <a href="/blog/" data-tr="nav.blog">Blog</a>
+    <a href="/about/" data-tr="nav.about">About</a>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener"><span data-tr="nav.book">Book a 20-min call</span><span class="sr-only" data-tr="nav.bookNewTab"> (opens in new tab)</span></a>
   </nav>
 </header>
 
 <main id="main">
 
-<nav class="breadcrumb container" aria-label="Breadcrumb">
-  <a href="/">Home</a>
+<nav class="breadcrumb container" aria-label="Breadcrumb" data-tr-attr="aria-label:crumb.label">
+  <a href="/" data-tr="crumb.home">Home</a>
   <span class="breadcrumb-sep" aria-hidden="true">›</span>
-  <a href="/tools/">Tools</a>
+  <a href="/tools/" data-tr="crumb.tools">Tools</a>
   <span class="breadcrumb-sep" aria-hidden="true">›</span>
-  <a href="/tools/audits/">Audits</a>
+  <a href="/tools/audits/" data-tr="crumb.audits">Audits</a>
   <span class="breadcrumb-sep" aria-hidden="true">›</span>
-  <span aria-current="page">Restaurant</span>
+  <span aria-current="page" data-tr="crumb.current">Restaurant</span>
 </nav>
 
 <!-- ============ HERO + FORM ============ -->
 <section class="hero hero-medium">
   <div class="container">
     <div class="audit-hero">
-      <span class="eyebrow">Free tool · Powered by Google Lighthouse</span>
-      <h1 class="mt-20">
+      <span class="eyebrow" data-tr="hero.eyebrow">Free tool · Powered by Google Lighthouse</span>
+      <h1 class="mt-20" data-tr-html="hero.h1.full">
         How is your<br>
         <span class="serif-italic">restaurant website</span><br>
         actually doing?
       </h1>
-      <p class="hero-sub" style="margin:24px auto 0; max-width:580px;">
+      <p class="hero-sub" style="margin:24px auto 0; max-width:580px;" data-tr="hero.sub">
         Drop your URL below and I'll run a real mobile audit in about thirty seconds — performance, SEO, accessibility, and the specific checks that matter for a restaurant. No sign-up, no email required to see your results, no tracking.
       </p>
 
@@ -2046,40 +2046,41 @@
           autocomplete="url"
           required
           aria-label="Your restaurant website URL"
+          data-tr-attr="placeholder:form.placeholder;aria-label:form.urlLabel"
         />
         <button type="submit" id="auditSubmit">
-          Run audit
+          <span data-tr="form.submit">Run audit</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </button>
       </form>
 
-      <p class="audit-note">
+      <p class="audit-note" data-tr="hero.note">
         Powered by Google's PageSpeed Insights API plus our own restaurant-specific scanner — ordering platforms, reservation widgets, maps, click-to-call, and mobile menu readability. Works on any publicly accessible URL (no staging environments or login walls).
       </p>
     </div>
 
     <!-- Loading state (hidden until fetch starts) -->
     <div class="audit-loading" id="auditLoading" hidden aria-live="polite">
-      <h2>Running your audit…</h2>
-      <p class="audit-loading-sub" id="auditLoadingSub">This usually takes 15–40 seconds.</p>
+      <h2 data-tr="load.h2">Running your audit…</h2>
+      <p class="audit-loading-sub" id="auditLoadingSub" data-tr="load.sub">This usually takes 15–40 seconds.</p>
       <div class="audit-progress-bar" aria-hidden="true">
         <div class="fill" id="auditProgressFill"></div>
       </div>
       <ol class="audit-steps" id="auditSteps">
-        <li class="audit-step" data-step="1"><span class="step-indicator">1</span><span>Sending your URL to Google Lighthouse</span></li>
-        <li class="audit-step" data-step="2"><span class="step-indicator">2</span><span>Running Lighthouse on a simulated phone</span></li>
-        <li class="audit-step" data-step="3"><span class="step-indicator">3</span><span>Detecting restaurant platforms and scoring readiness</span></li>
-        <li class="audit-step" data-step="4"><span class="step-indicator">4</span><span>Writing your report</span></li>
+        <li class="audit-step" data-step="1"><span class="step-indicator">1</span><span data-tr="load.step1">Sending your URL to Google Lighthouse</span></li>
+        <li class="audit-step" data-step="2"><span class="step-indicator">2</span><span data-tr="load.step2">Running Lighthouse on a simulated phone</span></li>
+        <li class="audit-step" data-step="3"><span class="step-indicator">3</span><span data-tr="load.step3">Detecting restaurant platforms and scoring readiness</span></li>
+        <li class="audit-step" data-step="4"><span class="step-indicator">4</span><span data-tr="load.step4">Writing your report</span></li>
       </ol>
     </div>
 
     <!-- Error state (hidden until an error occurs) -->
     <div class="audit-error" id="auditError" hidden role="alert">
-      <h2 id="auditErrorHeading">We couldn't audit that URL.</h2>
-      <p id="auditErrorBody">Check the address and try again. The site needs to be publicly reachable — if it's behind a login or a local network, the audit can't see it.</p>
+      <h2 id="auditErrorHeading" data-tr="err.h2">We couldn't audit that URL.</h2>
+      <p id="auditErrorBody" data-tr="err.body">Check the address and try again. The site needs to be publicly reachable — if it's behind a login or a local network, the audit can't see it.</p>
       <div class="audit-error-actions">
-        <button type="button" id="auditRetryBtn" class="audit-error-btn audit-error-btn-primary">Try again</button>
-        <button type="button" id="auditNewUrlBtn" class="audit-error-btn">Use a different URL</button>
+        <button type="button" id="auditRetryBtn" class="audit-error-btn audit-error-btn-primary" data-tr="err.retry">Try again</button>
+        <button type="button" id="auditNewUrlBtn" class="audit-error-btn" data-tr="err.newUrl">Use a different URL</button>
       </div>
     </div>
 
@@ -2742,6 +2743,110 @@
     } catch (_) {}
     window.__muntinLang = 'en';
   })();
+
+  // Phase L4b: tool-page UI translator. Walks every element tagged
+  // with data-tr (text content), data-tr-html (innerHTML), or
+  // data-tr-attr-X (an arbitrary attribute) and swaps in the Spanish
+  // string when LANG === 'es'. Keys live in window.__MUNTIN_UI_ES.
+  // Falls back silently to the original markup when a key is missing
+  // — the page renders in English regardless. Re-runs whenever new
+  // markup is injected by calling window.__muntinTranslate(root).
+  window.__MUNTIN_UI_ES = {
+    // Nav
+    'nav.services':     'Servicios',
+    'nav.restaurants':  'Restaurantes',
+    'nav.work':         'Trabajos',
+    'nav.blog':         'Blog',
+    'nav.about':        'Acerca de',
+    'nav.book':         'Reserva una llamada de 20 min',
+    'nav.openMenu':     'Abrir men\u00fa',
+    'nav.bookNewTab':   ' (se abre en una nueva pesta\u00f1a)',
+    'nav.mobile':       'Navegaci\u00f3n m\u00f3vil',
+    'nav.primary':      'Primaria',
+    // Breadcrumb
+    'crumb.home':       'Inicio',
+    'crumb.tools':      'Herramientas',
+    'crumb.audits':     'Auditor\u00edas',
+    'crumb.current':    'Restaurante',
+    'crumb.label':      'Ruta de navegaci\u00f3n',
+    'crumb.skip':       'Saltar al contenido principal',
+    // Hero
+    'hero.eyebrow':     'Herramienta gratuita \u00b7 Impulsada por Google Lighthouse',
+    'hero.h1.full':     '\u00bfC\u00f3mo est\u00e1 realmente<br><span class="serif-italic">el sitio web de tu restaurante</span><br>funcionando?',
+    'hero.sub':         'Pega tu URL abajo y har\u00e9 una auditor\u00eda m\u00f3vil real en unos treinta segundos: rendimiento, SEO, accesibilidad y las verificaciones espec\u00edficas que importan para un restaurante. Sin registro, sin email para ver tus resultados, sin rastreo.',
+    'form.placeholder': 'https://turestaurante.com',
+    'form.submit':      'Ejecutar auditor\u00eda',
+    'form.urlLabel':    'URL del sitio web de tu restaurante',
+    'hero.note':        'Impulsada por la API de PageSpeed Insights de Google m\u00e1s nuestro propio esc\u00e1ner espec\u00edfico para restaurantes: plataformas de pedidos, widgets de reservas, mapas, click-to-call y legibilidad del men\u00fa m\u00f3vil. Funciona con cualquier URL p\u00fablicamente accesible (sin entornos de prueba ni muros de inicio de sesi\u00f3n).',
+    // Loading
+    'load.h2':          'Ejecutando tu auditor\u00eda\u2026',
+    'load.sub':         'Esto suele tardar entre 15 y 40 segundos.',
+    'load.step1':       'Enviando tu URL a Google Lighthouse',
+    'load.step2':       'Ejecutando Lighthouse en un tel\u00e9fono simulado',
+    'load.step3':       'Detectando plataformas de restaurante y calificando preparaci\u00f3n',
+    'load.step4':       'Escribiendo tu informe',
+    // Error
+    'err.h2':           'No pudimos auditar esa URL.',
+    'err.body':         'Verifica la direcci\u00f3n e int\u00e9ntalo de nuevo. El sitio debe ser p\u00fablicamente accesible \u2014 si est\u00e1 detr\u00e1s de un inicio de sesi\u00f3n o en una red local, la auditor\u00eda no puede verlo.',
+    'err.retry':        'Intentar de nuevo',
+    'err.newUrl':       'Usar una URL diferente',
+    // Score / verdict
+    'score.h2':         'Tu puntuaci\u00f3n general',
+    'score.audited':    'Auditado:',
+    'score.verdict.placeholder': 'La copia del veredicto se llena aqu\u00ed despu\u00e9s de una ejecuci\u00f3n: explica qu\u00e9 significa la puntuaci\u00f3n y en qu\u00e9 enfocarse primero.',
+    'score.share':      'Compartir',
+    'score.shareX':     'Compartir en X (Twitter)',
+    'score.shareFB':    'Compartir en Facebook',
+    'score.shareLI':    'Compartir en LinkedIn',
+    'score.shareEmail': 'Compartir por correo',
+    // PDF CTA top
+    'pdf.cta.title':    'Recibe tu PDF por correo',
+    'pdf.cta.body':     'Te enviaremos el informe completo \u2014 sin sign-up, sin newsletter, sin spam.',
+    'pdf.cta.placeholder': 'tu@turestaurante.com',
+    'pdf.cta.submit':   'Env\u00edame el PDF',
+    'pdf.cta.email':    'Tu direcci\u00f3n de correo'
+  };
+
+  window.__muntinTranslate = function(root){
+    if (window.__muntinLang !== 'es') return;
+    var dict = window.__MUNTIN_UI_ES || {};
+    var scope = root || document;
+    // text content
+    var txtNodes = scope.querySelectorAll('[data-tr]');
+    for (var i = 0; i < txtNodes.length; i++) {
+      var k = txtNodes[i].getAttribute('data-tr');
+      if (dict[k] != null) txtNodes[i].textContent = dict[k];
+    }
+    // innerHTML (use sparingly, for elements that contain markup like <br>)
+    var htmlNodes = scope.querySelectorAll('[data-tr-html]');
+    for (var j = 0; j < htmlNodes.length; j++) {
+      var k2 = htmlNodes[j].getAttribute('data-tr-html');
+      if (dict[k2] != null) htmlNodes[j].innerHTML = dict[k2];
+    }
+    // arbitrary attribute (placeholder, aria-label, etc.):
+    // data-tr-attr="placeholder:form.placeholder;aria-label:form.urlLabel"
+    var attrNodes = scope.querySelectorAll('[data-tr-attr]');
+    for (var a = 0; a < attrNodes.length; a++) {
+      var spec = attrNodes[a].getAttribute('data-tr-attr');
+      var pairs = spec.split(';');
+      for (var p = 0; p < pairs.length; p++) {
+        var bits = pairs[p].split(':');
+        if (bits.length !== 2) continue;
+        var attr = bits[0].trim(), key = bits[1].trim();
+        if (dict[key] != null) attrNodes[a].setAttribute(attr, dict[key]);
+      }
+    }
+    // Update html lang attribute so AT and CSS :lang() selectors react
+    if (document.documentElement.getAttribute('lang') !== 'es') {
+      document.documentElement.setAttribute('lang', 'es');
+    }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function(){ window.__muntinTranslate(); });
+  } else {
+    window.__muntinTranslate();
+  }
 
   // Phase L3b: build a custom multi-page PDF of the current audit.
   // Reads from the window-scoped state populated during renderReport:
