@@ -388,6 +388,22 @@
     const PREF_KEY = 'muntin.audioPrefs.v1';
     const prefs = loadPrefs();
     if (rateSelect && prefs.rate) rateSelect.value = String(prefs.rate);
+
+    // If this post will use a pre-rendered MP3, the browser's voice
+    // list doesn't apply — the reader is already chosen at render time.
+    // Hide the voice picker up-front so users aren't presented with a
+    // "choose a name" dropdown that looks like it's demanding a
+    // selection. (We still swap the source-of-truth note to "Narrated
+    // in-house" once the manifest actually loads.)
+    if (audioSrc && voiceSelect) {
+      const voiceLabel = voiceSelect.closest('.listen-select');
+      if (voiceLabel) voiceLabel.hidden = true;
+      const srcNote = card.root.querySelector('.listen-source-note');
+      if (srcNote) {
+        srcNote.setAttribute('data-source', 'studio');
+        srcNote.textContent = 'Narrated in-house';
+      }
+    }
     function loadPrefs() {
       try { return JSON.parse(localStorage.getItem(PREF_KEY)) || {}; }
       catch (_) { return {}; }
@@ -527,6 +543,10 @@
         if (alt && alt.trim()) {
           text = alt.trim();
           kind = inferKind(el, 'figure');
+          // Suppress anything nested inside — the override represents
+          // the entire visual block in one spoken chunk, so we don't
+          // want the inner <p>s/<li>s re-read afterwards.
+          el.querySelectorAll(selector).forEach((d) => seen.add(d));
         } else if (el.matches('[role="img"][aria-label]')) {
           text = el.getAttribute('aria-label').trim();
           kind = 'figure';
@@ -552,6 +572,45 @@
 
       // Preserve document order (querySelectorAll already returns in
       // tree order; selector union preserves it too).
+      // Finally, normalize each chunk's text so the Web Speech engine
+      // reads "#1" as "number 1" and "$55" as "55 dollars" — same rule
+      // set the Piper extractor uses so both engines sound alike.
+      chunks.forEach((c) => { c.text = normalizeForSpeech(c.text); });
+    }
+
+    // Text → speech normalization. Keep in sync with the twin in
+    // scripts/render-post-audio.mjs so studio + browser modes agree.
+    // Common acronym-style expansions coach the synth into the
+    // pronunciations a human reader would choose on a restaurant-
+    // marketing blog (SEO → "S E O", 2026 → "twenty twenty-six").
+    const ACRONYMS = ['SEO','CTA','URL','PDF','POS','API','DNS','CDN','CMS','DIY','CEO','ROI','UX','UI','HTML','CSS','HTTPS','FAQ','GBP','NAP'];
+    const ACRONYM_RE = new RegExp('\\b(' + ACRONYMS.join('|') + ')\\b', 'g');
+    const EXPANSIONS = {
+      'Mr.': 'Mister', 'Mrs.': 'Missus', 'Ms.': 'Miss', 'Dr.': 'Doctor',
+      'vs.': 'versus', 'etc.': 'et cetera', 'i.e.': 'that is',
+      'e.g.': 'for example', 'approx.': 'approximately',
+    };
+    function numberWord(n) {
+      if (n === 0) return 'hundred';
+      const ones = ['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+      const tens = ['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+      if (n < 20) return ones[n];
+      const t = Math.floor(n / 10), o = n % 10;
+      return o ? tens[t] + '-' + ones[o] : tens[t];
+    }
+    function normalizeForSpeech(s) {
+      if (!s) return s;
+      return s
+        .replace(/#\s*(\d+)/g, 'number $1')
+        .replace(/\$(\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?)/g, '$1 dollars')
+        .replace(/(\d)\s*×\s*(\d|\$)/g, '$1 times $2')
+        .replace(/(\d)\s*([ap])\.?\s*m\.?\b/gi, (_, n, ap) => n + ' ' + ap.toUpperCase() + 'M')
+        .replace(ACRONYM_RE, (w) => w.split('').join(' '))
+        .replace(/\b20(\d{2})\b/g, (_, xx) => 'twenty ' + numberWord(parseInt(xx, 10)))
+        .replace(/\b(Mr|Mrs|Ms|Dr|vs|etc|i\.e|e\.g|approx)\.(?=\s|$)/g, (m) => EXPANSIONS[m] || m)
+        .replace(/[\u00A0\u202F]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
     }
 
     function inferKind(el, fallback) {
@@ -861,7 +920,7 @@
       const pct = audioEl.duration ? Math.min(100, (t / audioEl.duration) * 100) : 0;
       if (progressFill) progressFill.style.width = pct.toFixed(2) + '%';
       if (progressEl) progressEl.setAttribute('aria-valuenow', String(Math.round(pct)));
-      updateDockProgress(pct);
+      updateDockProgress(pct, t, audioEl.duration || 0);
       updateDockChapter(chunks[currentIndex]);
       if (prevBtn) prevBtn.disabled = currentIndex <= 0;
       if (nextBtn) nextBtn.disabled = currentIndex >= chunks.length - 1;
@@ -917,7 +976,9 @@
     /* ---- Floating dock ---- */
     // Mirrors the card's state; only shown when (a) audio is active and
     // (b) the card is scrolled out of view. Dismiss is "for this
-    // playback only" — on the next play it comes back.
+    // playback only" — on the next play it comes back. The dock carries
+    // its own skip + seek + time controls so the user never has to
+    // scroll back to the card during playback.
     const dock = buildDock();
     document.body.appendChild(dock.root);
     const dockPlayBtn = dock.root.querySelector('.listen-dock-play');
@@ -925,6 +986,11 @@
     const dockTitleEl = dock.root.querySelector('.listen-dock-title');
     const dockChapter = dock.root.querySelector('.listen-dock-chapter');
     const dockFill    = dock.root.querySelector('.listen-dock-progress-fill');
+    const dockProgEl  = dock.root.querySelector('.listen-dock-progress');
+    const dockPrevBtn = dock.root.querySelector('.listen-dock-prev');
+    const dockNextBtn = dock.root.querySelector('.listen-dock-next');
+    const dockTimeNow = dock.root.querySelector('.listen-dock-time-now');
+    const dockTimeEnd = dock.root.querySelector('.listen-dock-time-end');
     let dockDismissed = false;
     let cardInView = true;
 
@@ -933,17 +999,47 @@
       dockDismissed = true;
       updateDockVisibility();
     });
+    if (dockPrevBtn) dockPrevBtn.addEventListener('click', () => skipTo(currentIndex - 1));
+    if (dockNextBtn) dockNextBtn.addEventListener('click', () => skipTo(currentIndex + 1));
+    if (dockProgEl) {
+      dockProgEl.addEventListener('click', (e) => {
+        if (!chunks.length) return;
+        const rect = dockProgEl.getBoundingClientRect();
+        const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        // In studio mode seek by time; in speech mode seek by chunk.
+        if (engine === 'audio' && audioEl && audioEl.duration) {
+          audioEl.currentTime = ratio * audioEl.duration;
+        } else {
+          skipTo(Math.floor(ratio * chunks.length));
+        }
+      });
+    }
 
+    let footerInView = false;
     if ('IntersectionObserver' in window) {
       const io = new IntersectionObserver((entries) => {
         cardInView = entries[0].isIntersecting;
         updateDockVisibility();
       }, { rootMargin: '-40px 0px 0px 0px', threshold: 0 });
       io.observe(card.root);
+
+      // Hide the dock whenever the page footer comes into view — its
+      // dark pill otherwise stacks on top of the dark footer CTA and
+      // muddies the contrast. Visibility resumes when the user scrolls
+      // back up into the article.
+      const footer = document.querySelector('footer');
+      if (footer) {
+        const fo = new IntersectionObserver((entries) => {
+          footerInView = entries[0].isIntersecting;
+          updateDockVisibility();
+        }, { rootMargin: '0px 0px -10% 0px', threshold: 0 });
+        fo.observe(footer);
+      }
     }
 
     function updateDockVisibility() {
-      const shouldShow = !dockDismissed && !cardInView && (state === 'playing' || state === 'paused');
+      const shouldShow = !dockDismissed && !cardInView && !footerInView
+        && (state === 'playing' || state === 'paused');
       dock.root.setAttribute('data-visible', shouldShow ? 'true' : 'false');
     }
 
@@ -957,8 +1053,27 @@
       if (dockChapter) dockChapter.textContent = chunk ? chapterLabel(chunk) : '';
     }
 
-    function updateDockProgress(pct) {
+    function updateDockProgress(pct, elapsed, total) {
       if (dockFill) dockFill.style.width = pct + '%';
+      if (dockPrevBtn) dockPrevBtn.disabled = currentIndex <= 0;
+      if (dockNextBtn) dockNextBtn.disabled = currentIndex >= chunks.length - 1;
+      if (dockTimeNow && dockTimeEnd) {
+        // Studio mode passes real seconds; speech mode falls back to
+        // chunk-count ("3 / 47") since we don't know per-chunk timing.
+        if (typeof elapsed === 'number' && typeof total === 'number' && isFinite(total) && total > 0) {
+          dockTimeNow.textContent = formatTime(elapsed);
+          dockTimeEnd.textContent = '-' + formatTime(Math.max(0, total - elapsed));
+        } else if (chunks.length) {
+          dockTimeNow.textContent = String(currentIndex + 1);
+          dockTimeEnd.textContent = '/ ' + chunks.length;
+        }
+      }
+    }
+    function formatTime(sec) {
+      sec = Math.max(0, Math.round(sec));
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return m + ':' + (s < 10 ? '0' + s : s);
     }
 
     // Set the dock title once — from the page <h1> — so the user can
@@ -985,9 +1100,19 @@
           <span class="listen-dock-title">Audio edition</span>
           <span class="listen-dock-chapter"></span>
         </div>
-        <div class="listen-dock-progress"><div class="listen-dock-progress-fill"></div></div>
         <button type="button" class="listen-dock-close" aria-label="Hide audio controls">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+        </button>
+        <button type="button" class="listen-dock-skip listen-dock-prev" aria-label="Previous paragraph" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="19 20 9 12 19 4 19 20" fill="currentColor"/><line x1="5" y1="5" x2="5" y2="19"/></svg>
+        </button>
+        <div class="listen-dock-track">
+          <span class="listen-dock-time listen-dock-time-now">0:00</span>
+          <div class="listen-dock-progress" role="progressbar" aria-label="Audio progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="listen-dock-progress-fill"></div></div>
+          <span class="listen-dock-time listen-dock-time-end">0:00</span>
+        </div>
+        <button type="button" class="listen-dock-skip listen-dock-next" aria-label="Next paragraph" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 4 15 12 5 20 5 4" fill="currentColor"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
         </button>
       `;
       return { root };
