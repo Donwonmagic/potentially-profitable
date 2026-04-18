@@ -384,7 +384,75 @@
               <h2>Basics</h2>
               <p>The five things a first-time visitor looks for before anything else: what you are, where you are, when you're open, and how to reach you.</p>
             </header>
-            <!-- Entries populated in Sprint M2. -->
+
+            <article class="glossary-term" id="mobile-readable-menu">
+              <h3>Mobile-readable menu <a class="glossary-anchor" href="#mobile-readable-menu" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">A menu page that renders as real HTML text on a phone — not a PDF, not a JPEG, not a Squarespace image gallery pretending to be a menu.</p>
+              <p class="glossary-long">PDFs open in a separate tab, download to the visitor's camera roll, and do not zoom gracefully. Image menus can't be read by screen readers, can't be searched, and blur when pinch-zoomed. Real HTML menus are indexable by Google, legible on every screen size, and updatable without a designer. For tasting-menu formats where print aesthetics matter, ship BOTH — an HTML page for the site and a separate PDF for guests to download if they want.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Related: <a href="#wcag-contrast">WCAG contrast</a></span>
+                <span class="glossary-meta-chip">Related: <a href="#body-font-size">body font-size</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="above-the-fold-hours">
+              <h3>Above-the-fold hours <a class="glossary-anchor" href="#above-the-fold-hours" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Today's open/close times visible without scrolling when the homepage first loads.</p>
+              <p class="glossary-long">"Are they open right now?" is the single most common question a restaurant site has to answer, and answering it in four seconds is the difference between a walk-in and a Google Maps redirect to a competitor. Hours belong in the hero, in a persistent header, or in a live "Open · until 10" chip. "See our full hours →" on a link is not a substitute; most visitors won't click.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Related: <a href="#nap-consistency">NAP consistency</a></span>
+                <span class="glossary-meta-chip">Related: <a href="#google-business-profile">Google Business Profile</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="copyable-address">
+              <h3>Copyable address <a class="glossary-anchor" href="#copyable-address" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">An address that is selectable, copyable page text — not a baked-in image of an address.</p>
+              <p class="glossary-long">If a visitor can't long-press the address on their phone and hit Copy, they can't paste it into Google Maps, an Uber, or a text to a friend. Images look tidy in a designer's mockup and break every one of those flows. Wrap the real text in a Google Maps link (<code>https://maps.google.com/?q=…</code>) so a tap also launches directions.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Related: <a href="#directions-link">directions link</a></span>
+                <span class="glossary-meta-chip">Related: <a href="#nap-consistency">NAP consistency</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="tel-link">
+              <h3><code>tel:</code> link <span class="aka">· tap-to-call</span> <a class="glossary-anchor" href="#tel-link" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">A phone number wrapped in an HTML anchor with the <code>tel:</code> URI scheme so a phone tap launches the dialer.</p>
+              <p class="glossary-long">The anchor form is <code>&lt;a href="tel:+12125551212"&gt;(212) 555-1212&lt;/a&gt;</code>. Use the full international format (<code>+1</code>-prefixed) so the same markup works for visitors roaming abroad. A plain-text phone number forces visitors to memorize or copy-paste, losing ~15% of takeout orders and reservation calls at the margins.</p>
+              <pre>&lt;a href="tel:+12125551212"&gt;(212) 555-1212&lt;/a&gt;</pre>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Related: <a href="#nap-consistency">NAP consistency</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="cuisine-pitch">
+              <h3>Cuisine pitch <a class="glossary-anchor" href="#cuisine-pitch" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">One sentence under the restaurant name that tells a first-time visitor what you serve, who you serve, and why they should care.</p>
+              <p class="glossary-long">A first-time visitor should be able to classify your restaurant by cuisine, vibe, and neighborhood in about four seconds. "Wood-fired Neapolitan pizza and natural wine in Silver Spring" does that job. "Welcome to our restaurant" does not. The pitch lives as a subhead beneath the restaurant name in the hero, and re-appears in your <code>&lt;title&gt;</code> tag and <code>og:description</code> meta so the same sentence does the same job in search results and social previews.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Related: <a href="#title-tag">title tag</a></span>
+                <span class="glossary-meta-chip">Related: <a href="#json-ld-schema">JSON-LD schema</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="nap-consistency">
+              <h3>NAP consistency <span class="aka">· Name, Address, Phone</span> <a class="glossary-anchor" href="#nap-consistency" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Your name, address, and phone number reading identically across your website, Google Business Profile, Yelp, and every directory that links to you.</p>
+              <p class="glossary-long">Google uses NAP matching as a local-search signal; Yelp and Apple Maps use it for directory confidence. When "Joe's Pizza" on the site reads "Joes Pizza" on GBP and "Joe's Pizzeria" on Yelp, aggregators treat them as three different businesses and rank none of them well. The fix: pick one canonical spelling, update every listing, and publish the canonical values in <a href="#json-ld-schema">JSON-LD schema</a> so every crawler reads them from one source of truth.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Related: <a href="#google-business-profile">Google Business Profile</a></span>
+                <span class="glossary-meta-chip">Related: <a href="#json-ld-schema">JSON-LD schema</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="dietary-markers">
+              <h3>Dietary markers <span class="aka">· allergen callouts</span> <a class="glossary-anchor" href="#dietary-markers" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Per-dish labels — <code>V</code> for vegan, <code>GF</code> for gluten-free, <code>DF</code> for dairy-free, plus halal, kosher, and nut-free callouts — that let dietary-restricted visitors self-qualify the menu.</p>
+              <p class="glossary-long">About 1 in 3 diners avoids at least one food group. When menu items carry visible symbols or a legend, those diners can book with confidence; without them they call to ask, or (more often) choose a competitor whose menu said so plainly. For bakeries, custom-order intake forms should carry an explicit dietary-restriction field because cross-contamination is a food-safety question, not a marketing one.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: Dietary markers</span>
+              </div>
+            </article>
           </section>
 
           <!-- ============ MOBILE EXPERIENCE ============ -->
@@ -393,7 +461,61 @@
               <h2>Mobile experience</h2>
               <p>~70% of restaurant traffic is on a phone. These are the technical rules a site has to follow to be usable in one hand, in a moving elevator, with the sun on the screen.</p>
             </header>
-            <!-- Entries populated in Sprint M2. -->
+
+            <article class="glossary-term" id="viewport-meta-tag">
+              <h3>Viewport meta tag <a class="glossary-anchor" href="#viewport-meta-tag" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">A one-line <code>&lt;meta&gt;</code> tag in the HTML <code>&lt;head&gt;</code> that tells mobile browsers to render the page at phone width instead of zoomed-out desktop width.</p>
+              <p class="glossary-long">Without it, every mobile browser renders a page at ~980px and scales it down to fit the screen — everything looks tiny, nothing is tappable, and visitors bounce instantly. It is the single most catastrophic missing tag a restaurant site can ship, and the cheapest fix.</p>
+              <pre>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</pre>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: viewport</span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="page-speed">
+              <h3>Page speed <span class="aka">· Core Web Vitals</span> <a class="glossary-anchor" href="#page-speed" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">How fast your homepage becomes usable on a phone on a normal mobile connection — measured by Google's Core Web Vitals (LCP, INP, CLS).</p>
+              <p class="glossary-long">Google's own research: 53% of mobile visitors abandon a page that takes longer than three seconds to load. The three headline metrics:</p>
+              <ul>
+                <li><strong>LCP (Largest Contentful Paint)</strong> — how quickly the biggest above-the-fold element paints. Under 2.5s is good, over 4s is poor.</li>
+                <li><strong>INP (Interaction to Next Paint)</strong> — how quickly the page responds to a tap. Under 200ms is good, over 500ms is poor.</li>
+                <li><strong>CLS (Cumulative Layout Shift)</strong> — how much the page visibly shifts as it loads. Under 0.1 is good, over 0.25 is poor.</li>
+              </ul>
+              <p class="glossary-long">The audit runs a real Lighthouse scan and reports the actual field numbers rather than a vague score.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: performance</span>
+                <span class="glossary-meta-chip">Tool: <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener">pagespeed.web.dev ↗</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="tap-targets">
+              <h3>Tap targets <span class="aka">· 44&times;44 pixel minimum</span> <a class="glossary-anchor" href="#tap-targets" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Any button, link, or form control that a phone visitor might tap needs to be at least 44&times;44 CSS pixels so a thumb can hit it on the first try.</p>
+              <p class="glossary-long">44px is Apple's published human-interface minimum; Google recommends 48px. Smaller targets produce fat-finger misses, and on a restaurant site the most-tapped buttons are usually "Reserve," "Order Online," and the phone number — precisely the surfaces where a miss costs revenue. Pad links generously and give action buttons their own row; don't cram them into dense nav.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: tap-targets</span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="body-font-size">
+              <h3>Body font-size <span class="aka">· 16px minimum</span> <a class="glossary-anchor" href="#body-font-size" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">Body copy needs to render at 16px or larger on phones. Anything smaller forces iOS Safari to zoom on input focus and generally reads as tiny.</p>
+              <p class="glossary-long">16px is the baseline. For a restaurant site specifically, menu descriptions and wine lists deserve 17-18px because those paragraphs are the ones convincing a guest to book — they shouldn't require a squint. Use relative units (<code>1rem</code>, <code>1em</code>) in CSS, not fixed px, so the site respects the visitor's browser settings when they've bumped it up for readability.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: font-size</span>
+                <span class="glossary-meta-chip">Related: <a href="#wcag-contrast">WCAG contrast</a></span>
+              </div>
+            </article>
+
+            <article class="glossary-term" id="wcag-contrast">
+              <h3>WCAG contrast <span class="aka">· WCAG 2.1 AA</span> <a class="glossary-anchor" href="#wcag-contrast" aria-label="Link to this term">#</a></h3>
+              <p class="glossary-short">The color contrast standard that makes text readable outdoors, for older eyes, and for visitors with color-vision differences. Body text needs at least a 4.5:1 contrast ratio against its background; large headings can go down to 3:1.</p>
+              <p class="glossary-long">Low-contrast menu text is the #1 design aesthetic that kills conversion on restaurant sites. Thin grey serif on cream looks refined on a designer's laptop and disappears in direct sunlight. Roughly 1 in 4 adults over 40 has some form of age-related vision change; that's the exact demographic that dines out most. Aim for 4.5:1 body text, 3:1 headings, and test outdoors in bright sun before shipping.</p>
+              <div class="glossary-meta">
+                <span class="glossary-meta-chip">Audit check: color-contrast</span>
+                <span class="glossary-meta-chip">Tool: <a href="https://webaim.org/resources/contrastchecker/" target="_blank" rel="noopener">WebAIM contrast checker ↗</a></span>
+              </div>
+            </article>
           </section>
 
           <!-- ============ CONVERSIONS ============ -->
