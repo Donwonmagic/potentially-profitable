@@ -1,0 +1,539 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-18T19:18:33.901Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "pm_alex",
+  "language": "pt",
+  "total": 1003.12,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Todo restaurante tem um P O S. E mais cedo ou mais tarde - geralmente alguns meses depois que o hardware já foi pago - todo dono de restaurante percebe que sua escolha de P O S afeta seu site de uma forma que ninguém lhes contou durante o discurso de vendas. Sincronização de menu, pedidos on-line, transferência de reservas, programas de fidelidade, links de recebimento – tudo isso é executado por meio do P O S. Se você escolheu o P O S com base apenas no hardware do caixa e na taxa de transação, provavelmente descobriu as limitações do site da maneira mais difícil.",
+      "start": 0,
+      "end": 32.13
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Esta postagem compara os três sistemas P O S que vejo com mais frequência em auditorias independentes de restaurantes: Toast, Square para restaurantes e Clover. Examinarei o que cada um faz bem para integração de sites, onde cada um limita você silenciosamente e - para encerrar - qual eu escolheria para qual tipo de restaurante. Se você está prestes a assinar um contrato P O S, este é o post que eu gostaria que você lesse primeiro.",
+      "start": 32.45,
+      "end": 56.78
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Uma observação rápida: todos os três são produtos legítimos administrados por empresas reais e todos os três têm clientes que os amam e clientes que se arrependem da escolha. Não estou aqui para coroar um vencedor ou enterrar um perdedor - a questão é qual deles se adapta ao seu restaurante.",
+      "start": 57.1,
+      "end": 73.49
+    },
+    {
+      "id": 3,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "O que realmente significa “integração P O S com seu site”.",
+      "start": 74.29,
+      "end": 77.87
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Antes de entrarmos na comparação, vale a pena ser específico sobre o que estamos comparando. A \"integração P O S\" consiste, na verdade, em três coisas diferentes empilhadas umas sobre as outras, e cada P O S lida com cada camada em um nível de qualidade diferente.",
+      "start": 78.32,
+      "end": 93.78
+    },
+    {
+      "id": 5,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(1)",
+      "text": "1. Sincronização de menu.",
+      "start": 94.58,
+      "end": 96.15
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Seu P O S sabe o que está no menu. Seu site também precisa saber. O P O S pode enviar os dados do menu para o seu site para que você os mantenha em um só lugar? A promoção inclui descrições de pratos, imagens, modificadores, alérgenos e preços? O que acontece quando você verifica um prato no meio do serviço – seu site é atualizado em tempo real ou alguém está consumindo dados de disponibilidade de duas horas atrás?",
+      "start": 96.6,
+      "end": 121.32
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(2)",
+      "text": "2. Recebimento de pedidos.",
+      "start": 122.12,
+      "end": 124.04
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "O site aceita pedidos on-line e esses pedidos precisam chegar à sua cozinha de alguma forma. O pedido flui diretamente para a fila de tickets do PDV ou chega em um tablet separado que o anfitrião deve verificar? Ele respeita seu inventário em tempo real? Os clientes podem encomendar itens que você acabou de acabar?",
+      "start": 124.49,
+      "end": 142.8
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(3)",
+      "text": "3. Fluxo de dados de reservas e hóspedes.",
+      "start": 143.6,
+      "end": 146.37
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Quando um hóspede reserva uma mesa, a reserva aparece no mapa do seu P O S? O histórico do hóspede – contagem de visitas, alergias, aniversário, mesa favorita – flui entre a plataforma de reservas e o P O S para que um cliente que retorna seja reconhecido e cumprimentado pelo nome?",
+      "start": 146.82,
+      "end": 163.13
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "A maioria das páginas de marketing P O S fala sobre “integração de sites” como se fosse um botão que você aciona. Na prática, as três camadas acima são construídas em momentos diferentes, por equipes diferentes, e cada uma tem seu teto de qualidade. O P O S certo para o seu restaurante depende de qual das três camadas é mais importante para a forma como você realmente opera.",
+      "start": 163.45,
+      "end": 184.81
+    },
+    {
+      "id": 12,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Toast.",
+      "start": 185.61,
+      "end": 186.19
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Toast é o maior P O S específico para restaurantes no mercado dos EUA e o que vejo com mais frequência em restaurantes independentes com serviço completo. De acordo com a documentação do próprio produto Toast, a plataforma foi desenvolvida especificamente para restaurantes de serviço completo, serviço rápido e serviço de balcão e inclui pedidos on-line nativos, gerenciamento de menu e um desenvolvedor terceirizado A P I.",
+      "start": 186.64,
+      "end": 211.23
+    },
+    {
+      "id": 14,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(4)",
+      "text": "O que Toast faz bem para integração de sites.",
+      "start": 212.03,
+      "end": 214.8
+    },
+    {
+      "id": 15,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Pedidos on-line nativos com um fluxo direto desde a finalização da compra no site até o ingresso na cozinha – sem necessidade de entrega separada do tablet.",
+      "start": 215.25,
+      "end": 225.13
+    },
+    {
+      "id": 16,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Sincronização automática de menu do editor de menu do Toast com os widgets do site, incluindo imagens, modificadores e tags de alérgenos.",
+      "start": 225.35,
+      "end": 233.81
+    },
+    {
+      "id": 17,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "86ing em tempo real – quando você marca um prato como esgotado no P O S, a mudança é propagada imediatamente para o menu online.",
+      "start": 234.03,
+      "end": 242.15
+    },
+    {
+      "id": 18,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Um desenvolvedor maduro A P I que permite que um site personalizado (não os próprios modelos do Toast) acesse o mesmo pedido, menu e dados de convidados que as superfícies nativas do Toast usam. Esta é a parte que mais me interessa em minhas auditorias - significa que você pode ter um site personalizado em uma pilha moderna e ainda usar Toast como mecanismo.",
+      "start": 242.37,
+      "end": 262.87
+    },
+    {
+      "id": 19,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(5)",
+      "text": "Onde a história do site Toast fica complicada.",
+      "start": 263.67,
+      "end": 266.56
+    },
+    {
+      "id": 20,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Os sites de restaurantes hospedados pelo próprio Toast são funcionais, mas vinculados a modelos. Na minha experiência de auditoria, os sites criados com base nos modelos de site nativos do Toast compartilham um layout e um sistema de tipografia reconhecíveis – eles \"parecem um site de restaurante Toast\" mesmo quando as cores são diferentes.",
+      "start": 267.01,
+      "end": 286.65
+    },
+    {
+      "id": 21,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "As taxas de transação em pedidos de entrega e retirada encaminhados por meio do pedido integrado do Toast podem ser acumuladas em comparação com um checkout personalizado executado em seu próprio processador de pagamento. Os números exatos dependem do seu nível de contrato Toast, portanto, verifique a página de preços atual do Toast para sua situação.",
+      "start": 286.87,
+      "end": 307.82
+    },
+    {
+      "id": 22,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "A marca \"Powered by Toast\" no fluxo de checkout é difícil de remover totalmente sem passar para um nível de contrato superior.",
+      "start": 308.04,
+      "end": 315.84
+    },
+    {
+      "id": 23,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Os compromissos contratuais tendem a durar vários anos, o que é importante se você não tiver certeza de qual P O S ainda se adequará à sua operação daqui a três anos.",
+      "start": 316.06,
+      "end": 326.08
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Na minha experiência de auditoria: Toast é a escolha mais forte se você quiser que \"tudo funcione\" desde o primeiro dia e aceitar as compensações de um jardim murado. E se você tem um site personalizado e deseja que o Toast seja o mecanismo da cozinha, seu AP I é maduro o suficiente para suportar isso - apenas espere pagar um desenvolvedor para conectá-lo de forma limpa.",
+      "start": 326.4,
+      "end": 346.84
+    },
+    {
+      "id": 25,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Square para restaurantes.",
+      "start": 347.64,
+      "end": 349.12
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "A abordagem do Square é quase oposta à do Toast. Enquanto Toast é específico para restaurantes desde o início, Square começou como uma plataforma geral de varejo e pagamentos e adicionou recursos específicos para restaurantes além de seu produto mais amplo. Isso aparece como uma força e uma limitação. De acordo com a documentação do próprio produto Square, Square para restaurantes inclui gerenciamento de menu, pedidos on-line, gerenciamento de mesa e fidelidade - tudo com a mesma estrutura de preços pública e fixa pela qual Square é conhecido no varejo.",
+      "start": 349.57,
+      "end": 381.54
+    },
+    {
+      "id": 27,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(6)",
+      "text": "O que Square faz bem para integração de sites.",
+      "start": 382.34,
+      "end": 385.11
+    },
+    {
+      "id": 28,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Uma API pública limpa e bem documentada. Para um site personalizado que deseja extrair dados de catálogo, enviar pedidos ou consultar o histórico do cliente, os documentos do desenvolvedor do Square estão entre os melhores no espaço P O S - claros, atuais e com suporte ativo.",
+      "start": 385.56,
+      "end": 401.78
+    },
+    {
+      "id": 29,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Preços públicos e fixos. As taxas de processamento e custos mensais do Square são publicados abertamente em seu site. Nada de dança contratual, nada de “ligue-nos para um orçamento”, nada de surpresas negociadas.",
+      "start": 402,
+      "end": 414.89
+    },
+    {
+      "id": 30,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Square Online pode criar um site de restaurante funcional em uma tarde, com dados de menu sincronizados automaticamente do P O S. Não é um substituto para um site personalizado, mas é genuinamente útil para operadores que ainda não estão prontos para um.",
+      "start": 415.11,
+      "end": 429.81
+    },
+    {
+      "id": 31,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Menor dependência do fornecedor do que Toast — os custos de hardware são mais baixos, os contratos são mais curtos, a exportação de dados é mais simples. O custo de troca é menor se você superar o ajuste.",
+      "start": 430.03,
+      "end": 442.12
+    },
+    {
+      "id": 32,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(7)",
+      "text": "Onde a história do site Square fica complicada.",
+      "start": 442.92,
+      "end": 445.68
+    },
+    {
+      "id": 33,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "Square para restaurantes é mais jovem e menos dedicado a restaurantes do que Toast. Na minha experiência de auditoria, alguns recursos que um restaurante de serviço completo deseja – relatórios de vendas servidor por servidor para uma sala de jantar sofisticada, cadeias profundas de modificadores, cursos complexos – são mais escassos ou ausentes em comparação com a implementação nativa de restaurante do Toast.",
+      "start": 446.13,
+      "end": 470.6
+    },
+    {
+      "id": 34,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "Square O fluxo de pedidos on-line parece priorizar o varejo. Funciona, mas o ritmo visual e de interação não combina com a vibração de uma sala de toalhas de mesa - Square Online parece Square Online.",
+      "start": 470.82,
+      "end": 482.67
+    },
+    {
+      "id": 35,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "A sincronização de menu de Square para um site externo personalizado requer que você escreva a ponte A P I. Square fornece o tubo; você constrói o que passa por ele. Tudo bem se você tiver um desenvolvedor; é um bloqueador se você não fizer isso.",
+      "start": 482.89,
+      "end": 496.71
+    },
+    {
+      "id": 36,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Na minha experiência de auditoria: Square é a escolha mais forte para um restaurante independente de local único que deseja um A P I limpo, taxas públicas justas e flexibilidade para trocar de ferramentas posteriormente sem arrependimentos. A facilidade de desenvolvimento torna o P O S mais fácil deste trio emparelhar com um site totalmente personalizado.",
+      "start": 497.03,
+      "end": 517.5
+    },
+    {
+      "id": 37,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Clover.",
+      "start": 518.3,
+      "end": 518.86
+    },
+    {
+      "id": 38,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Clover é o sistema P O S mais amplamente distribuído dos três, porque é vendido por meio de provedores de serviços comerciais – bancos, processadores de pagamento e ISOs locais – além de ser vendido diretamente do próprio Clover. Esse modelo de distribuição é a maior força do Clover e sua maior fonte de confusão, simultaneamente. De acordo com a própria página de produtos de restaurante do Clover, a oferta do restaurante inclui gerenciamento de menu, pedidos on-line, gerenciamento de mesa e integrações de entrega de terceiros – embora o conjunto específico de recursos que você vê dependa de qual canal de distribuição você comprou.",
+      "start": 519.31,
+      "end": 556.16
+    },
+    {
+      "id": 39,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(8)",
+      "text": "O que Clover faz bem.",
+      "start": 556.96,
+      "end": 558.33
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(1)",
+      "text": "A mais ampla seleção de hardware. Estação Clover, Mini, Flex (portátil) e Kiosk cobrem quase todas as configurações físicas que um restaurante pode precisar - incluindo algumas (como o quiosque e acessórios de escala integrada) que os outros dois não oferecem diretamente. O hardware em si é bem construído.",
+      "start": 558.78,
+      "end": 575.73
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(2)",
+      "text": "Flexível – às vezes flexível demais. Como Clover é distribuído por meio de vários provedores de serviços comerciais, o conjunto exato de recursos, a estrutura de taxas e os termos do contrato que você obtém dependem de qual banco ou ISO lhe vendeu o sistema. Isto pode ser um ponto forte (o seu banco local pode ter negociado uma taxa melhor do que a pública) ou uma fonte de frustração (o Clover do seu vizinho pode ter características que o seu não tem).",
+      "start": 575.95,
+      "end": 602.31
+    },
+    {
+      "id": 42,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(3)",
+      "text": "O maior mercado de aplicativos no espaço P O S, o que significa que recursos de restaurantes de nicho – programas de fidelidade específicos, integrações de entrega específicas, ferramentas específicas de back-office – tendem a estar disponíveis como complementos quando você não consegue encontrá-los nativos.",
+      "start": 602.53,
+      "end": 620.42
+    },
+    {
+      "id": 43,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(9)",
+      "text": "Onde a história do site Clover fica complicada.",
+      "start": 621.22,
+      "end": 624.03
+    },
+    {
+      "id": 44,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(1)",
+      "text": "Ecossistema fragmentado. Estação Clover, Mini, Flex, Go e Kiosk no lado do hardware, além de níveis de planos como Jantar e Registro no lado do software – cada combinação tem um conjunto de recursos ligeiramente diferente, e entender qual pacote seu fornecedor comercial vendeu para você é um pequeno projeto de pesquisa por si só. Em minhas auditorias, perdi horas pensando \"este Clover tem pedidos on-line nativos habilitados?\" e a resposta foi \"depende do nível do seu plano\".",
+      "start": 624.48,
+      "end": 651.7
+    },
+    {
+      "id": 45,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(2)",
+      "text": "O desenvolvedor A P I existe, mas é menos maduro que o Square ou o Toast. Integrar Clover em um site personalizado geralmente requer mais trabalho de encanamento do que qualquer outra alternativa, na minha experiência.",
+      "start": 651.92,
+      "end": 664.71
+    },
+    {
+      "id": 46,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(3)",
+      "text": "O preço está no seu contrato, não em uma página. As taxas de transação e os custos mensais dependem muito do contrato de serviços comerciais específico que você assinou, e não de uma página pública de preços. Antes de se comprometer, leia a tabela de taxas em seu contrato real - vi configurações idênticas de Clover com 30% de diferença no custo mensal em restaurantes diferentes.",
+      "start": 664.93,
+      "end": 687.27
+    },
+    {
+      "id": 47,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Na minha experiência de auditoria: Clover é a escolha certa quando você precisa de hardware específico que Clover fabrica e os outros não - mesa portátil para um bar de alto volume, uma balança integrada para um balcão de açougue, um quiosque para uma linha fast-casual - ou quando o próprio relacionamento com o provedor de serviços comerciais é valioso (por exemplo, quando seu banco local agrupou o P O S com um empréstimo comercial ou linha de crédito). Para pura qualidade de integração de sites, é minha terceira escolha das três. Mas \"terceira escolha\" aqui ainda significa \"legitimamente utilizável\" - apenas que Toast e Square são geralmente pontos de partida mais fáceis se você tiver escolha livre.",
+      "start": 687.59,
+      "end": 725.58
+    },
+    {
+      "id": 48,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Lado a lado.",
+      "start": 726.38,
+      "end": 727.25
+    },
+    {
+      "id": 49,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Aqui está a mesma pergunta respondida em dez recursos, de uma só vez. Verde é um sim confiante. Amber é parcial ou “depende do seu plano”. A ferrugem é uma lacuna significativa que vale a pena conhecer antes de assinar um contrato.",
+      "start": 727.7,
+      "end": 740.95
+    },
+    {
+      "id": 50,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Comparação com base na documentação pública de cada fornecedor no início de vinte e vinte e seis · recursos e alteração de preços - verifique com seu provedor antes de assinar",
+      "start": 741.5,
+      "end": 752.63
+    },
+    {
+      "id": 51,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Qual eu escolheria, por tipo de restaurante.",
+      "start": 753.43,
+      "end": 755.9
+    },
+    {
+      "id": 52,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Veja como eu combinaria cada P O S com um tipo de restaurante, com base no que vejo nas auditorias. Estas são opiniões, não regras – seu melhor ajuste depende de variáveis ​​que não consigo ver em uma postagem de blog, então trate isso como um ponto de partida para sua própria avaliação, não como um veredicto.",
+      "start": 756.35,
+      "end": 773.89
+    },
+    {
+      "id": 53,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "O que perguntar ao seu provedor de P O S antes de criar um site.",
+      "start": 774.69,
+      "end": 778.53
+    },
+    {
+      "id": 54,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Qualquer que seja o P O S que você esteja avaliando, há seis perguntas que eu faria ao representante de vendas antes de assinar qualquer coisa. Anote-os, envie-os por e-mail para seu representante e salve a resposta - as respostas dirão mais sobre a qualidade da integração na qual você está se inscrevendo do que qualquer página brilhante de produto.",
+      "start": 778.98,
+      "end": 797.87
+    },
+    {
+      "id": 55,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "\"Posso executar um site personalizado em uma pilha moderna e ainda usar seu P O S como mecanismo?\" Este é o teste do ecossistema do desenvolvedor. Se a resposta for “bem, temos nossos próprios modelos” – isso é não. Você deseja um sim confiante com uma referência específica à documentação API e, de preferência, um exemplo de site personalizado que já faz isso.",
+      "start": 798.19,
+      "end": 818.28
+    },
+    {
+      "id": 56,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "“O que exatamente está na taxa mensal e o que é cobrado por transação?” O preço do P O S é uma sala de espelhos. Obtenha a resposta por escrito, anotada, com exemplos calculados em relação ao seu volume semanal típico. Se o representante hesitar ou optar por \"depende\", peça um modelo de fatura de um restaurante semelhante ao seu.",
+      "start": 818.5,
+      "end": 836.73
+    },
+    {
+      "id": 57,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "“Quando eu marco um prato como 86 no PDV, quanto tempo até que o menu online reflita isso?” A resposta que você deseja é “segundos” ou “dentro de um minuto”. Se for “no dia seguinte” ou “depois que um trabalho de sincronização for executado durante a noite”, seus clientes continuarão pedindo coisas que você não tem – e seu estande anfitrião será quem se desculpará por isso.",
+      "start": 836.95,
+      "end": 856.55
+    },
+    {
+      "id": 58,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "\"O que acontecerá com meus dados se eu sair daqui a três anos?\" Cada representante do P O S promete que você nunca mais vai querer sair. Essa não é a resposta. A verdadeira questão é: posso exportar menu, histórico de pedidos, perfis de clientes e dados de reservas em um formato padrão (CSV, JSON), e essa exportação inclui tudo que eu precisaria para reconstruir em outro lugar sem começar do zero?",
+      "start": 856.77,
+      "end": 877.94
+    },
+    {
+      "id": 59,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "\"Existe uma taxa de cancelamento ou cláusula de rescisão antecipada - e posso vê-la por escrito antes de assinar?\" Leia as letras pequenas. Os três provedores de P O S neste post têm respostas muito diferentes, e a resposta importa muito dois anos depois, se o ajuste parar de funcionar.",
+      "start": 878.16,
+      "end": 894.7
+    },
+    {
+      "id": 60,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
+      "text": "\"Se eu quisesse integrar um site personalizado ao seu P O S, qual seria o tempo típico de configuração?\" Esta é minha pergunta favorita, porque a resposta informa quantas vezes o representante realmente fez isso. Os representantes Toast normalmente respondem em semanas com um esboço do projeto. Os representantes Square geralmente respondem em dias e apontam para os documentos A P I. Os representantes do Clover às vezes precisam perguntar a uma pessoa de relações com o desenvolvedor e entrar em contato com você - o que é uma informação útil.",
+      "start": 894.92,
+      "end": 925.26
+    },
+    {
+      "id": 61,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Faça anotações sobre o formato de cada resposta, não apenas sobre o conteúdo. Uma resposta confiável e específica com documentação é um bom sinal. Uma resposta segura e sem documentação é um sinal de alerta. Uma resposta vaga com a promessa de acompanhamento é um sinal de alerta – e o acompanhamento quase nunca chega.",
+      "start": 925.58,
+      "end": 943.59
+    },
+    {
+      "id": 62,
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Faça anotações sobre o formato de cada resposta, não apenas sobre o conteúdo.",
+      "start": 944.14,
+      "end": 948.71
+    },
+    {
+      "id": 63,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "O P O S e o site são um sistema.",
+      "start": 949.51,
+      "end": 951.67
+    },
+    {
+      "id": 64,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "O erro que vejo com mais frequência em auditorias de restaurantes não é escolher o P O S errado. É escolher o P O S sem envolver a pessoa que vai construir o site – e depois descobrir os limites de integração na semana de lançamento, quando as opções são todas caras. No momento em que você está conectando o fluxo de reservas, você já está preso a tudo o que o P O S suporta, e \"faremos isso funcionar\" se torna muito mais caro do que uma conversa de cinco minutos no estágio de avaliação do P O S teria sido.",
+      "start": 952.12,
+      "end": 980.28
+    },
+    {
+      "id": 65,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "Se você estiver no meio da avaliação do P O S agora, traga a estratégia do seu site para a mesma reunião. Se você estiver no meio de um projeto de site com o P O S já escolhido, traga os documentos do desenvolvedor do P O S para o início. A qualidade da integração entre esses dois sistemas é mais importante do que qualquer sistema sozinho — e a única maneira de acertar é projetá-los como uma coisa só, desde o início.",
+      "start": 980.6,
+      "end": 1003.12
+    }
+  ]
+}
