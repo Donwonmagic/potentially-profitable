@@ -868,6 +868,54 @@ var RESTAURANT_PRIORITY_CHECKS = [
     failNote: null,
     unverified: 'We didn\'t spot a newsletter capture — is this right?',
     unverifiedNote: 'We look for an email input paired with newsletter language (subscribe / join our list / newsletter) OR a form action pointing at Mailchimp, Klaviyo, ConvertKit, Constant Contact, or similar. If yours is elsewhere or the form is in a modal we didn\'t render, let us know.'
+  },
+  {
+    // Phase H5: Catering / private-events page presence.
+    // Evaluated from the crawl bundle: a slot='catering' or
+    // slot='events' page counts as a pass. Subtype weights in
+    // subtypes.js make this a 2.5x bump for catering-only and
+    // boost for fine-dining / bar-pub.
+    type: 'catering-page',
+    weight: 0.75,
+    anchor: '#conversions',
+    effort: 'rebuild',
+    minutes: 180,
+    impact: 'A dedicated catering or private-events page is how most corporate planners and wedding organizers FIND caterers — it captures the long-tail search traffic ("catering Brooklyn", "private dining party of 30") that the homepage never ranks for.',
+    pass: 'You have a catering / events page',
+    passNote: 'Your site links to a dedicated catering or events page — planners searching for private dining in your area can land directly on a page that sells the offering.',
+    fail: null,
+    failNote: null,
+    unverified: 'We didn\'t find a catering or events page — is this right?',
+    unverifiedNote: 'We look for links labelled "Catering", "Private Events", "Parties", or "Weddings" in your navigation. If you do host events but the page is named differently, let us know. If you don\'t today, a catering page is one of the highest-ROI additions for any restaurant with dining-room capacity.',
+    byType: {
+      'fine-dining': {
+        impact: 'Private-dining rooms and buyouts are the margin engine of fine-dining — a single corporate holiday party pays for a slow week. A dedicated events page with capacity, sample menus, and photo gallery is what the event planners searching "private dining [city]" actually land on.'
+      },
+      'catering-only': {
+        impact: 'For a catering-only business the catering page IS the site. It\'s where packages, per-head pricing, dietary accommodations, minimum order sizes, service radius, lead time, and the RFQ form all live. Without it, planners comparing vendors leave for a competitor with clearer info.'
+      },
+      'bar-pub': {
+        impact: 'Private parties (birthdays, work socials, whiskey tastings) are high-ticket bar revenue that walks in by appointment. A dedicated events page with capacity, packages, and a Tripleseat / inquiry form converts those bookings that would otherwise end up in a lost email thread.'
+      }
+    }
+  },
+  {
+    // Phase H6: Age-gate presence. Only bar-pub has non-zero
+    // weight in subtypes.js (2.0); every other subtype suppresses
+    // the check entirely (0) so a cafe that sells no alcohol
+    // doesn't lose score for not gating.
+    type: 'age-gate',
+    weight: 1.0, // default; bar-pub override = 2.0 via subtypes
+    anchor: '#trust',
+    effort: 'dev',
+    minutes: 45,
+    impact: 'For bars, pubs, and breweries, an age-gate on the site shows regulators you care about compliance and protects you if an underage visitor sees your promotional content. Almost every state ABC / TTB program expects it, and platforms increasingly penalize non-compliant sites in ad delivery.',
+    pass: 'Your site gates underage visitors',
+    passNote: 'Your site asks visitors to confirm they are of legal drinking age before seeing beverage content — this is the baseline compliance move for any bar or brewery.',
+    fail: null,
+    failNote: null,
+    unverified: 'We didn\'t spot an age-gate — is this right?',
+    unverifiedNote: 'We look for "are you 21 or older", "confirm your age", "verify your age" modals. If your age-gate is conditional on a country param or lives in a script we didn\'t render, let us know — and if you don\'t have one yet, this is a 45-minute developer task worth prioritizing.'
   }
 ];
 
@@ -1114,6 +1162,23 @@ function detectEmailCapture(html, allUrls) {
   // is usually a contact-form, which isn't a newsletter capture.
   var present = hasHost || (hasEmailInput && hasNewsletterCopy);
   return { present: present, hasEmailInput: hasEmailInput, hasNewsletterCopy: hasNewsletterCopy, hasHost: hasHost };
+}
+
+// H6: Age-gate detection. Scans for the common "are you 21 or older"
+// modal/pattern. Mostly relevant for bar-pub and breweries.
+var AGE_GATE_PATTERNS = [
+  /\bage[-\s]?gate\b/i,
+  /\b(?:are\s+you|i\s+am|must\s+be)\s+(?:21|18)\s+(?:or\s+)?older\b/i,
+  /\bconfirm\s+your\s+age\b/i,
+  /\bmust\s+be\s+of\s+legal\s+drinking\s+age\b/i,
+  /\bverify\s+your\s+age\b/i
+];
+function detectAgeGate(html) {
+  if (!html || typeof html !== 'string') return { present: false };
+  for (var i = 0; i < AGE_GATE_PATTERNS.length; i++) {
+    if (AGE_GATE_PATTERNS[i].test(html)) return { present: true };
+  }
+  return { present: false };
 }
 
 function detectDietaryMarkers(pageText) {

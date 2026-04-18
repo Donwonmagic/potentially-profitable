@@ -3426,6 +3426,33 @@
       return makeResult(def, 'unverified');
     }
 
+    // ---- Catering / events page presence (Phase H5) ----
+    if (def.type === 'catering-page') {
+      var cpCrawl = window.__auditCrawl;
+      if (cpCrawl && Array.isArray(cpCrawl.pages)) {
+        for (var ci = 0; ci < cpCrawl.pages.length; ci++) {
+          var cp = cpCrawl.pages[ci];
+          if (cp && (cp.slot === 'catering' || cp.slot === 'events') && cp.html) {
+            return makeResult(def, 'pass', [{ name: cp.slot === 'catering' ? 'Catering page' : 'Events page' }]);
+          }
+        }
+      }
+      return makeResult(def, 'unverified');
+    }
+
+    // ---- Age-gate presence (Phase H6) ----
+    if (def.type === 'age-gate') {
+      if (typeof detectAgeGate !== 'function') return makeResult(def, 'unverified');
+      var agHtml = '';
+      var agCrawl = window.__auditCrawl;
+      if (agCrawl && agCrawl.homepage && typeof agCrawl.homepage.html === 'string') {
+        agHtml = agCrawl.homepage.html;
+      }
+      var ag = detectAgeGate(agHtml);
+      if (ag.present) return makeResult(def, 'pass');
+      return makeResult(def, 'unverified');
+    }
+
     // ---- Loyalty program (Phase H3) ----
     if (def.type === 'loyalty') {
       if (typeof detectLoyaltyProgram !== 'function') return makeResult(def, 'unverified');
