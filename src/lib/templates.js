@@ -239,6 +239,10 @@ function checklistKind(body) {
 }
 
 export function checklistNotification(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.checklistNotification === 'function') {
+    return ES.checklistNotification(body);
+  }
   const email = String(body.email || '—').trim();
   const k     = checklistKind(body);
 
@@ -273,6 +277,10 @@ export function checklistNotification(body) {
 }
 
 export function checklistAutoResponder(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.checklistAutoResponder === 'function') {
+    return ES.checklistAutoResponder(body);
+  }
   const k = checklistKind(body);
   const biz = k.businessField;
 
@@ -364,6 +372,10 @@ export function checklistAutoResponder(body) {
 // email actually acts as the deliverable, not just a receipt.
 
 export function auditReportNotification(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.auditReportNotification === 'function') {
+    return ES.auditReportNotification(body);
+  }
   const email       = String(body.email || '—').trim();
   const auditedUrl  = String(body.audited_url || '').trim();
   const overall     = String(body.overall_score || '—').trim();
@@ -413,6 +425,10 @@ export function auditReportNotification(body) {
 }
 
 export function auditReportAutoResponder(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.auditReportAutoResponder === 'function') {
+    return ES.auditReportAutoResponder(body);
+  }
   const auditedUrl = String(body.audited_url || '').trim();
   const overall    = String(body.overall_score || '').trim();
   const summary    = String(body.summary || '').trim();
@@ -494,6 +510,10 @@ function deepReportIntroFor(subtypeId) {
 }
 
 export function auditDeepReportNotification(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.auditDeepReportNotification === 'function') {
+    return ES.auditDeepReportNotification(body);
+  }
   const email       = String(body.email || '—').trim();
   const auditedUrl  = String(body.audited_url || '').trim();
   const overall     = String(body.overall_score || '—').trim();
@@ -534,6 +554,10 @@ export function auditDeepReportNotification(body) {
 }
 
 export function auditDeepReportAutoResponder(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.auditDeepReportAutoResponder === 'function') {
+    return ES.auditDeepReportAutoResponder(body);
+  }
   const auditedUrl = String(body.audited_url || '').trim();
   const overall    = String(body.overall_score || '').trim();
   const subtype    = String(body.subtype || '').trim();

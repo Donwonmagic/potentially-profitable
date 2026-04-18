@@ -2266,6 +2266,10 @@
           <input type="hidden" name="subtype"         id="pdfCtaTopSubtype"   value="" />
           <input type="hidden" name="overall_score"   id="pdfCtaTopScore"     value="" />
           <input type="hidden" name="shareable_link"  id="pdfCtaTopShareLink" value="" />
+          <!-- Locale routed to the worker so the auto-responder comes
+               back in the visitor's language. Populated at submit time
+               from window.__muntinLang; falls back to en. -->
+          <input type="hidden" name="locale"          id="pdfCtaTopLocale"    value="en" />
           <label for="pdfCtaTopEmail" class="sr-only">Your email address</label>
           <input type="email" id="pdfCtaTopEmail" name="email" required autocomplete="email" placeholder="you@yourrestaurant.com" />
           <button type="submit">Email me the PDF <span aria-hidden="true">→</span></button>
@@ -2522,6 +2526,7 @@
           <input type="hidden" name="restaurant_readiness" id="emailReportReadiness" value="" />
           <input type="hidden" name="shareable_link" id="emailReportShareLink" value="" />
           <input type="hidden" name="summary" id="emailReportSummary" value="" />
+          <input type="hidden" name="locale" id="emailReportLocale" value="en" />
           <input type="hidden" name="failing_checks" id="emailReportFailing" value="" />
           <input type="hidden" name="unverified_checks" id="emailReportUnverified" value="" />
           <input type="hidden" name="user_corrections" id="emailReportCorrections" value="" />
@@ -7600,6 +7605,9 @@
     setFieldIfPresent('subtype',        bt);
     setFieldIfPresent('overall_score',  (last && typeof last.overall === 'number') ? String(Math.round(last.overall)) : '');
     setFieldIfPresent('restaurant_readiness', (last && typeof last.restaurant === 'number') ? String(Math.round(last.restaurant)) : '');
+    // Route the response in the visitor's language. window.__muntinLang
+    // is set by the language-detection block earlier in the page.
+    setFieldIfPresent('locale', window.__muntinLang === 'es' ? 'es' : 'en');
 
     // Build PDF first, then POST. We await the PDF even if it's slow
     // because the attachment IS the deliverable — no point sending
