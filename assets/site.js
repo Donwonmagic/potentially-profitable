@@ -1083,9 +1083,12 @@
       listenBtn.setAttribute('data-state', next);
       listenBtn.setAttribute('aria-pressed', pressed);
       updateDockState();
-      // Reset dismissal at the start of each new playback so returning
-      // users get the dock back on the next play.
-      if (next === 'idle') dockDismissed = false;
+      // Reset the collapsed state at the start of each new playback
+      // so returning users get the full dock by default.
+      if (next === 'idle') {
+        dockCollapsed = false;
+        dock.root.setAttribute('data-collapsed', 'false');
+      }
       updateDockVisibility();
     }
 
@@ -1108,14 +1111,16 @@
 
     /* ---- Floating dock ---- */
     // Mirrors the card's state; only shown when (a) audio is active and
-    // (b) the card is scrolled out of view. Dismiss is "for this
-    // playback only" — on the next play it comes back. The dock carries
-    // its own skip + seek + time controls so the user never has to
-    // scroll back to the card during playback.
+    // (b) the card is scrolled out of view. The header close button
+    // collapses the dock to a compact pill (user can expand it again
+    // via the chevron); the stop button is the actual "end playback"
+    // action — hides the dock and returns to idle.
     const dock = buildDock();
     document.body.appendChild(dock.root);
     const dockPlayBtn = dock.root.querySelector('.listen-dock-play');
-    const dockClose   = dock.root.querySelector('.listen-dock-close');
+    const dockCollapse = dock.root.querySelector('.listen-dock-collapse');
+    const dockStop    = dock.root.querySelector('.listen-dock-stop');
+    const dockExpand  = dock.root.querySelector('.listen-dock-expand');
     const dockTitleEl = dock.root.querySelector('.listen-dock-title');
     const dockChapter = dock.root.querySelector('.listen-dock-chapter');
     const dockFill    = dock.root.querySelector('.listen-dock-progress-fill');
@@ -1124,13 +1129,29 @@
     const dockNextBtn = dock.root.querySelector('.listen-dock-next');
     const dockTimeNow = dock.root.querySelector('.listen-dock-time-now');
     const dockTimeEnd = dock.root.querySelector('.listen-dock-time-end');
-    let dockDismissed = false;
+    let dockCollapsed = false;
     let cardInView = true;
 
     dockPlayBtn.addEventListener('click', toggle);
-    dockClose.addEventListener('click', () => {
-      dockDismissed = true;
-      updateDockVisibility();
+    // Collapse / expand is a presentational toggle only — playback
+    // keeps running in the background. Only the Stop control ends
+    // audio. This separation means a user who wants the dock out of
+    // the way but audio still playing doesn't have to choose between
+    // the two.
+    dockCollapse.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dockCollapsed = true;
+      dock.root.setAttribute('data-collapsed', 'true');
+    });
+    dockExpand.addEventListener('click', () => {
+      dockCollapsed = false;
+      dock.root.setAttribute('data-collapsed', 'false');
+    });
+    dockStop.addEventListener('click', (e) => {
+      e.stopPropagation();
+      // Full stop — kills audio, returns to idle; updateDockVisibility
+      // will then hide the dock because state is no longer active.
+      finishPlayback();
     });
     if (dockPrevBtn) dockPrevBtn.addEventListener('click', () => skipTo(currentIndex - 1));
     if (dockNextBtn) dockNextBtn.addEventListener('click', () => skipTo(currentIndex + 1));
@@ -1162,7 +1183,7 @@
     }
 
     function updateDockVisibility() {
-      const shouldShow = !dockDismissed && !cardInView && !footerInView
+      const shouldShow = !cardInView && !footerInView
         && (state === 'playing' || state === 'paused');
       dock.root.setAttribute('data-visible', shouldShow ? 'true' : 'false');
     }
@@ -1215,6 +1236,7 @@
       root.setAttribute('aria-label', 'Audio player controls');
       root.setAttribute('data-state', 'idle');
       root.setAttribute('data-visible', 'false');
+      root.setAttribute('data-collapsed', 'false');
       root.innerHTML = `
         <button type="button" class="listen-dock-play" aria-label="Resume audio">
           <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.54.84l10-6.5a1 1 0 0 0 0-1.68l-10-6.5A1 1 0 0 0 8 5.5z"/></svg>
@@ -1224,9 +1246,14 @@
           <span class="listen-dock-title">Audio edition</span>
           <span class="listen-dock-chapter"></span>
         </div>
-        <button type="button" class="listen-dock-close" aria-label="Hide audio controls">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
-        </button>
+        <div class="listen-dock-header-actions">
+          <button type="button" class="listen-dock-stop" aria-label="Stop audio and close">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="1.5"/></svg>
+          </button>
+          <button type="button" class="listen-dock-collapse" aria-label="Minimize audio controls">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
         <button type="button" class="listen-dock-skip listen-dock-prev" aria-label="Previous paragraph" disabled>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="19 20 9 12 19 4 19 20" fill="currentColor"/><line x1="5" y1="5" x2="5" y2="19"/></svg>
         </button>
@@ -1237,6 +1264,9 @@
         </div>
         <button type="button" class="listen-dock-skip listen-dock-next" aria-label="Next paragraph" disabled>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 4 15 12 5 20 5 4" fill="currentColor"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+        </button>
+        <button type="button" class="listen-dock-expand" aria-label="Expand audio controls" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
         </button>
       `;
       return { root };

@@ -691,11 +691,15 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 }
 
 /* Floating dock — appears once the inline card scrolls out of view.
-   Laid out as two rows inside a pill: top row is [play][meta][close],
+   Laid out as two rows inside a pill: top row is [play][meta][actions],
    bottom row is [prev] [time] [progress] [time] [next] so the progress
-   bar can stretch to the full dock width (click-to-seek surface).
+   bar can stretch to the full dock width (click-to-seek surface). The
+   dock is collapsible: when data-collapsed="true", everything except
+   the play button + an expand chevron collapses so the dock reads as
+   a small floating pill that stays out of the user's way while audio
+   continues playing.
 */
-.listen-dock{position:fixed;left:50%;bottom:18px;transform:translate(-50%,120%);z-index:60;display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"play meta close" "skip progress skip-next";align-items:center;column-gap:14px;row-gap:8px;padding:12px 16px 14px;background:linear-gradient(180deg,rgba(20,22,26,0.96) 0%,rgba(14,16,20,0.98) 100%);backdrop-filter:saturate(140%) blur(16px);-webkit-backdrop-filter:saturate(140%) blur(16px);border-radius:22px;border:1px solid rgba(255,255,255,0.08);box-shadow:0 28px 56px -18px rgba(0,0,0,0.6),0 1px 0 rgba(255,255,255,0.06) inset;color:var(--white);font-family:var(--font-body);font-size:13px;transition:transform var(--t-med) var(--ease-out),opacity var(--t-med) var(--ease-out);opacity:0;pointer-events:none;width:min(520px,calc(100vw - 24px))}
+.listen-dock{position:fixed;left:50%;bottom:18px;transform:translate(-50%,120%);z-index:60;display:grid;grid-template-columns:auto 1fr auto auto;grid-template-areas:"play meta actions actions" "skip progress progress skip-next";align-items:center;column-gap:14px;row-gap:8px;padding:12px 16px 14px;background:linear-gradient(180deg,rgba(20,22,26,0.96) 0%,rgba(14,16,20,0.98) 100%);backdrop-filter:saturate(140%) blur(16px);-webkit-backdrop-filter:saturate(140%) blur(16px);border-radius:22px;border:1px solid rgba(255,255,255,0.08);box-shadow:0 28px 56px -18px rgba(0,0,0,0.6),0 1px 0 rgba(255,255,255,0.06) inset;color:var(--white);font-family:var(--font-body);font-size:13px;transition:transform var(--t-med) var(--ease-out),opacity var(--t-med) var(--ease-out),width var(--t-med) var(--ease-out),padding var(--t-med) var(--ease-out),border-radius var(--t-med) var(--ease-out);opacity:0;pointer-events:none;width:min(520px,calc(100vw - 24px))}
 .listen-dock[data-visible="true"]{transform:translate(-50%,0);opacity:1;pointer-events:auto}
 
 .listen-dock-play{grid-area:play;width:44px;height:44px;border-radius:50%;border:0;background:var(--white);color:var(--ink);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:none;transition:transform var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease);box-shadow:0 2px 0 rgba(0,0,0,0.12) inset}
@@ -712,9 +716,26 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 .listen-dock-chapter::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--teal);flex:none;box-shadow:0 0 0 3px rgba(31,78,91,0.25)}
 .listen-dock[data-state="playing"] .listen-dock-chapter::before{animation:listen-blink 1.4s var(--ease) infinite}
 
-.listen-dock-close{grid-area:close;width:32px;height:32px;border-radius:50%;border:0;background:transparent;color:rgba(255,255,255,0.6);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex:none;transition:color var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease)}
-.listen-dock-close:hover{color:var(--white);background:rgba(255,255,255,0.08)}
-.listen-dock-close svg{width:14px;height:14px}
+.listen-dock-header-actions{grid-area:actions;display:inline-flex;align-items:center;gap:2px}
+.listen-dock-stop,.listen-dock-collapse,.listen-dock-expand{width:32px;height:32px;border-radius:50%;border:0;background:transparent;color:rgba(255,255,255,0.55);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex:none;transition:color var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease)}
+.listen-dock-stop:hover,.listen-dock-collapse:hover,.listen-dock-expand:hover{color:var(--white);background:rgba(255,255,255,0.08)}
+.listen-dock-stop:hover{color:#FFB4B4;background:rgba(255,90,90,0.12)}
+.listen-dock-stop svg{width:12px;height:12px}
+.listen-dock-collapse svg,.listen-dock-expand svg{width:16px;height:16px}
+
+/* Collapsed pill — hide everything except the play button and a
+   small expand chevron. Shrinks the container to the minimum width
+   the two controls need. Clicking the expand chevron or the whole
+   pill restores the full dock. */
+.listen-dock[data-collapsed="true"]{grid-template-columns:auto auto;grid-template-areas:"play expand";width:auto;padding:6px 6px 6px 6px;border-radius:999px;column-gap:4px}
+.listen-dock[data-collapsed="true"] .listen-dock-meta,
+.listen-dock[data-collapsed="true"] .listen-dock-header-actions,
+.listen-dock[data-collapsed="true"] .listen-dock-skip,
+.listen-dock[data-collapsed="true"] .listen-dock-track{display:none}
+.listen-dock[data-collapsed="true"] .listen-dock-expand{display:inline-flex;grid-area:expand}
+.listen-dock[data-collapsed="true"] .listen-dock-play{width:40px;height:40px}
+.listen-dock-expand{display:none}
+.listen-dock-expand[hidden]{display:none}
 
 .listen-dock-skip{width:36px;height:36px;border-radius:50%;border:0;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.82);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex:none;transition:background-color var(--t-fast) var(--ease),color var(--t-fast) var(--ease)}
 .listen-dock-skip:hover:not(:disabled){background:rgba(255,255,255,0.14);color:var(--white)}
@@ -737,6 +758,7 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 
 @media (max-width:480px){
   .listen-dock{bottom:12px;padding:10px 12px 12px;row-gap:6px;column-gap:10px;font-size:12px;width:calc(100vw - 20px)}
+  .listen-dock[data-collapsed="true"]{width:auto;padding:6px 6px 6px 6px}
   .listen-dock-play{width:40px;height:40px}
   .listen-dock-skip{width:32px;height:32px}
   .listen-dock-time{font-size:10.5px}
