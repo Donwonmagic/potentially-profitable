@@ -269,21 +269,40 @@
     color: var(--teal);
   }
 
-  /* Check item — now a <label> wrapping a hidden checkbox */
+  /* Check item — a <label> wrapping a hidden checkbox, styled as a
+     cream-2 card with a left-side status rail that fills teal on check.
+     Echoes the exec-summary / top-3-fixes card family on the audit
+     report so the two surfaces feel like one product. */
   .check-item {
     display: grid;
     grid-template-columns: 56px 1fr;
     gap: 20px;
-    padding: 28px 12px 28px 0;
-    margin: 0 -12px;
-    border-bottom: 1px solid var(--line);
+    padding: 24px 24px 24px 28px;
+    margin: 0 0 14px;
+    background: var(--cream-2);
+    border: 1px solid var(--line);
+    border-radius: 14px;
     cursor: pointer;
     position: relative;
-    border-radius: 8px;
-    transition: background-color var(--t-fast) var(--ease);
+    overflow: hidden;
+    transition: background-color var(--t-fast) var(--ease),
+                border-color var(--t-fast) var(--ease),
+                transform var(--t-fast) var(--ease-out);
   }
-  .check-item:last-child { border-bottom: 0; }
-  .check-item:hover { background-color: rgba(31, 78, 91, 0.035); }
+  .check-item::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: var(--line);
+    transition: background var(--t-fast) var(--ease);
+  }
+  .check-item:last-child { margin-bottom: 0; }
+  .check-item:hover {
+    background-color: var(--cream);
+    border-color: var(--line-dark);
+    transform: translateY(-1px);
+  }
   .check-toggle {
     position: absolute;
     width: 1px; height: 1px;
@@ -298,9 +317,18 @@
     outline: 2px solid var(--teal);
     outline-offset: 2px;
   }
-  /* Checked state — the number turns into a checkmark in a filled teal
-     circle, and the headline + fields dim and strike through so it's
-     clear at a glance which items are done. */
+  /* Checked state — the left rail turns teal, the card body picks up a
+     teal-tinted wash, the number turns into a checkmark in a filled
+     teal circle, and the headline + fields dim and strike through so
+     it's clear at a glance which items are done. */
+  .check-item:has(.check-toggle:checked),
+  .check-item:has(.check-toggle:checked):hover {
+    background: var(--teal-tint);
+    border-color: color-mix(in srgb, var(--teal) 28%, var(--line));
+  }
+  .check-item:has(.check-toggle:checked)::before {
+    background: var(--teal);
+  }
   .check-item:has(.check-toggle:checked) .check-num {
     position: relative;
     color: transparent;
@@ -331,6 +359,7 @@
   .check-item:has(.check-toggle:checked) .check-body .field .v { opacity: 0.55; }
   @media (prefers-reduced-motion: reduce) {
     .check-item { transition: none; }
+    .check-item:hover { transform: none; }
   }
   .check-num {
     font-family: var(--font-display);
@@ -377,7 +406,13 @@
     border-radius: 4px;
   }
   @media (max-width: 640px) {
-    .check-item { grid-template-columns: 44px 1fr; gap: 14px; }
+    .check-item {
+      grid-template-columns: 44px 1fr;
+      gap: 14px;
+      padding: 20px 18px 20px 22px;
+      margin-bottom: 12px;
+      border-radius: 12px;
+    }
     .check-num { font-size: 28px; }
     .check-body .field { grid-template-columns: 1fr; gap: 4px; }
   }
@@ -589,11 +624,14 @@
       padding: 6pt 0 4pt !important;
       margin: 0 !important;
       border: 0 !important;
+      border-radius: 0 !important;
       border-bottom: 0.4pt dotted #999 !important;
       break-inside: avoid;
       page-break-inside: avoid;
       background: transparent !important;
+      overflow: visible !important;
     }
+    .check-item::before { content: none !important; }
     .check-item:last-child { border-bottom: 0 !important; }
 
     .check-num {
@@ -706,17 +744,35 @@
     gap: 12px;
   }
   .progress-track {
-    height: 8px;
+    height: 12px;
     background: var(--line);
     border-radius: 999px;
     overflow: hidden;
+    position: relative;
   }
   .progress-fill {
     height: 100%;
     width: 0%;
     background: linear-gradient(90deg, var(--teal) 0%, var(--teal-dark) 100%);
-    border-radius: 999px;
+    border-radius: 999px 0 0 999px;
     transition: width 400ms var(--ease-out);
+  }
+  /* Segmented tick overlay: vertical dividers every 1/30th of the bar
+     so the track reads as 30 discrete ticks. Works on top of the fill
+     so filled vs unfilled ticks still show through, with the cream
+     divider lines making the segment boundaries visible. */
+  .progress-track::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc((100% / 30) - 1.5px),
+      var(--cream) calc((100% / 30) - 1.5px),
+      var(--cream) calc(100% / 30)
+    );
   }
   .progress-meta {
     display: flex;
@@ -985,22 +1041,38 @@
     flex-shrink: 0;
   }
   .checklist-tailor-pills { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
+  /* Subtype pill — mirrors the .btc-alt-chip pattern on the audit tool
+     (transparent bg, line-dark border, 999px radius, 13px weight-600)
+     so the two surfaces share one visual vocabulary for "pick your
+     kind of restaurant." Active state flips to ink for a solid
+     selected-chip read. */
   .tailor-pill {
     font-family: var(--font-body);
     font-size: 13px;
-    font-weight: 500;
-    color: var(--ink-soft);
-    background: var(--cream-2);
-    border: 1px solid transparent;
+    font-weight: 600;
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid var(--line-dark);
     border-radius: 999px;
-    padding: 7px 14px;
+    padding: 6px 12px;
     cursor: pointer;
-    transition: all var(--t-fast) var(--ease);
+    transition: background var(--t-fast) var(--ease),
+                border-color var(--t-fast) var(--ease),
+                color var(--t-fast) var(--ease);
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
   }
-  .tailor-pill:hover { background: var(--cream); border-color: var(--line-dark); }
-  .tailor-pill.is-active { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+  .tailor-pill:hover,
+  .tailor-pill:focus-visible {
+    background: var(--cream-2);
+    border-color: var(--ink);
+    outline: none;
+  }
+  .tailor-pill.is-active {
+    background: var(--ink);
+    color: var(--cream);
+    border-color: var(--ink);
+  }
   .tailor-pill.is-active:hover { background: var(--ink); }
 
   /* ============ PER-CATEGORY PROGRESS ============ */
@@ -1172,8 +1244,10 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 4px 10px;
-    background: transparent;
+    padding: 6px 12px;
+    min-height: 32px;
+    margin-top: 6px;
+    background: var(--cream);
     border: 1px solid var(--line);
     border-radius: 999px;
     font: inherit;
@@ -1186,11 +1260,14 @@
   }
   .learn-more-btn:hover,
   .learn-more-btn:focus-visible {
-    background: var(--cream-2, #faf6ee);
+    background: var(--white);
     border-color: var(--teal);
     outline: none;
   }
   .learn-more-btn svg { width: 12px; height: 12px; }
+  @media (max-width: 640px) {
+    .learn-more-btn { padding: 8px 14px; min-height: 36px; font-size: 13px; }
+  }
 
   /* Native <dialog> uses the UA's default layout; we override
      essentially everything because the UA styles are harsh. */
