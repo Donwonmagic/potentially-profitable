@@ -271,7 +271,22 @@ var RESTAURANT_BUSINESS_TYPE_DEFS = {
 };
 
 var RESTAURANT_ALLOWED_BUSINESS_TYPES = [
-  'fine-dining', 'casual-dining', 'fast-casual', 'cafe-bakery', 'bar-pub', 'restaurant'
+  // Canonical 10-subtype registry (see ./subtypes.js / src/lib/subtypes.js).
+  'fine-dining',
+  'casual-dining',
+  'fast-casual',
+  'cafe',
+  'bakery',
+  'bar-pub',
+  'pizzeria',
+  'food-truck',
+  'ghost-kitchen',
+  'catering-only',
+  // Legacy ids kept for backward-compat with shared URLs carrying
+  // ?bt=cafe-bakery or ?bt=restaurant. canonicalSubtypeId() maps
+  // these to a canonical id at read time.
+  'cafe-bakery',
+  'restaurant'
 ];
 
 // ---------------------------------------------------------------------------

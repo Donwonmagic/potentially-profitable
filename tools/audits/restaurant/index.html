@@ -1848,11 +1848,21 @@
         <div class="btc-left">
           <div class="btc-label">We detected:</div>
           <select id="btcSelect" class="btc-select" aria-label="Restaurant type">
+            <!-- Options are kept in sync with RESTAURANT_SUBTYPES in
+                 ./subtypes.js. Legacy values (cafe-bakery, restaurant)
+                 remain acceptable via RESTAURANT_SUBTYPE_ALIASES and
+                 canonicalSubtypeId() so old shareable links keep
+                 routing correctly. -->
             <option value="fine-dining">Fine-dining restaurant</option>
             <option value="casual-dining">Casual / full-service restaurant</option>
             <option value="fast-casual">Fast-casual or quick-service</option>
-            <option value="cafe-bakery">Café or bakery</option>
-            <option value="bar-pub">Bar or pub</option>
+            <option value="cafe">Café or coffee shop</option>
+            <option value="bakery">Bakery or pâtisserie</option>
+            <option value="bar-pub">Bar, pub, or brewery</option>
+            <option value="pizzeria">Pizzeria</option>
+            <option value="food-truck">Food truck or pop-up</option>
+            <option value="ghost-kitchen">Ghost kitchen / delivery-only</option>
+            <option value="catering-only">Catering-only / private events</option>
             <option value="restaurant">Other restaurant</option>
           </select>
         </div>
