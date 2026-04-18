@@ -112,5 +112,124 @@ var RESTAURANT_SUBTYPES = [
       'food-truck-schedule': 0,
       'aggregator-only': 0
     }
+  },
+  {
+    id: 'bar-pub',
+    label: 'Bar, pub, or brewery',
+    schemaTypes: ['BarOrPub', 'Brewery', 'Winery', 'Distillery'],
+    platformHints: { tripleseat: 3, opentable: 1, resy: 1, sevenrooms: 1 },
+    keywords: [
+      /\bcocktails?\b/i, /\bcraft\s+beer\b/i, /\bon\s+tap\b/i,
+      /\b(?:draft|draught)\s+(?:beer|list)\b/i, /\bhappy\s+hour\b/i,
+      /\b(?:gastro)?pub\b/i, /\btaproom\b/i, /\bwhiskey\s+(?:bar|list)\b/i,
+      /\bwine\s+bar\b/i, /\bspeakeasy\b/i, /\bbrewery\b/i
+    ],
+    weights: {
+      conversions: 1.5,
+      'age-gate': 2.0,    // ONLY subtype with non-zero age-gate weight
+      'menu-format': 1.5, // cocktail/draft list rotation is heavy
+      'food-truck-schedule': 0,
+      'aggregator-only': 0
+    }
+  },
+  {
+    id: 'pizzeria',
+    label: 'Pizzeria',
+    schemaTypes: ['Restaurant', 'FastFoodRestaurant'],
+    platformHints: { slice: 5, toast: 2, chownow: 2, doordash: 2, grubhub: 2, square: 1 },
+    keywords: [
+      /\bpizza(?:s|eria)?\b/i, /\bslice(?:s)?\b/i, /\bneapolitan\b/i,
+      /\bwood[-\s]fired\b/i, /\bcoal[-\s]fired\b/i, /\bsicilian\b/i,
+      /\bdetroit[-\s]style\b/i, /\bpepperoni\b/i, /\bcalzone\b/i
+    ],
+    weights: {
+      conversions: 2.0,
+      'delivery-radius': 1.5,
+      'menu-format': 1.5,
+      'age-gate': 0,
+      'food-truck-schedule': 0,
+      'aggregator-only': 0
+    }
+  },
+  {
+    id: 'food-truck',
+    label: 'Food truck or pop-up',
+    schemaTypes: ['Restaurant', 'FastFoodRestaurant'],
+    platformHints: { square: 2, toast: 1 },
+    keywords: [
+      /\bfood\s+truck\b/i, /\btruck\s+schedule\b/i, /\bwhere\s+(?:we|are\s+we)\b/i,
+      /\btoday['’]s\s+location\b/i, /\bpop[-\s]?up\b/i, /\bcatch\s+us\b/i,
+      /\bfollow\s+(?:our|us\s+on)\b/i, /\bmobile\s+(?:kitchen|restaurant)\b/i
+    ],
+    weights: {
+      'food-truck-schedule': 2.0,
+      conversions: 0.5,
+      'menu-format': 1.0,
+      platform: 0.5, // maps less important — trucks move
+      'age-gate': 0,
+      'aggregator-only': 0
+    }
+  },
+  {
+    id: 'ghost-kitchen',
+    label: 'Ghost kitchen / delivery-only',
+    schemaTypes: ['Restaurant', 'FastFoodRestaurant'],
+    platformHints: {
+      doordash: 4, 'uber eats': 4, grubhub: 4, postmates: 2,
+      seamless: 2, caviar: 2, deliveroo: 3, 'just eat': 3,
+      deliverect: 3, otter: 3
+    },
+    keywords: [
+      /\bghost\s+kitchen\b/i, /\bvirtual\s+(?:kitchen|restaurant|brand)\b/i,
+      /\bdelivery[-\s]only\b/i, /\bcloud\s+kitchen\b/i,
+      /\bno\s+dine[-\s]in\b/i, /\bdelivery\s+&\s+pickup\s+only\b/i
+    ],
+    weights: {
+      'aggregator-only': 2.0,
+      conversions: 1.5,
+      'menu-format': 1.0,
+      phone: 0.5,
+      platform: 0.5,
+      'age-gate': 0,
+      'food-truck-schedule': 0
+    }
+  },
+  {
+    id: 'catering-only',
+    label: 'Catering-only / private events',
+    schemaTypes: ['FoodEstablishment', 'Restaurant'],
+    platformHints: { ezcater: 5, catertrax: 5, tripleseat: 3, square: 1 },
+    keywords: [
+      /\bcatering\s+(?:menu|services?|packages?)\b/i, /\bprivate\s+(?:events?|dining|parties)\b/i,
+      /\bcorporate\s+catering\b/i, /\bwedding\s+catering\b/i,
+      /\bbuffet\s+catering\b/i, /\bdrop[-\s]off\s+catering\b/i,
+      /\boff[-\s]premise\b/i, /\brequest\s+a\s+quote\b/i,
+      /\bevent\s+planning\b/i
+    ],
+    weights: {
+      'catering-page': 2.5,
+      conversions: 1.5,
+      'menu-format': 1.5,
+      phone: 2.0,
+      'age-gate': 0,
+      'food-truck-schedule': 0,
+      'aggregator-only': 0
+    }
   }
 ];
+
+// Legacy → canonical id mapping. Share links and older URLs that carry
+// ?bt=cafe-bakery or ?s=casual should still route to a real subtype.
+var RESTAURANT_SUBTYPE_ALIASES = {
+  'cafe-bakery':  'cafe',
+  'casual':       'casual-dining',
+  'restaurant':   'casual-dining',
+  'coffee-shop':  'cafe',
+  'coffeeshop':   'cafe',
+  'brewery':      'bar-pub',
+  'pub':          'bar-pub',
+  'taproom':      'bar-pub'
+};
+
+// Flat id array for enum validation.
+var RESTAURANT_SUBTYPE_IDS = RESTAURANT_SUBTYPES.map(function(s){ return s.id; });
