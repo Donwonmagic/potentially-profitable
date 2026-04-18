@@ -994,6 +994,56 @@
   }
 
   /* Restaurant-priority checks list */
+  /* Phase E6: crawl-summary row lives inside the priority-list
+     between the header and the check items. Chip design echoes
+     the business-type-card alternatives chips for consistency. */
+  .crawl-summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .crawl-summary[hidden] { display: none; }
+  .crawl-summary-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--stone);
+  }
+  .crawl-summary-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .crawl-summary-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border: 1px solid var(--line-dark);
+    background: var(--cream-2, #faf6ee);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .crawl-summary-chip.is-error {
+    color: var(--rust, #B8541A);
+    border-color: var(--rust, #B8541A);
+    background: transparent;
+  }
+  .crawl-summary-chip .cs-slot {
+    text-transform: capitalize;
+  }
+  .crawl-summary-chip .cs-path {
+    color: var(--stone);
+    font-weight: 500;
+    font-size: 11px;
+  }
+
   .priority-list {
     background: var(--white);
     border: 1px solid var(--line);
@@ -1953,6 +2003,16 @@
           <h3>Restaurant-priority checks</h3>
           <span class="tally" id="priorityTally">—</span>
         </header>
+        <!-- Phase E6: "Also scanned" chip row. Populated by
+             renderCrawlSummary() once window.__auditCrawl lands. Hidden
+             when the crawl returned no follow-up pages. Each chip names
+             a slot (Menu, Reserve, Order, Contact, About, Catering,
+             Events) so owners see that the audit read their site in
+             layers, not just the homepage. -->
+        <div class="crawl-summary" id="crawlSummary" hidden>
+          <span class="crawl-summary-label">Also scanned:</span>
+          <div class="crawl-summary-chips" id="crawlSummaryChips"></div>
+        </div>
         <div id="priorityItems">
           <!-- Populated by sprint 17/18 JavaScript -->
         </div>
