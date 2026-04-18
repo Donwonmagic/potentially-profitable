@@ -113,7 +113,51 @@ export default {
       }
     }
 
-    // Not an API route — fall through to the static-asset server.
+    // Not an API route. Before falling through to static assets,
+    // sniff for a Spanish-speaking first-time visitor at the site
+    // root and attach an advisory header so the page can show an
+    // opt-in "Ver en español" banner client-side. We deliberately
+    // do NOT redirect — redirects on "/" are hostile to crawlers,
+    // curl, and cache keys. Deep links to /es/* are always served
+    // verbatim from the static assets below.
+    //
+    // The hint fires only when:
+    //   - the request is GET
+    //   - the path is exactly "/" (root)
+    //   - the visitor has no md_locale preference cookie yet
+    //   - Accept-Language leads with a Spanish tag
+    //
+    // This is a pure passive signal. Omitting it has zero
+    // functional impact on the site.
+    if (request.method === 'GET' && pathname === '/') {
+      const cookies = request.headers.get('cookie') || '';
+      const hasPref = /(?:^|;\s*)md_locale=/.test(cookies);
+      if (!hasPref) {
+        const accept = (request.headers.get('accept-language') || '').toLowerCase();
+        // Match "es" or "es-XX" as the leading language tag. We avoid
+        // a broad /es/ regex to keep "fr-CA,es;q=0.1" from tripping
+        // the hint — only visitors whose browser asks for Spanish
+        // first (or right after English) get the banner.
+        const leadsWithSpanish = /^\s*es\b/.test(accept)
+          || /^\s*en[^,]*,\s*es\b/.test(accept);
+        if (leadsWithSpanish) {
+          const res = await env.ASSETS.fetch(request);
+          const h = new Headers(res.headers);
+          h.set('x-locale-hint', 'es');
+          // Any downstream cache keyed on Accept-Language should know
+          // that this response's payload is identical but headers vary.
+          const existingVary = h.get('vary');
+          h.set('vary', existingVary ? `${existingVary}, Accept-Language` : 'Accept-Language');
+          return new Response(res.body, {
+            status: res.status,
+            statusText: res.statusText,
+            headers: h,
+          });
+        }
+      }
+    }
+
+    // Fall through to the static-asset server.
     return env.ASSETS.fetch(request);
   },
 };
@@ -156,18 +200,38 @@ async function handleIntake(request, env, ctx) {
     return jsonResponse({ ok: true, status: 'sent' }, 200);
   }
 
+  // Locale comes from a hidden <input name="locale"> on the form.
+  // The Spanish /es/ pages stamp "es"; English pages omit the field
+  // and default to "en". Used here to surface validation errors in
+  // the same language the user is reading. Anything else is treated
+  // as English for safety.
+  const locale = (String(body.locale || '').trim().toLowerCase() === 'es') ? 'es' : 'en';
+  const err = (en, es) => (locale === 'es' ? es : en);
+
   // Required fields: name, email, services, goals. Business,
   // website, budget, and referral are optional per the form HTML.
   const required = requireFields(body, ['name', 'email', 'services', 'goals']);
   if (!required.ok) {
-    return jsonResponse({ ok: false, error: required.error }, 400);
+    // The validation helpers embed the missing field name in English;
+    // we localize the wrapper ("Missing required field") and keep the
+    // field name untouched so the developer can trace form-field
+    // mismatches without a Spanish dictionary.
+    const fieldName = required.error.replace(/^Missing required field:\s*/i, '');
+    const message = err(required.error, 'Falta un campo obligatorio: ' + fieldName);
+    return jsonResponse({ ok: false, error: message }, 400);
   }
   if (!isValidEmail(body.email)) {
-    return jsonResponse({ ok: false, error: 'Please enter a valid email address' }, 400);
+    return jsonResponse({ ok: false, error: err('Please enter a valid email address', 'Ingresa un correo electrónico válido') }, 400);
   }
   const lengths = enforceMaxLengths(body);
   if (!lengths.ok) {
-    return jsonResponse({ ok: false, error: lengths.error }, 400);
+    // enforceMaxLengths embeds a field name + limit. Preserve the
+    // structural details, just localize the framing.
+    const m = lengths.error.match(/^Field '(.+?)' is longer than the (\d+)-character limit$/);
+    const message = (locale === 'es' && m)
+      ? 'El campo «' + m[1] + '» supera el límite de ' + m[2] + ' caracteres.'
+      : lengths.error;
+    return jsonResponse({ ok: false, error: message }, 400);
   }
 
   const notificationTmpl = intakeNotification(body);

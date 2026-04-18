@@ -1,38 +1,172 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<!--
+  Sitemap with hreflang alternates.
+
+  Per https://developers.google.com/search/docs/specialty/international/localized-versions#sitemap
+  every <url> entry that has a localized alternate declares the full
+  set of alternates via <xhtml:link rel="alternate" hreflang="...">,
+  and each locale's URL appears as its own <url> with the same alternate
+  set. Both sides point at the same group, which is how Google knows
+  they're the same content in different languages.
+
+  Pages without a Spanish mirror today (blog posts, /glossary/, the
+  interactive /tools/audits/restaurant/, the individual tool utilities,
+  /resources/restaurant-website-checklist/) are listed English-only
+  without alternates, matching their actual state on disk. They'll
+  get alternates added when/if their Spanish mirrors ship.
+
+  The xmlns:xhtml declaration on <urlset> is required for Google to
+  accept the alternate links.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://muntin.digital/</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-04-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/" />
+  </url>
+  <url>
+    <loc>https://muntin.digital/es/</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/" />
+  </url>
+  <url>
+    <loc>https://muntin.digital/about/</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/about/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/about/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/about/" />
+  </url>
+  <url>
+    <loc>https://muntin.digital/es/about/</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/about/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/about/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/about/" />
+  </url>
+  <url>
+    <loc>https://muntin.digital/services/</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/services/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/services/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/services/" />
+  </url>
+  <url>
+    <loc>https://muntin.digital/es/services/</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/services/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/services/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/services/" />
   </url>
   <url>
     <loc>https://muntin.digital/for/restaurants/</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-04-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/for/restaurants/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/for/restaurants/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/for/restaurants/" />
+  </url>
+  <url>
+    <loc>https://muntin.digital/es/for/restaurants/</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/for/restaurants/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/for/restaurants/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/for/restaurants/" />
   </url>
   <url>
     <loc>https://muntin.digital/work/</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-04-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/work/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/work/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/work/" />
+  </url>
+  <url>
+    <loc>https://muntin.digital/es/work/</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/work/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/work/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/work/" />
   </url>
   <url>
     <loc>https://muntin.digital/work/irish-inn-glen-echo/</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-04-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/work/irish-inn-glen-echo/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/work/irish-inn-glen-echo/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/work/irish-inn-glen-echo/" />
+  </url>
+  <url>
+    <loc>https://muntin.digital/es/work/irish-inn-glen-echo/</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/work/irish-inn-glen-echo/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/work/irish-inn-glen-echo/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/work/irish-inn-glen-echo/" />
+  </url>
+  <url>
+    <loc>https://muntin.digital/work/tacombi/</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/work/tacombi/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/work/tacombi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/work/tacombi/" />
+  </url>
+  <url>
+    <loc>https://muntin.digital/es/work/tacombi/</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/work/tacombi/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/work/tacombi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/work/tacombi/" />
   </url>
   <url>
     <loc>https://muntin.digital/work/off-day-collective/</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-04-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/work/off-day-collective/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/work/off-day-collective/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/work/off-day-collective/" />
+  </url>
+  <url>
+    <loc>https://muntin.digital/es/work/off-day-collective/</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/work/off-day-collective/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/work/off-day-collective/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/work/off-day-collective/" />
   </url>
   <url>
     <loc>https://muntin.digital/resources/restaurant-website-checklist/</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-04-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -44,15 +178,39 @@
   </url>
   <url>
     <loc>https://muntin.digital/tools/</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-04-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/tools/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/" />
+  </url>
+  <url>
+    <loc>https://muntin.digital/es/tools/</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/tools/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/" />
   </url>
   <url>
     <loc>https://muntin.digital/tools/audits/</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-04-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/tools/audits/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/audits/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/audits/" />
+  </url>
+  <url>
+    <loc>https://muntin.digital/es/tools/audits/</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/tools/audits/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/audits/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/audits/" />
   </url>
   <url>
     <loc>https://muntin.digital/tools/audits/restaurant/</loc>
@@ -134,26 +292,74 @@
   </url>
   <url>
     <loc>https://muntin.digital/accessibility.html</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-04-18</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/accessibility.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/accessibility.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/accessibility.html" />
+  </url>
+  <url>
+    <loc>https://muntin.digital/es/accessibility.html</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/accessibility.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/accessibility.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/accessibility.html" />
   </url>
   <url>
     <loc>https://muntin.digital/privacy.html</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-04-18</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/privacy.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/privacy.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/privacy.html" />
+  </url>
+  <url>
+    <loc>https://muntin.digital/es/privacy.html</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/privacy.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/privacy.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/privacy.html" />
   </url>
   <url>
     <loc>https://muntin.digital/terms.html</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-04-18</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/terms.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/terms.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/terms.html" />
+  </url>
+  <url>
+    <loc>https://muntin.digital/es/terms.html</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/terms.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/terms.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/terms.html" />
   </url>
   <url>
     <loc>https://muntin.digital/cookies.html</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-04-18</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/cookies.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/cookies.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/cookies.html" />
+  </url>
+  <url>
+    <loc>https://muntin.digital/es/cookies.html</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://muntin.digital/cookies.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/cookies.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://muntin.digital/cookies.html" />
   </url>
 </urlset>

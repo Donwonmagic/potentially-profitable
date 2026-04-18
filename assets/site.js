@@ -1,3 +1,81 @@
+  // i18n runtime: a tiny dictionary lookup with English literals as the
+  // fallback. window.__i18n is populated on non-default-locale pages by
+  // a <script> inside the nav partial that sync-includes.mjs stamps
+  // from _includes/i18n.<locale>.json at build time. On English pages
+  // there is no __i18n, so every i18n() call returns the literal and
+  // the site behaves exactly as it did pre-i18n.
+  //
+  // Convention: keys are dotted ("nav.close_menu", "form.invalid_email")
+  // and the English literal is always passed as the second argument so
+  // a missing key is a one-language regression, not a broken UI.
+  //
+  // Named i18n() (not t()) to avoid shadowing collisions — several
+  // nested functions in this file reuse `t` as a local time variable.
+  //
+  // SCOPE: this helper localizes VISUAL UI strings (aria-labels, form
+  // errors, audio player controls, etc.) across the whole site,
+  // including blog pages. The audio-narration VOICE choice (the
+  // .listen-voice <select>) is intentionally INDEPENDENT of the page
+  // locale — a Spanish reader may prefer an English narrator and vice
+  // versa. See the block comment at the listen dock / card definitions.
+  const i18n = (key, en) => {
+    const d = (typeof window !== 'undefined' && window.__i18n) || null;
+    return (d && typeof d[key] === 'string') ? d[key] : en;
+  };
+
+  // Language switcher: clicking the "Español" / "English" anchor in the
+  // nav sets a functional cookie so the server can prefer the chosen
+  // locale on first-load hints (see src/worker.js) and so the user's
+  // preference survives across sessions. The anchor's href still points
+  // to the counterpart page, so JS-off visitors just navigate there;
+  // JS-on visitors additionally get the cookie write. The cookie is
+  // strictly functional (not tracking) — disclosed in /cookies.html.
+  document.querySelectorAll('.js-lang-switch').forEach((el) => {
+    el.addEventListener('click', () => {
+      const locale = el.getAttribute('data-set-locale');
+      if (!locale) return;
+      const secure = location.protocol === 'https:' ? '; Secure' : '';
+      document.cookie = `md_locale=${locale}; Path=/; Max-Age=31536000; SameSite=Lax${secure}`;
+    });
+  });
+
+  // Opt-in Spanish banner. Shown only on English pages when the
+  // reader's browser prefers Spanish and they haven't already set
+  // a locale preference or dismissed the banner. Uses
+  // navigator.languages for the detection (runs client-side with
+  // no server involvement required). The Worker's x-locale-hint
+  // header from src/worker.js is the complementary server-side
+  // signal for caching/analytics; the banner itself works off
+  // the browser-exposed language list.
+  //
+  // Dismissal is sticky for 30 days via a simple functional cookie
+  // so visitors who don't want Spanish aren't nagged on every page.
+  const hint = document.getElementById('langHint');
+  if (hint) {
+    const lang = (document.documentElement.lang || 'en').toLowerCase();
+    const cookies = document.cookie || '';
+    const hasLocalePref  = /(?:^|;\s*)md_locale=/.test(cookies);
+    const hasDismissed   = /(?:^|;\s*)md_hint_dismissed=/.test(cookies);
+    const navLangs       = (navigator.languages && navigator.languages.length)
+      ? navigator.languages
+      : [navigator.language || ''];
+    const prefersSpanish = navLangs.some((l) => String(l).toLowerCase().startsWith('es'));
+    if (lang === 'en' && prefersSpanish && !hasLocalePref && !hasDismissed) {
+      hint.hidden = false;
+    }
+    const dismiss = document.getElementById('langHintDismiss');
+    if (dismiss) {
+      dismiss.addEventListener('click', () => {
+        hint.hidden = true;
+        const secure = location.protocol === 'https:' ? '; Secure' : '';
+        // 30 days — long enough that a repeat visitor isn't nagged,
+        // short enough that someone who changes their browser
+        // language preference will eventually see the banner again.
+        document.cookie = `md_hint_dismissed=1; Path=/; Max-Age=2592000; SameSite=Lax${secure}`;
+      });
+    }
+  }
+
   // Opt out of the browser's automatic scroll restoration so that navigating
   // to a new page from low on the previous page doesn't leave the new page
   // scrolled to an arbitrary offset. We handle hash targets ourselves below;
@@ -43,7 +121,7 @@
       menu.querySelectorAll('a[href], button:not([disabled])');
     const setOpen = (open) => {
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      toggle.setAttribute('aria-label', open ? i18n('nav.close_menu', 'Close menu') : i18n('nav.open_menu', 'Open menu'));
       menu.hidden = !open;
       document.body.style.overflow = open ? 'hidden' : '';
       nav.classList.toggle('menu-open', open);
@@ -177,9 +255,9 @@
       const err = errId ? document.getElementById(errId) : field.parentElement.querySelector('.field-error');
       let msg = '';
       if (field.required && !field.value.trim()) {
-        msg = 'This field is required.';
+        msg = i18n('form.field_required', 'This field is required.');
       } else if (field.type === 'email' && field.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value)) {
-        msg = 'Please enter a valid email address.';
+        msg = i18n('form.invalid_email', 'Please enter a valid email address.');
       }
       field.classList.toggle('invalid', !!msg);
       if (msg) {
@@ -196,7 +274,7 @@
       if (!anyChecked) {
         servicesGroup.classList.add('invalid');
         servicesGroup.setAttribute('aria-invalid', 'true');
-        if (servicesError) servicesError.textContent = 'Please select at least one option.';
+        if (servicesError) servicesError.textContent = i18n('form.services_min_one', 'Please select at least one option.');
       } else {
         clearServicesError();
       }
@@ -273,7 +351,7 @@
         } else {
           const msg = (body && body.error)
             ? body.error
-            : 'Something went wrong. Please try again or email don@muntin.digital directly.';
+            : i18n('form.submit_fallback', 'Something went wrong. Please try again or email don@muntin.digital directly.');
           throw new Error(msg);
         }
       } catch (err) {
@@ -354,8 +432,26 @@
     // rendered MP3 (via data-audio-src) we use the HTMLAudioElement +
     // manifest path for high-quality playback. Otherwise we fall back
     // to the Web Speech API.
-    const audioSrc = listenBtn.getAttribute('data-audio-src');
-    const manifestSrc = listenBtn.getAttribute('data-audio-manifest') || (audioSrc ? audioSrc.replace(/\.mp3$/, '.json') : null);
+    const audioSrcBase = listenBtn.getAttribute('data-audio-src');
+    // Languages available for this post. Authored list (e.g. "en,es")
+    // is the source of truth; the player card only exposes what's
+    // actually rendered. Base English lives at audio.mp3 / audio.json;
+    // additional languages live at audio.<lang>.mp3 / audio.<lang>.json.
+    const availableLanguages = (listenBtn.getAttribute('data-audio-languages') || 'en')
+      .split(',').map((s) => s.trim().toLowerCase()).filter(Boolean);
+    if (!availableLanguages.includes('en')) availableLanguages.unshift('en');
+    // User preference persists across posts via the shared prefs key.
+    let currentLanguage = 'en';
+    function audioSrcFor(lang) {
+      if (!audioSrcBase) return null;
+      return lang === 'en' ? audioSrcBase : audioSrcBase.replace(/\.mp3$/, `.${lang}.mp3`);
+    }
+    function manifestSrcFor(lang) {
+      const a = audioSrcFor(lang);
+      return a ? a.replace(/\.mp3$/, '.json') : null;
+    }
+    let audioSrc = audioSrcFor(currentLanguage);
+    let manifestSrc = manifestSrcFor(currentLanguage);
     let engine = audioSrc ? 'audio' : 'speech';
     let audioEl = null;       // HTMLAudioElement (studio mode)
     let manifest = null;      // { chunks: [{ id, kind, headingAbove, start, end }], total }
@@ -386,6 +482,36 @@
     const fwd15Btn   = card.root.querySelector('.listen-fwd15');
     const rateSelect = card.root.querySelector('.listen-rate');
     const voiceSelect = card.root.querySelector('.listen-voice');
+    const languageSelect = card.root.querySelector('.listen-language');
+    const languageSelectLabel = card.root.querySelector('.listen-language-select');
+
+    // Display names for the language picker. Shown in their own
+    // endonym (Español, not Spanish) so a Spanish-speaking reader
+    // finds their option at a glance.
+    const LANGUAGE_NAMES = {
+      en: 'English',
+      es: 'Español',
+      fr: 'Français',
+      it: 'Italiano',
+      pt: 'Português',
+      hi: 'हिन्दी',
+      ja: '日本語',
+      zh: '中文',
+    };
+
+    // Populate the language dropdown when at least one non-English
+    // language is rendered for this post. If only English exists,
+    // keep the picker hidden (no point showing a one-option select).
+    if (languageSelect && availableLanguages.length > 1) {
+      languageSelect.replaceChildren();
+      availableLanguages.forEach((code) => {
+        const opt = document.createElement('option');
+        opt.value = code;
+        opt.textContent = LANGUAGE_NAMES[code] || code.toUpperCase();
+        languageSelect.appendChild(opt);
+      });
+      if (languageSelectLabel) languageSelectLabel.hidden = false;
+    }
 
     /* ---- User preferences (persist speed + voice across posts) ---- */
     const PREF_KEY = 'muntin.audioPrefs.v1';
@@ -469,6 +595,166 @@
         prefs.voiceURI = voiceSelect.value;
         savePrefs();
         if (state === 'playing') skipTo(currentIndex);
+      });
+    }
+
+    // Restore saved language preference (applies across posts, so a
+    // visitor who picked Spanish on one post lands on Spanish on the
+    // next one too — as long as the next post rendered Spanish).
+    if (prefs.language && availableLanguages.includes(prefs.language)) {
+      currentLanguage = prefs.language;
+      if (languageSelect) languageSelect.value = currentLanguage;
+      applyLanguage(currentLanguage, /* userInitiated */ false);
+    }
+
+    if (languageSelect) {
+      languageSelect.addEventListener('change', () => {
+        const next = languageSelect.value;
+        if (next === currentLanguage) return;
+        prefs.language = next;
+        savePrefs();
+        applyLanguage(next, /* userInitiated */ true);
+      });
+    }
+
+    // Swap the studio-mode source to the chosen language. Stops any
+    // current playback cleanly; the next Play starts the new language
+    // from the top. (Trying to preserve position across languages
+    // would misalign the highlight because chunk timings differ.)
+    function applyLanguage(lang, userInitiated) {
+      currentLanguage = lang;
+      audioSrc = audioSrcFor(lang);
+      manifestSrc = manifestSrcFor(lang);
+      engine = audioSrc ? 'audio' : 'speech';
+      // Tear down cached audio + manifest so the next play fetches
+      // the new language's assets.
+      if (audioEl) {
+        try { audioEl.pause(); } catch (_) {}
+        try { audioEl.removeAttribute('src'); audioEl.load(); } catch (_) {}
+        audioEl = null;
+      }
+      manifest = null;
+      updateMediaSessionMetadata();
+      if (userInitiated) finishPlayback();
+      // Swap the visible prose so a reader can follow along in the
+      // chosen language. This is the difference between "audio
+      // translation as an afterthought" and "intentional multilingual
+      // accessibility" — the listener sees what they're hearing.
+      applyVisualLanguage(lang);
+      // UI translations cover the visible surface outside the article
+      // chunks: infographic labels, callout tags, CTA button copy,
+      // navigation strings, etc. Anything tagged with a .i18n class.
+      applyUITranslations(lang);
+    }
+
+    /* ---- UI translations (infographics, callouts, buttons) ---- */
+    // Designed alongside the article-chunk translation so the whole
+    // surface switches together. Any element with class="i18n" is a
+    // candidate — its English textContent is cached on first swap, and
+    // translations live in <post>/translations.<lang>.json as a flat
+    // map keyed by the original English text. On language change we
+    // fetch the map (if we don't have it yet) and apply in one pass.
+    const originalUICache = new WeakMap();
+    const uiTranslationsByLang = new Map();
+    async function applyUITranslations(lang) {
+      const elements = Array.from(document.querySelectorAll('.i18n'));
+      if (!elements.length) return;
+      if (lang === 'en') {
+        elements.forEach((el) => {
+          const cached = originalUICache.get(el);
+          if (cached != null) el.textContent = cached;
+        });
+        return;
+      }
+      let map = uiTranslationsByLang.get(lang);
+      if (!map) {
+        // Try to find the translations file. Relative to the current
+        // page (works for any post that ships alongside it).
+        try {
+          const res = await fetch(`translations.${lang}.json`, { credentials: 'omit' });
+          if (!res.ok) throw new Error('status ' + res.status);
+          map = await res.json();
+          uiTranslationsByLang.set(lang, map);
+        } catch (e) {
+          console.warn(`[readAloud] ui translations ${lang} not found`, e);
+          uiTranslationsByLang.set(lang, {}); // cache empty to avoid re-fetching
+          map = {};
+        }
+      }
+      elements.forEach((el) => {
+        // Cache the original English textContent the first time we
+        // see this element, so a later switch back to English (or
+        // jump to another language) can restore cleanly.
+        let english = originalUICache.get(el);
+        if (english == null) {
+          english = el.textContent;
+          originalUICache.set(el, english);
+        }
+        const translated = map[english.trim()] || map[english];
+        if (translated) el.textContent = translated;
+      });
+    }
+
+    /* ---- Visual language swap ---- */
+    // Cache of original-English textContent keyed by the same chunk
+    // selector the audio manifest uses. Populated lazily on first
+    // swap, used to restore the page when the user flips back to
+    // English without requiring a page reload.
+    const originalTextCache = new Map();
+    // Per-language manifest text cache so we don't refetch the JSON
+    // every time the user toggles. The audio.<lang>.json carries the
+    // translated chunk text we need anyway — reuse it for visuals.
+    const translatedTextByLang = new Map();
+
+    async function applyVisualLanguage(lang) {
+      if (lang === 'en') {
+        // Restore every cached element back to its original English.
+        originalTextCache.forEach((original, selector) => {
+          const el = postBody.querySelector(selector);
+          if (el) el.textContent = original;
+        });
+        return;
+      }
+
+      // Fetch and cache the translated manifest if we haven't
+      // already. This call is a small JSON (<30 kB per post) so
+      // loading it on language change is fine even on mobile.
+      let translated = translatedTextByLang.get(lang);
+      if (!translated) {
+        const src = manifestSrcFor(lang);
+        if (!src) return;
+        try {
+          const res = await fetch(src, { credentials: 'omit' });
+          if (!res.ok) throw new Error('manifest ' + res.status);
+          const m = await res.json();
+          translated = m.chunks || [];
+          translatedTextByLang.set(lang, translated);
+        } catch (e) {
+          console.warn('[readAloud] visual translation fetch failed', e);
+          return;
+        }
+      }
+
+      // Apply translation to text-safe chunks only. Figures + callouts
+      // (kind === 'figure') are skipped — translating their visible
+      // text would break the layout around data-audio-alt cards and
+      // infographics. The audio still plays Spanish for them; the
+      // visible design stays as-authored.
+      translated.forEach((chunk) => {
+        if (chunk.kind === 'figure') return;
+        if (!chunk.selector) return;
+        const el = postBody.querySelector(chunk.selector);
+        if (!el) return;
+        // Only cache the original once, even across multiple
+        // language swaps, so flipping en→es→fr→en restores cleanly.
+        if (!originalTextCache.has(chunk.selector)) {
+          originalTextCache.set(chunk.selector, el.textContent);
+        }
+        // Use textContent to avoid accidentally parsing stray HTML
+        // inside the translation result. Inline emphasis (strong/em/a)
+        // is flattened — a known tradeoff of visual translation
+        // without HTML-preserving MT. Audio fidelity is preserved.
+        el.textContent = chunk.text;
       });
     }
 
@@ -1113,9 +1399,9 @@
       const pressed = next === 'playing' ? 'true' : 'false';
       playBtn.setAttribute('aria-pressed', pressed);
       playBtn.setAttribute('aria-label',
-        next === 'playing' ? 'Pause audio' :
-        next === 'paused'  ? 'Resume audio' :
-                             'Play audio version');
+        next === 'playing' ? i18n('audio.pause',  'Pause audio') :
+        next === 'paused'  ? i18n('audio.resume', 'Resume audio') :
+                             i18n('audio.play',   'Play audio version'));
       // Mirror onto the legacy pill so any integration that watches it
       // (analytics, tests) still sees the same state.
       listenBtn.setAttribute('data-state', next);
@@ -1229,7 +1515,7 @@
     function updateDockState() {
       dock.root.setAttribute('data-state', state);
       dockPlayBtn.setAttribute('aria-label',
-        state === 'playing' ? 'Pause audio' : 'Resume audio');
+        state === 'playing' ? i18n('audio.pause', 'Pause audio') : i18n('audio.resume', 'Resume audio'));
     }
 
     function updateDockChapter(chunk) {
@@ -1267,11 +1553,25 @@
       dockTitleEl.textContent = (postH1.innerText || postH1.textContent || '').replace(/\s+/g, ' ').trim();
     }
 
+    // i18n note for the audio player module (dock + card):
+    // Visual UI labels (aria-labels, progress text, dropdown titles) are
+    // localized via the i18n() helper above. The NARRATION VOICE choice
+    // in .listen-voice <select> is deliberately decoupled from the page
+    // locale — users may want a Spanish page read in an English voice
+    // or the reverse. The voice selector filters available system
+    // voices by each voice's own `v.lang` property, which is
+    // independent of `document.documentElement.lang`. Changing the
+    // site locale never overrides the user's voice pick; changing the
+    // voice never overrides the site locale.
+    //
+    // Deeper blog-audio UI translation (the template-literal strings
+    // below) lives in the sibling "improve blog audio" repo, which
+    // will stamp localized labels into the innerHTML blocks.
     function buildDock() {
       const root = document.createElement('div');
       root.className = 'listen-dock';
       root.setAttribute('role', 'region');
-      root.setAttribute('aria-label', 'Audio player controls');
+      root.setAttribute('aria-label', i18n('audio.controls', 'Audio player controls'));
       root.setAttribute('data-state', 'idle');
       root.setAttribute('data-visible', 'false');
       root.setAttribute('data-collapsed', 'false');
@@ -1326,29 +1626,7 @@
       if (typeof navigator === 'undefined' || !('mediaSession' in navigator)) return;
       mediaSessionWired = true;
 
-      const h1   = document.querySelector('.post-hero h1');
-      const meta = document.querySelector('meta[property="article:author"]');
-      const og   = document.querySelector('meta[property="og:image"]');
-      const title  = h1 ? (h1.innerText || h1.textContent || '').replace(/\s+/g, ' ').trim()
-                        : document.title;
-      const author = (meta && meta.getAttribute('content')) || 'Muntin Digital';
-      // Per-post cover lives at /brand/og/<slug>-cover.png — derived
-      // from the existing og:image meta. Fall back to the og image
-      // itself if the cover wasn't generated for this post.
-      const ogSrc  = og ? og.getAttribute('content') : '';
-      const cover  = ogSrc.endsWith('.svg') ? ogSrc.replace(/\.svg$/, '-cover.png') : ogSrc;
-      const artwork = cover ? [
-        { src: cover, sizes: '512x512', type: 'image/png' },
-      ] : [];
-
-      try {
-        navigator.mediaSession.metadata = new MediaMetadata({
-          title,
-          artist: author + ' · Muntin Digital',
-          album: 'Audio edition',
-          artwork,
-        });
-      } catch (_) { /* MediaMetadata may not exist in older browsers */ }
+      updateMediaSessionMetadata();
 
       // Action handlers — every one of these maps to an existing
       // engine method. Wrap in try/catch because some browsers throw
@@ -1368,6 +1646,34 @@
         if (engine !== 'audio' || !audioEl || d == null || d.seekTime == null) return;
         audioEl.currentTime = Math.max(0, Math.min(audioEl.duration || 0, d.seekTime));
       });
+    }
+
+    // Fills (or refreshes) the lock-screen metadata block. Called
+    // on first play and again whenever the user switches language
+    // so the album line reflects "Audio edition · Español" etc.
+    function updateMediaSessionMetadata() {
+      if (typeof navigator === 'undefined' || !('mediaSession' in navigator)) return;
+      const h1   = document.querySelector('.post-hero h1');
+      const meta = document.querySelector('meta[property="article:author"]');
+      const og   = document.querySelector('meta[property="og:image"]');
+      const title  = h1 ? (h1.innerText || h1.textContent || '').replace(/\s+/g, ' ').trim()
+                        : document.title;
+      const author = (meta && meta.getAttribute('content')) || 'Muntin Digital';
+      const ogSrc  = og ? og.getAttribute('content') : '';
+      const cover  = ogSrc.endsWith('.svg') ? ogSrc.replace(/\.svg$/, '-cover.png') : ogSrc;
+      const artwork = cover ? [{ src: cover, sizes: '512x512', type: 'image/png' }] : [];
+      const langName = LANGUAGE_NAMES[currentLanguage] || currentLanguage.toUpperCase();
+      const albumLabel = currentLanguage === 'en'
+        ? 'Audio edition'
+        : `Audio edition · ${langName}`;
+      try {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title,
+          artist: author + ' · Muntin Digital',
+          album: albumLabel,
+          artwork,
+        });
+      } catch (_) {}
     }
 
     function syncMediaSessionState() {
@@ -1396,7 +1702,7 @@
       const root = document.createElement('section');
       root.className = 'listen-card';
       root.setAttribute('data-state', 'idle');
-      root.setAttribute('aria-label', 'Audio edition of this article');
+      root.setAttribute('aria-label', i18n('audio.article_label', 'Audio edition of this article'));
 
       // Reading-time estimate from the post body. Average adult reading
       // pace is ~200 wpm; TTS at 1× is closer to ~155 wpm, so we use
@@ -1436,6 +1742,9 @@
             </button>
           </div>
           <div class="listen-card-selects">
+            <label class="listen-select listen-language-select" title="Language" hidden><span class="sr-only">Language</span>
+              <select class="listen-language" aria-label="Language"></select>
+            </label>
             <label class="listen-select" title="Playback speed"><span class="sr-only">Playback speed</span>
               <select class="listen-rate" aria-label="Playback speed">
                 <option value="0.9">0.9×</option>
@@ -1926,5 +2235,97 @@
           btn.focus();
         }
       });
+    });
+  })();
+
+  /* ============ PHASE M6: Checklist Learn-more popover ============
+   * Wires the .learn-more-btn buttons on /resources/restaurant-
+   * website-checklist/ to the single shared <dialog id="checklistPopover">
+   * added in Sprint M5. Click a Learn-more button, the handler reads
+   * the button's data-popover-* attributes, populates the dialog's
+   * title / body / glossary link / optional audit link, and calls
+   * dialog.showModal(). Escape-to-close is native to <dialog>;
+   * click-outside (backdrop) is wired manually because the native
+   * backdrop swallows clicks silently by default. Focus returns to
+   * the originating button on close.
+   */
+  (function initChecklistPopover() {
+    const dialog = document.getElementById('checklistPopover');
+    if (!dialog || typeof dialog.showModal !== 'function') return; // SSR/feature-missing: no-op.
+
+    const titleEl    = document.getElementById('checklistPopoverTitle');
+    const bodyEl     = document.getElementById('checklistPopoverBody');
+    const glossaryEl = document.getElementById('checklistPopoverGlossary');
+    const auditEl    = document.getElementById('checklistPopoverAudit');
+    const closeBtn   = dialog.querySelector('.checklist-popover-close');
+    let lastOpener   = null;
+
+    function openPopover(btn) {
+      const title      = btn.getAttribute('data-popover-title')    || 'Learn more';
+      const body       = btn.getAttribute('data-popover-body')     || '';
+      const glossaryId = btn.getAttribute('data-popover-glossary') || '';
+      const auditTo    = btn.getAttribute('data-popover-audit')    || '';
+      if (titleEl) titleEl.textContent = title;
+      if (bodyEl)  bodyEl.textContent  = body;
+      if (glossaryEl) {
+        glossaryEl.href = glossaryId
+          ? '/glossary/#' + glossaryId
+          : '/glossary/';
+      }
+      if (auditEl) {
+        if (auditTo) {
+          auditEl.href   = auditTo === '1' ? '/tools/audits/restaurant/' : auditTo;
+          auditEl.hidden = false;
+        } else {
+          auditEl.hidden = true;
+        }
+      }
+      lastOpener = btn;
+      dialog.showModal();
+      if (window.plausible) window.plausible('Checklist Learn-more', { props: { id: btn.getAttribute('data-popover-glossary') || 'unknown' } });
+    }
+
+    function closePopover() {
+      if (dialog.open) dialog.close();
+    }
+
+    // Delegated handler — one listener on the document handles every
+    // checklist item's Learn-more button, including items added
+    // dynamically (e.g. future subtype filter). Attached in the
+    // CAPTURE phase so it fires BEFORE the enclosing <label>'s
+    // default checkbox-toggle behavior: each .check-item is a
+    // <label> with a nested <input type=checkbox>, and without
+    // intercepting early, clicking Learn-more would also flip the
+    // item's completion state.
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest && e.target.closest('.learn-more-btn');
+      if (!btn) return;
+      e.preventDefault();
+      e.stopPropagation();
+      openPopover(btn);
+    }, true);
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        closePopover();
+      });
+    }
+
+    // Click-outside (on the backdrop) closes. We detect this by
+    // checking whether the click landed on the dialog element itself
+    // (the backdrop fires a click on the dialog node) rather than on
+    // its .checklist-popover-inner child.
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) closePopover();
+    });
+
+    // Return focus to the originating button on close, so keyboard
+    // users land back where they were.
+    dialog.addEventListener('close', () => {
+      if (lastOpener && typeof lastOpener.focus === 'function') {
+        lastOpener.focus();
+      }
+      lastOpener = null;
     });
   })();
