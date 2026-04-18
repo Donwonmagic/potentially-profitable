@@ -4546,9 +4546,34 @@
         ? String(Math.round(last.overall)) : '';
     }
     if (linkField) {
+      // Phase J6: encode EVERYTHING the printable permalink
+      // needs so the email recipient can land on a fully-
+      // unlocked, benchmark-anchored, re-scan-diffable view:
+      //   url     — the audited site
+      //   bt      — effective subtype (owner override > detection)
+      //   bl      — baseline snapshot (Phase I8) so the diff
+      //             block fires as 'no change' on first re-open
+      //             and as a real delta when the owner re-audits
+      //             later from the same link
+      //   deep=1  — bypasses the email gate so the link opens
+      //             straight to the deep tier
       var params = new URLSearchParams();
       if (auditedUrl) params.set('url', auditedUrl);
-      if (userBusinessType) params.set('bt', userBusinessType);
+      var bt = effectiveBusinessType();
+      if (bt && bt !== 'restaurant') params.set('bt', bt);
+      var last = window.__auditLastResult;
+      if (last && typeof last.overall === 'number') {
+        var baseline = [
+          Math.round(last.overall),
+          last.perf != null ? Math.round(last.perf) : '-',
+          last.a11y != null ? Math.round(last.a11y) : '-',
+          last.bp   != null ? Math.round(last.bp)   : '-',
+          last.seo  != null ? Math.round(last.seo)  : '-',
+          last.restaurant != null ? Math.round(last.restaurant) : '-'
+        ].join('.');
+        params.set('bl', baseline);
+      }
+      params.set('deep', '1');
       linkField.value = location.origin + location.pathname + '?' + params.toString();
     }
     gate.hidden    = false;
