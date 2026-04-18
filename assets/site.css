@@ -253,6 +253,7 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 }
 .compare .card{background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);padding:36px;transition:transform var(--t-med) var(--ease),box-shadow var(--t-med) var(--ease)}
 .compare .card.muntin{background:var(--ink);color:var(--cream);border-color:var(--ink);position:relative;overflow:hidden}
+.compare .card.muntin h3{color:var(--cream)}
 .compare .card.muntin::before{content:'';position:absolute;inset:0;background:radial-gradient(600px 300px at 20% 0%,rgba(31,78,91,0.55) 0%,rgba(20,22,26,0) 70%);pointer-events:none}
 .compare .card:hover{transform:translateY(-4px);box-shadow:0 30px 60px -30px rgba(20,22,26,0.2)}
 .compare .card h3{font-size:22px;margin-bottom:8px}
