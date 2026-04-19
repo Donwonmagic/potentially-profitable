@@ -342,7 +342,16 @@ function renderLanguage(postDir, chunks, lang) {
     version: 1,
     generatedAt: new Date().toISOString(),
     engine: engine,
-    model: path.basename(engine === 'piper' ? model : kokoroModel),
+    // Model name logged into the manifest. F5 English uses the ref
+    // audio; everything else reports its TTS model path. Null-safe so
+    // an F5-only run without --kokoro-model doesn't crash here.
+    model: (() => {
+      const src =
+        engine === 'piper' ? model :
+        engine === 'f5'    ? (lang === 'en' ? f5RefAudio : kokoroModel) :
+                             kokoroModel;
+      return src ? path.basename(src) : 'unknown';
+    })(),
     voice,
     language: lang,
     total: round(cursor),
@@ -350,7 +359,20 @@ function renderLanguage(postDir, chunks, lang) {
   };
   fs.writeFileSync(path.join(postDir, jsonName), JSON.stringify(manifest, null, 2));
 
-  if (!flags.has('--keep-tmp')) fs.rmSync(tmpDir, { recursive: true, force: true });
+  // Cleanup tmp dir. fs.rmSync is Node 14.14+; older Node (Colab's
+  // apt-installed default) uses rmdirSync. Fall back through the
+  // options, and swallow any failure — a stale tmp dir in /tmp is a
+  // non-fatal leak, the output MP3 + manifest are already safely
+  // written before we get here.
+  if (!flags.has('--keep-tmp')) {
+    try { fs.rmSync(tmpDir, { recursive: true, force: true }); }
+    catch (_) {
+      try { fs.rmdirSync(tmpDir, { recursive: true }); }
+      catch (_) {
+        try { spawnSync('rm', ['-rf', tmpDir]); } catch (_) {}
+      }
+    }
+  }
   console.log(`  ✓ ${path.relative(repoRoot, mp3Out)}  (${manifest.total.toFixed(1)}s)  voice=${voice}`);
 }
 
