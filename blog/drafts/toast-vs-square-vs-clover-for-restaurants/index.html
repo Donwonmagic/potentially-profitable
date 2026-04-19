@@ -178,6 +178,14 @@
     font-weight: 500;
   }
   .article-body a:hover { color: var(--teal-dark); }
+  /* Buttons inside the article (inline-CTA, etc.) must not inherit
+     the default article-body anchor colour — otherwise the cream
+     text reads as dark teal against the dark pill. Explicitly
+     restore the button palette and kill the underline. */
+  .article-body a.btn { color: var(--cream); border-bottom: 0; }
+  .article-body a.btn:hover { color: var(--cream); }
+  .article-body a.btn.btn-ghost { color: var(--ink); }
+
 
   .pull-quote {
     font-family: var(--font-display);
