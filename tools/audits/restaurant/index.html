@@ -6509,7 +6509,11 @@
       passCount: passCount,
       totalCount: totalCount,
       confirmedCount: confirmedCount,
-      lowConfidence: lowConfidence
+      lowConfidence: lowConfidence,
+      // Sprint A3: surface the unverified signal so callers can
+      // display the penalty and drive tooltips / verdict copy.
+      unverifiedCount: unverifiedCount,
+      unverifiedWeight: readinessState.unverifiedWeight || 0
     };
   }
 
@@ -6841,8 +6845,17 @@
     if (field && field.fcp !== null) setVital('fcp', formatMs(field.fcp), field.fcp, 'field', fieldScope);
     else                              setVital('fcp', fcp.displayValue, fcp.numericValue, 'lab');
 
-    // Expose raw audits for future consumers
-    window.__auditLastResult = { audits: audits, overall: overall, url: auditedUrl, restaurant: isRestaurantSite ? restaurantScore : null };
+    // Expose raw audits for future consumers. Sprint A3: also expose
+    // unverified-check metadata so downstream PDF/share/email layers
+    // can disclose the half-weight penalty applied in scoring.
+    window.__auditLastResult = {
+      audits: audits,
+      overall: overall,
+      url: auditedUrl,
+      restaurant: isRestaurantSite ? restaurantScore : null,
+      unverifiedCount: priorityResult.unverifiedCount || 0,
+      unverifiedPenaltyApplied: (priorityResult.unverifiedWeight || 0) > 0
+    };
 
     // Update the address bar so "copy link" gives you the audited
     // URL (and any live overrides). Uses history.replaceState so
@@ -7008,6 +7021,9 @@
     if (window.__auditLastResult) {
       window.__auditLastResult.overall = overall;
       window.__auditLastResult.restaurant = readinessInRollup ? newRestaurantScore : null;
+      window.__auditLastResult.unverifiedCount = priorityResult.unverifiedCount || 0;
+      window.__auditLastResult.unverifiedPenaltyApplied =
+        (priorityResult.unverifiedWeight || 0) > 0;
     }
     updateOverrideBanner();
 
