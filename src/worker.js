@@ -1350,18 +1350,25 @@ const PAGE_CRAWL_HOMEPAGE_TIMEOUT = 8000;
 async function handlePageCrawl(request, env, ctx) {
   const url = new URL(request.url);
   const target = (url.searchParams.get('url') || '').trim();
-  if (!target) {
-    return jsonResponse({ ok: false, error: 'Missing ?url= parameter' }, 400);
+  // Sprint E4: SSRF guard on the entry URL so a crafted input can't
+  // coax the Worker into fetching an internal host.
+  const gate = assertSafeHttpUrl(target);
+  if (!gate.ok) {
+    return jsonResponse({ ok: false, error: gate.error }, gate.status);
   }
 
-  const homepage = await fetchPageForCrawl(target, PAGE_CRAWL_HOMEPAGE_TIMEOUT);
+  const homepage = await fetchPageForCrawl(gate.url.toString(), PAGE_CRAWL_HOMEPAGE_TIMEOUT);
   if (!homepage.ok) {
     return jsonResponse({ ok: false, error: homepage.error || 'Fetch failed' }, 502);
   }
 
   // Sprint E2: rank up to PAGE_CRAWL_MAX_CANDIDATES internal-link
   // candidates from the homepage HTML.
+  // Sprint E4: each extracted candidate is ALSO re-checked through
+  // assertSafeHttpUrl. A restaurant site that links to a private IP
+  // or a non-http(s) URL in its own HTML would otherwise be followed.
   const candidates = extractInternalLinkCandidates(homepage.html, homepage.url)
+    .filter(function(c){ return assertSafeHttpUrl(c.url).ok; })
     .slice(0, PAGE_CRAWL_MAX_CANDIDATES);
 
   // Sprint E3: fetch the candidates in parallel, per-URL timeout,
