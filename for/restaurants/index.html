@@ -619,6 +619,29 @@
 @media (prefers-reduced-motion:reduce){
   .mc-drawer, .mc-drawer-backdrop{transition-duration:0ms}
 }
+
+/* Feature-tile "Learn more" — the per-tile entry point to the
+   explainer drawers. Sticks to the bottom of each .service tile
+   via margin-top:auto inside the tile's flex column. */
+.service-link{
+  margin-top:auto;
+  padding:16px 0 0;
+  background:transparent;border:0;
+  font:inherit;font-size:14px;font-weight:600;
+  color:var(--teal);cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px;
+  align-self:flex-start;
+  transition:color 180ms var(--ease-out);
+}
+.service-link-arrow{
+  width:14px;height:14px;
+  fill:none;stroke:currentColor;stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round;
+  transition:transform 200ms var(--ease-out);
+}
+.service-link:hover{color:var(--ink)}
+.service-link:hover .service-link-arrow{transform:translateX(4px)}
+.service-link:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px}
 </style>
 <link rel="stylesheet" href="/assets/site.css?v=20260418-langhint">
 </head>
@@ -870,6 +893,110 @@
   </div>
 </aside>
 
+<aside class="mc-drawer" data-drawer-id="ordering" role="dialog" aria-modal="true" aria-labelledby="drawer-ordering-title" data-open="false" inert>
+  <div class="mc-drawer-head">
+    <p class="mc-drawer-eyebrow">Online ordering</p>
+    <button type="button" class="mc-drawer-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+  </div>
+  <div class="mc-drawer-body">
+    <h2 id="drawer-ordering-title">Keep the margin, keep the diner</h2>
+    <p class="mc-drawer-lede">Third-party delivery apps take a 15–30% bite out of every ticket. Your own ordering path keeps more of every dollar — and, just as importantly, keeps the customer relationship.</p>
+    <ul>
+      <li><strong>Third-party fees stack up.</strong> DoorDash and Grubhub typically take 15–30% per order. A direct checkout keeps almost all of it. Over a year that's real money — often a line-cook's salary's worth.</li>
+      <li><strong>You own the customer.</strong> When DoorDash has the email, DoorDash has the repeat order. When you have the email, you have a relationship you can market back to — specials, seasonal launches, private events.</li>
+      <li><strong>The integration has to fit.</strong> Toast, Square, ChowNow, or a direct Stripe checkout — each suits a different kind of restaurant. We pick based on your POS, menu complexity, and staff workflow, not on what's trendy.</li>
+      <li><strong>Speed to checkout is everything.</strong> The fastest path is three taps from the menu. Every extra step loses orders. Live menu, one-tap add, saved card. Friction is the enemy.</li>
+      <li><strong>Pickup vs. delivery is a real decision.</strong> Self-delivery has margin but operational pain. Third-party delivery has reach but cost. The right mix is different for every restaurant, and we walk you through it instead of defaulting to a setup.</li>
+    </ul>
+  </div>
+  <div class="mc-drawer-foot">
+    <p class="mc-drawer-foot-text">Want to see how your ordering flow measures up? Run the free restaurant audit.</p>
+    <a class="mc-drawer-foot-btn" href="/tools/audits/restaurant/">Audit my site
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+  </div>
+</aside>
+
+<aside class="mc-drawer" data-drawer-id="gbp" role="dialog" aria-modal="true" aria-labelledby="drawer-gbp-title" data-open="false" inert>
+  <div class="mc-drawer-head">
+    <p class="mc-drawer-eyebrow">Google Business Profile</p>
+    <button type="button" class="mc-drawer-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+  </div>
+  <div class="mc-drawer-body">
+    <h2 id="drawer-gbp-title">Most restaurant traffic is on Google Maps</h2>
+    <p class="mc-drawer-lede">When someone types "best Thai near me," Google shows the three-pack of Maps results above everything else. If you're not optimized for that pack, you don't exist for those diners.</p>
+    <ul>
+      <li><strong>The map pack is everything.</strong> Over half of restaurant discovery starts inside Google Maps, not a search results page. If your profile is incomplete or stale, you lose to competitors whose profiles are dialed in.</li>
+      <li><strong>Hours, photos, menu link — in that order.</strong> The three highest-ROI fields on GBP. Accurate hours build trust, photos drive clicks, a menu link keeps diners on your page. All three are free to fix.</li>
+      <li><strong>Review response shapes rank.</strong> Google's algorithm rewards restaurants that reply to reviews — both positive and negative. It's also the single clearest trust signal new diners check before booking.</li>
+      <li><strong>Category tuning is underrated.</strong> "Italian Restaurant" vs. "Italian Trattoria" vs. "Pasta Restaurant" changes which searches you surface for. Most restaurants are set to the wrong primary category and never know.</li>
+      <li><strong>Posts are free real estate.</strong> Tonight's special, a seasonal menu drop, an event — GBP Posts surface directly in your listing. Most restaurants ignore them completely; every one you publish is pure upside.</li>
+    </ul>
+  </div>
+  <div class="mc-drawer-foot">
+    <p class="mc-drawer-foot-text">Want to see how your Google Business Profile is doing? Run the free restaurant audit.</p>
+    <a class="mc-drawer-foot-btn" href="/tools/audits/restaurant/">Audit my site
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+  </div>
+</aside>
+
+<aside class="mc-drawer" data-drawer-id="performance" role="dialog" aria-modal="true" aria-labelledby="drawer-performance-title" data-open="false" inert>
+  <div class="mc-drawer-head">
+    <p class="mc-drawer-eyebrow">Mobile speed</p>
+    <button type="button" class="mc-drawer-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+  </div>
+  <div class="mc-drawer-body">
+    <h2 id="drawer-performance-title">Under two seconds, or you lose them</h2>
+    <p class="mc-drawer-lede">Your diner is on a sidewalk, hungry, on 4G. Every extra second of load time loses a measurable share of them to the next listing down the street.</p>
+    <ul>
+      <li><strong>The numbers are brutal.</strong> Google's research: a one-second delay in mobile load can drop conversions by around 20%. For a restaurant, that's reservations and orders walking to the next listing.</li>
+      <li><strong>Speed is a ranking signal.</strong> Google Core Web Vitals factor directly into search rank. Slow restaurants get outranked by faster competitors, even with the same cuisine and the same neighborhood.</li>
+      <li><strong>Images are the usual villain.</strong> Most slow restaurant sites are slow because of oversized hero photos. We compress, resize, and lazy-load so your food still looks gorgeous but the page loads in a second.</li>
+      <li><strong>Measured, not guessed.</strong> Every Muntin build ships with a PageSpeed score north of 90 on mobile. We run the test before launch and periodically after — speed isn't a one-and-done concern.</li>
+      <li><strong>Fast doesn't mean sacrificed.</strong> You don't have to pick between "looks beautiful" and "loads fast." Modern build practices give you both. We just have to actually use them — and most restaurant sites don't.</li>
+    </ul>
+  </div>
+  <div class="mc-drawer-foot">
+    <p class="mc-drawer-foot-text">Want to see how fast your current site really loads? Run the free restaurant audit.</p>
+    <a class="mc-drawer-foot-btn" href="/tools/audits/restaurant/">Audit my site
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+  </div>
+</aside>
+
+<aside class="mc-drawer" data-drawer-id="photo" role="dialog" aria-modal="true" aria-labelledby="drawer-photo-title" data-open="false" inert>
+  <div class="mc-drawer-head">
+    <p class="mc-drawer-eyebrow">Food photography</p>
+    <button type="button" class="mc-drawer-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+  </div>
+  <div class="mc-drawer-body">
+    <h2 id="drawer-photo-title">Photos sell the table</h2>
+    <p class="mc-drawer-lede">Diners decide with their eyes. A menu written in Helvetica can't compete with a photo of the pasta they're about to order.</p>
+    <ul>
+      <li><strong>Every dish deserves a photograph.</strong> Start with your four or five hero items if you need to. Good photos drive reservation clicks, Instagram shares, and Google Business Profile engagement — the things that feed the top of the funnel.</li>
+      <li><strong>Your space is part of the pitch.</strong> Wide shots of the dining room, the bar at golden hour, the kitchen in motion. Diners book with confidence when they can see the room they're walking into.</li>
+      <li><strong>Responsive galleries, no distortion.</strong> Photos adapt to phone, tablet, and desktop without warping or cropping in ways you didn't intend. Lazy-loaded so they don't drag page speed down.</li>
+      <li><strong>Bring your own or we'll match you.</strong> We work with several DMV food photographers if you need one. If not, good phone photos can go a long way — we can do a lot with solid raw material.</li>
+      <li><strong>Grow the gallery as you go.</strong> New special? Shoot it on your phone, upload from the dashboard. Your site grows with your menu instead of frozen at launch day.</li>
+    </ul>
+  </div>
+  <div class="mc-drawer-foot">
+    <p class="mc-drawer-foot-text">Want to see how your current photos are working for you? Run the free restaurant audit.</p>
+    <a class="mc-drawer-foot-btn" href="/tools/audits/restaurant/">Audit my site
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+  </div>
+</aside>
+
 <script>
   /* Menu-card drawer controller. Two educational drawers triggered
      by [data-drawer="reserve"] and [data-drawer="live"] on the
@@ -1019,36 +1146,60 @@
         <div class="label">Menus</div>
         <h3>Menus that update in 30 seconds</h3>
         <p class="desc">No more PDFs. No more calling your nephew. Update a price, add a special, or swap a dish from your phone in under a minute — and the site re-renders before you close the tab.</p>
+        <button type="button" class="service-link" data-drawer="live" aria-label="Why a live-updating menu matters — open info">
+          Learn more
+          <svg class="service-link-arrow" viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </button>
       </div>
 
       <div class="service reveal">
         <div class="label">Reservations</div>
         <h3>Reservations that come to your inbox</h3>
         <p class="desc">OpenTable, Resy, Tock, or a lightweight built-in form that emails you and your hostess stand — your choice. We wire up whatever your existing workflow already trusts.</p>
+        <button type="button" class="service-link" data-drawer="reserve" aria-label="Why online reservations matter — open info">
+          Learn more
+          <svg class="service-link-arrow" viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </button>
       </div>
 
       <div class="service reveal">
         <div class="label">Ordering</div>
         <h3>Online ordering that doesn't eat your margin</h3>
         <p class="desc">Toast, Square, ChowNow, or a direct checkout for pickup — integrated so a hungry visitor can go from your menu to checkout in three taps without leaving your brand.</p>
+        <button type="button" class="service-link" data-drawer="ordering" aria-label="Why online ordering matters — open info">
+          Learn more
+          <svg class="service-link-arrow" viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </button>
       </div>
 
       <div class="service reveal">
         <div class="label">Local SEO</div>
         <h3>Google Business Profile that works</h3>
         <p class="desc">Most restaurant traffic comes from Google Maps, not organic search. We set up and optimize your Google Business Profile so you show up in the local pack when someone nearby Googles "best [your cuisine] near me."</p>
+        <button type="button" class="service-link" data-drawer="gbp" aria-label="Why Google Business Profile matters — open info">
+          Learn more
+          <svg class="service-link-arrow" viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </button>
       </div>
 
       <div class="service reveal">
         <div class="label">Performance</div>
         <h3>Fast mobile pages, under 2 seconds</h3>
         <p class="desc">Your customer is standing on a sidewalk, hungry, on 4G. If your homepage takes four seconds to load, you lost them. Every Muntin build hits sub-2-second mobile load out of the box — and we measure it.</p>
+        <button type="button" class="service-link" data-drawer="performance" aria-label="Why mobile page speed matters — open info">
+          Learn more
+          <svg class="service-link-arrow" viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </button>
       </div>
 
       <div class="service reveal">
         <div class="label">Photography</div>
         <h3>Photos that make people hungry</h3>
         <p class="desc">A responsive gallery that treats your food, space, and crew the way they deserve. Bring your own photographer or we'll recommend one in the DMV — either way, the site is built to show them off.</p>
+        <button type="button" class="service-link" data-drawer="photo" aria-label="Why food photography matters — open info">
+          Learn more
+          <svg class="service-link-arrow" viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </button>
       </div>
     </div>
   </div>
