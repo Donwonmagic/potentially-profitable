@@ -436,48 +436,75 @@ var RESTAURANT_PRIORITY_CHECKS = [
     byType: {
       'fine-dining': {
         impact: 'Fine-dining menus live and die on careful description — a 55-year-old guest skimming the tasting-menu copy on their phone in a taxi needs every word to be legible. Thin serifs on cream backgrounds are a common culprit.',
+        impact_es: 'Los menús de fine-dining viven o mueren por la descripción cuidadosa — un comensal de 55 años ojeando el texto del menú degustación en su teléfono dentro de un taxi necesita cada palabra legible. Las serifas delgadas sobre fondos crema son el culpable común.',
         passNote: 'Your tasting-menu and wine-list copy meets contrast thresholds — readable without squinting, even for the demographic that actually fills your dining room.',
-        failNote: 'Fine-dining menu aesthetics frequently use thin grey serifs on cream or dark-on-dark cards — elegant on-screen, unreadable on a phone. Darken body text to meet WCAG AA (4.5:1 ratio), especially menu descriptions and wine notes.'
+        passNote_es: 'Tu texto del menú degustación y carta de vinos cumple los umbrales de contraste — legible sin entrecerrar los ojos, incluso para el grupo demográfico que realmente llena tu comedor.',
+        failNote: 'Fine-dining menu aesthetics frequently use thin grey serifs on cream or dark-on-dark cards — elegant on-screen, unreadable on a phone. Darken body text to meet WCAG AA (4.5:1 ratio), especially menu descriptions and wine notes.',
+        failNote_es: 'La estética de los menús de fine-dining frecuentemente usa serifas grises delgadas sobre crema o cartas oscuro-sobre-oscuro — elegante en pantalla, ilegible en un teléfono. Oscurece el texto del cuerpo a WCAG AA (4.5:1), en especial descripciones y notas de vino.'
       },
       'fast-casual': {
         impact: 'Fast-casual decisions happen in 20 seconds on a phone at lunchtime. Low-contrast item names or prices mean the visitor bounces to an ordering aggregator where the same menu is clearer.',
+        impact_es: 'Las decisiones fast-casual pasan en 20 segundos en un teléfono a la hora del almuerzo. Nombres de platos o precios con bajo contraste hacen que el visitante rebote a un agregador donde el mismo menú es más claro.',
         passNote: 'Your item names and prices are readable at a glance — which is what a lunch-break ordering decision actually requires.',
-        failNote: 'Menu item names and prices especially need high contrast. Thin grey text over beige backgrounds is the most common fast-casual contrast failure — darken the body text to meet WCAG AA (4.5:1 ratio).'
+        passNote_es: 'Los nombres de platos y precios se leen de un vistazo — justo lo que una decisión de almuerzo requiere.',
+        failNote: 'Menu item names and prices especially need high contrast. Thin grey text over beige backgrounds is the most common fast-casual contrast failure — darken the body text to meet WCAG AA (4.5:1 ratio).',
+        failNote_es: 'Los nombres de platos y precios del menú en especial requieren alto contraste. Texto gris delgado sobre beige es el fallo fast-casual más común — oscurece el texto del cuerpo a WCAG AA (4.5:1).'
       },
       'cafe': {
         impact: 'Café customers read your hours, menu, and address more than anything else. Soft-palette café branding often puts those three items in light grey — elegant on a laptop, invisible on a phone in sunlight.',
+        impact_es: 'Los clientes de café leen tus horarios, menú y dirección más que cualquier otra cosa. La paleta suave de marca de café suele poner esos tres en gris claro — elegante en laptop, invisible en un teléfono al sol.',
         passNote: 'Hours, items, and address all meet contrast thresholds — readable at a glance, even in direct light.',
-        failNote: 'Hours and address are the most-read text on a café site. Pale grey on cream looks on-brand but fails contrast — darken these two specifically to WCAG AA (4.5:1 ratio).'
+        passNote_es: 'Horarios, platos y dirección cumplen los umbrales de contraste — legibles de un vistazo, incluso a plena luz.',
+        failNote: 'Hours and address are the most-read text on a café site. Pale grey on cream looks on-brand but fails contrast — darken these two specifically to WCAG AA (4.5:1 ratio).',
+        failNote_es: 'Horarios y dirección son el texto más leído en un sitio de café. Gris pálido sobre crema se ve on-brand pero falla en contraste — oscurece estos dos específicamente a WCAG AA (4.5:1).'
       },
       'bakery': {
         impact: 'Bakery menus carry ingredient lists, allergen notes, and custom-order details that customers read CAREFULLY — a guest ordering a wedding cake has to trust every label. Low-contrast allergen copy breaks that trust.',
+        impact_es: 'Los menús de panadería cargan listas de ingredientes, notas de alérgenos y detalles de pedidos personalizados que los clientes leen CON CUIDADO — quien pide un pastel de boda tiene que confiar en cada etiqueta. El texto de alérgenos con bajo contraste rompe esa confianza.',
         passNote: 'Your ingredient and allergen copy meets contrast thresholds — readable on a phone by the guest double-checking a custom-cake spec at 11pm the night before.',
-        failNote: 'Ingredient and allergen notes are the highest-stakes copy on a bakery site. Pale grey descriptions over cream fail WCAG AA (4.5:1) and spook nervous custom-cake or dietary-restricted customers. This is a trust issue, not just usability.'
+        passNote_es: 'Tu texto de ingredientes y alérgenos cumple los umbrales de contraste — legible en un teléfono para el cliente que revisa las especificaciones de un pastel personalizado a las 11pm de la noche anterior.',
+        failNote: 'Ingredient and allergen notes are the highest-stakes copy on a bakery site. Pale grey descriptions over cream fail WCAG AA (4.5:1) and spook nervous custom-cake or dietary-restricted customers. This is a trust issue, not just usability.',
+        failNote_es: 'Las notas de ingredientes y alérgenos son el texto de más alto riesgo en un sitio de panadería. Descripciones en gris pálido sobre crema fallan WCAG AA (4.5:1) y asustan a clientes nerviosos de pasteles personalizados o con restricciones. Es un tema de confianza, no solo de usabilidad.'
       },
       'pizzeria': {
         impact: 'Pizza sites lean on price grids and toppings lists — both of which fail contrast more than you would expect because the branding is often red-on-red or cream-on-cream. A customer can\'t confidently customize a pie if they can\'t read the pepperoni price or the crust options.',
+        impact_es: 'Los sitios de pizza se apoyan en tablas de precios y listas de ingredientes — ambas fallan contraste más de lo esperado porque la marca suele ser rojo-sobre-rojo o crema-sobre-crema. Un cliente no puede personalizar una pizza con confianza si no puede leer el precio del pepperoni o las opciones de masa.',
         passNote: 'Topping prices, crust options, and combo pricing all meet contrast thresholds — customers can customize a pie on a phone without squinting.',
-        failNote: 'Price grids and topping lists are the conversion surface for a pizzeria. Low-contrast cream-on-cream or red-on-red pricing fails WCAG AA (4.5:1) — darken prices and topping labels until they read cleanly on a phone outside.'
+        passNote_es: 'Precios de ingredientes, opciones de masa y precios de combos cumplen los umbrales de contraste — los clientes pueden personalizar una pizza en el teléfono sin entrecerrar los ojos.',
+        failNote: 'Price grids and topping lists are the conversion surface for a pizzeria. Low-contrast cream-on-cream or red-on-red pricing fails WCAG AA (4.5:1) — darken prices and topping labels until they read cleanly on a phone outside.',
+        failNote_es: 'Las tablas de precios y listas de ingredientes son la superficie de conversión de una pizzería. Precios en crema-sobre-crema o rojo-sobre-rojo fallan WCAG AA (4.5:1) — oscurece precios y etiquetas de ingredientes hasta que se lean limpio en un teléfono al aire libre.'
       },
       'food-truck': {
         impact: 'Food-truck sites are read OUTSIDE, in bright sun, on phones held at arm\'s length. Low-contrast copy fails instantly in that environment — and schedule + menu are the two things customers are squinting at while deciding whether to walk over.',
+        impact_es: 'Los sitios de food truck se leen AFUERA, bajo sol brillante, en teléfonos sostenidos a distancia del brazo. El texto de bajo contraste falla al instante en ese entorno — y horario + menú son las dos cosas que los clientes están entrecerrando los ojos mientras deciden si caminar hasta allá.',
         passNote: 'Your schedule and menu copy meets contrast thresholds — readable at a farmers\' market in bright sun without cupping the screen.',
-        failNote: 'Outdoor readability is the bar for a food-truck site. Pale brand colors that look great on Instagram fail WCAG AA (4.5:1) in direct sun — darken your schedule + menu text until they read cleanly at arm\'s length in daylight.'
+        passNote_es: 'Tu texto de horario y menú cumple los umbrales de contraste — legible en un mercado de agricultores bajo sol brillante sin tener que tapar la pantalla con la mano.',
+        failNote: 'Outdoor readability is the bar for a food-truck site. Pale brand colors that look great on Instagram fail WCAG AA (4.5:1) in direct sun — darken your schedule + menu text until they read cleanly at arm\'s length in daylight.',
+        failNote_es: 'La legibilidad al aire libre es la vara de un sitio de food truck. Colores de marca pálidos que se ven perfectos en Instagram fallan WCAG AA (4.5:1) al sol directo — oscurece el texto de horario + menú hasta que se lea limpio a la distancia del brazo a plena luz.'
       },
       'ghost-kitchen': {
         impact: 'Ghost-kitchen branding leans heavy on moody photography and low-contrast type — which photographs beautifully and converts terribly. Customers scanning delivery-hours and menu-brand details on a phone at 9pm need copy that reads without effort.',
+        impact_es: 'La marca de cocina fantasma se apoya mucho en fotografía ambiental y tipografía de bajo contraste — que fotografía bellamente y convierte terriblemente. Los clientes revisando horarios de delivery y detalles de marca en un teléfono a las 9pm necesitan texto que se lea sin esfuerzo.',
         passNote: 'Hours, brand names, and menu descriptions all meet contrast thresholds — a hungry customer can confirm "yes this is a real restaurant" without squinting.',
-        failNote: 'Ghost-kitchen moody-photography branding often fails WCAG AA (4.5:1) — pale type over dark hero images is the most common offender. Darken body text and especially the hours/brand names; these are the copy customers actually read before tapping through to a delivery app.'
+        passNote_es: 'Horarios, nombres de marca y descripciones de menú cumplen los umbrales de contraste — un cliente hambriento puede confirmar "sí, es un restaurante real" sin entrecerrar los ojos.',
+        failNote: 'Ghost-kitchen moody-photography branding often fails WCAG AA (4.5:1) — pale type over dark hero images is the most common offender. Darken body text and especially the hours/brand names; these are the copy customers actually read before tapping through to a delivery app.',
+        failNote_es: 'La marca ambiental de cocina fantasma falla frecuentemente WCAG AA (4.5:1) — texto pálido sobre imágenes hero oscuras es el error más común. Oscurece el texto del cuerpo y sobre todo los horarios/nombres de marca; son el texto que los clientes realmente leen antes de abrir la app de delivery.'
       },
       'catering-only': {
         impact: 'Catering sites carry package descriptions, price-per-head tables, dietary-accommodation notes, and lead-time policies — all of which an event planner reads CAREFULLY before requesting a quote. Low-contrast pricing copy breaks trust precisely when a professional buyer is comparing three caterers side by side.',
+        impact_es: 'Los sitios de catering cargan descripciones de paquetes, tablas de precio por persona, notas de acomodaciones dietéticas y políticas de tiempo de anticipación — todo lo que un planificador lee CON CUIDADO antes de pedir una cotización. El texto de precios con bajo contraste rompe la confianza justo cuando un comprador profesional compara tres caterings lado a lado.',
         passNote: 'Package prices, head-count math, and dietary-accommodation copy all meet contrast thresholds — readable at-a-glance on the phone of a planner juggling several vendors.',
-        failNote: 'Event planners comparing caterers don\'t squint — they bounce. Pale grey on cream for package descriptions and price tables fails WCAG AA (4.5:1). Darken body text, especially anywhere you list per-head pricing or minimum-headcount rules.'
+        passNote_es: 'Precios de paquetes, cálculos por cabeza y texto de acomodaciones dietéticas cumplen los umbrales de contraste — legibles de un vistazo en el teléfono de un planificador manejando varios vendedores.',
+        failNote: 'Event planners comparing caterers don\'t squint — they bounce. Pale grey on cream for package descriptions and price tables fails WCAG AA (4.5:1). Darken body text, especially anywhere you list per-head pricing or minimum-headcount rules.',
+        failNote_es: 'Los planificadores comparando caterings no entrecierran los ojos — rebotan. Gris pálido sobre crema para descripciones de paquetes y tablas de precios falla WCAG AA (4.5:1). Oscurece el texto del cuerpo, en especial donde listes precios por cabeza o reglas de número mínimo de personas.'
       },
       'bar-pub': {
         impact: 'Bar sites are often dark-themed by default, and legibility takes a hit. Guests checking happy-hour times or the cocktail list on a phone at the curb outside shouldn\'t have to squint.',
+        impact_es: 'Los sitios de bar son frecuentemente de tema oscuro por default, y la legibilidad sufre. Los clientes revisando horarios de happy hour o la lista de cócteles en un teléfono en la banqueta afuera no deberían tener que entrecerrar los ojos.',
         passNote: 'Your dark-theme copy still meets WCAG AA contrast ratios — happy-hour hours and the cocktail list are readable without zooming.',
-        failNote: 'Dark-theme bar sites fail contrast most often on mid-grey text over black. Lift your body-text brightness (or shift to near-white) until it meets WCAG AA (4.5:1 ratio) — especially for hours, happy-hour times, and the cocktail list.'
+        passNote_es: 'Tu texto de tema oscuro aún cumple los contrastes WCAG AA — horarios de happy hour y lista de cócteles se leen sin zoom.',
+        failNote: 'Dark-theme bar sites fail contrast most often on mid-grey text over black. Lift your body-text brightness (or shift to near-white) until it meets WCAG AA (4.5:1 ratio) — especially for hours, happy-hour times, and the cocktail list.',
+        failNote_es: 'Los sitios de bar de tema oscuro fallan contraste más frecuentemente en texto gris medio sobre negro. Sube el brillo del texto del cuerpo (o desplázalo a casi blanco) hasta cumplir WCAG AA (4.5:1) — sobre todo para horarios, happy hour y la lista de cócteles.'
       }
     }
   },
