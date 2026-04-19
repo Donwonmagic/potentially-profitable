@@ -551,7 +551,12 @@ async function handleGbpLookup(request, env, ctx) {
           'X-Goog-Api-Key': apiKey,
           'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.types,places.regularOpeningHours,places.photos,places.websiteUri,places.googleMapsUri'
         },
-        body: JSON.stringify({ textQuery: query, maxResultCount: 1 })
+        // Sprint G1: request the top 5 candidates so the client can
+        // disambiguate on common names like "Joe's Pizza" where
+        // Places' first match may not be the business the owner
+        // actually runs. maxResultCount=5 is Places' recommended
+        // upper bound for text search; beyond that the tail is noise.
+        body: JSON.stringify({ textQuery: query, maxResultCount: 5 })
       }
     );
 
@@ -567,21 +572,31 @@ async function handleGbpLookup(request, env, ctx) {
       return jsonResponse({ ok: false, error: 'No business found for that search. Try adding your city name.' }, 404);
     }
 
-    const p = places[0];
+    function buildCandidate(p) {
+      return {
+        placeId:    p.id || null,
+        name:       p.displayName ? p.displayName.text : null,
+        address:    p.formattedAddress || null,
+        rating:     p.rating || null,
+        reviewCount: p.userRatingCount || 0,
+        types:      (p.types || []).slice(0, 5),
+        photoCount: p.photos ? p.photos.length : 0,
+        hasHours:   !!(p.regularOpeningHours && p.regularOpeningHours.periods && p.regularOpeningHours.periods.length),
+        website:    p.websiteUri || null,
+        mapsUrl:    p.googleMapsUri || null,
+      };
+    }
 
-    // Build a clean response
-    const result = {
-      ok: true,
-      name: p.displayName ? p.displayName.text : null,
-      address: p.formattedAddress || null,
-      rating: p.rating || null,
-      reviewCount: p.userRatingCount || 0,
-      types: (p.types || []).slice(0, 5),
-      photoCount: p.photos ? p.photos.length : 0,
-      hasHours: !!(p.regularOpeningHours && p.regularOpeningHours.periods && p.regularOpeningHours.periods.length),
-      website: p.websiteUri || null,
-      mapsUrl: p.googleMapsUri || null,
-    };
+    const candidates = places.map(buildCandidate);
+    const top = candidates[0];
+
+    // Preserve the historical top-level shape for backwards-compat
+    // with any caller that wasn't expecting the `candidates` array,
+    // while adding the full top-5 under `candidates` for the new
+    // disambiguation UI (G3, future sprint).
+    const result = Object.assign({ ok: true }, top, {
+      candidates: candidates
+    });
 
     return jsonResponse(result, 200);
   } catch (err) {
