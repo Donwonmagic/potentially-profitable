@@ -1544,6 +1544,31 @@ function checkOgShareMeta(html) {
   return out;
 }
 
+// ---------------------------------------------------------------------------
+// Sprint BB1: POWERED_BY — single source of truth for every API,
+// framework, and data source the audit tool actually uses at runtime.
+// Rendered in the "How this audit was built" footer, the PDF cover,
+// the share-card PNG footer, and the OG / Twitter descriptions so
+// there is exactly one place to update when we add or remove a data
+// source. Each entry carries { name, vendor, license, role, url }.
+// ---------------------------------------------------------------------------
+var POWERED_BY = [
+  { name: 'Lighthouse',           vendor: 'Google',             license: 'Apache-2.0', role: 'Performance / Accessibility / Best Practices / SEO scoring', url: 'https://developer.chrome.com/docs/lighthouse/overview' },
+  { name: 'PageSpeed Insights',   vendor: 'Google',             license: 'Proprietary API', role: 'Hosted Lighthouse runs + CrUX field data', url: 'https://pagespeed.web.dev/' },
+  { name: 'Chrome UX Report',     vendor: 'Google',             license: 'Open dataset', role: 'Real-user Core Web Vitals (LCP / CLS / INP)', url: 'https://developer.chrome.com/docs/crux' },
+  { name: 'schema.org',           vendor: 'schema.org',         license: 'CC-BY-SA',   role: 'Restaurant JSON-LD vocabulary', url: 'https://schema.org/Restaurant' },
+  { name: 'Plausible Analytics',  vendor: 'Plausible',          license: 'AGPL-3.0',   role: 'Privacy-respecting audit event counters', url: 'https://plausible.io/' },
+  { name: 'jsPDF',                vendor: 'parallax',           license: 'MIT',        role: 'Client-side PDF export', url: 'https://github.com/parallax/jsPDF' },
+  { name: 'Fraunces',             vendor: 'Undercase Type',     license: 'OFL-1.1',    role: 'Display / heading typeface', url: 'https://fonts.google.com/specimen/Fraunces' },
+  { name: 'Inter',                vendor: 'Rasmus Andersson',   license: 'OFL-1.1',    role: 'Body / UI typeface', url: 'https://rsms.me/inter/' },
+  { name: 'Cloudflare Workers',   vendor: 'Cloudflare',         license: 'Proprietary runtime', role: 'Edge API: PSI proxy, page crawl, schema check', url: 'https://workers.cloudflare.com/' },
+  { name: 'Resend',               vendor: 'Resend',             license: 'Proprietary API', role: 'PDF delivery email', url: 'https://resend.com/' }
+];
+// Canonical one-line description used in OG/Twitter cards, PDF cover,
+// share-card footer, and the tool's meta description. Exactly one
+// source of truth — if this string changes, every surface updates.
+var MUNTIN_AUDIT_DESCRIPTION = 'A Muntin Digital creation — a free restaurant website audit combining Google Lighthouse, PageSpeed Insights, CrUX field data, schema.org validation, and restaurant-specific checks. No signup, no paywall, no dark patterns.';
+
 // Sprint A5: Node-only export shim so a scoring regression test can
 // import the readiness helpers without a browser. The `typeof module`
 // guard keeps this a no-op for the classic-script load path in the
@@ -1553,6 +1578,8 @@ if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     createRestaurantReadinessState: createRestaurantReadinessState,
     accumulateRestaurantReadiness: accumulateRestaurantReadiness,
-    finalizeRestaurantReadinessScore: finalizeRestaurantReadinessScore
+    finalizeRestaurantReadinessScore: finalizeRestaurantReadinessScore,
+    POWERED_BY: POWERED_BY,
+    MUNTIN_AUDIT_DESCRIPTION: MUNTIN_AUDIT_DESCRIPTION
   };
 }
