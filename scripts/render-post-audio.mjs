@@ -100,6 +100,15 @@ const optVal = (name) => {
   const idx = args.indexOf(name);
   return idx >= 0 ? args[idx + 1] : null;
 };
+// Let the operator override which Python interpreter we shell out
+// to for the Kokoro / F5 / translator helpers. On GitHub Codespaces
+// the default `python3` points at a bleeding-edge 3.14 from linuxbrew
+// where pydantic-core can't build, while the managed 3.12 that has
+// f5-tts actually installed lives at `python3.12`. Any environment
+// with a mismatch between what pip installed into and what the shell
+// resolves `python3` to can be fixed with `PYTHON=python3.12 node …`.
+const PYTHON_BIN = process.env.PYTHON || 'python3';
+
 const engine = (optVal('--engine') || 'kokoro').toLowerCase();
 if (!['kokoro', 'piper', 'f5'].includes(engine)) fail(`Unknown --engine "${engine}"; must be kokoro, piper, or f5.`);
 
@@ -175,9 +184,12 @@ if (!dryRun) {
     if (!fs.existsSync(refTextPath))  fail(`F5 reference transcript not found at ${refTextPath}`);
     if (!which('python3')) fail('`python3` not found on PATH. Install Python 3.10+.');
     // Quiet import check so the user gets a friendly error if pip install f5-tts hasn't run.
-    const probe = spawnSync('python3', ['-c', 'import f5_tts'], { stdio: 'pipe' });
+    const probe = spawnSync(PYTHON_BIN, ['-c', 'import f5_tts'], { stdio: 'pipe' });
     if (probe.status !== 0) {
-      fail('`f5-tts` python package not installed. Run: pip install f5-tts');
+      fail(`\`f5-tts\` not importable from \`${PYTHON_BIN}\`. Either:\n` +
+           `  1. Install it into that interpreter:  ${PYTHON_BIN} -m pip install --break-system-packages f5-tts\n` +
+           `  2. Or point the script at a different Python that already has it:\n` +
+           `       PYTHON=python3.12 node scripts/render-post-audio.mjs --engine f5 ...`);
     }
     // F5 English-only: non-English languages still render via Kokoro, so
     // we need Kokoro's model too if any non-EN language is requested.
@@ -349,7 +361,7 @@ function translateChunksFor(chunks, targetLang) {
     target: targetLang,
     chunks: chunks.map((c) => ({ id: c.id !== undefined ? c.id : chunks.indexOf(c), text: c.text })),
   });
-  const proc = spawnSync('python3', [helper], {
+  const proc = spawnSync(PYTHON_BIN, [helper], {
     input: payload,
     encoding: 'utf8',
     stdio: ['pipe', 'pipe', 'inherit'],
@@ -393,7 +405,7 @@ function synthesizeKokoro(chunks, outDir, opts = {}) {
   const payload = JSON.stringify({
     chunks: chunks.map((c, i) => ({ id: i, text: c.text })),
   });
-  const proc = spawnSync('python3', args, {
+  const proc = spawnSync(PYTHON_BIN, args, {
     input: payload,
     encoding: 'utf8',
     // Piped stderr shows progress; show it live by writing through.
@@ -423,7 +435,7 @@ function synthesizeF5(chunks, outDir) {
   const payload = JSON.stringify({
     chunks: chunks.map((c, i) => ({ id: i, text: c.text })),
   });
-  const proc = spawnSync('python3', args, {
+  const proc = spawnSync(PYTHON_BIN, args, {
     input: payload,
     encoding: 'utf8',
     stdio: ['pipe', 'pipe', 'inherit'],
