@@ -319,13 +319,13 @@ var RESTAURANT_PRIORITY_CHECKS = [
     anchor: '#mobile',
     effort: 'dev',       // 'self' | 'dev' | 'rebuild'
     minutes: 5,          // rough time-to-fix
-    impact: 'Without a viewport tag, every phone visitor sees a broken desktop layout. Roughly 70% of restaurant traffic is mobile, which means a missing viewport is 70% of your traffic bouncing on contact.',
-    pass: 'Your site fits on a phone screen',
-    passNote: 'Your pages render at phone width automatically — the single most important mobile-readiness check, and you pass it.',
-    fail: 'Your site is not set up for phones',
-    failNote: 'Without a viewport meta tag, mobile browsers render your site at desktop width and then zoom out to fit. Everything looks tiny and the whole mobile experience breaks. This is a one-line fix for whoever maintains your site — ask them to add <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</code> to the &lt;head&gt;.',
-    unverified: "We couldn't check if your site fits on a phone",
-    unverifiedNote: "Lighthouse couldn't evaluate the viewport tag on this run. Re-audit in a few seconds and this usually resolves."
+    impact: 'Sin la etiqueta viewport, todo visitante desde el teléfono ve un layout de escritorio roto. Cerca del 70 % del tráfico de restaurantes es móvil, así que un viewport faltante es el 70 % de tu tráfico rebotando al contacto.',
+    pass: 'Tu sitio entra en la pantalla del teléfono',
+    passNote: 'Tus páginas se muestran automáticamente al ancho del teléfono — la revisión más importante de preparación para móvil, y la pasas.',
+    fail: 'Tu sitio no está preparado para el teléfono',
+    failNote: 'Sin la etiqueta meta viewport, los navegadores móviles muestran tu sitio al ancho de escritorio y después lo reducen para que entre. Todo se ve diminuto y toda la experiencia móvil se rompe. Es un arreglo de un solo renglón para quien te mantiene el sitio — pídele que agregue <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</code> al &lt;head&gt;.',
+    unverified: 'No pudimos verificar si tu sitio entra en el teléfono',
+    unverifiedNote: 'Lighthouse no pudo evaluar la etiqueta viewport en esta corrida. Vuelve a auditar en unos segundos y normalmente se resuelve.'
   },
   {
     type: 'audit',
