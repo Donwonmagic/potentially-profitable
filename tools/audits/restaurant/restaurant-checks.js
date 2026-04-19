@@ -1568,6 +1568,185 @@ var POWERED_BY = [
 // share-card footer, and the tool's meta description. Exactly one
 // source of truth — if this string changes, every surface updates.
 var MUNTIN_AUDIT_DESCRIPTION = 'A Muntin Digital creation — a free restaurant website audit combining Google Lighthouse, PageSpeed Insights, CrUX field data, schema.org validation, and restaurant-specific checks. No signup, no paywall, no dark patterns.';
+var MUNTIN_AUDIT_DESCRIPTION_ES = 'Una creación de Muntin Digital — una auditoría gratuita del sitio web de tu restaurante que combina Google Lighthouse, PageSpeed Insights, datos reales de CrUX, validación de schema.org y verificaciones específicas para restaurantes. Sin registro, sin muros de pago, sin trucos.';
+
+// ---------------------------------------------------------------------------
+// Sprint ES1: UI_I18N — the single translation map shared by both
+// tools/audits/restaurant/index.html (EN) and es/tools/audits/
+// restaurant/index.html (ES). Every string that a user reads on
+// either page should live here; the t(key, vars) helper picks EN or
+// ES based on window.__muntinLang (set early by the language-
+// detection block in each HTML file). Adding a new string means a
+// one-time edit in this file, not two edits per locale.
+//
+// Conventions:
+//   - keys are dot-namespaced: 'ui.<section>.<purpose>'
+//   - template variables use {name} placeholders
+//   - when a translation is missing, t() falls back to English and
+//     flags it on window.__auditMissingTranslations for scripts/
+//     check-locale-parity.mjs to surface
+// ---------------------------------------------------------------------------
+var UI_I18N = {
+  'ring.label': {
+    en: '{score}/100',
+    es: '{score}/100'
+  },
+  'ring.label.unverified': {
+    en: '{score}/100 · {count} check{s} unverified',
+    es: '{score}/100 · {count} verificaci{on} sin confirmar'
+  },
+  'verdict.90': {
+    en: 'Your site is in great shape. Most restaurants would be thrilled to hit this score. Small polish items may remain — check the breakdown below.',
+    es: 'Tu sitio está en excelente forma. La mayoría de los restaurantes estaría feliz con esta puntuación. Quedan pulidos menores — revisa el desglose abajo.'
+  },
+  'verdict.70': {
+    en: 'Solid foundation with room to tighten up. Focus on the red and amber items below — most are mechanical fixes that push your scores into the green (90+) zone.',
+    es: 'Base sólida con margen para ajustar. Concéntrate en los elementos rojos y ámbar abajo — la mayoría son arreglos mecánicos que suben tu puntuación a la zona verde (90+).'
+  },
+  'verdict.50': {
+    en: "The site works, but it's leaking conversions. The good news: the wins here — load speed, image alt text, meta tags, schema — take days, not months, and they're listed in priority order below.",
+    es: 'El sitio funciona, pero está dejando conversiones en la mesa. La buena noticia: las ganancias aquí — velocidad de carga, texto alternativo de imágenes, meta tags, schema — toman días, no meses, y están listadas por prioridad abajo.'
+  },
+  'verdict.below': {
+    en: "There's real work to do. Scores in this range usually track with a template site hitting its ceiling — font sizes, tap targets, page speed, and schema markup all tend to be fixable, but they add up. Start with the failing items below, in the order they're listed.",
+    es: 'Hay trabajo real por hacer. Puntuaciones en este rango suelen venir de un sitio plantilla que llegó a su tope — tamaños de fuente, áreas tocables, velocidad y marcado schema todos se pueden arreglar, pero se acumulan. Empieza con los elementos fallidos abajo, en el orden listado.'
+  },
+  'verdict.unverifiedSuffix': {
+    en: " We couldn't verify {count} checks on this pass — each one is counted at half weight. Confirming them below will sharpen the score in either direction.",
+    es: ' No pudimos verificar {count} verificaciones esta vez — cada una cuenta a medio peso. Confirmarlas abajo afinará la puntuación en cualquier dirección.'
+  },
+  'topfixes.eta.rebuild': {
+    en: 'One of these is a site rebuild — plan a month, not a weekend.',
+    es: 'Una de estas es reconstruir el sitio — planifica un mes, no un fin de semana.'
+  },
+  'topfixes.eta.afternoon': {
+    en: 'About one focused afternoon across all three.',
+    es: 'Una tarde de trabajo concentrado entre las tres.'
+  },
+  'topfixes.eta.shortSelf': {
+    en: '~1 afternoon — you can handle it yourself.',
+    es: '~1 tarde — lo puedes resolver tú mismo.'
+  },
+  'topfixes.eta.shortDev': {
+    en: '~1 afternoon of dev time.',
+    es: '~1 tarde de trabajo de desarrollo.'
+  },
+  'topfixes.eta.weekendSelf': {
+    en: '~1 weekend — doable on a Saturday.',
+    es: '~1 fin de semana — se hace un sábado.'
+  },
+  'topfixes.eta.weekendDev': {
+    en: '~1 weekend of dev time.',
+    es: '~1 fin de semana de trabajo de desarrollo.'
+  },
+  'topfixes.eta.twoWeekends': {
+    en: '~2 weekends of work — break into Saturday and the next.',
+    es: '~2 fines de semana de trabajo — divídelo entre un sábado y el siguiente.'
+  },
+  'topfixes.eta.threeFourWeekends': {
+    en: '~3–4 weekends of work — scope it like a mini-project.',
+    es: '~3–4 fines de semana de trabajo — trátalo como un mini-proyecto.'
+  },
+  'topfixes.eta.many': {
+    en: "Several weekends — stage it, don't try to do it all at once.",
+    es: 'Varios fines de semana — organízalo por etapas, no intentes hacerlo todo de una vez.'
+  },
+  'chip.revenue': {
+    en: 'Est. {low}–{high}/yr at risk',
+    es: 'Est. {low}–{high}/año en riesgo'
+  },
+  'chip.revenue.title': {
+    en: 'Order-of-magnitude estimate based on typical 50 covers/day × $35 avg check. Change these inputs to recalculate.',
+    es: 'Estimación de orden de magnitud basada en 50 cubiertos/día × $35 cheque promedio típicos. Cambia estos valores para recalcular.'
+  },
+  'btc.confirmed': {
+    en: 'You confirmed',
+    es: 'Tú lo confirmaste'
+  },
+  'btc.high': {
+    en: 'High confidence · {pct}%',
+    es: 'Alta confianza · {pct}%'
+  },
+  'btc.medium': {
+    en: 'Best guess · {pct}%',
+    es: 'Mejor suposición · {pct}%'
+  },
+  'btc.uncertain': {
+    en: 'Uncertain — please pick',
+    es: 'Incierto — elige uno'
+  },
+  'btc.sub.confirmed': {
+    en: "You told us what kind of restaurant this is — we're using it to tailor the checks below to your segment.",
+    es: 'Nos dijiste qué tipo de restaurante es — lo usamos para ajustar las verificaciones de abajo a tu segmento.'
+  },
+  'btc.sub.low': {
+    en: "We're not confident on this one. Pick the closest match so the checks below apply the right weights — otherwise we'll use a neutral baseline.",
+    es: 'No estamos seguros aquí. Elige la opción más cercana para que las verificaciones de abajo apliquen los pesos correctos — si no, usamos una base neutral.'
+  },
+  'btc.sub.medium': {
+    en: "Our best guess from schema markup, platform, and page content. If we got it wrong, pick the right one — the checks below will update live.",
+    es: 'Nuestra mejor suposición según el schema, la plataforma y el contenido. Si nos equivocamos, elige el correcto — las verificaciones de abajo se actualizan en vivo.'
+  },
+  'btc.sub.high': {
+    en: "Auto-detected from schema markup, ordering/reservation platform, and page content. If we got it wrong, pick the right one — the checks below will update live.",
+    es: 'Detectado automáticamente por el schema, la plataforma de pedidos/reservas y el contenido. Si nos equivocamos, elige el correcto — las verificaciones de abajo se actualizan en vivo.'
+  },
+  'print.manager': {
+    en: 'Print for your manager',
+    es: 'Imprimir para tu gerente'
+  },
+  'print.worksheet.notes': {
+    en: 'Notes / assigned to:',
+    es: 'Notas / asignado a:'
+  }
+};
+
+// Pluralization helper for ES: most nouns just take -es / -s, but
+// "verificación" → "verificaciones" (accent shifts), and we need
+// locale-aware plural suffixes that English doesn't. Keep this
+// map small and extend only as new strings land.
+var ES_PLURAL = {
+  'on': function(n){ return n === 1 ? 'ón' : 'ones'; }
+};
+
+function t(key, vars, lang) {
+  var L = lang || (typeof window !== 'undefined' && window.__muntinLang) || 'en';
+  if (L !== 'es') L = 'en';
+  var entry = UI_I18N[key];
+  var str;
+  if (!entry) {
+    // Missing key entirely — mark for the parity checker and fall
+    // back to the key itself so the bug is visible, not silent.
+    if (typeof window !== 'undefined') {
+      window.__auditMissingTranslations = window.__auditMissingTranslations || {};
+      window.__auditMissingTranslations[key] = true;
+    }
+    str = key;
+  } else if (entry[L]) {
+    str = entry[L];
+  } else {
+    // Key present but this locale missing — fall back to EN and
+    // flag so the translator has a punch list.
+    if (typeof window !== 'undefined' && L !== 'en') {
+      window.__auditMissingTranslations = window.__auditMissingTranslations || {};
+      window.__auditMissingTranslations[key + '[' + L + ']'] = true;
+    }
+    str = entry.en || key;
+  }
+  if (!vars) return str;
+  return str.replace(/\{(\w+)\}/g, function(_m, name){
+    // ES-aware pluralization: {on} renders differently based on
+    // a numeric 'count' var in the same template.
+    if (L === 'es' && ES_PLURAL[name] && typeof vars.count === 'number') {
+      return ES_PLURAL[name](vars.count);
+    }
+    if (name === 's' && typeof vars.count === 'number') {
+      // English "check" vs "checks" — pick suffix from count.
+      return vars.count === 1 ? '' : 's';
+    }
+    return vars[name] != null ? String(vars[name]) : '';
+  });
+}
 
 // Sprint A5: Node-only export shim so a scoring regression test can
 // import the readiness helpers without a browser. The `typeof module`
@@ -1580,6 +1759,9 @@ if (typeof module !== 'undefined' && module.exports) {
     accumulateRestaurantReadiness: accumulateRestaurantReadiness,
     finalizeRestaurantReadinessScore: finalizeRestaurantReadinessScore,
     POWERED_BY: POWERED_BY,
-    MUNTIN_AUDIT_DESCRIPTION: MUNTIN_AUDIT_DESCRIPTION
+    MUNTIN_AUDIT_DESCRIPTION: MUNTIN_AUDIT_DESCRIPTION,
+    MUNTIN_AUDIT_DESCRIPTION_ES: MUNTIN_AUDIT_DESCRIPTION_ES,
+    UI_I18N: UI_I18N,
+    t: t
   };
 }
