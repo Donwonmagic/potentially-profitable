@@ -943,39 +943,39 @@ var RESTAURANT_PRIORITY_CHECKS = [
     unverifiedNote: 'Buscamos copy de "ubicación de hoy", "horario de esta semana", "encuéntranos en", "today\'s location", "this week\'s schedule", "find us at", "catch us at". Si tu horario vive inline en la página de inicio o en un embed de Instagram que no renderizamos, avísanos. Si hoy no publicas un horario — publicar uno es el cambio individual de mayor ROI que puedes hacer en un sitio de food truck.'
   },
   {
-    // Phase H8: Ghost-kitchen / delivery-only explicit marker.
-    // Subtypes.js weights this 2.0 for ghost-kitchen and 0
-    // elsewhere. A ghost kitchen that doesn't SAY "delivery
-    // only" confuses customers who arrive expecting dine-in.
+    // Fase H8: Marcador explícito de cocina fantasma / solo
+    // delivery. Subtypes.js pesa esto 2.0 para ghost-kitchen y 0
+    // en el resto. Una cocina fantasma que NO DICE "solo delivery"
+    // confunde a los clientes que llegan esperando salón.
     type: 'aggregator-only',
     weight: 1.0,
     anchor: '#conversions',
     effort: 'self',
     minutes: 20,
-    impact: 'Ghost kitchens that don\'t explicitly mark "delivery only" or "no dine-in" get customers showing up in person to an empty storefront — worse, getting a one-star review for "I drove there and it was closed." A single visible "Delivery & Pickup Only" banner deflects that confusion.',
-    pass: 'Your site marks delivery-only clearly',
-    passNote: 'Your site explicitly states "delivery only" / "virtual kitchen" so customers don\'t show up expecting dine-in.',
+    impact: 'Las cocinas fantasma que no marcan explícitamente "solo delivery" o "sin salón" reciben clientes que llegan en persona a un local vacío — peor, se llevan una reseña de una estrella de "manejé hasta allá y estaba cerrado". Un solo banner visible de "Solo Delivery y Pickup" desvía esa confusión.',
+    pass: 'Tu sitio marca claramente solo-delivery',
+    passNote: 'Tu sitio establece explícitamente "solo delivery" / "virtual kitchen" para que los clientes no lleguen esperando comer en salón.',
     fail: null,
     failNote: null,
-    unverified: 'We didn\'t see a delivery-only marker — is this right?',
-    unverifiedNote: 'We look for "virtual kitchen", "ghost kitchen", "delivery only", "no dine-in", "delivery & pickup only" copy. If yours is phrased differently, let us know. If your site reads as a dine-in restaurant but you\'re actually ghost/delivery-only, add a banner — the 20-minute fix deflects a common one-star review.'
+    unverified: 'No vimos un marcador de solo-delivery — ¿es correcto?',
+    unverifiedNote: 'Buscamos copy de "cocina virtual", "cocina fantasma", "solo delivery", "sin salón", "solo delivery y pickup", "virtual kitchen", "ghost kitchen", "delivery only", "no dine-in", "delivery & pickup only". Si el tuyo está redactado diferente, avísanos. Si tu sitio se lee como un restaurante de salón pero en realidad eres cocina fantasma / solo delivery, agrega un banner — el arreglo de 20 minutos desvía una reseña de una estrella común.'
   },
   {
-    // Phase H9: Wholesale / custom-order intake presence.
-    // Subtypes.js gives bakery weight 2.0 and cafe weight 1.0;
-    // other subtypes default to 1.0 (not suppressed).
+    // Fase H9: Presencia de intake mayorista / pedidos
+    // personalizados. Subtypes.js le da a bakery peso 2.0 y a cafe
+    // peso 1.0; otros subtipos tienen default 1.0 (no suprimidos).
     type: 'wholesale-custom-orders',
     weight: 1.0,
     anchor: '#conversions',
     effort: 'dev',
     minutes: 120,
-    impact: 'For bakeries and cafes, custom orders and wholesale accounts are margin multipliers — a single wedding-cake order can match a week of walk-in revenue, and a standing wholesale account compounds month over month.',
-    pass: 'Your site promotes wholesale / custom orders',
-    passNote: 'Your site surfaces custom-order or wholesale intake — the margin-rich orders that don\'t happen without explicit copy and a form.',
+    impact: 'Para panaderías y cafés, los pedidos personalizados y las cuentas mayoristas son multiplicadores de margen — un solo pedido de pastel de boda puede igualar una semana de ingreso de visitantes, y una cuenta mayorista estable capitaliza mes a mes.',
+    pass: 'Tu sitio promueve pedidos mayoristas / personalizados',
+    passNote: 'Tu sitio expone el intake de pedidos personalizados o mayoristas — los pedidos de margen alto que no pasan sin copy explícito y un formulario.',
     fail: null,
     failNote: null,
-    unverified: 'We didn\'t see wholesale / custom-order copy — is this right?',
-    unverifiedNote: 'We look for "custom order", "wholesale", "wedding cakes", "corporate orders", "bulk orders", "order in advance", "special orders". If yours is phrased differently, let us know. For bakeries specifically, a dedicated "Custom Orders" page with a structured intake form pays for itself fast.'
+    unverified: 'No vimos copy de mayoristas / pedidos personalizados — ¿es correcto?',
+    unverifiedNote: 'Buscamos "pedido personalizado", "mayorista", "pasteles de boda", "pedidos corporativos", "pedidos por volumen", "pedir con anticipación", "pedidos especiales", "custom order", "wholesale", "wedding cakes", "corporate orders", "bulk orders", "order in advance", "special orders". Si el tuyo está redactado diferente, avísanos. Para las panaderías en particular, una página dedicada de "Pedidos Personalizados" con un formulario estructurado de intake se paga sola rápido.'
   },
   {
     // Phase H10: Delivery-radius info presence. Subtypes.js
