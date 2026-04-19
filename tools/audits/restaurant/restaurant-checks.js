@@ -817,7 +817,14 @@ var RESTAURANT_PRIORITY_CHECKS = [
     minutes: 20,
     impact: "Restaurant schema markup is how Google learns your hours, cuisine, and price range for local search. Restaurants with proper schema show up in the 'restaurants near me' rich results with photos and ratings — restaurants without it get a plain blue link. The difference in click-through rate is meaningful.",
     pass: 'Google can read your site as a restaurant',
+    impact_es: 'El schema Restaurant es cómo Google entiende tu cocina, horarios, rango de precios y URL del menú. Sin él, Google tiene que adivinar tu categoría en vez de leerla directamente — la diferencia entre un rich snippet con horario y precios y un enlace azul plano.',
+    pass_es: 'Tu sitio publica schema de restaurante',
     passNote: 'Your site publishes Restaurant schema markup — the JSON-LD block Google reads to understand your cuisine, hours, price range, and menu URL. This is what earns you rich-result placement in "restaurants near me" searches.',
+    passNote_es: 'Tu sitio publica el schema de Restaurant — el bloque JSON-LD que Google lee para entender tu cocina, horarios, rango de precios y URL del menú. Esto es lo que te gana colocación de resultados enriquecidos en búsquedas de "restaurantes cerca de mí".',
+    fail_es: 'A tu sitio le falta el schema de Restaurant',
+    failNote_es: 'Detectamos tu segmento por señales de plataforma y palabras clave, pero tu sitio no publica el bloque JSON-LD <code>@type: "Restaurant"</code> que Google lee para resultados enriquecidos. Sin él, Google tiene que inferir tu categoría en vez de leerla — la diferencia entre un rich snippet (horario, precio, cocina) y un enlace azul plano. Es un cambio de 10 líneas para tu desarrollador.',
+    unverified_es: 'No pudimos confirmar tu schema de Restaurant',
+    unverifiedNote_es: 'No pudimos leer con confianza si tu sitio publica JSON-LD de Restaurant. Si crees que está, vuelve a auditar en un minuto — a veces Lighthouse lo pasa por alto. Si no, agregar un bloque JSON-LD con <code>@type: "Restaurant"</code>, tu dirección, horarios y cocina es significativo para el SEO local.',
     // Phase L6: when the audit CONFIDENTLY detected the subtype
     // from platforms/keywords but the site still has no schema,
     // the evaluator promotes this check from 'unverified' to 'fail'
@@ -840,12 +847,17 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'self',
     minutes: 30,
     impact: 'Dietary-aware guests make decisions based on whether they see themselves considered. A single "GF" mark or a "vegan" badge reliably converts more dietary-restricted customers than ten paragraphs of "we can accommodate." Even one marker signals that someone on staff has thought about cross-contamination.',
+    impact_es: 'Los comensales con restricciones deciden si se sienten considerados. Una sola marca "GF" o un badge "vegano" convierte más clientes con restricciones que diez párrafos de "nos adaptamos". Incluso una sola marca indica que alguien del equipo pensó en la contaminación cruzada.',
     pass: 'Your site signals dietary options',
+    pass_es: 'Tu sitio señala opciones dietéticas',
     passNote: '{detected} visible on your site — guests with dietary restrictions can self-qualify without having to call and ask.',
+    passNote_es: '{detected} visible en tu sitio — los comensales con restricciones pueden auto-calificar sin tener que llamar para preguntar.',
     fail: null,
     failNote: null,
     unverified: 'We didn\'t spot dietary markers — is this right?',
+    unverified_es: 'No vimos marcas dietéticas — ¿es correcto?',
     unverifiedNote: 'We scan for vegan, vegetarian, gluten-free, dairy-free, nut-free, halal, kosher, and allergen notes. If your menu marks dietary options with symbols or callouts we didn\'t recognize (or if the markers live on a menu page we didn\'t reach), let us know and we\'ll improve the detector.',
+    unverifiedNote_es: 'Buscamos vegano, vegetariano, sin gluten, sin lácteos, sin nueces, halal, kosher y notas de alérgenos. Si tu menú marca opciones dietéticas con símbolos o leyendas que no reconocimos (o si las marcas viven en una página de menú a la que no llegamos), avísanos y mejoraremos el detector.',
     byType: {
       'fine-dining': {
         impact: 'Fine-dining tasting menus live or die on accommodating dietary restrictions — half the phone calls your host fields are "do you have gluten-free or vegetarian options?" Surfacing answers on the menu page deflects those calls and lets guests book with confidence.',
@@ -874,12 +886,17 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'dev',
     minutes: 30,
     impact: 'Gift cards are the highest-margin line on a restaurant site. Every \$50 gift card sold brings in \$50 of revenue AND a future customer; roughly 20-30% of gift cards go unredeemed, which is pure revenue. A visible "Gift Cards" CTA converts more than you would expect, especially around November-December.',
+    impact_es: 'Las tarjetas de regalo son la línea de mayor margen en un sitio de restaurante. Cada tarjeta de $50 vendida trae $50 de ingresos Y un cliente futuro; cerca del 20-30% de las tarjetas no se canjean, puro margen. Un CTA visible de "Tarjetas de regalo" convierte más de lo esperado, especialmente entre noviembre y diciembre.',
     pass: 'Your site sells gift cards',
+    pass_es: 'Tu sitio vende tarjetas de regalo',
     passNote: '{detected} on your site — gift-card sales are some of the highest-margin revenue a restaurant can earn, and you already have the flow.',
+    passNote_es: '{detected} en tu sitio — las ventas de tarjetas de regalo son de los ingresos con mayor margen que un restaurante puede generar, y tú ya tienes el flujo.',
     fail: null,
     failNote: null,
     unverified: 'We didn\'t spot gift-card sales — is this right?',
+    unverified_es: 'No vimos venta de tarjetas de regalo — ¿es correcto?',
     unverifiedNote: 'We scan for gift-card text ("Gift Card", "Gift Certificate", "e-Gift") plus major platforms (Toast Gift Cards, Square Gift Cards, Yiftee, GiftUp, Factor4). If you sell via a platform we missed, tell us and we will add it. If you do not sell gift cards today, adding a simple checkout page is a high-ROI, once-a-quarter project.',
+    unverifiedNote_es: 'Buscamos texto de tarjetas ("Gift Card", "Gift Certificate", "e-Gift") y plataformas importantes (Toast Gift Cards, Square Gift Cards, Yiftee, GiftUp, Factor4). Si vendes por una plataforma que pasamos por alto, dínoslo y la agregamos. Si hoy no vendes tarjetas, agregar una página simple de checkout es un proyecto trimestral de alto ROI.',
     byType: {
       'fine-dining': {
         impact: 'Gift cards at fine-dining restaurants are the "special occasion" present par excellence — anniversaries, birthdays, holiday gifts. Redemption rates run higher than casual dining but unredeemed balances are still pure margin. Physical printed cards are a nice upsell for corporate gifts.',
@@ -906,12 +923,17 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'dev',
     minutes: 120,
     impact: 'Loyalty programs lift repeat-visit frequency by 15-30% on average — a material difference for a thin-margin business. The modern loyalty tools (Thanx, Paytronix, Square Loyalty) integrate with POS so every visit earns without a punchcard, which is the actual bar for adoption.',
+    impact_es: 'Los programas de lealtad suben la frecuencia de visita repetida entre 15-30% en promedio — una diferencia material para un negocio de márgenes delgados. Las herramientas modernas (Thanx, Paytronix, Square Loyalty) se integran con el POS, así cada visita acumula sin tarjeta perforada, que es la vara real para que se adopte.',
     pass: 'Your site promotes a loyalty program',
+    pass_es: 'Tu sitio promueve un programa de lealtad',
     passNote: '{detected} on your site — repeat-visit frequency is where restaurant margin lives, and you have the infrastructure to compound it.',
+    passNote_es: '{detected} en tu sitio — la frecuencia de visitas repetidas es donde vive el margen de un restaurante, y ya tienes la infraestructura para acumularlo.',
     fail: null,
     failNote: null,
     unverified: 'We didn\'t spot a loyalty program — is this right?',
-    unverifiedNote: 'We scan for loyalty text ("rewards program", "earn points", "join our rewards") and known platforms (Thanx, LevelUp, Paytronix, Como, Fivestars, Loyalzoo). If you run one we missed, tell us. If you do not have one yet, a modern POS-integrated loyalty program pays back in 90-120 days for most casual-dining and fast-casual restaurants.'
+    unverified_es: 'No vimos un programa de lealtad — ¿es correcto?',
+    unverifiedNote: 'We scan for loyalty text ("rewards program", "earn points", "join our rewards") and known platforms (Thanx, LevelUp, Paytronix, Como, Fivestars, Loyalzoo). If you run one we missed, tell us. If you do not have one yet, a modern POS-integrated loyalty program pays back in 90-120 days for most casual-dining and fast-casual restaurants.',
+    unverifiedNote_es: 'Buscamos texto de lealtad ("programa de recompensas", "gana puntos", "únete a recompensas") y plataformas conocidas (Thanx, LevelUp, Paytronix, Como, Fivestars, Loyalzoo). Si corres uno que pasamos por alto, dínoslo. Si aún no tienes, un programa moderno integrado al POS se paga solo en 90-120 días para la mayoría de restaurantes casual-dining y fast-casual.'
   },
   {
     // Phase H4: Email newsletter capture.
@@ -921,12 +943,17 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'dev',
     minutes: 60,
     impact: 'An email list is the only marketing channel you OWN — Instagram can ghost you, Google can change the rules, but your list keeps compounding. Restaurants with a newsletter capture typically see 3-5x higher repeat-visit rates from subscribers vs. non-subscribers.',
+    impact_es: 'Una lista de correo es el único canal de marketing que TÚ posees — Instagram puede silenciarte, Google puede cambiar las reglas, pero tu lista sigue creciendo. Los restaurantes con captura de newsletter suelen ver tasas de visita repetida 3-5× mayores de suscriptores vs no suscriptores.',
     pass: 'Your site captures newsletter signups',
+    pass_es: 'Tu sitio capta suscripciones al newsletter',
     passNote: '{detected} on your site — you are building an owned audience, which is the single most valuable marketing asset a restaurant can accumulate.',
+    passNote_es: '{detected} en tu sitio — estás construyendo una audiencia propia, el activo de marketing más valioso que un restaurante puede acumular.',
     fail: null,
     failNote: null,
     unverified: 'We didn\'t spot a newsletter capture — is this right?',
-    unverifiedNote: 'We look for an email input paired with newsletter language (subscribe / join our list / newsletter) OR a form action pointing at Mailchimp, Klaviyo, ConvertKit, Constant Contact, or similar. If yours is elsewhere or the form is in a modal we didn\'t render, let us know.'
+    unverified_es: 'No vimos captura de newsletter — ¿es correcto?',
+    unverifiedNote: 'We look for an email input paired with newsletter language (subscribe / join our list / newsletter) OR a form action pointing at Mailchimp, Klaviyo, ConvertKit, Constant Contact, or similar. If yours is elsewhere or the form is in a modal we didn\'t render, let us know.',
+    unverifiedNote_es: 'Buscamos una entrada de correo junto a texto de newsletter (suscríbete / únete a la lista / newsletter) O un action del formulario apuntando a Mailchimp, Klaviyo, ConvertKit, Constant Contact u otros. Si el tuyo está en otro lado o en un modal que no renderizamos, avísanos.'
   },
   {
     // Phase H5: Catering / private-events page presence.
