@@ -123,6 +123,16 @@ function localeForPath(relPath) {
 // locales, so "other" is unambiguous. When a third locale lands, the
 // switcher markup in the partials will need to iterate LOCALES instead
 // and this helper will return a map rather than a single URL.
+//
+// Missing-counterpart fallback: some surfaces (blog posts, the
+// restaurant audit tool) don't have their non-default mirror yet —
+// blog translation lives in a sibling repo, the audit tool uses an
+// in-page overlay. Rather than link the switcher at a URL that 0kb's
+// when a user taps it, we detect the missing file and fall back to
+// the other locale's HOME. The js-lang-switch click handler still
+// writes the md_locale cookie, so the user's language preference
+// sticks across the rest of the site even if this specific page has
+// no translation yet.
 function counterpartUrl(relPath, pageLocale) {
   const posix = toPosix(relPath);
   // Strip an index.html suffix so the URL is the directory form users see.
@@ -131,14 +141,26 @@ function counterpartUrl(relPath, pageLocale) {
     : posix === 'index.html'
       ? '/'
       : '/' + posix;
+  let url;
+  let targetRel;
   if (pageLocale === 'en') {
     // EN page → point to /<otherLocale>/... counterpart.
     const other = NON_DEFAULT_LOCALES[0];
-    return pretty === '/' ? `/${other}/` : `/${other}${pretty}`;
+    url = pretty === '/' ? `/${other}/` : `/${other}${pretty}`;
+    targetRel = pretty === '/' ? `${other}/index.html` : `${other}${pretty}index.html`;
+  } else {
+    // Non-default locale → strip the leading /<locale>/ and land at EN.
+    const stripped = pretty.replace(new RegExp(`^/${pageLocale}(/|$)`), '/');
+    url = stripped || '/';
+    targetRel = url === '/' ? 'index.html' : url.slice(1) + 'index.html';
   }
-  // Non-default locale → strip the leading /<locale>/ and land at EN.
-  const stripped = pretty.replace(new RegExp(`^/${pageLocale}(/|$)`), '/');
-  return stripped || '/';
+  // If the expected counterpart file doesn't exist on disk, fall back
+  // to the other locale's home rather than silently 0kb-ing the user.
+  const targetAbs = path.join(repoRoot, targetRel);
+  if (!fs.existsSync(targetAbs)) {
+    return pageLocale === 'en' ? `/${NON_DEFAULT_LOCALES[0]}/` : '/';
+  }
+  return url;
 }
 
 // The locale's "home" URL used for the logo link on every page except
