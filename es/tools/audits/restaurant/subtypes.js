@@ -1,17 +1,20 @@
 /**
- * Restaurant subtype registry — client mirror of src/lib/subtypes.js
+ * Registro de subtipos de restaurante — espejo en español de
+ * tools/audits/restaurant/subtypes.js para la versión /es/ de la
+ * herramienta de diagnóstico. Cargado como script clásico junto a
+ * restaurant-checks.js. La canónica sigue siendo src/lib/subtypes.js
+ * (ESM); este archivo hereda los ids, tipos de schema, platform
+ * hints, pesos y benchmarks del original — solo las etiquetas
+ * visibles al usuario y las expresiones regulares de palabras clave
+ * están traducidas para detectar sitios de restaurantes en español.
  *
- * Loaded as a classic script alongside restaurant-checks.js so its
- * top-level `var`s are available to the audit IIFE in index.html as
- * globals. Canonical source is src/lib/subtypes.js (ESM) — this file
- * must stay in lockstep with it.
+ * Las regex combinan términos en español y en inglés porque los
+ * sitios bilingües del DMV mezclan ambos en la misma página (p. ej.
+ * "happy hour", "food truck", "brunch" permanecen sin traducir en
+ * copy en español). Mantener ambos permite que la detección corra
+ * contra cualquier sitio sin importar su idioma predominante.
  *
- * Naming mirrors the server file with the same global names
- * (RESTAURANT_SUBTYPES, RESTAURANT_SUBTYPE_ALIASES, etc.) so a caller
- * writing code that shares logic across worker and client can use
- * identical references.
- *
- * See src/lib/subtypes.js for the field-by-field spec.
+ * Ver src/lib/subtypes.js para la especificación campo por campo.
  */
 
 var RESTAURANT_SUBTYPES = [
@@ -21,10 +24,16 @@ var RESTAURANT_SUBTYPES = [
     schemaTypes: [],
     platformHints: { resy: 5, tock: 5, sevenrooms: 4, opentable: 2 },
     keywords: [
-      /\btasting\s+menu\b/i, /\bprix\s+fixe\b/i, /\bsommelier\b/i,
-      /\bchef['’]s\s+(?:counter|table)\b/i, /\bwine\s+pairing\b/i,
-      /\bdegustation\b/i, /\bamuse[-\s]?bouche\b/i, /\bmichelin\b/i,
-      /\bmulti[-\s]?course\b/i, /\bomakase\b/i
+      /\bmen[úu]\s+de\s+degustaci[óo]n\b/i, /\bmen[úu]\s+degustaci[óo]n\b/i,
+      /\bprix\s+fixe\b/i, /\bmen[úu]\s+fijo\b/i,
+      /\bsommelier\b/i,
+      /\b(?:barra|mesa)\s+del\s+chef\b/i,
+      /\bmaridaje(?:\s+de\s+vinos?)?\b/i,
+      /\bdegustaci[óo]n\b/i, /\btasting\s+menu\b/i,
+      /\bamuse[-\s]?bouche\b/i, /\bmichelin\b/i,
+      /\b(?:multi[-\s]?course|varios\s+tiempos|m[úu]ltiples\s+tiempos)\b/i,
+      /\bomakase\b/i,
+      /\balta\s+cocina\b/i, /\bmen[úu]\s+de\s+autor\b/i
     ],
     weights: {
       conversions: 2.0,
@@ -40,9 +49,14 @@ var RESTAURANT_SUBTYPES = [
     schemaTypes: ['Restaurant', 'FoodEstablishment'],
     platformHints: { opentable: 3, yelpreservations: 2, toast: 1, square: 1 },
     keywords: [
-      /\bdining\s+room\b/i, /\bfull\s+bar\b/i,
-      /\blunch\s+and\s+dinner\b/i, /\bsignature\s+dishes?\b/i,
-      /\bfamily[-\s]friendly\b/i, /\bneighborhood\s+(?:spot|restaurant|favorite)\b/i
+      /\b(?:comedor|sal[óo]n|sala)\b/i, /\bbarra\s+completa\b/i, /\bbar\s+completo\b/i,
+      /\b(?:almuerzo|comida)\s+y\s+cena\b/i,
+      /\bplatos?\s+de\s+la\s+casa\b/i, /\bespecialidad(?:es)?\s+de\s+la\s+casa\b/i,
+      /\b(?:apto|ideal|perfecto)\s+para\s+(?:familias|ni[ñn]os)\b/i,
+      /\bfamily[-\s]friendly\b/i,
+      /\b(?:lugar|restaurante|favorito)\s+(?:de|del)\s+barrio\b/i,
+      /\bbistr[óo]\b/i,
+      /\bservicio\s+completo\b/i
     ],
     weights: {
       conversions: 1.5,
@@ -61,9 +75,16 @@ var RESTAURANT_SUBTYPES = [
       doordash: 1, grubhub: 1, 'uber eats': 1
     },
     keywords: [
+      /\bpedir\s+(?:en\s+l[íi]nea|online)\b/i, /\bpedidos?\s+(?:en\s+l[íi]nea|online)\b/i,
+      /\bpedir\s+para\s+(?:recoger|llevar|entrega|domicilio)\b/i,
+      /\bpara\s+llevar\b/i, /\bcomida\s+para\s+llevar\b/i,
       /\border\s+online\b/i, /\border\s+for\s+(?:pickup|delivery|takeout|take[-\s]out)\b/i,
-      /\bgrab\s+(?:and|&)\s+go\b/i, /\bfast[-\s]casual\b/i,
-      /\bcounter\s+service\b/i, /\bdrive[-\s]thru\b/i, /\bcurbside\s+pickup\b/i
+      /\bfast[-\s]casual\b/i,
+      /\bservicio\s+de\s+mostrador\b/i, /\bcounter\s+service\b/i,
+      /\bdrive[-\s]?thru\b/i,
+      /\brecoger\s+en\s+(?:el\s+)?auto\b/i, /\bcurbside\b/i,
+      /\bgrab\s+(?:and|&)\s+go\b/i,
+      /\bautoservicio\b/i
     ],
     weights: {
       conversions: 2.0,
@@ -79,10 +100,13 @@ var RESTAURANT_SUBTYPES = [
     schemaTypes: ['CafeOrCoffeeShop'],
     platformHints: { square: 3, toast: 1, chownow: 1 },
     keywords: [
-      /\b(?:espresso|cappuccino|latte|cortado|pour[-\s]over|americano|macchiato)\b/i,
-      /\bcoffee\s+(?:shop|bar|house)\b/i, /\bcafé\b/i, /\bcafe\b/i,
-      /\bartisan\s+coffee\b/i, /\broastery?\b/i, /\bsingle[-\s]origin\b/i,
-      /\bcold\s+brew\b/i
+      /\b(?:espresso|expreso|capuchino|cappuccino|latte|cortado|pour[-\s]over|americano|macchiato)\b/i,
+      /\bcafeter[íi]a\b/i, /\bcaf[ée]\b/i, /\bcoffee\s+(?:shop|bar|house)\b/i,
+      /\bcaf[ée]\s+(?:artesanal|de\s+especialidad)\b/i, /\bartisan\s+coffee\b/i,
+      /\btostadur[íi]a\b/i, /\btostadora\s+de\s+caf[ée]\b/i, /\broastery?\b/i,
+      /\b(?:origen\s+[úu]nico|de\s+origen)\b/i, /\bsingle[-\s]origin\b/i,
+      /\bcold\s+brew\b/i, /\bcaf[ée]\s+en\s+fr[íi]o\b/i,
+      /\bgrano\s+(?:[úu]nico|selecto)\b/i
     ],
     weights: {
       'menu-format': 1.0,
@@ -99,10 +123,16 @@ var RESTAURANT_SUBTYPES = [
     schemaTypes: ['Bakery', 'IceCreamShop'],
     platformHints: { square: 3, toast: 1 },
     keywords: [
-      /\b(?:pastries|croissants?|muffins?|scones?|éclairs?|macarons?)\b/i,
-      /\bbakery\b/i, /\bbaked\s+goods\b/i, /\bpâtisserie\b/i, /\bpatisserie\b/i,
-      /\bartisan\s+bread\b/i, /\bsourdough\b/i, /\bcustom\s+(?:cake|cakes|order)\b/i,
-      /\bwedding\s+cakes?\b/i, /\bcake\s+(?:order|orders|pickup)\b/i
+      /\b(?:pasteles?|panecillos?|croissants?|muffins?|scones?|[ée]clairs?|macarons?|empanadas?)\b/i,
+      /\bpanader[íi]a\b/i, /\bpasteler[íi]a\b/i, /\brepostería\b/i,
+      /\bp[âa]tisserie\b/i,
+      /\bpan\s+artesanal\b/i, /\bpanes?\s+artesanales?\b/i, /\bartisan\s+bread\b/i,
+      /\bmasa\s+madre\b/i, /\bsourdough\b/i,
+      /\b(?:pastel|torta|queque)\s+(?:personalizado|a\s+medida|por\s+encargo)\b/i,
+      /\bcustom\s+(?:cake|cakes|order)\b/i,
+      /\b(?:pastel|torta|queque)\s+de\s+bodas?\b/i, /\bwedding\s+cakes?\b/i,
+      /\bpedido\s+de\s+(?:pastel|torta|queque)\b/i,
+      /\bbakery\b/i
     ],
     weights: {
       'wholesale-custom-orders': 2.0,
@@ -119,10 +149,16 @@ var RESTAURANT_SUBTYPES = [
     schemaTypes: ['BarOrPub', 'Brewery', 'Winery', 'Distillery'],
     platformHints: { tripleseat: 3, opentable: 1, resy: 1, sevenrooms: 1 },
     keywords: [
-      /\bcocktails?\b/i, /\bcraft\s+beer\b/i, /\bon\s+tap\b/i,
-      /\b(?:draft|draught)\s+(?:beer|list)\b/i, /\bhappy\s+hour\b/i,
-      /\b(?:gastro)?pub\b/i, /\btaproom\b/i, /\bwhiskey\s+(?:bar|list)\b/i,
-      /\bwine\s+bar\b/i, /\bspeakeasy\b/i, /\bbrewery\b/i
+      /\bcocteles?\b/i, /\bcocktails?\b/i,
+      /\bcerveza\s+artesanal\b/i, /\bcraft\s+beer\b/i,
+      /\bde\s+barril\b/i, /\bcerveza\s+de\s+barril\b/i, /\bon\s+tap\b/i,
+      /\bhappy\s+hour\b/i, /\bhora\s+feliz\b/i,
+      /\b(?:gastro)?pub\b/i, /\btaproom\b/i, /\bsala\s+de\s+cata\b/i,
+      /\b(?:bar|carta)\s+de\s+whisk(?:y|ey)\b/i,
+      /\bbar\s+de\s+vinos?\b/i, /\bvinoteca\b/i,
+      /\bspeakeasy\b/i,
+      /\bcervecer[íi]a\b/i, /\bbrewery\b/i,
+      /\bcoctelera\b/i, /\bcoctelería\b/i
     ],
     weights: {
       conversions: 1.5,
@@ -138,9 +174,15 @@ var RESTAURANT_SUBTYPES = [
     schemaTypes: ['Restaurant', 'FastFoodRestaurant'],
     platformHints: { slice: 5, toast: 2, chownow: 2, doordash: 2, grubhub: 2, square: 1 },
     keywords: [
-      /\bpizza(?:s|eria)?\b/i, /\bslice(?:s)?\b/i, /\bneapolitan\b/i,
-      /\bwood[-\s]fired\b/i, /\bcoal[-\s]fired\b/i, /\bsicilian\b/i,
-      /\bdetroit[-\s]style\b/i, /\bpepperoni\b/i, /\bcalzone\b/i
+      /\bpizzas?\b/i, /\bpizzer[íi]a\b/i,
+      /\brebanadas?\b/i, /\bporciones?\s+de\s+pizza\b/i, /\bslice(?:s)?\b/i,
+      /\bnapolitana\b/i, /\bneapolitan\b/i,
+      /\b(?:al\s+)?horno\s+de\s+le[ñn]a\b/i, /\bwood[-\s]fired\b/i,
+      /\b(?:al\s+)?horno\s+de\s+carb[óo]n\b/i, /\bcoal[-\s]fired\b/i,
+      /\bsiciliana\b/i, /\bsicilian\b/i,
+      /\bestilo\s+detroit\b/i, /\bdetroit[-\s]style\b/i,
+      /\bpepperoni\b/i, /\bpeperoni\b/i,
+      /\bcalzone\b/i
     ],
     weights: {
       conversions: 2.0,
@@ -157,9 +199,14 @@ var RESTAURANT_SUBTYPES = [
     schemaTypes: ['Restaurant', 'FastFoodRestaurant'],
     platformHints: { square: 2, toast: 1 },
     keywords: [
-      /\bfood\s+truck\b/i, /\btruck\s+schedule\b/i, /\bwhere\s+(?:we|are\s+we)\b/i,
-      /\btoday['’]s\s+location\b/i, /\bpop[-\s]?up\b/i, /\bcatch\s+us\b/i,
-      /\bfollow\s+(?:our|us\s+on)\b/i, /\bmobile\s+(?:kitchen|restaurant)\b/i
+      /\bfood\s+truck\b/i, /\bcami[óo]n\s+de\s+comida\b/i,
+      /\bhorario\s+(?:del\s+cami[óo]n|del\s+truck)\b/i, /\btruck\s+schedule\b/i,
+      /\b[¿?]d[óo]nde\s+estamos\s+hoy\??\b/i, /\bwhere\s+(?:we|are\s+we)\b/i,
+      /\bubicaci[óo]n\s+de\s+hoy\b/i, /\btoday['’]s\s+location\b/i,
+      /\bpop[-\s]?up\b/i,
+      /\bs[íi]guenos\b/i, /\bcatch\s+us\b/i, /\bfollow\s+(?:our|us\s+on)\b/i,
+      /\bcocina\s+m[óo]vil\b/i, /\bmobile\s+(?:kitchen|restaurant)\b/i,
+      /\bpuesto\s+m[óo]vil\b/i
     ],
     weights: {
       'food-truck-schedule': 2.0,
@@ -180,9 +227,13 @@ var RESTAURANT_SUBTYPES = [
       deliverect: 3, otter: 3
     },
     keywords: [
-      /\bghost\s+kitchen\b/i, /\bvirtual\s+(?:kitchen|restaurant|brand)\b/i,
-      /\bdelivery[-\s]only\b/i, /\bcloud\s+kitchen\b/i,
-      /\bno\s+dine[-\s]in\b/i, /\bdelivery\s+&\s+pickup\s+only\b/i
+      /\bcocina\s+fantasma\b/i, /\bghost\s+kitchen\b/i,
+      /\bcocina\s+virtual\b/i, /\bmarca\s+virtual\b/i, /\brestaurante\s+virtual\b/i,
+      /\bvirtual\s+(?:kitchen|restaurant|brand)\b/i,
+      /\bsolo\s+(?:entrega|delivery)\b/i, /\bdelivery[-\s]only\b/i,
+      /\bcloud\s+kitchen\b/i,
+      /\bsin\s+(?:mesa|servicio\s+en\s+mesa|consumo\s+en\s+sitio)\b/i, /\bno\s+dine[-\s]in\b/i,
+      /\b(?:entrega\s+y\s+recogida|delivery\s+(?:y|&)\s+pickup)\s+[úu]nicamente\b/i
     ],
     weights: {
       'aggregator-only': 2.0,
@@ -200,11 +251,17 @@ var RESTAURANT_SUBTYPES = [
     schemaTypes: ['FoodEstablishment', 'Restaurant'],
     platformHints: { ezcater: 5, catertrax: 5, tripleseat: 3, square: 1 },
     keywords: [
-      /\bcatering\s+(?:menu|services?|packages?)\b/i, /\bprivate\s+(?:events?|dining|parties)\b/i,
-      /\bcorporate\s+catering\b/i, /\bwedding\s+catering\b/i,
-      /\bbuffet\s+catering\b/i, /\bdrop[-\s]off\s+catering\b/i,
-      /\boff[-\s]premise\b/i, /\brequest\s+a\s+quote\b/i,
-      /\bevent\s+planning\b/i
+      /\b(?:men[úu]|servicios?|paquetes?)\s+de\s+catering\b/i,
+      /\bcatering\s+(?:menu|services?|packages?)\b/i,
+      /\b(?:eventos?|comedor|fiestas?|celebraciones?)\s+privados?\b/i, /\bprivate\s+(?:events?|dining|parties)\b/i,
+      /\bcatering\s+(?:corporativo|empresarial)\b/i, /\bcorporate\s+catering\b/i,
+      /\bcatering\s+de\s+bodas?\b/i, /\bwedding\s+catering\b/i,
+      /\bcatering\s+(?:tipo\s+)?buffet\b/i, /\bbuffet\s+catering\b/i,
+      /\bcatering\s+(?:drop[-\s]off|de\s+entrega)\b/i,
+      /\bfuera\s+del\s+local\b/i, /\boff[-\s]premise\b/i,
+      /\bsolicitar?\s+cotizaci[óo]n\b/i, /\brequest\s+a\s+quote\b/i,
+      /\bplanificaci[óo]n\s+de\s+eventos?\b/i, /\borganizaci[óo]n\s+de\s+eventos?\b/i, /\bevent\s+planning\b/i,
+      /\bservicio\s+de\s+catering\b/i, /\bchef\s+privado\b/i
     ],
     weights: {
       'catering-page': 2.5,
