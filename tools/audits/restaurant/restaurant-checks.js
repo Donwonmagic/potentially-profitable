@@ -1592,6 +1592,40 @@ function poweredByRole(entry, lang) {
   if (L === 'es' && entry.role_es) return entry.role_es;
   return entry.role || '';
 }
+
+// Sprint ES9: return a shallow-merged copy of a check definition with
+// the localized string fields swapped in when window.__muntinLang is
+// 'es'. Pattern: any field `foo` can have an `foo_es` sibling; when
+// lang is 'es' and the _es variant is a non-empty string, it wins.
+// Falls back to English silently if the _es variant is missing.
+//
+// Applied to the TOP-LEVEL check def and to each byType[subtype]
+// override before rendering, so translators can localize either tier
+// independently as coverage grows.
+function localizeCheckCopy(def, lang) {
+  if (!def) return def;
+  var L = lang || (typeof window !== 'undefined' && window.__muntinLang) || 'en';
+  if (L !== 'es') return def;
+  var localeKeys = [
+    'title', 'pass', 'fail', 'unverified', 'impact',
+    'passNote', 'passNoteText', 'failNote', 'unverifiedNote'
+  ];
+  var out = null;
+  for (var i = 0; i < localeKeys.length; i++) {
+    var k = localeKeys[i];
+    var esVal = def[k + '_es'];
+    if (typeof esVal === 'string' && esVal.length > 0) {
+      if (!out) {
+        out = {};
+        for (var key in def) {
+          if (Object.prototype.hasOwnProperty.call(def, key)) out[key] = def[key];
+        }
+      }
+      out[k] = esVal;
+    }
+  }
+  return out || def;
+}
 // Canonical one-line description used in OG/Twitter cards, PDF cover,
 // share-card footer, and the tool's meta description. Exactly one
 // source of truth — if this string changes, every surface updates.
