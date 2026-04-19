@@ -4176,7 +4176,7 @@
       // countdown after we've run longer than expected so the user
       // knows we haven't stalled.
       if (loadingSubEl && elapsed > PROGRESS_TARGET_SECONDS + 5) {
-        loadingSubEl.textContent = "Google is taking longer than usual on this one — still running…";
+        loadingSubEl.textContent = "Google se está tardando más de lo usual con este — sigue corriendo…";
       }
     }, 200);
   }
@@ -4190,7 +4190,7 @@
     if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
     progressStartTime = null;
     if (progressFill) progressFill.style.width = '0%';
-    if (loadingSubEl) loadingSubEl.textContent = 'This usually takes 15–40 seconds.';
+    if (loadingSubEl) loadingSubEl.textContent = 'Esto suele tomar 15-40 segundos.';
     setStep(0);
   }
 
@@ -4568,10 +4568,10 @@
         srcEl.textContent = scope === 'origin' ? 'Real users (origin)' : 'Real users';
         srcEl.className = 'v-source v-source-field';
       } else if (source === 'lab') {
-        srcEl.textContent = 'Lab estimate';
+        srcEl.textContent = 'Estimación de laboratorio';
         srcEl.className = 'v-source v-source-lab';
       } else if (source === 'missing') {
-        srcEl.textContent = 'No real-user data';
+        srcEl.textContent = 'Sin datos de usuarios reales';
         srcEl.className = 'v-source v-source-missing';
       } else {
         srcEl.textContent = '';
@@ -5707,13 +5707,13 @@
     }
     if (sub) {
       if (userBusinessType) {
-        sub.textContent = "You told us what kind of restaurant this is — we're using it to tailor the checks below to your segment.";
+        sub.textContent = "Tú nos dijiste qué tipo de restaurante es este — lo estamos usando para afinar los chequeos de abajo a tu segmento.";
       } else if (detection && detection.confidence === 'low') {
-        sub.textContent = "We couldn't tell what kind of restaurant this is from the page. Pick the closest match and the checks below will speak your dialect.";
+        sub.textContent = "No pudimos determinar qué tipo de restaurante es este a partir de la página. Elige la coincidencia más cercana y los chequeos de abajo hablarán tu dialecto.";
       } else if (detection && detection.confidence === 'medium') {
-        sub.textContent = "Our best guess from schema markup, platform, and page content. If we got it wrong, pick the right one — the checks below will update live.";
+        sub.textContent = "Nuestra mejor suposición a partir del marcado schema, la plataforma y el contenido de la página. Si nos equivocamos, elige el correcto — los chequeos de abajo se actualizan en vivo.";
       } else {
-        sub.textContent = "Auto-detected from schema markup, ordering/reservation platform, and page content. If we got it wrong, pick the right one — the checks below will update live.";
+        sub.textContent = "Autodetectado a partir del marcado schema, la plataforma de pedidos/reservas y el contenido de la página. Si nos equivocamos, elige el correcto — los chequeos de abajo se actualizan en vivo.";
       }
     }
 
@@ -6484,7 +6484,7 @@
         }
         tally.textContent = pieces.join(' · ');
       } else {
-        tally.textContent = 'No restaurant-priority data available';
+        tally.textContent = 'No hay datos de prioridad de restaurante disponibles';
       }
     }
 
@@ -7024,9 +7024,9 @@
     }
     banner.hidden = false;
     if (textEl) {
-      var noun = keys.length === 1 ? 'check' : 'checks';
-      textEl.textContent = 'This score includes ' + keys.length +
-        ' owner-confirmed ' + noun + '. Remove the ?ov=… parameter from the URL to see the fully tool-verified score.';
+      var noun = keys.length === 1 ? 'chequeo' : 'chequeos';
+      textEl.textContent = 'Este puntaje incluye ' + keys.length +
+        ' ' + noun + ' confirmado' + (keys.length === 1 ? '' : 's') + ' por el dueño. Quita el parámetro ?ov=… de la URL para ver el puntaje verificado completamente por la herramienta.';
     }
   }
 
@@ -7038,7 +7038,7 @@
 
   function runAudit(url) {
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Running…';
+    submitBtn.textContent = 'Corriendo…';
     showOnly(loadingEl);
     resetProgress();
 
@@ -7171,7 +7171,7 @@
     var remain = cooldownRemaining();
     if (remain > 0) {
       submitBtn.disabled = true;
-      submitBtn.textContent = 'Wait ' + remain + 's';
+      submitBtn.textContent = 'Espera ' + remain + ' s';
     } else if (submitBtn.disabled && submitBtn.textContent && submitBtn.textContent.indexOf('Wait') === 0) {
       // Cooldown just ended — restore original label
       submitBtn.disabled = false;
@@ -7578,13 +7578,13 @@
       showToast('Enter a valid email address.', 'error');
       if (opts.errorEl) {
         opts.errorEl.hidden = false;
-        opts.errorEl.textContent = 'Enter a valid email address.';
+        opts.errorEl.textContent = 'Ingresa una dirección de email válida.';
       }
       if (emailInput) emailInput.focus();
       return;
     }
     if (opts.errorEl) { opts.errorEl.hidden = true; opts.errorEl.textContent = ''; }
-    if (btn) { btn.disabled = true; btn.dataset.origHtml = btn.innerHTML; btn.textContent = 'Building your PDF…'; }
+    if (btn) { btn.disabled = true; btn.dataset.origHtml = btn.innerHTML; btn.textContent = 'Construyendo tu PDF…'; }
     showToast('Building your PDF…');
 
     // Pre-fill the hidden-field trio on whichever form submitted;
@@ -7610,7 +7610,7 @@
     buildAuditPdf()
       .catch(function(){ return null; })
       .then(function(pdf){
-        if (btn) btn.textContent = 'Sending…';
+        if (btn) btn.textContent = 'Enviando…';
         showToast('Sending…');
         var payload = {};
         new FormData(form).forEach(function(v, k){ payload[k] = v; });
@@ -7631,7 +7631,7 @@
         if (!res) throw new Error('PDF build failed');
         return res.json().then(function(body){
           if (res.ok && body && body.ok) {
-            if (btn) { btn.disabled = true; btn.textContent = 'Sent — check your inbox'; }
+            if (btn) { btn.disabled = true; btn.textContent = 'Enviado — revisa tu inbox'; }
             showToast('Your PDF is on its way. If it warrants a longer look, I might follow up personally.', 'success');
             if (opts.successEl) {
               opts.successEl.hidden = false;
@@ -7820,7 +7820,7 @@
         if (i >= urls.length) return Promise.resolve(competitorResults);
         var url = urls[i];
         var displayIdx = i + 1;
-        compareStatusH.textContent = 'Auditing competitor ' + displayIdx + ' of ' + urls.length + '…';
+        compareStatusH.textContent = 'Diagnosticando competidor ' + displayIdx + ' de ' + urls.length + '…';
         var baseProgress = ((displayIdx - 1) / urls.length) * 100;
         var nextProgress = (displayIdx / urls.length) * 100;
         compareProgress.style.width = baseProgress + '%';
@@ -7976,7 +7976,7 @@
       e.preventDefault();
       if (!window.__auditLastResult) {
         compareError.hidden = false;
-        compareErrorTxt.textContent = 'Run an audit on your own site first — then we can compare it against competitors.';
+        compareErrorTxt.textContent = 'Corre primero un diagnóstico a tu propio sitio — después podemos compararlo contra competidores.';
         return;
       }
       // Collect all non-empty URL inputs
@@ -7990,7 +7990,7 @@
       }
       if (!urls.length) {
         compareError.hidden = false;
-        compareErrorTxt.textContent = 'Add at least one competitor URL to compare.';
+        compareErrorTxt.textContent = 'Agrega al menos una URL de competidor para comparar.';
         return;
       }
       if (window.plausible) window.plausible('Audit Comparison Run', { props: { count: urls.length } });
@@ -7999,24 +7999,24 @@
       compareStatus.hidden = false;
       compareProgress.style.width = '0%';
       compareRunBtn.disabled = true;
-      compareRunBtn.textContent = 'Running…';
+      compareRunBtn.textContent = 'Corriendo…';
 
       runCompetitorsSequential(urls)
         .then(function(){
           compareRunBtn.disabled = false;
-          compareRunBtn.textContent = 'Run comparison';
+          compareRunBtn.textContent = 'Correr comparación';
           compareProgress.style.width = '100%';
           renderCompareTable();
         })
         .catch(function(err){
           console.error('[audit compare]', err);
           compareRunBtn.disabled = false;
-          compareRunBtn.textContent = 'Run comparison';
+          compareRunBtn.textContent = 'Correr comparación';
           compareStatus.hidden = true;
           compareError.hidden = false;
-          var which = err.competitorIndex ? 'Competitor ' + err.competitorIndex : 'One of the competitors';
-          var reason = (err && err.message) || 'unknown error';
-          compareErrorTxt.textContent = which + " couldn't be audited (" + reason + "). Check the URL and try again, or remove it and run the rest.";
+          var which = err.competitorIndex ? 'Competidor ' + err.competitorIndex : 'Uno de los competidores';
+          var reason = (err && err.message) || 'error desconocido';
+          compareErrorTxt.textContent = which + " no se pudo diagnosticar (" + reason + "). Revisa la URL y vuelve a intentar, o quítala y corre los demás.";
           if (window.plausible) window.plausible('Audit Comparison Error');
         });
     });
