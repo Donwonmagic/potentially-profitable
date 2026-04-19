@@ -501,50 +501,50 @@ var RESTAURANT_PRIORITY_CHECKS = [
     anchor: '#basics',
     effort: 'self',
     minutes: 2,
-    impact: "On mobile, every tap that requires copying and pasting instead of tapping costs you customers. Phone calls are still how most takeout orders and reservation questions reach independent restaurants.",
-    pass: 'Visitors can tap your phone number to call',
-    passNote: 'A tappable phone number is on your page — mobile visitors can call you with one tap, which matters for takeout orders, reservation questions, and "are you still open" calls.',
-    passNoteText: 'We found a phone number in your page text, but it is not wrapped in a clickable <code>tel:</code> link. Mobile visitors have to copy the number into their dialer manually instead of tapping to call. Ask your developer to wrap the number in <code>&lt;a href="tel:+1..."&gt;</code>.',
-    fail: "We couldn't find a phone number on your site",
-    failNote: "No click-to-call link and no visible phone number in the page text. Every restaurant gets calls — about 'are you open now', about table availability, about special requests — and if your site doesn't make calling one tap, you are losing those conversations. Add a phone number to your site and wrap it in a <code>tel:</code> link.",
-    unverified: "We couldn't confirm whether you have a phone number",
-    unverifiedNote: "We only see the parts of your page that Lighthouse surfaces to us — sometimes phone numbers get missed. Check that yours is visible on every page and wrapped in a <code>tel:</code> link so mobile visitors can tap to call.",
+    impact: 'En el teléfono, cada toque que requiere copiar y pegar en vez de tocar te cuesta clientes. Las llamadas siguen siendo cómo la mayoría de los pedidos para llevar y las preguntas de reservas llegan a los restaurantes independientes.',
+    pass: 'Los visitantes pueden tocar tu teléfono para llamar',
+    passNote: 'Tienes un teléfono tocable en tu página — los visitantes móviles pueden llamarte con un toque, lo que importa para pedidos para llevar, preguntas de reservas y llamadas de "¿siguen abiertos?".',
+    passNoteText: 'Encontramos un número de teléfono en el texto de tu página, pero no está envuelto en un enlace <code>tel:</code> clicable. Los visitantes móviles tienen que copiar el número a su marcador a mano en vez de tocar para llamar. Pídele a tu desarrollador que envuelva el número en <code>&lt;a href="tel:+1..."&gt;</code>.',
+    fail: 'No pudimos encontrar un número de teléfono en tu sitio',
+    failNote: 'Sin enlace de tocar-para-llamar y sin un número de teléfono visible en el texto de la página. Todo restaurante recibe llamadas — de "¿están abiertos ahora?", de disponibilidad de mesas, de peticiones especiales — y si tu sitio no hace que llamar sea un solo toque, estás perdiendo esas conversaciones. Agrega un número de teléfono a tu sitio y envuélvelo en un enlace <code>tel:</code>.',
+    unverified: 'No pudimos confirmar si tienes un número de teléfono',
+    unverifiedNote: 'Solo vemos las partes de tu página que Lighthouse nos muestra — a veces los números de teléfono se escapan. Revisa que el tuyo esté visible en cada página y envuelto en un enlace <code>tel:</code> para que los visitantes móviles puedan tocar para llamar.',
     byType: {
       'fine-dining': {
-        impact: 'Guests calling a fine-dining restaurant usually have a high-value question: a special-occasion menu, a large-party booking, a dietary accommodation. A missing phone number or a broken tel: link sends those calls — and reservations — to a competitor.',
-        failNote: 'Special-occasion and large-party bookings almost always start with a phone call. Add a phone number and wrap it in a <code>tel:</code> link so the concierge-level conversation can actually happen.'
+        impact: 'Los invitados que llaman a un restaurante de alta cocina normalmente tienen una pregunta de alto valor: un menú para ocasión especial, una reserva de grupo grande, un acomodo dietario. Un teléfono faltante o un enlace tel: roto manda esas llamadas — y esas reservas — a la competencia.',
+        failNote: 'Las reservas de ocasión especial y de grupo grande casi siempre empiezan con una llamada. Agrega un teléfono y envuélvelo en un enlace <code>tel:</code> para que la conversación nivel concierge de verdad pueda pasar.'
       },
       'fast-casual': {
-        impact: 'Fast-casual traffic is mostly online ordering, but a phone number still closes the edge cases: "is there parking?", "do you cater?", "do you have gluten-free?" A tappable number keeps those from becoming a one-star review.',
-        failNote: 'Even if online ordering drives most of your conversion, add a tappable phone number. Catering, dietary questions, and "is my order ready?" calls all need a one-tap path — and they convert at a much higher rate than form-fills.'
+        impact: 'El tráfico fast-casual es mayormente pedidos en línea, pero un teléfono sigue cerrando los casos borde: "¿hay estacionamiento?", "¿hacen catering?", "¿tienen sin gluten?". Un número tocable evita que esos se conviertan en una reseña de una estrella.',
+        failNote: 'Aunque los pedidos en línea manejen la mayor parte de tu conversión, agrega un teléfono tocable. Las llamadas de catering, preguntas dietarias y "¿está listo mi pedido?" todas necesitan un camino de un toque — y convierten a una tasa mucho más alta que los formularios.'
       },
       'cafe': {
-        impact: 'Café and bakery customers call to check hours, to ask about custom cake orders, and to reserve whole pies or catering trays. A missing phone number is a missing revenue channel — custom-order margins especially.',
-        failNote: 'Custom-order inquiries (birthday cakes, catering trays, wholesale) come in by phone. Add a tappable phone number — a <code>tel:</code> link at the top of every page is the bar for a café or bakery.'
+        impact: 'Los clientes de cafetería y panadería llaman para confirmar horarios, para preguntar por pedidos de pasteles personalizados, y para reservar tartas enteras o bandejas de catering. Un teléfono faltante es un canal de ingresos faltante — sobre todo por los márgenes de los pedidos personalizados.',
+        failNote: 'Las consultas de pedidos personalizados (pasteles de cumpleaños, bandejas de catering, mayoreo) entran por teléfono. Agrega un teléfono tocable — un enlace <code>tel:</code> arriba en cada página es la vara para una cafetería o panadería.'
       },
       'bakery': {
-        impact: 'Wedding-cake consultations, dietary-restricted special orders, and catering-tray inquiries almost always start with a phone call — these are the margin-rich orders that rarely convert through a web form. A missing tappable phone on a bakery site is a missing revenue channel, full stop.',
-        failNote: 'Custom-cake and catering inquiries come in by phone. Add a tappable phone number at the top of every page — a <code>tel:</code> link beside your "Order Ahead" button is the baseline for any bakery that takes custom work.'
+        impact: 'Las consultas de pastel de boda, los pedidos especiales con restricciones dietarias y las consultas de bandejas de catering casi siempre empiezan con una llamada — son los pedidos con margen alto que rara vez convierten por un formulario web. Un teléfono tocable faltante en el sitio de una panadería es un canal de ingresos faltante, punto.',
+        failNote: 'Las consultas de pasteles personalizados y de catering entran por teléfono. Agrega un teléfono tocable arriba en cada página — un enlace <code>tel:</code> al lado de tu botón de "Pedir por adelantado" es la base para cualquier panadería que haga trabajo personalizado.'
       },
       'pizzeria': {
-        impact: 'Phone orders still account for roughly 40% of US pizzeria revenue — and every one of those orders that a customer has to manually dial is a customer who might give up and open Slice. Delivery ETA questions ("how long?") and last-minute customizations ("can you add jalapeños?") are one-tap conversations.',
-        failNote: 'Phone ordering is table stakes for pizzerias. Add a tappable phone at the top of every page, and keep it visible next to the "Order Online" button — the two channels complement each other, and ~40% of your revenue still comes in by phone.'
+        impact: 'Los pedidos por teléfono todavía explican cerca del 40 % de los ingresos de las pizzerías en EE. UU. — y cada uno de esos pedidos que el cliente tiene que marcar a mano es un cliente que quizá se rinde y abre Slice. Las preguntas de tiempo de entrega ("¿cuánto falta?") y las personalizaciones de último minuto ("¿le puedes poner jalapeños?") son conversaciones de un toque.',
+        failNote: 'El pedido por teléfono es la base para pizzerías. Agrega un teléfono tocable arriba en cada página, y mantenlo visible al lado del botón de "Pedir en línea" — los dos canales se complementan, y ~40 % de tus ingresos sigue entrando por teléfono.'
       },
       'food-truck': {
-        impact: 'Food-truck operators usually cannot answer phones during service — the person who answers is the person cooking. A tappable phone still matters for catering and private-event inquiries, which are the margin-rich bookings that keep trucks profitable between rushes.',
-        failNote: 'You probably can\'t answer a phone mid-service, and that\'s fine. Still add a tappable phone for catering and private-event leads; those calls are not lunch-rush traffic — they\'re $500-$3000 bookings you want to return after service.'
+        impact: 'Los operadores de food truck normalmente no pueden contestar el teléfono durante el servicio — la persona que contesta es la que está cocinando. Un teléfono tocable igual importa para consultas de catering y eventos privados, que son las reservas con margen alto que mantienen rentables los trucks entre las horas pico.',
+        failNote: 'Probablemente no puedas contestar un teléfono en pleno servicio, y está bien. Igual agrega un teléfono tocable para leads de catering y eventos privados; esas llamadas no son tráfico de la hora pico del almuerzo — son reservas de USD 500 a 3,000 que quieres devolver después del servicio.'
       },
       'ghost-kitchen': {
-        impact: 'Most ghost kitchens run lean and do not staff a phone — customer-service routes to aggregator support instead. That\'s fine as an operational choice, but customers still try. A tappable phone avoids the "they\'re not a real business" signal when a skeptical customer is deciding whether to order.',
-        failNote: 'Even if you don\'t actively answer, add a tappable phone or at least a quick-response SMS number. Missing it reads as "no real operator behind this brand" to a skeptical customer — a much bigger conversion hit than whatever time you save by hiding the number.'
+        impact: 'La mayoría de las cocinas fantasma corren con equipo mínimo y no ponen a nadie al teléfono — el servicio al cliente se rutea al soporte del agregador. Está bien como decisión operativa, pero los clientes lo intentan igual. Un teléfono tocable evita la señal de "no son un negocio real" cuando un cliente escéptico está decidiendo si pedir.',
+        failNote: 'Aunque no contestes activamente, agrega un teléfono tocable o al menos un número de SMS de respuesta rápida. No tenerlo se lee como "no hay operador real detrás de esta marca" para un cliente escéptico — un golpe de conversión mucho más grande que cualquier tiempo que ahorres escondiendo el número.'
       },
       'catering-only': {
-        impact: 'Phone is the single highest-converting channel for catering. Event planners juggle tight timelines, last-minute head-count changes, and dietary exceptions — all of which are phone conversations, not contact-form conversations. A missing tappable phone on a catering site is a missing business, effectively.',
-        failNote: 'Non-negotiable for catering. A tappable phone at the top of every page — ideally beside "Request a Quote" — is the baseline. Planners booking \$2K+ events will almost always call before submitting a form; giving them a one-tap number closes bookings the form alone would not.'
+        impact: 'El teléfono es el canal de mayor conversión para catering, por mucho. Los planificadores de eventos hacen malabares con calendarios apretados, cambios de último minuto en la cantidad de personas y excepciones dietarias — todas son conversaciones de teléfono, no de formulario de contacto. Un teléfono tocable faltante en un sitio de catering es un negocio faltante, en la práctica.',
+        failNote: 'No negociable para catering. Un teléfono tocable arriba en cada página — idealmente al lado de "Solicitar cotización" — es la base. Los planificadores reservando eventos de USD 2,000+ casi siempre llaman antes de enviar un formulario; darles un número de un toque cierra reservas que el formulario solo no cerraría.'
       },
       'bar-pub': {
-        impact: 'Bar calls are time-sensitive: "are you open?", "is happy hour still on?", "do I need a reservation tonight?" A missing tap-to-call number means those visitors go to a bar with an easier phone number.',
-        failNote: 'Non-negotiable for bars. Guests check "is happy hour still running?" on the curb outside. Add a phone number and wrap it in a <code>tel:</code> link so the call is one tap, not a copy-paste flow.'
+        impact: 'Las llamadas a un bar son sensibles al tiempo: "¿están abiertos?", "¿sigue la hora feliz?", "¿necesito reserva esta noche?". Un número de tocar-para-llamar faltante significa que esos visitantes se van a un bar con un teléfono más fácil.',
+        failNote: 'No negociable para bares. Los invitados preguntan "¿sigue la happy hour?" en la acera afuera. Agrega un teléfono y envuélvelo en un enlace <code>tel:</code> para que la llamada sea un toque, no un flujo de copiar-pegar.'
       }
     }
   },
