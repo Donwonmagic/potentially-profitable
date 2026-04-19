@@ -1009,19 +1009,19 @@ var RESTAURANT_PRIORITY_CHECKS = [
     unverifiedNote: 'Buscamos "destacado en", "como se vio en", "reconocimientos", "Michelin", "James Beard", "Eater", "reseña del NYT", "featured in", "as seen in", "accolades", "NYT review", o copy de biografía del chef ("conoce al chef", "nuestro chef", "meet the chef", "our chef"). Si tu prensa vive en una página de sobre nosotros a la que no llegamos, avísanos. Si tienes prensa que no estás mostrando — exponerla en la página de inicio es conversión gratis.'
   },
   {
-    // Phase H12: Sustainability / sourcing claims.
+    // Fase H12: Declaraciones de sostenibilidad / sourcing.
     type: 'sustainability',
     weight: 0.4,
     anchor: '#trust',
     effort: 'self',
     minutes: 30,
-    impact: 'Sustainability claims (locally sourced, farm-to-table, organic, seasonal) signal quality and values in one line of copy. For a meaningful slice of guests this matters MORE than the menu itself — and it raises the perceived average check.',
-    pass: 'Your site makes sourcing / sustainability claims',
-    passNote: 'Your site explicitly surfaces sustainability or sourcing (local farms, seasonal, organic, farm-to-table, etc.) — which raises perceived quality and attracts a loyal segment of diners.',
+    impact: 'Las declaraciones de sostenibilidad (de origen local, farm-to-table, orgánico, de temporada) señalan calidad y valores en una línea de copy. Para una franja significativa de comensales esto importa MÁS que el menú en sí — y levanta el cheque promedio percibido.',
+    pass: 'Tu sitio hace declaraciones de sourcing / sostenibilidad',
+    passNote: 'Tu sitio expone explícitamente sostenibilidad o sourcing (granjas locales, de temporada, orgánico, farm-to-table, etc.) — lo que levanta la calidad percibida y atrae a un segmento leal de comensales.',
     fail: null,
     failNote: null,
-    unverified: 'We didn\'t find sourcing claims — is this right?',
-    unverifiedNote: 'We look for "locally sourced", "farm-to-table", "organic", "sustainable", "seasonal menu", "single-origin", "grass-fed", and related markers. If your sourcing story lives in a photo caption or on a supplier page, let us know. If you\'re sourcing thoughtfully but not saying so, this is a one-afternoon content change.'
+    unverified: 'No encontramos declaraciones de sourcing — ¿es correcto?',
+    unverifiedNote: 'Buscamos "de origen local", "farm-to-table", "de la granja a la mesa", "orgánico", "sostenible", "menú de temporada", "de un solo origen", "alimentado con pasto", "locally sourced", "organic", "sustainable", "seasonal menu", "single-origin", "grass-fed" y marcadores relacionados. Si tu historia de sourcing vive en una leyenda de foto o en una página de proveedores, avísanos. Si estás haciendo sourcing con intención pero no lo estás diciendo, este es un cambio de contenido de una tarde.'
   },
   {
     // Phase H13: Photo coverage. Checks image count + alt-text
