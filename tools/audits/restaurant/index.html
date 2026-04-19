@@ -5781,12 +5781,18 @@
     if (confPill) {
       var pillText = '';
       var pillShow = true;
+      // Sprint F2: use numeric confidenceScore when present so the
+      // pill communicates real uncertainty (e.g., "68% confident")
+      // instead of only three categorical bins. Falls back to the
+      // string tier for legacy callers.
+      var pct = detection && typeof detection.confidenceScore === 'number'
+        ? Math.round(detection.confidenceScore * 100) : null;
       if (userBusinessType) {
         pillText = 'You confirmed';
       } else if (detection && detection.confidence === 'high') {
-        pillText = 'High confidence';
+        pillText = pct !== null ? ('High confidence · ' + pct + '%') : 'High confidence';
       } else if (detection && detection.confidence === 'medium') {
-        pillText = 'Best guess';
+        pillText = pct !== null ? ('Best guess · ' + pct + '%') : 'Best guess';
       } else if (detection && detection.confidence === 'low') {
         pillText = 'Uncertain — please pick';
       } else {
@@ -5801,10 +5807,15 @@
         : 'Detected:';
     }
     if (sub) {
+      // Sprint F2: when numeric confidence is below 50% and the
+      // owner hasn't confirmed, lead with an explicit ask so the
+      // weights don't get silently applied on shaky detection.
+      var low50 = detection && typeof detection.confidenceScore === 'number'
+        && detection.confidenceScore < 0.5;
       if (userBusinessType) {
         sub.textContent = "You told us what kind of restaurant this is — we're using it to tailor the checks below to your segment.";
-      } else if (detection && detection.confidence === 'low') {
-        sub.textContent = "We couldn't tell what kind of restaurant this is from the page. Pick the closest match and the checks below will speak your dialect.";
+      } else if (low50 || (detection && detection.confidence === 'low')) {
+        sub.textContent = "We're not confident on this one. Pick the closest match so the checks below apply the right weights — otherwise we'll use a neutral baseline.";
       } else if (detection && detection.confidence === 'medium') {
         sub.textContent = "Our best guess from schema markup, platform, and page content. If we got it wrong, pick the right one — the checks below will update live.";
       } else {
