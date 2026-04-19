@@ -43,6 +43,7 @@ import {
   requireFields,
   enforceMaxLengths,
   assertSafeHttpUrl,
+  pickLang,
 } from './lib/validation.js';
 import {
   intakeNotification,
@@ -618,7 +619,7 @@ async function handleSeoCheck(request, env, ctx) {
   // Sprint E2: SSRF guard — refuse non-http(s), private IP ranges,
   // localhost aliases, URLs with embedded credentials, and URLs
   // longer than 2048 chars.
-  const gate = assertSafeHttpUrl(target);
+  const gate = assertSafeHttpUrl(target, pickLang(request));
   if (!gate.ok) {
     return jsonResponse({ ok: false, error: gate.error }, gate.status);
   }
@@ -665,8 +666,9 @@ async function handleSeoCheck(request, env, ctx) {
 async function handleSchemaCheck(request, env, ctx) {
   const url = new URL(request.url);
   const target = (url.searchParams.get('url') || '').trim();
+  const lang = pickLang(request);
   // Sprint E3: SSRF guard — same ruleset as E2.
-  const gate = assertSafeHttpUrl(target);
+  const gate = assertSafeHttpUrl(target, lang);
   if (!gate.ok) {
     return jsonResponse({ ok: false, error: gate.error }, gate.status);
   }
@@ -678,12 +680,15 @@ async function handleSchemaCheck(request, env, ctx) {
       signal: AbortSignal.timeout(8000),
     });
     if (!res.ok) {
-      return jsonResponse({ ok: false, error: 'Could not fetch the page (HTTP ' + res.status + ')' }, 502);
+      const m = lang === 'es'
+        ? 'No se pudo cargar la página (HTTP ' + res.status + ')'
+        : 'Could not fetch the page (HTTP ' + res.status + ')';
+      return jsonResponse({ ok: false, error: m }, 502);
     }
 
     const html = await res.text();
     const parsed = extractJsonLd(html);
-    const validation = validateRestaurantSchema(parsed.objects);
+    const validation = validateRestaurantSchema(parsed.objects, lang);
 
     return jsonResponse({
       ok: true,
@@ -746,20 +751,58 @@ function isRestaurantLikeSchema(obj) {
 //   F4: acceptsReservations, hasMenu (planned)
 //   F5: hours mismatch vs Places (planned; consumer-side)
 //   F6: NAP consistency  (planned; consumer-side)
-function validateRestaurantSchema(objects) {
+// Sprint ES3: localized reason strings for the H1-H4 validators.
+// Each validator sets .reasonKey; finalizeSchemaReasons() maps it to
+// EN or ES text based on the request locale. Keys stay stable for
+// client-side rendering + parity checks.
+const SCHEMA_REASONS = {
+  'hours.missing':        { en: 'No openingHours or openingHoursSpecification on the Restaurant schema.',
+                            es: 'No hay openingHours ni openingHoursSpecification en el schema del restaurante.' },
+  'hours.partial':        { en: 'Only {dayCount} of 7 days covered — Google shows the rich-hours panel only when every day is present.',
+                            es: 'Solo {dayCount} de 7 días cubiertos — Google muestra el panel de horarios enriquecidos solo cuando están todos los días.' },
+  'hours.badTimes':       { en: '{timeFieldsBad} time values are not in HH:MM format — Google may silently drop the hours panel.',
+                            es: '{timeFieldsBad} valores de hora no están en formato HH:MM — Google puede omitir silenciosamente el panel de horarios.' },
+  'hours.parseErrors':    { en: '{parseErrors} day name could not be parsed — use Mo/Tu/We/Th/Fr/Sa/Su or full English names.',
+                            es: 'No se pudo interpretar {parseErrors} nombre de día — usa Mo/Tu/We/Th/Fr/Sa/Su o nombres en inglés completos.' },
+  'price.missing':        { en: 'No priceRange on the Restaurant schema. Google uses this to filter by price level.',
+                            es: 'No hay priceRange en el schema del restaurante. Google lo usa para filtrar por nivel de precio.' },
+  'price.badShape':       { en: 'priceRange "{value}" does not match a recognized shape (e.g. "$$", "$15-30", or "$25").',
+                            es: 'priceRange "{value}" no coincide con un formato reconocido (p. ej. "$$", "$15-30" o "$25").' },
+  'address.missing':      { en: 'No address on the Restaurant schema.',
+                            es: 'No hay address en el schema del restaurante.' },
+  'address.string':       { en: 'Address is a bare string; Google prefers a structured PostalAddress with streetAddress, addressLocality, addressRegion, and postalCode.',
+                            es: 'La dirección es solo una cadena; Google prefiere un PostalAddress estructurado con streetAddress, addressLocality, addressRegion y postalCode.' },
+  'address.missingFields':{ en: 'Address is missing: {fields}. Add these fields to qualify for local-search rich results.',
+                            es: 'A la dirección le falta: {fields}. Agrega estos campos para calificar para resultados enriquecidos de búsqueda local.' }
+};
+function formatReason(reasonKey, vars, lang) {
+  if (!reasonKey) return null;
+  const entry = SCHEMA_REASONS[reasonKey];
+  if (!entry) return reasonKey;
+  const tmpl = (lang === 'es' && entry.es) || entry.en;
+  if (!vars) return tmpl;
+  return tmpl.replace(/\{(\w+)\}/g, function(_m, k){
+    return vars[k] != null ? String(vars[k]) : '';
+  });
+}
+
+function validateRestaurantSchema(objects, lang) {
   const restaurantObjects = (objects || []).filter(isRestaurantLikeSchema);
+  const L = lang || 'en';
+  const hours = validateOpeningHours(restaurantObjects);
+  if (hours.reasonKey) hours.reason = formatReason(hours.reasonKey, hours.reasonVars, L);
+  const price = validatePriceRange(restaurantObjects);
+  if (price.reasonKey) price.reason = formatReason(price.reasonKey, price.reasonVars, L);
+  const address = validateAddress(restaurantObjects);
+  if (address.reasonKey) address.reason = formatReason(address.reasonKey, address.reasonVars, L);
   return {
     restaurantObjectCount: restaurantObjects.length,
-    openingHours:        validateOpeningHours(restaurantObjects),
-    priceRange:          validatePriceRange(restaurantObjects),
+    openingHours:        hours,
+    priceRange:          price,
     servesCuisine:       validateServesCuisine(restaurantObjects),
     acceptsReservations: validateAcceptsReservations(restaurantObjects),
     hasMenu:             validateHasMenu(restaurantObjects),
-    // Sprint H3: new address validator — covers streetAddress /
-    // addressLocality / addressRegion / postalCode presence, the
-    // four highest-impact fields for Google's local-search rich
-    // results on a Restaurant schema.
-    address:             validateAddress(restaurantObjects)
+    address:             address
   };
 }
 
@@ -791,11 +834,19 @@ function validateAddress(restaurantObjects) {
   }
   const missingFields = wanted.filter(function(k){ return !found[k]; });
   const valid = present && missingFields.length === 0;
-  let reason = null;
-  if (!present) reason = 'No address on the Restaurant schema.';
-  else if (typeof rawAddress === 'string') reason = 'Address is a bare string; Google prefers a structured PostalAddress with streetAddress, addressLocality, addressRegion, and postalCode.';
-  else if (missingFields.length) reason = 'Address is missing: ' + missingFields.join(', ') + '. Add these fields to qualify for local-search rich results.';
-  return { present: present, valid: valid, reason: reason, missingFields: missingFields };
+  let reasonKey = null;
+  let reasonVars = null;
+  if (!present) reasonKey = 'address.missing';
+  else if (typeof rawAddress === 'string') reasonKey = 'address.string';
+  else if (missingFields.length) {
+    reasonKey = 'address.missingFields';
+    reasonVars = { fields: missingFields.join(', ') };
+  }
+  return {
+    present: present, valid: valid,
+    reasonKey: reasonKey, reasonVars: reasonVars, reason: null,
+    missingFields: missingFields
+  };
 }
 
 // F4: acceptsReservations validation. schema.org permits either a
@@ -1179,15 +1230,16 @@ function validatePriceRange(restaurantObjects) {
   // can be rendered alongside openingHours/address in a consistent
   // shape. "Present but mal-formed" is a real-world failure mode we
   // want to surface distinctly from "missing entirely".
-  let reason = null;
-  if (!present) reason = 'No priceRange on the Restaurant schema. Google uses this to filter by price level.';
-  else if (!wellFormed) reason = 'priceRange "' + (value || '') + '" does not match a recognized shape (e.g. "$$", "$15-30", or "$25").';
+  let reasonKey = null;
+  let reasonVars = null;
+  if (!present) reasonKey = 'price.missing';
+  else if (!wellFormed) { reasonKey = 'price.badShape'; reasonVars = { value: value || '' }; }
   return {
     present: present,
     wellFormed: wellFormed,
     value: value,
     valid: present && wellFormed,
-    reason: reason
+    reasonKey: reasonKey, reasonVars: reasonVars, reason: null
   };
 }
 
@@ -1320,11 +1372,12 @@ function validateOpeningHours(restaurantObjects) {
   // Sprint H4: add a single-sentence `reason` for renderers that want
   // to show the owner WHY the audit flagged this field rather than
   // just "unverified". Null when everything looks fine.
-  let reason = null;
-  if (!found) reason = 'No openingHours or openingHoursSpecification on the Restaurant schema.';
-  else if (dayCount < 7) reason = 'Only ' + dayCount + ' of 7 days covered — Google shows the rich-hours panel only when every day is present.';
-  else if (timeFieldsSeen > 0 && timeFieldsBad > 0) reason = timeFieldsBad + ' time values are not in HH:MM format — Google may silently drop the hours panel.';
-  else if (parseErrors > 0) reason = parseErrors + ' day name could not be parsed — use Mo/Tu/We/Th/Fr/Sa/Su or full English names.';
+  let reasonKey = null;
+  let reasonVars = null;
+  if (!found) reasonKey = 'hours.missing';
+  else if (dayCount < 7) { reasonKey = 'hours.partial'; reasonVars = { dayCount: dayCount }; }
+  else if (timeFieldsSeen > 0 && timeFieldsBad > 0) { reasonKey = 'hours.badTimes'; reasonVars = { timeFieldsBad: timeFieldsBad }; }
+  else if (parseErrors > 0) { reasonKey = 'hours.parseErrors'; reasonVars = { parseErrors: parseErrors }; }
   return {
     present:     found,
     dayCount:    dayCount,
@@ -1334,7 +1387,7 @@ function validateOpeningHours(restaurantObjects) {
     timeFieldsSeen: timeFieldsSeen,
     timeFieldsBad:  timeFieldsBad,
     valid:       found && dayCount === 7 && (timeFieldsSeen === 0 || timesValid) && parseErrors === 0,
-    reason:      reason
+    reasonKey:   reasonKey, reasonVars: reasonVars, reason: null
   };
 }
 
@@ -1490,7 +1543,7 @@ async function handlePageCrawl(request, env, ctx) {
   const target = (url.searchParams.get('url') || '').trim();
   // Sprint E4: SSRF guard on the entry URL so a crafted input can't
   // coax the Worker into fetching an internal host.
-  const gate = assertSafeHttpUrl(target);
+  const gate = assertSafeHttpUrl(target, pickLang(request));
   if (!gate.ok) {
     return jsonResponse({ ok: false, error: gate.error }, gate.status);
   }
@@ -1786,10 +1839,17 @@ async function handlePsi(request, env, ctx) {
   } catch (err) {
     console.error('[psi] upstream fetch failed:', err && err.stack ? err.stack : err);
     const isTimeout = err && (err.name === 'TimeoutError' || err.name === 'AbortError');
+    // Sprint ES3: localized PSI error messages.
+    const L = pickLang(request);
+    const MSG = {
+      timeout: { en: 'PageSpeed Insights took longer than 30s — please retry',
+                 es: 'PageSpeed Insights tardó más de 30s — por favor reintenta' },
+      fail:    { en: 'Failed to reach PageSpeed Insights',
+                 es: 'No se pudo conectar con PageSpeed Insights' }
+    };
+    const pick = (m) => (L === 'es' && m.es) || m.en;
     return jsonResponse(
-      { ok: false, error: isTimeout
-          ? 'PageSpeed Insights took longer than 30s — please retry'
-          : 'Failed to reach PageSpeed Insights' },
+      { ok: false, error: isTimeout ? pick(MSG.timeout) : pick(MSG.fail) },
       isTimeout ? 504 : 502
     );
   }
