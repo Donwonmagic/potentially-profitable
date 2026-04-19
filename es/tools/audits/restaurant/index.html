@@ -2443,64 +2443,66 @@
         </div>
       </div>
 
-      <!-- ============ SPRINT 6d: COMPETITOR COMPARISON ============
-           After the owner sees their own report, the next question is
-           always the same: "How does this compare to the restaurants
-           I'm actually competing with?" This section lets them drop in
-           up to 3 competitor URLs and runs a full audit on each,
-           showing the results side-by-side. Uses the same PSI endpoint
-           as the main audit; each competitor is a separate sequential
-           fetch so we don't hammer Google's rate limits. -->
+      <!-- ============ SPRINT 6d: COMPARACIÓN CON COMPETIDORES ============
+           Después de que el dueño ve su propio reporte, la siguiente
+           pregunta siempre es la misma: "¿Cómo se compara esto con
+           los restaurantes contra los que estoy compitiendo en
+           realidad?" Esta sección los deja pegar hasta 3 URLs de
+           competidores y corre una auditoría completa sobre cada una,
+           mostrando los resultados lado a lado. Usa el mismo endpoint
+           de PSI que la auditoría principal; cada competidor es un
+           fetch secuencial separado para no machacar los rate limits
+           de Google. -->
       <div class="audit-compare" id="auditCompare">
         <header>
-          <h3>How do you stack up?</h3>
-          <p>Add up to three competitor restaurants and we'll audit each one side-by-side. Lets you see exactly where you're winning and where they're beating you.</p>
+          <h3>¿Cómo te comparas?</h3>
+          <p>Agrega hasta tres restaurantes competidores y diagnosticamos cada uno lado a lado. Te deja ver exactamente dónde estás ganando y dónde te están ganando.</p>
         </header>
 
         <form id="auditCompareForm" class="audit-compare-form">
           <div class="compare-inputs" id="compareInputs">
             <div class="compare-input-row">
-              <label for="compareUrl0" class="sr-only">Competitor 1</label>
-              <input type="url" id="compareUrl0" name="competitor0" placeholder="competitor1.com" autocomplete="off" spellcheck="false" />
+              <label for="compareUrl0" class="sr-only">Competidor 1</label>
+              <input type="url" id="compareUrl0" name="competitor0" placeholder="competidor1.com" autocomplete="off" spellcheck="false" />
             </div>
           </div>
           <div class="compare-actions">
-            <button type="button" id="compareAddBtn" class="compare-add-btn">+ Add another competitor</button>
-            <button type="submit" id="compareRunBtn" class="compare-run-btn">Run comparison</button>
+            <button type="button" id="compareAddBtn" class="compare-add-btn">+ Agregar otro competidor</button>
+            <button type="submit" id="compareRunBtn" class="compare-run-btn">Correr comparación</button>
           </div>
         </form>
 
-        <!-- Live status + step list during competitor runs -->
+        <!-- Estado en vivo + lista de pasos durante las corridas de competidores -->
         <div class="compare-status" id="compareStatus" hidden aria-live="polite">
-          <p class="compare-status-heading" id="compareStatusHeading">Auditing competitor 1 of 3…</p>
+          <p class="compare-status-heading" id="compareStatusHeading">Diagnosticando competidor 1 de 3…</p>
           <div class="audit-progress-bar" aria-hidden="true">
             <div class="fill" id="compareProgressFill"></div>
           </div>
-          <p class="compare-status-sub" id="compareStatusSub">Each competitor takes 15–40 seconds. We run them one at a time so Google doesn't rate-limit us.</p>
+          <p class="compare-status-sub" id="compareStatusSub">Cada competidor toma 15-40 segundos. Los corremos de a uno para que Google no nos limite por rate limit.</p>
         </div>
 
-        <!-- Comparison results table (populated after runs) -->
+        <!-- Tabla de resultados de comparación (poblada después de las corridas) -->
         <div class="compare-results" id="compareResults" hidden>
           <div class="compare-table-wrap">
             <table class="compare-table">
               <thead>
                 <tr>
-                  <th scope="col" class="compare-label-col">Metric</th>
-                  <!-- columns injected dynamically -->
+                  <th scope="col" class="compare-label-col">Métrica</th>
+                  <!-- columnas inyectadas dinámicamente -->
                 </tr>
               </thead>
               <tbody id="compareTableBody">
-                <!-- rows injected dynamically -->
+                <!-- filas inyectadas dinámicamente -->
               </tbody>
             </table>
           </div>
           <p class="compare-verdict" id="compareVerdict"></p>
         </div>
 
-        <!-- Error state if one competitor fails -->
+        <!-- Estado de error si un competidor falla -->
         <div class="compare-error" id="compareError" hidden role="alert">
-          <p id="compareErrorText">Something went wrong.</p>
-          <button type="button" id="compareRetryBtn" class="compare-run-btn">Try again</button>
+          <p id="compareErrorText">Algo salió mal.</p>
+          <button type="button" id="compareRetryBtn" class="compare-run-btn">Reintentar</button>
         </div>
       </div>
 
