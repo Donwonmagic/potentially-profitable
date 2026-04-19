@@ -65,7 +65,11 @@
     //                             warn-only mode during rollout; flip
     //                             to hard-fail once ES coverage is
     //                             complete (see the script's tail)
-    "command": "node scripts/sync-includes.mjs && node scripts/stamp-hreflang.mjs && node scripts/check-locale-parity.mjs --check && mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md --exclude=src --exclude=scripts --exclude=_includes . | tar -xf - -C dist"
+    //   stamp-es-restaurant-audit.mjs — ES4: regenerates the Spanish
+    //                             mirror of the restaurant audit from
+    //                             the EN master so i18n changes land
+    //                             in both locales automatically.
+    "command": "node scripts/sync-includes.mjs && node scripts/stamp-hreflang.mjs && node scripts/stamp-es-restaurant-audit.mjs && node scripts/check-locale-parity.mjs --check && mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md --exclude=src --exclude=scripts --exclude=_includes . | tar -xf - -C dist"
   },
   "assets": {
     "directory": "./dist",
