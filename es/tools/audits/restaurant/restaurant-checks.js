@@ -682,76 +682,76 @@ var RESTAURANT_PRIORITY_CHECKS = [
     anchor: '#basics',
     effort: 'rebuild',
     minutes: 240,
-    impact: "PDF menus are the most common mobile-UX sin on restaurant sites. They don't zoom gracefully, they don't link to online ordering, and they make every menu update (new special, changed price) dependent on a developer with InDesign. Replacing a PDF menu with a real HTML menu page typically lifts mobile dwell time by 30-50%.",
-    pass: 'Your menu opens as a real HTML page',
-    passNote: 'Visitors can read your menu on a phone without downloading a PDF or pinching to zoom. This is table stakes for mobile restaurant UX.',
-    fail: 'Your menu is a PDF or an image',
-    failNote: 'PDF menus are the single most common restaurant mobile UX sin. They do not zoom gracefully on phones, they do not link to online ordering, and they make the "update a price" workflow depend on a developer. Replace it with a real HTML menu page.',
-    unverified: "We couldn't find a menu link — is this right?",
-    unverifiedNote: "We looked for a link containing 'menu' in its path and didn't find one. If your menu is reachable but named something else (like 'food', 'dining', 'kitchen'), the scanner missed it — tell us below and we'll improve it.",
+    impact: 'Los menús en PDF son el pecado más común de UX móvil en los sitios de restaurantes. No hacen zoom con gracia, no enlazan a pedidos en línea, y hacen que toda actualización del menú (un especial nuevo, un cambio de precio) dependa de un desarrollador con InDesign. Reemplazar un menú en PDF con una página de menú en HTML de verdad normalmente sube el tiempo de permanencia en móvil entre el 30 y el 50 %.',
+    pass: 'Tu menú abre como una página HTML real',
+    passNote: 'Los visitantes pueden leer tu menú en el teléfono sin descargar un PDF ni hacer pinch-zoom. Esta es la base mínima para la UX móvil de un restaurante.',
+    fail: 'Tu menú es un PDF o una imagen',
+    failNote: 'Los menús en PDF son el pecado de UX móvil más común en restaurantes. No hacen zoom con gracia en el teléfono, no enlazan con los pedidos en línea, y hacen que el flujo de "actualizar un precio" dependa de un desarrollador. Reemplázalo con una página de menú en HTML de verdad.',
+    unverified: 'No pudimos encontrar un enlace al menú — ¿es correcto?',
+    unverifiedNote: 'Buscamos un enlace con "menu" en la ruta y no encontramos uno. Si tu menú es alcanzable pero se llama de otra forma (como "food", "dining", "kitchen", "comida" o "carta"), el escáner se lo pasó — dinos abajo y lo mejoramos.',
     byType: {
       'fine-dining': {
-        impact: 'Fine-dining menus are part of the marketing pitch — prospective guests decide whether to book based on how the tasting menu reads. A PDF (especially one styled for print) flattens on mobile and breaks that pitch completely.',
-        pass: 'Your tasting menu opens as a real HTML page',
-        passNote: 'Your tasting menu and wine list render as HTML — guests can browse on a phone while deciding whether to book, without downloading a file.',
-        fail: 'Your tasting menu is a PDF or an image',
-        failNote: 'PDF tasting menus look designed, but they break the Saturday-afternoon "should I book this place?" decision flow on mobile. Rebuild as an HTML page so the copy is indexable by Google, legible on phones, and updatable without a designer.'
+        impact: 'Los menús de alta cocina son parte de la propuesta de marketing — los posibles invitados deciden si reservar basándose en cómo se lee el menú de degustación. Un PDF (sobre todo uno diseñado para imprimir) se aplasta en móvil y rompe esa propuesta por completo.',
+        pass: 'Tu menú de degustación abre como una página HTML real',
+        passNote: 'Tu menú de degustación y tu carta de vinos se muestran como HTML — los invitados pueden ojearlos en el teléfono mientras deciden si reservar, sin descargar un archivo.',
+        fail: 'Tu menú de degustación es un PDF o una imagen',
+        failNote: 'Los menús de degustación en PDF se ven diseñados, pero rompen el flujo de decisión del "¿debería reservar este lugar?" del sábado por la tarde en móvil. Reconstruye como página HTML para que el copy lo pueda indexar Google, sea legible en el teléfono y actualizable sin un diseñador.'
       },
       'fast-casual': {
-        impact: 'Fast-casual menus ARE the conversion page — prices, item names, and a one-tap "Order" button all need to live on the same scrollable page. A PDF kills the ordering flow and sends the customer to an aggregator.',
-        pass: 'Your menu opens as a real HTML page',
-        passNote: 'Your menu renders as HTML alongside your order button — which is the pattern that actually converts for fast-casual traffic.',
-        fail: 'Your menu is a PDF or an image',
-        failNote: 'PDF menus on a fast-casual site are a conversion killer. Your menu, prices, and "Order Online" button need to live on one scrollable HTML page — that\'s the ChowNow/Toast/Square pattern and it outperforms PDFs by wide margins.'
+        impact: 'Los menús fast-casual SON la página de conversión — los precios, los nombres de los platos y un botón de "Pedir" de un toque todos necesitan vivir en la misma página con scroll. Un PDF mata el flujo de pedidos y manda al cliente a un agregador.',
+        pass: 'Tu menú abre como una página HTML real',
+        passNote: 'Tu menú se muestra como HTML junto al botón de pedir — que es el patrón que de verdad convierte para el tráfico fast-casual.',
+        fail: 'Tu menú es un PDF o una imagen',
+        failNote: 'Los menús en PDF en un sitio fast-casual matan la conversión. Tu menú, los precios y el botón de "Pedir en línea" necesitan vivir en una sola página HTML con scroll — ese es el patrón de ChowNow/Toast/Square y les gana a los PDFs por mucho.'
       },
       'cafe': {
-        impact: 'Café menus change often — daily specials, seasonal drinks, weekly bakes. A PDF menu means every tweak is a developer ticket; an HTML page means the barista can update prices between the morning and afternoon rush.',
-        pass: 'Your menu opens as a real HTML page',
-        passNote: 'Your menu is an HTML page — which means you can update seasonal drinks, daily specials, and prices without emailing a designer.',
-        fail: 'Your menu is a PDF or an image',
-        failNote: 'Café menus change weekly (or daily); PDFs lock you into a once-a-month update cadence. Rebuild as HTML so seasonal items, specials, and price changes can ship the same afternoon they\'re decided.'
+        impact: 'Los menús de cafetería cambian seguido — especiales del día, bebidas de temporada, hornadas de la semana. Un menú en PDF significa que cada ajuste es un ticket para el desarrollador; una página HTML significa que el barista puede actualizar precios entre la hora pico de la mañana y la de la tarde.',
+        pass: 'Tu menú abre como una página HTML real',
+        passNote: 'Tu menú es una página HTML — lo que significa que puedes actualizar bebidas de temporada, especiales del día y precios sin mandarle correo a un diseñador.',
+        fail: 'Tu menú es un PDF o una imagen',
+        failNote: 'Los menús de cafetería cambian cada semana (o cada día); los PDFs te encierran en una cadencia de actualización de una vez al mes. Reconstruye como HTML para que los ítems de temporada, los especiales y los cambios de precio puedan salir la misma tarde que se decidan.'
       },
       'bakery': {
-        impact: 'Bakery offerings rotate aggressively — seasonal tarts, weekend-only loaves, holiday cookie lineups. A PDF menu means the baker needs a designer to update the Christmas-cookie list; an HTML page means it ships the same morning, and can link to an "Order this" button per item.',
-        pass: 'Your bakery menu opens as a real HTML page',
-        passNote: 'Your daily, seasonal, and custom-order menus render as HTML — which means the holiday lineup ships the morning you decide it, and each item can link to its own pre-order.',
-        fail: 'Your menu is a PDF or an image',
-        failNote: 'Bakery menus rotate weekly (or daily); PDFs lock you into a monthly update cadence and cannot link to a per-item "Pre-order this" button. Rebuild as HTML so seasonal and custom items ship the same day they\'re decided.'
+        impact: 'La oferta de una panadería rota agresivamente — tartas de temporada, panes solo de fin de semana, líneas de galletas de fiestas. Un menú en PDF significa que el panadero necesita a un diseñador para actualizar la lista de galletas de Navidad; una página HTML significa que sale esa misma mañana, y cada ítem puede enlazar a un botón de "Encargar este" individual.',
+        pass: 'Tu menú de panadería abre como una página HTML real',
+        passNote: 'Tus menús diarios, de temporada y de pedidos personalizados se muestran como HTML — lo que significa que la línea de fiestas sale la mañana que la decides, y cada ítem puede enlazar a su propio pedido anticipado.',
+        fail: 'Tu menú es un PDF o una imagen',
+        failNote: 'Los menús de panadería rotan cada semana (o cada día); los PDFs te encierran en una cadencia de actualización mensual y no pueden enlazar a un botón de "Encargar este" por ítem. Reconstruye como HTML para que los ítems de temporada y personalizados salgan el mismo día que se deciden.'
       },
       'pizzeria': {
-        impact: 'Pizzeria menus are the conversion page — a PDF menu cannot link each pie to an "Add to Cart" button, which is precisely the flow that makes Slice work and kills most independent pizzerias\' direct-ordering conversion. Every PDF-menu pizzeria is effectively handing its best customers to an aggregator.',
-        pass: 'Your menu opens as a real HTML page',
-        passNote: 'Your menu renders as HTML — each pie can link to its own "Order This" button, and price updates ship without a designer.',
-        fail: 'Your menu is a PDF or an image',
-        failNote: 'PDF menus break the pizzeria ordering flow completely — they can\'t link to per-pie order buttons or pass a pre-selected pie to your online checkout. Rebuild as an HTML page with one-tap "Order This" links per item; that\'s the pattern Slice uses and it\'s why Slice is taking your orders.'
+        impact: 'Los menús de pizzería son la página de conversión — un menú en PDF no puede enlazar cada pizza a un botón de "Agregar al carrito", que es precisamente el flujo que hace funcionar a Slice y que mata la conversión de pedidos directos de la mayoría de las pizzerías independientes. Toda pizzería con menú en PDF está, en la práctica, entregándole a un agregador a sus mejores clientes.',
+        pass: 'Tu menú abre como una página HTML real',
+        passNote: 'Tu menú se muestra como HTML — cada pizza puede enlazar a su propio botón de "Pedir esta", y las actualizaciones de precio salen sin un diseñador.',
+        fail: 'Tu menú es un PDF o una imagen',
+        failNote: 'Los menús en PDF rompen el flujo de pedido de pizzería por completo — no pueden enlazar a botones de pedido por pizza ni pasar una pizza pre-seleccionada a tu checkout en línea. Reconstruye como página HTML con enlaces de un toque "Pedir esta" por ítem; ese es el patrón que usa Slice y es por eso que Slice te está tomando los pedidos.'
       },
       'food-truck': {
-        impact: 'Food-truck menus rotate constantly — today it\'s barbacoa tacos, tomorrow it\'s carnitas, next week the owner is testing a smashburger. PDFs lock you into whatever was true the last time a designer had time. HTML means the menu matches what\'s actually on the truck, updated from your phone while you prep.',
-        pass: 'Your menu opens as a real HTML page',
-        passNote: 'Your menu is an HTML page — you can update today\'s specials from your phone between prep and service.',
-        fail: 'Your menu is a PDF or an image',
-        failNote: 'Food-truck menus change faster than any other restaurant type. A PDF menu is often DAYS stale by the time someone reads it. Rebuild as HTML so the menu on your site matches the menu on the truck — ideally updated the morning of each service from your phone.'
+        impact: 'Los menús de food truck rotan constantemente — hoy son tacos de barbacoa, mañana carnitas, la semana que viene la dueña está probando una smashburger. Los PDFs te encierran en lo que era cierto la última vez que el diseñador tuvo tiempo. HTML significa que el menú coincide con lo que está de verdad en el truck, actualizado desde tu teléfono mientras preparas.',
+        pass: 'Tu menú abre como una página HTML real',
+        passNote: 'Tu menú es una página HTML — puedes actualizar los especiales de hoy desde tu teléfono entre el prep y el servicio.',
+        fail: 'Tu menú es un PDF o una imagen',
+        failNote: 'Los menús de food truck cambian más rápido que los de ningún otro tipo de restaurante. Un menú en PDF suele estar DÍAS atrasado para cuando alguien lo lee. Reconstruye como HTML para que el menú de tu sitio coincida con el menú del truck — idealmente actualizado la mañana de cada servicio desde tu teléfono.'
       },
       'ghost-kitchen': {
-        impact: 'For a ghost kitchen the menu on your site has one job: matching the menu on every aggregator you\'re listed on. PDF menus go stale the instant a single item gets pulled or repriced, and the resulting drift erodes customer trust across every platform at once. An HTML menu can be pulled from the same source of truth your POS/middleware already feeds the aggregators.',
-        pass: 'Your menu opens as a real HTML page',
-        passNote: 'Your menu renders as HTML — easier to keep aligned with what\'s live on DoorDash / Uber Eats / Grubhub, especially when a price or item changes mid-week.',
-        fail: 'Your menu is a PDF or an image',
-        failNote: 'Ghost-kitchen menus drift fast across platforms. PDF menus on your site lock you into a stale snapshot; HTML menus can be kept in sync (manually or via Deliverect / Otter / your POS) with whatever is live on your aggregators.'
+        impact: 'Para una cocina fantasma, el menú en tu sitio tiene un solo trabajo: cuadrar con el menú de cada agregador en el que estás listado. Los menús en PDF se ponen viejos al instante en que un solo ítem se retira o se le cambia el precio, y la consecuente divergencia erosiona la confianza del cliente en todas las plataformas a la vez. Un menú HTML se puede alimentar de la misma fuente de verdad que tu POS/middleware ya le entrega a los agregadores.',
+        pass: 'Tu menú abre como una página HTML real',
+        passNote: 'Tu menú se muestra como HTML — más fácil de mantener alineado con lo que está en vivo en DoorDash / Uber Eats / Grubhub, sobre todo cuando cambia un precio o un ítem a mitad de semana.',
+        fail: 'Tu menú es un PDF o una imagen',
+        failNote: 'Los menús de cocina fantasma divergen rápido entre plataformas. Los menús en PDF en tu sitio te encierran en una foto vieja; los menús HTML se pueden mantener sincronizados (a mano o vía Deliverect / Otter / tu POS) con lo que está en vivo en tus agregadores.'
       },
       'catering-only': {
-        impact: 'Catering menus are the sales collateral — package breakdowns, per-head pricing, dietary accommodations, minimum orders, lead times. Unlike dine-in menus where a PDF is merely inconvenient, a catering PDF actually WORKS for one use case: emailing a rate sheet to a planner. The problem is that your site visitor and your planner-email flow have different needs — the planner wants a print-ready PDF; the site visitor wants a scannable HTML page. Offer both.',
-        pass: 'Your catering menu opens as a real HTML page',
-        passNote: 'Your packages and pricing render as HTML — event planners can scan them on a phone between meetings without downloading a file.',
-        fail: 'Your menu is a PDF or an image',
-        failNote: 'On a catering site a PDF menu is better than nothing, but it\'s still a drop-off point for mobile visitors. Ship an HTML package page for browse/discovery, and keep the PDF rate sheet as a download-to-share option for planners who need to forward it to clients — both audiences get what they need.'
+        impact: 'Los menús de catering son el material de ventas — desglose de paquetes, precio por persona, acomodos dietarios, pedidos mínimos, tiempos mínimos de aviso. A diferencia de los menús de consumo en el lugar donde un PDF es solo un inconveniente, un PDF de catering en realidad SÍ FUNCIONA para un caso de uso: enviarle una hoja de tarifas por correo a un planificador. El problema es que tu visitante del sitio y tu flujo de correo al planificador tienen necesidades distintas — el planificador quiere un PDF listo para imprimir; el visitante del sitio quiere una página HTML que se pueda escanear. Ofrece los dos.',
+        pass: 'Tu menú de catering abre como una página HTML real',
+        passNote: 'Tus paquetes y precios se muestran como HTML — los planificadores de eventos pueden ojearlos en el teléfono entre reuniones sin descargar un archivo.',
+        fail: 'Tu menú es un PDF o una imagen',
+        failNote: 'En un sitio de catering, un menú en PDF es mejor que nada, pero sigue siendo un punto de caída para los visitantes móviles. Saca una página HTML de paquetes para navegación/descubrimiento, y mantén la hoja de tarifas en PDF como opción de descarga-para-compartir para los planificadores que necesiten reenviarla a sus clientes — los dos públicos reciben lo que necesitan.'
       },
       'bar-pub': {
-        impact: 'Cocktail lists and draft lists rotate constantly — a PDF list goes stale within weeks, and nobody wants to read a PDF on a phone at the bar anyway. HTML lists are faster to update, easier to share, and readable without a download.',
-        pass: 'Your drink list opens as a real HTML page',
-        passNote: 'Your cocktail and draft lists render as HTML — which means visitors can scan them on a phone outside, and staff can rotate the list without a design sprint.',
-        fail: 'Your drink list is a PDF or an image',
-        failNote: 'PDF cocktail lists age poorly — by the time the designer ships the update, the beer\'s out of the keg. Rebuild as an HTML list (bar → pub → taproom style) so rotations happen the same day the barback swaps the tap.'
+        impact: 'Las cartas de cocteles y las cartas de cerveza de barril rotan constantemente — una carta en PDF se pone vieja en semanas, y de todas formas nadie quiere leer un PDF en el teléfono estando en el bar. Las cartas en HTML son más rápidas de actualizar, más fáciles de compartir y se leen sin descargar.',
+        pass: 'Tu carta de bebidas abre como una página HTML real',
+        passNote: 'Tus cartas de cocteles y de cerveza de barril se muestran como HTML — lo que significa que los visitantes pueden ojearlas en el teléfono afuera, y el equipo puede rotar la carta sin un sprint de diseño.',
+        fail: 'Tu carta de bebidas es un PDF o una imagen',
+        failNote: 'Las cartas de cocteles en PDF envejecen mal — para cuando el diseñador saca la actualización, la cerveza ya se acabó en el barril. Reconstruye como lista HTML (estilo bar → pub → taproom) para que las rotaciones pasen el mismo día que el barback cambia el grifo.'
       }
     }
   },
