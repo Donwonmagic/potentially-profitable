@@ -1024,42 +1024,44 @@ var RESTAURANT_PRIORITY_CHECKS = [
     unverifiedNote: 'Buscamos "de origen local", "farm-to-table", "de la granja a la mesa", "orgánico", "sostenible", "menú de temporada", "de un solo origen", "alimentado con pasto", "locally sourced", "organic", "sustainable", "seasonal menu", "single-origin", "grass-fed" y marcadores relacionados. Si tu historia de sourcing vive en una leyenda de foto o en una página de proveedores, avísanos. Si estás haciendo sourcing con intención pero no lo estás diciendo, este es un cambio de contenido de una tarde.'
   },
   {
-    // Phase H13: Photo coverage. Checks image count + alt-text
-    // coverage. Restaurants need food photography — sparse
-    // imagery kills conversion across every subtype.
+    // Fase H13: Cobertura fotográfica. Revisa conteo de imágenes +
+    // cobertura de alt-text. Los restaurantes necesitan fotografía
+    // de comida — imaginería escasa mata la conversión en cada
+    // subtipo.
     type: 'photo-coverage',
     weight: 0.5,
     anchor: '#mobile',
     effort: 'self',
     minutes: 120,
-    impact: 'Food photography is how restaurants sell online — a homepage with 3 images converts worse than one with 10, and alt-text makes those images accessible and SEO-indexable. Empty-alt or broken-alt photos are invisible to Google and to screen readers.',
-    pass: 'Your site has strong photo coverage',
-    passNote: 'Your homepage carries enough photography AND enough alt-text to do both jobs food images are supposed to do: sell the food and rank in Google Images.',
-    fail: 'Your site has sparse or unlabeled photos',
-    failNote: 'Homepages need at least 5 good food photos AND at least half of them need real alt-text ("smoked brisket plate with pickled onions" not "image1.jpg"). Both matter: photography drives conversion; alt-text drives accessibility and Google Images traffic.',
-    unverified: 'We couldn\'t read your image set',
-    unverifiedNote: 'The crawl didn\'t return enough HTML for us to count images reliably. Retry the audit, or paste the homepage URL into our manual-audit queue so we can look by hand.'
+    impact: 'La fotografía de comida es cómo los restaurantes venden online — una página de inicio con 3 imágenes convierte peor que una con 10, y el alt-text hace esas imágenes accesibles e indexables por SEO. Las fotos con alt vacío o alt roto son invisibles para Google y para los lectores de pantalla.',
+    pass: 'Tu sitio tiene cobertura fotográfica fuerte',
+    passNote: 'Tu página de inicio lleva suficiente fotografía Y suficiente alt-text para hacer los dos trabajos que las imágenes de comida se supone que hagan: vender la comida y posicionar en Google Imágenes.',
+    fail: 'Tu sitio tiene fotos escasas o sin etiquetar',
+    failNote: 'Las páginas de inicio necesitan al menos 5 buenas fotos de comida Y al menos la mitad de ellas necesita alt-text real ("plato de brisket ahumado con cebollas encurtidas" no "image1.jpg"). Las dos cosas importan: la fotografía mueve la conversión; el alt-text mueve la accesibilidad y el tráfico de Google Imágenes.',
+    unverified: 'No pudimos leer tu conjunto de imágenes',
+    unverifiedNote: 'El crawl no devolvió suficiente HTML para contar las imágenes de forma confiable. Vuelve a correr la auditoría o pega la URL de la página de inicio en nuestra cola de auditoría manual para que miremos a mano.'
   },
   {
-    // Phase H14: Hours accuracy — sources from
-    // /api/schema-check's validation.openingHours (populated by
-    // Phase F2's validateRestaurantSchema). Passes when the
-    // schema declares all 7 days; fails when it declares hours
-    // but not completely; unverified when schema is silent.
-    // Google's Rich Results for restaurants wants every day of
-    // the week listed, even if a day is explicitly closed.
+    // Fase H14: Precisión de horarios — se alimenta de la
+    // validation.openingHours de /api/schema-check (poblado por
+    // validateRestaurantSchema de la Fase F2). Pasa cuando el
+    // schema declara los 7 días; falla cuando declara horarios
+    // pero no completos; sin verificar cuando el schema está en
+    // silencio. Los Rich Results de Google para restaurantes
+    // quieren cada día de la semana listado, incluso si un día
+    // está explícitamente cerrado.
     type: 'hours-accuracy',
     weight: 0.6,
     anchor: '#findability',
     effort: 'dev',
     minutes: 30,
-    impact: 'Google Rich Results for restaurants wants a full 7-day hours listing — partial coverage causes the "hours vary" fallback, which erodes trust with "are they open right now?" searchers. Every day needs an entry in openingHoursSpecification, even if opens/closes are null for a closed day.',
-    pass: 'Your schema declares 7-day hours',
-    passNote: 'Your JSON-LD schema publishes hours for every day of the week — Google can render a full hours table in Rich Results and Map snippets.',
-    fail: 'Your schema hours are incomplete',
-    failNote: 'Your site declares hours in schema but not for every day of the week. Google falls back to a "hours vary" hint, which hurts click-through from "restaurants open now" searches. Add an openingHoursSpecification entry for every day of the week in your JSON-LD block (closed days can have opens/closes set to null).',
-    unverified: 'We couldn\'t confirm schema hours',
-    unverifiedNote: 'Your schema markup didn\'t declare opening hours at all (or we couldn\'t read it). Adding a complete openingHoursSpecification block is one of the highest-impact single edits you can make for local-search click-through.'
+    impact: 'Los Rich Results de Google para restaurantes quieren una lista completa de horarios de 7 días — la cobertura parcial causa el fallback de "los horarios varían", lo cual erosiona la confianza con los buscadores de "¿está abierto ahora?". Cada día necesita una entrada en openingHoursSpecification, incluso si opens/closes son null para un día cerrado.',
+    pass: 'Tu schema declara horarios de 7 días',
+    passNote: 'Tu schema JSON-LD publica horarios para cada día de la semana — Google puede renderizar una tabla completa de horarios en los Rich Results y en los snippets del Mapa.',
+    fail: 'Los horarios de tu schema están incompletos',
+    failNote: 'Tu sitio declara horarios en el schema pero no para cada día de la semana. Google cae al hint de "los horarios varían", lo cual daña el CTR desde las búsquedas de "restaurantes abiertos ahora". Agrega una entrada de openingHoursSpecification para cada día de la semana en tu bloque JSON-LD (los días cerrados pueden tener opens/closes en null).',
+    unverified: 'No pudimos confirmar los horarios del schema',
+    unverifiedNote: 'Tu marcado schema no declaró horarios de apertura en absoluto (o no pudimos leerlo). Agregar un bloque completo de openingHoursSpecification es una de las ediciones individuales de mayor impacto que puedes hacer para el CTR de búsqueda local.'
   }
 ];
 
