@@ -137,6 +137,86 @@ export function prettyUrl(raw) {
 }
 
 /**
+ * Sprint E1: SSRF guard for user-supplied URLs that the Worker will
+ * fetch server-side (seo-check, schema-check, page-crawl). Returns
+ * { ok: true, url: URL } when safe, or { ok: false, status, error }
+ * when the URL should be refused.
+ *
+ * Rules:
+ *   - Must be parseable as a URL
+ *   - Must be http(s) — blocks javascript:, data:, file:, ftp:, gopher:
+ *   - Must not be longer than 2048 characters
+ *   - Must not include userinfo (user:pass@…) — harmless to us, but a
+ *     common SSRF-bypass vector and confusing in logs
+ *   - Hostname must not be an IP literal in a private/loopback/link-
+ *     local range, nor a bare "localhost" alias
+ *
+ * This is a best-effort allowlist. Cloudflare Workers already refuse
+ * to fetch 127.0.0.1 at the runtime level, but the explicit check
+ * gives us a clean 400 + log line instead of a generic fetch failure
+ * and covers the IPv6 and hostname-alias cases the runtime doesn't.
+ */
+const SSRF_DENY_HOSTS = new Set([
+  'localhost', 'localhost.localdomain',
+  'ip6-localhost', 'ip6-loopback',
+]);
+export function assertSafeHttpUrl(raw) {
+  if (typeof raw !== 'string' || !raw.trim()) {
+    return { ok: false, status: 400, error: 'Missing URL' };
+  }
+  if (raw.length > 2048) {
+    return { ok: false, status: 400, error: 'URL exceeds 2048-character limit' };
+  }
+  let u;
+  try { u = new URL(raw.trim()); }
+  catch (_) { return { ok: false, status: 400, error: 'Invalid URL' }; }
+  if (u.protocol !== 'http:' && u.protocol !== 'https:') {
+    return { ok: false, status: 400, error: 'Only http(s) URLs are supported' };
+  }
+  if (u.username || u.password) {
+    return { ok: false, status: 400, error: 'URL must not contain credentials' };
+  }
+  const host = u.hostname.toLowerCase();
+  if (SSRF_DENY_HOSTS.has(host)) {
+    return { ok: false, status: 400, error: 'Loopback hosts are not allowed' };
+  }
+  // IPv4 literal checks (dotted quad).
+  const v4 = host.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+  if (v4) {
+    const o = v4.slice(1).map((x) => Number(x));
+    if (o.some((n) => n < 0 || n > 255)) {
+      return { ok: false, status: 400, error: 'Invalid IPv4 literal' };
+    }
+    const [a, b] = o;
+    // Loopback 127/8, link-local 169.254/16, RFC1918 10/8, 192.168/16,
+    // 172.16/12, CGNAT 100.64/10, multicast 224/4, reserved 0/8.
+    if (a === 0 || a === 10 || a === 127 || a === 127
+        || (a === 100 && b >= 64 && b <= 127)
+        || (a === 169 && b === 254)
+        || (a === 172 && b >= 16 && b <= 31)
+        || (a === 192 && b === 168)
+        || a >= 224) {
+      return { ok: false, status: 400, error: 'Private or reserved IP range is not allowed' };
+    }
+  }
+  // IPv6 literal: block loopback (::1), link-local (fe80::/10),
+  // unique-local (fc00::/7), and IPv4-mapped loopback (::ffff:127…).
+  if (host.startsWith('[') && host.endsWith(']')) {
+    const inner = host.slice(1, -1);
+    if (inner === '::1' || inner === '0:0:0:0:0:0:0:1') {
+      return { ok: false, status: 400, error: 'IPv6 loopback is not allowed' };
+    }
+    if (/^fe[89ab][0-9a-f]:/i.test(inner) || /^f[cd][0-9a-f]{2}:/i.test(inner)) {
+      return { ok: false, status: 400, error: 'Private IPv6 range is not allowed' };
+    }
+    if (/^::ffff:127\./i.test(inner)) {
+      return { ok: false, status: 400, error: 'IPv4-mapped loopback is not allowed' };
+    }
+  }
+  return { ok: true, url: u };
+}
+
+/**
  * Escape a string for safe insertion into an HTML email body.
  * Same character set as the standard HTML escape: & < > " '
  */
