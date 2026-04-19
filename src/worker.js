@@ -614,12 +614,14 @@ async function handleSeoCheck(request, env, ctx) {
 async function handleSchemaCheck(request, env, ctx) {
   const url = new URL(request.url);
   const target = (url.searchParams.get('url') || '').trim();
-  if (!target) {
-    return jsonResponse({ ok: false, error: 'Missing ?url= parameter' }, 400);
+  // Sprint E3: SSRF guard — same ruleset as E2.
+  const gate = assertSafeHttpUrl(target);
+  if (!gate.ok) {
+    return jsonResponse({ ok: false, error: gate.error }, gate.status);
   }
 
   try {
-    const res = await fetch(target, {
+    const res = await fetch(gate.url.toString(), {
       headers: { 'User-Agent': 'MuntinDigital-Schema-Check/1.0' },
       redirect: 'follow',
       signal: AbortSignal.timeout(8000),
