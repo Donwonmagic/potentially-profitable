@@ -678,6 +678,27 @@
     border: 1px solid #EFD1B6;
     font-variant-numeric: tabular-nums;
   }
+  /* Sprint CC6: weekend-to-green ETA badge — small, calm, sits to
+     the right of the Top 3 Fixes heading. Teal accent matches the
+     exec-summary border treatment so the eye groups it with
+     "summary of what to do" not "alert". */
+  .top-fixes-eta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #1F4E5B;
+    background: #E7F1F3;
+    border: 1px solid #C7DFE4;
+    border-radius: 999px;
+  }
+  .top-fixes-eta::before {
+    content: "⏱";
+    font-size: 12px;
+  }
 
   @media (max-width: 640px) {
     .top-fixes { padding: 16px 18px; }
@@ -2284,6 +2305,12 @@
         <div class="top-fixes-head">
           <div class="top-fixes-label">Top 3 fixes</div>
           <div class="top-fixes-sub">Ranked by impact for your segment. Work top-down.</div>
+          <!-- Sprint CC6: "weekend-to-green" badge summarizes the
+               aggregate effort of the top 3 fixes so an owner knows
+               whether this is a Saturday or a month-of-Saturdays
+               before reading the list. Populated by renderTopFixes()
+               after minutes + effort classes aggregate. -->
+          <div class="top-fixes-eta" id="topFixesEta" hidden></div>
         </div>
         <ol class="top-fixes-list" id="topFixesList"></ol>
       </section>
@@ -6168,6 +6195,42 @@
       li.appendChild(body);
       list.appendChild(li);
     });
+
+    // Sprint CC6: sum effort + minutes across the top 3 to produce a
+    // single human-readable ETA badge. A "weekend" here is ~8 hours
+    // of focused work, which matches what a typical small-biz owner
+    // can actually carve out. Rebuild items short-circuit the count
+    // because they're not a weekend job in any realistic framing.
+    var totalMinutes = 0;
+    var hasRebuild = false;
+    var hasSelf = false;
+    actionable.forEach(function(pick){
+      var d = pick.entry.def || {};
+      if (typeof d.minutes === 'number') totalMinutes += d.minutes;
+      if (d.effort === 'rebuild') hasRebuild = true;
+      if (d.effort === 'self') hasSelf = true;
+    });
+    var etaEl = document.getElementById('topFixesEta');
+    if (etaEl) {
+      var msg = '';
+      if (hasRebuild) {
+        msg = 'One of these is a site rebuild — plan a month, not a weekend.';
+      } else if (totalMinutes <= 0) {
+        msg = 'About one focused afternoon across all three.';
+      } else if (totalMinutes < 120) {
+        msg = '~1 afternoon' + (hasSelf ? ' — you can handle it yourself.' : ' of dev time.');
+      } else if (totalMinutes <= 480) {
+        msg = '~1 weekend' + (hasSelf ? ' — doable on a Saturday.' : ' of dev time.');
+      } else if (totalMinutes <= 960) {
+        msg = '~2 weekends of work — break into Saturday and the next.';
+      } else if (totalMinutes <= 1920) {
+        msg = '~3–4 weekends of work — scope it like a mini-project.';
+      } else {
+        msg = 'Several weekends — stage it, don\'t try to do it all at once.';
+      }
+      etaEl.textContent = msg;
+      etaEl.hidden = false;
+    }
 
     el.hidden = false;
   }
