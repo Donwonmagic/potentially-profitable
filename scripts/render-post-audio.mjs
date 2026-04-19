@@ -342,7 +342,16 @@ function renderLanguage(postDir, chunks, lang) {
     version: 1,
     generatedAt: new Date().toISOString(),
     engine: engine,
-    model: path.basename(engine === 'piper' ? model : kokoroModel),
+    // Model name logged into the manifest. F5 English uses the ref
+    // audio; everything else reports its TTS model path. Null-safe so
+    // an F5-only run without --kokoro-model doesn't crash here.
+    model: (() => {
+      const src =
+        engine === 'piper' ? model :
+        engine === 'f5'    ? (lang === 'en' ? f5RefAudio : kokoroModel) :
+                             kokoroModel;
+      return src ? path.basename(src) : 'unknown';
+    })(),
     voice,
     language: lang,
     total: round(cursor),
