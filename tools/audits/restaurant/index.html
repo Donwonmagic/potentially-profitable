@@ -30,6 +30,46 @@
 <meta name="twitter:description" content="Audit your restaurant website in about thirty seconds. Mobile, menus, ordering, reservations — free, no signup." />
 <meta name="twitter:image" content="https://muntin.digital/brand/og/audit-restaurants.svg" />
 
+<!-- Sprint BB4: generator + SoftwareApplication schema so search
+     engines index this as a discoverable tool and attribute it to
+     Muntin Digital. Version bumps when the audit engine changes
+     materially (weight changes, new checks); keep in sync with
+     POWERED_BY in restaurant-checks.js. -->
+<meta name="generator" content="Muntin Digital Audit v1.1" />
+<meta name="author" content="Muntin Digital" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Muntin Digital Restaurant Website Audit",
+  "applicationCategory": "BusinessApplication",
+  "applicationSubCategory": "Website Audit",
+  "operatingSystem": "Web",
+  "url": "https://muntin.digital/tools/audits/restaurant/",
+  "description": "A Muntin Digital creation — a free restaurant website audit combining Google Lighthouse, PageSpeed Insights, CrUX field data, schema.org validation, and restaurant-specific checks. No signup, no paywall, no dark patterns.",
+  "creator": {
+    "@type": "Organization",
+    "name": "Muntin Digital",
+    "url": "https://muntin.digital/"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "Mobile performance (Google Lighthouse)",
+    "Core Web Vitals field data (Google CrUX)",
+    "WCAG accessibility audit",
+    "SEO + structured-data validation (schema.org)",
+    "Restaurant-specific checks (ordering, reservations, menu, hours)",
+    "Competitor comparison",
+    "Printable PDF report",
+    "Shareable audit link"
+  ]
+}
+</script>
+
 <!-- Favicons -->
 <!-- Favicons. Order matters: SVG first for high-DPI scalable, then a
      192x192 PNG (Google Search's preferred favicon size — multiples
