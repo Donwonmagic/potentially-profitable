@@ -1603,10 +1603,21 @@ async function handlePsi(request, env, ctx) {
     // explicit signal the Worker previously held the connection open
     // up to Cloudflare's 120s ceiling, blocking the frontend loader
     // UI and tying up a Worker invocation slot.
-    const res  = await fetch(upstream.toString(), {
+    // Sprint B2: on 429/503 retry once after 2s. PSI throttles on
+    // burst traffic (e.g. the competitor-comparison flow fires 3
+    // audits back-to-back); a single retry recovers the most common
+    // transient case without materially extending worst-case latency.
+    let res = await fetch(upstream.toString(), {
       headers: { 'Accept': 'application/json' },
       signal: AbortSignal.timeout(30000)
     });
+    if (res.status === 429 || res.status === 503) {
+      await new Promise((r) => setTimeout(r, 2000));
+      res = await fetch(upstream.toString(), {
+        headers: { 'Accept': 'application/json' },
+        signal: AbortSignal.timeout(30000)
+      });
+    }
     const body = await res.text();
     // Pass through status + JSON body so the client can see PSI's
     // structured error shape (body.error.message) unchanged.
