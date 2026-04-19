@@ -978,35 +978,35 @@ var RESTAURANT_PRIORITY_CHECKS = [
     unverifiedNote: 'Buscamos "pedido personalizado", "mayorista", "pasteles de boda", "pedidos corporativos", "pedidos por volumen", "pedir con anticipación", "pedidos especiales", "custom order", "wholesale", "wedding cakes", "corporate orders", "bulk orders", "order in advance", "special orders". Si el tuyo está redactado diferente, avísanos. Para las panaderías en particular, una página dedicada de "Pedidos Personalizados" con un formulario estructurado de intake se paga sola rápido.'
   },
   {
-    // Phase H10: Delivery-radius info presence. Subtypes.js
-    // gives pizzeria weight 1.5; other subtypes 1.0.
+    // Fase H10: Presencia de info del radio de delivery.
+    // Subtypes.js le da a pizzeria peso 1.5; otros subtipos 1.0.
     type: 'delivery-radius',
     weight: 1.0,
     anchor: '#conversions',
     effort: 'self',
     minutes: 30,
-    impact: 'Showing your delivery area saves every "do you deliver to me?" phone call. For pizzerias specifically, explicit zone info matters more than the map pin — a customer two neighborhoods over gives up if you look ambiguous.',
-    pass: 'Your site shows delivery area / zone',
-    passNote: 'Your site explicitly says where you deliver — customers self-qualify without tying up your phone line.',
+    impact: 'Mostrar tu área de delivery ahorra cada llamada de "¿entregan en mi zona?". Para pizzerías específicamente, la información explícita de la zona importa más que el pin del mapa — un cliente a dos vecindarios se rinde si te ves ambiguo.',
+    pass: 'Tu sitio muestra área / zona de delivery',
+    passNote: 'Tu sitio dice explícitamente dónde entregan — los clientes se autocalifican sin ocupar tu línea telefónica.',
     fail: null,
     failNote: null,
-    unverified: 'We didn\'t find delivery-area info — is this right?',
-    unverifiedNote: 'We look for "delivery radius", "we deliver to [list]", "delivery zone / area", "zip codes we serve", or "delivery within N miles". If yours is on an order-platform page we didn\'t reach, let us know. For pizzerias especially, a simple neighborhood / zip-code list is worth a line of copy on the homepage.'
+    unverified: 'No encontramos info del área de delivery — ¿es correcto?',
+    unverifiedNote: 'Buscamos "radio de delivery", "entregamos en [lista]", "zona / área de delivery", "códigos postales que servimos", "delivery dentro de N millas", "delivery radius", "we deliver to [list]", "delivery zone / area", "zip codes we serve", "delivery within N miles". Si el tuyo está en una página de plataforma de pedidos a la que no llegamos, avísanos. Para las pizzerías especialmente, una lista simple de vecindarios / códigos postales vale una línea de copy en la página de inicio.'
   },
   {
-    // Phase H11: Social proof (press, awards, chef bio).
+    // Fase H11: Prueba social (prensa, premios, biografía del chef).
     type: 'social-proof',
     weight: 0.5,
     anchor: '#trust',
     effort: 'self',
     minutes: 45,
-    impact: 'Visible press quotes and awards convert skeptical new diners at measurably higher rates. "Featured in Eater" or a Michelin mention on the homepage is the single highest-credibility signal you can show a first-time visitor deciding whether to book.',
-    pass: 'Your site shows press / awards / chef bio',
-    passNote: 'Your site surfaces social proof (press mentions, awards, or a chef bio) — which converts skeptical first-time visitors into bookings.',
+    impact: 'Las citas de prensa y los premios visibles convierten a los comensales nuevos escépticos a tasas medibles más altas. "Destacado en Eater" o una mención de Michelin en la página de inicio es la señal individual de mayor credibilidad que puedes mostrarle a un visitante de primera vez que está decidiendo si reservar.',
+    pass: 'Tu sitio muestra prensa / premios / bio del chef',
+    passNote: 'Tu sitio expone prueba social (menciones de prensa, premios o una biografía del chef) — lo que convierte a los visitantes escépticos de primera vez en reservas.',
     fail: null,
     failNote: null,
-    unverified: 'We didn\'t find press / awards / chef copy — is this right?',
-    unverifiedNote: 'We look for "featured in", "as seen in", "accolades", "Michelin", "James Beard", "Eater", "NYT review", or chef bio copy ("meet the chef", "our chef"). If your press is on an about page we didn\'t reach, let us know. If you have press you\'re not showing — surfacing it on the homepage is free conversion.'
+    unverified: 'No encontramos copy de prensa / premios / chef — ¿es correcto?',
+    unverifiedNote: 'Buscamos "destacado en", "como se vio en", "reconocimientos", "Michelin", "James Beard", "Eater", "reseña del NYT", "featured in", "as seen in", "accolades", "NYT review", o copy de biografía del chef ("conoce al chef", "nuestro chef", "meet the chef", "our chef"). Si tu prensa vive en una página de sobre nosotros a la que no llegamos, avísanos. Si tienes prensa que no estás mostrando — exponerla en la página de inicio es conversión gratis.'
   },
   {
     // Phase H12: Sustainability / sourcing claims.
