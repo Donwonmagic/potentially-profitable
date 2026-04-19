@@ -358,39 +358,57 @@ var RESTAURANT_PRIORITY_CHECKS = [
     byType: {
       'fine-dining': {
         impact: 'On a fine-dining site the "Reserve" button carries almost the entire booking funnel — it\'s the one tap between "I\'m curious" and "I\'m on the books for Saturday." Small or crowded, and you lose the reservation.',
-        failNote: 'Action buttons under 44×44 pixels cause fat-finger misses. The "Reserve" button is the one that matters — give it at least 48×48 px and plenty of breathing room so the Saturday-night impulse actually books.'
+        impact_es: 'En un sitio de fine-dining, el botón "Reservar" carga casi todo el funnel de reservas — es el único tap entre "me interesa" y "ya tengo mesa el sábado". Pequeño o apretado, pierdes la reserva.',
+        failNote: 'Action buttons under 44×44 pixels cause fat-finger misses. The "Reserve" button is the one that matters — give it at least 48×48 px and plenty of breathing room so the Saturday-night impulse actually books.',
+        failNote_es: 'Los botones menores a 44×44 píxeles provocan errores de tap. El botón "Reservar" es el que importa — dale al menos 48×48 px y mucho espacio alrededor para que el impulso del sábado por la noche realmente se convierta en reserva.'
       },
       'fast-casual': {
         impact: 'Fast-casual traffic is almost all mobile and overwhelmingly intent-driven — someone is ordering lunch from their phone while walking to the office. "Order Online" is the most-tapped button on your site. If it\'s small, they give up and open DoorDash.',
-        failNote: 'Buttons under 44×44 pixels cause misses. "Order Online" is the critical button — bump its padding to at least 12px on every side and keep it visually distinct from secondary links.'
+        impact_es: 'El tráfico fast-casual es casi todo móvil y mayoritariamente de intención — alguien ordena el almuerzo desde su teléfono mientras camina a la oficina. "Ordenar en Línea" es el botón más tocado en tu sitio. Si es pequeño, se rinden y abren DoorDash.',
+        failNote: 'Buttons under 44×44 pixels cause misses. "Order Online" is the critical button — bump its padding to at least 12px on every side and keep it visually distinct from secondary links.',
+        failNote_es: 'Los botones menores a 44×44 píxeles provocan fallos. "Ordenar en Línea" es el botón crítico — súbele el padding a al menos 12 px en cada lado y manténlo visualmente distinto de los enlaces secundarios.'
       },
       'cafe': {
         impact: 'Most café traffic is hours-and-location intent: "is it open?" and "where is it?" The hours block and the map pin need to be tappable without zooming — a missed tap sends the customer to a competing shop around the corner.',
-        failNote: 'Hours, phone number, and map links are the three tap-target priorities for a café. They don\'t need to be huge buttons — just give them enough padding (12px) that a thumb reliably hits them.'
+        impact_es: 'La mayoría del tráfico de café es intención de horario y ubicación: "¿están abiertos?" y "¿dónde queda?" El bloque de horarios y el pin del mapa tienen que tocarse sin zoom — un tap fallido manda al cliente al café competidor a la vuelta de la esquina.',
+        failNote: 'Hours, phone number, and map links are the three tap-target priorities for a café. They don\'t need to be huge buttons — just give them enough padding (12px) that a thumb reliably hits them.',
+        failNote_es: 'Horarios, número de teléfono y enlaces de mapa son las tres prioridades de áreas tocables para un café. No necesitan ser botones enormes — solo dales suficiente padding (12 px) para que un pulgar los acierte de forma confiable.'
       },
       'bakery': {
         impact: 'Bakery traffic skews heavily toward custom-cake inquiries and morning pickup pre-orders — "Order Ahead" and "Request a Custom Cake" are the two buttons that carry $500-2000 wedding orders and $30 croissant pre-orders. A missed tap is a real lost order.',
-        failNote: 'Bump the "Order Ahead" and "Custom Cake Inquiry" buttons to 48×48 with 12px+ padding — these are the two that carry almost all of your online revenue. Other links can be smaller.'
+        impact_es: 'El tráfico de panadería se inclina fuerte hacia consultas de pasteles personalizados y pre-pedidos para recoger en la mañana — "Ordenar con Anticipación" y "Pedir Pastel Personalizado" son los dos botones que cargan pedidos de boda de $500-2000 y pre-pedidos de croissants de $30. Un tap fallido es un pedido real perdido.',
+        failNote: 'Bump the "Order Ahead" and "Custom Cake Inquiry" buttons to 48×48 with 12px+ padding — these are the two that carry almost all of your online revenue. Other links can be smaller.',
+        failNote_es: 'Sube los botones "Ordenar con Anticipación" y "Pedir Pastel Personalizado" a 48×48 con 12 px+ de padding — estos son los dos que cargan casi todos tus ingresos en línea. Los demás enlaces pueden ser más pequeños.'
       },
       'pizzeria': {
         impact: 'On a pizzeria site "Order Delivery" and "Start a Pickup Order" are the conversion. Almost all mobile traffic is hungry-right-now intent, and a missed tap routes that order to Slice or DoorDash (where you pay 20-30% commission) within seconds.',
-        failNote: '"Order Delivery" / "Pickup Order" need 48×48 tap targets and padding to separate them from secondary navigation. Every missed tap at 7pm on a Friday goes to an aggregator — you literally pay commission per miss.'
+        impact_es: 'En un sitio de pizzería "Ordenar Delivery" y "Iniciar Pedido Pickup" son la conversión. Casi todo el tráfico móvil es intención de "tengo hambre ahora", y un tap fallido desvía ese pedido a Slice o DoorDash (donde pagas 20-30% de comisión) en segundos.',
+        failNote: '"Order Delivery" / "Pickup Order" need 48×48 tap targets and padding to separate them from secondary navigation. Every missed tap at 7pm on a Friday goes to an aggregator — you literally pay commission per miss.',
+        failNote_es: '"Ordenar Delivery" / "Pedido Pickup" necesitan áreas de 48×48 y padding para separarse de la navegación secundaria. Cada tap fallido a las 7pm un viernes se va a un agregador — literalmente pagas comisión por cada fallo.'
       },
       'food-truck': {
         impact: 'Food-truck traffic is all mobile and all intent-driven — "where are you today?" "what\'s on the menu right now?" The "See Today\'s Schedule" and Instagram-link buttons carry the entire discovery funnel. A missed tap sends hungry customers to whatever else Google Maps surfaces nearby.',
-        failNote: 'The "Today\'s Location" and "See Our Schedule" buttons need 48×48 tap targets and healthy padding. Your Instagram-handle chip belongs in the same priority tier — it\'s where most of your actual schedule updates land.'
+        impact_es: 'El tráfico de food truck es todo móvil y todo de intención — "¿dónde están hoy?" "¿qué hay en el menú ahora?" Los botones "Ver Horario de Hoy" y el enlace a Instagram cargan todo el funnel de descubrimiento. Un tap fallido manda a clientes hambrientos a lo que sea que Google Maps muestre cerca.',
+        failNote: 'The "Today\'s Location" and "See Our Schedule" buttons need 48×48 tap targets and healthy padding. Your Instagram-handle chip belongs in the same priority tier — it\'s where most of your actual schedule updates land.',
+        failNote_es: 'Los botones "Ubicación de Hoy" y "Ver Nuestro Horario" necesitan áreas de 48×48 y padding generoso. Tu chip de handle de Instagram pertenece al mismo nivel de prioridad — es donde aterrizan la mayoría de tus actualizaciones de horario reales.'
       },
       'ghost-kitchen': {
         impact: 'Ghost-kitchen sites are discovery pages — customers came to confirm you\'re real before placing an order on DoorDash or Uber Eats. The "Order on DoorDash / Uber Eats / Grubhub" aggregator buttons are the primary conversion. Misses turn into orders for a competing kitchen on the same platform.',
-        failNote: 'Size the aggregator "Order On …" buttons first — they carry almost all your orders. 48×48 with padding, and stack them clearly so a customer on a hungry phone at 9pm can tap the one they prefer without a miss.'
+        impact_es: 'Los sitios de cocina fantasma son páginas de descubrimiento — los clientes vienen a confirmar que eres real antes de pedir por DoorDash o Uber Eats. Los botones "Ordenar en DoorDash / Uber Eats / Grubhub" son la conversión principal. Los fallos se convierten en pedidos para una cocina competidora en la misma plataforma.',
+        failNote: 'Size the aggregator "Order On …" buttons first — they carry almost all your orders. 48×48 with padding, and stack them clearly so a customer on a hungry phone at 9pm can tap the one they prefer without a miss.',
+        failNote_es: 'Dimensiona primero los botones "Ordenar en …" de los agregadores — cargan casi todos tus pedidos. 48×48 con padding, y apílalos claramente para que un cliente en un teléfono hambriento a las 9pm pueda tocar el que prefiera sin fallo.'
       },
       'catering-only': {
         impact: 'Catering-only sites convert through two buttons: "Request a Quote" (or "Book Your Event") and a tappable phone. Everything else on the site supports those two. A missed tap on the quote form — especially on a phone from a corporate event planner with 15 caterers in tabs — is a direct loss of a $2,000-$15,000 booking.',
-        failNote: '"Request a Quote" and the tappable phone are the two highest-value buttons on the site. Both need 48×48 targets and enough padding to thumb-tap cleanly. Everything else (gallery, testimonials, package links) can be smaller.'
+        impact_es: 'Los sitios de catering convierten con dos botones: "Solicitar Cotización" (o "Reserva tu Evento") y un teléfono tocable. Todo lo demás apoya a esos dos. Un tap fallido en el formulario de cotización — especialmente en el teléfono de un planificador corporativo con 15 caterings en pestañas — es la pérdida directa de una reserva de $2,000-$15,000.',
+        failNote: '"Request a Quote" and the tappable phone are the two highest-value buttons on the site. Both need 48×48 targets and enough padding to thumb-tap cleanly. Everything else (gallery, testimonials, package links) can be smaller.',
+        failNote_es: '"Solicitar Cotización" y el teléfono tocable son los dos botones de mayor valor. Ambos necesitan áreas de 48×48 y suficiente padding para tocarse limpio con el pulgar. Todo lo demás (galería, testimonios, enlaces de paquetes) puede ser más pequeño.'
       },
       'bar-pub': {
         impact: 'Bar traffic is often late-night and last-minute — "is happy hour still on?", "are they open?", "is there a cover?" A tappable phone and a tappable map are the two buttons that earn their space.',
-        failNote: 'Buttons under 44×44 pixels cause misses. On a bar site the phone number and map links are what visitors actually tap — make sure those in particular have 12px+ padding and aren\'t crowded by other links.'
+        impact_es: 'El tráfico de bar suele ser de última hora y de noche — "¿sigue el happy hour?", "¿están abiertos?", "¿hay cover?" Un teléfono tocable y un mapa tocable son los dos botones que ganan su espacio.',
+        failNote: 'Buttons under 44×44 pixels cause misses. On a bar site the phone number and map links are what visitors actually tap — make sure those in particular have 12px+ padding and aren\'t crowded by other links.',
+        failNote_es: 'Los botones menores a 44×44 píxeles provocan fallos. En un sitio de bar, el número de teléfono y los enlaces de mapa son lo que los visitantes realmente tocan — asegúrate de que esos en particular tengan 12 px+ de padding y no estén apretados por otros enlaces.'
       }
     }
   },
