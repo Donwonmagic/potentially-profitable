@@ -42,6 +42,7 @@ import {
   isSpamHoneypot,
   requireFields,
   enforceMaxLengths,
+  assertSafeHttpUrl,
 } from './lib/validation.js';
 import {
   intakeNotification,
@@ -563,14 +564,18 @@ async function handleGbpLookup(request, env, ctx) {
 async function handleSeoCheck(request, env, ctx) {
   const url = new URL(request.url);
   const target = (url.searchParams.get('url') || '').trim();
-  if (!target) {
-    return jsonResponse({ ok: false, error: 'Missing ?url= parameter' }, 400);
+  // Sprint E2: SSRF guard — refuse non-http(s), private IP ranges,
+  // localhost aliases, URLs with embedded credentials, and URLs
+  // longer than 2048 chars.
+  const gate = assertSafeHttpUrl(target);
+  if (!gate.ok) {
+    return jsonResponse({ ok: false, error: gate.error }, gate.status);
   }
 
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 8000);
-    const res = await fetch(target, {
+    const res = await fetch(gate.url.toString(), {
       headers: { 'User-Agent': 'MuntinDigital-SEO-Check/1.0' },
       redirect: 'follow',
       signal: controller.signal,
