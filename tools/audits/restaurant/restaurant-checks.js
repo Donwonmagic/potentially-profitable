@@ -1066,14 +1066,17 @@ var RESTAURANT_PRIORITY_CHECKS = [
 // ---------------------------------------------------------------------------
 // The inline check renderer walks RESTAURANT_PRIORITY_CHECKS and assigns
 // each check one of three statuses: 'pass', 'fail', 'unverified'. The
-// readiness score is a weighted-pass rollup that HONESTLY excludes
-// unverified checks from both the numerator and denominator — that way
-// a site we can't fully scan isn't punished for gaps we can't confirm.
+// readiness score is a weighted-pass rollup.
 //
 //   weight   (per check) — defaults to 1.0; see RESTAURANT_PRIORITY_CHECKS.
-//   'pass'   — adds full credit, counted in denominator.
-//   'fail'   — adds zero credit, counted in denominator.
-//   'unverified' — ignored entirely.
+//   'pass'   — adds full credit, full weight to the denominator.
+//   'fail'   — adds zero credit, full weight to the denominator.
+//   'unverified' — zero credit, HALF weight to the denominator (A1).
+//
+// Half-weighting unverified checks avoids the old bug where a site we
+// couldn't fully scan could score higher than a clean-scanning site
+// with the same number of fails. The adjustment is disclosed in the
+// UI via state.unverifiedWeight so owners can see the penalty.
 //
 // Phase B-H will extend the scoring to honor subtype-weight overrides
 // via subtypeWeights(id, checkId); for now these helpers preserve the
@@ -1085,7 +1088,8 @@ function createRestaurantReadinessState() {
     passCount: 0,
     unverifiedCount: 0,
     totalWeight: 0,
-    weightedCredit: 0
+    weightedCredit: 0,
+    unverifiedWeight: 0
   };
 }
 
@@ -1121,7 +1125,17 @@ function accumulateRestaurantReadiness(state, def, status, subtypeId) {
   } else if (status === 'fail') {
     state.totalWeight += w;    // credit = 0 on fail
   } else {
-    state.unverifiedCount++;   // excluded from the rollup
+    // Sprint A1: unverified checks now carry half-weight against the
+    // denominator (zero credit). Previously they were excluded from
+    // both sides, which inflated scores on sites we couldn't fully
+    // scan. Half-weight is a calibrated compromise between "assume the
+    // worst" (unfair to reachable-but-slow sites) and "ignore entirely"
+    // (rewards opacity). The half-weight is also tracked separately so
+    // the UI can disclose the adjustment to the owner.
+    state.unverifiedCount++;
+    var uw = 0.5 * w;
+    state.totalWeight += uw;
+    state.unverifiedWeight += uw;
   }
 }
 
