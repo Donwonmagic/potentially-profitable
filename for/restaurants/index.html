@@ -473,6 +473,152 @@
   .mc-live{justify-content:center}
   .menu-card-caption{flex-direction:column;gap:4px}
 }
+
+/* ============================================================
+   Menu-card drawers — educational overlays triggered by the
+   "Reserve a table" button and the green "Live" pill on the
+   sample menu. Each drawer explains why the feature it's
+   attached to matters for an independent restaurant. Desktop
+   slides in from the right; mobile rises as a bottom sheet.
+   ============================================================ */
+/* Reset <button> UA defaults without clobbering the original pill
+   styling for .mc-cta (ink bg, cream text, padding, radius are
+   already defined above) or the original .mc-live strip. */
+.mc-cta, .mc-live{
+  border:0;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.mc-live{
+  background:transparent;
+  padding:0;
+  font-family:inherit;
+}
+.mc-cta:focus-visible{outline:2px solid var(--cream);outline-offset:3px}
+.mc-live:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:4px}
+.mc-cta:hover{background:var(--teal)}
+.mc-live:hover .mc-live-dot{transform:scale(1.35);transition:transform 180ms var(--ease-out)}
+
+.mc-drawer-backdrop{
+  position:fixed;inset:0;
+  background:rgba(20,22,26,0.45);
+  opacity:0;pointer-events:none;
+  transition:opacity 240ms var(--ease-out);
+  z-index:80;
+}
+.mc-drawer-backdrop[data-open="true"]{opacity:1;pointer-events:auto}
+
+.mc-drawer{
+  position:fixed;top:0;right:0;bottom:0;
+  width:min(520px,92vw);
+  background:var(--cream);
+  box-shadow:-20px 0 60px -20px rgba(20,22,26,0.35);
+  transform:translateX(100%);
+  transition:transform 300ms cubic-bezier(.16,1,.3,1);
+  z-index:90;
+  display:flex;flex-direction:column;
+}
+.mc-drawer[data-open="true"]{transform:translateX(0)}
+
+.mc-drawer-head{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:22px 28px;
+  border-bottom:1px solid var(--line);
+  flex:0 0 auto;
+  gap:20px;
+}
+.mc-drawer-eyebrow{
+  font-size:11px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--teal);
+  margin:0;
+}
+.mc-drawer-close{
+  background:transparent;border:0;
+  padding:8px;margin:-8px;
+  cursor:pointer;color:var(--stone);
+  border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  transition:color 180ms var(--ease-out), background 180ms var(--ease-out);
+}
+.mc-drawer-close:hover{color:var(--ink);background:var(--cream-2)}
+.mc-drawer-close:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.mc-drawer-close svg{width:22px;height:22px;display:block}
+
+.mc-drawer-body{
+  padding:32px 28px 28px;
+  overflow-y:auto;
+  flex:1 1 auto;
+}
+.mc-drawer-body h2{
+  font-family:var(--font-display);
+  font-size:clamp(24px,3vw,30px);
+  font-weight:500;
+  color:var(--ink);
+  margin:0 0 14px;
+  letter-spacing:-0.01em;
+  line-height:1.2;
+}
+.mc-drawer-lede{
+  font-size:16px;line-height:1.6;
+  color:var(--ink-soft);
+  margin:0 0 26px;
+}
+.mc-drawer-body ul{
+  list-style:none;padding:0;margin:0;
+  display:flex;flex-direction:column;gap:18px;
+}
+.mc-drawer-body ul li{
+  font-size:15px;line-height:1.6;
+  color:var(--ink-soft);
+  padding-left:22px;position:relative;
+}
+.mc-drawer-body ul li::before{
+  content:'';position:absolute;
+  left:0;top:9px;width:8px;height:8px;
+  border-radius:50%;
+  background:var(--teal);
+}
+.mc-drawer-body ul li strong{color:var(--ink);font-weight:600}
+
+.mc-drawer-foot{
+  padding:20px 28px;
+  border-top:1px solid var(--line);
+  background:var(--cream-2);
+  flex:0 0 auto;
+}
+.mc-drawer-foot-text{
+  font-size:13px;color:var(--stone);margin:0 0 12px;
+}
+.mc-drawer-foot-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 22px;
+  background:var(--ink);color:var(--cream);
+  border-radius:999px;
+  font-size:14px;font-weight:600;
+  text-decoration:none;
+  transition:background 180ms var(--ease-out);
+}
+.mc-drawer-foot-btn:hover{background:var(--teal)}
+.mc-drawer-foot-btn svg{width:14px;height:14px}
+
+@media (max-width:640px){
+  .mc-drawer{
+    top:auto;left:0;right:0;bottom:0;
+    width:100%;
+    max-height:88vh;
+    border-radius:22px 22px 0 0;
+    transform:translateY(100%);
+  }
+  .mc-drawer[data-open="true"]{transform:translateY(0)}
+  .mc-drawer-head{padding:18px 22px}
+  .mc-drawer-body{padding:24px 22px}
+  .mc-drawer-foot{padding:18px 22px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .mc-drawer, .mc-drawer-backdrop{transition-duration:0ms}
+}
 </style>
 <link rel="stylesheet" href="/assets/site.css?v=20260418-langhint">
 </head>
@@ -578,15 +724,15 @@
     </div>
 
     <div>
-      <div class="menu-card" aria-hidden="true">
-        <header class="mc-masthead">
+      <div class="menu-card">
+        <header class="mc-masthead" aria-hidden="true">
           <p class="mc-kicker">Silver Spring · Italian · Est. 2019</p>
           <h3 class="mc-name">The Rowhouse<span class="mc-amp"> &amp; </span>Garden</h3>
           <div class="mc-rule" aria-hidden="true"><span class="mc-rule-dot"></span></div>
           <p class="mc-open"><span class="mc-open-dot" aria-hidden="true"></span>Open tonight · kitchen until 10</p>
         </header>
 
-        <div class="mc-section">
+        <div class="mc-section" aria-hidden="true">
           <p class="mc-section-label">Tonight</p>
 
           <ul class="mc-list">
@@ -641,11 +787,11 @@
         </div>
 
         <footer class="mc-foot">
-          <span class="mc-cta">
+          <button type="button" class="mc-cta" data-drawer="reserve" aria-label="Why online reservations matter — open info">
             Reserve a table
             <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
-          </span>
-          <span class="mc-live"><span class="mc-live-dot" aria-hidden="true"></span>Live · updated 2 min ago</span>
+          </button>
+          <button type="button" class="mc-live" data-drawer="live" aria-label="Why a live-updating menu matters — open info"><span class="mc-live-dot" aria-hidden="true"></span>Live · updated 2 min ago</button>
         </footer>
 
         <svg class="mc-watermark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
@@ -664,6 +810,138 @@
     </div>
   </div>
 </section>
+
+<!-- ============ MENU-CARD DRAWERS ============ -->
+<!-- Educational overlays attached to the sample menu card above.
+     Position:fixed, so DOM location is flexible — keeping them
+     adjacent to the section that triggers them makes the code
+     easier to reason about in review. -->
+<div class="mc-drawer-backdrop" data-open="false"></div>
+
+<aside class="mc-drawer" data-drawer-id="reserve" role="dialog" aria-modal="true" aria-labelledby="drawer-reserve-title" data-open="false" inert>
+  <div class="mc-drawer-head">
+    <p class="mc-drawer-eyebrow">Reservations</p>
+    <button type="button" class="mc-drawer-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+  </div>
+  <div class="mc-drawer-body">
+    <h2 id="drawer-reserve-title">A booking button they can tap at 10pm</h2>
+    <p class="mc-drawer-lede">Most diners decide where to eat from their phone, after hours, in bed. If your only option is "call us tomorrow," you lose them to the next place with a booking button.</p>
+    <ul>
+      <li><strong>They decide on their phone.</strong> The majority of restaurant decisions start on mobile and most happen outside your operating hours. A phone-only path loses every diner deciding at 11pm.</li>
+      <li><strong>Reminders cut no-shows.</strong> Automated email and SMS confirmations with calendar links keep covers booked. One no-show a week at $80 a cover is over $4,000 a year back.</li>
+      <li><strong>It frees your host stand.</strong> Every reservation that lands online is a call your FOH doesn't take during rush. Fewer interruptions, faster seating, better service.</li>
+      <li><strong>It drives discovery.</strong> OpenTable, Resy, Tock, and Google Reserve all surface you to diners who'd never hit your site directly. Bookings are pull, not just push.</li>
+      <li><strong>Covers flow into your POS.</strong> Toast, Square, and Lightspeed all integrate. Your team sees the reservation, the cover count, and special requests without re-keying a thing.</li>
+    </ul>
+  </div>
+  <div class="mc-drawer-foot">
+    <p class="mc-drawer-foot-text">Want to know how your current reservation flow is doing? Run the free restaurant audit.</p>
+    <a class="mc-drawer-foot-btn" href="/tools/audits/restaurant/">Audit my site
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+  </div>
+</aside>
+
+<aside class="mc-drawer" data-drawer-id="live" role="dialog" aria-modal="true" aria-labelledby="drawer-live-title" data-open="false" inert>
+  <div class="mc-drawer-head">
+    <p class="mc-drawer-eyebrow">Menu management</p>
+    <button type="button" class="mc-drawer-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+  </div>
+  <div class="mc-drawer-body">
+    <h2 id="drawer-live-title">A menu you can update from your phone</h2>
+    <p class="mc-drawer-lede">A PDF menu isn't a menu — it's a snapshot. The version your diners see at 7pm Tuesday should reflect what you 86'ed during lunch.</p>
+    <ul>
+      <li><strong>Stale menus break trust.</strong> Diners who see last season's prices, or an item you stopped serving in June, assume the rest of the site is just as out-of-date. Many won't book.</li>
+      <li><strong>Google reads live menus, not PDFs.</strong> Every dish name on a live HTML menu is a potential search result. "Heritage pork sugo near me" can land on your site. A PDF menu is a black box to search.</li>
+      <li><strong>Changes take seconds.</strong> A price tick, a sold-out item, tonight's special. You pull out your phone, type, save. No designer, no ticket, no wait.</li>
+      <li><strong>Screen readers work.</strong> Accessible menus serve every diner. Most PDF menus fail accessibility audits; well-built live menus pass by default.</li>
+      <li><strong>Share a dish, not a 12 MB file.</strong> Link the rockfish to Instagram, embed tonight's special in your email blast, drop a single URL in your Google Business Profile.</li>
+    </ul>
+  </div>
+  <div class="mc-drawer-foot">
+    <p class="mc-drawer-foot-text">Curious whether your menu is working this hard? Run the free restaurant audit.</p>
+    <a class="mc-drawer-foot-btn" href="/tools/audits/restaurant/">Audit my site
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+  </div>
+</aside>
+
+<script>
+  /* Menu-card drawer controller. Two educational drawers triggered
+     by [data-drawer="reserve"] and [data-drawer="live"] on the
+     sample menu card. Handles open/close, backdrop click, Esc,
+     focus management, and a minimal focus trap. Vanilla JS, no
+     dependencies. Inline here because these drawers only exist on
+     this page; if we add them to other pages we should promote
+     this to assets/site.js. */
+  (function(){
+    var backdrop = document.querySelector('.mc-drawer-backdrop');
+    var drawers  = Array.prototype.slice.call(document.querySelectorAll('.mc-drawer'));
+    var triggers = Array.prototype.slice.call(document.querySelectorAll('[data-drawer]'));
+    if (!backdrop || !drawers.length) return;
+
+    var active = null;
+    var prevFocus = null;
+
+    function openDrawer(key){
+      var d = null;
+      for (var i = 0; i < drawers.length; i++){
+        if (drawers[i].getAttribute('data-drawer-id') === key){ d = drawers[i]; break; }
+      }
+      if (!d) return;
+      prevFocus = document.activeElement;
+      active = d;
+      d.inert = false;
+      backdrop.setAttribute('data-open', 'true');
+      d.setAttribute('data-open', 'true');
+      document.body.style.overflow = 'hidden';
+      var closeBtn = d.querySelector('.mc-drawer-close');
+      if (closeBtn) setTimeout(function(){ closeBtn.focus(); }, 60);
+    }
+
+    function closeDrawer(){
+      if (!active) return;
+      var toClose = active;
+      toClose.setAttribute('data-open', 'false');
+      backdrop.setAttribute('data-open', 'false');
+      document.body.style.overflow = '';
+      // Wait for the slide-out animation before marking inert so the
+      // transition is visible; inert removes the drawer from focus
+      // order and the accessibility tree.
+      setTimeout(function(){ toClose.inert = true; }, 320);
+      if (prevFocus && prevFocus.focus) prevFocus.focus();
+      active = null;
+    }
+
+    triggers.forEach(function(t){
+      t.addEventListener('click', function(){ openDrawer(t.getAttribute('data-drawer')); });
+    });
+
+    drawers.forEach(function(d){
+      var closer = d.querySelector('.mc-drawer-close');
+      if (closer) closer.addEventListener('click', closeDrawer);
+    });
+
+    backdrop.addEventListener('click', closeDrawer);
+
+    document.addEventListener('keydown', function(e){
+      if (!active) return;
+      if (e.key === 'Escape'){ closeDrawer(); return; }
+      if (e.key !== 'Tab') return;
+      // Focus trap within the active drawer.
+      var focusables = active.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      if (!focusables.length) return;
+      var first = focusables[0];
+      var last  = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    });
+  }());
+</script>
 
 <!-- ============ PROOF STRIP ============ -->
 <section class="proof">
