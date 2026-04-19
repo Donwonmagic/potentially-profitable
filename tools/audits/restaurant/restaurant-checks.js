@@ -1543,3 +1543,16 @@ function checkOgShareMeta(html) {
               (out.twitterCard?1:0) + (out.twitterImage?1:0);
   return out;
 }
+
+// Sprint A5: Node-only export shim so a scoring regression test can
+// import the readiness helpers without a browser. The `typeof module`
+// guard keeps this a no-op for the classic-script load path in the
+// browser. Only the scorer internals are exported; everything else
+// stays a plain top-level global as before.
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    createRestaurantReadinessState: createRestaurantReadinessState,
+    accumulateRestaurantReadiness: accumulateRestaurantReadiness,
+    finalizeRestaurantReadinessScore: finalizeRestaurantReadinessScore
+  };
+}
