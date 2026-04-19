@@ -2077,28 +2077,28 @@
       </p>
     </div>
 
-    <!-- Loading state (hidden until fetch starts) -->
+    <!-- Estado de carga (oculto hasta que arranca el fetch) -->
     <div class="audit-loading" id="auditLoading" hidden aria-live="polite">
-      <h2 data-tr="load.h2">Running your audit…</h2>
-      <p class="audit-loading-sub" id="auditLoadingSub" data-tr="load.sub">This usually takes 15–40 seconds.</p>
+      <h2>Corriendo tu diagnóstico…</h2>
+      <p class="audit-loading-sub" id="auditLoadingSub">Esto suele tomar 15-40 segundos.</p>
       <div class="audit-progress-bar" aria-hidden="true">
         <div class="fill" id="auditProgressFill"></div>
       </div>
       <ol class="audit-steps" id="auditSteps">
-        <li class="audit-step" data-step="1"><span class="step-indicator">1</span><span data-tr="load.step1">Sending your URL to Google Lighthouse</span></li>
-        <li class="audit-step" data-step="2"><span class="step-indicator">2</span><span data-tr="load.step2">Running Lighthouse on a simulated phone</span></li>
-        <li class="audit-step" data-step="3"><span class="step-indicator">3</span><span data-tr="load.step3">Detecting restaurant platforms and scoring readiness</span></li>
-        <li class="audit-step" data-step="4"><span class="step-indicator">4</span><span data-tr="load.step4">Writing your report</span></li>
+        <li class="audit-step" data-step="1"><span class="step-indicator">1</span><span>Enviando tu URL a Google Lighthouse</span></li>
+        <li class="audit-step" data-step="2"><span class="step-indicator">2</span><span>Corriendo Lighthouse en un teléfono simulado</span></li>
+        <li class="audit-step" data-step="3"><span class="step-indicator">3</span><span>Detectando plataformas de restaurante y calificando readiness</span></li>
+        <li class="audit-step" data-step="4"><span class="step-indicator">4</span><span>Escribiendo tu reporte</span></li>
       </ol>
     </div>
 
-    <!-- Error state (hidden until an error occurs) -->
+    <!-- Estado de error (oculto hasta que ocurra un error) -->
     <div class="audit-error" id="auditError" hidden role="alert">
-      <h2 id="auditErrorHeading" data-tr="err.h2">We couldn't audit that URL.</h2>
-      <p id="auditErrorBody" data-tr="err.body">Check the address and try again. The site needs to be publicly reachable — if it's behind a login or a local network, the audit can't see it.</p>
+      <h2 id="auditErrorHeading">No pudimos diagnosticar esa URL.</h2>
+      <p id="auditErrorBody">Revisa la dirección y vuelve a intentar. El sitio necesita ser accesible públicamente — si está detrás de un login o en una red local, el diagnóstico no lo puede ver.</p>
       <div class="audit-error-actions">
-        <button type="button" id="auditRetryBtn" class="audit-error-btn audit-error-btn-primary" data-tr="err.retry">Try again</button>
-        <button type="button" id="auditNewUrlBtn" class="audit-error-btn" data-tr="err.newUrl">Use a different URL</button>
+        <button type="button" id="auditRetryBtn" class="audit-error-btn audit-error-btn-primary">Reintentar</button>
+        <button type="button" id="auditNewUrlBtn" class="audit-error-btn">Usar otra URL</button>
       </div>
     </div>
 
