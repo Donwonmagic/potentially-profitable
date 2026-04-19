@@ -1553,17 +1553,45 @@ function checkOgShareMeta(html) {
 // source. Each entry carries { name, vendor, license, role, url }.
 // ---------------------------------------------------------------------------
 var POWERED_BY = [
-  { name: 'Lighthouse',           vendor: 'Google',             license: 'Apache-2.0', role: 'Performance / Accessibility / Best Practices / SEO scoring', url: 'https://developer.chrome.com/docs/lighthouse/overview' },
-  { name: 'PageSpeed Insights',   vendor: 'Google',             license: 'Proprietary API', role: 'Hosted Lighthouse runs + CrUX field data', url: 'https://pagespeed.web.dev/' },
-  { name: 'Chrome UX Report',     vendor: 'Google',             license: 'Open dataset', role: 'Real-user Core Web Vitals (LCP / CLS / INP)', url: 'https://developer.chrome.com/docs/crux' },
-  { name: 'schema.org',           vendor: 'schema.org',         license: 'CC-BY-SA',   role: 'Restaurant JSON-LD vocabulary', url: 'https://schema.org/Restaurant' },
-  { name: 'Plausible Analytics',  vendor: 'Plausible',          license: 'AGPL-3.0',   role: 'Privacy-respecting audit event counters', url: 'https://plausible.io/' },
-  { name: 'jsPDF',                vendor: 'parallax',           license: 'MIT',        role: 'Client-side PDF export', url: 'https://github.com/parallax/jsPDF' },
-  { name: 'Fraunces',             vendor: 'Undercase Type',     license: 'OFL-1.1',    role: 'Display / heading typeface', url: 'https://fonts.google.com/specimen/Fraunces' },
-  { name: 'Inter',                vendor: 'Rasmus Andersson',   license: 'OFL-1.1',    role: 'Body / UI typeface', url: 'https://rsms.me/inter/' },
-  { name: 'Cloudflare Workers',   vendor: 'Cloudflare',         license: 'Proprietary runtime', role: 'Edge API: PSI proxy, page crawl, schema check', url: 'https://workers.cloudflare.com/' },
-  { name: 'Resend',               vendor: 'Resend',             license: 'Proprietary API', role: 'PDF delivery email', url: 'https://resend.com/' }
+  { name: 'Lighthouse',           vendor: 'Google',             license: 'Apache-2.0', role: 'Performance / Accessibility / Best Practices / SEO scoring',
+    role_es: 'Puntuación de rendimiento / accesibilidad / buenas prácticas / SEO',
+    url: 'https://developer.chrome.com/docs/lighthouse/overview' },
+  { name: 'PageSpeed Insights',   vendor: 'Google',             license: 'Proprietary API', role: 'Hosted Lighthouse runs + CrUX field data',
+    role_es: 'Ejecuciones alojadas de Lighthouse + datos de campo CrUX',
+    url: 'https://pagespeed.web.dev/' },
+  { name: 'Chrome UX Report',     vendor: 'Google',             license: 'Open dataset', role: 'Real-user Core Web Vitals (LCP / CLS / INP)',
+    role_es: 'Métricas Web Esenciales reales (LCP / CLS / INP)',
+    url: 'https://developer.chrome.com/docs/crux' },
+  { name: 'schema.org',           vendor: 'schema.org',         license: 'CC-BY-SA',   role: 'Restaurant JSON-LD vocabulary',
+    role_es: 'Vocabulario JSON-LD para restaurantes',
+    url: 'https://schema.org/Restaurant' },
+  { name: 'Plausible Analytics',  vendor: 'Plausible',          license: 'AGPL-3.0',   role: 'Privacy-respecting audit event counters',
+    role_es: 'Contadores de eventos de auditoría respetando la privacidad',
+    url: 'https://plausible.io/' },
+  { name: 'jsPDF',                vendor: 'parallax',           license: 'MIT',        role: 'Client-side PDF export',
+    role_es: 'Exportación de PDF en el navegador',
+    url: 'https://github.com/parallax/jsPDF' },
+  { name: 'Fraunces',             vendor: 'Undercase Type',     license: 'OFL-1.1',    role: 'Display / heading typeface',
+    role_es: 'Tipografía de títulos y display',
+    url: 'https://fonts.google.com/specimen/Fraunces' },
+  { name: 'Inter',                vendor: 'Rasmus Andersson',   license: 'OFL-1.1',    role: 'Body / UI typeface',
+    role_es: 'Tipografía de cuerpo y UI',
+    url: 'https://rsms.me/inter/' },
+  { name: 'Cloudflare Workers',   vendor: 'Cloudflare',         license: 'Proprietary runtime', role: 'Edge API: PSI proxy, page crawl, schema check',
+    role_es: 'API en el edge: proxy PSI, rastreo de página, verificación de schema',
+    url: 'https://workers.cloudflare.com/' },
+  { name: 'Resend',               vendor: 'Resend',             license: 'Proprietary API', role: 'PDF delivery email',
+    role_es: 'Envío del PDF por correo',
+    url: 'https://resend.com/' }
 ];
+// Helper for the "How this audit was built" footer — returns the
+// role string in the current locale with EN fallback.
+function poweredByRole(entry, lang) {
+  if (!entry) return '';
+  var L = lang || (typeof window !== 'undefined' && window.__muntinLang) || 'en';
+  if (L === 'es' && entry.role_es) return entry.role_es;
+  return entry.role || '';
+}
 // Canonical one-line description used in OG/Twitter cards, PDF cover,
 // share-card footer, and the tool's meta description. Exactly one
 // source of truth — if this string changes, every surface updates.
@@ -1762,6 +1790,7 @@ if (typeof module !== 'undefined' && module.exports) {
     MUNTIN_AUDIT_DESCRIPTION: MUNTIN_AUDIT_DESCRIPTION,
     MUNTIN_AUDIT_DESCRIPTION_ES: MUNTIN_AUDIT_DESCRIPTION_ES,
     UI_I18N: UI_I18N,
-    t: t
+    t: t,
+    poweredByRole: poweredByRole
   };
 }
