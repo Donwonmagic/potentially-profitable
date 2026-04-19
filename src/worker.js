@@ -103,14 +103,50 @@ export default {
           );
         }
       }
+      // Sprint U2: every API request gets an X-Request-Id. If the
+      // caller supplied one we honor it (makes client-side retry
+      // correlation trivial); otherwise we mint a new one.
+      const reqId = request.headers.get('x-request-id') || crypto.randomUUID();
+      const started = Date.now();
       try {
-        return await handler(request, env, ctx);
+        const response = await handler(request, env, ctx);
+        // Sprint U1: structured access log, one JSON line per request,
+        // so Cloudflare's observability panel can slice by event /
+        // status / path / duration without regex parsing.
+        console.log(JSON.stringify({
+          event: 'api.response',
+          path: pathname,
+          method: request.method,
+          status: response.status,
+          ms: Date.now() - started,
+          reqId: reqId
+        }));
+        // Clone headers on the way out so we can stamp the request id
+        // without mutating the handler's response (Response headers
+        // are immutable after construction).
+        const out = new Response(response.body, {
+          status: response.status,
+          statusText: response.statusText,
+          headers: new Headers(response.headers)
+        });
+        out.headers.set('X-Request-Id', reqId);
+        return out;
       } catch (err) {
+        console.log(JSON.stringify({
+          event: 'api.error',
+          path: pathname,
+          method: request.method,
+          ms: Date.now() - started,
+          reqId: reqId,
+          error: err && err.message ? err.message : String(err)
+        }));
         console.error('[api]', pathname, err && err.stack ? err.stack : err);
-        return jsonResponse(
-          { ok: false, error: 'Internal error — please try again in a moment' },
+        const fallback = jsonResponse(
+          { ok: false, error: 'Internal error — please try again in a moment', reqId: reqId },
           500
         );
+        fallback.headers.set('X-Request-Id', reqId);
+        return fallback;
       }
     }
 
