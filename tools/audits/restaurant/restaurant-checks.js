@@ -686,31 +686,40 @@ var RESTAURANT_PRIORITY_CHECKS = [
     unverifiedNote_es: 'Buscamos Google Maps, Apple Maps, Mapbox, Bing Maps, OpenStreetMap, Waze y Leaflet. Si tu sitio usa uno de esos, perfecto — simplemente no lo encontramos en esta ejecución. Si tu dirección está solo en texto plano, considera envolverla en un enlace de Google Maps para que los visitantes obtengan indicaciones con un tap.',
     byType: {
       'fine-dining': {
-        impact: 'First-time guests heading to a fine-dining reservation want turn-by-turn directions, not a copy-paste address. A tappable map is part of the concierge experience — and it\'s expected.'
+        impact: 'First-time guests heading to a fine-dining reservation want turn-by-turn directions, not a copy-paste address. A tappable map is part of the concierge experience — and it\'s expected.',
+        impact_es: 'Los comensales que van por primera vez a una reserva de fine-dining quieren indicaciones paso a paso, no una dirección para copiar y pegar. Un mapa tocable es parte de la experiencia concierge — y se espera.'
       },
       'fast-casual': {
-        impact: 'Fast-casual traffic is often "food near me" intent — visitors are already on their phone deciding where to walk or drive. A one-tap map shaves 15 seconds off the decision and keeps them from comparison-shopping another block over.'
+        impact: 'Fast-casual traffic is often "food near me" intent — visitors are already on their phone deciding where to walk or drive. A one-tap map shaves 15 seconds off the decision and keeps them from comparison-shopping another block over.',
+        impact_es: 'El tráfico fast-casual suele ser intención de "comida cerca de mí" — los visitantes ya están en su teléfono decidiendo a dónde caminar o manejar. Un mapa de un solo tap recorta 15 segundos de la decisión y evita que comparen con otro lugar una cuadra más allá.'
       },
       'cafe': {
-        impact: 'Café and bakery traffic is overwhelmingly local and walk-in driven. A one-tap directions link (especially for the pickup address on a catering or custom order) removes the "wait, where is this place again?" moment.'
+        impact: 'Café and bakery traffic is overwhelmingly local and walk-in driven. A one-tap directions link (especially for the pickup address on a catering or custom order) removes the "wait, where is this place again?" moment.',
+        impact_es: 'El tráfico de café y panadería es mayormente local y basado en walk-ins. Un enlace de indicaciones de un tap (especialmente para la dirección de recogida en un pedido de catering o personalizado) elimina el momento "espera, ¿dónde quedaba este lugar?".'
       },
       'bakery': {
-        impact: 'Morning bakery traffic is time-critical — a commuter grabbing croissants at 7:30am does not have time to fumble with a typed address. A one-tap directions link keeps the pickup rush on schedule, and matters double for wholesale or catering customers driving to a pickup address they have never visited.'
+        impact: 'Morning bakery traffic is time-critical — a commuter grabbing croissants at 7:30am does not have time to fumble with a typed address. A one-tap directions link keeps the pickup rush on schedule, and matters double for wholesale or catering customers driving to a pickup address they have never visited.',
+        impact_es: 'El tráfico matutino de panadería es de tiempo crítico — un trabajador que pasa por croissants a las 7:30am no tiene tiempo para lidiar con una dirección escrita. Un enlace de indicaciones de un tap mantiene la hora pico de recogida en tiempo, e importa el doble para clientes de mayoreo o catering manejando a una dirección de recogida que nunca han visitado.'
       },
       'pizzeria': {
-        impact: 'For pizzerias the primary use of a map is communicating DELIVERY ZONE, not just the storefront address. A one-tap Google Maps pin is the bare minimum; a proper delivery-radius overlay (or at least a list of served neighborhoods) saves you from the "do you deliver to me?" phone calls that your phone staff are answering instead of taking orders.'
+        impact: 'For pizzerias the primary use of a map is communicating DELIVERY ZONE, not just the storefront address. A one-tap Google Maps pin is the bare minimum; a proper delivery-radius overlay (or at least a list of served neighborhoods) saves you from the "do you deliver to me?" phone calls that your phone staff are answering instead of taking orders.',
+        impact_es: 'Para pizzerías, el uso principal de un mapa es comunicar la ZONA DE ENTREGA, no solo la dirección del local. Un pin de Google Maps de un tap es el mínimo; un overlay de radio de entrega apropiado (o al menos una lista de colonias servidas) te ahorra las llamadas de "¿entregan aquí?" que tu personal de teléfono responde en vez de tomar pedidos.'
       },
       'food-truck': {
-        impact: 'Food trucks MOVE, which inverts the usual map-check logic: a static storefront pin is the wrong answer. What customers need is a one-tap map OF TODAY\'S LOCATION (usually a dynamic field on a schedule page), plus a link to your Instagram or Twitter where you post real-time changes. A stale "home address" map is worse than no map at all.'
+        impact: 'Food trucks MOVE, which inverts the usual map-check logic: a static storefront pin is the wrong answer. What customers need is a one-tap map OF TODAY\'S LOCATION (usually a dynamic field on a schedule page), plus a link to your Instagram or Twitter where you post real-time changes. A stale "home address" map is worse than no map at all.',
+        impact_es: 'Los food trucks se MUEVEN, lo que invierte la lógica usual: un pin estático del local es la respuesta equivocada. Lo que los clientes necesitan es un mapa de un tap de la UBICACIÓN DE HOY (normalmente un campo dinámico en una página de horario), más un enlace a tu Instagram o Twitter donde publicas cambios en tiempo real. Un mapa desactualizado de "dirección base" es peor que ningún mapa.'
       },
       'ghost-kitchen': {
-        impact: 'Customers never visit a ghost kitchen — what they care about is the DELIVERY ZONE (ZIP codes or neighborhoods you serve). A standard Google Maps pin helps with nothing; what you need is a clear "we deliver to …" list or a delivery-radius visualization. Aggregator pages already handle address validation, but seeing the zone up front saves the bounce for out-of-range visitors.'
+        impact: 'Customers never visit a ghost kitchen — what they care about is the DELIVERY ZONE (ZIP codes or neighborhoods you serve). A standard Google Maps pin helps with nothing; what you need is a clear "we deliver to …" list or a delivery-radius visualization. Aggregator pages already handle address validation, but seeing the zone up front saves the bounce for out-of-range visitors.',
+        impact_es: 'Los clientes nunca visitan una cocina fantasma — lo que les importa es la ZONA DE ENTREGA (códigos postales o colonias que atiendes). Un pin estándar de Google Maps no ayuda en nada; lo que necesitas es una lista clara de "entregamos en …" o una visualización del radio de entrega. Las páginas de los agregadores ya validan direcciones, pero ver la zona al frente te ahorra el rebote de visitantes fuera de zona.'
       },
       'catering-only': {
-        impact: 'Maps on a catering site are about SERVICE AREA, not storefront. A clear service-radius map (or a written list of cities/counties served) lets an event planner self-qualify before investing in a quote request. It also handles the "do you travel to us?" question that otherwise eats the first 30 seconds of every intake call.'
+        impact: 'Maps on a catering site are about SERVICE AREA, not storefront. A clear service-radius map (or a written list of cities/counties served) lets an event planner self-qualify before investing in a quote request. It also handles the "do you travel to us?" question that otherwise eats the first 30 seconds of every intake call.',
+        impact_es: 'Los mapas en un sitio de catering son sobre ÁREA DE SERVICIO, no local. Un mapa claro de radio de servicio (o una lista escrita de ciudades/condados servidos) permite al planificador auto-calificarse antes de invertir en una solicitud de cotización. También resuelve la pregunta "¿viajan hasta nosotros?" que de otra forma consume los primeros 30 segundos de cada llamada de intake.'
       },
       'bar-pub': {
-        impact: 'Bar hopping happens on the phone. A tappable map — especially for a bar tucked down a side street or into a basement — can be the difference between a visitor finding you or ending up at whichever place Google Maps surfaces first.'
+        impact: 'Bar hopping happens on the phone. A tappable map — especially for a bar tucked down a side street or into a basement — can be the difference between a visitor finding you or ending up at whichever place Google Maps surfaces first.',
+        impact_es: 'El bar hopping pasa en el teléfono. Un mapa tocable — sobre todo para un bar escondido en una calle lateral o en un sótano — puede ser la diferencia entre un visitante que te encuentra o que termina en cualquier lugar que Google Maps muestre primero.'
       }
     }
   },
