@@ -754,7 +754,9 @@
       justify-content: center;
     }
     body.print-worksheet .top-fixes-list li::after {
-      content: "Notes / assigned to:";
+      /* CSS content: string is swapped by a JS data-attr before print
+         so this label localizes without duplicating the stylesheet. */
+      content: attr(data-notes-label);
       display: block;
       border: 1px dashed #000;
       min-height: 80px;
@@ -4645,18 +4647,16 @@
   }
 
   function verdictFor(score, meta) {
+    // Sprint ES2: verdict copy routed through t(); picks EN or ES
+    // based on window.__muntinLang detected earlier in boot.
     var base;
-    if (score >= 90) base = "Your site is in great shape. Most restaurants would be thrilled to hit this score. Small polish items may remain — check the breakdown below.";
-    else if (score >= 70) base = "Solid foundation with room to tighten up. Focus on the red and amber items below — most are mechanical fixes that push your scores into the green (90+) zone.";
-    else if (score >= 50) base = "The site works, but it's leaking conversions. The good news: the wins here — load speed, image alt text, meta tags, schema — take days, not months, and they're listed in priority order below.";
-    else base = "There's real work to do. Scores in this range usually track with a template site hitting its ceiling — font sizes, tap targets, page speed, and schema markup all tend to be fixable, but they add up. Start with the failing items below, in the order they're listed.";
-    // Sprint A4: when more than two checks couldn't be verified, the
-    // A1 half-weight penalty has bent the score downward. Disclose
-    // that honestly so owners know confirming unverified items will
-    // lift the number, not just feel like busywork.
+    if (score >= 90) base = t('verdict.90');
+    else if (score >= 70) base = t('verdict.70');
+    else if (score >= 50) base = t('verdict.50');
+    else base = t('verdict.below');
     var uv = meta && typeof meta.unverifiedCount === 'number' ? meta.unverifiedCount : 0;
     if (uv > 2) {
-      base += ' We couldn\'t verify ' + uv + ' checks on this pass — each one is counted at half weight. Confirming them below will sharpen the score in either direction.';
+      base += t('verdict.unverifiedSuffix', { count: uv });
     }
     return base;
   }
@@ -4673,15 +4673,14 @@
     value.textContent = score;
     fg.setAttribute('stroke-dasharray', circumference.toFixed(2));
     fg.setAttribute('stroke-dashoffset', circumference.toFixed(2));
-    // Sprint A2: surface unverified-check count so screen readers and
-    // tooltip hovers convey the penalty that feeds into the score.
+    // Sprint A2+ES2: score-ring aria-label and tooltip routed through
+    // t() so screen readers announce the Spanish phrase on the ES
+    // mirror. Key choice preserves A1's half-weight-penalty disclosure.
     var unverified = meta && typeof meta.unverifiedCount === 'number'
       ? meta.unverifiedCount : 0;
-    var label = score + '/100';
-    if (unverified > 0) {
-      label += ' · ' + unverified + ' check' + (unverified === 1 ? '' : 's')
-             + ' unverified';
-    }
+    var label = unverified > 0
+      ? t('ring.label.unverified', { score: score, count: unverified })
+      : t('ring.label',             { score: score });
     ring.setAttribute('role', 'img');
     ring.setAttribute('aria-label', label);
     ring.setAttribute('title', label);
@@ -5909,13 +5908,13 @@
       var pct = detection && typeof detection.confidenceScore === 'number'
         ? Math.round(detection.confidenceScore * 100) : null;
       if (userBusinessType) {
-        pillText = 'You confirmed';
+        pillText = t('btc.confirmed');
       } else if (detection && detection.confidence === 'high') {
-        pillText = pct !== null ? ('High confidence · ' + pct + '%') : 'High confidence';
+        pillText = pct !== null ? t('btc.high', { pct: pct }) : t('btc.high', { pct: '' }).replace(' · %','').replace(' · ','');
       } else if (detection && detection.confidence === 'medium') {
-        pillText = pct !== null ? ('Best guess · ' + pct + '%') : 'Best guess';
+        pillText = pct !== null ? t('btc.medium', { pct: pct }) : t('btc.medium', { pct: '' }).replace(' · %','').replace(' · ','');
       } else if (detection && detection.confidence === 'low') {
-        pillText = 'Uncertain — please pick';
+        pillText = t('btc.uncertain');
       } else {
         pillShow = false;
       }
@@ -5934,13 +5933,13 @@
       var low50 = detection && typeof detection.confidenceScore === 'number'
         && detection.confidenceScore < 0.5;
       if (userBusinessType) {
-        sub.textContent = "You told us what kind of restaurant this is — we're using it to tailor the checks below to your segment.";
+        sub.textContent = t('btc.sub.confirmed');
       } else if (low50 || (detection && detection.confidence === 'low')) {
-        sub.textContent = "We're not confident on this one. Pick the closest match so the checks below apply the right weights — otherwise we'll use a neutral baseline.";
+        sub.textContent = t('btc.sub.low');
       } else if (detection && detection.confidence === 'medium') {
-        sub.textContent = "Our best guess from schema markup, platform, and page content. If we got it wrong, pick the right one — the checks below will update live.";
+        sub.textContent = t('btc.sub.medium');
       } else {
-        sub.textContent = "Auto-detected from schema markup, ordering/reservation platform, and page content. If we got it wrong, pick the right one — the checks below will update live.";
+        sub.textContent = t('btc.sub.high');
       }
     }
 
@@ -6271,8 +6270,14 @@
         // revenue-risk coefficient (scoped list in V1).
         var risk = estimateRevenueAtRiskRange(def, DEFAULT_OWNER_INPUTS);
         if (risk) {
-          var riskLabel = 'Est. ' + formatRevenueK(risk.low) + '–' + formatRevenueK(risk.high) + '/yr at risk';
-          chips.innerHTML += '<span class="chip chip-revenue" title="Order-of-magnitude estimate based on typical 50 covers/day × $35 avg check. Change these inputs to recalculate.">' + riskLabel + '</span>';
+          // Sprint ES2: chip label + tooltip localized via t().
+          var riskLabel = t('chip.revenue', {
+            low:  formatRevenueK(risk.low),
+            high: formatRevenueK(risk.high)
+          });
+          var riskTitle = t('chip.revenue.title')
+            .replace(/"/g, '&quot;');
+          chips.innerHTML += '<span class="chip chip-revenue" title="' + riskTitle + '">' + riskLabel + '</span>';
         }
         body.appendChild(chips);
       }
@@ -6298,20 +6303,23 @@
     var etaEl = document.getElementById('topFixesEta');
     if (etaEl) {
       var msg = '';
+      // Sprint ES2: ETA copy routed through t(). Branch selection on
+      // totalMinutes + effort class stays locale-independent; only
+      // the returned sentence localizes.
       if (hasRebuild) {
-        msg = 'One of these is a site rebuild — plan a month, not a weekend.';
+        msg = t('topfixes.eta.rebuild');
       } else if (totalMinutes <= 0) {
-        msg = 'About one focused afternoon across all three.';
+        msg = t('topfixes.eta.afternoon');
       } else if (totalMinutes < 120) {
-        msg = '~1 afternoon' + (hasSelf ? ' — you can handle it yourself.' : ' of dev time.');
+        msg = hasSelf ? t('topfixes.eta.shortSelf') : t('topfixes.eta.shortDev');
       } else if (totalMinutes <= 480) {
-        msg = '~1 weekend' + (hasSelf ? ' — doable on a Saturday.' : ' of dev time.');
+        msg = hasSelf ? t('topfixes.eta.weekendSelf') : t('topfixes.eta.weekendDev');
       } else if (totalMinutes <= 960) {
-        msg = '~2 weekends of work — break into Saturday and the next.';
+        msg = t('topfixes.eta.twoWeekends');
       } else if (totalMinutes <= 1920) {
-        msg = '~3–4 weekends of work — scope it like a mini-project.';
+        msg = t('topfixes.eta.threeFourWeekends');
       } else {
-        msg = 'Several weekends — stage it, don\'t try to do it all at once.';
+        msg = t('topfixes.eta.many');
       }
       etaEl.textContent = msg;
       etaEl.hidden = false;
@@ -7840,10 +7848,26 @@
   /* -------- Sprint CC7: Print-for-your-manager worksheet -------- */
   var printManagerBtn = document.getElementById('printManagerBtn');
   if (printManagerBtn) {
+    // Sprint ES2: relabel the button text on boot if the detected
+    // locale is ES. Keeps the EN file valid as a standalone page
+    // (no blank button on load) while letting the ES mirror pick
+    // up the translation automatically.
+    var pmLabelNode = printManagerBtn.childNodes[printManagerBtn.childNodes.length - 1];
+    if (pmLabelNode && pmLabelNode.nodeType === Node.TEXT_NODE) {
+      pmLabelNode.nodeValue = ' ' + t('print.manager');
+    }
     printManagerBtn.addEventListener('click', function(){
       if (!window.__auditResults || !window.__auditResults.entries || !window.__auditResults.entries.length) {
         return; // no report yet — silent no-op
       }
+      // Sprint ES2: stamp the localized "Notes / assigned to:" label
+      // onto each top-fix <li> via data-notes-label so the worksheet
+      // print CSS (which uses content: attr(...)) reads the right
+      // language without a second stylesheet.
+      var notesLabel = t('print.worksheet.notes');
+      document.querySelectorAll('#topFixesList li').forEach(function(li){
+        li.setAttribute('data-notes-label', notesLabel);
+      });
       document.body.classList.add('print-worksheet');
       var cleanup = function(){
         document.body.classList.remove('print-worksheet');
