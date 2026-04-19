@@ -4488,7 +4488,7 @@
     return "There's real work to do. Scores in this range usually track with a template site hitting its ceiling — font sizes, tap targets, page speed, and schema markup all tend to be fixable, but they add up. Start with the failing items below, in the order they're listed.";
   }
 
-  function setScoreRing(score) {
+  function setScoreRing(score, meta) {
     var ring = document.getElementById('scoreRing');
     var value = document.getElementById('scoreValue');
     var fg = ring.querySelector('circle.fg');
@@ -4500,6 +4500,18 @@
     value.textContent = score;
     fg.setAttribute('stroke-dasharray', circumference.toFixed(2));
     fg.setAttribute('stroke-dashoffset', circumference.toFixed(2));
+    // Sprint A2: surface unverified-check count so screen readers and
+    // tooltip hovers convey the penalty that feeds into the score.
+    var unverified = meta && typeof meta.unverifiedCount === 'number'
+      ? meta.unverifiedCount : 0;
+    var label = score + '/100';
+    if (unverified > 0) {
+      label += ' · ' + unverified + ' check' + (unverified === 1 ? '' : 's')
+             + ' unverified';
+    }
+    ring.setAttribute('role', 'img');
+    ring.setAttribute('aria-label', label);
+    ring.setAttribute('title', label);
     // Force reflow so the animation runs
     void fg.getBoundingClientRect();
     fg.setAttribute('stroke-dashoffset', offset.toFixed(2));
@@ -6790,7 +6802,7 @@
       restaurant: readinessInRollup ? restaurantScore : null
     }, priorityResult);
 
-    setScoreRing(overall);
+    setScoreRing(overall, { unverifiedCount: priorityResult.unverifiedCount });
     setCategory('performance',   perf);
     setCategory('accessibility', a11y);
     setCategory('best-practices', bp);
@@ -6982,7 +6994,7 @@
     // "I have this" on enough unverifieds to cross the confidence
     // threshold, the restaurant card transitions from '?' to a
     // real score on this pass.
-    setScoreRing(overall);
+    setScoreRing(overall, { unverifiedCount: priorityResult.unverifiedCount });
     var verdictEl = document.getElementById('verdictCopy');
     if (verdictEl) verdictEl.textContent = verdictFor(overall);
     if (!state.isRestaurant) {
