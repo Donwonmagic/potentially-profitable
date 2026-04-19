@@ -699,6 +699,82 @@
     content: "⏱";
     font-size: 12px;
   }
+  /* Sprint CC7: worksheet print mode. When the body carries the
+     .print-worksheet class at print time, everything but the Top-3-
+     Fixes list collapses, chips go monochrome, each fix gets a bold
+     checkbox in the ::before, and a blank "Notes" column appears to
+     the right. Intended output: one sheet, B&W-safe, easy to hand
+     to a manager or contractor who won't read the full PDF. */
+  @media print {
+    body.print-worksheet .audit-summary,
+    body.print-worksheet .category-grid,
+    body.print-worksheet .exec-summary,
+    body.print-worksheet .opportunities-wrap,
+    body.print-worksheet .metric-glossary,
+    body.print-worksheet .vitals-strip,
+    body.print-worksheet .not-restaurant-notice,
+    body.print-worksheet .business-type-card,
+    body.print-worksheet .priority-list,
+    body.print-worksheet .audit-compare,
+    body.print-worksheet .email-report,
+    body.print-worksheet .pdf-cta-top,
+    body.print-worksheet .share-row,
+    body.print-worksheet .share-platforms,
+    body.print-worksheet .audit-form,
+    body.print-worksheet header,
+    body.print-worksheet footer {
+      display: none !important;
+    }
+    body.print-worksheet .top-fixes {
+      background: #fff !important;
+      border: none !important;
+      padding: 0 !important;
+    }
+    body.print-worksheet .top-fixes-list li {
+      page-break-inside: avoid;
+      border: 1px solid #000 !important;
+      padding: 14px 18px !important;
+      margin-bottom: 12px !important;
+      border-radius: 0 !important;
+      display: grid !important;
+      grid-template-columns: 32px 1fr 260px !important;
+      align-items: start !important;
+      counter-increment: fix-counter;
+    }
+    body.print-worksheet .top-fixes-list li::before {
+      content: counter(fix-counter) !important;
+      width: 24px; height: 24px;
+      border: 2px solid #000;
+      background: #fff !important;
+      color: #000 !important;
+      border-radius: 2px !important;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    body.print-worksheet .top-fixes-list li::after {
+      content: "Notes / assigned to:";
+      display: block;
+      border: 1px dashed #000;
+      min-height: 80px;
+      padding: 6px 8px;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #000;
+    }
+    body.print-worksheet .top-fixes-item-chips .chip {
+      background: #fff !important;
+      color: #000 !important;
+      border: 1px solid #000 !important;
+    }
+    body.print-worksheet .top-fixes-eta {
+      background: #fff !important;
+      border: 1px solid #000 !important;
+      color: #000 !important;
+    }
+  }
 
   @media (max-width: 640px) {
     .top-fixes { padding: 16px 18px; }
@@ -2220,6 +2296,15 @@
             <button type="button" class="share-btn" id="shareCardBtn" hidden>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               Download share card
+            </button>
+            <!-- Sprint CC7: print-for-manager worksheet. Toggles a
+                 stripped, high-contrast, checkbox-augmented print
+                 stylesheet then triggers the browser print dialog.
+                 Gives an owner a single-page handoff to a manager
+                 or contractor without needing the full PDF export. -->
+            <button type="button" class="share-btn" id="printManagerBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+              Print for your manager
             </button>
             <span class="share-toast" id="shareToast" aria-live="polite">Link copied!</span>
           </div>
@@ -7751,6 +7836,26 @@
   /* Phase L1: deep-gate submit handler retired — the gate itself
    * is gone. The PDF-attaching "Email me this report" form is wired
    * separately (Sprint L3) using the existing #emailReportForm. */
+
+  /* -------- Sprint CC7: Print-for-your-manager worksheet -------- */
+  var printManagerBtn = document.getElementById('printManagerBtn');
+  if (printManagerBtn) {
+    printManagerBtn.addEventListener('click', function(){
+      if (!window.__auditResults || !window.__auditResults.entries || !window.__auditResults.entries.length) {
+        return; // no report yet — silent no-op
+      }
+      document.body.classList.add('print-worksheet');
+      var cleanup = function(){
+        document.body.classList.remove('print-worksheet');
+        window.removeEventListener('afterprint', cleanup);
+      };
+      window.addEventListener('afterprint', cleanup);
+      // Safari fires afterprint inconsistently; fall back on a timer
+      // in case the user cancels the dialog before any event fires.
+      setTimeout(cleanup, 30000);
+      window.print();
+    });
+  }
 
   /* -------- Phase I7: Download share-card PNG -------- */
   var shareCardBtn = document.getElementById('shareCardBtn');
