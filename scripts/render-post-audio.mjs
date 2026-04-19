@@ -359,7 +359,20 @@ function renderLanguage(postDir, chunks, lang) {
   };
   fs.writeFileSync(path.join(postDir, jsonName), JSON.stringify(manifest, null, 2));
 
-  if (!flags.has('--keep-tmp')) fs.rmSync(tmpDir, { recursive: true, force: true });
+  // Cleanup tmp dir. fs.rmSync is Node 14.14+; older Node (Colab's
+  // apt-installed default) uses rmdirSync. Fall back through the
+  // options, and swallow any failure — a stale tmp dir in /tmp is a
+  // non-fatal leak, the output MP3 + manifest are already safely
+  // written before we get here.
+  if (!flags.has('--keep-tmp')) {
+    try { fs.rmSync(tmpDir, { recursive: true, force: true }); }
+    catch (_) {
+      try { fs.rmdirSync(tmpDir, { recursive: true }); }
+      catch (_) {
+        try { spawnSync('rm', ['-rf', tmpDir]); } catch (_) {}
+      }
+    }
+  }
   console.log(`  ✓ ${path.relative(repoRoot, mp3Out)}  (${manifest.total.toFixed(1)}s)  voice=${voice}`);
 }
 
