@@ -761,18 +761,19 @@ var RESTAURANT_PRIORITY_CHECKS = [
     anchor: '#findability',
     effort: 'dev',
     minutes: 20,
-    impact: "Restaurant schema markup is how Google learns your hours, cuisine, and price range for local search. Restaurants with proper schema show up in the 'restaurants near me' rich results with photos and ratings — restaurants without it get a plain blue link. The difference in click-through rate is meaningful.",
-    pass: 'Google can read your site as a restaurant',
-    passNote: 'Your site publishes Restaurant schema markup — the JSON-LD block Google reads to understand your cuisine, hours, price range, and menu URL. This is what earns you rich-result placement in "restaurants near me" searches.',
-    // Phase L6: when the audit CONFIDENTLY detected the subtype
-    // from platforms/keywords but the site still has no schema,
-    // the evaluator promotes this check from 'unverified' to 'fail'
-    // and the title/note swap to the explicit 'we know what you are,
-    // Google can't read it directly from your page yet' framing.
-    fail: 'Your site is missing Restaurant schema markup',
-    failNote: "We detected your segment from platform and keyword signals, but your site isn't publishing the JSON-LD <code>@type: \"Restaurant\"</code> block Google reads for rich-result placement. Without it Google has to infer your category rather than reading it directly — which is the difference between a rich snippet (hours, price, cuisine) and a plain blue link. It's a 10-line change for your developer.",
-    unverified: "We couldn't confirm your Restaurant schema",
-    unverifiedNote: "We couldn't confidently read whether your site publishes Restaurant JSON-LD. If you think it's there, re-audit in a minute — sometimes Lighthouse misses it. If it isn't, adding a JSON-LD block with <code>@type: \"Restaurant\"</code>, your address, opening hours, and cuisine is meaningful for local SEO."
+    impact: 'El marcado schema de Restaurant es cómo Google aprende tus horarios, tu cocina y tu rango de precios para la búsqueda local. Los restaurantes con schema adecuado salen en los resultados enriquecidos de "restaurantes cerca de mí" con fotos y calificaciones — los que no, quedan con un simple enlace azul. La diferencia en CTR es significativa.',
+    pass: 'Google puede leer tu sitio como restaurante',
+    passNote: 'Tu sitio publica marcado schema de Restaurant — el bloque JSON-LD que Google lee para entender tu cocina, tus horarios, tu rango de precios y el URL del menú. Esto es lo que te gana ubicación en resultado enriquecido en las búsquedas de "restaurantes cerca de mí".',
+    // Fase L6: cuando la auditoría detectó CON CONFIANZA el subtipo
+    // a partir de las plataformas/keywords pero el sitio todavía no
+    // tiene schema, el evaluador promueve esta revisión de
+    // 'unverified' a 'fail' y el título/nota cambian al framing
+    // explícito de 'ya sabemos qué eres, Google aún no lo puede
+    // leer directo de tu página'.
+    fail: 'A tu sitio le falta el marcado schema de Restaurant',
+    failNote: 'Detectamos tu segmento a partir de señales de plataforma y palabras clave, pero tu sitio no publica el bloque JSON-LD <code>@type: "Restaurant"</code> que Google lee para la ubicación en resultado enriquecido. Sin él, Google tiene que inferir tu categoría en vez de leerla directamente — esa es la diferencia entre un rich snippet (horarios, precio, cocina) y un simple enlace azul. Es un cambio de 10 líneas para tu desarrollador.',
+    unverified: 'No pudimos confirmar tu schema de Restaurant',
+    unverifiedNote: 'No pudimos leer con confianza si tu sitio publica JSON-LD de Restaurant. Si crees que está, vuelve a auditar en un minuto — a veces a Lighthouse se le pasa. Si no está, agregar un bloque JSON-LD con <code>@type: "Restaurant"</code>, tu dirección, tus horarios de apertura y tu cocina es significativo para el SEO local.'
   },
   {
     // Phase H1: Dietary / allergen signal presence. Evaluated by
@@ -785,28 +786,28 @@ var RESTAURANT_PRIORITY_CHECKS = [
     anchor: '#trust',
     effort: 'self',
     minutes: 30,
-    impact: 'Dietary-aware guests make decisions based on whether they see themselves considered. A single "GF" mark or a "vegan" badge reliably converts more dietary-restricted customers than ten paragraphs of "we can accommodate." Even one marker signals that someone on staff has thought about cross-contamination.',
-    pass: 'Your site signals dietary options',
-    passNote: '{detected} visible on your site — guests with dietary restrictions can self-qualify without having to call and ask.',
+    impact: 'Los comensales con restricciones alimentarias toman decisiones según si ven que los consideraron. Una sola marca "SG" o una etiqueta "vegano" convierte, de forma confiable, a más clientes con restricciones dietarias que diez párrafos de "podemos acomodar". Incluso una sola señal indica que alguien del equipo pensó en la contaminación cruzada.',
+    pass: 'Tu sitio señala opciones dietarias',
+    passNote: '{detected} visible en tu sitio — los invitados con restricciones dietarias pueden autocalificarse sin tener que llamar para preguntar.',
     fail: null,
     failNote: null,
-    unverified: 'We didn\'t spot dietary markers — is this right?',
-    unverifiedNote: 'We scan for vegan, vegetarian, gluten-free, dairy-free, nut-free, halal, kosher, and allergen notes. If your menu marks dietary options with symbols or callouts we didn\'t recognize (or if the markers live on a menu page we didn\'t reach), let us know and we\'ll improve the detector.',
+    unverified: 'No vimos señales dietarias — ¿es correcto?',
+    unverifiedNote: 'Escaneamos vegano, vegetariano, sin gluten, sin lácteos, sin frutos secos, halal, kosher y avisos de alérgenos. Si tu menú marca opciones dietarias con símbolos o anuncios que no reconocimos (o si las señales viven en una página de menú a la que no llegamos), avísanos y mejoramos el detector.',
     byType: {
       'fine-dining': {
-        impact: 'Fine-dining tasting menus live or die on accommodating dietary restrictions — half the phone calls your host fields are "do you have gluten-free or vegetarian options?" Surfacing answers on the menu page deflects those calls and lets guests book with confidence.',
-        unverifiedNote: 'Tasting-menu dietary accommodations belong on your menu or reservations page in plain English. "Vegetarian tasting available on request" earns bookings; silence sends them to a restaurant that says so.'
+        impact: 'Los menús de degustación de alta cocina viven o mueren por acomodar las restricciones dietarias — la mitad de las llamadas que contesta tu host son "¿tienen opciones sin gluten o vegetarianas?". Mostrar las respuestas en la página del menú desvía esas llamadas y deja que los invitados reserven con confianza.',
+        unverifiedNote: 'Los acomodos dietarios del menú de degustación van en tu página de menú o de reservas en cristiano. "Degustación vegetariana disponible bajo pedido" gana reservas; el silencio las manda a un restaurante que sí lo dice.'
       },
       'casual-dining': {
-        impact: 'Casual-dining guests often decide between two restaurants based on whether one of them clearly marks vegetarian or gluten-free options. The market of dietary-aware eaters is bigger than most owners realize — about 1 in 3 diners avoids at least one food group.',
-        unverifiedNote: 'Mark a few items with V / GF / DF symbols on the menu page (with a small legend). This is the single highest-ROI content change a casual-dining site can make.'
+        impact: 'Los invitados del casual a menudo deciden entre dos restaurantes según si uno de los dos marca con claridad las opciones vegetarianas o sin gluten. El mercado de comensales atentos a la dieta es más grande de lo que la mayoría de los dueños se imagina — cerca de 1 de cada 3 evita al menos un grupo de alimentos.',
+        unverifiedNote: 'Marca algunos platos con símbolos V / SG / SL en la página del menú (con una leyenda corta). Este es el cambio de contenido con más ROI que puede hacer un sitio de casual.'
       },
       'bakery': {
-        impact: 'For bakeries dietary markers are not marketing — they are safety. A customer ordering a custom cake for a nut-allergic child trusts whether you\'ve thought about cross-contamination, and your site is where they decide whether to trust you with a birthday.',
-        unverifiedNote: 'Call out cross-contamination policy and clearly mark nut-free / gluten-free / dairy-free bakes on the menu page. For custom-order intake, add a dietary-restriction field to the form. This is a trust-earning change, not a marketing one.'
+        impact: 'Para las panaderías, las señales dietarias no son marketing — son seguridad. Un cliente encargando un pastel personalizado para un niño con alergia a los frutos secos confía en si pensaste en la contaminación cruzada, y tu sitio es donde decide si te confía un cumpleaños.',
+        unverifiedNote: 'Declara la política de contaminación cruzada y marca claramente en la página del menú los horneados sin frutos secos / sin gluten / sin lácteos. Para el intake de pedidos personalizados, agrega un campo de restricciones dietarias al formulario. Este es un cambio para ganar confianza, no de marketing.'
       },
       'ghost-kitchen': {
-        impact: 'Ghost-kitchen customers rarely inspect the site before ordering — but the ones who DO are usually dietary-restricted and comparing brands before committing. Clear dietary markers on your brand page move those orders into your funnel instead of a competing aggregator listing.'
+        impact: 'Los clientes de cocina fantasma rara vez inspeccionan el sitio antes de pedir — pero los que SÍ lo hacen suelen tener restricciones dietarias y están comparando marcas antes de comprometerse. Las señales dietarias claras en la página de tu marca mueven esos pedidos a tu embudo en vez de a una ficha de agregador que compite contigo.'
       }
     }
   },
