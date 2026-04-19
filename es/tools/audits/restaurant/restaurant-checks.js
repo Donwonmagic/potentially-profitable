@@ -812,53 +812,54 @@ var RESTAURANT_PRIORITY_CHECKS = [
     }
   },
   {
-    // Phase H2: Gift-card presence. Evaluator branch uses
-    // detectGiftCardPresence(pageText, allUrls). Never fail —
-    // absence is a missed revenue lever, not a broken site.
+    // Fase H2: Presencia de gift cards. La rama del evaluador usa
+    // detectGiftCardPresence(pageText, allUrls). Nunca falla —
+    // la ausencia es una palanca de ingresos perdida, no un sitio
+    // roto.
     type: 'gift-cards',
     weight: 0.5,
     anchor: '#conversions',
     effort: 'dev',
     minutes: 30,
-    impact: 'Gift cards are the highest-margin line on a restaurant site. Every \$50 gift card sold brings in \$50 of revenue AND a future customer; roughly 20-30% of gift cards go unredeemed, which is pure revenue. A visible "Gift Cards" CTA converts more than you would expect, especially around November-December.',
-    pass: 'Your site sells gift cards',
-    passNote: '{detected} on your site — gift-card sales are some of the highest-margin revenue a restaurant can earn, and you already have the flow.',
+    impact: 'Las gift cards son la línea de margen más alto de un sitio de restaurante. Cada gift card de USD 50 vendida trae USD 50 de ingreso Y un futuro cliente; aproximadamente el 20-30 % de las gift cards no se redimen, lo cual es ingreso puro. Un CTA visible de "Gift Cards" convierte más de lo que esperarías, especialmente alrededor de noviembre-diciembre.',
+    pass: 'Tu sitio vende gift cards',
+    passNote: '{detected} en tu sitio — las ventas de gift cards son uno de los ingresos de mayor margen que un restaurante puede ganar, y ya tienes el flujo.',
     fail: null,
     failNote: null,
-    unverified: 'We didn\'t spot gift-card sales — is this right?',
-    unverifiedNote: 'We scan for gift-card text ("Gift Card", "Gift Certificate", "e-Gift") plus major platforms (Toast Gift Cards, Square Gift Cards, Yiftee, GiftUp, Factor4). If you sell via a platform we missed, tell us and we will add it. If you do not sell gift cards today, adding a simple checkout page is a high-ROI, once-a-quarter project.',
+    unverified: 'No vimos venta de gift cards — ¿es correcto?',
+    unverifiedNote: 'Escaneamos texto de gift card ("Gift Card", "Gift Certificate", "e-Gift") más las plataformas principales (Toast Gift Cards, Square Gift Cards, Yiftee, GiftUp, Factor4). Si vendes vía una plataforma que se nos escapó, avísanos y la agregamos. Si hoy no vendes gift cards, agregar una simple página de checkout es un proyecto trimestral de alto ROI.',
     byType: {
       'fine-dining': {
-        impact: 'Gift cards at fine-dining restaurants are the "special occasion" present par excellence — anniversaries, birthdays, holiday gifts. Redemption rates run higher than casual dining but unredeemed balances are still pure margin. Physical printed cards are a nice upsell for corporate gifts.',
-        unverifiedNote: 'A gift-card page on a fine-dining site pays for itself during the holidays. Tock, Resy, and SevenRooms all integrate gift cards; Toast does too if you are on their POS.'
+        impact: 'Las gift cards en restaurantes de alta cocina son el regalo de "ocasión especial" por excelencia — aniversarios, cumpleaños, regalos de temporada. Las tasas de redención son más altas que en el casual pero los saldos no redimidos siguen siendo margen puro. Las tarjetas físicas impresas son un buen upsell para regalos corporativos.',
+        unverifiedNote: 'Una página de gift cards en un sitio de alta cocina se paga sola durante las fiestas. Tock, Resy y SevenRooms integran gift cards; Toast también si estás en su POS.'
       },
       'bar-pub': {
-        impact: 'Bars and pubs over-index on gift cards — stocking-stuffers, birthday presents, thank-you gifts from corporate accounts. Every unredeemed card is pure revenue; every redeemed one brings in a customer plus whatever they spend above the card value.',
-        unverifiedNote: 'Bar gift cards especially benefit from a simple online checkout. Square and Toast both do this well; Tripleseat if you already use it for events.'
+        impact: 'Los bares y pubs se sobre-indexan en gift cards — regalos para la media, regalos de cumpleaños, regalos de agradecimiento de cuentas corporativas. Cada tarjeta no redimida es ingreso puro; cada una redimida trae un cliente más lo que gaste por encima del valor de la tarjeta.',
+        unverifiedNote: 'Las gift cards de bar se benefician especialmente de un checkout online simple. Square y Toast lo hacen bien; Tripleseat si ya lo usas para eventos.'
       },
       'bakery': {
-        impact: 'Bakery gift cards convert well for birthday presents, corporate gifts, and the "sorry I forgot the birthday cake" save. They are also one of the easiest ways to capture a repeat customer from a one-time visitor.',
-        unverifiedNote: 'A gift-card purchase page on your bakery site with $25, $50, $100 presets is the baseline. Square and Toast both handle this natively; email-delivered e-cards make same-day gift purchases possible.'
+        impact: 'Las gift cards de panadería convierten bien para regalos de cumpleaños, regalos corporativos y el "perdón, olvidé el pastel de cumpleaños". También son una de las maneras más fáciles de capturar un cliente recurrente a partir de un visitante de una sola vez.',
+        unverifiedNote: 'Una página de compra de gift cards en el sitio de tu panadería con presets de USD 25, USD 50, USD 100 es el mínimo. Square y Toast manejan esto de forma nativa; las e-cards entregadas por email hacen posible la compra de regalos el mismo día.'
       },
       'ghost-kitchen': {
-        impact: 'Gift cards matter less for ghost kitchens (customers who never visit are unlikely to gift-card-gift the experience), but digital e-cards still add revenue around holidays — and matter for corporate catering accounts.'
+        impact: 'Las gift cards importan menos para las cocinas fantasma (los clientes que nunca visitan no suelen regalar la experiencia en gift card), pero las e-cards digitales todavía suman ingresos alrededor de las fiestas — y pesan para las cuentas de catering corporativo.'
       }
     }
   },
   {
-    // Phase H3: Loyalty / rewards presence.
+    // Fase H3: Presencia de programa de lealtad / recompensas.
     type: 'loyalty',
     weight: 0.4,
     anchor: '#conversions',
     effort: 'dev',
     minutes: 120,
-    impact: 'Loyalty programs lift repeat-visit frequency by 15-30% on average — a material difference for a thin-margin business. The modern loyalty tools (Thanx, Paytronix, Square Loyalty) integrate with POS so every visit earns without a punchcard, which is the actual bar for adoption.',
-    pass: 'Your site promotes a loyalty program',
-    passNote: '{detected} on your site — repeat-visit frequency is where restaurant margin lives, and you have the infrastructure to compound it.',
+    impact: 'Los programas de lealtad levantan la frecuencia de visita repetida en promedio un 15-30 % — una diferencia material para un negocio de margen fino. Las herramientas modernas de lealtad (Thanx, Paytronix, Square Loyalty) se integran con el POS para que cada visita gane sin tarjeta de ponches, que es el umbral real para la adopción.',
+    pass: 'Tu sitio promueve un programa de lealtad',
+    passNote: '{detected} en tu sitio — la frecuencia de visita repetida es donde vive el margen del restaurante, y tienes la infraestructura para capitalizarla.',
     fail: null,
     failNote: null,
-    unverified: 'We didn\'t spot a loyalty program — is this right?',
-    unverifiedNote: 'We scan for loyalty text ("rewards program", "earn points", "join our rewards") and known platforms (Thanx, LevelUp, Paytronix, Como, Fivestars, Loyalzoo). If you run one we missed, tell us. If you do not have one yet, a modern POS-integrated loyalty program pays back in 90-120 days for most casual-dining and fast-casual restaurants.'
+    unverified: 'No vimos un programa de lealtad — ¿es correcto?',
+    unverifiedNote: 'Escaneamos texto de lealtad ("programa de recompensas", "gana puntos", "únete a nuestras recompensas", "rewards program", "earn points") y plataformas conocidas (Thanx, LevelUp, Paytronix, Como, Fivestars, Loyalzoo). Si corres uno que se nos pasó, avísanos. Si todavía no tienes, un programa de lealtad moderno integrado con POS se paga en 90-120 días para la mayoría de restaurantes casuales y fast-casual.'
   },
   {
     // Phase H4: Email newsletter capture.
