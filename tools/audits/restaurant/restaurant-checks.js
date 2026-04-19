@@ -991,12 +991,16 @@ var RESTAURANT_PRIORITY_CHECKS = [
     }
   },
   {
-    // Phase H6: Age-gate presence. Only bar-pub has non-zero
-    // weight in subtypes.js (2.0); every other subtype suppresses
-    // the check entirely (0) so a cafe that sells no alcohol
-    // doesn't lose score for not gating.
+    // Phase H6: Age-gate presence. Suppressed (weight 0) for EVERY
+    // current restaurant subtype — bars and breweries included.
+    // Age-gates on the web are rarely mandated by state ABC rules
+    // for restaurants; they mostly apply to packaged-alcohol retail,
+    // cannabis dispensaries, and vape/tobacco shops. Those are not
+    // restaurant subtypes today, but if one is ever added (e.g.
+    // 'liquor-store' or 'dispensary') it can set a non-zero weight
+    // in its own subtypes.js entry without touching this definition.
     type: 'age-gate',
-    weight: 1.0, // default; bar-pub override = 2.0 via subtypes
+    weight: 1.0, // default unused; all subtypes override to 0
     anchor: '#trust',
     effort: 'dev',
     minutes: 45,
