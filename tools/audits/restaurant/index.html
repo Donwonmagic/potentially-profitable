@@ -669,6 +669,15 @@
   .top-fixes-item-chips .chip-effort-dev     { background: #E7F1F3; color: #1F4E5B; }
   .top-fixes-item-chips .chip-effort-rebuild { background: #F7E7DC; color: #B8541A; }
   .top-fixes-item-chips .chip-time           { background: var(--cream-2, #faf6ee); color: var(--ink); border: 1px solid var(--line, #E6DFCE); }
+  /* Sprint V2: revenue-at-risk chip uses the rust accent to echo the
+     "Top 3 Fixes" section border treatment — visually flags these
+     as "money on the table" without creating a new color token. */
+  .top-fixes-item-chips .chip-revenue {
+    background: #FDEFE3;
+    color: #8A3E16;
+    border: 1px solid #EFD1B6;
+    font-variant-numeric: tabular-nums;
+  }
 
   @media (max-width: 640px) {
     .top-fixes { padding: 16px 18px; }
@@ -5999,6 +6008,67 @@
   // "conversions" (weight 2.0) above "loyalty" (weight 0.4) even
   // when both are failing. Falls back to the raw def.weight when
   // subtypeWeights() returns null.
+  // Sprint V1: per-check-type annual-revenue-at-risk coefficients.
+  // These are conservative order-of-magnitude ranges, derived from
+  // public industry benchmarks (53% of mobile users bounce above 3s
+  // load, ~15% of takeout now starts with online ordering, ~12% of
+  // dine-in starts with a reservation link, etc.). The number is
+  // rendered as a range chip ("Est. $X–Y/yr at risk") so owners see
+  // the scale of what a fix is worth, not false precision.
+  //
+  // Defaults: 50 covers/day × $35 avg check × 365 days = $638,750
+  // annual revenue. Owner-editable inputs in a later CC sprint will
+  // let the user substitute their own seats + avg check + hours.
+  var DEFAULT_OWNER_INPUTS = {
+    coversPerDay: 50,
+    avgCheck:     35,
+    openDays:     365
+  };
+  // Revenue-at-risk percentage ranges [low, high] per check type.
+  // Values are % of annual revenue the owner is plausibly leaving on
+  // the table by failing this check, based on observed funnel drop-
+  // off in restaurant-tech case studies. Missing types → no chip.
+  var REVENUE_AT_RISK_PCT = {
+    'audit.viewport':          [0.04, 0.09],  // mobile crash = big
+    'audit.tap-targets':       [0.01, 0.04],
+    'audit.color-contrast':    [0.005, 0.02],
+    'audit.font-size':         [0.005, 0.02],
+    'phone':                   [0.01, 0.03],
+    'conversions':             [0.06, 0.15],  // ordering/reservations
+    'menu-format':             [0.01, 0.04],
+    'platform':                [0.005, 0.02],
+    'schema':                  [0.005, 0.015],
+    'dietary':                 [0.005, 0.02],
+    'gift-cards':              [0.005, 0.015],
+    'loyalty':                 [0.01, 0.03],
+    'email-capture':           [0.005, 0.02],
+    'catering-page':           [0.01, 0.04],
+    'hours-accuracy':          [0.005, 0.02]
+  };
+  function estimateRevenueAtRiskRange(def, owner) {
+    var key = def && (def.audit || def.type);
+    var range = key ? REVENUE_AT_RISK_PCT[key] : null;
+    if (!range) return null;
+    var o = owner || DEFAULT_OWNER_INPUTS;
+    var annualRevenue = (o.coversPerDay || 0) * (o.avgCheck || 0) * (o.openDays || 365);
+    if (annualRevenue <= 0) return null;
+    return {
+      low:  Math.round(annualRevenue * range[0]),
+      high: Math.round(annualRevenue * range[1]),
+      pctLow:  range[0],
+      pctHigh: range[1]
+    };
+  }
+  // Format a dollar amount to the nearest thousand for the chip.
+  function formatRevenueK(n) {
+    if (n < 1000) return '$' + n;
+    if (n < 10000) return '$' + (n / 1000).toFixed(1) + 'k';
+    return '$' + Math.round(n / 1000) + 'k';
+  }
+  // Expose on the window so the PDF builder + share card can also
+  // surface the estimate without re-computing.
+  window.__auditRevenueAtRisk = estimateRevenueAtRiskRange;
+
   function renderTopFixes() {
     var el   = document.getElementById('topFixes');
     var list = document.getElementById('topFixesList');
@@ -6082,6 +6152,15 @@
           else if (def.minutes < 180)  timeLabel = '~' + Math.round(def.minutes / 60) + ' hr';
           else                         timeLabel = 'Half-day project';
           chips.innerHTML += '<span class="chip chip-time">' + timeLabel + '</span>';
+        }
+        // Sprint V2: annual-revenue-at-risk chip. Rendered as a range
+        // with a "est." prefix so owners read it as an order-of-
+        // magnitude, not a quote. Hidden when the check type has no
+        // revenue-risk coefficient (scoped list in V1).
+        var risk = estimateRevenueAtRiskRange(def, DEFAULT_OWNER_INPUTS);
+        if (risk) {
+          var riskLabel = 'Est. ' + formatRevenueK(risk.low) + '–' + formatRevenueK(risk.high) + '/yr at risk';
+          chips.innerHTML += '<span class="chip chip-revenue" title="Order-of-magnitude estimate based on typical 50 covers/day × $35 avg check. Change these inputs to recalculate.">' + riskLabel + '</span>';
         }
         body.appendChild(chips);
       }
