@@ -125,6 +125,10 @@ const STATIC = [
 
   // Skip link / footer-ish
   [ 'Skip to main content', 'Saltar al contenido principal' ],
+
+  // OG / Twitter card image — swap the EN restaurant-audit SVG for
+  // the Spanish sibling that lives beside it in /brand/og/.
+  [ '/brand/og/audit-restaurants.svg', '/brand/og/audit-restaurants-es.svg' ],
 ];
 
 function applyTranslations(src) {

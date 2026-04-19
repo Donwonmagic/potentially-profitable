@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#14161A"/>
+  <defs>
+    <radialGradient id="spdglow" cx="78%" cy="30%" r="55%">
+      <stop offset="0%" stop-color="#1F4E5B" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#14161A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#spdglow)"/>
+
+  <text x="72" y="90" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#FAF7F2" letter-spacing="5" opacity="0.55">FREE TOOL · SPEED · 10 SECONDS</text>
+
+  <text x="72" y="210" font-family="Fraunces, Georgia, serif" font-size="68" font-weight="500" fill="#FAF7F2" letter-spacing="-2">How fast is</text>
+  <text x="72" y="285" font-family="Fraunces, Georgia, serif" font-size="68" font-weight="500" fill="#FAF7F2" letter-spacing="-2">your site?</text>
+  <text x="72" y="355" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="30" font-weight="400" fill="#FAF7F2" opacity="0.65">Mobile speed. One number, plain English.</text>
+
+  <g transform="translate(880, 280)" font-family="Inter, Arial, sans-serif">
+    <path d="M -130 0 A 130 130 0 0 1 130 0" fill="none" stroke="#1F4E5B" stroke-width="12" opacity="0.25" stroke-linecap="round"/>
+    <path d="M -130 0 A 130 130 0 0 1 105 -76" fill="none" stroke="#1f9d55" stroke-width="12" stroke-linecap="round"/>
+    <line x1="0" y1="0" x2="90" y2="-60" stroke="#FAF7F2" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="0" cy="0" r="10" fill="#FAF7F2"/>
+    <text x="0" y="-40" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="64" font-weight="500" fill="#FAF7F2">82</text>
+    <text x="0" y="-8" text-anchor="middle" font-size="12" font-weight="600" fill="#FAF7F2" opacity="0.6" letter-spacing="3">OUT OF 100</text>
+    <text x="-132" y="28" font-size="11" font-weight="600" fill="#FAF7F2" opacity="0.5" letter-spacing="2">SLOW</text>
+    <text x="132" y="28" text-anchor="end" font-size="11" font-weight="600" fill="#FAF7F2" opacity="0.5" letter-spacing="2">FAST</text>
+  </g>
+
+  <rect y="580" width="1200" height="50" fill="#1F4E5B" opacity="0.2"/>
+  <text x="72" y="612" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#FAF7F2" letter-spacing="2" opacity="0.6">LCP · CLS · INP · CORE WEB VITALS</text>
+  <text x="1128" y="612" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600" fill="#FAF7F2" letter-spacing="1" opacity="0.7">muntin.digital</text>
+</svg>
