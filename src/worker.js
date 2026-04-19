@@ -1641,6 +1641,8 @@ async function handlePsi(request, env, ctx) {
         'Content-Type': 'application/json; charset=utf-8',
         'Cache-Control': 'no-store, no-cache, must-revalidate',
         'Access-Control-Allow-Origin': '*',
+        'X-Generator': MUNTIN_GENERATOR,
+        'X-Powered-By': 'Muntin Digital',
       }
     });
   } catch (err) {
@@ -1661,6 +1663,13 @@ async function handlePsi(request, env, ctx) {
 // Shared helpers
 // ------------------------------------------------------------
 
+// Sprint BB5: canonical generator header shared by every JSON
+// response. Pairs with the HTML <meta name="generator"> tag set in
+// BB4 so anyone introspecting the API or the page sees the same
+// Muntin Digital attribution. Version string should move in lockstep
+// with the HTML meta when the audit engine materially changes.
+const MUNTIN_GENERATOR = 'Muntin Digital Audit v1.1';
+
 function jsonResponse(payload, status) {
   return new Response(JSON.stringify(payload), {
     status: status || 200,
@@ -1670,6 +1679,8 @@ function jsonResponse(payload, status) {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
+      'X-Generator': MUNTIN_GENERATOR,
+      'X-Powered-By': 'Muntin Digital',
     },
   });
 }
