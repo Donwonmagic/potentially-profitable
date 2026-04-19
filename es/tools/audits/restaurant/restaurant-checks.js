@@ -449,49 +449,49 @@ var RESTAURANT_PRIORITY_CHECKS = [
     anchor: '#mobile',
     effort: 'dev',
     minutes: 10,
-    impact: "Text below 16px forces iOS to zoom on focus and frustrates every mobile reader. Menu descriptions that look fine on a laptop are often unreadable on a phone at arm's length.",
-    pass: 'Your text is legible without pinch-zooming',
-    passNote: 'Your body text is above the mobile readability threshold — visitors do not have to pinch-zoom to read the menu.',
-    fail: 'Your text is too small on a phone',
-    failNote: 'More than 40% of your text is below the legibility threshold. Visitors give up before finding their entree. Set body font-size to at least 16px — for menu descriptions and anything a hungry customer actually has to read, 17 or 18 px is better.',
-    unverified: "We couldn't check your text size",
-    unverifiedNote: "Lighthouse couldn't evaluate font sizes on this run. Re-audit in a few seconds and this usually resolves.",
+    impact: 'Un texto por debajo de 16 px fuerza a iOS a hacer zoom al enfocar y frustra a todo lector móvil. Las descripciones del menú que se ven bien en una laptop suelen ser ilegibles en un teléfono a la distancia del brazo.',
+    pass: 'Tu texto es legible sin hacer pinch-zoom',
+    passNote: 'El texto del cuerpo está por encima del umbral de legibilidad móvil — los visitantes no tienen que hacer pinch-zoom para leer el menú.',
+    fail: 'Tu texto es muy chico en el teléfono',
+    failNote: 'Más del 40 % de tu texto está por debajo del umbral de legibilidad. Los visitantes se rinden antes de encontrar su plato principal. Pon el tamaño de fuente del cuerpo en al menos 16 px — para las descripciones del menú y cualquier cosa que un cliente con hambre de verdad tenga que leer, 17 o 18 px es mejor.',
+    unverified: 'No pudimos verificar el tamaño de tu texto',
+    unverifiedNote: 'Lighthouse no pudo evaluar los tamaños de fuente en esta corrida. Vuelve a auditar en unos segundos y normalmente se resuelve.',
     byType: {
       'fine-dining': {
-        impact: 'Tasting-menu descriptions, wine-list notes, and chef\'s-counter blurbs are the highest-value text on your site. Set too small, they force a pinch-zoom that breaks the whole luxe experience.',
-        failNote: 'Set body font-size to at least 16px. For the tasting menu and wine list specifically, 17 or 18px is the floor — those blocks of descriptive copy are what convinces a guest to book.'
+        impact: 'Las descripciones del menú de degustación, las notas de la carta de vinos y los comentarios de la barra del chef son el texto de mayor valor de tu sitio. Si están muy chicos, fuerzan un pinch-zoom que rompe toda la experiencia de lujo.',
+        failNote: 'Pon el tamaño de fuente del cuerpo en al menos 16 px. Para el menú de degustación y la carta de vinos específicamente, 17 o 18 px es el piso — esos bloques de copy descriptivo son los que convencen al comensal de reservar.'
       },
       'fast-casual': {
-        impact: 'Customers scan your menu on a phone mid-walk. Small item names and prices turn a 10-second decision into a 30-second squint — and they close the tab and reopen DoorDash.',
-        failNote: 'Set body font-size to at least 16px. Item names and prices specifically should be 17 or 18px — the menu is your conversion page.'
+        impact: 'Los clientes escanean tu menú en el teléfono mientras caminan. Nombres de platos y precios chicos convierten una decisión de 10 segundos en un entrecerrar los ojos de 30 segundos — y cierran la pestaña y vuelven a abrir DoorDash.',
+        failNote: 'Pon el tamaño de fuente del cuerpo en al menos 16 px. Los nombres de los platos y los precios específicamente deberían ser 17 o 18 px — el menú es tu página de conversión.'
       },
       'cafe': {
-        impact: 'Hours and location are read more than anything else on a café site. Tiny type below 16px forces iOS to zoom on focus and makes "are they open?" a frustrating question.',
-        failNote: 'Set body font-size to at least 16px. The hours block specifically should be 17 or 18px — it\'s the first thing most café visitors look for.'
+        impact: 'Horarios y ubicación se leen más que nada en el sitio de una cafetería. Tipografía chiquita por debajo de 16 px fuerza a iOS a hacer zoom al enfocar y convierte el "¿están abiertos?" en una pregunta frustrante.',
+        failNote: 'Pon el tamaño de fuente del cuerpo en al menos 16 px. El bloque de horarios específicamente debería ser 17 o 18 px — es lo primero que la mayoría de los visitantes de cafetería buscan.'
       },
       'bakery': {
-        impact: 'Ingredient lists, custom-order spec fields, and pickup-date copy are the three things a bakery customer reads MOST carefully. Tiny type forces a pinch-zoom on exactly the moments that require precision.',
-        failNote: 'Set body to 16px, and set ingredient lists plus custom-order copy to 17-18px. Customers placing $200+ orders for a specific date want zero ambiguity about what they\'re ordering.'
+        impact: 'Listas de ingredientes, campos de especificación de pedidos personalizados y copy de fecha de recogida son las tres cosas que un cliente de panadería lee CON MÁS cuidado. Tipografía chiquita fuerza un pinch-zoom justo en los momentos que requieren precisión.',
+        failNote: 'Pon el cuerpo en 16 px, y pon las listas de ingredientes más el copy de pedidos personalizados en 17 a 18 px. Los clientes haciendo pedidos de USD 200+ para una fecha específica quieren cero ambigüedad sobre lo que están encargando.'
       },
       'pizzeria': {
-        impact: 'Topping lists, allergen notes (gluten / dairy / dairy-free cheese), and delivery-zone details are the make-or-break copy for a pizzeria. Tiny type forces a pinch-zoom on the exact moments a customer is deciding between ordering from you or opening Slice.',
-        failNote: 'Set body to 16px, and set topping lists and delivery-zone copy to 17-18px. The customer picking between "one large pepperoni" and "half-pepperoni half-mushroom" should never have to zoom.'
+        impact: 'Las listas de ingredientes, los avisos de alérgenos (gluten / lácteos / queso sin lácteos) y los detalles de la zona de entrega son el copy que decide todo para una pizzería. Tipografía chiquita fuerza un pinch-zoom justo en el momento en que el cliente está decidiendo entre pedirte a ti o abrir Slice.',
+        failNote: 'Pon el cuerpo en 16 px, y pon las listas de ingredientes y el copy de zona de entrega en 17 a 18 px. El cliente eligiendo entre "una grande de pepperoni" y "mitad pepperoni mitad champiñones" nunca debería tener que hacer zoom.'
       },
       'food-truck': {
-        impact: 'Schedule times and today\'s-location copy are the two pieces of content a food-truck customer reads MOST — usually on a phone, outdoors, while walking. Tiny type makes "are they at the brewery tonight?" a harder question than it needs to be.',
-        failNote: 'Set body to 16px, and set schedule times and today\'s-location copy to 17-18px. Both belong in a block large enough to read at a glance while walking.'
+        impact: 'Los horarios del calendario y el copy de la ubicación de hoy son las dos piezas de contenido que un cliente de food truck lee MÁS — normalmente desde el teléfono, afuera, mientras camina. Tipografía chiquita convierte "¿están en la cervecería esta noche?" en una pregunta más difícil de lo que tendría que ser.',
+        failNote: 'Pon el cuerpo en 16 px, y pon los horarios del calendario y el copy de ubicación de hoy en 17 a 18 px. Los dos van en un bloque lo suficientemente grande como para leerse de un vistazo mientras caminas.'
       },
       'ghost-kitchen': {
-        impact: 'Delivery hours, service area, and menu descriptions are the text customers actually read — and for ghost kitchens that text lives in competition with a lot of visual branding. Sub-16px type forces pinch-zooms on the exact decisions ("are they delivering now? to my zip?") that cost you the order.',
-        failNote: 'Set body to 16px, and put delivery-hours + service-area copy at 17-18px. These are the two paragraphs that decide whether the customer taps over to DoorDash at all.'
+        impact: 'Los horarios de entrega, el área de servicio y las descripciones del menú son el texto que los clientes de verdad leen — y en las cocinas fantasma ese texto vive compitiendo con mucho branding visual. Tipografía por debajo de 16 px fuerza pinch-zooms justo en las decisiones ("¿están entregando ahora? ¿a mi código postal?") que te cuestan el pedido.',
+        failNote: 'Pon el cuerpo en 16 px, y pon el copy de horarios de entrega + área de servicio en 17 a 18 px. Son los dos párrafos que deciden si el cliente siquiera pasa a DoorDash.'
       },
       'catering-only': {
-        impact: 'Package descriptions, per-head pricing tables, dietary-accommodation notes, and lead-time rules are the decision-critical text on a catering site. Tiny type on a phone forces the planner — who is already rushed — to pinch-zoom through your rate card, which is a terrible first impression for a $5,000 booking.',
-        failNote: 'Set body to 16px, and set package descriptions + pricing tables to 17-18px. Corporate planners often read on a phone between meetings — make the rate card scannable without zoom.'
+        impact: 'Las descripciones de paquetes, las tablas de precios por persona, los avisos de acomodo dietario y las reglas de tiempo mínimo de aviso son el texto crítico de decisión en un sitio de catering. Tipografía chiquita en el teléfono fuerza al planificador — que ya va apurado — a hacer pinch-zoom por tu tabla de tarifas, lo que es una pésima primera impresión para una reserva de USD 5,000.',
+        failNote: 'Pon el cuerpo en 16 px, y pon las descripciones de paquetes + las tablas de precios en 17 a 18 px. Los planificadores corporativos suelen leer desde el teléfono entre reuniones — haz que la tabla de tarifas sea escaneable sin hacer zoom.'
       },
       'bar-pub': {
-        impact: 'Cocktail lists, draft lists, and happy-hour details are the bar\'s menu. Small type on a phone in a dim Uber ride is a usability tax guests won\'t pay.',
-        failNote: 'Set body font-size to at least 16px. The cocktail/draft list and happy-hour times deserve 17 or 18px — those are the conversion paragraphs for a bar site.'
+        impact: 'Las cartas de cocteles, las cartas de cerveza de barril y los detalles de happy hour son el menú del bar. Tipografía chica en el teléfono desde un Uber con poca luz es un impuesto de usabilidad que el invitado no va a pagar.',
+        failNote: 'Pon el tamaño de fuente del cuerpo en al menos 16 px. La carta de cocteles / cerveza de barril y los horarios de happy hour merecen 17 o 18 px — esos son los párrafos de conversión para un sitio de bar.'
       }
     }
   },
