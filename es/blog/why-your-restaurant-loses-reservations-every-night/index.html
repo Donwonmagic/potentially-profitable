@@ -589,73 +589,73 @@
       <p><strong>Cómo probarlo en treinta segundos:</strong> abre tu sitio en frío. Cronometra cuántos segundos pasan antes de que puedas ver el horario <em>de hoy</em> sin hacer scroll ni tocar nada. Si son más de cinco, tienes la Fuga n.º 3.</p>
       <p><strong>El arreglo:</strong> pon el horario en el hero, o en un header fijo, o en una etiqueta chica de "ABIERTO AHORA · hasta las 10 PM" que se actualice sola según la hora actual. La etiqueta es mi favorita — son unas treinta líneas de JavaScript y tranquiliza al visitante justo en el momento en que lo necesita.</p>
 
-      <h3>Leak #4 — The reservation button is buried or missing</h3>
-      <p>Some restaurant sites don't have a reservation button on the homepage at all. Others have one, but it's in a dropdown menu at the top right, or it's a small text link at the bottom of a long hero, or it only lives on the "Contact" page. This is the leak that frustrates me the most, because the fix is so cheap and the impact is so obvious.</p>
-      <p>There's a well-established UX principle here — <a href="https://www.nngroup.com/articles/fittss-law/" target="_blank" rel="noopener">Fitts's Law</a>, which in plain English says: <em>the harder a button is to reach, the less often people press it</em>. A reservation button at the top of a nav that requires a tap to open and then a second tap to select is twice as hard to hit as a button that's permanently visible at the bottom of the screen. You lose conversion at every step of the tap path.</p>
-      <p><strong>How to test it in thirty seconds:</strong> open your homepage on your phone. Without scrolling or opening any menus, can you tap "Reserve" in a single gesture? If not — Leak #4.</p>
-      <p><strong>The fix:</strong> add a sticky bottom-of-screen reservation CTA on every mobile page. It's maybe an hour of work on a custom site. On most template builders you can approximate it with a floating widget. Either way, it's the single highest-ROI change you can make for conversion — and most of the restaurants I've audited have never even considered it.</p>
+      <h3>Fuga n.º 4 — El botón de reserva está enterrado o no está</h3>
+      <p>Algunos sitios de restaurante no tienen ningún botón de reserva en la portada. Otros sí tienen uno, pero está en un menú desplegable arriba a la derecha, o es un enlace de texto chico al final de un hero largo, o solo vive en la página de "Contacto". Esta es la fuga que más me frustra, porque el arreglo es tan barato y el impacto tan obvio.</p>
+      <p>Acá hay un principio de UX bien establecido — <a href="https://www.nngroup.com/articles/fittss-law/" target="_blank" rel="noopener">la Ley de Fitts</a>, que en cristiano dice: <em>mientras más difícil sea alcanzar un botón, menos veces lo va a tocar la gente</em>. Un botón de reserva arriba en la nav que requiere un toque para abrir y después un segundo toque para seleccionar es el doble de difícil de pegar que un botón permanentemente visible abajo en la pantalla. Pierdes conversión en cada paso del camino del toque.</p>
+      <p><strong>Cómo probarlo en treinta segundos:</strong> abre tu portada en el teléfono. Sin hacer scroll ni abrir ningún menú, ¿puedes tocar "Reservar" en un solo gesto? Si no — Fuga n.º 4.</p>
+      <p><strong>El arreglo:</strong> agrega un CTA de reserva fijo abajo en la pantalla en toda página móvil. Es quizá una hora de trabajo en un sitio a medida. En la mayoría de los constructores de plantilla puedes aproximarlo con un widget flotante. De cualquier manera, es el único cambio con más ROI que puedes hacer para conversión — y la mayoría de los restaurantes que he auditado ni siquiera lo ha considerado.</p>
 
-      <h3>Leak #5 — Reservation flow friction</h3>
-      <p>This is where most restaurant reservation funnels actually fall apart. The visitor tapped "Reserve," which means they're <em>in</em> — the conversion is one or two clicks from happening. And most restaurant sites use a booking platform that turns those one or two clicks into seven.</p>
-      <p>Here's what a typical reservation widget asks for: party size, date, time, alternative time, name, phone, email, password for the account you're being quietly signed up for, phone-verification code, "agree to terms," sometimes a credit card held as collateral, sometimes a captcha to prove you're human. By step seven, the customer has forgotten why they wanted Italian food.</p>
-      <p>Baymard Institute's research on e-commerce checkout abandonment finds that the average cart-abandonment rate in online retail hovers around <strong>70%</strong>, and one of the top reasons cited by shoppers is "the site wanted me to create an account." Reservation forms are checkout forms wearing a different hat, and they suffer the same dynamic: every additional field, every unnecessary account, every extra screen correlates directly with people dropping out.</p>
+      <h3>Fuga n.º 5 — Fricción en el flujo de reserva</h3>
+      <p>Aquí es donde la mayoría de los embudos de reserva de restaurantes se cae de verdad. El visitante tocó "Reservar", lo que significa que está <em>adentro</em> — la conversión está a uno o dos clics de pasar. Y la mayoría de los sitios de restaurante usa una plataforma de reservas que convierte esos uno o dos clics en siete.</p>
+      <p>Esto es lo que pide un widget típico de reservas: tamaño del grupo, fecha, hora, hora alternativa, nombre, teléfono, correo, contraseña para la cuenta que te están creando en silencio, código de verificación por teléfono, "aceptar términos", a veces una tarjeta de crédito retenida como garantía, a veces un captcha para probar que eres humano. Para el paso siete, el cliente ya olvidó por qué quería comida italiana.</p>
+      <p>La investigación del Baymard Institute sobre abandono de carrito en e-commerce encuentra que la tasa promedio de abandono de carrito en retail en línea ronda el <strong>70 %</strong>, y una de las razones principales que citan los compradores es "el sitio quería que creara una cuenta". Los formularios de reserva son formularios de checkout con otro sombrero, y sufren la misma dinámica: cada campo adicional, cada cuenta innecesaria, cada pantalla extra correlaciona directo con gente cayéndose del flujo.</p>
 
       <details class="cite">
-        <summary>Source: Baymard Institute, ongoing</summary>
+        <summary>Fuente: Baymard Institute, en curso</summary>
         <div class="cite-body">
-          <p><span class="cite-source">Baymard Institute</span> — "49 Cart Abandonment Rate Statistics"</p>
-          <p>A regularly updated meta-analysis of dozens of studies on online shopping cart abandonment. The average rate across all studies is approximately 70%. "Account creation required" is consistently one of the top 2–3 reasons cited by shoppers who abandoned during checkout. While the data is from e-commerce (not reservations), the UX friction pattern — more fields = more dropoff — applies directly to any multi-step form.</p>
-          <a href="https://baymard.com/lists/cart-abandonment-rate" target="_blank" rel="noopener">Baymard cart abandonment research</a>
+          <p><span class="cite-source">Baymard Institute</span> — "49 estadísticas sobre la tasa de abandono de carrito"</p>
+          <p>Un meta-análisis actualizado regularmente de docenas de estudios sobre abandono de carrito en compras en línea. La tasa promedio entre todos los estudios es aproximadamente 70 %. "Requiere crear cuenta" consistentemente está entre las 2 o 3 razones principales que citan los compradores que abandonaron durante el checkout. Aunque los datos son de e-commerce (no de reservas), el patrón de fricción de UX — más campos = más caídas — aplica directo a cualquier formulario multipaso.</p>
+          <a href="https://baymard.com/lists/cart-abandonment-rate" target="_blank" rel="noopener">Investigación de Baymard sobre abandono de carrito</a>
         </div>
       </details>
 
-      <p><strong>How to test it in thirty seconds:</strong> pretend you're a first-time customer and actually book a table at your own restaurant end-to-end. Count the distinct screens and required fields. If you got past six, that's Leak #5 — and most restaurants I audit land between eight and twelve.</p>
-      <p><strong>The fix:</strong> pick a reservation platform whose default flow has fewer steps (the major players vary a lot), or — if your volume is low enough — use a simple embedded form that asks for name, date, time, party size, and email, and emails your host stand. When your volume grows, you revisit the platform decision. Don't pay a complex system for simple bookings.</p>
+      <p><strong>Cómo probarlo en treinta segundos:</strong> finge que eres un cliente de primera vez y reserva de verdad una mesa en tu propio restaurante de punta a punta. Cuenta las pantallas distintas y los campos obligatorios. Si pasaste de seis, esa es la Fuga n.º 5 — y la mayoría de los restaurantes que audito cae entre ocho y doce.</p>
+      <p><strong>El arreglo:</strong> elige una plataforma de reservas cuyo flujo por defecto tenga menos pasos (los grandes varían bastante), o — si tu volumen es lo suficientemente bajo — usa un formulario simple incrustado que pida nombre, fecha, hora, tamaño del grupo y correo, y que le mande un correo a tu host. Cuando tu volumen crezca, vuelves a la decisión de plataforma. No pagues un sistema complejo para reservas simples.</p>
 
-      <h3>Leak #6 — Confirmation anxiety</h3>
-      <p>This one is small on the funnel (about three people out of a hundred) but it's nasty because it's invisible to you. Here's what happens: the customer completes the booking, the reservation widget flashes a "thanks!" screen, and then... nothing. No email. No text message. No paper trail. They wait a few hours, start to doubt the booking went through, and quietly call somewhere else "just in case." Sometimes they show up expecting a table that doesn't exist in the system. Either outcome is a worse experience than if they'd never tried to book at all.</p>
-      <p><strong>How to test it in thirty seconds:</strong> book a real reservation at your own restaurant right now. Does a confirmation email arrive within a minute? Is it from your restaurant's name, or a generic "OpenTable Reservations" address? Does it clearly state the date, time, party size, and how to modify or cancel? Is it signed by the restaurant — or does it feel like a robot wrote it?</p>
-      <p><strong>The fix:</strong> it's pure operations. Make sure your reservation system sends an instant, well-formatted confirmation email. Customize the sender name to be the restaurant, not the platform. Add a reminder email the day-of. If your current platform won't let you customize the confirmation, ask your provider — most will turn it on when asked. If they won't, that's a reason to change platforms.</p>
+      <h3>Fuga n.º 6 — Ansiedad de confirmación</h3>
+      <p>Esta es chica en el embudo (como tres personas de cada cien) pero es fea porque para ti es invisible. Así es lo que pasa: el cliente completa la reserva, el widget de reserva le muestra una pantalla de "¡gracias!", y después… nada. Ni correo. Ni mensaje de texto. Ni rastro escrito. Esperan unas horas, empiezan a dudar si la reserva pasó, y en silencio llaman a otro lado "por si acaso". A veces se aparecen esperando una mesa que no existe en el sistema. Cualquiera de los dos resultados es peor experiencia que si nunca hubieran intentado reservar.</p>
+      <p><strong>Cómo probarlo en treinta segundos:</strong> haz una reserva real en tu propio restaurante ahora mismo. ¿Llega un correo de confirmación en un minuto? ¿Viene del nombre de tu restaurante, o de una dirección genérica tipo "OpenTable Reservations"? ¿Dice claramente la fecha, la hora, el tamaño del grupo y cómo modificar o cancelar? ¿Está firmado por el restaurante — o se siente como si lo hubiera escrito un robot?</p>
+      <p><strong>El arreglo:</strong> es puro operativo. Asegúrate de que tu sistema de reservas mande un correo de confirmación instantáneo y bien formateado. Personaliza el nombre del remitente para que sea el restaurante, no la plataforma. Agrega un correo de recordatorio el mismo día. Si tu plataforma actual no te deja personalizar la confirmación, pregúntale al proveedor — la mayoría lo activa cuando se lo piden. Si no lo hace, esa es una razón para cambiar de plataforma.</p>
 
-      <h2>The fix math</h2>
-      <p>Here's the thing that usually surprises restaurant owners most: <strong>fixing the top four leaks — slow load, PDF menu, hidden hours, and missing reservation button — typically takes a single focused afternoon</strong> on a custom-built site. Four of the six leaks, closed in one session, for the cost of an audit plus a few hours of work. On a template site like Wix or Squarespace, three of the four aren't really fixable without a rebuild, which is the quiet cost of the "cheap" platform — you can't close the leaks even after you find them.</p>
-      <p>The remaining two leaks (reservation flow friction and confirmation anxiety) usually aren't code problems at all — they're platform-choice or operational problems. They take longer to address, but they're almost always worth the effort.</p>
-      <p>If you close all six, you'll probably recover somewhere between 30 and 50% of the traffic you're losing today. Your actual recovery will depend on your menu, your clientele, and how badly the site was leaking to start with — but the direction is one-way, and the compounding is real. Every month you leave the leaks in place, you're lighting money on fire that the customer was already holding out to you.</p>
+      <h2>La cuenta del arreglo</h2>
+      <p>Esto es lo que normalmente sorprende más a los dueños de restaurante: <strong>arreglar las cuatro fugas principales — carga lenta, menú en PDF, horario escondido y botón de reserva ausente — normalmente toma una sola tarde enfocada</strong> en un sitio a medida. Cuatro de las seis fugas, cerradas en una sola sesión, por el costo de una auditoría más unas pocas horas de trabajo. En un sitio de plantilla como Wix o Squarespace, tres de las cuatro no se arreglan de verdad sin una reconstrucción, que es el costo silencioso de la plataforma "barata" — no puedes cerrar las fugas ni siquiera después de encontrarlas.</p>
+      <p>Las dos fugas restantes (fricción en el flujo de reserva y ansiedad de confirmación) normalmente no son problemas de código — son problemas de elección de plataforma o de operación. Toman más tiempo, pero casi siempre valen el esfuerzo.</p>
+      <p>Si cierras las seis, probablemente recuperes en algún lugar entre el 30 y el 50 % del tráfico que estás perdiendo hoy. Tu recuperación real va a depender de tu menú, tu clientela y qué tan mal estaba goteando el sitio para empezar — pero la dirección es una sola, y el efecto compuesto es real. Cada mes que dejas las fugas en su lugar, estás prendiéndole fuego a plata que el cliente ya te estaba ofreciendo en la mano.</p>
 
       <div class="inline-cta">
-        <h4 class="i18n">Want to see which leaks your site has?</h4>
-        <p class="i18n">The free Restaurant Website Audit runs a real mobile Lighthouse scan in about thirty seconds and flags the specific leaks this post walks through. Or book a twenty-minute call and I'll walk through your site with you on Zoom, leak by leak.</p>
-        <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span>
+        <h4 class="i18n">¿Quieres ver qué fugas tiene tu sitio?</h4>
+        <p class="i18n">El Diagnóstico gratis de sitios de restaurante corre un escaneo real de Lighthouse en móvil en unos treinta segundos y marca las fugas específicas que este artículo recorre. O agenda una llamada de veinte minutos y repasamos tu sitio juntos por Zoom, fuga por fuga.</p>
+        <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Agenda una llamada de 20 min<span class="sr-only"> (se abre en una pestaña nueva)</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
       </div>
     </article>
 
     <aside class="further-reading">
-      <p class="label">Further reading</p>
-      <a href="/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/">
-        <h4>How Much Does a Custom Restaurant Website Cost in 2026?</h4>
-        <p>The full priced breakdown — line items, real examples, and what you're paying for that doesn't appear on the invoice.</p>
+      <p class="label">Sigue leyendo</p>
+      <a href="/es/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/">
+        <h4>¿Cuánto cuesta un sitio a medida para restaurante en 2026?</h4>
+        <p>El desglose completo de precios — rubros reales, ejemplos concretos, y lo que estás pagando que no aparece en la factura.</p>
       </a>
-      <a href="/resources/restaurant-website-checklist/">
-        <h4>The Restaurant Website Checklist</h4>
-        <p>Twenty-three checks you can run on your own site in ten minutes. Half of them map directly to the leaks in this post.</p>
+      <a href="/es/resources/restaurant-website-checklist/">
+        <h4>El checklist para sitios de restaurante</h4>
+        <p>Treinta revisiones que puedes correr en tu propio sitio en diez minutos. La mitad mapea directo con las fugas de este artículo.</p>
       </a>
-      <a href="/tools/audits/restaurant/">
-        <h4>Free Restaurant Website Audit</h4>
-        <p>Drop your URL and get a real mobile Lighthouse audit in about thirty seconds — the fastest way to verify Leak #1 on your own site.</p>
+      <a href="/es/tools/audits/restaurant/">
+        <h4>Diagnóstico gratis de sitios de restaurante</h4>
+        <p>Suelta tu URL y consigue un diagnóstico real de Lighthouse móvil en unos treinta segundos — la forma más rápida de verificar la Fuga n.º 1 en tu propio sitio.</p>
       </a>
-      <a href="/blog/">
-        <h4>Back to Writing</h4>
-        <p>More notes from the studio.</p>
+      <a href="/es/blog/">
+        <h4>Volver a los escritos</h4>
+        <p>Más notas desde el estudio.</p>
       </a>
     </aside>
 
     <aside class="sources">
-      <p class="sources-label">Sources</p>
+      <p class="sources-label">Fuentes</p>
       <ol>
-        <li>Daniel An, <cite>"Find out how you stack up to new industry benchmarks for mobile page speed,"</cite> Think with Google, February 2017. <a href="https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/" target="_blank" rel="noopener">thinkwithgoogle.com</a></li>
-        <li>Jakob Nielsen and Kara Pernice, <cite>"Usability of Local Business Websites,"</cite> Nielsen Norman Group. <a href="https://www.nngroup.com/articles/local-business/" target="_blank" rel="noopener">nngroup.com</a></li>
+        <li>Daniel An, <cite>"Find out how you stack up to new industry benchmarks for mobile page speed,"</cite> Think with Google, febrero de 2017. <a href="https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/" target="_blank" rel="noopener">thinkwithgoogle.com</a></li>
+        <li>Jakob Nielsen y Kara Pernice, <cite>"Usability of Local Business Websites,"</cite> Nielsen Norman Group. <a href="https://www.nngroup.com/articles/local-business/" target="_blank" rel="noopener">nngroup.com</a></li>
         <li>Raluca Budiu, <cite>"Fitts's Law and Its Applications in UX,"</cite> Nielsen Norman Group. <a href="https://www.nngroup.com/articles/fittss-law/" target="_blank" rel="noopener">nngroup.com</a></li>
         <li>Baymard Institute, <cite>"Cart Abandonment Rate Statistics,"</cite> Baymard Research. <a href="https://baymard.com/lists/cart-abandonment-rate" target="_blank" rel="noopener">baymard.com</a></li>
       </ol>
