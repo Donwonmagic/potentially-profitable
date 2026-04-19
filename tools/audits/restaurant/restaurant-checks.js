@@ -1040,18 +1040,25 @@ var RESTAURANT_PRIORITY_CHECKS = [
     byType: {
       'fine-dining': {
         impact: 'Fine-dining tasting menus live or die on accommodating dietary restrictions — half the phone calls your host fields are "do you have gluten-free or vegetarian options?" Surfacing answers on the menu page deflects those calls and lets guests book with confidence.',
-        unverifiedNote: 'Tasting-menu dietary accommodations belong on your menu or reservations page in plain English. "Vegetarian tasting available on request" earns bookings; silence sends them to a restaurant that says so.'
+        impact_es: 'Los menús degustación de fine-dining viven o mueren por acomodar restricciones dietéticas — la mitad de las llamadas que tu host atiende son "¿tienen opciones sin gluten o vegetarianas?" Poner las respuestas en la página del menú desvía esas llamadas y deja a los comensales reservar con confianza.',
+        unverifiedNote: 'Tasting-menu dietary accommodations belong on your menu or reservations page in plain English. "Vegetarian tasting available on request" earns bookings; silence sends them to a restaurant that says so.',
+        unverifiedNote_es: 'Las acomodaciones dietéticas del menú degustación pertenecen en tu página de menú o reservas en lenguaje claro. "Menú degustación vegetariano bajo pedido" gana reservas; el silencio las manda a un restaurante que sí lo dice.'
       },
       'casual-dining': {
         impact: 'Casual-dining guests often decide between two restaurants based on whether one of them clearly marks vegetarian or gluten-free options. The market of dietary-aware eaters is bigger than most owners realize — about 1 in 3 diners avoids at least one food group.',
-        unverifiedNote: 'Mark a few items with V / GF / DF symbols on the menu page (with a small legend). This is the single highest-ROI content change a casual-dining site can make.'
+        impact_es: 'Los comensales de casual-dining frecuentemente eligen entre dos restaurantes según cuál marca claramente opciones vegetarianas o sin gluten. El mercado de comensales con restricciones es más grande de lo que la mayoría de los dueños cree — cerca de 1 de cada 3 evita al menos un grupo de alimentos.',
+        unverifiedNote: 'Mark a few items with V / GF / DF symbols on the menu page (with a small legend). This is the single highest-ROI content change a casual-dining site can make.',
+        unverifiedNote_es: 'Marca algunos platos con símbolos V / SG / SL en la página del menú (con una leyenda pequeña). Es el cambio de contenido con mayor ROI que un sitio de casual-dining puede hacer.'
       },
       'bakery': {
         impact: 'For bakeries dietary markers are not marketing — they are safety. A customer ordering a custom cake for a nut-allergic child trusts whether you\'ve thought about cross-contamination, and your site is where they decide whether to trust you with a birthday.',
-        unverifiedNote: 'Call out cross-contamination policy and clearly mark nut-free / gluten-free / dairy-free bakes on the menu page. For custom-order intake, add a dietary-restriction field to the form. This is a trust-earning change, not a marketing one.'
+        impact_es: 'Para las panaderías, las marcas dietéticas no son marketing — son seguridad. Un cliente pidiendo un pastel personalizado para un niño con alergia a nueces confía en si has pensado en contaminación cruzada, y tu sitio es donde decide si confiarte un cumpleaños.',
+        unverifiedNote: 'Call out cross-contamination policy and clearly mark nut-free / gluten-free / dairy-free bakes on the menu page. For custom-order intake, add a dietary-restriction field to the form. This is a trust-earning change, not a marketing one.',
+        unverifiedNote_es: 'Destaca tu política de contaminación cruzada y marca claramente los horneados sin nueces / sin gluten / sin lácteos en la página del menú. Para el intake de pedidos personalizados, agrega un campo de restricciones dietéticas al formulario. Es un cambio de ganancia de confianza, no de marketing.'
       },
       'ghost-kitchen': {
-        impact: 'Ghost-kitchen customers rarely inspect the site before ordering — but the ones who DO are usually dietary-restricted and comparing brands before committing. Clear dietary markers on your brand page move those orders into your funnel instead of a competing aggregator listing.'
+        impact: 'Ghost-kitchen customers rarely inspect the site before ordering — but the ones who DO are usually dietary-restricted and comparing brands before committing. Clear dietary markers on your brand page move those orders into your funnel instead of a competing aggregator listing.',
+        impact_es: 'Los clientes de cocinas fantasma rara vez inspeccionan el sitio antes de pedir — pero los que SÍ lo hacen normalmente tienen restricciones dietéticas y comparan marcas antes de comprometerse. Las marcas dietéticas claras en tu página de marca mueven esos pedidos a tu funnel en vez de a un listado de agregador competidor.'
       }
     }
   },
@@ -1079,18 +1086,25 @@ var RESTAURANT_PRIORITY_CHECKS = [
     byType: {
       'fine-dining': {
         impact: 'Gift cards at fine-dining restaurants are the "special occasion" present par excellence — anniversaries, birthdays, holiday gifts. Redemption rates run higher than casual dining but unredeemed balances are still pure margin. Physical printed cards are a nice upsell for corporate gifts.',
-        unverifiedNote: 'A gift-card page on a fine-dining site pays for itself during the holidays. Tock, Resy, and SevenRooms all integrate gift cards; Toast does too if you are on their POS.'
+        impact_es: 'Las tarjetas de regalo en restaurantes de fine-dining son el regalo de "ocasión especial" por excelencia — aniversarios, cumpleaños, regalos de fiestas. Las tasas de canje son más altas que en casual dining pero los saldos no canjeados siguen siendo puro margen. Las tarjetas físicas impresas son un buen upsell para regalos corporativos.',
+        unverifiedNote: 'A gift-card page on a fine-dining site pays for itself during the holidays. Tock, Resy, and SevenRooms all integrate gift cards; Toast does too if you are on their POS.',
+        unverifiedNote_es: 'Una página de tarjetas de regalo en un sitio de fine-dining se paga sola en las fiestas. Tock, Resy y SevenRooms todos integran tarjetas de regalo; Toast también si estás en su POS.'
       },
       'bar-pub': {
         impact: 'Bars and pubs over-index on gift cards — stocking-stuffers, birthday presents, thank-you gifts from corporate accounts. Every unredeemed card is pure revenue; every redeemed one brings in a customer plus whatever they spend above the card value.',
-        unverifiedNote: 'Bar gift cards especially benefit from a simple online checkout. Square and Toast both do this well; Tripleseat if you already use it for events.'
+        impact_es: 'Los bares y pubs sobre-indexan en tarjetas de regalo — rellenos de medias navideñas, regalos de cumpleaños, regalos de agradecimiento de cuentas corporativas. Cada tarjeta no canjeada es puro ingreso; cada canjeada trae un cliente más lo que gaste por encima del valor de la tarjeta.',
+        unverifiedNote: 'Bar gift cards especially benefit from a simple online checkout. Square and Toast both do this well; Tripleseat if you already use it for events.',
+        unverifiedNote_es: 'Las tarjetas de regalo de bar en especial se benefician de un checkout simple en línea. Square y Toast lo hacen bien; Tripleseat si ya lo usas para eventos.'
       },
       'bakery': {
         impact: 'Bakery gift cards convert well for birthday presents, corporate gifts, and the "sorry I forgot the birthday cake" save. They are also one of the easiest ways to capture a repeat customer from a one-time visitor.',
-        unverifiedNote: 'A gift-card purchase page on your bakery site with $25, $50, $100 presets is the baseline. Square and Toast both handle this natively; email-delivered e-cards make same-day gift purchases possible.'
+        impact_es: 'Las tarjetas de regalo de panadería convierten bien para regalos de cumpleaños, regalos corporativos y el rescate de "perdón, olvidé el pastel de cumpleaños". También son una de las formas más fáciles de convertir un visitante único en cliente repetido.',
+        unverifiedNote: 'A gift-card purchase page on your bakery site with $25, $50, $100 presets is the baseline. Square and Toast both handle this natively; email-delivered e-cards make same-day gift purchases possible.',
+        unverifiedNote_es: 'Una página de compra de tarjetas de regalo en tu sitio de panadería con presets de $25, $50, $100 es la base. Square y Toast ambos lo manejan nativamente; las e-cards entregadas por correo permiten compras de regalo el mismo día.'
       },
       'ghost-kitchen': {
-        impact: 'Gift cards matter less for ghost kitchens (customers who never visit are unlikely to gift-card-gift the experience), but digital e-cards still add revenue around holidays — and matter for corporate catering accounts.'
+        impact: 'Gift cards matter less for ghost kitchens (customers who never visit are unlikely to gift-card-gift the experience), but digital e-cards still add revenue around holidays — and matter for corporate catering accounts.',
+        impact_es: 'Las tarjetas de regalo importan menos para las cocinas fantasma (los clientes que nunca visitan difícilmente regalarán la experiencia), pero las e-cards digitales aún añaden ingresos en las fiestas — y importan para las cuentas de catering corporativo.'
       }
     }
   },
@@ -1159,13 +1173,16 @@ var RESTAURANT_PRIORITY_CHECKS = [
     unverifiedNote_es: 'Buscamos enlaces etiquetados "Catering", "Eventos Privados", "Fiestas" o "Bodas" en tu navegación. Si haces eventos pero la página se llama distinto, avísanos. Si hoy no, una página de catering es una de las adiciones de más alto ROI para cualquier restaurante con capacidad de comedor.',
     byType: {
       'fine-dining': {
-        impact: 'Private-dining rooms and buyouts are the margin engine of fine-dining — a single corporate holiday party pays for a slow week. A dedicated events page with capacity, sample menus, and photo gallery is what the event planners searching "private dining [city]" actually land on.'
+        impact: 'Private-dining rooms and buyouts are the margin engine of fine-dining — a single corporate holiday party pays for a slow week. A dedicated events page with capacity, sample menus, and photo gallery is what the event planners searching "private dining [city]" actually land on.',
+        impact_es: 'Los salones privados y buyouts son el motor de margen del fine-dining — una sola fiesta corporativa de fiestas paga una semana lenta. Una página dedicada de eventos con capacidad, menús de muestra y galería de fotos es donde los planificadores de eventos buscando "cenas privadas [ciudad]" realmente aterrizan.'
       },
       'catering-only': {
-        impact: 'For a catering-only business the catering page IS the site. It\'s where packages, per-head pricing, dietary accommodations, minimum order sizes, service radius, lead time, and the RFQ form all live. Without it, planners comparing vendors leave for a competitor with clearer info.'
+        impact: 'For a catering-only business the catering page IS the site. It\'s where packages, per-head pricing, dietary accommodations, minimum order sizes, service radius, lead time, and the RFQ form all live. Without it, planners comparing vendors leave for a competitor with clearer info.',
+        impact_es: 'Para un negocio solo de catering, la página de catering ES el sitio. Es donde viven los paquetes, precios por cabeza, acomodaciones dietéticas, tamaños mínimos de pedido, radio de servicio, tiempo de anticipación y el formulario RFQ. Sin ella, los planificadores comparando vendedores se van con un competidor que tenga info más clara.'
       },
       'bar-pub': {
-        impact: 'Private parties (birthdays, work socials, whiskey tastings) are high-ticket bar revenue that walks in by appointment. A dedicated events page with capacity, packages, and a Tripleseat / inquiry form converts those bookings that would otherwise end up in a lost email thread.'
+        impact: 'Private parties (birthdays, work socials, whiskey tastings) are high-ticket bar revenue that walks in by appointment. A dedicated events page with capacity, packages, and a Tripleseat / inquiry form converts those bookings that would otherwise end up in a lost email thread.',
+        impact_es: 'Las fiestas privadas (cumpleaños, reuniones de trabajo, catas de whiskey) son ingresos de alto valor en un bar que llegan por cita. Una página dedicada de eventos con capacidad, paquetes y un formulario Tripleseat / consulta convierte esas reservas que de otra forma terminarían en un hilo de correos perdido.'
       }
     }
   },

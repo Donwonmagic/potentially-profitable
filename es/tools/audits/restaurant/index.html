@@ -5133,10 +5133,14 @@
   // restaurant-checks.js use the new canonical keys (cafe, bar-pub,
   // etc.) while old share URLs still land on the right copy.
   function resolveCheckForType(def, businessType) {
-    // Sprint ES9: localize BOTH the base def and the byType override
-    // before merging, so a Spanish-locale render picks _es variants
-    // at every tier. Returns the merged + localized object in one
-    // pass; callers don't need to call localizeCheckCopy separately.
+    // Sprint ES9 / fixed in ES11: merge base + byType override in
+    // English FIRST, then localize once over the merged object. This
+    // way a byType that overrides only `impact` in English (no _es)
+    // doesn't shadow the base def's `impact_es` in the Spanish locale —
+    // the localize pass picks up impact_es that the base copied
+    // through, OR the override's own impact_es if present, while
+    // preserving any non-localized subtype-specific fields that
+    // genuinely need to override.
     var localize = (typeof localizeCheckCopy === 'function')
       ? localizeCheckCopy : function(x){ return x; };
     if (!def || !def.byType || !businessType) return localize(def);
@@ -5146,12 +5150,10 @@
     var key = canon || businessType;
     var override = def.byType[key];
     if (!override) return localize(def);
-    var baseDef     = localize(def);
-    var overrideDef = localize(override);
     var merged = {};
-    for (var k in baseDef) if (baseDef.hasOwnProperty(k) && k !== 'byType') merged[k] = baseDef[k];
-    for (var k2 in overrideDef) if (overrideDef.hasOwnProperty(k2)) merged[k2] = overrideDef[k2];
-    return merged;
+    for (var k in def) if (def.hasOwnProperty(k) && k !== 'byType') merged[k] = def[k];
+    for (var k2 in override) if (override.hasOwnProperty(k2)) merged[k2] = override[k2];
+    return localize(merged);
   }
 
   // Single source of truth: owner correction wins over auto-detection
