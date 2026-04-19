@@ -555,40 +555,40 @@ var RESTAURANT_PRIORITY_CHECKS = [
     anchor: '#conversions',
     effort: 'dev',
     minutes: 15,
-    impact: "The path from 'I might check this place out' to 'I am driving there' should be one tap. An embedded map or a Maps link cuts directions friction to zero — plain-text addresses add a whole copy-paste flow before the customer even arrives.",
-    pass: 'Visitors can get directions with one tap',
-    passNote: '{detected} is on your site — first-time visitors can tap once to get turn-by-turn directions to your door.',
-    fail: null, // never fail this check — absence is always unverified
+    impact: 'El camino de "quizá me doy una vuelta por este lugar" a "ya voy manejando para allá" debería ser un solo toque. Un mapa incrustado o un enlace a Maps reduce la fricción de las indicaciones a cero — las direcciones en texto plano agregan todo un flujo de copiar-pegar antes de que el cliente siquiera llegue.',
+    pass: 'Los visitantes pueden conseguir indicaciones con un solo toque',
+    passNote: '{detected} está en tu sitio — los visitantes de primera vez pueden tocar una vez para conseguir indicaciones paso a paso hasta tu puerta.',
+    fail: null, // nunca falla esta revisión — la ausencia siempre queda como no verificada
     failNote: null,
-    unverified: "We didn't see a map on your site — is this right?",
-    unverifiedNote: "We scan for Google Maps, Apple Maps, Mapbox, Bing Maps, OpenStreetMap, Waze, and Leaflet. If your site uses one of those, great — we just couldn't find it on this run. If your address is plain text only, consider wrapping it in a Google Maps link so visitors can launch directions in one tap.",
+    unverified: 'No vimos un mapa en tu sitio — ¿es correcto?',
+    unverifiedNote: 'Escaneamos Google Maps, Apple Maps, Mapbox, Bing Maps, OpenStreetMap, Waze y Leaflet. Si tu sitio usa uno de esos, perfecto — solo que no lo encontramos en esta corrida. Si tu dirección es solo texto plano, considera envolverla en un enlace de Google Maps para que los visitantes puedan lanzar las indicaciones en un solo toque.',
     byType: {
       'fine-dining': {
-        impact: 'First-time guests heading to a fine-dining reservation want turn-by-turn directions, not a copy-paste address. A tappable map is part of the concierge experience — and it\'s expected.'
+        impact: 'Los invitados de primera vez que van a una reserva de alta cocina quieren indicaciones paso a paso, no una dirección para copiar y pegar. Un mapa tocable es parte de la experiencia concierge — y se da por hecho.'
       },
       'fast-casual': {
-        impact: 'Fast-casual traffic is often "food near me" intent — visitors are already on their phone deciding where to walk or drive. A one-tap map shaves 15 seconds off the decision and keeps them from comparison-shopping another block over.'
+        impact: 'El tráfico fast-casual suele ser intención de "comida cerca de mí" — los visitantes ya están en el teléfono decidiendo a dónde caminar o manejar. Un mapa de un toque le resta 15 segundos a la decisión y los mantiene a salvo de comparar con el lugar de la siguiente cuadra.'
       },
       'cafe': {
-        impact: 'Café and bakery traffic is overwhelmingly local and walk-in driven. A one-tap directions link (especially for the pickup address on a catering or custom order) removes the "wait, where is this place again?" moment.'
+        impact: 'El tráfico de cafetería y panadería es abrumadoramente local y movido por los walk-ins. Un enlace de indicaciones de un toque (sobre todo para la dirección de recogida de un catering o un pedido personalizado) elimina el momento de "espera, ¿dónde era este lugar?".'
       },
       'bakery': {
-        impact: 'Morning bakery traffic is time-critical — a commuter grabbing croissants at 7:30am does not have time to fumble with a typed address. A one-tap directions link keeps the pickup rush on schedule, and matters double for wholesale or catering customers driving to a pickup address they have never visited.'
+        impact: 'El tráfico matutino de panadería es sensible al tiempo — alguien que pasa por unos croissants a las 7:30 de la mañana no tiene tiempo de batallar con una dirección escrita. Un enlace de indicaciones de un toque mantiene la hora pico de recogida en hora, e importa el doble para clientes mayoristas o de catering que manejan a una dirección de recogida que nunca han visitado.'
       },
       'pizzeria': {
-        impact: 'For pizzerias the primary use of a map is communicating DELIVERY ZONE, not just the storefront address. A one-tap Google Maps pin is the bare minimum; a proper delivery-radius overlay (or at least a list of served neighborhoods) saves you from the "do you deliver to me?" phone calls that your phone staff are answering instead of taking orders.'
+        impact: 'Para las pizzerías el uso principal de un mapa es comunicar la ZONA DE ENTREGA, no solo la dirección del local. Un pin de Google Maps de un toque es el mínimo; un overlay decente de radio de entrega (o al menos una lista de los barrios atendidos) te salva de las llamadas de "¿entregan en mi zona?" que tu gente del teléfono está respondiendo en vez de tomar pedidos.'
       },
       'food-truck': {
-        impact: 'Food trucks MOVE, which inverts the usual map-check logic: a static storefront pin is the wrong answer. What customers need is a one-tap map OF TODAY\'S LOCATION (usually a dynamic field on a schedule page), plus a link to your Instagram or Twitter where you post real-time changes. A stale "home address" map is worse than no map at all.'
+        impact: 'Los food trucks SE MUEVEN, lo que invierte la lógica usual del mapa: un pin estático del local es la respuesta equivocada. Lo que el cliente necesita es un mapa de un toque DE LA UBICACIÓN DE HOY (normalmente un campo dinámico en una página de horario), más un enlace a tu Instagram o Twitter donde publicas los cambios en tiempo real. Un mapa de "dirección de la base" desactualizado es peor que no tener mapa.'
       },
       'ghost-kitchen': {
-        impact: 'Customers never visit a ghost kitchen — what they care about is the DELIVERY ZONE (ZIP codes or neighborhoods you serve). A standard Google Maps pin helps with nothing; what you need is a clear "we deliver to …" list or a delivery-radius visualization. Aggregator pages already handle address validation, but seeing the zone up front saves the bounce for out-of-range visitors.'
+        impact: 'Los clientes nunca visitan una cocina fantasma — lo que les importa es la ZONA DE ENTREGA (códigos postales o barrios que atiendes). Un pin estándar de Google Maps no ayuda con nada; lo que necesitas es una lista clara de "entregamos a…" o una visualización del radio de entrega. Las páginas de los agregadores ya manejan la validación de dirección, pero ver la zona desde arriba ahorra el rebote de los visitantes fuera de rango.'
       },
       'catering-only': {
-        impact: 'Maps on a catering site are about SERVICE AREA, not storefront. A clear service-radius map (or a written list of cities/counties served) lets an event planner self-qualify before investing in a quote request. It also handles the "do you travel to us?" question that otherwise eats the first 30 seconds of every intake call.'
+        impact: 'Los mapas en un sitio de catering son sobre el ÁREA DE SERVICIO, no sobre el local. Un mapa de radio de servicio claro (o una lista escrita de ciudades/condados atendidos) le permite al planificador de eventos autocalificarse antes de invertir en pedir una cotización. También resuelve la pregunta de "¿viajan hasta donde nosotros?" que de otra forma se come los primeros 30 segundos de cada llamada de entrada.'
       },
       'bar-pub': {
-        impact: 'Bar hopping happens on the phone. A tappable map — especially for a bar tucked down a side street or into a basement — can be the difference between a visitor finding you or ending up at whichever place Google Maps surfaces first.'
+        impact: 'El bar hopping pasa en el teléfono. Un mapa tocable — sobre todo para un bar escondido en una calle lateral o en un sótano — puede ser la diferencia entre que un visitante te encuentre o termine en el primer lugar que Google Maps le muestre.'
       }
     }
   },
