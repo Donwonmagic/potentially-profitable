@@ -2506,17 +2506,18 @@
         </div>
       </div>
 
-      <!-- Email me the report -->
+      <!-- Envíame el reporte -->
       <div class="email-report">
         <header>
-          <h3>Email me the PDF.</h3>
-          <p>Drop your email and I'll send the full printable PDF right away, with a short note on what jumped out at me. If something in the audit warrants a longer look, I may follow up personally. No drip, no newsletter.</p>
+          <h3>Envíame el PDF.</h3>
+          <p>Pega tu email y te envío el PDF completo e imprimible al instante, con una nota corta sobre lo que me saltó a la vista. Si algo del diagnóstico amerita una mirada más larga, puede que te siga personalmente. Sin drip, sin newsletter.</p>
         </header>
 
         <form id="emailReportForm" action="/api/audit-report" method="POST" class="email-form">
-          <input type="hidden" name="_subject" value="Restaurant Audit — report requested" />
+          <input type="hidden" name="_subject" value="Diagnóstico de restaurante — reporte solicitado" />
           <input type="hidden" name="interest" value="restaurant-audit-report" />
-          <input type="hidden" name="source" value="/tools/audits/restaurant/" />
+          <input type="hidden" name="source" value="/es/tools/audits/restaurant/" />
+          <input type="hidden" name="locale" value="es" />
           <input type="hidden" name="audited_url" id="emailReportUrl" value="" />
           <input type="hidden" name="overall_score" id="emailReportScore" value="" />
           <input type="hidden" name="restaurant_readiness" id="emailReportReadiness" value="" />
@@ -2532,23 +2533,23 @@
             name="email"
             required
             autocomplete="email"
-            placeholder="you@yourrestaurant.com"
-            aria-label="Your email address"
+            placeholder="tu@turestaurante.com"
+            aria-label="Tu dirección de email"
           />
-          <button type="submit">Email me the PDF →</button>
+          <button type="submit">Envíame el PDF →</button>
         </form>
         <p class="email-disclaimer">
-          Your email stays with me. No list, no marketing drip.
+          Tu email se queda conmigo. Sin lista, sin drip de marketing.
         </p>
 
         <div class="email-report-success" id="emailReportSuccess" hidden role="status" aria-live="polite">
-          Sent — the PDF is on its way to your inbox. Check your spam folder if you don't see it in a minute or two.
+          Enviado — el PDF va en camino a tu inbox. Revisa tu carpeta de spam si no lo ves en un minuto o dos.
         </div>
 
         <div id="emailReportError" class="email-report-error" hidden role="alert"></div>
       </div>
 
-      </div><!-- /#reportDeep (Phase J1) -->
+      </div><!-- /#reportDeep (Fase J1) -->
 
     </div>
 
