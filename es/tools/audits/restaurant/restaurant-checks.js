@@ -907,40 +907,40 @@ var RESTAURANT_PRIORITY_CHECKS = [
     }
   },
   {
-    // Phase H6: Age-gate presence. Only bar-pub has non-zero
-    // weight in subtypes.js (2.0); every other subtype suppresses
-    // the check entirely (0) so a cafe that sells no alcohol
-    // doesn't lose score for not gating.
+    // Fase H6: Presencia de age-gate. Solo bar-pub tiene peso no
+    // cero en subtypes.js (2.0); cada otro subtipo suprime la
+    // revisión por completo (0) para que un café que no vende
+    // alcohol no pierda puntaje por no gatear la edad.
     type: 'age-gate',
-    weight: 1.0, // default; bar-pub override = 2.0 via subtypes
+    weight: 1.0, // por defecto; override de bar-pub = 2.0 vía subtypes
     anchor: '#trust',
     effort: 'dev',
     minutes: 45,
-    impact: 'For bars, pubs, and breweries, an age-gate on the site shows regulators you care about compliance and protects you if an underage visitor sees your promotional content. Almost every state ABC / TTB program expects it, and platforms increasingly penalize non-compliant sites in ad delivery.',
-    pass: 'Your site gates underage visitors',
-    passNote: 'Your site asks visitors to confirm they are of legal drinking age before seeing beverage content — this is the baseline compliance move for any bar or brewery.',
+    impact: 'Para bares, pubs y cervecerías, un age-gate en el sitio muestra a los reguladores que te importa el cumplimiento y te protege si un visitante menor de edad ve tu contenido promocional. Casi todo programa estatal ABC / TTB lo espera, y las plataformas cada vez penalizan más la entrega de anuncios en sitios no conformes.',
+    pass: 'Tu sitio gatea a los visitantes menores de edad',
+    passNote: 'Tu sitio pide a los visitantes que confirmen que tienen la edad legal para consumir alcohol antes de ver el contenido de bebidas — este es el movimiento base de cumplimiento para cualquier bar o cervecería.',
     fail: null,
     failNote: null,
-    unverified: 'We didn\'t spot an age-gate — is this right?',
-    unverifiedNote: 'We look for "are you 21 or older", "confirm your age", "verify your age" modals. If your age-gate is conditional on a country param or lives in a script we didn\'t render, let us know — and if you don\'t have one yet, this is a 45-minute developer task worth prioritizing.'
+    unverified: 'No vimos un age-gate — ¿es correcto?',
+    unverifiedNote: 'Buscamos modales de "¿tienes 21 años o más?", "confirma tu edad", "verifica tu edad", "are you 21 or older", "confirm your age", "verify your age". Si tu age-gate es condicional a un parámetro de país o vive en un script que no renderizamos, avísanos — y si todavía no tienes uno, es una tarea de desarrollador de 45 minutos que vale la pena priorizar.'
   },
   {
-    // Phase H7: Food-truck schedule page presence. Food trucks
-    // move; a schedule page IS the site's primary purpose.
-    // Subtypes.js weights this 2.0 for food-truck and 0 for
-    // every other subtype.
+    // Fase H7: Presencia de página de horario del food truck. Los
+    // food trucks se mueven; una página de horario ES el propósito
+    // primario del sitio. Subtypes.js pesa esto 2.0 para food-truck
+    // y 0 para cada otro subtipo.
     type: 'food-truck-schedule',
     weight: 1.0,
     anchor: '#basics',
     effort: 'dev',
     minutes: 60,
-    impact: 'Every food-truck customer arrives with the same question: "where are you today?" A visible weekly schedule, a today\'s-location block, or at minimum a "Find us" page with your Instagram feed is the primary job of a food-truck website.',
-    pass: 'Your site shows a schedule / location',
-    passNote: 'Your site answers "where are you today?" directly — customers can find you without scrolling to your Instagram.',
+    impact: 'Cada cliente de food truck llega con la misma pregunta: "¿dónde están hoy?" Un horario semanal visible, un bloque de ubicación-de-hoy o, como mínimo, una página de "Encuéntranos" con tu feed de Instagram es el trabajo primario de un sitio web de food truck.',
+    pass: 'Tu sitio muestra horario / ubicación',
+    passNote: 'Tu sitio contesta "¿dónde están hoy?" directamente — los clientes pueden encontrarte sin tener que ir a scrollear tu Instagram.',
     fail: null,
     failNote: null,
-    unverified: 'We didn\'t find a schedule / location page — is this right?',
-    unverifiedNote: 'We look for "today\'s location", "this week\'s schedule", "find us at", "catch us at" copy. If your schedule lives inline on the homepage or in an Instagram embed we didn\'t render, let us know. If you don\'t publish a schedule today — publishing one is the single highest-ROI change you can make on a food-truck site.'
+    unverified: 'No encontramos una página de horario / ubicación — ¿es correcto?',
+    unverifiedNote: 'Buscamos copy de "ubicación de hoy", "horario de esta semana", "encuéntranos en", "today\'s location", "this week\'s schedule", "find us at", "catch us at". Si tu horario vive inline en la página de inicio o en un embed de Instagram que no renderizamos, avísanos. Si hoy no publicas un horario — publicar uno es el cambio individual de mayor ROI que puedes hacer en un sitio de food truck.'
   },
   {
     // Phase H8: Ghost-kitchen / delivery-only explicit marker.
