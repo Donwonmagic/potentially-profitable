@@ -5133,16 +5133,24 @@
   // restaurant-checks.js use the new canonical keys (cafe, bar-pub,
   // etc.) while old share URLs still land on the right copy.
   function resolveCheckForType(def, businessType) {
-    if (!def || !def.byType || !businessType) return def;
+    // Sprint ES9: localize BOTH the base def and the byType override
+    // before merging, so a Spanish-locale render picks _es variants
+    // at every tier. Returns the merged + localized object in one
+    // pass; callers don't need to call localizeCheckCopy separately.
+    var localize = (typeof localizeCheckCopy === 'function')
+      ? localizeCheckCopy : function(x){ return x; };
+    if (!def || !def.byType || !businessType) return localize(def);
     var canon = (typeof canonicalSubtypeId === 'function')
       ? canonicalSubtypeId(businessType)
       : null;
     var key = canon || businessType;
     var override = def.byType[key];
-    if (!override) return def;
+    if (!override) return localize(def);
+    var baseDef     = localize(def);
+    var overrideDef = localize(override);
     var merged = {};
-    for (var k in def) if (def.hasOwnProperty(k) && k !== 'byType') merged[k] = def[k];
-    for (var k2 in override) if (override.hasOwnProperty(k2)) merged[k2] = override[k2];
+    for (var k in baseDef) if (baseDef.hasOwnProperty(k) && k !== 'byType') merged[k] = baseDef[k];
+    for (var k2 in overrideDef) if (overrideDef.hasOwnProperty(k2)) merged[k2] = overrideDef[k2];
     return merged;
   }
 

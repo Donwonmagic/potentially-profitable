@@ -967,12 +967,17 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'rebuild',
     minutes: 180,
     impact: 'A dedicated catering or private-events page is how most corporate planners and wedding organizers FIND caterers — it captures the long-tail search traffic ("catering Brooklyn", "private dining party of 30") that the homepage never ranks for.',
+    impact_es: 'Una página dedicada de catering o eventos privados es cómo la mayoría de los planificadores corporativos y organizadores de bodas ENCUENTRAN catering — captura el tráfico long-tail ("catering Brooklyn", "cena privada grupo de 30") por el que la página principal nunca rankea.',
     pass: 'You have a catering / events page',
+    pass_es: 'Tienes una página de catering / eventos',
     passNote: 'Your site links to a dedicated catering or events page — planners searching for private dining in your area can land directly on a page that sells the offering.',
+    passNote_es: 'Tu sitio enlaza a una página dedicada de catering o eventos — los planificadores buscando cenas privadas en tu zona pueden aterrizar directamente en una página que vende la oferta.',
     fail: null,
     failNote: null,
     unverified: 'We didn\'t find a catering or events page — is this right?',
+    unverified_es: 'No encontramos una página de catering o eventos — ¿es correcto?',
     unverifiedNote: 'We look for links labelled "Catering", "Private Events", "Parties", or "Weddings" in your navigation. If you do host events but the page is named differently, let us know. If you don\'t today, a catering page is one of the highest-ROI additions for any restaurant with dining-room capacity.',
+    unverifiedNote_es: 'Buscamos enlaces etiquetados "Catering", "Eventos Privados", "Fiestas" o "Bodas" en tu navegación. Si haces eventos pero la página se llama distinto, avísanos. Si hoy no, una página de catering es una de las adiciones de más alto ROI para cualquier restaurante con capacidad de comedor.',
     byType: {
       'fine-dining': {
         impact: 'Private-dining rooms and buyouts are the margin engine of fine-dining — a single corporate holiday party pays for a slow week. A dedicated events page with capacity, sample menus, and photo gallery is what the event planners searching "private dining [city]" actually land on.'
@@ -996,12 +1001,17 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'dev',
     minutes: 45,
     impact: 'For bars, pubs, and breweries, an age-gate on the site shows regulators you care about compliance and protects you if an underage visitor sees your promotional content. Almost every state ABC / TTB program expects it, and platforms increasingly penalize non-compliant sites in ad delivery.',
+    impact_es: 'Para bares, pubs y cervecerías, un age-gate en el sitio le muestra a los reguladores que te importa el cumplimiento y te protege si un visitante menor ve contenido promocional. Casi todo programa estatal ABC / TTB lo espera, y las plataformas cada vez más penalizan sitios no cumplidores en la entrega de anuncios.',
     pass: 'Your site gates underage visitors',
+    pass_es: 'Tu sitio bloquea visitantes menores de edad',
     passNote: 'Your site asks visitors to confirm they are of legal drinking age before seeing beverage content — this is the baseline compliance move for any bar or brewery.',
+    passNote_es: 'Tu sitio pide a los visitantes confirmar que tienen edad legal antes de ver contenido de bebidas — la jugada básica de cumplimiento para cualquier bar o cervecería.',
     fail: null,
     failNote: null,
     unverified: 'We didn\'t spot an age-gate — is this right?',
-    unverifiedNote: 'We look for "are you 21 or older", "confirm your age", "verify your age" modals. If your age-gate is conditional on a country param or lives in a script we didn\'t render, let us know — and if you don\'t have one yet, this is a 45-minute developer task worth prioritizing.'
+    unverified_es: 'No vimos un age-gate — ¿es correcto?',
+    unverifiedNote: 'We look for "are you 21 or older", "confirm your age", "verify your age" modals. If your age-gate is conditional on a country param or lives in a script we didn\'t render, let us know — and if you don\'t have one yet, this is a 45-minute developer task worth prioritizing.',
+    unverifiedNote_es: 'Buscamos modales "¿tienes 21 años o más?", "confirma tu edad", "verifica tu edad". Si tu age-gate depende de un parámetro de país o vive en un script que no renderizamos, avísanos — y si aún no lo tienes, esta es una tarea de desarrollo de 45 minutos que vale la pena priorizar.'
   },
   {
     // Phase H7: Food-truck schedule page presence. Food trucks
@@ -1014,12 +1024,17 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'dev',
     minutes: 60,
     impact: 'Every food-truck customer arrives with the same question: "where are you today?" A visible weekly schedule, a today\'s-location block, or at minimum a "Find us" page with your Instagram feed is the primary job of a food-truck website.',
+    impact_es: 'Todo cliente de un food truck llega con la misma pregunta: "¿dónde están hoy?" Un horario semanal visible, un bloque de ubicación del día, o como mínimo una página "Encuéntranos" con tu feed de Instagram es el trabajo principal de un sitio de food truck.',
     pass: 'Your site shows a schedule / location',
+    pass_es: 'Tu sitio muestra horario / ubicación',
     passNote: 'Your site answers "where are you today?" directly — customers can find you without scrolling to your Instagram.',
+    passNote_es: 'Tu sitio responde "¿dónde están hoy?" directamente — los clientes te encuentran sin tener que bajar hasta tu Instagram.',
     fail: null,
     failNote: null,
     unverified: 'We didn\'t find a schedule / location page — is this right?',
-    unverifiedNote: 'We look for "today\'s location", "this week\'s schedule", "find us at", "catch us at" copy. If your schedule lives inline on the homepage or in an Instagram embed we didn\'t render, let us know. If you don\'t publish a schedule today — publishing one is the single highest-ROI change you can make on a food-truck site.'
+    unverified_es: 'No encontramos una página de horario / ubicación — ¿es correcto?',
+    unverifiedNote: 'We look for "today\'s location", "this week\'s schedule", "find us at", "catch us at" copy. If your schedule lives inline on the homepage or in an Instagram embed we didn\'t render, let us know. If you don\'t publish a schedule today — publishing one is the single highest-ROI change you can make on a food-truck site.',
+    unverifiedNote_es: 'Buscamos texto como "ubicación de hoy", "horario de esta semana", "encuéntranos en", "nos ves en". Si tu horario vive inline en la página principal o en un embed de Instagram que no renderizamos, avísanos. Si hoy no publicas un horario — publicar uno es el cambio de mayor ROI en un sitio de food truck.'
   },
   {
     // Phase H8: Ghost-kitchen / delivery-only explicit marker.
@@ -1032,12 +1047,17 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'self',
     minutes: 20,
     impact: 'Ghost kitchens that don\'t explicitly mark "delivery only" or "no dine-in" get customers showing up in person to an empty storefront — worse, getting a one-star review for "I drove there and it was closed." A single visible "Delivery & Pickup Only" banner deflects that confusion.',
+    impact_es: 'Las cocinas fantasma que no marcan explícitamente "solo delivery" o "sin dine-in" terminan con clientes que llegan en persona a un local vacío — peor, con una reseña de una estrella "manejé hasta allá y estaba cerrado". Un solo banner visible de "Solo delivery y pickup" desvía esa confusión.',
     pass: 'Your site marks delivery-only clearly',
+    pass_es: 'Tu sitio marca claramente solo-delivery',
     passNote: 'Your site explicitly states "delivery only" / "virtual kitchen" so customers don\'t show up expecting dine-in.',
+    passNote_es: 'Tu sitio dice explícitamente "solo delivery" / "cocina virtual" para que los clientes no se presenten esperando dine-in.',
     fail: null,
     failNote: null,
     unverified: 'We didn\'t see a delivery-only marker — is this right?',
-    unverifiedNote: 'We look for "virtual kitchen", "ghost kitchen", "delivery only", "no dine-in", "delivery & pickup only" copy. If yours is phrased differently, let us know. If your site reads as a dine-in restaurant but you\'re actually ghost/delivery-only, add a banner — the 20-minute fix deflects a common one-star review.'
+    unverified_es: 'No vimos una marca de solo-delivery — ¿es correcto?',
+    unverifiedNote: 'We look for "virtual kitchen", "ghost kitchen", "delivery only", "no dine-in", "delivery & pickup only" copy. If yours is phrased differently, let us know. If your site reads as a dine-in restaurant but you\'re actually ghost/delivery-only, add a banner — the 20-minute fix deflects a common one-star review.',
+    unverifiedNote_es: 'Buscamos texto como "cocina virtual", "ghost kitchen", "solo delivery", "sin dine-in", "solo delivery y pickup". Si el tuyo está redactado distinto, avísanos. Si tu sitio se lee como un restaurante de dine-in pero en realidad eres ghost/solo delivery, agrega un banner — el arreglo de 20 minutos desvía una reseña de una estrella común.'
   },
   {
     // Phase H9: Wholesale / custom-order intake presence.
@@ -1049,12 +1069,17 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'dev',
     minutes: 120,
     impact: 'For bakeries and cafes, custom orders and wholesale accounts are margin multipliers — a single wedding-cake order can match a week of walk-in revenue, and a standing wholesale account compounds month over month.',
+    impact_es: 'Para panaderías y cafés, los pedidos personalizados y las cuentas de mayoreo multiplican el margen — un solo pedido de pastel de bodas puede igualar una semana de ingresos por walk-in, y una cuenta de mayoreo fija se acumula mes tras mes.',
     pass: 'Your site promotes wholesale / custom orders',
+    pass_es: 'Tu sitio promueve pedidos de mayoreo / personalizados',
     passNote: 'Your site surfaces custom-order or wholesale intake — the margin-rich orders that don\'t happen without explicit copy and a form.',
+    passNote_es: 'Tu sitio muestra la entrada de pedidos personalizados o de mayoreo — los pedidos de alto margen que no suceden sin copy explícito y un formulario.',
     fail: null,
     failNote: null,
     unverified: 'We didn\'t see wholesale / custom-order copy — is this right?',
-    unverifiedNote: 'We look for "custom order", "wholesale", "wedding cakes", "corporate orders", "bulk orders", "order in advance", "special orders". If yours is phrased differently, let us know. For bakeries specifically, a dedicated "Custom Orders" page with a structured intake form pays for itself fast.'
+    unverified_es: 'No vimos texto de mayoreo / pedidos personalizados — ¿es correcto?',
+    unverifiedNote: 'We look for "custom order", "wholesale", "wedding cakes", "corporate orders", "bulk orders", "order in advance", "special orders". If yours is phrased differently, let us know. For bakeries specifically, a dedicated "Custom Orders" page with a structured intake form pays for itself fast.',
+    unverifiedNote_es: 'Buscamos "pedido personalizado", "mayoreo", "pasteles de boda", "pedidos corporativos", "pedidos al mayoreo", "ordenar con anticipación", "pedidos especiales". Si el tuyo está redactado distinto, avísanos. Para panaderías en particular, una página dedicada de "Pedidos Personalizados" con un formulario estructurado se paga sola rápido.'
   },
   {
     // Phase H10: Delivery-radius info presence. Subtypes.js
@@ -1065,12 +1090,17 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'self',
     minutes: 30,
     impact: 'Showing your delivery area saves every "do you deliver to me?" phone call. For pizzerias specifically, explicit zone info matters more than the map pin — a customer two neighborhoods over gives up if you look ambiguous.',
+    impact_es: 'Mostrar tu zona de entrega ahorra cada llamada de "¿entregan aquí?" Para pizzerías en particular, la info explícita de zona importa más que el pin en el mapa — un cliente a dos colonias de distancia se rinde si te ves ambiguo.',
     pass: 'Your site shows delivery area / zone',
+    pass_es: 'Tu sitio muestra zona / área de entrega',
     passNote: 'Your site explicitly says where you deliver — customers self-qualify without tying up your phone line.',
+    passNote_es: 'Tu sitio dice explícitamente a dónde entregas — los clientes se auto-califican sin ocupar tu línea de teléfono.',
     fail: null,
     failNote: null,
     unverified: 'We didn\'t find delivery-area info — is this right?',
-    unverifiedNote: 'We look for "delivery radius", "we deliver to [list]", "delivery zone / area", "zip codes we serve", or "delivery within N miles". If yours is on an order-platform page we didn\'t reach, let us know. For pizzerias especially, a simple neighborhood / zip-code list is worth a line of copy on the homepage.'
+    unverified_es: 'No encontramos info de zona de entrega — ¿es correcto?',
+    unverifiedNote: 'We look for "delivery radius", "we deliver to [list]", "delivery zone / area", "zip codes we serve", or "delivery within N miles". If yours is on an order-platform page we didn\'t reach, let us know. For pizzerias especially, a simple neighborhood / zip-code list is worth a line of copy on the homepage.',
+    unverifiedNote_es: 'Buscamos "radio de entrega", "entregamos en [lista]", "zona / área de entrega", "códigos postales que servimos" o "entrega dentro de N millas". Si el tuyo está en una página de plataforma de pedidos que no alcanzamos, avísanos. Para pizzerías en especial, una lista simple de colonias / códigos postales merece una línea de copy en la página principal.'
   },
   {
     // Phase H11: Social proof (press, awards, chef bio).
@@ -1080,12 +1110,17 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'self',
     minutes: 45,
     impact: 'Visible press quotes and awards convert skeptical new diners at measurably higher rates. "Featured in Eater" or a Michelin mention on the homepage is the single highest-credibility signal you can show a first-time visitor deciding whether to book.',
+    impact_es: 'Las citas de prensa y premios visibles convierten a comensales nuevos escépticos a tasas medibles más altas. "Presentado en Eater" o una mención Michelin en la página principal es la señal de credibilidad más alta que puedes mostrar a un visitante por primera vez decidiendo si reservar.',
     pass: 'Your site shows press / awards / chef bio',
+    pass_es: 'Tu sitio muestra prensa / premios / bio del chef',
     passNote: 'Your site surfaces social proof (press mentions, awards, or a chef bio) — which converts skeptical first-time visitors into bookings.',
+    passNote_es: 'Tu sitio muestra prueba social (menciones de prensa, premios o bio del chef) — lo que convierte a visitantes escépticos por primera vez en reservas.',
     fail: null,
     failNote: null,
     unverified: 'We didn\'t find press / awards / chef copy — is this right?',
-    unverifiedNote: 'We look for "featured in", "as seen in", "accolades", "Michelin", "James Beard", "Eater", "NYT review", or chef bio copy ("meet the chef", "our chef"). If your press is on an about page we didn\'t reach, let us know. If you have press you\'re not showing — surfacing it on the homepage is free conversion.'
+    unverified_es: 'No encontramos texto de prensa / premios / chef — ¿es correcto?',
+    unverifiedNote: 'We look for "featured in", "as seen in", "accolades", "Michelin", "James Beard", "Eater", "NYT review", or chef bio copy ("meet the chef", "our chef"). If your press is on an about page we didn\'t reach, let us know. If you have press you\'re not showing — surfacing it on the homepage is free conversion.',
+    unverifiedNote_es: 'Buscamos "destacados en", "como se vio en", "reconocimientos", "Michelin", "James Beard", "Eater", "reseña NYT" o bio del chef ("conoce al chef", "nuestro chef"). Si tu prensa está en una página "About" que no alcanzamos, avísanos. Si tienes prensa que no estás mostrando — sacarla en la página principal es conversión gratis.'
   },
   {
     // Phase H12: Sustainability / sourcing claims.
@@ -1095,12 +1130,17 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'self',
     minutes: 30,
     impact: 'Sustainability claims (locally sourced, farm-to-table, organic, seasonal) signal quality and values in one line of copy. For a meaningful slice of guests this matters MORE than the menu itself — and it raises the perceived average check.',
+    impact_es: 'Las declaraciones de sostenibilidad (producto local, farm-to-table, orgánico, de temporada) comunican calidad y valores en una sola línea. Para una porción significativa de los comensales esto importa MÁS que el menú mismo — y sube el cheque promedio percibido.',
     pass: 'Your site makes sourcing / sustainability claims',
+    pass_es: 'Tu sitio hace declaraciones de origen / sostenibilidad',
     passNote: 'Your site explicitly surfaces sustainability or sourcing (local farms, seasonal, organic, farm-to-table, etc.) — which raises perceived quality and attracts a loyal segment of diners.',
+    passNote_es: 'Tu sitio muestra explícitamente sostenibilidad o abastecimiento (granjas locales, de temporada, orgánico, farm-to-table, etc.) — lo que eleva la calidad percibida y atrae a un segmento leal de comensales.',
     fail: null,
     failNote: null,
     unverified: 'We didn\'t find sourcing claims — is this right?',
-    unverifiedNote: 'We look for "locally sourced", "farm-to-table", "organic", "sustainable", "seasonal menu", "single-origin", "grass-fed", and related markers. If your sourcing story lives in a photo caption or on a supplier page, let us know. If you\'re sourcing thoughtfully but not saying so, this is a one-afternoon content change.'
+    unverified_es: 'No encontramos declaraciones de origen — ¿es correcto?',
+    unverifiedNote: 'We look for "locally sourced", "farm-to-table", "organic", "sustainable", "seasonal menu", "single-origin", "grass-fed", and related markers. If your sourcing story lives in a photo caption or on a supplier page, let us know. If you\'re sourcing thoughtfully but not saying so, this is a one-afternoon content change.',
+    unverifiedNote_es: 'Buscamos "producto local", "farm-to-table", "orgánico", "sostenible", "menú de temporada", "origen único", "alimentado con pasto" y marcadores similares. Si tu historia de abastecimiento vive en una leyenda de foto o una página de proveedores, avísanos. Si te abasteces con cuidado pero no lo dices, este es un cambio de contenido de una tarde.'
   },
   {
     // Phase H13: Photo coverage. Checks image count + alt-text
@@ -1112,12 +1152,19 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'self',
     minutes: 120,
     impact: 'Food photography is how restaurants sell online — a homepage with 3 images converts worse than one with 10, and alt-text makes those images accessible and SEO-indexable. Empty-alt or broken-alt photos are invisible to Google and to screen readers.',
+    impact_es: 'La fotografía de comida es cómo los restaurantes venden en línea — una página principal con 3 imágenes convierte peor que una con 10, y el alt-text hace esas imágenes accesibles e indexables para SEO. Las fotos sin alt o con alt roto son invisibles para Google y para lectores de pantalla.',
     pass: 'Your site has strong photo coverage',
+    pass_es: 'Tu sitio tiene buena cobertura fotográfica',
     passNote: 'Your homepage carries enough photography AND enough alt-text to do both jobs food images are supposed to do: sell the food and rank in Google Images.',
+    passNote_es: 'Tu página principal lleva suficiente fotografía Y suficiente alt-text para hacer los dos trabajos que las imágenes de comida deben hacer: vender la comida y rankear en Google Imágenes.',
     fail: 'Your site has sparse or unlabeled photos',
+    fail_es: 'Tu sitio tiene fotos escasas o sin etiquetas',
     failNote: 'Homepages need at least 5 good food photos AND at least half of them need real alt-text ("smoked brisket plate with pickled onions" not "image1.jpg"). Both matter: photography drives conversion; alt-text drives accessibility and Google Images traffic.',
+    failNote_es: 'Las páginas principales necesitan al menos 5 buenas fotos de comida Y al menos la mitad necesita alt-text real ("plato de brisket ahumado con cebolla encurtida" y no "image1.jpg"). Ambas importan: la fotografía impulsa conversión; el alt-text impulsa accesibilidad y tráfico de Google Imágenes.',
     unverified: 'We couldn\'t read your image set',
-    unverifiedNote: 'The crawl didn\'t return enough HTML for us to count images reliably. Retry the audit, or paste the homepage URL into our manual-audit queue so we can look by hand.'
+    unverified_es: 'No pudimos leer tu conjunto de imágenes',
+    unverifiedNote: 'The crawl didn\'t return enough HTML for us to count images reliably. Retry the audit, or paste the homepage URL into our manual-audit queue so we can look by hand.',
+    unverifiedNote_es: 'El rastreo no devolvió suficiente HTML para contar imágenes de forma confiable. Vuelve a auditar, o pega la URL de la página principal en nuestra cola manual para revisarla a mano.'
   },
   {
     // Phase H14: Hours accuracy — sources from
@@ -1133,12 +1180,19 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'dev',
     minutes: 30,
     impact: 'Google Rich Results for restaurants wants a full 7-day hours listing — partial coverage causes the "hours vary" fallback, which erodes trust with "are they open right now?" searchers. Every day needs an entry in openingHoursSpecification, even if opens/closes are null for a closed day.',
+    impact_es: 'Los Rich Results de Google para restaurantes quieren un listado completo de 7 días — la cobertura parcial provoca el fallback "los horarios varían", que erosiona la confianza de quien busca "¿están abiertos ahora?". Cada día necesita una entrada en openingHoursSpecification, incluso si opens/closes son null para un día cerrado.',
     pass: 'Your schema declares 7-day hours',
+    pass_es: 'Tu schema declara los 7 días de horario',
     passNote: 'Your JSON-LD schema publishes hours for every day of the week — Google can render a full hours table in Rich Results and Map snippets.',
+    passNote_es: 'Tu schema JSON-LD publica horarios para cada día de la semana — Google puede renderizar una tabla completa en Rich Results y en los snippets del mapa.',
     fail: 'Your schema hours are incomplete',
+    fail_es: 'Tus horarios de schema están incompletos',
     failNote: 'Your site declares hours in schema but not for every day of the week. Google falls back to a "hours vary" hint, which hurts click-through from "restaurants open now" searches. Add an openingHoursSpecification entry for every day of the week in your JSON-LD block (closed days can have opens/closes set to null).',
+    failNote_es: 'Tu sitio declara horarios en schema pero no para cada día de la semana. Google cae al mensaje "los horarios varían", lo que reduce el click-through en búsquedas de "restaurantes abiertos ahora". Agrega una entrada openingHoursSpecification para cada día de la semana en tu bloque JSON-LD (los días cerrados pueden tener opens/closes en null).',
     unverified: 'We couldn\'t confirm schema hours',
-    unverifiedNote: 'Your schema markup didn\'t declare opening hours at all (or we couldn\'t read it). Adding a complete openingHoursSpecification block is one of the highest-impact single edits you can make for local-search click-through.'
+    unverified_es: 'No pudimos confirmar los horarios del schema',
+    unverifiedNote: 'Your schema markup didn\'t declare opening hours at all (or we couldn\'t read it). Adding a complete openingHoursSpecification block is one of the highest-impact single edits you can make for local-search click-through.',
+    unverifiedNote_es: 'Tu schema no declaró horarios en absoluto (o no pudimos leerlo). Agregar un bloque openingHoursSpecification completo es una de las ediciones individuales de mayor impacto que puedes hacer para el click-through en búsqueda local.'
   }
 ];
 
