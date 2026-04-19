@@ -532,39 +532,57 @@ var RESTAURANT_PRIORITY_CHECKS = [
     byType: {
       'fine-dining': {
         impact: 'Tasting-menu descriptions, wine-list notes, and chef\'s-counter blurbs are the highest-value text on your site. Set too small, they force a pinch-zoom that breaks the whole luxe experience.',
-        failNote: 'Set body font-size to at least 16px. For the tasting menu and wine list specifically, 17 or 18px is the floor — those blocks of descriptive copy are what convinces a guest to book.'
+        impact_es: 'Descripciones del menú degustación, notas de la carta de vinos y textos de chef\'s counter son el texto de mayor valor en tu sitio. Si los haces muy pequeños, fuerzan un zoom con los dedos que rompe toda la experiencia premium.',
+        failNote: 'Set body font-size to at least 16px. For the tasting menu and wine list specifically, 17 or 18px is the floor — those blocks of descriptive copy are what convinces a guest to book.',
+        failNote_es: 'Configura el tamaño de fuente del cuerpo a por lo menos 16 px. Para el menú degustación y la carta de vinos en particular, 17 o 18 px es el mínimo — esos bloques descriptivos son lo que convence al comensal de reservar.'
       },
       'fast-casual': {
         impact: 'Customers scan your menu on a phone mid-walk. Small item names and prices turn a 10-second decision into a 30-second squint — and they close the tab and reopen DoorDash.',
-        failNote: 'Set body font-size to at least 16px. Item names and prices specifically should be 17 or 18px — the menu is your conversion page.'
+        impact_es: 'Los clientes ojean tu menú en el teléfono mientras caminan. Nombres y precios pequeños convierten una decisión de 10 segundos en 30 segundos entrecerrando los ojos — y cierran la pestaña y vuelven a abrir DoorDash.',
+        failNote: 'Set body font-size to at least 16px. Item names and prices specifically should be 17 or 18px — the menu is your conversion page.',
+        failNote_es: 'Configura el tamaño de fuente del cuerpo a por lo menos 16 px. Nombres de platos y precios en particular deberían ser 17 o 18 px — el menú es tu página de conversión.'
       },
       'cafe': {
         impact: 'Hours and location are read more than anything else on a café site. Tiny type below 16px forces iOS to zoom on focus and makes "are they open?" a frustrating question.',
-        failNote: 'Set body font-size to at least 16px. The hours block specifically should be 17 or 18px — it\'s the first thing most café visitors look for.'
+        impact_es: 'Horarios y ubicación se leen más que cualquier cosa en un sitio de café. Texto diminuto bajo 16 px obliga a iOS a hacer zoom al enfocar y convierte "¿están abiertos?" en una pregunta frustrante.',
+        failNote: 'Set body font-size to at least 16px. The hours block specifically should be 17 or 18px — it\'s the first thing most café visitors look for.',
+        failNote_es: 'Configura el tamaño de fuente del cuerpo a por lo menos 16 px. El bloque de horarios en particular debería ser 17 o 18 px — es lo primero que busca la mayoría de los visitantes de un café.'
       },
       'bakery': {
         impact: 'Ingredient lists, custom-order spec fields, and pickup-date copy are the three things a bakery customer reads MOST carefully. Tiny type forces a pinch-zoom on exactly the moments that require precision.',
-        failNote: 'Set body to 16px, and set ingredient lists plus custom-order copy to 17-18px. Customers placing $200+ orders for a specific date want zero ambiguity about what they\'re ordering.'
+        impact_es: 'Las listas de ingredientes, campos de especificaciones de pedidos personalizados y texto de fecha de recogida son las tres cosas que un cliente de panadería lee CON MÁS cuidado. Texto diminuto fuerza un zoom con los dedos justo en los momentos que requieren precisión.',
+        failNote: 'Set body to 16px, and set ingredient lists plus custom-order copy to 17-18px. Customers placing $200+ orders for a specific date want zero ambiguity about what they\'re ordering.',
+        failNote_es: 'Configura el cuerpo a 16 px, y las listas de ingredientes más el texto de pedidos personalizados a 17-18 px. Los clientes haciendo pedidos de $200+ para una fecha específica quieren cero ambigüedad sobre lo que están ordenando.'
       },
       'pizzeria': {
         impact: 'Topping lists, allergen notes (gluten / dairy / dairy-free cheese), and delivery-zone details are the make-or-break copy for a pizzeria. Tiny type forces a pinch-zoom on the exact moments a customer is deciding between ordering from you or opening Slice.',
-        failNote: 'Set body to 16px, and set topping lists and delivery-zone copy to 17-18px. The customer picking between "one large pepperoni" and "half-pepperoni half-mushroom" should never have to zoom.'
+        impact_es: 'Las listas de ingredientes, notas de alérgenos (gluten / lácteos / queso sin lácteos) y detalles de zona de entrega son el texto decisivo para una pizzería. Texto diminuto obliga a hacer zoom con los dedos justo cuando un cliente decide entre pedirte a ti o abrir Slice.',
+        failNote: 'Set body to 16px, and set topping lists and delivery-zone copy to 17-18px. The customer picking between "one large pepperoni" and "half-pepperoni half-mushroom" should never have to zoom.',
+        failNote_es: 'Configura el cuerpo a 16 px, y las listas de ingredientes y texto de zona de entrega a 17-18 px. El cliente eligiendo entre "una grande de pepperoni" y "mitad pepperoni mitad champiñones" nunca debería tener que hacer zoom.'
       },
       'food-truck': {
         impact: 'Schedule times and today\'s-location copy are the two pieces of content a food-truck customer reads MOST — usually on a phone, outdoors, while walking. Tiny type makes "are they at the brewery tonight?" a harder question than it needs to be.',
-        failNote: 'Set body to 16px, and set schedule times and today\'s-location copy to 17-18px. Both belong in a block large enough to read at a glance while walking.'
+        impact_es: 'Horarios y texto de ubicación de hoy son los dos contenidos que un cliente de food truck lee MÁS — normalmente en un teléfono, al aire libre, caminando. Texto diminuto convierte "¿están en la cervecería esta noche?" en una pregunta más difícil de lo necesario.',
+        failNote: 'Set body to 16px, and set schedule times and today\'s-location copy to 17-18px. Both belong in a block large enough to read at a glance while walking.',
+        failNote_es: 'Configura el cuerpo a 16 px, y los horarios y texto de ubicación del día a 17-18 px. Ambos deben ir en un bloque lo bastante grande para leerse de un vistazo mientras caminas.'
       },
       'ghost-kitchen': {
         impact: 'Delivery hours, service area, and menu descriptions are the text customers actually read — and for ghost kitchens that text lives in competition with a lot of visual branding. Sub-16px type forces pinch-zooms on the exact decisions ("are they delivering now? to my zip?") that cost you the order.',
-        failNote: 'Set body to 16px, and put delivery-hours + service-area copy at 17-18px. These are the two paragraphs that decide whether the customer taps over to DoorDash at all.'
+        impact_es: 'Horarios de delivery, área de servicio y descripciones de menú son el texto que los clientes realmente leen — y para las cocinas fantasma ese texto compite con mucho branding visual. Texto bajo 16 px fuerza zoom con los dedos justo en las decisiones ("¿están entregando ahora? ¿a mi código postal?") que te cuestan el pedido.',
+        failNote: 'Set body to 16px, and put delivery-hours + service-area copy at 17-18px. These are the two paragraphs that decide whether the customer taps over to DoorDash at all.',
+        failNote_es: 'Configura el cuerpo a 16 px, y pon el texto de horarios de delivery + área de servicio a 17-18 px. Estos son los dos párrafos que deciden si el cliente siquiera toca para ir a DoorDash.'
       },
       'catering-only': {
         impact: 'Package descriptions, per-head pricing tables, dietary-accommodation notes, and lead-time rules are the decision-critical text on a catering site. Tiny type on a phone forces the planner — who is already rushed — to pinch-zoom through your rate card, which is a terrible first impression for a $5,000 booking.',
-        failNote: 'Set body to 16px, and set package descriptions + pricing tables to 17-18px. Corporate planners often read on a phone between meetings — make the rate card scannable without zoom.'
+        impact_es: 'Descripciones de paquetes, tablas de precios por cabeza, notas de acomodaciones dietéticas y reglas de tiempo de anticipación son el texto crítico en un sitio de catering. Texto diminuto en un teléfono obliga al planificador — que ya va apurado — a hacer zoom en tu tabla de tarifas, una pésima primera impresión para una reserva de $5,000.',
+        failNote: 'Set body to 16px, and set package descriptions + pricing tables to 17-18px. Corporate planners often read on a phone between meetings — make the rate card scannable without zoom.',
+        failNote_es: 'Configura el cuerpo a 16 px, y las descripciones de paquetes + tablas de precios a 17-18 px. Los planificadores corporativos suelen leer en el teléfono entre juntas — haz la tabla de tarifas escaneable sin zoom.'
       },
       'bar-pub': {
         impact: 'Cocktail lists, draft lists, and happy-hour details are the bar\'s menu. Small type on a phone in a dim Uber ride is a usability tax guests won\'t pay.',
-        failNote: 'Set body font-size to at least 16px. The cocktail/draft list and happy-hour times deserve 17 or 18px — those are the conversion paragraphs for a bar site.'
+        impact_es: 'Lista de cócteles, lista de cervezas de barril y detalles de happy hour son el menú del bar. Texto pequeño en un teléfono dentro de un Uber con poca luz es un impuesto de usabilidad que los clientes no pagarán.',
+        failNote: 'Set body font-size to at least 16px. The cocktail/draft list and happy-hour times deserve 17 or 18px — those are the conversion paragraphs for a bar site.',
+        failNote_es: 'Configura el tamaño de fuente del cuerpo a por lo menos 16 px. La lista de cócteles/cervezas y los horarios de happy hour merecen 17 o 18 px — esos son los párrafos de conversión en un sitio de bar.'
       }
     }
   },
