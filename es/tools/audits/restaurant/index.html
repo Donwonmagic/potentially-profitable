@@ -2118,110 +2118,111 @@
           </div>
         </div>
         <div class="audit-summary-meta">
-          <h2 id="scoreHeadline">Your overall score</h2>
-          <div class="url">Audited: <strong id="auditedUrl">—</strong></div>
-          <p class="verdict" id="verdictCopy">Verdict copy populates here after a run — explains what the score means and what to focus on first.</p>
+          <h2 id="scoreHeadline">Tu puntaje general</h2>
+          <div class="url">Diagnosticado: <strong id="auditedUrl">—</strong></div>
+          <p class="verdict" id="verdictCopy">El veredicto se puebla aquí después de una corrida — explica qué significa el puntaje y en qué enfocarte primero.</p>
           <div class="score-override-banner" id="scoreOverrideBanner" hidden>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            <span id="scoreOverrideText">This score includes owner-confirmed checks.</span>
+            <span id="scoreOverrideText">Este puntaje incluye chequeos confirmados por el dueño.</span>
           </div>
           <div class="share-row">
             <button type="button" class="share-btn" id="shareBtn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M9 4H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2"/></svg>
-              Copy link
+              Copiar enlace
             </button>
-            <!-- Phase I7: download-share-card button triggers
-                 Canvas rendering of a 1200x630 PNG (score +
-                 subtype + top-3-fixes) that owners can post on
-                 Instagram / LinkedIn / email. -->
+            <!-- Fase I7: el botón de download-share-card dispara el
+                 rendering en Canvas de un PNG de 1200x630 (puntaje +
+                 subtipo + top-3-arreglos) que los dueños pueden
+                 publicar en Instagram / LinkedIn / email. -->
             <button type="button" class="share-btn" id="shareCardBtn" hidden>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Download share card
+              Descargar tarjeta para compartir
             </button>
-            <span class="share-toast" id="shareToast" aria-live="polite">Link copied!</span>
+            <span class="share-toast" id="shareToast" aria-live="polite">¡Enlace copiado!</span>
           </div>
 
-          <div class="share-platforms" aria-label="Share to social">
-            <span class="label">Share:</span>
-            <a class="share-platform" id="shareX" target="_blank" rel="noopener noreferrer" aria-label="Share on X (Twitter)" title="Share on X">
+          <div class="share-platforms" aria-label="Compartir en redes">
+            <span class="label">Compartir:</span>
+            <a class="share-platform" id="shareX" target="_blank" rel="noopener noreferrer" aria-label="Compartir en X (Twitter)" title="Compartir en X">
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
             </a>
-            <a class="share-platform" id="shareFB" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook" title="Share on Facebook">
+            <a class="share-platform" id="shareFB" target="_blank" rel="noopener noreferrer" aria-label="Compartir en Facebook" title="Compartir en Facebook">
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12.07C22 6.51 17.52 2 12 2S2 6.51 2 12.07c0 5.02 3.66 9.18 8.44 9.93v-7.02H7.9v-2.91h2.54V9.85c0-2.51 1.49-3.9 3.78-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.77l-.44 2.91h-2.33V22c4.78-.75 8.44-4.9 8.44-9.93z"/></svg>
             </a>
-            <a class="share-platform" id="shareLI" target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn" title="Share on LinkedIn">
+            <a class="share-platform" id="shareLI" target="_blank" rel="noopener noreferrer" aria-label="Compartir en LinkedIn" title="Compartir en LinkedIn">
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45C23.2 24 24 23.23 24 22.28V1.72C24 .77 23.2 0 22.22 0z"/></svg>
             </a>
-            <a class="share-platform" id="shareWA" target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp" title="Share on WhatsApp">
+            <a class="share-platform" id="shareWA" target="_blank" rel="noopener noreferrer" aria-label="Compartir en WhatsApp" title="Compartir en WhatsApp">
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-1 1.1-.2.2-.4.2-.7.1-1.6-.8-2.7-1.4-3.7-3.1-.3-.5.3-.4.8-1.4.1-.2 0-.4 0-.5s-.7-1.7-1-2.3c-.3-.6-.5-.5-.7-.5H7.8c-.2 0-.5.1-.8.4-.3.3-1.1 1-1.1 2.5s1.1 2.9 1.3 3.1c.2.2 2.2 3.3 5.2 4.6 2 .8 2.8.9 3.7.8.6-.1 1.7-.7 2-1.3.3-.7.3-1.2.2-1.3 0-.2-.2-.2-.5-.3zM12 2a10 10 0 0 0-8.5 15.2L2 22l4.9-1.3A10 10 0 1 0 12 2zm0 18.3a8.3 8.3 0 0 1-4.2-1.2l-.3-.2-3.1.8.8-3-.2-.3A8.3 8.3 0 1 1 12 20.3z"/></svg>
             </a>
-            <a class="share-platform" id="shareEmail" aria-label="Share via email" title="Share via email">
+            <a class="share-platform" id="shareEmail" aria-label="Compartir por email" title="Compartir por email">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><polyline points="2 7 12 13 22 7"/></svg>
             </a>
-            <button type="button" class="share-platform share-native" id="shareNative" aria-label="Open native share sheet" title="More share options" hidden>
+            <button type="button" class="share-platform share-native" id="shareNative" aria-label="Abrir hoja nativa para compartir" title="Más opciones para compartir" hidden>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>
             </button>
-            <button type="button" class="share-platform" id="shareImage" aria-label="Download result card as image" title="Download image">
+            <button type="button" class="share-platform" id="shareImage" aria-label="Descargar tarjeta de resultados como imagen" title="Descargar imagen">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             </button>
           </div>
         </div>
       </div>
 
-      <!-- Five category gauges — four from Lighthouse + Restaurant Readiness from priority checks -->
+      <!-- Cinco gauges de categoría — cuatro de Lighthouse + Restaurant Readiness de los chequeos prioritarios -->
       <div class="category-grid">
         <div class="category-card" data-cat="performance">
-          <div class="label">Performance</div>
+          <div class="label">Rendimiento</div>
           <div class="cat-value">—</div>
           <div class="bar"><div class="fill" style="width:0%"></div></div>
-          <div class="sublabel">How fast pages load on a phone</div>
+          <div class="sublabel">Qué tan rápido cargan las páginas en un teléfono</div>
         </div>
         <div class="category-card" data-cat="accessibility">
-          <div class="label">Accessibility</div>
+          <div class="label">Accesibilidad</div>
           <div class="cat-value">—</div>
           <div class="bar"><div class="fill" style="width:0%"></div></div>
-          <div class="sublabel">Usable for every visitor</div>
+          <div class="sublabel">Usable para cada visitante</div>
         </div>
         <div class="category-card" data-cat="best-practices">
-          <div class="label">Best Practices</div>
+          <div class="label">Buenas prácticas</div>
           <div class="cat-value">—</div>
           <div class="bar"><div class="fill" style="width:0%"></div></div>
-          <div class="sublabel">Modern, secure web standards</div>
+          <div class="sublabel">Estándares web modernos y seguros</div>
         </div>
         <div class="category-card" data-cat="seo">
           <div class="label">SEO</div>
           <div class="cat-value">—</div>
           <div class="bar"><div class="fill" style="width:0%"></div></div>
-          <div class="sublabel">Whether Google can find you</div>
+          <div class="sublabel">Si Google puede encontrarte</div>
         </div>
         <div class="category-card" data-cat="restaurant">
-          <div class="label">Restaurant</div>
+          <div class="label">Restaurante</div>
           <div class="cat-value">—</div>
           <div class="bar"><div class="fill" style="width:0%"></div></div>
-          <div class="sublabel">Restaurant-specific checks</div>
+          <div class="sublabel">Chequeos específicos para restaurantes</div>
         </div>
       </div>
 
-      <!-- Phase I1: Executive summary. A 2-3 sentence narrative
-           that interprets the score in plain English, calls out
-           the subtype's posture, and names the top 1-2 areas to
-           focus on. Populated by renderExecutiveSummary() in
-           I1b. Hidden by default so the layout doesn't reserve
-           empty space on pre-audit page load. -->
+      <!-- Fase I1: Resumen ejecutivo. Una narrativa de 2-3 oraciones
+           que interpreta el puntaje en español claro, señala la
+           postura del subtipo y nombra las 1-2 áreas principales en
+           las que enfocarse. Lo puebla renderExecutiveSummary() en
+           I1b. Oculto por default para que el layout no reserve
+           espacio vacío en la carga de página pre-diagnóstico. -->
       <section class="exec-summary" id="execSummary" hidden aria-live="polite">
-        <div class="exec-summary-label">What this means</div>
+        <div class="exec-summary-label">Qué significa esto</div>
         <p class="exec-summary-body" id="execSummaryBody">—</p>
       </section>
 
-      <!-- Phase I2: Top 3 Fixes action card. Shows the three
-           highest-leverage actionable items (failing or unverified
-           checks ordered by subtype-effective weight) with effort
-           and time chips so the owner sees a compact action plan
-           before the full priority list below. -->
+      <!-- Fase I2: Tarjeta de acción de los Top 3 Arreglos. Muestra
+           los tres ítems accionables de mayor palanca (chequeos
+           fallidos o sin verificar ordenados por peso efectivo del
+           subtipo) con chips de esfuerzo y tiempo para que el dueño
+           vea un plan de acción compacto antes de la lista prioritaria
+           completa más abajo. -->
       <section class="top-fixes" id="topFixes" hidden>
         <div class="top-fixes-head">
-          <div class="top-fixes-label">Top 3 fixes</div>
-          <div class="top-fixes-sub">Ranked by impact for your segment. Work top-down.</div>
+          <div class="top-fixes-label">Top 3 arreglos</div>
+          <div class="top-fixes-sub">Ordenados por impacto para tu segmento. Trabájalos de arriba hacia abajo.</div>
         </div>
         <ol class="top-fixes-list" id="topFixesList"></ol>
       </section>
