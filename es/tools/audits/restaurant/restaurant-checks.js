@@ -862,47 +862,47 @@ var RESTAURANT_PRIORITY_CHECKS = [
     unverifiedNote: 'Escaneamos texto de lealtad ("programa de recompensas", "gana puntos", "únete a nuestras recompensas", "rewards program", "earn points") y plataformas conocidas (Thanx, LevelUp, Paytronix, Como, Fivestars, Loyalzoo). Si corres uno que se nos pasó, avísanos. Si todavía no tienes, un programa de lealtad moderno integrado con POS se paga en 90-120 días para la mayoría de restaurantes casuales y fast-casual.'
   },
   {
-    // Phase H4: Email newsletter capture.
+    // Fase H4: Captura de newsletter por email.
     type: 'email-capture',
     weight: 0.4,
     anchor: '#conversions',
     effort: 'dev',
     minutes: 60,
-    impact: 'An email list is the only marketing channel you OWN — Instagram can ghost you, Google can change the rules, but your list keeps compounding. Restaurants with a newsletter capture typically see 3-5x higher repeat-visit rates from subscribers vs. non-subscribers.',
-    pass: 'Your site captures newsletter signups',
-    passNote: '{detected} on your site — you are building an owned audience, which is the single most valuable marketing asset a restaurant can accumulate.',
+    impact: 'Una lista de email es el único canal de marketing que TÚ posees — Instagram te puede dejar en visto, Google puede cambiar las reglas, pero tu lista sigue capitalizando. Los restaurantes con una captura de newsletter típicamente ven tasas de visita repetida 3-5x más altas entre suscriptores vs. no suscriptores.',
+    pass: 'Tu sitio captura suscripciones al newsletter',
+    passNote: '{detected} en tu sitio — estás construyendo una audiencia propia, que es el activo de marketing más valioso que un restaurante puede acumular.',
     fail: null,
     failNote: null,
-    unverified: 'We didn\'t spot a newsletter capture — is this right?',
-    unverifiedNote: 'We look for an email input paired with newsletter language (subscribe / join our list / newsletter) OR a form action pointing at Mailchimp, Klaviyo, ConvertKit, Constant Contact, or similar. If yours is elsewhere or the form is in a modal we didn\'t render, let us know.'
+    unverified: 'No vimos captura de newsletter — ¿es correcto?',
+    unverifiedNote: 'Buscamos un input de email acompañado de lenguaje de newsletter (suscríbete / únete a nuestra lista / newsletter / subscribe / join our list) O un form action apuntando a Mailchimp, Klaviyo, ConvertKit, Constant Contact o similar. Si el tuyo vive en otra parte o el formulario está en un modal que no renderizamos, avísanos.'
   },
   {
-    // Phase H5: Catering / private-events page presence.
-    // Evaluated from the crawl bundle: a slot='catering' or
-    // slot='events' page counts as a pass. Subtype weights in
-    // subtypes.js make this a 2.5x bump for catering-only and
-    // boost for fine-dining / bar-pub.
+    // Fase H5: Presencia de página de catering / eventos
+    // privados. Evaluada desde el bundle del crawl: una página
+    // con slot='catering' o slot='events' cuenta como pass. Los
+    // pesos por subtipo en subtypes.js dan a esto un boost de 2.5x
+    // para catering-only y un boost para fine-dining / bar-pub.
     type: 'catering-page',
     weight: 0.75,
     anchor: '#conversions',
     effort: 'rebuild',
     minutes: 180,
-    impact: 'A dedicated catering or private-events page is how most corporate planners and wedding organizers FIND caterers — it captures the long-tail search traffic ("catering Brooklyn", "private dining party of 30") that the homepage never ranks for.',
-    pass: 'You have a catering / events page',
-    passNote: 'Your site links to a dedicated catering or events page — planners searching for private dining in your area can land directly on a page that sells the offering.',
+    impact: 'Una página dedicada de catering o eventos privados es cómo la mayoría de los planificadores corporativos y organizadores de bodas ENCUENTRAN proveedores de catering — captura el tráfico de búsqueda de cola larga ("catering Brooklyn", "cena privada para grupo de 30") por el cual la página de inicio nunca posiciona.',
+    pass: 'Tienes una página de catering / eventos',
+    passNote: 'Tu sitio enlaza a una página dedicada de catering o eventos — los planificadores buscando cena privada en tu zona pueden aterrizar directo en una página que vende la oferta.',
     fail: null,
     failNote: null,
-    unverified: 'We didn\'t find a catering or events page — is this right?',
-    unverifiedNote: 'We look for links labelled "Catering", "Private Events", "Parties", or "Weddings" in your navigation. If you do host events but the page is named differently, let us know. If you don\'t today, a catering page is one of the highest-ROI additions for any restaurant with dining-room capacity.',
+    unverified: 'No encontramos una página de catering o eventos — ¿es correcto?',
+    unverifiedNote: 'Buscamos enlaces etiquetados "Catering", "Eventos Privados", "Private Events", "Fiestas", "Parties" o "Bodas" en tu navegación. Si organizas eventos pero la página tiene otro nombre, avísanos. Si hoy no la tienes, una página de catering es una de las adiciones de mayor ROI para cualquier restaurante con capacidad de salón.',
     byType: {
       'fine-dining': {
-        impact: 'Private-dining rooms and buyouts are the margin engine of fine-dining — a single corporate holiday party pays for a slow week. A dedicated events page with capacity, sample menus, and photo gallery is what the event planners searching "private dining [city]" actually land on.'
+        impact: 'Las salas de cena privada y los buyouts son el motor de margen de la alta cocina — una sola fiesta corporativa de fin de año paga una semana lenta. Una página dedicada de eventos con capacidad, menús de muestra y galería de fotos es donde aterrizan los organizadores de eventos que buscan "cena privada [ciudad]".'
       },
       'catering-only': {
-        impact: 'For a catering-only business the catering page IS the site. It\'s where packages, per-head pricing, dietary accommodations, minimum order sizes, service radius, lead time, and the RFQ form all live. Without it, planners comparing vendors leave for a competitor with clearer info.'
+        impact: 'Para un negocio solo de catering la página de catering ES el sitio. Es donde viven los paquetes, el precio por persona, los acomodos dietarios, los tamaños mínimos de pedido, el radio de servicio, el tiempo de anticipación y el formulario de RFQ. Sin ella, los planificadores que comparan proveedores se van con un competidor con información más clara.'
       },
       'bar-pub': {
-        impact: 'Private parties (birthdays, work socials, whiskey tastings) are high-ticket bar revenue that walks in by appointment. A dedicated events page with capacity, packages, and a Tripleseat / inquiry form converts those bookings that would otherwise end up in a lost email thread.'
+        impact: 'Las fiestas privadas (cumpleaños, eventos sociales de trabajo, catas de whiskey) son ingresos de ticket alto para el bar que entran por cita. Una página dedicada de eventos con capacidad, paquetes y un formulario Tripleseat / de consulta convierte esas reservas que de otra forma terminarían en un hilo de email perdido.'
       }
     }
   },
