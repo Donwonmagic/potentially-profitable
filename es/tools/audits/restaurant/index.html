@@ -4540,7 +4540,7 @@
     var valueEl = card.querySelector('.cat-value');
     if (valueEl) {
       valueEl.textContent = '?';
-      valueEl.title = 'Not enough confirmed signal yet. Answer the "Is this right?" questions below and this score will update live.';
+      valueEl.title = 'Todavía no hay suficiente señal confirmada. Contesta las preguntas de "¿Esto es correcto?" de abajo y este puntaje se actualizará en vivo.';
     }
     var fill = card.querySelector('.bar .fill');
     fill.style.width = '0%';
@@ -4565,7 +4565,7 @@
     if (grade) valueEl.classList.add(grade);
     if (srcEl) {
       if (source === 'field') {
-        srcEl.textContent = scope === 'origin' ? 'Real users (origin)' : 'Real users';
+        srcEl.textContent = scope === 'origin' ? 'Usuarios reales (origen)' : 'Usuarios reales';
         srcEl.className = 'v-source v-source-field';
       } else if (source === 'lab') {
         srcEl.textContent = 'Estimación de laboratorio';
@@ -5426,7 +5426,7 @@
         for (var ci = 0; ci < cpCrawl.pages.length; ci++) {
           var cp = cpCrawl.pages[ci];
           if (cp && (cp.slot === 'catering' || cp.slot === 'events') && cp.html) {
-            return makeResult(def, 'pass', [{ name: cp.slot === 'catering' ? 'Catering page' : 'Events page' }]);
+            return makeResult(def, 'pass', [{ name: cp.slot === 'catering' ? 'Página de catering' : 'Página de eventos' }]);
           }
         }
       }
@@ -5460,7 +5460,7 @@
         }
       }
       var ly = detectLoyaltyProgram(lyText, lyUrls);
-      if (ly.present) return makeResult(def, 'pass', [{ name: ly.viaHosts ? 'Loyalty platform' : 'Loyalty program' }]);
+      if (ly.present) return makeResult(def, 'pass', [{ name: ly.viaHosts ? 'Plataforma de lealtad' : 'Programa de lealtad' }]);
       return makeResult(def, 'unverified');
     }
 
@@ -5687,13 +5687,13 @@
       var pillText = '';
       var pillShow = true;
       if (userBusinessType) {
-        pillText = 'You confirmed';
+        pillText = 'Tú lo confirmaste';
       } else if (detection && detection.confidence === 'high') {
-        pillText = 'High confidence';
+        pillText = 'Alta confianza';
       } else if (detection && detection.confidence === 'medium') {
-        pillText = 'Best guess';
+        pillText = 'Mejor suposición';
       } else if (detection && detection.confidence === 'low') {
-        pillText = 'Uncertain — please pick';
+        pillText = 'Incierto — por favor elige';
       } else {
         pillShow = false;
       }
@@ -5702,8 +5702,8 @@
     }
     if (labelText) {
       labelText.textContent = userBusinessType
-        ? 'You picked:'
-        : 'Detected:';
+        ? 'Tú elegiste:'
+        : 'Detectamos:';
     }
     if (sub) {
       if (userBusinessType) {
@@ -6100,12 +6100,12 @@
         .filter(function(e){ var c = e.result && e.result.mark && e.result.mark.cls; return c === 'fail' || c === 'unverified'; })
         .slice(0, 3)
         .map(function(e){
-          var t = (e.result && e.result.title) || (e.def && (e.def.unverified || e.def.fail)) || 'Action item';
+          var t = (e.result && e.result.title) || (e.def && (e.def.unverified || e.def.fail)) || 'Ítem de acción';
           return t;
         });
     }
     if (!fixes.length) {
-      fixes = ['Your site is in strong shape!'];
+      fixes = ['¡Tu sitio está en forma fuerte!'];
     }
     ctx.fillStyle = '#14161A';
     var fixY = colY + 118;
@@ -6196,25 +6196,25 @@
   function executiveSubtypeHint(subtypeId) {
     switch (subtypeId) {
       case 'fine-dining':
-        return 'For fine-dining, the biggest lever is keeping reservations on your own site instead of routing through OpenTable.';
+        return 'Para la alta cocina, la palanca más grande es mantener las reservas en tu propio sitio en vez de rutearlas por OpenTable.';
       case 'casual-dining':
-        return 'For casual dining, the biggest lever is owning both reservations and takeout ordering rather than paying aggregator commission.';
+        return 'Para el casual dining, la palanca más grande es ser dueño tanto de las reservas como del pedido takeout en vez de pagar comisión a agregadores.';
       case 'fast-casual':
-        return 'For fast-casual, the biggest lever is direct online ordering — every order on Toast or ChowNow keeps the 20-30% DoorDash commission.';
+        return 'Para fast-casual, la palanca más grande es el pedido online directo — cada pedido en Toast o ChowNow te queda libre de la comisión del 20-30 % de DoorDash.';
       case 'cafe':
-        return 'For cafes, the biggest lever is hours clarity plus a one-tap phone and map — that\'s 80% of what your morning traffic actually reads.';
+        return 'Para los cafés, la palanca más grande es claridad en los horarios más un teléfono y mapa de un toque — eso es el 80 % de lo que tu tráfico de la mañana realmente lee.';
       case 'bakery':
-        return 'For bakeries, the biggest lever is a dedicated custom-order / wedding-cake intake form — that\'s where margin-rich orders come from.';
+        return 'Para las panaderías, la palanca más grande es un formulario dedicado de intake para pedidos personalizados / pasteles de boda — ahí es donde vienen los pedidos de margen alto.';
       case 'bar-pub':
-        return 'For bars and pubs, the biggest lever is an events / private-parties booking flow — Tripleseat or a simple inquiry form captures the high-ticket bookings.';
+        return 'Para bares y pubs, la palanca más grande es un flujo de reserva para eventos / fiestas privadas — Tripleseat o un formulario simple de consulta captura las reservas de ticket alto.';
       case 'pizzeria':
-        return 'For pizzerias, the biggest lever is a direct-order flow on your own site — Slice and DoorDash take 20-30% per pie, and owning the customer is worth more than the commission saved.';
+        return 'Para pizzerías, la palanca más grande es un flujo de pedido directo en tu propio sitio — Slice y DoorDash se llevan 20-30 % por pizza, y ser dueño del cliente vale más que la comisión ahorrada.';
       case 'food-truck':
-        return 'For food trucks, the biggest lever is a visible schedule / today\'s-location page — that\'s the primary job of a food-truck site.';
+        return 'Para food trucks, la palanca más grande es una página visible de horario / ubicación-de-hoy — ese es el trabajo primario de un sitio de food truck.';
       case 'ghost-kitchen':
-        return 'For ghost kitchens, the biggest lever is clear aggregator links plus an explicit delivery-only marker so dine-in visitors don\'t show up to a closed storefront.';
+        return 'Para cocinas fantasma, la palanca más grande es enlaces claros a los agregadores más un marcador explícito de solo-delivery para que los visitantes de salón no lleguen a un local cerrado.';
       case 'catering-only':
-        return 'For catering-only businesses, the biggest lever is a structured quote-request form — ezCater, CaterTrax, Tripleseat, or a custom RFQ captures the $2K+ bookings that email threads lose.';
+        return 'Para negocios de solo catering, la palanca más grande es un formulario estructurado de solicitud de cotización — ezCater, CaterTrax, Tripleseat o un RFQ a medida captura las reservas de USD 2K+ que los hilos de email pierden.';
       default:
         return 'Trabaja los chequeos prioritarios de abajo en orden — cada uno está calibrado por impacto para tu segmento.';
     }
