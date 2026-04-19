@@ -4481,11 +4481,21 @@
     };
   }
 
-  function verdictFor(score) {
-    if (score >= 90) return "Your site is in great shape. Most restaurants would be thrilled to hit this score. Small polish items may remain — check the breakdown below.";
-    if (score >= 70) return "Solid foundation with room to tighten up. Focus on the red and amber items below — most are mechanical fixes that push your scores into the green (90+) zone.";
-    if (score >= 50) return "The site works, but it's leaking conversions. The good news: the wins here — load speed, image alt text, meta tags, schema — take days, not months, and they're listed in priority order below.";
-    return "There's real work to do. Scores in this range usually track with a template site hitting its ceiling — font sizes, tap targets, page speed, and schema markup all tend to be fixable, but they add up. Start with the failing items below, in the order they're listed.";
+  function verdictFor(score, meta) {
+    var base;
+    if (score >= 90) base = "Your site is in great shape. Most restaurants would be thrilled to hit this score. Small polish items may remain — check the breakdown below.";
+    else if (score >= 70) base = "Solid foundation with room to tighten up. Focus on the red and amber items below — most are mechanical fixes that push your scores into the green (90+) zone.";
+    else if (score >= 50) base = "The site works, but it's leaking conversions. The good news: the wins here — load speed, image alt text, meta tags, schema — take days, not months, and they're listed in priority order below.";
+    else base = "There's real work to do. Scores in this range usually track with a template site hitting its ceiling — font sizes, tap targets, page speed, and schema markup all tend to be fixable, but they add up. Start with the failing items below, in the order they're listed.";
+    // Sprint A4: when more than two checks couldn't be verified, the
+    // A1 half-weight penalty has bent the score downward. Disclose
+    // that honestly so owners know confirming unverified items will
+    // lift the number, not just feel like busywork.
+    var uv = meta && typeof meta.unverifiedCount === 'number' ? meta.unverifiedCount : 0;
+    if (uv > 2) {
+      base += ' We couldn\'t verify ' + uv + ' checks on this pass — each one is counted at half weight. Confirming them below will sharpen the score in either direction.';
+    }
+    return base;
   }
 
   function setScoreRing(score, meta) {
@@ -6795,7 +6805,7 @@
     // Strip protocol from displayed URL for readability
     var displayUrl = auditedUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
     document.getElementById('auditedUrl').textContent = displayUrl;
-    document.getElementById('verdictCopy').textContent = verdictFor(overall);
+    document.getElementById('verdictCopy').textContent = verdictFor(overall, { unverifiedCount: priorityResult.unverifiedCount });
 
     // Phase I1: render the narrative executive-summary block
     // below the category cards. Feeds in all the pillar scores
@@ -7009,7 +7019,7 @@
     // real score on this pass.
     setScoreRing(overall, { unverifiedCount: priorityResult.unverifiedCount });
     var verdictEl = document.getElementById('verdictCopy');
-    if (verdictEl) verdictEl.textContent = verdictFor(overall);
+    if (verdictEl) verdictEl.textContent = verdictFor(overall, { unverifiedCount: priorityResult.unverifiedCount });
     if (!state.isRestaurant) {
       setCategoryNA('restaurant');
     } else if (priorityResult.lowConfidence) {
