@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- Glossary: dark reference-page feel with term cards echoing the
+       "Lo esencial" chip pattern on the glossary page itself. -->
+  <rect width="1200" height="630" fill="#14161A"/>
+  <defs>
+    <radialGradient id="glossglow-es" cx="75%" cy="30%" r="55%">
+      <stop offset="0%" stop-color="#1F4E5B" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#14161A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#glossglow-es)" opacity="0.6"/>
+
+  <text x="72" y="90" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#FAF7F2" letter-spacing="5" opacity="0.55">GLOSARIO WEB · EN ESPAÑOL CLARO</text>
+
+  <text x="72" y="210" font-family="Fraunces, Georgia, serif" font-size="72" font-weight="500" fill="#FAF7F2" letter-spacing="-2">Cada término,</text>
+  <text x="72" y="290" font-family="Fraunces, Georgia, serif" font-size="72" font-weight="500" fill="#FAF7F2" letter-spacing="-2">explicado claro.</text>
+  <text x="72" y="355" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="32" font-weight="400" fill="#FAF7F2" opacity="0.65">Para dueños, no para desarrolladores.</text>
+
+  <!-- Sample glossary entry cards (right-aligned, faded to feel like
+       paging through a reference). -->
+  <g transform="translate(720, 140)" font-family="Inter, Arial, sans-serif">
+    <rect x="0" y="0" width="380" height="88" rx="10" fill="#FAF7F2" opacity="0.07"/>
+    <text x="24" y="32" font-size="11" font-weight="700" fill="#FAF7F2" letter-spacing="3" opacity="0.55">SCHEMA</text>
+    <text x="24" y="66" font-family="Fraunces, Georgia, serif" font-size="22" font-weight="500" fill="#FAF7F2">Datos que Google lee.</text>
+
+    <rect x="0" y="108" width="380" height="88" rx="10" fill="#FAF7F2" opacity="0.07"/>
+    <text x="24" y="140" font-size="11" font-weight="700" fill="#FAF7F2" letter-spacing="3" opacity="0.55">CORE WEB VITALS</text>
+    <text x="24" y="174" font-family="Fraunces, Georgia, serif" font-size="22" font-weight="500" fill="#FAF7F2">Velocidad + estabilidad.</text>
+
+    <rect x="0" y="216" width="380" height="88" rx="10" fill="#FAF7F2" opacity="0.07"/>
+    <text x="24" y="248" font-size="11" font-weight="700" fill="#FAF7F2" letter-spacing="3" opacity="0.55">OPEN GRAPH</text>
+    <text x="24" y="282" font-family="Fraunces, Georgia, serif" font-size="22" font-weight="500" fill="#FAF7F2">Tarjetas al compartir.</text>
+
+    <rect x="0" y="324" width="380" height="88" rx="10" fill="#FAF7F2" opacity="0.07"/>
+    <text x="24" y="356" font-size="11" font-weight="700" fill="#FAF7F2" letter-spacing="3" opacity="0.55">HREFLANG</text>
+    <text x="24" y="390" font-family="Fraunces, Georgia, serif" font-size="22" font-weight="500" fill="#FAF7F2">Versiones por idioma.</text>
+  </g>
+
+  <rect y="580" width="1200" height="50" fill="#1F4E5B" opacity="0.25"/>
+  <text x="72" y="612" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#FAF7F2" letter-spacing="2" opacity="0.6">GLOSARIO DE MUNTIN DIGITAL</text>
+  <text x="1128" y="612" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600" fill="#FAF7F2" letter-spacing="1" opacity="0.7">muntin.digital/es/glossary</text>
+</svg>
