@@ -141,7 +141,7 @@
       setOpen(menu.hidden);
     });
     menu.addEventListener('click', (e) => {
-      if (e.target.tagName === 'A') setOpen(false);
+      if (e.target.closest('a')) setOpen(false);
     });
     document.addEventListener('keydown', (e) => {
       if (menu.hidden) return;
