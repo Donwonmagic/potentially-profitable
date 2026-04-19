@@ -4957,18 +4957,45 @@
     var topScore     = scores[topType];
     var secondScore  = scores[sortedTypes[1]] || 0;
 
+    // Sprint F1: build a top-3 list of candidates with numeric
+    // confidence so the UI can render alternative chips + gate on
+    // low confidence before silently applying subtype weights.
+    //
+    // Numeric confidence: topScore / (topScore + secondScore), with a
+    // small prior so a 3-vs-0 split reads as "very confident" rather
+    // than "perfect certainty at total mass 3". Clamps to [0, 1].
+    var totalMass = Math.max(topScore + secondScore, 1);
+    var confidenceScore = topScore <= 0 ? 0
+      : Math.max(0, Math.min(1, (topScore - 0.5) / totalMass));
+    var runnersUp = sortedTypes.slice(0, 3).map(function(t){
+      return {
+        type: t,
+        label: BUSINESS_TYPE_DEFS[t].label,
+        score: scores[t]
+      };
+    });
+
     // Require ≥2 absolute pts to classify at all; ≥4 pts AND a 2-pt
     // lead for HIGH confidence. Below the floor, fall through to
     // generic 'restaurant' so we don't confidently mislabel.
     if (topScore < 2) {
-      return { type: 'restaurant', label: 'Restaurant', confidence: 'low', scores: scores };
+      return {
+        type: 'restaurant',
+        label: 'Restaurant',
+        confidence: 'low',
+        confidenceScore: 0,
+        scores: scores,
+        runnersUp: runnersUp
+      };
     }
     var confidence = (topScore - secondScore >= 2 && topScore >= 4) ? 'high' : 'medium';
     return {
       type: topType,
       label: BUSINESS_TYPE_DEFS[topType].label,
       confidence: confidence,
-      scores: scores
+      confidenceScore: confidenceScore,
+      scores: scores,
+      runnersUp: runnersUp
     };
   }
 
