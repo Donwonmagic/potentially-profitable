@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#14161A"/>
+  <defs>
+    <radialGradient id="srchglow-es" cx="78%" cy="30%" r="55%">
+      <stop offset="0%" stop-color="#1F4E5B" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#14161A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#srchglow-es)"/>
+
+  <text x="72" y="90" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#FAF7F2" letter-spacing="5" opacity="0.55">HERRAMIENTA GRATIS · IDEAS DE BÚSQUEDA</text>
+
+  <text x="72" y="210" font-family="Fraunces, Georgia, serif" font-size="68" font-weight="500" fill="#FAF7F2" letter-spacing="-2">¿Qué busca la gente</text>
+  <text x="72" y="285" font-family="Fraunces, Georgia, serif" font-size="68" font-weight="500" fill="#FAF7F2" letter-spacing="-2">cerca de mí?</text>
+  <text x="72" y="355" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="30" font-weight="400" fill="#FAF7F2" opacity="0.65">Sugerencias reales de Google. Tu ciudad, tu negocio.</text>
+
+  <!-- Search input + suggestions mockup -->
+  <g transform="translate(750, 140)" font-family="Inter, Arial, sans-serif">
+    <rect x="0" y="0" width="380" height="58" rx="29" fill="#FAF7F2" opacity="0.1"/>
+    <circle cx="32" cy="29" r="8" fill="none" stroke="#FAF7F2" stroke-width="2" opacity="0.7"/>
+    <line x1="38" y1="35" x2="44" y2="41" stroke="#FAF7F2" stroke-width="2" opacity="0.7"/>
+    <text x="56" y="35" font-size="15" fill="#FAF7F2" opacity="0.85">tacos silver spring</text>
+
+    <g transform="translate(0, 78)">
+      <rect x="0" y="0" width="380" height="44" rx="8" fill="#FAF7F2" opacity="0.06"/>
+      <text x="20" y="28" font-size="14" fill="#FAF7F2" opacity="0.8">tacos silver spring <tspan fill="#C9A84C" font-weight="600">maryland</tspan></text>
+    </g>
+    <g transform="translate(0, 130)">
+      <rect x="0" y="0" width="380" height="44" rx="8" fill="#FAF7F2" opacity="0.06"/>
+      <text x="20" y="28" font-size="14" fill="#FAF7F2" opacity="0.8">tacos silver spring <tspan fill="#C9A84C" font-weight="600">al pastor</tspan></text>
+    </g>
+    <g transform="translate(0, 182)">
+      <rect x="0" y="0" width="380" height="44" rx="8" fill="#FAF7F2" opacity="0.06"/>
+      <text x="20" y="28" font-size="14" fill="#FAF7F2" opacity="0.8">tacos silver spring <tspan fill="#C9A84C" font-weight="600">abiertos ahora</tspan></text>
+    </g>
+    <g transform="translate(0, 234)">
+      <rect x="0" y="0" width="380" height="44" rx="8" fill="#FAF7F2" opacity="0.06"/>
+      <text x="20" y="28" font-size="14" fill="#FAF7F2" opacity="0.8">tacos silver spring <tspan fill="#C9A84C" font-weight="600">delivery</tspan></text>
+    </g>
+  </g>
+
+  <rect y="580" width="1200" height="50" fill="#1F4E5B" opacity="0.2"/>
+  <text x="72" y="612" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#FAF7F2" letter-spacing="2" opacity="0.6">SUGERENCIAS REALES · TU CIUDAD</text>
+  <text x="1128" y="612" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600" fill="#FAF7F2" letter-spacing="1" opacity="0.7">muntin.digital/es</text>
+</svg>

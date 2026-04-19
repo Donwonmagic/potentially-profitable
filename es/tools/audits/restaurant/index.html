@@ -17,18 +17,20 @@
 
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Diagnóstico gratis para sitios web de restaurantes — Califica tu sitio en unos treinta segundos" />
-<meta property="og:description" content="Corre el diagnóstico del sitio web de tu restaurante en unos treinta segundos. Velocidad móvil, legibilidad del menú, detección de pedidos online y reservas, y más — un diagnóstico real de restaurantes, no un puntaje genérico de Lighthouse. Gratis, sin registro." />
+<meta property="og:description" content="Una creación de Muntin Digital impulsada por Google Lighthouse, PageSpeed Insights, datos reales de CrUX y validación de schema.org — más chequeos específicos para restaurantes: pedidos, reservas, legibilidad del menú, click-to-call y estado de Google Business Profile. Gratis, sin registro." />
 <meta property="og:url" content="https://muntin.digital/es/tools/audits/restaurant/" />
 <meta property="og:site_name" content="Muntin Digital" />
-<meta property="og:image" content="https://muntin.digital/brand/og/audit-restaurants.svg" />
+<meta property="og:image" content="https://muntin.digital/brand/og/audit-restaurants-es.svg" />
 <meta property="og:image:type" content="image/svg+xml" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Diagnóstico gratis para sitios web de restaurantes — Califica tu sitio en unos treinta segundos" />
-<meta name="twitter:description" content="Corre el diagnóstico del sitio web de tu restaurante en unos treinta segundos. Móvil, menús, pedidos, reservas — gratis, sin registro." />
-<meta name="twitter:image" content="https://muntin.digital/brand/og/audit-restaurants.svg" />
+<meta name="twitter:description" content="Una creación de Muntin Digital impulsada por Lighthouse, CrUX y schema.org — un diagnóstico real de restaurante para velocidad móvil, menús, pedidos, reservas y estado de Google Business Profile. Gratis, sin registro." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/audit-restaurants-es.svg" />
+<meta name="twitter:creator" content="@muntin_digital" />
+<meta name="twitter:site" content="@muntin_digital" />
 
 <!-- Favicons -->
 <!-- Favicons. Order matters: SVG first for high-DPI scalable, then a
@@ -45,22 +47,48 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
+<!-- Sprint BB4: generator + SoftwareApplication schema so search
+     engines index this as a discoverable tool and attribute it to
+     Muntin Digital. Version bumps when the audit engine changes
+     materially (weight changes, new checks); keep in sync with
+     POWERED_BY in restaurant-checks.js. -->
+<meta name="generator" content="Muntin Digital Audit v1.1" />
+<meta name="author" content="Muntin Digital" />
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "WebApplication",
+      "@type": "SoftwareApplication",
       "@id": "https://muntin.digital/es/tools/audits/restaurant/#app",
-      "name": "Diagnóstico de sitio web de restaurante",
-      "inLanguage": "es",
+      "name": "Diagnóstico de sitio web de restaurante de Muntin Digital",
       "applicationCategory": "BusinessApplication",
+      "applicationSubCategory": "Website Audit",
       "operatingSystem": "Web",
+      "inLanguage": "es",
       "url": "https://muntin.digital/es/tools/audits/restaurant/",
-      "description": "Una herramienta de diagnóstico gratuita que corre del lado del cliente, construida a propósito para sitios web de restaurantes. Corre Google PageSpeed Insights y traduce los resultados a ítems pass/fail en un español claro para los dueños de restaurantes independientes.",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "creator": { "@id": "https://muntin.digital/#business" },
-      "audience": { "@type": "BusinessAudience", "audienceType": "Dueño de restaurante" }
+      "description": "Una creación de Muntin Digital — un diagnóstico gratis del sitio web de tu restaurante que combina Google Lighthouse, PageSpeed Insights, datos reales de CrUX, validación de schema.org y chequeos específicos para restaurantes. Sin registro, sin muros de pago, sin trucos.",
+      "creator": {
+        "@type": "Organization",
+        "name": "Muntin Digital",
+        "url": "https://muntin.digital/"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "audience": { "@type": "BusinessAudience", "audienceType": "Dueño de restaurante" },
+      "featureList": [
+        "Rendimiento móvil (Google Lighthouse)",
+        "Core Web Vitals de campo (Google CrUX)",
+        "Diagnóstico de accesibilidad WCAG",
+        "SEO + validación de datos estructurados (schema.org)",
+        "Chequeos específicos para restaurantes (pedidos, reservas, menú, horarios)",
+        "Comparación con la competencia",
+        "Reporte PDF imprimible",
+        "Enlace de diagnóstico para compartir"
+      ]
     },
     {
       "@type": "BreadcrumbList",
@@ -6026,7 +6054,7 @@
     ctx.font = '600 20px "Inter", system-ui, sans-serif';
     ctx.textBaseline = 'top';
     ctx.textAlign = 'left';
-    ctx.fillText('MUNTIN DIGITAL · Restaurant Website Audit', 60, 56);
+    ctx.fillText('MUNTIN DIGITAL · Diagnóstico de sitio web de restaurante', 60, 56);
 
     // Subtype chip (top-right).
     ctx.save();
@@ -7306,8 +7334,8 @@
     if (ov) params.set('ov', ov);
     var shareUrl = location.origin + location.pathname + '?' + params.toString();
     var pretty = last.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
-    var text = pretty + ' scored ' + last.overall + '/100 on the free Restaurant Website Audit from Muntin Digital. Run yours:';
-    var subject = 'Restaurant Website Audit — ' + pretty + ' scored ' + last.overall + '/100';
+    var text = pretty + ' sacó ' + last.overall + '/100 en el Diagnóstico gratis de sitio web de restaurante de Muntin Digital. Corre el tuyo:';
+    var subject = 'Diagnóstico de sitio web de restaurante — ' + pretty + ' sacó ' + last.overall + '/100';
     return {
       url:      shareUrl,
       text:     text,
@@ -7366,7 +7394,7 @@
       var ctx = buildShareContext();
       if (!ctx || typeof navigator.share !== 'function') return;
       navigator.share({
-        title: 'Restaurant Website Audit — ' + ctx.score + '/100',
+        title: 'Diagnóstico de sitio web de restaurante — ' + ctx.score + '/100',
         text:  ctx.text,
         url:   ctx.url
       }).then(function(){
@@ -7448,7 +7476,7 @@
       // Title
       g.fillStyle = '#14161A';
       g.font = '500 32px Fraunces, Georgia, serif';
-      g.fillText('Restaurant Website Audit', 60, 400);
+      g.fillText('Diagnóstico de sitio web de restaurante', 60, 400);
 
       // Checks (right column)
       var startX = 500, startY = 60;

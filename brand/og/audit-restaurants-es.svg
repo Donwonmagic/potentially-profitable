@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#1F4E5B"/>
+  <defs>
+    <radialGradient id="aglow-es" cx="80%" cy="40%" r="45%">
+      <stop offset="0%" stop-color="#FAF7F2" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#1F4E5B" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#aglow-es)"/>
+
+  <text x="72" y="90" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#FAF7F2" letter-spacing="5" opacity="0.5">GRATIS · 30 SEGUNDOS · SIN REGISTRO</text>
+
+  <text x="72" y="200" font-family="Fraunces, Georgia, serif" font-size="64" font-weight="500" fill="#FAF7F2" letter-spacing="-2">Diagnóstico de</text>
+  <text x="72" y="275" font-family="Fraunces, Georgia, serif" font-size="64" font-weight="500" fill="#FAF7F2" letter-spacing="-2">sitios de restaurante</text>
+  <text x="72" y="340" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="500" fill="#FAF7F2" opacity="0.55">Velocidad móvil · Legibilidad del menú · Pedidos en línea</text>
+  <text x="72" y="372" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="500" fill="#FAF7F2" opacity="0.55">Perfil de Empresa de Google · Reservas · Schema</text>
+
+  <!-- Right: three result indicators -->
+  <g transform="translate(880, 150)">
+    <!-- Pass -->
+    <rect x="0" y="0" width="240" height="52" rx="8" fill="#FAF7F2" opacity="0.1"/>
+    <circle cx="32" cy="26" r="10" fill="#1f9d55"/>
+    <path d="M27 26 L30 29 L37 22" stroke="#FAF7F2" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <text x="54" y="31" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600" fill="#FAF7F2" opacity="0.8">Menú apto para móvil</text>
+
+    <!-- Fail -->
+    <rect x="0" y="64" width="240" height="52" rx="8" fill="#FAF7F2" opacity="0.1"/>
+    <circle cx="32" cy="90" r="10" fill="#B8541A"/>
+    <text x="28" y="95" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#FAF7F2">&#10005;</text>
+    <text x="54" y="95" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600" fill="#FAF7F2" opacity="0.8">Marcado schema</text>
+
+    <!-- Pass -->
+    <rect x="0" y="128" width="240" height="52" rx="8" fill="#FAF7F2" opacity="0.1"/>
+    <circle cx="32" cy="154" r="10" fill="#1f9d55"/>
+    <path d="M27 154 L30 157 L37 150" stroke="#FAF7F2" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <text x="54" y="159" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600" fill="#FAF7F2" opacity="0.8">Pedidos en línea</text>
+  </g>
+
+  <!-- Bottom bar -->
+  <rect y="580" width="1200" height="50" fill="#14161A" opacity="0.3"/>
+  <text x="72" y="612" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#FAF7F2" letter-spacing="2" opacity="0.6">PEGA TU URL · RESULTADOS EN 30 SEGUNDOS</text>
+  <text x="1128" y="612" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600" fill="#FAF7F2" letter-spacing="1" opacity="0.7">muntin.digital/es</text>
+</svg>

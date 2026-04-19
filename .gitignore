@@ -14,3 +14,9 @@
 node_modules/
 package-lock.json
 package.json
+
+# Voice-cloning reference audio — never commit the user's own recordings.
+scripts/voice-refs/*.wav
+scripts/voice-refs/*.mp3
+scripts/voice-refs/*.m4a
+scripts/voice-refs/*.flac

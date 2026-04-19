@@ -42,6 +42,8 @@ import {
   isSpamHoneypot,
   requireFields,
   enforceMaxLengths,
+  assertSafeHttpUrl,
+  pickLang,
 } from './lib/validation.js';
 import {
   intakeNotification,
@@ -102,14 +104,50 @@ export default {
           );
         }
       }
+      // Sprint U2: every API request gets an X-Request-Id. If the
+      // caller supplied one we honor it (makes client-side retry
+      // correlation trivial); otherwise we mint a new one.
+      const reqId = request.headers.get('x-request-id') || crypto.randomUUID();
+      const started = Date.now();
       try {
-        return await handler(request, env, ctx);
+        const response = await handler(request, env, ctx);
+        // Sprint U1: structured access log, one JSON line per request,
+        // so Cloudflare's observability panel can slice by event /
+        // status / path / duration without regex parsing.
+        console.log(JSON.stringify({
+          event: 'api.response',
+          path: pathname,
+          method: request.method,
+          status: response.status,
+          ms: Date.now() - started,
+          reqId: reqId
+        }));
+        // Clone headers on the way out so we can stamp the request id
+        // without mutating the handler's response (Response headers
+        // are immutable after construction).
+        const out = new Response(response.body, {
+          status: response.status,
+          statusText: response.statusText,
+          headers: new Headers(response.headers)
+        });
+        out.headers.set('X-Request-Id', reqId);
+        return out;
       } catch (err) {
+        console.log(JSON.stringify({
+          event: 'api.error',
+          path: pathname,
+          method: request.method,
+          ms: Date.now() - started,
+          reqId: reqId,
+          error: err && err.message ? err.message : String(err)
+        }));
         console.error('[api]', pathname, err && err.stack ? err.stack : err);
-        return jsonResponse(
-          { ok: false, error: 'Internal error — please try again in a moment' },
+        const fallback = jsonResponse(
+          { ok: false, error: 'Internal error — please try again in a moment', reqId: reqId },
           500
         );
+        fallback.headers.set('X-Request-Id', reqId);
+        return fallback;
       }
     }
 
@@ -514,7 +552,12 @@ async function handleGbpLookup(request, env, ctx) {
           'X-Goog-Api-Key': apiKey,
           'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.types,places.regularOpeningHours,places.photos,places.websiteUri,places.googleMapsUri'
         },
-        body: JSON.stringify({ textQuery: query, maxResultCount: 1 })
+        // Sprint G1: request the top 5 candidates so the client can
+        // disambiguate on common names like "Joe's Pizza" where
+        // Places' first match may not be the business the owner
+        // actually runs. maxResultCount=5 is Places' recommended
+        // upper bound for text search; beyond that the tail is noise.
+        body: JSON.stringify({ textQuery: query, maxResultCount: 5 })
       }
     );
 
@@ -530,21 +573,31 @@ async function handleGbpLookup(request, env, ctx) {
       return jsonResponse({ ok: false, error: 'No business found for that search. Try adding your city name.' }, 404);
     }
 
-    const p = places[0];
+    function buildCandidate(p) {
+      return {
+        placeId:    p.id || null,
+        name:       p.displayName ? p.displayName.text : null,
+        address:    p.formattedAddress || null,
+        rating:     p.rating || null,
+        reviewCount: p.userRatingCount || 0,
+        types:      (p.types || []).slice(0, 5),
+        photoCount: p.photos ? p.photos.length : 0,
+        hasHours:   !!(p.regularOpeningHours && p.regularOpeningHours.periods && p.regularOpeningHours.periods.length),
+        website:    p.websiteUri || null,
+        mapsUrl:    p.googleMapsUri || null,
+      };
+    }
 
-    // Build a clean response
-    const result = {
-      ok: true,
-      name: p.displayName ? p.displayName.text : null,
-      address: p.formattedAddress || null,
-      rating: p.rating || null,
-      reviewCount: p.userRatingCount || 0,
-      types: (p.types || []).slice(0, 5),
-      photoCount: p.photos ? p.photos.length : 0,
-      hasHours: !!(p.regularOpeningHours && p.regularOpeningHours.periods && p.regularOpeningHours.periods.length),
-      website: p.websiteUri || null,
-      mapsUrl: p.googleMapsUri || null,
-    };
+    const candidates = places.map(buildCandidate);
+    const top = candidates[0];
+
+    // Preserve the historical top-level shape for backwards-compat
+    // with any caller that wasn't expecting the `candidates` array,
+    // while adding the full top-5 under `candidates` for the new
+    // disambiguation UI (G3, future sprint).
+    const result = Object.assign({ ok: true }, top, {
+      candidates: candidates
+    });
 
     return jsonResponse(result, 200);
   } catch (err) {
@@ -563,14 +616,18 @@ async function handleGbpLookup(request, env, ctx) {
 async function handleSeoCheck(request, env, ctx) {
   const url = new URL(request.url);
   const target = (url.searchParams.get('url') || '').trim();
-  if (!target) {
-    return jsonResponse({ ok: false, error: 'Missing ?url= parameter' }, 400);
+  // Sprint E2: SSRF guard — refuse non-http(s), private IP ranges,
+  // localhost aliases, URLs with embedded credentials, and URLs
+  // longer than 2048 chars.
+  const gate = assertSafeHttpUrl(target, pickLang(request));
+  if (!gate.ok) {
+    return jsonResponse({ ok: false, error: gate.error }, gate.status);
   }
 
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 8000);
-    const res = await fetch(target, {
+    const res = await fetch(gate.url.toString(), {
       headers: { 'User-Agent': 'MuntinDigital-SEO-Check/1.0' },
       redirect: 'follow',
       signal: controller.signal,
@@ -609,23 +666,29 @@ async function handleSeoCheck(request, env, ctx) {
 async function handleSchemaCheck(request, env, ctx) {
   const url = new URL(request.url);
   const target = (url.searchParams.get('url') || '').trim();
-  if (!target) {
-    return jsonResponse({ ok: false, error: 'Missing ?url= parameter' }, 400);
+  const lang = pickLang(request);
+  // Sprint E3: SSRF guard — same ruleset as E2.
+  const gate = assertSafeHttpUrl(target, lang);
+  if (!gate.ok) {
+    return jsonResponse({ ok: false, error: gate.error }, gate.status);
   }
 
   try {
-    const res = await fetch(target, {
+    const res = await fetch(gate.url.toString(), {
       headers: { 'User-Agent': 'MuntinDigital-Schema-Check/1.0' },
       redirect: 'follow',
       signal: AbortSignal.timeout(8000),
     });
     if (!res.ok) {
-      return jsonResponse({ ok: false, error: 'Could not fetch the page (HTTP ' + res.status + ')' }, 502);
+      const m = lang === 'es'
+        ? 'No se pudo cargar la página (HTTP ' + res.status + ')'
+        : 'Could not fetch the page (HTTP ' + res.status + ')';
+      return jsonResponse({ ok: false, error: m }, 502);
     }
 
     const html = await res.text();
     const parsed = extractJsonLd(html);
-    const validation = validateRestaurantSchema(parsed.objects);
+    const validation = validateRestaurantSchema(parsed.objects, lang);
 
     return jsonResponse({
       ok: true,
@@ -688,15 +751,101 @@ function isRestaurantLikeSchema(obj) {
 //   F4: acceptsReservations, hasMenu (planned)
 //   F5: hours mismatch vs Places (planned; consumer-side)
 //   F6: NAP consistency  (planned; consumer-side)
-function validateRestaurantSchema(objects) {
+// Sprint ES3: localized reason strings for the H1-H4 validators.
+// Each validator sets .reasonKey; finalizeSchemaReasons() maps it to
+// EN or ES text based on the request locale. Keys stay stable for
+// client-side rendering + parity checks.
+const SCHEMA_REASONS = {
+  'hours.missing':        { en: 'No openingHours or openingHoursSpecification on the Restaurant schema.',
+                            es: 'No hay openingHours ni openingHoursSpecification en el schema del restaurante.' },
+  'hours.partial':        { en: 'Only {dayCount} of 7 days covered — Google shows the rich-hours panel only when every day is present.',
+                            es: 'Solo {dayCount} de 7 días cubiertos — Google muestra el panel de horarios enriquecidos solo cuando están todos los días.' },
+  'hours.badTimes':       { en: '{timeFieldsBad} time values are not in HH:MM format — Google may silently drop the hours panel.',
+                            es: '{timeFieldsBad} valores de hora no están en formato HH:MM — Google puede omitir silenciosamente el panel de horarios.' },
+  'hours.parseErrors':    { en: '{parseErrors} day name could not be parsed — use Mo/Tu/We/Th/Fr/Sa/Su or full English names.',
+                            es: 'No se pudo interpretar {parseErrors} nombre de día — usa Mo/Tu/We/Th/Fr/Sa/Su o nombres en inglés completos.' },
+  'price.missing':        { en: 'No priceRange on the Restaurant schema. Google uses this to filter by price level.',
+                            es: 'No hay priceRange en el schema del restaurante. Google lo usa para filtrar por nivel de precio.' },
+  'price.badShape':       { en: 'priceRange "{value}" does not match a recognized shape (e.g. "$$", "$15-30", or "$25").',
+                            es: 'priceRange "{value}" no coincide con un formato reconocido (p. ej. "$$", "$15-30" o "$25").' },
+  'address.missing':      { en: 'No address on the Restaurant schema.',
+                            es: 'No hay address en el schema del restaurante.' },
+  'address.string':       { en: 'Address is a bare string; Google prefers a structured PostalAddress with streetAddress, addressLocality, addressRegion, and postalCode.',
+                            es: 'La dirección es solo una cadena; Google prefiere un PostalAddress estructurado con streetAddress, addressLocality, addressRegion y postalCode.' },
+  'address.missingFields':{ en: 'Address is missing: {fields}. Add these fields to qualify for local-search rich results.',
+                            es: 'A la dirección le falta: {fields}. Agrega estos campos para calificar para resultados enriquecidos de búsqueda local.' }
+};
+function formatReason(reasonKey, vars, lang) {
+  if (!reasonKey) return null;
+  const entry = SCHEMA_REASONS[reasonKey];
+  if (!entry) return reasonKey;
+  const tmpl = (lang === 'es' && entry.es) || entry.en;
+  if (!vars) return tmpl;
+  return tmpl.replace(/\{(\w+)\}/g, function(_m, k){
+    return vars[k] != null ? String(vars[k]) : '';
+  });
+}
+
+function validateRestaurantSchema(objects, lang) {
   const restaurantObjects = (objects || []).filter(isRestaurantLikeSchema);
+  const L = lang || 'en';
+  const hours = validateOpeningHours(restaurantObjects);
+  if (hours.reasonKey) hours.reason = formatReason(hours.reasonKey, hours.reasonVars, L);
+  const price = validatePriceRange(restaurantObjects);
+  if (price.reasonKey) price.reason = formatReason(price.reasonKey, price.reasonVars, L);
+  const address = validateAddress(restaurantObjects);
+  if (address.reasonKey) address.reason = formatReason(address.reasonKey, address.reasonVars, L);
   return {
     restaurantObjectCount: restaurantObjects.length,
-    openingHours:        validateOpeningHours(restaurantObjects),
-    priceRange:          validatePriceRange(restaurantObjects),
+    openingHours:        hours,
+    priceRange:          price,
     servesCuisine:       validateServesCuisine(restaurantObjects),
     acceptsReservations: validateAcceptsReservations(restaurantObjects),
-    hasMenu:             validateHasMenu(restaurantObjects)
+    hasMenu:             validateHasMenu(restaurantObjects),
+    address:             address
+  };
+}
+
+// Sprint H3: address validation. Looks at the .address field on
+// each restaurant-like object. Address can be a string (discouraged
+// but legal), or a PostalAddress object with named sub-fields. We
+// report { present, valid, reason, missingFields } so the renderer
+// can surface "you have an address but postalCode is missing" —
+// exactly the kind of gap that prevents Rich Results eligibility.
+function validateAddress(restaurantObjects) {
+  let present = false;
+  const wanted = ['streetAddress', 'addressLocality', 'addressRegion', 'postalCode'];
+  const found = Object.create(null);
+  let rawAddress = null;
+  for (let i = 0; i < restaurantObjects.length; i++) {
+    const addr = restaurantObjects[i].address;
+    if (!addr) continue;
+    present = true;
+    if (typeof addr === 'string') {
+      rawAddress = addr;
+      continue; // string form — can't audit sub-fields, just presence
+    }
+    if (typeof addr === 'object') {
+      rawAddress = rawAddress || addr;
+      wanted.forEach(function(k){
+        if (typeof addr[k] === 'string' && addr[k].trim()) found[k] = true;
+      });
+    }
+  }
+  const missingFields = wanted.filter(function(k){ return !found[k]; });
+  const valid = present && missingFields.length === 0;
+  let reasonKey = null;
+  let reasonVars = null;
+  if (!present) reasonKey = 'address.missing';
+  else if (typeof rawAddress === 'string') reasonKey = 'address.string';
+  else if (missingFields.length) {
+    reasonKey = 'address.missingFields';
+    reasonVars = { fields: missingFields.join(', ') };
+  }
+  return {
+    present: present, valid: valid,
+    reasonKey: reasonKey, reasonVars: reasonVars, reason: null,
+    missingFields: missingFields
   };
 }
 
@@ -1077,7 +1226,21 @@ function validatePriceRange(restaurantObjects) {
     // Single number fallback ('$25') — legal but loses the range signal
     else if (/^\$?\d+(?:\.\d{1,2})?$/.test(raw.trim())) wellFormed = true;
   }
-  return { present: present, wellFormed: wellFormed, value: value };
+  // Sprint H2/H4: single-sentence reason + valid flag so this field
+  // can be rendered alongside openingHours/address in a consistent
+  // shape. "Present but mal-formed" is a real-world failure mode we
+  // want to surface distinctly from "missing entirely".
+  let reasonKey = null;
+  let reasonVars = null;
+  if (!present) reasonKey = 'price.missing';
+  else if (!wellFormed) { reasonKey = 'price.badShape'; reasonVars = { value: value || '' }; }
+  return {
+    present: present,
+    wellFormed: wellFormed,
+    value: value,
+    valid: present && wellFormed,
+    reasonKey: reasonKey, reasonVars: reasonVars, reason: null
+  };
 }
 
 // F3: servesCuisine validation. Accepts a single string or an
@@ -1130,6 +1293,19 @@ function validateOpeningHours(restaurantObjects) {
   const covered = Object.create(null);
   let found = false;
   let parseErrors = 0;
+  // Sprint H1: track time-format validity. schema.org's
+  // openingHoursSpecification.opens / .closes expect ISO-8601 time
+  // ("HH:MM" or "HH:MM:SS"). Sites that feed "9am" or "opens at
+  // 9" pass presence but fail strict validation, which is exactly
+  // why Google occasionally refuses to render rich-hours panels.
+  let timeFieldsSeen = 0;
+  let timeFieldsBad = 0;
+  const TIME_RE = /^([01]\d|2[0-3]):([0-5]\d)(?::[0-5]\d)?$/;
+  function checkTime(val) {
+    if (val === undefined || val === null || val === '') return;
+    timeFieldsSeen++;
+    if (typeof val !== 'string' || !TIME_RE.test(val.trim())) timeFieldsBad++;
+  }
 
   function addDay(raw) {
     if (!raw) return;
@@ -1151,12 +1327,16 @@ function validateOpeningHours(restaurantObjects) {
         const dow = entry.dayOfWeek;
         if (Array.isArray(dow)) dow.forEach(addDay);
         else addDay(dow);
+        checkTime(entry.opens);
+        checkTime(entry.closes);
       });
     } else if (spec && typeof spec === 'object') {
       found = true;
       const dow = spec.dayOfWeek;
       if (Array.isArray(dow)) dow.forEach(addDay);
       else addDay(dow);
+      checkTime(spec.opens);
+      checkTime(spec.closes);
     }
 
     // Legacy string form: openingHours: "Mo-Fr 08:00-17:00 Sa 09:00-13:00"
@@ -1180,16 +1360,34 @@ function validateOpeningHours(restaurantObjects) {
             i = (i + 1) % 7;
           }
         }
+        // H1: validate embedded time ranges like "08:00-17:00".
+        const timeRanges = s.match(/\d{1,2}:\d{2}(?::\d{2})?/g) || [];
+        timeRanges.forEach(checkTime);
       });
     }
   });
 
   const dayCount = Object.keys(covered).length;
+  const timesValid = timeFieldsSeen > 0 && timeFieldsBad === 0;
+  // Sprint H4: add a single-sentence `reason` for renderers that want
+  // to show the owner WHY the audit flagged this field rather than
+  // just "unverified". Null when everything looks fine.
+  let reasonKey = null;
+  let reasonVars = null;
+  if (!found) reasonKey = 'hours.missing';
+  else if (dayCount < 7) { reasonKey = 'hours.partial'; reasonVars = { dayCount: dayCount }; }
+  else if (timeFieldsSeen > 0 && timeFieldsBad > 0) { reasonKey = 'hours.badTimes'; reasonVars = { timeFieldsBad: timeFieldsBad }; }
+  else if (parseErrors > 0) { reasonKey = 'hours.parseErrors'; reasonVars = { parseErrors: parseErrors }; }
   return {
     present:     found,
     dayCount:    dayCount,
     complete:    dayCount === 7,
-    parseErrors: parseErrors
+    parseErrors: parseErrors,
+    timesValid:  timesValid,
+    timeFieldsSeen: timeFieldsSeen,
+    timeFieldsBad:  timeFieldsBad,
+    valid:       found && dayCount === 7 && (timeFieldsSeen === 0 || timesValid) && parseErrors === 0,
+    reasonKey:   reasonKey, reasonVars: reasonVars, reason: null
   };
 }
 
@@ -1343,18 +1541,25 @@ const PAGE_CRAWL_HOMEPAGE_TIMEOUT = 8000;
 async function handlePageCrawl(request, env, ctx) {
   const url = new URL(request.url);
   const target = (url.searchParams.get('url') || '').trim();
-  if (!target) {
-    return jsonResponse({ ok: false, error: 'Missing ?url= parameter' }, 400);
+  // Sprint E4: SSRF guard on the entry URL so a crafted input can't
+  // coax the Worker into fetching an internal host.
+  const gate = assertSafeHttpUrl(target, pickLang(request));
+  if (!gate.ok) {
+    return jsonResponse({ ok: false, error: gate.error }, gate.status);
   }
 
-  const homepage = await fetchPageForCrawl(target, PAGE_CRAWL_HOMEPAGE_TIMEOUT);
+  const homepage = await fetchPageForCrawl(gate.url.toString(), PAGE_CRAWL_HOMEPAGE_TIMEOUT);
   if (!homepage.ok) {
     return jsonResponse({ ok: false, error: homepage.error || 'Fetch failed' }, 502);
   }
 
   // Sprint E2: rank up to PAGE_CRAWL_MAX_CANDIDATES internal-link
   // candidates from the homepage HTML.
+  // Sprint E4: each extracted candidate is ALSO re-checked through
+  // assertSafeHttpUrl. A restaurant site that links to a private IP
+  // or a non-http(s) URL in its own HTML would otherwise be followed.
   const candidates = extractInternalLinkCandidates(homepage.html, homepage.url)
+    .filter(function(c){ return assertSafeHttpUrl(c.url).ok; })
     .slice(0, PAGE_CRAWL_MAX_CANDIDATES);
 
   // Sprint E3: fetch the candidates in parallel, per-URL timeout,
@@ -1598,9 +1803,26 @@ async function handlePsi(request, env, ctx) {
   upstream.searchParams.set('key', env.PSI_API_KEY);
 
   try {
-    const res  = await fetch(upstream.toString(), {
-      headers: { 'Accept': 'application/json' }
+    // Sprint B1: cap the PSI call at 30s. Lighthouse runs occasionally
+    // stall longer than that on origin-side issues, and without an
+    // explicit signal the Worker previously held the connection open
+    // up to Cloudflare's 120s ceiling, blocking the frontend loader
+    // UI and tying up a Worker invocation slot.
+    // Sprint B2: on 429/503 retry once after 2s. PSI throttles on
+    // burst traffic (e.g. the competitor-comparison flow fires 3
+    // audits back-to-back); a single retry recovers the most common
+    // transient case without materially extending worst-case latency.
+    let res = await fetch(upstream.toString(), {
+      headers: { 'Accept': 'application/json' },
+      signal: AbortSignal.timeout(30000)
     });
+    if (res.status === 429 || res.status === 503) {
+      await new Promise((r) => setTimeout(r, 2000));
+      res = await fetch(upstream.toString(), {
+        headers: { 'Accept': 'application/json' },
+        signal: AbortSignal.timeout(30000)
+      });
+    }
     const body = await res.text();
     // Pass through status + JSON body so the client can see PSI's
     // structured error shape (body.error.message) unchanged.
@@ -1610,11 +1832,26 @@ async function handlePsi(request, env, ctx) {
         'Content-Type': 'application/json; charset=utf-8',
         'Cache-Control': 'no-store, no-cache, must-revalidate',
         'Access-Control-Allow-Origin': '*',
+        'X-Generator': MUNTIN_GENERATOR,
+        'X-Powered-By': 'Muntin Digital',
       }
     });
   } catch (err) {
     console.error('[psi] upstream fetch failed:', err && err.stack ? err.stack : err);
-    return jsonResponse({ ok: false, error: 'Failed to reach PageSpeed Insights' }, 502);
+    const isTimeout = err && (err.name === 'TimeoutError' || err.name === 'AbortError');
+    // Sprint ES3: localized PSI error messages.
+    const L = pickLang(request);
+    const MSG = {
+      timeout: { en: 'PageSpeed Insights took longer than 30s — please retry',
+                 es: 'PageSpeed Insights tardó más de 30s — por favor reintenta' },
+      fail:    { en: 'Failed to reach PageSpeed Insights',
+                 es: 'No se pudo conectar con PageSpeed Insights' }
+    };
+    const pick = (m) => (L === 'es' && m.es) || m.en;
+    return jsonResponse(
+      { ok: false, error: isTimeout ? pick(MSG.timeout) : pick(MSG.fail) },
+      isTimeout ? 504 : 502
+    );
   }
 }
 
@@ -1623,6 +1860,13 @@ async function handlePsi(request, env, ctx) {
 // ------------------------------------------------------------
 // Shared helpers
 // ------------------------------------------------------------
+
+// Sprint BB5: canonical generator header shared by every JSON
+// response. Pairs with the HTML <meta name="generator"> tag set in
+// BB4 so anyone introspecting the API or the page sees the same
+// Muntin Digital attribution. Version string should move in lockstep
+// with the HTML meta when the audit engine materially changes.
+const MUNTIN_GENERATOR = 'Muntin Digital Audit v1.1';
 
 function jsonResponse(payload, status) {
   return new Response(JSON.stringify(payload), {
@@ -1633,6 +1877,8 @@ function jsonResponse(payload, status) {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
+      'X-Generator': MUNTIN_GENERATOR,
+      'X-Powered-By': 'Muntin Digital',
     },
   });
 }

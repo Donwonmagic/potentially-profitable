@@ -694,8 +694,12 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
    multilingual readers notice it. Slightly accented border + a small
    globe glyph before the selected language name. */
 .listen-language-select{position:relative;padding-left:4px}
-.listen-language-select select{padding-left:28px;font-weight:600;color:var(--lc-accent);border-color:var(--lc-accent)}
-.listen-language-select::before{content:"";position:absolute;left:10px;top:50%;width:14px;height:14px;transform:translateY(-50%);background:currentColor;color:var(--lc-accent);-webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><line x1='2' y1='12' x2='22' y2='12'/><path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'/></svg>") no-repeat center/contain;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><line x1='2' y1='12' x2='22' y2='12'/><path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'/></svg>") no-repeat center/contain;pointer-events:none}
+/* Specificity bumped (.listen-select.listen-language-select ...) so
+   the language-specific left padding isn't overridden by the generic
+   .listen-select select rule that ships below. Otherwise the globe
+   glyph overlaps the selected language name on first paint. */
+.listen-select.listen-language-select select{padding:6px 28px 6px 32px;font-weight:600;color:var(--lc-accent);border-color:var(--lc-accent)}
+.listen-language-select::before{content:"";position:absolute;left:12px;top:50%;width:14px;height:14px;transform:translateY(-50%);background:currentColor;color:var(--lc-accent);-webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><line x1='2' y1='12' x2='22' y2='12'/><path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'/></svg>") no-repeat center/contain;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><line x1='2' y1='12' x2='22' y2='12'/><path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'/></svg>") no-repeat center/contain;pointer-events:none}
 .listen-select{position:relative}
 .listen-select select{appearance:none;-webkit-appearance:none;background:transparent;border:1px solid var(--line-dark);border-radius:999px;padding:6px 28px 6px 12px;font-family:var(--font-body);font-size:12px;font-weight:600;color:var(--ink-soft);cursor:pointer;transition:all var(--t-fast) var(--ease)}
 .listen-select select:hover,.listen-select select:focus-visible{border-color:var(--lc-accent);color:var(--lc-accent);outline:none}
@@ -1058,7 +1062,7 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 }
 .tool-cta-ring{
   position: relative;
-  width: clamp(200px, 28vw, 260px);
+  width: clamp(160px, 28vw, 240px);
   aspect-ratio: 1;
 }
 .tool-cta-ring svg{
@@ -1080,17 +1084,10 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 }
 .tool-cta-ring-text .value{
   font-family: var(--font-display);
-  font-size: clamp(48px, 7vw, 72px);
+  font-size: clamp(72px, 12vw, 112px);
   font-weight: 500;
-  color: var(--ink);
+  color: var(--teal);
   line-height: 1;
-}
-.tool-cta-ring-text .max{
-  font-family: var(--font-body);
-  font-size: 14px;
-  color: var(--stone);
-  margin-top: 6px;
-  letter-spacing: 0.02em;
 }
 .tool-cta-preview{
   list-style: none;
@@ -1112,9 +1109,9 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 @media (max-width: 820px){
   .tool-cta-inner{
     grid-template-columns: 1fr;
-    gap: 36px;
+    gap: 40px;
   }
-  .tool-cta-visual{ order: -1; }
+  .tool-cta-visual{ gap: 20px; }
   .tool-cta-preview{ max-width: 440px; margin: 0 auto; text-align: center; }
 }
 @media (max-width: 540px){
@@ -1127,4 +1124,6 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
   .tool-cta-form input[type="text"]{ padding: 12px 16px; }
   .tool-cta-form button{ border-radius: 14px; width: 100%; padding: 14px 24px; }
   .tool-cta-chips{ font-size: 12px; }
+  .tool-cta-preview{ font-size: 13.5px; }
+  .tool-cta-preview li{ padding: 8px 0; }
 }

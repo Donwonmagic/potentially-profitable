@@ -16,8 +16,8 @@
 <!-- i18n:hreflang END -->
 
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Free Restaurant Website Audit — Score Your Site in About Thirty Seconds" />
-<meta property="og:description" content="Audit your restaurant website in about thirty seconds. Mobile speed, menu legibility, online ordering and reservation detection, and more — a real restaurant audit, not a generic Lighthouse score. Free, no signup." />
+<meta property="og:title" content="Free Restaurant Website Audit — A Muntin Digital Creation" />
+<meta property="og:description" content="A Muntin Digital creation powered by Google Lighthouse, PageSpeed Insights, CrUX field data, and schema.org validation — plus restaurant-specific checks for ordering, reservations, menu legibility, click-to-call, and Google Business Profile readiness. Free, no signup." />
 <meta property="og:url" content="https://muntin.digital/tools/audits/restaurant/" />
 <meta property="og:site_name" content="Muntin Digital" />
 <meta property="og:image" content="https://muntin.digital/brand/og/audit-restaurants.svg" />
@@ -26,9 +26,51 @@
 <meta property="og:image:height" content="630" />
 
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Free Restaurant Website Audit — Score Your Site in About Thirty Seconds" />
-<meta name="twitter:description" content="Audit your restaurant website in about thirty seconds. Mobile, menus, ordering, reservations — free, no signup." />
+<meta name="twitter:title" content="Free Restaurant Website Audit — A Muntin Digital Creation" />
+<meta name="twitter:description" content="A Muntin Digital creation powered by Lighthouse, CrUX, and schema.org — a real restaurant audit for mobile speed, menus, ordering, reservations, and Google Business Profile readiness. Free, no signup." />
 <meta name="twitter:image" content="https://muntin.digital/brand/og/audit-restaurants.svg" />
+<meta name="twitter:creator" content="@muntin_digital" />
+<meta name="twitter:site" content="@muntin_digital" />
+
+<!-- Sprint BB4: generator + SoftwareApplication schema so search
+     engines index this as a discoverable tool and attribute it to
+     Muntin Digital. Version bumps when the audit engine changes
+     materially (weight changes, new checks); keep in sync with
+     POWERED_BY in restaurant-checks.js. -->
+<meta name="generator" content="Muntin Digital Audit v1.1" />
+<meta name="author" content="Muntin Digital" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Muntin Digital Restaurant Website Audit",
+  "applicationCategory": "BusinessApplication",
+  "applicationSubCategory": "Website Audit",
+  "operatingSystem": "Web",
+  "url": "https://muntin.digital/tools/audits/restaurant/",
+  "description": "A Muntin Digital creation — a free restaurant website audit combining Google Lighthouse, PageSpeed Insights, CrUX field data, schema.org validation, and restaurant-specific checks. No signup, no paywall, no dark patterns.",
+  "creator": {
+    "@type": "Organization",
+    "name": "Muntin Digital",
+    "url": "https://muntin.digital/"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "Mobile performance (Google Lighthouse)",
+    "Core Web Vitals field data (Google CrUX)",
+    "WCAG accessibility audit",
+    "SEO + structured-data validation (schema.org)",
+    "Restaurant-specific checks (ordering, reservations, menu, hours)",
+    "Competitor comparison",
+    "Printable PDF report",
+    "Shareable audit link"
+  ]
+}
+</script>
 
 <!-- Favicons -->
 <!-- Favicons. Order matters: SVG first for high-DPI scalable, then a
@@ -627,6 +669,114 @@
   .top-fixes-item-chips .chip-effort-dev     { background: #E7F1F3; color: #1F4E5B; }
   .top-fixes-item-chips .chip-effort-rebuild { background: #F7E7DC; color: #B8541A; }
   .top-fixes-item-chips .chip-time           { background: var(--cream-2, #faf6ee); color: var(--ink); border: 1px solid var(--line, #E6DFCE); }
+  /* Sprint V2: revenue-at-risk chip uses the rust accent to echo the
+     "Top 3 Fixes" section border treatment — visually flags these
+     as "money on the table" without creating a new color token. */
+  .top-fixes-item-chips .chip-revenue {
+    background: #FDEFE3;
+    color: #8A3E16;
+    border: 1px solid #EFD1B6;
+    font-variant-numeric: tabular-nums;
+  }
+  /* Sprint CC6: weekend-to-green ETA badge — small, calm, sits to
+     the right of the Top 3 Fixes heading. Teal accent matches the
+     exec-summary border treatment so the eye groups it with
+     "summary of what to do" not "alert". */
+  .top-fixes-eta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #1F4E5B;
+    background: #E7F1F3;
+    border: 1px solid #C7DFE4;
+    border-radius: 999px;
+  }
+  .top-fixes-eta::before {
+    content: "⏱";
+    font-size: 12px;
+  }
+  /* Sprint CC7: worksheet print mode. When the body carries the
+     .print-worksheet class at print time, everything but the Top-3-
+     Fixes list collapses, chips go monochrome, each fix gets a bold
+     checkbox in the ::before, and a blank "Notes" column appears to
+     the right. Intended output: one sheet, B&W-safe, easy to hand
+     to a manager or contractor who won't read the full PDF. */
+  @media print {
+    body.print-worksheet .audit-summary,
+    body.print-worksheet .category-grid,
+    body.print-worksheet .exec-summary,
+    body.print-worksheet .opportunities-wrap,
+    body.print-worksheet .metric-glossary,
+    body.print-worksheet .vitals-strip,
+    body.print-worksheet .not-restaurant-notice,
+    body.print-worksheet .business-type-card,
+    body.print-worksheet .priority-list,
+    body.print-worksheet .audit-compare,
+    body.print-worksheet .email-report,
+    body.print-worksheet .pdf-cta-top,
+    body.print-worksheet .share-row,
+    body.print-worksheet .share-platforms,
+    body.print-worksheet .audit-form,
+    body.print-worksheet header,
+    body.print-worksheet footer {
+      display: none !important;
+    }
+    body.print-worksheet .top-fixes {
+      background: #fff !important;
+      border: none !important;
+      padding: 0 !important;
+    }
+    body.print-worksheet .top-fixes-list li {
+      page-break-inside: avoid;
+      border: 1px solid #000 !important;
+      padding: 14px 18px !important;
+      margin-bottom: 12px !important;
+      border-radius: 0 !important;
+      display: grid !important;
+      grid-template-columns: 32px 1fr 260px !important;
+      align-items: start !important;
+      counter-increment: fix-counter;
+    }
+    body.print-worksheet .top-fixes-list li::before {
+      content: counter(fix-counter) !important;
+      width: 24px; height: 24px;
+      border: 2px solid #000;
+      background: #fff !important;
+      color: #000 !important;
+      border-radius: 2px !important;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    body.print-worksheet .top-fixes-list li::after {
+      /* CSS content: string is swapped by a JS data-attr before print
+         so this label localizes without duplicating the stylesheet. */
+      content: attr(data-notes-label);
+      display: block;
+      border: 1px dashed #000;
+      min-height: 80px;
+      padding: 6px 8px;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #000;
+    }
+    body.print-worksheet .top-fixes-item-chips .chip {
+      background: #fff !important;
+      color: #000 !important;
+      border: 1px solid #000 !important;
+    }
+    body.print-worksheet .top-fixes-eta {
+      background: #fff !important;
+      border: 1px solid #000 !important;
+      color: #000 !important;
+    }
+  }
 
   @media (max-width: 640px) {
     .top-fixes { padding: 16px 18px; }
@@ -2149,6 +2299,15 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               Download share card
             </button>
+            <!-- Sprint CC7: print-for-manager worksheet. Toggles a
+                 stripped, high-contrast, checkbox-augmented print
+                 stylesheet then triggers the browser print dialog.
+                 Gives an owner a single-page handoff to a manager
+                 or contractor without needing the full PDF export. -->
+            <button type="button" class="share-btn" id="printManagerBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+              Print for your manager
+            </button>
             <span class="share-toast" id="shareToast" aria-live="polite">Link copied!</span>
           </div>
 
@@ -2233,6 +2392,12 @@
         <div class="top-fixes-head">
           <div class="top-fixes-label">Top 3 fixes</div>
           <div class="top-fixes-sub">Ranked by impact for your segment. Work top-down.</div>
+          <!-- Sprint CC6: "weekend-to-green" badge summarizes the
+               aggregate effort of the top 3 fixes so an owner knows
+               whether this is a Saturday or a month-of-Saturdays
+               before reading the list. Populated by renderTopFixes()
+               after minutes + effort classes aggregate. -->
+          <div class="top-fixes-eta" id="topFixesEta" hidden></div>
         </div>
         <ol class="top-fixes-list" id="topFixesList"></ol>
       </section>
@@ -2266,6 +2431,10 @@
           <input type="hidden" name="subtype"         id="pdfCtaTopSubtype"   value="" />
           <input type="hidden" name="overall_score"   id="pdfCtaTopScore"     value="" />
           <input type="hidden" name="shareable_link"  id="pdfCtaTopShareLink" value="" />
+          <!-- Locale routed to the worker so the auto-responder comes
+               back in the visitor's language. Populated at submit time
+               from window.__muntinLang; falls back to en. -->
+          <input type="hidden" name="locale"          id="pdfCtaTopLocale"    value="en" />
           <label for="pdfCtaTopEmail" class="sr-only">Your email address</label>
           <input type="email" id="pdfCtaTopEmail" name="email" required autocomplete="email" placeholder="you@yourrestaurant.com" />
           <button type="submit">Email me the PDF <span aria-hidden="true">→</span></button>
@@ -2522,6 +2691,7 @@
           <input type="hidden" name="restaurant_readiness" id="emailReportReadiness" value="" />
           <input type="hidden" name="shareable_link" id="emailReportShareLink" value="" />
           <input type="hidden" name="summary" id="emailReportSummary" value="" />
+          <input type="hidden" name="locale" id="emailReportLocale" value="en" />
           <input type="hidden" name="failing_checks" id="emailReportFailing" value="" />
           <input type="hidden" name="unverified_checks" id="emailReportUnverified" value="" />
           <input type="hidden" name="user_corrections" id="emailReportCorrections" value="" />
@@ -4476,14 +4646,22 @@
     };
   }
 
-  function verdictFor(score) {
-    if (score >= 90) return "Your site is in great shape. Most restaurants would be thrilled to hit this score. Small polish items may remain — check the breakdown below.";
-    if (score >= 70) return "Solid foundation with room to tighten up. Focus on the red and amber items below — most are mechanical fixes that push your scores into the green (90+) zone.";
-    if (score >= 50) return "The site works, but it's leaking conversions. The good news: the wins here — load speed, image alt text, meta tags, schema — take days, not months, and they're listed in priority order below.";
-    return "There's real work to do. Scores in this range usually track with a template site hitting its ceiling — font sizes, tap targets, page speed, and schema markup all tend to be fixable, but they add up. Start with the failing items below, in the order they're listed.";
+  function verdictFor(score, meta) {
+    // Sprint ES2: verdict copy routed through t(); picks EN or ES
+    // based on window.__muntinLang detected earlier in boot.
+    var base;
+    if (score >= 90) base = t('verdict.90');
+    else if (score >= 70) base = t('verdict.70');
+    else if (score >= 50) base = t('verdict.50');
+    else base = t('verdict.below');
+    var uv = meta && typeof meta.unverifiedCount === 'number' ? meta.unverifiedCount : 0;
+    if (uv > 2) {
+      base += t('verdict.unverifiedSuffix', { count: uv });
+    }
+    return base;
   }
 
-  function setScoreRing(score) {
+  function setScoreRing(score, meta) {
     var ring = document.getElementById('scoreRing');
     var value = document.getElementById('scoreValue');
     var fg = ring.querySelector('circle.fg');
@@ -4495,6 +4673,17 @@
     value.textContent = score;
     fg.setAttribute('stroke-dasharray', circumference.toFixed(2));
     fg.setAttribute('stroke-dashoffset', circumference.toFixed(2));
+    // Sprint A2+ES2: score-ring aria-label and tooltip routed through
+    // t() so screen readers announce the Spanish phrase on the ES
+    // mirror. Key choice preserves A1's half-weight-penalty disclosure.
+    var unverified = meta && typeof meta.unverifiedCount === 'number'
+      ? meta.unverifiedCount : 0;
+    var label = unverified > 0
+      ? t('ring.label.unverified', { score: score, count: unverified })
+      : t('ring.label',             { score: score });
+    ring.setAttribute('role', 'img');
+    ring.setAttribute('aria-label', label);
+    ring.setAttribute('title', label);
     // Force reflow so the animation runs
     void fg.getBoundingClientRect();
     fg.setAttribute('stroke-dashoffset', offset.toFixed(2));
@@ -4888,18 +5077,45 @@
     var topScore     = scores[topType];
     var secondScore  = scores[sortedTypes[1]] || 0;
 
+    // Sprint F1: build a top-3 list of candidates with numeric
+    // confidence so the UI can render alternative chips + gate on
+    // low confidence before silently applying subtype weights.
+    //
+    // Numeric confidence: topScore / (topScore + secondScore), with a
+    // small prior so a 3-vs-0 split reads as "very confident" rather
+    // than "perfect certainty at total mass 3". Clamps to [0, 1].
+    var totalMass = Math.max(topScore + secondScore, 1);
+    var confidenceScore = topScore <= 0 ? 0
+      : Math.max(0, Math.min(1, (topScore - 0.5) / totalMass));
+    var runnersUp = sortedTypes.slice(0, 3).map(function(t){
+      return {
+        type: t,
+        label: BUSINESS_TYPE_DEFS[t].label,
+        score: scores[t]
+      };
+    });
+
     // Require ≥2 absolute pts to classify at all; ≥4 pts AND a 2-pt
     // lead for HIGH confidence. Below the floor, fall through to
     // generic 'restaurant' so we don't confidently mislabel.
     if (topScore < 2) {
-      return { type: 'restaurant', label: 'Restaurant', confidence: 'low', scores: scores };
+      return {
+        type: 'restaurant',
+        label: 'Restaurant',
+        confidence: 'low',
+        confidenceScore: 0,
+        scores: scores,
+        runnersUp: runnersUp
+      };
     }
     var confidence = (topScore - secondScore >= 2 && topScore >= 4) ? 'high' : 'medium';
     return {
       type: topType,
       label: BUSINESS_TYPE_DEFS[topType].label,
       confidence: confidence,
-      scores: scores
+      confidenceScore: confidenceScore,
+      scores: scores,
+      runnersUp: runnersUp
     };
   }
 
@@ -4915,17 +5131,27 @@
   // restaurant-checks.js use the new canonical keys (cafe, bar-pub,
   // etc.) while old share URLs still land on the right copy.
   function resolveCheckForType(def, businessType) {
-    if (!def || !def.byType || !businessType) return def;
+    // Sprint ES9 / fixed in ES11: merge base + byType override in
+    // English FIRST, then localize once over the merged object. This
+    // way a byType that overrides only `impact` in English (no _es)
+    // doesn't shadow the base def's `impact_es` in the Spanish locale —
+    // the localize pass picks up impact_es that the base copied
+    // through, OR the override's own impact_es if present, while
+    // preserving any non-localized subtype-specific fields that
+    // genuinely need to override.
+    var localize = (typeof localizeCheckCopy === 'function')
+      ? localizeCheckCopy : function(x){ return x; };
+    if (!def || !def.byType || !businessType) return localize(def);
     var canon = (typeof canonicalSubtypeId === 'function')
       ? canonicalSubtypeId(businessType)
       : null;
     var key = canon || businessType;
     var override = def.byType[key];
-    if (!override) return def;
+    if (!override) return localize(def);
     var merged = {};
     for (var k in def) if (def.hasOwnProperty(k) && k !== 'byType') merged[k] = def[k];
     for (var k2 in override) if (override.hasOwnProperty(k2)) merged[k2] = override[k2];
-    return merged;
+    return localize(merged);
   }
 
   // Single source of truth: owner correction wins over auto-detection
@@ -5685,14 +5911,20 @@
     if (confPill) {
       var pillText = '';
       var pillShow = true;
+      // Sprint F2: use numeric confidenceScore when present so the
+      // pill communicates real uncertainty (e.g., "68% confident")
+      // instead of only three categorical bins. Falls back to the
+      // string tier for legacy callers.
+      var pct = detection && typeof detection.confidenceScore === 'number'
+        ? Math.round(detection.confidenceScore * 100) : null;
       if (userBusinessType) {
-        pillText = 'You confirmed';
+        pillText = t('btc.confirmed');
       } else if (detection && detection.confidence === 'high') {
-        pillText = 'High confidence';
+        pillText = pct !== null ? t('btc.high', { pct: pct }) : t('btc.high', { pct: '' }).replace(' · %','').replace(' · ','');
       } else if (detection && detection.confidence === 'medium') {
-        pillText = 'Best guess';
+        pillText = pct !== null ? t('btc.medium', { pct: pct }) : t('btc.medium', { pct: '' }).replace(' · %','').replace(' · ','');
       } else if (detection && detection.confidence === 'low') {
-        pillText = 'Uncertain — please pick';
+        pillText = t('btc.uncertain');
       } else {
         pillShow = false;
       }
@@ -5705,14 +5937,19 @@
         : 'Detected:';
     }
     if (sub) {
+      // Sprint F2: when numeric confidence is below 50% and the
+      // owner hasn't confirmed, lead with an explicit ask so the
+      // weights don't get silently applied on shaky detection.
+      var low50 = detection && typeof detection.confidenceScore === 'number'
+        && detection.confidenceScore < 0.5;
       if (userBusinessType) {
-        sub.textContent = "You told us what kind of restaurant this is — we're using it to tailor the checks below to your segment.";
-      } else if (detection && detection.confidence === 'low') {
-        sub.textContent = "We couldn't tell what kind of restaurant this is from the page. Pick the closest match and the checks below will speak your dialect.";
+        sub.textContent = t('btc.sub.confirmed');
+      } else if (low50 || (detection && detection.confidence === 'low')) {
+        sub.textContent = t('btc.sub.low');
       } else if (detection && detection.confidence === 'medium') {
-        sub.textContent = "Our best guess from schema markup, platform, and page content. If we got it wrong, pick the right one — the checks below will update live.";
+        sub.textContent = t('btc.sub.medium');
       } else {
-        sub.textContent = "Auto-detected from schema markup, ordering/reservation platform, and page content. If we got it wrong, pick the right one — the checks below will update live.";
+        sub.textContent = t('btc.sub.high');
       }
     }
 
@@ -5892,6 +6129,67 @@
   // "conversions" (weight 2.0) above "loyalty" (weight 0.4) even
   // when both are failing. Falls back to the raw def.weight when
   // subtypeWeights() returns null.
+  // Sprint V1: per-check-type annual-revenue-at-risk coefficients.
+  // These are conservative order-of-magnitude ranges, derived from
+  // public industry benchmarks (53% of mobile users bounce above 3s
+  // load, ~15% of takeout now starts with online ordering, ~12% of
+  // dine-in starts with a reservation link, etc.). The number is
+  // rendered as a range chip ("Est. $X–Y/yr at risk") so owners see
+  // the scale of what a fix is worth, not false precision.
+  //
+  // Defaults: 50 covers/day × $35 avg check × 365 days = $638,750
+  // annual revenue. Owner-editable inputs in a later CC sprint will
+  // let the user substitute their own seats + avg check + hours.
+  var DEFAULT_OWNER_INPUTS = {
+    coversPerDay: 50,
+    avgCheck:     35,
+    openDays:     365
+  };
+  // Revenue-at-risk percentage ranges [low, high] per check type.
+  // Values are % of annual revenue the owner is plausibly leaving on
+  // the table by failing this check, based on observed funnel drop-
+  // off in restaurant-tech case studies. Missing types → no chip.
+  var REVENUE_AT_RISK_PCT = {
+    'audit.viewport':          [0.04, 0.09],  // mobile crash = big
+    'audit.tap-targets':       [0.01, 0.04],
+    'audit.color-contrast':    [0.005, 0.02],
+    'audit.font-size':         [0.005, 0.02],
+    'phone':                   [0.01, 0.03],
+    'conversions':             [0.06, 0.15],  // ordering/reservations
+    'menu-format':             [0.01, 0.04],
+    'platform':                [0.005, 0.02],
+    'schema':                  [0.005, 0.015],
+    'dietary':                 [0.005, 0.02],
+    'gift-cards':              [0.005, 0.015],
+    'loyalty':                 [0.01, 0.03],
+    'email-capture':           [0.005, 0.02],
+    'catering-page':           [0.01, 0.04],
+    'hours-accuracy':          [0.005, 0.02]
+  };
+  function estimateRevenueAtRiskRange(def, owner) {
+    var key = def && (def.audit || def.type);
+    var range = key ? REVENUE_AT_RISK_PCT[key] : null;
+    if (!range) return null;
+    var o = owner || DEFAULT_OWNER_INPUTS;
+    var annualRevenue = (o.coversPerDay || 0) * (o.avgCheck || 0) * (o.openDays || 365);
+    if (annualRevenue <= 0) return null;
+    return {
+      low:  Math.round(annualRevenue * range[0]),
+      high: Math.round(annualRevenue * range[1]),
+      pctLow:  range[0],
+      pctHigh: range[1]
+    };
+  }
+  // Format a dollar amount to the nearest thousand for the chip.
+  function formatRevenueK(n) {
+    if (n < 1000) return '$' + n;
+    if (n < 10000) return '$' + (n / 1000).toFixed(1) + 'k';
+    return '$' + Math.round(n / 1000) + 'k';
+  }
+  // Expose on the window so the PDF builder + share card can also
+  // surface the estimate without re-computing.
+  window.__auditRevenueAtRisk = estimateRevenueAtRiskRange;
+
   function renderTopFixes() {
     var el   = document.getElementById('topFixes');
     var list = document.getElementById('topFixesList');
@@ -5976,12 +6274,66 @@
           else                         timeLabel = 'Half-day project';
           chips.innerHTML += '<span class="chip chip-time">' + timeLabel + '</span>';
         }
+        // Sprint V2: annual-revenue-at-risk chip. Rendered as a range
+        // with a "est." prefix so owners read it as an order-of-
+        // magnitude, not a quote. Hidden when the check type has no
+        // revenue-risk coefficient (scoped list in V1).
+        var risk = estimateRevenueAtRiskRange(def, DEFAULT_OWNER_INPUTS);
+        if (risk) {
+          // Sprint ES2: chip label + tooltip localized via t().
+          var riskLabel = t('chip.revenue', {
+            low:  formatRevenueK(risk.low),
+            high: formatRevenueK(risk.high)
+          });
+          var riskTitle = t('chip.revenue.title')
+            .replace(/"/g, '&quot;');
+          chips.innerHTML += '<span class="chip chip-revenue" title="' + riskTitle + '">' + riskLabel + '</span>';
+        }
         body.appendChild(chips);
       }
 
       li.appendChild(body);
       list.appendChild(li);
     });
+
+    // Sprint CC6: sum effort + minutes across the top 3 to produce a
+    // single human-readable ETA badge. A "weekend" here is ~8 hours
+    // of focused work, which matches what a typical small-biz owner
+    // can actually carve out. Rebuild items short-circuit the count
+    // because they're not a weekend job in any realistic framing.
+    var totalMinutes = 0;
+    var hasRebuild = false;
+    var hasSelf = false;
+    actionable.forEach(function(pick){
+      var d = pick.entry.def || {};
+      if (typeof d.minutes === 'number') totalMinutes += d.minutes;
+      if (d.effort === 'rebuild') hasRebuild = true;
+      if (d.effort === 'self') hasSelf = true;
+    });
+    var etaEl = document.getElementById('topFixesEta');
+    if (etaEl) {
+      var msg = '';
+      // Sprint ES2: ETA copy routed through t(). Branch selection on
+      // totalMinutes + effort class stays locale-independent; only
+      // the returned sentence localizes.
+      if (hasRebuild) {
+        msg = t('topfixes.eta.rebuild');
+      } else if (totalMinutes <= 0) {
+        msg = t('topfixes.eta.afternoon');
+      } else if (totalMinutes < 120) {
+        msg = hasSelf ? t('topfixes.eta.shortSelf') : t('topfixes.eta.shortDev');
+      } else if (totalMinutes <= 480) {
+        msg = hasSelf ? t('topfixes.eta.weekendSelf') : t('topfixes.eta.weekendDev');
+      } else if (totalMinutes <= 960) {
+        msg = t('topfixes.eta.twoWeekends');
+      } else if (totalMinutes <= 1920) {
+        msg = t('topfixes.eta.threeFourWeekends');
+      } else {
+        msg = t('topfixes.eta.many');
+      }
+      etaEl.textContent = msg;
+      etaEl.hidden = false;
+    }
 
     el.hidden = false;
   }
@@ -6492,7 +6844,11 @@
       passCount: passCount,
       totalCount: totalCount,
       confirmedCount: confirmedCount,
-      lowConfidence: lowConfidence
+      lowConfidence: lowConfidence,
+      // Sprint A3: surface the unverified signal so callers can
+      // display the penalty and drive tooltips / verdict copy.
+      unverifiedCount: unverifiedCount,
+      unverifiedWeight: readinessState.unverifiedWeight || 0
     };
   }
 
@@ -6774,7 +7130,7 @@
     // Strip protocol from displayed URL for readability
     var displayUrl = auditedUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
     document.getElementById('auditedUrl').textContent = displayUrl;
-    document.getElementById('verdictCopy').textContent = verdictFor(overall);
+    document.getElementById('verdictCopy').textContent = verdictFor(overall, { unverifiedCount: priorityResult.unverifiedCount });
 
     // Phase I1: render the narrative executive-summary block
     // below the category cards. Feeds in all the pillar scores
@@ -6785,7 +7141,7 @@
       restaurant: readinessInRollup ? restaurantScore : null
     }, priorityResult);
 
-    setScoreRing(overall);
+    setScoreRing(overall, { unverifiedCount: priorityResult.unverifiedCount });
     setCategory('performance',   perf);
     setCategory('accessibility', a11y);
     setCategory('best-practices', bp);
@@ -6824,8 +7180,17 @@
     if (field && field.fcp !== null) setVital('fcp', formatMs(field.fcp), field.fcp, 'field', fieldScope);
     else                              setVital('fcp', fcp.displayValue, fcp.numericValue, 'lab');
 
-    // Expose raw audits for future consumers
-    window.__auditLastResult = { audits: audits, overall: overall, url: auditedUrl, restaurant: isRestaurantSite ? restaurantScore : null };
+    // Expose raw audits for future consumers. Sprint A3: also expose
+    // unverified-check metadata so downstream PDF/share/email layers
+    // can disclose the half-weight penalty applied in scoring.
+    window.__auditLastResult = {
+      audits: audits,
+      overall: overall,
+      url: auditedUrl,
+      restaurant: isRestaurantSite ? restaurantScore : null,
+      unverifiedCount: priorityResult.unverifiedCount || 0,
+      unverifiedPenaltyApplied: (priorityResult.unverifiedWeight || 0) > 0
+    };
 
     // Update the address bar so "copy link" gives you the audited
     // URL (and any live overrides). Uses history.replaceState so
@@ -6977,9 +7342,9 @@
     // "I have this" on enough unverifieds to cross the confidence
     // threshold, the restaurant card transitions from '?' to a
     // real score on this pass.
-    setScoreRing(overall);
+    setScoreRing(overall, { unverifiedCount: priorityResult.unverifiedCount });
     var verdictEl = document.getElementById('verdictCopy');
-    if (verdictEl) verdictEl.textContent = verdictFor(overall);
+    if (verdictEl) verdictEl.textContent = verdictFor(overall, { unverifiedCount: priorityResult.unverifiedCount });
     if (!state.isRestaurant) {
       setCategoryNA('restaurant');
     } else if (priorityResult.lowConfidence) {
@@ -6991,6 +7356,9 @@
     if (window.__auditLastResult) {
       window.__auditLastResult.overall = overall;
       window.__auditLastResult.restaurant = readinessInRollup ? newRestaurantScore : null;
+      window.__auditLastResult.unverifiedCount = priorityResult.unverifiedCount || 0;
+      window.__auditLastResult.unverifiedPenaltyApplied =
+        (priorityResult.unverifiedWeight || 0) > 0;
     }
     updateOverrideBanner();
 
@@ -7487,6 +7855,42 @@
    * is gone. The PDF-attaching "Email me this report" form is wired
    * separately (Sprint L3) using the existing #emailReportForm. */
 
+  /* -------- Sprint CC7: Print-for-your-manager worksheet -------- */
+  var printManagerBtn = document.getElementById('printManagerBtn');
+  if (printManagerBtn) {
+    // Sprint ES2: relabel the button text on boot if the detected
+    // locale is ES. Keeps the EN file valid as a standalone page
+    // (no blank button on load) while letting the ES mirror pick
+    // up the translation automatically.
+    var pmLabelNode = printManagerBtn.childNodes[printManagerBtn.childNodes.length - 1];
+    if (pmLabelNode && pmLabelNode.nodeType === Node.TEXT_NODE) {
+      pmLabelNode.nodeValue = ' ' + t('print.manager');
+    }
+    printManagerBtn.addEventListener('click', function(){
+      if (!window.__auditResults || !window.__auditResults.entries || !window.__auditResults.entries.length) {
+        return; // no report yet — silent no-op
+      }
+      // Sprint ES2: stamp the localized "Notes / assigned to:" label
+      // onto each top-fix <li> via data-notes-label so the worksheet
+      // print CSS (which uses content: attr(...)) reads the right
+      // language without a second stylesheet.
+      var notesLabel = t('print.worksheet.notes');
+      document.querySelectorAll('#topFixesList li').forEach(function(li){
+        li.setAttribute('data-notes-label', notesLabel);
+      });
+      document.body.classList.add('print-worksheet');
+      var cleanup = function(){
+        document.body.classList.remove('print-worksheet');
+        window.removeEventListener('afterprint', cleanup);
+      };
+      window.addEventListener('afterprint', cleanup);
+      // Safari fires afterprint inconsistently; fall back on a timer
+      // in case the user cancels the dialog before any event fires.
+      setTimeout(cleanup, 30000);
+      window.print();
+    });
+  }
+
   /* -------- Phase I7: Download share-card PNG -------- */
   var shareCardBtn = document.getElementById('shareCardBtn');
   if (shareCardBtn) {
@@ -7600,6 +8004,9 @@
     setFieldIfPresent('subtype',        bt);
     setFieldIfPresent('overall_score',  (last && typeof last.overall === 'number') ? String(Math.round(last.overall)) : '');
     setFieldIfPresent('restaurant_readiness', (last && typeof last.restaurant === 'number') ? String(Math.round(last.restaurant)) : '');
+    // Route the response in the visitor's language. window.__muntinLang
+    // is set by the language-detection block earlier in the page.
+    setFieldIfPresent('locale', window.__muntinLang === 'es' ? 'es' : 'en');
 
     // Build PDF first, then POST. We await the PDF even if it's slow
     // because the attachment IS the deliverable — no point sending

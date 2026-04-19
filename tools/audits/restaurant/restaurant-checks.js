@@ -320,12 +320,19 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'dev',       // 'self' | 'dev' | 'rebuild'
     minutes: 5,          // rough time-to-fix
     impact: 'Without a viewport tag, every phone visitor sees a broken desktop layout. Roughly 70% of restaurant traffic is mobile, which means a missing viewport is 70% of your traffic bouncing on contact.',
+    impact_es: 'Sin una etiqueta viewport, cada visitante desde un teléfono ve un diseño de escritorio roto. Cerca del 70% del tráfico de restaurantes es móvil, así que un viewport ausente es 70% de tu tráfico rebotando al instante.',
     pass: 'Your site fits on a phone screen',
+    pass_es: 'Tu sitio se adapta a la pantalla de un teléfono',
     passNote: 'Your pages render at phone width automatically — the single most important mobile-readiness check, and you pass it.',
+    passNote_es: 'Tus páginas se adaptan automáticamente al ancho de un teléfono — la verificación más importante de preparación móvil, y la pasas.',
     fail: 'Your site is not set up for phones',
+    fail_es: 'Tu sitio no está preparado para teléfonos',
     failNote: 'Without a viewport meta tag, mobile browsers render your site at desktop width and then zoom out to fit. Everything looks tiny and the whole mobile experience breaks. This is a one-line fix for whoever maintains your site — ask them to add <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</code> to the &lt;head&gt;.',
+    failNote_es: 'Sin una meta etiqueta viewport, los navegadores móviles cargan tu sitio al ancho de escritorio y luego hacen zoom out para ajustarlo. Todo se ve minúsculo y la experiencia móvil completa se rompe. Este es un arreglo de una línea para quien mantiene tu sitio — pídele que agregue <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</code> en el &lt;head&gt;.',
     unverified: "We couldn't check if your site fits on a phone",
-    unverifiedNote: "Lighthouse couldn't evaluate the viewport tag on this run. Re-audit in a few seconds and this usually resolves."
+    unverified_es: 'No pudimos comprobar si tu sitio se adapta a un teléfono',
+    unverifiedNote: "Lighthouse couldn't evaluate the viewport tag on this run. Re-audit in a few seconds and this usually resolves.",
+    unverifiedNote_es: 'Lighthouse no pudo evaluar la etiqueta viewport en esta ejecución. Vuelve a auditar en unos segundos y normalmente se resuelve.'
   },
   {
     type: 'audit',
@@ -335,48 +342,73 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'dev',
     minutes: 20,
     impact: "Every missed tap is a frustrated customer. On a restaurant site where the most-tapped button is usually Reserve or Order, small tap targets translate directly into lost bookings.",
+    impact_es: 'Cada tap fallido es un cliente frustrado. En un sitio de restaurante donde el botón más tocado suele ser Reservar u Ordenar, áreas tocables pequeñas se traducen directamente en reservas perdidas.',
     pass: 'Your buttons are big enough to tap',
+    pass_es: 'Tus botones son lo bastante grandes para tocar',
     passNote: 'Your action buttons are big enough to hit on the first try with a thumb holding a phone in one hand.',
+    passNote_es: 'Tus botones de acción son lo bastante grandes para acertarlos al primer intento sosteniendo el teléfono con una mano.',
     fail: 'Some of your buttons are too small to tap reliably',
+    fail_es: 'Algunos botones son muy pequeños para tocarlos de forma confiable',
     failNote: 'Action buttons under 44×44 pixels cause fat-finger misses. On a restaurant site, a missed "Reserve" tap is a lost booking walking out the door. Bump button padding to 12px on every side, and give links at least 44px of vertical space around them.',
+    failNote_es: 'Los botones menores a 44×44 píxeles provocan errores de tap. En un sitio de restaurante, un tap fallido en "Reservar" es una reserva que se va por la puerta. Aumenta el padding de los botones a 12 px en cada lado, y deja al menos 44 px de espacio vertical alrededor de los enlaces.',
     unverified: "We couldn't check your buttons' tap-friendliness",
+    unverified_es: 'No pudimos comprobar la usabilidad táctil de tus botones',
     unverifiedNote: "Lighthouse couldn't evaluate tap targets on this run. Re-audit in a few seconds and this usually resolves.",
+    unverifiedNote_es: 'Lighthouse no pudo evaluar las áreas tocables en esta ejecución. Vuelve a auditar en unos segundos y normalmente se resuelve.',
     byType: {
       'fine-dining': {
         impact: 'On a fine-dining site the "Reserve" button carries almost the entire booking funnel — it\'s the one tap between "I\'m curious" and "I\'m on the books for Saturday." Small or crowded, and you lose the reservation.',
-        failNote: 'Action buttons under 44×44 pixels cause fat-finger misses. The "Reserve" button is the one that matters — give it at least 48×48 px and plenty of breathing room so the Saturday-night impulse actually books.'
+        impact_es: 'En un sitio de fine-dining, el botón "Reservar" carga casi todo el funnel de reservas — es el único tap entre "me interesa" y "ya tengo mesa el sábado". Pequeño o apretado, pierdes la reserva.',
+        failNote: 'Action buttons under 44×44 pixels cause fat-finger misses. The "Reserve" button is the one that matters — give it at least 48×48 px and plenty of breathing room so the Saturday-night impulse actually books.',
+        failNote_es: 'Los botones menores a 44×44 píxeles provocan errores de tap. El botón "Reservar" es el que importa — dale al menos 48×48 px y mucho espacio alrededor para que el impulso del sábado por la noche realmente se convierta en reserva.'
       },
       'fast-casual': {
         impact: 'Fast-casual traffic is almost all mobile and overwhelmingly intent-driven — someone is ordering lunch from their phone while walking to the office. "Order Online" is the most-tapped button on your site. If it\'s small, they give up and open DoorDash.',
-        failNote: 'Buttons under 44×44 pixels cause misses. "Order Online" is the critical button — bump its padding to at least 12px on every side and keep it visually distinct from secondary links.'
+        impact_es: 'El tráfico fast-casual es casi todo móvil y mayoritariamente de intención — alguien ordena el almuerzo desde su teléfono mientras camina a la oficina. "Ordenar en Línea" es el botón más tocado en tu sitio. Si es pequeño, se rinden y abren DoorDash.',
+        failNote: 'Buttons under 44×44 pixels cause misses. "Order Online" is the critical button — bump its padding to at least 12px on every side and keep it visually distinct from secondary links.',
+        failNote_es: 'Los botones menores a 44×44 píxeles provocan fallos. "Ordenar en Línea" es el botón crítico — súbele el padding a al menos 12 px en cada lado y manténlo visualmente distinto de los enlaces secundarios.'
       },
       'cafe': {
         impact: 'Most café traffic is hours-and-location intent: "is it open?" and "where is it?" The hours block and the map pin need to be tappable without zooming — a missed tap sends the customer to a competing shop around the corner.',
-        failNote: 'Hours, phone number, and map links are the three tap-target priorities for a café. They don\'t need to be huge buttons — just give them enough padding (12px) that a thumb reliably hits them.'
+        impact_es: 'La mayoría del tráfico de café es intención de horario y ubicación: "¿están abiertos?" y "¿dónde queda?" El bloque de horarios y el pin del mapa tienen que tocarse sin zoom — un tap fallido manda al cliente al café competidor a la vuelta de la esquina.',
+        failNote: 'Hours, phone number, and map links are the three tap-target priorities for a café. They don\'t need to be huge buttons — just give them enough padding (12px) that a thumb reliably hits them.',
+        failNote_es: 'Horarios, número de teléfono y enlaces de mapa son las tres prioridades de áreas tocables para un café. No necesitan ser botones enormes — solo dales suficiente padding (12 px) para que un pulgar los acierte de forma confiable.'
       },
       'bakery': {
         impact: 'Bakery traffic skews heavily toward custom-cake inquiries and morning pickup pre-orders — "Order Ahead" and "Request a Custom Cake" are the two buttons that carry $500-2000 wedding orders and $30 croissant pre-orders. A missed tap is a real lost order.',
-        failNote: 'Bump the "Order Ahead" and "Custom Cake Inquiry" buttons to 48×48 with 12px+ padding — these are the two that carry almost all of your online revenue. Other links can be smaller.'
+        impact_es: 'El tráfico de panadería se inclina fuerte hacia consultas de pasteles personalizados y pre-pedidos para recoger en la mañana — "Ordenar con Anticipación" y "Pedir Pastel Personalizado" son los dos botones que cargan pedidos de boda de $500-2000 y pre-pedidos de croissants de $30. Un tap fallido es un pedido real perdido.',
+        failNote: 'Bump the "Order Ahead" and "Custom Cake Inquiry" buttons to 48×48 with 12px+ padding — these are the two that carry almost all of your online revenue. Other links can be smaller.',
+        failNote_es: 'Sube los botones "Ordenar con Anticipación" y "Pedir Pastel Personalizado" a 48×48 con 12 px+ de padding — estos son los dos que cargan casi todos tus ingresos en línea. Los demás enlaces pueden ser más pequeños.'
       },
       'pizzeria': {
         impact: 'On a pizzeria site "Order Delivery" and "Start a Pickup Order" are the conversion. Almost all mobile traffic is hungry-right-now intent, and a missed tap routes that order to Slice or DoorDash (where you pay 20-30% commission) within seconds.',
-        failNote: '"Order Delivery" / "Pickup Order" need 48×48 tap targets and padding to separate them from secondary navigation. Every missed tap at 7pm on a Friday goes to an aggregator — you literally pay commission per miss.'
+        impact_es: 'En un sitio de pizzería "Ordenar Delivery" y "Iniciar Pedido Pickup" son la conversión. Casi todo el tráfico móvil es intención de "tengo hambre ahora", y un tap fallido desvía ese pedido a Slice o DoorDash (donde pagas 20-30% de comisión) en segundos.',
+        failNote: '"Order Delivery" / "Pickup Order" need 48×48 tap targets and padding to separate them from secondary navigation. Every missed tap at 7pm on a Friday goes to an aggregator — you literally pay commission per miss.',
+        failNote_es: '"Ordenar Delivery" / "Pedido Pickup" necesitan áreas de 48×48 y padding para separarse de la navegación secundaria. Cada tap fallido a las 7pm un viernes se va a un agregador — literalmente pagas comisión por cada fallo.'
       },
       'food-truck': {
         impact: 'Food-truck traffic is all mobile and all intent-driven — "where are you today?" "what\'s on the menu right now?" The "See Today\'s Schedule" and Instagram-link buttons carry the entire discovery funnel. A missed tap sends hungry customers to whatever else Google Maps surfaces nearby.',
-        failNote: 'The "Today\'s Location" and "See Our Schedule" buttons need 48×48 tap targets and healthy padding. Your Instagram-handle chip belongs in the same priority tier — it\'s where most of your actual schedule updates land.'
+        impact_es: 'El tráfico de food truck es todo móvil y todo de intención — "¿dónde están hoy?" "¿qué hay en el menú ahora?" Los botones "Ver Horario de Hoy" y el enlace a Instagram cargan todo el funnel de descubrimiento. Un tap fallido manda a clientes hambrientos a lo que sea que Google Maps muestre cerca.',
+        failNote: 'The "Today\'s Location" and "See Our Schedule" buttons need 48×48 tap targets and healthy padding. Your Instagram-handle chip belongs in the same priority tier — it\'s where most of your actual schedule updates land.',
+        failNote_es: 'Los botones "Ubicación de Hoy" y "Ver Nuestro Horario" necesitan áreas de 48×48 y padding generoso. Tu chip de handle de Instagram pertenece al mismo nivel de prioridad — es donde aterrizan la mayoría de tus actualizaciones de horario reales.'
       },
       'ghost-kitchen': {
         impact: 'Ghost-kitchen sites are discovery pages — customers came to confirm you\'re real before placing an order on DoorDash or Uber Eats. The "Order on DoorDash / Uber Eats / Grubhub" aggregator buttons are the primary conversion. Misses turn into orders for a competing kitchen on the same platform.',
-        failNote: 'Size the aggregator "Order On …" buttons first — they carry almost all your orders. 48×48 with padding, and stack them clearly so a customer on a hungry phone at 9pm can tap the one they prefer without a miss.'
+        impact_es: 'Los sitios de cocina fantasma son páginas de descubrimiento — los clientes vienen a confirmar que eres real antes de pedir por DoorDash o Uber Eats. Los botones "Ordenar en DoorDash / Uber Eats / Grubhub" son la conversión principal. Los fallos se convierten en pedidos para una cocina competidora en la misma plataforma.',
+        failNote: 'Size the aggregator "Order On …" buttons first — they carry almost all your orders. 48×48 with padding, and stack them clearly so a customer on a hungry phone at 9pm can tap the one they prefer without a miss.',
+        failNote_es: 'Dimensiona primero los botones "Ordenar en …" de los agregadores — cargan casi todos tus pedidos. 48×48 con padding, y apílalos claramente para que un cliente en un teléfono hambriento a las 9pm pueda tocar el que prefiera sin fallo.'
       },
       'catering-only': {
         impact: 'Catering-only sites convert through two buttons: "Request a Quote" (or "Book Your Event") and a tappable phone. Everything else on the site supports those two. A missed tap on the quote form — especially on a phone from a corporate event planner with 15 caterers in tabs — is a direct loss of a $2,000-$15,000 booking.',
-        failNote: '"Request a Quote" and the tappable phone are the two highest-value buttons on the site. Both need 48×48 targets and enough padding to thumb-tap cleanly. Everything else (gallery, testimonials, package links) can be smaller.'
+        impact_es: 'Los sitios de catering convierten con dos botones: "Solicitar Cotización" (o "Reserva tu Evento") y un teléfono tocable. Todo lo demás apoya a esos dos. Un tap fallido en el formulario de cotización — especialmente en el teléfono de un planificador corporativo con 15 caterings en pestañas — es la pérdida directa de una reserva de $2,000-$15,000.',
+        failNote: '"Request a Quote" and the tappable phone are the two highest-value buttons on the site. Both need 48×48 targets and enough padding to thumb-tap cleanly. Everything else (gallery, testimonials, package links) can be smaller.',
+        failNote_es: '"Solicitar Cotización" y el teléfono tocable son los dos botones de mayor valor. Ambos necesitan áreas de 48×48 y suficiente padding para tocarse limpio con el pulgar. Todo lo demás (galería, testimonios, enlaces de paquetes) puede ser más pequeño.'
       },
       'bar-pub': {
         impact: 'Bar traffic is often late-night and last-minute — "is happy hour still on?", "are they open?", "is there a cover?" A tappable phone and a tappable map are the two buttons that earn their space.',
-        failNote: 'Buttons under 44×44 pixels cause misses. On a bar site the phone number and map links are what visitors actually tap — make sure those in particular have 12px+ padding and aren\'t crowded by other links.'
+        impact_es: 'El tráfico de bar suele ser de última hora y de noche — "¿sigue el happy hour?", "¿están abiertos?", "¿hay cover?" Un teléfono tocable y un mapa tocable son los dos botones que ganan su espacio.',
+        failNote: 'Buttons under 44×44 pixels cause misses. On a bar site the phone number and map links are what visitors actually tap — make sure those in particular have 12px+ padding and aren\'t crowded by other links.',
+        failNote_es: 'Los botones menores a 44×44 píxeles provocan fallos. En un sitio de bar, el número de teléfono y los enlaces de mapa son lo que los visitantes realmente tocan — asegúrate de que esos en particular tengan 12 px+ de padding y no estén apretados por otros enlaces.'
       }
     }
   },
@@ -388,57 +420,91 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'dev',
     minutes: 15,
     impact: "Roughly 1 in 4 adults over 40 has some form of age-related vision difficulty. If your menu text fails contrast, you're leaving money on the table from the exact demographic that dines out most.",
+    impact_es: 'Cerca de 1 de cada 4 adultos mayores de 40 años tiene algún tipo de dificultad visual. Si tu menú falla en contraste, estás dejando dinero en la mesa — justo del grupo demográfico que más sale a comer.',
     pass: 'Your menu text is readable for everyone',
+    pass_es: 'El texto de tu menú es legible para todos',
     passNote: 'A 55-year-old standing in bright sunlight can read your menu descriptions. That is the actual bar for a mobile restaurant menu — and you meet it.',
+    passNote_es: 'Una persona de 55 años bajo el sol puede leer las descripciones de tu menú. Esa es la verdadera vara para un menú móvil de restaurante — y la cumples.',
     fail: 'Some of your text is hard to read',
+    fail_es: 'Parte de tu texto es difícil de leer',
     failNote: 'Light gray on cream or dark-on-dark is invisible to anyone over 40 or anyone standing outside in the sun. Most of your weekday lunch crowd is one of those people. Darken your body text or lift the background — aim for at least the WCAG AA contrast ratio (4.5:1 for normal text).',
+    failNote_es: 'Gris claro sobre crema o oscuro sobre oscuro es invisible para cualquier persona mayor de 40 o para alguien parado al sol. La mayoría del público de almuerzo entre semana es una de esas personas. Oscurece el texto del cuerpo o aclara el fondo — apunta al menos al contraste WCAG AA (4.5:1 para texto normal).',
     unverified: "We couldn't check your menu text contrast",
+    unverified_es: 'No pudimos comprobar el contraste del texto de tu menú',
     unverifiedNote: "Lighthouse couldn't evaluate color contrast on this run. Re-audit in a few seconds and this usually resolves.",
+    unverifiedNote_es: 'Lighthouse no pudo evaluar el contraste de color en esta ejecución. Vuelve a auditar en unos segundos y normalmente se resuelve.',
     byType: {
       'fine-dining': {
         impact: 'Fine-dining menus live and die on careful description — a 55-year-old guest skimming the tasting-menu copy on their phone in a taxi needs every word to be legible. Thin serifs on cream backgrounds are a common culprit.',
+        impact_es: 'Los menús de fine-dining viven o mueren por la descripción cuidadosa — un comensal de 55 años ojeando el texto del menú degustación en su teléfono dentro de un taxi necesita cada palabra legible. Las serifas delgadas sobre fondos crema son el culpable común.',
         passNote: 'Your tasting-menu and wine-list copy meets contrast thresholds — readable without squinting, even for the demographic that actually fills your dining room.',
-        failNote: 'Fine-dining menu aesthetics frequently use thin grey serifs on cream or dark-on-dark cards — elegant on-screen, unreadable on a phone. Darken body text to meet WCAG AA (4.5:1 ratio), especially menu descriptions and wine notes.'
+        passNote_es: 'Tu texto del menú degustación y carta de vinos cumple los umbrales de contraste — legible sin entrecerrar los ojos, incluso para el grupo demográfico que realmente llena tu comedor.',
+        failNote: 'Fine-dining menu aesthetics frequently use thin grey serifs on cream or dark-on-dark cards — elegant on-screen, unreadable on a phone. Darken body text to meet WCAG AA (4.5:1 ratio), especially menu descriptions and wine notes.',
+        failNote_es: 'La estética de los menús de fine-dining frecuentemente usa serifas grises delgadas sobre crema o cartas oscuro-sobre-oscuro — elegante en pantalla, ilegible en un teléfono. Oscurece el texto del cuerpo a WCAG AA (4.5:1), en especial descripciones y notas de vino.'
       },
       'fast-casual': {
         impact: 'Fast-casual decisions happen in 20 seconds on a phone at lunchtime. Low-contrast item names or prices mean the visitor bounces to an ordering aggregator where the same menu is clearer.',
+        impact_es: 'Las decisiones fast-casual pasan en 20 segundos en un teléfono a la hora del almuerzo. Nombres de platos o precios con bajo contraste hacen que el visitante rebote a un agregador donde el mismo menú es más claro.',
         passNote: 'Your item names and prices are readable at a glance — which is what a lunch-break ordering decision actually requires.',
-        failNote: 'Menu item names and prices especially need high contrast. Thin grey text over beige backgrounds is the most common fast-casual contrast failure — darken the body text to meet WCAG AA (4.5:1 ratio).'
+        passNote_es: 'Los nombres de platos y precios se leen de un vistazo — justo lo que una decisión de almuerzo requiere.',
+        failNote: 'Menu item names and prices especially need high contrast. Thin grey text over beige backgrounds is the most common fast-casual contrast failure — darken the body text to meet WCAG AA (4.5:1 ratio).',
+        failNote_es: 'Los nombres de platos y precios del menú en especial requieren alto contraste. Texto gris delgado sobre beige es el fallo fast-casual más común — oscurece el texto del cuerpo a WCAG AA (4.5:1).'
       },
       'cafe': {
         impact: 'Café customers read your hours, menu, and address more than anything else. Soft-palette café branding often puts those three items in light grey — elegant on a laptop, invisible on a phone in sunlight.',
+        impact_es: 'Los clientes de café leen tus horarios, menú y dirección más que cualquier otra cosa. La paleta suave de marca de café suele poner esos tres en gris claro — elegante en laptop, invisible en un teléfono al sol.',
         passNote: 'Hours, items, and address all meet contrast thresholds — readable at a glance, even in direct light.',
-        failNote: 'Hours and address are the most-read text on a café site. Pale grey on cream looks on-brand but fails contrast — darken these two specifically to WCAG AA (4.5:1 ratio).'
+        passNote_es: 'Horarios, platos y dirección cumplen los umbrales de contraste — legibles de un vistazo, incluso a plena luz.',
+        failNote: 'Hours and address are the most-read text on a café site. Pale grey on cream looks on-brand but fails contrast — darken these two specifically to WCAG AA (4.5:1 ratio).',
+        failNote_es: 'Horarios y dirección son el texto más leído en un sitio de café. Gris pálido sobre crema se ve on-brand pero falla en contraste — oscurece estos dos específicamente a WCAG AA (4.5:1).'
       },
       'bakery': {
         impact: 'Bakery menus carry ingredient lists, allergen notes, and custom-order details that customers read CAREFULLY — a guest ordering a wedding cake has to trust every label. Low-contrast allergen copy breaks that trust.',
+        impact_es: 'Los menús de panadería cargan listas de ingredientes, notas de alérgenos y detalles de pedidos personalizados que los clientes leen CON CUIDADO — quien pide un pastel de boda tiene que confiar en cada etiqueta. El texto de alérgenos con bajo contraste rompe esa confianza.',
         passNote: 'Your ingredient and allergen copy meets contrast thresholds — readable on a phone by the guest double-checking a custom-cake spec at 11pm the night before.',
-        failNote: 'Ingredient and allergen notes are the highest-stakes copy on a bakery site. Pale grey descriptions over cream fail WCAG AA (4.5:1) and spook nervous custom-cake or dietary-restricted customers. This is a trust issue, not just usability.'
+        passNote_es: 'Tu texto de ingredientes y alérgenos cumple los umbrales de contraste — legible en un teléfono para el cliente que revisa las especificaciones de un pastel personalizado a las 11pm de la noche anterior.',
+        failNote: 'Ingredient and allergen notes are the highest-stakes copy on a bakery site. Pale grey descriptions over cream fail WCAG AA (4.5:1) and spook nervous custom-cake or dietary-restricted customers. This is a trust issue, not just usability.',
+        failNote_es: 'Las notas de ingredientes y alérgenos son el texto de más alto riesgo en un sitio de panadería. Descripciones en gris pálido sobre crema fallan WCAG AA (4.5:1) y asustan a clientes nerviosos de pasteles personalizados o con restricciones. Es un tema de confianza, no solo de usabilidad.'
       },
       'pizzeria': {
         impact: 'Pizza sites lean on price grids and toppings lists — both of which fail contrast more than you would expect because the branding is often red-on-red or cream-on-cream. A customer can\'t confidently customize a pie if they can\'t read the pepperoni price or the crust options.',
+        impact_es: 'Los sitios de pizza se apoyan en tablas de precios y listas de ingredientes — ambas fallan contraste más de lo esperado porque la marca suele ser rojo-sobre-rojo o crema-sobre-crema. Un cliente no puede personalizar una pizza con confianza si no puede leer el precio del pepperoni o las opciones de masa.',
         passNote: 'Topping prices, crust options, and combo pricing all meet contrast thresholds — customers can customize a pie on a phone without squinting.',
-        failNote: 'Price grids and topping lists are the conversion surface for a pizzeria. Low-contrast cream-on-cream or red-on-red pricing fails WCAG AA (4.5:1) — darken prices and topping labels until they read cleanly on a phone outside.'
+        passNote_es: 'Precios de ingredientes, opciones de masa y precios de combos cumplen los umbrales de contraste — los clientes pueden personalizar una pizza en el teléfono sin entrecerrar los ojos.',
+        failNote: 'Price grids and topping lists are the conversion surface for a pizzeria. Low-contrast cream-on-cream or red-on-red pricing fails WCAG AA (4.5:1) — darken prices and topping labels until they read cleanly on a phone outside.',
+        failNote_es: 'Las tablas de precios y listas de ingredientes son la superficie de conversión de una pizzería. Precios en crema-sobre-crema o rojo-sobre-rojo fallan WCAG AA (4.5:1) — oscurece precios y etiquetas de ingredientes hasta que se lean limpio en un teléfono al aire libre.'
       },
       'food-truck': {
         impact: 'Food-truck sites are read OUTSIDE, in bright sun, on phones held at arm\'s length. Low-contrast copy fails instantly in that environment — and schedule + menu are the two things customers are squinting at while deciding whether to walk over.',
+        impact_es: 'Los sitios de food truck se leen AFUERA, bajo sol brillante, en teléfonos sostenidos a distancia del brazo. El texto de bajo contraste falla al instante en ese entorno — y horario + menú son las dos cosas que los clientes están entrecerrando los ojos mientras deciden si caminar hasta allá.',
         passNote: 'Your schedule and menu copy meets contrast thresholds — readable at a farmers\' market in bright sun without cupping the screen.',
-        failNote: 'Outdoor readability is the bar for a food-truck site. Pale brand colors that look great on Instagram fail WCAG AA (4.5:1) in direct sun — darken your schedule + menu text until they read cleanly at arm\'s length in daylight.'
+        passNote_es: 'Tu texto de horario y menú cumple los umbrales de contraste — legible en un mercado de agricultores bajo sol brillante sin tener que tapar la pantalla con la mano.',
+        failNote: 'Outdoor readability is the bar for a food-truck site. Pale brand colors that look great on Instagram fail WCAG AA (4.5:1) in direct sun — darken your schedule + menu text until they read cleanly at arm\'s length in daylight.',
+        failNote_es: 'La legibilidad al aire libre es la vara de un sitio de food truck. Colores de marca pálidos que se ven perfectos en Instagram fallan WCAG AA (4.5:1) al sol directo — oscurece el texto de horario + menú hasta que se lea limpio a la distancia del brazo a plena luz.'
       },
       'ghost-kitchen': {
         impact: 'Ghost-kitchen branding leans heavy on moody photography and low-contrast type — which photographs beautifully and converts terribly. Customers scanning delivery-hours and menu-brand details on a phone at 9pm need copy that reads without effort.',
+        impact_es: 'La marca de cocina fantasma se apoya mucho en fotografía ambiental y tipografía de bajo contraste — que fotografía bellamente y convierte terriblemente. Los clientes revisando horarios de delivery y detalles de marca en un teléfono a las 9pm necesitan texto que se lea sin esfuerzo.',
         passNote: 'Hours, brand names, and menu descriptions all meet contrast thresholds — a hungry customer can confirm "yes this is a real restaurant" without squinting.',
-        failNote: 'Ghost-kitchen moody-photography branding often fails WCAG AA (4.5:1) — pale type over dark hero images is the most common offender. Darken body text and especially the hours/brand names; these are the copy customers actually read before tapping through to a delivery app.'
+        passNote_es: 'Horarios, nombres de marca y descripciones de menú cumplen los umbrales de contraste — un cliente hambriento puede confirmar "sí, es un restaurante real" sin entrecerrar los ojos.',
+        failNote: 'Ghost-kitchen moody-photography branding often fails WCAG AA (4.5:1) — pale type over dark hero images is the most common offender. Darken body text and especially the hours/brand names; these are the copy customers actually read before tapping through to a delivery app.',
+        failNote_es: 'La marca ambiental de cocina fantasma falla frecuentemente WCAG AA (4.5:1) — texto pálido sobre imágenes hero oscuras es el error más común. Oscurece el texto del cuerpo y sobre todo los horarios/nombres de marca; son el texto que los clientes realmente leen antes de abrir la app de delivery.'
       },
       'catering-only': {
         impact: 'Catering sites carry package descriptions, price-per-head tables, dietary-accommodation notes, and lead-time policies — all of which an event planner reads CAREFULLY before requesting a quote. Low-contrast pricing copy breaks trust precisely when a professional buyer is comparing three caterers side by side.',
+        impact_es: 'Los sitios de catering cargan descripciones de paquetes, tablas de precio por persona, notas de acomodaciones dietéticas y políticas de tiempo de anticipación — todo lo que un planificador lee CON CUIDADO antes de pedir una cotización. El texto de precios con bajo contraste rompe la confianza justo cuando un comprador profesional compara tres caterings lado a lado.',
         passNote: 'Package prices, head-count math, and dietary-accommodation copy all meet contrast thresholds — readable at-a-glance on the phone of a planner juggling several vendors.',
-        failNote: 'Event planners comparing caterers don\'t squint — they bounce. Pale grey on cream for package descriptions and price tables fails WCAG AA (4.5:1). Darken body text, especially anywhere you list per-head pricing or minimum-headcount rules.'
+        passNote_es: 'Precios de paquetes, cálculos por cabeza y texto de acomodaciones dietéticas cumplen los umbrales de contraste — legibles de un vistazo en el teléfono de un planificador manejando varios vendedores.',
+        failNote: 'Event planners comparing caterers don\'t squint — they bounce. Pale grey on cream for package descriptions and price tables fails WCAG AA (4.5:1). Darken body text, especially anywhere you list per-head pricing or minimum-headcount rules.',
+        failNote_es: 'Los planificadores comparando caterings no entrecierran los ojos — rebotan. Gris pálido sobre crema para descripciones de paquetes y tablas de precios falla WCAG AA (4.5:1). Oscurece el texto del cuerpo, en especial donde listes precios por cabeza o reglas de número mínimo de personas.'
       },
       'bar-pub': {
         impact: 'Bar sites are often dark-themed by default, and legibility takes a hit. Guests checking happy-hour times or the cocktail list on a phone at the curb outside shouldn\'t have to squint.',
+        impact_es: 'Los sitios de bar son frecuentemente de tema oscuro por default, y la legibilidad sufre. Los clientes revisando horarios de happy hour o la lista de cócteles en un teléfono en la banqueta afuera no deberían tener que entrecerrar los ojos.',
         passNote: 'Your dark-theme copy still meets WCAG AA contrast ratios — happy-hour hours and the cocktail list are readable without zooming.',
-        failNote: 'Dark-theme bar sites fail contrast most often on mid-grey text over black. Lift your body-text brightness (or shift to near-white) until it meets WCAG AA (4.5:1 ratio) — especially for hours, happy-hour times, and the cocktail list.'
+        passNote_es: 'Tu texto de tema oscuro aún cumple los contrastes WCAG AA — horarios de happy hour y lista de cócteles se leen sin zoom.',
+        failNote: 'Dark-theme bar sites fail contrast most often on mid-grey text over black. Lift your body-text brightness (or shift to near-white) until it meets WCAG AA (4.5:1 ratio) — especially for hours, happy-hour times, and the cocktail list.',
+        failNote_es: 'Los sitios de bar de tema oscuro fallan contraste más frecuentemente en texto gris medio sobre negro. Sube el brillo del texto del cuerpo (o desplázalo a casi blanco) hasta cumplir WCAG AA (4.5:1) — sobre todo para horarios, happy hour y la lista de cócteles.'
       }
     }
   },
@@ -450,48 +516,73 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'dev',
     minutes: 10,
     impact: "Text below 16px forces iOS to zoom on focus and frustrates every mobile reader. Menu descriptions that look fine on a laptop are often unreadable on a phone at arm's length.",
+    impact_es: 'Texto menor a 16 px obliga a iOS a hacer zoom al enfocar y frustra a cualquier lector móvil. Descripciones de menú que se ven bien en laptop suelen ser ilegibles en un teléfono a la distancia del brazo.',
     pass: 'Your text is legible without pinch-zooming',
+    pass_es: 'Tu texto se lee sin hacer zoom con los dedos',
     passNote: 'Your body text is above the mobile readability threshold — visitors do not have to pinch-zoom to read the menu.',
+    passNote_es: 'El texto de tu cuerpo supera el umbral de legibilidad móvil — los visitantes no tienen que hacer zoom con los dedos para leer el menú.',
     fail: 'Your text is too small on a phone',
+    fail_es: 'Tu texto es muy pequeño en un teléfono',
     failNote: 'More than 40% of your text is below the legibility threshold. Visitors give up before finding their entree. Set body font-size to at least 16px — for menu descriptions and anything a hungry customer actually has to read, 17 or 18 px is better.',
+    failNote_es: 'Más del 40% de tu texto está por debajo del umbral de legibilidad. Los visitantes se rinden antes de encontrar el plato principal. Configura el tamaño de fuente del cuerpo a por lo menos 16 px — para descripciones de menú y cualquier cosa que un cliente hambriento deba leer, 17 o 18 px es mejor.',
     unverified: "We couldn't check your text size",
+    unverified_es: 'No pudimos comprobar el tamaño de tu texto',
     unverifiedNote: "Lighthouse couldn't evaluate font sizes on this run. Re-audit in a few seconds and this usually resolves.",
+    unverifiedNote_es: 'Lighthouse no pudo evaluar los tamaños de fuente en esta ejecución. Vuelve a auditar en unos segundos y normalmente se resuelve.',
     byType: {
       'fine-dining': {
         impact: 'Tasting-menu descriptions, wine-list notes, and chef\'s-counter blurbs are the highest-value text on your site. Set too small, they force a pinch-zoom that breaks the whole luxe experience.',
-        failNote: 'Set body font-size to at least 16px. For the tasting menu and wine list specifically, 17 or 18px is the floor — those blocks of descriptive copy are what convinces a guest to book.'
+        impact_es: 'Descripciones del menú degustación, notas de la carta de vinos y textos de chef\'s counter son el texto de mayor valor en tu sitio. Si los haces muy pequeños, fuerzan un zoom con los dedos que rompe toda la experiencia premium.',
+        failNote: 'Set body font-size to at least 16px. For the tasting menu and wine list specifically, 17 or 18px is the floor — those blocks of descriptive copy are what convinces a guest to book.',
+        failNote_es: 'Configura el tamaño de fuente del cuerpo a por lo menos 16 px. Para el menú degustación y la carta de vinos en particular, 17 o 18 px es el mínimo — esos bloques descriptivos son lo que convence al comensal de reservar.'
       },
       'fast-casual': {
         impact: 'Customers scan your menu on a phone mid-walk. Small item names and prices turn a 10-second decision into a 30-second squint — and they close the tab and reopen DoorDash.',
-        failNote: 'Set body font-size to at least 16px. Item names and prices specifically should be 17 or 18px — the menu is your conversion page.'
+        impact_es: 'Los clientes ojean tu menú en el teléfono mientras caminan. Nombres y precios pequeños convierten una decisión de 10 segundos en 30 segundos entrecerrando los ojos — y cierran la pestaña y vuelven a abrir DoorDash.',
+        failNote: 'Set body font-size to at least 16px. Item names and prices specifically should be 17 or 18px — the menu is your conversion page.',
+        failNote_es: 'Configura el tamaño de fuente del cuerpo a por lo menos 16 px. Nombres de platos y precios en particular deberían ser 17 o 18 px — el menú es tu página de conversión.'
       },
       'cafe': {
         impact: 'Hours and location are read more than anything else on a café site. Tiny type below 16px forces iOS to zoom on focus and makes "are they open?" a frustrating question.',
-        failNote: 'Set body font-size to at least 16px. The hours block specifically should be 17 or 18px — it\'s the first thing most café visitors look for.'
+        impact_es: 'Horarios y ubicación se leen más que cualquier cosa en un sitio de café. Texto diminuto bajo 16 px obliga a iOS a hacer zoom al enfocar y convierte "¿están abiertos?" en una pregunta frustrante.',
+        failNote: 'Set body font-size to at least 16px. The hours block specifically should be 17 or 18px — it\'s the first thing most café visitors look for.',
+        failNote_es: 'Configura el tamaño de fuente del cuerpo a por lo menos 16 px. El bloque de horarios en particular debería ser 17 o 18 px — es lo primero que busca la mayoría de los visitantes de un café.'
       },
       'bakery': {
         impact: 'Ingredient lists, custom-order spec fields, and pickup-date copy are the three things a bakery customer reads MOST carefully. Tiny type forces a pinch-zoom on exactly the moments that require precision.',
-        failNote: 'Set body to 16px, and set ingredient lists plus custom-order copy to 17-18px. Customers placing $200+ orders for a specific date want zero ambiguity about what they\'re ordering.'
+        impact_es: 'Las listas de ingredientes, campos de especificaciones de pedidos personalizados y texto de fecha de recogida son las tres cosas que un cliente de panadería lee CON MÁS cuidado. Texto diminuto fuerza un zoom con los dedos justo en los momentos que requieren precisión.',
+        failNote: 'Set body to 16px, and set ingredient lists plus custom-order copy to 17-18px. Customers placing $200+ orders for a specific date want zero ambiguity about what they\'re ordering.',
+        failNote_es: 'Configura el cuerpo a 16 px, y las listas de ingredientes más el texto de pedidos personalizados a 17-18 px. Los clientes haciendo pedidos de $200+ para una fecha específica quieren cero ambigüedad sobre lo que están ordenando.'
       },
       'pizzeria': {
         impact: 'Topping lists, allergen notes (gluten / dairy / dairy-free cheese), and delivery-zone details are the make-or-break copy for a pizzeria. Tiny type forces a pinch-zoom on the exact moments a customer is deciding between ordering from you or opening Slice.',
-        failNote: 'Set body to 16px, and set topping lists and delivery-zone copy to 17-18px. The customer picking between "one large pepperoni" and "half-pepperoni half-mushroom" should never have to zoom.'
+        impact_es: 'Las listas de ingredientes, notas de alérgenos (gluten / lácteos / queso sin lácteos) y detalles de zona de entrega son el texto decisivo para una pizzería. Texto diminuto obliga a hacer zoom con los dedos justo cuando un cliente decide entre pedirte a ti o abrir Slice.',
+        failNote: 'Set body to 16px, and set topping lists and delivery-zone copy to 17-18px. The customer picking between "one large pepperoni" and "half-pepperoni half-mushroom" should never have to zoom.',
+        failNote_es: 'Configura el cuerpo a 16 px, y las listas de ingredientes y texto de zona de entrega a 17-18 px. El cliente eligiendo entre "una grande de pepperoni" y "mitad pepperoni mitad champiñones" nunca debería tener que hacer zoom.'
       },
       'food-truck': {
         impact: 'Schedule times and today\'s-location copy are the two pieces of content a food-truck customer reads MOST — usually on a phone, outdoors, while walking. Tiny type makes "are they at the brewery tonight?" a harder question than it needs to be.',
-        failNote: 'Set body to 16px, and set schedule times and today\'s-location copy to 17-18px. Both belong in a block large enough to read at a glance while walking.'
+        impact_es: 'Horarios y texto de ubicación de hoy son los dos contenidos que un cliente de food truck lee MÁS — normalmente en un teléfono, al aire libre, caminando. Texto diminuto convierte "¿están en la cervecería esta noche?" en una pregunta más difícil de lo necesario.',
+        failNote: 'Set body to 16px, and set schedule times and today\'s-location copy to 17-18px. Both belong in a block large enough to read at a glance while walking.',
+        failNote_es: 'Configura el cuerpo a 16 px, y los horarios y texto de ubicación del día a 17-18 px. Ambos deben ir en un bloque lo bastante grande para leerse de un vistazo mientras caminas.'
       },
       'ghost-kitchen': {
         impact: 'Delivery hours, service area, and menu descriptions are the text customers actually read — and for ghost kitchens that text lives in competition with a lot of visual branding. Sub-16px type forces pinch-zooms on the exact decisions ("are they delivering now? to my zip?") that cost you the order.',
-        failNote: 'Set body to 16px, and put delivery-hours + service-area copy at 17-18px. These are the two paragraphs that decide whether the customer taps over to DoorDash at all.'
+        impact_es: 'Horarios de delivery, área de servicio y descripciones de menú son el texto que los clientes realmente leen — y para las cocinas fantasma ese texto compite con mucho branding visual. Texto bajo 16 px fuerza zoom con los dedos justo en las decisiones ("¿están entregando ahora? ¿a mi código postal?") que te cuestan el pedido.',
+        failNote: 'Set body to 16px, and put delivery-hours + service-area copy at 17-18px. These are the two paragraphs that decide whether the customer taps over to DoorDash at all.',
+        failNote_es: 'Configura el cuerpo a 16 px, y pon el texto de horarios de delivery + área de servicio a 17-18 px. Estos son los dos párrafos que deciden si el cliente siquiera toca para ir a DoorDash.'
       },
       'catering-only': {
         impact: 'Package descriptions, per-head pricing tables, dietary-accommodation notes, and lead-time rules are the decision-critical text on a catering site. Tiny type on a phone forces the planner — who is already rushed — to pinch-zoom through your rate card, which is a terrible first impression for a $5,000 booking.',
-        failNote: 'Set body to 16px, and set package descriptions + pricing tables to 17-18px. Corporate planners often read on a phone between meetings — make the rate card scannable without zoom.'
+        impact_es: 'Descripciones de paquetes, tablas de precios por cabeza, notas de acomodaciones dietéticas y reglas de tiempo de anticipación son el texto crítico en un sitio de catering. Texto diminuto en un teléfono obliga al planificador — que ya va apurado — a hacer zoom en tu tabla de tarifas, una pésima primera impresión para una reserva de $5,000.',
+        failNote: 'Set body to 16px, and set package descriptions + pricing tables to 17-18px. Corporate planners often read on a phone between meetings — make the rate card scannable without zoom.',
+        failNote_es: 'Configura el cuerpo a 16 px, y las descripciones de paquetes + tablas de precios a 17-18 px. Los planificadores corporativos suelen leer en el teléfono entre juntas — haz la tabla de tarifas escaneable sin zoom.'
       },
       'bar-pub': {
         impact: 'Cocktail lists, draft lists, and happy-hour details are the bar\'s menu. Small type on a phone in a dim Uber ride is a usability tax guests won\'t pay.',
-        failNote: 'Set body font-size to at least 16px. The cocktail/draft list and happy-hour times deserve 17 or 18px — those are the conversion paragraphs for a bar site.'
+        impact_es: 'Lista de cócteles, lista de cervezas de barril y detalles de happy hour son el menú del bar. Texto pequeño en un teléfono dentro de un Uber con poca luz es un impuesto de usabilidad que los clientes no pagarán.',
+        failNote: 'Set body font-size to at least 16px. The cocktail/draft list and happy-hour times deserve 17 or 18px — those are the conversion paragraphs for a bar site.',
+        failNote_es: 'Configura el tamaño de fuente del cuerpo a por lo menos 16 px. La lista de cócteles/cervezas y los horarios de happy hour merecen 17 o 18 px — esos son los párrafos de conversión en un sitio de bar.'
       }
     }
   },
@@ -502,49 +593,75 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'self',
     minutes: 2,
     impact: "On mobile, every tap that requires copying and pasting instead of tapping costs you customers. Phone calls are still how most takeout orders and reservation questions reach independent restaurants.",
+    impact_es: 'En móvil, cada tap que requiere copiar y pegar en vez de tocar te cuesta clientes. Las llamadas siguen siendo cómo la mayoría de los pedidos para llevar y preguntas de reserva llegan a los restaurantes independientes.',
     pass: 'Visitors can tap your phone number to call',
+    pass_es: 'Los visitantes pueden tocar tu número para llamar',
     passNote: 'A tappable phone number is on your page — mobile visitors can call you with one tap, which matters for takeout orders, reservation questions, and "are you still open" calls.',
+    passNote_es: 'Hay un número tocable en tu página — los visitantes móviles te pueden llamar con un solo tap, lo que importa para pedidos para llevar, preguntas de reservas y llamadas de "¿aún están abiertos?".',
     passNoteText: 'We found a phone number in your page text, but it is not wrapped in a clickable <code>tel:</code> link. Mobile visitors have to copy the number into their dialer manually instead of tapping to call. Ask your developer to wrap the number in <code>&lt;a href="tel:+1..."&gt;</code>.',
+    passNoteText_es: 'Encontramos un número en el texto, pero no está envuelto en un enlace <code>tel:</code> clicable. Los visitantes móviles tienen que copiar el número al marcador manualmente en vez de tocar para llamar. Pídele a tu desarrollador que envuelva el número en <code>&lt;a href="tel:+1..."&gt;</code>.',
     fail: "We couldn't find a phone number on your site",
+    fail_es: 'No encontramos un número de teléfono en tu sitio',
     failNote: "No click-to-call link and no visible phone number in the page text. Every restaurant gets calls — about 'are you open now', about table availability, about special requests — and if your site doesn't make calling one tap, you are losing those conversations. Add a phone number to your site and wrap it in a <code>tel:</code> link.",
+    failNote_es: 'No hay enlace para llamar con un tap ni número visible en el texto. Todo restaurante recibe llamadas — "¿están abiertos ya?", "¿hay mesa?", peticiones especiales — y si tu sitio no hace que llamar sea un solo tap, estás perdiendo esas conversaciones. Agrega un número y envuélvelo en un enlace <code>tel:</code>.',
     unverified: "We couldn't confirm whether you have a phone number",
+    unverified_es: 'No pudimos confirmar si tienes un número de teléfono',
     unverifiedNote: "We only see the parts of your page that Lighthouse surfaces to us — sometimes phone numbers get missed. Check that yours is visible on every page and wrapped in a <code>tel:</code> link so mobile visitors can tap to call.",
+    unverifiedNote_es: 'Solo vemos las partes de tu página que Lighthouse nos expone — a veces se pasan los números de teléfono. Verifica que el tuyo sea visible en cada página y esté envuelto en un enlace <code>tel:</code> para que los visitantes móviles toquen y llamen.',
     byType: {
       'fine-dining': {
         impact: 'Guests calling a fine-dining restaurant usually have a high-value question: a special-occasion menu, a large-party booking, a dietary accommodation. A missing phone number or a broken tel: link sends those calls — and reservations — to a competitor.',
-        failNote: 'Special-occasion and large-party bookings almost always start with a phone call. Add a phone number and wrap it in a <code>tel:</code> link so the concierge-level conversation can actually happen.'
+        impact_es: 'Los comensales que llaman a un restaurante de fine-dining suelen tener una pregunta de alto valor: un menú de ocasión especial, una reserva de grupo grande, una acomodación dietética. Un número ausente o un enlace tel: roto manda esas llamadas — y reservas — a la competencia.',
+        failNote: 'Special-occasion and large-party bookings almost always start with a phone call. Add a phone number and wrap it in a <code>tel:</code> link so the concierge-level conversation can actually happen.',
+        failNote_es: 'Las reservas de ocasión especial y grupos grandes casi siempre empiezan con una llamada. Agrega un número y envuélvelo en un enlace <code>tel:</code> para que la conversación a nivel concierge realmente suceda.'
       },
       'fast-casual': {
         impact: 'Fast-casual traffic is mostly online ordering, but a phone number still closes the edge cases: "is there parking?", "do you cater?", "do you have gluten-free?" A tappable number keeps those from becoming a one-star review.',
-        failNote: 'Even if online ordering drives most of your conversion, add a tappable phone number. Catering, dietary questions, and "is my order ready?" calls all need a one-tap path — and they convert at a much higher rate than form-fills.'
+        impact_es: 'El tráfico fast-casual es mayormente pedidos en línea, pero un número de teléfono aún cierra los casos borde: "¿hay estacionamiento?", "¿hacen catering?", "¿tienen opciones sin gluten?" Un número tocable evita que esos se conviertan en una reseña de una estrella.',
+        failNote: 'Even if online ordering drives most of your conversion, add a tappable phone number. Catering, dietary questions, and "is my order ready?" calls all need a one-tap path — and they convert at a much higher rate than form-fills.',
+        failNote_es: 'Aunque los pedidos en línea generen la mayoría de tu conversión, agrega un teléfono tocable. Catering, preguntas dietéticas y llamadas de "¿ya está mi orden?" todas necesitan un camino de un solo tap — y convierten a tasas mucho más altas que los formularios.'
       },
       'cafe': {
         impact: 'Café and bakery customers call to check hours, to ask about custom cake orders, and to reserve whole pies or catering trays. A missing phone number is a missing revenue channel — custom-order margins especially.',
-        failNote: 'Custom-order inquiries (birthday cakes, catering trays, wholesale) come in by phone. Add a tappable phone number — a <code>tel:</code> link at the top of every page is the bar for a café or bakery.'
+        impact_es: 'Los clientes de café y panadería llaman para consultar horarios, preguntar por pasteles personalizados y reservar pays enteros o charolas de catering. Un número ausente es un canal de ingresos ausente — sobre todo márgenes de pedidos personalizados.',
+        failNote: 'Custom-order inquiries (birthday cakes, catering trays, wholesale) come in by phone. Add a tappable phone number — a <code>tel:</code> link at the top of every page is the bar for a café or bakery.',
+        failNote_es: 'Las consultas de pedidos personalizados (pasteles de cumpleaños, charolas de catering, mayoreo) llegan por teléfono. Agrega un número tocable — un enlace <code>tel:</code> al tope de cada página es la vara para un café o panadería.'
       },
       'bakery': {
         impact: 'Wedding-cake consultations, dietary-restricted special orders, and catering-tray inquiries almost always start with a phone call — these are the margin-rich orders that rarely convert through a web form. A missing tappable phone on a bakery site is a missing revenue channel, full stop.',
-        failNote: 'Custom-cake and catering inquiries come in by phone. Add a tappable phone number at the top of every page — a <code>tel:</code> link beside your "Order Ahead" button is the baseline for any bakery that takes custom work.'
+        impact_es: 'Las consultas de pasteles de boda, pedidos con restricciones dietéticas y consultas de charolas de catering casi siempre empiezan con una llamada — son los pedidos de alto margen que rara vez convierten por un formulario web. Un teléfono tocable ausente en un sitio de panadería es un canal de ingresos ausente, punto.',
+        failNote: 'Custom-cake and catering inquiries come in by phone. Add a tappable phone number at the top of every page — a <code>tel:</code> link beside your "Order Ahead" button is the baseline for any bakery that takes custom work.',
+        failNote_es: 'Las consultas de pasteles personalizados y catering llegan por teléfono. Agrega un número tocable al tope de cada página — un enlace <code>tel:</code> al lado de tu botón "Ordenar con Anticipación" es la base para cualquier panadería que acepte trabajo personalizado.'
       },
       'pizzeria': {
         impact: 'Phone orders still account for roughly 40% of US pizzeria revenue — and every one of those orders that a customer has to manually dial is a customer who might give up and open Slice. Delivery ETA questions ("how long?") and last-minute customizations ("can you add jalapeños?") are one-tap conversations.',
-        failNote: 'Phone ordering is table stakes for pizzerias. Add a tappable phone at the top of every page, and keep it visible next to the "Order Online" button — the two channels complement each other, and ~40% of your revenue still comes in by phone.'
+        impact_es: 'Los pedidos telefónicos aún representan cerca del 40% de los ingresos de las pizzerías en EE.UU. — y cada uno de esos pedidos que el cliente tiene que marcar manualmente es un cliente que podría rendirse y abrir Slice. Preguntas de ETA de delivery ("¿cuánto tardan?") y personalizaciones de último minuto ("¿pueden agregar jalapeños?") son conversaciones de un solo tap.',
+        failNote: 'Phone ordering is table stakes for pizzerias. Add a tappable phone at the top of every page, and keep it visible next to the "Order Online" button — the two channels complement each other, and ~40% of your revenue still comes in by phone.',
+        failNote_es: 'El pedido telefónico es el piso mínimo para las pizzerías. Agrega un teléfono tocable al tope de cada página, y mantenlo visible junto al botón "Ordenar en Línea" — los dos canales se complementan, y cerca del 40% de tus ingresos aún entra por teléfono.'
       },
       'food-truck': {
         impact: 'Food-truck operators usually cannot answer phones during service — the person who answers is the person cooking. A tappable phone still matters for catering and private-event inquiries, which are the margin-rich bookings that keep trucks profitable between rushes.',
-        failNote: 'You probably can\'t answer a phone mid-service, and that\'s fine. Still add a tappable phone for catering and private-event leads; those calls are not lunch-rush traffic — they\'re $500-$3000 bookings you want to return after service.'
+        impact_es: 'Los operadores de food truck normalmente no pueden contestar teléfonos durante el servicio — quien contesta es quien cocina. Un teléfono tocable aún importa para consultas de catering y eventos privados, las reservas de alto margen que mantienen a los trucks rentables entre rushes.',
+        failNote: 'You probably can\'t answer a phone mid-service, and that\'s fine. Still add a tappable phone for catering and private-event leads; those calls are not lunch-rush traffic — they\'re $500-$3000 bookings you want to return after service.',
+        failNote_es: 'Probablemente no puedes contestar el teléfono a medio servicio, y está bien. Aun así, agrega un teléfono tocable para leads de catering y eventos privados; esas llamadas no son tráfico de hora pico — son reservas de $500-$3000 que quieres devolver después del servicio.'
       },
       'ghost-kitchen': {
         impact: 'Most ghost kitchens run lean and do not staff a phone — customer-service routes to aggregator support instead. That\'s fine as an operational choice, but customers still try. A tappable phone avoids the "they\'re not a real business" signal when a skeptical customer is deciding whether to order.',
-        failNote: 'Even if you don\'t actively answer, add a tappable phone or at least a quick-response SMS number. Missing it reads as "no real operator behind this brand" to a skeptical customer — a much bigger conversion hit than whatever time you save by hiding the number.'
+        impact_es: 'La mayoría de las cocinas fantasma operan con personal reducido y no atienden teléfono — el servicio al cliente va al soporte del agregador. Está bien como elección operativa, pero los clientes aún intentan. Un teléfono tocable evita la señal de "no es un negocio real" cuando un cliente escéptico decide si ordenar.',
+        failNote: 'Even if you don\'t actively answer, add a tappable phone or at least a quick-response SMS number. Missing it reads as "no real operator behind this brand" to a skeptical customer — a much bigger conversion hit than whatever time you save by hiding the number.',
+        failNote_es: 'Aunque no contestes activamente, agrega un teléfono tocable o al menos un número de SMS de respuesta rápida. Su ausencia se lee como "no hay un operador real detrás de esta marca" para un cliente escéptico — un golpe a la conversión mucho más grande que el tiempo que ahorras ocultando el número.'
       },
       'catering-only': {
         impact: 'Phone is the single highest-converting channel for catering. Event planners juggle tight timelines, last-minute head-count changes, and dietary exceptions — all of which are phone conversations, not contact-form conversations. A missing tappable phone on a catering site is a missing business, effectively.',
-        failNote: 'Non-negotiable for catering. A tappable phone at the top of every page — ideally beside "Request a Quote" — is the baseline. Planners booking \$2K+ events will almost always call before submitting a form; giving them a one-tap number closes bookings the form alone would not.'
+        impact_es: 'El teléfono es el canal con mayor conversión para catering. Los planificadores de eventos manejan tiempos ajustados, cambios de último minuto en el número de personas y excepciones dietéticas — todo eso son conversaciones telefónicas, no de formulario de contacto. Un teléfono tocable ausente en un sitio de catering es, efectivamente, un negocio ausente.',
+        failNote: 'Non-negotiable for catering. A tappable phone at the top of every page — ideally beside "Request a Quote" — is the baseline. Planners booking \$2K+ events will almost always call before submitting a form; giving them a one-tap number closes bookings the form alone would not.',
+        failNote_es: 'No negociable para catering. Un teléfono tocable al tope de cada página — idealmente junto a "Solicitar Cotización" — es la base. Los planificadores reservando eventos de $2K+ casi siempre llaman antes de enviar un formulario; darles un número de un solo tap cierra reservas que el formulario solo no cerraría.'
       },
       'bar-pub': {
         impact: 'Bar calls are time-sensitive: "are you open?", "is happy hour still on?", "do I need a reservation tonight?" A missing tap-to-call number means those visitors go to a bar with an easier phone number.',
-        failNote: 'Non-negotiable for bars. Guests check "is happy hour still running?" on the curb outside. Add a phone number and wrap it in a <code>tel:</code> link so the call is one tap, not a copy-paste flow.'
+        impact_es: 'Las llamadas a bares son de tiempo crítico: "¿están abiertos?", "¿sigue el happy hour?", "¿necesito reserva esta noche?" Un número ausente para llamar con un tap significa que esos visitantes van a otro bar con un teléfono más fácil.',
+        failNote: 'Non-negotiable for bars. Guests check "is happy hour still running?" on the curb outside. Add a phone number and wrap it in a <code>tel:</code> link so the call is one tap, not a copy-paste flow.',
+        failNote_es: 'No negociable para bares. Los clientes preguntan "¿sigue el happy hour?" desde la banqueta. Agrega un número y envuélvelo en un enlace <code>tel:</code> para que la llamada sea un tap, no un flujo de copiar y pegar.'
       }
     }
   },
@@ -556,39 +673,53 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'dev',
     minutes: 15,
     impact: "The path from 'I might check this place out' to 'I am driving there' should be one tap. An embedded map or a Maps link cuts directions friction to zero — plain-text addresses add a whole copy-paste flow before the customer even arrives.",
+    impact_es: 'El camino de "quizá vaya a este lugar" a "ya voy en camino" debería ser un solo tap. Un mapa embebido o un enlace a Maps reduce la fricción a cero — una dirección en texto plano agrega un flujo completo de copiar y pegar antes de que el cliente llegue.',
     pass: 'Visitors can get directions with one tap',
+    pass_es: 'Los visitantes pueden obtener indicaciones con un tap',
     passNote: '{detected} is on your site — first-time visitors can tap once to get turn-by-turn directions to your door.',
+    passNote_es: '{detected} está en tu sitio — los visitantes por primera vez pueden tocar una vez para obtener indicaciones paso a paso hasta tu puerta.',
     fail: null, // never fail this check — absence is always unverified
     failNote: null,
     unverified: "We didn't see a map on your site — is this right?",
+    unverified_es: 'No vimos un mapa en tu sitio — ¿es correcto?',
     unverifiedNote: "We scan for Google Maps, Apple Maps, Mapbox, Bing Maps, OpenStreetMap, Waze, and Leaflet. If your site uses one of those, great — we just couldn't find it on this run. If your address is plain text only, consider wrapping it in a Google Maps link so visitors can launch directions in one tap.",
+    unverifiedNote_es: 'Buscamos Google Maps, Apple Maps, Mapbox, Bing Maps, OpenStreetMap, Waze y Leaflet. Si tu sitio usa uno de esos, perfecto — simplemente no lo encontramos en esta ejecución. Si tu dirección está solo en texto plano, considera envolverla en un enlace de Google Maps para que los visitantes obtengan indicaciones con un tap.',
     byType: {
       'fine-dining': {
-        impact: 'First-time guests heading to a fine-dining reservation want turn-by-turn directions, not a copy-paste address. A tappable map is part of the concierge experience — and it\'s expected.'
+        impact: 'First-time guests heading to a fine-dining reservation want turn-by-turn directions, not a copy-paste address. A tappable map is part of the concierge experience — and it\'s expected.',
+        impact_es: 'Los comensales que van por primera vez a una reserva de fine-dining quieren indicaciones paso a paso, no una dirección para copiar y pegar. Un mapa tocable es parte de la experiencia concierge — y se espera.'
       },
       'fast-casual': {
-        impact: 'Fast-casual traffic is often "food near me" intent — visitors are already on their phone deciding where to walk or drive. A one-tap map shaves 15 seconds off the decision and keeps them from comparison-shopping another block over.'
+        impact: 'Fast-casual traffic is often "food near me" intent — visitors are already on their phone deciding where to walk or drive. A one-tap map shaves 15 seconds off the decision and keeps them from comparison-shopping another block over.',
+        impact_es: 'El tráfico fast-casual suele ser intención de "comida cerca de mí" — los visitantes ya están en su teléfono decidiendo a dónde caminar o manejar. Un mapa de un solo tap recorta 15 segundos de la decisión y evita que comparen con otro lugar una cuadra más allá.'
       },
       'cafe': {
-        impact: 'Café and bakery traffic is overwhelmingly local and walk-in driven. A one-tap directions link (especially for the pickup address on a catering or custom order) removes the "wait, where is this place again?" moment.'
+        impact: 'Café and bakery traffic is overwhelmingly local and walk-in driven. A one-tap directions link (especially for the pickup address on a catering or custom order) removes the "wait, where is this place again?" moment.',
+        impact_es: 'El tráfico de café y panadería es mayormente local y basado en walk-ins. Un enlace de indicaciones de un tap (especialmente para la dirección de recogida en un pedido de catering o personalizado) elimina el momento "espera, ¿dónde quedaba este lugar?".'
       },
       'bakery': {
-        impact: 'Morning bakery traffic is time-critical — a commuter grabbing croissants at 7:30am does not have time to fumble with a typed address. A one-tap directions link keeps the pickup rush on schedule, and matters double for wholesale or catering customers driving to a pickup address they have never visited.'
+        impact: 'Morning bakery traffic is time-critical — a commuter grabbing croissants at 7:30am does not have time to fumble with a typed address. A one-tap directions link keeps the pickup rush on schedule, and matters double for wholesale or catering customers driving to a pickup address they have never visited.',
+        impact_es: 'El tráfico matutino de panadería es de tiempo crítico — un trabajador que pasa por croissants a las 7:30am no tiene tiempo para lidiar con una dirección escrita. Un enlace de indicaciones de un tap mantiene la hora pico de recogida en tiempo, e importa el doble para clientes de mayoreo o catering manejando a una dirección de recogida que nunca han visitado.'
       },
       'pizzeria': {
-        impact: 'For pizzerias the primary use of a map is communicating DELIVERY ZONE, not just the storefront address. A one-tap Google Maps pin is the bare minimum; a proper delivery-radius overlay (or at least a list of served neighborhoods) saves you from the "do you deliver to me?" phone calls that your phone staff are answering instead of taking orders.'
+        impact: 'For pizzerias the primary use of a map is communicating DELIVERY ZONE, not just the storefront address. A one-tap Google Maps pin is the bare minimum; a proper delivery-radius overlay (or at least a list of served neighborhoods) saves you from the "do you deliver to me?" phone calls that your phone staff are answering instead of taking orders.',
+        impact_es: 'Para pizzerías, el uso principal de un mapa es comunicar la ZONA DE ENTREGA, no solo la dirección del local. Un pin de Google Maps de un tap es el mínimo; un overlay de radio de entrega apropiado (o al menos una lista de colonias servidas) te ahorra las llamadas de "¿entregan aquí?" que tu personal de teléfono responde en vez de tomar pedidos.'
       },
       'food-truck': {
-        impact: 'Food trucks MOVE, which inverts the usual map-check logic: a static storefront pin is the wrong answer. What customers need is a one-tap map OF TODAY\'S LOCATION (usually a dynamic field on a schedule page), plus a link to your Instagram or Twitter where you post real-time changes. A stale "home address" map is worse than no map at all.'
+        impact: 'Food trucks MOVE, which inverts the usual map-check logic: a static storefront pin is the wrong answer. What customers need is a one-tap map OF TODAY\'S LOCATION (usually a dynamic field on a schedule page), plus a link to your Instagram or Twitter where you post real-time changes. A stale "home address" map is worse than no map at all.',
+        impact_es: 'Los food trucks se MUEVEN, lo que invierte la lógica usual: un pin estático del local es la respuesta equivocada. Lo que los clientes necesitan es un mapa de un tap de la UBICACIÓN DE HOY (normalmente un campo dinámico en una página de horario), más un enlace a tu Instagram o Twitter donde publicas cambios en tiempo real. Un mapa desactualizado de "dirección base" es peor que ningún mapa.'
       },
       'ghost-kitchen': {
-        impact: 'Customers never visit a ghost kitchen — what they care about is the DELIVERY ZONE (ZIP codes or neighborhoods you serve). A standard Google Maps pin helps with nothing; what you need is a clear "we deliver to …" list or a delivery-radius visualization. Aggregator pages already handle address validation, but seeing the zone up front saves the bounce for out-of-range visitors.'
+        impact: 'Customers never visit a ghost kitchen — what they care about is the DELIVERY ZONE (ZIP codes or neighborhoods you serve). A standard Google Maps pin helps with nothing; what you need is a clear "we deliver to …" list or a delivery-radius visualization. Aggregator pages already handle address validation, but seeing the zone up front saves the bounce for out-of-range visitors.',
+        impact_es: 'Los clientes nunca visitan una cocina fantasma — lo que les importa es la ZONA DE ENTREGA (códigos postales o colonias que atiendes). Un pin estándar de Google Maps no ayuda en nada; lo que necesitas es una lista clara de "entregamos en …" o una visualización del radio de entrega. Las páginas de los agregadores ya validan direcciones, pero ver la zona al frente te ahorra el rebote de visitantes fuera de zona.'
       },
       'catering-only': {
-        impact: 'Maps on a catering site are about SERVICE AREA, not storefront. A clear service-radius map (or a written list of cities/counties served) lets an event planner self-qualify before investing in a quote request. It also handles the "do you travel to us?" question that otherwise eats the first 30 seconds of every intake call.'
+        impact: 'Maps on a catering site are about SERVICE AREA, not storefront. A clear service-radius map (or a written list of cities/counties served) lets an event planner self-qualify before investing in a quote request. It also handles the "do you travel to us?" question that otherwise eats the first 30 seconds of every intake call.',
+        impact_es: 'Los mapas en un sitio de catering son sobre ÁREA DE SERVICIO, no local. Un mapa claro de radio de servicio (o una lista escrita de ciudades/condados servidos) permite al planificador auto-calificarse antes de invertir en una solicitud de cotización. También resuelve la pregunta "¿viajan hasta nosotros?" que de otra forma consume los primeros 30 segundos de cada llamada de intake.'
       },
       'bar-pub': {
-        impact: 'Bar hopping happens on the phone. A tappable map — especially for a bar tucked down a side street or into a basement — can be the difference between a visitor finding you or ending up at whichever place Google Maps surfaces first.'
+        impact: 'Bar hopping happens on the phone. A tappable map — especially for a bar tucked down a side street or into a basement — can be the difference between a visitor finding you or ending up at whichever place Google Maps surfaces first.',
+        impact_es: 'El bar hopping pasa en el teléfono. Un mapa tocable — sobre todo para un bar escondido en una calle lateral o en un sótano — puede ser la diferencia entre un visitante que te encuentra o que termina en cualquier lugar que Google Maps muestre primero.'
       }
     }
   },
@@ -602,77 +733,127 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'dev',
     minutes: 60,
     impact: "This is the single biggest direct-conversion lever on a restaurant website. Every reservation taken on your own site (instead of OpenTable) keeps the full booking. Every order through your own Toast or Square checkout (instead of DoorDash) keeps the full margin.",
+    impact_es: 'Esta es la palanca de conversión directa más grande de un sitio de restaurante. Cada reserva tomada en tu propio sitio (en vez de OpenTable) se queda completa. Cada pedido por tu propio checkout de Toast o Square (en vez de DoorDash) mantiene el margen completo.',
     pass: 'Visitors can order or book a table online',
+    pass_es: 'Los visitantes pueden ordenar o reservar mesa en línea',
     passNote: '{detected} on your site — direct online conversions keep commission-hungry marketplaces out of your margins.',
+    passNote_es: '{detected} en tu sitio — las conversiones directas en línea mantienen fuera de tu margen a los marketplaces que cobran comisiones.',
     passNoteText: "We found text that strongly suggests self-hosted ordering or reservations on your site (something like 'ORDER ONLINE' or 'RESERVE A TABLE'). We couldn't tie it to a specific platform we recognize, but the signal is there.",
+    passNoteText_es: 'Encontramos texto que sugiere fuertemente pedidos o reservas propias en tu sitio (algo como "ORDENA EN LÍNEA" o "RESERVA UNA MESA"). No pudimos vincularlo a una plataforma que reconozcamos, pero la señal está ahí.',
     fail: null, // never fail — a restaurant might legitimately only take walk-ins
     failNote: null,
     unverified: "We couldn't detect online ordering or reservations — is this right?",
+    unverified_es: 'No pudimos detectar pedidos ni reservas en línea — ¿es correcto?',
     unverifiedNote: "We scan for 100+ major ordering and reservation platforms, including Toast, Square, ChowNow, OpenTable, Resy, Tock, BentoBox, Popmenu, SevenRooms, TheFork, Deliveroo, and dozens more. If you use one of those and we missed it, tell us below and we will add it to the scanner. If you take orders or bookings over the phone only, that is a legitimate choice — just mark it so.",
+    unverifiedNote_es: 'Buscamos 100+ plataformas de pedidos y reservas, incluyendo Toast, Square, ChowNow, OpenTable, Resy, Tock, BentoBox, Popmenu, SevenRooms, TheFork, Deliveroo y docenas más. Si usas una de esas y la pasamos por alto, avísanos abajo y la agregamos al escáner. Si solo tomas pedidos o reservas por teléfono, es una elección legítima — solo márcalo así.',
     byType: {
       'fine-dining': {
         impact: 'Reservations are the entire business model for fine dining. Every booking taken on your site (via Resy, Tock, SevenRooms, or an embedded widget) keeps the relationship — and the deposit, for prix-fixe reservations — instead of sending it through OpenTable.',
+        impact_es: 'Las reservas son el modelo de negocio completo del fine-dining. Cada reserva tomada en tu sitio (vía Resy, Tock, SevenRooms o un widget embebido) conserva la relación — y el depósito, para reservas de menú prix-fixe — en vez de enviarla por OpenTable.',
         pass: 'Guests can reserve a table online',
+        pass_es: 'Los comensales pueden reservar mesa en línea',
         passNote: '{detected} on your site — guests can book directly, and you keep the relationship (and any deposit) instead of paying per-cover fees to a marketplace.',
+        passNote_es: '{detected} en tu sitio — los comensales pueden reservar directamente, y conservas la relación (y cualquier depósito) en vez de pagar cuotas por cubierto a un marketplace.',
         passNoteText: "We found text that suggests self-hosted reservations ('RESERVE A TABLE', 'Book Your Seat') but couldn't match it to a specific platform.",
+        passNoteText_es: 'Encontramos texto que sugiere reservas propias ("RESERVA UNA MESA", "Reserva tu Lugar") pero no pudimos vincularlo a una plataforma específica.',
         unverified: "We couldn't detect online reservations — is this right?",
-        unverifiedNote: "We scan for reservation platforms including Resy, Tock, SevenRooms, OpenTable, Yelp Reservations, TheFork, and more. Fine-dining restaurants that don\'t take online reservations are leaving money on the table — every phone-only booking is a guest who might not bother."
+        unverified_es: 'No pudimos detectar reservas en línea — ¿es correcto?',
+        unverifiedNote: "We scan for reservation platforms including Resy, Tock, SevenRooms, OpenTable, Yelp Reservations, TheFork, and more. Fine-dining restaurants that don\'t take online reservations are leaving money on the table — every phone-only booking is a guest who might not bother.",
+        unverifiedNote_es: 'Buscamos plataformas de reservas incluyendo Resy, Tock, SevenRooms, OpenTable, Yelp Reservations, TheFork y más. Los restaurantes de fine-dining que no toman reservas en línea están dejando dinero en la mesa — cada reserva solo-teléfono es un comensal que podría no molestarse.'
       },
       'casual-dining': {
         impact: 'Casual dining lives in both worlds — reservations for dinner rushes, online ordering for takeout and delivery. Missing either one sends revenue to OpenTable, DoorDash, or a competitor that has both.',
+        impact_es: 'El casual dining vive en ambos mundos — reservas para las horas pico de cena, pedidos en línea para llevar y delivery. Que falte cualquiera de los dos manda ingresos a OpenTable, DoorDash o a un competidor que tenga ambos.',
         pass: 'Guests can reserve or order online',
-        passNote: '{detected} on your site — guests can book a table or place a takeout order directly, which is the pattern that wins for casual-dining restaurants.'
+        pass_es: 'Los comensales pueden reservar u ordenar en línea',
+        passNote: '{detected} on your site — guests can book a table or place a takeout order directly, which is the pattern that wins for casual-dining restaurants.',
+        passNote_es: '{detected} en tu sitio — los comensales pueden reservar mesa o hacer un pedido para llevar directamente, el patrón ganador para restaurantes casual-dining.'
       },
       'fast-casual': {
         impact: 'Online ordering IS the business model for fast-casual. Every order through your own Toast or ChowNow checkout keeps the 30% DoorDash commission in your pocket. A site without direct ordering is a site that hands margin to marketplaces every day.',
+        impact_es: 'Los pedidos en línea SON el modelo de negocio del fast-casual. Cada pedido por tu propio checkout de Toast o ChowNow mantiene el 30% de comisión de DoorDash en tu bolsillo. Un sitio sin pedidos directos es un sitio que entrega margen a los marketplaces todos los días.',
         pass: 'Customers can order online',
+        pass_es: 'Los clientes pueden ordenar en línea',
         passNote: '{detected} on your site — direct orders keep the full margin, and you own the customer data.',
+        passNote_es: '{detected} en tu sitio — los pedidos directos mantienen el margen completo, y tú eres dueño de los datos del cliente.',
         passNoteText: "We found text that suggests self-hosted ordering ('ORDER ONLINE', 'Order for Pickup') but couldn't match it to a specific platform.",
+        passNoteText_es: 'Encontramos texto que sugiere pedidos propios ("ORDENA EN LÍNEA", "Pedido para Pickup") pero no pudimos vincularlo a una plataforma específica.',
         unverified: "We couldn't detect online ordering — is this right?",
-        unverifiedNote: "We scan for ordering platforms including Toast, Square, ChowNow, BentoBox, Olo, Lunchbox, Slice, Menufy, and dozens more. Fast-casual restaurants without direct online ordering are sending 20–30% of every order to DoorDash/Grubhub as commission."
+        unverified_es: 'No pudimos detectar pedidos en línea — ¿es correcto?',
+        unverifiedNote: "We scan for ordering platforms including Toast, Square, ChowNow, BentoBox, Olo, Lunchbox, Slice, Menufy, and dozens more. Fast-casual restaurants without direct online ordering are sending 20–30% of every order to DoorDash/Grubhub as commission.",
+        unverifiedNote_es: 'Buscamos plataformas de pedidos incluyendo Toast, Square, ChowNow, BentoBox, Olo, Lunchbox, Slice, Menufy y docenas más. Los restaurantes fast-casual sin pedidos directos en línea están mandando 20-30% de cada pedido a DoorDash/Grubhub como comisión.'
       },
       'cafe': {
         impact: 'Direct online ordering matters even for small cafés — pre-orders for commuters, whole-cake orders for birthdays, catering trays for offices. Square and Toast make this table stakes; a site without ordering sends those conversions through Grubhub.',
+        impact_es: 'Los pedidos directos en línea importan incluso para cafés pequeños — pre-pedidos para trabajadores, pedidos de pasteles enteros para cumpleaños, charolas de catering para oficinas. Square y Toast hacen esto el piso mínimo; un sitio sin pedidos manda esas conversiones por Grubhub.',
         pass: 'Customers can order online',
+        pass_es: 'Los clientes pueden ordenar en línea',
         passNote: '{detected} on your site — commuter pre-orders, custom-cake inquiries, and catering tray orders all flow to you directly instead of a commissioned aggregator.',
-        unverifiedNote: "We scan for café-friendly platforms like Square, Toast, ChowNow, and more. Even a simple online-order page for pre-orders, custom cakes, or catering is a meaningful revenue channel for cafés and bakeries."
+        passNote_es: '{detected} en tu sitio — pre-pedidos de trabajadores, consultas de pasteles personalizados y pedidos de charolas de catering todos fluyen a ti directamente en vez de a un agregador con comisiones.',
+        unverifiedNote: "We scan for café-friendly platforms like Square, Toast, ChowNow, and more. Even a simple online-order page for pre-orders, custom cakes, or catering is a meaningful revenue channel for cafés and bakeries.",
+        unverifiedNote_es: 'Buscamos plataformas amigables para cafés como Square, Toast, ChowNow y más. Incluso una página simple de pedidos en línea para pre-pedidos, pasteles personalizados o catering es un canal de ingresos significativo para cafés y panaderías.'
       },
       'bakery': {
         impact: 'Online pre-orders ARE the business model for modern bakeries — customers who cannot pre-order online end up ordering through Instagram DMs or giving up. Custom-cake inquiry forms, wedding-cake intake, and whole-pie pre-orders all belong on your site directly, where the margin stays with you.',
+        impact_es: 'Los pre-pedidos en línea SON el modelo de negocio de las panaderías modernas — los clientes que no pueden pre-ordenar terminan pidiendo por DMs de Instagram o rindiéndose. Formularios de consulta de pasteles personalizados, intake de pasteles de boda y pre-pedidos de pays enteros pertenecen en tu sitio directamente, donde el margen se queda contigo.',
         pass: 'Customers can pre-order online',
+        pass_es: 'Los clientes pueden pre-ordenar en línea',
         passNote: '{detected} on your site — pre-orders, custom-cake inquiries, and whole-pie bookings all flow to you directly instead of becoming DMs your staff has to answer by hand.',
-        unverifiedNote: "We scan for bakery-friendly platforms (Square, Toast) plus generic order-ahead widgets. Even a simple HTML pre-order page for custom cakes or catering is a real revenue channel for bakeries and pâtisseries."
+        passNote_es: '{detected} en tu sitio — pre-pedidos, consultas de pasteles personalizados y reservas de pays enteros fluyen a ti directamente en vez de convertirse en DMs que tu equipo tenga que contestar a mano.',
+        unverifiedNote: "We scan for bakery-friendly platforms (Square, Toast) plus generic order-ahead widgets. Even a simple HTML pre-order page for custom cakes or catering is a real revenue channel for bakeries and pâtisseries.",
+        unverifiedNote_es: 'Buscamos plataformas amigables para panadería (Square, Toast) más widgets genéricos de pedidos por adelantado. Incluso una página HTML simple de pre-pedidos para pasteles personalizados o catering es un canal de ingresos real para panaderías y pâtisseries.'
       },
       'pizzeria': {
         impact: 'Online ordering IS the business model for a pizzeria. Every order that flows through Slice, DoorDash, or Grubhub costs you 20-30% commission — on a $25 pie that is $5-7 of margin walking out the door. A direct Toast or ChowNow flow (or even a Slice "direct" storefront) can cut that commission in half, and owning the customer data is worth even more than the commission saved.',
+        impact_es: 'Los pedidos en línea SON el modelo de negocio de una pizzería. Cada pedido por Slice, DoorDash o Grubhub te cuesta 20-30% de comisión — en una pizza de $25 son $5-7 de margen saliendo por la puerta. Un flujo directo de Toast o ChowNow (o incluso un Slice "direct") puede recortar esa comisión a la mitad, y ser dueño de los datos del cliente vale aún más que la comisión ahorrada.',
         pass: 'Customers can order delivery / pickup online',
+        pass_es: 'Los clientes pueden ordenar delivery / pickup en línea',
         passNote: '{detected} on your site — every direct order keeps 20-30% more margin than a Slice or DoorDash order AND builds a repeat-customer list you own.',
+        passNote_es: '{detected} en tu sitio — cada pedido directo mantiene 20-30% más margen que un pedido por Slice o DoorDash Y construye una lista de clientes repetidos que tú posees.',
         passNoteText: "We found 'Order Online' / 'Order Delivery' / 'Start a Pickup Order' copy but could not pin it to a specific platform.",
-        unverifiedNote: "We scan for pizzeria-heavy platforms including Slice, Toast, ChowNow, Square, Olo, Menufy, and the major aggregators (DoorDash, Grubhub, Uber Eats). If you only take phone orders today, every online order you add is commission-free margin."
+        passNoteText_es: 'Encontramos texto "Ordenar en Línea" / "Ordenar Delivery" / "Iniciar Pedido Pickup" pero no pudimos vincularlo a una plataforma específica.',
+        unverifiedNote: "We scan for pizzeria-heavy platforms including Slice, Toast, ChowNow, Square, Olo, Menufy, and the major aggregators (DoorDash, Grubhub, Uber Eats). If you only take phone orders today, every online order you add is commission-free margin.",
+        unverifiedNote_es: 'Buscamos plataformas pizza-pesadas incluyendo Slice, Toast, ChowNow, Square, Olo, Menufy y los principales agregadores (DoorDash, Grubhub, Uber Eats). Si hoy solo tomas pedidos por teléfono, cada pedido en línea que agregues es margen sin comisión.'
       },
       'food-truck': {
         impact: 'Day-of ordering from a food-truck site is less common — most trucks take cash or Venmo at the window. Where online ordering DOES matter is pre-orders for group meetups, catering/private-event inquiries, and merchandise (t-shirts, hot sauces, bean subscriptions). Missing a pre-order or inquiry form sends those leads to Instagram DMs where they get buried.',
+        impact_es: 'El pedido del día desde un sitio de food truck es menos común — la mayoría de los trucks toman efectivo o Venmo en la ventana. Donde los pedidos en línea SÍ importan es para pre-pedidos de reuniones grupales, consultas de catering/eventos privados y mercancía (camisetas, salsas picantes, suscripciones de granos). Que falte un formulario de pre-pedido o consulta manda esos leads a DMs de Instagram donde se entierran.',
         pass: 'Customers can pre-order or inquire online',
+        pass_es: 'Los clientes pueden pre-ordenar o consultar en línea',
         passNote: '{detected} on your site — group pre-orders and catering inquiries land in a form instead of a DM thread your staff has to untangle.',
-        unverifiedNote: "We scan for food-truck-friendly platforms (Square, Toast) and generic inquiry forms. Day-of ordering is usually not the goal — the high-value flow is a catering/private-event inquiry form, where every submission is a \$500-\$3000 opportunity."
+        passNote_es: '{detected} en tu sitio — los pre-pedidos grupales y consultas de catering aterrizan en un formulario en vez de un hilo de DMs que tu equipo tenga que desenredar.',
+        unverifiedNote: "We scan for food-truck-friendly platforms (Square, Toast) and generic inquiry forms. Day-of ordering is usually not the goal — the high-value flow is a catering/private-event inquiry form, where every submission is a \$500-\$3000 opportunity.",
+        unverifiedNote_es: 'Buscamos plataformas amigables para food trucks (Square, Toast) y formularios genéricos de consulta. El pedido del día normalmente no es el objetivo — el flujo de alto valor es un formulario de consulta de catering/eventos privados, donde cada envío es una oportunidad de $500-$3000.'
       },
       'ghost-kitchen': {
         impact: 'Ghost kitchens live or die on aggregator presence — DoorDash, Uber Eats, Grubhub, Caviar, Postmates. Clear links to EVERY aggregator you\'re on are the primary conversion; a direct-order flow on your own site is a nice-to-have (and keeps more margin when it converts), but the aggregator links are what customers actually use.',
+        impact_es: 'Las cocinas fantasma viven o mueren por la presencia en agregadores — DoorDash, Uber Eats, Grubhub, Caviar, Postmates. Los enlaces claros a CADA agregador donde estés son la conversión principal; un flujo de pedido directo en tu propio sitio es un bonus (y mantiene más margen cuando convierte), pero los enlaces a los agregadores son los que los clientes realmente usan.',
         pass: 'Customers can order via aggregators / direct',
+        pass_es: 'Los clientes pueden ordenar por agregadores / directo',
         passNote: '{detected} on your site — at minimum the aggregator you partner with is one tap from the homepage. A customer scanning your menu lands in an active order funnel, not a dead-end.',
-        unverifiedNote: "We scan for every major aggregator (DoorDash, Uber Eats, Grubhub, Postmates, Caviar, Deliveroo, Just Eat, Wolt, etc.) and middleware (Deliverect, Otter). Missing links to your actual aggregators is a conversion cliff — customers assume you\'re not available on their platform."
+        passNote_es: '{detected} en tu sitio — como mínimo el agregador con el que trabajas está a un tap de la página principal. Un cliente revisando tu menú aterriza en un funnel de pedido activo, no en un callejón sin salida.',
+        unverifiedNote: "We scan for every major aggregator (DoorDash, Uber Eats, Grubhub, Postmates, Caviar, Deliveroo, Just Eat, Wolt, etc.) and middleware (Deliverect, Otter). Missing links to your actual aggregators is a conversion cliff — customers assume you\'re not available on their platform.",
+        unverifiedNote_es: 'Buscamos cada agregador principal (DoorDash, Uber Eats, Grubhub, Postmates, Caviar, Deliveroo, Just Eat, Wolt, etc.) y middleware (Deliverect, Otter). Que falten enlaces a tus agregadores reales es un precipicio de conversión — los clientes asumen que no estás disponible en su plataforma.'
       },
       'catering-only': {
         impact: 'The "conversion" on a catering site is a quote request, not an online order. ezCater, CaterTrax, and Tripleseat all offer structured intake; a custom RFQ form works too, provided it captures head count, event date, dietary restrictions, delivery address, and a phone number. A site without any structured intake is routing bookings through generic email — which wins you nothing and loses you many.',
+        impact_es: 'La "conversión" en un sitio de catering es una solicitud de cotización, no un pedido en línea. ezCater, CaterTrax y Tripleseat todos ofrecen intake estructurado; un formulario RFQ personalizado también funciona, siempre que capture número de personas, fecha del evento, restricciones dietéticas, dirección de entrega y un teléfono. Un sitio sin intake estructurado está enrutando reservas por correo genérico — lo que no te gana nada y te pierde muchas.',
         pass: 'Planners can request a quote online',
+        pass_es: 'Los planificadores pueden solicitar cotización en línea',
         passNote: '{detected} on your site — event planners can start a quote request with their head count, date, and dietary notes in one place, instead of writing a cold email.',
-        unverifiedNote: "We scan for catering-focused platforms (ezCater, CaterTrax, Tripleseat) and generic RFQ/quote forms. A structured intake form is worth several emails of back-and-forth per booking — it\'s the single most impactful addition to a catering-only site without a booking flow."
+        passNote_es: '{detected} en tu sitio — los planificadores de eventos pueden empezar una solicitud de cotización con su número de personas, fecha y notas dietéticas en un solo lugar, en vez de escribir un correo en frío.',
+        unverifiedNote: "We scan for catering-focused platforms (ezCater, CaterTrax, Tripleseat) and generic RFQ/quote forms. A structured intake form is worth several emails of back-and-forth per booking — it\'s the single most impactful addition to a catering-only site without a booking flow.",
+        unverifiedNote_es: 'Buscamos plataformas enfocadas a catering (ezCater, CaterTrax, Tripleseat) y formularios RFQ/cotización genéricos. Un formulario de intake estructurado vale varios correos de ida y vuelta por reserva — es la adición de más impacto en un sitio de catering sin flujo de reservas.'
       },
       'bar-pub': {
         impact: 'Bars and pubs vary — some take reservations, most take walk-ins. But even walk-in bars benefit from event bookings (private parties, tastings, brunches) and gift-card purchases. Tripleseat and similar platforms are common; a direct booking flow converts better than an email inquiry.',
+        impact_es: 'Los bares y pubs varían — algunos toman reservas, la mayoría toma walk-ins. Pero incluso los bares de walk-in se benefician de reservas de eventos (fiestas privadas, catas, brunches) y compras de tarjetas de regalo. Tripleseat y plataformas similares son comunes; un flujo de reservas directo convierte mejor que una consulta por correo.',
         pass: 'Guests can book events or reservations online',
+        pass_es: 'Los clientes pueden reservar eventos o reservas en línea',
         passNote: '{detected} on your site — event bookings and reservations can be handled without a back-and-forth email thread, which is where most bar-inquiry revenue falls through.',
-        unverifiedNote: "We scan for reservation and event-booking platforms including OpenTable, Resy, Tripleseat, and more. Not every bar needs online booking (walk-ins are legitimate) — but event and private-party inquiries almost always benefit from a direct booking flow."
+        passNote_es: '{detected} en tu sitio — las reservas de eventos y mesas pueden manejarse sin un hilo de correos de ida y vuelta, que es donde se cae la mayoría de los ingresos de consultas a bares.',
+        unverifiedNote: "We scan for reservation and event-booking platforms including OpenTable, Resy, Tripleseat, and more. Not every bar needs online booking (walk-ins are legitimate) — but event and private-party inquiries almost always benefit from a direct booking flow.",
+        unverifiedNote_es: 'Buscamos plataformas de reservas y reservas de eventos incluyendo OpenTable, Resy, Tripleseat y más. No todos los bares necesitan reservas en línea (los walk-ins son legítimos) — pero las consultas de eventos y fiestas privadas casi siempre se benefician de un flujo de reservas directo.'
       }
     }
   },
@@ -683,75 +864,127 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'rebuild',
     minutes: 240,
     impact: "PDF menus are the most common mobile-UX sin on restaurant sites. They don't zoom gracefully, they don't link to online ordering, and they make every menu update (new special, changed price) dependent on a developer with InDesign. Replacing a PDF menu with a real HTML menu page typically lifts mobile dwell time by 30-50%.",
+    impact_es: 'Los menús PDF son el pecado más común de UX móvil en sitios de restaurantes. No hacen zoom de forma agradable, no enlazan con pedidos en línea, y vuelven cada actualización (nuevo especial, cambio de precio) dependiente de un desarrollador con InDesign. Reemplazar un menú PDF por una página HTML real suele subir el tiempo de permanencia móvil entre 30-50%.',
     pass: 'Your menu opens as a real HTML page',
+    pass_es: 'Tu menú abre como una página HTML real',
     passNote: 'Visitors can read your menu on a phone without downloading a PDF or pinching to zoom. This is table stakes for mobile restaurant UX.',
+    passNote_es: 'Los visitantes pueden leer tu menú en un teléfono sin descargar un PDF ni hacer zoom con los dedos. Este es el piso mínimo para UX móvil de restaurante.',
     fail: 'Your menu is a PDF or an image',
+    fail_es: 'Tu menú es un PDF o una imagen',
     failNote: 'PDF menus are the single most common restaurant mobile UX sin. They do not zoom gracefully on phones, they do not link to online ordering, and they make the "update a price" workflow depend on a developer. Replace it with a real HTML menu page.',
+    failNote_es: 'Los menús PDF son el pecado de UX móvil más común en restaurantes. No hacen zoom bien en teléfonos, no enlazan con pedidos en línea, y vuelven el flujo de "actualizar un precio" dependiente de un desarrollador. Reemplázalo con una página HTML real.',
     unverified: "We couldn't find a menu link — is this right?",
+    unverified_es: 'No encontramos un enlace de menú — ¿es correcto?',
     unverifiedNote: "We looked for a link containing 'menu' in its path and didn't find one. If your menu is reachable but named something else (like 'food', 'dining', 'kitchen'), the scanner missed it — tell us below and we'll improve it.",
+    unverifiedNote_es: 'Buscamos un enlace con "menu" en su ruta y no lo encontramos. Si tu menú es accesible pero se llama de otra forma (como "food", "dining", "kitchen"), el escáner lo pasó por alto — dínoslo abajo y mejoraremos el escáner.',
     byType: {
       'fine-dining': {
         impact: 'Fine-dining menus are part of the marketing pitch — prospective guests decide whether to book based on how the tasting menu reads. A PDF (especially one styled for print) flattens on mobile and breaks that pitch completely.',
+        impact_es: 'Los menús de fine-dining son parte del pitch de marketing — los comensales potenciales deciden si reservar según cómo lee el menú degustación. Un PDF (sobre todo uno con estilo para imprimir) se aplana en móvil y rompe el pitch completamente.',
         pass: 'Your tasting menu opens as a real HTML page',
+        pass_es: 'Tu menú degustación abre como una página HTML real',
         passNote: 'Your tasting menu and wine list render as HTML — guests can browse on a phone while deciding whether to book, without downloading a file.',
+        passNote_es: 'Tu menú degustación y carta de vinos renderean como HTML — los comensales pueden navegar en el teléfono mientras deciden si reservar, sin descargar un archivo.',
         fail: 'Your tasting menu is a PDF or an image',
-        failNote: 'PDF tasting menus look designed, but they break the Saturday-afternoon "should I book this place?" decision flow on mobile. Rebuild as an HTML page so the copy is indexable by Google, legible on phones, and updatable without a designer.'
+        fail_es: 'Tu menú degustación es un PDF o una imagen',
+        failNote: 'PDF tasting menus look designed, but they break the Saturday-afternoon "should I book this place?" decision flow on mobile. Rebuild as an HTML page so the copy is indexable by Google, legible on phones, and updatable without a designer.',
+        failNote_es: 'Los menús degustación en PDF se ven diseñados, pero rompen el flujo de decisión de un sábado por la tarde "¿debería reservar aquí?" en móvil. Reconstruye como página HTML para que el texto sea indexable por Google, legible en teléfonos y actualizable sin un diseñador.'
       },
       'fast-casual': {
         impact: 'Fast-casual menus ARE the conversion page — prices, item names, and a one-tap "Order" button all need to live on the same scrollable page. A PDF kills the ordering flow and sends the customer to an aggregator.',
+        impact_es: 'Los menús fast-casual SON la página de conversión — precios, nombres de platos y un botón "Ordenar" de un solo tap todos necesitan vivir en la misma página deslizable. Un PDF mata el flujo de pedido y manda al cliente a un agregador.',
         pass: 'Your menu opens as a real HTML page',
+        pass_es: 'Tu menú abre como una página HTML real',
         passNote: 'Your menu renders as HTML alongside your order button — which is the pattern that actually converts for fast-casual traffic.',
+        passNote_es: 'Tu menú rendereá como HTML junto a tu botón de pedido — el patrón que realmente convierte para tráfico fast-casual.',
         fail: 'Your menu is a PDF or an image',
-        failNote: 'PDF menus on a fast-casual site are a conversion killer. Your menu, prices, and "Order Online" button need to live on one scrollable HTML page — that\'s the ChowNow/Toast/Square pattern and it outperforms PDFs by wide margins.'
+        fail_es: 'Tu menú es un PDF o una imagen',
+        failNote: 'PDF menus on a fast-casual site are a conversion killer. Your menu, prices, and "Order Online" button need to live on one scrollable HTML page — that\'s the ChowNow/Toast/Square pattern and it outperforms PDFs by wide margins.',
+        failNote_es: 'Los menús PDF en un sitio fast-casual son un asesino de conversión. Tu menú, precios y botón "Ordenar en Línea" necesitan vivir en una sola página HTML deslizable — ese es el patrón ChowNow/Toast/Square y supera a los PDFs por amplios márgenes.'
       },
       'cafe': {
         impact: 'Café menus change often — daily specials, seasonal drinks, weekly bakes. A PDF menu means every tweak is a developer ticket; an HTML page means the barista can update prices between the morning and afternoon rush.',
+        impact_es: 'Los menús de café cambian seguido — especiales del día, bebidas de temporada, productos horneados semanales. Un menú PDF significa que cada ajuste es un ticket para desarrollo; una página HTML significa que el barista puede actualizar precios entre la hora pico de mañana y de tarde.',
         pass: 'Your menu opens as a real HTML page',
+        pass_es: 'Tu menú abre como una página HTML real',
         passNote: 'Your menu is an HTML page — which means you can update seasonal drinks, daily specials, and prices without emailing a designer.',
+        passNote_es: 'Tu menú es una página HTML — lo que significa que puedes actualizar bebidas de temporada, especiales del día y precios sin escribirle a un diseñador.',
         fail: 'Your menu is a PDF or an image',
-        failNote: 'Café menus change weekly (or daily); PDFs lock you into a once-a-month update cadence. Rebuild as HTML so seasonal items, specials, and price changes can ship the same afternoon they\'re decided.'
+        fail_es: 'Tu menú es un PDF o una imagen',
+        failNote: 'Café menus change weekly (or daily); PDFs lock you into a once-a-month update cadence. Rebuild as HTML so seasonal items, specials, and price changes can ship the same afternoon they\'re decided.',
+        failNote_es: 'Los menús de café cambian semanalmente (o diariamente); los PDFs te encierran en una cadencia de actualización mensual. Reconstruye como HTML para que los platos de temporada, especiales y cambios de precio puedan publicarse la misma tarde que se deciden.'
       },
       'bakery': {
         impact: 'Bakery offerings rotate aggressively — seasonal tarts, weekend-only loaves, holiday cookie lineups. A PDF menu means the baker needs a designer to update the Christmas-cookie list; an HTML page means it ships the same morning, and can link to an "Order this" button per item.',
+        impact_es: 'La oferta de panadería rota agresivamente — tartas de temporada, panes solo de fin de semana, colecciones de galletas de fiestas. Un menú PDF significa que el panadero necesita un diseñador para actualizar la lista de galletas de Navidad; una página HTML significa que se publica la misma mañana, y puede enlazar a un botón "Pedir esto" por cada ítem.',
         pass: 'Your bakery menu opens as a real HTML page',
+        pass_es: 'Tu menú de panadería abre como una página HTML real',
         passNote: 'Your daily, seasonal, and custom-order menus render as HTML — which means the holiday lineup ships the morning you decide it, and each item can link to its own pre-order.',
+        passNote_es: 'Tus menús diarios, de temporada y de pedidos personalizados rendereá como HTML — lo que significa que la colección de fiestas se publica la mañana que la decides, y cada ítem puede enlazar a su propio pre-pedido.',
         fail: 'Your menu is a PDF or an image',
-        failNote: 'Bakery menus rotate weekly (or daily); PDFs lock you into a monthly update cadence and cannot link to a per-item "Pre-order this" button. Rebuild as HTML so seasonal and custom items ship the same day they\'re decided.'
+        fail_es: 'Tu menú es un PDF o una imagen',
+        failNote: 'Bakery menus rotate weekly (or daily); PDFs lock you into a monthly update cadence and cannot link to a per-item "Pre-order this" button. Rebuild as HTML so seasonal and custom items ship the same day they\'re decided.',
+        failNote_es: 'Los menús de panadería rotan semanalmente (o diariamente); los PDFs te encierran en una cadencia de actualización mensual y no pueden enlazar a un botón por ítem "Pre-ordenar esto". Reconstruye como HTML para que ítems de temporada y personalizados se publiquen el mismo día que se deciden.'
       },
       'pizzeria': {
         impact: 'Pizzeria menus are the conversion page — a PDF menu cannot link each pie to an "Add to Cart" button, which is precisely the flow that makes Slice work and kills most independent pizzerias\' direct-ordering conversion. Every PDF-menu pizzeria is effectively handing its best customers to an aggregator.',
+        impact_es: 'Los menús de pizzería son la página de conversión — un menú PDF no puede enlazar cada pizza a un botón "Agregar al carrito", que es justo el flujo que hace funcionar a Slice y mata la conversión de pedidos directos en la mayoría de las pizzerías independientes. Cada pizzería con menú PDF está efectivamente entregando a sus mejores clientes a un agregador.',
         pass: 'Your menu opens as a real HTML page',
+        pass_es: 'Tu menú abre como una página HTML real',
         passNote: 'Your menu renders as HTML — each pie can link to its own "Order This" button, and price updates ship without a designer.',
+        passNote_es: 'Tu menú rendereá como HTML — cada pizza puede enlazar a su propio botón "Ordenar esta", y las actualizaciones de precio se publican sin un diseñador.',
         fail: 'Your menu is a PDF or an image',
-        failNote: 'PDF menus break the pizzeria ordering flow completely — they can\'t link to per-pie order buttons or pass a pre-selected pie to your online checkout. Rebuild as an HTML page with one-tap "Order This" links per item; that\'s the pattern Slice uses and it\'s why Slice is taking your orders.'
+        fail_es: 'Tu menú es un PDF o una imagen',
+        failNote: 'PDF menus break the pizzeria ordering flow completely — they can\'t link to per-pie order buttons or pass a pre-selected pie to your online checkout. Rebuild as an HTML page with one-tap "Order This" links per item; that\'s the pattern Slice uses and it\'s why Slice is taking your orders.',
+        failNote_es: 'Los menús PDF rompen el flujo de pedido de pizzería por completo — no pueden enlazar a botones de pedido por pizza ni pasar una pizza preseleccionada a tu checkout en línea. Reconstruye como página HTML con enlaces "Ordenar esta" de un tap por ítem; ese es el patrón que usa Slice y por eso Slice se lleva tus pedidos.'
       },
       'food-truck': {
         impact: 'Food-truck menus rotate constantly — today it\'s barbacoa tacos, tomorrow it\'s carnitas, next week the owner is testing a smashburger. PDFs lock you into whatever was true the last time a designer had time. HTML means the menu matches what\'s actually on the truck, updated from your phone while you prep.',
+        impact_es: 'Los menús de food truck rotan constantemente — hoy son tacos de barbacoa, mañana carnitas, la próxima semana el dueño está probando una smashburger. Los PDFs te encierran en lo que fue cierto la última vez que un diseñador tuvo tiempo. HTML significa que el menú coincide con lo que realmente está en el truck, actualizado desde tu teléfono mientras preparas.',
         pass: 'Your menu opens as a real HTML page',
+        pass_es: 'Tu menú abre como una página HTML real',
         passNote: 'Your menu is an HTML page — you can update today\'s specials from your phone between prep and service.',
+        passNote_es: 'Tu menú es una página HTML — puedes actualizar los especiales del día desde tu teléfono entre prep y servicio.',
         fail: 'Your menu is a PDF or an image',
-        failNote: 'Food-truck menus change faster than any other restaurant type. A PDF menu is often DAYS stale by the time someone reads it. Rebuild as HTML so the menu on your site matches the menu on the truck — ideally updated the morning of each service from your phone.'
+        fail_es: 'Tu menú es un PDF o una imagen',
+        failNote: 'Food-truck menus change faster than any other restaurant type. A PDF menu is often DAYS stale by the time someone reads it. Rebuild as HTML so the menu on your site matches the menu on the truck — ideally updated the morning of each service from your phone.',
+        failNote_es: 'Los menús de food truck cambian más rápido que cualquier otro tipo de restaurante. Un menú PDF suele estar DÍAS desactualizado para cuando alguien lo lee. Reconstruye como HTML para que el menú en tu sitio coincida con el menú del truck — idealmente actualizado la mañana de cada servicio desde tu teléfono.'
       },
       'ghost-kitchen': {
         impact: 'For a ghost kitchen the menu on your site has one job: matching the menu on every aggregator you\'re listed on. PDF menus go stale the instant a single item gets pulled or repriced, and the resulting drift erodes customer trust across every platform at once. An HTML menu can be pulled from the same source of truth your POS/middleware already feeds the aggregators.',
+        impact_es: 'Para una cocina fantasma, el menú en tu sitio tiene un trabajo: coincidir con el menú en cada agregador donde estás listado. Los menús PDF se desactualizan al instante en que un solo ítem se quita o cambia de precio, y la deriva resultante erosiona la confianza del cliente en cada plataforma a la vez. Un menú HTML puede sacarse de la misma fuente de verdad que tu POS/middleware ya alimenta a los agregadores.',
         pass: 'Your menu opens as a real HTML page',
+        pass_es: 'Tu menú abre como una página HTML real',
         passNote: 'Your menu renders as HTML — easier to keep aligned with what\'s live on DoorDash / Uber Eats / Grubhub, especially when a price or item changes mid-week.',
+        passNote_es: 'Tu menú rendereá como HTML — más fácil de mantener alineado con lo que está en vivo en DoorDash / Uber Eats / Grubhub, sobre todo cuando un precio o ítem cambia a media semana.',
         fail: 'Your menu is a PDF or an image',
-        failNote: 'Ghost-kitchen menus drift fast across platforms. PDF menus on your site lock you into a stale snapshot; HTML menus can be kept in sync (manually or via Deliverect / Otter / your POS) with whatever is live on your aggregators.'
+        fail_es: 'Tu menú es un PDF o una imagen',
+        failNote: 'Ghost-kitchen menus drift fast across platforms. PDF menus on your site lock you into a stale snapshot; HTML menus can be kept in sync (manually or via Deliverect / Otter / your POS) with whatever is live on your aggregators.',
+        failNote_es: 'Los menús de cocina fantasma derivan rápido entre plataformas. Los menús PDF en tu sitio te encierran en una foto desactualizada; los menús HTML pueden mantenerse sincronizados (manualmente o vía Deliverect / Otter / tu POS) con lo que está en vivo en tus agregadores.'
       },
       'catering-only': {
         impact: 'Catering menus are the sales collateral — package breakdowns, per-head pricing, dietary accommodations, minimum orders, lead times. Unlike dine-in menus where a PDF is merely inconvenient, a catering PDF actually WORKS for one use case: emailing a rate sheet to a planner. The problem is that your site visitor and your planner-email flow have different needs — the planner wants a print-ready PDF; the site visitor wants a scannable HTML page. Offer both.',
+        impact_es: 'Los menús de catering son material de ventas — desglose de paquetes, precios por cabeza, acomodaciones dietéticas, pedidos mínimos, tiempos de anticipación. A diferencia de los menús de dine-in donde un PDF es simplemente incómodo, un PDF de catering SÍ funciona para un caso: enviar una hoja de tarifas a un planificador. El problema es que el visitante de tu sitio y el flujo de correo del planificador tienen necesidades diferentes — el planificador quiere un PDF listo para imprimir; el visitante quiere una página HTML escaneable. Ofrece ambos.',
         pass: 'Your catering menu opens as a real HTML page',
+        pass_es: 'Tu menú de catering abre como una página HTML real',
         passNote: 'Your packages and pricing render as HTML — event planners can scan them on a phone between meetings without downloading a file.',
+        passNote_es: 'Tus paquetes y precios rendereá como HTML — los planificadores de eventos pueden escanearlos en el teléfono entre juntas sin descargar un archivo.',
         fail: 'Your menu is a PDF or an image',
-        failNote: 'On a catering site a PDF menu is better than nothing, but it\'s still a drop-off point for mobile visitors. Ship an HTML package page for browse/discovery, and keep the PDF rate sheet as a download-to-share option for planners who need to forward it to clients — both audiences get what they need.'
+        fail_es: 'Tu menú es un PDF o una imagen',
+        failNote: 'On a catering site a PDF menu is better than nothing, but it\'s still a drop-off point for mobile visitors. Ship an HTML package page for browse/discovery, and keep the PDF rate sheet as a download-to-share option for planners who need to forward it to clients — both audiences get what they need.',
+        failNote_es: 'En un sitio de catering, un menú PDF es mejor que nada, pero sigue siendo un punto de abandono para visitantes móviles. Publica una página HTML de paquetes para navegación/descubrimiento, y mantén la hoja de tarifas PDF como opción de descarga-para-compartir para planificadores que necesitan reenviarla a clientes — ambas audiencias obtienen lo que necesitan.'
       },
       'bar-pub': {
         impact: 'Cocktail lists and draft lists rotate constantly — a PDF list goes stale within weeks, and nobody wants to read a PDF on a phone at the bar anyway. HTML lists are faster to update, easier to share, and readable without a download.',
+        impact_es: 'Las listas de cócteles y de cervezas de barril rotan constantemente — una lista PDF se desactualiza en semanas, y nadie quiere leer un PDF en el teléfono en el bar de todos modos. Las listas HTML son más rápidas de actualizar, más fáciles de compartir y legibles sin descarga.',
         pass: 'Your drink list opens as a real HTML page',
+        pass_es: 'Tu lista de bebidas abre como una página HTML real',
         passNote: 'Your cocktail and draft lists render as HTML — which means visitors can scan them on a phone outside, and staff can rotate the list without a design sprint.',
+        passNote_es: 'Tus listas de cócteles y cervezas rendereá como HTML — lo que significa que los visitantes pueden escanearlas en el teléfono afuera, y el equipo puede rotar la lista sin un sprint de diseño.',
         fail: 'Your drink list is a PDF or an image',
-        failNote: 'PDF cocktail lists age poorly — by the time the designer ships the update, the beer\'s out of the keg. Rebuild as an HTML list (bar → pub → taproom style) so rotations happen the same day the barback swaps the tap.'
+        fail_es: 'Tu lista de bebidas es un PDF o una imagen',
+        failNote: 'PDF cocktail lists age poorly — by the time the designer ships the update, the beer\'s out of the keg. Rebuild as an HTML list (bar → pub → taproom style) so rotations happen the same day the barback swaps the tap.',
+        failNote_es: 'Las listas PDF de cócteles envejecen mal — para cuando el diseñador publica la actualización, ya se acabó la cerveza del barril. Reconstruye como lista HTML (estilo bar → pub → taproom) para que las rotaciones sucedan el mismo día que el barback cambia el grifo.'
       }
     }
   },
@@ -763,7 +996,14 @@ var RESTAURANT_PRIORITY_CHECKS = [
     minutes: 20,
     impact: "Restaurant schema markup is how Google learns your hours, cuisine, and price range for local search. Restaurants with proper schema show up in the 'restaurants near me' rich results with photos and ratings — restaurants without it get a plain blue link. The difference in click-through rate is meaningful.",
     pass: 'Google can read your site as a restaurant',
+    impact_es: 'El schema Restaurant es cómo Google entiende tu cocina, horarios, rango de precios y URL del menú. Sin él, Google tiene que adivinar tu categoría en vez de leerla directamente — la diferencia entre un rich snippet con horario y precios y un enlace azul plano.',
+    pass_es: 'Tu sitio publica schema de restaurante',
     passNote: 'Your site publishes Restaurant schema markup — the JSON-LD block Google reads to understand your cuisine, hours, price range, and menu URL. This is what earns you rich-result placement in "restaurants near me" searches.',
+    passNote_es: 'Tu sitio publica el schema de Restaurant — el bloque JSON-LD que Google lee para entender tu cocina, horarios, rango de precios y URL del menú. Esto es lo que te gana colocación de resultados enriquecidos en búsquedas de "restaurantes cerca de mí".',
+    fail_es: 'A tu sitio le falta el schema de Restaurant',
+    failNote_es: 'Detectamos tu segmento por señales de plataforma y palabras clave, pero tu sitio no publica el bloque JSON-LD <code>@type: "Restaurant"</code> que Google lee para resultados enriquecidos. Sin él, Google tiene que inferir tu categoría en vez de leerla — la diferencia entre un rich snippet (horario, precio, cocina) y un enlace azul plano. Es un cambio de 10 líneas para tu desarrollador.',
+    unverified_es: 'No pudimos confirmar tu schema de Restaurant',
+    unverifiedNote_es: 'No pudimos leer con confianza si tu sitio publica JSON-LD de Restaurant. Si crees que está, vuelve a auditar en un minuto — a veces Lighthouse lo pasa por alto. Si no, agregar un bloque JSON-LD con <code>@type: "Restaurant"</code>, tu dirección, horarios y cocina es significativo para el SEO local.',
     // Phase L6: when the audit CONFIDENTLY detected the subtype
     // from platforms/keywords but the site still has no schema,
     // the evaluator promotes this check from 'unverified' to 'fail'
@@ -786,27 +1026,39 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'self',
     minutes: 30,
     impact: 'Dietary-aware guests make decisions based on whether they see themselves considered. A single "GF" mark or a "vegan" badge reliably converts more dietary-restricted customers than ten paragraphs of "we can accommodate." Even one marker signals that someone on staff has thought about cross-contamination.',
+    impact_es: 'Los comensales con restricciones deciden si se sienten considerados. Una sola marca "GF" o un badge "vegano" convierte más clientes con restricciones que diez párrafos de "nos adaptamos". Incluso una sola marca indica que alguien del equipo pensó en la contaminación cruzada.',
     pass: 'Your site signals dietary options',
+    pass_es: 'Tu sitio señala opciones dietéticas',
     passNote: '{detected} visible on your site — guests with dietary restrictions can self-qualify without having to call and ask.',
+    passNote_es: '{detected} visible en tu sitio — los comensales con restricciones pueden auto-calificar sin tener que llamar para preguntar.',
     fail: null,
     failNote: null,
     unverified: 'We didn\'t spot dietary markers — is this right?',
+    unverified_es: 'No vimos marcas dietéticas — ¿es correcto?',
     unverifiedNote: 'We scan for vegan, vegetarian, gluten-free, dairy-free, nut-free, halal, kosher, and allergen notes. If your menu marks dietary options with symbols or callouts we didn\'t recognize (or if the markers live on a menu page we didn\'t reach), let us know and we\'ll improve the detector.',
+    unverifiedNote_es: 'Buscamos vegano, vegetariano, sin gluten, sin lácteos, sin nueces, halal, kosher y notas de alérgenos. Si tu menú marca opciones dietéticas con símbolos o leyendas que no reconocimos (o si las marcas viven en una página de menú a la que no llegamos), avísanos y mejoraremos el detector.',
     byType: {
       'fine-dining': {
         impact: 'Fine-dining tasting menus live or die on accommodating dietary restrictions — half the phone calls your host fields are "do you have gluten-free or vegetarian options?" Surfacing answers on the menu page deflects those calls and lets guests book with confidence.',
-        unverifiedNote: 'Tasting-menu dietary accommodations belong on your menu or reservations page in plain English. "Vegetarian tasting available on request" earns bookings; silence sends them to a restaurant that says so.'
+        impact_es: 'Los menús degustación de fine-dining viven o mueren por acomodar restricciones dietéticas — la mitad de las llamadas que tu host atiende son "¿tienen opciones sin gluten o vegetarianas?" Poner las respuestas en la página del menú desvía esas llamadas y deja a los comensales reservar con confianza.',
+        unverifiedNote: 'Tasting-menu dietary accommodations belong on your menu or reservations page in plain English. "Vegetarian tasting available on request" earns bookings; silence sends them to a restaurant that says so.',
+        unverifiedNote_es: 'Las acomodaciones dietéticas del menú degustación pertenecen en tu página de menú o reservas en lenguaje claro. "Menú degustación vegetariano bajo pedido" gana reservas; el silencio las manda a un restaurante que sí lo dice.'
       },
       'casual-dining': {
         impact: 'Casual-dining guests often decide between two restaurants based on whether one of them clearly marks vegetarian or gluten-free options. The market of dietary-aware eaters is bigger than most owners realize — about 1 in 3 diners avoids at least one food group.',
-        unverifiedNote: 'Mark a few items with V / GF / DF symbols on the menu page (with a small legend). This is the single highest-ROI content change a casual-dining site can make.'
+        impact_es: 'Los comensales de casual-dining frecuentemente eligen entre dos restaurantes según cuál marca claramente opciones vegetarianas o sin gluten. El mercado de comensales con restricciones es más grande de lo que la mayoría de los dueños cree — cerca de 1 de cada 3 evita al menos un grupo de alimentos.',
+        unverifiedNote: 'Mark a few items with V / GF / DF symbols on the menu page (with a small legend). This is the single highest-ROI content change a casual-dining site can make.',
+        unverifiedNote_es: 'Marca algunos platos con símbolos V / SG / SL en la página del menú (con una leyenda pequeña). Es el cambio de contenido con mayor ROI que un sitio de casual-dining puede hacer.'
       },
       'bakery': {
         impact: 'For bakeries dietary markers are not marketing — they are safety. A customer ordering a custom cake for a nut-allergic child trusts whether you\'ve thought about cross-contamination, and your site is where they decide whether to trust you with a birthday.',
-        unverifiedNote: 'Call out cross-contamination policy and clearly mark nut-free / gluten-free / dairy-free bakes on the menu page. For custom-order intake, add a dietary-restriction field to the form. This is a trust-earning change, not a marketing one.'
+        impact_es: 'Para las panaderías, las marcas dietéticas no son marketing — son seguridad. Un cliente pidiendo un pastel personalizado para un niño con alergia a nueces confía en si has pensado en contaminación cruzada, y tu sitio es donde decide si confiarte un cumpleaños.',
+        unverifiedNote: 'Call out cross-contamination policy and clearly mark nut-free / gluten-free / dairy-free bakes on the menu page. For custom-order intake, add a dietary-restriction field to the form. This is a trust-earning change, not a marketing one.',
+        unverifiedNote_es: 'Destaca tu política de contaminación cruzada y marca claramente los horneados sin nueces / sin gluten / sin lácteos en la página del menú. Para el intake de pedidos personalizados, agrega un campo de restricciones dietéticas al formulario. Es un cambio de ganancia de confianza, no de marketing.'
       },
       'ghost-kitchen': {
-        impact: 'Ghost-kitchen customers rarely inspect the site before ordering — but the ones who DO are usually dietary-restricted and comparing brands before committing. Clear dietary markers on your brand page move those orders into your funnel instead of a competing aggregator listing.'
+        impact: 'Ghost-kitchen customers rarely inspect the site before ordering — but the ones who DO are usually dietary-restricted and comparing brands before committing. Clear dietary markers on your brand page move those orders into your funnel instead of a competing aggregator listing.',
+        impact_es: 'Los clientes de cocinas fantasma rara vez inspeccionan el sitio antes de pedir — pero los que SÍ lo hacen normalmente tienen restricciones dietéticas y comparan marcas antes de comprometerse. Las marcas dietéticas claras en tu página de marca mueven esos pedidos a tu funnel en vez de a un listado de agregador competidor.'
       }
     }
   },
@@ -820,27 +1072,39 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'dev',
     minutes: 30,
     impact: 'Gift cards are the highest-margin line on a restaurant site. Every \$50 gift card sold brings in \$50 of revenue AND a future customer; roughly 20-30% of gift cards go unredeemed, which is pure revenue. A visible "Gift Cards" CTA converts more than you would expect, especially around November-December.',
+    impact_es: 'Las tarjetas de regalo son la línea de mayor margen en un sitio de restaurante. Cada tarjeta de $50 vendida trae $50 de ingresos Y un cliente futuro; cerca del 20-30% de las tarjetas no se canjean, puro margen. Un CTA visible de "Tarjetas de regalo" convierte más de lo esperado, especialmente entre noviembre y diciembre.',
     pass: 'Your site sells gift cards',
+    pass_es: 'Tu sitio vende tarjetas de regalo',
     passNote: '{detected} on your site — gift-card sales are some of the highest-margin revenue a restaurant can earn, and you already have the flow.',
+    passNote_es: '{detected} en tu sitio — las ventas de tarjetas de regalo son de los ingresos con mayor margen que un restaurante puede generar, y tú ya tienes el flujo.',
     fail: null,
     failNote: null,
     unverified: 'We didn\'t spot gift-card sales — is this right?',
+    unverified_es: 'No vimos venta de tarjetas de regalo — ¿es correcto?',
     unverifiedNote: 'We scan for gift-card text ("Gift Card", "Gift Certificate", "e-Gift") plus major platforms (Toast Gift Cards, Square Gift Cards, Yiftee, GiftUp, Factor4). If you sell via a platform we missed, tell us and we will add it. If you do not sell gift cards today, adding a simple checkout page is a high-ROI, once-a-quarter project.',
+    unverifiedNote_es: 'Buscamos texto de tarjetas ("Gift Card", "Gift Certificate", "e-Gift") y plataformas importantes (Toast Gift Cards, Square Gift Cards, Yiftee, GiftUp, Factor4). Si vendes por una plataforma que pasamos por alto, dínoslo y la agregamos. Si hoy no vendes tarjetas, agregar una página simple de checkout es un proyecto trimestral de alto ROI.',
     byType: {
       'fine-dining': {
         impact: 'Gift cards at fine-dining restaurants are the "special occasion" present par excellence — anniversaries, birthdays, holiday gifts. Redemption rates run higher than casual dining but unredeemed balances are still pure margin. Physical printed cards are a nice upsell for corporate gifts.',
-        unverifiedNote: 'A gift-card page on a fine-dining site pays for itself during the holidays. Tock, Resy, and SevenRooms all integrate gift cards; Toast does too if you are on their POS.'
+        impact_es: 'Las tarjetas de regalo en restaurantes de fine-dining son el regalo de "ocasión especial" por excelencia — aniversarios, cumpleaños, regalos de fiestas. Las tasas de canje son más altas que en casual dining pero los saldos no canjeados siguen siendo puro margen. Las tarjetas físicas impresas son un buen upsell para regalos corporativos.',
+        unverifiedNote: 'A gift-card page on a fine-dining site pays for itself during the holidays. Tock, Resy, and SevenRooms all integrate gift cards; Toast does too if you are on their POS.',
+        unverifiedNote_es: 'Una página de tarjetas de regalo en un sitio de fine-dining se paga sola en las fiestas. Tock, Resy y SevenRooms todos integran tarjetas de regalo; Toast también si estás en su POS.'
       },
       'bar-pub': {
         impact: 'Bars and pubs over-index on gift cards — stocking-stuffers, birthday presents, thank-you gifts from corporate accounts. Every unredeemed card is pure revenue; every redeemed one brings in a customer plus whatever they spend above the card value.',
-        unverifiedNote: 'Bar gift cards especially benefit from a simple online checkout. Square and Toast both do this well; Tripleseat if you already use it for events.'
+        impact_es: 'Los bares y pubs sobre-indexan en tarjetas de regalo — rellenos de medias navideñas, regalos de cumpleaños, regalos de agradecimiento de cuentas corporativas. Cada tarjeta no canjeada es puro ingreso; cada canjeada trae un cliente más lo que gaste por encima del valor de la tarjeta.',
+        unverifiedNote: 'Bar gift cards especially benefit from a simple online checkout. Square and Toast both do this well; Tripleseat if you already use it for events.',
+        unverifiedNote_es: 'Las tarjetas de regalo de bar en especial se benefician de un checkout simple en línea. Square y Toast lo hacen bien; Tripleseat si ya lo usas para eventos.'
       },
       'bakery': {
         impact: 'Bakery gift cards convert well for birthday presents, corporate gifts, and the "sorry I forgot the birthday cake" save. They are also one of the easiest ways to capture a repeat customer from a one-time visitor.',
-        unverifiedNote: 'A gift-card purchase page on your bakery site with $25, $50, $100 presets is the baseline. Square and Toast both handle this natively; email-delivered e-cards make same-day gift purchases possible.'
+        impact_es: 'Las tarjetas de regalo de panadería convierten bien para regalos de cumpleaños, regalos corporativos y el rescate de "perdón, olvidé el pastel de cumpleaños". También son una de las formas más fáciles de convertir un visitante único en cliente repetido.',
+        unverifiedNote: 'A gift-card purchase page on your bakery site with $25, $50, $100 presets is the baseline. Square and Toast both handle this natively; email-delivered e-cards make same-day gift purchases possible.',
+        unverifiedNote_es: 'Una página de compra de tarjetas de regalo en tu sitio de panadería con presets de $25, $50, $100 es la base. Square y Toast ambos lo manejan nativamente; las e-cards entregadas por correo permiten compras de regalo el mismo día.'
       },
       'ghost-kitchen': {
-        impact: 'Gift cards matter less for ghost kitchens (customers who never visit are unlikely to gift-card-gift the experience), but digital e-cards still add revenue around holidays — and matter for corporate catering accounts.'
+        impact: 'Gift cards matter less for ghost kitchens (customers who never visit are unlikely to gift-card-gift the experience), but digital e-cards still add revenue around holidays — and matter for corporate catering accounts.',
+        impact_es: 'Las tarjetas de regalo importan menos para las cocinas fantasma (los clientes que nunca visitan difícilmente regalarán la experiencia), pero las e-cards digitales aún añaden ingresos en las fiestas — y importan para las cuentas de catering corporativo.'
       }
     }
   },
@@ -852,12 +1116,17 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'dev',
     minutes: 120,
     impact: 'Loyalty programs lift repeat-visit frequency by 15-30% on average — a material difference for a thin-margin business. The modern loyalty tools (Thanx, Paytronix, Square Loyalty) integrate with POS so every visit earns without a punchcard, which is the actual bar for adoption.',
+    impact_es: 'Los programas de lealtad suben la frecuencia de visita repetida entre 15-30% en promedio — una diferencia material para un negocio de márgenes delgados. Las herramientas modernas (Thanx, Paytronix, Square Loyalty) se integran con el POS, así cada visita acumula sin tarjeta perforada, que es la vara real para que se adopte.',
     pass: 'Your site promotes a loyalty program',
+    pass_es: 'Tu sitio promueve un programa de lealtad',
     passNote: '{detected} on your site — repeat-visit frequency is where restaurant margin lives, and you have the infrastructure to compound it.',
+    passNote_es: '{detected} en tu sitio — la frecuencia de visitas repetidas es donde vive el margen de un restaurante, y ya tienes la infraestructura para acumularlo.',
     fail: null,
     failNote: null,
     unverified: 'We didn\'t spot a loyalty program — is this right?',
-    unverifiedNote: 'We scan for loyalty text ("rewards program", "earn points", "join our rewards") and known platforms (Thanx, LevelUp, Paytronix, Como, Fivestars, Loyalzoo). If you run one we missed, tell us. If you do not have one yet, a modern POS-integrated loyalty program pays back in 90-120 days for most casual-dining and fast-casual restaurants.'
+    unverified_es: 'No vimos un programa de lealtad — ¿es correcto?',
+    unverifiedNote: 'We scan for loyalty text ("rewards program", "earn points", "join our rewards") and known platforms (Thanx, LevelUp, Paytronix, Como, Fivestars, Loyalzoo). If you run one we missed, tell us. If you do not have one yet, a modern POS-integrated loyalty program pays back in 90-120 days for most casual-dining and fast-casual restaurants.',
+    unverifiedNote_es: 'Buscamos texto de lealtad ("programa de recompensas", "gana puntos", "únete a recompensas") y plataformas conocidas (Thanx, LevelUp, Paytronix, Como, Fivestars, Loyalzoo). Si corres uno que pasamos por alto, dínoslo. Si aún no tienes, un programa moderno integrado al POS se paga solo en 90-120 días para la mayoría de restaurantes casual-dining y fast-casual.'
   },
   {
     // Phase H4: Email newsletter capture.
@@ -867,12 +1136,17 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'dev',
     minutes: 60,
     impact: 'An email list is the only marketing channel you OWN — Instagram can ghost you, Google can change the rules, but your list keeps compounding. Restaurants with a newsletter capture typically see 3-5x higher repeat-visit rates from subscribers vs. non-subscribers.',
+    impact_es: 'Una lista de correo es el único canal de marketing que TÚ posees — Instagram puede silenciarte, Google puede cambiar las reglas, pero tu lista sigue creciendo. Los restaurantes con captura de newsletter suelen ver tasas de visita repetida 3-5× mayores de suscriptores vs no suscriptores.',
     pass: 'Your site captures newsletter signups',
+    pass_es: 'Tu sitio capta suscripciones al newsletter',
     passNote: '{detected} on your site — you are building an owned audience, which is the single most valuable marketing asset a restaurant can accumulate.',
+    passNote_es: '{detected} en tu sitio — estás construyendo una audiencia propia, el activo de marketing más valioso que un restaurante puede acumular.',
     fail: null,
     failNote: null,
     unverified: 'We didn\'t spot a newsletter capture — is this right?',
-    unverifiedNote: 'We look for an email input paired with newsletter language (subscribe / join our list / newsletter) OR a form action pointing at Mailchimp, Klaviyo, ConvertKit, Constant Contact, or similar. If yours is elsewhere or the form is in a modal we didn\'t render, let us know.'
+    unverified_es: 'No vimos captura de newsletter — ¿es correcto?',
+    unverifiedNote: 'We look for an email input paired with newsletter language (subscribe / join our list / newsletter) OR a form action pointing at Mailchimp, Klaviyo, ConvertKit, Constant Contact, or similar. If yours is elsewhere or the form is in a modal we didn\'t render, let us know.',
+    unverifiedNote_es: 'Buscamos una entrada de correo junto a texto de newsletter (suscríbete / únete a la lista / newsletter) O un action del formulario apuntando a Mailchimp, Klaviyo, ConvertKit, Constant Contact u otros. Si el tuyo está en otro lado o en un modal que no renderizamos, avísanos.'
   },
   {
     // Phase H5: Catering / private-events page presence.
@@ -886,41 +1160,58 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'rebuild',
     minutes: 180,
     impact: 'A dedicated catering or private-events page is how most corporate planners and wedding organizers FIND caterers — it captures the long-tail search traffic ("catering Brooklyn", "private dining party of 30") that the homepage never ranks for.',
+    impact_es: 'Una página dedicada de catering o eventos privados es cómo la mayoría de los planificadores corporativos y organizadores de bodas ENCUENTRAN catering — captura el tráfico long-tail ("catering Brooklyn", "cena privada grupo de 30") por el que la página principal nunca rankea.',
     pass: 'You have a catering / events page',
+    pass_es: 'Tienes una página de catering / eventos',
     passNote: 'Your site links to a dedicated catering or events page — planners searching for private dining in your area can land directly on a page that sells the offering.',
+    passNote_es: 'Tu sitio enlaza a una página dedicada de catering o eventos — los planificadores buscando cenas privadas en tu zona pueden aterrizar directamente en una página que vende la oferta.',
     fail: null,
     failNote: null,
     unverified: 'We didn\'t find a catering or events page — is this right?',
+    unverified_es: 'No encontramos una página de catering o eventos — ¿es correcto?',
     unverifiedNote: 'We look for links labelled "Catering", "Private Events", "Parties", or "Weddings" in your navigation. If you do host events but the page is named differently, let us know. If you don\'t today, a catering page is one of the highest-ROI additions for any restaurant with dining-room capacity.',
+    unverifiedNote_es: 'Buscamos enlaces etiquetados "Catering", "Eventos Privados", "Fiestas" o "Bodas" en tu navegación. Si haces eventos pero la página se llama distinto, avísanos. Si hoy no, una página de catering es una de las adiciones de más alto ROI para cualquier restaurante con capacidad de comedor.',
     byType: {
       'fine-dining': {
-        impact: 'Private-dining rooms and buyouts are the margin engine of fine-dining — a single corporate holiday party pays for a slow week. A dedicated events page with capacity, sample menus, and photo gallery is what the event planners searching "private dining [city]" actually land on.'
+        impact: 'Private-dining rooms and buyouts are the margin engine of fine-dining — a single corporate holiday party pays for a slow week. A dedicated events page with capacity, sample menus, and photo gallery is what the event planners searching "private dining [city]" actually land on.',
+        impact_es: 'Los salones privados y buyouts son el motor de margen del fine-dining — una sola fiesta corporativa de fiestas paga una semana lenta. Una página dedicada de eventos con capacidad, menús de muestra y galería de fotos es donde los planificadores de eventos buscando "cenas privadas [ciudad]" realmente aterrizan.'
       },
       'catering-only': {
-        impact: 'For a catering-only business the catering page IS the site. It\'s where packages, per-head pricing, dietary accommodations, minimum order sizes, service radius, lead time, and the RFQ form all live. Without it, planners comparing vendors leave for a competitor with clearer info.'
+        impact: 'For a catering-only business the catering page IS the site. It\'s where packages, per-head pricing, dietary accommodations, minimum order sizes, service radius, lead time, and the RFQ form all live. Without it, planners comparing vendors leave for a competitor with clearer info.',
+        impact_es: 'Para un negocio solo de catering, la página de catering ES el sitio. Es donde viven los paquetes, precios por cabeza, acomodaciones dietéticas, tamaños mínimos de pedido, radio de servicio, tiempo de anticipación y el formulario RFQ. Sin ella, los planificadores comparando vendedores se van con un competidor que tenga info más clara.'
       },
       'bar-pub': {
-        impact: 'Private parties (birthdays, work socials, whiskey tastings) are high-ticket bar revenue that walks in by appointment. A dedicated events page with capacity, packages, and a Tripleseat / inquiry form converts those bookings that would otherwise end up in a lost email thread.'
+        impact: 'Private parties (birthdays, work socials, whiskey tastings) are high-ticket bar revenue that walks in by appointment. A dedicated events page with capacity, packages, and a Tripleseat / inquiry form converts those bookings that would otherwise end up in a lost email thread.',
+        impact_es: 'Las fiestas privadas (cumpleaños, reuniones de trabajo, catas de whiskey) son ingresos de alto valor en un bar que llegan por cita. Una página dedicada de eventos con capacidad, paquetes y un formulario Tripleseat / consulta convierte esas reservas que de otra forma terminarían en un hilo de correos perdido.'
       }
     }
   },
   {
-    // Phase H6: Age-gate presence. Only bar-pub has non-zero
-    // weight in subtypes.js (2.0); every other subtype suppresses
-    // the check entirely (0) so a cafe that sells no alcohol
-    // doesn't lose score for not gating.
+    // Phase H6: Age-gate presence. Suppressed (weight 0) for EVERY
+    // current restaurant subtype — bars and breweries included.
+    // Age-gates on the web are rarely mandated by state ABC rules
+    // for restaurants; they mostly apply to packaged-alcohol retail,
+    // cannabis dispensaries, and vape/tobacco shops. Those are not
+    // restaurant subtypes today, but if one is ever added (e.g.
+    // 'liquor-store' or 'dispensary') it can set a non-zero weight
+    // in its own subtypes.js entry without touching this definition.
     type: 'age-gate',
-    weight: 1.0, // default; bar-pub override = 2.0 via subtypes
+    weight: 1.0, // default unused; all subtypes override to 0
     anchor: '#trust',
     effort: 'dev',
     minutes: 45,
     impact: 'For bars, pubs, and breweries, an age-gate on the site shows regulators you care about compliance and protects you if an underage visitor sees your promotional content. Almost every state ABC / TTB program expects it, and platforms increasingly penalize non-compliant sites in ad delivery.',
+    impact_es: 'Para bares, pubs y cervecerías, un age-gate en el sitio le muestra a los reguladores que te importa el cumplimiento y te protege si un visitante menor ve contenido promocional. Casi todo programa estatal ABC / TTB lo espera, y las plataformas cada vez más penalizan sitios no cumplidores en la entrega de anuncios.',
     pass: 'Your site gates underage visitors',
+    pass_es: 'Tu sitio bloquea visitantes menores de edad',
     passNote: 'Your site asks visitors to confirm they are of legal drinking age before seeing beverage content — this is the baseline compliance move for any bar or brewery.',
+    passNote_es: 'Tu sitio pide a los visitantes confirmar que tienen edad legal antes de ver contenido de bebidas — la jugada básica de cumplimiento para cualquier bar o cervecería.',
     fail: null,
     failNote: null,
     unverified: 'We didn\'t spot an age-gate — is this right?',
-    unverifiedNote: 'We look for "are you 21 or older", "confirm your age", "verify your age" modals. If your age-gate is conditional on a country param or lives in a script we didn\'t render, let us know — and if you don\'t have one yet, this is a 45-minute developer task worth prioritizing.'
+    unverified_es: 'No vimos un age-gate — ¿es correcto?',
+    unverifiedNote: 'We look for "are you 21 or older", "confirm your age", "verify your age" modals. If your age-gate is conditional on a country param or lives in a script we didn\'t render, let us know — and if you don\'t have one yet, this is a 45-minute developer task worth prioritizing.',
+    unverifiedNote_es: 'Buscamos modales "¿tienes 21 años o más?", "confirma tu edad", "verifica tu edad". Si tu age-gate depende de un parámetro de país o vive en un script que no renderizamos, avísanos — y si aún no lo tienes, esta es una tarea de desarrollo de 45 minutos que vale la pena priorizar.'
   },
   {
     // Phase H7: Food-truck schedule page presence. Food trucks
@@ -933,12 +1224,17 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'dev',
     minutes: 60,
     impact: 'Every food-truck customer arrives with the same question: "where are you today?" A visible weekly schedule, a today\'s-location block, or at minimum a "Find us" page with your Instagram feed is the primary job of a food-truck website.',
+    impact_es: 'Todo cliente de un food truck llega con la misma pregunta: "¿dónde están hoy?" Un horario semanal visible, un bloque de ubicación del día, o como mínimo una página "Encuéntranos" con tu feed de Instagram es el trabajo principal de un sitio de food truck.',
     pass: 'Your site shows a schedule / location',
+    pass_es: 'Tu sitio muestra horario / ubicación',
     passNote: 'Your site answers "where are you today?" directly — customers can find you without scrolling to your Instagram.',
+    passNote_es: 'Tu sitio responde "¿dónde están hoy?" directamente — los clientes te encuentran sin tener que bajar hasta tu Instagram.',
     fail: null,
     failNote: null,
     unverified: 'We didn\'t find a schedule / location page — is this right?',
-    unverifiedNote: 'We look for "today\'s location", "this week\'s schedule", "find us at", "catch us at" copy. If your schedule lives inline on the homepage or in an Instagram embed we didn\'t render, let us know. If you don\'t publish a schedule today — publishing one is the single highest-ROI change you can make on a food-truck site.'
+    unverified_es: 'No encontramos una página de horario / ubicación — ¿es correcto?',
+    unverifiedNote: 'We look for "today\'s location", "this week\'s schedule", "find us at", "catch us at" copy. If your schedule lives inline on the homepage or in an Instagram embed we didn\'t render, let us know. If you don\'t publish a schedule today — publishing one is the single highest-ROI change you can make on a food-truck site.',
+    unverifiedNote_es: 'Buscamos texto como "ubicación de hoy", "horario de esta semana", "encuéntranos en", "nos ves en". Si tu horario vive inline en la página principal o en un embed de Instagram que no renderizamos, avísanos. Si hoy no publicas un horario — publicar uno es el cambio de mayor ROI en un sitio de food truck.'
   },
   {
     // Phase H8: Ghost-kitchen / delivery-only explicit marker.
@@ -951,12 +1247,17 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'self',
     minutes: 20,
     impact: 'Ghost kitchens that don\'t explicitly mark "delivery only" or "no dine-in" get customers showing up in person to an empty storefront — worse, getting a one-star review for "I drove there and it was closed." A single visible "Delivery & Pickup Only" banner deflects that confusion.',
+    impact_es: 'Las cocinas fantasma que no marcan explícitamente "solo delivery" o "sin dine-in" terminan con clientes que llegan en persona a un local vacío — peor, con una reseña de una estrella "manejé hasta allá y estaba cerrado". Un solo banner visible de "Solo delivery y pickup" desvía esa confusión.',
     pass: 'Your site marks delivery-only clearly',
+    pass_es: 'Tu sitio marca claramente solo-delivery',
     passNote: 'Your site explicitly states "delivery only" / "virtual kitchen" so customers don\'t show up expecting dine-in.',
+    passNote_es: 'Tu sitio dice explícitamente "solo delivery" / "cocina virtual" para que los clientes no se presenten esperando dine-in.',
     fail: null,
     failNote: null,
     unverified: 'We didn\'t see a delivery-only marker — is this right?',
-    unverifiedNote: 'We look for "virtual kitchen", "ghost kitchen", "delivery only", "no dine-in", "delivery & pickup only" copy. If yours is phrased differently, let us know. If your site reads as a dine-in restaurant but you\'re actually ghost/delivery-only, add a banner — the 20-minute fix deflects a common one-star review.'
+    unverified_es: 'No vimos una marca de solo-delivery — ¿es correcto?',
+    unverifiedNote: 'We look for "virtual kitchen", "ghost kitchen", "delivery only", "no dine-in", "delivery & pickup only" copy. If yours is phrased differently, let us know. If your site reads as a dine-in restaurant but you\'re actually ghost/delivery-only, add a banner — the 20-minute fix deflects a common one-star review.',
+    unverifiedNote_es: 'Buscamos texto como "cocina virtual", "ghost kitchen", "solo delivery", "sin dine-in", "solo delivery y pickup". Si el tuyo está redactado distinto, avísanos. Si tu sitio se lee como un restaurante de dine-in pero en realidad eres ghost/solo delivery, agrega un banner — el arreglo de 20 minutos desvía una reseña de una estrella común.'
   },
   {
     // Phase H9: Wholesale / custom-order intake presence.
@@ -968,12 +1269,17 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'dev',
     minutes: 120,
     impact: 'For bakeries and cafes, custom orders and wholesale accounts are margin multipliers — a single wedding-cake order can match a week of walk-in revenue, and a standing wholesale account compounds month over month.',
+    impact_es: 'Para panaderías y cafés, los pedidos personalizados y las cuentas de mayoreo multiplican el margen — un solo pedido de pastel de bodas puede igualar una semana de ingresos por walk-in, y una cuenta de mayoreo fija se acumula mes tras mes.',
     pass: 'Your site promotes wholesale / custom orders',
+    pass_es: 'Tu sitio promueve pedidos de mayoreo / personalizados',
     passNote: 'Your site surfaces custom-order or wholesale intake — the margin-rich orders that don\'t happen without explicit copy and a form.',
+    passNote_es: 'Tu sitio muestra la entrada de pedidos personalizados o de mayoreo — los pedidos de alto margen que no suceden sin copy explícito y un formulario.',
     fail: null,
     failNote: null,
     unverified: 'We didn\'t see wholesale / custom-order copy — is this right?',
-    unverifiedNote: 'We look for "custom order", "wholesale", "wedding cakes", "corporate orders", "bulk orders", "order in advance", "special orders". If yours is phrased differently, let us know. For bakeries specifically, a dedicated "Custom Orders" page with a structured intake form pays for itself fast.'
+    unverified_es: 'No vimos texto de mayoreo / pedidos personalizados — ¿es correcto?',
+    unverifiedNote: 'We look for "custom order", "wholesale", "wedding cakes", "corporate orders", "bulk orders", "order in advance", "special orders". If yours is phrased differently, let us know. For bakeries specifically, a dedicated "Custom Orders" page with a structured intake form pays for itself fast.',
+    unverifiedNote_es: 'Buscamos "pedido personalizado", "mayoreo", "pasteles de boda", "pedidos corporativos", "pedidos al mayoreo", "ordenar con anticipación", "pedidos especiales". Si el tuyo está redactado distinto, avísanos. Para panaderías en particular, una página dedicada de "Pedidos Personalizados" con un formulario estructurado se paga sola rápido.'
   },
   {
     // Phase H10: Delivery-radius info presence. Subtypes.js
@@ -984,12 +1290,17 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'self',
     minutes: 30,
     impact: 'Showing your delivery area saves every "do you deliver to me?" phone call. For pizzerias specifically, explicit zone info matters more than the map pin — a customer two neighborhoods over gives up if you look ambiguous.',
+    impact_es: 'Mostrar tu zona de entrega ahorra cada llamada de "¿entregan aquí?" Para pizzerías en particular, la info explícita de zona importa más que el pin en el mapa — un cliente a dos colonias de distancia se rinde si te ves ambiguo.',
     pass: 'Your site shows delivery area / zone',
+    pass_es: 'Tu sitio muestra zona / área de entrega',
     passNote: 'Your site explicitly says where you deliver — customers self-qualify without tying up your phone line.',
+    passNote_es: 'Tu sitio dice explícitamente a dónde entregas — los clientes se auto-califican sin ocupar tu línea de teléfono.',
     fail: null,
     failNote: null,
     unverified: 'We didn\'t find delivery-area info — is this right?',
-    unverifiedNote: 'We look for "delivery radius", "we deliver to [list]", "delivery zone / area", "zip codes we serve", or "delivery within N miles". If yours is on an order-platform page we didn\'t reach, let us know. For pizzerias especially, a simple neighborhood / zip-code list is worth a line of copy on the homepage.'
+    unverified_es: 'No encontramos info de zona de entrega — ¿es correcto?',
+    unverifiedNote: 'We look for "delivery radius", "we deliver to [list]", "delivery zone / area", "zip codes we serve", or "delivery within N miles". If yours is on an order-platform page we didn\'t reach, let us know. For pizzerias especially, a simple neighborhood / zip-code list is worth a line of copy on the homepage.',
+    unverifiedNote_es: 'Buscamos "radio de entrega", "entregamos en [lista]", "zona / área de entrega", "códigos postales que servimos" o "entrega dentro de N millas". Si el tuyo está en una página de plataforma de pedidos que no alcanzamos, avísanos. Para pizzerías en especial, una lista simple de colonias / códigos postales merece una línea de copy en la página principal.'
   },
   {
     // Phase H11: Social proof (press, awards, chef bio).
@@ -999,12 +1310,17 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'self',
     minutes: 45,
     impact: 'Visible press quotes and awards convert skeptical new diners at measurably higher rates. "Featured in Eater" or a Michelin mention on the homepage is the single highest-credibility signal you can show a first-time visitor deciding whether to book.',
+    impact_es: 'Las citas de prensa y premios visibles convierten a comensales nuevos escépticos a tasas medibles más altas. "Presentado en Eater" o una mención Michelin en la página principal es la señal de credibilidad más alta que puedes mostrar a un visitante por primera vez decidiendo si reservar.',
     pass: 'Your site shows press / awards / chef bio',
+    pass_es: 'Tu sitio muestra prensa / premios / bio del chef',
     passNote: 'Your site surfaces social proof (press mentions, awards, or a chef bio) — which converts skeptical first-time visitors into bookings.',
+    passNote_es: 'Tu sitio muestra prueba social (menciones de prensa, premios o bio del chef) — lo que convierte a visitantes escépticos por primera vez en reservas.',
     fail: null,
     failNote: null,
     unverified: 'We didn\'t find press / awards / chef copy — is this right?',
-    unverifiedNote: 'We look for "featured in", "as seen in", "accolades", "Michelin", "James Beard", "Eater", "NYT review", or chef bio copy ("meet the chef", "our chef"). If your press is on an about page we didn\'t reach, let us know. If you have press you\'re not showing — surfacing it on the homepage is free conversion.'
+    unverified_es: 'No encontramos texto de prensa / premios / chef — ¿es correcto?',
+    unverifiedNote: 'We look for "featured in", "as seen in", "accolades", "Michelin", "James Beard", "Eater", "NYT review", or chef bio copy ("meet the chef", "our chef"). If your press is on an about page we didn\'t reach, let us know. If you have press you\'re not showing — surfacing it on the homepage is free conversion.',
+    unverifiedNote_es: 'Buscamos "destacados en", "como se vio en", "reconocimientos", "Michelin", "James Beard", "Eater", "reseña NYT" o bio del chef ("conoce al chef", "nuestro chef"). Si tu prensa está en una página "About" que no alcanzamos, avísanos. Si tienes prensa que no estás mostrando — sacarla en la página principal es conversión gratis.'
   },
   {
     // Phase H12: Sustainability / sourcing claims.
@@ -1014,12 +1330,17 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'self',
     minutes: 30,
     impact: 'Sustainability claims (locally sourced, farm-to-table, organic, seasonal) signal quality and values in one line of copy. For a meaningful slice of guests this matters MORE than the menu itself — and it raises the perceived average check.',
+    impact_es: 'Las declaraciones de sostenibilidad (producto local, farm-to-table, orgánico, de temporada) comunican calidad y valores en una sola línea. Para una porción significativa de los comensales esto importa MÁS que el menú mismo — y sube el cheque promedio percibido.',
     pass: 'Your site makes sourcing / sustainability claims',
+    pass_es: 'Tu sitio hace declaraciones de origen / sostenibilidad',
     passNote: 'Your site explicitly surfaces sustainability or sourcing (local farms, seasonal, organic, farm-to-table, etc.) — which raises perceived quality and attracts a loyal segment of diners.',
+    passNote_es: 'Tu sitio muestra explícitamente sostenibilidad o abastecimiento (granjas locales, de temporada, orgánico, farm-to-table, etc.) — lo que eleva la calidad percibida y atrae a un segmento leal de comensales.',
     fail: null,
     failNote: null,
     unverified: 'We didn\'t find sourcing claims — is this right?',
-    unverifiedNote: 'We look for "locally sourced", "farm-to-table", "organic", "sustainable", "seasonal menu", "single-origin", "grass-fed", and related markers. If your sourcing story lives in a photo caption or on a supplier page, let us know. If you\'re sourcing thoughtfully but not saying so, this is a one-afternoon content change.'
+    unverified_es: 'No encontramos declaraciones de origen — ¿es correcto?',
+    unverifiedNote: 'We look for "locally sourced", "farm-to-table", "organic", "sustainable", "seasonal menu", "single-origin", "grass-fed", and related markers. If your sourcing story lives in a photo caption or on a supplier page, let us know. If you\'re sourcing thoughtfully but not saying so, this is a one-afternoon content change.',
+    unverifiedNote_es: 'Buscamos "producto local", "farm-to-table", "orgánico", "sostenible", "menú de temporada", "origen único", "alimentado con pasto" y marcadores similares. Si tu historia de abastecimiento vive en una leyenda de foto o una página de proveedores, avísanos. Si te abasteces con cuidado pero no lo dices, este es un cambio de contenido de una tarde.'
   },
   {
     // Phase H13: Photo coverage. Checks image count + alt-text
@@ -1031,12 +1352,19 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'self',
     minutes: 120,
     impact: 'Food photography is how restaurants sell online — a homepage with 3 images converts worse than one with 10, and alt-text makes those images accessible and SEO-indexable. Empty-alt or broken-alt photos are invisible to Google and to screen readers.',
+    impact_es: 'La fotografía de comida es cómo los restaurantes venden en línea — una página principal con 3 imágenes convierte peor que una con 10, y el alt-text hace esas imágenes accesibles e indexables para SEO. Las fotos sin alt o con alt roto son invisibles para Google y para lectores de pantalla.',
     pass: 'Your site has strong photo coverage',
+    pass_es: 'Tu sitio tiene buena cobertura fotográfica',
     passNote: 'Your homepage carries enough photography AND enough alt-text to do both jobs food images are supposed to do: sell the food and rank in Google Images.',
+    passNote_es: 'Tu página principal lleva suficiente fotografía Y suficiente alt-text para hacer los dos trabajos que las imágenes de comida deben hacer: vender la comida y rankear en Google Imágenes.',
     fail: 'Your site has sparse or unlabeled photos',
+    fail_es: 'Tu sitio tiene fotos escasas o sin etiquetas',
     failNote: 'Homepages need at least 5 good food photos AND at least half of them need real alt-text ("smoked brisket plate with pickled onions" not "image1.jpg"). Both matter: photography drives conversion; alt-text drives accessibility and Google Images traffic.',
+    failNote_es: 'Las páginas principales necesitan al menos 5 buenas fotos de comida Y al menos la mitad necesita alt-text real ("plato de brisket ahumado con cebolla encurtida" y no "image1.jpg"). Ambas importan: la fotografía impulsa conversión; el alt-text impulsa accesibilidad y tráfico de Google Imágenes.',
     unverified: 'We couldn\'t read your image set',
-    unverifiedNote: 'The crawl didn\'t return enough HTML for us to count images reliably. Retry the audit, or paste the homepage URL into our manual-audit queue so we can look by hand.'
+    unverified_es: 'No pudimos leer tu conjunto de imágenes',
+    unverifiedNote: 'The crawl didn\'t return enough HTML for us to count images reliably. Retry the audit, or paste the homepage URL into our manual-audit queue so we can look by hand.',
+    unverifiedNote_es: 'El rastreo no devolvió suficiente HTML para contar imágenes de forma confiable. Vuelve a auditar, o pega la URL de la página principal en nuestra cola manual para revisarla a mano.'
   },
   {
     // Phase H14: Hours accuracy — sources from
@@ -1052,12 +1380,19 @@ var RESTAURANT_PRIORITY_CHECKS = [
     effort: 'dev',
     minutes: 30,
     impact: 'Google Rich Results for restaurants wants a full 7-day hours listing — partial coverage causes the "hours vary" fallback, which erodes trust with "are they open right now?" searchers. Every day needs an entry in openingHoursSpecification, even if opens/closes are null for a closed day.',
+    impact_es: 'Los Rich Results de Google para restaurantes quieren un listado completo de 7 días — la cobertura parcial provoca el fallback "los horarios varían", que erosiona la confianza de quien busca "¿están abiertos ahora?". Cada día necesita una entrada en openingHoursSpecification, incluso si opens/closes son null para un día cerrado.',
     pass: 'Your schema declares 7-day hours',
+    pass_es: 'Tu schema declara los 7 días de horario',
     passNote: 'Your JSON-LD schema publishes hours for every day of the week — Google can render a full hours table in Rich Results and Map snippets.',
+    passNote_es: 'Tu schema JSON-LD publica horarios para cada día de la semana — Google puede renderizar una tabla completa en Rich Results y en los snippets del mapa.',
     fail: 'Your schema hours are incomplete',
+    fail_es: 'Tus horarios de schema están incompletos',
     failNote: 'Your site declares hours in schema but not for every day of the week. Google falls back to a "hours vary" hint, which hurts click-through from "restaurants open now" searches. Add an openingHoursSpecification entry for every day of the week in your JSON-LD block (closed days can have opens/closes set to null).',
+    failNote_es: 'Tu sitio declara horarios en schema pero no para cada día de la semana. Google cae al mensaje "los horarios varían", lo que reduce el click-through en búsquedas de "restaurantes abiertos ahora". Agrega una entrada openingHoursSpecification para cada día de la semana en tu bloque JSON-LD (los días cerrados pueden tener opens/closes en null).',
     unverified: 'We couldn\'t confirm schema hours',
-    unverifiedNote: 'Your schema markup didn\'t declare opening hours at all (or we couldn\'t read it). Adding a complete openingHoursSpecification block is one of the highest-impact single edits you can make for local-search click-through.'
+    unverified_es: 'No pudimos confirmar los horarios del schema',
+    unverifiedNote: 'Your schema markup didn\'t declare opening hours at all (or we couldn\'t read it). Adding a complete openingHoursSpecification block is one of the highest-impact single edits you can make for local-search click-through.',
+    unverifiedNote_es: 'Tu schema no declaró horarios en absoluto (o no pudimos leerlo). Agregar un bloque openingHoursSpecification completo es una de las ediciones individuales de mayor impacto que puedes hacer para el click-through en búsqueda local.'
   }
 ];
 
@@ -1066,14 +1401,17 @@ var RESTAURANT_PRIORITY_CHECKS = [
 // ---------------------------------------------------------------------------
 // The inline check renderer walks RESTAURANT_PRIORITY_CHECKS and assigns
 // each check one of three statuses: 'pass', 'fail', 'unverified'. The
-// readiness score is a weighted-pass rollup that HONESTLY excludes
-// unverified checks from both the numerator and denominator — that way
-// a site we can't fully scan isn't punished for gaps we can't confirm.
+// readiness score is a weighted-pass rollup.
 //
 //   weight   (per check) — defaults to 1.0; see RESTAURANT_PRIORITY_CHECKS.
-//   'pass'   — adds full credit, counted in denominator.
-//   'fail'   — adds zero credit, counted in denominator.
-//   'unverified' — ignored entirely.
+//   'pass'   — adds full credit, full weight to the denominator.
+//   'fail'   — adds zero credit, full weight to the denominator.
+//   'unverified' — zero credit, HALF weight to the denominator (A1).
+//
+// Half-weighting unverified checks avoids the old bug where a site we
+// couldn't fully scan could score higher than a clean-scanning site
+// with the same number of fails. The adjustment is disclosed in the
+// UI via state.unverifiedWeight so owners can see the penalty.
 //
 // Phase B-H will extend the scoring to honor subtype-weight overrides
 // via subtypeWeights(id, checkId); for now these helpers preserve the
@@ -1085,7 +1423,8 @@ function createRestaurantReadinessState() {
     passCount: 0,
     unverifiedCount: 0,
     totalWeight: 0,
-    weightedCredit: 0
+    weightedCredit: 0,
+    unverifiedWeight: 0
   };
 }
 
@@ -1121,7 +1460,17 @@ function accumulateRestaurantReadiness(state, def, status, subtypeId) {
   } else if (status === 'fail') {
     state.totalWeight += w;    // credit = 0 on fail
   } else {
-    state.unverifiedCount++;   // excluded from the rollup
+    // Sprint A1: unverified checks now carry half-weight against the
+    // denominator (zero credit). Previously they were excluded from
+    // both sides, which inflated scores on sites we couldn't fully
+    // scan. Half-weight is a calibrated compromise between "assume the
+    // worst" (unfair to reachable-but-slow sites) and "ignore entirely"
+    // (rewards opacity). The half-weight is also tracked separately so
+    // the UI can disclose the adjustment to the owner.
+    state.unverifiedCount++;
+    var uw = 0.5 * w;
+    state.totalWeight += uw;
+    state.unverifiedWeight += uw;
   }
 }
 
@@ -1528,4 +1877,289 @@ function checkOgShareMeta(html) {
   out.score = (out.ogTitle?1:0) + (out.ogDescription?1:0) + (out.ogImage?1:0) +
               (out.twitterCard?1:0) + (out.twitterImage?1:0);
   return out;
+}
+
+// ---------------------------------------------------------------------------
+// Sprint BB1: POWERED_BY — single source of truth for every API,
+// framework, and data source the audit tool actually uses at runtime.
+// Rendered in the "How this audit was built" footer, the PDF cover,
+// the share-card PNG footer, and the OG / Twitter descriptions so
+// there is exactly one place to update when we add or remove a data
+// source. Each entry carries { name, vendor, license, role, url }.
+// ---------------------------------------------------------------------------
+var POWERED_BY = [
+  { name: 'Lighthouse',           vendor: 'Google',             license: 'Apache-2.0', role: 'Performance / Accessibility / Best Practices / SEO scoring',
+    role_es: 'Puntuación de rendimiento / accesibilidad / buenas prácticas / SEO',
+    url: 'https://developer.chrome.com/docs/lighthouse/overview' },
+  { name: 'PageSpeed Insights',   vendor: 'Google',             license: 'Proprietary API', role: 'Hosted Lighthouse runs + CrUX field data',
+    role_es: 'Ejecuciones alojadas de Lighthouse + datos de campo CrUX',
+    url: 'https://pagespeed.web.dev/' },
+  { name: 'Chrome UX Report',     vendor: 'Google',             license: 'Open dataset', role: 'Real-user Core Web Vitals (LCP / CLS / INP)',
+    role_es: 'Métricas Web Esenciales reales (LCP / CLS / INP)',
+    url: 'https://developer.chrome.com/docs/crux' },
+  { name: 'schema.org',           vendor: 'schema.org',         license: 'CC-BY-SA',   role: 'Restaurant JSON-LD vocabulary',
+    role_es: 'Vocabulario JSON-LD para restaurantes',
+    url: 'https://schema.org/Restaurant' },
+  { name: 'Plausible Analytics',  vendor: 'Plausible',          license: 'AGPL-3.0',   role: 'Privacy-respecting audit event counters',
+    role_es: 'Contadores de eventos de auditoría respetando la privacidad',
+    url: 'https://plausible.io/' },
+  { name: 'jsPDF',                vendor: 'parallax',           license: 'MIT',        role: 'Client-side PDF export',
+    role_es: 'Exportación de PDF en el navegador',
+    url: 'https://github.com/parallax/jsPDF' },
+  { name: 'Fraunces',             vendor: 'Undercase Type',     license: 'OFL-1.1',    role: 'Display / heading typeface',
+    role_es: 'Tipografía de títulos y display',
+    url: 'https://fonts.google.com/specimen/Fraunces' },
+  { name: 'Inter',                vendor: 'Rasmus Andersson',   license: 'OFL-1.1',    role: 'Body / UI typeface',
+    role_es: 'Tipografía de cuerpo y UI',
+    url: 'https://rsms.me/inter/' },
+  { name: 'Cloudflare Workers',   vendor: 'Cloudflare',         license: 'Proprietary runtime', role: 'Edge API: PSI proxy, page crawl, schema check',
+    role_es: 'API en el edge: proxy PSI, rastreo de página, verificación de schema',
+    url: 'https://workers.cloudflare.com/' },
+  { name: 'Resend',               vendor: 'Resend',             license: 'Proprietary API', role: 'PDF delivery email',
+    role_es: 'Envío del PDF por correo',
+    url: 'https://resend.com/' }
+];
+// Helper for the "How this audit was built" footer — returns the
+// role string in the current locale with EN fallback.
+function poweredByRole(entry, lang) {
+  if (!entry) return '';
+  var L = lang || (typeof window !== 'undefined' && window.__muntinLang) || 'en';
+  if (L === 'es' && entry.role_es) return entry.role_es;
+  return entry.role || '';
+}
+
+// Sprint ES9: return a shallow-merged copy of a check definition with
+// the localized string fields swapped in when window.__muntinLang is
+// 'es'. Pattern: any field `foo` can have an `foo_es` sibling; when
+// lang is 'es' and the _es variant is a non-empty string, it wins.
+// Falls back to English silently if the _es variant is missing.
+//
+// Applied to the TOP-LEVEL check def and to each byType[subtype]
+// override before rendering, so translators can localize either tier
+// independently as coverage grows.
+function localizeCheckCopy(def, lang) {
+  if (!def) return def;
+  var L = lang || (typeof window !== 'undefined' && window.__muntinLang) || 'en';
+  if (L !== 'es') return def;
+  var localeKeys = [
+    'title', 'pass', 'fail', 'unverified', 'impact',
+    'passNote', 'passNoteText', 'failNote', 'unverifiedNote'
+  ];
+  var out = null;
+  for (var i = 0; i < localeKeys.length; i++) {
+    var k = localeKeys[i];
+    var esVal = def[k + '_es'];
+    if (typeof esVal === 'string' && esVal.length > 0) {
+      if (!out) {
+        out = {};
+        for (var key in def) {
+          if (Object.prototype.hasOwnProperty.call(def, key)) out[key] = def[key];
+        }
+      }
+      out[k] = esVal;
+    }
+  }
+  return out || def;
+}
+// Canonical one-line description used in OG/Twitter cards, PDF cover,
+// share-card footer, and the tool's meta description. Exactly one
+// source of truth — if this string changes, every surface updates.
+var MUNTIN_AUDIT_DESCRIPTION = 'A Muntin Digital creation — a free restaurant website audit combining Google Lighthouse, PageSpeed Insights, CrUX field data, schema.org validation, and restaurant-specific checks. No signup, no paywall, no dark patterns.';
+var MUNTIN_AUDIT_DESCRIPTION_ES = 'Una creación de Muntin Digital — una auditoría gratuita del sitio web de tu restaurante que combina Google Lighthouse, PageSpeed Insights, datos reales de CrUX, validación de schema.org y verificaciones específicas para restaurantes. Sin registro, sin muros de pago, sin trucos.';
+
+// ---------------------------------------------------------------------------
+// Sprint ES1: UI_I18N — the single translation map shared by both
+// tools/audits/restaurant/index.html (EN) and es/tools/audits/
+// restaurant/index.html (ES). Every string that a user reads on
+// either page should live here; the t(key, vars) helper picks EN or
+// ES based on window.__muntinLang (set early by the language-
+// detection block in each HTML file). Adding a new string means a
+// one-time edit in this file, not two edits per locale.
+//
+// Conventions:
+//   - keys are dot-namespaced: 'ui.<section>.<purpose>'
+//   - template variables use {name} placeholders
+//   - when a translation is missing, t() falls back to English and
+//     flags it on window.__auditMissingTranslations for scripts/
+//     check-locale-parity.mjs to surface
+// ---------------------------------------------------------------------------
+var UI_I18N = {
+  'ring.label': {
+    en: '{score}/100',
+    es: '{score}/100'
+  },
+  'ring.label.unverified': {
+    en: '{score}/100 · {count} check{s} unverified',
+    es: '{score}/100 · {count} verificaci{on} sin confirmar'
+  },
+  'verdict.90': {
+    en: 'Your site is in great shape. Most restaurants would be thrilled to hit this score. Small polish items may remain — check the breakdown below.',
+    es: 'Tu sitio está en excelente forma. La mayoría de los restaurantes estaría feliz con esta puntuación. Quedan pulidos menores — revisa el desglose abajo.'
+  },
+  'verdict.70': {
+    en: 'Solid foundation with room to tighten up. Focus on the red and amber items below — most are mechanical fixes that push your scores into the green (90+) zone.',
+    es: 'Base sólida con margen para ajustar. Concéntrate en los elementos rojos y ámbar abajo — la mayoría son arreglos mecánicos que suben tu puntuación a la zona verde (90+).'
+  },
+  'verdict.50': {
+    en: "The site works, but it's leaking conversions. The good news: the wins here — load speed, image alt text, meta tags, schema — take days, not months, and they're listed in priority order below.",
+    es: 'El sitio funciona, pero está dejando conversiones en la mesa. La buena noticia: las ganancias aquí — velocidad de carga, texto alternativo de imágenes, meta tags, schema — toman días, no meses, y están listadas por prioridad abajo.'
+  },
+  'verdict.below': {
+    en: "There's real work to do. Scores in this range usually track with a template site hitting its ceiling — font sizes, tap targets, page speed, and schema markup all tend to be fixable, but they add up. Start with the failing items below, in the order they're listed.",
+    es: 'Hay trabajo real por hacer. Puntuaciones en este rango suelen venir de un sitio plantilla que llegó a su tope — tamaños de fuente, áreas tocables, velocidad y marcado schema todos se pueden arreglar, pero se acumulan. Empieza con los elementos fallidos abajo, en el orden listado.'
+  },
+  'verdict.unverifiedSuffix': {
+    en: " We couldn't verify {count} checks on this pass — each one is counted at half weight. Confirming them below will sharpen the score in either direction.",
+    es: ' No pudimos verificar {count} verificaciones esta vez — cada una cuenta a medio peso. Confirmarlas abajo afinará la puntuación en cualquier dirección.'
+  },
+  'topfixes.eta.rebuild': {
+    en: 'One of these is a site rebuild — plan a month, not a weekend.',
+    es: 'Una de estas es reconstruir el sitio — planifica un mes, no un fin de semana.'
+  },
+  'topfixes.eta.afternoon': {
+    en: 'About one focused afternoon across all three.',
+    es: 'Una tarde de trabajo concentrado entre las tres.'
+  },
+  'topfixes.eta.shortSelf': {
+    en: '~1 afternoon — you can handle it yourself.',
+    es: '~1 tarde — lo puedes resolver tú mismo.'
+  },
+  'topfixes.eta.shortDev': {
+    en: '~1 afternoon of dev time.',
+    es: '~1 tarde de trabajo de desarrollo.'
+  },
+  'topfixes.eta.weekendSelf': {
+    en: '~1 weekend — doable on a Saturday.',
+    es: '~1 fin de semana — se hace un sábado.'
+  },
+  'topfixes.eta.weekendDev': {
+    en: '~1 weekend of dev time.',
+    es: '~1 fin de semana de trabajo de desarrollo.'
+  },
+  'topfixes.eta.twoWeekends': {
+    en: '~2 weekends of work — break into Saturday and the next.',
+    es: '~2 fines de semana de trabajo — divídelo entre un sábado y el siguiente.'
+  },
+  'topfixes.eta.threeFourWeekends': {
+    en: '~3–4 weekends of work — scope it like a mini-project.',
+    es: '~3–4 fines de semana de trabajo — trátalo como un mini-proyecto.'
+  },
+  'topfixes.eta.many': {
+    en: "Several weekends — stage it, don't try to do it all at once.",
+    es: 'Varios fines de semana — organízalo por etapas, no intentes hacerlo todo de una vez.'
+  },
+  'chip.revenue': {
+    en: 'Est. {low}–{high}/yr at risk',
+    es: 'Est. {low}–{high}/año en riesgo'
+  },
+  'chip.revenue.title': {
+    en: 'Order-of-magnitude estimate based on typical 50 covers/day × $35 avg check. Change these inputs to recalculate.',
+    es: 'Estimación de orden de magnitud basada en 50 cubiertos/día × $35 cheque promedio típicos. Cambia estos valores para recalcular.'
+  },
+  'btc.confirmed': {
+    en: 'You confirmed',
+    es: 'Tú lo confirmaste'
+  },
+  'btc.high': {
+    en: 'High confidence · {pct}%',
+    es: 'Alta confianza · {pct}%'
+  },
+  'btc.medium': {
+    en: 'Best guess · {pct}%',
+    es: 'Mejor suposición · {pct}%'
+  },
+  'btc.uncertain': {
+    en: 'Uncertain — please pick',
+    es: 'Incierto — elige uno'
+  },
+  'btc.sub.confirmed': {
+    en: "You told us what kind of restaurant this is — we're using it to tailor the checks below to your segment.",
+    es: 'Nos dijiste qué tipo de restaurante es — lo usamos para ajustar las verificaciones de abajo a tu segmento.'
+  },
+  'btc.sub.low': {
+    en: "We're not confident on this one. Pick the closest match so the checks below apply the right weights — otherwise we'll use a neutral baseline.",
+    es: 'No estamos seguros aquí. Elige la opción más cercana para que las verificaciones de abajo apliquen los pesos correctos — si no, usamos una base neutral.'
+  },
+  'btc.sub.medium': {
+    en: "Our best guess from schema markup, platform, and page content. If we got it wrong, pick the right one — the checks below will update live.",
+    es: 'Nuestra mejor suposición según el schema, la plataforma y el contenido. Si nos equivocamos, elige el correcto — las verificaciones de abajo se actualizan en vivo.'
+  },
+  'btc.sub.high': {
+    en: "Auto-detected from schema markup, ordering/reservation platform, and page content. If we got it wrong, pick the right one — the checks below will update live.",
+    es: 'Detectado automáticamente por el schema, la plataforma de pedidos/reservas y el contenido. Si nos equivocamos, elige el correcto — las verificaciones de abajo se actualizan en vivo.'
+  },
+  'print.manager': {
+    en: 'Print for your manager',
+    es: 'Imprimir para tu gerente'
+  },
+  'print.worksheet.notes': {
+    en: 'Notes / assigned to:',
+    es: 'Notas / asignado a:'
+  }
+};
+
+// Pluralization helper for ES: most nouns just take -es / -s, but
+// "verificación" → "verificaciones" (accent shifts), and we need
+// locale-aware plural suffixes that English doesn't. Keep this
+// map small and extend only as new strings land.
+var ES_PLURAL = {
+  'on': function(n){ return n === 1 ? 'ón' : 'ones'; }
+};
+
+function t(key, vars, lang) {
+  var L = lang || (typeof window !== 'undefined' && window.__muntinLang) || 'en';
+  if (L !== 'es') L = 'en';
+  var entry = UI_I18N[key];
+  var str;
+  if (!entry) {
+    // Missing key entirely — mark for the parity checker and fall
+    // back to the key itself so the bug is visible, not silent.
+    if (typeof window !== 'undefined') {
+      window.__auditMissingTranslations = window.__auditMissingTranslations || {};
+      window.__auditMissingTranslations[key] = true;
+    }
+    str = key;
+  } else if (entry[L]) {
+    str = entry[L];
+  } else {
+    // Key present but this locale missing — fall back to EN and
+    // flag so the translator has a punch list.
+    if (typeof window !== 'undefined' && L !== 'en') {
+      window.__auditMissingTranslations = window.__auditMissingTranslations || {};
+      window.__auditMissingTranslations[key + '[' + L + ']'] = true;
+    }
+    str = entry.en || key;
+  }
+  if (!vars) return str;
+  return str.replace(/\{(\w+)\}/g, function(_m, name){
+    // ES-aware pluralization: {on} renders differently based on
+    // a numeric 'count' var in the same template.
+    if (L === 'es' && ES_PLURAL[name] && typeof vars.count === 'number') {
+      return ES_PLURAL[name](vars.count);
+    }
+    if (name === 's' && typeof vars.count === 'number') {
+      // English "check" vs "checks" — pick suffix from count.
+      return vars.count === 1 ? '' : 's';
+    }
+    return vars[name] != null ? String(vars[name]) : '';
+  });
+}
+
+// Sprint A5: Node-only export shim so a scoring regression test can
+// import the readiness helpers without a browser. The `typeof module`
+// guard keeps this a no-op for the classic-script load path in the
+// browser. Only the scorer internals are exported; everything else
+// stays a plain top-level global as before.
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    createRestaurantReadinessState: createRestaurantReadinessState,
+    accumulateRestaurantReadiness: accumulateRestaurantReadiness,
+    finalizeRestaurantReadinessScore: finalizeRestaurantReadinessScore,
+    POWERED_BY: POWERED_BY,
+    MUNTIN_AUDIT_DESCRIPTION: MUNTIN_AUDIT_DESCRIPTION,
+    MUNTIN_AUDIT_DESCRIPTION_ES: MUNTIN_AUDIT_DESCRIPTION_ES,
+    UI_I18N: UI_I18N,
+    t: t,
+    poweredByRole: poweredByRole
+  };
 }
