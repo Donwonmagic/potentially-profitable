@@ -1598,8 +1598,14 @@ async function handlePsi(request, env, ctx) {
   upstream.searchParams.set('key', env.PSI_API_KEY);
 
   try {
+    // Sprint B1: cap the PSI call at 30s. Lighthouse runs occasionally
+    // stall longer than that on origin-side issues, and without an
+    // explicit signal the Worker previously held the connection open
+    // up to Cloudflare's 120s ceiling, blocking the frontend loader
+    // UI and tying up a Worker invocation slot.
     const res  = await fetch(upstream.toString(), {
-      headers: { 'Accept': 'application/json' }
+      headers: { 'Accept': 'application/json' },
+      signal: AbortSignal.timeout(30000)
     });
     const body = await res.text();
     // Pass through status + JSON body so the client can see PSI's
@@ -1614,7 +1620,13 @@ async function handlePsi(request, env, ctx) {
     });
   } catch (err) {
     console.error('[psi] upstream fetch failed:', err && err.stack ? err.stack : err);
-    return jsonResponse({ ok: false, error: 'Failed to reach PageSpeed Insights' }, 502);
+    const isTimeout = err && (err.name === 'TimeoutError' || err.name === 'AbortError');
+    return jsonResponse(
+      { ok: false, error: isTimeout
+          ? 'PageSpeed Insights took longer than 30s — please retry'
+          : 'Failed to reach PageSpeed Insights' },
+      isTimeout ? 504 : 502
+    );
   }
 }
 
