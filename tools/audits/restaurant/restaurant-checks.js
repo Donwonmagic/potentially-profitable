@@ -749,67 +749,111 @@ var RESTAURANT_PRIORITY_CHECKS = [
     byType: {
       'fine-dining': {
         impact: 'Reservations are the entire business model for fine dining. Every booking taken on your site (via Resy, Tock, SevenRooms, or an embedded widget) keeps the relationship — and the deposit, for prix-fixe reservations — instead of sending it through OpenTable.',
+        impact_es: 'Las reservas son el modelo de negocio completo del fine-dining. Cada reserva tomada en tu sitio (vía Resy, Tock, SevenRooms o un widget embebido) conserva la relación — y el depósito, para reservas de menú prix-fixe — en vez de enviarla por OpenTable.',
         pass: 'Guests can reserve a table online',
+        pass_es: 'Los comensales pueden reservar mesa en línea',
         passNote: '{detected} on your site — guests can book directly, and you keep the relationship (and any deposit) instead of paying per-cover fees to a marketplace.',
+        passNote_es: '{detected} en tu sitio — los comensales pueden reservar directamente, y conservas la relación (y cualquier depósito) en vez de pagar cuotas por cubierto a un marketplace.',
         passNoteText: "We found text that suggests self-hosted reservations ('RESERVE A TABLE', 'Book Your Seat') but couldn't match it to a specific platform.",
+        passNoteText_es: 'Encontramos texto que sugiere reservas propias ("RESERVA UNA MESA", "Reserva tu Lugar") pero no pudimos vincularlo a una plataforma específica.',
         unverified: "We couldn't detect online reservations — is this right?",
-        unverifiedNote: "We scan for reservation platforms including Resy, Tock, SevenRooms, OpenTable, Yelp Reservations, TheFork, and more. Fine-dining restaurants that don\'t take online reservations are leaving money on the table — every phone-only booking is a guest who might not bother."
+        unverified_es: 'No pudimos detectar reservas en línea — ¿es correcto?',
+        unverifiedNote: "We scan for reservation platforms including Resy, Tock, SevenRooms, OpenTable, Yelp Reservations, TheFork, and more. Fine-dining restaurants that don\'t take online reservations are leaving money on the table — every phone-only booking is a guest who might not bother.",
+        unverifiedNote_es: 'Buscamos plataformas de reservas incluyendo Resy, Tock, SevenRooms, OpenTable, Yelp Reservations, TheFork y más. Los restaurantes de fine-dining que no toman reservas en línea están dejando dinero en la mesa — cada reserva solo-teléfono es un comensal que podría no molestarse.'
       },
       'casual-dining': {
         impact: 'Casual dining lives in both worlds — reservations for dinner rushes, online ordering for takeout and delivery. Missing either one sends revenue to OpenTable, DoorDash, or a competitor that has both.',
+        impact_es: 'El casual dining vive en ambos mundos — reservas para las horas pico de cena, pedidos en línea para llevar y delivery. Que falte cualquiera de los dos manda ingresos a OpenTable, DoorDash o a un competidor que tenga ambos.',
         pass: 'Guests can reserve or order online',
-        passNote: '{detected} on your site — guests can book a table or place a takeout order directly, which is the pattern that wins for casual-dining restaurants.'
+        pass_es: 'Los comensales pueden reservar u ordenar en línea',
+        passNote: '{detected} on your site — guests can book a table or place a takeout order directly, which is the pattern that wins for casual-dining restaurants.',
+        passNote_es: '{detected} en tu sitio — los comensales pueden reservar mesa o hacer un pedido para llevar directamente, el patrón ganador para restaurantes casual-dining.'
       },
       'fast-casual': {
         impact: 'Online ordering IS the business model for fast-casual. Every order through your own Toast or ChowNow checkout keeps the 30% DoorDash commission in your pocket. A site without direct ordering is a site that hands margin to marketplaces every day.',
+        impact_es: 'Los pedidos en línea SON el modelo de negocio del fast-casual. Cada pedido por tu propio checkout de Toast o ChowNow mantiene el 30% de comisión de DoorDash en tu bolsillo. Un sitio sin pedidos directos es un sitio que entrega margen a los marketplaces todos los días.',
         pass: 'Customers can order online',
+        pass_es: 'Los clientes pueden ordenar en línea',
         passNote: '{detected} on your site — direct orders keep the full margin, and you own the customer data.',
+        passNote_es: '{detected} en tu sitio — los pedidos directos mantienen el margen completo, y tú eres dueño de los datos del cliente.',
         passNoteText: "We found text that suggests self-hosted ordering ('ORDER ONLINE', 'Order for Pickup') but couldn't match it to a specific platform.",
+        passNoteText_es: 'Encontramos texto que sugiere pedidos propios ("ORDENA EN LÍNEA", "Pedido para Pickup") pero no pudimos vincularlo a una plataforma específica.',
         unverified: "We couldn't detect online ordering — is this right?",
-        unverifiedNote: "We scan for ordering platforms including Toast, Square, ChowNow, BentoBox, Olo, Lunchbox, Slice, Menufy, and dozens more. Fast-casual restaurants without direct online ordering are sending 20–30% of every order to DoorDash/Grubhub as commission."
+        unverified_es: 'No pudimos detectar pedidos en línea — ¿es correcto?',
+        unverifiedNote: "We scan for ordering platforms including Toast, Square, ChowNow, BentoBox, Olo, Lunchbox, Slice, Menufy, and dozens more. Fast-casual restaurants without direct online ordering are sending 20–30% of every order to DoorDash/Grubhub as commission.",
+        unverifiedNote_es: 'Buscamos plataformas de pedidos incluyendo Toast, Square, ChowNow, BentoBox, Olo, Lunchbox, Slice, Menufy y docenas más. Los restaurantes fast-casual sin pedidos directos en línea están mandando 20-30% de cada pedido a DoorDash/Grubhub como comisión.'
       },
       'cafe': {
         impact: 'Direct online ordering matters even for small cafés — pre-orders for commuters, whole-cake orders for birthdays, catering trays for offices. Square and Toast make this table stakes; a site without ordering sends those conversions through Grubhub.',
+        impact_es: 'Los pedidos directos en línea importan incluso para cafés pequeños — pre-pedidos para trabajadores, pedidos de pasteles enteros para cumpleaños, charolas de catering para oficinas. Square y Toast hacen esto el piso mínimo; un sitio sin pedidos manda esas conversiones por Grubhub.',
         pass: 'Customers can order online',
+        pass_es: 'Los clientes pueden ordenar en línea',
         passNote: '{detected} on your site — commuter pre-orders, custom-cake inquiries, and catering tray orders all flow to you directly instead of a commissioned aggregator.',
-        unverifiedNote: "We scan for café-friendly platforms like Square, Toast, ChowNow, and more. Even a simple online-order page for pre-orders, custom cakes, or catering is a meaningful revenue channel for cafés and bakeries."
+        passNote_es: '{detected} en tu sitio — pre-pedidos de trabajadores, consultas de pasteles personalizados y pedidos de charolas de catering todos fluyen a ti directamente en vez de a un agregador con comisiones.',
+        unverifiedNote: "We scan for café-friendly platforms like Square, Toast, ChowNow, and more. Even a simple online-order page for pre-orders, custom cakes, or catering is a meaningful revenue channel for cafés and bakeries.",
+        unverifiedNote_es: 'Buscamos plataformas amigables para cafés como Square, Toast, ChowNow y más. Incluso una página simple de pedidos en línea para pre-pedidos, pasteles personalizados o catering es un canal de ingresos significativo para cafés y panaderías.'
       },
       'bakery': {
         impact: 'Online pre-orders ARE the business model for modern bakeries — customers who cannot pre-order online end up ordering through Instagram DMs or giving up. Custom-cake inquiry forms, wedding-cake intake, and whole-pie pre-orders all belong on your site directly, where the margin stays with you.',
+        impact_es: 'Los pre-pedidos en línea SON el modelo de negocio de las panaderías modernas — los clientes que no pueden pre-ordenar terminan pidiendo por DMs de Instagram o rindiéndose. Formularios de consulta de pasteles personalizados, intake de pasteles de boda y pre-pedidos de pays enteros pertenecen en tu sitio directamente, donde el margen se queda contigo.',
         pass: 'Customers can pre-order online',
+        pass_es: 'Los clientes pueden pre-ordenar en línea',
         passNote: '{detected} on your site — pre-orders, custom-cake inquiries, and whole-pie bookings all flow to you directly instead of becoming DMs your staff has to answer by hand.',
-        unverifiedNote: "We scan for bakery-friendly platforms (Square, Toast) plus generic order-ahead widgets. Even a simple HTML pre-order page for custom cakes or catering is a real revenue channel for bakeries and pâtisseries."
+        passNote_es: '{detected} en tu sitio — pre-pedidos, consultas de pasteles personalizados y reservas de pays enteros fluyen a ti directamente en vez de convertirse en DMs que tu equipo tenga que contestar a mano.',
+        unverifiedNote: "We scan for bakery-friendly platforms (Square, Toast) plus generic order-ahead widgets. Even a simple HTML pre-order page for custom cakes or catering is a real revenue channel for bakeries and pâtisseries.",
+        unverifiedNote_es: 'Buscamos plataformas amigables para panadería (Square, Toast) más widgets genéricos de pedidos por adelantado. Incluso una página HTML simple de pre-pedidos para pasteles personalizados o catering es un canal de ingresos real para panaderías y pâtisseries.'
       },
       'pizzeria': {
         impact: 'Online ordering IS the business model for a pizzeria. Every order that flows through Slice, DoorDash, or Grubhub costs you 20-30% commission — on a $25 pie that is $5-7 of margin walking out the door. A direct Toast or ChowNow flow (or even a Slice "direct" storefront) can cut that commission in half, and owning the customer data is worth even more than the commission saved.',
+        impact_es: 'Los pedidos en línea SON el modelo de negocio de una pizzería. Cada pedido por Slice, DoorDash o Grubhub te cuesta 20-30% de comisión — en una pizza de $25 son $5-7 de margen saliendo por la puerta. Un flujo directo de Toast o ChowNow (o incluso un Slice "direct") puede recortar esa comisión a la mitad, y ser dueño de los datos del cliente vale aún más que la comisión ahorrada.',
         pass: 'Customers can order delivery / pickup online',
+        pass_es: 'Los clientes pueden ordenar delivery / pickup en línea',
         passNote: '{detected} on your site — every direct order keeps 20-30% more margin than a Slice or DoorDash order AND builds a repeat-customer list you own.',
+        passNote_es: '{detected} en tu sitio — cada pedido directo mantiene 20-30% más margen que un pedido por Slice o DoorDash Y construye una lista de clientes repetidos que tú posees.',
         passNoteText: "We found 'Order Online' / 'Order Delivery' / 'Start a Pickup Order' copy but could not pin it to a specific platform.",
-        unverifiedNote: "We scan for pizzeria-heavy platforms including Slice, Toast, ChowNow, Square, Olo, Menufy, and the major aggregators (DoorDash, Grubhub, Uber Eats). If you only take phone orders today, every online order you add is commission-free margin."
+        passNoteText_es: 'Encontramos texto "Ordenar en Línea" / "Ordenar Delivery" / "Iniciar Pedido Pickup" pero no pudimos vincularlo a una plataforma específica.',
+        unverifiedNote: "We scan for pizzeria-heavy platforms including Slice, Toast, ChowNow, Square, Olo, Menufy, and the major aggregators (DoorDash, Grubhub, Uber Eats). If you only take phone orders today, every online order you add is commission-free margin.",
+        unverifiedNote_es: 'Buscamos plataformas pizza-pesadas incluyendo Slice, Toast, ChowNow, Square, Olo, Menufy y los principales agregadores (DoorDash, Grubhub, Uber Eats). Si hoy solo tomas pedidos por teléfono, cada pedido en línea que agregues es margen sin comisión.'
       },
       'food-truck': {
         impact: 'Day-of ordering from a food-truck site is less common — most trucks take cash or Venmo at the window. Where online ordering DOES matter is pre-orders for group meetups, catering/private-event inquiries, and merchandise (t-shirts, hot sauces, bean subscriptions). Missing a pre-order or inquiry form sends those leads to Instagram DMs where they get buried.',
+        impact_es: 'El pedido del día desde un sitio de food truck es menos común — la mayoría de los trucks toman efectivo o Venmo en la ventana. Donde los pedidos en línea SÍ importan es para pre-pedidos de reuniones grupales, consultas de catering/eventos privados y mercancía (camisetas, salsas picantes, suscripciones de granos). Que falte un formulario de pre-pedido o consulta manda esos leads a DMs de Instagram donde se entierran.',
         pass: 'Customers can pre-order or inquire online',
+        pass_es: 'Los clientes pueden pre-ordenar o consultar en línea',
         passNote: '{detected} on your site — group pre-orders and catering inquiries land in a form instead of a DM thread your staff has to untangle.',
-        unverifiedNote: "We scan for food-truck-friendly platforms (Square, Toast) and generic inquiry forms. Day-of ordering is usually not the goal — the high-value flow is a catering/private-event inquiry form, where every submission is a \$500-\$3000 opportunity."
+        passNote_es: '{detected} en tu sitio — los pre-pedidos grupales y consultas de catering aterrizan en un formulario en vez de un hilo de DMs que tu equipo tenga que desenredar.',
+        unverifiedNote: "We scan for food-truck-friendly platforms (Square, Toast) and generic inquiry forms. Day-of ordering is usually not the goal — the high-value flow is a catering/private-event inquiry form, where every submission is a \$500-\$3000 opportunity.",
+        unverifiedNote_es: 'Buscamos plataformas amigables para food trucks (Square, Toast) y formularios genéricos de consulta. El pedido del día normalmente no es el objetivo — el flujo de alto valor es un formulario de consulta de catering/eventos privados, donde cada envío es una oportunidad de $500-$3000.'
       },
       'ghost-kitchen': {
         impact: 'Ghost kitchens live or die on aggregator presence — DoorDash, Uber Eats, Grubhub, Caviar, Postmates. Clear links to EVERY aggregator you\'re on are the primary conversion; a direct-order flow on your own site is a nice-to-have (and keeps more margin when it converts), but the aggregator links are what customers actually use.',
+        impact_es: 'Las cocinas fantasma viven o mueren por la presencia en agregadores — DoorDash, Uber Eats, Grubhub, Caviar, Postmates. Los enlaces claros a CADA agregador donde estés son la conversión principal; un flujo de pedido directo en tu propio sitio es un bonus (y mantiene más margen cuando convierte), pero los enlaces a los agregadores son los que los clientes realmente usan.',
         pass: 'Customers can order via aggregators / direct',
+        pass_es: 'Los clientes pueden ordenar por agregadores / directo',
         passNote: '{detected} on your site — at minimum the aggregator you partner with is one tap from the homepage. A customer scanning your menu lands in an active order funnel, not a dead-end.',
-        unverifiedNote: "We scan for every major aggregator (DoorDash, Uber Eats, Grubhub, Postmates, Caviar, Deliveroo, Just Eat, Wolt, etc.) and middleware (Deliverect, Otter). Missing links to your actual aggregators is a conversion cliff — customers assume you\'re not available on their platform."
+        passNote_es: '{detected} en tu sitio — como mínimo el agregador con el que trabajas está a un tap de la página principal. Un cliente revisando tu menú aterriza en un funnel de pedido activo, no en un callejón sin salida.',
+        unverifiedNote: "We scan for every major aggregator (DoorDash, Uber Eats, Grubhub, Postmates, Caviar, Deliveroo, Just Eat, Wolt, etc.) and middleware (Deliverect, Otter). Missing links to your actual aggregators is a conversion cliff — customers assume you\'re not available on their platform.",
+        unverifiedNote_es: 'Buscamos cada agregador principal (DoorDash, Uber Eats, Grubhub, Postmates, Caviar, Deliveroo, Just Eat, Wolt, etc.) y middleware (Deliverect, Otter). Que falten enlaces a tus agregadores reales es un precipicio de conversión — los clientes asumen que no estás disponible en su plataforma.'
       },
       'catering-only': {
         impact: 'The "conversion" on a catering site is a quote request, not an online order. ezCater, CaterTrax, and Tripleseat all offer structured intake; a custom RFQ form works too, provided it captures head count, event date, dietary restrictions, delivery address, and a phone number. A site without any structured intake is routing bookings through generic email — which wins you nothing and loses you many.',
+        impact_es: 'La "conversión" en un sitio de catering es una solicitud de cotización, no un pedido en línea. ezCater, CaterTrax y Tripleseat todos ofrecen intake estructurado; un formulario RFQ personalizado también funciona, siempre que capture número de personas, fecha del evento, restricciones dietéticas, dirección de entrega y un teléfono. Un sitio sin intake estructurado está enrutando reservas por correo genérico — lo que no te gana nada y te pierde muchas.',
         pass: 'Planners can request a quote online',
+        pass_es: 'Los planificadores pueden solicitar cotización en línea',
         passNote: '{detected} on your site — event planners can start a quote request with their head count, date, and dietary notes in one place, instead of writing a cold email.',
-        unverifiedNote: "We scan for catering-focused platforms (ezCater, CaterTrax, Tripleseat) and generic RFQ/quote forms. A structured intake form is worth several emails of back-and-forth per booking — it\'s the single most impactful addition to a catering-only site without a booking flow."
+        passNote_es: '{detected} en tu sitio — los planificadores de eventos pueden empezar una solicitud de cotización con su número de personas, fecha y notas dietéticas en un solo lugar, en vez de escribir un correo en frío.',
+        unverifiedNote: "We scan for catering-focused platforms (ezCater, CaterTrax, Tripleseat) and generic RFQ/quote forms. A structured intake form is worth several emails of back-and-forth per booking — it\'s the single most impactful addition to a catering-only site without a booking flow.",
+        unverifiedNote_es: 'Buscamos plataformas enfocadas a catering (ezCater, CaterTrax, Tripleseat) y formularios RFQ/cotización genéricos. Un formulario de intake estructurado vale varios correos de ida y vuelta por reserva — es la adición de más impacto en un sitio de catering sin flujo de reservas.'
       },
       'bar-pub': {
         impact: 'Bars and pubs vary — some take reservations, most take walk-ins. But even walk-in bars benefit from event bookings (private parties, tastings, brunches) and gift-card purchases. Tripleseat and similar platforms are common; a direct booking flow converts better than an email inquiry.',
+        impact_es: 'Los bares y pubs varían — algunos toman reservas, la mayoría toma walk-ins. Pero incluso los bares de walk-in se benefician de reservas de eventos (fiestas privadas, catas, brunches) y compras de tarjetas de regalo. Tripleseat y plataformas similares son comunes; un flujo de reservas directo convierte mejor que una consulta por correo.',
         pass: 'Guests can book events or reservations online',
+        pass_es: 'Los clientes pueden reservar eventos o reservas en línea',
         passNote: '{detected} on your site — event bookings and reservations can be handled without a back-and-forth email thread, which is where most bar-inquiry revenue falls through.',
-        unverifiedNote: "We scan for reservation and event-booking platforms including OpenTable, Resy, Tripleseat, and more. Not every bar needs online booking (walk-ins are legitimate) — but event and private-party inquiries almost always benefit from a direct booking flow."
+        passNote_es: '{detected} en tu sitio — las reservas de eventos y mesas pueden manejarse sin un hilo de correos de ida y vuelta, que es donde se cae la mayoría de los ingresos de consultas a bares.',
+        unverifiedNote: "We scan for reservation and event-booking platforms including OpenTable, Resy, Tripleseat, and more. Not every bar needs online booking (walk-ins are legitimate) — but event and private-party inquiries almost always benefit from a direct booking flow.",
+        unverifiedNote_es: 'Buscamos plataformas de reservas y reservas de eventos incluyendo OpenTable, Resy, Tripleseat y más. No todos los bares necesitan reservas en línea (los walk-ins son legítimos) — pero las consultas de eventos y fiestas privadas casi siempre se benefician de un flujo de reservas directo.'
       }
     }
   },
