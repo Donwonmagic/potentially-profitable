@@ -2245,66 +2245,68 @@
            and (in L3+) an attached PDF built from the audit state. -->
       <aside class="pdf-cta pdf-cta--top">
         <div class="pdf-cta-text">
-          <strong>Grab a PDF of this audit.</strong>
-          <span>Drop your email — we'll send a clean printable copy to your inbox. No list, no drip.</span>
+          <strong>Toma un PDF de este diagnóstico.</strong>
+          <span>Pega tu email — te enviamos una copia limpia e imprimible a tu inbox. Sin lista, sin drip.</span>
         </div>
         <form id="pdfCtaTopForm" class="pdf-cta-form" action="/api/audit-report" method="POST" novalidate>
           <input type="hidden" name="interest" value="restaurant-audit-report" />
-          <input type="hidden" name="source"   value="/tools/audits/restaurant/#top-cta" />
+          <input type="hidden" name="source"   value="/es/tools/audits/restaurant/#top-cta" />
+          <input type="hidden" name="locale"   value="es" />
           <input type="hidden" name="_gotcha"  value="" />
           <input type="hidden" name="audited_url"     id="pdfCtaTopUrl"       value="" />
           <input type="hidden" name="subtype"         id="pdfCtaTopSubtype"   value="" />
           <input type="hidden" name="overall_score"   id="pdfCtaTopScore"     value="" />
           <input type="hidden" name="shareable_link"  id="pdfCtaTopShareLink" value="" />
-          <label for="pdfCtaTopEmail" class="sr-only">Your email address</label>
-          <input type="email" id="pdfCtaTopEmail" name="email" required autocomplete="email" placeholder="you@yourrestaurant.com" />
-          <button type="submit">Email me the PDF <span aria-hidden="true">→</span></button>
+          <label for="pdfCtaTopEmail" class="sr-only">Tu dirección de email</label>
+          <input type="email" id="pdfCtaTopEmail" name="email" required autocomplete="email" placeholder="tu@turestaurante.com" />
+          <button type="submit">Envíame el PDF <span aria-hidden="true">→</span></button>
         </form>
         <p class="pdf-cta-toast" id="pdfCtaTopToast" aria-live="polite"></p>
       </aside>
 
-      <!-- Per-category opportunity drill-down — the specific Lighthouse
-           audits that failed, grouped by category, sorted by impact.
-           Populated from the raw PSI response in renderOpportunities(). -->
+      <!-- Drill-down de oportunidades por categoría — los audits
+           específicos de Lighthouse que fallaron, agrupados por
+           categoría, ordenados por impacto. Lo puebla
+           renderOpportunities() desde la respuesta cruda de PSI. -->
       <div class="opportunities-wrap" id="opportunitiesWrap" hidden>
         <div class="opportunities-head">
-          <h3>What's actually dragging your score down</h3>
-          <p>Every finding below comes straight from Google Lighthouse. They're grouped by category and sorted by estimated impact — fix the top items first.</p>
+          <h3>Qué está arrastrando tu puntaje hacia abajo en realidad</h3>
+          <p>Cada hallazgo debajo viene directo de Google Lighthouse. Están agrupados por categoría y ordenados por impacto estimado — arregla primero los ítems de arriba.</p>
         </div>
         <div id="opportunitiesBody"></div>
       </div>
 
-      <!-- Expandable glossary: plain-English explanations of each metric -->
+      <!-- Glosario expandible: explicaciones en español claro de cada métrica -->
       <details class="metric-glossary">
-        <summary>What do these numbers actually mean?</summary>
+        <summary>¿Qué significan en realidad estos números?</summary>
         <div class="glossary-body">
-          <h4>Performance (0–100)</h4>
-          <p>How fast your pages load and become usable on a phone. This is the metric that quietly costs restaurants the most money — Google's own research found that 53% of mobile visitors leave a page that takes longer than three seconds to load. A higher score means more people stick around long enough to see your menu.</p>
-          <p class="ranges"><strong>Good:</strong> 90+ &nbsp;·&nbsp; <strong>Needs work:</strong> 50–89 &nbsp;·&nbsp; <strong>Failing:</strong> &lt;50</p>
+          <h4>Rendimiento (0-100)</h4>
+          <p>Qué tan rápido cargan tus páginas y se vuelven usables en un teléfono. Esta es la métrica que en silencio les cuesta más dinero a los restaurantes — la propia investigación de Google encontró que el 53 % de los visitantes móviles abandonan una página que tarda más de tres segundos en cargar. Un puntaje más alto significa que más gente se queda lo suficiente para ver tu menú.</p>
+          <p class="ranges"><strong>Bueno:</strong> 90+ &nbsp;·&nbsp; <strong>Necesita trabajo:</strong> 50-89 &nbsp;·&nbsp; <strong>Fallando:</strong> &lt;50</p>
 
-          <h4>Accessibility (0–100)</h4>
-          <p>Whether people with vision impairments, motor differences, or screen readers can actually use your site. Half of this is legally required in many states. The other half is just good manners — about one in five of your customers benefits directly from an accessible site, and everyone benefits indirectly (better text contrast makes your site easier to read in sunlight too).</p>
-          <p class="ranges"><strong>Target:</strong> 100. Anything less means real people are being shut out.</p>
+          <h4>Accesibilidad (0-100)</h4>
+          <p>Si personas con impedimentos de visión, diferencias motoras o lectores de pantalla realmente pueden usar tu sitio. La mitad de esto es un requisito legal en muchos estados. La otra mitad es buena educación — cerca de uno de cada cinco de tus clientes se beneficia directo de un sitio accesible, y todos se benefician indirecto (mejor contraste de texto también hace que tu sitio sea más fácil de leer bajo el sol).</p>
+          <p class="ranges"><strong>Meta:</strong> 100. Cualquier cosa menos significa que gente real está siendo excluida.</p>
 
-          <h4>Best Practices (0–100)</h4>
-          <p>Whether your site follows modern, secure web standards — HTTPS, no vulnerable dependencies, no deprecated APIs. A well-built site should score 100 by default. A score under 90 usually points at a specific security or compatibility issue worth fixing.</p>
-          <p class="ranges"><strong>Target:</strong> 100.</p>
+          <h4>Buenas prácticas (0-100)</h4>
+          <p>Si tu sitio sigue los estándares web modernos y seguros — HTTPS, sin dependencias vulnerables, sin APIs obsoletas. Un sitio bien construido debería calificar 100 por default. Un puntaje por debajo de 90 usualmente apunta a un problema específico de seguridad o compatibilidad que vale la pena arreglar.</p>
+          <p class="ranges"><strong>Meta:</strong> 100.</p>
 
-          <h4>SEO (0–100)</h4>
-          <p>The technical SEO fundamentals — a working title tag, a meta description, a crawlable URL, a mobile-friendly viewport, structured data. This score measures whether Google <em>can</em> rank your site. It doesn't measure whether you <em>do</em> rank for specific keywords — that's a longer-term question about content and inbound links.</p>
-          <p class="ranges"><strong>Target:</strong> 100. Anything less is leaving ranking signals on the table.</p>
+          <h4>SEO (0-100)</h4>
+          <p>Los fundamentos técnicos de SEO — un title tag funcional, una meta descripción, una URL crawlable, un viewport mobile-friendly, datos estructurados. Este puntaje mide si Google <em>puede</em> posicionar tu sitio. No mide si <em>realmente</em> posicionas para palabras clave específicas — esa es una pregunta más de largo plazo sobre contenido y enlaces entrantes.</p>
+          <p class="ranges"><strong>Meta:</strong> 100. Cualquier cosa menos es dejar señales de posicionamiento sobre la mesa.</p>
 
-          <h4>Restaurant Readiness (0–100)</h4>
-          <p>Our own rubric, specific to independent restaurant websites. Covers nine checks that matter for turning a mobile visitor into a booked table: a working mobile viewport, tap-target size, text contrast, legible font sizes, a tappable phone number, an embedded map or directions link, online ordering or reservations (either a known platform like Toast/OpenTable or a self-hosted equivalent), an HTML menu (not a PDF or image), and Restaurant schema.org markup for local search. Each check is weighted by its conversion impact — a pass earns full weight, a fail earns zero. Anything we honestly couldn't verify is excluded from both sides of the average, so "unknown" never penalizes you. Non-restaurant sites show "N/A" here and don't count this category toward their overall score.</p>
+          <h4>Restaurant Readiness (0-100)</h4>
+          <p>Nuestra propia rúbrica, específica para sitios web de restaurantes independientes. Cubre nueve chequeos que importan para convertir a un visitante móvil en una mesa reservada: un viewport móvil funcional, tamaño del tap-target, contraste de texto, tamaños de fuente legibles, un número de teléfono con tap-to-call, un mapa embebido o enlace a direcciones, pedidos online o reservas (ya sea una plataforma conocida como Toast / OpenTable o un equivalente self-hosted), un menú en HTML (no un PDF o imagen) y el marcado schema.org de Restaurant para búsqueda local. Cada chequeo está ponderado por su impacto en conversión — un pass gana peso completo, un fail gana cero. Cualquier cosa que honestamente no pudimos verificar queda excluida de ambos lados del promedio, así que "desconocido" nunca te penaliza. Los sitios que no son de restaurante muestran "N/A" aquí y esta categoría no cuenta para su puntaje general.</p>
 
           <h4>Core Web Vitals</h4>
-          <p>Five specific timing and interactivity measurements. Three of them (LCP, CLS, INP) are the current Core Web Vitals Google uses for mobile search ranking. Each card shows either <em>real-user data</em> (the 28-day median of actual visitor experiences that Google collects from Chrome) or a <em>lab estimate</em> (a simulated mobile run) — real-user data is preferred when available, since it reflects the site your customers actually experience. New or low-traffic restaurant sites usually only have lab data until they accumulate enough visits.</p>
+          <p>Cinco mediciones específicas de tiempo e interactividad. Tres de ellas (LCP, CLS, INP) son los Core Web Vitals actuales que Google usa para el ranking de búsqueda móvil. Cada tarjeta muestra ya sea <em>datos de usuarios reales</em> (la mediana de 28 días de experiencias reales de visitantes que Google recolecta desde Chrome) o una <em>estimación de laboratorio</em> (una corrida móvil simulada) — los datos de usuarios reales se prefieren cuando están disponibles, porque reflejan el sitio que tus clientes realmente viven. Los sitios de restaurante nuevos o de bajo tráfico usualmente solo tienen datos de laboratorio hasta que acumulan suficientes visitas.</p>
           <ul>
-            <li><strong>LCP — Largest Contentful Paint.</strong> How long until the biggest visible thing on the page (usually a hero image or headline) shows up. <em>Good: under 2.5s · Poor: over 4s.</em></li>
-            <li><strong>CLS — Cumulative Layout Shift.</strong> How much the page jumps around while loading. Shifting layouts are the reason you sometimes tap "Reserve" and accidentally hit an ad because the ad loaded a second late and pushed everything down. <em>Good: under 0.1 · Poor: over 0.25.</em></li>
-            <li><strong>INP — Interaction to Next Paint.</strong> How long the page takes to respond to a tap or click — the third Core Web Vital, replacing FID in 2024. Field-only: requires enough real visits to report. <em>Good: under 200ms · Poor: over 500ms.</em></li>
-            <li><strong>TBT — Total Blocking Time.</strong> The lab-only proxy for INP. How long the page is frozen while JavaScript runs during the simulated load. Useful when CrUX hasn't collected INP yet. <em>Good: under 200ms · Poor: over 600ms.</em></li>
-            <li><strong>FCP — First Contentful Paint.</strong> How long until the very first pixel renders. Often earlier than LCP — this is "the page is doing something" versus "the page is usable." <em>Good: under 1.8s · Poor: over 3s.</em></li>
+            <li><strong>LCP — Largest Contentful Paint.</strong> Cuánto tarda en aparecer la cosa visible más grande de la página (normalmente una imagen de héroe o un titular). <em>Bueno: bajo 2,5 s · Pobre: sobre 4 s.</em></li>
+            <li><strong>CLS — Cumulative Layout Shift.</strong> Cuánto salta la página mientras carga. Los layouts que se mueven son la razón por la que a veces tocas "Reservar" y por accidente pegas en un anuncio porque el anuncio cargó un segundo tarde y empujó todo hacia abajo. <em>Bueno: bajo 0,1 · Pobre: sobre 0,25.</em></li>
+            <li><strong>INP — Interaction to Next Paint.</strong> Cuánto tarda la página en responder a un tap o click — el tercer Core Web Vital, reemplazando a FID en 2024. Solo de campo: requiere suficientes visitas reales para poder reportar. <em>Bueno: bajo 200 ms · Pobre: sobre 500 ms.</em></li>
+            <li><strong>TBT — Total Blocking Time.</strong> El proxy solo-laboratorio para INP. Cuánto tiempo la página está congelada mientras corre JavaScript durante la carga simulada. Útil cuando CrUX todavía no ha recolectado INP. <em>Bueno: bajo 200 ms · Pobre: sobre 600 ms.</em></li>
+            <li><strong>FCP — First Contentful Paint.</strong> Cuánto tarda en renderizarse el primer píxel. Usualmente más temprano que LCP — esto es "la página está haciendo algo" versus "la página es usable". <em>Bueno: bajo 1,8 s · Pobre: sobre 3 s.</em></li>
           </ul>
         </div>
       </details>
@@ -2351,83 +2353,89 @@
         </div>
       </div>
 
-      <!-- Not-a-restaurant notice. Shown when looksLikeRestaurant()
-           returns false, hides the priority-list below, and offers an
-           override button so an owner of a restaurant we mis-classified
-           can tell us and run the restaurant-specific checks anyway.
-           The override persists via ?r=1 in the URL so a shared link
-           preserves the correction. -->
+      <!-- Aviso de no-es-restaurante. Se muestra cuando
+           looksLikeRestaurant() devuelve false, oculta la lista de
+           prioridades debajo, y ofrece un botón de override para que
+           un dueño de restaurante mal clasificado nos avise y corra
+           los chequeos específicos de restaurante de todas formas. El
+           override persiste vía ?r=1 en la URL para que un enlace
+           compartido preserve la corrección. -->
       <div class="not-restaurant-notice" id="notRestaurantNotice" hidden>
         <div class="nrn-body">
-          <h3>We didn't classify this as a restaurant site</h3>
-          <p>The four Lighthouse categories above (Performance, Accessibility, Best Practices, SEO) still apply — they're universal. We just didn't find the signals we look for to confirm a restaurant: a known ordering or reservation platform (Toast, OpenTable, Resy…), Restaurant schema markup, or clear restaurant language on the page.</p>
-          <p class="nrn-sub">If this <em>is</em> a restaurant and we got it wrong, tell us and we'll run the restaurant-specific checks on it.</p>
+          <h3>No clasificamos esto como sitio de restaurante</h3>
+          <p>Las cuatro categorías de Lighthouse arriba (Rendimiento, Accesibilidad, Buenas prácticas, SEO) siguen aplicando — son universales. Simplemente no encontramos las señales que buscamos para confirmar un restaurante: una plataforma conocida de pedidos o reservas (Toast, OpenTable, Resy…), marcado schema de Restaurant o lenguaje claro de restaurante en la página.</p>
+          <p class="nrn-sub">Si esto <em>es</em> un restaurante y nos equivocamos, avísanos y correremos los chequeos específicos de restaurante sobre él.</p>
         </div>
         <button type="button" class="nrn-btn" id="forceRestaurantBtn">
-          This <em>is</em> a restaurant — show me the checks
+          Esto <em>sí</em> es un restaurante — muéstrame los chequeos
         </button>
       </div>
 
-      <!-- Business-type auto-detection. Phase B: detect + adapt copy,
-           no scoring change. Persisted via ?bt= in the URL so a
-           corrected shared link keeps the classification. -->
+      <!-- Autodetección del tipo de negocio. Fase B: detectar +
+           adaptar el copy, sin cambio en el scoring. Persistido vía
+           ?bt= en la URL para que un enlace compartido corregido
+           mantenga la clasificación. -->
       <div class="business-type-card" id="businessTypeCard" hidden>
         <div class="btc-left">
-          <!-- The btc-label reads "We detected:" by default; when
-               detectSubtype() returns a confidence score in C2b it
-               becomes "Detected · N% confident" so the owner can see
-               how sure we are before overriding. #btcConfidence is
-               the span we flip in / out when confidence is available. -->
+          <!-- El btc-label dice "Detectamos:" por default; cuando
+               detectSubtype() devuelve un score de confianza en C2b
+               se vuelve "Detectado · N % de confianza" para que el
+               dueño vea qué tan seguros estamos antes de hacer
+               override. #btcConfidence es el span que conmutamos
+               cuando la confianza está disponible. -->
           <div class="btc-label">
-            <span id="btcLabelText">We detected:</span>
+            <span id="btcLabelText">Detectamos:</span>
             <span class="btc-confidence" id="btcConfidence" hidden></span>
           </div>
-          <select id="btcSelect" class="btc-select" aria-label="Restaurant type">
-            <!-- Options are kept in sync with RESTAURANT_SUBTYPES in
-                 ./subtypes.js. Legacy values (cafe-bakery, restaurant)
-                 remain acceptable via RESTAURANT_SUBTYPE_ALIASES and
-                 canonicalSubtypeId() so old shareable links keep
-                 routing correctly. -->
-            <option value="fine-dining">Fine-dining restaurant</option>
-            <option value="casual-dining">Casual / full-service restaurant</option>
-            <option value="fast-casual">Fast-casual or quick-service</option>
-            <option value="cafe">Café or coffee shop</option>
-            <option value="bakery">Bakery or pâtisserie</option>
-            <option value="bar-pub">Bar, pub, or brewery</option>
-            <option value="pizzeria">Pizzeria</option>
-            <option value="food-truck">Food truck or pop-up</option>
-            <option value="ghost-kitchen">Ghost kitchen / delivery-only</option>
-            <option value="catering-only">Catering-only / private events</option>
-            <option value="restaurant">Other restaurant</option>
+          <select id="btcSelect" class="btc-select" aria-label="Tipo de restaurante">
+            <!-- Las opciones se mantienen en sync con
+                 RESTAURANT_SUBTYPES en ./subtypes.js. Los valores
+                 legacy (cafe-bakery, restaurant) siguen aceptándose
+                 vía RESTAURANT_SUBTYPE_ALIASES y canonicalSubtypeId()
+                 para que los enlaces antiguos compartidos sigan
+                 ruteando correctamente. -->
+            <option value="fine-dining">Restaurante de alta cocina</option>
+            <option value="casual-dining">Restaurante casual / full-service</option>
+            <option value="fast-casual">Fast-casual o quick-service</option>
+            <option value="cafe">Café o coffee shop</option>
+            <option value="bakery">Panadería o pâtisserie</option>
+            <option value="bar-pub">Bar, pub o cervecería</option>
+            <option value="pizzeria">Pizzería</option>
+            <option value="food-truck">Food truck o pop-up</option>
+            <option value="ghost-kitchen">Cocina fantasma / solo delivery</option>
+            <option value="catering-only">Solo catering / eventos privados</option>
+            <option value="restaurant">Otro restaurante</option>
           </select>
         </div>
-        <p class="btc-sub" id="btcSub">Auto-detected from schema markup, ordering/reservation platform, and page content. If we got it wrong, pick the right one — the checks below will update live.</p>
-        <!-- Alternative-subtype quick-select. Hidden until detection
-             produces runner-up candidates with non-zero score; see
-             renderBusinessTypeAlternatives in the IIFE below. Each chip
-             sets btcSelect.value and fires its change handler so the
-             full correction flow (tally, share URL, Plausible event,
-             readiness recompute) runs identically to a dropdown change. -->
+        <p class="btc-sub" id="btcSub">Autodetectado a partir del marcado schema, la plataforma de pedidos/reservas y el contenido de la página. Si nos equivocamos, elige el correcto — los chequeos de abajo se actualizan en vivo.</p>
+        <!-- Quick-select del subtipo alternativo. Oculto hasta que la
+             detección produzca candidatos finalistas con score no-cero;
+             ver renderBusinessTypeAlternatives en el IIFE de abajo. Cada
+             chip setea btcSelect.value y dispara su change handler para
+             que el flujo completo de corrección (tally, share URL,
+             evento de Plausible, recálculo del readiness) corra idéntico
+             a un cambio del dropdown. -->
         <div class="btc-alternatives" id="btcAlternatives" hidden>
-          <span class="btc-alt-label">Or:</span>
+          <span class="btc-alt-label">O:</span>
           <div class="btc-alt-chips" id="btcAltChips"></div>
         </div>
       </div>
 
-      <!-- Restaurant-priority checks list -->
+      <!-- Lista de chequeos de prioridad para restaurantes -->
       <div class="priority-list" id="priorityListWrap">
         <header>
-          <h3>Restaurant-priority checks</h3>
+          <h3>Chequeos de prioridad para restaurantes</h3>
           <span class="tally" id="priorityTally">—</span>
         </header>
-        <!-- Phase E6: "Also scanned" chip row. Populated by
-             renderCrawlSummary() once window.__auditCrawl lands. Hidden
-             when the crawl returned no follow-up pages. Each chip names
-             a slot (Menu, Reserve, Order, Contact, About, Catering,
-             Events) so owners see that the audit read their site in
-             layers, not just the homepage. -->
+        <!-- Fase E6: fila de chips "También escaneamos". La puebla
+             renderCrawlSummary() una vez que window.__auditCrawl
+             aterriza. Oculta cuando el crawl no devolvió páginas
+             de seguimiento. Cada chip nombra un slot (Menú, Reservas,
+             Pedidos, Contacto, Acerca, Catering, Eventos) para que
+             los dueños vean que la auditoría leyó su sitio en capas,
+             no solo la página de inicio. -->
         <div class="crawl-summary" id="crawlSummary" hidden>
-          <span class="crawl-summary-label">Also scanned:</span>
+          <span class="crawl-summary-label">También escaneamos:</span>
           <div class="crawl-summary-chips" id="crawlSummaryChips"></div>
         </div>
         <div id="priorityItems">
