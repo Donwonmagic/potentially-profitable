@@ -5562,6 +5562,23 @@
 
     // ---- Phone check: tel: link OR phone number in text ----
     if (def.type === 'phone') {
+      // Sprint M1.5: Places nationalPhoneNumber is the strongest
+      // signal — Google verifies the number when the owner claims
+      // the listing, so presence means the business really has a
+      // public phone. Schema `telephone` is nearly as strong. Either
+      // one fuses a formerly-unverified tel:-less site into a pass.
+      var ctxPlace = context && context.places && context.places.place;
+      if (ctxPlace && typeof ctxPlace.nationalPhoneNumber === 'string' && ctxPlace.nationalPhoneNumber.trim()) {
+        return makeResult(def, 'pass');
+      }
+      var ctxSchemaObjs = context && context.schema && Array.isArray(context.schema.objects)
+        ? context.schema.objects : [];
+      for (var p_i = 0; p_i < ctxSchemaObjs.length; p_i++) {
+        var obj = ctxSchemaObjs[p_i];
+        if (obj && typeof obj.telephone === 'string' && obj.telephone.trim()) {
+          return makeResult(def, 'pass');
+        }
+      }
       var telDetection = detectPlatforms(['phone'], allUrls);
       if (telDetection.detected) return makeResult(def, 'pass');
       if (detectPhoneInText(pageText)) return makeResult(def, 'pass-text');
@@ -5578,6 +5595,47 @@
       var detection = detectPlatforms(def.platforms, allUrls);
       if (detection.detected) {
         return makeResult(def, 'pass', detection.found);
+      }
+      // Sprint M1.7 + M1.8: Places verified booleans are the
+      // strongest signal — if Google says the business accepts
+      // takeout / delivery / reservations, it does, even when the
+      // site uses a private ordering vendor or an obscure reservation
+      // system we don't pattern-match. The check passes both
+      // "ordering" (via takeout/delivery) and "reservations" (via
+      // reservable).
+      var ctxPlaceC = context && context.places && context.places.place;
+      if (ctxPlaceC) {
+        var wantOrdering = Array.isArray(def.platforms) && def.platforms.indexOf('ordering') !== -1;
+        var wantReservations = Array.isArray(def.platforms) && def.platforms.indexOf('reservations') !== -1;
+        if (wantOrdering && (ctxPlaceC.takeout === true || ctxPlaceC.delivery === true)) {
+          return makeResult(def, 'pass');
+        }
+        if (wantReservations && ctxPlaceC.reservable === true) {
+          return makeResult(def, 'pass');
+        }
+      }
+      // Sprint M1.8: schema `acceptsReservations: true` is also
+      // confident — the site's own schema declaration is owner-
+      // authored truth.
+      var ctxSchemaC = context && context.schema && context.schema.validation;
+      if (ctxSchemaC && ctxSchemaC.acceptsReservations && ctxSchemaC.acceptsReservations.accepts === true) {
+        var wantReservations2 = Array.isArray(def.platforms) && def.platforms.indexOf('reservations') !== -1;
+        if (wantReservations2) return makeResult(def, 'pass');
+      }
+      // Sprint M1.7 + M1.8: a live reserve/order slot in the expanded
+      // crawl (HTTP 200 with actual HTML) is another confident pass —
+      // the site literally has a page dedicated to the action.
+      var ctxCrawlC = context && context.crawl && Array.isArray(context.crawl.pages)
+        ? context.crawl.pages : [];
+      for (var cpi = 0; cpi < ctxCrawlC.length; cpi++) {
+        var cp = ctxCrawlC[cpi];
+        if (!cp || !cp.html || cp.status !== 200) continue;
+        if (cp.slot === 'order' && def.platforms.indexOf('ordering') !== -1) {
+          return makeResult(def, 'pass');
+        }
+        if (cp.slot === 'reserve' && def.platforms.indexOf('reservations') !== -1) {
+          return makeResult(def, 'pass');
+        }
       }
       // Text fallback — catches self-hosted restaurants like Tacombi
       // whose ordering lives on their own domain with no recognizable
@@ -5605,6 +5663,28 @@
       var mapDetection = detectPlatforms(def.platforms, allUrls);
       if (mapDetection.detected) {
         return makeResult(def, 'pass', mapDetection.found);
+      }
+      // Sprint M1.6: a restaurant with verified Places coordinates OR
+      // schema `geo` coordinates has a reachable map even without an
+      // embedded-map widget on the page — the address + lat/lng gives
+      // any smartphone a one-tap Maps launch. Fuse both, but only for
+      // the 'maps' platform group; other platform checks (ordering,
+      // reservations) have their own fuses in M1.7/M1.8.
+      var isMapsCheck = Array.isArray(def.platforms) && def.platforms.indexOf('maps') !== -1;
+      if (isMapsCheck) {
+        var ctxP = context && context.places && context.places.place;
+        if (ctxP && ctxP.location && typeof ctxP.location.lat === 'number' && typeof ctxP.location.lng === 'number') {
+          return makeResult(def, 'pass');
+        }
+        var ctxSchemaObjs6 = context && context.schema && Array.isArray(context.schema.objects)
+          ? context.schema.objects : [];
+        for (var g_i = 0; g_i < ctxSchemaObjs6.length; g_i++) {
+          var g = ctxSchemaObjs6[g_i] && ctxSchemaObjs6[g_i].geo;
+          if (g && (typeof g.latitude === 'number' || typeof g.latitude === 'string')
+                && (typeof g.longitude === 'number' || typeof g.longitude === 'string')) {
+            return makeResult(def, 'pass');
+          }
+        }
       }
       return makeResult(def, 'unverified');
     }
