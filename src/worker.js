@@ -75,6 +75,7 @@ const API_ROUTES = {
   '/api/observatory':   handleObservatory,
   '/api/wayback-first-seen': handleWaybackFirstSeen,
   '/api/crux-history':  handleCruxHistory,
+  '/api/gbp-details':   handleGbpDetails,
 };
 
 
@@ -96,7 +97,7 @@ export default {
           404
         );
       }
-      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history') {
+      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
         }
@@ -2426,6 +2427,95 @@ async function handleCruxHistory(request, env, ctx) {
   } catch (err) {
     console.error('[crux-history]', err && err.stack ? err.stack : err);
     return jsonResponse({ ok: false, error: 'crux-error' }, 502);
+  }
+}
+
+// ------------------------------------------------------------
+// /api/gbp-details — Places Details v1 (reviews + extended fields).
+//
+// Second Places call, called only in Deep Scan. Takes a placeId
+// (from the Fast Scan gbp-lookup response) and requests the
+// review-level payload that's too quota-expensive for every audit:
+// up to 5 recent reviews + owner-response presence, and the full
+// currentOpeningHours.weekdayDescriptions as a fallback when the
+// initial field mask didn't get them.
+//
+// Accuracy rule: we surface review counts and owner-reply presence
+// as raw facts. We do NOT mine review text for sentiment in Sprint
+// 2 — sentiment analysis would cross into the "judgment, not fact"
+// zone we're deferring.
+// ------------------------------------------------------------
+async function handleGbpDetails(request, env, ctx) {
+  if (!env.GOOGLE_PLACES_KEY) {
+    return jsonResponse({ ok: false, error: 'places-unconfigured' }, 503);
+  }
+  const url = new URL(request.url);
+  const placeId = (url.searchParams.get('placeId') || '').trim();
+  if (!placeId || !/^[A-Za-z0-9_-]+$/.test(placeId) || placeId.length > 200) {
+    return jsonResponse({ ok: false, error: 'invalid-placeId' }, 400);
+  }
+
+  try {
+    const res = await fetch(
+      'https://places.googleapis.com/v1/places/' + encodeURIComponent(placeId),
+      {
+        method: 'GET',
+        headers: {
+          'X-Goog-Api-Key': env.GOOGLE_PLACES_KEY,
+          'X-Goog-FieldMask': [
+            'id',
+            'displayName',
+            'reviews',
+            'currentOpeningHours',
+            'regularOpeningHours',
+            'priceLevel',
+            'userRatingCount',
+            'rating'
+          ].join(',')
+        },
+        signal: AbortSignal.timeout(8000)
+      }
+    );
+    if (!res.ok) {
+      const body = await res.text();
+      console.error('[gbp-details]', res.status, body);
+      return jsonResponse({ ok: false, error: 'places-details-' + res.status }, 502);
+    }
+    const data = await res.json();
+    // Normalize reviews: take up to 5 recent, strip PII where we
+    // can, and flag owner-reply presence per-review. We return the
+    // review TEXT verbatim — it's public data Google already shows —
+    // but mark nothing about sentiment or tone (see header note).
+    const reviews = Array.isArray(data.reviews) ? data.reviews.slice(0, 5).map(function(r){
+      return {
+        rating:       typeof r.rating === 'number' ? r.rating : null,
+        publishTime:  r.publishTime || null,
+        relativePublishTimeDescription: r.relativePublishTimeDescription || null,
+        text:         r.text && r.text.text ? r.text.text : null,
+        languageCode: r.text && r.text.languageCode ? r.text.languageCode : null,
+        hasOwnerReply: !!(r.authorAttribution && r.authorAttribution.uri && r.ownerResponseText)
+                        || !!(r.reply && (r.reply.text || r.reply.comment))
+      };
+    }) : [];
+    const hoursText = data.currentOpeningHours && Array.isArray(data.currentOpeningHours.weekdayDescriptions)
+      ? data.currentOpeningHours.weekdayDescriptions
+      : null;
+    const reviewCount = typeof data.userRatingCount === 'number' ? data.userRatingCount : null;
+    const ownerReplied = reviews.reduce(function(acc, r){ return acc + (r.hasOwnerReply ? 1 : 0); }, 0);
+    return jsonResponse({
+      ok: true,
+      placeId: data.id || placeId,
+      name: data.displayName && data.displayName.text ? data.displayName.text : null,
+      rating: typeof data.rating === 'number' ? data.rating : null,
+      reviewCount: reviewCount,
+      weekdayHoursText: hoursText,
+      reviews: reviews,
+      ownerReplyRate: reviews.length > 0 ? (ownerReplied / reviews.length) : null,
+      priceLevel: typeof data.priceLevel === 'string' ? data.priceLevel : null
+    });
+  } catch (err) {
+    console.error('[gbp-details]', err && err.stack ? err.stack : err);
+    return jsonResponse({ ok: false, error: 'gbp-details-error' }, 502);
   }
 }
 
