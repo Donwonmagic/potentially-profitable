@@ -2095,6 +2095,11 @@ var UI_I18N = {
   'print.worksheet.notes': {
     en: 'Notes / assigned to:',
     es: 'Notas / asignado a:'
+  },
+  // DYM3: "Did you mean" error-card chip copy.
+  'err.dym.prompt': {
+    en: 'Did you mean',
+    es: '¿Quisiste decir'
   }
 };
 
