@@ -2337,6 +2337,11 @@ var UI_I18N = {
     en: '{count} week{s} ago',
     es: 'hace {count} semana{s}'
   },
+  // Sprint H3: resolved-since chips lead-in label.
+  'history.resolvedLabel': {
+    en: 'You resolved:',
+    es: 'Resolviste:'
+  },
   'deep.age.liveSince': {
     en: 'Live since {year}',
     es: 'En línea desde {year}'

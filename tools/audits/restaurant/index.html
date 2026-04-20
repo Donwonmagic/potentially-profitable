@@ -882,6 +882,47 @@
   .history-banner-pillar-val   { font-weight: 700; font-variant-numeric: tabular-nums; }
   .history-banner-pillar-up   .history-banner-pillar-val { color: #1F6B3A; }
   .history-banner-pillar-down .history-banner-pillar-val { color: #B8541A; }
+  /* Sprint H3: resolved-checks chip row — quiet lead-in label + a
+     flex-wrap of compact green chips. Each chip shows the check's
+     human-readable title. Hidden entirely when nothing resolved. */
+  .history-banner-resolved {
+    margin-top: 10px;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 6px 8px;
+  }
+  .history-banner-resolved[hidden] { display: none; }
+  .history-banner-resolved-label {
+    font-size: 12.5px;
+    color: var(--stone);
+    font-weight: 600;
+  }
+  .history-banner-resolved-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 6px 6px;
+  }
+  .history-banner-resolved-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #1F6B3A;
+    background: #E4F2E9;
+    border: 1px solid #BED9C5;
+    border-radius: 999px;
+  }
+  .history-banner-resolved-chip::before {
+    content: '✓';
+    font-size: 11px;
+    font-weight: 700;
+  }
 
   /* Sprint Q1: sticky report table-of-contents. At ≥1200px the panel
      is fixed to the right-hand gutter; at smaller sizes it collapses
@@ -3875,6 +3916,14 @@
         </div>
         <div class="history-banner-delta" id="historyBannerDelta"></div>
         <ul class="history-banner-pillars" id="historyBannerPillars"></ul>
+        <!-- Sprint H3: specific priority checks that flipped from
+             failed / unverified to a pass between the prior snapshot
+             and this audit. Rendered as compact green chips. Stays
+             hidden when no checks resolved. -->
+        <div class="history-banner-resolved" id="historyBannerResolved" hidden>
+          <span class="history-banner-resolved-label" data-tr="history.resolvedLabel">You resolved:</span>
+          <ul class="history-banner-resolved-list" id="historyBannerResolvedList"></ul>
+        </div>
       </section>
 
       <section class="exec-summary" id="execSummary" hidden aria-live="polite">
@@ -8765,7 +8814,14 @@
       seo:     typeof snap.seo === 'number'  ? snap.seo  : null,
       restaurant: typeof snap.restaurant === 'number' ? snap.restaurant : null,
       subtype: snap.subtype || null,
-      unverifiedCount: typeof snap.unverifiedCount === 'number' ? snap.unverifiedCount : null
+      unverifiedCount: typeof snap.unverifiedCount === 'number' ? snap.unverifiedCount : null,
+      // Sprint H3: capture the priority-check failures + unverified
+      // at snapshot time so a future re-audit can render a "resolved
+      // since last audit" chip row when the owner fixes something.
+      // Each entry is { id, title } — we persist the title so old
+      // snapshots survive a check rename/removal in future versions.
+      failedChecks:     Array.isArray(snap.failedChecks)     ? snap.failedChecks.slice(0, 40)     : [],
+      unverifiedChecks: Array.isArray(snap.unverifiedChecks) ? snap.unverifiedChecks.slice(0, 40) : []
     };
     var prev = readHistory(url);
     // Guard: if the newest entry is within the minimum-delta window,
@@ -8865,12 +8921,66 @@
       li.appendChild(val);
       pillarsEl.appendChild(li);
     });
+    // Sprint H3: compute checks that went from fail/unverified in
+    // the prior snapshot to a pass in the current run. Accuracy
+    // gate: we derive the "passing now" set from window.__auditResults
+    // (the authoritative current-run data) and subtract anything
+    // still failing or unverified. A check that simply dropped out
+    // of the check list between versions doesn't count — we only
+    // surface IDs that exist in both runs.
+    var resolvedEl = document.getElementById('historyBannerResolved');
+    var resolvedListEl = document.getElementById('historyBannerResolvedList');
+    if (resolvedEl && resolvedListEl) {
+      var priorFailedIds = {};
+      (previous.failedChecks || []).forEach(function(c){ if (c && c.id) priorFailedIds[c.id] = c.title || c.id; });
+      (previous.unverifiedChecks || []).forEach(function(c){ if (c && c.id) priorFailedIds[c.id] = c.title || c.id; });
+
+      var currentStill = {};
+      (current.failedChecks || []).forEach(function(c){ if (c && c.id) currentStill[c.id] = true; });
+      (current.unverifiedChecks || []).forEach(function(c){ if (c && c.id) currentStill[c.id] = true; });
+
+      // Prefer the *current* run's check title where available so a
+      // post-rename copy change shows up immediately; fall back to
+      // the stored snapshot title for checks the current run doesn't
+      // include anymore.
+      var currentTitles = {};
+      if (window.__auditResults && Array.isArray(window.__auditResults.entries)) {
+        window.__auditResults.entries.forEach(function(e){
+          var id = e && e.def && (e.def.audit || e.def.type);
+          if (!id) return;
+          var title = (e.result && e.result.title) || e.def.pass || e.def.fail || id;
+          currentTitles[id] = title;
+        });
+      }
+
+      var resolved = [];
+      for (var id in priorFailedIds) {
+        if (!priorFailedIds.hasOwnProperty(id)) continue;
+        if (currentStill[id]) continue; // still failing — not resolved
+        resolved.push({ id: id, title: currentTitles[id] || priorFailedIds[id] });
+      }
+
+      resolvedListEl.innerHTML = '';
+      if (resolved.length) {
+        resolved.slice(0, 8).forEach(function(r){
+          var li = document.createElement('li');
+          li.className = 'history-banner-resolved-chip';
+          li.textContent = r.title;
+          resolvedListEl.appendChild(li);
+        });
+        resolvedEl.hidden = false;
+      } else {
+        resolvedEl.hidden = true;
+      }
+    }
+
     // Render the banner only when we have at least one comparable
-    // value (either overall delta or a pillar delta). If every
-    // pillar is identical between runs, suppress the banner — it
-    // would read as noise.
+    // value (either overall delta, a pillar delta, or a resolved
+    // check). If every pillar is identical between runs AND nothing
+    // resolved, suppress the banner — it would read as noise.
+    var hasResolved = resolvedEl && !resolvedEl.hidden;
     var showBanner = (typeof current.overall === 'number' && typeof previous.overall === 'number')
-                     || changesCount > 0;
+                     || changesCount > 0 || hasResolved;
     banner.hidden = !showBanner;
   }
 
@@ -10804,6 +10914,22 @@
     // gate: we only save / compare score data WE computed, never
     // speculative values.
     try {
+      // Sprint H3: harvest currently-failing + unverified check IDs
+      // (with their human titles) off the results bundle so the next
+      // audit run can surface a "resolved since last audit" chip row.
+      var failedChecks = [];
+      var unverifiedChecks = [];
+      if (window.__auditResults && Array.isArray(window.__auditResults.entries)) {
+        window.__auditResults.entries.forEach(function(e){
+          var def = e && e.def;
+          var cls = e && e.result && e.result.mark && e.result.mark.cls;
+          var id = def && (def.audit || def.type);
+          if (!id) return;
+          var title = (e.result && e.result.title) || def.fail || def.unverified || id;
+          if (cls === 'fail')         failedChecks.push({ id: id, title: title });
+          else if (cls === 'unverified') unverifiedChecks.push({ id: id, title: title });
+        });
+      }
       saveAuditSnapshot(auditedUrl, {
         overall: overall,
         perf:    perf,
@@ -10812,7 +10938,9 @@
         seo:     seo,
         restaurant: isRestaurantSite ? restaurantScore : null,
         subtype: businessType && businessType.type ? businessType.type : null,
-        unverifiedCount: priorityResult.unverifiedCount || 0
+        unverifiedCount: priorityResult.unverifiedCount || 0,
+        failedChecks: failedChecks,
+        unverifiedChecks: unverifiedChecks
       });
       renderHistoryBanner(auditedUrl);
     } catch (_) { /* localStorage disabled / full — fail closed */ }
