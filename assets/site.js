@@ -668,10 +668,19 @@
       }
       let map = uiTranslationsByLang.get(lang);
       if (!map) {
-        // Try to find the translations file. Relative to the current
-        // page (works for any post that ships alongside it).
+        // Resolve the translations file against the audio-src directory
+        // rather than the current page URL. That way a locale-routed
+        // variant of a post (e.g. /es/blog/<slug>/) whose HTML points
+        // its data-audio-src at the canonical /blog/<slug>/audio.mp3
+        // also pulls /blog/<slug>/translations.<lang>.json — one set of
+        // translations + audio files, consumed from many URLs.
+        const base = audioSrcBase || '';
+        const lastSlash = base.lastIndexOf('/');
+        const translationsUrl = (lastSlash >= 0
+          ? base.slice(0, lastSlash + 1)
+          : '') + `translations.${lang}.json`;
         try {
-          const res = await fetch(`translations.${lang}.json`, { credentials: 'omit' });
+          const res = await fetch(translationsUrl, { credentials: 'omit' });
           if (!res.ok) throw new Error('status ' + res.status);
           map = await res.json();
           uiTranslationsByLang.set(lang, map);

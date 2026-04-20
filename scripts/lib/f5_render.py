@@ -70,6 +70,9 @@ def main() -> int:
                    help="Speaking speed multiplier (1.0 = natural)")
     p.add_argument("--nfe-step",   type=int,   default=32,
                    help="Sampling steps; lower = faster, higher = cleaner")
+    p.add_argument("--cfg-strength", type=float, default=2.0,
+                   help="Classifier-free-guidance strength; higher keeps "
+                        "output closer to gen_text and reduces reference bleed")
     p.add_argument("--device",     default=None,
                    help="cpu|cuda|mps|auto (default: auto-detect)")
     args = p.parse_args()
@@ -111,6 +114,7 @@ def main() -> int:
             gen_text=text,
             speed=args.speed,
             nfe_step=args.nfe_step,
+            cfg_strength=args.cfg_strength,
             file_wave=out,
             remove_silence=False,
             # Quiet the per-call progress bars so our own stderr lines stay clean.
