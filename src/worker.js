@@ -91,6 +91,17 @@ export default {
     const url = new URL(request.url);
     const pathname = url.pathname;
 
+    // Sprint D3: embeddable SVG audit badge. Handled outside the
+    // /api/* routing because it serves an SVG (not JSON) and is
+    // meant to be dropped into an <img src=...> on a restaurant's
+    // own website.
+    if (pathname === '/badge/restaurant') {
+      return handleBadgeRestaurant(request, env, ctx);
+    }
+    if (pathname === '/api/badge-snapshot') {
+      return handleBadgeSnapshot(request, env, ctx);
+    }
+
     // API routes — check the exact-match table first.
     if (pathname.startsWith('/api/')) {
       const handler = API_ROUTES[pathname];
@@ -2875,6 +2886,218 @@ async function dnsEmailProbe(apex) {
     bulkReady: bulkBaseline,
     checkedAt: new Date().toISOString()
   };
+}
+
+// ------------------------------------------------------------
+// /badge/restaurant — embeddable SVG audit badge (Sprint D3).
+//
+// Owners paste this into their site footer:
+//
+//   <a href="https://muntin.digital/tools/audits/restaurant/?url=https://yoursite.com"
+//      target="_blank" rel="noopener">
+//     <img src="https://muntin.digital/badge/restaurant?url=https://yoursite.com"
+//          alt="Muntin Digital restaurant audit" width="240" height="80"
+//          loading="lazy" decoding="async">
+//   </a>
+//
+// Two render modes:
+//   1. SCORED — when a badge snapshot exists in KV for the URL,
+//      the SVG shows the real score + grade + last-audited date.
+//      The date is ALWAYS displayed so viewers know it's a
+//      snapshot, not a live number. Snapshots older than 7 days
+//      fall through to the generic mode (stale data is worse than
+//      no data per the accuracy rule).
+//   2. GENERIC — branded "Free restaurant audit by Muntin Digital"
+//      card with a CTA to run one. This is the default state when
+//      the AUDIT_CACHE binding isn't provisioned yet or when the
+//      URL has never been audited.
+//
+// Both modes link back to the audit page with the URL pre-filled.
+// ------------------------------------------------------------
+async function handleBadgeRestaurant(request, env, ctx) {
+  const url = new URL(request.url);
+  const target = (url.searchParams.get('url') || '').trim();
+  // SSRF guard applies here too — a malicious embed could otherwise
+  // coax the Worker into hashing / reading an internal URL.
+  const gate = assertSafeHttpUrl(target, pickLang(request));
+  let svg;
+  if (!gate.ok) {
+    svg = renderBadgeSvg({ mode: 'generic', reason: 'invalid-url' });
+  } else {
+    let snapshot = null;
+    if (env.AUDIT_CACHE) {
+      try {
+        const hash = await (async () => {
+          var normalized = gate.url.toString().replace(/^https?:\/\//i, '').replace(/\/$/, '').toLowerCase();
+          var buf = new TextEncoder().encode(normalized);
+          var digest = await crypto.subtle.digest('SHA-256', buf);
+          var bytes = new Uint8Array(digest);
+          var hex = '';
+          for (var i = 0; i < bytes.length; i++) hex += bytes[i].toString(16).padStart(2, '0');
+          return hex.slice(0, 32);
+        })();
+        const raw = await env.AUDIT_CACHE.get('badge:' + hash);
+        if (raw) {
+          try { snapshot = JSON.parse(raw); } catch (_) { snapshot = null; }
+        }
+      } catch (_) { /* KV read failure → fall through to generic */ }
+    }
+    // Accuracy gate: enforce 7-day freshness. Stale snapshots
+    // quietly degrade to the generic badge rather than display
+    // an out-of-date number.
+    const MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
+    const fresh = snapshot && typeof snapshot.timestamp === 'number'
+      && (Date.now() - snapshot.timestamp) < MAX_AGE_MS
+      && typeof snapshot.score === 'number' && snapshot.score >= 0 && snapshot.score <= 100;
+    if (fresh) {
+      svg = renderBadgeSvg({
+        mode: 'scored',
+        score: Math.round(snapshot.score),
+        grade: snapshot.grade || gradeFromScore(snapshot.score),
+        auditedAt: snapshot.timestamp,
+        host: gate.url.hostname.replace(/^www\./i, '')
+      });
+    } else {
+      svg = renderBadgeSvg({ mode: 'generic' });
+    }
+  }
+  return new Response(svg, {
+    status: 200,
+    headers: {
+      'Content-Type': 'image/svg+xml; charset=utf-8',
+      // 1h edge cache so the badge image doesn't refetch the KV
+      // lookup on every page view. Snapshot updates propagate
+      // within the hour.
+      'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+      'Access-Control-Allow-Origin': '*',
+      'X-Generator': MUNTIN_GENERATOR,
+      'X-Powered-By': 'Muntin Digital',
+    }
+  });
+}
+
+function gradeFromScore(score) {
+  if (!Number.isFinite(score)) return null;
+  if (score >= 90) return 'A';
+  if (score >= 80) return 'B';
+  if (score >= 70) return 'C';
+  if (score >= 60) return 'D';
+  return 'F';
+}
+
+// Render the 480×160 badge SVG. Colors match the site design
+// tokens (cream, ink, teal, rust). Self-contained — no external
+// fonts (falls back to Georgia / system-ui) so it renders
+// identically across every embed surface.
+function renderBadgeSvg(opts) {
+  const W = 480, H = 160;
+  const BG = '#FAF7F2';
+  const INK = '#14161A';
+  const TEAL = '#1F4E5B';
+  const STONE = '#6B6B6B';
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+
+  if (opts.mode === 'scored') {
+    const score = opts.score;
+    const grade = opts.grade || 'C';
+    const gradeColor = /^A/.test(grade) ? '#1f9d55'
+                     : /^B/.test(grade) ? '#1f9d55'
+                     : /^C/.test(grade) ? '#d97706'
+                     : '#B8541A';
+    const date = new Date(opts.auditedAt || Date.now());
+    const dateLabel = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    return [
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" role="img" aria-label="Muntin Digital audit score: ' + esc(score) + ' out of 100">',
+      '<rect width="' + W + '" height="' + H + '" rx="12" fill="' + BG + '"/>',
+      '<rect x="0" y="0" width="6" height="' + H + '" fill="' + TEAL + '"/>',
+      '<g transform="translate(32, 34)">',
+      '<text font-family="Inter, system-ui, Arial, sans-serif" font-size="11" font-weight="700" fill="' + TEAL + '" letter-spacing="3">MUNTIN DIGITAL · RESTAURANT AUDIT</text>',
+      '<text y="32" font-family="Georgia, \'Fraunces\', serif" font-size="58" font-weight="500" fill="' + INK + '">' + esc(score) + '</text>',
+      '<text x="110" y="32" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="500" fill="' + STONE + '">/ 100</text>',
+      '<text y="58" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="600" fill="' + STONE + '" letter-spacing="1">AUDITED ' + esc(dateLabel.toUpperCase()) + '</text>',
+      '</g>',
+      // Grade capsule — right side
+      '<g transform="translate(' + (W - 110) + ', 40)">',
+      '<rect width="78" height="78" rx="12" fill="' + gradeColor + '"/>',
+      '<text x="39" y="56" text-anchor="middle" font-family="Georgia, \'Fraunces\', serif" font-size="44" font-weight="700" fill="#FAF7F2">' + esc(grade) + '</text>',
+      '</g>',
+      // Bottom footer
+      '<text x="' + (W - 14) + '" y="' + (H - 12) + '" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="10" fill="' + STONE + '" letter-spacing="1">muntin.digital</text>',
+      '</svg>'
+    ].join('');
+  }
+
+  // Generic mode — branded CTA when no fresh snapshot is available.
+  return [
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" role="img" aria-label="Free restaurant website audit by Muntin Digital">',
+    '<rect width="' + W + '" height="' + H + '" rx="12" fill="' + BG + '"/>',
+    '<rect x="0" y="0" width="6" height="' + H + '" fill="' + TEAL + '"/>',
+    '<g transform="translate(32, 34)">',
+    '<text font-family="Inter, system-ui, Arial, sans-serif" font-size="11" font-weight="700" fill="' + TEAL + '" letter-spacing="3">MUNTIN DIGITAL</text>',
+    '<text y="34" font-family="Georgia, \'Fraunces\', serif" font-size="28" font-weight="500" fill="' + INK + '">Free restaurant audit</text>',
+    '<text y="62" font-family="Inter, Arial, sans-serif" font-size="14" fill="' + STONE + '">30 seconds · no signup · plain English</text>',
+    '<g transform="translate(0, 82)">',
+    '<rect width="192" height="34" rx="17" fill="' + TEAL + '"/>',
+    '<text x="96" y="22" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="' + BG + '" letter-spacing="2">RUN YOUR AUDIT →</text>',
+    '</g>',
+    '</g>',
+    '<text x="' + (W - 14) + '" y="' + (H - 12) + '" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="10" fill="' + STONE + '" letter-spacing="1">muntin.digital</text>',
+    '</svg>'
+  ].join('');
+}
+
+// ------------------------------------------------------------
+// /api/badge-snapshot — accept a score payload from the audit UI
+// and store it in KV under badge:<urlHash>. No-ops when the
+// AUDIT_CACHE binding isn't present. Client POSTs this after a
+// successful audit so the embeddable badge (D3) reflects the
+// current score. Accuracy gate: we validate the score is a
+// number in [0, 100] and refuse anything else.
+// ------------------------------------------------------------
+async function handleBadgeSnapshot(request, env, ctx) {
+  let body;
+  try { body = await request.json(); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const target = typeof body.url === 'string' ? body.url : '';
+  const gate = assertSafeHttpUrl(target, pickLang(request));
+  if (!gate.ok) {
+    return jsonResponse({ ok: false, error: gate.error }, gate.status);
+  }
+  const score = typeof body.score === 'number' ? body.score : null;
+  if (score === null || !Number.isFinite(score) || score < 0 || score > 100) {
+    return jsonResponse({ ok: false, error: 'invalid-score' }, 400);
+  }
+  const grade = typeof body.grade === 'string' && /^[A-F][+-]?$/.test(body.grade) ? body.grade : gradeFromScore(score);
+  if (!env.AUDIT_CACHE) {
+    // No KV → no persistence. Return ok:false so the client knows
+    // the snapshot didn't land and doesn't point owners at a badge
+    // that can't update. This flips to persisted when the binding
+    // is provisioned.
+    return jsonResponse({ ok: false, error: 'badge-cache-unconfigured' });
+  }
+  try {
+    const normalized = gate.url.toString().replace(/^https?:\/\//i, '').replace(/\/$/, '').toLowerCase();
+    const buf = new TextEncoder().encode(normalized);
+    const digest = await crypto.subtle.digest('SHA-256', buf);
+    const bytes = new Uint8Array(digest);
+    let hex = '';
+    for (let i = 0; i < bytes.length; i++) hex += bytes[i].toString(16).padStart(2, '0');
+    const key = 'badge:' + hex.slice(0, 32);
+    const payload = {
+      score: score,
+      grade: grade,
+      timestamp: Date.now(),
+      host: gate.url.hostname.replace(/^www\./i, '')
+    };
+    // 30-day TTL at the KV level; the /badge endpoint enforces a
+    // stricter 7-day freshness window at serve time.
+    await env.AUDIT_CACHE.put(key, JSON.stringify(payload), { expirationTtl: 30 * 24 * 3600 });
+    return jsonResponse({ ok: true, expiresInDays: 30 });
+  } catch (err) {
+    console.error('[badge-snapshot]', err && err.message);
+    return jsonResponse({ ok: false, error: 'badge-write-failed' }, 502);
+  }
 }
 
 function jsonResponse(payload, status) {

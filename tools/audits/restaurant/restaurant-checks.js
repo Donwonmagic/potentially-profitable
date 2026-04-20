@@ -2424,7 +2424,17 @@ var UI_I18N = {
   'schemaRichness.priority.recommended': { en: 'Recommended', es: 'Recomendado' },
   'schemaRichness.priority.optional':    { en: 'Optional',    es: 'Opcional'    },
   'schemaRichness.copy':     { en: 'Copy snippet', es: 'Copiar fragmento' },
-  'schemaRichness.copied':   { en: 'Copied!',      es: '¡Copiado!'        }
+  'schemaRichness.copied':   { en: 'Copied!',      es: '¡Copiado!'        },
+  // Sprint D3: embeddable badge offer card.
+  'badge.eyebrow':      { en: 'Embeddable badge', es: 'Badge para incrustar' },
+  'badge.heading':      { en: 'Show this score on your own site', es: 'Muestra esta puntuación en tu propio sitio' },
+  'badge.sub': {
+    en: 'Paste this snippet into your site footer. The badge refreshes to match whatever audit you run next — no manual updating.',
+    es: 'Pega este fragmento en el pie de tu sitio. El badge se actualiza con la auditoría más reciente que ejecutes — sin actualizaciones manuales.'
+  },
+  'badge.snippetLabel': { en: 'Copy-paste HTML', es: 'HTML para copiar y pegar' },
+  'badge.copy':         { en: 'Copy snippet',    es: 'Copiar fragmento' },
+  'badge.copied':       { en: 'Copied!',         es: '¡Copiado!' }
 };
 
 // Pluralization helper for ES: most nouns just take -es / -s, but

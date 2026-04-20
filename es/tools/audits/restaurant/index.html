@@ -689,6 +689,98 @@
     color: var(--stone);
   }
 
+  /* Sprint D3: embeddable-badge offer card. Shown at the end of
+     every completed audit. The preview is a live render of the
+     SVG that the owner will embed — so they see exactly what a
+     visitor to their site will see. */
+  .badge-offer-card {
+    max-width: 1100px;
+    margin: 24px auto 0;
+    padding: 22px 26px;
+    background: var(--cream-2, #faf6ee);
+    border: 1px solid var(--line, #E6DFCE);
+    border-left: 4px solid var(--teal);
+    border-radius: 14px;
+  }
+  .badge-offer-card[hidden] { display: none; }
+  .badge-offer-head {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+  .badge-offer-badge {
+    align-self: flex-start;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #1F4E5B;
+    background: #E7F1F3;
+    border: 1px solid #C7DFE4;
+    border-radius: 999px;
+  }
+  .badge-offer-title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0;
+    color: var(--ink);
+  }
+  .badge-offer-sub {
+    margin: 0 0 16px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .badge-offer-preview {
+    padding: 16px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: center;
+  }
+  .badge-offer-preview img { max-width: 100%; height: auto; display: block; }
+  .badge-offer-snippet-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 6px;
+  }
+  .badge-offer-snippet {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--ink);
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    resize: vertical;
+    min-height: 96px;
+  }
+  .badge-offer-copy {
+    margin-top: 10px;
+    padding: 7px 18px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--cream);
+    background: var(--teal);
+    border: 1px solid var(--teal);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .badge-offer-copy:hover { background: var(--teal-dark); border-color: var(--teal-dark); }
+
   /* Sprint T2: attribution footer. Native <details> so expansion
      works with no JS; closed state is a tight one-liner so reports
      stay uncluttered. */
@@ -3415,6 +3507,25 @@
 
         <div id="emailReportError" class="email-report-error" hidden role="alert"></div>
       </div>
+
+      <!-- Sprint D3: embeddable badge offer. Appears after audit
+           completes; gives the owner a copy-paste snippet to drop
+           into their own site footer. The badge image updates
+           whenever they re-audit (badge snapshot writes to KV on
+           each run). When KV isn't configured the badge falls back
+           to a generic 'Free Muntin Digital audit' card that still
+           drives traffic back to the tool. -->
+      <section class="badge-offer-card" id="badgeOfferCard" hidden>
+        <header class="badge-offer-head">
+          <span class="badge-offer-badge" data-tr="badge.eyebrow">Embeddable badge</span>
+          <h3 class="badge-offer-title" data-tr="badge.heading">Show this score on your own site</h3>
+        </header>
+        <p class="badge-offer-sub" data-tr="badge.sub">Paste this snippet into your site footer. The badge refreshes to match whatever audit you run next — no manual updating.</p>
+        <div class="badge-offer-preview" id="badgeOfferPreview"></div>
+        <label class="badge-offer-snippet-label" for="badgeOfferSnippet" data-tr="badge.snippetLabel">Copy-paste HTML</label>
+        <textarea class="badge-offer-snippet" id="badgeOfferSnippet" readonly spellcheck="false"></textarea>
+        <button type="button" class="badge-offer-copy" id="badgeOfferCopy" data-tr="badge.copy">Copy snippet</button>
+      </section>
 
       <!-- Sprint T2: 'How this audit was built' attribution footer.
            Populated from the POWERED_BY constant in restaurant-checks.js
@@ -7537,6 +7648,69 @@
   // footer from the POWERED_BY constant in restaurant-checks.js.
   // Runs idempotently — if the list is already populated, skip so
   // re-renders on priority-check re-evaluate don't duplicate entries.
+  // Sprint D3: render the badge offer card + prepare the copy-paste
+  // snippet. Runs idempotently — re-running an audit replaces the
+  // snippet's URL so the badge reflects the freshest run.
+  function renderBadgeOffer(auditedUrl) {
+    var card = document.getElementById('badgeOfferCard');
+    var preview = document.getElementById('badgeOfferPreview');
+    var snippet = document.getElementById('badgeOfferSnippet');
+    var copyBtn = document.getElementById('badgeOfferCopy');
+    if (!card || !preview || !snippet || !copyBtn) return;
+    if (typeof auditedUrl !== 'string' || !auditedUrl) { card.hidden = true; return; }
+    // Build the two URLs: badge image (src) + click-through (href).
+    // Both are relative to the current origin so the tool works
+    // in any deployment (prod, preview, local dev).
+    var origin = window.location.origin;
+    var badgeSrc = origin + '/badge/restaurant?url=' + encodeURIComponent(auditedUrl);
+    var linkHref = origin + '/tools/audits/restaurant/?url=' + encodeURIComponent(auditedUrl);
+    var altText = (window.__muntinLang === 'es')
+      ? 'Auditoría de restaurante Muntin Digital'
+      : 'Muntin Digital restaurant audit';
+    var html = [
+      '<a href="' + linkHref + '" target="_blank" rel="noopener">',
+      '  <img src="' + badgeSrc + '"',
+      '       alt="' + altText + '"',
+      '       width="240" height="80"',
+      '       loading="lazy" decoding="async">',
+      '</a>'
+    ].join('\n');
+    // Render the preview as an actual rendered badge (not escaped
+    // HTML) so the owner sees what viewers will see.
+    preview.innerHTML = '';
+    var link = document.createElement('a');
+    link.href = linkHref;
+    link.target = '_blank';
+    link.rel = 'noopener';
+    var img = document.createElement('img');
+    img.src = badgeSrc;
+    img.alt = altText;
+    img.width = 240;
+    img.height = 80;
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    link.appendChild(img);
+    preview.appendChild(link);
+    snippet.value = html;
+    // Rewire the copy button to this audit's URL (listener idempotent
+    // via the handler flag).
+    if (!copyBtn.__badgeHandlerBound) {
+      copyBtn.__badgeHandlerBound = true;
+      copyBtn.addEventListener('click', function(){
+        var orig = copyBtn.textContent;
+        try {
+          navigator.clipboard.writeText(snippet.value);
+          copyBtn.textContent = t('badge.copied');
+          setTimeout(function(){ copyBtn.textContent = orig; }, 1500);
+        } catch (_) {
+          snippet.focus();
+          snippet.select();
+        }
+      });
+    }
+    card.hidden = false;
+  }
+
   function renderBuiltByFooter() {
     var list = document.getElementById('builtByList');
     if (!list) return;
@@ -9229,6 +9403,21 @@
           renderReport(data, url);
           finishProgress();
           if (window.plausible) window.plausible('Audit Completed');
+          // Sprint D3: snapshot the score for the embeddable badge.
+          // Fire-and-forget — failure to persist the snapshot
+          // (binding missing, network blip) never affects the
+          // audit flow. Card still renders with the snippet.
+          try {
+            var last = window.__auditLastResult;
+            if (last && typeof last.overall === 'number') {
+              fetch('/api/badge-snapshot', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: url, score: last.overall })
+              }).catch(function(){});
+            }
+          } catch (_) {}
+          if (typeof renderBadgeOffer === 'function') renderBadgeOffer(url);
           // Sprint S2.5: Deep Scan is purely additive — after the
           // Fast report renders, kick off the four deeper signals in
           // parallel. Each resolves on its own budget (up to ~15s
