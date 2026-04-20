@@ -858,7 +858,22 @@ const SCHEMA_REASONS = {
   'address.string':       { en: 'Address is a bare string; Google prefers a structured PostalAddress with streetAddress, addressLocality, addressRegion, and postalCode.',
                             es: 'La dirección es solo una cadena; Google prefiere un PostalAddress estructurado con streetAddress, addressLocality, addressRegion y postalCode.' },
   'address.missingFields':{ en: 'Address is missing: {fields}. Add these fields to qualify for local-search rich results.',
-                            es: 'A la dirección le falta: {fields}. Agrega estos campos para calificar para resultados enriquecidos de búsqueda local.' }
+                            es: 'A la dirección le falta: {fields}. Agrega estos campos para calificar para resultados enriquecidos de búsqueda local.' },
+  // Sprint M1.2: reasons for the three validators that previously
+  // returned presence-only booleans. These feed the client's schema
+  // gaps list and let ES renders show grammatical Spanish.
+  'cuisine.missing':      { en: 'No servesCuisine on the Restaurant schema. Google uses this to match queries like "Mexican near me".',
+                            es: 'No hay servesCuisine en el schema del restaurante. Google lo usa para emparejar búsquedas como "mexicano cerca de mí".' },
+  'cuisine.tooGeneric':   { en: 'servesCuisine is only "{value}" — pair it with one or two specific cuisines (e.g. "Italian, Neapolitan Pizza") for better local-search match.',
+                            es: 'servesCuisine solo dice "{value}" — acompáñalo con una o dos cocinas específicas (p. ej. "Italiana, Pizza Napolitana") para mejorar la coincidencia en búsquedas locales.' },
+  'reservations.missing': { en: 'No acceptsReservations on the Restaurant schema. Even declaring `false` helps Google route reservation-intent queries away from you when you want walk-ins only.',
+                            es: 'No hay acceptsReservations en el schema del restaurante. Incluso declarar `false` ayuda a Google a desviar búsquedas con intención de reserva cuando solo tomas walk-ins.' },
+  'reservations.malformed':{ en: 'acceptsReservations is "{value}" — Google expects `true`, `false`, or a Reservation sub-object, not free-form text.',
+                            es: 'acceptsReservations es "{value}" — Google espera `true`, `false` o un sub-objeto Reservation, no texto libre.' },
+  'menu.missing':         { en: 'No hasMenu on the Restaurant schema. Adding a menu URL (or Menu sub-object) unlocks Google\'s menu rich-result card.',
+                            es: 'No hay hasMenu en el schema del restaurante. Agregar una URL de menú (o un sub-objeto Menu) desbloquea la tarjeta enriquecida de menú en Google.' },
+  'menu.badUrl':          { en: 'hasMenu is declared but the URL isn\'t http(s) — Google will silently drop the menu panel.',
+                            es: 'hasMenu está declarado pero la URL no es http(s) — Google omitirá silenciosamente el panel del menú.' }
 };
 function formatReason(reasonKey, vars, lang) {
   if (!reasonKey) return null;
@@ -880,13 +895,22 @@ function validateRestaurantSchema(objects, lang) {
   if (price.reasonKey) price.reason = formatReason(price.reasonKey, price.reasonVars, L);
   const address = validateAddress(restaurantObjects);
   if (address.reasonKey) address.reason = formatReason(address.reasonKey, address.reasonVars, L);
+  // Sprint M1.2: finish the three validators that used to return
+  // presence-only booleans — cuisine, reservations, and menu — and
+  // resolve their localized reason strings on the way out.
+  const cuisine = validateServesCuisine(restaurantObjects);
+  if (cuisine.reasonKey) cuisine.reason = formatReason(cuisine.reasonKey, cuisine.reasonVars, L);
+  const reservations = validateAcceptsReservations(restaurantObjects);
+  if (reservations.reasonKey) reservations.reason = formatReason(reservations.reasonKey, reservations.reasonVars, L);
+  const menu = validateHasMenu(restaurantObjects);
+  if (menu.reasonKey) menu.reason = formatReason(menu.reasonKey, menu.reasonVars, L);
   return {
     restaurantObjectCount: restaurantObjects.length,
     openingHours:        hours,
     priceRange:          price,
-    servesCuisine:       validateServesCuisine(restaurantObjects),
-    acceptsReservations: validateAcceptsReservations(restaurantObjects),
-    hasMenu:             validateHasMenu(restaurantObjects),
+    servesCuisine:       cuisine,
+    acceptsReservations: reservations,
+    hasMenu:             menu,
     address:             address
   };
 }
@@ -962,7 +986,26 @@ function validateAcceptsReservations(restaurantObjects) {
     // A Reservation sub-object counts as "yes, we accept"
     accepts = true;
   }
-  return { present: present, accepts: accepts, raw: value };
+  // Sprint M1.2: match the {present, valid, reasonKey, reasonVars,
+  // reason, value} shape the other validators return. `valid` means
+  // "Google can understand it" — not "this restaurant accepts
+  // reservations." A strictly-false declaration is still valid.
+  let reasonKey = null;
+  let reasonVars = null;
+  if (!present) reasonKey = 'reservations.missing';
+  else if (accepts === null) {
+    reasonKey = 'reservations.malformed';
+    reasonVars = { value: typeof value === 'string' ? value : JSON.stringify(value) };
+  }
+  return {
+    present: present,
+    valid: present && accepts !== null,
+    reasonKey: reasonKey,
+    reasonVars: reasonVars,
+    reason: null,
+    accepts: accepts,
+    value: value
+  };
 }
 
 // F4: hasMenu validation. Accepts either a URL string or a
@@ -994,7 +1037,23 @@ function validateHasMenu(restaurantObjects) {
       if (typeof val.url === 'string') pushMenu(val.url);
     }
   }
-  return { present: present, urlValid: urlValid, urls: urls };
+  // Sprint M1.2: adopt the unified {present, valid, reasonKey,
+  // reasonVars, reason, value} shape. `valid` means hasMenu is
+  // present AND at least one URL is http(s)-parseable. `urls` kept
+  // for backwards compatibility with any consumer that already
+  // expected it on the response.
+  let reasonKey = null;
+  if (!present) reasonKey = 'menu.missing';
+  else if (!urlValid) reasonKey = 'menu.badUrl';
+  return {
+    present: present,
+    valid: present && urlValid,
+    reasonKey: reasonKey,
+    reasonVars: null,
+    reason: null,
+    urls: urls,
+    urlValid: urlValid
+  };
 }
 
 function isValidHttpUrl(s) {
@@ -1348,10 +1407,25 @@ function validateServesCuisine(restaurantObjects) {
       });
     }
   }
+  // Sprint M1.2: unified shape + a "tooGeneric" flag for the
+  // single-value "restaurant"/"food" pattern that doesn't buy any
+  // local-search match. Single specific cuisine (e.g. "Italian") is
+  // valid; single generic term with no specifier is weakly valid.
+  const GENERIC = { 'restaurant': 1, 'food': 1, 'dining': 1, 'cuisine': 1 };
+  const present = cuisines.length > 0;
+  const tooGeneric = cuisines.length === 1 && !!GENERIC[cuisines[0]];
+  let reasonKey = null;
+  let reasonVars = null;
+  if (!present) reasonKey = 'cuisine.missing';
+  else if (tooGeneric) { reasonKey = 'cuisine.tooGeneric'; reasonVars = { value: cuisines[0] }; }
   return {
-    present: cuisines.length > 0,
-    count:   cuisines.length,
-    values:  cuisines
+    present: present,
+    valid: present && !tooGeneric,
+    reasonKey: reasonKey,
+    reasonVars: reasonVars,
+    reason: null,
+    count: cuisines.length,
+    values: cuisines
   };
 }
 
