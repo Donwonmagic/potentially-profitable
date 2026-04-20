@@ -2401,6 +2401,10 @@ var UI_I18N = {
     en: 'Open-source projects listed here are used under their respective licenses (MIT, Apache-2.0, BSD-3, OFL-1.1, MPL-2.0, AGPL-3.0, CC-BY-SA). Vendor names are trademarks of their owners.',
     es: 'Los proyectos de código abierto listados aquí se usan bajo sus respectivas licencias (MIT, Apache-2.0, BSD-3, OFL-1.1, MPL-2.0, AGPL-3.0, CC-BY-SA). Los nombres de los proveedores son marcas de sus titulares.'
   },
+  'builtBy.andMore': {
+    en: '+ {count} more',
+    es: '+ {count} más'
+  },
   // Sprint T4: brand dossier card.
   'dossier.badge': {
     en: 'Cited facts',

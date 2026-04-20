@@ -996,6 +996,13 @@
     color: var(--teal);
     list-style: none;
   }
+  /* Sprint E4: inline vendor teaser in the closed summary state.
+     Muted so the clickable label stays the visual anchor but owners
+     still learn WHAT powers the tool without having to expand. */
+  .built-by-summary-teaser {
+    font-weight: 400;
+    color: var(--stone);
+  }
   .built-by-footer summary::before {
     content: '+ ';
     display: inline-block;
@@ -3805,7 +3812,10 @@
            default; expanding shows every API / framework / typeface
            that powers the audit, each a link to its vendor. -->
       <details class="built-by-footer" id="builtByFooter">
-        <summary data-tr="builtBy.summary">How this audit was built</summary>
+        <summary>
+          <span class="built-by-summary-label" data-tr="builtBy.summary">How this audit was built</span>
+          <span class="built-by-summary-teaser" id="builtByTeaser"></span>
+        </summary>
         <p class="built-by-intro" data-tr="builtBy.intro">A Muntin Digital creation, powered by:</p>
         <ul class="built-by-list" id="builtByList"></ul>
         <p class="built-by-license" data-tr="builtBy.license">Open-source projects listed here are used under their respective licenses (MIT, Apache-2.0, BSD-3, OFL-1.1, MPL-2.0, AGPL-3.0, CC-BY-SA). Vendor names are trademarks of their owners.</p>
@@ -8150,6 +8160,10 @@
     card.hidden = false;
   }
 
+  // Sprint T2 + E4: the closed state of the footer now carries a
+  // live vendor teaser (\"· Lighthouse, CrUX, schema.org + 7 more\")
+  // so owners learn what powers the tool without needing to expand.
+  // Runs idempotently.
   function renderBuiltByFooter() {
     var list = document.getElementById('builtByList');
     if (!list) return;
@@ -8158,6 +8172,18 @@
               : (typeof POWERED_BY !== 'undefined' && Array.isArray(POWERED_BY) ? POWERED_BY : null);
     if (!items || !items.length) return;
     var lang = (typeof window !== 'undefined' && window.__muntinLang) || 'en';
+    // Inline teaser for the closed state. Pulls first 3 vendor
+    // names; appends "+N more" tail when the list is longer, so a
+    // future POWERED_BY add auto-reflows here too.
+    var teaser = document.getElementById('builtByTeaser');
+    if (teaser) {
+      var leadNames = items.slice(0, 3).map(function(x){ return x.name; }).filter(Boolean);
+      var remaining = Math.max(0, items.length - leadNames.length);
+      if (leadNames.length) {
+        teaser.textContent = ' · ' + leadNames.join(', ')
+          + (remaining > 0 ? ' ' + t('builtBy.andMore', { count: remaining }) : '');
+      }
+    }
     items.forEach(function(entry){
       if (!entry || !entry.name) return;
       var li = document.createElement('li');
