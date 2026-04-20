@@ -327,6 +327,85 @@
     font-variant-numeric: tabular-nums;
   }
 
+  /* Sprint T1: Places-verified facts card. Cream background +
+     soft-teal badge signal "verified info, not opinion". Chips use
+     the same pill shape as the effort/time chips so the card feels
+     like an extension of the existing priority UI, not a new system. */
+  .places-facts-card {
+    max-width: 1100px;
+    margin: 24px auto 0;
+    padding: 22px 26px;
+    background: var(--cream-2, #faf6ee);
+    border: 1px solid var(--line, #E6DFCE);
+    border-left: 4px solid var(--teal);
+    border-radius: 14px;
+  }
+  .places-facts-card[hidden] { display: none; }
+  .places-facts-head {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 14px;
+  }
+  .places-facts-badge {
+    align-self: flex-start;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #1F4E5B;
+    background: #E7F1F3;
+    border: 1px solid #C7DFE4;
+    border-radius: 999px;
+  }
+  .places-facts-title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0;
+    color: var(--ink);
+  }
+  .places-facts-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .places-facts-chips .chip {
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    background: #FFFFFF;
+    border: 1px solid var(--line, #E6DFCE);
+    border-radius: 999px;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .places-facts-summary {
+    margin: 0 0 12px;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .places-facts-summary::before { content: '“'; margin-right: 2px; }
+  .places-facts-summary::after  { content: '”'; margin-left: 2px; }
+  .places-facts-hours summary {
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--teal);
+  }
+  .places-facts-hours ul {
+    list-style: none;
+    margin: 8px 0 0;
+    padding: 0;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
   .audit-note {
     font-size: 13px;
     color: var(--stone);
@@ -2789,6 +2868,28 @@
           <div class="btc-alt-chips" id="btcAltChips"></div>
         </div>
       </div>
+
+      <!-- Sprint T1: Places-verified facts card. Renders only what
+           Google's Places v1 API has actually confirmed for this
+           business — Google's own description (editorialSummary),
+           price level ($-$$$$), primary type, and the published
+           weekday hours. Every row renders only when its field is
+           non-null; the whole card stays hidden when Places didn't
+           match or returned nothing. Accuracy gate: each line is a
+           direct passthrough of a verified-by-Google value. We do
+           not interpret, paraphrase, or summarize. -->
+      <section class="places-facts-card" id="placesFactsCard" hidden>
+        <header class="places-facts-head">
+          <span class="places-facts-badge" data-tr="places.verifiedBadge">Verified by Google</span>
+          <h3 class="places-facts-title" data-tr="places.heading">What Google knows about this restaurant</h3>
+        </header>
+        <div class="places-facts-chips" id="placesFactsChips"></div>
+        <p class="places-facts-summary" id="placesFactsSummary" hidden></p>
+        <details class="places-facts-hours" id="placesFactsHours" hidden>
+          <summary data-tr="places.hoursLabel">Google-published hours</summary>
+          <ul id="placesFactsHoursList"></ul>
+        </details>
+      </section>
 
       <!-- Restaurant-priority checks list -->
       <div class="priority-list" id="priorityListWrap">
@@ -6683,6 +6784,111 @@
     }
 
     renderBusinessTypeAlternatives(effective, detection);
+    renderPlacesFactsCard();
+  }
+
+  // Sprint T1: render the Places-verified facts card. Every row is
+  // a direct passthrough of a Google-confirmed field. Never displays
+  // the card if Places didn't match; never renders a row where its
+  // field is null. No interpretation, no paraphrasing.
+  function renderPlacesFactsCard() {
+    var card = document.getElementById('placesFactsCard');
+    var chipsEl = document.getElementById('placesFactsChips');
+    var summaryEl = document.getElementById('placesFactsSummary');
+    var hoursEl = document.getElementById('placesFactsHours');
+    var hoursListEl = document.getElementById('placesFactsHoursList');
+    if (!card || !chipsEl || !summaryEl || !hoursEl || !hoursListEl) return;
+    var snap = window.__auditPlaces;
+    if (!snap || !snap.ok || !snap.place) {
+      card.hidden = true;
+      return;
+    }
+    var p = snap.place;
+    chipsEl.innerHTML = '';
+    var rendered = 0;
+
+    if (typeof p.primaryTypeDisplayName === 'string' && p.primaryTypeDisplayName.trim()) {
+      var typeChip = document.createElement('span');
+      typeChip.className = 'chip';
+      typeChip.textContent = p.primaryTypeDisplayName;
+      chipsEl.appendChild(typeChip);
+      rendered++;
+    }
+
+    // priceLevel is a string enum: PRICE_LEVEL_FREE / INEXPENSIVE /
+    // MODERATE / EXPENSIVE / VERY_EXPENSIVE. Map to $-$$$$ only when
+    // the value is one we recognize. No $$ guesses for unknowns.
+    var priceMap = {
+      PRICE_LEVEL_FREE:           t('places.priceLevel.free'),
+      PRICE_LEVEL_INEXPENSIVE:    '$',
+      PRICE_LEVEL_MODERATE:       '$$',
+      PRICE_LEVEL_EXPENSIVE:      '$$$',
+      PRICE_LEVEL_VERY_EXPENSIVE: '$$$$'
+    };
+    if (typeof p.priceLevel === 'string' && priceMap[p.priceLevel]) {
+      var priceChip = document.createElement('span');
+      priceChip.className = 'chip';
+      priceChip.textContent = priceMap[p.priceLevel];
+      priceChip.setAttribute('title', t('places.priceLevel.tooltip'));
+      chipsEl.appendChild(priceChip);
+      rendered++;
+    }
+
+    if (typeof p.rating === 'number' && typeof p.reviewCount === 'number' && p.reviewCount > 0) {
+      var ratingChip = document.createElement('span');
+      ratingChip.className = 'chip';
+      ratingChip.textContent = t('places.ratingChip', {
+        rating: p.rating.toFixed(1),
+        count:  p.reviewCount.toLocaleString()
+      });
+      chipsEl.appendChild(ratingChip);
+      rendered++;
+    }
+
+    if (p.businessStatus === 'OPERATIONAL') {
+      var statusChip = document.createElement('span');
+      statusChip.className = 'chip';
+      statusChip.textContent = t('places.operational');
+      chipsEl.appendChild(statusChip);
+      rendered++;
+    }
+
+    // editorialSummary is Google's own one-sentence description of
+    // the business, authored by editorial staff — as factual as a
+    // Places field gets. Render verbatim when present.
+    if (typeof p.editorialSummary === 'string' && p.editorialSummary.trim()) {
+      summaryEl.textContent = p.editorialSummary.trim();
+      summaryEl.hidden = false;
+      rendered++;
+    } else {
+      summaryEl.hidden = true;
+    }
+
+    // weekdayHoursText is an array of "Mon: 11:00 AM – 10:00 PM"-
+    // style strings straight from Google. Render in a <details> so
+    // the card stays compact by default.
+    if (Array.isArray(p.weekdayHoursText) && p.weekdayHoursText.length) {
+      hoursListEl.innerHTML = '';
+      p.weekdayHoursText.forEach(function(line){
+        if (typeof line !== 'string' || !line.trim()) return;
+        var li = document.createElement('li');
+        li.textContent = line;
+        hoursListEl.appendChild(li);
+      });
+      if (hoursListEl.children.length) {
+        hoursEl.hidden = false;
+        rendered++;
+      } else {
+        hoursEl.hidden = true;
+      }
+    } else {
+      hoursEl.hidden = true;
+    }
+
+    // Card visibility gate: show only when at least one verified
+    // fact landed. An empty Places result produces an empty card,
+    // which we suppress entirely per the accuracy rule.
+    card.hidden = rendered === 0;
   }
 
   // Render up to 2 runner-up candidates as clickable chips. Hidden when

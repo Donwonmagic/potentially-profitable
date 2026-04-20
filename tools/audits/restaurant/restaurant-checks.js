@@ -2241,6 +2241,35 @@ var UI_I18N = {
   'deep.reviews.ownerReplied': {
     en: 'owner replied',
     es: 'respondió el dueño'
+  },
+  // Sprint T1: Places-verified facts card.
+  'places.verifiedBadge': {
+    en: 'Verified by Google',
+    es: 'Verificado por Google'
+  },
+  'places.heading': {
+    en: 'What Google knows about this restaurant',
+    es: 'Lo que Google sabe de este restaurante'
+  },
+  'places.hoursLabel': {
+    en: 'Google-published hours',
+    es: 'Horarios publicados por Google'
+  },
+  'places.operational': {
+    en: 'Operating',
+    es: 'En operación'
+  },
+  'places.ratingChip': {
+    en: '★ {rating} · {count} reviews',
+    es: '★ {rating} · {count} reseñas'
+  },
+  'places.priceLevel.free': {
+    en: 'Free',
+    es: 'Gratis'
+  },
+  'places.priceLevel.tooltip': {
+    en: 'Price level published by Google Business Profile',
+    es: 'Nivel de precio publicado por el Perfil de Empresa de Google'
   }
 };
 
