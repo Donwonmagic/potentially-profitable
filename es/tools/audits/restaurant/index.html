@@ -721,6 +721,78 @@
   }
   .og-completeness-copy:hover { background: #E7F1F3; }
 
+  /* Sprint H1: 'Since your last audit' banner. Elevated styling
+     (slightly taller, bolder type) so the delta reads as a
+     reward-for-returning, not a generic stat block. Renders only
+     when a prior snapshot exists AND at least one pillar moved. */
+  .history-banner {
+    max-width: 1100px;
+    margin: 18px auto 0;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #F6F1E6 0%, #FAF7F2 100%);
+    border: 1px solid #E6DFCE;
+    border-left: 4px solid var(--teal);
+    border-radius: 12px;
+  }
+  .history-banner[hidden] { display: none; }
+  .history-banner-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .history-banner-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal);
+  }
+  .history-banner-timing {
+    font-size: 13px;
+    color: var(--stone);
+  }
+  .history-banner-delta {
+    margin-top: 6px;
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  .history-banner-from, .history-banner-to { color: var(--ink); }
+  .history-banner-arrow { color: var(--stone); padding: 0 4px; }
+  .history-banner-diff {
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 600;
+    margin-left: 6px;
+  }
+  .history-banner-headline-up   .history-banner-diff { color: #1F6B3A; }
+  .history-banner-headline-down .history-banner-diff { color: #B8541A; }
+  .history-banner-headline-flat .history-banner-diff { color: var(--stone); }
+  .history-banner-pillars {
+    list-style: none;
+    margin: 10px 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 8px;
+  }
+  .history-banner-pillar {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    font-size: 12.5px;
+    border-radius: 999px;
+    background: #FFFFFF;
+    border: 1px solid var(--line, #E6DFCE);
+  }
+  .history-banner-pillar-label { color: var(--ink); font-weight: 500; }
+  .history-banner-pillar-val   { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .history-banner-pillar-up   .history-banner-pillar-val { color: #1F6B3A; }
+  .history-banner-pillar-down .history-banner-pillar-val { color: #B8541A; }
+
   /* Sprint E3: shared 'DEEP SCAN' eyebrow label applied to every
      Deep-Scan-only card. Small, quiet, clearly visually distinct
      from the Fast Scan body — signals these are optional extras
@@ -3358,6 +3430,21 @@
            focus on. Populated by renderExecutiveSummary() in
            I1b. Hidden by default so the layout doesn't reserve
            empty space on pre-audit page load. -->
+      <!-- Sprint H1: 'Since your last audit' banner. Renders only
+           when a prior snapshot for this exact URL exists in the
+           current browser's localStorage AND is old enough to be
+           a meaningful delta (at least 6 hours). First-time audits
+           and within-same-session re-renders keep the banner
+           hidden so we never fabricate progress. -->
+      <section class="history-banner" id="historyBanner" hidden aria-live="polite">
+        <div class="history-banner-row">
+          <span class="history-banner-eyebrow" data-tr="history.eyebrow">Since your last audit</span>
+          <span class="history-banner-timing" id="historyBannerTiming"></span>
+        </div>
+        <div class="history-banner-delta" id="historyBannerDelta"></div>
+        <ul class="history-banner-pillars" id="historyBannerPillars"></ul>
+      </section>
+
       <section class="exec-summary" id="execSummary" hidden aria-live="polite">
         <div class="exec-summary-label">Qué significa esto</div>
         <p class="exec-summary-body" id="execSummaryBody">—</p>
@@ -8162,6 +8249,158 @@
     card.hidden = false;
   }
 
+  // Sprint H1: audit history helpers. Everything lives in
+  // localStorage under 'muntin-audit-history:<sha-8-of-url>'. We
+  // keep at most 20 entries per URL (FIFO), so an owner running
+  // weekly audits has ~5 months of history before the oldest
+  // entry drops. Accuracy rule: we only store values THIS audit
+  // produced — the banner never compares against partial or
+  // speculative data.
+  var HISTORY_KEY_PREFIX = 'muntin-audit-history:';
+  var HISTORY_MAX_ENTRIES = 20;
+  var HISTORY_MIN_DELTA_MS = 6 * 60 * 60 * 1000; // 6h minimum gap
+
+  function historyKeyFor(url) {
+    // Small hex digest of the normalized URL. Not cryptographic —
+    // just a stable per-URL key that avoids storing the URL itself
+    // in the localStorage key (which would be readable by any
+    // script on the page). Uses djb2, no crypto subtle needed.
+    var s = String(url || '').trim()
+      .replace(/^https?:\/\//i, '').replace(/\/$/, '').toLowerCase();
+    var h = 5381;
+    for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0;
+    return HISTORY_KEY_PREFIX + (h >>> 0).toString(16);
+  }
+
+  function readHistory(url) {
+    try {
+      var raw = window.localStorage.getItem(historyKeyFor(url));
+      if (!raw) return [];
+      var parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (_) { return []; }
+  }
+
+  function saveAuditSnapshot(url, snap) {
+    if (!url || !snap) return;
+    var entry = {
+      ts: Date.now(),
+      overall: typeof snap.overall === 'number' ? snap.overall : null,
+      perf:    typeof snap.perf === 'number' ? snap.perf : null,
+      a11y:    typeof snap.a11y === 'number' ? snap.a11y : null,
+      bp:      typeof snap.bp === 'number'   ? snap.bp   : null,
+      seo:     typeof snap.seo === 'number'  ? snap.seo  : null,
+      restaurant: typeof snap.restaurant === 'number' ? snap.restaurant : null,
+      subtype: snap.subtype || null,
+      unverifiedCount: typeof snap.unverifiedCount === 'number' ? snap.unverifiedCount : null
+    };
+    var prev = readHistory(url);
+    // Guard: if the newest entry is within the minimum-delta window,
+    // overwrite it instead of appending. A user hitting re-audit
+    // twice in 10 seconds shouldn't create two history rows.
+    if (prev.length && entry.ts - prev[prev.length - 1].ts < HISTORY_MIN_DELTA_MS) {
+      prev[prev.length - 1] = entry;
+    } else {
+      prev.push(entry);
+      while (prev.length > HISTORY_MAX_ENTRIES) prev.shift();
+    }
+    try {
+      window.localStorage.setItem(historyKeyFor(url), JSON.stringify(prev));
+    } catch (_) { /* quota exceeded — fail closed */ }
+  }
+
+  function renderHistoryBanner(url) {
+    var banner = document.getElementById('historyBanner');
+    var timingEl = document.getElementById('historyBannerTiming');
+    var deltaEl = document.getElementById('historyBannerDelta');
+    var pillarsEl = document.getElementById('historyBannerPillars');
+    if (!banner || !timingEl || !deltaEl || !pillarsEl) return;
+    var history = readHistory(url);
+    // Need at least 2 entries — the one just saved (last) + a prior.
+    if (history.length < 2) { banner.hidden = true; return; }
+    var current = history[history.length - 1];
+    var previous = null;
+    // Walk backwards to find a prior entry at least HISTORY_MIN_DELTA_MS
+    // older than the current one. A re-audit in the same hour doesn't
+    // qualify as 'since your last audit.'
+    for (var i = history.length - 2; i >= 0; i--) {
+      if (current.ts - history[i].ts >= HISTORY_MIN_DELTA_MS) {
+        previous = history[i];
+        break;
+      }
+    }
+    if (!previous) { banner.hidden = true; return; }
+
+    // Timing label — days (or hours if < 1 day).
+    var elapsedMs = current.ts - previous.ts;
+    var timingLabel;
+    if (elapsedMs < 24 * 60 * 60 * 1000) {
+      var hrs = Math.max(1, Math.round(elapsedMs / (60 * 60 * 1000)));
+      timingLabel = t('history.hoursAgo', { count: hrs });
+    } else if (elapsedMs < 14 * 24 * 60 * 60 * 1000) {
+      var days = Math.max(1, Math.round(elapsedMs / (24 * 60 * 60 * 1000)));
+      timingLabel = t('history.daysAgo', { count: days });
+    } else {
+      var weeks = Math.max(1, Math.round(elapsedMs / (7 * 24 * 60 * 60 * 1000)));
+      timingLabel = t('history.weeksAgo', { count: weeks });
+    }
+    timingEl.textContent = timingLabel;
+
+    // Overall delta headline.
+    deltaEl.innerHTML = '';
+    if (typeof current.overall === 'number' && typeof previous.overall === 'number') {
+      var diff = current.overall - previous.overall;
+      var band = diff > 0 ? 'up' : diff < 0 ? 'down' : 'flat';
+      var arrow = band === 'up' ? '↑' : band === 'down' ? '↓' : '=';
+      var sign = diff > 0 ? '+' : '';
+      var headline = document.createElement('div');
+      headline.className = 'history-banner-headline history-banner-headline-' + band;
+      headline.innerHTML =
+        '<span class="history-banner-from">' + previous.overall + '</span>' +
+        ' <span class="history-banner-arrow">' + arrow + '</span> ' +
+        '<span class="history-banner-to">' + current.overall + '</span>' +
+        ' <span class="history-banner-diff">(' + sign + diff + ')</span>';
+      deltaEl.appendChild(headline);
+    }
+
+    // Per-pillar deltas — only pillars where both runs have a number.
+    pillarsEl.innerHTML = '';
+    var pillars = [
+      { key: 'perf',       label: 'Performance' },
+      { key: 'a11y',       label: 'Accessibility' },
+      { key: 'bp',         label: 'Best Practices' },
+      { key: 'seo',        label: 'SEO' },
+      { key: 'restaurant', label: 'Restaurant Readiness' }
+    ];
+    var changesCount = 0;
+    pillars.forEach(function(p){
+      var a = previous[p.key];
+      var b = current[p.key];
+      if (typeof a !== 'number' || typeof b !== 'number') return;
+      var d = b - a;
+      if (d === 0) return; // unchanged pillars don't earn a row
+      changesCount++;
+      var li = document.createElement('li');
+      li.className = 'history-banner-pillar history-banner-pillar-' + (d > 0 ? 'up' : 'down');
+      var lbl = document.createElement('span');
+      lbl.className = 'history-banner-pillar-label';
+      lbl.textContent = p.label;
+      var val = document.createElement('span');
+      val.className = 'history-banner-pillar-val';
+      val.textContent = (d > 0 ? '+' : '') + d;
+      li.appendChild(lbl);
+      li.appendChild(val);
+      pillarsEl.appendChild(li);
+    });
+    // Render the banner only when we have at least one comparable
+    // value (either overall delta or a pillar delta). If every
+    // pillar is identical between runs, suppress the banner — it
+    // would read as noise.
+    var showBanner = (typeof current.overall === 'number' && typeof previous.overall === 'number')
+                     || changesCount > 0;
+    banner.hidden = !showBanner;
+  }
+
   // Sprint T2 + E4: the closed state of the footer now carries a
   // live vendor teaser (\"· Lighthouse, CrUX, schema.org + 7 more\")
   // so owners learn what powers the tool without needing to expand.
@@ -9562,6 +9801,26 @@
       unverifiedCount: priorityResult.unverifiedCount || 0,
       unverifiedPenaltyApplied: (priorityResult.unverifiedWeight || 0) > 0
     };
+
+    // Sprint H1: save a compact snapshot of this audit to
+    // localStorage (per URL). The next time this URL is audited,
+    // renderHistoryBanner() compares the new score against the
+    // most-recent prior snapshot and surfaces the delta. Accuracy
+    // gate: we only save / compare score data WE computed, never
+    // speculative values.
+    try {
+      saveAuditSnapshot(auditedUrl, {
+        overall: overall,
+        perf:    perf,
+        a11y:    a11y,
+        bp:      bp,
+        seo:     seo,
+        restaurant: isRestaurantSite ? restaurantScore : null,
+        subtype: businessType && businessType.type ? businessType.type : null,
+        unverifiedCount: priorityResult.unverifiedCount || 0
+      });
+      renderHistoryBanner(auditedUrl);
+    } catch (_) { /* localStorage disabled / full — fail closed */ }
 
     // Update the address bar so "copy link" gives you the audited
     // URL (and any live overrides). Uses history.replaceState so

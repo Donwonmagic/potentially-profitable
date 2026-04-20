@@ -2323,6 +2323,20 @@ var UI_I18N = {
     es: 'No hubo señales adicionales disponibles para este sitio.'
   },
   'deepScan.eyebrow': { en: 'Deep scan', es: 'Deep scan' },
+  // Sprint H1: 'since your last audit' banner copy.
+  'history.eyebrow':  { en: 'Since your last audit', es: 'Desde tu última auditoría' },
+  'history.hoursAgo': {
+    en: '{count} hour{s} ago',
+    es: 'hace {count} hora{s}'
+  },
+  'history.daysAgo': {
+    en: '{count} day{s} ago',
+    es: 'hace {count} día{s}'
+  },
+  'history.weeksAgo': {
+    en: '{count} week{s} ago',
+    es: 'hace {count} semana{s}'
+  },
   'deep.age.liveSince': {
     en: 'Live since {year}',
     es: 'En línea desde {year}'
