@@ -1,0 +1,267 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-20T18:42:44.851Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "zm_yunxi",
+  "language": "zh",
+  "total": 555.12,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "大多数独立餐厅在好年份的营业利润率在 4 到 8 个点之间。在像今年这样的一年里——食品成本上涨，劳动力上涨，租金上涨，保险上涨——利润率已经缩小了两三个点，而我参加的每次运营商聚会上的谈话最终都会变成同一句话：“我只需要找到另外一两个点的利润率，我就没事了。”",
+      "start": 0,
+      "end": 21.04
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "这是诚实的消息。你也许可以。不是通过裁员，不是通过缩小份额，也不是通过将供应商更换为您的常客绝对会注意到的更便宜的 sysco 系列。通过修复网站上的五个小问题。每个人的工作时间都在一个小时以内。就个人而言，它们都不会改变你的年份。叠加起来，他们返回大约一整点的利润——对于一家典型的单一地点独立餐厅，其收入为 1.2 美元至 1.5 美元，每年可达到 8,000 美元至 15,000 美元。每年。复合。",
+      "start": 21.39,
+      "end": 50.48
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "这五个动作很无聊。这就是重点。餐馆老板听到“网站优化”，他们的注意力就转向了一个为期六个月的重新设计项目，其中包括一名顾问、一份宣传材料和一张 30,000 美元的发票。我所描述的是您可以在周日晚上和周一午餐期间亲手完成的五个修复。你的具体数字会有所不同——更大的餐厅在相同的百分比下收回更多的钱，更高流量的网站会增加胜利——但这五个动作的形状出现在我审计的每个独立餐厅网站上。",
+      "start": 50.83,
+      "end": 81.7
+    },
+    {
+      "id": 3,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "这是堆栈。五次网站变更，每一次都贡献了一小部分利润恢复。第一步：让你的工作时间在每一页的首屏上都可见。通过转化目前因为无法判断您是否开放而跳出的访问者，可以恢复大约五分之一的利润。第二步：在一个明显的地方放置一个主要的保留号召性用语，而不是三个较弱的号召性用语来争夺注意力。通过消除决策摩擦，又恢复四分之一个百分点。第三步：在主页的首屏上方添加一个直接的自订购链接，其颜色不会融入设计中。通过将送货订单从 DoorDash 转移出去，恢复了大约十分之三的积分。第四步：重写利润率最高的三到四个菜单项的描述，使它们成为客人最有可能选择的项目。仅通过转向命令混合即可恢复大约百分之十五的点。第五步：删除网站上所有过时的折扣、过期的促销横幅和过时的 P D F 菜单。通过消除价格混乱和信任破裂，再恢复十分之一点。五个小动作，叠起来。总计：大约一个整点的利润率。在一家典型的独立餐厅，每年的费用为八到一万五千美元。",
+      "start": 82.5,
+      "end": 146.67
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "这是每个动作的近距离观察，以及实际需要的工作时间。",
+      "start": 147.42,
+      "end": 152.61
+    },
+    {
+      "id": 5,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "第 1 步 — 首屏可见时间 · +0.20%。",
+      "start": 153.71,
+      "end": 158.25
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "餐厅网站上最常见的问题是“你们现在营业吗？”问题最常得到解答的地方是页脚，或者在单独的联系页面上点击三下即可。这种差距——客人找到的东西和你把它放在哪里——是大多数独立餐厅网站上影响最大的一个漏洞。",
+      "start": 158.95,
+      "end": 174.42
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "把你的时间投入到英雄身上。或者在导航下方的粘性栏中。或者作为一个小的“立即开放·直到晚上 10 点”指示器，使用一点 JavaScript 进行更新。这些工作中的任何一个；具体实现比原则更重要：访问者应该在页面加载后三秒内看到您是否打开，无需滚动，无需点击。",
+      "start": 174.77,
+      "end": 196.13
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "工作时间：将今天的时间写入主页的英雄部分以及每个具有可见标题块的页面。如果您使用的是 Wix 或 Squarespace，则这是一个 10 分钟的内容编辑。如果您访问自定义网站，则需要与 Web 开发人员交谈 30 分钟。不管怎样，一小时最多。",
+      "start": 196.48,
+      "end": 215.48
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "举措 2 — 一项主要保留 C T A · +0.25%。",
+      "start": 216.58,
+      "end": 221.38
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "大多数餐厅网站在三个地方都有预订 CTA：导航中的按钮、主页中间的块以及页脚中的“立即预订”标注。每个都是不同的颜色，不同的大小，而且 - 至关重要的是 - 有时甚至指向不同的目的地（导航为 OpenTable，中间为电话号码，页脚为电子邮件）。",
+      "start": 222.08,
+      "end": 240.4
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "选择一个。使其突出。将它们全部指向同一个地方。这里的神经科学很无聊，而且有据可查：当你为访问者提供相同动作的两个同等权重的选项时，他们不会选择任何一个并离开。当你给他们一个时，他们就会选择它。",
+      "start": 240.75,
+      "end": 256.39
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "工作时间：决定您的主要预订目的地（OpenTable？Resy？您自己的表格？）。将三个 C T A 点更新为全部指向那里，具有相同的标签、相同的视觉权重。如果您想将电话号码保留为次要选项，请将其放在主按钮旁边的小文本中，而不是与它竞争。",
+      "start": 256.74,
+      "end": 275.83
+    },
+    {
+      "id": 13,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "第 3 步 — 直接自行订购链接位于顶部 · +0.30%。",
+      "start": 276.93,
+      "end": 282.5
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "这是最大的一次胜利，也是大多数餐厅不小心破坏的一次。如果您对 P O S 使用 Square 或 Toast，则您已经在 yourrestaurant.square.site 或 yourrestaurant.toasttab.com 等网站上拥有自己的订购页面。大多数餐馆将点击三下的链接深埋在无人发现的“外卖”页面中。与此同时，主页上的 DoorDash 按钮很大，呈黄色。",
+      "start": 283.2,
+      "end": 307.39
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "将自己订购的链接放在导航栏的首屏上方一个视觉效果强烈的按钮中。如果您要保留 DoorDash 链接，请将其放在您自己的链接下方，较小的链接，并带有“或通过 DoorDash → 订购”之类的内容，这样想要 DoorDash 体验的客人仍然可以拥有它，但默认路径是您的直接站点。",
+      "start": 307.74,
+      "end": 328.65
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "这里的数学是杠杆式的：你从 DoorDash 偷回的每一个直接订单大约会比该订单多出大约 20% 的保证金。即使将每周交付量的 15% 改为直接订购也能收回真金白银。",
+      "start": 329,
+      "end": 343.07
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "工作时间：在您的导航和主页英雄中添加一个“直接订购 →”按钮，将其链接到您现有的 Square/Toast/其他自己的订购页面。确保按钮是折叠上方最亮的东西。",
+      "start": 343.42,
+      "end": 356.77
+    },
+    {
+      "id": 18,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "第 4 步 — 对高利润商品进行更好的描述 · +0.15%。",
+      "start": 357.87,
+      "end": 363.32
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "查看过去 90 天的单品销售情况。按每次封面的贡献利润对每道菜进行排名——扣除食品成本后，该菜向您支付的金额。您会发现三到四个项目的利润远高于您的平均水平。 On most menus, those are: the pasta with the cheap-grain base and the expensive-protein garnish, the pizza, the signature cocktail, and one dessert.",
+      "start": 364.02,
+      "end": 386.39
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "这些是你的菜单描述应该最努力销售的项目。大多数餐厅都会用三段文字来描述他们的招牌牛排，而招牌意大利面则会用两个词来描述。将其倒转为您真正赚钱的项目。 \"Orecchiette\" becomes \"Hand-cut orecchiette, slow-cooked lamb ragù, pecorino from our supplier in Lazio since twenty nineteen — the dish the kitchen argues about.\"现在是客人想点的菜了。",
+      "start": 386.91,
+      "end": 410.81
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "工作时间：确定最重要的 3-4 个利润项目，写 2 个句子，每个句子包含具体的来源/准备/故事细节。更新您网站上的菜单页面。",
+      "start": 411.16,
+      "end": 422.22
+    },
+    {
+      "id": 22,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "步骤 5 — 删除所有过时的促销和旧的 P D F · +0.10%。",
+      "start": 423.32,
+      "end": 429.57
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "浏览您自己的网站，就像您是第一次访问者一样，没有上下文。 You will find at least one: a happy-hour card that still references twenty twenty-three pricing, a banner promoting a summer special that ended in October, a P D F menu titled “Fall twenty twenty-four” still linked from a sidebar, a gift-card promo that expired six months ago.",
+      "start": 430.27,
+      "end": 449
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "每一个都是小小的信任破裂。客人看到一件陈旧的物品，就会不自觉地开始想知道网站上还有什么不是最新的。这会削弱促成预订的那一瞬间的信心。把他们全部杀掉。",
+      "start": 449.52,
+      "end": 462.77
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "工作时间：打开网站的每个页面，记下所有不是最新的价格/促销/季节性参考，删除或更新。您会在典型网站上找到其中 4-8 个。每个问题的修复时间都不超过 5 分钟。",
+      "start": 463.12,
+      "end": 477.18
+    },
+    {
+      "id": 26,
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "五动。它们都不是重新设计的。他们都不需要顾问。在一个缓慢的周日完成后，他们返回了一个完整的利润点——这比大多数餐厅从更换供应商一年中获得的利润还要高。",
+      "start": 477.93,
+      "end": 490.33
+    },
+    {
+      "id": 27,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "诚实的复合论证。",
+      "start": 491.43,
+      "end": 493.12
+    },
+    {
+      "id": 28,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "百分之一在音调中听起来并不令人印象深刻。这是顾问会把这个数字埋在第七张幻灯片上的。但餐厅的利润恢复有一个问题：它与销量成复利关系。一家餐厅每年营业额为 1.2 美元，如果获得一点利润，则将获得 12 美元K。一家餐厅的营业额为 2.5 美元 M，如果获得相同的点，则获得 25 美元 K。 And next year, when you’re doing a little more volume, the same stack of five moves returns a little more money — because the percentage is always against the larger revenue number.",
+      "start": 493.82,
+      "end": 524.4
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "五年内，一家成长中的独立餐厅的单点利润保守地为 60 美元到 100 美元。这是真实的事情。这是一线厨师一年的工资。那是一个新的引擎盖通风口。这是您一直推迟的露台扩建的首付。",
+      "start": 524.92,
+      "end": 538.69
+    },
+    {
+      "id": 30,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "所有这五个动作都可以在本周日完成。他们都不需要雇用任何人。它们都不需要重新设计。他们只需要每个小时的关注，并愿意将您的网站视为餐厅的操作系统，而不是您曾经做过并忘记的小册子。",
+      "start": 539.04,
+      "end": 553.01
+    },
+    {
+      "id": 31,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "边际已经存在了。去拿吧。",
+      "start": 553.36,
+      "end": 555.12
+    }
+  ]
+}

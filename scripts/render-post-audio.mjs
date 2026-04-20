@@ -249,6 +249,22 @@ function renderPost(postDir) {
   // and selector are preserved so the runtime's highlight sync lines
   // up across languages.
   for (const lang of languages) {
+    // Skip languages whose output MP3 + manifest are already on disk.
+    // Re-invoking the translator for a completed language is expensive
+    // (slow) and risky (Google's unauth endpoint will 503 under load);
+    // the render should be resumable across runs without re-doing
+    // completed work. Pass --force-retranslate to override.
+    const mp3Name  = lang === 'en' ? 'audio.mp3'  : `audio.${lang}.mp3`;
+    const jsonName = lang === 'en' ? 'audio.json' : `audio.${lang}.json`;
+    const mp3Path  = path.join(postDir, mp3Name);
+    const jsonPath = path.join(postDir, jsonName);
+    if (!flags.has('--force-retranslate')
+        && fs.existsSync(mp3Path)
+        && fs.existsSync(jsonPath)) {
+      console.log(`  · skip ${lang}: ${mp3Name} already present`);
+      continue;
+    }
+
     let langChunks = chunks;
     if (lang !== 'en') {
       console.log(`  · translating ${chunks.length} chunks → ${lang}`);
