@@ -1,0 +1,275 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-20T19:00:48.107Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "em_alex",
+  "language": "es",
+  "total": 647.16,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Si vio su Google Analytics durante el último año y sintió vagamente que algo andaba mal (las mismas impresiones Google Business Profile, pero notablemente menos clics en su sitio web), no se lo estaba imaginando. Algo cambió. Google comenzó a hacer algo con los listados de restaurantes que los operadores de restaurantes pasaron por alto, porque se implementó silenciosamente y porque parece una característica en lugar de una toma.",
+      "start": 0,
+      "end": 22.88
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "En el último año, Google Maps comenzó a mostrar widgets de reserva directamente dentro del listado para la mayoría de los restaurantes que usan OpenTable, Resy, SevenRooms o Tock. Un huésped ahora puede buscar \"Italiano cerca de mí\", tocar su restaurante, elegir el tamaño y la hora del grupo y completar la reserva sin tener que salir de Google. Su sitio web nunca es visitado. El héroe de tu página de inicio, las descripciones de tu menú, la historia de tu marca, todo ello omitido. El huésped reserva, la reserva ingresa a su sistema de reservas y Google mantiene la sesión silenciosamente.",
+      "start": 23.4,
+      "end": 55.34
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Si estás pensando \"bueno, al menos obtuve la reserva\", sí, esta vez la obtuviste. Pero también sucedió algo importante: Google enseñó a ese huésped que su restaurante es una fila en un resultado de búsqueda, no un destino. La próxima vez que quieran salir a comer, primero volverán a Google, tocarán la tarjeta de Mapas y reservarán nuevamente sin saber nada sobre su lugar. Con el tiempo, esa relación con su restaurante es muy diferente a la que se suponía que debía construir su sitio web.",
+      "start": 55.86,
+      "end": 82.63
+    },
+    {
+      "id": 3,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Así es como se ve realmente el flujo y cuánto cuesta silenciosamente.",
+      "start": 83.15,
+      "end": 87.26
+    },
+    {
+      "id": 4,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Aquí está el bypass, uno al lado del otro. A la izquierda, hoy empuja el flujo Google. Un huésped busca su restaurante en Google, llega a la tarjeta de Mapas, toca el botón \"Buscar una mesa\", elige el tamaño y la hora del grupo dentro del widget OpenTable o Resy integrado directamente en Google Maps y completa la reserva. Su sitio web nunca es visitado. El huésped no tiene idea de cómo es tu lugar, qué hace que tu menú sea diferente o de que tienes una historia que vale la pena conocer. Reservaron una mesa genérica con un nombre genérico. A la derecha, el flujo que quieras. El huésped busca, llega a la tarjeta de Mapas, accede al enlace de su sitio web, ve su imagen principal, su voz y su menú, y luego reserva a través de un widget de reserva en su propio sitio, que aún se dirige a OpenTable o Resy bajo el capó. Misma reserva, mismo back-end, mismo resultado final para el restaurante. Pero ahora el huésped ha visto la marca real de su restaurante, lo que aumenta drásticamente su probabilidad de recordarlo la próxima vez, contárselo a un amigo o realizar un pedido directamente desde su sitio en lugar de hacerlo a través de DoorDash la próxima semana. La reserva no es toda la victoria. La impresión de marca es. El atajo de Google roba la impresión de marca, no la reserva.",
+      "start": 88.06,
+      "end": 156.04
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Ambos flujos dan como resultado una reserva en sus libros. Pero solo uno de ellos resulta en un huésped que realmente conoce su restaurante.",
+      "start": 156.79,
+      "end": 164.95
+    },
+    {
+      "id": 6,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Por qué es importante: en dólares, no en vibraciones.",
+      "start": 166.05,
+      "end": 168.9
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Si el argumento hasta ahora parece un poco abstracto (la \"impresión de marca\" no es un tema sobre el que nadie discuta en una reunión de operadores), pongámosle algunos números.",
+      "start": 169.6,
+      "end": 178.99
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Un huésped que reserva a través de su sitio web y realmente llega a su página de inicio tiene aproximadamente 3 veces más posibilidades de regresar dentro de los 90 días, según los patrones de cohorte que veo en restaurantes con análisis adecuados. Es más probable que soliciten la entrega directamente a usted más adelante (porque conocen la U R L). Es más probable que se registren en su lista de SMS (porque vieron la opción de suscripción en la página de reserva). Es más probable que le cuenten a un amigo las palabras exactas que usaste en tu página de inicio, porque tu página de inicio les dio palabras.",
+      "start": 179.51,
+      "end": 214.52
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Un huésped que reserva en línea a través de Google recuerda que tal vez comió en \"algún lugar italiano en la calle 4\". Ese invitado merece la portada pero casi nada más. A lo largo de un año de servicio de cenas, la diferencia agravante entre esos dos comportamientos de los huéspedes es real, especialmente cuando esos dólares de las visitas recurrentes son el margen exacto que la mayoría de los restaurantes están tratando de construir en este momento.",
+      "start": 215.04,
+      "end": 240.49
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Hay un segundo costo que es más difícil de ver hasta que es demasiado tarde: la dependencia de la plataforma. El manual completo de Google durante la última década (en viajes, servicios locales, reseñas, compras) es insertarse como intermediario, demostrar que puede vivir sin hacer clic en su propio sitio y luego, eventualmente, comenzar a cobrar por el tráfico que solía brindarle de forma gratuita. Si su flujo de reservas no afecta su sitio web, está a un cambio de algoritmo de quedar completamente desintermediado. No eres dueño de nada. Google es propietario del huésped.",
+      "start": 241.01,
+      "end": 271.93
+    },
+    {
+      "id": 11,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Tres jugadas que recuperan el flow.",
+      "start": 273.03,
+      "end": 275.05
+    },
+    {
+      "id": 12,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(1)",
+      "text": "1. Haga que el enlace de su sitio web Google Business Profile sea imperdible.",
+      "start": 276.15,
+      "end": 280.64
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "En Google Maps, el botón \"Sitio web\" se encuentra justo al lado del widget de reserva. La mayoría de los operadores aceptan cualquier URL Google que se complete automáticamente desde su dominio y nunca vuelven a pensar en ello. Eso es un error. El botón de su sitio web en G B P es el elemento inmobiliario más valioso que Google le ofrece de forma gratuita, y debe apuntar a una URL cuyo único propósito es superar el widget en línea.",
+      "start": 281.34,
+      "end": 304.76
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Específicamente: dirija la URL de su sitio web G B P a una página de destino diseñada como página de reservas, no a su página de inicio. Imagen heroica de tu habitación. Una frase de voz. Un destacado widget \"Reservar una mesa\" que se enruta al mismo back-end OpenTable/Resy al que se enruta Google. Tal vez un pequeño enlace \"o ver el menú completo\". Eso es todo. La página existe para brindarle al huésped que hizo clic en \"Sitio web\" en lugar de \"Buscar una mesa\" una razón para sentir que tomó la decisión correcta y un camino sin complicaciones hacia la misma reserva.",
+      "start": 305.28,
+      "end": 337.43
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "El movimiento: cree una página /reserve en su sitio web, configure su Google Business Profile \"Sitio web\" U R L en esa página. Tarda una hora.",
+      "start": 337.95,
+      "end": 346.36
+    },
+    {
+      "id": 16,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(2)",
+      "text": "2. Supere el diseño del widget en línea en su propio sitio.",
+      "start": 347.46,
+      "end": 350.83
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "La razón por la que el widget en línea gana en este momento es que no tiene fricción. El invitado toca, elige un momento y listo. Si el flujo de reservas de su sitio web requiere un clic en una página OpenTable, luego una carga, luego un captcha y luego un registro, pierde la carrera de velocidad.",
+      "start": 351.53,
+      "end": 368.23
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Incruste el widget directamente en su página en lugar de vincularlo. OpenTable, Resy, SevenRooms y Tock proporcionan un widget de iframe que puede colocar en su propia página de inicio o página de reserva y que completa la reserva en la misma sesión. Haga el trabajo para que esa inserción sea hermosa: fuentes adecuadas, su paleta de colores, selector de tamaño de grupo en la mitad superior de la página. El objetivo es que el huésped que llegó desde Google sienta que tuvo una mejor experiencia de reserva, no una peor, por haber pasado por usted.",
+      "start": 368.75,
+      "end": 398.72
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "La medida: comuníquese con el soporte de su plataforma de reservas, solicite el código para insertar el widget, pídale a su desarrollador (o a usted, en la mayoría de los sitios modernos) que lo envíe. Toma de 2 a 4 horas en total.",
+      "start": 399.24,
+      "end": 412.1
+    },
+    {
+      "id": 20,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(3)",
+      "text": "3. Capture el correo electrónico antes de que Google pueda hacerlo.",
+      "start": 413.2,
+      "end": 416.82
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "El widget en línea Google toma el correo electrónico del huésped y se lo entrega a la plataforma de reservas, no a usted. Muchos operadores no se dan cuenta de que OpenTable y Resy no comparten esos correos electrónicos directamente: usted obtiene registros de comensales solo de los invitados que realmente se sentaron en su restaurante, y solo si tiene planes de niveles específicos. ¿El huésped que reservó pero canceló? No los tienes.",
+      "start": 417.52,
+      "end": 440.99
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "En su propia página de reservas, agregue una única casilla de verificación: \"Envíeme también un correo electrónico ocasional de [nombre del restaurante]: cambios en el menú, eventos y nuestras especialidades semanales\". Esa casilla de verificación, marcada de forma predeterminada si su jurisdicción lo permite, crea una lista de correo electrónico propia que nadie puede quitarle. Cada huésped que pasa por tu sitio se convierte en una futura reactivación, un futuro pedido directo, un futuro referido. Cada huésped que reserva en línea en Google se convierte en una fila en la base de datos de OpenTable.",
+      "start": 441.51,
+      "end": 474.09
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "El movimiento: agregue la casilla de verificación a su widget de reserva, envíe los correos electrónicos a su lista Klaviyo / Mailchimp / Attentive, nutra. Noventa minutos de trabajo. Compuestos para siempre.",
+      "start": 474.61,
+      "end": 487.15
+    },
+    {
+      "id": 24,
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Google no está robando tus reservas. Está robando la relación con los huéspedes en torno a sus reservas, que con el tiempo vale mucho más que cualquier reserva única.",
+      "start": 487.9,
+      "end": 497.34
+    },
+    {
+      "id": 25,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Qué no hacer: desactivar las reservas en G B P.",
+      "start": 498.44,
+      "end": 501.28
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "He visto operadores, frustrados por la omisión, desactivar por completo la integración de reservas en su Google Business Profile. La idea es: si Google no puede mostrar el widget en línea, el huésped se verá obligado a hacer clic para acceder a mi sitio web. No hagas esto.",
+      "start": 501.98,
+      "end": 516.77
+    },
+    {
+      "id": 27,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "Lo que realmente sucede es que el huésped mira su listado Google, no ve ninguna opción de reserva, asume que es difícil reservar y toca el siguiente restaurante de la lista. Pierdes al huésped por completo en lugar de retenerlo con una impresión parcial de la marca. El widget en línea no es el enemigo; el widget en línea es el único camino, es el enemigo. Mantenga activado el widget en línea. Haga que la ruta de su sitio web sea también obvia, rápida y mejor diseñada que la que sirve Google.",
+      "start": 517.29,
+      "end": 543.54
+    },
+    {
+      "id": 28,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "Piense en ello como una opción, no como una oposición. Algunos invitados tienen poco tiempo y siempre tocarán el widget en línea. Está bien, todavía tienes una reserva. Otros huéspedes, especialmente los habituales y los huéspedes que se preocupan por combinar el ambiente del restaurante con la ocasión, estarán encantados de hacer clic en su sitio si usted hace que ese camino sea atractivo. Después de un año de reservas, incluso trasladar entre el 20% y el 30% del flujo a su sitio web es una recuperación significativa de la propiedad de la marca.",
+      "start": 544.06,
+      "end": 575.79
+    },
+    {
+      "id": 29,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "El patrón más amplio.",
+      "start": 576.89,
+      "end": 578.34
+    },
+    {
+      "id": 30,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "La opción \"buscar una mesa\" de Google no es única. Es una versión temprana y leve de un patrón que Google se aplica cada pocos años: tome un comportamiento que solía canalizar el tráfico a sitios web de pequeñas empresas, introdúzcalo en el ecosistema Google, llámelo característica y observe cómo disminuyen las tasas de clics. Las revisiones ocurrieron primero. Las horas sucedieron a continuación. Los menús sucedieron parcialmente. Las reservas se están realizando ahora. Lo siguiente es realizar pedidos en línea.",
+      "start": 579.04,
+      "end": 606.73
+    },
+    {
+      "id": 31,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "La jugada defensiva no es para luchar contra Google; nadie gana eso. La cuestión es asegurarse de que cuando el huésped elija hacer clic en su sitio, sea recompensado con algo mejor que el acceso directo. Buen diseño, carga rápida, una ruta de reserva clara, un pequeño momento de marca que les haga recordar tu nombre. Google mantiene el flujo mercantilizado. Mantienes a los clientes que se preocupan por la diferencia, y esos son los clientes que realmente sostienen un restaurante a lo largo del tiempo.",
+      "start": 607.25,
+      "end": 634.35
+    },
+    {
+      "id": 32,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "Cree la página /reserva. Inserta el widget. Capture el correo electrónico. Tres mudanzas, menos de un día de trabajo en total. Mantendrás la relación de marca que, de otro modo, Google habría dejado tranquilamente.",
+      "start": 634.87,
+      "end": 647.16
+    }
+  ]
+}

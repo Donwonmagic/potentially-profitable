@@ -1,0 +1,267 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-20T18:31:37.052Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "am_puck",
+  "language": "en",
+  "total": 531.12,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Most independent restaurants run somewhere between 4 and 8 points of operating margin in a good year. In a year like this one — food cost up, labor up, rent up, insurance up — that margin has narrowed by two or three points, and the conversation at every operator meetup I go to eventually turns to the same sentence: \"I just need to find another point or two of margin and I'll be fine.\"",
+      "start": 0,
+      "end": 17.63
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Here's the honest news. You probably can. Not by cutting staff, not by shrinking portions, not by switching suppliers to a cheaper sysco line that your regulars will absolutely notice. By fixing five small things on your website. Each one is under an hour of work. Individually, none of them will change your year. Stacked, they return roughly one full point of margin — which, on a typical single-location independent restaurant doing 1.2 dollars–1.5 dollarsM in revenue, works out to 8,000 dollars–15,000 dollars a year . Every year. Compounding.",
+      "start": 17.98,
+      "end": 47.74
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "The five moves are boring. That's the point. Restaurant owners hear \"website optimization\" and their head goes to a six-month redesign project with a consultant, a pitch deck, and a 30,000 dollars invoice. What I'm describing is five fixes you can do with your own hands between Sunday evening and Monday lunch. Your exact numbers will vary — bigger restaurants recover more dollars on the same percentage, higher-trafficked sites compound the wins — but the shape of these five moves shows up on every independent restaurant site I audit.",
+      "start": 48.26,
+      "end": 75.77
+    },
+    {
+      "id": 3,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Here's the stack. Five website changes, each one contributing a small slice of margin recovery. Move one: make your hours visible above the fold on every page. Recovers about a fifth of a point of margin by converting visitors who currently bounce because they can't tell if you're open. Move two: put a single primary reservation call to action in one obvious place, not three weaker ones competing for attention. Recovers another quarter point by eliminating decision friction. Move three: add a direct own-ordering link to your homepage, above the fold, in a color that doesn't blend into the design. Recovers about three tenths of a point by shifting delivery orders off DoorDash. Move four: rewrite descriptions on the three or four menu items with the highest profit margin so they're the ones guests are most likely to pick. Recovers about fifteen hundredths of a point just by steering order mix. Move five: delete every stale discount, expired promo banner, and outdated P D F menu on your site. Recovers another tenth of a point by eliminating price confusion and trust breaks. Five small moves, stacked. Total: roughly one full point of profit margin. On a typical independent restaurant, that's eight to fifteen thousand dollars a year.",
+      "start": 76.57,
+      "end": 134.21
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Here&rsquo;s each move up close, with the actual hour of work it takes.",
+      "start": 134.96,
+      "end": 139.51
+    },
+    {
+      "id": 5,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Move 1 — Hours visible above the fold &middot; +0.20%.",
+      "start": 140.61,
+      "end": 145.51
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "The most common question on a restaurant website is \"are you open right now.\" The most common place that question gets answered is the footer , or on a separate Contact page three clicks away. That gap — between what the guest came to find and where you put it — is the single highest-leverage leak on most independent restaurant sites.",
+      "start": 146.21,
+      "end": 163.56
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Put your hours in the hero. Or in a sticky bar under the nav. Or as a small \"Open now &middot; until 10 PM\" indicator that updates with a little JavaScript. Any of these work; the specific implementation matters less than the principle: the visitor should see whether you&rsquo;re open within three seconds of the page loading, without scrolling, without clicking.",
+      "start": 164.08,
+      "end": 182.08
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "The hour of work: write today&rsquo;s hours into the hero section of your homepage and every page that has a visible header block. If you&rsquo;re on Wix or Squarespace, this is a 10-minute content edit. If you&rsquo;re on a custom site, it&rsquo;s 30 minutes with a web developer. Either way, one hour tops.",
+      "start": 182.6,
+      "end": 199.96
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Move 2 — One primary reservation C T A &middot; +0.25%.",
+      "start": 201.06,
+      "end": 206.9
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Most restaurant sites have the reservation C T A in three places: a button in the nav, a block in the middle of the homepage, and a \"Book now\" callout in the footer. Each one is a different color, a different size, and — critically — sometimes even points to different destinations (OpenTable for the nav, a phone number for the middle, an email for the footer).",
+      "start": 207.6,
+      "end": 225.59
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Pick one. Make it prominent. Point all of them at the same place. The neuroscience here is boring and well-documented: when you give a visitor two equal-weighted options for the same action, they pick neither and leave. When you give them one, they pick it.",
+      "start": 226.11,
+      "end": 240.38
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "The hour of work: decide which reservation destination is your primary (OpenTable? Resy? Your own form?). Update the three C T A spots to all point there, same label, same visual weight. If you want to keep the phone number as a secondary option, put it in small text next to the main button, not competing with it.",
+      "start": 240.9,
+      "end": 257.82
+    },
+    {
+      "id": 13,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Move 3 — Direct own-ordering link up top &middot; +0.30%.",
+      "start": 258.92,
+      "end": 263.95
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "This one&rsquo;s the biggest single win, and it&rsquo;s also the one most restaurants accidentally sabotage. If you use Square or Toast for P O S, you already have an own-ordering page at something like yourrestaurant.square.site or yourrestaurant.toasttab.com . Most restaurants bury that link three clicks deep in a \"Takeout\" page that nobody finds. Meanwhile the DoorDash button on your homepage is huge and yellow.",
+      "start": 264.65,
+      "end": 283.9
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Put the own-ordering link in the nav, above the fold, in a visually strong button. If you&rsquo;re going to keep a DoorDash link, put it below your own link, smaller, with something like \"or order via DoorDash &rarr;\" so the guest who wants the DoorDash experience still has it but the default path is your direct site.",
+      "start": 284.42,
+      "end": 301.15
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "The math here is leveraged: every direct order you steal back from DoorDash is roughly 20% more margin on that order. Even shifting 15% of weekly delivery volume to direct ordering recovers real money.",
+      "start": 301.67,
+      "end": 315.45
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "The hour of work: add a single \"Order direct &rarr;\" button to your nav and your homepage hero, link it to your existing Square/Toast/other own-ordering page. Make sure the button is the brightest thing above the fold.",
+      "start": 315.97,
+      "end": 329.47
+    },
+    {
+      "id": 18,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Move 4 — Better descriptions on top-margin items &middot; +0.15%.",
+      "start": 330.57,
+      "end": 336.66
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Look at your last 90 days of item-level sales. Rank every dish by contribution margin per cover — what that dish pays you after food cost. You&rsquo;ll find three or four items that are substantially more profitable than your average. On most menus, those are: the pasta with the cheap-grain base and the expensive-protein garnish, the pizza, the signature cocktail, and one dessert.",
+      "start": 337.36,
+      "end": 355.58
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Those are the items your menu descriptions should work hardest to sell. Most restaurants give their signature steak a three-paragraph description and leave the house pasta with two words. Invert that for the items you actually make money on. \"Orecchiette\" becomes \"Hand-cut orecchiette, slow-cooked lamb rag&ugrave;, pecorino from our supplier in Lazio since twenty nineteen — the dish the kitchen argues about.\" Now it&rsquo;s the dish the guest wants to order.",
+      "start": 356.1,
+      "end": 375.75
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "The hour of work: identify your top 3–4 margin items, write 2 sentences each with specific sourcing / preparation / story detail. Update the menu page on your website.",
+      "start": 376.27,
+      "end": 388.3
+    },
+    {
+      "id": 22,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Move 5 — Delete every stale promo and old P D F &middot; +0.10%.",
+      "start": 389.4,
+      "end": 395.51
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Walk your own website as if you were a first-time visitor with no context. You will find at least one: a happy-hour card that still references twenty twenty-three pricing, a banner promoting a summer special that ended in October, a P D F menu titled &ldquo;Fall twenty twenty-four&rdquo; still linked from a sidebar, a gift-card promo that expired six months ago.",
+      "start": 396.21,
+      "end": 414.26
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Each of these is a tiny trust break. The guest sees one stale item and unconsciously starts to wonder what else on the site isn&rsquo;t current. That erodes the tiny moment of confidence that leads to a booking. Kill them all.",
+      "start": 414.78,
+      "end": 429.13
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "The hour of work: open every page of your site, note every price / promo / seasonal reference that isn&rsquo;t current, remove or update. You&rsquo;ll find 4–8 of these on a typical site. None take more than 5 minutes each to fix.",
+      "start": 429.65,
+      "end": 445.82
+    },
+    {
+      "id": 26,
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "Five moves. None of them are redesigns. None of them require a consultant. Done on a slow Sunday, they return one full point of margin — which is more than most restaurants will get from a year of switching suppliers.",
+      "start": 446.57,
+      "end": 459.3
+    },
+    {
+      "id": 27,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "The honest compounding argument.",
+      "start": 460.4,
+      "end": 461.98
+    },
+    {
+      "id": 28,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "One percent doesn&rsquo;t sound impressive in a pitch. It&rsquo;s the kind of number a consultant would bury on slide seven. But here&rsquo;s the thing about margin recovery on a restaurant: it compounds with volume. A restaurant doing 1.2 dollarsM/year that gains a point of margin gains 12 dollarsK. A restaurant doing 2.5 dollarsM that gains the same point gains 25 dollarsK. And next year, when you&rsquo;re doing a little more volume, the same stack of five moves returns a little more money — because the percentage is always against the larger revenue number.",
+      "start": 462.68,
+      "end": 493.24
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "Over five years, a single point of margin on a growing independent restaurant is conservatively 60 dollarsK–100 dollarsK back in the business. That&rsquo;s a real thing. That&rsquo;s a year of a line cook&rsquo;s salary. That&rsquo;s a new hood vent. That&rsquo;s the down payment on the patio build-out you&rsquo;ve been putting off.",
+      "start": 493.76,
+      "end": 511.62
+    },
+    {
+      "id": 30,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "All five of these moves can be done this Sunday. None of them require hiring anybody. None of them require a redesign. They just require an hour of attention each, and the willingness to treat your website as an operating system for your restaurant, not as a brochure you did once and forgot.",
+      "start": 512.14,
+      "end": 528.54
+    },
+    {
+      "id": 31,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "The margin is already there. Go get it.",
+      "start": 529.06,
+      "end": 531.12
+    }
+  ]
+}
