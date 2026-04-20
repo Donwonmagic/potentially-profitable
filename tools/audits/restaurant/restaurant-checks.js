@@ -2270,6 +2270,19 @@ var UI_I18N = {
   'places.priceLevel.tooltip': {
     en: 'Price level published by Google Business Profile',
     es: 'Nivel de precio publicado por el Perfil de Empresa de Google'
+  },
+  // Sprint T2: 'How this audit was built' attribution footer.
+  'builtBy.summary': {
+    en: 'How this audit was built',
+    es: 'Cómo se construyó esta auditoría'
+  },
+  'builtBy.intro': {
+    en: 'A Muntin Digital creation, powered by:',
+    es: 'Una creación de Muntin Digital, impulsada por:'
+  },
+  'builtBy.license': {
+    en: 'Open-source projects listed here are used under their respective licenses (MIT, Apache-2.0, BSD-3, OFL-1.1, MPL-2.0, AGPL-3.0, CC-BY-SA). Vendor names are trademarks of their owners.',
+    es: 'Los proyectos de código abierto listados aquí se usan bajo sus respectivas licencias (MIT, Apache-2.0, BSD-3, OFL-1.1, MPL-2.0, AGPL-3.0, CC-BY-SA). Los nombres de los proveedores son marcas de sus titulares.'
   }
 };
 

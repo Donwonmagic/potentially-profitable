@@ -406,6 +406,82 @@
     color: var(--ink-soft);
   }
 
+  /* Sprint T2: attribution footer. Native <details> so expansion
+     works with no JS; closed state is a tight one-liner so reports
+     stay uncluttered. */
+  .built-by-footer {
+    max-width: 1100px;
+    margin: 48px auto 0;
+    padding: 16px 24px;
+    background: var(--cream-2, #faf6ee);
+    border: 1px solid var(--line, #E6DFCE);
+    border-radius: 12px;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  .built-by-footer summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--teal);
+    list-style: none;
+  }
+  .built-by-footer summary::before {
+    content: '+ ';
+    display: inline-block;
+    width: 12px;
+    font-weight: 700;
+    transition: transform 150ms var(--ease, ease);
+  }
+  .built-by-footer[open] summary::before { content: '– '; }
+  .built-by-footer summary::-webkit-details-marker { display: none; }
+  .built-by-intro {
+    margin: 14px 0 10px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .built-by-list {
+    list-style: none;
+    margin: 0 0 14px;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 10px 20px;
+  }
+  .built-by-list li {
+    padding-left: 14px;
+    position: relative;
+  }
+  .built-by-list li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--teal);
+  }
+  .built-by-list a {
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--stone-2, #C7BFA9);
+  }
+  .built-by-list a:hover { color: var(--teal); border-bottom-color: var(--teal); }
+  .built-by-list .vendor {
+    color: var(--stone);
+    font-size: 12.5px;
+    margin-left: 4px;
+  }
+  .built-by-list .role {
+    display: block;
+    font-size: 12.5px;
+    color: var(--stone);
+    margin-top: 2px;
+  }
+  .built-by-license {
+    margin: 0;
+    font-size: 12px;
+    color: var(--stone);
+  }
+
   .audit-note {
     font-size: 13px;
     color: var(--stone);
@@ -3015,6 +3091,18 @@
 
         <div id="emailReportError" class="email-report-error" hidden role="alert"></div>
       </div>
+
+      <!-- Sprint T2: 'How this audit was built' attribution footer.
+           Populated from the POWERED_BY constant in restaurant-checks.js
+           at render time. Collapsible so the report stays tight by
+           default; expanding shows every API / framework / typeface
+           that powers the audit, each a link to its vendor. -->
+      <details class="built-by-footer" id="builtByFooter">
+        <summary data-tr="builtBy.summary">How this audit was built</summary>
+        <p class="built-by-intro" data-tr="builtBy.intro">A Muntin Digital creation, powered by:</p>
+        <ul class="built-by-list" id="builtByList"></ul>
+        <p class="built-by-license" data-tr="builtBy.license">Open-source projects listed here are used under their respective licenses (MIT, Apache-2.0, BSD-3, OFL-1.1, MPL-2.0, AGPL-3.0, CC-BY-SA). Vendor names are trademarks of their owners.</p>
+      </details>
 
       </div><!-- /#reportDeep (Phase J1) -->
 
@@ -6785,6 +6873,52 @@
 
     renderBusinessTypeAlternatives(effective, detection);
     renderPlacesFactsCard();
+    renderBuiltByFooter();
+  }
+
+  // Sprint T2: render the "How this audit was built" attribution
+  // footer from the POWERED_BY constant in restaurant-checks.js.
+  // Runs idempotently — if the list is already populated, skip so
+  // re-renders on priority-check re-evaluate don't duplicate entries.
+  function renderBuiltByFooter() {
+    var list = document.getElementById('builtByList');
+    if (!list) return;
+    if (list.children.length) return; // already rendered
+    var items = Array.isArray(window.POWERED_BY) ? window.POWERED_BY
+              : (typeof POWERED_BY !== 'undefined' && Array.isArray(POWERED_BY) ? POWERED_BY : null);
+    if (!items || !items.length) return;
+    var lang = (typeof window !== 'undefined' && window.__muntinLang) || 'en';
+    items.forEach(function(entry){
+      if (!entry || !entry.name) return;
+      var li = document.createElement('li');
+      var link = document.createElement('a');
+      if (entry.url) {
+        link.href = entry.url;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+      }
+      link.textContent = entry.name;
+      li.appendChild(link);
+      if (entry.vendor) {
+        var v = document.createElement('span');
+        v.className = 'vendor';
+        v.textContent = ' · ' + entry.vendor;
+        li.appendChild(v);
+      }
+      // Use the locale-aware role via poweredByRole() when available,
+      // falling back to the English role string. Either way, render
+      // only what POWERED_BY actually declares — no synthesized
+      // descriptions.
+      var roleStr = (typeof poweredByRole === 'function')
+        ? poweredByRole(entry, lang) : (entry.role || '');
+      if (roleStr) {
+        var r = document.createElement('span');
+        r.className = 'role';
+        r.textContent = roleStr;
+        li.appendChild(r);
+      }
+      list.appendChild(li);
+    });
   }
 
   // Sprint T1: render the Places-verified facts card. Every row is
