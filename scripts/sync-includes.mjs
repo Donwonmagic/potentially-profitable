@@ -124,15 +124,15 @@ function localeForPath(relPath) {
 // switcher markup in the partials will need to iterate LOCALES instead
 // and this helper will return a map rather than a single URL.
 //
-// Missing-counterpart fallback: some surfaces (blog posts, the
-// restaurant audit tool) don't have their non-default mirror yet —
-// blog translation lives in a sibling repo, the audit tool uses an
-// in-page overlay. Rather than link the switcher at a URL that 0kb's
-// when a user taps it, we detect the missing file and fall back to
-// the other locale's HOME. The js-lang-switch click handler still
-// writes the md_locale cookie, so the user's language preference
-// sticks across the rest of the site even if this specific page has
-// no translation yet.
+// Missing-counterpart fallback: blog translation lives in a sibling
+// repo and its per-post mirrors haven't merged into this repo yet.
+// Rather than 0kb the user when they click 'Ver en español' from a
+// specific post, the switcher falls back to the Spanish blog landing
+// (/es/blog/) when the per-post counterpart is missing — they still
+// land on the Spanish blog surface and the js-lang-switch cookie
+// write carries their language preference to every subsequent page.
+// When the sibling repo lands the per-post Spanish HTML, the check
+// below flips to true and the switcher points at the exact post.
 function counterpartUrl(relPath, pageLocale) {
   const posix = toPosix(relPath);
   // Strip an index.html suffix so the URL is the directory form users see.
@@ -154,11 +154,15 @@ function counterpartUrl(relPath, pageLocale) {
     url = stripped || '/';
     targetRel = url === '/' ? 'index.html' : url.slice(1) + 'index.html';
   }
-  // If the expected counterpart file doesn't exist on disk, fall back
-  // to the other locale's home rather than silently 0kb-ing the user.
+  // Missing-counterpart fallback: specifically for blog posts (where
+  // the sibling translation repo owns the content), route to the
+  // locale's blog landing instead of 0kb-ing the user. For any other
+  // missing counterpart, keep the raw URL — hreflang alternates still
+  // want the canonical path even if the page is transiently down.
   const targetAbs = path.join(repoRoot, targetRel);
-  if (!fs.existsSync(targetAbs)) {
-    return pageLocale === 'en' ? `/${NON_DEFAULT_LOCALES[0]}/` : '/';
+  const isBlogPost = /\bblog\//.test(posix) && !posix.endsWith('blog/index.html') && posix !== 'blog/index.html';
+  if (isBlogPost && !fs.existsSync(targetAbs)) {
+    return pageLocale === 'en' ? `/${NON_DEFAULT_LOCALES[0]}/blog/` : '/blog/';
   }
   return url;
 }
