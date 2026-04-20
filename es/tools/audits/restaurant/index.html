@@ -3335,6 +3335,97 @@
     .compare-run-btn { margin-left: 0; }
   }
 
+  /* Sprint R1: 30-day re-audit reminder card. Quieter + tighter than
+     the main email-report form above — this is an opt-in follow-up
+     nudge, not a primary CTA. Sits directly below the email-report
+     block and borrows its grid form layout via .email-form-like. */
+  .reaudit-reminder {
+    margin-top: 20px;
+    padding: 24px 30px;
+    background: var(--cream-2, #faf6ee);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+  }
+  .reaudit-reminder header { margin-bottom: 14px; }
+  .reaudit-reminder h3 {
+    margin: 0 0 4px;
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .reaudit-reminder p {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--stone);
+    max-width: 620px;
+  }
+  .reaudit-reminder-form {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    max-width: 520px;
+    margin-top: 12px;
+  }
+  .reaudit-reminder-form input[type="email"] {
+    padding: 11px 14px;
+    border: 1px solid var(--line-dark);
+    border-radius: 10px;
+    font: inherit;
+    font-size: 14px;
+    background: var(--white);
+    color: var(--ink);
+  }
+  .reaudit-reminder-form input[type="email"]:focus {
+    outline: 2px solid var(--teal);
+    outline-offset: 0;
+  }
+  .reaudit-reminder-form button {
+    padding: 11px 18px;
+    background: var(--teal);
+    color: var(--white, #ffffff);
+    border: none;
+    border-radius: 10px;
+    font: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background var(--t-fast) var(--ease);
+  }
+  .reaudit-reminder-form button:hover,
+  .reaudit-reminder-form button:focus {
+    background: var(--teal-dark, #133842);
+    outline: none;
+  }
+  .reaudit-reminder-form button[disabled] { opacity: 0.6; cursor: wait; }
+  .reaudit-reminder-disclaimer {
+    margin-top: 10px !important;
+    font-size: 12px !important;
+    color: var(--stone);
+  }
+  .reaudit-reminder-success {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: #E4F2E9;
+    border: 1px solid #BED9C5;
+    border-radius: 10px;
+    color: #1F6B3A;
+    font-size: 13.5px;
+    font-weight: 600;
+  }
+  .reaudit-reminder-error {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: #FAE9DE;
+    border: 1px solid #E6C5B1;
+    border-radius: 10px;
+    color: #B8541A;
+    font-size: 13.5px;
+  }
+  @media print { .reaudit-reminder { display: none !important; } }
+  body.print-worksheet .reaudit-reminder { display: none !important; }
+
   /* Email report form */
   .email-report {
     margin-top: 32px;
@@ -4421,6 +4512,34 @@
 
         <div id="emailReportError" class="email-report-error" hidden role="alert"></div>
       </div>
+
+      <!-- Sprint R1: schedule a 30-day re-audit reminder. Single-
+           purpose, standalone card so it doesn't compete with the
+           email-the-PDF form above. Uses Resend's scheduled_at to
+           hold the message server-side until send-time — we do not
+           store the email in our own KV / DB. Hidden on print. -->
+      <section class="reaudit-reminder" id="reauditReminder">
+        <header>
+          <h3 data-tr="reaudit.heading">Remind me to re-audit in 30 days</h3>
+          <p data-tr="reaudit.sub">Audits are snapshots. A friendly reminder in 30 days helps you see which fixes actually moved the score. One email, nothing else.</p>
+        </header>
+        <form id="reauditReminderForm" class="reaudit-reminder-form" novalidate>
+          <input type="text" name="_gotcha" class="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <input
+            type="email"
+            name="email"
+            required
+            autocomplete="email"
+            placeholder="you@yourrestaurant.com"
+            aria-label="Your email address"
+            data-tr-attr="placeholder:reaudit.placeholder"
+          />
+          <button type="submit" data-tr="reaudit.submit">Schedule 30-day reminder</button>
+        </form>
+        <p class="reaudit-reminder-disclaimer" data-tr="reaudit.disclaimer">Your email lives only on the scheduled message. We don't store it on our end — no list, no drip, no follow-up.</p>
+        <div class="reaudit-reminder-success" id="reauditReminderSuccess" hidden role="status" aria-live="polite" data-tr="reaudit.success">Reminder scheduled — you'll hear from us in 30 days.</div>
+        <div class="reaudit-reminder-error" id="reauditReminderError" hidden role="alert"></div>
+      </section>
 
       <!-- Sprint D3: embeddable badge offer. Appears after audit
            completes; gives the owner a copy-paste snippet to drop
@@ -12151,6 +12270,67 @@
         sourceTag: 'bottom-cta',
         hideFormOnSuccess: true
       });
+    });
+  }
+
+  /* Sprint R1: 30-day re-audit reminder submit. POSTs to
+     /api/schedule-reaudit which queues a single Resend-scheduled
+     message 30 days out. Honeypot field is checked server-side; we
+     also client-short-circuit if an audit hasn't landed yet (nothing
+     to re-audit). */
+  var reauditForm    = document.getElementById('reauditReminderForm');
+  var reauditSuccess = document.getElementById('reauditReminderSuccess');
+  var reauditError   = document.getElementById('reauditReminderError');
+  if (reauditForm) {
+    reauditForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      var last = window.__auditLastResult;
+      if (!last || !last.url) {
+        if (reauditError) {
+          reauditError.textContent = t('reaudit.needAudit');
+          reauditError.hidden = false;
+        }
+        return;
+      }
+      var formData = new FormData(reauditForm);
+      formData.append('url', last.url);
+      formData.append('lang', (window.__muntinLang || 'en'));
+      var submitBtn = reauditForm.querySelector('button[type="submit"]');
+      var originalLabel = submitBtn ? submitBtn.textContent : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = t('reaudit.sending');
+      }
+      if (reauditError)   reauditError.hidden = true;
+      if (reauditSuccess) reauditSuccess.hidden = true;
+      fetch('/api/schedule-reaudit', {
+        method: 'POST',
+        body: formData
+      }).then(function(res){ return res.json().then(function(j){ return { status: res.status, body: j }; }); })
+        .then(function(r){
+          if (r.body && r.body.ok) {
+            if (reauditSuccess) reauditSuccess.hidden = false;
+            reauditForm.hidden = true;
+            if (window.plausible) window.plausible('Audit Reminder Scheduled');
+          } else {
+            if (reauditError) {
+              reauditError.textContent = (r.body && r.body.error) || t('reaudit.genericError');
+              reauditError.hidden = false;
+            }
+          }
+        })
+        .catch(function(){
+          if (reauditError) {
+            reauditError.textContent = t('reaudit.genericError');
+            reauditError.hidden = false;
+          }
+        })
+        .then(function(){
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalLabel;
+          }
+        });
     });
   }
 
