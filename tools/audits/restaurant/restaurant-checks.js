@@ -2296,7 +2296,40 @@ var UI_I18N = {
   'dossier.footnote': {
     en: 'Every sentence links to the verified signal it came from. Hover any citation to see the source.',
     es: 'Cada oración se enlaza con la señal verificada de la que proviene. Pasa el cursor sobre cualquier cita para ver la fuente.'
-  }
+  },
+  // Sprint D1: email deliverability card.
+  'deep.email.heading': {
+    en: 'Email deliverability',
+    es: 'Entregabilidad de correo'
+  },
+  'deep.email.sub': {
+    en: 'Gmail, Outlook, and Yahoo require SPF + DMARC on sending domains. Booking confirmations and newsletters land in spam without them.',
+    es: 'Gmail, Outlook y Yahoo exigen SPF + DMARC en los dominios que envían correo. Sin ellos, confirmaciones de reserva y newsletters caen en spam.'
+  },
+  'deep.email.spf':   { en: 'SPF',   es: 'SPF' },
+  'deep.email.dmarc': { en: 'DMARC', es: 'DMARC' },
+  'deep.email.dkim':  { en: 'DKIM',  es: 'DKIM' },
+  'deep.email.state.pass':    { en: 'Present',      es: 'Presente' },
+  'deep.email.state.fail':    { en: 'Missing',      es: 'Ausente' },
+  'deep.email.state.unknown': { en: 'Not detected', es: 'No detectado' },
+  'deep.email.spf.multiple': {
+    en: 'Multiple SPF records found — email providers treat this as no SPF. Merge them into one.',
+    es: 'Se encontraron múltiples registros SPF — los proveedores de correo lo tratan como si no hubiera SPF. Únelos en uno solo.'
+  },
+  'deep.email.dmarc.policy': {
+    en: 'Policy: p={policy}',
+    es: 'Política: p={policy}'
+  },
+  'deep.email.dkim.selector': {
+    en: 'Confirmed at selector "{selector}"',
+    es: 'Confirmado en el selector "{selector}"'
+  },
+  'deep.email.dkim.unknown': {
+    en: 'Not detected via the common selectors we probe. Your mail provider may use a custom selector we can\'t confirm without access.',
+    es: 'No se detectó en los selectores comunes que revisamos. Tu proveedor de correo puede usar un selector propio que no podemos confirmar sin acceso.'
+  },
+  'deep.email.posture.ready':    { en: 'Ready for bulk mail', es: 'Listo para envíos masivos' },
+  'deep.email.posture.notReady': { en: 'Not bulk-mail ready',  es: 'No está listo para envíos masivos' }
 };
 
 // Pluralization helper for ES: most nouns just take -es / -s, but

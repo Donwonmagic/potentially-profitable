@@ -406,6 +406,87 @@
     color: var(--ink-soft);
   }
 
+  /* Sprint D1: email deliverability card. Pass rows use the same
+     green as the security-grade chip; fail rows use rust. Unknown
+     rows (DKIM only) are neutral to avoid claiming a missing record
+     where we honestly don't know. */
+  .deep-email-card {
+    max-width: 1100px;
+    margin: 24px auto 0;
+    padding: 22px 26px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+  }
+  .deep-email-card[hidden] { display: none; }
+  .deep-section-head-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+  .deep-section-head-wrap .deep-section-head { margin: 0; }
+  .deep-email-posture {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 999px;
+  }
+  .deep-email-posture[hidden] { display: none; }
+  .deep-email-posture[data-band="good"] {
+    background: #E7F5EC;
+    color: #1F6B3A;
+    border: 1px solid #C7E4CF;
+  }
+  .deep-email-posture[data-band="bad"] {
+    background: #F7E7DC;
+    color: #B8541A;
+    border: 1px solid #EFC4AA;
+  }
+  .deep-email-rows {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+  }
+  .deep-email-row {
+    display: grid;
+    grid-template-columns: 80px 100px 1fr;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 0;
+    border-top: 1px solid var(--line);
+    font-size: 14px;
+  }
+  .deep-email-row:first-child { border-top: none; }
+  .deep-email-label {
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+  }
+  .deep-email-state {
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: center;
+    border-radius: 999px;
+    justify-self: start;
+  }
+  .deep-email-row-pass .deep-email-state     { background: #E7F5EC; color: #1F6B3A; }
+  .deep-email-row-fail .deep-email-state     { background: #F7E7DC; color: #B8541A; }
+  .deep-email-row-unknown .deep-email-state  { background: var(--cream-2, #faf6ee); color: var(--stone); border: 1px solid var(--line); }
+  .deep-email-detail { color: var(--ink-soft); font-size: 13.5px; }
+  @media (max-width: 640px) {
+    .deep-email-row { grid-template-columns: 1fr; gap: 4px; }
+    .deep-email-state { justify-self: start; }
+  }
+
   /* Sprint T4: brand-dossier card. Similar treatment to the Places
      facts card — cream background, teal accent, prominent "Cited
      facts" badge — but the body is a flowing paragraph with tiny
@@ -2958,6 +3039,20 @@
         <div class="deep-crux-grid" id="deepCruxGrid"></div>
       </section>
 
+      <!-- Sprint D1: Email deliverability card. Populated from the
+           /api/dns-email-health probe. Stays hidden until the probe
+           returns ok:true and at least one sub-check has a definite
+           answer (DKIM absence is never claimed — only "confirmed"
+           or "unknown via our probes"). -->
+      <section class="deep-email-card" id="deepEmailCard" hidden>
+        <header class="deep-section-head-wrap">
+          <h3 class="deep-section-head" data-tr="deep.email.heading">Email deliverability</h3>
+          <span class="deep-email-posture" id="deepEmailPosture" hidden></span>
+        </header>
+        <p class="deep-section-sub" data-tr="deep.email.sub">Gmail, Outlook, and Yahoo require SPF + DMARC on sending domains. Booking confirmations and newsletters land in spam without them.</p>
+        <ul class="deep-email-rows" id="deepEmailRows"></ul>
+      </section>
+
       <!-- Not-a-restaurant notice. Shown when looksLikeRestaurant()
            returns false, hides the priority-list below, and offers an
            override button so an owner of a restaurant we mis-classified
@@ -3400,6 +3495,16 @@
       .then(function(d){ return d && d.ok ? d : { ok: false }; })
       .catch(function(){ return { ok: false }; });
   }
+  // Sprint D1: DNS email health probe. Returns confirmed SPF /
+  // DMARC / DKIM presence. Used by the deliverability render below.
+  function callDnsEmailHealth(targetUrl) {
+    var params = new URLSearchParams();
+    params.append('url', targetUrl);
+    return fetch('/api/dns-email-health?' + params.toString(), { signal: AbortSignal.timeout(10000) })
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(d){ return d && d.ok ? d : { ok: false }; })
+      .catch(function(){ return { ok: false }; });
+  }
 
   // Sprint T4: brand dossier. Pre-extracts verified signals from
   // the audit snapshots (Places + schema + crawl) and POSTs them to
@@ -3579,6 +3684,12 @@
         done();
       });
     }
+    // Sprint D1: DNS email health (SPF / DMARC / DKIM).
+    pending++; callDnsEmailHealth(url).then(function(data){
+      window.__auditDnsEmail = data;
+      if (typeof renderDnsEmailHealth === 'function') renderDnsEmailHealth(data);
+      done();
+    });
     // Sprint T4: facts dossier. Fires last so it can read the
     // freshest window.__audit* signals. Renders only when the
     // server-side strict-citation validation passes; silently
@@ -5522,6 +5633,80 @@
     poly.setAttribute('points', pts.join(' '));
     svg.appendChild(poly);
     return svg;
+  }
+
+  // Sprint D1: render the email deliverability card. Each row shows
+  // one DNS check with a status icon. Accuracy gates:
+  //   * SPF/DMARC: `present: true` → confirmed pass, `present: false`
+  //     → confirmed missing.
+  //   * DKIM: `confirmed: true` → pass with selector label;
+  //     `confirmed: false` → "Not confirmed via standard selectors"
+  //     (never shown as "missing").
+  function renderDnsEmailHealth(data) {
+    var card = document.getElementById('deepEmailCard');
+    var rows = document.getElementById('deepEmailRows');
+    var posture = document.getElementById('deepEmailPosture');
+    if (!card || !rows || !posture) return;
+    if (!data || !data.ok) { card.hidden = true; return; }
+    rows.innerHTML = '';
+    function appendRow(labelKey, state, detail) {
+      var li = document.createElement('li');
+      li.className = 'deep-email-row deep-email-row-' + state;
+      var label = document.createElement('span');
+      label.className = 'deep-email-label';
+      label.textContent = t(labelKey);
+      var stateEl = document.createElement('span');
+      stateEl.className = 'deep-email-state';
+      stateEl.textContent = t('deep.email.state.' + state);
+      li.appendChild(label);
+      li.appendChild(stateEl);
+      if (detail) {
+        var d = document.createElement('span');
+        d.className = 'deep-email-detail';
+        d.textContent = detail;
+        li.appendChild(d);
+      }
+      rows.appendChild(li);
+    }
+
+    // SPF row — confirmed true/false.
+    appendRow('deep.email.spf',
+      data.spf && data.spf.present ? 'pass' : 'fail',
+      data.spf && data.spf.warning === 'multiple-spf' ? t('deep.email.spf.multiple') : null);
+
+    // DMARC row — policy state surfaced when present.
+    var dmarcDetail = null;
+    if (data.dmarc && data.dmarc.present) {
+      var policy = data.dmarc.policy || 'none';
+      dmarcDetail = t('deep.email.dmarc.policy', { policy: policy });
+    }
+    appendRow('deep.email.dmarc',
+      data.dmarc && data.dmarc.present ? 'pass' : 'fail',
+      dmarcDetail);
+
+    // DKIM row — only two honest outcomes: confirmed (with selector)
+    // or unknown. Never rendered as failed/missing because our
+    // selector probe list is finite and a custom selector we didn't
+    // try might exist.
+    if (data.dkim && data.dkim.confirmed) {
+      appendRow('deep.email.dkim', 'pass',
+        t('deep.email.dkim.selector', { selector: data.dkim.selector }));
+    } else {
+      appendRow('deep.email.dkim', 'unknown', t('deep.email.dkim.unknown'));
+    }
+
+    // Overall posture chip — only show when we have a definite read
+    // on both SPF and DMARC.
+    if (data.spf && data.dmarc && typeof data.spf.present === 'boolean' && typeof data.dmarc.present === 'boolean') {
+      var bulkReady = data.bulkReady === true;
+      posture.textContent = bulkReady ? t('deep.email.posture.ready') : t('deep.email.posture.notReady');
+      posture.setAttribute('data-band', bulkReady ? 'good' : 'bad');
+      posture.hidden = false;
+    } else {
+      posture.hidden = true;
+    }
+
+    card.hidden = false;
   }
 
   function renderReviewsCard(data) {

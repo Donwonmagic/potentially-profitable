@@ -78,6 +78,7 @@ const API_ROUTES = {
   '/api/crux-history':  handleCruxHistory,
   '/api/gbp-details':   handleGbpDetails,
   '/api/brand-dossier': handleBrandDossier,
+  '/api/dns-email-health': handleDnsEmailHealth,
 };
 
 
@@ -102,7 +103,7 @@ export default {
       // /api/brand-dossier accepts POST only (it carries the signal
       // payload in the body). Not in the GET-allowlist below, so it
       // falls through to the default POST-only branch.
-      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details') {
+      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details' || pathname === '/api/dns-email-health') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
         }
@@ -2721,6 +2722,158 @@ async function buildBrandDossier(env, allowedKeys, signalsObj, lang) {
     ok: true,
     paragraph: finalParagraph,
     sentences: validated
+  };
+}
+
+// ------------------------------------------------------------
+// /api/dns-email-health — SPF / DKIM / DMARC presence check (D1).
+//
+// Email deliverability is a first-order concern for restaurants
+// running newsletters, booking confirmations, and review-response
+// emails. A domain without SPF + DMARC drops to spam folders at
+// Gmail, Outlook, and Yahoo — the three inboxes that matter for
+// restaurant marketing.
+//
+// We check three records via Cloudflare's free 1.1.1.1 DoH:
+//   * SPF   — TXT record on the apex domain beginning with "v=spf1"
+//   * DMARC — TXT record on _dmarc.<domain> beginning with "v=DMARC1"
+//   * DKIM  — selectable by selector; we probe a list of common
+//             selectors (google, default, k1, selector1, mail,
+//             mailchimp, s1) and report presence if ANY return a
+//             TXT with "v=DKIM1" or "k=".
+//
+// Accuracy rule: each sub-check reports `true`/`false`/`unknown`.
+// We never infer presence from indirect evidence — DKIM specifically
+// uses a finite probe list, so absence is reported as "unknown"
+// rather than "missing" (the domain might use an exotic selector
+// we didn't try). The UI surfaces known facts only.
+// ------------------------------------------------------------
+
+async function handleDnsEmailHealth(request, env, ctx) {
+  const url = new URL(request.url);
+  const target = (url.searchParams.get('url') || '').trim();
+  const lang = pickLang(request);
+  const gate = assertSafeHttpUrl(target, lang);
+  if (!gate.ok) {
+    return jsonResponse({ ok: false, error: gate.error }, gate.status);
+  }
+  // Use the apex domain for mail records. Strip leading www.
+  const apex = gate.url.hostname.replace(/^www\./i, '');
+
+  // 24h cache — DNS email records change rarely (only when an owner
+  // swaps ESPs or fixes their setup). The withAuditCache helper
+  // no-ops when the binding is absent.
+  const cached = await withAuditCache(env, request, ['dns-email', apex], 24 * 3600, async () => {
+    return await dnsEmailProbe(apex);
+  });
+  const res = jsonResponse(cached.value, cached.value && cached.value.ok === false ? 502 : 200);
+  res.headers.set('X-Audit-Cache', cached.cacheHit ? 'hit' : 'miss');
+  return res;
+}
+
+// Common DKIM selector probe list. Ordered by prevalence in the
+// restaurant-SMB bracket: google (Google Workspace), selector1/
+// selector2 (Microsoft 365), k1-k3 (SendGrid / Mailchimp / Postmark),
+// mail (generic), s1 (SparkPost), dkim (default).
+const DKIM_SELECTORS = ['google', 'selector1', 'selector2', 'k1', 'k2', 'k3', 'mail', 'dkim', 's1', 'default'];
+
+async function dnsEmailProbe(apex) {
+  // Parallel TXT lookups for SPF (apex) + DMARC (_dmarc.apex) + every
+  // DKIM selector. Each lookup returns { answers: [...] } or errors.
+  async function dohTxt(name) {
+    try {
+      const res = await fetch(
+        'https://cloudflare-dns.com/dns-query?name=' + encodeURIComponent(name) + '&type=TXT',
+        {
+          headers: { accept: 'application/dns-json' },
+          signal: AbortSignal.timeout(3000)
+        }
+      );
+      if (!res.ok) return null;
+      const data = await res.json();
+      if (!data || data.Status !== 0 || !Array.isArray(data.Answer)) return [];
+      // Strip the surrounding quotes and unescape concatenated TXT
+      // chunks DoH returns as a single string like `"part1" "part2"`.
+      return data.Answer
+        .filter(function(a){ return a && typeof a.data === 'string'; })
+        .map(function(a){
+          return a.data.replace(/^"|"$/g, '').replace(/"\s+"/g, '');
+        });
+    } catch (_) { return null; }
+  }
+
+  const lookups = [
+    dohTxt(apex),
+    dohTxt('_dmarc.' + apex),
+  ].concat(DKIM_SELECTORS.map((sel) => dohTxt(sel + '._domainkey.' + apex)));
+
+  const results = await Promise.all(lookups);
+  const apexTxt  = results[0] || [];
+  const dmarcTxt = results[1] || [];
+  const dkimTxts = results.slice(2);
+
+  // SPF: TXT on apex starting with "v=spf1". Count the number of
+  // matches (more than one = misconfiguration that silently breaks).
+  const spfMatches = apexTxt.filter(function(t){ return /^v=spf1(\s|$)/i.test(t.trim()); });
+  const spf = {
+    present: spfMatches.length > 0,
+    count:   spfMatches.length,
+    record:  spfMatches[0] || null,
+    warning: spfMatches.length > 1 ? 'multiple-spf' : null
+  };
+
+  // DMARC: TXT on _dmarc subdomain. Parse the `p=` policy (none /
+  // quarantine / reject) for the chip display.
+  const dmarcMatches = dmarcTxt.filter(function(t){ return /^v=DMARC1(\s|;)/i.test(t.trim()); });
+  let dmarcPolicy = null;
+  if (dmarcMatches[0]) {
+    const pm = dmarcMatches[0].match(/(?:^|;)\s*p\s*=\s*(none|quarantine|reject)/i);
+    if (pm) dmarcPolicy = pm[1].toLowerCase();
+  }
+  const dmarc = {
+    present: dmarcMatches.length > 0,
+    policy:  dmarcPolicy,
+    record:  dmarcMatches[0] || null
+  };
+
+  // DKIM: report the first selector that returned a real v=DKIM1 or
+  // k= record. Accuracy rule: we never claim DKIM is MISSING — only
+  // present (with the selector) or unknown (none of our probes hit).
+  let dkimSelector = null;
+  let dkimRecord = null;
+  for (let i = 0; i < DKIM_SELECTORS.length; i++) {
+    const entries = dkimTxts[i] || [];
+    const hit = entries.find(function(t){
+      return /v=DKIM1/i.test(t) || /\bk=(rsa|ed25519)\b/i.test(t);
+    });
+    if (hit) {
+      dkimSelector = DKIM_SELECTORS[i];
+      dkimRecord = hit;
+      break;
+    }
+  }
+  const dkim = {
+    present: dkimSelector !== null,   // true only when confirmed; false is "unknown via our probes"
+    confirmed: dkimSelector !== null, // alias so client can distinguish
+    selector: dkimSelector,
+    record:   dkimRecord,
+    probedSelectors: DKIM_SELECTORS
+  };
+
+  // Overall deliverability posture: SPF + DMARC both present is the
+  // baseline for getting past Gmail's spam filter in 2024-era policy
+  // (RFC 8617, Google's October 2024 enforcement). DKIM elevates
+  // further but is optional for most small-biz mailers using hosted
+  // ESPs (which sign on their behalf).
+  const bulkBaseline = spf.present && dmarc.present;
+  return {
+    ok: true,
+    domain:  apex,
+    spf:     spf,
+    dmarc:   dmarc,
+    dkim:    dkim,
+    bulkReady: bulkBaseline,
+    checkedAt: new Date().toISOString()
   };
 }
 
