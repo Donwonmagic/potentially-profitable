@@ -5,13 +5,18 @@
 //
 // Engines
 // -------
-// Two open-source neural TTS engines are supported:
+// Three open-source neural TTS engines are supported:
 //
 //   - kokoro (default) — Kokoro 82M via kokoro-onnx. Apache 2.0, runs
 //     on CPU, genuinely fluid sentence-to-sentence narration because
 //     the model attends over multi-sentence input natively. Shells out
 //     to scripts/lib/kokoro_render.py which holds the model in memory
-//     across all chunks of a post.
+//     across all chunks of a post. Used for all non-English languages.
+//
+//   - f5 — F5-TTS voice cloning. MIT-licensed, clones the voice in
+//     scripts/voice-refs/don-reference.m4a for English narration.
+//     English-only; non-English languages in the same run still use
+//     Kokoro so the pipeline stays one command.
 //
 //   - piper — Piper neural TTS. MIT-licensed, faster, but narrates one
 //     utterance at a time so it feels more "announced" than read. Kept
@@ -24,22 +29,29 @@
 //           soundfile), the kokoro-v1.0.onnx model, and the voices-v1.0.bin
 //           file. Both assets come from thewh1teagle/kokoro-onnx GitHub
 //           releases.
+//   F5:     python3 with f5-tts (pip install f5-tts). The F5-TTS model
+//           (~1.5 GB) downloads automatically from HuggingFace on first
+//           run. Reference audio + transcript are expected at
+//           scripts/voice-refs/don-reference.m4a and don-reference.txt.
 //   Piper:  piper on $PATH plus an .onnx voice model.
 //
 // Usage
 // -----
-//   # Kokoro (default):
+//   # Kokoro (default — all languages):
 //   node scripts/render-post-audio.mjs blog/<slug> \
 //     --kokoro-model /path/to/kokoro-v1.0.onnx \
 //     --kokoro-voices /path/to/voices-v1.0.bin
 //
+//   # F5 for English + Kokoro for other languages in one command:
+//   node scripts/render-post-audio.mjs --all --engine f5 \
+//     --kokoro-model ... --kokoro-voices ...
+//
+//   # F5 English only (skip Kokoro deps):
+//   node scripts/render-post-audio.mjs --all --engine f5 --languages en
+//
 //   # Piper fallback:
 //   node scripts/render-post-audio.mjs blog/<slug> \
 //     --engine piper --model /path/to/voice.onnx
-//
-//   # Every post that opts in via a #listen-btn (drafts included):
-//   node scripts/render-post-audio.mjs --all \
-//     --kokoro-model ... --kokoro-voices ...
 //
 // Writes
 // ------
@@ -67,7 +79,12 @@ const VALUED = new Set([
   '--engine', '--model', '--speaker',
   '--kokoro-model', '--kokoro-voices', '--kokoro-voice',
   '--kokoro-speed', '--kokoro-lang',
+  '--kokoro-voice-es', '--kokoro-voice-fr', '--kokoro-voice-it',
+  '--kokoro-voice-pt', '--kokoro-voice-hi', '--kokoro-voice-ja',
+  '--kokoro-voice-zh',
   '--languages',
+  '--f5-ref-audio', '--f5-ref-text', '--f5-speed', '--f5-nfe-step',
+  '--f5-cfg-strength', '--f5-device',
 ]);
 const flags = new Set(args.filter((a) => a.startsWith('--') && !VALUED.has(a)));
 const positional = [];
@@ -83,8 +100,17 @@ const optVal = (name) => {
   const idx = args.indexOf(name);
   return idx >= 0 ? args[idx + 1] : null;
 };
+// Let the operator override which Python interpreter we shell out
+// to for the Kokoro / F5 / translator helpers. On GitHub Codespaces
+// the default `python3` points at a bleeding-edge 3.14 from linuxbrew
+// where pydantic-core can't build, while the managed 3.12 that has
+// f5-tts actually installed lives at `python3.12`. Any environment
+// with a mismatch between what pip installed into and what the shell
+// resolves `python3` to can be fixed with `PYTHON=python3.12 node …`.
+const PYTHON_BIN = process.env.PYTHON || 'python3';
+
 const engine = (optVal('--engine') || 'kokoro').toLowerCase();
-if (!['kokoro', 'piper'].includes(engine)) fail(`Unknown --engine "${engine}"; must be kokoro or piper.`);
+if (!['kokoro', 'piper', 'f5'].includes(engine)) fail(`Unknown --engine "${engine}"; must be kokoro, piper, or f5.`);
 
 // Languages to render per post. "en" is the source language;
 // additional BCP-47 language codes (es, fr, it, pt, zh, etc.)
@@ -128,6 +154,30 @@ const LANG_KOKORO_TAG = {
   pt: 'pt-br', hi: 'hi', ja: 'ja', zh: 'cmn',
 };
 
+// F5-TTS inputs (voice cloning — English only for now; F5's multilingual
+// support is limited compared to Kokoro, and the point of F5 on this
+// site is specifically "Don's English voice"). Reference audio + text
+// transcript live in scripts/voice-refs/ by default.
+//
+// Defaults tuned after first-listen feedback on Don's own voice:
+//   speed=0.9          — reads a touch slower than the reference pace,
+//                        which tended to rush. Tweakable via --f5-speed.
+//   nfe-step=48        — bumped from 32 to reduce "reference bleed"
+//                        (where F5-TTS echoes phrases from the ref
+//                        transcript when they overlap content phrases
+//                        — e.g. the reservations post repeating
+//                        "this post breaks down…"). Costs ~50% more
+//                        compute per chunk but noticeably cleaner.
+//   cfg-strength=3     — same rationale; stronger classifier-free
+//                        guidance keeps the model closer to gen_text
+//                        and away from the reference.
+const f5RefAudio = optVal('--f5-ref-audio') || 'scripts/voice-refs/don-reference.m4a';
+const f5RefText  = optVal('--f5-ref-text')  || 'scripts/voice-refs/don-reference.txt';
+const f5Speed    = optVal('--f5-speed')     || '0.9';
+const f5NfeStep  = optVal('--f5-nfe-step')  || '48';
+const f5CfgStrength = optVal('--f5-cfg-strength') || '3';
+const f5Device   = optVal('--f5-device')    || '';
+
 const dryRun = flags.has('--dry-run');
 if (!dryRun) {
   if (!which('ffmpeg')) fail('`ffmpeg` not found on PATH.');
@@ -135,12 +185,36 @@ if (!dryRun) {
     if (!model) fail('--model <path/to/voice.onnx> is required for piper engine.');
     if (!fs.existsSync(model)) fail(`Piper model not found at ${model}`);
     if (!which('piper')) fail('`piper` not found on PATH. Install from https://github.com/rhasspy/piper/releases');
-  } else {
+  } else if (engine === 'kokoro') {
     if (!kokoroModel)  fail('--kokoro-model <path/to/kokoro-v1.0.onnx> is required.');
     if (!kokoroVoices) fail('--kokoro-voices <path/to/voices-v1.0.bin> is required.');
     if (!fs.existsSync(kokoroModel))  fail(`Kokoro model not found at ${kokoroModel}`);
     if (!fs.existsSync(kokoroVoices)) fail(`Kokoro voices not found at ${kokoroVoices}`);
     if (!which('python3')) fail('`python3` not found on PATH.');
+  } else if (engine === 'f5') {
+    const refAudioPath = path.resolve(repoRoot, f5RefAudio);
+    const refTextPath  = path.resolve(repoRoot, f5RefText);
+    if (!fs.existsSync(refAudioPath)) fail(`F5 reference audio not found at ${refAudioPath}`);
+    if (!fs.existsSync(refTextPath))  fail(`F5 reference transcript not found at ${refTextPath}`);
+    if (!which('python3')) fail('`python3` not found on PATH. Install Python 3.10+.');
+    // Quiet import check so the user gets a friendly error if pip install f5-tts hasn't run.
+    const probe = spawnSync(PYTHON_BIN, ['-c', 'import f5_tts'], { stdio: 'pipe' });
+    if (probe.status !== 0) {
+      fail(`\`f5-tts\` not importable from \`${PYTHON_BIN}\`. Either:\n` +
+           `  1. Install it into that interpreter:  ${PYTHON_BIN} -m pip install --break-system-packages f5-tts\n` +
+           `  2. Or point the script at a different Python that already has it:\n` +
+           `       PYTHON=python3.12 node scripts/render-post-audio.mjs --engine f5 ...`);
+    }
+    // F5 English-only: non-English languages still render via Kokoro, so
+    // we need Kokoro's model too if any non-EN language is requested.
+    const needsKokoro = languages.some((l) => l !== 'en');
+    if (needsKokoro) {
+      if (!kokoroModel || !kokoroVoices) {
+        fail('F5 handles English; non-English languages still use Kokoro — pass --kokoro-model and --kokoro-voices too, or use --languages en.');
+      }
+      if (!fs.existsSync(kokoroModel))  fail(`Kokoro model not found at ${kokoroModel}`);
+      if (!fs.existsSync(kokoroVoices)) fail(`Kokoro voices not found at ${kokoroVoices}`);
+    }
   }
 }
 
@@ -202,19 +276,28 @@ function renderLanguage(postDir, chunks, lang) {
     GAP_CACHE.set(key, p);
     return p;
   }
+  // Gap values tuned for natural "breath" spots. Each pause is long
+  // enough the listener hears a beat between thoughts, short enough
+  // that the piece doesn't drag. Tuned by ear on Don's cloned voice.
   function gapBefore(chunk, prev) {
     if (!prev) return 0;
-    if (chunk.kind === 'heading') return 0.80;
-    if (chunk.kind === 'figure')  return 0.55;
-    if (prev.kind === 'heading')  return 0.45;
-    if (prev.kind === 'figure')   return 0.50;
-    if (chunk.kind === 'list' && prev.kind === 'list') return 0.22;
-    if (chunk.kind === 'quote' || prev.kind === 'quote') return 0.55;
+    if (chunk.kind === 'heading') return 1.10;           // section break
+    if (chunk.kind === 'figure')  return 0.80;           // before graphic
+    if (prev.kind === 'heading')  return 0.70;           // after heading
+    if (prev.kind === 'figure')   return 0.75;           // after graphic
+    if (chunk.kind === 'list' && prev.kind === 'list') return 0.32;
+    if (chunk.kind === 'quote' || prev.kind === 'quote') return 0.75;
     const prevEndsSentence = /[.!?]$/.test(prev.text);
-    return prevEndsSentence ? 0.32 : 0.22;
+    return prevEndsSentence ? 0.52 : 0.35;
   }
 
-  const voice = LANG_VOICE[lang] || LANG_VOICE.en;
+  // For F5-mode English we log the reference voice name (not a Kokoro
+  // catalog ID) into the manifest so downstream consumers can tell
+  // who's narrating. Non-English languages in F5 mode still use
+  // Kokoro's catalog voice.
+  const voice = (engine === 'f5' && lang === 'en')
+    ? ('f5:' + path.basename(path.resolve(repoRoot, f5RefAudio)))
+    : (LANG_VOICE[lang] || LANG_VOICE.en);
   const kokoroTag = LANG_KOKORO_TAG[lang] || 'en-us';
 
   // Batch-synthesize every chunk's raw WAV up front. For Kokoro this
@@ -223,8 +306,17 @@ function renderLanguage(postDir, chunks, lang) {
   // shell out in a loop.
   const rawDir = path.join(tmpDir, 'raw');
   fs.mkdirSync(rawDir, { recursive: true });
-  if (engine === 'kokoro') synthesizeKokoro(chunks, rawDir, { voice, lang: kokoroTag });
-  else                     synthesizePiper(chunks, rawDir);
+  // F5-TTS is English-only (it's the voice-cloning track for Don's
+  // own narration). For any non-English language we fall back to
+  // Kokoro with that language's mapped voice + tag, so a bilingual
+  // render still works with --engine f5.
+  if (engine === 'f5' && lang === 'en') {
+    synthesizeF5(chunks, rawDir);
+  } else if (engine === 'kokoro' || engine === 'f5') {
+    synthesizeKokoro(chunks, rawDir, { voice, lang: kokoroTag });
+  } else {
+    synthesizePiper(chunks, rawDir);
+  }
 
   let cursor = 0;
   chunks.forEach((chunk, i) => {
@@ -267,7 +359,16 @@ function renderLanguage(postDir, chunks, lang) {
     version: 1,
     generatedAt: new Date().toISOString(),
     engine: engine,
-    model: path.basename(engine === 'piper' ? model : kokoroModel),
+    // Model name logged into the manifest. F5 English uses the ref
+    // audio; everything else reports its TTS model path. Null-safe so
+    // an F5-only run without --kokoro-model doesn't crash here.
+    model: (() => {
+      const src =
+        engine === 'piper' ? model :
+        engine === 'f5'    ? (lang === 'en' ? f5RefAudio : kokoroModel) :
+                             kokoroModel;
+      return src ? path.basename(src) : 'unknown';
+    })(),
     voice,
     language: lang,
     total: round(cursor),
@@ -275,7 +376,20 @@ function renderLanguage(postDir, chunks, lang) {
   };
   fs.writeFileSync(path.join(postDir, jsonName), JSON.stringify(manifest, null, 2));
 
-  if (!flags.has('--keep-tmp')) fs.rmSync(tmpDir, { recursive: true, force: true });
+  // Cleanup tmp dir. fs.rmSync is Node 14.14+; older Node (Colab's
+  // apt-installed default) uses rmdirSync. Fall back through the
+  // options, and swallow any failure — a stale tmp dir in /tmp is a
+  // non-fatal leak, the output MP3 + manifest are already safely
+  // written before we get here.
+  if (!flags.has('--keep-tmp')) {
+    try { fs.rmSync(tmpDir, { recursive: true, force: true }); }
+    catch (_) {
+      try { fs.rmdirSync(tmpDir, { recursive: true }); }
+      catch (_) {
+        try { spawnSync('rm', ['-rf', tmpDir]); } catch (_) {}
+      }
+    }
+  }
   console.log(`  ✓ ${path.relative(repoRoot, mp3Out)}  (${manifest.total.toFixed(1)}s)  voice=${voice}`);
 }
 
@@ -286,7 +400,7 @@ function translateChunksFor(chunks, targetLang) {
     target: targetLang,
     chunks: chunks.map((c) => ({ id: c.id !== undefined ? c.id : chunks.indexOf(c), text: c.text })),
   });
-  const proc = spawnSync('python3', [helper], {
+  const proc = spawnSync(PYTHON_BIN, [helper], {
     input: payload,
     encoding: 'utf8',
     stdio: ['pipe', 'pipe', 'inherit'],
@@ -330,7 +444,7 @@ function synthesizeKokoro(chunks, outDir, opts = {}) {
   const payload = JSON.stringify({
     chunks: chunks.map((c, i) => ({ id: i, text: c.text })),
   });
-  const proc = spawnSync('python3', args, {
+  const proc = spawnSync(PYTHON_BIN, args, {
     input: payload,
     encoding: 'utf8',
     // Piped stderr shows progress; show it live by writing through.
@@ -339,6 +453,36 @@ function synthesizeKokoro(chunks, outDir, opts = {}) {
   });
   if (proc.status !== 0) {
     fail(`kokoro helper failed (${proc.status}): ${proc.stdout || '(no stdout)'}`);
+  }
+}
+
+function synthesizeF5(chunks, outDir) {
+  // Spawn the F5-TTS Python helper once, stream the chunk list as
+  // JSON. Model + vocoder stay in RAM across all chunks of the post.
+  // Reference audio + transcript are passed via CLI args (they're
+  // constant across chunks).
+  const helper = path.join(repoRoot, 'scripts', 'lib', 'f5_render.py');
+  const args = [
+    helper,
+    '--ref-audio',  path.resolve(repoRoot, f5RefAudio),
+    '--ref-text',   path.resolve(repoRoot, f5RefText),
+    '--speed',         f5Speed,
+    '--nfe-step',      f5NfeStep,
+    '--cfg-strength',  f5CfgStrength,
+    '--output-dir',    outDir,
+  ];
+  if (f5Device) { args.push('--device', f5Device); }
+  const payload = JSON.stringify({
+    chunks: chunks.map((c, i) => ({ id: i, text: c.text })),
+  });
+  const proc = spawnSync(PYTHON_BIN, args, {
+    input: payload,
+    encoding: 'utf8',
+    stdio: ['pipe', 'pipe', 'inherit'],
+    maxBuffer: 16 * 1024 * 1024,
+  });
+  if (proc.status !== 0) {
+    fail(`f5 helper failed (${proc.status}): ${proc.stdout || '(no stdout)'}`);
   }
 }
 

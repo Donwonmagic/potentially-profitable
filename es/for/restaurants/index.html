@@ -77,9 +77,9 @@
         { "@type": "Question", "name": "¿Cómo manejan las reservas?", "acceptedAnswer": { "@type": "Answer", "text": "OpenTable, Resy, Tock o Square Reservations empotrados de forma limpia — o un formulario simple integrado que te llega a ti y al host. El flujo que tu equipo ya conoce." } },
         { "@type": "Question", "name": "¿Y los pedidos en línea?", "acceptedAnswer": { "@type": "Answer", "text": "Dos caminos. Redirección: un botón limpio hacia tu storefront actual de Toast, Square o ChowNow. Directo: un checkout integrado con tu propio procesador de pagos para que te quedes con el margen." } },
         { "@type": "Question", "name": "¿Ayudan con Google Business Profile?", "acceptedAnswer": { "@type": "Answer", "text": "Sí — configuración, optimización de fotos, horarios, enlace al menú y afinamiento de categorías vienen incluidos en cada proyecto. Suele ser la hora de mayor retorno de todo el proyecto." } },
-        { "@type": "Question", "name": "¿Cuánto cuesta un sitio a medida para restaurante?", "acceptedAnswer": { "@type": "Answer", "text": "Essentials arranca en USD 2,500. La mayoría de los restaurantes quedan en Full Service por USD 5,000 a 9,000. Premier — grupos con varias sucursales y restaurantes con necesidades de integración de POS — va entre USD 8,000 y 15,000+." } },
+        { "@type": "Question", "name": "¿Cuánto cuesta un sitio a medida para restaurante?", "acceptedAnswer": { "@type": "Answer", "text": "Esencial arranca en USD 2,500. La mayoría de los restaurantes quedan en Servicio Completo por USD 5,000 a 9,000. Premium — grupos con varias sucursales y restaurantes con necesidades de integración de POS — va entre USD 8,000 y 15,000+." } },
         { "@type": "Question", "name": "¿Solo trabajan con restaurantes de Silver Spring?", "acceptedAnswer": { "@type": "Answer", "text": "No. Muntin está en Silver Spring, MD, pero trabajamos con restaurantes en todo el DMV y a distancia con restaurantes en cualquier parte de Estados Unidos." } },
-        { "@type": "Question", "name": "¿Cuánto toma tener el sitio en línea?", "acceptedAnswer": { "@type": "Answer", "text": "Essentials se lanza en 2 a 3 semanas, Full Service en 4 a 6 y Premier en 6 a 10. Solo dos proyectos activos a la vez." } }
+        { "@type": "Question", "name": "¿Cuánto toma tener el sitio en línea?", "acceptedAnswer": { "@type": "Answer", "text": "Esencial se lanza en 2 a 3 semanas, Servicio Completo en 4 a 6 y Premium en 6 a 10. Solo dos proyectos activos a la vez." } }
       ]
     }
   ]
@@ -140,8 +140,47 @@
 .menu-card-caption{margin-top:18px;display:flex;justify-content:space-between;gap:16px;font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums}
 .menu-card-caption em{font-family:var(--font-display);font-style:italic;color:var(--ink-soft)}
 @media (max-width:640px){.menu-card{aspect-ratio:auto;min-height:600px}.mc-foot{flex-direction:column-reverse;align-items:stretch;gap:12px}.mc-cta{justify-content:center}.mc-live{justify-content:center}.menu-card-caption{flex-direction:column;gap:4px}}
+
+/* Menu-card + feature-tile drawer system. Parallels the English
+   mirror at /for/restaurants/. Triggered by any [data-drawer]
+   button on this page. Same CSS keys so styles stay in lockstep. */
+.mc-cta, .mc-live{border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.mc-live{background:transparent;padding:0;font-family:inherit}
+.mc-cta:focus-visible{outline:2px solid var(--cream);outline-offset:3px}
+.mc-live:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:4px}
+.mc-cta:hover{background:var(--teal)}
+.mc-live:hover .mc-live-dot{transform:scale(1.35);transition:transform 180ms var(--ease-out)}
+.mc-drawer-backdrop{position:fixed;inset:0;background:rgba(20,22,26,0.45);opacity:0;pointer-events:none;transition:opacity 240ms var(--ease-out);z-index:80}
+.mc-drawer-backdrop[data-open="true"]{opacity:1;pointer-events:auto}
+.mc-drawer{position:fixed;top:0;right:0;bottom:0;width:min(520px,92vw);background:var(--cream);box-shadow:-20px 0 60px -20px rgba(20,22,26,0.35);transform:translateX(100%);transition:transform 300ms cubic-bezier(.16,1,.3,1);z-index:90;display:flex;flex-direction:column}
+.mc-drawer[data-open="true"]{transform:translateX(0)}
+.mc-drawer-head{display:flex;justify-content:space-between;align-items:center;padding:22px 28px;border-bottom:1px solid var(--line);flex:0 0 auto;gap:20px}
+.mc-drawer-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0}
+.mc-drawer-close{background:transparent;border:0;padding:8px;margin:-8px;cursor:pointer;color:var(--stone);border-radius:6px;display:flex;align-items:center;justify-content:center;transition:color 180ms var(--ease-out),background 180ms var(--ease-out)}
+.mc-drawer-close:hover{color:var(--ink);background:var(--cream-2)}
+.mc-drawer-close:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.mc-drawer-close svg{width:22px;height:22px;display:block}
+.mc-drawer-body{padding:32px 28px 28px;overflow-y:auto;flex:1 1 auto}
+.mc-drawer-body h2{font-family:var(--font-display);font-size:clamp(24px,3vw,30px);font-weight:500;color:var(--ink);margin:0 0 14px;letter-spacing:-0.01em;line-height:1.2}
+.mc-drawer-lede{font-size:16px;line-height:1.6;color:var(--ink-soft);margin:0 0 26px}
+.mc-drawer-body ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:18px}
+.mc-drawer-body ul li{font-size:15px;line-height:1.6;color:var(--ink-soft);padding-left:22px;position:relative}
+.mc-drawer-body ul li::before{content:'';position:absolute;left:0;top:9px;width:8px;height:8px;border-radius:50%;background:var(--teal)}
+.mc-drawer-body ul li strong{color:var(--ink);font-weight:600}
+.mc-drawer-foot{padding:20px 28px;border-top:1px solid var(--line);background:var(--cream-2);flex:0 0 auto}
+.mc-drawer-foot-text{font-size:13px;color:var(--stone);margin:0 0 12px}
+.mc-drawer-foot-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;background:var(--ink);color:var(--cream);border-radius:999px;font-size:14px;font-weight:600;text-decoration:none;transition:background 180ms var(--ease-out)}
+.mc-drawer-foot-btn:hover{background:var(--teal)}
+.mc-drawer-foot-btn svg{width:14px;height:14px}
+@media (max-width:640px){.mc-drawer{top:auto;left:0;right:0;bottom:0;width:100%;max-height:88vh;border-radius:22px 22px 0 0;transform:translateY(100%)}.mc-drawer[data-open="true"]{transform:translateY(0)}.mc-drawer-head{padding:18px 22px}.mc-drawer-body{padding:24px 22px}.mc-drawer-foot{padding:18px 22px}}
+@media (prefers-reduced-motion:reduce){.mc-drawer,.mc-drawer-backdrop{transition-duration:0ms}}
+.service-link{margin-top:auto;padding:16px 0 0;background:transparent;border:0;font:inherit;font-size:14px;font-weight:600;color:var(--teal);cursor:pointer;display:inline-flex;align-items:center;gap:8px;align-self:flex-start;transition:color 180ms var(--ease-out)}
+.service-link-arrow{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform 200ms var(--ease-out)}
+.service-link:hover{color:var(--ink)}
+.service-link:hover .service-link-arrow{transform:translateX(4px)}
+.service-link:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px}
 </style>
-<link rel="stylesheet" href="/assets/site.css?v=20260418-langhint">
+<link rel="stylesheet" href="/assets/site.css?v=20260419-mobnav">
 </head>
 <body>
 
@@ -232,15 +271,15 @@
     </div>
 
     <div>
-      <div class="menu-card" aria-hidden="true">
-        <header class="mc-masthead">
+      <div class="menu-card">
+        <header class="mc-masthead" aria-hidden="true">
           <p class="mc-kicker">Silver Spring · Italiano · Desde 2019</p>
           <h3 class="mc-name">The Rowhouse<span class="mc-amp"> &amp; </span>Garden</h3>
           <div class="mc-rule" aria-hidden="true"><span class="mc-rule-dot"></span></div>
           <p class="mc-open"><span class="mc-open-dot" aria-hidden="true"></span>Abierto esta noche · cocina hasta las 10</p>
         </header>
 
-        <div class="mc-section">
+        <div class="mc-section" aria-hidden="true">
           <p class="mc-section-label">Esta noche</p>
 
           <ul class="mc-list">
@@ -295,11 +334,11 @@
         </div>
 
         <footer class="mc-foot">
-          <span class="mc-cta">
+          <button type="button" class="mc-cta" data-drawer="reserve" aria-label="Por qué importan las reservas en línea — abrir información">
             Reservar mesa
             <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
-          </span>
-          <span class="mc-live"><span class="mc-live-dot" aria-hidden="true"></span>En vivo · actualizado hace 2 min</span>
+          </button>
+          <button type="button" class="mc-live" data-drawer="live" aria-label="Por qué importa un menú que se actualiza en vivo — abrir información"><span class="mc-live-dot" aria-hidden="true"></span>En vivo · actualizado hace 2 min</button>
         </footer>
 
         <svg class="mc-watermark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
@@ -319,6 +358,235 @@
   </div>
 </section>
 
+<!-- ============ DRAWERS DE TARJETA DE MENÚ + MOSAICOS ============ -->
+<!-- Overlays educativos para la tarjeta de menú de muestra y los
+     mosaicos de funcionalidades. Posición fija; la ubicación en el
+     DOM no afecta el layout. Espejo del mecanismo en /for/restaurants/. -->
+<div class="mc-drawer-backdrop" data-open="false"></div>
+
+<aside class="mc-drawer" data-drawer-id="reserve" role="dialog" aria-modal="true" aria-labelledby="drawer-reserve-title" data-open="false" inert>
+  <div class="mc-drawer-head">
+    <p class="mc-drawer-eyebrow">Reservas</p>
+    <button type="button" class="mc-drawer-close" aria-label="Cerrar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+  </div>
+  <div class="mc-drawer-body">
+    <h2 id="drawer-reserve-title">Un botón de reservas que se toca a las 10 de la noche</h2>
+    <p class="mc-drawer-lede">La mayoría de los comensales deciden dónde comer desde el celular, fuera del horario de atención, desde la cama. Si tu única opción es "llámanos mañana", los pierdes contra el siguiente restaurante que sí tiene un botón.</p>
+    <ul>
+      <li><strong>Deciden desde el celular.</strong> La mayor parte de las decisiones de dónde comer empiezan en móvil, y la mayoría ocurren fuera del horario de operación. Un flujo solo-llamada pierde a cada comensal que decide a las 11 pm.</li>
+      <li><strong>Los recordatorios reducen no-shows.</strong> Confirmaciones automáticas por correo y SMS con enlace al calendario mantienen las reservas en pie. Un no-show a la semana a $80 por cubierto son más de $4,000 al año recuperados.</li>
+      <li><strong>Libera la recepción.</strong> Cada reserva que entra en línea es una llamada que tu equipo no atiende durante el servicio. Menos interrupciones, servicio más fluido, mejor experiencia.</li>
+      <li><strong>Impulsa el descubrimiento.</strong> OpenTable, Resy, Tock y Google Reserve te exponen a comensales que nunca llegarían a tu sitio directamente. Las reservas son tracción, no solo empuje.</li>
+      <li><strong>Los cubiertos entran a tu POS.</strong> Toast, Square y Lightspeed integran directo. Tu equipo ve la reserva, el número de cubiertos y las notas especiales sin retipear nada.</li>
+    </ul>
+  </div>
+  <div class="mc-drawer-foot">
+    <p class="mc-drawer-foot-text">¿Quieres ver cómo está tu flujo actual de reservas? Corre el diagnóstico gratuito.</p>
+    <a class="mc-drawer-foot-btn" href="/es/tools/audits/restaurant/">Diagnosticar mi sitio
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+  </div>
+</aside>
+
+<aside class="mc-drawer" data-drawer-id="live" role="dialog" aria-modal="true" aria-labelledby="drawer-live-title" data-open="false" inert>
+  <div class="mc-drawer-head">
+    <p class="mc-drawer-eyebrow">Gestión del menú</p>
+    <button type="button" class="mc-drawer-close" aria-label="Cerrar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+  </div>
+  <div class="mc-drawer-body">
+    <h2 id="drawer-live-title">Un menú que actualizas desde el celular</h2>
+    <p class="mc-drawer-lede">Un menú en PDF no es un menú — es una foto. La versión que ven tus comensales un martes a las 7 pm debería reflejar lo que dejaste de servir al mediodía.</p>
+    <ul>
+      <li><strong>Los menús obsoletos rompen la confianza.</strong> Comensales que ven precios de hace seis meses, o un plato que quitaste en junio, asumen que el resto del sitio está igual de desactualizado. Muchos no reservan.</li>
+      <li><strong>Google lee menús en vivo, no PDFs.</strong> Cada nombre de plato en un menú HTML en vivo es un resultado de búsqueda potencial. "Fettuccine al burro cerca de mí" puede caer en tu sitio. Un PDF es una caja negra para Google.</li>
+      <li><strong>Los cambios toman segundos.</strong> Un ajuste de precio, un agotado, el especial de esta noche. Sacas el teléfono, escribes, guardas. Sin diseñador, sin ticket, sin esperar.</li>
+      <li><strong>Los lectores de pantalla funcionan.</strong> Menús accesibles sirven a todos los comensales. La mayoría de los PDFs fallan auditorías de accesibilidad; los menús en vivo bien hechos pasan sin esfuerzo.</li>
+      <li><strong>Compartes un plato, no un archivo de 12 MB.</strong> Liga tu plato estrella a Instagram, mete el especial de la noche en tu email, deja una sola URL en tu ficha de Google Business.</li>
+    </ul>
+  </div>
+  <div class="mc-drawer-foot">
+    <p class="mc-drawer-foot-text">¿Quieres ver si tu menú está trabajando lo suficiente? Corre el diagnóstico gratuito.</p>
+    <a class="mc-drawer-foot-btn" href="/es/tools/audits/restaurant/">Diagnosticar mi sitio
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+  </div>
+</aside>
+
+<aside class="mc-drawer" data-drawer-id="ordering" role="dialog" aria-modal="true" aria-labelledby="drawer-ordering-title" data-open="false" inert>
+  <div class="mc-drawer-head">
+    <p class="mc-drawer-eyebrow">Pedidos en línea</p>
+    <button type="button" class="mc-drawer-close" aria-label="Cerrar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+  </div>
+  <div class="mc-drawer-body">
+    <h2 id="drawer-ordering-title">Conserva el margen, conserva al cliente</h2>
+    <p class="mc-drawer-lede">Las apps de delivery de terceros se llevan entre 15% y 30% de cada ticket. Un flujo propio bien hecho retiene más de cada dólar — y, igual de importante, la relación con el cliente.</p>
+    <ul>
+      <li><strong>Las comisiones suman rápido.</strong> DoorDash y Grubhub cobran típicamente entre 15% y 30% por pedido. Un checkout directo retiene casi todo. A lo largo de un año es dinero real — muchas veces el equivalente al salario de un cocinero de línea.</li>
+      <li><strong>Eres dueño del cliente.</strong> Cuando DoorDash tiene el correo, DoorDash tiene el pedido repetido. Cuando tú tienes el correo, tienes una relación a la que puedes hacerle marketing — especiales, lanzamientos de temporada, eventos privados.</li>
+      <li><strong>La integración tiene que calzar.</strong> Toast, Square, ChowNow o un checkout directo con Stripe — cada uno sirve a un tipo distinto de restaurante. Elegimos según tu POS, la complejidad del menú y el flujo de tu equipo, no por lo que esté de moda.</li>
+      <li><strong>La velocidad al checkout lo es todo.</strong> El camino más corto son tres toques desde el menú. Cada paso extra pierde pedidos. Menú en vivo, agregar-de-un-toque, tarjeta guardada. La fricción es el enemigo.</li>
+      <li><strong>Pickup vs. delivery es una decisión real.</strong> Delivery propio tiene margen pero dolor operativo. Delivery por terceros tiene alcance pero costo. La mezcla correcta es distinta para cada restaurante, y la caminamos contigo en vez de caer en un setup por default.</li>
+    </ul>
+  </div>
+  <div class="mc-drawer-foot">
+    <p class="mc-drawer-foot-text">¿Quieres ver cómo se compara tu flujo de pedidos? Corre el diagnóstico gratuito.</p>
+    <a class="mc-drawer-foot-btn" href="/es/tools/audits/restaurant/">Diagnosticar mi sitio
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+  </div>
+</aside>
+
+<aside class="mc-drawer" data-drawer-id="gbp" role="dialog" aria-modal="true" aria-labelledby="drawer-gbp-title" data-open="false" inert>
+  <div class="mc-drawer-head">
+    <p class="mc-drawer-eyebrow">Google Business Profile</p>
+    <button type="button" class="mc-drawer-close" aria-label="Cerrar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+  </div>
+  <div class="mc-drawer-body">
+    <h2 id="drawer-gbp-title">La mayoría del tráfico de restaurantes está en Google Maps</h2>
+    <p class="mc-drawer-lede">Cuando alguien escribe "mejor tailandés cerca de mí", Google muestra el paquete de tres resultados de Maps antes que cualquier otra cosa. Si no estás optimizado para ese paquete, no existes para esos comensales.</p>
+    <ul>
+      <li><strong>El map pack lo es todo.</strong> Más de la mitad del descubrimiento de restaurantes empieza dentro de Google Maps, no en una página de resultados de búsqueda. Si tu perfil está incompleto o desactualizado, pierdes contra competidores que sí lo tienen afinado.</li>
+      <li><strong>Horarios, fotos, enlace al menú — en ese orden.</strong> Los tres campos con mayor retorno en GBP. Horarios precisos generan confianza, las fotos generan clicks, un enlace al menú mantiene a los comensales en tu página. Los tres son gratis de arreglar.</li>
+      <li><strong>Responder reseñas mueve el ranking.</strong> El algoritmo de Google premia a los restaurantes que responden reseñas — positivas y negativas. También es la señal de confianza más clara que revisan los nuevos comensales antes de reservar.</li>
+      <li><strong>El ajuste de categoría está subestimado.</strong> "Restaurante italiano" vs. "Trattoria italiana" vs. "Restaurante de pasta" cambia por cuáles búsquedas apareces. La mayoría están en la categoría principal equivocada y nunca lo saben.</li>
+      <li><strong>Los posts son espacio gratis.</strong> Especial de esta noche, lanzamiento de un menú de temporada, un evento — los Posts de GBP aparecen directo en tu ficha. La mayoría de los restaurantes los ignoran por completo; cada uno que publicas es pura ganancia.</li>
+    </ul>
+  </div>
+  <div class="mc-drawer-foot">
+    <p class="mc-drawer-foot-text">¿Quieres ver cómo está tu Google Business Profile? Corre el diagnóstico gratuito.</p>
+    <a class="mc-drawer-foot-btn" href="/es/tools/audits/restaurant/">Diagnosticar mi sitio
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+  </div>
+</aside>
+
+<aside class="mc-drawer" data-drawer-id="performance" role="dialog" aria-modal="true" aria-labelledby="drawer-performance-title" data-open="false" inert>
+  <div class="mc-drawer-head">
+    <p class="mc-drawer-eyebrow">Velocidad móvil</p>
+    <button type="button" class="mc-drawer-close" aria-label="Cerrar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+  </div>
+  <div class="mc-drawer-body">
+    <h2 id="drawer-performance-title">Menos de dos segundos, o los pierdes</h2>
+    <p class="mc-drawer-lede">Tu comensal está parado en la banqueta, con hambre, con 4G. Cada segundo extra de carga pierde una porción medible al siguiente listado de la cuadra.</p>
+    <ul>
+      <li><strong>Los números son brutales.</strong> Investigación de Google: un segundo de retraso en la carga móvil puede bajar las conversiones alrededor de 20%. Para un restaurante, eso son reservas y pedidos caminando al siguiente listado.</li>
+      <li><strong>La velocidad es una señal de ranking.</strong> Los Core Web Vitals de Google entran directo en el ranking de búsqueda. Los restaurantes lentos son superados por competidores más rápidos, con la misma cocina y el mismo barrio.</li>
+      <li><strong>Las imágenes son el villano habitual.</strong> La mayoría de los sitios de restaurantes lentos son lentos por fotos hero demasiado pesadas. Las comprimimos, redimensionamos y cargamos con lazy-load — tu comida sigue luciendo espectacular pero la página carga en un segundo.</li>
+      <li><strong>Medido, no adivinado.</strong> Cada proyecto de Muntin sale con un PageSpeed por encima de 90 en móvil. Corremos la prueba antes del lanzamiento y periódicamente después — la velocidad no es un tema de una sola vez.</li>
+      <li><strong>Rápido no significa sacrificado.</strong> No tienes que elegir entre "se ve hermoso" y "carga rápido". Las prácticas modernas dan ambos. Solo hay que usarlas — y la mayoría de los sitios de restaurantes no lo hacen.</li>
+    </ul>
+  </div>
+  <div class="mc-drawer-foot">
+    <p class="mc-drawer-foot-text">¿Quieres ver qué tan rápido carga tu sitio actual? Corre el diagnóstico gratuito.</p>
+    <a class="mc-drawer-foot-btn" href="/es/tools/audits/restaurant/">Diagnosticar mi sitio
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+  </div>
+</aside>
+
+<aside class="mc-drawer" data-drawer-id="photo" role="dialog" aria-modal="true" aria-labelledby="drawer-photo-title" data-open="false" inert>
+  <div class="mc-drawer-head">
+    <p class="mc-drawer-eyebrow">Fotografía de comida</p>
+    <button type="button" class="mc-drawer-close" aria-label="Cerrar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+  </div>
+  <div class="mc-drawer-body">
+    <h2 id="drawer-photo-title">Las fotos venden la mesa</h2>
+    <p class="mc-drawer-lede">Los comensales deciden con los ojos. Un menú escrito en Helvetica no compite con una foto de la pasta que están a punto de pedir.</p>
+    <ul>
+      <li><strong>Cada plato merece una foto.</strong> Empieza por tus cuatro o cinco platos estrella si hace falta. Las buenas fotos impulsan clicks a reservas, shares en Instagram y engagement en Google Business Profile — lo que alimenta la parte alta del embudo.</li>
+      <li><strong>Tu espacio es parte del pitch.</strong> Tomas amplias del comedor, el bar a la hora dorada, la cocina en movimiento. Los comensales reservan con confianza cuando pueden ver el salón al que van a entrar.</li>
+      <li><strong>Galerías responsivas, sin deformaciones.</strong> Las fotos se adaptan a celular, tablet y escritorio sin distorsionarse ni recortarse de formas que no querías. Con lazy-load para no bajar la velocidad de carga.</li>
+      <li><strong>Trae tu fotógrafo o te buscamos uno.</strong> Trabajamos con varios fotógrafos de comida del DMV si necesitas uno. Si no, fotos decentes de celular rinden mucho — se puede hacer mucho con material crudo bueno.</li>
+      <li><strong>La galería crece contigo.</strong> ¿Nuevo especial? Tómalo con el celular, súbelo desde el panel. Tu sitio crece con tu menú en vez de quedarse congelado el día del lanzamiento.</li>
+    </ul>
+  </div>
+  <div class="mc-drawer-foot">
+    <p class="mc-drawer-foot-text">¿Quieres ver cómo están trabajando tus fotos actuales? Corre el diagnóstico gratuito.</p>
+    <a class="mc-drawer-foot-btn" href="/es/tools/audits/restaurant/">Diagnosticar mi sitio
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+  </div>
+</aside>
+
+<script>
+  /* Controlador de drawers — espejo del script en /for/restaurants/.
+     Cualquier [data-drawer] en la página abre su drawer; Esc,
+     backdrop y el botón de cerrar lo cierran. Focus trap mínimo,
+     sin dependencias. Inline aquí; si se extiende a otras páginas
+     debería promoverse a assets/site.js. */
+  (function(){
+    var backdrop = document.querySelector('.mc-drawer-backdrop');
+    var drawers  = Array.prototype.slice.call(document.querySelectorAll('.mc-drawer'));
+    var triggers = Array.prototype.slice.call(document.querySelectorAll('[data-drawer]'));
+    if (!backdrop || !drawers.length) return;
+
+    var active = null;
+    var prevFocus = null;
+
+    function openDrawer(key){
+      var d = null;
+      for (var i = 0; i < drawers.length; i++){
+        if (drawers[i].getAttribute('data-drawer-id') === key){ d = drawers[i]; break; }
+      }
+      if (!d) return;
+      prevFocus = document.activeElement;
+      active = d;
+      d.inert = false;
+      backdrop.setAttribute('data-open', 'true');
+      d.setAttribute('data-open', 'true');
+      document.body.style.overflow = 'hidden';
+      var closeBtn = d.querySelector('.mc-drawer-close');
+      if (closeBtn) setTimeout(function(){ closeBtn.focus(); }, 60);
+    }
+
+    function closeDrawer(){
+      if (!active) return;
+      var toClose = active;
+      toClose.setAttribute('data-open', 'false');
+      backdrop.setAttribute('data-open', 'false');
+      document.body.style.overflow = '';
+      setTimeout(function(){ toClose.inert = true; }, 320);
+      if (prevFocus && prevFocus.focus) prevFocus.focus();
+      active = null;
+    }
+
+    triggers.forEach(function(t){
+      t.addEventListener('click', function(){ openDrawer(t.getAttribute('data-drawer')); });
+    });
+
+    drawers.forEach(function(d){
+      var closer = d.querySelector('.mc-drawer-close');
+      if (closer) closer.addEventListener('click', closeDrawer);
+    });
+
+    backdrop.addEventListener('click', closeDrawer);
+
+    document.addEventListener('keydown', function(e){
+      if (!active) return;
+      if (e.key === 'Escape'){ closeDrawer(); return; }
+      if (e.key !== 'Tab') return;
+      var focusables = active.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      if (!focusables.length) return;
+      var first = focusables[0];
+      var last  = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    });
+  }());
+</script>
+
 <!-- ============ PROOF STRIP ============ -->
 <section class="proof">
   <div class="container proof-inner">
@@ -330,6 +598,10 @@
       <span>Google Business</span>
       <span>Velocidad móvil</span>
       <span>Galerías de fotos</span>
+    </div>
+  </div>
+</section>
+
 <!-- ============ PROBLEM / COMPARISON ============ -->
 <section class="block bg-cream2" id="why">
   <div class="container">
@@ -391,36 +663,60 @@
         <div class="label">Menús</div>
         <h3>Menús que se actualizan en 30 segundos</h3>
         <p class="desc">Basta de PDFs. Basta de llamarle al sobrino. Cambia un precio, agrega un especial o cambia un plato desde el celular en menos de un minuto — y el sitio se actualiza antes de que cierres la pestaña.</p>
+        <button type="button" class="service-link" data-drawer="live" aria-label="Por qué importa un menú que se actualiza en vivo — abrir información">
+          Saber más
+          <svg class="service-link-arrow" viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </button>
       </div>
 
       <div class="service reveal">
         <div class="label">Reservas</div>
         <h3>Reservas que caen en tu bandeja</h3>
         <p class="desc">OpenTable, Resy, Tock o un formulario liviano integrado que te llega a ti y al host — como prefieras. Conectamos lo que tu flujo actual ya conoce.</p>
+        <button type="button" class="service-link" data-drawer="reserve" aria-label="Por qué importan las reservas en línea — abrir información">
+          Saber más
+          <svg class="service-link-arrow" viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </button>
       </div>
 
       <div class="service reveal">
         <div class="label">Pedidos</div>
         <h3>Pedidos en línea que no te comen el margen</h3>
         <p class="desc">Toast, Square, ChowNow, o un checkout directo para recoger en el local — integrado para que un visitante con hambre vaya del menú al pago en tres toques sin salirse de tu marca.</p>
+        <button type="button" class="service-link" data-drawer="ordering" aria-label="Por qué importan los pedidos en línea — abrir información">
+          Saber más
+          <svg class="service-link-arrow" viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </button>
       </div>
 
       <div class="service reveal">
         <div class="label">SEO local</div>
         <h3>Google Business Profile que funciona</h3>
         <p class="desc">La mayoría del tráfico de restaurantes viene de Google Maps, no de la búsqueda orgánica. Configuramos y afinamos tu Google Business Profile para que aparezcas en el paquete local cuando alguien cerca busque "mejor [tu cocina] cerca de mí".</p>
+        <button type="button" class="service-link" data-drawer="gbp" aria-label="Por qué importa Google Business Profile — abrir información">
+          Saber más
+          <svg class="service-link-arrow" viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </button>
       </div>
 
       <div class="service reveal">
         <div class="label">Desempeño</div>
         <h3>Páginas móviles rápidas, menos de 2 segundos</h3>
         <p class="desc">Tu cliente está parado en la banqueta, con hambre, en 4G. Si tu portada tarda cuatro segundos en cargar, lo perdiste. Cada proyecto de Muntin sale con carga móvil por debajo de 2 segundos — y lo medimos.</p>
+        <button type="button" class="service-link" data-drawer="performance" aria-label="Por qué importa la velocidad móvil — abrir información">
+          Saber más
+          <svg class="service-link-arrow" viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </button>
       </div>
 
       <div class="service reveal">
         <div class="label">Fotografía</div>
         <h3>Fotos que dan hambre</h3>
         <p class="desc">Una galería responsiva que trata a tu comida, tu espacio y tu equipo como merecen. Trae a tu fotógrafo o te recomendamos uno en el DMV — de cualquier forma, el sitio está construido para que luzca.</p>
+        <button type="button" class="service-link" data-drawer="photo" aria-label="Por qué importa la fotografía de comida — abrir información">
+          Saber más
+          <svg class="service-link-arrow" viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </button>
       </div>
     </div>
   </div>
@@ -477,6 +773,10 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ PRICING ============ -->
 <section class="block bg-cream2" id="pricing">
   <div class="container">
@@ -490,7 +790,7 @@
     <div class="services">
       <div class="service reveal">
         <div class="label">Pequeño y enfocado</div>
-        <h3>Essentials</h3>
+        <h3>Esencial</h3>
         <div class="price">USD 2,500<small>–4,000</small></div>
         <p class="desc">Para el spot del barrio que necesita un sitio de verdad desde ayer. Tres a seis páginas, menú, horarios, contacto, mapa y una redirección simple de reservas. Se lanza en 2 a 3 semanas.</p>
         <ul>
@@ -504,11 +804,11 @@
 
       <div class="service reveal">
         <div class="label">El más elegido</div>
-        <h3>Full Service</h3>
+        <h3>Servicio Completo</h3>
         <div class="price">USD 5,000<small>–9,000</small></div>
-        <p class="desc">Todo lo de Essentials más las piezas funcionales que la mayoría de los restaurantes en verdad necesita: un menú que actualizas tú mismo, reservas conectadas a tu flujo, pedidos en línea y una galería de fotos decente. Se lanza en 4 a 6 semanas.</p>
+        <p class="desc">Todo lo de Esencial más las piezas funcionales que la mayoría de los restaurantes en verdad necesita: un menú que actualizas tú mismo, reservas conectadas a tu flujo, pedidos en línea y una galería de fotos decente. Se lanza en 4 a 6 semanas.</p>
         <ul>
-          <li>Todo lo de Essentials</li>
+          <li>Todo lo de Esencial</li>
           <li>Gestión de menú autoservicio (sin código)</li>
           <li>Integración con OpenTable / Resy / Tock</li>
           <li>Redirección a pedidos en línea (Toast / Square / ChowNow)</li>
@@ -519,11 +819,11 @@
 
       <div class="service reveal">
         <div class="label">Grupos y a medida</div>
-        <h3>Premier</h3>
+        <h3>Premium</h3>
         <div class="price">USD 8,000<small>–15,000+</small></div>
         <p class="desc">Para grupos, chefs que abren un segundo o tercer concepto, o restaurantes con necesidades reales de flujo a medida — ruteo por sucursal, integración directa con el POS, checkout propio de pedidos, o funcionalidades que las herramientas plantilla no alcanzan. Se lanza en 6 a 10 semanas.</p>
         <ul>
-          <li>Todo lo de Full Service</li>
+          <li>Todo lo de Servicio Completo</li>
           <li>Ruteo multisucursal y localizador de tiendas</li>
           <li>Integración directa con POS (Toast / Square / Lightspeed)</li>
           <li>Checkout de pedidos a medida</li>
@@ -568,6 +868,10 @@
         <h3>4. Cuidado y actualizaciones</h3>
         <p class="desc">Plan de cuidado opcional: actualizaciones de menú, especiales de temporada, fotos nuevas, monitoreo de desempeño y parches de seguridad. La misma persona que lo construyó, para siempre — o hasta que tú decidas otra cosa.</p>
       </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ FAQ ============ -->
 <section class="block bg-cream2" id="faq">
   <div class="container">
@@ -604,7 +908,7 @@
 
       <details class="faq-item">
         <summary>¿Cuánto cuesta un sitio a medida para restaurante?</summary>
-        <p>Essentials arranca en USD 2,500. La mayoría de los restaurantes quedan en Full Service por USD 5,000 a 9,000. Grupos con varias sucursales o que necesitan integración con POS van entre USD 8,000 y 15,000+. Sin facturación por hora, sin sorpresas en la factura — ves el número antes de arrancar.</p>
+        <p>Esencial arranca en USD 2,500. La mayoría de los restaurantes quedan en Servicio Completo por USD 5,000 a 9,000. Grupos con varias sucursales o que necesitan integración con POS van entre USD 8,000 y 15,000+. Sin facturación por hora, sin sorpresas en la factura — ves el número antes de arrancar.</p>
       </details>
 
       <details class="faq-item">
@@ -614,7 +918,7 @@
 
       <details class="faq-item">
         <summary>¿Cuánto toma tener el sitio en línea?</summary>
-        <p>Essentials se lanza en 2 a 3 semanas, Full Service en 4 a 6 y Multi-sucursal en 6 a 10. Solo dos proyectos activos a la vez, así que el calendario es real — no un marcador que se corre.</p>
+        <p>Esencial se lanza en 2 a 3 semanas, Servicio Completo en 4 a 6 y Multi-sucursal en 6 a 10. Solo dos proyectos activos a la vez, así que el calendario es real — no un marcador que se corre.</p>
       </details>
     </div>
   </div>
@@ -711,6 +1015,6 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260418-langhint" defer></script>
+<script src="/assets/site.js?v=20260419-mobnav" defer></script>
 </body>
 </html>

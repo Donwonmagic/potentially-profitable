@@ -98,7 +98,7 @@
 </script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260418-langhint">
+<link rel="stylesheet" href="/assets/site.css?v=20260419-mobnav">
 
 <style>
   .post-hero { max-width: 760px; margin: 0 auto; text-align: center; padding-bottom: 24px; }
@@ -120,6 +120,14 @@
   .article-body li::marker { color: var(--teal); }
   .article-body a { color: var(--teal); border-bottom: 1px dashed currentColor; font-weight: 500; }
   .article-body a:hover { color: var(--teal-dark); }
+  /* Buttons inside the article (inline-CTA, etc.) must not inherit
+     the default article-body anchor colour — otherwise the cream
+     text reads as dark teal against the dark pill. Explicitly
+     restore the button palette and kill the underline. */
+  .article-body a.btn { color: var(--cream); border-bottom: 0; }
+  .article-body a.btn:hover { color: var(--cream); }
+  .article-body a.btn.btn-ghost { color: var(--ink); }
+
   .pull-quote { font-family: var(--font-display); font-style: italic; font-size: clamp(24px, 2.8vw, 30px); line-height: 1.35; color: var(--teal); max-width: 580px; margin: 56px auto; text-align: center; padding: 36px 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   .inline-cta { margin: 56px 0; padding: 36px 40px; background: var(--cream-2); border: 1px solid var(--line); border-radius: 16px; text-align: center; }
   .inline-cta h4 { font-family: var(--font-display); font-size: 24px; font-weight: 500; margin: 0 0 10px; color: var(--ink); letter-spacing: -0.01em; }
@@ -422,6 +430,6 @@
   </div>
 </footer>
 
-<script src="/assets/site.js" defer></script>
+<script src="/assets/site.js?v=20260419-mobnav" defer></script>
 </body>
 </html>

@@ -102,7 +102,7 @@
   plausible.init()
 </script>
 
-<link rel="stylesheet" href="/assets/site.css?v=20260418-langhint">
+<link rel="stylesheet" href="/assets/site.css?v=20260419-mobnav">
 
 <style>
   /* ============ BLOG POST LAYOUT STYLES ============ */
@@ -172,6 +172,13 @@
     font-weight: 500;
   }
   .article-body a:hover { color: var(--teal-dark); }
+  /* Buttons inside the article (inline-CTA, etc.) must not inherit
+     the default article-body anchor colour — otherwise the cream
+     text reads as dark teal against the dark pill. Explicitly
+     restore the button palette and kill the underline. */
+  .article-body a.btn { color: var(--cream); border-bottom: 0; }
+  .article-body a.btn:hover { color: var(--cream); }
+  .article-body a.btn.btn-ghost { color: var(--ink); }
   .article-body hr { border: 0; border-top: 1px solid var(--line); margin: 56px 0; }
 
   .pull-quote {
@@ -739,6 +746,6 @@
   </div>
 </footer>
 
-<script src="/assets/site.js" defer></script>
+<script src="/assets/site.js?v=20260419-mobnav" defer></script>
 </body>
 </html>
