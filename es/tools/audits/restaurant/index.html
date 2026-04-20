@@ -2865,6 +2865,72 @@
       .catch(function(){ return { ok: false, validation: null, objects: [] }; });
   }
 
+  // Sprint M1.4: derive a Places text-search query from the URL.
+  // Hostname → strip www. → strip TLD → replace digits/punctuation
+  // with spaces → trim. If the result is empty or too generic to be
+  // a reasonable business-name guess ("www", "site"), return null
+  // so the caller skips the Places call entirely rather than wasting
+  // a quota unit on garbage.
+  function deriveGbpQueryFromUrl(targetUrl) {
+    var host;
+    try { host = new URL(targetUrl).hostname; } catch (_) { return null; }
+    host = host.replace(/^www\./i, '');
+    // Drop the last label (TLD) and rejoin with spaces. "irisihinn-
+    // glenecho.com" → "irisihinnglenecho"; "example.co.uk" → "example
+    // co". The co.uk case is rare enough for restaurants that losing
+    // a letter here is acceptable — Places text search is fuzzy.
+    var parts = host.split('.');
+    if (parts.length > 1) parts = parts.slice(0, -1);
+    var stem = parts.join(' ').replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
+    if (!stem) return null;
+    var blocklist = { 'www': 1, 'site': 1, 'localhost': 1 };
+    if (blocklist[stem.toLowerCase()]) return null;
+    return stem;
+  }
+
+  // Sprint M1.4: Places text-search wrapper. Best-effort; never
+  // blocks the audit. If the derived query is null, the endpoint
+  // errors, or the returned website does not match the audited
+  // hostname, resolves to { ok: false, place: null } so downstream
+  // detector fusions see Places as "unknown" and fall back to their
+  // regex/keyword path (identical to today's behavior).
+  function callGbpLookup(targetUrl) {
+    var query = deriveGbpQueryFromUrl(targetUrl);
+    if (!query) return Promise.resolve({ ok: false, place: null });
+    var params = new URLSearchParams();
+    params.append('q', query);
+    if (window.__muntinLang === 'es') params.append('lang', 'es');
+    return fetch('/api/gbp-lookup?' + params.toString(), {
+      headers: { 'Accept': 'application/json' },
+      signal: AbortSignal.timeout(5000)
+    })
+      .then(function(res){ return res.ok ? res.json() : null; })
+      .then(function(data){
+        if (!data || !data.ok || !Array.isArray(data.candidates) || !data.candidates.length) {
+          return { ok: false, place: null };
+        }
+        // Match the Places candidate whose `website` hostname matches
+        // the audited URL's hostname. Without a match we return
+        // { ok: false } so detectors don't accidentally inherit
+        // signals from a different business that happens to share
+        // a similar name.
+        var targetHost = '';
+        try { targetHost = new URL(targetUrl).hostname.replace(/^www\./i, '').toLowerCase(); }
+        catch (_) { /* ignore */ }
+        var matched = null;
+        for (var i = 0; i < data.candidates.length; i++) {
+          var c = data.candidates[i];
+          if (!c || !c.website) continue;
+          try {
+            var ch = new URL(c.website).hostname.replace(/^www\./i, '').toLowerCase();
+            if (ch && targetHost && ch === targetHost) { matched = c; break; }
+          } catch (_) { /* skip bad URLs */ }
+        }
+        return { ok: !!matched, place: matched };
+      })
+      .catch(function(){ return { ok: false, place: null }; });
+  }
+
   // (Phase G3 client-side callYelpLookup removed — Yelp no longer
   // offers a free Fusion API tier for new developers, so the
   // proxied endpoint was retired from the Worker. Review-platform
@@ -5458,7 +5524,33 @@
     return { mark: mark, title: title, note: note, state: state };
   }
 
-  function evaluatePriorityCheck(def, audits, allUrls, pageText) {
+  // Sprint M1.4: build the detector context object once per audit
+  // from the window-scoped signals stored in runAudit. Returns a
+  // normalized shape even when individual fetches failed, so
+  // downstream fusion code can always do
+  //   context.places && context.places.ok  ...
+  // without worrying about undefined chains.
+  function buildDetectorContext() {
+    var places = window.__auditPlaces || null;
+    var schema = window.__auditSchema || null;
+    var crawl  = window.__auditCrawl  || null;
+    return {
+      places: (places && places.ok && places.place) ? places : null,
+      schema: (schema && schema.ok) ? schema : null,
+      crawl:  (crawl  && crawl.ok)  ? crawl  : null
+    };
+  }
+
+  // Sprint M1.4: the optional fifth argument `context` bundles the
+  // richer signals every detector-fusion sprint (M1.5–M1.14) will
+  // read against. Shape:
+  //   { places: { ok: boolean, place: <normalized Places result> | null },
+  //     schema: { validation: {...}, objects: [...] },
+  //     crawl:  { homepage: {...}, pages: [...], capHit: boolean } }
+  // When context is missing or its fields are null, detectors fall
+  // back to the existing regex/keyword path. This sprint only plumbs
+  // the context through — behavior is unchanged until M1.5+.
+  function evaluatePriorityCheck(def, audits, allUrls, pageText, context) {
     // ---- Lighthouse-backed audit check ----
     if (def.type === 'audit') {
       var audit = audits && audits[def.audit];
@@ -6680,10 +6772,13 @@
     // opens as a real HTML page" alongside an Order button. The
     // underlying pass/fail logic is unchanged.
     var btype = effectiveBusinessType();
+    // Sprint M1.4: build the detector context once per audit so every
+    // priority check sees the same Places / schema / crawl snapshot.
+    var evalContext = buildDetectorContext();
     var results = [];
     PRIORITY_CHECKS.forEach(function(def, idx){
       var resolvedDef = resolveCheckForType(def, btype);
-      var result = evaluatePriorityCheck(resolvedDef, audits, allUrls, pageText);
+      var result = evaluatePriorityCheck(resolvedDef, audits, allUrls, pageText, evalContext);
       if (!result) return;
       // Apply any user override from the feedback UI.
       if (USER_OVERRIDES[idx] === 'pass' && result.mark.cls === 'unverified') {
@@ -7271,9 +7366,10 @@
       var unverifiedChecks = [];
       if (isRestaurantSite) {
         var emailType = effectiveBusinessType();
+        var emailEvalContext = buildDetectorContext();
         PRIORITY_CHECKS.forEach(function(def, idx){
           var resolvedDef = resolveCheckForType(def, emailType);
-          var result = evaluatePriorityCheck(resolvedDef, audits, allUrls, pageText);
+          var result = evaluatePriorityCheck(resolvedDef, audits, allUrls, pageText, emailEvalContext);
           if (!result) return;
           if (USER_OVERRIDES[idx] === 'pass' && result.mark.cls === 'unverified') return;
           if (USER_OVERRIDES[idx] === 'fail' && result.mark.cls === 'unverified') {
@@ -7497,17 +7593,22 @@
       startProgress();
     }, 350);
 
-    // Kick off PSI + multi-page crawl + schema-check in parallel
-    // so all three network calls overlap with the long Lighthouse
-    // wait. The schema-check call also serves the Phase H14
-    // hours-accuracy check; its failure never blocks the audit.
-    Promise.all([callPsi(url), callPageCrawl(url), callSchemaCheck(url)])
+    // Kick off PSI + multi-page crawl + schema-check + Places lookup
+    // in parallel so all four network calls overlap with the long
+    // Lighthouse wait. The schema-check call also serves the Phase H14
+    // hours-accuracy check; Places lookup (Sprint M1.4) feeds the
+    // detector-fusion sprints (M1.5–M1.14). Any of these can fail
+    // without blocking the audit — they resolve to null-shaped
+    // fallback objects and detectors gracefully degrade.
+    Promise.all([callPsi(url), callPageCrawl(url), callSchemaCheck(url), callGbpLookup(url)])
       .then(function(results){
         var data = results[0];
         var crawl = results[1];
         var schema = results[2];
+        var places = results[3];
         window.__auditCrawl  = crawl;  // exposed for evaluators + later phases
         window.__auditSchema = schema;
+        window.__auditPlaces = places;
         // Step 3: Lighthouse response received, scoring restaurant checks
         setStep(3);
         return new Promise(function(resolve){
@@ -7843,8 +7944,9 @@
         var state = window.__auditScoreState || {};
         var shareUrls = state.allUrls || extractAllUrls(last.audits);
         var shareText = state.pageText || extractPageText(last.audits);
+        var shareEvalContext = buildDetectorContext();
         PRIORITY_CHECKS.forEach(function(def, idx) {
-          var result = evaluatePriorityCheck(def, last.audits, shareUrls, shareText);
+          var result = evaluatePriorityCheck(def, last.audits, shareUrls, shareText, shareEvalContext);
           if (!result) return;
           // Apply any owner overrides so the image matches what's on
           // screen — same logic as renderPriorityChecks.
@@ -8268,6 +8370,11 @@
             // format score might mislead a fast-casual owner).
             var userSubtype = effectiveBusinessType();
             PRIORITY_CHECKS.forEach(function(def){
+              // Sprint M1.4: no context passed here — competitor
+              // audits must run regex-only so they stay apples-to-
+              // apples with each other and with the user. The user's
+              // Places data is only valid for the user's URL; mixing
+              // it in would bias scores across businesses.
               var result = evaluatePriorityCheck(def, audits, allUrls, pageText);
               if (!result) return;
               accumulateRestaurantReadiness(readinessState, def, result.mark.cls, userSubtype);
