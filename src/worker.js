@@ -79,6 +79,7 @@ const API_ROUTES = {
   '/api/gbp-details':   handleGbpDetails,
   '/api/brand-dossier': handleBrandDossier,
   '/api/dns-email-health': handleDnsEmailHealth,
+  '/api/schedule-reaudit': handleScheduleReaudit,
 };
 
 
@@ -3044,6 +3045,144 @@ function renderBadgeSvg(opts) {
     '<text x="' + (W - 14) + '" y="' + (H - 12) + '" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="10" fill="' + STONE + '" letter-spacing="1">muntin.digital</text>',
     '</svg>'
   ].join('');
+}
+
+// ------------------------------------------------------------
+// /api/schedule-reaudit — Sprint R1
+//
+// Schedule a friendly 30-day reminder email that re-audits the
+// same URL. Uses Resend's scheduled_at to hold the message on
+// Resend's side — no KV, no cron, no long-lived server state
+// required. Resend supports scheduling up to 30 days ahead, which
+// is exactly the window we want.
+//
+// Accuracy + privacy posture:
+//   * We do NOT store the email anywhere. Resend holds the queued
+//     message until send time; after delivery, the record lives
+//     in their sent-log only.
+//   * SSRF-safe URL validation identical to the rest of the API.
+//   * We send a single message — no drip, no follow-up chains.
+//
+// Request body: { email, url, lang }
+// Response:     { ok: true, scheduledFor: '...' } | { ok: false, error }
+// ------------------------------------------------------------
+async function handleScheduleReaudit(request, env, ctx) {
+  if (request.method !== 'POST') {
+    return jsonResponse({ ok: false, error: 'POST only' }, 405);
+  }
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  if (isSpamHoneypot(body)) {
+    return jsonResponse({ ok: true, scheduled: true }, 200);
+  }
+  // Prefer an explicit lang on the form body (so the UI can send the
+  // user's current page locale), otherwise fall back to pickLang's
+  // request-based detection.
+  const bodyLang = typeof body.lang === 'string' ? body.lang.toLowerCase() : '';
+  const lang = (bodyLang === 'es' || bodyLang === 'en') ? bodyLang : pickLang(request);
+  const email = typeof body.email === 'string' ? body.email.trim() : '';
+  const url   = typeof body.url   === 'string' ? body.url.trim()   : '';
+  if (!isValidEmail(email)) {
+    return jsonResponse({ ok: false, error: lang === 'es'
+      ? 'Por favor ingresa un correo válido'
+      : 'Please enter a valid email' }, 400);
+  }
+  const urlGate = assertSafeHttpUrl(url, lang);
+  if (!urlGate.ok) {
+    return jsonResponse({ ok: false, error: urlGate.error }, 400);
+  }
+  if (!env || !env.RESEND_API_KEY) {
+    return jsonResponse({ ok: false, error: 'Reminder service unavailable right now' }, 503);
+  }
+
+  // 30 days out, at ~10:00 local (we use UTC and accept the timezone
+  // drift — a reminder that lands anywhere 4am–2pm local is fine).
+  const now = Date.now();
+  const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
+  const when = new Date(now + thirtyDaysMs);
+  // Round to top of hour at 14:00 UTC to avoid a weirdly precise
+  // timestamp and land inside Resend's 30-day window comfortably.
+  when.setUTCHours(14, 0, 0, 0);
+  // If rounding pushed us over 30 days, pull back one hour step.
+  if (when.getTime() - now > thirtyDaysMs) {
+    when.setUTCHours(when.getUTCHours() - 1);
+  }
+  const scheduledAtIso = when.toISOString();
+
+  const canonicalUrl = urlGate.url && urlGate.url.href ? urlGate.url.href : String(urlGate.url || url);
+  const pretty = canonicalUrl.replace(/^https?:\/\//i, '').replace(/\/$/, '');
+  const auditLink = 'https://muntin.digital/' + (lang === 'es' ? 'es/' : '')
+                  + 'tools/audits/restaurant/?url=' + encodeURIComponent(canonicalUrl);
+
+  const subject = lang === 'es'
+    ? 'Hora de re-auditar ' + pretty + ' — recordatorio de 30 días'
+    : "It's been 30 days — time to re-audit " + pretty;
+
+  const bodyLines = lang === 'es' ? [
+    'Hola,',
+    '',
+    'Hace aproximadamente 30 días auditaste ' + pretty + ' con la herramienta gratuita de Muntin Digital.',
+    '',
+    'Si arreglaste alguno de los hallazgos, ejecutar una nueva auditoría mostrará exactamente qué se resolvió y cuánto subió tu puntuación.',
+    '',
+    'Ejecutar nueva auditoría: ' + auditLink,
+    '',
+    'Sin lista de marketing, sin goteo de correos, sin boletín. Solo te escribiré si respondes a este mensaje.',
+    '',
+    '— Don',
+    'Muntin Digital'
+  ] : [
+    'Hey,',
+    '',
+    "You audited " + pretty + " about 30 days ago with Muntin Digital's free restaurant website audit.",
+    '',
+    "If you fixed any of the findings, re-auditing will show you exactly what resolved and how much your score moved.",
+    '',
+    'Re-run audit: ' + auditLink,
+    '',
+    "No marketing list, no drip, no newsletter. I'll only email you if you reply to this one.",
+    '',
+    '— Don',
+    'Muntin Digital'
+  ];
+  const txt = bodyLines.join('\n');
+  const html = '<div style="font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Arial,sans-serif;font-size:15px;line-height:1.6;color:#2A2D33;">'
+             + bodyLines.map((l) => l === '' ? '<br>' : (l.startsWith('Re-run audit:') || l.startsWith('Ejecutar nueva auditoría:'))
+                 ? '<p style="margin:10px 0;"><a href="' + auditLink + '" style="display:inline-block;padding:10px 18px;background:#1F4E5B;color:#FAF7F2;text-decoration:none;border-radius:999px;font-weight:600;">' + (lang === 'es' ? 'Re-auditar mi sitio' : 'Re-audit my site') + '</a></p>'
+                 : '<p style="margin:0;">' + escapeHtmlForEmail(l) + '</p>').join('')
+             + '</div>';
+
+  const fromEmail = (env.FROM_EMAIL && String(env.FROM_EMAIL)) || 'Don Goldstein <don@muntin.digital>';
+  const sendRes = await sendEmail({
+    from: fromEmail,
+    to: email,
+    replyTo: 'don@muntin.digital',
+    subject: subject,
+    html: html,
+    text: txt,
+    scheduledAt: scheduledAtIso,
+  }, env.RESEND_API_KEY);
+
+  if (!sendRes.ok) {
+    console.warn('[schedule-reaudit] send failed:', sendRes.error);
+    return jsonResponse({ ok: false, error: sendRes.error || 'Could not schedule reminder' }, 502);
+  }
+
+  return jsonResponse({
+    ok: true,
+    scheduledFor: scheduledAtIso
+  }, 200);
+}
+
+// Small inline HTML escaper so we don't import the templates module
+// for a single email. Not for attribute contexts — only text nodes.
+function escapeHtmlForEmail(s) {
+  return String(s || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 }
 
 // ------------------------------------------------------------

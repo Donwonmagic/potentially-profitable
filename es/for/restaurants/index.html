@@ -111,7 +111,7 @@
    keeping per-page inlined CSS in sync with the English page's
    style block avoids a cross-locale CSS fork.                */
 
-.menu-card{position:relative;width:100%;aspect-ratio:5 / 6;background:radial-gradient(130% 90% at 50% -20%, rgba(31,78,91,0.06) 0%, transparent 55%),linear-gradient(180deg, #FDFBF5 0%, #F5EEDE 100%);border:1px solid var(--line-dark);border-radius:8px;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 2px 4px rgba(20,22,26,0.04),0 22px 44px -22px rgba(31,78,91,0.18),0 60px 100px -40px rgba(20,22,26,0.35);padding:clamp(26px,3.6vw,40px) clamp(24px,3vw,36px);display:flex;flex-direction:column;overflow:hidden;isolation:isolate;font-family:var(--font-body)}
+.menu-card{position:relative;width:100%;background:radial-gradient(130% 90% at 50% -20%, rgba(31,78,91,0.06) 0%, transparent 55%),linear-gradient(180deg, #FDFBF5 0%, #F5EEDE 100%);border:1px solid var(--line-dark);border-radius:8px;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 2px 4px rgba(20,22,26,0.04),0 22px 44px -22px rgba(31,78,91,0.18),0 60px 100px -40px rgba(20,22,26,0.35);padding:clamp(26px,3.6vw,40px) clamp(24px,3vw,36px);display:flex;flex-direction:column;overflow:hidden;isolation:isolate;font-family:var(--font-body)}
 .menu-card::before{content:'';position:absolute;inset:clamp(14px,1.6vw,18px);background-image:linear-gradient(to right, rgba(20,22,26,0.05) 0 1px, transparent 1px 100%),linear-gradient(to bottom, rgba(20,22,26,0.05) 0 1px, transparent 1px 100%);background-size:33.333% 100%, 100% 25%;background-position:0 0, 0 0;pointer-events:none;z-index:0;mix-blend-mode:multiply}
 .menu-card > *{position:relative;z-index:1}
 .mc-masthead{text-align:center;padding-bottom:clamp(16px,2.2vw,22px);border-bottom:1px solid rgba(20,22,26,0.14)}
@@ -146,7 +146,7 @@
 @media (prefers-reduced-motion:reduce){.mc-live-dot{animation:none}}
 .menu-card-caption{margin-top:18px;display:flex;justify-content:space-between;gap:16px;font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums}
 .menu-card-caption em{font-family:var(--font-display);font-style:italic;color:var(--ink-soft)}
-@media (max-width:640px){.menu-card{aspect-ratio:auto;min-height:600px}.mc-foot{flex-direction:column-reverse;align-items:stretch;gap:12px}.mc-cta{justify-content:center}.mc-live{justify-content:center}.menu-card-caption{flex-direction:column;gap:4px}}
+@media (max-width:640px){.menu-card{min-height:600px}.mc-foot{flex-direction:column-reverse;align-items:stretch;gap:12px}.mc-cta{justify-content:center}.mc-live{justify-content:center}.menu-card-caption{flex-direction:column;gap:4px}}
 
 /* Menu-card + feature-tile drawer system. Parallels the English
    mirror at /for/restaurants/. Triggered by any [data-drawer]

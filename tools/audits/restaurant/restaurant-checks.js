@@ -2322,6 +2322,26 @@ var UI_I18N = {
     en: 'No additional signals were available for this site.',
     es: 'No hubo señales adicionales disponibles para este sitio.'
   },
+  'deepScan.eyebrow': { en: 'Deep scan', es: 'Deep scan' },
+  // Sprint H1: 'since your last audit' banner copy.
+  'history.eyebrow':  { en: 'Since your last audit', es: 'Desde tu última auditoría' },
+  'history.hoursAgo': {
+    en: '{count} hour{s} ago',
+    es: 'hace {count} hora{s}'
+  },
+  'history.daysAgo': {
+    en: '{count} day{s} ago',
+    es: 'hace {count} día{s}'
+  },
+  'history.weeksAgo': {
+    en: '{count} week{s} ago',
+    es: 'hace {count} semana{s}'
+  },
+  // Sprint H3: resolved-since chips lead-in label.
+  'history.resolvedLabel': {
+    en: 'You resolved:',
+    es: 'Resolviste:'
+  },
   'deep.age.liveSince': {
     en: 'Live since {year}',
     es: 'En línea desde {year}'
@@ -2400,6 +2420,10 @@ var UI_I18N = {
     en: 'Open-source projects listed here are used under their respective licenses (MIT, Apache-2.0, BSD-3, OFL-1.1, MPL-2.0, AGPL-3.0, CC-BY-SA). Vendor names are trademarks of their owners.',
     es: 'Los proyectos de código abierto listados aquí se usan bajo sus respectivas licencias (MIT, Apache-2.0, BSD-3, OFL-1.1, MPL-2.0, AGPL-3.0, CC-BY-SA). Los nombres de los proveedores son marcas de sus titulares.'
   },
+  'builtBy.andMore': {
+    en: '+ {count} more',
+    es: '+ {count} más'
+  },
   // Sprint T4: brand dossier card.
   'dossier.badge': {
     en: 'Cited facts',
@@ -2460,6 +2484,24 @@ var UI_I18N = {
   'schemaRichness.priority.optional':    { en: 'Optional',    es: 'Opcional'    },
   'schemaRichness.copy':     { en: 'Copy snippet', es: 'Copiar fragmento' },
   'schemaRichness.copied':   { en: 'Copied!',      es: '¡Copiado!'        },
+  // Sprint E1: progressive-disclosure labels shared by schema +
+  // OG scorecards.
+  'schemaRichness.moreMissing': {
+    en: 'Show {count} more opportunities',
+    es: 'Ver {count} oportunidades más'
+  },
+  'schemaRichness.covered': {
+    en: 'See {count} fields you\'re already covering',
+    es: 'Ver {count} campos que ya cubres'
+  },
+  'schemaRichness.summaryAllGood': {
+    en: 'All {total} Google-recommended fields are populated. This site is fully set up.',
+    es: 'Los {total} campos recomendados por Google están completos. Este sitio está listo.'
+  },
+  'og.summaryAllGood': {
+    en: 'All {total} social-share meta tags are populated.',
+    es: 'Los {total} meta tags de compartido social están completos.'
+  },
   // Sprint D3: embeddable badge offer card.
   'badge.eyebrow':      { en: 'Embeddable badge', es: 'Badge para incrustar' },
   'badge.heading':      { en: 'Show this score on your own site', es: 'Muestra esta puntuación en tu propio sitio' },
@@ -2479,6 +2521,115 @@ var UI_I18N = {
   'og.summary':  {
     en: '{present} of {total} social-share meta tags populated.',
     es: '{present} de {total} meta tags de compartido social completos.'
+  },
+  // Sprint H2: Owner Action Plan card. Persistent per-URL checklist
+  // split across three time horizons so owners can turn an audit into
+  // a plan they actually work through. Copy is scoped to the card.
+  'actionPlan.eyebrow': { en: 'Your action plan', es: 'Tu plan de acción' },
+  'actionPlan.heading': {
+    en: 'Turn this audit into a plan you can work through',
+    es: 'Convierte esta auditoría en un plan que puedas ejecutar'
+  },
+  'actionPlan.sub': {
+    en: 'Your highest-leverage gaps, split across three horizons. Check each off as you tackle it — your progress is saved on this device and survives re-audits.',
+    es: 'Tus mayores oportunidades, divididas en tres horizontes. Marca cada una al completarla — tu progreso se guarda en este dispositivo y sobrevive a nuevas auditorías.'
+  },
+  'actionPlan.reset': { en: 'Reset checkboxes', es: 'Reiniciar casillas' },
+  'actionPlan.col.week':    { en: 'This week',    es: 'Esta semana' },
+  'actionPlan.col.month':   { en: 'This month',   es: 'Este mes' },
+  'actionPlan.col.quarter': { en: 'This quarter', es: 'Este trimestre' },
+  'actionPlan.empty': {
+    en: 'No failing or unverified checks. Come back after a change to the site.',
+    es: 'Sin verificaciones fallidas o sin verificar. Vuelve tras un cambio en el sitio.'
+  },
+  'actionPlan.progress': {
+    en: '{done} of {total} complete',
+    es: '{done} de {total} completadas'
+  },
+  'actionPlan.colEmpty': {
+    en: 'Nothing for this horizon yet.',
+    es: 'Aún no hay nada para este horizonte.'
+  },
+  // Effort/time meta strings reused inside the action plan column
+  // items. Kept separate from the Top-3 chip text because these render
+  // as plain meta labels without chip styling.
+  'effort.self':    { en: 'Fix yourself',      es: 'Arreglo propio' },
+  'effort.dev':     { en: 'Ask your developer', es: 'Pregunta a tu desarrollador' },
+  'effort.rebuild': { en: 'Rebuild needed',    es: 'Se necesita rehacer' },
+  'effort.halfday': { en: 'Half-day project',  es: 'Proyecto de medio día' },
+  // Sprint N1: NAP cross-check card (Name/Address/Phone consistency
+  // across Google Places, schema.org, and on-page text). Rows render
+  // one per mismatched field, with sub-labels for each source.
+  'nap.eyebrow': { en: 'Local listing consistency', es: 'Consistencia de ficha local' },
+  'nap.heading': {
+    en: "Your name, address, and phone don't line up across sources",
+    es: 'Tu nombre, dirección y teléfono no coinciden entre fuentes'
+  },
+  'nap.sub': {
+    en: "Google ranks local businesses higher when their Business Profile, website schema, and on-page text all match. Every mismatch below is a citation inconsistency search engines can see — pick the canonical value and unify.",
+    es: 'Google posiciona mejor a los negocios locales cuando su Perfil de Empresa, el schema del sitio y el texto en la página coinciden. Cada desajuste de abajo es una inconsistencia de citación que los buscadores detectan — elige el valor canónico y unifícalo.'
+  },
+  'nap.label.phone':   { en: 'Phone number',   es: 'Teléfono' },
+  'nap.label.address': { en: 'Address',        es: 'Dirección' },
+  'nap.label.name':    { en: 'Business name',  es: 'Nombre del negocio' },
+  'nap.source.places': { en: 'Google Places',  es: 'Google Places' },
+  'nap.source.schema': { en: 'Your schema',    es: 'Tu schema' },
+  'nap.source.page':   { en: 'Your page text', es: 'Texto en tu página' },
+  // Sprint Q1: sticky in-report table of contents.
+  'toc.label':         { en: 'On this page',         es: 'En esta página' },
+  'toc.openSheet':     { en: 'Sections',             es: 'Secciones' },
+  'toc.overall':       { en: 'Overall score',        es: 'Puntuación general' },
+  'toc.topFixes':      { en: 'Top fixes',            es: 'Arreglos principales' },
+  'toc.actionPlan':    { en: 'Your plan',            es: 'Tu plan' },
+  'toc.categories':    { en: 'Categories',           es: 'Categorías' },
+  'toc.opportunities': { en: 'Opportunities',        es: 'Oportunidades' },
+  'toc.napCheck':      { en: 'Listing consistency',  es: 'Consistencia de ficha' },
+  'toc.priority':      { en: 'Restaurant checks',    es: 'Verificaciones del restaurante' },
+  'toc.compare':       { en: 'Compare',              es: 'Comparar' },
+  // Sprint F1: dev-handoff prompt copy. Owners click "Copy for your
+  // developer" next to failing/unverified checks; we format a
+  // markdown prompt they can paste into email / tickets / ChatGPT.
+  'devPrompt.copy':        { en: 'Copy for your developer', es: 'Copiar para tu desarrollador' },
+  'devPrompt.copied':      { en: 'Copied ✓',                es: 'Copiado ✓' },
+  'devPrompt.title':       { en: 'Website audit finding',   es: 'Hallazgo de auditoría del sitio' },
+  'devPrompt.audited':     { en: 'Audited',                 es: 'Auditado' },
+  'devPrompt.foundHeader': { en: 'What we found',           es: 'Qué encontramos' },
+  'devPrompt.whyHeader':   { en: 'Why it matters',          es: 'Por qué importa' },
+  'devPrompt.closing': {
+    en: 'Can you help me fix this? A step-by-step plan would be perfect. Let me know if you need anything from me to diagnose.',
+    es: '¿Puedes ayudarme a arreglarlo? Un plan paso a paso sería perfecto. Dime si necesitas algo de mi parte para diagnosticar.'
+  },
+  'devPrompt.signoff': {
+    en: 'Generated by Muntin Digital Restaurant Audit · muntin.digital',
+    es: 'Generado por la Auditoría de Restaurantes de Muntin Digital · muntin.digital'
+  },
+  // Sprint R1: 30-day re-audit reminder card.
+  'reaudit.heading': {
+    en: 'Remind me to re-audit in 30 days',
+    es: 'Recuérdame re-auditar en 30 días'
+  },
+  'reaudit.sub': {
+    en: 'Audits are snapshots. A friendly reminder in 30 days helps you see which fixes actually moved the score. One email, nothing else.',
+    es: 'Las auditorías son fotos en el tiempo. Un recordatorio amable en 30 días te ayuda a ver qué arreglos realmente movieron la puntuación. Un solo correo, nada más.'
+  },
+  'reaudit.placeholder': { en: 'you@yourrestaurant.com', es: 'tu@turestaurante.com' },
+  'reaudit.submit':      { en: 'Schedule 30-day reminder', es: 'Programar recordatorio de 30 días' },
+  'reaudit.sending':     { en: 'Scheduling…',               es: 'Programando…' },
+  'reaudit.disclaimer': {
+    en: "Your email lives only on the scheduled message. We don't store it on our end — no list, no drip, no follow-up.",
+    es: 'Tu correo vive solo en el mensaje programado. No lo guardamos de nuestro lado — sin lista, sin goteo, sin seguimiento.'
+  },
+  'reaudit.success': {
+    en: "Reminder scheduled — you'll hear from us in 30 days.",
+    es: 'Recordatorio programado — sabrás de nosotros en 30 días.'
+  },
+  'reaudit.needAudit': {
+    en: 'Run an audit first, then schedule a reminder.',
+    es: 'Ejecuta una auditoría primero, luego programa un recordatorio.'
+  },
+  'reaudit.genericError': {
+    en: "Couldn't schedule the reminder. Try again in a moment?",
+    es: 'No pudimos programar el recordatorio. ¿Intenta de nuevo en un momento?'
   }
 };
 

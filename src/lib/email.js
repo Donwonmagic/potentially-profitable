@@ -55,6 +55,14 @@ const RESEND_ENDPOINT = 'https://api.resend.com/emails';
  *                                  accepts up to 40MB total email
  *                                  size, content-type is inferred
  *                                  from the filename extension.
+ * @param {string} [opts.scheduledAt] — Optional ISO 8601 timestamp
+ *                                  (e.g. "2026-05-20T14:00:00.000Z").
+ *                                  Resend queues the send and fires it
+ *                                  at that time. Used by the 30-day
+ *                                  re-audit reminder. Resend supports
+ *                                  scheduling up to 30 days ahead; the
+ *                                  caller is responsible for staying
+ *                                  inside that window.
  * @param {string} apiKey        — Resend API key (env.RESEND_API_KEY)
  *
  * @returns {Promise<{ok: boolean, id?: string, error?: string}>}
@@ -84,6 +92,12 @@ export async function sendEmail(opts, apiKey) {
       return a && typeof a.filename === 'string' && typeof a.content === 'string' && a.content.length > 0;
     });
     if (filtered.length) payload.attachments = filtered;
+  }
+  if (typeof opts.scheduledAt === 'string' && opts.scheduledAt) {
+    // Resend expects ISO 8601 in UTC. Pass the caller's string through
+    // verbatim; validation lives in the caller because only it knows
+    // the intent (30 days ahead, 1 hour ahead, etc).
+    payload.scheduled_at = opts.scheduledAt;
   }
 
   // Sprint I1: retry transient failures with exponential backoff.
