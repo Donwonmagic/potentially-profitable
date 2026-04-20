@@ -883,6 +883,123 @@
   .history-banner-pillar-up   .history-banner-pillar-val { color: #1F6B3A; }
   .history-banner-pillar-down .history-banner-pillar-val { color: #B8541A; }
 
+  /* Sprint Q1: sticky report table-of-contents. At ≥1200px the panel
+     is fixed to the right-hand gutter; at smaller sizes it collapses
+     to a floating "Sections" button that opens a bottom-sheet overlay.
+     Hidden entirely until #auditReport renders. The active-link state
+     is driven by IntersectionObserver — data-toc-active on the <a>
+     flips the color + left border. Respects reduced-motion (no scroll
+     animation). Prints don't show this at all. */
+  .audit-toc { }
+  .audit-toc[hidden] { display: none; }
+  .audit-toc-panel {
+    position: fixed;
+    top: 120px;
+    right: max(24px, calc((100vw - 1200px) / 2 - 220px));
+    width: 200px;
+    max-height: calc(100vh - 160px);
+    overflow-y: auto;
+    padding: 14px 16px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(20, 22, 26, 0.04);
+    z-index: 40;
+  }
+  .audit-toc-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 8px;
+  }
+  .audit-toc-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .audit-toc-list a {
+    display: block;
+    padding: 6px 10px;
+    font-size: 13px;
+    line-height: 1.3;
+    color: var(--ink);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    border-radius: 0 6px 6px 0;
+    transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+  }
+  .audit-toc-list a:hover,
+  .audit-toc-list a:focus {
+    background: var(--cream, #FAF7F2);
+    color: var(--teal);
+    outline: none;
+  }
+  .audit-toc-list a[data-toc-active="1"] {
+    color: var(--teal);
+    font-weight: 600;
+    border-left-color: var(--teal);
+    background: var(--cream-2, #faf6ee);
+  }
+  .audit-toc-list li[hidden] { display: none; }
+
+  .audit-toc-fab {
+    display: none;
+  }
+
+  @media (max-width: 1199px) {
+    .audit-toc-panel {
+      position: fixed;
+      right: 0;
+      left: 0;
+      top: auto;
+      bottom: 0;
+      width: auto;
+      max-height: 60vh;
+      border-radius: 14px 14px 0 0;
+      transform: translateY(100%);
+      transition: transform 200ms ease;
+      padding: 20px 24px 28px;
+      box-shadow: 0 -4px 24px rgba(20, 22, 26, 0.12);
+    }
+    .audit-toc[data-sheet="open"] .audit-toc-panel {
+      transform: translateY(0);
+    }
+    .audit-toc-fab {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      padding: 10px 16px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+      background: var(--teal);
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(20, 22, 26, 0.18);
+      z-index: 41;
+    }
+    .audit-toc-fab:focus { outline: 2px solid var(--teal); outline-offset: 2px; }
+    .audit-toc-fab-icon { font-size: 14px; line-height: 1; }
+    .audit-toc-list a { padding: 10px 12px; font-size: 14.5px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .audit-toc-panel { transition: none; }
+    .audit-toc-list a { transition: none; }
+  }
+  @media print {
+    .audit-toc { display: none !important; }
+  }
+
   /* Sprint H2: Owner Action Plan card. Three-column grid on desktop,
      stacks to one column below 720px. Each column lists failed +
      unverified priority checks filed to a time horizon based on
@@ -3596,6 +3713,34 @@
     <!-- Report card (hidden until a result renders) -->
     <div class="audit-report" id="auditReport" hidden>
 
+      <!-- Sprint Q1: Sticky report table-of-contents. Desktop renders
+           as a fixed right-gutter panel at ≥1200px. Smaller viewports
+           get a floating "Sections" button that toggles a bottom-
+           sheet overlay. Each link highlights when its target section
+           crosses the viewport center (IntersectionObserver). Links
+           whose targets are hidden (e.g. action plan with no items)
+           auto-hide themselves. Respects prefers-reduced-motion —
+           scroll is instant rather than smooth. -->
+      <nav class="audit-toc" id="auditToc" aria-label="Report sections" hidden>
+        <div class="audit-toc-panel">
+          <div class="audit-toc-label" data-tr="toc.label">On this page</div>
+          <ul class="audit-toc-list" id="auditTocList">
+            <li><a href="#overallScoreSection" data-toc-target="overallScoreSection" data-tr="toc.overall">Overall score</a></li>
+            <li><a href="#topFixes"            data-toc-target="topFixes"            data-tr="toc.topFixes">Top fixes</a></li>
+            <li><a href="#actionPlanCard"      data-toc-target="actionPlanCard"      data-tr="toc.actionPlan">Your plan</a></li>
+            <li><a href="#categoryGrid"        data-toc-target="categoryGrid"        data-tr="toc.categories">Categories</a></li>
+            <li><a href="#opportunitiesWrap"   data-toc-target="opportunitiesWrap"   data-tr="toc.opportunities">Opportunities</a></li>
+            <li><a href="#napCheckCard"        data-toc-target="napCheckCard"        data-tr="toc.napCheck">Listing consistency</a></li>
+            <li><a href="#priorityListWrap"    data-toc-target="priorityListWrap"    data-tr="toc.priority">Restaurant checks</a></li>
+            <li><a href="#auditCompare"        data-toc-target="auditCompare"        data-tr="toc.compare">Compare</a></li>
+          </ul>
+        </div>
+        <button type="button" class="audit-toc-fab" id="auditTocFab" aria-expanded="false" aria-controls="auditToc">
+          <span class="audit-toc-fab-icon" aria-hidden="true">☰</span>
+          <span data-tr="toc.openSheet">Sections</span>
+        </button>
+      </nav>
+
       <!-- Sprint S2.5: Deep Scan status strip + data chips. Appears
            only when the toggle is checked. Chips inside (.deep-age-
            chip, .deep-security-chip) stay hidden until their upstream
@@ -3606,7 +3751,7 @@
       </div>
 
       <!-- Summary with overall score ring -->
-      <div class="audit-summary">
+      <div class="audit-summary" id="overallScoreSection">
         <div class="score-ring" id="scoreRing">
           <svg viewBox="0 0 120 120" aria-hidden="true">
             <circle class="bg" cx="60" cy="60" r="52"></circle>
@@ -3678,7 +3823,7 @@
       </div>
 
       <!-- Five category gauges — four from Lighthouse + Restaurant Readiness from priority checks -->
-      <div class="category-grid">
+      <div class="category-grid" id="categoryGrid">
         <div class="category-card" data-cat="performance">
           <div class="label">Performance</div>
           <div class="cat-value">—</div>
@@ -8220,6 +8365,10 @@
     // when there's nothing to flag.
     renderNapCheck();
     renderBuiltByFooter();
+    // Sprint Q1: refresh the sticky ToC after every card renderer
+    // above has decided whether to show itself. Dead links to
+    // hidden cards get removed here.
+    syncAuditTocVisibility();
   }
 
   // Sprint D4 + E1: Open Graph / Twitter Card completeness with
@@ -9472,10 +9621,12 @@
       resetBtn.onclick = function(){
         try { window.localStorage.removeItem(actionPlanKeyFor(auditedUrl)); } catch (_) {}
         renderActionPlan(auditedUrl);
+        syncAuditTocVisibility();
       };
     }
 
     card.hidden = false;
+    syncAuditTocVisibility();
   }
 
   function makeTextSpan(txt) {
@@ -9660,6 +9811,129 @@
     });
 
     card.hidden = false;
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // Sprint Q1: sticky report table of contents.
+  //
+  // One-time setup attaches the IntersectionObserver + click/FAB
+  // handlers. syncAuditTocVisibility() is called every time a
+  // section's visibility changes (renderReport, runDeepSignals,
+  // renderActionPlan, renderNapCheck) so dead links to hidden
+  // cards never appear in the ToC.
+  //
+  // Accuracy rule: a ToC entry disappears when its target is
+  // hidden. We never leave a dangling anchor that scrolls to empty
+  // space.
+  // ─────────────────────────────────────────────────────────────
+  var _auditTocObserver = null;
+  var _auditTocSetupDone = false;
+
+  function setupAuditToc() {
+    if (_auditTocSetupDone) return;
+    var toc = document.getElementById('auditToc');
+    if (!toc) return;
+    var fab = document.getElementById('auditTocFab');
+    var list = document.getElementById('auditTocList');
+    if (!list) return;
+
+    // Mobile FAB toggles the bottom-sheet. The sheet closes on
+    // any link click so the owner immediately sees the target.
+    if (fab) {
+      fab.addEventListener('click', function(){
+        var open = toc.getAttribute('data-sheet') === 'open';
+        toc.setAttribute('data-sheet', open ? 'closed' : 'open');
+        fab.setAttribute('aria-expanded', open ? 'false' : 'true');
+      });
+    }
+
+    // Click handler: smooth scroll (or instant when reduced-motion),
+    // then close the mobile sheet. Browsers' default anchor-click
+    // would work but we intercept to honor prefers-reduced-motion
+    // reliably on older Safari.
+    list.addEventListener('click', function(ev){
+      var a = ev.target && ev.target.closest && ev.target.closest('a[data-toc-target]');
+      if (!a) return;
+      var targetId = a.getAttribute('data-toc-target');
+      var target = document.getElementById(targetId);
+      if (!target || target.hidden) return;
+      ev.preventDefault();
+      var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      try {
+        target.scrollIntoView({
+          behavior: prefersReduced ? 'auto' : 'smooth',
+          block: 'start'
+        });
+      } catch (_) { target.scrollIntoView(); }
+      if (toc.getAttribute('data-sheet') === 'open') {
+        toc.setAttribute('data-sheet', 'closed');
+        if (fab) fab.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Set up the observer once. Targets are resolved lazily from the
+    // anchors so we don't fight with cards that render later. When
+    // a target enters the top half of the viewport, its link gets
+    // data-toc-active. Uses rootMargin to trigger when the section
+    // is about 1/3 down from the top — a sensible "you're reading
+    // this" point.
+    if ('IntersectionObserver' in window) {
+      _auditTocObserver = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if (!entry.isIntersecting) return;
+          var id = entry.target.id;
+          var links = list.querySelectorAll('a[data-toc-target]');
+          for (var i = 0; i < links.length; i++) {
+            if (links[i].getAttribute('data-toc-target') === id) {
+              links[i].setAttribute('data-toc-active', '1');
+            } else {
+              links[i].removeAttribute('data-toc-active');
+            }
+          }
+        });
+      }, {
+        // Trigger when the section crosses 1/3 from the top — a
+        // stable reading-anchor point. Negative bottom margin
+        // keeps the active state on a section while it fills the
+        // middle of the viewport.
+        rootMargin: '-30% 0px -60% 0px',
+        threshold: 0
+      });
+    }
+
+    _auditTocSetupDone = true;
+  }
+
+  function syncAuditTocVisibility() {
+    var toc = document.getElementById('auditToc');
+    var report = document.getElementById('auditReport');
+    if (!toc || !report) return;
+    setupAuditToc();
+
+    // Hide the whole ToC until the report is visible.
+    if (report.hidden) {
+      toc.hidden = true;
+      return;
+    }
+
+    var list = document.getElementById('auditTocList');
+    if (!list) return;
+    var links = list.querySelectorAll('a[data-toc-target]');
+    var visibleCount = 0;
+    for (var i = 0; i < links.length; i++) {
+      var li = links[i].parentNode;
+      var target = document.getElementById(links[i].getAttribute('data-toc-target'));
+      var targetVisible = target && !target.hidden;
+      if (li) li.hidden = !targetVisible;
+      if (targetVisible) {
+        visibleCount++;
+        if (_auditTocObserver) _auditTocObserver.observe(target);
+      }
+    }
+
+    // If fewer than 3 sections are visible, don't bother rendering
+    // the ToC — saves layout cost on very short error states.
+    toc.hidden = visibleCount < 3;
   }
 
   // Phase L1: email gate retired. The deep tier always renders

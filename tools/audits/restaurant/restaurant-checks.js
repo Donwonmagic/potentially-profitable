@@ -2569,7 +2569,18 @@ var UI_I18N = {
   'nap.label.name':    { en: 'Business name',  es: 'Nombre del negocio' },
   'nap.source.places': { en: 'Google Places',  es: 'Google Places' },
   'nap.source.schema': { en: 'Your schema',    es: 'Tu schema' },
-  'nap.source.page':   { en: 'Your page text', es: 'Texto en tu página' }
+  'nap.source.page':   { en: 'Your page text', es: 'Texto en tu página' },
+  // Sprint Q1: sticky in-report table of contents.
+  'toc.label':         { en: 'On this page',         es: 'En esta página' },
+  'toc.openSheet':     { en: 'Sections',             es: 'Secciones' },
+  'toc.overall':       { en: 'Overall score',        es: 'Puntuación general' },
+  'toc.topFixes':      { en: 'Top fixes',            es: 'Arreglos principales' },
+  'toc.actionPlan':    { en: 'Your plan',            es: 'Tu plan' },
+  'toc.categories':    { en: 'Categories',           es: 'Categorías' },
+  'toc.opportunities': { en: 'Opportunities',        es: 'Oportunidades' },
+  'toc.napCheck':      { en: 'Listing consistency',  es: 'Consistencia de ficha' },
+  'toc.priority':      { en: 'Restaurant checks',    es: 'Verificaciones del restaurante' },
+  'toc.compare':       { en: 'Compare',              es: 'Comparar' }
 };
 
 // Pluralization helper for ES: most nouns just take -es / -s, but
