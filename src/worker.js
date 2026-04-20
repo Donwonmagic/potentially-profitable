@@ -45,6 +45,7 @@ import {
   assertSafeHttpUrl,
   pickLang,
 } from './lib/validation.js';
+import { withAuditCache } from './lib/audit-cache.js';
 import {
   intakeNotification,
   intakeAutoResponder,
@@ -520,6 +521,11 @@ async function handlePing(request, env, ctx) {
         notify:  Boolean(env.NOTIFY_EMAIL),
         psi:     Boolean(env.PSI_API_KEY),
         places:  Boolean(env.GOOGLE_PLACES_KEY),
+        // Sprint T3: binding-present flag so ops can verify the KV
+        // cache + future AI Gateway bindings are wired without
+        // exercising them.
+        auditCache: Boolean(env.AUDIT_CACHE),
+        aiGateway:  Boolean(env.AI),
       },
     },
     200
@@ -2234,8 +2240,20 @@ async function handleObservatory(request, env, ctx) {
   }
   const host = gate.url.hostname;
 
+  // Sprint T3: 24h cache keyed on hostname. Security-header grades
+  // change when a site redeploys — 24h is a reasonable freshness
+  // window, and the withAuditCache helper no-ops when the
+  // AUDIT_CACHE binding isn't provisioned (i.e. today).
+  const cached = await withAuditCache(env, request, ['observatory', host], 86400, async () => {
+    return await observatoryScan(host);
+  });
+  const res = jsonResponse(cached.value, cached.value && cached.value.ok === false ? 502 : 200);
+  res.headers.set('X-Audit-Cache', cached.cacheHit ? 'hit' : 'miss');
+  return res;
+}
+
+async function observatoryScan(host) {
   try {
-    // Kick off a scan via POST. Observatory accepts form-encoded.
     const startRes = await fetch(
       'https://http-observatory.security.mozilla.org/api/v1/analyze?host=' + encodeURIComponent(host),
       {
@@ -2245,11 +2263,8 @@ async function handleObservatory(request, env, ctx) {
         signal: AbortSignal.timeout(5000)
       }
     );
-    if (!startRes.ok) {
-      return jsonResponse({ ok: false, error: 'observatory-start-failed' }, 502);
-    }
+    if (!startRes.ok) return { ok: false, error: 'observatory-start-failed' };
     let data = await startRes.json();
-    // Poll up to 5 times if the scan is still PENDING / STARTING.
     const deadline = Date.now() + 10000;
     let polls = 0;
     while (data && (data.state === 'PENDING' || data.state === 'STARTING' || data.state === 'RUNNING') && Date.now() < deadline && polls < 5) {
@@ -2263,9 +2278,9 @@ async function handleObservatory(request, env, ctx) {
       data = await pollRes.json();
     }
     if (!data || data.state !== 'FINISHED' || typeof data.grade !== 'string') {
-      return jsonResponse({ ok: false, error: 'observatory-not-ready' });
+      return { ok: false, error: 'observatory-not-ready' };
     }
-    return jsonResponse({
+    return {
       ok: true,
       grade: data.grade,
       score: typeof data.score === 'number' ? data.score : null,
@@ -2273,10 +2288,10 @@ async function handleObservatory(request, env, ctx) {
       tests_failed: data.tests_failed || null,
       tests_quantity: data.tests_quantity || null,
       scan_id: data.scan_id || null
-    });
+    };
   } catch (err) {
     console.error('[observatory]', err && err.stack ? err.stack : err);
-    return jsonResponse({ ok: false, error: 'observatory-unreachable' }, 502);
+    return { ok: false, error: 'observatory-unreachable' };
   }
 }
 
@@ -2297,37 +2312,39 @@ async function handleWaybackFirstSeen(request, env, ctx) {
   if (!gate.ok) {
     return jsonResponse({ ok: false, error: gate.error }, gate.status);
   }
+  // Sprint T3: 7-day cache. First-seen year is stable by definition;
+  // the Wayback CDX answer for a given URL never moves earlier.
+  const cached = await withAuditCache(env, request, ['wayback', gate.url.toString()], 7 * 86400, async () => {
+    return await waybackLookup(gate.url.toString());
+  });
+  const res = jsonResponse(cached.value, cached.value && cached.value.ok === false ? 502 : 200);
+  res.headers.set('X-Audit-Cache', cached.cacheHit ? 'hit' : 'miss');
+  return res;
+}
 
+async function waybackLookup(targetUrl) {
   try {
-    // CDX returns lines of JSON — use output=json + limit=1 with the
-    // earliest timestamp filter. Fields: urlkey, timestamp, original,
-    // mimetype, statuscode, digest, length.
     const cdxUrl = 'https://web.archive.org/cdx/search/cdx?url=' +
-                   encodeURIComponent(gate.url.toString()) +
+                   encodeURIComponent(targetUrl) +
                    '&output=json&fl=timestamp&limit=1&filter=statuscode:200';
     const res = await fetch(cdxUrl, {
       headers: { 'User-Agent': 'MuntinDigital-Audit/1.0' },
       signal: AbortSignal.timeout(6000)
     });
-    if (!res.ok) {
-      return jsonResponse({ ok: false, error: 'wayback-unreachable' }, 502);
-    }
+    if (!res.ok) return { ok: false, error: 'wayback-unreachable' };
     const rows = await res.json();
-    // First row is a header. Second row (if any) has the timestamp.
     if (!Array.isArray(rows) || rows.length < 2 || !rows[1] || !rows[1][0]) {
-      return jsonResponse({ ok: true, firstSeen: null, year: null });
+      return { ok: true, firstSeen: null, year: null };
     }
     const ts = String(rows[1][0]);
     const year = parseInt(ts.slice(0, 4), 10);
-    // Defensive: Wayback timestamps are YYYYMMDDhhmmss. If the parse
-    // produces anything outside a realistic range, omit.
     if (!Number.isFinite(year) || year < 1996 || year > (new Date().getUTCFullYear() + 1)) {
-      return jsonResponse({ ok: true, firstSeen: null, year: null });
+      return { ok: true, firstSeen: null, year: null };
     }
-    return jsonResponse({ ok: true, firstSeen: ts, year: year });
+    return { ok: true, firstSeen: ts, year: year };
   } catch (err) {
     console.error('[wayback]', err && err.stack ? err.stack : err);
-    return jsonResponse({ ok: false, error: 'wayback-error' }, 502);
+    return { ok: false, error: 'wayback-error' };
   }
 }
 
@@ -2353,15 +2370,27 @@ async function handleCruxHistory(request, env, ctx) {
   if (!gate.ok) {
     return jsonResponse({ ok: false, error: gate.error }, gate.status);
   }
+  // Sprint T3: 48h cache. Google publishes CrUX weekly so a 2-day
+  // cache captures any new data while still cutting quota pressure
+  // in half for frequent re-audits.
+  const cached = await withAuditCache(env, request, ['crux', gate.url.origin], 48 * 3600, async () => {
+    return await cruxHistoryQuery(env.PSI_API_KEY, gate.url.origin);
+  });
+  const status = (cached.value && cached.value.ok === false) ? 502 : 200;
+  const res = jsonResponse(cached.value, status);
+  res.headers.set('X-Audit-Cache', cached.cacheHit ? 'hit' : 'miss');
+  return res;
+}
 
+async function cruxHistoryQuery(apiKey, origin) {
   try {
     const res = await fetch(
-      'https://chromeuxreport.googleapis.com/v1/records:queryHistoryRecord?key=' + encodeURIComponent(env.PSI_API_KEY),
+      'https://chromeuxreport.googleapis.com/v1/records:queryHistoryRecord?key=' + encodeURIComponent(apiKey),
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          origin: gate.url.origin,
+          origin: origin,
           formFactor: 'PHONE',
           metrics: [
             'largest_contentful_paint',
@@ -2373,28 +2402,17 @@ async function handleCruxHistory(request, env, ctx) {
       }
     );
     if (!res.ok) {
-      // 404 = not in CrUX (site below the traffic threshold). Treat
-      // as "no data" rather than error so the UI can omit the section.
-      if (res.status === 404) {
-        return jsonResponse({ ok: true, hasData: false, reason: 'no-crux-record' });
-      }
-      return jsonResponse({ ok: false, error: 'crux-upstream-' + res.status }, 502);
+      if (res.status === 404) return { ok: true, hasData: false, reason: 'no-crux-record' };
+      return { ok: false, error: 'crux-upstream-' + res.status };
     }
     const body = await res.json();
     const metrics = body && body.record && body.record.metrics ? body.record.metrics : null;
-    if (!metrics) {
-      return jsonResponse({ ok: true, hasData: false, reason: 'empty-metrics' });
-    }
-    // Extract only the p75 histogram from each metric plus the
-    // collection period list. Omit anything with fewer than 2
-    // points — a single-week value is not a trend we can show.
+    if (!metrics) return { ok: true, hasData: false, reason: 'empty-metrics' };
     function seriesFor(key) {
       const m = metrics[key];
       if (!m || !Array.isArray(m.percentilesTimeseries) && !m.percentilesTimeseries) return null;
       const pts = m.percentilesTimeseries && m.percentilesTimeseries.p75s;
       if (!Array.isArray(pts) || pts.length < 2) return null;
-      // percentilesTimeseries.p75s entries are strings for LCP/INP
-      // (milliseconds) and numbers for CLS. Normalize to numbers.
       const values = pts.map(function(v){
         if (v === null || v === undefined) return null;
         var n = typeof v === 'string' ? parseFloat(v) : v;
@@ -2404,29 +2422,23 @@ async function handleCruxHistory(request, env, ctx) {
     }
     const periods = (body.record && Array.isArray(body.record.collectionPeriods))
       ? body.record.collectionPeriods.map(function(p){
-          // Each period has {firstDate, lastDate} with {year,month,day}.
-          // Render compact ISO-like strings for the sparkline tooltip.
           const d = p && p.lastDate;
           return d && d.year ? (d.year + '-' + String(d.month).padStart(2, '0') + '-' + String(d.day).padStart(2, '0')) : null;
         })
       : [];
     const out = {
-      ok: true,
-      hasData: true,
-      periods: periods,
+      ok: true, hasData: true, periods: periods,
       lcp: seriesFor('largest_contentful_paint'),
       inp: seriesFor('interaction_to_next_paint'),
       cls: seriesFor('cumulative_layout_shift')
     };
-    // If every metric came back null (common when sample size is
-    // tiny), treat as no data.
     if (!out.lcp && !out.inp && !out.cls) {
-      return jsonResponse({ ok: true, hasData: false, reason: 'insufficient-samples' });
+      return { ok: true, hasData: false, reason: 'insufficient-samples' };
     }
-    return jsonResponse(out);
+    return out;
   } catch (err) {
     console.error('[crux-history]', err && err.stack ? err.stack : err);
-    return jsonResponse({ ok: false, error: 'crux-error' }, 502);
+    return { ok: false, error: 'crux-error' };
   }
 }
 
@@ -2454,23 +2466,29 @@ async function handleGbpDetails(request, env, ctx) {
   if (!placeId || !/^[A-Za-z0-9_-]+$/.test(placeId) || placeId.length > 200) {
     return jsonResponse({ ok: false, error: 'invalid-placeId' }, 400);
   }
+  // Sprint T3: 24h cache. Reviews change, but a day's staleness is
+  // acceptable for a Deep Scan payload — the tradeoff is a huge cut
+  // in Places quota usage for frequent re-audits of the same URL.
+  const cached = await withAuditCache(env, request, ['gbp-details', placeId], 24 * 3600, async () => {
+    return await gbpDetailsQuery(env.GOOGLE_PLACES_KEY, placeId);
+  });
+  const status = (cached.value && cached.value.ok === false) ? 502 : 200;
+  const res = jsonResponse(cached.value, status);
+  res.headers.set('X-Audit-Cache', cached.cacheHit ? 'hit' : 'miss');
+  return res;
+}
 
+async function gbpDetailsQuery(apiKey, placeId) {
   try {
     const res = await fetch(
       'https://places.googleapis.com/v1/places/' + encodeURIComponent(placeId),
       {
         method: 'GET',
         headers: {
-          'X-Goog-Api-Key': env.GOOGLE_PLACES_KEY,
+          'X-Goog-Api-Key': apiKey,
           'X-Goog-FieldMask': [
-            'id',
-            'displayName',
-            'reviews',
-            'currentOpeningHours',
-            'regularOpeningHours',
-            'priceLevel',
-            'userRatingCount',
-            'rating'
+            'id','displayName','reviews','currentOpeningHours','regularOpeningHours',
+            'priceLevel','userRatingCount','rating'
           ].join(',')
         },
         signal: AbortSignal.timeout(8000)
@@ -2479,30 +2497,25 @@ async function handleGbpDetails(request, env, ctx) {
     if (!res.ok) {
       const body = await res.text();
       console.error('[gbp-details]', res.status, body);
-      return jsonResponse({ ok: false, error: 'places-details-' + res.status }, 502);
+      return { ok: false, error: 'places-details-' + res.status };
     }
     const data = await res.json();
-    // Normalize reviews: take up to 5 recent, strip PII where we
-    // can, and flag owner-reply presence per-review. We return the
-    // review TEXT verbatim — it's public data Google already shows —
-    // but mark nothing about sentiment or tone (see header note).
     const reviews = Array.isArray(data.reviews) ? data.reviews.slice(0, 5).map(function(r){
       return {
-        rating:       typeof r.rating === 'number' ? r.rating : null,
-        publishTime:  r.publishTime || null,
+        rating: typeof r.rating === 'number' ? r.rating : null,
+        publishTime: r.publishTime || null,
         relativePublishTimeDescription: r.relativePublishTimeDescription || null,
-        text:         r.text && r.text.text ? r.text.text : null,
+        text: r.text && r.text.text ? r.text.text : null,
         languageCode: r.text && r.text.languageCode ? r.text.languageCode : null,
         hasOwnerReply: !!(r.authorAttribution && r.authorAttribution.uri && r.ownerResponseText)
                         || !!(r.reply && (r.reply.text || r.reply.comment))
       };
     }) : [];
     const hoursText = data.currentOpeningHours && Array.isArray(data.currentOpeningHours.weekdayDescriptions)
-      ? data.currentOpeningHours.weekdayDescriptions
-      : null;
+      ? data.currentOpeningHours.weekdayDescriptions : null;
     const reviewCount = typeof data.userRatingCount === 'number' ? data.userRatingCount : null;
     const ownerReplied = reviews.reduce(function(acc, r){ return acc + (r.hasOwnerReply ? 1 : 0); }, 0);
-    return jsonResponse({
+    return {
       ok: true,
       placeId: data.id || placeId,
       name: data.displayName && data.displayName.text ? data.displayName.text : null,
@@ -2512,10 +2525,10 @@ async function handleGbpDetails(request, env, ctx) {
       reviews: reviews,
       ownerReplyRate: reviews.length > 0 ? (ownerReplied / reviews.length) : null,
       priceLevel: typeof data.priceLevel === 'string' ? data.priceLevel : null
-    });
+    };
   } catch (err) {
     console.error('[gbp-details]', err && err.stack ? err.stack : err);
-    return jsonResponse({ ok: false, error: 'gbp-details-error' }, 502);
+    return { ok: false, error: 'gbp-details-error' };
   }
 }
 
