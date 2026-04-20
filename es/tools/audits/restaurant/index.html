@@ -544,6 +544,44 @@
     transition: background var(--t-fast, 120ms) ease;
   }
   .schema-richness-copy:hover { background: #E7F1F3; }
+  /* Sprint E1: progressive-disclosure wrappers for schema + OG
+     scorecards. The two "Show N more" disclosures collapse the
+     long tail of the scorecard so the default view is just the
+     urgent required gaps. */
+  .schema-richness-row-wrap,
+  .og-completeness-row-wrap {
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+  .schema-richness-more > summary,
+  .og-completeness-more > summary {
+    padding: 14px 0;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--teal);
+    list-style: none;
+  }
+  .schema-richness-more > summary::before,
+  .og-completeness-more > summary::before {
+    content: '+ ';
+    display: inline-block;
+    width: 14px;
+    font-weight: 700;
+  }
+  .schema-richness-more[open] > summary::before,
+  .og-completeness-more[open] > summary::before { content: '– '; }
+  .schema-richness-more > summary::-webkit-details-marker,
+  .og-completeness-more > summary::-webkit-details-marker { display: none; }
+  .schema-richness-covered > summary,
+  .og-completeness-covered > summary { color: var(--stone); }
+  .schema-richness-inner-list,
+  .og-completeness-inner-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px dashed var(--line);
+  }
 
   /* Sprint D4: Open Graph / Twitter Card completeness. Same
      visual language as the D2 schema scorecard — cream base,
@@ -7679,12 +7717,11 @@
     renderBuiltByFooter();
   }
 
-  // Sprint D4: Open Graph / Twitter Card completeness. Uses the
-  // existing checkOgShareMeta() detector on the homepage HTML
-  // that /api/page-crawl already captured. Accuracy gate: calls a
-  // field present ONLY when the literal meta tag exists with a
-  // non-empty value (og:image + twitter:image additionally require
-  // an http(s) URL).
+  // Sprint D4 + E1: Open Graph / Twitter Card completeness with
+  // progressive disclosure. Same partition as the schema scorecard:
+  // missing REQUIRED tags always visible (og:title / og:description
+  // / og:image). Missing recommended tags behind a "Show N more"
+  // disclosure. Present tags behind a "covered" disclosure.
   function renderOgCompleteness() {
     var card = document.getElementById('ogCompletenessCard');
     var list = document.getElementById('ogCompletenessList');
@@ -7699,20 +7736,28 @@
       ? crawl.homepage.html : '';
     if (!homepageHtml) { card.hidden = true; return; }
     var detection = checkOgShareMeta(homepageHtml);
-    list.innerHTML = '';
-    var presentCount = 0;
-    var lang = (typeof window !== 'undefined' && window.__muntinLang) || 'en';
+
+    var missingRequired = [];
+    var missingOther = [];
+    var present = [];
     fields.forEach(function(f){
-      var present = !!detection[f.key];
-      if (present) presentCount++;
+      if (detection[f.key]) present.push(f);
+      else if (f.priority === 'required') missingRequired.push(f);
+      else missingOther.push(f);
+    });
+
+    list.innerHTML = '';
+    var lang = (typeof window !== 'undefined' && window.__muntinLang) || 'en';
+
+    function renderRow(f, status) {
       var li = document.createElement('li');
-      li.className = 'og-completeness-row og-completeness-row-' + (present ? 'present' : 'missing')
+      li.className = 'og-completeness-row og-completeness-row-' + status
                    + ' og-completeness-priority-' + f.priority;
       var lead = document.createElement('div');
       lead.className = 'og-completeness-lead';
       var icon = document.createElement('span');
       icon.className = 'og-completeness-icon';
-      icon.textContent = present ? '✓' : '+';
+      icon.textContent = status === 'present' ? '✓' : '+';
       var label = document.createElement('code');
       label.className = 'og-completeness-label';
       label.textContent = f.label;
@@ -7723,11 +7768,11 @@
       lead.appendChild(label);
       lead.appendChild(pri);
       li.appendChild(lead);
-      var benefit = document.createElement('p');
-      benefit.className = 'og-completeness-benefit';
-      benefit.textContent = (lang === 'es' && f.benefit_es) ? f.benefit_es : f.benefit_en;
-      li.appendChild(benefit);
-      if (!present) {
+      if (status !== 'present') {
+        var benefit = document.createElement('p');
+        benefit.className = 'og-completeness-benefit';
+        benefit.textContent = (lang === 'es' && f.benefit_es) ? f.benefit_es : f.benefit_en;
+        li.appendChild(benefit);
         var pre = document.createElement('pre');
         pre.className = 'og-completeness-snippet';
         pre.textContent = f.example;
@@ -7751,23 +7796,62 @@
         li.appendChild(btn);
         li.appendChild(pre);
       }
-      list.appendChild(li);
-    });
-    summary.textContent = t('og.summary', {
-      present: presentCount,
-      total: fields.length
-    });
+      return li;
+    }
+
+    missingRequired.forEach(function(f){ list.appendChild(renderRow(f, 'missing')); });
+
+    if (missingOther.length) {
+      var details = document.createElement('details');
+      details.className = 'og-completeness-more';
+      var summaryEl = document.createElement('summary');
+      summaryEl.textContent = t('schemaRichness.moreMissing', { count: missingOther.length });
+      details.appendChild(summaryEl);
+      var innerList = document.createElement('ul');
+      innerList.className = 'og-completeness-inner-list';
+      missingOther.forEach(function(f){ innerList.appendChild(renderRow(f, 'missing')); });
+      details.appendChild(innerList);
+      var wrapLi = document.createElement('li');
+      wrapLi.className = 'og-completeness-row-wrap';
+      wrapLi.appendChild(details);
+      list.appendChild(wrapLi);
+    }
+
+    if (present.length) {
+      var details2 = document.createElement('details');
+      details2.className = 'og-completeness-more og-completeness-covered';
+      var summaryEl2 = document.createElement('summary');
+      summaryEl2.textContent = t('schemaRichness.covered', { count: present.length });
+      details2.appendChild(summaryEl2);
+      var innerList2 = document.createElement('ul');
+      innerList2.className = 'og-completeness-inner-list';
+      present.forEach(function(f){ innerList2.appendChild(renderRow(f, 'present')); });
+      details2.appendChild(innerList2);
+      var wrapLi2 = document.createElement('li');
+      wrapLi2.className = 'og-completeness-row-wrap';
+      wrapLi2.appendChild(details2);
+      list.appendChild(wrapLi2);
+    }
+
+    var gapCount = missingRequired.length + missingOther.length;
+    if (gapCount === 0) {
+      summary.textContent = t('og.summaryAllGood', { total: fields.length });
+    } else {
+      summary.textContent = t('og.summary', {
+        present: present.length, total: fields.length
+      });
+    }
     card.hidden = false;
   }
 
-  // Sprint D2: schema richness scorecard. Walks the schema-check
-  // response's restaurant-like objects, marks each Google-
-  // recommended field as present or missing, renders a per-gap
-  // copy-paste snippet for everything missing. Accuracy gate:
-  // we call a field "present" only when the schema object literally
-  // declares it with a non-empty value. Presence via Places
-  // (fetched separately) does NOT count — that's a different
-  // surface Google draws from.
+  // Sprint D2 + E1: schema richness scorecard with progressive
+  // disclosure. Visible by default: missing REQUIRED fields with
+  // full snippets — the urgent action list. Behind a single
+  // "Show N recommended / optional opportunities" disclosure: all
+  // other missing fields. Behind a "See N fields you're already
+  // covering" disclosure: present fields. Accuracy gate unchanged —
+  // presence only credited when the field literally exists in
+  // schema with a non-empty value.
   function renderSchemaRichness() {
     var card = document.getElementById('schemaRichnessCard');
     var list = document.getElementById('schemaRichnessList');
@@ -7782,7 +7866,6 @@
       card.hidden = true;
       return;
     }
-    // Narrow to restaurant-like objects.
     var RESTAURANT_TYPES = /^(Restaurant|FoodEstablishment|Bakery|BarOrPub|Brewery|CafeOrCoffeeShop|FastFoodRestaurant|IceCreamShop|Winery|Distillery|Hotel)$/i;
     var restaurantObjs = schema.objects.filter(function(o){
       if (!o || !o['@type']) return false;
@@ -7790,14 +7873,7 @@
       if (Array.isArray(t)) return t.some(function(x){ return RESTAURANT_TYPES.test(String(x)); });
       return RESTAURANT_TYPES.test(String(t));
     });
-    if (!restaurantObjs.length) {
-      // No Restaurant schema detected at all — the separate
-      // schema priority check already nudges toward adding one.
-      // Don't render this richness card because there's nothing
-      // to score.
-      card.hidden = true;
-      return;
-    }
+    if (!restaurantObjs.length) { card.hidden = true; return; }
     function fieldPresent(key) {
       for (var i = 0; i < restaurantObjs.length; i++) {
         var v = restaurantObjs[i][key];
@@ -7808,22 +7884,29 @@
       }
       return false;
     }
-    list.innerHTML = '';
-    var presentCount = 0;
-    var lang = (typeof window !== 'undefined' && window.__muntinLang) || 'en';
+    // Partition: missingRequired (urgent) | missingOther (deferred) | present (covered).
+    var missingRequired = [];
+    var missingOther = [];
+    var present = [];
     fields.forEach(function(f){
-      var present = fieldPresent(f.key);
-      if (present) presentCount++;
+      if (fieldPresent(f.key)) present.push(f);
+      else if (f.priority === 'required') missingRequired.push(f);
+      else missingOther.push(f);
+    });
+
+    list.innerHTML = '';
+    var lang = (typeof window !== 'undefined' && window.__muntinLang) || 'en';
+
+    function renderRow(f, status) {
       var li = document.createElement('li');
-      li.className = 'schema-richness-row schema-richness-row-' + (present ? 'present' : 'missing')
-                    + ' schema-richness-priority-' + f.priority;
-      // Left: status + label + priority chip.
+      li.className = 'schema-richness-row schema-richness-row-' + status
+                   + ' schema-richness-priority-' + f.priority;
       var lead = document.createElement('div');
       lead.className = 'schema-richness-lead';
       var icon = document.createElement('span');
       icon.className = 'schema-richness-icon';
-      icon.textContent = present ? '✓' : '+';
-      icon.setAttribute('aria-label', present ? t('schemaRichness.present') : t('schemaRichness.missing'));
+      icon.textContent = status === 'present' ? '✓' : '+';
+      icon.setAttribute('aria-label', status === 'present' ? t('schemaRichness.present') : t('schemaRichness.missing'));
       var label = document.createElement('span');
       label.className = 'schema-richness-label';
       label.textContent = f.label;
@@ -7834,15 +7917,11 @@
       lead.appendChild(label);
       lead.appendChild(priorityChip);
       li.appendChild(lead);
-      // Benefit copy — same for present/missing, just different
-      // framing via CSS.
-      var benefitStr = (lang === 'es' && f.benefit_es) ? f.benefit_es : f.benefit_en;
-      var benefit = document.createElement('p');
-      benefit.className = 'schema-richness-benefit';
-      benefit.textContent = benefitStr;
-      li.appendChild(benefit);
-      // For missing: render a copy-paste snippet with a copy button.
-      if (!present) {
+      if (status !== 'present') {
+        var benefit = document.createElement('p');
+        benefit.className = 'schema-richness-benefit';
+        benefit.textContent = (lang === 'es' && f.benefit_es) ? f.benefit_es : f.benefit_en;
+        li.appendChild(benefit);
         var pre = document.createElement('pre');
         pre.className = 'schema-richness-snippet';
         pre.textContent = f.example;
@@ -7857,7 +7936,6 @@
             btn.textContent = t('schemaRichness.copied');
             setTimeout(function(){ btn.textContent = orig; }, 1500);
           } catch (_) {
-            // Fallback: select the text so the user can copy manually.
             var range = document.createRange();
             range.selectNode(pre);
             window.getSelection().removeAllRanges();
@@ -7867,13 +7945,59 @@
         li.appendChild(btn);
         li.appendChild(pre);
       }
-      list.appendChild(li);
-    });
+      return li;
+    }
+
+    // Urgent: missing required fields, always expanded.
+    missingRequired.forEach(function(f){ list.appendChild(renderRow(f, 'missing')); });
+
+    // Deferred: missing recommended + optional fields, behind one
+    // disclosure so the default view stays tight.
+    if (missingOther.length) {
+      var details = document.createElement('details');
+      details.className = 'schema-richness-more';
+      var summaryEl = document.createElement('summary');
+      summaryEl.textContent = t('schemaRichness.moreMissing', { count: missingOther.length });
+      details.appendChild(summaryEl);
+      var innerList = document.createElement('ul');
+      innerList.className = 'schema-richness-inner-list';
+      missingOther.forEach(function(f){ innerList.appendChild(renderRow(f, 'missing')); });
+      details.appendChild(innerList);
+      var wrapLi = document.createElement('li');
+      wrapLi.className = 'schema-richness-row-wrap';
+      wrapLi.appendChild(details);
+      list.appendChild(wrapLi);
+    }
+
+    // Covered: present fields, behind a second disclosure. The pat-
+    // on-the-back view — reassurance without taking up the primary
+    // action real estate.
+    if (present.length) {
+      var details2 = document.createElement('details');
+      details2.className = 'schema-richness-more schema-richness-covered';
+      var summaryEl2 = document.createElement('summary');
+      summaryEl2.textContent = t('schemaRichness.covered', { count: present.length });
+      details2.appendChild(summaryEl2);
+      var innerList2 = document.createElement('ul');
+      innerList2.className = 'schema-richness-inner-list';
+      present.forEach(function(f){ innerList2.appendChild(renderRow(f, 'present')); });
+      details2.appendChild(innerList2);
+      var wrapLi2 = document.createElement('li');
+      wrapLi2.className = 'schema-richness-row-wrap';
+      wrapLi2.appendChild(details2);
+      list.appendChild(wrapLi2);
+    }
+
+    // Summary line — two-part so owner reads it as status + action.
     var total = fields.length;
-    summary.textContent = t('schemaRichness.summary', {
-      present: presentCount,
-      total: total
-    });
+    var gapCount = missingRequired.length + missingOther.length;
+    if (gapCount === 0) {
+      summary.textContent = t('schemaRichness.summaryAllGood', { total: total });
+    } else {
+      summary.textContent = t('schemaRichness.summary', {
+        present: present.length, total: total
+      });
+    }
     card.hidden = false;
   }
 

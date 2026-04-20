@@ -2460,6 +2460,24 @@ var UI_I18N = {
   'schemaRichness.priority.optional':    { en: 'Optional',    es: 'Opcional'    },
   'schemaRichness.copy':     { en: 'Copy snippet', es: 'Copiar fragmento' },
   'schemaRichness.copied':   { en: 'Copied!',      es: '¡Copiado!'        },
+  // Sprint E1: progressive-disclosure labels shared by schema +
+  // OG scorecards.
+  'schemaRichness.moreMissing': {
+    en: 'Show {count} more opportunities',
+    es: 'Ver {count} oportunidades más'
+  },
+  'schemaRichness.covered': {
+    en: 'See {count} fields you\'re already covering',
+    es: 'Ver {count} campos que ya cubres'
+  },
+  'schemaRichness.summaryAllGood': {
+    en: 'All {total} Google-recommended fields are populated. This site is fully set up.',
+    es: 'Los {total} campos recomendados por Google están completos. Este sitio está listo.'
+  },
+  'og.summaryAllGood': {
+    en: 'All {total} social-share meta tags are populated.',
+    es: 'Los {total} meta tags de compartido social están completos.'
+  },
   // Sprint D3: embeddable badge offer card.
   'badge.eyebrow':      { en: 'Embeddable badge', es: 'Badge para incrustar' },
   'badge.heading':      { en: 'Show this score on your own site', es: 'Muestra esta puntuación en tu propio sitio' },
