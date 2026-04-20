@@ -72,6 +72,7 @@ const API_ROUTES = {
   '/api/page-crawl':    handlePageCrawl,
   '/api/psi':           handlePsi,
   '/api/did-you-mean':  handleDidYouMean,
+  '/api/observatory':   handleObservatory,
 };
 
 
@@ -93,7 +94,7 @@ export default {
           404
         );
       }
-      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean') {
+      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
         }
@@ -2205,6 +2206,74 @@ async function dnsResolves(hostname) {
     return data && data.Status === 0 && Array.isArray(data.Answer) && data.Answer.length > 0;
   } catch (_) {
     return false;
+  }
+}
+
+// ------------------------------------------------------------
+// /api/observatory — Mozilla HTTP Observatory proxy.
+//
+// Deep Scan adds a one-letter security-headers grade (A+ / A / B /
+// C / D / F) sourced from Mozilla's free observatory. The API is
+// two-step: POST /analyze kicks off a scan; GET /analyze polls for
+// the result. We budget up to 10s across 5 polls — if the grade
+// isn't ready by then we return ok:false and the client simply
+// doesn't render the grade chip. Accuracy rule: we NEVER show a
+// speculative grade. If observatory times out or errors, the UI
+// omits the section entirely.
+// ------------------------------------------------------------
+async function handleObservatory(request, env, ctx) {
+  const url = new URL(request.url);
+  const target = (url.searchParams.get('url') || '').trim();
+  const lang = pickLang(request);
+  const gate = assertSafeHttpUrl(target, lang);
+  if (!gate.ok) {
+    return jsonResponse({ ok: false, error: gate.error }, gate.status);
+  }
+  const host = gate.url.hostname;
+
+  try {
+    // Kick off a scan via POST. Observatory accepts form-encoded.
+    const startRes = await fetch(
+      'https://http-observatory.security.mozilla.org/api/v1/analyze?host=' + encodeURIComponent(host),
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'hidden=false&rescan=false',
+        signal: AbortSignal.timeout(5000)
+      }
+    );
+    if (!startRes.ok) {
+      return jsonResponse({ ok: false, error: 'observatory-start-failed' }, 502);
+    }
+    let data = await startRes.json();
+    // Poll up to 5 times if the scan is still PENDING / STARTING.
+    const deadline = Date.now() + 10000;
+    let polls = 0;
+    while (data && (data.state === 'PENDING' || data.state === 'STARTING' || data.state === 'RUNNING') && Date.now() < deadline && polls < 5) {
+      await new Promise((r) => setTimeout(r, 1500));
+      polls++;
+      const pollRes = await fetch(
+        'https://http-observatory.security.mozilla.org/api/v1/analyze?host=' + encodeURIComponent(host),
+        { signal: AbortSignal.timeout(4000) }
+      );
+      if (!pollRes.ok) break;
+      data = await pollRes.json();
+    }
+    if (!data || data.state !== 'FINISHED' || typeof data.grade !== 'string') {
+      return jsonResponse({ ok: false, error: 'observatory-not-ready' });
+    }
+    return jsonResponse({
+      ok: true,
+      grade: data.grade,
+      score: typeof data.score === 'number' ? data.score : null,
+      tests_passed: data.tests_passed || null,
+      tests_failed: data.tests_failed || null,
+      tests_quantity: data.tests_quantity || null,
+      scan_id: data.scan_id || null
+    });
+  } catch (err) {
+    console.error('[observatory]', err && err.stack ? err.stack : err);
+    return jsonResponse({ ok: false, error: 'observatory-unreachable' }, 502);
   }
 }
 
