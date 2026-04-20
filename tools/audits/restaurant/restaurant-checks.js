@@ -1605,9 +1605,23 @@ function detectGiftCardPresence(pageText, allUrls) {
 // H3: Loyalty / rewards detection. Text keywords plus known
 // loyalty-platform hosts (Thanx, LevelUp, Paytronix, Como,
 // Fivestars, Loyalzoo, Punchcard, Hang).
+// Sprint M1.11: extended hosts list catches the POS-native loyalty
+// subdomains and a few newer vendors. toasttab.com + squareup.com
+// host loyalty landing pages for their restaurant customers under
+// /rewards or /loyalty paths; looking for those specific paths in
+// the URL catches them even when the top-level host isn't in the
+// list. Punchh is the largest QSR-focused loyalty SaaS not yet
+// listed. fivestars-rewards is the domain most deploys use.
 var LOYALTY_PATTERNS = {
-  keywords: /\b(?:loyalty\s+program|rewards\s+program|earn\s+(?:points|rewards)|join\s+our\s+rewards|sign\s+up\s+for\s+rewards|loyalty\s+(?:club|members))\b/i,
-  hosts: ['thanx.com', 'thelevelup', 'paytronix', 'como.com', 'fivestars', 'loyalzoo', 'punchcard', 'hang.com', 'belly', 'spendgo']
+  keywords: /\b(?:loyalty\s+program|rewards\s+program|earn\s+(?:points|rewards)|join\s+our\s+rewards|sign\s+up\s+for\s+rewards|loyalty\s+(?:club|members)|my\s+rewards|member\s+rewards)\b/i,
+  hosts: [
+    'thanx.com', 'thelevelup', 'paytronix', 'como.com', 'fivestars',
+    'fivestars-rewards', 'loyalzoo', 'punchcard', 'hang.com', 'belly',
+    'spendgo', 'punchh.com', 'smile.io', 'yotpo.com', 'kangaroorewards',
+    'stampme', 'loopyloyalty', 'tapmango', 'toast-rewards',
+    'square-loyalty', '/rewards', '/loyalty', 'toasttab.com/rewards',
+    'squareup.com/app/loyalty'
+  ]
 };
 function detectLoyaltyProgram(pageText, allUrls) {
   var viaText = pageText ? LOYALTY_PATTERNS.keywords.test(pageText) : false;
@@ -1648,11 +1662,28 @@ function detectEmailCapture(html, allUrls) {
       }
     }
   }
-  // Pass when we have EITHER a recognized provider (hasHost) OR
-  // an email input + newsletter copy pair. An email input alone
-  // is usually a contact-form, which isn't a newsletter capture.
-  var present = hasHost || (hasEmailInput && hasNewsletterCopy);
-  return { present: present, hasEmailInput: hasEmailInput, hasNewsletterCopy: hasNewsletterCopy, hasHost: hasHost };
+  // Sprint M1.12: also scan <form action="..."> attributes directly.
+  // Many restaurant sites have the ESP target on the form action but
+  // the URL never appears elsewhere on the page (so it wouldn't be
+  // in allUrls), and some ESPs use subdomain tokens our host list
+  // can't anticipate. This catches the common self-hosted-signup
+  // shape (site.com action=https://list-manage.com/subscribe...)
+  // that detection would otherwise miss.
+  var hasFormEsp = false;
+  var formActionRe = /<form[^>]*action\s*=\s*["']([^"']+)["']/gi;
+  var fm;
+  while (!hasFormEsp && (fm = formActionRe.exec(html)) !== null) {
+    var action = fm[1].toLowerCase();
+    for (var hi = 0; hi < EMAIL_CAPTURE_HOSTS.length; hi++) {
+      if (action.indexOf(EMAIL_CAPTURE_HOSTS[hi]) >= 0) { hasFormEsp = true; break; }
+    }
+  }
+  // Pass when we have EITHER a recognized provider (hasHost,
+  // hasFormEsp) OR an email input + newsletter copy pair. An email
+  // input alone is usually a contact-form, which isn't a newsletter
+  // capture.
+  var present = hasHost || hasFormEsp || (hasEmailInput && hasNewsletterCopy);
+  return { present: present, hasEmailInput: hasEmailInput, hasNewsletterCopy: hasNewsletterCopy, hasHost: hasHost, hasFormEsp: hasFormEsp };
 }
 
 // H6: Age-gate detection. Scans for the common "are you 21 or older"

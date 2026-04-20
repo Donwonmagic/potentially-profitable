@@ -5693,6 +5693,29 @@
     if (def.type === 'menu-format') {
       var format = detectMenuFormat(allUrls, pageText);
       if (format === 'html')     return makeResult(def, 'pass');
+      // Sprint M1.9: if the crawler fetched a dedicated menu slot
+      // and the page returned substantive HTML, the site has a live
+      // HTML menu — a pass even when the homepage also links to a
+      // PDF copy. 2 KB is the HTML-length floor that filters out
+      // empty-shell or redirect pages while staying well below the
+      // byte size of a real menu.
+      var ctxCrawl9 = context && context.crawl && Array.isArray(context.crawl.pages)
+        ? context.crawl.pages : [];
+      for (var mi = 0; mi < ctxCrawl9.length; mi++) {
+        var mp = ctxCrawl9[mi];
+        if (mp && mp.slot === 'menu' && mp.status === 200
+            && typeof mp.html === 'string' && mp.html.length > 2000) {
+          return makeResult(def, 'pass');
+        }
+      }
+      // Sprint M1.9: schema hasMenu.valid means the site declares an
+      // http(s) menu URL in structured data. Google will render a
+      // menu rich-result from that, so the format question is
+      // resolved upstream of our regex.
+      var ctxSchema9 = context && context.schema && context.schema.validation;
+      if (ctxSchema9 && ctxSchema9.hasMenu && ctxSchema9.hasMenu.valid === true) {
+        return makeResult(def, 'pass');
+      }
       if (format === 'pdf' || format === 'image') return makeResult(def, 'fail');
       return makeResult(def, 'unverified');
     }
@@ -5734,6 +5757,15 @@
 
     // ---- Photo coverage (Phase H13) ----
     if (def.type === 'photo-coverage') {
+      // Sprint M1.14: Places photoCount is a verified count of
+      // photos the business has uploaded to Google Business Profile.
+      // ≥10 is a strong pass — the owner has invested real time in
+      // visual marketing. Takes precedence over the homepage-only
+      // <img> count which misses lazy-loaded / below-the-fold images.
+      var ctxP14 = context && context.places && context.places.place;
+      if (ctxP14 && typeof ctxP14.photoCount === 'number' && ctxP14.photoCount >= 10) {
+        return makeResult(def, 'pass');
+      }
       if (typeof detectPhotoCoverage !== 'function') return makeResult(def, 'unverified');
       var pcCrawl = window.__auditCrawl;
       var pcHtml = (pcCrawl && pcCrawl.homepage && typeof pcCrawl.homepage.html === 'string')
@@ -5755,6 +5787,25 @@
 
     // ---- Social proof (Phase H11) ----
     if (def.type === 'social-proof') {
+      // Sprint M1.13: 25+ Google reviews is credible third-party
+      // social proof that doesn't require on-page press mentions.
+      // For restaurants this is an easier-to-earn signal than a
+      // "featured in Eater" write-up and is just as load-bearing in
+      // a customer's booking decision. Schema aggregateRating is
+      // equally credible (owner-attested, but Google rejects invalid
+      // values so it survives scrutiny).
+      var ctxP13 = context && context.places && context.places.place;
+      if (ctxP13 && typeof ctxP13.reviewCount === 'number' && ctxP13.reviewCount >= 25) {
+        return makeResult(def, 'pass');
+      }
+      var ctxSchema13 = context && context.schema && Array.isArray(context.schema.objects)
+        ? context.schema.objects : [];
+      for (var spj = 0; spj < ctxSchema13.length; spj++) {
+        var sr = ctxSchema13[spj] && ctxSchema13[spj].aggregateRating;
+        if (sr && (typeof sr.ratingValue !== 'undefined' || typeof sr.reviewCount !== 'undefined')) {
+          return makeResult(def, 'pass');
+        }
+      }
       if (typeof detectSocialProof !== 'function') return makeResult(def, 'unverified');
       var spText = String(pageText || '');
       var spCrawl = window.__auditCrawl;
@@ -5787,6 +5838,17 @@
 
     // ---- Wholesale / custom-order intake (Phase H9) ----
     if (def.type === 'wholesale-custom-orders') {
+      // Sprint M1.10: a dedicated wholesale slot (new in M1.3) that
+      // returned HTTP 200 is a definitive pass. No need to scan text
+      // — the site literally has a /wholesale page or similar.
+      var ctxCrawl10 = context && context.crawl && Array.isArray(context.crawl.pages)
+        ? context.crawl.pages : [];
+      for (var wci = 0; wci < ctxCrawl10.length; wci++) {
+        var wcp = ctxCrawl10[wci];
+        if (wcp && wcp.slot === 'wholesale' && wcp.status === 200 && typeof wcp.html === 'string' && wcp.html.length > 500) {
+          return makeResult(def, 'pass');
+        }
+      }
       if (typeof detectWholesaleCustomOrders !== 'function') return makeResult(def, 'unverified');
       var wcText = String(pageText || '');
       var wcCrawl = window.__auditCrawl;
@@ -5848,11 +5910,15 @@
 
     // ---- Catering / events page presence (Phase H5) ----
     if (def.type === 'catering-page') {
-      var cpCrawl = window.__auditCrawl;
+      // Sprint M1.10: tighten the slot-existence check — require
+      // HTTP 200 (not just "returned some HTML") so a 404 with a
+      // templated error body can't sneak through as a pass.
+      var cpCrawl = (context && context.crawl) || window.__auditCrawl;
       if (cpCrawl && Array.isArray(cpCrawl.pages)) {
         for (var ci = 0; ci < cpCrawl.pages.length; ci++) {
           var cp = cpCrawl.pages[ci];
-          if (cp && (cp.slot === 'catering' || cp.slot === 'events') && cp.html) {
+          if (cp && (cp.slot === 'catering' || cp.slot === 'events')
+                 && cp.status === 200 && typeof cp.html === 'string' && cp.html.length > 500) {
             return makeResult(def, 'pass', [{ name: cp.slot === 'catering' ? 'Catering page' : 'Events page' }]);
           }
         }
