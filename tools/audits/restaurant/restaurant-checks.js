@@ -2043,6 +2043,17 @@ var UI_I18N = {
     en: " We couldn't verify {count} checks on this pass — each one is counted at half weight. Confirming them below will sharpen the score in either direction.",
     es: ' No pudimos verificar {count} verificaciones esta vez — cada una cuenta a medio peso. Confirmarlas abajo afinará la puntuación en cualquier dirección.'
   },
+  // Sprint M1.16: after detector fusion, most well-covered
+  // restaurants see zero unverified checks. Celebrate the
+  // confidence so owners trust the score.
+  'verdict.allAutoVerified': {
+    en: " All {total} restaurant checks were verified automatically — from your Google Business Profile, your site's schema, and our multi-page crawl. No guesswork in this report.",
+    es: ' Las {total} verificaciones de restaurante se confirmaron automáticamente — desde tu Perfil de Empresa de Google, el schema de tu sitio y nuestro rastreo multi-página. Sin adivinar nada en este reporte.'
+  },
+  'verdict.highAutoVerified': {
+    en: ' {confirmed} of {total} checks confirmed automatically from Google Business Profile and your site. {unverified} need a second look — answer them below to sharpen your score.',
+    es: ' {confirmed} de {total} verificaciones confirmadas automáticamente desde el Perfil de Empresa de Google y tu sitio. {unverified} necesitan una segunda mirada — respóndelas abajo para afinar tu puntuación.'
+  },
   'topfixes.eta.rebuild': {
     en: 'One of these is a site rebuild — plan a month, not a weekend.',
     es: 'Una de estas es reconstruir el sitio — planifica un mes, no un fin de semana.'

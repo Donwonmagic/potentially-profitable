@@ -4751,8 +4751,20 @@
     else if (score >= 50) base = t('verdict.50');
     else base = t('verdict.below');
     var uv = meta && typeof meta.unverifiedCount === 'number' ? meta.unverifiedCount : 0;
-    if (uv > 2) {
+    var total = meta && typeof meta.totalCount === 'number' ? meta.totalCount : 0;
+    var confirmed = total - uv;
+    // Sprint M1.16: after the Sprint-1 detector fuses, most audits
+    // on well-covered restaurants produce ZERO unverified checks.
+    // That deserves its own suffix — celebrate the confidence so
+    // owners trust the score instead of wondering what was skipped.
+    if (uv === 0 && total >= 10) {
+      base += t('verdict.allAutoVerified', { total: total });
+    } else if (uv > 2) {
       base += t('verdict.unverifiedSuffix', { count: uv });
+    } else if (uv > 0 && confirmed >= 10) {
+      base += t('verdict.highAutoVerified', {
+        confirmed: confirmed, total: total, unverified: uv
+      });
     }
     return base;
   }
@@ -5165,6 +5177,44 @@
             if (hints[name]) scores[type] += hints[name];
           });
         });
+      }
+    }
+
+    // Sprint M1.15: corroborate with Google Places when we have a
+    // matched listing. Places verifies the business type directly —
+    // `primaryTypeDisplayName` is the display label Google assigned
+    // ("Pizza restaurant", "Bar", "Bakery") and the boolean `serves*`
+    // flags describe the actual menu. These signals carry 4 pts each
+    // (roughly equivalent to a strong keyword match) so they nudge
+    // weakly-classified sites toward the right subtype without
+    // overwhelming an explicit schema.org @type declaration (5 pts).
+    var placesSnap = (typeof window !== 'undefined' && window.__auditPlaces) ? window.__auditPlaces : null;
+    var place = placesSnap && placesSnap.ok ? placesSnap.place : null;
+    if (place) {
+      var typeLabel = (place.primaryTypeDisplayName || '').toLowerCase();
+      // primaryTypeDisplayName-based routing
+      if (/pizza/.test(typeLabel) && scores['fast-casual'] !== undefined) scores['fast-casual'] += 4;
+      if (/bar\b|pub|brewery|tavern|taproom/.test(typeLabel) && scores['bar-pub'] !== undefined) scores['bar-pub'] += 4;
+      if (/cafe|coffee|bakery|pâtisserie|patisserie/.test(typeLabel)) {
+        if (scores['cafe-bakery'] !== undefined) scores['cafe-bakery'] += 4;
+      }
+      if (/fine\s*dining|upscale/.test(typeLabel) && scores['fine-dining'] !== undefined) scores['fine-dining'] += 4;
+      if (/fast\s*food|quick\s*service|qsr/.test(typeLabel) && scores['fast-casual'] !== undefined) scores['fast-casual'] += 4;
+      // serves* boolean fusion: cocktails + beer + wine + !breakfast
+      // is the defining bar-pub signature. Coffee-only signals a cafe.
+      var servesAlcohol = place.servesBeer === true || place.servesWine === true || place.servesCocktails === true;
+      var servesBreakfast = place.servesBreakfast === true;
+      if (servesAlcohol && place.servesCocktails === true && !servesBreakfast) {
+        if (scores['bar-pub'] !== undefined) scores['bar-pub'] += 3;
+      }
+      if (place.servesCoffee === true && !place.servesDinner) {
+        if (scores['cafe-bakery'] !== undefined) scores['cafe-bakery'] += 3;
+      }
+      // An explicit priceLevel of PRICE_LEVEL_EXPENSIVE or above is
+      // a strong fine-dining nudge. Places uses string enum values.
+      if (typeof place.priceLevel === 'string' &&
+          /EXPENSIVE|VERY_EXPENSIVE/.test(place.priceLevel)) {
+        if (scores['fine-dining'] !== undefined) scores['fine-dining'] += 3;
       }
     }
 
@@ -7401,7 +7451,7 @@
     // Strip protocol from displayed URL for readability
     var displayUrl = auditedUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
     document.getElementById('auditedUrl').textContent = displayUrl;
-    document.getElementById('verdictCopy').textContent = verdictFor(overall, { unverifiedCount: priorityResult.unverifiedCount });
+    document.getElementById('verdictCopy').textContent = verdictFor(overall, { unverifiedCount: priorityResult.unverifiedCount, totalCount: priorityResult.totalCount });
 
     // Phase I1: render the narrative executive-summary block
     // below the category cards. Feeds in all the pillar scores
@@ -7616,7 +7666,7 @@
     // real score on this pass.
     setScoreRing(overall, { unverifiedCount: priorityResult.unverifiedCount });
     var verdictEl = document.getElementById('verdictCopy');
-    if (verdictEl) verdictEl.textContent = verdictFor(overall, { unverifiedCount: priorityResult.unverifiedCount });
+    if (verdictEl) verdictEl.textContent = verdictFor(overall, { unverifiedCount: priorityResult.unverifiedCount, totalCount: priorityResult.totalCount });
     if (!state.isRestaurant) {
       setCategoryNA('restaurant');
     } else if (priorityResult.lowConfidence) {
