@@ -74,6 +74,7 @@ const API_ROUTES = {
   '/api/did-you-mean':  handleDidYouMean,
   '/api/observatory':   handleObservatory,
   '/api/wayback-first-seen': handleWaybackFirstSeen,
+  '/api/crux-history':  handleCruxHistory,
 };
 
 
@@ -95,7 +96,7 @@ export default {
           404
         );
       }
-      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen') {
+      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
         }
@@ -2326,6 +2327,105 @@ async function handleWaybackFirstSeen(request, env, ctx) {
   } catch (err) {
     console.error('[wayback]', err && err.stack ? err.stack : err);
     return jsonResponse({ ok: false, error: 'wayback-error' }, 502);
+  }
+}
+
+// ------------------------------------------------------------
+// /api/crux-history — CrUX History API proxy.
+//
+// Returns 25 weeks of Core Web Vitals p75 history for the origin
+// (LCP, INP, CLS) plus experience.overall if available. Sparkline
+// rendering in the Deep Scan UI reads from this. Accuracy rule:
+// we only surface metrics where history has ≥2 data points; a
+// single-point series is not a trend. Uses the existing
+// PSI_API_KEY env (CrUX History is covered by the same Google
+// API key quota).
+// ------------------------------------------------------------
+async function handleCruxHistory(request, env, ctx) {
+  if (!env.PSI_API_KEY) {
+    return jsonResponse({ ok: false, error: 'crux-unconfigured' }, 503);
+  }
+  const url = new URL(request.url);
+  const target = (url.searchParams.get('url') || '').trim();
+  const lang = pickLang(request);
+  const gate = assertSafeHttpUrl(target, lang);
+  if (!gate.ok) {
+    return jsonResponse({ ok: false, error: gate.error }, gate.status);
+  }
+
+  try {
+    const res = await fetch(
+      'https://chromeuxreport.googleapis.com/v1/records:queryHistoryRecord?key=' + encodeURIComponent(env.PSI_API_KEY),
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          origin: gate.url.origin,
+          formFactor: 'PHONE',
+          metrics: [
+            'largest_contentful_paint',
+            'interaction_to_next_paint',
+            'cumulative_layout_shift'
+          ]
+        }),
+        signal: AbortSignal.timeout(8000)
+      }
+    );
+    if (!res.ok) {
+      // 404 = not in CrUX (site below the traffic threshold). Treat
+      // as "no data" rather than error so the UI can omit the section.
+      if (res.status === 404) {
+        return jsonResponse({ ok: true, hasData: false, reason: 'no-crux-record' });
+      }
+      return jsonResponse({ ok: false, error: 'crux-upstream-' + res.status }, 502);
+    }
+    const body = await res.json();
+    const metrics = body && body.record && body.record.metrics ? body.record.metrics : null;
+    if (!metrics) {
+      return jsonResponse({ ok: true, hasData: false, reason: 'empty-metrics' });
+    }
+    // Extract only the p75 histogram from each metric plus the
+    // collection period list. Omit anything with fewer than 2
+    // points — a single-week value is not a trend we can show.
+    function seriesFor(key) {
+      const m = metrics[key];
+      if (!m || !Array.isArray(m.percentilesTimeseries) && !m.percentilesTimeseries) return null;
+      const pts = m.percentilesTimeseries && m.percentilesTimeseries.p75s;
+      if (!Array.isArray(pts) || pts.length < 2) return null;
+      // percentilesTimeseries.p75s entries are strings for LCP/INP
+      // (milliseconds) and numbers for CLS. Normalize to numbers.
+      const values = pts.map(function(v){
+        if (v === null || v === undefined) return null;
+        var n = typeof v === 'string' ? parseFloat(v) : v;
+        return Number.isFinite(n) ? n : null;
+      });
+      return { p75: values };
+    }
+    const periods = (body.record && Array.isArray(body.record.collectionPeriods))
+      ? body.record.collectionPeriods.map(function(p){
+          // Each period has {firstDate, lastDate} with {year,month,day}.
+          // Render compact ISO-like strings for the sparkline tooltip.
+          const d = p && p.lastDate;
+          return d && d.year ? (d.year + '-' + String(d.month).padStart(2, '0') + '-' + String(d.day).padStart(2, '0')) : null;
+        })
+      : [];
+    const out = {
+      ok: true,
+      hasData: true,
+      periods: periods,
+      lcp: seriesFor('largest_contentful_paint'),
+      inp: seriesFor('interaction_to_next_paint'),
+      cls: seriesFor('cumulative_layout_shift')
+    };
+    // If every metric came back null (common when sample size is
+    // tiny), treat as no data.
+    if (!out.lcp && !out.inp && !out.cls) {
+      return jsonResponse({ ok: true, hasData: false, reason: 'insufficient-samples' });
+    }
+    return jsonResponse(out);
+  } catch (err) {
+    console.error('[crux-history]', err && err.stack ? err.stack : err);
+    return jsonResponse({ ok: false, error: 'crux-error' }, 502);
   }
 }
 
