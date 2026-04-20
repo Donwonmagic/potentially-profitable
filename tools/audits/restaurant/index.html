@@ -406,6 +406,144 @@
     color: var(--ink-soft);
   }
 
+  /* Sprint D2: schema richness scorecard. Dense two-column-ish
+     list — each row shows status icon, label, priority chip,
+     benefit line, and (for missing) a copy-paste JSON-LD snippet. */
+  .schema-richness-card {
+    max-width: 1100px;
+    margin: 24px auto 0;
+    padding: 22px 26px;
+    background: var(--cream-2, #faf6ee);
+    border: 1px solid var(--line, #E6DFCE);
+    border-left: 4px solid var(--teal);
+    border-radius: 14px;
+  }
+  .schema-richness-card[hidden] { display: none; }
+  .schema-richness-head {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+  .schema-richness-badge {
+    align-self: flex-start;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #1F4E5B;
+    background: #E7F1F3;
+    border: 1px solid #C7DFE4;
+    border-radius: 999px;
+  }
+  .schema-richness-title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0;
+    color: var(--ink);
+  }
+  .schema-richness-summary {
+    margin: 0 0 14px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  .schema-richness-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .schema-richness-row {
+    padding: 14px 0;
+    border-top: 1px solid var(--line);
+  }
+  .schema-richness-row:first-child { border-top: none; }
+  .schema-richness-lead {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .schema-richness-icon {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .schema-richness-row-present .schema-richness-icon {
+    background: #E7F5EC;
+    color: #1F6B3A;
+    border: 1px solid #C7E4CF;
+  }
+  .schema-richness-row-missing .schema-richness-icon {
+    background: #FDEFE3;
+    color: #B8541A;
+    border: 1px dashed #EFC4AA;
+  }
+  .schema-richness-label {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .schema-richness-priority {
+    margin-left: auto;
+    padding: 2px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    background: var(--white);
+    color: var(--stone);
+    border: 1px solid var(--line);
+  }
+  .schema-richness-priority-required .schema-richness-priority {
+    background: #F7E7DC;
+    color: #B8541A;
+    border-color: #EFC4AA;
+  }
+  .schema-richness-benefit {
+    margin: 0 0 0 32px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .schema-richness-row-missing .schema-richness-benefit { color: var(--ink); }
+  .schema-richness-snippet {
+    margin: 10px 0 0 32px;
+    padding: 12px 14px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--ink);
+    white-space: pre;
+    overflow-x: auto;
+  }
+  .schema-richness-copy {
+    margin: 8px 0 0 32px;
+    padding: 5px 12px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--teal);
+    background: var(--white);
+    border: 1px solid var(--teal);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background var(--t-fast, 120ms) ease;
+  }
+  .schema-richness-copy:hover { background: #E7F1F3; }
+
   /* Sprint D1: email deliverability card. Pass rows use the same
      green as the security-grade chip; fail rows use rust. Unknown
      rows (DKIM only) are neutral to avoid claiming a missing record
@@ -3115,6 +3253,20 @@
           <div class="btc-alt-chips" id="btcAltChips"></div>
         </div>
       </div>
+
+      <!-- Sprint D2: Restaurant schema richness scorecard. Shows
+           each Google-recommended Restaurant schema field with a
+           present/missing status + a copy-paste JSON-LD snippet
+           for every gap. Stays hidden when no Restaurant-like
+           schema was detected at all. -->
+      <section class="schema-richness-card" id="schemaRichnessCard" hidden>
+        <header class="schema-richness-head">
+          <span class="schema-richness-badge" data-tr="schemaRichness.badge">Schema scorecard</span>
+          <h3 class="schema-richness-title" data-tr="schemaRichness.heading">How complete is your Restaurant schema?</h3>
+        </header>
+        <p class="schema-richness-summary" id="schemaRichnessSummary"></p>
+        <ul class="schema-richness-list" id="schemaRichnessList"></ul>
+      </section>
 
       <!-- Sprint T1: Places-verified facts card. Renders only what
            Google's Places v1 API has actually confirmed for this
@@ -7258,7 +7410,125 @@
 
     renderBusinessTypeAlternatives(effective, detection);
     renderPlacesFactsCard();
+    renderSchemaRichness();
     renderBuiltByFooter();
+  }
+
+  // Sprint D2: schema richness scorecard. Walks the schema-check
+  // response's restaurant-like objects, marks each Google-
+  // recommended field as present or missing, renders a per-gap
+  // copy-paste snippet for everything missing. Accuracy gate:
+  // we call a field "present" only when the schema object literally
+  // declares it with a non-empty value. Presence via Places
+  // (fetched separately) does NOT count — that's a different
+  // surface Google draws from.
+  function renderSchemaRichness() {
+    var card = document.getElementById('schemaRichnessCard');
+    var list = document.getElementById('schemaRichnessList');
+    var summary = document.getElementById('schemaRichnessSummary');
+    if (!card || !list || !summary) return;
+    var fields = Array.isArray(window.RESTAURANT_SCHEMA_FIELDS)
+      ? window.RESTAURANT_SCHEMA_FIELDS
+      : (typeof RESTAURANT_SCHEMA_FIELDS !== 'undefined' ? RESTAURANT_SCHEMA_FIELDS : null);
+    if (!fields || !fields.length) return;
+    var schema = window.__auditSchema;
+    if (!schema || !schema.ok || !Array.isArray(schema.objects)) {
+      card.hidden = true;
+      return;
+    }
+    // Narrow to restaurant-like objects.
+    var RESTAURANT_TYPES = /^(Restaurant|FoodEstablishment|Bakery|BarOrPub|Brewery|CafeOrCoffeeShop|FastFoodRestaurant|IceCreamShop|Winery|Distillery|Hotel)$/i;
+    var restaurantObjs = schema.objects.filter(function(o){
+      if (!o || !o['@type']) return false;
+      var t = o['@type'];
+      if (Array.isArray(t)) return t.some(function(x){ return RESTAURANT_TYPES.test(String(x)); });
+      return RESTAURANT_TYPES.test(String(t));
+    });
+    if (!restaurantObjs.length) {
+      // No Restaurant schema detected at all — the separate
+      // schema priority check already nudges toward adding one.
+      // Don't render this richness card because there's nothing
+      // to score.
+      card.hidden = true;
+      return;
+    }
+    function fieldPresent(key) {
+      for (var i = 0; i < restaurantObjs.length; i++) {
+        var v = restaurantObjs[i][key];
+        if (v === undefined || v === null) continue;
+        if (typeof v === 'string' && !v.trim()) continue;
+        if (Array.isArray(v) && !v.length) continue;
+        return true;
+      }
+      return false;
+    }
+    list.innerHTML = '';
+    var presentCount = 0;
+    var lang = (typeof window !== 'undefined' && window.__muntinLang) || 'en';
+    fields.forEach(function(f){
+      var present = fieldPresent(f.key);
+      if (present) presentCount++;
+      var li = document.createElement('li');
+      li.className = 'schema-richness-row schema-richness-row-' + (present ? 'present' : 'missing')
+                    + ' schema-richness-priority-' + f.priority;
+      // Left: status + label + priority chip.
+      var lead = document.createElement('div');
+      lead.className = 'schema-richness-lead';
+      var icon = document.createElement('span');
+      icon.className = 'schema-richness-icon';
+      icon.textContent = present ? '✓' : '+';
+      icon.setAttribute('aria-label', present ? t('schemaRichness.present') : t('schemaRichness.missing'));
+      var label = document.createElement('span');
+      label.className = 'schema-richness-label';
+      label.textContent = f.label;
+      var priorityChip = document.createElement('span');
+      priorityChip.className = 'schema-richness-priority';
+      priorityChip.textContent = t('schemaRichness.priority.' + f.priority);
+      lead.appendChild(icon);
+      lead.appendChild(label);
+      lead.appendChild(priorityChip);
+      li.appendChild(lead);
+      // Benefit copy — same for present/missing, just different
+      // framing via CSS.
+      var benefitStr = (lang === 'es' && f.benefit_es) ? f.benefit_es : f.benefit_en;
+      var benefit = document.createElement('p');
+      benefit.className = 'schema-richness-benefit';
+      benefit.textContent = benefitStr;
+      li.appendChild(benefit);
+      // For missing: render a copy-paste snippet with a copy button.
+      if (!present) {
+        var pre = document.createElement('pre');
+        pre.className = 'schema-richness-snippet';
+        pre.textContent = f.example;
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'schema-richness-copy';
+        btn.textContent = t('schemaRichness.copy');
+        btn.addEventListener('click', function(){
+          var orig = btn.textContent;
+          try {
+            navigator.clipboard.writeText(f.example);
+            btn.textContent = t('schemaRichness.copied');
+            setTimeout(function(){ btn.textContent = orig; }, 1500);
+          } catch (_) {
+            // Fallback: select the text so the user can copy manually.
+            var range = document.createRange();
+            range.selectNode(pre);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+          }
+        });
+        li.appendChild(btn);
+        li.appendChild(pre);
+      }
+      list.appendChild(li);
+    });
+    var total = fields.length;
+    summary.textContent = t('schemaRichness.summary', {
+      present: presentCount,
+      total: total
+    });
+    card.hidden = false;
   }
 
   // Sprint T2: render the "How this audit was built" attribution

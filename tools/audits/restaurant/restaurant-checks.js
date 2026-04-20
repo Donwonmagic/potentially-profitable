@@ -2041,6 +2041,87 @@ function localizeCheckCopy(def, lang) {
   }
   return out || def;
 }
+// ---------------------------------------------------------------------------
+// Sprint D2: Restaurant schema richness scorecard.
+//
+// Google's "Restaurant rich results" docs list a dozen-odd fields
+// that the Knowledge Panel + Rich Results renderer can show if
+// present. Missing fields don't invalidate the schema — they just
+// silently cost the site visibility in the panel. This constant
+// enumerates the fields that measurably matter, with:
+//   key        — the schema.org / JSON-LD property name
+//   label      — the human-readable label shown in the scorecard
+//   priority   — 'required' | 'recommended' | 'optional' per Google's
+//                own categorization in its Rich Results docs
+//   benefit    — one-line "what this field buys you" for the UI
+//   example    — a ready-to-paste JSON-LD fragment the owner can drop
+//                into their Restaurant block. Uses placeholders in
+//                angle brackets so it's obvious what to replace.
+//
+// The scorecard (client-side renderSchemaRichness) walks the
+// restaurant-like objects returned by /api/schema-check and marks
+// each field present/missing. Copy-paste buttons are rendered for
+// every missing field.
+// ---------------------------------------------------------------------------
+var RESTAURANT_SCHEMA_FIELDS = [
+  { key: 'name',                   label: 'Restaurant name',        priority: 'required',
+    benefit_en: 'The business name as Google should display it.',
+    benefit_es: 'El nombre del negocio como Google debe mostrarlo.',
+    example: '"name": "<Your Restaurant>"' },
+  { key: 'address',                label: 'Structured address',     priority: 'required',
+    benefit_en: 'Unlocks the Maps pin, directions button, and local-pack ranking.',
+    benefit_es: 'Desbloquea el pin del mapa, el botón de indicaciones y el posicionamiento del local-pack.',
+    example: '"address": {\n  "@type": "PostalAddress",\n  "streetAddress": "<123 Main St>",\n  "addressLocality": "<City>",\n  "addressRegion": "<ST>",\n  "postalCode": "<00000>",\n  "addressCountry": "US"\n}' },
+  { key: 'telephone',              label: 'Phone number',           priority: 'required',
+    benefit_en: 'Tap-to-call surface in the Knowledge Panel.',
+    benefit_es: 'Superficie tap-to-call en el Knowledge Panel.',
+    example: '"telephone": "<+1-555-555-5555>"' },
+  { key: 'url',                    label: 'Canonical website URL',  priority: 'required',
+    benefit_en: 'The link Google uses in every rich result surface.',
+    benefit_es: 'El enlace que Google usa en cada superficie de resultado enriquecido.',
+    example: '"url": "<https://yourrestaurant.com/>"' },
+  { key: 'image',                  label: 'Hero images',            priority: 'recommended',
+    benefit_en: 'Images appear in the Knowledge Panel carousel.',
+    benefit_es: 'Las imágenes aparecen en el carrusel del Knowledge Panel.',
+    example: '"image": [\n  "<https://yourrestaurant.com/img/exterior.jpg>",\n  "<https://yourrestaurant.com/img/dining-room.jpg>",\n  "<https://yourrestaurant.com/img/hero-dish.jpg>"\n]' },
+  { key: 'priceRange',             label: 'Price range',            priority: 'recommended',
+    benefit_en: 'Enables price-based filtering in Maps and Search.',
+    benefit_es: 'Permite filtros por precio en Maps y Search.',
+    example: '"priceRange": "$$"' },
+  { key: 'servesCuisine',          label: 'Cuisine',                priority: 'recommended',
+    benefit_en: 'Matches you to queries like "Thai near me" or "Neapolitan pizza".',
+    benefit_es: 'Te empareja con búsquedas como "tailandés cerca de mí" o "pizza napolitana".',
+    example: '"servesCuisine": ["<Italian>", "<Neapolitan Pizza>"]' },
+  { key: 'openingHoursSpecification', label: '7-day opening hours', priority: 'recommended',
+    benefit_en: 'Powers the "Open now" / "Closes at 10 PM" hours panel.',
+    benefit_es: 'Alimenta el panel "Abierto ahora" / "Cierra a las 10 PM".',
+    example: '"openingHoursSpecification": [\n  {\n    "@type": "OpeningHoursSpecification",\n    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday"],\n    "opens": "11:00",\n    "closes": "22:00"\n  },\n  {\n    "@type": "OpeningHoursSpecification",\n    "dayOfWeek": ["Friday","Saturday"],\n    "opens": "11:00",\n    "closes": "23:00"\n  },\n  {\n    "@type": "OpeningHoursSpecification",\n    "dayOfWeek": "Sunday",\n    "opens": "11:00",\n    "closes": "21:00"\n  }\n]' },
+  { key: 'acceptsReservations',    label: 'Reservation flag',       priority: 'recommended',
+    benefit_en: 'Unlocks the "Reserve a table" Knowledge Panel button.',
+    benefit_es: 'Desbloquea el botón "Reserva una mesa" del Knowledge Panel.',
+    example: '"acceptsReservations": true' },
+  { key: 'hasMenu',                label: 'Menu URL',               priority: 'recommended',
+    benefit_en: 'Unlocks the "See menu" link Google shows next to the business.',
+    benefit_es: 'Desbloquea el enlace "Ver menú" que Google muestra junto al negocio.',
+    example: '"hasMenu": "<https://yourrestaurant.com/menu/>"' },
+  { key: 'geo',                    label: 'Geo coordinates',        priority: 'recommended',
+    benefit_en: 'Exact lat/lng improves Maps clustering and "near me" matching.',
+    benefit_es: 'Latitud/longitud exactas mejoran el clustering del mapa y "cerca de mí".',
+    example: '"geo": {\n  "@type": "GeoCoordinates",\n  "latitude": <38.9929>,\n  "longitude": <-77.0268>\n}' },
+  { key: 'aggregateRating',        label: 'Aggregate rating',       priority: 'optional',
+    benefit_en: 'Enables the gold-star rating cluster in search snippets.',
+    benefit_es: 'Activa el racimo de estrellas doradas en los snippets de búsqueda.',
+    example: '"aggregateRating": {\n  "@type": "AggregateRating",\n  "ratingValue": "<4.6>",\n  "reviewCount": "<127>"\n}' },
+  { key: 'sameAs',                 label: 'Social links (sameAs)',  priority: 'optional',
+    benefit_en: 'Connects your schema to your Instagram, Facebook, TripAdvisor, etc.',
+    benefit_es: 'Conecta tu schema con tu Instagram, Facebook, TripAdvisor, etc.',
+    example: '"sameAs": [\n  "<https://instagram.com/yourrestaurant>",\n  "<https://facebook.com/yourrestaurant>"\n]' },
+  { key: 'paymentAccepted',        label: 'Payment methods',        priority: 'optional',
+    benefit_en: 'Some surfaces show "Accepts credit cards" / "Apple Pay accepted".',
+    benefit_es: 'Algunas superficies muestran "Acepta tarjetas" / "Apple Pay aceptado".',
+    example: '"paymentAccepted": "Cash, Credit Card, Apple Pay"' }
+];
+
 // Canonical one-line description used in OG/Twitter cards, PDF cover,
 // share-card footer, and the tool's meta description. Exactly one
 // source of truth — if this string changes, every surface updates.
@@ -2329,7 +2410,21 @@ var UI_I18N = {
     es: 'No se detectó en los selectores comunes que revisamos. Tu proveedor de correo puede usar un selector propio que no podemos confirmar sin acceso.'
   },
   'deep.email.posture.ready':    { en: 'Ready for bulk mail', es: 'Listo para envíos masivos' },
-  'deep.email.posture.notReady': { en: 'Not bulk-mail ready',  es: 'No está listo para envíos masivos' }
+  'deep.email.posture.notReady': { en: 'Not bulk-mail ready',  es: 'No está listo para envíos masivos' },
+  // Sprint D2: schema richness scorecard.
+  'schemaRichness.badge':    { en: 'Schema scorecard', es: 'Tarjeta de schema' },
+  'schemaRichness.heading':  { en: 'How complete is your Restaurant schema?', es: '¿Qué tan completo está tu schema de restaurante?' },
+  'schemaRichness.summary':  {
+    en: '{present} of {total} Google-recommended Restaurant fields populated.',
+    es: '{present} de {total} campos recomendados por Google completos.'
+  },
+  'schemaRichness.present':  { en: 'Present',  es: 'Presente'  },
+  'schemaRichness.missing':  { en: 'Missing',  es: 'Faltante' },
+  'schemaRichness.priority.required':    { en: 'Required',    es: 'Obligatorio' },
+  'schemaRichness.priority.recommended': { en: 'Recommended', es: 'Recomendado' },
+  'schemaRichness.priority.optional':    { en: 'Optional',    es: 'Opcional'    },
+  'schemaRichness.copy':     { en: 'Copy snippet', es: 'Copiar fragmento' },
+  'schemaRichness.copied':   { en: 'Copied!',      es: '¡Copiado!'        }
 };
 
 // Pluralization helper for ES: most nouns just take -es / -s, but
@@ -2394,6 +2489,7 @@ if (typeof module !== 'undefined' && module.exports) {
     MUNTIN_AUDIT_DESCRIPTION_ES: MUNTIN_AUDIT_DESCRIPTION_ES,
     UI_I18N: UI_I18N,
     t: t,
-    poweredByRole: poweredByRole
+    poweredByRole: poweredByRole,
+    RESTAURANT_SCHEMA_FIELDS: RESTAURANT_SCHEMA_FIELDS
   };
 }
