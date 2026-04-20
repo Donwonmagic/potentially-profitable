@@ -583,6 +583,97 @@
     border-top: 1px dashed var(--line);
   }
 
+  /* Sprint N1: NAP (Name / Address / Phone) cross-check. Visually
+     aligned with the D1 email deliverability card because both are
+     telling the owner 'look how your site maps to external sources'.
+     Border-left is rust (warning) because every row this card shows
+     is a real inconsistency that search engines can see. Hidden when
+     there are no mismatches — accuracy rule, never rendered blank. */
+  .nap-check-card {
+    max-width: 1100px;
+    margin: 24px auto 0;
+    padding: 22px 26px;
+    background: var(--white);
+    border: 1px solid var(--line, #E6DFCE);
+    border-left: 4px solid var(--rust, #B8541A);
+    border-radius: 14px;
+  }
+  .nap-check-card[hidden] { display: none; }
+  .nap-check-head {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+  .nap-check-eyebrow {
+    align-self: flex-start;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--rust, #B8541A);
+    background: #FAE9DE;
+    border-radius: 999px;
+  }
+  .nap-check-title {
+    margin: 4px 0 0;
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .nap-check-sub {
+    margin: 0 0 12px;
+    color: var(--stone);
+    font-size: 14px;
+    max-width: 780px;
+  }
+  .nap-check-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .nap-check-row {
+    padding: 12px 14px;
+    background: var(--cream, #FAF7F2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+  .nap-check-row-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--stone);
+    margin-bottom: 6px;
+  }
+  .nap-check-row-sources {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .nap-check-source {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 13.5px;
+    color: var(--ink);
+  }
+  .nap-check-source-name {
+    min-width: 120px;
+    color: var(--stone);
+    font-size: 12.5px;
+  }
+  .nap-check-source-value {
+    font-family: var(--font-body);
+    font-weight: 500;
+    word-break: break-word;
+  }
+
   /* Sprint D4: Open Graph / Twitter Card completeness. Same
      visual language as the D2 schema scorecard — cream base,
      teal accent, copy buttons for gaps — but ORDER-DIFFERENT
@@ -3886,6 +3977,22 @@
           </details>
         </div>
       </div>
+
+      <!-- Sprint N1: NAP (Name/Address/Phone) cross-check. Renders
+           ONLY when we have at least two sources for a field AND
+           they disagree. Accuracy rule: no speculation — we only
+           surface a mismatch when the normalized values actually
+           differ across verified sources (Google Places, schema.org
+           JSON-LD, on-page text). Hidden entirely when everything
+           lines up or when we don't have enough signals to compare. -->
+      <section class="nap-check-card" id="napCheckCard" hidden>
+        <header class="nap-check-head">
+          <span class="nap-check-eyebrow" data-tr="nap.eyebrow">Local listing consistency</span>
+          <h3 class="nap-check-title" data-tr="nap.heading">Your name, address, and phone don't line up across sources</h3>
+        </header>
+        <p class="nap-check-sub" data-tr="nap.sub">Google ranks local businesses higher when their Business Profile, website schema, and on-page text all match. Every mismatch below is a citation inconsistency search engines can see — pick the canonical value and unify.</p>
+        <ul class="nap-check-list" id="napCheckList"></ul>
+      </section>
 
       <!-- Sprint D4: Open Graph / Twitter Card completeness. Reuses
            the existing checkOgShareMeta() detector against the
@@ -8059,6 +8166,11 @@
     renderPlacesFactsCard();
     renderSchemaRichness();
     renderOgCompleteness();
+    // Sprint N1: NAP cross-check runs after the renderers that
+    // expose __auditPlaces / __auditSchema / __auditCrawl so the
+    // card always sees the latest signal state. It self-hides
+    // when there's nothing to flag.
+    renderNapCheck();
     renderBuiltByFooter();
   }
 
@@ -9322,6 +9434,184 @@
     var s = document.createElement('span');
     s.textContent = txt;
     return s;
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // Sprint N1: NAP (Name / Address / Phone) cross-check
+  //
+  // Walks three verified signal sources — Google Places, schema.org
+  // JSON-LD, and on-page text — and flags every field whose values
+  // don't line up. Each row surfaces one mismatched attribute with
+  // every source's value so the owner can pick the canonical one
+  // and unify.
+  //
+  // Accuracy rules:
+  //   * Need ≥2 sources per field before we can compare. Single-
+  //     source fields are dropped silently.
+  //   * Normalized comparisons (not exact strings). A phone compares
+  //     by last-10 digits. A name compares lowercased letters-only.
+  //     An address compares by street-number + zip. Case, formatting,
+  //     and decorative punctuation can differ without flagging.
+  //   * The card is hidden entirely when nothing disagrees. Never
+  //     rendered with "no issues found" copy — that's noise.
+  // ─────────────────────────────────────────────────────────────
+  function normalizePhoneForCompare(v) {
+    if (!v) return null;
+    var digits = String(v).replace(/\D/g, '');
+    if (digits.length < 7) return null;
+    return digits.slice(-10); // US/CA/ intl last-10 is the stable key
+  }
+  function normalizeNameForCompare(v) {
+    if (!v) return null;
+    var s = String(v).toLowerCase()
+      .replace(/&/g, 'and')
+      .replace(/[^a-z0-9]/g, '');
+    return s.length >= 3 ? s : null;
+  }
+  function normalizeAddressForCompare(v) {
+    if (!v) return null;
+    // Extract the leading street number + trailing 5-digit zip —
+    // the two parts of an address that rarely vary in formatting.
+    // If both are present in both sources, comparison is safe.
+    var s = String(v).toLowerCase();
+    var numMatch = s.match(/\b(\d{1,6})\b/);
+    var zipMatch = s.match(/\b(\d{5})(?:-\d{4})?\b/);
+    var num = numMatch ? numMatch[1] : '';
+    var zip = zipMatch ? zipMatch[1] : '';
+    if (!num && !zip) return null; // not enough signal to compare
+    return num + '|' + zip;
+  }
+  function schemaAddressToString(addr) {
+    if (!addr) return null;
+    if (typeof addr === 'string') return addr;
+    if (typeof addr === 'object') {
+      var parts = [];
+      if (addr.streetAddress)   parts.push(String(addr.streetAddress));
+      if (addr.addressLocality) parts.push(String(addr.addressLocality));
+      if (addr.addressRegion)   parts.push(String(addr.addressRegion));
+      if (addr.postalCode)      parts.push(String(addr.postalCode));
+      return parts.length ? parts.join(', ') : null;
+    }
+    return null;
+  }
+  function firstSchemaFieldValue(schema, field) {
+    if (!schema || !Array.isArray(schema.objects)) return null;
+    for (var i = 0; i < schema.objects.length; i++) {
+      var obj = schema.objects[i];
+      if (obj && obj[field] != null && obj[field] !== '') return obj[field];
+    }
+    return null;
+  }
+  function renderNapCheck() {
+    var card = document.getElementById('napCheckCard');
+    var list = document.getElementById('napCheckList');
+    if (!card || !list) return;
+
+    var places = window.__auditPlaces;
+    var schema = window.__auditSchema;
+
+    // Accuracy rule: Places + schema are the two gold-standard
+    // sources. Homepage H1/title add a third source for the name
+    // field (where H1 is typically the restaurant name). We skip
+    // on-page phone and address extraction entirely — substring
+    // regex matches in concatenated Lighthouse text can misfire
+    // (fax numbers, addresses for catering pickup points, etc.)
+    // and a false-positive mismatch is worse than a silent miss.
+    var placesEntity = (places && places.ok && places.place) ? places.place : null;
+
+    // ----- Phone -----
+    var phoneSources = [];
+    if (placesEntity && placesEntity.nationalPhoneNumber) {
+      phoneSources.push({ source: 'places', value: placesEntity.nationalPhoneNumber });
+    }
+    var schemaPhone = firstSchemaFieldValue(schema, 'telephone');
+    if (schemaPhone) phoneSources.push({ source: 'schema', value: String(schemaPhone) });
+
+    // ----- Name -----
+    var nameSources = [];
+    if (placesEntity && placesEntity.name) {
+      nameSources.push({ source: 'places', value: String(placesEntity.name) });
+    }
+    var schemaName = firstSchemaFieldValue(schema, 'name');
+    if (schemaName) nameSources.push({ source: 'schema', value: String(schemaName) });
+    // On-page name: use homepage H1/title. These are signals the
+    // crawl already captured — no new extraction needed.
+    var crawlHome = window.__auditCrawl && window.__auditCrawl.homepage;
+    if (crawlHome && crawlHome.h1) {
+      nameSources.push({ source: 'page', value: String(crawlHome.h1) });
+    } else if (crawlHome && crawlHome.title) {
+      nameSources.push({ source: 'page', value: String(crawlHome.title) });
+    }
+
+    // ----- Address -----
+    var addressSources = [];
+    if (placesEntity && placesEntity.address) {
+      addressSources.push({ source: 'places', value: String(placesEntity.address) });
+    }
+    var schemaAddrRaw = firstSchemaFieldValue(schema, 'address');
+    var schemaAddrStr = schemaAddressToString(schemaAddrRaw);
+    if (schemaAddrStr) addressSources.push({ source: 'schema', value: schemaAddrStr });
+    // No on-page address extraction — too noisy to do accuracy-safely
+    // without a real geoparser. Two-source comparison is enough for
+    // a confident mismatch call.
+
+    function hasMismatch(sources, normalizer) {
+      if (!sources || sources.length < 2) return false;
+      var seen = null;
+      for (var i = 0; i < sources.length; i++) {
+        var norm = normalizer(sources[i].value);
+        if (norm == null) continue;
+        if (seen === null) { seen = norm; continue; }
+        if (seen !== norm) return true;
+      }
+      return false;
+    }
+
+    var rows = [];
+    if (hasMismatch(phoneSources, normalizePhoneForCompare)) {
+      rows.push({ label: t('nap.label.phone'), sources: phoneSources });
+    }
+    if (hasMismatch(nameSources, normalizeNameForCompare)) {
+      rows.push({ label: t('nap.label.name'), sources: nameSources });
+    }
+    if (hasMismatch(addressSources, normalizeAddressForCompare)) {
+      rows.push({ label: t('nap.label.address'), sources: addressSources });
+    }
+
+    if (!rows.length) {
+      card.hidden = true;
+      return;
+    }
+
+    list.innerHTML = '';
+    rows.forEach(function(row){
+      var li = document.createElement('li');
+      li.className = 'nap-check-row';
+      var labelEl = document.createElement('div');
+      labelEl.className = 'nap-check-row-label';
+      labelEl.textContent = row.label;
+      li.appendChild(labelEl);
+
+      var sourcesEl = document.createElement('div');
+      sourcesEl.className = 'nap-check-row-sources';
+      row.sources.forEach(function(s){
+        var sRow = document.createElement('div');
+        sRow.className = 'nap-check-source';
+        var name = document.createElement('span');
+        name.className = 'nap-check-source-name';
+        name.textContent = t('nap.source.' + s.source);
+        var val = document.createElement('span');
+        val.className = 'nap-check-source-value';
+        val.textContent = s.value;
+        sRow.appendChild(name);
+        sRow.appendChild(val);
+        sourcesEl.appendChild(sRow);
+      });
+      li.appendChild(sourcesEl);
+      list.appendChild(li);
+    });
+
+    card.hidden = false;
   }
 
   // Phase L1: email gate retired. The deep tier always renders

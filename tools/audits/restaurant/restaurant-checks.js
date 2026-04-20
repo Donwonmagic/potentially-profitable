@@ -2551,7 +2551,25 @@ var UI_I18N = {
   'effort.self':    { en: 'Fix yourself',      es: 'Arreglo propio' },
   'effort.dev':     { en: 'Ask your developer', es: 'Pregunta a tu desarrollador' },
   'effort.rebuild': { en: 'Rebuild needed',    es: 'Se necesita rehacer' },
-  'effort.halfday': { en: 'Half-day project',  es: 'Proyecto de medio día' }
+  'effort.halfday': { en: 'Half-day project',  es: 'Proyecto de medio día' },
+  // Sprint N1: NAP cross-check card (Name/Address/Phone consistency
+  // across Google Places, schema.org, and on-page text). Rows render
+  // one per mismatched field, with sub-labels for each source.
+  'nap.eyebrow': { en: 'Local listing consistency', es: 'Consistencia de ficha local' },
+  'nap.heading': {
+    en: "Your name, address, and phone don't line up across sources",
+    es: 'Tu nombre, dirección y teléfono no coinciden entre fuentes'
+  },
+  'nap.sub': {
+    en: "Google ranks local businesses higher when their Business Profile, website schema, and on-page text all match. Every mismatch below is a citation inconsistency search engines can see — pick the canonical value and unify.",
+    es: 'Google posiciona mejor a los negocios locales cuando su Perfil de Empresa, el schema del sitio y el texto en la página coinciden. Cada desajuste de abajo es una inconsistencia de citación que los buscadores detectan — elige el valor canónico y unifícalo.'
+  },
+  'nap.label.phone':   { en: 'Phone number',   es: 'Teléfono' },
+  'nap.label.address': { en: 'Address',        es: 'Dirección' },
+  'nap.label.name':    { en: 'Business name',  es: 'Nombre del negocio' },
+  'nap.source.places': { en: 'Google Places',  es: 'Google Places' },
+  'nap.source.schema': { en: 'Your schema',    es: 'Tu schema' },
+  'nap.source.page':   { en: 'Your page text', es: 'Texto en tu página' }
 };
 
 // Pluralization helper for ES: most nouns just take -es / -s, but
