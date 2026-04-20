@@ -73,6 +73,7 @@ const API_ROUTES = {
   '/api/psi':           handlePsi,
   '/api/did-you-mean':  handleDidYouMean,
   '/api/observatory':   handleObservatory,
+  '/api/wayback-first-seen': handleWaybackFirstSeen,
 };
 
 
@@ -94,7 +95,7 @@ export default {
           404
         );
       }
-      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory') {
+      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
         }
@@ -2274,6 +2275,57 @@ async function handleObservatory(request, env, ctx) {
   } catch (err) {
     console.error('[observatory]', err && err.stack ? err.stack : err);
     return jsonResponse({ ok: false, error: 'observatory-unreachable' }, 502);
+  }
+}
+
+// ------------------------------------------------------------
+// /api/wayback-first-seen — Internet Archive CDX lookup.
+//
+// Returns the year a URL was first captured by the Wayback Machine
+// + total snapshot count. Deep Scan renders a subtle "live since
+// YYYY" chip when the answer is definite; omits the chip when CDX
+// returns nothing (accuracy rule: we do not show a year we are
+// uncertain about). Free public API, no key required.
+// ------------------------------------------------------------
+async function handleWaybackFirstSeen(request, env, ctx) {
+  const url = new URL(request.url);
+  const target = (url.searchParams.get('url') || '').trim();
+  const lang = pickLang(request);
+  const gate = assertSafeHttpUrl(target, lang);
+  if (!gate.ok) {
+    return jsonResponse({ ok: false, error: gate.error }, gate.status);
+  }
+
+  try {
+    // CDX returns lines of JSON — use output=json + limit=1 with the
+    // earliest timestamp filter. Fields: urlkey, timestamp, original,
+    // mimetype, statuscode, digest, length.
+    const cdxUrl = 'https://web.archive.org/cdx/search/cdx?url=' +
+                   encodeURIComponent(gate.url.toString()) +
+                   '&output=json&fl=timestamp&limit=1&filter=statuscode:200';
+    const res = await fetch(cdxUrl, {
+      headers: { 'User-Agent': 'MuntinDigital-Audit/1.0' },
+      signal: AbortSignal.timeout(6000)
+    });
+    if (!res.ok) {
+      return jsonResponse({ ok: false, error: 'wayback-unreachable' }, 502);
+    }
+    const rows = await res.json();
+    // First row is a header. Second row (if any) has the timestamp.
+    if (!Array.isArray(rows) || rows.length < 2 || !rows[1] || !rows[1][0]) {
+      return jsonResponse({ ok: true, firstSeen: null, year: null });
+    }
+    const ts = String(rows[1][0]);
+    const year = parseInt(ts.slice(0, 4), 10);
+    // Defensive: Wayback timestamps are YYYYMMDDhhmmss. If the parse
+    // produces anything outside a realistic range, omit.
+    if (!Number.isFinite(year) || year < 1996 || year > (new Date().getUTCFullYear() + 1)) {
+      return jsonResponse({ ok: true, firstSeen: null, year: null });
+    }
+    return jsonResponse({ ok: true, firstSeen: ts, year: year });
+  } catch (err) {
+    console.error('[wayback]', err && err.stack ? err.stack : err);
+    return jsonResponse({ ok: false, error: 'wayback-error' }, 502);
   }
 }
 
