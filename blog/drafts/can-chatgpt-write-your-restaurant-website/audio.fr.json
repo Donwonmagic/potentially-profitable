@@ -1,0 +1,291 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-20T18:18:09.691Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "ff_siwis",
+  "language": "fr",
+  "total": 495.7,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Si vous avez déjà ouvert ChatGPT, tapé « écrire la page À propos de mon restaurant italien » et immédiatement senti quelque chose se serrer dans votre estomac lorsque le résultat est revenu, vous connaissez déjà la réponse à la moitié de ce message. La copie était bien. C’était aussi exactement la même copie que tous les autres restaurateurs italiens regardaient sur leur écran depuis deux ans maintenant, avec des échanges de mots mineurs. On pourrait sentir, sans pouvoir l’exprimer, que le résultat pourrait être n’importe quel restaurant. C'est le problème.",
+      "start": 0,
+      "end": 23.6
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Mais la réponse complète est plus utile que « L’IA ne peut pas écrire un site Web de restaurant ». Il peut absolument en écrire des parties, rapidement et bien. L'astuce consiste à savoir quelles parties, comment le briefer et où s'arrêter, car les parties de votre site Web qui incitent les invités à vous choisir au lieu de l'endroit de l'autre côté de la rue sont exactement les parties que l'IA est la pire pour écrire sans y être invité.",
+      "start": 24.12,
+      "end": 44
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Laissez-moi vous montrer ce que je veux dire avec la même invite, trois niveaux d'effort différents.",
+      "start": 44.52,
+      "end": 49.48
+    },
+    {
+      "id": 3,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Voici la même invite : « écrivez le paragraphe d'introduction de la page À propos d'un restaurant italien du quartier » – s'exécute de trois manières. Premier laissez-passer générique : « Notre expérience culinaire italienne authentique apporte les saveurs de l'Italie dans votre quartier. Découvrez l'hospitalité et la tradition dans notre restaurant familial. C'est une phrase que vous avez lue sur cinq cents autres sites Web de restaurants. Il ne dit rien de spécifique au client. Légèrement suggéré, avec un contexte de base sur le restaurant : « Une trattoria de quartier au cœur de Silver Spring, servant quotidiennement des pâtes faites à la main et des pizzas au feu de bois que nous avons perfectionnées pendant quinze ans. Mieux – emplacement, détails, caractère – mais se lit toujours comme une brochure. Écrit nativement, par un humain qui connaît réellement les lieux : « Chaque dimanche depuis 1998, Nonna prépare la même sauce rouge. Huit heures, pas de raccourcis, pas de négociation. C'est sur tous les plats de pâtes que nous servons, car le changer serait un combat qu'aucun de nous ne gagnerait. Mêmes informations, registre totalement différent. Cette voix spécifique, ancrée dans une histoire spécifique, est ce qui donne au client l'impression qu'il choisit ce restaurant et non un modèle.",
+      "start": 50.28,
+      "end": 110.06
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Tous les trois sont grammaticaux. Tous les trois « passeraient » l’évaluation d’un éditeur. Un seul d’entre eux donne envie d’y manger.",
+      "start": 110.81,
+      "end": 116.97
+    },
+    {
+      "id": 5,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Où l’IA est vraiment bonne pour un site Web de restaurant.",
+      "start": 118.07,
+      "end": 121.16
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Je ne suis pas un sceptique en matière d’IA. J'utilise ChatGPT tous les jours. Il présente des cas d'utilisation réels et durables pour un restaurateur indépendant qui essaie également de gérer son propre site Web à onze heures. un mardi. Trois d’entre eux spécifiquement :",
+      "start": 121.86,
+      "end": 136.81
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(1)",
+      "text": "1. Descriptions des éléments de menu à l'échelle.",
+      "start": 137.91,
+      "end": 140.17
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Si vous avez un menu de cinquante plats et pas de temps, l'IA est très efficace pour transformer une note de préparation interne d'une seule ligne (« poulet en brique, citron, romarin, servi sur une pomme de terre ») en une description de deux phrases destinée aux invités. C’est vraiment utile. Il remplace le \"même nom de plat sans description\" par défaut avec lequel la plupart des sites de restaurants sont livrés.",
+      "start": 140.87,
+      "end": 159.36
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "La clé est que l’invite doit inclure vos échantillons vocaux. Donnez à ChatGPT trois éléments de menu déjà écrits comme vous le souhaitez, puis demandez-lui de faire correspondre ce registre pour le reste. Sans les échantillons de voix, vous obtenez la sortie de l'étape 1 ci-dessus, appliquée cinquante fois.",
+      "start": 159.88,
+      "end": 176.11
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(2)",
+      "text": "2. Un brouillon pour les pages que l’invité ne lira pas réellement attentivement.",
+      "start": 177.21,
+      "end": 181
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Toutes les pages de votre site Web ne sont pas porteuses. Votre politique de confidentialité ne ferme pas les réservations. Votre page d'informations sur les allergènes ne change pas l'avis d'un client. Pour les pages à caractère de conformité qui ont juste besoin d'exister et d'être compétentes, l'IA convient parfaitement. Expédiez-le, continuez.",
+      "start": 181.7,
+      "end": 200.17
+    },
+    {
+      "id": 12,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(3)",
+      "text": "3. Structure et grandes lignes.",
+      "start": 201.27,
+      "end": 202.82
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "L’IA est vraiment meilleure que la plupart des humains en matière de dessin. Demandez à ChatGPT « quelles sont généralement les sections d'une page À propos d'un restaurant, classées en fonction de leur influence sur la décision d'un client de réserver », et vous obtiendrez un cadre utile en trente secondes. Utilisez le plan. Écrivez vous-même les mots réels.",
+      "start": 203.52,
+      "end": 221.31
+    },
+    {
+      "id": 14,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Là où l’IA donne discrètement tort à votre restaurant.",
+      "start": 222.41,
+      "end": 224.97
+    },
+    {
+      "id": 15,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(4)",
+      "text": "1. Les détails qui incitent les clients à vous faire confiance.",
+      "start": 226.07,
+      "end": 229.06
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Les sites Web de restaurants fonctionnent ou non sur des spécificités. « Nous nous approvisionnons dans une ferme de Poolesville » vaut dix phrases sur les « ingrédients d'origine locale ». \"Notre chef pâtissier formé chez Del Posto\" vaut un paragraphe sur \"notre équipe talentueuse\". L'IA, sans y être invité, utilise par défaut le général car le général correspond à ce qui se trouve dans ses données d'entraînement. Les clients font confiance au spécifique parce que le spécifique est l’opposé d’un modèle.",
+      "start": 229.76,
+      "end": 251.99
+    },
+    {
+      "id": 17,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(5)",
+      "text": "2. Votre cadence.",
+      "start": 253.09,
+      "end": 254.25
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Chaque restaurant qui écrit sa propre copie a une cadence : la durée des phrases, l'endroit où tombent les tirets, le registre dans lequel se trouve la voix. L'IA aplatit cela dans le premier paragraphe. Vous pouvez le briefer pour résoudre ce problème, mais la plupart des opérateurs ne le font pas, car briefer correctement l'IA prend à peu près le même temps que simplement écrire la chose.",
+      "start": 254.95,
+      "end": 273.83
+    },
+    {
+      "id": 19,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(6)",
+      "text": "3. Les moments qui nécessitent du jugement.",
+      "start": 274.93,
+      "end": 276.93
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "La partie la plus difficile de la rédaction d’un texte de restaurant n’est pas de trouver les mots : il s’agit de savoir quelles trois choses dire dans un paragraphe de quatre phrases et lesquelles ne pas dire. C’est du jugement, et le jugement est exactement ce qu’un modèle de langage ne peut pas faire. Il ne sait pas que l’histoire de l’ouverture au cours du premier hiver de la pandémie est celle qui fait vendre la salle, et que l’histoire du changement de menu en douceur trois ans plus tard ne l’est pas. Vous le savez. C’est vous qui devez le taper.",
+      "start": 277.63,
+      "end": 299.51
+    },
+    {
+      "id": 21,
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Les parties du site Web d'un restaurant qui incitent les clients à vous choisir sont précisément celles qu'une IA est la moins bonne à écrire. Ce qui signifie que le temps que vous gagnez avec ChatGPT doit être réinvesti quelque part, sinon le site devient plus plat, pas plus rapide.",
+      "start": 300.26,
+      "end": 315.49
+    },
+    {
+      "id": 22,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Le briefing d’une page qui corrige le problème.",
+      "start": 316.59,
+      "end": 319.3
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Si vous envisagez d'utiliser l'IA pour la copie de votre restaurant - et vous devriez le faire - vous devez lui donner autre chose que \"écrire ma page À propos\". Voici le modèle de briefing que j'utilise lorsque je travaille avec des opérateurs qui souhaitent gérer leur propre contenu. Écrivez ceci une fois, enregistrez-le dans un document Google, collez-le comme première invite chaque fois que vous ouvrez une nouvelle conversation ChatGPT.",
+      "start": 320,
+      "end": 340.54
+    },
+    {
+      "id": 24,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Le restaurant, en une phrase. Quartier, cuisine, années d'ouverture, un détail distinctif. \"Un endroit italien de douze ans à Takoma Park connu pour sa sauce rouge du dimanche.\" Une phrase.",
+      "start": 341.06,
+      "end": 352.51
+    },
+    {
+      "id": 25,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Trois vraies spécificités. La ferme d’où vous vous approvisionnez, l’expérience du chef, le plat que les invités demandent le plus. Noms spécifiques, personnes spécifiques, lieux spécifiques. C’est ce que l’IA refuse autrement d’inventer (à juste titre).",
+      "start": 352.83,
+      "end": 366.51
+    },
+    {
+      "id": 26,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Trois échantillons de voix. Trois courts paragraphes déjà écrits comme vous le souhaitez. Votre meilleure légende Instagram, votre meilleure description de menu, votre meilleur email à vos habitués. L'IA est une imitation ; donnez-lui quelque chose de réel à imiter.",
+      "start": 366.83,
+      "end": 381
+    },
+    {
+      "id": 27,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Trois choses que vous ne voulez jamais dire. «Authentique», «passionné», «élevé» – les mots utilisés par défaut dans chaque copie de restaurant. Interdisez-les explicitement.",
+      "start": 381.32,
+      "end": 390.51
+    },
+    {
+      "id": 28,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "La tâche, étroite. Ne dites pas « écrivez ma page À propos ». Dites « écrivez un paragraphe d'introduction de 150 mots pour la page À propos qui mentionne la sauce rouge du dimanche et se termine par une ligne qui donne envie à un nouveau client de réserver ce week-end ».",
+      "start": 390.83,
+      "end": 405.92
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Avec ce briefing en place, l’IA passe du résultat de l’étape 1 à quelque chose de plus proche de l’étape 2. Il n’atteindra pas l’étape 3 – la voix native, la partie qui donne l’impression que seul votre restaurant aurait pu écrire ceci – mais cela vous mènera à 70 % du chemin. Votre travail concerne les 30 % restants : ajouter le détail spécifique que l'IA ne connaissait pas, couper la phrase qui se lit un peu trop comme une brochure, échanger un adjectif générique contre un nom concret.",
+      "start": 406.44,
+      "end": 428.58
+    },
+    {
+      "id": 30,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Alors… devrait-il ?",
+      "start": 429.68,
+      "end": 430.73
+    },
+    {
+      "id": 31,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Oui, pour les descriptions de menu, les grandes lignes et la copie de conformité. Avec hésitation, pour les premières ébauches de pages, vous modifierez fortement. Non, pour les trois pages qui ferment réellement un invité : le héros de votre page d'accueil, votre histoire À propos et la raison en une ligne pour laquelle quelqu'un devrait choisir votre restaurant plutôt que celui d'apparence identique à quatre pâtés de maisons.",
+      "start": 431.43,
+      "end": 450.96
+    },
+    {
+      "id": 32,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Ces trois-là, écrivez-vous. Même si cela vous prend un week-end. Même si la première ébauche est mauvaise. Parce qu'un week-end de mauvaises phrases écrites par la personne qui possède le restaurant battra toujours un brouillon d'IA soigné écrit par personne en particulier. Ce n’est pas de la sentimentalité, c’est un point de conversion. Les clients peuvent sentir la différence entre « quelqu’un qui se soucie de cet endroit a écrit ceci » et « quelque chose qui ne se souciait de rien a écrit ceci ». La différence de conversion entre les deux est mesurable et non minime.",
+      "start": 451.48,
+      "end": 477.21
+    },
+    {
+      "id": 33,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "ChatGPT est un outil puissant. C’est très efficace pour déplacer des objets lourds à travers la pièce. Ce n'est pas un menuisier. Utilisez-le pour ce à quoi il sert et gardez le jugement – ​​la voix, les détails, les moments qui font qu’un restaurant se sent comme un lieu et non comme une entreprise – pour vous-même.",
+      "start": 477.73,
+      "end": 493.98
+    },
+    {
+      "id": 34,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Ou engagez un menuisier.",
+      "start": 494.5,
+      "end": 495.7
+    }
+  ]
+}
