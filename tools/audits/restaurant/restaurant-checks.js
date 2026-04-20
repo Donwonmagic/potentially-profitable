@@ -6,7 +6,7 @@
  * consumer script (matching the pattern used by the sibling wellness
  * audit at ../wellness/wellness-checks.js).
  *
- * Detection categories (populated in later sprints):
+ * Detection categories:
  *   ordering     — online ordering platforms (Toast, Square, ChowNow, …)
  *   reservations — reservation platforms (OpenTable, Resy, Tock, …)
  *   maps         — embedded maps and directions
@@ -16,8 +16,57 @@
  * the page's HTML. If any URL contains the pattern string, the
  * platform is detected.
  *
- * Subsequent sprints (A2–A7) move the existing inline definitions out
- * of index.html into this module without changing behavior.
+ * ---------------------------------------------------------------------
+ * Sprint 1 (M1.1–M1.18): Detector-fusion context
+ * ---------------------------------------------------------------------
+ *
+ * `evaluatePriorityCheck(def, audits, allUrls, pageText, context)` in
+ * index.html dispatches each def.type to its handler. The optional 5th
+ * argument `context` bundles the richer signals that Sprint 1 added:
+ *
+ *   context = {
+ *     places: {                        // null if no matching GBP listing
+ *       ok: true,
+ *       place: {                       // normalized Places v1 result
+ *         nationalPhoneNumber, location {lat, lng},
+ *         takeout, delivery, reservable, dineIn,
+ *         servesBreakfast / Lunch / Dinner / Brunch,
+ *         servesBeer / Wine / Cocktails / Coffee / Dessert,
+ *         servesVegetarianFood,
+ *         primaryTypeDisplayName, editorialSummary,
+ *         priceLevel, businessStatus,
+ *         rating, reviewCount, photoCount,
+ *         weekdayHoursText                 // human-readable hours
+ *       }
+ *     },
+ *     schema: {                        // null if /api/schema-check failed
+ *       validation: {
+ *         openingHours, priceRange, address,
+ *         servesCuisine, acceptsReservations, hasMenu   // each with {present, valid, reason, value}
+ *       },
+ *       objects: []                    // raw JSON-LD array
+ *     },
+ *     crawl: {                         // null if /api/page-crawl failed
+ *       homepage: { url, status, html, title, h1 },
+ *       pages: [                       // slot-tagged follow-up fetches
+ *         { slot, url, status, html, title, h1, error? },
+ *         ...
+ *       ],
+ *       capHit                         // true if the 15s timer fired
+ *     }
+ *   }
+ *
+ * Detectors that read the context gracefully degrade when any field is
+ * null — they fall back to the existing regex/keyword path. This is how
+ * the Fast Scan path stays callable when Places or schema check fails.
+ *
+ * When adding a new detector fuse, always null-guard the chain:
+ *     var place = context && context.places && context.places.place;
+ *     if (place && place.takeout === true) return makeResult(def, 'pass');
+ *
+ * The competitor-comparison flow in index.html deliberately passes NO
+ * context because the user's Places signal is not valid for a competing
+ * URL — mixing them would bias cross-URL scoring.
  */
 
 // ---------------------------------------------------------------------------
