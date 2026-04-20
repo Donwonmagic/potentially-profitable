@@ -84,7 +84,7 @@ const VALUED = new Set([
   '--kokoro-voice-zh',
   '--languages',
   '--f5-ref-audio', '--f5-ref-text', '--f5-speed', '--f5-nfe-step',
-  '--f5-device',
+  '--f5-cfg-strength', '--f5-device',
 ]);
 const flags = new Set(args.filter((a) => a.startsWith('--') && !VALUED.has(a)));
 const positional = [];
@@ -158,10 +158,24 @@ const LANG_KOKORO_TAG = {
 // support is limited compared to Kokoro, and the point of F5 on this
 // site is specifically "Don's English voice"). Reference audio + text
 // transcript live in scripts/voice-refs/ by default.
+//
+// Defaults tuned after first-listen feedback on Don's own voice:
+//   speed=0.9          — reads a touch slower than the reference pace,
+//                        which tended to rush. Tweakable via --f5-speed.
+//   nfe-step=48        — bumped from 32 to reduce "reference bleed"
+//                        (where F5-TTS echoes phrases from the ref
+//                        transcript when they overlap content phrases
+//                        — e.g. the reservations post repeating
+//                        "this post breaks down…"). Costs ~50% more
+//                        compute per chunk but noticeably cleaner.
+//   cfg-strength=3     — same rationale; stronger classifier-free
+//                        guidance keeps the model closer to gen_text
+//                        and away from the reference.
 const f5RefAudio = optVal('--f5-ref-audio') || 'scripts/voice-refs/don-reference.m4a';
 const f5RefText  = optVal('--f5-ref-text')  || 'scripts/voice-refs/don-reference.txt';
-const f5Speed    = optVal('--f5-speed')     || '1.0';
-const f5NfeStep  = optVal('--f5-nfe-step')  || '32';
+const f5Speed    = optVal('--f5-speed')     || '0.9';
+const f5NfeStep  = optVal('--f5-nfe-step')  || '48';
+const f5CfgStrength = optVal('--f5-cfg-strength') || '3';
 const f5Device   = optVal('--f5-device')    || '';
 
 const dryRun = flags.has('--dry-run');
@@ -262,16 +276,19 @@ function renderLanguage(postDir, chunks, lang) {
     GAP_CACHE.set(key, p);
     return p;
   }
+  // Gap values tuned for natural "breath" spots. Each pause is long
+  // enough the listener hears a beat between thoughts, short enough
+  // that the piece doesn't drag. Tuned by ear on Don's cloned voice.
   function gapBefore(chunk, prev) {
     if (!prev) return 0;
-    if (chunk.kind === 'heading') return 0.80;
-    if (chunk.kind === 'figure')  return 0.55;
-    if (prev.kind === 'heading')  return 0.45;
-    if (prev.kind === 'figure')   return 0.50;
-    if (chunk.kind === 'list' && prev.kind === 'list') return 0.22;
-    if (chunk.kind === 'quote' || prev.kind === 'quote') return 0.55;
+    if (chunk.kind === 'heading') return 1.10;           // section break
+    if (chunk.kind === 'figure')  return 0.80;           // before graphic
+    if (prev.kind === 'heading')  return 0.70;           // after heading
+    if (prev.kind === 'figure')   return 0.75;           // after graphic
+    if (chunk.kind === 'list' && prev.kind === 'list') return 0.32;
+    if (chunk.kind === 'quote' || prev.kind === 'quote') return 0.75;
     const prevEndsSentence = /[.!?]$/.test(prev.text);
-    return prevEndsSentence ? 0.32 : 0.22;
+    return prevEndsSentence ? 0.52 : 0.35;
   }
 
   // For F5-mode English we log the reference voice name (not a Kokoro
@@ -449,9 +466,10 @@ function synthesizeF5(chunks, outDir) {
     helper,
     '--ref-audio',  path.resolve(repoRoot, f5RefAudio),
     '--ref-text',   path.resolve(repoRoot, f5RefText),
-    '--speed',      f5Speed,
-    '--nfe-step',   f5NfeStep,
-    '--output-dir', outDir,
+    '--speed',         f5Speed,
+    '--nfe-step',      f5NfeStep,
+    '--cfg-strength',  f5CfgStrength,
+    '--output-dir',    outDir,
   ];
   if (f5Device) { args.push('--device', f5Device); }
   const payload = JSON.stringify({
