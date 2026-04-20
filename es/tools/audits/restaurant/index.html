@@ -2980,6 +2980,38 @@
     padding-top: 4px;
   }
   .priority-item .link:hover { color: var(--teal-dark); }
+  /* Sprint F1: "Copy for your developer" button on failing +
+     unverified priority check rows. Same visual class as the existing
+     feedback-btn but filled-teal to distinguish the primary handoff
+     action. Only rendered on actionable items. */
+  .dev-prompt-btn {
+    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--teal);
+    background: transparent;
+    border: 1px solid var(--teal);
+    border-radius: 999px;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+  }
+  .dev-prompt-btn::before {
+    content: '⧉';
+    font-size: 13px;
+    line-height: 1;
+  }
+  .dev-prompt-btn:hover,
+  .dev-prompt-btn:focus {
+    background: var(--teal);
+    color: var(--white, #ffffff);
+    outline: none;
+  }
+  @media print { .dev-prompt-btn { display: none !important; } }
   @media (max-width: 640px) {
     .priority-item { grid-template-columns: 28px 1fr; }
     .priority-item .link { grid-column: 2; padding-top: 0; }
@@ -9748,6 +9780,92 @@
   }
 
   // ─────────────────────────────────────────────────────────────
+  // Sprint F1: dev-handoff prompt builder.
+  //
+  // Converts a priority-check definition + the audited URL into a
+  // markdown-formatted message the owner can paste directly into
+  // an email, a support ticket, or an AI assistant. Accuracy-safe:
+  // every line is composed from data the audit already produced.
+  // No speculation, no invented context.
+  //
+  // Output format (EN):
+  //   ## Website audit finding: <title>
+  //
+  //   Auditado: <url>
+  //
+  //   **What we found**
+  //   <failNote / unverifiedNote, HTML stripped>
+  //
+  //   **Why it matters**
+  //   <impact copy>
+  //
+  //   Can you help me fix this? A step-by-step plan would be
+  //   perfect. Let me know if you need anything from me to
+  //   diagnose.
+  // ─────────────────────────────────────────────────────────────
+  function stripHtmlForPrompt(s) {
+    return String(s || '')
+      .replace(/<[^>]+>/g, '')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+  function buildDevPrompt(def, auditedUrl) {
+    var lang = (typeof window !== 'undefined' && window.__muntinLang) || 'en';
+    var title = (lang === 'es' ? def.fail_es : def.fail) || def.fail || (def.audit || def.type || '');
+    if (!title) {
+      title = (lang === 'es' ? def.unverified_es : def.unverified) || def.unverified || 'Website audit finding';
+    }
+    var note = (lang === 'es' ? def.failNote_es : def.failNote) || def.failNote
+             || (lang === 'es' ? def.unverifiedNote_es : def.unverifiedNote) || def.unverifiedNote || '';
+    var impact = (lang === 'es' ? def.impact_es : def.impact) || def.impact || '';
+
+    var lines = [];
+    lines.push('## ' + t('devPrompt.title') + ': ' + stripHtmlForPrompt(title));
+    lines.push('');
+    if (auditedUrl) {
+      lines.push(t('devPrompt.audited') + ': ' + auditedUrl);
+      lines.push('');
+    }
+    if (note) {
+      lines.push('**' + t('devPrompt.foundHeader') + '**');
+      lines.push(stripHtmlForPrompt(note));
+      lines.push('');
+    }
+    if (impact) {
+      lines.push('**' + t('devPrompt.whyHeader') + '**');
+      lines.push(stripHtmlForPrompt(impact));
+      lines.push('');
+    }
+    lines.push(t('devPrompt.closing'));
+    lines.push('');
+    lines.push('— ' + t('devPrompt.signoff'));
+    return lines.join('\n');
+  }
+
+  // Clipboard-API-refusing fallback: write into a temporary textarea,
+  // select, exec-copy, remove. Works across Safari quirks + insecure
+  // contexts (localhost without HTTPS during dev).
+  function fallbackCopy(text) {
+    try {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '-1000px';
+      ta.style.left = '-1000px';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch (_) { /* nothing to do */ }
+      document.body.removeChild(ta);
+    } catch (_) { /* give up silently */ }
+  }
+
+  // ─────────────────────────────────────────────────────────────
   // Sprint N1: NAP (Name / Address / Phone) cross-check
   //
   // Walks three verified signal sources — Google Places, schema.org
@@ -10501,6 +10619,19 @@
           '</div>';
       }
 
+      // Sprint F1: "Copy for your developer" button on actionable
+      // rows. Produces a markdown-formatted prompt the owner can
+      // paste directly into email, a support ticket, or a chat with
+      // their developer / an AI assistant. Zero fabrication — every
+      // line is composed from data the audit already produced.
+      var devPromptHtml = '';
+      if (result.mark.cls !== 'pass') {
+        devPromptHtml =
+          '<button type="button" class="dev-prompt-btn"' +
+            ' data-check-idx="' + entry.idx + '"' +
+            ' data-tr="devPrompt.copy">Copy for your developer</button>';
+      }
+
       // Status label for assistive tech. The visible .mark div stays
       // aria-hidden because its glyph is decorative; the sr-only
       // preceding span is what screen readers actually announce so a
@@ -10517,6 +10648,7 @@
           chipsHtml +
           impactHtml +
           feedbackHtml +
+          devPromptHtml +
         '</div>' +
         '<a class="link" href="/glossary/?filter=restaurants' + def.anchor + '">Learn more →</a>';
       container.appendChild(row);
@@ -10551,6 +10683,44 @@
         // category card LIVE so the user sees their correction change
         // the headline number immediately — no re-audit needed.
         recomputeOverallFromCurrentState();
+      });
+    });
+
+    // Sprint F1: "Copy for your developer" button click handlers.
+    // Each click builds a markdown-formatted handoff prompt from the
+    // priority-check definition + current result, copies it to the
+    // clipboard, and flashes the button label. Accuracy-safe: every
+    // line composed from data the audit already produced.
+    container.querySelectorAll('.dev-prompt-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var idx = parseInt(btn.getAttribute('data-check-idx'), 10);
+        if (isNaN(idx)) return;
+        var def = PRIORITY_CHECKS[idx];
+        if (!def) return;
+        var resolvedDef = resolveCheckForType(def, effectiveBusinessType());
+        var auditedUrl = (window.__auditLastResult && window.__auditLastResult.url) || '';
+        var prompt = buildDevPrompt(resolvedDef, auditedUrl);
+        var originalText = btn.textContent;
+        var doneText = t('devPrompt.copied');
+        function flash() {
+          btn.textContent = doneText;
+          setTimeout(function(){ btn.textContent = originalText; }, 1600);
+        }
+        try {
+          navigator.clipboard.writeText(prompt).then(flash, function(){
+            // Clipboard API denied (insecure context or Safari quirk) —
+            // fall back to textarea selection.
+            fallbackCopy(prompt);
+            flash();
+          });
+        } catch (_) {
+          fallbackCopy(prompt);
+          flash();
+        }
+        if (window.plausible) {
+          var checkName = (def && (def.audit || def.type)) || 'check-' + idx;
+          window.plausible('Audit Dev-Prompt Copy', { props: { check: checkName } });
+        }
       });
     });
 
