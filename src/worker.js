@@ -1692,7 +1692,10 @@ function scrapeTypesFromString(text) {
 // response budget — the client-side checks only need the first
 // chunk of any realistic restaurant page (nav, menu, schema).
 const PAGE_CRAWL_MAX_HTML         = 500_000;  // ~500 KB per page
-const PAGE_CRAWL_MAX_CANDIDATES   = 5;
+// Sprint M1.3: bump to 8 so the three newly-added slots (wholesale,
+// gift, careers) can land alongside the existing five without
+// squeezing the original coverage.
+const PAGE_CRAWL_MAX_CANDIDATES   = 8;
 const PAGE_CRAWL_PER_URL_TIMEOUT  = 6000;
 const PAGE_CRAWL_GLOBAL_CAP       = 15000;
 const PAGE_CRAWL_HOMEPAGE_TIMEOUT = 8000;
@@ -1744,11 +1747,19 @@ async function handlePageCrawl(request, env, ctx) {
       if (entry.status === 'fulfilled' && entry.value) {
         const v = entry.value;
         if (v.result && v.result.ok) {
+          const trimmed = truncateHtml(v.result.html, PAGE_CRAWL_MAX_HTML);
+          // Sprint M1.3: extract title + h1 per page so the detector
+          // fuses (M1.9 menu, M1.10 catering/wholesale) can confirm a
+          // slot page matches its intent without scanning the full
+          // HTML twice.
+          const meta = extractTitleAndH1(trimmed);
           pages.push({
             slot: v.slot,
             url: v.url,
             status: v.result.status,
-            html: truncateHtml(v.result.html, PAGE_CRAWL_MAX_HTML)
+            html: trimmed,
+            title: meta.title,
+            h1: meta.h1
           });
         } else {
           pages.push({
@@ -1756,6 +1767,8 @@ async function handlePageCrawl(request, env, ctx) {
             url: v.url,
             status: (v.result && v.result.status) || 0,
             html: null,
+            title: null,
+            h1: null,
             error: (v.result && v.result.error) || 'fetch-failed'
           });
         }
@@ -1767,12 +1780,19 @@ async function handlePageCrawl(request, env, ctx) {
   // retry against later.
   const capHit = !Array.isArray(settled);
 
+  // Sprint M1.3: also extract title + h1 from the homepage so the
+  // client has a consistent shape for every crawled page.
+  const homepageHtml = truncateHtml(homepage.html, PAGE_CRAWL_MAX_HTML);
+  const homepageMeta = extractTitleAndH1(homepageHtml);
+
   return jsonResponse({
     ok: true,
     homepage: {
       url: homepage.url,
       status: homepage.status,
-      html: truncateHtml(homepage.html, PAGE_CRAWL_MAX_HTML)
+      html: homepageHtml,
+      title: homepageMeta.title,
+      h1: homepageMeta.h1
     },
     candidates: candidates,
     pages: pages,
@@ -1805,8 +1825,37 @@ const PAGE_CRAWL_SLOTS = [
   { slot: 'events',      patterns: [/\bevents?\b/i, /\bparties\b/i, /\bweddings?\b/i, /private\s+dining/i] },
   { slot: 'menu',        patterns: [/\bmenu\b/i, /\bmenus\b/i, /food\s*&?\s*drink/i, /\bwine\s+list\b/i, /\bdrink\s+list\b/i] },
   { slot: 'contact',     patterns: [/\bcontact\b/i, /\bvisit\b/i, /location/i, /find\s+us/i, /hours/i] },
-  { slot: 'about',       patterns: [/\babout\b/i, /our\s+story/i, /\bchef\b/i, /\bteam\b/i] }
+  { slot: 'about',       patterns: [/\babout\b/i, /our\s+story/i, /\bchef\b/i, /\bteam\b/i] },
+  // Sprint M1.3: three new slots so the existence of a dedicated
+  // wholesale / gift-cards / careers page resolves the corresponding
+  // priority checks without asking the owner "Is this right?".
+  // Order after 'about' matters only for tie-breaking; each slot's
+  // patterns are distinct enough that an anchor won't double-match.
+  { slot: 'wholesale',   patterns: [/\bwholesale\b/i, /\bbulk\s+order/i, /\btrade\s+account/i, /\bB2B\b/i] },
+  { slot: 'gift',        patterns: [/gift\s*cards?/i, /gift\s*certificate/i, /\begift\b/i, /e-?gift/i] },
+  { slot: 'careers',     patterns: [/\bcareers?\b/i, /\bjobs\b/i, /\bjoin\s+(our|the)\s+team\b/i, /\bhiring\b/i, /\bwork\s+with\s+us\b/i] }
 ];
+
+// Sprint M1.3: extract the first <h1> and <title> from HTML so the
+// client can fingerprint a slot page without fully rendering it.
+// Regex-based (HTMLRewriter would be better; this is cheap and
+// correct for the shapes restaurant sites actually ship). Returns
+// null on miss. Strips nested tags + collapses whitespace.
+function extractTitleAndH1(html) {
+  if (typeof html !== 'string' || !html) return { title: null, h1: null };
+  let title = null, h1 = null;
+  const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+  if (titleMatch) {
+    title = titleMatch[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() || null;
+    if (title && title.length > 180) title = title.slice(0, 180);
+  }
+  const h1Match = html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i);
+  if (h1Match) {
+    h1 = h1Match[1].replace(/<[^>]+>/g, ' ').replace(/&[a-z#0-9]+;/gi, ' ').replace(/\s+/g, ' ').trim() || null;
+    if (h1 && h1.length > 180) h1 = h1.slice(0, 180);
+  }
+  return { title: title, h1: h1 };
+}
 
 // Extract up to 5 internal-link candidates from homepage HTML, one
 // per priority slot. Returns an array of { slot, url } pointing at
