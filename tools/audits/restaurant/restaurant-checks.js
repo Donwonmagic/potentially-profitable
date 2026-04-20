@@ -6,7 +6,7 @@
  * consumer script (matching the pattern used by the sibling wellness
  * audit at ../wellness/wellness-checks.js).
  *
- * Detection categories (populated in later sprints):
+ * Detection categories:
  *   ordering     — online ordering platforms (Toast, Square, ChowNow, …)
  *   reservations — reservation platforms (OpenTable, Resy, Tock, …)
  *   maps         — embedded maps and directions
@@ -16,8 +16,57 @@
  * the page's HTML. If any URL contains the pattern string, the
  * platform is detected.
  *
- * Subsequent sprints (A2–A7) move the existing inline definitions out
- * of index.html into this module without changing behavior.
+ * ---------------------------------------------------------------------
+ * Sprint 1 (M1.1–M1.18): Detector-fusion context
+ * ---------------------------------------------------------------------
+ *
+ * `evaluatePriorityCheck(def, audits, allUrls, pageText, context)` in
+ * index.html dispatches each def.type to its handler. The optional 5th
+ * argument `context` bundles the richer signals that Sprint 1 added:
+ *
+ *   context = {
+ *     places: {                        // null if no matching GBP listing
+ *       ok: true,
+ *       place: {                       // normalized Places v1 result
+ *         nationalPhoneNumber, location {lat, lng},
+ *         takeout, delivery, reservable, dineIn,
+ *         servesBreakfast / Lunch / Dinner / Brunch,
+ *         servesBeer / Wine / Cocktails / Coffee / Dessert,
+ *         servesVegetarianFood,
+ *         primaryTypeDisplayName, editorialSummary,
+ *         priceLevel, businessStatus,
+ *         rating, reviewCount, photoCount,
+ *         weekdayHoursText                 // human-readable hours
+ *       }
+ *     },
+ *     schema: {                        // null if /api/schema-check failed
+ *       validation: {
+ *         openingHours, priceRange, address,
+ *         servesCuisine, acceptsReservations, hasMenu   // each with {present, valid, reason, value}
+ *       },
+ *       objects: []                    // raw JSON-LD array
+ *     },
+ *     crawl: {                         // null if /api/page-crawl failed
+ *       homepage: { url, status, html, title, h1 },
+ *       pages: [                       // slot-tagged follow-up fetches
+ *         { slot, url, status, html, title, h1, error? },
+ *         ...
+ *       ],
+ *       capHit                         // true if the 15s timer fired
+ *     }
+ *   }
+ *
+ * Detectors that read the context gracefully degrade when any field is
+ * null — they fall back to the existing regex/keyword path. This is how
+ * the Fast Scan path stays callable when Places or schema check fails.
+ *
+ * When adding a new detector fuse, always null-guard the chain:
+ *     var place = context && context.places && context.places.place;
+ *     if (place && place.takeout === true) return makeResult(def, 'pass');
+ *
+ * The competitor-comparison flow in index.html deliberately passes NO
+ * context because the user's Places signal is not valid for a competing
+ * URL — mixing them would bias cross-URL scoring.
  */
 
 // ---------------------------------------------------------------------------
@@ -1605,9 +1654,23 @@ function detectGiftCardPresence(pageText, allUrls) {
 // H3: Loyalty / rewards detection. Text keywords plus known
 // loyalty-platform hosts (Thanx, LevelUp, Paytronix, Como,
 // Fivestars, Loyalzoo, Punchcard, Hang).
+// Sprint M1.11: extended hosts list catches the POS-native loyalty
+// subdomains and a few newer vendors. toasttab.com + squareup.com
+// host loyalty landing pages for their restaurant customers under
+// /rewards or /loyalty paths; looking for those specific paths in
+// the URL catches them even when the top-level host isn't in the
+// list. Punchh is the largest QSR-focused loyalty SaaS not yet
+// listed. fivestars-rewards is the domain most deploys use.
 var LOYALTY_PATTERNS = {
-  keywords: /\b(?:loyalty\s+program|rewards\s+program|earn\s+(?:points|rewards)|join\s+our\s+rewards|sign\s+up\s+for\s+rewards|loyalty\s+(?:club|members))\b/i,
-  hosts: ['thanx.com', 'thelevelup', 'paytronix', 'como.com', 'fivestars', 'loyalzoo', 'punchcard', 'hang.com', 'belly', 'spendgo']
+  keywords: /\b(?:loyalty\s+program|rewards\s+program|earn\s+(?:points|rewards)|join\s+our\s+rewards|sign\s+up\s+for\s+rewards|loyalty\s+(?:club|members)|my\s+rewards|member\s+rewards)\b/i,
+  hosts: [
+    'thanx.com', 'thelevelup', 'paytronix', 'como.com', 'fivestars',
+    'fivestars-rewards', 'loyalzoo', 'punchcard', 'hang.com', 'belly',
+    'spendgo', 'punchh.com', 'smile.io', 'yotpo.com', 'kangaroorewards',
+    'stampme', 'loopyloyalty', 'tapmango', 'toast-rewards',
+    'square-loyalty', '/rewards', '/loyalty', 'toasttab.com/rewards',
+    'squareup.com/app/loyalty'
+  ]
 };
 function detectLoyaltyProgram(pageText, allUrls) {
   var viaText = pageText ? LOYALTY_PATTERNS.keywords.test(pageText) : false;
@@ -1648,11 +1711,28 @@ function detectEmailCapture(html, allUrls) {
       }
     }
   }
-  // Pass when we have EITHER a recognized provider (hasHost) OR
-  // an email input + newsletter copy pair. An email input alone
-  // is usually a contact-form, which isn't a newsletter capture.
-  var present = hasHost || (hasEmailInput && hasNewsletterCopy);
-  return { present: present, hasEmailInput: hasEmailInput, hasNewsletterCopy: hasNewsletterCopy, hasHost: hasHost };
+  // Sprint M1.12: also scan <form action="..."> attributes directly.
+  // Many restaurant sites have the ESP target on the form action but
+  // the URL never appears elsewhere on the page (so it wouldn't be
+  // in allUrls), and some ESPs use subdomain tokens our host list
+  // can't anticipate. This catches the common self-hosted-signup
+  // shape (site.com action=https://list-manage.com/subscribe...)
+  // that detection would otherwise miss.
+  var hasFormEsp = false;
+  var formActionRe = /<form[^>]*action\s*=\s*["']([^"']+)["']/gi;
+  var fm;
+  while (!hasFormEsp && (fm = formActionRe.exec(html)) !== null) {
+    var action = fm[1].toLowerCase();
+    for (var hi = 0; hi < EMAIL_CAPTURE_HOSTS.length; hi++) {
+      if (action.indexOf(EMAIL_CAPTURE_HOSTS[hi]) >= 0) { hasFormEsp = true; break; }
+    }
+  }
+  // Pass when we have EITHER a recognized provider (hasHost,
+  // hasFormEsp) OR an email input + newsletter copy pair. An email
+  // input alone is usually a contact-form, which isn't a newsletter
+  // capture.
+  var present = hasHost || hasFormEsp || (hasEmailInput && hasNewsletterCopy);
+  return { present: present, hasEmailInput: hasEmailInput, hasNewsletterCopy: hasNewsletterCopy, hasHost: hasHost, hasFormEsp: hasFormEsp };
 }
 
 // H6: Age-gate detection. Scans for the common "are you 21 or older"
@@ -1961,6 +2041,122 @@ function localizeCheckCopy(def, lang) {
   }
   return out || def;
 }
+// ---------------------------------------------------------------------------
+// Sprint D2: Restaurant schema richness scorecard.
+//
+// Google's "Restaurant rich results" docs list a dozen-odd fields
+// that the Knowledge Panel + Rich Results renderer can show if
+// present. Missing fields don't invalidate the schema — they just
+// silently cost the site visibility in the panel. This constant
+// enumerates the fields that measurably matter, with:
+//   key        — the schema.org / JSON-LD property name
+//   label      — the human-readable label shown in the scorecard
+//   priority   — 'required' | 'recommended' | 'optional' per Google's
+//                own categorization in its Rich Results docs
+//   benefit    — one-line "what this field buys you" for the UI
+//   example    — a ready-to-paste JSON-LD fragment the owner can drop
+//                into their Restaurant block. Uses placeholders in
+//                angle brackets so it's obvious what to replace.
+//
+// The scorecard (client-side renderSchemaRichness) walks the
+// restaurant-like objects returned by /api/schema-check and marks
+// each field present/missing. Copy-paste buttons are rendered for
+// every missing field.
+// ---------------------------------------------------------------------------
+var RESTAURANT_SCHEMA_FIELDS = [
+  { key: 'name',                   label: 'Restaurant name',        priority: 'required',
+    benefit_en: 'The business name as Google should display it.',
+    benefit_es: 'El nombre del negocio como Google debe mostrarlo.',
+    example: '"name": "<Your Restaurant>"' },
+  { key: 'address',                label: 'Structured address',     priority: 'required',
+    benefit_en: 'Unlocks the Maps pin, directions button, and local-pack ranking.',
+    benefit_es: 'Desbloquea el pin del mapa, el botón de indicaciones y el posicionamiento del local-pack.',
+    example: '"address": {\n  "@type": "PostalAddress",\n  "streetAddress": "<123 Main St>",\n  "addressLocality": "<City>",\n  "addressRegion": "<ST>",\n  "postalCode": "<00000>",\n  "addressCountry": "US"\n}' },
+  { key: 'telephone',              label: 'Phone number',           priority: 'required',
+    benefit_en: 'Tap-to-call surface in the Knowledge Panel.',
+    benefit_es: 'Superficie tap-to-call en el Knowledge Panel.',
+    example: '"telephone": "<+1-555-555-5555>"' },
+  { key: 'url',                    label: 'Canonical website URL',  priority: 'required',
+    benefit_en: 'The link Google uses in every rich result surface.',
+    benefit_es: 'El enlace que Google usa en cada superficie de resultado enriquecido.',
+    example: '"url": "<https://yourrestaurant.com/>"' },
+  { key: 'image',                  label: 'Hero images',            priority: 'recommended',
+    benefit_en: 'Images appear in the Knowledge Panel carousel.',
+    benefit_es: 'Las imágenes aparecen en el carrusel del Knowledge Panel.',
+    example: '"image": [\n  "<https://yourrestaurant.com/img/exterior.jpg>",\n  "<https://yourrestaurant.com/img/dining-room.jpg>",\n  "<https://yourrestaurant.com/img/hero-dish.jpg>"\n]' },
+  { key: 'priceRange',             label: 'Price range',            priority: 'recommended',
+    benefit_en: 'Enables price-based filtering in Maps and Search.',
+    benefit_es: 'Permite filtros por precio en Maps y Search.',
+    example: '"priceRange": "$$"' },
+  { key: 'servesCuisine',          label: 'Cuisine',                priority: 'recommended',
+    benefit_en: 'Matches you to queries like "Thai near me" or "Neapolitan pizza".',
+    benefit_es: 'Te empareja con búsquedas como "tailandés cerca de mí" o "pizza napolitana".',
+    example: '"servesCuisine": ["<Italian>", "<Neapolitan Pizza>"]' },
+  { key: 'openingHoursSpecification', label: '7-day opening hours', priority: 'recommended',
+    benefit_en: 'Powers the "Open now" / "Closes at 10 PM" hours panel.',
+    benefit_es: 'Alimenta el panel "Abierto ahora" / "Cierra a las 10 PM".',
+    example: '"openingHoursSpecification": [\n  {\n    "@type": "OpeningHoursSpecification",\n    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday"],\n    "opens": "11:00",\n    "closes": "22:00"\n  },\n  {\n    "@type": "OpeningHoursSpecification",\n    "dayOfWeek": ["Friday","Saturday"],\n    "opens": "11:00",\n    "closes": "23:00"\n  },\n  {\n    "@type": "OpeningHoursSpecification",\n    "dayOfWeek": "Sunday",\n    "opens": "11:00",\n    "closes": "21:00"\n  }\n]' },
+  { key: 'acceptsReservations',    label: 'Reservation flag',       priority: 'recommended',
+    benefit_en: 'Unlocks the "Reserve a table" Knowledge Panel button.',
+    benefit_es: 'Desbloquea el botón "Reserva una mesa" del Knowledge Panel.',
+    example: '"acceptsReservations": true' },
+  { key: 'hasMenu',                label: 'Menu URL',               priority: 'recommended',
+    benefit_en: 'Unlocks the "See menu" link Google shows next to the business.',
+    benefit_es: 'Desbloquea el enlace "Ver menú" que Google muestra junto al negocio.',
+    example: '"hasMenu": "<https://yourrestaurant.com/menu/>"' },
+  { key: 'geo',                    label: 'Geo coordinates',        priority: 'recommended',
+    benefit_en: 'Exact lat/lng improves Maps clustering and "near me" matching.',
+    benefit_es: 'Latitud/longitud exactas mejoran el clustering del mapa y "cerca de mí".',
+    example: '"geo": {\n  "@type": "GeoCoordinates",\n  "latitude": <38.9929>,\n  "longitude": <-77.0268>\n}' },
+  { key: 'aggregateRating',        label: 'Aggregate rating',       priority: 'optional',
+    benefit_en: 'Enables the gold-star rating cluster in search snippets.',
+    benefit_es: 'Activa el racimo de estrellas doradas en los snippets de búsqueda.',
+    example: '"aggregateRating": {\n  "@type": "AggregateRating",\n  "ratingValue": "<4.6>",\n  "reviewCount": "<127>"\n}' },
+  { key: 'sameAs',                 label: 'Social links (sameAs)',  priority: 'optional',
+    benefit_en: 'Connects your schema to your Instagram, Facebook, TripAdvisor, etc.',
+    benefit_es: 'Conecta tu schema con tu Instagram, Facebook, TripAdvisor, etc.',
+    example: '"sameAs": [\n  "<https://instagram.com/yourrestaurant>",\n  "<https://facebook.com/yourrestaurant>"\n]' },
+  { key: 'paymentAccepted',        label: 'Payment methods',        priority: 'optional',
+    benefit_en: 'Some surfaces show "Accepts credit cards" / "Apple Pay accepted".',
+    benefit_es: 'Algunas superficies muestran "Acepta tarjetas" / "Apple Pay aceptado".',
+    example: '"paymentAccepted": "Cash, Credit Card, Apple Pay"' }
+];
+
+// ---------------------------------------------------------------------------
+// Sprint D4: Open Graph / Twitter Card completeness scorecard.
+//
+// Every share to Facebook, LinkedIn, iMessage, WhatsApp, Slack, or
+// X ends up looking bare (plain URL + no thumbnail) when these five
+// meta tags are missing. For a restaurant whose primary marketing
+// channel is social, that's a meaningful loss of impression quality.
+//
+// Fields are the minimum-viable set that all five major share
+// surfaces actually render. The example snippets use angle-bracket
+// placeholders for the owner to fill in.
+// ---------------------------------------------------------------------------
+var OG_META_FIELDS = [
+  { key: 'ogTitle',       label: 'og:title',        priority: 'required',
+    benefit_en: 'The headline every social share surface reads first.',
+    benefit_es: 'El titular que lee primero cada superficie de compartido social.',
+    example: '<meta property="og:title" content="<Your Restaurant — short punchy headline>">' },
+  { key: 'ogDescription', label: 'og:description',  priority: 'required',
+    benefit_en: 'The one-line pitch under the headline in share cards.',
+    benefit_es: 'La línea de presentación bajo el titular en las tarjetas al compartir.',
+    example: '<meta property="og:description" content="<One sentence about your restaurant and what you serve>">' },
+  { key: 'ogImage',       label: 'og:image',        priority: 'required',
+    benefit_en: '1200×630 hero image. Without it, share cards look empty.',
+    benefit_es: 'Imagen hero 1200×630. Sin ella, las tarjetas se ven vacías.',
+    example: '<meta property="og:image" content="<https://yourrestaurant.com/og/hero.jpg>">' },
+  { key: 'twitterCard',   label: 'twitter:card',    priority: 'recommended',
+    benefit_en: 'Tells X / Twitter how to render your card ("summary_large_image" is the standard).',
+    benefit_es: 'Le dice a X / Twitter cómo renderizar tu tarjeta ("summary_large_image" es el estándar).',
+    example: '<meta name="twitter:card" content="summary_large_image">' },
+  { key: 'twitterImage',  label: 'twitter:image',   priority: 'recommended',
+    benefit_en: 'The image X / Twitter uses when og:image isn\'t enough.',
+    benefit_es: 'La imagen que X / Twitter usa cuando og:image no es suficiente.',
+    example: '<meta name="twitter:image" content="<https://yourrestaurant.com/og/hero.jpg>">' }
+];
+
 // Canonical one-line description used in OG/Twitter cards, PDF cover,
 // share-card footer, and the tool's meta description. Exactly one
 // source of truth — if this string changes, every surface updates.
@@ -2011,6 +2207,17 @@ var UI_I18N = {
   'verdict.unverifiedSuffix': {
     en: " We couldn't verify {count} checks on this pass — each one is counted at half weight. Confirming them below will sharpen the score in either direction.",
     es: ' No pudimos verificar {count} verificaciones esta vez — cada una cuenta a medio peso. Confirmarlas abajo afinará la puntuación en cualquier dirección.'
+  },
+  // Sprint M1.16: after detector fusion, most well-covered
+  // restaurants see zero unverified checks. Celebrate the
+  // confidence so owners trust the score.
+  'verdict.allAutoVerified': {
+    en: " All {total} restaurant checks were verified automatically — from your Google Business Profile, your site's schema, and our multi-page crawl. No guesswork in this report.",
+    es: ' Las {total} verificaciones de restaurante se confirmaron automáticamente — desde tu Perfil de Empresa de Google, el schema de tu sitio y nuestro rastreo multi-página. Sin adivinar nada en este reporte.'
+  },
+  'verdict.highAutoVerified': {
+    en: ' {confirmed} of {total} checks confirmed automatically from Google Business Profile and your site. {unverified} need a second look — answer them below to sharpen your score.',
+    es: ' {confirmed} de {total} verificaciones confirmadas automáticamente desde el Perfil de Empresa de Google y tu sitio. {unverified} necesitan una segunda mirada — respóndelas abajo para afinar tu puntuación.'
   },
   'topfixes.eta.rebuild': {
     en: 'One of these is a site rebuild — plan a month, not a weekend.',
@@ -2095,6 +2302,183 @@ var UI_I18N = {
   'print.worksheet.notes': {
     en: 'Notes / assigned to:',
     es: 'Notas / asignado a:'
+  },
+  // DYM3: "Did you mean" error-card chip copy.
+  'err.dym.prompt': {
+    en: 'Did you mean',
+    es: '¿Quisiste decir'
+  },
+  // Sprint S2.5-S2.7: Deep Scan strings. Every key lands EN + ES so
+  // the ES stamp picks them up without manual translation later.
+  'deepScan.running': {
+    en: 'Gathering deeper signals — security headers, site age, field-data trends, reviews…',
+    es: 'Recopilando señales más profundas — encabezados de seguridad, antigüedad del sitio, tendencias reales, reseñas…'
+  },
+  'deepScan.done': {
+    en: 'Deep-scan signals loaded.',
+    es: 'Señales del deep-scan cargadas.'
+  },
+  'deepScan.noSignals': {
+    en: 'No additional signals were available for this site.',
+    es: 'No hubo señales adicionales disponibles para este sitio.'
+  },
+  'deep.age.liveSince': {
+    en: 'Live since {year}',
+    es: 'En línea desde {year}'
+  },
+  'deep.security.grade': {
+    en: 'Security headers: {grade}',
+    es: 'Encabezados de seguridad: {grade}'
+  },
+  'deep.crux.heading': {
+    en: 'Field-data trends (25 weeks)',
+    es: 'Tendencias de datos reales (25 semanas)'
+  },
+  'deep.crux.sub': {
+    en: 'Real-user Core Web Vitals from the Chrome UX Report. Rendered only when Google has enough samples to publish a trend.',
+    es: 'Métricas Web Esenciales reales del Chrome UX Report. Se muestran solo cuando Google tiene suficientes muestras para publicar una tendencia.'
+  },
+  'deep.reviews.heading': {
+    en: 'Google reviews snapshot',
+    es: 'Resumen de reseñas de Google'
+  },
+  'deep.reviews.countLine': {
+    en: '{count} Google reviews',
+    es: '{count} reseñas en Google'
+  },
+  'deep.reviews.ratingLine': {
+    en: '{rating} average rating',
+    es: 'Calificación promedio {rating}'
+  },
+  'deep.reviews.replyLine': {
+    en: '{replied} of {sampled} recent have an owner reply',
+    es: '{replied} de {sampled} recientes tienen respuesta del dueño'
+  },
+  'deep.reviews.ownerReplied': {
+    en: 'owner replied',
+    es: 'respondió el dueño'
+  },
+  // Sprint T1: Places-verified facts card.
+  'places.verifiedBadge': {
+    en: 'Verified by Google',
+    es: 'Verificado por Google'
+  },
+  'places.heading': {
+    en: 'What Google knows about this restaurant',
+    es: 'Lo que Google sabe de este restaurante'
+  },
+  'places.hoursLabel': {
+    en: 'Google-published hours',
+    es: 'Horarios publicados por Google'
+  },
+  'places.operational': {
+    en: 'Operating',
+    es: 'En operación'
+  },
+  'places.ratingChip': {
+    en: '★ {rating} · {count} reviews',
+    es: '★ {rating} · {count} reseñas'
+  },
+  'places.priceLevel.free': {
+    en: 'Free',
+    es: 'Gratis'
+  },
+  'places.priceLevel.tooltip': {
+    en: 'Price level published by Google Business Profile',
+    es: 'Nivel de precio publicado por el Perfil de Empresa de Google'
+  },
+  // Sprint T2: 'How this audit was built' attribution footer.
+  'builtBy.summary': {
+    en: 'How this audit was built',
+    es: 'Cómo se construyó esta auditoría'
+  },
+  'builtBy.intro': {
+    en: 'A Muntin Digital creation, powered by:',
+    es: 'Una creación de Muntin Digital, impulsada por:'
+  },
+  'builtBy.license': {
+    en: 'Open-source projects listed here are used under their respective licenses (MIT, Apache-2.0, BSD-3, OFL-1.1, MPL-2.0, AGPL-3.0, CC-BY-SA). Vendor names are trademarks of their owners.',
+    es: 'Los proyectos de código abierto listados aquí se usan bajo sus respectivas licencias (MIT, Apache-2.0, BSD-3, OFL-1.1, MPL-2.0, AGPL-3.0, CC-BY-SA). Los nombres de los proveedores son marcas de sus titulares.'
+  },
+  // Sprint T4: brand dossier card.
+  'dossier.badge': {
+    en: 'Cited facts',
+    es: 'Hechos citados'
+  },
+  'dossier.heading': {
+    en: 'What we can verify about this restaurant',
+    es: 'Lo que podemos verificar de este restaurante'
+  },
+  'dossier.footnote': {
+    en: 'Every sentence links to the verified signal it came from. Hover any citation to see the source.',
+    es: 'Cada oración se enlaza con la señal verificada de la que proviene. Pasa el cursor sobre cualquier cita para ver la fuente.'
+  },
+  // Sprint D1: email deliverability card.
+  'deep.email.heading': {
+    en: 'Email deliverability',
+    es: 'Entregabilidad de correo'
+  },
+  'deep.email.sub': {
+    en: 'Gmail, Outlook, and Yahoo require SPF + DMARC on sending domains. Booking confirmations and newsletters land in spam without them.',
+    es: 'Gmail, Outlook y Yahoo exigen SPF + DMARC en los dominios que envían correo. Sin ellos, confirmaciones de reserva y newsletters caen en spam.'
+  },
+  'deep.email.spf':   { en: 'SPF',   es: 'SPF' },
+  'deep.email.dmarc': { en: 'DMARC', es: 'DMARC' },
+  'deep.email.dkim':  { en: 'DKIM',  es: 'DKIM' },
+  'deep.email.state.pass':    { en: 'Present',      es: 'Presente' },
+  'deep.email.state.fail':    { en: 'Missing',      es: 'Ausente' },
+  'deep.email.state.unknown': { en: 'Not detected', es: 'No detectado' },
+  'deep.email.spf.multiple': {
+    en: 'Multiple SPF records found — email providers treat this as no SPF. Merge them into one.',
+    es: 'Se encontraron múltiples registros SPF — los proveedores de correo lo tratan como si no hubiera SPF. Únelos en uno solo.'
+  },
+  'deep.email.dmarc.policy': {
+    en: 'Policy: p={policy}',
+    es: 'Política: p={policy}'
+  },
+  'deep.email.dkim.selector': {
+    en: 'Confirmed at selector "{selector}"',
+    es: 'Confirmado en el selector "{selector}"'
+  },
+  'deep.email.dkim.unknown': {
+    en: 'Not detected via the common selectors we probe. Your mail provider may use a custom selector we can\'t confirm without access.',
+    es: 'No se detectó en los selectores comunes que revisamos. Tu proveedor de correo puede usar un selector propio que no podemos confirmar sin acceso.'
+  },
+  'deep.email.posture.ready':    { en: 'Ready for bulk mail', es: 'Listo para envíos masivos' },
+  'deep.email.posture.notReady': { en: 'Not bulk-mail ready',  es: 'No está listo para envíos masivos' },
+  // Sprint D2: schema richness scorecard.
+  'schemaRichness.badge':    { en: 'Schema scorecard', es: 'Tarjeta de schema' },
+  'schemaRichness.heading':  { en: 'How complete is your Restaurant schema?', es: '¿Qué tan completo está tu schema de restaurante?' },
+  'schemaRichness.summary':  {
+    en: '{present} of {total} Google-recommended Restaurant fields populated.',
+    es: '{present} de {total} campos recomendados por Google completos.'
+  },
+  'schemaRichness.present':  { en: 'Present',  es: 'Presente'  },
+  'schemaRichness.missing':  { en: 'Missing',  es: 'Faltante' },
+  'schemaRichness.priority.required':    { en: 'Required',    es: 'Obligatorio' },
+  'schemaRichness.priority.recommended': { en: 'Recommended', es: 'Recomendado' },
+  'schemaRichness.priority.optional':    { en: 'Optional',    es: 'Opcional'    },
+  'schemaRichness.copy':     { en: 'Copy snippet', es: 'Copiar fragmento' },
+  'schemaRichness.copied':   { en: 'Copied!',      es: '¡Copiado!'        },
+  // Sprint D3: embeddable badge offer card.
+  'badge.eyebrow':      { en: 'Embeddable badge', es: 'Badge para incrustar' },
+  'badge.heading':      { en: 'Show this score on your own site', es: 'Muestra esta puntuación en tu propio sitio' },
+  'badge.sub': {
+    en: 'Paste this snippet into your site footer. The badge refreshes to match whatever audit you run next — no manual updating.',
+    es: 'Pega este fragmento en el pie de tu sitio. El badge se actualiza con la auditoría más reciente que ejecutes — sin actualizaciones manuales.'
+  },
+  'badge.snippetLabel': { en: 'Copy-paste HTML', es: 'HTML para copiar y pegar' },
+  'badge.copy':         { en: 'Copy snippet',    es: 'Copiar fragmento' },
+  'badge.copied':       { en: 'Copied!',         es: '¡Copiado!' },
+  // Sprint D4: OG / Twitter completeness scorecard.
+  'og.badge':    { en: 'Social share preview', es: 'Vista previa al compartir' },
+  'og.heading':  {
+    en: 'How your site looks when shared on social',
+    es: 'Cómo se ve tu sitio al compartirlo en redes sociales'
+  },
+  'og.summary':  {
+    en: '{present} of {total} social-share meta tags populated.',
+    es: '{present} de {total} meta tags de compartido social completos.'
   }
 };
 
@@ -2160,6 +2544,8 @@ if (typeof module !== 'undefined' && module.exports) {
     MUNTIN_AUDIT_DESCRIPTION_ES: MUNTIN_AUDIT_DESCRIPTION_ES,
     UI_I18N: UI_I18N,
     t: t,
-    poweredByRole: poweredByRole
+    poweredByRole: poweredByRole,
+    RESTAURANT_SCHEMA_FIELDS: RESTAURANT_SCHEMA_FIELDS,
+    OG_META_FIELDS: OG_META_FIELDS
   };
 }
