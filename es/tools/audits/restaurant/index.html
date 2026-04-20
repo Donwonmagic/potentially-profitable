@@ -10108,6 +10108,51 @@
     ctx.fillText(chipText, W - 60 - chipPadX, chipY + chipPadY);
     ctx.restore();
 
+    // Sprint H4: delta chip pulled from H1/H3 localStorage history.
+    // Same accuracy gate as renderHistoryBanner — only renders when a
+    // prior snapshot at least 6h older than the current one exists
+    // AND the overall score actually moved. A flat delta stays
+    // hidden; zero is noise and we'd rather publish nothing.
+    (function stampHistoryDelta(){
+      try {
+        var history = readHistory(last.url || '');
+        if (!history || history.length < 2) return;
+        var current  = history[history.length - 1];
+        var previous = null;
+        for (var i = history.length - 2; i >= 0; i--) {
+          if (current.ts - history[i].ts >= HISTORY_MIN_DELTA_MS) {
+            previous = history[i];
+            break;
+          }
+        }
+        if (!previous) return;
+        if (typeof current.overall !== 'number' || typeof previous.overall !== 'number') return;
+        var diff = current.overall - previous.overall;
+        if (diff === 0) return;
+        var arrow = diff > 0 ? '↑' : '↓';
+        var sign  = diff > 0 ? '+' : '';
+        var dChipText = arrow + ' ' + sign + diff + ' since last audit';
+        ctx.save();
+        ctx.font = '600 14px "Inter", system-ui, sans-serif';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'top';
+        var dPadX = 12, dPadY = 6;
+        var dWidth  = ctx.measureText(dChipText).width + dPadX * 2;
+        var dHeight = 26;
+        var dX = W - 60 - dWidth;
+        var dY = chipY + chipHeight + 10; // sits just below the subtype chip
+        // Green pill when up, rust when down — mirrors in-page banner.
+        var bg = diff > 0 ? '#E4F2E9' : '#FAE9DE';
+        var fg = diff > 0 ? '#1F6B3A' : '#B8541A';
+        ctx.fillStyle = bg;
+        roundedRect(ctx, dX, dY, dWidth, dHeight, 999);
+        ctx.fill();
+        ctx.fillStyle = fg;
+        ctx.fillText(dChipText, W - 60 - dPadX, dY + dPadY);
+        ctx.restore();
+      } catch (_) { /* history unavailable — skip silently */ }
+    })();
+
     // Big score ring on the left — mirrors the in-page SVG.
     var ringX = 220, ringY = 330, ringR = 140, ringW = 22;
     ctx.save();
