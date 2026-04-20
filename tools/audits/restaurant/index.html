@@ -543,6 +543,135 @@
     transition: background var(--t-fast, 120ms) ease;
   }
   .schema-richness-copy:hover { background: #E7F1F3; }
+  /* Sprint E1: progressive-disclosure wrappers for schema + OG
+     scorecards. The two "Show N more" disclosures collapse the
+     long tail of the scorecard so the default view is just the
+     urgent required gaps. */
+  .schema-richness-row-wrap,
+  .og-completeness-row-wrap {
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+  .schema-richness-more > summary,
+  .og-completeness-more > summary {
+    padding: 14px 0;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--teal);
+    list-style: none;
+  }
+  .schema-richness-more > summary::before,
+  .og-completeness-more > summary::before {
+    content: '+ ';
+    display: inline-block;
+    width: 14px;
+    font-weight: 700;
+  }
+  .schema-richness-more[open] > summary::before,
+  .og-completeness-more[open] > summary::before { content: '– '; }
+  .schema-richness-more > summary::-webkit-details-marker,
+  .og-completeness-more > summary::-webkit-details-marker { display: none; }
+  .schema-richness-covered > summary,
+  .og-completeness-covered > summary { color: var(--stone); }
+  .schema-richness-inner-list,
+  .og-completeness-inner-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px dashed var(--line);
+  }
+
+  /* Sprint N1: NAP (Name / Address / Phone) cross-check. Visually
+     aligned with the D1 email deliverability card because both are
+     telling the owner 'look how your site maps to external sources'.
+     Border-left is rust (warning) because every row this card shows
+     is a real inconsistency that search engines can see. Hidden when
+     there are no mismatches — accuracy rule, never rendered blank. */
+  .nap-check-card {
+    max-width: 1100px;
+    margin: 24px auto 0;
+    padding: 22px 26px;
+    background: var(--white);
+    border: 1px solid var(--line, #E6DFCE);
+    border-left: 4px solid var(--rust, #B8541A);
+    border-radius: 14px;
+  }
+  .nap-check-card[hidden] { display: none; }
+  .nap-check-head {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+  .nap-check-eyebrow {
+    align-self: flex-start;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--rust, #B8541A);
+    background: #FAE9DE;
+    border-radius: 999px;
+  }
+  .nap-check-title {
+    margin: 4px 0 0;
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .nap-check-sub {
+    margin: 0 0 12px;
+    color: var(--stone);
+    font-size: 14px;
+    max-width: 780px;
+  }
+  .nap-check-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .nap-check-row {
+    padding: 12px 14px;
+    background: var(--cream, #FAF7F2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+  .nap-check-row-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--stone);
+    margin-bottom: 6px;
+  }
+  .nap-check-row-sources {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .nap-check-source {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 13.5px;
+    color: var(--ink);
+  }
+  .nap-check-source-name {
+    min-width: 120px;
+    color: var(--stone);
+    font-size: 12.5px;
+  }
+  .nap-check-source-value {
+    font-family: var(--font-body);
+    font-weight: 500;
+    word-break: break-word;
+  }
 
   /* Sprint D4: Open Graph / Twitter Card completeness. Same
      visual language as the D2 schema scorecard — cream base,
@@ -681,6 +810,403 @@
     cursor: pointer;
   }
   .og-completeness-copy:hover { background: #E7F1F3; }
+
+  /* Sprint H1: 'Since your last audit' banner. Elevated styling
+     (slightly taller, bolder type) so the delta reads as a
+     reward-for-returning, not a generic stat block. Renders only
+     when a prior snapshot exists AND at least one pillar moved. */
+  .history-banner {
+    max-width: 1100px;
+    margin: 18px auto 0;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #F6F1E6 0%, #FAF7F2 100%);
+    border: 1px solid #E6DFCE;
+    border-left: 4px solid var(--teal);
+    border-radius: 12px;
+  }
+  .history-banner[hidden] { display: none; }
+  .history-banner-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .history-banner-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal);
+  }
+  .history-banner-timing {
+    font-size: 13px;
+    color: var(--stone);
+  }
+  .history-banner-delta {
+    margin-top: 6px;
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  .history-banner-from, .history-banner-to { color: var(--ink); }
+  .history-banner-arrow { color: var(--stone); padding: 0 4px; }
+  .history-banner-diff {
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 600;
+    margin-left: 6px;
+  }
+  .history-banner-headline-up   .history-banner-diff { color: #1F6B3A; }
+  .history-banner-headline-down .history-banner-diff { color: #B8541A; }
+  .history-banner-headline-flat .history-banner-diff { color: var(--stone); }
+  .history-banner-pillars {
+    list-style: none;
+    margin: 10px 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 8px;
+  }
+  .history-banner-pillar {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    font-size: 12.5px;
+    border-radius: 999px;
+    background: #FFFFFF;
+    border: 1px solid var(--line, #E6DFCE);
+  }
+  .history-banner-pillar-label { color: var(--ink); font-weight: 500; }
+  .history-banner-pillar-val   { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .history-banner-pillar-up   .history-banner-pillar-val { color: #1F6B3A; }
+  .history-banner-pillar-down .history-banner-pillar-val { color: #B8541A; }
+  /* Sprint H3: resolved-checks chip row — quiet lead-in label + a
+     flex-wrap of compact green chips. Each chip shows the check's
+     human-readable title. Hidden entirely when nothing resolved. */
+  .history-banner-resolved {
+    margin-top: 10px;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 6px 8px;
+  }
+  .history-banner-resolved[hidden] { display: none; }
+  .history-banner-resolved-label {
+    font-size: 12.5px;
+    color: var(--stone);
+    font-weight: 600;
+  }
+  .history-banner-resolved-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 6px 6px;
+  }
+  .history-banner-resolved-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #1F6B3A;
+    background: #E4F2E9;
+    border: 1px solid #BED9C5;
+    border-radius: 999px;
+  }
+  .history-banner-resolved-chip::before {
+    content: '✓';
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  /* Sprint Q1: sticky report table-of-contents. At ≥1200px the panel
+     is fixed to the right-hand gutter; at smaller sizes it collapses
+     to a floating "Sections" button that opens a bottom-sheet overlay.
+     Hidden entirely until #auditReport renders. The active-link state
+     is driven by IntersectionObserver — data-toc-active on the <a>
+     flips the color + left border. Respects reduced-motion (no scroll
+     animation). Prints don't show this at all. */
+  .audit-toc { }
+  .audit-toc[hidden] { display: none; }
+  .audit-toc-panel {
+    position: fixed;
+    top: 120px;
+    right: max(24px, calc((100vw - 1200px) / 2 - 220px));
+    width: 200px;
+    max-height: calc(100vh - 160px);
+    overflow-y: auto;
+    padding: 14px 16px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(20, 22, 26, 0.04);
+    z-index: 40;
+  }
+  .audit-toc-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 8px;
+  }
+  .audit-toc-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .audit-toc-list a {
+    display: block;
+    padding: 6px 10px;
+    font-size: 13px;
+    line-height: 1.3;
+    color: var(--ink);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    border-radius: 0 6px 6px 0;
+    transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+  }
+  .audit-toc-list a:hover,
+  .audit-toc-list a:focus {
+    background: var(--cream, #FAF7F2);
+    color: var(--teal);
+    outline: none;
+  }
+  .audit-toc-list a[data-toc-active="1"] {
+    color: var(--teal);
+    font-weight: 600;
+    border-left-color: var(--teal);
+    background: var(--cream-2, #faf6ee);
+  }
+  .audit-toc-list li[hidden] { display: none; }
+
+  .audit-toc-fab {
+    display: none;
+  }
+
+  @media (max-width: 1199px) {
+    .audit-toc-panel {
+      position: fixed;
+      right: 0;
+      left: 0;
+      top: auto;
+      bottom: 0;
+      width: auto;
+      max-height: 60vh;
+      border-radius: 14px 14px 0 0;
+      transform: translateY(100%);
+      transition: transform 200ms ease;
+      padding: 20px 24px 28px;
+      box-shadow: 0 -4px 24px rgba(20, 22, 26, 0.12);
+    }
+    .audit-toc[data-sheet="open"] .audit-toc-panel {
+      transform: translateY(0);
+    }
+    .audit-toc-fab {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      padding: 10px 16px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+      background: var(--teal);
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(20, 22, 26, 0.18);
+      z-index: 41;
+    }
+    .audit-toc-fab:focus { outline: 2px solid var(--teal); outline-offset: 2px; }
+    .audit-toc-fab-icon { font-size: 14px; line-height: 1; }
+    .audit-toc-list a { padding: 10px 12px; font-size: 14.5px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .audit-toc-panel { transition: none; }
+    .audit-toc-list a { transition: none; }
+  }
+  @media print {
+    .audit-toc { display: none !important; }
+  }
+
+  /* Sprint H2: Owner Action Plan card. Three-column grid on desktop,
+     stacks to one column below 720px. Each column lists failed +
+     unverified priority checks filed to a time horizon based on
+     effective weight. Checkbox state persists per-URL in localStorage
+     under muntin-action-plan:<hash>. Checkboxes survive re-audits. */
+  .action-plan-card {
+    max-width: 1100px;
+    margin: 24px auto 0;
+    padding: 22px 26px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+  }
+  .action-plan-card[hidden] { display: none; }
+  .action-plan-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  .action-plan-eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 6px;
+  }
+  .action-plan-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .action-plan-sub {
+    margin: 0 0 16px;
+    color: var(--stone);
+    font-size: 14px;
+    max-width: 780px;
+  }
+  .action-plan-reset {
+    flex-shrink: 0;
+    appearance: none;
+    border: 1px solid var(--line);
+    background: var(--cream-2, #faf6ee);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .action-plan-reset:hover { background: #E7F1F3; }
+  .action-plan-columns {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+  @media (max-width: 720px) {
+    .action-plan-columns { grid-template-columns: 1fr; }
+    .action-plan-head { flex-direction: column; }
+  }
+  .action-plan-col {
+    background: var(--cream, #FAF7F2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 14px 10px;
+    display: flex;
+    flex-direction: column;
+  }
+  .action-plan-col-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .action-plan-col-label {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .action-plan-col-progress {
+    font-size: 11.5px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--stone);
+  }
+  .action-plan-items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .action-plan-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+  .action-plan-item input[type="checkbox"] {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    cursor: pointer;
+    accent-color: var(--teal);
+  }
+  .action-plan-item-body { flex: 1; min-width: 0; }
+  .action-plan-item-title {
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--ink);
+  }
+  .action-plan-item[data-done="1"] .action-plan-item-title {
+    text-decoration: line-through;
+    color: var(--stone);
+  }
+  .action-plan-item-meta {
+    margin-top: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    font-size: 11.5px;
+    color: var(--stone);
+  }
+  .action-plan-empty-col {
+    font-size: 12.5px;
+    color: var(--stone);
+    font-style: italic;
+  }
+  @media print {
+    .action-plan-reset { display: none; }
+    .action-plan-columns { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .action-plan-item { page-break-inside: avoid; }
+  }
+
+  /* Sprint E3: shared 'DEEP SCAN' eyebrow label applied to every
+     Deep-Scan-only card. Small, quiet, clearly visually distinct
+     from the Fast Scan body — signals these are optional extras
+     the owner opted into rather than gaps in the core report. */
+  .deep-card { position: relative; }
+  .deep-card .deep-eyebrow {
+    display: inline-block;
+    padding: 2px 9px;
+    margin-bottom: 12px;
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--stone);
+    background: var(--cream-2, #faf6ee);
+    border: 1px solid var(--line, #E6DFCE);
+    border-radius: 4px;
+  }
 
   /* Sprint D1: email deliverability card. Pass rows use the same
      green as the security-grade chip; fail rows use rust. Unknown
@@ -937,6 +1463,13 @@
     font-weight: 600;
     color: var(--teal);
     list-style: none;
+  }
+  /* Sprint E4: inline vendor teaser in the closed summary state.
+     Muted so the clickable label stays the visual anchor but owners
+     still learn WHAT powers the tool without having to expand. */
+  .built-by-summary-teaser {
+    font-weight: 400;
+    color: var(--stone);
   }
   .built-by-footer summary::before {
     content: '+ ';
@@ -1549,7 +2082,57 @@
     body.print-worksheet .share-platforms,
     body.print-worksheet .audit-form,
     body.print-worksheet header,
-    body.print-worksheet footer {
+    body.print-worksheet footer,
+    /* Sprint N1 worksheet hygiene: hide the noisier cards that
+       aren't directly actionable for a manager handoff. Keep
+       action-plan-card + nap-check-card visible — those ARE the
+       handoff artifact. */
+    body.print-worksheet .og-completeness-card,
+    body.print-worksheet .schema-richness-card,
+    body.print-worksheet .deep-email-card,
+    body.print-worksheet .history-banner,
+    body.print-worksheet .builtby-footer,
+    body.print-worksheet .deep-card,
+    body.print-worksheet .deep-scan-strip,
+    body.print-worksheet .brand-dossier-card,
+    body.print-worksheet .crawl-summary,
+    body.print-worksheet .owner-inputs-card {
+      display: none !important;
+    }
+    /* Sprint N1 + H2 worksheet presentation: both the action plan
+       and NAP cross-check flip to B&W single-column layouts when
+       printing in worksheet mode. */
+    body.print-worksheet .action-plan-card,
+    body.print-worksheet .nap-check-card {
+      background: #fff !important;
+      border: 1px solid #000 !important;
+      border-left-width: 4px !important;
+      border-radius: 0 !important;
+      page-break-inside: avoid;
+      margin-top: 18px !important;
+    }
+    body.print-worksheet .action-plan-columns {
+      grid-template-columns: 1fr !important;
+      gap: 6px !important;
+    }
+    body.print-worksheet .action-plan-col,
+    body.print-worksheet .action-plan-item,
+    body.print-worksheet .nap-check-row {
+      background: #fff !important;
+      border: 1px solid #000 !important;
+      border-radius: 0 !important;
+    }
+    body.print-worksheet .action-plan-col-label,
+    body.print-worksheet .nap-check-row-label {
+      color: #000 !important;
+    }
+    body.print-worksheet .action-plan-eyebrow,
+    body.print-worksheet .nap-check-eyebrow {
+      color: #000 !important;
+      background: #fff !important;
+      border: 1px solid #000 !important;
+    }
+    body.print-worksheet .action-plan-reset {
       display: none !important;
     }
     body.print-worksheet .top-fixes {
@@ -2095,6 +2678,70 @@
     border-color: var(--teal);
     outline: none;
   }
+  /* Sprint E2: Google-verified chip strip. Lives inline inside the
+     business-type card; does NOT introduce a second card. Chips
+     render only when Places v1 returned a verified value. */
+  .business-type-card .btc-google-strip {
+    width: 100%;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--line, #E6DFCE);
+  }
+  .business-type-card .btc-google-strip[hidden] { display: none; }
+  .btc-google-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #1F4E5B;
+    background: #E7F1F3;
+    border: 1px solid #C7DFE4;
+    border-radius: 999px;
+    margin-bottom: 8px;
+  }
+  .btc-google-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 8px;
+    margin-bottom: 8px;
+  }
+  .btc-google-chips .chip {
+    padding: 4px 10px;
+    font-size: 12.5px;
+    font-weight: 500;
+    background: var(--white);
+    border: 1px solid var(--line, #E6DFCE);
+    border-radius: 999px;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .btc-google-summary {
+    margin: 4px 0 8px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .btc-google-summary[hidden] { display: none; }
+  .btc-google-summary::before { content: '“'; margin-right: 2px; }
+  .btc-google-summary::after  { content: '”'; margin-left: 2px; }
+  .btc-google-hours[hidden] { display: none; }
+  .btc-google-hours summary {
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--teal);
+  }
+  .btc-google-hours ul {
+    list-style: none;
+    margin: 6px 0 0;
+    padding: 0;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
   .business-type-card .btc-sub {
     flex: 1;
     min-width: 240px;
@@ -2332,6 +2979,38 @@
     padding-top: 4px;
   }
   .priority-item .link:hover { color: var(--teal-dark); }
+  /* Sprint F1: "Copy for your developer" button on failing +
+     unverified priority check rows. Same visual class as the existing
+     feedback-btn but filled-teal to distinguish the primary handoff
+     action. Only rendered on actionable items. */
+  .dev-prompt-btn {
+    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--teal);
+    background: transparent;
+    border: 1px solid var(--teal);
+    border-radius: 999px;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+  }
+  .dev-prompt-btn::before {
+    content: '⧉';
+    font-size: 13px;
+    line-height: 1;
+  }
+  .dev-prompt-btn:hover,
+  .dev-prompt-btn:focus {
+    background: var(--teal);
+    color: var(--white, #ffffff);
+    outline: none;
+  }
+  @media print { .dev-prompt-btn { display: none !important; } }
   @media (max-width: 640px) {
     .priority-item { grid-template-columns: 28px 1fr; }
     .priority-item .link { grid-column: 2; padding-top: 0; }
@@ -2654,6 +3333,97 @@
     .compare-actions { flex-direction: column; align-items: stretch; }
     .compare-run-btn { margin-left: 0; }
   }
+
+  /* Sprint R1: 30-day re-audit reminder card. Quieter + tighter than
+     the main email-report form above — this is an opt-in follow-up
+     nudge, not a primary CTA. Sits directly below the email-report
+     block and borrows its grid form layout via .email-form-like. */
+  .reaudit-reminder {
+    margin-top: 20px;
+    padding: 24px 30px;
+    background: var(--cream-2, #faf6ee);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+  }
+  .reaudit-reminder header { margin-bottom: 14px; }
+  .reaudit-reminder h3 {
+    margin: 0 0 4px;
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .reaudit-reminder p {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--stone);
+    max-width: 620px;
+  }
+  .reaudit-reminder-form {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    max-width: 520px;
+    margin-top: 12px;
+  }
+  .reaudit-reminder-form input[type="email"] {
+    padding: 11px 14px;
+    border: 1px solid var(--line-dark);
+    border-radius: 10px;
+    font: inherit;
+    font-size: 14px;
+    background: var(--white);
+    color: var(--ink);
+  }
+  .reaudit-reminder-form input[type="email"]:focus {
+    outline: 2px solid var(--teal);
+    outline-offset: 0;
+  }
+  .reaudit-reminder-form button {
+    padding: 11px 18px;
+    background: var(--teal);
+    color: var(--white, #ffffff);
+    border: none;
+    border-radius: 10px;
+    font: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background var(--t-fast) var(--ease);
+  }
+  .reaudit-reminder-form button:hover,
+  .reaudit-reminder-form button:focus {
+    background: var(--teal-dark, #133842);
+    outline: none;
+  }
+  .reaudit-reminder-form button[disabled] { opacity: 0.6; cursor: wait; }
+  .reaudit-reminder-disclaimer {
+    margin-top: 10px !important;
+    font-size: 12px !important;
+    color: var(--stone);
+  }
+  .reaudit-reminder-success {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: #E4F2E9;
+    border: 1px solid #BED9C5;
+    border-radius: 10px;
+    color: #1F6B3A;
+    font-size: 13.5px;
+    font-weight: 600;
+  }
+  .reaudit-reminder-error {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: #FAE9DE;
+    border: 1px solid #E6C5B1;
+    border-radius: 10px;
+    color: #B8541A;
+    font-size: 13.5px;
+  }
+  @media print { .reaudit-reminder { display: none !important; } }
+  body.print-worksheet .reaudit-reminder { display: none !important; }
 
   /* Email report form */
   .email-report {
@@ -3107,6 +3877,34 @@
     <!-- Report card (hidden until a result renders) -->
     <div class="audit-report" id="auditReport" hidden>
 
+      <!-- Sprint Q1: Sticky report table-of-contents. Desktop renders
+           as a fixed right-gutter panel at ≥1200px. Smaller viewports
+           get a floating "Sections" button that toggles a bottom-
+           sheet overlay. Each link highlights when its target section
+           crosses the viewport center (IntersectionObserver). Links
+           whose targets are hidden (e.g. action plan with no items)
+           auto-hide themselves. Respects prefers-reduced-motion —
+           scroll is instant rather than smooth. -->
+      <nav class="audit-toc" id="auditToc" aria-label="Report sections" hidden>
+        <div class="audit-toc-panel">
+          <div class="audit-toc-label" data-tr="toc.label">On this page</div>
+          <ul class="audit-toc-list" id="auditTocList">
+            <li><a href="#overallScoreSection" data-toc-target="overallScoreSection" data-tr="toc.overall">Overall score</a></li>
+            <li><a href="#topFixes"            data-toc-target="topFixes"            data-tr="toc.topFixes">Top fixes</a></li>
+            <li><a href="#actionPlanCard"      data-toc-target="actionPlanCard"      data-tr="toc.actionPlan">Your plan</a></li>
+            <li><a href="#categoryGrid"        data-toc-target="categoryGrid"        data-tr="toc.categories">Categories</a></li>
+            <li><a href="#opportunitiesWrap"   data-toc-target="opportunitiesWrap"   data-tr="toc.opportunities">Opportunities</a></li>
+            <li><a href="#napCheckCard"        data-toc-target="napCheckCard"        data-tr="toc.napCheck">Listing consistency</a></li>
+            <li><a href="#priorityListWrap"    data-toc-target="priorityListWrap"    data-tr="toc.priority">Restaurant checks</a></li>
+            <li><a href="#auditCompare"        data-toc-target="auditCompare"        data-tr="toc.compare">Compare</a></li>
+          </ul>
+        </div>
+        <button type="button" class="audit-toc-fab" id="auditTocFab" aria-expanded="false" aria-controls="auditToc">
+          <span class="audit-toc-fab-icon" aria-hidden="true">☰</span>
+          <span data-tr="toc.openSheet">Sections</span>
+        </button>
+      </nav>
+
       <!-- Sprint S2.5: Deep Scan status strip + data chips. Appears
            only when the toggle is checked. Chips inside (.deep-age-
            chip, .deep-security-chip) stay hidden until their upstream
@@ -3117,7 +3915,7 @@
       </div>
 
       <!-- Summary with overall score ring -->
-      <div class="audit-summary">
+      <div class="audit-summary" id="overallScoreSection">
         <div class="score-ring" id="scoreRing">
           <svg viewBox="0 0 120 120" aria-hidden="true">
             <circle class="bg" cx="60" cy="60" r="52"></circle>
@@ -3189,7 +3987,7 @@
       </div>
 
       <!-- Five category gauges — four from Lighthouse + Restaurant Readiness from priority checks -->
-      <div class="category-grid">
+      <div class="category-grid" id="categoryGrid">
         <div class="category-card" data-cat="performance">
           <div class="label">Performance</div>
           <div class="cat-value">—</div>
@@ -3228,6 +4026,29 @@
            focus on. Populated by renderExecutiveSummary() in
            I1b. Hidden by default so the layout doesn't reserve
            empty space on pre-audit page load. -->
+      <!-- Sprint H1: 'Since your last audit' banner. Renders only
+           when a prior snapshot for this exact URL exists in the
+           current browser's localStorage AND is old enough to be
+           a meaningful delta (at least 6 hours). First-time audits
+           and within-same-session re-renders keep the banner
+           hidden so we never fabricate progress. -->
+      <section class="history-banner" id="historyBanner" hidden aria-live="polite">
+        <div class="history-banner-row">
+          <span class="history-banner-eyebrow" data-tr="history.eyebrow">Since your last audit</span>
+          <span class="history-banner-timing" id="historyBannerTiming"></span>
+        </div>
+        <div class="history-banner-delta" id="historyBannerDelta"></div>
+        <ul class="history-banner-pillars" id="historyBannerPillars"></ul>
+        <!-- Sprint H3: specific priority checks that flipped from
+             failed / unverified to a pass between the prior snapshot
+             and this audit. Rendered as compact green chips. Stays
+             hidden when no checks resolved. -->
+        <div class="history-banner-resolved" id="historyBannerResolved" hidden>
+          <span class="history-banner-resolved-label" data-tr="history.resolvedLabel">You resolved:</span>
+          <ul class="history-banner-resolved-list" id="historyBannerResolvedList"></ul>
+        </div>
+      </section>
+
       <section class="exec-summary" id="execSummary" hidden aria-live="polite">
         <div class="exec-summary-label">What this means</div>
         <p class="exec-summary-body" id="execSummaryBody">—</p>
@@ -3250,6 +4071,23 @@
           <div class="top-fixes-eta" id="topFixesEta" hidden></div>
         </div>
         <ol class="top-fixes-list" id="topFixesList"></ol>
+      </section>
+
+      <!-- Sprint H2: Owner Action Plan. Failed + unverified priority
+           checks, auto-sorted by subtype-effective weight, split into
+           three time-horizon columns. Each checkbox persists per-URL
+           in localStorage so a returning owner sees their progress.
+           Works with the existing print-for-manager worksheet. -->
+      <section class="action-plan-card" id="actionPlanCard" hidden>
+        <header class="action-plan-head">
+          <div>
+            <span class="action-plan-eyebrow" data-tr="actionPlan.eyebrow">Your action plan</span>
+            <h3 class="action-plan-title" data-tr="actionPlan.heading">Turn this audit into a plan you can work through</h3>
+          </div>
+          <button type="button" class="action-plan-reset" id="actionPlanReset" data-tr="actionPlan.reset">Reset checkboxes</button>
+        </header>
+        <p class="action-plan-sub" data-tr="actionPlan.sub">Your highest-leverage gaps, split across three horizons. Check each off as you tackle it — your progress is saved on this device and survives re-audits.</p>
+        <div class="action-plan-columns" id="actionPlanColumns"></div>
       </section>
 
       <!-- Phase L1: Email gate retired. Deep tier now renders
@@ -3384,7 +4222,8 @@
            rendered only when the server confirms every sentence
            cites a valid signal. When the LLM is unavailable or
            validation fails, this card stays hidden entirely. -->
-      <section class="brand-dossier-card" id="brandDossierCard" hidden>
+      <section class="brand-dossier-card deep-card" id="brandDossierCard" hidden>
+        <span class="deep-eyebrow" data-tr="deepScan.eyebrow">Deep scan</span>
         <header class="brand-dossier-head">
           <span class="brand-dossier-badge" data-tr="dossier.badge">Cited facts</span>
           <h3 class="brand-dossier-title" data-tr="dossier.heading">What we can verify about this restaurant</h3>
@@ -3394,14 +4233,19 @@
       </section>
 
       <!-- Sprint S2.7: Deep Scan sections. Each stays hidden until
-           its upstream delivers real data; no placeholder values. -->
-      <section class="deep-reviews-card" id="deepReviewsCard" hidden>
+           its upstream delivers real data; no placeholder values.
+           The shared .deep-card wrapper + <span class="deep-eyebrow">
+           (Sprint E3) signals these are optional extras the owner
+           opted into, visually distinct from the Fast Scan body. -->
+      <section class="deep-reviews-card deep-card" id="deepReviewsCard" hidden>
+        <span class="deep-eyebrow" data-tr="deepScan.eyebrow">Deep scan</span>
         <h3 class="deep-section-head" data-tr="deep.reviews.heading">Google reviews snapshot</h3>
         <p class="deep-section-sub" id="deepReviewsSub"></p>
         <ol class="deep-reviews-list" id="deepReviewsList"></ol>
       </section>
 
-      <section class="deep-crux-card" id="deepCruxCard" hidden>
+      <section class="deep-crux-card deep-card" id="deepCruxCard" hidden>
+        <span class="deep-eyebrow" data-tr="deepScan.eyebrow">Deep scan</span>
         <h3 class="deep-section-head" data-tr="deep.crux.heading">Field-data trends (25 weeks)</h3>
         <p class="deep-section-sub" data-tr="deep.crux.sub">Real-user Core Web Vitals from the Chrome UX Report. Rendered only when Google has enough samples to publish a trend.</p>
         <div class="deep-crux-grid" id="deepCruxGrid"></div>
@@ -3412,7 +4256,8 @@
            returns ok:true and at least one sub-check has a definite
            answer (DKIM absence is never claimed — only "confirmed"
            or "unknown via our probes"). -->
-      <section class="deep-email-card" id="deepEmailCard" hidden>
+      <section class="deep-email-card deep-card" id="deepEmailCard" hidden>
+        <span class="deep-eyebrow" data-tr="deepScan.eyebrow">Deep scan</span>
         <header class="deep-section-head-wrap">
           <h3 class="deep-section-head" data-tr="deep.email.heading">Email deliverability</h3>
           <span class="deep-email-posture" id="deepEmailPosture" hidden></span>
@@ -3482,7 +4327,38 @@
           <span class="btc-alt-label">Or:</span>
           <div class="btc-alt-chips" id="btcAltChips"></div>
         </div>
+
+        <!-- Sprint E2: Google-verified chips folded into the business-
+             type card (previously lived in a standalone Places facts
+             card). Populated only when /api/gbp-lookup matched this
+             URL; every chip corresponds to a verified Places field —
+             we never synthesize a value we don't have. -->
+        <div class="btc-google-strip" id="btcGoogleStrip" hidden>
+          <span class="btc-google-badge" data-tr="places.verifiedBadge">Verified by Google</span>
+          <div class="btc-google-chips" id="btcGoogleChips"></div>
+          <p class="btc-google-summary" id="btcGoogleSummary" hidden></p>
+          <details class="btc-google-hours" id="btcGoogleHours" hidden>
+            <summary data-tr="places.hoursLabel">Google-published hours</summary>
+            <ul id="btcGoogleHoursList"></ul>
+          </details>
+        </div>
       </div>
+
+      <!-- Sprint N1: NAP (Name/Address/Phone) cross-check. Renders
+           ONLY when we have at least two sources for a field AND
+           they disagree. Accuracy rule: no speculation — we only
+           surface a mismatch when the normalized values actually
+           differ across verified sources (Google Places, schema.org
+           JSON-LD, on-page text). Hidden entirely when everything
+           lines up or when we don't have enough signals to compare. -->
+      <section class="nap-check-card" id="napCheckCard" hidden>
+        <header class="nap-check-head">
+          <span class="nap-check-eyebrow" data-tr="nap.eyebrow">Local listing consistency</span>
+          <h3 class="nap-check-title" data-tr="nap.heading">Your name, address, and phone don't line up across sources</h3>
+        </header>
+        <p class="nap-check-sub" data-tr="nap.sub">Google ranks local businesses higher when their Business Profile, website schema, and on-page text all match. Every mismatch below is a citation inconsistency search engines can see — pick the canonical value and unify.</p>
+        <ul class="nap-check-list" id="napCheckList"></ul>
+      </section>
 
       <!-- Sprint D4: Open Graph / Twitter Card completeness. Reuses
            the existing checkOgShareMeta() detector against the
@@ -3509,28 +4385,6 @@
         </header>
         <p class="schema-richness-summary" id="schemaRichnessSummary"></p>
         <ul class="schema-richness-list" id="schemaRichnessList"></ul>
-      </section>
-
-      <!-- Sprint T1: Places-verified facts card. Renders only what
-           Google's Places v1 API has actually confirmed for this
-           business — Google's own description (editorialSummary),
-           price level ($-$$$$), primary type, and the published
-           weekday hours. Every row renders only when its field is
-           non-null; the whole card stays hidden when Places didn't
-           match or returned nothing. Accuracy gate: each line is a
-           direct passthrough of a verified-by-Google value. We do
-           not interpret, paraphrase, or summarize. -->
-      <section class="places-facts-card" id="placesFactsCard" hidden>
-        <header class="places-facts-head">
-          <span class="places-facts-badge" data-tr="places.verifiedBadge">Verified by Google</span>
-          <h3 class="places-facts-title" data-tr="places.heading">What Google knows about this restaurant</h3>
-        </header>
-        <div class="places-facts-chips" id="placesFactsChips"></div>
-        <p class="places-facts-summary" id="placesFactsSummary" hidden></p>
-        <details class="places-facts-hours" id="placesFactsHours" hidden>
-          <summary data-tr="places.hoursLabel">Google-published hours</summary>
-          <ul id="placesFactsHoursList"></ul>
-        </details>
       </section>
 
       <!-- Restaurant-priority checks list -->
@@ -3658,6 +4512,34 @@
         <div id="emailReportError" class="email-report-error" hidden role="alert"></div>
       </div>
 
+      <!-- Sprint R1: schedule a 30-day re-audit reminder. Single-
+           purpose, standalone card so it doesn't compete with the
+           email-the-PDF form above. Uses Resend's scheduled_at to
+           hold the message server-side until send-time — we do not
+           store the email in our own KV / DB. Hidden on print. -->
+      <section class="reaudit-reminder" id="reauditReminder">
+        <header>
+          <h3 data-tr="reaudit.heading">Remind me to re-audit in 30 days</h3>
+          <p data-tr="reaudit.sub">Audits are snapshots. A friendly reminder in 30 days helps you see which fixes actually moved the score. One email, nothing else.</p>
+        </header>
+        <form id="reauditReminderForm" class="reaudit-reminder-form" novalidate>
+          <input type="text" name="_gotcha" class="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <input
+            type="email"
+            name="email"
+            required
+            autocomplete="email"
+            placeholder="you@yourrestaurant.com"
+            aria-label="Your email address"
+            data-tr-attr="placeholder:reaudit.placeholder"
+          />
+          <button type="submit" data-tr="reaudit.submit">Schedule 30-day reminder</button>
+        </form>
+        <p class="reaudit-reminder-disclaimer" data-tr="reaudit.disclaimer">Your email lives only on the scheduled message. We don't store it on our end — no list, no drip, no follow-up.</p>
+        <div class="reaudit-reminder-success" id="reauditReminderSuccess" hidden role="status" aria-live="polite" data-tr="reaudit.success">Reminder scheduled — you'll hear from us in 30 days.</div>
+        <div class="reaudit-reminder-error" id="reauditReminderError" hidden role="alert"></div>
+      </section>
+
       <!-- Sprint D3: embeddable badge offer. Appears after audit
            completes; gives the owner a copy-paste snippet to drop
            into their own site footer. The badge image updates
@@ -3683,7 +4565,10 @@
            default; expanding shows every API / framework / typeface
            that powers the audit, each a link to its vendor. -->
       <details class="built-by-footer" id="builtByFooter">
-        <summary data-tr="builtBy.summary">How this audit was built</summary>
+        <summary>
+          <span class="built-by-summary-label" data-tr="builtBy.summary">How this audit was built</span>
+          <span class="built-by-summary-teaser" id="builtByTeaser"></span>
+        </summary>
         <p class="built-by-intro" data-tr="builtBy.intro">A Muntin Digital creation, powered by:</p>
         <ul class="built-by-list" id="builtByList"></ul>
         <p class="built-by-license" data-tr="builtBy.license">Open-source projects listed here are used under their respective licenses (MIT, Apache-2.0, BSD-3, OFL-1.1, MPL-2.0, AGPL-3.0, CC-BY-SA). Vendor names are trademarks of their owners.</p>
@@ -7674,15 +8559,23 @@
     renderPlacesFactsCard();
     renderSchemaRichness();
     renderOgCompleteness();
+    // Sprint N1: NAP cross-check runs after the renderers that
+    // expose __auditPlaces / __auditSchema / __auditCrawl so the
+    // card always sees the latest signal state. It self-hides
+    // when there's nothing to flag.
+    renderNapCheck();
     renderBuiltByFooter();
+    // Sprint Q1: refresh the sticky ToC after every card renderer
+    // above has decided whether to show itself. Dead links to
+    // hidden cards get removed here.
+    syncAuditTocVisibility();
   }
 
-  // Sprint D4: Open Graph / Twitter Card completeness. Uses the
-  // existing checkOgShareMeta() detector on the homepage HTML
-  // that /api/page-crawl already captured. Accuracy gate: calls a
-  // field present ONLY when the literal meta tag exists with a
-  // non-empty value (og:image + twitter:image additionally require
-  // an http(s) URL).
+  // Sprint D4 + E1: Open Graph / Twitter Card completeness with
+  // progressive disclosure. Same partition as the schema scorecard:
+  // missing REQUIRED tags always visible (og:title / og:description
+  // / og:image). Missing recommended tags behind a "Show N more"
+  // disclosure. Present tags behind a "covered" disclosure.
   function renderOgCompleteness() {
     var card = document.getElementById('ogCompletenessCard');
     var list = document.getElementById('ogCompletenessList');
@@ -7697,20 +8590,28 @@
       ? crawl.homepage.html : '';
     if (!homepageHtml) { card.hidden = true; return; }
     var detection = checkOgShareMeta(homepageHtml);
-    list.innerHTML = '';
-    var presentCount = 0;
-    var lang = (typeof window !== 'undefined' && window.__muntinLang) || 'en';
+
+    var missingRequired = [];
+    var missingOther = [];
+    var present = [];
     fields.forEach(function(f){
-      var present = !!detection[f.key];
-      if (present) presentCount++;
+      if (detection[f.key]) present.push(f);
+      else if (f.priority === 'required') missingRequired.push(f);
+      else missingOther.push(f);
+    });
+
+    list.innerHTML = '';
+    var lang = (typeof window !== 'undefined' && window.__muntinLang) || 'en';
+
+    function renderRow(f, status) {
       var li = document.createElement('li');
-      li.className = 'og-completeness-row og-completeness-row-' + (present ? 'present' : 'missing')
+      li.className = 'og-completeness-row og-completeness-row-' + status
                    + ' og-completeness-priority-' + f.priority;
       var lead = document.createElement('div');
       lead.className = 'og-completeness-lead';
       var icon = document.createElement('span');
       icon.className = 'og-completeness-icon';
-      icon.textContent = present ? '✓' : '+';
+      icon.textContent = status === 'present' ? '✓' : '+';
       var label = document.createElement('code');
       label.className = 'og-completeness-label';
       label.textContent = f.label;
@@ -7721,11 +8622,11 @@
       lead.appendChild(label);
       lead.appendChild(pri);
       li.appendChild(lead);
-      var benefit = document.createElement('p');
-      benefit.className = 'og-completeness-benefit';
-      benefit.textContent = (lang === 'es' && f.benefit_es) ? f.benefit_es : f.benefit_en;
-      li.appendChild(benefit);
-      if (!present) {
+      if (status !== 'present') {
+        var benefit = document.createElement('p');
+        benefit.className = 'og-completeness-benefit';
+        benefit.textContent = (lang === 'es' && f.benefit_es) ? f.benefit_es : f.benefit_en;
+        li.appendChild(benefit);
         var pre = document.createElement('pre');
         pre.className = 'og-completeness-snippet';
         pre.textContent = f.example;
@@ -7749,23 +8650,62 @@
         li.appendChild(btn);
         li.appendChild(pre);
       }
-      list.appendChild(li);
-    });
-    summary.textContent = t('og.summary', {
-      present: presentCount,
-      total: fields.length
-    });
+      return li;
+    }
+
+    missingRequired.forEach(function(f){ list.appendChild(renderRow(f, 'missing')); });
+
+    if (missingOther.length) {
+      var details = document.createElement('details');
+      details.className = 'og-completeness-more';
+      var summaryEl = document.createElement('summary');
+      summaryEl.textContent = t('schemaRichness.moreMissing', { count: missingOther.length });
+      details.appendChild(summaryEl);
+      var innerList = document.createElement('ul');
+      innerList.className = 'og-completeness-inner-list';
+      missingOther.forEach(function(f){ innerList.appendChild(renderRow(f, 'missing')); });
+      details.appendChild(innerList);
+      var wrapLi = document.createElement('li');
+      wrapLi.className = 'og-completeness-row-wrap';
+      wrapLi.appendChild(details);
+      list.appendChild(wrapLi);
+    }
+
+    if (present.length) {
+      var details2 = document.createElement('details');
+      details2.className = 'og-completeness-more og-completeness-covered';
+      var summaryEl2 = document.createElement('summary');
+      summaryEl2.textContent = t('schemaRichness.covered', { count: present.length });
+      details2.appendChild(summaryEl2);
+      var innerList2 = document.createElement('ul');
+      innerList2.className = 'og-completeness-inner-list';
+      present.forEach(function(f){ innerList2.appendChild(renderRow(f, 'present')); });
+      details2.appendChild(innerList2);
+      var wrapLi2 = document.createElement('li');
+      wrapLi2.className = 'og-completeness-row-wrap';
+      wrapLi2.appendChild(details2);
+      list.appendChild(wrapLi2);
+    }
+
+    var gapCount = missingRequired.length + missingOther.length;
+    if (gapCount === 0) {
+      summary.textContent = t('og.summaryAllGood', { total: fields.length });
+    } else {
+      summary.textContent = t('og.summary', {
+        present: present.length, total: fields.length
+      });
+    }
     card.hidden = false;
   }
 
-  // Sprint D2: schema richness scorecard. Walks the schema-check
-  // response's restaurant-like objects, marks each Google-
-  // recommended field as present or missing, renders a per-gap
-  // copy-paste snippet for everything missing. Accuracy gate:
-  // we call a field "present" only when the schema object literally
-  // declares it with a non-empty value. Presence via Places
-  // (fetched separately) does NOT count — that's a different
-  // surface Google draws from.
+  // Sprint D2 + E1: schema richness scorecard with progressive
+  // disclosure. Visible by default: missing REQUIRED fields with
+  // full snippets — the urgent action list. Behind a single
+  // "Show N recommended / optional opportunities" disclosure: all
+  // other missing fields. Behind a "See N fields you're already
+  // covering" disclosure: present fields. Accuracy gate unchanged —
+  // presence only credited when the field literally exists in
+  // schema with a non-empty value.
   function renderSchemaRichness() {
     var card = document.getElementById('schemaRichnessCard');
     var list = document.getElementById('schemaRichnessList');
@@ -7780,7 +8720,6 @@
       card.hidden = true;
       return;
     }
-    // Narrow to restaurant-like objects.
     var RESTAURANT_TYPES = /^(Restaurant|FoodEstablishment|Bakery|BarOrPub|Brewery|CafeOrCoffeeShop|FastFoodRestaurant|IceCreamShop|Winery|Distillery|Hotel)$/i;
     var restaurantObjs = schema.objects.filter(function(o){
       if (!o || !o['@type']) return false;
@@ -7788,14 +8727,7 @@
       if (Array.isArray(t)) return t.some(function(x){ return RESTAURANT_TYPES.test(String(x)); });
       return RESTAURANT_TYPES.test(String(t));
     });
-    if (!restaurantObjs.length) {
-      // No Restaurant schema detected at all — the separate
-      // schema priority check already nudges toward adding one.
-      // Don't render this richness card because there's nothing
-      // to score.
-      card.hidden = true;
-      return;
-    }
+    if (!restaurantObjs.length) { card.hidden = true; return; }
     function fieldPresent(key) {
       for (var i = 0; i < restaurantObjs.length; i++) {
         var v = restaurantObjs[i][key];
@@ -7806,22 +8738,29 @@
       }
       return false;
     }
-    list.innerHTML = '';
-    var presentCount = 0;
-    var lang = (typeof window !== 'undefined' && window.__muntinLang) || 'en';
+    // Partition: missingRequired (urgent) | missingOther (deferred) | present (covered).
+    var missingRequired = [];
+    var missingOther = [];
+    var present = [];
     fields.forEach(function(f){
-      var present = fieldPresent(f.key);
-      if (present) presentCount++;
+      if (fieldPresent(f.key)) present.push(f);
+      else if (f.priority === 'required') missingRequired.push(f);
+      else missingOther.push(f);
+    });
+
+    list.innerHTML = '';
+    var lang = (typeof window !== 'undefined' && window.__muntinLang) || 'en';
+
+    function renderRow(f, status) {
       var li = document.createElement('li');
-      li.className = 'schema-richness-row schema-richness-row-' + (present ? 'present' : 'missing')
-                    + ' schema-richness-priority-' + f.priority;
-      // Left: status + label + priority chip.
+      li.className = 'schema-richness-row schema-richness-row-' + status
+                   + ' schema-richness-priority-' + f.priority;
       var lead = document.createElement('div');
       lead.className = 'schema-richness-lead';
       var icon = document.createElement('span');
       icon.className = 'schema-richness-icon';
-      icon.textContent = present ? '✓' : '+';
-      icon.setAttribute('aria-label', present ? t('schemaRichness.present') : t('schemaRichness.missing'));
+      icon.textContent = status === 'present' ? '✓' : '+';
+      icon.setAttribute('aria-label', status === 'present' ? t('schemaRichness.present') : t('schemaRichness.missing'));
       var label = document.createElement('span');
       label.className = 'schema-richness-label';
       label.textContent = f.label;
@@ -7832,15 +8771,11 @@
       lead.appendChild(label);
       lead.appendChild(priorityChip);
       li.appendChild(lead);
-      // Benefit copy — same for present/missing, just different
-      // framing via CSS.
-      var benefitStr = (lang === 'es' && f.benefit_es) ? f.benefit_es : f.benefit_en;
-      var benefit = document.createElement('p');
-      benefit.className = 'schema-richness-benefit';
-      benefit.textContent = benefitStr;
-      li.appendChild(benefit);
-      // For missing: render a copy-paste snippet with a copy button.
-      if (!present) {
+      if (status !== 'present') {
+        var benefit = document.createElement('p');
+        benefit.className = 'schema-richness-benefit';
+        benefit.textContent = (lang === 'es' && f.benefit_es) ? f.benefit_es : f.benefit_en;
+        li.appendChild(benefit);
         var pre = document.createElement('pre');
         pre.className = 'schema-richness-snippet';
         pre.textContent = f.example;
@@ -7855,7 +8790,6 @@
             btn.textContent = t('schemaRichness.copied');
             setTimeout(function(){ btn.textContent = orig; }, 1500);
           } catch (_) {
-            // Fallback: select the text so the user can copy manually.
             var range = document.createRange();
             range.selectNode(pre);
             window.getSelection().removeAllRanges();
@@ -7865,13 +8799,59 @@
         li.appendChild(btn);
         li.appendChild(pre);
       }
-      list.appendChild(li);
-    });
+      return li;
+    }
+
+    // Urgent: missing required fields, always expanded.
+    missingRequired.forEach(function(f){ list.appendChild(renderRow(f, 'missing')); });
+
+    // Deferred: missing recommended + optional fields, behind one
+    // disclosure so the default view stays tight.
+    if (missingOther.length) {
+      var details = document.createElement('details');
+      details.className = 'schema-richness-more';
+      var summaryEl = document.createElement('summary');
+      summaryEl.textContent = t('schemaRichness.moreMissing', { count: missingOther.length });
+      details.appendChild(summaryEl);
+      var innerList = document.createElement('ul');
+      innerList.className = 'schema-richness-inner-list';
+      missingOther.forEach(function(f){ innerList.appendChild(renderRow(f, 'missing')); });
+      details.appendChild(innerList);
+      var wrapLi = document.createElement('li');
+      wrapLi.className = 'schema-richness-row-wrap';
+      wrapLi.appendChild(details);
+      list.appendChild(wrapLi);
+    }
+
+    // Covered: present fields, behind a second disclosure. The pat-
+    // on-the-back view — reassurance without taking up the primary
+    // action real estate.
+    if (present.length) {
+      var details2 = document.createElement('details');
+      details2.className = 'schema-richness-more schema-richness-covered';
+      var summaryEl2 = document.createElement('summary');
+      summaryEl2.textContent = t('schemaRichness.covered', { count: present.length });
+      details2.appendChild(summaryEl2);
+      var innerList2 = document.createElement('ul');
+      innerList2.className = 'schema-richness-inner-list';
+      present.forEach(function(f){ innerList2.appendChild(renderRow(f, 'present')); });
+      details2.appendChild(innerList2);
+      var wrapLi2 = document.createElement('li');
+      wrapLi2.className = 'schema-richness-row-wrap';
+      wrapLi2.appendChild(details2);
+      list.appendChild(wrapLi2);
+    }
+
+    // Summary line — two-part so owner reads it as status + action.
     var total = fields.length;
-    summary.textContent = t('schemaRichness.summary', {
-      present: presentCount,
-      total: total
-    });
+    var gapCount = missingRequired.length + missingOther.length;
+    if (gapCount === 0) {
+      summary.textContent = t('schemaRichness.summaryAllGood', { total: total });
+    } else {
+      summary.textContent = t('schemaRichness.summary', {
+        present: present.length, total: total
+      });
+    }
     card.hidden = false;
   }
 
@@ -7942,6 +8922,223 @@
     card.hidden = false;
   }
 
+  // Sprint H1: audit history helpers. Everything lives in
+  // localStorage under 'muntin-audit-history:<sha-8-of-url>'. We
+  // keep at most 20 entries per URL (FIFO), so an owner running
+  // weekly audits has ~5 months of history before the oldest
+  // entry drops. Accuracy rule: we only store values THIS audit
+  // produced — the banner never compares against partial or
+  // speculative data.
+  var HISTORY_KEY_PREFIX = 'muntin-audit-history:';
+  var HISTORY_MAX_ENTRIES = 20;
+  var HISTORY_MIN_DELTA_MS = 6 * 60 * 60 * 1000; // 6h minimum gap
+
+  function historyKeyFor(url) {
+    // Small hex digest of the normalized URL. Not cryptographic —
+    // just a stable per-URL key that avoids storing the URL itself
+    // in the localStorage key (which would be readable by any
+    // script on the page). Uses djb2, no crypto subtle needed.
+    var s = String(url || '').trim()
+      .replace(/^https?:\/\//i, '').replace(/\/$/, '').toLowerCase();
+    var h = 5381;
+    for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0;
+    return HISTORY_KEY_PREFIX + (h >>> 0).toString(16);
+  }
+
+  function readHistory(url) {
+    try {
+      var raw = window.localStorage.getItem(historyKeyFor(url));
+      if (!raw) return [];
+      var parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (_) { return []; }
+  }
+
+  function saveAuditSnapshot(url, snap) {
+    if (!url || !snap) return;
+    var entry = {
+      ts: Date.now(),
+      overall: typeof snap.overall === 'number' ? snap.overall : null,
+      perf:    typeof snap.perf === 'number' ? snap.perf : null,
+      a11y:    typeof snap.a11y === 'number' ? snap.a11y : null,
+      bp:      typeof snap.bp === 'number'   ? snap.bp   : null,
+      seo:     typeof snap.seo === 'number'  ? snap.seo  : null,
+      restaurant: typeof snap.restaurant === 'number' ? snap.restaurant : null,
+      subtype: snap.subtype || null,
+      unverifiedCount: typeof snap.unverifiedCount === 'number' ? snap.unverifiedCount : null,
+      // Sprint H3: capture the priority-check failures + unverified
+      // at snapshot time so a future re-audit can render a "resolved
+      // since last audit" chip row when the owner fixes something.
+      // Each entry is { id, title } — we persist the title so old
+      // snapshots survive a check rename/removal in future versions.
+      failedChecks:     Array.isArray(snap.failedChecks)     ? snap.failedChecks.slice(0, 40)     : [],
+      unverifiedChecks: Array.isArray(snap.unverifiedChecks) ? snap.unverifiedChecks.slice(0, 40) : []
+    };
+    var prev = readHistory(url);
+    // Guard: if the newest entry is within the minimum-delta window,
+    // overwrite it instead of appending. A user hitting re-audit
+    // twice in 10 seconds shouldn't create two history rows.
+    if (prev.length && entry.ts - prev[prev.length - 1].ts < HISTORY_MIN_DELTA_MS) {
+      prev[prev.length - 1] = entry;
+    } else {
+      prev.push(entry);
+      while (prev.length > HISTORY_MAX_ENTRIES) prev.shift();
+    }
+    try {
+      window.localStorage.setItem(historyKeyFor(url), JSON.stringify(prev));
+    } catch (_) { /* quota exceeded — fail closed */ }
+  }
+
+  function renderHistoryBanner(url) {
+    var banner = document.getElementById('historyBanner');
+    var timingEl = document.getElementById('historyBannerTiming');
+    var deltaEl = document.getElementById('historyBannerDelta');
+    var pillarsEl = document.getElementById('historyBannerPillars');
+    if (!banner || !timingEl || !deltaEl || !pillarsEl) return;
+    var history = readHistory(url);
+    // Need at least 2 entries — the one just saved (last) + a prior.
+    if (history.length < 2) { banner.hidden = true; return; }
+    var current = history[history.length - 1];
+    var previous = null;
+    // Walk backwards to find a prior entry at least HISTORY_MIN_DELTA_MS
+    // older than the current one. A re-audit in the same hour doesn't
+    // qualify as 'since your last audit.'
+    for (var i = history.length - 2; i >= 0; i--) {
+      if (current.ts - history[i].ts >= HISTORY_MIN_DELTA_MS) {
+        previous = history[i];
+        break;
+      }
+    }
+    if (!previous) { banner.hidden = true; return; }
+
+    // Timing label — days (or hours if < 1 day).
+    var elapsedMs = current.ts - previous.ts;
+    var timingLabel;
+    if (elapsedMs < 24 * 60 * 60 * 1000) {
+      var hrs = Math.max(1, Math.round(elapsedMs / (60 * 60 * 1000)));
+      timingLabel = t('history.hoursAgo', { count: hrs });
+    } else if (elapsedMs < 14 * 24 * 60 * 60 * 1000) {
+      var days = Math.max(1, Math.round(elapsedMs / (24 * 60 * 60 * 1000)));
+      timingLabel = t('history.daysAgo', { count: days });
+    } else {
+      var weeks = Math.max(1, Math.round(elapsedMs / (7 * 24 * 60 * 60 * 1000)));
+      timingLabel = t('history.weeksAgo', { count: weeks });
+    }
+    timingEl.textContent = timingLabel;
+
+    // Overall delta headline.
+    deltaEl.innerHTML = '';
+    if (typeof current.overall === 'number' && typeof previous.overall === 'number') {
+      var diff = current.overall - previous.overall;
+      var band = diff > 0 ? 'up' : diff < 0 ? 'down' : 'flat';
+      var arrow = band === 'up' ? '↑' : band === 'down' ? '↓' : '=';
+      var sign = diff > 0 ? '+' : '';
+      var headline = document.createElement('div');
+      headline.className = 'history-banner-headline history-banner-headline-' + band;
+      headline.innerHTML =
+        '<span class="history-banner-from">' + previous.overall + '</span>' +
+        ' <span class="history-banner-arrow">' + arrow + '</span> ' +
+        '<span class="history-banner-to">' + current.overall + '</span>' +
+        ' <span class="history-banner-diff">(' + sign + diff + ')</span>';
+      deltaEl.appendChild(headline);
+    }
+
+    // Per-pillar deltas — only pillars where both runs have a number.
+    pillarsEl.innerHTML = '';
+    var pillars = [
+      { key: 'perf',       label: 'Performance' },
+      { key: 'a11y',       label: 'Accessibility' },
+      { key: 'bp',         label: 'Best Practices' },
+      { key: 'seo',        label: 'SEO' },
+      { key: 'restaurant', label: 'Restaurant Readiness' }
+    ];
+    var changesCount = 0;
+    pillars.forEach(function(p){
+      var a = previous[p.key];
+      var b = current[p.key];
+      if (typeof a !== 'number' || typeof b !== 'number') return;
+      var d = b - a;
+      if (d === 0) return; // unchanged pillars don't earn a row
+      changesCount++;
+      var li = document.createElement('li');
+      li.className = 'history-banner-pillar history-banner-pillar-' + (d > 0 ? 'up' : 'down');
+      var lbl = document.createElement('span');
+      lbl.className = 'history-banner-pillar-label';
+      lbl.textContent = p.label;
+      var val = document.createElement('span');
+      val.className = 'history-banner-pillar-val';
+      val.textContent = (d > 0 ? '+' : '') + d;
+      li.appendChild(lbl);
+      li.appendChild(val);
+      pillarsEl.appendChild(li);
+    });
+    // Sprint H3: compute checks that went from fail/unverified in
+    // the prior snapshot to a pass in the current run. Accuracy
+    // gate: we derive the "passing now" set from window.__auditResults
+    // (the authoritative current-run data) and subtract anything
+    // still failing or unverified. A check that simply dropped out
+    // of the check list between versions doesn't count — we only
+    // surface IDs that exist in both runs.
+    var resolvedEl = document.getElementById('historyBannerResolved');
+    var resolvedListEl = document.getElementById('historyBannerResolvedList');
+    if (resolvedEl && resolvedListEl) {
+      var priorFailedIds = {};
+      (previous.failedChecks || []).forEach(function(c){ if (c && c.id) priorFailedIds[c.id] = c.title || c.id; });
+      (previous.unverifiedChecks || []).forEach(function(c){ if (c && c.id) priorFailedIds[c.id] = c.title || c.id; });
+
+      var currentStill = {};
+      (current.failedChecks || []).forEach(function(c){ if (c && c.id) currentStill[c.id] = true; });
+      (current.unverifiedChecks || []).forEach(function(c){ if (c && c.id) currentStill[c.id] = true; });
+
+      // Prefer the *current* run's check title where available so a
+      // post-rename copy change shows up immediately; fall back to
+      // the stored snapshot title for checks the current run doesn't
+      // include anymore.
+      var currentTitles = {};
+      if (window.__auditResults && Array.isArray(window.__auditResults.entries)) {
+        window.__auditResults.entries.forEach(function(e){
+          var id = e && e.def && (e.def.audit || e.def.type);
+          if (!id) return;
+          var title = (e.result && e.result.title) || e.def.pass || e.def.fail || id;
+          currentTitles[id] = title;
+        });
+      }
+
+      var resolved = [];
+      for (var id in priorFailedIds) {
+        if (!priorFailedIds.hasOwnProperty(id)) continue;
+        if (currentStill[id]) continue; // still failing — not resolved
+        resolved.push({ id: id, title: currentTitles[id] || priorFailedIds[id] });
+      }
+
+      resolvedListEl.innerHTML = '';
+      if (resolved.length) {
+        resolved.slice(0, 8).forEach(function(r){
+          var li = document.createElement('li');
+          li.className = 'history-banner-resolved-chip';
+          li.textContent = r.title;
+          resolvedListEl.appendChild(li);
+        });
+        resolvedEl.hidden = false;
+      } else {
+        resolvedEl.hidden = true;
+      }
+    }
+
+    // Render the banner only when we have at least one comparable
+    // value (either overall delta, a pillar delta, or a resolved
+    // check). If every pillar is identical between runs AND nothing
+    // resolved, suppress the banner — it would read as noise.
+    var hasResolved = resolvedEl && !resolvedEl.hidden;
+    var showBanner = (typeof current.overall === 'number' && typeof previous.overall === 'number')
+                     || changesCount > 0 || hasResolved;
+    banner.hidden = !showBanner;
+  }
+
+  // Sprint T2 + E4: the closed state of the footer now carries a
+  // live vendor teaser (\"· Lighthouse, CrUX, schema.org + 7 more\")
+  // so owners learn what powers the tool without needing to expand.
+  // Runs idempotently.
   function renderBuiltByFooter() {
     var list = document.getElementById('builtByList');
     if (!list) return;
@@ -7950,6 +9147,18 @@
               : (typeof POWERED_BY !== 'undefined' && Array.isArray(POWERED_BY) ? POWERED_BY : null);
     if (!items || !items.length) return;
     var lang = (typeof window !== 'undefined' && window.__muntinLang) || 'en';
+    // Inline teaser for the closed state. Pulls first 3 vendor
+    // names; appends "+N more" tail when the list is longer, so a
+    // future POWERED_BY add auto-reflows here too.
+    var teaser = document.getElementById('builtByTeaser');
+    if (teaser) {
+      var leadNames = items.slice(0, 3).map(function(x){ return x.name; }).filter(Boolean);
+      var remaining = Math.max(0, items.length - leadNames.length);
+      if (leadNames.length) {
+        teaser.textContent = ' · ' + leadNames.join(', ')
+          + (remaining > 0 ? ' ' + t('builtBy.andMore', { count: remaining }) : '');
+      }
+    }
     items.forEach(function(entry){
       if (!entry || !entry.name) return;
       var li = document.createElement('li');
@@ -7983,22 +9192,23 @@
     });
   }
 
-  // Sprint T1: render the Places-verified facts card. Every row is
-  // a direct passthrough of a Google-confirmed field. Never displays
-  // the card if Places didn't match; never renders a row where its
-  // field is null. No interpretation, no paraphrasing.
+  // Sprint T1 + E2: render the Google-verified chips folded inside
+  // the business-type card. Every chip is a direct passthrough of a
+  // Places v1 field; the strip stays hidden when Places didn't
+  // match or returned nothing. No interpretation, no paraphrasing.
   function renderPlacesFactsCard() {
-    var card = document.getElementById('placesFactsCard');
-    var chipsEl = document.getElementById('placesFactsChips');
-    var summaryEl = document.getElementById('placesFactsSummary');
-    var hoursEl = document.getElementById('placesFactsHours');
-    var hoursListEl = document.getElementById('placesFactsHoursList');
-    if (!card || !chipsEl || !summaryEl || !hoursEl || !hoursListEl) return;
+    var stripEl = document.getElementById('btcGoogleStrip');
+    var chipsEl = document.getElementById('btcGoogleChips');
+    var summaryEl = document.getElementById('btcGoogleSummary');
+    var hoursEl = document.getElementById('btcGoogleHours');
+    var hoursListEl = document.getElementById('btcGoogleHoursList');
+    if (!stripEl || !chipsEl || !summaryEl || !hoursEl || !hoursListEl) return;
     var snap = window.__auditPlaces;
     if (!snap || !snap.ok || !snap.place) {
-      card.hidden = true;
+      stripEl.hidden = true;
       return;
     }
+    var card = stripEl; // downstream code below writes `card.hidden = ...`
     var p = snap.place;
     chipsEl.innerHTML = '';
     var rendered = 0;
@@ -8469,6 +9679,610 @@
     el.hidden = false;
   }
 
+  // ─────────────────────────────────────────────────────────────
+  // Sprint H2: Owner Action Plan
+  //
+  // Read failed + unverified priority checks from window.__auditResults,
+  // weight them by subtype-effective weight (same logic as renderTopFixes),
+  // split into three time horizons:
+  //
+  //   [0..3)  → This week     (highest leverage, do first)
+  //   [3..6)  → This month    (medium)
+  //   [6..)   → This quarter  (slower / bigger lifts)
+  //
+  // Persist each checkbox in localStorage keyed by URL hash so
+  // returning owners see their progress survive re-audits.
+  //
+  // Accuracy rule: if a check's status flips from fail→pass on
+  // re-audit, it simply drops out of the plan — no speculative
+  // "you said you'd fix this" language. Checkbox state for the
+  // now-passing check is retained but invisible (it's still in
+  // localStorage under its checkId, so if the check regresses in
+  // a future audit, the historic completion mark returns).
+  // ─────────────────────────────────────────────────────────────
+  var ACTION_PLAN_KEY_PREFIX = 'muntin-action-plan:';
+  function actionPlanKeyFor(url) {
+    var s = String(url || '').trim()
+      .replace(/^https?:\/\//i, '').replace(/\/$/, '').toLowerCase();
+    var h = 5381;
+    for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0;
+    return ACTION_PLAN_KEY_PREFIX + (h >>> 0).toString(16);
+  }
+  function readActionPlanState(url) {
+    try {
+      var raw = window.localStorage.getItem(actionPlanKeyFor(url));
+      if (!raw) return {};
+      var parsed = JSON.parse(raw);
+      return (parsed && typeof parsed === 'object') ? parsed : {};
+    } catch (_) { return {}; }
+  }
+  function writeActionPlanState(url, state) {
+    try {
+      window.localStorage.setItem(actionPlanKeyFor(url), JSON.stringify(state));
+    } catch (_) { /* quota — fail closed */ }
+  }
+
+  function renderActionPlan(auditedUrl) {
+    var card = document.getElementById('actionPlanCard');
+    var cols = document.getElementById('actionPlanColumns');
+    var resetBtn = document.getElementById('actionPlanReset');
+    if (!card || !cols) return;
+
+    var bundle = window.__auditResults;
+    if (!bundle || !Array.isArray(bundle.entries) || !bundle.entries.length) {
+      card.hidden = true;
+      return;
+    }
+    var subtypeId = bundle.subtypeId || null;
+
+    var actionable = bundle.entries
+      .filter(function(e){
+        var cls = e.result && e.result.mark && e.result.mark.cls;
+        return cls === 'fail' || cls === 'unverified';
+      })
+      .map(function(e){
+        var def = e.def || {};
+        var checkId = def.audit || def.type;
+        var w = null;
+        if (subtypeId && typeof subtypeWeights === 'function') {
+          w = subtypeWeights(subtypeId, checkId);
+        }
+        if (typeof w !== 'number') {
+          w = (typeof def.weight === 'number') ? def.weight : 1.0;
+        }
+        var statusRank = (e.result.mark.cls === 'fail') ? 1 : 0;
+        return { entry: e, weight: w, statusRank: statusRank, checkId: checkId };
+      })
+      .filter(function(x){ return x.weight > 0 && x.checkId; });
+
+    if (!actionable.length) {
+      card.hidden = true;
+      return;
+    }
+
+    actionable.sort(function(a, b){
+      if (b.weight !== a.weight) return b.weight - a.weight;
+      if (b.statusRank !== a.statusRank) return b.statusRank - a.statusRank;
+      return 0;
+    });
+
+    var buckets = [
+      { key: 'week',    label: t('actionPlan.col.week'),    items: actionable.slice(0, 3) },
+      { key: 'month',   label: t('actionPlan.col.month'),   items: actionable.slice(3, 6) },
+      { key: 'quarter', label: t('actionPlan.col.quarter'), items: actionable.slice(6) }
+    ];
+
+    var state = readActionPlanState(auditedUrl);
+    cols.innerHTML = '';
+
+    buckets.forEach(function(bucket){
+      var colEl = document.createElement('div');
+      colEl.className = 'action-plan-col';
+      colEl.setAttribute('data-bucket', bucket.key);
+
+      var head = document.createElement('div');
+      head.className = 'action-plan-col-head';
+      var label = document.createElement('span');
+      label.className = 'action-plan-col-label';
+      label.textContent = bucket.label;
+      head.appendChild(label);
+
+      var doneCount = bucket.items.reduce(function(n, x){
+        return n + (state[x.checkId] ? 1 : 0);
+      }, 0);
+      var progress = document.createElement('span');
+      progress.className = 'action-plan-col-progress';
+      progress.textContent = t('actionPlan.progress', {
+        done: doneCount,
+        total: bucket.items.length
+      });
+      if (!bucket.items.length) progress.textContent = '';
+      head.appendChild(progress);
+      colEl.appendChild(head);
+
+      if (!bucket.items.length) {
+        var empty = document.createElement('div');
+        empty.className = 'action-plan-empty-col';
+        empty.textContent = t('actionPlan.colEmpty');
+        colEl.appendChild(empty);
+        cols.appendChild(colEl);
+        return;
+      }
+
+      var ul = document.createElement('ul');
+      ul.className = 'action-plan-items';
+
+      bucket.items.forEach(function(pick){
+        var def = pick.entry.def;
+        var result = pick.entry.result;
+        var li = document.createElement('li');
+        li.className = 'action-plan-item';
+        var isDone = !!state[pick.checkId];
+        if (isDone) li.setAttribute('data-done', '1');
+
+        var cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked = isDone;
+        cb.setAttribute('aria-label', result.title || def.audit || def.type);
+        cb.addEventListener('change', function(){
+          var current = readActionPlanState(auditedUrl);
+          current[pick.checkId] = cb.checked;
+          writeActionPlanState(auditedUrl, current);
+          if (cb.checked) li.setAttribute('data-done', '1');
+          else li.removeAttribute('data-done');
+          // Refresh the column's progress counter without re-rendering
+          // the whole card — keeps checkbox focus intact.
+          var newDone = bucket.items.reduce(function(n, x){
+            var st = readActionPlanState(auditedUrl);
+            return n + (st[x.checkId] ? 1 : 0);
+          }, 0);
+          progress.textContent = t('actionPlan.progress', {
+            done: newDone,
+            total: bucket.items.length
+          });
+        });
+        li.appendChild(cb);
+
+        var bodyEl = document.createElement('div');
+        bodyEl.className = 'action-plan-item-body';
+        var titleEl = document.createElement('div');
+        titleEl.className = 'action-plan-item-title';
+        titleEl.textContent = result.title || def.unverified || def.fail || ('Check: ' + (def.audit || def.type));
+        bodyEl.appendChild(titleEl);
+
+        if (def.effort || typeof def.minutes === 'number') {
+          var meta = document.createElement('div');
+          meta.className = 'action-plan-item-meta';
+          if (def.effort === 'self') {
+            meta.appendChild(makeTextSpan(t('effort.self')));
+          } else if (def.effort === 'dev') {
+            meta.appendChild(makeTextSpan(t('effort.dev')));
+          } else if (def.effort === 'rebuild') {
+            meta.appendChild(makeTextSpan(t('effort.rebuild')));
+          }
+          if (typeof def.minutes === 'number') {
+            var timeLabel;
+            if (def.minutes < 60)        timeLabel = '~' + def.minutes + ' min';
+            else if (def.minutes < 180)  timeLabel = '~' + Math.round(def.minutes / 60) + ' hr';
+            else                         timeLabel = t('effort.halfday');
+            meta.appendChild(makeTextSpan(timeLabel));
+          }
+          bodyEl.appendChild(meta);
+        }
+
+        li.appendChild(bodyEl);
+        ul.appendChild(li);
+      });
+
+      colEl.appendChild(ul);
+      cols.appendChild(colEl);
+    });
+
+    if (resetBtn) {
+      resetBtn.onclick = function(){
+        try { window.localStorage.removeItem(actionPlanKeyFor(auditedUrl)); } catch (_) {}
+        renderActionPlan(auditedUrl);
+        syncAuditTocVisibility();
+      };
+    }
+
+    card.hidden = false;
+    syncAuditTocVisibility();
+  }
+
+  function makeTextSpan(txt) {
+    var s = document.createElement('span');
+    s.textContent = txt;
+    return s;
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // Sprint F1: dev-handoff prompt builder.
+  //
+  // Converts a priority-check definition + the audited URL into a
+  // markdown-formatted message the owner can paste directly into
+  // an email, a support ticket, or an AI assistant. Accuracy-safe:
+  // every line is composed from data the audit already produced.
+  // No speculation, no invented context.
+  //
+  // Output format (EN):
+  //   ## Website audit finding: <title>
+  //
+  //   Audited: <url>
+  //
+  //   **What we found**
+  //   <failNote / unverifiedNote, HTML stripped>
+  //
+  //   **Why it matters**
+  //   <impact copy>
+  //
+  //   Can you help me fix this? A step-by-step plan would be
+  //   perfect. Let me know if you need anything from me to
+  //   diagnose.
+  // ─────────────────────────────────────────────────────────────
+  function stripHtmlForPrompt(s) {
+    return String(s || '')
+      .replace(/<[^>]+>/g, '')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+  function buildDevPrompt(def, auditedUrl) {
+    var lang = (typeof window !== 'undefined' && window.__muntinLang) || 'en';
+    var title = (lang === 'es' ? def.fail_es : def.fail) || def.fail || (def.audit || def.type || '');
+    if (!title) {
+      title = (lang === 'es' ? def.unverified_es : def.unverified) || def.unverified || 'Website audit finding';
+    }
+    var note = (lang === 'es' ? def.failNote_es : def.failNote) || def.failNote
+             || (lang === 'es' ? def.unverifiedNote_es : def.unverifiedNote) || def.unverifiedNote || '';
+    var impact = (lang === 'es' ? def.impact_es : def.impact) || def.impact || '';
+
+    var lines = [];
+    lines.push('## ' + t('devPrompt.title') + ': ' + stripHtmlForPrompt(title));
+    lines.push('');
+    if (auditedUrl) {
+      lines.push(t('devPrompt.audited') + ': ' + auditedUrl);
+      lines.push('');
+    }
+    if (note) {
+      lines.push('**' + t('devPrompt.foundHeader') + '**');
+      lines.push(stripHtmlForPrompt(note));
+      lines.push('');
+    }
+    if (impact) {
+      lines.push('**' + t('devPrompt.whyHeader') + '**');
+      lines.push(stripHtmlForPrompt(impact));
+      lines.push('');
+    }
+    lines.push(t('devPrompt.closing'));
+    lines.push('');
+    lines.push('— ' + t('devPrompt.signoff'));
+    return lines.join('\n');
+  }
+
+  // Clipboard-API-refusing fallback: write into a temporary textarea,
+  // select, exec-copy, remove. Works across Safari quirks + insecure
+  // contexts (localhost without HTTPS during dev).
+  function fallbackCopy(text) {
+    try {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '-1000px';
+      ta.style.left = '-1000px';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch (_) { /* nothing to do */ }
+      document.body.removeChild(ta);
+    } catch (_) { /* give up silently */ }
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // Sprint N1: NAP (Name / Address / Phone) cross-check
+  //
+  // Walks three verified signal sources — Google Places, schema.org
+  // JSON-LD, and on-page text — and flags every field whose values
+  // don't line up. Each row surfaces one mismatched attribute with
+  // every source's value so the owner can pick the canonical one
+  // and unify.
+  //
+  // Accuracy rules:
+  //   * Need ≥2 sources per field before we can compare. Single-
+  //     source fields are dropped silently.
+  //   * Normalized comparisons (not exact strings). A phone compares
+  //     by last-10 digits. A name compares lowercased letters-only.
+  //     An address compares by street-number + zip. Case, formatting,
+  //     and decorative punctuation can differ without flagging.
+  //   * The card is hidden entirely when nothing disagrees. Never
+  //     rendered with "no issues found" copy — that's noise.
+  // ─────────────────────────────────────────────────────────────
+  function normalizePhoneForCompare(v) {
+    if (!v) return null;
+    var digits = String(v).replace(/\D/g, '');
+    if (digits.length < 7) return null;
+    return digits.slice(-10); // US/CA/ intl last-10 is the stable key
+  }
+  function normalizeNameForCompare(v) {
+    if (!v) return null;
+    var s = String(v).toLowerCase()
+      .replace(/&/g, 'and')
+      .replace(/[^a-z0-9]/g, '');
+    return s.length >= 3 ? s : null;
+  }
+  function normalizeAddressForCompare(v) {
+    if (!v) return null;
+    // Extract the leading street number + trailing 5-digit zip —
+    // the two parts of an address that rarely vary in formatting.
+    // If both are present in both sources, comparison is safe.
+    var s = String(v).toLowerCase();
+    var numMatch = s.match(/\b(\d{1,6})\b/);
+    var zipMatch = s.match(/\b(\d{5})(?:-\d{4})?\b/);
+    var num = numMatch ? numMatch[1] : '';
+    var zip = zipMatch ? zipMatch[1] : '';
+    if (!num && !zip) return null; // not enough signal to compare
+    return num + '|' + zip;
+  }
+  function schemaAddressToString(addr) {
+    if (!addr) return null;
+    if (typeof addr === 'string') return addr;
+    if (typeof addr === 'object') {
+      var parts = [];
+      if (addr.streetAddress)   parts.push(String(addr.streetAddress));
+      if (addr.addressLocality) parts.push(String(addr.addressLocality));
+      if (addr.addressRegion)   parts.push(String(addr.addressRegion));
+      if (addr.postalCode)      parts.push(String(addr.postalCode));
+      return parts.length ? parts.join(', ') : null;
+    }
+    return null;
+  }
+  function firstSchemaFieldValue(schema, field) {
+    if (!schema || !Array.isArray(schema.objects)) return null;
+    for (var i = 0; i < schema.objects.length; i++) {
+      var obj = schema.objects[i];
+      if (obj && obj[field] != null && obj[field] !== '') return obj[field];
+    }
+    return null;
+  }
+  function renderNapCheck() {
+    var card = document.getElementById('napCheckCard');
+    var list = document.getElementById('napCheckList');
+    if (!card || !list) return;
+
+    var places = window.__auditPlaces;
+    var schema = window.__auditSchema;
+
+    // Accuracy rule: Places + schema are the two gold-standard
+    // sources. Homepage H1/title add a third source for the name
+    // field (where H1 is typically the restaurant name). We skip
+    // on-page phone and address extraction entirely — substring
+    // regex matches in concatenated Lighthouse text can misfire
+    // (fax numbers, addresses for catering pickup points, etc.)
+    // and a false-positive mismatch is worse than a silent miss.
+    var placesEntity = (places && places.ok && places.place) ? places.place : null;
+
+    // ----- Phone -----
+    var phoneSources = [];
+    if (placesEntity && placesEntity.nationalPhoneNumber) {
+      phoneSources.push({ source: 'places', value: placesEntity.nationalPhoneNumber });
+    }
+    var schemaPhone = firstSchemaFieldValue(schema, 'telephone');
+    if (schemaPhone) phoneSources.push({ source: 'schema', value: String(schemaPhone) });
+
+    // ----- Name -----
+    var nameSources = [];
+    if (placesEntity && placesEntity.name) {
+      nameSources.push({ source: 'places', value: String(placesEntity.name) });
+    }
+    var schemaName = firstSchemaFieldValue(schema, 'name');
+    if (schemaName) nameSources.push({ source: 'schema', value: String(schemaName) });
+    // On-page name: use homepage H1/title. These are signals the
+    // crawl already captured — no new extraction needed.
+    var crawlHome = window.__auditCrawl && window.__auditCrawl.homepage;
+    if (crawlHome && crawlHome.h1) {
+      nameSources.push({ source: 'page', value: String(crawlHome.h1) });
+    } else if (crawlHome && crawlHome.title) {
+      nameSources.push({ source: 'page', value: String(crawlHome.title) });
+    }
+
+    // ----- Address -----
+    var addressSources = [];
+    if (placesEntity && placesEntity.address) {
+      addressSources.push({ source: 'places', value: String(placesEntity.address) });
+    }
+    var schemaAddrRaw = firstSchemaFieldValue(schema, 'address');
+    var schemaAddrStr = schemaAddressToString(schemaAddrRaw);
+    if (schemaAddrStr) addressSources.push({ source: 'schema', value: schemaAddrStr });
+    // No on-page address extraction — too noisy to do accuracy-safely
+    // without a real geoparser. Two-source comparison is enough for
+    // a confident mismatch call.
+
+    function hasMismatch(sources, normalizer) {
+      if (!sources || sources.length < 2) return false;
+      var seen = null;
+      for (var i = 0; i < sources.length; i++) {
+        var norm = normalizer(sources[i].value);
+        if (norm == null) continue;
+        if (seen === null) { seen = norm; continue; }
+        if (seen !== norm) return true;
+      }
+      return false;
+    }
+
+    var rows = [];
+    if (hasMismatch(phoneSources, normalizePhoneForCompare)) {
+      rows.push({ label: t('nap.label.phone'), sources: phoneSources });
+    }
+    if (hasMismatch(nameSources, normalizeNameForCompare)) {
+      rows.push({ label: t('nap.label.name'), sources: nameSources });
+    }
+    if (hasMismatch(addressSources, normalizeAddressForCompare)) {
+      rows.push({ label: t('nap.label.address'), sources: addressSources });
+    }
+
+    if (!rows.length) {
+      card.hidden = true;
+      return;
+    }
+
+    list.innerHTML = '';
+    rows.forEach(function(row){
+      var li = document.createElement('li');
+      li.className = 'nap-check-row';
+      var labelEl = document.createElement('div');
+      labelEl.className = 'nap-check-row-label';
+      labelEl.textContent = row.label;
+      li.appendChild(labelEl);
+
+      var sourcesEl = document.createElement('div');
+      sourcesEl.className = 'nap-check-row-sources';
+      row.sources.forEach(function(s){
+        var sRow = document.createElement('div');
+        sRow.className = 'nap-check-source';
+        var name = document.createElement('span');
+        name.className = 'nap-check-source-name';
+        name.textContent = t('nap.source.' + s.source);
+        var val = document.createElement('span');
+        val.className = 'nap-check-source-value';
+        val.textContent = s.value;
+        sRow.appendChild(name);
+        sRow.appendChild(val);
+        sourcesEl.appendChild(sRow);
+      });
+      li.appendChild(sourcesEl);
+      list.appendChild(li);
+    });
+
+    card.hidden = false;
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // Sprint Q1: sticky report table of contents.
+  //
+  // One-time setup attaches the IntersectionObserver + click/FAB
+  // handlers. syncAuditTocVisibility() is called every time a
+  // section's visibility changes (renderReport, runDeepSignals,
+  // renderActionPlan, renderNapCheck) so dead links to hidden
+  // cards never appear in the ToC.
+  //
+  // Accuracy rule: a ToC entry disappears when its target is
+  // hidden. We never leave a dangling anchor that scrolls to empty
+  // space.
+  // ─────────────────────────────────────────────────────────────
+  var _auditTocObserver = null;
+  var _auditTocSetupDone = false;
+
+  function setupAuditToc() {
+    if (_auditTocSetupDone) return;
+    var toc = document.getElementById('auditToc');
+    if (!toc) return;
+    var fab = document.getElementById('auditTocFab');
+    var list = document.getElementById('auditTocList');
+    if (!list) return;
+
+    // Mobile FAB toggles the bottom-sheet. The sheet closes on
+    // any link click so the owner immediately sees the target.
+    if (fab) {
+      fab.addEventListener('click', function(){
+        var open = toc.getAttribute('data-sheet') === 'open';
+        toc.setAttribute('data-sheet', open ? 'closed' : 'open');
+        fab.setAttribute('aria-expanded', open ? 'false' : 'true');
+      });
+    }
+
+    // Click handler: smooth scroll (or instant when reduced-motion),
+    // then close the mobile sheet. Browsers' default anchor-click
+    // would work but we intercept to honor prefers-reduced-motion
+    // reliably on older Safari.
+    list.addEventListener('click', function(ev){
+      var a = ev.target && ev.target.closest && ev.target.closest('a[data-toc-target]');
+      if (!a) return;
+      var targetId = a.getAttribute('data-toc-target');
+      var target = document.getElementById(targetId);
+      if (!target || target.hidden) return;
+      ev.preventDefault();
+      var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      try {
+        target.scrollIntoView({
+          behavior: prefersReduced ? 'auto' : 'smooth',
+          block: 'start'
+        });
+      } catch (_) { target.scrollIntoView(); }
+      if (toc.getAttribute('data-sheet') === 'open') {
+        toc.setAttribute('data-sheet', 'closed');
+        if (fab) fab.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Set up the observer once. Targets are resolved lazily from the
+    // anchors so we don't fight with cards that render later. When
+    // a target enters the top half of the viewport, its link gets
+    // data-toc-active. Uses rootMargin to trigger when the section
+    // is about 1/3 down from the top — a sensible "you're reading
+    // this" point.
+    if ('IntersectionObserver' in window) {
+      _auditTocObserver = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if (!entry.isIntersecting) return;
+          var id = entry.target.id;
+          var links = list.querySelectorAll('a[data-toc-target]');
+          for (var i = 0; i < links.length; i++) {
+            if (links[i].getAttribute('data-toc-target') === id) {
+              links[i].setAttribute('data-toc-active', '1');
+            } else {
+              links[i].removeAttribute('data-toc-active');
+            }
+          }
+        });
+      }, {
+        // Trigger when the section crosses 1/3 from the top — a
+        // stable reading-anchor point. Negative bottom margin
+        // keeps the active state on a section while it fills the
+        // middle of the viewport.
+        rootMargin: '-30% 0px -60% 0px',
+        threshold: 0
+      });
+    }
+
+    _auditTocSetupDone = true;
+  }
+
+  function syncAuditTocVisibility() {
+    var toc = document.getElementById('auditToc');
+    var report = document.getElementById('auditReport');
+    if (!toc || !report) return;
+    setupAuditToc();
+
+    // Hide the whole ToC until the report is visible.
+    if (report.hidden) {
+      toc.hidden = true;
+      return;
+    }
+
+    var list = document.getElementById('auditTocList');
+    if (!list) return;
+    var links = list.querySelectorAll('a[data-toc-target]');
+    var visibleCount = 0;
+    for (var i = 0; i < links.length; i++) {
+      var li = links[i].parentNode;
+      var target = document.getElementById(links[i].getAttribute('data-toc-target'));
+      var targetVisible = target && !target.hidden;
+      if (li) li.hidden = !targetVisible;
+      if (targetVisible) {
+        visibleCount++;
+        if (_auditTocObserver) _auditTocObserver.observe(target);
+      }
+    }
+
+    // If fewer than 3 sections are visible, don't bother rendering
+    // the ToC — saves layout cost on very short error states.
+    toc.hidden = visibleCount < 3;
+  }
+
   // Phase L1: email gate retired. The deep tier always renders
   // immediately after the audit runs. The single email-capture
   // surface is #emailReportForm at the bottom of the report,
@@ -8528,6 +10342,51 @@
     ctx.fillStyle = '#1F4E5B';
     ctx.fillText(chipText, W - 60 - chipPadX, chipY + chipPadY);
     ctx.restore();
+
+    // Sprint H4: delta chip pulled from H1/H3 localStorage history.
+    // Same accuracy gate as renderHistoryBanner — only renders when a
+    // prior snapshot at least 6h older than the current one exists
+    // AND the overall score actually moved. A flat delta stays
+    // hidden; zero is noise and we'd rather publish nothing.
+    (function stampHistoryDelta(){
+      try {
+        var history = readHistory(last.url || '');
+        if (!history || history.length < 2) return;
+        var current  = history[history.length - 1];
+        var previous = null;
+        for (var i = history.length - 2; i >= 0; i--) {
+          if (current.ts - history[i].ts >= HISTORY_MIN_DELTA_MS) {
+            previous = history[i];
+            break;
+          }
+        }
+        if (!previous) return;
+        if (typeof current.overall !== 'number' || typeof previous.overall !== 'number') return;
+        var diff = current.overall - previous.overall;
+        if (diff === 0) return;
+        var arrow = diff > 0 ? '↑' : '↓';
+        var sign  = diff > 0 ? '+' : '';
+        var dChipText = arrow + ' ' + sign + diff + ' since last audit';
+        ctx.save();
+        ctx.font = '600 14px "Inter", system-ui, sans-serif';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'top';
+        var dPadX = 12, dPadY = 6;
+        var dWidth  = ctx.measureText(dChipText).width + dPadX * 2;
+        var dHeight = 26;
+        var dX = W - 60 - dWidth;
+        var dY = chipY + chipHeight + 10; // sits just below the subtype chip
+        // Green pill when up, rust when down — mirrors in-page banner.
+        var bg = diff > 0 ? '#E4F2E9' : '#FAE9DE';
+        var fg = diff > 0 ? '#1F6B3A' : '#B8541A';
+        ctx.fillStyle = bg;
+        roundedRect(ctx, dX, dY, dWidth, dHeight, 999);
+        ctx.fill();
+        ctx.fillStyle = fg;
+        ctx.fillText(dChipText, W - 60 - dPadX, dY + dPadY);
+        ctx.restore();
+      } catch (_) { /* history unavailable — skip silently */ }
+    })();
 
     // Big score ring on the left — mirrors the in-page SVG.
     var ringX = 220, ringY = 330, ringR = 140, ringW = 22;
@@ -8877,6 +10736,19 @@
           '</div>';
       }
 
+      // Sprint F1: "Copy for your developer" button on actionable
+      // rows. Produces a markdown-formatted prompt the owner can
+      // paste directly into email, a support ticket, or a chat with
+      // their developer / an AI assistant. Zero fabrication — every
+      // line is composed from data the audit already produced.
+      var devPromptHtml = '';
+      if (result.mark.cls !== 'pass') {
+        devPromptHtml =
+          '<button type="button" class="dev-prompt-btn"' +
+            ' data-check-idx="' + entry.idx + '"' +
+            ' data-tr="devPrompt.copy">Copy for your developer</button>';
+      }
+
       // Status label for assistive tech. The visible .mark div stays
       // aria-hidden because its glyph is decorative; the sr-only
       // preceding span is what screen readers actually announce so a
@@ -8893,6 +10765,7 @@
           chipsHtml +
           impactHtml +
           feedbackHtml +
+          devPromptHtml +
         '</div>' +
         '<a class="link" href="/glossary/?filter=restaurants' + def.anchor + '">Learn more →</a>';
       container.appendChild(row);
@@ -8927,6 +10800,44 @@
         // category card LIVE so the user sees their correction change
         // the headline number immediately — no re-audit needed.
         recomputeOverallFromCurrentState();
+      });
+    });
+
+    // Sprint F1: "Copy for your developer" button click handlers.
+    // Each click builds a markdown-formatted handoff prompt from the
+    // priority-check definition + current result, copies it to the
+    // clipboard, and flashes the button label. Accuracy-safe: every
+    // line composed from data the audit already produced.
+    container.querySelectorAll('.dev-prompt-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var idx = parseInt(btn.getAttribute('data-check-idx'), 10);
+        if (isNaN(idx)) return;
+        var def = PRIORITY_CHECKS[idx];
+        if (!def) return;
+        var resolvedDef = resolveCheckForType(def, effectiveBusinessType());
+        var auditedUrl = (window.__auditLastResult && window.__auditLastResult.url) || '';
+        var prompt = buildDevPrompt(resolvedDef, auditedUrl);
+        var originalText = btn.textContent;
+        var doneText = t('devPrompt.copied');
+        function flash() {
+          btn.textContent = doneText;
+          setTimeout(function(){ btn.textContent = originalText; }, 1600);
+        }
+        try {
+          navigator.clipboard.writeText(prompt).then(flash, function(){
+            // Clipboard API denied (insecure context or Safari quirk) —
+            // fall back to textarea selection.
+            fallbackCopy(prompt);
+            flash();
+          });
+        } catch (_) {
+          fallbackCopy(prompt);
+          flash();
+        }
+        if (window.plausible) {
+          var checkName = (def && (def.audit || def.type)) || 'check-' + idx;
+          window.plausible('Audit Dev-Prompt Copy', { props: { check: checkName } });
+        }
       });
     });
 
@@ -9237,6 +11148,10 @@
       // Phase I2: action card after the main priority list runs
       // so window.__auditResults is populated.
       renderTopFixes();
+      // Sprint H2: owner action plan. Reads from window.__auditResults
+      // and partitions failed/unverified entries by weight into
+      // three time-horizon columns with persistent checkboxes.
+      renderActionPlan(auditedUrl);
     } else {
       priorityResult = { score: 0, passCount: 0, totalCount: 0, confirmedCount: 0, lowConfidence: true };
     }
@@ -9325,6 +11240,44 @@
       unverifiedCount: priorityResult.unverifiedCount || 0,
       unverifiedPenaltyApplied: (priorityResult.unverifiedWeight || 0) > 0
     };
+
+    // Sprint H1: save a compact snapshot of this audit to
+    // localStorage (per URL). The next time this URL is audited,
+    // renderHistoryBanner() compares the new score against the
+    // most-recent prior snapshot and surfaces the delta. Accuracy
+    // gate: we only save / compare score data WE computed, never
+    // speculative values.
+    try {
+      // Sprint H3: harvest currently-failing + unverified check IDs
+      // (with their human titles) off the results bundle so the next
+      // audit run can surface a "resolved since last audit" chip row.
+      var failedChecks = [];
+      var unverifiedChecks = [];
+      if (window.__auditResults && Array.isArray(window.__auditResults.entries)) {
+        window.__auditResults.entries.forEach(function(e){
+          var def = e && e.def;
+          var cls = e && e.result && e.result.mark && e.result.mark.cls;
+          var id = def && (def.audit || def.type);
+          if (!id) return;
+          var title = (e.result && e.result.title) || def.fail || def.unverified || id;
+          if (cls === 'fail')         failedChecks.push({ id: id, title: title });
+          else if (cls === 'unverified') unverifiedChecks.push({ id: id, title: title });
+        });
+      }
+      saveAuditSnapshot(auditedUrl, {
+        overall: overall,
+        perf:    perf,
+        a11y:    a11y,
+        bp:      bp,
+        seo:     seo,
+        restaurant: isRestaurantSite ? restaurantScore : null,
+        subtype: businessType && businessType.type ? businessType.type : null,
+        unverifiedCount: priorityResult.unverifiedCount || 0,
+        failedChecks: failedChecks,
+        unverifiedChecks: unverifiedChecks
+      });
+      renderHistoryBanner(auditedUrl);
+    } catch (_) { /* localStorage disabled / full — fail closed */ }
 
     // Update the address bar so "copy link" gives you the audited
     // URL (and any live overrides). Uses history.replaceState so
@@ -10315,6 +12268,67 @@
         sourceTag: 'bottom-cta',
         hideFormOnSuccess: true
       });
+    });
+  }
+
+  /* Sprint R1: 30-day re-audit reminder submit. POSTs to
+     /api/schedule-reaudit which queues a single Resend-scheduled
+     message 30 days out. Honeypot field is checked server-side; we
+     also client-short-circuit if an audit hasn't landed yet (nothing
+     to re-audit). */
+  var reauditForm    = document.getElementById('reauditReminderForm');
+  var reauditSuccess = document.getElementById('reauditReminderSuccess');
+  var reauditError   = document.getElementById('reauditReminderError');
+  if (reauditForm) {
+    reauditForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      var last = window.__auditLastResult;
+      if (!last || !last.url) {
+        if (reauditError) {
+          reauditError.textContent = t('reaudit.needAudit');
+          reauditError.hidden = false;
+        }
+        return;
+      }
+      var formData = new FormData(reauditForm);
+      formData.append('url', last.url);
+      formData.append('lang', (window.__muntinLang || 'en'));
+      var submitBtn = reauditForm.querySelector('button[type="submit"]');
+      var originalLabel = submitBtn ? submitBtn.textContent : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = t('reaudit.sending');
+      }
+      if (reauditError)   reauditError.hidden = true;
+      if (reauditSuccess) reauditSuccess.hidden = true;
+      fetch('/api/schedule-reaudit', {
+        method: 'POST',
+        body: formData
+      }).then(function(res){ return res.json().then(function(j){ return { status: res.status, body: j }; }); })
+        .then(function(r){
+          if (r.body && r.body.ok) {
+            if (reauditSuccess) reauditSuccess.hidden = false;
+            reauditForm.hidden = true;
+            if (window.plausible) window.plausible('Audit Reminder Scheduled');
+          } else {
+            if (reauditError) {
+              reauditError.textContent = (r.body && r.body.error) || t('reaudit.genericError');
+              reauditError.hidden = false;
+            }
+          }
+        })
+        .catch(function(){
+          if (reauditError) {
+            reauditError.textContent = t('reaudit.genericError');
+            reauditError.hidden = false;
+          }
+        })
+        .then(function(){
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalLabel;
+          }
+        });
     });
   }
 
