@@ -1925,7 +1925,57 @@
     body.print-worksheet .share-platforms,
     body.print-worksheet .audit-form,
     body.print-worksheet header,
-    body.print-worksheet footer {
+    body.print-worksheet footer,
+    /* Sprint N1 worksheet hygiene: hide the noisier cards that
+       aren't directly actionable for a manager handoff. Keep
+       action-plan-card + nap-check-card visible — those ARE the
+       handoff artifact. */
+    body.print-worksheet .og-completeness-card,
+    body.print-worksheet .schema-richness-card,
+    body.print-worksheet .deep-email-card,
+    body.print-worksheet .history-banner,
+    body.print-worksheet .builtby-footer,
+    body.print-worksheet .deep-card,
+    body.print-worksheet .deep-scan-strip,
+    body.print-worksheet .brand-dossier-card,
+    body.print-worksheet .crawl-summary,
+    body.print-worksheet .owner-inputs-card {
+      display: none !important;
+    }
+    /* Sprint N1 + H2 worksheet presentation: both the action plan
+       and NAP cross-check flip to B&W single-column layouts when
+       printing in worksheet mode. */
+    body.print-worksheet .action-plan-card,
+    body.print-worksheet .nap-check-card {
+      background: #fff !important;
+      border: 1px solid #000 !important;
+      border-left-width: 4px !important;
+      border-radius: 0 !important;
+      page-break-inside: avoid;
+      margin-top: 18px !important;
+    }
+    body.print-worksheet .action-plan-columns {
+      grid-template-columns: 1fr !important;
+      gap: 6px !important;
+    }
+    body.print-worksheet .action-plan-col,
+    body.print-worksheet .action-plan-item,
+    body.print-worksheet .nap-check-row {
+      background: #fff !important;
+      border: 1px solid #000 !important;
+      border-radius: 0 !important;
+    }
+    body.print-worksheet .action-plan-col-label,
+    body.print-worksheet .nap-check-row-label {
+      color: #000 !important;
+    }
+    body.print-worksheet .action-plan-eyebrow,
+    body.print-worksheet .nap-check-eyebrow {
+      color: #000 !important;
+      background: #fff !important;
+      border: 1px solid #000 !important;
+    }
+    body.print-worksheet .action-plan-reset {
       display: none !important;
     }
     body.print-worksheet .top-fixes {
