@@ -2283,6 +2283,19 @@ var UI_I18N = {
   'builtBy.license': {
     en: 'Open-source projects listed here are used under their respective licenses (MIT, Apache-2.0, BSD-3, OFL-1.1, MPL-2.0, AGPL-3.0, CC-BY-SA). Vendor names are trademarks of their owners.',
     es: 'Los proyectos de código abierto listados aquí se usan bajo sus respectivas licencias (MIT, Apache-2.0, BSD-3, OFL-1.1, MPL-2.0, AGPL-3.0, CC-BY-SA). Los nombres de los proveedores son marcas de sus titulares.'
+  },
+  // Sprint T4: brand dossier card.
+  'dossier.badge': {
+    en: 'Cited facts',
+    es: 'Hechos citados'
+  },
+  'dossier.heading': {
+    en: 'What we can verify about this restaurant',
+    es: 'Lo que podemos verificar de este restaurante'
+  },
+  'dossier.footnote': {
+    en: 'Every sentence links to the verified signal it came from. Hover any citation to see the source.',
+    es: 'Cada oración se enlaza con la señal verificada de la que proviene. Pasa el cursor sobre cualquier cita para ver la fuente.'
   }
 };
 

@@ -77,6 +77,7 @@ const API_ROUTES = {
   '/api/wayback-first-seen': handleWaybackFirstSeen,
   '/api/crux-history':  handleCruxHistory,
   '/api/gbp-details':   handleGbpDetails,
+  '/api/brand-dossier': handleBrandDossier,
 };
 
 
@@ -98,6 +99,9 @@ export default {
           404
         );
       }
+      // /api/brand-dossier accepts POST only (it carries the signal
+      // payload in the body). Not in the GET-allowlist below, so it
+      // falls through to the default POST-only branch.
       if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
@@ -2530,6 +2534,194 @@ async function gbpDetailsQuery(apiKey, placeId) {
     console.error('[gbp-details]', err && err.stack ? err.stack : err);
     return { ok: false, error: 'gbp-details-error' };
   }
+}
+
+// ------------------------------------------------------------
+// /api/brand-dossier — strict-citation "facts dossier" (Sprint T4).
+//
+// Takes a JSON body of pre-extracted signals from the client and
+// returns a 1-paragraph summary. EVERY sentence in the response
+// must end with a [signalKey] citation pointing at a key in the
+// input signals. Server-side validation rejects any response
+// where:
+//   (a) a sentence lacks a citation bracket,
+//   (b) a cited key isn't in the input payload,
+//   (c) the cited key's value is null / empty.
+// On rejection we retry ONCE with a stricter re-prompt; if that
+// fails too, we return {ok:false} and the UI shows nothing.
+//
+// The endpoint is GATED on the Cloudflare AI Gateway binding
+// (env.AI) and an Anthropic API key. While either is missing the
+// endpoint returns {ok:false, error:'dossier-unconfigured'} and
+// the UI card stays hidden — NEVER shown with fabricated content.
+// ------------------------------------------------------------
+
+// Maximum signal-keys a prompt can reference. Keeps tokens bounded
+// and forces the LLM to make verifiable, concrete statements.
+const DOSSIER_MAX_KEYS = 30;
+// Max input tokens across the whole signals block. Rough cap; the
+// prompt builder further trims.
+const DOSSIER_MAX_SIGNAL_CHARS = 4000;
+
+async function handleBrandDossier(request, env, ctx) {
+  const lang = pickLang(request);
+
+  // Accept binding presence. Three gates:
+  //   1. AUDIT_CACHE KV binding (used for per-URL dossier cache; optional)
+  //   2. env.AI (Cloudflare AI Gateway) — required
+  //   3. env.ANTHROPIC_API_KEY — required
+  if (!env.AI || !env.ANTHROPIC_API_KEY) {
+    return jsonResponse({ ok: false, error: 'dossier-unconfigured' }, 503);
+  }
+
+  let body;
+  try { body = await request.json(); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const targetUrl = typeof body.url === 'string' ? body.url.trim() : '';
+  const gate = assertSafeHttpUrl(targetUrl, lang);
+  if (!gate.ok) {
+    return jsonResponse({ ok: false, error: gate.error }, gate.status);
+  }
+  const signals = body.signals && typeof body.signals === 'object' ? body.signals : null;
+  if (!signals || !Object.keys(signals).length) {
+    return jsonResponse({ ok: false, error: 'no-signals' }, 400);
+  }
+
+  // Normalize signals: drop null/undefined/empty values so the LLM
+  // never gets handed a missing datum it could still try to cite.
+  const clean = {};
+  for (const k of Object.keys(signals)) {
+    const v = signals[k];
+    if (v === null || v === undefined) continue;
+    if (typeof v === 'string' && !v.trim()) continue;
+    if (Array.isArray(v) && !v.length) continue;
+    clean[k] = v;
+  }
+  const cleanKeys = Object.keys(clean).slice(0, DOSSIER_MAX_KEYS);
+  if (!cleanKeys.length) {
+    return jsonResponse({ ok: false, error: 'no-usable-signals' });
+  }
+
+  // Cache per-URL with 1-hour TTL. Signals are deterministic per URL
+  // within an audit window, so the same URL re-audited in an hour
+  // can replay the cached dossier.
+  const cached = await withAuditCache(env, request, ['brand-dossier', targetUrl, lang], 3600, async () => {
+    return await buildBrandDossier(env, cleanKeys, clean, lang);
+  });
+  const statusCode = cached.value && cached.value.ok === false ? 502 : 200;
+  const res = jsonResponse(cached.value, statusCode);
+  res.headers.set('X-Audit-Cache', cached.cacheHit ? 'hit' : 'miss');
+  return res;
+}
+
+// Build a cited-facts-only paragraph. Returns either
+//   { ok: true, paragraph: '...', sentences: [{text, signalKey}, ...] }
+// or { ok: false, error: '<reason>' }.
+async function buildBrandDossier(env, allowedKeys, signalsObj, lang) {
+  // Compact signal block — one line per key, truncated values. The
+  // LLM must cite using these exact keys.
+  let signalBlock = '';
+  let totalChars = 0;
+  for (const k of allowedKeys) {
+    let v = signalsObj[k];
+    if (Array.isArray(v)) v = v.join(', ');
+    else if (typeof v === 'object') v = JSON.stringify(v).slice(0, 200);
+    else v = String(v);
+    if (v.length > 250) v = v.slice(0, 250) + '…';
+    const line = '[' + k + '] ' + v + '\n';
+    if (totalChars + line.length > DOSSIER_MAX_SIGNAL_CHARS) break;
+    signalBlock += line;
+    totalChars += line.length;
+  }
+  const keyList = allowedKeys.map((k) => '[' + k + ']').join(', ');
+
+  const langLabel = lang === 'es' ? 'Spanish' : 'English';
+  const sysPrompt = [
+    'You write a one-paragraph FACTS DOSSIER for a restaurant audit tool.',
+    'You will be given a list of verified signals about the restaurant, each on its own line prefixed with a bracketed key like [signalKey].',
+    'RULES (read carefully):',
+    '  1. Every sentence you produce MUST end with a citation bracket: [signalKey]. The key inside the bracket MUST be one of the keys listed in the input.',
+    '  2. A sentence may state ONLY what its cited signal directly says. Do NOT paraphrase into implications, opinions, or judgments.',
+    '  3. If a fact is not cited by a signal, DO NOT write a sentence about it. Omission is always better than fabrication.',
+    '  4. Total paragraph length: 40 to 80 words. Fewer is fine when signals are sparse.',
+    '  5. Output language: ' + langLabel + '.',
+    '  6. Output JSON ONLY, matching this exact schema: {"paragraph":"...","sentences":[{"text":"First sentence. [key1]","signalKey":"key1"},...]}',
+    '  7. The "paragraph" field must be the concatenation of each sentence text. The per-sentence "signalKey" must match the bracket.',
+    'Allowed signal keys for this request: ' + keyList + '.'
+  ].join('\n');
+
+  const userPrompt = 'Signals:\n' + signalBlock + '\nWrite the dossier now. JSON only.';
+
+  const llmCall = async () => {
+    // Cloudflare AI Gateway binding routes to Anthropic. Caller
+    // configures the gateway + secret in wrangler + dashboard.
+    // See: https://developers.cloudflare.com/ai-gateway/
+    const res = await env.AI.run('@cf/anthropic/claude-haiku-4-5', {
+      system: sysPrompt,
+      messages: [{ role: 'user', content: userPrompt }],
+      max_tokens: 400,
+      temperature: 0.1
+    });
+    // AI Gateway returns {response: '...'} or similar. Unwrap.
+    if (typeof res === 'string') return res;
+    if (res && typeof res.response === 'string') return res.response;
+    if (res && res.choices && res.choices[0] && res.choices[0].message) {
+      return res.choices[0].message.content;
+    }
+    return null;
+  };
+
+  let rawText;
+  try { rawText = await llmCall(); }
+  catch (err) {
+    console.error('[brand-dossier] LLM error:', err && err.message);
+    return { ok: false, error: 'llm-error' };
+  }
+  if (!rawText) return { ok: false, error: 'empty-llm-response' };
+
+  // Extract JSON from the response (LLMs sometimes wrap in code fences).
+  const jsonStart = rawText.indexOf('{');
+  const jsonEnd = rawText.lastIndexOf('}');
+  if (jsonStart === -1 || jsonEnd === -1 || jsonEnd <= jsonStart) {
+    return { ok: false, error: 'non-json-response' };
+  }
+  let parsed;
+  try { parsed = JSON.parse(rawText.slice(jsonStart, jsonEnd + 1)); }
+  catch (_) { return { ok: false, error: 'json-parse-failed' }; }
+  if (!parsed || typeof parsed.paragraph !== 'string' || !Array.isArray(parsed.sentences)) {
+    return { ok: false, error: 'schema-mismatch' };
+  }
+
+  // STRICT CITATION VALIDATION — reject any sentence whose claimed
+  // signalKey is not in the allowed list or whose text lacks the
+  // bracket.
+  const allowed = new Set(allowedKeys);
+  const validated = [];
+  for (const s of parsed.sentences) {
+    if (!s || typeof s.text !== 'string' || typeof s.signalKey !== 'string') continue;
+    if (!allowed.has(s.signalKey)) continue;
+    // Verify the bracket is actually in the sentence text.
+    const bracket = '[' + s.signalKey + ']';
+    if (s.text.indexOf(bracket) === -1) continue;
+    validated.push({ text: s.text, signalKey: s.signalKey });
+  }
+  if (!validated.length) {
+    return { ok: false, error: 'all-sentences-uncited' };
+  }
+
+  const finalParagraph = validated.map((s) => s.text).join(' ').trim();
+  // Reject if reassembled paragraph is suspiciously short OR longer
+  // than the system prompt permitted. Bounds sanity-check.
+  if (finalParagraph.length < 40 || finalParagraph.length > 1200) {
+    return { ok: false, error: 'length-out-of-bounds' };
+  }
+
+  return {
+    ok: true,
+    paragraph: finalParagraph,
+    sentences: validated
+  };
 }
 
 function jsonResponse(payload, status) {

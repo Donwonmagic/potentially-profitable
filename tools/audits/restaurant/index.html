@@ -406,6 +406,69 @@
     color: var(--ink-soft);
   }
 
+  /* Sprint T4: brand-dossier card. Similar treatment to the Places
+     facts card — cream background, teal accent, prominent "Cited
+     facts" badge — but the body is a flowing paragraph with tiny
+     numbered superscripts pointing at the verified signal. */
+  .brand-dossier-card {
+    max-width: 1100px;
+    margin: 24px auto 0;
+    padding: 22px 26px;
+    background: var(--cream-2, #faf6ee);
+    border: 1px solid var(--line, #E6DFCE);
+    border-left: 4px solid var(--teal);
+    border-radius: 14px;
+  }
+  .brand-dossier-card[hidden] { display: none; }
+  .brand-dossier-head {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 14px;
+  }
+  .brand-dossier-badge {
+    align-self: flex-start;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #1F4E5B;
+    background: #E7F1F3;
+    border: 1px solid #C7DFE4;
+    border-radius: 999px;
+  }
+  .brand-dossier-title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0;
+    color: var(--ink);
+  }
+  .brand-dossier-body {
+    margin: 0 0 12px;
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .dossier-cite {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--teal);
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 1px 5px;
+    margin-left: 2px;
+    cursor: help;
+    vertical-align: super;
+  }
+  .brand-dossier-footnote {
+    margin: 0;
+    font-size: 12.5px;
+    color: var(--stone);
+  }
+
   /* Sprint T2: attribution footer. Native <details> so expansion
      works with no JS; closed state is a tight one-liner so reports
      stay uncluttered. */
@@ -2868,6 +2931,19 @@
         </div>
       </div>
 
+      <!-- Sprint T4: facts dossier — strict-citation paragraph
+           rendered only when the server confirms every sentence
+           cites a valid signal. When the LLM is unavailable or
+           validation fails, this card stays hidden entirely. -->
+      <section class="brand-dossier-card" id="brandDossierCard" hidden>
+        <header class="brand-dossier-head">
+          <span class="brand-dossier-badge" data-tr="dossier.badge">Cited facts</span>
+          <h3 class="brand-dossier-title" data-tr="dossier.heading">What we can verify about this restaurant</h3>
+        </header>
+        <p class="brand-dossier-body" id="brandDossierBody"></p>
+        <p class="brand-dossier-footnote" data-tr="dossier.footnote">Every sentence links to the verified signal it came from. Hover any citation to see the source.</p>
+      </section>
+
       <!-- Sprint S2.7: Deep Scan sections. Each stays hidden until
            its upstream delivers real data; no placeholder values. -->
       <section class="deep-reviews-card" id="deepReviewsCard" hidden>
@@ -3325,6 +3401,121 @@
       .catch(function(){ return { ok: false }; });
   }
 
+  // Sprint T4: brand dossier. Pre-extracts verified signals from
+  // the audit snapshots (Places + schema + crawl) and POSTs them to
+  // /api/brand-dossier. Only verified facts are sent — the server's
+  // system prompt forces every returned sentence to cite one of
+  // these exact keys, and the server rejects any response that
+  // doesn't.
+  function callBrandDossier(targetUrl) {
+    var signals = buildDossierSignals();
+    if (!signals || !Object.keys(signals).length) {
+      return Promise.resolve({ ok: false, error: 'no-signals' });
+    }
+    return fetch('/api/brand-dossier', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      signal: AbortSignal.timeout(20000),
+      body: JSON.stringify({
+        url: targetUrl,
+        lang: window.__muntinLang === 'es' ? 'es' : 'en',
+        signals: signals
+      })
+    })
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(d){ return d && d.ok ? d : { ok: false, error: (d && d.error) || 'dossier-error' }; })
+      .catch(function(){ return { ok: false, error: 'network-error' }; });
+  }
+
+  // Sprint T4: build the signals payload from current audit state.
+  // Returns an object of flat key→value pairs that the server uses
+  // as the ground-truth set for citation enforcement. Keys must be
+  // stable (the system prompt quotes them back) and values must be
+  // non-null strings or arrays-of-strings.
+  function buildDossierSignals() {
+    var out = {};
+    var places = window.__auditPlaces;
+    if (places && places.ok && places.place) {
+      var p = places.place;
+      if (p.name) out.placesName = p.name;
+      if (p.primaryTypeDisplayName) out.primaryType = p.primaryTypeDisplayName;
+      if (p.editorialSummary) out.editorialSummary = p.editorialSummary;
+      if (typeof p.rating === 'number' && typeof p.reviewCount === 'number' && p.reviewCount > 0) {
+        out.googleRating = p.rating.toFixed(1) + ' stars across ' + p.reviewCount + ' Google reviews';
+      }
+      if (p.priceLevel) {
+        var priceMap = { PRICE_LEVEL_INEXPENSIVE: '$', PRICE_LEVEL_MODERATE: '$$', PRICE_LEVEL_EXPENSIVE: '$$$', PRICE_LEVEL_VERY_EXPENSIVE: '$$$$' };
+        if (priceMap[p.priceLevel]) out.priceLevel = 'Google price level ' + priceMap[p.priceLevel];
+      }
+      if (p.businessStatus === 'OPERATIONAL') out.businessStatus = 'Operating (per Google Business Profile)';
+      var servesList = [];
+      if (p.servesBreakfast) servesList.push('breakfast');
+      if (p.servesLunch) servesList.push('lunch');
+      if (p.servesDinner) servesList.push('dinner');
+      if (p.servesBrunch) servesList.push('brunch');
+      if (servesList.length) out.servesMeals = 'Serves ' + servesList.join(', ');
+      var drinksList = [];
+      if (p.servesBeer) drinksList.push('beer');
+      if (p.servesWine) drinksList.push('wine');
+      if (p.servesCocktails) drinksList.push('cocktails');
+      if (p.servesCoffee) drinksList.push('coffee');
+      if (drinksList.length) out.servesDrinks = 'Serves ' + drinksList.join(', ');
+      if (p.reservable === true) out.reservable = 'Accepts reservations (per Google)';
+      if (p.dineIn === true) out.dineIn = 'Offers dine-in service';
+      if (p.takeout === true) out.takeout = 'Offers takeout';
+      if (p.delivery === true) out.delivery = 'Offers delivery';
+    }
+    var schema = window.__auditSchema && window.__auditSchema.validation;
+    if (schema) {
+      if (schema.servesCuisine && schema.servesCuisine.present && schema.servesCuisine.values && schema.servesCuisine.values.length) {
+        out.schemaCuisine = 'Cuisine declared in schema: ' + schema.servesCuisine.values.slice(0, 4).join(', ');
+      }
+      if (schema.openingHours && schema.openingHours.valid) {
+        out.schemaHours = 'Full 7-day hours declared in Restaurant schema';
+      }
+    }
+    var crawl = window.__auditCrawl;
+    if (crawl && crawl.homepage) {
+      if (crawl.homepage.title) out.homepageTitle = 'Homepage title: "' + crawl.homepage.title.slice(0, 120) + '"';
+      if (crawl.homepage.h1) out.homepageH1 = 'Homepage H1: "' + crawl.homepage.h1.slice(0, 120) + '"';
+    }
+    return out;
+  }
+
+  // Sprint T4: render the dossier card. Exits early when the server
+  // rejected the LLM response (missing citations, schema mismatch,
+  // etc.) so an unvalidated dossier is NEVER shown. When the server
+  // returns a validated paragraph, render it with subtle numbered
+  // citations that surface the signal text on click.
+  function renderBrandDossier(data) {
+    var card = document.getElementById('brandDossierCard');
+    var bodyEl = document.getElementById('brandDossierBody');
+    if (!card || !bodyEl) return;
+    if (!data || !data.ok || typeof data.paragraph !== 'string' || !Array.isArray(data.sentences) || !data.sentences.length) {
+      card.hidden = true;
+      return;
+    }
+    bodyEl.innerHTML = '';
+    // For each validated sentence, render its text with the
+    // bracketed citation replaced by a superscript marker that
+    // reveals the underlying signal on hover/click.
+    data.sentences.forEach(function(s, idx){
+      var frag = document.createElement('span');
+      frag.className = 'dossier-sentence';
+      var bracket = '[' + s.signalKey + ']';
+      var text = (s.text || '').replace(bracket, '').trim();
+      frag.textContent = text + ' ';
+      var sup = document.createElement('sup');
+      sup.className = 'dossier-cite';
+      sup.textContent = String(idx + 1);
+      sup.setAttribute('title', s.signalKey);
+      frag.appendChild(sup);
+      bodyEl.appendChild(frag);
+      bodyEl.appendChild(document.createTextNode(' '));
+    });
+    card.hidden = false;
+  }
+
   // Sprint S2.5: Deep Scan orchestrator. Runs AFTER the Fast Scan
   // renderReport has completed so the user sees the usual report
   // immediately, then watches four deeper signals resolve in place.
@@ -3388,6 +3579,15 @@
         done();
       });
     }
+    // Sprint T4: facts dossier. Fires last so it can read the
+    // freshest window.__audit* signals. Renders only when the
+    // server-side strict-citation validation passes; silently
+    // no-ops otherwise (including when AI Gateway isn't configured).
+    pending++; callBrandDossier(url).then(function(data){
+      window.__auditBrandDossier = data;
+      if (typeof renderBrandDossier === 'function') renderBrandDossier(data);
+      done();
+    });
   }
 
   // (Phase G3 client-side callYelpLookup removed — Yelp no longer
