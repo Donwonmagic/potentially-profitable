@@ -10981,6 +10981,31 @@
       if (sh.detected) return true;
     }
 
+    // 4b) Hostname brand-name signal. When the domain itself carries an
+    //     unambiguous restaurant signifier ("tacombi" → "taco",
+    //     "joespizza" → "pizza", "sugarfishsushi" → "sushi"), the site
+    //     is almost certainly a restaurant even when Lighthouse fetched
+    //     a sparse SPA shell with no recognized platforms, no schema,
+    //     and no accessible text. Substring match (not word boundary)
+    //     because brand names routinely concatenate — "tacombi" won't
+    //     match \\btaco\\b but contains "taco" as a substring.
+    //
+    //     List is deliberately conservative: every entry is a word
+    //     that's almost exclusively found in restaurant brand names.
+    //     We omit shorter / more-ambiguous terms like "cafe" (matches
+    //     cafepress.com), "pho" (phone / photo), "diner" (gardener),
+    //     "bar" (far too general).
+    var HOSTNAME_BRAND_SUBSTRINGS = [
+      'restaurant', 'bistro', 'trattoria', 'brasserie', 'gastropub',
+      'pizzeria', 'taqueria', 'steakhouse', 'chophouse', 'smokehouse',
+      'bakery', 'eatery', 'creamery',
+      'pizza', 'sushi', 'taco', 'burger', 'ramen', 'kebab',
+      'ceviche', 'tapas', 'dumpling'
+    ];
+    for (var hi = 0; hi < HOSTNAME_BRAND_SUBSTRINGS.length; hi++) {
+      if (host.indexOf(HOSTNAME_BRAND_SUBSTRINGS[hi]) !== -1) return true;
+    }
+
     // 5) Build a haystack from hostname + page title + meta description
     //    + the rich pageText (link text, anchor snippets, tap-target
     //    nodes). Each Lighthouse audit exposes its related snippet
