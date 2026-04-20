@@ -2516,7 +2516,42 @@ var UI_I18N = {
   'og.summary':  {
     en: '{present} of {total} social-share meta tags populated.',
     es: '{present} de {total} meta tags de compartido social completos.'
-  }
+  },
+  // Sprint H2: Owner Action Plan card. Persistent per-URL checklist
+  // split across three time horizons so owners can turn an audit into
+  // a plan they actually work through. Copy is scoped to the card.
+  'actionPlan.eyebrow': { en: 'Your action plan', es: 'Tu plan de acción' },
+  'actionPlan.heading': {
+    en: 'Turn this audit into a plan you can work through',
+    es: 'Convierte esta auditoría en un plan que puedas ejecutar'
+  },
+  'actionPlan.sub': {
+    en: 'Your highest-leverage gaps, split across three horizons. Check each off as you tackle it — your progress is saved on this device and survives re-audits.',
+    es: 'Tus mayores oportunidades, divididas en tres horizontes. Marca cada una al completarla — tu progreso se guarda en este dispositivo y sobrevive a nuevas auditorías.'
+  },
+  'actionPlan.reset': { en: 'Reset checkboxes', es: 'Reiniciar casillas' },
+  'actionPlan.col.week':    { en: 'This week',    es: 'Esta semana' },
+  'actionPlan.col.month':   { en: 'This month',   es: 'Este mes' },
+  'actionPlan.col.quarter': { en: 'This quarter', es: 'Este trimestre' },
+  'actionPlan.empty': {
+    en: 'No failing or unverified checks. Come back after a change to the site.',
+    es: 'Sin verificaciones fallidas o sin verificar. Vuelve tras un cambio en el sitio.'
+  },
+  'actionPlan.progress': {
+    en: '{done} of {total} complete',
+    es: '{done} de {total} completadas'
+  },
+  'actionPlan.colEmpty': {
+    en: 'Nothing for this horizon yet.',
+    es: 'Aún no hay nada para este horizonte.'
+  },
+  // Effort/time meta strings reused inside the action plan column
+  // items. Kept separate from the Top-3 chip text because these render
+  // as plain meta labels without chip styling.
+  'effort.self':    { en: 'Fix yourself',      es: 'Arreglo propio' },
+  'effort.dev':     { en: 'Ask your developer', es: 'Pregunta a tu desarrollador' },
+  'effort.rebuild': { en: 'Rebuild needed',    es: 'Se necesita rehacer' },
+  'effort.halfday': { en: 'Half-day project',  es: 'Proyecto de medio día' }
 };
 
 // Pluralization helper for ES: most nouns just take -es / -s, but

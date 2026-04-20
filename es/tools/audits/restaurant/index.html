@@ -793,6 +793,153 @@
   .history-banner-pillar-up   .history-banner-pillar-val { color: #1F6B3A; }
   .history-banner-pillar-down .history-banner-pillar-val { color: #B8541A; }
 
+  /* Sprint H2: Owner Action Plan card. Three-column grid on desktop,
+     stacks to one column below 720px. Each column lists failed +
+     unverified priority checks filed to a time horizon based on
+     effective weight. Checkbox state persists per-URL in localStorage
+     under muntin-action-plan:<hash>. Checkboxes survive re-audits. */
+  .action-plan-card {
+    max-width: 1100px;
+    margin: 24px auto 0;
+    padding: 22px 26px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+  }
+  .action-plan-card[hidden] { display: none; }
+  .action-plan-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  .action-plan-eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 6px;
+  }
+  .action-plan-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .action-plan-sub {
+    margin: 0 0 16px;
+    color: var(--stone);
+    font-size: 14px;
+    max-width: 780px;
+  }
+  .action-plan-reset {
+    flex-shrink: 0;
+    appearance: none;
+    border: 1px solid var(--line);
+    background: var(--cream-2, #faf6ee);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .action-plan-reset:hover { background: #E7F1F3; }
+  .action-plan-columns {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+  @media (max-width: 720px) {
+    .action-plan-columns { grid-template-columns: 1fr; }
+    .action-plan-head { flex-direction: column; }
+  }
+  .action-plan-col {
+    background: var(--cream, #FAF7F2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 14px 10px;
+    display: flex;
+    flex-direction: column;
+  }
+  .action-plan-col-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .action-plan-col-label {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .action-plan-col-progress {
+    font-size: 11.5px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--stone);
+  }
+  .action-plan-items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .action-plan-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+  .action-plan-item input[type="checkbox"] {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    cursor: pointer;
+    accent-color: var(--teal);
+  }
+  .action-plan-item-body { flex: 1; min-width: 0; }
+  .action-plan-item-title {
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--ink);
+  }
+  .action-plan-item[data-done="1"] .action-plan-item-title {
+    text-decoration: line-through;
+    color: var(--stone);
+  }
+  .action-plan-item-meta {
+    margin-top: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    font-size: 11.5px;
+    color: var(--stone);
+  }
+  .action-plan-empty-col {
+    font-size: 12.5px;
+    color: var(--stone);
+    font-style: italic;
+  }
+  @media print {
+    .action-plan-reset { display: none; }
+    .action-plan-columns { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .action-plan-item { page-break-inside: avoid; }
+  }
+
   /* Sprint E3: shared 'DEEP SCAN' eyebrow label applied to every
      Deep-Scan-only card. Small, quiet, clearly visually distinct
      from the Fast Scan body — signals these are optional extras
@@ -3467,6 +3614,23 @@
           <div class="top-fixes-eta" id="topFixesEta" hidden></div>
         </div>
         <ol class="top-fixes-list" id="topFixesList"></ol>
+      </section>
+
+      <!-- Sprint H2: Owner Action Plan. Failed + unverified priority
+           checks, auto-sorted by subtype-effective weight, split into
+           three time-horizon columns. Each checkbox persists per-URL
+           in localStorage so a returning owner sees their progress.
+           Works with the existing print-for-manager worksheet. -->
+      <section class="action-plan-card" id="actionPlanCard" hidden>
+        <header class="action-plan-head">
+          <div>
+            <span class="action-plan-eyebrow" data-tr="actionPlan.eyebrow">Your action plan</span>
+            <h3 class="action-plan-title" data-tr="actionPlan.heading">Turn this audit into a plan you can work through</h3>
+          </div>
+          <button type="button" class="action-plan-reset" id="actionPlanReset" data-tr="actionPlan.reset">Reset checkboxes</button>
+        </header>
+        <p class="action-plan-sub" data-tr="actionPlan.sub">Your highest-leverage gaps, split across three horizons. Check each off as you tackle it — your progress is saved on this device and survives re-audits.</p>
+        <div class="action-plan-columns" id="actionPlanColumns"></div>
       </section>
 
       <!-- Phase L1: Email gate retired. Deep tier now renders
@@ -8945,6 +9109,221 @@
     el.hidden = false;
   }
 
+  // ─────────────────────────────────────────────────────────────
+  // Sprint H2: Owner Action Plan
+  //
+  // Read failed + unverified priority checks from window.__auditResults,
+  // weight them by subtype-effective weight (same logic as renderTopFixes),
+  // split into three time horizons:
+  //
+  //   [0..3)  → This week     (highest leverage, do first)
+  //   [3..6)  → This month    (medium)
+  //   [6..)   → This quarter  (slower / bigger lifts)
+  //
+  // Persist each checkbox in localStorage keyed by URL hash so
+  // returning owners see their progress survive re-audits.
+  //
+  // Accuracy rule: if a check's status flips from fail→pass on
+  // re-audit, it simply drops out of the plan — no speculative
+  // "you said you'd fix this" language. Checkbox state for the
+  // now-passing check is retained but invisible (it's still in
+  // localStorage under its checkId, so if the check regresses in
+  // a future audit, the historic completion mark returns).
+  // ─────────────────────────────────────────────────────────────
+  var ACTION_PLAN_KEY_PREFIX = 'muntin-action-plan:';
+  function actionPlanKeyFor(url) {
+    var s = String(url || '').trim()
+      .replace(/^https?:\/\//i, '').replace(/\/$/, '').toLowerCase();
+    var h = 5381;
+    for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0;
+    return ACTION_PLAN_KEY_PREFIX + (h >>> 0).toString(16);
+  }
+  function readActionPlanState(url) {
+    try {
+      var raw = window.localStorage.getItem(actionPlanKeyFor(url));
+      if (!raw) return {};
+      var parsed = JSON.parse(raw);
+      return (parsed && typeof parsed === 'object') ? parsed : {};
+    } catch (_) { return {}; }
+  }
+  function writeActionPlanState(url, state) {
+    try {
+      window.localStorage.setItem(actionPlanKeyFor(url), JSON.stringify(state));
+    } catch (_) { /* quota — fail closed */ }
+  }
+
+  function renderActionPlan(auditedUrl) {
+    var card = document.getElementById('actionPlanCard');
+    var cols = document.getElementById('actionPlanColumns');
+    var resetBtn = document.getElementById('actionPlanReset');
+    if (!card || !cols) return;
+
+    var bundle = window.__auditResults;
+    if (!bundle || !Array.isArray(bundle.entries) || !bundle.entries.length) {
+      card.hidden = true;
+      return;
+    }
+    var subtypeId = bundle.subtypeId || null;
+
+    var actionable = bundle.entries
+      .filter(function(e){
+        var cls = e.result && e.result.mark && e.result.mark.cls;
+        return cls === 'fail' || cls === 'unverified';
+      })
+      .map(function(e){
+        var def = e.def || {};
+        var checkId = def.audit || def.type;
+        var w = null;
+        if (subtypeId && typeof subtypeWeights === 'function') {
+          w = subtypeWeights(subtypeId, checkId);
+        }
+        if (typeof w !== 'number') {
+          w = (typeof def.weight === 'number') ? def.weight : 1.0;
+        }
+        var statusRank = (e.result.mark.cls === 'fail') ? 1 : 0;
+        return { entry: e, weight: w, statusRank: statusRank, checkId: checkId };
+      })
+      .filter(function(x){ return x.weight > 0 && x.checkId; });
+
+    if (!actionable.length) {
+      card.hidden = true;
+      return;
+    }
+
+    actionable.sort(function(a, b){
+      if (b.weight !== a.weight) return b.weight - a.weight;
+      if (b.statusRank !== a.statusRank) return b.statusRank - a.statusRank;
+      return 0;
+    });
+
+    var buckets = [
+      { key: 'week',    label: t('actionPlan.col.week'),    items: actionable.slice(0, 3) },
+      { key: 'month',   label: t('actionPlan.col.month'),   items: actionable.slice(3, 6) },
+      { key: 'quarter', label: t('actionPlan.col.quarter'), items: actionable.slice(6) }
+    ];
+
+    var state = readActionPlanState(auditedUrl);
+    cols.innerHTML = '';
+
+    buckets.forEach(function(bucket){
+      var colEl = document.createElement('div');
+      colEl.className = 'action-plan-col';
+      colEl.setAttribute('data-bucket', bucket.key);
+
+      var head = document.createElement('div');
+      head.className = 'action-plan-col-head';
+      var label = document.createElement('span');
+      label.className = 'action-plan-col-label';
+      label.textContent = bucket.label;
+      head.appendChild(label);
+
+      var doneCount = bucket.items.reduce(function(n, x){
+        return n + (state[x.checkId] ? 1 : 0);
+      }, 0);
+      var progress = document.createElement('span');
+      progress.className = 'action-plan-col-progress';
+      progress.textContent = t('actionPlan.progress', {
+        done: doneCount,
+        total: bucket.items.length
+      });
+      if (!bucket.items.length) progress.textContent = '';
+      head.appendChild(progress);
+      colEl.appendChild(head);
+
+      if (!bucket.items.length) {
+        var empty = document.createElement('div');
+        empty.className = 'action-plan-empty-col';
+        empty.textContent = t('actionPlan.colEmpty');
+        colEl.appendChild(empty);
+        cols.appendChild(colEl);
+        return;
+      }
+
+      var ul = document.createElement('ul');
+      ul.className = 'action-plan-items';
+
+      bucket.items.forEach(function(pick){
+        var def = pick.entry.def;
+        var result = pick.entry.result;
+        var li = document.createElement('li');
+        li.className = 'action-plan-item';
+        var isDone = !!state[pick.checkId];
+        if (isDone) li.setAttribute('data-done', '1');
+
+        var cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked = isDone;
+        cb.setAttribute('aria-label', result.title || def.audit || def.type);
+        cb.addEventListener('change', function(){
+          var current = readActionPlanState(auditedUrl);
+          current[pick.checkId] = cb.checked;
+          writeActionPlanState(auditedUrl, current);
+          if (cb.checked) li.setAttribute('data-done', '1');
+          else li.removeAttribute('data-done');
+          // Refresh the column's progress counter without re-rendering
+          // the whole card — keeps checkbox focus intact.
+          var newDone = bucket.items.reduce(function(n, x){
+            var st = readActionPlanState(auditedUrl);
+            return n + (st[x.checkId] ? 1 : 0);
+          }, 0);
+          progress.textContent = t('actionPlan.progress', {
+            done: newDone,
+            total: bucket.items.length
+          });
+        });
+        li.appendChild(cb);
+
+        var bodyEl = document.createElement('div');
+        bodyEl.className = 'action-plan-item-body';
+        var titleEl = document.createElement('div');
+        titleEl.className = 'action-plan-item-title';
+        titleEl.textContent = result.title || def.unverified || def.fail || ('Check: ' + (def.audit || def.type));
+        bodyEl.appendChild(titleEl);
+
+        if (def.effort || typeof def.minutes === 'number') {
+          var meta = document.createElement('div');
+          meta.className = 'action-plan-item-meta';
+          if (def.effort === 'self') {
+            meta.appendChild(makeTextSpan(t('effort.self')));
+          } else if (def.effort === 'dev') {
+            meta.appendChild(makeTextSpan(t('effort.dev')));
+          } else if (def.effort === 'rebuild') {
+            meta.appendChild(makeTextSpan(t('effort.rebuild')));
+          }
+          if (typeof def.minutes === 'number') {
+            var timeLabel;
+            if (def.minutes < 60)        timeLabel = '~' + def.minutes + ' min';
+            else if (def.minutes < 180)  timeLabel = '~' + Math.round(def.minutes / 60) + ' hr';
+            else                         timeLabel = t('effort.halfday');
+            meta.appendChild(makeTextSpan(timeLabel));
+          }
+          bodyEl.appendChild(meta);
+        }
+
+        li.appendChild(bodyEl);
+        ul.appendChild(li);
+      });
+
+      colEl.appendChild(ul);
+      cols.appendChild(colEl);
+    });
+
+    if (resetBtn) {
+      resetBtn.onclick = function(){
+        try { window.localStorage.removeItem(actionPlanKeyFor(auditedUrl)); } catch (_) {}
+        renderActionPlan(auditedUrl);
+      };
+    }
+
+    card.hidden = false;
+  }
+
+  function makeTextSpan(txt) {
+    var s = document.createElement('span');
+    s.textContent = txt;
+    return s;
+  }
+
   // Phase L1: email gate retired. The deep tier always renders
   // immediately after the audit runs. The single email-capture
   // surface is #emailReportForm at the bottom of the report,
@@ -9713,6 +10092,10 @@
       // Phase I2: action card after the main priority list runs
       // so window.__auditResults is populated.
       renderTopFixes();
+      // Sprint H2: owner action plan. Reads from window.__auditResults
+      // and partitions failed/unverified entries by weight into
+      // three time-horizon columns with persistent checkboxes.
+      renderActionPlan(auditedUrl);
     } else {
       priorityResult = { score: 0, passCount: 0, totalCount: 0, confirmedCount: 0, lowConfidence: true };
     }
