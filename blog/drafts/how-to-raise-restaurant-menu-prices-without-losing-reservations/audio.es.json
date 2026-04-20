@@ -1,0 +1,395 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-20T17:34:00.951Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "em_alex",
+  "language": "es",
+  "total": 801.07,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "No quieres subir los precios. Sus costos ya han aumentado, los costos de sus proveedores ya han aumentado y en algún lugar de su cabeza sabe que las matemáticas dejaron de funcionar hace unos cuatro meses. Ha estado manteniendo los precios del menú porque recuerda lo que sucedió la última vez que el restaurante de enfrente intentó un aumento de liv de una sola vez, y prefiere comerse el margen que perder un cliente habitual.",
+      "start": 0,
+      "end": 22.46
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Entiendo el miedo. También creo que el miedo suele solucionar el riesgo equivocado. La pregunta no es si debo aumentar los precios; en algún momento, si sigues absorbiendo cada aumento de costos, cierras. La pregunta es qué artículos, en qué cantidad y en qué orden, para que los números en el menú puedan aumentar sin que el conteo de reservas baje.",
+      "start": 22.98,
+      "end": 41.59
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Esta publicación es el manual que utilizo cuando ayudo a los operadores de restaurantes a cambiar el precio de su menú y su sitio web en la misma semana. Las matemáticas son específicas del restaurante, la ejecución es específica del sitio web y las dos mitades solo funcionan juntas. Estos números son ilustrativos y se extraen de patrones que veo en los restaurantes independientes con los que trabajo, no de un conjunto de datos publicado. Su propio menú variará. La forma de la jugada es la parte que se generaliza.",
+      "start": 42.11,
+      "end": 70.48
+    },
+    {
+      "id": 3,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Las matemáticas ansiosas que nadie quiere ejecutar.",
+      "start": 71.58,
+      "end": 74.6
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Antes que nada, haz este cálculo. Extraiga los últimos noventa días de ventas. Tome el porcentaje del costo de los alimentos: lo que paga a los proveedores dividido por lo que les cobra a los huéspedes. Si solía ser del 30% y ahora es del 34%, esa desviación de cuatro puntos es su margen de beneficio que se va por la puerta trasera. Para un restaurante independiente que gana 1,2 millones de dólares al año, esos cuatro puntos equivalen a unos 48.000 dólares, más que el salario de un sous chef confiable y que se evapora silenciosamente.",
+      "start": 75.3,
+      "end": 107.86
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Ahora haz lo incómodo. Si aumenta su menú en un promedio del 6% en todos los ámbitos y, como resultado, pierde el 3% de sus coberturas, sus ingresos apenas se mueven, pero su margen se recupera casi por completo, porque las coberturas que pierde en el margen fueron las de menor gasto de todos modos. Ese es todo el juego. El truco consiste en conseguir el 6% sin que el 3% se convierta en el 15%.",
+      "start": 108.38,
+      "end": 132.03
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Equivocarse se ve así: un aumento porcentual fijo en cada artículo, un nuevo menú P D F subido durante el fin de semana y un lunes por la mañana en el que los clientes habituales abren sus teléfonos, ven la misma hamburguesa que costaba 17 dólares la semana pasada y ahora cuesta 19 dólares, y reservan tranquilamente en otro lugar. Las cifras aumentaron, el recuento de reservas disminuyó y ahora es culpa suya, no de la inflación.",
+      "start": 132.55,
+      "end": 156.29
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Hacerlo bien parece tener tres niveles.",
+      "start": 156.81,
+      "end": 159.18
+    },
+    {
+      "id": 8,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Aquí está la estrategia de aumento de precios de tres niveles, en una imagen. Nivel uno: elementos ancla: los platos por los que los invitados recuerdan su menú, la hamburguesa o el sándwich de pollo que todos esperan. Sostenlos. No los toques. Nivel dos: elementos principales: los caballos de batalla del menú medio, la mayoría de los platos principales, la mayoría de las pastas, la mayoría de las pizzas. Auméntelos entre un cuatro y un seis por ciento. Nivel tres: artículos exclusivos: el menú de su chef, los especiales, el único plato que solo usted prepara de esta manera. Auméntelos entre un ocho y un doce por ciento. El invitado recuerda el ancla, siente que el núcleo se mueve una vez y lo olvida, y no cuestiona la firma porque, para empezar, la firma nunca fue un elemento de comparación de precios. Resultado: margen recuperado.",
+      "start": 159.98,
+      "end": 204.25
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "La lógica es simple: los comensales no notan los cambios de precios de manera uniforme en todo el menú. Los notan más en los artículos que han comparado con otros restaurantes. Los notan menos en los artículos que solo tú haces. El manual es tomar el aumento en los lugares donde es menos probable que el huésped lo sienta y dejar los elementos ancla como están para que el menú aún se sienta como \"tuyo\" cuando lo abra.",
+      "start": 205,
+      "end": 227.28
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Las gradas, de cerca.",
+      "start": 228.38,
+      "end": 229.64
+    },
+    {
+      "id": 11,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(1)",
+      "text": "Nivel 1: Anclas que nunca tocas.",
+      "start": 230.74,
+      "end": 232.75
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Cada menú tiene de tres a cinco elementos que quedan grabados en la memoria del huésped. La hamburguesa, el César, el pollo de la casa, el cóctel de autor a 14 dólares. Estos no son sólo elementos del menú: son precios de referencia. Cuando un huésped abre su menú, primero busca esos números, generalmente de manera inconsciente, para decidir si tiene \"el mismo precio que tenía\" o si algo ha cambiado.",
+      "start": 233.45,
+      "end": 254.65
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Deja las anclas en paz. Cómete el margen que les queda. Esto es contrario a la intuición (su instinto es subir un poco cada artículo), pero los artículos ancla son donde se habla de cualquier movimiento de precios. Un aumento de 1 dólar en la hamburguesa aparecerá en una reseña Yelp dentro de una semana. Un aumento de 2 dólares en un plato de pasta que está en el menú junto con otras doce pastas, nadie se da cuenta.",
+      "start": 255.17,
+      "end": 277.19
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Hay un beneficio secundario. Mantener precios ancla le da una línea verdadera en una conversación futura: \"Hemos mantenido nuestra hamburguesa a 17 dólares desde el veinticuatro\". Esa es una frase que puedes decir en voz alta. Los huéspedes que se preocupan por los precios lo respetan. Los huéspedes a los que no les importan los precios nunca piensan en ello. Todos ganan por una pequeña cosa.",
+      "start": 277.71,
+      "end": 299.33
+    },
+    {
+      "id": 15,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(2)",
+      "text": "Nivel 2: artículos básicos, aumentados entre un 4 y un 6 por ciento.",
+      "start": 300.43,
+      "end": 304.97
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "El núcleo de su menú es donde realmente ocurre el aumento promedio ponderado. La mayoría de tus platos principales. La mayoría de tus pastas. La mayoría de tus pizzas, si eres una pizzería. Estos son los artículos que los huéspedes piden con regularidad pero de los que no tienen un recuerdo exacto del dólar. Recuerdan que \"fueron unos veinte dólares\". Un paso de 21 dólares a 22,25 dólares está dentro de esa tolerancia de memoria. Un paso de 21 dólares a 25 dólares no lo es.",
+      "start": 305.67,
+      "end": 333.72
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Entre el cuatro y el seis por ciento es el punto ideal. Por debajo del 4%, apenas se recupera margen y se ha gastado capital político en balde. Por encima del 6%, los clientes empiezan a notar que el menú \"parece\" más caro, incluso si no pueden señalar un artículo específico. Permanezca en esa banda del núcleo y recuperará silenciosamente aproximadamente dos tercios del margen que perdió debido a la inflación de costos.",
+      "start": 334.24,
+      "end": 358.15
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Una nota táctica: cuando aumente los elementos básicos, no redondee al dólar. Un salto de 21 dólares a 22 dólares parece mayor que un salto de 21 dólares a 21,75 dólares. El cerebro se ancla en el primer dedo. Pasar de veintiún y tantos a veintidós y tantos es un rango de precios diferente en la cabeza del huésped. De veintiún y tantos a veintiuno y tantos más grande es el mismo grupo.",
+      "start": 358.67,
+      "end": 381.55
+    },
+    {
+      "id": 19,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(3)",
+      "text": "Nivel 3: artículos exclusivos, aumentado entre un 8 y un 12 por ciento.",
+      "start": 382.65,
+      "end": 387.41
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Sus artículos exclusivos son aquellos que los invitados no pueden comparar con ningún otro lugar. El menú degustación. El especial del chef. El único plato por el que eres conocido no existe en la misma forma en la calle. Estos son inelásticos en cuanto al precio de una manera que el resto de su menú no lo es: los invitados no eligen entre su versión y la de otra persona, sino que eligen si piden su versión.",
+      "start": 388.11,
+      "end": 409.72
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Aumente estos entre un 8 y un 12 por ciento sin inmutarse. Si el menú degustación del chef era de 85 dólares, llévalo a 92 dólares o 95 dólares. El invitado que está ahí para el menú de degustación ya ha superado el umbral de sensibilidad al precio: entró comprometido. Lo que están pagando es la experiencia, y esa experiencia vale más de lo que normalmente cobras por ella.",
+      "start": 410.24,
+      "end": 431.78
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "El error común aquí es el sentido opuesto: tratar los artículos exclusivos con más precaución que los artículos básicos porque \"son los más caros\". Equivocado. Los artículos caros son los que tienen menor presión de comparación de precios. Son el lugar más fácil para recuperar margen.",
+      "start": 432.3,
+      "end": 448.76
+    },
+    {
+      "id": 23,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Los movimientos del sitio web que hacen que el precio se mantenga.",
+      "start": 449.86,
+      "end": 453.36
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "El menú es la mitad del trabajo. La otra mitad es el sitio web que el huésped consulta antes de decidirse a reservar. La mayoría de los restaurantes aumentan los precios y luego no cambian nada más en línea, por lo que un aumento del 5% se convierte en un aumento percibido del 12% en la cabeza del huésped. Tres movimientos de sitios web hacen gran parte del trabajo pesado.",
+      "start": 454.06,
+      "end": 475.58
+    },
+    {
+      "id": 25,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(4)",
+      "text": "1. No cambies los números: cambia lo que los rodea.",
+      "start": 476.68,
+      "end": 479.54
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Si la página de su menú solo muestra una lista de platos con precios, un aumento de precio se interpreta como un aumento evidente. Los invitados escanean, ven un número mayor y se estremecen.",
+      "start": 480.24,
+      "end": 491.16
+    },
+    {
+      "id": 27,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Si la página de su menú muestra un plato con una descripción adecuada (el origen, el método de cocción, el único detalle que hace que esta versión sea suya), el precio se lee en contexto. No son \"24 dólares por un sándwich de pollo\", son \"24 dólares por medio pollo asado con jugo de mantequilla marrón, de una granja que puedes nombrar, servido de una manera que puedes describir\". El precio no ha cambiado, pero sí el marco en el que el huésped lo valora.",
+      "start": 491.68,
+      "end": 515.74
+    },
+    {
+      "id": 28,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "Cuando subas un precio, reescribe la descripción al mismo tiempo. Dos frases. Algo específico. El huésped que abre su sitio esta semana y ve \"Pollo 24 dólares: media ave asada, jugo de mantequilla marrón, salmuera de dos horas\" lo lee como un restaurante que invierte en su producto. El huésped que ve \"Pollo 24 dólares\" lee un restaurante que acaba de encarecerse.",
+      "start": 516.26,
+      "end": 536.57
+    },
+    {
+      "id": 29,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(5)",
+      "text": "2. Actualizar al menos una fotografía.",
+      "start": 537.67,
+      "end": 540.08
+    },
+    {
+      "id": 30,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "Esto suena superficial. No lo es. Los elementos del menú que se han movido visualmente (un nuevo plato, una nueva guarnición, una nueva fotografía) se cotizan según la nueva imagen, no según la memoria de precios anterior. Un huésped que se desplaza por la página del menú en un teléfono evaluará \"la nueva versión de este plato a 24 dólares\" de manera muy diferente a \"el mismo plato que comí el año pasado, pero ahora a 24 dólares\".",
+      "start": 540.78,
+      "end": 564.55
+    },
+    {
+      "id": 31,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "No es necesario volver a grabar todo el menú. Elija los tres artículos que más cambiaron de precio y tenga en su plato de cocina una versión fresca durante una hora un martes por la tarde. La luz natural, la mesa limpia y la cámara del teléfono están bien si eres hábil con ello. Noventa minutos, tres fotos nuevas. Esas tres fotos neutralizan la conversación sobre los precios de esos tres artículos durante los próximos seis meses.",
+      "start": 565.07,
+      "end": 588.62
+    },
+    {
+      "id": 32,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(6)",
+      "text": "3. Elimine los descuentos obsoletos antes de publicar los nuevos precios.",
+      "start": 589.72,
+      "end": 594.06
+    },
+    {
+      "id": 33,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "Cada sitio de restaurante que audito tiene al menos una \"promoción\" obsoleta en alguna parte: un cuadro de happy hour que todavía muestra el precio anterior, un cartel sobre un especial de verano que finalizó en octubre, un menú en PDF titulado \"Primavera veinte y veinticuatro\" todavía vinculado desde una barra lateral. Estos son la muerte por un aumento de precio, porque le dicen al huésped \"el precio real es más bajo que el que está en esta página\".",
+      "start": 594.76,
+      "end": 619.29
+    },
+    {
+      "id": 34,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "Dedique una hora antes de publicar el nuevo menú a recorrer su propio sitio como si fuera la primera vez que lo visita. Cada precio que aparece en cualquier lugar. Cada pancarta. Cada P D F. Si no coincide con el nuevo menú, elimínelo. Un huésped que encuentra una hamburguesa de 17 dólares en la página de inicio pero una hamburguesa de 19 dólares en la página del menú acaba de ser entrenado para creer que su restaurante es deshonesto, a pesar de que planeaba arreglar la página de inicio la próxima semana.",
+      "start": 619.81,
+      "end": 647.59
+    },
+    {
+      "id": 35,
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "Cada descuento obsoleto en su sitio es un argumento en contra del precio real. No le estás ahorrando dinero al huésped, le estás dando una razón para no confiar en el nuevo.",
+      "start": 648.34,
+      "end": 657.75
+    },
+    {
+      "id": 36,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Qué hacer esta semana.",
+      "start": 658.85,
+      "end": 660.13
+    },
+    {
+      "id": 37,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "Si ha estado posponiendo un aumento de precios durante tres meses y esta publicación finalmente lo tiene dispuesto, aquí está la secuencia honesta de siete días. No es glamoroso y no necesita serlo.",
+      "start": 660.83,
+      "end": 672.46
+    },
+    {
+      "id": 38,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Lunes. Obtenga sus últimos noventa días de ventas por artículo. Etiqueta cada elemento como ancla, núcleo o firma. No estarás de acuerdo contigo mismo en algunos; ese es el punto, es una decisión, no un algoritmo.",
+      "start": 672.98,
+      "end": 685.39
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Martes. Redactar los nuevos precios. Anclas sostenidas. Los artículos básicos subieron entre un 4% y un 6%, evitando saltos redondos. Las firmas aumentaron entre un 8% y un 12%. Haga un promedio ponderado con respecto al volumen: su objetivo es un 5 a 6 % ponderado, no un 5 a 6 % fijo en cada artículo.",
+      "start": 685.71,
+      "end": 706.96
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Miércoles. Vuelva a escribir las descripciones de cualquier artículo que haya recaudado más de un dólar. Dos frases, concretas. Abastecimiento, método, los detalles que sólo tú conoces.",
+      "start": 707.28,
+      "end": 717.62
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Jueves. Vuelva a disparar tres platos con los mayores movimientos de precios. Teléfono + luz natural + hora de cocina.",
+      "start": 717.94,
+      "end": 724.8
+    },
+    {
+      "id": 42,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Viernes. Audite su propio sitio web en frío. Cada página que muestra un precio, cada banner promocional antiguo, cada menú P D F. Elimine todo lo que contradiga el nuevo precio.",
+      "start": 725.12,
+      "end": 735.41
+    },
+    {
+      "id": 43,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
+      "text": "Sábado. Publicar. La página del menú primero, los bloques de la página de inicio en segundo lugar, el menú P D F al final. Dígale a su anfitrión y a sus servidores cuáles son los tres elementos que más se movieron para que estén listos para el invitado que los solicite.",
+      "start": 735.73,
+      "end": 750.62
+    },
+    {
+      "id": 44,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(7)",
+      "text": "Domingo. Observe el recuento de reservas para las próximas dos semanas. Si baja más del 5%, tomaste demasiado. Si retiene o se mueve menos del 2%, no tomó lo suficiente y puede recuperar otro 3% en noventa días.",
+      "start": 750.94,
+      "end": 765.25
+    },
+    {
+      "id": 45,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "Ese es todo el libro de jugadas. Tres niveles, tres movimientos de sitio web, siete días.",
+      "start": 765.77,
+      "end": 770.74
+    },
+    {
+      "id": 46,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(29)",
+      "text": "No estás tratando de extraer más del huésped, estás tratando de dejar de perder dinero con el huésped que ya tienes. La distinción importa. Un restaurante que silenciosamente se arruina porque no aumentará los precios cierra igual que un restaurante que aumentó los precios de manera incorrecta. Uno de esos resultados, al menos el operador pudo elegir.",
+      "start": 771.26,
+      "end": 790.44
+    },
+    {
+      "id": 47,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(30)",
+      "text": "Ponle precio para sobrevivir. Descríbelo a la tierra. Fotografíelo para restablecerlo. Luego deja que los habituales vuelvan a aparecer, de la misma manera que siempre lo han hecho.",
+      "start": 790.96,
+      "end": 801.07
+    }
+  ]
+}

@@ -20,3 +20,7 @@ scripts/voice-refs/*.wav
 scripts/voice-refs/*.mp3
 scripts/voice-refs/*.m4a
 scripts/voice-refs/*.flac
+
+# Python bytecode cache from scripts/lib helpers.
+__pycache__/
+*.pyc
