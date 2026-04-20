@@ -721,6 +721,26 @@
   }
   .og-completeness-copy:hover { background: #E7F1F3; }
 
+  /* Sprint E3: shared 'DEEP SCAN' eyebrow label applied to every
+     Deep-Scan-only card. Small, quiet, clearly visually distinct
+     from the Fast Scan body — signals these are optional extras
+     the owner opted into rather than gaps in the core report. */
+  .deep-card { position: relative; }
+  .deep-card .deep-eyebrow {
+    display: inline-block;
+    padding: 2px 9px;
+    margin-bottom: 12px;
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--stone);
+    background: var(--cream-2, #faf6ee);
+    border: 1px solid var(--line, #E6DFCE);
+    border-radius: 4px;
+  }
+
   /* Sprint D1: email deliverability card. Pass rows use the same
      green as the security-grade chip; fail rows use rust. Unknown
      rows (DKIM only) are neutral to avoid claiming a missing record
@@ -3487,7 +3507,8 @@
            rendered only when the server confirms every sentence
            cites a valid signal. When the LLM is unavailable or
            validation fails, this card stays hidden entirely. -->
-      <section class="brand-dossier-card" id="brandDossierCard" hidden>
+      <section class="brand-dossier-card deep-card" id="brandDossierCard" hidden>
+        <span class="deep-eyebrow" data-tr="deepScan.eyebrow">Deep scan</span>
         <header class="brand-dossier-head">
           <span class="brand-dossier-badge" data-tr="dossier.badge">Cited facts</span>
           <h3 class="brand-dossier-title" data-tr="dossier.heading">What we can verify about this restaurant</h3>
@@ -3497,14 +3518,19 @@
       </section>
 
       <!-- Sprint S2.7: Deep Scan sections. Each stays hidden until
-           its upstream delivers real data; no placeholder values. -->
-      <section class="deep-reviews-card" id="deepReviewsCard" hidden>
+           its upstream delivers real data; no placeholder values.
+           The shared .deep-card wrapper + <span class="deep-eyebrow">
+           (Sprint E3) signals these are optional extras the owner
+           opted into, visually distinct from the Fast Scan body. -->
+      <section class="deep-reviews-card deep-card" id="deepReviewsCard" hidden>
+        <span class="deep-eyebrow" data-tr="deepScan.eyebrow">Deep scan</span>
         <h3 class="deep-section-head" data-tr="deep.reviews.heading">Google reviews snapshot</h3>
         <p class="deep-section-sub" id="deepReviewsSub"></p>
         <ol class="deep-reviews-list" id="deepReviewsList"></ol>
       </section>
 
-      <section class="deep-crux-card" id="deepCruxCard" hidden>
+      <section class="deep-crux-card deep-card" id="deepCruxCard" hidden>
+        <span class="deep-eyebrow" data-tr="deepScan.eyebrow">Deep scan</span>
         <h3 class="deep-section-head" data-tr="deep.crux.heading">Field-data trends (25 weeks)</h3>
         <p class="deep-section-sub" data-tr="deep.crux.sub">Real-user Core Web Vitals from the Chrome UX Report. Rendered only when Google has enough samples to publish a trend.</p>
         <div class="deep-crux-grid" id="deepCruxGrid"></div>
@@ -3515,7 +3541,8 @@
            returns ok:true and at least one sub-check has a definite
            answer (DKIM absence is never claimed — only "confirmed"
            or "unknown via our probes"). -->
-      <section class="deep-email-card" id="deepEmailCard" hidden>
+      <section class="deep-email-card deep-card" id="deepEmailCard" hidden>
+        <span class="deep-eyebrow" data-tr="deepScan.eyebrow">Deep scan</span>
         <header class="deep-section-head-wrap">
           <h3 class="deep-section-head" data-tr="deep.email.heading">Email deliverability</h3>
           <span class="deep-email-posture" id="deepEmailPosture" hidden></span>

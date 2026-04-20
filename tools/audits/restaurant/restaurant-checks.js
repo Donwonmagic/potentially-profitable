@@ -2322,6 +2322,7 @@ var UI_I18N = {
     en: 'No additional signals were available for this site.',
     es: 'No hubo señales adicionales disponibles para este sitio.'
   },
+  'deepScan.eyebrow': { en: 'Deep scan', es: 'Deep scan' },
   'deep.age.liveSince': {
     en: 'Live since {year}',
     es: 'En línea desde {year}'
