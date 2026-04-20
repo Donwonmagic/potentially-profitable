@@ -544,6 +544,144 @@
   }
   .schema-richness-copy:hover { background: #E7F1F3; }
 
+  /* Sprint D4: Open Graph / Twitter Card completeness. Same
+     visual language as the D2 schema scorecard — cream base,
+     teal accent, copy buttons for gaps — but ORDER-DIFFERENT
+     so owners see social posture separately from schema posture. */
+  .og-completeness-card {
+    max-width: 1100px;
+    margin: 24px auto 0;
+    padding: 22px 26px;
+    background: var(--cream-2, #faf6ee);
+    border: 1px solid var(--line, #E6DFCE);
+    border-left: 4px solid var(--teal);
+    border-radius: 14px;
+  }
+  .og-completeness-card[hidden] { display: none; }
+  .og-completeness-head {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+  .og-completeness-badge {
+    align-self: flex-start;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #1F4E5B;
+    background: #E7F1F3;
+    border: 1px solid #C7DFE4;
+    border-radius: 999px;
+  }
+  .og-completeness-title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0;
+    color: var(--ink);
+  }
+  .og-completeness-summary {
+    margin: 0 0 14px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  .og-completeness-list { list-style: none; margin: 0; padding: 0; }
+  .og-completeness-row {
+    padding: 14px 0;
+    border-top: 1px solid var(--line);
+  }
+  .og-completeness-row:first-child { border-top: none; }
+  .og-completeness-lead {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .og-completeness-icon {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .og-completeness-row-present .og-completeness-icon {
+    background: #E7F5EC;
+    color: #1F6B3A;
+    border: 1px solid #C7E4CF;
+  }
+  .og-completeness-row-missing .og-completeness-icon {
+    background: #FDEFE3;
+    color: #B8541A;
+    border: 1px dashed #EFC4AA;
+  }
+  .og-completeness-label {
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--white);
+    padding: 2px 8px;
+    border-radius: 5px;
+    border: 1px solid var(--line);
+  }
+  .og-completeness-priority {
+    margin-left: auto;
+    padding: 2px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    background: var(--white);
+    color: var(--stone);
+    border: 1px solid var(--line);
+  }
+  .og-completeness-priority-required .og-completeness-priority {
+    background: #F7E7DC;
+    color: #B8541A;
+    border-color: #EFC4AA;
+  }
+  .og-completeness-benefit {
+    margin: 0 0 0 32px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .og-completeness-snippet {
+    margin: 10px 0 0 32px;
+    padding: 12px 14px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--ink);
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+  .og-completeness-copy {
+    margin: 8px 0 0 32px;
+    padding: 5px 12px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--teal);
+    background: var(--white);
+    border: 1px solid var(--teal);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .og-completeness-copy:hover { background: #E7F1F3; }
+
   /* Sprint D1: email deliverability card. Pass rows use the same
      green as the security-grade chip; fail rows use rust. Unknown
      rows (DKIM only) are neutral to avoid claiming a missing record
@@ -3345,6 +3483,19 @@
           <div class="btc-alt-chips" id="btcAltChips"></div>
         </div>
       </div>
+
+      <!-- Sprint D4: Open Graph / Twitter Card completeness. Reuses
+           the existing checkOgShareMeta() detector against the
+           homepage HTML captured during crawl; no new endpoint.
+           Stays hidden when the crawl didn't land homepage HTML. -->
+      <section class="og-completeness-card" id="ogCompletenessCard" hidden>
+        <header class="og-completeness-head">
+          <span class="og-completeness-badge" data-tr="og.badge">Social share preview</span>
+          <h3 class="og-completeness-title" data-tr="og.heading">How your site looks when shared on social</h3>
+        </header>
+        <p class="og-completeness-summary" id="ogCompletenessSummary"></p>
+        <ul class="og-completeness-list" id="ogCompletenessList"></ul>
+      </section>
 
       <!-- Sprint D2: Restaurant schema richness scorecard. Shows
            each Google-recommended Restaurant schema field with a
@@ -7522,7 +7673,89 @@
     renderBusinessTypeAlternatives(effective, detection);
     renderPlacesFactsCard();
     renderSchemaRichness();
+    renderOgCompleteness();
     renderBuiltByFooter();
+  }
+
+  // Sprint D4: Open Graph / Twitter Card completeness. Uses the
+  // existing checkOgShareMeta() detector on the homepage HTML
+  // that /api/page-crawl already captured. Accuracy gate: calls a
+  // field present ONLY when the literal meta tag exists with a
+  // non-empty value (og:image + twitter:image additionally require
+  // an http(s) URL).
+  function renderOgCompleteness() {
+    var card = document.getElementById('ogCompletenessCard');
+    var list = document.getElementById('ogCompletenessList');
+    var summary = document.getElementById('ogCompletenessSummary');
+    if (!card || !list || !summary) return;
+    var fields = Array.isArray(window.OG_META_FIELDS) ? window.OG_META_FIELDS
+      : (typeof OG_META_FIELDS !== 'undefined' ? OG_META_FIELDS : null);
+    if (!fields || !fields.length) return;
+    if (typeof checkOgShareMeta !== 'function') { card.hidden = true; return; }
+    var crawl = window.__auditCrawl;
+    var homepageHtml = (crawl && crawl.homepage && typeof crawl.homepage.html === 'string')
+      ? crawl.homepage.html : '';
+    if (!homepageHtml) { card.hidden = true; return; }
+    var detection = checkOgShareMeta(homepageHtml);
+    list.innerHTML = '';
+    var presentCount = 0;
+    var lang = (typeof window !== 'undefined' && window.__muntinLang) || 'en';
+    fields.forEach(function(f){
+      var present = !!detection[f.key];
+      if (present) presentCount++;
+      var li = document.createElement('li');
+      li.className = 'og-completeness-row og-completeness-row-' + (present ? 'present' : 'missing')
+                   + ' og-completeness-priority-' + f.priority;
+      var lead = document.createElement('div');
+      lead.className = 'og-completeness-lead';
+      var icon = document.createElement('span');
+      icon.className = 'og-completeness-icon';
+      icon.textContent = present ? '✓' : '+';
+      var label = document.createElement('code');
+      label.className = 'og-completeness-label';
+      label.textContent = f.label;
+      var pri = document.createElement('span');
+      pri.className = 'og-completeness-priority';
+      pri.textContent = t('schemaRichness.priority.' + f.priority);
+      lead.appendChild(icon);
+      lead.appendChild(label);
+      lead.appendChild(pri);
+      li.appendChild(lead);
+      var benefit = document.createElement('p');
+      benefit.className = 'og-completeness-benefit';
+      benefit.textContent = (lang === 'es' && f.benefit_es) ? f.benefit_es : f.benefit_en;
+      li.appendChild(benefit);
+      if (!present) {
+        var pre = document.createElement('pre');
+        pre.className = 'og-completeness-snippet';
+        pre.textContent = f.example;
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'og-completeness-copy';
+        btn.textContent = t('schemaRichness.copy');
+        btn.addEventListener('click', function(){
+          var orig = btn.textContent;
+          try {
+            navigator.clipboard.writeText(f.example);
+            btn.textContent = t('schemaRichness.copied');
+            setTimeout(function(){ btn.textContent = orig; }, 1500);
+          } catch (_) {
+            var range = document.createRange();
+            range.selectNode(pre);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+          }
+        });
+        li.appendChild(btn);
+        li.appendChild(pre);
+      }
+      list.appendChild(li);
+    });
+    summary.textContent = t('og.summary', {
+      present: presentCount,
+      total: fields.length
+    });
+    card.hidden = false;
   }
 
   // Sprint D2: schema richness scorecard. Walks the schema-check

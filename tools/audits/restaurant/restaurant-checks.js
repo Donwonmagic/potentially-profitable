@@ -2122,6 +2122,41 @@ var RESTAURANT_SCHEMA_FIELDS = [
     example: '"paymentAccepted": "Cash, Credit Card, Apple Pay"' }
 ];
 
+// ---------------------------------------------------------------------------
+// Sprint D4: Open Graph / Twitter Card completeness scorecard.
+//
+// Every share to Facebook, LinkedIn, iMessage, WhatsApp, Slack, or
+// X ends up looking bare (plain URL + no thumbnail) when these five
+// meta tags are missing. For a restaurant whose primary marketing
+// channel is social, that's a meaningful loss of impression quality.
+//
+// Fields are the minimum-viable set that all five major share
+// surfaces actually render. The example snippets use angle-bracket
+// placeholders for the owner to fill in.
+// ---------------------------------------------------------------------------
+var OG_META_FIELDS = [
+  { key: 'ogTitle',       label: 'og:title',        priority: 'required',
+    benefit_en: 'The headline every social share surface reads first.',
+    benefit_es: 'El titular que lee primero cada superficie de compartido social.',
+    example: '<meta property="og:title" content="<Your Restaurant — short punchy headline>">' },
+  { key: 'ogDescription', label: 'og:description',  priority: 'required',
+    benefit_en: 'The one-line pitch under the headline in share cards.',
+    benefit_es: 'La línea de presentación bajo el titular en las tarjetas al compartir.',
+    example: '<meta property="og:description" content="<One sentence about your restaurant and what you serve>">' },
+  { key: 'ogImage',       label: 'og:image',        priority: 'required',
+    benefit_en: '1200×630 hero image. Without it, share cards look empty.',
+    benefit_es: 'Imagen hero 1200×630. Sin ella, las tarjetas se ven vacías.',
+    example: '<meta property="og:image" content="<https://yourrestaurant.com/og/hero.jpg>">' },
+  { key: 'twitterCard',   label: 'twitter:card',    priority: 'recommended',
+    benefit_en: 'Tells X / Twitter how to render your card ("summary_large_image" is the standard).',
+    benefit_es: 'Le dice a X / Twitter cómo renderizar tu tarjeta ("summary_large_image" es el estándar).',
+    example: '<meta name="twitter:card" content="summary_large_image">' },
+  { key: 'twitterImage',  label: 'twitter:image',   priority: 'recommended',
+    benefit_en: 'The image X / Twitter uses when og:image isn\'t enough.',
+    benefit_es: 'La imagen que X / Twitter usa cuando og:image no es suficiente.',
+    example: '<meta name="twitter:image" content="<https://yourrestaurant.com/og/hero.jpg>">' }
+];
+
 // Canonical one-line description used in OG/Twitter cards, PDF cover,
 // share-card footer, and the tool's meta description. Exactly one
 // source of truth — if this string changes, every surface updates.
@@ -2434,7 +2469,17 @@ var UI_I18N = {
   },
   'badge.snippetLabel': { en: 'Copy-paste HTML', es: 'HTML para copiar y pegar' },
   'badge.copy':         { en: 'Copy snippet',    es: 'Copiar fragmento' },
-  'badge.copied':       { en: 'Copied!',         es: '¡Copiado!' }
+  'badge.copied':       { en: 'Copied!',         es: '¡Copiado!' },
+  // Sprint D4: OG / Twitter completeness scorecard.
+  'og.badge':    { en: 'Social share preview', es: 'Vista previa al compartir' },
+  'og.heading':  {
+    en: 'How your site looks when shared on social',
+    es: 'Cómo se ve tu sitio al compartirlo en redes sociales'
+  },
+  'og.summary':  {
+    en: '{present} of {total} social-share meta tags populated.',
+    es: '{present} de {total} meta tags de compartido social completos.'
+  }
 };
 
 // Pluralization helper for ES: most nouns just take -es / -s, but
@@ -2500,6 +2545,7 @@ if (typeof module !== 'undefined' && module.exports) {
     UI_I18N: UI_I18N,
     t: t,
     poweredByRole: poweredByRole,
-    RESTAURANT_SCHEMA_FIELDS: RESTAURANT_SCHEMA_FIELDS
+    RESTAURANT_SCHEMA_FIELDS: RESTAURANT_SCHEMA_FIELDS,
+    OG_META_FIELDS: OG_META_FIELDS
   };
 }
