@@ -71,6 +71,7 @@ const API_ROUTES = {
   '/api/schema-check':  handleSchemaCheck,
   '/api/page-crawl':    handlePageCrawl,
   '/api/psi':           handlePsi,
+  '/api/did-you-mean':  handleDidYouMean,
 };
 
 
@@ -92,7 +93,7 @@ export default {
           404
         );
       }
-      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi') {
+      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
         }
@@ -1867,6 +1868,138 @@ async function handlePsi(request, env, ctx) {
 // Muntin Digital attribution. Version string should move in lockstep
 // with the HTML meta when the audit engine materially changes.
 const MUNTIN_GENERATOR = 'Muntin Digital Audit v1.1';
+
+// ------------------------------------------------------------
+// /api/did-you-mean — DNS-over-HTTPS typo-suggestion helper.
+//
+// When the restaurant audit (or any future tool) fails because a
+// user's URL doesn't resolve, the client calls this endpoint with
+// the offending URL. We generate a small set of plausible typo
+// corrections (single-character deletion + adjacent transposition
+// on the SLD portion of the hostname) and DNS-query each against
+// 1.1.1.1 via DNS-over-HTTPS. The first candidate that actually
+// resolves gets returned as the suggestion.
+//
+// Rationale: a wrong suggestion is worse than no suggestion, so
+// we only propose candidates that ALSO resolve — this avoids
+// suggesting `example.co` or `exampl.com` as alternatives if
+// those don't exist.
+//
+// Response shape:
+//   { ok: true, input, suggestion: 'irishinnglenecho.com',
+//     suggestedUrl: 'https://irishinnglenecho.com/' }
+//   { ok: true, input, suggestion: null }   // no plausible match
+//
+// Budgeted at ~2s total: 40 DoH lookups in parallel, each capped
+// at 1.5s. DoH at 1.1.1.1 answers in tens of milliseconds for
+// unresolved names, so this rarely uses its full budget.
+// ------------------------------------------------------------
+
+async function handleDidYouMean(request, env, ctx) {
+  const urlObj = new URL(request.url);
+  const raw = (urlObj.searchParams.get('url') || '').trim();
+  const gate = assertSafeHttpUrl(raw, pickLang(request));
+  if (!gate.ok) {
+    return jsonResponse({ ok: false, error: gate.error }, gate.status);
+  }
+  const parsed = gate.url;
+  const host = parsed.hostname.toLowerCase();
+  const cands = didYouMeanCandidates(host).slice(0, 40);
+
+  const MAX_WAIT = 2000;
+  const started = Date.now();
+  let suggestion = null;
+  const lookups = cands.map(async (cand) => {
+    if (suggestion || Date.now() - started > MAX_WAIT) return;
+    const ok = await dnsResolves(cand).catch(() => false);
+    if (ok && !suggestion) suggestion = cand;
+  });
+  await Promise.race([
+    Promise.all(lookups),
+    new Promise((r) => setTimeout(r, MAX_WAIT))
+  ]);
+
+  if (!suggestion) {
+    return jsonResponse({ ok: true, input: host, suggestion: null });
+  }
+  // Preserve the user's scheme, port, and path when echoing the
+  // suggested URL back so the client can retry the full request.
+  const out = new URL(parsed.toString());
+  out.hostname = suggestion;
+  return jsonResponse({
+    ok: true,
+    input: host,
+    suggestion: suggestion,
+    suggestedUrl: out.toString()
+  });
+}
+
+// Build a small set of plausible typo-correction candidates for a
+// hostname. Operates on the "second-level" portion only — e.g. for
+// `irisihinnglenecho.com` we edit `irisihinnglenecho` and keep `.com`
+// — so deletions don't turn `.com` into `.co` or `.om`, which would
+// resolve but be wrong-domain suggestions. Preserves any `www.`
+// prefix on the way out.
+function didYouMeanCandidates(hostname) {
+  const labels = hostname.split('.');
+  if (labels.length < 2) return [];
+  const hadWww = labels[0] === 'www';
+  const withoutWww = hadWww ? labels.slice(1) : labels;
+  if (withoutWww.length < 2) return [];
+  const tld  = withoutWww.slice(-1)[0];
+  const tld2 = withoutWww.length >= 3 ? withoutWww.slice(-2).join('.') : null; // handle co.uk etc.
+  // Use the compound TLD only when both parts look like TLDs (<=3 chars).
+  const useTld2 = tld2 && withoutWww.length >= 3 && withoutWww.slice(-2).every((l) => l.length <= 3);
+  const suffix = useTld2 ? withoutWww.slice(-2).join('.') : tld;
+  const sldEnd = useTld2 ? withoutWww.length - 2 : withoutWww.length - 1;
+  const sld = withoutWww.slice(0, sldEnd).join('.');
+  if (!sld || sld.length < 3) return [];
+
+  const variants = new Set();
+  // 1. Single-character deletions.
+  for (let i = 0; i < sld.length; i++) {
+    variants.add(sld.slice(0, i) + sld.slice(i + 1));
+  }
+  // 2. Adjacent transpositions.
+  for (let i = 0; i < sld.length - 1; i++) {
+    if (sld[i] === sld[i + 1]) continue; // transposing identical chars is a no-op
+    variants.add(sld.slice(0, i) + sld[i + 1] + sld[i] + sld.slice(i + 2));
+  }
+  // 3. Remove doubled-letter runs (e.g. `irisih` → `irish` via
+  //    collapsing `ih` would not help, but `bookking` → `booking`
+  //    by collapsing `kk` would). Conceptually a deletion already
+  //    covers this, but adding targeted collapses helps when the
+  //    SLD is long and we'd otherwise prune the right candidate.
+  for (let i = 0; i < sld.length - 1; i++) {
+    if (sld[i] === sld[i + 1]) variants.add(sld.slice(0, i) + sld.slice(i + 1));
+  }
+  variants.delete(sld);
+
+  const prefix = hadWww ? 'www.' : '';
+  const out = [];
+  for (const v of variants) {
+    if (v.length < 3) continue; // too short to be a real domain
+    out.push(prefix + v + '.' + suffix);
+  }
+  return out;
+}
+
+async function dnsResolves(hostname) {
+  const url = 'https://cloudflare-dns.com/dns-query?name=' +
+              encodeURIComponent(hostname) + '&type=A';
+  try {
+    const res = await fetch(url, {
+      headers: { accept: 'application/dns-json' },
+      signal: AbortSignal.timeout(1500)
+    });
+    if (!res.ok) return false;
+    const data = await res.json();
+    // Status 0 = NOERROR. Answer[] contains A records when resolved.
+    return data && data.Status === 0 && Array.isArray(data.Answer) && data.Answer.length > 0;
+  } catch (_) {
+    return false;
+  }
+}
 
 function jsonResponse(payload, status) {
   return new Response(JSON.stringify(payload), {

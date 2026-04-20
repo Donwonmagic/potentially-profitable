@@ -366,6 +366,32 @@
     color: var(--cream);
     border-color: var(--teal-dark);
   }
+  /* DYM2: "Did you mean" suggestion block. Teal accent so it reads
+     as a helpful offer rather than a second error. The suggested
+     hostname renders as an inline button so one tap re-runs. */
+  .audit-error-dym {
+    margin: 12px 0 0 !important;
+    padding: 10px 14px;
+    background: #E7F1F3;
+    border: 1px solid #C7DFE4;
+    border-radius: 10px;
+    color: #1F4E5B !important;
+    font-size: 14px !important;
+  }
+  .audit-error-dym[hidden] { display: none !important; }
+  .audit-error-dym-btn {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 700;
+    background: none;
+    border: none;
+    border-bottom: 1.5px solid #1F4E5B;
+    color: #1F4E5B;
+    padding: 0 2px;
+    margin: 0 2px;
+    cursor: pointer;
+  }
+  .audit-error-dym-btn:hover { color: #B8541A; border-bottom-color: #B8541A; }
 
   /* Report card — overall score */
   .audit-report { margin-top: 64px; }
@@ -2257,6 +2283,10 @@
     <div class="audit-error" id="auditError" hidden role="alert">
       <h2 id="auditErrorHeading" data-tr="err.h2">We couldn't audit that URL.</h2>
       <p id="auditErrorBody" data-tr="err.body">Check the address and try again. The site needs to be publicly reachable — if it's behind a login or a local network, the audit can't see it.</p>
+      <!-- DYM2: populated async by /api/did-you-mean when a likely
+           typo correction resolves. Hidden by default so the card
+           stays tight when no suggestion is available. -->
+      <p class="audit-error-dym" id="auditErrorDym" hidden></p>
       <div class="audit-error-actions">
         <button type="button" id="auditRetryBtn" class="audit-error-btn audit-error-btn-primary" data-tr="err.retry">Try again</button>
         <button type="button" id="auditNewUrlBtn" class="audit-error-btn" data-tr="err.newUrl">Use a different URL</button>
@@ -7397,10 +7427,53 @@
     }
   }
 
-  function showError(heading, body) {
+  function showError(heading, body, failedUrl) {
     errorHeading.textContent = heading;
     errorBody.textContent = body;
+    // DYM2: clear any previous suggestion before showing the card,
+    // then fetch a typo-corrected URL if we have a failed URL to
+    // check. Rendering is async and non-blocking — the error is
+    // visible immediately, suggestion appears when ready.
+    var dymEl = document.getElementById('auditErrorDym');
+    if (dymEl) {
+      dymEl.hidden = true;
+      dymEl.innerHTML = '';
+    }
     showOnly(errorEl);
+    if (failedUrl && dymEl) {
+      fetchDidYouMean(failedUrl).then(function(res){
+        if (!res || !res.suggestion || !res.suggestedUrl) return;
+        var prompt = t('err.dym.prompt'); // "Did you mean"
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'audit-error-dym-btn';
+        btn.textContent = res.suggestion;
+        btn.addEventListener('click', function(){
+          urlInput.value = res.suggestedUrl;
+          // Fire submit so the existing URL normalization + run flow
+          // applies — mirrors what "Try again" does.
+          var form = urlInput.closest('form');
+          if (form) form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+          else runAudit(res.suggestedUrl);
+        });
+        dymEl.textContent = prompt + ' ';
+        dymEl.appendChild(btn);
+        dymEl.appendChild(document.createTextNode('?'));
+        dymEl.hidden = false;
+      });
+    }
+  }
+
+  function fetchDidYouMean(u) {
+    try {
+      var qs = '?url=' + encodeURIComponent(u) +
+        (window.__muntinLang === 'es' ? '&lang=es' : '');
+      return fetch('/api/did-you-mean' + qs, {
+        headers: { 'Accept': 'application/json' },
+        signal: AbortSignal.timeout(3500)
+      }).then(function(r){ return r.ok ? r.json() : null; })
+        .catch(function(){ return null; });
+    } catch (_) { return Promise.resolve(null); }
   }
 
   function runAudit(url) {
@@ -7461,9 +7534,13 @@
         console.error('[audit] fetch failed', err);
         var msg = (err && err.message) || '';
         if (/unable to process|fetched.*failed|lighthouse returned error|chrome.*crashed/i.test(msg)) {
+          // DYM2: the URL was unreachable — this is the strongest
+          // typo-suggestion signal, so pass the URL through so the
+          // error card async-fetches /api/did-you-mean.
           showError(
             "We couldn't reach that site.",
-            "Google Lighthouse couldn't load the URL. Make sure it's publicly accessible — no login wall, no staging environment, and no rate limiter blocking bots."
+            "Google Lighthouse couldn't load the URL. Make sure it's publicly accessible — no login wall, no staging environment, and no rate limiter blocking bots.",
+            url
           );
         } else if (/quota|rate|exceed/i.test(msg) || err.status === 429) {
           // Start a 30-second cooldown so rapid retries don't compound
@@ -7476,9 +7553,13 @@
             "Google's free tier is temporarily throttled. Give it about 30 seconds before trying again, or email don@muntin.digital for a manual audit."
           );
         } else if (err.status === 400) {
+          // DYM2: 400 from PSI is often a typo (unknown domain, bad
+          // hostname). Pass the URL so did-you-mean can surface a
+          // correction.
           showError(
             "That URL didn't work.",
-            "Check the address and try again. PageSpeed rejected the request — usually that means a typo, a redirect loop, or a site that blocks the Lighthouse crawler."
+            "Check the address and try again. PageSpeed rejected the request — usually that means a typo, a redirect loop, or a site that blocks the Lighthouse crawler.",
+            url
           );
         } else if (/referer.*blocked|referrer.*blocked|api[- ]key.*referer|forbidden.*referer/i.test(msg) || err.status === 403) {
           showError(
