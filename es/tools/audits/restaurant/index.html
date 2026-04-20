@@ -193,6 +193,140 @@
     .audit-form { flex-direction: column; border-radius: 20px; }
     .audit-form button { border-radius: 14px; justify-content: center; }
   }
+  /* Sprint S2.5: Deep Scan toggle. Subtle, below the form, so it
+     reads as an optional power-user addition rather than a primary
+     decision point. Reuses the cream/teal palette. */
+  .audit-deep-toggle {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    max-width: 640px;
+    margin: 14px auto 0;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    background: var(--cream-2, #faf6ee);
+    border: 1px solid var(--line, #E6DFCE);
+    border-radius: 12px;
+    cursor: pointer;
+    user-select: none;
+    text-align: left;
+  }
+  .audit-deep-toggle input[type="checkbox"] {
+    flex-shrink: 0;
+    margin-top: 2px;
+    width: 16px;
+    height: 16px;
+    accent-color: var(--teal);
+    cursor: pointer;
+  }
+  .audit-deep-toggle:hover { border-color: var(--teal); }
+  .audit-deep-toggle input:checked ~ span { color: var(--ink); font-weight: 500; }
+
+  /* Sprint S2.7: Deep Scan chips + sections. Chips sit above the
+     audit-summary so they read as "extras we found" not mandatory
+     report content. Sections live deeper in the report flow. */
+  .deep-scan-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    max-width: 1100px;
+    margin: 0 auto 18px;
+    padding: 0 4px;
+  }
+  .deep-scan-strip[hidden] { display: none; }
+  .deep-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #1F4E5B;
+    background: #E7F1F3;
+    border: 1px solid #C7DFE4;
+    border-radius: 999px;
+    font-variant-numeric: tabular-nums;
+  }
+  .deep-chip[hidden] { display: none; }
+  .deep-chip.deep-security-chip[data-grade-band="good"] { background:#E7F5EC; color:#1F6B3A; border-color:#C7E4CF; }
+  .deep-chip.deep-security-chip[data-grade-band="ok"]   { background:#FDEFE3; color:#8A3E16; border-color:#EFD1B6; }
+  .deep-chip.deep-security-chip[data-grade-band="bad"]  { background:#F7E7DC; color:#B8541A; border-color:#EFC4AA; }
+
+  .deep-reviews-card,
+  .deep-crux-card {
+    max-width: 1100px;
+    margin: 24px auto 0;
+    padding: 24px 28px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+  }
+  .deep-reviews-card[hidden], .deep-crux-card[hidden] { display: none; }
+  .deep-section-head {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0 0 6px;
+    color: var(--ink);
+  }
+  .deep-section-sub {
+    margin: 0 0 16px;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .deep-reviews-list { list-style: none; margin: 0; padding: 0; }
+  .deep-review-item {
+    padding: 12px 0;
+    border-top: 1px solid var(--line);
+  }
+  .deep-review-item:first-child { border-top: none; }
+  .deep-review-meta {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--stone);
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+  .deep-review-item blockquote {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink);
+    font-style: italic;
+  }
+  .deep-crux-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 640px) {
+    .deep-crux-grid { grid-template-columns: 1fr; }
+  }
+  .deep-crux-spark {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px;
+    background: var(--cream-2, #faf6ee);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+  .deep-crux-spark-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--stone);
+    letter-spacing: 0.14em;
+  }
+  .deep-crux-spark-value {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
 
   .audit-note {
     font-size: 13px;
@@ -2260,6 +2394,16 @@
         </button>
       </form>
 
+      <!-- Sprint S2.5: Deep Scan toggle. Off by default. When on,
+           the audit adds 4 extra data sources (security-headers,
+           site-age, CrUX history, Places reviews) and takes 2–3 min
+           instead of ~30 s. Rendered as a subtle checkbox so it's
+           discoverable without competing with the primary CTA. -->
+      <label class="audit-deep-toggle" for="auditDeepScan">
+        <input type="checkbox" id="auditDeepScan" name="deepScan" />
+        <span data-tr="hero.deepToggle">Also run a deep scan (2–3 min) — security headers, CrUX history, site age, reviews</span>
+      </label>
+
       <p class="audit-note" data-tr="hero.note">
         Powered by Google's PageSpeed Insights API plus our own restaurant-specific scanner — ordering platforms, reservation widgets, maps, click-to-call, and mobile menu readability. Works on any publicly accessible URL (no staging environments or login walls).
       </p>
@@ -2296,6 +2440,15 @@
 
     <!-- Report card (hidden until a result renders) -->
     <div class="audit-report" id="auditReport" hidden>
+
+      <!-- Sprint S2.5: Deep Scan status strip + data chips. Appears
+           only when the toggle is checked. Chips inside (.deep-age-
+           chip, .deep-security-chip) stay hidden until their upstream
+           returns real data — we never render a placeholder value. -->
+      <div class="deep-scan-strip" id="deepScanStrip" hidden>
+        <span class="deep-chip deep-age-chip" id="deepAgeChip" hidden></span>
+        <span class="deep-chip deep-security-chip" id="deepSecurityChip" hidden></span>
+      </div>
 
       <!-- Summary with overall score ring -->
       <div class="audit-summary">
@@ -2560,6 +2713,20 @@
           <div class="hint">Primer render con contenido</div>
         </div>
       </div>
+
+      <!-- Sprint S2.7: Deep Scan sections. Each stays hidden until
+           its upstream delivers real data; no placeholder values. -->
+      <section class="deep-reviews-card" id="deepReviewsCard" hidden>
+        <h3 class="deep-section-head" data-tr="deep.reviews.heading">Google reviews snapshot</h3>
+        <p class="deep-section-sub" id="deepReviewsSub"></p>
+        <ol class="deep-reviews-list" id="deepReviewsList"></ol>
+      </section>
+
+      <section class="deep-crux-card" id="deepCruxCard" hidden>
+        <h3 class="deep-section-head" data-tr="deep.crux.heading">Field-data trends (25 weeks)</h3>
+        <p class="deep-section-sub" data-tr="deep.crux.sub">Real-user Core Web Vitals from the Chrome UX Report. Rendered only when Google has enough samples to publish a trend.</p>
+        <div class="deep-crux-grid" id="deepCruxGrid"></div>
+      </section>
 
       <!-- Not-a-restaurant notice. Shown when looksLikeRestaurant()
            returns false, hides the priority-list below, and offers an
@@ -2929,6 +3096,111 @@
         return { ok: !!matched, place: matched };
       })
       .catch(function(){ return { ok: false, place: null }; });
+  }
+
+  // Sprint S2.5 Deep Scan wrappers. Each fetcher returns a normalized
+  // "ok:false" shape on any failure so the renderer can safely test
+  // `.ok` and render nothing when data isn't available. Accuracy rule:
+  // never render fallback / placeholder content — if the upstream
+  // doesn't answer, the UI just omits the section.
+  function callObservatory(targetUrl) {
+    var params = new URLSearchParams();
+    params.append('url', targetUrl);
+    if (window.__muntinLang === 'es') params.append('lang', 'es');
+    return fetch('/api/observatory?' + params.toString(), { signal: AbortSignal.timeout(15000) })
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(d){ return d && d.ok ? d : { ok: false }; })
+      .catch(function(){ return { ok: false }; });
+  }
+  function callWaybackFirstSeen(targetUrl) {
+    var params = new URLSearchParams();
+    params.append('url', targetUrl);
+    return fetch('/api/wayback-first-seen?' + params.toString(), { signal: AbortSignal.timeout(8000) })
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(d){ return d && d.ok ? d : { ok: false }; })
+      .catch(function(){ return { ok: false }; });
+  }
+  function callCruxHistory(targetUrl) {
+    var params = new URLSearchParams();
+    params.append('url', targetUrl);
+    return fetch('/api/crux-history?' + params.toString(), { signal: AbortSignal.timeout(10000) })
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(d){ return d && d.ok ? d : { ok: false }; })
+      .catch(function(){ return { ok: false }; });
+  }
+  function callGbpDetails(placeId) {
+    if (!placeId) return Promise.resolve({ ok: false });
+    var params = new URLSearchParams();
+    params.append('placeId', placeId);
+    return fetch('/api/gbp-details?' + params.toString(), { signal: AbortSignal.timeout(10000) })
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(d){ return d && d.ok ? d : { ok: false }; })
+      .catch(function(){ return { ok: false }; });
+  }
+
+  // Sprint S2.5: Deep Scan orchestrator. Runs AFTER the Fast Scan
+  // renderReport has completed so the user sees the usual report
+  // immediately, then watches four deeper signals resolve in place.
+  // Each fetch is independent; if one fails, the others still land
+  // and render. Hot-patches the DOM via per-section render helpers
+  // (S2.7) that NO-OP when their upstream data is missing.
+  function runDeepSignals(url) {
+    // Prep: the UI shows a live status strip while fetches resolve.
+    var stripEl = document.getElementById('deepScanStrip');
+    if (stripEl) {
+      stripEl.hidden = false;
+      stripEl.setAttribute('data-state', 'running');
+      stripEl.textContent = t('deepScan.running');
+    }
+
+    var placeId = null;
+    var placesSnap = window.__auditPlaces;
+    if (placesSnap && placesSnap.ok && placesSnap.place && placesSnap.place.placeId) {
+      placeId = placesSnap.place.placeId;
+    }
+
+    var pending = 0;
+    function done() {
+      pending--;
+      if (pending <= 0 && stripEl) {
+        // Accuracy rule: if every fetch returned ok:false, show a
+        // neutral "no additional signals available" message rather
+        // than fake success. If at least one rendered, show a
+        // completion state.
+        var anyRendered =
+          !!document.querySelector('.deep-age-chip:not([hidden])') ||
+          !!document.querySelector('.deep-security-chip:not([hidden])') ||
+          !!document.querySelector('.deep-crux-spark:not([hidden])') ||
+          !!document.querySelector('.deep-reviews-card:not([hidden])');
+        stripEl.setAttribute('data-state', anyRendered ? 'done' : 'empty');
+        stripEl.textContent = anyRendered
+          ? t('deepScan.done')
+          : t('deepScan.noSignals');
+      }
+    }
+
+    pending++; callObservatory(url).then(function(data){
+      window.__auditObservatory = data;
+      if (typeof renderSecurityGrade === 'function') renderSecurityGrade(data);
+      done();
+    });
+    pending++; callWaybackFirstSeen(url).then(function(data){
+      window.__auditWayback = data;
+      if (typeof renderSiteAge === 'function') renderSiteAge(data);
+      done();
+    });
+    pending++; callCruxHistory(url).then(function(data){
+      window.__auditCruxHistory = data;
+      if (typeof renderCruxHistory === 'function') renderCruxHistory(data);
+      done();
+    });
+    if (placeId) {
+      pending++; callGbpDetails(placeId).then(function(data){
+        window.__auditGbpDetails = data;
+        if (typeof renderReviewsCard === 'function') renderReviewsCard(data);
+        done();
+      });
+    }
   }
 
   // (Phase G3 client-side callYelpLookup removed — Yelp no longer
@@ -4769,6 +5041,145 @@
       });
     }
     return base;
+  }
+
+  // Sprint S2.7: Deep Scan renderers. ACCURACY RULE — each renderer
+  // exits early without mutating the DOM when its upstream data is
+  // missing or incomplete. We never fabricate a grade, year, or
+  // metric. The section stays invisible when we can't speak with
+  // confidence about it.
+
+  function renderSiteAge(data) {
+    var chip = document.getElementById('deepAgeChip');
+    if (!chip) return;
+    if (!data || !data.ok || typeof data.year !== 'number') return;
+    chip.textContent = t('deep.age.liveSince', { year: data.year });
+    chip.hidden = false;
+  }
+
+  function renderSecurityGrade(data) {
+    var chip = document.getElementById('deepSecurityChip');
+    if (!chip) return;
+    if (!data || !data.ok || typeof data.grade !== 'string' || !data.grade) return;
+    chip.textContent = t('deep.security.grade', { grade: data.grade });
+    chip.hidden = false;
+    // Color-code: A/B green-leaning, C neutral, D/F warn.
+    chip.setAttribute('data-grade-band',
+      /^A/.test(data.grade) ? 'good' :
+      /^B/.test(data.grade) ? 'good' :
+      /^C/.test(data.grade) ? 'ok'   : 'bad');
+  }
+
+  function renderCruxHistory(data) {
+    var card = document.getElementById('deepCruxCard');
+    var grid = document.getElementById('deepCruxGrid');
+    if (!card || !grid) return;
+    if (!data || !data.ok || !data.hasData) return;
+    grid.innerHTML = '';
+    var metricsRendered = 0;
+    ['lcp', 'inp', 'cls'].forEach(function(key){
+      var series = data[key];
+      if (!series || !Array.isArray(series.p75)) return;
+      // Accuracy rule: require ≥2 non-null data points in the series
+      // before rendering. A one-week sparkline is misleading.
+      var clean = series.p75.filter(function(v){ return typeof v === 'number' && isFinite(v); });
+      if (clean.length < 2) return;
+      var cell = document.createElement('div');
+      cell.className = 'deep-crux-spark';
+      var label = document.createElement('div');
+      label.className = 'deep-crux-spark-label';
+      label.textContent = key.toUpperCase();
+      var latestRaw = clean[clean.length - 1];
+      var latestDisplay;
+      if (key === 'cls') latestDisplay = latestRaw.toFixed(3);
+      else latestDisplay = Math.round(latestRaw) + 'ms';
+      var value = document.createElement('div');
+      value.className = 'deep-crux-spark-value';
+      value.textContent = latestDisplay;
+      var svg = buildSparklineSvg(clean);
+      cell.appendChild(label);
+      cell.appendChild(value);
+      if (svg) cell.appendChild(svg);
+      grid.appendChild(cell);
+      metricsRendered++;
+    });
+    if (metricsRendered > 0) card.hidden = false;
+  }
+
+  function buildSparklineSvg(values) {
+    if (!Array.isArray(values) || values.length < 2) return null;
+    var W = 120, H = 28, PAD = 2;
+    var min = Infinity, max = -Infinity;
+    for (var i = 0; i < values.length; i++) {
+      if (values[i] < min) min = values[i];
+      if (values[i] > max) max = values[i];
+    }
+    if (min === max) { min -= 1; max += 1; }
+    var xStep = (W - PAD * 2) / (values.length - 1);
+    var pts = [];
+    for (var j = 0; j < values.length; j++) {
+      var x = PAD + j * xStep;
+      var y = H - PAD - ((values[j] - min) / (max - min)) * (H - PAD * 2);
+      pts.push(x.toFixed(1) + ',' + y.toFixed(1));
+    }
+    var svgNs = 'http://www.w3.org/2000/svg';
+    var svg = document.createElementNS(svgNs, 'svg');
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    svg.setAttribute('width', W);
+    svg.setAttribute('height', H);
+    svg.setAttribute('aria-hidden', 'true');
+    var poly = document.createElementNS(svgNs, 'polyline');
+    poly.setAttribute('fill', 'none');
+    poly.setAttribute('stroke', '#1F4E5B');
+    poly.setAttribute('stroke-width', '1.5');
+    poly.setAttribute('points', pts.join(' '));
+    svg.appendChild(poly);
+    return svg;
+  }
+
+  function renderReviewsCard(data) {
+    var card = document.getElementById('deepReviewsCard');
+    var sub = document.getElementById('deepReviewsSub');
+    var list = document.getElementById('deepReviewsList');
+    if (!card || !sub || !list) return;
+    if (!data || !data.ok) return;
+    // Accuracy rule: render only verified fact lines. If reviewCount
+    // is null we don't speculate.
+    var facts = [];
+    if (typeof data.reviewCount === 'number') {
+      facts.push(t('deep.reviews.countLine', { count: data.reviewCount.toLocaleString() }));
+    }
+    if (typeof data.rating === 'number') {
+      facts.push(t('deep.reviews.ratingLine', { rating: data.rating.toFixed(1) }));
+    }
+    var sampled = Array.isArray(data.reviews) ? data.reviews.length : 0;
+    if (sampled > 0 && typeof data.ownerReplyRate === 'number') {
+      var replied = Math.round(data.ownerReplyRate * sampled);
+      facts.push(t('deep.reviews.replyLine', { replied: replied, sampled: sampled }));
+    }
+    if (!facts.length) return; // nothing factual to show
+    sub.textContent = facts.join(' · ');
+    list.innerHTML = '';
+    if (Array.isArray(data.reviews)) {
+      data.reviews.forEach(function(r){
+        if (!r || !r.text) return;
+        var li = document.createElement('li');
+        li.className = 'deep-review-item';
+        var meta = document.createElement('div');
+        meta.className = 'deep-review-meta';
+        var metaBits = [];
+        if (typeof r.rating === 'number') metaBits.push('★'.repeat(Math.round(r.rating)));
+        if (r.relativePublishTimeDescription) metaBits.push(r.relativePublishTimeDescription);
+        if (r.hasOwnerReply) metaBits.push(t('deep.reviews.ownerReplied'));
+        meta.textContent = metaBits.join(' · ');
+        var quote = document.createElement('blockquote');
+        quote.textContent = r.text.length > 280 ? r.text.slice(0, 280) + '…' : r.text;
+        li.appendChild(meta);
+        li.appendChild(quote);
+        list.appendChild(li);
+      });
+    }
+    card.hidden = false;
   }
 
   function setScoreRing(score, meta) {
@@ -7776,6 +8187,11 @@
     showOnly(loadingEl);
     resetProgress();
 
+    // Sprint S2.5: Deep Scan toggle state is captured at submit time
+    // so a mid-audit toggle flip doesn't confuse the state machine.
+    var deepToggle = document.getElementById('auditDeepScan');
+    window.__auditDeepScanRequested = !!(deepToggle && deepToggle.checked);
+
     // Step 1: submitting the request through the same-origin /api/psi
     // proxy (which adds the PSI API key server-side — see callPsi).
     setStep(1);
@@ -7818,6 +8234,14 @@
           renderReport(data, url);
           finishProgress();
           if (window.plausible) window.plausible('Audit Completed');
+          // Sprint S2.5: Deep Scan is purely additive — after the
+          // Fast report renders, kick off the four deeper signals in
+          // parallel. Each resolves on its own budget (up to ~15s
+          // for observatory), and the renderer hot-patches new
+          // sections into the already-visible report as data lands.
+          if (window.__auditDeepScanRequested) {
+            runDeepSignals(url);
+          }
         } catch (e) {
           console.error('[audit] render failed', e);
           finishProgress();

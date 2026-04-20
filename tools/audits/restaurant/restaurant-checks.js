@@ -2191,6 +2191,56 @@ var UI_I18N = {
   'err.dym.prompt': {
     en: 'Did you mean',
     es: '¿Quisiste decir'
+  },
+  // Sprint S2.5-S2.7: Deep Scan strings. Every key lands EN + ES so
+  // the ES stamp picks them up without manual translation later.
+  'deepScan.running': {
+    en: 'Gathering deeper signals — security headers, site age, field-data trends, reviews…',
+    es: 'Recopilando señales más profundas — encabezados de seguridad, antigüedad del sitio, tendencias reales, reseñas…'
+  },
+  'deepScan.done': {
+    en: 'Deep-scan signals loaded.',
+    es: 'Señales del deep-scan cargadas.'
+  },
+  'deepScan.noSignals': {
+    en: 'No additional signals were available for this site.',
+    es: 'No hubo señales adicionales disponibles para este sitio.'
+  },
+  'deep.age.liveSince': {
+    en: 'Live since {year}',
+    es: 'En línea desde {year}'
+  },
+  'deep.security.grade': {
+    en: 'Security headers: {grade}',
+    es: 'Encabezados de seguridad: {grade}'
+  },
+  'deep.crux.heading': {
+    en: 'Field-data trends (25 weeks)',
+    es: 'Tendencias de datos reales (25 semanas)'
+  },
+  'deep.crux.sub': {
+    en: 'Real-user Core Web Vitals from the Chrome UX Report. Rendered only when Google has enough samples to publish a trend.',
+    es: 'Métricas Web Esenciales reales del Chrome UX Report. Se muestran solo cuando Google tiene suficientes muestras para publicar una tendencia.'
+  },
+  'deep.reviews.heading': {
+    en: 'Google reviews snapshot',
+    es: 'Resumen de reseñas de Google'
+  },
+  'deep.reviews.countLine': {
+    en: '{count} Google reviews',
+    es: '{count} reseñas en Google'
+  },
+  'deep.reviews.ratingLine': {
+    en: '{rating} average rating',
+    es: 'Calificación promedio {rating}'
+  },
+  'deep.reviews.replyLine': {
+    en: '{replied} of {sampled} recent have an owner reply',
+    es: '{replied} de {sampled} recientes tienen respuesta del dueño'
+  },
+  'deep.reviews.ownerReplied': {
+    en: 'owner replied',
+    es: 'respondió el dueño'
   }
 };
 
