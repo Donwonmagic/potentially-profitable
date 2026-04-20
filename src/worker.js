@@ -551,7 +551,56 @@ async function handleGbpLookup(request, env, ctx) {
         headers: {
           'Content-Type': 'application/json',
           'X-Goog-Api-Key': apiKey,
-          'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.types,places.regularOpeningHours,places.photos,places.websiteUri,places.googleMapsUri'
+          // Sprint M1.1: expanded field mask. The previous mask fetched
+          // only enough to answer "is this the right business?" The new
+          // mask asks Places for every signal the audit can use to
+          // eliminate its Yes/No unverified-check dance:
+          //   * priceLevel           → drives schema.priceRange fuse
+          //   * businessStatus       → confidence signal (open / closed)
+          //   * dineIn/takeout/delivery → resolves conversions unverified
+          //   * serves*              → resolves dietary, corroborates subtype
+          //   * reservable           → resolves reservations unverified
+          //   * primaryTypeDisplayName → corroborates subtype detector
+          //   * editorialSummary     → feeds brand copy + detector hints
+          //   * nationalPhoneNumber  → resolves phone unverified
+          //   * currentOpeningHours.weekdayDescriptions → human hours text
+          //   * location             → resolves map unverified (lat/lng)
+          // Every added field is SKU-compatible with the existing call
+          // (standard SKUs only, no Pro-only fields), so cost per
+          // lookup is unchanged.
+          'X-Goog-FieldMask': [
+            'places.id',
+            'places.displayName',
+            'places.formattedAddress',
+            'places.rating',
+            'places.userRatingCount',
+            'places.types',
+            'places.regularOpeningHours',
+            'places.currentOpeningHours.weekdayDescriptions',
+            'places.photos',
+            'places.websiteUri',
+            'places.googleMapsUri',
+            'places.priceLevel',
+            'places.businessStatus',
+            'places.dineIn',
+            'places.takeout',
+            'places.delivery',
+            'places.reservable',
+            'places.servesBreakfast',
+            'places.servesLunch',
+            'places.servesDinner',
+            'places.servesBrunch',
+            'places.servesVegetarianFood',
+            'places.servesBeer',
+            'places.servesWine',
+            'places.servesCocktails',
+            'places.servesCoffee',
+            'places.servesDessert',
+            'places.primaryTypeDisplayName',
+            'places.editorialSummary',
+            'places.nationalPhoneNumber',
+            'places.location'
+          ].join(',')
         },
         // Sprint G1: request the top 5 candidates so the client can
         // disambiguate on common names like "Joe's Pizza" where
@@ -575,6 +624,14 @@ async function handleGbpLookup(request, env, ctx) {
     }
 
     function buildCandidate(p) {
+      // Sprint M1.1: pass every newly-requested field through to the
+      // client. Null/undefined-safe because Places omits fields Google
+      // can't verify (e.g. a restaurant with no confirmed takeout
+      // returns no `takeout` key rather than `false`). Detectors in
+      // restaurant-checks.js treat `null` as "unknown" and `true/false`
+      // as confident.
+      const weekdayHours = p.currentOpeningHours && p.currentOpeningHours.weekdayDescriptions
+        ? p.currentOpeningHours.weekdayDescriptions : null;
       return {
         placeId:    p.id || null,
         name:       p.displayName ? p.displayName.text : null,
@@ -586,6 +643,33 @@ async function handleGbpLookup(request, env, ctx) {
         hasHours:   !!(p.regularOpeningHours && p.regularOpeningHours.periods && p.regularOpeningHours.periods.length),
         website:    p.websiteUri || null,
         mapsUrl:    p.googleMapsUri || null,
+        // New in M1.1 — these are the signals every detector fuse
+        // (M1.5–M1.14) reads from to eliminate unverified statuses.
+        priceLevel:              typeof p.priceLevel === 'string' ? p.priceLevel : null,
+        businessStatus:          p.businessStatus || null,
+        dineIn:                  typeof p.dineIn   === 'boolean' ? p.dineIn   : null,
+        takeout:                 typeof p.takeout  === 'boolean' ? p.takeout  : null,
+        delivery:                typeof p.delivery === 'boolean' ? p.delivery : null,
+        reservable:              typeof p.reservable === 'boolean' ? p.reservable : null,
+        servesBreakfast:         typeof p.servesBreakfast        === 'boolean' ? p.servesBreakfast        : null,
+        servesLunch:             typeof p.servesLunch            === 'boolean' ? p.servesLunch            : null,
+        servesDinner:            typeof p.servesDinner           === 'boolean' ? p.servesDinner           : null,
+        servesBrunch:            typeof p.servesBrunch           === 'boolean' ? p.servesBrunch           : null,
+        servesVegetarianFood:    typeof p.servesVegetarianFood   === 'boolean' ? p.servesVegetarianFood   : null,
+        servesBeer:              typeof p.servesBeer             === 'boolean' ? p.servesBeer             : null,
+        servesWine:              typeof p.servesWine             === 'boolean' ? p.servesWine             : null,
+        servesCocktails:         typeof p.servesCocktails        === 'boolean' ? p.servesCocktails        : null,
+        servesCoffee:            typeof p.servesCoffee           === 'boolean' ? p.servesCoffee           : null,
+        servesDessert:           typeof p.servesDessert          === 'boolean' ? p.servesDessert          : null,
+        primaryTypeDisplayName:  p.primaryTypeDisplayName && p.primaryTypeDisplayName.text
+                                   ? p.primaryTypeDisplayName.text : null,
+        editorialSummary:        p.editorialSummary && p.editorialSummary.text
+                                   ? p.editorialSummary.text : null,
+        nationalPhoneNumber:     p.nationalPhoneNumber || null,
+        weekdayHoursText:        weekdayHours,
+        location:                p.location && typeof p.location.latitude === 'number' && typeof p.location.longitude === 'number'
+                                   ? { lat: p.location.latitude, lng: p.location.longitude }
+                                   : null
       };
     }
 
