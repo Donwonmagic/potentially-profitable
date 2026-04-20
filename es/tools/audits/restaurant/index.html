@@ -2134,6 +2134,70 @@
     border-color: var(--teal);
     outline: none;
   }
+  /* Sprint E2: Google-verified chip strip. Lives inline inside the
+     business-type card; does NOT introduce a second card. Chips
+     render only when Places v1 returned a verified value. */
+  .business-type-card .btc-google-strip {
+    width: 100%;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--line, #E6DFCE);
+  }
+  .business-type-card .btc-google-strip[hidden] { display: none; }
+  .btc-google-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #1F4E5B;
+    background: #E7F1F3;
+    border: 1px solid #C7DFE4;
+    border-radius: 999px;
+    margin-bottom: 8px;
+  }
+  .btc-google-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 8px;
+    margin-bottom: 8px;
+  }
+  .btc-google-chips .chip {
+    padding: 4px 10px;
+    font-size: 12.5px;
+    font-weight: 500;
+    background: var(--white);
+    border: 1px solid var(--line, #E6DFCE);
+    border-radius: 999px;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .btc-google-summary {
+    margin: 4px 0 8px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .btc-google-summary[hidden] { display: none; }
+  .btc-google-summary::before { content: '“'; margin-right: 2px; }
+  .btc-google-summary::after  { content: '”'; margin-left: 2px; }
+  .btc-google-hours[hidden] { display: none; }
+  .btc-google-hours summary {
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--teal);
+  }
+  .btc-google-hours ul {
+    list-style: none;
+    margin: 6px 0 0;
+    padding: 0;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
   .business-type-card .btc-sub {
     flex: 1;
     min-width: 240px;
@@ -3521,6 +3585,21 @@
           <span class="btc-alt-label">Or:</span>
           <div class="btc-alt-chips" id="btcAltChips"></div>
         </div>
+
+        <!-- Sprint E2: Google-verified chips folded into the business-
+             type card (previously lived in a standalone Places facts
+             card). Populated only when /api/gbp-lookup matched this
+             URL; every chip corresponds to a verified Places field —
+             we never synthesize a value we don't have. -->
+        <div class="btc-google-strip" id="btcGoogleStrip" hidden>
+          <span class="btc-google-badge" data-tr="places.verifiedBadge">Verified by Google</span>
+          <div class="btc-google-chips" id="btcGoogleChips"></div>
+          <p class="btc-google-summary" id="btcGoogleSummary" hidden></p>
+          <details class="btc-google-hours" id="btcGoogleHours" hidden>
+            <summary data-tr="places.hoursLabel">Google-published hours</summary>
+            <ul id="btcGoogleHoursList"></ul>
+          </details>
+        </div>
       </div>
 
       <!-- Sprint D4: Open Graph / Twitter Card completeness. Reuses
@@ -3548,28 +3627,6 @@
         </header>
         <p class="schema-richness-summary" id="schemaRichnessSummary"></p>
         <ul class="schema-richness-list" id="schemaRichnessList"></ul>
-      </section>
-
-      <!-- Sprint T1: Places-verified facts card. Renders only what
-           Google's Places v1 API has actually confirmed for this
-           business — Google's own description (editorialSummary),
-           price level ($-$$$$), primary type, and the published
-           weekday hours. Every row renders only when its field is
-           non-null; the whole card stays hidden when Places didn't
-           match or returned nothing. Accuracy gate: each line is a
-           direct passthrough of a verified-by-Google value. We do
-           not interpret, paraphrase, or summarize. -->
-      <section class="places-facts-card" id="placesFactsCard" hidden>
-        <header class="places-facts-head">
-          <span class="places-facts-badge" data-tr="places.verifiedBadge">Verified by Google</span>
-          <h3 class="places-facts-title" data-tr="places.heading">What Google knows about this restaurant</h3>
-        </header>
-        <div class="places-facts-chips" id="placesFactsChips"></div>
-        <p class="places-facts-summary" id="placesFactsSummary" hidden></p>
-        <details class="places-facts-hours" id="placesFactsHours" hidden>
-          <summary data-tr="places.hoursLabel">Google-published hours</summary>
-          <ul id="placesFactsHoursList"></ul>
-        </details>
       </section>
 
       <!-- Restaurant-priority checks list -->
@@ -8109,22 +8166,23 @@
     });
   }
 
-  // Sprint T1: render the Places-verified facts card. Every row is
-  // a direct passthrough of a Google-confirmed field. Never displays
-  // the card if Places didn't match; never renders a row where its
-  // field is null. No interpretation, no paraphrasing.
+  // Sprint T1 + E2: render the Google-verified chips folded inside
+  // the business-type card. Every chip is a direct passthrough of a
+  // Places v1 field; the strip stays hidden when Places didn't
+  // match or returned nothing. No interpretation, no paraphrasing.
   function renderPlacesFactsCard() {
-    var card = document.getElementById('placesFactsCard');
-    var chipsEl = document.getElementById('placesFactsChips');
-    var summaryEl = document.getElementById('placesFactsSummary');
-    var hoursEl = document.getElementById('placesFactsHours');
-    var hoursListEl = document.getElementById('placesFactsHoursList');
-    if (!card || !chipsEl || !summaryEl || !hoursEl || !hoursListEl) return;
+    var stripEl = document.getElementById('btcGoogleStrip');
+    var chipsEl = document.getElementById('btcGoogleChips');
+    var summaryEl = document.getElementById('btcGoogleSummary');
+    var hoursEl = document.getElementById('btcGoogleHours');
+    var hoursListEl = document.getElementById('btcGoogleHoursList');
+    if (!stripEl || !chipsEl || !summaryEl || !hoursEl || !hoursListEl) return;
     var snap = window.__auditPlaces;
     if (!snap || !snap.ok || !snap.place) {
-      card.hidden = true;
+      stripEl.hidden = true;
       return;
     }
+    var card = stripEl; // downstream code below writes `card.hidden = ...`
     var p = snap.place;
     chipsEl.innerHTML = '';
     var rendered = 0;
