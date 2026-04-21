@@ -1932,6 +1932,31 @@
   .score-benchmark-delta.up   { color: #1F6B3A; }
   .score-benchmark-delta.down { color: #8A3010; }
   .score-benchmark-delta.even { color: var(--stone); }
+  /* Phase 4 #1: benchmark provenance info glyph. Small ⓘ that carries
+     the methodology string in its title attribute. Button styling
+     (not a span) so keyboard users can focus it and read the title
+     via their assistive-tech announce. Stays quiet visually — the
+     goal is "there's something here to hover if you want" without
+     competing with the benchmark itself. */
+  .score-benchmark-info {
+    margin-left: 2px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--stone);
+    font-size: 13px;
+    line-height: 1;
+    cursor: help;
+    opacity: 0.65;
+    transition: opacity var(--t-fast) var(--ease);
+  }
+  .score-benchmark-info:hover,
+  .score-benchmark-info:focus { opacity: 1; outline: none; }
+  .score-benchmark-info:focus-visible {
+    outline: 2px solid var(--teal, #1F4E5B);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
   /* Override banner: visible only when the visitor has confirmed one or
      more unverified checks. Signals (both to the original owner and to
      anyone they forward the share link to) that the score contains
@@ -4088,6 +4113,16 @@
             <span class="score-benchmark-label">Typical <span id="scoreBenchmarkSubtype">restaurant</span> sites score:</span>
             <strong id="scoreBenchmarkMedian">—</strong>
             <span class="score-benchmark-delta" id="scoreBenchmarkDelta"></span>
+            <!-- Phase 4 #1: benchmark provenance affordance. The
+                 title attribute carries the full methodology string
+                 (set dynamically by setScoreBenchmark so it localizes
+                 and reflects refresh status); the glyph is a visible
+                 hint that there's something to hover. Keyboard users
+                 reach it via focus + Enter since the button has a
+                 title and aria-label. -->
+            <button type="button" class="score-benchmark-info" id="scoreBenchmarkInfo"
+                    aria-label="How we calculated this benchmark"
+                    tabindex="0">ⓘ</button>
           </div>
           <div class="score-override-banner" id="scoreOverrideBanner" hidden>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -10047,10 +10082,30 @@
     var subEl    = document.getElementById('scoreBenchmarkSubtype');
     var medianEl = document.getElementById('scoreBenchmarkMedian');
     var deltaEl  = document.getElementById('scoreBenchmarkDelta');
+    var infoEl   = document.getElementById('scoreBenchmarkInfo');
     if (!el || !subEl || !medianEl || !deltaEl) return;
     if (typeof subtypeBenchmark !== 'function') { el.hidden = true; return; }
     var bench = subtypeBenchmark(subtypeId);
     if (!bench || typeof bench.overall !== 'number') { el.hidden = true; return; }
+
+    // Phase 4 #1: populate the provenance tooltip. When the benchmark
+    // is still operator-estimate (every subtype today) this reads as
+    // an honest disclosure; when a future refresh flips a subtype
+    // to 'refreshed' with a real sample size, the same code path
+    // will surface "n=412 audits collected through 2026-Q2."
+    if (infoEl && typeof subtypeBenchmarkWithMetadata === 'function') {
+      var meta = subtypeBenchmarkWithMetadata(subtypeId);
+      if (meta) {
+        var tip = meta.methodology;
+        if (meta.sampleSize) tip += ' (n=' + meta.sampleSize + ')';
+        if (meta.lastUpdated) tip += ' Last updated: ' + meta.lastUpdated + '.';
+        infoEl.setAttribute('title', tip);
+        infoEl.setAttribute('aria-label', tip);
+        infoEl.hidden = false;
+      } else {
+        infoEl.hidden = true;
+      }
+    }
 
     var label = (typeof BUSINESS_TYPE_DEFS === 'object' && BUSINESS_TYPE_DEFS && BUSINESS_TYPE_DEFS[subtypeId] && BUSINESS_TYPE_DEFS[subtypeId].label)
       ? String(BUSINESS_TYPE_DEFS[subtypeId].label)

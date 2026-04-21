@@ -357,9 +357,69 @@ var RESTAURANT_SUBTYPE_BENCHMARKS = {
   'catering-only':  { overall: 60, mobile: 56, a11y: 70, seo: 58, readiness: 48 }
 };
 
+// Phase 4 #1: benchmark provenance metadata.
+// Addresses the original audit's credibility concern: "benchmarks
+// lack sample size / date / methodology — users cannot assess
+// reliability." The honest answer is that the scores above were
+// operator estimates from manual review of restaurant sites in each
+// subtype — not rigorously sampled audit data. This constant
+// surfaces that provenance so the score-card tooltip can say so
+// directly instead of presenting the numbers as if they were
+// statistically derived.
+//
+// Shape is a single shared object rather than per-subtype because
+// every benchmark has the same provenance today. When live audit
+// data starts refreshing individual subtypes, this shape expands
+// into a per-subtype map so some subtypes can say "n=412 audits,
+// 2026-Q2" while others still say "operator estimate."
+//
+// Fields:
+//   source        - Human-readable source descriptor.
+//   sampleSize    - Approximate n. null until live-audit-driven
+//                   refresh lands; currently all subtypes are in
+//                   the operator-estimate bucket.
+//   methodology   - One-sentence description of how the medians
+//                   were derived. Shown in the benchmark chip
+//                   tooltip so the owner sees the provenance on
+//                   hover without leaving the page.
+//   lastUpdated   - YYYY-MM of the most recent manual refresh.
+//                   Updated whenever the scores in RESTAURANT_SUBTYPE_
+//                   BENCHMARKS are re-estimated.
+//   refreshStatus - 'provisional' (operator-estimate) | 'refreshed'
+//                   (backed by live audit sampling). All subtypes
+//                   start provisional; the refresh pipeline that
+//                   flips them to 'refreshed' is future work.
+var RESTAURANT_BENCHMARK_METADATA = {
+  source: 'Manual review of ~100 restaurant sites per subtype',
+  sampleSize: null,
+  methodology: 'Median scores estimated from a manual review of roughly 100 restaurant sites in each subtype. Provisional — will be refreshed automatically as this tool collects live audit data.',
+  lastUpdated: '2026-01',
+  refreshStatus: 'provisional'
+};
+
 function subtypeBenchmark(id) {
   var canon = canonicalSubtypeId(id);
   return (canon && RESTAURANT_SUBTYPE_BENCHMARKS[canon]) || null;
+}
+
+/**
+ * Return the combined benchmark shape for a subtype — the scores
+ * plus the shared provenance metadata. Callers that want only
+ * scores stay on subtypeBenchmark(); callers that want the full
+ * picture (score-card tooltip, methodology footer, credibility
+ * disclosures) use this. Null when the subtype can't resolve.
+ */
+function subtypeBenchmarkWithMetadata(id) {
+  var scores = subtypeBenchmark(id);
+  if (!scores) return null;
+  return {
+    scores: scores,
+    source: RESTAURANT_BENCHMARK_METADATA.source,
+    sampleSize: RESTAURANT_BENCHMARK_METADATA.sampleSize,
+    methodology: RESTAURANT_BENCHMARK_METADATA.methodology,
+    lastUpdated: RESTAURANT_BENCHMARK_METADATA.lastUpdated,
+    refreshStatus: RESTAURANT_BENCHMARK_METADATA.refreshStatus
+  };
 }
 
 // Sprint CC (Phase 2 close-out): subtype-aware default inputs for
@@ -636,6 +696,8 @@ if (typeof module !== 'undefined' && module.exports) {
     canonicalSubtypeId: canonicalSubtypeId,
     getSubtype: getSubtype,
     subtypeBenchmark: subtypeBenchmark,
+    subtypeBenchmarkWithMetadata: subtypeBenchmarkWithMetadata,
+    RESTAURANT_BENCHMARK_METADATA: RESTAURANT_BENCHMARK_METADATA,
     subtypeOwnerDefaults: subtypeOwnerDefaults,
     priceLevelAvgCheckMultiplier: priceLevelAvgCheckMultiplier,
     PLACES_PRICE_LEVEL_AVG_CHECK_MULT: PLACES_PRICE_LEVEL_AVG_CHECK_MULT,
