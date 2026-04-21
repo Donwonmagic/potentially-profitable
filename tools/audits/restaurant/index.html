@@ -1791,6 +1791,32 @@
     0%, 100% { box-shadow: 0 0 0 4px rgba(31, 78, 91, 0.12); }
     50%      { box-shadow: 0 0 0 7px rgba(31, 78, 91, 0.06); }
   }
+  /* Sprint 9: staggered report reveal. When JS adds .report-revealed
+     to the audit report container, the first six report sections
+     fade + lift into place in sequence (120ms between each). Cap of
+     six prevents a long deep-scroll from animating for 4+ seconds.
+     Only runs under prefers-reduced-motion: no-preference — under
+     reduced-motion, the report appears fully formed without
+     animation. */
+  @keyframes reveal-up {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .report-revealed .audit-summary,
+    .report-revealed .category-grid,
+    .report-revealed .exec-summary,
+    .report-revealed .top-fixes,
+    .report-revealed .action-plan-card,
+    .report-revealed .margin-health-card {
+      animation: reveal-up 520ms var(--ease-out, cubic-bezier(.16,1,.3,1)) both;
+    }
+    .report-revealed .category-grid     { animation-delay: 120ms; }
+    .report-revealed .exec-summary      { animation-delay: 240ms; }
+    .report-revealed .top-fixes         { animation-delay: 360ms; }
+    .report-revealed .action-plan-card  { animation-delay: 480ms; }
+    .report-revealed .margin-health-card{ animation-delay: 600ms; }
+  }
   @media (prefers-reduced-motion: reduce) {
     .audit-progress-bar .fill { transition: none; }
     .audit-step.active .step-indicator { animation: none; }
@@ -12766,6 +12792,13 @@
     // Phase L1: no gate to toggle; deep tier is always visible.
 
     showOnly(reportEl);
+    // Sprint 9: staggered entrance choreography. Toggles a class on
+    // the report root; CSS uses it to stagger the first six sections
+    // in so the audit reveals itself deliberately instead of
+    // appearing all-at-once. prefers-reduced-motion gated via the
+    // CSS @media rule so assistive-motion users see the report
+    // instantly without animation.
+    if (reportEl) reportEl.classList.add('report-revealed');
     // Scroll the report into view and move keyboard + screen-reader
     // focus onto the results headline so assistive-tech users hear
     // the audit is complete instead of being stranded on the submit
