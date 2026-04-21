@@ -77,6 +77,7 @@ const STATIC = [
   [ 'Your overall score', 'Tu puntuación general' ],
   [ 'Audited:', 'Auditado:' ],
   [ 'Copy link', 'Copiar enlace' ],
+  [ 'Building share link…', 'Creando enlace para compartir…' ],
   [ 'Download share card', 'Descargar tarjeta' ],
   [ 'Print for your manager', 'Imprimir para tu gerente' ],
   [ 'Share:', 'Compartir:' ],
