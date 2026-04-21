@@ -1068,7 +1068,52 @@ var RESTAURANT_PRIORITY_CHECKS = [
     unverified: "We couldn't reach your menu page to evaluate its content",
     unverified_es: 'No pudimos acceder a tu página de menú para evaluar su contenido',
     unverifiedNote: "The audit looks at the page behind your 'Menu' link for visible prices and dish photos. We couldn't reach one this pass — either the format is a PDF (see the menu-format check above) or the crawler missed it. Confirm the format first; we'll re-evaluate depth on the next run.",
-    unverifiedNote_es: 'La auditoría revisa la página detrás de tu enlace "Menú" buscando precios visibles y fotos de platos. No pudimos acceder a una en este pase — o el formato es PDF (ver el chequeo de menu-format arriba) o el crawler no la encontró. Confirma primero el formato; reevaluaremos la profundidad en la próxima ejecución.'
+    unverifiedNote_es: 'La auditoría revisa la página detrás de tu enlace "Menú" buscando precios visibles y fotos de platos. No pudimos acceder a una en este pase — o el formato es PDF (ver el chequeo de menu-format arriba) o el crawler no la encontró. Confirma primero el formato; reevaluaremos la profundidad en la próxima ejecución.',
+    // Phase 3 #5c: byType specialization. Each subtype gets copy that
+    // names its specific stakes — what conversion pattern the missing
+    // signals are breaking, and what the remediation looks like at
+    // that subtype's typical operating scale. Generic copy above
+    // still applies to casual-dining and any subtype not listed here.
+    // Added in sprints (fine-dining/fast-casual/cafe first) so each
+    // commit is small enough to land without stream-timeout risk.
+    byType: {
+      'fine-dining': {
+        impact: 'Fine-dining guests book based on how the tasting menu reads — the prose, the wine-pairing callouts, and the per-seat price point. Missing prices costs bookings from guests who need to know what the evening will cost (prix fixe, corkage, wine pairing add-on) before they commit. Photos matter less here than on delivery-app sites; the words do the selling.',
+        impact_es: 'Los comensales de fine-dining reservan por cómo se lee el menú degustación — la prosa, las notas de maridaje y el precio por persona. Sin precios, se pierden reservas de quienes necesitan saber el costo de la noche (prix fixe, descorche, maridaje adicional) antes de decidir. Las fotos importan menos aquí que en sitios de apps de entrega; las palabras son las que venden.',
+        pass: 'Your tasting menu reads with prices clearly visible',
+        pass_es: 'Tu menú degustación se lee con los precios claramente visibles',
+        passNote: 'Guests can scan the tasting menu, see the prix fixe price, and decide to book — all on one page, on a phone, without calling to ask.',
+        passNote_es: 'Los comensales pueden recorrer el menú degustación, ver el precio del prix fixe y decidir reservar — todo en una página, en el teléfono, sin tener que llamar para preguntar.',
+        fail: 'Your tasting menu is missing: {detected}',
+        fail_es: 'A tu menú degustación le falta: {detected}',
+        failNote: 'Fine-dining guests book on the strength of the menu — they need the tasting-menu copy AND the price (prix fixe, corkage policy, wine-pairing add-on) before committing. Add these to your menu page; the text matters more than photography for this segment, but missing either sends bookings to the competitor that shows them both.',
+        failNote_es: 'Los comensales de fine-dining reservan por la fuerza del menú — necesitan la copia del menú degustación Y el precio (prix fixe, política de descorche, maridaje adicional) antes de comprometerse. Agrégalos a tu página del menú; el texto importa más que la fotografía en este segmento, pero si falta alguno, las reservas se van al competidor que muestra ambos.'
+      },
+      'fast-casual': {
+        impact: 'Fast-casual menus ARE the conversion page. Prices next to each item + at least one photo per section lift online-ordering conversion 20-30% vs menus missing either signal. Customers who don\'t see them on your site bounce to the DoorDash / UberEats / ChowNow tile where both are standard — and the platform keeps 30% of that revenue instead of you.',
+        impact_es: 'Los menús fast-casual SON la página de conversión. Precios junto a cada ítem + al menos una foto por sección suben la conversión de pedidos en línea 20-30% frente a menús sin alguna de las dos señales. Los clientes que no las ven en tu sitio rebotan al tile de DoorDash / UberEats / ChowNow donde ambas son estándar — y la plataforma se queda con 30% de ese ingreso en vez de tú.',
+        pass: 'Your menu has item prices and dish photos ready for ordering',
+        pass_es: 'Tu menú tiene precios de ítems y fotos de platos listos para pedir',
+        passNote: 'Shoppers scan prices to budget, scroll through photos to choose, and tap "order" without leaving your site. That\'s the pattern that keeps the margin in-house instead of handing 30% to an aggregator.',
+        passNote_es: 'Los compradores revisan precios para presupuestar, recorren fotos para elegir y tocan "ordenar" sin salir de tu sitio. Ese es el patrón que mantiene el margen en casa en vez de entregar 30% a un agregador.',
+        fail: 'Your menu is missing: {detected}',
+        fail_es: 'A tu menú le falta: {detected}',
+        failNote: 'Fast-casual ordering conversion depends on both signals. Shoppers scan prices to budget, scroll through photos to choose. Add them to your menu page BEFORE the competition\'s DoorDash tile captures the order — every order that routes through the aggregator costs you 30% of the ticket.',
+        failNote_es: 'La conversión de pedidos fast-casual depende de ambas señales. Los compradores revisan precios para presupuestar, recorren fotos para elegir. Agrégalas a tu página del menú ANTES que el tile de DoorDash de la competencia capture el pedido — cada pedido que pasa por el agregador te cuesta 30% del ticket.'
+      },
+      'cafe': {
+        impact: 'Café menus carry the morning decision — "latte or cortado? $4 or $5?" — that most customers already made on their phone while walking in. Visible prices + a handful of drink/pastry photos resolve that decision BEFORE the customer reaches the counter, which is how busy mornings stay moving. Price-less menus force the mid-line "what does a cortado cost again?" that slows the queue.',
+        impact_es: 'Los menús de café cargan la decisión de la mañana — "¿latte o cortado? ¿$4 o $5?" — que la mayoría de los clientes ya tomó en el teléfono mientras caminaban. Precios visibles + unas cuantas fotos de bebidas y repostería resuelven esa decisión ANTES que el cliente llegue al mostrador, que es como se mueven las mañanas ocupadas. Los menús sin precio fuerzan el "¿cuánto cuesta un cortado?" a media fila que atasca la cola.',
+        pass: 'Your café menu shows prices and a few drink or pastry photos',
+        pass_es: 'Tu menú de café muestra precios y algunas fotos de bebidas o repostería',
+        passNote: 'Customers queue up knowing what they want — which means your baristas are making drinks instead of answering "how much is that?" Morning throughput stays smooth.',
+        passNote_es: 'Los clientes hacen fila sabiendo qué quieren — lo que significa que tus baristas están haciendo bebidas en vez de responder "¿cuánto cuesta eso?". El flujo matutino se mantiene fluido.',
+        fail: 'Your café menu is missing: {detected}',
+        fail_es: 'A tu menú de café le falta: {detected}',
+        failNote: 'Café menus carry the mid-walk "what am I getting today" decision. Both the price and a couple of drink/pastry photos belong on the page so customers queue up with a decision, not a question. If you only have time for one fix, ship the prices — even hand-typed, even updated with the seasonal board.',
+        failNote_es: 'Los menús de café cargan la decisión "¿qué voy a pedir hoy?" camino al café. Tanto el precio como un par de fotos de bebidas o repostería pertenecen a la página para que los clientes hagan fila con una decisión, no con una pregunta. Si sólo tienes tiempo para un arreglo, publica los precios — aunque sean escritos a mano, aunque se actualicen con la pizarra de temporada.'
+      }
+    }
   },
   {
     type: 'schema',
