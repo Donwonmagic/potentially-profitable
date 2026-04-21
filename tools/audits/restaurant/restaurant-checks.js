@@ -1037,6 +1037,39 @@ var RESTAURANT_PRIORITY_CHECKS = [
       }
     }
   },
+  // Phase 3 #5: menu-depth. Evaluates the menu PAGE CONTENT — does it
+  // show prices and dish photos? Complements menu-format (HTML vs PDF)
+  // and dietary (GF/V markers). A menu that passes format but has
+  // neither prices nor photos still underperforms on conversion;
+  // delivery apps cross-check the owner's site before a shopper taps
+  // "add to cart" and opaque menus cost orders. Weight 0.75 (bonus
+  // tier) because a site with a broken format shouldn't be penalized
+  // twice — the failNote explicitly tells owners to fix format first
+  // on the unverified path.
+  {
+    type: 'menu-depth',
+    weight: 0.75,
+    anchor: '#basics',
+    effort: 'self',
+    minutes: 120,
+    impact: 'Menus without visible prices and dish photos underperform by 30-40% on delivery apps and the owner\'s own online-ordering flow. Visitors cross-check prices before tapping "add to cart"; they scroll past items without photos. Adding both is a one-afternoon project for most HTML menus and the single highest-ROI change for ghost-kitchen and fast-casual restaurants.',
+    impact_es: 'Los menús sin precios visibles y fotos de platos rinden 30-40% peor en apps de entrega y en el flujo de pedidos del propio sitio. Los visitantes verifican precios antes de tocar "agregar al carrito"; pasan de largo los ítems sin fotos. Agregar ambos es un proyecto de una tarde para la mayoría de los menús HTML y el cambio de mayor ROI para cocinas fantasma y restaurantes fast-casual.',
+    pass: 'Your menu has visible prices and dish photos',
+    pass_es: 'Tu menú tiene precios visibles y fotos de platos',
+    passNote: 'Your menu page shows both prices and dish photos — shoppers can cross-check before ordering, which is exactly the pattern that converts on delivery apps and on your own site.',
+    passNote_es: 'Tu página del menú muestra precios y fotos de platos — los compradores pueden verificar antes de pedir, que es justo el patrón que convierte en apps de entrega y en tu propio sitio.',
+    fail: 'Your menu is missing conversion signals',
+    fail_es: 'Tu menú le falta señales que venden',
+    // failNote uses the {detected} template token (same path the
+    // platform check uses) to enumerate the specific gaps — e.g.
+    // "Your menu page is missing: prices and dish photos."
+    failNote: 'Your menu page is missing: {detected}. These are the two signals a shopper or delivery-app user checks before tapping "add to cart." Add them to your menu page — plain text prices next to each item, and one photo per signature dish — and conversion typically lifts within a week.',
+    failNote_es: 'A tu página del menú le falta: {detected}. Estas son las dos señales que un comprador o usuario de app de entrega verifica antes de tocar "agregar al carrito". Agrégalas a tu página del menú — precios en texto plano junto a cada ítem, y una foto por cada plato insignia — y la conversión suele subir en una semana.',
+    unverified: "We couldn't reach your menu page to evaluate its content",
+    unverified_es: 'No pudimos acceder a tu página de menú para evaluar su contenido',
+    unverifiedNote: "The audit looks at the page behind your 'Menu' link for visible prices and dish photos. We couldn't reach one this pass — either the format is a PDF (see the menu-format check above) or the crawler missed it. Confirm the format first; we'll re-evaluate depth on the next run.",
+    unverifiedNote_es: 'La auditoría revisa la página detrás de tu enlace "Menú" buscando precios visibles y fotos de platos. No pudimos acceder a una en este pase — o el formato es PDF (ver el chequeo de menu-format arriba) o el crawler no la encontró. Confirma primero el formato; reevaluaremos la profundidad en la próxima ejecución.'
+  },
   {
     type: 'schema',
     weight: 0.5, // bonus — nice to have, not critical
@@ -2399,6 +2432,30 @@ var UI_I18N = {
     en: 'owner replied',
     es: 'respondió el dueño'
   },
+  // Phase 3 #4: review-responsiveness chip + urgent-unreplied callout.
+  // Surfaces the computed reply rate AND flags the specific anti-
+  // pattern of low-star reviews without an owner response — the
+  // cluster Google's local-pack ranking punishes most.
+  'deep.reviews.respChip':   {
+    en: 'Responsiveness: {score}/100',
+    es: 'Capacidad de respuesta: {score}/100'
+  },
+  'deep.reviews.respChip.title': {
+    en: 'Replies to the {sampled} most recent reviews, with extra weight on unreplied 1–2 star reviews. Higher is better.',
+    es: 'Respuestas a las {sampled} reseñas más recientes, con peso extra en reseñas de 1–2 estrellas sin respuesta. Más alto es mejor.'
+  },
+  'deep.reviews.urgentOne': {
+    en: 'One unanswered low-star review in your recent {sampled} — replying within a day signals you care.',
+    es: 'Una reseña negativa sin respuesta entre las últimas {sampled} — responder en un día demuestra que te importa.'
+  },
+  'deep.reviews.urgentMany': {
+    en: '{count} of your {sampled} most recent reviews are 1–2 stars with no owner reply — a cluster worth addressing today.',
+    es: '{count} de tus {sampled} reseñas más recientes son de 1–2 estrellas sin respuesta del dueño — un grupo a atender hoy.'
+  },
+  'deep.reviews.urgentBadge': {
+    en: 'Needs your reply',
+    es: 'Necesita tu respuesta'
+  },
   // Sprint T1: Places-verified facts card.
   'places.verifiedBadge': {
     en: 'Verified by Google',
@@ -2607,6 +2664,10 @@ var UI_I18N = {
   'nap.label.phone':   { en: 'Phone number',   es: 'Teléfono' },
   'nap.label.address': { en: 'Address',        es: 'Dirección' },
   'nap.label.name':    { en: 'Business name',  es: 'Nombre del negocio' },
+  // Phase 3 #1: hours-consistency row label. Renders alongside the
+  // existing NAP rows in renderNapCheck when Google Places hours and
+  // the on-page schema's openingHoursSpecification disagree.
+  'nap.label.hours':   { en: 'Opening hours',  es: 'Horario de apertura' },
   'nap.source.places': { en: 'Google Places',  es: 'Google Places' },
   'nap.source.schema': { en: 'Your schema',    es: 'Tu schema' },
   'nap.source.page':   { en: 'Your page text', es: 'Texto en tu página' },
@@ -2716,6 +2777,446 @@ function t(key, vars, lang) {
 }
 
 // ---------------------------------------------------------------------------
+// Phase 3 #5: menu intelligence (prices + dish photos on the menu page).
+// ---------------------------------------------------------------------------
+// The existing 'menu-format' priority check answers "is your menu an
+// HTML page or a PDF?" and 'dietary' answers "do you mark gluten-free /
+// vegan?". Neither tells an owner whether their HTML menu is
+// actually doing the job — menus without visible prices kill ordering
+// intent on delivery apps (shoppers cross-check before tapping), and
+// menus without dish photos convert 30-40% worse than menus with them
+// (DoorDash + UberEats internal studies, consistently replicated).
+//
+// extractMenuSignals(context) is a pure, testable function that reads
+// the crawled menu-slot page (or falls back to the homepage HTML)
+// and returns:
+//
+//   {
+//     hasMenuPage:       boolean   — did we find a page to analyze?
+//     sourceUrl:         string?   — which URL we read
+//     pricesCount:       number    — distinct price-pattern matches
+//     imagesCount:       number    — <img> tags on the page (raw)
+//     imagesNearPrices:  number    — images within ~200 chars of a price
+//     hasPriceCoverage:  boolean   — pricesCount >= PRICE_FLOOR
+//     hasPhotoCoverage:  boolean   — imagesNearPrices >= PHOTO_FLOOR
+//     gaps:              string[]  — 'prices' / 'photos' tokens missing
+//   }
+//
+// Thresholds are defensible floors, not industry medians:
+//   PRICE_FLOOR = 5 — a menu page with fewer than 5 price marks has
+//     hidden most pricing; real menus typically show 15-40.
+//   PHOTO_FLOOR = 3 — filters sites with a single hero image but no
+//     dish photography; real photo menus carry 8-30 images per page.
+//
+// Phase 3 #5b: hasPhotoCoverage now thresholds on imagesNearPrices,
+// not on the raw imagesCount. Rationale: a page with 1 hero + 1 logo +
+// 1 nav icon has 3 <img> tags but zero DISH photos; the old count-all
+// rule let those pages pass. A real dish photo is visually paired
+// with its price (photo-name-price card pattern), so proximity to a
+// price-pattern match in the HTML source is the strongest single
+// signal of "this is a photographed menu." The 200-character window
+// is wide enough for the common item-card layouts while staying tight
+// enough to exclude header images from the count.
+//
+// The check consumes these thresholds to decide pass / fail and
+// populates the `{gaps}` template token in the failNote so the owner
+// sees exactly which signals are missing, not a generic scolding.
+var MENU_INTEL_PRICE_FLOOR = 5;
+var MENU_INTEL_PHOTO_FLOOR = 3;
+var MENU_INTEL_PROXIMITY_WINDOW = 200;
+
+// Match common price notations: leading symbol ($7.99, €12), or
+// trailing currency suffix (7.99 USD, 12 EUR). Stays deliberately
+// strict on digits so body-copy numbers like "1847 Main St" don't
+// false-positive. Currency symbols include the common western set
+// plus yen; can be extended if the audit goes global.
+var MENU_INTEL_PRICE_RE = /(?:\$|€|£|¥)\s*\d{1,3}(?:[.,]\d{2})?\b|\b\d{1,3}(?:[.,]\d{2})?\s*(?:USD|EUR|GBP|JPY)\b/g;
+var MENU_INTEL_IMG_RE = /<img\b[^>]*>/gi;
+
+function extractMenuSignals(context) {
+  var ctx = context || {};
+  var pages = (ctx.crawl && Array.isArray(ctx.crawl.pages)) ? ctx.crawl.pages : [];
+  // Prefer a crawled menu-slot page — if the crawler found a
+  // dedicated menu URL, that's where we should measure. The homepage
+  // is the fallback, since many sites inline their menu there.
+  var targetPage = null;
+  for (var i = 0; i < pages.length; i++) {
+    var p = pages[i];
+    if (p && p.slot === 'menu' && p.status === 200 && typeof p.html === 'string' && p.html.length > 2000) {
+      targetPage = p;
+      break;
+    }
+  }
+  if (!targetPage && ctx.crawl && ctx.crawl.homepage && typeof ctx.crawl.homepage.html === 'string') {
+    targetPage = ctx.crawl.homepage;
+  }
+  if (!targetPage || typeof targetPage.html !== 'string' || !targetPage.html.length) {
+    return {
+      hasMenuPage: false,
+      sourceUrl: null,
+      pricesCount: 0,
+      imagesCount: 0,
+      imagesNearPrices: 0,
+      hasPriceCoverage: false,
+      hasPhotoCoverage: false,
+      gaps: ['menu-page']
+    };
+  }
+  var html = targetPage.html;
+  // Important: reset lastIndex since the module-level regexes carry
+  // the /g flag and state across calls without an explicit reset.
+  MENU_INTEL_PRICE_RE.lastIndex = 0;
+  MENU_INTEL_IMG_RE.lastIndex = 0;
+  // Collect offsets (not just counts) so we can measure proximity
+  // between <img> tags and price patterns. exec() in a /g loop gives
+  // us .index at each step; one pass per regex stays O(n).
+  var priceOffsets = [];
+  var imgOffsets = [];
+  var m;
+  while ((m = MENU_INTEL_PRICE_RE.exec(html)) !== null) {
+    priceOffsets.push(m.index);
+  }
+  MENU_INTEL_IMG_RE.lastIndex = 0;
+  while ((m = MENU_INTEL_IMG_RE.exec(html)) !== null) {
+    imgOffsets.push(m.index);
+  }
+  var pricesCount = priceOffsets.length;
+  var imagesCount = imgOffsets.length;
+  // Count images within MENU_INTEL_PROXIMITY_WINDOW chars of ANY
+  // price match. Walk both sorted arrays in one merge-style pass so
+  // the worst case stays O(n+m) instead of O(n*m). priceOffsets are
+  // sorted by construction (single /g pass); imgOffsets likewise.
+  var imagesNearPrices = 0;
+  if (priceOffsets.length > 0 && imgOffsets.length > 0) {
+    var pi = 0; // moving price-offset cursor
+    for (var ii = 0; ii < imgOffsets.length; ii++) {
+      var imgAt = imgOffsets[ii];
+      // Advance pi past any prices that are already out of range
+      // (too far before this image).
+      while (pi < priceOffsets.length && priceOffsets[pi] < imgAt - MENU_INTEL_PROXIMITY_WINDOW) {
+        pi++;
+      }
+      // Nearest candidate price offset; check whether it's within
+      // the window in either direction.
+      if (pi < priceOffsets.length) {
+        var distance = Math.abs(priceOffsets[pi] - imgAt);
+        if (distance <= MENU_INTEL_PROXIMITY_WINDOW) {
+          imagesNearPrices++;
+          continue;
+        }
+      }
+      // Also check the previous price in case the image is just
+      // BEFORE the next price-out-of-range marker but still close
+      // to the preceding one.
+      if (pi > 0) {
+        var prevDistance = Math.abs(priceOffsets[pi - 1] - imgAt);
+        if (prevDistance <= MENU_INTEL_PROXIMITY_WINDOW) {
+          imagesNearPrices++;
+        }
+      }
+    }
+  }
+  var hasPriceCoverage = pricesCount >= MENU_INTEL_PRICE_FLOOR;
+  var hasPhotoCoverage = imagesNearPrices >= MENU_INTEL_PHOTO_FLOOR;
+  var gaps = [];
+  if (!hasPriceCoverage) gaps.push('prices');
+  if (!hasPhotoCoverage) gaps.push('photos');
+  return {
+    hasMenuPage: true,
+    sourceUrl: targetPage.url || null,
+    pricesCount: pricesCount,
+    imagesCount: imagesCount,
+    imagesNearPrices: imagesNearPrices,
+    hasPriceCoverage: hasPriceCoverage,
+    hasPhotoCoverage: hasPhotoCoverage,
+    gaps: gaps
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Phase 3 #4: review-responsiveness scoring.
+// ---------------------------------------------------------------------------
+// /api/gbp-details returns the 5 most recent Google reviews plus a
+// hasOwnerReply flag per review. Previously the card just rendered
+// those as a list; owners learned that reviews existed but got no
+// "should I act on this" signal.
+//
+// computeReviewResponsiveness(reviews) is a pure function that turns
+// the review array into an actionable scorecard:
+//
+//   {
+//     score:         0..100  — blended response rate + urgency penalty
+//     grade:         'good' | 'ok' | 'bad'
+//     sampled:       number of reviews evaluated
+//     replied:       number with owner reply
+//     urgentCount:   number of low-star (<=2) reviews NOT replied to
+//     urgentRatings: number[] — the star values of those low-star unreplied ones
+//   }
+//
+// Scoring formula (kept simple; we have n=5 samples — no illusion of
+// statistical precision):
+//
+//   base   = 100 * replied / sampled
+//   penalty = 20 per unreplied 1-2 star review
+//   score  = clamp(0, 100, base - penalty)
+//
+// Grade bands: >=80 good, 50-79 ok, <50 bad. Match the score-ring
+// gradeScore() treatment so the visual language is consistent
+// across the audit.
+//
+// Null-safe: returns null when there are no reviews to evaluate
+// (review array missing or empty). Caller should hide the chip in
+// that case rather than render a placeholder score.
+function computeReviewResponsiveness(reviews) {
+  if (!Array.isArray(reviews) || reviews.length === 0) return null;
+  var sampled = 0;
+  var replied = 0;
+  var urgentCount = 0;
+  var urgentRatings = [];
+  for (var i = 0; i < reviews.length; i++) {
+    var r = reviews[i];
+    if (!r || typeof r !== 'object') continue;
+    sampled++;
+    var isReplied = !!r.hasOwnerReply;
+    if (isReplied) replied++;
+    var rating = (typeof r.rating === 'number') ? r.rating : null;
+    if (rating != null && rating <= 2 && !isReplied) {
+      urgentCount++;
+      urgentRatings.push(rating);
+    }
+  }
+  if (sampled === 0) return null;
+  var base = 100 * (replied / sampled);
+  var score = Math.max(0, Math.min(100, Math.round(base - 20 * urgentCount)));
+  var grade = score >= 80 ? 'good' : (score >= 50 ? 'ok' : 'bad');
+  return {
+    score: score,
+    grade: grade,
+    sampled: sampled,
+    replied: replied,
+    urgentCount: urgentCount,
+    urgentRatings: urgentRatings
+  };
+}
+// ---------------------------------------------------------------------------
+// The renderNapCheck card in index.html surfaces drift between Google
+// Places, the on-page schema, and the homepage H1/title for Name,
+// Address, and Phone. Phase 3 extends the same pattern to opening
+// hours — the single biggest "I drove there and they were closed"
+// owner pain point and the most common silent suppressor of GBP
+// local-pack ranking.
+//
+// Both source shapes have to be normalized into the SAME canonical
+// representation before comparison. We use a per-day map of
+// "open-close" minute tuples:
+//
+//   { Mo: ['0660-1320'], Tu: ['0660-1320'], ... }
+//
+// Each value is an ARRAY because a day can carry multiple ranges
+// (e.g. lunch + dinner service). Days where the business is closed
+// are simply absent from the map — schema's "opens=null, closes=null"
+// and Places' missing-day both encode the same intent.
+//
+// Two pure parsers:
+//   parsePlacesHoursText(arr)    -> day map
+//   parseSchemaHoursObjects(arr) -> day map
+//
+// One canonical-key serializer:
+//   serializeHoursDayMap(map)    -> stable string for equality compare
+//
+// Exported for Node tests; consumed by renderNapCheck in index.html.
+
+var HOURS_DAY_NAMES = {
+  'monday':    'Mo', 'mo': 'Mo', 'mon': 'Mo',
+  'tuesday':   'Tu', 'tu': 'Tu', 'tue': 'Tu', 'tues': 'Tu',
+  'wednesday': 'We', 'we': 'We', 'wed': 'We',
+  'thursday':  'Th', 'th': 'Th', 'thu': 'Th', 'thur': 'Th', 'thurs': 'Th',
+  'friday':    'Fr', 'fr': 'Fr', 'fri': 'Fr',
+  'saturday':  'Sa', 'sa': 'Sa', 'sat': 'Sa',
+  'sunday':    'Su', 'su': 'Su', 'sun': 'Su'
+};
+var HOURS_DAY_ORDER = ['Mo','Tu','We','Th','Fr','Sa','Su'];
+
+// Convert "11:00 AM" / "11:00" / "11 AM" / "11pm" / "23:00" into
+// minutes-from-midnight. Returns null on parse failure so the caller
+// can skip a malformed row rather than fabricate a mismatch.
+function parseHoursTimeToMinutes(raw) {
+  if (raw == null) return null;
+  var s = String(raw).trim().toLowerCase();
+  if (!s) return null;
+  // Strict ISO HH:MM (or HH:MM:SS) — schema.org's openingHoursSpecification
+  // uses this. Place text wraps an AM/PM after the time so this strict
+  // match must not greedy-eat AM/PM.
+  var iso = s.match(/^([01]?\d|2[0-3]):([0-5]\d)(?::[0-5]\d)?$/);
+  if (iso) {
+    return parseInt(iso[1], 10) * 60 + parseInt(iso[2], 10);
+  }
+  // 12-hour clock: "11 AM", "11:30am", "11:30 a.m.", "12 PM" (noon),
+  // "12 AM" (midnight), "12:00 a.m.", etc.
+  var hr = s.match(/^(\d{1,2})(?::([0-5]\d))?\s*(a\.?m\.?|p\.?m\.?)$/);
+  if (hr) {
+    var h = parseInt(hr[1], 10);
+    var m = hr[2] ? parseInt(hr[2], 10) : 0;
+    var meridiem = hr[3].replace(/\./g, '');
+    if (h < 1 || h > 12) return null;
+    if (meridiem === 'pm' && h !== 12) h += 12;
+    if (meridiem === 'am' && h === 12) h = 0;
+    return h * 60 + m;
+  }
+  return null;
+}
+
+// "Monday: 11:00 AM – 10:00 PM"            -> day:'Mo', ranges:[[660,1320]]
+// "Saturday: 11 AM – 1 AM"                 -> day:'Sa', ranges:[[660,1500]] (overnight tracks +24h)
+// "Tuesday: 11:00 AM – 2:30 PM, 5 PM – 10 PM" -> day:'Tu', ranges:[[660,870],[1020,1320]]
+// "Sunday: Closed"                         -> day:'Su', ranges:[]   (explicit closed)
+// "Monday: Open 24 hours"                  -> day:'Mo', ranges:[[0,1440]]
+// Anything we can't parse returns null so the caller skips it.
+function parsePlacesHoursLine(line) {
+  if (!line || typeof line !== 'string') return null;
+  // Google sometimes uses thin space (U+202F) before AM/PM; collapse
+  // every kind of whitespace so the regex doesn't have to enumerate.
+  var clean = line.replace(/\s+/g, ' ').trim();
+  var colon = clean.indexOf(':');
+  if (colon < 0) return null;
+  var dayWord = clean.slice(0, colon).trim().toLowerCase();
+  var dayCode = HOURS_DAY_NAMES[dayWord];
+  if (!dayCode) return null;
+  var rest = clean.slice(colon + 1).trim();
+  if (!rest) return { day: dayCode, ranges: null }; // unparseable; skip
+  // "Closed" — explicit, honor it as a real (empty) ranges array.
+  if (/^closed\b/i.test(rest)) return { day: dayCode, ranges: [] };
+  // "Open 24 hours" — single full-day range.
+  if (/^open\s*24\s*hours?\b/i.test(rest)) return { day: dayCode, ranges: [[0, 1440]] };
+  // Split by comma for multi-segment days (lunch + dinner). Each
+  // segment must look like "TIME – TIME" (en-dash, em-dash, hyphen,
+  // or "to" all valid separators in the wild).
+  var ranges = [];
+  var segments = rest.split(',');
+  for (var i = 0; i < segments.length; i++) {
+    var seg = segments[i].trim();
+    if (!seg) continue;
+    var rangeMatch = seg.match(/^(.+?)\s*[–—-]\s*(.+)$/);
+    if (!rangeMatch) {
+      // Couldn't parse a range; bail entirely on this line rather
+      // than emit a partial day map.
+      return null;
+    }
+    var openMin  = parseHoursTimeToMinutes(rangeMatch[1].trim());
+    var closeMin = parseHoursTimeToMinutes(rangeMatch[2].trim());
+    if (openMin == null || closeMin == null) return null;
+    // Overnight tracks roll forward by 24h so 10 PM – 2 AM serializes
+    // distinctly from 2 AM – 10 PM (different intents).
+    if (closeMin <= openMin) closeMin += 1440;
+    ranges.push([openMin, closeMin]);
+  }
+  // No ranges parsed but no "Closed" — drop rather than fabricate.
+  if (!ranges.length) return null;
+  return { day: dayCode, ranges: ranges };
+}
+
+function parsePlacesHoursText(arr) {
+  if (!Array.isArray(arr)) return null;
+  var map = {};
+  var matched = 0;
+  for (var i = 0; i < arr.length; i++) {
+    var parsed = parsePlacesHoursLine(arr[i]);
+    if (!parsed || !parsed.ranges) continue;
+    map[parsed.day] = parsed.ranges;
+    matched++;
+  }
+  // Need at least one parsed day to count as signal — guarding against
+  // a Places response that's all "Hours not available" lines.
+  return matched > 0 ? map : null;
+}
+
+// Walk the raw JSON-LD objects (window.__auditSchema.objects) for any
+// Restaurant / FoodEstablishment-typed entries and collect their
+// openingHoursSpecification. Mirrors the worker-side validateOpeningHours
+// shape but returns the same per-day map shape parsePlacesHoursText
+// emits, so both sources serialize through the same canonical key.
+function parseSchemaHoursObjects(objects) {
+  if (!Array.isArray(objects)) return null;
+  var map = {};
+  function addDay(dayRaw, openMin, closeMin) {
+    if (dayRaw == null) return;
+    var s = String(dayRaw).toLowerCase().replace(/^https?:\/\/schema\.org\//, '').trim();
+    var dayCode = HOURS_DAY_NAMES[s];
+    if (!dayCode) {
+      var tail = s.split('/').pop();
+      dayCode = HOURS_DAY_NAMES[tail];
+    }
+    if (!dayCode) return;
+    if (openMin == null || closeMin == null) {
+      // schema.org allows opens=null + closes=null to encode "closed."
+      // Treat as an empty-ranges day so the absence is meaningful.
+      if (!map[dayCode]) map[dayCode] = [];
+      return;
+    }
+    if (closeMin <= openMin) closeMin += 1440;
+    if (!map[dayCode]) map[dayCode] = [];
+    map[dayCode].push([openMin, closeMin]);
+  }
+  function ingest(obj) {
+    if (!obj) return;
+    var spec = obj.openingHoursSpecification;
+    var entries = Array.isArray(spec) ? spec : (spec && typeof spec === 'object' ? [spec] : []);
+    for (var i = 0; i < entries.length; i++) {
+      var entry = entries[i];
+      if (!entry) continue;
+      var openMin  = parseHoursTimeToMinutes(entry.opens);
+      var closeMin = parseHoursTimeToMinutes(entry.closes);
+      var dow = entry.dayOfWeek;
+      if (Array.isArray(dow)) {
+        for (var j = 0; j < dow.length; j++) addDay(dow[j], openMin, closeMin);
+      } else {
+        addDay(dow, openMin, closeMin);
+      }
+    }
+  }
+  for (var k = 0; k < objects.length; k++) ingest(objects[k]);
+  // Sort each day's ranges by open-time so [['0660-0870'],['1020-1320']]
+  // and [['1020-1320'],['0660-0870']] serialize the same way.
+  var hasAny = false;
+  Object.keys(map).forEach(function(d){
+    map[d].sort(function(a, b){ return a[0] - b[0]; });
+    if (map[d].length > 0) hasAny = true;
+  });
+  // Return null if nothing parsed — we don't want an empty {} to look
+  // like a confident "closed every day" signal.
+  return hasAny || Object.keys(map).length > 0 ? map : null;
+}
+
+// Canonical serialization used as the equality key when comparing two
+// hours sources. Stable order, fixed-width padded times, day codes in
+// the canonical Mo→Su sequence.
+//
+//   serialize({ Mo:[[660,1320]] }) === 'Mo:0660-1320'
+//   serialize({})                  === ''  (means "closed every day")
+function serializeHoursDayMap(map) {
+  if (!map || typeof map !== 'object') return null;
+  var pieces = [];
+  for (var i = 0; i < HOURS_DAY_ORDER.length; i++) {
+    var d = HOURS_DAY_ORDER[i];
+    if (!map[d]) continue;
+    if (map[d].length === 0) {
+      pieces.push(d + ':closed');
+      continue;
+    }
+    var rangeStrs = map[d].map(function(r){
+      return pad4(r[0]) + '-' + pad4(r[1]);
+    });
+    pieces.push(d + ':' + rangeStrs.join(','));
+  }
+  return pieces.join('|');
+}
+function pad4(n) {
+  var s = String(Math.floor(n));
+  while (s.length < 4) s = '0' + s;
+  return s;
+}
+
+// ---------------------------------------------------------------------------
 // Phase 2 U6: freshness-label bucket selection.
 // ---------------------------------------------------------------------------
 // Given an age in seconds since the audit ran, return the i18n key
@@ -2819,6 +3320,15 @@ if (typeof module !== 'undefined' && module.exports) {
     finalizeRestaurantReadinessScore: finalizeRestaurantReadinessScore,
     rankActionablesByImpact: rankActionablesByImpact,
     pickFreshnessKey: pickFreshnessKey,
+    parsePlacesHoursText: parsePlacesHoursText,
+    parsePlacesHoursLine: parsePlacesHoursLine,
+    parseSchemaHoursObjects: parseSchemaHoursObjects,
+    serializeHoursDayMap: serializeHoursDayMap,
+    parseHoursTimeToMinutes: parseHoursTimeToMinutes,
+    computeReviewResponsiveness: computeReviewResponsiveness,
+    extractMenuSignals: extractMenuSignals,
+    MENU_INTEL_PRICE_FLOOR: MENU_INTEL_PRICE_FLOOR,
+    MENU_INTEL_PHOTO_FLOOR: MENU_INTEL_PHOTO_FLOOR,
     POWERED_BY: POWERED_BY,
     MUNTIN_AUDIT_DESCRIPTION: MUNTIN_AUDIT_DESCRIPTION,
     MUNTIN_AUDIT_DESCRIPTION_ES: MUNTIN_AUDIT_DESCRIPTION_ES,

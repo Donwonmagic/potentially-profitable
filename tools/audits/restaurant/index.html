@@ -303,6 +303,73 @@
     color: var(--ink);
     font-style: italic;
   }
+  /* Phase 3 #4: urgent-review styling. Low-star reviews without an
+     owner reply get a rust left-border so an owner's eye lands on
+     the specific rows worth acting on first, without shouting over
+     the other reviews. */
+  .deep-review-item[data-urgent="1"] {
+    border-left: 3px solid var(--rust, #B8541A);
+    padding-left: 12px;
+    background: #FDF5EE;
+    margin: 6px -8px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 0 6px 6px 0;
+  }
+  .deep-review-item[data-urgent="1"] .deep-review-urgent-badge {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 8px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--rust, #B8541A);
+    background: #fff;
+    border: 1px solid var(--rust, #B8541A);
+    border-radius: 999px;
+    text-transform: uppercase;
+  }
+  /* Phase 3 #4: responsiveness chip in the reviews-card header.
+     Mirrors the security-headers chip grade-band treatment so the
+     visual language is consistent. */
+  .deep-reviews-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+  .deep-reviews-head .deep-section-head { margin: 0; }
+  .deep-reviews-resp-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    font-variant-numeric: tabular-nums;
+    cursor: help;
+  }
+  .deep-reviews-resp-chip[hidden] { display: none; }
+  .deep-reviews-resp-chip[data-grade="good"] { background:#E7F5EC; color:#1F6B3A; border-color:#BFE0CB; }
+  .deep-reviews-resp-chip[data-grade="ok"]   { background:#FDEFE3; color:#8A3E16; border-color:#EFD1B6; }
+  .deep-reviews-resp-chip[data-grade="bad"]  { background:#F7E7DC; color:#B8541A; border-color:#EFC4AA; }
+  /* Nudge line for unreplied low-star clusters. Subtle teal strip
+     above the review list so it reads as context, not as another
+     header. */
+  .deep-reviews-nudge {
+    margin: 0 0 16px;
+    padding: 10px 14px;
+    background: var(--teal-tint, #E8F1F3);
+    border-left: 3px solid var(--teal, #1F4E5B);
+    border-radius: 0 6px 6px 0;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .deep-reviews-nudge[hidden] { display: none; }
   .deep-crux-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -4331,8 +4398,18 @@
            opted into, visually distinct from the Fast Scan body. -->
       <section class="deep-reviews-card deep-card" id="deepReviewsCard" hidden>
         <span class="deep-eyebrow" data-tr="deepScan.eyebrow">Deep scan</span>
-        <h3 class="deep-section-head" data-tr="deep.reviews.heading">Google reviews snapshot</h3>
+        <div class="deep-reviews-head">
+          <h3 class="deep-section-head" data-tr="deep.reviews.heading">Google reviews snapshot</h3>
+          <!-- Phase 3 #4: responsiveness chip — score + grade band,
+               populated by renderReviewsCard after computeReview-
+               Responsiveness runs. Hidden when there are no sampled
+               reviews so we don't render a placeholder score. -->
+          <span class="deep-reviews-resp-chip" id="deepReviewsRespChip" hidden></span>
+        </div>
         <p class="deep-section-sub" id="deepReviewsSub"></p>
+        <!-- Phase 3 #4: urgent-unreplied nudge. Renders only when
+             1–2 star reviews exist without an owner response. -->
+        <p class="deep-reviews-nudge" id="deepReviewsNudge" hidden></p>
         <ol class="deep-reviews-list" id="deepReviewsList"></ol>
       </section>
 
@@ -7137,6 +7214,8 @@
     var card = document.getElementById('deepReviewsCard');
     var sub = document.getElementById('deepReviewsSub');
     var list = document.getElementById('deepReviewsList');
+    var respChip = document.getElementById('deepReviewsRespChip');
+    var nudge = document.getElementById('deepReviewsNudge');
     if (!card || !sub || !list) return;
     if (!data || !data.ok) return;
     // Accuracy rule: render only verified fact lines. If reviewCount
@@ -7155,12 +7234,51 @@
     }
     if (!facts.length) return; // nothing factual to show
     sub.textContent = facts.join(' · ');
+
+    // Phase 3 #4: responsiveness scorecard. Blends reply rate with a
+    // penalty for unreplied 1-2 star reviews. Chip renders in the
+    // card header; nudge line renders above the review list when
+    // urgent reviews exist.
+    var responsiveness = (typeof computeReviewResponsiveness === 'function')
+      ? computeReviewResponsiveness(data.reviews)
+      : null;
+    if (respChip) {
+      if (responsiveness) {
+        respChip.textContent = t('deep.reviews.respChip', { score: responsiveness.score });
+        respChip.setAttribute('data-grade', responsiveness.grade);
+        respChip.setAttribute('title', t('deep.reviews.respChip.title', { sampled: responsiveness.sampled }));
+        respChip.hidden = false;
+      } else {
+        respChip.hidden = true;
+      }
+    }
+    if (nudge) {
+      if (responsiveness && responsiveness.urgentCount > 0) {
+        var nudgeKey = responsiveness.urgentCount === 1
+          ? 'deep.reviews.urgentOne'
+          : 'deep.reviews.urgentMany';
+        nudge.textContent = t(nudgeKey, {
+          count: responsiveness.urgentCount,
+          sampled: responsiveness.sampled
+        });
+        nudge.hidden = false;
+      } else {
+        nudge.hidden = true;
+      }
+    }
+
     list.innerHTML = '';
     if (Array.isArray(data.reviews)) {
       data.reviews.forEach(function(r){
         if (!r || !r.text) return;
         var li = document.createElement('li');
         li.className = 'deep-review-item';
+        // Phase 3 #4: flag low-star unreplied reviews so the rust
+        // border + badge pull the owner's eye to the specific rows
+        // worth acting on. Checked against the same rules used by
+        // computeReviewResponsiveness so chip + list stay in sync.
+        var isUrgent = (typeof r.rating === 'number' && r.rating <= 2 && !r.hasOwnerReply);
+        if (isUrgent) li.setAttribute('data-urgent', '1');
         var meta = document.createElement('div');
         meta.className = 'deep-review-meta';
         var metaBits = [];
@@ -7168,6 +7286,12 @@
         if (r.relativePublishTimeDescription) metaBits.push(r.relativePublishTimeDescription);
         if (r.hasOwnerReply) metaBits.push(t('deep.reviews.ownerReplied'));
         meta.textContent = metaBits.join(' · ');
+        if (isUrgent) {
+          var badge = document.createElement('span');
+          badge.className = 'deep-review-urgent-badge';
+          badge.textContent = t('deep.reviews.urgentBadge');
+          meta.appendChild(badge);
+        }
         var quote = document.createElement('blockquote');
         quote.textContent = r.text.length > 280 ? r.text.slice(0, 280) + '…' : r.text;
         li.appendChild(meta);
@@ -8146,6 +8270,34 @@
         }
       }
       return makeResult(def, 'unverified');
+    }
+
+    // ---- Menu depth check (Phase 3 #5) ----
+    // Runs AFTER menu-format so the owner sees format first, then
+    // depth. We read the crawled menu-slot page (or the homepage as
+    // fallback) for visible prices + dish photos and fail when
+    // either signal is missing. When no menu page is reachable at
+    // all, we go 'unverified' with copy pointing back to menu-format
+    // rather than fabricating a fail.
+    if (def.type === 'menu-depth') {
+      if (typeof extractMenuSignals !== 'function') return makeResult(def, 'unverified');
+      var menuSignals = extractMenuSignals(context);
+      if (!menuSignals || !menuSignals.hasMenuPage) return makeResult(def, 'unverified');
+      if (menuSignals.hasPriceCoverage && menuSignals.hasPhotoCoverage) {
+        return makeResult(def, 'pass');
+      }
+      // At least one signal is missing — populate the {detected}
+      // token with a human-readable gap list so the failNote names
+      // exactly what to add, not a generic scolding.
+      var gapLabels = menuSignals.gaps.map(function(g){
+        if (g === 'prices') return 'prices on each item';
+        if (g === 'photos') return 'dish photos';
+        return g;
+      });
+      var gapPhrase = gapLabels.length === 1
+        ? gapLabels[0]
+        : gapLabels.slice(0, -1).join(', ') + ' and ' + gapLabels[gapLabels.length - 1];
+      return makeResult(def, 'fail', gapPhrase);
     }
 
     // ---- Menu format check ----
@@ -9623,6 +9775,14 @@
     'phone':                   [0.01, 0.03],
     'conversions':             [0.06, 0.15],  // ordering/reservations
     'menu-format':             [0.01, 0.04],
+    // Phase 3 #5: menu-depth coefficient. Range of 2-5% reflects
+    // DoorDash + UberEats internal analyses: menus with both prices
+    // AND dish photos convert ~30-40% higher than menus missing
+    // either, and the delta maps onto 2-5% of annual revenue for a
+    // typical independent restaurant. High end applies when the
+    // restaurant leans on delivery apps; low end for dine-in-heavy
+    // operations where the menu page is more reference than sales.
+    'menu-depth':              [0.02, 0.05],
     'platform':                [0.005, 0.02],
     'schema':                  [0.005, 0.015],
     'dietary':                 [0.005, 0.02],
@@ -10319,6 +10479,41 @@
     }
     return null;
   }
+  // Phase 3 #1: render a per-day map (from parseSchemaHoursObjects)
+  // back into a human-readable line so the NAP card can show the
+  // schema-side hours next to the Places line. Format mirrors what
+  // Google Maps emits ("Mon: 11:00 AM – 10:00 PM"), separated by " · "
+  // so it stays one visual row even on a wide column.
+  var PRETTY_HOURS_DAY_LABEL = {
+    Mo: 'Mon', Tu: 'Tue', We: 'Wed', Th: 'Thu', Fr: 'Fri', Sa: 'Sat', Su: 'Sun'
+  };
+  var PRETTY_HOURS_DAY_ORDER = ['Mo','Tu','We','Th','Fr','Sa','Su'];
+  function prettyHoursDisplayFromMap(map) {
+    if (!map || typeof map !== 'object') return '';
+    var parts = [];
+    for (var i = 0; i < PRETTY_HOURS_DAY_ORDER.length; i++) {
+      var d = PRETTY_HOURS_DAY_ORDER[i];
+      var ranges = map[d];
+      if (!ranges) continue;
+      if (ranges.length === 0) {
+        parts.push(PRETTY_HOURS_DAY_LABEL[d] + ': Closed');
+        continue;
+      }
+      var rangeStrs = ranges.map(function(r){
+        return prettyHoursMinutes(r[0]) + '–' + prettyHoursMinutes(r[1] >= 1440 ? r[1] - 1440 : r[1]);
+      });
+      parts.push(PRETTY_HOURS_DAY_LABEL[d] + ': ' + rangeStrs.join(', '));
+    }
+    return parts.join(' · ');
+  }
+  function prettyHoursMinutes(min) {
+    var h24 = Math.floor(min / 60) % 24;
+    var m   = min % 60;
+    var meridiem = h24 < 12 ? 'AM' : 'PM';
+    var h12 = h24 % 12; if (h12 === 0) h12 = 12;
+    return h12 + (m > 0 ? ':' + (m < 10 ? '0' + m : m) : '') + ' ' + meridiem;
+  }
+
   function firstSchemaFieldValue(schema, field) {
     if (!schema || !Array.isArray(schema.objects)) return null;
     for (var i = 0; i < schema.objects.length; i++) {
@@ -10380,12 +10575,45 @@
     // without a real geoparser. Two-source comparison is enough for
     // a confident mismatch call.
 
+    // ----- Hours (Phase 3 #1) -----
+    // Compare Places weekdayDescriptions ("Monday: 11:00 AM – 10:00 PM")
+    // against the schema's openingHoursSpecification. Both parsers
+    // live in restaurant-checks.js and emit the same per-day map; the
+    // canonical-key serializer below is the comparison key. The value
+    // shown in the rendered card is the human-readable form so an
+    // owner can SEE the drift, not just be told it exists.
+    var hoursSources = [];
+    if (placesEntity && Array.isArray(placesEntity.weekdayHoursText)
+        && typeof parsePlacesHoursText === 'function') {
+      var placesMap = parsePlacesHoursText(placesEntity.weekdayHoursText);
+      if (placesMap) {
+        hoursSources.push({
+          source: 'places',
+          value: serializeHoursDayMap(placesMap),
+          displayValue: placesEntity.weekdayHoursText.join(' · ')
+        });
+      }
+    }
+    if (schema && Array.isArray(schema.objects)
+        && typeof parseSchemaHoursObjects === 'function') {
+      var schemaMap = parseSchemaHoursObjects(schema.objects);
+      if (schemaMap) {
+        hoursSources.push({
+          source: 'schema',
+          value: serializeHoursDayMap(schemaMap),
+          displayValue: prettyHoursDisplayFromMap(schemaMap)
+        });
+      }
+    }
+
     function hasMismatch(sources, normalizer) {
       if (!sources || sources.length < 2) return false;
       var seen = null;
       for (var i = 0; i < sources.length; i++) {
-        var norm = normalizer(sources[i].value);
-        if (norm == null) continue;
+        var raw = (sources[i] && typeof sources[i].value !== 'undefined')
+          ? sources[i].value : sources[i];
+        var norm = normalizer ? normalizer(raw) : raw;
+        if (norm == null || norm === '') continue;
         if (seen === null) { seen = norm; continue; }
         if (seen !== norm) return true;
       }
@@ -10401,6 +10629,11 @@
     }
     if (hasMismatch(addressSources, normalizeAddressForCompare)) {
       rows.push({ label: t('nap.label.address'), sources: addressSources });
+    }
+    // Hours sources already carry the canonical key in `value`; pass
+    // an identity normalizer so the existing hasMismatch helper works.
+    if (hasMismatch(hoursSources, function(v){ return v; })) {
+      rows.push({ label: t('nap.label.hours'), sources: hoursSources });
     }
 
     if (!rows.length) {
@@ -10427,7 +10660,15 @@
         name.textContent = t('nap.source.' + s.source);
         var val = document.createElement('span');
         val.className = 'nap-check-source-value';
-        val.textContent = s.value;
+        // Phase 3 #1: prefer displayValue when present so a row can
+        // carry a canonical comparison key (s.value) AND a separately
+        // rendered human-readable string. Hours sources need this
+        // because the canonical key (e.g. "Mo:0660-1320|Tu:0660-1320")
+        // is unreadable to an owner; displayValue carries the
+        // "Mon: 11 AM – 10 PM · Tue: 11 AM – 10 PM" form.
+        val.textContent = (s.displayValue != null && s.displayValue !== '')
+          ? s.displayValue
+          : s.value;
         sRow.appendChild(name);
         sRow.appendChild(val);
         sourcesEl.appendChild(sRow);
