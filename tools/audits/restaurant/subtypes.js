@@ -412,6 +412,49 @@ function subtypeOwnerDefaults(id) {
   return (canon && RESTAURANT_SUBTYPE_OWNER_DEFAULTS[canon]) || null;
 }
 
+// Sprint CC3a: Google Places priceLevel → avgCheck multiplier.
+// Places v1 returns priceLevel as a string enum; each value shifts
+// a restaurant's typical check size relative to the subtype median.
+// Multipliers are deliberately asymmetric around 1.0 because US
+// restaurant check sizes follow a right-skewed distribution — the
+// ceiling of "$$$$ fine-dining" is much further above the median
+// than the floor of "$ taqueria" is below it.
+//
+// Owner sees zero input here — Places supplies the priceLevel, we
+// apply the multiplier, the revenue-at-risk chip auto-tightens.
+// That's the "wonder at how much it tells them without asking"
+// direction the user named.
+//
+// Multipliers picked from published US restaurant check-size
+// distributions (Nation's Restaurant News, Technomic 2024):
+//   PRICE_LEVEL_INEXPENSIVE    ~55% of median
+//   PRICE_LEVEL_MODERATE       identity (subtype default IS the median)
+//   PRICE_LEVEL_EXPENSIVE      ~1.6× median
+//   PRICE_LEVEL_VERY_EXPENSIVE ~2.4× median
+// UNSPECIFIED / FREE / unknown / null → identity, so the absence
+// of data never skews the chip.
+var PLACES_PRICE_LEVEL_AVG_CHECK_MULT = {
+  'PRICE_LEVEL_INEXPENSIVE':    0.55,
+  'PRICE_LEVEL_MODERATE':       1.00,
+  'PRICE_LEVEL_EXPENSIVE':      1.60,
+  'PRICE_LEVEL_VERY_EXPENSIVE': 2.40
+};
+
+/**
+ * Resolve an avg-check multiplier from a Places priceLevel string.
+ * Unknown / missing inputs return 1.0 (identity) so the caller can
+ * unconditionally multiply and never corrupt the default on
+ * missing data. Lowercase inputs are normalized so a test fixture
+ * or a future Places API version that changes case doesn't break
+ * the lookup.
+ */
+function priceLevelAvgCheckMultiplier(priceLevel) {
+  if (typeof priceLevel !== 'string') return 1.0;
+  var key = priceLevel.toUpperCase();
+  var mult = PLACES_PRICE_LEVEL_AVG_CHECK_MULT[key];
+  return (typeof mult === 'number' && mult > 0) ? mult : 1.0;
+}
+
 /**
  * Resolve a subtype-specific weight override for a given check id.
  * Returns the number (>=0) if overridden, or null to use the check's
@@ -458,6 +501,8 @@ if (typeof module !== 'undefined' && module.exports) {
     getSubtype: getSubtype,
     subtypeBenchmark: subtypeBenchmark,
     subtypeOwnerDefaults: subtypeOwnerDefaults,
+    priceLevelAvgCheckMultiplier: priceLevelAvgCheckMultiplier,
+    PLACES_PRICE_LEVEL_AVG_CHECK_MULT: PLACES_PRICE_LEVEL_AVG_CHECK_MULT,
     subtypeWeights: subtypeWeights
   };
 }

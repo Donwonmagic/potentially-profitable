@@ -9793,6 +9793,30 @@
       ? subtypeOwnerDefaults(subId)
       : null;
     var base = subDefaults || DEFAULT_OWNER_INPUTS;
+
+    // Sprint CC3a: layer Google Places priceLevel on top of the
+    // subtype default. Places already returned priceLevel (one of
+    // PRICE_LEVEL_INEXPENSIVE / MODERATE / EXPENSIVE /
+    // VERY_EXPENSIVE) during the fast scan; we multiply only
+    // avgCheck so a $$$$-tier room gets a ~2.4× check without
+    // also claiming it does 2.4× the covers. Unknown / null /
+    // unexpected values return 1.0 from the helper, leaving the
+    // subtype default untouched — the chip never gets worse than
+    // the CC2 state, only better when the signal exists.
+    try {
+      var placesForCheck = window.__auditPlaces && window.__auditPlaces.place;
+      var priceLevel = placesForCheck && placesForCheck.priceLevel;
+      if (priceLevel && typeof priceLevelAvgCheckMultiplier === 'function') {
+        var mult = priceLevelAvgCheckMultiplier(priceLevel);
+        if (mult !== 1.0 && typeof base.avgCheck === 'number') {
+          base = {
+            coversPerDay: base.coversPerDay,
+            avgCheck:     Math.max(1, Math.round(base.avgCheck * mult)),
+            openDays:     base.openDays
+          };
+        }
+      }
+    } catch (_) { /* noop — Places absent, keep the subtype default */ }
     var override = window.__auditOwnerInputs;
     if (override && typeof override === 'object') {
       return {
