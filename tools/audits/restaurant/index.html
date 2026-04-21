@@ -3888,7 +3888,7 @@
         actually doing?
       </h1>
       <p class="hero-sub" style="margin:24px auto 0; max-width:580px;" data-tr="hero.sub">
-        Drop your URL below and I'll run a real mobile audit in about thirty seconds — performance, SEO, accessibility, and the specific checks that matter for a restaurant. No sign-up, no email required to see your results, no tracking.
+        Drop your URL below and I'll run a real mobile audit in about thirty seconds — performance, SEO, accessibility, and the specific checks that matter for a restaurant. The full report renders on this page — no sign-up, no email, no tracking. (An optional form at the bottom emails you a PDF copy if you want one.)
       </p>
 
       <form class="audit-form" id="auditForm" novalidate>
@@ -5236,7 +5236,7 @@
     // Hero
     'hero.eyebrow':     'Herramienta gratuita \u00b7 Impulsada por Google Lighthouse',
     'hero.h1.full':     '\u00bfC\u00f3mo est\u00e1 realmente<br><span class="serif-italic">el sitio web de tu restaurante</span><br>funcionando?',
-    'hero.sub':         'Pega tu URL abajo y har\u00e9 una auditor\u00eda m\u00f3vil real en unos treinta segundos: rendimiento, SEO, accesibilidad y las verificaciones espec\u00edficas que importan para un restaurante. Sin registro, sin email para ver tus resultados, sin rastreo.',
+    'hero.sub':         'Pega tu URL abajo y har\u00e9 una auditor\u00eda m\u00f3vil real en unos treinta segundos: rendimiento, SEO, accesibilidad y las verificaciones espec\u00edficas que importan para un restaurante. El informe completo aparece en esta p\u00e1gina \u2014 sin registro, sin email, sin rastreo. (Hay un formulario opcional al final si quieres recibir una copia en PDF.)',
     'form.placeholder': 'https://turestaurante.com',
     'form.submit':      'Ejecutar auditor\u00eda',
     'form.urlLabel':    'URL del sitio web de tu restaurante',
@@ -5270,21 +5270,48 @@
     'pdf.cta.email':    'Tu direcci\u00f3n de correo'
   };
 
+  // Phase 2 U4: unified translation lookup. The tool has two
+  // translation maps for historical reasons:
+  //   1. window.__MUNTIN_UI_ES  (declared just above this function)
+  //      — page-chrome strings used by the data-tr DOM scanner.
+  //   2. UI_I18N in restaurant-checks.js, accessed via t(key)
+  //      — runtime-rendered strings used by chip / card renderers.
+  // The two grew separately and drifted: 49 of 68 data-tr keys live
+  // ONLY in UI_I18N, so a Spanish visitor saw Spanish chips but
+  // English headings. resolveTr() consults __MUNTIN_UI_ES first
+  // (so existing strings keep winning) and falls back to t(key) so
+  // any key in either source resolves correctly. Result: UI_I18N is
+  // effectively the single source of truth for translation; new
+  // strings only need to be added there.
+  function resolveTr(key) {
+    var dict = window.__MUNTIN_UI_ES || {};
+    if (dict[key] != null) return dict[key];
+    if (typeof t === 'function') {
+      var fallback = t(key, null, 'es');
+      // t() returns the key itself when missing; treat that as "not
+      // translated" rather than silently swapping the live English
+      // text with a key string.
+      if (fallback != null && fallback !== key) return fallback;
+    }
+    return null;
+  }
+
   window.__muntinTranslate = function(root){
     if (window.__muntinLang !== 'es') return;
-    var dict = window.__MUNTIN_UI_ES || {};
     var scope = root || document;
     // text content
     var txtNodes = scope.querySelectorAll('[data-tr]');
     for (var i = 0; i < txtNodes.length; i++) {
       var k = txtNodes[i].getAttribute('data-tr');
-      if (dict[k] != null) txtNodes[i].textContent = dict[k];
+      var v = resolveTr(k);
+      if (v != null) txtNodes[i].textContent = v;
     }
     // innerHTML (use sparingly, for elements that contain markup like <br>)
     var htmlNodes = scope.querySelectorAll('[data-tr-html]');
     for (var j = 0; j < htmlNodes.length; j++) {
       var k2 = htmlNodes[j].getAttribute('data-tr-html');
-      if (dict[k2] != null) htmlNodes[j].innerHTML = dict[k2];
+      var v2 = resolveTr(k2);
+      if (v2 != null) htmlNodes[j].innerHTML = v2;
     }
     // arbitrary attribute (placeholder, aria-label, etc.):
     // data-tr-attr="placeholder:form.placeholder;aria-label:form.urlLabel"
@@ -5296,7 +5323,8 @@
         var bits = pairs[p].split(':');
         if (bits.length !== 2) continue;
         var attr = bits[0].trim(), key = bits[1].trim();
-        if (dict[key] != null) attrNodes[a].setAttribute(attr, dict[key]);
+        var v3 = resolveTr(key);
+        if (v3 != null) attrNodes[a].setAttribute(attr, v3);
       }
     }
     // Update html lang attribute so AT and CSS :lang() selectors react

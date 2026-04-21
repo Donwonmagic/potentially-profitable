@@ -2323,6 +2323,15 @@ var UI_I18N = {
     es: 'No hubo señales adicionales disponibles para este sitio.'
   },
   'deepScan.eyebrow': { en: 'Deep scan', es: 'Deep scan' },
+  // Phase 2 U4: hero deep-scan toggle copy. Was referenced as a
+  // data-tr attribute in index.html but had no entry here, so a
+  // Spanish visitor saw English on this single line. Adding it
+  // here is the canonical fix — UI_I18N is now the single source
+  // of truth for translation lookups.
+  'hero.deepToggle': {
+    en: 'Also run a deep scan (2–3 min) — security headers, CrUX history, site age, reviews',
+    es: 'También ejecutar un escaneo profundo (2–3 min): encabezados de seguridad, historial CrUX, antigüedad del sitio, reseñas'
+  },
   // Phase 2 U6: freshness timestamp chip on the score card. Owners
   // returning to a saved share link weeks later need to know whether
   // they're looking at fresh data or an old run. The chip flips
