@@ -1813,6 +1813,21 @@
     word-break: break-all;
   }
   .audit-summary-meta .url strong { color: var(--ink); font-weight: 600; }
+  /* Phase 2 U6: freshness chip. Inline-block so it can sit beneath
+     the URL line on its own row. Stone tone signals "metadata," not
+     "alert"; the dotted underline on the tooltip-bearing element
+     hints at the title attribute without forcing JS-driven
+     popovers. */
+  .audit-freshness {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 12.5px;
+    color: var(--stone);
+    font-variant-numeric: tabular-nums;
+    border-bottom: 1px dotted var(--line-dark, #d4ccbc);
+    cursor: help;
+  }
+  .audit-freshness[hidden] { display: none; }
   .audit-summary-meta .verdict {
     font-size: 15.5px;
     line-height: 1.65;
@@ -3916,9 +3931,9 @@
         <div class="fill" id="auditProgressFill"></div>
       </div>
       <ol class="audit-steps" id="auditSteps">
-        <li class="audit-step" data-step="1"><span class="step-indicator">1</span><span data-tr="load.step1">Sending your URL to Google Lighthouse</span></li>
-        <li class="audit-step" data-step="2"><span class="step-indicator">2</span><span data-tr="load.step2">Running Lighthouse on a simulated phone</span></li>
-        <li class="audit-step" data-step="3"><span class="step-indicator">3</span><span data-tr="load.step3">Detecting restaurant platforms and scoring readiness</span></li>
+        <li class="audit-step" data-step="1"><span class="step-indicator">1</span><span data-tr="load.step1">Submitting your site for the speed test</span></li>
+        <li class="audit-step" data-step="2"><span class="step-indicator">2</span><span data-tr="load.step2">Loading your site in a simulated phone</span></li>
+        <li class="audit-step" data-step="3"><span class="step-indicator">3</span><span data-tr="load.step3">Reading your menu, hours, ordering, and Google profile</span></li>
         <li class="audit-step" data-step="4"><span class="step-indicator">4</span><span data-tr="load.step4">Writing your report</span></li>
       </ol>
     </div>
@@ -3992,6 +4007,12 @@
         <div class="audit-summary-meta">
           <h2 id="scoreHeadline">Your overall score</h2>
           <div class="url">Audited: <strong id="auditedUrl">—</strong></div>
+          <!-- Phase 2 U6: freshness chip. Populated by setAuditTimestamp()
+               after the report renders. Owners landing on a saved
+               share link weeks later need to know whether they're
+               looking at a fresh run or a stale snapshot. The full ISO
+               stamp lives in the title attribute for the curious. -->
+          <time class="audit-freshness" id="auditFreshness" hidden></time>
           <p class="verdict" id="verdictCopy">Verdict copy populates here after a run — explains what the score means and what to focus on first.</p>
           <!-- Phase 2 U7: subtype-benchmark chip. Populated by
                setScoreBenchmark() after setScoreRing() lands. Hidden
@@ -4317,8 +4338,8 @@
 
       <section class="deep-crux-card deep-card" id="deepCruxCard" hidden>
         <span class="deep-eyebrow" data-tr="deepScan.eyebrow">Deep scan</span>
-        <h3 class="deep-section-head" data-tr="deep.crux.heading">Field-data trends (25 weeks)</h3>
-        <p class="deep-section-sub" data-tr="deep.crux.sub">Real-user Core Web Vitals from the Chrome UX Report. Rendered only when Google has enough samples to publish a trend.</p>
+        <h3 class="deep-section-head" data-tr="deep.crux.heading">What real visitors actually experience</h3>
+        <p class="deep-section-sub" data-tr="deep.crux.sub">Page load, response time, and layout stability — measured from real Chrome users on your site over the last 25 weeks. Only shown when Google has enough samples to publish a trend. (Technical: Core Web Vitals from CrUX.)</p>
         <div class="deep-crux-grid" id="deepCruxGrid"></div>
       </section>
 
@@ -4330,10 +4351,10 @@
       <section class="deep-email-card deep-card" id="deepEmailCard" hidden>
         <span class="deep-eyebrow" data-tr="deepScan.eyebrow">Deep scan</span>
         <header class="deep-section-head-wrap">
-          <h3 class="deep-section-head" data-tr="deep.email.heading">Email deliverability</h3>
+          <h3 class="deep-section-head" data-tr="deep.email.heading">Will your reservation confirmations land in spam?</h3>
           <span class="deep-email-posture" id="deepEmailPosture" hidden></span>
         </header>
-        <p class="deep-section-sub" data-tr="deep.email.sub">Gmail, Outlook, and Yahoo require SPF + DMARC on sending domains. Booking confirmations and newsletters land in spam without them.</p>
+        <p class="deep-section-sub" data-tr="deep.email.sub">Gmail, Outlook, and Yahoo silently route booking confirmations and newsletters to spam unless your domain proves it can send mail. The three rows below are the proofs they look for.</p>
         <ul class="deep-email-rows" id="deepEmailRows"></ul>
       </section>
 
@@ -4451,8 +4472,8 @@
            schema was detected at all. -->
       <section class="schema-richness-card" id="schemaRichnessCard" hidden>
         <header class="schema-richness-head">
-          <span class="schema-richness-badge" data-tr="schemaRichness.badge">Schema scorecard</span>
-          <h3 class="schema-richness-title" data-tr="schemaRichness.heading">How complete is your Restaurant schema?</h3>
+          <span class="schema-richness-badge" data-tr="schemaRichness.badge">How Google reads your data</span>
+          <h3 class="schema-richness-title" data-tr="schemaRichness.heading">How well can Google read your menu, hours, and address?</h3>
         </header>
         <p class="schema-richness-summary" id="schemaRichnessSummary"></p>
         <ul class="schema-richness-list" id="schemaRichnessList"></ul>
@@ -5223,9 +5244,9 @@
     // Loading
     'load.h2':          'Ejecutando tu auditor\u00eda\u2026',
     'load.sub':         'Esto suele tardar entre 15 y 40 segundos.',
-    'load.step1':       'Enviando tu URL a Google Lighthouse',
-    'load.step2':       'Ejecutando Lighthouse en un tel\u00e9fono simulado',
-    'load.step3':       'Detectando plataformas de restaurante y calificando preparaci\u00f3n',
+    'load.step1':       'Enviando tu sitio al test de velocidad',
+    'load.step2':       'Cargando tu sitio en un tel\u00e9fono simulado',
+    'load.step3':       'Leyendo tu men\u00fa, horarios, pedidos y perfil de Google',
     'load.step4':       'Escribiendo tu informe',
     // Error
     'err.h2':           'No pudimos auditar esa URL.',
@@ -9642,6 +9663,66 @@
     return items;
   }
 
+  // Phase 2 U6: freshness chip on the score card. Captures the time
+  // the report rendered (NOT when the page loaded — a saved share
+  // link should always show when the audit was actually run, which
+  // for a same-session audit is "now" and for a re-loaded share link
+  // is whatever timestamp lives in __auditTimestamp). The chip
+  // self-updates every 30s so a viewer who leaves the page open sees
+  // the relative time tick over.
+  var FRESHNESS_TIMER = null;
+  function setAuditTimestamp(when) {
+    var el = document.getElementById('auditFreshness');
+    if (!el) return;
+    // Argument precedence: explicit `when` wins (used by the initial
+    // audit-render path with Date.now()), then a previously-stored
+    // window.__auditTimestamp (used by override re-renders so we
+    // don't reset the clock when the owner just confirms a check),
+    // then fall back to "now" so a defensive caller still gets a
+    // reasonable label.
+    var ts = (typeof when === 'number')
+      ? when
+      : (typeof window.__auditTimestamp === 'number' ? window.__auditTimestamp : Date.now());
+    window.__auditTimestamp = ts;
+    el.setAttribute('datetime', new Date(ts).toISOString());
+    var fullStamp = new Date(ts).toLocaleString();
+    var tooltip = (typeof t === 'function') ? t('freshness.tooltip') : 'Re-run any time — the audit is free.';
+    el.setAttribute('title', fullStamp + ' — ' + tooltip);
+    paintFreshnessLabel(el, ts);
+    el.hidden = false;
+    if (FRESHNESS_TIMER) { clearInterval(FRESHNESS_TIMER); }
+    FRESHNESS_TIMER = setInterval(function(){
+      var current = document.getElementById('auditFreshness');
+      if (!current || !window.__auditTimestamp) {
+        if (FRESHNESS_TIMER) { clearInterval(FRESHNESS_TIMER); FRESHNESS_TIMER = null; }
+        return;
+      }
+      paintFreshnessLabel(current, window.__auditTimestamp);
+    }, 30_000);
+  }
+  function paintFreshnessLabel(el, ts) {
+    var ageSec = Math.max(0, Math.floor((Date.now() - ts) / 1000));
+    if (typeof t !== 'function' || typeof pickFreshnessKey !== 'function') {
+      el.textContent = 'Audited ' + new Date(ts).toLocaleString();
+      return;
+    }
+    var pick = pickFreshnessKey(ageSec, Date.now());
+    var vars = pick.vars;
+    // For the 'onDate' bucket the bucket helper hands us an ISO date
+    // (YYYY-MM-DD) for stability across locales / time zones; the
+    // browser-side render swaps that for a more readable
+    // toLocaleDateString form so the chip says "Apr 21, 2026" rather
+    // than "2026-04-21". Keeps the helper pure (testable) while
+    // letting the UI show owner-friendly dates.
+    if (pick.key === 'freshness.onDate' && vars && vars.date) {
+      var formatted = new Date(ts).toLocaleDateString(undefined, {
+        year: 'numeric', month: 'short', day: 'numeric'
+      });
+      vars = { date: formatted };
+    }
+    el.textContent = t(pick.key, vars);
+  }
+
   // Phase 2 U7: paint the subtype-benchmark chip beneath the overall
   // score. Reuses subtypeBenchmark() from subtypes.js and the
   // BUSINESS_TYPE_DEFS label lookup already used by the share card.
@@ -11436,6 +11517,12 @@
       var benchEl = document.getElementById('scoreBenchmark');
       if (benchEl) benchEl.hidden = true;
     }
+    // Phase 2 U6: stamp the audit time so a viewer of a saved share
+    // link weeks later sees "Audited 18 days ago" rather than
+    // assuming the report is fresh. The chip self-updates via a
+    // 30s interval so a tab left open ticks "just now" -> "5 minutes
+    // ago" without a refresh.
+    setAuditTimestamp(Date.now());
     setCategory('performance',   perf);
     setCategory('accessibility', a11y);
     setCategory('best-practices', bp);
@@ -11686,6 +11773,12 @@
       var benchEl2 = document.getElementById('scoreBenchmark');
       if (benchEl2) benchEl2.hidden = true;
     }
+    // Phase 2 U6: refresh the freshness label without resetting the
+    // captured audit timestamp — clicking "I have this" doesn't
+    // re-run the audit, so the chip should still anchor to the
+    // ORIGINAL run time. Calling without an argument reuses
+    // window.__auditTimestamp.
+    setAuditTimestamp();
     var verdictEl = document.getElementById('verdictCopy');
     if (verdictEl) verdictEl.textContent = verdictFor(overall, { unverifiedCount: priorityResult.unverifiedCount, totalCount: priorityResult.totalCount });
     if (!state.isRestaurant) {
