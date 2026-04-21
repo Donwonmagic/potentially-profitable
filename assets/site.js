@@ -1503,6 +1503,7 @@
         audioEl.playbackRate = currentRate();
         try { await audioEl.play(); } catch (e) { console.warn('[readAloud] resume rejected', e); return; }
         setState('playing');
+        ensureAmplitudeAnalyser();
         tickStudio();
         return;
       }
@@ -1514,13 +1515,86 @@
       drawTicks();
       revealPlayerChrome();
       audioEl.playbackRate = currentRate();
+      // Create the AudioContext inside the user-gesture chain, before
+      // the first await — Safari otherwise leaves it permanently
+      // suspended. If analyser setup fails, playback continues without
+      // the amplitude cue.
+      ensureAmplitudeAnalyser();
       try { await audioEl.play(); } catch (e) {
         console.warn('[readAloud] audio.play rejected', e);
         return;
       }
       setState('playing');
+      startAmplitudeLoop();
       tickStudio();
       if (window.plausible) window.plausible('Post Listened');
+    }
+
+    /* -- Sprint A7: amplitude-reactive play-button breathing --------
+       First play lazily creates an AudioContext + MediaElementSource +
+       AnalyserNode, chains source → analyser → destination so audio
+       continues to play through speakers, then rAFs a loop that
+       computes RMS per frame and writes it as `--listen-amp` on the
+       play button. CSS uses the var to drive the outer aura ring's
+       scale, so the button breathes with the voice.
+       Every API entry is wrapped in try/catch; any failure (Safari
+       MediaElementSource policy, CORS taint, unsupported AnalyserNode)
+       leaves the static pulse rings as the only breathing cue. */
+    let audioCtx = null;
+    let audioCtxSource = null;
+    let analyserNode = null;
+    let amplitudeFrame = 0;
+    let amplitudeBuffer = null;
+    function ensureAmplitudeAnalyser() {
+      if (!audioEl || !playBtn) return;
+      if (analyserNode) { startAmplitudeLoop(); return; }
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      try {
+        audioCtx = new AC();
+        audioCtxSource = audioCtx.createMediaElementSource(audioEl);
+        analyserNode = audioCtx.createAnalyser();
+        analyserNode.fftSize = 256;
+        analyserNode.smoothingTimeConstant = 0.6;
+        amplitudeBuffer = new Uint8Array(analyserNode.fftSize);
+        audioCtxSource.connect(analyserNode);
+        analyserNode.connect(audioCtx.destination);
+      } catch (e) {
+        console.warn('[readAloud] analyser setup failed', e);
+        audioCtx = null; analyserNode = null; amplitudeBuffer = null;
+        return;
+      }
+      // AudioContexts created before a user gesture start suspended on
+      // some browsers; resume inside the gesture chain.
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume().catch(() => {});
+      }
+      startAmplitudeLoop();
+    }
+    function startAmplitudeLoop() {
+      if (amplitudeFrame) return;
+      const tick = () => {
+        if (!analyserNode || !amplitudeBuffer || !playBtn) { amplitudeFrame = 0; return; }
+        if (state !== 'playing') {
+          playBtn.style.setProperty('--listen-amp', '0');
+          amplitudeFrame = 0;
+          return;
+        }
+        analyserNode.getByteTimeDomainData(amplitudeBuffer);
+        // RMS of the centered waveform (samples are 0..255 with 128 at rest).
+        let sumSq = 0;
+        for (let i = 0; i < amplitudeBuffer.length; i++) {
+          const v = (amplitudeBuffer[i] - 128) / 128;
+          sumSq += v * v;
+        }
+        const rms = Math.sqrt(sumSq / amplitudeBuffer.length);
+        // Clamp to 0..1 and bias upward a touch so normal speech RMS
+        // (~0.15–0.35) reads as active but not saturated.
+        const amp = Math.min(1, rms * 2.2);
+        playBtn.style.setProperty('--listen-amp', amp.toFixed(3));
+        amplitudeFrame = requestAnimationFrame(tick);
+      };
+      amplitudeFrame = requestAnimationFrame(tick);
     }
 
     function pauseStudioPlayback() {

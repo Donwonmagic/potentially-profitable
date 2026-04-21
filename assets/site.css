@@ -749,24 +749,31 @@ br.br-lg{display:none}
    (inset:-12px), .listen-card-play-aura span is the outer ring
    (inset:-18px). Inner ring (::after, inset:-6px) stays as-is. */
 .listen-card-play::before{content:"";position:absolute;inset:-12px;border-radius:50%;border:2px solid var(--lc-accent);opacity:0;transform:scale(0.9);pointer-events:none}
-.listen-card-play-aura{position:absolute;inset:-18px;border-radius:50%;border:2px solid var(--lc-accent);opacity:0;transform:scale(0.9);pointer-events:none}
+/* Sprint A7: the outer aura ring is amplitude-driven. JS analyses the
+   audio source and writes `--listen-amp` (0..1) on the play button
+   every rAF tick; the ring's scale reads the var so it breathes with
+   the voice. Baseline scale 0.95, peak scale 1.20. 80ms linear
+   transition smooths the ~60fps updates without looking twitchy. */
+.listen-card-play-aura{
+  position:absolute;inset:-18px;border-radius:50%;
+  border:2px solid var(--lc-accent);
+  opacity:0;
+  transform:scale(0.95);
+  transition:opacity var(--t-med) var(--ease), transform 80ms linear;
+  pointer-events:none;
+}
 .listen-card[data-state="playing"] .listen-card-play::before{
   animation:listen-pulse-mid 2.6s var(--ease-out) infinite;
   animation-delay:0.9s;
 }
 .listen-card[data-state="playing"] .listen-card-play-aura{
-  animation:listen-pulse-outer 3.2s var(--ease-out) infinite;
-  animation-delay:1.6s;
+  opacity:0.35;
+  transform:scale(calc(0.95 + var(--listen-amp, 0) * 0.25));
 }
 @keyframes listen-pulse-mid{
   0%   { opacity:0.35; transform:scale(0.92); }
   70%  { opacity:0;    transform:scale(1.35); }
   100% { opacity:0;    transform:scale(1.35); }
-}
-@keyframes listen-pulse-outer{
-  0%   { opacity:0.20; transform:scale(0.94); }
-  70%  { opacity:0;    transform:scale(1.5);  }
-  100% { opacity:0;    transform:scale(1.5);  }
 }
 
 .listen-card-body{grid-area:body;min-width:0}
@@ -1065,6 +1072,10 @@ br.br-lg{display:none}
    the active chapter, but skip the scaleY bounce and glow. */
 .listen-card-progress-ticks span{transition:background-color var(--t-fast) var(--ease)}
 .listen-card[data-state="playing"] .listen-card-progress-ticks span[data-current="true"]{transform:none;box-shadow:none}
+/* Sprint A7: pin the amplitude ring at its baseline scale. The var
+   continues to update, but CSS ignores it — the aura stays as a
+   static halo instead of breathing. */
+.listen-card[data-state="playing"] .listen-card-play-aura{transform:scale(0.95);transition:opacity var(--t-fast) var(--ease)}
 }
 
 /* ============ BREADCRUMBS ============
