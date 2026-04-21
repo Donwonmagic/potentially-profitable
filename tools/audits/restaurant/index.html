@@ -3310,26 +3310,60 @@
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
   }
-  .chip-self     { background: #e6f4ec; border-color: #bfe0cb; color: #0f6b35; }
-  .chip-self::before { content: '●'; color: #1f9d55; font-size: 9px; }
-  .chip-dev      { background: #eef4fa; border-color: #c9d9ea; color: #2a5285; }
-  .chip-dev::before  { content: '●'; color: #3b7bc4; font-size: 9px; }
-  .chip-rebuild  { background: #fce9e1; border-color: #f4b69e; color: #8a3010; }
-  .chip-rebuild::before { content: '●'; color: var(--rust); font-size: 9px; }
-  .chip-time     { background: var(--cream-2); color: var(--stone); }
-  /* Phase 2 U1: revenue-at-risk chip promoted to a global chip variant
-     so every surface that surfaces a finding — priority row, Action
-     Plan item, Top 3 card — can emit the same `<span class="chip
-     chip-revenue">` and look consistent. Rust accent echoes the
-     top-fixes-card border treatment: visually flags "money on the
-     table" without introducing a new color token. */
-  .chip-revenue {
-    background: #FDEFE3;
-    border-color: #EFD1B6;
-    color: #8A3E16;
-    font-variant-numeric: tabular-nums;
+  /* Sprint 8: chip tone system. Softens the chip recipes from solid
+     pastel backgrounds + dot prefix (dated-feeling 2020 pattern) to
+     translucent tinted backgrounds with matching border color
+     (2024-era pattern — Stripe, Linear, modern Tailwind UI). The
+     tint-on-tint carries the semantic color without needing a
+     leading ● glyph, which made every effort chip feel slightly
+     over-decorated.
+
+     Three semantic tones live behind three access patterns:
+       .chip-self / data-tone="effort-self"   → green
+       .chip-dev  / data-tone="effort-dev"    → blue
+       .chip-rebuild / data-tone="effort-rebuild" → rust
+       .chip-time / data-tone="time"          → neutral
+       .chip-revenue / data-tone="risk"       → rust + $ glyph
+
+     Legacy class names stay the canonical emit path; data-tone is
+     a forward-facing API future emitters can adopt. Both route to
+     the same visual recipe so a mixed document renders consistently. */
+  .chip-self,
+  .chip[data-tone="effort-self"] {
+    background: rgba(31, 157, 85, 0.09);
+    border-color: rgba(31, 157, 85, 0.22);
+    color: #0f6b35;
   }
-  .chip-revenue::before { content: '$'; font-weight: 700; font-size: 10px; }
+  .chip-dev,
+  .chip[data-tone="effort-dev"] {
+    background: rgba(59, 123, 196, 0.09);
+    border-color: rgba(59, 123, 196, 0.22);
+    color: #2a5285;
+  }
+  .chip-rebuild,
+  .chip[data-tone="effort-rebuild"] {
+    background: rgba(184, 84, 26, 0.09);
+    border-color: rgba(184, 84, 26, 0.22);
+    color: #8a3010;
+  }
+  .chip-time,
+  .chip[data-tone="time"] {
+    background: transparent;
+    border-color: var(--line);
+    color: var(--stone);
+  }
+  /* Phase 2 U1 + Sprint 8: revenue-at-risk chip. Kept as the sole
+     chip variant that carries a leading glyph — $ is a more
+     distinctive semantic signal than a generic bullet dot, and the
+     tabular-nums already on .chip ensure currency values align. */
+  .chip-revenue,
+  .chip[data-tone="risk"] {
+    background: rgba(184, 84, 26, 0.09);
+    border-color: rgba(184, 84, 26, 0.22);
+    color: #8A3E16;
+  }
+  .chip-revenue::before,
+  .chip[data-tone="risk"]::before { content: '$'; font-weight: 700; font-size: 10px; }
 
   /* "Why this matters" — one-line impact framing, subtle but present.
      Helps owners prioritize by consequence, not by test order. */
