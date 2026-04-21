@@ -475,6 +475,12 @@
     const progressEl = card.root.querySelector('.listen-card-progress');
     const progressFill = card.root.querySelector('.listen-card-progress-fill');
     const progressTicks = card.root.querySelector('.listen-card-progress-ticks');
+    const waveformCanvas = card.root.querySelector('.listen-card-waveform');
+    // Sprint A6: peaks array (one bin per column, 0..1). Populated
+    // asynchronously once per audio URL; null until ready. Rendered
+    // behind the progress fill to give the bar a voice-shaped body.
+    let waveformPeaks = null;
+    let waveformForUrl = null; // guards against a language swap mid-fetch
     const extrasEl   = card.root.querySelector('.listen-card-extras');
     const prevBtn    = card.root.querySelector('.listen-prev');
     const nextBtn    = card.root.querySelector('.listen-next');
@@ -634,6 +640,14 @@
         audioEl = null;
       }
       manifest = null;
+      // Sprint A6: invalidate the peaks so the next play re-fetches
+      // the language-specific MP3 (different duration, different peaks).
+      waveformPeaks = null;
+      waveformForUrl = null;
+      if (waveformCanvas) {
+        const ctx = waveformCanvas.getContext('2d');
+        if (ctx) ctx.clearRect(0, 0, waveformCanvas.width, waveformCanvas.height);
+      }
       updateMediaSessionMetadata();
       if (userInitiated) finishPlayback();
       // Swap the visible prose so a reader can follow along in the
@@ -956,13 +970,31 @@
           el.classList.add('is-reading-callout');
         }
         // Update "now reading" label on the card
-        if (chapterEl) chapterEl.textContent = chapterLabel(chunk);
+        if (chapterEl) setChapterText(chapterEl, chapterLabel(chunk));
         const rect = el.getBoundingClientRect();
         const isOutOfView = rect.top < 80 || rect.bottom > window.innerHeight - 80;
         if (isOutOfView) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
       } else if (chapterEl) {
-        chapterEl.textContent = '';
+        setChapterText(chapterEl, '');
       }
+    }
+
+    // Sprint A4: animate any chapter-label text change with a fade-slide
+    // in — opacity + translateY + a 1.5px blur settle over 360ms. Uses
+    // the remove/reflow/re-add class trick so the same keyframe can
+    // re-trigger on each chunk boundary. Skipped when the text is
+    // unchanged (a no-op tickStudio pass shouldn't re-animate).
+    function setChapterText(el, next) {
+      if (!el) return;
+      const cur = el.textContent || '';
+      const n = next || '';
+      if (cur === n) return;
+      el.textContent = n;
+      el.classList.remove('lc-chapter-in');
+      // Force a reflow so the browser treats the class removal +
+      // re-add as a real transition boundary.
+      void el.offsetWidth;
+      if (n) el.classList.add('lc-chapter-in');
     }
 
     function chapterLabel(chunk) {
@@ -1009,6 +1041,9 @@
       // One tick per H2 boundary, so the progress bar doubles as a
       // chapter map. Fall back to a single no-tick bar if the post has
       // no H2s (short posts).
+      // Sprint A3: each segment also carries its [startIdx, endIdx)
+      // range on the dataset so tickStudio can flag the active chapter
+      // without recomputing the mapping on every audio tick.
       const frag = document.createDocumentFragment();
       let lastFlex = 0;
       for (let i = 0; i < chunks.length; i++) {
@@ -1016,6 +1051,8 @@
         if (isBoundary) {
           const seg = document.createElement('span');
           seg.style.flex = String(i - lastFlex);
+          seg.dataset.startIdx = String(lastFlex);
+          seg.dataset.endIdx   = String(i);
           frag.appendChild(seg);
           lastFlex = i;
         }
@@ -1023,8 +1060,158 @@
       // Final segment through the end
       const tail = document.createElement('span');
       tail.style.flex = String(chunks.length - lastFlex);
+      tail.dataset.startIdx = String(lastFlex);
+      tail.dataset.endIdx   = String(chunks.length);
       frag.appendChild(tail);
       progressTicks.replaceChildren(frag);
+    }
+
+    /* -- Sprint A6: static peaks waveform ------------------------- */
+    // Lightweight 32-bit FNV-1a hash so cache keys stay short even on
+    // long audio URLs. Enough to avoid collisions across a handful of
+    // language variants per post.
+    function hashAudioUrl(s) {
+      let h = 0x811c9dc5;
+      for (let i = 0; i < s.length; i++) {
+        h ^= s.charCodeAt(i);
+        h = (h * 0x01000193) >>> 0;
+      }
+      return h.toString(16);
+    }
+
+    const PEAKS_CACHE_PREFIX = 'muntin.audioPeaks.v1.';
+    const PEAKS_BIN_COUNT    = 120;
+
+    function loadCachedPeaks(url) {
+      try {
+        const key = PEAKS_CACHE_PREFIX + hashAudioUrl(url);
+        const raw = localStorage.getItem(key);
+        if (!raw) return null;
+        const arr = JSON.parse(raw);
+        if (!Array.isArray(arr) || arr.length !== PEAKS_BIN_COUNT) return null;
+        return arr;
+      } catch (_) { return null; }
+    }
+    function saveCachedPeaks(url, peaks) {
+      try {
+        const key = PEAKS_CACHE_PREFIX + hashAudioUrl(url);
+        // Round to 3 decimals so the JSON stays under ~1.2 KB per post.
+        const rounded = peaks.map((v) => Math.round(v * 1000) / 1000);
+        localStorage.setItem(key, JSON.stringify(rounded));
+      } catch (_) {}
+    }
+
+    // Decode audio → compute one peak bin per ~duration/PEAKS_BIN_COUNT
+    // window from channel 0. Gracefully falls through to null on any
+    // failure (CORS, decodeAudioData rejection, unsupported AudioContext)
+    // and the card keeps its existing flat teal bar.
+    async function computePeaksFrom(url) {
+      const AC = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+      if (!AC || !window.fetch) return null;
+      try {
+        const res = await fetch(url, { credentials: 'omit' });
+        if (!res.ok) return null;
+        const buf = await res.arrayBuffer();
+        // A 1-second / 1-channel / 22050-Hz context is enough to host
+        // decodeAudioData without allocating a playback-sized buffer.
+        const tempCtx = new AC(1, 22050, 22050);
+        const audioBuf = await tempCtx.decodeAudioData(buf.slice(0));
+        const ch = audioBuf.getChannelData(0);
+        const bins = PEAKS_BIN_COUNT;
+        const step = Math.floor(ch.length / bins) || 1;
+        const peaks = new Array(bins);
+        let max = 0;
+        for (let b = 0; b < bins; b++) {
+          let peak = 0;
+          const start = b * step;
+          const end = Math.min(start + step, ch.length);
+          for (let i = start; i < end; i++) {
+            const v = Math.abs(ch[i]);
+            if (v > peak) peak = v;
+          }
+          peaks[b] = peak;
+          if (peak > max) max = peak;
+        }
+        // Normalize to 0..1 so the tallest bin hits the top.
+        if (max > 0) for (let b = 0; b < bins; b++) peaks[b] /= max;
+        return peaks;
+      } catch (e) {
+        console.warn('[readAloud] peaks decode failed', e);
+        return null;
+      }
+    }
+
+    async function ensureWaveformPeaks() {
+      if (!waveformCanvas || !audioSrc) return;
+      // Respect Data Saver: skip the ~100-300 KB audio fetch.
+      try {
+        const c = navigator.connection;
+        if (c && c.saveData) return;
+      } catch (_) {}
+      if (waveformForUrl === audioSrc) return;
+      waveformForUrl = audioSrc;
+      const cached = loadCachedPeaks(audioSrc);
+      if (cached) { waveformPeaks = cached; renderWaveform(0); return; }
+      const fresh = await computePeaksFrom(audioSrc);
+      if (waveformForUrl !== audioSrc) return; // language changed mid-fetch
+      if (fresh) {
+        waveformPeaks = fresh;
+        saveCachedPeaks(audioSrc, fresh);
+        renderWaveform(lastKnownPlayedPct);
+      }
+    }
+
+    let lastKnownPlayedPct = 0;
+    function renderWaveform(playedPct) {
+      if (!waveformCanvas || !waveformPeaks) return;
+      lastKnownPlayedPct = playedPct || 0;
+      const cssW = waveformCanvas.clientWidth;
+      const cssH = waveformCanvas.clientHeight;
+      if (!cssW || !cssH) return;
+      const dpr = window.devicePixelRatio || 1;
+      const w = Math.floor(cssW * dpr);
+      const h = Math.floor(cssH * dpr);
+      if (waveformCanvas.width !== w)  waveformCanvas.width  = w;
+      if (waveformCanvas.height !== h) waveformCanvas.height = h;
+      const ctx = waveformCanvas.getContext('2d');
+      if (!ctx) return;
+      ctx.clearRect(0, 0, w, h);
+      const bins = waveformPeaks.length;
+      const barW = w / bins;
+      const halfH = h / 2;
+      const playedBoundary = (playedPct / 100) * w;
+      const UNPLAYED = 'rgba(31,78,91,0.22)';
+      const PLAYED   = 'rgba(31,78,91,0.85)';
+      for (let i = 0; i < bins; i++) {
+        const peak = waveformPeaks[i];
+        const barH = Math.max(1, peak * (halfH - 1));
+        const x = i * barW;
+        ctx.fillStyle = (x + barW * 0.5) <= playedBoundary ? PLAYED : UNPLAYED;
+        // Single rect centered vertically — symmetric around the midline.
+        ctx.fillRect(Math.round(x), Math.round(halfH - barH), Math.max(1, Math.floor(barW * 0.6)), Math.round(barH * 2));
+      }
+    }
+
+    // Re-paint on viewport resize so the canvas stays crisp at the
+    // new width. Listeners fire after the progress bar relayouts.
+    window.addEventListener('resize', () => {
+      if (waveformPeaks) renderWaveform(lastKnownPlayedPct);
+    });
+
+    // Sprint A3: flag the tick segment whose [startIdx, endIdx) contains
+    // the currently-playing chunk. CSS swells the current segment to
+    // 1.08× and tints it with a soft teal, so the progress bar visibly
+    // bubbles forward chapter by chapter as the audio advances.
+    function markCurrentTickSegment(idx) {
+      if (!progressTicks) return;
+      const segs = progressTicks.children;
+      for (let i = 0; i < segs.length; i++) {
+        const s = segs[i];
+        const a = Number(s.dataset.startIdx);
+        const b = Number(s.dataset.endIdx);
+        if (idx >= a && idx < b) s.setAttribute('data-current', 'true');
+        else                     s.removeAttribute('data-current');
+      }
     }
 
     function updateProgress() {
@@ -1263,7 +1450,7 @@
         audioEl = new Audio();
         audioEl.preload = 'metadata';
         audioEl.src = audioSrc;
-        audioEl.addEventListener('ended', finishStudioPlayback);
+        audioEl.addEventListener('ended', () => finishStudioPlayback(true));
         audioEl.addEventListener('error', () => {
           console.warn('[readAloud] studio audio error, falling back to speech');
           engine = 'speech';
@@ -1302,6 +1489,10 @@
       // Studio mode uses Audio's native rate; remove the voice picker
       const voiceLabel = voiceSelect ? voiceSelect.closest('.listen-select') : null;
       if (voiceLabel) voiceLabel.hidden = true;
+      // Sprint A6: kick off the peaks pipeline. Fire-and-forget; the
+      // canvas stays blank (and the existing flat fill is the only
+      // progress cue) until peaks resolve or fail silently.
+      ensureWaveformPeaks();
       return true;
     }
 
@@ -1312,6 +1503,7 @@
         audioEl.playbackRate = currentRate();
         try { await audioEl.play(); } catch (e) { console.warn('[readAloud] resume rejected', e); return; }
         setState('playing');
+        ensureAmplitudeAnalyser();
         tickStudio();
         return;
       }
@@ -1323,13 +1515,93 @@
       drawTicks();
       revealPlayerChrome();
       audioEl.playbackRate = currentRate();
+      // Create the AudioContext inside the user-gesture chain, before
+      // the first await — Safari otherwise leaves it permanently
+      // suspended. If analyser setup fails, playback continues without
+      // the amplitude cue.
+      ensureAmplitudeAnalyser();
       try { await audioEl.play(); } catch (e) {
         console.warn('[readAloud] audio.play rejected', e);
         return;
       }
       setState('playing');
+      startAmplitudeLoop();
       tickStudio();
       if (window.plausible) window.plausible('Post Listened');
+    }
+
+    /* -- Sprint A7: amplitude-reactive play-button breathing --------
+       First play lazily creates an AudioContext + MediaElementSource +
+       AnalyserNode, chains source → analyser → destination so audio
+       continues to play through speakers, then rAFs a loop that
+       computes RMS per frame and writes it as `--listen-amp` on the
+       play button. CSS uses the var to drive the outer aura ring's
+       scale, so the button breathes with the voice.
+       Every API entry is wrapped in try/catch; any failure (Safari
+       MediaElementSource policy, CORS taint, unsupported AnalyserNode)
+       leaves the static pulse rings as the only breathing cue. */
+    let audioCtx = null;
+    let audioCtxSource = null;
+    let analyserNode = null;
+    let amplitudeFrame = 0;
+    let amplitudeBuffer = null;
+    function ensureAmplitudeAnalyser() {
+      if (!audioEl || !playBtn) return;
+      if (analyserNode) { startAmplitudeLoop(); return; }
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      try {
+        audioCtx = new AC();
+        audioCtxSource = audioCtx.createMediaElementSource(audioEl);
+        analyserNode = audioCtx.createAnalyser();
+        analyserNode.fftSize = 256;
+        analyserNode.smoothingTimeConstant = 0.6;
+        amplitudeBuffer = new Uint8Array(analyserNode.fftSize);
+        audioCtxSource.connect(analyserNode);
+        analyserNode.connect(audioCtx.destination);
+      } catch (e) {
+        console.warn('[readAloud] analyser setup failed', e);
+        audioCtx = null; analyserNode = null; amplitudeBuffer = null;
+        return;
+      }
+      // AudioContexts created before a user gesture start suspended on
+      // some browsers; resume inside the gesture chain.
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume().catch(() => {});
+      }
+      startAmplitudeLoop();
+    }
+    function startAmplitudeLoop() {
+      if (amplitudeFrame) return;
+      const root = document.documentElement;
+      const tick = () => {
+        if (!analyserNode || !amplitudeBuffer || !playBtn) { amplitudeFrame = 0; return; }
+        if (state !== 'playing') {
+          playBtn.style.setProperty('--listen-amp', '0');
+          root.style.setProperty('--listen-amp', '0');
+          amplitudeFrame = 0;
+          return;
+        }
+        analyserNode.getByteTimeDomainData(amplitudeBuffer);
+        // RMS of the centered waveform (samples are 0..255 with 128 at rest).
+        let sumSq = 0;
+        for (let i = 0; i < amplitudeBuffer.length; i++) {
+          const v = (amplitudeBuffer[i] - 128) / 128;
+          sumSq += v * v;
+        }
+        const rms = Math.sqrt(sumSq / amplitudeBuffer.length);
+        // Clamp to 0..1 and bias upward a touch so normal speech RMS
+        // (~0.15–0.35) reads as active but not saturated.
+        const amp = Math.min(1, rms * 2.2);
+        const s = amp.toFixed(3);
+        playBtn.style.setProperty('--listen-amp', s);
+        // Sprint A9: also expose on the document root so the dock's
+        // progress fill can read the same amplitude (siblings don't
+        // share inherited custom-prop scope).
+        root.style.setProperty('--listen-amp', s);
+        amplitudeFrame = requestAnimationFrame(tick);
+      };
+      amplitudeFrame = requestAnimationFrame(tick);
     }
 
     function pauseStudioPlayback() {
@@ -1338,15 +1610,57 @@
       setState('paused');
     }
 
-    function finishStudioPlayback() {
+    function finishStudioPlayback(withFinale) {
+      const completed = !!(audioEl && audioEl.duration && audioEl.currentTime >= audioEl.duration - 0.5);
       if (audioEl) { try { audioEl.pause(); } catch (_) {} audioEl.currentTime = 0; }
+      if (window.plausible && completed) {
+        window.plausible('Post Listened: Completed');
+      }
+      // Sprint A12: when the listener naturally reached the end, pause
+      // the UI on a warm "finished" state for 2.8s before collapsing to
+      // idle. This is the quiet emotional payoff — the moment the
+      // cheerleading progress bar becomes a soft glow and the play icon
+      // swaps to a checkmark. User-aborted stops skip the finale.
+      if (withFinale && completed) {
+        // Apply the localized finale copy into the chapter line so the
+        // "Now reading" slot becomes the payoff message.
+        if (chapterEl) setChapterText(chapterEl, finaleMessageForLanguage(currentLanguage));
+        if (dockChapter) setChapterText(dockChapter, finaleMessageForLanguage(currentLanguage));
+        setState('finished');
+        syncMediaSessionPosition();
+        setTimeout(() => {
+          currentIndex = 0;
+          setCurrent(null, null);
+          if (chapterEl) setChapterText(chapterEl, '');
+          if (dockChapter) setChapterText(dockChapter, '');
+          setState('idle');
+          syncMediaSessionPosition();
+        }, 2800);
+        return;
+      }
       currentIndex = 0;
       setCurrent(null, null);
       setState('idle');
       syncMediaSessionPosition();
-      if (window.plausible && audioEl && audioEl.duration && audioEl.currentTime >= audioEl.duration - 0.5) {
-        window.plausible('Post Listened: Completed');
-      }
+    }
+
+    // Sprint A12: inline per-language finale copy. Inline rather than
+    // via per-post translations.<lang>.json because this string is
+    // global to every audio-equipped post and identical across posts —
+    // it shouldn't be translated post-by-post. Falls back to English
+    // for any audio language not listed.
+    const FINALE_MESSAGES = {
+      en: "You've reached the end",
+      es: 'Has llegado al final',
+      fr: 'Vous êtes arrivé à la fin',
+      it: 'Sei arrivato alla fine',
+      pt: 'Você chegou ao fim',
+      hi: 'आप अंत तक पहुँच गए हैं',
+      ja: '最後まで到達しました',
+      zh: '您已到达终点',
+    };
+    function finaleMessageForLanguage(lang) {
+      return FINALE_MESSAGES[lang] || FINALE_MESSAGES.en;
     }
 
     // Event-driven tick: registered as the timeupdate + seeked
@@ -1371,8 +1685,10 @@
       const pct = audioEl.duration ? Math.min(100, (t / audioEl.duration) * 100) : 0;
       if (progressFill) progressFill.style.width = pct.toFixed(2) + '%';
       if (progressEl) progressEl.setAttribute('aria-valuenow', String(Math.round(pct)));
+      renderWaveform(pct);
       updateDockProgress(pct, t, audioEl.duration || 0);
       updateDockChapter(chunks[currentIndex]);
+      markCurrentTickSegment(currentIndex);
       if (prevBtn) prevBtn.disabled = currentIndex <= 0;
       if (nextBtn) nextBtn.disabled = currentIndex >= chunks.length - 1;
       updateSkipButtons();
@@ -1394,8 +1710,10 @@
       const pct = audioEl.duration ? ((chunk.start || 0) / audioEl.duration) * 100 : 0;
       if (progressFill) progressFill.style.width = pct.toFixed(2) + '%';
       if (progressEl) progressEl.setAttribute('aria-valuenow', String(Math.round(pct)));
+      renderWaveform(pct);
       updateDockProgress(pct, chunk.start || 0, audioEl.duration || 0);
       updateDockChapter(chunk);
+      markCurrentTickSegment(currentIndex);
       if (prevBtn) prevBtn.disabled = currentIndex <= 0;
       if (nextBtn) nextBtn.disabled = currentIndex >= chunks.length - 1;
     }
@@ -1516,9 +1834,20 @@
     }
 
     function updateDockVisibility() {
+      // Sprint A12: keep the dock visible during the 'finished' state
+      // so a scrolled-away listener also sees the finale moment land
+      // — the dock's chapter line already shows the localized finale
+      // copy for the 2.8s window before state collapses to idle.
       const shouldShow = !cardInView && !footerInView
-        && (state === 'playing' || state === 'paused');
+        && (state === 'playing' || state === 'paused' || state === 'finished');
       dock.root.setAttribute('data-visible', shouldShow ? 'true' : 'false');
+      // Sprint A10: card-to-dock morph. When the dock takes over, dim
+      // the card so it reads as handed-off (visible on scroll-back);
+      // when the dock retires, the card restores to full opacity +
+      // saturation. Card transitions start 40ms earlier than the dock
+      // via CSS transition-delay, so on scroll-back the card de-dims
+      // first and the dock slides out last.
+      card.root.setAttribute('data-dimmed', shouldShow ? 'true' : 'false');
     }
 
     function updateDockState() {
@@ -1528,7 +1857,7 @@
     }
 
     function updateDockChapter(chunk) {
-      if (dockChapter) dockChapter.textContent = chunk ? chapterLabel(chunk) : '';
+      if (dockChapter) setChapterText(dockChapter, chunk ? chapterLabel(chunk) : '');
     }
 
     function updateDockProgress(pct, elapsed, total) {
@@ -1721,9 +2050,11 @@
 
       root.innerHTML = `
         <button type="button" class="listen-card-play" aria-pressed="false" aria-label="Play audio version">
+          <span class="listen-card-play-aura" aria-hidden="true"></span>
           <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.54.84l10-6.5a1 1 0 0 0 0-1.68l-10-6.5A1 1 0 0 0 8 5.5z"/></svg>
           <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1"/><rect x="13.5" y="5" width="4" height="14" rx="1"/></svg>
-          <svg class="icon-loading" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 3a9 9 0 1 1-9 9" opacity="0.9"/></svg>
+          <svg class="icon-finished" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="5 12 10 17 19 7"/></svg>
+          <span class="listen-card-play-dots" aria-hidden="true"><i></i><i></i><i></i></span>
         </button>
         <div class="listen-card-body">
           <p class="listen-card-kicker"><span>Audio edition</span></p>
@@ -1731,7 +2062,7 @@
           <p class="listen-card-sub">Press play and we'll read the whole post aloud — charts and all.</p>
         </div>
         <div class="listen-card-meta"><strong>${minutes} min</strong><span>hands-free</span></div>
-        <div class="listen-card-progress" hidden role="progressbar" aria-label="Audio progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="listen-card-progress-fill"></div><div class="listen-card-progress-ticks"></div></div>
+        <div class="listen-card-progress" hidden role="progressbar" aria-label="Audio progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><canvas class="listen-card-waveform" aria-hidden="true"></canvas><div class="listen-card-progress-fill"></div><div class="listen-card-progress-ticks"></div></div>
         <p class="listen-card-chapter"><span class="listen-card-chapter-label">Now reading</span><em></em></p>
         <div class="listen-card-extras" hidden>
           <div class="listen-card-skips">
