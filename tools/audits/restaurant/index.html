@@ -1993,6 +1993,137 @@
   .score-benchmark-delta.up   { color: #1F6B3A; }
   .score-benchmark-delta.down { color: #8A3010; }
   .score-benchmark-delta.even { color: var(--stone); }
+  /* Phase 4 #3: margin-health card. Rollup that synthesizes the
+     existing check results into a single margin-leak score.
+     Self-hides when there are no leaks. Visual language matches
+     action-plan-card so the narrative reads "your plan" then
+     "your margin health" as paired cards. */
+  .margin-health-card {
+    max-width: 1100px;
+    margin: 32px auto 0;
+    padding: 24px 28px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--rust, #B8541A);
+    border-radius: 14px;
+  }
+  .margin-health-card[hidden] { display: none; }
+  .margin-health-eyebrow {
+    display: inline-block;
+    padding: 2px 10px;
+    margin-bottom: 10px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--rust, #B8541A);
+    background: #FDF5EE;
+    border: 1px solid #F1DCC9;
+    border-radius: 999px;
+  }
+  .margin-health-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .margin-health-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .margin-health-score {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 4px;
+    font-variant-numeric: tabular-nums;
+    padding: 2px 14px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+  }
+  .margin-health-score[data-grade="good"] { background: #E7F5EC; color: #1F6B3A; border-color: #BFE0CB; }
+  .margin-health-score[data-grade="ok"]   { background: #FDEFE3; color: #8A3E16; border-color: #EFD1B6; }
+  .margin-health-score[data-grade="bad"]  { background: #F7E7DC; color: #B8541A; border-color: #EFC4AA; }
+  .margin-health-score-value {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1;
+  }
+  .margin-health-score-max { font-size: 12px; color: inherit; opacity: 0.75; }
+  .margin-health-sub {
+    margin: 4px 0 16px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .margin-health-leaks-wrap[hidden] { display: none; }
+  .margin-health-leaks-lead {
+    margin: 14px 0 8px;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--stone);
+  }
+  .margin-health-leaks {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .margin-health-leak {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px;
+    margin-bottom: 6px;
+    background: var(--cream-2, #faf6ee);
+    border: 1px solid var(--line, #E6DFCE);
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .margin-health-leak[data-confirmed="false"] {
+    opacity: 0.85;
+    border-style: dashed;
+  }
+  .margin-health-leak-label {
+    flex: 1 1 auto;
+    color: var(--ink);
+  }
+  .margin-health-leak-unconfirmed {
+    display: block;
+    margin-top: 2px;
+    font-size: 11.5px;
+    color: var(--stone);
+    font-style: italic;
+  }
+  .margin-health-leak-points {
+    flex: 0 0 auto;
+    padding: 2px 10px;
+    background: var(--rust, #B8541A);
+    color: var(--white);
+    font-weight: 700;
+    font-size: 12.5px;
+    border-radius: 999px;
+    font-variant-numeric: tabular-nums;
+  }
+  .margin-health-leak[data-confirmed="false"] .margin-health-leak-points {
+    background: var(--stone, #8a8a8a);
+  }
+  .margin-health-empty {
+    margin: 0;
+    font-size: 14.5px;
+    color: #1F6B3A;
+    font-weight: 500;
+  }
+
   /* Phase 4 #1: benchmark provenance info glyph. Small ⓘ that carries
      the methodology string in its title attribute. Button styling
      (not a span) so keyboard users can focus it and read the title
@@ -4343,6 +4474,30 @@
         </header>
         <p class="action-plan-sub" data-tr="actionPlan.sub">Your highest-leverage gaps, split across three horizons. Check each off as you tackle it — your progress is saved on this device and survives re-audits.</p>
         <div class="action-plan-columns" id="actionPlanColumns"></div>
+      </section>
+
+      <!-- Phase 4 #3: margin-health rollup card. Synthesizes the
+           existing check results into a single "how much of your
+           revenue stays with you vs leaks to commission-taking
+           aggregators?" score. Populated by renderMarginHealth() at
+           audit-render time. Self-hides when there are no leaks
+           (rare perfect score) so the card never shouts unless the
+           owner has something to act on. -->
+      <section class="margin-health-card" id="marginHealthCard" hidden>
+        <span class="margin-health-eyebrow" data-tr="marginHealth.eyebrow">Margin health</span>
+        <header class="margin-health-head">
+          <h3 class="margin-health-title" data-tr="marginHealth.heading">How much of your revenue stays with you?</h3>
+          <div class="margin-health-score" id="marginHealthScore" role="img">
+            <span class="margin-health-score-value" id="marginHealthScoreValue">—</span>
+            <span class="margin-health-score-max">/ 100</span>
+          </div>
+        </header>
+        <p class="margin-health-sub" data-tr="marginHealth.sub">Every gap below forces customers through a commission-taking path instead of your own margin-preserving one. Aggregators typically take 15–30% per order; your net margin is 3–5%. Closing these leaks keeps the money with the kitchen.</p>
+        <div class="margin-health-leaks-wrap" id="marginHealthLeaksWrap">
+          <p class="margin-health-leaks-lead" data-tr="marginHealth.leakLeadLine">Where orders are leaking:</p>
+          <ul class="margin-health-leaks" id="marginHealthLeaks"></ul>
+        </div>
+        <p class="margin-health-empty" id="marginHealthEmpty" hidden data-tr="marginHealth.emptyState">No leaks detected — your site is set up to keep the margin in-house on every order.</p>
       </section>
 
       <!-- Phase L1: Email gate retired. Deep tier now renders
@@ -10628,6 +10783,99 @@
     syncAuditTocVisibility();
   }
 
+  // Phase 4 #3b: render the margin-health rollup card. Reads the
+  // priority-check results we already rendered plus the platform-
+  // detection result, synthesizes into computeMarginHealth's signal
+  // shape, and paints the score + leak list. Self-hides when the
+  // scorer returns a perfect 100 so the card never nags a
+  // well-built site.
+  function findCheckState(entries, typeOrAudit) {
+    if (!Array.isArray(entries)) return null;
+    for (var i = 0; i < entries.length; i++) {
+      var e = entries[i];
+      if (!e || !e.def) continue;
+      var key = e.def.type || e.def.audit;
+      if (key === typeOrAudit) {
+        return (e.result && e.result.mark && e.result.mark.cls) || null;
+      }
+    }
+    return null;
+  }
+  function renderMarginHealth() {
+    var card       = document.getElementById('marginHealthCard');
+    var scoreEl    = document.getElementById('marginHealthScore');
+    var valueEl    = document.getElementById('marginHealthScoreValue');
+    var leaksWrap  = document.getElementById('marginHealthLeaksWrap');
+    var leaksEl    = document.getElementById('marginHealthLeaks');
+    var emptyEl    = document.getElementById('marginHealthEmpty');
+    if (!card || !scoreEl || !valueEl || !leaksEl) return;
+    if (typeof computeMarginHealth !== 'function') { card.hidden = true; return; }
+
+    var bundle = window.__auditResults;
+    var entries = (bundle && Array.isArray(bundle.entries)) ? bundle.entries : null;
+    if (!entries || !entries.length) { card.hidden = true; return; }
+
+    var signals = {
+      conversionsState:   findCheckState(entries, 'conversions'),
+      menuFormatState:    findCheckState(entries, 'menu-format'),
+      menuDepthState:     findCheckState(entries, 'menu-depth'),
+      hoursAccuracyState: findCheckState(entries, 'hours-accuracy'),
+      // hasAggregatorOnly derivation is future work — requires a
+      // direct-vs-aggregator taxonomy for the platform detector.
+      // Leaving false today means this dimension never docks; when
+      // the taxonomy lands, the scorer picks it up automatically.
+      hasAggregatorOnly:  false
+    };
+    var health = computeMarginHealth(signals);
+    if (!health) { card.hidden = true; return; }
+
+    valueEl.textContent = String(health.score);
+    scoreEl.setAttribute('data-grade', health.grade);
+    scoreEl.setAttribute('aria-label',
+      t('marginHealth.scoreLabel') + ': ' + health.score + '/100');
+
+    leaksEl.innerHTML = '';
+    if (!health.leaks.length) {
+      // Perfect margin posture — render the empty-state congrats
+      // rather than an empty list. Audit card still surfaces so the
+      // score is visible; the green empty line carries the "nothing
+      // to fix" message.
+      if (leaksWrap) leaksWrap.hidden = true;
+      if (emptyEl)   emptyEl.hidden   = false;
+    } else {
+      if (leaksWrap) leaksWrap.hidden = false;
+      if (emptyEl)   emptyEl.hidden   = true;
+      health.leaks.forEach(function(leak){
+        var li = document.createElement('li');
+        li.className = 'margin-health-leak';
+        li.setAttribute('data-confirmed', leak.confirmed ? 'true' : 'false');
+
+        var labelEl = document.createElement('div');
+        labelEl.className = 'margin-health-leak-label';
+        var mainText = document.createElement('span');
+        mainText.textContent = t('marginHealth.leak.' + leak.source);
+        labelEl.appendChild(mainText);
+        if (!leak.confirmed) {
+          var note = document.createElement('span');
+          note.className = 'margin-health-leak-unconfirmed';
+          note.textContent = t('marginHealth.unconfirmed');
+          labelEl.appendChild(note);
+        }
+        li.appendChild(labelEl);
+
+        var pts = document.createElement('span');
+        pts.className = 'margin-health-leak-points';
+        pts.textContent = t('marginHealth.leakPoints', { points: leak.points });
+        li.appendChild(pts);
+
+        leaksEl.appendChild(li);
+      });
+    }
+
+    card.hidden = false;
+    if (typeof syncAuditTocVisibility === 'function') syncAuditTocVisibility();
+  }
+
   function makeTextSpan(txt) {
     var s = document.createElement('span');
     s.textContent = txt;
@@ -12059,6 +12307,11 @@
       // and partitions failed/unverified entries by weight into
       // three time-horizon columns with persistent checkboxes.
       renderActionPlan(auditedUrl);
+      // Phase 4 #3b: margin-health rollup sits next to the action
+      // plan so the narrative reads "your fixes, by effort" then
+      // "your margin health, by dollar leak". Both cards reference
+      // the same underlying check results, framed differently.
+      renderMarginHealth();
     } else {
       priorityResult = { score: 0, passCount: 0, totalCount: 0, confirmedCount: 0, lowConfidence: true };
     }
@@ -12377,6 +12630,14 @@
       setCategoryLowSignal('restaurant');
     } else {
       setCategory('restaurant', newRestaurantScore);
+    }
+    // Phase 4 #3b: re-render the margin-health rollup when the
+    // owner flips "I have this" on a previously-unverified check.
+    // The new check state feeds directly into the leak detection so
+    // the score and leak list stay in sync with what the owner
+    // just confirmed.
+    if (state.isRestaurant && typeof renderMarginHealth === 'function') {
+      renderMarginHealth();
     }
 
     if (window.__auditLastResult) {

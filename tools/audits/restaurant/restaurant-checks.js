@@ -2689,6 +2689,49 @@ var UI_I18N = {
     en: 'Found an error in a weight, a benchmark, or the revenue math? Tell us — the whole tool is open and the explanation above is linked from every audit so the methodology travels with the score.',
     es: '¿Encontraste un error en un peso, un benchmark o las matemáticas de ingresos? Dínoslo — toda la herramienta es abierta y la explicación anterior está enlazada desde cada auditoría, así la metodología viaja junto con la puntuación.'
   },
+  // Phase 4 #3: margin-health card. Synthesizes existing check
+  // results into a single "how vulnerable is this restaurant to
+  // leaking orders through 15-30% aggregator commission paths?"
+  // readout. Owner sees the score + the specific leaks, not a
+  // generic "you should be on DoorDash" nudge.
+  'marginHealth.eyebrow':  { en: 'Margin health', es: 'Salud del margen' },
+  'marginHealth.heading': {
+    en: 'How much of your revenue stays with you?',
+    es: '¿Cuánto de tus ingresos se queda contigo?'
+  },
+  'marginHealth.sub': {
+    en: 'Every gap below forces customers through a commission-taking path instead of your own margin-preserving one. Aggregators typically take 15–30% per order; your net margin is 3–5%. Closing these leaks keeps the money with the kitchen.',
+    es: 'Cada brecha de abajo empuja a los clientes por un canal con comisión en lugar del tuyo que preserva el margen. Los agregadores suelen tomar entre 15–30% por pedido; tu margen neto es de 3–5%. Cerrar estas fugas mantiene el dinero en la cocina.'
+  },
+  'marginHealth.scoreLabel': { en: 'Margin health score', es: 'Puntuación de salud de margen' },
+  'marginHealth.emptyState': {
+    en: 'No leaks detected — your site is set up to keep the margin in-house on every order.',
+    es: 'No se detectaron fugas — tu sitio está configurado para mantener el margen en casa en cada pedido.'
+  },
+  'marginHealth.leakLeadLine': { en: 'Where orders are leaking:', es: 'Por dónde se están fugando los pedidos:' },
+  'marginHealth.leakPoints':   { en: '−{points} pts', es: '−{points} pts' },
+  'marginHealth.unconfirmed':  { en: 'unverified — half penalty', es: 'no confirmada — media penalización' },
+  // Machine-key translations for the scorer's leak.source values.
+  'marginHealth.leak.conversions': {
+    en: 'No own-site ordering or reservations — every direct-intent customer lands on an aggregator',
+    es: 'Sin pedido o reserva en tu propio sitio — cada cliente con intención directa termina en un agregador'
+  },
+  'marginHealth.leak.menuFormat': {
+    en: 'Menu is a PDF — can\'t link to "Order This" per item, breaks the direct-conversion flow',
+    es: 'El menú es un PDF — no puede enlazar "Ordena esto" por ítem, rompe el flujo de conversión directa'
+  },
+  'marginHealth.leak.menuDepth': {
+    en: 'Menu missing prices or dish photos — shoppers bounce to DoorDash where those signals are standard',
+    es: 'El menú no muestra precios o fotos — los compradores rebotan a DoorDash donde esas señales son estándar'
+  },
+  'marginHealth.leak.hoursAccuracy': {
+    en: 'Hours inconsistent across Google and your schema — Google can route customers to aggregator listings when unsure',
+    es: 'Horarios inconsistentes entre Google y tu schema — Google puede redirigir clientes a agregadores cuando hay duda'
+  },
+  'marginHealth.leak.aggregatorOnly': {
+    en: 'Aggregators are the only ordering surface detected — no direct-ordering platform alongside',
+    es: 'Los agregadores son la única superficie de pedido detectada — sin plataforma directa junto a ellos'
+  },
   // Sprint D1: email deliverability card.
   // Phase 2 U2: heading + sub rewritten in owner-outcome language.
   // The technical term "deliverability" never appeared on any
@@ -3025,14 +3068,15 @@ function computeMarginHealth(signals) {
   var leaks = [];
   var score = 100;
 
-  score -= applyPenalty(signals.conversionsState,   MARGIN_HEALTH_PENALTIES.conversions,
-    'own-site ordering or reservations', leaks);
-  score -= applyPenalty(signals.menuFormatState,    MARGIN_HEALTH_PENALTIES.menuFormat,
-    'HTML menu (not PDF)', leaks);
-  score -= applyPenalty(signals.menuDepthState,     MARGIN_HEALTH_PENALTIES.menuDepth,
-    'visible prices + dish photos', leaks);
-  score -= applyPenalty(signals.hoursAccuracyState, MARGIN_HEALTH_PENALTIES.hoursAccuracy,
-    'accurate hours across Google + schema', leaks);
+  // source keys are stable machine identifiers — the UI layer
+  // (index.html) looks them up in UI_I18N via
+  // t('marginHealth.leak.' + source) to render the human-readable
+  // phrase per locale. Keeping the scorer locale-free preserves
+  // Node testability and avoids fragile string equality on copy.
+  score -= applyPenalty(signals.conversionsState,   MARGIN_HEALTH_PENALTIES.conversions,   'conversions',   leaks);
+  score -= applyPenalty(signals.menuFormatState,    MARGIN_HEALTH_PENALTIES.menuFormat,    'menuFormat',    leaks);
+  score -= applyPenalty(signals.menuDepthState,     MARGIN_HEALTH_PENALTIES.menuDepth,     'menuDepth',     leaks);
+  score -= applyPenalty(signals.hoursAccuracyState, MARGIN_HEALTH_PENALTIES.hoursAccuracy, 'hoursAccuracy', leaks);
 
   // Aggregator-only is a derived binary — only counts as a leak when
   // we CONFIRMED aggregators are the sole ordering surface. We don't
@@ -3042,7 +3086,7 @@ function computeMarginHealth(signals) {
   if (signals.hasAggregatorOnly === true) {
     score -= MARGIN_HEALTH_PENALTIES.aggregatorOnly;
     leaks.push({
-      source: 'no direct-ordering platform alongside aggregators',
+      source: 'aggregatorOnly',
       points: MARGIN_HEALTH_PENALTIES.aggregatorOnly,
       confirmed: true
     });
