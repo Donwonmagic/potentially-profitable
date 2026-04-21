@@ -509,6 +509,88 @@ function reviewCountCoversPerDayMultiplier(reviewCount) {
   return mult;
 }
 
+// Sprint CC3c: confidence-aware chip-range widening.
+// CC3a + CC3b tighten the revenue chip when priceLevel + reviewCount
+// are present. About half of real audits have both signals, roughly
+// a quarter have neither. Without this step the chip shows the same
+// visual weight for a well-resolved restaurant and a nothing-
+// detected one — overclaims precision when we're mostly guessing.
+//
+// Approach: widen the chip's [low, high] span multiplicatively based
+// on which confidence signals are missing. Signals present = no
+// widening. Every missing signal widens the range a little, so an
+// audit with all three unresolved reads as a deliberately imprecise
+// estimate ($5k–40k) while a fully-resolved one reads as a tight one
+// ($12k–18k). No copy change needed — the range WIDTH itself
+// communicates how much we know.
+//
+// Widening factors (applied multiplicatively to pct ranges):
+//
+//   Places match missing           0.70 low × 1.40 high
+//     (no subtype validation, no priceLevel, no reviewCount — huge unknown)
+//   priceLevel missing (avgCheck unclear)
+//                                  0.85 × 1.15
+//   reviewCount < LOW_REVIEW_COUNT_THRESHOLD  (traffic unclear)
+//                                  0.85 × 1.15
+//
+// Stacked worst case (nothing resolved): 0.70 × 0.85 × 0.85 = 0.506
+// low, 1.40 × 1.15 × 1.15 = 1.852 high. Range is ~3.7× wider than
+// the fully-resolved case. That's the honest scale of "we're mostly
+// guessing."
+//
+// Stacked best case (all resolved): 1.0 × 1.0 = identity, chip is
+// unchanged from the CC3a + CC3b tightened values.
+var CONFIDENCE_PLACES_MISSING_LOW  = 0.70;
+var CONFIDENCE_PLACES_MISSING_HIGH = 1.40;
+var CONFIDENCE_PRICE_MISSING_LOW   = 0.85;
+var CONFIDENCE_PRICE_MISSING_HIGH  = 1.15;
+var CONFIDENCE_REVIEWS_MISSING_LOW  = 0.85;
+var CONFIDENCE_REVIEWS_MISSING_HIGH = 1.15;
+// 50 reviews is the threshold below which Google's own signals
+// (rating, review breadth) are too thin to trust for traffic proxy.
+// Restaurants below this count are treated the same as "no reviews"
+// for confidence purposes. Above 50, the reviewCountCoversPerDay
+// multiplier carries the signal.
+var LOW_REVIEW_COUNT_THRESHOLD = 50;
+
+/**
+ * Compute confidence widening factors for the revenue-chip range.
+ * signals shape: { hasPlacesMatch, hasPriceLevel, reviewCount }
+ *   - hasPlacesMatch: boolean (did the Places text-search return a hit?)
+ *   - hasPriceLevel:  boolean (is priceLevel string populated?)
+ *   - reviewCount:    number  (Google userRatingCount, or null/0 when missing)
+ *
+ * Returns { low, high } — multiplicative factors to apply to the
+ * chip's annual-revenue percentages. low is always <= 1.0; high is
+ * always >= 1.0; the product low*high roughly measures uncertainty.
+ *
+ * Defensive on bad input: a null/undefined signals object is treated
+ * as "everything is missing" which produces maximum widening. That
+ * fails loud visually (a wide range chip) rather than hiding the
+ * missing data.
+ */
+function confidenceWideningFactors(signals) {
+  var widthLow = 1.0;
+  var widthHigh = 1.0;
+  if (!signals || !signals.hasPlacesMatch) {
+    widthLow  *= CONFIDENCE_PLACES_MISSING_LOW;
+    widthHigh *= CONFIDENCE_PLACES_MISSING_HIGH;
+  }
+  if (!signals || !signals.hasPriceLevel) {
+    widthLow  *= CONFIDENCE_PRICE_MISSING_LOW;
+    widthHigh *= CONFIDENCE_PRICE_MISSING_HIGH;
+  }
+  var lowCount = !signals
+    || typeof signals.reviewCount !== 'number'
+    || !isFinite(signals.reviewCount)
+    || signals.reviewCount < LOW_REVIEW_COUNT_THRESHOLD;
+  if (lowCount) {
+    widthLow  *= CONFIDENCE_REVIEWS_MISSING_LOW;
+    widthHigh *= CONFIDENCE_REVIEWS_MISSING_HIGH;
+  }
+  return { low: widthLow, high: widthHigh };
+}
+
 /**
  * Resolve a subtype-specific weight override for a given check id.
  * Returns the number (>=0) if overridden, or null to use the check's
@@ -562,6 +644,8 @@ if (typeof module !== 'undefined' && module.exports) {
     REVIEW_SCALER_SLOPE: REVIEW_SCALER_SLOPE,
     REVIEW_SCALER_FLOOR: REVIEW_SCALER_FLOOR,
     REVIEW_SCALER_CEIL:  REVIEW_SCALER_CEIL,
+    confidenceWideningFactors: confidenceWideningFactors,
+    LOW_REVIEW_COUNT_THRESHOLD: LOW_REVIEW_COUNT_THRESHOLD,
     subtypeWeights: subtypeWeights
   };
 }

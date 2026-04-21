@@ -9894,12 +9894,41 @@
     var o = owner || (typeof effectiveOwnerInputs === 'function' ? effectiveOwnerInputs() : DEFAULT_OWNER_INPUTS);
     var annualRevenue = (o.coversPerDay || 0) * (o.avgCheck || 0) * (o.openDays || 365);
     if (annualRevenue <= 0) return null;
+    // Sprint CC3c: widen [low, high] when the confidence signals
+    // that drive CC3a / CC3b weren't available. Signals present =
+    // identity widening (no change). Signals missing = range stretch
+    // that visually encodes "we're guessing more" without changing
+    // any chip copy. The range WIDTH itself is the honesty layer.
+    var signals = (typeof auditConfidenceSignals === 'function')
+      ? auditConfidenceSignals()
+      : null;
+    var widening = (typeof confidenceWideningFactors === 'function')
+      ? confidenceWideningFactors(signals)
+      : { low: 1.0, high: 1.0 };
     return {
-      low:  Math.round(annualRevenue * range[0]),
-      high: Math.round(annualRevenue * range[1]),
+      low:  Math.round(annualRevenue * range[0] * widening.low),
+      high: Math.round(annualRevenue * range[1] * widening.high),
       pctLow:  range[0],
-      pctHigh: range[1]
+      pctHigh: range[1],
+      confidence: widening
     };
+  }
+  // Sprint CC3c: read the fast-scan confidence signals (was a Places
+  // match found? is priceLevel populated? is reviewCount thick
+  // enough to be trustworthy?) off window state. Keeps the pure
+  // confidenceWideningFactors helper testable in Node while the
+  // signal-gathering stays where the audit state actually lives.
+  function auditConfidenceSignals() {
+    try {
+      var places = window.__auditPlaces && window.__auditPlaces.place;
+      return {
+        hasPlacesMatch: !!places,
+        hasPriceLevel:  !!(places && places.priceLevel),
+        reviewCount:    (places && typeof places.reviewCount === 'number') ? places.reviewCount : null
+      };
+    } catch (_) {
+      return { hasPlacesMatch: false, hasPriceLevel: false, reviewCount: null };
+    }
   }
   // Format a dollar amount to the nearest thousand for the chip.
   function formatRevenueK(n) {
