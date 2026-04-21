@@ -455,6 +455,60 @@ function priceLevelAvgCheckMultiplier(priceLevel) {
   return (typeof mult === 'number' && mult > 0) ? mult : 1.0;
 }
 
+// Sprint CC3b: Google Places userRatingCount → coversPerDay scaler.
+// A restaurant with 2,400 Google reviews is moving more traffic
+// than one with 80, other things equal. We use this as a proxy for
+// the cover count instead of asking the owner.
+//
+// Logarithmic scale centered on 100 reviews (roughly the US
+// median for established independents per Google Places data):
+//
+//   mult = 1.0 + REVIEW_SCALER_SLOPE * log10(count / REVIEW_COUNT_ANCHOR)
+//
+// Clamped to [REVIEW_SCALER_FLOOR, REVIEW_SCALER_CEIL] so viral
+// outliers (a food-truck that went on TikTok and has 8k reviews
+// but still does food-truck volume) don't produce cartoonish
+// revenue numbers, and so a brand-new restaurant with 2 reviews
+// doesn't crater its chip to zero.
+//
+// Constants picked to give these mappings:
+//     10 reviews   -> ~0.70
+//     25           -> ~0.82
+//    100           -> 1.00  (identity)
+//    500           -> ~1.21
+//   2000           -> ~1.39
+//   5000           -> ~1.51  (capped below CEIL)
+//
+// The ranges intentionally compress as count grows — beyond a few
+// thousand reviews, additional reviews indicate fame more than
+// additional daily covers.
+var REVIEW_COUNT_ANCHOR  = 100;
+var REVIEW_SCALER_SLOPE  = 0.30;
+var REVIEW_SCALER_FLOOR  = 0.40;
+var REVIEW_SCALER_CEIL   = 2.50;
+
+/**
+ * Resolve a coversPerDay multiplier from a Google Places
+ * userRatingCount. Returns 1.0 for null, undefined, non-positive,
+ * non-numeric inputs so the chip never degrades on missing data.
+ * Result is clamped to [REVIEW_SCALER_FLOOR, REVIEW_SCALER_CEIL]
+ * to prevent outliers from producing implausible revenue numbers.
+ */
+function reviewCountCoversPerDayMultiplier(reviewCount) {
+  if (typeof reviewCount !== 'number' || !isFinite(reviewCount) || reviewCount <= 0) {
+    return 1.0;
+  }
+  var ratio = reviewCount / REVIEW_COUNT_ANCHOR;
+  // Math.log10 is in ES2015; all browsers we support plus Node 18+
+  // have it. Returns -Infinity at 0 and negative for ratio < 1,
+  // which is fine — we clamp afterwards.
+  var logRatio = Math.log10(ratio);
+  var mult = 1.0 + REVIEW_SCALER_SLOPE * logRatio;
+  if (mult < REVIEW_SCALER_FLOOR) return REVIEW_SCALER_FLOOR;
+  if (mult > REVIEW_SCALER_CEIL)  return REVIEW_SCALER_CEIL;
+  return mult;
+}
+
 /**
  * Resolve a subtype-specific weight override for a given check id.
  * Returns the number (>=0) if overridden, or null to use the check's
@@ -503,6 +557,11 @@ if (typeof module !== 'undefined' && module.exports) {
     subtypeOwnerDefaults: subtypeOwnerDefaults,
     priceLevelAvgCheckMultiplier: priceLevelAvgCheckMultiplier,
     PLACES_PRICE_LEVEL_AVG_CHECK_MULT: PLACES_PRICE_LEVEL_AVG_CHECK_MULT,
+    reviewCountCoversPerDayMultiplier: reviewCountCoversPerDayMultiplier,
+    REVIEW_COUNT_ANCHOR: REVIEW_COUNT_ANCHOR,
+    REVIEW_SCALER_SLOPE: REVIEW_SCALER_SLOPE,
+    REVIEW_SCALER_FLOOR: REVIEW_SCALER_FLOOR,
+    REVIEW_SCALER_CEIL:  REVIEW_SCALER_CEIL,
     subtypeWeights: subtypeWeights
   };
 }

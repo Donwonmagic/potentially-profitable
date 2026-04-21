@@ -9816,6 +9816,26 @@
           };
         }
       }
+      // Sprint CC3b: review count as a coversPerDay proxy. Places
+      // already returned userRatingCount (the "128 Google reviews"
+      // number) on the basic lookup. A log-scaled multiplier centered
+      // on ~100 reviews tracks the real gap between a quiet
+      // 30-review neighborhood spot and a busy 2,000-review landmark
+      // without asking the owner anything. Clamped in the helper to
+      // prevent a viral 8k-review food-truck from projecting chain-
+      // restaurant covers.
+      var reviewCount = placesForCheck && placesForCheck.reviewCount;
+      if (typeof reviewCount === 'number' && reviewCount > 0
+          && typeof reviewCountCoversPerDayMultiplier === 'function') {
+        var rMult = reviewCountCoversPerDayMultiplier(reviewCount);
+        if (rMult !== 1.0 && typeof base.coversPerDay === 'number') {
+          base = {
+            coversPerDay: Math.max(1, Math.round(base.coversPerDay * rMult)),
+            avgCheck:     base.avgCheck,
+            openDays:     base.openDays
+          };
+        }
+      }
     } catch (_) { /* noop — Places absent, keep the subtype default */ }
     var override = window.__auditOwnerInputs;
     if (override && typeof override === 'object') {
