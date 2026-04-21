@@ -914,8 +914,15 @@ br.br-lg{display:none}
    a small floating pill that stays out of the user's way while audio
    continues playing.
 */
-.listen-dock{position:fixed;left:50%;bottom:18px;transform:translate(-50%,120%);z-index:60;display:grid;grid-template-columns:auto 1fr auto auto;grid-template-areas:"play meta actions actions" "skip progress progress skip-next";align-items:center;column-gap:14px;row-gap:8px;padding:12px 16px 14px;background:linear-gradient(180deg,rgba(20,22,26,0.96) 0%,rgba(14,16,20,0.98) 100%);backdrop-filter:saturate(140%) blur(16px);-webkit-backdrop-filter:saturate(140%) blur(16px);border-radius:22px;border:1px solid rgba(255,255,255,0.08);box-shadow:0 28px 56px -18px rgba(0,0,0,0.6),0 1px 0 rgba(255,255,255,0.06) inset;color:var(--white);font-family:var(--font-body);font-size:13px;transition:transform var(--t-med) var(--ease-out),opacity var(--t-med) var(--ease-out),width var(--t-med) var(--ease-out),padding var(--t-med) var(--ease-out),border-radius var(--t-med) var(--ease-out),box-shadow 800ms var(--ease-out);opacity:0;pointer-events:none;width:min(520px,calc(100vw - 24px));isolation:isolate}
-.listen-dock[data-visible="true"]{transform:translate(-50%,0);opacity:1;pointer-events:auto}
+.listen-dock{position:fixed;left:50%;bottom:18px;transform:translate(-50%,24px) scale(0.96);z-index:60;display:grid;grid-template-columns:auto 1fr auto auto;grid-template-areas:"play meta actions actions" "skip progress progress skip-next";align-items:center;column-gap:14px;row-gap:8px;padding:12px 16px 14px;background:linear-gradient(180deg,rgba(20,22,26,0.96) 0%,rgba(14,16,20,0.98) 100%);backdrop-filter:saturate(140%) blur(16px);-webkit-backdrop-filter:saturate(140%) blur(16px);border-radius:22px;border:1px solid rgba(255,255,255,0.08);box-shadow:0 28px 56px -18px rgba(0,0,0,0.6),0 1px 0 rgba(255,255,255,0.06) inset;color:var(--white);font-family:var(--font-body);font-size:13px;transition:transform 500ms var(--ease-out) 40ms,opacity 500ms var(--ease-out) 40ms,width var(--t-med) var(--ease-out),padding var(--t-med) var(--ease-out),border-radius var(--t-med) var(--ease-out),box-shadow 800ms var(--ease-out);opacity:0;pointer-events:none;width:min(520px,calc(100vw - 24px));isolation:isolate}
+.listen-dock[data-visible="true"]{transform:translate(-50%,0) scale(1);opacity:1;pointer-events:auto}
+/* Sprint A10: card-to-dock morph. Card dims over 500ms when the dock
+   takes over (0ms delay, so it starts 40ms ahead of the dock's
+   entry); restores to full opacity + saturation + scale on scroll-
+   back. Paired with the dock's +40ms transition-delay, the two
+   surfaces feel like one continuous object being handed off. */
+.listen-card{transition:opacity 500ms var(--ease-out), filter 500ms var(--ease-out), transform 500ms var(--ease-out)}
+.listen-card[data-dimmed="true"]{opacity:0.7; filter:saturate(0.85); transform:scale(0.985)}
 /* Sprint A8: warm teal overlay during playback. A pseudo-element is
    the cleanest cross-browser way to cross-fade a gradient — direct
    background-image transitions snap rather than interpolate. Sits
@@ -1113,6 +1120,9 @@ br.br-lg{display:none}
 .listen-card[data-state="playing"] .listen-card-play-aura{transform:scale(0.95);transition:opacity var(--t-fast) var(--ease)}
 /* Sprint A8: dock warm tint still lands via opacity, just instantly. */
 .listen-dock::before{transition:none}
+/* Sprint A10: drop the morph transition; card + dock swap instantly. */
+.listen-card{transition:opacity var(--t-fast) var(--ease)}
+.listen-card[data-dimmed="true"]{transform:none;filter:none}
 }
 
 /* ============ BREADCRUMBS ============

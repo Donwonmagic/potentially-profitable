@@ -1795,6 +1795,13 @@
       const shouldShow = !cardInView && !footerInView
         && (state === 'playing' || state === 'paused');
       dock.root.setAttribute('data-visible', shouldShow ? 'true' : 'false');
+      // Sprint A10: card-to-dock morph. When the dock takes over, dim
+      // the card so it reads as handed-off (visible on scroll-back);
+      // when the dock retires, the card restores to full opacity +
+      // saturation. Card transitions start 40ms earlier than the dock
+      // via CSS transition-delay, so on scroll-back the card de-dims
+      // first and the dock slides out last.
+      card.root.setAttribute('data-dimmed', shouldShow ? 'true' : 'false');
     }
 
     function updateDockState() {
