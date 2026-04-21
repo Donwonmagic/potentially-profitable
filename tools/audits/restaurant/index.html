@@ -1916,6 +1916,19 @@
     color: var(--stone);
     opacity: 0.18;
   }
+  /* Sprint 6: benchmark halo ring. Inner ring at r=44 with thinner
+     stroke and lower opacity so it reads as "reference mark" rather
+     than a second data series. Paint matches the main fg stroke so
+     there's visual continuity between the owner's score and their
+     subtype median; only opacity + stroke-width differ. */
+  .score-ring .halo {
+    stroke: var(--teal);
+    stroke-width: 6;
+    stroke-linecap: round;
+    opacity: 0.35;
+    transition: stroke-dashoffset 1.2s var(--ease-out);
+  }
+  .score-ring .halo[hidden] { display: none; }
   .score-ring .fg {
     stroke: var(--teal);
     stroke-linecap: round;
@@ -4329,6 +4342,17 @@
               </linearGradient>
             </defs>
             <circle class="bg" cx="60" cy="60" r="52"></circle>
+            <!-- Sprint 6: subtype-benchmark halo ring at r=44 (inside
+                 the main score stroke). Renders at 40% opacity so
+                 it's clearly present but doesn't compete with the
+                 overall score arc. Populated by setScoreRing when the
+                 subtype benchmark is known; stays hidden otherwise.
+                 Gives an immediate visual answer to "am I above or
+                 below typical" without needing to scroll to the
+                 benchmark chip. -->
+            <circle class="halo" cx="60" cy="60" r="44"
+                    stroke-dasharray="276.46" stroke-dashoffset="276.46"
+                    hidden></circle>
             <circle class="fg" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"></circle>
             <!-- Sprint 5: tick-mark ring. 60 marks at r=60 (just
                  outside the stroke, inside the 60px radius center
@@ -7660,14 +7684,38 @@
     var ring = document.getElementById('scoreRing');
     var value = document.getElementById('scoreValue');
     var fg = ring.querySelector('circle.fg');
+    var halo = ring.querySelector('circle.halo');
     var r = 52;
     var circumference = 2 * Math.PI * r; // ~326.7
     var offset = circumference - (score / 100) * circumference;
     ring.classList.remove('grade-good','grade-ok','grade-bad');
     ring.classList.add(gradeScore(score));
-    value.textContent = score;
     fg.setAttribute('stroke-dasharray', circumference.toFixed(2));
     fg.setAttribute('stroke-dashoffset', circumference.toFixed(2));
+    // Sprint 6: benchmark halo. Paints an inner ring to the subtype
+    // median when meta.benchmarkOverall is a number in 0..100. Hidden
+    // when no benchmark is available (non-restaurant site or subtype
+    // we don't have data for). Reduced-motion skips the transition
+    // via the existing global @media rule — the halo still paints,
+    // just without the 1.2s sweep.
+    if (halo) {
+      if (meta && typeof meta.benchmarkOverall === 'number') {
+        var rHalo = 44;
+        var circHalo = 2 * Math.PI * rHalo;
+        var offHalo = circHalo - (meta.benchmarkOverall / 100) * circHalo;
+        halo.setAttribute('stroke-dasharray', circHalo.toFixed(2));
+        halo.setAttribute('stroke-dashoffset', circHalo.toFixed(2));
+        halo.hidden = false;
+        // Stagger the halo entrance so it arrives after the main
+        // stroke has already started sweeping — reads as secondary.
+        void halo.getBoundingClientRect();
+        setTimeout(function(){
+          halo.setAttribute('stroke-dashoffset', offHalo.toFixed(2));
+        }, 180);
+      } else {
+        halo.hidden = true;
+      }
+    }
     // Sprint A2+ES2: score-ring aria-label and tooltip routed through
     // t() so screen readers announce the Spanish phrase on the ES
     // mirror. Key choice preserves A1's half-weight-penalty disclosure.
@@ -7682,6 +7730,46 @@
     // Force reflow so the animation runs
     void fg.getBoundingClientRect();
     fg.setAttribute('stroke-dashoffset', offset.toFixed(2));
+    // Sprint 6: counting-number animation for the score value.
+    // 900ms rAF counter from the previous score (or 0) to the new
+    // one, eased to match the stroke sweep. Reduced-motion skips
+    // the counter and sets the value instantly. Cancels in-flight
+    // counter when setScoreRing is called again so overrides
+    // re-render without two counters racing.
+    if (value) {
+      var prefersReduced = false;
+      try {
+        prefersReduced = window.matchMedia &&
+          window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      } catch (_) {}
+      if (window.__scoreRingCounter) {
+        cancelAnimationFrame(window.__scoreRingCounter);
+        window.__scoreRingCounter = null;
+      }
+      if (prefersReduced) {
+        value.textContent = score;
+      } else {
+        var startVal = parseInt(value.textContent, 10);
+        if (!isFinite(startVal)) startVal = 0;
+        var delta = score - startVal;
+        var startTime = null;
+        var duration = 900;
+        var easeOutQuart = function(t){ return 1 - Math.pow(1 - t, 4); };
+        var step = function(now){
+          if (startTime === null) startTime = now;
+          var progress = Math.min(1, (now - startTime) / duration);
+          var eased = easeOutQuart(progress);
+          value.textContent = Math.round(startVal + delta * eased);
+          if (progress < 1) {
+            window.__scoreRingCounter = requestAnimationFrame(step);
+          } else {
+            window.__scoreRingCounter = null;
+            value.textContent = score; // pin the final value exactly
+          }
+        };
+        window.__scoreRingCounter = requestAnimationFrame(step);
+      }
+    }
   }
 
   function setCategory(cat, score) {
@@ -12414,7 +12502,19 @@
       restaurant: readinessInRollup ? restaurantScore : null
     }, priorityResult);
 
-    setScoreRing(overall, { unverifiedCount: priorityResult.unverifiedCount });
+    // Sprint 6: pre-resolve the benchmark so the ring halo can paint
+    // to the subtype median at the same time the main stroke paints
+    // to the owner's overall score. Non-restaurant sites skip this
+    // (no benchmark defined) and the halo stays hidden.
+    var ringBenchmark = null;
+    if (isRestaurantSite && typeof subtypeBenchmark === 'function') {
+      var _bench = subtypeBenchmark(effectiveBusinessType());
+      if (_bench && typeof _bench.overall === 'number') ringBenchmark = _bench.overall;
+    }
+    setScoreRing(overall, {
+      unverifiedCount: priorityResult.unverifiedCount,
+      benchmarkOverall: ringBenchmark
+    });
     // Phase 2 U7: anchor the overall score against the subtype median
     // so "74" reads in context. Only shown on restaurant sites where
     // a subtype benchmark exists.
@@ -12669,7 +12769,17 @@
     // "I have this" on enough unverifieds to cross the confidence
     // threshold, the restaurant card transitions from '?' to a
     // real score on this pass.
-    setScoreRing(overall, { unverifiedCount: priorityResult.unverifiedCount });
+    // Sprint 6: re-resolve benchmark for the override re-render path
+    // so the halo stays synced when the owner flips "I have this."
+    var overrideBenchmark = null;
+    if (state.isRestaurant && typeof subtypeBenchmark === 'function') {
+      var _obench = subtypeBenchmark(effectiveBusinessType());
+      if (_obench && typeof _obench.overall === 'number') overrideBenchmark = _obench.overall;
+    }
+    setScoreRing(overall, {
+      unverifiedCount: priorityResult.unverifiedCount,
+      benchmarkOverall: overrideBenchmark
+    });
     // Phase 2 U7: re-anchor the benchmark chip whenever the score is
     // recomputed (owner flips "I have this", overrides land from the
     // share link, etc.). The setScoreBenchmark helper no-ops safely
