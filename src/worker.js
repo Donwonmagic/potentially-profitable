@@ -46,6 +46,17 @@ import {
   pickLang,
 } from './lib/validation.js';
 import { withAuditCache } from './lib/audit-cache.js';
+
+// Compute the X-Audit-Cache header value from a withAuditCache result.
+// Three states: 'hit' (fresh, within TTL), 'stale-fallback' (upstream
+// errored, served a cached value between TTL and 2× TTL), 'miss'
+// (fresh upstream fetch). Owners can see which they got via devtools
+// and the UI can surface stale-fallback as a disclosure.
+function auditCacheHeader(cached) {
+  if (!cached) return 'miss';
+  if (cached.staleFallback) return 'stale-fallback';
+  return cached.cacheHit ? 'hit' : 'miss';
+}
 import {
   intakeNotification,
   intakeAutoResponder,
@@ -2265,7 +2276,7 @@ async function handleObservatory(request, env, ctx) {
     return await observatoryScan(host);
   });
   const res = jsonResponse(cached.value, cached.value && cached.value.ok === false ? 502 : 200);
-  res.headers.set('X-Audit-Cache', cached.cacheHit ? 'hit' : 'miss');
+  res.headers.set('X-Audit-Cache', auditCacheHeader(cached));
   return res;
 }
 
@@ -2335,7 +2346,7 @@ async function handleWaybackFirstSeen(request, env, ctx) {
     return await waybackLookup(gate.url.toString());
   });
   const res = jsonResponse(cached.value, cached.value && cached.value.ok === false ? 502 : 200);
-  res.headers.set('X-Audit-Cache', cached.cacheHit ? 'hit' : 'miss');
+  res.headers.set('X-Audit-Cache', auditCacheHeader(cached));
   return res;
 }
 
@@ -2395,7 +2406,7 @@ async function handleCruxHistory(request, env, ctx) {
   });
   const status = (cached.value && cached.value.ok === false) ? 502 : 200;
   const res = jsonResponse(cached.value, status);
-  res.headers.set('X-Audit-Cache', cached.cacheHit ? 'hit' : 'miss');
+  res.headers.set('X-Audit-Cache', auditCacheHeader(cached));
   return res;
 }
 
@@ -2491,7 +2502,7 @@ async function handleGbpDetails(request, env, ctx) {
   });
   const status = (cached.value && cached.value.ok === false) ? 502 : 200;
   const res = jsonResponse(cached.value, status);
-  res.headers.set('X-Audit-Cache', cached.cacheHit ? 'hit' : 'miss');
+  res.headers.set('X-Audit-Cache', auditCacheHeader(cached));
   return res;
 }
 
@@ -2624,7 +2635,7 @@ async function handleBrandDossier(request, env, ctx) {
   });
   const statusCode = cached.value && cached.value.ok === false ? 502 : 200;
   const res = jsonResponse(cached.value, statusCode);
-  res.headers.set('X-Audit-Cache', cached.cacheHit ? 'hit' : 'miss');
+  res.headers.set('X-Audit-Cache', auditCacheHeader(cached));
   return res;
 }
 
@@ -2779,7 +2790,7 @@ async function handleDnsEmailHealth(request, env, ctx) {
     return await dnsEmailProbe(apex);
   });
   const res = jsonResponse(cached.value, cached.value && cached.value.ok === false ? 502 : 200);
-  res.headers.set('X-Audit-Cache', cached.cacheHit ? 'hit' : 'miss');
+  res.headers.set('X-Audit-Cache', auditCacheHeader(cached));
   return res;
 }
 

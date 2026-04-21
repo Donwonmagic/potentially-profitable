@@ -2812,6 +2812,27 @@
     font-weight: 500;
     font-size: 11px;
   }
+  /* Partial-data notice: rendered inside the crawl-summary block when
+     the follow-up crawl failed entirely (ok:false) or the 15s global
+     timer fired (capHit:true). Full-width line so owners see a single
+     honest disclosure instead of a silently-shorter chip row. Styled
+     rust on cream to match the existing .is-error chip accent. */
+  .crawl-summary-notice {
+    flex: 1 0 100%;
+    margin: 0;
+    padding: 10px 12px;
+    border: 1px solid var(--rust, #B8541A);
+    border-radius: 10px;
+    background: #fdf5ee;
+    color: var(--ink);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .crawl-summary-notice[hidden] { display: none; }
+  .crawl-summary-notice strong {
+    color: var(--rust, #B8541A);
+    margin-right: 4px;
+  }
 
   .priority-list {
     background: var(--white);
@@ -4405,9 +4426,14 @@
              when the crawl returned no follow-up pages. Each chip names
              a slot (Menu, Reserve, Order, Contact, About, Catering,
              Events) so owners see that the audit read their site in
-             layers, not just the homepage. -->
+             layers, not just the homepage.
+             The notice <p> below is shown when the crawl failed
+             entirely or timed out so owners see a single honest
+             disclosure that checks below may be based on partial
+             signal (homepage only). -->
         <div class="crawl-summary" id="crawlSummary" hidden>
-          <span class="crawl-summary-label">Also scanned:</span>
+          <p class="crawl-summary-notice" id="crawlSummaryNotice" hidden></p>
+          <span class="crawl-summary-label" id="crawlSummaryLabel">Also scanned:</span>
           <div class="crawl-summary-chips" id="crawlSummaryChips"></div>
         </div>
         <div id="priorityItems">
@@ -10569,23 +10595,46 @@
   }
 
   // Phase E6: render the 'Also scanned:' chip row from the
-  // /api/page-crawl bundle on window.__auditCrawl. Hidden when the
-  // crawl returned no follow-up pages (homepage-only audit, global
-  // timeout, or nothing matched PAGE_CRAWL_SLOTS). One chip per
+  // /api/page-crawl bundle on window.__auditCrawl. One chip per
   // fetched page; chips for failed fetches carry the .is-error
   // class and a readable status suffix so owners see explicitly
   // that the audit tried (and failed at) reading their menu page.
+  //
+  // Sprint R3 (partial-data disclosure): when the crawl failed
+  // entirely (ok:false) or the 15s global timer fired (capHit:true),
+  // surface a visible notice above the chips so owners know why
+  // some checks below may be marked unverified. The silent fallback
+  // was masking homepage-only runs as if they were complete scans.
   function renderCrawlSummary(crawl) {
-    var wrap  = document.getElementById('crawlSummary');
-    var chips = document.getElementById('crawlSummaryChips');
+    var wrap   = document.getElementById('crawlSummary');
+    var chips  = document.getElementById('crawlSummaryChips');
+    var notice = document.getElementById('crawlSummaryNotice');
+    var label  = document.getElementById('crawlSummaryLabel');
     if (!wrap || !chips) return;
     chips.innerHTML = '';
-    if (!crawl || !Array.isArray(crawl.pages) || !crawl.pages.length) {
-      wrap.hidden = true;
-      return;
+    if (notice) { notice.hidden = true; notice.innerHTML = ''; }
+
+    var pages = (crawl && Array.isArray(crawl.pages)) ? crawl.pages : [];
+
+    // Three disclosure states. A crawl can fail transport-level
+    // (ok:false), succeed-but-time-out (capHit:true with possibly
+    // zero or some pages), or complete cleanly. We surface the
+    // first two so owners never wonder "did it actually read my
+    // menu page?"
+    var noticeText = null;
+    if (!crawl || crawl.ok === false) {
+      noticeText = 'We couldn’t read follow-up pages on your site. Checks below that depend on menu, hours, or ordering pages are based on your homepage only — you’ll see those marked <em>unverified</em> below.';
+    } else if (crawl.capHit === true) {
+      noticeText = 'Our scan of your menu, reservations, and ordering pages ran long and we stopped at 15 seconds. Some checks below may be based on partial data — click <strong>Re-run</strong> to try again.';
     }
+
+    if (noticeText && notice) {
+      notice.innerHTML = '<strong>Heads up:</strong> ' + noticeText;
+      notice.hidden = false;
+    }
+
     var added = 0;
-    crawl.pages.forEach(function(page){
+    pages.forEach(function(page){
       if (!page || !page.slot) return;
       var chip = document.createElement('span');
       chip.className = 'crawl-summary-chip' + (page.html ? '' : ' is-error');
@@ -10615,7 +10664,11 @@
       chips.appendChild(chip);
       added++;
     });
-    wrap.hidden = (added === 0);
+
+    // The 'Also scanned:' label only makes sense when at least one
+    // chip renders. Hide it when the wrap shows only a notice.
+    if (label) label.hidden = (added === 0);
+    wrap.hidden = (added === 0 && !noticeText);
   }
 
   function renderPriorityChecks(audits, allUrls, pageText) {
