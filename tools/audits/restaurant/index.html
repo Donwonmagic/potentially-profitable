@@ -9755,14 +9755,60 @@
   // rendered as a range chip ("Est. $X–Y/yr at risk") so owners see
   // the scale of what a fix is worth, not false precision.
   //
-  // Defaults: 50 covers/day × $35 avg check × 365 days = $638,750
-  // annual revenue. Owner-editable inputs in a later CC sprint will
-  // let the user substitute their own seats + avg check + hours.
+  // Sprint CC (Phase 2 close-out): the generic DEFAULT_OWNER_INPUTS
+  // of {50 covers/day × $35 × 365 days = $638k/yr} was the fallback
+  // that shipped with the revenue-at-risk chip. It's correct for
+  // roughly nobody — a fine-dining room is 3× that revenue, a cafe
+  // is 70% of it. Sprint CC1 added subtype-aware defaults in
+  // subtypes.js; this function is the dynamic resolver the rest of
+  // the audit uses from here forward.
+  //
+  // Resolution order:
+  //   1. window.__auditOwnerInputs — the owner's saved override (CC3)
+  //   2. subtypeOwnerDefaults(effectiveBusinessType()) — subtype median
+  //   3. DEFAULT_OWNER_INPUTS — absolute last-resort generic shape
+  //
+  // Callers pass the result into estimateRevenueAtRiskRange or just
+  // call it with no owner argument (the function uses this resolver
+  // internally when owner is null/undefined).
   var DEFAULT_OWNER_INPUTS = {
     coversPerDay: 50,
     avgCheck:     35,
     openDays:     365
   };
+  function effectiveOwnerInputs() {
+    // 1. Explicit owner override (Sprint CC3 — reads from localStorage
+    //    via window.__auditOwnerInputs). Must carry all three fields
+    //    with positive numbers to be accepted; partial overrides mix
+    //    with the subtype default for the missing fields so a user
+    //    who only customizes coversPerDay still gets a subtype-
+    //    appropriate avgCheck.
+    var subId = null;
+    try {
+      if (typeof effectiveBusinessType === 'function') {
+        subId = effectiveBusinessType();
+      }
+    } catch (_) { /* noop */ }
+    var subDefaults = (typeof subtypeOwnerDefaults === 'function')
+      ? subtypeOwnerDefaults(subId)
+      : null;
+    var base = subDefaults || DEFAULT_OWNER_INPUTS;
+    var override = window.__auditOwnerInputs;
+    if (override && typeof override === 'object') {
+      return {
+        coversPerDay: (typeof override.coversPerDay === 'number' && override.coversPerDay > 0)
+          ? override.coversPerDay : base.coversPerDay,
+        avgCheck: (typeof override.avgCheck === 'number' && override.avgCheck > 0)
+          ? override.avgCheck : base.avgCheck,
+        openDays: (typeof override.openDays === 'number' && override.openDays > 0 && override.openDays <= 365)
+          ? override.openDays : base.openDays
+      };
+    }
+    return base;
+  }
+  // Expose for the PDF builder + share card so they can read the
+  // effective inputs without re-running the subtype-resolution path.
+  window.__auditOwnerInputsEffective = effectiveOwnerInputs;
   // Revenue-at-risk percentage ranges [low, high] per check type.
   // Values are % of annual revenue the owner is plausibly leaving on
   // the table by failing this check, based on observed funnel drop-
@@ -9796,7 +9842,12 @@
     var key = def && (def.audit || def.type);
     var range = key ? REVENUE_AT_RISK_PCT[key] : null;
     if (!range) return null;
-    var o = owner || DEFAULT_OWNER_INPUTS;
+    // Sprint CC2: when no owner object is passed, resolve the
+    // subtype-appropriate defaults dynamically instead of falling
+    // back to the generic shape. Keeps backward compat with tests
+    // that explicitly pass a harness object; callers now pass
+    // effectiveOwnerInputs() directly.
+    var o = owner || (typeof effectiveOwnerInputs === 'function' ? effectiveOwnerInputs() : DEFAULT_OWNER_INPUTS);
     var annualRevenue = (o.coversPerDay || 0) * (o.avgCheck || 0) * (o.openDays || 365);
     if (annualRevenue <= 0) return null;
     return {
@@ -9825,7 +9876,7 @@
   // tiebreaker for two items with identical dollar midpoints.
   function estimateDollarImpact(def) {
     if (typeof estimateRevenueAtRiskRange !== 'function') return null;
-    var range = estimateRevenueAtRiskRange(def, DEFAULT_OWNER_INPUTS);
+    var range = estimateRevenueAtRiskRange(def, effectiveOwnerInputs());
     if (!range) return null;
     return Math.round((range.low + range.high) / 2);
   }
@@ -10041,7 +10092,7 @@
         // with a "est." prefix so owners read it as an order-of-
         // magnitude, not a quote. Hidden when the check type has no
         // revenue-risk coefficient (scoped list in V1).
-        var risk = estimateRevenueAtRiskRange(def, DEFAULT_OWNER_INPUTS);
+        var risk = estimateRevenueAtRiskRange(def, effectiveOwnerInputs());
         if (risk) {
           // Sprint ES2: chip label + tooltip localized via t().
           var riskLabel = t('chip.revenue', {
@@ -10277,7 +10328,7 @@
         // meta row at all. An item with no effort/time AND no revenue
         // coefficient still suppresses the meta row (current behavior).
         var apRisk = (typeof estimateRevenueAtRiskRange === 'function')
-          ? estimateRevenueAtRiskRange(def, DEFAULT_OWNER_INPUTS)
+          ? estimateRevenueAtRiskRange(def, effectiveOwnerInputs())
           : null;
         if (def.effort || typeof def.minutes === 'number' || apRisk) {
           var meta = document.createElement('div');
@@ -11270,7 +11321,7 @@
           chips.push('<span class="chip chip-time">' + timeLabel + '</span>');
         }
         var rowRisk = (typeof estimateRevenueAtRiskRange === 'function')
-          ? estimateRevenueAtRiskRange(def, DEFAULT_OWNER_INPUTS)
+          ? estimateRevenueAtRiskRange(def, effectiveOwnerInputs())
           : null;
         if (rowRisk) {
           var rowRiskLabel = t('chip.revenue', {
