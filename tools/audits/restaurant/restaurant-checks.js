@@ -2894,6 +2894,87 @@ function t(key, vars, lang) {
 }
 
 // ---------------------------------------------------------------------------
+// Phase 3 #6: DOM-aware URL extraction from crawled follow-up pages.
+// ---------------------------------------------------------------------------
+// The existing platform detector (detectPlatforms in index.html) is
+// already boundary-aware: it parses each URL via new URL(...), matches
+// patterns against host / hostPath with explicit token-boundary
+// guards, and rejects path-only patterns against bare host strings.
+// That gives it solid precision — /assets/square-shadows.css won't
+// false-positive "Square" because the bare-host pattern doesn't match
+// path segments.
+//
+// The real gap is RECALL, not precision. The detector feeds on URLs
+// extracted from PageSpeed's audit details (network-requests +
+// crawlable-anchors), which only covers the homepage Lighthouse
+// visited. A restaurant whose Toast ordering is embedded on a
+// dedicated /order/ page — or whose Resy widget only lives on
+// /reserve/ — is invisible to the homepage trace. PSI never fetched
+// those follow-up pages; the page-crawl endpoint did, and the HTML
+// is sitting on window.__auditCrawl.pages ready to be mined.
+//
+// extractCrawlPageUrls(crawl) walks every successfully crawled page
+// (homepage + follow-up slots) and pulls URLs out of the DOM
+// attributes that actually identify platform embeds:
+//
+//   <a href=...>         — direct link to ordering / reservations
+//   <iframe src=...>     — embedded booking / ordering widget
+//   <script src=...>     — widget loader script
+//   <form action=...>    — native checkout form pointing at a platform
+//
+// The union of these URLs is merged into allUrls before the priority-
+// check loop runs, so the existing detectPlatforms flow picks up
+// references on follow-up pages without any change to its matching
+// rules. Precision is preserved (same boundary-aware matcher), recall
+// goes up (more URL material to match against).
+//
+// Defensive on malformed HTML: regex-based extraction tolerates broken
+// markup where a real DOM parser would throw. Duplicate URLs are NOT
+// de-duped here because detectPlatforms handles that via its `seen`
+// map; we return the raw list and let the caller concat.
+var CRAWL_URL_ATTR_RE = /<(?:a|iframe|script|form)\b[^>]*\b(?:href|src|action)\s*=\s*(?:"([^"]+)"|'([^']+)'|([^\s>]+))/gi;
+
+function extractCrawlPageUrls(crawl) {
+  if (!crawl || typeof crawl !== 'object') return [];
+  var pages = [];
+  if (crawl.homepage && typeof crawl.homepage.html === 'string') {
+    pages.push(crawl.homepage);
+  }
+  if (Array.isArray(crawl.pages)) {
+    for (var pi = 0; pi < crawl.pages.length; pi++) {
+      var p = crawl.pages[pi];
+      if (p && typeof p.html === 'string' && p.html.length) {
+        pages.push(p);
+      }
+    }
+  }
+  if (!pages.length) return [];
+  var urls = [];
+  for (var i = 0; i < pages.length; i++) {
+    var html = pages[i].html;
+    if (!html || typeof html !== 'string') continue;
+    // Reset lastIndex every call; the /g flag carries state otherwise
+    // and two pages into the loop we'd be matching mid-string.
+    CRAWL_URL_ATTR_RE.lastIndex = 0;
+    var m;
+    while ((m = CRAWL_URL_ATTR_RE.exec(html)) !== null) {
+      // Capture groups 1 (double-quoted) / 2 (single-quoted) /
+      // 3 (unquoted). Exactly one of the three is defined per match.
+      var val = m[1] || m[2] || m[3];
+      if (val == null) continue;
+      val = String(val).trim();
+      if (!val) continue;
+      // Skip fragment-only anchors ("#menu") and JS hrefs
+      // ("javascript:void(0)") — they can't carry a platform host.
+      if (val.charAt(0) === '#') continue;
+      if (/^javascript:/i.test(val)) continue;
+      urls.push(val);
+    }
+  }
+  return urls;
+}
+
+// ---------------------------------------------------------------------------
 // Phase 3 #5: menu intelligence (prices + dish photos on the menu page).
 // ---------------------------------------------------------------------------
 // The existing 'menu-format' priority check answers "is your menu an
@@ -3446,6 +3527,7 @@ if (typeof module !== 'undefined' && module.exports) {
     extractMenuSignals: extractMenuSignals,
     MENU_INTEL_PRICE_FLOOR: MENU_INTEL_PRICE_FLOOR,
     MENU_INTEL_PHOTO_FLOOR: MENU_INTEL_PHOTO_FLOOR,
+    extractCrawlPageUrls: extractCrawlPageUrls,
     POWERED_BY: POWERED_BY,
     MUNTIN_AUDIT_DESCRIPTION: MUNTIN_AUDIT_DESCRIPTION,
     MUNTIN_AUDIT_DESCRIPTION_ES: MUNTIN_AUDIT_DESCRIPTION_ES,

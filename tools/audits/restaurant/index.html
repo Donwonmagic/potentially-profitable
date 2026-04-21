@@ -11694,6 +11694,28 @@
     // uses platform hits as its most reliable "is this a restaurant"
     // signal).
     var allUrls  = extractAllUrls(audits);
+    // Phase 3 #6: augment with URLs pulled from the crawled follow-up
+    // pages. PSI only traces the homepage; a Toast widget living on
+    // /order/ or a Resy iframe on /reserve/ is invisible to the
+    // homepage-only detector. extractCrawlPageUrls walks every
+    // successfully crawled page's HTML and pulls values out of
+    // <a href>, <iframe src>, <script src>, and <form action> —
+    // exactly the attributes a platform embed uses. The existing
+    // boundary-aware detectPlatforms() handles the merged set
+    // unchanged, so precision stays put and only recall improves.
+    if (typeof extractCrawlPageUrls === 'function' && window.__auditCrawl) {
+      var crawlUrls = extractCrawlPageUrls(window.__auditCrawl);
+      if (crawlUrls && crawlUrls.length) {
+        var seen = {};
+        for (var u = 0; u < allUrls.length; u++) seen[allUrls[u]] = true;
+        for (var c = 0; c < crawlUrls.length; c++) {
+          if (!seen[crawlUrls[c]]) {
+            seen[crawlUrls[c]] = true;
+            allUrls.push(crawlUrls[c]);
+          }
+        }
+      }
+    }
     var pageText = extractPageText(audits);
 
     // Effective classification combines the automatic signal with any
