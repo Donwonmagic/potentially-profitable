@@ -1908,6 +1908,14 @@
     stroke-width: 12;
   }
   .score-ring .bg { stroke: var(--line); }
+  /* Sprint 5: tick-mark ring at r=60 with stroke-dashaarray draws
+     60 tiny marks around the outside of the fill stroke. Uses
+     currentColor so it inherits the ring's text color for
+     consistency; 18% opacity keeps them subtle. */
+  .score-ring .ticks {
+    color: var(--stone);
+    opacity: 0.18;
+  }
   .score-ring .fg {
     stroke: var(--teal);
     stroke-linecap: round;
@@ -4322,6 +4330,22 @@
             </defs>
             <circle class="bg" cx="60" cy="60" r="52"></circle>
             <circle class="fg" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"></circle>
+            <!-- Sprint 5: tick-mark ring. 60 marks at r=60 (just
+                 outside the stroke, inside the 60px radius center
+                 point) indicate a gauge-like scale without data
+                 noise. Rendered as a dasharray trick on a 4th
+                 concentric circle: stroke invisibly thin at r=60
+                 with a dasharray that draws a 1px tick every 6
+                 degrees (2πr / 60 = ~6.28 per tick). Rotated -90deg
+                 via parent <svg> transform already so ticks land
+                 from the top-center clockwise. Low opacity keeps
+                 them quiet; the score stroke remains the anchor. -->
+            <circle class="ticks" cx="60" cy="60" r="60"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="6"
+                    stroke-dasharray="1 5.283"
+                    aria-hidden="true"></circle>
           </svg>
           <div class="text">
             <span class="value" id="scoreValue">—</span>
