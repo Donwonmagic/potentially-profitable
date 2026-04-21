@@ -1009,6 +1009,9 @@
       // One tick per H2 boundary, so the progress bar doubles as a
       // chapter map. Fall back to a single no-tick bar if the post has
       // no H2s (short posts).
+      // Sprint A3: each segment also carries its [startIdx, endIdx)
+      // range on the dataset so tickStudio can flag the active chapter
+      // without recomputing the mapping on every audio tick.
       const frag = document.createDocumentFragment();
       let lastFlex = 0;
       for (let i = 0; i < chunks.length; i++) {
@@ -1016,6 +1019,8 @@
         if (isBoundary) {
           const seg = document.createElement('span');
           seg.style.flex = String(i - lastFlex);
+          seg.dataset.startIdx = String(lastFlex);
+          seg.dataset.endIdx   = String(i);
           frag.appendChild(seg);
           lastFlex = i;
         }
@@ -1023,8 +1028,26 @@
       // Final segment through the end
       const tail = document.createElement('span');
       tail.style.flex = String(chunks.length - lastFlex);
+      tail.dataset.startIdx = String(lastFlex);
+      tail.dataset.endIdx   = String(chunks.length);
       frag.appendChild(tail);
       progressTicks.replaceChildren(frag);
+    }
+
+    // Sprint A3: flag the tick segment whose [startIdx, endIdx) contains
+    // the currently-playing chunk. CSS swells the current segment to
+    // 1.08× and tints it with a soft teal, so the progress bar visibly
+    // bubbles forward chapter by chapter as the audio advances.
+    function markCurrentTickSegment(idx) {
+      if (!progressTicks) return;
+      const segs = progressTicks.children;
+      for (let i = 0; i < segs.length; i++) {
+        const s = segs[i];
+        const a = Number(s.dataset.startIdx);
+        const b = Number(s.dataset.endIdx);
+        if (idx >= a && idx < b) s.setAttribute('data-current', 'true');
+        else                     s.removeAttribute('data-current');
+      }
     }
 
     function updateProgress() {
@@ -1373,6 +1396,7 @@
       if (progressEl) progressEl.setAttribute('aria-valuenow', String(Math.round(pct)));
       updateDockProgress(pct, t, audioEl.duration || 0);
       updateDockChapter(chunks[currentIndex]);
+      markCurrentTickSegment(currentIndex);
       if (prevBtn) prevBtn.disabled = currentIndex <= 0;
       if (nextBtn) nextBtn.disabled = currentIndex >= chunks.length - 1;
       updateSkipButtons();
@@ -1396,6 +1420,7 @@
       if (progressEl) progressEl.setAttribute('aria-valuenow', String(Math.round(pct)));
       updateDockProgress(pct, chunk.start || 0, audioEl.duration || 0);
       updateDockChapter(chunk);
+      markCurrentTickSegment(currentIndex);
       if (prevBtn) prevBtn.disabled = currentIndex <= 0;
       if (nextBtn) nextBtn.disabled = currentIndex >= chunks.length - 1;
     }
