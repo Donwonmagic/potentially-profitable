@@ -362,6 +362,56 @@ function subtypeBenchmark(id) {
   return (canon && RESTAURANT_SUBTYPE_BENCHMARKS[canon]) || null;
 }
 
+// Sprint CC (Phase 2 close-out): subtype-aware default inputs for
+// the revenue-at-risk chip. The generic DEFAULT_OWNER_INPUTS of
+// {50 covers/day × $35 × 365 days = $638k/yr} is correct for
+// nobody — a fine-dining room does 80 × $85 and is closed 2
+// days/week; a cafe does 300+ small tickets at $6-8. Using a
+// single shape across every subtype made the chips systematically
+// wrong for every restaurant that isn't a casual-dining archetype.
+//
+// These are rough industry medians per subtype, same "tradespeople's
+// estimates" credibility frame as RESTAURANT_SUBTYPE_BENCHMARKS
+// above. Useful as better-than-generic defaults and as the starting
+// values for the owner-editable input card (future sprint).
+//
+// Shape:
+//   coversPerDay  — typical transactions per day (covers for dine-in,
+//                   tickets for quick-service / cafes)
+//   avgCheck      — typical ticket value in USD
+//   openDays      — typical annual service days (fine-dining closes
+//                   2/week; food-trucks are seasonal; catering is
+//                   per-event so we model a slightly reduced year)
+//
+// Owners can override every field via the input card; these are only
+// the starting values when no override exists. A subtype that isn't
+// listed here falls through to DEFAULT_OWNER_INPUTS in index.html so
+// the audit never fails closed.
+var RESTAURANT_SUBTYPE_OWNER_DEFAULTS = {
+  'fine-dining':    { coversPerDay:  80, avgCheck: 85, openDays: 310 },
+  'casual-dining':  { coversPerDay: 120, avgCheck: 35, openDays: 350 },
+  'fast-casual':    { coversPerDay: 250, avgCheck: 18, openDays: 360 },
+  'cafe':           { coversPerDay: 300, avgCheck:  8, openDays: 360 },
+  'bakery':         { coversPerDay: 200, avgCheck: 10, openDays: 360 },
+  'bar-pub':        { coversPerDay: 100, avgCheck: 30, openDays: 350 },
+  'pizzeria':       { coversPerDay: 150, avgCheck: 22, openDays: 360 },
+  'food-truck':     { coversPerDay:  80, avgCheck: 12, openDays: 240 },
+  'ghost-kitchen':  { coversPerDay: 120, avgCheck: 20, openDays: 350 },
+  'catering-only':  { coversPerDay:  50, avgCheck: 35, openDays: 250 }
+};
+
+/**
+ * Look up subtype-aware default owner inputs. Returns the triple
+ * {coversPerDay, avgCheck, openDays} for the canonical subtype, or
+ * null when the id doesn't resolve (caller falls back to the
+ * generic DEFAULT_OWNER_INPUTS). Handles legacy ids via
+ * canonicalSubtypeId, same as subtypeBenchmark.
+ */
+function subtypeOwnerDefaults(id) {
+  var canon = canonicalSubtypeId(id);
+  return (canon && RESTAURANT_SUBTYPE_OWNER_DEFAULTS[canon]) || null;
+}
+
 /**
  * Resolve a subtype-specific weight override for a given check id.
  * Returns the number (>=0) if overridden, or null to use the check's
@@ -390,4 +440,24 @@ function rankSubtypeScores(scores) {
   var confidence = total > 0 ? top.score / total : 0;
   var alternatives = entries.slice(1, 3).filter(function(e){ return e.score > 0; });
   return { id: top.id, confidence: confidence, alternatives: alternatives };
+}
+
+// Node-only export shim so a regression test can require() this
+// module. Classic-script load in the browser ignores this branch;
+// only `typeof module` is truthy in Node. Kept narrow — only the
+// helpers a test needs are exported. Mirrors the pattern at the
+// tail of restaurant-checks.js.
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    RESTAURANT_SUBTYPES: RESTAURANT_SUBTYPES,
+    RESTAURANT_SUBTYPE_ALIASES: RESTAURANT_SUBTYPE_ALIASES,
+    RESTAURANT_SUBTYPE_IDS: RESTAURANT_SUBTYPE_IDS,
+    RESTAURANT_SUBTYPE_BENCHMARKS: RESTAURANT_SUBTYPE_BENCHMARKS,
+    RESTAURANT_SUBTYPE_OWNER_DEFAULTS: RESTAURANT_SUBTYPE_OWNER_DEFAULTS,
+    canonicalSubtypeId: canonicalSubtypeId,
+    getSubtype: getSubtype,
+    subtypeBenchmark: subtypeBenchmark,
+    subtypeOwnerDefaults: subtypeOwnerDefaults,
+    subtypeWeights: subtypeWeights
+  };
 }
