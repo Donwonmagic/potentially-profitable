@@ -1913,9 +1913,16 @@
     stroke-linecap: round;
     transition: stroke-dashoffset 1.2s var(--ease-out);
   }
-  .score-ring.grade-good .fg  { stroke: #1f9d55; }
-  .score-ring.grade-ok   .fg  { stroke: #d97706; }
-  .score-ring.grade-bad  .fg  { stroke: var(--rust); }
+  /* Sprint 4: grade-band gradient strokes. The flat solid colors
+     above become the fallback for browsers that drop gradient url
+     references (none in practice; modern SVG support is universal).
+     URL refs point at the <defs> in the ring's own SVG, one per
+     grade. Visual outcome: the ring feels warmer at its origin and
+     transitions through the grade color as it fills — an implied
+     progression rather than a single flat value. */
+  .score-ring.grade-good .fg { stroke: url(#scoreGradGood); }
+  .score-ring.grade-ok   .fg { stroke: url(#scoreGradOk); }
+  .score-ring.grade-bad  .fg { stroke: url(#scoreGradBad); }
   .score-ring .text {
     position: absolute;
     inset: 0;
@@ -4293,6 +4300,26 @@
       <div class="audit-summary" id="overallScoreSection">
         <div class="score-ring" id="scoreRing">
           <svg viewBox="0 0 120 120" aria-hidden="true">
+            <!-- Sprint 4: gradient stroke defs. Three variants, one
+                 per grade band. The ring's class (.grade-good /
+                 .grade-ok / .grade-bad) selects which gradient paints
+                 via CSS attribute selector below. Stops are teal→
+                 grade-color rather than flat; gives the ring a sense
+                 of warmth + progression as it fills. -->
+            <defs>
+              <linearGradient id="scoreGradGood" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%"  stop-color="#1F4E5B"/>
+                <stop offset="100%" stop-color="#1f9d55"/>
+              </linearGradient>
+              <linearGradient id="scoreGradOk" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%"  stop-color="#1F4E5B"/>
+                <stop offset="100%" stop-color="#D97706"/>
+              </linearGradient>
+              <linearGradient id="scoreGradBad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%"  stop-color="#1F4E5B"/>
+                <stop offset="100%" stop-color="#B8541A"/>
+              </linearGradient>
+            </defs>
             <circle class="bg" cx="60" cy="60" r="52"></circle>
             <circle class="fg" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"></circle>
           </svg>
