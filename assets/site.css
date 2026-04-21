@@ -740,8 +740,34 @@ br.br-lg{display:none}
 .listen-card[data-state="loading"] .listen-card-play{background:var(--lc-accent-dark)}
 .listen-card[data-state="loading"] .listen-card-play .icon-play{display:none}
 .listen-card[data-state="loading"] .listen-card-play .icon-loading{display:block;animation:listen-spin 0.8s linear infinite}
-.listen-card-play::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--lc-accent);opacity:0;transform:scale(0.9)}
+.listen-card-play::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--lc-accent);opacity:0;transform:scale(0.9);pointer-events:none}
 .listen-card[data-state="playing"] .listen-card-play::after{animation:listen-pulse 2s var(--ease-out) infinite}
+/* Sprint A5: two more concentric pulse rings for a richer broadcast
+   while playing. Each ring starts smaller, expands past the base
+   footprint, and fades out — staggered so they leave the button in
+   a procession rather than all at once. ::before is the middle ring
+   (inset:-12px), .listen-card-play-aura span is the outer ring
+   (inset:-18px). Inner ring (::after, inset:-6px) stays as-is. */
+.listen-card-play::before{content:"";position:absolute;inset:-12px;border-radius:50%;border:2px solid var(--lc-accent);opacity:0;transform:scale(0.9);pointer-events:none}
+.listen-card-play-aura{position:absolute;inset:-18px;border-radius:50%;border:2px solid var(--lc-accent);opacity:0;transform:scale(0.9);pointer-events:none}
+.listen-card[data-state="playing"] .listen-card-play::before{
+  animation:listen-pulse-mid 2.6s var(--ease-out) infinite;
+  animation-delay:0.9s;
+}
+.listen-card[data-state="playing"] .listen-card-play-aura{
+  animation:listen-pulse-outer 3.2s var(--ease-out) infinite;
+  animation-delay:1.6s;
+}
+@keyframes listen-pulse-mid{
+  0%   { opacity:0.35; transform:scale(0.92); }
+  70%  { opacity:0;    transform:scale(1.35); }
+  100% { opacity:0;    transform:scale(1.35); }
+}
+@keyframes listen-pulse-outer{
+  0%   { opacity:0.20; transform:scale(0.94); }
+  70%  { opacity:0;    transform:scale(1.5);  }
+  100% { opacity:0;    transform:scale(1.5);  }
+}
 
 .listen-card-body{grid-area:body;min-width:0}
 .listen-card-kicker{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--lc-accent);display:inline-flex;align-items:center;gap:8px;margin:0 0 4px}
@@ -1016,7 +1042,7 @@ br.br-lg{display:none}
 @keyframes listen-callout-pulse{0%,100%{box-shadow:0 0 0 2px var(--teal),0 0 0 8px var(--teal-tint)}
 50%{box-shadow:0 0 0 2px var(--teal),0 0 0 14px rgba(31,78,91,0.08)}
 }
-@media (prefers-reduced-motion:reduce){.listen-btn[data-state="playing"] svg path,.listen-card-play::after,.listen-card[data-state="loading"] .listen-card-play .icon-loading,.listen-card[data-state="playing"] .listen-card-kicker::before,.listen-card[data-state="playing"] .listen-card-progress-fill,.listen-dock[data-state="playing"] .listen-dock-progress-fill,.listen-card-chapter em.lc-chapter-in,.listen-dock-chapter.lc-chapter-in{animation:none}
+@media (prefers-reduced-motion:reduce){.listen-btn[data-state="playing"] svg path,.listen-card-play::after,.listen-card-play::before,.listen-card-play-aura,.listen-card[data-state="loading"] .listen-card-play .icon-loading,.listen-card[data-state="playing"] .listen-card-kicker::before,.listen-card[data-state="playing"] .listen-card-progress-fill,.listen-dock[data-state="playing"] .listen-dock-progress-fill,.listen-card-chapter em.lc-chapter-in,.listen-dock-chapter.lc-chapter-in{animation:none}
 /* Sprint A1: skip the ambient cross-fade under reduced-motion; the
    end state still applies via the [data-state] selector, so the
    warm tint is present without the 1.2s transition. */
