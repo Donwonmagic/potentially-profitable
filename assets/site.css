@@ -734,12 +734,29 @@ br.br-lg{display:none}
 .listen-card-play:active{transform:translateY(0)}
 .listen-card-play:focus-visible{outline:2px solid var(--lc-accent);outline-offset:3px}
 .listen-card-play svg{width:26px;height:26px;flex:none}
-.listen-card-play .icon-pause,.listen-card-play .icon-loading{display:none}
+.listen-card-play .icon-pause{display:none}
 .listen-card[data-state="playing"] .listen-card-play .icon-play{display:none}
 .listen-card[data-state="playing"] .listen-card-play .icon-pause{display:block}
 .listen-card[data-state="loading"] .listen-card-play{background:var(--lc-accent-dark)}
 .listen-card[data-state="loading"] .listen-card-play .icon-play{display:none}
-.listen-card[data-state="loading"] .listen-card-play .icon-loading{display:block;animation:listen-spin 0.8s linear infinite}
+/* Sprint A11: 3-dot trail replaces the spinner SVG as the loading
+   state. Three 4px dots inside the play button, each scale(0) → 1 →
+   0 over 0.8s with 0.12s stagger. Reads as a voice clearing its
+   throat rather than an abstract spinning wheel. */
+.listen-card-play-dots{display:none;gap:5px;align-items:center;justify-content:center}
+.listen-card[data-state="loading"] .listen-card-play-dots{display:inline-flex}
+.listen-card-play-dots i{
+  display:block;width:6px;height:6px;border-radius:50%;
+  background:var(--white);
+  transform:scale(0);
+  animation:listen-dots 0.8s var(--ease-out) infinite;
+}
+.listen-card-play-dots i:nth-child(2){animation-delay:0.12s}
+.listen-card-play-dots i:nth-child(3){animation-delay:0.24s}
+@keyframes listen-dots{
+  0%, 80%, 100% { transform:scale(0); opacity:0.4; }
+  40%           { transform:scale(1); opacity:1;   }
+}
 .listen-card-play::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--lc-accent);opacity:0;transform:scale(0.9);pointer-events:none}
 .listen-card[data-state="playing"] .listen-card-play::after{animation:listen-pulse 2s var(--ease-out) infinite}
 /* Sprint A5: two more concentric pulse rings for a richer broadcast
@@ -1103,7 +1120,10 @@ br.br-lg{display:none}
 @keyframes listen-callout-pulse{0%,100%{box-shadow:0 0 0 2px var(--teal),0 0 0 8px var(--teal-tint)}
 50%{box-shadow:0 0 0 2px var(--teal),0 0 0 14px rgba(31,78,91,0.08)}
 }
-@media (prefers-reduced-motion:reduce){.listen-btn[data-state="playing"] svg path,.listen-card-play::after,.listen-card-play::before,.listen-card-play-aura,.listen-card[data-state="loading"] .listen-card-play .icon-loading,.listen-card[data-state="playing"] .listen-card-kicker::before,.listen-card[data-state="playing"] .listen-card-progress-fill,.listen-dock[data-state="playing"] .listen-dock-progress-fill,.listen-card-chapter em.lc-chapter-in,.listen-dock-chapter.lc-chapter-in{animation:none}
+@media (prefers-reduced-motion:reduce){.listen-btn[data-state="playing"] svg path,.listen-card-play::after,.listen-card-play::before,.listen-card-play-aura,.listen-card[data-state="playing"] .listen-card-kicker::before,.listen-card[data-state="playing"] .listen-card-progress-fill,.listen-dock[data-state="playing"] .listen-dock-progress-fill,.listen-card-chapter em.lc-chapter-in,.listen-dock-chapter.lc-chapter-in{animation:none}
+/* Sprint A11: keep the dots visible (so the loading affordance stays
+   readable) but drop the staggered scale animation. */
+.listen-card-play-dots i{animation:none;transform:scale(1);opacity:0.7}
 /* Sprint A1: skip the ambient cross-fade under reduced-motion; the
    end state still applies via the [data-state] selector, so the
    warm tint is present without the 1.2s transition. */
