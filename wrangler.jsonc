@@ -99,7 +99,30 @@
   "vars": {
     "FROM_EMAIL":   "Don Goldstein <don@muntin.digital>",
     "NOTIFY_EMAIL": "don@muntin.digital"
-  }
+  },
+
+  // ─────────────────────────────────────────────────────────────────
+  // Durable Object: global per-IP rate limiter (activated Phase 1).
+  //
+  // Class definition lives in src/lib/rate-limiter-do.js and is re-
+  // exported from src/worker.js. The first `wrangler deploy` after
+  // this block was uncommented runs the v1 migration and creates the
+  // RateLimiter class on Cloudflare's side. Worker code checks for
+  // env.RATE_LIMITER at request time: when the binding is present
+  // the Worker calls the DO (global sliding window); when absent the
+  // in-isolate limiter in rate-limit.js is the fallback. Both paths
+  // are exercised by scripts/test-rate-limit* tests.
+  "durable_objects": {
+    "bindings": [{ "name": "RATE_LIMITER", "class_name": "RateLimiter" }]
+  },
+  // Cloudflare Workers free plan only supports DOs backed by SQLite
+  // storage (the older KV-backed DOs are paid-plan only). The class
+  // definition in src/lib/rate-limiter-do.js is unchanged — both
+  // backends expose the same `state.storage.get/put` API. The
+  // distinction is purely in the migration directive.
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["RateLimiter"] }
+  ]
 
   // ─────────────────────────────────────────────────────────────────
   // Sprint T3 optional binding (not yet provisioned):
@@ -115,15 +138,6 @@
   //
   //   "kv_namespaces": [
   //     { "binding": "AUDIT_CACHE", "id": "<paste-from-wrangler-output>" }
-  //   ]
-  //
-  // Same story for the Durable Object rate-limiter (planned S2 roadmap):
-  //
-  //   "durable_objects": {
-  //     "bindings": [{ "name": "RATE_LIMITER", "class_name": "RateLimiter" }]
-  //   },
-  //   "migrations": [
-  //     { "tag": "v1", "new_classes": ["RateLimiter"] }
   //   ]
   //
   // And for the AI Gateway that powers the facts dossier (T4):

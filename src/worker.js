@@ -46,6 +46,44 @@ import {
   pickLang,
 } from './lib/validation.js';
 import { withAuditCache } from './lib/audit-cache.js';
+import { createRateLimiter, clientIpFromRequest } from './lib/rate-limit.js';
+import { RateLimiter, checkDurableRateLimit } from './lib/rate-limiter-do.js';
+
+// Durable Object classes must be re-exported from the Worker entry
+// module so the runtime can instantiate them when the binding fires.
+// Leaving this export in place when the binding is still commented in
+// wrangler.jsonc is harmless — the class is defined but never
+// instantiated.
+export { RateLimiter };
+
+// Compute the X-Audit-Cache header value from a withAuditCache result.
+// Three states: 'hit' (fresh, within TTL), 'stale-fallback' (upstream
+// errored, served a cached value between TTL and 2× TTL), 'miss'
+// (fresh upstream fetch). Owners can see which they got via devtools
+// and the UI can surface stale-fallback as a disclosure.
+function auditCacheHeader(cached) {
+  if (!cached) return 'miss';
+  if (cached.staleFallback) return 'stale-fallback';
+  return cached.cacheHit ? 'hit' : 'miss';
+}
+
+// Per-isolate rate limiter. 30 requests per IP per 60 s — generous
+// enough that a real owner re-auditing after every fix never hits it,
+// tight enough to blunt the common "one IP, many URLs" burst attack
+// that would otherwise exhaust PSI / Places / Resend / LLM quotas.
+// See src/lib/rate-limit.js for the full scope discussion.
+const API_RATE_LIMITER = createRateLimiter({ windowMs: 60_000, max: 30 });
+
+// Form / email endpoints have a tighter budget because each POST
+// triggers up to two Resend emails (free tier: 100/day).
+const FORM_RATE_LIMITER = createRateLimiter({ windowMs: 3600_000, max: 10 });
+
+const FORM_RATE_LIMIT_PATHS = new Set([
+  '/api/intake',
+  '/api/checklist',
+  '/api/audit-report',
+  '/api/schedule-reaudit'
+]);
 import {
   intakeNotification,
   intakeAutoResponder,
@@ -132,6 +170,53 @@ export default {
       // correlation trivial); otherwise we mint a new one.
       const reqId = request.headers.get('x-request-id') || crypto.randomUUID();
       const started = Date.now();
+
+      // Per-IP throttle. /api/ping bypasses so ops can health-check
+      // without burning the caller's own budget. Form endpoints use a
+      // tighter per-hour budget because each hits Resend's free tier.
+      //
+      // Two-tier enforcement:
+      //   1. Durable-Object sliding window (global across isolates)
+      //      when env.RATE_LIMITER is bound. Authoritative.
+      //   2. In-isolate sliding window as the fallback when the DO
+      //      binding is absent (local dev, pre-deploy, or after a DO
+      //      outage). Less precise but zero extra latency.
+      // checkDurableRateLimit never throws — a DO outage is logged
+      // and the request is treated as allowed by that layer so a
+      // real user is never blocked because of an infrastructure
+      // blip. The in-isolate fallback still caps bursts within one
+      // isolate in that degraded mode.
+      if (pathname !== '/api/ping') {
+        const ip = clientIpFromRequest(request);
+        const isForm = FORM_RATE_LIMIT_PATHS.has(pathname);
+        const tier = isForm
+          ? { name: 'form', windowMs: 3600_000, max: 10 }
+          : { name: 'api',  windowMs: 60_000,   max: 30 };
+
+        let deny = null;
+        if (env.RATE_LIMITER) {
+          deny = await checkDurableRateLimit(env, tier.name + ':' + ip, tier.windowMs, tier.max);
+        } else {
+          const localLimiter = isForm ? FORM_RATE_LIMITER : API_RATE_LIMITER;
+          deny = localLimiter.check(ip);
+        }
+
+        if (deny) {
+          console.log(JSON.stringify({
+            event: 'api.rate_limited',
+            path: pathname,
+            method: request.method,
+            retryAfter: deny.retryAfterSeconds,
+            tier: tier.name,
+            reqId: reqId
+          }));
+          const throttled = jsonResponse({ ok: false, error: 'rate-limited', retryAfterSeconds: deny.retryAfterSeconds }, 429);
+          throttled.headers.set('Retry-After', String(deny.retryAfterSeconds));
+          throttled.headers.set('X-Request-Id', reqId);
+          return throttled;
+        }
+      }
+
       try {
         const response = await handler(request, env, ctx);
         // Sprint U1: structured access log, one JSON line per request,
@@ -749,7 +834,11 @@ async function handleSeoCheck(request, env, ctx) {
       return jsonResponse({ ok: false, error: 'Could not fetch the page (HTTP ' + res.status + ')' }, 502);
     }
 
-    const html = await res.text();
+    // Cap at 1.5 MB. Title + meta description live in <head>; we only
+    // need the first chunk of the document. A pathological upstream
+    // can't force the Worker to buffer a multi-MB body.
+    const read = await readTextCapped(res, 1_500_000);
+    const html = read.text;
 
     // Extract <title>
     const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
@@ -798,7 +887,11 @@ async function handleSchemaCheck(request, env, ctx) {
       return jsonResponse({ ok: false, error: m }, 502);
     }
 
-    const html = await res.text();
+    // Cap at 1.5 MB. JSON-LD blocks are always inline in <head> or
+    // early <body>; streaming with a hard cap prevents a 10 MB asset
+    // dump from exhausting Worker memory before truncation can run.
+    const schemaRead = await readTextCapped(res, 1_500_000);
+    const html = schemaRead.text;
     const parsed = extractJsonLd(html);
     const validation = validateRestaurantSchema(parsed.objects, lang);
 
@@ -1838,6 +1931,79 @@ function truncateHtml(html, maxBytes) {
   return html.slice(0, maxBytes);
 }
 
+// Stream a Response body as text, aborting at maxBytes. Without this,
+// a malicious or broken upstream returning a 10 MB document forces the
+// Worker to buffer the entire response before truncateHtml can even
+// look at it — blowing memory and the 128 MB response budget. Reading
+// chunk-by-chunk and cancelling the reader at the byte cap keeps us
+// under the limit even when the upstream lies about its Content-Length.
+//
+// Returns { text, truncated, bytesRead }. `truncated: true` signals the
+// cap was reached and the tail of the document was discarded — callers
+// that need a deterministic doc length (schema parser, title extractor)
+// still work correctly because the returned text is valid UTF-8 prefix.
+export async function readTextCapped(res, maxBytes) {
+  const limit = Math.max(0, maxBytes | 0) || 0;
+  // Degenerate cap: if a caller passes 0 (or a negative) we refuse to
+  // read anything. Cancel the body so the upstream doesn't keep
+  // sending. Returning an empty string is the only honest answer.
+  if (limit === 0) {
+    try {
+      if (res && res.body && typeof res.body.cancel === 'function') {
+        await res.body.cancel();
+      }
+    } catch (_) { /* ignore */ }
+    return { text: '', truncated: true, bytesRead: 0 };
+  }
+  const body = res && res.body;
+  if (!body || typeof body.getReader !== 'function') {
+    // No streamable body (shouldn't happen in Workers runtime, but be
+    // defensive for mocked / non-streaming test responses).
+    const fallback = await res.text();
+    if (limit && fallback.length > limit) {
+      return { text: fallback.slice(0, limit), truncated: true, bytesRead: limit };
+    }
+    return { text: fallback, truncated: false, bytesRead: fallback.length };
+  }
+  const reader = body.getReader();
+  const chunks = [];
+  let bytes = 0;
+  let truncated = false;
+  try {
+    while (true) {
+      const step = await reader.read();
+      if (step.done) break;
+      const value = step.value;
+      if (!value) continue;
+      const len = value.byteLength;
+      if (limit > 0 && bytes + len > limit) {
+        const remaining = Math.max(0, limit - bytes);
+        if (remaining > 0) chunks.push(value.subarray(0, remaining));
+        bytes = limit;
+        truncated = true;
+        try { await reader.cancel(); } catch (_) { /* ignore */ }
+        break;
+      }
+      chunks.push(value);
+      bytes += len;
+    }
+  } finally {
+    try { reader.releaseLock(); } catch (_) { /* ignore */ }
+  }
+  // Concatenate once and decode the full buffer so no UTF-8 character
+  // is split across a chunk boundary. TextDecoder with fatal:false
+  // emits U+FFFD on a split at the tail; acceptable for our purposes
+  // (schema parser + regex extractors ignore replacement characters).
+  const merged = new Uint8Array(bytes);
+  let offset = 0;
+  for (const c of chunks) {
+    merged.set(c, offset);
+    offset += c.byteLength;
+  }
+  const text = new TextDecoder('utf-8', { fatal: false }).decode(merged);
+  return { text: text, truncated: truncated, bytesRead: bytes };
+}
+
 // Slot-assigned link-text patterns. Each pattern matches a category
 // of page that the audit wants to inspect separately. Order matters:
 // we stop at the first slot that matches a given anchor, so more
@@ -1969,8 +2135,13 @@ async function fetchPageForCrawl(target, timeoutMs) {
     if (!res.ok) {
       return { ok: false, url: target, status: res.status, error: 'HTTP ' + res.status };
     }
-    const html = await res.text();
-    return { ok: true, url: res.url || target, status: res.status, html: html };
+    // Stream with a hard cap so a 10 MB homepage cannot exhaust the
+    // Worker's memory budget before truncateHtml downstream can cap
+    // it. PAGE_CRAWL_MAX_HTML is the outer intent; we allocate a
+    // slightly larger byte budget so multi-byte UTF-8 doesn't clip
+    // the truncateHtml char cap applied by the caller.
+    const read = await readTextCapped(res, PAGE_CRAWL_MAX_HTML * 2);
+    return { ok: true, url: res.url || target, status: res.status, html: read.text };
   } catch (err) {
     clearTimeout(timeout);
     const msg = (err && err.name === 'AbortError') ? 'Fetch timed out' : 'Fetch failed';
@@ -2265,7 +2436,7 @@ async function handleObservatory(request, env, ctx) {
     return await observatoryScan(host);
   });
   const res = jsonResponse(cached.value, cached.value && cached.value.ok === false ? 502 : 200);
-  res.headers.set('X-Audit-Cache', cached.cacheHit ? 'hit' : 'miss');
+  res.headers.set('X-Audit-Cache', auditCacheHeader(cached));
   return res;
 }
 
@@ -2335,7 +2506,7 @@ async function handleWaybackFirstSeen(request, env, ctx) {
     return await waybackLookup(gate.url.toString());
   });
   const res = jsonResponse(cached.value, cached.value && cached.value.ok === false ? 502 : 200);
-  res.headers.set('X-Audit-Cache', cached.cacheHit ? 'hit' : 'miss');
+  res.headers.set('X-Audit-Cache', auditCacheHeader(cached));
   return res;
 }
 
@@ -2395,7 +2566,7 @@ async function handleCruxHistory(request, env, ctx) {
   });
   const status = (cached.value && cached.value.ok === false) ? 502 : 200;
   const res = jsonResponse(cached.value, status);
-  res.headers.set('X-Audit-Cache', cached.cacheHit ? 'hit' : 'miss');
+  res.headers.set('X-Audit-Cache', auditCacheHeader(cached));
   return res;
 }
 
@@ -2491,7 +2662,7 @@ async function handleGbpDetails(request, env, ctx) {
   });
   const status = (cached.value && cached.value.ok === false) ? 502 : 200;
   const res = jsonResponse(cached.value, status);
-  res.headers.set('X-Audit-Cache', cached.cacheHit ? 'hit' : 'miss');
+  res.headers.set('X-Audit-Cache', auditCacheHeader(cached));
   return res;
 }
 
@@ -2624,7 +2795,7 @@ async function handleBrandDossier(request, env, ctx) {
   });
   const statusCode = cached.value && cached.value.ok === false ? 502 : 200;
   const res = jsonResponse(cached.value, statusCode);
-  res.headers.set('X-Audit-Cache', cached.cacheHit ? 'hit' : 'miss');
+  res.headers.set('X-Audit-Cache', auditCacheHeader(cached));
   return res;
 }
 
@@ -2779,7 +2950,7 @@ async function handleDnsEmailHealth(request, env, ctx) {
     return await dnsEmailProbe(apex);
   });
   const res = jsonResponse(cached.value, cached.value && cached.value.ok === false ? 502 : 200);
-  res.headers.set('X-Audit-Cache', cached.cacheHit ? 'hit' : 'miss');
+  res.headers.set('X-Audit-Cache', auditCacheHeader(cached));
   return res;
 }
 

@@ -1813,12 +1813,58 @@
     word-break: break-all;
   }
   .audit-summary-meta .url strong { color: var(--ink); font-weight: 600; }
+  /* Phase 2 U6: freshness chip. Inline-block so it can sit beneath
+     the URL line on its own row. Stone tone signals "metadata," not
+     "alert"; the dotted underline on the tooltip-bearing element
+     hints at the title attribute without forcing JS-driven
+     popovers. */
+  .audit-freshness {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 12.5px;
+    color: var(--stone);
+    font-variant-numeric: tabular-nums;
+    border-bottom: 1px dotted var(--line-dark, #d4ccbc);
+    cursor: help;
+  }
+  .audit-freshness[hidden] { display: none; }
   .audit-summary-meta .verdict {
     font-size: 15.5px;
     line-height: 1.65;
     color: var(--ink-soft);
     margin: 16px 0 0;
   }
+  /* Phase 2 U7: subtype-benchmark chip. Anchors the raw overall score
+     ("74") against a typical median for the owner's subtype so they
+     read it as "a bit above average for a pizzeria" rather than a
+     decontextualized number. Compact, tabular-nums on the score
+     values so the delta doesn't shift left-edge alignment as it
+     toggles sign. */
+  .score-benchmark {
+    display: inline-flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    margin-top: 14px;
+    padding: 6px 12px;
+    font-size: 13px;
+    line-height: 1.35;
+    color: var(--ink-soft);
+    background: var(--cream-2, #F3EEE3);
+    border: 1px solid var(--line, #E6DFCE);
+    border-radius: 999px;
+    font-variant-numeric: tabular-nums;
+  }
+  .score-benchmark[hidden] { display: none; }
+  .score-benchmark-label { color: var(--stone); }
+  .score-benchmark strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .score-benchmark-delta { font-weight: 600; }
+  .score-benchmark-delta.up   { color: #1F6B3A; }
+  .score-benchmark-delta.down { color: #8A3010; }
+  .score-benchmark-delta.even { color: var(--stone); }
   /* Override banner: visible only when the visitor has confirmed one or
      more unverified checks. Signals (both to the original owner and to
      anyone they forward the share link to) that the score contains
@@ -2036,15 +2082,6 @@
   .top-fixes-item-chips .chip-effort-dev     { background: #E7F1F3; color: #1F4E5B; }
   .top-fixes-item-chips .chip-effort-rebuild { background: #F7E7DC; color: #B8541A; }
   .top-fixes-item-chips .chip-time           { background: var(--cream-2, #faf6ee); color: var(--ink); border: 1px solid var(--line, #E6DFCE); }
-  /* Sprint V2: revenue-at-risk chip uses the rust accent to echo the
-     "Top 3 Fixes" section border treatment — visually flags these
-     as "money on the table" without creating a new color token. */
-  .top-fixes-item-chips .chip-revenue {
-    background: #FDEFE3;
-    color: #8A3E16;
-    border: 1px solid #EFD1B6;
-    font-variant-numeric: tabular-nums;
-  }
   /* Sprint CC6: weekend-to-green ETA badge — small, calm, sits to
      the right of the Top 3 Fixes heading. Teal accent matches the
      exec-summary border treatment so the eye groups it with
@@ -2812,6 +2849,27 @@
     font-weight: 500;
     font-size: 11px;
   }
+  /* Partial-data notice: rendered inside the crawl-summary block when
+     the follow-up crawl failed entirely (ok:false) or the 15s global
+     timer fired (capHit:true). Full-width line so owners see a single
+     honest disclosure instead of a silently-shorter chip row. Styled
+     rust on cream to match the existing .is-error chip accent. */
+  .crawl-summary-notice {
+    flex: 1 0 100%;
+    margin: 0;
+    padding: 10px 12px;
+    border: 1px solid var(--rust, #B8541A);
+    border-radius: 10px;
+    background: #fdf5ee;
+    color: var(--ink);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .crawl-summary-notice[hidden] { display: none; }
+  .crawl-summary-notice strong {
+    color: var(--rust, #B8541A);
+    margin-right: 4px;
+  }
 
   .priority-list {
     background: var(--white);
@@ -2924,6 +2982,19 @@
   .chip-rebuild  { background: #fce9e1; border-color: #f4b69e; color: #8a3010; }
   .chip-rebuild::before { content: '●'; color: var(--rust); font-size: 9px; }
   .chip-time     { background: var(--cream-2); color: var(--stone); }
+  /* Phase 2 U1: revenue-at-risk chip promoted to a global chip variant
+     so every surface that surfaces a finding — priority row, Action
+     Plan item, Top 3 card — can emit the same `<span class="chip
+     chip-revenue">` and look consistent. Rust accent echoes the
+     top-fixes-card border treatment: visually flags "money on the
+     table" without introducing a new color token. */
+  .chip-revenue {
+    background: #FDEFE3;
+    border-color: #EFD1B6;
+    color: #8A3E16;
+    font-variant-numeric: tabular-nums;
+  }
+  .chip-revenue::before { content: '$'; font-weight: 700; font-size: 10px; }
 
   /* "Why this matters" — one-line impact framing, subtle but present.
      Helps owners prioritize by consequence, not by test order. */
@@ -3817,7 +3888,7 @@
         actually doing?
       </h1>
       <p class="hero-sub" style="margin:24px auto 0; max-width:580px;" data-tr="hero.sub">
-        Drop your URL below and I'll run a real mobile audit in about thirty seconds — performance, SEO, accessibility, and the specific checks that matter for a restaurant. No sign-up, no email required to see your results, no tracking.
+        Drop your URL below and I'll run a real mobile audit in about thirty seconds — performance, SEO, accessibility, and the specific checks that matter for a restaurant. The full report renders on this page — no sign-up, no email, no tracking. (An optional form at the bottom emails you a PDF copy if you want one.)
       </p>
 
       <form class="audit-form" id="auditForm" novalidate>
@@ -3860,9 +3931,9 @@
         <div class="fill" id="auditProgressFill"></div>
       </div>
       <ol class="audit-steps" id="auditSteps">
-        <li class="audit-step" data-step="1"><span class="step-indicator">1</span><span data-tr="load.step1">Sending your URL to Google Lighthouse</span></li>
-        <li class="audit-step" data-step="2"><span class="step-indicator">2</span><span data-tr="load.step2">Running Lighthouse on a simulated phone</span></li>
-        <li class="audit-step" data-step="3"><span class="step-indicator">3</span><span data-tr="load.step3">Detecting restaurant platforms and scoring readiness</span></li>
+        <li class="audit-step" data-step="1"><span class="step-indicator">1</span><span data-tr="load.step1">Submitting your site for the speed test</span></li>
+        <li class="audit-step" data-step="2"><span class="step-indicator">2</span><span data-tr="load.step2">Loading your site in a simulated phone</span></li>
+        <li class="audit-step" data-step="3"><span class="step-indicator">3</span><span data-tr="load.step3">Reading your menu, hours, ordering, and Google profile</span></li>
         <li class="audit-step" data-step="4"><span class="step-indicator">4</span><span data-tr="load.step4">Writing your report</span></li>
       </ol>
     </div>
@@ -3936,7 +4007,21 @@
         <div class="audit-summary-meta">
           <h2 id="scoreHeadline">Your overall score</h2>
           <div class="url">Audited: <strong id="auditedUrl">—</strong></div>
+          <!-- Phase 2 U6: freshness chip. Populated by setAuditTimestamp()
+               after the report renders. Owners landing on a saved
+               share link weeks later need to know whether they're
+               looking at a fresh run or a stale snapshot. The full ISO
+               stamp lives in the title attribute for the curious. -->
+          <time class="audit-freshness" id="auditFreshness" hidden></time>
           <p class="verdict" id="verdictCopy">Verdict copy populates here after a run — explains what the score means and what to focus on first.</p>
+          <!-- Phase 2 U7: subtype-benchmark chip. Populated by
+               setScoreBenchmark() after setScoreRing() lands. Hidden
+               when no benchmark is known for the resolved subtype. -->
+          <div class="score-benchmark" id="scoreBenchmark" hidden>
+            <span class="score-benchmark-label">Typical <span id="scoreBenchmarkSubtype">restaurant</span> sites score:</span>
+            <strong id="scoreBenchmarkMedian">—</strong>
+            <span class="score-benchmark-delta" id="scoreBenchmarkDelta"></span>
+          </div>
           <div class="score-override-banner" id="scoreOverrideBanner" hidden>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             <span id="scoreOverrideText">This score includes owner-confirmed checks.</span>
@@ -4253,8 +4338,8 @@
 
       <section class="deep-crux-card deep-card" id="deepCruxCard" hidden>
         <span class="deep-eyebrow" data-tr="deepScan.eyebrow">Deep scan</span>
-        <h3 class="deep-section-head" data-tr="deep.crux.heading">Field-data trends (25 weeks)</h3>
-        <p class="deep-section-sub" data-tr="deep.crux.sub">Real-user Core Web Vitals from the Chrome UX Report. Rendered only when Google has enough samples to publish a trend.</p>
+        <h3 class="deep-section-head" data-tr="deep.crux.heading">What real visitors actually experience</h3>
+        <p class="deep-section-sub" data-tr="deep.crux.sub">Page load, response time, and layout stability — measured from real Chrome users on your site over the last 25 weeks. Only shown when Google has enough samples to publish a trend. (Technical: Core Web Vitals from CrUX.)</p>
         <div class="deep-crux-grid" id="deepCruxGrid"></div>
       </section>
 
@@ -4266,10 +4351,10 @@
       <section class="deep-email-card deep-card" id="deepEmailCard" hidden>
         <span class="deep-eyebrow" data-tr="deepScan.eyebrow">Deep scan</span>
         <header class="deep-section-head-wrap">
-          <h3 class="deep-section-head" data-tr="deep.email.heading">Email deliverability</h3>
+          <h3 class="deep-section-head" data-tr="deep.email.heading">Will your reservation confirmations land in spam?</h3>
           <span class="deep-email-posture" id="deepEmailPosture" hidden></span>
         </header>
-        <p class="deep-section-sub" data-tr="deep.email.sub">Gmail, Outlook, and Yahoo require SPF + DMARC on sending domains. Booking confirmations and newsletters land in spam without them.</p>
+        <p class="deep-section-sub" data-tr="deep.email.sub">Gmail, Outlook, and Yahoo silently route booking confirmations and newsletters to spam unless your domain proves it can send mail. The three rows below are the proofs they look for.</p>
         <ul class="deep-email-rows" id="deepEmailRows"></ul>
       </section>
 
@@ -4387,8 +4472,8 @@
            schema was detected at all. -->
       <section class="schema-richness-card" id="schemaRichnessCard" hidden>
         <header class="schema-richness-head">
-          <span class="schema-richness-badge" data-tr="schemaRichness.badge">Schema scorecard</span>
-          <h3 class="schema-richness-title" data-tr="schemaRichness.heading">How complete is your Restaurant schema?</h3>
+          <span class="schema-richness-badge" data-tr="schemaRichness.badge">How Google reads your data</span>
+          <h3 class="schema-richness-title" data-tr="schemaRichness.heading">How well can Google read your menu, hours, and address?</h3>
         </header>
         <p class="schema-richness-summary" id="schemaRichnessSummary"></p>
         <ul class="schema-richness-list" id="schemaRichnessList"></ul>
@@ -4405,9 +4490,14 @@
              when the crawl returned no follow-up pages. Each chip names
              a slot (Menu, Reserve, Order, Contact, About, Catering,
              Events) so owners see that the audit read their site in
-             layers, not just the homepage. -->
+             layers, not just the homepage.
+             The notice <p> below is shown when the crawl failed
+             entirely or timed out so owners see a single honest
+             disclosure that checks below may be based on partial
+             signal (homepage only). -->
         <div class="crawl-summary" id="crawlSummary" hidden>
-          <span class="crawl-summary-label">Also scanned:</span>
+          <p class="crawl-summary-notice" id="crawlSummaryNotice" hidden></p>
+          <span class="crawl-summary-label" id="crawlSummaryLabel">Also scanned:</span>
           <div class="crawl-summary-chips" id="crawlSummaryChips"></div>
         </div>
         <div id="priorityItems">
@@ -5146,7 +5236,7 @@
     // Hero
     'hero.eyebrow':     'Herramienta gratuita \u00b7 Impulsada por Google Lighthouse',
     'hero.h1.full':     '\u00bfC\u00f3mo est\u00e1 realmente<br><span class="serif-italic">el sitio web de tu restaurante</span><br>funcionando?',
-    'hero.sub':         'Pega tu URL abajo y har\u00e9 una auditor\u00eda m\u00f3vil real en unos treinta segundos: rendimiento, SEO, accesibilidad y las verificaciones espec\u00edficas que importan para un restaurante. Sin registro, sin email para ver tus resultados, sin rastreo.',
+    'hero.sub':         'Pega tu URL abajo y har\u00e9 una auditor\u00eda m\u00f3vil real en unos treinta segundos: rendimiento, SEO, accesibilidad y las verificaciones espec\u00edficas que importan para un restaurante. El informe completo aparece en esta p\u00e1gina \u2014 sin registro, sin email, sin rastreo. (Hay un formulario opcional al final si quieres recibir una copia en PDF.)',
     'form.placeholder': 'https://turestaurante.com',
     'form.submit':      'Ejecutar auditor\u00eda',
     'form.urlLabel':    'URL del sitio web de tu restaurante',
@@ -5154,9 +5244,9 @@
     // Loading
     'load.h2':          'Ejecutando tu auditor\u00eda\u2026',
     'load.sub':         'Esto suele tardar entre 15 y 40 segundos.',
-    'load.step1':       'Enviando tu URL a Google Lighthouse',
-    'load.step2':       'Ejecutando Lighthouse en un tel\u00e9fono simulado',
-    'load.step3':       'Detectando plataformas de restaurante y calificando preparaci\u00f3n',
+    'load.step1':       'Enviando tu sitio al test de velocidad',
+    'load.step2':       'Cargando tu sitio en un tel\u00e9fono simulado',
+    'load.step3':       'Leyendo tu men\u00fa, horarios, pedidos y perfil de Google',
     'load.step4':       'Escribiendo tu informe',
     // Error
     'err.h2':           'No pudimos auditar esa URL.',
@@ -5180,21 +5270,48 @@
     'pdf.cta.email':    'Tu direcci\u00f3n de correo'
   };
 
+  // Phase 2 U4: unified translation lookup. The tool has two
+  // translation maps for historical reasons:
+  //   1. window.__MUNTIN_UI_ES  (declared just above this function)
+  //      — page-chrome strings used by the data-tr DOM scanner.
+  //   2. UI_I18N in restaurant-checks.js, accessed via t(key)
+  //      — runtime-rendered strings used by chip / card renderers.
+  // The two grew separately and drifted: 49 of 68 data-tr keys live
+  // ONLY in UI_I18N, so a Spanish visitor saw Spanish chips but
+  // English headings. resolveTr() consults __MUNTIN_UI_ES first
+  // (so existing strings keep winning) and falls back to t(key) so
+  // any key in either source resolves correctly. Result: UI_I18N is
+  // effectively the single source of truth for translation; new
+  // strings only need to be added there.
+  function resolveTr(key) {
+    var dict = window.__MUNTIN_UI_ES || {};
+    if (dict[key] != null) return dict[key];
+    if (typeof t === 'function') {
+      var fallback = t(key, null, 'es');
+      // t() returns the key itself when missing; treat that as "not
+      // translated" rather than silently swapping the live English
+      // text with a key string.
+      if (fallback != null && fallback !== key) return fallback;
+    }
+    return null;
+  }
+
   window.__muntinTranslate = function(root){
     if (window.__muntinLang !== 'es') return;
-    var dict = window.__MUNTIN_UI_ES || {};
     var scope = root || document;
     // text content
     var txtNodes = scope.querySelectorAll('[data-tr]');
     for (var i = 0; i < txtNodes.length; i++) {
       var k = txtNodes[i].getAttribute('data-tr');
-      if (dict[k] != null) txtNodes[i].textContent = dict[k];
+      var v = resolveTr(k);
+      if (v != null) txtNodes[i].textContent = v;
     }
     // innerHTML (use sparingly, for elements that contain markup like <br>)
     var htmlNodes = scope.querySelectorAll('[data-tr-html]');
     for (var j = 0; j < htmlNodes.length; j++) {
       var k2 = htmlNodes[j].getAttribute('data-tr-html');
-      if (dict[k2] != null) htmlNodes[j].innerHTML = dict[k2];
+      var v2 = resolveTr(k2);
+      if (v2 != null) htmlNodes[j].innerHTML = v2;
     }
     // arbitrary attribute (placeholder, aria-label, etc.):
     // data-tr-attr="placeholder:form.placeholder;aria-label:form.urlLabel"
@@ -5206,7 +5323,8 @@
         var bits = pairs[p].split(':');
         if (bits.length !== 2) continue;
         var attr = bits[0].trim(), key = bits[1].trim();
-        if (dict[key] != null) attrNodes[a].setAttribute(attr, dict[key]);
+        var v3 = resolveTr(key);
+        if (v3 != null) attrNodes[a].setAttribute(attr, v3);
       }
     }
     // Update html lang attribute so AT and CSS :lang() selectors react
@@ -9538,6 +9656,143 @@
   // surface the estimate without re-computing.
   window.__auditRevenueAtRisk = estimateRevenueAtRiskRange;
 
+  // Phase 2 U9: compute an order-of-magnitude dollar-impact score
+  // for a single priority-check entry. Returns the range midpoint in
+  // dollars, or null when the check has no revenue coefficient. Used
+  // by the renderer to rank Action Plan items (and Top 3 fixes) by
+  // what an owner can plausibly recover, not by how heavy the check
+  // is in the subtype weight schedule. Keeps the old weight-based
+  // tiebreaker for two items with identical dollar midpoints.
+  function estimateDollarImpact(def) {
+    if (typeof estimateRevenueAtRiskRange !== 'function') return null;
+    var range = estimateRevenueAtRiskRange(def, DEFAULT_OWNER_INPUTS);
+    if (!range) return null;
+    return Math.round((range.low + range.high) / 2);
+  }
+
+  // Phase 2 U9: rank a list of actionable entries by estimated $
+  // impact first, then by subtype-effective weight, then by
+  // confirmed-fail vs unverified. The canonical implementation lives
+  // in restaurant-checks.js (as the global `rankActionablesByImpact`)
+  // so a Node test can exercise the sort without a DOM. This thin
+  // wrapper binds the browser-only estimateDollarImpact fn so callers
+  // here keep the same signature they had pre-refactor.
+  function rankActionables(items) {
+    if (typeof rankActionablesByImpact === 'function') {
+      return rankActionablesByImpact(items, estimateDollarImpact);
+    }
+    // Fallback if the global somehow isn't loaded — preserves the
+    // pre-Phase-2 behavior so rendering never hard-fails.
+    items.sort(function(a, b){
+      if (b.weight !== a.weight) return b.weight - a.weight;
+      if (b.statusRank !== a.statusRank) return b.statusRank - a.statusRank;
+      return 0;
+    });
+    return items;
+  }
+
+  // Phase 2 U6: freshness chip on the score card. Captures the time
+  // the report rendered (NOT when the page loaded — a saved share
+  // link should always show when the audit was actually run, which
+  // for a same-session audit is "now" and for a re-loaded share link
+  // is whatever timestamp lives in __auditTimestamp). The chip
+  // self-updates every 30s so a viewer who leaves the page open sees
+  // the relative time tick over.
+  var FRESHNESS_TIMER = null;
+  function setAuditTimestamp(when) {
+    var el = document.getElementById('auditFreshness');
+    if (!el) return;
+    // Argument precedence: explicit `when` wins (used by the initial
+    // audit-render path with Date.now()), then a previously-stored
+    // window.__auditTimestamp (used by override re-renders so we
+    // don't reset the clock when the owner just confirms a check),
+    // then fall back to "now" so a defensive caller still gets a
+    // reasonable label.
+    var ts = (typeof when === 'number')
+      ? when
+      : (typeof window.__auditTimestamp === 'number' ? window.__auditTimestamp : Date.now());
+    window.__auditTimestamp = ts;
+    el.setAttribute('datetime', new Date(ts).toISOString());
+    var fullStamp = new Date(ts).toLocaleString();
+    var tooltip = (typeof t === 'function') ? t('freshness.tooltip') : 'Re-run any time — the audit is free.';
+    el.setAttribute('title', fullStamp + ' — ' + tooltip);
+    paintFreshnessLabel(el, ts);
+    el.hidden = false;
+    if (FRESHNESS_TIMER) { clearInterval(FRESHNESS_TIMER); }
+    FRESHNESS_TIMER = setInterval(function(){
+      var current = document.getElementById('auditFreshness');
+      if (!current || !window.__auditTimestamp) {
+        if (FRESHNESS_TIMER) { clearInterval(FRESHNESS_TIMER); FRESHNESS_TIMER = null; }
+        return;
+      }
+      paintFreshnessLabel(current, window.__auditTimestamp);
+    }, 30_000);
+  }
+  function paintFreshnessLabel(el, ts) {
+    var ageSec = Math.max(0, Math.floor((Date.now() - ts) / 1000));
+    if (typeof t !== 'function' || typeof pickFreshnessKey !== 'function') {
+      el.textContent = 'Audited ' + new Date(ts).toLocaleString();
+      return;
+    }
+    var pick = pickFreshnessKey(ageSec, Date.now());
+    var vars = pick.vars;
+    // For the 'onDate' bucket the bucket helper hands us an ISO date
+    // (YYYY-MM-DD) for stability across locales / time zones; the
+    // browser-side render swaps that for a more readable
+    // toLocaleDateString form so the chip says "Apr 21, 2026" rather
+    // than "2026-04-21". Keeps the helper pure (testable) while
+    // letting the UI show owner-friendly dates.
+    if (pick.key === 'freshness.onDate' && vars && vars.date) {
+      var formatted = new Date(ts).toLocaleDateString(undefined, {
+        year: 'numeric', month: 'short', day: 'numeric'
+      });
+      vars = { date: formatted };
+    }
+    el.textContent = t(pick.key, vars);
+  }
+
+  // Phase 2 U7: paint the subtype-benchmark chip beneath the overall
+  // score. Reuses subtypeBenchmark() from subtypes.js and the
+  // BUSINESS_TYPE_DEFS label lookup already used by the share card.
+  // Hidden entirely when we have no benchmark for the resolved
+  // subtype (e.g. non-restaurant site or future subtype we haven't
+  // measured yet) — showing a placeholder would be worse than
+  // showing nothing.
+  function setScoreBenchmark(overall, subtypeId) {
+    var el       = document.getElementById('scoreBenchmark');
+    var subEl    = document.getElementById('scoreBenchmarkSubtype');
+    var medianEl = document.getElementById('scoreBenchmarkMedian');
+    var deltaEl  = document.getElementById('scoreBenchmarkDelta');
+    if (!el || !subEl || !medianEl || !deltaEl) return;
+    if (typeof subtypeBenchmark !== 'function') { el.hidden = true; return; }
+    var bench = subtypeBenchmark(subtypeId);
+    if (!bench || typeof bench.overall !== 'number') { el.hidden = true; return; }
+
+    var label = (typeof BUSINESS_TYPE_DEFS === 'object' && BUSINESS_TYPE_DEFS && BUSINESS_TYPE_DEFS[subtypeId] && BUSINESS_TYPE_DEFS[subtypeId].label)
+      ? String(BUSINESS_TYPE_DEFS[subtypeId].label)
+      : 'restaurant';
+    // Strip trailing "restaurant" / "café or coffee shop" suffixes so
+    // "Typical fine-dining restaurant sites score:" reads cleanly.
+    // The label stays lowercased to match the phrasing.
+    subEl.textContent = label.toLowerCase().replace(/\s+restaurant$/, '');
+
+    medianEl.textContent = String(bench.overall);
+
+    var diff = (typeof overall === 'number') ? overall - bench.overall : 0;
+    deltaEl.classList.remove('up', 'down', 'even');
+    if (diff >= 3) {
+      deltaEl.classList.add('up');
+      deltaEl.textContent = '— you’re +' + diff;
+    } else if (diff <= -3) {
+      deltaEl.classList.add('down');
+      deltaEl.textContent = '— you’re ' + diff;
+    } else {
+      deltaEl.classList.add('even');
+      deltaEl.textContent = '— right around the median';
+    }
+    el.hidden = false;
+  }
+
   function renderTopFixes() {
     var el   = document.getElementById('topFixes');
     var list = document.getElementById('topFixesList');
@@ -9575,11 +9830,11 @@
       })
       .filter(function(e){ return e.weight > 0; }); // suppress zero-weight checks (e.g. age-gate for cafe)
 
-    actionable.sort(function(a, b){
-      if (b.weight !== a.weight) return b.weight - a.weight;
-      if (b.statusRank !== a.statusRank) return b.statusRank - a.statusRank;
-      return 0;
-    });
+    // Phase 2 U9: rank Top 3 by estimated $ impact first, then by
+    // subtype-weight, then by status. Keeps the two "what to do first"
+    // surfaces (Top 3 + Action Plan "This week" column) in sync so
+    // owners never see contradictory prioritization.
+    rankActionables(actionable);
     actionable = actionable.slice(0, 3);
 
     if (!actionable.length) {
@@ -9767,11 +10022,11 @@
       return;
     }
 
-    actionable.sort(function(a, b){
-      if (b.weight !== a.weight) return b.weight - a.weight;
-      if (b.statusRank !== a.statusRank) return b.statusRank - a.statusRank;
-      return 0;
-    });
+    // Phase 2 U9: rank by estimated $ impact first, then by weight,
+    // then by status. Items with a revenue coefficient outrank items
+    // without one so the "This week" column leads with the fixes
+    // that most directly move the needle on the P&L.
+    rankActionables(actionable);
 
     var buckets = [
       { key: 'week',    label: t('actionPlan.col.week'),    items: actionable.slice(0, 3) },
@@ -9857,7 +10112,14 @@
         titleEl.textContent = result.title || def.unverified || def.fail || ('Check: ' + (def.audit || def.type));
         bodyEl.appendChild(titleEl);
 
-        if (def.effort || typeof def.minutes === 'number') {
+        // Phase 2 U1: compute the revenue-at-risk range once per item
+        // so we can render the chip AND know whether to create the
+        // meta row at all. An item with no effort/time AND no revenue
+        // coefficient still suppresses the meta row (current behavior).
+        var apRisk = (typeof estimateRevenueAtRiskRange === 'function')
+          ? estimateRevenueAtRiskRange(def, DEFAULT_OWNER_INPUTS)
+          : null;
+        if (def.effort || typeof def.minutes === 'number' || apRisk) {
           var meta = document.createElement('div');
           meta.className = 'action-plan-item-meta';
           if (def.effort === 'self') {
@@ -9873,6 +10135,16 @@
             else if (def.minutes < 180)  timeLabel = '~' + Math.round(def.minutes / 60) + ' hr';
             else                         timeLabel = t('effort.halfday');
             meta.appendChild(makeTextSpan(timeLabel));
+          }
+          if (apRisk) {
+            var apChip = document.createElement('span');
+            apChip.className = 'chip chip-revenue';
+            apChip.title = t('chip.revenue.title');
+            apChip.textContent = t('chip.revenue', {
+              low:  formatRevenueK(apRisk.low),
+              high: formatRevenueK(apRisk.high)
+            });
+            meta.appendChild(apChip);
           }
           bodyEl.appendChild(meta);
         }
@@ -10569,23 +10841,46 @@
   }
 
   // Phase E6: render the 'Also scanned:' chip row from the
-  // /api/page-crawl bundle on window.__auditCrawl. Hidden when the
-  // crawl returned no follow-up pages (homepage-only audit, global
-  // timeout, or nothing matched PAGE_CRAWL_SLOTS). One chip per
+  // /api/page-crawl bundle on window.__auditCrawl. One chip per
   // fetched page; chips for failed fetches carry the .is-error
   // class and a readable status suffix so owners see explicitly
   // that the audit tried (and failed at) reading their menu page.
+  //
+  // Sprint R3 (partial-data disclosure): when the crawl failed
+  // entirely (ok:false) or the 15s global timer fired (capHit:true),
+  // surface a visible notice above the chips so owners know why
+  // some checks below may be marked unverified. The silent fallback
+  // was masking homepage-only runs as if they were complete scans.
   function renderCrawlSummary(crawl) {
-    var wrap  = document.getElementById('crawlSummary');
-    var chips = document.getElementById('crawlSummaryChips');
+    var wrap   = document.getElementById('crawlSummary');
+    var chips  = document.getElementById('crawlSummaryChips');
+    var notice = document.getElementById('crawlSummaryNotice');
+    var label  = document.getElementById('crawlSummaryLabel');
     if (!wrap || !chips) return;
     chips.innerHTML = '';
-    if (!crawl || !Array.isArray(crawl.pages) || !crawl.pages.length) {
-      wrap.hidden = true;
-      return;
+    if (notice) { notice.hidden = true; notice.innerHTML = ''; }
+
+    var pages = (crawl && Array.isArray(crawl.pages)) ? crawl.pages : [];
+
+    // Three disclosure states. A crawl can fail transport-level
+    // (ok:false), succeed-but-time-out (capHit:true with possibly
+    // zero or some pages), or complete cleanly. We surface the
+    // first two so owners never wonder "did it actually read my
+    // menu page?"
+    var noticeText = null;
+    if (!crawl || crawl.ok === false) {
+      noticeText = 'We couldn’t read follow-up pages on your site. Checks below that depend on menu, hours, or ordering pages are based on your homepage only — you’ll see those marked <em>unverified</em> below.';
+    } else if (crawl.capHit === true) {
+      noticeText = 'Our scan of your menu, reservations, and ordering pages ran long and we stopped at 15 seconds. Some checks below may be based on partial data — click <strong>Re-run</strong> to try again.';
     }
+
+    if (noticeText && notice) {
+      notice.innerHTML = '<strong>Heads up:</strong> ' + noticeText;
+      notice.hidden = false;
+    }
+
     var added = 0;
-    crawl.pages.forEach(function(page){
+    pages.forEach(function(page){
       if (!page || !page.slot) return;
       var chip = document.createElement('span');
       chip.className = 'crawl-summary-chip' + (page.html ? '' : ' is-error');
@@ -10615,7 +10910,11 @@
       chips.appendChild(chip);
       added++;
     });
-    wrap.hidden = (added === 0);
+
+    // The 'Also scanned:' label only makes sense when at least one
+    // chip renders. Hide it when the wrap shows only a notice.
+    if (label) label.hidden = (added === 0);
+    wrap.hidden = (added === 0 && !noticeText);
   }
 
   function renderPriorityChecks(audits, allUrls, pageText) {
@@ -10708,8 +11007,11 @@
       // nothing to fix. An unverified item shows its chips because the
       // owner might click "No I don't have this" and immediately want
       // to know how hard it is to fix.
+      // Phase 2 U1: also surface the revenue-at-risk chip here so the
+      // "$ impact" signal isn't only in the Top 3 card — every
+      // actionable row makes the owner's cost-of-inaction visible.
       var chipsHtml = '';
-      if (result.mark.cls !== 'pass' && (def.effort || def.minutes)) {
+      if (result.mark.cls !== 'pass') {
         var chips = [];
         if (def.effort === 'self') {
           chips.push('<span class="chip chip-effort chip-self" title="You can usually do this yourself">Fix yourself</span>');
@@ -10725,6 +11027,17 @@
           else if (def.minutes < 180)  timeLabel = '~' + Math.round(def.minutes / 60) + ' hr';
           else                         timeLabel = 'Half-day project';
           chips.push('<span class="chip chip-time">' + timeLabel + '</span>');
+        }
+        var rowRisk = (typeof estimateRevenueAtRiskRange === 'function')
+          ? estimateRevenueAtRiskRange(def, DEFAULT_OWNER_INPUTS)
+          : null;
+        if (rowRisk) {
+          var rowRiskLabel = t('chip.revenue', {
+            low:  formatRevenueK(rowRisk.low),
+            high: formatRevenueK(rowRisk.high)
+          });
+          var rowRiskTitle = t('chip.revenue.title').replace(/"/g, '&quot;');
+          chips.push('<span class="chip chip-revenue" title="' + rowRiskTitle + '">' + escapeHtml(rowRiskLabel) + '</span>');
         }
         if (chips.length) {
           chipsHtml = '<div class="chips">' + chips.join('') + '</div>';
@@ -11223,6 +11536,21 @@
     }, priorityResult);
 
     setScoreRing(overall, { unverifiedCount: priorityResult.unverifiedCount });
+    // Phase 2 U7: anchor the overall score against the subtype median
+    // so "74" reads in context. Only shown on restaurant sites where
+    // a subtype benchmark exists.
+    if (isRestaurantSite) {
+      setScoreBenchmark(overall, effectiveBusinessType());
+    } else {
+      var benchEl = document.getElementById('scoreBenchmark');
+      if (benchEl) benchEl.hidden = true;
+    }
+    // Phase 2 U6: stamp the audit time so a viewer of a saved share
+    // link weeks later sees "Audited 18 days ago" rather than
+    // assuming the report is fresh. The chip self-updates via a
+    // 30s interval so a tab left open ticks "just now" -> "5 minutes
+    // ago" without a refresh.
+    setAuditTimestamp(Date.now());
     setCategory('performance',   perf);
     setCategory('accessibility', a11y);
     setCategory('best-practices', bp);
@@ -11463,6 +11791,22 @@
     // threshold, the restaurant card transitions from '?' to a
     // real score on this pass.
     setScoreRing(overall, { unverifiedCount: priorityResult.unverifiedCount });
+    // Phase 2 U7: re-anchor the benchmark chip whenever the score is
+    // recomputed (owner flips "I have this", overrides land from the
+    // share link, etc.). The setScoreBenchmark helper no-ops safely
+    // on non-restaurant sites.
+    if (state.isRestaurant) {
+      setScoreBenchmark(overall, effectiveBusinessType());
+    } else {
+      var benchEl2 = document.getElementById('scoreBenchmark');
+      if (benchEl2) benchEl2.hidden = true;
+    }
+    // Phase 2 U6: refresh the freshness label without resetting the
+    // captured audit timestamp — clicking "I have this" doesn't
+    // re-run the audit, so the chip should still anchor to the
+    // ORIGINAL run time. Calling without an argument reuses
+    // window.__auditTimestamp.
+    setAuditTimestamp();
     var verdictEl = document.getElementById('verdictCopy');
     if (verdictEl) verdictEl.textContent = verdictFor(overall, { unverifiedCount: priorityResult.unverifiedCount, totalCount: priorityResult.totalCount });
     if (!state.isRestaurant) {

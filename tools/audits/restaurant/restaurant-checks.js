@@ -2323,6 +2323,27 @@ var UI_I18N = {
     es: 'No hubo señales adicionales disponibles para este sitio.'
   },
   'deepScan.eyebrow': { en: 'Deep scan', es: 'Deep scan' },
+  // Phase 2 U4: hero deep-scan toggle copy. Was referenced as a
+  // data-tr attribute in index.html but had no entry here, so a
+  // Spanish visitor saw English on this single line. Adding it
+  // here is the canonical fix — UI_I18N is now the single source
+  // of truth for translation lookups.
+  'hero.deepToggle': {
+    en: 'Also run a deep scan (2–3 min) — security headers, CrUX history, site age, reviews',
+    es: 'También ejecutar un escaneo profundo (2–3 min): encabezados de seguridad, historial CrUX, antigüedad del sitio, reseñas'
+  },
+  // Phase 2 U6: freshness timestamp chip on the score card. Owners
+  // returning to a saved share link weeks later need to know whether
+  // they're looking at fresh data or an old run. The chip flips
+  // through "just now" → "5 minutes ago" → "2 hours ago" → "3 days
+  // ago" → date for older audits. The full ISO stamp is always in
+  // the tooltip.
+  'freshness.justNow':   { en: 'Audited just now',                       es: 'Auditado ahora mismo' },
+  'freshness.minutesAgo':{ en: 'Audited {count} minute{s} ago',          es: 'Auditado hace {count} minuto{s}' },
+  'freshness.hoursAgo':  { en: 'Audited {count} hour{s} ago',            es: 'Auditado hace {count} hora{s}' },
+  'freshness.daysAgo':   { en: 'Audited {count} day{s} ago',             es: 'Auditado hace {count} día{s}' },
+  'freshness.onDate':    { en: 'Audited {date}',                         es: 'Auditado el {date}' },
+  'freshness.tooltip':   { en: 'Re-run any time — the audit is free.',   es: 'Vuelve a ejecutarlo cuando quieras — la auditoría es gratis.' },
   // Sprint H1: 'since your last audit' banner copy.
   'history.eyebrow':  { en: 'Since your last audit', es: 'Desde tu última auditoría' },
   'history.hoursAgo': {
@@ -2343,20 +2364,20 @@ var UI_I18N = {
     es: 'Resolviste:'
   },
   'deep.age.liveSince': {
-    en: 'Live since {year}',
-    es: 'En línea desde {year}'
+    en: 'Google has known about this site since {year}',
+    es: 'Google conoce este sitio desde {year}'
   },
   'deep.security.grade': {
-    en: 'Security headers: {grade}',
-    es: 'Encabezados de seguridad: {grade}'
+    en: 'Site security grade: {grade}',
+    es: 'Calificación de seguridad del sitio: {grade}'
   },
   'deep.crux.heading': {
-    en: 'Field-data trends (25 weeks)',
-    es: 'Tendencias de datos reales (25 semanas)'
+    en: 'What real visitors actually experience',
+    es: 'Lo que los visitantes reales experimentan'
   },
   'deep.crux.sub': {
-    en: 'Real-user Core Web Vitals from the Chrome UX Report. Rendered only when Google has enough samples to publish a trend.',
-    es: 'Métricas Web Esenciales reales del Chrome UX Report. Se muestran solo cuando Google tiene suficientes muestras para publicar una tendencia.'
+    en: 'Page load, response time, and layout stability — measured from real Chrome users on your site over the last 25 weeks. Only shown when Google has enough samples to publish a trend. (Technical: Core Web Vitals from CrUX.)',
+    es: 'Carga de página, tiempo de respuesta y estabilidad del diseño — medidos desde usuarios reales de Chrome en tu sitio durante las últimas 25 semanas. Solo se muestra cuando Google tiene suficientes muestras para publicar una tendencia. (Técnico: Core Web Vitals de CrUX.)'
   },
   'deep.reviews.heading': {
     en: 'Google reviews snapshot',
@@ -2438,13 +2459,18 @@ var UI_I18N = {
     es: 'Cada oración se enlaza con la señal verificada de la que proviene. Pasa el cursor sobre cualquier cita para ver la fuente.'
   },
   // Sprint D1: email deliverability card.
+  // Phase 2 U2: heading + sub rewritten in owner-outcome language.
+  // The technical term "deliverability" never appeared on any
+  // restaurant operator's spreadsheet — but every operator has had a
+  // guest say "I never got the confirmation email." That's what this
+  // card actually tests.
   'deep.email.heading': {
-    en: 'Email deliverability',
-    es: 'Entregabilidad de correo'
+    en: 'Will your reservation confirmations land in spam?',
+    es: '¿Tus confirmaciones de reserva terminarán en spam?'
   },
   'deep.email.sub': {
-    en: 'Gmail, Outlook, and Yahoo require SPF + DMARC on sending domains. Booking confirmations and newsletters land in spam without them.',
-    es: 'Gmail, Outlook y Yahoo exigen SPF + DMARC en los dominios que envían correo. Sin ellos, confirmaciones de reserva y newsletters caen en spam.'
+    en: 'Gmail, Outlook, and Yahoo silently route booking confirmations and newsletters to spam unless your domain proves it can send mail. The three rows below are the proofs they look for.',
+    es: 'Gmail, Outlook y Yahoo envían silenciosamente las confirmaciones de reserva y newsletters al spam a menos que tu dominio demuestre que puede enviar correos. Las tres filas siguientes son las pruebas que esperan.'
   },
   'deep.email.spf':   { en: 'SPF',   es: 'SPF' },
   'deep.email.dmarc': { en: 'DMARC', es: 'DMARC' },
@@ -2468,13 +2494,22 @@ var UI_I18N = {
     en: 'Not detected via the common selectors we probe. Your mail provider may use a custom selector we can\'t confirm without access.',
     es: 'No se detectó en los selectores comunes que revisamos. Tu proveedor de correo puede usar un selector propio que no podemos confirmar sin acceso.'
   },
-  'deep.email.posture.ready':    { en: 'Ready for bulk mail', es: 'Listo para envíos masivos' },
-  'deep.email.posture.notReady': { en: 'Not bulk-mail ready',  es: 'No está listo para envíos masivos' },
+  // Phase 2 U2: outcome language for the email-posture chip. The
+  // "bulk mail" framing was a sysadmin concept; what an owner cares
+  // about is whether the next reservation confirmation will reach
+  // the guest's inbox.
+  'deep.email.posture.ready':    { en: 'Confirmation emails will reach guests',     es: 'Las confirmaciones llegarán a los huéspedes' },
+  'deep.email.posture.notReady': { en: 'Confirmation emails likely going to spam', es: 'Las confirmaciones probablemente terminan en spam' },
   // Sprint D2: schema richness scorecard.
-  'schemaRichness.badge':    { en: 'Schema scorecard', es: 'Tarjeta de schema' },
-  'schemaRichness.heading':  { en: 'How complete is your Restaurant schema?', es: '¿Qué tan completo está tu schema de restaurante?' },
+  // Phase 2 U2: badge + heading rewritten in owner-outcome language.
+  // "Schema" is a developer term — the underlying question for an
+  // owner is whether Google's search results, voice assistants, and
+  // restaurant-discovery widgets can read their menu, hours, and
+  // address WITHOUT a human visiting the site. Same data, owner framing.
+  'schemaRichness.badge':    { en: 'How Google reads your data', es: 'Cómo Google lee tus datos' },
+  'schemaRichness.heading':  { en: 'How well can Google read your menu, hours, and address?', es: '¿Qué tan bien puede Google leer tu menú, horarios y dirección?' },
   'schemaRichness.summary':  {
-    en: '{present} of {total} Google-recommended Restaurant fields populated.',
+    en: '{present} of {total} Google-recommended fields populated.',
     es: '{present} de {total} campos recomendados por Google completos.'
   },
   'schemaRichness.present':  { en: 'Present',  es: 'Presente'  },
@@ -2680,6 +2715,98 @@ function t(key, vars, lang) {
   });
 }
 
+// ---------------------------------------------------------------------------
+// Phase 2 U6: freshness-label bucket selection.
+// ---------------------------------------------------------------------------
+// Given an age in seconds since the audit ran, return the i18n key
+// the chip should render plus any template variables. Pure function
+// so the boundary cases (just-now vs minutes, days vs date) are
+// testable without a DOM or a live clock. The caller resolves the
+// key through t() and applies the resulting string.
+//
+// Buckets:
+//   0..59     s  -> 'freshness.justNow'
+//   60..3599  s  -> 'freshness.minutesAgo'  vars: { count: minutes }
+//   3600..86399 -> 'freshness.hoursAgo'    vars: { count: hours }
+//   86400..7d  -> 'freshness.daysAgo'      vars: { count: days }
+//   7d..       -> 'freshness.onDate'       vars: { date: ISO date }
+//
+// ageSeconds is clamped at 0; negative values (clock skew, future
+// timestamp) collapse to 'just now' rather than rendering nonsense.
+function pickFreshnessKey(ageSeconds, nowMs) {
+  // Defensive on bad input: NaN, Infinity, undefined, negative, or
+  // non-numeric all collapse to the just-now bucket. The chip never
+  // crashes the audit page just because a clock got skewed.
+  if (typeof ageSeconds !== 'number' || !isFinite(ageSeconds)) {
+    return { key: 'freshness.justNow', vars: {} };
+  }
+  var age = Math.max(0, Math.floor(ageSeconds));
+  if (age < 60) return { key: 'freshness.justNow', vars: {} };
+  if (age < 3600) return { key: 'freshness.minutesAgo', vars: { count: Math.floor(age / 60) } };
+  if (age < 86400) return { key: 'freshness.hoursAgo', vars: { count: Math.floor(age / 3600) } };
+  if (age < 86400 * 7) return { key: 'freshness.daysAgo', vars: { count: Math.floor(age / 86400) } };
+  // Older than a week — render the absolute date. Caller passes the
+  // current time so we can compute the original timestamp without
+  // re-reading the clock; this is what makes the function testable.
+  var origin = (typeof nowMs === 'number' ? nowMs : Date.now()) - (age * 1000);
+  var iso = new Date(origin).toISOString().slice(0, 10); // YYYY-MM-DD
+  return { key: 'freshness.onDate', vars: { date: iso } };
+}
+
+// ---------------------------------------------------------------------------
+// Phase 2 U9: rank actionable findings by estimated $ impact.
+// ---------------------------------------------------------------------------
+// Shared helper used by both the Top 3 Fixes card and the Action Plan
+// columns so the two "what to do first" surfaces stay in sync — an
+// owner never sees contradictory prioritization between them.
+//
+// Contract: the `items` argument is an array of
+//   { entry: {def, result}, weight: number, statusRank: number,
+//     dollarImpact?: number | null }
+//
+// Items WITH a numeric dollarImpact always outrank items WITHOUT one —
+// the owner can make a concrete decision against a dollar number, so
+// weight-only items tail in after. Inside each group, sort keys run
+// dollarImpact DESC → weight DESC → statusRank DESC → index ASC so
+// declaration order is the stable tiebreaker.
+//
+// The `dollarImpactFn` argument is an adapter: a function that takes
+// a priority-check def and returns its dollar midpoint, or null. It is
+// an argument (not a hard-coded call to estimateRevenueAtRiskRange)
+// because that helper lives in the browser IIFE and depends on
+// DEFAULT_OWNER_INPUTS which the Node test harness controls directly.
+// Passing the function in also keeps this module pure — no globals,
+// no hidden dependencies — so the tests stay deterministic.
+function rankActionablesByImpact(items, dollarImpactFn) {
+  if (!Array.isArray(items)) return items;
+  var impactOf = (typeof dollarImpactFn === 'function')
+    ? dollarImpactFn
+    : function(){ return null; };
+  for (var i = 0; i < items.length; i++) {
+    var x = items[i];
+    if (x && typeof x.dollarImpact !== 'number') {
+      var def = x.entry && x.entry.def;
+      var v = impactOf(def);
+      x.dollarImpact = (typeof v === 'number') ? v : null;
+    }
+    if (x && typeof x.__idx !== 'number') x.__idx = i;
+  }
+  items.sort(function(a, b){
+    var aHas = (typeof a.dollarImpact === 'number');
+    var bHas = (typeof b.dollarImpact === 'number');
+    if (aHas !== bHas) return aHas ? -1 : 1;
+    if (aHas && b.dollarImpact !== a.dollarImpact) return b.dollarImpact - a.dollarImpact;
+    var aw = (typeof a.weight === 'number') ? a.weight : 0;
+    var bw = (typeof b.weight === 'number') ? b.weight : 0;
+    if (bw !== aw) return bw - aw;
+    var ar = (typeof a.statusRank === 'number') ? a.statusRank : 0;
+    var br = (typeof b.statusRank === 'number') ? b.statusRank : 0;
+    if (br !== ar) return br - ar;
+    return a.__idx - b.__idx;
+  });
+  return items;
+}
+
 // Sprint A5: Node-only export shim so a scoring regression test can
 // import the readiness helpers without a browser. The `typeof module`
 // guard keeps this a no-op for the classic-script load path in the
@@ -2690,6 +2817,8 @@ if (typeof module !== 'undefined' && module.exports) {
     createRestaurantReadinessState: createRestaurantReadinessState,
     accumulateRestaurantReadiness: accumulateRestaurantReadiness,
     finalizeRestaurantReadinessScore: finalizeRestaurantReadinessScore,
+    rankActionablesByImpact: rankActionablesByImpact,
+    pickFreshnessKey: pickFreshnessKey,
     POWERED_BY: POWERED_BY,
     MUNTIN_AUDIT_DESCRIPTION: MUNTIN_AUDIT_DESCRIPTION,
     MUNTIN_AUDIT_DESCRIPTION_ES: MUNTIN_AUDIT_DESCRIPTION_ES,
