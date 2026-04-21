@@ -1450,7 +1450,7 @@
         audioEl = new Audio();
         audioEl.preload = 'metadata';
         audioEl.src = audioSrc;
-        audioEl.addEventListener('ended', finishStudioPlayback);
+        audioEl.addEventListener('ended', () => finishStudioPlayback(true));
         audioEl.addEventListener('error', () => {
           console.warn('[readAloud] studio audio error, falling back to speech');
           engine = 'speech';
@@ -1610,15 +1610,57 @@
       setState('paused');
     }
 
-    function finishStudioPlayback() {
+    function finishStudioPlayback(withFinale) {
+      const completed = !!(audioEl && audioEl.duration && audioEl.currentTime >= audioEl.duration - 0.5);
       if (audioEl) { try { audioEl.pause(); } catch (_) {} audioEl.currentTime = 0; }
+      if (window.plausible && completed) {
+        window.plausible('Post Listened: Completed');
+      }
+      // Sprint A12: when the listener naturally reached the end, pause
+      // the UI on a warm "finished" state for 2.8s before collapsing to
+      // idle. This is the quiet emotional payoff — the moment the
+      // cheerleading progress bar becomes a soft glow and the play icon
+      // swaps to a checkmark. User-aborted stops skip the finale.
+      if (withFinale && completed) {
+        // Apply the localized finale copy into the chapter line so the
+        // "Now reading" slot becomes the payoff message.
+        if (chapterEl) setChapterText(chapterEl, finaleMessageForLanguage(currentLanguage));
+        if (dockChapter) setChapterText(dockChapter, finaleMessageForLanguage(currentLanguage));
+        setState('finished');
+        syncMediaSessionPosition();
+        setTimeout(() => {
+          currentIndex = 0;
+          setCurrent(null, null);
+          if (chapterEl) setChapterText(chapterEl, '');
+          if (dockChapter) setChapterText(dockChapter, '');
+          setState('idle');
+          syncMediaSessionPosition();
+        }, 2800);
+        return;
+      }
       currentIndex = 0;
       setCurrent(null, null);
       setState('idle');
       syncMediaSessionPosition();
-      if (window.plausible && audioEl && audioEl.duration && audioEl.currentTime >= audioEl.duration - 0.5) {
-        window.plausible('Post Listened: Completed');
-      }
+    }
+
+    // Sprint A12: inline per-language finale copy. Inline rather than
+    // via per-post translations.<lang>.json because this string is
+    // global to every audio-equipped post and identical across posts —
+    // it shouldn't be translated post-by-post. Falls back to English
+    // for any audio language not listed.
+    const FINALE_MESSAGES = {
+      en: "You've reached the end",
+      es: 'Has llegado al final',
+      fr: 'Vous êtes arrivé à la fin',
+      it: 'Sei arrivato alla fine',
+      pt: 'Você chegou ao fim',
+      hi: 'आप अंत तक पहुँच गए हैं',
+      ja: '最後まで到達しました',
+      zh: '您已到达终点',
+    };
+    function finaleMessageForLanguage(lang) {
+      return FINALE_MESSAGES[lang] || FINALE_MESSAGES.en;
     }
 
     // Event-driven tick: registered as the timeupdate + seeked
@@ -1792,8 +1834,12 @@
     }
 
     function updateDockVisibility() {
+      // Sprint A12: keep the dock visible during the 'finished' state
+      // so a scrolled-away listener also sees the finale moment land
+      // — the dock's chapter line already shows the localized finale
+      // copy for the 2.8s window before state collapses to idle.
       const shouldShow = !cardInView && !footerInView
-        && (state === 'playing' || state === 'paused');
+        && (state === 'playing' || state === 'paused' || state === 'finished');
       dock.root.setAttribute('data-visible', shouldShow ? 'true' : 'false');
       // Sprint A10: card-to-dock morph. When the dock takes over, dim
       // the card so it reads as handed-off (visible on scroll-back);
@@ -2007,6 +2053,7 @@
           <span class="listen-card-play-aura" aria-hidden="true"></span>
           <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.54.84l10-6.5a1 1 0 0 0 0-1.68l-10-6.5A1 1 0 0 0 8 5.5z"/></svg>
           <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1"/><rect x="13.5" y="5" width="4" height="14" rx="1"/></svg>
+          <svg class="icon-finished" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="5 12 10 17 19 7"/></svg>
           <span class="listen-card-play-dots" aria-hidden="true"><i></i><i></i><i></i></span>
         </button>
         <div class="listen-card-body">

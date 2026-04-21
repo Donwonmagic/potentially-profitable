@@ -727,6 +727,16 @@ br.br-lg{display:none}
 .listen-card > *{position:relative;z-index:1}
 .listen-card[data-state="playing"]::after,
 .listen-card[data-state="paused"]::after{opacity:1}
+/* Sprint A12: finished-state ambient. Swaps the teal-brick ambient
+   for a warm cream-gold wash as the payoff moment — a visual nod to
+   "you arrived, well done" without words. Lasts 2.8s before JS
+   collapses the card back to idle. */
+.listen-card[data-state="finished"]::after{
+  opacity:1;
+  background:
+    radial-gradient(120% 180% at 50% 0%, rgba(217,178,99,0.18), rgba(217,178,99,0.05) 55%, transparent 75%),
+    radial-gradient(100% 140% at 50% 100%, rgba(255,230,180,0.14), transparent 70%);
+}
 .listen-card[hidden]{display:none}
 
 .listen-card-play{grid-area:play;position:relative;width:64px;height:64px;border-radius:50%;border:0;background:var(--lc-accent);color:var(--white);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 10px 24px -10px rgba(31,78,91,0.55),0 2px 0 rgba(255,255,255,0.4) inset;transition:transform var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
@@ -734,11 +744,26 @@ br.br-lg{display:none}
 .listen-card-play:active{transform:translateY(0)}
 .listen-card-play:focus-visible{outline:2px solid var(--lc-accent);outline-offset:3px}
 .listen-card-play svg{width:26px;height:26px;flex:none}
-.listen-card-play .icon-pause{display:none}
+.listen-card-play .icon-pause,.listen-card-play .icon-finished{display:none}
 .listen-card[data-state="playing"] .listen-card-play .icon-play{display:none}
 .listen-card[data-state="playing"] .listen-card-play .icon-pause{display:block}
 .listen-card[data-state="loading"] .listen-card-play{background:var(--lc-accent-dark)}
 .listen-card[data-state="loading"] .listen-card-play .icon-play{display:none}
+/* Sprint A12: finished state — play icon fades out, checkmark fades
+   in. Soft background transition to a warm cream-gold to match the
+   ambient wash. Button doesn't disable (user can click play to
+   replay), just visually reads as completed. */
+.listen-card[data-state="finished"] .listen-card-play{
+  background:linear-gradient(180deg, #C79C55 0%, #A87A36 100%);
+  transition:background var(--t-med) var(--ease-out);
+}
+.listen-card[data-state="finished"] .listen-card-play .icon-play{display:none}
+.listen-card[data-state="finished"] .listen-card-play .icon-finished{display:block;animation:listen-finish-check 420ms var(--ease-out) both}
+@keyframes listen-finish-check{
+  0%   { opacity:0; transform:scale(0.7); }
+  60%  { opacity:1; transform:scale(1.12); }
+  100% { opacity:1; transform:scale(1); }
+}
 /* Sprint A11: 3-dot trail replaces the spinner SVG as the loading
    state. Three 4px dots inside the play button, each scale(0) → 1 →
    0 over 0.8s with 0.12s stagger. Reads as a voice clearing its
@@ -852,6 +877,23 @@ br.br-lg{display:none}
 @keyframes listen-sheen-card{
   0%   { background-position: 120% 0%, 0% 0%; }
   100% { background-position: -40% 0%, 0% 0%; }
+}
+/* Sprint A12: finished state — progress fill glows warm gold, then
+   retracts right-to-left over 1.6s via transform-origin:right +
+   scaleX. Width stays pinned at 100% so the glow reads as "the whole
+   journey lit up" before fading. */
+.listen-card[data-state="finished"] .listen-card-progress-fill{
+  width:100% !important;
+  background:linear-gradient(90deg, #C79C55 0%, #E5C78A 50%, #A87A36 100%);
+  animation:listen-finish-retract 1.6s var(--ease-out) 0.35s forwards;
+  transform-origin:right center;
+  filter:drop-shadow(0 0 10px rgba(217,178,99,0.65));
+  will-change:transform, opacity;
+}
+@keyframes listen-finish-retract{
+  0%   { transform:scaleX(1);   opacity:1;   }
+  70%  { transform:scaleX(0.15); opacity:0.6; }
+  100% { transform:scaleX(0);   opacity:0;   }
 }
 .listen-card-progress.is-scrubbing .listen-card-progress-fill,.listen-card-progress:hover .listen-card-progress-fill{height:8px}
 .listen-card-progress-fill::after{content:"";position:absolute;right:-6px;top:50%;width:12px;height:12px;border-radius:50%;background:var(--lc-accent);transform:translateY(-50%) scale(0);transition:transform var(--t-fast) var(--ease);box-shadow:0 2px 8px -2px rgba(31,78,91,0.5)}
@@ -1120,7 +1162,7 @@ br.br-lg{display:none}
 @keyframes listen-callout-pulse{0%,100%{box-shadow:0 0 0 2px var(--teal),0 0 0 8px var(--teal-tint)}
 50%{box-shadow:0 0 0 2px var(--teal),0 0 0 14px rgba(31,78,91,0.08)}
 }
-@media (prefers-reduced-motion:reduce){.listen-btn[data-state="playing"] svg path,.listen-card-play::after,.listen-card-play::before,.listen-card-play-aura,.listen-card[data-state="playing"] .listen-card-kicker::before,.listen-card[data-state="playing"] .listen-card-progress-fill,.listen-dock[data-state="playing"] .listen-dock-progress-fill,.listen-card-chapter em.lc-chapter-in,.listen-dock-chapter.lc-chapter-in{animation:none}
+@media (prefers-reduced-motion:reduce){.listen-btn[data-state="playing"] svg path,.listen-card-play::after,.listen-card-play::before,.listen-card-play-aura,.listen-card[data-state="playing"] .listen-card-kicker::before,.listen-card[data-state="playing"] .listen-card-progress-fill,.listen-dock[data-state="playing"] .listen-dock-progress-fill,.listen-card-chapter em.lc-chapter-in,.listen-dock-chapter.lc-chapter-in,.listen-card[data-state="finished"] .listen-card-play .icon-finished,.listen-card[data-state="finished"] .listen-card-progress-fill{animation:none}
 /* Sprint A11: keep the dots visible (so the loading affordance stays
    readable) but drop the staggered scale animation. */
 .listen-card-play-dots i{animation:none;transform:scale(1);opacity:0.7}
@@ -1143,6 +1185,10 @@ br.br-lg{display:none}
 /* Sprint A10: drop the morph transition; card + dock swap instantly. */
 .listen-card{transition:opacity var(--t-fast) var(--ease)}
 .listen-card[data-dimmed="true"]{transform:none;filter:none}
+/* Sprint A12: show the finished-state end-result without the retract
+   animation — fill shrinks to 0 immediately, checkmark appears. */
+.listen-card[data-state="finished"] .listen-card-progress-fill{transform:scaleX(0);opacity:0}
+.listen-card[data-state="finished"] .listen-card-play .icon-finished{opacity:1;transform:none}
 }
 
 /* ============ BREADCRUMBS ============
