@@ -2632,6 +2632,63 @@ var UI_I18N = {
     en: 'Every sentence links to the verified signal it came from. Hover any citation to see the source.',
     es: 'Cada oración se enlaza con la señal verificada de la que proviene. Pasa el cursor sobre cualquier cita para ver la fuente.'
   },
+  // Phase 4 #2: methodology explainer copy. Owner-facing disclosure
+  // of every calculation the audit performs. Long-form; collapsible.
+  // The EN is the canonical copy; ES is a close translation kept in
+  // sync. Any edit here should update both locales — the
+  // test-i18n-coverage check will catch misses.
+  'method.summary':          { en: 'How we calculate these numbers', es: 'Cómo calculamos estos números' },
+  'method.scoreHead':        { en: 'The overall score', es: 'La puntuación general' },
+  'method.scoreBody': {
+    en: 'The overall score is a weighted average of five pillars. Performance is weighted 2× the others because a slow mobile site is materially worse for a restaurant than an imperfect SEO score — 53% of mobile visitors bounce from pages that take more than 3s to load. The Restaurant Readiness pillar is only included when we have enough confirmed checks to trust it; otherwise the score falls back to a simple 4-pillar average so one detected platform plus eight unverified checks doesn\'t inflate the overall number.',
+    es: 'La puntuación general es un promedio ponderado de cinco pilares. El Rendimiento pesa 2× los demás porque un sitio móvil lento es significativamente peor para un restaurante que un SEO imperfecto — el 53% de los visitantes móviles abandona páginas que tardan más de 3s en cargar. El pilar de Preparación del Restaurante solo se incluye cuando tenemos suficientes verificaciones confirmadas para confiar en él; de lo contrario la puntuación vuelve a un promedio simple de 4 pilares, para que una plataforma detectada más ocho verificaciones no confirmadas no inflen el número general.'
+  },
+  'method.subtypeHead':      { en: 'How we detect your restaurant subtype', es: 'Cómo detectamos el subtipo de tu restaurante' },
+  'method.subtypeBody': {
+    en: 'Ten subtypes are recognized: fine-dining, casual-dining, fast-casual, cafe, bakery, bar-pub, pizzeria, food-truck, ghost-kitchen, and catering-only. Detection combines schema.org @type hints, the presence of subtype-specific platforms (Slice for pizzerias, Resy for fine-dining, etc.), and keyword patterns in the page text. Each signal contributes to a score; the highest-scoring subtype wins. Confidence is reported in the subtype card so you can override it if we got it wrong.',
+    es: 'Reconocemos diez subtipos: fine-dining, casual-dining, fast-casual, café, panadería, bar-pub, pizzería, food-truck, ghost-kitchen y solo-catering. La detección combina señales @type de schema.org, la presencia de plataformas específicas del subtipo (Slice para pizzerías, Resy para fine-dining, etc.) y patrones de palabras clave en el texto de la página. Cada señal contribuye a una puntuación; el subtipo con mayor puntuación gana. La confianza se reporta en la tarjeta de subtipo para que puedas corregirla si nos equivocamos.'
+  },
+  'method.weightsHead':      { en: 'Check weights', es: 'Pesos de las verificaciones' },
+  'method.weightsBody': {
+    en: 'Each of the 20+ restaurant-priority checks carries a weight from 0 (not applicable to this subtype) to 2.0 (critical). Viewport is 2.0 across every subtype because a missing viewport breaks every phone visitor\'s experience. Conversions (online ordering or reservations) is 1.5 for most subtypes but 2.0 for fine-dining (reservations) and 2.0 for fast-casual (ordering). Age-gate is 0 for every restaurant subtype — bars and restaurants don\'t legally need them in most jurisdictions, unlike alcohol retailers.',
+    es: 'Cada una de las 20+ verificaciones de prioridad restaurantera tiene un peso entre 0 (no aplica a este subtipo) y 2.0 (crítico). El viewport es 2.0 en todos los subtipos porque la ausencia de viewport rompe la experiencia de cada visitante móvil. Las conversiones (pedidos en línea o reservas) es 1.5 para la mayoría de los subtipos pero 2.0 para fine-dining (reservas) y 2.0 para fast-casual (pedidos). La barrera de edad es 0 para todos los subtipos restauranteros — los bares y restaurantes legalmente no la requieren en la mayoría de las jurisdicciones, a diferencia de los vendedores de alcohol.'
+  },
+  'method.weightsUnverified': {
+    en: '"Unverified" checks (where we honestly couldn\'t tell) count at HALF weight against the denominator, zero credit toward the numerator. This prevents a site we couldn\'t fully scan from inflating its score past a clean-scanning site with the same pass count. The penalty is disclosed on the score ring as "N unverified checks."',
+    es: 'Las verificaciones "no confirmadas" (donde honestamente no pudimos saber) cuentan a MEDIO peso en el denominador, cero crédito en el numerador. Esto evita que un sitio que no pudimos escanear completamente infle su puntuación sobre un sitio de escaneo limpio con el mismo conteo de aprobaciones. La penalización se divulga en el anillo de puntuación como "N verificaciones no confirmadas".'
+  },
+  'method.benchmarksHead':   { en: 'The "typical sites score" benchmark', es: 'El benchmark de "puntuación típica de sitios"' },
+  'method.benchmarksBody': {
+    en: 'Per-subtype benchmark medians are currently operator estimates from manual review of roughly 100 restaurant sites in each subtype. They\'re provisional — the refresh pipeline that replaces each subtype with a real sample size (drawn from live audits this tool runs) is future work. The benchmark chip\'s ⓘ tooltip carries the provenance on every render. Numbers are anchors for expectation-setting, not statistical claims.',
+    es: 'Las medianas de benchmark por subtipo son actualmente estimaciones de operador basadas en la revisión manual de aproximadamente 100 sitios de restaurante por subtipo. Son provisionales — el pipeline de actualización que reemplaza cada subtipo con un tamaño de muestra real (de auditorías en vivo ejecutadas por esta herramienta) es trabajo futuro. El tooltip ⓘ del chip de benchmark lleva la procedencia en cada render. Los números son anclas para calibrar expectativas, no afirmaciones estadísticas.'
+  },
+  'method.revenueHead':      { en: 'The revenue-at-risk chip', es: 'El chip de ingresos-en-riesgo' },
+  'method.revenueBody': {
+    en: 'Every actionable finding carries an "Est. $X–Y/yr at risk" chip. The range is the product of three inputs:',
+    es: 'Cada hallazgo accionable lleva un chip "Est. $X–Y/año en riesgo". El rango es el producto de tres insumos:'
+  },
+  'method.revenueInputs': {
+    en: '(1) a per-check revenue-at-risk coefficient based on published funnel-dropoff research; (2) your restaurant\'s estimated annual revenue, which starts from a subtype-aware default (fine-dining ~$2M, cafe ~$860k, food-truck ~$230k) and is automatically adjusted when Google Places tells us something more: priceLevel scales the per-ticket average (0.55× for $, 2.4× for $$$$), and userRatingCount scales daily covers logarithmically (clamped to 0.40×–2.50× so viral outliers don\'t project chain volume); (3) a confidence-widening layer that stretches the range when any of the Places signals aren\'t available, so an audit with thin data produces an explicitly wider chip instead of a falsely precise one.',
+    es: '(1) un coeficiente de ingresos-en-riesgo por verificación basado en investigación publicada sobre pérdidas de embudo; (2) los ingresos anuales estimados de tu restaurante, que parten de un valor predeterminado consciente del subtipo (fine-dining ~$2M, café ~$860k, food-truck ~$230k) y se ajustan automáticamente cuando Google Places nos dice algo más: priceLevel escala el ticket promedio (0.55× para $, 2.4× para $$$$), y userRatingCount escala las cubiertas diarias logarítmicamente (limitado a 0.40×–2.50× para que los casos virales no proyecten volumen de cadena); (3) una capa de ampliación por confianza que estira el rango cuando alguna señal de Places no está disponible, de modo que una auditoría con datos delgados produce un chip explícitamente más amplio en lugar de uno falsamente preciso.'
+  },
+  'method.revenueZeroInput': {
+    en: 'Nothing in this chain asks you to type numbers. Every adjustment reads from signals the audit already fetches during the fast scan.',
+    es: 'Nada en esta cadena te pide escribir números. Cada ajuste se basa en señales que la auditoría ya obtiene durante el escaneo rápido.'
+  },
+  'method.confidenceHead':   { en: 'What "confidence-widened" means', es: 'Qué significa "ampliado por confianza"' },
+  'method.confidenceBody': {
+    en: 'When Google Places didn\'t find your listing, or didn\'t publish a price level, or hasn\'t accumulated at least 50 reviews, the revenue chip\'s low and high values are stretched to reflect the genuine uncertainty. A well-resolved audit might show Est. $12k–18k/yr at risk; a nothing-resolved audit of the same check shows Est. $5k–37k/yr at risk. The range width itself is the honesty layer — we\'d rather show you a wide span we can defend than a tight one we can\'t.',
+    es: 'Cuando Google Places no encontró tu listado, o no publicó un nivel de precio, o no ha acumulado al menos 50 reseñas, los valores bajo y alto del chip de ingresos se estiran para reflejar la incertidumbre genuina. Una auditoría bien resuelta podría mostrar Est. $12k–18k/año en riesgo; una sin datos de la misma verificación muestra Est. $5k–37k/año en riesgo. El ancho del rango en sí es la capa de honestidad — preferimos mostrarte un rango amplio que podemos defender, en lugar de uno estrecho que no.'
+  },
+  'method.limitsHead':       { en: 'What this audit does NOT do', es: 'Lo que esta auditoría NO hace' },
+  'method.limitsBody': {
+    en: 'It runs on one Lighthouse pass (simulated phone, default throttling) plus a follow-up crawl of up to eight internal pages. It does not test ordering flow end-to-end, place a real reservation, verify your DoorDash profile, or measure real-user traffic beyond what Google\'s CrUX report publishes. It does not scrape Yelp or TripAdvisor (their terms forbid it). It does not claim your revenue-at-risk numbers are precise — they\'re order-of-magnitude estimates, always shown as ranges with "Est." up front.',
+    es: 'Ejecuta una sola pasada de Lighthouse (teléfono simulado, throttling por defecto) más un rastreo de seguimiento de hasta ocho páginas internas. No prueba el flujo de pedido de extremo a extremo, no hace una reserva real, no verifica tu perfil de DoorDash, ni mide tráfico real de usuarios más allá de lo que publica el reporte CrUX de Google. No hace scraping a Yelp ni TripAdvisor (sus términos lo prohíben). No afirma que tus números de ingresos-en-riesgo son precisos — son estimaciones de orden de magnitud, siempre mostradas como rangos con "Est." al frente.'
+  },
+  'method.feedbackNote': {
+    en: 'Found an error in a weight, a benchmark, or the revenue math? Tell us — the whole tool is open and the explanation above is linked from every audit so the methodology travels with the score.',
+    es: '¿Encontraste un error en un peso, un benchmark o las matemáticas de ingresos? Dínoslo — toda la herramienta es abierta y la explicación anterior está enlazada desde cada auditoría, así la metodología viaja junto con la puntuación.'
+  },
   // Sprint D1: email deliverability card.
   // Phase 2 U2: heading + sub rewritten in owner-outcome language.
   // The technical term "deliverability" never appeared on any
