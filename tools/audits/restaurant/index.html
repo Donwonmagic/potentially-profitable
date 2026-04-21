@@ -1241,13 +1241,57 @@
     display: flex;
     flex-direction: column;
   }
+  /* Sprint 15: action-plan column head now includes a 2px progress
+     rail that fills based on done/total items in the column. The
+     numerical progress label stays (N of M) for assistive tech and
+     skim-reading; the rail adds an instant visual answer. Rail is
+     driven by a CSS custom property --col-progress set inline by
+     the JS renderer when it assembles the column (0..1 scalar). */
   .action-plan-col-head {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     gap: 8px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
+  .action-plan-col-head::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    margin-top: 32px;
+    background: var(--line);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .action-plan-col { position: relative; }
+  .action-plan-col::after {
+    content: '';
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    top: 44px;
+    height: 2px;
+    background: var(--line);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+  .action-plan-col::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 44px;
+    height: 2px;
+    width: calc((100% - 28px) * var(--col-progress, 0));
+    background: var(--teal);
+    border-radius: 2px;
+    transition: width 420ms var(--ease-out, cubic-bezier(.16,1,.3,1));
+    pointer-events: none;
+    z-index: 1;
+  }
+  /* Suppress the head::after since we moved the rail to .action-plan-col */
+  .action-plan-col-head::after { display: none; }
   .action-plan-col-label {
     font-family: var(--font-display);
     font-size: 15px;
@@ -2534,6 +2578,13 @@
     border-top: 1px solid var(--line, #E6DFCE);
   }
   .top-fixes-list li:first-child { border-top: none; padding-top: 8px; }
+  /* Sprint 15: numbered badge in the display (Fraunces) typeface
+     with a subtle ring around the solid rust fill — the editorial
+     callout look. Serif numerals at medium weight read as
+     "considered" rather than stamped, while the rust fill + white
+     numeral preserves the urgency signal of the Top 3 Fixes frame.
+     4-px outer ring at 10% rust adds a halo that blends the badge
+     into its card rather than sitting like a pasted-on sticker. */
   .top-fixes-list li::before {
     content: counter(fix-counter);
     flex-shrink: 0;
@@ -2544,9 +2595,10 @@
     background: var(--rust, #B8541A);
     color: #fff;
     border-radius: 999px;
-    font-family: var(--font-body);
-    font-weight: 700;
-    font-size: 14px;
+    font-family: var(--font-display, var(--font-body));
+    font-weight: 500;
+    font-size: 17px;
+    box-shadow: 0 0 0 4px rgba(184, 84, 26, 0.10);
   }
   .top-fixes-item-body { flex: 1; min-width: 0; }
   .top-fixes-item-title {
@@ -11069,6 +11121,15 @@
       var doneCount = bucket.items.reduce(function(n, x){
         return n + (state[x.checkId] ? 1 : 0);
       }, 0);
+      // Sprint 15: CSS --col-progress drives the visual rail under
+      // the column head. 0..1 scalar; ::before on the column uses
+      // it as width multiplier. Empty columns show 0 fill (no rail
+      // color); fully-done columns show a teal rail across the
+      // card width.
+      var progressRatio = bucket.items.length > 0
+        ? (doneCount / bucket.items.length)
+        : 0;
+      colEl.style.setProperty('--col-progress', progressRatio.toFixed(3));
       var progress = document.createElement('span');
       progress.className = 'action-plan-col-progress';
       progress.textContent = t('actionPlan.progress', {
@@ -11119,6 +11180,13 @@
             done: newDone,
             total: bucket.items.length
           });
+          // Sprint 15: keep the rail in sync when the owner toggles
+          // a checkbox. 420ms CSS transition on the width handles
+          // the animation; we just set the scalar.
+          var newRatio = bucket.items.length > 0
+            ? (newDone / bucket.items.length)
+            : 0;
+          colEl.style.setProperty('--col-progress', newRatio.toFixed(3));
         });
         li.appendChild(cb);
 
