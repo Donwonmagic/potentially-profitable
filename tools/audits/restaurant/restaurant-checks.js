@@ -1112,6 +1112,42 @@ var RESTAURANT_PRIORITY_CHECKS = [
         fail_es: 'A tu menú de café le falta: {detected}',
         failNote: 'Café menus carry the mid-walk "what am I getting today" decision. Both the price and a couple of drink/pastry photos belong on the page so customers queue up with a decision, not a question. If you only have time for one fix, ship the prices — even hand-typed, even updated with the seasonal board.',
         failNote_es: 'Los menús de café cargan la decisión "¿qué voy a pedir hoy?" camino al café. Tanto el precio como un par de fotos de bebidas o repostería pertenecen a la página para que los clientes hagan fila con una decisión, no con una pregunta. Si sólo tienes tiempo para un arreglo, publica los precios — aunque sean escritos a mano, aunque se actualicen con la pizarra de temporada.'
+      },
+      'bakery': {
+        impact: 'Bakery menus are almost pure visual sales. A croissant, a danish, a cinnamon roll — customers can\'t tell what they\'re buying without a photo, and they can\'t decide whether to stop in without a price. Missing dish photography is the single biggest conversion leak a bakery site has; if you only invest in one thing, invest in product photography.',
+        impact_es: 'Los menús de panadería son casi pura venta visual. Un croissant, un danés, un rollo de canela — los clientes no pueden saber qué están comprando sin una foto, y no pueden decidir si pasar sin un precio. La falta de fotografía de producto es la fuga de conversión más grande que tiene un sitio de panadería; si inviertes en una sola cosa, que sea la fotografía de producto.',
+        pass: 'Your bakery menu has prices and product photography',
+        pass_es: 'Tu menú de panadería tiene precios y fotografía de producto',
+        passNote: 'Customers can see what they want — a glazed morning bun, a rye loaf, a croissant — and decide to stop in before they\'re on the block. That visual decision layer is exactly what bakeries compete on.',
+        passNote_es: 'Los clientes pueden ver lo que quieren — un pan de mañana glaseado, un pan de centeno, un croissant — y decidir pasar antes de llegar a la cuadra. Esa capa de decisión visual es exactamente la que compite en panadería.',
+        fail: 'Your bakery menu is missing: {detected}',
+        fail_es: 'A tu menú de panadería le falta: {detected}',
+        failNote: 'Bakery menus sell with images first, prices second. Without photos, customers can\'t identify what they want; without prices, they can\'t budget the stop. Both belong next to each item — a phone camera and good light will close most of this gap without hiring a photographer.',
+        failNote_es: 'Los menús de panadería venden con imágenes primero, precios segundo. Sin fotos, los clientes no pueden identificar qué quieren; sin precios, no pueden presupuestar la visita. Ambos pertenecen junto a cada ítem — una cámara de teléfono y buena luz cerrarán la mayor parte de esta brecha sin contratar un fotógrafo.'
+      },
+      'pizzeria': {
+        impact: 'Pizza is a category-shop — customers open three pizzeria tabs side-by-side and the one with the best-photographed, clearly-priced menu wins the order. Missing either signal hands the order to Slice (~15% commission) or to the pizzeria down the block that shows both. The per-item conversion delta on a well-photographed Margherita vs a blank-text menu runs 30-50%.',
+        impact_es: 'La pizza es una categoría de compra comparada — los clientes abren tres pestañas de pizzerías lado a lado y la que tenga el menú mejor fotografiado y con precios claros se lleva el pedido. Si falta alguna de las dos señales, el pedido se va a Slice (~15% de comisión) o a la pizzería de enfrente que muestra ambas. El delta de conversión por ítem sobre una Margherita bien fotografiada frente a un menú de texto plano corre entre 30-50%.',
+        pass: 'Your pizzeria menu has per-pie prices and photography',
+        pass_es: 'Tu menú de pizzería tiene precios por pizza y fotografía',
+        passNote: 'Your menu wins the side-by-side comparison shoppers do before ordering — pies visible, prices visible, one-tap ordering. That pattern is what keeps Slice from eating your margins.',
+        passNote_es: 'Tu menú gana la comparación lado a lado que hacen los compradores antes de pedir — pizzas visibles, precios visibles, pedido de un toque. Ese patrón es el que evita que Slice se coma tus márgenes.',
+        fail: 'Your pizzeria menu is missing: {detected}',
+        fail_es: 'A tu menú de pizzería le falta: {detected}',
+        failNote: 'Pizza ordering is a three-tab comparison — whichever pizzeria shows the pies AND the prices cleanest wins. Shoot your top six pies (phone camera + overhead light works fine), put prices right next to each, and your direct-ordering conversion will lift 30-50% against the Slice competition. This is the single highest-ROI menu project a pizzeria can do.',
+        failNote_es: 'El pedido de pizza es una comparación de tres pestañas — la pizzería que muestre las pizzas Y los precios más limpios gana. Fotografía tus seis pizzas principales (cámara de teléfono + luz desde arriba funciona bien), pon los precios junto a cada una, y tu conversión de pedidos directos subirá 30-50% frente a la competencia de Slice. Este es el proyecto de menú con mayor ROI que una pizzería puede hacer.'
+      },
+      'bar-pub': {
+        impact: 'Bar and pub menus split into two lists: drinks (cocktail prices, draft list) and food (which carries most of the margin — bar food is a higher-markup category than beer). A site that shows neither photos nor prices on the food menu is usually missing the food menu altogether, and the after-work food revenue takes the hit.',
+        impact_es: 'Los menús de bar y pub se dividen en dos listas: bebidas (precios de cócteles, lista de barril) y comida (que carga la mayoría del margen — la comida de bar es una categoría de mayor margen que la cerveza). Un sitio que no muestra ni fotos ni precios en el menú de comida suele estar ocultando el menú de comida por completo, y el ingreso de comida de after-work es el que paga.',
+        pass: 'Your pub menu shows prices with food photography',
+        pass_es: 'Tu menú de pub muestra precios con fotografía de comida',
+        passNote: 'Your food menu is visible the way the cocktail list is — prices next to items, photos of the signature plates. That makes the after-drink "should we order food?" decision a yes instead of a bar-tab.',
+        passNote_es: 'Tu menú de comida es visible de la misma forma que la lista de cócteles — precios junto a los ítems, fotos de los platos insignia. Eso convierte la decisión post-bebida de "¿pedimos comida?" en un sí en vez de sólo una cuenta del bar.',
+        fail: 'Your pub menu is missing: {detected}',
+        fail_es: 'A tu menú de pub le falta: {detected}',
+        failNote: 'Bar customers decide whether to order food AFTER they\'ve already ordered a drink — the food menu with prices AND photos is the conversion surface for that second decision. Cocktail-list prices on their own miss the bigger revenue lever: the food order. Put the food menu on equal footing with the drink list, photos and all.',
+        failNote_es: 'Los clientes del bar deciden si pedir comida DESPUÉS de haber pedido una bebida — el menú de comida con precios Y fotos es la superficie de conversión para esa segunda decisión. Los precios sólo en la lista de cócteles se pierden la palanca de ingreso más grande: el pedido de comida. Pon el menú de comida en igualdad con la lista de bebidas, fotos incluidas.'
       }
     }
   },
