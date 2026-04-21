@@ -10319,6 +10319,41 @@
     }
     return null;
   }
+  // Phase 3 #1: render a per-day map (from parseSchemaHoursObjects)
+  // back into a human-readable line so the NAP card can show the
+  // schema-side hours next to the Places line. Format mirrors what
+  // Google Maps emits ("Mon: 11:00 AM – 10:00 PM"), separated by " · "
+  // so it stays one visual row even on a wide column.
+  var PRETTY_HOURS_DAY_LABEL = {
+    Mo: 'Mon', Tu: 'Tue', We: 'Wed', Th: 'Thu', Fr: 'Fri', Sa: 'Sat', Su: 'Sun'
+  };
+  var PRETTY_HOURS_DAY_ORDER = ['Mo','Tu','We','Th','Fr','Sa','Su'];
+  function prettyHoursDisplayFromMap(map) {
+    if (!map || typeof map !== 'object') return '';
+    var parts = [];
+    for (var i = 0; i < PRETTY_HOURS_DAY_ORDER.length; i++) {
+      var d = PRETTY_HOURS_DAY_ORDER[i];
+      var ranges = map[d];
+      if (!ranges) continue;
+      if (ranges.length === 0) {
+        parts.push(PRETTY_HOURS_DAY_LABEL[d] + ': Closed');
+        continue;
+      }
+      var rangeStrs = ranges.map(function(r){
+        return prettyHoursMinutes(r[0]) + '–' + prettyHoursMinutes(r[1] >= 1440 ? r[1] - 1440 : r[1]);
+      });
+      parts.push(PRETTY_HOURS_DAY_LABEL[d] + ': ' + rangeStrs.join(', '));
+    }
+    return parts.join(' · ');
+  }
+  function prettyHoursMinutes(min) {
+    var h24 = Math.floor(min / 60) % 24;
+    var m   = min % 60;
+    var meridiem = h24 < 12 ? 'AM' : 'PM';
+    var h12 = h24 % 12; if (h12 === 0) h12 = 12;
+    return h12 + (m > 0 ? ':' + (m < 10 ? '0' + m : m) : '') + ' ' + meridiem;
+  }
+
   function firstSchemaFieldValue(schema, field) {
     if (!schema || !Array.isArray(schema.objects)) return null;
     for (var i = 0; i < schema.objects.length; i++) {
@@ -10380,12 +10415,45 @@
     // without a real geoparser. Two-source comparison is enough for
     // a confident mismatch call.
 
+    // ----- Hours (Phase 3 #1) -----
+    // Compare Places weekdayDescriptions ("Monday: 11:00 AM – 10:00 PM")
+    // against the schema's openingHoursSpecification. Both parsers
+    // live in restaurant-checks.js and emit the same per-day map; the
+    // canonical-key serializer below is the comparison key. The value
+    // shown in the rendered card is the human-readable form so an
+    // owner can SEE the drift, not just be told it exists.
+    var hoursSources = [];
+    if (placesEntity && Array.isArray(placesEntity.weekdayHoursText)
+        && typeof parsePlacesHoursText === 'function') {
+      var placesMap = parsePlacesHoursText(placesEntity.weekdayHoursText);
+      if (placesMap) {
+        hoursSources.push({
+          source: 'places',
+          value: serializeHoursDayMap(placesMap),
+          displayValue: placesEntity.weekdayHoursText.join(' · ')
+        });
+      }
+    }
+    if (schema && Array.isArray(schema.objects)
+        && typeof parseSchemaHoursObjects === 'function') {
+      var schemaMap = parseSchemaHoursObjects(schema.objects);
+      if (schemaMap) {
+        hoursSources.push({
+          source: 'schema',
+          value: serializeHoursDayMap(schemaMap),
+          displayValue: prettyHoursDisplayFromMap(schemaMap)
+        });
+      }
+    }
+
     function hasMismatch(sources, normalizer) {
       if (!sources || sources.length < 2) return false;
       var seen = null;
       for (var i = 0; i < sources.length; i++) {
-        var norm = normalizer(sources[i].value);
-        if (norm == null) continue;
+        var raw = (sources[i] && typeof sources[i].value !== 'undefined')
+          ? sources[i].value : sources[i];
+        var norm = normalizer ? normalizer(raw) : raw;
+        if (norm == null || norm === '') continue;
         if (seen === null) { seen = norm; continue; }
         if (seen !== norm) return true;
       }
@@ -10401,6 +10469,11 @@
     }
     if (hasMismatch(addressSources, normalizeAddressForCompare)) {
       rows.push({ label: t('nap.label.address'), sources: addressSources });
+    }
+    // Hours sources already carry the canonical key in `value`; pass
+    // an identity normalizer so the existing hasMismatch helper works.
+    if (hasMismatch(hoursSources, function(v){ return v; })) {
+      rows.push({ label: t('nap.label.hours'), sources: hoursSources });
     }
 
     if (!rows.length) {
@@ -10427,7 +10500,15 @@
         name.textContent = t('nap.source.' + s.source);
         var val = document.createElement('span');
         val.className = 'nap-check-source-value';
-        val.textContent = s.value;
+        // Phase 3 #1: prefer displayValue when present so a row can
+        // carry a canonical comparison key (s.value) AND a separately
+        // rendered human-readable string. Hours sources need this
+        // because the canonical key (e.g. "Mo:0660-1320|Tu:0660-1320")
+        // is unreadable to an owner; displayValue carries the
+        // "Mon: 11 AM – 10 PM · Tue: 11 AM – 10 PM" form.
+        val.textContent = (s.displayValue != null && s.displayValue !== '')
+          ? s.displayValue
+          : s.value;
         sRow.appendChild(name);
         sRow.appendChild(val);
         sourcesEl.appendChild(sRow);

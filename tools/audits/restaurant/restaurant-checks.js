@@ -2607,6 +2607,10 @@ var UI_I18N = {
   'nap.label.phone':   { en: 'Phone number',   es: 'Teléfono' },
   'nap.label.address': { en: 'Address',        es: 'Dirección' },
   'nap.label.name':    { en: 'Business name',  es: 'Nombre del negocio' },
+  // Phase 3 #1: hours-consistency row label. Renders alongside the
+  // existing NAP rows in renderNapCheck when Google Places hours and
+  // the on-page schema's openingHoursSpecification disagree.
+  'nap.label.hours':   { en: 'Opening hours',  es: 'Horario de apertura' },
   'nap.source.places': { en: 'Google Places',  es: 'Google Places' },
   'nap.source.schema': { en: 'Your schema',    es: 'Tu schema' },
   'nap.source.page':   { en: 'Your page text', es: 'Texto en tu página' },
@@ -2716,6 +2720,226 @@ function t(key, vars, lang) {
 }
 
 // ---------------------------------------------------------------------------
+// Phase 3 #1: cross-source hours-consistency normalization.
+// ---------------------------------------------------------------------------
+// The renderNapCheck card in index.html surfaces drift between Google
+// Places, the on-page schema, and the homepage H1/title for Name,
+// Address, and Phone. Phase 3 extends the same pattern to opening
+// hours — the single biggest "I drove there and they were closed"
+// owner pain point and the most common silent suppressor of GBP
+// local-pack ranking.
+//
+// Both source shapes have to be normalized into the SAME canonical
+// representation before comparison. We use a per-day map of
+// "open-close" minute tuples:
+//
+//   { Mo: ['0660-1320'], Tu: ['0660-1320'], ... }
+//
+// Each value is an ARRAY because a day can carry multiple ranges
+// (e.g. lunch + dinner service). Days where the business is closed
+// are simply absent from the map — schema's "opens=null, closes=null"
+// and Places' missing-day both encode the same intent.
+//
+// Two pure parsers:
+//   parsePlacesHoursText(arr)    -> day map
+//   parseSchemaHoursObjects(arr) -> day map
+//
+// One canonical-key serializer:
+//   serializeHoursDayMap(map)    -> stable string for equality compare
+//
+// Exported for Node tests; consumed by renderNapCheck in index.html.
+
+var HOURS_DAY_NAMES = {
+  'monday':    'Mo', 'mo': 'Mo', 'mon': 'Mo',
+  'tuesday':   'Tu', 'tu': 'Tu', 'tue': 'Tu', 'tues': 'Tu',
+  'wednesday': 'We', 'we': 'We', 'wed': 'We',
+  'thursday':  'Th', 'th': 'Th', 'thu': 'Th', 'thur': 'Th', 'thurs': 'Th',
+  'friday':    'Fr', 'fr': 'Fr', 'fri': 'Fr',
+  'saturday':  'Sa', 'sa': 'Sa', 'sat': 'Sa',
+  'sunday':    'Su', 'su': 'Su', 'sun': 'Su'
+};
+var HOURS_DAY_ORDER = ['Mo','Tu','We','Th','Fr','Sa','Su'];
+
+// Convert "11:00 AM" / "11:00" / "11 AM" / "11pm" / "23:00" into
+// minutes-from-midnight. Returns null on parse failure so the caller
+// can skip a malformed row rather than fabricate a mismatch.
+function parseHoursTimeToMinutes(raw) {
+  if (raw == null) return null;
+  var s = String(raw).trim().toLowerCase();
+  if (!s) return null;
+  // Strict ISO HH:MM (or HH:MM:SS) — schema.org's openingHoursSpecification
+  // uses this. Place text wraps an AM/PM after the time so this strict
+  // match must not greedy-eat AM/PM.
+  var iso = s.match(/^([01]?\d|2[0-3]):([0-5]\d)(?::[0-5]\d)?$/);
+  if (iso) {
+    return parseInt(iso[1], 10) * 60 + parseInt(iso[2], 10);
+  }
+  // 12-hour clock: "11 AM", "11:30am", "11:30 a.m.", "12 PM" (noon),
+  // "12 AM" (midnight), "12:00 a.m.", etc.
+  var hr = s.match(/^(\d{1,2})(?::([0-5]\d))?\s*(a\.?m\.?|p\.?m\.?)$/);
+  if (hr) {
+    var h = parseInt(hr[1], 10);
+    var m = hr[2] ? parseInt(hr[2], 10) : 0;
+    var meridiem = hr[3].replace(/\./g, '');
+    if (h < 1 || h > 12) return null;
+    if (meridiem === 'pm' && h !== 12) h += 12;
+    if (meridiem === 'am' && h === 12) h = 0;
+    return h * 60 + m;
+  }
+  return null;
+}
+
+// "Monday: 11:00 AM – 10:00 PM"            -> day:'Mo', ranges:[[660,1320]]
+// "Saturday: 11 AM – 1 AM"                 -> day:'Sa', ranges:[[660,1500]] (overnight tracks +24h)
+// "Tuesday: 11:00 AM – 2:30 PM, 5 PM – 10 PM" -> day:'Tu', ranges:[[660,870],[1020,1320]]
+// "Sunday: Closed"                         -> day:'Su', ranges:[]   (explicit closed)
+// "Monday: Open 24 hours"                  -> day:'Mo', ranges:[[0,1440]]
+// Anything we can't parse returns null so the caller skips it.
+function parsePlacesHoursLine(line) {
+  if (!line || typeof line !== 'string') return null;
+  // Google sometimes uses thin space (U+202F) before AM/PM; collapse
+  // every kind of whitespace so the regex doesn't have to enumerate.
+  var clean = line.replace(/\s+/g, ' ').trim();
+  var colon = clean.indexOf(':');
+  if (colon < 0) return null;
+  var dayWord = clean.slice(0, colon).trim().toLowerCase();
+  var dayCode = HOURS_DAY_NAMES[dayWord];
+  if (!dayCode) return null;
+  var rest = clean.slice(colon + 1).trim();
+  if (!rest) return { day: dayCode, ranges: null }; // unparseable; skip
+  // "Closed" — explicit, honor it as a real (empty) ranges array.
+  if (/^closed\b/i.test(rest)) return { day: dayCode, ranges: [] };
+  // "Open 24 hours" — single full-day range.
+  if (/^open\s*24\s*hours?\b/i.test(rest)) return { day: dayCode, ranges: [[0, 1440]] };
+  // Split by comma for multi-segment days (lunch + dinner). Each
+  // segment must look like "TIME – TIME" (en-dash, em-dash, hyphen,
+  // or "to" all valid separators in the wild).
+  var ranges = [];
+  var segments = rest.split(',');
+  for (var i = 0; i < segments.length; i++) {
+    var seg = segments[i].trim();
+    if (!seg) continue;
+    var rangeMatch = seg.match(/^(.+?)\s*[–—-]\s*(.+)$/);
+    if (!rangeMatch) {
+      // Couldn't parse a range; bail entirely on this line rather
+      // than emit a partial day map.
+      return null;
+    }
+    var openMin  = parseHoursTimeToMinutes(rangeMatch[1].trim());
+    var closeMin = parseHoursTimeToMinutes(rangeMatch[2].trim());
+    if (openMin == null || closeMin == null) return null;
+    // Overnight tracks roll forward by 24h so 10 PM – 2 AM serializes
+    // distinctly from 2 AM – 10 PM (different intents).
+    if (closeMin <= openMin) closeMin += 1440;
+    ranges.push([openMin, closeMin]);
+  }
+  // No ranges parsed but no "Closed" — drop rather than fabricate.
+  if (!ranges.length) return null;
+  return { day: dayCode, ranges: ranges };
+}
+
+function parsePlacesHoursText(arr) {
+  if (!Array.isArray(arr)) return null;
+  var map = {};
+  var matched = 0;
+  for (var i = 0; i < arr.length; i++) {
+    var parsed = parsePlacesHoursLine(arr[i]);
+    if (!parsed || !parsed.ranges) continue;
+    map[parsed.day] = parsed.ranges;
+    matched++;
+  }
+  // Need at least one parsed day to count as signal — guarding against
+  // a Places response that's all "Hours not available" lines.
+  return matched > 0 ? map : null;
+}
+
+// Walk the raw JSON-LD objects (window.__auditSchema.objects) for any
+// Restaurant / FoodEstablishment-typed entries and collect their
+// openingHoursSpecification. Mirrors the worker-side validateOpeningHours
+// shape but returns the same per-day map shape parsePlacesHoursText
+// emits, so both sources serialize through the same canonical key.
+function parseSchemaHoursObjects(objects) {
+  if (!Array.isArray(objects)) return null;
+  var map = {};
+  function addDay(dayRaw, openMin, closeMin) {
+    if (dayRaw == null) return;
+    var s = String(dayRaw).toLowerCase().replace(/^https?:\/\/schema\.org\//, '').trim();
+    var dayCode = HOURS_DAY_NAMES[s];
+    if (!dayCode) {
+      var tail = s.split('/').pop();
+      dayCode = HOURS_DAY_NAMES[tail];
+    }
+    if (!dayCode) return;
+    if (openMin == null || closeMin == null) {
+      // schema.org allows opens=null + closes=null to encode "closed."
+      // Treat as an empty-ranges day so the absence is meaningful.
+      if (!map[dayCode]) map[dayCode] = [];
+      return;
+    }
+    if (closeMin <= openMin) closeMin += 1440;
+    if (!map[dayCode]) map[dayCode] = [];
+    map[dayCode].push([openMin, closeMin]);
+  }
+  function ingest(obj) {
+    if (!obj) return;
+    var spec = obj.openingHoursSpecification;
+    var entries = Array.isArray(spec) ? spec : (spec && typeof spec === 'object' ? [spec] : []);
+    for (var i = 0; i < entries.length; i++) {
+      var entry = entries[i];
+      if (!entry) continue;
+      var openMin  = parseHoursTimeToMinutes(entry.opens);
+      var closeMin = parseHoursTimeToMinutes(entry.closes);
+      var dow = entry.dayOfWeek;
+      if (Array.isArray(dow)) {
+        for (var j = 0; j < dow.length; j++) addDay(dow[j], openMin, closeMin);
+      } else {
+        addDay(dow, openMin, closeMin);
+      }
+    }
+  }
+  for (var k = 0; k < objects.length; k++) ingest(objects[k]);
+  // Sort each day's ranges by open-time so [['0660-0870'],['1020-1320']]
+  // and [['1020-1320'],['0660-0870']] serialize the same way.
+  var hasAny = false;
+  Object.keys(map).forEach(function(d){
+    map[d].sort(function(a, b){ return a[0] - b[0]; });
+    if (map[d].length > 0) hasAny = true;
+  });
+  // Return null if nothing parsed — we don't want an empty {} to look
+  // like a confident "closed every day" signal.
+  return hasAny || Object.keys(map).length > 0 ? map : null;
+}
+
+// Canonical serialization used as the equality key when comparing two
+// hours sources. Stable order, fixed-width padded times, day codes in
+// the canonical Mo→Su sequence.
+//
+//   serialize({ Mo:[[660,1320]] }) === 'Mo:0660-1320'
+//   serialize({})                  === ''  (means "closed every day")
+function serializeHoursDayMap(map) {
+  if (!map || typeof map !== 'object') return null;
+  var pieces = [];
+  for (var i = 0; i < HOURS_DAY_ORDER.length; i++) {
+    var d = HOURS_DAY_ORDER[i];
+    if (!map[d]) continue;
+    if (map[d].length === 0) {
+      pieces.push(d + ':closed');
+      continue;
+    }
+    var rangeStrs = map[d].map(function(r){
+      return pad4(r[0]) + '-' + pad4(r[1]);
+    });
+    pieces.push(d + ':' + rangeStrs.join(','));
+  }
+  return pieces.join('|');
+}
+function pad4(n) {
+  var s = String(Math.floor(n));
+  while (s.length < 4) s = '0' + s;
+  return s;
+}
+
+// ---------------------------------------------------------------------------
 // Phase 2 U6: freshness-label bucket selection.
 // ---------------------------------------------------------------------------
 // Given an age in seconds since the audit ran, return the i18n key
@@ -2819,6 +3043,11 @@ if (typeof module !== 'undefined' && module.exports) {
     finalizeRestaurantReadinessScore: finalizeRestaurantReadinessScore,
     rankActionablesByImpact: rankActionablesByImpact,
     pickFreshnessKey: pickFreshnessKey,
+    parsePlacesHoursText: parsePlacesHoursText,
+    parsePlacesHoursLine: parsePlacesHoursLine,
+    parseSchemaHoursObjects: parseSchemaHoursObjects,
+    serializeHoursDayMap: serializeHoursDayMap,
+    parseHoursTimeToMinutes: parseHoursTimeToMinutes,
     POWERED_BY: POWERED_BY,
     MUNTIN_AUDIT_DESCRIPTION: MUNTIN_AUDIT_DESCRIPTION,
     MUNTIN_AUDIT_DESCRIPTION_ES: MUNTIN_AUDIT_DESCRIPTION_ES,
