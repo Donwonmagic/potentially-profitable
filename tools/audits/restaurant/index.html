@@ -1791,6 +1791,51 @@
     0%, 100% { box-shadow: 0 0 0 4px rgba(31, 78, 91, 0.12); }
     50%      { box-shadow: 0 0 0 7px rgba(31, 78, 91, 0.06); }
   }
+  /* Sprint 10: micro-interactions batch. Three small tactile wins,
+     all gated under prefers-reduced-motion: no-preference so
+     assistive-motion users get static alternatives.
+       1. Button press: any button inside the tool scales to 0.97
+          on :active for 120ms tactile feedback using --ease-spring.
+       2. Chip hover lift: chips translate up 1px and gain a soft
+          shadow on hover, signaling their row-level clickability
+          (they're not always clickable, but the readiness signal
+          still helps scannability).
+       3. Priority-check row reveal-on-scroll: rows gain .in-view
+          via IntersectionObserver (wired in the IIFE below) and
+          animate up + fade in as the owner scrolls through. */
+  @media (prefers-reduced-motion: no-preference) {
+    .audit-report button:active,
+    .audit-hero button:active,
+    .tool-cta-form button:active {
+      transform: scale(0.97);
+      transition: transform var(--t-micro, 120ms) var(--ease-spring, cubic-bezier(.2,.9,.25,1.2));
+    }
+    .chip {
+      transition: transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+    }
+    .chip:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px rgba(20, 22, 26, 0.06);
+    }
+    .priority-item {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 420ms var(--ease-out), transform 420ms var(--ease-out);
+    }
+    .priority-item.in-view {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  /* Reduced-motion fallback: priority-check rows must still render
+     visibly. Without this, users with reduced-motion enabled would
+     see empty space where the priority rows should be because the
+     IntersectionObserver never fires the .in-view toggle in the
+     no-preference branch. */
+  @media (prefers-reduced-motion: reduce) {
+    .priority-item { opacity: 1; transform: none; }
+  }
+
   /* Sprint 9: staggered report reveal. When JS adds .report-revealed
      to the audit report container, the first six report sections
      fade + lift into place in sequence (120ms between each). Cap of
@@ -12100,6 +12145,34 @@
         '<a class="link" href="/glossary/?filter=restaurants' + def.anchor + '">Learn more →</a>';
       container.appendChild(row);
     });
+
+    // Sprint 10: IntersectionObserver wires .in-view on priority rows
+    // as they scroll into the viewport. The CSS keyframe-free reveal
+    // (opacity + transform transition) kicks in when the class lands.
+    // Observer is scoped per-render; we disconnect a previous one if
+    // re-rendering from an override so we don't accumulate observers.
+    try {
+      if (window.__priorityObserver && typeof window.__priorityObserver.disconnect === 'function') {
+        window.__priorityObserver.disconnect();
+      }
+      if (typeof IntersectionObserver === 'function') {
+        var io = new IntersectionObserver(function(entries){
+          entries.forEach(function(entry){
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in-view');
+              io.unobserve(entry.target);
+            }
+          });
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+        container.querySelectorAll('.priority-item').forEach(function(el){ io.observe(el); });
+        window.__priorityObserver = io;
+      } else {
+        // Fallback: show everything immediately when IO isn't available
+        container.querySelectorAll('.priority-item').forEach(function(el){ el.classList.add('in-view'); });
+      }
+    } catch (_) {
+      container.querySelectorAll('.priority-item').forEach(function(el){ el.classList.add('in-view'); });
+    }
 
     // Wire up feedback button click handlers. Each click records an
     // override in USER_OVERRIDES, re-renders the checks, and fires a
