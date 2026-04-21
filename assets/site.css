@@ -702,6 +702,31 @@ br.br-lg{display:none}
 
 .listen-card{--lc-accent:var(--teal);--lc-accent-dark:var(--teal-dark);--lc-tint:var(--teal-tint);position:relative;display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"play body meta" "play progress progress" "play chapter chapter" "extras extras extras";align-items:center;gap:14px 20px;width:100%;max-width:640px;margin:28px auto 0;padding:22px 24px;background:linear-gradient(180deg,var(--white) 0%,var(--cream) 100%);border:1px solid var(--line-dark);border-radius:20px;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 18px 40px -24px rgba(20,54,64,0.22);text-align:left}
 .listen-card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(160deg,rgba(31,78,91,0.18),rgba(31,78,91,0) 55%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+/* Sprint A1: ambient playback tint. ::after sits inside the card's
+   own stacking context, below content (z-index:0) but above the
+   base white→cream background. Opacity transitions from 0 → 1 as
+   state goes idle → playing over 1.2s. The radial is anchored at
+   top-left so the warmth reads as "a glow the voice is casting
+   from behind." Reduced-motion shows the end state without the
+   cross-fade. Content inside the card already sits in grid flow;
+   no z-index bump needed because ::after is positioned absolutely
+   and appears behind non-positioned flow content. */
+.listen-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  background:
+    radial-gradient(120% 180% at 15% 0%, rgba(31,78,91,0.06), rgba(31,78,91,0.02) 45%, transparent 70%),
+    radial-gradient(80% 140% at 85% 100%, rgba(184,84,26,0.035), transparent 65%);
+  opacity:0;
+  transition:opacity 1.2s cubic-bezier(.22,.61,.36,1);
+  pointer-events:none;
+  z-index:0;
+}
+.listen-card > *{position:relative;z-index:1}
+.listen-card[data-state="playing"]::after,
+.listen-card[data-state="paused"]::after{opacity:1}
 .listen-card[hidden]{display:none}
 
 .listen-card-play{grid-area:play;position:relative;width:64px;height:64px;border-radius:50%;border:0;background:var(--lc-accent);color:var(--white);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 10px 24px -10px rgba(31,78,91,0.55),0 2px 0 rgba(255,255,255,0.4) inset;transition:transform var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
@@ -907,6 +932,10 @@ br.br-lg{display:none}
 50%{box-shadow:0 0 0 2px var(--teal),0 0 0 14px rgba(31,78,91,0.08)}
 }
 @media (prefers-reduced-motion:reduce){.listen-btn[data-state="playing"] svg path,.listen-card-play::after,.listen-card[data-state="loading"] .listen-card-play .icon-loading,.listen-card[data-state="playing"] .listen-card-kicker::before{animation:none}
+/* Sprint A1: skip the ambient cross-fade under reduced-motion; the
+   end state still applies via the [data-state] selector, so the
+   warm tint is present without the 1.2s transition. */
+.listen-card::after{transition:none}
 .article-body .is-reading{transition:none}
 .listen-dock{transition:opacity var(--t-fast) var(--ease)}
 }
