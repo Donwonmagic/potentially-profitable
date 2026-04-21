@@ -117,7 +117,13 @@
   //     { "binding": "AUDIT_CACHE", "id": "<paste-from-wrangler-output>" }
   //   ]
   //
-  // Same story for the Durable Object rate-limiter (planned S2 roadmap):
+  // Same story for the Durable Object rate-limiter. The class is
+  // defined in src/lib/rate-limiter-do.js and re-exported from
+  // src/worker.js today — uncommenting the block below plus running
+  // `wrangler deploy` with the migration activates global (cross-
+  // isolate) per-IP rate limiting. Until the binding appears the
+  // Worker falls back to the in-isolate limiter in rate-limit.js, so
+  // code and config are deploy-order-independent.
   //
   //   "durable_objects": {
   //     "bindings": [{ "name": "RATE_LIMITER", "class_name": "RateLimiter" }]

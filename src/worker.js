@@ -47,6 +47,14 @@ import {
 } from './lib/validation.js';
 import { withAuditCache } from './lib/audit-cache.js';
 import { createRateLimiter, clientIpFromRequest } from './lib/rate-limit.js';
+import { RateLimiter, checkDurableRateLimit } from './lib/rate-limiter-do.js';
+
+// Durable Object classes must be re-exported from the Worker entry
+// module so the runtime can instantiate them when the binding fires.
+// Leaving this export in place when the binding is still commented in
+// wrangler.jsonc is harmless — the class is defined but never
+// instantiated.
+export { RateLimiter };
 
 // Compute the X-Audit-Cache header value from a withAuditCache result.
 // Three states: 'hit' (fresh, within TTL), 'stale-fallback' (upstream
@@ -166,15 +174,40 @@ export default {
       // Per-IP throttle. /api/ping bypasses so ops can health-check
       // without burning the caller's own budget. Form endpoints use a
       // tighter per-hour budget because each hits Resend's free tier.
+      //
+      // Two-tier enforcement:
+      //   1. Durable-Object sliding window (global across isolates)
+      //      when env.RATE_LIMITER is bound. Authoritative.
+      //   2. In-isolate sliding window as the fallback when the DO
+      //      binding is absent (local dev, pre-deploy, or after a DO
+      //      outage). Less precise but zero extra latency.
+      // checkDurableRateLimit never throws — a DO outage is logged
+      // and the request is treated as allowed by that layer so a
+      // real user is never blocked because of an infrastructure
+      // blip. The in-isolate fallback still caps bursts within one
+      // isolate in that degraded mode.
       if (pathname !== '/api/ping') {
-        const limiter = FORM_RATE_LIMIT_PATHS.has(pathname) ? FORM_RATE_LIMITER : API_RATE_LIMITER;
-        const deny = limiter.check(clientIpFromRequest(request));
+        const ip = clientIpFromRequest(request);
+        const isForm = FORM_RATE_LIMIT_PATHS.has(pathname);
+        const tier = isForm
+          ? { name: 'form', windowMs: 3600_000, max: 10 }
+          : { name: 'api',  windowMs: 60_000,   max: 30 };
+
+        let deny = null;
+        if (env.RATE_LIMITER) {
+          deny = await checkDurableRateLimit(env, tier.name + ':' + ip, tier.windowMs, tier.max);
+        } else {
+          const localLimiter = isForm ? FORM_RATE_LIMITER : API_RATE_LIMITER;
+          deny = localLimiter.check(ip);
+        }
+
         if (deny) {
           console.log(JSON.stringify({
             event: 'api.rate_limited',
             path: pathname,
             method: request.method,
             retryAfter: deny.retryAfterSeconds,
+            tier: tier.name,
             reqId: reqId
           }));
           const throttled = jsonResponse({ ok: false, error: 'rate-limited', retryAfterSeconds: deny.retryAfterSeconds }, 429);
