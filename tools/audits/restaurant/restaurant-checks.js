@@ -1148,6 +1148,42 @@ var RESTAURANT_PRIORITY_CHECKS = [
         fail_es: 'A tu menú de pub le falta: {detected}',
         failNote: 'Bar customers decide whether to order food AFTER they\'ve already ordered a drink — the food menu with prices AND photos is the conversion surface for that second decision. Cocktail-list prices on their own miss the bigger revenue lever: the food order. Put the food menu on equal footing with the drink list, photos and all.',
         failNote_es: 'Los clientes del bar deciden si pedir comida DESPUÉS de haber pedido una bebida — el menú de comida con precios Y fotos es la superficie de conversión para esa segunda decisión. Los precios sólo en la lista de cócteles se pierden la palanca de ingreso más grande: el pedido de comida. Pon el menú de comida en igualdad con la lista de bebidas, fotos incluidas.'
+      },
+      'food-truck': {
+        impact: 'Food-truck menus rotate weekly. A photo of today\'s smashburger + its price is the whole pitch — customers standing across the plaza check your site BEFORE they walk over to queue. Missing either signal sends them to the truck next to you that shows both. This is a same-morning fix: the owner shoots a phone photo of the special, updates the price in the site CMS, done.',
+        impact_es: 'Los menús de food truck rotan semanalmente. Una foto de la smashburger de hoy + su precio es todo el pitch — los clientes parados al otro lado de la plaza revisan tu sitio ANTES de caminar a hacer fila. Si falta alguna señal, se van al truck de al lado que muestra ambas. Este es un arreglo de la misma mañana: el dueño toma una foto con el teléfono del especial, actualiza el precio en el CMS del sitio, listo.',
+        pass: 'Your truck menu shows today\'s prices and photos',
+        pass_es: 'Tu menú del truck muestra los precios y fotos de hoy',
+        passNote: 'Your site matches the truck — today\'s special with its price and its photo, visible before the customer walks over. That\'s the pattern that wins the walk-the-plaza decision.',
+        passNote_es: 'Tu sitio coincide con el truck — el especial de hoy con su precio y su foto, visibles antes que el cliente cruce. Ese es el patrón que gana la decisión de cruzar la plaza.',
+        fail: 'Your truck menu is missing: {detected}',
+        fail_es: 'A tu menú del truck le falta: {detected}',
+        failNote: 'Food trucks live and die on the "walk across the plaza to line up" decision. A phone photo of today\'s special + the price is the whole sales pitch — you can update both from the truck before service starts. Skip either and the customer walks to the truck that shows both.',
+        failNote_es: 'Los food trucks viven o mueren por la decisión de "cruzar la plaza a hacer fila". Una foto de teléfono del especial de hoy + el precio es todo el pitch de ventas — puedes actualizar ambos desde el truck antes que empiece el servicio. Salta cualquiera y el cliente camina al truck que muestra ambos.'
+      },
+      'ghost-kitchen': {
+        impact: 'Ghost kitchens have exactly two selling surfaces: aggregator tiles (DoorDash / UberEats / GrubHub — all three show prices and photos by default) and the owner\'s own site. A silent menu on your own site sends shoppers back to the aggregator — where 30% of every ticket goes to the platform instead of to you. Prices + photos on your direct-ordering page is the ONLY way to keep that margin in-house.',
+        impact_es: 'Las cocinas fantasma tienen exactamente dos superficies de venta: los tiles de agregadores (DoorDash / UberEats / GrubHub — los tres muestran precios y fotos por defecto) y el propio sitio del dueño. Un menú silencioso en tu propio sitio manda a los compradores de vuelta al agregador — donde 30% de cada ticket va a la plataforma en vez de a ti. Precios + fotos en tu página de pedido directo es la ÚNICA forma de mantener ese margen en casa.',
+        pass: 'Your ghost-kitchen menu has prices and dish photos on-site',
+        pass_es: 'Tu menú de cocina fantasma tiene precios y fotos de platos en el sitio',
+        passNote: 'Your own-site menu matches what DoorDash / UberEats show — which means a shopper who lands there directly can order without bouncing back to the aggregator. Every order on your own site is a 30% margin win.',
+        passNote_es: 'Tu menú del sitio propio coincide con lo que muestran DoorDash / UberEats — lo que significa que un comprador que aterriza ahí directamente puede pedir sin rebotar al agregador. Cada pedido en tu propio sitio es una ganancia de 30% en margen.',
+        fail: 'Your ghost-kitchen menu is missing: {detected}',
+        fail_es: 'A tu menú de cocina fantasma le falta: {detected}',
+        failNote: 'A ghost kitchen\'s own site has to SELL the same way DoorDash does — prices next to each item, one photo per dish. Silent menus send customers straight back to the aggregator (where you pay 30% of that revenue to them instead of keeping it). Use the same photos you uploaded to DoorDash; use the same prices. Parity is the whole game.',
+        failNote_es: 'El sitio propio de una cocina fantasma tiene que VENDER de la misma forma que DoorDash — precios junto a cada ítem, una foto por plato. Los menús silenciosos mandan a los clientes directo de vuelta al agregador (donde pagas 30% de ese ingreso en vez de quedártelo). Usa las mismas fotos que subiste a DoorDash; usa los mismos precios. La paridad es todo el juego.'
+      },
+      'catering-only': {
+        impact: 'Catering planners make a go / no-go decision within the first 10 seconds of hitting your packages page: "is the per-head price in our budget?" and "does the food look like it fits our event?". Package photos + per-head prices are the two signals that carry that decision. A package page without either sends them to a caterer that is explicit.',
+        impact_es: 'Los planificadores de catering toman una decisión de sí/no en los primeros 10 segundos de llegar a tu página de paquetes: "¿el precio por persona está en nuestro presupuesto?" y "¿la comida se ve como para nuestro evento?". Fotos de paquetes + precios por persona son las dos señales que cargan esa decisión. Una página de paquetes sin alguna de las dos los manda a un caterer que sí sea explícito.',
+        pass: 'Your catering packages have per-head prices and event photos',
+        pass_es: 'Tus paquetes de catering tienen precios por persona y fotos del evento',
+        passNote: 'Planners can scan your packages the way they scan every other caterer\'s — per-head price visible, event photos visible, decision made in the same 10 seconds they give every option.',
+        passNote_es: 'Los planificadores pueden revisar tus paquetes de la misma forma que revisan los de cualquier otro caterer — precio por persona visible, fotos del evento visibles, decisión tomada en los mismos 10 segundos que dan a cada opción.',
+        fail: 'Your catering packages are missing: {detected}',
+        fail_es: 'A tus paquetes de catering les falta: {detected}',
+        failNote: 'Catering planners make a go / no-go within 10 seconds: per-head price in range, food looks like it fits the event. Without prices, they go to a caterer who is upfront; without photos, they go to one that shows the spread. Both belong next to each package name — a single plated shot plus a starting per-head number is enough to start the conversation.',
+        failNote_es: 'Los planificadores de catering toman un sí/no en 10 segundos: precio por persona en rango, comida que se ve acorde al evento. Sin precios, se van con un caterer que sí es claro; sin fotos, con uno que muestra el despliegue. Ambos pertenecen junto a cada nombre de paquete — una sola foto del plato más un precio base por persona es suficiente para empezar la conversación.'
       }
     }
   },
