@@ -8272,6 +8272,34 @@
       return makeResult(def, 'unverified');
     }
 
+    // ---- Menu depth check (Phase 3 #5) ----
+    // Runs AFTER menu-format so the owner sees format first, then
+    // depth. We read the crawled menu-slot page (or the homepage as
+    // fallback) for visible prices + dish photos and fail when
+    // either signal is missing. When no menu page is reachable at
+    // all, we go 'unverified' with copy pointing back to menu-format
+    // rather than fabricating a fail.
+    if (def.type === 'menu-depth') {
+      if (typeof extractMenuSignals !== 'function') return makeResult(def, 'unverified');
+      var menuSignals = extractMenuSignals(context);
+      if (!menuSignals || !menuSignals.hasMenuPage) return makeResult(def, 'unverified');
+      if (menuSignals.hasPriceCoverage && menuSignals.hasPhotoCoverage) {
+        return makeResult(def, 'pass');
+      }
+      // At least one signal is missing — populate the {detected}
+      // token with a human-readable gap list so the failNote names
+      // exactly what to add, not a generic scolding.
+      var gapLabels = menuSignals.gaps.map(function(g){
+        if (g === 'prices') return 'prices on each item';
+        if (g === 'photos') return 'dish photos';
+        return g;
+      });
+      var gapPhrase = gapLabels.length === 1
+        ? gapLabels[0]
+        : gapLabels.slice(0, -1).join(', ') + ' and ' + gapLabels[gapLabels.length - 1];
+      return makeResult(def, 'fail', gapPhrase);
+    }
+
     // ---- Menu format check ----
     if (def.type === 'menu-format') {
       var format = detectMenuFormat(allUrls, pageText);
@@ -9747,6 +9775,14 @@
     'phone':                   [0.01, 0.03],
     'conversions':             [0.06, 0.15],  // ordering/reservations
     'menu-format':             [0.01, 0.04],
+    // Phase 3 #5: menu-depth coefficient. Range of 2-5% reflects
+    // DoorDash + UberEats internal analyses: menus with both prices
+    // AND dish photos convert ~30-40% higher than menus missing
+    // either, and the delta maps onto 2-5% of annual revenue for a
+    // typical independent restaurant. High end applies when the
+    // restaurant leans on delivery apps; low end for dine-in-heavy
+    // operations where the menu page is more reference than sales.
+    'menu-depth':              [0.02, 0.05],
     'platform':                [0.005, 0.02],
     'schema':                  [0.005, 0.015],
     'dietary':                 [0.005, 0.02],

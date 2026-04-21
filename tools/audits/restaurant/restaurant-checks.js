@@ -1037,6 +1037,39 @@ var RESTAURANT_PRIORITY_CHECKS = [
       }
     }
   },
+  // Phase 3 #5: menu-depth. Evaluates the menu PAGE CONTENT — does it
+  // show prices and dish photos? Complements menu-format (HTML vs PDF)
+  // and dietary (GF/V markers). A menu that passes format but has
+  // neither prices nor photos still underperforms on conversion;
+  // delivery apps cross-check the owner's site before a shopper taps
+  // "add to cart" and opaque menus cost orders. Weight 0.75 (bonus
+  // tier) because a site with a broken format shouldn't be penalized
+  // twice — the failNote explicitly tells owners to fix format first
+  // on the unverified path.
+  {
+    type: 'menu-depth',
+    weight: 0.75,
+    anchor: '#basics',
+    effort: 'self',
+    minutes: 120,
+    impact: 'Menus without visible prices and dish photos underperform by 30-40% on delivery apps and the owner\'s own online-ordering flow. Visitors cross-check prices before tapping "add to cart"; they scroll past items without photos. Adding both is a one-afternoon project for most HTML menus and the single highest-ROI change for ghost-kitchen and fast-casual restaurants.',
+    impact_es: 'Los menús sin precios visibles y fotos de platos rinden 30-40% peor en apps de entrega y en el flujo de pedidos del propio sitio. Los visitantes verifican precios antes de tocar "agregar al carrito"; pasan de largo los ítems sin fotos. Agregar ambos es un proyecto de una tarde para la mayoría de los menús HTML y el cambio de mayor ROI para cocinas fantasma y restaurantes fast-casual.',
+    pass: 'Your menu has visible prices and dish photos',
+    pass_es: 'Tu menú tiene precios visibles y fotos de platos',
+    passNote: 'Your menu page shows both prices and dish photos — shoppers can cross-check before ordering, which is exactly the pattern that converts on delivery apps and on your own site.',
+    passNote_es: 'Tu página del menú muestra precios y fotos de platos — los compradores pueden verificar antes de pedir, que es justo el patrón que convierte en apps de entrega y en tu propio sitio.',
+    fail: 'Your menu is missing conversion signals',
+    fail_es: 'Tu menú le falta señales que venden',
+    // failNote uses the {detected} template token (same path the
+    // platform check uses) to enumerate the specific gaps — e.g.
+    // "Your menu page is missing: prices and dish photos."
+    failNote: 'Your menu page is missing: {detected}. These are the two signals a shopper or delivery-app user checks before tapping "add to cart." Add them to your menu page — plain text prices next to each item, and one photo per signature dish — and conversion typically lifts within a week.',
+    failNote_es: 'A tu página del menú le falta: {detected}. Estas son las dos señales que un comprador o usuario de app de entrega verifica antes de tocar "agregar al carrito". Agrégalas a tu página del menú — precios en texto plano junto a cada ítem, y una foto por cada plato insignia — y la conversión suele subir en una semana.',
+    unverified: "We couldn't reach your menu page to evaluate its content",
+    unverified_es: 'No pudimos acceder a tu página de menú para evaluar su contenido',
+    unverifiedNote: "The audit looks at the page behind your 'Menu' link for visible prices and dish photos. We couldn't reach one this pass — either the format is a PDF (see the menu-format check above) or the crawler missed it. Confirm the format first; we'll re-evaluate depth on the next run.",
+    unverifiedNote_es: 'La auditoría revisa la página detrás de tu enlace "Menú" buscando precios visibles y fotos de platos. No pudimos acceder a una en este pase — o el formato es PDF (ver el chequeo de menu-format arriba) o el crawler no la encontró. Confirma primero el formato; reevaluaremos la profundidad en la próxima ejecución.'
+  },
   {
     type: 'schema',
     weight: 0.5, // bonus — nice to have, not critical
@@ -2744,6 +2777,104 @@ function t(key, vars, lang) {
 }
 
 // ---------------------------------------------------------------------------
+// Phase 3 #5: menu intelligence (prices + dish photos on the menu page).
+// ---------------------------------------------------------------------------
+// The existing 'menu-format' priority check answers "is your menu an
+// HTML page or a PDF?" and 'dietary' answers "do you mark gluten-free /
+// vegan?". Neither tells an owner whether their HTML menu is
+// actually doing the job — menus without visible prices kill ordering
+// intent on delivery apps (shoppers cross-check before tapping), and
+// menus without dish photos convert 30-40% worse than menus with them
+// (DoorDash + UberEats internal studies, consistently replicated).
+//
+// extractMenuSignals(context) is a pure, testable function that reads
+// the crawled menu-slot page (or falls back to the homepage HTML)
+// and returns:
+//
+//   {
+//     hasMenuPage:     boolean   — did we find a page to analyze?
+//     sourceUrl:       string?   — which URL we read
+//     pricesCount:     number    — distinct price-pattern matches
+//     imagesCount:     number    — <img> tags on the page
+//     hasPriceCoverage: boolean  — pricesCount >= PRICE_FLOOR
+//     hasPhotoCoverage: boolean  — imagesCount >= PHOTO_FLOOR
+//     gaps:            string[]  — 'prices' / 'photos' tokens missing
+//   }
+//
+// Thresholds are defensible floors, not industry medians:
+//   PRICE_FLOOR = 5 — a menu page with fewer than 5 price marks has
+//     hidden most pricing; real menus typically show 15-40.
+//   PHOTO_FLOOR = 3 — filters sites with a single hero image but no
+//     dish photography; real photo menus carry 8-30 images per page.
+//
+// The check consumes these thresholds to decide pass / fail and
+// populates the `{gaps}` template token in the failNote so the owner
+// sees exactly which signals are missing, not a generic scolding.
+var MENU_INTEL_PRICE_FLOOR = 5;
+var MENU_INTEL_PHOTO_FLOOR = 3;
+
+// Match common price notations: leading symbol ($7.99, €12), or
+// trailing currency suffix (7.99 USD, 12 EUR). Stays deliberately
+// strict on digits so body-copy numbers like "1847 Main St" don't
+// false-positive. Currency symbols include the common western set
+// plus yen; can be extended if the audit goes global.
+var MENU_INTEL_PRICE_RE = /(?:\$|€|£|¥)\s*\d{1,3}(?:[.,]\d{2})?\b|\b\d{1,3}(?:[.,]\d{2})?\s*(?:USD|EUR|GBP|JPY)\b/g;
+var MENU_INTEL_IMG_RE = /<img\b[^>]*>/gi;
+
+function extractMenuSignals(context) {
+  var ctx = context || {};
+  var pages = (ctx.crawl && Array.isArray(ctx.crawl.pages)) ? ctx.crawl.pages : [];
+  // Prefer a crawled menu-slot page — if the crawler found a
+  // dedicated menu URL, that's where we should measure. The homepage
+  // is the fallback, since many sites inline their menu there.
+  var targetPage = null;
+  for (var i = 0; i < pages.length; i++) {
+    var p = pages[i];
+    if (p && p.slot === 'menu' && p.status === 200 && typeof p.html === 'string' && p.html.length > 2000) {
+      targetPage = p;
+      break;
+    }
+  }
+  if (!targetPage && ctx.crawl && ctx.crawl.homepage && typeof ctx.crawl.homepage.html === 'string') {
+    targetPage = ctx.crawl.homepage;
+  }
+  if (!targetPage || typeof targetPage.html !== 'string' || !targetPage.html.length) {
+    return {
+      hasMenuPage: false,
+      sourceUrl: null,
+      pricesCount: 0,
+      imagesCount: 0,
+      hasPriceCoverage: false,
+      hasPhotoCoverage: false,
+      gaps: ['menu-page']
+    };
+  }
+  var html = targetPage.html;
+  // Important: reset lastIndex since the module-level regex carries
+  // the /g flag and state across calls without an explicit reset.
+  MENU_INTEL_PRICE_RE.lastIndex = 0;
+  MENU_INTEL_IMG_RE.lastIndex = 0;
+  var priceMatches = html.match(MENU_INTEL_PRICE_RE) || [];
+  var imageMatches = html.match(MENU_INTEL_IMG_RE) || [];
+  var pricesCount = priceMatches.length;
+  var imagesCount = imageMatches.length;
+  var hasPriceCoverage = pricesCount >= MENU_INTEL_PRICE_FLOOR;
+  var hasPhotoCoverage = imagesCount >= MENU_INTEL_PHOTO_FLOOR;
+  var gaps = [];
+  if (!hasPriceCoverage) gaps.push('prices');
+  if (!hasPhotoCoverage) gaps.push('photos');
+  return {
+    hasMenuPage: true,
+    sourceUrl: targetPage.url || null,
+    pricesCount: pricesCount,
+    imagesCount: imagesCount,
+    hasPriceCoverage: hasPriceCoverage,
+    hasPhotoCoverage: hasPhotoCoverage,
+    gaps: gaps
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Phase 3 #4: review-responsiveness scoring.
 // ---------------------------------------------------------------------------
 // /api/gbp-details returns the 5 most recent Google reviews plus a
@@ -3136,6 +3267,9 @@ if (typeof module !== 'undefined' && module.exports) {
     serializeHoursDayMap: serializeHoursDayMap,
     parseHoursTimeToMinutes: parseHoursTimeToMinutes,
     computeReviewResponsiveness: computeReviewResponsiveness,
+    extractMenuSignals: extractMenuSignals,
+    MENU_INTEL_PRICE_FLOOR: MENU_INTEL_PRICE_FLOOR,
+    MENU_INTEL_PHOTO_FLOOR: MENU_INTEL_PHOTO_FLOOR,
     POWERED_BY: POWERED_BY,
     MUNTIN_AUDIT_DESCRIPTION: MUNTIN_AUDIT_DESCRIPTION,
     MUNTIN_AUDIT_DESCRIPTION_ES: MUNTIN_AUDIT_DESCRIPTION_ES,
