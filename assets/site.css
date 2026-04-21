@@ -761,7 +761,36 @@ br.br-lg{display:none}
 .listen-card-progress{grid-area:progress;position:relative;height:24px;display:flex;align-items:center;cursor:pointer;touch-action:none;-ms-touch-action:none;user-select:none}
 .listen-card-progress::before{content:"";position:absolute;left:0;right:0;height:6px;background:var(--line);border-radius:999px;transition:height var(--t-fast) var(--ease)}
 .listen-card-progress.is-scrubbing::before,.listen-card-progress:hover::before{height:8px}
-.listen-card-progress-fill{position:absolute;left:0;width:0%;height:6px;background:linear-gradient(90deg,var(--lc-accent),var(--lc-accent-dark));border-radius:999px;transition:width 0.1s linear,height var(--t-fast) var(--ease);pointer-events:none}
+/* Sprint A2: gradient + sheen progress fill. The base gradient
+   gains a third stop (brighter 2A6475 at 0%) so the filled portion
+   reads as warmer at its leading edge — an implied progression,
+   not a flat block. A second background layer carries the sheen: a
+   40%-wide translucent white diagonal that scrolls via
+   background-position animation only when the card is playing.
+   The sheen layer is set with background-size: 200% 100% + position
+   animation so GPU-compositing handles it cheaply. */
+.listen-card-progress-fill{
+  position:absolute;left:0;width:0%;height:6px;
+  background:
+    linear-gradient(100deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0) 32%,
+      rgba(255,255,255,0.28) 50%,
+      rgba(255,255,255,0) 68%,
+      rgba(255,255,255,0) 100%) 0% 0% / 220% 100% no-repeat,
+    linear-gradient(90deg, #2A6475 0%, var(--lc-accent) 50%, #17404B 100%);
+  border-radius:999px;
+  transition:width 0.1s linear, height var(--t-fast) var(--ease);
+  pointer-events:none;
+}
+.listen-card[data-state="playing"] .listen-card-progress-fill{
+  animation: listen-sheen-card 2.8s linear infinite;
+  will-change: background-position;
+}
+@keyframes listen-sheen-card{
+  0%   { background-position: 120% 0%, 0% 0%; }
+  100% { background-position: -40% 0%, 0% 0%; }
+}
 .listen-card-progress.is-scrubbing .listen-card-progress-fill,.listen-card-progress:hover .listen-card-progress-fill{height:8px}
 .listen-card-progress-fill::after{content:"";position:absolute;right:-6px;top:50%;width:12px;height:12px;border-radius:50%;background:var(--lc-accent);transform:translateY(-50%) scale(0);transition:transform var(--t-fast) var(--ease);box-shadow:0 2px 8px -2px rgba(31,78,91,0.5)}
 .listen-card-progress:hover .listen-card-progress-fill::after,.listen-card-progress.is-scrubbing .listen-card-progress-fill::after{transform:translateY(-50%) scale(1)}
@@ -876,7 +905,34 @@ br.br-lg{display:none}
 .listen-dock-progress{flex:1;height:18px;display:flex;align-items:center;cursor:pointer;position:relative;touch-action:none;-ms-touch-action:none;user-select:none}
 .listen-dock-progress::before{content:"";position:absolute;left:0;right:0;height:4px;background:rgba(255,255,255,0.14);border-radius:999px;transition:height var(--t-fast) var(--ease)}
 .listen-dock-progress:hover::before,.listen-dock-progress.is-scrubbing::before{height:6px}
-.listen-dock-progress-fill{position:absolute;left:0;width:0%;height:4px;background:linear-gradient(90deg,rgba(255,255,255,0.85),var(--white));border-radius:999px;transition:width 0.1s linear,height var(--t-fast) var(--ease);pointer-events:none}
+/* Sprint A2 — dock mirror of the card sheen. Same diagonal-band
+   technique, but on a white-on-glass fill: the sheen is a slightly
+   brighter white slice (the base is already 0.85 → 1.0 alpha, so the
+   band reads as a subtle highlight rather than a bright flash). Only
+   animates while playing; drops back to the static 3-stop gradient
+   when paused. */
+.listen-dock-progress-fill{
+  position:absolute;left:0;width:0%;height:4px;
+  background:
+    linear-gradient(100deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0) 32%,
+      rgba(255,255,255,0.55) 50%,
+      rgba(255,255,255,0) 68%,
+      rgba(255,255,255,0) 100%) 0% 0% / 220% 100% no-repeat,
+    linear-gradient(90deg, rgba(255,255,255,0.78) 0%, var(--white) 50%, rgba(255,255,255,0.9) 100%);
+  border-radius:999px;
+  transition:width 0.1s linear, height var(--t-fast) var(--ease);
+  pointer-events:none;
+}
+.listen-dock[data-state="playing"] .listen-dock-progress-fill{
+  animation: listen-sheen-dock 2.8s linear infinite;
+  will-change: background-position;
+}
+@keyframes listen-sheen-dock{
+  0%   { background-position: 120% 0%, 0% 0%; }
+  100% { background-position: -40% 0%, 0% 0%; }
+}
 .listen-dock-progress:hover .listen-dock-progress-fill,.listen-dock-progress.is-scrubbing .listen-dock-progress-fill{height:6px}
 .listen-dock-progress-fill::after{content:"";position:absolute;right:-5px;top:50%;width:10px;height:10px;border-radius:50%;background:var(--white);transform:translateY(-50%) scale(0);transition:transform var(--t-fast) var(--ease)}
 .listen-dock-progress:hover .listen-dock-progress-fill::after,.listen-dock-progress.is-scrubbing .listen-dock-progress-fill::after{transform:translateY(-50%) scale(1)}
@@ -931,7 +987,7 @@ br.br-lg{display:none}
 @keyframes listen-callout-pulse{0%,100%{box-shadow:0 0 0 2px var(--teal),0 0 0 8px var(--teal-tint)}
 50%{box-shadow:0 0 0 2px var(--teal),0 0 0 14px rgba(31,78,91,0.08)}
 }
-@media (prefers-reduced-motion:reduce){.listen-btn[data-state="playing"] svg path,.listen-card-play::after,.listen-card[data-state="loading"] .listen-card-play .icon-loading,.listen-card[data-state="playing"] .listen-card-kicker::before{animation:none}
+@media (prefers-reduced-motion:reduce){.listen-btn[data-state="playing"] svg path,.listen-card-play::after,.listen-card[data-state="loading"] .listen-card-play .icon-loading,.listen-card[data-state="playing"] .listen-card-kicker::before,.listen-card[data-state="playing"] .listen-card-progress-fill,.listen-dock[data-state="playing"] .listen-dock-progress-fill{animation:none}
 /* Sprint A1: skip the ambient cross-fade under reduced-motion; the
    end state still applies via the [data-state] selector, so the
    warm tint is present without the 1.2s transition. */
