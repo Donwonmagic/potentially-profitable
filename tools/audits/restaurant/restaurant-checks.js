@@ -2951,6 +2951,125 @@ function t(key, vars, lang) {
 }
 
 // ---------------------------------------------------------------------------
+// Phase 4 #3: margin-health rollup.
+// ---------------------------------------------------------------------------
+// Direct answer to the user's push-back on aggregator detection as
+// an "empowering" signal: detecting presence on DoorDash isn't
+// empowering; showing an owner HOW MUCH OF THEIR REVENUE IS AT
+// STRUCTURAL RISK of leaking to aggregators IS. Same data we
+// already fetched, different — honest — frame.
+//
+// computeMarginHealth(signals) is a pure, testable function that
+// synthesizes five existing check results into a single 0-100 score
+// and a list of specific "leaks" — the gaps that force customers
+// toward commission-taking platforms instead of the restaurant's
+// own margin-preserving channels.
+//
+// Signals in (each is a check result string: 'pass' | 'fail' |
+// 'unverified' | missing):
+//   conversionsState    - own-site ordering / reservations
+//   menuDepthState      - prices + dish photos on the menu page
+//   menuFormatState     - HTML menu vs PDF
+//   hoursAccuracyState  - schema hours complete + consistent w/ Places
+//   hasDirectPlatform   - boolean, Toast / Square / ChowNow / etc.
+//                         detected on site (owner-kept margin)
+//   hasAggregatorOnly   - boolean, DoorDash / UberEats / Grubhub
+//                         detected as the ONLY ordering surface
+//
+// Penalty values are calibrated to typical US restaurant margin
+// structure (3-5% net margin; aggregator commissions 15-30%):
+//
+//   no own-site conversion path          -30   (biggest leak)
+//   only aggregator platforms detected   -25   (structural dependency)
+//   menu PDF (blocks direct conversion)  -15
+//   menu depth missing (opaque menu)     -15
+//   hours inconsistent (Google shows wrong info, sends to aggregator)
+//                                         -10
+//
+// Unverified checks count half-penalty, matching the A1 convention
+// used by the readiness scorer. Pass = 0 penalty. Missing signal =
+// 0 penalty (we don't invent leaks we can't see).
+//
+// Grade bands:
+//   >=75 good — healthy independent margin posture
+//   50-74 ok  — mixed; identifiable leaks but recoverable
+//   <50 bad   — structural dependency; every order routes through
+//                a 15-30% commission path
+//
+// The returned `leaks` array is what the margin-health card renders
+// so the owner sees the SPECIFIC things to fix, not just a number.
+
+var MARGIN_HEALTH_PENALTIES = {
+  conversions:         30,
+  aggregatorOnly:      25,
+  menuFormat:          15,
+  menuDepth:           15,
+  hoursAccuracy:       10
+};
+
+function applyPenalty(state, full, label, leaks) {
+  if (state === 'fail') {
+    leaks.push({ source: label, points: full, confirmed: true });
+    return full;
+  }
+  if (state === 'unverified') {
+    var half = Math.round(full / 2);
+    leaks.push({ source: label, points: half, confirmed: false });
+    return half;
+  }
+  return 0;
+}
+
+function computeMarginHealth(signals) {
+  if (!signals || typeof signals !== 'object') return null;
+  var leaks = [];
+  var score = 100;
+
+  score -= applyPenalty(signals.conversionsState,   MARGIN_HEALTH_PENALTIES.conversions,
+    'own-site ordering or reservations', leaks);
+  score -= applyPenalty(signals.menuFormatState,    MARGIN_HEALTH_PENALTIES.menuFormat,
+    'HTML menu (not PDF)', leaks);
+  score -= applyPenalty(signals.menuDepthState,     MARGIN_HEALTH_PENALTIES.menuDepth,
+    'visible prices + dish photos', leaks);
+  score -= applyPenalty(signals.hoursAccuracyState, MARGIN_HEALTH_PENALTIES.hoursAccuracy,
+    'accurate hours across Google + schema', leaks);
+
+  // Aggregator-only is a derived binary — only counts as a leak when
+  // we CONFIRMED aggregators are the sole ordering surface. We don't
+  // dock for "you're on DoorDash" in general; we dock for "DoorDash
+  // is the only ordering path we could detect." Safer against false
+  // positives on restaurants that diversify properly.
+  if (signals.hasAggregatorOnly === true) {
+    score -= MARGIN_HEALTH_PENALTIES.aggregatorOnly;
+    leaks.push({
+      source: 'no direct-ordering platform alongside aggregators',
+      points: MARGIN_HEALTH_PENALTIES.aggregatorOnly,
+      confirmed: true
+    });
+  }
+
+  if (score < 0) score = 0;
+  if (score > 100) score = 100;
+  var grade = score >= 75 ? 'good' : (score >= 50 ? 'ok' : 'bad');
+
+  // Sort leaks by point value descending so the UI can render them
+  // in "biggest first" order without re-sorting downstream.
+  leaks.sort(function(a, b){ return b.points - a.points; });
+
+  return {
+    score: score,
+    grade: grade,
+    leaks: leaks,
+    maxPenalty:
+      MARGIN_HEALTH_PENALTIES.conversions +
+      MARGIN_HEALTH_PENALTIES.aggregatorOnly +
+      MARGIN_HEALTH_PENALTIES.menuFormat +
+      MARGIN_HEALTH_PENALTIES.menuDepth +
+      MARGIN_HEALTH_PENALTIES.hoursAccuracy
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Phase 3 #6: DOM-aware URL extraction from crawled follow-up pages.
 // ---------------------------------------------------------------------------
 // The existing platform detector (detectPlatforms in index.html) is
@@ -3585,6 +3704,8 @@ if (typeof module !== 'undefined' && module.exports) {
     MENU_INTEL_PRICE_FLOOR: MENU_INTEL_PRICE_FLOOR,
     MENU_INTEL_PHOTO_FLOOR: MENU_INTEL_PHOTO_FLOOR,
     extractCrawlPageUrls: extractCrawlPageUrls,
+    computeMarginHealth: computeMarginHealth,
+    MARGIN_HEALTH_PENALTIES: MARGIN_HEALTH_PENALTIES,
     POWERED_BY: POWERED_BY,
     MUNTIN_AUDIT_DESCRIPTION: MUNTIN_AUDIT_DESCRIPTION,
     MUNTIN_AUDIT_DESCRIPTION_ES: MUNTIN_AUDIT_DESCRIPTION_ES,
