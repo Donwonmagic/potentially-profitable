@@ -1573,10 +1573,12 @@
     }
     function startAmplitudeLoop() {
       if (amplitudeFrame) return;
+      const root = document.documentElement;
       const tick = () => {
         if (!analyserNode || !amplitudeBuffer || !playBtn) { amplitudeFrame = 0; return; }
         if (state !== 'playing') {
           playBtn.style.setProperty('--listen-amp', '0');
+          root.style.setProperty('--listen-amp', '0');
           amplitudeFrame = 0;
           return;
         }
@@ -1591,7 +1593,12 @@
         // Clamp to 0..1 and bias upward a touch so normal speech RMS
         // (~0.15–0.35) reads as active but not saturated.
         const amp = Math.min(1, rms * 2.2);
-        playBtn.style.setProperty('--listen-amp', amp.toFixed(3));
+        const s = amp.toFixed(3);
+        playBtn.style.setProperty('--listen-amp', s);
+        // Sprint A9: also expose on the document root so the dock's
+        // progress fill can read the same amplitude (siblings don't
+        // share inherited custom-prop scope).
+        root.style.setProperty('--listen-amp', s);
         amplitudeFrame = requestAnimationFrame(tick);
       };
       amplitudeFrame = requestAnimationFrame(tick);

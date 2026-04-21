@@ -1014,6 +1014,17 @@ br.br-lg{display:none}
   animation: listen-sheen-dock 2.8s linear infinite;
   will-change: background-position;
 }
+/* Sprint A9: amplitude-driven glow on the dock progress fill. On
+   desktop + tablet (≥481px), filter: drop-shadow is tied to the
+   --listen-amp var, so the bar throbs gently with the voice. Mobile
+   skips it to cap repaint cost — the sheen from Sprint A2 is already
+   active there. */
+@media (min-width:481px){
+  .listen-dock[data-state="playing"] .listen-dock-progress-fill{
+    filter:drop-shadow(0 0 calc(var(--listen-amp, 0) * 6px) rgba(255,255,255,0.5));
+    transition:width 0.1s linear, height var(--t-fast) var(--ease), filter 80ms linear;
+  }
+}
 @keyframes listen-sheen-dock{
   0%   { background-position: 120% 0%, 0% 0%; }
   100% { background-position: -40% 0%, 0% 0%; }
