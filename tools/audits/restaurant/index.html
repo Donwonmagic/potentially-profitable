@@ -145,10 +145,23 @@
   /* ============ AUDIT TOOL STYLES ============ */
 
   /* Input form */
+  /* Sprint 2: hero gradient wash + form elevation.
+     Two scoped visual upgrades consuming the Sprint 1 tokens.
+     - .audit-hero gets a two-stop radial wash that hints at depth
+       without adding weight. Scoped to the hero only; the body
+       background stays cream. On mobile the gradient reads subtly
+       because the radii land off-screen; that's intentional.
+     - .audit-form graduates to --elev-2: a paired subtle + spread
+       shadow that reads as a raised surface instead of a flat pill
+       with a single soft drop. Focus-within keeps its teal tint but
+       now layers on top of elev-2 for a visible level shift. */
   .audit-hero {
     text-align: center;
     max-width: 780px;
     margin: 0 auto;
+    padding: 40px var(--pad-x, 20px) 24px;
+    background: var(--gradient-hero);
+    border-radius: 24px;
   }
   .audit-form {
     display: flex;
@@ -159,12 +172,12 @@
     background: var(--white);
     border: 1px solid var(--line-dark);
     border-radius: 999px;
-    box-shadow: 0 10px 30px rgba(20, 22, 26, 0.06);
-    transition: border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+    box-shadow: var(--elev-2);
+    transition: border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
   }
   .audit-form:focus-within {
     border-color: var(--teal);
-    box-shadow: 0 10px 40px rgba(31, 78, 91, 0.12);
+    box-shadow: var(--elev-2), 0 0 0 3px rgba(31, 78, 91, 0.12);
   }
   .audit-form input[type="url"] {
     flex: 1;
@@ -196,8 +209,48 @@
   .audit-form button:hover { background: var(--teal-dark); }
   .audit-form button:disabled { background: var(--stone-2); cursor: not-allowed; }
   @media (max-width: 640px) {
-    .audit-form { flex-direction: column; border-radius: 20px; }
-    .audit-form button { border-radius: 14px; justify-content: center; }
+    /* Sprint 12: mobile-first form tap targets. The form column-stacks
+       on ≤640px; size the input and button to comfortable thumb
+       targets (≥ 48px touch spec) and full-width the button so it
+       visually anchors the action. */
+    .audit-form { flex-direction: column; border-radius: 20px; padding: 10px; gap: 10px; }
+    .audit-form input[type="url"] { min-height: 52px; font-size: 17px; padding: 14px 18px; }
+    .audit-form button {
+      border-radius: 14px;
+      justify-content: center;
+      width: 100%;
+      min-height: 52px;
+      font-size: 16px;
+    }
+  }
+  /* Sprint 12: hero eyebrow shimmer. Gives the existing eyebrow
+     ("Free tool · Powered by Google Lighthouse") a faint left-to-
+     right sheen that cycles every 8s — enough of a modernization
+     signal to feel alive without demanding attention. Implemented
+     via background-clip: text + a moving gradient so the animation
+     affects color only; no layout shift. Reduced-motion leaves the
+     eyebrow static at the brand teal color. */
+  @media (prefers-reduced-motion: no-preference) {
+    .audit-hero .eyebrow {
+      background: linear-gradient(
+        90deg,
+        var(--teal) 0%,
+        var(--teal) 40%,
+        #3E8A9E 50%,
+        var(--teal) 60%,
+        var(--teal) 100%
+      );
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: eyebrow-shimmer 8s linear infinite;
+    }
+    @keyframes eyebrow-shimmer {
+      0%   { background-position: 200% 50%; }
+      100% { background-position: -100% 50%; }
+    }
   }
   /* Sprint S2.5: Deep Scan toggle. Subtle, below the form, so it
      reads as an optional power-user addition rather than a primary
@@ -1188,13 +1241,57 @@
     display: flex;
     flex-direction: column;
   }
+  /* Sprint 15: action-plan column head now includes a 2px progress
+     rail that fills based on done/total items in the column. The
+     numerical progress label stays (N of M) for assistive tech and
+     skim-reading; the rail adds an instant visual answer. Rail is
+     driven by a CSS custom property --col-progress set inline by
+     the JS renderer when it assembles the column (0..1 scalar). */
   .action-plan-col-head {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     gap: 8px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
+  .action-plan-col-head::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    margin-top: 32px;
+    background: var(--line);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .action-plan-col { position: relative; }
+  .action-plan-col::after {
+    content: '';
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    top: 44px;
+    height: 2px;
+    background: var(--line);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+  .action-plan-col::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 44px;
+    height: 2px;
+    width: calc((100% - 28px) * var(--col-progress, 0));
+    background: var(--teal);
+    border-radius: 2px;
+    transition: width 420ms var(--ease-out, cubic-bezier(.16,1,.3,1));
+    pointer-events: none;
+    z-index: 1;
+  }
+  /* Suppress the head::after since we moved the rail to .action-plan-col */
+  .action-plan-col-head::after { display: none; }
   .action-plan-col-label {
     font-family: var(--font-display);
     font-size: 15px;
@@ -1778,6 +1875,77 @@
     0%, 100% { box-shadow: 0 0 0 4px rgba(31, 78, 91, 0.12); }
     50%      { box-shadow: 0 0 0 7px rgba(31, 78, 91, 0.06); }
   }
+  /* Sprint 10: micro-interactions batch. Three small tactile wins,
+     all gated under prefers-reduced-motion: no-preference so
+     assistive-motion users get static alternatives.
+       1. Button press: any button inside the tool scales to 0.97
+          on :active for 120ms tactile feedback using --ease-spring.
+       2. Chip hover lift: chips translate up 1px and gain a soft
+          shadow on hover, signaling their row-level clickability
+          (they're not always clickable, but the readiness signal
+          still helps scannability).
+       3. Priority-check row reveal-on-scroll: rows gain .in-view
+          via IntersectionObserver (wired in the IIFE below) and
+          animate up + fade in as the owner scrolls through. */
+  @media (prefers-reduced-motion: no-preference) {
+    .audit-report button:active,
+    .audit-hero button:active,
+    .tool-cta-form button:active {
+      transform: scale(0.97);
+      transition: transform var(--t-micro, 120ms) var(--ease-spring, cubic-bezier(.2,.9,.25,1.2));
+    }
+    .chip {
+      transition: transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+    }
+    .chip:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px rgba(20, 22, 26, 0.06);
+    }
+    .priority-item {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 420ms var(--ease-out), transform 420ms var(--ease-out);
+    }
+    .priority-item.in-view {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  /* Reduced-motion fallback: priority-check rows must still render
+     visibly. Without this, users with reduced-motion enabled would
+     see empty space where the priority rows should be because the
+     IntersectionObserver never fires the .in-view toggle in the
+     no-preference branch. */
+  @media (prefers-reduced-motion: reduce) {
+    .priority-item { opacity: 1; transform: none; }
+  }
+
+  /* Sprint 9: staggered report reveal. When JS adds .report-revealed
+     to the audit report container, the first six report sections
+     fade + lift into place in sequence (120ms between each). Cap of
+     six prevents a long deep-scroll from animating for 4+ seconds.
+     Only runs under prefers-reduced-motion: no-preference — under
+     reduced-motion, the report appears fully formed without
+     animation. */
+  @keyframes reveal-up {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .report-revealed .audit-summary,
+    .report-revealed .category-grid,
+    .report-revealed .exec-summary,
+    .report-revealed .top-fixes,
+    .report-revealed .action-plan-card,
+    .report-revealed .margin-health-card {
+      animation: reveal-up 520ms var(--ease-out, cubic-bezier(.16,1,.3,1)) both;
+    }
+    .report-revealed .category-grid     { animation-delay: 120ms; }
+    .report-revealed .exec-summary      { animation-delay: 240ms; }
+    .report-revealed .top-fixes         { animation-delay: 360ms; }
+    .report-revealed .action-plan-card  { animation-delay: 480ms; }
+    .report-revealed .margin-health-card{ animation-delay: 600ms; }
+  }
   @media (prefers-reduced-motion: reduce) {
     .audit-progress-bar .fill { transition: none; }
     .audit-step.active .step-indicator { animation: none; }
@@ -1864,19 +2032,40 @@
 
   /* Report card — overall score */
   .audit-report { margin-top: 64px; }
+  /* Sprint 11: score-card reorganization. The two-column grid was
+     already in place; this sprint adds depth-without-shadow-spam
+     via a soft gradient halo pseudo-element behind the card, plus
+     graduates the base shadow to --elev-2. The halo uses the same
+     teal + rust gradient tokens as the hero wash, so the score card
+     visually rhymes with its landing page even though they sit
+     thousands of pixels apart in the document flow. */
   .audit-summary {
+    position: relative;
     display: grid;
     grid-template-columns: 240px 1fr;
     gap: 48px;
     align-items: center;
     padding: 48px;
-    background: var(--white);
+    background: var(--surface-1, var(--white));
     border: 1px solid var(--line);
     border-radius: 24px;
     margin-bottom: 32px;
+    box-shadow: var(--elev-2);
+  }
+  .audit-summary::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 25px;
+    background: linear-gradient(135deg, rgba(31, 78, 91, 0.12), rgba(184, 84, 26, 0.06));
+    z-index: -1;
+    filter: blur(22px);
+    opacity: 0.55;
+    pointer-events: none;
   }
   @media (max-width: 960px) {
     .audit-summary { grid-template-columns: 1fr; gap: 24px; padding: 32px 24px; text-align: center; }
+    .audit-summary::before { filter: blur(14px); opacity: 0.4; }
   }
 
   .score-ring {
@@ -1895,14 +2084,42 @@
     stroke-width: 12;
   }
   .score-ring .bg { stroke: var(--line); }
+  /* Sprint 5: tick-mark ring at r=60 with stroke-dashaarray draws
+     60 tiny marks around the outside of the fill stroke. Uses
+     currentColor so it inherits the ring's text color for
+     consistency; 18% opacity keeps them subtle. */
+  .score-ring .ticks {
+    color: var(--stone);
+    opacity: 0.18;
+  }
+  /* Sprint 6: benchmark halo ring. Inner ring at r=44 with thinner
+     stroke and lower opacity so it reads as "reference mark" rather
+     than a second data series. Paint matches the main fg stroke so
+     there's visual continuity between the owner's score and their
+     subtype median; only opacity + stroke-width differ. */
+  .score-ring .halo {
+    stroke: var(--teal);
+    stroke-width: 6;
+    stroke-linecap: round;
+    opacity: 0.35;
+    transition: stroke-dashoffset 1.2s var(--ease-out);
+  }
+  .score-ring .halo[hidden] { display: none; }
   .score-ring .fg {
     stroke: var(--teal);
     stroke-linecap: round;
     transition: stroke-dashoffset 1.2s var(--ease-out);
   }
-  .score-ring.grade-good .fg  { stroke: #1f9d55; }
-  .score-ring.grade-ok   .fg  { stroke: #d97706; }
-  .score-ring.grade-bad  .fg  { stroke: var(--rust); }
+  /* Sprint 4: grade-band gradient strokes. The flat solid colors
+     above become the fallback for browsers that drop gradient url
+     references (none in practice; modern SVG support is universal).
+     URL refs point at the <defs> in the ring's own SVG, one per
+     grade. Visual outcome: the ring feels warmer at its origin and
+     transitions through the grade color as it fills — an implied
+     progression rather than a single flat value. */
+  .score-ring.grade-good .fg { stroke: url(#scoreGradGood); }
+  .score-ring.grade-ok   .fg { stroke: url(#scoreGradOk); }
+  .score-ring.grade-bad  .fg { stroke: url(#scoreGradBad); }
   .score-ring .text {
     position: absolute;
     inset: 0;
@@ -2076,22 +2293,33 @@
     margin: 0;
     padding: 0;
   }
+  /* Sprint 14: margin-health leak rows get the card-within-card
+     promotion. Was: flat cream-2 rectangle with a thin line border.
+     Now: raised surface-1 rectangle with a 3-px rust border-left
+     (confirmed) or dashed stone-2 border-left (unverified). Points
+     pill migrates to the top-right corner via align-self so it
+     floats over the leak description rather than competing for
+     inline space, which was squeezing long leak labels on narrow
+     viewports. */
   .margin-health-leak {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 12px;
-    padding: 10px 12px;
-    margin-bottom: 6px;
-    background: var(--cream-2, #faf6ee);
+    gap: 14px;
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    background: var(--surface-1, var(--white));
     border: 1px solid var(--line, #E6DFCE);
-    border-radius: 8px;
+    border-left: 3px solid var(--rust, #B8541A);
+    border-radius: 12px;
     font-size: 14px;
     line-height: 1.5;
+    box-shadow: var(--elev-1);
   }
   .margin-health-leak[data-confirmed="false"] {
-    opacity: 0.85;
-    border-style: dashed;
+    opacity: 0.9;
+    border-left-style: dashed;
+    border-left-color: var(--stone-2, #9A958B);
   }
   .margin-health-leak-label {
     flex: 1 1 auto;
@@ -2099,14 +2327,15 @@
   }
   .margin-health-leak-unconfirmed {
     display: block;
-    margin-top: 2px;
+    margin-top: 4px;
     font-size: 11.5px;
     color: var(--stone);
     font-style: italic;
   }
   .margin-health-leak-points {
     flex: 0 0 auto;
-    padding: 2px 10px;
+    align-self: flex-start;
+    padding: 3px 11px;
     background: var(--rust, #B8541A);
     color: var(--white);
     font-weight: 700;
@@ -2116,6 +2345,34 @@
   }
   .margin-health-leak[data-confirmed="false"] .margin-health-leak-points {
     background: var(--stone, #8a8a8a);
+  }
+  /* Sprint 14: shared empty-state pattern. Any card whose data
+     resolves to "no leaks detected" / "nothing to fix here" can
+     opt into this class to render a small check glyph + headline
+     + optional body in a dashed card. Stronger "considered tool"
+     signal than a flat green paragraph. Applied to margin-health's
+     empty path first; future cards (review responsiveness, NAP)
+     can adopt later. */
+  .audit-empty-state {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+    background: var(--surface-inset, var(--cream-2));
+    border: 1px dashed var(--line-dark, #D4CCBC);
+    border-radius: 14px;
+    color: var(--ink);
+  }
+  .audit-empty-state::before {
+    content: '';
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    background: rgba(31, 107, 58, 0.12);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%231F6B3A' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>");
+    background-repeat: no-repeat;
+    background-position: center;
   }
   .margin-health-empty {
     margin: 0;
@@ -2321,6 +2578,13 @@
     border-top: 1px solid var(--line, #E6DFCE);
   }
   .top-fixes-list li:first-child { border-top: none; padding-top: 8px; }
+  /* Sprint 15: numbered badge in the display (Fraunces) typeface
+     with a subtle ring around the solid rust fill — the editorial
+     callout look. Serif numerals at medium weight read as
+     "considered" rather than stamped, while the rust fill + white
+     numeral preserves the urgency signal of the Top 3 Fixes frame.
+     4-px outer ring at 10% rust adds a halo that blends the badge
+     into its card rather than sitting like a pasted-on sticker. */
   .top-fixes-list li::before {
     content: counter(fix-counter);
     flex-shrink: 0;
@@ -2331,9 +2595,10 @@
     background: var(--rust, #B8541A);
     color: #fff;
     border-radius: 999px;
-    font-family: var(--font-body);
-    font-weight: 700;
-    font-size: 14px;
+    font-family: var(--font-display, var(--font-body));
+    font-weight: 500;
+    font-size: 17px;
+    box-shadow: 0 0 0 4px rgba(184, 84, 26, 0.10);
   }
   .top-fixes-item-body { flex: 1; min-width: 0; }
   .top-fixes-item-title {
@@ -3246,39 +3511,83 @@
     gap: 6px;
     margin-top: 10px;
   }
+  /* Sprint 7: chip baseline unification. Normalizes the shared
+     geometry (height, padding, type size, gap) across every chip
+     variant so the tool's visual rhythm reads as one system. Each
+     variant class (.chip-self, .chip-dev, .chip-rebuild, .chip-time,
+     .chip-revenue, .chip-effort, etc.) keeps its own background +
+     border-color rules; only the structural dimensions move.
+     Slightly taller (26px min-height vs 3px+font) and tabular nums
+     ensure dollar / time values line up when chips sit in rows. */
   .chip {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    padding: 3px 10px;
+    gap: 6px;
+    min-height: 26px;
+    padding: 0 12px;
     font-family: var(--font-body);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
     border-radius: 999px;
     border: 1px solid var(--line-dark);
     white-space: nowrap;
-  }
-  .chip-self     { background: #e6f4ec; border-color: #bfe0cb; color: #0f6b35; }
-  .chip-self::before { content: '●'; color: #1f9d55; font-size: 9px; }
-  .chip-dev      { background: #eef4fa; border-color: #c9d9ea; color: #2a5285; }
-  .chip-dev::before  { content: '●'; color: #3b7bc4; font-size: 9px; }
-  .chip-rebuild  { background: #fce9e1; border-color: #f4b69e; color: #8a3010; }
-  .chip-rebuild::before { content: '●'; color: var(--rust); font-size: 9px; }
-  .chip-time     { background: var(--cream-2); color: var(--stone); }
-  /* Phase 2 U1: revenue-at-risk chip promoted to a global chip variant
-     so every surface that surfaces a finding — priority row, Action
-     Plan item, Top 3 card — can emit the same `<span class="chip
-     chip-revenue">` and look consistent. Rust accent echoes the
-     top-fixes-card border treatment: visually flags "money on the
-     table" without introducing a new color token. */
-  .chip-revenue {
-    background: #FDEFE3;
-    border-color: #EFD1B6;
-    color: #8A3E16;
     font-variant-numeric: tabular-nums;
   }
-  .chip-revenue::before { content: '$'; font-weight: 700; font-size: 10px; }
+  /* Sprint 8: chip tone system. Softens the chip recipes from solid
+     pastel backgrounds + dot prefix (dated-feeling 2020 pattern) to
+     translucent tinted backgrounds with matching border color
+     (2024-era pattern — Stripe, Linear, modern Tailwind UI). The
+     tint-on-tint carries the semantic color without needing a
+     leading ● glyph, which made every effort chip feel slightly
+     over-decorated.
+
+     Three semantic tones live behind three access patterns:
+       .chip-self / data-tone="effort-self"   → green
+       .chip-dev  / data-tone="effort-dev"    → blue
+       .chip-rebuild / data-tone="effort-rebuild" → rust
+       .chip-time / data-tone="time"          → neutral
+       .chip-revenue / data-tone="risk"       → rust + $ glyph
+
+     Legacy class names stay the canonical emit path; data-tone is
+     a forward-facing API future emitters can adopt. Both route to
+     the same visual recipe so a mixed document renders consistently. */
+  .chip-self,
+  .chip[data-tone="effort-self"] {
+    background: rgba(31, 157, 85, 0.09);
+    border-color: rgba(31, 157, 85, 0.22);
+    color: #0f6b35;
+  }
+  .chip-dev,
+  .chip[data-tone="effort-dev"] {
+    background: rgba(59, 123, 196, 0.09);
+    border-color: rgba(59, 123, 196, 0.22);
+    color: #2a5285;
+  }
+  .chip-rebuild,
+  .chip[data-tone="effort-rebuild"] {
+    background: rgba(184, 84, 26, 0.09);
+    border-color: rgba(184, 84, 26, 0.22);
+    color: #8a3010;
+  }
+  .chip-time,
+  .chip[data-tone="time"] {
+    background: transparent;
+    border-color: var(--line);
+    color: var(--stone);
+  }
+  /* Phase 2 U1 + Sprint 8: revenue-at-risk chip. Kept as the sole
+     chip variant that carries a leading glyph — $ is a more
+     distinctive semantic signal than a generic bullet dot, and the
+     tabular-nums already on .chip ensure currency values align. */
+  .chip-revenue,
+  .chip[data-tone="risk"] {
+    background: rgba(184, 84, 26, 0.09);
+    border-color: rgba(184, 84, 26, 0.22);
+    color: #8A3E16;
+  }
+  .chip-revenue::before,
+  .chip[data-tone="risk"]::before { content: '$'; font-weight: 700; font-size: 10px; }
 
   /* "Why this matters" — one-line impact framing, subtle but present.
      Helps owners prioritize by consequence, not by test order. */
@@ -3374,17 +3683,52 @@
   }
   @media print { .dev-prompt-btn { display: none !important; } }
   @media (max-width: 640px) {
-    .priority-item { grid-template-columns: 28px 1fr; }
-    .priority-item .link { grid-column: 2; padding-top: 0; }
+    /* Sprint 13: priority-list mobile upgrade. Rows promote to a
+       card-like pattern with a leading 32×32 status circle (up from
+       28px), 17px title (up from 15px), and a visible row gap so
+       each finding reads as its own unit rather than a table row.
+       Chips wrap naturally below the title via the existing
+       .chips.flex-wrap rule. */
+    .priority-item {
+      grid-template-columns: 32px 1fr;
+      gap: 14px;
+      padding: 16px 18px;
+      font-size: 17px;
+      border-radius: 12px;
+      border-top: 0;
+      background: var(--surface-1, var(--white));
+      margin-bottom: 8px;
+      box-shadow: var(--elev-1);
+    }
+    .priority-item .mark { width: 32px; height: 32px; }
+    .priority-item .link { grid-column: 2; padding-top: 0; font-size: 14px; }
+    .priority-list { border: 0; background: transparent; padding: 0; }
+  }
+  /* Sprint 13: score-ring mobile scale. Drops from 200×200 to 160×160
+     on narrow viewports so it doesn't dominate the single-column
+     stacked layout. Numeric value + label scale proportionally. */
+  @media (max-width: 640px) {
+    .score-ring { width: 160px; height: 160px; }
+    .score-ring .value { font-size: 56px; }
+    .score-ring .max { font-size: 12px; }
   }
 
   /* Share link button */
+  /* Sprint 11: share-row becomes a compact inset "tray" under the
+     verdict content — frames the share actions as a grouped
+     toolbar rather than a loose row of buttons. Cream-inset
+     background matches the methodology card + built-by footer
+     elsewhere in the report, so the tray reads as part of the
+     existing tonal vocabulary. */
   .share-row {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-top: 20px;
+    margin-top: 24px;
+    padding: 12px 14px;
     flex-wrap: wrap;
+    background: var(--surface-inset, var(--cream-2));
+    border-radius: 14px;
   }
   .share-btn {
     display: inline-flex;
@@ -4280,8 +4624,55 @@
       <div class="audit-summary" id="overallScoreSection">
         <div class="score-ring" id="scoreRing">
           <svg viewBox="0 0 120 120" aria-hidden="true">
+            <!-- Sprint 4: gradient stroke defs. Three variants, one
+                 per grade band. The ring's class (.grade-good /
+                 .grade-ok / .grade-bad) selects which gradient paints
+                 via CSS attribute selector below. Stops are teal→
+                 grade-color rather than flat; gives the ring a sense
+                 of warmth + progression as it fills. -->
+            <defs>
+              <linearGradient id="scoreGradGood" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%"  stop-color="#1F4E5B"/>
+                <stop offset="100%" stop-color="#1f9d55"/>
+              </linearGradient>
+              <linearGradient id="scoreGradOk" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%"  stop-color="#1F4E5B"/>
+                <stop offset="100%" stop-color="#D97706"/>
+              </linearGradient>
+              <linearGradient id="scoreGradBad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%"  stop-color="#1F4E5B"/>
+                <stop offset="100%" stop-color="#B8541A"/>
+              </linearGradient>
+            </defs>
             <circle class="bg" cx="60" cy="60" r="52"></circle>
+            <!-- Sprint 6: subtype-benchmark halo ring at r=44 (inside
+                 the main score stroke). Renders at 40% opacity so
+                 it's clearly present but doesn't compete with the
+                 overall score arc. Populated by setScoreRing when the
+                 subtype benchmark is known; stays hidden otherwise.
+                 Gives an immediate visual answer to "am I above or
+                 below typical" without needing to scroll to the
+                 benchmark chip. -->
+            <circle class="halo" cx="60" cy="60" r="44"
+                    stroke-dasharray="276.46" stroke-dashoffset="276.46"
+                    hidden></circle>
             <circle class="fg" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"></circle>
+            <!-- Sprint 5: tick-mark ring. 60 marks at r=60 (just
+                 outside the stroke, inside the 60px radius center
+                 point) indicate a gauge-like scale without data
+                 noise. Rendered as a dasharray trick on a 4th
+                 concentric circle: stroke invisibly thin at r=60
+                 with a dasharray that draws a 1px tick every 6
+                 degrees (2πr / 60 = ~6.28 per tick). Rotated -90deg
+                 via parent <svg> transform already so ticks land
+                 from the top-center clockwise. Low opacity keeps
+                 them quiet; the score stroke remains the anchor. -->
+            <circle class="ticks" cx="60" cy="60" r="60"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="6"
+                    stroke-dasharray="1 5.283"
+                    aria-hidden="true"></circle>
           </svg>
           <div class="text">
             <span class="value" id="scoreValue">—</span>
@@ -4497,7 +4888,7 @@
           <p class="margin-health-leaks-lead" data-tr="marginHealth.leakLeadLine">Where orders are leaking:</p>
           <ul class="margin-health-leaks" id="marginHealthLeaks"></ul>
         </div>
-        <p class="margin-health-empty" id="marginHealthEmpty" hidden data-tr="marginHealth.emptyState">No leaks detected — your site is set up to keep the margin in-house on every order.</p>
+        <p class="margin-health-empty audit-empty-state" id="marginHealthEmpty" hidden data-tr="marginHealth.emptyState">No leaks detected — your site is set up to keep the margin in-house on every order.</p>
       </section>
 
       <!-- Phase L1: Email gate retired. Deep tier now renders
@@ -7596,14 +7987,38 @@
     var ring = document.getElementById('scoreRing');
     var value = document.getElementById('scoreValue');
     var fg = ring.querySelector('circle.fg');
+    var halo = ring.querySelector('circle.halo');
     var r = 52;
     var circumference = 2 * Math.PI * r; // ~326.7
     var offset = circumference - (score / 100) * circumference;
     ring.classList.remove('grade-good','grade-ok','grade-bad');
     ring.classList.add(gradeScore(score));
-    value.textContent = score;
     fg.setAttribute('stroke-dasharray', circumference.toFixed(2));
     fg.setAttribute('stroke-dashoffset', circumference.toFixed(2));
+    // Sprint 6: benchmark halo. Paints an inner ring to the subtype
+    // median when meta.benchmarkOverall is a number in 0..100. Hidden
+    // when no benchmark is available (non-restaurant site or subtype
+    // we don't have data for). Reduced-motion skips the transition
+    // via the existing global @media rule — the halo still paints,
+    // just without the 1.2s sweep.
+    if (halo) {
+      if (meta && typeof meta.benchmarkOverall === 'number') {
+        var rHalo = 44;
+        var circHalo = 2 * Math.PI * rHalo;
+        var offHalo = circHalo - (meta.benchmarkOverall / 100) * circHalo;
+        halo.setAttribute('stroke-dasharray', circHalo.toFixed(2));
+        halo.setAttribute('stroke-dashoffset', circHalo.toFixed(2));
+        halo.hidden = false;
+        // Stagger the halo entrance so it arrives after the main
+        // stroke has already started sweeping — reads as secondary.
+        void halo.getBoundingClientRect();
+        setTimeout(function(){
+          halo.setAttribute('stroke-dashoffset', offHalo.toFixed(2));
+        }, 180);
+      } else {
+        halo.hidden = true;
+      }
+    }
     // Sprint A2+ES2: score-ring aria-label and tooltip routed through
     // t() so screen readers announce the Spanish phrase on the ES
     // mirror. Key choice preserves A1's half-weight-penalty disclosure.
@@ -7618,6 +8033,46 @@
     // Force reflow so the animation runs
     void fg.getBoundingClientRect();
     fg.setAttribute('stroke-dashoffset', offset.toFixed(2));
+    // Sprint 6: counting-number animation for the score value.
+    // 900ms rAF counter from the previous score (or 0) to the new
+    // one, eased to match the stroke sweep. Reduced-motion skips
+    // the counter and sets the value instantly. Cancels in-flight
+    // counter when setScoreRing is called again so overrides
+    // re-render without two counters racing.
+    if (value) {
+      var prefersReduced = false;
+      try {
+        prefersReduced = window.matchMedia &&
+          window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      } catch (_) {}
+      if (window.__scoreRingCounter) {
+        cancelAnimationFrame(window.__scoreRingCounter);
+        window.__scoreRingCounter = null;
+      }
+      if (prefersReduced) {
+        value.textContent = score;
+      } else {
+        var startVal = parseInt(value.textContent, 10);
+        if (!isFinite(startVal)) startVal = 0;
+        var delta = score - startVal;
+        var startTime = null;
+        var duration = 900;
+        var easeOutQuart = function(t){ return 1 - Math.pow(1 - t, 4); };
+        var step = function(now){
+          if (startTime === null) startTime = now;
+          var progress = Math.min(1, (now - startTime) / duration);
+          var eased = easeOutQuart(progress);
+          value.textContent = Math.round(startVal + delta * eased);
+          if (progress < 1) {
+            window.__scoreRingCounter = requestAnimationFrame(step);
+          } else {
+            window.__scoreRingCounter = null;
+            value.textContent = score; // pin the final value exactly
+          }
+        };
+        window.__scoreRingCounter = requestAnimationFrame(step);
+      }
+    }
   }
 
   function setCategory(cat, score) {
@@ -10666,6 +11121,15 @@
       var doneCount = bucket.items.reduce(function(n, x){
         return n + (state[x.checkId] ? 1 : 0);
       }, 0);
+      // Sprint 15: CSS --col-progress drives the visual rail under
+      // the column head. 0..1 scalar; ::before on the column uses
+      // it as width multiplier. Empty columns show 0 fill (no rail
+      // color); fully-done columns show a teal rail across the
+      // card width.
+      var progressRatio = bucket.items.length > 0
+        ? (doneCount / bucket.items.length)
+        : 0;
+      colEl.style.setProperty('--col-progress', progressRatio.toFixed(3));
       var progress = document.createElement('span');
       progress.className = 'action-plan-col-progress';
       progress.textContent = t('actionPlan.progress', {
@@ -10716,6 +11180,13 @@
             done: newDone,
             total: bucket.items.length
           });
+          // Sprint 15: keep the rail in sync when the owner toggles
+          // a checkbox. 420ms CSS transition on the width handles
+          // the animation; we just set the scalar.
+          var newRatio = bucket.items.length > 0
+            ? (newDone / bucket.items.length)
+            : 0;
+          colEl.style.setProperty('--col-progress', newRatio.toFixed(3));
         });
         li.appendChild(cb);
 
@@ -11879,6 +12350,34 @@
       container.appendChild(row);
     });
 
+    // Sprint 10: IntersectionObserver wires .in-view on priority rows
+    // as they scroll into the viewport. The CSS keyframe-free reveal
+    // (opacity + transform transition) kicks in when the class lands.
+    // Observer is scoped per-render; we disconnect a previous one if
+    // re-rendering from an override so we don't accumulate observers.
+    try {
+      if (window.__priorityObserver && typeof window.__priorityObserver.disconnect === 'function') {
+        window.__priorityObserver.disconnect();
+      }
+      if (typeof IntersectionObserver === 'function') {
+        var io = new IntersectionObserver(function(entries){
+          entries.forEach(function(entry){
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in-view');
+              io.unobserve(entry.target);
+            }
+          });
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+        container.querySelectorAll('.priority-item').forEach(function(el){ io.observe(el); });
+        window.__priorityObserver = io;
+      } else {
+        // Fallback: show everything immediately when IO isn't available
+        container.querySelectorAll('.priority-item').forEach(function(el){ el.classList.add('in-view'); });
+      }
+    } catch (_) {
+      container.querySelectorAll('.priority-item').forEach(function(el){ el.classList.add('in-view'); });
+    }
+
     // Wire up feedback button click handlers. Each click records an
     // override in USER_OVERRIDES, re-renders the checks, and fires a
     // Plausible event so we get aggregate signal on which checks
@@ -12350,7 +12849,19 @@
       restaurant: readinessInRollup ? restaurantScore : null
     }, priorityResult);
 
-    setScoreRing(overall, { unverifiedCount: priorityResult.unverifiedCount });
+    // Sprint 6: pre-resolve the benchmark so the ring halo can paint
+    // to the subtype median at the same time the main stroke paints
+    // to the owner's overall score. Non-restaurant sites skip this
+    // (no benchmark defined) and the halo stays hidden.
+    var ringBenchmark = null;
+    if (isRestaurantSite && typeof subtypeBenchmark === 'function') {
+      var _bench = subtypeBenchmark(effectiveBusinessType());
+      if (_bench && typeof _bench.overall === 'number') ringBenchmark = _bench.overall;
+    }
+    setScoreRing(overall, {
+      unverifiedCount: priorityResult.unverifiedCount,
+      benchmarkOverall: ringBenchmark
+    });
     // Phase 2 U7: anchor the overall score against the subtype median
     // so "74" reads in context. Only shown on restaurant sites where
     // a subtype benchmark exists.
@@ -12558,6 +13069,13 @@
     // Phase L1: no gate to toggle; deep tier is always visible.
 
     showOnly(reportEl);
+    // Sprint 9: staggered entrance choreography. Toggles a class on
+    // the report root; CSS uses it to stagger the first six sections
+    // in so the audit reveals itself deliberately instead of
+    // appearing all-at-once. prefers-reduced-motion gated via the
+    // CSS @media rule so assistive-motion users see the report
+    // instantly without animation.
+    if (reportEl) reportEl.classList.add('report-revealed');
     // Scroll the report into view and move keyboard + screen-reader
     // focus onto the results headline so assistive-tech users hear
     // the audit is complete instead of being stranded on the submit
@@ -12605,7 +13123,17 @@
     // "I have this" on enough unverifieds to cross the confidence
     // threshold, the restaurant card transitions from '?' to a
     // real score on this pass.
-    setScoreRing(overall, { unverifiedCount: priorityResult.unverifiedCount });
+    // Sprint 6: re-resolve benchmark for the override re-render path
+    // so the halo stays synced when the owner flips "I have this."
+    var overrideBenchmark = null;
+    if (state.isRestaurant && typeof subtypeBenchmark === 'function') {
+      var _obench = subtypeBenchmark(effectiveBusinessType());
+      if (_obench && typeof _obench.overall === 'number') overrideBenchmark = _obench.overall;
+    }
+    setScoreRing(overall, {
+      unverifiedCount: priorityResult.unverifiedCount,
+      benchmarkOverall: overrideBenchmark
+    });
     // Phase 2 U7: re-anchor the benchmark chip whenever the score is
     // recomputed (owner flips "I have this", overrides land from the
     // share link, etc.). The setScoreBenchmark helper no-ops safely
