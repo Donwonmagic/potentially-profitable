@@ -3591,8 +3591,34 @@
   }
   @media print { .dev-prompt-btn { display: none !important; } }
   @media (max-width: 640px) {
-    .priority-item { grid-template-columns: 28px 1fr; }
-    .priority-item .link { grid-column: 2; padding-top: 0; }
+    /* Sprint 13: priority-list mobile upgrade. Rows promote to a
+       card-like pattern with a leading 32×32 status circle (up from
+       28px), 17px title (up from 15px), and a visible row gap so
+       each finding reads as its own unit rather than a table row.
+       Chips wrap naturally below the title via the existing
+       .chips.flex-wrap rule. */
+    .priority-item {
+      grid-template-columns: 32px 1fr;
+      gap: 14px;
+      padding: 16px 18px;
+      font-size: 17px;
+      border-radius: 12px;
+      border-top: 0;
+      background: var(--surface-1, var(--white));
+      margin-bottom: 8px;
+      box-shadow: var(--elev-1);
+    }
+    .priority-item .mark { width: 32px; height: 32px; }
+    .priority-item .link { grid-column: 2; padding-top: 0; font-size: 14px; }
+    .priority-list { border: 0; background: transparent; padding: 0; }
+  }
+  /* Sprint 13: score-ring mobile scale. Drops from 200×200 to 160×160
+     on narrow viewports so it doesn't dominate the single-column
+     stacked layout. Numeric value + label scale proportionally. */
+  @media (max-width: 640px) {
+    .score-ring { width: 160px; height: 160px; }
+    .score-ring .value { font-size: 56px; }
+    .score-ring .max { font-size: 12px; }
   }
 
   /* Share link button */
