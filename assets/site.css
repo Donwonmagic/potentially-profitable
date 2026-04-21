@@ -625,9 +625,15 @@ body:has(.block.final) .foot-cta{display:none}
 .reveal{opacity:1;transform:none}
 }
 :focus{outline:none}
-a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px}
+/* Sprint 3: global focus affordance. The 2px solid outline reads as
+   a browser-default; the layered halo from --ring-focus reads as
+   "designed." Both land together so keyboard users on legacy
+   browsers without focus-visible support still get the outline
+   fallback. The 3-px 22% teal halo is soft enough to feel like a
+   brand element, visible enough to satisfy WCAG focus contrast. */
+a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px;box-shadow:var(--ring-focus)}
 .btn:focus-visible{outline-offset:4px;border-radius:999px}
-.final a:focus-visible,.process a:focus-visible,footer a:focus-visible{outline-color:var(--cream)}
+.final a:focus-visible,.process a:focus-visible,footer a:focus-visible{outline-color:var(--cream);box-shadow:0 0 0 3px rgba(250,247,242,.32)}
 .skip-link{position:absolute;left:-9999px;top:0;background:var(--ink);color:var(--cream);padding:12px 20px;border-radius:0 0 8px 0;font-size:14px;font-weight:500;z-index:100}
 .skip-link:focus{left:0;outline:2px solid var(--cream);outline-offset:2px}
 /* Screen-reader-only text. Used to annotate icon-only buttons and links
