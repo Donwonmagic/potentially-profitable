@@ -126,7 +126,15 @@ var RESTAURANT_SUBTYPES = [
     ],
     weights: {
       conversions: 1.5,
-      'age-gate': 2.0,    // ONLY subtype with non-zero age-gate weight
+      // age-gate is suppressed for every restaurant subtype including
+      // bar-pub. Age-gates on the WEB are rarely mandated by state ABC
+      // rules for bars/restaurants — they chiefly apply to packaged-
+      // alcohol retailers, cannabis dispensaries, and vape/tobacco
+      // stores. Flagging a bar for missing one was overreach. If a
+      // future dispensary-style subtype is added, it can set this
+      // weight nonzero in its own entry; the check definition stays
+      // in restaurant-checks.js for that extensibility.
+      'age-gate': 0,
       'menu-format': 1.5, // cocktail/draft list rotation is heavy
       'food-truck-schedule': 0,
       'aggregator-only': 0

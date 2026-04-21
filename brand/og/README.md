@@ -10,18 +10,70 @@ The page templates are already wired to point at the `.png` path. Drop
 the exported files next to each SVG and you're live. Until then the
 pages fall back to `/brand/og-image.png` (the master card).
 
-## The eight cards
+## The full card inventory (EN + ES, 40 cards)
 
-| SVG | PNG (expected path) | Used by |
+Each page has an English card in `/brand/og/<name>.svg` and a Spanish
+sibling at `/brand/og/<name>-es.svg`. Same design system — same
+palette, same Fraunces/Inter stack, same muntin-window mark — with
+translated copy. Every ES page under `/es/*` points at the `-es` card
+via `og:image` and `twitter:image`; every EN page points at the plain
+sibling.
+
+### Category cards
+
+| EN SVG | ES SVG | Used by |
 |---|---|---|
-| `home.svg` | `home.png` | Homepage (`/`) |
-| `restaurants.svg` | `restaurants.png` | `/for/restaurants/` |
-| `work.svg` | `work.png` | `/work/` |
-| `work-irish-inn.svg` | `work-irish-inn.png` | `/work/irish-inn-glen-echo/` |
-| `work-off-day-collective.svg` | `work-off-day-collective.png` | `/work/off-day-collective/` |
-| `checklist.svg` | `checklist.png` | `/resources/restaurant-website-checklist/` |
-| `audit.svg` | `audit.png` | `/tools/` |
-| `audit-restaurants.svg` | `audit-restaurants.png` | `/tools/audits/restaurant/` |
+| `home.svg` | `home-es.svg` | `/` · `/es/` |
+| `about.svg` | `about-es.svg` | `/about/` · `/es/about/` |
+| `services.svg` | `services-es.svg` | `/services/` · `/es/services/` |
+| `glossary.svg` | `glossary-es.svg` | `/glossary/` · `/es/glossary/` |
+| `restaurants.svg` | `restaurants-es.svg` | `/for/restaurants/` · `/es/for/restaurants/` |
+| `checklist.svg` | `checklist-es.svg` | `/resources/restaurant-website-checklist/` · `/es/…` |
+
+### Portfolio cards
+
+| EN SVG | ES SVG | Used by |
+|---|---|---|
+| `work.svg` | `work-es.svg` | `/work/` · `/es/work/` |
+| `work-irish-inn.svg` | `work-irish-inn-es.svg` | `/work/irish-inn-glen-echo/` · `/es/…` |
+| `work-off-day-collective.svg` | `work-off-day-collective-es.svg` | `/work/off-day-collective/` · `/es/…` |
+| `work-tacombi.svg` | `work-tacombi-es.svg` | `/work/tacombi/` · `/es/…` |
+
+### Tool cards
+
+| EN SVG | ES SVG | Used by |
+|---|---|---|
+| `audit.svg` | `audit-es.svg` | `/tools/` + `/tools/audits/` (and ES mirrors) |
+| `audit-restaurants.svg` | `audit-restaurants-es.svg` | `/tools/audits/restaurant/` · ES mirror |
+| `tool-compare.svg` | `tool-compare-es.svg` | `/tools/compare/` · ES mirror |
+| `tool-gbp-grader.svg` | `tool-gbp-grader-es.svg` | `/tools/gbp-grader/` · ES mirror |
+| `tool-mobile-check.svg` | `tool-mobile-check-es.svg` | `/tools/mobile-check/` · ES mirror |
+| `tool-schema-check.svg` | `tool-schema-check-es.svg` | `/tools/schema-check/` · ES mirror |
+| `tool-search-ideas.svg` | `tool-search-ideas-es.svg` | `/tools/search-ideas/` · ES mirror |
+| `tool-seo-grader.svg` | `tool-seo-grader-es.svg` | `/tools/seo-grader/` · ES mirror |
+| `tool-speed-test.svg` | `tool-speed-test-es.svg` | `/tools/speed-test/` · ES mirror |
+| `tool-tech-stack.svg` | `tool-tech-stack-es.svg` | `/tools/tech-stack/` · ES mirror |
+
+### Blog cards (still EN-only; ES blog not yet live)
+
+| SVG | Used by |
+|---|---|
+| `blog.svg` | `/blog/` landing |
+| `blog-*.svg` | Individual blog posts (see file listing) |
+
+### Rewiring
+
+Every page's `og:image` points at the `.svg` above. The companion PNG
+lives at the same filename with a `.png` extension (once exported).
+To re-point every page after editing this inventory, run:
+
+```sh
+node scripts/rewire-og-cards.mjs
+```
+
+The script is idempotent and safe to re-run. The ES restaurant-audit
+mirror is regenerated alongside via `scripts/stamp-es-restaurant-audit.mjs`
+(already wired into the Cloudflare Pages build).
 
 ## Why SVG + PNG
 

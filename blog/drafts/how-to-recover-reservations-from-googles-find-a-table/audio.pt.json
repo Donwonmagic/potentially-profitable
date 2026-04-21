@@ -1,0 +1,275 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-20T19:09:24.340Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "pm_alex",
+  "language": "pt",
+  "total": 639.73,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Se você assistiu ao seu Google Analytics no ano passado e sentiu vagamente que algo estava errado - as mesmas impressões Google Business Profile, mas visivelmente menos cliques para o seu site - você não estava imaginando isso. Algo mudou. Google começou a fazer algo nas listagens de restaurantes que os operadores de restaurantes quase não perceberam, porque foi implementado silenciosamente e porque parece um recurso em vez de uma aquisição.",
+      "start": 0,
+      "end": 24.89
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "No último ano, Google Maps começou a exibir widgets de reserva diretamente na listagem para a maioria dos restaurantes que usam OpenTable, Resy, SevenRooms ou Tock. Um hóspede agora pode pesquisar “Italiano perto de mim”, tocar no seu restaurante, escolher o tamanho e o horário da festa e concluir a reserva sem sair do Google. Seu site nunca é visitado. O herói da sua página inicial, as descrições do seu menu, a história da sua marca - tudo isso ignorado. Os hóspedes reservam, a reserva cai no seu sistema de reservas e Google mantém a sessão silenciosamente.",
+      "start": 25.41,
+      "end": 56.78
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Se você está pensando \"bem, pelo menos consegui a reserva\" - sim, desta vez você conseguiu. Mas algo importante também aconteceu: Google ensinou ao hóspede que seu restaurante está em uma linha no resultado da pesquisa, e não em um destino. Da próxima vez que quiserem comer fora, eles voltarão primeiro ao Google, tocarão no cartão do Maps e farão a reserva novamente, sem nunca saberem nada sobre o seu lugar. Com o tempo, esse relacionamento com o seu restaurante é muito diferente daquele que o seu site deveria construir.",
+      "start": 57.3,
+      "end": 85.67
+    },
+    {
+      "id": 3,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Esta é a aparência real do fluxo e quanto custa silenciosamente.",
+      "start": 86.19,
+      "end": 89.98
+    },
+    {
+      "id": 4,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Aqui está o desvio, lado a lado. À esquerda, o fluxo Google avança hoje. Um hóspede pesquisa seu restaurante em Google, acessa o cartão do Maps, toca no botão 'Encontrar uma mesa', escolhe o tamanho e o horário da festa no widget OpenTable ou Resy incorporado diretamente em Google Maps e conclui a reserva. Seu site nunca é visitado. O hóspede não tem ideia de como é o seu lugar, o que diferencia o seu cardápio ou que você tem uma história que vale a pena conhecer. Eles reservaram uma mesa genérica com um nome genérico. À direita, o fluxo que você deseja. O hóspede pesquisa, acessa o cartão do Maps, acessa o link do seu site, vê sua imagem de herói, sua voz e seu menu e, em seguida, reserva por meio de um widget de reserva em seu próprio site – que ainda direciona para OpenTable ou Resy nos bastidores. A mesma reserva, o mesmo back-end, o mesmo resultado final para o restaurante. Mas agora o hóspede viu a marca real do seu restaurante, o que aumenta drasticamente a probabilidade de se lembrar de você na próxima vez, contar a um amigo ou fazer um pedido direto do seu site, em vez de pelo DoorDash na próxima semana. A reserva não é toda a vitória. A impressão da marca é. O atalho do Google rouba a impressão da marca, não a reserva.",
+      "start": 90.78,
+      "end": 159.38
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Ambos os fluxos resultam em uma reserva em seus livros. Mas apenas um deles resulta em um hóspede que realmente conheceu seu restaurante.",
+      "start": 160.13,
+      "end": 168.47
+    },
+    {
+      "id": 6,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Por que isso é importante – em dólares, não em vibrações.",
+      "start": 169.57,
+      "end": 172.71
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Se o argumento até agora parece um pouco abstrato – “impressão de marca” não é um item sobre o qual alguém discute em uma reunião de operadores – vamos colocar alguns números nisso.",
+      "start": 173.41,
+      "end": 183.61
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Um hóspede que reserva através do seu site e chega à sua página inicial tem cerca de 3 vezes mais chances de retornar em 90 dias, com base nos padrões de coorte que vejo em restaurantes com análises adequadas. É mais provável que eles solicitem a entrega diretamente de você mais tarde (porque conhecem o U R L). É mais provável que eles se inscrevam na sua lista de SMS (porque viram o opt-in na página de reserva). É mais provável que eles contem a um amigo exatamente as palavras que você usou em sua página inicial, porque sua página inicial lhes forneceu palavras.",
+      "start": 184.13,
+      "end": 217.83
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Um hóspede que faz uma reserva in-line através do Google lembra que comeu em “algum restaurante italiano no dia 4”, talvez. Esse convidado vale a cobertura, mas quase nada mais. Ao longo de um ano de serviço de jantar, a diferença entre esses dois comportamentos dos hóspedes é real, especialmente quando os dólares das visitas recorrentes são a margem exata que a maioria dos restaurantes está tentando construir neste momento.",
+      "start": 218.35,
+      "end": 243.32
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Há um segundo custo que é mais difícil de ver até que seja tarde demais: a dependência da plataforma. Todo o manual do Google ao longo da última década – em viagens, em serviços locais, em avaliações, em compras – é inserir-se como intermediário, provar que você pode viver sem clicar em seu próprio site e, eventualmente, começar a cobrar pelo tráfego que ele costumava fornecer gratuitamente. Se o seu fluxo de reservas não atingir o seu site, você estará a uma mudança de algoritmo de ser totalmente desintermediado. Você não possui nada. Google é proprietário do convidado.",
+      "start": 243.84,
+      "end": 276.13
+    },
+    {
+      "id": 11,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Três movimentos que recuperam o fluxo.",
+      "start": 277.23,
+      "end": 279.45
+    },
+    {
+      "id": 12,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(1)",
+      "text": "1. Torne o link do seu site Google Business Profile imperdível.",
+      "start": 280.55,
+      "end": 284.19
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "No Google Maps, o botão “Site” fica ao lado do widget de reserva. A maioria das operadoras aceita qualquer U R L Google preenchido automaticamente em seu domínio e nunca mais pensa nisso. Isso é um erro. O botão do seu site em GB P é o imóvel mais valioso que Google oferece gratuitamente - e deve apontar para um U R L cujo objetivo é superar o widget embutido.",
+      "start": 284.89,
+      "end": 305.63
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Especificamente: aponte o URL do seu site GBP para uma página de destino projetada como uma página de reservas, não para sua página inicial. Imagem heróica do seu quarto. Uma frase de voz. Um widget proeminente “Reserve uma mesa” que roteia para o mesmo back-end OpenTable/Resy para o qual Google está roteando. Talvez um pequeno link “ou veja o menu completo”. É isso. A página existe para dar ao hóspede que clicou em “Site” em vez de “Encontrar uma mesa” um motivo para sentir que fez a ligação certa e um caminho fácil para a mesma reserva.",
+      "start": 306.15,
+      "end": 336.67
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "A mudança: crie uma página /reserve em seu site, defina seu Google Business Profile “Website” U R L para essa página. Demora uma hora.",
+      "start": 337.19,
+      "end": 345.03
+    },
+    {
+      "id": 16,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(2)",
+      "text": "2. Projete o widget embutido em seu próprio site.",
+      "start": 346.13,
+      "end": 349.24
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "A razão pela qual o widget embutido vence agora é que ele não tem atrito. O convidado toca, escolhe um horário e pronto. Se o fluxo de reservas do seu site exigir um clique para uma página OpenTable, depois um carregamento, depois um captcha e, por fim, uma inscrição – você perde a corrida pela velocidade.",
+      "start": 349.94,
+      "end": 367.45
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Incorpore o widget diretamente em sua página em vez de vincular. OpenTable, Resy, SevenRooms e Tock fornecem um widget iframe que você pode colocar em sua própria página inicial ou página de reserva que conclui a reserva na mesma sessão. Faça o trabalho para deixar essa incorporação bonita – fontes adequadas, sua paleta de cores, seletor de tamanho de festa acima da dobra. O objetivo é que o hóspede que chegou do Google sinta que teve uma experiência de reserva melhor, e não pior, por ter passado por você.",
+      "start": 367.97,
+      "end": 396.95
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "A mudança: entre em contato com o suporte da sua plataforma de reservas, solicite o código de incorporação do widget, peça ao seu desenvolvedor (ou você, na maioria dos sites modernos). Leva de 2 a 4 horas no total.",
+      "start": 397.47,
+      "end": 410.3
+    },
+    {
+      "id": 20,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(3)",
+      "text": "3. Capture o e-mail antes que Google possa.",
+      "start": 411.4,
+      "end": 413.94
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "O widget Google embutido pega o e-mail do hóspede e o entrega à plataforma de reservas, não a você. Muitas operadoras não percebem que OpenTable e Resy não compartilham esses e-mails diretamente – você obtém registros de jantares apenas para os convidados que realmente se sentaram em seu restaurante e somente se você estiver em planos de nível específico. O hóspede que reservou mas cancelou? Você não os tem.",
+      "start": 414.64,
+      "end": 438.1
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Em sua própria página de reservas, adicione uma única caixa de seleção: “Envie-me também e-mails ocasionais de [nome do restaurante] - alterações de menu, eventos e nossas promoções semanais”. Essa caixa de seleção, marcada por padrão se sua jurisdição permitir, cria uma lista de e-mail própria que ninguém pode tirar de você. Cada visitante que passa pelo seu site se torna uma futura reativação, um futuro pedido direto, uma futura indicação. Cada hóspede que faz reservas in-line em Google torna-se uma linha no banco de dados de OpenTable.",
+      "start": 438.62,
+      "end": 469.11
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "A jogada: adicione a caixa de seleção ao seu widget de reserva, envie os e-mails para sua lista Klaviyo / Mailchimp / Attentive, nutri. Noventa minutos de trabalho. Compostos para sempre.",
+      "start": 469.63,
+      "end": 480.44
+    },
+    {
+      "id": 24,
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Google não está roubando suas reservas. Isso está roubando o relacionamento com os hóspedes em torno de suas reservas – o que vale muito mais ao longo do tempo do que qualquer reserva única.",
+      "start": 481.19,
+      "end": 492.24
+    },
+    {
+      "id": 25,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "O que não fazer: desabilitar reservas em GB P.",
+      "start": 493.34,
+      "end": 496.33
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Já vi operadoras, frustradas com o desvio, desativarem totalmente a integração de reservas em seu Google Business Profile. O pensamento é: se Google não puder mostrar o widget embutido, o convidado será forçado a clicar no meu site. Não faça isso.",
+      "start": 497.03,
+      "end": 511.7
+    },
+    {
+      "id": 27,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "O que realmente acontece é que o hóspede olha para o seu anúncio Google, não vê nenhuma opção de reserva, presume que é difícil reservar e toca no próximo restaurante da lista. Você perde totalmente o hóspede, em vez de mantê-lo com uma impressão parcial da marca. O widget embutido não é o inimigo - o widget embutido sendo o único caminho é o inimigo. Mantenha o widget embutido ativado. Torne o caminho do seu site também óbvio, rápido e melhor projetado do que o que Google serve.",
+      "start": 512.22,
+      "end": 538.7
+    },
+    {
+      "id": 28,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "Pense nisso como opcionalidade, não como oposição. Alguns convidados estão pressionados pelo tempo e sempre tocarão no widget embutido. Tudo bem – você ainda tem uma reserva. Outros hóspedes, especialmente clientes habituais e que se preocupam em combinar a vibração do restaurante com a ocasião, clicarão com prazer no seu site se você tornar esse caminho convidativo. Ao longo de um ano de reservas, mesmo transferir 20 a 30% do fluxo de volta para o seu site é uma recuperação significativa da propriedade da marca.",
+      "start": 539.22,
+      "end": 569.75
+    },
+    {
+      "id": 29,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "O padrão mais amplo.",
+      "start": 570.85,
+      "end": 572.2
+    },
+    {
+      "id": 30,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "O “encontrar uma mesa” de Google não é único. É uma versão inicial e moderada de um padrão que Google se aplica a cada poucos anos: pegue um comportamento que costumava canalizar o tráfego para sites de pequenas empresas, coloque-o dentro do ecossistema Google, chame-o de recurso e observe o declínio das taxas de cliques. As avaliações aconteceram primeiro. As horas aconteceram a seguir. Os menus aconteceram parcialmente. As reservas estão acontecendo agora. O pedido online é o próximo.",
+      "start": 572.9,
+      "end": 599.65
+    },
+    {
+      "id": 31,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "O jogo defensivo não é lutar contra Google – ninguém ganha isso. A jogada é garantir que, quando o visitante decidir clicar no seu site, ele seja recompensado com algo melhor do que o atalho. Bom design, carregamento rápido, caminho de reserva claro, um pequeno momento de marca que os faz lembrar do seu nome. Google mantém o fluxo comoditizado. Você mantém os clientes que se preocupam com a diferença – e esses são os clientes que realmente sustentam um restaurante ao longo do tempo.",
+      "start": 600.17,
+      "end": 627.34
+    },
+    {
+      "id": 32,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "Crie a página /reserva. Incorpore o widget. Capture o e-mail. Três movimentos, menos de um dia de trabalho no total. Você manterá o relacionamento com a marca que Google teria abandonado silenciosamente.",
+      "start": 627.86,
+      "end": 639.73
+    }
+  ]
+}

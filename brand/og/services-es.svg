@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- Services / pricing — cream background with three teal-bordered
+       service cards. Same design system, lighter touch so the pricing
+       card reads as "clean inventory" not "dense marketing." -->
+  <rect width="1200" height="630" fill="#FAF7F2"/>
+
+  <text x="72" y="90" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#1F4E5B" letter-spacing="5">SERVICIOS Y PRECIOS · MUNTIN DIGITAL</text>
+
+  <text x="72" y="210" font-family="Fraunces, Georgia, serif" font-size="72" font-weight="500" fill="#14161A" letter-spacing="-2">Un estudio,</text>
+  <text x="72" y="285" font-family="Fraunces, Georgia, serif" font-size="72" font-weight="500" fill="#14161A" letter-spacing="-2">una hoja de precios.</text>
+  <text x="72" y="345" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="30" font-weight="400" fill="#1F4E5B">Sin capa intermedia, sin ofertas combo.</text>
+
+  <!-- Three small service cards, bottom-right -->
+  <g transform="translate(72, 400)">
+    <rect x="0" y="0" width="310" height="130" rx="10" fill="#FFFFFF" stroke="#1F4E5B" stroke-width="1.5" opacity="0.95"/>
+    <text x="24" y="40" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#1F4E5B" letter-spacing="3">SITIOS WEB</text>
+    <text x="24" y="80" font-family="Fraunces, Georgia, serif" font-size="26" font-weight="500" fill="#14161A">A medida · En 2 a 6 semanas</text>
+    <text x="24" y="108" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="500" fill="#6B6B6B">Diseño + desarrollo + copy.</text>
+  </g>
+  <g transform="translate(400, 400)">
+    <rect x="0" y="0" width="310" height="130" rx="10" fill="#FFFFFF" stroke="#1F4E5B" stroke-width="1.5" opacity="0.95"/>
+    <text x="24" y="40" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#1F4E5B" letter-spacing="3">MARCA</text>
+    <text x="24" y="80" font-family="Fraunces, Georgia, serif" font-size="26" font-weight="500" fill="#14161A">Identidad visual completa</text>
+    <text x="24" y="108" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="500" fill="#6B6B6B">Logo, paleta, tipografía, voz.</text>
+  </g>
+  <g transform="translate(728, 400)">
+    <rect x="0" y="0" width="310" height="130" rx="10" fill="#FFFFFF" stroke="#1F4E5B" stroke-width="1.5" opacity="0.95"/>
+    <text x="24" y="40" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#1F4E5B" letter-spacing="3">REDES SOCIALES</text>
+    <text x="24" y="80" font-family="Fraunces, Georgia, serif" font-size="26" font-weight="500" fill="#14161A">Gestión mensual</text>
+    <text x="24" y="108" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="500" fill="#6B6B6B">Contenido, calendario, análisis.</text>
+  </g>
+
+  <line x1="0" y1="590" x2="1200" y2="590" stroke="#E8E2D6" stroke-width="1"/>
+  <text x="72" y="616" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#6B6B6B" letter-spacing="2">MUNTIN DIGITAL · SE HABLA ESPAÑOL</text>
+  <text x="1128" y="616" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#6B6B6B" letter-spacing="1">muntin.digital/es/services</text>
+</svg>

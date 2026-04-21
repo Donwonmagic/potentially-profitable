@@ -65,7 +65,11 @@
     //                             warn-only mode during rollout; flip
     //                             to hard-fail once ES coverage is
     //                             complete (see the script's tail)
-    "command": "node scripts/sync-includes.mjs && node scripts/stamp-hreflang.mjs && node scripts/check-locale-parity.mjs --check && mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md --exclude=src --exclude=scripts --exclude=_includes . | tar -xf - -C dist"
+    //   stamp-es-restaurant-audit.mjs — ES4: regenerates the Spanish
+    //                             mirror of the restaurant audit from
+    //                             the EN master so i18n changes land
+    //                             in both locales automatically.
+    "command": "node scripts/sync-includes.mjs && node scripts/stamp-hreflang.mjs && node scripts/stamp-es-restaurant-audit.mjs && node scripts/check-locale-parity.mjs --check && mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md --exclude=src --exclude=scripts --exclude=_includes . | tar -xf - -C dist"
   },
   "assets": {
     "directory": "./dist",
@@ -96,4 +100,38 @@
     "FROM_EMAIL":   "Don Goldstein <don@muntin.digital>",
     "NOTIFY_EMAIL": "don@muntin.digital"
   }
+
+  // ─────────────────────────────────────────────────────────────────
+  // Sprint T3 optional binding (not yet provisioned):
+  //
+  // Uncomment the block below AFTER creating a Cloudflare KV namespace
+  // via the dashboard or `wrangler kv:namespace create AUDIT_CACHE`.
+  // Replace the `id` value with the namespace id that command prints.
+  // The Worker's src/lib/audit-cache.js reads env.AUDIT_CACHE when
+  // present and caches PSI / Places / schema / crawl responses for
+  // 1-6 hours keyed by URL. When the binding is absent (as now), every
+  // cache call no-ops and the audit runs identically to today — no
+  // code change required when the binding appears.
+  //
+  //   "kv_namespaces": [
+  //     { "binding": "AUDIT_CACHE", "id": "<paste-from-wrangler-output>" }
+  //   ]
+  //
+  // Same story for the Durable Object rate-limiter (planned S2 roadmap):
+  //
+  //   "durable_objects": {
+  //     "bindings": [{ "name": "RATE_LIMITER", "class_name": "RateLimiter" }]
+  //   },
+  //   "migrations": [
+  //     { "tag": "v1", "new_classes": ["RateLimiter"] }
+  //   ]
+  //
+  // And for the AI Gateway that powers the facts dossier (T4):
+  //
+  //   "ai": {
+  //     "binding": "AI"
+  //   }
+  //
+  // Plus a secret: `wrangler secret put ANTHROPIC_API_KEY`.
+  // ─────────────────────────────────────────────────────────────────
 }

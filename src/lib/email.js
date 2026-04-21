@@ -55,6 +55,14 @@ const RESEND_ENDPOINT = 'https://api.resend.com/emails';
  *                                  accepts up to 40MB total email
  *                                  size, content-type is inferred
  *                                  from the filename extension.
+ * @param {string} [opts.scheduledAt] — Optional ISO 8601 timestamp
+ *                                  (e.g. "2026-05-20T14:00:00.000Z").
+ *                                  Resend queues the send and fires it
+ *                                  at that time. Used by the 30-day
+ *                                  re-audit reminder. Resend supports
+ *                                  scheduling up to 30 days ahead; the
+ *                                  caller is responsible for staying
+ *                                  inside that window.
  * @param {string} apiKey        — Resend API key (env.RESEND_API_KEY)
  *
  * @returns {Promise<{ok: boolean, id?: string, error?: string}>}
@@ -85,25 +93,43 @@ export async function sendEmail(opts, apiKey) {
     });
     if (filtered.length) payload.attachments = filtered;
   }
+  if (typeof opts.scheduledAt === 'string' && opts.scheduledAt) {
+    // Resend expects ISO 8601 in UTC. Pass the caller's string through
+    // verbatim; validation lives in the caller because only it knows
+    // the intent (30 days ahead, 1 hour ahead, etc).
+    payload.scheduled_at = opts.scheduledAt;
+  }
 
+  // Sprint I1: retry transient failures with exponential backoff.
+  // Retry on any network error and on 429 / 5xx from Resend. Three
+  // attempts at 500ms, 1500ms, 4000ms — caps worst-case at ~6s which
+  // fits comfortably inside the Worker's request budget for form
+  // handlers. Non-retryable errors (4xx other than 429) fail fast.
+  const BACKOFFS = [500, 1500, 4000];
   let res;
-  try {
-    res = await fetch(RESEND_ENDPOINT, {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + apiKey,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    });
-  } catch (err) {
-    // Network-level failure (DNS, TLS, timeout). Resend's API is
-    // hosted on api.resend.com and is extremely reliable, so this
-    // usually means the Worker couldn't reach out at all — which
-    // on Cloudflare Workers essentially never happens outside a
-    // configuration error. Still, translate it into a friendly
-    // error instead of a crash.
-    return { ok: false, error: 'Email provider unreachable: ' + (err && err.message ? err.message : String(err)) };
+  let lastErr;
+  for (let attempt = 0; attempt <= BACKOFFS.length; attempt++) {
+    try {
+      res = await fetch(RESEND_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + apiKey,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+    } catch (err) {
+      lastErr = err;
+      res = null;
+    }
+    const transient = !res || res.status === 429 || res.status >= 500;
+    if (!transient) break;
+    if (attempt === BACKOFFS.length) break;
+    await new Promise((r) => setTimeout(r, BACKOFFS[attempt]));
+  }
+  if (!res) {
+    // Every attempt hit a network-level failure.
+    return { ok: false, error: 'Email provider unreachable: ' + (lastErr && lastErr.message ? lastErr.message : String(lastErr)) };
   }
 
   if (res.ok) {
