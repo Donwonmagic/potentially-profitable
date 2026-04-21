@@ -1948,19 +1948,40 @@
 
   /* Report card — overall score */
   .audit-report { margin-top: 64px; }
+  /* Sprint 11: score-card reorganization. The two-column grid was
+     already in place; this sprint adds depth-without-shadow-spam
+     via a soft gradient halo pseudo-element behind the card, plus
+     graduates the base shadow to --elev-2. The halo uses the same
+     teal + rust gradient tokens as the hero wash, so the score card
+     visually rhymes with its landing page even though they sit
+     thousands of pixels apart in the document flow. */
   .audit-summary {
+    position: relative;
     display: grid;
     grid-template-columns: 240px 1fr;
     gap: 48px;
     align-items: center;
     padding: 48px;
-    background: var(--white);
+    background: var(--surface-1, var(--white));
     border: 1px solid var(--line);
     border-radius: 24px;
     margin-bottom: 32px;
+    box-shadow: var(--elev-2);
+  }
+  .audit-summary::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 25px;
+    background: linear-gradient(135deg, rgba(31, 78, 91, 0.12), rgba(184, 84, 26, 0.06));
+    z-index: -1;
+    filter: blur(22px);
+    opacity: 0.55;
+    pointer-events: none;
   }
   @media (max-width: 960px) {
     .audit-summary { grid-template-columns: 1fr; gap: 24px; padding: 32px 24px; text-align: center; }
+    .audit-summary::before { filter: blur(14px); opacity: 0.4; }
   }
 
   .score-ring {
@@ -3535,12 +3556,21 @@
   }
 
   /* Share link button */
+  /* Sprint 11: share-row becomes a compact inset "tray" under the
+     verdict content — frames the share actions as a grouped
+     toolbar rather than a loose row of buttons. Cream-inset
+     background matches the methodology card + built-by footer
+     elsewhere in the report, so the tray reads as part of the
+     existing tonal vocabulary. */
   .share-row {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-top: 20px;
+    margin-top: 24px;
+    padding: 12px 14px;
     flex-wrap: wrap;
+    background: var(--surface-inset, var(--cream-2));
+    border-radius: 14px;
   }
   .share-btn {
     display: inline-flex;
