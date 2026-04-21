@@ -48,6 +48,7 @@ import {
 import { withAuditCache } from './lib/audit-cache.js';
 import { createRateLimiter, clientIpFromRequest } from './lib/rate-limit.js';
 import { RateLimiter, checkDurableRateLimit } from './lib/rate-limiter-do.js';
+import { saveSnapshot, getSnapshot, isValidTokenShape } from './lib/audit-snapshots.js';
 
 // Durable Object classes must be re-exported from the Worker entry
 // module so the runtime can instantiate them when the binding fires.
@@ -84,6 +85,10 @@ const FORM_RATE_LIMIT_PATHS = new Set([
   '/api/audit-report',
   '/api/schedule-reaudit'
 ]);
+// D1: /api/audit-snapshot intentionally stays on the lighter
+// api-tier (30/min/IP) — a legit shared link might be opened by
+// half a dozen collaborators from one office NAT, and legitimate
+// POSTs only fire when an owner clicks "share" (once per session).
 import {
   intakeNotification,
   intakeAutoResponder,
@@ -104,6 +109,7 @@ const API_ROUTES = {
   '/api/intake':        handleIntake,
   '/api/checklist':     handleChecklist,
   '/api/audit-report':  handleAuditReport,
+  '/api/audit-snapshot': handleAuditSnapshot,
   '/api/ping':          handlePing,
   '/api/gbp-lookup':    handleGbpLookup,
   '/api/seo-check':     handleSeoCheck,
@@ -153,7 +159,16 @@ export default {
       // /api/brand-dossier accepts POST only (it carries the signal
       // payload in the body). Not in the GET-allowlist below, so it
       // falls through to the default POST-only branch.
-      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details' || pathname === '/api/dns-email-health') {
+      //
+      // D1: /api/audit-snapshot accepts BOTH — POST creates a new
+      // snapshot, GET (?token=XXX) reads one. Branches via a third
+      // arm so neither of the existing method-checks below rejects
+      // a legitimate call.
+      if (pathname === '/api/audit-snapshot') {
+        if (request.method !== 'GET' && request.method !== 'POST') {
+          return jsonResponse({ ok: false, error: 'Method not allowed — audit-snapshot accepts GET or POST' }, 405);
+        }
+      } else if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details' || pathname === '/api/dns-email-health') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
         }
@@ -3421,6 +3436,79 @@ async function handleBadgeSnapshot(request, env, ctx) {
     console.error('[badge-snapshot]', err && err.message);
     return jsonResponse({ ok: false, error: 'badge-write-failed' }, 502);
   }
+}
+
+// D1: audit-snapshot endpoint. Single route, two methods:
+//   POST  body: { auditedUrl, score, verdict, results, language, subtype, meta }
+//         returns { ok: true, token, shareUrl, expiresAt }
+//   GET   ?token=XXXXXXXXXX
+//         returns { ok: true, snapshot } | { ok: false, error }
+//
+// Rate-limiting, rate-limit tier, CORS + request-id logging are all
+// handled upstream in the main fetch handler (see API_ROUTES dispatch).
+async function handleAuditSnapshot(request, env, ctx) {
+  if (request.method === 'POST') {
+    let body;
+    try { body = await request.json(); }
+    catch (_) { return jsonResponse({ ok: false, error: 'invalid-body' }, 400); }
+
+    // Sanity-check the URL before trusting the client-supplied
+    // payload. The URL goes into the snapshot and is displayed
+    // on the hydrated audit page; it must at minimum parse as an
+    // http(s) URL, not a data: / javascript: smuggle.
+    const gate = assertSafeHttpUrl(body.auditedUrl, pickLang(request));
+    if (!gate.ok) {
+      return jsonResponse({ ok: false, error: gate.error }, gate.status);
+    }
+
+    const result = await saveSnapshot(env, body);
+    if (!result.ok) {
+      if (result.error === 'snapshot-storage-unavailable') {
+        return jsonResponse({ ok: false, error: 'snapshot-storage-unavailable' }, 503);
+      }
+      return jsonResponse({ ok: false, error: result.error }, 400);
+    }
+
+    // Build the share URL against the request origin so local dev
+    // (http://localhost:8787) returns matching links.
+    const origin = new URL(request.url).origin;
+    const shareUrl = `${origin}/tools/audits/restaurant/?s=${result.token}`;
+    const shareUrlEs = `${origin}/es/tools/audits/restaurant/?s=${result.token}`;
+    return jsonResponse({
+      ok: true,
+      token: result.token,
+      shareUrl,
+      shareUrlEs,
+      expiresAt: result.expiresAt,
+      bytes: result.byteLength,
+    });
+  }
+
+  // GET: read a saved snapshot.
+  const url = new URL(request.url);
+  const token = url.searchParams.get('token') || url.searchParams.get('s') || '';
+  if (!isValidTokenShape(token)) {
+    return jsonResponse({ ok: false, error: 'invalid-token' }, 400);
+  }
+  const result = await getSnapshot(env, token);
+  if (!result.ok) {
+    if (result.error === 'snapshot-storage-unavailable') {
+      return jsonResponse({ ok: false, error: 'snapshot-storage-unavailable' }, 503);
+    }
+    if (result.error === 'not-found') {
+      return jsonResponse({ ok: false, error: 'not-found' }, 404);
+    }
+    return jsonResponse({ ok: false, error: result.error }, 400);
+  }
+  // Short edge cache — the snapshot is immutable once written, but
+  // we don't want to hold it forever in case of manual deletion.
+  return new Response(JSON.stringify({ ok: true, snapshot: result.snapshot }), {
+    status: 200,
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': 'public, max-age=300, s-maxage=300',
+    },
+  });
 }
 
 function jsonResponse(payload, status) {
