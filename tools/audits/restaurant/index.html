@@ -13817,32 +13817,148 @@
     });
   }
 
-  /* -------- Share button: builds ?url=... and copies to clipboard -------- */
+  /* -------- Share button: D2 — POST snapshot, copy permalink -------- */
+  // Old flow (kept as fallback): copy `?url=<audited>` so opening the
+  // link re-ran the audit from scratch. Problem: the recipient saw a
+  // different score if the site had changed, and they got "Measuring…"
+  // progress instead of a ready-to-read result.
+  //
+  // New flow: POST a compact snapshot of the current audit state to
+  // /api/audit-snapshot, receive a 10-char token, copy a permalink
+  // like `?s=ABCD1234XY`. Opening the permalink hydrates the tool
+  // with the exact data the original owner saw (implemented in D3).
+  //
+  // Graceful degrade: if the snapshot endpoint returns 503 (KV binding
+  // not yet provisioned), or any network failure, we fall through to
+  // the old ?url= permalink so the button never leaves the user
+  // without something to share.
   var shareBtn   = document.getElementById('shareBtn');
   var shareToast = document.getElementById('shareToast');
   if (shareBtn) {
     shareBtn.addEventListener('click', function(){
       var last = window.__auditLastResult;
       if (!last || !last.url) return;
-      var shareUrl = location.origin + location.pathname + '?url=' + encodeURIComponent(last.url);
+      var originalLabel = shareBtn.innerHTML;
+      // Visual feedback for the async POST — the endpoint responds in
+      // under a second on a warm KV, but up to ~2s on a cold one.
+      shareBtn.disabled = true;
+      var originalAria = shareBtn.getAttribute('aria-label') || '';
+      shareBtn.setAttribute('aria-label', 'Building share link…');
+      var fallbackUrl = location.origin + location.pathname + '?url=' + encodeURIComponent(last.url);
+      var payload = buildSnapshotPayload(last);
       var showToast = function(){
         if (!shareToast) return;
         shareToast.classList.add('visible');
         setTimeout(function(){ shareToast.classList.remove('visible'); }, 2000);
       };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(shareUrl).then(showToast, function(){
-          // Fallback: select into a temp input
-          fallbackCopy(shareUrl);
-          showToast();
+      var finish = function(urlToCopy){
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(urlToCopy).then(showToast, function(){
+            fallbackCopy(urlToCopy); showToast();
+          });
+        } else {
+          fallbackCopy(urlToCopy); showToast();
+        }
+        shareBtn.disabled = false;
+        shareBtn.innerHTML = originalLabel;
+        if (originalAria) shareBtn.setAttribute('aria-label', originalAria);
+        if (window.plausible) window.plausible('Audit Shared');
+      };
+      if (!payload) { finish(fallbackUrl); return; }
+      fetch('/api/audit-snapshot', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(payload),
+      }).then(function(r){ return r.ok ? r.json() : r.json().then(function(j){ return Promise.reject(j); }); })
+        .then(function(data){
+          if (data && data.ok && data.shareUrl) {
+            // Honor the current locale: /es/... permalink when the
+            // audit was running in Spanish.
+            var isEs = location.pathname.indexOf('/es/') === 0;
+            finish(isEs && data.shareUrlEs ? data.shareUrlEs : data.shareUrl);
+          } else {
+            finish(fallbackUrl);
+          }
+        })
+        .catch(function(err){
+          // 503 snapshot-storage-unavailable lands here; so do network
+          // errors. Either way, fall back to the ?url= share link so
+          // the button always does SOMETHING useful.
+          if (err && err.error && err.error !== 'snapshot-storage-unavailable') {
+            // Log unexpected errors to aid later diagnosis.
+            try { console.warn('[share] snapshot POST failed', err); } catch (_) {}
+          }
+          finish(fallbackUrl);
         });
-      } else {
-        fallbackCopy(shareUrl);
-        showToast();
-      }
-      if (window.plausible) window.plausible('Audit Shared');
     });
   }
+
+  /* -------- D2: snapshot payload builder -------- */
+  // Gathers the rendered audit state into a JSON-serializable envelope
+  // that /api/audit-snapshot accepts. Returns null if no audit has
+  // completed yet (share button is hidden in that case, but defensive
+  // check in case of a race).
+  function buildSnapshotPayload(last) {
+    if (!last || !last.url || typeof last.overall !== 'object') return null;
+    var language = (location.pathname.indexOf('/es/') === 0) ? 'es' : 'en';
+    // Subtype lives on __auditResults when the audit completed under
+    // the restaurant track. Non-restaurant runs leave it null.
+    var subtype = null;
+    try {
+      if (window.__auditResults && window.__auditResults.subtypeId) {
+        subtype = String(window.__auditResults.subtypeId);
+      }
+    } catch (_) {}
+    // Verdict copy: the rendered H2 + lede at the top of the results
+    // card. Grab from the DOM rather than recompute — guarantees the
+    // recipient sees the exact words the original owner saw.
+    var verdict = '';
+    try {
+      var vEl = document.querySelector('.audit-summary .verdict-line')
+             || document.querySelector('.audit-summary h2');
+      if (vEl && vEl.textContent) verdict = vEl.textContent.replace(/\s+/g, ' ').trim();
+    } catch (_) {}
+    // Flatten the per-check results to { id, state, title }[] — enough
+    // for the hydration path (D3) to render a read-only priority list.
+    var checks = [];
+    try {
+      if (window.__auditResults && Array.isArray(window.__auditResults.entries)) {
+        window.__auditResults.entries.forEach(function(e){
+          var def = e && e.def;
+          var result = e && e.result;
+          var id = def && (def.audit || def.type);
+          if (!id) return;
+          var state = (result && result.mark && result.mark.cls) || 'skip';
+          var title = (result && result.title) || def.fail || def.unverified || id;
+          checks.push({ id: id, state: state, title: String(title).slice(0, 200) });
+        });
+      }
+    } catch (_) {}
+    var overall = last.overall || {};
+    return {
+      auditedUrl: last.url,
+      score:      typeof overall.total === 'number' ? overall.total : (typeof last.restaurant === 'number' ? last.restaurant : 0),
+      language:   language,
+      subtype:    subtype,
+      verdict:    verdict,
+      results: {
+        checks: checks,
+        categoryScores: {
+          perf:       typeof overall.perf       === 'number' ? overall.perf       : null,
+          a11y:       typeof overall.a11y       === 'number' ? overall.a11y       : null,
+          bp:         typeof overall.bp         === 'number' ? overall.bp         : null,
+          seo:        typeof overall.seo        === 'number' ? overall.seo        : null,
+          restaurant: typeof last.restaurant    === 'number' ? last.restaurant    : null,
+        },
+      },
+      meta: {
+        generatedAt:               Date.now(),
+        unverifiedCount:           last.unverifiedCount || 0,
+        unverifiedPenaltyApplied:  !!last.unverifiedPenaltyApplied,
+      },
+    };
+  }
+
   function fallbackCopy(text) {
     var ta = document.createElement('textarea');
     ta.value = text;

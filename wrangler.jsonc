@@ -125,19 +125,28 @@
   ]
 
   // ─────────────────────────────────────────────────────────────────
-  // Sprint T3 optional binding (not yet provisioned):
+  // Optional KV bindings (provisioned on demand):
   //
-  // Uncomment the block below AFTER creating a Cloudflare KV namespace
-  // via the dashboard or `wrangler kv:namespace create AUDIT_CACHE`.
-  // Replace the `id` value with the namespace id that command prints.
-  // The Worker's src/lib/audit-cache.js reads env.AUDIT_CACHE when
-  // present and caches PSI / Places / schema / crawl responses for
-  // 1-6 hours keyed by URL. When the binding is absent (as now), every
-  // cache call no-ops and the audit runs identically to today — no
-  // code change required when the binding appears.
+  // Sprint T3 — AUDIT_CACHE:
+  // Create the namespace via `wrangler kv:namespace create AUDIT_CACHE`
+  // and paste the returned id below. The Worker's src/lib/audit-cache.js
+  // reads env.AUDIT_CACHE when present and caches PSI / Places / schema
+  // / crawl responses for 1-6 hours keyed by URL. When the binding is
+  // absent, every cache call no-ops and the audit runs identically to
+  // today — no code change required when the binding appears.
+  //
+  // D1 — AUDIT_SNAPSHOTS:
+  // Create via `wrangler kv:namespace create AUDIT_SNAPSHOTS`. Backs the
+  // /api/audit-snapshot endpoint (src/lib/audit-snapshots.js) — persists
+  // serialized audit state so the owner can share a permalink instead of
+  // downloading a PDF. 90-day TTL, ~30-80 KB per snapshot, token is the
+  // only gate (unlisted resource, not secret). When the binding is
+  // absent the endpoint returns 503 with error=snapshot-storage-
+  // unavailable and the audit tool keeps working without share links.
   //
   //   "kv_namespaces": [
-  //     { "binding": "AUDIT_CACHE", "id": "<paste-from-wrangler-output>" }
+  //     { "binding": "AUDIT_CACHE",     "id": "<paste-from-wrangler-output>" },
+  //     { "binding": "AUDIT_SNAPSHOTS", "id": "<paste-from-wrangler-output>" }
   //   ]
   //
   // And for the AI Gateway that powers the facts dossier (T4):
