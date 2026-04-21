@@ -1,5 +1,55 @@
 :root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--teal-dark:#143640;--teal-tint:#E8F1F3;--rust:#B8541A;--stone:#6B6B6B;--stone-2:#9A958B;--line:#E8E2D6;--line-dark:#D4CCBC;--line-input:#8A8378;--white:#FFFFFF;--font-display:'Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;--font-body:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--max:1200px;--pad-x:clamp(20px,4vw,64px);--ease:cubic-bezier(.22,.61,.36,1);--ease-out:cubic-bezier(.16,1,.3,1);--t-fast:180ms;--t-med:420ms;--t-slow:900ms;--r-sm:8px;--r-md:14px;--r-lg:22px}
 
+/* ============ Modernization tokens (Sprint 1) ============
+   Additive vocabulary that later modernization sprints consume. No
+   visual change lands with this commit alone — declaring the tokens
+   in :root has zero effect until a selector references one. The
+   foundation commit exists so every follow-up sprint reads from the
+   same system instead of ad-hoc values.
+
+   Surface layers replace the current "every card is cream-2 or
+   white" flatness with a three-tier depth vocabulary. Elevation
+   tokens collapse scattered ad-hoc box-shadows into three tiers the
+   rest of the tool can reference. Fluid type extends the clamp()
+   sizing already used on h1-h3 down into mid-tier text. Motion
+   extras (micro timing + spring easing) enable the tactile hover /
+   press interactions added in later sprints without introducing a
+   stiff feel. */
+:root{
+  /* Surface depth — progressively lighter as you float up */
+  --surface-0: #FAF7F2;          /* body / baseline (matches --cream) */
+  --surface-1: #FFFDF8;          /* raised card */
+  --surface-2: #FFFFFF;          /* floating / modal */
+  --surface-inset: #F3EEE3;      /* recessed tray (matches --cream-2) */
+
+  /* Elevation — paired subtle+spread shadows rather than single blur */
+  --elev-1: 0 1px 0 rgba(20,22,26,.04), 0 1px 2px rgba(20,22,26,.04);
+  --elev-2: 0 2px 4px rgba(20,22,26,.04), 0 12px 24px -8px rgba(20,22,26,.08);
+  --elev-3: 0 4px 8px rgba(20,22,26,.05), 0 24px 48px -12px rgba(20,22,26,.10);
+
+  /* Focus affordance — consistent across every interactive element */
+  --ring-focus: 0 0 0 3px rgba(31,78,91,.22);
+
+  /* Hero wash — two-stop radial gradient that adds depth without
+     weight. Only applied to .audit-hero; keeps body calm. */
+  --gradient-hero:
+    radial-gradient(1200px 600px at 20% -10%, rgba(31,78,91,.06), transparent 60%),
+    radial-gradient(900px 500px at 110% 10%, rgba(184,84,26,.05), transparent 55%);
+
+  /* Fluid mid-tier type — h1-h3 already clamp; these cover body
+     rhythm so card type doesn't feel frozen against the hero. */
+  --fs-eyebrow: clamp(11px, .18vw + 10px, 13px);
+  --fs-body:    clamp(15px, .25vw + 14px, 17px);
+  --fs-lead:    clamp(17px, .4vw  + 15px, 20px);
+  --fs-h4:      clamp(17px, .35vw + 15px, 19px);
+  --fs-h3:      clamp(20px, 1vw   + 16px, 26px);
+
+  /* Motion extras — --t-fast/med/slow remain; these add shorter
+     tactile duration + a gentle overshoot ease for press feedback. */
+  --t-micro:    120ms;
+  --ease-spring: cubic-bezier(.2,.9,.25,1.2);
+}
+
 /* ============ SELF-HOSTED WEB FONTS ============
    Fraunces (display) and Inter (body) are served from /assets/fonts/
    instead of Google Fonts. Each @font-face is scoped to a single
