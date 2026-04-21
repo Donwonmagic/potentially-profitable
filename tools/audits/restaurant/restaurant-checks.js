@@ -2792,13 +2792,14 @@ function t(key, vars, lang) {
 // and returns:
 //
 //   {
-//     hasMenuPage:     boolean   — did we find a page to analyze?
-//     sourceUrl:       string?   — which URL we read
-//     pricesCount:     number    — distinct price-pattern matches
-//     imagesCount:     number    — <img> tags on the page
-//     hasPriceCoverage: boolean  — pricesCount >= PRICE_FLOOR
-//     hasPhotoCoverage: boolean  — imagesCount >= PHOTO_FLOOR
-//     gaps:            string[]  — 'prices' / 'photos' tokens missing
+//     hasMenuPage:       boolean   — did we find a page to analyze?
+//     sourceUrl:         string?   — which URL we read
+//     pricesCount:       number    — distinct price-pattern matches
+//     imagesCount:       number    — <img> tags on the page (raw)
+//     imagesNearPrices:  number    — images within ~200 chars of a price
+//     hasPriceCoverage:  boolean   — pricesCount >= PRICE_FLOOR
+//     hasPhotoCoverage:  boolean   — imagesNearPrices >= PHOTO_FLOOR
+//     gaps:              string[]  — 'prices' / 'photos' tokens missing
 //   }
 //
 // Thresholds are defensible floors, not industry medians:
@@ -2807,11 +2808,22 @@ function t(key, vars, lang) {
 //   PHOTO_FLOOR = 3 — filters sites with a single hero image but no
 //     dish photography; real photo menus carry 8-30 images per page.
 //
+// Phase 3 #5b: hasPhotoCoverage now thresholds on imagesNearPrices,
+// not on the raw imagesCount. Rationale: a page with 1 hero + 1 logo +
+// 1 nav icon has 3 <img> tags but zero DISH photos; the old count-all
+// rule let those pages pass. A real dish photo is visually paired
+// with its price (photo-name-price card pattern), so proximity to a
+// price-pattern match in the HTML source is the strongest single
+// signal of "this is a photographed menu." The 200-character window
+// is wide enough for the common item-card layouts while staying tight
+// enough to exclude header images from the count.
+//
 // The check consumes these thresholds to decide pass / fail and
 // populates the `{gaps}` template token in the failNote so the owner
 // sees exactly which signals are missing, not a generic scolding.
 var MENU_INTEL_PRICE_FLOOR = 5;
 var MENU_INTEL_PHOTO_FLOOR = 3;
+var MENU_INTEL_PROXIMITY_WINDOW = 200;
 
 // Match common price notations: leading symbol ($7.99, €12), or
 // trailing currency suffix (7.99 USD, 12 EUR). Stays deliberately
@@ -2844,22 +2856,68 @@ function extractMenuSignals(context) {
       sourceUrl: null,
       pricesCount: 0,
       imagesCount: 0,
+      imagesNearPrices: 0,
       hasPriceCoverage: false,
       hasPhotoCoverage: false,
       gaps: ['menu-page']
     };
   }
   var html = targetPage.html;
-  // Important: reset lastIndex since the module-level regex carries
+  // Important: reset lastIndex since the module-level regexes carry
   // the /g flag and state across calls without an explicit reset.
   MENU_INTEL_PRICE_RE.lastIndex = 0;
   MENU_INTEL_IMG_RE.lastIndex = 0;
-  var priceMatches = html.match(MENU_INTEL_PRICE_RE) || [];
-  var imageMatches = html.match(MENU_INTEL_IMG_RE) || [];
-  var pricesCount = priceMatches.length;
-  var imagesCount = imageMatches.length;
+  // Collect offsets (not just counts) so we can measure proximity
+  // between <img> tags and price patterns. exec() in a /g loop gives
+  // us .index at each step; one pass per regex stays O(n).
+  var priceOffsets = [];
+  var imgOffsets = [];
+  var m;
+  while ((m = MENU_INTEL_PRICE_RE.exec(html)) !== null) {
+    priceOffsets.push(m.index);
+  }
+  MENU_INTEL_IMG_RE.lastIndex = 0;
+  while ((m = MENU_INTEL_IMG_RE.exec(html)) !== null) {
+    imgOffsets.push(m.index);
+  }
+  var pricesCount = priceOffsets.length;
+  var imagesCount = imgOffsets.length;
+  // Count images within MENU_INTEL_PROXIMITY_WINDOW chars of ANY
+  // price match. Walk both sorted arrays in one merge-style pass so
+  // the worst case stays O(n+m) instead of O(n*m). priceOffsets are
+  // sorted by construction (single /g pass); imgOffsets likewise.
+  var imagesNearPrices = 0;
+  if (priceOffsets.length > 0 && imgOffsets.length > 0) {
+    var pi = 0; // moving price-offset cursor
+    for (var ii = 0; ii < imgOffsets.length; ii++) {
+      var imgAt = imgOffsets[ii];
+      // Advance pi past any prices that are already out of range
+      // (too far before this image).
+      while (pi < priceOffsets.length && priceOffsets[pi] < imgAt - MENU_INTEL_PROXIMITY_WINDOW) {
+        pi++;
+      }
+      // Nearest candidate price offset; check whether it's within
+      // the window in either direction.
+      if (pi < priceOffsets.length) {
+        var distance = Math.abs(priceOffsets[pi] - imgAt);
+        if (distance <= MENU_INTEL_PROXIMITY_WINDOW) {
+          imagesNearPrices++;
+          continue;
+        }
+      }
+      // Also check the previous price in case the image is just
+      // BEFORE the next price-out-of-range marker but still close
+      // to the preceding one.
+      if (pi > 0) {
+        var prevDistance = Math.abs(priceOffsets[pi - 1] - imgAt);
+        if (prevDistance <= MENU_INTEL_PROXIMITY_WINDOW) {
+          imagesNearPrices++;
+        }
+      }
+    }
+  }
   var hasPriceCoverage = pricesCount >= MENU_INTEL_PRICE_FLOOR;
-  var hasPhotoCoverage = imagesCount >= MENU_INTEL_PHOTO_FLOOR;
+  var hasPhotoCoverage = imagesNearPrices >= MENU_INTEL_PHOTO_FLOOR;
   var gaps = [];
   if (!hasPriceCoverage) gaps.push('prices');
   if (!hasPhotoCoverage) gaps.push('photos');
@@ -2868,6 +2926,7 @@ function extractMenuSignals(context) {
     sourceUrl: targetPage.url || null,
     pricesCount: pricesCount,
     imagesCount: imagesCount,
+    imagesNearPrices: imagesNearPrices,
     hasPriceCoverage: hasPriceCoverage,
     hasPhotoCoverage: hasPhotoCoverage,
     gaps: gaps

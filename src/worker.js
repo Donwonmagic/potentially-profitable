@@ -2016,7 +2016,20 @@ const PAGE_CRAWL_SLOTS = [
   { slot: 'order',       patterns: [/order\s*(online|now|here)?/i, /start\s+(an\s+)?order/i, /\bpickup\b/i, /\bdelivery\b/i] },
   { slot: 'catering',    patterns: [/\bcatering\b/i, /\bcater\s*your\b/i, /private\s+event/i, /\brfq\b/i] },
   { slot: 'events',      patterns: [/\bevents?\b/i, /\bparties\b/i, /\bweddings?\b/i, /private\s+dining/i] },
-  { slot: 'menu',        patterns: [/\bmenu\b/i, /\bmenus\b/i, /food\s*&?\s*drink/i, /\bwine\s+list\b/i, /\bdrink\s+list\b/i] },
+  // Phase 3 #5b: menu-slot patterns expanded to close the crawl-reach
+  // limitation surfaced after shipping menu-depth. Three specific
+  // additions, each chosen for low false-positive risk:
+  //   /\bcarte\b/    — almost exclusively fine-dining menu pages
+  //                    ("prix fixe", "à la carte"); zero hits on
+  //                    generic English body copy
+  //   /\bto-go\b/    — ordering-flow pages that carry the menu
+  //                    alongside the pickup flow
+  //   /\border[-\s]online\b/  — same; normalizes "Order Online" or
+  //                    "order-online" URL slugs
+  // Broader candidates rejected: /food/ matches "About our food" pages
+  // and nav links; /eats/ collides with brand names; /kitchen/ matches
+  // "Our Kitchen" about-us content.
+  { slot: 'menu',        patterns: [/\bmenu\b/i, /\bmenus\b/i, /food\s*&?\s*drink/i, /\bwine\s+list\b/i, /\bdrink\s+list\b/i, /\bcarte\b/i, /\bto-go\b/i, /\border[-\s]online\b/i] },
   { slot: 'contact',     patterns: [/\bcontact\b/i, /\bvisit\b/i, /location/i, /find\s+us/i, /hours/i] },
   { slot: 'about',       patterns: [/\babout\b/i, /our\s+story/i, /\bchef\b/i, /\bteam\b/i] },
   // Sprint M1.3: three new slots so the existence of a dedicated

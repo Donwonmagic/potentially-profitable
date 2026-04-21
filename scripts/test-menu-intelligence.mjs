@@ -90,7 +90,12 @@ function menuCrawl(html) {
   assertEq('prices-no-photos: gaps contains photos only', out.gaps, ['photos']);
 }
 
-// --- Test 3: photos but no visible prices ---------------------------
+// --- Test 3: photos but no prices nearby -> photos don't count ----
+// Phase 3 #5b: hasPhotoCoverage thresholds on imagesNearPrices, not
+// raw imagesCount. A page with plenty of images but zero adjacent
+// prices registers no dish photos — those images could be a gallery,
+// a hero carousel, or decorative chrome. Both gaps surface in the
+// failNote so the owner knows prices are the blocking fix.
 {
   const html = `
     <h1>Our menu — ask your server about tonight's selection</h1>
@@ -99,8 +104,10 @@ function menuCrawl(html) {
     <p>Menu changes weekly. Call for details.</p>`;
   const out = extractMenuSignals(menuCrawl(html));
   assert('photos-no-prices: !hasPriceCoverage', !out.hasPriceCoverage);
-  assert('photos-no-prices: hasPhotoCoverage',   out.hasPhotoCoverage);
-  assertEq('photos-no-prices: gaps contains prices only', out.gaps, ['prices']);
+  assert('photos-no-prices: raw imagesCount high', out.imagesCount >= 5);
+  assertEq('photos-no-prices: imagesNearPrices is 0', out.imagesNearPrices, 0);
+  assert('photos-no-prices: !hasPhotoCoverage (no adjacent prices)', !out.hasPhotoCoverage);
+  assertEq('photos-no-prices: gaps contains both', out.gaps, ['prices', 'photos']);
 }
 
 // --- Test 4: neither prices nor photos ------------------------------
@@ -213,7 +220,77 @@ function menuCrawl(html) {
     'pricesCount=' + out.pricesCount);
 }
 
-// --- Test 11: repeated regex calls stay correct (lastIndex reset) --
+// --- Test 11a: hero image far from the menu list doesn't count ----
+// A common pattern: big hero photo at the top of the page, then 800+
+// chars of marketing copy, then the price list. The hero <img> is
+// NOT a dish photo — it's chrome. imagesNearPrices must filter it.
+{
+  const html = `
+    <img src="/hero.jpg" class="hero">
+    <h1>Our restaurant</h1>
+    <p>${'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '.repeat(12)}</p>
+    <h2>About our chef</h2>
+    <p>${'Nulla facilisi. '.repeat(12)}</p>
+    <section>
+      <h2>Menu</h2>
+      <ul>
+        <li>Margherita $14</li>
+        <li>Pepperoni $16</li>
+        <li>Carbonara $18</li>
+        <li>Tiramisu $9</li>
+        <li>Espresso $3.50</li>
+      </ul>
+    </section>`;
+  const out = extractMenuSignals(menuCrawl(html));
+  assert('hero-far-from-prices: hasPriceCoverage', out.hasPriceCoverage);
+  assertEq('hero-far-from-prices: raw imagesCount', out.imagesCount, 1);
+  assertEq('hero-far-from-prices: imagesNearPrices = 0 (hero filtered out)',
+    out.imagesNearPrices, 0);
+  assert('hero-far-from-prices: !hasPhotoCoverage', !out.hasPhotoCoverage);
+}
+
+// --- Test 11b: images paired with prices DO count ------------------
+// The classic dish-card layout: <img> immediately followed by name
+// and price. Three such cards should pass the PHOTO_FLOOR.
+{
+  const html = `
+    <h1>Menu</h1>
+    <article><img src="/m.jpg"><h3>Margherita</h3><p>$14</p></article>
+    <article><img src="/p.jpg"><h3>Pepperoni</h3><p>$16</p></article>
+    <article><img src="/c.jpg"><h3>Carbonara</h3><p>$18</p></article>
+    <article><img src="/t.jpg"><h3>Tiramisu</h3><p>$9</p></article>
+    <article><img src="/e.jpg"><h3>Espresso</h3><p>$3.50</p></article>`;
+  const out = extractMenuSignals(menuCrawl(html));
+  assert('dish-cards: hasPriceCoverage',    out.hasPriceCoverage);
+  assert('dish-cards: imagesNearPrices >= PHOTO_FLOOR',
+    out.imagesNearPrices >= MENU_INTEL_PHOTO_FLOOR,
+    'imagesNearPrices=' + out.imagesNearPrices);
+  assert('dish-cards: hasPhotoCoverage',    out.hasPhotoCoverage);
+  assertEq('dish-cards: no gaps', out.gaps, []);
+}
+
+// --- Test 11c: mixed — hero + one adjacent dish photo --------------
+// Hero at top, 5 prices in a list, 1 image IN the list adjacent to a
+// price. imagesCount=2 but imagesNearPrices=1 — below PHOTO_FLOOR.
+{
+  const html = `
+    <img src="/hero.jpg">
+    <p>${'x'.repeat(800)}</p>
+    <ul>
+      <li>Margherita $14</li>
+      <li><img src="/pep.jpg"> Pepperoni $16</li>
+      <li>Carbonara $18</li>
+      <li>Tiramisu $9</li>
+      <li>Espresso $3.50</li>
+    </ul>`;
+  const out = extractMenuSignals(menuCrawl(html));
+  assertEq('mixed-hero-plus-one: imagesCount',       out.imagesCount,      2);
+  assertEq('mixed-hero-plus-one: imagesNearPrices',  out.imagesNearPrices, 1);
+  assert  ('mixed-hero-plus-one: !hasPhotoCoverage (1 < PHOTO_FLOOR)',
+    !out.hasPhotoCoverage);
+}
+
+// --- Test 11d: repeated regex calls stay correct (lastIndex reset) --
 // extractMenuSignals runs inside the audit pipeline potentially
 // multiple times (once for the main site, once per competitor). The
 // regexes carry /g so we have to explicitly reset lastIndex each call.
