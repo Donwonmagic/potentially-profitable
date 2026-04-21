@@ -926,8 +926,15 @@ br.br-lg{display:none}
 
 .listen-card-extras{grid-area:extras;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding-top:14px;border-top:1px solid var(--line);margin-top:2px}
 .listen-card-skips{display:inline-flex;gap:6px}
-.listen-iconbtn{position:relative;width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;background:transparent;border:1px solid var(--line-dark);border-radius:10px;color:var(--ink-soft);cursor:pointer;transition:all var(--t-fast) var(--ease)}
-.listen-iconbtn:hover:not(:disabled){border-color:var(--lc-accent);color:var(--lc-accent);background:var(--lc-tint)}
+/* Sprint A13: control-row chip-family unification. Icon buttons,
+   selects, and source-note now share border color + hover-lift so
+   the control row reads as part of the site's chip vocabulary.
+   Radius bumped from 10px to 12px for closer visual rhythm with the
+   pill selects beside them. Hover-lift (translateY + box-shadow) is
+   the same motion the audit tool's chips use. */
+.listen-iconbtn{position:relative;width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;background:transparent;border:1px solid var(--line-dark);border-radius:12px;color:var(--ink-soft);cursor:pointer;transition:border-color var(--t-fast) var(--ease),color var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
+.listen-iconbtn:hover:not(:disabled){border-color:var(--lc-accent);color:var(--lc-accent);background:var(--lc-tint);transform:translateY(-1px);box-shadow:0 4px 10px -4px rgba(31,78,91,0.22)}
+.listen-iconbtn:active:not(:disabled){transform:translateY(0)}
 .listen-iconbtn:disabled{opacity:0.4;cursor:not-allowed}
 .listen-iconbtn svg{width:16px;height:16px}
 /* The ±15s buttons overlay a small number inside the circular-
@@ -948,10 +955,10 @@ br.br-lg{display:none}
 .listen-select.listen-language-select select{padding:6px 28px 6px 32px;font-weight:600;color:var(--lc-accent);border-color:var(--lc-accent)}
 .listen-language-select::before{content:"";position:absolute;left:12px;top:50%;width:14px;height:14px;transform:translateY(-50%);background:currentColor;color:var(--lc-accent);-webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><line x1='2' y1='12' x2='22' y2='12'/><path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'/></svg>") no-repeat center/contain;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><line x1='2' y1='12' x2='22' y2='12'/><path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'/></svg>") no-repeat center/contain;pointer-events:none}
 .listen-select{position:relative}
-.listen-select select{appearance:none;-webkit-appearance:none;background:transparent;border:1px solid var(--line-dark);border-radius:999px;padding:6px 28px 6px 12px;font-family:var(--font-body);font-size:12px;font-weight:600;color:var(--ink-soft);cursor:pointer;transition:all var(--t-fast) var(--ease)}
-.listen-select select:hover,.listen-select select:focus-visible{border-color:var(--lc-accent);color:var(--lc-accent);outline:none}
+.listen-select select{appearance:none;-webkit-appearance:none;background:transparent;border:1px solid var(--line-dark);border-radius:999px;padding:6px 28px 6px 12px;font-family:var(--font-body);font-size:12px;font-weight:600;color:var(--ink-soft);cursor:pointer;transition:border-color var(--t-fast) var(--ease),color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
+.listen-select select:hover,.listen-select select:focus-visible{border-color:var(--lc-accent);color:var(--lc-accent);outline:none;transform:translateY(-1px);box-shadow:0 4px 10px -4px rgba(31,78,91,0.22)}
 .listen-select::after{content:"";position:absolute;right:10px;top:50%;width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-70%) rotate(45deg);color:var(--stone);pointer-events:none}
-.listen-source-note{font-family:var(--font-body);font-size:11px;color:var(--stone-2);letter-spacing:0.02em;display:inline-flex;align-items:center;gap:6px}
+.listen-source-note{font-family:var(--font-body);font-size:11px;color:var(--stone-2);letter-spacing:0.02em;display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;background:rgba(31,78,91,0.03);border:1px solid rgba(31,78,91,0.08)}
 .listen-source-note[data-source="studio"]{color:var(--lc-accent)}
 .listen-source-note[data-source="studio"]::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
 
