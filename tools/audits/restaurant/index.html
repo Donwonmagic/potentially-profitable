@@ -1819,6 +1819,37 @@
     color: var(--ink-soft);
     margin: 16px 0 0;
   }
+  /* Phase 2 U7: subtype-benchmark chip. Anchors the raw overall score
+     ("74") against a typical median for the owner's subtype so they
+     read it as "a bit above average for a pizzeria" rather than a
+     decontextualized number. Compact, tabular-nums on the score
+     values so the delta doesn't shift left-edge alignment as it
+     toggles sign. */
+  .score-benchmark {
+    display: inline-flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    margin-top: 14px;
+    padding: 6px 12px;
+    font-size: 13px;
+    line-height: 1.35;
+    color: var(--ink-soft);
+    background: var(--cream-2, #F3EEE3);
+    border: 1px solid var(--line, #E6DFCE);
+    border-radius: 999px;
+    font-variant-numeric: tabular-nums;
+  }
+  .score-benchmark[hidden] { display: none; }
+  .score-benchmark-label { color: var(--stone); }
+  .score-benchmark strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .score-benchmark-delta { font-weight: 600; }
+  .score-benchmark-delta.up   { color: #1F6B3A; }
+  .score-benchmark-delta.down { color: #8A3010; }
+  .score-benchmark-delta.even { color: var(--stone); }
   /* Override banner: visible only when the visitor has confirmed one or
      more unverified checks. Signals (both to the original owner and to
      anyone they forward the share link to) that the score contains
@@ -2036,15 +2067,6 @@
   .top-fixes-item-chips .chip-effort-dev     { background: #E7F1F3; color: #1F4E5B; }
   .top-fixes-item-chips .chip-effort-rebuild { background: #F7E7DC; color: #B8541A; }
   .top-fixes-item-chips .chip-time           { background: var(--cream-2, #faf6ee); color: var(--ink); border: 1px solid var(--line, #E6DFCE); }
-  /* Sprint V2: revenue-at-risk chip uses the rust accent to echo the
-     "Top 3 Fixes" section border treatment — visually flags these
-     as "money on the table" without creating a new color token. */
-  .top-fixes-item-chips .chip-revenue {
-    background: #FDEFE3;
-    color: #8A3E16;
-    border: 1px solid #EFD1B6;
-    font-variant-numeric: tabular-nums;
-  }
   /* Sprint CC6: weekend-to-green ETA badge — small, calm, sits to
      the right of the Top 3 Fixes heading. Teal accent matches the
      exec-summary border treatment so the eye groups it with
@@ -2945,6 +2967,19 @@
   .chip-rebuild  { background: #fce9e1; border-color: #f4b69e; color: #8a3010; }
   .chip-rebuild::before { content: '●'; color: var(--rust); font-size: 9px; }
   .chip-time     { background: var(--cream-2); color: var(--stone); }
+  /* Phase 2 U1: revenue-at-risk chip promoted to a global chip variant
+     so every surface that surfaces a finding — priority row, Action
+     Plan item, Top 3 card — can emit the same `<span class="chip
+     chip-revenue">` and look consistent. Rust accent echoes the
+     top-fixes-card border treatment: visually flags "money on the
+     table" without introducing a new color token. */
+  .chip-revenue {
+    background: #FDEFE3;
+    border-color: #EFD1B6;
+    color: #8A3E16;
+    font-variant-numeric: tabular-nums;
+  }
+  .chip-revenue::before { content: '$'; font-weight: 700; font-size: 10px; }
 
   /* "Why this matters" — one-line impact framing, subtle but present.
      Helps owners prioritize by consequence, not by test order. */
@@ -3958,6 +3993,14 @@
           <h2 id="scoreHeadline">Your overall score</h2>
           <div class="url">Audited: <strong id="auditedUrl">—</strong></div>
           <p class="verdict" id="verdictCopy">Verdict copy populates here after a run — explains what the score means and what to focus on first.</p>
+          <!-- Phase 2 U7: subtype-benchmark chip. Populated by
+               setScoreBenchmark() after setScoreRing() lands. Hidden
+               when no benchmark is known for the resolved subtype. -->
+          <div class="score-benchmark" id="scoreBenchmark" hidden>
+            <span class="score-benchmark-label">Typical <span id="scoreBenchmarkSubtype">restaurant</span> sites score:</span>
+            <strong id="scoreBenchmarkMedian">—</strong>
+            <span class="score-benchmark-delta" id="scoreBenchmarkDelta"></span>
+          </div>
           <div class="score-override-banner" id="scoreOverrideBanner" hidden>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             <span id="scoreOverrideText">This score includes owner-confirmed checks.</span>
@@ -9564,6 +9607,83 @@
   // surface the estimate without re-computing.
   window.__auditRevenueAtRisk = estimateRevenueAtRiskRange;
 
+  // Phase 2 U9: compute an order-of-magnitude dollar-impact score
+  // for a single priority-check entry. Returns the range midpoint in
+  // dollars, or null when the check has no revenue coefficient. Used
+  // by the renderer to rank Action Plan items (and Top 3 fixes) by
+  // what an owner can plausibly recover, not by how heavy the check
+  // is in the subtype weight schedule. Keeps the old weight-based
+  // tiebreaker for two items with identical dollar midpoints.
+  function estimateDollarImpact(def) {
+    if (typeof estimateRevenueAtRiskRange !== 'function') return null;
+    var range = estimateRevenueAtRiskRange(def, DEFAULT_OWNER_INPUTS);
+    if (!range) return null;
+    return Math.round((range.low + range.high) / 2);
+  }
+
+  // Phase 2 U9: rank a list of actionable entries by estimated $
+  // impact first, then by subtype-effective weight, then by
+  // confirmed-fail vs unverified. The canonical implementation lives
+  // in restaurant-checks.js (as the global `rankActionablesByImpact`)
+  // so a Node test can exercise the sort without a DOM. This thin
+  // wrapper binds the browser-only estimateDollarImpact fn so callers
+  // here keep the same signature they had pre-refactor.
+  function rankActionables(items) {
+    if (typeof rankActionablesByImpact === 'function') {
+      return rankActionablesByImpact(items, estimateDollarImpact);
+    }
+    // Fallback if the global somehow isn't loaded — preserves the
+    // pre-Phase-2 behavior so rendering never hard-fails.
+    items.sort(function(a, b){
+      if (b.weight !== a.weight) return b.weight - a.weight;
+      if (b.statusRank !== a.statusRank) return b.statusRank - a.statusRank;
+      return 0;
+    });
+    return items;
+  }
+
+  // Phase 2 U7: paint the subtype-benchmark chip beneath the overall
+  // score. Reuses subtypeBenchmark() from subtypes.js and the
+  // BUSINESS_TYPE_DEFS label lookup already used by the share card.
+  // Hidden entirely when we have no benchmark for the resolved
+  // subtype (e.g. non-restaurant site or future subtype we haven't
+  // measured yet) — showing a placeholder would be worse than
+  // showing nothing.
+  function setScoreBenchmark(overall, subtypeId) {
+    var el       = document.getElementById('scoreBenchmark');
+    var subEl    = document.getElementById('scoreBenchmarkSubtype');
+    var medianEl = document.getElementById('scoreBenchmarkMedian');
+    var deltaEl  = document.getElementById('scoreBenchmarkDelta');
+    if (!el || !subEl || !medianEl || !deltaEl) return;
+    if (typeof subtypeBenchmark !== 'function') { el.hidden = true; return; }
+    var bench = subtypeBenchmark(subtypeId);
+    if (!bench || typeof bench.overall !== 'number') { el.hidden = true; return; }
+
+    var label = (typeof BUSINESS_TYPE_DEFS === 'object' && BUSINESS_TYPE_DEFS && BUSINESS_TYPE_DEFS[subtypeId] && BUSINESS_TYPE_DEFS[subtypeId].label)
+      ? String(BUSINESS_TYPE_DEFS[subtypeId].label)
+      : 'restaurant';
+    // Strip trailing "restaurant" / "café or coffee shop" suffixes so
+    // "Typical fine-dining restaurant sites score:" reads cleanly.
+    // The label stays lowercased to match the phrasing.
+    subEl.textContent = label.toLowerCase().replace(/\s+restaurant$/, '');
+
+    medianEl.textContent = String(bench.overall);
+
+    var diff = (typeof overall === 'number') ? overall - bench.overall : 0;
+    deltaEl.classList.remove('up', 'down', 'even');
+    if (diff >= 3) {
+      deltaEl.classList.add('up');
+      deltaEl.textContent = '— you’re +' + diff;
+    } else if (diff <= -3) {
+      deltaEl.classList.add('down');
+      deltaEl.textContent = '— you’re ' + diff;
+    } else {
+      deltaEl.classList.add('even');
+      deltaEl.textContent = '— right around the median';
+    }
+    el.hidden = false;
+  }
+
   function renderTopFixes() {
     var el   = document.getElementById('topFixes');
     var list = document.getElementById('topFixesList');
@@ -9601,11 +9721,11 @@
       })
       .filter(function(e){ return e.weight > 0; }); // suppress zero-weight checks (e.g. age-gate for cafe)
 
-    actionable.sort(function(a, b){
-      if (b.weight !== a.weight) return b.weight - a.weight;
-      if (b.statusRank !== a.statusRank) return b.statusRank - a.statusRank;
-      return 0;
-    });
+    // Phase 2 U9: rank Top 3 by estimated $ impact first, then by
+    // subtype-weight, then by status. Keeps the two "what to do first"
+    // surfaces (Top 3 + Action Plan "This week" column) in sync so
+    // owners never see contradictory prioritization.
+    rankActionables(actionable);
     actionable = actionable.slice(0, 3);
 
     if (!actionable.length) {
@@ -9793,11 +9913,11 @@
       return;
     }
 
-    actionable.sort(function(a, b){
-      if (b.weight !== a.weight) return b.weight - a.weight;
-      if (b.statusRank !== a.statusRank) return b.statusRank - a.statusRank;
-      return 0;
-    });
+    // Phase 2 U9: rank by estimated $ impact first, then by weight,
+    // then by status. Items with a revenue coefficient outrank items
+    // without one so the "This week" column leads with the fixes
+    // that most directly move the needle on the P&L.
+    rankActionables(actionable);
 
     var buckets = [
       { key: 'week',    label: t('actionPlan.col.week'),    items: actionable.slice(0, 3) },
@@ -9883,7 +10003,14 @@
         titleEl.textContent = result.title || def.unverified || def.fail || ('Check: ' + (def.audit || def.type));
         bodyEl.appendChild(titleEl);
 
-        if (def.effort || typeof def.minutes === 'number') {
+        // Phase 2 U1: compute the revenue-at-risk range once per item
+        // so we can render the chip AND know whether to create the
+        // meta row at all. An item with no effort/time AND no revenue
+        // coefficient still suppresses the meta row (current behavior).
+        var apRisk = (typeof estimateRevenueAtRiskRange === 'function')
+          ? estimateRevenueAtRiskRange(def, DEFAULT_OWNER_INPUTS)
+          : null;
+        if (def.effort || typeof def.minutes === 'number' || apRisk) {
           var meta = document.createElement('div');
           meta.className = 'action-plan-item-meta';
           if (def.effort === 'self') {
@@ -9899,6 +10026,16 @@
             else if (def.minutes < 180)  timeLabel = '~' + Math.round(def.minutes / 60) + ' hr';
             else                         timeLabel = t('effort.halfday');
             meta.appendChild(makeTextSpan(timeLabel));
+          }
+          if (apRisk) {
+            var apChip = document.createElement('span');
+            apChip.className = 'chip chip-revenue';
+            apChip.title = t('chip.revenue.title');
+            apChip.textContent = t('chip.revenue', {
+              low:  formatRevenueK(apRisk.low),
+              high: formatRevenueK(apRisk.high)
+            });
+            meta.appendChild(apChip);
           }
           bodyEl.appendChild(meta);
         }
@@ -10761,8 +10898,11 @@
       // nothing to fix. An unverified item shows its chips because the
       // owner might click "No I don't have this" and immediately want
       // to know how hard it is to fix.
+      // Phase 2 U1: also surface the revenue-at-risk chip here so the
+      // "$ impact" signal isn't only in the Top 3 card — every
+      // actionable row makes the owner's cost-of-inaction visible.
       var chipsHtml = '';
-      if (result.mark.cls !== 'pass' && (def.effort || def.minutes)) {
+      if (result.mark.cls !== 'pass') {
         var chips = [];
         if (def.effort === 'self') {
           chips.push('<span class="chip chip-effort chip-self" title="You can usually do this yourself">Fix yourself</span>');
@@ -10778,6 +10918,17 @@
           else if (def.minutes < 180)  timeLabel = '~' + Math.round(def.minutes / 60) + ' hr';
           else                         timeLabel = 'Half-day project';
           chips.push('<span class="chip chip-time">' + timeLabel + '</span>');
+        }
+        var rowRisk = (typeof estimateRevenueAtRiskRange === 'function')
+          ? estimateRevenueAtRiskRange(def, DEFAULT_OWNER_INPUTS)
+          : null;
+        if (rowRisk) {
+          var rowRiskLabel = t('chip.revenue', {
+            low:  formatRevenueK(rowRisk.low),
+            high: formatRevenueK(rowRisk.high)
+          });
+          var rowRiskTitle = t('chip.revenue.title').replace(/"/g, '&quot;');
+          chips.push('<span class="chip chip-revenue" title="' + rowRiskTitle + '">' + escapeHtml(rowRiskLabel) + '</span>');
         }
         if (chips.length) {
           chipsHtml = '<div class="chips">' + chips.join('') + '</div>';
@@ -11276,6 +11427,15 @@
     }, priorityResult);
 
     setScoreRing(overall, { unverifiedCount: priorityResult.unverifiedCount });
+    // Phase 2 U7: anchor the overall score against the subtype median
+    // so "74" reads in context. Only shown on restaurant sites where
+    // a subtype benchmark exists.
+    if (isRestaurantSite) {
+      setScoreBenchmark(overall, effectiveBusinessType());
+    } else {
+      var benchEl = document.getElementById('scoreBenchmark');
+      if (benchEl) benchEl.hidden = true;
+    }
     setCategory('performance',   perf);
     setCategory('accessibility', a11y);
     setCategory('best-practices', bp);
@@ -11516,6 +11676,16 @@
     // threshold, the restaurant card transitions from '?' to a
     // real score on this pass.
     setScoreRing(overall, { unverifiedCount: priorityResult.unverifiedCount });
+    // Phase 2 U7: re-anchor the benchmark chip whenever the score is
+    // recomputed (owner flips "I have this", overrides land from the
+    // share link, etc.). The setScoreBenchmark helper no-ops safely
+    // on non-restaurant sites.
+    if (state.isRestaurant) {
+      setScoreBenchmark(overall, effectiveBusinessType());
+    } else {
+      var benchEl2 = document.getElementById('scoreBenchmark');
+      if (benchEl2) benchEl2.hidden = true;
+    }
     var verdictEl = document.getElementById('verdictCopy');
     if (verdictEl) verdictEl.textContent = verdictFor(overall, { unverifiedCount: priorityResult.unverifiedCount, totalCount: priorityResult.totalCount });
     if (!state.isRestaurant) {

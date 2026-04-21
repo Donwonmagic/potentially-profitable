@@ -2680,6 +2680,60 @@ function t(key, vars, lang) {
   });
 }
 
+// ---------------------------------------------------------------------------
+// Phase 2 U9: rank actionable findings by estimated $ impact.
+// ---------------------------------------------------------------------------
+// Shared helper used by both the Top 3 Fixes card and the Action Plan
+// columns so the two "what to do first" surfaces stay in sync — an
+// owner never sees contradictory prioritization between them.
+//
+// Contract: the `items` argument is an array of
+//   { entry: {def, result}, weight: number, statusRank: number,
+//     dollarImpact?: number | null }
+//
+// Items WITH a numeric dollarImpact always outrank items WITHOUT one —
+// the owner can make a concrete decision against a dollar number, so
+// weight-only items tail in after. Inside each group, sort keys run
+// dollarImpact DESC → weight DESC → statusRank DESC → index ASC so
+// declaration order is the stable tiebreaker.
+//
+// The `dollarImpactFn` argument is an adapter: a function that takes
+// a priority-check def and returns its dollar midpoint, or null. It is
+// an argument (not a hard-coded call to estimateRevenueAtRiskRange)
+// because that helper lives in the browser IIFE and depends on
+// DEFAULT_OWNER_INPUTS which the Node test harness controls directly.
+// Passing the function in also keeps this module pure — no globals,
+// no hidden dependencies — so the tests stay deterministic.
+function rankActionablesByImpact(items, dollarImpactFn) {
+  if (!Array.isArray(items)) return items;
+  var impactOf = (typeof dollarImpactFn === 'function')
+    ? dollarImpactFn
+    : function(){ return null; };
+  for (var i = 0; i < items.length; i++) {
+    var x = items[i];
+    if (x && typeof x.dollarImpact !== 'number') {
+      var def = x.entry && x.entry.def;
+      var v = impactOf(def);
+      x.dollarImpact = (typeof v === 'number') ? v : null;
+    }
+    if (x && typeof x.__idx !== 'number') x.__idx = i;
+  }
+  items.sort(function(a, b){
+    var aHas = (typeof a.dollarImpact === 'number');
+    var bHas = (typeof b.dollarImpact === 'number');
+    if (aHas !== bHas) return aHas ? -1 : 1;
+    if (aHas && b.dollarImpact !== a.dollarImpact) return b.dollarImpact - a.dollarImpact;
+    var aw = (typeof a.weight === 'number') ? a.weight : 0;
+    var bw = (typeof b.weight === 'number') ? b.weight : 0;
+    if (bw !== aw) return bw - aw;
+    var ar = (typeof a.statusRank === 'number') ? a.statusRank : 0;
+    var br = (typeof b.statusRank === 'number') ? b.statusRank : 0;
+    if (br !== ar) return br - ar;
+    return a.__idx - b.__idx;
+  });
+  return items;
+}
+
 // Sprint A5: Node-only export shim so a scoring regression test can
 // import the readiness helpers without a browser. The `typeof module`
 // guard keeps this a no-op for the classic-script load path in the
@@ -2690,6 +2744,7 @@ if (typeof module !== 'undefined' && module.exports) {
     createRestaurantReadinessState: createRestaurantReadinessState,
     accumulateRestaurantReadiness: accumulateRestaurantReadiness,
     finalizeRestaurantReadinessScore: finalizeRestaurantReadinessScore,
+    rankActionablesByImpact: rankActionablesByImpact,
     POWERED_BY: POWERED_BY,
     MUNTIN_AUDIT_DESCRIPTION: MUNTIN_AUDIT_DESCRIPTION,
     MUNTIN_AUDIT_DESCRIPTION_ES: MUNTIN_AUDIT_DESCRIPTION_ES,
