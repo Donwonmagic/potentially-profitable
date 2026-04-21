@@ -125,16 +125,31 @@ export async function writeCache(env, key, value, ttlSeconds) {
   }
 }
 
+// In-flight coalescing map. When two concurrent callers in the same
+// isolate miss the cache for the same key, the first one calls the
+// fetcher and the second joins the first one's promise instead of
+// firing a duplicate upstream call. Scope is intentionally per-isolate:
+// Workers run many isolates in parallel, so truly global coalescing
+// would require a Durable Object. In-isolate still handles the common
+// "same URL requested from one browser session" case and cuts
+// duplicate upstreams when a viral share lands multiple requests on
+// one isolate within the same second.
+const IN_FLIGHT = new Map();
+
 /**
  * Convenience: cache-wrap an async fetcher with stale-fallback.
  *
- * Returns { value, cacheHit, staleFallback, ageSeconds } so the caller
- * can set an `x-audit-cache` header for observability.
+ * Returns { value, cacheHit, staleFallback, ageSeconds, coalesced }.
+ * The caller uses this to set an `x-audit-cache` header for
+ * observability.
  *   - cacheHit=true, staleFallback=false   -> fresh hit (within TTL)
  *   - cacheHit=false, staleFallback=false  -> fresh fetch (miss)
  *   - cacheHit=false, staleFallback=true   -> upstream failed, served
  *                                             a cached value older
  *                                             than TTL but within 2× TTL
+ *   - coalesced=true                        -> joined an in-flight
+ *                                             fetcher rather than
+ *                                             starting a new one
  *
  * The fetcher is called on miss OR when a stale entry is present but
  * its TTL has elapsed (we always try fresh first; stale is only used
@@ -164,20 +179,41 @@ export async function withAuditCache(env, request, keyParts, ttlSeconds, fetcher
   // Stale but in range (ts between TTL and 2× TTL) — hold as fallback.
   var staleEntry = (entry && ageSeconds !== null && ageSeconds <= 2 * ttl) ? entry : null;
 
-  var fresh;
-  var fetcherError = null;
-  try {
-    fresh = await fetcher();
-  } catch (err) {
-    fetcherError = err;
+  // Coalesce concurrent misses on the same key: if another caller in
+  // this isolate is already awaiting the fetcher, join its promise
+  // instead of firing a duplicate upstream call. The shared inflight
+  // entry also handles writeCache so we write once per fetch.
+  var existing = IN_FLIGHT.get(key);
+  var coalesced = false;
+  var inflight;
+  if (existing) {
+    inflight = existing;
+    coalesced = true;
+  } else {
+    inflight = (async function(){
+      var out = { fresh: undefined, err: null };
+      try {
+        out.fresh = await fetcher();
+        if (out.fresh && out.fresh.ok !== false) {
+          await writeCache(env, key, out.fresh, ttl);
+        }
+      } catch (e) {
+        out.err = e;
+      }
+      return out;
+    })().finally(function(){
+      IN_FLIGHT.delete(key);
+    });
+    IN_FLIGHT.set(key, inflight);
   }
+
+  var settled = await inflight;
+  var fresh = settled.fresh;
+  var fetcherError = settled.err;
 
   var looksOk = !fetcherError && fresh && fresh.ok !== false;
   if (looksOk) {
-    // Write with the TTL the caller asked for; writeCache stores with
-    // 2× TTL so the entry survives past freshness as stale fallback.
-    await writeCache(env, key, fresh, ttl);
-    return { value: fresh, cacheHit: false, staleFallback: false, ageSeconds: 0 };
+    return { value: fresh, cacheHit: false, staleFallback: false, ageSeconds: 0, coalesced: coalesced };
   }
 
   // Upstream failed and we have a usable stale entry — serve it rather
@@ -188,7 +224,8 @@ export async function withAuditCache(env, request, keyParts, ttlSeconds, fetcher
       value: staleEntry.value,
       cacheHit: false,
       staleFallback: true,
-      ageSeconds: ageSeconds
+      ageSeconds: ageSeconds,
+      coalesced: coalesced
     };
   }
 
@@ -197,5 +234,5 @@ export async function withAuditCache(env, request, keyParts, ttlSeconds, fetcher
   // jsonResponse 502. If it returned an { ok:false } shape, pass it
   // through so the caller can surface the upstream error message.
   if (fetcherError) throw fetcherError;
-  return { value: fresh, cacheHit: false, staleFallback: false, ageSeconds: null };
+  return { value: fresh, cacheHit: false, staleFallback: false, ageSeconds: null, coalesced: coalesced };
 }

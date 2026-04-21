@@ -153,6 +153,68 @@ const fakeRequest = { url: 'https://example.test/api/psi?url=whatever' };
   assertEq('fresh=1 returns fresh value',      result.value.score,  10);
 }
 
+// --- Test 7: concurrent misses coalesce onto one fetcher call ------
+{
+  const env = makeEnv();
+  let calls = 0;
+  let resolveFetch;
+  const slowFetcher = () => {
+    calls++;
+    return new Promise((r) => { resolveFetch = () => r({ ok: true, score: 42 }); });
+  };
+
+  // Fire 5 concurrent calls; only the first should invoke the fetcher.
+  // The others must join the same inflight promise.
+  const pending = Promise.all([
+    withAuditCache(env, fakeRequest, ['psi', 'https://f.test/'], 3600, slowFetcher),
+    withAuditCache(env, fakeRequest, ['psi', 'https://f.test/'], 3600, slowFetcher),
+    withAuditCache(env, fakeRequest, ['psi', 'https://f.test/'], 3600, slowFetcher),
+    withAuditCache(env, fakeRequest, ['psi', 'https://f.test/'], 3600, slowFetcher),
+    withAuditCache(env, fakeRequest, ['psi', 'https://f.test/'], 3600, slowFetcher)
+  ]);
+
+  // Give the event loop a tick so all five have called withAuditCache
+  // and queued onto the inflight map before we resolve the fetcher.
+  await new Promise((r) => setTimeout(r, 10));
+  assertEq('5 concurrent callers invoked fetcher once', calls, 1);
+
+  resolveFetch();
+  const results = await pending;
+
+  assertEq('all callers received the same value', results.every(r => r.value.score === 42), true);
+  const coalesceCount = results.filter(r => r.coalesced).length;
+  assertEq('four callers are marked coalesced', coalesceCount, 4);
+  assertEq('one caller is not coalesced',        results.length - coalesceCount, 1);
+}
+
+// --- Test 8: cache entry written once after coalesced burst --------
+{
+  const env = makeEnv();
+  let calls = 0;
+  let resolveFetch;
+  const slowFetcher = () => {
+    calls++;
+    return new Promise((r) => { resolveFetch = () => r({ ok: true, score: 77 }); });
+  };
+
+  const p1 = withAuditCache(env, fakeRequest, ['psi', 'https://g.test/'], 3600, slowFetcher);
+  const p2 = withAuditCache(env, fakeRequest, ['psi', 'https://g.test/'], 3600, slowFetcher);
+  const p3 = withAuditCache(env, fakeRequest, ['psi', 'https://g.test/'], 3600, slowFetcher);
+  await new Promise((r) => setTimeout(r, 10));
+  resolveFetch();
+  await Promise.all([p1, p2, p3]);
+
+  // Exactly one KV entry should exist for this key.
+  const keyCount = env.AUDIT_CACHE.store.size;
+  assertEq('single KV entry written for coalesced burst', keyCount, 1);
+  assertEq('fetcher still called exactly once',           calls,    1);
+
+  // Follow-up call is a fresh hit off the single written entry.
+  const p4 = await withAuditCache(env, fakeRequest, ['psi', 'https://g.test/'], 3600, slowFetcher);
+  assertEq('post-burst hit reads from cache', p4.cacheHit, true);
+  assertEq('post-burst fetcher NOT invoked',  calls,       1);
+}
+
 if (failures > 0) {
   console.error('\n' + failures + ' test(s) failed');
   process.exit(1);
