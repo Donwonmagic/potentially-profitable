@@ -115,8 +115,13 @@
   "durable_objects": {
     "bindings": [{ "name": "RATE_LIMITER", "class_name": "RateLimiter" }]
   },
+  // Cloudflare Workers free plan only supports DOs backed by SQLite
+  // storage (the older KV-backed DOs are paid-plan only). The class
+  // definition in src/lib/rate-limiter-do.js is unchanged — both
+  // backends expose the same `state.storage.get/put` API. The
+  // distinction is purely in the migration directive.
   "migrations": [
-    { "tag": "v1", "new_classes": ["RateLimiter"] }
+    { "tag": "v1", "new_sqlite_classes": ["RateLimiter"] }
   ]
 
   // ─────────────────────────────────────────────────────────────────
