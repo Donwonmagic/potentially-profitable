@@ -1068,7 +1068,124 @@ var RESTAURANT_PRIORITY_CHECKS = [
     unverified: "We couldn't reach your menu page to evaluate its content",
     unverified_es: 'No pudimos acceder a tu página de menú para evaluar su contenido',
     unverifiedNote: "The audit looks at the page behind your 'Menu' link for visible prices and dish photos. We couldn't reach one this pass — either the format is a PDF (see the menu-format check above) or the crawler missed it. Confirm the format first; we'll re-evaluate depth on the next run.",
-    unverifiedNote_es: 'La auditoría revisa la página detrás de tu enlace "Menú" buscando precios visibles y fotos de platos. No pudimos acceder a una en este pase — o el formato es PDF (ver el chequeo de menu-format arriba) o el crawler no la encontró. Confirma primero el formato; reevaluaremos la profundidad en la próxima ejecución.'
+    unverifiedNote_es: 'La auditoría revisa la página detrás de tu enlace "Menú" buscando precios visibles y fotos de platos. No pudimos acceder a una en este pase — o el formato es PDF (ver el chequeo de menu-format arriba) o el crawler no la encontró. Confirma primero el formato; reevaluaremos la profundidad en la próxima ejecución.',
+    // Phase 3 #5c: byType specialization. Each subtype gets copy that
+    // names its specific stakes — what conversion pattern the missing
+    // signals are breaking, and what the remediation looks like at
+    // that subtype's typical operating scale. Generic copy above
+    // still applies to casual-dining and any subtype not listed here.
+    // Added in sprints (fine-dining/fast-casual/cafe first) so each
+    // commit is small enough to land without stream-timeout risk.
+    byType: {
+      'fine-dining': {
+        impact: 'Fine-dining guests book based on how the tasting menu reads — the prose, the wine-pairing callouts, and the per-seat price point. Missing prices costs bookings from guests who need to know what the evening will cost (prix fixe, corkage, wine pairing add-on) before they commit. Photos matter less here than on delivery-app sites; the words do the selling.',
+        impact_es: 'Los comensales de fine-dining reservan por cómo se lee el menú degustación — la prosa, las notas de maridaje y el precio por persona. Sin precios, se pierden reservas de quienes necesitan saber el costo de la noche (prix fixe, descorche, maridaje adicional) antes de decidir. Las fotos importan menos aquí que en sitios de apps de entrega; las palabras son las que venden.',
+        pass: 'Your tasting menu reads with prices clearly visible',
+        pass_es: 'Tu menú degustación se lee con los precios claramente visibles',
+        passNote: 'Guests can scan the tasting menu, see the prix fixe price, and decide to book — all on one page, on a phone, without calling to ask.',
+        passNote_es: 'Los comensales pueden recorrer el menú degustación, ver el precio del prix fixe y decidir reservar — todo en una página, en el teléfono, sin tener que llamar para preguntar.',
+        fail: 'Your tasting menu is missing: {detected}',
+        fail_es: 'A tu menú degustación le falta: {detected}',
+        failNote: 'Fine-dining guests book on the strength of the menu — they need the tasting-menu copy AND the price (prix fixe, corkage policy, wine-pairing add-on) before committing. Add these to your menu page; the text matters more than photography for this segment, but missing either sends bookings to the competitor that shows them both.',
+        failNote_es: 'Los comensales de fine-dining reservan por la fuerza del menú — necesitan la copia del menú degustación Y el precio (prix fixe, política de descorche, maridaje adicional) antes de comprometerse. Agrégalos a tu página del menú; el texto importa más que la fotografía en este segmento, pero si falta alguno, las reservas se van al competidor que muestra ambos.'
+      },
+      'fast-casual': {
+        impact: 'Fast-casual menus ARE the conversion page. Prices next to each item + at least one photo per section lift online-ordering conversion 20-30% vs menus missing either signal. Customers who don\'t see them on your site bounce to the DoorDash / UberEats / ChowNow tile where both are standard — and the platform keeps 30% of that revenue instead of you.',
+        impact_es: 'Los menús fast-casual SON la página de conversión. Precios junto a cada ítem + al menos una foto por sección suben la conversión de pedidos en línea 20-30% frente a menús sin alguna de las dos señales. Los clientes que no las ven en tu sitio rebotan al tile de DoorDash / UberEats / ChowNow donde ambas son estándar — y la plataforma se queda con 30% de ese ingreso en vez de tú.',
+        pass: 'Your menu has item prices and dish photos ready for ordering',
+        pass_es: 'Tu menú tiene precios de ítems y fotos de platos listos para pedir',
+        passNote: 'Shoppers scan prices to budget, scroll through photos to choose, and tap "order" without leaving your site. That\'s the pattern that keeps the margin in-house instead of handing 30% to an aggregator.',
+        passNote_es: 'Los compradores revisan precios para presupuestar, recorren fotos para elegir y tocan "ordenar" sin salir de tu sitio. Ese es el patrón que mantiene el margen en casa en vez de entregar 30% a un agregador.',
+        fail: 'Your menu is missing: {detected}',
+        fail_es: 'A tu menú le falta: {detected}',
+        failNote: 'Fast-casual ordering conversion depends on both signals. Shoppers scan prices to budget, scroll through photos to choose. Add them to your menu page BEFORE the competition\'s DoorDash tile captures the order — every order that routes through the aggregator costs you 30% of the ticket.',
+        failNote_es: 'La conversión de pedidos fast-casual depende de ambas señales. Los compradores revisan precios para presupuestar, recorren fotos para elegir. Agrégalas a tu página del menú ANTES que el tile de DoorDash de la competencia capture el pedido — cada pedido que pasa por el agregador te cuesta 30% del ticket.'
+      },
+      'cafe': {
+        impact: 'Café menus carry the morning decision — "latte or cortado? $4 or $5?" — that most customers already made on their phone while walking in. Visible prices + a handful of drink/pastry photos resolve that decision BEFORE the customer reaches the counter, which is how busy mornings stay moving. Price-less menus force the mid-line "what does a cortado cost again?" that slows the queue.',
+        impact_es: 'Los menús de café cargan la decisión de la mañana — "¿latte o cortado? ¿$4 o $5?" — que la mayoría de los clientes ya tomó en el teléfono mientras caminaban. Precios visibles + unas cuantas fotos de bebidas y repostería resuelven esa decisión ANTES que el cliente llegue al mostrador, que es como se mueven las mañanas ocupadas. Los menús sin precio fuerzan el "¿cuánto cuesta un cortado?" a media fila que atasca la cola.',
+        pass: 'Your café menu shows prices and a few drink or pastry photos',
+        pass_es: 'Tu menú de café muestra precios y algunas fotos de bebidas o repostería',
+        passNote: 'Customers queue up knowing what they want — which means your baristas are making drinks instead of answering "how much is that?" Morning throughput stays smooth.',
+        passNote_es: 'Los clientes hacen fila sabiendo qué quieren — lo que significa que tus baristas están haciendo bebidas en vez de responder "¿cuánto cuesta eso?". El flujo matutino se mantiene fluido.',
+        fail: 'Your café menu is missing: {detected}',
+        fail_es: 'A tu menú de café le falta: {detected}',
+        failNote: 'Café menus carry the mid-walk "what am I getting today" decision. Both the price and a couple of drink/pastry photos belong on the page so customers queue up with a decision, not a question. If you only have time for one fix, ship the prices — even hand-typed, even updated with the seasonal board.',
+        failNote_es: 'Los menús de café cargan la decisión "¿qué voy a pedir hoy?" camino al café. Tanto el precio como un par de fotos de bebidas o repostería pertenecen a la página para que los clientes hagan fila con una decisión, no con una pregunta. Si sólo tienes tiempo para un arreglo, publica los precios — aunque sean escritos a mano, aunque se actualicen con la pizarra de temporada.'
+      },
+      'bakery': {
+        impact: 'Bakery menus are almost pure visual sales. A croissant, a danish, a cinnamon roll — customers can\'t tell what they\'re buying without a photo, and they can\'t decide whether to stop in without a price. Missing dish photography is the single biggest conversion leak a bakery site has; if you only invest in one thing, invest in product photography.',
+        impact_es: 'Los menús de panadería son casi pura venta visual. Un croissant, un danés, un rollo de canela — los clientes no pueden saber qué están comprando sin una foto, y no pueden decidir si pasar sin un precio. La falta de fotografía de producto es la fuga de conversión más grande que tiene un sitio de panadería; si inviertes en una sola cosa, que sea la fotografía de producto.',
+        pass: 'Your bakery menu has prices and product photography',
+        pass_es: 'Tu menú de panadería tiene precios y fotografía de producto',
+        passNote: 'Customers can see what they want — a glazed morning bun, a rye loaf, a croissant — and decide to stop in before they\'re on the block. That visual decision layer is exactly what bakeries compete on.',
+        passNote_es: 'Los clientes pueden ver lo que quieren — un pan de mañana glaseado, un pan de centeno, un croissant — y decidir pasar antes de llegar a la cuadra. Esa capa de decisión visual es exactamente la que compite en panadería.',
+        fail: 'Your bakery menu is missing: {detected}',
+        fail_es: 'A tu menú de panadería le falta: {detected}',
+        failNote: 'Bakery menus sell with images first, prices second. Without photos, customers can\'t identify what they want; without prices, they can\'t budget the stop. Both belong next to each item — a phone camera and good light will close most of this gap without hiring a photographer.',
+        failNote_es: 'Los menús de panadería venden con imágenes primero, precios segundo. Sin fotos, los clientes no pueden identificar qué quieren; sin precios, no pueden presupuestar la visita. Ambos pertenecen junto a cada ítem — una cámara de teléfono y buena luz cerrarán la mayor parte de esta brecha sin contratar un fotógrafo.'
+      },
+      'pizzeria': {
+        impact: 'Pizza is a category-shop — customers open three pizzeria tabs side-by-side and the one with the best-photographed, clearly-priced menu wins the order. Missing either signal hands the order to Slice (~15% commission) or to the pizzeria down the block that shows both. The per-item conversion delta on a well-photographed Margherita vs a blank-text menu runs 30-50%.',
+        impact_es: 'La pizza es una categoría de compra comparada — los clientes abren tres pestañas de pizzerías lado a lado y la que tenga el menú mejor fotografiado y con precios claros se lleva el pedido. Si falta alguna de las dos señales, el pedido se va a Slice (~15% de comisión) o a la pizzería de enfrente que muestra ambas. El delta de conversión por ítem sobre una Margherita bien fotografiada frente a un menú de texto plano corre entre 30-50%.',
+        pass: 'Your pizzeria menu has per-pie prices and photography',
+        pass_es: 'Tu menú de pizzería tiene precios por pizza y fotografía',
+        passNote: 'Your menu wins the side-by-side comparison shoppers do before ordering — pies visible, prices visible, one-tap ordering. That pattern is what keeps Slice from eating your margins.',
+        passNote_es: 'Tu menú gana la comparación lado a lado que hacen los compradores antes de pedir — pizzas visibles, precios visibles, pedido de un toque. Ese patrón es el que evita que Slice se coma tus márgenes.',
+        fail: 'Your pizzeria menu is missing: {detected}',
+        fail_es: 'A tu menú de pizzería le falta: {detected}',
+        failNote: 'Pizza ordering is a three-tab comparison — whichever pizzeria shows the pies AND the prices cleanest wins. Shoot your top six pies (phone camera + overhead light works fine), put prices right next to each, and your direct-ordering conversion will lift 30-50% against the Slice competition. This is the single highest-ROI menu project a pizzeria can do.',
+        failNote_es: 'El pedido de pizza es una comparación de tres pestañas — la pizzería que muestre las pizzas Y los precios más limpios gana. Fotografía tus seis pizzas principales (cámara de teléfono + luz desde arriba funciona bien), pon los precios junto a cada una, y tu conversión de pedidos directos subirá 30-50% frente a la competencia de Slice. Este es el proyecto de menú con mayor ROI que una pizzería puede hacer.'
+      },
+      'bar-pub': {
+        impact: 'Bar and pub menus split into two lists: drinks (cocktail prices, draft list) and food (which carries most of the margin — bar food is a higher-markup category than beer). A site that shows neither photos nor prices on the food menu is usually missing the food menu altogether, and the after-work food revenue takes the hit.',
+        impact_es: 'Los menús de bar y pub se dividen en dos listas: bebidas (precios de cócteles, lista de barril) y comida (que carga la mayoría del margen — la comida de bar es una categoría de mayor margen que la cerveza). Un sitio que no muestra ni fotos ni precios en el menú de comida suele estar ocultando el menú de comida por completo, y el ingreso de comida de after-work es el que paga.',
+        pass: 'Your pub menu shows prices with food photography',
+        pass_es: 'Tu menú de pub muestra precios con fotografía de comida',
+        passNote: 'Your food menu is visible the way the cocktail list is — prices next to items, photos of the signature plates. That makes the after-drink "should we order food?" decision a yes instead of a bar-tab.',
+        passNote_es: 'Tu menú de comida es visible de la misma forma que la lista de cócteles — precios junto a los ítems, fotos de los platos insignia. Eso convierte la decisión post-bebida de "¿pedimos comida?" en un sí en vez de sólo una cuenta del bar.',
+        fail: 'Your pub menu is missing: {detected}',
+        fail_es: 'A tu menú de pub le falta: {detected}',
+        failNote: 'Bar customers decide whether to order food AFTER they\'ve already ordered a drink — the food menu with prices AND photos is the conversion surface for that second decision. Cocktail-list prices on their own miss the bigger revenue lever: the food order. Put the food menu on equal footing with the drink list, photos and all.',
+        failNote_es: 'Los clientes del bar deciden si pedir comida DESPUÉS de haber pedido una bebida — el menú de comida con precios Y fotos es la superficie de conversión para esa segunda decisión. Los precios sólo en la lista de cócteles se pierden la palanca de ingreso más grande: el pedido de comida. Pon el menú de comida en igualdad con la lista de bebidas, fotos incluidas.'
+      },
+      'food-truck': {
+        impact: 'Food-truck menus rotate weekly. A photo of today\'s smashburger + its price is the whole pitch — customers standing across the plaza check your site BEFORE they walk over to queue. Missing either signal sends them to the truck next to you that shows both. This is a same-morning fix: the owner shoots a phone photo of the special, updates the price in the site CMS, done.',
+        impact_es: 'Los menús de food truck rotan semanalmente. Una foto de la smashburger de hoy + su precio es todo el pitch — los clientes parados al otro lado de la plaza revisan tu sitio ANTES de caminar a hacer fila. Si falta alguna señal, se van al truck de al lado que muestra ambas. Este es un arreglo de la misma mañana: el dueño toma una foto con el teléfono del especial, actualiza el precio en el CMS del sitio, listo.',
+        pass: 'Your truck menu shows today\'s prices and photos',
+        pass_es: 'Tu menú del truck muestra los precios y fotos de hoy',
+        passNote: 'Your site matches the truck — today\'s special with its price and its photo, visible before the customer walks over. That\'s the pattern that wins the walk-the-plaza decision.',
+        passNote_es: 'Tu sitio coincide con el truck — el especial de hoy con su precio y su foto, visibles antes que el cliente cruce. Ese es el patrón que gana la decisión de cruzar la plaza.',
+        fail: 'Your truck menu is missing: {detected}',
+        fail_es: 'A tu menú del truck le falta: {detected}',
+        failNote: 'Food trucks live and die on the "walk across the plaza to line up" decision. A phone photo of today\'s special + the price is the whole sales pitch — you can update both from the truck before service starts. Skip either and the customer walks to the truck that shows both.',
+        failNote_es: 'Los food trucks viven o mueren por la decisión de "cruzar la plaza a hacer fila". Una foto de teléfono del especial de hoy + el precio es todo el pitch de ventas — puedes actualizar ambos desde el truck antes que empiece el servicio. Salta cualquiera y el cliente camina al truck que muestra ambos.'
+      },
+      'ghost-kitchen': {
+        impact: 'Ghost kitchens have exactly two selling surfaces: aggregator tiles (DoorDash / UberEats / GrubHub — all three show prices and photos by default) and the owner\'s own site. A silent menu on your own site sends shoppers back to the aggregator — where 30% of every ticket goes to the platform instead of to you. Prices + photos on your direct-ordering page is the ONLY way to keep that margin in-house.',
+        impact_es: 'Las cocinas fantasma tienen exactamente dos superficies de venta: los tiles de agregadores (DoorDash / UberEats / GrubHub — los tres muestran precios y fotos por defecto) y el propio sitio del dueño. Un menú silencioso en tu propio sitio manda a los compradores de vuelta al agregador — donde 30% de cada ticket va a la plataforma en vez de a ti. Precios + fotos en tu página de pedido directo es la ÚNICA forma de mantener ese margen en casa.',
+        pass: 'Your ghost-kitchen menu has prices and dish photos on-site',
+        pass_es: 'Tu menú de cocina fantasma tiene precios y fotos de platos en el sitio',
+        passNote: 'Your own-site menu matches what DoorDash / UberEats show — which means a shopper who lands there directly can order without bouncing back to the aggregator. Every order on your own site is a 30% margin win.',
+        passNote_es: 'Tu menú del sitio propio coincide con lo que muestran DoorDash / UberEats — lo que significa que un comprador que aterriza ahí directamente puede pedir sin rebotar al agregador. Cada pedido en tu propio sitio es una ganancia de 30% en margen.',
+        fail: 'Your ghost-kitchen menu is missing: {detected}',
+        fail_es: 'A tu menú de cocina fantasma le falta: {detected}',
+        failNote: 'A ghost kitchen\'s own site has to SELL the same way DoorDash does — prices next to each item, one photo per dish. Silent menus send customers straight back to the aggregator (where you pay 30% of that revenue to them instead of keeping it). Use the same photos you uploaded to DoorDash; use the same prices. Parity is the whole game.',
+        failNote_es: 'El sitio propio de una cocina fantasma tiene que VENDER de la misma forma que DoorDash — precios junto a cada ítem, una foto por plato. Los menús silenciosos mandan a los clientes directo de vuelta al agregador (donde pagas 30% de ese ingreso en vez de quedártelo). Usa las mismas fotos que subiste a DoorDash; usa los mismos precios. La paridad es todo el juego.'
+      },
+      'catering-only': {
+        impact: 'Catering planners make a go / no-go decision within the first 10 seconds of hitting your packages page: "is the per-head price in our budget?" and "does the food look like it fits our event?". Package photos + per-head prices are the two signals that carry that decision. A package page without either sends them to a caterer that is explicit.',
+        impact_es: 'Los planificadores de catering toman una decisión de sí/no en los primeros 10 segundos de llegar a tu página de paquetes: "¿el precio por persona está en nuestro presupuesto?" y "¿la comida se ve como para nuestro evento?". Fotos de paquetes + precios por persona son las dos señales que cargan esa decisión. Una página de paquetes sin alguna de las dos los manda a un caterer que sí sea explícito.',
+        pass: 'Your catering packages have per-head prices and event photos',
+        pass_es: 'Tus paquetes de catering tienen precios por persona y fotos del evento',
+        passNote: 'Planners can scan your packages the way they scan every other caterer\'s — per-head price visible, event photos visible, decision made in the same 10 seconds they give every option.',
+        passNote_es: 'Los planificadores pueden revisar tus paquetes de la misma forma que revisan los de cualquier otro caterer — precio por persona visible, fotos del evento visibles, decisión tomada en los mismos 10 segundos que dan a cada opción.',
+        fail: 'Your catering packages are missing: {detected}',
+        fail_es: 'A tus paquetes de catering les falta: {detected}',
+        failNote: 'Catering planners make a go / no-go within 10 seconds: per-head price in range, food looks like it fits the event. Without prices, they go to a caterer who is upfront; without photos, they go to one that shows the spread. Both belong next to each package name — a single plated shot plus a starting per-head number is enough to start the conversation.',
+        failNote_es: 'Los planificadores de catering toman un sí/no en 10 segundos: precio por persona en rango, comida que se ve acorde al evento. Sin precios, se van con un caterer que sí es claro; sin fotos, con uno que muestra el despliegue. Ambos pertenecen junto a cada nombre de paquete — una sola foto del plato más un precio base por persona es suficiente para empezar la conversación.'
+      }
+    }
   },
   {
     type: 'schema',
@@ -2515,6 +2632,106 @@ var UI_I18N = {
     en: 'Every sentence links to the verified signal it came from. Hover any citation to see the source.',
     es: 'Cada oración se enlaza con la señal verificada de la que proviene. Pasa el cursor sobre cualquier cita para ver la fuente.'
   },
+  // Phase 4 #2: methodology explainer copy. Owner-facing disclosure
+  // of every calculation the audit performs. Long-form; collapsible.
+  // The EN is the canonical copy; ES is a close translation kept in
+  // sync. Any edit here should update both locales — the
+  // test-i18n-coverage check will catch misses.
+  'method.summary':          { en: 'How we calculate these numbers', es: 'Cómo calculamos estos números' },
+  'method.scoreHead':        { en: 'The overall score', es: 'La puntuación general' },
+  'method.scoreBody': {
+    en: 'The overall score is a weighted average of five pillars. Performance is weighted 2× the others because a slow mobile site is materially worse for a restaurant than an imperfect SEO score — 53% of mobile visitors bounce from pages that take more than 3s to load. The Restaurant Readiness pillar is only included when we have enough confirmed checks to trust it; otherwise the score falls back to a simple 4-pillar average so one detected platform plus eight unverified checks doesn\'t inflate the overall number.',
+    es: 'La puntuación general es un promedio ponderado de cinco pilares. El Rendimiento pesa 2× los demás porque un sitio móvil lento es significativamente peor para un restaurante que un SEO imperfecto — el 53% de los visitantes móviles abandona páginas que tardan más de 3s en cargar. El pilar de Preparación del Restaurante solo se incluye cuando tenemos suficientes verificaciones confirmadas para confiar en él; de lo contrario la puntuación vuelve a un promedio simple de 4 pilares, para que una plataforma detectada más ocho verificaciones no confirmadas no inflen el número general.'
+  },
+  'method.subtypeHead':      { en: 'How we detect your restaurant subtype', es: 'Cómo detectamos el subtipo de tu restaurante' },
+  'method.subtypeBody': {
+    en: 'Ten subtypes are recognized: fine-dining, casual-dining, fast-casual, cafe, bakery, bar-pub, pizzeria, food-truck, ghost-kitchen, and catering-only. Detection combines schema.org @type hints, the presence of subtype-specific platforms (Slice for pizzerias, Resy for fine-dining, etc.), and keyword patterns in the page text. Each signal contributes to a score; the highest-scoring subtype wins. Confidence is reported in the subtype card so you can override it if we got it wrong.',
+    es: 'Reconocemos diez subtipos: fine-dining, casual-dining, fast-casual, café, panadería, bar-pub, pizzería, food-truck, ghost-kitchen y solo-catering. La detección combina señales @type de schema.org, la presencia de plataformas específicas del subtipo (Slice para pizzerías, Resy para fine-dining, etc.) y patrones de palabras clave en el texto de la página. Cada señal contribuye a una puntuación; el subtipo con mayor puntuación gana. La confianza se reporta en la tarjeta de subtipo para que puedas corregirla si nos equivocamos.'
+  },
+  'method.weightsHead':      { en: 'Check weights', es: 'Pesos de las verificaciones' },
+  'method.weightsBody': {
+    en: 'Each of the 20+ restaurant-priority checks carries a weight from 0 (not applicable to this subtype) to 2.0 (critical). Viewport is 2.0 across every subtype because a missing viewport breaks every phone visitor\'s experience. Conversions (online ordering or reservations) is 1.5 for most subtypes but 2.0 for fine-dining (reservations) and 2.0 for fast-casual (ordering). Age-gate is 0 for every restaurant subtype — bars and restaurants don\'t legally need them in most jurisdictions, unlike alcohol retailers.',
+    es: 'Cada una de las 20+ verificaciones de prioridad restaurantera tiene un peso entre 0 (no aplica a este subtipo) y 2.0 (crítico). El viewport es 2.0 en todos los subtipos porque la ausencia de viewport rompe la experiencia de cada visitante móvil. Las conversiones (pedidos en línea o reservas) es 1.5 para la mayoría de los subtipos pero 2.0 para fine-dining (reservas) y 2.0 para fast-casual (pedidos). La barrera de edad es 0 para todos los subtipos restauranteros — los bares y restaurantes legalmente no la requieren en la mayoría de las jurisdicciones, a diferencia de los vendedores de alcohol.'
+  },
+  'method.weightsUnverified': {
+    en: '"Unverified" checks (where we honestly couldn\'t tell) count at HALF weight against the denominator, zero credit toward the numerator. This prevents a site we couldn\'t fully scan from inflating its score past a clean-scanning site with the same pass count. The penalty is disclosed on the score ring as "N unverified checks."',
+    es: 'Las verificaciones "no confirmadas" (donde honestamente no pudimos saber) cuentan a MEDIO peso en el denominador, cero crédito en el numerador. Esto evita que un sitio que no pudimos escanear completamente infle su puntuación sobre un sitio de escaneo limpio con el mismo conteo de aprobaciones. La penalización se divulga en el anillo de puntuación como "N verificaciones no confirmadas".'
+  },
+  'method.benchmarksHead':   { en: 'The "typical sites score" benchmark', es: 'El benchmark de "puntuación típica de sitios"' },
+  'method.benchmarksBody': {
+    en: 'Per-subtype benchmark medians are currently operator estimates from manual review of roughly 100 restaurant sites in each subtype. They\'re provisional — the refresh pipeline that replaces each subtype with a real sample size (drawn from live audits this tool runs) is future work. The benchmark chip\'s ⓘ tooltip carries the provenance on every render. Numbers are anchors for expectation-setting, not statistical claims.',
+    es: 'Las medianas de benchmark por subtipo son actualmente estimaciones de operador basadas en la revisión manual de aproximadamente 100 sitios de restaurante por subtipo. Son provisionales — el pipeline de actualización que reemplaza cada subtipo con un tamaño de muestra real (de auditorías en vivo ejecutadas por esta herramienta) es trabajo futuro. El tooltip ⓘ del chip de benchmark lleva la procedencia en cada render. Los números son anclas para calibrar expectativas, no afirmaciones estadísticas.'
+  },
+  'method.revenueHead':      { en: 'The revenue-at-risk chip', es: 'El chip de ingresos-en-riesgo' },
+  'method.revenueBody': {
+    en: 'Every actionable finding carries an "Est. $X–Y/yr at risk" chip. The range is the product of three inputs:',
+    es: 'Cada hallazgo accionable lleva un chip "Est. $X–Y/año en riesgo". El rango es el producto de tres insumos:'
+  },
+  'method.revenueInputs': {
+    en: '(1) a per-check revenue-at-risk coefficient based on published funnel-dropoff research; (2) your restaurant\'s estimated annual revenue, which starts from a subtype-aware default (fine-dining ~$2M, cafe ~$860k, food-truck ~$230k) and is automatically adjusted when Google Places tells us something more: priceLevel scales the per-ticket average (0.55× for $, 2.4× for $$$$), and userRatingCount scales daily covers logarithmically (clamped to 0.40×–2.50× so viral outliers don\'t project chain volume); (3) a confidence-widening layer that stretches the range when any of the Places signals aren\'t available, so an audit with thin data produces an explicitly wider chip instead of a falsely precise one.',
+    es: '(1) un coeficiente de ingresos-en-riesgo por verificación basado en investigación publicada sobre pérdidas de embudo; (2) los ingresos anuales estimados de tu restaurante, que parten de un valor predeterminado consciente del subtipo (fine-dining ~$2M, café ~$860k, food-truck ~$230k) y se ajustan automáticamente cuando Google Places nos dice algo más: priceLevel escala el ticket promedio (0.55× para $, 2.4× para $$$$), y userRatingCount escala las cubiertas diarias logarítmicamente (limitado a 0.40×–2.50× para que los casos virales no proyecten volumen de cadena); (3) una capa de ampliación por confianza que estira el rango cuando alguna señal de Places no está disponible, de modo que una auditoría con datos delgados produce un chip explícitamente más amplio en lugar de uno falsamente preciso.'
+  },
+  'method.revenueZeroInput': {
+    en: 'Nothing in this chain asks you to type numbers. Every adjustment reads from signals the audit already fetches during the fast scan.',
+    es: 'Nada en esta cadena te pide escribir números. Cada ajuste se basa en señales que la auditoría ya obtiene durante el escaneo rápido.'
+  },
+  'method.confidenceHead':   { en: 'What "confidence-widened" means', es: 'Qué significa "ampliado por confianza"' },
+  'method.confidenceBody': {
+    en: 'When Google Places didn\'t find your listing, or didn\'t publish a price level, or hasn\'t accumulated at least 50 reviews, the revenue chip\'s low and high values are stretched to reflect the genuine uncertainty. A well-resolved audit might show Est. $12k–18k/yr at risk; a nothing-resolved audit of the same check shows Est. $5k–37k/yr at risk. The range width itself is the honesty layer — we\'d rather show you a wide span we can defend than a tight one we can\'t.',
+    es: 'Cuando Google Places no encontró tu listado, o no publicó un nivel de precio, o no ha acumulado al menos 50 reseñas, los valores bajo y alto del chip de ingresos se estiran para reflejar la incertidumbre genuina. Una auditoría bien resuelta podría mostrar Est. $12k–18k/año en riesgo; una sin datos de la misma verificación muestra Est. $5k–37k/año en riesgo. El ancho del rango en sí es la capa de honestidad — preferimos mostrarte un rango amplio que podemos defender, en lugar de uno estrecho que no.'
+  },
+  'method.limitsHead':       { en: 'What this audit does NOT do', es: 'Lo que esta auditoría NO hace' },
+  'method.limitsBody': {
+    en: 'It runs on one Lighthouse pass (simulated phone, default throttling) plus a follow-up crawl of up to eight internal pages. It does not test ordering flow end-to-end, place a real reservation, verify your DoorDash profile, or measure real-user traffic beyond what Google\'s CrUX report publishes. It does not scrape Yelp or TripAdvisor (their terms forbid it). It does not claim your revenue-at-risk numbers are precise — they\'re order-of-magnitude estimates, always shown as ranges with "Est." up front.',
+    es: 'Ejecuta una sola pasada de Lighthouse (teléfono simulado, throttling por defecto) más un rastreo de seguimiento de hasta ocho páginas internas. No prueba el flujo de pedido de extremo a extremo, no hace una reserva real, no verifica tu perfil de DoorDash, ni mide tráfico real de usuarios más allá de lo que publica el reporte CrUX de Google. No hace scraping a Yelp ni TripAdvisor (sus términos lo prohíben). No afirma que tus números de ingresos-en-riesgo son precisos — son estimaciones de orden de magnitud, siempre mostradas como rangos con "Est." al frente.'
+  },
+  'method.feedbackNote': {
+    en: 'Found an error in a weight, a benchmark, or the revenue math? Tell us — the whole tool is open and the explanation above is linked from every audit so the methodology travels with the score.',
+    es: '¿Encontraste un error en un peso, un benchmark o las matemáticas de ingresos? Dínoslo — toda la herramienta es abierta y la explicación anterior está enlazada desde cada auditoría, así la metodología viaja junto con la puntuación.'
+  },
+  // Phase 4 #3: margin-health card. Synthesizes existing check
+  // results into a single "how vulnerable is this restaurant to
+  // leaking orders through 15-30% aggregator commission paths?"
+  // readout. Owner sees the score + the specific leaks, not a
+  // generic "you should be on DoorDash" nudge.
+  'marginHealth.eyebrow':  { en: 'Margin health', es: 'Salud del margen' },
+  'marginHealth.heading': {
+    en: 'How much of your revenue stays with you?',
+    es: '¿Cuánto de tus ingresos se queda contigo?'
+  },
+  'marginHealth.sub': {
+    en: 'Every gap below forces customers through a commission-taking path instead of your own margin-preserving one. Aggregators typically take 15–30% per order; your net margin is 3–5%. Closing these leaks keeps the money with the kitchen.',
+    es: 'Cada brecha de abajo empuja a los clientes por un canal con comisión en lugar del tuyo que preserva el margen. Los agregadores suelen tomar entre 15–30% por pedido; tu margen neto es de 3–5%. Cerrar estas fugas mantiene el dinero en la cocina.'
+  },
+  'marginHealth.scoreLabel': { en: 'Margin health score', es: 'Puntuación de salud de margen' },
+  'marginHealth.emptyState': {
+    en: 'No leaks detected — your site is set up to keep the margin in-house on every order.',
+    es: 'No se detectaron fugas — tu sitio está configurado para mantener el margen en casa en cada pedido.'
+  },
+  'marginHealth.leakLeadLine': { en: 'Where orders are leaking:', es: 'Por dónde se están fugando los pedidos:' },
+  'marginHealth.leakPoints':   { en: '−{points} pts', es: '−{points} pts' },
+  'marginHealth.unconfirmed':  { en: 'unverified — half penalty', es: 'no confirmada — media penalización' },
+  // Machine-key translations for the scorer's leak.source values.
+  'marginHealth.leak.conversions': {
+    en: 'No own-site ordering or reservations — every direct-intent customer lands on an aggregator',
+    es: 'Sin pedido o reserva en tu propio sitio — cada cliente con intención directa termina en un agregador'
+  },
+  'marginHealth.leak.menuFormat': {
+    en: 'Menu is a PDF — can\'t link to "Order This" per item, breaks the direct-conversion flow',
+    es: 'El menú es un PDF — no puede enlazar "Ordena esto" por ítem, rompe el flujo de conversión directa'
+  },
+  'marginHealth.leak.menuDepth': {
+    en: 'Menu missing prices or dish photos — shoppers bounce to DoorDash where those signals are standard',
+    es: 'El menú no muestra precios o fotos — los compradores rebotan a DoorDash donde esas señales son estándar'
+  },
+  'marginHealth.leak.hoursAccuracy': {
+    en: 'Hours inconsistent across Google and your schema — Google can route customers to aggregator listings when unsure',
+    es: 'Horarios inconsistentes entre Google y tu schema — Google puede redirigir clientes a agregadores cuando hay duda'
+  },
+  'marginHealth.leak.aggregatorOnly': {
+    en: 'Aggregators are the only ordering surface detected — no direct-ordering platform alongside',
+    es: 'Los agregadores son la única superficie de pedido detectada — sin plataforma directa junto a ellos'
+  },
   // Sprint D1: email deliverability card.
   // Phase 2 U2: heading + sub rewritten in owner-outcome language.
   // The technical term "deliverability" never appeared on any
@@ -2774,6 +2991,207 @@ function t(key, vars, lang) {
     }
     return vars[name] != null ? String(vars[name]) : '';
   });
+}
+
+// ---------------------------------------------------------------------------
+// Phase 4 #3: margin-health rollup.
+// ---------------------------------------------------------------------------
+// Direct answer to the user's push-back on aggregator detection as
+// an "empowering" signal: detecting presence on DoorDash isn't
+// empowering; showing an owner HOW MUCH OF THEIR REVENUE IS AT
+// STRUCTURAL RISK of leaking to aggregators IS. Same data we
+// already fetched, different — honest — frame.
+//
+// computeMarginHealth(signals) is a pure, testable function that
+// synthesizes five existing check results into a single 0-100 score
+// and a list of specific "leaks" — the gaps that force customers
+// toward commission-taking platforms instead of the restaurant's
+// own margin-preserving channels.
+//
+// Signals in (each is a check result string: 'pass' | 'fail' |
+// 'unverified' | missing):
+//   conversionsState    - own-site ordering / reservations
+//   menuDepthState      - prices + dish photos on the menu page
+//   menuFormatState     - HTML menu vs PDF
+//   hoursAccuracyState  - schema hours complete + consistent w/ Places
+//   hasDirectPlatform   - boolean, Toast / Square / ChowNow / etc.
+//                         detected on site (owner-kept margin)
+//   hasAggregatorOnly   - boolean, DoorDash / UberEats / Grubhub
+//                         detected as the ONLY ordering surface
+//
+// Penalty values are calibrated to typical US restaurant margin
+// structure (3-5% net margin; aggregator commissions 15-30%):
+//
+//   no own-site conversion path          -30   (biggest leak)
+//   only aggregator platforms detected   -25   (structural dependency)
+//   menu PDF (blocks direct conversion)  -15
+//   menu depth missing (opaque menu)     -15
+//   hours inconsistent (Google shows wrong info, sends to aggregator)
+//                                         -10
+//
+// Unverified checks count half-penalty, matching the A1 convention
+// used by the readiness scorer. Pass = 0 penalty. Missing signal =
+// 0 penalty (we don't invent leaks we can't see).
+//
+// Grade bands:
+//   >=75 good — healthy independent margin posture
+//   50-74 ok  — mixed; identifiable leaks but recoverable
+//   <50 bad   — structural dependency; every order routes through
+//                a 15-30% commission path
+//
+// The returned `leaks` array is what the margin-health card renders
+// so the owner sees the SPECIFIC things to fix, not just a number.
+
+var MARGIN_HEALTH_PENALTIES = {
+  conversions:         30,
+  aggregatorOnly:      25,
+  menuFormat:          15,
+  menuDepth:           15,
+  hoursAccuracy:       10
+};
+
+function applyPenalty(state, full, label, leaks) {
+  if (state === 'fail') {
+    leaks.push({ source: label, points: full, confirmed: true });
+    return full;
+  }
+  if (state === 'unverified') {
+    var half = Math.round(full / 2);
+    leaks.push({ source: label, points: half, confirmed: false });
+    return half;
+  }
+  return 0;
+}
+
+function computeMarginHealth(signals) {
+  if (!signals || typeof signals !== 'object') return null;
+  var leaks = [];
+  var score = 100;
+
+  // source keys are stable machine identifiers — the UI layer
+  // (index.html) looks them up in UI_I18N via
+  // t('marginHealth.leak.' + source) to render the human-readable
+  // phrase per locale. Keeping the scorer locale-free preserves
+  // Node testability and avoids fragile string equality on copy.
+  score -= applyPenalty(signals.conversionsState,   MARGIN_HEALTH_PENALTIES.conversions,   'conversions',   leaks);
+  score -= applyPenalty(signals.menuFormatState,    MARGIN_HEALTH_PENALTIES.menuFormat,    'menuFormat',    leaks);
+  score -= applyPenalty(signals.menuDepthState,     MARGIN_HEALTH_PENALTIES.menuDepth,     'menuDepth',     leaks);
+  score -= applyPenalty(signals.hoursAccuracyState, MARGIN_HEALTH_PENALTIES.hoursAccuracy, 'hoursAccuracy', leaks);
+
+  // Aggregator-only is a derived binary — only counts as a leak when
+  // we CONFIRMED aggregators are the sole ordering surface. We don't
+  // dock for "you're on DoorDash" in general; we dock for "DoorDash
+  // is the only ordering path we could detect." Safer against false
+  // positives on restaurants that diversify properly.
+  if (signals.hasAggregatorOnly === true) {
+    score -= MARGIN_HEALTH_PENALTIES.aggregatorOnly;
+    leaks.push({
+      source: 'aggregatorOnly',
+      points: MARGIN_HEALTH_PENALTIES.aggregatorOnly,
+      confirmed: true
+    });
+  }
+
+  if (score < 0) score = 0;
+  if (score > 100) score = 100;
+  var grade = score >= 75 ? 'good' : (score >= 50 ? 'ok' : 'bad');
+
+  // Sort leaks by point value descending so the UI can render them
+  // in "biggest first" order without re-sorting downstream.
+  leaks.sort(function(a, b){ return b.points - a.points; });
+
+  return {
+    score: score,
+    grade: grade,
+    leaks: leaks,
+    maxPenalty:
+      MARGIN_HEALTH_PENALTIES.conversions +
+      MARGIN_HEALTH_PENALTIES.aggregatorOnly +
+      MARGIN_HEALTH_PENALTIES.menuFormat +
+      MARGIN_HEALTH_PENALTIES.menuDepth +
+      MARGIN_HEALTH_PENALTIES.hoursAccuracy
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Phase 3 #6: DOM-aware URL extraction from crawled follow-up pages.
+// ---------------------------------------------------------------------------
+// The existing platform detector (detectPlatforms in index.html) is
+// already boundary-aware: it parses each URL via new URL(...), matches
+// patterns against host / hostPath with explicit token-boundary
+// guards, and rejects path-only patterns against bare host strings.
+// That gives it solid precision — /assets/square-shadows.css won't
+// false-positive "Square" because the bare-host pattern doesn't match
+// path segments.
+//
+// The real gap is RECALL, not precision. The detector feeds on URLs
+// extracted from PageSpeed's audit details (network-requests +
+// crawlable-anchors), which only covers the homepage Lighthouse
+// visited. A restaurant whose Toast ordering is embedded on a
+// dedicated /order/ page — or whose Resy widget only lives on
+// /reserve/ — is invisible to the homepage trace. PSI never fetched
+// those follow-up pages; the page-crawl endpoint did, and the HTML
+// is sitting on window.__auditCrawl.pages ready to be mined.
+//
+// extractCrawlPageUrls(crawl) walks every successfully crawled page
+// (homepage + follow-up slots) and pulls URLs out of the DOM
+// attributes that actually identify platform embeds:
+//
+//   <a href=...>         — direct link to ordering / reservations
+//   <iframe src=...>     — embedded booking / ordering widget
+//   <script src=...>     — widget loader script
+//   <form action=...>    — native checkout form pointing at a platform
+//
+// The union of these URLs is merged into allUrls before the priority-
+// check loop runs, so the existing detectPlatforms flow picks up
+// references on follow-up pages without any change to its matching
+// rules. Precision is preserved (same boundary-aware matcher), recall
+// goes up (more URL material to match against).
+//
+// Defensive on malformed HTML: regex-based extraction tolerates broken
+// markup where a real DOM parser would throw. Duplicate URLs are NOT
+// de-duped here because detectPlatforms handles that via its `seen`
+// map; we return the raw list and let the caller concat.
+var CRAWL_URL_ATTR_RE = /<(?:a|iframe|script|form)\b[^>]*\b(?:href|src|action)\s*=\s*(?:"([^"]+)"|'([^']+)'|([^\s>]+))/gi;
+
+function extractCrawlPageUrls(crawl) {
+  if (!crawl || typeof crawl !== 'object') return [];
+  var pages = [];
+  if (crawl.homepage && typeof crawl.homepage.html === 'string') {
+    pages.push(crawl.homepage);
+  }
+  if (Array.isArray(crawl.pages)) {
+    for (var pi = 0; pi < crawl.pages.length; pi++) {
+      var p = crawl.pages[pi];
+      if (p && typeof p.html === 'string' && p.html.length) {
+        pages.push(p);
+      }
+    }
+  }
+  if (!pages.length) return [];
+  var urls = [];
+  for (var i = 0; i < pages.length; i++) {
+    var html = pages[i].html;
+    if (!html || typeof html !== 'string') continue;
+    // Reset lastIndex every call; the /g flag carries state otherwise
+    // and two pages into the loop we'd be matching mid-string.
+    CRAWL_URL_ATTR_RE.lastIndex = 0;
+    var m;
+    while ((m = CRAWL_URL_ATTR_RE.exec(html)) !== null) {
+      // Capture groups 1 (double-quoted) / 2 (single-quoted) /
+      // 3 (unquoted). Exactly one of the three is defined per match.
+      var val = m[1] || m[2] || m[3];
+      if (val == null) continue;
+      val = String(val).trim();
+      if (!val) continue;
+      // Skip fragment-only anchors ("#menu") and JS hrefs
+      // ("javascript:void(0)") — they can't carry a platform host.
+      if (val.charAt(0) === '#') continue;
+      if (/^javascript:/i.test(val)) continue;
+      urls.push(val);
+    }
+  }
+  return urls;
 }
 
 // ---------------------------------------------------------------------------
@@ -3329,6 +3747,9 @@ if (typeof module !== 'undefined' && module.exports) {
     extractMenuSignals: extractMenuSignals,
     MENU_INTEL_PRICE_FLOOR: MENU_INTEL_PRICE_FLOOR,
     MENU_INTEL_PHOTO_FLOOR: MENU_INTEL_PHOTO_FLOOR,
+    extractCrawlPageUrls: extractCrawlPageUrls,
+    computeMarginHealth: computeMarginHealth,
+    MARGIN_HEALTH_PENALTIES: MARGIN_HEALTH_PENALTIES,
     POWERED_BY: POWERED_BY,
     MUNTIN_AUDIT_DESCRIPTION: MUNTIN_AUDIT_DESCRIPTION,
     MUNTIN_AUDIT_DESCRIPTION_ES: MUNTIN_AUDIT_DESCRIPTION_ES,

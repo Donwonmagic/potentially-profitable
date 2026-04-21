@@ -357,9 +357,298 @@ var RESTAURANT_SUBTYPE_BENCHMARKS = {
   'catering-only':  { overall: 60, mobile: 56, a11y: 70, seo: 58, readiness: 48 }
 };
 
+// Phase 4 #1: benchmark provenance metadata.
+// Addresses the original audit's credibility concern: "benchmarks
+// lack sample size / date / methodology — users cannot assess
+// reliability." The honest answer is that the scores above were
+// operator estimates from manual review of restaurant sites in each
+// subtype — not rigorously sampled audit data. This constant
+// surfaces that provenance so the score-card tooltip can say so
+// directly instead of presenting the numbers as if they were
+// statistically derived.
+//
+// Shape is a single shared object rather than per-subtype because
+// every benchmark has the same provenance today. When live audit
+// data starts refreshing individual subtypes, this shape expands
+// into a per-subtype map so some subtypes can say "n=412 audits,
+// 2026-Q2" while others still say "operator estimate."
+//
+// Fields:
+//   source        - Human-readable source descriptor.
+//   sampleSize    - Approximate n. null until live-audit-driven
+//                   refresh lands; currently all subtypes are in
+//                   the operator-estimate bucket.
+//   methodology   - One-sentence description of how the medians
+//                   were derived. Shown in the benchmark chip
+//                   tooltip so the owner sees the provenance on
+//                   hover without leaving the page.
+//   lastUpdated   - YYYY-MM of the most recent manual refresh.
+//                   Updated whenever the scores in RESTAURANT_SUBTYPE_
+//                   BENCHMARKS are re-estimated.
+//   refreshStatus - 'provisional' (operator-estimate) | 'refreshed'
+//                   (backed by live audit sampling). All subtypes
+//                   start provisional; the refresh pipeline that
+//                   flips them to 'refreshed' is future work.
+var RESTAURANT_BENCHMARK_METADATA = {
+  source: 'Manual review of ~100 restaurant sites per subtype',
+  sampleSize: null,
+  methodology: 'Median scores estimated from a manual review of roughly 100 restaurant sites in each subtype. Provisional — will be refreshed automatically as this tool collects live audit data.',
+  lastUpdated: '2026-01',
+  refreshStatus: 'provisional'
+};
+
 function subtypeBenchmark(id) {
   var canon = canonicalSubtypeId(id);
   return (canon && RESTAURANT_SUBTYPE_BENCHMARKS[canon]) || null;
+}
+
+/**
+ * Return the combined benchmark shape for a subtype — the scores
+ * plus the shared provenance metadata. Callers that want only
+ * scores stay on subtypeBenchmark(); callers that want the full
+ * picture (score-card tooltip, methodology footer, credibility
+ * disclosures) use this. Null when the subtype can't resolve.
+ */
+function subtypeBenchmarkWithMetadata(id) {
+  var scores = subtypeBenchmark(id);
+  if (!scores) return null;
+  return {
+    scores: scores,
+    source: RESTAURANT_BENCHMARK_METADATA.source,
+    sampleSize: RESTAURANT_BENCHMARK_METADATA.sampleSize,
+    methodology: RESTAURANT_BENCHMARK_METADATA.methodology,
+    lastUpdated: RESTAURANT_BENCHMARK_METADATA.lastUpdated,
+    refreshStatus: RESTAURANT_BENCHMARK_METADATA.refreshStatus
+  };
+}
+
+// Sprint CC (Phase 2 close-out): subtype-aware default inputs for
+// the revenue-at-risk chip. The generic DEFAULT_OWNER_INPUTS of
+// {50 covers/day × $35 × 365 days = $638k/yr} is correct for
+// nobody — a fine-dining room does 80 × $85 and is closed 2
+// days/week; a cafe does 300+ small tickets at $6-8. Using a
+// single shape across every subtype made the chips systematically
+// wrong for every restaurant that isn't a casual-dining archetype.
+//
+// These are rough industry medians per subtype, same "tradespeople's
+// estimates" credibility frame as RESTAURANT_SUBTYPE_BENCHMARKS
+// above. Useful as better-than-generic defaults and as the starting
+// values for the owner-editable input card (future sprint).
+//
+// Shape:
+//   coversPerDay  — typical transactions per day (covers for dine-in,
+//                   tickets for quick-service / cafes)
+//   avgCheck      — typical ticket value in USD
+//   openDays      — typical annual service days (fine-dining closes
+//                   2/week; food-trucks are seasonal; catering is
+//                   per-event so we model a slightly reduced year)
+//
+// Owners can override every field via the input card; these are only
+// the starting values when no override exists. A subtype that isn't
+// listed here falls through to DEFAULT_OWNER_INPUTS in index.html so
+// the audit never fails closed.
+var RESTAURANT_SUBTYPE_OWNER_DEFAULTS = {
+  'fine-dining':    { coversPerDay:  80, avgCheck: 85, openDays: 310 },
+  'casual-dining':  { coversPerDay: 120, avgCheck: 35, openDays: 350 },
+  'fast-casual':    { coversPerDay: 250, avgCheck: 18, openDays: 360 },
+  'cafe':           { coversPerDay: 300, avgCheck:  8, openDays: 360 },
+  'bakery':         { coversPerDay: 200, avgCheck: 10, openDays: 360 },
+  'bar-pub':        { coversPerDay: 100, avgCheck: 30, openDays: 350 },
+  'pizzeria':       { coversPerDay: 150, avgCheck: 22, openDays: 360 },
+  'food-truck':     { coversPerDay:  80, avgCheck: 12, openDays: 240 },
+  'ghost-kitchen':  { coversPerDay: 120, avgCheck: 20, openDays: 350 },
+  'catering-only':  { coversPerDay:  50, avgCheck: 35, openDays: 250 }
+};
+
+/**
+ * Look up subtype-aware default owner inputs. Returns the triple
+ * {coversPerDay, avgCheck, openDays} for the canonical subtype, or
+ * null when the id doesn't resolve (caller falls back to the
+ * generic DEFAULT_OWNER_INPUTS). Handles legacy ids via
+ * canonicalSubtypeId, same as subtypeBenchmark.
+ */
+function subtypeOwnerDefaults(id) {
+  var canon = canonicalSubtypeId(id);
+  return (canon && RESTAURANT_SUBTYPE_OWNER_DEFAULTS[canon]) || null;
+}
+
+// Sprint CC3a: Google Places priceLevel → avgCheck multiplier.
+// Places v1 returns priceLevel as a string enum; each value shifts
+// a restaurant's typical check size relative to the subtype median.
+// Multipliers are deliberately asymmetric around 1.0 because US
+// restaurant check sizes follow a right-skewed distribution — the
+// ceiling of "$$$$ fine-dining" is much further above the median
+// than the floor of "$ taqueria" is below it.
+//
+// Owner sees zero input here — Places supplies the priceLevel, we
+// apply the multiplier, the revenue-at-risk chip auto-tightens.
+// That's the "wonder at how much it tells them without asking"
+// direction the user named.
+//
+// Multipliers picked from published US restaurant check-size
+// distributions (Nation's Restaurant News, Technomic 2024):
+//   PRICE_LEVEL_INEXPENSIVE    ~55% of median
+//   PRICE_LEVEL_MODERATE       identity (subtype default IS the median)
+//   PRICE_LEVEL_EXPENSIVE      ~1.6× median
+//   PRICE_LEVEL_VERY_EXPENSIVE ~2.4× median
+// UNSPECIFIED / FREE / unknown / null → identity, so the absence
+// of data never skews the chip.
+var PLACES_PRICE_LEVEL_AVG_CHECK_MULT = {
+  'PRICE_LEVEL_INEXPENSIVE':    0.55,
+  'PRICE_LEVEL_MODERATE':       1.00,
+  'PRICE_LEVEL_EXPENSIVE':      1.60,
+  'PRICE_LEVEL_VERY_EXPENSIVE': 2.40
+};
+
+/**
+ * Resolve an avg-check multiplier from a Places priceLevel string.
+ * Unknown / missing inputs return 1.0 (identity) so the caller can
+ * unconditionally multiply and never corrupt the default on
+ * missing data. Lowercase inputs are normalized so a test fixture
+ * or a future Places API version that changes case doesn't break
+ * the lookup.
+ */
+function priceLevelAvgCheckMultiplier(priceLevel) {
+  if (typeof priceLevel !== 'string') return 1.0;
+  var key = priceLevel.toUpperCase();
+  var mult = PLACES_PRICE_LEVEL_AVG_CHECK_MULT[key];
+  return (typeof mult === 'number' && mult > 0) ? mult : 1.0;
+}
+
+// Sprint CC3b: Google Places userRatingCount → coversPerDay scaler.
+// A restaurant with 2,400 Google reviews is moving more traffic
+// than one with 80, other things equal. We use this as a proxy for
+// the cover count instead of asking the owner.
+//
+// Logarithmic scale centered on 100 reviews (roughly the US
+// median for established independents per Google Places data):
+//
+//   mult = 1.0 + REVIEW_SCALER_SLOPE * log10(count / REVIEW_COUNT_ANCHOR)
+//
+// Clamped to [REVIEW_SCALER_FLOOR, REVIEW_SCALER_CEIL] so viral
+// outliers (a food-truck that went on TikTok and has 8k reviews
+// but still does food-truck volume) don't produce cartoonish
+// revenue numbers, and so a brand-new restaurant with 2 reviews
+// doesn't crater its chip to zero.
+//
+// Constants picked to give these mappings:
+//     10 reviews   -> ~0.70
+//     25           -> ~0.82
+//    100           -> 1.00  (identity)
+//    500           -> ~1.21
+//   2000           -> ~1.39
+//   5000           -> ~1.51  (capped below CEIL)
+//
+// The ranges intentionally compress as count grows — beyond a few
+// thousand reviews, additional reviews indicate fame more than
+// additional daily covers.
+var REVIEW_COUNT_ANCHOR  = 100;
+var REVIEW_SCALER_SLOPE  = 0.30;
+var REVIEW_SCALER_FLOOR  = 0.40;
+var REVIEW_SCALER_CEIL   = 2.50;
+
+/**
+ * Resolve a coversPerDay multiplier from a Google Places
+ * userRatingCount. Returns 1.0 for null, undefined, non-positive,
+ * non-numeric inputs so the chip never degrades on missing data.
+ * Result is clamped to [REVIEW_SCALER_FLOOR, REVIEW_SCALER_CEIL]
+ * to prevent outliers from producing implausible revenue numbers.
+ */
+function reviewCountCoversPerDayMultiplier(reviewCount) {
+  if (typeof reviewCount !== 'number' || !isFinite(reviewCount) || reviewCount <= 0) {
+    return 1.0;
+  }
+  var ratio = reviewCount / REVIEW_COUNT_ANCHOR;
+  // Math.log10 is in ES2015; all browsers we support plus Node 18+
+  // have it. Returns -Infinity at 0 and negative for ratio < 1,
+  // which is fine — we clamp afterwards.
+  var logRatio = Math.log10(ratio);
+  var mult = 1.0 + REVIEW_SCALER_SLOPE * logRatio;
+  if (mult < REVIEW_SCALER_FLOOR) return REVIEW_SCALER_FLOOR;
+  if (mult > REVIEW_SCALER_CEIL)  return REVIEW_SCALER_CEIL;
+  return mult;
+}
+
+// Sprint CC3c: confidence-aware chip-range widening.
+// CC3a + CC3b tighten the revenue chip when priceLevel + reviewCount
+// are present. About half of real audits have both signals, roughly
+// a quarter have neither. Without this step the chip shows the same
+// visual weight for a well-resolved restaurant and a nothing-
+// detected one — overclaims precision when we're mostly guessing.
+//
+// Approach: widen the chip's [low, high] span multiplicatively based
+// on which confidence signals are missing. Signals present = no
+// widening. Every missing signal widens the range a little, so an
+// audit with all three unresolved reads as a deliberately imprecise
+// estimate ($5k–40k) while a fully-resolved one reads as a tight one
+// ($12k–18k). No copy change needed — the range WIDTH itself
+// communicates how much we know.
+//
+// Widening factors (applied multiplicatively to pct ranges):
+//
+//   Places match missing           0.70 low × 1.40 high
+//     (no subtype validation, no priceLevel, no reviewCount — huge unknown)
+//   priceLevel missing (avgCheck unclear)
+//                                  0.85 × 1.15
+//   reviewCount < LOW_REVIEW_COUNT_THRESHOLD  (traffic unclear)
+//                                  0.85 × 1.15
+//
+// Stacked worst case (nothing resolved): 0.70 × 0.85 × 0.85 = 0.506
+// low, 1.40 × 1.15 × 1.15 = 1.852 high. Range is ~3.7× wider than
+// the fully-resolved case. That's the honest scale of "we're mostly
+// guessing."
+//
+// Stacked best case (all resolved): 1.0 × 1.0 = identity, chip is
+// unchanged from the CC3a + CC3b tightened values.
+var CONFIDENCE_PLACES_MISSING_LOW  = 0.70;
+var CONFIDENCE_PLACES_MISSING_HIGH = 1.40;
+var CONFIDENCE_PRICE_MISSING_LOW   = 0.85;
+var CONFIDENCE_PRICE_MISSING_HIGH  = 1.15;
+var CONFIDENCE_REVIEWS_MISSING_LOW  = 0.85;
+var CONFIDENCE_REVIEWS_MISSING_HIGH = 1.15;
+// 50 reviews is the threshold below which Google's own signals
+// (rating, review breadth) are too thin to trust for traffic proxy.
+// Restaurants below this count are treated the same as "no reviews"
+// for confidence purposes. Above 50, the reviewCountCoversPerDay
+// multiplier carries the signal.
+var LOW_REVIEW_COUNT_THRESHOLD = 50;
+
+/**
+ * Compute confidence widening factors for the revenue-chip range.
+ * signals shape: { hasPlacesMatch, hasPriceLevel, reviewCount }
+ *   - hasPlacesMatch: boolean (did the Places text-search return a hit?)
+ *   - hasPriceLevel:  boolean (is priceLevel string populated?)
+ *   - reviewCount:    number  (Google userRatingCount, or null/0 when missing)
+ *
+ * Returns { low, high } — multiplicative factors to apply to the
+ * chip's annual-revenue percentages. low is always <= 1.0; high is
+ * always >= 1.0; the product low*high roughly measures uncertainty.
+ *
+ * Defensive on bad input: a null/undefined signals object is treated
+ * as "everything is missing" which produces maximum widening. That
+ * fails loud visually (a wide range chip) rather than hiding the
+ * missing data.
+ */
+function confidenceWideningFactors(signals) {
+  var widthLow = 1.0;
+  var widthHigh = 1.0;
+  if (!signals || !signals.hasPlacesMatch) {
+    widthLow  *= CONFIDENCE_PLACES_MISSING_LOW;
+    widthHigh *= CONFIDENCE_PLACES_MISSING_HIGH;
+  }
+  if (!signals || !signals.hasPriceLevel) {
+    widthLow  *= CONFIDENCE_PRICE_MISSING_LOW;
+    widthHigh *= CONFIDENCE_PRICE_MISSING_HIGH;
+  }
+  var lowCount = !signals
+    || typeof signals.reviewCount !== 'number'
+    || !isFinite(signals.reviewCount)
+    || signals.reviewCount < LOW_REVIEW_COUNT_THRESHOLD;
+  if (lowCount) {
+    widthLow  *= CONFIDENCE_REVIEWS_MISSING_LOW;
+    widthHigh *= CONFIDENCE_REVIEWS_MISSING_HIGH;
+  }
+  return { low: widthLow, high: widthHigh };
 }
 
 /**
@@ -390,4 +679,35 @@ function rankSubtypeScores(scores) {
   var confidence = total > 0 ? top.score / total : 0;
   var alternatives = entries.slice(1, 3).filter(function(e){ return e.score > 0; });
   return { id: top.id, confidence: confidence, alternatives: alternatives };
+}
+
+// Node-only export shim so a regression test can require() this
+// module. Classic-script load in the browser ignores this branch;
+// only `typeof module` is truthy in Node. Kept narrow — only the
+// helpers a test needs are exported. Mirrors the pattern at the
+// tail of restaurant-checks.js.
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    RESTAURANT_SUBTYPES: RESTAURANT_SUBTYPES,
+    RESTAURANT_SUBTYPE_ALIASES: RESTAURANT_SUBTYPE_ALIASES,
+    RESTAURANT_SUBTYPE_IDS: RESTAURANT_SUBTYPE_IDS,
+    RESTAURANT_SUBTYPE_BENCHMARKS: RESTAURANT_SUBTYPE_BENCHMARKS,
+    RESTAURANT_SUBTYPE_OWNER_DEFAULTS: RESTAURANT_SUBTYPE_OWNER_DEFAULTS,
+    canonicalSubtypeId: canonicalSubtypeId,
+    getSubtype: getSubtype,
+    subtypeBenchmark: subtypeBenchmark,
+    subtypeBenchmarkWithMetadata: subtypeBenchmarkWithMetadata,
+    RESTAURANT_BENCHMARK_METADATA: RESTAURANT_BENCHMARK_METADATA,
+    subtypeOwnerDefaults: subtypeOwnerDefaults,
+    priceLevelAvgCheckMultiplier: priceLevelAvgCheckMultiplier,
+    PLACES_PRICE_LEVEL_AVG_CHECK_MULT: PLACES_PRICE_LEVEL_AVG_CHECK_MULT,
+    reviewCountCoversPerDayMultiplier: reviewCountCoversPerDayMultiplier,
+    REVIEW_COUNT_ANCHOR: REVIEW_COUNT_ANCHOR,
+    REVIEW_SCALER_SLOPE: REVIEW_SCALER_SLOPE,
+    REVIEW_SCALER_FLOOR: REVIEW_SCALER_FLOOR,
+    REVIEW_SCALER_CEIL:  REVIEW_SCALER_CEIL,
+    confidenceWideningFactors: confidenceWideningFactors,
+    LOW_REVIEW_COUNT_THRESHOLD: LOW_REVIEW_COUNT_THRESHOLD,
+    subtypeWeights: subtypeWeights
+  };
 }
