@@ -209,8 +209,48 @@
   .audit-form button:hover { background: var(--teal-dark); }
   .audit-form button:disabled { background: var(--stone-2); cursor: not-allowed; }
   @media (max-width: 640px) {
-    .audit-form { flex-direction: column; border-radius: 20px; }
-    .audit-form button { border-radius: 14px; justify-content: center; }
+    /* Sprint 12: mobile-first form tap targets. The form column-stacks
+       on ≤640px; size the input and button to comfortable thumb
+       targets (≥ 48px touch spec) and full-width the button so it
+       visually anchors the action. */
+    .audit-form { flex-direction: column; border-radius: 20px; padding: 10px; gap: 10px; }
+    .audit-form input[type="url"] { min-height: 52px; font-size: 17px; padding: 14px 18px; }
+    .audit-form button {
+      border-radius: 14px;
+      justify-content: center;
+      width: 100%;
+      min-height: 52px;
+      font-size: 16px;
+    }
+  }
+  /* Sprint 12: hero eyebrow shimmer. Gives the existing eyebrow
+     ("Free tool · Powered by Google Lighthouse") a faint left-to-
+     right sheen that cycles every 8s — enough of a modernization
+     signal to feel alive without demanding attention. Implemented
+     via background-clip: text + a moving gradient so the animation
+     affects color only; no layout shift. Reduced-motion leaves the
+     eyebrow static at the brand teal color. */
+  @media (prefers-reduced-motion: no-preference) {
+    .audit-hero .eyebrow {
+      background: linear-gradient(
+        90deg,
+        var(--teal) 0%,
+        var(--teal) 40%,
+        #3E8A9E 50%,
+        var(--teal) 60%,
+        var(--teal) 100%
+      );
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: eyebrow-shimmer 8s linear infinite;
+    }
+    @keyframes eyebrow-shimmer {
+      0%   { background-position: 200% 50%; }
+      100% { background-position: -100% 50%; }
+    }
   }
   /* Sprint S2.5: Deep Scan toggle. Subtle, below the form, so it
      reads as an optional power-user addition rather than a primary
