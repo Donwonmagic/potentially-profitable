@@ -3287,18 +3287,28 @@
     gap: 6px;
     margin-top: 10px;
   }
+  /* Sprint 7: chip baseline unification. Normalizes the shared
+     geometry (height, padding, type size, gap) across every chip
+     variant so the tool's visual rhythm reads as one system. Each
+     variant class (.chip-self, .chip-dev, .chip-rebuild, .chip-time,
+     .chip-revenue, .chip-effort, etc.) keeps its own background +
+     border-color rules; only the structural dimensions move.
+     Slightly taller (26px min-height vs 3px+font) and tabular nums
+     ensure dollar / time values line up when chips sit in rows. */
   .chip {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    padding: 3px 10px;
+    gap: 6px;
+    min-height: 26px;
+    padding: 0 12px;
     font-family: var(--font-body);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
     border-radius: 999px;
     border: 1px solid var(--line-dark);
     white-space: nowrap;
+    font-variant-numeric: tabular-nums;
   }
   .chip-self     { background: #e6f4ec; border-color: #bfe0cb; color: #0f6b35; }
   .chip-self::before { content: '●'; color: #1f9d55; font-size: 9px; }
