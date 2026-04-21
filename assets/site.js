@@ -475,6 +475,12 @@
     const progressEl = card.root.querySelector('.listen-card-progress');
     const progressFill = card.root.querySelector('.listen-card-progress-fill');
     const progressTicks = card.root.querySelector('.listen-card-progress-ticks');
+    const waveformCanvas = card.root.querySelector('.listen-card-waveform');
+    // Sprint A6: peaks array (one bin per column, 0..1). Populated
+    // asynchronously once per audio URL; null until ready. Rendered
+    // behind the progress fill to give the bar a voice-shaped body.
+    let waveformPeaks = null;
+    let waveformForUrl = null; // guards against a language swap mid-fetch
     const extrasEl   = card.root.querySelector('.listen-card-extras');
     const prevBtn    = card.root.querySelector('.listen-prev');
     const nextBtn    = card.root.querySelector('.listen-next');
@@ -634,6 +640,14 @@
         audioEl = null;
       }
       manifest = null;
+      // Sprint A6: invalidate the peaks so the next play re-fetches
+      // the language-specific MP3 (different duration, different peaks).
+      waveformPeaks = null;
+      waveformForUrl = null;
+      if (waveformCanvas) {
+        const ctx = waveformCanvas.getContext('2d');
+        if (ctx) ctx.clearRect(0, 0, waveformCanvas.width, waveformCanvas.height);
+      }
       updateMediaSessionMetadata();
       if (userInitiated) finishPlayback();
       // Swap the visible prose so a reader can follow along in the
@@ -1052,6 +1066,138 @@
       progressTicks.replaceChildren(frag);
     }
 
+    /* -- Sprint A6: static peaks waveform ------------------------- */
+    // Lightweight 32-bit FNV-1a hash so cache keys stay short even on
+    // long audio URLs. Enough to avoid collisions across a handful of
+    // language variants per post.
+    function hashAudioUrl(s) {
+      let h = 0x811c9dc5;
+      for (let i = 0; i < s.length; i++) {
+        h ^= s.charCodeAt(i);
+        h = (h * 0x01000193) >>> 0;
+      }
+      return h.toString(16);
+    }
+
+    const PEAKS_CACHE_PREFIX = 'muntin.audioPeaks.v1.';
+    const PEAKS_BIN_COUNT    = 120;
+
+    function loadCachedPeaks(url) {
+      try {
+        const key = PEAKS_CACHE_PREFIX + hashAudioUrl(url);
+        const raw = localStorage.getItem(key);
+        if (!raw) return null;
+        const arr = JSON.parse(raw);
+        if (!Array.isArray(arr) || arr.length !== PEAKS_BIN_COUNT) return null;
+        return arr;
+      } catch (_) { return null; }
+    }
+    function saveCachedPeaks(url, peaks) {
+      try {
+        const key = PEAKS_CACHE_PREFIX + hashAudioUrl(url);
+        // Round to 3 decimals so the JSON stays under ~1.2 KB per post.
+        const rounded = peaks.map((v) => Math.round(v * 1000) / 1000);
+        localStorage.setItem(key, JSON.stringify(rounded));
+      } catch (_) {}
+    }
+
+    // Decode audio → compute one peak bin per ~duration/PEAKS_BIN_COUNT
+    // window from channel 0. Gracefully falls through to null on any
+    // failure (CORS, decodeAudioData rejection, unsupported AudioContext)
+    // and the card keeps its existing flat teal bar.
+    async function computePeaksFrom(url) {
+      const AC = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+      if (!AC || !window.fetch) return null;
+      try {
+        const res = await fetch(url, { credentials: 'omit' });
+        if (!res.ok) return null;
+        const buf = await res.arrayBuffer();
+        // A 1-second / 1-channel / 22050-Hz context is enough to host
+        // decodeAudioData without allocating a playback-sized buffer.
+        const tempCtx = new AC(1, 22050, 22050);
+        const audioBuf = await tempCtx.decodeAudioData(buf.slice(0));
+        const ch = audioBuf.getChannelData(0);
+        const bins = PEAKS_BIN_COUNT;
+        const step = Math.floor(ch.length / bins) || 1;
+        const peaks = new Array(bins);
+        let max = 0;
+        for (let b = 0; b < bins; b++) {
+          let peak = 0;
+          const start = b * step;
+          const end = Math.min(start + step, ch.length);
+          for (let i = start; i < end; i++) {
+            const v = Math.abs(ch[i]);
+            if (v > peak) peak = v;
+          }
+          peaks[b] = peak;
+          if (peak > max) max = peak;
+        }
+        // Normalize to 0..1 so the tallest bin hits the top.
+        if (max > 0) for (let b = 0; b < bins; b++) peaks[b] /= max;
+        return peaks;
+      } catch (e) {
+        console.warn('[readAloud] peaks decode failed', e);
+        return null;
+      }
+    }
+
+    async function ensureWaveformPeaks() {
+      if (!waveformCanvas || !audioSrc) return;
+      // Respect Data Saver: skip the ~100-300 KB audio fetch.
+      try {
+        const c = navigator.connection;
+        if (c && c.saveData) return;
+      } catch (_) {}
+      if (waveformForUrl === audioSrc) return;
+      waveformForUrl = audioSrc;
+      const cached = loadCachedPeaks(audioSrc);
+      if (cached) { waveformPeaks = cached; renderWaveform(0); return; }
+      const fresh = await computePeaksFrom(audioSrc);
+      if (waveformForUrl !== audioSrc) return; // language changed mid-fetch
+      if (fresh) {
+        waveformPeaks = fresh;
+        saveCachedPeaks(audioSrc, fresh);
+        renderWaveform(lastKnownPlayedPct);
+      }
+    }
+
+    let lastKnownPlayedPct = 0;
+    function renderWaveform(playedPct) {
+      if (!waveformCanvas || !waveformPeaks) return;
+      lastKnownPlayedPct = playedPct || 0;
+      const cssW = waveformCanvas.clientWidth;
+      const cssH = waveformCanvas.clientHeight;
+      if (!cssW || !cssH) return;
+      const dpr = window.devicePixelRatio || 1;
+      const w = Math.floor(cssW * dpr);
+      const h = Math.floor(cssH * dpr);
+      if (waveformCanvas.width !== w)  waveformCanvas.width  = w;
+      if (waveformCanvas.height !== h) waveformCanvas.height = h;
+      const ctx = waveformCanvas.getContext('2d');
+      if (!ctx) return;
+      ctx.clearRect(0, 0, w, h);
+      const bins = waveformPeaks.length;
+      const barW = w / bins;
+      const halfH = h / 2;
+      const playedBoundary = (playedPct / 100) * w;
+      const UNPLAYED = 'rgba(31,78,91,0.22)';
+      const PLAYED   = 'rgba(31,78,91,0.85)';
+      for (let i = 0; i < bins; i++) {
+        const peak = waveformPeaks[i];
+        const barH = Math.max(1, peak * (halfH - 1));
+        const x = i * barW;
+        ctx.fillStyle = (x + barW * 0.5) <= playedBoundary ? PLAYED : UNPLAYED;
+        // Single rect centered vertically — symmetric around the midline.
+        ctx.fillRect(Math.round(x), Math.round(halfH - barH), Math.max(1, Math.floor(barW * 0.6)), Math.round(barH * 2));
+      }
+    }
+
+    // Re-paint on viewport resize so the canvas stays crisp at the
+    // new width. Listeners fire after the progress bar relayouts.
+    window.addEventListener('resize', () => {
+      if (waveformPeaks) renderWaveform(lastKnownPlayedPct);
+    });
+
     // Sprint A3: flag the tick segment whose [startIdx, endIdx) contains
     // the currently-playing chunk. CSS swells the current segment to
     // 1.08× and tints it with a soft teal, so the progress bar visibly
@@ -1343,6 +1489,10 @@
       // Studio mode uses Audio's native rate; remove the voice picker
       const voiceLabel = voiceSelect ? voiceSelect.closest('.listen-select') : null;
       if (voiceLabel) voiceLabel.hidden = true;
+      // Sprint A6: kick off the peaks pipeline. Fire-and-forget; the
+      // canvas stays blank (and the existing flat fill is the only
+      // progress cue) until peaks resolve or fail silently.
+      ensureWaveformPeaks();
       return true;
     }
 
@@ -1412,6 +1562,7 @@
       const pct = audioEl.duration ? Math.min(100, (t / audioEl.duration) * 100) : 0;
       if (progressFill) progressFill.style.width = pct.toFixed(2) + '%';
       if (progressEl) progressEl.setAttribute('aria-valuenow', String(Math.round(pct)));
+      renderWaveform(pct);
       updateDockProgress(pct, t, audioEl.duration || 0);
       updateDockChapter(chunks[currentIndex]);
       markCurrentTickSegment(currentIndex);
@@ -1436,6 +1587,7 @@
       const pct = audioEl.duration ? ((chunk.start || 0) / audioEl.duration) * 100 : 0;
       if (progressFill) progressFill.style.width = pct.toFixed(2) + '%';
       if (progressEl) progressEl.setAttribute('aria-valuenow', String(Math.round(pct)));
+      renderWaveform(pct);
       updateDockProgress(pct, chunk.start || 0, audioEl.duration || 0);
       updateDockChapter(chunk);
       markCurrentTickSegment(currentIndex);
@@ -1775,7 +1927,7 @@
           <p class="listen-card-sub">Press play and we'll read the whole post aloud — charts and all.</p>
         </div>
         <div class="listen-card-meta"><strong>${minutes} min</strong><span>hands-free</span></div>
-        <div class="listen-card-progress" hidden role="progressbar" aria-label="Audio progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="listen-card-progress-fill"></div><div class="listen-card-progress-ticks"></div></div>
+        <div class="listen-card-progress" hidden role="progressbar" aria-label="Audio progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><canvas class="listen-card-waveform" aria-hidden="true"></canvas><div class="listen-card-progress-fill"></div><div class="listen-card-progress-ticks"></div></div>
         <p class="listen-card-chapter"><span class="listen-card-chapter-label">Now reading</span><em></em></p>
         <div class="listen-card-extras" hidden>
           <div class="listen-card-skips">

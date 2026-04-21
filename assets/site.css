@@ -786,6 +786,18 @@ br.br-lg{display:none}
    outer wrapper. */
 .listen-card-progress{grid-area:progress;position:relative;height:24px;display:flex;align-items:center;cursor:pointer;touch-action:none;-ms-touch-action:none;user-select:none}
 .listen-card-progress::before{content:"";position:absolute;left:0;right:0;height:6px;background:var(--line);border-radius:999px;transition:height var(--t-fast) var(--ease)}
+/* Sprint A6: static peaks waveform. Canvas is painted once per audio
+   URL (peaks computed via OfflineAudioContext), then redrawn on each
+   tick to shift the played/unplayed boundary. Sits underneath the
+   track line + progress fill so it adds voice-shaped body without
+   obscuring the existing scrub affordance. */
+.listen-card-waveform{
+  position:absolute;left:0;right:0;top:50%;
+  width:100%;height:22px;
+  transform:translateY(-50%);
+  pointer-events:none;
+  opacity:0.92;
+}
 .listen-card-progress.is-scrubbing::before,.listen-card-progress:hover::before{height:8px}
 /* Sprint A2: gradient + sheen progress fill. The base gradient
    gains a third stop (brighter 2A6475 at 0%) so the filled portion
