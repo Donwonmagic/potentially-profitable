@@ -2399,6 +2399,30 @@ var UI_I18N = {
     en: 'owner replied',
     es: 'respondió el dueño'
   },
+  // Phase 3 #4: review-responsiveness chip + urgent-unreplied callout.
+  // Surfaces the computed reply rate AND flags the specific anti-
+  // pattern of low-star reviews without an owner response — the
+  // cluster Google's local-pack ranking punishes most.
+  'deep.reviews.respChip':   {
+    en: 'Responsiveness: {score}/100',
+    es: 'Capacidad de respuesta: {score}/100'
+  },
+  'deep.reviews.respChip.title': {
+    en: 'Replies to the {sampled} most recent reviews, with extra weight on unreplied 1–2 star reviews. Higher is better.',
+    es: 'Respuestas a las {sampled} reseñas más recientes, con peso extra en reseñas de 1–2 estrellas sin respuesta. Más alto es mejor.'
+  },
+  'deep.reviews.urgentOne': {
+    en: 'One unanswered low-star review in your recent {sampled} — replying within a day signals you care.',
+    es: 'Una reseña negativa sin respuesta entre las últimas {sampled} — responder en un día demuestra que te importa.'
+  },
+  'deep.reviews.urgentMany': {
+    en: '{count} of your {sampled} most recent reviews are 1–2 stars with no owner reply — a cluster worth addressing today.',
+    es: '{count} de tus {sampled} reseñas más recientes son de 1–2 estrellas sin respuesta del dueño — un grupo a atender hoy.'
+  },
+  'deep.reviews.urgentBadge': {
+    en: 'Needs your reply',
+    es: 'Necesita tu respuesta'
+  },
   // Sprint T1: Places-verified facts card.
   'places.verifiedBadge': {
     en: 'Verified by Google',
@@ -2720,7 +2744,70 @@ function t(key, vars, lang) {
 }
 
 // ---------------------------------------------------------------------------
-// Phase 3 #1: cross-source hours-consistency normalization.
+// Phase 3 #4: review-responsiveness scoring.
+// ---------------------------------------------------------------------------
+// /api/gbp-details returns the 5 most recent Google reviews plus a
+// hasOwnerReply flag per review. Previously the card just rendered
+// those as a list; owners learned that reviews existed but got no
+// "should I act on this" signal.
+//
+// computeReviewResponsiveness(reviews) is a pure function that turns
+// the review array into an actionable scorecard:
+//
+//   {
+//     score:         0..100  — blended response rate + urgency penalty
+//     grade:         'good' | 'ok' | 'bad'
+//     sampled:       number of reviews evaluated
+//     replied:       number with owner reply
+//     urgentCount:   number of low-star (<=2) reviews NOT replied to
+//     urgentRatings: number[] — the star values of those low-star unreplied ones
+//   }
+//
+// Scoring formula (kept simple; we have n=5 samples — no illusion of
+// statistical precision):
+//
+//   base   = 100 * replied / sampled
+//   penalty = 20 per unreplied 1-2 star review
+//   score  = clamp(0, 100, base - penalty)
+//
+// Grade bands: >=80 good, 50-79 ok, <50 bad. Match the score-ring
+// gradeScore() treatment so the visual language is consistent
+// across the audit.
+//
+// Null-safe: returns null when there are no reviews to evaluate
+// (review array missing or empty). Caller should hide the chip in
+// that case rather than render a placeholder score.
+function computeReviewResponsiveness(reviews) {
+  if (!Array.isArray(reviews) || reviews.length === 0) return null;
+  var sampled = 0;
+  var replied = 0;
+  var urgentCount = 0;
+  var urgentRatings = [];
+  for (var i = 0; i < reviews.length; i++) {
+    var r = reviews[i];
+    if (!r || typeof r !== 'object') continue;
+    sampled++;
+    var isReplied = !!r.hasOwnerReply;
+    if (isReplied) replied++;
+    var rating = (typeof r.rating === 'number') ? r.rating : null;
+    if (rating != null && rating <= 2 && !isReplied) {
+      urgentCount++;
+      urgentRatings.push(rating);
+    }
+  }
+  if (sampled === 0) return null;
+  var base = 100 * (replied / sampled);
+  var score = Math.max(0, Math.min(100, Math.round(base - 20 * urgentCount)));
+  var grade = score >= 80 ? 'good' : (score >= 50 ? 'ok' : 'bad');
+  return {
+    score: score,
+    grade: grade,
+    sampled: sampled,
+    replied: replied,
+    urgentCount: urgentCount,
+    urgentRatings: urgentRatings
+  };
+}
 // ---------------------------------------------------------------------------
 // The renderNapCheck card in index.html surfaces drift between Google
 // Places, the on-page schema, and the homepage H1/title for Name,
@@ -3048,6 +3135,7 @@ if (typeof module !== 'undefined' && module.exports) {
     parseSchemaHoursObjects: parseSchemaHoursObjects,
     serializeHoursDayMap: serializeHoursDayMap,
     parseHoursTimeToMinutes: parseHoursTimeToMinutes,
+    computeReviewResponsiveness: computeReviewResponsiveness,
     POWERED_BY: POWERED_BY,
     MUNTIN_AUDIT_DESCRIPTION: MUNTIN_AUDIT_DESCRIPTION,
     MUNTIN_AUDIT_DESCRIPTION_ES: MUNTIN_AUDIT_DESCRIPTION_ES,

@@ -303,6 +303,73 @@
     color: var(--ink);
     font-style: italic;
   }
+  /* Phase 3 #4: urgent-review styling. Low-star reviews without an
+     owner reply get a rust left-border so an owner's eye lands on
+     the specific rows worth acting on first, without shouting over
+     the other reviews. */
+  .deep-review-item[data-urgent="1"] {
+    border-left: 3px solid var(--rust, #B8541A);
+    padding-left: 12px;
+    background: #FDF5EE;
+    margin: 6px -8px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 0 6px 6px 0;
+  }
+  .deep-review-item[data-urgent="1"] .deep-review-urgent-badge {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 8px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--rust, #B8541A);
+    background: #fff;
+    border: 1px solid var(--rust, #B8541A);
+    border-radius: 999px;
+    text-transform: uppercase;
+  }
+  /* Phase 3 #4: responsiveness chip in the reviews-card header.
+     Mirrors the security-headers chip grade-band treatment so the
+     visual language is consistent. */
+  .deep-reviews-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+  .deep-reviews-head .deep-section-head { margin: 0; }
+  .deep-reviews-resp-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    font-variant-numeric: tabular-nums;
+    cursor: help;
+  }
+  .deep-reviews-resp-chip[hidden] { display: none; }
+  .deep-reviews-resp-chip[data-grade="good"] { background:#E7F5EC; color:#1F6B3A; border-color:#BFE0CB; }
+  .deep-reviews-resp-chip[data-grade="ok"]   { background:#FDEFE3; color:#8A3E16; border-color:#EFD1B6; }
+  .deep-reviews-resp-chip[data-grade="bad"]  { background:#F7E7DC; color:#B8541A; border-color:#EFC4AA; }
+  /* Nudge line for unreplied low-star clusters. Subtle teal strip
+     above the review list so it reads as context, not as another
+     header. */
+  .deep-reviews-nudge {
+    margin: 0 0 16px;
+    padding: 10px 14px;
+    background: var(--teal-tint, #E8F1F3);
+    border-left: 3px solid var(--teal, #1F4E5B);
+    border-radius: 0 6px 6px 0;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .deep-reviews-nudge[hidden] { display: none; }
   .deep-crux-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -4331,8 +4398,18 @@
            opted into, visually distinct from the Fast Scan body. -->
       <section class="deep-reviews-card deep-card" id="deepReviewsCard" hidden>
         <span class="deep-eyebrow" data-tr="deepScan.eyebrow">Deep scan</span>
-        <h3 class="deep-section-head" data-tr="deep.reviews.heading">Google reviews snapshot</h3>
+        <div class="deep-reviews-head">
+          <h3 class="deep-section-head" data-tr="deep.reviews.heading">Google reviews snapshot</h3>
+          <!-- Phase 3 #4: responsiveness chip — score + grade band,
+               populated by renderReviewsCard after computeReview-
+               Responsiveness runs. Hidden when there are no sampled
+               reviews so we don't render a placeholder score. -->
+          <span class="deep-reviews-resp-chip" id="deepReviewsRespChip" hidden></span>
+        </div>
         <p class="deep-section-sub" id="deepReviewsSub"></p>
+        <!-- Phase 3 #4: urgent-unreplied nudge. Renders only when
+             1–2 star reviews exist without an owner response. -->
+        <p class="deep-reviews-nudge" id="deepReviewsNudge" hidden></p>
         <ol class="deep-reviews-list" id="deepReviewsList"></ol>
       </section>
 
@@ -7137,6 +7214,8 @@
     var card = document.getElementById('deepReviewsCard');
     var sub = document.getElementById('deepReviewsSub');
     var list = document.getElementById('deepReviewsList');
+    var respChip = document.getElementById('deepReviewsRespChip');
+    var nudge = document.getElementById('deepReviewsNudge');
     if (!card || !sub || !list) return;
     if (!data || !data.ok) return;
     // Accuracy rule: render only verified fact lines. If reviewCount
@@ -7155,12 +7234,51 @@
     }
     if (!facts.length) return; // nothing factual to show
     sub.textContent = facts.join(' · ');
+
+    // Phase 3 #4: responsiveness scorecard. Blends reply rate with a
+    // penalty for unreplied 1-2 star reviews. Chip renders in the
+    // card header; nudge line renders above the review list when
+    // urgent reviews exist.
+    var responsiveness = (typeof computeReviewResponsiveness === 'function')
+      ? computeReviewResponsiveness(data.reviews)
+      : null;
+    if (respChip) {
+      if (responsiveness) {
+        respChip.textContent = t('deep.reviews.respChip', { score: responsiveness.score });
+        respChip.setAttribute('data-grade', responsiveness.grade);
+        respChip.setAttribute('title', t('deep.reviews.respChip.title', { sampled: responsiveness.sampled }));
+        respChip.hidden = false;
+      } else {
+        respChip.hidden = true;
+      }
+    }
+    if (nudge) {
+      if (responsiveness && responsiveness.urgentCount > 0) {
+        var nudgeKey = responsiveness.urgentCount === 1
+          ? 'deep.reviews.urgentOne'
+          : 'deep.reviews.urgentMany';
+        nudge.textContent = t(nudgeKey, {
+          count: responsiveness.urgentCount,
+          sampled: responsiveness.sampled
+        });
+        nudge.hidden = false;
+      } else {
+        nudge.hidden = true;
+      }
+    }
+
     list.innerHTML = '';
     if (Array.isArray(data.reviews)) {
       data.reviews.forEach(function(r){
         if (!r || !r.text) return;
         var li = document.createElement('li');
         li.className = 'deep-review-item';
+        // Phase 3 #4: flag low-star unreplied reviews so the rust
+        // border + badge pull the owner's eye to the specific rows
+        // worth acting on. Checked against the same rules used by
+        // computeReviewResponsiveness so chip + list stay in sync.
+        var isUrgent = (typeof r.rating === 'number' && r.rating <= 2 && !r.hasOwnerReply);
+        if (isUrgent) li.setAttribute('data-urgent', '1');
         var meta = document.createElement('div');
         meta.className = 'deep-review-meta';
         var metaBits = [];
@@ -7168,6 +7286,12 @@
         if (r.relativePublishTimeDescription) metaBits.push(r.relativePublishTimeDescription);
         if (r.hasOwnerReply) metaBits.push(t('deep.reviews.ownerReplied'));
         meta.textContent = metaBits.join(' · ');
+        if (isUrgent) {
+          var badge = document.createElement('span');
+          badge.className = 'deep-review-urgent-badge';
+          badge.textContent = t('deep.reviews.urgentBadge');
+          meta.appendChild(badge);
+        }
         var quote = document.createElement('blockquote');
         quote.textContent = r.text.length > 280 ? r.text.slice(0, 280) + '…' : r.text;
         li.appendChild(meta);
