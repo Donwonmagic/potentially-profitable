@@ -984,6 +984,19 @@ br.br-lg{display:none}
 @keyframes listen-blink{0%,100%{opacity:1}
 50%{opacity:0.3}
 }
+/* Sprint A4: chapter-label fade-slide. Runs for 360ms on every chunk
+   boundary (triggered from JS by removing + re-adding the class after
+   a forced reflow). Gives the "now reading…" text a spoken-and-
+   settled feel rather than a hard swap. */
+@keyframes lc-chapter-in{
+  0%   { opacity:0; transform:translateY(6px); filter:blur(1.5px); }
+  100% { opacity:1; transform:translateY(0);   filter:blur(0); }
+}
+.listen-card-chapter em.lc-chapter-in,
+.listen-dock-chapter.lc-chapter-in{
+  animation:lc-chapter-in 360ms var(--ease-out);
+  will-change:opacity, transform, filter;
+}
 .article-body .is-reading{position:relative;background:var(--teal-tint);border-radius:6px;box-shadow:-12px 0 0 0 var(--teal-tint),12px 0 0 0 var(--teal-tint);transition:background-color 0.25s var(--ease),box-shadow 0.25s var(--ease)}
 .article-body .is-reading::before{content:'';position:absolute;left:-16px;top:0.35em;bottom:0.35em;width:3px;background:var(--teal);border-radius:2px}
 /* Callouts (figures, data-audio-alt blocks, any visual card) already
@@ -1003,7 +1016,7 @@ br.br-lg{display:none}
 @keyframes listen-callout-pulse{0%,100%{box-shadow:0 0 0 2px var(--teal),0 0 0 8px var(--teal-tint)}
 50%{box-shadow:0 0 0 2px var(--teal),0 0 0 14px rgba(31,78,91,0.08)}
 }
-@media (prefers-reduced-motion:reduce){.listen-btn[data-state="playing"] svg path,.listen-card-play::after,.listen-card[data-state="loading"] .listen-card-play .icon-loading,.listen-card[data-state="playing"] .listen-card-kicker::before,.listen-card[data-state="playing"] .listen-card-progress-fill,.listen-dock[data-state="playing"] .listen-dock-progress-fill{animation:none}
+@media (prefers-reduced-motion:reduce){.listen-btn[data-state="playing"] svg path,.listen-card-play::after,.listen-card[data-state="loading"] .listen-card-play .icon-loading,.listen-card[data-state="playing"] .listen-card-kicker::before,.listen-card[data-state="playing"] .listen-card-progress-fill,.listen-dock[data-state="playing"] .listen-dock-progress-fill,.listen-card-chapter em.lc-chapter-in,.listen-dock-chapter.lc-chapter-in{animation:none}
 /* Sprint A1: skip the ambient cross-fade under reduced-motion; the
    end state still applies via the [data-state] selector, so the
    warm tint is present without the 1.2s transition. */

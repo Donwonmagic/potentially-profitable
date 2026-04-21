@@ -956,13 +956,31 @@
           el.classList.add('is-reading-callout');
         }
         // Update "now reading" label on the card
-        if (chapterEl) chapterEl.textContent = chapterLabel(chunk);
+        if (chapterEl) setChapterText(chapterEl, chapterLabel(chunk));
         const rect = el.getBoundingClientRect();
         const isOutOfView = rect.top < 80 || rect.bottom > window.innerHeight - 80;
         if (isOutOfView) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
       } else if (chapterEl) {
-        chapterEl.textContent = '';
+        setChapterText(chapterEl, '');
       }
+    }
+
+    // Sprint A4: animate any chapter-label text change with a fade-slide
+    // in — opacity + translateY + a 1.5px blur settle over 360ms. Uses
+    // the remove/reflow/re-add class trick so the same keyframe can
+    // re-trigger on each chunk boundary. Skipped when the text is
+    // unchanged (a no-op tickStudio pass shouldn't re-animate).
+    function setChapterText(el, next) {
+      if (!el) return;
+      const cur = el.textContent || '';
+      const n = next || '';
+      if (cur === n) return;
+      el.textContent = n;
+      el.classList.remove('lc-chapter-in');
+      // Force a reflow so the browser treats the class removal +
+      // re-add as a real transition boundary.
+      void el.offsetWidth;
+      if (n) el.classList.add('lc-chapter-in');
     }
 
     function chapterLabel(chunk) {
@@ -1553,7 +1571,7 @@
     }
 
     function updateDockChapter(chunk) {
-      if (dockChapter) dockChapter.textContent = chunk ? chapterLabel(chunk) : '';
+      if (dockChapter) setChapterText(dockChapter, chunk ? chapterLabel(chunk) : '');
     }
 
     function updateDockProgress(pct, elapsed, total) {
