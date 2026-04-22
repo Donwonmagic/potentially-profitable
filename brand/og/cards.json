@@ -296,6 +296,189 @@
         "value": 90,
         "label": "EL UMBRAL VERDE"
       }
+    },
+
+    {
+      "slug": "blog-losing-reservations",
+      "kind": "article",
+      "locale": "en",
+      "eyebrow": "CONVERSION · RESERVATIONS",
+      "title_1": "Why your restaurant",
+      "title_italic": "loses",
+      "title_2": "reservations.",
+      "dek": "Six leaks. Real dollar math. The fix for each one.",
+      "focus": {
+        "type": "funnel",
+        "label": "THE FUNNEL",
+        "data": [100, 85, 73, 50, 47],
+        "labels": [100, 85, 73, 50, 47],
+        "lost_label": "53 lost per 100 visitors"
+      }
+    },
+    {
+      "slug": "blog-losing-reservations-es",
+      "kind": "article",
+      "locale": "es",
+      "eyebrow": "CONVERSIÓN · RESERVAS",
+      "title_1": "Por qué tu restaurante",
+      "title_italic": "pierde",
+      "title_2": "reservas.",
+      "dek": "Seis fugas. Cuentas reales. Un arreglo para cada una.",
+      "focus": {
+        "type": "funnel",
+        "label": "EL EMBUDO",
+        "data": [100, 85, 73, 50, 47],
+        "labels": [100, 85, 73, 50, 47],
+        "lost_label": "53 perdidas por cada 100 visitas"
+      }
+    },
+
+    {
+      "slug": "blog-doordash-math",
+      "kind": "article",
+      "locale": "en",
+      "eyebrow": "DELIVERY · BREAKEVEN",
+      "title_1": "Does the delivery",
+      "title_italic": "math",
+      "title_2": "actually work?",
+      "dek": "What 30% commission really costs a 12%-margin restaurant.",
+      "focus": {
+        "type": "stat",
+        "value": "30%",
+        "caption": "platform fee against a 12% operating margin",
+        "source": "DOORDASH PARTNER AGREEMENT · 2026"
+      }
+    },
+    {
+      "slug": "blog-doordash-math-es",
+      "kind": "article",
+      "locale": "es",
+      "eyebrow": "DELIVERY · PUNTO DE EQUILIBRIO",
+      "title_1": "¿Las cuentas del",
+      "title_italic": "delivery",
+      "title_2": "cierran?",
+      "dek": "Qué le cuesta de verdad el 30% de comisión a un restaurante con 12% de margen.",
+      "focus": {
+        "type": "stat",
+        "value": "30%",
+        "caption": "comisión de la plataforma contra un margen operativo del 12%",
+        "source": "ACUERDO PARTNER DOORDASH · 2026"
+      }
+    },
+
+    {
+      "slug": "blog-menu-prices",
+      "kind": "article",
+      "locale": "en",
+      "eyebrow": "PRICING · RETENTION",
+      "title_1": "Raise the menu,",
+      "title_italic": "keep",
+      "title_2": "the seats.",
+      "dek": "A six-move playbook for lifting prices without losing the room.",
+      "focus": {
+        "type": "list",
+        "label": "THE PLAYBOOK",
+        "items": [
+          "Re-cost before re-pricing",
+          "Move in threes, not fives",
+          "Reset the anchor",
+          "Protect the loved item"
+        ]
+      }
+    },
+    {
+      "slug": "blog-menu-prices-es",
+      "kind": "article",
+      "locale": "es",
+      "eyebrow": "PRECIOS · RETENCIÓN",
+      "title_1": "Sube el menú,",
+      "title_italic": "conserva",
+      "title_2": "la mesa.",
+      "dek": "Seis jugadas para subir precios sin perder la sala.",
+      "focus": {
+        "type": "list",
+        "label": "LA JUGADA",
+        "items": [
+          "Re-cuesta antes de re-precio",
+          "Mueve de tres en tres",
+          "Restablece el ancla",
+          "Protege el plato querido"
+        ]
+      }
+    },
+
+    {
+      "slug": "blog-restaurant-cost",
+      "kind": "article",
+      "locale": "en",
+      "eyebrow": "BUDGET · TRANSPARENCY",
+      "title_1": "What a restaurant",
+      "title_italic": "website",
+      "title_2": "really costs.",
+      "dek": "Real ranges: DIY templates, assisted builds, fully bespoke.",
+      "focus": {
+        "type": "stat",
+        "value": "$3–15k",
+        "caption": "end-to-end build — templated to bespoke",
+        "source": "MUNTIN DIGITAL · 2026 INDEX"
+      }
+    },
+    {
+      "slug": "blog-restaurant-cost-es",
+      "kind": "article",
+      "locale": "es",
+      "eyebrow": "PRESUPUESTO · TRANSPARENCIA",
+      "title_1": "Cuánto cuesta de",
+      "title_italic": "verdad",
+      "title_2": "una web.",
+      "dek": "Rangos reales: plantillas DIY, acompañadas, a medida.",
+      "focus": {
+        "type": "stat",
+        "value": "$3–15k",
+        "caption": "desarrollo completo — plantilla a medida",
+        "source": "MUNTIN DIGITAL · ÍNDICE 2026"
+      }
+    },
+
+    {
+      "slug": "blog-wix-vs-custom",
+      "kind": "article",
+      "locale": "en",
+      "eyebrow": "PLATFORMS · TRADE-OFFS",
+      "title_1": "Wix",
+      "title_italic": "versus",
+      "title_2": "custom.",
+      "dek": "Where each wins, and when the difference matters for a restaurant.",
+      "focus": {
+        "type": "list",
+        "label": "WHAT YOU TRADE",
+        "items": [
+          "Speed to launch vs. control",
+          "Monthly fees vs. ownership",
+          "Template ceiling vs. craft",
+          "Lock-in vs. portability"
+        ]
+      }
+    },
+    {
+      "slug": "blog-wix-vs-custom-es",
+      "kind": "article",
+      "locale": "es",
+      "eyebrow": "PLATAFORMAS · LO QUE CEDES",
+      "title_1": "Wix",
+      "title_italic": "frente a",
+      "title_2": "hecho a medida.",
+      "dek": "Dónde gana cada uno, y cuándo importa para un restaurante.",
+      "focus": {
+        "type": "list",
+        "label": "QUÉ INTERCAMBIAS",
+        "items": [
+          "Velocidad de lanzamiento vs. control",
+          "Mensualidad vs. propiedad",
+          "Techo de plantilla vs. oficio",
+          "Dependencia vs. portabilidad"
+        ]
+      }
     }
   ]
 }

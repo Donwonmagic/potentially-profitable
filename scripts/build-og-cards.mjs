@@ -212,6 +212,52 @@ const focusModules = {
   },
 
   /**
+   * Horizontal funnel showing stage-by-stage dropoff. Ported from
+   * the reservations post's inline figure. focus.data = array of
+   * numbers (start large, end small), focus.labels = optional
+   * array same length, focus.lost_label = caption under the final
+   * lost figure. Colors intensify toward the bottom.
+   */
+  funnel: ({ card, fg, accentHex }) => {
+    const data = card.focus?.data ?? [];
+    if (!data.length) return "";
+    const labels = card.focus?.labels ?? [];
+    const lostLabel = xmlEscape(card.focus?.lost_label ?? "");
+    const label = xmlEscape((card.focus?.label ?? "").toUpperCase());
+    const x = 700;
+    const yStart = snap(160);
+    const maxW = 340;
+    const top = data[0] || 1;
+    const rowH = 28;
+    const gap = 8;
+    const rows = data.map((n, i) => {
+      const w = Math.round((n / top) * maxW);
+      const y = yStart + 32 + i * (rowH + gap);
+      const opacity = 0.35 + (i / Math.max(1, data.length - 1)) * 0.55;
+      const color = i === data.length - 1 ? accentHex : PALETTE.teal;
+      const lbl = labels[i] ?? String(n);
+      return `
+        <rect x="${x}" y="${y}" width="${w}" height="${rowH}" rx="3"
+              fill="${color}" opacity="${opacity}"/>
+        <text x="${x + maxW + 16}" y="${y + 19}"
+              font-family="Inter, Arial, sans-serif" font-size="14"
+              font-weight="${i === data.length - 1 ? 700 : 500}"
+              fill="${i === data.length - 1 ? accentHex : PALETTE.muted}">${xmlEscape(String(lbl))}</text>
+      `;
+    }).join("");
+    const yCaption = yStart + 32 + data.length * (rowH + gap) + 20;
+    return `
+      <text x="${x}" y="${yStart}"
+            font-family="Inter, Arial, sans-serif" font-size="12"
+            font-weight="700" letter-spacing="3" fill="${PALETTE.muted}">${label}</text>
+      ${rows}
+      ${lostLabel ? `<text x="${x}" y="${yCaption}"
+            font-family="Inter, Arial, sans-serif" font-size="13"
+            font-weight="600" fill="${accentHex}">${lostLabel}</text>` : ""}
+    `;
+  },
+
+  /**
    * Pull quote with attribution. focus.text = the quote (no outer
    * quotation marks — we stamp them), focus.attribution = who said
    * it, focus.wrap = optional max chars/line hint (default 28).
@@ -448,9 +494,67 @@ function renderResearch(card) {
 `;
 }
 
+/**
+ * article — blog posts under /blog/. Same cream-bg editorial
+ * language as research, but teal accent (per the design brief:
+ * Articles → teal) and a slightly roomier title block to
+ * accommodate the longer editorial headlines.
+ */
+function renderArticle(card) {
+  const bg = PALETTE.cream;
+  const fg = PALETTE.ink;
+  const accentHex = PALETTE[card.accent ?? "teal"] ?? PALETTE.teal;
+  const eyebrow = (card.eyebrow ?? "").toUpperCase();
+
+  const title1 = xmlEscape(card.title_1 ?? "");
+  const titleItalic = xmlEscape(card.title_italic ?? "");
+  const title2 = xmlEscape(card.title_2 ?? "");
+  const dek = xmlEscape(card.dek ?? "");
+
+  const focusFn = focusModules[card.focus?.type];
+  const focus = focusFn ? focusFn({ card, fg, accentHex, onLight: true }) : "";
+
+  const yEyebrow = snap(96);
+  const yT1 = snap(184);
+  const yTi = snap(256);
+  const yT2 = snap(328);
+  const yDek = snap(408);
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CANVAS_W} ${CANVAS_H}" width="${CANVAS_W}" height="${CANVAS_H}">
+  <rect width="${CANVAS_W}" height="${CANVAS_H}" fill="${bg}"/>
+  ${categoryStrip(accentHex)}
+
+  <text x="${EDGE}" y="${yEyebrow}"
+        font-family="Inter, Arial, sans-serif" font-size="13"
+        font-weight="700" letter-spacing="4" fill="${accentHex}">${xmlEscape(eyebrow)}</text>
+
+  <text x="${EDGE}" y="${yT1}"
+        font-family="Fraunces, Georgia, serif" font-size="58"
+        font-weight="500" letter-spacing="-2" fill="${fg}">${title1}</text>
+  <text x="${EDGE}" y="${yTi}"
+        font-family="Fraunces, Georgia, serif" font-style="italic"
+        font-size="58" font-weight="400" letter-spacing="-2"
+        fill="${accentHex}">${titleItalic}</text>
+  <text x="${EDGE}" y="${yT2}"
+        font-family="Fraunces, Georgia, serif" font-size="58"
+        font-weight="500" letter-spacing="-2" fill="${fg}">${title2}</text>
+
+  <text x="${EDGE}" y="${yDek}"
+        font-family="Inter, Arial, sans-serif" font-size="20"
+        font-weight="400" fill="${PALETTE.muted}">${dek}</text>
+
+  ${focus}
+
+  ${ornament({ color: PALETTE.muted })}
+  ${footer({ color: PALETTE.muted, ruleColor: PALETTE.rule })}
+</svg>
+`;
+}
+
 const templates = {
   page: renderPage,
   research: renderResearch,
+  article: renderArticle,
 };
 
 // -------------------------------------------------------------
