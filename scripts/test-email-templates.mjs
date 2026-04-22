@@ -243,6 +243,72 @@ function assertShellInvariants(label, html) {
   assert('XSS: entity-encoded img tag',        xss.html.indexOf('&lt;img src=x onerror=alert(1)&gt;') !== -1);
 }
 
+// --- D10: Spanish locale dispatch ----------------------------------
+// Every template in templates.js accepts body.locale === 'es' and
+// routes to the matching function in templates.es.js. These
+// assertions verify the dispatch AND that the ES template picks up
+// the same D9 shell improvements (viewport meta, brand eyebrow,
+// receivedBecause footer, primaryCta/secondaryCta helpers).
+{
+  const out = intakeAutoResponder({ name: 'Ada Lovelace', email: 'a@b.com', locale: 'es' });
+  assertShape('ES intakeAutoResponder', out);
+  // lang attribute ES-specific.
+  assert('ES intakeAutoResponder: html lang="es"',
+    out.html.indexOf('lang="es"') !== -1);
+  // Same shell invariants (viewport, charset, eyebrow) — ES inherits.
+  assert('ES intakeAutoResponder: viewport meta',
+    out.html.indexOf('name="viewport"') !== -1);
+  assert('ES intakeAutoResponder: brand eyebrow',
+    out.html.indexOf('Muntin Digital') !== -1);
+  // ES-specific copy.
+  assert('ES intakeAutoResponder: Spanish subject',
+    out.subject.indexOf('Recibí tu mensaje') !== -1 || out.subject.indexOf('Recibí tu mensaje') !== -1);
+  assert('ES intakeAutoResponder: ES received-because footer',
+    out.html.indexOf('Enviaste el formulario de contacto') !== -1);
+}
+{
+  const out = checklistAutoResponder({
+    email: 'a@b.com', restaurant: 'Chef de Mer', subtype: 'fine-dining', locale: 'es',
+  });
+  assertShape('ES checklistAutoResponder', out);
+  assert('ES checklistAutoResponder: primaryCta label ES',
+    out.html.indexOf('Descargar el PDF') !== -1);
+  assert('ES checklistAutoResponder: secondaryCta label ES',
+    out.html.indexOf('Agenda una llamada de 20 min') !== -1);
+  assert('ES checklistAutoResponder: ES received-because footer',
+    out.html.indexOf('Solicitaste el PDF del checklist') !== -1);
+}
+{
+  const out = auditReportAutoResponder({
+    audited_url: 'https://pizzajoint.example/',
+    overall_score: '78',
+    shareable_link: 'https://muntin.digital/es/tools/audits/restaurant/?s=ABCDEFGHJK',
+    locale: 'es',
+  });
+  assertShape('ES auditReportAutoResponder', out);
+  assert('ES auditReportAutoResponder: Spanish permalink heading',
+    out.html.indexOf('Tu enlace permanente para compartir') !== -1);
+  assert('ES auditReportAutoResponder: primaryCta label ES',
+    out.html.indexOf('Abrir el informe interactivo') !== -1);
+  assert('ES auditReportAutoResponder: ES received-because footer',
+    out.html.indexOf('Solicitaste una copia por correo') !== -1);
+}
+{
+  const out = auditDeepReportAutoResponder({
+    audited_url: 'https://pizzajoint.example/',
+    overall_score: '78',
+    subtype: 'casual-dining',
+    shareable_link: 'https://muntin.digital/es/tools/audits/restaurant/?s=ABCDEFGHJK',
+    pdf_b64: 'abc',
+    locale: 'es',
+  });
+  assertShape('ES auditDeepReportAutoResponder', out);
+  assert('ES auditDeepReportAutoResponder: Spanish permalink heading',
+    out.html.indexOf('Tu enlace permanente para compartir') !== -1);
+  assert('ES auditDeepReportAutoResponder: ES received-because footer',
+    out.html.indexOf('Solicitaste el PDF completo') !== -1);
+}
+
 if (failures > 0) {
   console.error('\n' + failures + ' test(s) failed');
   process.exit(1);
