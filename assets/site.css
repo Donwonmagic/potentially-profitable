@@ -1915,3 +1915,24 @@ br.br-lg{display:none}
 .cite-chip{display:inline-flex;align-items:center;gap:5px;padding:1px 8px;margin-left:4px;font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.04em;color:var(--teal);background:var(--teal-tint);border:1px solid transparent;border-radius:999px;text-decoration:none;vertical-align:1px;transition:background var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease)}
 .cite-chip:hover{background:var(--white);border-color:var(--teal)}
 .cite-chip svg{width:11px;height:11px}
+
+/* ===== Research-note CTA inside a .cite details block =====
+   The .cite-body now leads with an internal "Read Don's summary"
+   link (new tab) and keeps the external source link below it.
+   This treatment makes the internal summary visually primary while
+   preserving the external reference for readers who want the raw
+   study. See scripts/wire-research-citations.mjs. */
+.cite-note-link{
+  display:inline-flex;align-items:center;gap:6px;
+  margin:4px 0 10px;padding:7px 14px;
+  background:var(--teal-tint);color:var(--teal-dark);
+  border:1px solid rgba(31,78,91,0.22);border-radius:999px;
+  font-family:var(--font-body);font-size:13px;font-weight:600;letter-spacing:0.01em;
+  text-decoration:none;
+  transition:background var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease);
+}
+.cite-note-link:hover,.cite-note-link:focus-visible{
+  background:var(--teal);color:var(--cream);border-color:var(--teal);
+}
+.cite-note-link span{font-size:12px;opacity:0.8}
+.cite-note-link:hover span{opacity:1}
