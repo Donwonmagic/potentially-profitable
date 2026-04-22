@@ -14175,11 +14175,19 @@
         if (window.plausible) window.plausible('Audit Shared');
       };
       if (!payload) { finish(fallbackUrl); return; }
-      fetch('/api/audit-snapshot', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(payload),
-      }).then(function(r){ return r.ok ? r.json() : r.json().then(function(j){ return Promise.reject(j); }); })
+      // D7a: render a per-snapshot OG image before POSTing so social
+      // crawlers get a rich per-audit preview when the permalink is
+      // shared. Non-blocking: any Canvas failure falls through and the
+      // snapshot still saves without a custom OG (HTMLRewriter in D7b
+      // falls back to the static brand card).
+      (function buildAndPost(){
+        var postWithOg = function(ogBase64){
+          if (ogBase64) payload.og = { pngBase64: ogBase64 };
+          fetch('/api/audit-snapshot', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(payload),
+          }).then(function(r){ return r.ok ? r.json() : r.json().then(function(j){ return Promise.reject(j); }); })
         .then(function(data){
           if (data && data.ok && data.shareUrl) {
             // Honor the current locale: /es/... permalink when the
@@ -14200,7 +14208,156 @@
           }
           finish(fallbackUrl);
         });
+        };
+        // Try to render the OG PNG. On any failure, continue without.
+        try {
+          renderSnapshotOgPngBase64(payload).then(postWithOg, function(){ postWithOg(null); });
+        } catch (_) {
+          postWithOg(null);
+        }
+      })();
     });
+  }
+
+  /* -------- D7a: per-snapshot OG image renderer -------- */
+  // Draws a 1200×630 Canvas with the audit score, host, and capture
+  // date, exports to a base64 PNG string (no data: prefix). Promise-
+  // based so the share flow can await and fall through cleanly on
+  // failure. Every API call is try/catch-ed — a Canvas misfeature on
+  // older WebKit, a stray exception from a locale-specific Intl call,
+  // or a 0-pixel layout race all degrade to no-custom-OG rather than
+  // a broken share.
+  function renderSnapshotOgPngBase64(payload) {
+    return new Promise(function(resolve, reject) {
+      try {
+        var canvas = document.createElement('canvas');
+        canvas.width = 1200;
+        canvas.height = 630;
+        var ctx = canvas.getContext('2d');
+        if (!ctx) return reject(new Error('no 2d context'));
+        drawSnapshotOg(ctx, payload);
+        // Prefer the synchronous toDataURL path. Canvas.toBlob +
+        // FileReader.readAsDataURL would also work but adds async
+        // complexity for ~1200×630 content; toDataURL is plenty
+        // fast and sync in every browser we support.
+        var dataUrl = canvas.toDataURL('image/png');
+        if (!dataUrl || dataUrl.indexOf('base64,') === -1) {
+          return reject(new Error('toDataURL returned no base64'));
+        }
+        var base64 = dataUrl.split('base64,')[1];
+        if (!base64) return reject(new Error('empty base64'));
+        resolve(base64);
+      } catch (e) { reject(e); }
+    });
+  }
+
+  // Visible copy on the OG card. Localized alongside the rest of the
+  // tool — matches the brand voice used on the share row + banner.
+  var OG_STRINGS_EN = {
+    eyebrow:  'Restaurant website audit',
+    ofMax:    '/100',
+    audited:  'Audited {date}',
+    footer:   'muntin.digital · restaurant audit',
+  };
+  var OG_STRINGS_ES = {
+    eyebrow:  'Auditoría del sitio web del restaurante',
+    ofMax:    '/100',
+    audited:  'Auditado {date}',
+    footer:   'muntin.digital · auditoría de restaurantes',
+  };
+
+  function drawSnapshotOg(ctx, payload) {
+    var W = 1200, H = 630;
+    var isEs = (payload && payload.language === 'es');
+    var strings = isEs ? OG_STRINGS_ES : OG_STRINGS_EN;
+    var score = (payload && typeof payload.score === 'number') ? Math.round(payload.score) : 0;
+    var host = (function(){
+      try { return (new URL(payload.auditedUrl)).host.replace(/^www\./i, ''); }
+      catch (_) { return String(payload.auditedUrl || '').slice(0, 80); }
+    })();
+    var date = (function(){
+      try {
+        var d = new Date((payload.meta && payload.meta.generatedAt) || Date.now());
+        return d.toLocaleDateString(isEs ? 'es' : 'en-US',
+          { year: 'numeric', month: 'long', day: 'numeric' });
+      } catch (_) { return ''; }
+    })();
+
+    // Background
+    ctx.fillStyle = '#FAF7F2';  // cream
+    ctx.fillRect(0, 0, W, H);
+
+    // Left accent bar (teal, full height)
+    ctx.fillStyle = '#1F4E5B';
+    ctx.fillRect(0, 0, 14, H);
+
+    // Eyebrow (top-right)
+    ctx.fillStyle = '#1F4E5B';
+    ctx.font = '500 22px Georgia, "Times New Roman", serif';
+    ctx.textBaseline = 'top';
+    ctx.textAlign = 'right';
+    ctx.fillText(strings.eyebrow, W - 60, 58);
+
+    // Muntin wordmark (top-left, next to accent bar)
+    ctx.font = '700 20px -apple-system, "Segoe UI", Inter, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('MUNTIN DIGITAL', 60, 62);
+
+    // Score ring — left side of the main area
+    var ringCx = 330, ringCy = 340, ringR = 140, ringStroke = 22;
+    var grade = score >= 75 ? 'good' : score >= 50 ? 'ok' : 'bad';
+    var accent = grade === 'good' ? '#1F4E5B'
+               : grade === 'ok'   ? '#D97706'
+               :                    '#B8541A';
+    // Track
+    ctx.strokeStyle = 'rgba(31,78,91,0.14)';
+    ctx.lineWidth = ringStroke;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.arc(ringCx, ringCy, ringR, 0, Math.PI * 2);
+    ctx.stroke();
+    // Score arc — starts at 12 o'clock (-π/2), sweeps clockwise
+    // proportional to score. Small guard so a 0 score still shows a
+    // visible dot via the round cap.
+    var sweep = Math.max(0.01, (score / 100)) * Math.PI * 2;
+    ctx.strokeStyle = accent;
+    ctx.beginPath();
+    ctx.arc(ringCx, ringCy, ringR, -Math.PI / 2, -Math.PI / 2 + sweep);
+    ctx.stroke();
+    // Score text (centered)
+    ctx.fillStyle = '#14161A';
+    ctx.font = '500 140px Georgia, "Times New Roman", serif';
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center';
+    ctx.fillText(String(score), ringCx, ringCy - 8);
+    ctx.fillStyle = 'rgba(20,22,26,0.55)';
+    ctx.font = '500 28px Georgia, "Times New Roman", serif';
+    ctx.fillText(strings.ofMax, ringCx, ringCy + 80);
+
+    // Host + captured date (right side of the main area)
+    var textX = 560;
+    ctx.fillStyle = '#14161A';
+    ctx.font = '600 52px Georgia, "Times New Roman", serif';
+    ctx.textBaseline = 'alphabetic';
+    ctx.textAlign = 'left';
+    // Wrap long hosts at word boundaries (rare but e.g. shop.foo.com/menu).
+    var hostToDraw = host.length > 28 ? host.slice(0, 27) + '…' : host;
+    ctx.fillText(hostToDraw, textX, 320);
+
+    ctx.fillStyle = 'rgba(20,22,26,0.65)';
+    ctx.font = '500 26px -apple-system, "Segoe UI", Inter, sans-serif';
+    if (date) ctx.fillText(strings.audited.replace('{date}', date), textX, 370);
+
+    // Footer (thin rule + domain line)
+    ctx.strokeStyle = 'rgba(31,78,91,0.18)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(60, H - 80);
+    ctx.lineTo(W - 60, H - 80);
+    ctx.stroke();
+    ctx.fillStyle = '#1F4E5B';
+    ctx.font = '500 22px -apple-system, "Segoe UI", Inter, sans-serif';
+    ctx.fillText(strings.footer, 60, H - 45);
   }
 
   /* -------- D2: snapshot payload builder -------- */
