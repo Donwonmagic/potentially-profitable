@@ -158,7 +158,12 @@ function ornament({ color = PALETTE.muted, x = EDGE, y = 552 } = {}) {
  */
 function categoryStrip(accent) {
   if (accent === "ink") return "";
-  return `<rect x="0" y="0" width="8" height="${CANVAS_H}" fill="${accent}"/>`;
+  // 12px rail — present but not loud. The top 40% is solid, below
+  // fades to the accent at low opacity — a subtle editorial detail.
+  return `
+    <rect x="0" y="0" width="12" height="${CANVAS_H * 0.4}" fill="${accent}"/>
+    <rect x="0" y="${CANVAS_H * 0.4}" width="12" height="${CANVAS_H * 0.6}" fill="${accent}" opacity="0.4"/>
+  `;
 }
 
 // -------------------------------------------------------------
@@ -203,6 +208,91 @@ const focusModules = {
             font-family="Inter, Arial, sans-serif" font-size="12"
             font-weight="700" letter-spacing="3" fill="${fg}" opacity="0.5">${label}</text>
       ${rows}
+    `;
+  },
+
+  /**
+   * Pull quote with attribution. focus.text = the quote (no outer
+   * quotation marks — we stamp them), focus.attribution = who said
+   * it, focus.wrap = optional max chars/line hint (default 28).
+   */
+  quote: ({ card, fg, accentHex, onLight = false }) => {
+    const raw = card.focus?.text ?? "";
+    const attribution = xmlEscape(card.focus?.attribution ?? "");
+    const max = card.focus?.wrap ?? 28;
+    // Greedy wrap into lines.
+    const words = raw.split(/\s+/);
+    const lines = [];
+    let cur = "";
+    for (const w of words) {
+      if ((cur + " " + w).trim().length > max && cur) { lines.push(cur); cur = w; }
+      else { cur = (cur + " " + w).trim(); }
+    }
+    if (cur) lines.push(cur);
+    const x = 700;
+    const xMark = 680;
+    const yStart = snap(208);
+    const lineH = 58;
+    const quoteColor = onLight ? PALETTE.ink : fg;
+    const rows = lines.map((ln, i) => `
+      <text x="${x}" y="${yStart + i * lineH}"
+            font-family="Fraunces, Georgia, serif" font-style="italic"
+            font-size="38" font-weight="500" letter-spacing="-1"
+            fill="${quoteColor}">${xmlEscape(ln)}</text>
+    `).join("");
+    const yAttr = yStart + lines.length * lineH + 24;
+    return `
+      <text x="${xMark}" y="${yStart - 36}"
+            font-family="Fraunces, Georgia, serif" font-size="112"
+            font-weight="500" fill="${accentHex}" opacity="0.35">&#x201C;</text>
+      ${rows}
+      <line x1="${x}" y1="${yAttr - 14}" x2="${x + 36}" y2="${yAttr - 14}"
+            stroke="${accentHex}" stroke-width="2"/>
+      <text x="${x + 48}" y="${yAttr - 10}"
+            font-family="Inter, Arial, sans-serif" font-size="14"
+            font-weight="600" letter-spacing="2" fill="${accentHex}">${attribution}</text>
+    `;
+  },
+
+  /**
+   * Score ring — circular gauge with threshold zones (for Lighthouse).
+   * focus.value = numeric score (0-100), focus.label = under ring.
+   * Teal ≥70, gold 50-69, rust <50.
+   */
+  "score-ring": ({ card, fg, onLight = false }) => {
+    const value = Math.max(0, Math.min(100, Number(card.focus?.value ?? 0)));
+    const label = xmlEscape((card.focus?.label ?? "").toUpperCase());
+    const cx = 920;
+    const cy = 300;
+    const r = 110;
+    const circ = 2 * Math.PI * r;
+    const filled = (value / 100) * circ;
+    const empty = circ - filled;
+    const zoneColor = value >= 70 ? PALETTE.teal : value >= 50 ? PALETTE.gold : PALETTE.rust;
+    const trackColor = onLight ? "rgba(20,22,26,0.08)" : "rgba(250,247,242,0.14)";
+    const numberColor = onLight ? PALETTE.ink : fg;
+    // Threshold ticks at 50 and 90 (outer).
+    const tick = (pct) => {
+      const a = -Math.PI / 2 + (pct / 100) * 2 * Math.PI;
+      const r1 = r + 12, r2 = r + 24;
+      return `<line x1="${cx + r1 * Math.cos(a)}" y1="${cy + r1 * Math.sin(a)}"
+                    x2="${cx + r2 * Math.cos(a)}" y2="${cy + r2 * Math.sin(a)}"
+                    stroke="${onLight ? PALETTE.muted : PALETTE.dim}" stroke-width="2"/>`;
+    };
+    return `
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${trackColor}" stroke-width="18"/>
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${zoneColor}" stroke-width="18"
+              stroke-dasharray="${filled} ${empty}"
+              transform="rotate(-90 ${cx} ${cy})"
+              stroke-linecap="butt"/>
+      ${tick(50)}
+      ${tick(90)}
+      <text x="${cx}" y="${cy + 18}" text-anchor="middle"
+            font-family="Fraunces, Georgia, serif" font-size="96"
+            font-weight="500" letter-spacing="-4" fill="${numberColor}">${value}</text>
+      <text x="${cx}" y="${cy + r + 56}" text-anchor="middle"
+            font-family="Inter, Arial, sans-serif" font-size="12"
+            font-weight="700" letter-spacing="3" fill="${zoneColor}">${label}</text>
     `;
   },
 
@@ -298,8 +388,69 @@ function renderPage(card) {
 `;
 }
 
+/**
+ * research — short notes under /learn/research/. Cream background,
+ * rust accent (the evidence-shelf color), serif headline, right-
+ * column focus module.
+ */
+function renderResearch(card) {
+  const bg = PALETTE.cream;
+  const fg = PALETTE.ink;
+  const accentHex = PALETTE[card.accent ?? "rust"] ?? PALETTE.rust;
+  const eyebrow = (card.eyebrow ?? "").toUpperCase();
+
+  const title1 = xmlEscape(card.title_1 ?? "");
+  const titleItalic = xmlEscape(card.title_italic ?? "");
+  const title2 = xmlEscape(card.title_2 ?? "");
+  const dek = xmlEscape(card.dek ?? "");
+
+  const focusFn = focusModules[card.focus?.type];
+  const focus = focusFn
+    ? focusFn({ card, fg, accentHex, onLight: true })
+    : "";
+
+  // 8px baseline positions. Tighter vertical rhythm than page
+  // because research cards trend toward more on-canvas content.
+  const yEyebrow = snap(104);
+  const yT1 = snap(192);
+  const yTi = snap(260);
+  const yT2 = snap(328);
+  const yDek = snap(408);
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CANVAS_W} ${CANVAS_H}" width="${CANVAS_W}" height="${CANVAS_H}">
+  <rect width="${CANVAS_W}" height="${CANVAS_H}" fill="${bg}"/>
+  ${categoryStrip(accentHex)}
+
+  <text x="${EDGE}" y="${yEyebrow}"
+        font-family="Inter, Arial, sans-serif" font-size="13"
+        font-weight="700" letter-spacing="4" fill="${accentHex}">${xmlEscape(eyebrow)}</text>
+
+  <text x="${EDGE}" y="${yT1}"
+        font-family="Fraunces, Georgia, serif" font-size="60"
+        font-weight="500" letter-spacing="-2" fill="${fg}">${title1}</text>
+  <text x="${EDGE}" y="${yTi}"
+        font-family="Fraunces, Georgia, serif" font-style="italic"
+        font-size="60" font-weight="400" letter-spacing="-2"
+        fill="${accentHex}">${titleItalic}</text>
+  <text x="${EDGE}" y="${yT2}"
+        font-family="Fraunces, Georgia, serif" font-size="60"
+        font-weight="500" letter-spacing="-2" fill="${fg}">${title2}</text>
+
+  <text x="${EDGE}" y="${yDek}"
+        font-family="Inter, Arial, sans-serif" font-size="20"
+        font-weight="400" fill="${PALETTE.muted}">${dek}</text>
+
+  ${focus}
+
+  ${ornament({ color: PALETTE.muted })}
+  ${footer({ color: PALETTE.muted, ruleColor: PALETTE.rule })}
+</svg>
+`;
+}
+
 const templates = {
   page: renderPage,
+  research: renderResearch,
 };
 
 // -------------------------------------------------------------
