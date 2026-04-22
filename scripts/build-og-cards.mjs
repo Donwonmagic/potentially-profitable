@@ -172,6 +172,61 @@ const focusModules = {
     stroke: fg,
     opacity: 0.14,
   }),
+
+  /**
+   * Numbered list. Up to 5 items. Sits on the right side of the card.
+   * focus.items is an array of strings.
+   * focus.label is the column header (tracked Inter).
+   */
+  list: ({ card, fg, accentHex }) => {
+    const items = (card.focus?.items ?? []).slice(0, 5);
+    const label = xmlEscape((card.focus?.label ?? "").toUpperCase());
+    const x = 760;
+    const yStart = 150;
+    const rowH = 64;    // 8px × 8 = snap-friendly
+    const rows = items.map((item, i) => {
+      const y = yStart + 40 + i * rowH;
+      const n = i + 1;
+      return `
+        <circle cx="${x}" cy="${y - 14}" r="18" fill="none"
+                stroke="${accentHex}" stroke-width="1.5" opacity="0.75"/>
+        <text x="${x}" y="${y - 9}" text-anchor="middle"
+              font-family="Fraunces, Georgia, serif" font-style="italic"
+              font-size="18" font-weight="500" fill="${accentHex}">${n}</text>
+        <text x="${x + 36}" y="${y - 8}"
+              font-family="Inter, Arial, sans-serif" font-size="18"
+              font-weight="500" fill="${fg}" opacity="0.88">${xmlEscape(item)}</text>
+      `;
+    }).join("");
+    return `
+      <text x="${x}" y="${yStart}"
+            font-family="Inter, Arial, sans-serif" font-size="12"
+            font-weight="700" letter-spacing="3" fill="${fg}" opacity="0.5">${label}</text>
+      ${rows}
+    `;
+  },
+
+  /**
+   * Single large statistic. focus.value = display number/string,
+   * focus.caption = line under value, focus.source = attribution line.
+   */
+  stat: ({ card, fg, accentHex }) => {
+    const value = xmlEscape(card.focus?.value ?? "");
+    const caption = xmlEscape(card.focus?.caption ?? "");
+    const source = xmlEscape((card.focus?.source ?? "").toUpperCase());
+    const x = 780;
+    return `
+      <text x="${x}" y="${snap(200)}"
+            font-family="Inter, Arial, sans-serif" font-size="12"
+            font-weight="700" letter-spacing="3" fill="${fg}" opacity="0.5">${source}</text>
+      <text x="${x}" y="${snap(320)}"
+            font-family="Fraunces, Georgia, serif" font-size="128"
+            font-weight="500" letter-spacing="-4" fill="${accentHex}">${value}</text>
+      <text x="${x}" y="${snap(376)}"
+            font-family="Inter, Arial, sans-serif" font-size="18"
+            font-weight="500" fill="${fg}" opacity="0.78">${caption}</text>
+    `;
+  },
 };
 
 // -------------------------------------------------------------
@@ -186,6 +241,10 @@ function renderPage(card) {
   const bg = PALETTE.ink;
   const fg = PALETTE.cream;
   const dim = PALETTE.dim;
+  // Pages are brand-forward (ink bg). When a focus module needs an
+  // accent color (stat value, list numbers), fall back to a warm
+  // highlight rather than cream — keeps the focal point readable.
+  const accentHex = card.accent && card.accent !== "ink" ? PALETTE[card.accent] : PALETTE.gold;
   const eyebrow = (card.eyebrow ?? "").toUpperCase();
 
   const title1 = xmlEscape(card.title_1 ?? "");
@@ -193,7 +252,7 @@ function renderPage(card) {
   const title2 = xmlEscape(card.title_2 ?? "");
   const dek = xmlEscape(card.dek ?? "");
 
-  const focus = (focusModules[card.focus?.type] ?? (() => ""))({ card, fg });
+  const focus = (focusModules[card.focus?.type] ?? (() => ""))({ card, fg, accentHex });
 
   // 8px baseline positions.
   const yEyebrow = snap(128);    // 128
