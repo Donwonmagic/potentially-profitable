@@ -3327,6 +3327,20 @@
     flex-direction: column;
     gap: 18px;
   }
+  /* Hotfix: the HTML5 `hidden` attribute uses a non-!important UA
+     rule (`[hidden] { display: none }`) that loses CSS specificity
+     to the unscoped class above. Without this, JS that sets
+     `notice.hidden = true` is silently ignored — the notice stays
+     visible regardless of classification. Mirror for businessTypeCard
+     + nap-check-card + the worksheet-header sibling so any element
+     with both an explicit display value AND a `hidden` toggle
+     respects the attribute. */
+  .not-restaurant-notice[hidden],
+  .business-type-card[hidden],
+  .nap-check-card[hidden],
+  .worksheet-header[hidden] {
+    display: none !important;
+  }
   .not-restaurant-notice .nrn-body h3 {
     font-family: var(--font-display);
     font-size: 20px;
