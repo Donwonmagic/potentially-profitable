@@ -1,395 +1,395 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-20T17:45:29.257Z",
+  "generatedAt": "2026-04-22T20:40:43.793Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "am_puck",
   "language": "en",
-  "total": 648.6,
+  "total": 651.58,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "You don't want to raise prices. Your costs have already gone up, your suppliers' costs have already gone up, and somewhere in the back of your head you know the math stopped working about four months ago. You've been holding the line on menu prices because you remember what happened the last time the restaurant across the street tried a liv increase in one shot, and you'd rather eat the margin than lose a regular.",
+      "text": "You do not want to raise prices. Your costs have already gone up, your suppliers' costs have already gone up, and somewhere in the back of your head you know the math stopped working about four months ago. You have been holding the line on menu prices because you remember what happened the last time the restaurant across the street tried a liv increase in one shot, and you would rather eat the margin than lose a regular.",
       "start": 0,
-      "end": 17.24
+      "end": 17.27
     },
     {
       "id": 1,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "I understand the fear. I also think the fear is usually solving for the wrong risk. The question isn't should I raise prices — at some point, if you keep eating every cost increase, you close. The question is which items, by how much, and in what order , so that the numbers on the menu can go up without your reservation count going down.",
-      "start": 17.76,
-      "end": 35.07
+      "text": "I understand the fear. I also think the fear is usually solving for the wrong risk. The question is not should I raise prices — at some point, if you keep eating every cost increase, you close. The question is which items, by how much, and in what order , so that the numbers on the menu can go up without your reservation count going down.",
+      "start": 17.79,
+      "end": 35.25
     },
     {
       "id": 2,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
       "text": "This post is the playbook I use when I help restaurant operators reprice their menu and their website in the same week. The math is restaurant-specific, the execution is website-specific, and the two halves only work together. These numbers are illustrative, drawn from patterns I see across the independent restaurants I work with — not from a published dataset. Your own menu will vary. The shape of the move is the part that generalizes.",
-      "start": 35.59,
-      "end": 54.85
+      "start": 35.77,
+      "end": 55.03
     },
     {
       "id": 3,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
       "text": "The anxious math nobody wants to run.",
-      "start": 55.95,
-      "end": 57.93
+      "start": 56.13,
+      "end": 58.11
     },
     {
       "id": 4,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Before anything else, do this one calculation. Pull the last ninety days of sales. Take your food cost percentage — what you're paying suppliers divided by what you charge guests. If it used to be 30% and it's now 34%, that four-point drift is your profit margin walking out the back door. For an independent restaurant doing 1.2 dollarsM a year, that four points is around 48,000 dollars — more than a reliable sous chef's salary, evaporating quietly.",
-      "start": 58.63,
-      "end": 82.99
+      "text": "Before anything else, do this one calculation. Pull the last ninety days of sales. Take your food cost percentage — what you are paying suppliers divided by what you charge guests. If it used to be 30% and it is now 34%, that four-point drift is your profit margin walking out the back door. For an independent restaurant doing 1.2 dollarsM a year, that four points is around 48,000 dollars — more than a reliable sous chef's salary, evaporating quietly.",
+      "start": 58.81,
+      "end": 83.23
     },
     {
       "id": 5,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Now do the uncomfortable one. If you raise your menu by an average of 6% across the board, and you lose 3% of your covers as a result, your revenue barely moves — but your margin recovers almost entirely, because the covers you lose at the margin were the lowest-spending ones anyway. That's the whole game. The trick is getting the 6% without the 3% becoming 15%.",
-      "start": 83.51,
-      "end": 101.37
+      "text": "Now do the uncomfortable one. If you raise your menu by an average of 6% across the board, and you lose 3% of your covers as a result, your revenue barely moves — but your margin recovers almost entirely, because the covers you lose at the margin were the lowest-spending ones anyway. That is the whole game. The trick is getting the 6% without the 3% becoming 15%.",
+      "start": 83.75,
+      "end": 101.56
     },
     {
       "id": 6,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(6)",
-      "text": "Getting it wrong looks like this: a flat percentage bump on every item, a new P D F menu uploaded over the weekend, and a Monday morning where regulars open their phones, see the same burger that was 17 dollars last week now at 19 dollars, and quietly book somewhere else. The numbers went up, the reservation count went down, and now it's your fault — not inflation's.",
-      "start": 101.89,
-      "end": 119.54
+      "text": "Getting it wrong looks like this: a flat percentage bump on every item, a new P D F menu uploaded over the weekend, and a Monday morning where regulars open their phones, see the same burger that was 17 dollars last week now at 19 dollars, and quietly book somewhere else. The numbers went up, the reservation count went down, and now it is your fault — not inflation's.",
+      "start": 102.08,
+      "end": 119.85
     },
     {
       "id": 7,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(7)",
       "text": "Getting it right looks like three tiers.",
-      "start": 120.06,
-      "end": 121.79
+      "start": 120.37,
+      "end": 122.1
     },
     {
       "id": 8,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Here's the three-tier price-raise strategy, in one picture. Tier one: anchor items — the dishes guests remember your menu by, the burger or the chicken sandwich everyone expects. Hold those. Don't touch them. Tier two: core items — your mid-menu workhorses, most entrées, most pastas, most pizzas. Raise those by four to six percent. Tier three: signature items — your chef's menu, the specials, the one dish that only you make this way. Raise those by eight to twelve percent. The guest remembers the anchor, feels the core move once and forgets it, and doesn't question the signature because the signature was never a price-comparison item to begin with. Result: margin recovered.",
-      "start": 122.59,
-      "end": 156.96
+      "text": "Here is the three-tier price-raise strategy, in one picture. Tier one: anchor items — the dishes guests remember your menu by, the burger or the chicken sandwich everyone expects. Hold those. Do not touch them. Tier two: core items — your mid-menu workhorses, most entrées, most pastas, most pizzas. Raise those by four to six percent. Tier three: signature items — your chef's menu, the specials, the one dish that only you make this way. Raise those by eight to twelve percent. The guest remembers the anchor, feels the core move once and forgets it, and does not question the signature because the signature was never a price-comparison item to begin with. Result: margin recovered.",
+      "start": 122.9,
+      "end": 157.33
     },
     {
       "id": 9,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(8)",
-      "text": "The logic is simple: guests don't notice price changes evenly across the menu. They notice them most on the items they've compared to other restaurants. They notice them least on the items that only you make. The playbook is to take your raise in the places the guest is least likely to feel it, and to leave the anchor items as-is so the menu still feels like \"yours\" when they open it.",
-      "start": 157.71,
-      "end": 175.78
+      "text": "The logic is simple: guests do not notice price changes evenly across the menu. They notice them most on the items they have compared to other restaurants. They notice them least on the items that only you make. The playbook is to take your raise in the places the guest is least likely to feel it, and to leave the anchor items as-is so the menu still feels like \"yours\" when they open it.",
+      "start": 158.08,
+      "end": 175.92
     },
     {
       "id": 10,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(2)",
       "text": "The tiers, up close.",
-      "start": 176.88,
-      "end": 177.91
+      "start": 177.02,
+      "end": 178.05
     },
     {
       "id": 11,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(1)",
       "text": "Tier 1 — Anchors you never touch.",
-      "start": 179.01,
-      "end": 180.62
+      "start": 179.15,
+      "end": 180.76
     },
     {
       "id": 12,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Every menu has three to five items that are load-bearing in the guest's memory. The burger, the Caesar, the house chicken, the signature cocktail at 14 dollars. These aren't just menu items — they're reference prices. When a guest opens your menu, they scan for those numbers first, usually unconsciously, to decide whether you're \"the same price you were\" or whether something has changed.",
-      "start": 181.32,
-      "end": 199.7
+      "text": "Every menu has three to five items that are load-bearing in the guest's memory. The burger, the Caesar, the house chicken, the signature cocktail at 14 dollars. These are not just menu items — they are reference prices. When a guest opens your menu, they scan for those numbers first, usually unconsciously, to decide whether you are \"the same price you were\" or whether something has changed.",
+      "start": 181.46,
+      "end": 199.63
     },
     {
       "id": 13,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(10)",
-      "text": "Leave the anchors alone. Eat the margin on them. This is counterintuitive — your instinct is to raise every item a little — but the anchor items are where any price movement gets talked about . A 1 dollars bump on the burger will show up in a Yelp review within a week. A 2 dollars bump on a pasta dish that's on the menu alongside twelve other pastas, nobody notices.",
-      "start": 200.22,
-      "end": 218.59
+      "text": "Leave the anchors alone. Eat the margin on them. This is counterintuitive — your instinct is to raise every item a little — but the anchor items are where any price movement gets talked about . A 1 dollars bump on the burger will show up in a Yelp review within a week. A 2 dollars bump on a pasta dish that is on the menu alongside twelve other pastas, nobody notices.",
+      "start": 200.15,
+      "end": 218.6
     },
     {
       "id": 14,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(11)",
-      "text": "There's a secondary benefit. Holding anchor prices gives you a true line in future conversation: \"We've held our burger at 17 dollars since twenty twenty-four.\" That's a sentence you can say out loud. Guests who care about prices respect it. Guests who don't care about prices never think about it. Everybody wins a small thing.",
-      "start": 219.11,
-      "end": 236.27
+      "text": "There is a secondary benefit. Holding anchor prices gives you a true line in future conversation: \"We have held our burger at 17 dollars since twenty twenty-four.\" That is a sentence you can say out loud. Guests who care about prices respect it. Guests who do not care about prices never think about it. Everybody wins a small thing.",
+      "start": 219.12,
+      "end": 236.46
     },
     {
       "id": 15,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(2)",
       "text": "Tier 2 — Core items, raised 4 to 6 percent.",
-      "start": 237.37,
-      "end": 240.11
+      "start": 237.56,
+      "end": 240.3
     },
     {
       "id": 16,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(12)",
-      "text": "The core of your menu is where the weighted-average raise actually happens. Most of your entrées. Most of your pastas. Most of your pizzas, if you're a pizza place. These are the items guests order regularly but don't have an exact-dollar memory of. They remember \"it was around twenty bucks.\" A move from 21 dollars to 22.25 dollars is inside that memory tolerance. A move from 21 dollars to 25 dollars is not.",
-      "start": 240.81,
-      "end": 260.06
+      "text": "The core of your menu is where the weighted-average raise actually happens. Most of your entrées. Most of your pastas. Most of your pizzas, if you are a pizza place. These are the items guests order regularly but do not have an exact-dollar memory of. They remember \"it was around twenty bucks.\" A move from 21 dollars to 22.25 dollars is inside that memory tolerance. A move from 21 dollars to 25 dollars is not.",
+      "start": 241,
+      "end": 260.4
     },
     {
       "id": 17,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Four to six percent is the sweet spot. Below 4%, you barely recover margin and you've spent political capital for nothing. Above 6%, guests start to notice the menu \"feels\" more expensive, even if they can't point to a specific item. Stay in that band on the core and you'll recover roughly two thirds of the margin you've lost to cost inflation, silently.",
-      "start": 260.58,
-      "end": 278.61
+      "text": "Four to six percent is the sweet spot. Below 4%, you barely recover margin and you have spent political capital for nothing. Above 6%, guests start to notice the menu \"feels\" more expensive, even if they cannot point to a specific item. Stay in that band on the core and you will recover roughly two thirds of the margin you have lost to cost inflation, silently.",
+      "start": 260.92,
+      "end": 278.95
     },
     {
       "id": 18,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(14)",
-      "text": "One tactical note: when you raise core items, don't round to the dollar . A jump from 21 dollars to 22 dollars feels bigger than a jump from 21 dollars to 21.75 dollars. The brain anchors on the leading digit. Going from twenty-one-something to twenty-two-something is a different price bracket in the guest's head. Twenty-one-something to twenty-one-something-bigger is the same bracket.",
-      "start": 279.13,
-      "end": 297.42
+      "text": "One tactical note: when you raise core items, do not round to the dollar . A jump from 21 dollars to 22 dollars feels bigger than a jump from 21 dollars to 21.75 dollars. The brain anchors on the leading digit. Going from twenty-one-something to twenty-two-something is a different price bracket in the guest's head. Twenty-one-something to twenty-one-something-bigger is the same bracket.",
+      "start": 279.47,
+      "end": 297.86
     },
     {
       "id": 19,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(3)",
       "text": "Tier 3 — Signature items, raised 8 to 12 percent.",
-      "start": 298.52,
-      "end": 301.84
+      "start": 298.96,
+      "end": 302.28
     },
     {
       "id": 20,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(15)",
-      "text": "Your signature items are the ones guests can't compare to anywhere else. The tasting menu. The chef's special. The one dish you're known for that doesn't exist in the same form down the street. These are price-inelastic in a way the rest of your menu isn't — guests aren't choosing between your version and someone else's, they're choosing whether to order your version at all.",
-      "start": 302.54,
-      "end": 320.06
+      "text": "Your signature items are the ones guests cannot compare to anywhere else. The tasting menu. The chef's special. The one dish you are known for that does not exist in the same form down the street. These are price-inelastic in a way the rest of your menu is not — guests are not choosing between your version and someone else's, they are choosing whether to order your version at all.",
+      "start": 302.98,
+      "end": 320.64
     },
     {
       "id": 21,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(16)",
-      "text": "Raise these 8 to 12 percent without flinching. If the chef's tasting menu was 85 dollars, take it to 92 dollars or 95 dollars. The guest who's there for the tasting menu is already past the price-sensitivity threshold — they walked in committed. What they're paying for is the experience, and that experience is worth more than you usually charge for it anyway.",
-      "start": 320.58,
-      "end": 338.85
+      "text": "Raise these 8 to 12 percent without flinching. If the chef's tasting menu was 85 dollars, take it to 92 dollars or 95 dollars. The guest who is there for the tasting menu is already past the price-sensitivity threshold — they walked in committed. What they are paying for is the experience, and that experience is worth more than you usually charge for it anyway.",
+      "start": 321.16,
+      "end": 339.43
     },
     {
       "id": 22,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(17)",
-      "text": "The common mistake here is the opposite direction: treating signature items with more caution than core items because \"they're the expensive ones.\" Wrong. The expensive items are the ones with the least price-comparison pressure. They're the easiest place to recover margin.",
-      "start": 339.37,
-      "end": 355.6
+      "text": "The common mistake here is the opposite direction: treating signature items with more caution than core items because \"they are the expensive ones.\" Wrong. The expensive items are the ones with the least price-comparison pressure. They are the easiest place to recover margin.",
+      "start": 339.95,
+      "end": 356.51
     },
     {
       "id": 23,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(3)",
       "text": "The website moves that make a price raise stick.",
-      "start": 356.7,
-      "end": 359.04
+      "start": 357.61,
+      "end": 359.95
     },
     {
       "id": 24,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(18)",
       "text": "The menu is half the work. The other half is the website the guest looks at before they decide to book. Most restaurants raise prices and then change nothing else online, which is how a 5% raise becomes a 12% perceived raise in the guest's head. Three website moves do a lot of the heavy lifting.",
-      "start": 359.74,
-      "end": 376.74
+      "start": 360.65,
+      "end": 377.65
     },
     {
       "id": 25,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(4)",
-      "text": "1. Don't change the numbers — change what's around them.",
-      "start": 377.84,
-      "end": 380.62
+      "text": "1. Do not change the numbers — change what is around them.",
+      "start": 378.75,
+      "end": 381.77
     },
     {
       "id": 26,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(19)",
       "text": "If your menu page just shows a list of dishes with prices, a price bump reads as a naked increase. Guests scan, they see a bigger number, they flinch.",
-      "start": 381.32,
-      "end": 390.76
+      "start": 382.47,
+      "end": 391.91
     },
     {
       "id": 27,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(20)",
-      "text": "If your menu page shows a dish with a proper description — the sourcing, the cooking method, the one detail that makes this version yours — the price reads in context. It's not \"24 dollars for a chicken sandwich,\" it's \"24 dollars for a pan-roasted half chicken with brown-butter jus, from a farm you can name, served in a way you can describe.\" The price hasn't changed, but the frame the guest evaluates it in has.",
-      "start": 391.28,
-      "end": 409.93
+      "text": "If your menu page shows a dish with a proper description — the sourcing, the cooking method, the one detail that makes this version yours — the price reads in context. It is not \"24 dollars for a chicken sandwich,\" it is \"24 dollars for a pan-roasted half chicken with brown-butter jus, from a farm you can name, served in a way you can describe.\" The price has not changed, but the frame the guest evaluates it in has.",
+      "start": 392.43,
+      "end": 411.2
     },
     {
       "id": 28,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(21)",
       "text": "When you raise a price, rewrite the description at the same time . Two sentences. Something specific. The guest who opens your site this week and sees \"Chicken 24 dollars — pan-roasted half-bird, brown-butter jus, two-hour brine\" reads that as a restaurant investing in its product. The guest who sees \"Chicken 24 dollars\" reads a restaurant that just got more expensive.",
-      "start": 410.45,
-      "end": 428.53
+      "start": 411.72,
+      "end": 429.8
     },
     {
       "id": 29,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(5)",
       "text": "2. Update at least one photograph.",
-      "start": 429.63,
-      "end": 431.48
+      "start": 430.9,
+      "end": 432.75
     },
     {
       "id": 30,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(22)",
-      "text": "This sounds superficial. It isn't. Menu items that have visually moved — a new plating, a new garnish, a new photograph — get priced against the new image, not the old price memory. A guest scrolling your menu page on a phone will evaluate \"the new version of this dish at 24 dollars\" very differently from \"the same dish I had last year, but 24 dollars now.\"",
-      "start": 432.18,
-      "end": 449.38
+      "text": "This sounds superficial. It is not. Menu items that have visually moved — a new plating, a new garnish, a new photograph — get priced against the new image, not the old price memory. A guest scrolling your menu page on a phone will evaluate \"the new version of this dish at 24 dollars\" very differently from \"the same dish I had last year, but 24 dollars now.\"",
+      "start": 433.45,
+      "end": 450.95
     },
     {
       "id": 31,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(23)",
-      "text": "You don't need to re-shoot the whole menu. Pick the three items that moved the most in price and have your kitchen plate a fresh version for an hour on a Tuesday afternoon. Natural light, clean table, phone camera is fine if you're handy with it. Ninety minutes, three new photos. Those three photos neutralize the price conversation on those three items for the next six months.",
-      "start": 449.73,
-      "end": 467.6
+      "text": "You do not need to re-shoot the whole menu. Pick the three items that moved the most in price and have your kitchen plate a fresh version for an hour on a Tuesday afternoon. Natural light, clean table, phone camera is fine if you are handy with it. Ninety minutes, three new photos. Those three photos neutralize the price conversation on those three items for the next six months.",
+      "start": 451.3,
+      "end": 469.14
     },
     {
       "id": 32,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(6)",
       "text": "3. Remove stale discounts before you publish the new prices.",
-      "start": 468.7,
-      "end": 472.25
+      "start": 470.24,
+      "end": 473.79
     },
     {
       "id": 33,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(24)",
-      "text": "Every restaurant site I audit has at least one stale \"promo\" somewhere — a happy-hour box that's still pointing at the old pricing, a banner about a summer special that ended in October, a P D F menu titled \"Spring twenty twenty-four\" still linked from a sidebar. These are death on a price raise, because they tell the guest \"the real price is lower than what's on this page.\"",
-      "start": 472.95,
-      "end": 490.6
+      "text": "Every restaurant site I audit has at least one stale \"promo\" somewhere — a happy-hour box that is still pointing at the old pricing, a banner about a summer special that ended in October, a P D F menu titled \"Spring twenty twenty-four\" still linked from a sidebar. These are death on a price raise, because they tell the guest \"the real price is lower than what is on this page.\"",
+      "start": 474.49,
+      "end": 492.28
     },
     {
       "id": 34,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(25)",
-      "text": "Spend an hour before you publish the new menu walking your own site as if you were a first-time visitor. Every price that shows up anywhere. Every banner. Every P D F. If it doesn't match the new menu, kill it. A guest who finds a 17 dollars burger on the homepage but a 19 dollars burger on the menu page has just been trained to believe your restaurant is dishonest, even though you were planning to fix the homepage next week.",
-      "start": 490.95,
-      "end": 509.54
+      "text": "Spend an hour before you publish the new menu walking your own site as if you were a first-time visitor. Every price that shows up anywhere. Every banner. Every P D F. If it does not match the new menu, kill it. A guest who finds a 17 dollars burger on the homepage but a 19 dollars burger on the menu page has just been trained to believe your restaurant is dishonest, even though you were planning to fix the homepage next week.",
+      "start": 492.63,
+      "end": 511.25
     },
     {
       "id": 35,
       "kind": "quote",
       "selector": "#post-body > p:nth-of-type(26)",
-      "text": "Every stale discount on your site is an argument against the real price. You're not saving the guest money, you're giving them a reason not to trust the new one.",
-      "start": 510.29,
-      "end": 519.41
+      "text": "Every stale discount on your site is an argument against the real price. You are not saving the guest money, you are giving them a reason not to trust the new one.",
+      "start": 512,
+      "end": 521.36
     },
     {
       "id": 36,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(4)",
       "text": "What to do this week.",
-      "start": 520.51,
-      "end": 521.47
+      "start": 522.46,
+      "end": 523.42
     },
     {
       "id": 37,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(27)",
-      "text": "If you've been putting off a price raise for three months and this post has you finally willing, here's the honest seven-day sequence. It's not glamorous and it doesn't need to be.",
-      "start": 522.17,
-      "end": 532.38
+      "text": "If you have been putting off a price raise for three months and this post has you finally willing, here is the honest seven-day sequence. It is not glamorous and it does not need to be.",
+      "start": 524.12,
+      "end": 534.72
     },
     {
       "id": 38,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Monday. Pull your last ninety days of sales by item. Tag every item as anchor, core, or signature. You'll disagree with yourself on a few — that&rsquo;s the point, it&rsquo;s a decision, not an algorithm.",
-      "start": 532.9,
-      "end": 546.34
+      "text": "Monday. Pull your last ninety days of sales by item. Tag every item as anchor, core, or signature. You will disagree with yourself on a few — that&rsquo;s the point, it&rsquo;s a decision, not an algorithm.",
+      "start": 535.24,
+      "end": 548.86
     },
     {
       "id": 39,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
       "text": "Tuesday. Draft the new prices. Anchors held. Core items up 4–6%, avoiding round-dollar jumps. Signatures up 8–12%. Weighted-average it against volume — you&rsquo;re aiming for a weighted 5–6%, not a flat 5–6% on every item.",
-      "start": 546.66,
-      "end": 563.62
+      "start": 549.18,
+      "end": 566.14
     },
     {
       "id": 40,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
       "text": "Wednesday. Rewrite the descriptions on any item you raised more than a dollar. Two sentences, specific. Sourcing, method, the detail only you know.",
-      "start": 563.94,
-      "end": 573.21
+      "start": 566.46,
+      "end": 575.73
     },
     {
       "id": 41,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
       "text": "Thursday. Re-shoot three dishes with the biggest price moves. Phone + natural light + hour of kitchen time.",
-      "start": 573.53,
-      "end": 580.24
+      "start": 576.05,
+      "end": 582.76
     },
     {
       "id": 42,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
       "text": "Friday. Audit your own website cold. Every page that shows a price, every old promo banner, every P D F menu. Remove anything that contradicts the new pricing.",
-      "start": 580.56,
-      "end": 591.17
+      "start": 583.08,
+      "end": 593.69
     },
     {
       "id": 43,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
       "text": "Saturday. Publish. Menu page first, homepage blocks second, P D F menu last. Tell your host and servers the three items that moved most so they&rsquo;re ready for the one guest who asks.",
-      "start": 591.49,
-      "end": 604.15
+      "start": 594.01,
+      "end": 606.67
     },
     {
       "id": 44,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(7)",
       "text": "Sunday. Watch your reservation count for the next two weeks. If it drops more than 5%, you took too much. If it holds or moves less than 2%, you didn&rsquo;t take enough — and you can come back for another 3% in ninety days.",
-      "start": 604.47,
-      "end": 618.59
+      "start": 606.99,
+      "end": 621.11
     },
     {
       "id": 45,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(28)",
-      "text": "That's the whole playbook. Three tiers, three website moves, seven days.",
-      "start": 619.11,
-      "end": 622.87
+      "text": "That is the whole playbook. Three tiers, three website moves, seven days.",
+      "start": 621.63,
+      "end": 625.59
     },
     {
       "id": 46,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(29)",
-      "text": "You're not trying to extract more from the guest — you're trying to stop losing money on the guest you already have. The distinction matters. A restaurant that's quietly going broke because it won't raise prices closes the same as a restaurant that raised prices the wrong way. One of those outcomes, the operator at least got to choose.",
-      "start": 623.39,
-      "end": 640
+      "text": "You are not trying to extract more from the guest — you are trying to stop losing money on the guest you already have. The distinction matters. A restaurant that is quietly going broke because it will not raise prices closes the same as a restaurant that raised prices the wrong way. One of those outcomes, the operator at least got to choose.",
+      "start": 626.11,
+      "end": 642.98
     },
     {
       "id": 47,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(30)",
       "text": "Price it to survive. Describe it to land. Photograph it to reset. Then let the regulars show back up, the same way they always have.",
-      "start": 640.52,
-      "end": 648.6
+      "start": 643.5,
+      "end": 651.58
     }
   ]
 }

@@ -910,9 +910,37 @@
       const t = Math.floor(n / 10), o = n % 10;
       return o ? tens[t] + '-' + ones[o] : tens[t];
     }
+    // Contraction expansions — runtime twin of scripts/render-post-audio.mjs.
+    // Same set, same order. Used by the Web Speech fallback (when no MP3
+    // exists) so contractions are pronounced cleanly. The pre-rendered
+    // MP3 already has these baked in via the build-time normalizer.
+    const CONTRACTIONS = [
+      [/\b(W|w)on't\b/g,   (_, c) => (c === 'W' ? 'Will' : 'will') + ' not'],
+      [/\b(C|c)an't\b/g,   (_, c) => c === 'C' ? 'Cannot' : 'cannot'],
+      [/\b(S|s)han't\b/g,  (_, c) => (c === 'S' ? 'Shall' : 'shall') + ' not'],
+      [/\b([A-Za-z]+)n't\b/g, (_, w) => w + ' not'],
+      [/\b([A-Za-z]+)'re\b/g, (_, w) => w + ' are'],
+      [/\b([A-Za-z]+)'ve\b/g, (_, w) => w + ' have'],
+      [/\b([A-Za-z]+)'ll\b/g, (_, w) => w + ' will'],
+      [/\b([A-Za-z]+)'d\b/g,  (_, w) => w + ' would'],
+      [/\b(I|i)'m\b/g,        (_, c) => c + ' am'],
+      [/\b(I|i)t's\b/g,    (_, c) => c + 't is'],
+      [/\b(T|t)hat's\b/g,  (_, c) => c + 'hat is'],
+      [/\b(H|h)ere's\b/g,  (_, c) => c + 'ere is'],
+      [/\b(T|t)here's\b/g, (_, c) => c + 'here is'],
+      [/\b(W|w)hat's\b/g,  (_, c) => c + 'hat is'],
+      [/\b(L|l)et's\b/g,   (_, c) => c + 'et us'],
+      [/\b(H|h)e's\b/g,    (_, c) => c + 'e is'],
+      [/\b(S|s)he's\b/g,   (_, c) => c + 'he is'],
+      [/\b(W|w)ho's\b/g,   (_, c) => c + 'ho is'],
+      [/\b(W|w)here's\b/g, (_, c) => c + 'here is'],
+    ];
+
     function normalizeForSpeech(s) {
       if (!s) return s;
-      return s
+      let pre = s;
+      for (const [re, rep] of CONTRACTIONS) pre = pre.replace(re, rep);
+      return pre
         .replace(/#\s*(\d+)/g, 'number $1')
         .replace(/\$(\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?)/g, '$1 dollars')
         .replace(/(\d)\s*×\s*(\d|\$)/g, '$1 times $2')

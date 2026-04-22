@@ -706,7 +706,46 @@ function normalizeForSpeech(str) {
     'e.g.': 'for example', 'approx.': 'approximately',
   };
 
-  return str
+  // Contraction expansions. Kokoro's am_puck (and most espeak-ng voices)
+  // produce a faint hitch at the apostrophe-s / apostrophe-t boundary
+  // that listeners hear as a glitch — sometimes audible enough to read
+  // as "apostrophe s" being literally spoken. Expanding to the full
+  // form sidesteps the phoneme transition entirely. Trades a tiny bit
+  // of conversational warmth for clean enunciation; F5-TTS doesn't
+  // need this trick because its prosody is learned from the reference
+  // audio, not from espeak phonemes. Order matters: long-form negations
+  // ("won't", "can't") match before the generic "Xn't" pattern.
+  // Possessive 's ("DoorDash's") is intentionally untouched — only
+  // contractions with high-frequency function-word stems are expanded.
+  const CONTRACTIONS = [
+    // Negations (most common offenders)
+    [/\b(W|w)on't\b/g,    (_, c) => (c === 'W' ? 'Will' : 'will') + ' not'],
+    [/\b(C|c)an't\b/g,    (_, c) => c === 'C' ? 'Cannot' : 'cannot'],
+    [/\b(S|s)han't\b/g,   (_, c) => (c === 'S' ? 'Shall' : 'shall') + ' not'],
+    [/\b([A-Za-z]+)n't\b/g, (_, w) => `${w} not`],
+    // 're / 've / 'll / 'd / 'm
+    [/\b([A-Za-z]+)'re\b/g, (_, w) => `${w} are`],
+    [/\b([A-Za-z]+)'ve\b/g, (_, w) => `${w} have`],
+    [/\b([A-Za-z]+)'ll\b/g, (_, w) => `${w} will`],
+    [/\b([A-Za-z]+)'d\b/g,  (_, w) => `${w} would`],
+    [/\b(I|i)'m\b/g,        (_, c) => `${c} am`],
+    // 's contractions on short pronouns/let. Possessive 's stays.
+    [/\b(I|i)t's\b/g,    (_, c) => `${c}t is`],
+    [/\b(T|t)hat's\b/g,  (_, c) => `${c}hat is`],
+    [/\b(H|h)ere's\b/g,  (_, c) => `${c}ere is`],
+    [/\b(T|t)here's\b/g, (_, c) => `${c}here is`],
+    [/\b(W|w)hat's\b/g,  (_, c) => `${c}hat is`],
+    [/\b(L|l)et's\b/g,   (_, c) => `${c}et us`],
+    [/\b(H|h)e's\b/g,    (_, c) => `${c}e is`],
+    [/\b(S|s)he's\b/g,   (_, c) => `${c}he is`],
+    [/\b(W|w)ho's\b/g,   (_, c) => `${c}ho is`],
+    [/\b(W|w)here's\b/g, (_, c) => `${c}here is`],
+  ];
+
+  let pre = str;
+  for (const [re, rep] of CONTRACTIONS) pre = pre.replace(re, rep);
+
+  return pre
     // "#1" / "# 1" / "#10" → "number 1" (numeric only; leaves hashtags alone)
     .replace(/#\s*(\d+)/g, 'number $1')
     // "$33,000" / "$55" → "33,000 dollars" / "55 dollars"

@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-20T18:44:38.037Z",
+  "generatedAt": "2026-04-22T20:57:23.718Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "am_puck",
   "language": "en",
-  "total": 512.23,
+  "total": 513.19,
   "chunks": [
     {
       "id": 0,
@@ -43,217 +43,217 @@
       "id": 4,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Here's the map of what operators actually want when they ask about an app, and the cheaper tool that delivers each thing. When you say 'I want a loyalty program,' what actually works is a punch-card or points system built into your P O S (Square and Toast both have one included), or a web-based loyalty page with SMS opt-in. When you say 'I want to send push notifications to regulars,' what actually delivers is an SMS list — higher open rates, no app install required, already works on every phone. When you say 'I want my brand in the guest's hand,' what you actually need is a mobile-excellent website plus a well-designed Google Business Profile — that's where guests actually interact with your brand on their phone. When you say 'I want own-ordering in the guest's pocket,' what delivers is a progressive web app version of your ordering page, saved to the home screen with one tap. When you say 'I want data on my regulars,' what delivers is a CRM connected to your P O S. None of these require a native app. All of them together cost a fraction of what a native app costs, and none of them require your regulars to download anything.",
+      "text": "Here is the map of what operators actually want when they ask about an app, and the cheaper tool that delivers each thing. When you say 'I want a loyalty program,' what actually works is a punch-card or points system built into your P O S (Square and Toast both have one included), or a web-based loyalty page with SMS opt-in. When you say 'I want to send push notifications to regulars,' what actually delivers is an SMS list — higher open rates, no app install required, already works on every phone. When you say 'I want my brand in the guest's hand,' what you actually need is a mobile-excellent website plus a well-designed Google Business Profile — that is where guests actually interact with your brand on their phone. When you say 'I want own-ordering in the guest's pocket,' what delivers is a progressive web app version of your ordering page, saved to the home screen with one tap. When you say 'I want data on my regulars,' what delivers is a CRM connected to your P O S. None of these require a native app. All of them together cost a fraction of what a native app costs, and none of them require your regulars to download anything.",
       "start": 71.99,
-      "end": 124.56
+      "end": 125.52
     },
     {
       "id": 5,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
       "text": "Total stack if you build all five: roughly 30 dollars–80 dollars/month in tooling costs, plus maybe a week of setup. Total cost of the native app that was pitched at you: 15 dollars–40 dollarsK up front, 400 dollars–1,200 dollars/month in maintenance, plus the ongoing cost of getting guests to actually install and open the thing. The app route costs 20–50x more to deliver the same underlying outcomes. That&rsquo;s not a rounding error.",
-      "start": 125.31,
-      "end": 147.5
+      "start": 126.27,
+      "end": 148.46
     },
     {
       "id": 6,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
       "text": "The install problem nobody talks about.",
-      "start": 148.6,
-      "end": 150.85
+      "start": 149.56,
+      "end": 151.81
     },
     {
       "id": 7,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(6)",
       "text": "Agencies pitching restaurant apps never want to discuss the install rate. Here&rsquo;s the uncomfortable truth: the average independent restaurant that launches a native app sees under 2% of its guests install it , and of those who install, fewer than a third are still using it six months later. I&rsquo;ve seen the dashboards. You get a flurry of downloads in the first two weeks from regulars who want to be supportive, then the curve flattens.",
-      "start": 151.55,
-      "end": 171.4
+      "start": 152.51,
+      "end": 172.36
     },
     {
       "id": 8,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(7)",
       "text": "This isn&rsquo;t because your restaurant isn&rsquo;t beloved. It&rsquo;s because your guests already have too many apps on their phone, and yours is the 187th notification competing for their attention. They love you. They also love the dry cleaner across the street and the gym around the corner, and none of those places have convinced them to install an app either. The friction-to-benefit ratio just isn&rsquo;t there.",
-      "start": 171.92,
-      "end": 191.53
+      "start": 172.88,
+      "end": 192.49
     },
     {
       "id": 9,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(8)",
       "text": "A website, by contrast, works on install rate 100%. Every single person who types your U R L or taps your Google Business Profile is inside your \"app\" with zero friction. An SMS opt-in works on behavior — the guest texts a short code at the table and is signed up, no download required. A PWA (progressive web app) saved to the home screen looks exactly like a native app, launches with a tap, and installs in three seconds from a button on your website.",
-      "start": 192.05,
-      "end": 214.6
+      "start": 193.01,
+      "end": 215.56
     },
     {
       "id": 10,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(9)",
       "text": "The modern version of \"I want my restaurant in the guest&rsquo;s pocket\" isn&rsquo;t a native app. It&rsquo;s a website good enough that the guest wants to save it to their home screen. That is an accomplishment your existing website stack can deliver — it just requires someone who cares about the details.",
-      "start": 215.12,
-      "end": 232.65
+      "start": 216.08,
+      "end": 233.61
     },
     {
       "id": 11,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(2)",
       "text": "The two situations where an app is actually the right call.",
-      "start": 233.75,
-      "end": 236.94
+      "start": 234.71,
+      "end": 237.9
     },
     {
       "id": 12,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(10)",
       "text": "I&rsquo;m not going to tell you no app, ever. Two specific situations make a native app defensible.",
-      "start": 237.64,
-      "end": 244.86
+      "start": 238.6,
+      "end": 245.82
     },
     {
       "id": 13,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(1)",
       "text": "1. Multi-location brands with 5,000+ weekly app-relevant transactions.",
-      "start": 245.96,
-      "end": 252.49
+      "start": 246.92,
+      "end": 253.45
     },
     {
       "id": 14,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(11)",
       "text": "Starbucks has an app. Chipotle has an app. Sweetgreen has an app. That&rsquo;s because when you have 20+ locations and guests ordering multiple times a week, the math on app-driven loyalty + pre-ordering actually pencils out — you amortize the build cost over a volume of orders that no independent restaurant sees. At Starbucks scale, a 1% conversion lift on mobile ordering pays for the entire app program in a quarter. At your scale, it doesn&rsquo;t.",
-      "start": 253.19,
-      "end": 275.15
+      "start": 254.15,
+      "end": 276.11
     },
     {
       "id": 15,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(12)",
       "text": "If you&rsquo;re a two-location independent, the math still doesn&rsquo;t work. If you&rsquo;re five or more locations doing real mobile-ordering volume, it might. Below that, no.",
-      "start": 275.67,
-      "end": 288.67
+      "start": 276.63,
+      "end": 289.63
     },
     {
       "id": 16,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(2)",
       "text": "2. A concept that genuinely requires app-level behavior.",
-      "start": 289.77,
-      "end": 293.41
+      "start": 290.73,
+      "end": 294.37
     },
     {
       "id": 17,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(13)",
       "text": "Ghost kitchens running multiple concepts out of one space. Pre-order-only meal prep services where every order is scheduled 48 hours in advance. Subscription dining clubs. These are actually app-shaped products — the app is the product, not a marketing layer on top of a restaurant.",
-      "start": 294.11,
-      "end": 310.47
+      "start": 295.07,
+      "end": 311.43
     },
     {
       "id": 18,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(14)",
       "text": "If your concept is \"sit-down independent restaurant where people walk in, eat, and leave,\" that isn&rsquo;t app-shaped. The app is marketing overhead. If your concept is \"members-only tasting club that ships a box every Tuesday,\" the app might be the entire distribution mechanism. Different animals.",
-      "start": 310.99,
-      "end": 328.22
+      "start": 311.95,
+      "end": 329.18
     },
     {
       "id": 19,
       "kind": "quote",
       "selector": "#post-body > p:nth-of-type(15)",
       "text": "The reasons you want an app are real. The app is just a much more expensive and much less-used way to get them than the tools that already live on your guest&rsquo;s phone.",
-      "start": 328.97,
-      "end": 340
+      "start": 329.93,
+      "end": 340.96
     },
     {
       "id": 20,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(3)",
       "text": "What to do instead, in order.",
-      "start": 341.1,
-      "end": 342.39
+      "start": 342.06,
+      "end": 343.35
     },
     {
       "id": 21,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(16)",
       "text": "If this post has talked you off the app ledge, here&rsquo;s the honest sequence. Do these first, in this order. If at the end of step four you still feel like you need a native app, call me and I&rsquo;ll connect you with an agency who does them well.",
-      "start": 343.09,
-      "end": 357.96
+      "start": 344.05,
+      "end": 358.92
     },
     {
       "id": 22,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
       "text": "Turn on your P O S&rsquo;s loyalty program. Square Loyalty, Toast Loyalty — both included. Ten-minute setup. Every regular who pays with a card is automatically earning points starting tomorrow. No install required, nothing new on your guest&rsquo;s phone.",
-      "start": 358.48,
-      "end": 375.17
+      "start": 359.44,
+      "end": 376.13
     },
     {
       "id": 23,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
       "text": "Start an SMS list. Services like Klaviyo, Attentive, or SimpleTexting run 20 dollars–50 dollars/mo for a restaurant-sized list. Promote the opt-in at the host stand (&ldquo;text [short code] for the weekend specials&rdquo;). You&rsquo;ll see the opt-in rate hit 20%+ of walk-ins within weeks. SMS has a 95% open rate. Push notifications from apps have an 8% engagement rate. It&rsquo;s not close.",
-      "start": 375.49,
-      "end": 400.45
+      "start": 376.45,
+      "end": 401.41
     },
     {
       "id": 24,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
       "text": "Make your own-ordering page into a PWA. If you use Square or Toast, the ordering page already qualifies — guests can tap &ldquo;Add to home screen&rdquo; and get an app-like icon on their phone. Put a prompt on your site that tells them how. Zero additional cost.",
-      "start": 400.77,
-      "end": 416.4
+      "start": 401.73,
+      "end": 417.36
     },
     {
       "id": 25,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
       "text": "Audit your Google Business Profile. Full-strength photos, accurate hours, replies to reviews. This is the place guests actually interact with your brand on their phones, far more than any app ever would.",
-      "start": 416.72,
-      "end": 428.68
+      "start": 417.68,
+      "end": 429.64
     },
     {
       "id": 26,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(17)",
       "text": "Four steps. A weekend of work. Probably 50 dollars–100 dollars a month in ongoing tooling. You get loyalty, push-equivalent messaging, an app-like icon on the guest&rsquo;s phone, and a professional mobile presence. That stack outperforms a 25 dollarsK native app on every measurable outcome, because your guest never had to make the choice to install it.",
-      "start": 429.2,
-      "end": 448
+      "start": 430.16,
+      "end": 448.96
     },
     {
       "id": 27,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(4)",
       "text": "The one honest line to say to the agency.",
-      "start": 449.1,
-      "end": 451.53
+      "start": 450.06,
+      "end": 452.49
     },
     {
       "id": 28,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(18)",
       "text": "If an agency is actively pitching you right now, the line I&rsquo;d use is this: &ldquo;Show me a client of yours, my size, where the app has paid for itself in recovered profit margin within eighteen months — not in &lsquo;brand engagement&rsquo; or &lsquo;app downloads,&rsquo; but in actual dollars that wouldn&rsquo;t have existed otherwise. If you can show me that, I&rsquo;m interested. If you can&rsquo;t, we&rsquo;re done.&rdquo;",
-      "start": 452.23,
-      "end": 475.42
+      "start": 453.19,
+      "end": 476.38
     },
     {
       "id": 29,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(19)",
       "text": "Most agencies can&rsquo;t answer that question, because the honest answer for an independent restaurant is almost always that the app is a marketing vehicle for the agency, not a profit vehicle for the restaurant. The margin on their side is better than the margin on yours, which is how the pitch got to your inbox in the first place.",
-      "start": 475.77,
-      "end": 493.98
+      "start": 476.73,
+      "end": 494.94
     },
     {
       "id": 30,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(20)",
       "text": "Your goal isn&rsquo;t to own a mobile app. Your goal is to have regulars come back more often and new guests find you. The tools that deliver those things already exist, mostly on your guest&rsquo;s phone by default, and they cost pennies compared to what&rsquo;s on the quote sheet in your inbox right now. Use those. Save the app budget for the patio build-out.",
-      "start": 494.5,
-      "end": 512.23
+      "start": 495.46,
+      "end": 513.19
     }
   ]
 }
