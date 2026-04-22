@@ -9270,7 +9270,24 @@
       note = def.unverifiedNote;
     }
     if (note && detected) {
-      note = note.replace('{detected}', escapeHtml(formatPlatformList(detected)));
+      // Hotfix: `detected` can arrive as either:
+      //   - an array of { name, label } objects (most checks — the
+      //     detection helpers return `{detected: bool, found: []}`
+      //     and callers pass `.found` through)
+      //   - a pre-formatted string (the menu-depth check at
+      //     line 9462-9470 composes a human-readable gap phrase —
+      //     "dish photos" or "prices on each item and dish photos" —
+      //     because its failNote expects literal interpolation, not
+      //     platform-list pluralization)
+      // Prior version assumed every `detected` was array-shaped and
+      // passed through formatPlatformList, which tripped on strings
+      // (strings have .length but no .map). Branch explicitly.
+      var detectedStr = (typeof detected === 'string')
+        ? detected
+        : (Array.isArray(detected) ? formatPlatformList(detected) : '');
+      if (detectedStr) {
+        note = note.replace('{detected}', escapeHtml(detectedStr));
+      }
     }
     return { mark: mark, title: title, note: note, state: state };
   }
