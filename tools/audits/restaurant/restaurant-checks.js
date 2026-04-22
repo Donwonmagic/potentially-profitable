@@ -1811,15 +1811,58 @@ function detectGiftCardPresence(pageText, allUrls) {
 // the URL catches them even when the top-level host isn't in the
 // list. Punchh is the largest QSR-focused loyalty SaaS not yet
 // listed. fivestars-rewards is the domain most deploys use.
+// Hotfix B3: keyword set widened to catch the brand-prefixed
+// patterns most chains actually use ("Tacombi Rewards",
+// "Chipotle Rewards", "Starbucks Rewards") plus the value-prop
+// phrases that mean the same thing ("free tacos for life",
+// "free coffee on your birthday", "earn a free X every N visits").
+// Previously the regex required phrases like "loyalty program" or
+// "rewards program" verbatim, which missed every chain that just
+// brands their program by name. Tacombi reproduced this exactly:
+// their landing page says "Tacombi Rewards · Free Tacos for Life"
+// — neither phrase matched the old keyword set.
+//
+// Conservative additions: only patterns that genuinely indicate a
+// loyalty program. Plain "rewards" or "points" without a
+// program-context word would over-fire (every payment-processor
+// page mentions "rewards"; every nutrition page mentions "points").
 var LOYALTY_PATTERNS = {
-  keywords: /\b(?:loyalty\s+program|rewards\s+program|earn\s+(?:points|rewards)|join\s+our\s+rewards|sign\s+up\s+for\s+rewards|loyalty\s+(?:club|members)|my\s+rewards|member\s+rewards)\b/i,
+  keywords: new RegExp([
+    // Original program-name patterns
+    '\\bloyalty\\s+program\\b',
+    '\\brewards\\s+program\\b',
+    '\\bearn\\s+(?:points|rewards|stars|credits)\\b',
+    '\\bjoin\\s+our\\s+rewards\\b',
+    '\\bsign\\s+up\\s+for\\s+rewards\\b',
+    '\\bloyalty\\s+(?:club|members)\\b',
+    '\\bmy\\s+rewards\\b',
+    '\\bmember\\s+rewards\\b',
+    // B3 additions — brand-prefixed program names
+    "\\b[a-z][a-z'’]{2,20}\\s+rewards\\b(?!\\s+for)",  // "Tacombi rewards", "Starbucks rewards"
+    '\\bjoin\\s+rewards\\b',
+    '\\bjoin\\s+(?:the\\s+)?(?:loyalty|rewards)\\b',
+    '\\bredeem\\s+(?:points|rewards|stars)\\b',
+    // Value-prop phrasing (free X via repeat purchase)
+    '\\bfree\\s+\\w+\\s+for\\s+life\\b',                 // "free tacos for life", "free pizza for life"
+    '\\bfree\\s+\\w+\\s+on\\s+(?:your\\s+)?birthday\\b', // "free entree on your birthday"
+    '\\bfree\\s+\\w+\\s+every\\s+(?:\\d+|tenth|fifth)',  // "free coffee every 10 visits"
+    // Membership / app patterns
+    '\\bmembership\\s+(?:program|benefits|perks)\\b',
+    '\\b(?:download|get)\\s+(?:our|the)\\s+app\\s+(?:and|for)\\s+rewards\\b',
+    '\\b(?:our|the)\\s+(?:loyalty|rewards)\\s+app\\b',
+  ].join('|'), 'i'),
   hosts: [
     'thanx.com', 'thelevelup', 'paytronix', 'como.com', 'fivestars',
     'fivestars-rewards', 'loyalzoo', 'punchcard', 'hang.com', 'belly',
     'spendgo', 'punchh.com', 'smile.io', 'yotpo.com', 'kangaroorewards',
     'stampme', 'loopyloyalty', 'tapmango', 'toast-rewards',
     'square-loyalty', '/rewards', '/loyalty', 'toasttab.com/rewards',
-    'squareup.com/app/loyalty'
+    'squareup.com/app/loyalty',
+    // B3: additional loyalty platforms / common page slugs
+    'spotonloyalty', 'spoton.com/loyalty', 'lavu.com/loyalty',
+    'cardfree', 'launchcontrol', 'olo.com/loyalty', 'incentivio',
+    '/membership', '/perks', '/loyalty-program', '/rewards-program',
+    'getopen.app', 'apple.com/app-store/loyalty'
   ]
 };
 function detectLoyaltyProgram(pageText, allUrls) {
