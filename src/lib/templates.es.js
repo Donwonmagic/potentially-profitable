@@ -241,7 +241,9 @@ function checklistKindEs(body) {
     businessField,
     items:         30,
     pageUrl:       'https://muntin.digital/es/resources/restaurant-website-checklist/',
-    pdfUrl:        'https://muntin.digital/es/resources/restaurant-website-checklist/muntin-restaurant-website-checklist-es.pdf',
+    // D12b: pdfUrl retired alongside the static Puppeteer-rendered
+    // PDF. The interactive page IS the deliverable; printing /
+    // saving-as-PDF is a browser-native affordance on the live URL.
     auditUrl:      'https://muntin.digital/es/tools/audits/restaurant/',
   };
 }
@@ -262,7 +264,7 @@ export function checklistNotification(body) {
       field('De',       escapeHtml(email)),
       k.subtype !== 'all' ? field('Subtipo', escapeHtml(k.subtypeLabel)) : '',
       k.businessField ? field(k.businessLabel, escapeHtml(k.businessField)) : '',
-      '<p style="margin:24px 0 0;font-size:13px;color:#6B6B6B;">La autorespuesta con el enlace del PDF ya se envió al usuario. No hace falta seguimiento manual, a menos que quieras nutrir el lead. El contacto vino del sitio en español, así que conviene responder en español.</p>',
+      '<p style="margin:24px 0 0;font-size:13px;color:#6B6B6B;">La autorespuesta con el enlace del checklist en vivo ya se envió al usuario. No hace falta seguimiento manual, a menos que quieras nutrir el lead. El contacto vino del sitio en español, así que conviene responder en español.</p>',
     ].join('\n')
   );
 
@@ -274,7 +276,7 @@ export function checklistNotification(body) {
     k.businessField ? k.businessLabel + ': ' + k.businessField : '',
     '',
     '--',
-    'La autorespuesta con el enlace del PDF ya se envió al usuario.',
+    'La autorespuesta con el enlace del checklist en vivo ya se envió al usuario.',
     'El contacto vino del sitio en español; conviene responder en español.',
   ].filter(Boolean).join('\n');
 
@@ -300,12 +302,12 @@ export function checklistAutoResponder(body) {
     : '';
 
   const opening = biz
-    ? 'Aquí está el PDF para <strong>' + escapeHtml(biz) + '</strong>' + tailoredLine + '. Imprímelo, clávalo en el tablero de la oficina trasera, o pásalo por el equipo en la próxima reunión de staff — está pensado para marcarse con lápiz.'
-    : 'Aquí está tu PDF' + tailoredLine + '. Imprímelo, clávalo en el tablero de la oficina trasera, o pásalo por el equipo en la próxima reunión de staff — está pensado para marcarse con lápiz.';
+    ? 'Aquí está tu checklist del sitio para <strong>' + escapeHtml(biz) + '</strong>' + tailoredLine + '. Ábrelo abajo, marca los ítems conforme avanzas, y guarda o imprime una copia cuando necesites un impreso para la cocina o una reunión de planeación.'
+    : 'Aquí está tu checklist del sitio' + tailoredLine + '. Ábrelo abajo, marca los ítems conforme avanzas, y guarda o imprime una copia cuando necesites un impreso para la cocina o una reunión de planeación.';
 
   const openingTxt = biz
-    ? 'Aquí está el PDF para ' + biz + tailoredLineTxt + '. Imprímelo, clávalo en el tablero de la oficina trasera, o pásalo por el equipo en la próxima reunión de staff — está pensado para marcarse con lápiz.'
-    : 'Aquí está tu PDF' + tailoredLineTxt + '. Imprímelo, clávalo en el tablero de la oficina trasera, o pásalo por el equipo en la próxima reunión de staff — está pensado para marcarse con lápiz.';
+    ? 'Aquí está tu checklist del sitio para ' + biz + tailoredLineTxt + '. Ábrelo abajo, marca los ítems conforme avanzas, y guarda o imprime una copia cuando necesites un impreso para la cocina o una reunión de planeación.'
+    : 'Aquí está tu checklist del sitio' + tailoredLineTxt + '. Ábrelo abajo, marca los ítems conforme avanzas, y guarda o imprime una copia cuando necesites un impreso para la cocina o una reunión de planeación.';
 
   const kindsLine = 'restaurante (alta cocina, casual, bar, café, food truck)';
 
@@ -314,11 +316,8 @@ export function checklistAutoResponder(body) {
     [
       '<p style="margin:0 0 20px;font-size:16px;line-height:1.6;color:#2A2D33;">' + opening + '</p>',
 
-      primaryCta(k.pdfUrl, 'Descargar el PDF'),
-      '<p style="margin:0 0 22px;font-size:13px;color:#6B6B6B;">Tamaño carta · ' + k.items + ' chequeos · abre en tu navegador.</p>',
-
-      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Si prefieres marcar los ítems en pantalla, la versión interactiva guarda tu avance en este dispositivo y deja que ajustes el checklist a tu tipo de ' + kindsLine + ' para que los ítems N/A salgan del puntaje:</p>',
-      '<p style="margin:0 0 24px;"><a href="' + k.pageUrl + '" style="color:#1F4E5B;font-weight:600;">Abrir el checklist interactivo &rarr;</a></p>',
+      primaryCta(k.pageUrl, 'Abrir tu checklist'),
+      '<p style="margin:0 0 22px;font-size:13px;color:#6B6B6B;">' + k.items + ' chequeos · adaptado a ' + kindsLine + ' para que los ítems N/A salgan del puntaje · tu avance se guarda en este dispositivo.</p>',
 
       '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">¿Quieres un segundo par de ojos humanos después de correrlo? Responde a este correo con tu URL y le doy una mirada real — sin lista, sin goteo, sin newsletter, solo una respuesta de mi parte.</p>',
       '<p style="margin:0 0 8px;font-size:15px;line-height:1.55;color:#2A2D33;">O si prefieres que yo corra los chequeos por ti y te escriba la lista de arreglos:</p>',
@@ -327,17 +326,14 @@ export function checklistAutoResponder(body) {
 
       '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">— Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital · Silver Spring, MD</span></p>',
     ].join('\n'),
-    'Solicitaste el PDF del checklist del sitio para tu ' + k.subjectNoun + '.'
+    'Solicitaste el checklist del sitio para tu ' + k.subjectNoun + '.'
   );
 
   const txt = [
     openingTxt,
     '',
-    'Descargar el PDF: ' + k.pdfUrl,
-    '(Tamaño carta · ' + k.items + ' chequeos)',
-    '',
-    'O abre la versión interactiva — guarda tu avance en este dispositivo y deja que ajustes el checklist a tu tipo de ' + kindsLine + ' para que los ítems N/A salgan del puntaje:',
-    k.pageUrl,
+    'Abrir tu checklist: ' + k.pageUrl,
+    '(' + k.items + ' chequeos, adaptado a ' + kindsLine + ' para que los ítems N/A salgan del puntaje. Tu avance se guarda en este dispositivo; guarda o imprime cuando quieras desde tu navegador.)',
     '',
     '¿Quieres un segundo par de ojos humanos después de correrlo? Responde a este correo con tu URL y le doy una mirada real — sin lista, sin goteo, sin newsletter, solo una respuesta de mi parte.',
     '',

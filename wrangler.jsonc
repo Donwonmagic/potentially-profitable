@@ -37,7 +37,7 @@
   //   src           — Sprint 7a: Worker source (referenced by "main"
   //                   above, NOT a static asset)
   //   scripts       — build-time Node scripts (sync-includes.mjs,
-  //                   render-checklist-pdfs.mjs). Referenced by the
+  //                   stamp-hreflang.mjs, etc). Referenced by the
   //                   build command, never served to users.
   //   _includes     — canonical HTML partials (nav, footer) consumed
   //                   by scripts/sync-includes.mjs. Not user-facing.
