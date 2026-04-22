@@ -2080,3 +2080,26 @@ br.br-lg{display:none}
   .research-drawer,.research-drawer-inner{transition:none}
   .research-drawer-loading::before{animation:none}
 }
+
+/* ===== Glossary term → research note cross-link =====
+   Compact "See the research" line added by scripts/
+   wire-glossary-research.mjs after .gloss-term-why on selected
+   terms. Click opens the research drawer inline (site.js); with
+   JS off, the native <a> works as a same-tab follow (drawer JS
+   only intercepts when dialog + fetch are present). */
+.gloss-term-research{
+  margin:8px 0 0;font-family:var(--font-body);
+  font-size:12.5px;line-height:1.5;color:var(--stone);
+  letter-spacing:0.01em;
+}
+.gloss-term-research strong{
+  color:var(--ink-soft);font-weight:600;margin-right:5px;
+}
+.gloss-term-research a{
+  color:var(--teal);font-weight:500;
+  text-decoration:none;border-bottom:1px dashed currentColor;
+}
+.gloss-term-research a:hover,
+.gloss-term-research a:focus-visible{
+  color:var(--teal-dark);border-bottom-color:var(--teal-dark);
+}
