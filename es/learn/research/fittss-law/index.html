@@ -108,11 +108,11 @@
 
 <main id="main">
 
-<nav class="breadcrumb container" aria-label="Breadcrumb">
-  <a href="/">Home</a><span class="breadcrumb-sep" aria-hidden="true">›</span>
-  <a href="/learn/">Learn</a><span class="breadcrumb-sep" aria-hidden="true">›</span>
-  <a href="/learn/research/">Research</a><span class="breadcrumb-sep" aria-hidden="true">›</span>
-  <span aria-current="page">Fitts's Law</span>
+<nav class="breadcrumb container" aria-label="Migas de pan">
+  <a href="/es/">Inicio</a><span class="breadcrumb-sep" aria-hidden="true">›</span>
+  <a href="/es/learn/">Aprende</a><span class="breadcrumb-sep" aria-hidden="true">›</span>
+  <a href="/es/learn/research/">Investigación</a><span class="breadcrumb-sep" aria-hidden="true">›</span>
+  <span aria-current="page">Ley de Fitts</span>
 </nav>
 
 <section class="hero hero-tight">
@@ -121,12 +121,12 @@
       <div class="research-source-line">
         <span class="research-source-publisher">Nielsen Norman Group</span>
         <span class="research-source-sep" aria-hidden="true">·</span>
-        <span class="research-source-year">Based on Fitts, 1954</span>
+        <span class="research-source-year">Basado en Fitts, 1954</span>
         <span class="research-source-sep" aria-hidden="true">·</span>
-        <span class="research-source-kind">UX principle</span>
+        <span class="research-source-kind">Principio de UX</span>
       </div>
-      <h1>The harder a button is to reach, <span class="serif-italic">the less often it gets pressed.</span></h1>
-      <p class="research-dek">A 72-year-old principle from experimental psychology that still explains most of what goes wrong with restaurant reservation CTAs. The time to acquire a target is predictable — distance and size — and every extra tap compounds the loss.</p>
+      <h1>Mientras más difícil sea alcanzar un botón, <span class="serif-italic">menos veces se presiona.</span></h1>
+      <p class="research-dek">Un principio de 72 años, salido de la psicología experimental, que todavía explica buena parte de lo que falla en los CTA de reservas de restaurantes. El tiempo para alcanzar un objetivo es predecible — distancia y tamaño — y cada toque extra suma a la pérdida.</p>
     </div>
   </div>
 </section>
@@ -136,50 +136,50 @@
     <article class="research-body">
 
       <div class="research-note">
-        <h2>Don's note</h2>
-        <p>Fitts's Law sounds academic; it isn't. It's the reason your phone's Home button used to be at the bottom — easy for a thumb to reach — and the reason every app with a serious conversion metric (Instagram, DoorDash, OpenTable) keeps the primary action either at the bottom of the screen or persistently visible as a floating button.</p>
-        <p>In restaurant-website terms: a "Reserve" button hidden inside a hamburger menu at the top-right of the viewport is <strong>twice as hard</strong> to press as one fixed to the bottom of the screen. Not twice as bad stylistically — twice as hard to press, measured in thumb travel. Every conversion drops proportionally. This is the cheapest UX fix a restaurant site can make, and it's the one most template builders don't do by default.</p>
+        <h2>La nota de Don</h2>
+        <p>La Ley de Fitts suena académica; no lo es. Es la razón por la que el botón "Home" de tu teléfono solía estar abajo — fácil de alcanzar con el pulgar — y la razón por la que cada app con una métrica de conversión seria (Instagram, DoorDash, OpenTable) mantiene la acción principal en la parte de abajo de la pantalla o como un botón flotante siempre visible.</p>
+        <p>Traducido a sitios de restaurante: un botón de "Reservar" escondido dentro de un menú hamburguesa en la esquina superior derecha es <strong>el doble de difícil</strong> de presionar que uno fijo en la parte de abajo de la pantalla. No el doble de feo estéticamente — el doble de difícil de presionar, medido en distancia que viaja el pulgar. Cada conversión cae proporcionalmente. Este es el arreglo de UX más barato que un sitio de restaurante puede hacer, y es el que la mayoría de los constructores de plantillas no hace por defecto.</p>
       </div>
 
-      <h2>Key findings</h2>
+      <h2>Hallazgos clave</h2>
       <ul class="research-findings">
-        <li>Formalized by <strong>Paul Fitts in 1954</strong> based on rapid target-acquisition experiments. The finding: time-to-target is a predictable function of the distance to it and its size.</li>
-        <li>The classic formula: <em>T = a + b · log₂(1 + D/W)</em> where D is distance to the target, W is its width, and a/b are constants for the user + device. Bigger targets are faster to acquire; closer targets are faster to acquire.</li>
-        <li><strong>Smaller buttons miss more often.</strong> The iOS Human Interface Guidelines' 44×44pt minimum tap target isn't a style preference — it's a Fitts's Law accommodation.</li>
-        <li><strong>Screen edges and corners are "infinite" in extent.</strong> You can flick past them with no penalty, which is why macOS keeps the menu bar glued to the top edge. Bottom-sticky mobile CTAs exploit the same property.</li>
-        <li><strong>Every extra tap compounds the loss.</strong> A reservation flow that opens a nav → selects "Reserve" → opens an embed is three Fitts's Law penalties stacked. Compression always wins.</li>
+        <li>Formalizado por <strong>Paul Fitts en 1954</strong> con base en experimentos de adquisición rápida de objetivos. El hallazgo: el tiempo-al-objetivo es una función predecible de la distancia y el tamaño.</li>
+        <li>La fórmula clásica: <em>T = a + b · log₂(1 + D/W)</em> donde D es la distancia al objetivo, W su ancho, y a/b son constantes del usuario + dispositivo. Los objetivos más grandes se alcanzan más rápido; los más cercanos también.</li>
+        <li><strong>Los botones pequeños fallan más veces.</strong> El mínimo de 44×44pt en los Human Interface Guidelines de iOS no es una preferencia estilística — es una acomodación a la Ley de Fitts.</li>
+        <li><strong>Los bordes y esquinas de la pantalla son "infinitos" en extensión.</strong> Puedes pasarte de largo sin penalización, por eso macOS mantiene la barra de menú pegada al borde superior. Los CTA pegajosos en la parte de abajo de móvil explotan la misma propiedad.</li>
+        <li><strong>Cada toque extra suma a la pérdida.</strong> Un flujo de reserva que abre un nav → selecciona "Reservar" → abre un embed son tres penalizaciones de la Ley de Fitts apiladas. La compresión siempre gana.</li>
       </ul>
 
-      <h2>How Muntin uses this</h2>
+      <h2>Cómo lo usa Muntin</h2>
       <ul class="research-uses">
-        <li><a href="/blog/why-your-restaurant-loses-reservations-every-night/"><strong>Why your restaurant loses reservations every night</strong><span>Leak #4 — "the reservation button is buried or missing" — is where Fitts's Law does the most work in the library. The sticky-bottom-CTA recommendation is Fitts's Law in practice.</span></a></li>
-        <li><a href="/blog/wix-vs-custom-for-restaurants/"><strong>Wix vs. custom for restaurants: what breaks first</strong><span>Break #4 ("reservation-flow friction") leans on Fitts to explain why Wix's default nav patterns measurably cost conversions relative to a custom sticky-CTA layout.</span></a></li>
+        <li><a href="/es/blog/why-your-restaurant-loses-reservations-every-night/"><strong>Por qué tu restaurante pierde reservas cada noche</strong><span>La fuga #4 — "el botón de reservar está enterrado o no existe" — es donde la Ley de Fitts hace más trabajo en la biblioteca. La recomendación del CTA pegajoso abajo es Ley de Fitts en la práctica.</span></a></li>
+        <li><a href="/es/blog/wix-vs-custom-for-restaurants/"><strong>Wix vs. a medida para restaurantes: qué se rompe primero</strong><span>La ruptura #4 ("fricción en el flujo de reserva") se apoya en Fitts para explicar por qué los patrones de nav por defecto de Wix cuestan medidamente en conversión frente a un layout a medida con CTA pegajoso.</span></a></li>
       </ul>
 
       <aside class="research-original">
         <div class="research-original-text">
-          <p class="research-original-kicker">Go straight to the source</p>
+          <p class="research-original-kicker">Ve directo a la fuente</p>
           <p class="research-original-title">Fitts's Law and Its Applications in UX</p>
-          <p class="research-original-meta">Raluca Budiu · Nielsen Norman Group</p>
+          <p class="research-original-meta">Raluca Budiu · Nielsen Norman Group · En inglés</p>
         </div>
-        <a class="btn btn-primary" href="https://www.nngroup.com/articles/fittss-law/" target="_blank" rel="noopener noreferrer">Read the original article<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="18" height="18"><path d="M7 17L17 7M9 7h8v8"/></svg><span class="sr-only"> (opens in new tab)</span></a>
+        <a class="btn btn-primary" href="https://www.nngroup.com/articles/fittss-law/" target="_blank" rel="noopener noreferrer">Leer el artículo original<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="18" height="18"><path d="M7 17L17 7M9 7h8v8"/></svg><span class="sr-only"> (se abre en una pestaña nueva)</span></a>
       </aside>
 
-      <h2>Full citation</h2>
-      <p class="research-citation">Budiu, R. <cite>Fitts's Law and Its Applications in UX</cite>. Nielsen Norman Group. <a href="https://www.nngroup.com/articles/fittss-law/" target="_blank" rel="noopener noreferrer">nngroup.com</a>. (Based on: Fitts, P. M. (1954). The information capacity of the human motor system in controlling the amplitude of movement. <cite>Journal of Experimental Psychology, 47</cite>(6), 381–391.)</p>
+      <h2>Cita completa</h2>
+      <p class="research-citation">Budiu, R. <cite>Fitts's Law and Its Applications in UX</cite>. Nielsen Norman Group. <a href="https://www.nngroup.com/articles/fittss-law/" target="_blank" rel="noopener noreferrer">nngroup.com</a>. (Basado en: Fitts, P. M. (1954). The information capacity of the human motor system in controlling the amplitude of movement. <cite>Journal of Experimental Psychology, 47</cite>(6), 381–391.)</p>
 
-      <p class="research-reviewed"><strong>Last reviewed:</strong> April 2026 — Fitts's Law is foundational UX and is not subject to revision; its applications continue to be reinforced by every mobile-interaction study since.</p>
+      <p class="research-reviewed"><strong>Última revisión:</strong> abril 2026 — la Ley de Fitts es UX fundacional y no está sujeta a revisión; sus aplicaciones siguen reforzándose con cada estudio de interacción móvil desde entonces.</p>
     </article>
   </div>
 </section>
 
 <section class="block bg-cream2">
   <div class="container">
-    <div class="section-header reveal section-center"><span class="eyebrow">More research</span><h2>Next in the<br><span class="serif-italic">research library.</span></h2></div>
+    <div class="section-header reveal section-center"><span class="eyebrow">Más investigación</span><h2>Lo siguiente en la<br><span class="serif-italic">biblioteca de investigación.</span></h2></div>
     <div class="learn-tools">
-      <a class="learn-tool" href="/learn/research/cart-abandonment-rate/"><span class="learn-tool-kicker">Baymard Institute</span><h3>The 70% cart abandonment rate.</h3><p>Online checkout forms lose ~70% of shoppers before completion. Reservation widgets are checkout forms in disguise.</p><span class="learn-tool-cta">Read the note →</span></a>
-      <a class="learn-tool" href="/learn/research/local-business-websites/"><span class="learn-tool-kicker">Nielsen Norman Group</span><h3>What people actually look for.</h3><p>Hours and location top the list of what people search for on local business sites — and both are the most commonly hidden.</p><span class="learn-tool-cta">Read the note →</span></a>
-      <a class="learn-tool" href="/learn/research/"><span class="learn-tool-kicker">All research</span><h3>The full research index.</h3><p>Every study cited across the library, summarized and cross-linked.</p><span class="learn-tool-cta">Back to research →</span></a>
+      <a class="learn-tool" href="/es/learn/research/cart-abandonment-rate/"><span class="learn-tool-kicker">Baymard Institute</span><h3>La tasa de 70% de abandono de carrito.</h3><p>Los formularios de checkout en línea pierden ~70% de los compradores antes de completar. Los widgets de reservas son formularios de checkout disfrazados.</p><span class="learn-tool-cta">Leer la nota →</span></a>
+      <a class="learn-tool" href="/es/learn/research/local-business-websites/"><span class="learn-tool-kicker">Nielsen Norman Group</span><h3>Qué busca de verdad la gente.</h3><p>Los horarios y la ubicación encabezan la lista de lo que busca la gente en sitios de negocios locales — y ambos son lo más comúnmente escondido.</p><span class="learn-tool-cta">Leer la nota →</span></a>
+      <a class="learn-tool" href="/es/learn/research/"><span class="learn-tool-kicker">Toda la investigación</span><h3>El índice completo de investigación.</h3><p>Cada estudio citado en la biblioteca, resumido y cruzado con los artículos.</p><span class="learn-tool-cta">Volver a investigación →</span></a>
     </div>
   </div>
 </section>
