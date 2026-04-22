@@ -329,19 +329,19 @@
 <section class="block" aria-labelledby="audio-heading">
   <div class="container">
     <div class="section-header reveal">
-      <span class="eyebrow">Audio narration</span>
-      <h2 id="audio-heading">Every article,<br><span class="serif-italic">in six languages, read aloud.</span></h2>
-      <p class="final-sub">Every blog post ships with audio narration in English, Spanish, French, Italian, Portuguese, and Chinese. The pipeline is a Node script; the player is plain JS. No streaming service, no paywall.</p>
+      <span class="eyebrow">Narración en audio</span>
+      <h2 id="audio-heading">Cada artículo,<br><span class="serif-italic">leído en voz alta en seis idiomas.</span></h2>
+      <p class="final-sub">Cada artículo del blog sale al aire con narración en inglés, español, francés, italiano, portugués y chino. El flujo es un script de Node; el reproductor es JS puro. Sin servicio de streaming, sin muro de pago.</p>
     </div>
 
     <div class="sys-audio">
       <div>
-        <h3>How it ships</h3>
+        <h3>Cómo se publica</h3>
         <ul>
-          <li><code>scripts/render-post-audio.mjs</code> chunks the article by heading, generates each chunk via text-to-speech, and stitches <code>audio.mp3</code> into the post's own directory.</li>
-          <li>Per-paragraph <code>data-audio-alt</code> attributes give complex figures (charts, tables) a narrator-friendly alternative read.</li>
-          <li><code>AudioObject</code> JSON-LD schema announces the narration to search engines for speakable-content eligibility.</li>
-          <li>The player itself is a single docked UI element rendered only when the reader opts in, so the default page weight stays honest.</li>
+          <li><code>scripts/render-post-audio.mjs</code> corta el artículo por encabezados, genera cada fragmento con text-to-speech y cose el <code>audio.mp3</code> dentro del propio directorio del artículo.</li>
+          <li>Los atributos <code>data-audio-alt</code> por párrafo les dan a las figuras complejas (gráficas, tablas) una lectura alternativa pensada para el narrador.</li>
+          <li>El schema JSON-LD <code>AudioObject</code> le anuncia la narración a los buscadores para ser elegible como contenido speakable.</li>
+          <li>El reproductor en sí es un solo elemento acoplado en pantalla que solo se renderiza cuando el lector decide activarlo, así el peso por defecto de la página se mantiene honesto.</li>
         </ul>
       </div>
     </div>
