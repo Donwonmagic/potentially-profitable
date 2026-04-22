@@ -138,12 +138,15 @@ function assertShellInvariants(label, html) {
   assertShellInvariants('checklistAutoResponder', out.html);
   assert('checklistAutoResponder: subject includes business',
     out.subject.indexOf('Chef de Mer') !== -1);
-  assert('checklistAutoResponder: primaryCta present',
-    out.html.indexOf('Download the PDF') !== -1 && out.html.indexOf('<table') !== -1);
+  assert('checklistAutoResponder: primaryCta routes to live page (D12b)',
+    out.html.indexOf('Open your checklist') !== -1 && out.html.indexOf('<table') !== -1);
+  assert('checklistAutoResponder: primary CTA href is the live page, not a .pdf',
+    out.html.indexOf('/resources/restaurant-website-checklist/"') !== -1
+    && out.html.indexOf('muntin-restaurant-website-checklist.pdf') === -1);
   assert('checklistAutoResponder: Calendly CTA via secondary helper',
     out.html.indexOf('calendly.com/dongoldstein-accts/muntinconsult') !== -1);
   assert('checklistAutoResponder: received-because footer present',
-    out.html.indexOf('You requested the') !== -1 && out.html.indexOf('checklist PDF') !== -1);
+    out.html.indexOf('You requested the') !== -1 && out.html.indexOf('website checklist') !== -1);
 }
 
 // --- 5. auditReportNotification -----------------------------------
@@ -302,12 +305,15 @@ function assertShellInvariants(label, html) {
     email: 'a@b.com', restaurant: 'Chef de Mer', subtype: 'fine-dining', locale: 'es',
   });
   assertShape('ES checklistAutoResponder', out);
-  assert('ES checklistAutoResponder: primaryCta label ES',
-    out.html.indexOf('Descargar el PDF') !== -1);
+  assert('ES checklistAutoResponder: primaryCta label ES (D12b)',
+    out.html.indexOf('Abrir tu checklist') !== -1);
+  assert('ES checklistAutoResponder: primary CTA href is the live page, not a .pdf',
+    out.html.indexOf('/es/resources/restaurant-website-checklist/"') !== -1
+    && out.html.indexOf('muntin-restaurant-website-checklist-es.pdf') === -1);
   assert('ES checklistAutoResponder: secondaryCta label ES',
     out.html.indexOf('Agenda una llamada de 20 min') !== -1);
   assert('ES checklistAutoResponder: ES received-because footer',
-    out.html.indexOf('Solicitaste el PDF del checklist') !== -1);
+    out.html.indexOf('Solicitaste el checklist del sitio') !== -1);
 }
 {
   const out = auditReportAutoResponder({
