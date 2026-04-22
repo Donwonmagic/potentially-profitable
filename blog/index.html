@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-<title>Writing — Notes from the Studio | Muntin Digital</title>
+<title>Articles — Muntin Digital's Library</title>
 <meta name="description" content="Honest essays about building websites for small businesses. Written by Don at Muntin Digital — a one-person studio in Silver Spring, MD." />
 <meta name="theme-color" content="#1F4E5B" />
 <link rel="canonical" href="https://muntin.digital/blog/" />
@@ -17,7 +17,7 @@
 <!-- i18n:hreflang END -->
 
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Writing — Notes from the Studio | Muntin Digital" />
+<meta property="og:title" content="Articles — Muntin Digital's Library" />
 <meta property="og:description" content="Honest essays about building websites for small businesses. Written by Don at Muntin Digital." />
 <meta property="og:url" content="https://muntin.digital/blog/" />
 <meta property="og:site_name" content="Muntin Digital" />
@@ -27,7 +27,7 @@
 <meta property="og:image:height" content="630" />
 
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Writing — Notes from the Studio | Muntin Digital" />
+<meta name="twitter:title" content="Articles — Muntin Digital's Library" />
 <meta name="twitter:description" content="Honest essays about building websites for small businesses." />
 <meta name="twitter:image" content="https://muntin.digital/brand/og/blog.png" />
 
@@ -53,7 +53,7 @@
     {
       "@type": "Blog",
       "@id": "https://muntin.digital/blog/#blog",
-      "name": "Muntin Digital — Writing",
+      "name": "Muntin Digital — Articles",
       "description": "Honest essays about building websites for small businesses.",
       "url": "https://muntin.digital/blog/",
       "author": { "@id": "https://muntin.digital/#business" },
@@ -65,7 +65,8 @@
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
-        { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://muntin.digital/blog/" }
+        { "@type": "ListItem", "position": 2, "name": "Learn",           "item": "https://muntin.digital/learn/" },
+        { "@type": "ListItem", "position": 3, "name": "Articles",        "item": "https://muntin.digital/blog/" }
       ]
     }
   ]
@@ -95,7 +96,7 @@
      Without this, a slow stylesheet fetch briefly renders the raw
      'Home > Page' links at the top-left of the viewport. -->
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260422-research2">
+<link rel="stylesheet" href="/assets/site.css?v=20260422-cohesion">
 
 <style>
   /* ============ BLOG INDEX + POST LAYOUT STYLES ============ */
@@ -266,14 +267,16 @@
 <nav class="breadcrumb container" aria-label="Breadcrumb">
   <a href="/">Home</a>
   <span class="breadcrumb-sep" aria-hidden="true">›</span>
-  <span aria-current="page">Blog</span>
+  <a href="/learn/">Learn</a>
+  <span class="breadcrumb-sep" aria-hidden="true">›</span>
+  <span aria-current="page">Articles</span>
 </nav>
 
 <!-- ============ HERO ============ -->
 <section class="hero hero-medium">
   <div class="container">
     <div class="hero-center">
-      <span class="eyebrow">Writing</span>
+      <span class="eyebrow">Part of the Library · Articles</span>
       <h1 class="mt-20">
         Notes<br>
         <span class="serif-italic">from the studio.</span>
@@ -347,16 +350,14 @@
 <section class="block final">
   <div class="container">
     <div class="section-header reveal section-center">
-      <span class="eyebrow">Before the blog catches up</span>
-      <h2>Questions that<br>need real answers?</h2>
-      <p class="final-sub">The posts here will eventually answer most of the common questions small business owners ask me. If yours is urgent, skip the queue and ask me directly on a short call — same honest answer, same afternoon.</p>
+      <span class="eyebrow">Articles are one room in the library</span>
+      <h2>Keep exploring<br><span class="serif-italic">the whole library.</span></h2>
+      <p class="final-sub">Every article here is backed by research, glossary terms, and a free tool you can try on your own site. If you want the guided version, the tour starts at <a href="/learn/start-here/">Start here</a>. If you want the honest conversation, the 20-minute call is still the fastest path.</p>
     </div>
 
     <div class="hero-ctas reveal hero-ctas-center">
-      <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
-      </a>
-      <a class="btn btn-ghost" href="/resources/restaurant-website-checklist/">Read the free checklist</a>
+      <a class="btn btn-primary" href="/learn/">Browse the whole library</a>
+      <a class="btn btn-ghost js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a>
     </div>
   </div>
 </section>
@@ -429,6 +430,6 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260422-research2" defer></script>
+<script src="/assets/site.js?v=20260422-cohesion" defer></script>
 </body>
 </html>

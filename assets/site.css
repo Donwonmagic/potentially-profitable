@@ -250,6 +250,10 @@ p{margin:0}
 .hero h1 .serif-italic{font-style:italic;font-weight:400;color:var(--teal)}
 .hero-sub{margin-top:28px;max-width:520px;font-size:clamp(17px,1.35vw,20px);line-height:1.55;color:var(--ink-soft)}
 .hero-ctas{margin-top:40px;display:flex;gap:14px;flex-wrap:wrap}
+.hero-note{margin:18px 0 0;font-size:13.5px;line-height:1.55;color:var(--stone)}
+.hero-note a{color:var(--teal);border-bottom:1px dashed currentColor;font-weight:500;text-decoration:none}
+.hero-note a:hover,.hero-note a:focus-visible{color:var(--teal-dark);border-bottom-color:var(--teal-dark)}
+.hero-note strong{color:var(--ink-soft);font-weight:600;margin-right:2px}
 .hero-meta{margin-top:44px;display:flex;align-items:center;gap:16px;color:var(--ink-soft);font-size:14px}
 .hero-meta-sub{color:var(--stone)}
 .hero-meta .avatar{width:44px;height:44px;border-radius:999px;background:linear-gradient(135deg,var(--teal) 0%,var(--teal-dark) 100%);color:var(--cream);display:grid;place-items:center;font-family:var(--font-display);font-weight:600;font-size:18px;letter-spacing:-0.02em;flex:0 0 44px;box-shadow:0 8px 20px -8px rgba(20,22,26,0.25)}
@@ -1936,3 +1940,166 @@ br.br-lg{display:none}
 }
 .cite-note-link span{font-size:12px;opacity:0.8}
 .cite-note-link:hover span{opacity:1}
+
+/* ============================================================
+   RESEARCH DRAWER (inline research-note preview)
+   Opened when a reader clicks a .cite-note-link or .link-research
+   anchor. Uses a native <dialog> so focus-trap, Esc-to-close, and
+   the top-layer behavior come for free. Reader's origin page
+   (audit session, article mid-read, etc.) is never left.
+   Progressive enhancement: if <dialog>.showModal is missing or JS
+   is off, the trigger's target="_blank" fallback takes over.
+   ============================================================ */
+.research-drawer{
+  padding:0;border:0;background:transparent;
+  /* Slide-in from the right on desktop. Sits flush to the right
+     edge of the viewport; mobile rule below converts to a bottom sheet. */
+  position:fixed;margin:0;right:0;top:0;left:auto;bottom:auto;
+  height:100dvh;max-height:100dvh;
+  width:min(560px,100vw);max-width:100vw;
+}
+.research-drawer::backdrop{
+  background:rgba(20,22,26,0.55);
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+}
+.research-drawer-inner{
+  display:flex;flex-direction:column;height:100%;
+  background:var(--cream);
+  border-left:1px solid var(--line-dark);
+  box-shadow:-24px 0 60px -12px rgba(0,0,0,0.28);
+  overflow:hidden;
+}
+
+/* Top bar: "Research note" label + close */
+.research-drawer-head{
+  flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:18px 22px;border-bottom:1px solid var(--line);background:var(--white);
+}
+.research-drawer-kicker{
+  font-family:var(--font-body);font-size:11px;font-weight:700;
+  letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);
+  display:inline-flex;align-items:center;gap:8px;
+}
+.research-drawer-kicker::before{
+  content:'';display:inline-block;width:6px;height:6px;
+  border-radius:50%;background:var(--teal);
+}
+.research-drawer-close{
+  background:var(--cream-2);border:1px solid var(--line);border-radius:999px;
+  padding:5px 11px;font-family:var(--font-body);font-size:11px;font-weight:600;
+  letter-spacing:0.08em;text-transform:uppercase;color:var(--stone);
+  cursor:pointer;flex-shrink:0;
+  transition:border-color var(--t-fast) var(--ease),color var(--t-fast) var(--ease);
+}
+.research-drawer-close:hover,.research-drawer-close:focus-visible{
+  border-color:var(--teal);color:var(--teal);
+}
+
+/* Scrollable body */
+.research-drawer-body{
+  flex:1;min-height:0;overflow-y:auto;padding:28px 28px 16px;
+}
+.research-drawer-source{
+  font-family:var(--font-body);font-size:12px;font-weight:600;
+  letter-spacing:0.02em;color:var(--stone);
+  display:flex;flex-wrap:wrap;gap:6px 10px;margin-bottom:14px;
+}
+.research-drawer-source strong{color:var(--teal);font-weight:700}
+.research-drawer-source span[aria-hidden]{color:var(--stone-2)}
+.research-drawer h2.research-drawer-title{
+  font-family:var(--font-display);font-weight:500;
+  font-size:clamp(22px,2.6vw,28px);line-height:1.2;letter-spacing:-0.01em;
+  color:var(--ink);margin:0 0 14px;
+}
+.research-drawer h2.research-drawer-title .serif-italic{
+  font-style:italic;color:var(--teal);font-weight:500;
+}
+.research-drawer-dek{
+  font-family:var(--font-display);font-style:italic;font-size:17px;line-height:1.4;
+  color:var(--stone);margin:0 0 24px;
+}
+.research-drawer-section-label{
+  font-family:var(--font-body);font-size:10.5px;font-weight:700;
+  letter-spacing:0.16em;text-transform:uppercase;color:var(--stone-2);
+  margin:0 0 10px;
+}
+.research-drawer-note{
+  font-size:14.5px;line-height:1.65;color:var(--ink-soft);margin:0 0 22px;
+}
+.research-drawer-note strong{color:var(--ink)}
+.research-drawer-findings{
+  list-style:none;margin:0 0 24px;padding:0;display:grid;gap:10px;
+}
+.research-drawer-findings li{
+  padding:12px 14px;background:var(--white);border:1px solid var(--line);
+  border-radius:var(--r-sm);font-size:13.5px;line-height:1.55;color:var(--ink-soft);
+}
+.research-drawer-findings li strong{color:var(--ink)}
+.research-drawer-loading{
+  padding:36px 22px;text-align:center;color:var(--stone-2);font-size:14px;
+}
+.research-drawer-loading::before{
+  content:'';display:inline-block;width:12px;height:12px;margin-right:10px;
+  border:2px solid var(--line);border-top-color:var(--teal);border-radius:999px;
+  animation:search-spin 0.8s linear infinite;vertical-align:-2px;
+}
+.research-drawer-error{
+  padding:22px;margin:0;background:var(--cream-2);border:1px solid var(--line);
+  border-radius:var(--r-sm);font-size:13.5px;color:var(--stone);
+}
+.research-drawer-error strong{display:block;color:var(--ink);margin-bottom:6px}
+
+/* Sticky footer CTAs */
+.research-drawer-actions{
+  flex-shrink:0;display:flex;flex-direction:column;gap:8px;
+  padding:16px 22px 20px;border-top:1px solid var(--line);background:var(--cream-2);
+}
+.research-drawer-actions .btn{
+  justify-content:space-between;width:100%;padding:12px 18px;font-size:14px;
+}
+.research-drawer-actions .btn svg{width:14px;height:14px;flex:0 0 14px}
+.research-drawer-actions .btn-ghost{background:transparent}
+
+/* Mobile: convert to a bottom sheet */
+@media (max-width:720px){
+  .research-drawer{
+    width:100vw;top:auto;bottom:0;height:min(88dvh,88vh);
+  }
+  .research-drawer-inner{
+    border-left:0;border-top:1px solid var(--line-dark);
+    border-top-left-radius:var(--r-lg);border-top-right-radius:var(--r-lg);
+    box-shadow:0 -24px 60px -12px rgba(0,0,0,0.28);
+  }
+  .research-drawer-head{padding:14px 18px}
+  .research-drawer-body{padding:22px 20px 12px}
+  .research-drawer-actions{padding:14px 18px 18px}
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion:reduce){
+  .research-drawer,.research-drawer-inner{transition:none}
+  .research-drawer-loading::before{animation:none}
+}
+
+/* ===== Glossary term → research note cross-link =====
+   Compact "See the research" line added by scripts/
+   wire-glossary-research.mjs after .gloss-term-why on selected
+   terms. Click opens the research drawer inline (site.js); with
+   JS off, the native <a> works as a same-tab follow (drawer JS
+   only intercepts when dialog + fetch are present). */
+.gloss-term-research{
+  margin:8px 0 0;font-family:var(--font-body);
+  font-size:12.5px;line-height:1.5;color:var(--stone);
+  letter-spacing:0.01em;
+}
+.gloss-term-research strong{
+  color:var(--ink-soft);font-weight:600;margin-right:5px;
+}
+.gloss-term-research a{
+  color:var(--teal);font-weight:500;
+  text-decoration:none;border-bottom:1px dashed currentColor;
+}
+.gloss-term-research a:hover,
+.gloss-term-research a:focus-visible{
+  color:var(--teal-dark);border-bottom-color:var(--teal-dark);
+}

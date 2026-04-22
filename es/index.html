@@ -186,8 +186,8 @@
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init()
 </script>
-<link rel="preload" as="style" href="/assets/site.css?v=20260422-research2">
-<link rel="stylesheet" href="/assets/site.css?v=20260422-research2" fetchpriority="high">
+<link rel="preload" as="style" href="/assets/site.css?v=20260422-cohesion">
+<link rel="stylesheet" href="/assets/site.css?v=20260422-cohesion" fetchpriority="high">
 </head>
 <body>
 
@@ -208,7 +208,7 @@
              along with the rest of the nav block on every build, keeping
              the partial strictly idempotent. Valid HTML5: <script> may
              appear in any flow-content context. */
-  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página"});</script>
+  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
   <div class="container nav-inner">
     <a href="#main" class="logo" aria-label="Muntin Digital — inicio">
       <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
@@ -280,6 +280,9 @@
         </a>
         <a class="btn btn-ghost" href="#services">Ver qué incluye</a>
       </div>
+      <p class="hero-note">
+        <strong>Además, gratis:</strong> una <a href="/es/learn/">biblioteca</a> con artículos honestos, <a href="/es/tools/">herramientas</a> para restaurantes y <a href="/es/learn/research/">notas de investigación</a>. Los restauranteros pueden <a href="/es/learn/start-here/">empezar aquí</a> con un recorrido guiado de 60 minutos.
+      </p>
       <div class="hero-meta">
         <div class="avatar" aria-hidden="true">D</div>
         <div>
@@ -408,6 +411,53 @@
           <li>Todo es tuyo. Sin ataduras. Punto.</li>
         </ul>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BIBLIOTECA ============ -->
+<!-- Se coloca entre la sección de Problema y el teaser de Servicios:
+     "Aquí cobra Muntin" se lee mejor después de "Aquí regala Muntin."
+     La biblioteca es la construcción de confianza antes del pitch.
+     Las cuatro tarjetas llevan a superficies ya publicadas en /es/learn/,
+     /es/blog/, /es/tools/, /es/learn/research/. -->
+<section class="block" id="library" aria-labelledby="library-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">Antes de contratar a nadie</span>
+      <h2 id="library-heading">La biblioteca es gratis.<br><span class="serif-italic">Úsala.</span></h2>
+      <p>Cada artículo, herramienta, nota de investigación y término del glosario aquí es gratuito y está pensado para restaurantes. Es el mismo pensamiento que entra en el trabajo con clientes — si puedes aplicarlo tú, aplícalo. Cuando estés listo para un socio, aquí estoy.</p>
+    </div>
+
+    <div class="learn-tools" style="margin-top:48px;">
+      <a class="learn-tool" href="/es/learn/start-here/">
+        <span class="learn-tool-kicker">Empieza aquí · ~1 hora</span>
+        <h3>El recorrido guiado.</h3>
+        <p>Cuatro pasos que te llevan de "¿qué es esto?" a "esto es lo primero que hay que arreglar." Pensado para restauranteros que llegaron en frío.</p>
+        <span class="learn-tool-cta">Comenzar el recorrido →</span>
+      </a>
+      <a class="learn-tool" href="/es/blog/">
+        <span class="learn-tool-kicker">Artículos · ensayos honestos</span>
+        <h3>Apuntes del estudio.</h3>
+        <p>Números reales, contrapartes reales. Las cuentas de DoorDash, precios del menú, comparaciones de plataformas — para un operador independiente que tiene que decidir esta semana.</p>
+        <span class="learn-tool-cta">Ver los artículos →</span>
+      </a>
+      <a class="learn-tool" href="/es/tools/">
+        <span class="learn-tool-kicker">Herramientas gratis · sin registro</span>
+        <h3>Audita tu propio sitio.</h3>
+        <p>Un diagnóstico consciente de restaurante más siete utilidades enfocadas. Cada herramienta trae enlaces a la investigación y al glosario relevantes.</p>
+        <span class="learn-tool-cta">Abrir el kit de herramientas →</span>
+      </a>
+      <a class="learn-tool" href="/es/learn/research/">
+        <span class="learn-tool-kicker">Investigación · la evidencia</span>
+        <h3>Cada afirmación, con fuente.</h3>
+        <p>Resúmenes escritos por Muntin de los estudios detrás de los consejos — la investigación de Google sobre velocidad móvil, la Ley de Fitts, el abandono de carrito de Baymard, y más.</p>
+        <span class="learn-tool-cta">Leer la investigación →</span>
+      </a>
+    </div>
+
+    <div class="hero-ctas hero-ctas-center" style="margin-top:44px;">
+      <a class="btn btn-ghost" href="/es/learn/">Recorrer toda la biblioteca</a>
     </div>
   </div>
 </section>
@@ -729,6 +779,6 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260422-research2" defer></script>
+<script src="/assets/site.js?v=20260422-cohesion" defer></script>
 </body>
 </html>

@@ -79,7 +79,7 @@
 </script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260422-research2">
+<link rel="stylesheet" href="/assets/site.css?v=20260422-cohesion">
 </head>
 <body>
 
@@ -91,7 +91,7 @@
              along with the rest of the nav block on every build, keeping
              the partial strictly idempotent. Valid HTML5: <script> may
              appear in any flow-content context. */
-  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página"});</script>
+  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
   <div class="container nav-inner">
     <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
       <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
@@ -407,7 +407,7 @@
           <li><code>scripts/wire-research-citations.mjs</code> recorre cada artículo publicado del blog, encuentra anclas externas que coinciden con el mapa conocido de citas, e inyecta un enlace interno a "Leer el resumen de Don" (pestaña nueva) inmediatamente antes de cada una. Es idempotente — re-ejecutarlo no hace nada.</li>
           <li>Los enlaces a notas de investigación se abren en una pestaña nueva (<code>target="_blank"</code>) para que un lector a medio diagnóstico o a medio artículo no pierda su lugar. Las migas de pan en la nota muestran claramente "Inicio › Aprende › Investigación › &lt;nota&gt;" así el lector sabe dónde está.</li>
           <li>Cada nota de investigación incluye schema JSON-LD completo (<code>Article</code> → <code>citation</code> → <code>ScholarlyArticle</code>) para que los buscadores entiendan la relación resumen-cita-fuente.</li>
-          <li><em>Mejora futura en cola:</em> un cajón inline que muestra el resumen de la nota sin abandonar la página de origen, con un enlace "Abrir nota completa ↗". La pestaña nueva es la v1 conservadora; el cajón aterriza cuando los patrones de uso sean más claros.</li>
+          <li>Hacer clic en cualquier enlace a una nota de investigación ahora abre un <strong>cajón inline</strong> sobre la página de origen — lateral en escritorio, desde abajo en móvil — así el lector puede ver el resumen, los hallazgos clave y ambos CTA sin salir de su diagnóstico o abandonar el artículo a media lectura. El cajón carga la nota de forma perezosa y extrae el preview con <code>DOMParser</code>, con caché por slug para que la segunda apertura sea instantánea. Si <code>&lt;dialog&gt;.showModal</code> o <code>fetch</code> no están disponibles — o el lector presiona ⌘/Ctrl/shift para forzar una pestaña nueva — el <code>target="_blank"</code> original del enlace toma el relevo. Cero regresión, mejora progresiva completa.</li>
         </ul>
       </div>
     </div>
@@ -538,6 +538,6 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260422-research2" defer></script>
+<script src="/assets/site.js?v=20260422-cohesion" defer></script>
 </body>
 </html>

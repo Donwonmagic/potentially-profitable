@@ -2906,3 +2906,216 @@
     }
     function escapeAttr(s) { return escapeHtml(s); }
   })();
+
+  // ───────────────────────────────────────────────────────────────
+  // RESEARCH DRAWER (inline research-note preview)
+  //
+  // Intercepts clicks on .cite-note-link (in blog post citations)
+  // and .link-research (in audit result rows + the audit metric
+  // glossary) — any anchor whose href points to a /learn/research/
+  // page under either locale. Instead of opening a new tab, the
+  // click lazy-fetches that research note's HTML, extracts the
+  // preview sections (hero, Don's note, key findings, source), and
+  // renders them into a side-sheet dialog. The reader keeps their
+  // origin page (audit session or article scroll position) intact.
+  //
+  // Progressive enhancement: any of the following falls back to
+  // the trigger's existing target="_blank" new-tab behavior —
+  //   - <dialog>.showModal unavailable (old Safari, older Firefox)
+  //   - DOMParser or fetch unavailable
+  //   - reader holds ⌘/Ctrl/shift to force a new tab or new window
+  //   - fetch fails (offline, 404)
+  // Upshot: nothing breaks when the drawer can't open; the user
+  // just gets the old new-tab flow.
+  // ───────────────────────────────────────────────────────────────
+  (() => {
+    // Capability gate. Fall back to native new-tab if anything is
+    // missing. No polyfills — the baseline already works.
+    const probeDialog = document.createElement('dialog');
+    if (typeof probeDialog.showModal !== 'function') return;
+    if (typeof DOMParser !== 'function' || typeof fetch !== 'function') return;
+
+    // Only hijack links that point at a research-note URL. Matches
+    // /learn/research/<slug>/ and /es/learn/research/<slug>/ on the
+    // same origin. External links and anchors to other pages keep
+    // their current behavior.
+    const RESEARCH_HREF_RE = /^\/(?:es\/)?learn\/research\/[a-z0-9-]+\/?$/i;
+
+    // Copy keys localized via the existing i18n helper so ES readers
+    // see Spanish strings. English literals are the fallback for any
+    // missing key.
+    const strings = {
+      kicker:         i18n('drawer.kicker',        'Research note'),
+      close:          i18n('drawer.close',         'Close'),
+      loading:        i18n('drawer.loading',       'Loading the summary…'),
+      errTitle:       i18n('drawer.err_title',     'Couldn’t load the summary'),
+      errBody:        i18n('drawer.err_body',      'Open the full note in a new tab instead — it’s the same content, just more of it.'),
+      findingsLabel:  i18n('drawer.findings_label','Key findings'),
+      noteLabel:      i18n('drawer.note_label',    'Don’s note'),
+      readFull:       i18n('drawer.read_full',     'Read the full note'),
+      readOriginal:   i18n('drawer.read_original', 'See the original source'),
+      openInNewTab:   i18n('drawer.open_new_tab',  'opens in a new tab'),
+    };
+
+    let dialog = null;
+    let body = null;
+    let actions = null;
+    let lastOpener = null;
+    const cache = new Map();   // slug → parsed preview object
+    let inFlight = null;       // AbortController for the current fetch
+
+    const EXTERNAL_ARROW_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="14" height="14"><path d="M7 17L17 7M9 7h8v8"/></svg>';
+
+    function ensureDialog() {
+      if (dialog) return;
+      dialog = document.createElement('dialog');
+      dialog.className = 'research-drawer';
+      dialog.setAttribute('aria-label', strings.kicker);
+      dialog.innerHTML =
+        '<div class="research-drawer-inner">' +
+          '<div class="research-drawer-head">' +
+            '<span class="research-drawer-kicker">' + strings.kicker + '</span>' +
+            '<button type="button" class="research-drawer-close" aria-label="' + strings.close + '">' + strings.close + '</button>' +
+          '</div>' +
+          '<div class="research-drawer-body" role="document"></div>' +
+          '<div class="research-drawer-actions"></div>' +
+        '</div>';
+      document.body.appendChild(dialog);
+      body = dialog.querySelector('.research-drawer-body');
+      actions = dialog.querySelector('.research-drawer-actions');
+      dialog.querySelector('.research-drawer-close').addEventListener('click', close);
+      dialog.addEventListener('click', (e) => { if (e.target === dialog) close(); });
+      dialog.addEventListener('close', () => {
+        if (lastOpener && typeof lastOpener.focus === 'function') lastOpener.focus();
+        lastOpener = null;
+        if (inFlight) { inFlight.abort(); inFlight = null; }
+      });
+    }
+
+    function open(trigger, href) {
+      ensureDialog();
+      lastOpener = trigger;
+      body.innerHTML = '<div class="research-drawer-loading">' + strings.loading + '</div>';
+      actions.innerHTML = '';
+      try { dialog.showModal(); } catch (_) { /* already open */ }
+
+      // Serve from cache on second open.
+      const slug = href.split('/').filter(Boolean).pop();
+      if (cache.has(slug)) { render(href, cache.get(slug)); return; }
+
+      // Fetch + extract.
+      if (inFlight) inFlight.abort();
+      inFlight = new AbortController();
+      fetch(href, { signal: inFlight.signal, credentials: 'same-origin' })
+        .then((res) => {
+          if (!res.ok) throw new Error('status ' + res.status);
+          return res.text();
+        })
+        .then((html) => {
+          const preview = extract(html);
+          if (!preview) throw new Error('preview extraction failed');
+          cache.set(slug, preview);
+          render(href, preview);
+        })
+        .catch((err) => {
+          if (err && err.name === 'AbortError') return;
+          renderError(href);
+        });
+    }
+
+    function close() {
+      if (dialog && dialog.open) dialog.close();
+    }
+
+    // Parse a research note's HTML and pull out the pieces that
+    // make the preview. Tolerant to layout drift — each getter is
+    // independently null-safe, so a redesigned note that drops
+    // (say) the dek still renders the rest.
+    function extract(html) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const hero = doc.querySelector('.research-hero');
+      if (!hero) return null;
+      const title = (doc.querySelector('.research-hero h1') || {}).innerHTML || '';
+      const sourceLine = (doc.querySelector('.research-source-line') || {}).innerHTML || '';
+      const dek = (doc.querySelector('.research-dek') || {}).textContent || '';
+      // Don's note: prefer the first <p> inside .research-note.
+      const noteP = doc.querySelector('.research-note p');
+      const note = noteP ? noteP.innerHTML : '';
+      // Top 3 findings (the note itself carries 5; keep the preview lean).
+      const findings = Array.from(doc.querySelectorAll('.research-findings > li')).slice(0, 3).map((li) => li.innerHTML);
+      // External source link — the "Read the original …" button in
+      // the .research-original aside.
+      const origAnchor = doc.querySelector('.research-original a[href^="http"]');
+      const originalHref = origAnchor ? origAnchor.getAttribute('href') : '';
+      return { title, sourceLine, dek, note, findings, originalHref };
+    }
+
+    function render(href, preview) {
+      let html = '';
+      if (preview.sourceLine) html += '<div class="research-drawer-source">' + preview.sourceLine + '</div>';
+      if (preview.title)      html += '<h2 class="research-drawer-title">' + preview.title + '</h2>';
+      if (preview.dek)        html += '<p class="research-drawer-dek">' + escapeHtml(preview.dek) + '</p>';
+      if (preview.note) {
+        html += '<p class="research-drawer-section-label">' + strings.noteLabel + '</p>';
+        html += '<p class="research-drawer-note">' + preview.note + '</p>';
+      }
+      if (preview.findings && preview.findings.length) {
+        html += '<p class="research-drawer-section-label">' + strings.findingsLabel + '</p>';
+        html += '<ul class="research-drawer-findings">' + preview.findings.map((f) => '<li>' + f + '</li>').join('') + '</ul>';
+      }
+      body.innerHTML = html;
+
+      // Action footer: "Read the full note" opens the full research
+      // page in a new tab (keeps the origin page intact). "See the
+      // original source" opens the external study.
+      let actionsHtml =
+        '<a class="btn btn-primary" href="' + escapeAttr(href) + '" target="_blank" rel="noopener">' +
+          strings.readFull + EXTERNAL_ARROW_SVG +
+          '<span class="sr-only"> (' + strings.openInNewTab + ')</span>' +
+        '</a>';
+      if (preview.originalHref) {
+        actionsHtml +=
+          '<a class="btn btn-ghost" href="' + escapeAttr(preview.originalHref) + '" target="_blank" rel="noopener noreferrer">' +
+            strings.readOriginal + EXTERNAL_ARROW_SVG +
+            '<span class="sr-only"> (' + strings.openInNewTab + ')</span>' +
+          '</a>';
+      }
+      actions.innerHTML = actionsHtml;
+    }
+
+    function renderError(href) {
+      body.innerHTML =
+        '<p class="research-drawer-error">' +
+          '<strong>' + strings.errTitle + '</strong>' + strings.errBody +
+        '</p>';
+      actions.innerHTML =
+        '<a class="btn btn-primary" href="' + escapeAttr(href) + '" target="_blank" rel="noopener">' +
+          strings.readFull + EXTERNAL_ARROW_SVG +
+          '<span class="sr-only"> (' + strings.openInNewTab + ')</span>' +
+        '</a>';
+    }
+
+    // Global click interceptor. Captures clicks on research-note
+    // anchors during bubbling so nothing else has to know about the
+    // drawer. Modifier keys (⌘/Ctrl/shift/middle-click) bypass us and
+    // fall through to the browser's native new-tab/new-window handling
+    // — preserves user intent on power-user clicks.
+    document.addEventListener('click', (e) => {
+      if (e.defaultPrevented) return;
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = e.target && e.target.closest && e.target.closest('a[href]');
+      if (!a) return;
+      const href = a.getAttribute('href') || '';
+      if (!RESEARCH_HREF_RE.test(href)) return;
+      // Same-origin only (the regex already guarantees a relative
+      // href, so no cross-origin concern).
+      e.preventDefault();
+      open(a, href);
+    });
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+    }
+    function escapeAttr(s) { return escapeHtml(s); }
+  })();

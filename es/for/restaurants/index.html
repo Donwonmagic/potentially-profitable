@@ -187,7 +187,7 @@
 .service-link:hover .service-link-arrow{transform:translateX(4px)}
 .service-link:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px}
 </style>
-<link rel="stylesheet" href="/assets/site.css?v=20260422-research2">
+<link rel="stylesheet" href="/assets/site.css?v=20260422-cohesion">
 </head>
 <body>
 
@@ -199,7 +199,7 @@
              along with the rest of the nav block on every build, keeping
              the partial strictly idempotent. Valid HTML5: <script> may
              appear in any flow-content context. */
-  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página"});</script>
+  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
   <div class="container nav-inner">
     <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
       <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
@@ -943,6 +943,54 @@
   </div>
 </section>
 
+<!-- ============ RECURSOS PARA RESTAURANTES ============ -->
+<!-- Aterrizaje suave entre el FAQ y el CTA final: un estante con
+     "esto te puedes llevar aunque nunca me contrates." Presenta las
+     herramientas, la biblioteca, el checklist y las notas de
+     investigación como un conjunto coherente pensado para
+     restaurantes — no como CTA sueltos. -->
+<section class="block" id="resources" aria-labelledby="resources-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">Gratis, sin registro</span>
+      <h2 id="resources-heading">Recursos hechos<br><span class="serif-italic">para restauranteros.</span></h2>
+      <p>Cada herramienta y artículo de abajo es específico para restaurantes — no consejo genérico para negocios pequeños disfrazado con una foto de comida. Usa lo que te sirva; regresa cuando necesites más.</p>
+    </div>
+
+    <div class="learn-tools" style="margin-top:40px;">
+      <a class="learn-tool" href="/es/tools/audits/restaurant/">
+        <span class="learn-tool-kicker">Diagnóstico gratis · ~30 seg</span>
+        <h3>Califica tu propio sitio.</h3>
+        <p>Veintitrés verificaciones conscientes de restaurante — velocidad móvil, legibilidad del menú, flujo de reservas, Google Business Profile, schema. Top tres arreglos por impacto.</p>
+        <span class="learn-tool-cta">Ejecutar el diagnóstico →</span>
+      </a>
+      <a class="learn-tool" href="/es/resources/restaurant-website-checklist/">
+        <span class="learn-tool-kicker">Checklist · 10 min</span>
+        <h3>La rúbrica de 23 puntos.</h3>
+        <p>Un checklist imprimible que puedes correr en tu propio sitio o pasárselo a la agencia que estás auditando. La misma rúbrica que usa la herramienta gratis, con espacio para notas.</p>
+        <span class="learn-tool-cta">Abrir el checklist →</span>
+      </a>
+      <a class="learn-tool" href="/es/blog/">
+        <span class="learn-tool-kicker">Artículos · ensayos honestos</span>
+        <h3>Apuntes del estudio.</h3>
+        <p>Las cuentas de DoorDash, precios del menú, comparaciones de plataformas, embudos de fuga de reservas. Escritos para un operador que tiene que decidir esta semana.</p>
+        <span class="learn-tool-cta">Ver los artículos →</span>
+      </a>
+      <a class="learn-tool" href="/es/learn/research/">
+        <span class="learn-tool-kicker">Investigación · la evidencia</span>
+        <h3>Los estudios detrás del consejo.</h3>
+        <p>Resúmenes en lenguaje claro de la investigación de Google sobre velocidad móvil, la Ley de Fitts, el abandono de carrito de Baymard y más — con enlaces a las fuentes originales.</p>
+        <span class="learn-tool-cta">Leer la investigación →</span>
+      </a>
+    </div>
+
+    <div class="hero-ctas hero-ctas-center" style="margin-top:40px;">
+      <a class="btn btn-ghost" href="/es/learn/">Recorrer toda la biblioteca</a>
+      <a class="btn btn-ghost" href="/es/learn/start-here/">O tomar el recorrido guiado</a>
+    </div>
+  </div>
+</section>
+
 <!-- ============ FINAL CTA ============ -->
 <section class="block final" id="contact-cta">
   <div class="container">
@@ -1037,6 +1085,6 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260422-research2" defer></script>
+<script src="/assets/site.js?v=20260422-cohesion" defer></script>
 </body>
 </html>
