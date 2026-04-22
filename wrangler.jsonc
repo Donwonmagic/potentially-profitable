@@ -99,7 +99,20 @@
   "vars": {
     "FROM_EMAIL":   "Don Goldstein <don@muntin.digital>",
     "NOTIFY_EMAIL": "don@muntin.digital"
-  }
+  },
+
+  // A prior dashboard-side experiment bound a `RateLimiter` Durable
+  // Object class that was never actually implemented in code (the T3
+  // commented block below shows the shape it would have taken). Every
+  // subsequent deploy now fails with: "New version of script does not
+  // export class 'RateLimiter' which is depended on by existing
+  // Durable Objects." This migration tells Cloudflare to drop the
+  // class + its (empty) DO namespace so the deploy can proceed. Safe:
+  // no production data uses a DO with that binding, and a rate
+  // limiter's state is ephemeral by design even if it had any.
+  "migrations": [
+    { "tag": "v1", "deleted_classes": ["RateLimiter"] }
+  ]
 
   // ─────────────────────────────────────────────────────────────────
   // Sprint T3 optional binding (not yet provisioned):
