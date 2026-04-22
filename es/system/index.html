@@ -390,8 +390,32 @@
   </div>
 </section>
 
+<!-- ============ INVESTIGACIÓN ============ -->
+<section class="block bg-cream2" aria-labelledby="research-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">Investigación</span>
+      <h2 id="research-heading">Cada cita externa<br><span class="serif-italic">tiene un espejo escrito por Muntin.</span></h2>
+      <p class="final-sub">Cuando un artículo o herramienta de este sitio cita investigación externa, la cita apunta <em>primero</em> a un resumen escrito por Muntin en <a href="/es/learn/research/">/es/learn/research/</a>, y <em>después</em> al estudio original. El lector conserva su lugar en la página que estaba leyendo; el resumen se abre al lado en una pestaña nueva.</p>
+    </div>
+
+    <div class="sys-audio">
+      <div>
+        <h3>Cómo se publica</h3>
+        <ul>
+          <li>Cada URL externa de investigación que cita la biblioteca está mapeada a una página interna de resumen en <code>/learn/research/&lt;slug&gt;/</code> — en lenguaje claro, con marco de restaurante, con el hallazgo principal, los números clave y un índice inverso de "cómo lo usa Muntin" que muestra cada artículo que se apoya en el estudio.</li>
+          <li><code>scripts/wire-research-citations.mjs</code> recorre cada artículo publicado del blog, encuentra anclas externas que coinciden con el mapa conocido de citas, e inyecta un enlace interno a "Leer el resumen de Don" (pestaña nueva) inmediatamente antes de cada una. Es idempotente — re-ejecutarlo no hace nada.</li>
+          <li>Los enlaces a notas de investigación se abren en una pestaña nueva (<code>target="_blank"</code>) para que un lector a medio diagnóstico o a medio artículo no pierda su lugar. Las migas de pan en la nota muestran claramente "Inicio › Aprende › Investigación › &lt;nota&gt;" así el lector sabe dónde está.</li>
+          <li>Cada nota de investigación incluye schema JSON-LD completo (<code>Article</code> → <code>citation</code> → <code>ScholarlyArticle</code>) para que los buscadores entiendan la relación resumen-cita-fuente.</li>
+          <li><em>Mejora futura en cola:</em> un cajón inline que muestra el resumen de la nota sin abandonar la página de origen, con un enlace "Abrir nota completa ↗". La pestaña nueva es la v1 conservadora; el cajón aterriza cuando los patrones de uso sean más claros.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ ACCESSIBILITY ============ -->
-<section class="block bg-cream2" aria-labelledby="a11y-heading">
+<section class="block" aria-labelledby="a11y-heading">
   <div class="container">
     <div class="section-header reveal">
       <span class="eyebrow">Accesibilidad</span>

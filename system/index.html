@@ -401,8 +401,32 @@
   </div>
 </section>
 
+<!-- ============ RESEARCH INDEX ============ -->
+<section class="block bg-cream2" aria-labelledby="research-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">Research</span>
+      <h2 id="research-heading">Every external citation<br><span class="serif-italic">has a Muntin-authored mirror.</span></h2>
+      <p class="final-sub">When an article or tool on this site cites outside research, the citation points <em>first</em> to a Muntin-authored summary at <a href="/learn/research/">/learn/research/</a>, and <em>second</em> to the original study. The reader keeps their place on the page they were reading; the summary opens alongside in a new tab.</p>
+    </div>
+
+    <div class="sys-audio">
+      <div>
+        <h3>How it ships</h3>
+        <ul>
+          <li>Every external research URL the library cites is mapped to an internal <code>/learn/research/&lt;slug&gt;/</code> summary page — plain-English, restaurant-framed, with the headline finding, key numbers, and a "how Muntin uses this" reverse-index showing every article that leans on the study.</li>
+          <li><code>scripts/wire-research-citations.mjs</code> walks every published blog post, finds external anchors that match the known citation map, and injects a "Read Don's summary" internal link (new tab) immediately before each. Idempotent — re-runs are no-ops.</li>
+          <li>Research-note links open in a new tab (<code>target="_blank"</code>) so a reader in the middle of an audit or an article doesn't lose their place. The breadcrumb on the research note clearly shows "Home › Learn › Research › &lt;note&gt;" so the reader knows where they are.</li>
+          <li>Each research note includes full JSON-LD schema (<code>Article</code> → <code>citation</code> → <code>ScholarlyArticle</code>) so search engines understand the summary-cites-source relationship.</li>
+          <li><em>Future enhancement queued:</em> an inline drawer that shows the research-note summary without leaving the origin page, with a "Open full note ↗" link. The new-tab pattern is the conservative v1; the drawer lands once reader usage patterns are clearer.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ ACCESSIBILITY ============ -->
-<section class="block bg-cream2" aria-labelledby="a11y-heading">
+<section class="block" aria-labelledby="a11y-heading">
   <div class="container">
     <div class="section-header reveal">
       <span class="eyebrow">Accessibility</span>
