@@ -78,6 +78,16 @@ const STATIC = [
   [ 'Audited:', 'Auditado:' ],
   [ 'Copy link', 'Copiar enlace' ],
   [ 'Building share link…', 'Creando enlace para compartir…' ],
+  // D3: snapshot-view error copy. Strings live inline in the
+  // hydrateFromSnapshotToken / renderSnapshotError helpers; the EN
+  // master is the source of truth, ES comes from this mapping.
+  [ "This share link has expired or wasn't found. Run a fresh audit below to check the current state of the site.",
+    'Este enlace compartido ha expirado o no se encontró. Ejecuta una auditoría nueva abajo para ver el estado actual del sitio.' ],
+  [ "Saved-audit sharing isn't turned on right now. Run a fresh audit below.",
+    'Compartir auditorías guardadas no está activado ahora mismo. Ejecuta una auditoría nueva abajo.' ],
+  [ "Couldn't load this shared audit. Run a fresh audit below to see current results.",
+    'No se pudo cargar esta auditoría compartida. Ejecuta una auditoría nueva abajo para ver los resultados actuales.' ],
+  [ 'Shared audit not available', 'Auditoría compartida no disponible' ],
   [ 'Download share card', 'Descargar tarjeta' ],
   [ 'Print for your manager', 'Imprimir para tu gerente' ],
   [ 'Share:', 'Compartir:' ],

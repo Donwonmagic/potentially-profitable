@@ -1952,6 +1952,47 @@
     .audit-step.active .step-indicator { animation: none; }
   }
 
+  /* D3: snapshot-view mode. A recipient opening a shared permalink
+     sees the captured score + priority-check list, but sections that
+     depend on live signals (action plan, margin-health leaks, top
+     fixes, category grid, audit-progress bar, email-report form,
+     history banner, feedback UI on unverified rows) are hidden in
+     this mode. The "re-run audit" CTA polish lands in D4; for now
+     the form section stays visible so a recipient can paste a fresh
+     URL or click Run. */
+  body.snapshot-hydrating #overallScoreSection,
+  body.snapshot-hydrating #priorityListWrap {
+    visibility: hidden;
+  }
+  body.snapshot-view .audit-progress-bar,
+  body.snapshot-view .category-grid,
+  body.snapshot-view .exec-summary,
+  body.snapshot-view .top-fixes,
+  body.snapshot-view .action-plan-card,
+  body.snapshot-view .margin-health-card,
+  body.snapshot-view .history-banner,
+  body.snapshot-view .priority-feedback,
+  body.snapshot-view .dev-prompt-btn,
+  body.snapshot-view .email-report,
+  body.snapshot-view #businessTypeOverride,
+  body.snapshot-view #score-override-container,
+  body.snapshot-view .score-override-banner {
+    display: none !important;
+  }
+  /* Error variant: score section stays visible (it's carrying the
+     "can't find this link" copy); everything else hides. */
+  body.snapshot-error .priority-list,
+  body.snapshot-error .audit-progress-bar,
+  body.snapshot-error .category-grid,
+  body.snapshot-error .exec-summary,
+  body.snapshot-error .top-fixes,
+  body.snapshot-error .action-plan-card,
+  body.snapshot-error .margin-health-card,
+  body.snapshot-error .history-banner,
+  body.snapshot-error .email-report {
+    display: none !important;
+  }
+
   /* Error state */
   .audit-error {
     max-width: 520px;
@@ -14520,9 +14561,210 @@
   })();
 
   /* -------- URL-param auto-run for shareable links -------- */
+  /* ==================================================================
+     D3: snapshot hydration
+     ------------------------------------------------------------------
+     When the page loads with `?s=<token>`, fetch the saved snapshot and
+     render a read-only view of what the original owner saw, rather than
+     re-running the audit from scratch. Falls back to a "can't find this
+     share link" state on 404 / 410 so the recipient has a clear path
+     forward (run a fresh audit of the same URL, if they know it).
+
+     Scope kept tight for D3:
+       * Populate the score ring + value + grade band
+       * Fill the audited-URL line
+       * Set the verdict copy
+       * Render a simplified priority-check list from the captured
+         { id, state, title } triples — no feedback buttons, no dev-
+         prompt buttons, no action-plan reconstruction. A snapshot is
+         a point-in-time record, not a rerun.
+       * Hide the sections that can't be rendered from the payload
+         alone (top-fixes, action-plan, margin-health, category grid);
+         D4 polishes the banner + re-run CTA on top of this.
+     ================================================================== */
+
+  function hydrateFromSnapshotToken(token) {
+    // Sanity-check shape before we hit the network. 10 chars of the
+    // server-side alphabet; anything else is a garbage URL.
+    if (!/^[A-HJ-NP-Z2-9]{10}$/.test(token)) {
+      renderSnapshotError('invalid-token');
+      return;
+    }
+    // Mark the body immediately so CSS can hide "not in snapshot"
+    // UI (the autoRunFromParam 300ms delay means we need a signal
+    // before the measuring-pill starts animating).
+    document.body.classList.add('snapshot-hydrating');
+    fetch('/api/audit-snapshot?token=' + encodeURIComponent(token), {
+      credentials: 'omit',
+      headers: { 'accept': 'application/json' },
+    })
+      .then(function(r){
+        if (r.status === 404) return Promise.reject({ error: 'not-found', status: 404 });
+        if (r.status === 503) return Promise.reject({ error: 'snapshot-storage-unavailable', status: 503 });
+        if (!r.ok)            return Promise.reject({ error: 'http-' + r.status, status: r.status });
+        return r.json();
+      })
+      .then(function(data){
+        if (!data || !data.ok || !data.snapshot) {
+          return Promise.reject({ error: (data && data.error) || 'unknown' });
+        }
+        renderSnapshotView(data.snapshot);
+      })
+      .catch(function(err){
+        try { console.warn('[snapshot] hydrate failed', err); } catch (_) {}
+        renderSnapshotError((err && err.error) || 'unknown');
+      });
+  }
+
+  function renderSnapshotView(snapshot) {
+    document.body.classList.remove('snapshot-hydrating');
+    document.body.classList.add('snapshot-view');
+
+    // URL: show in the input so a "Re-run audit" click (D4) picks it up
+    // without requiring the user to retype.
+    try {
+      var urlInput = document.getElementById('auditUrl');
+      if (urlInput && snapshot.auditedUrl) urlInput.value = snapshot.auditedUrl;
+    } catch (_) {}
+
+    // Overall score section: reveal + populate the ring.
+    try {
+      var scoreSection = document.getElementById('overallScoreSection');
+      if (scoreSection) scoreSection.hidden = false;
+      var score = typeof snapshot.score === 'number' ? snapshot.score : 0;
+      if (typeof setScoreRing === 'function') {
+        // Build benchmark meta if we have a subtype — reuses the same
+        // subtypeBenchmark helper the live audit uses, so a snapshot
+        // renders with the exact same halo math.
+        var bench = null;
+        if (snapshot.subtype && typeof subtypeBenchmark === 'function') {
+          try { bench = subtypeBenchmark(snapshot.subtype); } catch (_) {}
+        }
+        setScoreRing(score, bench && typeof bench.overall === 'number'
+          ? { benchmarkOverall: bench.overall }
+          : null);
+      } else {
+        // Defensive: setScoreRing is defined elsewhere in this file,
+        // but a page load race could in theory reach here before it
+        // binds. Fall back to a plain text update.
+        var valueEl = document.getElementById('scoreValue');
+        if (valueEl) valueEl.textContent = String(Math.round(score));
+      }
+      var auditedUrlEl = document.getElementById('auditedUrl');
+      if (auditedUrlEl) auditedUrlEl.textContent = snapshot.auditedUrl || '—';
+      var verdictEl = document.getElementById('verdictCopy');
+      if (verdictEl && snapshot.verdict) verdictEl.textContent = snapshot.verdict;
+    } catch (_) {}
+
+    // Priority-check list: build simplified rows from the captured
+    // { id, state, title } triples. No feedback / dev-prompt buttons —
+    // those paths depend on live data the snapshot doesn't carry.
+    try {
+      var listEl = document.getElementById('priorityListWrap');
+      var checks = (snapshot.results && Array.isArray(snapshot.results.checks))
+        ? snapshot.results.checks : [];
+      if (listEl && checks.length) {
+        var frag = document.createDocumentFragment();
+        checks.forEach(function(c){
+          var row = document.createElement('div');
+          var cls = (c.state === 'pass' || c.state === 'fail' || c.state === 'unverified') ? c.state : 'skip';
+          row.className = 'priority-item ' + cls + ' in-view';
+          var ch = cls === 'pass' ? '✓' : cls === 'fail' ? '✗' : '?';
+          var label = cls === 'pass' ? 'Pass' : cls === 'fail' ? 'Fail' : 'Needs verification';
+          row.innerHTML =
+            '<div class="mark ' + cls + '" aria-hidden="true">' + ch + '</div>' +
+            '<div class="body">' +
+              '<strong><span class="sr-only">' + label + ': </span>' +
+              escapeSnapshotHtml(c.title || c.id || '') +
+              '</strong>' +
+            '</div>';
+          frag.appendChild(row);
+        });
+        listEl.replaceChildren(frag);
+        // Reveal the list container if it was hidden behind the
+        // auto-run loading state.
+        listEl.hidden = false;
+      }
+    } catch (_) {}
+
+    // Flip the body into the "report has rendered" state so the
+    // Sprint-9 staggered reveal animations fire on the sections
+    // that ARE visible (audit-summary). The CSS hides the ones that
+    // shouldn't appear in snapshot view via the .snapshot-view class.
+    try { document.body.classList.add('report-revealed'); } catch (_) {}
+
+    // Seed the global so Share button + any downstream consumers
+    // read the same shape as a live run.
+    try {
+      window.__auditLastResult = {
+        audits: null,
+        overall: {
+          total: typeof snapshot.score === 'number' ? snapshot.score : 0,
+          perf: snapshot.results && snapshot.results.categoryScores && snapshot.results.categoryScores.perf,
+          a11y: snapshot.results && snapshot.results.categoryScores && snapshot.results.categoryScores.a11y,
+          bp:   snapshot.results && snapshot.results.categoryScores && snapshot.results.categoryScores.bp,
+          seo:  snapshot.results && snapshot.results.categoryScores && snapshot.results.categoryScores.seo,
+        },
+        url: snapshot.auditedUrl,
+        restaurant: snapshot.results && snapshot.results.categoryScores && snapshot.results.categoryScores.restaurant,
+        unverifiedCount: (snapshot.meta && snapshot.meta.unverifiedCount) || 0,
+        unverifiedPenaltyApplied: !!(snapshot.meta && snapshot.meta.unverifiedPenaltyApplied),
+        fromSnapshot: true,
+      };
+    } catch (_) {}
+  }
+
+  function renderSnapshotError(kind) {
+    document.body.classList.remove('snapshot-hydrating');
+    document.body.classList.add('snapshot-error');
+    // Minimal error state for D3 — D4 adds the polished banner +
+    // call-to-run-fresh-audit CTA. For now, surface the error in
+    // the hero form area using the existing #progressBar / verdict
+    // affordances so users see SOMETHING useful.
+    try {
+      var scoreSection = document.getElementById('overallScoreSection');
+      if (scoreSection) scoreSection.hidden = false;
+      var valueEl = document.getElementById('scoreValue');
+      if (valueEl) valueEl.textContent = '—';
+      var verdictEl = document.getElementById('verdictCopy');
+      if (verdictEl) {
+        verdictEl.textContent = (kind === 'not-found' || kind === 'invalid-token')
+          ? "Este enlace compartido ha expirado o no se encontró. Ejecuta una auditoría nueva abajo para ver el estado actual del sitio."
+          : (kind === 'snapshot-storage-unavailable')
+            ? "Compartir auditorías guardadas no está activado ahora mismo. Ejecuta una auditoría nueva abajo."
+            : "No se pudo cargar esta auditoría compartida. Ejecuta una auditoría nueva abajo para ver los resultados actuales.";
+      }
+      var headlineEl = document.getElementById('scoreHeadline');
+      if (headlineEl) headlineEl.textContent = 'Auditoría compartida no disponible';
+    } catch (_) {}
+  }
+
+  // Tiny HTML-escape used only inside the snapshot renderer. The
+  // page's main escapeHtml helper lives in scope but is defined
+  // hundreds of lines below this IIFE; repeating the four-char
+  // replacement avoids a hoisting-order coupling.
+  function escapeSnapshotHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   (function autoRunFromParam(){
     try {
       var params = new URLSearchParams(location.search);
+      // D3: snapshot hydration takes precedence over ?url= auto-run.
+      // A recipient of a shared permalink expects to see the ORIGINAL
+      // owner's result, not a fresh re-measure — re-running would
+      // confuse "we're comparing current state vs. shared state" with
+      // "the shared link is what I'm looking at".
+      var snapToken = params.get('s');
+      if (snapToken) {
+        hydrateFromSnapshotToken(snapToken);
+        return;
+      }
       var preset = params.get('url');
       if (!preset) return;
       var normalized = normalizeUrl(preset);
