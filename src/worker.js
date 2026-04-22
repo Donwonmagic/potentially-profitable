@@ -98,6 +98,7 @@ import {
   auditReportAutoResponder,
   auditDeepReportNotification,
   auditDeepReportAutoResponder,
+  reauditReminder,
 } from './lib/templates.js';
 
 
@@ -3399,52 +3400,20 @@ async function handleScheduleReaudit(request, env, ctx) {
   const auditLink = 'https://muntin.digital/' + (lang === 'es' ? 'es/' : '')
                   + 'tools/audits/restaurant/?url=' + encodeURIComponent(canonicalUrl);
 
-  const subject = lang === 'es'
-    ? 'Hora de re-auditar ' + pretty + ' — recordatorio de 30 días'
-    : "It's been 30 days — time to re-audit " + pretty;
-
-  const bodyLines = lang === 'es' ? [
-    'Hola,',
-    '',
-    'Hace aproximadamente 30 días auditaste ' + pretty + ' con la herramienta gratuita de Muntin Digital.',
-    '',
-    'Si arreglaste alguno de los hallazgos, ejecutar una nueva auditoría mostrará exactamente qué se resolvió y cuánto subió tu puntuación.',
-    '',
-    'Ejecutar nueva auditoría: ' + auditLink,
-    '',
-    'Sin lista de marketing, sin goteo de correos, sin boletín. Solo te escribiré si respondes a este mensaje.',
-    '',
-    '— Don',
-    'Muntin Digital'
-  ] : [
-    'Hey,',
-    '',
-    "You audited " + pretty + " about 30 days ago with Muntin Digital's free restaurant website audit.",
-    '',
-    "If you fixed any of the findings, re-auditing will show you exactly what resolved and how much your score moved.",
-    '',
-    'Re-run audit: ' + auditLink,
-    '',
-    "No marketing list, no drip, no newsletter. I'll only email you if you reply to this one.",
-    '',
-    '— Don',
-    'Muntin Digital'
-  ];
-  const txt = bodyLines.join('\n');
-  const html = '<div style="font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Arial,sans-serif;font-size:15px;line-height:1.6;color:#2A2D33;">'
-             + bodyLines.map((l) => l === '' ? '<br>' : (l.startsWith('Re-run audit:') || l.startsWith('Ejecutar nueva auditoría:'))
-                 ? '<p style="margin:10px 0;"><a href="' + auditLink + '" style="display:inline-block;padding:10px 18px;background:#1F4E5B;color:#FAF7F2;text-decoration:none;border-radius:999px;font-weight:600;">' + (lang === 'es' ? 'Re-auditar mi sitio' : 'Re-audit my site') + '</a></p>'
-                 : '<p style="margin:0;">' + escapeHtmlForEmail(l) + '</p>').join('')
-             + '</div>';
+  // D11: route through the shared reauditReminder template so the
+  // reminder picks up the D9/D10 shell refresh (viewport meta,
+  // brand eyebrow, Outlook-safe CTA, received-because footer).
+  // The template handles locale dispatch internally.
+  const tpl = reauditReminder({ locale: lang, pretty, auditLink });
 
   const fromEmail = (env.FROM_EMAIL && String(env.FROM_EMAIL)) || 'Don Goldstein <don@muntin.digital>';
   const sendRes = await sendEmail({
     from: fromEmail,
     to: email,
     replyTo: 'don@muntin.digital',
-    subject: subject,
-    html: html,
-    text: txt,
+    subject: tpl.subject,
+    html: tpl.html,
+    text: tpl.text,
     scheduledAt: scheduledAtIso,
   }, env.RESEND_API_KEY);
 

@@ -24,6 +24,7 @@ import {
   auditReportAutoResponder,
   auditDeepReportNotification,
   auditDeepReportAutoResponder,
+  reauditReminder,
   primaryCta,
   secondaryCta,
 } from '../src/lib/templates.js';
@@ -241,6 +242,36 @@ function assertShellInvariants(label, html) {
   assert('XSS: no raw <img tag in html',       xss.html.indexOf('<img src=x') === -1);
   assert('XSS: entity-encoded script tag',     xss.html.indexOf('&lt;script&gt;alert(1)&lt;/script&gt;') !== -1);
   assert('XSS: entity-encoded img tag',        xss.html.indexOf('&lt;img src=x onerror=alert(1)&gt;') !== -1);
+}
+
+// --- D11: reauditReminder (EN) + ES dispatch ----------------------
+{
+  const out = reauditReminder({
+    pretty: 'pizzajoint.example',
+    auditLink: 'https://muntin.digital/tools/audits/restaurant/?url=https%3A%2F%2Fpizzajoint.example',
+  });
+  assertShape('reauditReminder (EN)', out);
+  assertShellInvariants('reauditReminder (EN)', out.html);
+  assert('reauditReminder (EN): subject mentions 30 days + host',
+    out.subject.indexOf('30 days') !== -1 && out.subject.indexOf('pizzajoint.example') !== -1);
+  assert('reauditReminder (EN): primaryCta present',
+    out.html.indexOf('Re-audit my site') !== -1 && out.html.indexOf('<table') !== -1);
+  assert('reauditReminder (EN): received-because footer present',
+    out.html.indexOf('You asked for a 30-day reminder') !== -1);
+}
+{
+  const out = reauditReminder({
+    pretty: 'pizzajoint.example',
+    auditLink: 'https://muntin.digital/es/tools/audits/restaurant/?url=https%3A%2F%2Fpizzajoint.example',
+    locale: 'es',
+  });
+  assertShape('reauditReminder (ES)', out);
+  assert('reauditReminder (ES): html lang="es"',
+    out.html.indexOf('lang="es"') !== -1);
+  assert('reauditReminder (ES): ES primaryCta label',
+    out.html.indexOf('Re-auditar mi sitio') !== -1);
+  assert('reauditReminder (ES): ES received-because footer',
+    out.html.indexOf('Solicitaste un recordatorio de 30') !== -1);
 }
 
 // --- D10: Spanish locale dispatch ----------------------------------

@@ -572,3 +572,49 @@ export function auditDeepReportAutoResponder(body) {
 
   return { subject, html, text: txt };
 }
+
+// ============================================================
+// 7. D11: Re-audit 30-day reminder (ES)
+// ============================================================
+//
+// ES peer of reauditReminder in templates.js. Same shape, same
+// shell, localized copy. Routing happens in templates.js via the
+// standard locale dispatcher.
+
+export function reauditReminder(body) {
+  const pretty    = String(body.pretty    || '').trim();
+  const auditLink = String(body.auditLink || '').trim();
+  const subject = 'Hora de re-auditar ' + (pretty || 'tu sitio') + ' \u2014 recordatorio de 30 d\u00edas';
+
+  const html = htmlShell(
+    'Hora de re-auditar',
+    [
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Hola,</p>',
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Hace aproximadamente 30 d\u00edas auditaste <strong>' + escapeHtml(pretty || 'tu sitio') + '</strong> con la herramienta gratuita de Muntin Digital.</p>',
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Si arreglaste alguno de los hallazgos, ejecutar una nueva auditor\u00eda mostrar\u00e1 exactamente qu\u00e9 se resolvi\u00f3 y cu\u00e1nto subi\u00f3 tu puntuaci\u00f3n.</p>',
+      primaryCta(auditLink, 'Re-auditar mi sitio'),
+      '<div style="height:12px;line-height:12px;">&nbsp;</div>',
+      '<p style="margin:0 0 16px;font-size:14px;line-height:1.55;color:#6B6B6B;">Sin lista de marketing, sin goteo, sin newsletter. Solo te escribo si respondes a este correo.</p>',
+      '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">\u2014 Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital \u00b7 Silver Spring, MD</span></p>',
+    ].join('\n'),
+    'Solicitaste un recordatorio de 30 d\u00edas para re-auditar ' + (pretty || 'tu sitio') + '.'
+  );
+
+  const txt = [
+    'Hola,',
+    '',
+    'Hace aproximadamente 30 d\u00edas auditaste ' + (pretty || 'tu sitio') + ' con la herramienta gratuita de Muntin Digital.',
+    '',
+    'Si arreglaste alguno de los hallazgos, ejecutar una nueva auditor\u00eda mostrar\u00e1 exactamente qu\u00e9 se resolvi\u00f3 y cu\u00e1nto subi\u00f3 tu puntuaci\u00f3n.',
+    '',
+    'Ejecutar nueva auditor\u00eda: ' + auditLink,
+    '',
+    'Sin lista de marketing, sin goteo de correos, sin bolet\u00edn. Solo te escribir\u00e9 si respondes a este mensaje.',
+    '',
+    '\u2014 Don',
+    'Muntin Digital',
+  ].join('\n');
+
+  return { subject, html, text: txt };
+}
+

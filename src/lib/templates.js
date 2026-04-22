@@ -108,6 +108,58 @@ export function primaryCta(url, label) {
 export function secondaryCta(url, label) {
   return _buttonTable(url, label, '#FAF7F2', '#1F4E5B', '#1F4E5B');
 }
+// D11: re-audit reminder template. Previously inline in
+// handleScheduleReaudit (worker.js); moved here so it picks up the
+// D9 shell refresh (viewport meta, brand eyebrow, Outlook-safe
+// CTA) and so a parallel templates.es.js function handles locale
+// routing instead of an if-block in the handler.
+//
+// Shape: accepts { url, pretty, auditLink, locale } and returns the
+// standard { subject, html, text } trio. `pretty` is the host
+// stripped of protocol + trailing slash; `auditLink` is the
+// pre-built re-audit URL with ?url= encoded. Both are derived in
+// the worker handler from the user-supplied URL after SSRF gating.
+export function reauditReminder(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.reauditReminder === 'function') {
+    return ES.reauditReminder(body);
+  }
+  const pretty    = String(body.pretty    || '').trim();
+  const auditLink = String(body.auditLink || '').trim();
+  const subject = "It's been 30 days — time to re-audit " + (pretty || 'your site');
+
+  const html = htmlShell(
+    'Time to re-audit',
+    [
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Hey,</p>',
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">You audited <strong>' + escapeHtml(pretty || 'your site') + '</strong> about 30 days ago with Muntin Digital\'s free restaurant website audit.</p>',
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">If you fixed any of the findings, re-auditing will show you exactly what resolved and how much your score moved.</p>',
+      primaryCta(auditLink, 'Re-audit my site'),
+      '<div style="height:12px;line-height:12px;">&nbsp;</div>',
+      '<p style="margin:0 0 16px;font-size:14px;line-height:1.55;color:#6B6B6B;">No marketing list, no drip, no newsletter. I\'ll only email you if you reply to this one.</p>',
+      '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">— Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital · Silver Spring, MD</span></p>',
+    ].join('\n'),
+    "You asked for a 30-day reminder to re-audit " + (pretty || 'your site') + '.'
+  );
+
+  const txt = [
+    'Hey,',
+    '',
+    "You audited " + (pretty || 'your site') + " about 30 days ago with Muntin Digital's free restaurant website audit.",
+    '',
+    "If you fixed any of the findings, re-auditing will show you exactly what resolved and how much your score moved.",
+    '',
+    'Re-run audit: ' + auditLink,
+    '',
+    "No marketing list, no drip, no newsletter. I'll only email you if you reply to this one.",
+    '',
+    '— Don',
+    'Muntin Digital',
+  ].join('\n');
+
+  return { subject, html, text: txt };
+}
+
 function _buttonTable(url, label, bg, color, border) {
   return [
     '<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="margin:0 0 8px;">',
