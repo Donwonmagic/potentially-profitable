@@ -156,51 +156,51 @@
 <section class="block" aria-labelledby="stack-heading">
   <div class="container">
     <div class="section-header reveal">
-      <span class="eyebrow">The stack</span>
-      <h2 id="stack-heading">Deliberately<br><span class="serif-italic">small.</span></h2>
-      <p class="final-sub">Zero frameworks, zero build step for the HTML itself, zero client-side rendering. The stack fits in one person's head, deploys in under a minute, and runs on a free tier.</p>
+      <span class="eyebrow">El stack</span>
+      <h2 id="stack-heading">Deliberadamente<br><span class="serif-italic">pequeño.</span></h2>
+      <p class="final-sub">Cero frameworks, cero paso de build para el propio HTML, cero renderizado del lado del cliente. El stack le cabe a una persona en la cabeza, despliega en menos de un minuto y corre en una capa gratuita.</p>
     </div>
 
     <ul class="sys-stack">
       <li>
         <span class="sys-stack-label">Hosting</span>
         <strong>Cloudflare Pages</strong>
-        <span>Static HTML served from the edge. ~30ms TTFB from the DMV, ~80ms from Europe.</span>
+        <span>HTML estático servido desde el edge. ~30 ms de TTFB desde el DMV, ~80 ms desde Europa.</span>
       </li>
       <li>
-        <span class="sys-stack-label">Dynamic routes</span>
+        <span class="sys-stack-label">Rutas dinámicas</span>
         <strong>Cloudflare Workers</strong>
-        <span>Tool endpoints (the restaurant audit, grader APIs) run at the edge with KV caching. Single <code>src/worker.js</code>.</span>
+        <span>Los endpoints de las herramientas (diagnóstico de restaurante, APIs de calificadores) corren en el edge con caché en KV. Un solo <code>src/worker.js</code>.</span>
       </li>
       <li>
         <span class="sys-stack-label">HTML</span>
-        <strong>Handwritten</strong>
-        <span>Every page is a plain <code>index.html</code>. Nav + footer are synced from <code>_includes/</code> by a 240-line Node script at deploy.</span>
+        <strong>Escrito a mano</strong>
+        <span>Cada página es un <code>index.html</code> plano. El nav y el footer se sincronizan desde <code>_includes/</code> con un script de Node de 240 líneas en cada deploy.</span>
       </li>
       <li>
         <span class="sys-stack-label">CSS</span>
-        <strong>One stylesheet, tokenized</strong>
-        <span>A single <code>site.css</code> with <code>:root</code> design tokens for color, type, spacing, radius, and motion. No preprocessor.</span>
+        <strong>Una hoja, con tokens</strong>
+        <span>Un solo <code>site.css</code> con tokens de diseño en <code>:root</code> para color, tipografía, espaciado, radio y movimiento. Sin preprocesador.</span>
       </li>
       <li>
         <span class="sys-stack-label">JS</span>
-        <strong>One stylesheet's worth</strong>
-        <span>A single <code>site.js</code>, deferred, no framework. Hosts the audio player, share menu, language detection, and form validation.</span>
+        <strong>Un solo archivo</strong>
+        <span>Un solo <code>site.js</code>, con <code>defer</code>, sin framework. Aloja el reproductor de audio, el menú para compartir, la detección de idioma y la validación de formularios.</span>
       </li>
       <li>
-        <span class="sys-stack-label">Type</span>
-        <strong>Self-hosted</strong>
-        <span>Fraunces (display) and Inter (body) served from <code>/assets/fonts/</code> as <code>woff2</code> with metric-matched fallbacks. Zero Google Fonts round-trip.</span>
+        <span class="sys-stack-label">Tipografía</span>
+        <strong>Auto-hospedada</strong>
+        <span>Fraunces (display) e Inter (texto) servidas desde <code>/assets/fonts/</code> como <code>woff2</code> con fallbacks de métricas emparejadas. Cero viaje a Google Fonts.</span>
       </li>
       <li>
-        <span class="sys-stack-label">Analytics</span>
+        <span class="sys-stack-label">Analítica</span>
         <strong>Plausible</strong>
-        <span>Privacy-respecting, cookie-free, GDPR-clean. No consent banner required; no tracking pixel soup.</span>
+        <span>Respeta la privacidad, sin cookies, limpia ante el GDPR. Sin banner de consentimiento; sin sopa de píxeles de rastreo.</span>
       </li>
       <li>
         <span class="sys-stack-label">Build</span>
-        <strong>Node scripts</strong>
-        <span>A handful of small Node scripts for include sync, hreflang stamping, locale parity checks, OG image rendering, audio pipeline, and SEO enrichment.</span>
+        <strong>Scripts de Node</strong>
+        <span>Un puñado de scripts de Node para sincronizar los includes, estampar hreflang, revisar paridad de locales, renderizar imágenes OG, el flujo de audio y enriquecer el SEO.</span>
       </li>
     </ul>
   </div>
