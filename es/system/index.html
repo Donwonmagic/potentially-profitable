@@ -352,35 +352,35 @@
 <section class="block bg-cream2" aria-labelledby="a11y-heading">
   <div class="container">
     <div class="section-header reveal">
-      <span class="eyebrow">Accessibility</span>
-      <h2 id="a11y-heading">The quiet<br><span class="serif-italic">fundamentals.</span></h2>
-      <p class="final-sub">Accessibility isn't a section of the site — it's a default the whole site respects. Here's what that looks like in practice.</p>
+      <span class="eyebrow">Accesibilidad</span>
+      <h2 id="a11y-heading">Los fundamentos<br><span class="serif-italic">silenciosos.</span></h2>
+      <p class="final-sub">La accesibilidad no es una sección del sitio — es un valor por defecto que respeta el sitio entero. Así se ve en la práctica.</p>
     </div>
 
     <ul class="sys-a11y">
       <li>
-        <h3>Skip links</h3>
-        <p>Every page opens with <code>&lt;a class="skip-link" href="#main"&gt;</code> so keyboard users bypass the nav on every load.</p>
+        <h3>Enlaces de salto</h3>
+        <p>Cada página abre con <code>&lt;a class="skip-link" href="#main"&gt;</code> para que quien navega con teclado se salte el nav en cada carga.</p>
       </li>
       <li>
-        <h3>Semantic landmarks</h3>
-        <p>Primary nav, mobile menu, and language switcher each carry a distinct <code>aria-label</code>. Every section references its heading via <code>aria-labelledby</code>.</p>
+        <h3>Landmarks semánticos</h3>
+        <p>El nav principal, el menú móvil y el selector de idioma cargan cada uno un <code>aria-label</code> distinto. Cada sección se refiere a su encabezado vía <code>aria-labelledby</code>.</p>
       </li>
       <li>
-        <h3>Visible focus</h3>
-        <p>A dedicated <code>--ring-focus</code> token renders a 3px teal ring on every focusable element. Never removed, never replaced with <code>outline: none</code>.</p>
+        <h3>Foco visible</h3>
+        <p>Un token dedicado <code>--ring-focus</code> pinta un anillo teal de 3 px sobre cada elemento enfocable. Nunca se quita, nunca se reemplaza por <code>outline: none</code>.</p>
       </li>
       <li>
-        <h3>Reduced motion</h3>
-        <p>Scroll reveals, listening-callout pulse, and audio player transitions all respect <code>prefers-reduced-motion</code> and shorten to near-zero when set.</p>
+        <h3>Movimiento reducido</h3>
+        <p>Los reveals al hacer scroll, el pulso del callout de audio y las transiciones del reproductor respetan <code>prefers-reduced-motion</code> y se acortan a casi cero cuando está activo.</p>
       </li>
       <li>
-        <h3>Color contrast</h3>
-        <p>Body text on cream clears WCAG AA at 16.4:1; link teal clears AA at 4.8:1; focus ring clears AA Large on every background in the palette.</p>
+        <h3>Contraste de color</h3>
+        <p>El texto sobre cream pasa WCAG AA con 16.4:1; el teal de los enlaces pasa AA con 4.8:1; el anillo de foco pasa AA Large sobre cada fondo de la paleta.</p>
       </li>
       <li>
-        <h3>Keyboard-complete</h3>
-        <p>Mobile menu, share menu, audio player, language switcher, and every form are fully operable with keyboard alone. <code>aria-expanded</code> and <code>aria-haspopup</code> are accurate.</p>
+        <h3>Todo con teclado</h3>
+        <p>El menú móvil, el menú para compartir, el reproductor de audio, el selector de idioma y cada formulario son totalmente operables solo con teclado. <code>aria-expanded</code> y <code>aria-haspopup</code> reflejan el estado real.</p>
       </li>
     </ul>
   </div>
