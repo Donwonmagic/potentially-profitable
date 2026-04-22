@@ -79,7 +79,7 @@
 </script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260422-research2">
+<link rel="stylesheet" href="/assets/site.css?v=20260422-drawer">
 </head>
 <body>
 
@@ -418,7 +418,7 @@
           <li><code>scripts/wire-research-citations.mjs</code> walks every published blog post, finds external anchors that match the known citation map, and injects a "Read Don's summary" internal link (new tab) immediately before each. Idempotent — re-runs are no-ops.</li>
           <li>Research-note links open in a new tab (<code>target="_blank"</code>) so a reader in the middle of an audit or an article doesn't lose their place. The breadcrumb on the research note clearly shows "Home › Learn › Research › &lt;note&gt;" so the reader knows where they are.</li>
           <li>Each research note includes full JSON-LD schema (<code>Article</code> → <code>citation</code> → <code>ScholarlyArticle</code>) so search engines understand the summary-cites-source relationship.</li>
-          <li><em>Future enhancement queued:</em> an inline drawer that shows the research-note summary without leaving the origin page, with a "Open full note ↗" link. The new-tab pattern is the conservative v1; the drawer lands once reader usage patterns are clearer.</li>
+          <li>Clicking any research-note link now opens an <strong>inline drawer</strong> on top of the origin page — a side-sheet on desktop, a bottom sheet on mobile — so the reader can see the summary, key findings, and both CTAs without leaving their audit session or article mid-scroll. The drawer lazy-fetches the note's HTML and extracts the preview via <code>DOMParser</code>, caching per-slug so the second open is instant. If <code>&lt;dialog&gt;.showModal</code> or <code>fetch</code> is unavailable — or the reader holds ⌘/Ctrl/shift to force a new tab — the anchor's original <code>target="_blank"</code> takes over. Zero regression, full progressive enhancement.</li>
         </ul>
       </div>
     </div>
@@ -549,6 +549,6 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260422-research2" defer></script>
+<script src="/assets/site.js?v=20260422-drawer" defer></script>
 </body>
 </html>
