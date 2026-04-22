@@ -3731,6 +3731,265 @@ function rankActionablesByImpact(items, dollarImpactFn) {
 // guard keeps this a no-op for the classic-script load path in the
 // browser. Only the scorer internals are exported; everything else
 // stays a plain top-level global as before.
+/* ====================================================================
+   D5 — Developer-handoff document generators.
+
+   The audit page already has a per-row "Copy for your developer" button
+   that emits one prompt per check. The handoff doc is a complementary
+   artifact — the WHOLE actionable list rolled into a single document
+   the owner can paste into Linear/Jira/ClickUp or hand to an agency
+   for scoping. Two output shapes:
+
+     buildHandoffMarkdown(payload)        -> string
+     buildHandoffPrintableHtml(payload)   -> string
+
+   Both share the same input contract so the UI gathers data once:
+
+     {
+       auditedUrl:    string,
+       host:          string         // already prettified (no protocol)
+       score:         number 0..100,
+       capturedAt:    number ms      // optional — defaults to "recently"
+       permalinkUrl:  string|null    // ?s=<token> URL when available
+       subtype:       string|null,
+       verdict:       string|null,
+       checks:        Array<{
+         id:          string,
+         title:       string,
+         state:       'fail' | 'unverified' | 'pass',
+         minutes:     number|null,
+         effort:      'self' | 'dev' | 'rebuild' | null,
+         impact:      string|null,
+         note:        string|null
+       }>
+     }
+
+   Pure functions: zero DOM, zero network, zero side effects. The
+   sortChecksForHandoff helper is exported so callers can pre-sort
+   without re-deriving the ranking heuristic.
+   ==================================================================== */
+
+function sortChecksForHandoff(checks) {
+  if (!Array.isArray(checks)) return [];
+  // Failures first (most actionable), then unverified (needs owner
+  // confirmation), then everything else last. Within a state group,
+  // shorter-effort items come first so a dev sees the quick wins on
+  // top — matches the rankActionablesByImpact intent without
+  // requiring the impact-fn dependency at handoff time.
+  var STATE_RANK = { fail: 0, unverified: 1, pass: 2, skip: 3 };
+  var EFFORT_RANK = { self: 0, dev: 1, rebuild: 2 };
+  return checks.slice().sort(function(a, b) {
+    var sa = STATE_RANK[a.state] != null ? STATE_RANK[a.state] : 9;
+    var sb = STATE_RANK[b.state] != null ? STATE_RANK[b.state] : 9;
+    if (sa !== sb) return sa - sb;
+    var ea = EFFORT_RANK[a.effort] != null ? EFFORT_RANK[a.effort] : 9;
+    var eb = EFFORT_RANK[b.effort] != null ? EFFORT_RANK[b.effort] : 9;
+    if (ea !== eb) return ea - eb;
+    var ma = typeof a.minutes === 'number' ? a.minutes : 9999;
+    var mb = typeof b.minutes === 'number' ? b.minutes : 9999;
+    return ma - mb;
+  });
+}
+
+function _handoffActionableOnly(checks) {
+  return sortChecksForHandoff(checks).filter(function(c) {
+    return c.state === 'fail' || c.state === 'unverified';
+  });
+}
+
+function _handoffEffortLabel(effort, minutes) {
+  // Same ladder the per-row chips use, expressed as a single string
+  // an agency can scope from. Minutes/hours conversion matches
+  // index.html's chip render.
+  if (effort === 'rebuild') return 'half-day project';
+  if (typeof minutes === 'number' && minutes > 0) {
+    if (minutes < 5)   return '<5 min';
+    if (minutes < 60)  return '~' + minutes + ' min';
+    if (minutes < 180) return '~' + Math.round(minutes / 60) + ' hr';
+    return 'half-day project';
+  }
+  if (effort === 'self') return 'owner-fixable';
+  if (effort === 'dev')  return 'developer task';
+  return null;
+}
+
+function _handoffStateLabel(state) {
+  if (state === 'fail')        return 'NEEDS FIX';
+  if (state === 'unverified')  return 'NEEDS REVIEW';
+  if (state === 'pass')        return 'PASS';
+  return state || '';
+}
+
+function _handoffFormatDate(ts) {
+  if (!ts) return null;
+  try {
+    var d = new Date(ts);
+    if (isNaN(d.getTime())) return null;
+    // ISO-ish: YYYY-MM-DD (no locale assumption — handoff docs go to
+    // whoever; absolute dates beat relative ones outside the UI).
+    var y = d.getUTCFullYear();
+    var m = String(d.getUTCMonth() + 1).padStart(2, '0');
+    var day = String(d.getUTCDate()).padStart(2, '0');
+    return y + '-' + m + '-' + day;
+  } catch (_) { return null; }
+}
+
+function _handoffEscapeMd(s) {
+  // Light markdown escape: backticks + pipe + leading hash so
+  // titles like "200 OK status" or "section-header" don't break the
+  // surrounding rendering.
+  return String(s == null ? '' : s)
+    .replace(/`/g, '\\`')
+    .replace(/\|/g, '\\|');
+}
+
+function _handoffEscapeHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function buildHandoffMarkdown(payload) {
+  if (!payload || typeof payload !== 'object') return '';
+  var host = payload.host || payload.auditedUrl || '—';
+  var score = (typeof payload.score === 'number') ? Math.round(payload.score) : null;
+  var date = _handoffFormatDate(payload.capturedAt);
+  var actionable = _handoffActionableOnly(payload.checks || []);
+
+  var lines = [];
+  // Header
+  lines.push('# Website audit handoff — ' + host);
+  if (score !== null || date) {
+    var bits = [];
+    if (score !== null) bits.push('Score **' + score + '/100**');
+    if (date)           bits.push('captured ' + date);
+    lines.push('_' + bits.join(' · ') + '_');
+  }
+  lines.push('');
+  if (payload.auditedUrl) {
+    lines.push('**Audited URL:** ' + payload.auditedUrl);
+  }
+  if (payload.permalinkUrl) {
+    lines.push('**Live audit:** ' + payload.permalinkUrl);
+  }
+  if (payload.verdict) {
+    lines.push('');
+    lines.push('> ' + payload.verdict);
+  }
+  lines.push('');
+  lines.push('---');
+  lines.push('');
+
+  // Action list
+  if (!actionable.length) {
+    lines.push('No actionable items in this audit. Every check is passing or skipped.');
+  } else {
+    lines.push('## Action items (' + actionable.length + ')');
+    lines.push('');
+    actionable.forEach(function(c, idx) {
+      var bits = [_handoffStateLabel(c.state)];
+      var effort = _handoffEffortLabel(c.effort, c.minutes);
+      if (effort) bits.push(effort);
+      lines.push('### ' + (idx + 1) + '. ' + _handoffEscapeMd(c.title || c.id));
+      lines.push('`' + bits.join('` · `') + '`');
+      if (c.note)   { lines.push(''); lines.push(c.note); }
+      if (c.impact) {
+        lines.push('');
+        lines.push('**Why this matters:** ' + c.impact);
+      }
+      lines.push('');
+    });
+  }
+
+  // Footer
+  lines.push('---');
+  lines.push('');
+  lines.push('Generated by the [Muntin restaurant website audit](https://muntin.digital/tools/audits/restaurant/).');
+  return lines.join('\n');
+}
+
+function buildHandoffPrintableHtml(payload) {
+  if (!payload || typeof payload !== 'object') return '';
+  var host = payload.host || payload.auditedUrl || '—';
+  var score = (typeof payload.score === 'number') ? Math.round(payload.score) : null;
+  var date = _handoffFormatDate(payload.capturedAt);
+  var actionable = _handoffActionableOnly(payload.checks || []);
+
+  var headBits = [];
+  if (score !== null) headBits.push('Score <strong>' + score + '/100</strong>');
+  if (date)           headBits.push('captured ' + _handoffEscapeHtml(date));
+
+  var rowsHtml = actionable.length === 0
+    ? '<p class="empty">No actionable items in this audit. Every check is passing or skipped.</p>'
+    : actionable.map(function(c, idx) {
+        var stateClass = 'state-' + (c.state || 'unknown');
+        var effort = _handoffEffortLabel(c.effort, c.minutes);
+        var chips = '<span class="chip ' + stateClass + '">' + _handoffEscapeHtml(_handoffStateLabel(c.state)) + '</span>';
+        if (effort) chips += '<span class="chip chip-effort">' + _handoffEscapeHtml(effort) + '</span>';
+        var noteHtml   = c.note   ? '<p class="note">'   + _handoffEscapeHtml(c.note)   + '</p>' : '';
+        var impactHtml = c.impact ? '<p class="impact"><strong>Why this matters:</strong> ' + _handoffEscapeHtml(c.impact) + '</p>' : '';
+        return '<article class="action-item">' +
+          '<header><span class="num">' + (idx + 1) + '</span><h2>' + _handoffEscapeHtml(c.title || c.id) + '</h2></header>' +
+          '<div class="chips">' + chips + '</div>' +
+          noteHtml + impactHtml +
+          '</article>';
+      }).join('');
+
+  return '<!doctype html>\n<html lang="' + _handoffEscapeHtml(payload.language || 'en') + '"><head>' +
+    '<meta charset="utf-8">' +
+    '<meta name="viewport" content="width=device-width,initial-scale=1">' +
+    '<title>Website audit handoff — ' + _handoffEscapeHtml(host) + '</title>' +
+    '<style>' +
+      ':root{--ink:#14161A;--ink-soft:#2A2D33;--stone:#7A7F87;--cream:#FAF7F2;--cream-2:#F3EEE3;--teal:#1F4E5B;--teal-tint:rgba(31,78,91,0.06);--rust:#B8541A;--line:#E8E2D6}' +
+      '*{box-sizing:border-box}' +
+      'html,body{margin:0;padding:0;background:var(--cream);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif;font-size:14px;line-height:1.55}' +
+      '.doc{max-width:760px;margin:0 auto;padding:48px 36px}' +
+      'header.doc-header{padding-bottom:24px;border-bottom:2px solid var(--ink);margin-bottom:24px}' +
+      '.doc-eyebrow{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}' +
+      '.doc h1{font-family:Georgia,"Times New Roman",serif;font-size:30px;font-weight:500;margin:0 0 8px;line-height:1.2}' +
+      '.doc-meta{margin:0;color:var(--ink-soft);font-size:13.5px}' +
+      '.doc-meta strong{color:var(--ink)}' +
+      '.doc-links{margin:18px 0 0;font-size:13px;color:var(--ink-soft)}' +
+      '.doc-links div{margin:4px 0}' +
+      '.doc-links a{color:var(--teal);word-break:break-all}' +
+      '.verdict{margin:16px 0 0;padding:14px 16px;background:var(--teal-tint);border-left:3px solid var(--teal);border-radius:8px;font-size:14px;color:var(--ink)}' +
+      'h2.section{font-family:Georgia,serif;font-size:20px;font-weight:500;margin:32px 0 16px}' +
+      '.action-item{break-inside:avoid;page-break-inside:avoid;background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:0 0 14px}' +
+      '.action-item header{display:flex;align-items:baseline;gap:10px;margin:0 0 8px}' +
+      '.action-item .num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--teal);color:#fff;font-size:12px;font-weight:700;flex:none}' +
+      '.action-item h2{font-family:Georgia,serif;font-size:17px;font-weight:600;margin:0;color:var(--ink);line-height:1.3}' +
+      '.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}' +
+      '.chip{display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:0.04em;background:var(--cream-2);color:var(--ink-soft);border:1px solid var(--line)}' +
+      '.chip.state-fail{background:rgba(184,84,26,0.08);color:var(--rust);border-color:rgba(184,84,26,0.25)}' +
+      '.chip.state-unverified{background:rgba(31,78,91,0.06);color:var(--teal);border-color:rgba(31,78,91,0.18)}' +
+      '.chip.chip-effort{background:#fff;color:var(--ink-soft)}' +
+      '.note{margin:6px 0;color:var(--ink-soft);font-size:13.5px}' +
+      '.impact{margin:6px 0 0;color:var(--ink-soft);font-size:13px}' +
+      '.impact strong{color:var(--ink)}' +
+      '.empty{padding:24px;text-align:center;color:var(--stone);font-style:italic;background:#fff;border:1px dashed var(--line);border-radius:10px}' +
+      'footer.doc-footer{margin-top:32px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--stone)}' +
+      'footer.doc-footer a{color:var(--teal)}' +
+      '@media print{html,body{background:#fff}.doc{max-width:none;margin:0;padding:24px 32px}.action-item{box-shadow:none}}' +
+    '</style></head><body><div class="doc">' +
+    '<header class="doc-header">' +
+      '<p class="doc-eyebrow">Website audit handoff</p>' +
+      '<h1>' + _handoffEscapeHtml(host) + '</h1>' +
+      (headBits.length ? '<p class="doc-meta">' + headBits.join(' · ') + '</p>' : '') +
+      '<div class="doc-links">' +
+        (payload.auditedUrl ? '<div><strong>Audited URL:</strong> <a href="' + _handoffEscapeHtml(payload.auditedUrl) + '">' + _handoffEscapeHtml(payload.auditedUrl) + '</a></div>' : '') +
+        (payload.permalinkUrl ? '<div><strong>Live audit:</strong> <a href="' + _handoffEscapeHtml(payload.permalinkUrl) + '">' + _handoffEscapeHtml(payload.permalinkUrl) + '</a></div>' : '') +
+      '</div>' +
+      (payload.verdict ? '<p class="verdict">' + _handoffEscapeHtml(payload.verdict) + '</p>' : '') +
+    '</header>' +
+    (actionable.length ? '<h2 class="section">Action items (' + actionable.length + ')</h2>' : '') +
+    rowsHtml +
+    '<footer class="doc-footer">Generated by the <a href="https://muntin.digital/tools/audits/restaurant/">Muntin restaurant website audit</a>.</footer>' +
+    '</div></body></html>';
+}
+
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     createRestaurantReadinessState: createRestaurantReadinessState,
@@ -3757,6 +4016,10 @@ if (typeof module !== 'undefined' && module.exports) {
     t: t,
     poweredByRole: poweredByRole,
     RESTAURANT_SCHEMA_FIELDS: RESTAURANT_SCHEMA_FIELDS,
-    OG_META_FIELDS: OG_META_FIELDS
+    OG_META_FIELDS: OG_META_FIELDS,
+    // D5: developer-handoff generators
+    buildHandoffMarkdown: buildHandoffMarkdown,
+    buildHandoffPrintableHtml: buildHandoffPrintableHtml,
+    sortChecksForHandoff: sortChecksForHandoff
   };
 }

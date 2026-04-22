@@ -3778,7 +3778,7 @@
     padding-top: 4px;
   }
   .priority-item .link:hover { color: var(--teal-dark); }
-  /* Sprint F1: "Copy for your developer" button on failing +
+  /* Sprint F1: "Copiar para tu desarrollador" button on failing +
      unverified priority check rows. Same visual class as the existing
      feedback-btn but filled-teal to distinguish the primary handoff
      action. Only rendered on actionable items. */
@@ -4883,6 +4883,20 @@
             <button type="button" class="share-btn" id="printManagerBtn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
               Imprimir para tu gerente
+            </button>
+            <!-- D5: developer handoff brief. Two delivery shapes for
+                 one underlying document. The Markdown copy is the
+                 hot path — owners paste it into Linear/Jira/ClickUp
+                 / a chat with their dev. The printable opens the same
+                 content in a new tab styled for browser-print →
+                 save-as-PDF for agencies that prefer a one-pager. -->
+            <button type="button" class="share-btn" id="copyDevBriefBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              Copiar para tu desarrollador
+            </button>
+            <button type="button" class="share-btn" id="printDevBriefBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="14" x2="15" y2="14"/><line x1="9" y1="18" x2="15" y2="18"/></svg>
+              Abrir resumen imprimible
             </button>
             <span class="share-toast" id="shareToast" aria-live="polite">Link copied!</span>
           </div>
@@ -12467,7 +12481,7 @@
           '</div>';
       }
 
-      // Sprint F1: "Copy for your developer" button on actionable
+      // Sprint F1: "Copiar para tu desarrollador" button on actionable
       // rows. Produces a markdown-formatted prompt the owner can
       // paste directly into email, a support ticket, or a chat with
       // their developer / an AI assistant. Zero fabrication — every
@@ -12477,7 +12491,7 @@
         devPromptHtml =
           '<button type="button" class="dev-prompt-btn"' +
             ' data-check-idx="' + entry.idx + '"' +
-            ' data-tr="devPrompt.copy">Copy for your developer</button>';
+            ' data-tr="devPrompt.copy">Copiar para tu desarrollador</button>';
       }
 
       // Status label for assistive tech. The visible .mark div stays
@@ -12562,7 +12576,7 @@
       });
     });
 
-    // Sprint F1: "Copy for your developer" button click handlers.
+    // Sprint F1: "Copiar para tu desarrollador" button click handlers.
     // Each click builds a markdown-formatted handoff prompt from the
     // priority-check definition + current result, copies it to the
     // clipboard, and flashes the button label. Accuracy-safe: every
@@ -13940,6 +13954,150 @@
       // in case the user cancels the dialog before any event fires.
       setTimeout(cleanup, 30000);
       window.print();
+    });
+  }
+
+  /* -------- D5: developer-brief generator (markdown + printable) -------- */
+  // Both buttons feed off the same gatherDevBriefPayload() so the
+  // markdown copy and the printable HTML stay in sync. Pure functions
+  // live in restaurant-checks.js; the wiring here only assembles the
+  // input from window.__auditResults + window.__auditLastResult.
+  function gatherDevBriefPayload() {
+    var last = window.__auditLastResult;
+    if (!last || !last.url) return null;
+    var entries = (window.__auditResults && window.__auditResults.entries) || [];
+    var subtype = (window.__auditResults && window.__auditResults.subtypeId) || null;
+    var checks = entries.map(function(e) {
+      var def = e && e.def;
+      var result = e && e.result;
+      var id = def && (def.audit || def.type);
+      if (!id) return null;
+      return {
+        id:      id,
+        title:   String((result && result.title) || (def && def.fail) || (def && def.unverified) || id).slice(0, 200),
+        state:   (result && result.mark && result.mark.cls) || 'skip',
+        minutes: (def && typeof def.minutes === 'number') ? def.minutes : null,
+        effort:  (def && def.effort) || null,
+        impact:  (def && def.impact) || null,
+        note:    (result && result.note) ? String(result.note).replace(/<[^>]*>/g, '').trim() : null
+      };
+    }).filter(function(c) { return c !== null; });
+    // Verdict: scrape the rendered copy so the dev-brief carries the
+    // exact owner-facing language. Falls back to nothing rather than
+    // recomputing — keeps generator pure of the verdict heuristic.
+    var verdict = '';
+    try {
+      var vEl = document.querySelector('.audit-summary .verdict-line')
+             || document.querySelector('#verdictCopy')
+             || document.querySelector('.audit-summary h2');
+      if (vEl && vEl.textContent) verdict = vEl.textContent.replace(/\s+/g, ' ').trim();
+    } catch (_) {}
+    // Permalink: only present if a snapshot has already been minted
+    // for this audit (D2). The brief works without it; the heading
+    // simply omits the "Live audit:" line.
+    var permalinkUrl = null;
+    try {
+      if (location.search.indexOf('?s=') !== -1 || location.search.indexOf('&s=') !== -1) {
+        permalinkUrl = location.href;
+      }
+    } catch (_) {}
+    var host = '';
+    try {
+      var u = new URL(last.url);
+      host = u.host.replace(/^www\./i, '');
+    } catch (_) { host = last.url; }
+    var overall = last.overall || {};
+    return {
+      auditedUrl:   last.url,
+      host:         host,
+      score:        typeof overall.total === 'number' ? overall.total
+                  : (typeof last.restaurant === 'number' ? last.restaurant : 0),
+      capturedAt:   Date.now(),
+      permalinkUrl: permalinkUrl,
+      subtype:      subtype,
+      verdict:      verdict || null,
+      language:     (location.pathname.indexOf('/es/') === 0) ? 'es' : 'en',
+      checks:       checks
+    };
+  }
+
+  function devBriefSlug(payload) {
+    var slug = (payload.host || 'audit')
+      .replace(/[^a-z0-9]+/gi, '-')
+      .replace(/^-|-$/g, '')
+      .toLowerCase()
+      .slice(0, 50) || 'audit';
+    var d = new Date(payload.capturedAt || Date.now());
+    var stamp = d.getUTCFullYear()
+              + String(d.getUTCMonth() + 1).padStart(2, '0')
+              + String(d.getUTCDate()).padStart(2, '0');
+    return 'muntin-audit-' + slug + '-' + stamp;
+  }
+
+  var copyDevBriefBtn = document.getElementById('copyDevBriefBtn');
+  if (copyDevBriefBtn) {
+    copyDevBriefBtn.addEventListener('click', function() {
+      var payload = gatherDevBriefPayload();
+      if (!payload) return;
+      var md = (typeof buildHandoffMarkdown === 'function')
+        ? buildHandoffMarkdown(payload) : '';
+      if (!md) return;
+      var done = function() {
+        if (shareToast) {
+          shareToast.classList.add('visible');
+          setTimeout(function(){ shareToast.classList.remove('visible'); }, 2000);
+        }
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(md).then(done, function() {
+          fallbackCopy(md); done();
+        });
+      } else {
+        fallbackCopy(md); done();
+      }
+      if (window.plausible) window.plausible('Audit Dev Brief Copied');
+    });
+  }
+
+  var printDevBriefBtn = document.getElementById('printDevBriefBtn');
+  if (printDevBriefBtn) {
+    printDevBriefBtn.addEventListener('click', function() {
+      var payload = gatherDevBriefPayload();
+      if (!payload) return;
+      var html = (typeof buildHandoffPrintableHtml === 'function')
+        ? buildHandoffPrintableHtml(payload) : '';
+      if (!html) return;
+      // Open via Blob URL so the new window has a stable
+      // document.URL (download/share path works) and we don't blow
+      // past the browser's data: URL length cap on bigger audits.
+      try {
+        var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var win = window.open(url, '_blank', 'noopener,noreferrer');
+        if (!win) {
+          // Pop-up blocker fired — fall back to a download instead so
+          // the user always gets the artifact.
+          var a = document.createElement('a');
+          a.href = url;
+          a.download = devBriefSlug(payload) + '.html';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        } else {
+          // Cue the print dialog after the new tab has had a frame
+          // to render the styles. The user can cancel out of print
+          // and still keep the page for save-as-PDF.
+          setTimeout(function() {
+            try { win.focus(); win.print(); } catch (_) {}
+          }, 700);
+        }
+        // Free the blob URL after a generous window so the new tab
+        // has time to load it.
+        setTimeout(function() { try { URL.revokeObjectURL(url); } catch (_) {} }, 60000);
+      } catch (e) {
+        try { console.warn('[devBrief] printable open failed', e); } catch (_) {}
+      }
+      if (window.plausible) window.plausible('Audit Dev Brief Printed');
     });
   }
 

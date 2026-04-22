@@ -103,6 +103,10 @@ const STATIC = [
   [ 'Shared audit not available', 'Auditoría compartida no disponible' ],
   [ 'Download share card', 'Descargar tarjeta' ],
   [ 'Print for your manager', 'Imprimir para tu gerente' ],
+  // D5: developer brief buttons. Labels appear in the share row
+  // alongside Copy link / Print for your manager.
+  [ 'Copy for your developer', 'Copiar para tu desarrollador' ],
+  [ 'Open printable brief',    'Abrir resumen imprimible' ],
   [ 'Share:', 'Compartir:' ],
   [ '>Top 3 fixes<', '>3 arreglos principales<' ],
   [ 'Ranked by impact for your segment. Work top-down.',
