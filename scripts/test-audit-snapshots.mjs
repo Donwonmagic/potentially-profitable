@@ -10,12 +10,14 @@
 import {
   saveSnapshot,
   getSnapshot,
+  getSnapshotOg,
   mintSnapshotToken,
   isValidTokenShape,
   validateSnapshotPayload,
   TOKEN_ALPHABET,
   TOKEN_LENGTH,
   MAX_PAYLOAD_BYTES,
+  MAX_OG_BYTES,
   SNAPSHOT_TTL_SECONDS,
   CURRENT_SCHEMA_VERSION,
 } from '../src/lib/audit-snapshots.js';
@@ -220,6 +222,159 @@ assertEq('number input invalid',  isValidTokenShape(1234567890), false);
       value: originalGet, configurable: true, writable: true,
     });
   }
+}
+
+// --- D7a: OG PNG field ---------------------------------------------
+// Smallest valid PNG: 1×1 transparent. Magic + IHDR + IDAT + IEND.
+// Hex-hand-built so the test has zero runtime dependencies.
+const TINY_PNG_BYTES = Uint8Array.from([
+  0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, // magic
+  0x00, 0x00, 0x00, 0x0D, 0x49, 0x48, 0x44, 0x52,
+  0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01,
+  0x08, 0x06, 0x00, 0x00, 0x00, 0x1F, 0x15, 0xC4,
+  0x89, 0x00, 0x00, 0x00, 0x0D, 0x49, 0x44, 0x41,
+  0x54, 0x78, 0x9C, 0x62, 0x00, 0x01, 0x00, 0x00,
+  0x05, 0x00, 0x01, 0x0D, 0x0A, 0x2D, 0xB4, 0x00,
+  0x00, 0x00, 0x00, 0x49, 0x45, 0x4E, 0x44, 0xAE,
+  0x42, 0x60, 0x82,
+]);
+const TINY_PNG_BASE64 = Buffer.from(TINY_PNG_BYTES).toString('base64');
+
+assertEq('MAX_OG_BYTES is 300KB', MAX_OG_BYTES, 300 * 1024);
+
+// --- validateSnapshotPayload: og field shape ----------------------
+{
+  const r = validateSnapshotPayload({
+    auditedUrl: 'https://example.com', score: 50,
+    og: { pngBase64: TINY_PNG_BASE64 },
+  });
+  assertEq('og valid → ok',              r.ok, true);
+  assert  ('og valid → ogBytes present', r.ok && r.ogBytes && r.ogBytes.length === TINY_PNG_BYTES.length);
+  assert  ('og valid → serialized hasOg flag',
+    r.ok && JSON.parse(r.serialized).hasOg === true);
+}
+{
+  const r = validateSnapshotPayload({
+    auditedUrl: 'https://example.com', score: 50,
+    og: 'not-an-object',
+  });
+  assertEq('og not-object → rejected', r.ok, false);
+  assert('og not-object error mentions pngBase64', r.error.indexOf('pngBase64') !== -1);
+}
+{
+  const r = validateSnapshotPayload({
+    auditedUrl: 'https://example.com', score: 50,
+    og: { pngBase64: 'not-base64!@#$' },
+  });
+  assertEq('og bad-base64 → rejected', r.ok, false);
+}
+{
+  const r = validateSnapshotPayload({
+    auditedUrl: 'https://example.com', score: 50,
+    og: { pngBase64: Buffer.from(Uint8Array.from([0, 0, 0, 0])).toString('base64') },
+  });
+  assertEq('og not-a-png → rejected', r.ok, false);
+  assert('og not-a-png error mentions PNG', r.error.indexOf('PNG') !== -1);
+}
+{
+  // Oversized PNG payload (fill with > MAX_OG_BYTES of zeros after
+  // the PNG magic so size-check trips before magic-check).
+  const oversized = new Uint8Array(MAX_OG_BYTES + 16);
+  oversized[0] = 0x89; oversized[1] = 0x50; oversized[2] = 0x4E; oversized[3] = 0x47;
+  const r = validateSnapshotPayload({
+    auditedUrl: 'https://example.com', score: 50,
+    og: { pngBase64: Buffer.from(oversized).toString('base64') },
+  });
+  assertEq('og oversized → rejected', r.ok, false);
+}
+{
+  // No og field at all → accepts and hasOg=false.
+  const r = validateSnapshotPayload({ auditedUrl: 'https://example.com', score: 50 });
+  assertEq('og absent → ok', r.ok, true);
+  assertEq('og absent → hasOg=false', JSON.parse(r.serialized).hasOg, false);
+  // ogBytes is explicitly null when no og field was sent (not
+  // absent from the return) so the caller can branch on truthy.
+  assertEq('og absent → ogBytes null', r.ogBytes, null);
+}
+
+// --- saveSnapshot stores OG bytes separately -----------------------
+{
+  const env = makeEnv();
+  const save = await saveSnapshot(env, {
+    auditedUrl: 'https://example.com', score: 50,
+    og: { pngBase64: TINY_PNG_BASE64 },
+  });
+  assert('save with og ok', save.ok);
+  const kv = env.AUDIT_SNAPSHOTS;
+  assert('snap key exists', kv.store.has('snap:' + save.token));
+  assert('og key exists',   kv.store.has('og:'   + save.token));
+  assertEq('og key TTL matches snap TTL',
+    kv.store.get('og:' + save.token).expirationTtl,
+    SNAPSHOT_TTL_SECONDS);
+  assertEq('save reports og byte count', save.ogBytesWritten, TINY_PNG_BYTES.length);
+}
+
+// --- saveSnapshot without OG leaves og key absent ------------------
+{
+  const env = makeEnv();
+  const save = await saveSnapshot(env, { auditedUrl: 'https://example.com', score: 50 });
+  const kv = env.AUDIT_SNAPSHOTS;
+  assert('snap key exists (no-og save)',          kv.store.has('snap:' + save.token));
+  assertEq('og key NOT written (no-og save)',     kv.store.has('og:' + save.token), false);
+  assertEq('save reports zero og bytes',          save.ogBytesWritten, 0);
+}
+
+// --- getSnapshotOg round-trips the PNG bytes -----------------------
+// The in-memory KV shim in this file stores the put value verbatim;
+// in Workers KV the value comes back as an ArrayBuffer when fetched
+// with 'arrayBuffer' mode. For the test we need the shim to honor
+// that mode, so extend it.
+function makeBinaryKv() {
+  const store = new Map();
+  return {
+    store,
+    async get(key, mode) {
+      if (!store.has(key)) return null;
+      const entry = store.get(key);
+      if (mode === 'arrayBuffer' && entry.value instanceof Uint8Array) {
+        return entry.value.buffer.slice(entry.value.byteOffset, entry.value.byteOffset + entry.value.byteLength);
+      }
+      return entry.value;
+    },
+    async put(key, value, opts) { store.set(key, { value, expirationTtl: opts && opts.expirationTtl }); },
+    async delete(key) { store.delete(key); },
+  };
+}
+{
+  const env = { AUDIT_SNAPSHOTS: makeBinaryKv() };
+  const save = await saveSnapshot(env, {
+    auditedUrl: 'https://example.com', score: 50,
+    og: { pngBase64: TINY_PNG_BASE64 },
+  });
+  assert('save with og ok (binary kv)', save.ok);
+  const read = await getSnapshotOg(env, save.token);
+  assert('og read ok',                    read.ok, read.error);
+  assert('og read returns bytes',         read.ok && read.bytes && read.bytes.byteLength === TINY_PNG_BYTES.length);
+  // Spot-check PNG magic survived the round-trip.
+  const back = new Uint8Array(read.bytes);
+  assertEq('og bytes[0] round-trips 0x89', back[0], 0x89);
+  assertEq('og bytes[1] round-trips 0x50', back[1], 0x50);
+}
+
+// --- getSnapshotOg: missing-binding / invalid-token / not-found ---
+{
+  const read = await getSnapshotOg({}, 'ABCDEFGHJK');
+  assertEq('og read without binding errors', read.error, 'snapshot-storage-unavailable');
+}
+{
+  const env = { AUDIT_SNAPSHOTS: makeBinaryKv() };
+  const read = await getSnapshotOg(env, 'too-short');
+  assertEq('og malformed token → invalid-token', read.error, 'invalid-token');
+}
+{
+  const env = { AUDIT_SNAPSHOTS: makeBinaryKv() };
+  const read = await getSnapshotOg(env, 'ABCDEFGHJK');
+  assertEq('og unknown token → not-found', read.error, 'not-found');
 }
 
 if (failures > 0) {

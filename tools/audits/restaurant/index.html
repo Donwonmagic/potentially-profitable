@@ -1951,6 +1951,133 @@
     .audit-step.active .step-indicator { animation: none; }
   }
 
+  /* D3: snapshot-view mode. A recipient opening a shared permalink
+     sees the captured score + priority-check list, but sections that
+     depend on live signals (action plan, margin-health leaks, top
+     fixes, category grid, audit-progress bar, email-report form,
+     history banner, feedback UI on unverified rows) are hidden in
+     this mode. The "re-run audit" CTA polish lands in D4; for now
+     the form section stays visible so a recipient can paste a fresh
+     URL or click Run. */
+  body.snapshot-hydrating #overallScoreSection,
+  body.snapshot-hydrating #priorityListWrap {
+    visibility: hidden;
+  }
+  body.snapshot-view .audit-progress-bar,
+  body.snapshot-view .category-grid,
+  body.snapshot-view .exec-summary,
+  body.snapshot-view .top-fixes,
+  body.snapshot-view .action-plan-card,
+  body.snapshot-view .margin-health-card,
+  body.snapshot-view .history-banner,
+  body.snapshot-view .priority-feedback,
+  body.snapshot-view .dev-prompt-btn,
+  body.snapshot-view .email-report,
+  body.snapshot-view #businessTypeOverride,
+  body.snapshot-view #score-override-container,
+  body.snapshot-view .score-override-banner {
+    display: none !important;
+  }
+  /* Error variant: score section stays visible (it's carrying the
+     "can't find this link" copy); everything else hides. */
+  body.snapshot-error .priority-list,
+  body.snapshot-error .audit-progress-bar,
+  body.snapshot-error .category-grid,
+  body.snapshot-error .exec-summary,
+  body.snapshot-error .top-fixes,
+  body.snapshot-error .action-plan-card,
+  body.snapshot-error .margin-health-card,
+  body.snapshot-error .history-banner,
+  body.snapshot-error .email-report {
+    display: none !important;
+  }
+
+  /* D4: snapshot banner. A chip-family container at the top of the
+     snapshot view that carries two pieces of information: when the
+     audit was captured + what was audited. Soft teal-tint background
+     echoes the chip-tone system; the re-run button is a filled teal
+     pill so the call-to-action is unambiguous. Only visible inside
+     body.snapshot-view. */
+  .snapshot-banner {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    max-width: 720px;
+    margin: 0 auto 22px;
+    padding: 16px 20px;
+    background: rgba(31, 78, 91, 0.05);
+    border: 1px solid rgba(31, 78, 91, 0.18);
+    border-radius: 14px;
+    font-family: var(--font-body);
+    color: var(--ink);
+  }
+  .snapshot-banner-body { flex: 1 1 auto; min-width: 0; }
+  .snapshot-banner-eyebrow {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 6px;
+  }
+  .snapshot-banner-copy {
+    margin: 0 0 4px;
+    font-size: 14.5px;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+  .snapshot-banner-copy strong {
+    font-weight: 600;
+    color: var(--teal-dark, var(--teal));
+  }
+  .snapshot-banner-sub {
+    margin: 0;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    line-height: 1.4;
+  }
+  .snapshot-banner-rerun {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex: none;
+    padding: 10px 14px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--teal);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition: background-color var(--t-fast, 180ms) var(--ease, ease),
+                transform var(--t-fast, 180ms) var(--ease, ease),
+                box-shadow var(--t-fast, 180ms) var(--ease, ease);
+    box-shadow: 0 2px 6px -2px rgba(31, 78, 91, 0.45);
+  }
+  .snapshot-banner-rerun:hover {
+    background: var(--teal-dark, #17404B);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px -4px rgba(31, 78, 91, 0.45);
+  }
+  .snapshot-banner-rerun:active { transform: translateY(0); }
+  .snapshot-banner-rerun svg { width: 15px; height: 15px; flex: none; }
+  .snapshot-banner-rerun:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 3px;
+  }
+  @media (max-width: 560px) {
+    .snapshot-banner { flex-direction: column; align-items: stretch; gap: 12px; }
+    .snapshot-banner-rerun { justify-content: center; }
+  }
+  /* Print path: hide the banner cleanly — the print sheet already
+     strips the #overallScoreSection chrome, the snapshot context is
+     redundant ink. */
+  body.print-worksheet .snapshot-banner { display: none; }
+
   /* Error state */
   .audit-error {
     max-width: 520px;
@@ -2779,6 +2906,76 @@
       border: 1px solid #000 !important;
       color: #000 !important;
     }
+
+    /* D13: @page + worksheet header. Without explicit @page rules
+       Chrome was using default 0.5in margins and the worksheet
+       header sat too close to the top edge for a hole-punched
+       paper handoff. Matches the checklist page's Letter/0.55in
+       presets for visual rhythm between the two printables. */
+    body.print-worksheet {
+      background: #fff !important;
+    }
+    body.print-worksheet .worksheet-header {
+      display: block !important;
+      border-bottom: 2px solid #000;
+      padding: 0 0 14px;
+      margin: 0 0 18px;
+      page-break-after: avoid;
+    }
+    body.print-worksheet .worksheet-header-brand {
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: #000;
+      margin: 0 0 6px;
+    }
+    body.print-worksheet .worksheet-header-title {
+      font-family: var(--font-display, Georgia, serif);
+      font-size: 22px;
+      font-weight: 500;
+      color: #000;
+      margin: 0 0 12px;
+      line-height: 1.25;
+    }
+    body.print-worksheet .worksheet-header-meta {
+      margin: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 24px;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+    body.print-worksheet .worksheet-header-row {
+      display: flex;
+      gap: 8px;
+      align-items: baseline;
+      page-break-inside: avoid;
+    }
+    body.print-worksheet .worksheet-header-row dt {
+      font-weight: 700;
+      color: #000;
+      margin: 0;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 9px;
+      flex: 0 0 auto;
+    }
+    body.print-worksheet .worksheet-header-row dd {
+      margin: 0;
+      color: #000;
+      font-size: 11px;
+      font-weight: 500;
+    }
+    @page {
+      size: Letter;
+      margin: 0.55in 0.55in 0.85in;
+    }
+  }
+
+  /* D13: worksheet header is hidden on screen — only prints. */
+  .worksheet-header {
+    display: none;
   }
 
   @media (max-width: 640px) {
@@ -3714,6 +3911,106 @@
   }
 
   /* Share link button */
+  /* D8: snapshot permalink display. Visible block above the share
+     row once the eager-mint POST lands (typically <500ms after
+     audit completion). Read-only input carries the full URL; the
+     Copy button swaps between "Copy" and "Copied ✓" on click. Soft
+     teal-tint container groups the disclosure copy visually so the
+     90-day retention + "unlisted not secret" reminder reads as
+     part of the affordance rather than footnote fine print. */
+  .snapshot-permalink {
+    margin: 12px 0 14px;
+    padding: 14px 16px 12px;
+    background: rgba(31, 78, 91, 0.04);
+    border: 1px solid rgba(31, 78, 91, 0.14);
+    border-radius: 12px;
+  }
+  .snapshot-permalink-label {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin: 0 0 8px;
+  }
+  .snapshot-permalink-row {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    min-width: 0;
+  }
+  .snapshot-permalink-value {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--white);
+    border: 1px solid rgba(31, 78, 91, 0.2);
+    border-radius: 999px;
+    padding: 9px 14px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    line-height: 1.3;
+  }
+  .snapshot-permalink-value:focus {
+    outline: 2px solid var(--teal);
+    outline-offset: 2px;
+    border-color: var(--teal);
+  }
+  .snapshot-permalink-copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex: none;
+    padding: 9px 16px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--teal);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color var(--t-fast, 180ms) var(--ease, ease),
+                transform var(--t-fast, 180ms) var(--ease, ease),
+                box-shadow var(--t-fast, 180ms) var(--ease, ease);
+    box-shadow: 0 2px 6px -2px rgba(31, 78, 91, 0.45);
+  }
+  .snapshot-permalink-copy:hover {
+    background: var(--teal-dark, #17404B);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px -4px rgba(31, 78, 91, 0.45);
+  }
+  .snapshot-permalink-copy:active { transform: translateY(0); }
+  .snapshot-permalink-copy:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 3px;
+  }
+  .snapshot-permalink-copy svg { width: 14px; height: 14px; flex: none; }
+  .snapshot-permalink-copy-done { display: none; }
+  .snapshot-permalink-copy.copied .snapshot-permalink-copy-label,
+  .snapshot-permalink-copy.copied svg {
+    display: none;
+  }
+  .snapshot-permalink-copy.copied .snapshot-permalink-copy-done {
+    display: inline;
+  }
+  .snapshot-permalink-disclosure {
+    margin: 9px 0 0;
+    font-size: 11.5px;
+    color: var(--ink-soft, var(--ink));
+    line-height: 1.4;
+  }
+  @media (max-width: 560px) {
+    .snapshot-permalink-row { flex-wrap: wrap; }
+    .snapshot-permalink-copy { width: 100%; justify-content: center; }
+  }
+  body.print-worksheet .snapshot-permalink { display: none; }
+
   /* Sprint 11: share-row becomes a compact inset "tray" under the
      verdict content — frames the share actions as a grouped
      toolbar rather than a loose row of buttons. Cream-inset
@@ -4583,6 +4880,23 @@
     <!-- Report card (hidden until a result renders) -->
     <div class="audit-report" id="auditReport" hidden>
 
+      <!-- D13: worksheet print header. Hidden on screen; revealed
+           via body.print-worksheet + @media print. Gives the
+           manager or contractor receiving the printed worksheet
+           top-of-page context (audited URL, date, score, subtype)
+           without them having to open the tool. Populated by the
+           printManagerBtn click handler before window.print() is
+           invoked. -->
+      <header class="worksheet-header" id="worksheetHeader" aria-hidden="true">
+        <div class="worksheet-header-brand">MUNTIN DIGITAL</div>
+        <h1 class="worksheet-header-title" id="worksheetHeaderTitle">Restaurant website audit worksheet</h1>
+        <dl class="worksheet-header-meta">
+          <div class="worksheet-header-row"><dt>Audited URL</dt><dd id="worksheetHeaderUrl">—</dd></div>
+          <div class="worksheet-header-row"><dt>Captured</dt><dd id="worksheetHeaderDate">—</dd></div>
+          <div class="worksheet-header-row"><dt>Overall score</dt><dd id="worksheetHeaderScore">—</dd></div>
+        </dl>
+      </header>
+
       <!-- Sprint Q1: Sticky report table-of-contents. Desktop renders
            as a fixed right-gutter panel at ≥1200px. Smaller viewports
            get a floating "Sections" button that toggles a bottom-
@@ -4619,6 +4933,29 @@
         <span class="deep-chip deep-age-chip" id="deepAgeChip" hidden></span>
         <span class="deep-chip deep-security-chip" id="deepSecurityChip" hidden></span>
       </div>
+
+      <!-- D4: snapshot banner. Hidden by default; shown only when the
+           page loaded via ?s=<token> and hydration succeeded. Gives the
+           recipient explicit context about what they're looking at and
+           a one-click path to re-run the audit against the live site. -->
+      <aside class="snapshot-banner" id="snapshotBanner" hidden role="status" aria-live="polite">
+        <div class="snapshot-banner-body">
+          <span class="snapshot-banner-eyebrow">Shared audit</span>
+          <p class="snapshot-banner-copy">
+            <span>Captured</span>
+            <strong id="snapshotBannerDate">—</strong>
+            <span>for</span>
+            <strong id="snapshotBannerUrl">—</strong>
+          </p>
+          <p class="snapshot-banner-sub">
+            You're viewing the original owner's results. Numbers may have shifted since.
+          </p>
+        </div>
+        <button type="button" class="snapshot-banner-rerun" id="snapshotRerunBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><polyline points="3 3 3 9 9 9"/></svg>
+          <span id="snapshotRerunLabel">Re-run audit now</span>
+        </button>
+      </aside>
 
       <!-- Summary with overall score ring -->
       <div class="audit-summary" id="overallScoreSection">
@@ -4711,6 +5048,26 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             <span id="scoreOverrideText">This score includes owner-confirmed checks.</span>
           </div>
+          <!-- D8: permalink display. Populated once the eager-mint
+               POST resolves (typically within ~500ms of audit
+               completion). Shows the actual shareable URL in a
+               read-only input with a dedicated Copy button so the
+               owner can see what they're sharing before they send
+               it anywhere. Hidden until mint resolves — the legacy
+               Copy-link button still handles the fallback path. -->
+          <div class="snapshot-permalink" id="snapshotPermalinkDisplay" hidden>
+            <label class="snapshot-permalink-label" for="snapshotPermalinkValue">Your shareable link</label>
+            <div class="snapshot-permalink-row">
+              <input type="text" id="snapshotPermalinkValue" class="snapshot-permalink-value" readonly value="" aria-label="Shareable audit permalink">
+              <button type="button" class="snapshot-permalink-copy" id="snapshotPermalinkCopy" aria-label="Copy shareable link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span class="snapshot-permalink-copy-label">Copy</span>
+                <span class="snapshot-permalink-copy-done">Copied ✓</span>
+              </button>
+            </div>
+            <p class="snapshot-permalink-disclosure">Auto-deletes in 90 days. Unlisted but not secret — don't share sensitive URLs.</p>
+          </div>
+
           <div class="share-row">
             <button type="button" class="share-btn" id="shareBtn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M9 4H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2"/></svg>
@@ -4732,6 +5089,20 @@
             <button type="button" class="share-btn" id="printManagerBtn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
               Print for your manager
+            </button>
+            <!-- D5: developer handoff brief. Two delivery shapes for
+                 one underlying document. The Markdown copy is the
+                 hot path — owners paste it into Linear/Jira/ClickUp
+                 / a chat with their dev. The printable opens the same
+                 content in a new tab styled for browser-print →
+                 save-as-PDF for agencies that prefer a one-pager. -->
+            <button type="button" class="share-btn" id="copyDevBriefBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              Copy for your developer
+            </button>
+            <button type="button" class="share-btn" id="printDevBriefBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="14" x2="15" y2="14"/><line x1="9" y1="18" x2="15" y2="18"/></svg>
+              Open printable brief
             </button>
             <span class="share-toast" id="shareToast" aria-live="polite">Link copied!</span>
           </div>
@@ -6111,6 +6482,24 @@
     var last = window.__auditLastResult;
     if (!last || typeof last.overall !== 'number') return Promise.resolve(null);
 
+    // D14: capture the eager-minted snapshot permalink (D8). When
+    // present, every page footer prints it and the cover page adds
+    // a "Live audit" callout. When absent (ensureSharedSnapshot
+    // failed or hasn't resolved yet), footers fall back to the
+    // audited URL and the cover callout is suppressed. PDFs
+    // delivered via the /api/audit-report email attachment path
+    // can then always carry a clear "jump to live" route without
+    // the recipient having to retype the URL.
+    var PERMALINK = null;
+    try {
+      if (window.__snapshotShareState && window.__snapshotShareState.token) {
+        var isEs = location.pathname.indexOf('/es/') === 0;
+        PERMALINK = isEs && window.__snapshotShareState.shareUrlEs
+          ? window.__snapshotShareState.shareUrlEs
+          : window.__snapshotShareState.shareUrl;
+      }
+    } catch (_) {}
+
     return loadJsPdf().then(function(jsPDF){
       if (!jsPDF) return null;
 
@@ -6134,6 +6523,12 @@
           'cover.overallScore': 'Overall Score',
           'cover.outOf100':   'out of 100',
           'cover.byPillar':   'By Pillar',
+          // D14: snapshot callout on the PDF cover page. Frames
+          // the file as a point-in-time capture and hands the
+          // recipient a live-audit URL they can visit instead
+          // of treating the PDF as the canonical result.
+          'cover.snapshotLabel': 'Snapshot',
+          'cover.snapshotBody':  'Captured on the date above. For the live audit, visit {url}.',
           'cover.tagline':    'Structure brings clarity.',
           'pillar.mobile':    'Mobile performance',
           'pillar.a11y':      'Accessibility',
@@ -6216,6 +6611,8 @@
           'cover.overallScore': 'Puntuaci\u00f3n general',
           'cover.outOf100':   'de 100',
           'cover.byPillar':   'Por pilar',
+          'cover.snapshotLabel': 'Instantánea',
+          'cover.snapshotBody':  'Capturada en la fecha arriba. Para la auditoría en vivo, visita {url}.',
           'cover.tagline':    'La estructura aporta claridad.',
           'pillar.mobile':    'Rendimiento m\u00f3vil',
           'pillar.a11y':      'Accesibilidad',
@@ -6678,11 +7075,19 @@
         setColor(textColor);
         doc.text('Muntin Digital · muntin.digital', MARGIN + 16, PAGE_H - 20);
 
-        // Center: URL of the audited site (content pages only).
-        if (showUrl && url) {
-          setBrandFont(false, 8);
-          setColor(textColor);
-          doc.text(url, PAGE_W / 2, PAGE_H - 20, { align: 'center' });
+        // Center: "live audit" permalink when we have one (D14) so a
+        // printed PDF always carries a jump-back route to the live
+        // tool. Falls back to the audited URL when the eager-mint
+        // didn't resolve in time (save-offline case, rare).
+        if (showUrl) {
+          var centerText = PERMALINK
+            ? PERMALINK.replace(/^https?:\/\//, '')
+            : url;
+          if (centerText) {
+            setBrandFont(false, 8);
+            setColor(textColor);
+            doc.text(centerText, PAGE_W / 2, PAGE_H - 20, { align: 'center' });
+          }
         }
 
         // Right: "page X / Y"
@@ -6774,6 +7179,26 @@
       setColor(COL_STONE);
       var metaParts = [todayPretty, (subtype.label || subtypeId), (url || '—')];
       doc.text(metaParts.join('  ·  '), MARGIN, titleY + 28);
+
+      // D14: "This is a snapshot" callout when a permalink is
+      // available. Frames the PDF honestly as a point-in-time
+      // capture and gives the recipient an explicit route to the
+      // live audit. Matches the voice of the web permalink banner
+      // from D4. Suppressed when no permalink exists so the cover
+      // doesn't print a "visit nothing" line.
+      if (PERMALINK) {
+        var calloutY = titleY + 52;
+        // Inset tint strip
+        setColor(COL_TEAL_TINT, 'fill');
+        doc.roundedRect(MARGIN, calloutY - 12, COL_W, 26, 4, 4, 'F');
+        setBrandFont(true, 8);
+        setColor(COL_TEAL);
+        doc.text(t('cover.snapshotLabel').toUpperCase(), MARGIN + 10, calloutY - 2);
+        setBrandFont(false, 9);
+        setColor(COL_INK_SOFT);
+        doc.text(t('cover.snapshotBody', { url: PERMALINK.replace(/^https?:\/\//, '') }),
+          MARGIN + 10, calloutY + 10);
+      }
 
       // Score block (left) + pillar lockups (right)
       var scoreEyebrowY = 320;
@@ -13057,7 +13482,19 @@
       console.warn('[audit] email payload build failed', e);
     }
 
-    // Populate per-platform share links for the current result
+    // Populate per-platform share links for the current result.
+    // D8: kick off eager-mint of the snapshot permalink so every
+    // downstream share surface (Copy link, social buttons, dev
+    // brief, email) lands on the same stable URL instead of the
+    // older ?url= re-run link. Fully non-blocking — fires in the
+    // background and updates the link hrefs + visible permalink
+    // display when it resolves.
+    ensureSharedSnapshot().then(function(mint){
+      if (mint) {
+        updateShareLinks();
+        revealPermalinkDisplay(mint);
+      }
+    });
     updateShareLinks();
 
     // Phase I7: reveal the download-share-card button once an
@@ -13561,16 +13998,24 @@
   function buildShareContext() {
     var last = window.__auditLastResult;
     if (!last || !last.url) return null;
-    // Include any current user overrides in the share URL so the
-    // recipient opens the audit pre-corrected. This is the fix that
-    // makes "forward this audit to your developer" actually preserve
-    // the conversation: if the owner clicked "Yes I have ordering"
-    // before sharing, the shared link shows ordering as a pass.
-    var params = new URLSearchParams();
-    params.set('url', last.url);
-    var ov = encodeOverrides(USER_OVERRIDES);
-    if (ov) params.set('ov', ov);
-    var shareUrl = location.origin + location.pathname + '?' + params.toString();
+    // D8: prefer the snapshot permalink minted by ensureSharedSnapshot.
+    // Until that resolves (first ~500ms after audit completion), fall
+    // back to the ?url= re-run URL so social buttons never point at
+    // an empty href. The fallback preserves any current user overrides
+    // so a recipient opens the audit pre-corrected.
+    var shareUrl;
+    if (window.__snapshotShareState && window.__snapshotShareState.token) {
+      var isEs = location.pathname.indexOf('/es/') === 0;
+      shareUrl = isEs && window.__snapshotShareState.shareUrlEs
+        ? window.__snapshotShareState.shareUrlEs
+        : window.__snapshotShareState.shareUrl;
+    } else {
+      var params = new URLSearchParams();
+      params.set('url', last.url);
+      var ov = encodeOverrides(USER_OVERRIDES);
+      if (ov) params.set('ov', ov);
+      shareUrl = location.origin + location.pathname + '?' + params.toString();
+    }
     var pretty = last.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
     var text = pretty + ' scored ' + last.overall + '/100 on the free Restaurant Website Audit from Muntin Digital. Run yours:';
     var subject = 'Restaurant Website Audit — ' + pretty + ' scored ' + last.overall + '/100';
@@ -13580,8 +14025,105 @@
       subject:  subject,
       audited:  last.url,
       score:    last.overall,
-      prettyUrl: pretty
+      prettyUrl: pretty,
+      fromSnapshot: !!(window.__snapshotShareState && window.__snapshotShareState.token),
     };
+  }
+
+  /* -------- D8: eager-mint + cached-promise snapshot helper --------
+     First caller kicks off the POST; subsequent callers receive the
+     cached promise. On resolution, window.__snapshotShareState
+     carries the minted token + URLs so synchronous code (social-
+     button href builder, dev-brief generator) can read it without
+     re-awaiting. On failure, the state stays null and downstream
+     surfaces keep using the ?url= fallback URL. */
+  window.__snapshotShareState = { token: null, shareUrl: null, shareUrlEs: null, promise: null };
+  function ensureSharedSnapshot() {
+    var s = window.__snapshotShareState;
+    if (s.token)   return Promise.resolve(s);
+    if (s.promise) return s.promise;
+    var last = window.__auditLastResult;
+    if (!last || !last.url || typeof buildSnapshotPayload !== 'function') {
+      return Promise.resolve(null);
+    }
+    var payload = buildSnapshotPayload(last);
+    if (!payload) return Promise.resolve(null);
+    s.promise = (function(){
+      // Same Canvas → PNG → base64 path the share button uses (D7a).
+      var ogStep = (typeof renderSnapshotOgPngBase64 === 'function')
+        ? renderSnapshotOgPngBase64(payload).then(function(b){ return b; }, function(){ return null; })
+        : Promise.resolve(null);
+      return ogStep.then(function(ogBase64){
+        if (ogBase64) payload.og = { pngBase64: ogBase64 };
+        return fetch('/api/audit-snapshot', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+      }).then(function(r){
+        return r.ok ? r.json() : r.json().then(function(j){ return Promise.reject(j); });
+      }).then(function(data){
+        if (!data || !data.ok || !data.token) return null;
+        s.token      = data.token;
+        s.shareUrl   = data.shareUrl;
+        s.shareUrlEs = data.shareUrlEs;
+        return s;
+      }).catch(function(err){
+        if (err && err.error && err.error !== 'snapshot-storage-unavailable') {
+          try { console.warn('[share] eager-mint failed', err); } catch (_) {}
+        }
+        s.promise = null; // allow a later retry
+        return null;
+      });
+    })();
+    return s.promise;
+  }
+
+  /* -------- D8: permalink display reveal --------
+     Once the eager-mint resolves, reveal a small inline block in the
+     share row showing the actual URL + a Copy button. This replaces
+     the "click → invisibly copies" pattern with a visible
+     "here is the link" affordance the user can select, share, or
+     paste manually. The existing Copy-link button stays but becomes
+     a convenience rather than the primary mechanism. */
+  function revealPermalinkDisplay(mint) {
+    if (!mint || !mint.token) return;
+    var display = document.getElementById('snapshotPermalinkDisplay');
+    if (!display) return;
+    var urlEl   = document.getElementById('snapshotPermalinkValue');
+    var copyBtn = document.getElementById('snapshotPermalinkCopy');
+    var isEs = location.pathname.indexOf('/es/') === 0;
+    var url = isEs && mint.shareUrlEs ? mint.shareUrlEs : mint.shareUrl;
+    if (!url) return;
+    if (urlEl) {
+      urlEl.value = url;
+      // Select on focus so copy-paste workflow is one-click.
+      urlEl.addEventListener('focus', function(){
+        try { urlEl.select(); } catch (_) {}
+      }, { once: false });
+    }
+    display.hidden = false;
+    if (copyBtn && !copyBtn.__wired) {
+      copyBtn.__wired = true;
+      copyBtn.addEventListener('click', function(){
+        if (!urlEl) return;
+        var value = urlEl.value;
+        var done = function(){
+          copyBtn.classList.add('copied');
+          setTimeout(function(){ copyBtn.classList.remove('copied'); }, 1500);
+          if (window.plausible) window.plausible('Audit Permalink Copied');
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(value).then(done, function(){
+            try { urlEl.select(); document.execCommand('copy'); } catch (_) {}
+            done();
+          });
+        } else {
+          try { urlEl.select(); document.execCommand('copy'); } catch (_) {}
+          done();
+        }
+      });
+    }
   }
 
   /* -------- Populate per-platform share URLs after a successful run -------- */
@@ -13778,6 +14320,38 @@
       document.querySelectorAll('#topFixesList li').forEach(function(li){
         li.setAttribute('data-notes-label', notesLabel);
       });
+      // D13: populate the print-only worksheet header with audit
+      // context (URL + date + score) so the recipient of the
+      // printed sheet has a top-of-page anchor. Gracefully handles
+      // partial state — the worksheet prints with "—" placeholders
+      // if any piece of context is unavailable.
+      try {
+        var last = window.__auditLastResult || {};
+        var isEs = location.pathname.indexOf('/es/') === 0;
+        var urlEl = document.getElementById('worksheetHeaderUrl');
+        if (urlEl && last.url) {
+          urlEl.textContent = last.url.replace(/^https?:\/\//i, '').replace(/\/$/, '');
+        }
+        var dateEl = document.getElementById('worksheetHeaderDate');
+        if (dateEl) {
+          try {
+            dateEl.textContent = new Date().toLocaleDateString(
+              isEs ? 'es' : 'en-US',
+              { year: 'numeric', month: 'long', day: 'numeric' }
+            );
+          } catch (_) {}
+        }
+        var scoreEl = document.getElementById('worksheetHeaderScore');
+        if (scoreEl && last.overall && typeof last.overall.total === 'number') {
+          scoreEl.textContent = Math.round(last.overall.total) + '/100';
+        }
+        var titleEl = document.getElementById('worksheetHeaderTitle');
+        if (titleEl) {
+          titleEl.textContent = isEs
+            ? 'Hoja de auditoría del sitio web del restaurante'
+            : 'Restaurant website audit worksheet';
+        }
+      } catch (_) {}
       document.body.classList.add('print-worksheet');
       var cleanup = function(){
         document.body.classList.remove('print-worksheet');
@@ -13788,6 +14362,150 @@
       // in case the user cancels the dialog before any event fires.
       setTimeout(cleanup, 30000);
       window.print();
+    });
+  }
+
+  /* -------- D5: developer-brief generator (markdown + printable) -------- */
+  // Both buttons feed off the same gatherDevBriefPayload() so the
+  // markdown copy and the printable HTML stay in sync. Pure functions
+  // live in restaurant-checks.js; the wiring here only assembles the
+  // input from window.__auditResults + window.__auditLastResult.
+  function gatherDevBriefPayload() {
+    var last = window.__auditLastResult;
+    if (!last || !last.url) return null;
+    var entries = (window.__auditResults && window.__auditResults.entries) || [];
+    var subtype = (window.__auditResults && window.__auditResults.subtypeId) || null;
+    var checks = entries.map(function(e) {
+      var def = e && e.def;
+      var result = e && e.result;
+      var id = def && (def.audit || def.type);
+      if (!id) return null;
+      return {
+        id:      id,
+        title:   String((result && result.title) || (def && def.fail) || (def && def.unverified) || id).slice(0, 200),
+        state:   (result && result.mark && result.mark.cls) || 'skip',
+        minutes: (def && typeof def.minutes === 'number') ? def.minutes : null,
+        effort:  (def && def.effort) || null,
+        impact:  (def && def.impact) || null,
+        note:    (result && result.note) ? String(result.note).replace(/<[^>]*>/g, '').trim() : null
+      };
+    }).filter(function(c) { return c !== null; });
+    // Verdict: scrape the rendered copy so the dev-brief carries the
+    // exact owner-facing language. Falls back to nothing rather than
+    // recomputing — keeps generator pure of the verdict heuristic.
+    var verdict = '';
+    try {
+      var vEl = document.querySelector('.audit-summary .verdict-line')
+             || document.querySelector('#verdictCopy')
+             || document.querySelector('.audit-summary h2');
+      if (vEl && vEl.textContent) verdict = vEl.textContent.replace(/\s+/g, ' ').trim();
+    } catch (_) {}
+    // Permalink: only present if a snapshot has already been minted
+    // for this audit (D2). The brief works without it; the heading
+    // simply omits the "Live audit:" line.
+    var permalinkUrl = null;
+    try {
+      if (location.search.indexOf('?s=') !== -1 || location.search.indexOf('&s=') !== -1) {
+        permalinkUrl = location.href;
+      }
+    } catch (_) {}
+    var host = '';
+    try {
+      var u = new URL(last.url);
+      host = u.host.replace(/^www\./i, '');
+    } catch (_) { host = last.url; }
+    var overall = last.overall || {};
+    return {
+      auditedUrl:   last.url,
+      host:         host,
+      score:        typeof overall.total === 'number' ? overall.total
+                  : (typeof last.restaurant === 'number' ? last.restaurant : 0),
+      capturedAt:   Date.now(),
+      permalinkUrl: permalinkUrl,
+      subtype:      subtype,
+      verdict:      verdict || null,
+      language:     (location.pathname.indexOf('/es/') === 0) ? 'es' : 'en',
+      checks:       checks
+    };
+  }
+
+  function devBriefSlug(payload) {
+    var slug = (payload.host || 'audit')
+      .replace(/[^a-z0-9]+/gi, '-')
+      .replace(/^-|-$/g, '')
+      .toLowerCase()
+      .slice(0, 50) || 'audit';
+    var d = new Date(payload.capturedAt || Date.now());
+    var stamp = d.getUTCFullYear()
+              + String(d.getUTCMonth() + 1).padStart(2, '0')
+              + String(d.getUTCDate()).padStart(2, '0');
+    return 'muntin-audit-' + slug + '-' + stamp;
+  }
+
+  var copyDevBriefBtn = document.getElementById('copyDevBriefBtn');
+  if (copyDevBriefBtn) {
+    copyDevBriefBtn.addEventListener('click', function() {
+      var payload = gatherDevBriefPayload();
+      if (!payload) return;
+      var md = (typeof buildHandoffMarkdown === 'function')
+        ? buildHandoffMarkdown(payload) : '';
+      if (!md) return;
+      var done = function() {
+        if (shareToast) {
+          shareToast.classList.add('visible');
+          setTimeout(function(){ shareToast.classList.remove('visible'); }, 2000);
+        }
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(md).then(done, function() {
+          fallbackCopy(md); done();
+        });
+      } else {
+        fallbackCopy(md); done();
+      }
+      if (window.plausible) window.plausible('Audit Dev Brief Copied');
+    });
+  }
+
+  var printDevBriefBtn = document.getElementById('printDevBriefBtn');
+  if (printDevBriefBtn) {
+    printDevBriefBtn.addEventListener('click', function() {
+      var payload = gatherDevBriefPayload();
+      if (!payload) return;
+      var html = (typeof buildHandoffPrintableHtml === 'function')
+        ? buildHandoffPrintableHtml(payload) : '';
+      if (!html) return;
+      // Open via Blob URL so the new window has a stable
+      // document.URL (download/share path works) and we don't blow
+      // past the browser's data: URL length cap on bigger audits.
+      try {
+        var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var win = window.open(url, '_blank', 'noopener,noreferrer');
+        if (!win) {
+          // Pop-up blocker fired — fall back to a download instead so
+          // the user always gets the artifact.
+          var a = document.createElement('a');
+          a.href = url;
+          a.download = devBriefSlug(payload) + '.html';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        } else {
+          // Cue the print dialog after the new tab has had a frame
+          // to render the styles. The user can cancel out of print
+          // and still keep the page for save-as-PDF.
+          setTimeout(function() {
+            try { win.focus(); win.print(); } catch (_) {}
+          }, 700);
+        }
+        // Free the blob URL after a generous window so the new tab
+        // has time to load it.
+        setTimeout(function() { try { URL.revokeObjectURL(url); } catch (_) {} }, 60000);
+      } catch (e) {
+        try { console.warn('[devBrief] printable open failed', e); } catch (_) {}
+      }
+      if (window.plausible) window.plausible('Audit Dev Brief Printed');
     });
   }
 
@@ -13865,11 +14583,19 @@
         if (window.plausible) window.plausible('Audit Shared');
       };
       if (!payload) { finish(fallbackUrl); return; }
-      fetch('/api/audit-snapshot', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(payload),
-      }).then(function(r){ return r.ok ? r.json() : r.json().then(function(j){ return Promise.reject(j); }); })
+      // D7a: render a per-snapshot OG image before POSTing so social
+      // crawlers get a rich per-audit preview when the permalink is
+      // shared. Non-blocking: any Canvas failure falls through and the
+      // snapshot still saves without a custom OG (HTMLRewriter in D7b
+      // falls back to the static brand card).
+      (function buildAndPost(){
+        var postWithOg = function(ogBase64){
+          if (ogBase64) payload.og = { pngBase64: ogBase64 };
+          fetch('/api/audit-snapshot', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(payload),
+          }).then(function(r){ return r.ok ? r.json() : r.json().then(function(j){ return Promise.reject(j); }); })
         .then(function(data){
           if (data && data.ok && data.shareUrl) {
             // Honor the current locale: /es/... permalink when the
@@ -13890,7 +14616,156 @@
           }
           finish(fallbackUrl);
         });
+        };
+        // Try to render the OG PNG. On any failure, continue without.
+        try {
+          renderSnapshotOgPngBase64(payload).then(postWithOg, function(){ postWithOg(null); });
+        } catch (_) {
+          postWithOg(null);
+        }
+      })();
     });
+  }
+
+  /* -------- D7a: per-snapshot OG image renderer -------- */
+  // Draws a 1200×630 Canvas with the audit score, host, and capture
+  // date, exports to a base64 PNG string (no data: prefix). Promise-
+  // based so the share flow can await and fall through cleanly on
+  // failure. Every API call is try/catch-ed — a Canvas misfeature on
+  // older WebKit, a stray exception from a locale-specific Intl call,
+  // or a 0-pixel layout race all degrade to no-custom-OG rather than
+  // a broken share.
+  function renderSnapshotOgPngBase64(payload) {
+    return new Promise(function(resolve, reject) {
+      try {
+        var canvas = document.createElement('canvas');
+        canvas.width = 1200;
+        canvas.height = 630;
+        var ctx = canvas.getContext('2d');
+        if (!ctx) return reject(new Error('no 2d context'));
+        drawSnapshotOg(ctx, payload);
+        // Prefer the synchronous toDataURL path. Canvas.toBlob +
+        // FileReader.readAsDataURL would also work but adds async
+        // complexity for ~1200×630 content; toDataURL is plenty
+        // fast and sync in every browser we support.
+        var dataUrl = canvas.toDataURL('image/png');
+        if (!dataUrl || dataUrl.indexOf('base64,') === -1) {
+          return reject(new Error('toDataURL returned no base64'));
+        }
+        var base64 = dataUrl.split('base64,')[1];
+        if (!base64) return reject(new Error('empty base64'));
+        resolve(base64);
+      } catch (e) { reject(e); }
+    });
+  }
+
+  // Visible copy on the OG card. Localized alongside the rest of the
+  // tool — matches the brand voice used on the share row + banner.
+  var OG_STRINGS_EN = {
+    eyebrow:  'Restaurant website audit',
+    ofMax:    '/100',
+    audited:  'Audited {date}',
+    footer:   'muntin.digital · restaurant audit',
+  };
+  var OG_STRINGS_ES = {
+    eyebrow:  'Auditoría del sitio web del restaurante',
+    ofMax:    '/100',
+    audited:  'Auditado {date}',
+    footer:   'muntin.digital · auditoría de restaurantes',
+  };
+
+  function drawSnapshotOg(ctx, payload) {
+    var W = 1200, H = 630;
+    var isEs = (payload && payload.language === 'es');
+    var strings = isEs ? OG_STRINGS_ES : OG_STRINGS_EN;
+    var score = (payload && typeof payload.score === 'number') ? Math.round(payload.score) : 0;
+    var host = (function(){
+      try { return (new URL(payload.auditedUrl)).host.replace(/^www\./i, ''); }
+      catch (_) { return String(payload.auditedUrl || '').slice(0, 80); }
+    })();
+    var date = (function(){
+      try {
+        var d = new Date((payload.meta && payload.meta.generatedAt) || Date.now());
+        return d.toLocaleDateString(isEs ? 'es' : 'en-US',
+          { year: 'numeric', month: 'long', day: 'numeric' });
+      } catch (_) { return ''; }
+    })();
+
+    // Background
+    ctx.fillStyle = '#FAF7F2';  // cream
+    ctx.fillRect(0, 0, W, H);
+
+    // Left accent bar (teal, full height)
+    ctx.fillStyle = '#1F4E5B';
+    ctx.fillRect(0, 0, 14, H);
+
+    // Eyebrow (top-right)
+    ctx.fillStyle = '#1F4E5B';
+    ctx.font = '500 22px Georgia, "Times New Roman", serif';
+    ctx.textBaseline = 'top';
+    ctx.textAlign = 'right';
+    ctx.fillText(strings.eyebrow, W - 60, 58);
+
+    // Muntin wordmark (top-left, next to accent bar)
+    ctx.font = '700 20px -apple-system, "Segoe UI", Inter, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('MUNTIN DIGITAL', 60, 62);
+
+    // Score ring — left side of the main area
+    var ringCx = 330, ringCy = 340, ringR = 140, ringStroke = 22;
+    var grade = score >= 75 ? 'good' : score >= 50 ? 'ok' : 'bad';
+    var accent = grade === 'good' ? '#1F4E5B'
+               : grade === 'ok'   ? '#D97706'
+               :                    '#B8541A';
+    // Track
+    ctx.strokeStyle = 'rgba(31,78,91,0.14)';
+    ctx.lineWidth = ringStroke;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.arc(ringCx, ringCy, ringR, 0, Math.PI * 2);
+    ctx.stroke();
+    // Score arc — starts at 12 o'clock (-π/2), sweeps clockwise
+    // proportional to score. Small guard so a 0 score still shows a
+    // visible dot via the round cap.
+    var sweep = Math.max(0.01, (score / 100)) * Math.PI * 2;
+    ctx.strokeStyle = accent;
+    ctx.beginPath();
+    ctx.arc(ringCx, ringCy, ringR, -Math.PI / 2, -Math.PI / 2 + sweep);
+    ctx.stroke();
+    // Score text (centered)
+    ctx.fillStyle = '#14161A';
+    ctx.font = '500 140px Georgia, "Times New Roman", serif';
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center';
+    ctx.fillText(String(score), ringCx, ringCy - 8);
+    ctx.fillStyle = 'rgba(20,22,26,0.55)';
+    ctx.font = '500 28px Georgia, "Times New Roman", serif';
+    ctx.fillText(strings.ofMax, ringCx, ringCy + 80);
+
+    // Host + captured date (right side of the main area)
+    var textX = 560;
+    ctx.fillStyle = '#14161A';
+    ctx.font = '600 52px Georgia, "Times New Roman", serif';
+    ctx.textBaseline = 'alphabetic';
+    ctx.textAlign = 'left';
+    // Wrap long hosts at word boundaries (rare but e.g. shop.foo.com/menu).
+    var hostToDraw = host.length > 28 ? host.slice(0, 27) + '…' : host;
+    ctx.fillText(hostToDraw, textX, 320);
+
+    ctx.fillStyle = 'rgba(20,22,26,0.65)';
+    ctx.font = '500 26px -apple-system, "Segoe UI", Inter, sans-serif';
+    if (date) ctx.fillText(strings.audited.replace('{date}', date), textX, 370);
+
+    // Footer (thin rule + domain line)
+    ctx.strokeStyle = 'rgba(31,78,91,0.18)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(60, H - 80);
+    ctx.lineTo(W - 60, H - 80);
+    ctx.stroke();
+    ctx.fillStyle = '#1F4E5B';
+    ctx.font = '500 22px -apple-system, "Segoe UI", Inter, sans-serif';
+    ctx.fillText(strings.footer, 60, H - 45);
   }
 
   /* -------- D2: snapshot payload builder -------- */
@@ -14518,9 +15393,349 @@
   })();
 
   /* -------- URL-param auto-run for shareable links -------- */
+  /* ==================================================================
+     D3: snapshot hydration
+     ------------------------------------------------------------------
+     When the page loads with `?s=<token>`, fetch the saved snapshot and
+     render a read-only view of what the original owner saw, rather than
+     re-running the audit from scratch. Falls back to a "can't find this
+     share link" state on 404 / 410 so the recipient has a clear path
+     forward (run a fresh audit of the same URL, if they know it).
+
+     Scope kept tight for D3:
+       * Populate the score ring + value + grade band
+       * Fill the audited-URL line
+       * Set the verdict copy
+       * Render a simplified priority-check list from the captured
+         { id, state, title } triples — no feedback buttons, no dev-
+         prompt buttons, no action-plan reconstruction. A snapshot is
+         a point-in-time record, not a rerun.
+       * Hide the sections that can't be rendered from the payload
+         alone (top-fixes, action-plan, margin-health, category grid);
+         D4 polishes the banner + re-run CTA on top of this.
+     ================================================================== */
+
+  function hydrateFromSnapshotToken(token) {
+    // Sanity-check shape before we hit the network. 10 chars of the
+    // server-side alphabet; anything else is a garbage URL.
+    if (!/^[A-HJ-NP-Z2-9]{10}$/.test(token)) {
+      renderSnapshotError('invalid-token');
+      return;
+    }
+    // Mark the body immediately so CSS can hide "not in snapshot"
+    // UI (the autoRunFromParam 300ms delay means we need a signal
+    // before the measuring-pill starts animating).
+    document.body.classList.add('snapshot-hydrating');
+    fetch('/api/audit-snapshot?token=' + encodeURIComponent(token), {
+      credentials: 'omit',
+      headers: { 'accept': 'application/json' },
+    })
+      .then(function(r){
+        if (r.status === 404) return Promise.reject({ error: 'not-found', status: 404 });
+        if (r.status === 503) return Promise.reject({ error: 'snapshot-storage-unavailable', status: 503 });
+        if (!r.ok)            return Promise.reject({ error: 'http-' + r.status, status: r.status });
+        return r.json();
+      })
+      .then(function(data){
+        if (!data || !data.ok || !data.snapshot) {
+          return Promise.reject({ error: (data && data.error) || 'unknown' });
+        }
+        renderSnapshotView(data.snapshot);
+      })
+      .catch(function(err){
+        try { console.warn('[snapshot] hydrate failed', err); } catch (_) {}
+        renderSnapshotError((err && err.error) || 'unknown');
+      });
+  }
+
+  function renderSnapshotView(snapshot) {
+    document.body.classList.remove('snapshot-hydrating');
+    document.body.classList.add('snapshot-view');
+
+    // URL: show in the input so a "Re-run audit" click (D4) picks it up
+    // without requiring the user to retype.
+    try {
+      var urlInput = document.getElementById('auditUrl');
+      if (urlInput && snapshot.auditedUrl) urlInput.value = snapshot.auditedUrl;
+    } catch (_) {}
+
+    // Overall score section: reveal + populate the ring.
+    try {
+      var scoreSection = document.getElementById('overallScoreSection');
+      if (scoreSection) scoreSection.hidden = false;
+      var score = typeof snapshot.score === 'number' ? snapshot.score : 0;
+      if (typeof setScoreRing === 'function') {
+        // Build benchmark meta if we have a subtype — reuses the same
+        // subtypeBenchmark helper the live audit uses, so a snapshot
+        // renders with the exact same halo math.
+        var bench = null;
+        if (snapshot.subtype && typeof subtypeBenchmark === 'function') {
+          try { bench = subtypeBenchmark(snapshot.subtype); } catch (_) {}
+        }
+        setScoreRing(score, bench && typeof bench.overall === 'number'
+          ? { benchmarkOverall: bench.overall }
+          : null);
+      } else {
+        // Defensive: setScoreRing is defined elsewhere in this file,
+        // but a page load race could in theory reach here before it
+        // binds. Fall back to a plain text update.
+        var valueEl = document.getElementById('scoreValue');
+        if (valueEl) valueEl.textContent = String(Math.round(score));
+      }
+      var auditedUrlEl = document.getElementById('auditedUrl');
+      if (auditedUrlEl) auditedUrlEl.textContent = snapshot.auditedUrl || '—';
+      var verdictEl = document.getElementById('verdictCopy');
+      if (verdictEl && snapshot.verdict) verdictEl.textContent = snapshot.verdict;
+    } catch (_) {}
+
+    // Priority-check list: build simplified rows from the captured
+    // { id, state, title } triples. No feedback / dev-prompt buttons —
+    // those paths depend on live data the snapshot doesn't carry.
+    try {
+      var listEl = document.getElementById('priorityListWrap');
+      var checks = (snapshot.results && Array.isArray(snapshot.results.checks))
+        ? snapshot.results.checks : [];
+      if (listEl && checks.length) {
+        var frag = document.createDocumentFragment();
+        checks.forEach(function(c){
+          var row = document.createElement('div');
+          var cls = (c.state === 'pass' || c.state === 'fail' || c.state === 'unverified') ? c.state : 'skip';
+          row.className = 'priority-item ' + cls + ' in-view';
+          var ch = cls === 'pass' ? '✓' : cls === 'fail' ? '✗' : '?';
+          var label = cls === 'pass' ? 'Pass' : cls === 'fail' ? 'Fail' : 'Needs verification';
+          row.innerHTML =
+            '<div class="mark ' + cls + '" aria-hidden="true">' + ch + '</div>' +
+            '<div class="body">' +
+              '<strong><span class="sr-only">' + label + ': </span>' +
+              escapeSnapshotHtml(c.title || c.id || '') +
+              '</strong>' +
+            '</div>';
+          frag.appendChild(row);
+        });
+        listEl.replaceChildren(frag);
+        // Reveal the list container if it was hidden behind the
+        // auto-run loading state.
+        listEl.hidden = false;
+      }
+    } catch (_) {}
+
+    // D4: populate + reveal the snapshot banner. The generatedAt is a
+    // client-side timestamp from D2; we also fall back to
+    // snapshot.createdAt which the server writes at save time.
+    try {
+      var banner = document.getElementById('snapshotBanner');
+      if (banner) {
+        var captured = (snapshot.meta && snapshot.meta.generatedAt)
+                    || snapshot.createdAt
+                    || null;
+        var dateEl = document.getElementById('snapshotBannerDate');
+        if (dateEl) dateEl.textContent = formatSnapshotDate(captured);
+        var urlEl = document.getElementById('snapshotBannerUrl');
+        if (urlEl) urlEl.textContent = prettifyHostFromUrl(snapshot.auditedUrl || '');
+        banner.hidden = false;
+      }
+      wireSnapshotRerun(snapshot.auditedUrl || '');
+    } catch (_) {}
+
+    // Flip the body into the "report has rendered" state so the
+    // Sprint-9 staggered reveal animations fire on the sections
+    // that ARE visible (audit-summary). The CSS hides the ones that
+    // shouldn't appear in snapshot view via the .snapshot-view class.
+    try { document.body.classList.add('report-revealed'); } catch (_) {}
+
+    // Seed the global so Share button + any downstream consumers
+    // read the same shape as a live run.
+    try {
+      window.__auditLastResult = {
+        audits: null,
+        overall: {
+          total: typeof snapshot.score === 'number' ? snapshot.score : 0,
+          perf: snapshot.results && snapshot.results.categoryScores && snapshot.results.categoryScores.perf,
+          a11y: snapshot.results && snapshot.results.categoryScores && snapshot.results.categoryScores.a11y,
+          bp:   snapshot.results && snapshot.results.categoryScores && snapshot.results.categoryScores.bp,
+          seo:  snapshot.results && snapshot.results.categoryScores && snapshot.results.categoryScores.seo,
+        },
+        url: snapshot.auditedUrl,
+        restaurant: snapshot.results && snapshot.results.categoryScores && snapshot.results.categoryScores.restaurant,
+        unverifiedCount: (snapshot.meta && snapshot.meta.unverifiedCount) || 0,
+        unverifiedPenaltyApplied: !!(snapshot.meta && snapshot.meta.unverifiedPenaltyApplied),
+        fromSnapshot: true,
+      };
+    } catch (_) {}
+  }
+
+  function renderSnapshotError(kind) {
+    document.body.classList.remove('snapshot-hydrating');
+    document.body.classList.add('snapshot-error');
+    // Minimal error state for D3 — D4 adds the polished banner +
+    // call-to-run-fresh-audit CTA. For now, surface the error in
+    // the hero form area using the existing #progressBar / verdict
+    // affordances so users see SOMETHING useful.
+    try {
+      var scoreSection = document.getElementById('overallScoreSection');
+      if (scoreSection) scoreSection.hidden = false;
+      var valueEl = document.getElementById('scoreValue');
+      if (valueEl) valueEl.textContent = '—';
+      var verdictEl = document.getElementById('verdictCopy');
+      if (verdictEl) {
+        verdictEl.textContent = (kind === 'not-found' || kind === 'invalid-token')
+          ? "This share link has expired or wasn't found. Run a fresh audit below to check the current state of the site."
+          : (kind === 'snapshot-storage-unavailable')
+            ? "Saved-audit sharing isn't turned on right now. Run a fresh audit below."
+            : "Couldn't load this shared audit. Run a fresh audit below to see current results.";
+      }
+      var headlineEl = document.getElementById('scoreHeadline');
+      if (headlineEl) headlineEl.textContent = 'Shared audit not available';
+    } catch (_) {}
+  }
+
+  // Tiny HTML-escape used only inside the snapshot renderer. The
+  // page's main escapeHtml helper lives in scope but is defined
+  // hundreds of lines below this IIFE; repeating the four-char
+  // replacement avoids a hoisting-order coupling.
+  function escapeSnapshotHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  // D4: relative-date formatter for the snapshot banner. "Today",
+  // "Yesterday", "3 days ago", "2 weeks ago" up to ~6 weeks, then a
+  // locale-formatted absolute date (en-US: "April 12, 2026"; es:
+  // "12 de abril de 2026"). Returns a localized "recently" if the
+  // timestamp is missing / unparseable — never throws.
+  var SNAPSHOT_DATE_STRINGS_EN = {
+    recently:    'recently',
+    moments:     'moments ago',
+    minutesOne:  'a minute ago',
+    minutes:     '{n} minutes ago',
+    hourOne:     'an hour ago',
+    hours:       '{n} hours ago',
+    yesterday:   'yesterday',
+    days:        '{n} days ago',
+    weekOne:     'a week ago',
+    weeks:       '{n} weeks ago',
+  };
+  var SNAPSHOT_DATE_STRINGS_ES = {
+    recently:    'recientemente',
+    moments:     'hace un momento',
+    minutesOne:  'hace un minuto',
+    minutes:     'hace {n} minutos',
+    hourOne:     'hace una hora',
+    hours:       'hace {n} horas',
+    yesterday:   'ayer',
+    days:        'hace {n} días',
+    weekOne:     'hace una semana',
+    weeks:       'hace {n} semanas',
+  };
+  function formatSnapshotDate(ts) {
+    var strings = (location.pathname.indexOf('/es/') === 0)
+      ? SNAPSHOT_DATE_STRINGS_ES
+      : SNAPSHOT_DATE_STRINGS_EN;
+    var fill = function(tpl, n) { return tpl.replace('{n}', String(n)); };
+    try {
+      if (!ts) return strings.recently;
+      var d = new Date(ts);
+      if (isNaN(d.getTime())) return strings.recently;
+      var now = Date.now();
+      var diffMs = now - d.getTime();
+      if (diffMs >= 0) {
+        var minute = 60 * 1000;
+        var hour   = 60 * minute;
+        var day    = 24 * hour;
+        if (diffMs < 2 * minute)  return strings.moments;
+        if (diffMs < 2 * minute + minute) return strings.minutesOne;
+        if (diffMs < hour)        return fill(strings.minutes, Math.round(diffMs / minute));
+        if (diffMs < 2 * hour)    return strings.hourOne;
+        if (diffMs < day)         return fill(strings.hours, Math.round(diffMs / hour));
+        if (diffMs < 2 * day)     return strings.yesterday;
+        if (diffMs < 7 * day)     return fill(strings.days, Math.floor(diffMs / day));
+        if (diffMs < 14 * day)    return strings.weekOne;
+        if (diffMs < 6 * 7 * day) return fill(strings.weeks, Math.floor(diffMs / (7 * day)));
+      }
+      var locale = (location.pathname.indexOf('/es/') === 0) ? 'es' : 'en-US';
+      return d.toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' });
+    } catch (_) { return strings.recently; }
+  }
+
+  // D4: strip protocol + trailing slash from a URL so the banner reads
+  // `pizzajoint.example` rather than `https://pizzajoint.example/`.
+  // Falls back to the raw string on any parse failure — snapshots have
+  // already been shape-validated server-side, but be defensive anyway.
+  function prettifyHostFromUrl(raw) {
+    try {
+      if (!raw) return '—';
+      var u = new URL(raw);
+      var host = u.host.replace(/^www\./i, '');
+      var pathTail = (u.pathname && u.pathname !== '/') ? u.pathname : '';
+      return host + pathTail;
+    } catch (_) {
+      return String(raw || '—');
+    }
+  }
+
+  // D4: wire the "Re-run audit now" button. Clicking clears the
+  // snapshot-view state, strips the ?s= param from the URL (so a
+  // mid-flight reload doesn't re-hydrate the snapshot over the live
+  // result), and kicks off a fresh runAudit() against the same URL.
+  function wireSnapshotRerun(url) {
+    var btn = document.getElementById('snapshotRerunBtn');
+    if (!btn) return;
+    btn.addEventListener('click', function() {
+      try {
+        // Strip the snapshot token from the URL bar — the live run
+        // will populate its own ?url= or ?bl= params via the existing
+        // history mechanism. Keeping ?s= would make a reload revert.
+        var next = location.pathname;
+        if (history && typeof history.replaceState === 'function') {
+          history.replaceState(null, '', next);
+        }
+      } catch (_) {}
+      // Un-do the snapshot-view state so the live-audit UI sections
+      // become eligible to render again.
+      document.body.classList.remove('snapshot-view', 'snapshot-error', 'report-revealed');
+      // Clear the read-only priority list; the live runner repopulates.
+      try {
+        var list = document.getElementById('priorityListWrap');
+        if (list) list.replaceChildren();
+      } catch (_) {}
+      // Hide the banner — the live run doesn't need it, and keeping
+      // it visible during the fresh audit would be confusing.
+      try {
+        var banner = document.getElementById('snapshotBanner');
+        if (banner) banner.hidden = true;
+      } catch (_) {}
+      // Populate the input + kick off the audit. runAudit exists in
+      // the outer IIFE scope alongside autoRunFromParam.
+      try {
+        var input = document.getElementById('auditUrl');
+        if (input && url) input.value = url;
+        if (typeof runAudit === 'function' && url) {
+          if (window.plausible) window.plausible('Audit Snapshot Rerun');
+          runAudit(url);
+        }
+      } catch (e) {
+        try { console.warn('[snapshot] re-run failed', e); } catch (_) {}
+      }
+    });
+  }
+
   (function autoRunFromParam(){
     try {
       var params = new URLSearchParams(location.search);
+      // D3: snapshot hydration takes precedence over ?url= auto-run.
+      // A recipient of a shared permalink expects to see the ORIGINAL
+      // owner's result, not a fresh re-measure — re-running would
+      // confuse "we're comparing current state vs. shared state" with
+      // "the shared link is what I'm looking at".
+      var snapToken = params.get('s');
+      if (snapToken) {
+        hydrateFromSnapshotToken(snapToken);
+        return;
+      }
       var preset = params.get('url');
       if (!preset) return;
       var normalized = normalizeUrl(preset);

@@ -78,8 +78,54 @@ const STATIC = [
   [ 'Audited:', 'Auditado:' ],
   [ 'Copy link', 'Copiar enlace' ],
   [ 'Building share link…', 'Creando enlace para compartir…' ],
+  // D4: snapshot banner copy. Structure matches the HTML exactly so
+  // substring replace picks them up even when adjacent to <strong>
+  // span boundaries. Order matters: longer strings first so the
+  // shorter ones don't prematurely replace substrings of them.
+  [ "You're viewing the original owner's results. Numbers may have shifted since.",
+    'Estás viendo los resultados originales del propietario. Los números pueden haber cambiado desde entonces.' ],
+  [ '>Shared audit<', '>Auditoría compartida<' ],
+  [ '>Captured<', '>Capturada<' ],
+  [ '>Re-run audit now<', '>Ejecutar auditoría ahora<' ],
+  // The "for" inside the banner copy is a common English word that
+  // appears elsewhere; we disambiguate via the surrounding <span> tag.
+  [ '</strong>\n            <span>for</span>\n            <strong',
+    '</strong>\n            <span>para</span>\n            <strong' ],
+  // D3: snapshot-view error copy. Strings live inline in the
+  // hydrateFromSnapshotToken / renderSnapshotError helpers; the EN
+  // master is the source of truth, ES comes from this mapping.
+  [ "This share link has expired or wasn't found. Run a fresh audit below to check the current state of the site.",
+    'Este enlace compartido ha expirado o no se encontró. Ejecuta una auditoría nueva abajo para ver el estado actual del sitio.' ],
+  [ "Saved-audit sharing isn't turned on right now. Run a fresh audit below.",
+    'Compartir auditorías guardadas no está activado ahora mismo. Ejecuta una auditoría nueva abajo.' ],
+  [ "Couldn't load this shared audit. Run a fresh audit below to see current results.",
+    'No se pudo cargar esta auditoría compartida. Ejecuta una auditoría nueva abajo para ver los resultados actuales.' ],
+  [ 'Shared audit not available', 'Auditoría compartida no disponible' ],
   [ 'Download share card', 'Descargar tarjeta' ],
   [ 'Print for your manager', 'Imprimir para tu gerente' ],
+  // D13: worksheet print header. <dt> labels inside the header
+  // + the H1 title (handled at print time by JS — no stamp
+  // needed for that path). Stamps here cover the static
+  // markup so screen readers that peek at aria-hidden nodes
+  // still get ES context.
+  [ '<dt>Audited URL</dt>',   '<dt>URL auditada</dt>' ],
+  [ '<dt>Captured</dt>',      '<dt>Capturada</dt>' ],
+  [ '<dt>Overall score</dt>', '<dt>Puntuación general</dt>' ],
+  [ 'Restaurant website audit worksheet',
+    'Hoja de auditoría del sitio web del restaurante' ],
+  // D5: developer brief buttons. Labels appear in the share row
+  // alongside Copy link / Print for your manager.
+  [ 'Copy for your developer', 'Copiar para tu desarrollador' ],
+  [ 'Open printable brief',    'Abrir resumen imprimible' ],
+  // D8: permalink display copy. Label sits above the URL input;
+  // disclosure underneath. "Copy" and "Copied ✓" are button states.
+  [ 'Your shareable link', 'Tu enlace para compartir' ],
+  [ "Auto-deletes in 90 days. Unlisted but not secret — don't share sensitive URLs.",
+    'Se borra automáticamente en 90 días. No está listado pero no es secreto — no compartas URLs sensibles.' ],
+  [ '>Copy<',   '>Copiar<' ],
+  [ '>Copied ✓<', '>Copiado ✓<' ],
+  [ 'aria-label="Copy shareable link"', 'aria-label="Copiar enlace para compartir"' ],
+  [ 'aria-label="Shareable audit permalink"', 'aria-label="Enlace permanente de auditoría para compartir"' ],
   [ 'Share:', 'Compartir:' ],
   [ '>Top 3 fixes<', '>3 arreglos principales<' ],
   [ 'Ranked by impact for your segment. Work top-down.',
