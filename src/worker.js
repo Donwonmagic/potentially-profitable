@@ -46,6 +46,49 @@ import {
   pickLang,
 } from './lib/validation.js';
 import { withAuditCache } from './lib/audit-cache.js';
+import { createRateLimiter, clientIpFromRequest } from './lib/rate-limit.js';
+import { RateLimiter, checkDurableRateLimit } from './lib/rate-limiter-do.js';
+import { saveSnapshot, getSnapshot, getSnapshotOg, isValidTokenShape } from './lib/audit-snapshots.js';
+
+// Durable Object classes must be re-exported from the Worker entry
+// module so the runtime can instantiate them when the binding fires.
+// Leaving this export in place when the binding is still commented in
+// wrangler.jsonc is harmless — the class is defined but never
+// instantiated.
+export { RateLimiter };
+
+// Compute the X-Audit-Cache header value from a withAuditCache result.
+// Three states: 'hit' (fresh, within TTL), 'stale-fallback' (upstream
+// errored, served a cached value between TTL and 2× TTL), 'miss'
+// (fresh upstream fetch). Owners can see which they got via devtools
+// and the UI can surface stale-fallback as a disclosure.
+function auditCacheHeader(cached) {
+  if (!cached) return 'miss';
+  if (cached.staleFallback) return 'stale-fallback';
+  return cached.cacheHit ? 'hit' : 'miss';
+}
+
+// Per-isolate rate limiter. 30 requests per IP per 60 s — generous
+// enough that a real owner re-auditing after every fix never hits it,
+// tight enough to blunt the common "one IP, many URLs" burst attack
+// that would otherwise exhaust PSI / Places / Resend / LLM quotas.
+// See src/lib/rate-limit.js for the full scope discussion.
+const API_RATE_LIMITER = createRateLimiter({ windowMs: 60_000, max: 30 });
+
+// Form / email endpoints have a tighter budget because each POST
+// triggers up to two Resend emails (free tier: 100/day).
+const FORM_RATE_LIMITER = createRateLimiter({ windowMs: 3600_000, max: 10 });
+
+const FORM_RATE_LIMIT_PATHS = new Set([
+  '/api/intake',
+  '/api/checklist',
+  '/api/audit-report',
+  '/api/schedule-reaudit'
+]);
+// D1: /api/audit-snapshot intentionally stays on the lighter
+// api-tier (30/min/IP) — a legit shared link might be opened by
+// half a dozen collaborators from one office NAT, and legitimate
+// POSTs only fire when an owner clicks "share" (once per session).
 import {
   intakeNotification,
   intakeAutoResponder,
@@ -55,6 +98,7 @@ import {
   auditReportAutoResponder,
   auditDeepReportNotification,
   auditDeepReportAutoResponder,
+  reauditReminder,
 } from './lib/templates.js';
 
 
@@ -66,6 +110,8 @@ const API_ROUTES = {
   '/api/intake':        handleIntake,
   '/api/checklist':     handleChecklist,
   '/api/audit-report':  handleAuditReport,
+  '/api/audit-snapshot': handleAuditSnapshot,
+  '/api/og-snapshot':    handleOgSnapshot,
   '/api/ping':          handlePing,
   '/api/gbp-lookup':    handleGbpLookup,
   '/api/seo-check':     handleSeoCheck,
@@ -115,7 +161,16 @@ export default {
       // /api/brand-dossier accepts POST only (it carries the signal
       // payload in the body). Not in the GET-allowlist below, so it
       // falls through to the default POST-only branch.
-      if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details' || pathname === '/api/dns-email-health') {
+      //
+      // D1: /api/audit-snapshot accepts BOTH — POST creates a new
+      // snapshot, GET (?token=XXX) reads one. Branches via a third
+      // arm so neither of the existing method-checks below rejects
+      // a legitimate call.
+      if (pathname === '/api/audit-snapshot') {
+        if (request.method !== 'GET' && request.method !== 'POST') {
+          return jsonResponse({ ok: false, error: 'Method not allowed — audit-snapshot accepts GET or POST' }, 405);
+        }
+      } else if (pathname === '/api/og-snapshot' || pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details' || pathname === '/api/dns-email-health') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
         }
@@ -132,6 +187,53 @@ export default {
       // correlation trivial); otherwise we mint a new one.
       const reqId = request.headers.get('x-request-id') || crypto.randomUUID();
       const started = Date.now();
+
+      // Per-IP throttle. /api/ping bypasses so ops can health-check
+      // without burning the caller's own budget. Form endpoints use a
+      // tighter per-hour budget because each hits Resend's free tier.
+      //
+      // Two-tier enforcement:
+      //   1. Durable-Object sliding window (global across isolates)
+      //      when env.RATE_LIMITER is bound. Authoritative.
+      //   2. In-isolate sliding window as the fallback when the DO
+      //      binding is absent (local dev, pre-deploy, or after a DO
+      //      outage). Less precise but zero extra latency.
+      // checkDurableRateLimit never throws — a DO outage is logged
+      // and the request is treated as allowed by that layer so a
+      // real user is never blocked because of an infrastructure
+      // blip. The in-isolate fallback still caps bursts within one
+      // isolate in that degraded mode.
+      if (pathname !== '/api/ping') {
+        const ip = clientIpFromRequest(request);
+        const isForm = FORM_RATE_LIMIT_PATHS.has(pathname);
+        const tier = isForm
+          ? { name: 'form', windowMs: 3600_000, max: 10 }
+          : { name: 'api',  windowMs: 60_000,   max: 30 };
+
+        let deny = null;
+        if (env.RATE_LIMITER) {
+          deny = await checkDurableRateLimit(env, tier.name + ':' + ip, tier.windowMs, tier.max);
+        } else {
+          const localLimiter = isForm ? FORM_RATE_LIMITER : API_RATE_LIMITER;
+          deny = localLimiter.check(ip);
+        }
+
+        if (deny) {
+          console.log(JSON.stringify({
+            event: 'api.rate_limited',
+            path: pathname,
+            method: request.method,
+            retryAfter: deny.retryAfterSeconds,
+            tier: tier.name,
+            reqId: reqId
+          }));
+          const throttled = jsonResponse({ ok: false, error: 'rate-limited', retryAfterSeconds: deny.retryAfterSeconds }, 429);
+          throttled.headers.set('Retry-After', String(deny.retryAfterSeconds));
+          throttled.headers.set('X-Request-Id', reqId);
+          return throttled;
+        }
+      }
+
       try {
         const response = await handler(request, env, ctx);
         // Sprint U1: structured access log, one JSON line per request,
@@ -218,10 +320,93 @@ export default {
       }
     }
 
+    // D7b: social-crawler meta injection for shared audit permalinks.
+    // When the request is for the audit tool page AND carries a valid
+    // ?s=<token> query param, pull the snapshot metadata from KV and
+    // rewrite og:*/twitter:* meta tags on the static response so Slack,
+    // LinkedIn, X, Facebook, etc. render the per-snapshot score card
+    // instead of the generic site OG. The rewrite is streaming via
+    // HTMLRewriter — zero overhead when ?s= isn't present.
+    const snapshotPaths = ['/tools/audits/restaurant/', '/tools/audits/restaurant/index.html',
+                           '/es/tools/audits/restaurant/', '/es/tools/audits/restaurant/index.html'];
+    if (request.method === 'GET' && snapshotPaths.includes(pathname)) {
+      const snapToken = url.searchParams.get('s');
+      if (snapToken && isValidTokenShape(snapToken) && env.AUDIT_SNAPSHOTS) {
+        const snap = await getSnapshot(env, snapToken);
+        if (snap.ok && snap.snapshot) {
+          const base = await env.ASSETS.fetch(request);
+          return rewriteAuditPageForSnapshot(base, snap.snapshot, snapToken, url);
+        }
+      }
+    }
+
     // Fall through to the static-asset server.
     return env.ASSETS.fetch(request);
   },
 };
+
+// D7b: rewrite og:*/twitter:* meta tags on the audit tool page so
+// shared permalinks get a rich per-snapshot social card. Uses
+// HTMLRewriter, which Cloudflare offers as a zero-parse streaming
+// transformer — each matched element handler runs as the bytes flow
+// through, no DOM construction.
+//
+// String computation extracted to buildSnapshotMetaOverrides() so the
+// logic can be unit-tested without needing an HTMLRewriter instance.
+export function buildSnapshotMetaOverrides(snapshot, token, reqUrl) {
+  const score = (typeof snapshot.score === 'number') ? Math.round(snapshot.score) : null;
+  const host = (function() {
+    try { return new URL(snapshot.auditedUrl).host.replace(/^www\./i, ''); }
+    catch (_) { return String(snapshot.auditedUrl || '').slice(0, 80); }
+  })();
+  const isEs = snapshot.language === 'es';
+  const titleLabel = isEs ? 'Puntuación de auditoría' : 'Audit score';
+  const ogTitle = (score !== null)
+    ? `${titleLabel}: ${score}/100 — ${host}`
+    : `${isEs ? 'Auditoría compartida' : 'Shared audit'} — ${host}`;
+  // Description: verdict if present, otherwise a generic one.
+  const rawVerdict = (snapshot.verdict || '').replace(/\s+/g, ' ').trim();
+  const ogDescription = rawVerdict
+    ? (rawVerdict.length > 200 ? rawVerdict.slice(0, 199) + '…' : rawVerdict)
+    : (isEs
+        ? `Auditoría del sitio web del restaurante compartida desde muntin.digital.`
+        : `A restaurant website audit snapshot shared from muntin.digital.`);
+  // og:image: always the snapshot OG endpoint. When no custom OG
+  // was saved, /api/og-snapshot redirects to the static brand card.
+  const origin = reqUrl.origin;
+  const ogImage = `${origin}/api/og-snapshot?token=${encodeURIComponent(token)}`;
+  // og:url: honor the locale path the request came in on.
+  const canonicalUrl = `${origin}${reqUrl.pathname}?s=${encodeURIComponent(token)}`;
+  return { ogTitle, ogDescription, ogImage, canonicalUrl };
+}
+
+function rewriteAuditPageForSnapshot(response, snapshot, token, reqUrl) {
+  const { ogTitle, ogDescription, ogImage, canonicalUrl } = buildSnapshotMetaOverrides(snapshot, token, reqUrl);
+
+  const rw = new HTMLRewriter()
+    .on('meta[property="og:title"]',       { element(el) { el.setAttribute('content', ogTitle); } })
+    .on('meta[name="twitter:title"]',      { element(el) { el.setAttribute('content', ogTitle); } })
+    .on('meta[property="og:description"]', { element(el) { el.setAttribute('content', ogDescription); } })
+    .on('meta[name="twitter:description"]',{ element(el) { el.setAttribute('content', ogDescription); } })
+    .on('meta[property="og:image"]',       { element(el) { el.setAttribute('content', ogImage); } })
+    .on('meta[name="twitter:image"]',      { element(el) { el.setAttribute('content', ogImage); } })
+    .on('meta[property="og:url"]',         { element(el) { el.setAttribute('content', canonicalUrl); } });
+  // Clone so we can strip the content-length header that won't be
+  // accurate once the rewriter streams its output.
+  const headers = new Headers(response.headers);
+  headers.delete('content-length');
+  // Social crawlers sometimes aggressively cache OG lookups.
+  // Short cache is fine because snapshots are immutable once written.
+  const existingCc = headers.get('cache-control');
+  if (!existingCc || existingCc.indexOf('no-store') === -1) {
+    headers.set('cache-control', 'public, max-age=300, s-maxage=900');
+  }
+  return rw.transform(new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  }));
+}
 
 
 // ============================================================
@@ -749,7 +934,11 @@ async function handleSeoCheck(request, env, ctx) {
       return jsonResponse({ ok: false, error: 'Could not fetch the page (HTTP ' + res.status + ')' }, 502);
     }
 
-    const html = await res.text();
+    // Cap at 1.5 MB. Title + meta description live in <head>; we only
+    // need the first chunk of the document. A pathological upstream
+    // can't force the Worker to buffer a multi-MB body.
+    const read = await readTextCapped(res, 1_500_000);
+    const html = read.text;
 
     // Extract <title>
     const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
@@ -798,7 +987,11 @@ async function handleSchemaCheck(request, env, ctx) {
       return jsonResponse({ ok: false, error: m }, 502);
     }
 
-    const html = await res.text();
+    // Cap at 1.5 MB. JSON-LD blocks are always inline in <head> or
+    // early <body>; streaming with a hard cap prevents a 10 MB asset
+    // dump from exhausting Worker memory before truncation can run.
+    const schemaRead = await readTextCapped(res, 1_500_000);
+    const html = schemaRead.text;
     const parsed = extractJsonLd(html);
     const validation = validateRestaurantSchema(parsed.objects, lang);
 
@@ -1838,6 +2031,79 @@ function truncateHtml(html, maxBytes) {
   return html.slice(0, maxBytes);
 }
 
+// Stream a Response body as text, aborting at maxBytes. Without this,
+// a malicious or broken upstream returning a 10 MB document forces the
+// Worker to buffer the entire response before truncateHtml can even
+// look at it — blowing memory and the 128 MB response budget. Reading
+// chunk-by-chunk and cancelling the reader at the byte cap keeps us
+// under the limit even when the upstream lies about its Content-Length.
+//
+// Returns { text, truncated, bytesRead }. `truncated: true` signals the
+// cap was reached and the tail of the document was discarded — callers
+// that need a deterministic doc length (schema parser, title extractor)
+// still work correctly because the returned text is valid UTF-8 prefix.
+export async function readTextCapped(res, maxBytes) {
+  const limit = Math.max(0, maxBytes | 0) || 0;
+  // Degenerate cap: if a caller passes 0 (or a negative) we refuse to
+  // read anything. Cancel the body so the upstream doesn't keep
+  // sending. Returning an empty string is the only honest answer.
+  if (limit === 0) {
+    try {
+      if (res && res.body && typeof res.body.cancel === 'function') {
+        await res.body.cancel();
+      }
+    } catch (_) { /* ignore */ }
+    return { text: '', truncated: true, bytesRead: 0 };
+  }
+  const body = res && res.body;
+  if (!body || typeof body.getReader !== 'function') {
+    // No streamable body (shouldn't happen in Workers runtime, but be
+    // defensive for mocked / non-streaming test responses).
+    const fallback = await res.text();
+    if (limit && fallback.length > limit) {
+      return { text: fallback.slice(0, limit), truncated: true, bytesRead: limit };
+    }
+    return { text: fallback, truncated: false, bytesRead: fallback.length };
+  }
+  const reader = body.getReader();
+  const chunks = [];
+  let bytes = 0;
+  let truncated = false;
+  try {
+    while (true) {
+      const step = await reader.read();
+      if (step.done) break;
+      const value = step.value;
+      if (!value) continue;
+      const len = value.byteLength;
+      if (limit > 0 && bytes + len > limit) {
+        const remaining = Math.max(0, limit - bytes);
+        if (remaining > 0) chunks.push(value.subarray(0, remaining));
+        bytes = limit;
+        truncated = true;
+        try { await reader.cancel(); } catch (_) { /* ignore */ }
+        break;
+      }
+      chunks.push(value);
+      bytes += len;
+    }
+  } finally {
+    try { reader.releaseLock(); } catch (_) { /* ignore */ }
+  }
+  // Concatenate once and decode the full buffer so no UTF-8 character
+  // is split across a chunk boundary. TextDecoder with fatal:false
+  // emits U+FFFD on a split at the tail; acceptable for our purposes
+  // (schema parser + regex extractors ignore replacement characters).
+  const merged = new Uint8Array(bytes);
+  let offset = 0;
+  for (const c of chunks) {
+    merged.set(c, offset);
+    offset += c.byteLength;
+  }
+  const text = new TextDecoder('utf-8', { fatal: false }).decode(merged);
+  return { text: text, truncated: truncated, bytesRead: bytes };
+}
+
 // Slot-assigned link-text patterns. Each pattern matches a category
 // of page that the audit wants to inspect separately. Order matters:
 // we stop at the first slot that matches a given anchor, so more
@@ -1850,7 +2116,20 @@ const PAGE_CRAWL_SLOTS = [
   { slot: 'order',       patterns: [/order\s*(online|now|here)?/i, /start\s+(an\s+)?order/i, /\bpickup\b/i, /\bdelivery\b/i] },
   { slot: 'catering',    patterns: [/\bcatering\b/i, /\bcater\s*your\b/i, /private\s+event/i, /\brfq\b/i] },
   { slot: 'events',      patterns: [/\bevents?\b/i, /\bparties\b/i, /\bweddings?\b/i, /private\s+dining/i] },
-  { slot: 'menu',        patterns: [/\bmenu\b/i, /\bmenus\b/i, /food\s*&?\s*drink/i, /\bwine\s+list\b/i, /\bdrink\s+list\b/i] },
+  // Phase 3 #5b: menu-slot patterns expanded to close the crawl-reach
+  // limitation surfaced after shipping menu-depth. Three specific
+  // additions, each chosen for low false-positive risk:
+  //   /\bcarte\b/    — almost exclusively fine-dining menu pages
+  //                    ("prix fixe", "à la carte"); zero hits on
+  //                    generic English body copy
+  //   /\bto-go\b/    — ordering-flow pages that carry the menu
+  //                    alongside the pickup flow
+  //   /\border[-\s]online\b/  — same; normalizes "Order Online" or
+  //                    "order-online" URL slugs
+  // Broader candidates rejected: /food/ matches "About our food" pages
+  // and nav links; /eats/ collides with brand names; /kitchen/ matches
+  // "Our Kitchen" about-us content.
+  { slot: 'menu',        patterns: [/\bmenu\b/i, /\bmenus\b/i, /food\s*&?\s*drink/i, /\bwine\s+list\b/i, /\bdrink\s+list\b/i, /\bcarte\b/i, /\bto-go\b/i, /\border[-\s]online\b/i] },
   { slot: 'contact',     patterns: [/\bcontact\b/i, /\bvisit\b/i, /location/i, /find\s+us/i, /hours/i] },
   { slot: 'about',       patterns: [/\babout\b/i, /our\s+story/i, /\bchef\b/i, /\bteam\b/i] },
   // Sprint M1.3: three new slots so the existence of a dedicated
@@ -1969,8 +2248,13 @@ async function fetchPageForCrawl(target, timeoutMs) {
     if (!res.ok) {
       return { ok: false, url: target, status: res.status, error: 'HTTP ' + res.status };
     }
-    const html = await res.text();
-    return { ok: true, url: res.url || target, status: res.status, html: html };
+    // Stream with a hard cap so a 10 MB homepage cannot exhaust the
+    // Worker's memory budget before truncateHtml downstream can cap
+    // it. PAGE_CRAWL_MAX_HTML is the outer intent; we allocate a
+    // slightly larger byte budget so multi-byte UTF-8 doesn't clip
+    // the truncateHtml char cap applied by the caller.
+    const read = await readTextCapped(res, PAGE_CRAWL_MAX_HTML * 2);
+    return { ok: true, url: res.url || target, status: res.status, html: read.text };
   } catch (err) {
     clearTimeout(timeout);
     const msg = (err && err.name === 'AbortError') ? 'Fetch timed out' : 'Fetch failed';
@@ -2265,7 +2549,7 @@ async function handleObservatory(request, env, ctx) {
     return await observatoryScan(host);
   });
   const res = jsonResponse(cached.value, cached.value && cached.value.ok === false ? 502 : 200);
-  res.headers.set('X-Audit-Cache', cached.cacheHit ? 'hit' : 'miss');
+  res.headers.set('X-Audit-Cache', auditCacheHeader(cached));
   return res;
 }
 
@@ -2335,7 +2619,7 @@ async function handleWaybackFirstSeen(request, env, ctx) {
     return await waybackLookup(gate.url.toString());
   });
   const res = jsonResponse(cached.value, cached.value && cached.value.ok === false ? 502 : 200);
-  res.headers.set('X-Audit-Cache', cached.cacheHit ? 'hit' : 'miss');
+  res.headers.set('X-Audit-Cache', auditCacheHeader(cached));
   return res;
 }
 
@@ -2395,7 +2679,7 @@ async function handleCruxHistory(request, env, ctx) {
   });
   const status = (cached.value && cached.value.ok === false) ? 502 : 200;
   const res = jsonResponse(cached.value, status);
-  res.headers.set('X-Audit-Cache', cached.cacheHit ? 'hit' : 'miss');
+  res.headers.set('X-Audit-Cache', auditCacheHeader(cached));
   return res;
 }
 
@@ -2491,7 +2775,7 @@ async function handleGbpDetails(request, env, ctx) {
   });
   const status = (cached.value && cached.value.ok === false) ? 502 : 200;
   const res = jsonResponse(cached.value, status);
-  res.headers.set('X-Audit-Cache', cached.cacheHit ? 'hit' : 'miss');
+  res.headers.set('X-Audit-Cache', auditCacheHeader(cached));
   return res;
 }
 
@@ -2624,7 +2908,7 @@ async function handleBrandDossier(request, env, ctx) {
   });
   const statusCode = cached.value && cached.value.ok === false ? 502 : 200;
   const res = jsonResponse(cached.value, statusCode);
-  res.headers.set('X-Audit-Cache', cached.cacheHit ? 'hit' : 'miss');
+  res.headers.set('X-Audit-Cache', auditCacheHeader(cached));
   return res;
 }
 
@@ -2779,7 +3063,7 @@ async function handleDnsEmailHealth(request, env, ctx) {
     return await dnsEmailProbe(apex);
   });
   const res = jsonResponse(cached.value, cached.value && cached.value.ok === false ? 502 : 200);
-  res.headers.set('X-Audit-Cache', cached.cacheHit ? 'hit' : 'miss');
+  res.headers.set('X-Audit-Cache', auditCacheHeader(cached));
   return res;
 }
 
@@ -3116,52 +3400,20 @@ async function handleScheduleReaudit(request, env, ctx) {
   const auditLink = 'https://muntin.digital/' + (lang === 'es' ? 'es/' : '')
                   + 'tools/audits/restaurant/?url=' + encodeURIComponent(canonicalUrl);
 
-  const subject = lang === 'es'
-    ? 'Hora de re-auditar ' + pretty + ' — recordatorio de 30 días'
-    : "It's been 30 days — time to re-audit " + pretty;
-
-  const bodyLines = lang === 'es' ? [
-    'Hola,',
-    '',
-    'Hace aproximadamente 30 días auditaste ' + pretty + ' con la herramienta gratuita de Muntin Digital.',
-    '',
-    'Si arreglaste alguno de los hallazgos, ejecutar una nueva auditoría mostrará exactamente qué se resolvió y cuánto subió tu puntuación.',
-    '',
-    'Ejecutar nueva auditoría: ' + auditLink,
-    '',
-    'Sin lista de marketing, sin goteo de correos, sin boletín. Solo te escribiré si respondes a este mensaje.',
-    '',
-    '— Don',
-    'Muntin Digital'
-  ] : [
-    'Hey,',
-    '',
-    "You audited " + pretty + " about 30 days ago with Muntin Digital's free restaurant website audit.",
-    '',
-    "If you fixed any of the findings, re-auditing will show you exactly what resolved and how much your score moved.",
-    '',
-    'Re-run audit: ' + auditLink,
-    '',
-    "No marketing list, no drip, no newsletter. I'll only email you if you reply to this one.",
-    '',
-    '— Don',
-    'Muntin Digital'
-  ];
-  const txt = bodyLines.join('\n');
-  const html = '<div style="font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Arial,sans-serif;font-size:15px;line-height:1.6;color:#2A2D33;">'
-             + bodyLines.map((l) => l === '' ? '<br>' : (l.startsWith('Re-run audit:') || l.startsWith('Ejecutar nueva auditoría:'))
-                 ? '<p style="margin:10px 0;"><a href="' + auditLink + '" style="display:inline-block;padding:10px 18px;background:#1F4E5B;color:#FAF7F2;text-decoration:none;border-radius:999px;font-weight:600;">' + (lang === 'es' ? 'Re-auditar mi sitio' : 'Re-audit my site') + '</a></p>'
-                 : '<p style="margin:0;">' + escapeHtmlForEmail(l) + '</p>').join('')
-             + '</div>';
+  // D11: route through the shared reauditReminder template so the
+  // reminder picks up the D9/D10 shell refresh (viewport meta,
+  // brand eyebrow, Outlook-safe CTA, received-because footer).
+  // The template handles locale dispatch internally.
+  const tpl = reauditReminder({ locale: lang, pretty, auditLink });
 
   const fromEmail = (env.FROM_EMAIL && String(env.FROM_EMAIL)) || 'Don Goldstein <don@muntin.digital>';
   const sendRes = await sendEmail({
     from: fromEmail,
     to: email,
     replyTo: 'don@muntin.digital',
-    subject: subject,
-    html: html,
-    text: txt,
+    subject: tpl.subject,
+    html: tpl.html,
+    text: tpl.text,
     scheduledAt: scheduledAtIso,
   }, env.RESEND_API_KEY);
 
@@ -3237,6 +3489,112 @@ async function handleBadgeSnapshot(request, env, ctx) {
     console.error('[badge-snapshot]', err && err.message);
     return jsonResponse({ ok: false, error: 'badge-write-failed' }, 502);
   }
+}
+
+// D1: audit-snapshot endpoint. Single route, two methods:
+//   POST  body: { auditedUrl, score, verdict, results, language, subtype, meta }
+//         returns { ok: true, token, shareUrl, expiresAt }
+//   GET   ?token=XXXXXXXXXX
+//         returns { ok: true, snapshot } | { ok: false, error }
+//
+// Rate-limiting, rate-limit tier, CORS + request-id logging are all
+// handled upstream in the main fetch handler (see API_ROUTES dispatch).
+async function handleAuditSnapshot(request, env, ctx) {
+  if (request.method === 'POST') {
+    let body;
+    try { body = await request.json(); }
+    catch (_) { return jsonResponse({ ok: false, error: 'invalid-body' }, 400); }
+
+    // Sanity-check the URL before trusting the client-supplied
+    // payload. The URL goes into the snapshot and is displayed
+    // on the hydrated audit page; it must at minimum parse as an
+    // http(s) URL, not a data: / javascript: smuggle.
+    const gate = assertSafeHttpUrl(body.auditedUrl, pickLang(request));
+    if (!gate.ok) {
+      return jsonResponse({ ok: false, error: gate.error }, gate.status);
+    }
+
+    const result = await saveSnapshot(env, body);
+    if (!result.ok) {
+      if (result.error === 'snapshot-storage-unavailable') {
+        return jsonResponse({ ok: false, error: 'snapshot-storage-unavailable' }, 503);
+      }
+      return jsonResponse({ ok: false, error: result.error }, 400);
+    }
+
+    // Build the share URL against the request origin so local dev
+    // (http://localhost:8787) returns matching links.
+    const origin = new URL(request.url).origin;
+    const shareUrl = `${origin}/tools/audits/restaurant/?s=${result.token}`;
+    const shareUrlEs = `${origin}/es/tools/audits/restaurant/?s=${result.token}`;
+    return jsonResponse({
+      ok: true,
+      token: result.token,
+      shareUrl,
+      shareUrlEs,
+      expiresAt: result.expiresAt,
+      bytes: result.byteLength,
+    });
+  }
+
+  // GET: read a saved snapshot.
+  const url = new URL(request.url);
+  const token = url.searchParams.get('token') || url.searchParams.get('s') || '';
+  if (!isValidTokenShape(token)) {
+    return jsonResponse({ ok: false, error: 'invalid-token' }, 400);
+  }
+  const result = await getSnapshot(env, token);
+  if (!result.ok) {
+    if (result.error === 'snapshot-storage-unavailable') {
+      return jsonResponse({ ok: false, error: 'snapshot-storage-unavailable' }, 503);
+    }
+    if (result.error === 'not-found') {
+      return jsonResponse({ ok: false, error: 'not-found' }, 404);
+    }
+    return jsonResponse({ ok: false, error: result.error }, 400);
+  }
+  // Short edge cache — the snapshot is immutable once written, but
+  // we don't want to hold it forever in case of manual deletion.
+  return new Response(JSON.stringify({ ok: true, snapshot: result.snapshot }), {
+    status: 200,
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': 'public, max-age=300, s-maxage=300',
+    },
+  });
+}
+
+// D7b: /api/og-snapshot?token=<token>
+// Returns the per-snapshot OG PNG (uploaded in D7a) with
+// content-type:image/png and a long cache-control. When no custom
+// OG was saved (legacy snapshots, client-side Canvas failure, OG
+// write failure), redirects to the static brand card so every
+// shared link has SOMETHING for crawlers to fetch.
+async function handleOgSnapshot(request, env, ctx) {
+  const url = new URL(request.url);
+  const token = url.searchParams.get('token') || url.searchParams.get('s') || '';
+  if (!isValidTokenShape(token)) {
+    // Garbage token → redirect to the static brand OG so a
+    // malformed share link still renders a social preview.
+    return Response.redirect(`${url.origin}/brand/og/audit-restaurants.png`, 302);
+  }
+  const og = await getSnapshotOg(env, token);
+  if (og.ok && og.bytes) {
+    return new Response(og.bytes, {
+      status: 200,
+      headers: {
+        'content-type': 'image/png',
+        // 7-day cache: snapshots are immutable once written, so
+        // crawlers can hold onto the image for a long time.
+        'cache-control': 'public, max-age=604800, s-maxage=604800, immutable',
+        'access-control-allow-origin': '*',
+      },
+    });
+  }
+  // Missing custom OG → fall back to the static brand card. 302
+  // rather than returning the bytes so the URL stays stable while
+  // the crawler cache learns the permanent location.
+  return Response.redirect(`${url.origin}/brand/og/audit-restaurants.png`, 302);
 }
 
 function jsonResponse(payload, status) {

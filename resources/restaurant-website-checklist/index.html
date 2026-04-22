@@ -181,6 +181,10 @@
   .checklist-meta strong { color: var(--ink); font-weight: 600; }
 
   /* Print button */
+  /* D12: token swap — surface + elevation vocabulary from the
+     modernized audit tool so the checklist reads as the same
+     visual family. Hover lifts use the same translateY(-1px) +
+     elev-2 shadow pattern the audit page's chip buttons use. */
   .print-cta {
     display: inline-flex;
     align-items: center;
@@ -191,20 +195,30 @@
     font-size: 13px;
     font-weight: 500;
     color: var(--ink);
-    background: var(--white);
+    background: var(--surface-2);
     cursor: pointer;
-    transition: all var(--t-fast) var(--ease);
+    transition: background-color var(--t-fast) var(--ease),
+                border-color var(--t-fast) var(--ease),
+                transform var(--t-fast) var(--ease),
+                box-shadow var(--t-fast) var(--ease);
   }
-  .print-cta:hover { background: var(--cream-2); border-color: var(--teal); }
+  .print-cta:hover {
+    background: var(--surface-inset);
+    border-color: var(--teal);
+    transform: translateY(-1px);
+    box-shadow: var(--elev-2);
+  }
+  .print-cta:active { transform: translateY(0); }
 
   /* TOC */
   .toc {
     max-width: 720px;
     margin: 0 auto;
     padding: 40px 48px;
-    background: var(--white);
+    background: var(--surface-1);
     border: 1px solid var(--line);
     border-radius: 16px;
+    box-shadow: var(--elev-1);
   }
   .toc h2 {
     font-family: var(--font-body);
@@ -326,7 +340,7 @@
     gap: 20px;
     padding: 24px 24px 24px 28px;
     margin: 0 0 14px;
-    background: var(--cream-2);
+    background: var(--surface-inset);
     border: 1px solid var(--line);
     border-radius: 14px;
     cursor: pointer;
@@ -929,10 +943,10 @@
     align-items: center;
     gap: 12px;
     padding: 10px 18px 10px 10px;
-    background: var(--white);
+    background: var(--surface-2);
     border: 1px solid var(--line);
     border-radius: 999px;
-    box-shadow: 0 18px 44px -16px rgba(20, 22, 26, 0.28), 0 6px 16px -6px rgba(20, 22, 26, 0.12);
+    box-shadow: var(--elev-3);
     cursor: pointer;
     font-family: var(--font-body);
     color: var(--ink);
@@ -941,8 +955,15 @@
   .score-pill-btn:hover,
   .score-pill-btn:focus-visible {
     transform: translateY(-2px);
-    box-shadow: 0 22px 52px -16px rgba(20, 22, 26, 0.34), 0 8px 18px -6px rgba(20, 22, 26, 0.16);
+    box-shadow: var(--elev-3), 0 4px 10px -2px rgba(31, 78, 91, 0.18);
     outline: none;
+  }
+  /* D12: spring-ease press feedback — matches the micro-interaction
+     vocabulary from the audit tool's Sprint 10. Scale-down on press
+     is tiny (0.97) so it reads as tactile without bouncing. */
+  .score-pill-btn:active {
+    transform: translateY(0) scale(0.97);
+    transition: transform var(--t-micro, 80ms) var(--ease-spring);
   }
   .score-pill-btn:focus-visible {
     border-color: var(--teal);
@@ -1539,13 +1560,9 @@
         A free, honest audit for independent <span data-token="nounPlural">restaurant</span> websites. Run it on your own site in about ten minutes and see where you're leaving reservations on the table. Written for owners, not developers.
       </p>
       <div class="checklist-toolbar">
-        <a class="print-cta" href="/resources/restaurant-website-checklist/muntin-restaurant-website-checklist.pdf" download>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download the PDF
-        </a>
         <button type="button" class="print-cta" onclick="window.print()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-          Print my marked-up copy
+          Save or print this checklist
         </button>
         <div class="share-dropdown" data-share>
           <button type="button" class="share-btn" aria-haspopup="true" aria-expanded="false">
@@ -2157,16 +2174,16 @@
   <div class="container" style="max-width:680px;">
     <div class="section-header reveal" style="text-align:center;">
       <span class="eyebrow">Save it for later</span>
-      <h2>Download the PDF<br>to share with your team.</h2>
-      <p>A printable, pen-friendly audit sheet. Pass it around the kitchen, mark it up during a planning meeting, or tack it to the board behind the host stand.</p>
+      <h2>Print or share<br>with your team.</h2>
+      <p>The checklist lives as a live page — check items off as you go, save your progress on the device, and print a clean or marked-up copy whenever you need a physical handout for the kitchen or a planning meeting.</p>
     </div>
 
     <div class="reveal" style="text-align:center; margin-top:28px;">
-      <a class="btn btn-primary" href="/resources/restaurant-website-checklist/muntin-restaurant-website-checklist.pdf" download style="justify-content:center;">
-        Download the PDF
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      </a>
-      <p style="font-size:13px; color:var(--stone); margin:12px 0 0;">Letter-size PDF · a couple of pages · no signup required.</p>
+      <button type="button" class="btn btn-primary" onclick="window.print()" style="justify-content:center;">
+        Save or print this checklist
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      </button>
+      <p style="font-size:13px; color:var(--stone); margin:12px 0 0;">Your browser's Save as PDF option works great — Letter size, pen-friendly layout.</p>
     </div>
 
     <details class="reveal" style="max-width:520px; margin:32px auto 0; border-top:1px solid var(--line); padding-top:24px;">

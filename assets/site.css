@@ -1,5 +1,55 @@
 :root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--teal-dark:#143640;--teal-tint:#E8F1F3;--rust:#B8541A;--stone:#6B6B6B;--stone-2:#9A958B;--line:#E8E2D6;--line-dark:#D4CCBC;--line-input:#8A8378;--white:#FFFFFF;--font-display:'Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;--font-body:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--max:1200px;--pad-x:clamp(20px,4vw,64px);--ease:cubic-bezier(.22,.61,.36,1);--ease-out:cubic-bezier(.16,1,.3,1);--t-fast:180ms;--t-med:420ms;--t-slow:900ms;--r-sm:8px;--r-md:14px;--r-lg:22px}
 
+/* ============ Modernization tokens (Sprint 1) ============
+   Additive vocabulary that later modernization sprints consume. No
+   visual change lands with this commit alone — declaring the tokens
+   in :root has zero effect until a selector references one. The
+   foundation commit exists so every follow-up sprint reads from the
+   same system instead of ad-hoc values.
+
+   Surface layers replace the current "every card is cream-2 or
+   white" flatness with a three-tier depth vocabulary. Elevation
+   tokens collapse scattered ad-hoc box-shadows into three tiers the
+   rest of the tool can reference. Fluid type extends the clamp()
+   sizing already used on h1-h3 down into mid-tier text. Motion
+   extras (micro timing + spring easing) enable the tactile hover /
+   press interactions added in later sprints without introducing a
+   stiff feel. */
+:root{
+  /* Surface depth — progressively lighter as you float up */
+  --surface-0: #FAF7F2;          /* body / baseline (matches --cream) */
+  --surface-1: #FFFDF8;          /* raised card */
+  --surface-2: #FFFFFF;          /* floating / modal */
+  --surface-inset: #F3EEE3;      /* recessed tray (matches --cream-2) */
+
+  /* Elevation — paired subtle+spread shadows rather than single blur */
+  --elev-1: 0 1px 0 rgba(20,22,26,.04), 0 1px 2px rgba(20,22,26,.04);
+  --elev-2: 0 2px 4px rgba(20,22,26,.04), 0 12px 24px -8px rgba(20,22,26,.08);
+  --elev-3: 0 4px 8px rgba(20,22,26,.05), 0 24px 48px -12px rgba(20,22,26,.10);
+
+  /* Focus affordance — consistent across every interactive element */
+  --ring-focus: 0 0 0 3px rgba(31,78,91,.22);
+
+  /* Hero wash — two-stop radial gradient that adds depth without
+     weight. Only applied to .audit-hero; keeps body calm. */
+  --gradient-hero:
+    radial-gradient(1200px 600px at 20% -10%, rgba(31,78,91,.06), transparent 60%),
+    radial-gradient(900px 500px at 110% 10%, rgba(184,84,26,.05), transparent 55%);
+
+  /* Fluid mid-tier type — h1-h3 already clamp; these cover body
+     rhythm so card type doesn't feel frozen against the hero. */
+  --fs-eyebrow: clamp(11px, .18vw + 10px, 13px);
+  --fs-body:    clamp(15px, .25vw + 14px, 17px);
+  --fs-lead:    clamp(17px, .4vw  + 15px, 20px);
+  --fs-h4:      clamp(17px, .35vw + 15px, 19px);
+  --fs-h3:      clamp(20px, 1vw   + 16px, 26px);
+
+  /* Motion extras — --t-fast/med/slow remain; these add shorter
+     tactile duration + a gentle overshoot ease for press feedback. */
+  --t-micro:    120ms;
+  --ease-spring: cubic-bezier(.2,.9,.25,1.2);
+}
+
 /* ============ SELF-HOSTED WEB FONTS ============
    Fraunces (display) and Inter (body) are served from /assets/fonts/
    instead of Google Fonts. Each @font-face is scoped to a single
@@ -127,7 +177,7 @@ p{margin:0}
 .nav{position:fixed;inset:0 0 auto 0;z-index:50;padding:18px 0;transition:background var(--t-med) var(--ease),border-color var(--t-med) var(--ease),padding var(--t-med) var(--ease);border-bottom:1px solid transparent}
 .nav.scrolled{background:rgba(250,247,242,0.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom-color:var(--line);padding:12px 0}
 .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px}
-.logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:22px;font-weight:600;letter-spacing:-0.02em;white-space:nowrap;flex-shrink:0}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:22px;font-weight:600;letter-spacing:-0.02em;flex-shrink:0;white-space:nowrap}
 .logo-mark{width:28px;height:28px;flex:0 0 28px}
 /* Trademark mark attached to 'Muntin Digital' wordmarks. Used in
    two places:
@@ -169,11 +219,11 @@ p{margin:0}
   vertical-align:baseline;
 }
 .nav-links{display:flex;gap:36px;font-size:15px;color:var(--ink-soft)}
-.nav-links a{position:relative;transition:color var(--t-fast) var(--ease);white-space:nowrap}
+.nav-links a{position:relative;transition:color var(--t-fast) var(--ease);white-space:nowrap;flex-shrink:0}
 .nav-links a::after{content:'';position:absolute;left:0;right:0;bottom:-6px;height:1px;background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform var(--t-med) var(--ease-out)}
 .nav-links a:hover{color:var(--teal)}
 .nav-links a:hover::after{transform:scaleX(1)}
-@media (max-width:820px){.nav-links{display:none}
+@media (max-width:960px){.nav-links{display:none}
 }
 .lang-switch{display:flex;align-items:center;gap:8px;font-size:13px;letter-spacing:0.02em;color:var(--stone);margin-left:4px}
 .lang-switch a{padding:6px 10px;border-radius:999px;border:1px solid var(--line);color:var(--ink-soft);transition:color var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease),background var(--t-fast) var(--ease)}
@@ -575,9 +625,15 @@ body:has(.block.final) .foot-cta{display:none}
 .reveal{opacity:1;transform:none}
 }
 :focus{outline:none}
-a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px}
+/* Sprint 3: global focus affordance. The 2px solid outline reads as
+   a browser-default; the layered halo from --ring-focus reads as
+   "designed." Both land together so keyboard users on legacy
+   browsers without focus-visible support still get the outline
+   fallback. The 3-px 22% teal halo is soft enough to feel like a
+   brand element, visible enough to satisfy WCAG focus contrast. */
+a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px;box-shadow:var(--ring-focus)}
 .btn:focus-visible{outline-offset:4px;border-radius:999px}
-.final a:focus-visible,.process a:focus-visible,footer a:focus-visible{outline-color:var(--cream)}
+.final a:focus-visible,.process a:focus-visible,footer a:focus-visible{outline-color:var(--cream);box-shadow:0 0 0 3px rgba(250,247,242,.32)}
 .skip-link{position:absolute;left:-9999px;top:0;background:var(--ink);color:var(--cream);padding:12px 20px;border-radius:0 0 8px 0;font-size:14px;font-weight:500;z-index:100}
 .skip-link:focus{left:0;outline:2px solid var(--cream);outline-offset:2px}
 /* Screen-reader-only text. Used to annotate icon-only buttons and links
@@ -612,7 +668,7 @@ br.br-lg{display:none}
    container width — the compression shoves the text against one side
    of the pill, which reads as "the text isn't centered". */
 .nav-inner .btn-primary{flex-shrink:0}
-@media (max-width:820px){.nav-inner .btn-primary{display:none}
+@media (max-width:960px){.nav-inner .btn-primary{display:none}
 .nav-toggle{display:flex}
 .mobile-menu:not([hidden]){display:flex}
 .nav.menu-open{background:var(--cream);border-bottom-color:var(--line)}
@@ -646,6 +702,41 @@ br.br-lg{display:none}
 
 .listen-card{--lc-accent:var(--teal);--lc-accent-dark:var(--teal-dark);--lc-tint:var(--teal-tint);position:relative;display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"play body meta" "play progress progress" "play chapter chapter" "extras extras extras";align-items:center;gap:14px 20px;width:100%;max-width:640px;margin:28px auto 0;padding:22px 24px;background:linear-gradient(180deg,var(--white) 0%,var(--cream) 100%);border:1px solid var(--line-dark);border-radius:20px;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 18px 40px -24px rgba(20,54,64,0.22);text-align:left}
 .listen-card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(160deg,rgba(31,78,91,0.18),rgba(31,78,91,0) 55%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+/* Sprint A1: ambient playback tint. ::after sits inside the card's
+   own stacking context, below content (z-index:0) but above the
+   base white→cream background. Opacity transitions from 0 → 1 as
+   state goes idle → playing over 1.2s. The radial is anchored at
+   top-left so the warmth reads as "a glow the voice is casting
+   from behind." Reduced-motion shows the end state without the
+   cross-fade. Content inside the card already sits in grid flow;
+   no z-index bump needed because ::after is positioned absolutely
+   and appears behind non-positioned flow content. */
+.listen-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  background:
+    radial-gradient(120% 180% at 15% 0%, rgba(31,78,91,0.06), rgba(31,78,91,0.02) 45%, transparent 70%),
+    radial-gradient(80% 140% at 85% 100%, rgba(184,84,26,0.035), transparent 65%);
+  opacity:0;
+  transition:opacity 1.2s cubic-bezier(.22,.61,.36,1);
+  pointer-events:none;
+  z-index:0;
+}
+.listen-card > *{position:relative;z-index:1}
+.listen-card[data-state="playing"]::after,
+.listen-card[data-state="paused"]::after{opacity:1}
+/* Sprint A12: finished-state ambient. Swaps the teal-brick ambient
+   for a warm cream-gold wash as the payoff moment — a visual nod to
+   "you arrived, well done" without words. Lasts 2.8s before JS
+   collapses the card back to idle. */
+.listen-card[data-state="finished"]::after{
+  opacity:1;
+  background:
+    radial-gradient(120% 180% at 50% 0%, rgba(217,178,99,0.18), rgba(217,178,99,0.05) 55%, transparent 75%),
+    radial-gradient(100% 140% at 50% 100%, rgba(255,230,180,0.14), transparent 70%);
+}
 .listen-card[hidden]{display:none}
 
 .listen-card-play{grid-area:play;position:relative;width:64px;height:64px;border-radius:50%;border:0;background:var(--lc-accent);color:var(--white);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 10px 24px -10px rgba(31,78,91,0.55),0 2px 0 rgba(255,255,255,0.4) inset;transition:transform var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
@@ -653,19 +744,88 @@ br.br-lg{display:none}
 .listen-card-play:active{transform:translateY(0)}
 .listen-card-play:focus-visible{outline:2px solid var(--lc-accent);outline-offset:3px}
 .listen-card-play svg{width:26px;height:26px;flex:none}
-.listen-card-play .icon-pause,.listen-card-play .icon-loading{display:none}
+.listen-card-play .icon-pause,.listen-card-play .icon-finished{display:none}
 .listen-card[data-state="playing"] .listen-card-play .icon-play{display:none}
 .listen-card[data-state="playing"] .listen-card-play .icon-pause{display:block}
 .listen-card[data-state="loading"] .listen-card-play{background:var(--lc-accent-dark)}
 .listen-card[data-state="loading"] .listen-card-play .icon-play{display:none}
-.listen-card[data-state="loading"] .listen-card-play .icon-loading{display:block;animation:listen-spin 0.8s linear infinite}
-.listen-card-play::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--lc-accent);opacity:0;transform:scale(0.9)}
+/* Sprint A12: finished state — play icon fades out, checkmark fades
+   in. Soft background transition to a warm cream-gold to match the
+   ambient wash. Button doesn't disable (user can click play to
+   replay), just visually reads as completed. */
+.listen-card[data-state="finished"] .listen-card-play{
+  background:linear-gradient(180deg, #C79C55 0%, #A87A36 100%);
+  transition:background var(--t-med) var(--ease-out);
+}
+.listen-card[data-state="finished"] .listen-card-play .icon-play{display:none}
+.listen-card[data-state="finished"] .listen-card-play .icon-finished{display:block;animation:listen-finish-check 420ms var(--ease-out) both}
+@keyframes listen-finish-check{
+  0%   { opacity:0; transform:scale(0.7); }
+  60%  { opacity:1; transform:scale(1.12); }
+  100% { opacity:1; transform:scale(1); }
+}
+/* Sprint A11: 3-dot trail replaces the spinner SVG as the loading
+   state. Three 4px dots inside the play button, each scale(0) → 1 →
+   0 over 0.8s with 0.12s stagger. Reads as a voice clearing its
+   throat rather than an abstract spinning wheel. */
+.listen-card-play-dots{display:none;gap:5px;align-items:center;justify-content:center}
+.listen-card[data-state="loading"] .listen-card-play-dots{display:inline-flex}
+.listen-card-play-dots i{
+  display:block;width:6px;height:6px;border-radius:50%;
+  background:var(--white);
+  transform:scale(0);
+  animation:listen-dots 0.8s var(--ease-out) infinite;
+}
+.listen-card-play-dots i:nth-child(2){animation-delay:0.12s}
+.listen-card-play-dots i:nth-child(3){animation-delay:0.24s}
+@keyframes listen-dots{
+  0%, 80%, 100% { transform:scale(0); opacity:0.4; }
+  40%           { transform:scale(1); opacity:1;   }
+}
+.listen-card-play::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--lc-accent);opacity:0;transform:scale(0.9);pointer-events:none}
 .listen-card[data-state="playing"] .listen-card-play::after{animation:listen-pulse 2s var(--ease-out) infinite}
+/* Sprint A5: two more concentric pulse rings for a richer broadcast
+   while playing. Each ring starts smaller, expands past the base
+   footprint, and fades out — staggered so they leave the button in
+   a procession rather than all at once. ::before is the middle ring
+   (inset:-12px), .listen-card-play-aura span is the outer ring
+   (inset:-18px). Inner ring (::after, inset:-6px) stays as-is. */
+.listen-card-play::before{content:"";position:absolute;inset:-12px;border-radius:50%;border:2px solid var(--lc-accent);opacity:0;transform:scale(0.9);pointer-events:none}
+/* Sprint A7: the outer aura ring is amplitude-driven. JS analyses the
+   audio source and writes `--listen-amp` (0..1) on the play button
+   every rAF tick; the ring's scale reads the var so it breathes with
+   the voice. Baseline scale 0.95, peak scale 1.20. 80ms linear
+   transition smooths the ~60fps updates without looking twitchy. */
+.listen-card-play-aura{
+  position:absolute;inset:-18px;border-radius:50%;
+  border:2px solid var(--lc-accent);
+  opacity:0;
+  transform:scale(0.95);
+  transition:opacity var(--t-med) var(--ease), transform 80ms linear;
+  pointer-events:none;
+}
+.listen-card[data-state="playing"] .listen-card-play::before{
+  animation:listen-pulse-mid 2.6s var(--ease-out) infinite;
+  animation-delay:0.9s;
+}
+.listen-card[data-state="playing"] .listen-card-play-aura{
+  opacity:0.35;
+  transform:scale(calc(0.95 + var(--listen-amp, 0) * 0.25));
+}
+@keyframes listen-pulse-mid{
+  0%   { opacity:0.35; transform:scale(0.92); }
+  70%  { opacity:0;    transform:scale(1.35); }
+  100% { opacity:0;    transform:scale(1.35); }
+}
 
 .listen-card-body{grid-area:body;min-width:0}
 .listen-card-kicker{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--lc-accent);display:inline-flex;align-items:center;gap:8px;margin:0 0 4px}
 .listen-card-kicker::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--lc-accent);box-shadow:0 0 0 4px rgba(31,78,91,0.12)}
-.listen-card[data-state="playing"] .listen-card-kicker::before{animation:listen-blink 1.4s var(--ease) infinite}
+/* Sprint A14: soft breathe replaces the hard blink. The dot no
+   longer reads like a blinking cursor — opacity drifts to 0.55 and
+   the box-shadow aura expands + thins, giving a slow-breath feel
+   over 2.2s rather than 1.4s on/off. */
+.listen-card[data-state="playing"] .listen-card-kicker::before{animation:listen-breathe 2.2s var(--ease) infinite}
 .listen-card-title{font-family:var(--font-display);font-weight:500;font-size:20px;line-height:1.2;color:var(--ink);margin:0 0 2px}
 .listen-card-sub{font-family:var(--font-body);font-size:13.5px;line-height:1.45;color:var(--stone);margin:0}
 
@@ -679,15 +839,89 @@ br.br-lg{display:none}
    outer wrapper. */
 .listen-card-progress{grid-area:progress;position:relative;height:24px;display:flex;align-items:center;cursor:pointer;touch-action:none;-ms-touch-action:none;user-select:none}
 .listen-card-progress::before{content:"";position:absolute;left:0;right:0;height:6px;background:var(--line);border-radius:999px;transition:height var(--t-fast) var(--ease)}
+/* Sprint A6: static peaks waveform. Canvas is painted once per audio
+   URL (peaks computed via OfflineAudioContext), then redrawn on each
+   tick to shift the played/unplayed boundary. Sits underneath the
+   track line + progress fill so it adds voice-shaped body without
+   obscuring the existing scrub affordance. */
+.listen-card-waveform{
+  position:absolute;left:0;right:0;top:50%;
+  width:100%;height:22px;
+  transform:translateY(-50%);
+  pointer-events:none;
+  opacity:0.92;
+}
 .listen-card-progress.is-scrubbing::before,.listen-card-progress:hover::before{height:8px}
-.listen-card-progress-fill{position:absolute;left:0;width:0%;height:6px;background:linear-gradient(90deg,var(--lc-accent),var(--lc-accent-dark));border-radius:999px;transition:width 0.1s linear,height var(--t-fast) var(--ease);pointer-events:none}
+/* Sprint A2: gradient + sheen progress fill. The base gradient
+   gains a third stop (brighter 2A6475 at 0%) so the filled portion
+   reads as warmer at its leading edge — an implied progression,
+   not a flat block. A second background layer carries the sheen: a
+   40%-wide translucent white diagonal that scrolls via
+   background-position animation only when the card is playing.
+   The sheen layer is set with background-size: 200% 100% + position
+   animation so GPU-compositing handles it cheaply. */
+.listen-card-progress-fill{
+  position:absolute;left:0;width:0%;height:6px;
+  background:
+    linear-gradient(100deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0) 32%,
+      rgba(255,255,255,0.28) 50%,
+      rgba(255,255,255,0) 68%,
+      rgba(255,255,255,0) 100%) 0% 0% / 220% 100% no-repeat,
+    linear-gradient(90deg, #2A6475 0%, var(--lc-accent) 50%, #17404B 100%);
+  border-radius:999px;
+  transition:width 0.1s linear, height var(--t-fast) var(--ease);
+  pointer-events:none;
+}
+.listen-card[data-state="playing"] .listen-card-progress-fill{
+  animation: listen-sheen-card 2.8s linear infinite;
+  will-change: background-position;
+}
+@keyframes listen-sheen-card{
+  0%   { background-position: 120% 0%, 0% 0%; }
+  100% { background-position: -40% 0%, 0% 0%; }
+}
+/* Sprint A12: finished state — progress fill glows warm gold, then
+   retracts right-to-left over 1.6s via transform-origin:right +
+   scaleX. Width stays pinned at 100% so the glow reads as "the whole
+   journey lit up" before fading. */
+.listen-card[data-state="finished"] .listen-card-progress-fill{
+  width:100% !important;
+  background:linear-gradient(90deg, #C79C55 0%, #E5C78A 50%, #A87A36 100%);
+  animation:listen-finish-retract 1.6s var(--ease-out) 0.35s forwards;
+  transform-origin:right center;
+  filter:drop-shadow(0 0 10px rgba(217,178,99,0.65));
+  will-change:transform, opacity;
+}
+@keyframes listen-finish-retract{
+  0%   { transform:scaleX(1);   opacity:1;   }
+  70%  { transform:scaleX(0.15); opacity:0.6; }
+  100% { transform:scaleX(0);   opacity:0;   }
+}
 .listen-card-progress.is-scrubbing .listen-card-progress-fill,.listen-card-progress:hover .listen-card-progress-fill{height:8px}
 .listen-card-progress-fill::after{content:"";position:absolute;right:-6px;top:50%;width:12px;height:12px;border-radius:50%;background:var(--lc-accent);transform:translateY(-50%) scale(0);transition:transform var(--t-fast) var(--ease);box-shadow:0 2px 8px -2px rgba(31,78,91,0.5)}
 .listen-card-progress:hover .listen-card-progress-fill::after,.listen-card-progress.is-scrubbing .listen-card-progress-fill::after{transform:translateY(-50%) scale(1)}
 .listen-card-progress-ticks{position:absolute;left:0;right:0;height:6px;display:flex;pointer-events:none}
 .listen-card-progress.is-scrubbing .listen-card-progress-ticks,.listen-card-progress:hover .listen-card-progress-ticks{height:8px}
-.listen-card-progress-ticks span{flex:1;border-right:1px solid rgba(20,22,26,0.06)}
+.listen-card-progress-ticks span{
+  flex:1;
+  border-right:1px solid rgba(20,22,26,0.06);
+  position:relative;
+  transition:transform 380ms cubic-bezier(0.34,1.56,0.64,1), background-color 380ms var(--ease), box-shadow 380ms var(--ease);
+  transform-origin:center;
+}
 .listen-card-progress-ticks span:last-child{border-right:0}
+/* Sprint A3: the tick segment whose chunk range contains the currently
+   playing chunk lifts slightly + picks up a soft teal glow. Only fires
+   while the card is actually playing, so paused / idle players read
+   static and honest. */
+.listen-card[data-state="playing"] .listen-card-progress-ticks span[data-current="true"]{
+  transform:scaleY(1.25);
+  background:rgba(31,78,91,0.10);
+  box-shadow:inset 0 0 0 1px rgba(31,78,91,0.16);
+  border-radius:2px;
+}
 
 .listen-card-chapter{grid-area:chapter;font-family:var(--font-body);font-size:13px;color:var(--stone);line-height:1.4;min-height:1.2em;display:flex;align-items:center;gap:8px;opacity:0;transform:translateY(2px);transition:opacity var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
 .listen-card[data-state="playing"] .listen-card-chapter,.listen-card[data-state="paused"] .listen-card-chapter{opacity:1;transform:translateY(0)}
@@ -696,8 +930,15 @@ br.br-lg{display:none}
 
 .listen-card-extras{grid-area:extras;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding-top:14px;border-top:1px solid var(--line);margin-top:2px}
 .listen-card-skips{display:inline-flex;gap:6px}
-.listen-iconbtn{position:relative;width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;background:transparent;border:1px solid var(--line-dark);border-radius:10px;color:var(--ink-soft);cursor:pointer;transition:all var(--t-fast) var(--ease)}
-.listen-iconbtn:hover:not(:disabled){border-color:var(--lc-accent);color:var(--lc-accent);background:var(--lc-tint)}
+/* Sprint A13: control-row chip-family unification. Icon buttons,
+   selects, and source-note now share border color + hover-lift so
+   the control row reads as part of the site's chip vocabulary.
+   Radius bumped from 10px to 12px for closer visual rhythm with the
+   pill selects beside them. Hover-lift (translateY + box-shadow) is
+   the same motion the audit tool's chips use. */
+.listen-iconbtn{position:relative;width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;background:transparent;border:1px solid var(--line-dark);border-radius:12px;color:var(--ink-soft);cursor:pointer;transition:border-color var(--t-fast) var(--ease),color var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
+.listen-iconbtn:hover:not(:disabled){border-color:var(--lc-accent);color:var(--lc-accent);background:var(--lc-tint);transform:translateY(-1px);box-shadow:0 4px 10px -4px rgba(31,78,91,0.22)}
+.listen-iconbtn:active:not(:disabled){transform:translateY(0)}
 .listen-iconbtn:disabled{opacity:0.4;cursor:not-allowed}
 .listen-iconbtn svg{width:16px;height:16px}
 /* The ±15s buttons overlay a small number inside the circular-
@@ -718,10 +959,10 @@ br.br-lg{display:none}
 .listen-select.listen-language-select select{padding:6px 28px 6px 32px;font-weight:600;color:var(--lc-accent);border-color:var(--lc-accent)}
 .listen-language-select::before{content:"";position:absolute;left:12px;top:50%;width:14px;height:14px;transform:translateY(-50%);background:currentColor;color:var(--lc-accent);-webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><line x1='2' y1='12' x2='22' y2='12'/><path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'/></svg>") no-repeat center/contain;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><line x1='2' y1='12' x2='22' y2='12'/><path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'/></svg>") no-repeat center/contain;pointer-events:none}
 .listen-select{position:relative}
-.listen-select select{appearance:none;-webkit-appearance:none;background:transparent;border:1px solid var(--line-dark);border-radius:999px;padding:6px 28px 6px 12px;font-family:var(--font-body);font-size:12px;font-weight:600;color:var(--ink-soft);cursor:pointer;transition:all var(--t-fast) var(--ease)}
-.listen-select select:hover,.listen-select select:focus-visible{border-color:var(--lc-accent);color:var(--lc-accent);outline:none}
+.listen-select select{appearance:none;-webkit-appearance:none;background:transparent;border:1px solid var(--line-dark);border-radius:999px;padding:6px 28px 6px 12px;font-family:var(--font-body);font-size:12px;font-weight:600;color:var(--ink-soft);cursor:pointer;transition:border-color var(--t-fast) var(--ease),color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
+.listen-select select:hover,.listen-select select:focus-visible{border-color:var(--lc-accent);color:var(--lc-accent);outline:none;transform:translateY(-1px);box-shadow:0 4px 10px -4px rgba(31,78,91,0.22)}
 .listen-select::after{content:"";position:absolute;right:10px;top:50%;width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-70%) rotate(45deg);color:var(--stone);pointer-events:none}
-.listen-source-note{font-family:var(--font-body);font-size:11px;color:var(--stone-2);letter-spacing:0.02em;display:inline-flex;align-items:center;gap:6px}
+.listen-source-note{font-family:var(--font-body);font-size:11px;color:var(--stone-2);letter-spacing:0.02em;display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;background:rgba(31,78,91,0.03);border:1px solid rgba(31,78,91,0.08)}
 .listen-source-note[data-source="studio"]{color:var(--lc-accent)}
 .listen-source-note[data-source="studio"]::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
 
@@ -743,8 +984,39 @@ br.br-lg{display:none}
    a small floating pill that stays out of the user's way while audio
    continues playing.
 */
-.listen-dock{position:fixed;left:50%;bottom:18px;transform:translate(-50%,120%);z-index:60;display:grid;grid-template-columns:auto 1fr auto auto;grid-template-areas:"play meta actions actions" "skip progress progress skip-next";align-items:center;column-gap:14px;row-gap:8px;padding:12px 16px 14px;background:linear-gradient(180deg,rgba(20,22,26,0.96) 0%,rgba(14,16,20,0.98) 100%);backdrop-filter:saturate(140%) blur(16px);-webkit-backdrop-filter:saturate(140%) blur(16px);border-radius:22px;border:1px solid rgba(255,255,255,0.08);box-shadow:0 28px 56px -18px rgba(0,0,0,0.6),0 1px 0 rgba(255,255,255,0.06) inset;color:var(--white);font-family:var(--font-body);font-size:13px;transition:transform var(--t-med) var(--ease-out),opacity var(--t-med) var(--ease-out),width var(--t-med) var(--ease-out),padding var(--t-med) var(--ease-out),border-radius var(--t-med) var(--ease-out);opacity:0;pointer-events:none;width:min(520px,calc(100vw - 24px))}
-.listen-dock[data-visible="true"]{transform:translate(-50%,0);opacity:1;pointer-events:auto}
+.listen-dock{position:fixed;left:50%;bottom:18px;transform:translate(-50%,24px) scale(0.96);z-index:60;display:grid;grid-template-columns:auto 1fr auto auto;grid-template-areas:"play meta actions actions" "skip progress progress skip-next";align-items:center;column-gap:14px;row-gap:8px;padding:12px 16px 14px;background:linear-gradient(180deg,rgba(20,22,26,0.96) 0%,rgba(14,16,20,0.98) 100%);backdrop-filter:saturate(140%) blur(16px);-webkit-backdrop-filter:saturate(140%) blur(16px);border-radius:22px;border:1px solid rgba(255,255,255,0.08);box-shadow:0 28px 56px -18px rgba(0,0,0,0.6),0 1px 0 rgba(255,255,255,0.06) inset;color:var(--white);font-family:var(--font-body);font-size:13px;transition:transform 500ms var(--ease-out) 40ms,opacity 500ms var(--ease-out) 40ms,width var(--t-med) var(--ease-out),padding var(--t-med) var(--ease-out),border-radius var(--t-med) var(--ease-out),box-shadow 800ms var(--ease-out);opacity:0;pointer-events:none;width:min(520px,calc(100vw - 24px));isolation:isolate}
+.listen-dock[data-visible="true"]{transform:translate(-50%,0) scale(1);opacity:1;pointer-events:auto}
+/* Sprint A10: card-to-dock morph. Card dims over 500ms when the dock
+   takes over (0ms delay, so it starts 40ms ahead of the dock's
+   entry); restores to full opacity + saturation + scale on scroll-
+   back. Paired with the dock's +40ms transition-delay, the two
+   surfaces feel like one continuous object being handed off. */
+.listen-card{transition:opacity 500ms var(--ease-out), filter 500ms var(--ease-out), transform 500ms var(--ease-out)}
+.listen-card[data-dimmed="true"]{opacity:0.7; filter:saturate(0.85); transform:scale(0.985)}
+/* Sprint A8: warm teal overlay during playback. A pseudo-element is
+   the cleanest cross-browser way to cross-fade a gradient — direct
+   background-image transitions snap rather than interpolate. Sits
+   behind the dock's content via z-index, respects the parent border
+   radius, and fades in over 0.8s alongside a teal-tinted box-shadow
+   halo. Paused / idle dock keeps its current dark glass look. */
+.listen-dock::before{
+  content:"";position:absolute;inset:0;
+  border-radius:inherit;
+  background:radial-gradient(120% 100% at 30% 0%, rgba(31,78,91,0.32) 0%, rgba(31,78,91,0.14) 48%, rgba(31,78,91,0) 72%),
+             linear-gradient(180deg, rgba(31,78,91,0.20) 0%, rgba(14,16,20,0.0) 100%);
+  opacity:0;
+  transition:opacity 800ms var(--ease-out);
+  pointer-events:none;
+  z-index:0;
+}
+.listen-dock > *{position:relative;z-index:1}
+.listen-dock[data-state="playing"]::before{opacity:1}
+.listen-dock[data-state="playing"]{
+  box-shadow:0 28px 56px -18px rgba(0,0,0,0.6),
+             0 1px 0 rgba(255,255,255,0.06) inset,
+             0 0 0 1px rgba(31,78,91,0.25),
+             0 0 28px -6px rgba(31,78,91,0.5);
+}
 
 .listen-dock-play{grid-area:play;width:44px;height:44px;border-radius:50%;border:0;background:var(--white);color:var(--ink);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:none;transition:transform var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease);box-shadow:0 2px 0 rgba(0,0,0,0.12) inset}
 .listen-dock-play:hover{transform:scale(1.05)}
@@ -758,7 +1030,14 @@ br.br-lg{display:none}
 .listen-dock-title{font-weight:600;font-size:13px;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .listen-dock-chapter{font-size:11.5px;color:rgba(255,255,255,0.65);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:6px}
 .listen-dock-chapter::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--teal);flex:none;box-shadow:0 0 0 3px rgba(31,78,91,0.25)}
-.listen-dock[data-state="playing"] .listen-dock-chapter::before{animation:listen-blink 1.4s var(--ease) infinite}
+/* Dock dot sits on a near-black glass, so the card's teal-tint aura
+   doesn't carry. Keeps the opacity-only breath rhythm at the softer
+   2.2s cadence. */
+.listen-dock[data-state="playing"] .listen-dock-chapter::before{animation:listen-breathe-dock 2.2s var(--ease) infinite}
+@keyframes listen-breathe-dock{
+  0%,100% { opacity:1;    box-shadow:0 0 0 3px rgba(255,255,255,0.18); }
+  50%     { opacity:0.55; box-shadow:0 0 0 6px rgba(255,255,255,0.08); }
+}
 
 .listen-dock-header-actions{grid-area:actions;display:inline-flex;align-items:center;gap:2px}
 .listen-dock-stop,.listen-dock-collapse,.listen-dock-expand{width:32px;height:32px;border-radius:50%;border:0;background:transparent;color:rgba(255,255,255,0.55);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex:none;transition:color var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease)}
@@ -795,7 +1074,45 @@ br.br-lg{display:none}
 .listen-dock-progress{flex:1;height:18px;display:flex;align-items:center;cursor:pointer;position:relative;touch-action:none;-ms-touch-action:none;user-select:none}
 .listen-dock-progress::before{content:"";position:absolute;left:0;right:0;height:4px;background:rgba(255,255,255,0.14);border-radius:999px;transition:height var(--t-fast) var(--ease)}
 .listen-dock-progress:hover::before,.listen-dock-progress.is-scrubbing::before{height:6px}
-.listen-dock-progress-fill{position:absolute;left:0;width:0%;height:4px;background:linear-gradient(90deg,rgba(255,255,255,0.85),var(--white));border-radius:999px;transition:width 0.1s linear,height var(--t-fast) var(--ease);pointer-events:none}
+/* Sprint A2 — dock mirror of the card sheen. Same diagonal-band
+   technique, but on a white-on-glass fill: the sheen is a slightly
+   brighter white slice (the base is already 0.85 → 1.0 alpha, so the
+   band reads as a subtle highlight rather than a bright flash). Only
+   animates while playing; drops back to the static 3-stop gradient
+   when paused. */
+.listen-dock-progress-fill{
+  position:absolute;left:0;width:0%;height:4px;
+  background:
+    linear-gradient(100deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0) 32%,
+      rgba(255,255,255,0.55) 50%,
+      rgba(255,255,255,0) 68%,
+      rgba(255,255,255,0) 100%) 0% 0% / 220% 100% no-repeat,
+    linear-gradient(90deg, rgba(255,255,255,0.78) 0%, var(--white) 50%, rgba(255,255,255,0.9) 100%);
+  border-radius:999px;
+  transition:width 0.1s linear, height var(--t-fast) var(--ease);
+  pointer-events:none;
+}
+.listen-dock[data-state="playing"] .listen-dock-progress-fill{
+  animation: listen-sheen-dock 2.8s linear infinite;
+  will-change: background-position;
+}
+/* Sprint A9: amplitude-driven glow on the dock progress fill. On
+   desktop + tablet (≥481px), filter: drop-shadow is tied to the
+   --listen-amp var, so the bar throbs gently with the voice. Mobile
+   skips it to cap repaint cost — the sheen from Sprint A2 is already
+   active there. */
+@media (min-width:481px){
+  .listen-dock[data-state="playing"] .listen-dock-progress-fill{
+    filter:drop-shadow(0 0 calc(var(--listen-amp, 0) * 6px) rgba(255,255,255,0.5));
+    transition:width 0.1s linear, height var(--t-fast) var(--ease), filter 80ms linear;
+  }
+}
+@keyframes listen-sheen-dock{
+  0%   { background-position: 120% 0%, 0% 0%; }
+  100% { background-position: -40% 0%, 0% 0%; }
+}
 .listen-dock-progress:hover .listen-dock-progress-fill,.listen-dock-progress.is-scrubbing .listen-dock-progress-fill{height:6px}
 .listen-dock-progress-fill::after{content:"";position:absolute;right:-5px;top:50%;width:10px;height:10px;border-radius:50%;background:var(--white);transform:translateY(-50%) scale(0);transition:transform var(--t-fast) var(--ease)}
 .listen-dock-progress:hover .listen-dock-progress-fill::after,.listen-dock-progress.is-scrubbing .listen-dock-progress-fill::after{transform:translateY(-50%) scale(1)}
@@ -831,6 +1148,27 @@ br.br-lg{display:none}
 @keyframes listen-blink{0%,100%{opacity:1}
 50%{opacity:0.3}
 }
+/* Sprint A14: the successor to listen-blink. Opacity drifts 1 →
+   0.55 → 1, and the dot's aura expands from 4px to 8px while
+   thinning, so the "now reading" dot reads as breathing rather than
+   flashing. */
+@keyframes listen-breathe{
+  0%,100% { opacity:1;    box-shadow:0 0 0 4px rgba(31,78,91,0.12); }
+  50%     { opacity:0.55; box-shadow:0 0 0 8px rgba(31,78,91,0.05); }
+}
+/* Sprint A4: chapter-label fade-slide. Runs for 360ms on every chunk
+   boundary (triggered from JS by removing + re-adding the class after
+   a forced reflow). Gives the "now reading…" text a spoken-and-
+   settled feel rather than a hard swap. */
+@keyframes lc-chapter-in{
+  0%   { opacity:0; transform:translateY(6px); filter:blur(1.5px); }
+  100% { opacity:1; transform:translateY(0);   filter:blur(0); }
+}
+.listen-card-chapter em.lc-chapter-in,
+.listen-dock-chapter.lc-chapter-in{
+  animation:lc-chapter-in 360ms var(--ease-out);
+  will-change:opacity, transform, filter;
+}
 .article-body .is-reading{position:relative;background:var(--teal-tint);border-radius:6px;box-shadow:-12px 0 0 0 var(--teal-tint),12px 0 0 0 var(--teal-tint);transition:background-color 0.25s var(--ease),box-shadow 0.25s var(--ease)}
 .article-body .is-reading::before{content:'';position:absolute;left:-16px;top:0.35em;bottom:0.35em;width:3px;background:var(--teal);border-radius:2px}
 /* Callouts (figures, data-audio-alt blocks, any visual card) already
@@ -850,9 +1188,33 @@ br.br-lg{display:none}
 @keyframes listen-callout-pulse{0%,100%{box-shadow:0 0 0 2px var(--teal),0 0 0 8px var(--teal-tint)}
 50%{box-shadow:0 0 0 2px var(--teal),0 0 0 14px rgba(31,78,91,0.08)}
 }
-@media (prefers-reduced-motion:reduce){.listen-btn[data-state="playing"] svg path,.listen-card-play::after,.listen-card[data-state="loading"] .listen-card-play .icon-loading,.listen-card[data-state="playing"] .listen-card-kicker::before{animation:none}
+@media (prefers-reduced-motion:reduce){.listen-btn[data-state="playing"] svg path,.listen-card-play::after,.listen-card-play::before,.listen-card-play-aura,.listen-card[data-state="playing"] .listen-card-kicker::before,.listen-card[data-state="playing"] .listen-card-progress-fill,.listen-dock[data-state="playing"] .listen-dock-progress-fill,.listen-card-chapter em.lc-chapter-in,.listen-dock-chapter.lc-chapter-in,.listen-card[data-state="finished"] .listen-card-play .icon-finished,.listen-card[data-state="finished"] .listen-card-progress-fill{animation:none}
+/* Sprint A11: keep the dots visible (so the loading affordance stays
+   readable) but drop the staggered scale animation. */
+.listen-card-play-dots i{animation:none;transform:scale(1);opacity:0.7}
+/* Sprint A1: skip the ambient cross-fade under reduced-motion; the
+   end state still applies via the [data-state] selector, so the
+   warm tint is present without the 1.2s transition. */
+.listen-card::after{transition:none}
 .article-body .is-reading{transition:none}
 .listen-dock{transition:opacity var(--t-fast) var(--ease)}
+/* Sprint A3: still let the tick segment change background to mark
+   the active chapter, but skip the scaleY bounce and glow. */
+.listen-card-progress-ticks span{transition:background-color var(--t-fast) var(--ease)}
+.listen-card[data-state="playing"] .listen-card-progress-ticks span[data-current="true"]{transform:none;box-shadow:none}
+/* Sprint A7: pin the amplitude ring at its baseline scale. The var
+   continues to update, but CSS ignores it — the aura stays as a
+   static halo instead of breathing. */
+.listen-card[data-state="playing"] .listen-card-play-aura{transform:scale(0.95);transition:opacity var(--t-fast) var(--ease)}
+/* Sprint A8: dock warm tint still lands via opacity, just instantly. */
+.listen-dock::before{transition:none}
+/* Sprint A10: drop the morph transition; card + dock swap instantly. */
+.listen-card{transition:opacity var(--t-fast) var(--ease)}
+.listen-card[data-dimmed="true"]{transform:none;filter:none}
+/* Sprint A12: show the finished-state end-result without the retract
+   animation — fill shrinks to 0 immediately, checkmark appears. */
+.listen-card[data-state="finished"] .listen-card-progress-fill{transform:scaleX(0);opacity:0}
+.listen-card[data-state="finished"] .listen-card-play .icon-finished{opacity:1;transform:none}
 }
 
 /* ============ BREADCRUMBS ============

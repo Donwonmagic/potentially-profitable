@@ -1037,6 +1037,156 @@ var RESTAURANT_PRIORITY_CHECKS = [
       }
     }
   },
+  // Phase 3 #5: menu-depth. Evaluates the menu PAGE CONTENT — does it
+  // show prices and dish photos? Complements menu-format (HTML vs PDF)
+  // and dietary (GF/V markers). A menu that passes format but has
+  // neither prices nor photos still underperforms on conversion;
+  // delivery apps cross-check the owner's site before a shopper taps
+  // "add to cart" and opaque menus cost orders. Weight 0.75 (bonus
+  // tier) because a site with a broken format shouldn't be penalized
+  // twice — the failNote explicitly tells owners to fix format first
+  // on the unverified path.
+  {
+    type: 'menu-depth',
+    weight: 0.75,
+    anchor: '#basics',
+    effort: 'self',
+    minutes: 120,
+    impact: 'Menus without visible prices and dish photos underperform by 30-40% on delivery apps and the owner\'s own online-ordering flow. Visitors cross-check prices before tapping "add to cart"; they scroll past items without photos. Adding both is a one-afternoon project for most HTML menus and the single highest-ROI change for ghost-kitchen and fast-casual restaurants.',
+    impact_es: 'Los menús sin precios visibles y fotos de platos rinden 30-40% peor en apps de entrega y en el flujo de pedidos del propio sitio. Los visitantes verifican precios antes de tocar "agregar al carrito"; pasan de largo los ítems sin fotos. Agregar ambos es un proyecto de una tarde para la mayoría de los menús HTML y el cambio de mayor ROI para cocinas fantasma y restaurantes fast-casual.',
+    pass: 'Your menu has visible prices and dish photos',
+    pass_es: 'Tu menú tiene precios visibles y fotos de platos',
+    passNote: 'Your menu page shows both prices and dish photos — shoppers can cross-check before ordering, which is exactly the pattern that converts on delivery apps and on your own site.',
+    passNote_es: 'Tu página del menú muestra precios y fotos de platos — los compradores pueden verificar antes de pedir, que es justo el patrón que convierte en apps de entrega y en tu propio sitio.',
+    fail: 'Your menu is missing conversion signals',
+    fail_es: 'Tu menú le falta señales que venden',
+    // failNote uses the {detected} template token (same path the
+    // platform check uses) to enumerate the specific gaps — e.g.
+    // "Your menu page is missing: prices and dish photos."
+    failNote: 'Your menu page is missing: {detected}. These are the two signals a shopper or delivery-app user checks before tapping "add to cart." Add them to your menu page — plain text prices next to each item, and one photo per signature dish — and conversion typically lifts within a week.',
+    failNote_es: 'A tu página del menú le falta: {detected}. Estas son las dos señales que un comprador o usuario de app de entrega verifica antes de tocar "agregar al carrito". Agrégalas a tu página del menú — precios en texto plano junto a cada ítem, y una foto por cada plato insignia — y la conversión suele subir en una semana.',
+    unverified: "We couldn't reach your menu page to evaluate its content",
+    unverified_es: 'No pudimos acceder a tu página de menú para evaluar su contenido',
+    unverifiedNote: "The audit looks at the page behind your 'Menu' link for visible prices and dish photos. We couldn't reach one this pass — either the format is a PDF (see the menu-format check above) or the crawler missed it. Confirm the format first; we'll re-evaluate depth on the next run.",
+    unverifiedNote_es: 'La auditoría revisa la página detrás de tu enlace "Menú" buscando precios visibles y fotos de platos. No pudimos acceder a una en este pase — o el formato es PDF (ver el chequeo de menu-format arriba) o el crawler no la encontró. Confirma primero el formato; reevaluaremos la profundidad en la próxima ejecución.',
+    // Phase 3 #5c: byType specialization. Each subtype gets copy that
+    // names its specific stakes — what conversion pattern the missing
+    // signals are breaking, and what the remediation looks like at
+    // that subtype's typical operating scale. Generic copy above
+    // still applies to casual-dining and any subtype not listed here.
+    // Added in sprints (fine-dining/fast-casual/cafe first) so each
+    // commit is small enough to land without stream-timeout risk.
+    byType: {
+      'fine-dining': {
+        impact: 'Fine-dining guests book based on how the tasting menu reads — the prose, the wine-pairing callouts, and the per-seat price point. Missing prices costs bookings from guests who need to know what the evening will cost (prix fixe, corkage, wine pairing add-on) before they commit. Photos matter less here than on delivery-app sites; the words do the selling.',
+        impact_es: 'Los comensales de fine-dining reservan por cómo se lee el menú degustación — la prosa, las notas de maridaje y el precio por persona. Sin precios, se pierden reservas de quienes necesitan saber el costo de la noche (prix fixe, descorche, maridaje adicional) antes de decidir. Las fotos importan menos aquí que en sitios de apps de entrega; las palabras son las que venden.',
+        pass: 'Your tasting menu reads with prices clearly visible',
+        pass_es: 'Tu menú degustación se lee con los precios claramente visibles',
+        passNote: 'Guests can scan the tasting menu, see the prix fixe price, and decide to book — all on one page, on a phone, without calling to ask.',
+        passNote_es: 'Los comensales pueden recorrer el menú degustación, ver el precio del prix fixe y decidir reservar — todo en una página, en el teléfono, sin tener que llamar para preguntar.',
+        fail: 'Your tasting menu is missing: {detected}',
+        fail_es: 'A tu menú degustación le falta: {detected}',
+        failNote: 'Fine-dining guests book on the strength of the menu — they need the tasting-menu copy AND the price (prix fixe, corkage policy, wine-pairing add-on) before committing. Add these to your menu page; the text matters more than photography for this segment, but missing either sends bookings to the competitor that shows them both.',
+        failNote_es: 'Los comensales de fine-dining reservan por la fuerza del menú — necesitan la copia del menú degustación Y el precio (prix fixe, política de descorche, maridaje adicional) antes de comprometerse. Agrégalos a tu página del menú; el texto importa más que la fotografía en este segmento, pero si falta alguno, las reservas se van al competidor que muestra ambos.'
+      },
+      'fast-casual': {
+        impact: 'Fast-casual menus ARE the conversion page. Prices next to each item + at least one photo per section lift online-ordering conversion 20-30% vs menus missing either signal. Customers who don\'t see them on your site bounce to the DoorDash / UberEats / ChowNow tile where both are standard — and the platform keeps 30% of that revenue instead of you.',
+        impact_es: 'Los menús fast-casual SON la página de conversión. Precios junto a cada ítem + al menos una foto por sección suben la conversión de pedidos en línea 20-30% frente a menús sin alguna de las dos señales. Los clientes que no las ven en tu sitio rebotan al tile de DoorDash / UberEats / ChowNow donde ambas son estándar — y la plataforma se queda con 30% de ese ingreso en vez de tú.',
+        pass: 'Your menu has item prices and dish photos ready for ordering',
+        pass_es: 'Tu menú tiene precios de ítems y fotos de platos listos para pedir',
+        passNote: 'Shoppers scan prices to budget, scroll through photos to choose, and tap "order" without leaving your site. That\'s the pattern that keeps the margin in-house instead of handing 30% to an aggregator.',
+        passNote_es: 'Los compradores revisan precios para presupuestar, recorren fotos para elegir y tocan "ordenar" sin salir de tu sitio. Ese es el patrón que mantiene el margen en casa en vez de entregar 30% a un agregador.',
+        fail: 'Your menu is missing: {detected}',
+        fail_es: 'A tu menú le falta: {detected}',
+        failNote: 'Fast-casual ordering conversion depends on both signals. Shoppers scan prices to budget, scroll through photos to choose. Add them to your menu page BEFORE the competition\'s DoorDash tile captures the order — every order that routes through the aggregator costs you 30% of the ticket.',
+        failNote_es: 'La conversión de pedidos fast-casual depende de ambas señales. Los compradores revisan precios para presupuestar, recorren fotos para elegir. Agrégalas a tu página del menú ANTES que el tile de DoorDash de la competencia capture el pedido — cada pedido que pasa por el agregador te cuesta 30% del ticket.'
+      },
+      'cafe': {
+        impact: 'Café menus carry the morning decision — "latte or cortado? $4 or $5?" — that most customers already made on their phone while walking in. Visible prices + a handful of drink/pastry photos resolve that decision BEFORE the customer reaches the counter, which is how busy mornings stay moving. Price-less menus force the mid-line "what does a cortado cost again?" that slows the queue.',
+        impact_es: 'Los menús de café cargan la decisión de la mañana — "¿latte o cortado? ¿$4 o $5?" — que la mayoría de los clientes ya tomó en el teléfono mientras caminaban. Precios visibles + unas cuantas fotos de bebidas y repostería resuelven esa decisión ANTES que el cliente llegue al mostrador, que es como se mueven las mañanas ocupadas. Los menús sin precio fuerzan el "¿cuánto cuesta un cortado?" a media fila que atasca la cola.',
+        pass: 'Your café menu shows prices and a few drink or pastry photos',
+        pass_es: 'Tu menú de café muestra precios y algunas fotos de bebidas o repostería',
+        passNote: 'Customers queue up knowing what they want — which means your baristas are making drinks instead of answering "how much is that?" Morning throughput stays smooth.',
+        passNote_es: 'Los clientes hacen fila sabiendo qué quieren — lo que significa que tus baristas están haciendo bebidas en vez de responder "¿cuánto cuesta eso?". El flujo matutino se mantiene fluido.',
+        fail: 'Your café menu is missing: {detected}',
+        fail_es: 'A tu menú de café le falta: {detected}',
+        failNote: 'Café menus carry the mid-walk "what am I getting today" decision. Both the price and a couple of drink/pastry photos belong on the page so customers queue up with a decision, not a question. If you only have time for one fix, ship the prices — even hand-typed, even updated with the seasonal board.',
+        failNote_es: 'Los menús de café cargan la decisión "¿qué voy a pedir hoy?" camino al café. Tanto el precio como un par de fotos de bebidas o repostería pertenecen a la página para que los clientes hagan fila con una decisión, no con una pregunta. Si sólo tienes tiempo para un arreglo, publica los precios — aunque sean escritos a mano, aunque se actualicen con la pizarra de temporada.'
+      },
+      'bakery': {
+        impact: 'Bakery menus are almost pure visual sales. A croissant, a danish, a cinnamon roll — customers can\'t tell what they\'re buying without a photo, and they can\'t decide whether to stop in without a price. Missing dish photography is the single biggest conversion leak a bakery site has; if you only invest in one thing, invest in product photography.',
+        impact_es: 'Los menús de panadería son casi pura venta visual. Un croissant, un danés, un rollo de canela — los clientes no pueden saber qué están comprando sin una foto, y no pueden decidir si pasar sin un precio. La falta de fotografía de producto es la fuga de conversión más grande que tiene un sitio de panadería; si inviertes en una sola cosa, que sea la fotografía de producto.',
+        pass: 'Your bakery menu has prices and product photography',
+        pass_es: 'Tu menú de panadería tiene precios y fotografía de producto',
+        passNote: 'Customers can see what they want — a glazed morning bun, a rye loaf, a croissant — and decide to stop in before they\'re on the block. That visual decision layer is exactly what bakeries compete on.',
+        passNote_es: 'Los clientes pueden ver lo que quieren — un pan de mañana glaseado, un pan de centeno, un croissant — y decidir pasar antes de llegar a la cuadra. Esa capa de decisión visual es exactamente la que compite en panadería.',
+        fail: 'Your bakery menu is missing: {detected}',
+        fail_es: 'A tu menú de panadería le falta: {detected}',
+        failNote: 'Bakery menus sell with images first, prices second. Without photos, customers can\'t identify what they want; without prices, they can\'t budget the stop. Both belong next to each item — a phone camera and good light will close most of this gap without hiring a photographer.',
+        failNote_es: 'Los menús de panadería venden con imágenes primero, precios segundo. Sin fotos, los clientes no pueden identificar qué quieren; sin precios, no pueden presupuestar la visita. Ambos pertenecen junto a cada ítem — una cámara de teléfono y buena luz cerrarán la mayor parte de esta brecha sin contratar un fotógrafo.'
+      },
+      'pizzeria': {
+        impact: 'Pizza is a category-shop — customers open three pizzeria tabs side-by-side and the one with the best-photographed, clearly-priced menu wins the order. Missing either signal hands the order to Slice (~15% commission) or to the pizzeria down the block that shows both. The per-item conversion delta on a well-photographed Margherita vs a blank-text menu runs 30-50%.',
+        impact_es: 'La pizza es una categoría de compra comparada — los clientes abren tres pestañas de pizzerías lado a lado y la que tenga el menú mejor fotografiado y con precios claros se lleva el pedido. Si falta alguna de las dos señales, el pedido se va a Slice (~15% de comisión) o a la pizzería de enfrente que muestra ambas. El delta de conversión por ítem sobre una Margherita bien fotografiada frente a un menú de texto plano corre entre 30-50%.',
+        pass: 'Your pizzeria menu has per-pie prices and photography',
+        pass_es: 'Tu menú de pizzería tiene precios por pizza y fotografía',
+        passNote: 'Your menu wins the side-by-side comparison shoppers do before ordering — pies visible, prices visible, one-tap ordering. That pattern is what keeps Slice from eating your margins.',
+        passNote_es: 'Tu menú gana la comparación lado a lado que hacen los compradores antes de pedir — pizzas visibles, precios visibles, pedido de un toque. Ese patrón es el que evita que Slice se coma tus márgenes.',
+        fail: 'Your pizzeria menu is missing: {detected}',
+        fail_es: 'A tu menú de pizzería le falta: {detected}',
+        failNote: 'Pizza ordering is a three-tab comparison — whichever pizzeria shows the pies AND the prices cleanest wins. Shoot your top six pies (phone camera + overhead light works fine), put prices right next to each, and your direct-ordering conversion will lift 30-50% against the Slice competition. This is the single highest-ROI menu project a pizzeria can do.',
+        failNote_es: 'El pedido de pizza es una comparación de tres pestañas — la pizzería que muestre las pizzas Y los precios más limpios gana. Fotografía tus seis pizzas principales (cámara de teléfono + luz desde arriba funciona bien), pon los precios junto a cada una, y tu conversión de pedidos directos subirá 30-50% frente a la competencia de Slice. Este es el proyecto de menú con mayor ROI que una pizzería puede hacer.'
+      },
+      'bar-pub': {
+        impact: 'Bar and pub menus split into two lists: drinks (cocktail prices, draft list) and food (which carries most of the margin — bar food is a higher-markup category than beer). A site that shows neither photos nor prices on the food menu is usually missing the food menu altogether, and the after-work food revenue takes the hit.',
+        impact_es: 'Los menús de bar y pub se dividen en dos listas: bebidas (precios de cócteles, lista de barril) y comida (que carga la mayoría del margen — la comida de bar es una categoría de mayor margen que la cerveza). Un sitio que no muestra ni fotos ni precios en el menú de comida suele estar ocultando el menú de comida por completo, y el ingreso de comida de after-work es el que paga.',
+        pass: 'Your pub menu shows prices with food photography',
+        pass_es: 'Tu menú de pub muestra precios con fotografía de comida',
+        passNote: 'Your food menu is visible the way the cocktail list is — prices next to items, photos of the signature plates. That makes the after-drink "should we order food?" decision a yes instead of a bar-tab.',
+        passNote_es: 'Tu menú de comida es visible de la misma forma que la lista de cócteles — precios junto a los ítems, fotos de los platos insignia. Eso convierte la decisión post-bebida de "¿pedimos comida?" en un sí en vez de sólo una cuenta del bar.',
+        fail: 'Your pub menu is missing: {detected}',
+        fail_es: 'A tu menú de pub le falta: {detected}',
+        failNote: 'Bar customers decide whether to order food AFTER they\'ve already ordered a drink — the food menu with prices AND photos is the conversion surface for that second decision. Cocktail-list prices on their own miss the bigger revenue lever: the food order. Put the food menu on equal footing with the drink list, photos and all.',
+        failNote_es: 'Los clientes del bar deciden si pedir comida DESPUÉS de haber pedido una bebida — el menú de comida con precios Y fotos es la superficie de conversión para esa segunda decisión. Los precios sólo en la lista de cócteles se pierden la palanca de ingreso más grande: el pedido de comida. Pon el menú de comida en igualdad con la lista de bebidas, fotos incluidas.'
+      },
+      'food-truck': {
+        impact: 'Food-truck menus rotate weekly. A photo of today\'s smashburger + its price is the whole pitch — customers standing across the plaza check your site BEFORE they walk over to queue. Missing either signal sends them to the truck next to you that shows both. This is a same-morning fix: the owner shoots a phone photo of the special, updates the price in the site CMS, done.',
+        impact_es: 'Los menús de food truck rotan semanalmente. Una foto de la smashburger de hoy + su precio es todo el pitch — los clientes parados al otro lado de la plaza revisan tu sitio ANTES de caminar a hacer fila. Si falta alguna señal, se van al truck de al lado que muestra ambas. Este es un arreglo de la misma mañana: el dueño toma una foto con el teléfono del especial, actualiza el precio en el CMS del sitio, listo.',
+        pass: 'Your truck menu shows today\'s prices and photos',
+        pass_es: 'Tu menú del truck muestra los precios y fotos de hoy',
+        passNote: 'Your site matches the truck — today\'s special with its price and its photo, visible before the customer walks over. That\'s the pattern that wins the walk-the-plaza decision.',
+        passNote_es: 'Tu sitio coincide con el truck — el especial de hoy con su precio y su foto, visibles antes que el cliente cruce. Ese es el patrón que gana la decisión de cruzar la plaza.',
+        fail: 'Your truck menu is missing: {detected}',
+        fail_es: 'A tu menú del truck le falta: {detected}',
+        failNote: 'Food trucks live and die on the "walk across the plaza to line up" decision. A phone photo of today\'s special + the price is the whole sales pitch — you can update both from the truck before service starts. Skip either and the customer walks to the truck that shows both.',
+        failNote_es: 'Los food trucks viven o mueren por la decisión de "cruzar la plaza a hacer fila". Una foto de teléfono del especial de hoy + el precio es todo el pitch de ventas — puedes actualizar ambos desde el truck antes que empiece el servicio. Salta cualquiera y el cliente camina al truck que muestra ambos.'
+      },
+      'ghost-kitchen': {
+        impact: 'Ghost kitchens have exactly two selling surfaces: aggregator tiles (DoorDash / UberEats / GrubHub — all three show prices and photos by default) and the owner\'s own site. A silent menu on your own site sends shoppers back to the aggregator — where 30% of every ticket goes to the platform instead of to you. Prices + photos on your direct-ordering page is the ONLY way to keep that margin in-house.',
+        impact_es: 'Las cocinas fantasma tienen exactamente dos superficies de venta: los tiles de agregadores (DoorDash / UberEats / GrubHub — los tres muestran precios y fotos por defecto) y el propio sitio del dueño. Un menú silencioso en tu propio sitio manda a los compradores de vuelta al agregador — donde 30% de cada ticket va a la plataforma en vez de a ti. Precios + fotos en tu página de pedido directo es la ÚNICA forma de mantener ese margen en casa.',
+        pass: 'Your ghost-kitchen menu has prices and dish photos on-site',
+        pass_es: 'Tu menú de cocina fantasma tiene precios y fotos de platos en el sitio',
+        passNote: 'Your own-site menu matches what DoorDash / UberEats show — which means a shopper who lands there directly can order without bouncing back to the aggregator. Every order on your own site is a 30% margin win.',
+        passNote_es: 'Tu menú del sitio propio coincide con lo que muestran DoorDash / UberEats — lo que significa que un comprador que aterriza ahí directamente puede pedir sin rebotar al agregador. Cada pedido en tu propio sitio es una ganancia de 30% en margen.',
+        fail: 'Your ghost-kitchen menu is missing: {detected}',
+        fail_es: 'A tu menú de cocina fantasma le falta: {detected}',
+        failNote: 'A ghost kitchen\'s own site has to SELL the same way DoorDash does — prices next to each item, one photo per dish. Silent menus send customers straight back to the aggregator (where you pay 30% of that revenue to them instead of keeping it). Use the same photos you uploaded to DoorDash; use the same prices. Parity is the whole game.',
+        failNote_es: 'El sitio propio de una cocina fantasma tiene que VENDER de la misma forma que DoorDash — precios junto a cada ítem, una foto por plato. Los menús silenciosos mandan a los clientes directo de vuelta al agregador (donde pagas 30% de ese ingreso en vez de quedártelo). Usa las mismas fotos que subiste a DoorDash; usa los mismos precios. La paridad es todo el juego.'
+      },
+      'catering-only': {
+        impact: 'Catering planners make a go / no-go decision within the first 10 seconds of hitting your packages page: "is the per-head price in our budget?" and "does the food look like it fits our event?". Package photos + per-head prices are the two signals that carry that decision. A package page without either sends them to a caterer that is explicit.',
+        impact_es: 'Los planificadores de catering toman una decisión de sí/no en los primeros 10 segundos de llegar a tu página de paquetes: "¿el precio por persona está en nuestro presupuesto?" y "¿la comida se ve como para nuestro evento?". Fotos de paquetes + precios por persona son las dos señales que cargan esa decisión. Una página de paquetes sin alguna de las dos los manda a un caterer que sí sea explícito.',
+        pass: 'Your catering packages have per-head prices and event photos',
+        pass_es: 'Tus paquetes de catering tienen precios por persona y fotos del evento',
+        passNote: 'Planners can scan your packages the way they scan every other caterer\'s — per-head price visible, event photos visible, decision made in the same 10 seconds they give every option.',
+        passNote_es: 'Los planificadores pueden revisar tus paquetes de la misma forma que revisan los de cualquier otro caterer — precio por persona visible, fotos del evento visibles, decisión tomada en los mismos 10 segundos que dan a cada opción.',
+        fail: 'Your catering packages are missing: {detected}',
+        fail_es: 'A tus paquetes de catering les falta: {detected}',
+        failNote: 'Catering planners make a go / no-go within 10 seconds: per-head price in range, food looks like it fits the event. Without prices, they go to a caterer who is upfront; without photos, they go to one that shows the spread. Both belong next to each package name — a single plated shot plus a starting per-head number is enough to start the conversation.',
+        failNote_es: 'Los planificadores de catering toman un sí/no en 10 segundos: precio por persona en rango, comida que se ve acorde al evento. Sin precios, se van con un caterer que sí es claro; sin fotos, con uno que muestra el despliegue. Ambos pertenecen junto a cada nombre de paquete — una sola foto del plato más un precio base por persona es suficiente para empezar la conversación.'
+      }
+    }
+  },
   {
     type: 'schema',
     weight: 0.5, // bonus — nice to have, not critical
@@ -1661,15 +1811,58 @@ function detectGiftCardPresence(pageText, allUrls) {
 // the URL catches them even when the top-level host isn't in the
 // list. Punchh is the largest QSR-focused loyalty SaaS not yet
 // listed. fivestars-rewards is the domain most deploys use.
+// Hotfix B3: keyword set widened to catch the brand-prefixed
+// patterns most chains actually use ("Tacombi Rewards",
+// "Chipotle Rewards", "Starbucks Rewards") plus the value-prop
+// phrases that mean the same thing ("free tacos for life",
+// "free coffee on your birthday", "earn a free X every N visits").
+// Previously the regex required phrases like "loyalty program" or
+// "rewards program" verbatim, which missed every chain that just
+// brands their program by name. Tacombi reproduced this exactly:
+// their landing page says "Tacombi Rewards · Free Tacos for Life"
+// — neither phrase matched the old keyword set.
+//
+// Conservative additions: only patterns that genuinely indicate a
+// loyalty program. Plain "rewards" or "points" without a
+// program-context word would over-fire (every payment-processor
+// page mentions "rewards"; every nutrition page mentions "points").
 var LOYALTY_PATTERNS = {
-  keywords: /\b(?:loyalty\s+program|rewards\s+program|earn\s+(?:points|rewards)|join\s+our\s+rewards|sign\s+up\s+for\s+rewards|loyalty\s+(?:club|members)|my\s+rewards|member\s+rewards)\b/i,
+  keywords: new RegExp([
+    // Original program-name patterns
+    '\\bloyalty\\s+program\\b',
+    '\\brewards\\s+program\\b',
+    '\\bearn\\s+(?:points|rewards|stars|credits)\\b',
+    '\\bjoin\\s+our\\s+rewards\\b',
+    '\\bsign\\s+up\\s+for\\s+rewards\\b',
+    '\\bloyalty\\s+(?:club|members)\\b',
+    '\\bmy\\s+rewards\\b',
+    '\\bmember\\s+rewards\\b',
+    // B3 additions — brand-prefixed program names
+    "\\b[a-z][a-z'’]{2,20}\\s+rewards\\b(?!\\s+for)",  // "Tacombi rewards", "Starbucks rewards"
+    '\\bjoin\\s+rewards\\b',
+    '\\bjoin\\s+(?:the\\s+)?(?:loyalty|rewards)\\b',
+    '\\bredeem\\s+(?:points|rewards|stars)\\b',
+    // Value-prop phrasing (free X via repeat purchase)
+    '\\bfree\\s+\\w+\\s+for\\s+life\\b',                 // "free tacos for life", "free pizza for life"
+    '\\bfree\\s+\\w+\\s+on\\s+(?:your\\s+)?birthday\\b', // "free entree on your birthday"
+    '\\bfree\\s+\\w+\\s+every\\s+(?:\\d+|tenth|fifth)',  // "free coffee every 10 visits"
+    // Membership / app patterns
+    '\\bmembership\\s+(?:program|benefits|perks)\\b',
+    '\\b(?:download|get)\\s+(?:our|the)\\s+app\\s+(?:and|for)\\s+rewards\\b',
+    '\\b(?:our|the)\\s+(?:loyalty|rewards)\\s+app\\b',
+  ].join('|'), 'i'),
   hosts: [
     'thanx.com', 'thelevelup', 'paytronix', 'como.com', 'fivestars',
     'fivestars-rewards', 'loyalzoo', 'punchcard', 'hang.com', 'belly',
     'spendgo', 'punchh.com', 'smile.io', 'yotpo.com', 'kangaroorewards',
     'stampme', 'loopyloyalty', 'tapmango', 'toast-rewards',
     'square-loyalty', '/rewards', '/loyalty', 'toasttab.com/rewards',
-    'squareup.com/app/loyalty'
+    'squareup.com/app/loyalty',
+    // B3: additional loyalty platforms / common page slugs
+    'spotonloyalty', 'spoton.com/loyalty', 'lavu.com/loyalty',
+    'cardfree', 'launchcontrol', 'olo.com/loyalty', 'incentivio',
+    '/membership', '/perks', '/loyalty-program', '/rewards-program',
+    'getopen.app', 'apple.com/app-store/loyalty'
   ]
 };
 function detectLoyaltyProgram(pageText, allUrls) {
@@ -2323,6 +2516,27 @@ var UI_I18N = {
     es: 'No hubo señales adicionales disponibles para este sitio.'
   },
   'deepScan.eyebrow': { en: 'Deep scan', es: 'Deep scan' },
+  // Phase 2 U4: hero deep-scan toggle copy. Was referenced as a
+  // data-tr attribute in index.html but had no entry here, so a
+  // Spanish visitor saw English on this single line. Adding it
+  // here is the canonical fix — UI_I18N is now the single source
+  // of truth for translation lookups.
+  'hero.deepToggle': {
+    en: 'Also run a deep scan (2–3 min) — security headers, CrUX history, site age, reviews',
+    es: 'También ejecutar un escaneo profundo (2–3 min): encabezados de seguridad, historial CrUX, antigüedad del sitio, reseñas'
+  },
+  // Phase 2 U6: freshness timestamp chip on the score card. Owners
+  // returning to a saved share link weeks later need to know whether
+  // they're looking at fresh data or an old run. The chip flips
+  // through "just now" → "5 minutes ago" → "2 hours ago" → "3 days
+  // ago" → date for older audits. The full ISO stamp is always in
+  // the tooltip.
+  'freshness.justNow':   { en: 'Audited just now',                       es: 'Auditado ahora mismo' },
+  'freshness.minutesAgo':{ en: 'Audited {count} minute{s} ago',          es: 'Auditado hace {count} minuto{s}' },
+  'freshness.hoursAgo':  { en: 'Audited {count} hour{s} ago',            es: 'Auditado hace {count} hora{s}' },
+  'freshness.daysAgo':   { en: 'Audited {count} day{s} ago',             es: 'Auditado hace {count} día{s}' },
+  'freshness.onDate':    { en: 'Audited {date}',                         es: 'Auditado el {date}' },
+  'freshness.tooltip':   { en: 'Re-run any time — the audit is free.',   es: 'Vuelve a ejecutarlo cuando quieras — la auditoría es gratis.' },
   // Sprint H1: 'since your last audit' banner copy.
   'history.eyebrow':  { en: 'Since your last audit', es: 'Desde tu última auditoría' },
   'history.hoursAgo': {
@@ -2343,20 +2557,20 @@ var UI_I18N = {
     es: 'Resolviste:'
   },
   'deep.age.liveSince': {
-    en: 'Live since {year}',
-    es: 'En línea desde {year}'
+    en: 'Google has known about this site since {year}',
+    es: 'Google conoce este sitio desde {year}'
   },
   'deep.security.grade': {
-    en: 'Security headers: {grade}',
-    es: 'Encabezados de seguridad: {grade}'
+    en: 'Site security grade: {grade}',
+    es: 'Calificación de seguridad del sitio: {grade}'
   },
   'deep.crux.heading': {
-    en: 'Field-data trends (25 weeks)',
-    es: 'Tendencias de datos reales (25 semanas)'
+    en: 'What real visitors actually experience',
+    es: 'Lo que los visitantes reales experimentan'
   },
   'deep.crux.sub': {
-    en: 'Real-user Core Web Vitals from the Chrome UX Report. Rendered only when Google has enough samples to publish a trend.',
-    es: 'Métricas Web Esenciales reales del Chrome UX Report. Se muestran solo cuando Google tiene suficientes muestras para publicar una tendencia.'
+    en: 'Page load, response time, and layout stability — measured from real Chrome users on your site over the last 25 weeks. Only shown when Google has enough samples to publish a trend. (Technical: Core Web Vitals from CrUX.)',
+    es: 'Carga de página, tiempo de respuesta y estabilidad del diseño — medidos desde usuarios reales de Chrome en tu sitio durante las últimas 25 semanas. Solo se muestra cuando Google tiene suficientes muestras para publicar una tendencia. (Técnico: Core Web Vitals de CrUX.)'
   },
   'deep.reviews.heading': {
     en: 'Google reviews snapshot',
@@ -2377,6 +2591,30 @@ var UI_I18N = {
   'deep.reviews.ownerReplied': {
     en: 'owner replied',
     es: 'respondió el dueño'
+  },
+  // Phase 3 #4: review-responsiveness chip + urgent-unreplied callout.
+  // Surfaces the computed reply rate AND flags the specific anti-
+  // pattern of low-star reviews without an owner response — the
+  // cluster Google's local-pack ranking punishes most.
+  'deep.reviews.respChip':   {
+    en: 'Responsiveness: {score}/100',
+    es: 'Capacidad de respuesta: {score}/100'
+  },
+  'deep.reviews.respChip.title': {
+    en: 'Replies to the {sampled} most recent reviews, with extra weight on unreplied 1–2 star reviews. Higher is better.',
+    es: 'Respuestas a las {sampled} reseñas más recientes, con peso extra en reseñas de 1–2 estrellas sin respuesta. Más alto es mejor.'
+  },
+  'deep.reviews.urgentOne': {
+    en: 'One unanswered low-star review in your recent {sampled} — replying within a day signals you care.',
+    es: 'Una reseña negativa sin respuesta entre las últimas {sampled} — responder en un día demuestra que te importa.'
+  },
+  'deep.reviews.urgentMany': {
+    en: '{count} of your {sampled} most recent reviews are 1–2 stars with no owner reply — a cluster worth addressing today.',
+    es: '{count} de tus {sampled} reseñas más recientes son de 1–2 estrellas sin respuesta del dueño — un grupo a atender hoy.'
+  },
+  'deep.reviews.urgentBadge': {
+    en: 'Needs your reply',
+    es: 'Necesita tu respuesta'
   },
   // Sprint T1: Places-verified facts card.
   'places.verifiedBadge': {
@@ -2437,14 +2675,119 @@ var UI_I18N = {
     en: 'Every sentence links to the verified signal it came from. Hover any citation to see the source.',
     es: 'Cada oración se enlaza con la señal verificada de la que proviene. Pasa el cursor sobre cualquier cita para ver la fuente.'
   },
+  // Phase 4 #2: methodology explainer copy. Owner-facing disclosure
+  // of every calculation the audit performs. Long-form; collapsible.
+  // The EN is the canonical copy; ES is a close translation kept in
+  // sync. Any edit here should update both locales — the
+  // test-i18n-coverage check will catch misses.
+  'method.summary':          { en: 'How we calculate these numbers', es: 'Cómo calculamos estos números' },
+  'method.scoreHead':        { en: 'The overall score', es: 'La puntuación general' },
+  'method.scoreBody': {
+    en: 'The overall score is a weighted average of five pillars. Performance is weighted 2× the others because a slow mobile site is materially worse for a restaurant than an imperfect SEO score — 53% of mobile visitors bounce from pages that take more than 3s to load. The Restaurant Readiness pillar is only included when we have enough confirmed checks to trust it; otherwise the score falls back to a simple 4-pillar average so one detected platform plus eight unverified checks doesn\'t inflate the overall number.',
+    es: 'La puntuación general es un promedio ponderado de cinco pilares. El Rendimiento pesa 2× los demás porque un sitio móvil lento es significativamente peor para un restaurante que un SEO imperfecto — el 53% de los visitantes móviles abandona páginas que tardan más de 3s en cargar. El pilar de Preparación del Restaurante solo se incluye cuando tenemos suficientes verificaciones confirmadas para confiar en él; de lo contrario la puntuación vuelve a un promedio simple de 4 pilares, para que una plataforma detectada más ocho verificaciones no confirmadas no inflen el número general.'
+  },
+  'method.subtypeHead':      { en: 'How we detect your restaurant subtype', es: 'Cómo detectamos el subtipo de tu restaurante' },
+  'method.subtypeBody': {
+    en: 'Ten subtypes are recognized: fine-dining, casual-dining, fast-casual, cafe, bakery, bar-pub, pizzeria, food-truck, ghost-kitchen, and catering-only. Detection combines schema.org @type hints, the presence of subtype-specific platforms (Slice for pizzerias, Resy for fine-dining, etc.), and keyword patterns in the page text. Each signal contributes to a score; the highest-scoring subtype wins. Confidence is reported in the subtype card so you can override it if we got it wrong.',
+    es: 'Reconocemos diez subtipos: fine-dining, casual-dining, fast-casual, café, panadería, bar-pub, pizzería, food-truck, ghost-kitchen y solo-catering. La detección combina señales @type de schema.org, la presencia de plataformas específicas del subtipo (Slice para pizzerías, Resy para fine-dining, etc.) y patrones de palabras clave en el texto de la página. Cada señal contribuye a una puntuación; el subtipo con mayor puntuación gana. La confianza se reporta en la tarjeta de subtipo para que puedas corregirla si nos equivocamos.'
+  },
+  'method.weightsHead':      { en: 'Check weights', es: 'Pesos de las verificaciones' },
+  'method.weightsBody': {
+    en: 'Each of the 20+ restaurant-priority checks carries a weight from 0 (not applicable to this subtype) to 2.0 (critical). Viewport is 2.0 across every subtype because a missing viewport breaks every phone visitor\'s experience. Conversions (online ordering or reservations) is 1.5 for most subtypes but 2.0 for fine-dining (reservations) and 2.0 for fast-casual (ordering). Age-gate is 0 for every restaurant subtype — bars and restaurants don\'t legally need them in most jurisdictions, unlike alcohol retailers.',
+    es: 'Cada una de las 20+ verificaciones de prioridad restaurantera tiene un peso entre 0 (no aplica a este subtipo) y 2.0 (crítico). El viewport es 2.0 en todos los subtipos porque la ausencia de viewport rompe la experiencia de cada visitante móvil. Las conversiones (pedidos en línea o reservas) es 1.5 para la mayoría de los subtipos pero 2.0 para fine-dining (reservas) y 2.0 para fast-casual (pedidos). La barrera de edad es 0 para todos los subtipos restauranteros — los bares y restaurantes legalmente no la requieren en la mayoría de las jurisdicciones, a diferencia de los vendedores de alcohol.'
+  },
+  'method.weightsUnverified': {
+    en: '"Unverified" checks (where we honestly couldn\'t tell) count at HALF weight against the denominator, zero credit toward the numerator. This prevents a site we couldn\'t fully scan from inflating its score past a clean-scanning site with the same pass count. The penalty is disclosed on the score ring as "N unverified checks."',
+    es: 'Las verificaciones "no confirmadas" (donde honestamente no pudimos saber) cuentan a MEDIO peso en el denominador, cero crédito en el numerador. Esto evita que un sitio que no pudimos escanear completamente infle su puntuación sobre un sitio de escaneo limpio con el mismo conteo de aprobaciones. La penalización se divulga en el anillo de puntuación como "N verificaciones no confirmadas".'
+  },
+  'method.benchmarksHead':   { en: 'The "typical sites score" benchmark', es: 'El benchmark de "puntuación típica de sitios"' },
+  'method.benchmarksBody': {
+    en: 'Per-subtype benchmark medians are currently operator estimates from manual review of roughly 100 restaurant sites in each subtype. They\'re provisional — the refresh pipeline that replaces each subtype with a real sample size (drawn from live audits this tool runs) is future work. The benchmark chip\'s ⓘ tooltip carries the provenance on every render. Numbers are anchors for expectation-setting, not statistical claims.',
+    es: 'Las medianas de benchmark por subtipo son actualmente estimaciones de operador basadas en la revisión manual de aproximadamente 100 sitios de restaurante por subtipo. Son provisionales — el pipeline de actualización que reemplaza cada subtipo con un tamaño de muestra real (de auditorías en vivo ejecutadas por esta herramienta) es trabajo futuro. El tooltip ⓘ del chip de benchmark lleva la procedencia en cada render. Los números son anclas para calibrar expectativas, no afirmaciones estadísticas.'
+  },
+  'method.revenueHead':      { en: 'The revenue-at-risk chip', es: 'El chip de ingresos-en-riesgo' },
+  'method.revenueBody': {
+    en: 'Every actionable finding carries an "Est. $X–Y/yr at risk" chip. The range is the product of three inputs:',
+    es: 'Cada hallazgo accionable lleva un chip "Est. $X–Y/año en riesgo". El rango es el producto de tres insumos:'
+  },
+  'method.revenueInputs': {
+    en: '(1) a per-check revenue-at-risk coefficient based on published funnel-dropoff research; (2) your restaurant\'s estimated annual revenue, which starts from a subtype-aware default (fine-dining ~$2M, cafe ~$860k, food-truck ~$230k) and is automatically adjusted when Google Places tells us something more: priceLevel scales the per-ticket average (0.55× for $, 2.4× for $$$$), and userRatingCount scales daily covers logarithmically (clamped to 0.40×–2.50× so viral outliers don\'t project chain volume); (3) a confidence-widening layer that stretches the range when any of the Places signals aren\'t available, so an audit with thin data produces an explicitly wider chip instead of a falsely precise one.',
+    es: '(1) un coeficiente de ingresos-en-riesgo por verificación basado en investigación publicada sobre pérdidas de embudo; (2) los ingresos anuales estimados de tu restaurante, que parten de un valor predeterminado consciente del subtipo (fine-dining ~$2M, café ~$860k, food-truck ~$230k) y se ajustan automáticamente cuando Google Places nos dice algo más: priceLevel escala el ticket promedio (0.55× para $, 2.4× para $$$$), y userRatingCount escala las cubiertas diarias logarítmicamente (limitado a 0.40×–2.50× para que los casos virales no proyecten volumen de cadena); (3) una capa de ampliación por confianza que estira el rango cuando alguna señal de Places no está disponible, de modo que una auditoría con datos delgados produce un chip explícitamente más amplio en lugar de uno falsamente preciso.'
+  },
+  'method.revenueZeroInput': {
+    en: 'Nothing in this chain asks you to type numbers. Every adjustment reads from signals the audit already fetches during the fast scan.',
+    es: 'Nada en esta cadena te pide escribir números. Cada ajuste se basa en señales que la auditoría ya obtiene durante el escaneo rápido.'
+  },
+  'method.confidenceHead':   { en: 'What "confidence-widened" means', es: 'Qué significa "ampliado por confianza"' },
+  'method.confidenceBody': {
+    en: 'When Google Places didn\'t find your listing, or didn\'t publish a price level, or hasn\'t accumulated at least 50 reviews, the revenue chip\'s low and high values are stretched to reflect the genuine uncertainty. A well-resolved audit might show Est. $12k–18k/yr at risk; a nothing-resolved audit of the same check shows Est. $5k–37k/yr at risk. The range width itself is the honesty layer — we\'d rather show you a wide span we can defend than a tight one we can\'t.',
+    es: 'Cuando Google Places no encontró tu listado, o no publicó un nivel de precio, o no ha acumulado al menos 50 reseñas, los valores bajo y alto del chip de ingresos se estiran para reflejar la incertidumbre genuina. Una auditoría bien resuelta podría mostrar Est. $12k–18k/año en riesgo; una sin datos de la misma verificación muestra Est. $5k–37k/año en riesgo. El ancho del rango en sí es la capa de honestidad — preferimos mostrarte un rango amplio que podemos defender, en lugar de uno estrecho que no.'
+  },
+  'method.limitsHead':       { en: 'What this audit does NOT do', es: 'Lo que esta auditoría NO hace' },
+  'method.limitsBody': {
+    en: 'It runs on one Lighthouse pass (simulated phone, default throttling) plus a follow-up crawl of up to eight internal pages. It does not test ordering flow end-to-end, place a real reservation, verify your DoorDash profile, or measure real-user traffic beyond what Google\'s CrUX report publishes. It does not scrape Yelp or TripAdvisor (their terms forbid it). It does not claim your revenue-at-risk numbers are precise — they\'re order-of-magnitude estimates, always shown as ranges with "Est." up front.',
+    es: 'Ejecuta una sola pasada de Lighthouse (teléfono simulado, throttling por defecto) más un rastreo de seguimiento de hasta ocho páginas internas. No prueba el flujo de pedido de extremo a extremo, no hace una reserva real, no verifica tu perfil de DoorDash, ni mide tráfico real de usuarios más allá de lo que publica el reporte CrUX de Google. No hace scraping a Yelp ni TripAdvisor (sus términos lo prohíben). No afirma que tus números de ingresos-en-riesgo son precisos — son estimaciones de orden de magnitud, siempre mostradas como rangos con "Est." al frente.'
+  },
+  'method.feedbackNote': {
+    en: 'Found an error in a weight, a benchmark, or the revenue math? Tell us — the whole tool is open and the explanation above is linked from every audit so the methodology travels with the score.',
+    es: '¿Encontraste un error en un peso, un benchmark o las matemáticas de ingresos? Dínoslo — toda la herramienta es abierta y la explicación anterior está enlazada desde cada auditoría, así la metodología viaja junto con la puntuación.'
+  },
+  // Phase 4 #3: margin-health card. Synthesizes existing check
+  // results into a single "how vulnerable is this restaurant to
+  // leaking orders through 15-30% aggregator commission paths?"
+  // readout. Owner sees the score + the specific leaks, not a
+  // generic "you should be on DoorDash" nudge.
+  'marginHealth.eyebrow':  { en: 'Margin health', es: 'Salud del margen' },
+  'marginHealth.heading': {
+    en: 'How much of your revenue stays with you?',
+    es: '¿Cuánto de tus ingresos se queda contigo?'
+  },
+  'marginHealth.sub': {
+    en: 'Every gap below forces customers through a commission-taking path instead of your own margin-preserving one. Aggregators typically take 15–30% per order; your net margin is 3–5%. Closing these leaks keeps the money with the kitchen.',
+    es: 'Cada brecha de abajo empuja a los clientes por un canal con comisión en lugar del tuyo que preserva el margen. Los agregadores suelen tomar entre 15–30% por pedido; tu margen neto es de 3–5%. Cerrar estas fugas mantiene el dinero en la cocina.'
+  },
+  'marginHealth.scoreLabel': { en: 'Margin health score', es: 'Puntuación de salud de margen' },
+  'marginHealth.emptyState': {
+    en: 'No leaks detected — your site is set up to keep the margin in-house on every order.',
+    es: 'No se detectaron fugas — tu sitio está configurado para mantener el margen en casa en cada pedido.'
+  },
+  'marginHealth.leakLeadLine': { en: 'Where orders are leaking:', es: 'Por dónde se están fugando los pedidos:' },
+  'marginHealth.leakPoints':   { en: '−{points} pts', es: '−{points} pts' },
+  'marginHealth.unconfirmed':  { en: 'unverified — half penalty', es: 'no confirmada — media penalización' },
+  // Machine-key translations for the scorer's leak.source values.
+  'marginHealth.leak.conversions': {
+    en: 'No own-site ordering or reservations — every direct-intent customer lands on an aggregator',
+    es: 'Sin pedido o reserva en tu propio sitio — cada cliente con intención directa termina en un agregador'
+  },
+  'marginHealth.leak.menuFormat': {
+    en: 'Menu is a PDF — can\'t link to "Order This" per item, breaks the direct-conversion flow',
+    es: 'El menú es un PDF — no puede enlazar "Ordena esto" por ítem, rompe el flujo de conversión directa'
+  },
+  'marginHealth.leak.menuDepth': {
+    en: 'Menu missing prices or dish photos — shoppers bounce to DoorDash where those signals are standard',
+    es: 'El menú no muestra precios o fotos — los compradores rebotan a DoorDash donde esas señales son estándar'
+  },
+  'marginHealth.leak.hoursAccuracy': {
+    en: 'Hours inconsistent across Google and your schema — Google can route customers to aggregator listings when unsure',
+    es: 'Horarios inconsistentes entre Google y tu schema — Google puede redirigir clientes a agregadores cuando hay duda'
+  },
+  'marginHealth.leak.aggregatorOnly': {
+    en: 'Aggregators are the only ordering surface detected — no direct-ordering platform alongside',
+    es: 'Los agregadores son la única superficie de pedido detectada — sin plataforma directa junto a ellos'
+  },
   // Sprint D1: email deliverability card.
+  // Phase 2 U2: heading + sub rewritten in owner-outcome language.
+  // The technical term "deliverability" never appeared on any
+  // restaurant operator's spreadsheet — but every operator has had a
+  // guest say "I never got the confirmation email." That's what this
+  // card actually tests.
   'deep.email.heading': {
-    en: 'Email deliverability',
-    es: 'Entregabilidad de correo'
+    en: 'Will your reservation confirmations land in spam?',
+    es: '¿Tus confirmaciones de reserva terminarán en spam?'
   },
   'deep.email.sub': {
-    en: 'Gmail, Outlook, and Yahoo require SPF + DMARC on sending domains. Booking confirmations and newsletters land in spam without them.',
-    es: 'Gmail, Outlook y Yahoo exigen SPF + DMARC en los dominios que envían correo. Sin ellos, confirmaciones de reserva y newsletters caen en spam.'
+    en: 'Gmail, Outlook, and Yahoo silently route booking confirmations and newsletters to spam unless your domain proves it can send mail. The three rows below are the proofs they look for.',
+    es: 'Gmail, Outlook y Yahoo envían silenciosamente las confirmaciones de reserva y newsletters al spam a menos que tu dominio demuestre que puede enviar correos. Las tres filas siguientes son las pruebas que esperan.'
   },
   'deep.email.spf':   { en: 'SPF',   es: 'SPF' },
   'deep.email.dmarc': { en: 'DMARC', es: 'DMARC' },
@@ -2468,13 +2811,22 @@ var UI_I18N = {
     en: 'Not detected via the common selectors we probe. Your mail provider may use a custom selector we can\'t confirm without access.',
     es: 'No se detectó en los selectores comunes que revisamos. Tu proveedor de correo puede usar un selector propio que no podemos confirmar sin acceso.'
   },
-  'deep.email.posture.ready':    { en: 'Ready for bulk mail', es: 'Listo para envíos masivos' },
-  'deep.email.posture.notReady': { en: 'Not bulk-mail ready',  es: 'No está listo para envíos masivos' },
+  // Phase 2 U2: outcome language for the email-posture chip. The
+  // "bulk mail" framing was a sysadmin concept; what an owner cares
+  // about is whether the next reservation confirmation will reach
+  // the guest's inbox.
+  'deep.email.posture.ready':    { en: 'Confirmation emails will reach guests',     es: 'Las confirmaciones llegarán a los huéspedes' },
+  'deep.email.posture.notReady': { en: 'Confirmation emails likely going to spam', es: 'Las confirmaciones probablemente terminan en spam' },
   // Sprint D2: schema richness scorecard.
-  'schemaRichness.badge':    { en: 'Schema scorecard', es: 'Tarjeta de schema' },
-  'schemaRichness.heading':  { en: 'How complete is your Restaurant schema?', es: '¿Qué tan completo está tu schema de restaurante?' },
+  // Phase 2 U2: badge + heading rewritten in owner-outcome language.
+  // "Schema" is a developer term — the underlying question for an
+  // owner is whether Google's search results, voice assistants, and
+  // restaurant-discovery widgets can read their menu, hours, and
+  // address WITHOUT a human visiting the site. Same data, owner framing.
+  'schemaRichness.badge':    { en: 'How Google reads your data', es: 'Cómo Google lee tus datos' },
+  'schemaRichness.heading':  { en: 'How well can Google read your menu, hours, and address?', es: '¿Qué tan bien puede Google leer tu menú, horarios y dirección?' },
   'schemaRichness.summary':  {
-    en: '{present} of {total} Google-recommended Restaurant fields populated.',
+    en: '{present} of {total} Google-recommended fields populated.',
     es: '{present} de {total} campos recomendados por Google completos.'
   },
   'schemaRichness.present':  { en: 'Present',  es: 'Presente'  },
@@ -2572,6 +2924,10 @@ var UI_I18N = {
   'nap.label.phone':   { en: 'Phone number',   es: 'Teléfono' },
   'nap.label.address': { en: 'Address',        es: 'Dirección' },
   'nap.label.name':    { en: 'Business name',  es: 'Nombre del negocio' },
+  // Phase 3 #1: hours-consistency row label. Renders alongside the
+  // existing NAP rows in renderNapCheck when Google Places hours and
+  // the on-page schema's openingHoursSpecification disagree.
+  'nap.label.hours':   { en: 'Opening hours',  es: 'Horario de apertura' },
   'nap.source.places': { en: 'Google Places',  es: 'Google Places' },
   'nap.source.schema': { en: 'Your schema',    es: 'Tu schema' },
   'nap.source.page':   { en: 'Your page text', es: 'Texto en tu página' },
@@ -2602,6 +2958,41 @@ var UI_I18N = {
   'devPrompt.signoff': {
     en: 'Generated by Muntin Digital Restaurant Audit · muntin.digital',
     es: 'Generado por la Auditoría de Restaurantes de Muntin Digital · muntin.digital'
+  },
+  // D6: developer handoff document strings. Used by buildHandoffMarkdown
+  // and buildHandoffPrintableHtml in restaurant-checks.js. Voice
+  // matches the audit-page verdict copy: reassuring, concrete,
+  // owner-language; no jargon; framed in business cost rather than
+  // Lighthouse numbers.
+  'handoff.eyebrow':         { en: 'Developer handoff',                es: 'Para tu desarrollador' },
+  'handoff.titlePrefix':     { en: 'Restaurant website audit',         es: 'Auditoría del sitio web del restaurante' },
+  'handoff.score':           { en: 'Score {score}/100',                es: 'Puntuación {score}/100' },
+  'handoff.captured':        { en: 'captured {date}',                  es: 'capturada {date}' },
+  'handoff.auditedLabel':    { en: 'Audited URL:',                     es: 'URL auditada:' },
+  'handoff.permalinkLabel':  { en: 'Live audit:',                      es: 'Auditoría en vivo:' },
+  'handoff.actionsHeader':   { en: 'What to fix first ({n})',          es: 'Qué arreglar primero ({n})' },
+  'handoff.empty': {
+    en: 'Every check is passing. There is nothing in the priority list to hand off — your site is in solid shape.',
+    es: 'Todas las verificaciones pasan. No hay nada en la lista de prioridades para entregar — tu sitio está en muy buena forma.'
+  },
+  'handoff.why':             { en: 'Why this matters:',                es: 'Por qué importa:' },
+  'handoff.state.fail':      { en: 'To fix',                           es: 'Por arreglar' },
+  'handoff.state.unverified':{ en: 'To confirm',                       es: 'Por confirmar' },
+  'handoff.state.pass':      { en: 'Passing',                          es: 'Aprobado' },
+  'handoff.effort.rebuild':  { en: 'half-day project',                 es: 'proyecto de medio día' },
+  'handoff.effort.minutesShort': { en: '<5 min',                       es: '<5 min' },
+  'handoff.effort.minutes':  { en: '~{n} min',                         es: '~{n} min' },
+  'handoff.effort.hours':    { en: '~{n} hr',                          es: '~{n} h' },
+  'handoff.effort.self':     { en: 'owner-fixable',                    es: 'lo puede hacer el propietario' },
+  'handoff.effort.dev':      { en: 'developer task',                   es: 'tarea de desarrollador' },
+  'handoff.scope.header':    { en: 'Scope of work',                    es: 'Alcance del trabajo' },
+  'handoff.scope.body': {
+    en: 'This list is sorted by priority — the lightest, highest-impact fixes are at the top. Each item carries an effort label so an agency or freelancer can sum the work into hours and quote against it. The "why this matters" line on each row explains the business cost behind the fix — useful when justifying the work to a non-technical stakeholder.',
+    es: 'Esta lista está ordenada por prioridad — los arreglos más ligeros y de mayor impacto están arriba. Cada elemento lleva una etiqueta de esfuerzo para que una agencia o freelancer sume el trabajo en horas y pueda cotizarlo. La línea "por qué importa" explica el costo de negocio detrás de cada arreglo — útil al justificar el trabajo ante un stakeholder no técnico.'
+  },
+  'handoff.footer': {
+    en: 'Generated by the Muntin restaurant website audit. Try it free at muntin.digital/tools/audits/restaurant.',
+    es: 'Generada por la auditoría de sitios web de restaurantes de Muntin. Pruébala gratis en muntin.digital/tools/audits/restaurant.'
   },
   // Sprint R1: 30-day re-audit reminder card.
   'reaudit.heading': {
@@ -2680,16 +3071,1056 @@ function t(key, vars, lang) {
   });
 }
 
+// ---------------------------------------------------------------------------
+// Phase 4 #3: margin-health rollup.
+// ---------------------------------------------------------------------------
+// Direct answer to the user's push-back on aggregator detection as
+// an "empowering" signal: detecting presence on DoorDash isn't
+// empowering; showing an owner HOW MUCH OF THEIR REVENUE IS AT
+// STRUCTURAL RISK of leaking to aggregators IS. Same data we
+// already fetched, different — honest — frame.
+//
+// computeMarginHealth(signals) is a pure, testable function that
+// synthesizes five existing check results into a single 0-100 score
+// and a list of specific "leaks" — the gaps that force customers
+// toward commission-taking platforms instead of the restaurant's
+// own margin-preserving channels.
+//
+// Signals in (each is a check result string: 'pass' | 'fail' |
+// 'unverified' | missing):
+//   conversionsState    - own-site ordering / reservations
+//   menuDepthState      - prices + dish photos on the menu page
+//   menuFormatState     - HTML menu vs PDF
+//   hoursAccuracyState  - schema hours complete + consistent w/ Places
+//   hasDirectPlatform   - boolean, Toast / Square / ChowNow / etc.
+//                         detected on site (owner-kept margin)
+//   hasAggregatorOnly   - boolean, DoorDash / UberEats / Grubhub
+//                         detected as the ONLY ordering surface
+//
+// Penalty values are calibrated to typical US restaurant margin
+// structure (3-5% net margin; aggregator commissions 15-30%):
+//
+//   no own-site conversion path          -30   (biggest leak)
+//   only aggregator platforms detected   -25   (structural dependency)
+//   menu PDF (blocks direct conversion)  -15
+//   menu depth missing (opaque menu)     -15
+//   hours inconsistent (Google shows wrong info, sends to aggregator)
+//                                         -10
+//
+// Unverified checks count half-penalty, matching the A1 convention
+// used by the readiness scorer. Pass = 0 penalty. Missing signal =
+// 0 penalty (we don't invent leaks we can't see).
+//
+// Grade bands:
+//   >=75 good — healthy independent margin posture
+//   50-74 ok  — mixed; identifiable leaks but recoverable
+//   <50 bad   — structural dependency; every order routes through
+//                a 15-30% commission path
+//
+// The returned `leaks` array is what the margin-health card renders
+// so the owner sees the SPECIFIC things to fix, not just a number.
+
+var MARGIN_HEALTH_PENALTIES = {
+  conversions:         30,
+  aggregatorOnly:      25,
+  menuFormat:          15,
+  menuDepth:           15,
+  hoursAccuracy:       10
+};
+
+function applyPenalty(state, full, label, leaks) {
+  if (state === 'fail') {
+    leaks.push({ source: label, points: full, confirmed: true });
+    return full;
+  }
+  if (state === 'unverified') {
+    var half = Math.round(full / 2);
+    leaks.push({ source: label, points: half, confirmed: false });
+    return half;
+  }
+  return 0;
+}
+
+function computeMarginHealth(signals) {
+  if (!signals || typeof signals !== 'object') return null;
+  var leaks = [];
+  var score = 100;
+
+  // source keys are stable machine identifiers — the UI layer
+  // (index.html) looks them up in UI_I18N via
+  // t('marginHealth.leak.' + source) to render the human-readable
+  // phrase per locale. Keeping the scorer locale-free preserves
+  // Node testability and avoids fragile string equality on copy.
+  score -= applyPenalty(signals.conversionsState,   MARGIN_HEALTH_PENALTIES.conversions,   'conversions',   leaks);
+  score -= applyPenalty(signals.menuFormatState,    MARGIN_HEALTH_PENALTIES.menuFormat,    'menuFormat',    leaks);
+  score -= applyPenalty(signals.menuDepthState,     MARGIN_HEALTH_PENALTIES.menuDepth,     'menuDepth',     leaks);
+  score -= applyPenalty(signals.hoursAccuracyState, MARGIN_HEALTH_PENALTIES.hoursAccuracy, 'hoursAccuracy', leaks);
+
+  // Aggregator-only is a derived binary — only counts as a leak when
+  // we CONFIRMED aggregators are the sole ordering surface. We don't
+  // dock for "you're on DoorDash" in general; we dock for "DoorDash
+  // is the only ordering path we could detect." Safer against false
+  // positives on restaurants that diversify properly.
+  if (signals.hasAggregatorOnly === true) {
+    score -= MARGIN_HEALTH_PENALTIES.aggregatorOnly;
+    leaks.push({
+      source: 'aggregatorOnly',
+      points: MARGIN_HEALTH_PENALTIES.aggregatorOnly,
+      confirmed: true
+    });
+  }
+
+  if (score < 0) score = 0;
+  if (score > 100) score = 100;
+  var grade = score >= 75 ? 'good' : (score >= 50 ? 'ok' : 'bad');
+
+  // Sort leaks by point value descending so the UI can render them
+  // in "biggest first" order without re-sorting downstream.
+  leaks.sort(function(a, b){ return b.points - a.points; });
+
+  return {
+    score: score,
+    grade: grade,
+    leaks: leaks,
+    maxPenalty:
+      MARGIN_HEALTH_PENALTIES.conversions +
+      MARGIN_HEALTH_PENALTIES.aggregatorOnly +
+      MARGIN_HEALTH_PENALTIES.menuFormat +
+      MARGIN_HEALTH_PENALTIES.menuDepth +
+      MARGIN_HEALTH_PENALTIES.hoursAccuracy
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Phase 3 #6: DOM-aware URL extraction from crawled follow-up pages.
+// ---------------------------------------------------------------------------
+// The existing platform detector (detectPlatforms in index.html) is
+// already boundary-aware: it parses each URL via new URL(...), matches
+// patterns against host / hostPath with explicit token-boundary
+// guards, and rejects path-only patterns against bare host strings.
+// That gives it solid precision — /assets/square-shadows.css won't
+// false-positive "Square" because the bare-host pattern doesn't match
+// path segments.
+//
+// The real gap is RECALL, not precision. The detector feeds on URLs
+// extracted from PageSpeed's audit details (network-requests +
+// crawlable-anchors), which only covers the homepage Lighthouse
+// visited. A restaurant whose Toast ordering is embedded on a
+// dedicated /order/ page — or whose Resy widget only lives on
+// /reserve/ — is invisible to the homepage trace. PSI never fetched
+// those follow-up pages; the page-crawl endpoint did, and the HTML
+// is sitting on window.__auditCrawl.pages ready to be mined.
+//
+// extractCrawlPageUrls(crawl) walks every successfully crawled page
+// (homepage + follow-up slots) and pulls URLs out of the DOM
+// attributes that actually identify platform embeds:
+//
+//   <a href=...>         — direct link to ordering / reservations
+//   <iframe src=...>     — embedded booking / ordering widget
+//   <script src=...>     — widget loader script
+//   <form action=...>    — native checkout form pointing at a platform
+//
+// The union of these URLs is merged into allUrls before the priority-
+// check loop runs, so the existing detectPlatforms flow picks up
+// references on follow-up pages without any change to its matching
+// rules. Precision is preserved (same boundary-aware matcher), recall
+// goes up (more URL material to match against).
+//
+// Defensive on malformed HTML: regex-based extraction tolerates broken
+// markup where a real DOM parser would throw. Duplicate URLs are NOT
+// de-duped here because detectPlatforms handles that via its `seen`
+// map; we return the raw list and let the caller concat.
+var CRAWL_URL_ATTR_RE = /<(?:a|iframe|script|form)\b[^>]*\b(?:href|src|action)\s*=\s*(?:"([^"]+)"|'([^']+)'|([^\s>]+))/gi;
+
+function extractCrawlPageUrls(crawl) {
+  if (!crawl || typeof crawl !== 'object') return [];
+  var pages = [];
+  if (crawl.homepage && typeof crawl.homepage.html === 'string') {
+    pages.push(crawl.homepage);
+  }
+  if (Array.isArray(crawl.pages)) {
+    for (var pi = 0; pi < crawl.pages.length; pi++) {
+      var p = crawl.pages[pi];
+      if (p && typeof p.html === 'string' && p.html.length) {
+        pages.push(p);
+      }
+    }
+  }
+  if (!pages.length) return [];
+  var urls = [];
+  for (var i = 0; i < pages.length; i++) {
+    var html = pages[i].html;
+    if (!html || typeof html !== 'string') continue;
+    // Reset lastIndex every call; the /g flag carries state otherwise
+    // and two pages into the loop we'd be matching mid-string.
+    CRAWL_URL_ATTR_RE.lastIndex = 0;
+    var m;
+    while ((m = CRAWL_URL_ATTR_RE.exec(html)) !== null) {
+      // Capture groups 1 (double-quoted) / 2 (single-quoted) /
+      // 3 (unquoted). Exactly one of the three is defined per match.
+      var val = m[1] || m[2] || m[3];
+      if (val == null) continue;
+      val = String(val).trim();
+      if (!val) continue;
+      // Skip fragment-only anchors ("#menu") and JS hrefs
+      // ("javascript:void(0)") — they can't carry a platform host.
+      if (val.charAt(0) === '#') continue;
+      if (/^javascript:/i.test(val)) continue;
+      urls.push(val);
+    }
+  }
+  return urls;
+}
+
+// ---------------------------------------------------------------------------
+// Phase 3 #5: menu intelligence (prices + dish photos on the menu page).
+// ---------------------------------------------------------------------------
+// The existing 'menu-format' priority check answers "is your menu an
+// HTML page or a PDF?" and 'dietary' answers "do you mark gluten-free /
+// vegan?". Neither tells an owner whether their HTML menu is
+// actually doing the job — menus without visible prices kill ordering
+// intent on delivery apps (shoppers cross-check before tapping), and
+// menus without dish photos convert 30-40% worse than menus with them
+// (DoorDash + UberEats internal studies, consistently replicated).
+//
+// extractMenuSignals(context) is a pure, testable function that reads
+// the crawled menu-slot page (or falls back to the homepage HTML)
+// and returns:
+//
+//   {
+//     hasMenuPage:       boolean   — did we find a page to analyze?
+//     sourceUrl:         string?   — which URL we read
+//     pricesCount:       number    — distinct price-pattern matches
+//     imagesCount:       number    — <img> tags on the page (raw)
+//     imagesNearPrices:  number    — images within ~200 chars of a price
+//     hasPriceCoverage:  boolean   — pricesCount >= PRICE_FLOOR
+//     hasPhotoCoverage:  boolean   — imagesNearPrices >= PHOTO_FLOOR
+//     gaps:              string[]  — 'prices' / 'photos' tokens missing
+//   }
+//
+// Thresholds are defensible floors, not industry medians:
+//   PRICE_FLOOR = 5 — a menu page with fewer than 5 price marks has
+//     hidden most pricing; real menus typically show 15-40.
+//   PHOTO_FLOOR = 3 — filters sites with a single hero image but no
+//     dish photography; real photo menus carry 8-30 images per page.
+//
+// Phase 3 #5b: hasPhotoCoverage now thresholds on imagesNearPrices,
+// not on the raw imagesCount. Rationale: a page with 1 hero + 1 logo +
+// 1 nav icon has 3 <img> tags but zero DISH photos; the old count-all
+// rule let those pages pass. A real dish photo is visually paired
+// with its price (photo-name-price card pattern), so proximity to a
+// price-pattern match in the HTML source is the strongest single
+// signal of "this is a photographed menu." The 200-character window
+// is wide enough for the common item-card layouts while staying tight
+// enough to exclude header images from the count.
+//
+// The check consumes these thresholds to decide pass / fail and
+// populates the `{gaps}` template token in the failNote so the owner
+// sees exactly which signals are missing, not a generic scolding.
+var MENU_INTEL_PRICE_FLOOR = 5;
+var MENU_INTEL_PHOTO_FLOOR = 3;
+var MENU_INTEL_PROXIMITY_WINDOW = 200;
+
+// Match common price notations: leading symbol ($7.99, €12), or
+// trailing currency suffix (7.99 USD, 12 EUR). Stays deliberately
+// strict on digits so body-copy numbers like "1847 Main St" don't
+// false-positive. Currency symbols include the common western set
+// plus yen; can be extended if the audit goes global.
+var MENU_INTEL_PRICE_RE = /(?:\$|€|£|¥)\s*\d{1,3}(?:[.,]\d{2})?\b|\b\d{1,3}(?:[.,]\d{2})?\s*(?:USD|EUR|GBP|JPY)\b/g;
+var MENU_INTEL_IMG_RE = /<img\b[^>]*>/gi;
+
+function extractMenuSignals(context) {
+  var ctx = context || {};
+  var pages = (ctx.crawl && Array.isArray(ctx.crawl.pages)) ? ctx.crawl.pages : [];
+  // Prefer a crawled menu-slot page — if the crawler found a
+  // dedicated menu URL, that's where we should measure. The homepage
+  // is the fallback, since many sites inline their menu there.
+  var targetPage = null;
+  for (var i = 0; i < pages.length; i++) {
+    var p = pages[i];
+    if (p && p.slot === 'menu' && p.status === 200 && typeof p.html === 'string' && p.html.length > 2000) {
+      targetPage = p;
+      break;
+    }
+  }
+  if (!targetPage && ctx.crawl && ctx.crawl.homepage && typeof ctx.crawl.homepage.html === 'string') {
+    targetPage = ctx.crawl.homepage;
+  }
+  if (!targetPage || typeof targetPage.html !== 'string' || !targetPage.html.length) {
+    return {
+      hasMenuPage: false,
+      sourceUrl: null,
+      pricesCount: 0,
+      imagesCount: 0,
+      imagesNearPrices: 0,
+      hasPriceCoverage: false,
+      hasPhotoCoverage: false,
+      gaps: ['menu-page']
+    };
+  }
+  var html = targetPage.html;
+  // Important: reset lastIndex since the module-level regexes carry
+  // the /g flag and state across calls without an explicit reset.
+  MENU_INTEL_PRICE_RE.lastIndex = 0;
+  MENU_INTEL_IMG_RE.lastIndex = 0;
+  // Collect offsets (not just counts) so we can measure proximity
+  // between <img> tags and price patterns. exec() in a /g loop gives
+  // us .index at each step; one pass per regex stays O(n).
+  var priceOffsets = [];
+  var imgOffsets = [];
+  var m;
+  while ((m = MENU_INTEL_PRICE_RE.exec(html)) !== null) {
+    priceOffsets.push(m.index);
+  }
+  MENU_INTEL_IMG_RE.lastIndex = 0;
+  while ((m = MENU_INTEL_IMG_RE.exec(html)) !== null) {
+    imgOffsets.push(m.index);
+  }
+  var pricesCount = priceOffsets.length;
+  var imagesCount = imgOffsets.length;
+  // Count images within MENU_INTEL_PROXIMITY_WINDOW chars of ANY
+  // price match. Walk both sorted arrays in one merge-style pass so
+  // the worst case stays O(n+m) instead of O(n*m). priceOffsets are
+  // sorted by construction (single /g pass); imgOffsets likewise.
+  var imagesNearPrices = 0;
+  if (priceOffsets.length > 0 && imgOffsets.length > 0) {
+    var pi = 0; // moving price-offset cursor
+    for (var ii = 0; ii < imgOffsets.length; ii++) {
+      var imgAt = imgOffsets[ii];
+      // Advance pi past any prices that are already out of range
+      // (too far before this image).
+      while (pi < priceOffsets.length && priceOffsets[pi] < imgAt - MENU_INTEL_PROXIMITY_WINDOW) {
+        pi++;
+      }
+      // Nearest candidate price offset; check whether it's within
+      // the window in either direction.
+      if (pi < priceOffsets.length) {
+        var distance = Math.abs(priceOffsets[pi] - imgAt);
+        if (distance <= MENU_INTEL_PROXIMITY_WINDOW) {
+          imagesNearPrices++;
+          continue;
+        }
+      }
+      // Also check the previous price in case the image is just
+      // BEFORE the next price-out-of-range marker but still close
+      // to the preceding one.
+      if (pi > 0) {
+        var prevDistance = Math.abs(priceOffsets[pi - 1] - imgAt);
+        if (prevDistance <= MENU_INTEL_PROXIMITY_WINDOW) {
+          imagesNearPrices++;
+        }
+      }
+    }
+  }
+  var hasPriceCoverage = pricesCount >= MENU_INTEL_PRICE_FLOOR;
+  var hasPhotoCoverage = imagesNearPrices >= MENU_INTEL_PHOTO_FLOOR;
+  var gaps = [];
+  if (!hasPriceCoverage) gaps.push('prices');
+  if (!hasPhotoCoverage) gaps.push('photos');
+  return {
+    hasMenuPage: true,
+    sourceUrl: targetPage.url || null,
+    pricesCount: pricesCount,
+    imagesCount: imagesCount,
+    imagesNearPrices: imagesNearPrices,
+    hasPriceCoverage: hasPriceCoverage,
+    hasPhotoCoverage: hasPhotoCoverage,
+    gaps: gaps
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Phase 3 #4: review-responsiveness scoring.
+// ---------------------------------------------------------------------------
+// /api/gbp-details returns the 5 most recent Google reviews plus a
+// hasOwnerReply flag per review. Previously the card just rendered
+// those as a list; owners learned that reviews existed but got no
+// "should I act on this" signal.
+//
+// computeReviewResponsiveness(reviews) is a pure function that turns
+// the review array into an actionable scorecard:
+//
+//   {
+//     score:         0..100  — blended response rate + urgency penalty
+//     grade:         'good' | 'ok' | 'bad'
+//     sampled:       number of reviews evaluated
+//     replied:       number with owner reply
+//     urgentCount:   number of low-star (<=2) reviews NOT replied to
+//     urgentRatings: number[] — the star values of those low-star unreplied ones
+//   }
+//
+// Scoring formula (kept simple; we have n=5 samples — no illusion of
+// statistical precision):
+//
+//   base   = 100 * replied / sampled
+//   penalty = 20 per unreplied 1-2 star review
+//   score  = clamp(0, 100, base - penalty)
+//
+// Grade bands: >=80 good, 50-79 ok, <50 bad. Match the score-ring
+// gradeScore() treatment so the visual language is consistent
+// across the audit.
+//
+// Null-safe: returns null when there are no reviews to evaluate
+// (review array missing or empty). Caller should hide the chip in
+// that case rather than render a placeholder score.
+function computeReviewResponsiveness(reviews) {
+  if (!Array.isArray(reviews) || reviews.length === 0) return null;
+  var sampled = 0;
+  var replied = 0;
+  var urgentCount = 0;
+  var urgentRatings = [];
+  for (var i = 0; i < reviews.length; i++) {
+    var r = reviews[i];
+    if (!r || typeof r !== 'object') continue;
+    sampled++;
+    var isReplied = !!r.hasOwnerReply;
+    if (isReplied) replied++;
+    var rating = (typeof r.rating === 'number') ? r.rating : null;
+    if (rating != null && rating <= 2 && !isReplied) {
+      urgentCount++;
+      urgentRatings.push(rating);
+    }
+  }
+  if (sampled === 0) return null;
+  var base = 100 * (replied / sampled);
+  var score = Math.max(0, Math.min(100, Math.round(base - 20 * urgentCount)));
+  var grade = score >= 80 ? 'good' : (score >= 50 ? 'ok' : 'bad');
+  return {
+    score: score,
+    grade: grade,
+    sampled: sampled,
+    replied: replied,
+    urgentCount: urgentCount,
+    urgentRatings: urgentRatings
+  };
+}
+// ---------------------------------------------------------------------------
+// The renderNapCheck card in index.html surfaces drift between Google
+// Places, the on-page schema, and the homepage H1/title for Name,
+// Address, and Phone. Phase 3 extends the same pattern to opening
+// hours — the single biggest "I drove there and they were closed"
+// owner pain point and the most common silent suppressor of GBP
+// local-pack ranking.
+//
+// Both source shapes have to be normalized into the SAME canonical
+// representation before comparison. We use a per-day map of
+// "open-close" minute tuples:
+//
+//   { Mo: ['0660-1320'], Tu: ['0660-1320'], ... }
+//
+// Each value is an ARRAY because a day can carry multiple ranges
+// (e.g. lunch + dinner service). Days where the business is closed
+// are simply absent from the map — schema's "opens=null, closes=null"
+// and Places' missing-day both encode the same intent.
+//
+// Two pure parsers:
+//   parsePlacesHoursText(arr)    -> day map
+//   parseSchemaHoursObjects(arr) -> day map
+//
+// One canonical-key serializer:
+//   serializeHoursDayMap(map)    -> stable string for equality compare
+//
+// Exported for Node tests; consumed by renderNapCheck in index.html.
+
+var HOURS_DAY_NAMES = {
+  'monday':    'Mo', 'mo': 'Mo', 'mon': 'Mo',
+  'tuesday':   'Tu', 'tu': 'Tu', 'tue': 'Tu', 'tues': 'Tu',
+  'wednesday': 'We', 'we': 'We', 'wed': 'We',
+  'thursday':  'Th', 'th': 'Th', 'thu': 'Th', 'thur': 'Th', 'thurs': 'Th',
+  'friday':    'Fr', 'fr': 'Fr', 'fri': 'Fr',
+  'saturday':  'Sa', 'sa': 'Sa', 'sat': 'Sa',
+  'sunday':    'Su', 'su': 'Su', 'sun': 'Su'
+};
+var HOURS_DAY_ORDER = ['Mo','Tu','We','Th','Fr','Sa','Su'];
+
+// Convert "11:00 AM" / "11:00" / "11 AM" / "11pm" / "23:00" into
+// minutes-from-midnight. Returns null on parse failure so the caller
+// can skip a malformed row rather than fabricate a mismatch.
+function parseHoursTimeToMinutes(raw) {
+  if (raw == null) return null;
+  var s = String(raw).trim().toLowerCase();
+  if (!s) return null;
+  // Strict ISO HH:MM (or HH:MM:SS) — schema.org's openingHoursSpecification
+  // uses this. Place text wraps an AM/PM after the time so this strict
+  // match must not greedy-eat AM/PM.
+  var iso = s.match(/^([01]?\d|2[0-3]):([0-5]\d)(?::[0-5]\d)?$/);
+  if (iso) {
+    return parseInt(iso[1], 10) * 60 + parseInt(iso[2], 10);
+  }
+  // 12-hour clock: "11 AM", "11:30am", "11:30 a.m.", "12 PM" (noon),
+  // "12 AM" (midnight), "12:00 a.m.", etc.
+  var hr = s.match(/^(\d{1,2})(?::([0-5]\d))?\s*(a\.?m\.?|p\.?m\.?)$/);
+  if (hr) {
+    var h = parseInt(hr[1], 10);
+    var m = hr[2] ? parseInt(hr[2], 10) : 0;
+    var meridiem = hr[3].replace(/\./g, '');
+    if (h < 1 || h > 12) return null;
+    if (meridiem === 'pm' && h !== 12) h += 12;
+    if (meridiem === 'am' && h === 12) h = 0;
+    return h * 60 + m;
+  }
+  return null;
+}
+
+// "Monday: 11:00 AM – 10:00 PM"            -> day:'Mo', ranges:[[660,1320]]
+// "Saturday: 11 AM – 1 AM"                 -> day:'Sa', ranges:[[660,1500]] (overnight tracks +24h)
+// "Tuesday: 11:00 AM – 2:30 PM, 5 PM – 10 PM" -> day:'Tu', ranges:[[660,870],[1020,1320]]
+// "Sunday: Closed"                         -> day:'Su', ranges:[]   (explicit closed)
+// "Monday: Open 24 hours"                  -> day:'Mo', ranges:[[0,1440]]
+// Anything we can't parse returns null so the caller skips it.
+function parsePlacesHoursLine(line) {
+  if (!line || typeof line !== 'string') return null;
+  // Google sometimes uses thin space (U+202F) before AM/PM; collapse
+  // every kind of whitespace so the regex doesn't have to enumerate.
+  var clean = line.replace(/\s+/g, ' ').trim();
+  var colon = clean.indexOf(':');
+  if (colon < 0) return null;
+  var dayWord = clean.slice(0, colon).trim().toLowerCase();
+  var dayCode = HOURS_DAY_NAMES[dayWord];
+  if (!dayCode) return null;
+  var rest = clean.slice(colon + 1).trim();
+  if (!rest) return { day: dayCode, ranges: null }; // unparseable; skip
+  // "Closed" — explicit, honor it as a real (empty) ranges array.
+  if (/^closed\b/i.test(rest)) return { day: dayCode, ranges: [] };
+  // "Open 24 hours" — single full-day range.
+  if (/^open\s*24\s*hours?\b/i.test(rest)) return { day: dayCode, ranges: [[0, 1440]] };
+  // Split by comma for multi-segment days (lunch + dinner). Each
+  // segment must look like "TIME – TIME" (en-dash, em-dash, hyphen,
+  // or "to" all valid separators in the wild).
+  var ranges = [];
+  var segments = rest.split(',');
+  for (var i = 0; i < segments.length; i++) {
+    var seg = segments[i].trim();
+    if (!seg) continue;
+    var rangeMatch = seg.match(/^(.+?)\s*[–—-]\s*(.+)$/);
+    if (!rangeMatch) {
+      // Couldn't parse a range; bail entirely on this line rather
+      // than emit a partial day map.
+      return null;
+    }
+    var openMin  = parseHoursTimeToMinutes(rangeMatch[1].trim());
+    var closeMin = parseHoursTimeToMinutes(rangeMatch[2].trim());
+    if (openMin == null || closeMin == null) return null;
+    // Overnight tracks roll forward by 24h so 10 PM – 2 AM serializes
+    // distinctly from 2 AM – 10 PM (different intents).
+    if (closeMin <= openMin) closeMin += 1440;
+    ranges.push([openMin, closeMin]);
+  }
+  // No ranges parsed but no "Closed" — drop rather than fabricate.
+  if (!ranges.length) return null;
+  return { day: dayCode, ranges: ranges };
+}
+
+function parsePlacesHoursText(arr) {
+  if (!Array.isArray(arr)) return null;
+  var map = {};
+  var matched = 0;
+  for (var i = 0; i < arr.length; i++) {
+    var parsed = parsePlacesHoursLine(arr[i]);
+    if (!parsed || !parsed.ranges) continue;
+    map[parsed.day] = parsed.ranges;
+    matched++;
+  }
+  // Need at least one parsed day to count as signal — guarding against
+  // a Places response that's all "Hours not available" lines.
+  return matched > 0 ? map : null;
+}
+
+// Walk the raw JSON-LD objects (window.__auditSchema.objects) for any
+// Restaurant / FoodEstablishment-typed entries and collect their
+// openingHoursSpecification. Mirrors the worker-side validateOpeningHours
+// shape but returns the same per-day map shape parsePlacesHoursText
+// emits, so both sources serialize through the same canonical key.
+function parseSchemaHoursObjects(objects) {
+  if (!Array.isArray(objects)) return null;
+  var map = {};
+  function addDay(dayRaw, openMin, closeMin) {
+    if (dayRaw == null) return;
+    var s = String(dayRaw).toLowerCase().replace(/^https?:\/\/schema\.org\//, '').trim();
+    var dayCode = HOURS_DAY_NAMES[s];
+    if (!dayCode) {
+      var tail = s.split('/').pop();
+      dayCode = HOURS_DAY_NAMES[tail];
+    }
+    if (!dayCode) return;
+    if (openMin == null || closeMin == null) {
+      // schema.org allows opens=null + closes=null to encode "closed."
+      // Treat as an empty-ranges day so the absence is meaningful.
+      if (!map[dayCode]) map[dayCode] = [];
+      return;
+    }
+    if (closeMin <= openMin) closeMin += 1440;
+    if (!map[dayCode]) map[dayCode] = [];
+    map[dayCode].push([openMin, closeMin]);
+  }
+  function ingest(obj) {
+    if (!obj) return;
+    var spec = obj.openingHoursSpecification;
+    var entries = Array.isArray(spec) ? spec : (spec && typeof spec === 'object' ? [spec] : []);
+    for (var i = 0; i < entries.length; i++) {
+      var entry = entries[i];
+      if (!entry) continue;
+      var openMin  = parseHoursTimeToMinutes(entry.opens);
+      var closeMin = parseHoursTimeToMinutes(entry.closes);
+      var dow = entry.dayOfWeek;
+      if (Array.isArray(dow)) {
+        for (var j = 0; j < dow.length; j++) addDay(dow[j], openMin, closeMin);
+      } else {
+        addDay(dow, openMin, closeMin);
+      }
+    }
+  }
+  for (var k = 0; k < objects.length; k++) ingest(objects[k]);
+  // Sort each day's ranges by open-time so [['0660-0870'],['1020-1320']]
+  // and [['1020-1320'],['0660-0870']] serialize the same way.
+  var hasAny = false;
+  Object.keys(map).forEach(function(d){
+    map[d].sort(function(a, b){ return a[0] - b[0]; });
+    if (map[d].length > 0) hasAny = true;
+  });
+  // Return null if nothing parsed — we don't want an empty {} to look
+  // like a confident "closed every day" signal.
+  return hasAny || Object.keys(map).length > 0 ? map : null;
+}
+
+// Canonical serialization used as the equality key when comparing two
+// hours sources. Stable order, fixed-width padded times, day codes in
+// the canonical Mo→Su sequence.
+//
+//   serialize({ Mo:[[660,1320]] }) === 'Mo:0660-1320'
+//   serialize({})                  === ''  (means "closed every day")
+function serializeHoursDayMap(map) {
+  if (!map || typeof map !== 'object') return null;
+  var pieces = [];
+  for (var i = 0; i < HOURS_DAY_ORDER.length; i++) {
+    var d = HOURS_DAY_ORDER[i];
+    if (!map[d]) continue;
+    if (map[d].length === 0) {
+      pieces.push(d + ':closed');
+      continue;
+    }
+    var rangeStrs = map[d].map(function(r){
+      return pad4(r[0]) + '-' + pad4(r[1]);
+    });
+    pieces.push(d + ':' + rangeStrs.join(','));
+  }
+  return pieces.join('|');
+}
+function pad4(n) {
+  var s = String(Math.floor(n));
+  while (s.length < 4) s = '0' + s;
+  return s;
+}
+
+// ---------------------------------------------------------------------------
+// Phase 2 U6: freshness-label bucket selection.
+// ---------------------------------------------------------------------------
+// Given an age in seconds since the audit ran, return the i18n key
+// the chip should render plus any template variables. Pure function
+// so the boundary cases (just-now vs minutes, days vs date) are
+// testable without a DOM or a live clock. The caller resolves the
+// key through t() and applies the resulting string.
+//
+// Buckets:
+//   0..59     s  -> 'freshness.justNow'
+//   60..3599  s  -> 'freshness.minutesAgo'  vars: { count: minutes }
+//   3600..86399 -> 'freshness.hoursAgo'    vars: { count: hours }
+//   86400..7d  -> 'freshness.daysAgo'      vars: { count: days }
+//   7d..       -> 'freshness.onDate'       vars: { date: ISO date }
+//
+// ageSeconds is clamped at 0; negative values (clock skew, future
+// timestamp) collapse to 'just now' rather than rendering nonsense.
+function pickFreshnessKey(ageSeconds, nowMs) {
+  // Defensive on bad input: NaN, Infinity, undefined, negative, or
+  // non-numeric all collapse to the just-now bucket. The chip never
+  // crashes the audit page just because a clock got skewed.
+  if (typeof ageSeconds !== 'number' || !isFinite(ageSeconds)) {
+    return { key: 'freshness.justNow', vars: {} };
+  }
+  var age = Math.max(0, Math.floor(ageSeconds));
+  if (age < 60) return { key: 'freshness.justNow', vars: {} };
+  if (age < 3600) return { key: 'freshness.minutesAgo', vars: { count: Math.floor(age / 60) } };
+  if (age < 86400) return { key: 'freshness.hoursAgo', vars: { count: Math.floor(age / 3600) } };
+  if (age < 86400 * 7) return { key: 'freshness.daysAgo', vars: { count: Math.floor(age / 86400) } };
+  // Older than a week — render the absolute date. Caller passes the
+  // current time so we can compute the original timestamp without
+  // re-reading the clock; this is what makes the function testable.
+  var origin = (typeof nowMs === 'number' ? nowMs : Date.now()) - (age * 1000);
+  var iso = new Date(origin).toISOString().slice(0, 10); // YYYY-MM-DD
+  return { key: 'freshness.onDate', vars: { date: iso } };
+}
+
+// ---------------------------------------------------------------------------
+// Phase 2 U9: rank actionable findings by estimated $ impact.
+// ---------------------------------------------------------------------------
+// Shared helper used by both the Top 3 Fixes card and the Action Plan
+// columns so the two "what to do first" surfaces stay in sync — an
+// owner never sees contradictory prioritization between them.
+//
+// Contract: the `items` argument is an array of
+//   { entry: {def, result}, weight: number, statusRank: number,
+//     dollarImpact?: number | null }
+//
+// Items WITH a numeric dollarImpact always outrank items WITHOUT one —
+// the owner can make a concrete decision against a dollar number, so
+// weight-only items tail in after. Inside each group, sort keys run
+// dollarImpact DESC → weight DESC → statusRank DESC → index ASC so
+// declaration order is the stable tiebreaker.
+//
+// The `dollarImpactFn` argument is an adapter: a function that takes
+// a priority-check def and returns its dollar midpoint, or null. It is
+// an argument (not a hard-coded call to estimateRevenueAtRiskRange)
+// because that helper lives in the browser IIFE and depends on
+// DEFAULT_OWNER_INPUTS which the Node test harness controls directly.
+// Passing the function in also keeps this module pure — no globals,
+// no hidden dependencies — so the tests stay deterministic.
+function rankActionablesByImpact(items, dollarImpactFn) {
+  if (!Array.isArray(items)) return items;
+  var impactOf = (typeof dollarImpactFn === 'function')
+    ? dollarImpactFn
+    : function(){ return null; };
+  for (var i = 0; i < items.length; i++) {
+    var x = items[i];
+    if (x && typeof x.dollarImpact !== 'number') {
+      var def = x.entry && x.entry.def;
+      var v = impactOf(def);
+      x.dollarImpact = (typeof v === 'number') ? v : null;
+    }
+    if (x && typeof x.__idx !== 'number') x.__idx = i;
+  }
+  items.sort(function(a, b){
+    var aHas = (typeof a.dollarImpact === 'number');
+    var bHas = (typeof b.dollarImpact === 'number');
+    if (aHas !== bHas) return aHas ? -1 : 1;
+    if (aHas && b.dollarImpact !== a.dollarImpact) return b.dollarImpact - a.dollarImpact;
+    var aw = (typeof a.weight === 'number') ? a.weight : 0;
+    var bw = (typeof b.weight === 'number') ? b.weight : 0;
+    if (bw !== aw) return bw - aw;
+    var ar = (typeof a.statusRank === 'number') ? a.statusRank : 0;
+    var br = (typeof b.statusRank === 'number') ? b.statusRank : 0;
+    if (br !== ar) return br - ar;
+    return a.__idx - b.__idx;
+  });
+  return items;
+}
+
 // Sprint A5: Node-only export shim so a scoring regression test can
 // import the readiness helpers without a browser. The `typeof module`
 // guard keeps this a no-op for the classic-script load path in the
 // browser. Only the scorer internals are exported; everything else
 // stays a plain top-level global as before.
+/* ====================================================================
+   D5 — Developer-handoff document generators.
+
+   The audit page already has a per-row "Copy for your developer" button
+   that emits one prompt per check. The handoff doc is a complementary
+   artifact — the WHOLE actionable list rolled into a single document
+   the owner can paste into Linear/Jira/ClickUp or hand to an agency
+   for scoping. Two output shapes:
+
+     buildHandoffMarkdown(payload)        -> string
+     buildHandoffPrintableHtml(payload)   -> string
+
+   Both share the same input contract so the UI gathers data once:
+
+     {
+       auditedUrl:    string,
+       host:          string         // already prettified (no protocol)
+       score:         number 0..100,
+       capturedAt:    number ms      // optional — defaults to "recently"
+       permalinkUrl:  string|null    // ?s=<token> URL when available
+       subtype:       string|null,
+       verdict:       string|null,
+       checks:        Array<{
+         id:          string,
+         title:       string,
+         state:       'fail' | 'unverified' | 'pass',
+         minutes:     number|null,
+         effort:      'self' | 'dev' | 'rebuild' | null,
+         impact:      string|null,
+         note:        string|null
+       }>
+     }
+
+   Pure functions: zero DOM, zero network, zero side effects. The
+   sortChecksForHandoff helper is exported so callers can pre-sort
+   without re-deriving the ranking heuristic.
+   ==================================================================== */
+
+function sortChecksForHandoff(checks) {
+  if (!Array.isArray(checks)) return [];
+  // Failures first (most actionable), then unverified (needs owner
+  // confirmation), then everything else last. Within a state group,
+  // shorter-effort items come first so a dev sees the quick wins on
+  // top — matches the rankActionablesByImpact intent without
+  // requiring the impact-fn dependency at handoff time.
+  var STATE_RANK = { fail: 0, unverified: 1, pass: 2, skip: 3 };
+  var EFFORT_RANK = { self: 0, dev: 1, rebuild: 2 };
+  return checks.slice().sort(function(a, b) {
+    var sa = STATE_RANK[a.state] != null ? STATE_RANK[a.state] : 9;
+    var sb = STATE_RANK[b.state] != null ? STATE_RANK[b.state] : 9;
+    if (sa !== sb) return sa - sb;
+    var ea = EFFORT_RANK[a.effort] != null ? EFFORT_RANK[a.effort] : 9;
+    var eb = EFFORT_RANK[b.effort] != null ? EFFORT_RANK[b.effort] : 9;
+    if (ea !== eb) return ea - eb;
+    var ma = typeof a.minutes === 'number' ? a.minutes : 9999;
+    var mb = typeof b.minutes === 'number' ? b.minutes : 9999;
+    return ma - mb;
+  });
+}
+
+function _handoffActionableOnly(checks) {
+  return sortChecksForHandoff(checks).filter(function(c) {
+    return c.state === 'fail' || c.state === 'unverified';
+  });
+}
+
+function _handoffEffortLabel(effort, minutes, lang) {
+  // Same ladder the per-row chips use, expressed as a single string
+  // an agency can scope from. Minutes/hours conversion matches
+  // index.html's chip render. D6: routes through UI_I18N keys so
+  // the labels match the audit-page voice in EN + ES.
+  if (effort === 'rebuild') return t('handoff.effort.rebuild', null, lang);
+  if (typeof minutes === 'number' && minutes > 0) {
+    if (minutes < 5)   return t('handoff.effort.minutesShort', null, lang);
+    if (minutes < 60)  return t('handoff.effort.minutes', { n: minutes }, lang);
+    if (minutes < 180) return t('handoff.effort.hours', { n: Math.round(minutes / 60) }, lang);
+    return t('handoff.effort.rebuild', null, lang);
+  }
+  if (effort === 'self') return t('handoff.effort.self', null, lang);
+  if (effort === 'dev')  return t('handoff.effort.dev', null, lang);
+  return null;
+}
+
+function _handoffStateLabel(state, lang) {
+  if (state === 'fail')       return t('handoff.state.fail',       null, lang);
+  if (state === 'unverified') return t('handoff.state.unverified', null, lang);
+  if (state === 'pass')       return t('handoff.state.pass',       null, lang);
+  return state || '';
+}
+
+function _handoffFormatDate(ts) {
+  if (!ts) return null;
+  try {
+    var d = new Date(ts);
+    if (isNaN(d.getTime())) return null;
+    // ISO-ish: YYYY-MM-DD (no locale assumption — handoff docs go to
+    // whoever; absolute dates beat relative ones outside the UI).
+    var y = d.getUTCFullYear();
+    var m = String(d.getUTCMonth() + 1).padStart(2, '0');
+    var day = String(d.getUTCDate()).padStart(2, '0');
+    return y + '-' + m + '-' + day;
+  } catch (_) { return null; }
+}
+
+function _handoffEscapeMd(s) {
+  // Light markdown escape: backticks + pipe + leading hash so
+  // titles like "200 OK status" or "section-header" don't break the
+  // surrounding rendering.
+  return String(s == null ? '' : s)
+    .replace(/`/g, '\\`')
+    .replace(/\|/g, '\\|');
+}
+
+function _handoffEscapeHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function buildHandoffMarkdown(payload) {
+  if (!payload || typeof payload !== 'object') return '';
+  var lang = (payload.language === 'es') ? 'es' : 'en';
+  var host = payload.host || payload.auditedUrl || '—';
+  var score = (typeof payload.score === 'number') ? Math.round(payload.score) : null;
+  var date = _handoffFormatDate(payload.capturedAt);
+  var actionable = _handoffActionableOnly(payload.checks || []);
+
+  var lines = [];
+  // Header — "Restaurant website audit — host"
+  lines.push('# ' + t('handoff.titlePrefix', null, lang) + ' — ' + host);
+  if (score !== null || date) {
+    var bits = [];
+    if (score !== null) {
+      // Bold the whole "Score 62/100" line so the number reads loud
+      // even inside the surrounding _italic_ wrapper.
+      bits.push('**' + t('handoff.score', { score: String(score) }, lang) + '**');
+    }
+    if (date) bits.push(t('handoff.captured', { date: date }, lang));
+    lines.push('_' + bits.join(' · ') + '_');
+  }
+  lines.push('');
+  if (payload.auditedUrl) {
+    lines.push('**' + t('handoff.auditedLabel', null, lang) + '** ' + payload.auditedUrl);
+  }
+  if (payload.permalinkUrl) {
+    lines.push('**' + t('handoff.permalinkLabel', null, lang) + '** ' + payload.permalinkUrl);
+  }
+  if (payload.verdict) {
+    lines.push('');
+    lines.push('> ' + payload.verdict);
+  }
+  lines.push('');
+  lines.push('---');
+  lines.push('');
+
+  // Action list
+  if (!actionable.length) {
+    lines.push(t('handoff.empty', null, lang));
+  } else {
+    lines.push('## ' + t('handoff.actionsHeader', { n: actionable.length }, lang));
+    lines.push('');
+    actionable.forEach(function(c, idx) {
+      var bits = [_handoffStateLabel(c.state, lang)];
+      var effort = _handoffEffortLabel(c.effort, c.minutes, lang);
+      if (effort) bits.push(effort);
+      lines.push('### ' + (idx + 1) + '. ' + _handoffEscapeMd(c.title || c.id));
+      lines.push('`' + bits.join('` · `') + '`');
+      if (c.note)   { lines.push(''); lines.push(c.note); }
+      if (c.impact) {
+        lines.push('');
+        lines.push('**' + t('handoff.why', null, lang) + '** ' + c.impact);
+      }
+      lines.push('');
+    });
+
+    // Scope-of-work paragraph: a short, non-prescriptive frame an
+    // agency or freelancer can quote from. Only present when there's
+    // actually a list to scope — printing it under an empty action
+    // list would be absurd.
+    lines.push('---');
+    lines.push('');
+    lines.push('## ' + t('handoff.scope.header', null, lang));
+    lines.push('');
+    lines.push(t('handoff.scope.body', null, lang));
+    lines.push('');
+  }
+
+  // Footer
+  lines.push('---');
+  lines.push('');
+  lines.push(t('handoff.footer', null, lang));
+  return lines.join('\n');
+}
+
+function buildHandoffPrintableHtml(payload) {
+  if (!payload || typeof payload !== 'object') return '';
+  var lang = (payload.language === 'es') ? 'es' : 'en';
+  var host = payload.host || payload.auditedUrl || '—';
+  var score = (typeof payload.score === 'number') ? Math.round(payload.score) : null;
+  var date = _handoffFormatDate(payload.capturedAt);
+  var actionable = _handoffActionableOnly(payload.checks || []);
+
+  var headBits = [];
+  if (score !== null) {
+    // Replace the {score} placeholder ourselves so we can wrap the
+    // numeric portion in <strong> instead of the whole label.
+    var scoreLabel = t('handoff.score', null, lang)
+      .replace('{score}', '<strong>' + score + '/100</strong>');
+    headBits.push(scoreLabel);
+  }
+  if (date) headBits.push(t('handoff.captured', { date: _handoffEscapeHtml(date) }, lang));
+
+  var emptyHtml = '<p class="empty">' + _handoffEscapeHtml(t('handoff.empty', null, lang)) + '</p>';
+  var scopeHtml = actionable.length === 0 ? '' :
+    '<section class="scope">' +
+      '<h2 class="section">' + _handoffEscapeHtml(t('handoff.scope.header', null, lang)) + '</h2>' +
+      '<p class="scope-body">' + _handoffEscapeHtml(t('handoff.scope.body', null, lang)) + '</p>' +
+    '</section>';
+
+  var rowsHtml = actionable.length === 0
+    ? emptyHtml
+    : actionable.map(function(c, idx) {
+        var stateClass = 'state-' + (c.state || 'unknown');
+        var effort = _handoffEffortLabel(c.effort, c.minutes, lang);
+        var chips = '<span class="chip ' + stateClass + '">' + _handoffEscapeHtml(_handoffStateLabel(c.state, lang)) + '</span>';
+        if (effort) chips += '<span class="chip chip-effort">' + _handoffEscapeHtml(effort) + '</span>';
+        var noteHtml   = c.note   ? '<p class="note">'   + _handoffEscapeHtml(c.note)   + '</p>' : '';
+        var impactHtml = c.impact ? '<p class="impact"><strong>' + _handoffEscapeHtml(t('handoff.why', null, lang)) + '</strong> ' + _handoffEscapeHtml(c.impact) + '</p>' : '';
+        return '<article class="action-item">' +
+          '<header><span class="num">' + (idx + 1) + '</span><h2>' + _handoffEscapeHtml(c.title || c.id) + '</h2></header>' +
+          '<div class="chips">' + chips + '</div>' +
+          noteHtml + impactHtml +
+          '</article>';
+      }).join('');
+
+  return '<!doctype html>\n<html lang="' + _handoffEscapeHtml(lang) + '"><head>' +
+    '<meta charset="utf-8">' +
+    '<meta name="viewport" content="width=device-width,initial-scale=1">' +
+    '<title>' + _handoffEscapeHtml(t('handoff.titlePrefix', null, lang)) + ' — ' + _handoffEscapeHtml(host) + '</title>' +
+    '<style>' +
+      ':root{--ink:#14161A;--ink-soft:#2A2D33;--stone:#7A7F87;--cream:#FAF7F2;--cream-2:#F3EEE3;--teal:#1F4E5B;--teal-tint:rgba(31,78,91,0.06);--rust:#B8541A;--line:#E8E2D6}' +
+      '*{box-sizing:border-box}' +
+      'html,body{margin:0;padding:0;background:var(--cream);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif;font-size:14px;line-height:1.55}' +
+      '.doc{max-width:760px;margin:0 auto;padding:48px 36px}' +
+      'header.doc-header{padding-bottom:24px;border-bottom:2px solid var(--ink);margin-bottom:24px}' +
+      '.doc-eyebrow{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}' +
+      '.doc h1{font-family:Georgia,"Times New Roman",serif;font-size:30px;font-weight:500;margin:0 0 8px;line-height:1.2}' +
+      '.doc-meta{margin:0;color:var(--ink-soft);font-size:13.5px}' +
+      '.doc-meta strong{color:var(--ink)}' +
+      '.doc-links{margin:18px 0 0;font-size:13px;color:var(--ink-soft)}' +
+      '.doc-links div{margin:4px 0}' +
+      '.doc-links a{color:var(--teal);word-break:break-all}' +
+      '.verdict{margin:16px 0 0;padding:14px 16px;background:var(--teal-tint);border-left:3px solid var(--teal);border-radius:8px;font-size:14px;color:var(--ink)}' +
+      'h2.section{font-family:Georgia,serif;font-size:20px;font-weight:500;margin:32px 0 16px}' +
+      '.action-item{break-inside:avoid;page-break-inside:avoid;background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:0 0 14px}' +
+      '.action-item header{display:flex;align-items:baseline;gap:10px;margin:0 0 8px}' +
+      '.action-item .num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--teal);color:#fff;font-size:12px;font-weight:700;flex:none}' +
+      '.action-item h2{font-family:Georgia,serif;font-size:17px;font-weight:600;margin:0;color:var(--ink);line-height:1.3}' +
+      '.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}' +
+      '.chip{display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:0.04em;background:var(--cream-2);color:var(--ink-soft);border:1px solid var(--line)}' +
+      '.chip.state-fail{background:rgba(184,84,26,0.08);color:var(--rust);border-color:rgba(184,84,26,0.25)}' +
+      '.chip.state-unverified{background:rgba(31,78,91,0.06);color:var(--teal);border-color:rgba(31,78,91,0.18)}' +
+      '.chip.chip-effort{background:#fff;color:var(--ink-soft)}' +
+      '.note{margin:6px 0;color:var(--ink-soft);font-size:13.5px}' +
+      '.impact{margin:6px 0 0;color:var(--ink-soft);font-size:13px}' +
+      '.impact strong{color:var(--ink)}' +
+      '.empty{padding:24px;text-align:center;color:var(--stone);font-style:italic;background:#fff;border:1px dashed var(--line);border-radius:10px}' +
+      '.scope{margin-top:24px}' +
+      '.scope-body{margin:0;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:10px;font-size:13.5px;line-height:1.55;color:var(--ink-soft)}' +
+      'footer.doc-footer{margin-top:32px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--stone)}' +
+      'footer.doc-footer a{color:var(--teal)}' +
+      '@media print{html,body{background:#fff}.doc{max-width:none;margin:0;padding:24px 32px}.action-item{box-shadow:none}}' +
+    '</style></head><body><div class="doc">' +
+    '<header class="doc-header">' +
+      '<p class="doc-eyebrow">' + _handoffEscapeHtml(t('handoff.eyebrow', null, lang)) + '</p>' +
+      '<h1>' + _handoffEscapeHtml(host) + '</h1>' +
+      (headBits.length ? '<p class="doc-meta">' + headBits.join(' · ') + '</p>' : '') +
+      '<div class="doc-links">' +
+        (payload.auditedUrl ? '<div><strong>' + _handoffEscapeHtml(t('handoff.auditedLabel', null, lang)) + '</strong> <a href="' + _handoffEscapeHtml(payload.auditedUrl) + '">' + _handoffEscapeHtml(payload.auditedUrl) + '</a></div>' : '') +
+        (payload.permalinkUrl ? '<div><strong>' + _handoffEscapeHtml(t('handoff.permalinkLabel', null, lang)) + '</strong> <a href="' + _handoffEscapeHtml(payload.permalinkUrl) + '">' + _handoffEscapeHtml(payload.permalinkUrl) + '</a></div>' : '') +
+      '</div>' +
+      (payload.verdict ? '<p class="verdict">' + _handoffEscapeHtml(payload.verdict) + '</p>' : '') +
+    '</header>' +
+    (actionable.length ? '<h2 class="section">' + _handoffEscapeHtml(t('handoff.actionsHeader', { n: actionable.length }, lang)) + '</h2>' : '') +
+    rowsHtml +
+    scopeHtml +
+    '<footer class="doc-footer">' + _handoffEscapeHtml(t('handoff.footer', null, lang)) + '</footer>' +
+    '</div></body></html>';
+}
+
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     createRestaurantReadinessState: createRestaurantReadinessState,
     accumulateRestaurantReadiness: accumulateRestaurantReadiness,
     finalizeRestaurantReadinessScore: finalizeRestaurantReadinessScore,
+    rankActionablesByImpact: rankActionablesByImpact,
+    pickFreshnessKey: pickFreshnessKey,
+    parsePlacesHoursText: parsePlacesHoursText,
+    parsePlacesHoursLine: parsePlacesHoursLine,
+    parseSchemaHoursObjects: parseSchemaHoursObjects,
+    serializeHoursDayMap: serializeHoursDayMap,
+    parseHoursTimeToMinutes: parseHoursTimeToMinutes,
+    computeReviewResponsiveness: computeReviewResponsiveness,
+    extractMenuSignals: extractMenuSignals,
+    MENU_INTEL_PRICE_FLOOR: MENU_INTEL_PRICE_FLOOR,
+    MENU_INTEL_PHOTO_FLOOR: MENU_INTEL_PHOTO_FLOOR,
+    extractCrawlPageUrls: extractCrawlPageUrls,
+    computeMarginHealth: computeMarginHealth,
+    MARGIN_HEALTH_PENALTIES: MARGIN_HEALTH_PENALTIES,
     POWERED_BY: POWERED_BY,
     MUNTIN_AUDIT_DESCRIPTION: MUNTIN_AUDIT_DESCRIPTION,
     MUNTIN_AUDIT_DESCRIPTION_ES: MUNTIN_AUDIT_DESCRIPTION_ES,
@@ -2697,6 +4128,10 @@ if (typeof module !== 'undefined' && module.exports) {
     t: t,
     poweredByRole: poweredByRole,
     RESTAURANT_SCHEMA_FIELDS: RESTAURANT_SCHEMA_FIELDS,
-    OG_META_FIELDS: OG_META_FIELDS
+    OG_META_FIELDS: OG_META_FIELDS,
+    // D5: developer-handoff generators
+    buildHandoffMarkdown: buildHandoffMarkdown,
+    buildHandoffPrintableHtml: buildHandoffPrintableHtml,
+    sortChecksForHandoff: sortChecksForHandoff
   };
 }

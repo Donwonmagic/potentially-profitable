@@ -25,30 +25,64 @@
 import { escapeHtml, prettyUrl } from './validation.js';
 
 
-// Shell matches the English one visually — same colors, same
-// border treatment — with Spanish footer text so recipients don't
-// see "Silver Spring, MD" paired with an English line break after
-// reading a Spanish body.
-function htmlShell(title, bodyHtml) {
+// D10: Spanish visual frame — tracks every D9 improvement made to
+// the English htmlShell. Same markup, same inline styles, same
+// bulletproof button helpers; only the footer link routes to the
+// /es/ locale so a Spanish reader lands on the Spanish site when
+// they click through.
+function htmlShell(title, bodyHtml, receivedBecause) {
+  const footerReason = receivedBecause
+    ? '<p style="margin:0 0 10px;font-size:12px;line-height:1.5;color:#6B6B6B;">' + escapeHtml(receivedBecause) + '</p>'
+    : '';
   return [
     '<!doctype html>',
-    '<html lang="es"><body style="margin:0;padding:0;background:#FAF7F2;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Arial,sans-serif;color:#14161A;">',
-    '<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#FAF7F2;padding:32px 16px;">',
+    '<html lang="es"><head>',
+    '<meta charset="utf-8">',
+    '<meta name="viewport" content="width=device-width,initial-scale=1">',
+    '<meta name="x-apple-disable-message-reformatting">',
+    '<title>' + escapeHtml(title) + '</title>',
+    '</head>',
+    '<body style="margin:0;padding:0;background:#FAF7F2;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Arial,sans-serif;color:#14161A;">',
+    '<table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation" style="background:#FAF7F2;padding:32px 16px;">',
     '<tr><td align="center">',
-    '<table width="560" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;background:#ffffff;border:1px solid #E8E2D6;border-radius:12px;overflow:hidden;">',
+    '<table width="560" cellpadding="0" cellspacing="0" border="0" role="presentation" style="max-width:560px;background:#ffffff;border:1px solid #E8E2D6;border-radius:12px;overflow:hidden;">',
     '<tr><td style="padding:32px 36px;">',
-    '<p style="margin:0 0 20px;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#6B6B6B;">Muntin Digital</p>',
-    '<h1 style="margin:0 0 20px;font-size:22px;font-weight:500;color:#14161A;font-family:Georgia,\'Times New Roman\',serif;letter-spacing:-0.01em;">' + escapeHtml(title) + '</h1>',
+    '<p style="margin:0 0 20px;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#1F4E5B;">Muntin Digital</p>',
+    '<h1 style="margin:0 0 20px;font-size:22px;font-weight:500;color:#14161A;font-family:Georgia,\'Times New Roman\',serif;letter-spacing:-0.01em;line-height:1.25;">' + escapeHtml(title) + '</h1>',
     bodyHtml,
     '</td></tr>',
     '<tr><td style="padding:20px 36px;background:#F3EEE3;border-top:1px solid #E8E2D6;font-size:12px;color:#6B6B6B;">',
-    'Muntin Digital · Silver Spring, MD · <a href="https://muntin.digital/es/" style="color:#1F4E5B;text-decoration:none;">muntin.digital</a>',
+    footerReason,
+    'Muntin Digital · Silver Spring, MD · <a href="https://muntin.digital/es/" style="color:#1F4E5B;text-decoration:none;font-weight:600;">muntin.digital</a>',
     '</td></tr>',
     '</table>',
     '</td></tr>',
     '</table>',
     '</body></html>',
   ].join('\n');
+}
+
+// D10: CTA button helpers (ES mirror of primaryCta / secondaryCta
+// in templates.js). Same bulletproof table-wrapped anchor, same
+// visual palette — only the arrow and label differ per call site.
+export function primaryCta(url, label) {
+  return _buttonTable(url, label, '#1F4E5B', '#FAF7F2', '#1F4E5B');
+}
+export function secondaryCta(url, label) {
+  return _buttonTable(url, label, '#FAF7F2', '#1F4E5B', '#1F4E5B');
+}
+function _buttonTable(url, label, bg, color, border) {
+  return [
+    '<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="margin:0 0 8px;">',
+    '<tr><td align="center" bgcolor="' + bg + '" style="background:' + bg + ';border-radius:999px;border:1px solid ' + border + ';">',
+    '<a href="' + escapeHtml(url) + '" target="_blank" rel="noopener" ' +
+      'style="display:inline-block;padding:12px 24px;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Arial,sans-serif;' +
+      'font-size:14px;font-weight:600;line-height:1;color:' + color + ';text-decoration:none;border-radius:999px;">' +
+      escapeHtml(label) + ' &rarr;' +
+    '</a>',
+    '</td></tr>',
+    '</table>',
+  ].join('');
 }
 
 // A key/value row. Same visual as the English template's field().
@@ -133,7 +167,8 @@ export function intakeAutoResponder(body) {
       '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Antes de escribir, voy a darle una mirada a tu sitio actual, a tu menú y a tu Google Business Profile si lo tienes, para que la respuesta arranque con especificidades reales de tu situación, no con una plantilla genérica.</p>',
       '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Si te surge algo mientras tanto, puedes responder a este correo y cae directo en mi bandeja real.</p>',
       '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">— Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital · Silver Spring, MD</span></p>',
-    ].join('\n')
+    ].join('\n'),
+    'Enviaste el formulario de contacto en muntin.digital.'
   );
 
   const txt = [
@@ -206,7 +241,9 @@ function checklistKindEs(body) {
     businessField,
     items:         30,
     pageUrl:       'https://muntin.digital/es/resources/restaurant-website-checklist/',
-    pdfUrl:        'https://muntin.digital/es/resources/restaurant-website-checklist/muntin-restaurant-website-checklist-es.pdf',
+    // D12b: pdfUrl retired alongside the static Puppeteer-rendered
+    // PDF. The interactive page IS the deliverable; printing /
+    // saving-as-PDF is a browser-native affordance on the live URL.
     auditUrl:      'https://muntin.digital/es/tools/audits/restaurant/',
   };
 }
@@ -227,7 +264,7 @@ export function checklistNotification(body) {
       field('De',       escapeHtml(email)),
       k.subtype !== 'all' ? field('Subtipo', escapeHtml(k.subtypeLabel)) : '',
       k.businessField ? field(k.businessLabel, escapeHtml(k.businessField)) : '',
-      '<p style="margin:24px 0 0;font-size:13px;color:#6B6B6B;">La autorespuesta con el enlace del PDF ya se envió al usuario. No hace falta seguimiento manual, a menos que quieras nutrir el lead. El contacto vino del sitio en español, así que conviene responder en español.</p>',
+      '<p style="margin:24px 0 0;font-size:13px;color:#6B6B6B;">La autorespuesta con el enlace del checklist en vivo ya se envió al usuario. No hace falta seguimiento manual, a menos que quieras nutrir el lead. El contacto vino del sitio en español, así que conviene responder en español.</p>',
     ].join('\n')
   );
 
@@ -239,7 +276,7 @@ export function checklistNotification(body) {
     k.businessField ? k.businessLabel + ': ' + k.businessField : '',
     '',
     '--',
-    'La autorespuesta con el enlace del PDF ya se envió al usuario.',
+    'La autorespuesta con el enlace del checklist en vivo ya se envió al usuario.',
     'El contacto vino del sitio en español; conviene responder en español.',
   ].filter(Boolean).join('\n');
 
@@ -265,12 +302,12 @@ export function checklistAutoResponder(body) {
     : '';
 
   const opening = biz
-    ? 'Aquí está el PDF para <strong>' + escapeHtml(biz) + '</strong>' + tailoredLine + '. Imprímelo, clávalo en el tablero de la oficina trasera, o pásalo por el equipo en la próxima reunión de staff — está pensado para marcarse con lápiz.'
-    : 'Aquí está tu PDF' + tailoredLine + '. Imprímelo, clávalo en el tablero de la oficina trasera, o pásalo por el equipo en la próxima reunión de staff — está pensado para marcarse con lápiz.';
+    ? 'Aquí está tu checklist del sitio para <strong>' + escapeHtml(biz) + '</strong>' + tailoredLine + '. Ábrelo abajo, marca los ítems conforme avanzas, y guarda o imprime una copia cuando necesites un impreso para la cocina o una reunión de planeación.'
+    : 'Aquí está tu checklist del sitio' + tailoredLine + '. Ábrelo abajo, marca los ítems conforme avanzas, y guarda o imprime una copia cuando necesites un impreso para la cocina o una reunión de planeación.';
 
   const openingTxt = biz
-    ? 'Aquí está el PDF para ' + biz + tailoredLineTxt + '. Imprímelo, clávalo en el tablero de la oficina trasera, o pásalo por el equipo en la próxima reunión de staff — está pensado para marcarse con lápiz.'
-    : 'Aquí está tu PDF' + tailoredLineTxt + '. Imprímelo, clávalo en el tablero de la oficina trasera, o pásalo por el equipo en la próxima reunión de staff — está pensado para marcarse con lápiz.';
+    ? 'Aquí está tu checklist del sitio para ' + biz + tailoredLineTxt + '. Ábrelo abajo, marca los ítems conforme avanzas, y guarda o imprime una copia cuando necesites un impreso para la cocina o una reunión de planeación.'
+    : 'Aquí está tu checklist del sitio' + tailoredLineTxt + '. Ábrelo abajo, marca los ítems conforme avanzas, y guarda o imprime una copia cuando necesites un impreso para la cocina o una reunión de planeación.';
 
   const kindsLine = 'restaurante (alta cocina, casual, bar, café, food truck)';
 
@@ -279,30 +316,24 @@ export function checklistAutoResponder(body) {
     [
       '<p style="margin:0 0 20px;font-size:16px;line-height:1.6;color:#2A2D33;">' + opening + '</p>',
 
-      '<p style="margin:0 0 10px;">' +
-        '<a href="' + k.pdfUrl + '" style="display:inline-block;padding:14px 26px;background:#1F4E5B;color:#FAF7F2;text-decoration:none;border-radius:999px;font-weight:600;font-size:15px;">Descargar el PDF &rarr;</a>' +
-      '</p>',
-      '<p style="margin:0 0 22px;font-size:13px;color:#6B6B6B;">Tamaño carta · ' + k.items + ' chequeos · abre en tu navegador.</p>',
-
-      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Si prefieres marcar los ítems en pantalla, la versión interactiva guarda tu avance en este dispositivo y deja que ajustes el checklist a tu tipo de ' + kindsLine + ' para que los ítems N/A salgan del puntaje:</p>',
-      '<p style="margin:0 0 24px;"><a href="' + k.pageUrl + '" style="color:#1F4E5B;font-weight:600;">Abrir el checklist interactivo &rarr;</a></p>',
+      primaryCta(k.pageUrl, 'Abrir tu checklist'),
+      '<p style="margin:0 0 22px;font-size:13px;color:#6B6B6B;">' + k.items + ' chequeos · adaptado a ' + kindsLine + ' para que los ítems N/A salgan del puntaje · tu avance se guarda en este dispositivo.</p>',
 
       '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">¿Quieres un segundo par de ojos humanos después de correrlo? Responde a este correo con tu URL y le doy una mirada real — sin lista, sin goteo, sin newsletter, solo una respuesta de mi parte.</p>',
       '<p style="margin:0 0 8px;font-size:15px;line-height:1.55;color:#2A2D33;">O si prefieres que yo corra los chequeos por ti y te escriba la lista de arreglos:</p>',
-      '<p style="margin:0 0 20px;"><a href="https://calendly.com/dongoldstein-accts/muntinconsult" style="display:inline-block;padding:10px 18px;background:#FAF7F2;color:#1F4E5B;text-decoration:none;border:1px solid #1F4E5B;border-radius:999px;font-weight:600;font-size:14px;">Agenda una llamada de 20 min &rarr;</a></p>',
+      secondaryCta('https://calendly.com/dongoldstein-accts/muntinconsult', 'Agenda una llamada de 20 min'),
+      '<div style="height:12px;line-height:12px;">&nbsp;</div>',
 
       '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">— Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital · Silver Spring, MD</span></p>',
-    ].join('\n')
+    ].join('\n'),
+    'Solicitaste el checklist del sitio para tu ' + k.subjectNoun + '.'
   );
 
   const txt = [
     openingTxt,
     '',
-    'Descargar el PDF: ' + k.pdfUrl,
-    '(Tamaño carta · ' + k.items + ' chequeos)',
-    '',
-    'O abre la versión interactiva — guarda tu avance en este dispositivo y deja que ajustes el checklist a tu tipo de ' + kindsLine + ' para que los ítems N/A salgan del puntaje:',
-    k.pageUrl,
+    'Abrir tu checklist: ' + k.pageUrl,
+    '(' + k.items + ' chequeos, adaptado a ' + kindsLine + ' para que los ítems N/A salgan del puntaje. Tu avance se guarda en este dispositivo; guarda o imprime cuando quieras desde tu navegador.)',
     '',
     '¿Quieres un segundo par de ojos humanos después de correrlo? Responde a este correo con tu URL y le doy una mirada real — sin lista, sin goteo, sin newsletter, solo una respuesta de mi parte.',
     '',
@@ -385,12 +416,16 @@ export function auditReportAutoResponder(body) {
     [
       pretty  ? '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Aqu\u00ed est\u00e1 el informe de auditor\u00eda para <strong>' + escapeHtml(pretty) + '</strong>.</p>' : '',
       overall ? '<p style="margin:0 0 20px;padding:20px;background:#F3EEE3;border-radius:12px;text-align:center;"><span style="display:block;font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#6B6B6B;margin-bottom:8px;">Puntuaci\u00f3n general</span><span style="font-size:48px;font-weight:500;color:#1F4E5B;font-family:Georgia,serif;">' + escapeHtml(overall) + '<span style="font-size:22px;color:#6B6B6B;">/100</span></span>' + (summary ? '<br><span style="font-size:13px;color:#2A2D33;margin-top:8px;display:inline-block;">' + escapeHtml(summary) + '</span>' : '') + '</p>' : '',
-      shareLink ? '<p style="margin:0 0 20px;"><a href="' + escapeHtml(shareLink) + '" style="display:inline-block;padding:12px 22px;background:#1F4E5B;color:#FAF7F2;text-decoration:none;border-radius:999px;font-weight:600;font-size:14px;">Abrir el informe interactivo completo</a></p>' : '',
+      shareLink ? '<p style="margin:0 0 10px;font-size:14px;color:#2A2D33;"><strong>Tu enlace permanente para compartir</strong> \u2014 reen\u00edalo a colaboradores, gu\u00e1rdalo para m\u00e1s tarde, o \u00e1brelo cuando quieras:</p>' : '',
+      shareLink ? primaryCta(shareLink, 'Abrir el informe interactivo') : '',
+      '<div style="height:12px;line-height:12px;">&nbsp;</div>',
       '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">La herramienta de auditor\u00eda es un esc\u00e1ner \u2014 es buena, pero no soy yo. Si quieres una segunda opini\u00f3n humana sobre qu\u00e9 arreglar primero (y qu\u00e9 ignorar), responde a este correo con tus preguntas o agenda una llamada gratis de 20 minutos:</p>',
-      '<p style="margin:0 0 20px;"><a href="https://calendly.com/dongoldstein-accts/muntinconsult" style="color:#1F4E5B;font-weight:600;">Agendar una llamada de 20 min &rarr;</a></p>',
+      secondaryCta('https://calendly.com/dongoldstein-accts/muntinconsult', 'Agenda una llamada de 20 min'),
+      '<div style="height:12px;line-height:12px;">&nbsp;</div>',
       '<p style="margin:0 0 16px;font-size:14px;line-height:1.55;color:#6B6B6B;">Sin lista de marketing, sin goteo, sin newsletter. Solo te escribo si respondes a este correo.</p>',
       '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">\u2014 Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital \u00b7 Silver Spring, MD</span></p>',
-    ].filter(Boolean).join('\n')
+    ].filter(Boolean).join('\n'),
+    'Solicitaste una copia por correo de tu informe de auditor\u00eda.'
   );
 
   const txt = [
@@ -501,12 +536,16 @@ export function auditDeepReportAutoResponder(body) {
       hasPdf
         ? '<p style="margin:0 0 18px;padding:14px 18px;background:#E8F1F3;border-left:4px solid #1F4E5B;border-radius:8px;font-size:15px;line-height:1.55;color:#14161A;"><strong>Tu PDF est\u00e1 adjunto.</strong><br>Gu\u00e1rdalo, re\u00e9nv\u00edalo a tu desarrollador o agencia de marketing, o impr\u00edmelo para marcarlo a mano \u2014 est\u00e1 hecho para usarse.</p>'
         : '',
-      shareLink ? '<p style="margin:0 0 20px;"><a href="' + escapeHtml(shareLink) + '" style="display:inline-block;padding:12px 22px;background:#1F4E5B;color:#FAF7F2;text-decoration:none;border-radius:999px;font-weight:600;font-size:14px;">Abrir el informe interactivo</a></p>' : '',
+      shareLink ? '<p style="margin:0 0 10px;font-size:14px;color:#2A2D33;"><strong>Tu enlace permanente para compartir</strong> \u2014 reen\u00edalo a colaboradores, gu\u00e1rdalo para m\u00e1s tarde, o \u00e1brelo cuando quieras:</p>' : '',
+      shareLink ? primaryCta(shareLink, 'Abrir el informe interactivo') : '',
+      '<div style="height:12px;line-height:12px;">&nbsp;</div>',
       '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Si quieres una segunda opini\u00f3n humana sobre qu\u00e9 arreglar primero, responde a este correo con tus preguntas o agenda una llamada gratis de 20 minutos:</p>',
-      '<p style="margin:0 0 20px;"><a href="https://calendly.com/dongoldstein-accts/muntinconsult" style="color:#1F4E5B;font-weight:600;">Agendar una llamada de 20 min &rarr;</a></p>',
+      secondaryCta('https://calendly.com/dongoldstein-accts/muntinconsult', 'Agenda una llamada de 20 min'),
+      '<div style="height:12px;line-height:12px;">&nbsp;</div>',
       '<p style="margin:0 0 16px;font-size:14px;line-height:1.55;color:#6B6B6B;">Sin lista de marketing, sin goteo, sin newsletter. Solo te escribo si respondes a este correo.</p>',
       '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">\u2014 Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital \u00b7 Silver Spring, MD</span></p>',
-    ].filter(Boolean).join('\n')
+    ].filter(Boolean).join('\n'),
+    'Solicitaste el PDF completo de auditor\u00eda por correo.'
   );
 
   const txt = [
@@ -529,3 +568,49 @@ export function auditDeepReportAutoResponder(body) {
 
   return { subject, html, text: txt };
 }
+
+// ============================================================
+// 7. D11: Re-audit 30-day reminder (ES)
+// ============================================================
+//
+// ES peer of reauditReminder in templates.js. Same shape, same
+// shell, localized copy. Routing happens in templates.js via the
+// standard locale dispatcher.
+
+export function reauditReminder(body) {
+  const pretty    = String(body.pretty    || '').trim();
+  const auditLink = String(body.auditLink || '').trim();
+  const subject = 'Hora de re-auditar ' + (pretty || 'tu sitio') + ' \u2014 recordatorio de 30 d\u00edas';
+
+  const html = htmlShell(
+    'Hora de re-auditar',
+    [
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Hola,</p>',
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Hace aproximadamente 30 d\u00edas auditaste <strong>' + escapeHtml(pretty || 'tu sitio') + '</strong> con la herramienta gratuita de Muntin Digital.</p>',
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Si arreglaste alguno de los hallazgos, ejecutar una nueva auditor\u00eda mostrar\u00e1 exactamente qu\u00e9 se resolvi\u00f3 y cu\u00e1nto subi\u00f3 tu puntuaci\u00f3n.</p>',
+      primaryCta(auditLink, 'Re-auditar mi sitio'),
+      '<div style="height:12px;line-height:12px;">&nbsp;</div>',
+      '<p style="margin:0 0 16px;font-size:14px;line-height:1.55;color:#6B6B6B;">Sin lista de marketing, sin goteo, sin newsletter. Solo te escribo si respondes a este correo.</p>',
+      '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">\u2014 Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital \u00b7 Silver Spring, MD</span></p>',
+    ].join('\n'),
+    'Solicitaste un recordatorio de 30 d\u00edas para re-auditar ' + (pretty || 'tu sitio') + '.'
+  );
+
+  const txt = [
+    'Hola,',
+    '',
+    'Hace aproximadamente 30 d\u00edas auditaste ' + (pretty || 'tu sitio') + ' con la herramienta gratuita de Muntin Digital.',
+    '',
+    'Si arreglaste alguno de los hallazgos, ejecutar una nueva auditor\u00eda mostrar\u00e1 exactamente qu\u00e9 se resolvi\u00f3 y cu\u00e1nto subi\u00f3 tu puntuaci\u00f3n.',
+    '',
+    'Ejecutar nueva auditor\u00eda: ' + auditLink,
+    '',
+    'Sin lista de marketing, sin goteo de correos, sin bolet\u00edn. Solo te escribir\u00e9 si respondes a este mensaje.',
+    '',
+    '\u2014 Don',
+    'Muntin Digital',
+  ].join('\n');
+
+  return { subject, html, text: txt };
+}
+
