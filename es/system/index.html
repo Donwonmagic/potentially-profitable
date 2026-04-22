@@ -354,6 +354,30 @@
   </div>
 </section>
 
+<!-- ============ BÚSQUEDA ============ -->
+<section class="block" aria-labelledby="search-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">Búsqueda</span>
+      <h2 id="search-heading">Índice estático,<br><span class="serif-italic">resultados al instante.</span></h2>
+      <p class="final-sub">La biblioteca se puede buscar completa sin servidor. Presiona <kbd class="nav-search-kbd" style="vertical-align:1px;"><span class="nav-search-kbd-mod">⌘</span>K</kbd> (o <kbd class="nav-search-kbd" style="vertical-align:1px;">Ctrl K</kbd>, o la tecla <kbd class="nav-search-kbd" style="vertical-align:1px;">/</kbd>) desde cualquier parte del sitio para probarla.</p>
+    </div>
+
+    <div class="sys-audio">
+      <div>
+        <h3>Cómo se publica</h3>
+        <ul>
+          <li><a href="https://pagefind.app/" target="_blank" rel="noopener">Pagefind</a> corre una sola vez al final de cada deploy, lee cada HTML construido en <code>dist/</code> y emite un índice estático a <code>dist/pagefind/</code>. Sin servidor, sin base de datos, sin API key.</li>
+          <li>El índice se divide automáticamente por <code>&lt;html lang&gt;</code>, así un lector en español recibe resultados en español y uno en inglés recibe resultados en inglés — misma caja de búsqueda, idioma correcto.</li>
+          <li>Un archivo de configuración en <code>pagefind.yml</code> excluye la navegación, el footer, las migas de pan y el chrome de overlay del índice, para que los resultados sean contenido de la página, no relleno.</li>
+          <li>La UI es una ventana modal a medida en <code>site.js</code> (sin la UI por defecto de Pagefind), cargada de forma perezosa la primera vez que se abre, así los lectores que nunca buscan no pagan ni un byte por la función.</li>
+          <li>Primero el teclado: las flechas mueven entre resultados, intro abre, escape cierra. El mouse resalta al pasar. El foco regresa al disparador al cerrar.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ ACCESSIBILITY ============ -->
 <section class="block bg-cream2" aria-labelledby="a11y-heading">
   <div class="container">

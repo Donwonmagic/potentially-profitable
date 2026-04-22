@@ -365,6 +365,30 @@
   </div>
 </section>
 
+<!-- ============ SEARCH ============ -->
+<section class="block" aria-labelledby="search-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">Search</span>
+      <h2 id="search-heading">Static index,<br><span class="serif-italic">instant results.</span></h2>
+      <p class="final-sub">The library is fully searchable without a server. Press <kbd class="nav-search-kbd" style="vertical-align:1px;"><span class="nav-search-kbd-mod">⌘</span>K</kbd> (or <kbd class="nav-search-kbd" style="vertical-align:1px;">Ctrl K</kbd>, or the <kbd class="nav-search-kbd" style="vertical-align:1px;">/</kbd> key) from anywhere on the site to try it.</p>
+    </div>
+
+    <div class="sys-audio">
+      <div>
+        <h3>How it ships</h3>
+        <ul>
+          <li><a href="https://pagefind.app/" target="_blank" rel="noopener">Pagefind</a> runs once at the end of each deploy, reads every built HTML file in <code>dist/</code>, and emits a static index to <code>dist/pagefind/</code>. No server, no database, no API key.</li>
+          <li>The index splits automatically by <code>&lt;html lang&gt;</code>, so a Spanish reader gets Spanish results and an English reader gets English results — same search box, right language.</li>
+          <li>A configuration file at <code>pagefind.yml</code> excludes navigation, footer, breadcrumb, and overlay chrome from the index so results are page content, not boilerplate.</li>
+          <li>The UI is a custom modal in <code>site.js</code> (no Pagefind default UI), lazy-loaded on first open so readers who never search pay zero bytes for the feature.</li>
+          <li>Keyboard-first: arrow keys move through results, return opens, escape closes. Mouse hover highlights. Focus returns to the trigger on close.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ ACCESSIBILITY ============ -->
 <section class="block bg-cream2" aria-labelledby="a11y-heading">
   <div class="container">
