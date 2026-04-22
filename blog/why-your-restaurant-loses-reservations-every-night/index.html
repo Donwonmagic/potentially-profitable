@@ -175,7 +175,7 @@
   plausible.init()
 </script>
 
-<link rel="stylesheet" href="/assets/site.css?v=20260422-search">
+<link rel="stylesheet" href="/assets/site.css?v=20260422-research2">
 
 <style>
   /* ============ BLOG POST LAYOUT STYLES ============ */
@@ -686,6 +686,7 @@
         <div class="cite-body">
           <p><span class="cite-source">Think with Google</span> — Mobile page speed benchmarks</p>
           <p>Google's research on mobile page speed has consistently found that the majority of mobile visitors leave pages that take longer than 3 seconds to load. The foundational study measured 11.8 million pages; subsequent Core Web Vitals data reinforces the 3-second threshold as a critical UX boundary.</p>
+          <a class="cite-note-link" href="/learn/research/mobile-page-speed-3-second-rule/" target="_blank" rel="noopener">Read Don's 2-minute summary <span aria-hidden="true">↗</span></a>
           <a href="https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/" target="_blank" rel="noopener">Read the full study on Think with Google</a>
         </div>
       </details>
@@ -702,13 +703,15 @@
 
       <h3>Leak #3 — Your hours are hiding</h3>
       <p>The single most common question on a restaurant website is "are you open right now?" — and most sites answer it by burying the hours in the footer, hiding them behind a "Visit" tab, or showing them only on a separate Contact page. The visitor rarely clicks. They just switch back to Google and book somewhere else.</p>
-      <p>This isn't my hunch. <a href="https://www.nngroup.com/articles/local-business/" target="_blank" rel="noopener">Nielsen Norman Group's research on local business websites</a> has repeatedly found that hours and location are the most-searched-for information on small-business sites — and the most frequently hidden. Owners often think the hours <span data-say="liv">live</span> "in the footer, where people will find them," without testing what happens when a first-time visitor, who's never seen the footer exist, tries to find them in five seconds.</p>
+      <p>This isn't my hunch. <a class="cite-note-link" href="/learn/research/local-business-websites/" target="_blank" rel="noopener">Read Don's 2-minute summary <span aria-hidden="true">↗</span></a>
+          <a href="https://www.nngroup.com/articles/local-business/" target="_blank" rel="noopener">Nielsen Norman Group's research on local business websites</a> has repeatedly found that hours and location are the most-searched-for information on small-business sites — and the most frequently hidden. Owners often think the hours <span data-say="liv">live</span> "in the footer, where people will find them," without testing what happens when a first-time visitor, who's never seen the footer exist, tries to find them in five seconds.</p>
       <p><strong>How to test it in thirty seconds:</strong> open your site cold. Time how many seconds pass before you can see <em>today's</em> hours without scrolling or clicking anything. If it's more than five, you've got Leak #3.</p>
       <p><strong>The fix:</strong> put hours in the hero, or in a sticky header, or in a small "OPEN NOW · until 10 PM" badge that auto-updates based on the current time. The badge is my favorite — it takes about thirty lines of JavaScript and it reassures the visitor at exactly the moment they need it.</p>
 
       <h3>Leak #4 — The reservation button is buried or missing</h3>
       <p>Some restaurant sites don't have a reservation button on the homepage at all. Others have one, but it's in a dropdown menu at the top right, or it's a small text link at the bottom of a long hero, or it only lives on the "Contact" page. This is the leak that frustrates me the most, because the fix is so cheap and the impact is so obvious.</p>
-      <p>There's a well-established UX principle here — <a href="https://www.nngroup.com/articles/fittss-law/" target="_blank" rel="noopener">Fitts's Law</a>, which in plain English says: <em>the harder a button is to reach, the less often people press it</em>. A reservation button at the top of a nav that requires a tap to open and then a second tap to select is twice as hard to hit as a button that's permanently visible at the bottom of the screen. You lose conversion at every step of the tap path.</p>
+      <p>There's a well-established UX principle here — <a class="cite-note-link" href="/learn/research/fittss-law/" target="_blank" rel="noopener">Read Don's 2-minute summary <span aria-hidden="true">↗</span></a>
+          <a href="https://www.nngroup.com/articles/fittss-law/" target="_blank" rel="noopener">Fitts's Law</a>, which in plain English says: <em>the harder a button is to reach, the less often people press it</em>. A reservation button at the top of a nav that requires a tap to open and then a second tap to select is twice as hard to hit as a button that's permanently visible at the bottom of the screen. You lose conversion at every step of the tap path.</p>
       <p><strong>How to test it in thirty seconds:</strong> open your homepage on your phone. Without scrolling or opening any menus, can you tap "Reserve" in a single gesture? If not — Leak #4.</p>
       <p><strong>The fix:</strong> add a sticky bottom-of-screen reservation CTA on every mobile page. It's maybe an hour of work on a custom site. On most template builders you can approximate it with a floating widget. Either way, it's the single highest-ROI change you can make for conversion — and most of the restaurants I've audited have never even considered it.</p>
 
@@ -722,6 +725,7 @@
         <div class="cite-body">
           <p><span class="cite-source">Baymard Institute</span> — "49 Cart Abandonment Rate Statistics"</p>
           <p>A regularly updated meta-analysis of dozens of studies on online shopping cart abandonment. The average rate across all studies is approximately 70%. "Account creation required" is consistently one of the top 2–3 reasons cited by shoppers who abandoned during checkout. While the data is from e-commerce (not reservations), the UX friction pattern — more fields = more dropoff — applies directly to any multi-step form.</p>
+          <a class="cite-note-link" href="/learn/research/cart-abandonment-rate/" target="_blank" rel="noopener">Read Don's 2-minute summary <span aria-hidden="true">↗</span></a>
           <a href="https://baymard.com/lists/cart-abandonment-rate" target="_blank" rel="noopener">Baymard cart abandonment research</a>
         </div>
       </details>
@@ -771,10 +775,14 @@
     <aside class="sources">
       <p class="sources-label">Sources</p>
       <ol>
-        <li>Daniel An, <cite>"Find out how you stack up to new industry benchmarks for mobile page speed,"</cite> Think with Google, February 2017. <a href="https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/" target="_blank" rel="noopener">thinkwithgoogle.com</a></li>
-        <li>Jakob Nielsen and Kara Pernice, <cite>"Usability of Local Business Websites,"</cite> Nielsen Norman Group. <a href="https://www.nngroup.com/articles/local-business/" target="_blank" rel="noopener">nngroup.com</a></li>
-        <li>Raluca Budiu, <cite>"Fitts's Law and Its Applications in UX,"</cite> Nielsen Norman Group. <a href="https://www.nngroup.com/articles/fittss-law/" target="_blank" rel="noopener">nngroup.com</a></li>
-        <li>Baymard Institute, <cite>"Cart Abandonment Rate Statistics,"</cite> Baymard Research. <a href="https://baymard.com/lists/cart-abandonment-rate" target="_blank" rel="noopener">baymard.com</a></li>
+        <li>Daniel An, <cite>"Find out how you stack up to new industry benchmarks for mobile page speed,"</cite> Think with Google, February 2017. <a class="cite-note-link" href="/learn/research/mobile-page-speed-3-second-rule/" target="_blank" rel="noopener">Read Don's 2-minute summary <span aria-hidden="true">↗</span></a>
+          <a href="https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/" target="_blank" rel="noopener">thinkwithgoogle.com</a></li>
+        <li>Jakob Nielsen and Kara Pernice, <cite>"Usability of Local Business Websites,"</cite> Nielsen Norman Group. <a class="cite-note-link" href="/learn/research/local-business-websites/" target="_blank" rel="noopener">Read Don's 2-minute summary <span aria-hidden="true">↗</span></a>
+          <a href="https://www.nngroup.com/articles/local-business/" target="_blank" rel="noopener">nngroup.com</a></li>
+        <li>Raluca Budiu, <cite>"Fitts's Law and Its Applications in UX,"</cite> Nielsen Norman Group. <a class="cite-note-link" href="/learn/research/fittss-law/" target="_blank" rel="noopener">Read Don's 2-minute summary <span aria-hidden="true">↗</span></a>
+          <a href="https://www.nngroup.com/articles/fittss-law/" target="_blank" rel="noopener">nngroup.com</a></li>
+        <li>Baymard Institute, <cite>"Cart Abandonment Rate Statistics,"</cite> Baymard Research. <a class="cite-note-link" href="/learn/research/cart-abandonment-rate/" target="_blank" rel="noopener">Read Don's 2-minute summary <span aria-hidden="true">↗</span></a>
+          <a href="https://baymard.com/lists/cart-abandonment-rate" target="_blank" rel="noopener">baymard.com</a></li>
       </ol>
     </aside>
   </div>
@@ -820,6 +828,7 @@
           <li><a href="/blog/">Articles</a></li>
           <li><a href="/tools/">Free tools</a></li>
           <li><a href="/glossary/">Glossary</a></li>
+          <li><a href="/learn/research/">Research</a></li>
           <li><a href="/resources/restaurant-website-checklist/">Restaurant checklist</a></li>
         </ul>
       </nav>
@@ -847,6 +856,6 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260422-search" defer></script>
+<script src="/assets/site.js?v=20260422-research2" defer></script>
 </body>
 </html>

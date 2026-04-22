@@ -139,7 +139,7 @@
      Without this, a slow stylesheet fetch briefly renders the raw
      'Home > Page' links at the top-left of the viewport. -->
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260422-search">
+<link rel="stylesheet" href="/assets/site.css?v=20260422-research2">
 
 <style>
   /* ============ AUDIT TOOL STYLES ============ */
@@ -3861,6 +3861,50 @@
     padding-top: 4px;
   }
   .priority-item .link:hover { color: var(--teal-dark); }
+  /* Secondary Learn-more variant for audit rows whose finding
+     maps to a Muntin research note. Sits below the glossary
+     "Learn more →" with slightly smaller type so the glossary
+     link remains the primary affordance. target="_blank" and a
+     trailing ↗ glyph telegraph the new-tab behavior. */
+  .priority-item .link-research {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--stone);
+    border-bottom: 1px dashed currentColor;
+    padding-top: 0;
+  }
+  .priority-item .link-research:hover,
+  .priority-item .link-research:focus-visible {
+    color: var(--teal);
+    border-bottom-color: var(--teal);
+  }
+  /* "Based on" research-note citations inside the expandable
+     metric glossary at the top of the audit results. Thin,
+     subdued so the main copy reads first. */
+  .metric-glossary .research-inline {
+    margin: 10px 0 0;
+    font-size: 13px;
+    color: var(--stone);
+    letter-spacing: 0.01em;
+  }
+  .metric-glossary .research-inline strong {
+    color: var(--ink-soft);
+    font-weight: 600;
+    margin-right: 4px;
+  }
+  .metric-glossary .research-inline a {
+    color: var(--teal);
+    text-decoration: none;
+    border-bottom: 1px dashed currentColor;
+  }
+  .metric-glossary .research-inline a:hover,
+  .metric-glossary .research-inline a:focus-visible {
+    color: var(--teal-dark);
+    border-bottom-color: var(--teal-dark);
+  }
   /* Sprint F1: "Copy for your developer" button on failing +
      unverified priority check rows. Same visual class as the existing
      feedback-btn but filled-teal to distinguish the primary handoff
@@ -5346,6 +5390,7 @@
           <h4>Performance (0–100)</h4>
           <p>How fast your pages load and become usable on a phone. This is the metric that quietly costs restaurants the most money — Google's own research found that 53% of mobile visitors leave a page that takes longer than three seconds to load. A higher score means more people stick around long enough to see your menu.</p>
           <p class="ranges"><strong>Good:</strong> 90+ &nbsp;·&nbsp; <strong>Needs work:</strong> 50–89 &nbsp;·&nbsp; <strong>Failing:</strong> &lt;50</p>
+          <p class="research-inline"><strong>Based on:</strong> <a href="/learn/research/lighthouse-performance-scoring/" target="_blank" rel="noopener">How Lighthouse scores performance <span aria-hidden="true">↗</span><span class="sr-only"> (opens in new tab)</span></a> · <a href="/learn/research/mobile-page-speed-3-second-rule/" target="_blank" rel="noopener">The 3-second mobile load rule <span aria-hidden="true">↗</span><span class="sr-only"> (opens in new tab)</span></a></p>
 
           <h4>Accessibility (0–100)</h4>
           <p>Whether people with vision impairments, motor differences, or screen readers can actually use your site. Half of this is legally required in many states. The other half is just good manners — about one in five of your customers benefits directly from an accessible site, and everyone benefits indirectly (better text contrast makes your site easier to read in sunlight too).</p>
@@ -5371,6 +5416,7 @@
             <li><strong>TBT — Total Blocking Time.</strong> The lab-only proxy for INP. How long the page is frozen while JavaScript runs during the simulated load. Useful when CrUX hasn't collected INP yet. <em>Good: under 200ms · Poor: over 600ms.</em></li>
             <li><strong>FCP — First Contentful Paint.</strong> How long until the very first pixel renders. Often earlier than LCP — this is "the page is doing something" versus "the page is usable." <em>Good: under 1.8s · Poor: over 3s.</em></li>
           </ul>
+          <p class="research-inline"><strong>Based on:</strong> <a href="/learn/research/lighthouse-performance-scoring/" target="_blank" rel="noopener">How Lighthouse scores performance <span aria-hidden="true">↗</span><span class="sr-only"> (opens in new tab)</span></a></p>
         </div>
       </details>
 
@@ -12741,6 +12787,37 @@
       subtypeId: btype
     };
 
+    // Research-note mapping for audit check rows. When a check's
+    // finding is grounded in a Muntin-authored research summary,
+    // the row gets a second "Based on ..." link alongside the
+    // glossary "Learn more" — target="_blank" so the reader's
+    // audit state is preserved when they pop over to read it.
+    //
+    // Mapping is keyed by `audit:<lighthouse-id>` for Lighthouse-
+    // style checks or `type:<detector-type>` for Muntin's own
+    // detector checks. Unmapped checks still show only the
+    // glossary link, unchanged. Adding a new mapping is one row.
+    var CHECK_TO_RESEARCH = {
+      'audit:tap-targets':  { slug: 'fittss-law',                      label: "Based on Fitts's Law" },
+      'type:conversions':   { slug: 'cart-abandonment-rate',           label: 'Based on Baymard research' },
+      'type:hours-accuracy':{ slug: 'local-business-websites',         label: 'Based on NNG research' },
+      'type:phone':         { slug: 'fittss-law',                      label: "Based on Fitts's Law" },
+      'type:menu-format':   { slug: 'mobile-page-speed-3-second-rule', label: "Based on Google's 3-second study" }
+    };
+    function researchLinkFor(def) {
+      if (!def) return '';
+      var key = def.audit ? 'audit:' + def.audit
+              : def.type  ? 'type:'  + def.type
+              : null;
+      var match = key ? CHECK_TO_RESEARCH[key] : null;
+      if (!match) return '';
+      return '<a class="link link-research" href="/learn/research/' + match.slug + '/" target="_blank" rel="noopener" title="Muntin research note — opens in a new tab">' +
+               escapeHtml(match.label) +
+               ' <span aria-hidden="true">↗</span>' +
+               '<span class="sr-only"> (opens in a new tab)</span>' +
+             '</a>';
+    }
+
     results.forEach(function(entry){
       var def = entry.def;
       var result = entry.result;
@@ -12852,7 +12929,8 @@
           feedbackHtml +
           devPromptHtml +
         '</div>' +
-        '<a class="link" href="/glossary/?filter=restaurants' + def.anchor + '">Learn more →</a>';
+        '<a class="link" href="/glossary/?filter=restaurants' + def.anchor + '">Learn more →</a>' +
+        researchLinkFor(def);
       container.appendChild(row);
     });
 
@@ -15907,6 +15985,7 @@
           <li><a href="/blog/">Articles</a></li>
           <li><a href="/tools/">Free tools</a></li>
           <li><a href="/glossary/">Glossary</a></li>
+          <li><a href="/learn/research/">Research</a></li>
           <li><a href="/resources/restaurant-website-checklist/">Restaurant checklist</a></li>
         </ul>
       </nav>
@@ -15934,6 +16013,6 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260422-search" defer></script>
+<script src="/assets/site.js?v=20260422-research2" defer></script>
 </body>
 </html>

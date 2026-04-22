@@ -1826,3 +1826,113 @@ br.br-lg{display:none}
   .search-loading::before{animation:none}
   .search-modal,.search-modal-inner,.nav-search-btn{transition:none}
 }
+
+/* ============================================================
+   RESEARCH NOTES (/learn/research/)
+   The internal-summary-of-external-studies layer. Keeps readers
+   in the ecosystem while still pointing to the original source.
+   Used by the research hub index and each individual note.
+   ============================================================ */
+
+/* ───── Hub index ───── */
+.research-index{list-style:none;margin:32px auto 0;padding:0;max-width:920px;display:grid;gap:18px}
+.research-index-card{display:block;padding:32px 36px;background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);text-decoration:none;color:inherit;transition:transform var(--t-med) var(--ease-out),box-shadow var(--t-med) var(--ease-out),border-color var(--t-fast) var(--ease)}
+.research-index-card:hover{transform:translateY(-3px);box-shadow:0 20px 40px -14px rgba(20,22,26,0.10);border-color:var(--teal)}
+.research-index-source{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);display:inline-block;margin-bottom:14px}
+.research-index-card h3{font-family:var(--font-display);font-size:clamp(22px,2.6vw,28px);font-weight:500;letter-spacing:-0.01em;margin:0 0 10px;color:var(--ink);line-height:1.2}
+.research-index-card p{font-size:15.5px;line-height:1.6;color:var(--stone);margin:0 0 16px}
+.research-index-uses{font-family:var(--font-body);font-size:12px;color:var(--stone-2);letter-spacing:0.04em}
+.research-index-uses strong{color:var(--teal);font-weight:600}
+
+.research-method{max-width:720px;margin:72px auto 0;padding-top:40px;border-top:1px solid var(--line)}
+.research-method h3{font-family:var(--font-display);font-size:22px;font-weight:500;letter-spacing:-0.01em;margin:0 0 14px;color:var(--ink)}
+.research-method p{font-size:15.5px;line-height:1.65;color:var(--stone);margin:0 0 14px}
+
+/* ───── Note hero ───── */
+.research-hero{max-width:760px;margin:0 auto;text-align:center;padding-bottom:24px}
+.research-source-line{font-family:var(--font-body);font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone);margin-bottom:20px;display:inline-flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px}
+.research-source-publisher{color:var(--teal)}
+.research-source-kind{color:var(--stone-2)}
+.research-source-sep{color:var(--stone-2);font-weight:500}
+.research-hero h1{font-family:var(--font-display);font-size:clamp(30px,4vw,46px);font-weight:500;letter-spacing:-0.02em;line-height:1.1;margin:0 0 24px;color:var(--ink)}
+.research-dek{font-family:var(--font-display);font-style:italic;font-size:clamp(18px,2.2vw,22px);line-height:1.45;color:var(--stone);max-width:620px;margin:0 auto;font-weight:400}
+
+/* ───── Note body ───── */
+.research-body{max-width:720px;margin:0 auto}
+.research-body h2{font-family:var(--font-display);font-size:clamp(24px,2.8vw,30px);font-weight:500;letter-spacing:-0.01em;color:var(--ink);margin:48px 0 16px}
+.research-body h2:first-child{margin-top:0}
+.research-body p{font-size:17px;line-height:1.7;color:var(--ink-soft);margin:0 0 18px}
+.research-body p strong{color:var(--ink)}
+.research-body p em{color:var(--teal);font-style:italic}
+.research-body a{color:var(--teal);border-bottom:1px dashed currentColor;font-weight:500;transition:color var(--t-fast) var(--ease)}
+.research-body a:hover{color:var(--teal-dark)}
+.research-body a.btn{color:var(--cream);border-bottom:0}
+.research-body a.btn:hover{color:var(--cream)}
+
+.research-note{background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:0 var(--r-md) var(--r-md) 0;padding:26px 32px;margin:8px 0 48px}
+.research-note h2{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--teal);margin:0 0 14px}
+.research-note p{font-size:16px;line-height:1.65;color:var(--ink-soft);margin:0 0 14px}
+.research-note p:last-child{margin:0}
+
+.research-findings{list-style:none;margin:0 0 20px;padding:0;display:grid;gap:10px}
+.research-findings > li{position:relative;padding:14px 20px 14px 48px;background:var(--white);border:1px solid var(--line);border-radius:var(--r-sm);font-size:16px;line-height:1.6;color:var(--ink-soft)}
+.research-findings > li::before{content:'';position:absolute;left:18px;top:22px;width:8px;height:8px;border-radius:50%;background:var(--teal)}
+.research-findings > li strong{color:var(--ink);font-weight:600}
+
+.research-uses{list-style:none;margin:0 0 48px;padding:0;display:grid;gap:10px}
+.research-uses > li > a{display:block;padding:16px 20px;background:var(--white);border:1px solid var(--line);border-radius:var(--r-sm);text-decoration:none;color:inherit;border-bottom:0;transition:border-color var(--t-fast) var(--ease),background var(--t-fast) var(--ease)}
+.research-uses > li > a:hover{border-color:var(--teal);background:var(--cream)}
+.research-uses > li > a strong{display:block;font-family:var(--font-display);font-size:17px;font-weight:500;letter-spacing:-0.01em;color:var(--ink);margin-bottom:4px}
+.research-uses > li > a span{display:block;font-family:var(--font-body);font-size:14px;line-height:1.55;color:var(--stone)}
+
+/* ───── "Go to the source" CTA (the external link) ───── */
+.research-original{display:grid;grid-template-columns:1fr auto;gap:28px;align-items:center;padding:28px 32px;margin:48px 0;background:var(--ink);color:var(--cream);border-radius:var(--r-md);position:relative;overflow:hidden}
+.research-original::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 85% 15%,rgba(197,160,89,0.10),transparent 55%);pointer-events:none}
+.research-original-text{position:relative}
+.research-original-kicker{font-family:var(--font-body);font-size:10px;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;color:#C5A059;margin:0 0 8px}
+.research-original-title{font-family:var(--font-display);font-size:20px;font-weight:500;letter-spacing:-0.01em;color:var(--cream);margin:0 0 6px;line-height:1.25}
+.research-original-meta{font-family:var(--font-body);font-size:13px;color:rgba(250,247,242,0.72);margin:0}
+.research-original .btn{position:relative;flex-shrink:0;white-space:nowrap}
+.research-original .btn{background:var(--cream);color:var(--ink);border:0}
+.research-original .btn:hover{background:var(--white)}
+.research-original .btn svg{width:16px;height:16px;margin-left:4px}
+@media (max-width:720px){
+  .research-original{grid-template-columns:1fr;gap:18px;padding:24px 22px;text-align:left}
+  .research-original .btn{justify-self:start}
+}
+
+.research-citation{font-family:var(--font-body);font-size:14.5px;line-height:1.65;color:var(--stone);background:var(--cream-2);border-left:3px solid var(--line-dark);padding:14px 18px;border-radius:0 var(--r-sm) var(--r-sm) 0;margin:0 0 24px}
+.research-citation cite{color:var(--ink);font-style:italic;font-weight:500}
+
+.research-reviewed{font-family:var(--font-body);font-size:13px;color:var(--stone-2);margin-top:32px;padding-top:20px;border-top:1px solid var(--line)}
+.research-reviewed strong{color:var(--stone)}
+
+/* ───── Inline citation chip (for use inside blog posts & tools) ───── */
+/* Pattern: <a class="cite-chip" href="/learn/research/<slug>/">Source</a>
+   Renders as a subtle inline pill that signals "click for the evidence"
+   without disrupting the reading flow. Used to link from .cite summary
+   lines back to the research note. */
+.cite-chip{display:inline-flex;align-items:center;gap:5px;padding:1px 8px;margin-left:4px;font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.04em;color:var(--teal);background:var(--teal-tint);border:1px solid transparent;border-radius:999px;text-decoration:none;vertical-align:1px;transition:background var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease)}
+.cite-chip:hover{background:var(--white);border-color:var(--teal)}
+.cite-chip svg{width:11px;height:11px}
+
+/* ===== Research-note CTA inside a .cite details block =====
+   The .cite-body now leads with an internal "Read Don's summary"
+   link (new tab) and keeps the external source link below it.
+   This treatment makes the internal summary visually primary while
+   preserving the external reference for readers who want the raw
+   study. See scripts/wire-research-citations.mjs. */
+.cite-note-link{
+  display:inline-flex;align-items:center;gap:6px;
+  margin:4px 0 10px;padding:7px 14px;
+  background:var(--teal-tint);color:var(--teal-dark);
+  border:1px solid rgba(31,78,91,0.22);border-radius:999px;
+  font-family:var(--font-body);font-size:13px;font-weight:600;letter-spacing:0.01em;
+  text-decoration:none;
+  transition:background var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease);
+}
+.cite-note-link:hover,.cite-note-link:focus-visible{
+  background:var(--teal);color:var(--cream);border-color:var(--teal);
+}
+.cite-note-link span{font-size:12px;opacity:0.8}
+.cite-note-link:hover span{opacity:1}
