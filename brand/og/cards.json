@@ -479,6 +479,74 @@
           "Dependencia vs. portabilidad"
         ]
       }
+    },
+
+    {
+      "slug": "audit",
+      "kind": "tool",
+      "locale": "en",
+      "eyebrow": "FREE · 30 SECONDS · NO SIGNUP",
+      "title_1": "Website",
+      "title_italic": "audits",
+      "title_2": "that read.",
+      "dek": "Industry-specific. Not a generic Lighthouse wrapper.",
+      "focus": {
+        "type": "score-ring",
+        "value": 75,
+        "label": "A REAL RESULT"
+      }
+    },
+    {
+      "slug": "audit-es",
+      "kind": "tool",
+      "locale": "es",
+      "eyebrow": "GRATIS · 30 SEGUNDOS · SIN REGISTRO",
+      "title_1": "Diagnósticos",
+      "title_italic": "que",
+      "title_2": "se leen.",
+      "dek": "Específicos por sector. No es un envoltorio genérico de Lighthouse.",
+      "focus": {
+        "type": "score-ring",
+        "value": 75,
+        "label": "UN RESULTADO REAL"
+      }
+    },
+
+    {
+      "slug": "audit-restaurants",
+      "kind": "tool",
+      "locale": "en",
+      "eyebrow": "DROP YOUR URL · GET RESULTS IN 30 SECONDS",
+      "title_1": "Restaurant",
+      "title_italic": "website",
+      "title_2": "audit.",
+      "dek": "Mobile speed, menu readability, ordering, GBP, reservations, schema.",
+      "focus": {
+        "type": "checks",
+        "items": [
+          { "label": "Mobile-friendly menu", "pass": true },
+          { "label": "Schema markup", "pass": false },
+          { "label": "Online ordering", "pass": true }
+        ]
+      }
+    },
+    {
+      "slug": "audit-restaurants-es",
+      "kind": "tool",
+      "locale": "es",
+      "eyebrow": "PEGA TU URL · RESULTADOS EN 30 SEGUNDOS",
+      "title_1": "Auditoría",
+      "title_italic": "para",
+      "title_2": "restaurantes.",
+      "dek": "Velocidad móvil, menú, pedidos, Google Business, reservas, schema.",
+      "focus": {
+        "type": "checks",
+        "items": [
+          { "label": "Menú amigable en móvil", "pass": true },
+          { "label": "Marcado de esquema", "pass": false },
+          { "label": "Pedidos en línea", "pass": true }
+        ]
+      }
     }
   ]
 }

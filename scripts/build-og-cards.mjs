@@ -301,11 +301,49 @@ const focusModules = {
   },
 
   /**
+   * Audit-style check rows. focus.items = array of {label, pass}.
+   * Consistent stroke glyphs for both pass and fail states (no
+   * mixing Unicode text glyphs with stroked paths — the weight-
+   * mismatch this legacy tool card had before).
+   */
+  checks: ({ card, fg, onLight = false }) => {
+    const items = (card.focus?.items ?? []).slice(0, 4);
+    const x = 740;
+    const yStart = snap(160);
+    const rowH = 64;
+    const rowW = 380;
+    const passColor = "#3AA368";
+    const failColor = PALETTE.rust;
+    const rowBg = onLight ? "rgba(20,22,26,0.05)" : "rgba(250,247,242,0.08)";
+    const textColor = onLight ? PALETTE.ink : fg;
+    const rows = items.map((item, i) => {
+      const y = yStart + i * (rowH + 8);
+      const mid = y + rowH / 2;
+      const cx = x + 32;
+      const color = item.pass ? passColor : failColor;
+      const glyph = item.pass
+        ? `<path d="M${cx - 10} ${mid} L${cx - 3} ${mid + 7} L${cx + 11} ${mid - 7}"
+              stroke="${color}" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
+        : `<path d="M${cx - 9} ${mid - 9} L${cx + 9} ${mid + 9} M${cx + 9} ${mid - 9} L${cx - 9} ${mid + 9}"
+              stroke="${color}" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+      return `
+        <rect x="${x}" y="${y}" width="${rowW}" height="${rowH}" rx="10" fill="${rowBg}"/>
+        <circle cx="${cx}" cy="${mid}" r="18" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.4"/>
+        ${glyph}
+        <text x="${cx + 32}" y="${mid + 6}"
+              font-family="Inter, Arial, sans-serif" font-size="17"
+              font-weight="500" fill="${textColor}" opacity="0.9">${xmlEscape(item.label)}</text>
+      `;
+    }).join("");
+    return rows;
+  },
+
+  /**
    * Score ring — circular gauge with threshold zones (for Lighthouse).
    * focus.value = numeric score (0-100), focus.label = under ring.
    * Teal ≥70, gold 50-69, rust <50.
    */
-  "score-ring": ({ card, fg, onLight = false }) => {
+  "score-ring": ({ card, fg, accentHex, onLight = false }) => {
     const value = Math.max(0, Math.min(100, Number(card.focus?.value ?? 0)));
     const label = xmlEscape((card.focus?.label ?? "").toUpperCase());
     const cx = 920;
@@ -314,7 +352,12 @@ const focusModules = {
     const circ = 2 * Math.PI * r;
     const filled = (value / 100) * circ;
     const empty = circ - filled;
-    const zoneColor = value >= 70 ? PALETTE.teal : value >= 50 ? PALETTE.gold : PALETTE.rust;
+    // Good-zone color: on a light bg use teal (the research/brand
+    // accent that reads as "pass"). On a dark bg use the card's
+    // accentHex so the ring pops against the ground. Mid/low zones
+    // are always gold/rust — those read on both.
+    const goodColor = onLight ? PALETTE.teal : (accentHex ?? PALETTE.gold);
+    const zoneColor = value >= 70 ? goodColor : value >= 50 ? PALETTE.gold : PALETTE.rust;
     const trackColor = onLight ? "rgba(20,22,26,0.08)" : "rgba(250,247,242,0.14)";
     const numberColor = onLight ? PALETTE.ink : fg;
     // Threshold ticks at 50 and 90 (outer).
@@ -551,10 +594,76 @@ function renderArticle(card) {
 `;
 }
 
+/**
+ * tool — free tools under /audit/, /audit/restaurants/, and the
+ * tool-* family. Saturated teal background (differentiates from
+ * pages and articles), gold accent (per design brief: Tools →
+ * gold), cream type.
+ */
+function renderTool(card) {
+  const bg = PALETTE.teal;
+  const fg = PALETTE.cream;
+  const accentHex = PALETTE[card.accent ?? "gold"] ?? PALETTE.gold;
+  const eyebrow = (card.eyebrow ?? "").toUpperCase();
+
+  const title1 = xmlEscape(card.title_1 ?? "");
+  const titleItalic = xmlEscape(card.title_italic ?? "");
+  const title2 = xmlEscape(card.title_2 ?? "");
+  const dek = xmlEscape(card.dek ?? "");
+
+  const focusFn = focusModules[card.focus?.type];
+  const focus = focusFn ? focusFn({ card, fg, accentHex }) : "";
+
+  const yEyebrow = snap(104);
+  const yT1 = snap(192);
+  const yTi = snap(264);
+  const yT2 = snap(336);
+  const yDek = snap(416);
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CANVAS_W} ${CANVAS_H}" width="${CANVAS_W}" height="${CANVAS_H}">
+  <defs>
+    <radialGradient id="toolglow" cx="82%" cy="28%" r="65%">
+      <stop offset="0%" stop-color="${PALETTE.cream}" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="${bg}" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="${CANVAS_W}" height="${CANVAS_H}" fill="${bg}"/>
+  <rect width="${CANVAS_W}" height="${CANVAS_H}" fill="url(#toolglow)"/>
+  <rect x="0" y="0" width="12" height="${CANVAS_H * 0.4}" fill="${accentHex}"/>
+  <rect x="0" y="${CANVAS_H * 0.4}" width="12" height="${CANVAS_H * 0.6}" fill="${accentHex}" opacity="0.4"/>
+
+  <text x="${EDGE}" y="${yEyebrow}"
+        font-family="Inter, Arial, sans-serif" font-size="13"
+        font-weight="700" letter-spacing="4" fill="${accentHex}">${xmlEscape(eyebrow)}</text>
+
+  <text x="${EDGE}" y="${yT1}"
+        font-family="Fraunces, Georgia, serif" font-size="62"
+        font-weight="500" letter-spacing="-2" fill="${fg}">${title1}</text>
+  <text x="${EDGE}" y="${yTi}"
+        font-family="Fraunces, Georgia, serif" font-style="italic"
+        font-size="62" font-weight="400" letter-spacing="-2"
+        fill="${accentHex}">${titleItalic}</text>
+  <text x="${EDGE}" y="${yT2}"
+        font-family="Fraunces, Georgia, serif" font-size="62"
+        font-weight="500" letter-spacing="-2" fill="${fg}">${title2}</text>
+
+  <text x="${EDGE}" y="${yDek}"
+        font-family="Inter, Arial, sans-serif" font-size="20"
+        font-weight="400" fill="${fg}" opacity="0.72">${dek}</text>
+
+  ${focus}
+
+  ${ornament({ color: fg })}
+  ${footer({ color: "rgba(250,247,242,0.6)", ruleColor: "rgba(250,247,242,0.2)" })}
+</svg>
+`;
+}
+
 const templates = {
   page: renderPage,
   research: renderResearch,
   article: renderArticle,
+  tool: renderTool,
 };
 
 // -------------------------------------------------------------
