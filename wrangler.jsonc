@@ -69,7 +69,13 @@
     //                             mirror of the restaurant audit from
     //                             the EN master so i18n changes land
     //                             in both locales automatically.
-    "command": "node scripts/sync-includes.mjs && node scripts/stamp-hreflang.mjs && node scripts/stamp-es-restaurant-audit.mjs && node scripts/check-locale-parity.mjs --check && mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md --exclude=src --exclude=scripts --exclude=_includes . | tar -xf - -C dist"
+    //   pagefind                — builds the static search index after
+    //                             the dist/ tree is materialized. Uses
+    //                             npx -y so no package.json is needed;
+    //                             outputs dist/pagefind/ which site.js
+    //                             lazy-loads on first open of the
+    //                             search modal. Config at pagefind.yml.
+    "command": "node scripts/sync-includes.mjs && node scripts/stamp-hreflang.mjs && node scripts/stamp-es-restaurant-audit.mjs && node scripts/check-locale-parity.mjs --check && mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md --exclude=src --exclude=scripts --exclude=_includes --exclude=pagefind.yml . | tar -xf - -C dist && npx -y pagefind@latest --site dist"
   },
   "assets": {
     "directory": "./dist",

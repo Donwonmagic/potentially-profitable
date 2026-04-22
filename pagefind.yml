@@ -1,0 +1,40 @@
+# Pagefind static search index configuration.
+# https://pagefind.app/docs/config-options/
+#
+# The index is built at deploy time by the `npx pagefind` command in
+# wrangler.jsonc's build step, operating on the staged dist/ tree.
+#
+# Locale handling: Pagefind reads <html lang="..."> on each page and
+# builds a separate index per language, so a Spanish reader searching
+# from /es/learn/ gets Spanish results and an English reader gets
+# English results. The UI (loaded from site.js) passes the current
+# page's locale when initializing the search.
+#
+# Chrome exclusion: the nav, footer, breadcrumb, and various overlay
+# chrome elements are boilerplate on every page and would dilute the
+# search index. Excluding them keeps results focused on page content.
+# The lang-hint banner, listen button, and share dropdown are pure UI
+# with no reader-relevant text; ignored for the same reason.
+
+exclude_selectors:
+  - "header.nav"
+  - "footer"
+  - "nav.breadcrumb"
+  - ".lang-hint"
+  - ".listen-btn"
+  - ".listen-dock"
+  - ".listen-card"
+  - ".share-dropdown"
+  - ".skip-link"
+  - "[data-pagefind-ignore]"
+
+# Pagefind's default glob matches **/*.{html}. Draft posts under
+# /blog/drafts/ (and their Spanish mirrors) are deployed intentionally
+# — they're reachable by direct URL for preview/review — and they
+# carry a <meta name="robots" content="noindex,nofollow"> so Google
+# won't surface them, but Pagefind doesn't auto-respect that meta.
+# Acceptable for v1: drafts appearing in site search is low-stakes
+# (they're unfinished, not secret), and they carry the same noindex
+# signal so a reader who searches and lands on one sees the right
+# "draft, work in progress" framing in the page itself. Can add
+# data-pagefind-ignore attributes to draft bodies later if needed.
