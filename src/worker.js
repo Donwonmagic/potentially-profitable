@@ -48,7 +48,7 @@ import {
 import { withAuditCache } from './lib/audit-cache.js';
 import { createRateLimiter, clientIpFromRequest } from './lib/rate-limit.js';
 import { RateLimiter, checkDurableRateLimit } from './lib/rate-limiter-do.js';
-import { saveSnapshot, getSnapshot, isValidTokenShape } from './lib/audit-snapshots.js';
+import { saveSnapshot, getSnapshot, getSnapshotOg, isValidTokenShape } from './lib/audit-snapshots.js';
 
 // Durable Object classes must be re-exported from the Worker entry
 // module so the runtime can instantiate them when the binding fires.
@@ -110,6 +110,7 @@ const API_ROUTES = {
   '/api/checklist':     handleChecklist,
   '/api/audit-report':  handleAuditReport,
   '/api/audit-snapshot': handleAuditSnapshot,
+  '/api/og-snapshot':    handleOgSnapshot,
   '/api/ping':          handlePing,
   '/api/gbp-lookup':    handleGbpLookup,
   '/api/seo-check':     handleSeoCheck,
@@ -168,7 +169,7 @@ export default {
         if (request.method !== 'GET' && request.method !== 'POST') {
           return jsonResponse({ ok: false, error: 'Method not allowed — audit-snapshot accepts GET or POST' }, 405);
         }
-      } else if (pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details' || pathname === '/api/dns-email-health') {
+      } else if (pathname === '/api/og-snapshot' || pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details' || pathname === '/api/dns-email-health') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
         }
@@ -318,10 +319,93 @@ export default {
       }
     }
 
+    // D7b: social-crawler meta injection for shared audit permalinks.
+    // When the request is for the audit tool page AND carries a valid
+    // ?s=<token> query param, pull the snapshot metadata from KV and
+    // rewrite og:*/twitter:* meta tags on the static response so Slack,
+    // LinkedIn, X, Facebook, etc. render the per-snapshot score card
+    // instead of the generic site OG. The rewrite is streaming via
+    // HTMLRewriter — zero overhead when ?s= isn't present.
+    const snapshotPaths = ['/tools/audits/restaurant/', '/tools/audits/restaurant/index.html',
+                           '/es/tools/audits/restaurant/', '/es/tools/audits/restaurant/index.html'];
+    if (request.method === 'GET' && snapshotPaths.includes(pathname)) {
+      const snapToken = url.searchParams.get('s');
+      if (snapToken && isValidTokenShape(snapToken) && env.AUDIT_SNAPSHOTS) {
+        const snap = await getSnapshot(env, snapToken);
+        if (snap.ok && snap.snapshot) {
+          const base = await env.ASSETS.fetch(request);
+          return rewriteAuditPageForSnapshot(base, snap.snapshot, snapToken, url);
+        }
+      }
+    }
+
     // Fall through to the static-asset server.
     return env.ASSETS.fetch(request);
   },
 };
+
+// D7b: rewrite og:*/twitter:* meta tags on the audit tool page so
+// shared permalinks get a rich per-snapshot social card. Uses
+// HTMLRewriter, which Cloudflare offers as a zero-parse streaming
+// transformer — each matched element handler runs as the bytes flow
+// through, no DOM construction.
+//
+// String computation extracted to buildSnapshotMetaOverrides() so the
+// logic can be unit-tested without needing an HTMLRewriter instance.
+export function buildSnapshotMetaOverrides(snapshot, token, reqUrl) {
+  const score = (typeof snapshot.score === 'number') ? Math.round(snapshot.score) : null;
+  const host = (function() {
+    try { return new URL(snapshot.auditedUrl).host.replace(/^www\./i, ''); }
+    catch (_) { return String(snapshot.auditedUrl || '').slice(0, 80); }
+  })();
+  const isEs = snapshot.language === 'es';
+  const titleLabel = isEs ? 'Puntuación de auditoría' : 'Audit score';
+  const ogTitle = (score !== null)
+    ? `${titleLabel}: ${score}/100 — ${host}`
+    : `${isEs ? 'Auditoría compartida' : 'Shared audit'} — ${host}`;
+  // Description: verdict if present, otherwise a generic one.
+  const rawVerdict = (snapshot.verdict || '').replace(/\s+/g, ' ').trim();
+  const ogDescription = rawVerdict
+    ? (rawVerdict.length > 200 ? rawVerdict.slice(0, 199) + '…' : rawVerdict)
+    : (isEs
+        ? `Auditoría del sitio web del restaurante compartida desde muntin.digital.`
+        : `A restaurant website audit snapshot shared from muntin.digital.`);
+  // og:image: always the snapshot OG endpoint. When no custom OG
+  // was saved, /api/og-snapshot redirects to the static brand card.
+  const origin = reqUrl.origin;
+  const ogImage = `${origin}/api/og-snapshot?token=${encodeURIComponent(token)}`;
+  // og:url: honor the locale path the request came in on.
+  const canonicalUrl = `${origin}${reqUrl.pathname}?s=${encodeURIComponent(token)}`;
+  return { ogTitle, ogDescription, ogImage, canonicalUrl };
+}
+
+function rewriteAuditPageForSnapshot(response, snapshot, token, reqUrl) {
+  const { ogTitle, ogDescription, ogImage, canonicalUrl } = buildSnapshotMetaOverrides(snapshot, token, reqUrl);
+
+  const rw = new HTMLRewriter()
+    .on('meta[property="og:title"]',       { element(el) { el.setAttribute('content', ogTitle); } })
+    .on('meta[name="twitter:title"]',      { element(el) { el.setAttribute('content', ogTitle); } })
+    .on('meta[property="og:description"]', { element(el) { el.setAttribute('content', ogDescription); } })
+    .on('meta[name="twitter:description"]',{ element(el) { el.setAttribute('content', ogDescription); } })
+    .on('meta[property="og:image"]',       { element(el) { el.setAttribute('content', ogImage); } })
+    .on('meta[name="twitter:image"]',      { element(el) { el.setAttribute('content', ogImage); } })
+    .on('meta[property="og:url"]',         { element(el) { el.setAttribute('content', canonicalUrl); } });
+  // Clone so we can strip the content-length header that won't be
+  // accurate once the rewriter streams its output.
+  const headers = new Headers(response.headers);
+  headers.delete('content-length');
+  // Social crawlers sometimes aggressively cache OG lookups.
+  // Short cache is fine because snapshots are immutable once written.
+  const existingCc = headers.get('cache-control');
+  if (!existingCc || existingCc.indexOf('no-store') === -1) {
+    headers.set('cache-control', 'public, max-age=300, s-maxage=900');
+  }
+  return rw.transform(new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  }));
+}
 
 
 // ============================================================
@@ -3509,6 +3593,39 @@ async function handleAuditSnapshot(request, env, ctx) {
       'cache-control': 'public, max-age=300, s-maxage=300',
     },
   });
+}
+
+// D7b: /api/og-snapshot?token=<token>
+// Returns the per-snapshot OG PNG (uploaded in D7a) with
+// content-type:image/png and a long cache-control. When no custom
+// OG was saved (legacy snapshots, client-side Canvas failure, OG
+// write failure), redirects to the static brand card so every
+// shared link has SOMETHING for crawlers to fetch.
+async function handleOgSnapshot(request, env, ctx) {
+  const url = new URL(request.url);
+  const token = url.searchParams.get('token') || url.searchParams.get('s') || '';
+  if (!isValidTokenShape(token)) {
+    // Garbage token → redirect to the static brand OG so a
+    // malformed share link still renders a social preview.
+    return Response.redirect(`${url.origin}/brand/og/audit-restaurants.png`, 302);
+  }
+  const og = await getSnapshotOg(env, token);
+  if (og.ok && og.bytes) {
+    return new Response(og.bytes, {
+      status: 200,
+      headers: {
+        'content-type': 'image/png',
+        // 7-day cache: snapshots are immutable once written, so
+        // crawlers can hold onto the image for a long time.
+        'cache-control': 'public, max-age=604800, s-maxage=604800, immutable',
+        'access-control-allow-origin': '*',
+      },
+    });
+  }
+  // Missing custom OG → fall back to the static brand card. 302
+  // rather than returning the bytes so the URL stays stable while
+  // the crawler cache learns the permanent location.
+  return Response.redirect(`${url.origin}/brand/og/audit-restaurants.png`, 302);
 }
 
 function jsonResponse(payload, status) {
