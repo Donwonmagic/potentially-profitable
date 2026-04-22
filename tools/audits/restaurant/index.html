@@ -1992,6 +1992,92 @@
     display: none !important;
   }
 
+  /* D4: snapshot banner. A chip-family container at the top of the
+     snapshot view that carries two pieces of information: when the
+     audit was captured + what was audited. Soft teal-tint background
+     echoes the chip-tone system; the re-run button is a filled teal
+     pill so the call-to-action is unambiguous. Only visible inside
+     body.snapshot-view. */
+  .snapshot-banner {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    max-width: 720px;
+    margin: 0 auto 22px;
+    padding: 16px 20px;
+    background: rgba(31, 78, 91, 0.05);
+    border: 1px solid rgba(31, 78, 91, 0.18);
+    border-radius: 14px;
+    font-family: var(--font-body);
+    color: var(--ink);
+  }
+  .snapshot-banner-body { flex: 1 1 auto; min-width: 0; }
+  .snapshot-banner-eyebrow {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 6px;
+  }
+  .snapshot-banner-copy {
+    margin: 0 0 4px;
+    font-size: 14.5px;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+  .snapshot-banner-copy strong {
+    font-weight: 600;
+    color: var(--teal-dark, var(--teal));
+  }
+  .snapshot-banner-sub {
+    margin: 0;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    line-height: 1.4;
+  }
+  .snapshot-banner-rerun {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex: none;
+    padding: 10px 14px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--teal);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition: background-color var(--t-fast, 180ms) var(--ease, ease),
+                transform var(--t-fast, 180ms) var(--ease, ease),
+                box-shadow var(--t-fast, 180ms) var(--ease, ease);
+    box-shadow: 0 2px 6px -2px rgba(31, 78, 91, 0.45);
+  }
+  .snapshot-banner-rerun:hover {
+    background: var(--teal-dark, #17404B);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px -4px rgba(31, 78, 91, 0.45);
+  }
+  .snapshot-banner-rerun:active { transform: translateY(0); }
+  .snapshot-banner-rerun svg { width: 15px; height: 15px; flex: none; }
+  .snapshot-banner-rerun:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 3px;
+  }
+  @media (max-width: 560px) {
+    .snapshot-banner { flex-direction: column; align-items: stretch; gap: 12px; }
+    .snapshot-banner-rerun { justify-content: center; }
+  }
+  /* Print path: hide the banner cleanly — the print sheet already
+     strips the #overallScoreSection chrome, the snapshot context is
+     redundant ink. */
+  body.print-worksheet .snapshot-banner { display: none; }
+
   /* Error state */
   .audit-error {
     max-width: 520px;
@@ -4660,6 +4746,29 @@
         <span class="deep-chip deep-age-chip" id="deepAgeChip" hidden></span>
         <span class="deep-chip deep-security-chip" id="deepSecurityChip" hidden></span>
       </div>
+
+      <!-- D4: snapshot banner. Hidden by default; shown only when the
+           page loaded via ?s=<token> and hydration succeeded. Gives the
+           recipient explicit context about what they're looking at and
+           a one-click path to re-run the audit against the live site. -->
+      <aside class="snapshot-banner" id="snapshotBanner" hidden role="status" aria-live="polite">
+        <div class="snapshot-banner-body">
+          <span class="snapshot-banner-eyebrow">Shared audit</span>
+          <p class="snapshot-banner-copy">
+            <span>Captured</span>
+            <strong id="snapshotBannerDate">—</strong>
+            <span>for</span>
+            <strong id="snapshotBannerUrl">—</strong>
+          </p>
+          <p class="snapshot-banner-sub">
+            You're viewing the original owner's results. Numbers may have shifted since.
+          </p>
+        </div>
+        <button type="button" class="snapshot-banner-rerun" id="snapshotRerunBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><polyline points="3 3 3 9 9 9"/></svg>
+          <span id="snapshotRerunLabel">Re-run audit now</span>
+        </button>
+      </aside>
 
       <!-- Summary with overall score ring -->
       <div class="audit-summary" id="overallScoreSection">
@@ -14685,6 +14794,24 @@
       }
     } catch (_) {}
 
+    // D4: populate + reveal the snapshot banner. The generatedAt is a
+    // client-side timestamp from D2; we also fall back to
+    // snapshot.createdAt which the server writes at save time.
+    try {
+      var banner = document.getElementById('snapshotBanner');
+      if (banner) {
+        var captured = (snapshot.meta && snapshot.meta.generatedAt)
+                    || snapshot.createdAt
+                    || null;
+        var dateEl = document.getElementById('snapshotBannerDate');
+        if (dateEl) dateEl.textContent = formatSnapshotDate(captured);
+        var urlEl = document.getElementById('snapshotBannerUrl');
+        if (urlEl) urlEl.textContent = prettifyHostFromUrl(snapshot.auditedUrl || '');
+        banner.hidden = false;
+      }
+      wireSnapshotRerun(snapshot.auditedUrl || '');
+    } catch (_) {}
+
     // Flip the body into the "report has rendered" state so the
     // Sprint-9 staggered reveal animations fire on the sections
     // that ARE visible (audit-summary). The CSS hides the ones that
@@ -14748,6 +14875,127 @@
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;');
+  }
+
+  // D4: relative-date formatter for the snapshot banner. "Today",
+  // "Yesterday", "3 days ago", "2 weeks ago" up to ~6 weeks, then a
+  // locale-formatted absolute date (en-US: "April 12, 2026"; es:
+  // "12 de abril de 2026"). Returns a localized "recently" if the
+  // timestamp is missing / unparseable — never throws.
+  var SNAPSHOT_DATE_STRINGS_EN = {
+    recently:    'recently',
+    moments:     'moments ago',
+    minutesOne:  'a minute ago',
+    minutes:     '{n} minutes ago',
+    hourOne:     'an hour ago',
+    hours:       '{n} hours ago',
+    yesterday:   'yesterday',
+    days:        '{n} days ago',
+    weekOne:     'a week ago',
+    weeks:       '{n} weeks ago',
+  };
+  var SNAPSHOT_DATE_STRINGS_ES = {
+    recently:    'recientemente',
+    moments:     'hace un momento',
+    minutesOne:  'hace un minuto',
+    minutes:     'hace {n} minutos',
+    hourOne:     'hace una hora',
+    hours:       'hace {n} horas',
+    yesterday:   'ayer',
+    days:        'hace {n} días',
+    weekOne:     'hace una semana',
+    weeks:       'hace {n} semanas',
+  };
+  function formatSnapshotDate(ts) {
+    var strings = (location.pathname.indexOf('/es/') === 0)
+      ? SNAPSHOT_DATE_STRINGS_ES
+      : SNAPSHOT_DATE_STRINGS_EN;
+    var fill = function(tpl, n) { return tpl.replace('{n}', String(n)); };
+    try {
+      if (!ts) return strings.recently;
+      var d = new Date(ts);
+      if (isNaN(d.getTime())) return strings.recently;
+      var now = Date.now();
+      var diffMs = now - d.getTime();
+      if (diffMs >= 0) {
+        var minute = 60 * 1000;
+        var hour   = 60 * minute;
+        var day    = 24 * hour;
+        if (diffMs < 2 * minute)  return strings.moments;
+        if (diffMs < 2 * minute + minute) return strings.minutesOne;
+        if (diffMs < hour)        return fill(strings.minutes, Math.round(diffMs / minute));
+        if (diffMs < 2 * hour)    return strings.hourOne;
+        if (diffMs < day)         return fill(strings.hours, Math.round(diffMs / hour));
+        if (diffMs < 2 * day)     return strings.yesterday;
+        if (diffMs < 7 * day)     return fill(strings.days, Math.floor(diffMs / day));
+        if (diffMs < 14 * day)    return strings.weekOne;
+        if (diffMs < 6 * 7 * day) return fill(strings.weeks, Math.floor(diffMs / (7 * day)));
+      }
+      var locale = (location.pathname.indexOf('/es/') === 0) ? 'es' : 'en-US';
+      return d.toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' });
+    } catch (_) { return strings.recently; }
+  }
+
+  // D4: strip protocol + trailing slash from a URL so the banner reads
+  // `pizzajoint.example` rather than `https://pizzajoint.example/`.
+  // Falls back to the raw string on any parse failure — snapshots have
+  // already been shape-validated server-side, but be defensive anyway.
+  function prettifyHostFromUrl(raw) {
+    try {
+      if (!raw) return '—';
+      var u = new URL(raw);
+      var host = u.host.replace(/^www\./i, '');
+      var pathTail = (u.pathname && u.pathname !== '/') ? u.pathname : '';
+      return host + pathTail;
+    } catch (_) {
+      return String(raw || '—');
+    }
+  }
+
+  // D4: wire the "Re-run audit now" button. Clicking clears the
+  // snapshot-view state, strips the ?s= param from the URL (so a
+  // mid-flight reload doesn't re-hydrate the snapshot over the live
+  // result), and kicks off a fresh runAudit() against the same URL.
+  function wireSnapshotRerun(url) {
+    var btn = document.getElementById('snapshotRerunBtn');
+    if (!btn) return;
+    btn.addEventListener('click', function() {
+      try {
+        // Strip the snapshot token from the URL bar — the live run
+        // will populate its own ?url= or ?bl= params via the existing
+        // history mechanism. Keeping ?s= would make a reload revert.
+        var next = location.pathname;
+        if (history && typeof history.replaceState === 'function') {
+          history.replaceState(null, '', next);
+        }
+      } catch (_) {}
+      // Un-do the snapshot-view state so the live-audit UI sections
+      // become eligible to render again.
+      document.body.classList.remove('snapshot-view', 'snapshot-error', 'report-revealed');
+      // Clear the read-only priority list; the live runner repopulates.
+      try {
+        var list = document.getElementById('priorityListWrap');
+        if (list) list.replaceChildren();
+      } catch (_) {}
+      // Hide the banner — the live run doesn't need it, and keeping
+      // it visible during the fresh audit would be confusing.
+      try {
+        var banner = document.getElementById('snapshotBanner');
+        if (banner) banner.hidden = true;
+      } catch (_) {}
+      // Populate the input + kick off the audit. runAudit exists in
+      // the outer IIFE scope alongside autoRunFromParam.
+      try {
+        var input = document.getElementById('auditUrl');
+        if (input && url) input.value = url;
+        if (typeof runAudit === 'function' && url) {
+          if (window.plausible) window.plausible('Audit Snapshot Rerun');
+          runAudit(url);
+        }
+      } catch (e) {
+        try { console.warn('[snapshot] re-run failed', e); } catch (_) {}
+      }
+    });
   }
 
   (function autoRunFromParam(){

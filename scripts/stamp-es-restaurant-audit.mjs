@@ -78,6 +78,19 @@ const STATIC = [
   [ 'Audited:', 'Auditado:' ],
   [ 'Copy link', 'Copiar enlace' ],
   [ 'Building share link…', 'Creando enlace para compartir…' ],
+  // D4: snapshot banner copy. Structure matches the HTML exactly so
+  // substring replace picks them up even when adjacent to <strong>
+  // span boundaries. Order matters: longer strings first so the
+  // shorter ones don't prematurely replace substrings of them.
+  [ "You're viewing the original owner's results. Numbers may have shifted since.",
+    'Estás viendo los resultados originales del propietario. Los números pueden haber cambiado desde entonces.' ],
+  [ '>Shared audit<', '>Auditoría compartida<' ],
+  [ '>Captured<', '>Capturada<' ],
+  [ '>Re-run audit now<', '>Ejecutar auditoría ahora<' ],
+  // The "for" inside the banner copy is a common English word that
+  // appears elsewhere; we disambiguate via the surrounding <span> tag.
+  [ '</strong>\n            <span>for</span>\n            <strong',
+    '</strong>\n            <span>para</span>\n            <strong' ],
   // D3: snapshot-view error copy. Strings live inline in the
   // hydrateFromSnapshotToken / renderSnapshotError helpers; the EN
   // master is the source of truth, ES comes from this mapping.
