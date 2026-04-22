@@ -2906,6 +2906,76 @@
       border: 1px solid #000 !important;
       color: #000 !important;
     }
+
+    /* D13: @page + worksheet header. Without explicit @page rules
+       Chrome was using default 0.5in margins and the worksheet
+       header sat too close to the top edge for a hole-punched
+       paper handoff. Matches the checklist page's Letter/0.55in
+       presets for visual rhythm between the two printables. */
+    body.print-worksheet {
+      background: #fff !important;
+    }
+    body.print-worksheet .worksheet-header {
+      display: block !important;
+      border-bottom: 2px solid #000;
+      padding: 0 0 14px;
+      margin: 0 0 18px;
+      page-break-after: avoid;
+    }
+    body.print-worksheet .worksheet-header-brand {
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: #000;
+      margin: 0 0 6px;
+    }
+    body.print-worksheet .worksheet-header-title {
+      font-family: var(--font-display, Georgia, serif);
+      font-size: 22px;
+      font-weight: 500;
+      color: #000;
+      margin: 0 0 12px;
+      line-height: 1.25;
+    }
+    body.print-worksheet .worksheet-header-meta {
+      margin: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 24px;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+    body.print-worksheet .worksheet-header-row {
+      display: flex;
+      gap: 8px;
+      align-items: baseline;
+      page-break-inside: avoid;
+    }
+    body.print-worksheet .worksheet-header-row dt {
+      font-weight: 700;
+      color: #000;
+      margin: 0;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 9px;
+      flex: 0 0 auto;
+    }
+    body.print-worksheet .worksheet-header-row dd {
+      margin: 0;
+      color: #000;
+      font-size: 11px;
+      font-weight: 500;
+    }
+    @page {
+      size: Letter;
+      margin: 0.55in 0.55in 0.85in;
+    }
+  }
+
+  /* D13: worksheet header is hidden on screen — only prints. */
+  .worksheet-header {
+    display: none;
   }
 
   @media (max-width: 640px) {
@@ -4809,6 +4879,23 @@
 
     <!-- Report card (hidden until a result renders) -->
     <div class="audit-report" id="auditReport" hidden>
+
+      <!-- D13: worksheet print header. Hidden on screen; revealed
+           via body.print-worksheet + @media print. Gives the
+           manager or contractor receiving the printed worksheet
+           top-of-page context (audited URL, date, score, subtype)
+           without them having to open the tool. Populated by the
+           printManagerBtn click handler before window.print() is
+           invoked. -->
+      <header class="worksheet-header" id="worksheetHeader" aria-hidden="true">
+        <div class="worksheet-header-brand">MUNTIN DIGITAL</div>
+        <h1 class="worksheet-header-title" id="worksheetHeaderTitle">Restaurant website audit worksheet</h1>
+        <dl class="worksheet-header-meta">
+          <div class="worksheet-header-row"><dt>Audited URL</dt><dd id="worksheetHeaderUrl">—</dd></div>
+          <div class="worksheet-header-row"><dt>Captured</dt><dd id="worksheetHeaderDate">—</dd></div>
+          <div class="worksheet-header-row"><dt>Overall score</dt><dd id="worksheetHeaderScore">—</dd></div>
+        </dl>
+      </header>
 
       <!-- Sprint Q1: Sticky report table-of-contents. Desktop renders
            as a fixed right-gutter panel at ≥1200px. Smaller viewports
@@ -14179,6 +14266,38 @@
       document.querySelectorAll('#topFixesList li').forEach(function(li){
         li.setAttribute('data-notes-label', notesLabel);
       });
+      // D13: populate the print-only worksheet header with audit
+      // context (URL + date + score) so the recipient of the
+      // printed sheet has a top-of-page anchor. Gracefully handles
+      // partial state — the worksheet prints with "—" placeholders
+      // if any piece of context is unavailable.
+      try {
+        var last = window.__auditLastResult || {};
+        var isEs = location.pathname.indexOf('/es/') === 0;
+        var urlEl = document.getElementById('worksheetHeaderUrl');
+        if (urlEl && last.url) {
+          urlEl.textContent = last.url.replace(/^https?:\/\//i, '').replace(/\/$/, '');
+        }
+        var dateEl = document.getElementById('worksheetHeaderDate');
+        if (dateEl) {
+          try {
+            dateEl.textContent = new Date().toLocaleDateString(
+              isEs ? 'es' : 'en-US',
+              { year: 'numeric', month: 'long', day: 'numeric' }
+            );
+          } catch (_) {}
+        }
+        var scoreEl = document.getElementById('worksheetHeaderScore');
+        if (scoreEl && last.overall && typeof last.overall.total === 'number') {
+          scoreEl.textContent = Math.round(last.overall.total) + '/100';
+        }
+        var titleEl = document.getElementById('worksheetHeaderTitle');
+        if (titleEl) {
+          titleEl.textContent = isEs
+            ? 'Hoja de auditoría del sitio web del restaurante'
+            : 'Restaurant website audit worksheet';
+        }
+      } catch (_) {}
       document.body.classList.add('print-worksheet');
       var cleanup = function(){
         document.body.classList.remove('print-worksheet');

@@ -103,6 +103,16 @@ const STATIC = [
   [ 'Shared audit not available', 'Auditoría compartida no disponible' ],
   [ 'Download share card', 'Descargar tarjeta' ],
   [ 'Print for your manager', 'Imprimir para tu gerente' ],
+  // D13: worksheet print header. <dt> labels inside the header
+  // + the H1 title (handled at print time by JS — no stamp
+  // needed for that path). Stamps here cover the static
+  // markup so screen readers that peek at aria-hidden nodes
+  // still get ES context.
+  [ '<dt>Audited URL</dt>',   '<dt>URL auditada</dt>' ],
+  [ '<dt>Captured</dt>',      '<dt>Capturada</dt>' ],
+  [ '<dt>Overall score</dt>', '<dt>Puntuación general</dt>' ],
+  [ 'Restaurant website audit worksheet',
+    'Hoja de auditoría del sitio web del restaurante' ],
   // D5: developer brief buttons. Labels appear in the share row
   // alongside Copy link / Print for your manager.
   [ 'Copy for your developer', 'Copiar para tu desarrollador' ],
