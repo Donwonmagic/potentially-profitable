@@ -2669,3 +2669,240 @@
       lastOpener = null;
     });
   })();
+
+  // ───────────────────────────────────────────────────────────────
+  // SEARCH MODAL (Pagefind-backed)
+  //
+  // Opens on Cmd/Ctrl+K, forward-slash, or a click on any
+  // .js-open-search element. Pagefind's JS + index live under
+  // /pagefind/ (built during deploy) and are lazy-loaded on first
+  // open so the search feature costs the page zero bytes until it's
+  // actually used.
+  //
+  // Locale: Pagefind splits its index by <html lang>, so the user's
+  // current page locale determines which results surface. No
+  // per-request locale filter needed.
+  //
+  // Keyboard: ↑/↓ to move selection, ↵ to open, Esc to close. The
+  // opener element is remembered so focus returns there on close
+  // (follows the same pattern the checklist popover uses above).
+  // ───────────────────────────────────────────────────────────────
+  (() => {
+    // No-op on browsers without <dialog>.showModal. Rather than ship a
+    // polyfill for the 1% of tails that lack it, fall back to linking
+    // to /learn/ — the hub still works and no crash ever surfaces.
+    const testDialog = document.createElement('dialog');
+    if (typeof testDialog.showModal !== 'function') {
+      document.querySelectorAll('.js-open-search').forEach((el) => {
+        if (el.tagName === 'BUTTON') el.addEventListener('click', () => { location.href = '/learn/'; });
+      });
+      return;
+    }
+
+    let dialog = null;       // the <dialog> element, created on first open
+    let input = null;        // the text input
+    let results = null;      // the results list container
+    let pagefind = null;     // the Pagefind module, lazy-imported
+    let pagefindPromise = null;
+    let lastOpener = null;   // element to re-focus on close
+    let debounce = null;     // debounce timer for search input
+    let activeIndex = -1;    // currently-selected result index
+    let lastQuery = '';
+
+    const locale = document.documentElement.lang && document.documentElement.lang.toLowerCase().startsWith('es') ? 'es' : 'en';
+    const strings = {
+      placeholder: i18n('search.placeholder', 'Search articles, tools, glossary terms…'),
+      close:       i18n('search.close',       'Close'),
+      hintTitle:   i18n('search.hint_title',  'What are you looking for?'),
+      hintBody:    i18n('search.hint_body',   'Try "DoorDash", "Core Web Vitals", or "menu prices." Results come from every article, tool, and glossary term in the library.'),
+      empty:       i18n('search.empty',       'No results for'),
+      emptyHint:   i18n('search.empty_hint',  'Try a shorter query or a different word.'),
+      loading:     i18n('search.loading',     'Searching…'),
+      navHint:     i18n('search.nav_hint',    'to navigate'),
+      openHint:    i18n('search.open_hint',   'to open'),
+      closeHint:   i18n('search.close_hint',  'to close'),
+    };
+
+    // Classify a URL into a user-facing "kind" so the result meta row
+    // can show something more useful than "/tools/seo-grader/" — e.g.
+    // "TOOL · /tools/seo-grader/". Mapping lives here (JS side) rather
+    // than in Pagefind meta tags so it's trivial to extend.
+    function classify(url) {
+      const u = url.replace(/^https?:\/\/[^/]+/, '').replace(/^\/es\//, '/');
+      if (u.startsWith('/blog/'))      return i18n('search.kind_article',   'Article');
+      if (u.startsWith('/tools/'))     return i18n('search.kind_tool',      'Tool');
+      if (u.startsWith('/glossary/'))  return i18n('search.kind_term',      'Glossary');
+      if (u.startsWith('/resources/')) return i18n('search.kind_resource',  'Guide');
+      if (u.startsWith('/learn/'))     return i18n('search.kind_library',   'Library');
+      if (u.startsWith('/work/'))      return i18n('search.kind_case',      'Case study');
+      if (u.startsWith('/services/'))  return i18n('search.kind_service',   'Services');
+      if (u.startsWith('/for/'))       return i18n('search.kind_industry',  'For you');
+      return i18n('search.kind_page', 'Page');
+    }
+
+    // Build the modal DOM the first time the user opens search. This
+    // keeps the baseline page weight at zero for readers who never
+    // trigger it (including most mobile visitors on a single article).
+    function ensureModal() {
+      if (dialog) return;
+      dialog = document.createElement('dialog');
+      dialog.className = 'search-modal';
+      dialog.setAttribute('aria-label', locale === 'es' ? 'Buscar' : 'Search');
+      dialog.innerHTML = `
+        <div class="search-modal-inner">
+          <div class="search-input-wrap">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+            <input type="search" class="search-input" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="${strings.placeholder}" placeholder="${strings.placeholder}">
+            <button type="button" class="search-close" aria-label="${strings.close}">${strings.close}</button>
+          </div>
+          <div class="search-results" role="listbox" aria-label="${strings.hintTitle}">
+            <div class="search-hint"><strong>${strings.hintTitle}</strong>${strings.hintBody}</div>
+          </div>
+          <div class="search-footer" aria-hidden="true">
+            <span class="search-footer-hints">
+              <span><kbd>↑</kbd><kbd>↓</kbd> ${strings.navHint}</span>
+              <span><kbd>↵</kbd> ${strings.openHint}</span>
+              <span><kbd>esc</kbd> ${strings.closeHint}</span>
+            </span>
+            <span>Pagefind</span>
+          </div>
+        </div>`;
+      document.body.appendChild(dialog);
+      input   = dialog.querySelector('.search-input');
+      results = dialog.querySelector('.search-results');
+      dialog.querySelector('.search-close').addEventListener('click', close);
+      dialog.addEventListener('click', (e) => { if (e.target === dialog) close(); });
+      dialog.addEventListener('close', () => {
+        if (lastOpener && typeof lastOpener.focus === 'function') lastOpener.focus();
+        lastOpener = null;
+      });
+      input.addEventListener('input', onInput);
+      input.addEventListener('keydown', onInputKeydown);
+    }
+
+    // Lazy-load Pagefind from the static index directory. Returns a
+    // cached promise so concurrent opens don't double-fetch.
+    function ensurePagefind() {
+      if (pagefindPromise) return pagefindPromise;
+      pagefindPromise = import('/pagefind/pagefind.js')
+        .then(async (mod) => { await mod.options({ baseUrl: '/' }); pagefind = mod; return mod; })
+        .catch((err) => { console.warn('[search] pagefind failed to load', err); pagefindPromise = null; throw err; });
+      return pagefindPromise;
+    }
+
+    function open(opener) {
+      ensureModal();
+      lastOpener = opener || document.activeElement;
+      dialog.showModal();
+      // Defer focus so the dialog is visible before the input grabs focus.
+      requestAnimationFrame(() => { try { input.focus(); input.select(); } catch (_) {} });
+      // Start warming the index in the background if it isn't loaded yet.
+      ensurePagefind().catch(() => {});
+    }
+
+    function close() {
+      if (dialog && dialog.open) dialog.close();
+    }
+
+    function onInput() {
+      clearTimeout(debounce);
+      const q = input.value.trim();
+      if (q === lastQuery) return;
+      lastQuery = q;
+      if (!q) {
+        results.innerHTML = `<div class="search-hint"><strong>${strings.hintTitle}</strong>${strings.hintBody}</div>`;
+        activeIndex = -1;
+        return;
+      }
+      // Show loading state while we wait for pagefind + results.
+      results.innerHTML = `<div class="search-loading">${strings.loading}</div>`;
+      debounce = setTimeout(() => runSearch(q), 140);
+    }
+
+    async function runSearch(q) {
+      try {
+        const mod = await ensurePagefind();
+        if (q !== lastQuery) return; // user kept typing
+        const res = await mod.search(q);
+        if (q !== lastQuery) return;
+        const hits = res.results.slice(0, 8);
+        const data = await Promise.all(hits.map((r) => r.data()));
+        if (q !== lastQuery) return;
+        renderResults(q, data);
+      } catch (err) {
+        results.innerHTML = `<div class="search-empty"><strong>${strings.empty}</strong> "${escapeHtml(q)}"<br>${strings.emptyHint}</div>`;
+      }
+    }
+
+    function renderResults(q, data) {
+      if (!data.length) {
+        results.innerHTML = `<div class="search-empty"><strong>${strings.empty}</strong> "${escapeHtml(q)}"<br>${strings.emptyHint}</div>`;
+        activeIndex = -1;
+        return;
+      }
+      const html = data.map((d, i) => {
+        const kind  = classify(d.url);
+        const title = (d.meta && d.meta.title) || d.url;
+        const href  = d.url.replace(/^https?:\/\/[^/]+/, '');
+        // Pagefind returns <mark> tags inside excerpts for highlight —
+        // keep them, they style via .search-result-excerpt mark in CSS.
+        return `<a class="search-result" role="option" href="${escapeAttr(href)}" data-idx="${i}">
+          <div class="search-result-meta"><span class="search-result-kind">${escapeHtml(kind)}</span><span>${escapeHtml(href)}</span></div>
+          <div class="search-result-title">${escapeHtml(title)}</div>
+          <div class="search-result-excerpt">${d.excerpt}</div>
+        </a>`;
+      }).join('');
+      results.innerHTML = html;
+      activeIndex = 0;
+      setActive(activeIndex);
+      // Hover selects (mouse and keyboard share the visual highlight).
+      results.querySelectorAll('.search-result').forEach((el, i) => {
+        el.addEventListener('mouseenter', () => setActive(i));
+      });
+    }
+
+    function setActive(i) {
+      const items = results.querySelectorAll('.search-result');
+      if (!items.length) return;
+      activeIndex = (i + items.length) % items.length;
+      items.forEach((el, idx) => el.classList.toggle('is-active', idx === activeIndex));
+      items[activeIndex].scrollIntoView({ block: 'nearest' });
+    }
+
+    function onInputKeydown(e) {
+      if (e.key === 'ArrowDown') { e.preventDefault(); setActive(activeIndex + 1); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(activeIndex - 1); }
+      else if (e.key === 'Enter') {
+        const items = results.querySelectorAll('.search-result');
+        if (items[activeIndex]) { e.preventDefault(); items[activeIndex].click(); }
+      }
+    }
+
+    // Global keybinding: Cmd+K / Ctrl+K, and `/` when not already
+    // typing in a form. Ignore when any modifier-less key is pressed
+    // inside an input so forms aren't hijacked.
+    document.addEventListener('keydown', (e) => {
+      const inField = /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName) || e.target.isContentEditable;
+      if ((e.key === 'k' || e.key === 'K') && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        open(e.target);
+      } else if (e.key === '/' && !inField && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        e.preventDefault();
+        open(e.target);
+      }
+    });
+
+    // Hook up every search trigger on the page.
+    document.querySelectorAll('.js-open-search').forEach((el) => {
+      el.addEventListener('click', (e) => { e.preventDefault(); open(el); });
+    });
+
+    // Small HTML-escape helpers (Pagefind already escapes titles/urls,
+    // but we re-escape when interpolating into the template to stay
+    // defense-in-depth. Excerpts intentionally skipped: Pagefind emits
+    // pre-escaped HTML with <mark> tags we want to render).
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+    }
+    function escapeAttr(s) { return escapeHtml(s); }
+  })();
