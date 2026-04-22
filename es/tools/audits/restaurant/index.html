@@ -6484,6 +6484,24 @@
     var last = window.__auditLastResult;
     if (!last || typeof last.overall !== 'number') return Promise.resolve(null);
 
+    // D14: capture the eager-minted snapshot permalink (D8). When
+    // present, every page footer prints it and the cover page adds
+    // a "Live audit" callout. When absent (ensureSharedSnapshot
+    // failed or hasn't resolved yet), footers fall back to the
+    // audited URL and the cover callout is suppressed. PDFs
+    // delivered via the /api/audit-report email attachment path
+    // can then always carry a clear "jump to live" route without
+    // the recipient having to retype the URL.
+    var PERMALINK = null;
+    try {
+      if (window.__snapshotShareState && window.__snapshotShareState.token) {
+        var isEs = location.pathname.indexOf('/es/') === 0;
+        PERMALINK = isEs && window.__snapshotShareState.shareUrlEs
+          ? window.__snapshotShareState.shareUrlEs
+          : window.__snapshotShareState.shareUrl;
+      }
+    } catch (_) {}
+
     return loadJsPdf().then(function(jsPDF){
       if (!jsPDF) return null;
 
@@ -6507,6 +6525,12 @@
           'cover.overallScore': 'Overall Score',
           'cover.outOf100':   'out of 100',
           'cover.byPillar':   'By Pillar',
+          // D14: snapshot callout on the PDF cover page. Frames
+          // the file as a point-in-time capture and hands the
+          // recipient a live-audit URL they can visit instead
+          // of treating the PDF as the canonical result.
+          'cover.snapshotLabel': 'Snapshot',
+          'cover.snapshotBody':  'Captured on the date above. For the live audit, visit {url}.',
           'cover.tagline':    'Structure brings clarity.',
           'pillar.mobile':    'Mobile performance',
           'pillar.a11y':      'Accessibility',
@@ -6589,6 +6613,8 @@
           'cover.overallScore': 'Puntuaci\u00f3n general',
           'cover.outOf100':   'de 100',
           'cover.byPillar':   'Por pilar',
+          'cover.snapshotLabel': 'Instantánea',
+          'cover.snapshotBody':  'Capturada en la fecha arriba. Para la auditoría en vivo, visita {url}.',
           'cover.tagline':    'La estructura aporta claridad.',
           'pillar.mobile':    'Rendimiento m\u00f3vil',
           'pillar.a11y':      'Accesibilidad',
@@ -7051,11 +7077,19 @@
         setColor(textColor);
         doc.text('Muntin Digital · muntin.digital', MARGIN + 16, PAGE_H - 20);
 
-        // Center: URL of the audited site (content pages only).
-        if (showUrl && url) {
-          setBrandFont(false, 8);
-          setColor(textColor);
-          doc.text(url, PAGE_W / 2, PAGE_H - 20, { align: 'center' });
+        // Center: "live audit" permalink when we have one (D14) so a
+        // printed PDF always carries a jump-back route to the live
+        // tool. Falls back to the audited URL when the eager-mint
+        // didn't resolve in time (save-offline case, rare).
+        if (showUrl) {
+          var centerText = PERMALINK
+            ? PERMALINK.replace(/^https?:\/\//, '')
+            : url;
+          if (centerText) {
+            setBrandFont(false, 8);
+            setColor(textColor);
+            doc.text(centerText, PAGE_W / 2, PAGE_H - 20, { align: 'center' });
+          }
         }
 
         // Right: "page X / Y"
@@ -7147,6 +7181,26 @@
       setColor(COL_STONE);
       var metaParts = [todayPretty, (subtype.label || subtypeId), (url || '—')];
       doc.text(metaParts.join('  ·  '), MARGIN, titleY + 28);
+
+      // D14: "This is a snapshot" callout when a permalink is
+      // available. Frames the PDF honestly as a point-in-time
+      // capture and gives the recipient an explicit route to the
+      // live audit. Matches the voice of the web permalink banner
+      // from D4. Suppressed when no permalink exists so the cover
+      // doesn't print a "visit nothing" line.
+      if (PERMALINK) {
+        var calloutY = titleY + 52;
+        // Inset tint strip
+        setColor(COL_TEAL_TINT, 'fill');
+        doc.roundedRect(MARGIN, calloutY - 12, COL_W, 26, 4, 4, 'F');
+        setBrandFont(true, 8);
+        setColor(COL_TEAL);
+        doc.text(t('cover.snapshotLabel').toUpperCase(), MARGIN + 10, calloutY - 2);
+        setBrandFont(false, 9);
+        setColor(COL_INK_SOFT);
+        doc.text(t('cover.snapshotBody', { url: PERMALINK.replace(/^https?:\/\//, '') }),
+          MARGIN + 10, calloutY + 10);
+      }
 
       // Score block (left) + pillar lockups (right)
       var scoreEyebrowY = 320;
