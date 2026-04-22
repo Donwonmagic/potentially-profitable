@@ -255,31 +255,31 @@
 <section class="block" aria-labelledby="i18n-heading">
   <div class="container">
     <div class="section-header reveal">
-      <span class="eyebrow">Internationalization</span>
-      <h2 id="i18n-heading">Bilingual,<br><span class="serif-italic">without the overhead.</span></h2>
-      <p class="final-sub">Every page ships with an English and Spanish version from day one — no third-party translation service, no runtime language swap, no JS framework. The ES mirror lives under <code>/es/</code> and is indexed by Google at full priority.</p>
+      <span class="eyebrow">Internacionalización</span>
+      <h2 id="i18n-heading">Bilingüe,<br><span class="serif-italic">sin el sobrecosto.</span></h2>
+      <p class="final-sub">Cada página sale al aire con versión en inglés y en español desde el primer día — sin servicio de traducción de terceros, sin cambio de idioma en tiempo de ejecución, sin framework de JS. La versión en español vive bajo <code>/es/</code> y Google la indexa con prioridad completa.</p>
     </div>
 
     <ol class="sys-pipeline">
       <li>
         <span class="sys-pipeline-num" aria-hidden="true">01</span>
-        <h3>One partial per locale</h3>
-        <p>Nav and footer live in <code>_includes/nav.html</code> + <code>_includes/footer.html</code> (English) and <code>_includes/es/</code> (Spanish). A build step stamps them into every page so a single edit propagates to 85 files.</p>
+        <h3>Un partial por idioma</h3>
+        <p>El nav y el footer viven en <code>_includes/nav.html</code> + <code>_includes/footer.html</code> (inglés) y <code>_includes/es/</code> (español). Un paso de build los estampa en cada página, así una sola edición se propaga a 85 archivos.</p>
       </li>
       <li>
         <span class="sys-pipeline-num" aria-hidden="true">02</span>
-        <h3>Hreflang, automatically</h3>
-        <p><code>scripts/stamp-hreflang.mjs</code> walks every page, detects its counterpart in the other locale, and injects the exact <code>&lt;link rel="alternate"&gt;</code> pair Google expects. No manual bookkeeping.</p>
+        <h3>Hreflang, automático</h3>
+        <p><code>scripts/stamp-hreflang.mjs</code> recorre cada página, detecta su contraparte en el otro idioma, e inyecta el par exacto de <code>&lt;link rel="alternate"&gt;</code> que Google espera. Sin papeleo manual.</p>
       </li>
       <li>
         <span class="sys-pipeline-num" aria-hidden="true">03</span>
-        <h3>Runtime UI strings</h3>
-        <p>JS-emitted strings (aria-labels, audio player, form validation) live in <code>_includes/i18n.es.json</code> and get stamped into every ES page's <code>&lt;script&gt;</code> so <code>site.js</code> can read them as <code>window.__i18n</code> without a network request.</p>
+        <h3>Strings de UI en tiempo de ejecución</h3>
+        <p>Las cadenas emitidas por JS (aria-labels, reproductor de audio, validación de formularios) viven en <code>_includes/i18n.es.json</code> y se estampan dentro del <code>&lt;script&gt;</code> de cada página en español, para que <code>site.js</code> las lea como <code>window.__i18n</code> sin una petición de red.</p>
       </li>
       <li>
         <span class="sys-pipeline-num" aria-hidden="true">04</span>
-        <h3>Parity enforced at build</h3>
-        <p><code>scripts/check-locale-parity.mjs --check</code> exits non-zero if any EN page lacks its ES counterpart. Shipping an untranslated page requires an explicit override — the default is "they stay in sync."</p>
+        <h3>Paridad obligada en el build</h3>
+        <p><code>scripts/check-locale-parity.mjs --check</code> sale con código de error si alguna página en inglés no tiene su contraparte en español. Publicar una página sin traducir exige un override explícito — lo normal es "se mantienen en sincronía".</p>
       </li>
     </ol>
   </div>
