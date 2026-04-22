@@ -107,6 +107,15 @@ const STATIC = [
   // alongside Copy link / Print for your manager.
   [ 'Copy for your developer', 'Copiar para tu desarrollador' ],
   [ 'Open printable brief',    'Abrir resumen imprimible' ],
+  // D8: permalink display copy. Label sits above the URL input;
+  // disclosure underneath. "Copy" and "Copied ✓" are button states.
+  [ 'Your shareable link', 'Tu enlace para compartir' ],
+  [ "Auto-deletes in 90 days. Unlisted but not secret — don't share sensitive URLs.",
+    'Se borra automáticamente en 90 días. No está listado pero no es secreto — no compartas URLs sensibles.' ],
+  [ '>Copy<',   '>Copiar<' ],
+  [ '>Copied ✓<', '>Copiado ✓<' ],
+  [ 'aria-label="Copy shareable link"', 'aria-label="Copiar enlace para compartir"' ],
+  [ 'aria-label="Shareable audit permalink"', 'aria-label="Enlace permanente de auditoría para compartir"' ],
   [ 'Share:', 'Compartir:' ],
   [ '>Top 3 fixes<', '>3 arreglos principales<' ],
   [ 'Ranked by impact for your segment. Work top-down.',
