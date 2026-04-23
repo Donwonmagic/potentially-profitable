@@ -69,13 +69,29 @@
     //                             mirror of the restaurant audit from
     //                             the EN master so i18n changes land
     //                             in both locales automatically.
+    //   build-og-cards.mjs      — renders every OG card declared in
+    //                             brand/og/cards.json through a typed
+    //                             template. Shells out to rsvg-convert
+    //                             with fontconfig pointed at Fraunces
+    //                             + Inter TTFs so renders use the real
+    //                             brand faces, not Georgia + Arial.
+    //                             Idempotent; skips PNGs newer than
+    //                             their source SVG. Runs first so
+    //                             subsequent validators can assume
+    //                             every declared card exists.
+    //   check-og-images.mjs     — fails the build if any HTML page's
+    //                             og:image / twitter:image meta
+    //                             references a file that does not
+    //                             exist in brand/og/. Catches stale
+    //                             slugs + forgotten cards.json
+    //                             entries before they ship.
     //   pagefind                — builds the static search index after
     //                             the dist/ tree is materialized. Uses
     //                             npx -y so no package.json is needed;
     //                             outputs dist/pagefind/ which site.js
     //                             lazy-loads on first open of the
     //                             search modal. Config at pagefind.yml.
-    "command": "node scripts/sync-includes.mjs && node scripts/stamp-hreflang.mjs && node scripts/stamp-es-restaurant-audit.mjs && node scripts/check-locale-parity.mjs --check && mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md --exclude=src --exclude=scripts --exclude=_includes --exclude=pagefind.yml . | tar -xf - -C dist && npx -y pagefind@latest --site dist"
+    "command": "node scripts/build-og-cards.mjs && node scripts/sync-includes.mjs && node scripts/stamp-hreflang.mjs && node scripts/stamp-es-restaurant-audit.mjs && node scripts/check-locale-parity.mjs --check && node scripts/check-og-images.mjs && mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md --exclude=src --exclude=scripts --exclude=_includes --exclude=pagefind.yml . | tar -xf - -C dist && npx -y pagefind@latest --site dist"
   },
   "assets": {
     "directory": "./dist",

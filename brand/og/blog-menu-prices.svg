@@ -1,32 +1,88 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
   <rect width="1200" height="630" fill="#FAF7F2"/>
-  <rect x="0" y="0" width="6" height="630" fill="#B8541A"/>
+  
+    <rect x="0" y="0" width="12" height="252" fill="#1F4E5B"/>
+    <rect x="0" y="252" width="12" height="378" fill="#1F4E5B" opacity="0.4"/>
+  
 
-  <text x="72" y="90" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#B8541A" letter-spacing="5">PRICING · OPERATIONS</text>
+  <text x="80" y="96"
+        font-family="Inter, Arial, sans-serif" font-size="13"
+        font-weight="700" letter-spacing="4" fill="#1F4E5B">PRICING · RETENTION</text>
 
-  <text x="72" y="200" font-family="Fraunces, Georgia, serif" font-size="54" font-weight="500" fill="#14161A" letter-spacing="-2">How to raise menu</text>
-  <text x="72" y="270" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="54" font-weight="400" fill="#1F4E5B" letter-spacing="-2">prices on your website</text>
-  <text x="72" y="340" font-family="Fraunces, Georgia, serif" font-size="44" font-weight="500" fill="#14161A" letter-spacing="-1">without losing reservations</text>
+  <text x="80" y="184"
+        font-family="Fraunces, Georgia, serif" font-size="58"
+        font-weight="500" letter-spacing="-2" fill="#14161A">Raise the menu,</text>
+  <text x="80" y="256"
+        font-family="Fraunces, Georgia, serif" font-style="italic"
+        font-size="58" font-weight="400" letter-spacing="-2"
+        fill="#1F4E5B">keep</text>
+  <text x="80" y="328"
+        font-family="Fraunces, Georgia, serif" font-size="58"
+        font-weight="500" letter-spacing="-2" fill="#14161A">the seats.</text>
 
-  <!-- Right: price ladder illustration -->
-  <g transform="translate(850, 160)">
-    <rect x="0" y="0" width="280" height="56" rx="8" fill="#FFFFFF" stroke="#E8E2D6" stroke-width="1.5"/>
-    <text x="20" y="35" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#6B6B6B" letter-spacing="2">ANCHORS</text>
-    <text x="260" y="35" text-anchor="end" font-family="Fraunces, Georgia, serif" font-size="18" font-weight="600" fill="#14161A">Hold</text>
+  <text x="80" y="408"
+        font-family="Inter, Arial, sans-serif" font-size="20"
+        font-weight="400" fill="#6B6B6B">A six-move playbook for lifting prices without losing the room.</text>
 
-    <rect x="0" y="68" width="280" height="56" rx="8" fill="#FFFFFF" stroke="#E8E2D6" stroke-width="1.5"/>
-    <text x="20" y="103" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#6B6B6B" letter-spacing="2">CORE</text>
-    <text x="260" y="103" text-anchor="end" font-family="Fraunces, Georgia, serif" font-size="18" font-weight="600" fill="#B8541A">+ 4–6%</text>
+  
+      <text x="760" y="150"
+            font-family="Inter, Arial, sans-serif" font-size="12"
+            font-weight="700" letter-spacing="3" fill="#14161A" opacity="0.5">THE PLAYBOOK</text>
+      
+        <circle cx="760" cy="176" r="18" fill="none"
+                stroke="#1F4E5B" stroke-width="1.5" opacity="0.75"/>
+        <text x="760" y="181" text-anchor="middle"
+              font-family="Fraunces, Georgia, serif" font-style="italic"
+              font-size="18" font-weight="500" fill="#1F4E5B">1</text>
+        <text x="796" y="182"
+              font-family="Inter, Arial, sans-serif" font-size="18"
+              font-weight="500" fill="#14161A" opacity="0.88">Re-cost before re-pricing</text>
+      
+        <circle cx="760" cy="240" r="18" fill="none"
+                stroke="#1F4E5B" stroke-width="1.5" opacity="0.75"/>
+        <text x="760" y="245" text-anchor="middle"
+              font-family="Fraunces, Georgia, serif" font-style="italic"
+              font-size="18" font-weight="500" fill="#1F4E5B">2</text>
+        <text x="796" y="246"
+              font-family="Inter, Arial, sans-serif" font-size="18"
+              font-weight="500" fill="#14161A" opacity="0.88">Move in threes, not fives</text>
+      
+        <circle cx="760" cy="304" r="18" fill="none"
+                stroke="#1F4E5B" stroke-width="1.5" opacity="0.75"/>
+        <text x="760" y="309" text-anchor="middle"
+              font-family="Fraunces, Georgia, serif" font-style="italic"
+              font-size="18" font-weight="500" fill="#1F4E5B">3</text>
+        <text x="796" y="310"
+              font-family="Inter, Arial, sans-serif" font-size="18"
+              font-weight="500" fill="#14161A" opacity="0.88">Reset the anchor</text>
+      
+        <circle cx="760" cy="368" r="18" fill="none"
+                stroke="#1F4E5B" stroke-width="1.5" opacity="0.75"/>
+        <text x="760" y="373" text-anchor="middle"
+              font-family="Fraunces, Georgia, serif" font-style="italic"
+              font-size="18" font-weight="500" fill="#1F4E5B">4</text>
+        <text x="796" y="374"
+              font-family="Inter, Arial, sans-serif" font-size="18"
+              font-weight="500" fill="#14161A" opacity="0.88">Protect the loved item</text>
+      
+    
 
-    <rect x="0" y="136" width="280" height="56" rx="8" fill="#FFFFFF" stroke="#E8E2D6" stroke-width="1.5"/>
-    <text x="20" y="171" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#6B6B6B" letter-spacing="2">SIGNATURE</text>
-    <text x="260" y="171" text-anchor="end" font-family="Fraunces, Georgia, serif" font-size="18" font-weight="600" fill="#B8541A">+ 8–12%</text>
-
-    <rect x="0" y="204" width="280" height="56" rx="8" fill="#14161A"/>
-    <text x="20" y="239" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#C5A059" letter-spacing="2">MARGIN</text>
-    <text x="260" y="239" text-anchor="end" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="18" font-weight="500" fill="#FAF7F2">recovered</text>
-  </g>
-
-  <text x="72" y="570" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#6B6B6B" letter-spacing="2">MUNTIN DIGITAL</text>
-  <text x="1128" y="570" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="500" fill="#6B6B6B">muntin.digital/blog</text>
+  
+    <g transform="translate(80, 552)" fill="#6B6B6B" opacity="0.6">
+      <circle cx="8" cy="8" r="8" fill="none" stroke="#6B6B6B" stroke-width="1"/>
+      <text x="8" y="12" text-anchor="middle"
+            font-family="Fraunces, Georgia, serif" font-style="italic"
+            font-size="11" font-weight="500" fill="#6B6B6B">d</text>
+    </g>
+  
+  
+    <line x1="80" y1="584" x2="1120" y2="584"
+          stroke="#E8E2D6" stroke-width="1"/>
+    <text x="80" y="614"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="2" fill="#6B6B6B">MUNTIN DIGITAL</text>
+    <text x="1120" y="614" text-anchor="end"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="1" fill="#6B6B6B">muntin.digital</text>
+  
 </svg>
