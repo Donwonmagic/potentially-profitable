@@ -173,8 +173,12 @@ const STATIC = [
   // Skip link / footer-ish
   [ 'Skip to main content', 'Saltar al contenido principal' ],
 
-  // OG / Twitter card image — swap the EN restaurant-audit SVG for
-  // the Spanish sibling that lives beside it in /brand/og/.
+  // OG / Twitter card image — swap the EN restaurant-audit asset
+  // for the Spanish sibling that lives beside it in /brand/og/.
+  // Both extensions listed because OG delivery migrated from SVG
+  // to PNG; this script has to cover both until the EN master
+  // source settles.
+  [ '/brand/og/audit-restaurants.png', '/brand/og/audit-restaurants-es.png' ],
   [ '/brand/og/audit-restaurants.svg', '/brand/og/audit-restaurants-es.svg' ],
 
   // Research-note "Learn more" enrichment (added during Sprint R+).
