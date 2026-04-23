@@ -1575,6 +1575,25 @@ br.br-lg{display:none}
 .learn-guide p{font-size:15.5px;line-height:1.6;color:var(--stone);margin:0 0 16px}
 .learn-guide-meta{font-family:var(--font-body);font-size:12px;font-weight:600;color:var(--teal);letter-spacing:0.04em;text-transform:uppercase}
 
+/* Shared blog-card layout. Originally inline in blog/index.html only;
+   promoted to the shared stylesheet so other pages that reuse
+   .post-list + .post-card (the /learn/ hub, any future 'latest from
+   the blog' sections) don't render as unstyled anchors. The inline
+   version in blog/index.html is now redundant but kept for isolation
+   in case the blog ever needs a one-off override. */
+.post-list{display:grid;gap:4px;max-width:760px;margin:0 auto}
+.post-card{display:grid;grid-template-columns:120px 1fr;gap:32px;padding:32px 0;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;transition:opacity var(--t-fast) var(--ease)}
+.post-card:hover{opacity:.72}
+.post-card:first-of-type{border-top:1px solid var(--line)}
+.post-card .meta{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--stone);padding-top:6px}
+.post-card .meta .date{display:block;color:var(--teal);margin-bottom:4px}
+.post-card h3{font-family:var(--font-display);font-size:clamp(24px,2.6vw,34px);font-weight:500;line-height:1.2;color:var(--ink);margin:0 0 10px;letter-spacing:-.01em}
+.post-card p{font-size:15.5px;line-height:1.65;color:var(--stone);margin:0}
+@media (max-width:640px){
+  .post-card{grid-template-columns:1fr;gap:10px;padding:24px 0}
+  .post-card .meta{padding-top:0}
+}
+
 /* Latest posts list spacing tweak when used inside Learn hub */
 .learn-post-list{margin-top:48px}
 .learn-more-row{margin-top:32px}
