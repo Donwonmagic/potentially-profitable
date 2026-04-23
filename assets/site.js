@@ -2697,3 +2697,453 @@
       lastOpener = null;
     });
   })();
+
+  // ───────────────────────────────────────────────────────────────
+  // SEARCH MODAL (Pagefind-backed)
+  //
+  // Opens on Cmd/Ctrl+K, forward-slash, or a click on any
+  // .js-open-search element. Pagefind's JS + index live under
+  // /pagefind/ (built during deploy) and are lazy-loaded on first
+  // open so the search feature costs the page zero bytes until it's
+  // actually used.
+  //
+  // Locale: Pagefind splits its index by <html lang>, so the user's
+  // current page locale determines which results surface. No
+  // per-request locale filter needed.
+  //
+  // Keyboard: ↑/↓ to move selection, ↵ to open, Esc to close. The
+  // opener element is remembered so focus returns there on close
+  // (follows the same pattern the checklist popover uses above).
+  // ───────────────────────────────────────────────────────────────
+  (() => {
+    // No-op on browsers without <dialog>.showModal. Rather than ship a
+    // polyfill for the 1% of tails that lack it, fall back to linking
+    // to /learn/ — the hub still works and no crash ever surfaces.
+    const testDialog = document.createElement('dialog');
+    if (typeof testDialog.showModal !== 'function') {
+      document.querySelectorAll('.js-open-search').forEach((el) => {
+        if (el.tagName === 'BUTTON') el.addEventListener('click', () => { location.href = '/learn/'; });
+      });
+      return;
+    }
+
+    let dialog = null;       // the <dialog> element, created on first open
+    let input = null;        // the text input
+    let results = null;      // the results list container
+    let pagefind = null;     // the Pagefind module, lazy-imported
+    let pagefindPromise = null;
+    let lastOpener = null;   // element to re-focus on close
+    let debounce = null;     // debounce timer for search input
+    let activeIndex = -1;    // currently-selected result index
+    let lastQuery = '';
+
+    const locale = document.documentElement.lang && document.documentElement.lang.toLowerCase().startsWith('es') ? 'es' : 'en';
+    const strings = {
+      placeholder: i18n('search.placeholder', 'Search articles, tools, glossary terms…'),
+      close:       i18n('search.close',       'Close'),
+      hintTitle:   i18n('search.hint_title',  'What are you looking for?'),
+      hintBody:    i18n('search.hint_body',   'Try "DoorDash", "Core Web Vitals", or "menu prices." Results come from every article, tool, and glossary term in the library.'),
+      empty:       i18n('search.empty',       'No results for'),
+      emptyHint:   i18n('search.empty_hint',  'Try a shorter query or a different word.'),
+      loading:     i18n('search.loading',     'Searching…'),
+      navHint:     i18n('search.nav_hint',    'to navigate'),
+      openHint:    i18n('search.open_hint',   'to open'),
+      closeHint:   i18n('search.close_hint',  'to close'),
+    };
+
+    // Classify a URL into a user-facing "kind" so the result meta row
+    // can show something more useful than "/tools/seo-grader/" — e.g.
+    // "TOOL · /tools/seo-grader/". Mapping lives here (JS side) rather
+    // than in Pagefind meta tags so it's trivial to extend.
+    function classify(url) {
+      const u = url.replace(/^https?:\/\/[^/]+/, '').replace(/^\/es\//, '/');
+      if (u.startsWith('/blog/'))      return i18n('search.kind_article',   'Article');
+      if (u.startsWith('/tools/'))     return i18n('search.kind_tool',      'Tool');
+      if (u.startsWith('/glossary/'))  return i18n('search.kind_term',      'Glossary');
+      if (u.startsWith('/resources/')) return i18n('search.kind_resource',  'Guide');
+      if (u.startsWith('/learn/'))     return i18n('search.kind_library',   'Library');
+      if (u.startsWith('/work/'))      return i18n('search.kind_case',      'Case study');
+      if (u.startsWith('/services/'))  return i18n('search.kind_service',   'Services');
+      if (u.startsWith('/for/'))       return i18n('search.kind_industry',  'For you');
+      return i18n('search.kind_page', 'Page');
+    }
+
+    // Build the modal DOM the first time the user opens search. This
+    // keeps the baseline page weight at zero for readers who never
+    // trigger it (including most mobile visitors on a single article).
+    function ensureModal() {
+      if (dialog) return;
+      dialog = document.createElement('dialog');
+      dialog.className = 'search-modal';
+      dialog.setAttribute('aria-label', locale === 'es' ? 'Buscar' : 'Search');
+      dialog.innerHTML = `
+        <div class="search-modal-inner">
+          <div class="search-input-wrap">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+            <input type="search" class="search-input" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="${strings.placeholder}" placeholder="${strings.placeholder}">
+            <button type="button" class="search-close" aria-label="${strings.close}">${strings.close}</button>
+          </div>
+          <div class="search-results" role="listbox" aria-label="${strings.hintTitle}">
+            <div class="search-hint"><strong>${strings.hintTitle}</strong>${strings.hintBody}</div>
+          </div>
+          <div class="search-footer" aria-hidden="true">
+            <span class="search-footer-hints">
+              <span><kbd>↑</kbd><kbd>↓</kbd> ${strings.navHint}</span>
+              <span><kbd>↵</kbd> ${strings.openHint}</span>
+              <span><kbd>esc</kbd> ${strings.closeHint}</span>
+            </span>
+            <span>Pagefind</span>
+          </div>
+        </div>`;
+      document.body.appendChild(dialog);
+      input   = dialog.querySelector('.search-input');
+      results = dialog.querySelector('.search-results');
+      dialog.querySelector('.search-close').addEventListener('click', close);
+      dialog.addEventListener('click', (e) => { if (e.target === dialog) close(); });
+      dialog.addEventListener('close', () => {
+        if (lastOpener && typeof lastOpener.focus === 'function') lastOpener.focus();
+        lastOpener = null;
+      });
+      input.addEventListener('input', onInput);
+      input.addEventListener('keydown', onInputKeydown);
+    }
+
+    // Lazy-load Pagefind from the static index directory. Returns a
+    // cached promise so concurrent opens don't double-fetch.
+    function ensurePagefind() {
+      if (pagefindPromise) return pagefindPromise;
+      pagefindPromise = import('/pagefind/pagefind.js')
+        .then(async (mod) => { await mod.options({ baseUrl: '/' }); pagefind = mod; return mod; })
+        .catch((err) => { console.warn('[search] pagefind failed to load', err); pagefindPromise = null; throw err; });
+      return pagefindPromise;
+    }
+
+    function open(opener) {
+      ensureModal();
+      lastOpener = opener || document.activeElement;
+      dialog.showModal();
+      // Defer focus so the dialog is visible before the input grabs focus.
+      requestAnimationFrame(() => { try { input.focus(); input.select(); } catch (_) {} });
+      // Start warming the index in the background if it isn't loaded yet.
+      ensurePagefind().catch(() => {});
+    }
+
+    function close() {
+      if (dialog && dialog.open) dialog.close();
+    }
+
+    function onInput() {
+      clearTimeout(debounce);
+      const q = input.value.trim();
+      if (q === lastQuery) return;
+      lastQuery = q;
+      if (!q) {
+        results.innerHTML = `<div class="search-hint"><strong>${strings.hintTitle}</strong>${strings.hintBody}</div>`;
+        activeIndex = -1;
+        return;
+      }
+      // Show loading state while we wait for pagefind + results.
+      results.innerHTML = `<div class="search-loading">${strings.loading}</div>`;
+      debounce = setTimeout(() => runSearch(q), 140);
+    }
+
+    async function runSearch(q) {
+      try {
+        const mod = await ensurePagefind();
+        if (q !== lastQuery) return; // user kept typing
+        const res = await mod.search(q);
+        if (q !== lastQuery) return;
+        const hits = res.results.slice(0, 8);
+        const data = await Promise.all(hits.map((r) => r.data()));
+        if (q !== lastQuery) return;
+        renderResults(q, data);
+      } catch (err) {
+        results.innerHTML = `<div class="search-empty"><strong>${strings.empty}</strong> "${escapeHtml(q)}"<br>${strings.emptyHint}</div>`;
+      }
+    }
+
+    function renderResults(q, data) {
+      if (!data.length) {
+        results.innerHTML = `<div class="search-empty"><strong>${strings.empty}</strong> "${escapeHtml(q)}"<br>${strings.emptyHint}</div>`;
+        activeIndex = -1;
+        return;
+      }
+      const html = data.map((d, i) => {
+        const kind  = classify(d.url);
+        const title = (d.meta && d.meta.title) || d.url;
+        const href  = d.url.replace(/^https?:\/\/[^/]+/, '');
+        // Pagefind returns <mark> tags inside excerpts for highlight —
+        // keep them, they style via .search-result-excerpt mark in CSS.
+        return `<a class="search-result" role="option" href="${escapeAttr(href)}" data-idx="${i}">
+          <div class="search-result-meta"><span class="search-result-kind">${escapeHtml(kind)}</span><span>${escapeHtml(href)}</span></div>
+          <div class="search-result-title">${escapeHtml(title)}</div>
+          <div class="search-result-excerpt">${d.excerpt}</div>
+        </a>`;
+      }).join('');
+      results.innerHTML = html;
+      activeIndex = 0;
+      setActive(activeIndex);
+      // Hover selects (mouse and keyboard share the visual highlight).
+      results.querySelectorAll('.search-result').forEach((el, i) => {
+        el.addEventListener('mouseenter', () => setActive(i));
+      });
+    }
+
+    function setActive(i) {
+      const items = results.querySelectorAll('.search-result');
+      if (!items.length) return;
+      activeIndex = (i + items.length) % items.length;
+      items.forEach((el, idx) => el.classList.toggle('is-active', idx === activeIndex));
+      items[activeIndex].scrollIntoView({ block: 'nearest' });
+    }
+
+    function onInputKeydown(e) {
+      if (e.key === 'ArrowDown') { e.preventDefault(); setActive(activeIndex + 1); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(activeIndex - 1); }
+      else if (e.key === 'Enter') {
+        const items = results.querySelectorAll('.search-result');
+        if (items[activeIndex]) { e.preventDefault(); items[activeIndex].click(); }
+      }
+    }
+
+    // Global keybinding: Cmd+K / Ctrl+K, and `/` when not already
+    // typing in a form. Ignore when any modifier-less key is pressed
+    // inside an input so forms aren't hijacked.
+    document.addEventListener('keydown', (e) => {
+      const inField = /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName) || e.target.isContentEditable;
+      if ((e.key === 'k' || e.key === 'K') && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        open(e.target);
+      } else if (e.key === '/' && !inField && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        e.preventDefault();
+        open(e.target);
+      }
+    });
+
+    // Hook up every search trigger on the page.
+    document.querySelectorAll('.js-open-search').forEach((el) => {
+      el.addEventListener('click', (e) => { e.preventDefault(); open(el); });
+    });
+
+    // Small HTML-escape helpers (Pagefind already escapes titles/urls,
+    // but we re-escape when interpolating into the template to stay
+    // defense-in-depth. Excerpts intentionally skipped: Pagefind emits
+    // pre-escaped HTML with <mark> tags we want to render).
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+    }
+    function escapeAttr(s) { return escapeHtml(s); }
+  })();
+
+  // ───────────────────────────────────────────────────────────────
+  // RESEARCH DRAWER (inline research-note preview)
+  //
+  // Intercepts clicks on .cite-note-link (in blog post citations)
+  // and .link-research (in audit result rows + the audit metric
+  // glossary) — any anchor whose href points to a /learn/research/
+  // page under either locale. Instead of opening a new tab, the
+  // click lazy-fetches that research note's HTML, extracts the
+  // preview sections (hero, Don's note, key findings, source), and
+  // renders them into a side-sheet dialog. The reader keeps their
+  // origin page (audit session or article scroll position) intact.
+  //
+  // Progressive enhancement: any of the following falls back to
+  // the trigger's existing target="_blank" new-tab behavior —
+  //   - <dialog>.showModal unavailable (old Safari, older Firefox)
+  //   - DOMParser or fetch unavailable
+  //   - reader holds ⌘/Ctrl/shift to force a new tab or new window
+  //   - fetch fails (offline, 404)
+  // Upshot: nothing breaks when the drawer can't open; the user
+  // just gets the old new-tab flow.
+  // ───────────────────────────────────────────────────────────────
+  (() => {
+    // Capability gate. Fall back to native new-tab if anything is
+    // missing. No polyfills — the baseline already works.
+    const probeDialog = document.createElement('dialog');
+    if (typeof probeDialog.showModal !== 'function') return;
+    if (typeof DOMParser !== 'function' || typeof fetch !== 'function') return;
+
+    // Only hijack links that point at a research-note URL. Matches
+    // /learn/research/<slug>/ and /es/learn/research/<slug>/ on the
+    // same origin. External links and anchors to other pages keep
+    // their current behavior.
+    const RESEARCH_HREF_RE = /^\/(?:es\/)?learn\/research\/[a-z0-9-]+\/?$/i;
+
+    // Copy keys localized via the existing i18n helper so ES readers
+    // see Spanish strings. English literals are the fallback for any
+    // missing key.
+    const strings = {
+      kicker:         i18n('drawer.kicker',        'Research note'),
+      close:          i18n('drawer.close',         'Close'),
+      loading:        i18n('drawer.loading',       'Loading the summary…'),
+      errTitle:       i18n('drawer.err_title',     'Couldn’t load the summary'),
+      errBody:        i18n('drawer.err_body',      'Open the full note in a new tab instead — it’s the same content, just more of it.'),
+      findingsLabel:  i18n('drawer.findings_label','Key findings'),
+      noteLabel:      i18n('drawer.note_label',    'Don’s note'),
+      readFull:       i18n('drawer.read_full',     'Read the full note'),
+      readOriginal:   i18n('drawer.read_original', 'See the original source'),
+      openInNewTab:   i18n('drawer.open_new_tab',  'opens in a new tab'),
+    };
+
+    let dialog = null;
+    let body = null;
+    let actions = null;
+    let lastOpener = null;
+    const cache = new Map();   // slug → parsed preview object
+    let inFlight = null;       // AbortController for the current fetch
+
+    const EXTERNAL_ARROW_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="14" height="14"><path d="M7 17L17 7M9 7h8v8"/></svg>';
+
+    function ensureDialog() {
+      if (dialog) return;
+      dialog = document.createElement('dialog');
+      dialog.className = 'research-drawer';
+      dialog.setAttribute('aria-label', strings.kicker);
+      dialog.innerHTML =
+        '<div class="research-drawer-inner">' +
+          '<div class="research-drawer-head">' +
+            '<span class="research-drawer-kicker">' + strings.kicker + '</span>' +
+            '<button type="button" class="research-drawer-close" aria-label="' + strings.close + '">' + strings.close + '</button>' +
+          '</div>' +
+          '<div class="research-drawer-body" role="document"></div>' +
+          '<div class="research-drawer-actions"></div>' +
+        '</div>';
+      document.body.appendChild(dialog);
+      body = dialog.querySelector('.research-drawer-body');
+      actions = dialog.querySelector('.research-drawer-actions');
+      dialog.querySelector('.research-drawer-close').addEventListener('click', close);
+      dialog.addEventListener('click', (e) => { if (e.target === dialog) close(); });
+      dialog.addEventListener('close', () => {
+        if (lastOpener && typeof lastOpener.focus === 'function') lastOpener.focus();
+        lastOpener = null;
+        if (inFlight) { inFlight.abort(); inFlight = null; }
+      });
+    }
+
+    function open(trigger, href) {
+      ensureDialog();
+      lastOpener = trigger;
+      body.innerHTML = '<div class="research-drawer-loading">' + strings.loading + '</div>';
+      actions.innerHTML = '';
+      try { dialog.showModal(); } catch (_) { /* already open */ }
+
+      // Serve from cache on second open.
+      const slug = href.split('/').filter(Boolean).pop();
+      if (cache.has(slug)) { render(href, cache.get(slug)); return; }
+
+      // Fetch + extract.
+      if (inFlight) inFlight.abort();
+      inFlight = new AbortController();
+      fetch(href, { signal: inFlight.signal, credentials: 'same-origin' })
+        .then((res) => {
+          if (!res.ok) throw new Error('status ' + res.status);
+          return res.text();
+        })
+        .then((html) => {
+          const preview = extract(html);
+          if (!preview) throw new Error('preview extraction failed');
+          cache.set(slug, preview);
+          render(href, preview);
+        })
+        .catch((err) => {
+          if (err && err.name === 'AbortError') return;
+          renderError(href);
+        });
+    }
+
+    function close() {
+      if (dialog && dialog.open) dialog.close();
+    }
+
+    // Parse a research note's HTML and pull out the pieces that
+    // make the preview. Tolerant to layout drift — each getter is
+    // independently null-safe, so a redesigned note that drops
+    // (say) the dek still renders the rest.
+    function extract(html) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const hero = doc.querySelector('.research-hero');
+      if (!hero) return null;
+      const title = (doc.querySelector('.research-hero h1') || {}).innerHTML || '';
+      const sourceLine = (doc.querySelector('.research-source-line') || {}).innerHTML || '';
+      const dek = (doc.querySelector('.research-dek') || {}).textContent || '';
+      // Don's note: prefer the first <p> inside .research-note.
+      const noteP = doc.querySelector('.research-note p');
+      const note = noteP ? noteP.innerHTML : '';
+      // Top 3 findings (the note itself carries 5; keep the preview lean).
+      const findings = Array.from(doc.querySelectorAll('.research-findings > li')).slice(0, 3).map((li) => li.innerHTML);
+      // External source link — the "Read the original …" button in
+      // the .research-original aside.
+      const origAnchor = doc.querySelector('.research-original a[href^="http"]');
+      const originalHref = origAnchor ? origAnchor.getAttribute('href') : '';
+      return { title, sourceLine, dek, note, findings, originalHref };
+    }
+
+    function render(href, preview) {
+      let html = '';
+      if (preview.sourceLine) html += '<div class="research-drawer-source">' + preview.sourceLine + '</div>';
+      if (preview.title)      html += '<h2 class="research-drawer-title">' + preview.title + '</h2>';
+      if (preview.dek)        html += '<p class="research-drawer-dek">' + escapeHtml(preview.dek) + '</p>';
+      if (preview.note) {
+        html += '<p class="research-drawer-section-label">' + strings.noteLabel + '</p>';
+        html += '<p class="research-drawer-note">' + preview.note + '</p>';
+      }
+      if (preview.findings && preview.findings.length) {
+        html += '<p class="research-drawer-section-label">' + strings.findingsLabel + '</p>';
+        html += '<ul class="research-drawer-findings">' + preview.findings.map((f) => '<li>' + f + '</li>').join('') + '</ul>';
+      }
+      body.innerHTML = html;
+
+      // Action footer: "Read the full note" opens the full research
+      // page in a new tab (keeps the origin page intact). "See the
+      // original source" opens the external study.
+      let actionsHtml =
+        '<a class="btn btn-primary" href="' + escapeAttr(href) + '" target="_blank" rel="noopener">' +
+          strings.readFull + EXTERNAL_ARROW_SVG +
+          '<span class="sr-only"> (' + strings.openInNewTab + ')</span>' +
+        '</a>';
+      if (preview.originalHref) {
+        actionsHtml +=
+          '<a class="btn btn-ghost" href="' + escapeAttr(preview.originalHref) + '" target="_blank" rel="noopener noreferrer">' +
+            strings.readOriginal + EXTERNAL_ARROW_SVG +
+            '<span class="sr-only"> (' + strings.openInNewTab + ')</span>' +
+          '</a>';
+      }
+      actions.innerHTML = actionsHtml;
+    }
+
+    function renderError(href) {
+      body.innerHTML =
+        '<p class="research-drawer-error">' +
+          '<strong>' + strings.errTitle + '</strong>' + strings.errBody +
+        '</p>';
+      actions.innerHTML =
+        '<a class="btn btn-primary" href="' + escapeAttr(href) + '" target="_blank" rel="noopener">' +
+          strings.readFull + EXTERNAL_ARROW_SVG +
+          '<span class="sr-only"> (' + strings.openInNewTab + ')</span>' +
+        '</a>';
+    }
+
+    // Global click interceptor. Captures clicks on research-note
+    // anchors during bubbling so nothing else has to know about the
+    // drawer. Modifier keys (⌘/Ctrl/shift/middle-click) bypass us and
+    // fall through to the browser's native new-tab/new-window handling
+    // — preserves user intent on power-user clicks.
+    document.addEventListener('click', (e) => {
+      if (e.defaultPrevented) return;
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = e.target && e.target.closest && e.target.closest('a[href]');
+      if (!a) return;
+      const href = a.getAttribute('href') || '';
+      if (!RESEARCH_HREF_RE.test(href)) return;
+      // Same-origin only (the regex already guarantees a relative
+      // href, so no cross-origin concern).
+      e.preventDefault();
+      open(a, href);
+    });
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+    }
+    function escapeAttr(s) { return escapeHtml(s); }
+  })();

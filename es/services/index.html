@@ -113,7 +113,7 @@
 </script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260419-mobnav">
+<link rel="stylesheet" href="/assets/site.css?v=20260422-cohesion">
 
 <style>
   /* ===== SERVICES PAGE LOCAL STYLES (mirror of /services/) ===== */
@@ -143,7 +143,7 @@
              along with the rest of the nav block on every build, keeping
              the partial strictly idempotent. Valid HTML5: <script> may
              appear in any flow-content context. */
-  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador"});</script>
+  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
   <div class="container nav-inner">
     <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
       <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
@@ -158,10 +158,18 @@
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/services/">Servicios</a>
       <a href="/es/for/restaurants/">Restaurantes</a>
+      <a href="/es/learn/">Aprende</a>
       <a href="/es/work/">Proyectos</a>
-      <a href="/es/blog/">Blog</a>
       <a href="/es/about/">Sobre Don</a>
     </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Buscar</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+    </button>
     <nav class="lang-switch" aria-label="Idioma">
       <a href="/services/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
@@ -176,9 +184,13 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/services/">Servicios</a>
     <a href="/es/for/restaurants/">Restaurantes</a>
+    <a href="/es/learn/">Aprende</a>
     <a href="/es/work/">Proyectos</a>
-    <a href="/es/blog/">Blog</a>
     <a href="/es/about/">Sobre Don</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Buscar en la biblioteca</span>
+    </button>
     <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Agenda una llamada de 20 min<span class="sr-only"> (se abre en una pestaña nueva)</span></a>
     <a href="/services/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
@@ -533,6 +545,40 @@
   </div>
 </section>
 
+<!-- ============ VELO EN VIVO ============ -->
+<section class="block bg-cream2" aria-labelledby="proof-heading">
+  <div class="container">
+    <div class="section-header reveal section-center">
+      <span class="eyebrow">Pruebas, no promesas</span>
+      <h2 id="proof-heading">Velo<br><span class="serif-italic">en vivo.</span></h2>
+      <p class="final-sub">Tres ejemplos reales de cómo se ven los servicios de arriba una vez que están al aire y haciendo lo suyo.</p>
+    </div>
+    <div class="learn-tools" style="margin-top:48px;">
+      <a class="learn-tool" href="/es/work/irish-inn-glen-echo/">
+        <span class="learn-tool-kicker">Rebrand patrimonial</span>
+        <h3>The Irish Inn at Glen Echo.</h3>
+        <p>Un emblema de los años 1900 con un sitio que se había quedado atrás. Sistema de marca nuevo, sitio a medida, flujo de reservas afinado de punta a punta.</p>
+        <span class="learn-tool-cta">Ver el caso de estudio →</span>
+      </a>
+      <a class="learn-tool" href="/es/work/tacombi/">
+        <span class="learn-tool-kicker">Equipo interno</span>
+        <h3>Tacombi.</h3>
+        <p>Marca de taquerías con varias ubicaciones. Integrado como equipo de marketing interno — engagement comunitario, redes y contenido en una sola voz consistente.</p>
+        <span class="learn-tool-cta">Ver el caso de estudio →</span>
+      </a>
+      <a class="learn-tool" href="/es/work/off-day-collective/">
+        <span class="learn-tool-kicker">Marca y lanzamiento web</span>
+        <h3>Off Day Collective.</h3>
+        <p>Una marca hospitalaria silenciosa y considerada. Identidad, web y redes construidas como un sistema coherente — silencio, curado.</p>
+        <span class="learn-tool-cta">Ver el caso de estudio →</span>
+      </a>
+    </div>
+    <div class="hero-ctas hero-ctas-center" style="margin-top:32px;">
+      <a class="btn btn-ghost" href="/es/work/">Todos los proyectos</a>
+    </div>
+  </div>
+</section>
+
 <!-- ============ FINAL CTA ============ -->
 <section class="block final" aria-labelledby="services-cta-heading">
   <div class="container">
@@ -578,18 +624,21 @@
           <li><a href="/es/services/">Servicios</a></li>
           <li><a href="/es/for/restaurants/">Para restaurantes</a></li>
           <li><a href="/es/work/">Proyectos</a></li>
-          <li><a href="/es/blog/">Blog</a></li>
           <li><a href="/es/about/">Sobre Don</a></li>
+          <li><a href="/es/system/">El sistema</a></li>
         </ul>
       </nav>
 
-      <nav class="foot-col" aria-labelledby="foot-tools">
-        <p class="foot-heading" id="foot-tools">Herramientas gratis</p>
+      <nav class="foot-col" aria-labelledby="foot-learn">
+        <p class="foot-heading" id="foot-learn">Aprende</p>
         <ul class="foot-links">
-          <li><a href="/es/tools/">Todas las herramientas</a></li>
-          <li><a href="/es/tools/audits/restaurant/">Diagnóstico de restaurante</a></li>
+          <li><a href="/es/learn/">Biblioteca</a></li>
+          <li><a href="/es/learn/start-here/">Empieza aquí</a></li>
+          <li><a href="/es/blog/">Artículos</a></li>
+          <li><a href="/es/tools/">Herramientas gratis</a></li>
+          <li><a href="/es/glossary/">Glosario</a></li>
+          <li><a href="/es/learn/research/">Investigación</a></li>
           <li><a href="/es/resources/restaurant-website-checklist/">Checklist para tu sitio</a></li>
-          <li><a href="/es/glossary/">Glosario web</a></li>
         </ul>
       </nav>
 
@@ -616,6 +665,6 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260419-mobnav" defer></script>
+<script src="/assets/site.js?v=20260422-cohesion" defer></script>
 </body>
 </html>

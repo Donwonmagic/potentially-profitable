@@ -173,9 +173,39 @@ const STATIC = [
   // Skip link / footer-ish
   [ 'Skip to main content', 'Saltar al contenido principal' ],
 
-  // OG / Twitter card image — swap the EN restaurant-audit SVG for
-  // the Spanish sibling that lives beside it in /brand/og/.
+  // OG / Twitter card image — swap the EN restaurant-audit asset
+  // for the Spanish sibling that lives beside it in /brand/og/.
+  // Both extensions listed because OG delivery migrated from SVG
+  // to PNG; this script has to cover both until the EN master
+  // source settles.
+  [ '/brand/og/audit-restaurants.png', '/brand/og/audit-restaurants-es.png' ],
   [ '/brand/og/audit-restaurants.svg', '/brand/og/audit-restaurants-es.svg' ],
+
+  // Research-note "Learn more" enrichment (added during Sprint R+).
+  // The rendered audit rows and the metric-glossary get second
+  // "Based on …" links that point at /learn/research/<slug>/ notes.
+  // Swap the URL prefix to /es/learn/research/ on the ES mirror and
+  // translate the label copy natively. All new-tab.
+  [ '"/learn/research/lighthouse-performance-scoring/"', '"/es/learn/research/lighthouse-performance-scoring/"' ],
+  [ '"/learn/research/mobile-page-speed-3-second-rule/"', '"/es/learn/research/mobile-page-speed-3-second-rule/"' ],
+  [ '"/learn/research/fittss-law/"',                     '"/es/learn/research/fittss-law/"' ],
+  [ '"/learn/research/cart-abandonment-rate/"',          '"/es/learn/research/cart-abandonment-rate/"' ],
+  [ '"/learn/research/local-business-websites/"',        '"/es/learn/research/local-business-websites/"' ],
+
+  // Row-level "Based on …" link labels (appear alongside "Learn more →"
+  // on audit result rows when the check maps to a research note).
+  [ "label: \"Based on Fitts's Law\"",                     "label: \"Con base en la Ley de Fitts\"" ],
+  [ "label: 'Based on Baymard research'",                  "label: 'Con base en la investigación de Baymard'" ],
+  [ "label: 'Based on NNG research'",                      "label: 'Con base en la investigación de NNG'" ],
+  [ "label: \"Based on Google's 3-second study\"",        "label: \"Con base en el estudio de 3 segundos de Google\"" ],
+  [ 'Muntin research note — opens in a new tab',           'Nota de investigación de Muntin — se abre en una pestaña nueva' ],
+  [ ' (opens in a new tab)',                               ' (se abre en una pestaña nueva)' ],
+
+  // Metric-glossary "Based on:" inline copy + the research-note link labels.
+  [ '<strong>Based on:</strong>',                          '<strong>Con base en:</strong>' ],
+  [ 'How Lighthouse scores performance ',                  'Cómo califica Lighthouse el rendimiento ' ],
+  [ 'The 3-second mobile load rule ',                      'La regla de los 3 segundos en móvil ' ],
+  [ ' (opens in new tab)',                                 ' (se abre en una pestaña nueva)' ],
 ];
 
 function applyTranslations(src) {

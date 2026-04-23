@@ -77,7 +77,7 @@
 </script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260419-mobnav">
+<link rel="stylesheet" href="/assets/site.css?v=20260422-cohesion">
 
 <style>
   /* Glossary-specific layout. Inline so the page ships self-contained
@@ -317,7 +317,7 @@
              along with the rest of the nav block on every build, keeping
              the partial strictly idempotent. Valid HTML5: <script> may
              appear in any flow-content context. */
-  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador"});</script>
+  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
   <div class="container nav-inner">
     <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
       <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
@@ -332,10 +332,18 @@
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/services/">Servicios</a>
       <a href="/es/for/restaurants/">Restaurantes</a>
+      <a href="/es/learn/">Aprende</a>
       <a href="/es/work/">Proyectos</a>
-      <a href="/es/blog/">Blog</a>
       <a href="/es/about/">Sobre Don</a>
     </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Buscar</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+    </button>
     <nav class="lang-switch" aria-label="Idioma">
       <a href="/glossary/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
@@ -350,9 +358,13 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/services/">Servicios</a>
     <a href="/es/for/restaurants/">Restaurantes</a>
+    <a href="/es/learn/">Aprende</a>
     <a href="/es/work/">Proyectos</a>
-    <a href="/es/blog/">Blog</a>
     <a href="/es/about/">Sobre Don</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Buscar en la biblioteca</span>
+    </button>
     <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Agenda una llamada de 20 min<span class="sr-only"> (se abre en una pestaña nueva)</span></a>
     <a href="/glossary/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
@@ -426,6 +438,7 @@
         </div>
         <p class="gloss-term-def">Un número de teléfono en tu sitio que, al tocarlo en un celular, abre el marcador con tu número ya cargado — en vez de ser texto plano que el visitante tiene que copiar. Construido con un enlace <code>href="tel:+1555…"</code>.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Si un cliente tiene que copiar tu número, cambiar de app, pegarlo y marcar, muchos no lo van a hacer. Un toque, un timbrazo — ese es el camino más corto entre «tengo hambre» o «necesito un corte de pelo» y pagarte a ti.</p>
+              <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/local-business-websites/">Usabilidad de sitios de negocios locales <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="hours-visibility" data-industries="restaurants all">
@@ -435,6 +448,7 @@
         </div>
         <p class="gloss-term-def">Si los horarios de hoy se ven en tu portada dentro de los cinco segundos de haber llegado, sin hacer scroll ni clic. Distinto de simplemente <em>tener</em> horarios en algún lado del sitio.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>«¿Están abiertos ahora?» es la pregunta más común que se hace un visitante. Esconde la respuesta a tres clics de profundidad y se la van a hacer al sitio de tu competidor.</p>
+              <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/local-business-websites/">Usabilidad de sitios de negocios locales <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="copyable-address" data-industries="restaurants all">
@@ -509,6 +523,7 @@
         </div>
         <p class="gloss-term-def">Las tres calificaciones de desempeño de Google para la carga real de una página en un celular — una para velocidad de carga (LCP), una para estabilidad del diseño (CLS), y una para capacidad de respuesta (INP). Las ves como barras de colores en cualquier reporte de diagnóstico.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Google usa explícitamente Core Web Vitals como señal de posicionamiento en la búsqueda. Dos restaurantes con menús idénticos y Google Business Profiles idénticos van a posicionar distinto si a uno le dan verde las vitals y al otro le dan rojo.</p>
+              <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/lighthouse-performance-scoring/">Cómo califica Lighthouse el rendimiento <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="lcp" data-industries="restaurants all">
@@ -518,6 +533,7 @@
         </div>
         <p class="gloss-term-def">Cuánto tarda en terminarse de dibujar la pieza visible más grande de tu portada — normalmente la foto del hero o el titular — en un celular. Menos de 2,5 segundos es «bueno», más de 4 segundos es «pobre».</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>El LCP es lo que el visitante siente como «la página ya cargó». Cada segundo extra manda más gente al botón atrás. La investigación de Google pone el salto de rebote en cerca del 32 % cuando el tiempo de carga pasa de 1 s a 3 s.</p>
+              <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/lighthouse-performance-scoring/">Cómo califica Lighthouse el rendimiento <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="cls" data-industries="restaurants all">
@@ -527,6 +543,7 @@
         </div>
         <p class="gloss-term-def">Una calificación que mide cuánto <em>salta</em> tu página mientras carga — cuando entra un banner, llega tarde una imagen, o una fuente que carga tarde empuja el texto hacia abajo. Más bajo, mejor; por debajo de 0,1 es bueno.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Si un cliente toca «Reservar» y el botón salta en el último milisegundo porque llegó una foto y lo empujó hacia abajo, toca algo equivocado y se va. Un diseño estable mantiene intactas las conversiones.</p>
+              <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/lighthouse-performance-scoring/">Cómo califica Lighthouse el rendimiento <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="inp" data-industries="all">
@@ -545,6 +562,7 @@
         </div>
         <p class="gloss-term-def">Una sola línea de código en el &lt;head&gt; de cada página (<code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</code>) que le dice a los celulares «renderiza esta página al ancho del celular, no al del escritorio».</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Sin ella, los celulares renderizan cada página como si fuera un monitor de escritorio y luego la encogen — todo se ve chiquito, ilegible, inutilizable. El arreglo es literalmente una línea; la diferencia antes/después en móvil es de la noche al día.</p>
+              <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/mobile-page-speed-3-second-rule/">La regla de los 3 segundos en móvil <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="tap-targets" data-industries="restaurants all">
@@ -554,6 +572,7 @@
         </div>
         <p class="gloss-term-def">Cualquier elemento clicable — botón, enlace, ítem de menú — que un dedo toca en un celular. Google y Apple recomiendan un área mínima de toque de 44×44 píxeles con espacio entre vecinos.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Los objetivos de toque apretados producen el «dedo gordo» que abre la cosa equivocada. Después de uno o dos de esos, la mayoría de los visitantes se van. Los objetivos más grandes también hacen el sitio usable para clientes mayores y para quien tenga limitaciones motrices o de destreza.</p>
+              <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/fittss-law/">Ley de Fitts <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="body-text-size" data-industries="restaurants all">
@@ -572,6 +591,7 @@
         </div>
         <p class="gloss-term-def">La herramienta de auditoría de código abierto que Google trae dentro de Chrome y dentro de PageSpeed Insights. Simula una carga de página en móvil y califica tu sitio en desempeño, SEO, accesibilidad y buenas prácticas.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Lighthouse es el mismo motor que Google usa para posicionar tu sitio — así que su puntuación no es consultiva, es la boleta de calificaciones. Nuestro diagnóstico de restaurante corre un Lighthouse real sobre tu URL y traduce los números a arreglos específicos para tu negocio.</p>
+              <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/lighthouse-performance-scoring/">Cómo califica Lighthouse el rendimiento <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="pagespeed-insights" data-industries="restaurants all">
@@ -590,6 +610,7 @@
         </div>
         <p class="gloss-term-def">El momento en que el navegador pinta el <em>primer</em> pedazo de tu página — normalmente un titular, un logo, o una zona de color de fondo. Se mide en segundos. Menos de 1,8 s es bueno, más de 3 s es pobre.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>El FCP es la señal de «algo está pasando». Una pantalla blanca en blanco por tres segundos se lee como rota aunque la página esté por cargar; un primer pintado antes de 1,8 s le dice al visitante que el sitio está funcionando y te da tiempo para terminar de cargar.</p>
+              <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/lighthouse-performance-scoring/">Cómo califica Lighthouse el rendimiento <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="ttfb" data-industries="all">
@@ -646,6 +667,7 @@
         </div>
         <p class="gloss-term-def">El botón o enlace específico que le pide al visitante hacer lo siguiente — «Reservar mesa», «Pedir en línea», «Reservar una clase», «Pedir cotización». Normalmente llamativo, claramente etiquetado, y repetido en momentos naturales de la página.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>El tráfico sin un siguiente paso claro convierte a una fracción de la tasa. Cada página debería tener un único CTA primario inconfundible — la acción que más te gustaría que un visitante tome — y debería verse en la primera pantalla, no escondido al fondo.</p>
+              <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/fittss-law/">Ley de Fitts <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="reservation-link" data-industries="restaurants">
@@ -655,6 +677,7 @@
         </div>
         <p class="gloss-term-def">Un enlace persistente — en la navegación, en el hero, y en el pie móvil — que arranca un flujo de reserva. Idealmente conectado a la plataforma en la que tu puesto de host ya confía (OpenTable, Resy, Tock, Square) para que las reservas caigan en el mismo sistema que el equipo ya revisa.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Una reserva que hay que mandar por correo, o que vive a tres clics de profundidad, es una reserva que la mitad de los visitantes abandona. Un toque, una reserva, una confirmación — ese es el estándar al que ya están acostumbrados los comensales.</p>
+              <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/cart-abandonment-rate/">La tasa del 70% de abandono de carrito <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="online-ordering" data-industries="restaurants">
@@ -664,6 +687,7 @@
         </div>
         <p class="gloss-term-def">Un botón en tu página de menú que enlaza directo al checkout de recoger o de delivery — no a una página de aterrizaje, no a una pantalla intermedia. O una redirección a tu proveedor de POS (Toast/Square/ChowNow), o un checkout directo corriendo sobre tu propio procesador de pagos.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Cada toque extra entre un visitante con hambre y un checkout baja las tasas de finalización de forma medible. Los checkouts directos también te dejan quedarte con más margen que las apps tipo marketplace como DoorDash o Grubhub.</p>
+              <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/cart-abandonment-rate/">La tasa del 70% de abandono de carrito <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="click-to-directions" data-industries="restaurants all">
@@ -682,6 +706,7 @@
         </div>
         <p class="gloss-term-def">Una barra delgada anclada al fondo de cada página móvil que sostiene una o dos de tus acciones más importantes — normalmente Llamar, Reservar o Pedir. Se queda visible incluso mientras el visitante hace scroll por el menú o el blog.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Un visitante que se convence en algún punto a la mitad de tu menú no debería tener que volver a subir hasta arriba para actuar. Un pie móvil fijo mantiene el siguiente paso a un pulgar de distancia en todo momento.</p>
+              <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/fittss-law/">Ley de Fitts <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="social-proof" data-industries="restaurants all">
@@ -1137,18 +1162,21 @@
           <li><a href="/es/services/">Servicios</a></li>
           <li><a href="/es/for/restaurants/">Para restaurantes</a></li>
           <li><a href="/es/work/">Proyectos</a></li>
-          <li><a href="/es/blog/">Blog</a></li>
           <li><a href="/es/about/">Sobre Don</a></li>
+          <li><a href="/es/system/">El sistema</a></li>
         </ul>
       </nav>
 
-      <nav class="foot-col" aria-labelledby="foot-tools">
-        <p class="foot-heading" id="foot-tools">Herramientas gratis</p>
+      <nav class="foot-col" aria-labelledby="foot-learn">
+        <p class="foot-heading" id="foot-learn">Aprende</p>
         <ul class="foot-links">
-          <li><a href="/es/tools/">Todas las herramientas</a></li>
-          <li><a href="/es/tools/audits/restaurant/">Diagnóstico de restaurante</a></li>
+          <li><a href="/es/learn/">Biblioteca</a></li>
+          <li><a href="/es/learn/start-here/">Empieza aquí</a></li>
+          <li><a href="/es/blog/">Artículos</a></li>
+          <li><a href="/es/tools/">Herramientas gratis</a></li>
+          <li><a href="/es/glossary/">Glosario</a></li>
+          <li><a href="/es/learn/research/">Investigación</a></li>
           <li><a href="/es/resources/restaurant-website-checklist/">Checklist para tu sitio</a></li>
-          <li><a href="/es/glossary/">Glosario web</a></li>
         </ul>
       </nav>
 
@@ -1175,7 +1203,7 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260419-mobnav" defer></script>
+<script src="/assets/site.js?v=20260422-cohesion" defer></script>
 
 <script>
   // Glossary filter — toggles data-active-filter on <main>, which

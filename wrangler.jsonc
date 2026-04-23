@@ -53,23 +53,50 @@
   // guarantees that a stale page can't ship.
   "build": {
     // i18n build steps run in order BEFORE the tar:
+    //   build-og-cards.mjs      — renders every OG card declared in
+    //                             brand/og/cards.json through a typed
+    //                             template. Shells out to rsvg-convert
+    //                             when available (CF Pages) with
+    //                             fontconfig pointed at Fraunces +
+    //                             Inter TTFs. Content-based skip: if
+    //                             the committed SVG matches template
+    //                             output and the PNG exists, no render
+    //                             needed — so a rendererless CF
+    //                             environment can still pass.
+    //   stamp-es-restaurant-audit.mjs — ES4: regenerates the Spanish
+    //                             mirror of the restaurant audit from
+    //                             the EN master. MUST run before
+    //                             sync-includes — the regeneration
+    //                             installs the EN nav, then
+    //                             sync-includes overwrites it with the
+    //                             Spanish nav partial. Reversing the
+    //                             order wipes Spanish nav on every
+    //                             deploy.
     //   sync-includes.mjs       — stamps locale-aware nav/footer
     //                             (English + Spanish partials under
-    //                             _includes/es/) into every HTML page
+    //                             _includes/es/) into every HTML page.
     //   stamp-hreflang.mjs      — injects <link rel="alternate"
     //                             hreflang="..."> + og:locale blocks
     //                             after each page's canonical tag.
-    //                             Idempotent, safe to re-run
+    //                             Idempotent, safe to re-run.
     //   check-locale-parity.mjs — warns about missing Spanish pages or
     //                             stale Spanish copies. Uses --check in
     //                             warn-only mode during rollout; flip
     //                             to hard-fail once ES coverage is
-    //                             complete (see the script's tail)
-    //   stamp-es-restaurant-audit.mjs — ES4: regenerates the Spanish
-    //                             mirror of the restaurant audit from
-    //                             the EN master so i18n changes land
-    //                             in both locales automatically.
-    "command": "node scripts/sync-includes.mjs && node scripts/stamp-hreflang.mjs && node scripts/stamp-es-restaurant-audit.mjs && node scripts/check-locale-parity.mjs --check && mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md --exclude=src --exclude=scripts --exclude=_includes . | tar -xf - -C dist"
+    //                             complete (see the script's tail).
+    //   check-og-images.mjs     — fails the build if any HTML page's
+    //                             og:image / twitter:image meta
+    //                             references a file that does not
+    //                             exist in brand/og/. Catches stale
+    //                             slugs + forgotten cards.json
+    //                             entries before they ship.
+    //   pagefind                — builds the static search index after
+    //                             the dist/ tree is materialized. Uses
+    //                             npx -y so no package.json is needed;
+    //                             outputs dist/pagefind/ which site.js
+    //                             lazy-loads on first open of the
+    //                             search modal. Config at pagefind.yml.
+    "command": "node scripts/build-og-cards.mjs && node scripts/stamp-es-restaurant-audit.mjs && node scripts/sync-includes.mjs && node scripts/stamp-hreflang.mjs && node scripts/check-locale-parity.mjs --check && node scripts/check-og-images.mjs && mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md --exclude=src --exclude=scripts --exclude=_includes --exclude=pagefind.yml . | tar -xf - -C dist && npx -y pagefind@latest --site dist"
   },
   "assets": {
     "directory": "./dist",

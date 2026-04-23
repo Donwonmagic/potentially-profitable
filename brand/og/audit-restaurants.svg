@@ -1,43 +1,76 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
-  <rect width="1200" height="630" fill="#1F4E5B"/>
   <defs>
-    <radialGradient id="aglow" cx="80%" cy="40%" r="45%">
-      <stop offset="0%" stop-color="#FAF7F2" stop-opacity="0.06"/>
+    <radialGradient id="toolglow" cx="82%" cy="28%" r="65%">
+      <stop offset="0%" stop-color="#FAF7F2" stop-opacity="0.08"/>
       <stop offset="100%" stop-color="#1F4E5B" stop-opacity="0"/>
     </radialGradient>
   </defs>
-  <rect width="1200" height="630" fill="url(#aglow)"/>
+  <rect width="1200" height="630" fill="#1F4E5B"/>
+  <rect width="1200" height="630" fill="url(#toolglow)"/>
+  <rect x="0" y="0" width="12" height="252" fill="#C5A059"/>
+  <rect x="0" y="252" width="12" height="378" fill="#C5A059" opacity="0.4"/>
 
-  <text x="72" y="90" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#FAF7F2" letter-spacing="5" opacity="0.5">FREE · 30 SECONDS · NO SIGNUP</text>
+  <text x="80" y="104"
+        font-family="Inter, Arial, sans-serif" font-size="13"
+        font-weight="700" letter-spacing="4" fill="#C5A059">DROP YOUR URL · GET RESULTS IN 30 SECONDS</text>
 
-  <text x="72" y="200" font-family="Fraunces, Georgia, serif" font-size="64" font-weight="500" fill="#FAF7F2" letter-spacing="-2">Restaurant</text>
-  <text x="72" y="275" font-family="Fraunces, Georgia, serif" font-size="64" font-weight="500" fill="#FAF7F2" letter-spacing="-2">Website Audit</text>
-  <text x="72" y="340" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="500" fill="#FAF7F2" opacity="0.55">Mobile speed · Menu readability · Ordering detection</text>
-  <text x="72" y="372" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="500" fill="#FAF7F2" opacity="0.55">Google Business Profile · Reservations · Schema</text>
+  <text x="80" y="192"
+        font-family="Fraunces, Georgia, serif" font-size="62"
+        font-weight="500" letter-spacing="-2" fill="#FAF7F2">Restaurant</text>
+  <text x="80" y="264"
+        font-family="Fraunces, Georgia, serif" font-style="italic"
+        font-size="62" font-weight="400" letter-spacing="-2"
+        fill="#C5A059">website</text>
+  <text x="80" y="336"
+        font-family="Fraunces, Georgia, serif" font-size="62"
+        font-weight="500" letter-spacing="-2" fill="#FAF7F2">audit.</text>
 
-  <!-- Right: three result indicators -->
-  <g transform="translate(880, 150)">
-    <!-- Pass -->
-    <rect x="0" y="0" width="240" height="52" rx="8" fill="#FAF7F2" opacity="0.1"/>
-    <circle cx="32" cy="26" r="10" fill="#1f9d55"/>
-    <path d="M27 26 L30 29 L37 22" stroke="#FAF7F2" stroke-width="2" fill="none" stroke-linecap="round"/>
-    <text x="54" y="31" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600" fill="#FAF7F2" opacity="0.8">Mobile-friendly menu</text>
+  <text x="80" y="416"
+        font-family="Inter, Arial, sans-serif" font-size="20"
+        font-weight="400" fill="#FAF7F2" opacity="0.72">Mobile speed, menu readability, ordering, GBP, reservations, schema.</text>
 
-    <!-- Fail -->
-    <rect x="0" y="64" width="240" height="52" rx="8" fill="#FAF7F2" opacity="0.1"/>
-    <circle cx="32" cy="90" r="10" fill="#B8541A"/>
-    <text x="28" y="95" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#FAF7F2">&#10005;</text>
-    <text x="54" y="95" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600" fill="#FAF7F2" opacity="0.8">Schema markup</text>
+  
+        <rect x="740" y="160" width="380" height="64" rx="10" fill="rgba(250,247,242,0.08)"/>
+        <circle cx="772" cy="192" r="18" fill="none" stroke="#3AA368" stroke-width="1.5" opacity="0.4"/>
+        <path d="M762 192 L769 199 L783 185"
+              stroke="#3AA368" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="804" y="198"
+              font-family="Inter, Arial, sans-serif" font-size="17"
+              font-weight="500" fill="#FAF7F2" opacity="0.9">Mobile-friendly menu</text>
+      
+        <rect x="740" y="232" width="380" height="64" rx="10" fill="rgba(250,247,242,0.08)"/>
+        <circle cx="772" cy="264" r="18" fill="none" stroke="#B8541A" stroke-width="1.5" opacity="0.4"/>
+        <path d="M763 255 L781 273 M781 255 L763 273"
+              stroke="#B8541A" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <text x="804" y="270"
+              font-family="Inter, Arial, sans-serif" font-size="17"
+              font-weight="500" fill="#FAF7F2" opacity="0.9">Schema markup</text>
+      
+        <rect x="740" y="304" width="380" height="64" rx="10" fill="rgba(250,247,242,0.08)"/>
+        <circle cx="772" cy="336" r="18" fill="none" stroke="#3AA368" stroke-width="1.5" opacity="0.4"/>
+        <path d="M762 336 L769 343 L783 329"
+              stroke="#3AA368" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="804" y="342"
+              font-family="Inter, Arial, sans-serif" font-size="17"
+              font-weight="500" fill="#FAF7F2" opacity="0.9">Online ordering</text>
+      
 
-    <!-- Pass -->
-    <rect x="0" y="128" width="240" height="52" rx="8" fill="#FAF7F2" opacity="0.1"/>
-    <circle cx="32" cy="154" r="10" fill="#1f9d55"/>
-    <path d="M27 154 L30 157 L37 150" stroke="#FAF7F2" stroke-width="2" fill="none" stroke-linecap="round"/>
-    <text x="54" y="159" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600" fill="#FAF7F2" opacity="0.8">Online ordering</text>
-  </g>
-
-  <!-- Bottom bar -->
-  <rect y="580" width="1200" height="50" fill="#14161A" opacity="0.3"/>
-  <text x="72" y="612" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#FAF7F2" letter-spacing="2" opacity="0.6">DROP YOUR URL · GET RESULTS IN 30 SECONDS</text>
-  <text x="1128" y="612" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600" fill="#FAF7F2" letter-spacing="1" opacity="0.7">muntin.digital</text>
+  
+    <g transform="translate(80, 552)" fill="#FAF7F2" opacity="0.6">
+      <circle cx="8" cy="8" r="8" fill="none" stroke="#FAF7F2" stroke-width="1"/>
+      <text x="8" y="12" text-anchor="middle"
+            font-family="Fraunces, Georgia, serif" font-style="italic"
+            font-size="11" font-weight="500" fill="#FAF7F2">d</text>
+    </g>
+  
+  
+    <line x1="80" y1="584" x2="1120" y2="584"
+          stroke="rgba(250,247,242,0.2)" stroke-width="1"/>
+    <text x="80" y="614"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="2" fill="rgba(250,247,242,0.6)">MUNTIN DIGITAL</text>
+    <text x="1120" y="614" text-anchor="end"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="1" fill="rgba(250,247,242,0.6)">muntin.digital</text>
+  
 </svg>

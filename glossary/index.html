@@ -79,7 +79,7 @@
 </script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260419-mobnav">
+<link rel="stylesheet" href="/assets/site.css?v=20260422-cohesion">
 
 <style>
   /* Glossary-specific layout. Inline so the page ships self-contained
@@ -328,10 +328,18 @@
     <nav class="nav-links" aria-label="Primary">
       <a href="/services/">Services</a>
       <a href="/for/restaurants/">Restaurants</a>
+      <a href="/learn/">Learn</a>
       <a href="/work/">Work</a>
-      <a href="/blog/">Blog</a>
       <a href="/about/">About</a>
     </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Search</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+    </button>
     <nav class="lang-switch" aria-label="Language">
       <a href="/es/glossary/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
@@ -346,9 +354,13 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/services/">Services</a>
     <a href="/for/restaurants/">Restaurants</a>
+    <a href="/learn/">Learn</a>
     <a href="/work/">Work</a>
-    <a href="/blog/">Blog</a>
     <a href="/about/">About</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Search the library</span>
+    </button>
     <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a>
     <a href="/es/glossary/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
@@ -439,6 +451,7 @@
         </div>
         <p class="gloss-term-def">A phone number on your site that, when tapped on a phone, opens the dialer with your number pre-filled — instead of being plain text the visitor has to copy. Built with an <code>href="tel:+1555…"</code> link.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>If a customer has to copy your number, switch apps, paste, and dial, many won't. One tap, one ring — that's the shortest path from "I'm hungry" or "I need a haircut" to paying you.</p>
+              <p class="gloss-term-research"><strong>See the research</strong> <a href="/learn/research/local-business-websites/">Usability of local business websites <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="hours-visibility" data-industries="restaurants all">
@@ -448,6 +461,7 @@
         </div>
         <p class="gloss-term-def">Whether today's hours are visible on your homepage within five seconds of landing, without scrolling or clicking. Distinct from just <em>having</em> hours somewhere on the site.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>"Are they open right now?" is the single most common question a visitor asks. Hide the answer three clicks deep and they'll ask your competitor's site instead.</p>
+              <p class="gloss-term-research"><strong>See the research</strong> <a href="/learn/research/local-business-websites/">Usability of local business websites <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="copyable-address" data-industries="restaurants all">
@@ -522,6 +536,7 @@
         </div>
         <p class="gloss-term-def">Google's three performance scores for a real page load on a phone — one for loading speed (LCP), one for layout stability (CLS), and one for responsiveness (INP). You'll see them as colored bars in any audit report.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Google explicitly uses Core Web Vitals as a search ranking signal. Two restaurants with identical menus and identical Google Business Profiles will rank differently if one's vitals are green and the other's are red.</p>
+              <p class="gloss-term-research"><strong>See the research</strong> <a href="/learn/research/lighthouse-performance-scoring/">How Lighthouse scores performance <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="lcp" data-industries="restaurants all">
@@ -531,6 +546,7 @@
         </div>
         <p class="gloss-term-def">How long it takes for the biggest visible chunk of your homepage — usually the hero image or the headline — to finish drawing on a phone. Under 2.5 seconds is "good", over 4 seconds is "poor".</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>LCP is what a visitor feels as "the page loaded". Every extra second pushes more of them to the back button. Google's own research puts the bounce-risk jump at ~32% when load time goes from 1s to 3s.</p>
+              <p class="gloss-term-research"><strong>See the research</strong> <a href="/learn/research/lighthouse-performance-scoring/">How Lighthouse scores performance <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="cls" data-industries="restaurants all">
@@ -540,6 +556,7 @@
         </div>
         <p class="gloss-term-def">A score that measures how much your page <em>jumps around</em> as it loads — when a banner slides in, an image arrives late, or a late-loading font nudges text down. Lower is better; under 0.1 is good.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>If a customer taps "Reserve" and the button jumps at the last millisecond because a photo arrived and pushed it down, they tap the wrong thing and leave. A stable layout keeps conversions intact.</p>
+              <p class="gloss-term-research"><strong>See the research</strong> <a href="/learn/research/lighthouse-performance-scoring/">How Lighthouse scores performance <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="inp" data-industries="all">
@@ -558,6 +575,7 @@
         </div>
         <p class="gloss-term-def">A single line of code in the &lt;head&gt; of every page (<code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</code>) that tells phones "render this page at phone width, not desktop width".</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Without it, phones render every page as if it were a desktop monitor and shrink it — everything looks tiny, unreadable, unusable. The fix is literally one line; the before-and-after on mobile is night-and-day.</p>
+              <p class="gloss-term-research"><strong>See the research</strong> <a href="/learn/research/mobile-page-speed-3-second-rule/">The 3-second mobile load rule <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="tap-targets" data-industries="restaurants all">
@@ -567,6 +585,7 @@
         </div>
         <p class="gloss-term-def">Any clickable element — button, link, menu item — that a finger taps on a phone. Google and Apple both recommend a minimum 44×44-pixel tap area with space between neighbors.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Cramped tap targets produce the "fat-finger" tap that opens the wrong thing. After one or two of those, most visitors leave. Bigger targets also make your site usable for older customers and anyone with motor or dexterity limits.</p>
+              <p class="gloss-term-research"><strong>See the research</strong> <a href="/learn/research/fittss-law/">Fitts's Law <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="body-text-size" data-industries="restaurants all">
@@ -585,6 +604,7 @@
         </div>
         <p class="gloss-term-def">The open-source auditing tool Google ships inside Chrome and inside PageSpeed Insights. It simulates a mobile page load and scores your site across performance, SEO, accessibility, and best practices.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Lighthouse is the same engine Google uses to rank your site — so its score isn't advisory, it's the report card. Our restaurant audit runs a real Lighthouse scan on your URL and translates the numbers into specific fixes for your business.</p>
+              <p class="gloss-term-research"><strong>See the research</strong> <a href="/learn/research/lighthouse-performance-scoring/">How Lighthouse scores performance <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="pagespeed-insights" data-industries="restaurants all">
@@ -603,6 +623,7 @@
         </div>
         <p class="gloss-term-def">The moment the browser paints the <em>first</em> piece of your page — usually a headline, a logo, or a patch of background color. Measured in seconds. Under 1.8s is good, over 3s is poor.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>FCP is the "something is happening" signal. A blank white screen for three seconds reads as broken even if the page is about to load; first paint before 1.8s tells the visitor the site is working and buys you time to finish loading.</p>
+              <p class="gloss-term-research"><strong>See the research</strong> <a href="/learn/research/lighthouse-performance-scoring/">How Lighthouse scores performance <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="ttfb" data-industries="all">
@@ -659,6 +680,7 @@
         </div>
         <p class="gloss-term-def">The specific button or link that asks a visitor to do the next thing — "Reserve a Table", "Order Online", "Book a Class", "Get a Quote". Usually bright, clearly labeled, and repeated at natural moments on the page.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Traffic without a clear next step converts at a fraction of the rate. Every page should have one unmistakable primary CTA — the one action you'd most like a visitor to take — and it should be visible on the first screen, not hidden at the bottom.</p>
+              <p class="gloss-term-research"><strong>See the research</strong> <a href="/learn/research/fittss-law/">Fitts's Law <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="reservation-link" data-industries="restaurants">
@@ -668,6 +690,7 @@
         </div>
         <p class="gloss-term-def">A persistent link — in the nav, in the hero, and in the mobile footer — that starts a reservation flow. Ideally wired to whichever platform your hostess stand already trusts (OpenTable, Resy, Tock, Square) so bookings land in the same system your team already checks.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>A reservation that has to be emailed, or lives three clicks deep, is a reservation half your visitors abandon. One tap, one booking, one confirmation — that's the standard diners have been trained on.</p>
+              <p class="gloss-term-research"><strong>See the research</strong> <a href="/learn/research/cart-abandonment-rate/">The 70% cart abandonment rate <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="online-ordering" data-industries="restaurants">
@@ -677,6 +700,7 @@
         </div>
         <p class="gloss-term-def">A button on your menu page that links directly to your pickup or delivery checkout — not a landing page, not an interstitial. Either a handoff to your POS provider (Toast/Square/ChowNow) or a direct checkout running through your own payment processor.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>Every extra tap between a hungry visitor and a checkout drops completion rates measurably. Direct checkouts also let you keep more of the margin than marketplace apps like DoorDash or Grubhub.</p>
+              <p class="gloss-term-research"><strong>See the research</strong> <a href="/learn/research/cart-abandonment-rate/">The 70% cart abandonment rate <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="click-to-directions" data-industries="restaurants all">
@@ -695,6 +719,7 @@
         </div>
         <p class="gloss-term-def">A thin bar pinned to the bottom of every mobile page holding one or two of your most important actions — usually Call, Reserve, or Order. Stays visible even as the visitor scrolls through the menu or the blog.</p>
         <p class="gloss-term-why"><strong>Why it matters</strong>A visitor who's sold somewhere in the middle of your menu shouldn't have to scroll back to the top to act. A sticky footer keeps the next step one thumb-tap away at any moment.</p>
+              <p class="gloss-term-research"><strong>See the research</strong> <a href="/learn/research/fittss-law/">Fitts's Law <span aria-hidden="true">↗</span></a></p>
       </article>
 
       <article class="gloss-term" id="social-proof" data-industries="restaurants all">
@@ -1150,18 +1175,21 @@
           <li><a href="/services/">Services</a></li>
           <li><a href="/for/restaurants/">For restaurants</a></li>
           <li><a href="/work/">Work</a></li>
-          <li><a href="/blog/">Blog</a></li>
           <li><a href="/about/">About Don</a></li>
+          <li><a href="/system/">The system</a></li>
         </ul>
       </nav>
 
-      <nav class="foot-col" aria-labelledby="foot-tools">
-        <p class="foot-heading" id="foot-tools">Free tools</p>
+      <nav class="foot-col" aria-labelledby="foot-learn">
+        <p class="foot-heading" id="foot-learn">Learn</p>
         <ul class="foot-links">
-          <li><a href="/tools/">All tools</a></li>
-          <li><a href="/tools/audits/restaurant/">Restaurant audit</a></li>
+          <li><a href="/learn/">Library home</a></li>
+          <li><a href="/learn/start-here/">Start here</a></li>
+          <li><a href="/blog/">Articles</a></li>
+          <li><a href="/tools/">Free tools</a></li>
+          <li><a href="/glossary/">Glossary</a></li>
+          <li><a href="/learn/research/">Research</a></li>
           <li><a href="/resources/restaurant-website-checklist/">Restaurant checklist</a></li>
-          <li><a href="/glossary/">Website glossary</a></li>
         </ul>
       </nav>
 
@@ -1188,7 +1216,7 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260419-mobnav" defer></script>
+<script src="/assets/site.js?v=20260422-cohesion" defer></script>
 
 <script>
   // Glossary filter — toggles data-active-filter on <main>, which

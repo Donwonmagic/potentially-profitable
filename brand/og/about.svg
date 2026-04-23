@@ -1,31 +1,59 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
-  <rect width="1200" height="630" fill="#FAF7F2"/>
-  <rect x="0" y="0" width="420" height="630" fill="#1F4E5B"/>
   <defs>
-    <radialGradient id="aboutglow" cx="30%" cy="40%" r="60%">
-      <stop offset="0%" stop-color="#FAF7F2" stop-opacity="0.06"/>
-      <stop offset="100%" stop-color="#1F4E5B" stop-opacity="0"/>
+    <radialGradient id="glow" cx="85%" cy="20%" r="70%">
+      <stop offset="0%" stop-color="#1F4E5B" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#14161A" stop-opacity="0"/>
     </radialGradient>
   </defs>
-  <rect x="0" y="0" width="420" height="630" fill="url(#aboutglow)"/>
+  <rect width="1200" height="630" fill="#14161A"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
 
-  <g transform="translate(100, 180)" stroke="#FAF7F2" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter" fill="none" opacity="0.2">
-    <rect x="0" y="0" width="240" height="240"/>
-    <line x1="120" y1="0" x2="120" y2="240"/>
-    <line x1="0" y1="85" x2="240" y2="85"/>
-  </g>
-  <text x="220" y="540" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="600" fill="#FAF7F2" letter-spacing="3" opacity="0.55">MUNTIN DIGITAL</text>
+  
+    <g transform="translate(760, 140)"
+       stroke="#FAF7F2" stroke-width="12"
+       stroke-linecap="square" stroke-linejoin="miter"
+       fill="none" opacity="0.14">
+      <rect x="0" y="0" width="340" height="340"/>
+      <line x1="170" y1="0" x2="170" y2="340"/>
+      <line x1="0" y1="119" x2="340" y2="119"/>
+    </g>
+  
 
-  <text x="470" y="100" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#1F4E5B" letter-spacing="5">THE OPERATOR BEHIND THE STUDIO</text>
+  <text x="80" y="128"
+        font-family="Inter, Arial, sans-serif" font-size="14"
+        font-weight="700" letter-spacing="5" fill="#FAF7F2" opacity="0.55">ABOUT · DON GOLDSTEIN</text>
 
-  <text x="470" y="210" font-family="Fraunces, Georgia, serif" font-size="72" font-weight="500" fill="#14161A" letter-spacing="-2">Don Goldstein</text>
-  <text x="470" y="280" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="36" font-weight="400" fill="#1F4E5B" opacity="0.8">A decade in the dining room.</text>
-  <text x="470" y="320" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="36" font-weight="400" fill="#1F4E5B" opacity="0.8">A studio built from</text>
-  <text x="470" y="360" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="36" font-weight="400" fill="#1F4E5B" opacity="0.8">what that teaches.</text>
+  <text x="80" y="232"
+        font-family="Fraunces, Georgia, serif" font-size="76"
+        font-weight="500" letter-spacing="-2" fill="#FAF7F2">A decade</text>
+  <text x="80" y="312"
+        font-family="Fraunces, Georgia, serif" font-style="italic"
+        font-size="76" font-weight="400" letter-spacing="-2"
+        fill="#FAF7F2" opacity="0.82">on the</text>
+  <text x="80" y="392"
+        font-family="Fraunces, Georgia, serif" font-size="76"
+        font-weight="500" letter-spacing="-2" fill="#FAF7F2">dining-room floor.</text>
 
-  <text x="470" y="440" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="500" fill="#6B6B6B">Two active DMV restaurants · Silver Spring, MD</text>
+  <text x="80" y="472"
+        font-family="Inter, Arial, sans-serif" font-size="22"
+        font-weight="400" fill="#FAF7F2" opacity="0.65">A studio built from what hospitality teaches. DMV based.</text>
 
-  <line x1="0" y1="590" x2="1200" y2="590" stroke="#E8E2D6" stroke-width="1"/>
-  <text x="470" y="616" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#6B6B6B" letter-spacing="2">ABOUT DON</text>
-  <text x="1128" y="616" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#6B6B6B" letter-spacing="1">muntin.digital/about</text>
+  
+    <g transform="translate(80, 552)" fill="#FAF7F2" opacity="0.6">
+      <circle cx="8" cy="8" r="8" fill="none" stroke="#FAF7F2" stroke-width="1"/>
+      <text x="8" y="12" text-anchor="middle"
+            font-family="Fraunces, Georgia, serif" font-style="italic"
+            font-size="11" font-weight="500" fill="#FAF7F2">d</text>
+    </g>
+  
+  
+    <line x1="80" y1="584" x2="1120" y2="584"
+          stroke="rgba(250,247,242,0.18)" stroke-width="1"/>
+    <text x="80" y="614"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="2" fill="rgba(250,247,242,0.55)">MUNTIN DIGITAL</text>
+    <text x="1120" y="614" text-anchor="end"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="1" fill="rgba(250,247,242,0.55)">muntin.digital</text>
+  
 </svg>

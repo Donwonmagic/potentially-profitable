@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-<title>Writing — Notes from the Studio | Muntin Digital</title>
+<title>Articles — Muntin Digital's Library</title>
 <meta name="description" content="Honest essays about building websites for small businesses. Written by Don at Muntin Digital — a one-person studio in Silver Spring, MD." />
 <meta name="theme-color" content="#1F4E5B" />
 <link rel="canonical" href="https://muntin.digital/blog/" />
@@ -17,7 +17,7 @@
 <!-- i18n:hreflang END -->
 
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Writing — Notes from the Studio | Muntin Digital" />
+<meta property="og:title" content="Articles — Muntin Digital's Library" />
 <meta property="og:description" content="Honest essays about building websites for small businesses. Written by Don at Muntin Digital." />
 <meta property="og:url" content="https://muntin.digital/blog/" />
 <meta property="og:site_name" content="Muntin Digital" />
@@ -27,7 +27,7 @@
 <meta property="og:image:height" content="630" />
 
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Writing — Notes from the Studio | Muntin Digital" />
+<meta name="twitter:title" content="Articles — Muntin Digital's Library" />
 <meta name="twitter:description" content="Honest essays about building websites for small businesses." />
 <meta name="twitter:image" content="https://muntin.digital/brand/og/blog.png" />
 
@@ -53,7 +53,7 @@
     {
       "@type": "Blog",
       "@id": "https://muntin.digital/blog/#blog",
-      "name": "Muntin Digital — Writing",
+      "name": "Muntin Digital — Articles",
       "description": "Honest essays about building websites for small businesses.",
       "url": "https://muntin.digital/blog/",
       "author": { "@id": "https://muntin.digital/#business" },
@@ -65,7 +65,8 @@
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
-        { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://muntin.digital/blog/" }
+        { "@type": "ListItem", "position": 2, "name": "Learn",           "item": "https://muntin.digital/learn/" },
+        { "@type": "ListItem", "position": 3, "name": "Articles",        "item": "https://muntin.digital/blog/" }
       ]
     }
   ]
@@ -95,7 +96,7 @@
      Without this, a slow stylesheet fetch briefly renders the raw
      'Home > Page' links at the top-left of the viewport. -->
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260419-mobnav">
+<link rel="stylesheet" href="/assets/site.css?v=20260422-cohesion">
 
 <style>
   /* ============ BLOG INDEX + POST LAYOUT STYLES ============ */
@@ -206,10 +207,18 @@
     <nav class="nav-links" aria-label="Primary">
       <a href="/services/">Services</a>
       <a href="/for/restaurants/">Restaurants</a>
+      <a href="/learn/">Learn</a>
       <a href="/work/">Work</a>
-      <a href="/blog/">Blog</a>
       <a href="/about/">About</a>
     </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Search</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+    </button>
     <nav class="lang-switch" aria-label="Language">
       <a href="/es/blog/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
@@ -224,9 +233,13 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/services/">Services</a>
     <a href="/for/restaurants/">Restaurants</a>
+    <a href="/learn/">Learn</a>
     <a href="/work/">Work</a>
-    <a href="/blog/">Blog</a>
     <a href="/about/">About</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Search the library</span>
+    </button>
     <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a>
     <a href="/es/blog/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
@@ -254,14 +267,16 @@
 <nav class="breadcrumb container" aria-label="Breadcrumb">
   <a href="/">Home</a>
   <span class="breadcrumb-sep" aria-hidden="true">›</span>
-  <span aria-current="page">Blog</span>
+  <a href="/learn/">Learn</a>
+  <span class="breadcrumb-sep" aria-hidden="true">›</span>
+  <span aria-current="page">Articles</span>
 </nav>
 
 <!-- ============ HERO ============ -->
 <section class="hero hero-medium">
   <div class="container">
     <div class="hero-center">
-      <span class="eyebrow">Writing</span>
+      <span class="eyebrow">Part of the Library · Articles</span>
       <h1 class="mt-20">
         Notes<br>
         <span class="serif-italic">from the studio.</span>
@@ -345,16 +360,14 @@
 <section class="block final">
   <div class="container">
     <div class="section-header reveal section-center">
-      <span class="eyebrow">Before the blog catches up</span>
-      <h2>Questions that<br>need real answers?</h2>
-      <p class="final-sub">The posts here will eventually answer most of the common questions small business owners ask me. If yours is urgent, skip the queue and ask me directly on a short call — same honest answer, same afternoon.</p>
+      <span class="eyebrow">Articles are one room in the library</span>
+      <h2>Keep exploring<br><span class="serif-italic">the whole library.</span></h2>
+      <p class="final-sub">Every article here is backed by research, glossary terms, and a free tool you can try on your own site. If you want the guided version, the tour starts at <a href="/learn/start-here/">Start here</a>. If you want the honest conversation, the 20-minute call is still the fastest path.</p>
     </div>
 
     <div class="hero-ctas reveal hero-ctas-center">
-      <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
-      </a>
-      <a class="btn btn-ghost" href="/resources/restaurant-website-checklist/">Read the free checklist</a>
+      <a class="btn btn-primary" href="/learn/">Browse the whole library</a>
+      <a class="btn btn-ghost js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a>
     </div>
   </div>
 </section>
@@ -386,18 +399,21 @@
           <li><a href="/services/">Services</a></li>
           <li><a href="/for/restaurants/">For restaurants</a></li>
           <li><a href="/work/">Work</a></li>
-          <li><a href="/blog/">Blog</a></li>
           <li><a href="/about/">About Don</a></li>
+          <li><a href="/system/">The system</a></li>
         </ul>
       </nav>
 
-      <nav class="foot-col" aria-labelledby="foot-tools">
-        <p class="foot-heading" id="foot-tools">Free tools</p>
+      <nav class="foot-col" aria-labelledby="foot-learn">
+        <p class="foot-heading" id="foot-learn">Learn</p>
         <ul class="foot-links">
-          <li><a href="/tools/">All tools</a></li>
-          <li><a href="/tools/audits/restaurant/">Restaurant audit</a></li>
+          <li><a href="/learn/">Library home</a></li>
+          <li><a href="/learn/start-here/">Start here</a></li>
+          <li><a href="/blog/">Articles</a></li>
+          <li><a href="/tools/">Free tools</a></li>
+          <li><a href="/glossary/">Glossary</a></li>
+          <li><a href="/learn/research/">Research</a></li>
           <li><a href="/resources/restaurant-website-checklist/">Restaurant checklist</a></li>
-          <li><a href="/glossary/">Website glossary</a></li>
         </ul>
       </nav>
 
@@ -424,6 +440,6 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260419-mobnav" defer></script>
+<script src="/assets/site.js?v=20260422-cohesion" defer></script>
 </body>
 </html>

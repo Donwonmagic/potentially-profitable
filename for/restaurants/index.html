@@ -16,6 +16,21 @@
 <meta property="og:locale:alternate" content="es_US" />
 <!-- i18n:hreflang END -->
 
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Restaurant Website Design in Silver Spring, MD — Muntin Digital" />
+<meta property="og:description" content="Websites built by someone who works hospitality nights. Silver Spring, MD — serving the DMV." />
+<meta property="og:url" content="https://muntin.digital/for/restaurants/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/restaurants.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Restaurant Website Design in Silver Spring, MD — Muntin Digital" />
+<meta name="twitter:description" content="Websites built by someone who works hospitality nights. Silver Spring, MD." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/restaurants.png" />
+
 <!-- Favicons -->
 <!-- Favicons. Order matters: SVG first for high-DPI scalable, then a
      192x192 PNG (Google Search's preferred favicon size — multiples
@@ -648,7 +663,7 @@
 .service-link:hover .service-link-arrow{transform:translateX(4px)}
 .service-link:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px}
 </style>
-<link rel="stylesheet" href="/assets/site.css?v=20260419-mobnav">
+<link rel="stylesheet" href="/assets/site.css?v=20260422-cohesion">
 </head>
 <body>
 
@@ -671,10 +686,18 @@
     <nav class="nav-links" aria-label="Primary">
       <a href="/services/">Services</a>
       <a href="/for/restaurants/">Restaurants</a>
+      <a href="/learn/">Learn</a>
       <a href="/work/">Work</a>
-      <a href="/blog/">Blog</a>
       <a href="/about/">About</a>
     </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Search</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+    </button>
     <nav class="lang-switch" aria-label="Language">
       <a href="/es/for/restaurants/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
@@ -689,9 +712,13 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/services/">Services</a>
     <a href="/for/restaurants/">Restaurants</a>
+    <a href="/learn/">Learn</a>
     <a href="/work/">Work</a>
-    <a href="/blog/">Blog</a>
     <a href="/about/">About</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Search the library</span>
+    </button>
     <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a>
     <a href="/es/for/restaurants/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
@@ -1412,6 +1439,53 @@
   </div>
 </section>
 
+<!-- ============ RESOURCES FOR RESTAURANT OWNERS ============ -->
+<!-- Soft landing between FAQ and Final CTA: a bundled "here's what
+     you can take away even if you never hire me" shelf. Surfaces
+     the tools, library, checklist, and research notes as a cohesive
+     resource set tuned for restaurants — not as scattered CTAs. -->
+<section class="block" id="resources" aria-labelledby="resources-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">Free, no signup</span>
+      <h2 id="resources-heading">Resources built<br><span class="serif-italic">for restaurant owners.</span></h2>
+      <p>Every tool and article below is restaurant-specific — not generic small-business advice dressed up with a food photo. Use what applies; come back when you need more.</p>
+    </div>
+
+    <div class="learn-tools" style="margin-top:40px;">
+      <a class="learn-tool" href="/tools/audits/restaurant/">
+        <span class="learn-tool-kicker">Free audit · ~30 seconds</span>
+        <h3>Score your own site.</h3>
+        <p>Twenty-three restaurant-aware checks — mobile speed, menu legibility, reservation flow, Google Business Profile, schema. Top three fixes ranked by impact.</p>
+        <span class="learn-tool-cta">Run the audit →</span>
+      </a>
+      <a class="learn-tool" href="/resources/restaurant-website-checklist/">
+        <span class="learn-tool-kicker">Checklist · 10 min</span>
+        <h3>The 23-check rubric.</h3>
+        <p>A printable checklist you can run on your own site or hand to the agency you're auditing. Same rubric the free tool uses, with room for notes.</p>
+        <span class="learn-tool-cta">Open the checklist →</span>
+      </a>
+      <a class="learn-tool" href="/blog/">
+        <span class="learn-tool-kicker">Articles · honest essays</span>
+        <h3>Notes from the studio.</h3>
+        <p>DoorDash math, menu pricing, platform comparisons, reservation-leak funnels. Written for an operator making a real decision this week.</p>
+        <span class="learn-tool-cta">Browse articles →</span>
+      </a>
+      <a class="learn-tool" href="/learn/research/">
+        <span class="learn-tool-kicker">Research · the evidence</span>
+        <h3>The studies behind the advice.</h3>
+        <p>Plain-English summaries of Google's mobile-speed research, Fitts's Law, Baymard cart abandonment, and more — with links to the original sources.</p>
+        <span class="learn-tool-cta">Read the research →</span>
+      </a>
+    </div>
+
+    <div class="hero-ctas hero-ctas-center" style="margin-top:40px;">
+      <a class="btn btn-ghost" href="/learn/">Browse the whole library</a>
+      <a class="btn btn-ghost" href="/learn/start-here/">Or take the guided tour</a>
+    </div>
+  </div>
+</section>
+
 <!-- ============ FINAL CTA ============ -->
 <section class="block final" id="contact-cta">
   <div class="container">
@@ -1466,18 +1540,21 @@
           <li><a href="/services/">Services</a></li>
           <li><a href="/for/restaurants/">For restaurants</a></li>
           <li><a href="/work/">Work</a></li>
-          <li><a href="/blog/">Blog</a></li>
           <li><a href="/about/">About Don</a></li>
+          <li><a href="/system/">The system</a></li>
         </ul>
       </nav>
 
-      <nav class="foot-col" aria-labelledby="foot-tools">
-        <p class="foot-heading" id="foot-tools">Free tools</p>
+      <nav class="foot-col" aria-labelledby="foot-learn">
+        <p class="foot-heading" id="foot-learn">Learn</p>
         <ul class="foot-links">
-          <li><a href="/tools/">All tools</a></li>
-          <li><a href="/tools/audits/restaurant/">Restaurant audit</a></li>
+          <li><a href="/learn/">Library home</a></li>
+          <li><a href="/learn/start-here/">Start here</a></li>
+          <li><a href="/blog/">Articles</a></li>
+          <li><a href="/tools/">Free tools</a></li>
+          <li><a href="/glossary/">Glossary</a></li>
+          <li><a href="/learn/research/">Research</a></li>
           <li><a href="/resources/restaurant-website-checklist/">Restaurant checklist</a></li>
-          <li><a href="/glossary/">Website glossary</a></li>
         </ul>
       </nav>
 
@@ -1504,6 +1581,6 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260419-mobnav" defer></script>
+<script src="/assets/site.js?v=20260422-cohesion" defer></script>
 </body>
 </html>

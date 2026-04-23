@@ -21,7 +21,7 @@
 <meta property="og:description" content="Una creación de Muntin Digital impulsada por Google Lighthouse, PageSpeed Insights, datos reales de CrUX y validación de schema.org — más verificaciones específicas para restaurantes: pedidos, reservas, legibilidad del menú, tocar para llamar y estado del Perfil de Empresa de Google. Gratis, sin registro." />
 <meta property="og:url" content="https://muntin.digital/es/tools/audits/restaurant/" />
 <meta property="og:site_name" content="Muntin Digital" />
-<meta property="og:image" content="https://muntin.digital/brand/og/audit-restaurants.png" />
+<meta property="og:image" content="https://muntin.digital/brand/og/audit-restaurants-es.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -29,7 +29,7 @@
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Auditoría gratuita para sitios de restaurante — Una creación de Muntin Digital" />
 <meta name="twitter:description" content="Una creación de Muntin Digital impulsada por Lighthouse, CrUX y schema.org — una auditoría real de restaurante para velocidad móvil, menús, pedidos, reservas y estado del Perfil de Empresa de Google. Gratis, sin registro." />
-<meta name="twitter:image" content="https://muntin.digital/brand/og/audit-restaurants.png" />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/audit-restaurants-es.png" />
 <meta name="twitter:creator" content="@muntin_digital" />
 <meta name="twitter:site" content="@muntin_digital" />
 
@@ -140,7 +140,7 @@
      Without this, a slow stylesheet fetch briefly renders the raw
      'Home > Page' links at the top-left of the viewport. -->
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260419-mobnav">
+<link rel="stylesheet" href="/assets/site.css?v=20260422-cohesion">
 
 <style>
   /* ============ AUDIT TOOL STYLES ============ */
@@ -3862,6 +3862,50 @@
     padding-top: 4px;
   }
   .priority-item .link:hover { color: var(--teal-dark); }
+  /* Secondary Learn-more variant for audit rows whose finding
+     maps to a Muntin research note. Sits below the glossary
+     "Learn more →" with slightly smaller type so the glossary
+     link remains the primary affordance. target="_blank" and a
+     trailing ↗ glyph telegraph the new-tab behavior. */
+  .priority-item .link-research {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--stone);
+    border-bottom: 1px dashed currentColor;
+    padding-top: 0;
+  }
+  .priority-item .link-research:hover,
+  .priority-item .link-research:focus-visible {
+    color: var(--teal);
+    border-bottom-color: var(--teal);
+  }
+  /* "Based on" research-note citations inside the expandable
+     metric glossary at the top of the audit results. Thin,
+     subdued so the main copy reads first. */
+  .metric-glossary .research-inline {
+    margin: 10px 0 0;
+    font-size: 13px;
+    color: var(--stone);
+    letter-spacing: 0.01em;
+  }
+  .metric-glossary .research-inline strong {
+    color: var(--ink-soft);
+    font-weight: 600;
+    margin-right: 4px;
+  }
+  .metric-glossary .research-inline a {
+    color: var(--teal);
+    text-decoration: none;
+    border-bottom: 1px dashed currentColor;
+  }
+  .metric-glossary .research-inline a:hover,
+  .metric-glossary .research-inline a:focus-visible {
+    color: var(--teal-dark);
+    border-bottom-color: var(--teal-dark);
+  }
   /* Sprint F1: "Copiar para tu desarrollador" button on failing +
      unverified priority check rows. Same visual class as the existing
      feedback-btn but filled-teal to distinguish the primary handoff
@@ -4753,7 +4797,7 @@
              along with the rest of the nav block on every build, keeping
              the partial strictly idempotent. Valid HTML5: <script> may
              appear in any flow-content context. */
-  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador"});</script>
+  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
   <div class="container nav-inner">
     <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
       <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
@@ -4768,10 +4812,18 @@
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/services/">Servicios</a>
       <a href="/es/for/restaurants/">Restaurantes</a>
+      <a href="/es/learn/">Aprende</a>
       <a href="/es/work/">Proyectos</a>
-      <a href="/es/blog/">Blog</a>
       <a href="/es/about/">Sobre Don</a>
     </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Buscar</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+    </button>
     <nav class="lang-switch" aria-label="Idioma">
       <a href="/tools/audits/restaurant/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
@@ -4786,9 +4838,13 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/services/">Servicios</a>
     <a href="/es/for/restaurants/">Restaurantes</a>
+    <a href="/es/learn/">Aprende</a>
     <a href="/es/work/">Proyectos</a>
-    <a href="/es/blog/">Blog</a>
     <a href="/es/about/">Sobre Don</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Buscar en la biblioteca</span>
+    </button>
     <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Agenda una llamada de 20 min<span class="sr-only"> (se abre en una pestaña nueva)</span></a>
     <a href="/tools/audits/restaurant/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
@@ -5324,6 +5380,7 @@
           <h4>Performance (0–100)</h4>
           <p>How fast your pages load and become usable on a phone. This is the metric that quietly costs restaurants the most money — Google's own research found that 53% of mobile visitors leave a page that takes longer than three seconds to load. A higher score means more people stick around long enough to see your menu.</p>
           <p class="ranges"><strong>Good:</strong> 90+ &nbsp;·&nbsp; <strong>Needs work:</strong> 50–89 &nbsp;·&nbsp; <strong>Failing:</strong> &lt;50</p>
+          <p class="research-inline"><strong>Con base en:</strong> <a href="/es/learn/research/lighthouse-performance-scoring/" target="_blank" rel="noopener">Cómo califica Lighthouse el rendimiento <span aria-hidden="true">↗</span><span class="sr-only"> (se abre en una pestaña nueva)</span></a> · <a href="/es/learn/research/mobile-page-speed-3-second-rule/" target="_blank" rel="noopener">La regla de los 3 segundos en móvil <span aria-hidden="true">↗</span><span class="sr-only"> (se abre en una pestaña nueva)</span></a></p>
 
           <h4>Accessibility (0–100)</h4>
           <p>Whether people with vision impairments, motor differences, or screen readers can actually use your site. Half of this is legally required in many states. The other half is just good manners — about one in five of your customers benefits directly from an accessible site, and everyone benefits indirectly (better text contrast makes your site easier to read in sunlight too).</p>
@@ -5349,6 +5406,7 @@
             <li><strong>TBT — Total Blocking Time.</strong> The lab-only proxy for INP. How long the page is frozen while JavaScript runs during the simulated load. Useful when CrUX hasn't collected INP yet. <em>Good: under 200ms · Poor: over 600ms.</em></li>
             <li><strong>FCP — First Contentful Paint.</strong> How long until the very first pixel renders. Often earlier than LCP — this is "the page is doing something" versus "the page is usable." <em>Good: under 1.8s · Poor: over 3s.</em></li>
           </ul>
+          <p class="research-inline"><strong>Con base en:</strong> <a href="/es/learn/research/lighthouse-performance-scoring/" target="_blank" rel="noopener">Cómo califica Lighthouse el rendimiento <span aria-hidden="true">↗</span><span class="sr-only"> (se abre en una pestaña nueva)</span></a></p>
         </div>
       </details>
 
@@ -5821,7 +5879,7 @@
     </div>
 
     <div class="hero-ctas reveal hero-ctas-center">
-      <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span>
+      <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (se abre en una pestaña nueva)</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </a>
       <a class="btn btn-ghost" href="/for/restaurants/">See restaurant services</a>
@@ -12720,6 +12778,37 @@
       subtypeId: btype
     };
 
+    // Research-note mapping for audit check rows. When a check's
+    // finding is grounded in a Muntin-authored research summary,
+    // the row gets a second "Based on ..." link alongside the
+    // glossary "Learn more" — target="_blank" so the reader's
+    // audit state is preserved when they pop over to read it.
+    //
+    // Mapping is keyed by `audit:<lighthouse-id>` for Lighthouse-
+    // style checks or `type:<detector-type>` for Muntin's own
+    // detector checks. Unmapped checks still show only the
+    // glossary link, unchanged. Adding a new mapping is one row.
+    var CHECK_TO_RESEARCH = {
+      'audit:tap-targets':  { slug: 'fittss-law',                      label: "Con base en la Ley de Fitts" },
+      'type:conversions':   { slug: 'cart-abandonment-rate',           label: 'Con base en la investigación de Baymard' },
+      'type:hours-accuracy':{ slug: 'local-business-websites',         label: 'Con base en la investigación de NNG' },
+      'type:phone':         { slug: 'fittss-law',                      label: "Con base en la Ley de Fitts" },
+      'type:menu-format':   { slug: 'mobile-page-speed-3-second-rule', label: "Con base en el estudio de 3 segundos de Google" }
+    };
+    function researchLinkFor(def) {
+      if (!def) return '';
+      var key = def.audit ? 'audit:' + def.audit
+              : def.type  ? 'type:'  + def.type
+              : null;
+      var match = key ? CHECK_TO_RESEARCH[key] : null;
+      if (!match) return '';
+      return '<a class="link link-research" href="/learn/research/' + match.slug + '/" target="_blank" rel="noopener" title="Nota de investigación de Muntin — se abre en una pestaña nueva">' +
+               escapeHtml(match.label) +
+               ' <span aria-hidden="true">↗</span>' +
+               '<span class="sr-only"> (se abre en una pestaña nueva)</span>' +
+             '</a>';
+    }
+
     results.forEach(function(entry){
       var def = entry.def;
       var result = entry.result;
@@ -12831,7 +12920,8 @@
           feedbackHtml +
           devPromptHtml +
         '</div>' +
-        '<a class="link" href="/glossary/?filter=restaurants' + def.anchor + '">Learn more →</a>';
+        '<a class="link" href="/glossary/?filter=restaurants' + def.anchor + '">Learn more →</a>' +
+        researchLinkFor(def);
       container.appendChild(row);
     });
 
@@ -15873,18 +15963,21 @@
           <li><a href="/es/services/">Servicios</a></li>
           <li><a href="/es/for/restaurants/">Para restaurantes</a></li>
           <li><a href="/es/work/">Proyectos</a></li>
-          <li><a href="/es/blog/">Blog</a></li>
           <li><a href="/es/about/">Sobre Don</a></li>
+          <li><a href="/es/system/">El sistema</a></li>
         </ul>
       </nav>
 
-      <nav class="foot-col" aria-labelledby="foot-tools">
-        <p class="foot-heading" id="foot-tools">Herramientas gratis</p>
+      <nav class="foot-col" aria-labelledby="foot-learn">
+        <p class="foot-heading" id="foot-learn">Aprende</p>
         <ul class="foot-links">
-          <li><a href="/es/tools/">Todas las herramientas</a></li>
-          <li><a href="/es/tools/audits/restaurant/">Diagnóstico de restaurante</a></li>
+          <li><a href="/es/learn/">Biblioteca</a></li>
+          <li><a href="/es/learn/start-here/">Empieza aquí</a></li>
+          <li><a href="/es/blog/">Artículos</a></li>
+          <li><a href="/es/tools/">Herramientas gratis</a></li>
+          <li><a href="/es/glossary/">Glosario</a></li>
+          <li><a href="/es/learn/research/">Investigación</a></li>
           <li><a href="/es/resources/restaurant-website-checklist/">Checklist para tu sitio</a></li>
-          <li><a href="/es/glossary/">Glosario web</a></li>
         </ul>
       </nav>
 
@@ -15911,6 +16004,6 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260419-mobnav" defer></script>
+<script src="/assets/site.js?v=20260422-cohesion" defer></script>
 </body>
 </html>

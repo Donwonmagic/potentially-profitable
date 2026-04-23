@@ -16,6 +16,21 @@
 <meta property="og:locale:alternate" content="es_US" />
 <!-- i18n:hreflang END -->
 
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Muntin Digital — Web Design, Branding & Social for Small Businesses" />
+<meta property="og:description" content="A one-person studio building custom websites, brand identity, and social media for restaurants and local businesses. Launch in 2–6 weeks." />
+<meta property="og:url" content="https://muntin.digital/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/home.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Muntin Digital — Web Design, Branding & Social for Small Businesses" />
+<meta name="twitter:description" content="A one-person studio for restaurants and small businesses. Launch in 2–6 weeks." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/home.png" />
+
 <!-- Favicons -->
 <!-- Favicons. Order matters: SVG first for high-DPI scalable, then a
      192x192 PNG (Google Search's preferred favicon size — multiples
@@ -105,7 +120,7 @@
         "longitude": -77.0261
       },
       "logo": "https://muntin.digital/brand/mark/mark-square-ink.svg",
-      "image": "https://muntin.digital/brand/og-image.png",
+      "image": "https://muntin.digital/brand/og/home.png",
       "founder": {
         "@type": "Person",
         "name": "Don Goldstein",
@@ -393,8 +408,8 @@
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init()
 </script>
-<link rel="preload" as="style" href="/assets/site.css?v=20260419-mobnav">
-<link rel="stylesheet" href="/assets/site.css?v=20260419-mobnav" fetchpriority="high">
+<link rel="preload" as="style" href="/assets/site.css?v=20260422-cohesion">
+<link rel="stylesheet" href="/assets/site.css?v=20260422-cohesion" fetchpriority="high">
 </head>
 <body>
 
@@ -424,10 +439,18 @@
     <nav class="nav-links" aria-label="Primary">
       <a href="/services/">Services</a>
       <a href="/for/restaurants/">Restaurants</a>
+      <a href="/learn/">Learn</a>
       <a href="/work/">Work</a>
-      <a href="/blog/">Blog</a>
       <a href="/about/">About</a>
     </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Search</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+    </button>
     <nav class="lang-switch" aria-label="Language">
       <a href="/es/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
@@ -442,9 +465,13 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/services/">Services</a>
     <a href="/for/restaurants/">Restaurants</a>
+    <a href="/learn/">Learn</a>
     <a href="/work/">Work</a>
-    <a href="/blog/">Blog</a>
     <a href="/about/">About</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Search the library</span>
+    </button>
     <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a>
     <a href="/es/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
@@ -486,6 +513,9 @@
         </a>
         <a class="btn btn-ghost" href="#services">See what's included</a>
       </div>
+      <p class="hero-note">
+        <strong>Also free:</strong> a <a href="/learn/">library</a> of honest articles, restaurant-specific <a href="/tools/">tools</a>, and <a href="/learn/research/">research notes</a>. Restaurant owners can <a href="/learn/start-here/">start here</a> for a 60-minute guided tour.
+      </p>
       <div class="hero-meta">
         <div class="avatar" aria-hidden="true">D</div>
         <div>
@@ -627,6 +657,53 @@
           <li>You own everything. No lock-in, ever.</li>
         </ul>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LIBRARY ============ -->
+<!-- Sits between the Problem section and Services teaser on purpose:
+     "Here's what Muntin charges for" reads better after "Here's
+     everything Muntin gives away for free." The library is the
+     trust-build before the pitch. All four cards lead to already-
+     shipped surfaces under /learn/, /blog/, /tools/, /learn/research/. -->
+<section class="block" id="library" aria-labelledby="library-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">Before you hire anyone</span>
+      <h2 id="library-heading">The library is free.<br><span class="serif-italic">Use it.</span></h2>
+      <p>Every article, tool, research note, and glossary term here is free and restaurant-specific. It's the same thinking that goes into client work — if you can apply it yourself, apply it yourself. When you're ready for a partner, I'm right here.</p>
+    </div>
+
+    <div class="learn-tools" style="margin-top:48px;">
+      <a class="learn-tool" href="/learn/start-here/">
+        <span class="learn-tool-kicker">Start here · ~1 hour</span>
+        <h3>The guided tour.</h3>
+        <p>Four steps that take you from "what is this?" to "here's the first thing to fix." Designed for restaurant owners who landed here cold.</p>
+        <span class="learn-tool-cta">Begin the tour →</span>
+      </a>
+      <a class="learn-tool" href="/blog/">
+        <span class="learn-tool-kicker">Articles · honest essays</span>
+        <h3>Notes from the studio.</h3>
+        <p>Real numbers, real tradeoffs. DoorDash math, menu pricing, platform comparisons — for an independent operator making a decision this week.</p>
+        <span class="learn-tool-cta">Browse articles →</span>
+      </a>
+      <a class="learn-tool" href="/tools/">
+        <span class="learn-tool-kicker">Free tools · no signup</span>
+        <h3>Audit your own site.</h3>
+        <p>A restaurant-aware website audit plus seven focused utilities. Every tool ships with links to the relevant research and glossary terms.</p>
+        <span class="learn-tool-cta">Open the toolkit →</span>
+      </a>
+      <a class="learn-tool" href="/learn/research/">
+        <span class="learn-tool-kicker">Research · the evidence</span>
+        <h3>Every claim, traced.</h3>
+        <p>Muntin-authored summaries of the studies behind the advice — Google's mobile speed research, Fitts's Law, Baymard cart abandonment, and more.</p>
+        <span class="learn-tool-cta">Read the research →</span>
+      </a>
+    </div>
+
+    <div class="hero-ctas hero-ctas-center" style="margin-top:44px;">
+      <a class="btn btn-ghost" href="/learn/">Browse the whole library</a>
     </div>
   </div>
 </section>
@@ -900,18 +977,21 @@
           <li><a href="/services/">Services</a></li>
           <li><a href="/for/restaurants/">For restaurants</a></li>
           <li><a href="/work/">Work</a></li>
-          <li><a href="/blog/">Blog</a></li>
           <li><a href="/about/">About Don</a></li>
+          <li><a href="/system/">The system</a></li>
         </ul>
       </nav>
 
-      <nav class="foot-col" aria-labelledby="foot-tools">
-        <p class="foot-heading" id="foot-tools">Free tools</p>
+      <nav class="foot-col" aria-labelledby="foot-learn">
+        <p class="foot-heading" id="foot-learn">Learn</p>
         <ul class="foot-links">
-          <li><a href="/tools/">All tools</a></li>
-          <li><a href="/tools/audits/restaurant/">Restaurant audit</a></li>
+          <li><a href="/learn/">Library home</a></li>
+          <li><a href="/learn/start-here/">Start here</a></li>
+          <li><a href="/blog/">Articles</a></li>
+          <li><a href="/tools/">Free tools</a></li>
+          <li><a href="/glossary/">Glossary</a></li>
+          <li><a href="/learn/research/">Research</a></li>
           <li><a href="/resources/restaurant-website-checklist/">Restaurant checklist</a></li>
-          <li><a href="/glossary/">Website glossary</a></li>
         </ul>
       </nav>
 
@@ -938,6 +1018,6 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260419-mobnav" defer></script>
+<script src="/assets/site.js?v=20260422-cohesion" defer></script>
 </body>
 </html>

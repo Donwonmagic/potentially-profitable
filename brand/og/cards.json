@@ -1,0 +1,668 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "_comment": "OG card manifest. Each entry produces <slug>.svg + <slug>.png in brand/og/. kind selects the template (page|article|research|tool). accent keys into PALETTE in scripts/build-og-cards.mjs. focus is an optional module { type: 'type'|'funnel'|'stat'|'score-ring'|'list'|'quote', ...data }. locale is for hreflang pairing; ES cards use slug '-es' suffix.",
+  "cards": [
+    {
+      "slug": "system",
+      "kind": "page",
+      "locale": "en",
+      "accent": "ink",
+      "eyebrow": "COLOPHON",
+      "title_1": "How this",
+      "title_italic": "system",
+      "title_2": "is built.",
+      "dek": "Tokens, scripts, translation pipeline, search, research. The moving parts, named.",
+      "focus": { "type": "type" }
+    },
+    {
+      "slug": "system-es",
+      "kind": "page",
+      "locale": "es",
+      "accent": "ink",
+      "eyebrow": "COLOFÓN",
+      "title_1": "Cómo se construyó",
+      "title_italic": "este",
+      "title_2": "sistema.",
+      "dek": "Tokens, scripts, pipeline de traducción, búsqueda, investigación. Las piezas, con nombre.",
+      "focus": { "type": "type" }
+    },
+    {
+      "slug": "learn",
+      "kind": "page",
+      "locale": "en",
+      "accent": "ink",
+      "eyebrow": "THE LIBRARY",
+      "title_1": "Learn the",
+      "title_italic": "web",
+      "title_2": "that sells.",
+      "dek": "Articles, research, tools, and a glossary — built to compound.",
+      "focus": { "type": "type" }
+    },
+    {
+      "slug": "learn-es",
+      "kind": "page",
+      "locale": "es",
+      "accent": "ink",
+      "eyebrow": "LA BIBLIOTECA",
+      "title_1": "Aprende la",
+      "title_italic": "web",
+      "title_2": "que vende.",
+      "dek": "Artículos, investigación, herramientas y un glosario — construidos para acumular.",
+      "focus": { "type": "type" }
+    },
+    {
+      "slug": "learn-start-here",
+      "kind": "page",
+      "locale": "en",
+      "accent": "ink",
+      "eyebrow": "START HERE",
+      "title_1": "A four-step",
+      "title_italic": "tour",
+      "title_2": "of the library.",
+      "dek": "No prior reading required. Fifteen minutes.",
+      "focus": {
+        "type": "list",
+        "label": "THE PATH",
+        "items": [
+          "What a website owes a diner",
+          "Where the money leaks",
+          "The math of fixing it",
+          "Tools to check your own site"
+        ]
+      }
+    },
+    {
+      "slug": "learn-start-here-es",
+      "kind": "page",
+      "locale": "es",
+      "accent": "ink",
+      "eyebrow": "COMIENZA AQUÍ",
+      "title_1": "Un recorrido",
+      "title_italic": "en cuatro",
+      "title_2": "pasos.",
+      "dek": "Sin lectura previa. Quince minutos.",
+      "focus": {
+        "type": "list",
+        "label": "EL CAMINO",
+        "items": [
+          "Lo que una web le debe al comensal",
+          "Dónde se fuga el dinero",
+          "Las cuentas de arreglarlo",
+          "Herramientas para revisar tu web"
+        ]
+      }
+    },
+    {
+      "slug": "learn-research",
+      "kind": "page",
+      "locale": "en",
+      "accent": "ink",
+      "eyebrow": "THE EVIDENCE SHELF",
+      "title_1": "Every claim,",
+      "title_italic": "traced",
+      "title_2": "to its source.",
+      "dek": "Short research notes behind the numbers we cite.",
+      "focus": {
+        "type": "stat",
+        "value": "5",
+        "caption": "research notes, each a primary source",
+        "source": "CITED ACROSS THE LIBRARY"
+      }
+    },
+    {
+      "slug": "learn-research-es",
+      "kind": "page",
+      "locale": "es",
+      "accent": "ink",
+      "eyebrow": "LA EVIDENCIA",
+      "title_1": "Cada cifra,",
+      "title_italic": "rastreada",
+      "title_2": "a su fuente.",
+      "dek": "Notas breves de investigación detrás de los números que citamos.",
+      "focus": {
+        "type": "stat",
+        "value": "5",
+        "caption": "notas de investigación, cada una una fuente primaria",
+        "source": "CITADAS EN TODA LA BIBLIOTECA"
+      }
+    },
+
+    {
+      "slug": "research-mobile-page-speed",
+      "kind": "research",
+      "locale": "en",
+      "eyebrow": "THINK WITH GOOGLE · 2017",
+      "title_1": "The first",
+      "title_italic": "three",
+      "title_2": "seconds.",
+      "dek": "Mobile load time and the bounce curve behind it.",
+      "focus": {
+        "type": "stat",
+        "value": "53%",
+        "caption": "bounce after a 3-second mobile load",
+        "source": "N = 900,000 MOBILE ADS · 2017"
+      }
+    },
+    {
+      "slug": "research-mobile-page-speed-es",
+      "kind": "research",
+      "locale": "es",
+      "eyebrow": "THINK WITH GOOGLE · 2017",
+      "title_1": "Los primeros",
+      "title_italic": "tres",
+      "title_2": "segundos.",
+      "dek": "Tiempo de carga móvil y la curva de rebote detrás.",
+      "focus": {
+        "type": "stat",
+        "value": "53%",
+        "caption": "rebota tras 3 segundos de carga en móvil",
+        "source": "N = 900,000 ANUNCIOS MÓVILES · 2017"
+      }
+    },
+
+    {
+      "slug": "research-fittss-law",
+      "kind": "research",
+      "locale": "en",
+      "eyebrow": "NN/G · BASED ON FITTS 1954",
+      "title_1": "Big targets,",
+      "title_italic": "short",
+      "title_2": "distances.",
+      "dek": "Why the size and placement of a button is the button.",
+      "focus": {
+        "type": "quote",
+        "text": "The time to acquire a target is a function of its distance and size.",
+        "attribution": "PAUL FITTS, 1954",
+        "wrap": 26
+      }
+    },
+    {
+      "slug": "research-fittss-law-es",
+      "kind": "research",
+      "locale": "es",
+      "eyebrow": "NN/G · BASADO EN FITTS 1954",
+      "title_1": "Blancos grandes,",
+      "title_italic": "distancias",
+      "title_2": "cortas.",
+      "dek": "Por qué el tamaño y la ubicación de un botón son el botón.",
+      "focus": {
+        "type": "quote",
+        "text": "El tiempo para alcanzar un blanco depende de su distancia y tamaño.",
+        "attribution": "PAUL FITTS, 1954",
+        "wrap": 26
+      }
+    },
+
+    {
+      "slug": "research-local-business-websites",
+      "kind": "research",
+      "locale": "en",
+      "eyebrow": "NIELSEN NORMAN GROUP",
+      "title_1": "What diners",
+      "title_italic": "actually",
+      "title_2": "come for.",
+      "dek": "Hours, location, contact — the top-task list on every local site.",
+      "focus": {
+        "type": "list",
+        "label": "TOP TASKS",
+        "items": [
+          "Hours of operation",
+          "Location & directions",
+          "Phone · contact",
+          "Menu or services"
+        ]
+      }
+    },
+    {
+      "slug": "research-local-business-websites-es",
+      "kind": "research",
+      "locale": "es",
+      "eyebrow": "NIELSEN NORMAN GROUP",
+      "title_1": "Lo que los",
+      "title_italic": "comensales",
+      "title_2": "buscan.",
+      "dek": "Horarios, ubicación, contacto — las tareas principales en toda web local.",
+      "focus": {
+        "type": "list",
+        "label": "TAREAS PRINCIPALES",
+        "items": [
+          "Horarios de atención",
+          "Ubicación y cómo llegar",
+          "Teléfono · contacto",
+          "Menú o servicios"
+        ]
+      }
+    },
+
+    {
+      "slug": "research-cart-abandonment-rate",
+      "kind": "research",
+      "locale": "en",
+      "eyebrow": "BAYMARD INSTITUTE · 49 STUDIES",
+      "title_1": "Seven of",
+      "title_italic": "every",
+      "title_2": "ten leave.",
+      "dek": "The industry-wide cart-abandonment baseline, and why.",
+      "focus": {
+        "type": "stat",
+        "value": "70.19%",
+        "caption": "of online carts abandoned (mean across 49 studies)",
+        "source": "2024 — BAYMARD.COM/LISTS/CART-ABANDONMENT-RATE"
+      }
+    },
+    {
+      "slug": "research-cart-abandonment-rate-es",
+      "kind": "research",
+      "locale": "es",
+      "eyebrow": "BAYMARD INSTITUTE · 49 ESTUDIOS",
+      "title_1": "Siete de",
+      "title_italic": "cada",
+      "title_2": "diez se van.",
+      "dek": "La tasa base de abandono del carrito, y por qué.",
+      "focus": {
+        "type": "stat",
+        "value": "70.19%",
+        "caption": "de carritos abandonados (promedio de 49 estudios)",
+        "source": "2024 — BAYMARD.COM/LISTS/CART-ABANDONMENT-RATE"
+      }
+    },
+
+    {
+      "slug": "research-lighthouse-performance-scoring",
+      "kind": "research",
+      "locale": "en",
+      "eyebrow": "CHROME DEVTOOLS · LIGHTHOUSE 12",
+      "title_1": "What",
+      "title_italic": "counts",
+      "title_2": "as fast.",
+      "dek": "Five metrics, one score, three bands. The 90-threshold is not arbitrary.",
+      "focus": {
+        "type": "score-ring",
+        "value": 90,
+        "label": "THE GREEN THRESHOLD"
+      }
+    },
+    {
+      "slug": "research-lighthouse-performance-scoring-es",
+      "kind": "research",
+      "locale": "es",
+      "eyebrow": "CHROME DEVTOOLS · LIGHTHOUSE 12",
+      "title_1": "Qué",
+      "title_italic": "cuenta",
+      "title_2": "como rápido.",
+      "dek": "Cinco métricas, una puntuación, tres bandas. El umbral de 90 no es arbitrario.",
+      "focus": {
+        "type": "score-ring",
+        "value": 90,
+        "label": "EL UMBRAL VERDE"
+      }
+    },
+
+    {
+      "slug": "blog-losing-reservations",
+      "kind": "article",
+      "locale": "en",
+      "eyebrow": "CONVERSION · RESERVATIONS",
+      "title_1": "Why your restaurant",
+      "title_italic": "loses",
+      "title_2": "reservations.",
+      "dek": "Six leaks. Real dollar math. The fix for each one.",
+      "focus": {
+        "type": "funnel",
+        "label": "THE FUNNEL",
+        "data": [100, 85, 73, 50, 47],
+        "labels": [100, 85, 73, 50, 47],
+        "lost_label": "53 lost per 100 visitors"
+      }
+    },
+    {
+      "slug": "blog-losing-reservations-es",
+      "kind": "article",
+      "locale": "es",
+      "eyebrow": "CONVERSIÓN · RESERVAS",
+      "title_1": "Por qué tu restaurante",
+      "title_italic": "pierde",
+      "title_2": "reservas.",
+      "dek": "Seis fugas. Cuentas reales. Un arreglo para cada una.",
+      "focus": {
+        "type": "funnel",
+        "label": "EL EMBUDO",
+        "data": [100, 85, 73, 50, 47],
+        "labels": [100, 85, 73, 50, 47],
+        "lost_label": "53 perdidas por cada 100 visitas"
+      }
+    },
+
+    {
+      "slug": "blog-doordash-math",
+      "kind": "article",
+      "locale": "en",
+      "eyebrow": "DELIVERY · BREAKEVEN",
+      "title_1": "Does the delivery",
+      "title_italic": "math",
+      "title_2": "actually work?",
+      "dek": "What 30% commission really costs a 12%-margin restaurant.",
+      "focus": {
+        "type": "stat",
+        "value": "30%",
+        "caption": "platform fee against a 12% operating margin",
+        "source": "DOORDASH PARTNER AGREEMENT · 2026"
+      }
+    },
+    {
+      "slug": "blog-doordash-math-es",
+      "kind": "article",
+      "locale": "es",
+      "eyebrow": "DELIVERY · PUNTO DE EQUILIBRIO",
+      "title_1": "¿Las cuentas del",
+      "title_italic": "delivery",
+      "title_2": "cierran?",
+      "dek": "Qué le cuesta de verdad el 30% de comisión a un restaurante con 12% de margen.",
+      "focus": {
+        "type": "stat",
+        "value": "30%",
+        "caption": "comisión de la plataforma contra un margen operativo del 12%",
+        "source": "ACUERDO PARTNER DOORDASH · 2026"
+      }
+    },
+
+    {
+      "slug": "blog-menu-prices",
+      "kind": "article",
+      "locale": "en",
+      "eyebrow": "PRICING · RETENTION",
+      "title_1": "Raise the menu,",
+      "title_italic": "keep",
+      "title_2": "the seats.",
+      "dek": "A six-move playbook for lifting prices without losing the room.",
+      "focus": {
+        "type": "list",
+        "label": "THE PLAYBOOK",
+        "items": [
+          "Re-cost before re-pricing",
+          "Move in threes, not fives",
+          "Reset the anchor",
+          "Protect the loved item"
+        ]
+      }
+    },
+    {
+      "slug": "blog-menu-prices-es",
+      "kind": "article",
+      "locale": "es",
+      "eyebrow": "PRECIOS · RETENCIÓN",
+      "title_1": "Sube el menú,",
+      "title_italic": "conserva",
+      "title_2": "la mesa.",
+      "dek": "Seis jugadas para subir precios sin perder la sala.",
+      "focus": {
+        "type": "list",
+        "label": "LA JUGADA",
+        "items": [
+          "Re-cuesta antes de re-precio",
+          "Mueve de tres en tres",
+          "Restablece el ancla",
+          "Protege el plato querido"
+        ]
+      }
+    },
+
+    {
+      "slug": "blog-restaurant-cost",
+      "kind": "article",
+      "locale": "en",
+      "eyebrow": "BUDGET · TRANSPARENCY",
+      "title_1": "What a restaurant",
+      "title_italic": "website",
+      "title_2": "really costs.",
+      "dek": "Real ranges: DIY templates, assisted builds, fully bespoke.",
+      "focus": {
+        "type": "stat",
+        "value": "$3–15k",
+        "caption": "end-to-end build — templated to bespoke",
+        "source": "MUNTIN DIGITAL · 2026 INDEX"
+      }
+    },
+    {
+      "slug": "blog-restaurant-cost-es",
+      "kind": "article",
+      "locale": "es",
+      "eyebrow": "PRESUPUESTO · TRANSPARENCIA",
+      "title_1": "Cuánto cuesta de",
+      "title_italic": "verdad",
+      "title_2": "una web.",
+      "dek": "Rangos reales: plantillas DIY, acompañadas, a medida.",
+      "focus": {
+        "type": "stat",
+        "value": "$3–15k",
+        "caption": "desarrollo completo — plantilla a medida",
+        "source": "MUNTIN DIGITAL · ÍNDICE 2026"
+      }
+    },
+
+    {
+      "slug": "blog-wix-vs-custom",
+      "kind": "article",
+      "locale": "en",
+      "eyebrow": "PLATFORMS · TRADE-OFFS",
+      "title_1": "Wix",
+      "title_italic": "versus",
+      "title_2": "custom.",
+      "dek": "Where each wins, and when the difference matters for a restaurant.",
+      "focus": {
+        "type": "list",
+        "label": "WHAT YOU TRADE",
+        "items": [
+          "Speed to launch vs. control",
+          "Monthly fees vs. ownership",
+          "Template ceiling vs. craft",
+          "Lock-in vs. portability"
+        ]
+      }
+    },
+    {
+      "slug": "blog-wix-vs-custom-es",
+      "kind": "article",
+      "locale": "es",
+      "eyebrow": "PLATAFORMAS · LO QUE CEDES",
+      "title_1": "Wix",
+      "title_italic": "frente a",
+      "title_2": "hecho a medida.",
+      "dek": "Dónde gana cada uno, y cuándo importa para un restaurante.",
+      "focus": {
+        "type": "list",
+        "label": "QUÉ INTERCAMBIAS",
+        "items": [
+          "Velocidad de lanzamiento vs. control",
+          "Mensualidad vs. propiedad",
+          "Techo de plantilla vs. oficio",
+          "Dependencia vs. portabilidad"
+        ]
+      }
+    },
+
+    {
+      "slug": "audit",
+      "kind": "tool",
+      "locale": "en",
+      "eyebrow": "FREE · 30 SECONDS · NO SIGNUP",
+      "title_1": "Website",
+      "title_italic": "audits",
+      "title_2": "that read.",
+      "dek": "Industry-specific. Not a generic Lighthouse wrapper.",
+      "focus": {
+        "type": "score-ring",
+        "value": 75,
+        "label": "A REAL RESULT"
+      }
+    },
+    {
+      "slug": "audit-es",
+      "kind": "tool",
+      "locale": "es",
+      "eyebrow": "GRATIS · 30 SEGUNDOS · SIN REGISTRO",
+      "title_1": "Diagnósticos",
+      "title_italic": "que",
+      "title_2": "se leen.",
+      "dek": "Específicos por sector. No es un envoltorio genérico de Lighthouse.",
+      "focus": {
+        "type": "score-ring",
+        "value": 75,
+        "label": "UN RESULTADO REAL"
+      }
+    },
+
+    {
+      "slug": "audit-restaurants",
+      "kind": "tool",
+      "locale": "en",
+      "eyebrow": "DROP YOUR URL · GET RESULTS IN 30 SECONDS",
+      "title_1": "Restaurant",
+      "title_italic": "website",
+      "title_2": "audit.",
+      "dek": "Mobile speed, menu readability, ordering, GBP, reservations, schema.",
+      "focus": {
+        "type": "checks",
+        "items": [
+          { "label": "Mobile-friendly menu", "pass": true },
+          { "label": "Schema markup", "pass": false },
+          { "label": "Online ordering", "pass": true }
+        ]
+      }
+    },
+    {
+      "slug": "audit-restaurants-es",
+      "kind": "tool",
+      "locale": "es",
+      "eyebrow": "PEGA TU URL · RESULTADOS EN 30 SEGUNDOS",
+      "title_1": "Auditoría",
+      "title_italic": "para",
+      "title_2": "restaurantes.",
+      "dek": "Velocidad móvil, menú, pedidos, Google Business, reservas, schema.",
+      "focus": {
+        "type": "checks",
+        "items": [
+          { "label": "Menú amigable en móvil", "pass": true },
+          { "label": "Marcado de esquema", "pass": false },
+          { "label": "Pedidos en línea", "pass": true }
+        ]
+      }
+    },
+
+    {
+      "slug": "home",
+      "kind": "page",
+      "locale": "en",
+      "accent": "ink",
+      "eyebrow": "A DIGITAL STUDIO OF ONE",
+      "title_1": "Structure",
+      "title_italic": "brings",
+      "title_2": "clarity.",
+      "dek": "Web design, branding & social media for restaurants and small businesses.",
+      "focus": { "type": "type" }
+    },
+    {
+      "slug": "home-es",
+      "kind": "page",
+      "locale": "es",
+      "accent": "ink",
+      "eyebrow": "UN ESTUDIO DIGITAL DE UNO",
+      "title_1": "La estructura",
+      "title_italic": "da",
+      "title_2": "claridad.",
+      "dek": "Diseño web, marca y redes sociales para restaurantes y negocios pequeños.",
+      "focus": { "type": "type" }
+    },
+
+    {
+      "slug": "about",
+      "kind": "page",
+      "locale": "en",
+      "accent": "ink",
+      "eyebrow": "ABOUT · DON GOLDSTEIN",
+      "title_1": "A decade",
+      "title_italic": "on the",
+      "title_2": "dining-room floor.",
+      "dek": "A studio built from what hospitality teaches. DMV based.",
+      "focus": { "type": "type" }
+    },
+    {
+      "slug": "about-es",
+      "kind": "page",
+      "locale": "es",
+      "accent": "ink",
+      "eyebrow": "ACERCA DE · DON GOLDSTEIN",
+      "title_1": "Una década",
+      "title_italic": "pisando",
+      "title_2": "la sala.",
+      "dek": "Un estudio armado con lo que enseña la hospitalidad. Con base en DMV.",
+      "focus": { "type": "type" }
+    },
+
+    {
+      "slug": "services",
+      "kind": "page",
+      "locale": "en",
+      "accent": "ink",
+      "eyebrow": "SERVICES & PRICING",
+      "title_1": "One studio,",
+      "title_italic": "one",
+      "title_2": "price sheet.",
+      "dek": "No middle layer. No bundle gimmicks. No surprise invoices.",
+      "focus": {
+        "type": "list",
+        "label": "WHAT'S OFFERED",
+        "items": [
+          "Custom website — 2 to 6 weeks",
+          "Full visual identity",
+          "Monthly management"
+        ]
+      }
+    },
+    {
+      "slug": "services-es",
+      "kind": "page",
+      "locale": "es",
+      "accent": "ink",
+      "eyebrow": "SERVICIOS Y PRECIOS",
+      "title_1": "Un estudio,",
+      "title_italic": "una",
+      "title_2": "lista de precios.",
+      "dek": "Sin intermediarios. Sin paquetes oscuros. Sin facturas sorpresa.",
+      "focus": {
+        "type": "list",
+        "label": "QUÉ OFRECEMOS",
+        "items": [
+          "Sitio web a medida — 2 a 6 semanas",
+          "Identidad visual completa",
+          "Gestión mensual"
+        ]
+      }
+    },
+
+    {
+      "slug": "restaurants",
+      "kind": "page",
+      "locale": "en",
+      "accent": "ink",
+      "eyebrow": "RESTAURANT WEB DESIGN · DMV",
+      "title_1": "A website",
+      "title_italic": "that matches",
+      "title_2": "the room.",
+      "dek": "Built by someone who works hospitality nights. Silver Spring, MD.",
+      "focus": { "type": "type" }
+    },
+    {
+      "slug": "restaurants-es",
+      "kind": "page",
+      "locale": "es",
+      "accent": "ink",
+      "eyebrow": "WEB PARA RESTAURANTES · DMV",
+      "title_1": "Una web",
+      "title_italic": "a la altura",
+      "title_2": "de la sala.",
+      "dek": "Hecha por alguien que trabaja turnos de hospitalidad. Silver Spring, MD.",
+      "focus": { "type": "type" }
+    }
+  ]
+}
