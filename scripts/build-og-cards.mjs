@@ -704,9 +704,7 @@ async function renderPng(svgPath, pngPath) {
   // This path is only for visual QA on a laptop that doesn't have
   // rsvg-convert. CF Pages build has rsvg-convert installed.
   const scratch = "/tmp/og-render-deps/node_modules/@resvg/resvg-js/index.js";
-  if (!fs.existsSync(scratch)) {
-    throw new Error("Neither rsvg-convert nor @resvg/resvg-js available. Install rsvg-convert or `npm i --prefix /tmp/og-render-deps @resvg/resvg-js`.");
-  }
+  if (!fs.existsSync(scratch)) return null;
   const { Resvg } = await import(scratch);
   const fontFiles = fs.readdirSync(FONTS_DIR)
     .filter((f) => f.endsWith(".ttf"))
@@ -756,17 +754,41 @@ async function main() {
       continue;
     }
 
+    // Skip logic is content-based, not mtime-based. Git doesn't
+    // preserve mtimes, and a fresh checkout writes .png before
+    // .svg (alphabetical order) so mtime-based skip would force a
+    // re-render of every card on every CF Pages build — and CF
+    // Pages doesn't have rsvg-convert, so that would break deploy.
+    // Instead: if the committed SVG matches what the template
+    // produces AND the PNG exists, trust both — skip.
     const prev = fs.existsSync(svgPath) ? fs.readFileSync(svgPath, "utf8") : "";
-    if (prev !== svg) {
-      fs.writeFileSync(svgPath, svg, "utf8");
-    }
-    const svgMtime = fs.statSync(svgPath).mtimeMs;
-    const pngMtime = fs.existsSync(pngPath) ? fs.statSync(pngPath).mtimeMs : 0;
-    if (pngMtime >= svgMtime && prev === svg) {
+    const pngExists = fs.existsSync(pngPath);
+    if (prev === svg && pngExists) {
       skipped++;
       continue;
     }
+
+    // Content differs OR PNG missing — need to render. Write the
+    // fresh SVG first so the file on disk matches the manifest.
+    if (prev !== svg) {
+      fs.writeFileSync(svgPath, svg, "utf8");
+    }
     const engine = await renderPng(svgPath, pngPath);
+    if (engine === null) {
+      if (pngExists) {
+        // Renderer missing but committed PNG exists — acceptable
+        // on CF Pages where we trust what's checked in. Warn
+        // loudly so the drift gets fixed on the next local build.
+        console.warn(`  ! ${card.slug}: SVG changed but no renderer available; keeping committed PNG`);
+        skipped++;
+        continue;
+      }
+      console.error(`  ✗ ${card.slug}: no PNG committed AND no renderer available.`);
+      console.error(`    install rsvg-convert, or locally run:`);
+      console.error(`    npm i --prefix /tmp/og-render-deps @resvg/resvg-js`);
+      process.exitCode = 1;
+      continue;
+    }
     console.log(`  ✓ ${card.slug}.png  [${engine}]`);
     wrote++;
   }
