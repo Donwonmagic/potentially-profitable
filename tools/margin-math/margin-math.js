@@ -140,6 +140,9 @@ var MM_PRIME_COST_BUCKETS = ['lt55', '55-59', '60-64', '65-69', 'gte70'];
 var MM_PRIME_COST_BANDS = ['below', 'good', 'ok', 'warn', 'bad'];
 var MM_FIXED_COST_BUCKETS = ['lt5k', '5-15k', '15-30k', '30-60k', 'gte60k'];
 var MM_BREAKEVEN_BANDS = ['good', 'ok', 'warn', 'bad', 'na'];
+var MM_PRICE_RAISE_TIERS = ['none', 'small', 'core', 'signature', 'aggressive'];
+var MM_COVER_LOSS_BUCKETS = ['lt2', '2-4', '5-8', 'gt8'];
+var MM_PRICE_RAISE_BANDS = ['good', 'ok', 'warn', 'bad'];
 
 function mmBucketTicket(ticket) {
   var t = mmNum(ticket);
@@ -164,6 +167,25 @@ function mmBucketCommission(pct) {
   if (p < 0.18) return 'basic';
   if (p < 0.27) return 'plus';
   return 'premier';
+}
+
+function mmBucketPriceRaiseTier(pct) {
+  // Menu-pricing tiers anchored to the post: hold / core / signature
+  // / aggressive. Zero is its own bucket (useful analytics signal).
+  var p = mmClampPct(pct);
+  if (p === 0)    return 'none';
+  if (p < 0.05)   return 'small';
+  if (p < 0.08)   return 'core';
+  if (p < 0.11)   return 'signature';
+  return 'aggressive';
+}
+
+function mmBucketCoverLoss(pct) {
+  var p = mmClampPct(pct);
+  if (p < 0.02)   return 'lt2';
+  if (p < 0.05)   return '2-4';
+  if (p <= 0.08)  return '5-8';
+  return 'gt8';
 }
 
 function mmBucketFixedCosts(dollars) {
@@ -281,6 +303,65 @@ function mmCalcBreakEvenCovers(input) {
   };
 }
 
+// ------------------------------------------------------------
+// Price-Raise Simulator
+//
+// Models a menu-wide price raise with assumed cover-loss elasticity.
+// First-order approximation:
+//   newSales = baseline × (1 + priceRaise) × (1 − coverLoss)
+//
+// Works because on typical independents the cross-elasticity between
+// a small raise and specific-item cover loss is small enough that
+// the product approximation tracks observed behavior within a few %.
+// The canonical reference: /blog/how-to-raise-restaurant-menu-prices-
+// without-losing-reservations/ walks through why this holds for the
+// 3-12% raise range the calculator supports.
+//
+// Break-even cover loss: the loss at which newSales = baseline.
+//   breakEven = priceRaise / (1 + priceRaise)
+//   e.g., 6% raise tolerates ~5.66% cover loss before it's a wash.
+//
+// Band:
+//   > +2% delta    — good  ("real pickup")
+//   0 to +2%       — ok    ("net positive, small")
+//   −1% to 0       — warn  ("wash — watching elasticity")
+//   < −1%          — bad   ("losing ground")
+// ------------------------------------------------------------
+
+function mmCalcPriceRaise(input) {
+  input = input || {};
+  var monthlyBaseline = mmNum(input.monthlyBaseline);
+  var priceRaisePct = mmClampPct(input.priceRaisePct);
+  var coverLossPct = mmClampPct(input.coverLossPct);
+
+  var newSales = monthlyBaseline * (1 + priceRaisePct) * (1 - coverLossPct);
+  var delta = newSales - monthlyBaseline;
+  var deltaPct = monthlyBaseline > 0 ? delta / monthlyBaseline : 0;
+
+  var breakEvenCoverLossPct = priceRaisePct > 0
+    ? (priceRaisePct / (1 + priceRaisePct))
+    : 0;
+
+  var band;
+  if (deltaPct > 0.02)        band = 'good';
+  else if (deltaPct >= 0)     band = 'ok';
+  else if (deltaPct >= -0.01) band = 'warn';
+  else                         band = 'bad';
+
+  return {
+    inputs: {
+      monthlyBaseline: monthlyBaseline,
+      priceRaisePct: priceRaisePct,
+      coverLossPct: coverLossPct
+    },
+    newSales: newSales,
+    delta: delta,
+    deltaPct: deltaPct,
+    breakEvenCoverLossPct: breakEvenCoverLossPct,
+    band: band
+  };
+}
+
 function mmCalcPrimeCost(input) {
   input = input || {};
   var foodCostPct = mmClampPct(input.foodCostPct);
@@ -314,6 +395,7 @@ if (typeof window !== 'undefined') {
     calcDeliveryBreakeven: mmCalcDeliveryBreakeven,
     calcPrimeCost:         mmCalcPrimeCost,
     calcBreakEvenCovers:   mmCalcBreakEvenCovers,
+    calcPriceRaise:        mmCalcPriceRaise,
     formatMoney: mmFormatMoney,
     formatPct: mmFormatPct,
     bucketTicket: mmBucketTicket,
@@ -321,6 +403,8 @@ if (typeof window !== 'undefined') {
     bucketCommission: mmBucketCommission,
     bucketPrimeCost: mmBucketPrimeCost,
     bucketFixedCosts: mmBucketFixedCosts,
+    bucketPriceRaiseTier: mmBucketPriceRaiseTier,
+    bucketCoverLoss: mmBucketCoverLoss,
     TICKET_BUCKETS: MM_TICKET_BUCKETS,
     FOODCOST_BUCKETS: MM_FOODCOST_BUCKETS,
     COMMISSION_TIERS: MM_COMMISSION_TIERS,
@@ -328,6 +412,9 @@ if (typeof window !== 'undefined') {
     PRIME_COST_BANDS: MM_PRIME_COST_BANDS,
     FIXED_COST_BUCKETS: MM_FIXED_COST_BUCKETS,
     BREAKEVEN_BANDS: MM_BREAKEVEN_BANDS,
+    PRICE_RAISE_TIERS: MM_PRICE_RAISE_TIERS,
+    COVER_LOSS_BUCKETS: MM_COVER_LOSS_BUCKETS,
+    PRICE_RAISE_BANDS: MM_PRICE_RAISE_BANDS,
     RECOMMENDATIONS: MM_RECOMMENDATIONS,
     DIRECT_PROCESSING_PCT: MM_DIRECT_PROCESSING_PCT
   };
@@ -338,6 +425,7 @@ if (typeof module !== 'undefined' && module.exports) {
     calcDeliveryBreakeven: mmCalcDeliveryBreakeven,
     calcPrimeCost:         mmCalcPrimeCost,
     calcBreakEvenCovers:   mmCalcBreakEvenCovers,
+    calcPriceRaise:        mmCalcPriceRaise,
     formatMoney: mmFormatMoney,
     formatPct: mmFormatPct,
     bucketTicket: mmBucketTicket,
@@ -345,6 +433,8 @@ if (typeof module !== 'undefined' && module.exports) {
     bucketCommission: mmBucketCommission,
     bucketPrimeCost: mmBucketPrimeCost,
     bucketFixedCosts: mmBucketFixedCosts,
+    bucketPriceRaiseTier: mmBucketPriceRaiseTier,
+    bucketCoverLoss: mmBucketCoverLoss,
     clampPct: mmClampPct,
     num: mmNum,
     TICKET_BUCKETS: MM_TICKET_BUCKETS,
@@ -354,6 +444,9 @@ if (typeof module !== 'undefined' && module.exports) {
     PRIME_COST_BANDS: MM_PRIME_COST_BANDS,
     FIXED_COST_BUCKETS: MM_FIXED_COST_BUCKETS,
     BREAKEVEN_BANDS: MM_BREAKEVEN_BANDS,
+    PRICE_RAISE_TIERS: MM_PRICE_RAISE_TIERS,
+    COVER_LOSS_BUCKETS: MM_COVER_LOSS_BUCKETS,
+    PRICE_RAISE_BANDS: MM_PRICE_RAISE_BANDS,
     RECOMMENDATIONS: MM_RECOMMENDATIONS,
     DIRECT_PROCESSING_PCT: MM_DIRECT_PROCESSING_PCT
   };

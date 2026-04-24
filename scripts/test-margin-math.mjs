@@ -21,6 +21,7 @@ const {
   calcDeliveryBreakeven,
   calcPrimeCost,
   calcBreakEvenCovers,
+  calcPriceRaise,
   formatMoney,
   formatPct,
   bucketTicket,
@@ -28,6 +29,8 @@ const {
   bucketCommission,
   bucketPrimeCost,
   bucketFixedCosts,
+  bucketPriceRaiseTier,
+  bucketCoverLoss,
   clampPct,
   num,
   TICKET_BUCKETS,
@@ -37,6 +40,9 @@ const {
   PRIME_COST_BANDS,
   FIXED_COST_BUCKETS,
   BREAKEVEN_BANDS,
+  PRICE_RAISE_TIERS,
+  COVER_LOSS_BUCKETS,
+  PRICE_RAISE_BANDS,
   RECOMMENDATIONS,
   DIRECT_PROCESSING_PCT
 } = require('../tools/margin-math/margin-math.js');
@@ -365,6 +371,101 @@ assertEq('bucket: fixed $60000',  bucketFixedCosts(60000),  'gte60k');
     }
   }
   console.log('PASS  calcBreakEvenCovers band names all in enum (' + bandsSeen.size + ' distinct)');
+}
+
+// ------------------------------------------------------------
+// Price-Raise Simulator
+//
+// Canonical fixture from the blog: baseline $100,000/mo, 6% raise,
+// 2.5% cover loss ->
+//   newSales = 100000 × 1.06 × 0.975 = 103,350
+//   delta    = +3,350 (+3.35%)
+//   breakEvenCoverLoss = 0.06 / 1.06 = 5.66%
+// ------------------------------------------------------------
+{
+  const r = calcPriceRaise({
+    monthlyBaseline: 100000,
+    priceRaisePct: 0.06,
+    coverLossPct: 0.025
+  });
+  assertClose('PR: new sales = $103,350',         r.newSales, 103350, 1);
+  assertClose('PR: delta = +$3,350',              r.delta, 3350, 1);
+  assertClose('PR: deltaPct ≈ 3.35%',             r.deltaPct, 0.0335, 0.001);
+  assertClose('PR: break-even cover loss ≈ 5.66%',r.breakEvenCoverLossPct, 0.0566, 0.001);
+  assertEq('PR: +3.35% delta -> good',             r.band, 'good');
+}
+
+// Wash scenario: 6% raise, 5.66% cover loss -> near-zero delta
+{
+  const r = calcPriceRaise({
+    monthlyBaseline: 100000,
+    priceRaisePct: 0.06,
+    coverLossPct: 0.0566
+  });
+  assert('PR: near-zero delta at break-even', Math.abs(r.deltaPct) < 0.005);
+}
+
+// Too-aggressive: 6% raise with 10% cover loss -> negative
+{
+  const r = calcPriceRaise({
+    monthlyBaseline: 100000,
+    priceRaisePct: 0.06,
+    coverLossPct: 0.10
+  });
+  assert('PR: over-elastic delta is negative', r.delta < 0);
+  assert('PR: band is bad when delta < -1%', r.band === 'bad' || r.band === 'warn');
+}
+
+// Zero baseline guard (no NaN)
+{
+  const r = calcPriceRaise({ monthlyBaseline: 0, priceRaisePct: 0.06, coverLossPct: 0.025 });
+  assertEq('PR: zero baseline -> zero delta', r.delta, 0);
+  assertEq('PR: zero baseline -> zero deltaPct', r.deltaPct, 0);
+}
+
+// Band boundaries
+{
+  // 3% raise, 1% cover loss: newSales = 1.03 × 0.99 = 1.0197; +1.97% -> ok
+  const ok = calcPriceRaise({ monthlyBaseline: 100000, priceRaisePct: 0.03, coverLossPct: 0.01 });
+  assertEq('PR: +1.97% -> ok', ok.band, 'ok');
+  // 3% raise, 3% cover loss: newSales = 1.03 × 0.97 = 0.9991; -0.09% -> warn
+  const warn = calcPriceRaise({ monthlyBaseline: 100000, priceRaisePct: 0.03, coverLossPct: 0.03 });
+  assertEq('PR: -0.09% -> warn', warn.band, 'warn');
+}
+
+// Privacy: bucket scan
+scan('bucketPriceRaiseTier scan 0-20%', bucketPriceRaiseTier, 0, 0.20, 0.005, PRICE_RAISE_TIERS);
+scan('bucketCoverLoss scan 0-12%',      bucketCoverLoss,      0, 0.12, 0.005, COVER_LOSS_BUCKETS);
+
+assertEq('bucket: price-raise 0%',    bucketPriceRaiseTier(0),     'none');
+assertEq('bucket: price-raise 4%',    bucketPriceRaiseTier(0.04),  'small');
+assertEq('bucket: price-raise 6%',    bucketPriceRaiseTier(0.06),  'core');
+assertEq('bucket: price-raise 10%',   bucketPriceRaiseTier(0.10),  'signature');
+assertEq('bucket: price-raise 12%',   bucketPriceRaiseTier(0.12),  'aggressive');
+
+// Poison-string test for new buckets
+{
+  const poison = '0.0626_HIDDEN';
+  assert('no "HIDDEN" leak from bucketPriceRaiseTier',
+    ('' + bucketPriceRaiseTier(poison)).indexOf('HIDDEN') === -1);
+  assert('no "HIDDEN" leak from bucketCoverLoss',
+    ('' + bucketCoverLoss(poison)).indexOf('HIDDEN') === -1);
+}
+
+// Band sweep
+{
+  const bandsSeen = new Set();
+  for (let raise = 0; raise <= 0.15; raise += 0.01) {
+    for (let loss = 0; loss <= 0.12; loss += 0.01) {
+      const r = calcPriceRaise({ monthlyBaseline: 100000, priceRaisePct: raise, coverLossPct: loss });
+      bandsSeen.add(r.band);
+      if (!PRICE_RAISE_BANDS.includes(r.band)) {
+        console.log('FAIL  PR band not in enum: ' + JSON.stringify(r.band));
+        failures++;
+      }
+    }
+  }
+  console.log('PASS  calcPriceRaise band names all in enum (' + bandsSeen.size + ' distinct)');
 }
 
 // ------------------------------------------------------------
