@@ -140,6 +140,17 @@
      competing with the big numbers. */
   .mm-footnote{margin:-2px 0 0;font-size:11.5px;line-height:1.55;color:var(--stone)}
   .mm-footnote strong{color:var(--ink-soft);font-weight:600}
+  /* Small in-field helper — an expandable "Worked example" revealer
+     that sits under a form field without dominating it. Shares the
+     visual vocabulary with .mm-step-inspect but is form-scoped. */
+  .mm-mini-help{margin:-4px 0 2px;font-size:12px}
+  .mm-mini-help summary{cursor:pointer;color:var(--teal);font-weight:600;list-style:none;display:inline-flex;align-items:center;gap:4px;letter-spacing:.01em}
+  .mm-mini-help summary::-webkit-details-marker{display:none}
+  .mm-mini-help summary::after{content:'\25BE';font-size:9px;transition:transform 140ms var(--ease-out)}
+  .mm-mini-help[open] summary::after{transform:rotate(180deg)}
+  .mm-mini-help summary:hover{color:var(--teal-dark)}
+  .mm-mini-help-body{margin:6px 0 0;padding:9px 11px;background:var(--cream-2);border-radius:6px;color:var(--ink-soft);line-height:1.55;font-weight:400;font-size:12.5px}
+  .mm-mini-help-body strong{color:var(--ink);font-weight:600}
   /* Privacy-promise steps — 8 verifiable claims, each with an
      inline "Inspect this" expander. Keyboard-operable via native
      <details>. Invite the audit; don't dodge it. */
@@ -401,6 +412,10 @@
           <input type="range" id="bec-margin" min="5" max="50" step="1" value="20" aria-describedby="bec-margin-val" />
           <small style="color:var(--stone);font-weight:400;font-size:12px;line-height:1.4;">What a cover contributes after food, hourly labor, and card fees. Not the same as operating margin.</small>
         </label>
+        <details class="mm-mini-help">
+          <summary>Worked example</summary>
+          <p class="mm-mini-help-body">A <strong>$40</strong> check with <strong>$12</strong> food + <strong>$8</strong> hourly labor + <strong>$1</strong> card fee = <strong>$19</strong> contribution, or <strong>47.5%</strong>. If you only have monthly totals, divide your variable contribution (sales &minus; COGS &minus; variable labor &minus; card fees) by sales.</p>
+        </details>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
           <label for="bec-days">
             <span>Days open/month</span>

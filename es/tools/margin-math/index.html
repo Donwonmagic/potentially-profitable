@@ -135,6 +135,17 @@
      visualmente: bajo los resultados, sobre el enlace al blog. */
   .mm-footnote{margin:-2px 0 0;font-size:11.5px;line-height:1.55;color:var(--stone)}
   .mm-footnote strong{color:var(--ink-soft);font-weight:600}
+  /* Ayudante en línea del formulario — expansor "Ejemplo" que cabe
+     bajo un campo sin dominarlo. Comparte vocabulario visual con
+     .mm-step-inspect pero está acotado al formulario. */
+  .mm-mini-help{margin:-4px 0 2px;font-size:12px}
+  .mm-mini-help summary{cursor:pointer;color:var(--teal);font-weight:600;list-style:none;display:inline-flex;align-items:center;gap:4px;letter-spacing:.01em}
+  .mm-mini-help summary::-webkit-details-marker{display:none}
+  .mm-mini-help summary::after{content:'\25BE';font-size:9px;transition:transform 140ms var(--ease-out)}
+  .mm-mini-help[open] summary::after{transform:rotate(180deg)}
+  .mm-mini-help summary:hover{color:var(--teal-dark)}
+  .mm-mini-help-body{margin:6px 0 0;padding:9px 11px;background:var(--cream-2);border-radius:6px;color:var(--ink-soft);line-height:1.55;font-weight:400;font-size:12.5px}
+  .mm-mini-help-body strong{color:var(--ink);font-weight:600}
   /* Pasos de la promesa de privacidad — 8 afirmaciones verificables,
      cada una con un expansor "Inspecciona esto". */
   .mm-steps{display:flex;flex-direction:column;gap:10px;max-width:760px;margin:20px auto 0}
@@ -383,6 +394,10 @@
           <input type="range" id="bec-margin" min="5" max="50" step="1" value="20" aria-describedby="bec-margin-val" />
           <small style="color:var(--stone);font-weight:400;font-size:12px;line-height:1.4;">Lo que aporta un cubierto después de comida, labor por hora y comisiones de tarjeta. No es lo mismo que el margen operativo.</small>
         </label>
+        <details class="mm-mini-help">
+          <summary>Ejemplo</summary>
+          <p class="mm-mini-help-body">Un ticket de <strong>$40</strong> con <strong>$12</strong> de comida + <strong>$8</strong> de labor por hora + <strong>$1</strong> de comisión de tarjeta = <strong>$19</strong> de contribución, o <strong>47.5%</strong>. Si solo tienes totales mensuales, divide tu contribución variable (ventas &minus; COGS &minus; labor variable &minus; comisiones de tarjeta) entre ventas.</p>
+        </details>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
           <label for="bec-days">
             <span>Días abierto/mes</span>
