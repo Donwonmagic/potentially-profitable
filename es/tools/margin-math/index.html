@@ -448,8 +448,8 @@
         </fieldset>
         <label for="pr-loss">
           <span>Pérdida asumida de cubiertos <output id="pr-loss-val" for="pr-loss">2.5%</output></span>
-          <input type="range" id="pr-loss" min="0" max="80" step="1" value="25" aria-describedby="pr-loss-val" />
-          <small style="color:var(--stone);font-weight:400;font-size:12px;line-height:1.4;">Las unidades del deslizador son décimas de porcentaje (25 = 2.5%). Los valores por defecto se reinician al cambiar de nivel.</small>
+          <input type="range" id="pr-loss" min="0" max="15" step="0.1" value="2.5" aria-describedby="pr-loss-val" />
+          <small style="color:var(--stone);font-weight:400;font-size:12px;line-height:1.4;">Los valores por defecto se reinician al cambiar de nivel.</small>
         </label>
       </form>
 
@@ -1013,10 +1013,10 @@
     var result = window.MM.calcPriceRaise({
       monthlyBaseline: baselineEl.value,
       priceRaisePct:   currentRaise,
-      coverLossPct:    parseFloat(lossEl.value) / 1000
+      coverLossPct:    parseFloat(lossEl.value) / 100
     });
 
-    lossValEl.textContent = (parseFloat(lossEl.value) / 10).toFixed(1) + '%';
+    lossValEl.textContent = parseFloat(lossEl.value).toFixed(1) + '%';
     newEl.textContent     = window.MM.formatMoney(result.newSales);
     breakevenEl.textContent = (result.breakEvenCoverLossPct * 100).toFixed(1) + '%';
     deltaEl.textContent   = (result.delta >= 0 ? '+' : '-') + window.MM.formatMoney(Math.abs(result.delta));
@@ -1034,7 +1034,7 @@
     firstInteractionFired = true;
     window.plausible('Margin Math PriceRaise', { props: {
       raise_tier:       currentTier,
-      cover_loss_bucket: window.MM.bucketCoverLoss(parseFloat(lossEl.value) / 1000),
+      cover_loss_bucket: window.MM.bucketCoverLoss(parseFloat(lossEl.value) / 100),
       band:             result.band
     }});
   }
@@ -1052,7 +1052,7 @@
       currentTier  = btn.getAttribute('data-tier');
       currentRaise = parseFloat(btn.getAttribute('data-raise'));
       var defaultLoss = parseFloat(btn.getAttribute('data-default-loss'));
-      lossEl.value = Math.round(defaultLoss * 1000);
+      lossEl.value = (defaultLoss * 100).toFixed(1);
       onInput();
     });
   });
