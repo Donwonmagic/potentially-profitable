@@ -33,6 +33,8 @@ const {
   calcPriceRaise,
   encodeState,
   decodeState,
+  crossFillState,
+  CROSS_FILL_PAIRS,
   formatMoney,
   formatPct,
   bucketTicket,
@@ -680,6 +682,63 @@ assertEq('bucket: price-raise 12%',   bucketPriceRaiseTier(0.12),  'aggressive')
 // Also proves we imported the two new names
 assertEq('FRAGMENT_VERSION is exposed', FRAGMENT_VERSION, '1');
 assert('FRAGMENT_KEYS is exposed', FRAGMENT_KEYS && typeof FRAGMENT_KEYS === 'object');
+
+// ------------------------------------------------------------
+// Cross-calculator pre-fill
+//
+// A food-cost percentage is one fact about a restaurant; so is its
+// average check and its contribution margin. When one calculator
+// receives the value via fragment, the others should seed from it
+// unless the fragment already set them explicitly.
+// ------------------------------------------------------------
+assert('CROSS_FILL_PAIRS is exposed', Array.isArray(CROSS_FILL_PAIRS) && CROSS_FILL_PAIRS.length >= 1);
+
+{
+  // dbe.f propagates to pc.f when pc.f is missing
+  const a = crossFillState({ dbe: { f: '32' } });
+  assertEq('cross-fill: dbe.f -> pc.f (pc missing)', a.pc.f, '32');
+  assertEq('cross-fill: dbe.f unchanged',            a.dbe.f, '32');
+}
+{
+  // pc.f propagates to dbe.f when dbe.f is missing
+  const a = crossFillState({ pc: { f: '28' } });
+  assertEq('cross-fill: pc.f -> dbe.f (dbe missing)', a.dbe.f, '28');
+  assertEq('cross-fill: pc.f unchanged',              a.pc.f, '28');
+}
+{
+  // Both sides set: no propagation (user explicitly diverged them)
+  const a = crossFillState({ dbe: { f: '30' }, pc: { f: '35' } });
+  assertEq('cross-fill: dbe.f preserved when both set', a.dbe.f, '30');
+  assertEq('cross-fill: pc.f preserved when both set',  a.pc.f,  '35');
+}
+{
+  // Neither side set: no namespaces created
+  const a = crossFillState({ bec: { fx: '15000' } });
+  assertEq('cross-fill: no spurious dbe namespace', a.dbe, undefined);
+  assertEq('cross-fill: no spurious pc namespace',  a.pc,  undefined);
+}
+{
+  // Average check: dbe.t ↔ bec.k
+  assertEq('cross-fill: dbe.t -> bec.k', crossFillState({ dbe: { t: '40' } }).bec.k, '40');
+  assertEq('cross-fill: bec.k -> dbe.t', crossFillState({ bec: { k: '45' } }).dbe.t, '45');
+}
+{
+  // Contribution margin: bec.m ↔ pr.m
+  assertEq('cross-fill: bec.m -> pr.m', crossFillState({ bec: { m: '22' } }).pr.m, '22');
+  assertEq('cross-fill: pr.m -> bec.m', crossFillState({ pr:  { m: '25' } }).bec.m, '25');
+}
+{
+  // Empty input: safe, no throw, no-op
+  assertEq('cross-fill: undefined safe', typeof crossFillState(), 'object');
+  assertEq('cross-fill: {} safe',        typeof crossFillState({}), 'object');
+}
+{
+  // End-to-end: decode → crossFill pipeline preserves user-set
+  // divergence and fills the gap otherwise.
+  const state = crossFillState(decodeState('v=1&dbe.f=30&bec.k=38'));
+  assertEq('pipeline: dbe.f -> pc.f',   state.pc.f,  '30');
+  assertEq('pipeline: bec.k -> dbe.t',  state.dbe.t, '38');
+}
 
 // ------------------------------------------------------------
 // Summary

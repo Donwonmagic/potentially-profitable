@@ -498,6 +498,43 @@ function mmEncodeState(state) {
   return parts.join('&');
 }
 
+// Cross-calculator pre-fill. A restaurant's food-cost percentage, its
+// average check, and its contribution margin are single facts about
+// the operation — not three. When the owner sets one of these in
+// whichever calculator they happened to open first, the other
+// calculators that take the same concept should adopt the value
+// unless the user explicitly gave them a different one.
+//
+// This seeds at hydrate-time only: once the calculators are live,
+// each owns its own state and the user is free to diverge.
+//
+// Pairs are symmetric — each call propagates A → B if A is set and
+// B is missing, and B → A in the opposite case. If both (or neither)
+// are set, nothing happens.
+var MM_CROSS_FILL_PAIRS = [
+  ['dbe', 'f', 'pc',  'f'],   // food cost (% of sales)
+  ['dbe', 't', 'bec', 'k'],   // average ticket / average check ($)
+  ['bec', 'm', 'pr',  'm']    // contribution margin (%)
+];
+
+function mmCrossFillState(state) {
+  state = state || {};
+  for (var i = 0; i < MM_CROSS_FILL_PAIRS.length; i++) {
+    var p = MM_CROSS_FILL_PAIRS[i];
+    var aNs = p[0], aKey = p[1], bNs = p[2], bKey = p[3];
+    var aVal = state[aNs] ? state[aNs][aKey] : undefined;
+    var bVal = state[bNs] ? state[bNs][bKey] : undefined;
+    if (aVal !== undefined && bVal === undefined) {
+      if (!state[bNs]) state[bNs] = {};
+      state[bNs][bKey] = aVal;
+    } else if (bVal !== undefined && aVal === undefined) {
+      if (!state[aNs]) state[aNs] = {};
+      state[aNs][aKey] = bVal;
+    }
+  }
+  return state;
+}
+
 function mmDecodeState(hash) {
   // Pure: accept a fragment string (leading `#` optional) and return
   // a { dbe, pc, bec, pr } partial object with only the keys that
@@ -540,8 +577,10 @@ if (typeof window !== 'undefined') {
     calcPriceRaise:        mmCalcPriceRaise,
     encodeState: mmEncodeState,
     decodeState: mmDecodeState,
+    crossFillState: mmCrossFillState,
     FRAGMENT_VERSION: MM_FRAGMENT_VERSION,
     FRAGMENT_KEYS:    MM_FRAGMENT_KEYS,
+    CROSS_FILL_PAIRS: MM_CROSS_FILL_PAIRS,
     formatMoney: mmFormatMoney,
     formatPct: mmFormatPct,
     bucketTicket: mmBucketTicket,
@@ -576,8 +615,10 @@ if (typeof module !== 'undefined' && module.exports) {
     calcPriceRaise:        mmCalcPriceRaise,
     encodeState: mmEncodeState,
     decodeState: mmDecodeState,
+    crossFillState: mmCrossFillState,
     FRAGMENT_VERSION: MM_FRAGMENT_VERSION,
     FRAGMENT_KEYS:    MM_FRAGMENT_KEYS,
+    CROSS_FILL_PAIRS: MM_CROSS_FILL_PAIRS,
     formatMoney: mmFormatMoney,
     formatPct: mmFormatPct,
     bucketTicket: mmBucketTicket,

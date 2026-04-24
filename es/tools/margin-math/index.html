@@ -904,7 +904,7 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/es/terms.html">Términos</a><a href="/es/privacy.html">Privacidad</a><a href="/es/accessibility.html">Accesibilidad</a><a href="/es/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="./margin-math.js?v=20260424-mm3"></script>
+<script src="./margin-math.js?v=20260424-mm4"></script>
 <script>
 /* Sincronía de escenario compartida. Cada IIFE de calculadora
  * registra su propia función getState(); al interactuar, re-codifica
@@ -919,7 +919,10 @@
 (function(){
   if (!window.MM) return;
   window.__mmCalcs = [];
-  window.__mmHydratedState = window.MM.decodeState(location.hash);
+  // decodeState toma el fragmento; crossFillState propaga conceptos
+  // compartidos (food cost, ticket promedio, margen de contribución)
+  // entre calculadoras cuando una tiene el valor y otra no.
+  window.__mmHydratedState = window.MM.crossFillState(window.MM.decodeState(location.hash));
   window.__mmUserInteracted = false;
   window.__mmSyncFragment = function(){
     if (!window.__mmUserInteracted) return;

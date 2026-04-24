@@ -924,7 +924,7 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="./margin-math.js?v=20260424-mm3"></script>
+<script src="./margin-math.js?v=20260424-mm4"></script>
 <script>
 /* Shared scenario sync. Each calculator IIFE registers its own
  * getState() closure; on user interaction we re-encode the full
@@ -939,7 +939,10 @@
 (function(){
   if (!window.MM) return;
   window.__mmCalcs = [];
-  window.__mmHydratedState = window.MM.decodeState(location.hash);
+  // decodeState gets the raw fragment; crossFillState propagates
+  // shared concepts (food cost, average check, contribution margin)
+  // across calculators where one set the value and another didn't.
+  window.__mmHydratedState = window.MM.crossFillState(window.MM.decodeState(location.hash));
   window.__mmUserInteracted = false;
   window.__mmSyncFragment = function(){
     if (!window.__mmUserInteracted) return;  // don't trample URL until user acts
