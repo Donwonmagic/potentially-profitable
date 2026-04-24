@@ -326,7 +326,16 @@ function indexByTopic(locale) {
 
 // ---------- shared head/nav/footer fragments ----------
 
-function pageHead(locale, { title, description, canonical, ogImage = '/brand/og/library.png' }) {
+function pageHead(locale, { title, description, canonical, ogImage }) {
+  // Default OG image: reuse the existing /brand/og/learn.png card.
+  // Per-page templates (term pages, etc.) override via the ogImage
+  // option. Adding topic/library-specific OG cards is a follow-up;
+  // for now the Library hub card is a fine fallback.
+  if (!ogImage) {
+    ogImage = locale === 'es' ? '/brand/og/learn-es.png' : '/brand/og/learn.png';
+  } else if (locale === 'es' && ogImage === '/brand/og/glossary.png') {
+    ogImage = '/brand/og/glossary-es.png';
+  }
   // Compute hreflang counterparts. canonical is locale-correct
   // already; build the other locale's URL by toggling the /es/ prefix.
   const enUrl = locale === 'en' ? canonical : canonical.replace('https://muntin.digital/es/', 'https://muntin.digital/');
