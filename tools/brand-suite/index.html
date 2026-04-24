@@ -342,10 +342,11 @@
 <nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><a href="/tools/">Tools</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><span aria-current="page">Brand Suite</span></nav>
 
 <section class="hero hero-tight"><div class="container"><div class="mm-hero">
-  <span class="eyebrow">Free tool &middot; Your logo never leaves this page</span>
-  <h1>A brand suite from<br><span class="serif-italic">your logo.</span></h1>
-  <p class="hero-sub" style="margin:20px auto 0;max-width:580px;">Drop in your mark. Get a color palette, accessible pairs, a WCAG contrast grid, and CSS tokens — all in your browser. A starter kit for the system that goes around your logo. No sign-up, no uploading to a server, no pixel ever leaves this tab.</p>
+  <span class="eyebrow">A Muntin Digital tool &middot; Your logo never leaves this page</span>
+  <h1>A starter kit for the<br>system around <span class="serif-italic">your mark.</span></h1>
+  <p class="hero-sub" style="margin:20px auto 0;max-width:580px;">A logo is one window into your brand — not the whole frame. Drop yours in; Brand Suite extracts a palette, grades every pair against WCAG, and hands you CSS tokens and a starter README. Built in the browser, by the studio. Your pixels never touch a server.</p>
   <a href="#how-we-protect" class="mm-pledge">Stays in your browser. <a href="#how-we-protect">See how we verified it</a></a>
+  <p style="margin:14px auto 0;font-size:12.5px;color:var(--stone);max-width:580px;line-height:1.55;">From <a href="/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">Muntin Digital</a> — a one-person restaurant web studio in Silver Spring, MD. The window in.</p>
 </div></div></section>
 
 <section class="block"><div class="container container-wide">
@@ -362,6 +363,7 @@
         <span class="bs-upload-hint" id="bsUploadHint">PNG, JPG, WebP, or SVG &middot; stays in your browser &middot; nothing is uploaded</span>
       </div>
     </div>
+    <p style="margin:12px auto 0;text-align:center;font-size:13px;color:var(--ink-soft);">Not sure what to upload? <button type="button" id="bsDemoBtn" style="background:none;border:0;padding:0;font:inherit;color:var(--teal);border-bottom:1px dashed currentColor;cursor:pointer;">See the demo on our own logo &rarr;</button></p>
 
     <div class="bs-status" id="bsStatus" role="status" aria-live="polite"></div>
 
@@ -900,7 +902,14 @@
       tokens.push({ name: name + '.on-ink',   value: window.BS.deriveAccessiblePair(entry.hex, INK).toUpperCase(),   type: 'color' });
     });
     return JSON.stringify({
-      meta: { source: 'Muntin Digital Brand Suite', generated: new Date().toISOString() },
+      meta: {
+        studio: 'Muntin Digital',
+        studioUrl: 'https://muntin.digital',
+        source: 'Muntin Digital Brand Suite',
+        tool: 'https://muntin.digital/tools/brand-suite/',
+        tagline: 'The window in.',
+        generated: new Date().toISOString()
+      },
       tokens: tokens
     }, null, 2);
   }
@@ -1077,7 +1086,17 @@
     lines.push('');
     lines.push('For a brand system that can be handed to a developer, an embroiderer, or a signage shop, you want a designer.');
     lines.push('');
-    lines.push('Muntin Digital: Brand Identity — https://muntin.digital/services/#brand');
+    lines.push('---');
+    lines.push('');
+    lines.push('## Made by Muntin Digital');
+    lines.push('');
+    lines.push('Brand Suite is a free tool from **Muntin Digital** — a one-person restaurant web studio in Silver Spring, Maryland. We build custom restaurant websites, brand identities, and social media, run end-to-end by the same person.');
+    lines.push('');
+    lines.push('- Studio: https://muntin.digital');
+    lines.push('- Brand Identity (from \\$1.5k): https://muntin.digital/services/#brand');
+    lines.push('- Tool source: https://muntin.digital/tools/brand-suite/');
+    lines.push('');
+    lines.push('> The window in.');
     return lines.join('\n') + '\n';
   }
 
@@ -1210,6 +1229,27 @@
       handleFile(ev.dataTransfer.files[0]);
     }
   });
+
+  // "See the demo on our own logo" — fetches the bundled Muntin sample
+  // from the same origin and feeds it through the normal handleFile
+  // pipeline. Same-origin fetch; no third-party egress. The user sees
+  // exactly what their own upload flow would produce, on our own mark.
+  var demoBtn = document.getElementById('bsDemoBtn');
+  if (demoBtn) {
+    demoBtn.addEventListener('click', function(){
+      setStatus('Loading Muntin sample…', 'working');
+      fetch('./sample-muntin.svg').then(function(r){
+        if (!r.ok) throw new Error('sample not found');
+        return r.blob();
+      }).then(function(blob){
+        var file = new File([blob], 'sample-muntin.svg', { type: 'image/svg+xml' });
+        handleFile(file);
+      }).catch(function(){
+        setStatus('Could not load the demo sample.', 'error');
+      });
+      if (window.plausible) window.plausible('Brand Suite Demo');
+    });
+  }
 })();
 </script>
 </body>
