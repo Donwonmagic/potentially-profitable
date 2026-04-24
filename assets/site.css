@@ -231,6 +231,87 @@ p{margin:0}
 .nav-links a:hover::after{transform:scaleX(1)}
 @media (max-width:960px){.nav-links{display:none}
 }
+
+/* Library dropdown — desktop only. The trigger is a real <a href="/learn/">,
+   so click and middle-click navigate to the Library hub even with JS off
+   or before the menu loads. The menu opens via :hover (mouse) or
+   :focus-within (keyboard). No JS required. Mobile uses <details> in
+   the existing mobile menu — see the .mobile-library rules near the
+   bottom of this file. */
+.nav-library-wrap{position:relative;display:inline-flex;align-items:center}
+.nav-library-trigger{display:inline-flex;align-items:center;gap:6px}
+.nav-library-chevron{width:11px;height:7px;color:var(--stone);transition:transform var(--t-fast) var(--ease),color var(--t-fast) var(--ease)}
+.nav-library-trigger:hover .nav-library-chevron,
+.nav-library-wrap:focus-within .nav-library-chevron{color:var(--teal);transform:translateY(1px)}
+.nav-library-menu{
+  position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%) translateY(-4px);
+  min-width:280px;max-width:320px;
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:var(--r-md);
+  box-shadow:var(--elev-3);
+  padding:8px;
+  display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;visibility:hidden;
+  transition:opacity var(--t-fast) var(--ease),transform var(--t-fast) var(--ease),visibility 0s linear var(--t-fast);
+  z-index:80;
+}
+.nav-library-wrap:hover .nav-library-menu,
+.nav-library-wrap:focus-within .nav-library-menu{
+  opacity:1;visibility:visible;pointer-events:auto;
+  transform:translateX(-50%) translateY(0);
+  transition:opacity var(--t-fast) var(--ease),transform var(--t-fast) var(--ease),visibility 0s linear 0s;
+}
+/* Bridge between trigger and menu so cursor doesn't fall into the gap. */
+.nav-library-menu::before{
+  content:'';position:absolute;top:-14px;left:0;right:0;height:14px;
+}
+.nav-library-menu a{
+  display:block;padding:10px 14px;
+  border-radius:var(--r-sm);
+  text-decoration:none;color:inherit;
+  transition:background var(--t-fast) var(--ease);
+}
+.nav-library-menu a::after{display:none} /* override the underline-on-hover from .nav-links a */
+.nav-library-menu a:hover,
+.nav-library-menu a:focus-visible{ background:var(--teal-tint); }
+.nav-library-menu a strong{
+  display:block;
+  font-family:var(--font-body);font-size:14.5px;font-weight:600;
+  color:var(--ink);letter-spacing:-0.005em;
+}
+.nav-library-menu a span{
+  display:block;
+  font-size:12.5px;color:var(--stone);
+  margin-top:2px;line-height:1.4;
+}
+
+/* Mobile menu: <details> nests Library subitems below the top-level
+   "Library" summary. Inherits the surrounding mobile-menu typography. */
+.mobile-menu .mobile-library{
+  border-bottom:1px solid var(--line);
+}
+.mobile-menu .mobile-library > summary{
+  list-style:none;
+  padding:14px 2px;
+  font-size:18px;font-family:var(--font-display);font-weight:500;color:var(--ink);
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.mobile-menu .mobile-library > summary::-webkit-details-marker{display:none}
+.mobile-menu .mobile-library > summary::after{
+  content:'';width:10px;height:10px;border-right:1.6px solid var(--stone);border-bottom:1.6px solid var(--stone);
+  transform:rotate(45deg);transition:transform var(--t-fast) var(--ease);margin-right:6px;
+}
+.mobile-menu .mobile-library[open] > summary::after{transform:rotate(-135deg);margin-bottom:-2px}
+.mobile-menu .mobile-library a{
+  padding:10px 18px;
+  font-size:15px;font-family:var(--font-body);font-weight:500;
+  color:var(--ink-soft);
+  border-bottom:0;
+}
+.mobile-menu .mobile-library a:last-of-type{padding-bottom:14px}
+
 .lang-switch{display:flex;align-items:center;gap:8px;font-size:13px;letter-spacing:0.02em;color:var(--stone);margin-left:4px}
 .lang-switch a{padding:6px 10px;border-radius:999px;border:1px solid var(--line);color:var(--ink-soft);transition:color var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease),background var(--t-fast) var(--ease)}
 .lang-switch a:hover{color:var(--teal);border-color:var(--teal)}
