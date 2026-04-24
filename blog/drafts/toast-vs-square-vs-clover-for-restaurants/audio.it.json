@@ -11,7 +11,7 @@
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Ogni ristorante ha un P O S. E prima o poi - di solito pochi mesi dopo che l'hardware è già stato pagato - ogni proprietario di ristorante si rende conto che la scelta del P O S influisce sul suo sito web in modi di cui nessuno gli aveva parlato durante la presentazione delle vendite. Sincronizzazione dei menu, ordini online, trasferimento delle prenotazioni, programmi fedeltà, collegamenti alle ricevute: tutto passa attraverso il POS. Se hai scelto il POS solo in base all'hardware del cassiere e alla commissione di transazione, probabilmente hai scoperto le limitazioni lato sito web nel modo più duro.",
+      "text": "Ogni ristorante ha un P O S. E prima o poi — di solito qualche mese dopo che l'hardware è già stato pagato — ogni proprietario di ristorante si rende conto che la scelta del P O S influenza il suo sito in modi che nessuno gli aveva detto durante il pitch commerciale. Sync del menu, ordinazione online, passaggio di prenotazioni, programmi fedeltà, link delle ricevute — tutto passa dal P O S. Se hai scelto il P O S solo in base all'hardware cassa e alla commissione, probabilmente hai scoperto i limiti lato sito alla maniera difficile.",
       "start": 0,
       "end": 33.99
     },
@@ -19,7 +19,7 @@
       "id": 1,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "Questo post mette a confronto i tre sistemi POS che vedo più spesso negli audit di ristoranti indipendenti: Toast, Square per ristoranti e Clover. Esaminerò ciò che ognuno fa bene per l'integrazione del sito web, dove ognuno ti limita silenziosamente e, in chiusura, quale sceglierei per quale tipo di ristorante. Se stai per firmare un contratto P O S, questo è il post che vorrei che tu leggessi per primo.",
+      "text": "Questo post confronta i tre P O S che vedo più spesso negli audit di ristoranti indipendenti: Toast, Square for Restaurants e Clover. Passerò in rassegna cosa ciascuno fa bene per l'integrazione col sito, dove ciascuno ti limita silenziosamente, e — in chiusura — quale sceglierei per quale tipo di ristorante. Se stai per firmare un contratto P O S, è il post che vorrei tu leggessi per primo.",
       "start": 34.31,
       "end": 56.85
     },
@@ -27,7 +27,7 @@
       "id": 2,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
-      "text": "Una breve nota in anticipo: tutti e tre sono prodotti legittimi gestiti da aziende reali e tutti e tre hanno clienti che li adorano e clienti che si pentono della scelta. Non sono qui per incoronare un vincitore o schiacciare un perdente: la domanda è quale si adatta al tuo ristorante.",
+      "text": "Una nota rapida in apertura: tutti e tre sono prodotti legittimi gestiti da aziende vere, e tutti e tre hanno clienti che li adorano e clienti che si sono pentiti della scelta. Non sono qui per incoronare un vincitore o sparare su un perdente — la domanda è quale calza al tuo ristorante.",
       "start": 57.17,
       "end": 75.03
     },
@@ -35,7 +35,7 @@
       "id": 3,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "Cosa significa in realtà \"Integrazione POS con il tuo sito web\".",
+      "text": "Cosa significa davvero « integrazione P O S col tuo sito ».",
       "start": 75.83,
       "end": 80.23
     },
@@ -43,7 +43,7 @@
       "id": 4,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Prima di entrare nel confronto, vale la pena essere specifici su ciò che stiamo confrontando. L'\"integrazione P O S\" è in realtà tre cose diverse impilate una sopra l'altra e ogni P O S gestisce ogni livello a un livello di qualità diverso.",
+      "text": "Prima di entrare nel confronto, vale la pena essere precisi su cosa stiamo confrontando. L'« integrazione P O S » è in realtà tre cose diverse impilate una sopra l'altra, e ogni P O S gestisce ogni livello a una qualità diversa.",
       "start": 80.68,
       "end": 97.03
     },
@@ -51,7 +51,7 @@
       "id": 5,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(1)",
-      "text": "1. Sincronizzazione del menu.",
+      "text": "1. Sync del menu.",
       "start": 97.83,
       "end": 100.02
     },
@@ -59,7 +59,7 @@
       "id": 6,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Il tuo P O S sa cosa c'è nel menu. Anche il tuo sito web deve saperlo. Il POS può inviare i dati del suo menu al tuo sito web in modo da mantenerli solo in un posto? La spinta include descrizioni dei piatti, immagini, modificatori, allergeni e prezzi? Cosa succede quando 86 un piatto a metà servizio: il tuo sito si aggiorna in tempo reale o qualcuno sta mangiando dati sulla disponibilità vecchi di due ore?",
+      "text": "Il tuo P O S sa cosa c'è sul menu. Anche il tuo sito ha bisogno di saperlo. Il P O S può spingere i suoi dati menu verso il tuo sito così tu lo mantieni in un solo posto? Il push include descrizioni dei piatti, immagini, modifier, allergeni e prezzi? Cosa succede quando 86 un piatto a metà servizio — il tuo sito si aggiorna in tempo reale, o qualcuno sta mangiando dati di disponibilità vecchi di due ore?",
       "start": 100.47,
       "end": 123.53
     },
@@ -67,7 +67,7 @@
       "id": 7,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(2)",
-      "text": "2. Presa degli ordini.",
+      "text": "2. Presa d'ordine.",
       "start": 124.33,
       "end": 126.05
     },
@@ -75,7 +75,7 @@
       "id": 8,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(6)",
-      "text": "Il sito Web accetta ordini online e tali ordini devono arrivare in qualche modo nella tua cucina. L'ordine scorre direttamente nella coda dei biglietti P O S o finisce in un tablet separato che l'host deve controllare? Rispetta il tuo inventario in tempo reale? I clienti possono ordinare gli articoli che hai appena esaurito?",
+      "text": "Il sito prende ordini online e quegli ordini devono atterrare in cucina in qualche modo. L'ordine finisce direttamente nella coda di ticket del P O S, o atterra su un tablet separato che l'accoglienza deve controllare? Rispetta l'inventario in tempo reale? I clienti possono ordinare articoli che hai appena finito?",
       "start": 126.5,
       "end": 145.98
     },
@@ -83,7 +83,7 @@
       "id": 9,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(3)",
-      "text": "3. Prenotazione e flusso dei dati degli ospiti.",
+      "text": "3. Flusso di prenotazione e dati ospite.",
       "start": 146.78,
       "end": 149.69
     },
@@ -91,7 +91,7 @@
       "id": 10,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(7)",
-      "text": "Quando un ospite prenota un tavolo, la prenotazione viene visualizzata sulla mappa del piano del tuo P O S? La cronologia degli ospiti (conteggio delle visite, allergie, compleanno, tavolo preferito) scorre tra la piattaforma di prenotazione e il punto vendita in modo che un cliente abituale venga riconosciuto e accolto per nome?",
+      "text": "Quando un ospite prenota un tavolo, la prenotazione appare sulla mappa del tuo P O S? Lo storico dell'ospite — numero di visite, allergie, compleanno, tavolo preferito — scorre tra la piattaforma di prenotazione e il P O S così un cliente che torna viene riconosciuto e salutato per nome?",
       "start": 150.14,
       "end": 170.32
     },
@@ -99,7 +99,7 @@
       "id": 11,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(8)",
-      "text": "La maggior parte delle pagine di marketing POS parlano di \"integrazione del sito Web\" come se fosse un interruttore da azionare. In pratica, i tre strati superiori vengono costruiti in tempi diversi, da team diversi, e ognuno ha il proprio massimale di qualità. Il giusto P O S per il tuo ristorante dipende da quale dei tre livelli conta di più per il modo in cui operi effettivamente.",
+      "text": "La maggior parte delle pagine marketing dei P O S parla di « integrazione col sito » come se fosse un solo interruttore da alzare. In pratica, i tre livelli sopra sono costruiti in momenti diversi, da team diversi, e ognuno ha il suo tetto di qualità. Il P O S giusto per il tuo ristorante dipende da quale dei tre livelli conta di più per come davvero operi.",
       "start": 170.64,
       "end": 193.09
     },
