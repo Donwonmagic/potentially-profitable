@@ -115,7 +115,7 @@
       "id": 13,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Toast est le plus grand point de vente spécifique aux restaurants sur le marché américain et celui que je vois le plus souvent dans les restaurants indépendants à service complet. Selon la documentation produit de Toast, la plate-forme est spécialement conçue pour les restaurants à service complet, à service rapide et au comptoir, et comprend la commande en ligne native, la gestion des menus et un développeur tiers A P I.",
+      "text": "Toast est le plus gros P O S spécifique restaurant sur le marché américain et celui que je vois le plus souvent sur les restaurants indépendants en full-service. D'après la documentation produit de Toast, la plateforme est construite spécifiquement pour les restaurants en full-service, quick-service et service au comptoir, et inclut la commande en ligne native, la gestion de menu et une A P I développeur tierce.",
       "start": 174.9,
       "end": 194.52
     },
@@ -123,7 +123,7 @@
       "id": 14,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(4)",
-      "text": "Ce que Toast fait bien pour l'intégration de sites Web.",
+      "text": "Ce que Toast fait bien côté intégration web.",
       "start": 195.32,
       "end": 199.22
     },
@@ -131,7 +131,7 @@
       "id": 15,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Commande en ligne native avec un pipeline direct depuis le paiement sur le site Web jusqu'au ticket de cuisine – aucun transfert séparé sur tablette n'est requis.",
+      "text": "Commande en ligne native avec un pipeline direct du checkout du site jusqu'au ticket cuisine — pas de passation par tablette séparée nécessaire.",
       "start": 199.67,
       "end": 208.92
     },
@@ -139,7 +139,7 @@
       "id": 16,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Synchronisation automatique des menus de l'éditeur de menu de Toast avec les widgets de leur site Web, y compris les images, les modificateurs et les balises allergènes.",
+      "text": "Sync automatique du menu depuis l'éditeur de menu de Toast vers leurs widgets de site, y compris les images, les modifiers et les tags d'allergènes.",
       "start": 209.14,
       "end": 220.49
     },
@@ -147,7 +147,7 @@
       "id": 17,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "86ing en temps réel : lorsque vous marquez un plat en rupture de stock sur le point de vente, le changement se propage immédiatement au menu en ligne.",
+      "text": "86 en temps réel — quand tu marques un plat comme épuisé sur le P O S, le changement se propage immédiatement au menu en ligne.",
       "start": 220.71,
       "end": 229.91
     },
@@ -155,7 +155,7 @@
       "id": 18,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "Un API de développeur mature qui permet à un site Web personnalisé (et non aux propres modèles de Toast) d'exploiter les mêmes commandes, menus et données d'invité que les surfaces natives de Toast. C'est la partie qui m'intéresse le plus dans mes audits : cela signifie que vous pouvez avoir un site personnalisé sur une pile moderne tout en utilisant Toast comme moteur.",
+      "text": "Une A P I développeur mature qui permet à un site construit sur mesure (pas aux templates de Toast) de taper dans les mêmes données commande, menu et client que les surfaces natives de Toast utilisent. C'est la partie qui m'intéresse le plus dans mes audits — ça veut dire que tu peux avoir un site sur mesure sur un stack moderne et quand même utiliser Toast comme moteur.",
       "start": 230.13,
       "end": 249.82
     },
@@ -163,7 +163,7 @@
       "id": 19,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(5)",
-      "text": "Là où l'histoire du site Web de Toast se complique.",
+      "text": "Là où l'histoire site de Toast se complique.",
       "start": 250.62,
       "end": 254.2
     },
@@ -171,7 +171,7 @@
       "id": 20,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Les sites de restaurants hébergés par Toast sont fonctionnels mais liés à des modèles. D'après mon expérience d'audit, les sites créés à partir des modèles de sites Web natifs de Toast partagent un système de mise en page et de typographie reconnaissable : ils « ressemblent à un site de restaurant Toast » même lorsque les couleurs sont différentes.",
+      "text": "Les sites restaurants hébergés par Toast eux-mêmes sont fonctionnels mais prisonniers des templates. D'expérience d'audit, les sites construits sur les templates natifs de Toast partagent un système de mise en page et de typographie reconnaissable — ils « ressemblent à un site de restaurant Toast » même quand les couleurs sont différentes.",
       "start": 254.65,
       "end": 273.35
     },
@@ -179,7 +179,7 @@
       "id": 21,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Les frais de transaction sur les commandes de livraison et de ramassage acheminées via la commande intégrée de Toast peuvent s'accumuler par rapport à un paiement personnalisé exécuté sur votre propre processeur de paiement. Les chiffres exacts dépendent de votre niveau de contrat Toast, alors consultez la page de tarification actuelle de Toast pour votre situation.",
+      "text": "Les frais de transaction sur les commandes de livraison et de pickup routées par la commande intégrée de Toast peuvent s'empiler comparés à un checkout sur mesure qui tourne sur ton propre processeur de paiement. Les chiffres exacts dépendent de ton niveau de contrat Toast, donc vérifie la page de tarifs actuelle de Toast pour ta situation.",
       "start": 273.57,
       "end": 293.56
     },
@@ -187,7 +187,7 @@
       "id": 22,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "La marque « Propulsé par Toast » dans le flux de paiement est difficile à supprimer complètement sans passer à un niveau de contrat supérieur.",
+      "text": "Le branding « Powered by Toast » dans le parcours de checkout est difficile à enlever complètement sans passer à un niveau de contrat plus élevé.",
       "start": 293.78,
       "end": 301.9
     },
@@ -195,7 +195,7 @@
       "id": 23,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "Les engagements contractuels ont tendance à s'étendre sur plusieurs années, ce qui est important si vous n'êtes pas sûr quel point de vente conviendra encore à vos opérations dans trois ans.",
+      "text": "Les engagements contractuels ont tendance à courir sur plusieurs années, ce qui compte si tu n'es pas sûr de quel P O S collera encore à ton opération dans trois ans.",
       "start": 302.12,
       "end": 312.42
     },
@@ -203,7 +203,7 @@
       "id": 24,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(10)",
-      "text": "D'après mon expérience d'audit : Toast est le choix le plus judicieux si vous voulez que \"tout fonctionne\" dès le premier jour et que vous acceptez les compromis d'un jardin clos. Et si vous avez un site Web personnalisé et que vous souhaitez que Toast soit le moteur de la cuisine, leur AP I est suffisamment mature pour le prendre en charge – attendez-vous simplement à payer un développeur pour le câbler proprement.",
+      "text": "D'expérience d'audit : Toast est le meilleur choix si tu veux « tout marche tout seul » dès le jour un et si tu acceptes les compromis d'un jardin fermé. Et si tu as un site sur mesure et que tu veux que Toast soit le moteur côté cuisine, leur A P I est assez mature pour supporter ça — attends-toi juste à payer un dev pour tout câbler proprement.",
       "start": 312.74,
       "end": 332.47
     },
@@ -211,7 +211,7 @@
       "id": 25,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "Square pour les restaurants.",
+      "text": "Square for Restaurants.",
       "start": 333.27,
       "end": 334.51
     },
