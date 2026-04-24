@@ -386,10 +386,55 @@
         <div class="mm-recommendation" id="bec-rec" data-band="ok"></div>
       </div>
     </article>
-    <article class="mm-card mm-coming" aria-disabled="true">
-      <span class="mm-card-eyebrow">Fase 3 &middot; Próximamente</span>
+    <article class="mm-card mm-live" data-calc="price-raise">
+      <div class="mm-card-header">
+        <span class="mm-card-eyebrow">Calculadora 4 de 4</span>
+        <span class="mm-badge-safe" title="Cada número que escribes se procesa en tu navegador. Nada se envía a nuestros servidores.">Se queda en tu navegador</span>
+      </div>
       <h3>Simulador de alza de precios</h3>
-      <p>Modela un alza de 3%, 6%, 8% o 12% con elasticidad asumida de pérdida de cubiertos. Tres escenarios lado a lado según nuestra guía de precios de menú.</p>
+      <p>Modela un alza de precios contra una elasticidad asumida de pérdida de cubiertos. El valor por defecto de cada nivel viene de nuestra guía de precios de menú — anula con el deslizador si tus clientes son más o menos elásticos que el típico.</p>
+
+      <form class="mm-form" onsubmit="return false;" aria-label="Simulador de alza de precios">
+        <label for="pr-baseline">
+          <span>Ventas mensuales actuales ($)</span>
+          <input type="number" id="pr-baseline" min="0" max="10000000" step="100" value="100000" inputmode="numeric" placeholder="ej., 85000" />
+        </label>
+        <fieldset class="mm-tier-group">
+          <legend>Nivel del alza</legend>
+          <div class="mm-tier-btns" role="radiogroup" aria-label="Nivel del alza de precios">
+            <button type="button" data-tier="small"      data-raise="0.03" data-default-loss="0.01"  aria-pressed="false" role="radio">3%<small>anclas</small></button>
+            <button type="button" data-tier="core"       data-raise="0.06" data-default-loss="0.025" aria-pressed="true"  role="radio">6%<small>núcleo</small></button>
+            <button type="button" data-tier="signature"  data-raise="0.08" data-default-loss="0.035" aria-pressed="false" role="radio">8%<small>firma</small></button>
+            <button type="button" data-tier="aggressive" data-raise="0.12" data-default-loss="0.05"  aria-pressed="false" role="radio">12%<small>agresivo</small></button>
+          </div>
+        </fieldset>
+        <label for="pr-loss">
+          <span>Pérdida asumida de cubiertos <output id="pr-loss-val" for="pr-loss">2.5%</output></span>
+          <input type="range" id="pr-loss" min="0" max="80" step="1" value="25" aria-describedby="pr-loss-val" />
+          <small style="color:var(--stone);font-weight:400;font-size:12px;line-height:1.4;">Las unidades del deslizador son décimas de porcentaje (25 = 2.5%). Los valores por defecto se reinician al cambiar de nivel.</small>
+        </label>
+      </form>
+
+      <div class="mm-results" aria-live="polite" aria-atomic="true">
+        <div class="mm-per-order">
+          <div class="mm-per-order-col">
+            <span class="mm-result-label">Nuevas ventas mensuales</span>
+            <span class="mm-result-value" id="pr-new">$103,350</span>
+          </div>
+          <div class="mm-per-order-col">
+            <span class="mm-result-label">Pérdida de cubiertos al equilibrio</span>
+            <span class="mm-result-value" id="pr-breakeven">5.7%</span>
+          </div>
+        </div>
+        <div class="mm-monthly" id="pr-head" data-band="good">
+          <span class="mm-monthly-label">Delta mensual</span>
+          <span class="mm-monthly-value" id="pr-delta">+$3,350</span>
+          <span class="mm-monthly-subtext" id="pr-delta-pct">+3.4% sobre la base</span>
+        </div>
+        <div class="mm-recommendation" id="pr-rec" data-band="good"></div>
+      </div>
+
+      <a class="mm-blog-link" href="/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Lee la estrategia completa: Subir precios sin perder reservas &rarr;</a>
     </article>
   </div>
 </div></section>
@@ -836,6 +881,85 @@
   marginEl.addEventListener('input', onInput);
   daysEl.addEventListener('input', onInput);
   typicalEl.addEventListener('input', onInput);
+
+  render();
+})();
+
+/* Simulador de alza de precios — IIFE aislado. */
+(function(){
+  if (!window.MM) return;
+  var card = document.querySelector('[data-calc="price-raise"]');
+  if (!card) return;
+
+  var baselineEl  = card.querySelector('#pr-baseline');
+  var tierBtns    = card.querySelectorAll('.mm-tier-btns button');
+  var lossEl      = card.querySelector('#pr-loss');
+  var lossValEl   = card.querySelector('#pr-loss-val');
+  var newEl       = card.querySelector('#pr-new');
+  var breakevenEl = card.querySelector('#pr-breakeven');
+  var headEl      = card.querySelector('#pr-head');
+  var deltaEl     = card.querySelector('#pr-delta');
+  var deltaPctEl  = card.querySelector('#pr-delta-pct');
+  var recEl       = card.querySelector('#pr-rec');
+
+  var currentRaise = 0.06;
+  var currentTier  = 'core';
+  var firstInteractionFired = false;
+
+  var REC_COPY = {
+    'good': 'Pickup neto fuerte. El alza está funcionando — estás cambiando un poco de volumen de cubiertos por más margen por cubierto, y la matemática cae a tu favor. Protege los platos firma; ahí está el poder de precio.',
+    'ok':   'Positivo pequeño. El alza pagó los cubiertos perdidos más una rebanada de margen. Si tu estimado de elasticidad es bueno, este es el punto dulce — respiro modesto sin poner en riesgo las reservas.',
+    'warn': 'Casi empate. Estás cambiando cubiertos por los mismos ingresos — no es pérdida, pero no es el punto de subir. O el alza fue muy agresiva para tu elasticidad, o contente y reevalúa sobre los ítems ancla antes de rodarla más amplio.',
+    'bad':  'Perdiendo terreno. Los ingresos netos caen con esta combinación de alza × elasticidad. Dos opciones: mantén esta alza solo en los ítems que el cliente nota menos (firmas le ganan a anclas), o baja a un nivel menor. Prueba primero con anclas-retenidas.'
+  };
+
+  function render(){
+    var result = window.MM.calcPriceRaise({
+      monthlyBaseline: baselineEl.value,
+      priceRaisePct:   currentRaise,
+      coverLossPct:    parseFloat(lossEl.value) / 1000
+    });
+
+    lossValEl.textContent = (parseFloat(lossEl.value) / 10).toFixed(1) + '%';
+    newEl.textContent     = window.MM.formatMoney(result.newSales);
+    breakevenEl.textContent = (result.breakEvenCoverLossPct * 100).toFixed(1) + '%';
+    deltaEl.textContent   = (result.delta >= 0 ? '+' : '-') + window.MM.formatMoney(Math.abs(result.delta));
+    deltaEl.style.color   = result.delta >= 0 ? '#1F6B3A' : 'var(--rust)';
+    deltaPctEl.textContent = (result.deltaPct >= 0 ? '+' : '') + (result.deltaPct * 100).toFixed(2) + '% sobre la base';
+    headEl.setAttribute('data-band', result.band);
+    recEl.setAttribute('data-band', result.band);
+    recEl.textContent = REC_COPY[result.band] || '';
+
+    return result;
+  }
+
+  function maybeFireAnalytics(result){
+    if (firstInteractionFired || !window.plausible) return;
+    firstInteractionFired = true;
+    window.plausible('Margin Math PriceRaise', { props: {
+      raise_tier:       currentTier,
+      cover_loss_bucket: window.MM.bucketCoverLoss(parseFloat(lossEl.value) / 1000),
+      band:             result.band
+    }});
+  }
+
+  function onInput(){ maybeFireAnalytics(render()); }
+
+  baselineEl.addEventListener('input', onInput);
+  lossEl.addEventListener('input', onInput);
+
+  Array.prototype.forEach.call(tierBtns, function(btn){
+    btn.addEventListener('click', function(){
+      Array.prototype.forEach.call(tierBtns, function(b){
+        b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+      });
+      currentTier  = btn.getAttribute('data-tier');
+      currentRaise = parseFloat(btn.getAttribute('data-raise'));
+      var defaultLoss = parseFloat(btn.getAttribute('data-default-loss'));
+      lossEl.value = Math.round(defaultLoss * 1000);
+      onInput();
+    });
+  });
 
   render();
 })();
