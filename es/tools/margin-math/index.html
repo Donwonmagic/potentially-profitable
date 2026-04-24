@@ -116,6 +116,18 @@
   .mm-escalate p{margin:0;flex:1;min-width:180px}
   .mm-escalate a{color:var(--rust);font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap}
   .mm-escalate a:hover{color:#8A3E16}
+  /* Sugerencia cruzada entre calculadoras — aparece en bandas
+     intermedias (warn / optimize / ok) para empujar al usuario a la
+     siguiente calculadora que suele importar para este patrón.
+     Mutuamente excluyente con .mm-escalate (que sólo aparece en la
+     peor banda), así que el usuario ve a lo sumo una fila "¿y ahora
+     qué?" a la vez. */
+  .mm-cross-suggest{margin:8px 0 0;padding:10px 14px;border-radius:8px;background:var(--teal-tint);color:var(--teal-dark);font-size:12.5px;line-height:1.5;display:none;gap:10px;align-items:center;flex-wrap:wrap}
+  .mm-cross-suggest[data-visible="true"]{display:flex}
+  .mm-cross-suggest span{flex:1;min-width:180px}
+  .mm-cross-suggest a{color:var(--teal);font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap}
+  .mm-cross-suggest a:hover{color:var(--teal-dark)}
+  @media print { .mm-cross-suggest { display: none !important; } }
   /* Acciones del reporte mensual — entregable insignia Muntin más
      recordatorio .ics. Ambas acciones son 100% del lado cliente:
      el diálogo de impresión es nativo del navegador; el .ics se
@@ -436,7 +448,7 @@
     </button>
   </div>
   <div class="mm-grid" aria-label="Calculadoras">
-    <article class="mm-card mm-live" data-calc="delivery-breakeven">
+    <article class="mm-card mm-live" id="calc-delivery" data-calc="delivery-breakeven">
       <div class="mm-card-header">
         <span class="mm-card-eyebrow">Calculadora 1 de 4</span>
         <span class="mm-badge-safe" title="Cada número que escribes se procesa en tu navegador. Nada se envía a nuestros servidores.">Se queda en tu navegador</span>
@@ -484,6 +496,10 @@
           <span class="mm-monthly-subtext" id="dbe-monthly-sub">se va por la puerta vs. directa</span>
         </div>
         <div class="mm-recommendation" id="dbe-rec" data-rec="consider-leaving"></div>
+        <div class="mm-cross-suggest" id="dbe-suggest">
+          <span>Una comisión alta de agregador suele apretar un margen ya delgado. Revisa tu prime cost para confirmarlo.</span>
+          <a href="#calc-primecost">Prime Cost abajo &rarr;</a>
+        </div>
         <div class="mm-escalate" id="dbe-escalate">
           <p>Cuando la matemática del canal se ve así de hostil, la palanca casi siempre es estructural — overhead fijo, mezcla de menú o configuración del pedido en línea. Un Diagnóstico de Restaurante de 15 minutos mapea los tres principales en tu caso.</p>
           <a href="/es/tools/audits/restaurant/">Correr el Diagnóstico de Restaurante &rarr;</a>
@@ -494,7 +510,7 @@
       <button type="button" class="mm-copy-link" data-copy-link data-copy-label="Copiar enlace del escenario" data-copied-label="Enlace copiado — pégalo para guardarlo">Copiar enlace del escenario</button>
       <a class="mm-blog-link" href="/blog/is-doordash-worth-it-for-restaurants-in-2026/">Lee el análisis completo: ¿Vale la pena DoorDash en 2026? &rarr;</a>
     </article>
-    <article class="mm-card mm-live" data-calc="prime-cost">
+    <article class="mm-card mm-live" id="calc-primecost" data-calc="prime-cost">
       <div class="mm-card-header">
         <span class="mm-card-eyebrow">Calculadora 2 de 4</span>
         <span class="mm-badge-safe" title="Cada número que escribes se procesa en tu navegador. Nada se envía a nuestros servidores.">Se queda en tu navegador</span>
@@ -539,6 +555,10 @@
           <div class="mm-pc-axis"><span>40%</span><span>55%</span><span>65%</span><span>70%</span><span>80%</span></div>
         </div>
         <div class="mm-recommendation" id="pc-rec" data-band="ok"></div>
+        <div class="mm-cross-suggest" id="pc-suggest">
+          <span>Un prime cost estresado suele aparecer primero como pocos cubiertos por noche. Corre las cuentas de cubiertos.</span>
+          <a href="#calc-breakeven">Cubiertos para romper el punto abajo &rarr;</a>
+        </div>
         <div class="mm-escalate" id="pc-escalate">
           <p>Arriba de 70% de prime cost rara vez se arregla solo. El Diagnóstico de Restaurante revisa la pauta de horarios, la mezcla del menú y la economía del canal juntos — ahí están las jugadas reales.</p>
           <a href="/es/tools/audits/restaurant/">Correr el Diagnóstico de Restaurante &rarr;</a>
@@ -548,7 +568,7 @@
       <button type="button" class="mm-copy-link" data-copy-link data-copy-label="Copiar enlace del escenario" data-copied-label="Enlace copiado — pégalo para guardarlo">Copiar enlace del escenario</button>
       <a class="mm-blog-link" href="/blog/is-doordash-worth-it-for-restaurants-in-2026/#prime-cost">¿Qué es un prime cost saludable y de dónde vienen los números? &rarr;</a>
     </article>
-    <article class="mm-card mm-live" data-calc="break-even-covers">
+    <article class="mm-card mm-live" id="calc-breakeven" data-calc="break-even-covers">
       <div class="mm-card-header">
         <span class="mm-card-eyebrow">Calculadora 3 de 4</span>
         <span class="mm-badge-safe" title="Cada número que escribes se procesa en tu navegador. Nada se envía a nuestros servidores.">Se queda en tu navegador</span>
@@ -598,6 +618,10 @@
           <span class="mm-monthly-subtext" id="bec-cap">a 150 cubiertos/día, 51% de la capacidad va a costos fijos</span>
         </div>
         <div class="mm-recommendation" id="bec-rec" data-band="ok"></div>
+        <div class="mm-cross-suggest" id="bec-suggest">
+          <span>¿Apretado en cubiertos? La palanca más rápida suele ser precio en los platos firma, no más volumen.</span>
+          <a href="#calc-priceraise">Simulador de alza de precios abajo &rarr;</a>
+        </div>
         <div class="mm-escalate" id="bec-escalate">
           <p>Estar en punto de equilibrio con volumen típico significa que cada pregunta estructural importa — renta, menú, mezcla de dayparts, márgenes por canal. El Diagnóstico de Restaurante los mapea en una sola pasada.</p>
           <a href="/es/tools/audits/restaurant/">Correr el Diagnóstico de Restaurante &rarr;</a>
@@ -605,7 +629,7 @@
       </div>
       <button type="button" class="mm-copy-link" data-copy-link data-copy-label="Copiar enlace del escenario" data-copied-label="Enlace copiado — pégalo para guardarlo">Copiar enlace del escenario</button>
     </article>
-    <article class="mm-card mm-live" data-calc="price-raise">
+    <article class="mm-card mm-live" id="calc-priceraise" data-calc="price-raise">
       <div class="mm-card-header">
         <span class="mm-card-eyebrow">Calculadora 4 de 4</span>
         <span class="mm-badge-safe" title="Cada número que escribes se procesa en tu navegador. Nada se envía a nuestros servidores.">Se queda en tu navegador</span>
@@ -658,6 +682,10 @@
           <span class="mm-monthly-subtext" id="pr-contrib-delta" style="margin-top:6px;color:var(--ink-soft);">Delta de contribución: +$5,350 (+26.7%)</span>
         </div>
         <div class="mm-recommendation" id="pr-rec" data-band="good"></div>
+        <div class="mm-cross-suggest" id="pr-suggest">
+          <span>Cuando el alza queda apretada, el prime cost suele estar corriendo caliente. Revisa food + labor contra la banda.</span>
+          <a href="#calc-primecost">Prime Cost arriba &rarr;</a>
+        </div>
         <div class="mm-escalate" id="pr-escalate">
           <p>Perder terreno con un alza general suele indicar que los ítems equivocados cargaron el aumento. El Diagnóstico de Restaurante re-ingenia el menú para que el alza caiga sobre los platos firma de baja elasticidad.</p>
           <a href="/es/tools/audits/restaurant/">Correr el Diagnóstico de Restaurante &rarr;</a>
@@ -1018,6 +1046,7 @@
   var monthlyEl     = card.querySelector('#dbe-monthly');
   var monthlySubEl  = card.querySelector('#dbe-monthly-sub');
   var recEl         = card.querySelector('#dbe-rec');
+  var suggestEl     = card.querySelector('#dbe-suggest');
   var escalateEl    = card.querySelector('#dbe-escalate');
 
   var currentTier = 'plus';
@@ -1075,6 +1104,7 @@
       monthlySubEl.textContent = 'Ingresa tu ticket promedio arriba';
       recEl.removeAttribute('data-rec');
       recEl.textContent = '';
+      if (suggestEl)  suggestEl.removeAttribute('data-visible');
       if (escalateEl) escalateEl.removeAttribute('data-visible');
       return result;
     }
@@ -1098,6 +1128,13 @@
         escalateEl.setAttribute('data-visible', 'true');
       } else {
         escalateEl.removeAttribute('data-visible');
+      }
+    }
+    if (suggestEl) {
+      if (result.recommendation === 'optimize') {
+        suggestEl.setAttribute('data-visible', 'true');
+      } else {
+        suggestEl.removeAttribute('data-visible');
       }
     }
 
@@ -1154,6 +1191,7 @@
   var bandLabelEl = card.querySelector('#pc-band-label');
   var markerEl    = card.querySelector('#pc-marker');
   var recEl       = card.querySelector('#pc-rec');
+  var suggestEl   = card.querySelector('#pc-suggest');
   var escalateEl  = card.querySelector('#pc-escalate');
   var segmentBtns = card.querySelectorAll('.mm-tier-btns button[data-segment]');
   var scaleSpans  = card.querySelectorAll('.mm-pc-scale > span');
@@ -1256,6 +1294,13 @@
         escalateEl.removeAttribute('data-visible');
       }
     }
+    if (suggestEl) {
+      if (result.band === 'warn') {
+        suggestEl.setAttribute('data-visible', 'true');
+      } else {
+        suggestEl.removeAttribute('data-visible');
+      }
+    }
 
     return result;
   }
@@ -1310,6 +1355,7 @@
   var headroomEl    = card.querySelector('#bec-headroom');
   var capEl         = card.querySelector('#bec-cap');
   var recEl         = card.querySelector('#bec-rec');
+  var suggestEl     = card.querySelector('#bec-suggest');
   var escalateEl    = card.querySelector('#bec-escalate');
 
   var firstInteractionFired = false;
@@ -1363,6 +1409,7 @@
       headEl.setAttribute('data-band', 'ok');
       headroomBlock.style.display = 'none';
       recEl.style.display = 'none';
+      if (suggestEl)  suggestEl.removeAttribute('data-visible');
       if (escalateEl) escalateEl.removeAttribute('data-visible');
       return result;
     }
@@ -1372,6 +1419,7 @@
       headEl.setAttribute('data-band', 'ok');
       headroomBlock.style.display = 'none';
       recEl.style.display = 'none';
+      if (suggestEl)  suggestEl.removeAttribute('data-visible');
       if (escalateEl) escalateEl.removeAttribute('data-visible');
       return result;
     }
@@ -1400,10 +1448,18 @@
           escalateEl.removeAttribute('data-visible');
         }
       }
+      if (suggestEl) {
+        if (result.band === 'warn') {
+          suggestEl.setAttribute('data-visible', 'true');
+        } else {
+          suggestEl.removeAttribute('data-visible');
+        }
+      }
     } else {
       headEl.setAttribute('data-band', 'ok');
       headroomBlock.style.display = 'none';
       recEl.style.display = 'none';
+      if (suggestEl)  suggestEl.removeAttribute('data-visible');
       if (escalateEl) escalateEl.removeAttribute('data-visible');
     }
 
@@ -1455,6 +1511,7 @@
   var deltaPctEl  = card.querySelector('#pr-delta-pct');
   var contribDeltaEl = card.querySelector('#pr-contrib-delta');
   var recEl       = card.querySelector('#pr-rec');
+  var suggestEl   = card.querySelector('#pr-suggest');
   var escalateEl  = card.querySelector('#pr-escalate');
 
   var currentRaise = 0.06;
@@ -1522,6 +1579,7 @@
       headEl.setAttribute('data-band', 'ok');
       recEl.removeAttribute('data-band');
       recEl.textContent = '';
+      if (suggestEl)  suggestEl.removeAttribute('data-visible');
       if (escalateEl) escalateEl.removeAttribute('data-visible');
       return result;
     }
@@ -1544,6 +1602,13 @@
         escalateEl.setAttribute('data-visible', 'true');
       } else {
         escalateEl.removeAttribute('data-visible');
+      }
+    }
+    if (suggestEl) {
+      if (result.band === 'warn' || result.band === 'ok') {
+        suggestEl.setAttribute('data-visible', 'true');
+      } else {
+        suggestEl.removeAttribute('data-visible');
       }
     }
 
