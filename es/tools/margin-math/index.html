@@ -36,7 +36,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/es/tools/margin-math/#tool","name":"Cálculo de Margen","description":"Calculadoras financieras del lado del cliente para restaurantes independientes: punto de equilibrio con delivery, simulación de alza de precios, chequeo de prime cost, cubiertos para romper el punto. Los datos del dueño se quedan en el navegador.","url":"https://muntin.digital/es/tools/margin-math/","inLanguage":"es","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/es/"},{"@type":"ListItem","position":2,"name":"Herramientas","item":"https://muntin.digital/es/tools/"},{"@type":"ListItem","position":3,"name":"Cálculo de Margen","item":"https://muntin.digital/es/tools/margin-math/"}]}]}
+{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/es/tools/margin-math/#tool","name":"Cálculo de Margen","description":"Calculadoras financieras del lado del cliente para restaurantes independientes: punto de equilibrio con delivery, simulación de alza de precios, chequeo de prime cost, cubiertos para romper el punto. Los datos del dueño se quedan en el navegador.","url":"https://muntin.digital/es/tools/margin-math/","inLanguage":"es","applicationCategory":"BusinessApplication","operatingSystem":"Web","isAccessibleForFree":true,"browserRequirements":"Requiere un navegador moderno con JavaScript habilitado","keywords":"calculadora de finanzas de restaurante, punto de equilibrio delivery, comisión DoorDash, prime cost, precio de menú, cubiertos para romper el punto, elasticidad de precio, márgenes de restaurante","audience":{"@type":"BusinessAudience","audienceType":"Dueños y operadores de restaurantes independientes"},"featureList":["Matemática por orden de delivery vs. pedido directo","Chequeo de prime cost calibrado por segmento de restaurante","Cubiertos para romper el punto con uso de capacidad","Simulador de alza de precios con equilibrio por utilidad e ingresos","Enlaces de escenario compartibles vía fragmento de URL","Reporte Mensual de Margen imprimible","Recordatorio mensual al calendario .ics","100% del lado cliente: sin fetch, sin almacenamiento, sin cuenta"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},{"@type":"FAQPage","@id":"https://muntin.digital/es/tools/margin-math/#faq","mainEntity":[{"@type":"Question","name":"¿Mis números salen de la página cuando uso Cálculo de Margen?","acceptedAnswer":{"@type":"Answer","text":"No. Ninguna llamada a fetch(), XMLHttpRequest ni envío de formulario se dispara cuando escribes un número financiero. La matemática corre entera en tu navegador. La página es HTML estático más dos archivos JavaScript sin minificar que puedes leer directamente."}},{"@type":"Question","name":"¿Cálculo de Margen requiere cuenta, correo o consentimiento de cookies?","acceptedAnswer":{"@type":"Answer","text":"No. Sin registro, sin gate de newsletter, sin banner de cookies. Puedes usar todas las calculadoras sin identificarte. La analítica es Plausible (privacidad primero) con propiedades en buckets — nunca tus valores crudos."}},{"@type":"Question","name":"¿Puedo compartir un escenario con mi contador?","acceptedAnswer":{"@type":"Answer","text":"Sí. Cada calculadora tiene un botón Copiar enlace del escenario que codifica tus entradas en el fragmento de la URL (después del #). Según la especificación HTTP, los navegadores nunca envían el fragmento al servidor: el enlace funciona y el servidor nunca ve su contenido. Un botón Copiar como texto plano compone un resumen etiquetado para correo o notas."}},{"@type":"Question","name":"¿Qué benchmarks usan las calculadoras?","acceptedAnswer":{"@type":"Answer","text":"Punto de equilibrio con delivery usa los niveles publicados de comisión de DoorDash en torno a 15%, 25% y 30%. Prime Cost usa la franja saludable de la NRA de 55 a 65 por ciento para independientes de servicio completo, con umbrales distintos para fast-casual (más apretados arriba) y fine-dining (desplazados cinco puntos arriba). Los benchmarks están fechados en el pie y se revisaron en abril de 2026."}},{"@type":"Question","name":"¿El código fuente es abierto y legible?","acceptedAnswer":{"@type":"Answer","text":"Sí. Sin paso de build, sin minificación, sin framework. El módulo de matemáticas vive en /tools/margin-math/margin-math.js como JavaScript plano bajo aproximadamente quinientas líneas, y cada función de cálculo tiene nombre. Click derecho Ver código fuente para leer la UI directamente."}},{"@type":"Question","name":"¿Puedo usar Cálculo de Margen como revisión mensual?","acceptedAnswer":{"@type":"Answer","text":"Sí. Imprime el reporte de este mes abre el diálogo de impresión nativo del navegador y genera un Reporte Mensual de Margen de una sola hoja con fecha y una URL Reabrir este escenario. Agrega un chequeo mensual a tu calendario descarga un archivo .ics con un evento recurrente mensual (doce ocurrencias) enlazado al escenario actual. Ambas acciones son 100% del lado cliente."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/es/"},{"@type":"ListItem","position":2,"name":"Herramientas","item":"https://muntin.digital/es/tools/"},{"@type":"ListItem","position":3,"name":"Cálculo de Margen","item":"https://muntin.digital/es/tools/margin-math/"}]}]}
 </script>
 <!-- i18n:preconnect START (generated by scripts/enrich-post-seo-v2.py) -->
 <link rel="preconnect" href="https://plausible.io" crossorigin />
@@ -96,6 +96,203 @@
   .mm-per-order-col{display:flex;flex-direction:column;gap:2px;text-align:center;padding:10px;background:var(--white);border-radius:8px;border:1px solid var(--line)}
   .mm-result-label{font-size:11px;font-weight:600;color:var(--stone);letter-spacing:.04em;text-transform:uppercase}
   .mm-result-value{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
+  .mm-result-sub{font-size:11px;color:var(--stone);font-variant-numeric:tabular-nums;margin-top:1px;letter-spacing:.01em}
+  /* "Copiar enlace del escenario" — acción discreta por calculadora
+     que escribe el estado actual en el fragmento de la URL para que
+     el dueño pueda marcarlo o compartirlo. Sin viaje al servidor; el
+     fragmento nunca sale del navegador. */
+  .mm-copy-link{align-self:flex-start;margin-top:-2px;font-size:12px;font-weight:600;color:var(--teal);background:none;border:0;padding:0;cursor:pointer;letter-spacing:.01em;display:inline-flex;align-items:center;gap:5px;font-family:inherit}
+  .mm-copy-link:hover{color:var(--teal-dark)}
+  .mm-copy-link:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:3px}
+  .mm-copy-link::before{content:'';width:10px;height:10px;border:1.5px solid currentColor;border-radius:2px;box-shadow:-3px 3px 0 -1.5px currentColor,-3px 3px 0 0 var(--white);display:inline-block;margin-right:2px;flex:0 0 10px}
+  .mm-copy-link[data-copied="true"]{color:#1F6B3A}
+  .mm-copy-link[data-copied="true"]::before{content:'\2713';border:0;box-shadow:none;width:auto;height:auto;font-weight:800;color:inherit;margin-right:1px;font-size:13px;line-height:1}
+  /* Cascada — "a dónde va cada dólar de una orden". Desglose en
+     dos barras apiladas del $ticket: food cost / comisión o
+     procesamiento / lo que te queda. Se ubica bajo los números por
+     orden para contar la historia por dólar; el delta mensual de
+     abajo escala la misma figura a un mes. */
+  .mm-wf{display:flex;flex-direction:column;gap:6px;margin-top:2px;padding-top:10px;border-top:1px dashed var(--line-dark)}
+  .mm-wf-row{display:grid;grid-template-columns:64px 1fr;gap:10px;align-items:center}
+  .mm-wf-label{font-size:10.5px;color:var(--stone);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+  .mm-wf-bar{display:flex;height:14px;border-radius:3px;overflow:hidden;border:1px solid var(--line);background:var(--white)}
+  .mm-wf-seg{display:block;height:100%;transition:width 220ms var(--ease-out);min-width:0}
+  .mm-wf-food{background:#B89A6E}
+  .mm-wf-fee{background:var(--rust)}
+  .mm-wf-margin{background:#1F6B3A}
+  .mm-wf-legend{list-style:none;padding:0;margin:4px 0 0;display:flex;flex-wrap:wrap;gap:10px 14px;font-size:10.5px;color:var(--stone);justify-content:center}
+  .mm-wf-legend li{display:inline-flex;align-items:center;gap:5px}
+  .mm-wf-dot{display:inline-block;width:8px;height:8px;border-radius:2px;flex:0 0 8px}
+  @media print {
+    .mm-wf-bar{border-color:#000 !important}
+    .mm-wf-food{background:#ddd !important}
+    .mm-wf-fee{background:#888 !important}
+    .mm-wf-margin{background:#222 !important}
+    .mm-wf-dot{border:0.5pt solid #000}
+    .mm-wf-label{color:#000 !important}
+    .mm-wf-legend{color:#000 !important}
+  }
+  /* Escalación por mala banda — solo aparece en la peor banda de
+     cada calculadora, enrutando al Diagnóstico de Restaurante
+     completo. Más discreto que la .mm-recommendation coloreada
+     para que no compitan. */
+  .mm-escalate{margin:10px 0 0;padding:12px 14px;border-radius:10px;background:var(--cream-2);border:1px solid var(--line);font-size:13px;line-height:1.55;color:var(--ink-soft);display:none;gap:12px;align-items:center;flex-wrap:wrap}
+  .mm-escalate[data-visible="true"]{display:flex}
+  .mm-escalate p{margin:0;flex:1;min-width:180px}
+  .mm-escalate a{color:var(--rust);font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap}
+  .mm-escalate a:hover{color:#8A3E16}
+  /* Sugerencia cruzada entre calculadoras — aparece en bandas
+     intermedias (warn / optimize / ok) para empujar al usuario a la
+     siguiente calculadora que suele importar para este patrón.
+     Mutuamente excluyente con .mm-escalate (que sólo aparece en la
+     peor banda), así que el usuario ve a lo sumo una fila "¿y ahora
+     qué?" a la vez. */
+  .mm-cross-suggest{margin:8px 0 0;padding:10px 14px;border-radius:8px;background:var(--teal-tint);color:var(--teal-dark);font-size:12.5px;line-height:1.5;display:none;gap:10px;align-items:center;flex-wrap:wrap}
+  .mm-cross-suggest[data-visible="true"]{display:flex}
+  .mm-cross-suggest span{flex:1;min-width:180px}
+  .mm-cross-suggest a{color:var(--teal);font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap}
+  .mm-cross-suggest a:hover{color:var(--teal-dark)}
+  @media print { .mm-cross-suggest { display: none !important; } }
+  /* Popover del glosario — lee las definiciones de los atributos
+     data-def puestos en los enlaces subrayados dentro de la tarjeta.
+     Sin fetch, sin build, sin nueva dependencia: el texto de la
+     definición viaja con el marcado, así la postura de privacidad
+     queda intacta. Accesible por teclado (focus + Escape); abrir
+     al pasar el cursor sólo en dispositivos con puntero fino. */
+  .mm-popover{position:absolute;z-index:120;max-width:320px;padding:12px 14px;background:var(--white);border:1px solid var(--line-dark);border-radius:8px;box-shadow:0 10px 28px rgba(0,0,0,0.12),0 2px 6px rgba(0,0,0,0.04);font-size:13px;line-height:1.55;color:var(--ink-soft);pointer-events:auto}
+  .mm-popover[hidden]{display:none}
+  .mm-popover-term{display:block;font-family:var(--font-display);font-size:14px;font-weight:500;color:var(--ink);margin:0 0 4px;letter-spacing:.01em}
+  .mm-popover-def{display:block;margin:0 0 8px}
+  .mm-popover-link{display:inline-flex;align-items:center;gap:3px;color:var(--teal);font-size:12.5px;font-weight:600;text-decoration:none;border-bottom:1px dashed currentColor;padding-bottom:1px}
+  .mm-popover-link:hover{color:var(--teal-dark)}
+  .mm-popover::before{content:'';position:absolute;top:-6px;left:20px;width:10px;height:10px;background:var(--white);border-left:1px solid var(--line-dark);border-top:1px solid var(--line-dark);transform:rotate(45deg)}
+  .mm-popover[data-flip="true"]::before{top:auto;bottom:-6px;border:0;border-right:1px solid var(--line-dark);border-bottom:1px solid var(--line-dark)}
+  @media print { .mm-popover { display: none !important; } }
+  @media (prefers-reduced-motion: no-preference) {
+    .mm-popover{animation:mm-pop-in 120ms var(--ease-out)}
+    @keyframes mm-pop-in { from { opacity:0; transform:translateY(-2px); } to { opacity:1; transform:translateY(0); } }
+  }
+  /* Acciones del reporte mensual — entregable insignia Muntin más
+     recordatorio .ics. Ambas acciones son 100% del lado cliente:
+     el diálogo de impresión es nativo del navegador; el .ics se
+     genera en el navegador y se descarga localmente. Va en el hero
+     para que el ritmo de cierre de mes sea lo primero que vea el
+     dueño al regresar. */
+  .mm-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px 0 0}
+  .mm-action{font-family:inherit;font-size:13.5px;font-weight:600;padding:10px 18px;border-radius:999px;cursor:pointer;border:1px solid var(--line-dark);background:var(--white);color:var(--ink);display:inline-flex;align-items:center;gap:8px;transition:border-color 140ms,color 140ms,background 140ms,transform 140ms;line-height:1.2}
+  .mm-action:hover{border-color:var(--teal);color:var(--teal)}
+  .mm-action:active{transform:translateY(1px)}
+  .mm-action:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+  .mm-action-primary{background:var(--teal);color:var(--white);border-color:var(--teal)}
+  .mm-action-primary:hover{background:var(--teal-dark);color:var(--white);border-color:var(--teal-dark)}
+  .mm-action-icon{display:inline-flex;width:14px;height:14px;flex:0 0 14px;align-items:center;justify-content:center}
+  .mm-action-icon svg{width:100%;height:auto;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+  .mm-action-note{text-align:center;margin:8px auto 0;max-width:520px;font-size:11.5px;color:var(--stone);line-height:1.5}
+  /* Banner de escenario cargado — aparece sólo en visitas de
+     regreso (cuando el fragmento de la URL trae estado de alguna
+     calculadora). Descartable durante la sesión. */
+  .mm-scenario-banner{max-width:760px;margin:0 auto 20px;padding:12px 18px;background:var(--teal-tint);color:var(--teal-dark);border-radius:10px;font-size:13.5px;line-height:1.5;display:none;gap:12px;align-items:center;border:1px solid rgba(31,78,91,0.12)}
+  .mm-scenario-banner[data-visible="true"]{display:flex}
+  .mm-scenario-banner-text{flex:1}
+  .mm-scenario-banner-text strong{color:var(--teal)}
+  .mm-scenario-banner-dismiss{background:none;border:0;padding:4px;color:inherit;cursor:pointer;opacity:.7;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;line-height:0}
+  .mm-scenario-banner-dismiss:hover{opacity:1}
+  .mm-scenario-banner-dismiss:focus-visible{outline:2px solid currentColor;outline-offset:2px;opacity:1}
+  @media print { .mm-scenario-banner { display: none !important; } }
+  /* Línea de benchmarks actualizados — anotación pequeña y fechada
+     que da al visitante recurrente una razón para volver. Los
+     umbrales de cada calculadora tienen referencias publicadas del
+     sector; este pie documenta cuándo se revisaron por última vez. */
+  .mm-benchmarks{text-align:center;margin:22px auto 0;max-width:760px;font-size:11.5px;color:var(--stone);line-height:1.6;padding:0 12px}
+  .mm-benchmarks time{color:var(--ink-soft);font-weight:600}
+  .mm-benchmarks a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+  .mm-benchmarks a:hover{color:var(--teal-dark)}
+  @media print { .mm-benchmarks { display: none !important; } }
+  /* Hoja de impresión — convierte la página en un Reporte Mensual
+     de Margen de una sola hoja. Conserva las cuatro tarjetas
+     (entradas + resultados como texto estático) y quita todo el
+     resto. El encabezado de fecha y el pie de enlace usan atributos
+     data- para que el JS los marque justo antes de window.print(). */
+  @media print {
+    @page { margin: 12mm 14mm; size: letter; }
+    body { background: #fff; color: #000; font-size: 10pt; }
+    header.nav, .mobile-menu, .lang-hint, footer, .skip-link, .breadcrumb,
+    section#how-we-protect, section#how-to-check, section#data-sharing,
+    .mm-next, .foot-cta, .hero .mm-pledge, .nav-search-btn, .lang-switch,
+    .mm-badge-safe, .mm-copy-link, .mm-blog-link, .mm-mini-help,
+    [data-copy-link], .mm-escalate,
+    .mm-actions, .mm-action-note { display: none !important; }
+    .hero { padding: 0 !important; margin: 0 0 6pt !important; text-align: left; }
+    .hero .container, .hero .container-wide, main .container, main .container-wide { padding: 0 !important; max-width: none !important; }
+    .hero h1 { font-size: 14pt; margin: 0 0 2pt; }
+    .hero h1 br, .hero .serif-italic { display: none; }
+    .hero-sub { display: none; }
+    .eyebrow { display: none; }
+    main::before {
+      content: 'Cálculo de Margen — Reporte Mensual';
+      display: block;
+      font-family: var(--font-display);
+      font-size: 17pt;
+      font-weight: 500;
+      border-bottom: 0.5pt solid #000;
+      padding-bottom: 3pt;
+      margin: 0 0 3pt;
+      letter-spacing: 0.01em;
+    }
+    body[data-print-date]::before {
+      content: attr(data-print-date) '  ·  muntin.digital/es/tools/margin-math/';
+      display: block;
+      font-size: 9pt;
+      color: #555;
+      margin: 0 0 10pt;
+      letter-spacing: 0.02em;
+    }
+    .mm-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 8pt !important; }
+    .mm-card { break-inside: avoid; page-break-inside: avoid; border: 0.5pt solid #555 !important; background: #fff !important; padding: 10pt !important; border-radius: 3pt !important; gap: 6pt !important; }
+    .mm-card-header { gap: 6pt; }
+    .mm-card-eyebrow { color: #555; font-size: 8pt; letter-spacing: 0.08em; }
+    .mm-card h3 { margin: 2pt 0 4pt; font-size: 12pt; }
+    .mm-card p { font-size: 9pt; margin: 0 0 4pt; line-height: 1.4; color: #222; }
+    .mm-card p a { color: #000; border: 0; text-decoration: none; }
+    .mm-form label { display: block; font-size: 9pt; margin: 0 0 2pt; color: #000; font-weight: 500; gap: 0 !important; }
+    .mm-form label > span { display: inline; font-weight: 500; }
+    .mm-form label > span > output { font-weight: 700; margin-left: 3pt; }
+    .mm-form label > small { display: none; }
+    .mm-form input[type="range"] { display: none !important; }
+    .mm-form input[type="number"] { border: 0 !important; background: transparent !important; padding: 0 !important; color: #000; font-weight: 700; font-size: 10pt; width: auto !important; -webkit-appearance: none; appearance: none; display: inline-block; }
+    .mm-tier-group { margin: 0 0 2pt; }
+    .mm-tier-group legend { font-size: 9pt; font-weight: 500; padding: 0; margin: 0 0 1pt; }
+    .mm-tier-btns { gap: 0 !important; }
+    .mm-tier-btns button { display: none !important; }
+    .mm-tier-btns button[aria-pressed="true"] { display: inline-block !important; border: 0.5pt solid #000 !important; background: none !important; color: #000 !important; padding: 1pt 5pt !important; font-weight: 700; border-radius: 2pt !important; font-size: 9pt; }
+    .mm-tier-btns button[aria-pressed="true"] small { color: #555; font-size: 8pt; margin-top: 0; }
+    .mm-results { background: none !important; border: 0.5pt solid #999 !important; padding: 6pt 8pt !important; margin-top: 4pt !important; border-radius: 2pt !important; gap: 5pt !important; }
+    .mm-monthly, .mm-per-order-col { padding: 3pt 0 !important; }
+    .mm-per-order-col { border: 0.5pt dotted #999 !important; background: none !important; padding: 3pt 4pt !important; }
+    .mm-monthly-value { font-size: 18pt !important; color: #000 !important; }
+    .mm-result-value { font-size: 13pt !important; color: #000 !important; }
+    .mm-result-label, .mm-monthly-label { color: #555; font-size: 8pt !important; }
+    .mm-monthly-subtext, .mm-result-sub { color: #555; font-size: 8pt; }
+    .mm-recommendation { background: #f4f4f4 !important; color: #000 !important; font-size: 9pt !important; padding: 5pt 7pt !important; line-height: 1.4; border-radius: 2pt !important; }
+    .mm-recommendation a { color: #000; }
+    .mm-footnote { font-size: 8pt; color: #555; margin: 2pt 0 0; }
+    .mm-pc-scale-wrap { margin: 3pt 0 !important; }
+    .mm-pc-scale { height: 4pt !important; }
+    .mm-pc-scale > span { background: #fff !important; border: 0.5pt solid #999 !important; }
+    .mm-pc-marker { background: #000 !important; height: 8pt !important; width: 2pt !important; top: -2pt !important; }
+    .mm-pc-axis { font-size: 7pt; }
+    body[data-print-url] main::after {
+      content: 'Reabrir este escenario: ' attr(data-print-url);
+      display: block;
+      font-size: 7.5pt;
+      color: #555;
+      margin-top: 10pt;
+      padding-top: 4pt;
+      border-top: 0.5pt solid #bbb;
+      overflow-wrap: anywhere;
+      page-break-inside: avoid;
+    }
+  }
   .mm-monthly{text-align:center;padding:8px 0;border-top:1px dashed var(--line-dark);display:flex;flex-direction:column;gap:2px}
   .mm-monthly-label{font-size:12px;font-weight:600;color:var(--stone);letter-spacing:.04em;text-transform:uppercase}
   .mm-monthly-value{font-family:var(--font-display);font-size:36px;font-weight:500;color:var(--rust);font-variant-numeric:tabular-nums;line-height:1.1}
@@ -130,6 +327,22 @@
   .mm-pc-axis{display:flex;justify-content:space-between;font-size:10px;color:var(--stone);margin-top:6px;padding:0 2px;font-variant-numeric:tabular-nums}
   .mm-blog-link{margin-top:4px;font-size:12px;color:var(--teal);text-decoration:none;font-weight:600}
   .mm-blog-link:hover{color:var(--teal-dark);border-bottom:1px dashed currentColor}
+  /* "No se modela" — pie de nota que dice qué deja fuera la
+     calculadora para no sobre-confiar en el resultado. Discreto
+     visualmente: bajo los resultados, sobre el enlace al blog. */
+  .mm-footnote{margin:-2px 0 0;font-size:11.5px;line-height:1.55;color:var(--stone)}
+  .mm-footnote strong{color:var(--ink-soft);font-weight:600}
+  /* Ayudante en línea del formulario — expansor "Ejemplo" que cabe
+     bajo un campo sin dominarlo. Comparte vocabulario visual con
+     .mm-step-inspect pero está acotado al formulario. */
+  .mm-mini-help{margin:-4px 0 2px;font-size:12px}
+  .mm-mini-help summary{cursor:pointer;color:var(--teal);font-weight:600;list-style:none;display:inline-flex;align-items:center;gap:4px;letter-spacing:.01em}
+  .mm-mini-help summary::-webkit-details-marker{display:none}
+  .mm-mini-help summary::after{content:'\25BE';font-size:9px;transition:transform 140ms var(--ease-out)}
+  .mm-mini-help[open] summary::after{transform:rotate(180deg)}
+  .mm-mini-help summary:hover{color:var(--teal-dark)}
+  .mm-mini-help-body{margin:6px 0 0;padding:9px 11px;background:var(--cream-2);border-radius:6px;color:var(--ink-soft);line-height:1.55;font-weight:400;font-size:12.5px}
+  .mm-mini-help-body strong{color:var(--ink);font-weight:600}
   /* Pasos de la promesa de privacidad — 8 afirmaciones verificables,
      cada una con un expansor "Inspecciona esto". */
   .mm-steps{display:flex;flex-direction:column;gap:10px;max-width:760px;margin:20px auto 0}
@@ -258,17 +471,38 @@
   <h1>Cálculos para tu<br><span class="serif-italic">restaurante específico.</span></h1>
   <p class="hero-sub" style="margin:20px auto 0;max-width:580px;">Cuatro calculadoras para las decisiones que los dueños de verdad enfrentan — punto de equilibrio con delivery, simulación de alza de precios, prime cost, cubiertos necesarios por noche. Tú escribes tus números; la matemática corre en tu navegador. Sin registro, sin subir nada, ningún servidor ve lo que escribes.</p>
   <a href="#how-we-protect" class="mm-pledge">Se queda en tu navegador. <a href="#how-we-protect">Mira cómo lo verificamos</a></a>
+  <div class="mm-actions" role="group" aria-label="Acciones del reporte mensual de margen">
+    <button type="button" class="mm-action mm-action-primary" id="mm-print-report" data-default-label="Imprime el reporte de este mes">
+      <span class="mm-action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 9V3h10v6"/><rect x="4" y="9" width="16" height="9" rx="1"/><path d="M7 15h10v6H7z"/></svg></span>
+      Imprime el reporte de este mes
+    </button>
+    <button type="button" class="mm-action" id="mm-add-ics" data-default-label="Agrega un chequeo mensual a tu calendario">
+      <span class="mm-action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg></span>
+      Agrega un chequeo mensual a tu calendario
+    </button>
+    <button type="button" class="mm-action" id="mm-copy-text" data-default-label="Copiar como texto plano">
+      <span class="mm-action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h12"/></svg></span>
+      Copiar como texto plano
+    </button>
+  </div>
+  <p class="mm-action-note">La impresión abre el diálogo de tu navegador; el calendario descarga un archivo <code>.ics</code>; el texto va a tu portapapeles. Las tres acciones corren del lado cliente — nada se sube a nuestro servidor.</p>
 </div></div></section>
 
 <section class="block"><div class="container container-wide">
+  <div class="mm-scenario-banner" id="mm-scenario-banner" role="status" aria-live="polite">
+    <span class="mm-scenario-banner-text"><strong>Cargado desde un escenario guardado.</strong> Tus números están puestos abajo — mueve los deslizadores para ver qué cambia.</span>
+    <button type="button" class="mm-scenario-banner-dismiss" aria-label="Cerrar">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+  </div>
   <div class="mm-grid" aria-label="Calculadoras">
-    <article class="mm-card mm-live" data-calc="delivery-breakeven">
+    <article class="mm-card mm-live" id="calc-delivery" data-calc="delivery-breakeven">
       <div class="mm-card-header">
         <span class="mm-card-eyebrow">Calculadora 1 de 4</span>
         <span class="mm-badge-safe" title="Cada número que escribes se procesa en tu navegador. Nada se envía a nuestros servidores.">Se queda en tu navegador</span>
       </div>
       <h3>Punto de equilibrio con delivery</h3>
-      <p>Mira lo que cada orden de verdad te deja en un <a href="/es/glossary/#aggregator" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">agregador</a> de terceros vs. la misma orden tomada <a href="/es/glossary/#direct-ordering" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">directa</a>.</p>
+      <p>Mira lo que cada orden de verdad te deja en un <a href="/es/glossary/#aggregator" data-term="Agregador" data-def="Plataforma de pedidos de terceros (DoorDash, Uber Eats, Grubhub) que lista tu menú, toma la orden del cliente, maneja el delivery y cobra una comisión — típicamente 15–30% por orden." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">agregador</a> de terceros vs. la misma orden tomada <a href="/es/glossary/#direct-ordering" data-term="Pedido directo" data-def="Órdenes hechas por tu propio sitio, app o teléfono, con el procesador de pagos que tú eliges — sin comisión del marketplace. Costo típico: 2–3% de procesamiento más la tarifa de la plataforma de pedidos." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">directa</a>.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Calculadora de punto de equilibrio con delivery">
         <label for="dbe-ticket">
@@ -304,25 +538,66 @@
             <span class="mm-result-value" id="dbe-direct">$16.75</span>
           </div>
         </div>
+        <div class="mm-wf" aria-label="A dónde va cada dólar de una orden">
+          <div class="mm-wf-row">
+            <span class="mm-wf-label">Plataforma</span>
+            <div class="mm-wf-bar" role="img" aria-label="Desglose de una orden en la plataforma">
+              <span class="mm-wf-seg mm-wf-food"   id="dbe-wf-p-food"></span>
+              <span class="mm-wf-seg mm-wf-fee"    id="dbe-wf-p-fee"></span>
+              <span class="mm-wf-seg mm-wf-margin" id="dbe-wf-p-keep"></span>
+            </div>
+          </div>
+          <div class="mm-wf-row">
+            <span class="mm-wf-label">Directa</span>
+            <div class="mm-wf-bar" role="img" aria-label="Desglose de una orden directa">
+              <span class="mm-wf-seg mm-wf-food"   id="dbe-wf-d-food"></span>
+              <span class="mm-wf-seg mm-wf-fee"    id="dbe-wf-d-fee"></span>
+              <span class="mm-wf-seg mm-wf-margin" id="dbe-wf-d-keep"></span>
+            </div>
+          </div>
+          <ul class="mm-wf-legend">
+            <li><span class="mm-wf-dot mm-wf-food"></span>Food cost</li>
+            <li><span class="mm-wf-dot mm-wf-fee"></span>Plataforma / procesamiento</li>
+            <li><span class="mm-wf-dot mm-wf-margin"></span>Lo que te queda</li>
+          </ul>
+        </div>
         <div class="mm-monthly">
           <span class="mm-monthly-label">Diferencia mensual</span>
           <span class="mm-monthly-value" id="dbe-monthly">$550</span>
           <span class="mm-monthly-subtext" id="dbe-monthly-sub">se va por la puerta vs. directa</span>
         </div>
         <div class="mm-recommendation" id="dbe-rec" data-rec="consider-leaving"></div>
+        <div class="mm-cross-suggest" id="dbe-suggest">
+          <span>Una comisión alta de agregador suele apretar un margen ya delgado. Revisa tu prime cost para confirmarlo.</span>
+          <a href="#calc-primecost">Prime Cost abajo &rarr;</a>
+        </div>
+        <div class="mm-escalate" id="dbe-escalate">
+          <p>Cuando la matemática del canal se ve así de hostil, la palanca casi siempre es estructural — overhead fijo, mezcla de menú o configuración del pedido en línea. Un Diagnóstico de Restaurante de 15 minutos mapea los tres principales en tu caso.</p>
+          <a href="/es/tools/audits/restaurant/">Correr el Diagnóstico de Restaurante &rarr;</a>
+        </div>
       </div>
 
+      <p class="mm-footnote"><strong>No se modela:</strong> gasto en listados patrocinados ("Boost"), empaque, tarifas de suscripción del canal directo, el minuto de labor por ticket. Réstalos antes de actuar sobre el número.</p>
+      <button type="button" class="mm-copy-link" data-copy-link data-copy-label="Copiar enlace del escenario" data-copied-label="Enlace copiado — pégalo para guardarlo">Copiar enlace del escenario</button>
       <a class="mm-blog-link" href="/blog/is-doordash-worth-it-for-restaurants-in-2026/">Lee el análisis completo: ¿Vale la pena DoorDash en 2026? &rarr;</a>
     </article>
-    <article class="mm-card mm-live" data-calc="prime-cost">
+    <article class="mm-card mm-live" id="calc-primecost" data-calc="prime-cost">
       <div class="mm-card-header">
         <span class="mm-card-eyebrow">Calculadora 2 de 4</span>
         <span class="mm-badge-safe" title="Cada número que escribes se procesa en tu navegador. Nada se envía a nuestros servidores.">Se queda en tu navegador</span>
       </div>
       <h3>Chequeo de prime cost</h3>
-      <p>Dos entradas — <a href="/es/glossary/#food-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">food cost</a> y <a href="/es/glossary/#labor-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">labor cost</a> como porcentajes de ventas — contra la franja saludable 55-65% del <a href="/es/glossary/#prime-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">prime cost</a> que publica la NRA para restaurantes independientes de servicio completo.</p>
+      <p>Dos entradas — <a href="/es/glossary/#food-cost" data-term="Food cost" data-def="Costo de los ingredientes como porcentaje de las ventas que generan. 28–35% es típico para independientes de servicio completo; más bajo en concepts con fuerte barra, más alto en conceptos con mucha materia prima." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">food cost</a> y <a href="/es/glossary/#labor-cost" data-term="Labor cost" data-def="Sueldos + impuestos de nómina + aporte de empleados de propina como porcentaje de las ventas. Incluye front-of-house y back-of-house; no incluye salario gerencial (suele ir aparte)." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">labor cost</a> como porcentajes de ventas — contra la franja saludable del <a href="/es/glossary/#prime-cost" data-term="Prime cost" data-def="Food cost + labor cost combinados. La línea más observada en las finanzas de un restaurante — 55–65% es la franja saludable de la NRA para independientes de servicio completo. Más alta para fine-dining, más apretada arriba en fast-casual." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">prime cost</a> según tu tipo de restaurante. Servicio completo va en 55–65%; fast-casual se aprieta en el tope; fine-dining corre naturalmente más alto.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Chequeo de prime cost">
+        <fieldset class="mm-tier-group">
+          <legend>Tipo de restaurante</legend>
+          <div class="mm-tier-btns" role="radiogroup" aria-label="Tipo de restaurante">
+            <button type="button" data-segment="full-service" aria-pressed="true"  role="radio">Servicio completo<small>55–65%</small></button>
+            <button type="button" data-segment="fast-casual"  aria-pressed="false" role="radio">Fast-casual<small>55–65%</small></button>
+            <button type="button" data-segment="fine-dining"  aria-pressed="false" role="radio">Fine-dining<small>60–70%</small></button>
+          </div>
+        </fieldset>
         <label for="pc-food">
           <span>Food cost (% de ventas) <output id="pc-food-val" for="pc-food">30%</output></span>
           <input type="range" id="pc-food" min="15" max="50" step="1" value="30" aria-describedby="pc-food-val" />
@@ -351,17 +626,26 @@
           <div class="mm-pc-axis"><span>40%</span><span>55%</span><span>65%</span><span>70%</span><span>80%</span></div>
         </div>
         <div class="mm-recommendation" id="pc-rec" data-band="ok"></div>
+        <div class="mm-cross-suggest" id="pc-suggest">
+          <span>Un prime cost estresado suele aparecer primero como pocos cubiertos por noche. Corre las cuentas de cubiertos.</span>
+          <a href="#calc-breakeven">Cubiertos para romper el punto abajo &rarr;</a>
+        </div>
+        <div class="mm-escalate" id="pc-escalate">
+          <p>Arriba de 70% de prime cost rara vez se arregla solo. El Diagnóstico de Restaurante revisa la pauta de horarios, la mezcla del menú y la economía del canal juntos — ahí están las jugadas reales.</p>
+          <a href="/es/tools/audits/restaurant/">Correr el Diagnóstico de Restaurante &rarr;</a>
+        </div>
       </div>
 
+      <button type="button" class="mm-copy-link" data-copy-link data-copy-label="Copiar enlace del escenario" data-copied-label="Enlace copiado — pégalo para guardarlo">Copiar enlace del escenario</button>
       <a class="mm-blog-link" href="/blog/is-doordash-worth-it-for-restaurants-in-2026/#prime-cost">¿Qué es un prime cost saludable y de dónde vienen los números? &rarr;</a>
     </article>
-    <article class="mm-card mm-live" data-calc="break-even-covers">
+    <article class="mm-card mm-live" id="calc-breakeven" data-calc="break-even-covers">
       <div class="mm-card-header">
         <span class="mm-card-eyebrow">Calculadora 3 de 4</span>
         <span class="mm-badge-safe" title="Cada número que escribes se procesa en tu navegador. Nada se envía a nuestros servidores.">Se queda en tu navegador</span>
       </div>
       <h3>Cubiertos para romper el punto</h3>
-      <p>¿Cuántos <a href="/es/glossary/#cover" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">cubiertos</a> por noche exige tu <a href="/es/glossary/#fixed-costs" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">overhead fijo</a>? Opcional: ingresa tus cubiertos diarios típicos para ver el colchón mensual sobre el <a href="/es/glossary/#break-even" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">punto de equilibrio</a>.</p>
+      <p>¿Cuántos <a href="/es/glossary/#cover" data-term="Cubierto" data-def="Un comensal atendido. Una mesa de cuatro son cuatro cubiertos. Es la unidad estándar para medir volumen y calcular economía por comensal." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">cubiertos</a> por noche exige tu <a href="/es/glossary/#fixed-costs" data-term="Costos fijos" data-def="Costos mensuales que no se flexan con el volumen — renta, seguros, pago del préstamo, SaaS, cobertura de responsabilidad, salario gerencial base. Típicamente 20–30% de los ingresos." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">overhead fijo</a>? Opcional: ingresa tus cubiertos diarios típicos para ver el colchón mensual sobre el <a href="/es/glossary/#break-even" data-term="Punto de equilibrio" data-def="El volumen en el que la contribución marginal cubre exactamente los costos fijos — un cubierto más es el primer dólar de utilidad; uno menos, el primer dólar de pérdida." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">punto de equilibrio</a>.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Calculadora de cubiertos para romper el punto">
         <label for="bec-fixed">
@@ -377,6 +661,10 @@
           <input type="range" id="bec-margin" min="5" max="50" step="1" value="20" aria-describedby="bec-margin-val" />
           <small style="color:var(--stone);font-weight:400;font-size:12px;line-height:1.4;">Lo que aporta un cubierto después de comida, labor por hora y comisiones de tarjeta. No es lo mismo que el margen operativo.</small>
         </label>
+        <details class="mm-mini-help">
+          <summary>Ejemplo</summary>
+          <p class="mm-mini-help-body">Un ticket de <strong>$40</strong> con <strong>$12</strong> de comida + <strong>$8</strong> de labor por hora + <strong>$1</strong> de comisión de tarjeta = <strong>$19</strong> de contribución, o <strong>47.5%</strong>. Si solo tienes totales mensuales, divide tu contribución variable (ventas &minus; COGS &minus; labor variable &minus; comisiones de tarjeta) entre ventas.</p>
+        </details>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
           <label for="bec-days">
             <span>Días abierto/mes</span>
@@ -401,15 +689,24 @@
           <span class="mm-monthly-subtext" id="bec-cap">a 150 cubiertos/día, 51% de la capacidad va a costos fijos</span>
         </div>
         <div class="mm-recommendation" id="bec-rec" data-band="ok"></div>
+        <div class="mm-cross-suggest" id="bec-suggest">
+          <span>¿Apretado en cubiertos? La palanca más rápida suele ser precio en los platos firma, no más volumen.</span>
+          <a href="#calc-priceraise">Simulador de alza de precios abajo &rarr;</a>
+        </div>
+        <div class="mm-escalate" id="bec-escalate">
+          <p>Estar en punto de equilibrio con volumen típico significa que cada pregunta estructural importa — renta, menú, mezcla de dayparts, márgenes por canal. El Diagnóstico de Restaurante los mapea en una sola pasada.</p>
+          <a href="/es/tools/audits/restaurant/">Correr el Diagnóstico de Restaurante &rarr;</a>
+        </div>
       </div>
+      <button type="button" class="mm-copy-link" data-copy-link data-copy-label="Copiar enlace del escenario" data-copied-label="Enlace copiado — pégalo para guardarlo">Copiar enlace del escenario</button>
     </article>
-    <article class="mm-card mm-live" data-calc="price-raise">
+    <article class="mm-card mm-live" id="calc-priceraise" data-calc="price-raise">
       <div class="mm-card-header">
         <span class="mm-card-eyebrow">Calculadora 4 de 4</span>
         <span class="mm-badge-safe" title="Cada número que escribes se procesa en tu navegador. Nada se envía a nuestros servidores.">Se queda en tu navegador</span>
       </div>
       <h3>Simulador de alza de precios</h3>
-      <p>Modela un alza de precios contra una <a href="/es/glossary/#elasticity" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">elasticidad</a> asumida de pérdida de cubiertos. El valor por defecto de cada nivel viene de nuestra guía de precios de menú — anula con el deslizador si tus clientes son más o menos elásticos que el típico.</p>
+      <p>Modela un alza de precios contra una <a href="/es/glossary/#elasticity" data-term="Elasticidad de precio" data-def="Cuánto se mueve el volumen de cubiertos cuando se mueve el precio. Alta elasticidad = clientes sensibles al precio (alza chica, caída grande de cubiertos). Baja elasticidad = poder de precio — los clientes siguen yendo aun con precios más altos, y las alzas se quedan." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">elasticidad</a> asumida de pérdida de cubiertos. El valor por defecto de cada nivel viene de nuestra guía de precios de menú — anula con el deslizador si tus clientes son más o menos elásticos que el típico.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Simulador de alza de precios">
         <label for="pr-baseline">
@@ -427,8 +724,13 @@
         </fieldset>
         <label for="pr-loss">
           <span>Pérdida asumida de cubiertos <output id="pr-loss-val" for="pr-loss">2.5%</output></span>
-          <input type="range" id="pr-loss" min="0" max="80" step="1" value="25" aria-describedby="pr-loss-val" />
-          <small style="color:var(--stone);font-weight:400;font-size:12px;line-height:1.4;">Las unidades del deslizador son décimas de porcentaje (25 = 2.5%). Los valores por defecto se reinician al cambiar de nivel.</small>
+          <input type="range" id="pr-loss" min="0" max="15" step="0.1" value="2.5" aria-describedby="pr-loss-val" />
+          <small style="color:var(--stone);font-weight:400;font-size:12px;line-height:1.4;">Los valores por defecto se reinician al cambiar de nivel.</small>
+        </label>
+        <label for="pr-margin">
+          <span>Margen de contribución <output id="pr-margin-val" for="pr-margin">20%</output></span>
+          <input type="range" id="pr-margin" min="5" max="50" step="1" value="20" aria-describedby="pr-margin-val" />
+          <small style="color:var(--stone);font-weight:400;font-size:12px;line-height:1.4;">Lo que aporta cada cubierto después de comida, labor variable y comisiones de tarjeta. Desbloquea el punto de equilibrio por utilidad abajo — más tolerante que el de ingresos porque los cubiertos perdidos solo te cuestan su margen, no el ticket entero.</small>
         </label>
       </form>
 
@@ -439,28 +741,45 @@
             <span class="mm-result-value" id="pr-new">$103,350</span>
           </div>
           <div class="mm-per-order-col">
-            <span class="mm-result-label">Pérdida de cubiertos al equilibrio</span>
-            <span class="mm-result-value" id="pr-breakeven">5.7%</span>
+            <span class="mm-result-label">Equilibrio de pérdida (utilidad)</span>
+            <span class="mm-result-value" id="pr-breakeven-profit">23.1%</span>
+            <span class="mm-result-sub" id="pr-breakeven-rev">Ingresos: 5.7%</span>
           </div>
         </div>
         <div class="mm-monthly" id="pr-head" data-band="good">
-          <span class="mm-monthly-label">Delta mensual</span>
+          <span class="mm-monthly-label">Delta mensual de ingresos</span>
           <span class="mm-monthly-value" id="pr-delta">+$3,350</span>
           <span class="mm-monthly-subtext" id="pr-delta-pct">+3.4% sobre la base</span>
+          <span class="mm-monthly-subtext" id="pr-contrib-delta" style="margin-top:6px;color:var(--ink-soft);">Delta de contribución: +$5,350 (+26.7%)</span>
         </div>
         <div class="mm-recommendation" id="pr-rec" data-band="good"></div>
+        <div class="mm-cross-suggest" id="pr-suggest">
+          <span>Cuando el alza queda apretada, el prime cost suele estar corriendo caliente. Revisa food + labor contra la banda.</span>
+          <a href="#calc-primecost">Prime Cost arriba &rarr;</a>
+        </div>
+        <div class="mm-escalate" id="pr-escalate">
+          <p>Perder terreno con un alza general suele indicar que los ítems equivocados cargaron el aumento. El Diagnóstico de Restaurante re-ingenia el menú para que el alza caiga sobre los platos firma de baja elasticidad.</p>
+          <a href="/es/tools/audits/restaurant/">Correr el Diagnóstico de Restaurante &rarr;</a>
+        </div>
       </div>
 
+      <button type="button" class="mm-copy-link" data-copy-link data-copy-label="Copiar enlace del escenario" data-copied-label="Enlace copiado — pégalo para guardarlo">Copiar enlace del escenario</button>
       <a class="mm-blog-link" href="/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Lee la estrategia completa: Subir precios sin perder reservas &rarr;</a>
     </article>
   </div>
+  <p class="mm-benchmarks">
+    Benchmarks revisados por última vez el <time datetime="2026-04-24">24 de abril de 2026</time> &middot;
+    Niveles de comisión de DoorDash (15 / 25 / 30%), franja saludable de prime cost de la NRA
+    (55–65% servicio completo) y segmentos fast-casual + fine-dining calibrados para 2026.
+    Fuentes citadas en <a href="/blog/is-doordash-worth-it-for-restaurants-in-2026/">¿Vale la pena DoorDash en 2026?</a>
+  </p>
 </div></section>
 
 <section class="block" id="how-we-protect"><div class="container">
   <div style="max-width:760px;margin:0 auto;">
     <span class="eyebrow">Predicar con el ejemplo</span>
     <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">Cómo protegemos los números que escribes</h2>
-    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Ocho afirmaciones. Cada una se puede verificar en tu propio navegador en menos de un minuto. Si alguna resulta falsa, queremos que lo encuentres tú primero — abre cada "Inspecciona esto" y compruébanos.</p>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Nueve afirmaciones. Cada una se puede verificar en tu propio navegador en menos de un minuto. Si alguna resulta falsa, queremos que lo encuentres tú primero — abre cada "Inspecciona esto" y compruébanos.</p>
   </div>
 
   <div class="mm-steps" aria-label="Pasos de protección de privacidad">
@@ -521,9 +840,9 @@
         <span class="mm-step-num" aria-hidden="true">5</span>
         <div class="mm-step-body">
           <h3 class="mm-step-title">Ningún script de terceros toca las entradas.</h3>
-          <p class="mm-step-claim">Esta página carga exactamente dos archivos JavaScript: el <code>site.js</code> del sitio (nav + switch de idioma) y <code>margin-math.js</code> específico de la herramienta (la matemática). Más un script de analítica (Plausible) que recibe los valores bucket. Nada más.</p>
+          <p class="mm-step-claim">Esta página carga exactamente dos archivos JavaScript: el <code>site.js</code> del sitio (nav + switch de idioma) y <code>margin-math.js</code> específico de la herramienta (la matemática). Más un script de analítica (Plausible) que recibe los valores bucket. Los popovers del glosario leen las definiciones de atributos <code>data-def</code> en el HTML — no se dispara ningún fetch adicional al pasar el cursor.</p>
           <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
-            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filtra <strong>JS</strong>. Recarga. Deberías ver <code>plausible.io/js/…</code>, <code>site.js</code>, y <code>margin-math.js</code>. Sin Google Tag Manager, sin Meta Pixel, sin widget de chat, sin session replay.</div>
+            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filtra <strong>JS</strong>. Recarga. Deberías ver <code>plausible.io/js/…</code>, <code>site.js</code>, y <code>margin-math.js</code>. Pasa el cursor sobre cualquier término subrayado dentro de una calculadora — la lista de solicitudes no crece. Sin Google Tag Manager, sin Meta Pixel, sin widget de chat, sin session replay.</div>
           </details>
         </div>
       </div>
@@ -533,10 +852,10 @@
       <div class="mm-step-head">
         <span class="mm-step-num" aria-hidden="true">6</span>
         <div class="mm-step-body">
-          <h3 class="mm-step-title">Las URLs compartibles mantienen los números fuera de los logs del servidor.</h3>
-          <p class="mm-step-claim">Cuando enviemos "Guardar este escenario" (fase posterior), los números irán codificados en el <a href="/es/glossary/#url-fragment" style="color:inherit;border-bottom:1px dashed var(--teal);"><strong>fragmento</strong> de la URL</a> — después del <code>#</code>. Según la especificación HTTP, los navegadores nunca envían el fragmento al servidor. El enlace funciona; el servidor nunca ve su contenido.</p>
+          <h3 class="mm-step-title">Los enlaces de escenario mantienen los números fuera de los logs del servidor.</h3>
+          <p class="mm-step-claim">Tus entradas viven en el <a href="/es/glossary/#url-fragment" style="color:inherit;border-bottom:1px dashed var(--teal);"><strong>fragmento</strong> de la URL</a> — la parte después del <code>#</code>. Según la especificación HTTP, los navegadores nunca envían el fragmento al servidor. Pulsa <strong>Copiar enlace del escenario</strong> en cualquier calculadora: el enlace que pegas es un rastro auditable que tú controlas — nada sale de tu navegador cuando mueves un deslizador, y nada sale del nuestro cuando compartes el enlace.</p>
           <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
-            <div class="mm-step-verify">Enlaces como <code>&hellip;/margin-math/#calc=delivery&amp;t=25&amp;f=30</code> hidratan el estado localmente. También ponemos <code>&lt;meta name="referrer" content="no-referrer"&gt;</code> en esta página — para que clics salientes no filtren el fragmento vía Referer.</div>
+            <div class="mm-step-verify">Mueve cualquier deslizador y mira la barra de direcciones. Se actualiza a algo como <code>&hellip;/margin-math/#v=1&amp;dbe.t=25&amp;dbe.f=30&amp;pc.f=32&amp;pc.l=34</code>. Ese fragmento nunca viaja en una solicitud HTTP. También ponemos <code>&lt;meta name="referrer" content="no-referrer"&gt;</code> en esta página para que clics salientes no lo filtren a terceros vía el encabezado Referer.</div>
           </details>
         </div>
       </div>
@@ -563,6 +882,19 @@
           <p class="mm-step-claim">Cierra la pestaña, reabre la herramienta: cada calculadora vuelve a sus valores por defecto. No hay cuenta, ni historial guardado, ni "bienvenido de vuelta."</p>
           <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
             <div class="mm-step-verify">Cambia cada deslizador y campo. Cierra la pestaña. Reabre <code>/tools/margin-math/</code>. Todo volvió a su valor inicial.</div>
+          </details>
+        </div>
+      </div>
+    </article>
+
+    <article class="mm-step">
+      <div class="mm-step-head">
+        <span class="mm-step-num" aria-hidden="true">9</span>
+        <div class="mm-step-body">
+          <h3 class="mm-step-title">El Reporte Mensual y el recordatorio al calendario son 100% del lado cliente.</h3>
+          <p class="mm-step-claim">"Imprime el reporte de este mes" abre el diálogo de impresión nativo del navegador — nunca vemos el resultado. "Agrega un chequeo mensual" genera un archivo <code>.ics</code> en tu navegador y lo descarga localmente. El evento del calendario incluye sólo la URL del fragmento visible en tu barra de direcciones.</p>
+          <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
+            <div class="mm-step-verify">DevTools &rarr; Network. Pulsa <strong>Imprime el reporte de este mes</strong> — sin solicitudes nuevas. Pulsa <strong>Agrega un chequeo mensual</strong> — sigue sin solicitudes; aparece la descarga <code>margin-math-mensual.ics</code>. Ábrelo con un editor de texto: cada campo del evento es copia en texto plano de valores que ya ves tú.</div>
           </details>
         </div>
       </div>
@@ -703,8 +1035,198 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/es/terms.html">Términos</a><a href="/es/privacy.html">Privacidad</a><a href="/es/accessibility.html">Accesibilidad</a><a href="/es/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="./margin-math.js?v=20260424-mm1"></script>
+<script src="./margin-math.js?v=20260424-mm4"></script>
 <script>
+/* Sincronía de escenario compartida. Cada IIFE de calculadora
+ * registra su propia función getState(); al interactuar, re-codifica
+ * todo el estado en el fragmento de la URL vía history.replaceState —
+ * sin navegación, sin red, sin nueva entrada en el historial.
+ *
+ * La hidratación desde un enlace guardado va al revés: decodifica el
+ * fragmento una vez al arrancar, lo guarda en __mmHydratedState, y
+ * cada IIFE lee sólo su propio namespace. Un enlace con sólo parte
+ * de un namespace (p. ej. "#v=1&dbe.t=30") se respeta — cada otra
+ * calculadora mantiene sus valores por defecto. */
+(function(){
+  if (!window.MM) return;
+  window.__mmCalcs = [];
+  // decodeState toma el fragmento; crossFillState propaga conceptos
+  // compartidos (food cost, ticket promedio, margen de contribución)
+  // entre calculadoras cuando una tiene el valor y otra no.
+  window.__mmHydratedState = window.MM.crossFillState(window.MM.decodeState(location.hash));
+  window.__mmUserInteracted = false;
+  window.__mmSyncFragment = function(){
+    if (!window.__mmUserInteracted) return;
+    var state = {};
+    for (var i = 0; i < window.__mmCalcs.length; i++) {
+      var c = window.__mmCalcs[i];
+      state[c.ns] = c.getState();
+    }
+    try {
+      history.replaceState(null, '', '#' + window.MM.encodeState(state));
+    } catch (_e) { /* no fatal */ }
+  };
+})();
+
+/* Popovers del glosario. Intercepta clic y hover en los enlaces del
+ * glosario *dentro de las tarjetas de calculadora* que llevan
+ * atributos data-def en línea. Todo lo demás — enlaces al blog,
+ * términos del panel de privacidad, nav del encabezado — navega
+ * normalmente.
+ *
+ * Por qué atributos data en línea y no fetch():
+ *   - Preserva la afirmación del panel de privacidad: la página no
+ *     añade solicitudes de red más allá de los dos JS enviados + la
+ *     analítica. Las definiciones viajan con el HTML que ya se
+ *     sirve.
+ *   - Teclado + lectores de pantalla aún navegan al glosario; el
+ *     popover es un atajo en flujo, no un reemplazo. Cada popover
+ *     expone un enlace "Ver en glosario" que hace la navegación
+ *     real.
+ *
+ * Abrir por hover sólo en dispositivos con puntero fino (matchMedia).
+ * En táctil, un tap abre el popover; otro tap afuera lo cierra. */
+(function(){
+  var grid = document.querySelector('.mm-grid');
+  if (!grid) return;
+  var triggers = grid.querySelectorAll('a[data-term][data-def]');
+  if (!triggers.length) return;
+
+  var pop = document.createElement('div');
+  pop.className = 'mm-popover';
+  pop.setAttribute('role', 'tooltip');
+  pop.setAttribute('hidden', '');
+  pop.innerHTML =
+    '<span class="mm-popover-term"></span>' +
+    '<span class="mm-popover-def"></span>' +
+    '<a class="mm-popover-link" href="#">Ver en el glosario →</a>';
+  document.body.appendChild(pop);
+  var termEl = pop.querySelector('.mm-popover-term');
+  var defEl  = pop.querySelector('.mm-popover-def');
+  var linkEl = pop.querySelector('.mm-popover-link');
+
+  var activeTrigger = null;
+  var openTimer = null;
+  var closeTimer = null;
+  var hoverCapable = (typeof window.matchMedia === 'function')
+    ? window.matchMedia('(hover: hover) and (pointer: fine)').matches
+    : false;
+
+  function position(trigger){
+    var r = trigger.getBoundingClientRect();
+    pop.style.left = '0px';
+    pop.style.top  = '0px';
+    pop.removeAttribute('data-flip');
+    pop.hidden = false;
+    var popRect = pop.getBoundingClientRect();
+    var top = r.bottom + window.scrollY + 10;
+    var wouldOverflow = (r.bottom + 10 + popRect.height) > window.innerHeight;
+    if (wouldOverflow && r.top - 10 - popRect.height > 0) {
+      top = r.top + window.scrollY - popRect.height - 10;
+      pop.setAttribute('data-flip', 'true');
+    }
+    var left = r.left + window.scrollX;
+    var maxLeft = window.scrollX + document.documentElement.clientWidth - popRect.width - 12;
+    if (left > maxLeft) left = maxLeft;
+    if (left < window.scrollX + 12) left = window.scrollX + 12;
+    pop.style.left = left + 'px';
+    pop.style.top  = top  + 'px';
+  }
+
+  function open(trigger){
+    clearTimeout(closeTimer);
+    if (activeTrigger === trigger && !pop.hidden) return;
+    activeTrigger = trigger;
+    termEl.textContent = trigger.getAttribute('data-term') || '';
+    defEl.textContent  = trigger.getAttribute('data-def') || '';
+    linkEl.setAttribute('href', trigger.getAttribute('href'));
+    position(trigger);
+  }
+
+  function close(){
+    activeTrigger = null;
+    pop.hidden = true;
+    clearTimeout(openTimer);
+    clearTimeout(closeTimer);
+  }
+
+  function scheduleOpen(trigger){
+    clearTimeout(openTimer);
+    clearTimeout(closeTimer);
+    openTimer = setTimeout(function(){ open(trigger); }, 140);
+  }
+  function scheduleClose(){
+    clearTimeout(openTimer);
+    clearTimeout(closeTimer);
+    closeTimer = setTimeout(close, 180);
+  }
+
+  Array.prototype.forEach.call(triggers, function(trigger){
+    if (hoverCapable) {
+      trigger.addEventListener('mouseenter', function(){ scheduleOpen(trigger); });
+      trigger.addEventListener('mouseleave', function(){ scheduleClose(); });
+    }
+    trigger.addEventListener('focus', function(){ open(trigger); });
+    trigger.addEventListener('blur',  function(){ scheduleClose(); });
+    trigger.addEventListener('click', function(e){
+      e.preventDefault();
+      if (activeTrigger === trigger && !pop.hidden) {
+        close();
+      } else {
+        open(trigger);
+      }
+    });
+  });
+
+  if (hoverCapable) {
+    pop.addEventListener('mouseenter', function(){ clearTimeout(closeTimer); });
+    pop.addEventListener('mouseleave', function(){ scheduleClose(); });
+  }
+  document.addEventListener('click', function(e){
+    if (pop.hidden) return;
+    if (pop.contains(e.target)) return;
+    for (var i = 0; i < triggers.length; i++) {
+      if (triggers[i].contains(e.target)) return;
+    }
+    close();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && !pop.hidden) {
+      close();
+      if (activeTrigger) activeTrigger.focus();
+    }
+  });
+  window.addEventListener('resize', close);
+  window.addEventListener('scroll', function(){
+    if (!pop.hidden && activeTrigger) position(activeTrigger);
+  }, { passive: true });
+})();
+
+/* Banner de escenario cargado. Aparece sólo cuando la página se
+ * carga con un fragmento que trae estado real de alguna calculadora
+ * — no en una visita en frío. Descartable durante la sesión. */
+(function(){
+  var banner = document.getElementById('mm-scenario-banner');
+  if (!banner) return;
+  var hydrated = window.__mmHydratedState || {};
+  var hasState = false;
+  for (var k in hydrated) {
+    if (hydrated.hasOwnProperty(k) && hydrated[k] && typeof hydrated[k] === 'object') {
+      for (var inner in hydrated[k]) {
+        if (hydrated[k].hasOwnProperty(inner)) { hasState = true; break; }
+      }
+    }
+    if (hasState) break;
+  }
+  if (hasState) banner.setAttribute('data-visible', 'true');
+  var dismiss = banner.querySelector('.mm-scenario-banner-dismiss');
+  if (dismiss) {
+    dismiss.addEventListener('click', function(){
+      banner.removeAttribute('data-visible');
+    });
+  }
+})();
+
 /* Calculadora Punto de equilibrio con delivery — cableado.
  *
  * Invariantes de privacidad (aplicadas aquí):
@@ -729,10 +1251,43 @@
   var monthlyEl     = card.querySelector('#dbe-monthly');
   var monthlySubEl  = card.querySelector('#dbe-monthly-sub');
   var recEl         = card.querySelector('#dbe-rec');
+  var suggestEl     = card.querySelector('#dbe-suggest');
+  var escalateEl    = card.querySelector('#dbe-escalate');
+  var wfPFood       = card.querySelector('#dbe-wf-p-food');
+  var wfPFee        = card.querySelector('#dbe-wf-p-fee');
+  var wfPKeep       = card.querySelector('#dbe-wf-p-keep');
+  var wfDFood       = card.querySelector('#dbe-wf-d-food');
+  var wfDFee        = card.querySelector('#dbe-wf-d-fee');
+  var wfDKeep       = card.querySelector('#dbe-wf-d-keep');
 
   var currentTier = 'plus';
   var currentCommission = 0.25;
   var firstInteractionFired = false;
+
+  var hydrated = (window.__mmHydratedState && window.__mmHydratedState.dbe) || null;
+  if (hydrated) {
+    if (hydrated.t !== undefined) ticketEl.value = hydrated.t;
+    if (hydrated.f !== undefined) foodcostEl.value = hydrated.f;
+    if (hydrated.o !== undefined) ordersEl.value = hydrated.o;
+    if (hydrated.c) {
+      var btn = card.querySelector('.mm-tier-btns button[data-tier="' + hydrated.c + '"]');
+      if (btn) {
+        Array.prototype.forEach.call(tierBtns, function(b){
+          b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+        });
+        currentTier = hydrated.c;
+        currentCommission = parseFloat(btn.getAttribute('data-pct'));
+      }
+    }
+  }
+  if (window.__mmCalcs) {
+    window.__mmCalcs.push({
+      ns: 'dbe',
+      getState: function(){
+        return { t: ticketEl.value, f: foodcostEl.value, c: currentTier, o: ordersEl.value };
+      }
+    });
+  }
 
   var REC_COPY = {
     'keep': 'A esta tasa, las órdenes por agregador son razonables como marketing — clientes nuevos a los que no hubieras llegado. Vigila el volumen.',
@@ -750,13 +1305,73 @@
 
     ticketValEl.textContent   = window.MM.formatMoney(ticketEl.value);
     foodcostValEl.textContent = foodcostEl.value + '%';
-    platformEl.textContent    = window.MM.formatMoney(result.perOrderOnPlatform);
-    directEl.textContent      = window.MM.formatMoney(result.perOrderDirect);
-    monthlyEl.textContent     = window.MM.formatMoney(result.monthlyDelta);
-    monthlySubEl.textContent  = result.monthlyDelta > 0 ? 'se va por la puerta vs. directa' : 'sin diferencia con estos valores';
+
+    // Los anchos de la cascada son razones — no dependen del valor
+    // del ticket, así que se actualizan incluso cuando la guarda
+    // de ticket=0 toma el control.
+    var foodPct = result.inputs.foodCostPct * 100;
+    var commPct = result.inputs.commissionPct * 100;
+    var procPct = result.inputs.directProcessingPct * 100;
+    var keepP = Math.max(0, 100 - foodPct - commPct);
+    var keepD = Math.max(0, 100 - foodPct - procPct);
+    wfPFood.style.width = foodPct + '%';
+    wfPFee.style.width  = commPct + '%';
+    wfPKeep.style.width = keepP   + '%';
+    wfDFood.style.width = foodPct + '%';
+    wfDFee.style.width  = procPct + '%';
+    wfDKeep.style.width = keepD   + '%';
+    if (result.inputs.ticket > 0) {
+      var t = result.inputs.ticket;
+      wfPFood.title = 'Food cost: ' + window.MM.formatMoney(t * result.inputs.foodCostPct);
+      wfPFee.title  = 'Comisión de plataforma: ' + window.MM.formatMoney(t * result.inputs.commissionPct);
+      wfPKeep.title = 'Te queda: ' + window.MM.formatMoney(result.perOrderOnPlatform);
+      wfDFood.title = 'Food cost: ' + window.MM.formatMoney(t * result.inputs.foodCostPct);
+      wfDFee.title  = 'Procesamiento de tarjeta: ' + window.MM.formatMoney(t * result.inputs.directProcessingPct);
+      wfDKeep.title = 'Te queda: ' + window.MM.formatMoney(result.perOrderDirect);
+    }
+
+    // Guardas de estado vacío. Un ticket en cero vuelve inútil cada
+    // resultado; pide el dato en vez de mostrar $0 en silencio.
+    if (result.inputs.ticket === 0) {
+      platformEl.textContent   = '—';
+      directEl.textContent     = '—';
+      monthlyEl.textContent    = '—';
+      monthlySubEl.textContent = 'Ingresa tu ticket promedio arriba';
+      recEl.removeAttribute('data-rec');
+      recEl.textContent = '';
+      if (suggestEl)  suggestEl.removeAttribute('data-visible');
+      if (escalateEl) escalateEl.removeAttribute('data-visible');
+      return result;
+    }
+
+    platformEl.textContent = window.MM.formatMoney(result.perOrderOnPlatform);
+    directEl.textContent   = window.MM.formatMoney(result.perOrderDirect);
+
+    if (result.inputs.ordersPerMonth === 0) {
+      monthlyEl.textContent    = '—';
+      monthlySubEl.textContent = 'Ingresa órdenes/mes para ver el impacto mensual';
+    } else {
+      monthlyEl.textContent    = window.MM.formatMoney(result.monthlyDelta);
+      monthlySubEl.textContent = result.monthlyDelta > 0 ? 'se va por la puerta vs. directa' : 'sin diferencia con estos valores';
+    }
 
     recEl.setAttribute('data-rec', result.recommendation);
     recEl.textContent = REC_COPY[result.recommendation] || '';
+
+    if (escalateEl) {
+      if (result.recommendation === 'consider-leaving') {
+        escalateEl.setAttribute('data-visible', 'true');
+      } else {
+        escalateEl.removeAttribute('data-visible');
+      }
+    }
+    if (suggestEl) {
+      if (result.recommendation === 'optimize') {
+        suggestEl.setAttribute('data-visible', 'true');
+      } else {
+        suggestEl.removeAttribute('data-visible');
+      }
+    }
 
     return result;
   }
@@ -772,7 +1387,11 @@
     }});
   }
 
-  function onInput(){ maybeFireAnalytics(render()); }
+  function onInput(){
+    window.__mmUserInteracted = true;
+    maybeFireAnalytics(render());
+    if (window.__mmSyncFragment) window.__mmSyncFragment();
+  }
 
   ticketEl.addEventListener('input', onInput);
   foodcostEl.addEventListener('input', onInput);
@@ -807,8 +1426,60 @@
   var bandLabelEl = card.querySelector('#pc-band-label');
   var markerEl    = card.querySelector('#pc-marker');
   var recEl       = card.querySelector('#pc-rec');
+  var suggestEl   = card.querySelector('#pc-suggest');
+  var escalateEl  = card.querySelector('#pc-escalate');
+  var segmentBtns = card.querySelectorAll('.mm-tier-btns button[data-segment]');
+  var scaleSpans  = card.querySelectorAll('.mm-pc-scale > span');
+  var axisEl      = card.querySelector('.mm-pc-axis');
 
+  var currentSegment = 'full-service';
   var firstInteractionFired = false;
+
+  // Layout de escala + eje por segmento. Los flex-grow suman algo
+  // arbitrario; son anchos relativos dentro del rango visual 40–80%.
+  // Las etiquetas del eje son los marcadores de frontera visibles.
+  var SCALE_LAYOUT = {
+    'full-service': { grow: [15, 5, 5, 5, 10], axis: ['40%', '55%', '65%', '70%', '80%'] },
+    'fast-casual':  { grow: [15, 5, 5, 3, 12], axis: ['40%', '55%', '65%', '68%', '80%'] },
+    'fine-dining':  { grow: [20, 5, 5, 5,  5], axis: ['40%', '60%', '70%', '75%', '80%'] }
+  };
+
+  function applyScaleLayout(segment){
+    var layout = SCALE_LAYOUT[segment] || SCALE_LAYOUT['full-service'];
+    for (var i = 0; i < scaleSpans.length; i++) {
+      scaleSpans[i].style.flexGrow = layout.grow[i] || 1;
+    }
+    if (axisEl) {
+      var labels = axisEl.children;
+      for (var j = 0; j < labels.length && j < layout.axis.length; j++) {
+        labels[j].textContent = layout.axis[j];
+      }
+    }
+  }
+
+  function setSegment(segment){
+    if (!SCALE_LAYOUT[segment]) segment = 'full-service';
+    currentSegment = segment;
+    Array.prototype.forEach.call(segmentBtns, function(b){
+      var pressed = b.getAttribute('data-segment') === segment;
+      b.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+    });
+    applyScaleLayout(segment);
+  }
+
+  var hydrated = (window.__mmHydratedState && window.__mmHydratedState.pc) || null;
+  if (hydrated) {
+    if (hydrated.f !== undefined) foodEl.value = hydrated.f;
+    if (hydrated.l !== undefined) laborEl.value = hydrated.l;
+    if (hydrated.s) setSegment(hydrated.s);
+  }
+  applyScaleLayout(currentSegment);
+  if (window.__mmCalcs) {
+    window.__mmCalcs.push({
+      ns: 'pc',
+      getState: function(){ return { f: foodEl.value, l: laborEl.value, s: currentSegment }; }
+    });
+  }
 
   var BAND_LABELS = {
     'below': 'Debajo de lo típico — verifica las entradas',
@@ -835,7 +1506,8 @@
   function render(){
     var result = window.MM.calcPrimeCost({
       foodCostPct:  foodEl.value,
-      laborCostPct: laborEl.value
+      laborCostPct: laborEl.value,
+      segment:      currentSegment
     });
 
     foodValEl.textContent  = foodEl.value + '%';
@@ -850,6 +1522,21 @@
     recEl.setAttribute('data-band', result.band);
     recEl.textContent = REC_COPY[result.band] || '';
 
+    if (escalateEl) {
+      if (result.band === 'bad') {
+        escalateEl.setAttribute('data-visible', 'true');
+      } else {
+        escalateEl.removeAttribute('data-visible');
+      }
+    }
+    if (suggestEl) {
+      if (result.band === 'warn') {
+        suggestEl.setAttribute('data-visible', 'true');
+      } else {
+        suggestEl.removeAttribute('data-visible');
+      }
+    }
+
     return result;
   }
 
@@ -859,14 +1546,26 @@
     window.plausible('Margin Math PrimeCost', { props: {
       foodcost_bucket:   window.MM.bucketFoodCost(foodEl.value),
       prime_cost_bucket: window.MM.bucketPrimeCost(result.primeCostPct),
+      segment:           result.segment,
       band:              result.band
     }});
   }
 
-  function onInput(){ maybeFireAnalytics(render()); }
+  function onInput(){
+    window.__mmUserInteracted = true;
+    maybeFireAnalytics(render());
+    if (window.__mmSyncFragment) window.__mmSyncFragment();
+  }
 
   foodEl.addEventListener('input', onInput);
   laborEl.addEventListener('input', onInput);
+
+  Array.prototype.forEach.call(segmentBtns, function(btn){
+    btn.addEventListener('click', function(){
+      setSegment(btn.getAttribute('data-segment'));
+      onInput();
+    });
+  });
 
   render();
 })();
@@ -891,8 +1590,30 @@
   var headroomEl    = card.querySelector('#bec-headroom');
   var capEl         = card.querySelector('#bec-cap');
   var recEl         = card.querySelector('#bec-rec');
+  var suggestEl     = card.querySelector('#bec-suggest');
+  var escalateEl    = card.querySelector('#bec-escalate');
 
   var firstInteractionFired = false;
+
+  var hydrated = (window.__mmHydratedState && window.__mmHydratedState.bec) || null;
+  if (hydrated) {
+    if (hydrated.fx !== undefined) fixedEl.value   = hydrated.fx;
+    if (hydrated.k  !== undefined) checkEl.value   = hydrated.k;
+    if (hydrated.m  !== undefined) marginEl.value  = hydrated.m;
+    if (hydrated.d  !== undefined) daysEl.value    = hydrated.d;
+    if (hydrated.tp !== undefined) typicalEl.value = hydrated.tp;
+  }
+  if (window.__mmCalcs) {
+    window.__mmCalcs.push({
+      ns: 'bec',
+      getState: function(){
+        return {
+          fx: fixedEl.value, k: checkEl.value, m: marginEl.value,
+          d: daysEl.value,   tp: typicalEl.value
+        };
+      }
+    });
+  }
 
   var REC_COPY = {
     'good': 'Los costos fijos son una porción cómoda de la operación. Estás con verdadero colchón. La palanca a vigilar son los costos fijos que se arrastran (suscripciones SaaS, alzas pequeñas de proveedores) — no se sienten como crisis pero suman.',
@@ -913,10 +1634,35 @@
 
     checkValEl.textContent  = window.MM.formatMoney(checkEl.value);
     marginValEl.textContent = marginEl.value + '%';
-    dailyEl.textContent     = Math.ceil(result.coversToBreakEvenDaily || 0).toString();
-    subEl.textContent       = window.MM.formatMoney(result.contributionPerCover) +
-                              ' de contribución por cubierto · ' +
-                              result.inputs.openDaysPerMonth + ' días abiertos';
+
+    // Guardas de estado vacío. Costos fijos en cero o contribución por
+    // cubierto en cero vuelven inútil el equilibrio — pide el dato
+    // faltante en vez de mostrar un "0" confuso.
+    if (result.inputs.fixedMonthlyCosts === 0) {
+      dailyEl.textContent = '—';
+      subEl.textContent   = 'Ingresa tus costos fijos mensuales arriba';
+      headEl.setAttribute('data-band', 'ok');
+      headroomBlock.style.display = 'none';
+      recEl.style.display = 'none';
+      if (suggestEl)  suggestEl.removeAttribute('data-visible');
+      if (escalateEl) escalateEl.removeAttribute('data-visible');
+      return result;
+    }
+    if (result.contributionPerCover === 0) {
+      dailyEl.textContent = '—';
+      subEl.textContent   = 'Ingresa ticket promedio y margen de contribución';
+      headEl.setAttribute('data-band', 'ok');
+      headroomBlock.style.display = 'none';
+      recEl.style.display = 'none';
+      if (suggestEl)  suggestEl.removeAttribute('data-visible');
+      if (escalateEl) escalateEl.removeAttribute('data-visible');
+      return result;
+    }
+
+    dailyEl.textContent = Math.ceil(result.coversToBreakEvenDaily || 0).toString();
+    subEl.textContent   = window.MM.formatMoney(result.contributionPerCover) +
+                          ' de contribución por cubierto · ' +
+                          result.inputs.openDaysPerMonth + ' días abiertos';
 
     if (result.band) {
       headEl.setAttribute('data-band', result.band);
@@ -930,10 +1676,26 @@
       recEl.setAttribute('data-band', result.band);
       recEl.textContent = REC_COPY[result.band] || '';
       recEl.style.display = '';
+      if (escalateEl) {
+        if (result.band === 'bad') {
+          escalateEl.setAttribute('data-visible', 'true');
+        } else {
+          escalateEl.removeAttribute('data-visible');
+        }
+      }
+      if (suggestEl) {
+        if (result.band === 'warn') {
+          suggestEl.setAttribute('data-visible', 'true');
+        } else {
+          suggestEl.removeAttribute('data-visible');
+        }
+      }
     } else {
       headEl.setAttribute('data-band', 'ok');
       headroomBlock.style.display = 'none';
       recEl.style.display = 'none';
+      if (suggestEl)  suggestEl.removeAttribute('data-visible');
+      if (escalateEl) escalateEl.removeAttribute('data-visible');
     }
 
     return result;
@@ -949,7 +1711,11 @@
     }});
   }
 
-  function onInput(){ maybeFireAnalytics(render()); }
+  function onInput(){
+    window.__mmUserInteracted = true;
+    maybeFireAnalytics(render());
+    if (window.__mmSyncFragment) window.__mmSyncFragment();
+  }
 
   fixedEl.addEventListener('input', onInput);
   checkEl.addEventListener('input', onInput);
@@ -970,16 +1736,51 @@
   var tierBtns    = card.querySelectorAll('.mm-tier-btns button');
   var lossEl      = card.querySelector('#pr-loss');
   var lossValEl   = card.querySelector('#pr-loss-val');
+  var marginEl    = card.querySelector('#pr-margin');
+  var marginValEl = card.querySelector('#pr-margin-val');
   var newEl       = card.querySelector('#pr-new');
-  var breakevenEl = card.querySelector('#pr-breakeven');
+  var beProfitEl  = card.querySelector('#pr-breakeven-profit');
+  var beRevEl     = card.querySelector('#pr-breakeven-rev');
   var headEl      = card.querySelector('#pr-head');
   var deltaEl     = card.querySelector('#pr-delta');
   var deltaPctEl  = card.querySelector('#pr-delta-pct');
+  var contribDeltaEl = card.querySelector('#pr-contrib-delta');
   var recEl       = card.querySelector('#pr-rec');
+  var suggestEl   = card.querySelector('#pr-suggest');
+  var escalateEl  = card.querySelector('#pr-escalate');
 
   var currentRaise = 0.06;
   var currentTier  = 'core';
   var firstInteractionFired = false;
+
+  var hydrated = (window.__mmHydratedState && window.__mmHydratedState.pr) || null;
+  if (hydrated) {
+    if (hydrated.b !== undefined) baselineEl.value = hydrated.b;
+    if (hydrated.l !== undefined) lossEl.value     = hydrated.l;
+    if (hydrated.m !== undefined) marginEl.value   = hydrated.m;
+    if (hydrated.t) {
+      var btn = card.querySelector('.mm-tier-btns button[data-tier="' + hydrated.t + '"]');
+      if (btn) {
+        Array.prototype.forEach.call(tierBtns, function(b){
+          b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+        });
+        currentTier  = hydrated.t;
+        currentRaise = parseFloat(btn.getAttribute('data-raise'));
+        if (hydrated.l === undefined) {
+          var defaultLoss = parseFloat(btn.getAttribute('data-default-loss'));
+          lossEl.value = (defaultLoss * 100).toFixed(1);
+        }
+      }
+    }
+  }
+  if (window.__mmCalcs) {
+    window.__mmCalcs.push({
+      ns: 'pr',
+      getState: function(){
+        return { b: baselineEl.value, t: currentTier, l: lossEl.value, m: marginEl.value };
+      }
+    });
+  }
 
   var REC_COPY = {
     'good': 'Pickup neto fuerte. El alza está funcionando — estás cambiando un poco de volumen de cubiertos por más margen por cubierto, y la matemática cae a tu favor. Protege los platos firma; ahí está el poder de precio.',
@@ -990,20 +1791,61 @@
 
   function render(){
     var result = window.MM.calcPriceRaise({
-      monthlyBaseline: baselineEl.value,
-      priceRaisePct:   currentRaise,
-      coverLossPct:    parseFloat(lossEl.value) / 1000
+      monthlyBaseline:  baselineEl.value,
+      priceRaisePct:    currentRaise,
+      coverLossPct:     parseFloat(lossEl.value) / 100,
+      contribMarginPct: parseFloat(marginEl.value) / 100
     });
 
-    lossValEl.textContent = (parseFloat(lossEl.value) / 10).toFixed(1) + '%';
-    newEl.textContent     = window.MM.formatMoney(result.newSales);
-    breakevenEl.textContent = (result.breakEvenCoverLossPct * 100).toFixed(1) + '%';
-    deltaEl.textContent   = (result.delta >= 0 ? '+' : '-') + window.MM.formatMoney(Math.abs(result.delta));
-    deltaEl.style.color   = result.delta >= 0 ? '#1F6B3A' : 'var(--rust)';
-    deltaPctEl.textContent = (result.deltaPct >= 0 ? '+' : '') + (result.deltaPct * 100).toFixed(2) + '% sobre la base';
+    lossValEl.textContent   = parseFloat(lossEl.value).toFixed(1) + '%';
+    marginValEl.textContent = marginEl.value + '%';
+
+    // Guarda de estado vacío. Sin base, los dólares son 0 e inútiles.
+    // Los puntos de equilibrio son independientes de la base, así que
+    // se mantienen visibles.
+    if (result.inputs.monthlyBaseline === 0) {
+      newEl.textContent          = '—';
+      deltaEl.textContent        = '—';
+      deltaEl.style.color        = 'var(--stone)';
+      deltaPctEl.textContent     = 'Ingresa tus ventas mensuales actuales arriba';
+      contribDeltaEl.textContent = '';
+      beProfitEl.textContent  = (result.breakEvenProfitCoverLossPct * 100).toFixed(1) + '%';
+      beRevEl.textContent     = 'Ingresos: ' + (result.breakEvenCoverLossPct * 100).toFixed(1) + '%';
+      headEl.setAttribute('data-band', 'ok');
+      recEl.removeAttribute('data-band');
+      recEl.textContent = '';
+      if (suggestEl)  suggestEl.removeAttribute('data-visible');
+      if (escalateEl) escalateEl.removeAttribute('data-visible');
+      return result;
+    }
+
+    newEl.textContent       = window.MM.formatMoney(result.newSales);
+    beProfitEl.textContent  = (result.breakEvenProfitCoverLossPct * 100).toFixed(1) + '%';
+    beRevEl.textContent     = 'Ingresos: ' + (result.breakEvenCoverLossPct * 100).toFixed(1) + '%';
+    deltaEl.textContent     = (result.delta >= 0 ? '+' : '-') + window.MM.formatMoney(Math.abs(result.delta));
+    deltaEl.style.color     = result.delta >= 0 ? '#1F6B3A' : 'var(--rust)';
+    deltaPctEl.textContent  = (result.deltaPct >= 0 ? '+' : '') + (result.deltaPct * 100).toFixed(2) + '% sobre la base';
+    contribDeltaEl.textContent = 'Delta de contribución: ' +
+      (result.contribDelta >= 0 ? '+' : '-') + window.MM.formatMoney(Math.abs(result.contribDelta)) +
+      ' (' + (result.contribDeltaPct >= 0 ? '+' : '') + (result.contribDeltaPct * 100).toFixed(1) + '%)';
     headEl.setAttribute('data-band', result.band);
     recEl.setAttribute('data-band', result.band);
     recEl.textContent = REC_COPY[result.band] || '';
+
+    if (escalateEl) {
+      if (result.band === 'bad') {
+        escalateEl.setAttribute('data-visible', 'true');
+      } else {
+        escalateEl.removeAttribute('data-visible');
+      }
+    }
+    if (suggestEl) {
+      if (result.band === 'warn' || result.band === 'ok') {
+        suggestEl.setAttribute('data-visible', 'true');
+      } else {
+        suggestEl.removeAttribute('data-visible');
+      }
+    }
 
     return result;
   }
@@ -1013,15 +1855,20 @@
     firstInteractionFired = true;
     window.plausible('Margin Math PriceRaise', { props: {
       raise_tier:       currentTier,
-      cover_loss_bucket: window.MM.bucketCoverLoss(parseFloat(lossEl.value) / 1000),
+      cover_loss_bucket: window.MM.bucketCoverLoss(parseFloat(lossEl.value) / 100),
       band:             result.band
     }});
   }
 
-  function onInput(){ maybeFireAnalytics(render()); }
+  function onInput(){
+    window.__mmUserInteracted = true;
+    maybeFireAnalytics(render());
+    if (window.__mmSyncFragment) window.__mmSyncFragment();
+  }
 
   baselineEl.addEventListener('input', onInput);
   lossEl.addEventListener('input', onInput);
+  marginEl.addEventListener('input', onInput);
 
   Array.prototype.forEach.call(tierBtns, function(btn){
     btn.addEventListener('click', function(){
@@ -1031,12 +1878,267 @@
       currentTier  = btn.getAttribute('data-tier');
       currentRaise = parseFloat(btn.getAttribute('data-raise'));
       var defaultLoss = parseFloat(btn.getAttribute('data-default-loss'));
-      lossEl.value = Math.round(defaultLoss * 1000);
+      lossEl.value = (defaultLoss * 100).toFixed(1);
       onInput();
     });
   });
 
   render();
+})();
+
+/* Reporte Mensual de Margen — imprimir. Marca fecha + URL del
+ * escenario en <body> para que la hoja de impresión muestre el
+ * encabezado y la línea "Reabrir este escenario", luego dispara
+ * el diálogo de impresión nativo del navegador. Los atributos se
+ * limpian después para que no re-disparen CSS de impresión en
+ * usos posteriores. */
+(function(){
+  var btn = document.getElementById('mm-print-report');
+  if (!btn) return;
+  btn.addEventListener('click', function(){
+    window.__mmUserInteracted = true;
+    if (window.__mmSyncFragment) window.__mmSyncFragment();
+    var now = new Date();
+    var dateLabel = now.toLocaleDateString(document.documentElement.lang || 'es',
+      { month: 'long', day: 'numeric', year: 'numeric' });
+    document.body.setAttribute('data-print-date', dateLabel);
+    document.body.setAttribute('data-print-url', location.href);
+    try { window.print(); }
+    finally {
+      setTimeout(function(){
+        document.body.removeAttribute('data-print-date');
+        document.body.removeAttribute('data-print-url');
+      }, 800);
+    }
+  });
+})();
+
+/* Reporte Mensual de Margen — recordatorio .ics. Genera un pequeño
+ * texto VCALENDAR en el navegador con un evento mensual recurrente
+ * que incluye la URL del escenario actual; dispara una descarga de
+ * archivo. Sin participación del servidor. Apple Calendar, Google
+ * Calendar y Outlook aceptan este formato. */
+(function(){
+  var btn = document.getElementById('mm-add-ics');
+  if (!btn) return;
+  var pad = function(n){ return n < 10 ? '0' + n : '' + n; };
+  var icsDate = function(d){
+    return d.getUTCFullYear() + pad(d.getUTCMonth() + 1) + pad(d.getUTCDate()) +
+           'T' + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + pad(d.getUTCSeconds()) + 'Z';
+  };
+  var icsEscape = function(s){
+    return String(s)
+      .replace(/\\/g, '\\\\')
+      .replace(/,/g, '\\,')
+      .replace(/;/g, '\\;')
+      .replace(/\n/g, '\\n');
+  };
+  btn.addEventListener('click', function(){
+    window.__mmUserInteracted = true;
+    if (window.__mmSyncFragment) window.__mmSyncFragment();
+    var start = new Date();
+    start.setDate(start.getDate() + 30);
+    start.setHours(10, 0, 0, 0);
+    var end = new Date(start.getTime() + 30 * 60 * 1000);
+    var uid = 'margin-math-' + start.getTime() + '@muntin.digital';
+    var href = location.href;
+    var summary = 'Cálculo de Margen — revisa los números de este mes';
+    var description = 'Chequeo de 30 días sobre los números de tu restaurante. Reabre tu escenario guardado: ' + href;
+    var lines = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Muntin Digital//Margin Math//ES',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      'UID:' + uid,
+      'DTSTAMP:' + icsDate(new Date()),
+      'DTSTART:' + icsDate(start),
+      'DTEND:' + icsDate(end),
+      'RRULE:FREQ=MONTHLY;COUNT=12',
+      'SUMMARY:' + icsEscape(summary),
+      'DESCRIPTION:' + icsEscape(description),
+      'URL:' + href,
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ];
+    var blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'margin-math-mensual.ics';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 200);
+    var original = btn.getAttribute('data-default-label') || btn.textContent.trim();
+    btn.setAttribute('data-copied', 'true');
+    btn.textContent = 'Recordatorio descargado';
+    setTimeout(function(){
+      btn.removeAttribute('data-copied');
+      btn.textContent = original;
+    }, 2600);
+  });
+})();
+
+/* Copiar escenario como texto plano. Compone un bloque compacto y
+ * etiquetado con el estado actual de cada calculadora, útil para
+ * pegarlo en un correo al contador, una nota o un doc compartido.
+ * Lee los valores visibles del DOM para que el texto refleje
+ * exactamente lo que ve el dueño en pantalla. */
+(function(){
+  var btn = document.getElementById('mm-copy-text');
+  if (!btn) return;
+  var copyLabel = btn.getAttribute('data-default-label') || 'Copiar como texto plano';
+
+  function sectionDelivery(){
+    var card = document.querySelector('[data-calc="delivery-breakeven"]');
+    if (!card) return null;
+    var tierBtn = card.querySelector('.mm-tier-btns button[aria-pressed="true"]');
+    var tierText = tierBtn ? tierBtn.firstChild.textContent.trim() + ' (' + tierBtn.querySelector('small').textContent + ')' : '';
+    return [
+      'Punto de equilibrio con delivery',
+      '  Ticket promedio:       $' + card.querySelector('#dbe-ticket').value,
+      '  Food cost:             ' + card.querySelector('#dbe-foodcost').value + '%',
+      '  Nivel de comisión:     ' + tierText,
+      '  Órdenes/mes:           ' + card.querySelector('#dbe-orders').value,
+      '  Por orden en plataforma: ' + card.querySelector('#dbe-platform').textContent.trim(),
+      '  Por orden directa:       ' + card.querySelector('#dbe-direct').textContent.trim(),
+      '  Diferencia mensual:      ' + card.querySelector('#dbe-monthly').textContent.trim()
+    ].join('\n');
+  }
+
+  function sectionPrimeCost(){
+    var card = document.querySelector('[data-calc="prime-cost"]');
+    if (!card) return null;
+    var segBtn = card.querySelector('.mm-tier-btns button[aria-pressed="true"][data-segment]');
+    var seg = segBtn ? segBtn.firstChild.textContent.trim() : 'Servicio completo';
+    return [
+      'Chequeo de prime cost (' + seg + ')',
+      '  Food cost:  ' + card.querySelector('#pc-food').value + '%',
+      '  Labor cost: ' + card.querySelector('#pc-labor').value + '%',
+      '  Prime cost: ' + card.querySelector('#pc-total').textContent.trim() +
+        ' — ' + card.querySelector('#pc-band-label').textContent.trim()
+    ].join('\n');
+  }
+
+  function sectionBreakEvenCovers(){
+    var card = document.querySelector('[data-calc="break-even-covers"]');
+    if (!card) return null;
+    var lines = [
+      'Cubiertos para romper el punto',
+      '  Costos fijos mensuales:    $' + card.querySelector('#bec-fixed').value,
+      '  Ticket promedio:           $' + card.querySelector('#bec-check').value,
+      '  Margen por cubierto:       ' + card.querySelector('#bec-margin').value + '%',
+      '  Días abiertos/mes:         ' + card.querySelector('#bec-days').value,
+      '  Cubiertos/día típicos:     ' + card.querySelector('#bec-typical').value,
+      '  Cubiertos/día para romper: ' + card.querySelector('#bec-daily').textContent.trim()
+    ];
+    var headroomBlock = card.querySelector('#bec-headroom-block');
+    if (headroomBlock && headroomBlock.style.display !== 'none') {
+      lines.push('  Colchón mensual:           ' + card.querySelector('#bec-headroom').textContent.trim());
+      lines.push('  ' + card.querySelector('#bec-cap').textContent.trim());
+    }
+    return lines.join('\n');
+  }
+
+  function sectionPriceRaise(){
+    var card = document.querySelector('[data-calc="price-raise"]');
+    if (!card) return null;
+    var tierBtn = card.querySelector('.mm-tier-btns button[aria-pressed="true"]');
+    var tierText = tierBtn ? tierBtn.firstChild.textContent.trim() + ' (' + tierBtn.querySelector('small').textContent + ')' : '';
+    return [
+      'Simulador de alza de precios',
+      '  Ventas mensuales actuales: $' + card.querySelector('#pr-baseline').value,
+      '  Nivel del alza:            ' + tierText,
+      '  Pérdida asumida:           ' + card.querySelector('#pr-loss').value + '%',
+      '  Margen de contribución:    ' + card.querySelector('#pr-margin').value + '%',
+      '  Nuevas ventas mensuales:   ' + card.querySelector('#pr-new').textContent.trim(),
+      '  Equilibrio (utilidad):     ' + card.querySelector('#pr-breakeven-profit').textContent.trim(),
+      '  ' + card.querySelector('#pr-breakeven-rev').textContent.trim(),
+      '  Delta mensual ingresos:    ' + card.querySelector('#pr-delta').textContent.trim() +
+        ' (' + card.querySelector('#pr-delta-pct').textContent.trim() + ')',
+      '  ' + card.querySelector('#pr-contrib-delta').textContent.trim()
+    ].join('\n');
+  }
+
+  function composeText(){
+    var date = new Date().toLocaleDateString(document.documentElement.lang || 'es',
+      { month: 'long', day: 'numeric', year: 'numeric' });
+    var parts = [
+      'Cálculo de Margen — foto del escenario',
+      'Fecha: ' + date,
+      ''
+    ];
+    var sections = [sectionDelivery(), sectionPrimeCost(), sectionBreakEvenCovers(), sectionPriceRaise()];
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i]) {
+        parts.push(sections[i]);
+        parts.push('');
+      }
+    }
+    parts.push('Reabrir este escenario:');
+    parts.push(location.href);
+    return parts.join('\n');
+  }
+
+  btn.addEventListener('click', function(){
+    window.__mmUserInteracted = true;
+    if (window.__mmSyncFragment) window.__mmSyncFragment();
+    var text = composeText();
+    var flash = function(label){
+      btn.setAttribute('data-copied', 'true');
+      btn.textContent = label;
+      setTimeout(function(){
+        btn.removeAttribute('data-copied');
+        btn.textContent = copyLabel;
+      }, 2600);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(
+        function(){ flash('Escenario copiado como texto'); },
+        function(){ flash('No se pudo copiar — selecciónalo manualmente'); }
+      );
+    } else {
+      flash('No se pudo copiar — selecciónalo manualmente');
+    }
+  });
+})();
+
+/* Manejadores del botón Copiar enlace del escenario. Escribe
+ * location.href al portapapeles; cambia brevemente el texto del
+ * botón; lo regresa. Si la Clipboard API está bloqueada, indica
+ * "Copia desde la barra de direcciones". El clic también marca
+ * __mmUserInteracted para que el fragmento se actualice aun si el
+ * usuario llega a la página y pulsa copiar de inmediato. */
+(function(){
+  var buttons = document.querySelectorAll('[data-copy-link]');
+  if (!buttons.length) return;
+  Array.prototype.forEach.call(buttons, function(btn){
+    var copyLabel   = btn.getAttribute('data-copy-label')   || 'Copiar enlace del escenario';
+    var copiedLabel = btn.getAttribute('data-copied-label') || 'Enlace copiado';
+    btn.addEventListener('click', function(){
+      window.__mmUserInteracted = true;
+      if (window.__mmSyncFragment) window.__mmSyncFragment();
+      var href = location.href;
+      var flash = function(label){
+        btn.setAttribute('data-copied', 'true');
+        btn.textContent = label;
+        setTimeout(function(){
+          btn.removeAttribute('data-copied');
+          btn.textContent = copyLabel;
+        }, 2600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(href).then(
+          function(){ flash(copiedLabel); },
+          function(){ flash('Copia desde la barra de direcciones'); }
+        );
+      } else {
+        flash('Copia desde la barra de direcciones');
+      }
+    });
+  });
 })();
 </script>
 </body>
