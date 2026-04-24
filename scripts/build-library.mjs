@@ -793,6 +793,145 @@ function injectCitedIn(researchSlug, citations) {
   return 'inserted';
 }
 
+// ---------- see-also generator ----------
+//
+// For a given source (a blog post slug), pick up to 3 related items
+// by topic overlap. Prefer a mix of types (article + research + tool)
+// over three of the same type. Skip self-references and any URL
+// already linked in the page's editorial "Further reading" aside —
+// the See Also block is meant to complement, not duplicate.
+
+function relatedItemsFor(sourceSlug, sourceTopics, existingHrefs = new Set()) {
+  const sourceTopicSet = new Set(sourceTopics);
+  const candidates = [];
+
+  for (const [slug, meta] of Object.entries(tagsDoc.blog_posts)) {
+    if (slug === sourceSlug) continue;
+    const overlap = (meta.topics || []).filter(t => sourceTopicSet.has(t)).length;
+    if (!overlap) continue;
+    candidates.push({
+      kind: 'article',
+      url: `/blog/${slug}/`,
+      title: meta.title,
+      dek: meta.dek,
+      score: overlap,
+      date: meta.date,
+    });
+  }
+  for (const [slug, meta] of Object.entries(tagsDoc.research_notes)) {
+    const overlap = (meta.topics || []).filter(t => sourceTopicSet.has(t)).length;
+    if (!overlap) continue;
+    candidates.push({
+      kind: 'research',
+      url: `/learn/research/${slug}/`,
+      title: meta.title,
+      dek: meta.dek,
+      score: overlap,
+    });
+  }
+  for (const [slug, meta] of Object.entries(tagsDoc.tools)) {
+    const overlap = (meta.topics || []).filter(t => sourceTopicSet.has(t)).length;
+    if (!overlap) continue;
+    candidates.push({
+      kind: 'tool',
+      url: `/tools/${slug}/`,
+      title: meta.title,
+      dek: meta.dek,
+      score: overlap,
+    });
+  }
+
+  // Drop anything already linked in the editorial Further Reading aside.
+  const filtered = candidates.filter(c => !existingHrefs.has(c.url));
+
+  // Sort: higher overlap score first, then articles by newest date,
+  // then alphabetical title for stability.
+  filtered.sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    if (a.kind === 'article' && b.kind === 'article') {
+      return (b.date || '').localeCompare(a.date || '');
+    }
+    return a.title.localeCompare(b.title);
+  });
+
+  // Pick up to 3, prefer one of each kind first.
+  const picked = [];
+  const seenKinds = new Set();
+  for (const c of filtered) {
+    if (picked.length === 3) break;
+    if (!seenKinds.has(c.kind)) {
+      picked.push(c);
+      seenKinds.add(c.kind);
+    }
+  }
+  // Fill remaining slots with anything not already picked.
+  if (picked.length < 3) {
+    for (const c of filtered) {
+      if (picked.length === 3) break;
+      if (!picked.includes(c)) picked.push(c);
+    }
+  }
+
+  return picked;
+}
+
+function renderSeeAlso(items) {
+  if (!items.length) {
+    return `<!-- LIBRARY:see-also:start --><!-- LIBRARY:see-also:end -->`;
+  }
+  const kindLabel = { article: 'Article', research: 'Research', tool: 'Tool' };
+  const cards = items.map(it =>
+    `      <li>
+        <a class="see-also-card" href="${esc(it.url)}">
+          <span class="see-also-kind">${esc(kindLabel[it.kind] || 'Read')}</span>
+          <h3>${esc(it.title)}</h3>
+          <p>${esc(it.dek || '')}</p>
+        </a>
+      </li>`
+  ).join('\n');
+  return `<!-- LIBRARY:see-also:start -->
+<aside class="see-also" aria-labelledby="see-also-h">
+  <p class="see-also-label" id="see-also-h">See also</p>
+  <ul class="see-also-list">
+${cards}
+    </ul>
+</aside>
+<!-- LIBRARY:see-also:end -->`;
+}
+
+function injectSeeAlso(blogSlug, items) {
+  const file = join(REPO, 'blog', blogSlug, 'index.html');
+  const html = readFileSync(file, 'utf8');
+  const block = renderSeeAlso(items);
+
+  const markerRe = /<!-- LIBRARY:see-also:start -->[\s\S]*?<!-- LIBRARY:see-also:end -->/;
+  if (markerRe.test(html)) {
+    writeFileSync(file, html.replace(markerRe, block), 'utf8');
+    return 'updated';
+  }
+
+  // First run — inject between the end of the article and the
+  // editorial further-reading aside. Every blog post has both.
+  const anchor = '<aside class="further-reading">';
+  if (!html.includes(anchor)) {
+    console.warn(`  warning: ${blogSlug}: no injection anchor, skipping`);
+    return 'skipped';
+  }
+  const replaced = html.replace(anchor, `${block}\n\n    ${anchor}`);
+  writeFileSync(file, replaced, 'utf8');
+  return 'inserted';
+}
+
+function existingFurtherReadingHrefs(blogSlug) {
+  const file = join(REPO, 'blog', blogSlug, 'index.html');
+  const html = readFileSync(file, 'utf8');
+  const m = html.match(/<aside class="further-reading">([\s\S]*?)<\/aside>/);
+  if (!m) return new Set();
+  const hrefs = new Set();
+  for (const h of m[1].matchAll(/href="([^"]+)"/g)) hrefs.add(h[1]);
+  return hrefs;
+}
+
 // ---------- run ----------
 
 const byTopic = indexByTopic();
@@ -819,6 +958,19 @@ for (const researchSlug of Object.keys(tagsDoc.research_notes)) {
   const list = cites[researchSlug] || [];
   const action = injectCitedIn(researchSlug, list);
   console.log(`  ${researchSlug.padEnd(34)} ${list.length} citing post(s) — ${action}`);
+}
+
+// "See also" blocks on blog posts. Each post gets up to 3
+// algorithmic recommendations based on shared topic tags,
+// preferring a mix of article + research + tool over three of
+// the same kind. Skips anything already linked in the editorial
+// Further Reading aside.
+console.log(`\nSee-also blocks:`);
+for (const [blogSlug, postMeta] of Object.entries(tagsDoc.blog_posts)) {
+  const existing = existingFurtherReadingHrefs(blogSlug);
+  const items = relatedItemsFor(blogSlug, postMeta.topics, existing);
+  const action = injectSeeAlso(blogSlug, items);
+  console.log(`  ${blogSlug.padEnd(56)} ${items.length} item(s) — ${action}`);
 }
 
 // Per-term glossary pages — generate /glossary/<slug>/ for each
