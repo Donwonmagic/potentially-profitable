@@ -130,6 +130,24 @@
   .mm-cross-suggest a{color:var(--teal);font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap}
   .mm-cross-suggest a:hover{color:var(--teal-dark)}
   @media print { .mm-cross-suggest { display: none !important; } }
+  /* Glossary popover — reads definitions from data-def attributes on
+     the underlined in-card links. No fetch, no build, no new script
+     dependency: the definition text travels with the markup so the
+     privacy posture survives intact. Keyboard-accessible via focus
+     and Escape-to-close; hover-to-open is pointer-only. */
+  .mm-popover{position:absolute;z-index:120;max-width:320px;padding:12px 14px;background:var(--white);border:1px solid var(--line-dark);border-radius:8px;box-shadow:0 10px 28px rgba(0,0,0,0.12),0 2px 6px rgba(0,0,0,0.04);font-size:13px;line-height:1.55;color:var(--ink-soft);pointer-events:auto}
+  .mm-popover[hidden]{display:none}
+  .mm-popover-term{display:block;font-family:var(--font-display);font-size:14px;font-weight:500;color:var(--ink);margin:0 0 4px;letter-spacing:.01em}
+  .mm-popover-def{display:block;margin:0 0 8px}
+  .mm-popover-link{display:inline-flex;align-items:center;gap:3px;color:var(--teal);font-size:12.5px;font-weight:600;text-decoration:none;border-bottom:1px dashed currentColor;padding-bottom:1px}
+  .mm-popover-link:hover{color:var(--teal-dark)}
+  .mm-popover::before{content:'';position:absolute;top:-6px;left:20px;width:10px;height:10px;background:var(--white);border-left:1px solid var(--line-dark);border-top:1px solid var(--line-dark);transform:rotate(45deg)}
+  .mm-popover[data-flip="true"]::before{top:auto;bottom:-6px;border:0;border-right:1px solid var(--line-dark);border-bottom:1px solid var(--line-dark)}
+  @media print { .mm-popover { display: none !important; } }
+  @media (prefers-reduced-motion: no-preference) {
+    .mm-popover{animation:mm-pop-in 120ms var(--ease-out)}
+    @keyframes mm-pop-in { from { opacity:0; transform:translateY(-2px); } to { opacity:1; transform:translateY(0); } }
+  }
   /* Monthly-report actions — signature Muntin deliverable + .ics
      reminder. Both actions are 100% client-side: the print dialog
      is browser-native; the .ics is generated in-browser and
@@ -474,7 +492,7 @@
         <span class="mm-badge-safe" title="Every number you type is processed in your browser. Nothing is sent to our servers.">Stays in your browser</span>
       </div>
       <h3>Delivery Break-Even</h3>
-      <p>See what each order actually nets you on a third-party <a href="/glossary/#aggregator" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">aggregator</a> vs. the same order taken <a href="/glossary/#direct-ordering" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">direct</a>.</p>
+      <p>See what each order actually nets you on a third-party <a href="/glossary/#aggregator" data-term="Aggregator" data-def="A third-party ordering platform (DoorDash, Uber Eats, Grubhub) that lists your menu, takes the customer's order, handles delivery, and takes a commission — typically 15–30% per order." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">aggregator</a> vs. the same order taken <a href="/glossary/#direct-ordering" data-term="Direct ordering" data-def="Orders placed through your own website, app, or phone, using payment processing you choose — no marketplace commission. Typical cost is 2–3% payment processing plus any ordering-platform fee." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">direct</a>.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Delivery break-even calculator">
         <label for="dbe-ticket">
@@ -536,7 +554,7 @@
         <span class="mm-badge-safe" title="Every number you type is processed in your browser. Nothing is sent to our servers.">Stays in your browser</span>
       </div>
       <h3>Prime Cost Check</h3>
-      <p>Two inputs — <a href="/glossary/#food-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">food cost</a> and <a href="/glossary/#labor-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">labor cost</a> as percentages of sales — placed against the healthy <a href="/glossary/#prime-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">prime cost</a> band for your restaurant type. Full-service sits at 55–65%; fast-casual tightens at the top; fine-dining runs naturally higher.</p>
+      <p>Two inputs — <a href="/glossary/#food-cost" data-term="Food cost" data-def="Cost of ingredients as a percentage of the revenue they generate. 28–35% is typical for full-service independents; lower for beverage-heavy concepts, higher for raw-ingredient-heavy ones." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">food cost</a> and <a href="/glossary/#labor-cost" data-term="Labor cost" data-def="Wages + payroll taxes + tipped-employee contribution as a percentage of sales. Covers front-of-house and back-of-house; doesn't include management salary (usually tracked separately)." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">labor cost</a> as percentages of sales — placed against the healthy <a href="/glossary/#prime-cost" data-term="Prime cost" data-def="Food cost + labor cost combined. The single most-watched line in restaurant finance — 55–65% is the NRA's healthy band for full-service independents. Higher for fine-dining, tighter at the top for fast-casual." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">prime cost</a> band for your restaurant type. Full-service sits at 55–65%; fast-casual tightens at the top; fine-dining runs naturally higher.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Prime cost check">
         <fieldset class="mm-tier-group">
@@ -594,7 +612,7 @@
         <span class="mm-badge-safe" title="Every number you type is processed in your browser. Nothing is sent to our servers.">Stays in your browser</span>
       </div>
       <h3>Break-Even Covers</h3>
-      <p>How many <a href="/glossary/#cover" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">covers</a> a night does your <a href="/glossary/#fixed-costs" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">fixed overhead</a> demand? Optional: enter your typical daily volume to see monthly headroom above <a href="/glossary/#break-even" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">break-even</a>.</p>
+      <p>How many <a href="/glossary/#cover" data-term="Cover" data-def="One served guest. A table of four is four covers. The standard unit for measuring restaurant volume and calculating per-guest economics." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">covers</a> a night does your <a href="/glossary/#fixed-costs" data-term="Fixed costs" data-def="Monthly costs that don't flex with volume — rent, insurance, loan payments, SaaS, liability coverage, base management salary. Typically 20–30% of revenue." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">fixed overhead</a> demand? Optional: enter your typical daily volume to see monthly headroom above <a href="/glossary/#break-even" data-term="Break-even" data-def="The volume at which contribution margin exactly covers fixed costs — one more cover is the first dollar of profit; one fewer is the first dollar of loss." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">break-even</a>.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Break-even covers calculator">
         <label for="bec-fixed">
@@ -655,7 +673,7 @@
         <span class="mm-badge-safe" title="Every number you type is processed in your browser. Nothing is sent to our servers.">Stays in your browser</span>
       </div>
       <h3>Price-Raise Simulator</h3>
-      <p>Model a price raise against an assumed cover-loss <a href="/glossary/#elasticity" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">elasticity</a>. The default for each tier comes from our menu-pricing guide — override with the slider if your customers are more or less elastic than typical.</p>
+      <p>Model a price raise against an assumed cover-loss <a href="/glossary/#elasticity" data-term="Price elasticity" data-def="How much cover volume moves when a price moves. High elasticity = price-sensitive customers (small raise, big cover drop). Low elasticity = pricing power — customers keep coming even at higher prices, and raises mostly stick." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">elasticity</a>. The default for each tier comes from our menu-pricing guide — override with the slider if your customers are more or less elastic than typical.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Price-raise simulator">
         <label for="pr-baseline">
@@ -789,9 +807,9 @@
         <span class="mm-step-num" aria-hidden="true">5</span>
         <div class="mm-step-body">
           <h3 class="mm-step-title">No third-party scripts touch the inputs.</h3>
-          <p class="mm-step-claim">This page loads exactly two JavaScript files: site-wide <code>site.js</code> (nav + language switch) and tool-specific <code>margin-math.js</code> (the math). Plus one analytics script (Plausible) that receives the bucket values. Nothing else.</p>
+          <p class="mm-step-claim">This page loads exactly two JavaScript files: site-wide <code>site.js</code> (nav + language switch) and tool-specific <code>margin-math.js</code> (the math). Plus one analytics script (Plausible) that receives the bucket values. Glossary hover popovers read their definitions from <code>data-def</code> attributes in the HTML itself — no additional fetch fires when you hover.</p>
           <details class="mm-step-inspect"><summary>Inspect this</summary>
-            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filter <strong>JS</strong>. Reload. You should see <code>plausible.io/js/…</code>, <code>site.js</code>, and <code>margin-math.js</code>. No Google Tag Manager, no Meta Pixel, no chat widget, no session replay.</div>
+            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filter <strong>JS</strong>. Reload. You should see <code>plausible.io/js/…</code>, <code>site.js</code>, and <code>margin-math.js</code>. Hover any underlined glossary term in a calculator — the request list does not grow. No Google Tag Manager, no Meta Pixel, no chat widget, no session replay.</div>
           </details>
         </div>
       </div>
@@ -1015,6 +1033,150 @@
       history.replaceState(null, '', '#' + window.MM.encodeState(state));
     } catch (_e) { /* non-fatal */ }
   };
+})();
+
+/* Glossary hover popovers. Intercepts clicks and hover on glossary
+ * links *inside the calculator cards* that carry inline data-def
+ * attributes. Everything else — blog-link targets, privacy-panel
+ * terms, header nav — navigates normally.
+ *
+ * Why inline data attributes and not fetch():
+ *   - Preserves the privacy-panel claim that the page doesn't add
+ *     new network requests beyond the two shipped JS files + the
+ *     analytics beacon. The popover definitions travel with the
+ *     HTML already being served.
+ *   - Keyboard + screen-reader users can still navigate to the
+ *     glossary; the popover is an in-flow shortcut, not a
+ *     replacement. Every popover exposes a "View in glossary" link
+ *     that does the real navigation.
+ *
+ * Hover-to-open is restricted to pointer:fine devices via matchMedia.
+ * Touch users tap the link once to open the popover (then tap the
+ * "View in glossary" link inside it to navigate), keeping behaviour
+ * identical to the native anchor for assistive tech. */
+(function(){
+  var grid = document.querySelector('.mm-grid');
+  if (!grid) return;
+  var triggers = grid.querySelectorAll('a[data-term][data-def]');
+  if (!triggers.length) return;
+
+  // Single shared popover element — cheaper than creating one per
+  // trigger, and prevents two popovers from ever being visible at
+  // the same time.
+  var pop = document.createElement('div');
+  pop.className = 'mm-popover';
+  pop.setAttribute('role', 'tooltip');
+  pop.setAttribute('hidden', '');
+  pop.innerHTML =
+    '<span class="mm-popover-term"></span>' +
+    '<span class="mm-popover-def"></span>' +
+    '<a class="mm-popover-link" href="#">View in glossary →</a>';
+  document.body.appendChild(pop);
+  var termEl = pop.querySelector('.mm-popover-term');
+  var defEl  = pop.querySelector('.mm-popover-def');
+  var linkEl = pop.querySelector('.mm-popover-link');
+
+  var activeTrigger = null;
+  var openTimer = null;
+  var closeTimer = null;
+  var hoverCapable = (typeof window.matchMedia === 'function')
+    ? window.matchMedia('(hover: hover) and (pointer: fine)').matches
+    : false;
+
+  function position(trigger){
+    // Position below the trigger; if that would overflow the
+    // viewport, flip above. Horizontal-clamp to viewport with a
+    // 12px margin so the popover never touches the edge.
+    var r = trigger.getBoundingClientRect();
+    pop.style.left = '0px';  // reset before measuring
+    pop.style.top  = '0px';
+    pop.removeAttribute('data-flip');
+    pop.hidden = false;
+    var popRect = pop.getBoundingClientRect();
+    var top = r.bottom + window.scrollY + 10;
+    var wouldOverflow = (r.bottom + 10 + popRect.height) > window.innerHeight;
+    if (wouldOverflow && r.top - 10 - popRect.height > 0) {
+      top = r.top + window.scrollY - popRect.height - 10;
+      pop.setAttribute('data-flip', 'true');
+    }
+    var left = r.left + window.scrollX;
+    var maxLeft = window.scrollX + document.documentElement.clientWidth - popRect.width - 12;
+    if (left > maxLeft) left = maxLeft;
+    if (left < window.scrollX + 12) left = window.scrollX + 12;
+    pop.style.left = left + 'px';
+    pop.style.top  = top  + 'px';
+  }
+
+  function open(trigger){
+    clearTimeout(closeTimer);
+    if (activeTrigger === trigger && !pop.hidden) return;
+    activeTrigger = trigger;
+    termEl.textContent = trigger.getAttribute('data-term') || '';
+    defEl.textContent  = trigger.getAttribute('data-def') || '';
+    linkEl.setAttribute('href', trigger.getAttribute('href'));
+    position(trigger);
+  }
+
+  function close(){
+    activeTrigger = null;
+    pop.hidden = true;
+    clearTimeout(openTimer);
+    clearTimeout(closeTimer);
+  }
+
+  function scheduleOpen(trigger){
+    clearTimeout(openTimer);
+    clearTimeout(closeTimer);
+    openTimer = setTimeout(function(){ open(trigger); }, 140);
+  }
+  function scheduleClose(){
+    clearTimeout(openTimer);
+    clearTimeout(closeTimer);
+    closeTimer = setTimeout(close, 180);
+  }
+
+  // Trigger wiring. Hover: pointer-only, delayed. Focus: always.
+  // Click: always — toggles, prevents navigation so in-flow stays in flow.
+  Array.prototype.forEach.call(triggers, function(trigger){
+    if (hoverCapable) {
+      trigger.addEventListener('mouseenter', function(){ scheduleOpen(trigger); });
+      trigger.addEventListener('mouseleave', function(){ scheduleClose(); });
+    }
+    trigger.addEventListener('focus', function(){ open(trigger); });
+    trigger.addEventListener('blur',  function(){ scheduleClose(); });
+    trigger.addEventListener('click', function(e){
+      e.preventDefault();
+      if (activeTrigger === trigger && !pop.hidden) {
+        close();
+      } else {
+        open(trigger);
+      }
+    });
+  });
+
+  // Popover itself: hover inside keeps it open; click outside closes.
+  if (hoverCapable) {
+    pop.addEventListener('mouseenter', function(){ clearTimeout(closeTimer); });
+    pop.addEventListener('mouseleave', function(){ scheduleClose(); });
+  }
+  document.addEventListener('click', function(e){
+    if (pop.hidden) return;
+    if (pop.contains(e.target)) return;
+    for (var i = 0; i < triggers.length; i++) {
+      if (triggers[i].contains(e.target)) return;
+    }
+    close();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && !pop.hidden) {
+      close();
+      if (activeTrigger) activeTrigger.focus();
+    }
+  });
+  window.addEventListener('resize', close);
+  window.addEventListener('scroll', function(){
+    if (!pop.hidden && activeTrigger) position(activeTrigger);
+  }, { passive: true });
 })();
 
 /* Scenario-diff banner. Appears only when the page is loaded with a

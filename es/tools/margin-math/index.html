@@ -128,6 +128,25 @@
   .mm-cross-suggest a{color:var(--teal);font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap}
   .mm-cross-suggest a:hover{color:var(--teal-dark)}
   @media print { .mm-cross-suggest { display: none !important; } }
+  /* Popover del glosario — lee las definiciones de los atributos
+     data-def puestos en los enlaces subrayados dentro de la tarjeta.
+     Sin fetch, sin build, sin nueva dependencia: el texto de la
+     definición viaja con el marcado, así la postura de privacidad
+     queda intacta. Accesible por teclado (focus + Escape); abrir
+     al pasar el cursor sólo en dispositivos con puntero fino. */
+  .mm-popover{position:absolute;z-index:120;max-width:320px;padding:12px 14px;background:var(--white);border:1px solid var(--line-dark);border-radius:8px;box-shadow:0 10px 28px rgba(0,0,0,0.12),0 2px 6px rgba(0,0,0,0.04);font-size:13px;line-height:1.55;color:var(--ink-soft);pointer-events:auto}
+  .mm-popover[hidden]{display:none}
+  .mm-popover-term{display:block;font-family:var(--font-display);font-size:14px;font-weight:500;color:var(--ink);margin:0 0 4px;letter-spacing:.01em}
+  .mm-popover-def{display:block;margin:0 0 8px}
+  .mm-popover-link{display:inline-flex;align-items:center;gap:3px;color:var(--teal);font-size:12.5px;font-weight:600;text-decoration:none;border-bottom:1px dashed currentColor;padding-bottom:1px}
+  .mm-popover-link:hover{color:var(--teal-dark)}
+  .mm-popover::before{content:'';position:absolute;top:-6px;left:20px;width:10px;height:10px;background:var(--white);border-left:1px solid var(--line-dark);border-top:1px solid var(--line-dark);transform:rotate(45deg)}
+  .mm-popover[data-flip="true"]::before{top:auto;bottom:-6px;border:0;border-right:1px solid var(--line-dark);border-bottom:1px solid var(--line-dark)}
+  @media print { .mm-popover { display: none !important; } }
+  @media (prefers-reduced-motion: no-preference) {
+    .mm-popover{animation:mm-pop-in 120ms var(--ease-out)}
+    @keyframes mm-pop-in { from { opacity:0; transform:translateY(-2px); } to { opacity:1; transform:translateY(0); } }
+  }
   /* Acciones del reporte mensual — entregable insignia Muntin más
      recordatorio .ics. Ambas acciones son 100% del lado cliente:
      el diálogo de impresión es nativo del navegador; el .ics se
@@ -454,7 +473,7 @@
         <span class="mm-badge-safe" title="Cada número que escribes se procesa en tu navegador. Nada se envía a nuestros servidores.">Se queda en tu navegador</span>
       </div>
       <h3>Punto de equilibrio con delivery</h3>
-      <p>Mira lo que cada orden de verdad te deja en un <a href="/es/glossary/#aggregator" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">agregador</a> de terceros vs. la misma orden tomada <a href="/es/glossary/#direct-ordering" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">directa</a>.</p>
+      <p>Mira lo que cada orden de verdad te deja en un <a href="/es/glossary/#aggregator" data-term="Agregador" data-def="Plataforma de pedidos de terceros (DoorDash, Uber Eats, Grubhub) que lista tu menú, toma la orden del cliente, maneja el delivery y cobra una comisión — típicamente 15–30% por orden." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">agregador</a> de terceros vs. la misma orden tomada <a href="/es/glossary/#direct-ordering" data-term="Pedido directo" data-def="Órdenes hechas por tu propio sitio, app o teléfono, con el procesador de pagos que tú eliges — sin comisión del marketplace. Costo típico: 2–3% de procesamiento más la tarifa de la plataforma de pedidos." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">directa</a>.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Calculadora de punto de equilibrio con delivery">
         <label for="dbe-ticket">
@@ -516,7 +535,7 @@
         <span class="mm-badge-safe" title="Cada número que escribes se procesa en tu navegador. Nada se envía a nuestros servidores.">Se queda en tu navegador</span>
       </div>
       <h3>Chequeo de prime cost</h3>
-      <p>Dos entradas — <a href="/es/glossary/#food-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">food cost</a> y <a href="/es/glossary/#labor-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">labor cost</a> como porcentajes de ventas — contra la franja saludable del <a href="/es/glossary/#prime-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">prime cost</a> según tu tipo de restaurante. Servicio completo va en 55–65%; fast-casual se aprieta en el tope; fine-dining corre naturalmente más alto.</p>
+      <p>Dos entradas — <a href="/es/glossary/#food-cost" data-term="Food cost" data-def="Costo de los ingredientes como porcentaje de las ventas que generan. 28–35% es típico para independientes de servicio completo; más bajo en concepts con fuerte barra, más alto en conceptos con mucha materia prima." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">food cost</a> y <a href="/es/glossary/#labor-cost" data-term="Labor cost" data-def="Sueldos + impuestos de nómina + aporte de empleados de propina como porcentaje de las ventas. Incluye front-of-house y back-of-house; no incluye salario gerencial (suele ir aparte)." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">labor cost</a> como porcentajes de ventas — contra la franja saludable del <a href="/es/glossary/#prime-cost" data-term="Prime cost" data-def="Food cost + labor cost combinados. La línea más observada en las finanzas de un restaurante — 55–65% es la franja saludable de la NRA para independientes de servicio completo. Más alta para fine-dining, más apretada arriba en fast-casual." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">prime cost</a> según tu tipo de restaurante. Servicio completo va en 55–65%; fast-casual se aprieta en el tope; fine-dining corre naturalmente más alto.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Chequeo de prime cost">
         <fieldset class="mm-tier-group">
@@ -574,7 +593,7 @@
         <span class="mm-badge-safe" title="Cada número que escribes se procesa en tu navegador. Nada se envía a nuestros servidores.">Se queda en tu navegador</span>
       </div>
       <h3>Cubiertos para romper el punto</h3>
-      <p>¿Cuántos <a href="/es/glossary/#cover" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">cubiertos</a> por noche exige tu <a href="/es/glossary/#fixed-costs" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">overhead fijo</a>? Opcional: ingresa tus cubiertos diarios típicos para ver el colchón mensual sobre el <a href="/es/glossary/#break-even" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">punto de equilibrio</a>.</p>
+      <p>¿Cuántos <a href="/es/glossary/#cover" data-term="Cubierto" data-def="Un comensal atendido. Una mesa de cuatro son cuatro cubiertos. Es la unidad estándar para medir volumen y calcular economía por comensal." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">cubiertos</a> por noche exige tu <a href="/es/glossary/#fixed-costs" data-term="Costos fijos" data-def="Costos mensuales que no se flexan con el volumen — renta, seguros, pago del préstamo, SaaS, cobertura de responsabilidad, salario gerencial base. Típicamente 20–30% de los ingresos." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">overhead fijo</a>? Opcional: ingresa tus cubiertos diarios típicos para ver el colchón mensual sobre el <a href="/es/glossary/#break-even" data-term="Punto de equilibrio" data-def="El volumen en el que la contribución marginal cubre exactamente los costos fijos — un cubierto más es el primer dólar de utilidad; uno menos, el primer dólar de pérdida." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">punto de equilibrio</a>.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Calculadora de cubiertos para romper el punto">
         <label for="bec-fixed">
@@ -635,7 +654,7 @@
         <span class="mm-badge-safe" title="Cada número que escribes se procesa en tu navegador. Nada se envía a nuestros servidores.">Se queda en tu navegador</span>
       </div>
       <h3>Simulador de alza de precios</h3>
-      <p>Modela un alza de precios contra una <a href="/es/glossary/#elasticity" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">elasticidad</a> asumida de pérdida de cubiertos. El valor por defecto de cada nivel viene de nuestra guía de precios de menú — anula con el deslizador si tus clientes son más o menos elásticos que el típico.</p>
+      <p>Modela un alza de precios contra una <a href="/es/glossary/#elasticity" data-term="Elasticidad de precio" data-def="Cuánto se mueve el volumen de cubiertos cuando se mueve el precio. Alta elasticidad = clientes sensibles al precio (alza chica, caída grande de cubiertos). Baja elasticidad = poder de precio — los clientes siguen yendo aun con precios más altos, y las alzas se quedan." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">elasticidad</a> asumida de pérdida de cubiertos. El valor por defecto de cada nivel viene de nuestra guía de precios de menú — anula con el deslizador si tus clientes son más o menos elásticos que el típico.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Simulador de alza de precios">
         <label for="pr-baseline">
@@ -769,9 +788,9 @@
         <span class="mm-step-num" aria-hidden="true">5</span>
         <div class="mm-step-body">
           <h3 class="mm-step-title">Ningún script de terceros toca las entradas.</h3>
-          <p class="mm-step-claim">Esta página carga exactamente dos archivos JavaScript: el <code>site.js</code> del sitio (nav + switch de idioma) y <code>margin-math.js</code> específico de la herramienta (la matemática). Más un script de analítica (Plausible) que recibe los valores bucket. Nada más.</p>
+          <p class="mm-step-claim">Esta página carga exactamente dos archivos JavaScript: el <code>site.js</code> del sitio (nav + switch de idioma) y <code>margin-math.js</code> específico de la herramienta (la matemática). Más un script de analítica (Plausible) que recibe los valores bucket. Los popovers del glosario leen las definiciones de atributos <code>data-def</code> en el HTML — no se dispara ningún fetch adicional al pasar el cursor.</p>
           <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
-            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filtra <strong>JS</strong>. Recarga. Deberías ver <code>plausible.io/js/…</code>, <code>site.js</code>, y <code>margin-math.js</code>. Sin Google Tag Manager, sin Meta Pixel, sin widget de chat, sin session replay.</div>
+            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filtra <strong>JS</strong>. Recarga. Deberías ver <code>plausible.io/js/…</code>, <code>site.js</code>, y <code>margin-math.js</code>. Pasa el cursor sobre cualquier término subrayado dentro de una calculadora — la lista de solicitudes no crece. Sin Google Tag Manager, sin Meta Pixel, sin widget de chat, sin session replay.</div>
           </details>
         </div>
       </div>
@@ -995,6 +1014,140 @@
       history.replaceState(null, '', '#' + window.MM.encodeState(state));
     } catch (_e) { /* no fatal */ }
   };
+})();
+
+/* Popovers del glosario. Intercepta clic y hover en los enlaces del
+ * glosario *dentro de las tarjetas de calculadora* que llevan
+ * atributos data-def en línea. Todo lo demás — enlaces al blog,
+ * términos del panel de privacidad, nav del encabezado — navega
+ * normalmente.
+ *
+ * Por qué atributos data en línea y no fetch():
+ *   - Preserva la afirmación del panel de privacidad: la página no
+ *     añade solicitudes de red más allá de los dos JS enviados + la
+ *     analítica. Las definiciones viajan con el HTML que ya se
+ *     sirve.
+ *   - Teclado + lectores de pantalla aún navegan al glosario; el
+ *     popover es un atajo en flujo, no un reemplazo. Cada popover
+ *     expone un enlace "Ver en glosario" que hace la navegación
+ *     real.
+ *
+ * Abrir por hover sólo en dispositivos con puntero fino (matchMedia).
+ * En táctil, un tap abre el popover; otro tap afuera lo cierra. */
+(function(){
+  var grid = document.querySelector('.mm-grid');
+  if (!grid) return;
+  var triggers = grid.querySelectorAll('a[data-term][data-def]');
+  if (!triggers.length) return;
+
+  var pop = document.createElement('div');
+  pop.className = 'mm-popover';
+  pop.setAttribute('role', 'tooltip');
+  pop.setAttribute('hidden', '');
+  pop.innerHTML =
+    '<span class="mm-popover-term"></span>' +
+    '<span class="mm-popover-def"></span>' +
+    '<a class="mm-popover-link" href="#">Ver en el glosario →</a>';
+  document.body.appendChild(pop);
+  var termEl = pop.querySelector('.mm-popover-term');
+  var defEl  = pop.querySelector('.mm-popover-def');
+  var linkEl = pop.querySelector('.mm-popover-link');
+
+  var activeTrigger = null;
+  var openTimer = null;
+  var closeTimer = null;
+  var hoverCapable = (typeof window.matchMedia === 'function')
+    ? window.matchMedia('(hover: hover) and (pointer: fine)').matches
+    : false;
+
+  function position(trigger){
+    var r = trigger.getBoundingClientRect();
+    pop.style.left = '0px';
+    pop.style.top  = '0px';
+    pop.removeAttribute('data-flip');
+    pop.hidden = false;
+    var popRect = pop.getBoundingClientRect();
+    var top = r.bottom + window.scrollY + 10;
+    var wouldOverflow = (r.bottom + 10 + popRect.height) > window.innerHeight;
+    if (wouldOverflow && r.top - 10 - popRect.height > 0) {
+      top = r.top + window.scrollY - popRect.height - 10;
+      pop.setAttribute('data-flip', 'true');
+    }
+    var left = r.left + window.scrollX;
+    var maxLeft = window.scrollX + document.documentElement.clientWidth - popRect.width - 12;
+    if (left > maxLeft) left = maxLeft;
+    if (left < window.scrollX + 12) left = window.scrollX + 12;
+    pop.style.left = left + 'px';
+    pop.style.top  = top  + 'px';
+  }
+
+  function open(trigger){
+    clearTimeout(closeTimer);
+    if (activeTrigger === trigger && !pop.hidden) return;
+    activeTrigger = trigger;
+    termEl.textContent = trigger.getAttribute('data-term') || '';
+    defEl.textContent  = trigger.getAttribute('data-def') || '';
+    linkEl.setAttribute('href', trigger.getAttribute('href'));
+    position(trigger);
+  }
+
+  function close(){
+    activeTrigger = null;
+    pop.hidden = true;
+    clearTimeout(openTimer);
+    clearTimeout(closeTimer);
+  }
+
+  function scheduleOpen(trigger){
+    clearTimeout(openTimer);
+    clearTimeout(closeTimer);
+    openTimer = setTimeout(function(){ open(trigger); }, 140);
+  }
+  function scheduleClose(){
+    clearTimeout(openTimer);
+    clearTimeout(closeTimer);
+    closeTimer = setTimeout(close, 180);
+  }
+
+  Array.prototype.forEach.call(triggers, function(trigger){
+    if (hoverCapable) {
+      trigger.addEventListener('mouseenter', function(){ scheduleOpen(trigger); });
+      trigger.addEventListener('mouseleave', function(){ scheduleClose(); });
+    }
+    trigger.addEventListener('focus', function(){ open(trigger); });
+    trigger.addEventListener('blur',  function(){ scheduleClose(); });
+    trigger.addEventListener('click', function(e){
+      e.preventDefault();
+      if (activeTrigger === trigger && !pop.hidden) {
+        close();
+      } else {
+        open(trigger);
+      }
+    });
+  });
+
+  if (hoverCapable) {
+    pop.addEventListener('mouseenter', function(){ clearTimeout(closeTimer); });
+    pop.addEventListener('mouseleave', function(){ scheduleClose(); });
+  }
+  document.addEventListener('click', function(e){
+    if (pop.hidden) return;
+    if (pop.contains(e.target)) return;
+    for (var i = 0; i < triggers.length; i++) {
+      if (triggers[i].contains(e.target)) return;
+    }
+    close();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && !pop.hidden) {
+      close();
+      if (activeTrigger) activeTrigger.focus();
+    }
+  });
+  window.addEventListener('resize', close);
+  window.addEventListener('scroll', function(){
+    if (!pop.hidden && activeTrigger) position(activeTrigger);
+  }, { passive: true });
 })();
 
 /* Banner de escenario cargado. Aparece sólo cuando la página se
