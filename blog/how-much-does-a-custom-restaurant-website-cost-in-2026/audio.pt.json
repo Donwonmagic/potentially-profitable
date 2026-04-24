@@ -1,747 +1,747 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-18T18:25:20.935Z",
+  "generatedAt": "2026-04-24T19:02:07.978Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "pm_alex",
   "language": "pt",
-  "total": 864.04,
+  "total": 777.12,
   "chunks": [
     {
       "id": 0,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "A resposta curta.",
+      "text": "The short answer.",
       "start": 0,
-      "end": 1.26
+      "end": 1.14
     },
     {
       "id": 1,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "De dois mil e quinhentos a quinze mil dólares, dependendo do escopo. A maioria dos restaurantes independentes cai na faixa de cinco mil a nove mil dólares. O resto deste post explica por que a faixa é tão larga, e em que ponto dela você provavelmente deveria estar.",
-      "start": 1.71,
-      "end": 19.06
+      "text": "2,500 dollars to 15,000 dollars, depending on scope. Most independent restaurants land in the 5,000 dollars to 9,000 dollars range. The rest of this post explains why the band is that wide, and where in it you should probably be.",
+      "start": 1.84,
+      "end": 17.42
     },
     {
       "id": 2,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "Por que não existe um preço único.",
-      "start": 19.86,
-      "end": 21.93
+      "text": "Why there is no single price.",
+      "start": 18.52,
+      "end": 20.31
     },
     {
       "id": 3,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "« Site de restaurante » não é uma coisa só. É um espectro que vai de « uma única página que existe » a « uma plataforma completa de hospitalidade ». As variáveis que mexem no número final são:",
-      "start": 22.38,
-      "end": 33.15
+      "text": "\"Restaurant website\" is not one thing. It is a spectrum from \"a single page that exists\" to \"a full hospitality platform.\" The variables that move the final number are:",
+      "start": 21.01,
+      "end": 31.19
     },
     {
       "id": 4,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Quantas páginas você realmente precisa. Um lugar de bairro de três páginas sai mais barato do que um restaurante de dez páginas com uma página separada pra eventos privados, um fluxo de catering e uma sala de imprensa.",
-      "start": 33.37,
-      "end": 46.14
+      "text": "How many pages you actually need. A three-page neighborhood spot is cheaper than a ten-page restaurant with a separate private events page, a catering flow, and a press room.",
+      "start": 31.54,
+      "end": 41.44
     },
     {
       "id": 5,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Quão complexo é o seu menu e o seu fluxo de pedido. Um menu P D F estático não custa nada. Um C M S de menu em autoatendimento com pedido online integrado e ligado ao seu P O S custa dinheiro de verdade.",
-      "start": 46.36,
-      "end": 59.29
+      "text": "How complex your menu and ordering flow is. A static P D F menu costs nothing. A self-serve menu C M S with integrated online ordering wired to your P O S costs real money.",
+      "start": 41.76,
+      "end": 52.37
     },
     {
       "id": 6,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Se você integra com um P O S, um sistema de reservas ou uma plataforma de pedido online. Cada integração é um pedaço sério de trabalho — e cada uma economiza horas de verdade toda semana quando está no ar.",
-      "start": 59.51,
-      "end": 73.1
+      "text": "Whether you integrate with a P O S, a reservation system, or an online-ordering platform. Each integration is a meaningful chunk of work — and each one saves you real hours every week once it is live.",
+      "start": 52.69,
+      "end": 64.2
     },
     {
       "id": 7,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "Quanta fotografia, texto e trabalho de marca você já tem. Se você precisa de um fotógrafo, um copywriter e um logotipo novo, o número dobra.",
-      "start": 73.32,
-      "end": 81.69
+      "text": "How much photography, copy, and brand work you already have. If you need a photographer, a copywriter, and a new logo, the number doubles.",
+      "start": 64.52,
+      "end": 72.01
     },
     {
       "id": 8,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "Se o site precisa ser mantido por você ou só por um dev. « Você pode atualizar o menu em trinta segundos » custa mais pra construir do que « liga pro dev quando o menu mudar » — mas se paga em menos de um ano.",
-      "start": 81.91,
-      "end": 94.25
+      "text": "Whether the site has to be maintainable by you, or only by a developer. \"You can update the menu in thirty seconds\" costs more to build than \"call the developer when the menu changes\" — but it pays for itself within a year.",
+      "start": 72.33,
+      "end": 84.24
     },
     {
       "id": 9,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(6)",
-      "text": "Quanto cuidado contínuo você quer depois do lançamento. Um build único sai mais barato do que uma relação build-plus-care. Na maioria das vezes é a relação de cuidado que realmente protege o seu investimento.",
-      "start": 94.47,
-      "end": 107.52
+      "text": "How much ongoing care you want after launch. A one-time build is cheaper than a build-plus-care relationship. Most of the time the care relationship is what actually protects your investment.",
+      "start": 84.56,
+      "end": 95.67
     },
     {
       "id": 10,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
-      "text": "Cada uma dessas variáveis pode empurrar o número entre quinhentos e três mil dólares. Um site que parece simples no papel pode custar mais do que um site que parece complexo, se o simples esconde trabalho de integração e o complexo é basicamente conteúdo.",
-      "start": 107.84,
-      "end": 124.31
+      "text": "Each of those variables can push the number by 500 dollars to 3,000 dollars. A site that looks simple on paper can cost more than a site that looks complex, if the simple one has hidden integration work and the complex one is mostly content.",
+      "start": 96.19,
+      "end": 111.55
     },
     {
       "id": 11,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "As quatro opções reais.",
-      "start": 125.11,
-      "end": 126.63
+      "text": "The four real options.",
+      "start": 112.65,
+      "end": 114.13
     },
     {
       "id": 12,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "As pessoas falam de sites de restaurante como se existissem uma dúzia de caminhos, mas na verdade são quatro. Aqui estão, honestamente:",
-      "start": 127.08,
-      "end": 135.66
+      "text": "People talk about restaurant websites like there are a dozen paths, but there are really four. Here they are, honestly:",
+      "start": 114.83,
+      "end": 121.84
     },
     {
       "id": 13,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Comparação de quatro opções de site de restaurante: template D I Y a duzentos a quatrocentos dólares por ano, freelancer a quinhentos a dois mil e quinhentos dólares, estúdio pequeno a dois mil e quinhentos a quinze mil dólares, e agência completa a quinze mil a oitenta mil dólares ou mais. O estúdio pequeno é o recomendado pra maioria dos restaurantes independentes.",
-      "start": 136.21,
-      "end": 159.31
+      "text": "Comparison of four restaurant website options: D I Y template at 200 dollars-400 dollars per year, freelancer at 500 dollars-2,500 dollars, small studio at 2,500 dollars-15,000 dollars, and full agency at 15,000 dollars-80,000 dollars+. Small studio is recommended for most independent restaurants.",
+      "start": 122.64,
+      "end": 144.61
     },
     {
       "id": 14,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(1)",
-      "text": "Opção 1 — D I Y em um template (Wix, Squarespace, Weebly).",
-      "start": 160.11,
-      "end": 163.46
+      "text": "Option 1 — D I Y on a template (Wix, Squarespace, Weebly).",
+      "start": 145.71,
+      "end": 149.33
     },
     {
       "id": 15,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Duzentos a quatrocentos dólares por ano, incluindo hospedagem, mais o seu tempo. Reserve quinze a quarenta horas pra deixar ele apresentável, e outras cinco a dez horas por mês pra manter ele atualizado.",
-      "start": 163.91,
-      "end": 175.59
+      "text": "200 dollars–400 dollars/year including hosting, plus your time. Budget fifteen to forty hours to get it looking decent, and another five to ten hours a month to keep it current.",
+      "start": 150.03,
+      "end": 161.32
     },
     {
       "id": 16,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(6)",
-      "text": "O que você recebe: um site funcionando que parece igual a dez mil outros sites de restaurante, carrega mais lento do que deveria no celular, e bate num teto no momento em que você quer fazer alguma coisa que o template não previu.",
-      "start": 175.91,
-      "end": 189.09
+      "text": "What you get: a working site that looks like ten thousand other restaurant sites, loads slower than it should on a phone, and hits a ceiling the moment you want to do something the template did not anticipate.",
+      "start": 161.84,
+      "end": 173.98
     },
     {
       "id": 17,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(7)",
-      "text": "Quando isso serve: o restaurante é novo, o caixa tá apertado, você planeja trocar o site dentro de um ano, e aceita que o site é um quebra-galho — não um reflexo do salão.",
-      "start": 189.41,
-      "end": 201.07
+      "text": "When this is fine: the restaurant is new, cash is tight, you are planning to replace the site within a year, and you can accept that the site is a placeholder — not a reflection of the room.",
+      "start": 174.5,
+      "end": 184.69
     },
     {
       "id": 18,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(8)",
-      "text": "Quando isso é armadilha: quando você já é estabelecido e o seu site tá fazendo feio pelo espaço. O custo de oportunidade de cada cliente que desistiu porque não conseguiu ler o seu menu no celular esmaga com folga a taxa de template que você achava que tava economizando.",
-      "start": 201.39,
-      "end": 217.16
+      "text": "When this is a trap: when you are already established and your site is reflecting badly on the space. The opportunity cost of every diner who bounced because they could not read your menu on their phone dwarfs the template fee you thought you were saving.",
+      "start": 185.21,
+      "end": 199.42
     },
     {
       "id": 19,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(2)",
-      "text": "Opção 2 — Um freelancer no Upwork ou Fiverr.",
-      "start": 217.96,
-      "end": 220.62
+      "text": "Option 2 — A freelancer on Upwork or Fiverr.",
+      "start": 200.52,
+      "end": 203.23
     },
     {
       "id": 20,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Quinhentos a dois mil e quinhentos dólares. A qualidade vai de « um milagre » a « um desastre », e geralmente você não consegue saber qual até já ter pago. Os bons freelancers estão cheios de trabalho e cobram de todo jeito a parte de cima da faixa.",
-      "start": 221.07,
-      "end": 233.62
+      "text": "500 dollars–2,500 dollars. Quality ranges from \"a miracle\" to \"a disaster,\" and you usually cannot tell which until you have already paid. The good freelancers are booked out and operate at the top of the range anyway.",
+      "start": 203.93,
+      "end": 216.85
     },
     {
       "id": 21,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(10)",
-      "text": "Quando funciona: você tem specs claras, já viu o portfólio do freelancer, e ele já fez trabalho pra restaurante antes.",
-      "start": 233.94,
-      "end": 241.24
+      "text": "When this works: you have clear specs, you have seen the freelancer's portfolio, and they have done restaurant work before.",
+      "start": 217.37,
+      "end": 223.93
     },
     {
       "id": 22,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(11)",
-      "text": "Quando não funciona: « só deixa bonito » não viaja bem atravessando barreiras de idioma e fusos horários. As revisões levam semanas. A entrega no fim te deixa com arquivos que você não consegue manter, e se quebra alguma coisa seis meses depois não tem pra quem ligar.",
-      "start": 241.56,
-      "end": 257.96
+      "text": "When it does not: \"just make it look nice\" does not travel well across language barriers and timezones. Revisions take weeks. The handoff at the end leaves you with files you cannot maintain, and if something breaks six months later there is nobody to call.",
+      "start": 224.45,
+      "end": 239.38
     },
     {
       "id": 23,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(3)",
-      "text": "Opção 3 — Um estúdio pequeno (onde o Muntin fica).",
-      "start": 258.76,
-      "end": 261.71
+      "text": "Option 3 — A small studio (where Muntin sits).",
+      "start": 240.48,
+      "end": 243.27
     },
     {
       "id": 24,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(12)",
-      "text": "Dois mil e quinhentos a quinze mil dólares. Uma ou duas pessoas, especializadas em um tipo específico de negócio, geralmente trabalhando por preço fixo com um escopo claro. Você conhece a pessoa de verdade que vai construir o seu site. Ela tem opiniões sobre o seu menu, e não vai entregar um logo em que não acredita.",
-      "start": 262.16,
-      "end": 280.51
+      "text": "2,500 dollars–15,000 dollars. One or two people, specialized in a specific kind of business, usually working on a fixed price with a clear scope. You meet the actual person who will build your site. They have opinions about your menu, and they will not ship a logo they do not believe in.",
+      "start": 243.97,
+      "end": 261.3
     },
     {
       "id": 25,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Quando funciona: você quer uma pessoa só responsável de ponta a ponta, dá mais valor à conversa do que ao entregável, e quer uma coisa que pareça e funcione como se um estúdio tivesse construído — não como um template.",
-      "start": 280.83,
-      "end": 293.21
+      "text": "When this works: you want one person accountable end to end, you value the conversation more than the deliverable, and you want something that looks and works like a studio built it — not like a template did.",
+      "start": 261.82,
+      "end": 273.53
     },
     {
       "id": 26,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(14)",
-      "text": "Quando não funciona: se o escopo realmente exige um time (rollouts multi-unidade, apps de pedido sob medida, integrações enterprise), um estúdio de uma pessoa é o formato errado. Você estaria pagando por uma coisa que ele não é construído pra entregar.",
-      "start": 293.53,
-      "end": 309.14
+      "text": "When it does not: if the scope genuinely requires a team (multi-location rollouts, custom ordering apps, enterprise integrations), a one-person studio is the wrong shape. You would be paying for something they are not built to deliver.",
+      "start": 274.05,
+      "end": 287.54
     },
     {
       "id": 27,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(4)",
-      "text": "Opção 4 — Uma agência completa.",
-      "start": 309.94,
-      "end": 312.06
+      "text": "Option 4 — A full agency.",
+      "start": 288.64,
+      "end": 290.56
     },
     {
       "id": 28,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(15)",
-      "text": "Quinze mil a oitenta mil dólares ou mais. Você vai ter um project manager, um designer, um dev, um especialista em S E O, um copywriter, um content strategist. Prazo: três a nove meses. Você vai ganhar uma apresentação de PowerPoint antes de ver um wireframe.",
-      "start": 312.51,
-      "end": 329.63
+      "text": "15,000 dollars–80,000 dollars+. You will get a project manager, a designer, a developer, an S E O specialist, a copywriter, a content strategist. Timeline: three to nine months. You will get a PowerPoint presentation before you see a wireframe.",
+      "start": 291.26,
+      "end": 307.12
     },
     {
       "id": 29,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(16)",
-      "text": "Quando é a opção certa: você é um grupo com cinco ou mais unidades, tem um time de marketing interno, ou opera em contexto enterprise com exigências de procurement.",
-      "start": 329.95,
-      "end": 341
+      "text": "When this is right: you are a restaurant group with five or more locations, you have an in-house marketing team, or you are operating in an enterprise context with procurement requirements.",
+      "start": 307.64,
+      "end": 318.48
     },
     {
       "id": 30,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(17)",
-      "text": "Quando é a errada: você é um independente de unidade única. Você tá pagando um overhead organizacional que você não precisa, e o seu projeto vai ser sempre o menos importante na roadmap de alguém.",
-      "start": 341.32,
-      "end": 352.16
+      "text": "When it is wrong: you are a single-location independent. You are paying for organizational overhead you do not need, and your project will always be the least important one on somebody's roadmap.",
+      "start": 319,
+      "end": 330.44
     },
     {
       "id": 31,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "O que realmente define o preço.",
-      "start": 352.96,
-      "end": 354.9
+      "text": "What actually drives the price.",
+      "start": 331.54,
+      "end": 333.39
     },
     {
       "id": 32,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(18)",
-      "text": "Dentro da faixa tamanho Muntin — os dois mil e quinhentos a quinze mil dólares onde realmente moram a maioria dos projetos de restaurantes independentes — veja como as linhas se empilham, honestamente:",
-      "start": 355.35,
-      "end": 369.49
+      "text": "Inside the Muntin-size band — the 2,500 dollars to 15,000 dollars range where most independent restaurant projects actually live — here is how the line items stack, honestly:",
+      "start": 334.09,
+      "end": 345.43
     },
     {
       "id": 33,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Build básico (site custom de três a seis páginas, mobile-first, no ar) dois mil e quinhentos a quatro mil dólares",
-      "start": 369.71,
-      "end": 379.4
+      "text": "Base build (3–6 page custom site, mobile-first, launched) 2,500 dollars–4,000 dollars",
+      "start": 345.78,
+      "end": 352.87
     },
     {
       "id": 34,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Sistema de menu que você mesmo atualiza, sem precisar de dev, mais quinhentos a mil e duzentos dólares",
-      "start": 379.62,
-      "end": 386.84
+      "text": "Menu system you can update yourself, no developer needed +500 dollars–1,200 dollars",
+      "start": 353.19,
+      "end": 359.09
     },
     {
       "id": 35,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Integração de reserva (OpenTable, Resy, Tock, Square) mais trezentos a oitocentos dólares",
-      "start": 387.06,
-      "end": 392.73
+      "text": "Reservation integration (OpenTable, Resy, Tock, Square) +300 dollars–800 dollars",
+      "start": 359.41,
+      "end": 365.08
     },
     {
       "id": 36,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "Handoff de pedido online (Toast, Square, ChowNow) mais quatrocentos a mil dólares",
-      "start": 392.95,
-      "end": 399.44
+      "text": "Online ordering handoff (Toast, Square, ChowNow) +400 dollars–1,000 dollars",
+      "start": 365.4,
+      "end": 370.77
     },
     {
       "id": 37,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
-      "text": "Configuração e otimização do Google Business Profile mais duzentos a quinhentos dólares",
-      "start": 399.66,
-      "end": 405.12
+      "text": "Google Business Profile setup and optimization +200 dollars–500 dollars",
+      "start": 371.09,
+      "end": 376.08
     },
     {
       "id": 38,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(6)",
-      "text": "Direção de fotografia (você contrata o fotógrafo, a gente faz a direção de arte) mais trezentos a oitocentos dólares",
-      "start": 405.34,
-      "end": 412.15
+      "text": "Photography direction (you hire the photographer, we art direct) +300 dollars–800 dollars",
+      "start": 376.4,
+      "end": 382.42
     },
     {
       "id": 39,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(7)",
-      "text": "Identidade de marca (logo, cores, tipo, brand board) mais mil e quinhentos a três mil dólares",
-      "start": 412.37,
-      "end": 419.31
+      "text": "Brand identity (logo, colors, type, brand board) +1,500 dollars–3,000 dollars",
+      "start": 382.74,
+      "end": 388.76
     },
     {
       "id": 40,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(8)",
-      "text": "Roteamento multi-unidade e localizador de lojas mais mil a dois mil e quinhentos dólares",
-      "start": 419.53,
-      "end": 425.59
+      "text": "Multi-location routing and store locator +1,000 dollars–2,500 dollars",
+      "start": 389.08,
+      "end": 394.65
     },
     {
       "id": 41,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(9)",
-      "text": "Integração P O S direta (Toast, Square, Lightspeed A P I) mais mil e quinhentos a três mil e quinhentos dólares",
-      "start": 425.81,
-      "end": 432.13
+      "text": "Direct P O S integration (Toast, Square, Lightspeed A P I) +1,500 dollars–3,500 dollars",
+      "start": 394.97,
+      "end": 400.98
     },
     {
       "id": 42,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(10)",
-      "text": "Checkout de pedido custom (seu processador de pagamento, sua margem) mais dois mil a quatro mil e quinhentos dólares",
-      "start": 432.35,
-      "end": 440.56
+      "text": "Custom ordering checkout (your payment processor, your margin) +2,000 dollars–4,500 dollars",
+      "start": 401.3,
+      "end": 407.79
     },
     {
       "id": 43,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(19)",
-      "text": "Três exemplos reais, pra que as faixas pareçam menos abstratas:",
-      "start": 440.78,
-      "end": 444.6
+      "text": "Three real examples, so the ranges feel less abstract:",
+      "start": 408.14,
+      "end": 410.86
     },
     {
       "id": 44,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "Um italiano de bairro pegando Essentials mais integração de reserva mais direção de foto aterrissa por volta de três mil e quatrocentos dólares.",
-      "start": 444.82,
-      "end": 453.38
+      "text": "A neighborhood Italian spot getting Essentials + reservation integration + photo direction lands around 3,400 dollars .",
+      "start": 411.21,
+      "end": 419
     },
     {
       "id": 45,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "Um bistrô adicionando um C M S de menu em autoatendimento de verdade, pedido online e trabalho de Google Business Profile aterrissa por volta de seis mil e quinhentos dólares.",
-      "start": 453.6,
-      "end": 462.66
+      "text": "A bistro adding a real self-serve menu C M S, online ordering, and Google Business Profile work lands around 6,500 dollars .",
+      "start": 419.32,
+      "end": 426.94
     },
     {
       "id": 46,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
-      "text": "Um grupo de duas unidades adicionando roteamento multi-unidade e integração P O S direta aterrissa por volta de onze mil dólares.",
-      "start": 462.88,
-      "end": 471.62
+      "text": "A two-location group adding multi-location routing and direct P O S integration lands around 11,000 dollars .",
+      "start": 427.26,
+      "end": 434.61
     },
     {
       "id": 47,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(2)",
-      "text": "Três exemplos de pacotes de site de restaurante que mostram o que define o preço: Italiano de bairro por três mil e quatrocentos dólares (build básico mais integração de reserva mais direção de foto), Bistrô por seis mil e quinhentos dólares (build básico mais C M S de menu, pedido online e Google Business Profile), Grupo de duas unidades por onze mil dólares (build básico mais roteamento multi-unidade mais integração P O S direta).",
-      "start": 472.17,
-      "end": 498.84
+      "text": "Three example restaurant website bundles showing what drives the price: Neighborhood Italian at 3,400 dollars (base build plus reservation integration plus photo direction), Bistro at 6,500 dollars (base build plus menu C M S, online ordering, and Google Business Profile), Two-Location Group at 11,000 dollars (base build plus multi-location routing plus direct P O S integration).",
+      "start": 435.41,
+      "end": 458.46
     },
     {
       "id": 48,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "Pelo que você tá pagando de verdade.",
-      "start": 499.64,
-      "end": 501.64
+      "text": "What you are actually paying for.",
+      "start": 459.56,
+      "end": 461.62
     },
     {
       "id": 49,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(20)",
-      "text": "As linhas acima são só metade da história. A outra metade é o trabalho que nunca aparece numa nota fiscal, mas aparece no produto final mesmo assim:",
-      "start": 502.09,
-      "end": 511.48
+      "text": "The line items above are only half the story. The other half is the work that never shows up on an invoice, but shows up in the finished product anyway:",
+      "start": 462.32,
+      "end": 470.81
     },
     {
       "id": 50,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(5)",
-      "text": "As conversas de estratégia.",
-      "start": 512.28,
-      "end": 513.79
+      "text": "Strategy conversations.",
+      "start": 471.91,
+      "end": 473.63
     },
     {
       "id": 51,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(21)",
-      "text": "Antes de qualquer design acontecer, você precisa de alguém fazendo as perguntas desconfortáveis. Por que o seu site atual não tá funcionando? Quais páginas tão pagando o próprio aluguel? Quais são peso morto? Um estúdio bom começa com uma hora de conversa que expõe o que realmente tá quebrado antes de qualquer um escolher uma fonte.",
-      "start": 514.24,
-      "end": 531.89
+      "text": "Before any design happens, you need someone asking the uncomfortable questions. Why is your current site not working? Which pages are earning their keep? Which ones are dead weight? A good studio starts with an hour of conversation that exposes what is actually broken before anyone picks a font.",
+      "start": 474.33,
+      "end": 490.97
     },
     {
       "id": 52,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(6)",
-      "text": "O texto.",
-      "start": 532.69,
-      "end": 533.26
+      "text": "Copy.",
+      "start": 492.07,
+      "end": 492.58
     },
     {
       "id": 53,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(22)",
-      "text": "Sites template partem do princípio de que você já escreveu o seu texto. Provavelmente não escreveu — e se escreveu, provavelmente foi pro menu antigo que você já trocou. Estúdios bons ou escrevem pra você, ou editam o seu num texto que realmente vende o salão.",
-      "start": 533.71,
-      "end": 549.65
+      "text": "Template sites assume you already wrote your copy. You probably did not — and even if you did, it was probably written for the old menu you have since changed. Good studios either write it for you or edit yours into something that actually sells the room.",
+      "start": 493.28,
+      "end": 508.39
     },
     {
       "id": 54,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(7)",
-      "text": "Os fundamentos de S E O.",
-      "start": 550.45,
-      "end": 552.01
+      "text": "S E O fundamentals.",
+      "start": 509.49,
+      "end": 510.86
     },
     {
       "id": 55,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(23)",
-      "text": "Title tags, meta descriptions, schema markup, um sitemap, H T T P S, texto alternativo, um formulário de contato que funciona, um Google Business Profile que bate com o site. Nada disso aparece num portfólio. Tudo isso leva tempo. Tudo isso é o motivo de você aparecer no Google, ponto final. (Se você quer ver quantos desses itens faltam no seu site atual, o Restaurant Website Audit gratuito passa por eles em uns trinta segundos.)",
-      "start": 552.46,
-      "end": 578.41
+      "text": "Title tags, meta descriptions, schema markup, a sitemap, H T T P S, alt text, a working contact form, a Google Business Profile that matches the site. None of these show up in a portfolio. All of them take time. All of them are why you show up on Google at all. (If you want to see how many of these your current site is missing, the free Restaurant Website Audit will run through them in about thirty seconds.)",
+      "start": 511.56,
+      "end": 533.01
     },
     {
       "id": 56,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(8)",
-      "text": "Testes em celular.",
-      "start": 579.21,
-      "end": 580.06
+      "text": "Mobile testing.",
+      "start": 534.11,
+      "end": 535.18
     },
     {
       "id": 57,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(24)",
-      "text": "O Android do seu primo, o iPhone 12 da sua amiga, o tablet baratinho do posto de recepção. Testes de verdade em aparelhos de verdade — não a « visão responsiva » do navegador desktop, que mente sobre metade dos bugs.",
-      "start": 580.51,
-      "end": 593.73
+      "text": "Your cousin's Android, your friend's iPhone 12, the cheap tablet at the hostess stand. Real testing on real devices — not the desktop browser's \"responsive view,\" which lies about half the bugs.",
+      "start": 535.88,
+      "end": 546.44
     },
     {
       "id": 58,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(9)",
-      "text": "A acessibilidade.",
-      "start": 594.53,
-      "end": 595.73
+      "text": "Accessibility.",
+      "start": 547.54,
+      "end": 548.61
     },
     {
       "id": 59,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(25)",
-      "text": "Navegação por teclado, suporte a leitor de tela, contraste de cor suficiente, rótulos corretos em formulários. Metade disso é exigência legal dependendo do seu estado. Nada disso é opcional num site que você quer que as pessoas realmente usem — incluindo as pessoas com artrite, óculos de leitura e celulares mais fracos que compõem uma fatia real dos seus clientes.",
-      "start": 596.18,
-      "end": 617.64
+      "text": "Keyboard navigation, screen reader support, sufficient color contrast, proper form labels. Half of this is legally required depending on your state. None of it is optional for a site you want people to actually use — including the people with arthritis, reading glasses, and low-end phones who make up a real slice of your customers.",
+      "start": 549.31,
+      "end": 568.04
     },
     {
       "id": 60,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(10)",
-      "text": "O cuidado depois do lançamento.",
-      "start": 618.44,
-      "end": 620.34
+      "text": "Care after launch.",
+      "start": 569.14,
+      "end": 570.23
     },
     {
       "id": 61,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(26)",
-      "text": "Atualizar um preço no menu em trinta segundos em vez de três dias. Pegar um formulário de contato quebrado antes de um cliente pegar. Trocar um plugin de foto morto antes dele derrubar a home numa sexta à noite. É aí que os freelancers somem e os estúdios ganham os seus retainers.",
-      "start": 620.79,
-      "end": 638.19
+      "text": "Updating a menu price in thirty seconds instead of three days. Catching a broken contact form before a customer does. Replacing a dead photo plugin before it takes down the homepage on a Friday night. This is where freelancers disappear and studios earn their retainers.",
+      "start": 570.93,
+      "end": 586.7
     },
     {
       "id": 62,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(6)",
-      "text": "Sinais de alerta dos dois lados.",
-      "start": 638.99,
-      "end": 641.9
+      "text": "Red flags on both ends.",
+      "start": 587.8,
+      "end": 589.37
     },
     {
       "id": 63,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(3)",
-      "text": "Sinais de alerta pra observar: cinco sinais de que um orçamento de site é suspeitosamente barato, e quatro sinais de que tá caro demais.",
-      "start": 642.45,
-      "end": 650.59
+      "text": "Red flags to watch for: five signs a website quote is suspiciously cheap, and four signs it is overpriced.",
+      "start": 590.17,
+      "end": 596.84
     },
     {
       "id": 64,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(7)",
-      "text": "O cronograma realista.",
-      "start": 651.39,
-      "end": 652.98
+      "text": "The realistic timeline.",
+      "start": 597.94,
+      "end": 599.37
     },
     {
       "id": 65,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(27)",
-      "text": "Um bom site custom de restaurante entre cinco mil e nove mil dólares entra no ar em quatro a seis semanas. Veja como um calendário real se parece:",
-      "start": 653.43,
-      "end": 663.78
+      "text": "A good 5,000 dollars to 9,000 dollars custom restaurant website launches in four to six weeks . Here is what a real calendar looks like:",
+      "start": 600.07,
+      "end": 610.25
     },
     {
       "id": 66,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
-      "text": "Semana 1 — Call de kickoff, auditoria de marca, coleta de conteúdo, revisão de fotos, auditoria de menu, inventário de P O S e sistema de reserva.",
-      "start": 664,
-      "end": 673.23
+      "text": "Week 1 — Kickoff call, brand audit, content gathering, photo review, menu audit, P O S and reservation system inventory.",
+      "start": 610.6,
+      "end": 617.53
     },
     {
       "id": 67,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
-      "text": "Semana 2 — Sitemap, wireframes, primeira passada completa de design.",
-      "start": 673.45,
-      "end": 677.5
+      "text": "Week 2 — Sitemap, wireframes, first full design pass.",
+      "start": 617.85,
+      "end": 621.19
     },
     {
       "id": 68,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
-      "text": "Semana 3 — Iteração de design a partir do feedback, segunda passada de design, entrada de conteúdo começa.",
-      "start": 677.72,
-      "end": 684.48
+      "text": "Week 3 — Design iteration based on feedback, second design pass, content entry starts.",
+      "start": 621.51,
+      "end": 626.7
     },
     {
       "id": 69,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
-      "text": "Semana 4 — Desenvolvimento, integrações, QA de celular em aparelhos de verdade.",
-      "start": 684.7,
-      "end": 690.77
+      "text": "Week 4 — Development, integrations, mobile QA on real devices.",
+      "start": 627.02,
+      "end": 630.98
     },
     {
       "id": 70,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(5)",
-      "text": "Semana 5 — Preparação do lançamento, revisão final de conteúdo, auditoria de acessibilidade e velocidade antes do go-live.",
-      "start": 690.99,
-      "end": 698.7
+      "text": "Week 5 — Launch prep, final content review, pre-launch accessibility and speed audit.",
+      "start": 631.3,
+      "end": 636.12
     },
     {
       "id": 71,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(6)",
-      "text": "Semana 6 — Lançamento, atualizações no Google Business Profile, documentação de entrega, e a primeira semana de monitoramento ao vivo.",
-      "start": 698.92,
-      "end": 707.28
+      "text": "Week 6 — Launch, Google Business Profile updates, handoff documentation, and the first week of live monitoring.",
+      "start": 636.44,
+      "end": 642.74
     },
     {
       "id": 72,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(4)",
-      "text": "Um cronograma de seis semanas pra um site custom de restaurante: Semana 1 Descoberta, Semana 2 Design, Semana 3 Iteração, Semana 4 Build, Semana 5 Preparação do lançamento, Semana 6 Lançamento.",
-      "start": 707.83,
-      "end": 722.72
+      "text": "A six-week project timeline for a custom restaurant website: Week 1 Discovery, Week 2 Design, Week 3 Iteration, Week 4 Build, Week 5 Launch Prep, Week 6 Launch.",
+      "start": 643.54,
+      "end": 653.88
     },
     {
       "id": 73,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(28)",
-      "text": "Qualquer coisa mais rápida que três semanas é suspeita — ninguém consegue desenhar, construir e lançar um bom site custom em duas semanas a não ser que seja na prática um template com um logo novo. Qualquer coisa mais lenta que oito semanas normalmente quer dizer que o escopo não tava claro desde o primeiro dia e o projeto tá sangrando tempo em rodadas de revisão.",
-      "start": 723.22,
-      "end": 743.99
+      "text": "Anything faster than three weeks is suspicious — nobody can design, build, and launch a good custom site in two weeks unless it is actually a template with a new logo. Anything slower than eight weeks usually means the scope was not clear from day one and the project is bleeding time on revision rounds.",
+      "start": 654.63,
+      "end": 671.28
     },
     {
       "id": 74,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(8)",
-      "text": "O que colocar no orçamento depois do lançamento.",
-      "start": 744.79,
-      "end": 746.7
+      "text": "What to budget for after launch.",
+      "start": 672.38,
+      "end": 674.31
     },
     {
       "id": 75,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(29)",
-      "text": "Um site não é uma compra única. A maioria dos restaurantes independentes deveria reservar entre cento e vinte e cinco e trezentos e cinquenta dólares por mês pra cuidado contínuo, que cobre:",
-      "start": 747.15,
-      "end": 758.24
+      "text": "A website is not a one-time purchase. Most independent restaurants should budget 125 dollars to 350 dollars per month for ongoing care, which covers:",
+      "start": 675.01,
+      "end": 685.78
     },
     {
       "id": 76,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(1)",
-      "text": "Hospedagem, SSL e manutenção de domínio",
-      "start": 758.46,
-      "end": 761.17
+      "text": "Hosting, SSL, and domain maintenance",
+      "start": 686.13,
+      "end": 688.6
     },
     {
       "id": 77,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(2)",
-      "text": "Patches de segurança e atualizações de software",
-      "start": 761.39,
-      "end": 764.07
+      "text": "Security patches and software updates",
+      "start": 688.92,
+      "end": 691.12
     },
     {
       "id": 78,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(3)",
-      "text": "Mudanças de menu, atualizações de horário, fotos novas, promoções sazonais",
-      "start": 764.29,
-      "end": 768.55
+      "text": "Menu changes, hours updates, new photos, seasonal specials",
+      "start": 691.44,
+      "end": 694.85
     },
     {
       "id": 79,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(4)",
-      "text": "Monitoramento de links quebrados e formulários",
-      "start": 768.77,
-      "end": 771.38
+      "text": "Broken-link and form monitoring",
+      "start": 695.17,
+      "end": 697.29
     },
     {
       "id": 80,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(5)",
-      "text": "Monitoramento de performance e uptime",
-      "start": 771.6,
-      "end": 774.72
+      "text": "Performance and uptime monitoring",
+      "start": 697.61,
+      "end": 699.71
     },
     {
       "id": 81,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(6)",
-      "text": "Correções emergenciais quando alguma coisa quebra numa sexta à noite",
-      "start": 774.94,
-      "end": 778.88
+      "text": "Emergency fixes when something breaks on a Friday night",
+      "start": 700.03,
+      "end": 703.28
     },
     {
       "id": 82,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(30)",
-      "text": "Pular o plano de cuidado e torcer pra nada quebrar é como a maioria dos sites de pequenos negócios apodrece em menos de dezoito meses. « Vou ligar pro meu dev quando precisar » vira « meu dev parou de responder » vira « tô pagando alguém novo quinhentos dólares pra consertar o que devia ter sido uma atualização de dois minutos ». O plano de cuidado é um seguro que você usa de fato.",
-      "start": 779.1,
-      "end": 802.76
+      "text": "Skipping the care plan and hoping nothing breaks is how most small business sites rot within eighteen months. \"I will call my developer when I need something\" becomes \"my developer stopped responding\" becomes \"I am paying someone new five hundred dollars to fix what should have been a two-minute update.\" The care plan is insurance you actually use.",
+      "start": 703.63,
+      "end": 722.05
     },
     {
       "id": 83,
       "kind": "quote",
       "selector": "#post-body > p:nth-of-type(31)",
-      "text": "Se o seu dev some depois do lançamento, o site que você pagou começa a morrer no primeiro dia.",
-      "start": 803.31,
-      "end": 810.32
+      "text": "If your developer disappears after launch, the site you paid for starts dying on day one.",
+      "start": 722.8,
+      "end": 728.02
     },
     {
       "id": 84,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(9)",
-      "text": "Então qual é o número certo pro seu restaurante?",
-      "start": 811.12,
-      "end": 813.86
+      "text": "So what is the right number for your restaurant?",
+      "start": 729.12,
+      "end": 731.78
     },
     {
       "id": 85,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(32)",
-      "text": "Se você é um independente de unidade única tentando sair do Wix pra ir pra uma coisa que realmente bate com o salão:",
-      "start": 814.31,
-      "end": 821.48
+      "text": "If you are a single-location independent trying to get off Wix and onto something that actually matches the room:",
+      "start": 732.48,
+      "end": 739.03
     },
     {
       "id": 86,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(1)",
-      "text": "O seu piso de orçamento é dois mil e quinhentos dólares.",
-      "start": 821.7,
-      "end": 824.69
+      "text": "Your budget floor is 2,500 dollars .",
+      "start": 739.38,
+      "end": 742.02
     },
     {
       "id": 87,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(2)",
-      "text": "A sua faixa média realista é cinco mil a nove mil dólares.",
-      "start": 824.91,
-      "end": 830.81
+      "text": "Your realistic mid-range is 5,000 dollars to 9,000 dollars .",
+      "start": 742.34,
+      "end": 747.64
     },
     {
       "id": 88,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(3)",
-      "text": "Reserve mais cento e vinte e cinco a trezentos e cinquenta dólares por mês pra cuidado contínuo depois do lançamento.",
-      "start": 831.03,
-      "end": 838.62
+      "text": "Budget another 125 dollars to 350 dollars a month for ongoing care after launch.",
+      "start": 747.96,
+      "end": 754.47
     },
     {
       "id": 89,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(4)",
-      "text": "O seu prazo deveria ser de quatro a seis semanas.",
-      "start": 838.84,
-      "end": 841.7
+      "text": "Your timeline should be four to six weeks .",
+      "start": 754.79,
+      "end": 757.36
     },
     {
       "id": 90,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(5)",
-      "text": "Você deveria estar falando diretamente com a pessoa que vai construir.",
-      "start": 841.92,
-      "end": 845.56
+      "text": "You should be talking directly to the person who will build it.",
+      "start": 757.68,
+      "end": 761.31
     },
     {
       "id": 91,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(33)",
-      "text": "Se você quer um número de verdade pra sua própria situação, o jeito mais rápido é uma call de Zoom de vinte minutos. A gente cobre o seu site atual, o seu menu, o seu P O S, o seu fluxo de reserva e o seu orçamento — aí você recebe um orçamento escrito no seu e-mail dentro de uma hora depois de desligar.",
-      "start": 845.88,
-      "end": 864.04
+      "text": "If you want a real number for your own situation, the fastest way to get one is a twenty-minute Zoom call. We will cover your current site, your menu, your P O S, your reservation workflow, and your budget — then you will have a written estimate in your inbox within an hour of hanging up.",
+      "start": 761.83,
+      "end": 777.12
     }
   ]
 }
