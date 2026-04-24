@@ -328,6 +328,11 @@
       pass:{title:'Horario semanal completo',body:'Tu ficha muestra un horario semanal completo. Mantenlo preciso — los clientes tratan los horarios desactualizados como razón para saltarse la visita.'},
       warn:{title:'Sólo horario regular',body:'Tienes horario regular pero no hay un horario semanal legible expuesto. Confirma que cada día muestre horas de apertura/cierre en tu panel de Business Profile.'},
       fail:{title:'Horario semanal incompleto',body:'Cubre cada día que abras en "Editar perfil" → "Horario". Un horario parcial se lee como una ficha desactualizada tanto para los usuarios como para Google.'}
+    },
+    nap:{
+      pass:{title:'NAP coincide con tu sitio',body:'El teléfono y la dirección en tu ficha de Google coinciden con el schema LocalBusiness de tu sitio. A Google le encanta este tipo de consistencia — es un multiplicador de confianza.'},
+      warn:{title:'NAP coincide parcialmente',body:'Teléfono y dirección en tu ficha no coinciden del todo con lo que hay en el schema de tu sitio. Alinealos — Google marca la inconsistencia y degrada las fichas confundidas.'},
+      fail:{title:'NAP no coincide o falta schema',body:'O tu sitio no tiene schema LocalBusiness, o su teléfono/dirección no concuerdan con tu ficha de Google. Arregla el schema y confirma que cada superficie de contacto (sitio, GBP, redes) lleve exactamente el mismo NAP.'}
     }
   };
 
@@ -553,23 +558,89 @@
     return Math.max(0,Math.round((Date.now()-newest)/86400000));
   }
 
+  // ----- Verificación NAP (nombre-dirección-teléfono) -----------
+  var BIZ_SCHEMA_TYPES={Restaurant:1,LocalBusiness:1,FoodEstablishment:1,Cafe:1,Bakery:1,BarOrPub:1,CafeOrCoffeeShop:1,FastFoodRestaurant:1,FoodService:1};
+  function extractBizObject(objects){
+    if(!Array.isArray(objects))return null;
+    for(var i=0;i<objects.length;i++){
+      var o=objects[i];
+      if(!o||!o['@type'])continue;
+      var t=Array.isArray(o['@type'])?o['@type']:[o['@type']];
+      for(var j=0;j<t.length;j++){
+        if(BIZ_SCHEMA_TYPES[t[j]])return o;
+      }
+    }
+    return null;
+  }
+  function normalizePhone(p){
+    if(p==null)return'';
+    var digits=(''+p).replace(/\D/g,'');
+    return digits.length>10?digits.slice(-10):digits;
+  }
+  function flattenAddress(a){
+    if(!a)return'';
+    if(typeof a==='string')return a;
+    if(typeof a==='object'){
+      var parts=[];
+      if(a.streetAddress)  parts.push(a.streetAddress);
+      if(a.addressLocality)parts.push(a.addressLocality);
+      if(a.addressRegion)  parts.push(a.addressRegion);
+      if(a.postalCode)     parts.push(a.postalCode);
+      return parts.join(' ');
+    }
+    return '';
+  }
+  function addressOverlap(a,b){
+    var ta=gbpTokenize(flattenAddress(a)).filter(function(t){return t.length>=3});
+    var tb=gbpTokenize(flattenAddress(b)).filter(function(t){return t.length>=3});
+    if(!ta.length||!tb.length)return 0;
+    var setB={};for(var i=0;i<tb.length;i++)setB[tb[i]]=1;
+    var hit=0;for(var j=0;j<ta.length;j++)if(setB[ta[j]])hit++;
+    return hit/ta.length;
+  }
+  function computeNap(chosen,schema){
+    if(!chosen||!chosen.website)return null;
+    if(!schema||!schema.ok)return{match:'no_schema'};
+    var biz=extractBizObject(schema.objects);
+    if(!biz)return{match:'no_schema'};
+    var phoneOk=false, addrOk=false;
+    if(chosen.nationalPhoneNumber&&biz.telephone){
+      phoneOk=normalizePhone(chosen.nationalPhoneNumber)===normalizePhone(biz.telephone);
+    }
+    if(chosen.address&&biz.address){
+      addrOk=addressOverlap(chosen.address,biz.address)>=0.5;
+    }
+    if(phoneOk&&addrOk)return{match:'full'};
+    if(phoneOk||addrOk)return{match:'partial'};
+    return{match:'mismatch'};
+  }
+
   function runDeepScan(placeId){
     if(deepScanState.inFlight||!placeId)return;
     deepScanState.inFlight=true;
     var btn=document.getElementById('gbpDeepBtn');
     if(btn){btn.disabled=true;btn.textContent='Escaneando…'}
-    fetch('/api/gbp-details?placeId='+encodeURIComponent(placeId))
-      .then(function(r){return r.json()})
-      .then(function(d){
-        if(!d||!d.ok)throw new Error(d&&d.error?d.error:'deep-scan-failed');
+
+    var site=deepScanState.chosen&&deepScanState.chosen.website;
+    var detailsP=fetch('/api/gbp-details?placeId='+encodeURIComponent(placeId)).then(function(r){return r.json()});
+    var schemaP=site
+      ?fetch('/api/schema-check?url='+encodeURIComponent(site)).then(function(r){return r.json()}).catch(function(){return null})
+      :Promise.resolve(null);
+
+    Promise.all([detailsP,schemaP])
+      .then(function(arr){
+        var details=arr[0], schema=arr[1];
+        if(!details||!details.ok)throw new Error(details&&details.error?details.error:'deep-scan-failed');
         deepScanState.data={
-          newestReviewAgeDays: newestReviewAgeDays(d.reviews),
-          ownerReplyRate:      (typeof d.ownerReplyRate==='number')?d.ownerReplyRate:null
+          newestReviewAgeDays: newestReviewAgeDays(details.reviews),
+          ownerReplyRate:      (typeof details.ownerReplyRate==='number')?details.ownerReplyRate:null,
+          nap:                 computeNap(deepScanState.chosen,schema)
         };
         renderFor(deepScanState.chosen,deepScanState.peerMedians,deepScanState.query,deepScanState.wasPicked);
         if(window.plausible)window.plausible('GBP Deep Scan',{props:{
           owner_reply_bucket: (deepScanState.data.ownerReplyRate==null)?'unknown':deepScanState.data.ownerReplyRate>=0.6?'60+':deepScanState.data.ownerReplyRate>=0.2?'20-59':'lt20',
-          recency_bucket:     (deepScanState.data.newestReviewAgeDays==null)?'unknown':deepScanState.data.newestReviewAgeDays<=30?'le30':deepScanState.data.newestReviewAgeDays<=90?'31-90':'gt90'
+          recency_bucket:     (deepScanState.data.newestReviewAgeDays==null)?'unknown':deepScanState.data.newestReviewAgeDays<=30?'le30':deepScanState.data.newestReviewAgeDays<=90?'31-90':'gt90',
+          nap_match:          deepScanState.data.nap?deepScanState.data.nap.match:'skipped'
         }});
       })
       .catch(function(err){

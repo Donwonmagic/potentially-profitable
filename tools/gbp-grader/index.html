@@ -345,6 +345,11 @@
       pass:{title:'Weekly hours are complete',body:'Your listing shows a full weekly schedule. Keep it accurate — customers treat stale hours as a reason to skip the visit.'},
       warn:{title:'Regular hours only',body:'You have regular hours but no human-readable weekly schedule exposed. Confirm each day shows open/close times in your Business Profile dashboard.'},
       fail:{title:'Weekly hours incomplete',body:'Cover every day you\'re open in "Edit profile" → "Hours". A partial schedule reads as a stale listing to both users and Google.'}
+    },
+    nap:{
+      pass:{title:'NAP matches your website',body:'Phone and address on your Google listing match the LocalBusiness schema on your site. Google loves this kind of consistency — it\'s a trust multiplier.'},
+      warn:{title:'NAP partially matches',body:'Phone and address on your listing don\'t fully match what\'s in your website\'s schema. Align them — Google flags inconsistency and downranks confused listings.'},
+      fail:{title:'NAP mismatch or missing schema',body:'Either your website has no LocalBusiness schema or its phone/address disagree with your Google listing. Fix the schema, then confirm every contact surface (site, GBP, socials) carries the exact same NAP.'}
     }
   };
 
@@ -598,24 +603,96 @@
     return Math.max(0,Math.round((Date.now()-newest)/86400000));
   }
 
+  // ----- NAP (Name-Address-Phone) cross-check ---------------------
+  // Compares the chosen GBP candidate's phone + address with the
+  // website's LocalBusiness schema.org markup (fetched via
+  // /api/schema-check). Returns a shape the scorer's nap check
+  // expects: {match: 'full'|'partial'|'mismatch'|'no_schema'} — or
+  // null when there's no website to compare against (scorer skips).
+  var BIZ_SCHEMA_TYPES={Restaurant:1,LocalBusiness:1,FoodEstablishment:1,Cafe:1,Bakery:1,BarOrPub:1,CafeOrCoffeeShop:1,FastFoodRestaurant:1,FoodService:1};
+  function extractBizObject(objects){
+    if(!Array.isArray(objects))return null;
+    for(var i=0;i<objects.length;i++){
+      var o=objects[i];
+      if(!o||!o['@type'])continue;
+      var t=Array.isArray(o['@type'])?o['@type']:[o['@type']];
+      for(var j=0;j<t.length;j++){
+        if(BIZ_SCHEMA_TYPES[t[j]])return o;
+      }
+    }
+    return null;
+  }
+  function normalizePhone(p){
+    if(p==null)return'';
+    var digits=(''+p).replace(/\D/g,'');
+    return digits.length>10?digits.slice(-10):digits;
+  }
+  function flattenAddress(a){
+    if(!a)return'';
+    if(typeof a==='string')return a;
+    if(typeof a==='object'){
+      var parts=[];
+      if(a.streetAddress)  parts.push(a.streetAddress);
+      if(a.addressLocality)parts.push(a.addressLocality);
+      if(a.addressRegion)  parts.push(a.addressRegion);
+      if(a.postalCode)     parts.push(a.postalCode);
+      return parts.join(' ');
+    }
+    return '';
+  }
+  function addressOverlap(a,b){
+    var ta=gbpTokenize(flattenAddress(a)).filter(function(t){return t.length>=3});
+    var tb=gbpTokenize(flattenAddress(b)).filter(function(t){return t.length>=3});
+    if(!ta.length||!tb.length)return 0;
+    var setB={};for(var i=0;i<tb.length;i++)setB[tb[i]]=1;
+    var hit=0;for(var j=0;j<ta.length;j++)if(setB[ta[j]])hit++;
+    return hit/ta.length;
+  }
+  function computeNap(chosen,schema){
+    if(!chosen||!chosen.website)return null;           // no website -> skipped
+    if(!schema||!schema.ok)return{match:'no_schema'};  // fetch failed or no JSON-LD
+    var biz=extractBizObject(schema.objects);
+    if(!biz)return{match:'no_schema'};
+    var phoneOk=false, addrOk=false;
+    if(chosen.nationalPhoneNumber&&biz.telephone){
+      phoneOk=normalizePhone(chosen.nationalPhoneNumber)===normalizePhone(biz.telephone);
+    }
+    if(chosen.address&&biz.address){
+      addrOk=addressOverlap(chosen.address,biz.address)>=0.5;
+    }
+    if(phoneOk&&addrOk)return{match:'full'};
+    if(phoneOk||addrOk)return{match:'partial'};
+    return{match:'mismatch'};
+  }
+
   function runDeepScan(placeId){
     if(deepScanState.inFlight||!placeId)return;
     deepScanState.inFlight=true;
     var btn=document.getElementById('gbpDeepBtn');
     if(btn){btn.disabled=true;btn.textContent='Scanning…'}
-    fetch('/api/gbp-details?placeId='+encodeURIComponent(placeId))
-      .then(function(r){return r.json()})
-      .then(function(d){
-        if(!d||!d.ok)throw new Error(d&&d.error?d.error:'deep-scan-failed');
+
+    var site=deepScanState.chosen&&deepScanState.chosen.website;
+    var detailsP=fetch('/api/gbp-details?placeId='+encodeURIComponent(placeId)).then(function(r){return r.json()});
+    // Schema-check is best-effort: a network/parse failure shouldn't
+    // sink the whole Deep Scan — the NAP field just becomes unknown.
+    var schemaP=site
+      ?fetch('/api/schema-check?url='+encodeURIComponent(site)).then(function(r){return r.json()}).catch(function(){return null})
+      :Promise.resolve(null);
+
+    Promise.all([detailsP,schemaP])
+      .then(function(arr){
+        var details=arr[0], schema=arr[1];
+        if(!details||!details.ok)throw new Error(details&&details.error?details.error:'deep-scan-failed');
         deepScanState.data={
-          newestReviewAgeDays: newestReviewAgeDays(d.reviews),
-          ownerReplyRate:      (typeof d.ownerReplyRate==='number')?d.ownerReplyRate:null
+          newestReviewAgeDays: newestReviewAgeDays(details.reviews),
+          ownerReplyRate:      (typeof details.ownerReplyRate==='number')?details.ownerReplyRate:null,
+          nap:                 computeNap(deepScanState.chosen,schema)
         };
-        // Re-render the full result with the new payload.
         renderFor(deepScanState.chosen,deepScanState.peerMedians,deepScanState.query,deepScanState.wasPicked);
         if(window.plausible)window.plausible('GBP Deep Scan',{props:{
           owner_reply_bucket: (deepScanState.data.ownerReplyRate==null)?'unknown':deepScanState.data.ownerReplyRate>=0.6?'60+':deepScanState.data.ownerReplyRate>=0.2?'20-59':'lt20',
-          recency_bucket:     (deepScanState.data.newestReviewAgeDays==null)?'unknown':deepScanState.data.newestReviewAgeDays<=30?'le30':deepScanState.data.newestReviewAgeDays<=90?'31-90':'gt90'
+          recency_bucket:     (deepScanState.data.newestReviewAgeDays==null)?'unknown':deepScanState.data.newestReviewAgeDays<=30?'le30':deepScanState.data.newestReviewAgeDays<=90?'31-90':'gt90',
+          nap_match:          deepScanState.data.nap?deepScanState.data.nap.match:'skipped'
         }});
       })
       .catch(function(err){
