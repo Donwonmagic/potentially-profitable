@@ -1,291 +1,291 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-20T18:29:46.174Z",
+  "generatedAt": "2026-04-24T19:26:02.023Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "zm_yunxi",
   "language": "zh",
-  "total": 476.96,
+  "total": 524.51,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "如果你曾经打开过 ChatGPT，输入「帮我给我的意大利餐厅写一篇『关于我们』的页面」，结果一出来你胃里就咯噔了一下——那你已经知道这篇文章一半的答案了。文案写得没毛病。它也和过去两年里每一个意大利餐厅老板在屏幕上盯着的那段文字一模一样，只是换了几个词。你当时能感觉到，但说不上来，那段输出可以是任何一家餐厅。这就是问题所在。",
+      "text": "If you have ever opened ChatGPT, typed \"write the About page for my Italian restaurant,\" and immediately felt something clench in your stomach when the output came back, you already know the answer to half of this post. The copy was fine. It was also the exact same copy every other Italian restaurant owner has been staring at on their screen for two years now, with minor word swaps. You could feel, without being able to articulate it, that the output could be any restaurant. That&rsquo;s the problem.",
       "start": 0,
-      "end": 26.29
+      "end": 26.86
     },
     {
       "id": 1,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "但完整的答案比「AI 写不了餐厅网站」要更有用。它绝对能写其中的一些部分，又快又好。窍门在于：知道是哪些部分、怎么交代它、以及在什么地方停手——因为你网站上那些能让客人选你、而不是选街对面那家的地方，恰好就是 AI 在没被引导的情况下写得最烂的地方。",
-      "start": 26.64,
-      "end": 45.48
+      "text": "But the full answer is more useful than \"AI can&rsquo;t write a restaurant website.\" It absolutely can write parts of one, fast and well. The trick is knowing which parts, how to brief it, and where to stop — because the parts of your website that make guests choose you instead of the place across the street are exactly the parts AI is worst at writing unprompted.",
+      "start": 27.38,
+      "end": 45.34
     },
     {
       "id": 2,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
-      "text": "我用同一个提示，分三个努力程度，给你看一下我是什么意思。",
-      "start": 45.83,
-      "end": 51.47
+      "text": "Let me show you what I mean with the same prompt, three different levels of effort.",
+      "start": 45.86,
+      "end": 50.4
     },
     {
       "id": 3,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "这是同一个提示——「给一家街区意大利餐厅的『关于我们』页面写一段开头文字」——用三种方式跑出来的结果。第一版，泛泛的初稿：「我们地道的意大利用餐体验把意大利的风味带到您的社区。在我们家族经营的餐厅体验好客与传统。」这是一句你在另外五百个餐厅网站上读过的句子。它对客人什么具体的都没讲。加一点点简单的提示，给一些关于这家餐厅的基本背景：「位于 Silver Spring 心脏地段的一家街区 trattoria，每天供应手工意面，还有我们十五年来打磨出来的柴窑披萨。」好一些——有位置、有细节、有一点个性——但读起来还是像宣传手册。再看一遍原生写作，由一个真正了解这家店的人写：「从一九九八年起，每个星期天，Nonna 都做同样那锅红酱。八个小时，不抄近路，不谈判。它出现在我们供应的每一道意面里，因为要改它，会是一场我们谁都打不赢的仗。」信息一样，语调完全不同。那种具体的声音、被一个具体故事锚定住的声音，就是让客人觉得自己在选这家餐厅、而不是在选一个模板的东西。",
-      "start": 52.27,
-      "end": 110.43
+      "text": "Here is the same prompt — 'write the intro paragraph for a neighborhood Italian restaurant's About page' — run three ways. Generic first pass: 'Our authentic Italian dining experience brings the flavors of Italy to your neighborhood. Experience hospitality and tradition at our family-owned restaurant.' That is a sentence you have read on five hundred other restaurant websites. It tells the guest nothing specific. Lightly prompted, with basic context about the restaurant: 'A neighborhood trattoria in the heart of Silver Spring, serving handmade pasta daily and the wood-fired pizzas we have perfected over fifteen years.' Better — location, specifics, some character — but still reads like a brochure. Natively written, by a human who actually knows the place: 'Every Sunday since nineteen ninety-eight, Nonna has made the same red sauce. Eight hours, no shortcuts, no negotiation. It is on every pasta dish we serve, because changing it would be a fight none of us would win.' Same information, entirely different register. That specific voice, grounded in a specific story, is what makes a guest feel like they are choosing this restaurant and not a template.",
+      "start": 51.2,
+      "end": 112.05
     },
     {
       "id": 4,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "这三段都合乎语法。这三段都能「过」一个编辑的审校。但其中只有一段让客人想去那里吃饭。",
-      "start": 111.18,
-      "end": 119.31
+      "text": "All three are grammatical. All three would \"pass\" an editor's review. Only one of them makes a guest want to eat there.",
+      "start": 112.8,
+      "end": 120.77
     },
     {
       "id": 5,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "AI 真正适合餐厅网站的地方。",
-      "start": 120.41,
-      "end": 124.28
+      "text": "Where AI is genuinely good for a restaurant website.",
+      "start": 121.87,
+      "end": 125.16
     },
     {
       "id": 6,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
-      "text": "我不是个 AI 怀疑论者。我自己每天都用 ChatGPT。对一个自己既要经营一家独立餐厅、又要在周二晚上十一点自己搞网站的老板来说，它有真实的、能长期用下去的使用场景。具体说三个：",
-      "start": 124.98,
-      "end": 139.45
+      "text": "I am not an AI skeptic. I use ChatGPT every day. It has real, durable use cases for an independent restaurant operator who is also trying to do their own website work at eleven p.m. on a Tuesday. Three of them specifically:",
+      "start": 125.86,
+      "end": 139.91
     },
     {
       "id": 7,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(1)",
-      "text": "一、大规模生成菜品描述。",
-      "start": 140.55,
-      "end": 142.36
+      "text": "1. Menu item descriptions at scale.",
+      "start": 141.01,
+      "end": 143.35
     },
     {
       "id": 8,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(6)",
-      "text": "如果你有一份五十道菜的菜单、而你没时间，AI 非常擅长把一行内部备菜笔记（「砖烤鸡、柠檬、迷迭香，配土豆一起上」）改写成两句话的、给客人看的描述。这件事是真的有用。它替换掉了大多数餐厅网站上线时那种「只有菜名，没有描述」的默认状态。",
-      "start": 143.06,
-      "end": 160.78
+      "text": "If you have got a fifty-item menu and no time, AI is very good at turning a one-line internal prep note (\"brick chicken, lemon, rosemary, served over potato\") into a two-sentence guest-facing description. That&rsquo;s genuinely useful. It replaces the \"same dish name with no description\" default most restaurant sites ship with.",
+      "start": 144.05,
+      "end": 162.54
     },
     {
       "id": 9,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(7)",
-      "text": "关键是提示里必须包含你自己的声音样本。给 ChatGPT 三道已经按你想要的方式写好的菜，然后让它照着这个调子写剩下的。没有声音样本的话，你得到的就是上面第一版那种输出，被它套用五十遍。",
-      "start": 161.13,
-      "end": 175.55
+      "text": "The key is the prompt has to include your voice samples. Give ChatGPT three menu items that are already written the way you want, then ask it to match that register for the rest. Without the voice samples, you get the stage-1 output above, applied fifty times.",
+      "start": 163.06,
+      "end": 177.11
     },
     {
       "id": 10,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(2)",
-      "text": "二、客人不会真的仔细看的那些页面的初稿。",
-      "start": 176.65,
-      "end": 179.89
+      "text": "2. Draft copy for pages the guest won&rsquo;t actually read carefully.",
+      "start": 178.21,
+      "end": 183.76
     },
     {
       "id": 11,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(8)",
-      "text": "你网站上不是每一页都承重的。你的「隐私政策」页不会帮你关掉一个预订。你的「过敏原信息」页不会改变任何一个客人的主意。对这些偏合规性质、只要「存在得体面」就行的页面，用 AI 就够了。发布上线，翻篇。",
-      "start": 180.59,
-      "end": 193.41
+      "text": "Not every page on your website is load-bearing. Your Privacy Policy is not closing reservations. Your Allergen Information page is not changing a guest's mind. For compliance-flavored pages that just need to exist and be competent, AI is fine. Ship it, move on.",
+      "start": 184.46,
+      "end": 199.66
     },
     {
       "id": 12,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(3)",
-      "text": "三、结构与大纲。",
-      "start": 194.51,
-      "end": 196.37
+      "text": "3. Structure and outlining.",
+      "start": 200.76,
+      "end": 202.99
     },
     {
       "id": 13,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(9)",
-      "text": "AI 在列大纲这件事上，确实比大多数人更擅长。你问 ChatGPT「一页餐厅的『关于我们』一般有哪些板块，请按照它们对客人是否决定预订的影响从高到低排序」，三十秒就能得到一个很有用的框架。用这个框架，但真正落到句子里的字，自己写。",
-      "start": 197.07,
-      "end": 212.77
+      "text": "AI is genuinely better than most humans at outlining. Ask ChatGPT \"what sections does a restaurant About page typically have, ranked by how much they affect a guest&rsquo;s decision to book,\" and you&rsquo;ll get a useful framework in thirty seconds. Use the outline. Write the actual words yourself.",
+      "start": 203.69,
+      "end": 220.88
     },
     {
       "id": 14,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "AI 会悄悄把你餐厅写偏掉的地方。",
-      "start": 213.87,
-      "end": 216.45
+      "text": "Where AI gets your restaurant quietly wrong.",
+      "start": 221.98,
+      "end": 224.82
     },
     {
       "id": 15,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(4)",
-      "text": "一、那些让客人信任你的具体细节。",
-      "start": 217.55,
-      "end": 219.21
+      "text": "1. The specifics that make guests trust you.",
+      "start": 225.92,
+      "end": 228.69
     },
     {
       "id": 16,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(10)",
-      "text": "餐厅网站成不成，靠的都是具体细节。「我们从 Poolesville 的一家农场进货」，胜过十句「使用本地食材」。「我们的甜点主厨在 Del Posto 受训」，胜过一段关于「我们才华横溢的团队」。在没有交代的情况下，AI 的默认就是往一般化的方向走——因为一般化就是它训练数据里的那个版本。客人之所以相信具体的东西，是因为具体的东西和模板正好相反。",
-      "start": 219.91,
-      "end": 245.1
+      "text": "Restaurant websites work or don&rsquo;t on specifics. \"We source from a farm in Poolesville\" is worth ten sentences about \"locally sourced ingredients.\" \"Our pastry chef trained at Del Posto\" is worth a paragraph about \"our talented team.\" AI, unprompted, defaults to the general because the general is what&rsquo;s in its training data. Guests trust the specific because the specific is the opposite of a template.",
+      "start": 229.39,
+      "end": 254.3
     },
     {
       "id": 17,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(5)",
-      "text": "二、你的节奏。",
-      "start": 246.2,
-      "end": 247.09
+      "text": "2. Your cadence.",
+      "start": 255.4,
+      "end": 256.44
     },
     {
       "id": 18,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(11)",
-      "text": "每一家自己动手写过文案的餐厅都有自己的节奏——句子有多长、破折号落在哪儿、语气停在什么样的音色上。AI 在第一段之内就能把这种节奏抹平。你当然可以把这一点加进交代里让它去修，但大多数餐厅老板不会去做这件事，因为把 AI 交代清楚花的时间，差不多就等于你自己把这段写完的时间。",
-      "start": 247.79,
-      "end": 268.41
+      "text": "Every restaurant that&rsquo;s written its own copy has a cadence — how long the sentences run, where the em-dashes fall, what register the voice sits in. AI flattens that within the first paragraph. You can brief it to fix this, but most operators don&rsquo;t, because briefing the AI properly takes about the same amount of time as just writing the thing.",
+      "start": 257.14,
+      "end": 275.66
     },
     {
       "id": 19,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(6)",
-      "text": "三、需要下判断的时刻。",
-      "start": 269.51,
-      "end": 271.28
+      "text": "3. The moments that require judgment.",
+      "start": 276.76,
+      "end": 279.44
     },
     {
       "id": 20,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(12)",
-      "text": "写餐厅文案里最难的，不是找词——而是决定在一段四句话的段落里该讲哪三件事，哪七件事不讲。这种东西叫判断，判断恰好是一个语言模型做不了的事。它不知道「在疫情第一个冬天开业」的那个故事，是真正能把这个餐厅空间推销出去的故事；而「三年后软开幕期间改了一次菜单」的那个故事不是。你知道。必须由你来敲下那段字。",
-      "start": 271.98,
-      "end": 293.32
+      "text": "The hardest part of writing restaurant copy isn&rsquo;t finding words — it&rsquo;s knowing which three things to say in a four-sentence paragraph and which seven not to. That&rsquo;s judgment, and judgment is exactly what a language model can&rsquo;t do. It doesn&rsquo;t know that the story about opening during the first winter of the pandemic is the one that sells the room, and that the story about the soft opening menu change three years later isn&rsquo;t. You know that. You&rsquo;re the one who has to type it.",
+      "start": 280.14,
+      "end": 310.63
     },
     {
       "id": 21,
       "kind": "quote",
       "selector": "#post-body > p:nth-of-type(13)",
-      "text": "一个餐厅网站里真正让客人选择你的那些部分，正好就是 AI 写得最烂的那些部分。也就是说，你用 ChatGPT 省下来的时间必须被重新投到别的地方，否则网站只会变得更扁平，不会变得更高效。",
-      "start": 294.07,
-      "end": 308.49
+      "text": "The parts of a restaurant website that make guests choose you are precisely the parts an AI is worst at writing. Which means the time you save with ChatGPT has to be reinvested somewhere, or the site gets flatter, not faster.",
+      "start": 311.38,
+      "end": 324.17
     },
     {
       "id": 22,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "能修好这一切的那一页交代文档。",
-      "start": 309.59,
-      "end": 312.23
+      "text": "The one-page briefing that fixes it.",
+      "start": 325.27,
+      "end": 327.43
     },
     {
       "id": 23,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(14)",
-      "text": "如果你要用 AI 来写你的餐厅文案——你也应该用——那你得给它的东西，不能是一句「帮我写『关于我们』页面」。下面是我给那些想自己搞内容的老板们用的那个交代模板。写一次，存进一份 Google Doc，然后每次你在 ChatGPT 里开一段新对话的时候，都把它作为第一个提示贴进去。",
-      "start": 312.93,
-      "end": 333.87
+      "text": "If you&rsquo;re going to use AI for your restaurant copy — and you should — you need to give it something other than \"write my About page.\" Here&rsquo;s the briefing template I use when I&rsquo;m working with operators who want to handle their own content. Write this once, save it in a Google Doc, paste it as the first prompt every time you open a new ChatGPT conversation.",
+      "start": 328.13,
+      "end": 350.56
     },
     {
       "id": 24,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "这家餐厅，一句话讲完。街区、菜系、开了多少年、一个有辨识度的细节。「一家在 Takoma Park 开了十二年、以周日红酱出名的意大利店。」一句话。",
-      "start": 334.22,
-      "end": 344.92
+      "text": "The restaurant, in one sentence. Neighborhood, cuisine, years open, one distinctive detail. &ldquo;A twelve-year-old Italian place in Takoma Park known for its Sunday red sauce.&rdquo; One sentence.",
+      "start": 351.08,
+      "end": 364.51
     },
     {
       "id": 25,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "三个真实存在的具体细节。你进货的那家农场、主厨的背景、客人问得最多的那道菜。具体的名词、具体的人、具体的地点。这些正是 AI 在没被告知的情况下（而且这么做是对的）会拒绝替你编出来的。",
-      "start": 345.24,
-      "end": 356.54
+      "text": "Three real specifics. The farm you source from, the chef&rsquo;s background, the one dish guests ask about most. Specific nouns, specific people, specific places. These are what AI otherwise refuses to invent (rightly).",
+      "start": 364.83,
+      "end": 379.05
     },
     {
       "id": 26,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "三段声音样本。三段你已经按\"你想要的腔调\"写好的短段落。你写过的最好的一条 Instagram 文案、你写过的最好的一条菜品描述、你写给常客的最好的一封邮件。AI 是一个模仿者；给它一些真实的东西去模仿。",
-      "start": 356.86,
-      "end": 371.04
+      "text": "Three voice samples. Three short paragraphs already written the way you want to sound. Your best Instagram caption, your best menu description, your best email to your regulars. AI is a mimic; give it something real to mimic.",
+      "start": 379.37,
+      "end": 392.32
     },
     {
       "id": 27,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "三件你永远不希望它说的事。「地道」、「热情」、「升华的」——几乎每一家餐厅的默认文案里都会滑向的那些词。明确地把它们禁掉。",
-      "start": 371.36,
-      "end": 379.7
+      "text": "Three things you never want it to say. &ldquo;Authentic,&rdquo; &ldquo;passionate,&rdquo; &ldquo;elevated&rdquo; — the words every restaurant copy default defaults to. Ban them explicitly.",
+      "start": 392.64,
+      "end": 407.41
     },
     {
       "id": 28,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "任务，写得足够窄。不要说「帮我写『关于我们』页面」。要说「帮我写一段一百五十字的『关于我们』开头段落，要提到周日红酱，并且结尾那句话要让一位新客人产生这个周末就来订位的冲动」。",
-      "start": 380.02,
-      "end": 391.66
+      "text": "The task, narrow. Don&rsquo;t say &ldquo;write my About page.&rdquo; Say &ldquo;write a 150-word intro paragraph for the About page that mentions the Sunday red sauce and ends with a line that makes a new guest want to book this weekend.&rdquo;",
+      "start": 407.73,
+      "end": 423.96
     },
     {
       "id": 29,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(15)",
-      "text": "有了这一份交代之后，AI 给你的就不再是第一版那种输出，而是更接近第二版的东西。它到不了第三版——那种原生的声音、那种让人觉得\"只有你这家餐厅才可能写出这段话\"的感觉——但能把你带到全程的百分之七十。剩下的百分之三十是你的活：把 AI 不知道的那条具体细节补上、把读起来有点过于像宣传手册的那句话划掉、把一个泛泛的形容词换成一个具体的名词。",
-      "start": 392.01,
-      "end": 418.19
+      "text": "With that briefing in place, AI goes from giving you stage-1 output to giving you something closer to stage-2. It won&rsquo;t reach stage-3 — the native voice, the part that feels like only your restaurant could have written this — but it&rsquo;ll get you 70% of the way there. Your job is the last 30%: adding the one specific detail the AI didn&rsquo;t know, cutting the sentence that reads a little too brochure-y, swapping a generic adjective for a concrete noun.",
+      "start": 424.31,
+      "end": 452.96
     },
     {
       "id": 30,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "那么……到底该不该用？",
-      "start": 419.29,
-      "end": 420.18
+      "text": "So… should it?",
+      "start": 454.06,
+      "end": 455.43
     },
     {
       "id": 31,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(16)",
-      "text": "在菜品描述、大纲和合规性质的文案上，该用。在那些你会大量再编辑的页面的初稿上，带着犹豫用。而在真正决定客人会不会选择你的那三页上——你的首页主视觉、你的\"关于我们\"故事，以及那句\"为什么有人应该选你这家，而不是选四条街外那家长得一模一样的餐厅\"——不要用。",
-      "start": 420.88,
-      "end": 436.84
+      "text": "Yes, for menu descriptions, outlines, and compliance copy. Hesitantly, for first drafts of pages you&rsquo;ll heavily edit. No, for the three pages that actually close a guest: your homepage hero, your About story, and the one-line reason someone should pick your restaurant over the identical-looking one four blocks away.",
+      "start": 456.13,
+      "end": 473.88
     },
     {
       "id": 32,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(17)",
-      "text": "那三页，你自己写。哪怕要花掉你一个周末。哪怕第一稿写得很烂。因为一整个周末里那些烂句子，是由这家餐厅的主人写出来的；它永远会赢过一份由没人在意的人写出来的、打磨得很漂亮的 AI 稿。这不是感情用事——这是转化点。客人能感受到\"这个写东西的人在乎这家店\"和\"这个写东西的东西什么都不在乎\"之间的区别。两者之间的转化差距是可以量化的，而且一点都不小。",
-      "start": 437.19,
-      "end": 461.18
+      "text": "Those three, you write. Even if it takes you a weekend. Even if the first draft is bad. Because a weekend of bad sentences written by the person who owns the restaurant will always beat a polished AI draft written by no-one in particular. That&rsquo;s not sentimentality — it&rsquo;s a conversion point. Guests can feel the difference between &ldquo;someone who cares about this place wrote this&rdquo; and &ldquo;something that didn&rsquo;t care about anything wrote this.&rdquo; The conversion difference between the two is measurable, and not small.",
+      "start": 474.4,
+      "end": 505.92
     },
     {
       "id": 33,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(18)",
-      "text": "ChatGPT 是一把电动工具。它很擅长把沉重的东西从房间这头挪到那头。但它不是一个木匠。用它去做它该做的事，而下判断的那部分工作——声音、具体细节、让一家餐厅感觉是\"一个地方\"而不是\"一桩生意\"的那些瞬间——自己留着做。",
-      "start": 461.53,
-      "end": 475.53
+      "text": "ChatGPT is a power tool. It&rsquo;s very good at moving heavy things across the room. It is not a carpenter. Use it for what it&rsquo;s for, and keep the judgment work — the voice, the specifics, the moments that make a restaurant feel like a place and not a business — for yourself.",
+      "start": 506.44,
+      "end": 522.5
     },
     {
       "id": 34,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(19)",
-      "text": "要么，请一个木匠。",
-      "start": 475.88,
-      "end": 476.96
+      "text": "Or hire a carpenter.",
+      "start": 523.02,
+      "end": 524.51
     }
   ]
 }
