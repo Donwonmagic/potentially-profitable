@@ -123,7 +123,7 @@
       "id": 14,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Confronto tra il flusso dei dati di menu in una piattaforma chiusa e un vero menu H T M L",
+      "text": "Confronto di come scorrono i dati del menu in una piattaforma chiusa rispetto a un menu in H T M L vero",
       "start": 192.8,
       "end": 198.76
     },
@@ -131,7 +131,7 @@
       "id": 15,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "Interruzione numero 2: la velocità di caricamento del dispositivo mobile è sempre più lenta di quanto dovrebbe essere.",
+      "text": "Rottura numero 2 — La velocità di caricamento mobile è sempre più lenta di quanto dovrebbe.",
       "start": 199.56,
       "end": 207.46
     },
@@ -139,7 +139,7 @@
       "id": 16,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(8)",
-      "text": "Questo è quello che posso dimostrare con un U R L: esegui qualsiasi sito di ristorante Wix attraverso il Restaurant Website Audit gratuito e guarda il punteggio delle prestazioni. Vedrai quasi sempre qualcosa tra 40 e 50 su 100. Non è colpa del ristorante: è della piattaforma.",
+      "text": "Questa è quella che posso dimostrare con una URL: passa qualsiasi sito di ristorante Wix attraverso l'Audit di sito di ristorante gratuito e guarda il punteggio Performance. Vedrai quasi sempre qualcosa nei 40-50 su 100. Quella non è colpa del ristorante — è della piattaforma.",
       "start": 207.91,
       "end": 226.97
     },
@@ -147,7 +147,7 @@
       "id": 17,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(9)",
-      "text": "I modelli Wix forniscono molti JavaScript per impostazione predefinita: abbastanza che, nella mia esperienza di audit, i punteggi delle prestazioni di Lighthouse sui siti mobili dei ristoranti Wix scendono costantemente al di sotto di 60. Su una connessione 4G esterna al tuo ristorante, ciò spesso si traduce in una prima verniciatura con contenuto che dura quattro secondi o più. La ricerca di Google sulla velocità delle pagine mobili mostra costantemente che la maggior parte dei visitatori mobili rimbalza da pagine che impiegano più di tre secondi per caricarsi, il che significa che un sito Wix lento sta perdendo silenziosamente una parte significativa del suo affamato traffico mobile prima che qualcuno veda il menu.",
+      "text": "I template Wix imbarcano di default un sacco di JavaScript — abbastanza perché, nella mia esperienza di audit, i punteggi Lighthouse di performance mobile sui siti di ristorante Wix si attestino con costanza sotto i 60. Su una connessione 4G fuori dal tuo ristorante, questo spesso si traduce in un first-contentful-paint che tira sopra i quattro secondi. La ricerca di Google sulla velocità mobile mostra in maniera costante che la maggioranza dei visitatori mobili abbandona le pagine che impiegano più di tre secondi a caricarsi — il che significa che un sito Wix lento sta perdendo in silenzio una porzione significativa del suo traffico mobile affamato prima ancora che qualcuno veda il menu.",
       "start": 227.29,
       "end": 271.65
     },
@@ -155,7 +155,7 @@
       "id": 18,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(2)",
-      "text": "Punteggi illustrativi delle prestazioni di Lighthouse mobile: un tipico modello di ristorante Wix ottiene un punteggio di circa 45 su 100, mentre un sito personalizzato ben costruito ottiene un punteggio di circa 95",
+      "text": "Punteggi Lighthouse di performance mobile, a titolo illustrativo: un template Wix tipico ottiene circa 45 su 100, mentre un sito su misura ben costruito ottiene circa 95",
       "start": 272.2,
       "end": 287.83
     },
@@ -163,7 +163,7 @@
       "id": 19,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "Pausa numero 3: l'integrazione delle prenotazioni è ostaggio di tutto ciò con cui Wix ha a che fare.",
+      "text": "Rottura numero 3 — L'integrazione delle prenotazioni è ostaggio degli accordi di Wix.",
       "start": 288.63,
       "end": 295.02
     },
@@ -171,7 +171,7 @@
       "id": 20,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(10)",
-      "text": "I modelli di ristorante di Wix si basano fortemente su OpenTable: è l'integrazione predefinita nella maggior parte di essi e OpenTable funziona bene se anche OpenTable è la tua preferenza. Ma se il tuo ristorante è su Resy, Tock, SevenRooms o Square Prenotazioni, nella mia esperienza di audit di solito scoprirai che l'\"integrazione\" è un iframe generico incorporato o un collegamento in uscita. Niente vive all'interno della tua pagina, niente corrisponde al tuo marchio, niente viene ricondotto in modo pulito all'analisi e quando il fornitore di terze parti cambia il proprio URL di incorporamento tra due anni, lo scopri perché il tuo pulsante di prenotazione si è rotto silenziosamente un venerdì sera.",
+      "text": "I template di ristorante Wix si appoggiano pesantemente a OpenTable — è l'integrazione di default nella maggior parte di essi, e OpenTable va benissimo se OpenTable è anche la tua preferenza. Ma se il tuo ristorante è su Resy, Tock, SevenRooms o Square Reservations, nella mia esperienza di audit di solito ti ritrovi con un'« integrazione » che è un iframe generico o un link esterno. Niente vive dentro la tua pagina, niente combacia con il tuo marchio, niente torna pulito in analytics, e quando il fornitore terzo cambierà la URL dell'embed tra due anni, te ne accorgi perché il bottone di prenotazione si è rotto in silenzio un venerdì sera.",
       "start": 295.47,
       "end": 337.25
     },
@@ -179,7 +179,7 @@
       "id": 21,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(11)",
-      "text": "Un sito personalizzato ti consente di scegliere il sistema di prenotazione che si adatta effettivamente al tuo flusso di lavoro e di collegarlo in modo pulito, qualunque sia la piattaforma.",
+      "text": "Un sito su misura ti lascia scegliere il sistema di prenotazione che si adatta davvero al tuo flusso di lavoro e collegarlo in modo pulito — qualunque sia la piattaforma.",
       "start": 337.57,
       "end": 349.8
     },
@@ -187,7 +187,7 @@
       "id": 22,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "Pausa numero 4: S E O è \"buono per il modello\", non \"effettivamente buono\".",
+      "text": "Rottura numero 4 — Il S E O è « buono per un template », non « buono davvero ».",
       "start": 350.6,
       "end": 355.55
     },
@@ -195,7 +195,7 @@
       "id": 23,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(12)",
-      "text": "Wix ti dirà che il suo S E O è forte. Tecnicamente non è sbagliato: esistono i tag title, viene generata una mappa del sito, le pagine sono indicizzabili. Quello è il pavimento. Non è il soffitto.",
+      "text": "Wix ti dirà che il suo S E O è solido. Tecnicamente non ha torto: i title tag esistono, si genera una sitemap, le pagine sono indicizzabili. Quello è il pavimento. Non è il soffitto.",
       "start": 356,
       "end": 369.08
     },
@@ -203,7 +203,7 @@
       "id": 24,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Dove vedo costantemente che Wix non è all'altezza negli audit dei ristoranti:",
+      "text": "Dove vedo Wix restare corto con costanza negli audit di ristorante:",
       "start": 369.4,
       "end": 374.24
     },
@@ -211,7 +211,7 @@
       "id": 25,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Il markup dello schema del ristorante (il JSON-LD che indica a Google la tua cucina, gli orari, la fascia di prezzo, l'URL del menu e le recensioni) è, nella maggior parte dei modelli di ristorante Wix che ho controllato, mancante del tutto o lasciato con segnaposto vuoti che il proprietario non sa cercare e compilare.",
+      "text": "Il markup schema restaurant (il JSON-LD che dice a Google la tua cucina, gli orari, la fascia di prezzo, la URL del menu e le recensioni) è, nella maggior parte dei template di ristorante Wix che ho auditato, o completamente mancante, o lasciato con dei placeholder vuoti che un proprietario non sa di dover andare a cercare e riempire.",
       "start": 374.46,
       "end": 393.7
     },
@@ -219,7 +219,7 @@
       "id": 26,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Le meta descrizioni tendono a generarsi automaticamente dalla copia della pagina a meno che non sovrascrivi manualmente ogni pagina - e in pratica la maggior parte dei proprietari non lo fa. Il risultato sono frammenti di ricerca Google che recitano come \"Benvenuti nella nostra home page: siamo entusiasti di condividere...\"",
+      "text": "Le meta description tendono a essere generate in automatico dal testo della pagina, a meno che tu non scavalchi manualmente ogni pagina — e in pratica, la maggior parte dei proprietari non lo fa. Il risultato sono snippet di ricerca che leggono tipo « Benvenuto sulla nostra home page — Siamo entusiasti di condividere… »",
       "start": 393.92,
       "end": 414.14
     },
@@ -227,7 +227,7 @@
       "id": 27,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Il testo alternativo dell'immagine spesso viene impostato automaticamente sul nome del file se non lo imposti manualmente. Ogni foto che carichi arriva come IMG_2041.jpg e rimane tale, invisibile a Google Ricerca immagini.",
+      "text": "L'alt text delle immagini spesso assume il nome del file se non lo imposti a mano. Ogni foto che carichi entra come IMG_2041.jpg e resta così, invisibile per Google Images.",
       "start": 414.36,
       "end": 431.71
     },
