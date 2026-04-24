@@ -1,467 +1,539 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-18T18:41:09.197Z",
+  "generatedAt": "2026-04-24T14:28:03.034Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "pm_alex",
   "language": "pt",
-  "total": 515.31,
+  "total": 0,
   "chunks": [
     {
       "id": 0,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "Por que isso é importante.",
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Aqui vai uma coisa desconfortável de perceber: o primeiro resultado do Google pro nome do seu restaurante provavelmente não é o seu site. É aquele painel lateral que desliza pra direita — o horário, o telefone, as cinco fotos minúsculas, a avaliação de uma estrela e meia de dois mil e dezenove, o selo de « fechado permanentemente » que alguém adicionou sem querer em dois mil e vinte e um. Esse painel é o seu Google Business Profile, e pra maioria dos restaurantes independentes ele faz oitenta por cento do trabalho que o seu site acha que tá fazendo.",
       "start": 0,
-      "end": 1.46
+      "end": 22.54
     },
     {
       "id": 1,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Seu Google Business Profile é a peça mais importante da presença online do seu restaurante. Ele aparece em Google Search, Google Maps e no pacote de mapas locais – a caixa de três listagens que aparece quando alguém pesquisa “restaurantes perto de mim”. De acordo com Google, empresas com perfis completos têm significativamente mais probabilidade de serem consideradas confiáveis ​​pelos clientes.",
-      "start": 1.91,
-      "end": 23.57
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Eu toco dois restaurantes e construo sites pra mais algumas dezenas. Quando um cliente novo marca uma call, a primeira aba que eu abro não é a home dele. É o G B P dele. Eu quero ver em quais campos ele mexeu, quais categorias escolheu, quando postou uma foto pela última vez, se tá respondendo às avaliações ou fingindo que elas não existem. Noventa por cento das vezes eu descubro em trinta segundos por que ele tá perdendo o tráfego de rua pro lugar do quarteirão seguinte. Quase nunca é a comida.",
+      "start": 23.06,
+      "end": 50.42
     },
     {
       "id": 2,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(2)",
-      "text": "A configuração de um perfil leva cerca de trinta minutos. Otimizá-lo adequadamente leva mais uma hora. A maioria dos proprietários de restaurantes faz a primeira parte e pula a segunda – e é por isso que sua listagem parece idêntica a de todos os outros restaurantes do quarteirão. Veja como fazer as duas coisas.",
-      "start": 23.89,
-      "end": 41.88
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Esse post é o checklist que eu passo nessa call — na ordem que eu passo, com as configurações específicas que ninguém te conta até uma nova revisão do Google te pegar.",
+      "start": 50.94,
+      "end": 61.29
     },
     {
       "id": 3,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "Passo 1 — Reivindique ou crie sua listagem.",
-      "start": 42.68,
-      "end": 45.16
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Aqui vai o que o Google vê quando olha pro perfil de um restaurante. À esquerda, um perfil incompleto: o nome, o endereço e o telefone. Talvez uma única foto desfocada da fachada. Data de abertura em branco. Atributos em branco. Link do menu apontando pra um P D F. Duas avaliações de três anos atrás, ambas sem resposta. À direita, um perfil completo: categoria primária específica, dez atributos adicionais, uma descrição que menciona o bairro e o prato assinatura, um link de menu apontando pra uma página H T M L de verdade, um link de reserva, posts semanais no Google, vinte fotos recentes, uma taxa de resposta a avaliações de noventa e cinco por cento. Mesmo restaurante. Ranking totalmente diferente no map pack local. A distância entre esses dois cards é a distância entre ser encontrado numa terça-feira e não ser encontrado.",
+      "start": 62.09,
+      "end": 100.35
     },
     {
       "id": 4,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(3)",
-      "text": "Google pode já ter criado uma listagem para o seu restaurante com base em dados públicos. Pesquise o nome do seu restaurante em Google Maps. Se aparecer, clique em “Reivindicar esta empresa” ou “É proprietário desta empresa?” e siga as instruções. Se não aparecer, crie um do zero:",
-      "start": 45.61,
-      "end": 61.36
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Montar um perfil leva uns trinta minutos. Otimizar direito leva mais uma hora. A maioria dos donos faz a primeira parte e pula a segunda — é exatamente por isso que o card da esquerda é muito mais comum do que o da direita. Eis como fazer as duas.",
+      "start": 101.1,
+      "end": 115.42
     },
     {
       "id": 5,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Acesse business.google.com",
-      "start": 61.58,
-      "end": 63.14
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Passo 1 — Reivindique ou crie o seu perfil.",
+      "start": 116.52,
+      "end": 118.56
     },
     {
       "id": 6,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Clique em \"Gerenciar agora\" ou \"Adicionar sua empresa\"",
-      "start": 63.36,
-      "end": 66.55
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "O Google pode já ter criado um perfil pro seu restaurante com base em dados públicos. Pesquise o nome do seu restaurante no Google Maps. Se aparecer, clique em « Reivindicar este negócio » ou « É o dono deste negócio? » e siga as instruções. Se não aparecer, crie um do zero:",
+      "start": 119.26,
+      "end": 134.59
     },
     {
       "id": 7,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Insira o nome legal exato do seu restaurante - o nome em sua placa, não uma versão repleta de palavras-chave. \"The Irish Inn at Glen Echo\" está correto. \"The Irish Inn - Best Irish Pub Restaurant Glen Echo MD\" não é, e Google pode suspender sua listagem por isso.",
-      "start": 66.77,
-      "end": 81.49
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Vá em business.google.com",
+      "start": 134.94,
+      "end": 136.54
     },
     {
       "id": 8,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "Selecione sua categoria de negócios. Comece com “Restaurante” e adicione uma categoria primária mais específica (veja a Etapa 3 abaixo).",
-      "start": 81.71,
-      "end": 89.89
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Clique em « Gerenciar agora » ou « Adicionar sua empresa »",
+      "start": 136.86,
+      "end": 138.85
     },
     {
       "id": 9,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "Digite seu endereço. Se você é um restaurante tradicional, use seu endereço físico. Não marque \"Eu entrego bens e serviços aos meus clientes no local deles\", a menos que você realmente faça a entrega com sua própria equipe.",
-      "start": 90.11,
-      "end": 103.32
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Digite o nome legal exato do seu restaurante — o nome que tá na fachada, não uma versão entupida de palavras-chave. « The Irish Inn at Glen Echo » tá certo. « The Irish Inn — Best Irish Pub Restaurant Glen Echo MD » não tá, e o Google pode suspender o seu perfil por isso.",
+      "start": 139.17,
+      "end": 154.4
     },
     {
       "id": 10,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
-      "text": "Adicione seu número de telefone e site U R L.",
-      "start": 103.54,
-      "end": 106.72
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Escolha a categoria do negócio. Comece com « Restaurante » e depois adicione uma categoria primária mais específica (veja o Passo 3 mais abaixo).",
+      "start": 154.72,
+      "end": 162.12
     },
     {
       "id": 11,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "Passo 2 — Verifique a propriedade.",
-      "start": 107.52,
-      "end": 109.63
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Digite o seu endereço. Se você é um restaurante físico, use o endereço físico. Não marque « Entrego mercadorias e serviços aos meus clientes no endereço deles » a menos que você realmente faça entrega com equipe própria.",
+      "start": 162.44,
+      "end": 175.36
     },
     {
       "id": 12,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Google precisa confirmar que você realmente possui ou gerencia este restaurante. Os métodos de verificação mais comuns em vinte e vinte e seis:",
-      "start": 110.08,
-      "end": 118.72
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
+      "text": "Adicione o telefone e a U R L do site.",
+      "start": 175.68,
+      "end": 178.09
     },
     {
       "id": 13,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Verificação de vídeo. Este é agora o método padrão para a maioria das novas listagens. Google pede que você grave um pequeno vídeo mostrando sua vitrine, sinalização e interior. Faça upload através do aplicativo ou painel GB P. A aprovação normalmente leva alguns dias.",
-      "start": 118.94,
-      "end": 134.79
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Passo 2 — Verifique a titularidade.",
+      "start": 179.19,
+      "end": 180.75
     },
     {
       "id": 14,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Telefonema ou mensagem de texto. Disponível para algumas empresas. Google liga ou envia uma mensagem de texto para o número registrado com um código de verificação.",
-      "start": 135.01,
-      "end": 145.26
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Google needs to confirm you actually own or manage this restaurant. The most common verification methods in twenty twenty-six:",
+      "start": 181.45,
+      "end": 189.44
     },
     {
       "id": 15,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "E-mail. Às vezes disponível se Google puder confirmar a propriedade do seu domínio.",
-      "start": 145.48,
-      "end": 150.12
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Video verification. This is now the default method for most new listings. Google asks you to record a short video showing your storefront, signage, and interior. Upload it through the G B P app or dashboard. Approval typically takes a few days.",
+      "start": 189.79,
+      "end": 204.94
     },
     {
       "id": 16,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "Postal por correio. Google usado para enviar um cartão postal com um PIN para o seu endereço (5 a 14 dias). Este método foi amplamente eliminado em favor da verificação por vídeo, mas ainda pode aparecer como uma opção em alguns casos.",
-      "start": 150.34,
-      "end": 164.38
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Phone call or text. Available for some businesses. Google calls or texts the number on file with a verification code.",
+      "start": 205.26,
+      "end": 213.2
     },
     {
       "id": 17,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Não pule a verificação. Uma listagem não verificada não pode responder a avaliações, postar atualizações ou acessar análises – e tem uma classificação pior do que uma listagem verificada.",
-      "start": 164.7,
-      "end": 176.04
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Email. Sometimes available if Google can confirm your domain ownership.",
+      "start": 213.52,
+      "end": 217.7
     },
     {
       "id": 18,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "Passo 3 — Escolha as categorias certas.",
-      "start": 176.84,
-      "end": 179.23
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Postcard by mail. Google used to send a postcard with a PIN to your address (5–14 days). This method has been largely phased out in favor of video verification but may still appear as an option in some cases.",
+      "start": 218.02,
+      "end": 231.91
     },
     {
       "id": 19,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "As categorias são a maior alavanca que você tem para a classificação da pesquisa local. Google usa sua categoria principal para determinar em quais pesquisas sua listagem aparece.",
-      "start": 179.68,
-      "end": 189.91
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Do not skip verification. An unverified listing cannot respond to reviews, post updates, or access analytics — and it ranks worse than a verified one.",
+      "start": 232.43,
+      "end": 242.58
     },
     {
       "id": 20,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Categoria primária: escolha a mais específica que se aplica. “Restaurante Italiano” supera “Restaurante”. “Restaurante Brunch” vence “Restaurante Americano” se o brunch for sua atração principal. Você obtém exatamente uma categoria primária – faça valer a pena.",
-      "start": 190.23,
-      "end": 204.64
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Video verification sounds like the fastest option on paper and then your approval sits pending for eleven days and you are about to open a new patio. My honest tip: if you are ever offered postcard-by-mail as a fallback, take it. Slower on average, but it has an actual bounded timer — you know within two weeks if it worked. Video verification can ghost you for a month and you have no recourse but to re-record and re-upload.",
+      "start": 243.1,
+      "end": 261.83
     },
     {
       "id": 21,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Categorias adicionais: adicione mais 2 a 5 que descrevam com precisão o seu negócio. Um restaurante que também faz catering pode adicionar \"Fornecedor\". Um lugar com um programa de bar forte pode adicionar “Bar” ou “Cocktail Bar”. Não adicione categorias que você realmente não atende — Google pode penalizá-lo por categorias enganosas.",
-      "start": 204.86,
-      "end": 224.18
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Also: record the video on the same phone you will use to manage the listing afterward . Google's systems correlate device fingerprints. Switching devices mid-process triggers a manual review that adds days.",
+      "start": 262.35,
+      "end": 275.36
     },
     {
       "id": 22,
       "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "Passo 4 — Preencha todos os campos.",
-      "start": 224.98,
-      "end": 227.35
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Step 3 — Choose the right categories.",
+      "start": 276.46,
+      "end": 278.35
     },
     {
       "id": 23,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "A maioria dos proprietários preenche nome, endereço, telefone e horário de funcionamento – depois para. Aqui está o que eles sentem falta:",
-      "start": 227.8,
-      "end": 235.4
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "If I could only fix one thing on most of the profiles I look at, it would be the primary category. It is the single biggest lever you have for local search ranking, and it is the one owners treat like a formality.",
+      "start": 279.05,
+      "end": 291.35
     },
     {
       "id": 24,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "Descrição do negócio. Você obtém 750 caracteres. Use-os. Dê um nome à sua culinária, ao seu bairro, à sua filosofia de fornecimento e aos seus pratos exclusivos. Isso é rastreado por Google e mostrado aos clientes.",
-      "start": 235.62,
-      "end": 249.27
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Here is what Google is doing under the hood: when someone types \"Italian restaurant near me,\" Google filters the local map pack down to listings whose primary category is \"Italian Restaurant.\" Listings with \"Italian Restaurant\" in their additional categories are candidates, but they rank below the primary-matches. So if you are an Italian place with \"Restaurant\" as your primary, you are losing to every other Italian spot in the neighborhood before the query even looks at your reviews or photos.",
+      "start": 291.87,
+      "end": 317.29
     },
     {
       "id": 25,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "Link do cardápio. Aponte isso para a página de menu do seu site, não para um PDF. Se você ainda não tem um site, pode usar o editor de menu integrado do Google - mas uma página da web real é melhor para SEO e para a experiência de leitura do cliente.",
-      "start": 249.49,
-      "end": 263.85
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Primary category: pick the most specific one that applies. \"Italian Restaurant\" beats \"Restaurant.\" \"Brunch Restaurant\" beats \"American Restaurant\" if brunch is your main draw. You get exactly one — make it count.",
+      "start": 317.81,
+      "end": 330.45
     },
     {
       "id": 26,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
-      "text": "Link de reserva. Se você utiliza OpenTable, Resy, Tock, ou qualquer outra plataforma, adicione aqui o U R L de reserva direta. Google mostrará um botão \"Reservar uma mesa\" na sua listagem.",
-      "start": 264.07,
-      "end": 275.61
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Additional categories: add 2–5 more that accurately describe your business. A restaurant that also does catering might add \"Caterer.\" A place with a strong bar program might add \"Bar\" or \"Cocktail Bar.\" Do not add categories you do not actually serve — Google suspends listings for misleading categories, and re-verification takes weeks.",
+      "start": 330.77,
+      "end": 349
     },
     {
       "id": 27,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
-      "text": "Link do pedido. A mesma ideia: direcione para sua página de pedido direto (por meio de Toast, Square ou seu site), não para um mercado de terceiros que cobra 30%.",
-      "start": 275.83,
-      "end": 286.11
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "I ran one of my restaurants on \"Restaurant\" as the primary category for the first two years we were open . That is me, somebody who does this for a living, sitting on a generic primary because nobody on staff thought to check. The day I switched it to the specific cuisine, our weekday rankings for \"[cuisine] near me\" moved up roughly five positions in the local pack. Not overnight — it took about a week. No other change, no new reviews, no new photos. Just the category.",
+      "start": 349.52,
+      "end": 369.43
     },
     {
       "id": 28,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
-      "text": "Atributos. Google permite especificar: assentos ao ar livre, acessível para cadeiras de rodas, aceita reservas, bom para grupos, bom para crianças, serve bebidas alcoólicas, música ao vivo, etc. Verifique todos os atributos aplicáveis. Eles filtram as pesquisas dos clientes (“restaurantes com mesas ao ar livre perto de mim”).",
-      "start": 286.33,
-      "end": 304.72
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "If you do nothing else on this list, pull up your profile and look at your primary. If it says \"Restaurant\" and you are any kind of specific cuisine, that is thirty seconds to fix and real ranking in return.",
+      "start": 369.95,
+      "end": 381.79
     },
     {
       "id": 29,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(6)",
-      "text": "Data de abertura. Se o seu restaurante está aberto desde 1931 (como um dos meus), coloque essa data. O patrimônio é um sinal de confiança.",
-      "start": 304.94,
-      "end": 313.61
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Step 4 — Complete every field.",
+      "start": 382.89,
+      "end": 384.63
     },
     {
       "id": 30,
-      "kind": "quote",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "Um Google Business Profile completo com todos os campos preenchidos é melhor classificado do que um incompleto. Google diz isso diretamente.",
-      "start": 314.16,
-      "end": 322.42
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Most owners fill in name, address, phone, and hours — then stop. Here is what they miss:",
+      "start": 385.33,
+      "end": 390.57
     },
     {
       "id": 31,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(6)",
-      "text": "Passo 5 — Adicione fotos reais.",
-      "start": 323.22,
-      "end": 325.42
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Business description. You get 750 characters. Use them. Name your cuisine, your neighborhood, your sourcing philosophy, and your signature dishes. This is crawled by Google and shown to customers.",
+      "start": 390.92,
+      "end": 403.12
     },
     {
       "id": 32,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Listagens com fotos geram significativamente mais engajamento do que aquelas sem fotos. Os dados do Google têm mostrado consistentemente que listagens com fotos recebem significativamente mais engajamento – tanto solicitações de direção quanto cliques no site – do que aquelas sem.",
-      "start": 325.87,
-      "end": 342.99
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Menu link. Point this at your website's menu page, not a P D F. If you do not have a website yet, you can use Google's built-in menu editor — but a real web page is better for S E O and for the customer's reading experience.",
+      "start": 403.44,
+      "end": 417.1
     },
     {
       "id": 33,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "O que carregar:",
-      "start": 343.31,
-      "end": 344.26
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Reservation link. If you use OpenTable, Resy, Tock, or any other platform, add the direct booking U R L here. Google will show a \"Reserve a table\" button on your listing.",
+      "start": 417.42,
+      "end": 428.75
     },
     {
       "id": 34,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
-      "text": "Foto da capa: a melhor foto da sua comida ou do seu quarto. Isto é o que aparece nos resultados da pesquisa.",
-      "start": 344.48,
-      "end": 350.59
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Order link. Same idea — point to your direct ordering page (through Toast, Square, or your website), not to a third-party marketplace that charges you 30%.",
+      "start": 429.07,
+      "end": 438.99
     },
     {
       "id": 35,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
-      "text": "Logo: marca do seu restaurante, formato quadrado, fundo limpo.",
-      "start": 350.81,
-      "end": 354.31
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "Attributes. Google lets you specify: outdoor seating, wheelchair accessible, takes reservations, good for groups, good for kids, serves alcohol, live music, et cetera Check every attribute that applies. These filter into customer searches (\"restaurants with outdoor seating near me\").",
+      "start": 439.31,
+      "end": 455.53
     },
     {
       "id": 36,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
-      "text": "Fotos do interior: sala de jantar, bar, pátio. Pelo menos 3–5.",
-      "start": 354.53,
-      "end": 358.49
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(6)",
+      "text": "Opening date. If your restaurant has been open since 1931 (like one of mine), put that date in. Heritage is a trust signal.",
+      "start": 455.85,
+      "end": 464.41
     },
     {
       "id": 37,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
-      "text": "Fotos de comida: seus pratos mais fotogênicos. Qualidade profissional, se possível – fotos do telefone funcionam bem se a iluminação for boa. Pelo menos 5–10.",
-      "start": 358.71,
-      "end": 368.33
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "The restaurant on the next block is not beating you because their food is better. They are beating you because they filled in the attributes you left blank.",
+      "start": 465.16,
+      "end": 473.81
     },
     {
       "id": 38,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(5)",
-      "text": "Fotos da equipe: o chef, o barman, o anfitrião. As pessoas confiam nos rostos.",
-      "start": 368.55,
-      "end": 373.04
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Step 5 — Add real photos.",
+      "start": 474.91,
+      "end": 476.58
     },
     {
       "id": 39,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(6)",
-      "text": "Foto externa: a vitrine, mostrando claramente sua placa. Isso ajuda os clientes a encontrar você na chegada.",
-      "start": 373.26,
-      "end": 379.61
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Profiles with photos get meaningfully more clicks and direction-requests than profiles without. Google has said this publicly for years. What they do not say out loud is which photos actually move the needle. After shooting a few hundred of them for restaurants, I can tell you the ranking is roughly: the exterior with your sign clearly visible, the dining room at dinner service with people in it, one hero plate of your signature dish, a clear shot of your menu board, and then everything else. Stock photography is worse than nothing — Google seems to detect and down-rank obvious stock.",
+      "start": 477.28,
+      "end": 504
     },
     {
       "id": 40,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "Faça upload de novas fotos pelo menos uma vez por mês. Fotos recentes sinalizam um negócio ativo e fornecem conteúdo novo ao Google.",
-      "start": 379.93,
-      "end": 388.05
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "What to upload:",
+      "start": 504.52,
+      "end": 505.29
     },
     {
       "id": 41,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(7)",
-      "text": "Etapa 6 — Configurar postagens Google.",
-      "start": 388.85,
-      "end": 391.34
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "Cover photo: the single best shot of your food or your room. This is what appears in search results.",
+      "start": 505.64,
+      "end": 511.5
     },
     {
       "id": 42,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "Google Postagens são atualizações curtas que aparecem diretamente na sua listagem - como mídia social para Google Maps. A maioria dos restaurantes nunca os utiliza, o que significa que aqueles que os utilizam se destacam imediatamente. Use-os para:",
-      "start": 391.79,
-      "end": 406.24
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "Logo: your restaurant's mark, square format, clean background.",
+      "start": 511.82,
+      "end": 515.19
     },
     {
       "id": 43,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(1)",
-      "text": "Especiais semanais e mudanças sazonais no menu",
-      "start": 406.46,
-      "end": 409.16
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "Interior photos: the dining room, the bar, the patio. At least 3–5.",
+      "start": 515.51,
+      "end": 519.9
     },
     {
       "id": 44,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(2)",
-      "text": "Eventos (música ao vivo, noite de curiosidades, feriados)",
-      "start": 409.38,
-      "end": 412.74
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
+      "text": "Food photos: your most photogenic dishes. Professional quality if possible — phone photos are fine if the lighting is good. At least 5–10.",
+      "start": 520.22,
+      "end": 529.5
     },
     {
       "id": 45,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(3)",
-      "text": "Promoções (happy hour, descontos no bairro)",
-      "start": 412.96,
-      "end": 415.27
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(5)",
+      "text": "Team photos: the chef, the bartender, the host stand. People trust faces.",
+      "start": 529.82,
+      "end": 534.26
     },
     {
       "id": 46,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(4)",
-      "text": "Novos itens de menu ou bebidas sazonais",
-      "start": 415.49,
-      "end": 418.01
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(6)",
+      "text": "Exterior photo: the storefront, clearly showing your sign. This helps customers find you on arrival.",
+      "start": 534.58,
+      "end": 540.47
     },
     {
       "id": 47,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "As postagens padrão são arquivadas após cerca de seis meses (os eventos expiram após a data do evento). Mas a atualização é importante – Google apresenta postagens recentes com mais destaque do que postagens obsoletas. Pense em postar como um hábito semanal, não como uma configuração única. Uma postagem por semana, publicada na segunda ou terça-feira, mantém sua listagem ativa e sinaliza tanto para Google quanto para os clientes que o restaurante está ativo.",
-      "start": 418.23,
-      "end": 444.56
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Upload new photos at least once a month. Fresh photos signal an active business, and they give Google fresh content to surface.",
+      "start": 540.99,
+      "end": 548.72
     },
     {
       "id": 48,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(8)",
-      "text": "Etapa 7 – Responda a cada avaliação.",
-      "start": 445.36,
-      "end": 447.71
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "At one of my places we used to batch-upload a dozen photos once a quarter when I had time. Then one month I tested a cadence of two photos a week — Monday morning, Thursday afternoon — for a season. Same restaurant, same quality of photos, just a slower drip. Map-pack impressions on weekday lunch queries roughly doubled over the quarter.",
+      "start": 549.24,
+      "end": 567.26
     },
     {
       "id": 49,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "Escrevi um post inteiro sobre avaliações Google, mas a versão resumida: responda a todas as avaliações, positivas e negativas, em 24 horas. Mantenha as respostas curtas, específicas e humanas. Responder às avaliações é um sinal de atendimento ao cliente e um sinal de classificação – Google confirma isso em sua documentação de classificação local.",
-      "start": 448.16,
-      "end": 468.4
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "I cannot prove causation. But I have seen the pattern enough times now to believe Google treats consistent posting as a liveness signal more than it treats a big one-time dump as a content signal. Drip > dump.",
+      "start": 567.78,
+      "end": 580.85
     },
     {
       "id": 50,
       "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(9)",
-      "text": "O hábito semanal de quinze minutos.",
-      "start": 469.2,
-      "end": 471.37
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Step 6 — Set up Google Posts.",
+      "start": 581.95,
+      "end": 583.73
     },
     {
       "id": 51,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "Depois que seu perfil estiver configurado, a manutenção é mínima. Aqui está a rotina semanal:",
-      "start": 471.82,
-      "end": 477.41
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "Google Posts are short updates that appear directly on your listing — like social media for Google Maps. Most restaurants never use them, which means the ones that do stand out immediately. Use them for:",
+      "start": 584.43,
+      "end": 596.91
     },
     {
       "id": 52,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Segunda-feira: publique uma postagem Google (o especial desta semana, um evento ou uma foto recente).",
-      "start": 477.63,
-      "end": 483.34
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(1)",
+      "text": "Weekly specials and seasonal menu changes",
+      "start": 597.26,
+      "end": 599.77
     },
     {
       "id": 53,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Diariamente (5 min): responda a quaisquer novos comentários.",
-      "start": 483.56,
-      "end": 487.32
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(2)",
+      "text": "Events (live music, trivia night, holiday hours)",
+      "start": 600.09,
+      "end": 602.88
     },
     {
       "id": 54,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Mensalmente: carregue 2 a 3 novas fotos. Atualize os horários se eles mudaram. Verifique se o link do seu menu ainda funciona.",
-      "start": 487.54,
-      "end": 495.08
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(3)",
+      "text": "Promotions (happy hour, neighborhood discounts)",
+      "start": 603.2,
+      "end": 605.48
     },
     {
       "id": 55,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "Trimestralmente: revise seus atributos, atualize sua descrição se seu conceito evoluiu e verifique suas análises para ver quais pesquisas estão encontrando você.",
-      "start": 495.3,
-      "end": 504.67
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(4)",
+      "text": "New menu items or seasonal drinks",
+      "start": 605.8,
+      "end": 607.67
     },
     {
       "id": 56,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "É isso. Quinze minutos por semana, mais um check-in mensal. Os restaurantes que fazem isso superam consistentemente aqueles que criaram seu perfil uma vez e nunca mais tocaram nele.",
-      "start": 504.99,
-      "end": 515.31
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "Standard posts are archived after about six months (events expire after the event date). But freshness matters — Google surfaces recent posts more prominently than stale ones. Think of posting as a weekly habit, not a one-time setup. One post per week, published on Monday or Tuesday, keeps your listing active and signals to both Google and customers that the restaurant is alive.",
+      "start": 608.02,
+      "end": 626.58
+    },
+    {
+      "id": 57,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "Step 7 — Respond to every review.",
+      "start": 627.68,
+      "end": 629.86
+    },
+    {
+      "id": 58,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "I wrote an entire post about Google reviews , but the short version: respond to every review, positive and negative, within 24 hours. Keep responses short, specific, and human. Responding to reviews is both a customer service signal and a ranking signal — Google confirms this in their local ranking documentation.",
+      "start": 630.56,
+      "end": 648.62
+    },
+    {
+      "id": 59,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "The fifteen-minute weekly habit.",
+      "start": 649.72,
+      "end": 651.19
+    },
+    {
+      "id": 60,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "Once your profile is set up, maintenance is minimal. Here is the weekly routine:",
+      "start": 651.89,
+      "end": 656.46
+    },
+    {
+      "id": 61,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Monday: publish one Google Post (this week's special, an event, or a fresh photo).",
+      "start": 656.81,
+      "end": 661.68
+    },
+    {
+      "id": 62,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Daily (5 min): respond to any new reviews.",
+      "start": 662,
+      "end": 664.63
+    },
+    {
+      "id": 63,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Monthly: upload 2–3 new photos. Update hours if they have changed. Check that your menu link still works.",
+      "start": 664.95,
+      "end": 671.68
+    },
+    {
+      "id": 64,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Quarterly: review your attributes, update your description if your concept has evolved, and check your analytics to see which searches are finding you.",
+      "start": 672,
+      "end": 680.24
+    },
+    {
+      "id": 65,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "That is it. Fifteen minutes a week, plus a monthly check-in. The restaurants that do this consistently outrank the ones that set up their profile once and never touched it again.",
+      "start": 680.76,
+      "end": 691.09
     }
   ]
 }
