@@ -327,14 +327,16 @@ function indexByTopic(locale) {
 // ---------- shared head/nav/footer fragments ----------
 
 function pageHead(locale, { title, description, canonical, ogImage }) {
-  // Default OG image: reuse the existing /brand/og/learn.png card.
-  // Per-page templates (term pages, etc.) override via the ogImage
-  // option. Adding topic/library-specific OG cards is a follow-up;
-  // for now the Library hub card is a fine fallback.
+  // Default OG image: the Library hub card. Renderers (renderTopicsHub,
+  // renderTopicPage, renderTermPage) override via ogImage when they
+  // have a more specific card. ES pages use the -es suffix.
   if (!ogImage) {
-    ogImage = locale === 'es' ? '/brand/og/learn-es.png' : '/brand/og/learn.png';
-  } else if (locale === 'es' && ogImage === '/brand/og/glossary.png') {
-    ogImage = '/brand/og/glossary-es.png';
+    ogImage = locale === 'es' ? '/brand/og/library-es.png' : '/brand/og/library.png';
+  } else if (locale === 'es') {
+    // Swap any EN-suffixed default to its ES counterpart.
+    if (ogImage === '/brand/og/glossary.png') ogImage = '/brand/og/glossary-es.png';
+    if (ogImage === '/brand/og/learn.png') ogImage = '/brand/og/learn-es.png';
+    if (ogImage === '/brand/og/topics.png') ogImage = '/brand/og/topics-es.png';
   }
   // Compute hreflang counterparts. canonical is locale-correct
   // already; build the other locale's URL by toggling the /es/ prefix.
@@ -646,10 +648,16 @@ function renderTopicPage(locale, topic, content) {
 </section>`);
   }
 
+  // Topic-specific OG card. Slug pattern is "topic-<slug>" (or
+  // "-es" suffix for ES). Falls back to library default if a
+  // bespoke card is missing — pageHead handles that.
+  const topicCardSlug = `topic-${topic.slug}${locale === 'es' ? '-es' : ''}`;
+
   return `${pageHead(locale, {
     title: locale === 'es' ? `${name} — Biblioteca Muntin Digital` : `${name} — Muntin Digital library`,
     description: desc,
     canonical,
+    ogImage: `/brand/og/${topicCardSlug}.png`,
   })}
 ${navHeader(altUrl)}
 
@@ -728,6 +736,7 @@ function renderTopicsHub(locale, byTopicForLocale) {
       ? 'Explora la biblioteca Muntin Digital por tema — velocidad y móvil, conversiones y reservas, SEO local, operaciones y margen, confianza y reseñas, marca y diseño.'
       : 'Browse the Muntin Digital library by topic — speed and mobile, conversions and reservations, local SEO, operations and margin, trust and reviews, brand and design.',
     canonical,
+    ogImage: locale === 'es' ? '/brand/og/topics-es.png' : '/brand/og/topics.png',
   })}
 ${navHeader(altUrl)}
 
