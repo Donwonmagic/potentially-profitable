@@ -932,6 +932,88 @@ function existingFurtherReadingHrefs(blogSlug) {
   return hrefs;
 }
 
+// ---------- tool deep-links ----------
+//
+// Every tool gets a "Learn more about this" block injected before
+// </main>, surfacing one curated glossary term and one curated
+// article + the topic page(s) the tool belongs to. Closes the loop
+// from tool result → educational ecosystem (the missing piece in
+// the original UX audit). Idempotent via comment markers.
+
+function renderToolDeepLinks(tool, glossaryTerm, article) {
+  const topicChips = (tool.topics || [])
+    .map(t => TOPIC_BY_SLUG[t])
+    .filter(Boolean)
+    .map(t => `<a class="tool-deep-topic" href="/learn/topics/${esc(t.slug)}/">${esc(t.name)}</a>`)
+    .join('\n        ');
+
+  const termCard = glossaryTerm
+    ? `<a class="tool-deep-card tool-deep-card-term" href="/glossary/${esc(glossaryTerm.slug)}/">
+          <span class="tool-deep-kind">Glossary</span>
+          <h3>${glossaryTerm.head}</h3>
+          ${glossaryTerm.aka ? `<p class="tool-deep-aka">${glossaryTerm.aka}</p>` : ''}
+          <p class="tool-deep-snippet">${esc(stripTags(glossaryTerm.defHtml).slice(0, 140))}${stripTags(glossaryTerm.defHtml).length > 140 ? '…' : ''}</p>
+          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
+        </a>`
+    : '';
+
+  const articleCard = article
+    ? `<a class="tool-deep-card tool-deep-card-article" href="/blog/${esc(article.slug)}/">
+          <span class="tool-deep-kind">Article</span>
+          <h3>${esc(article.title)}</h3>
+          <p class="tool-deep-snippet">${esc(article.dek)}</p>
+          <span class="tool-deep-cta">Read the playbook <span aria-hidden="true">→</span></span>
+        </a>`
+    : '';
+
+  return `<!-- LIBRARY:tool-deep-links:start -->
+<section class="tool-deep-links" aria-labelledby="tool-deep-h">
+  <div class="container">
+    <header class="tool-deep-head">
+      <span class="eyebrow">Learn more</span>
+      <h2 id="tool-deep-h">Why this tool exists.</h2>
+      <p class="tool-deep-blurb">Every check this tool runs maps to a specific concept in the Library. Two starting points — one definition, one playbook.</p>
+      ${topicChips ? `<div class="tool-deep-topics">${topicChips}</div>` : ''}
+    </header>
+    <div class="tool-deep-grid">
+      ${termCard}
+      ${articleCard}
+    </div>
+  </div>
+</section>
+<!-- LIBRARY:tool-deep-links:end -->`;
+}
+
+function injectToolDeepLinks(toolSlug, tool, glossaryTerm, article) {
+  const file = join(REPO, 'tools', toolSlug, 'index.html');
+  let html;
+  try {
+    html = readFileSync(file, 'utf8');
+  } catch {
+    console.warn(`  warning: ${toolSlug}: file not found, skipping`);
+    return 'skipped';
+  }
+
+  const block = renderToolDeepLinks(tool, glossaryTerm, article);
+
+  const markerRe = /<!-- LIBRARY:tool-deep-links:start -->[\s\S]*?<!-- LIBRARY:tool-deep-links:end -->/;
+  if (markerRe.test(html)) {
+    writeFileSync(file, html.replace(markerRe, block), 'utf8');
+    return 'updated';
+  }
+
+  // First run — inject right before </main>.
+  const anchor = '</main>';
+  const idx = html.indexOf(anchor);
+  if (idx < 0) {
+    console.warn(`  warning: ${toolSlug}: no </main> anchor, skipping`);
+    return 'skipped';
+  }
+  const replaced = html.slice(0, idx) + block + '\n\n' + html.slice(idx);
+  writeFileSync(file, replaced, 'utf8');
+  return 'inserted';
+}
+
 // ---------- run ----------
 
 const byTopic = indexByTopic();
@@ -958,6 +1040,25 @@ for (const researchSlug of Object.keys(tagsDoc.research_notes)) {
   const list = cites[researchSlug] || [];
   const action = injectCitedIn(researchSlug, list);
   console.log(`  ${researchSlug.padEnd(34)} ${list.length} citing post(s) — ${action}`);
+}
+
+// Tool deep-links — every tool gets a Library block at the bottom
+// surfacing its curated glossary term + article + topic chips.
+{
+  const { terms } = parseGlossary();
+  const termBySlug = Object.fromEntries(terms.map(t => [t.slug, t]));
+  console.log(`\nTool deep-links:`);
+  for (const [toolSlug, tool] of Object.entries(tagsDoc.tools)) {
+    const term = termBySlug[tool.glossary_term];
+    const articleSlug = tool.article;
+    const articleMeta = articleSlug ? tagsDoc.blog_posts[articleSlug] : null;
+    const article = articleMeta ? { slug: articleSlug, ...articleMeta } : null;
+    const action = injectToolDeepLinks(toolSlug, tool, term, article);
+    const refs = [];
+    if (term) refs.push(`glossary:${term.slug}`);
+    if (article) refs.push(`article:${article.slug}`);
+    console.log(`  ${toolSlug.padEnd(22)} → ${refs.join(', ').padEnd(60)} — ${action}`);
+  }
 }
 
 // "See also" blocks on blog posts. Each post gets up to 3
