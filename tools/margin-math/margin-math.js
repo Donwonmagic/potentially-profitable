@@ -317,11 +317,35 @@ function mmCalcBreakEvenCovers(input) {
 // without-losing-reservations/ walks through why this holds for the
 // 3-12% raise range the calculator supports.
 //
-// Break-even cover loss: the loss at which newSales = baseline.
-//   breakEven = priceRaise / (1 + priceRaise)
-//   e.g., 6% raise tolerates ~5.66% cover loss before it's a wash.
+// Two break-even cover-loss thresholds are reported:
 //
-// Band:
+//   Revenue break-even: cover loss at which newSales = baseline.
+//     L_rev = p / (1 + p)
+//     e.g., a 6% raise tolerates ~5.66% cover loss before revenue
+//     returns to baseline.
+//
+//   Profit break-even: cover loss at which new contribution =
+//   baseline contribution. Variable cost per cover (food, variable
+//   labor, card fees) is unchanged by a menu-price change, so each
+//   lost cover only costs you its contribution margin, not the whole
+//   ticket — which means the profit break-even is much more generous
+//   than the revenue one for low-margin restaurants.
+//     Derivation (m = contribution margin per cover as a fraction):
+//       new contribution = N(1-L) × [T(1+p) - T(1-m)] = N(1-L)T(p+m)
+//       baseline contribution = NTm
+//       setting equal: (1-L)(p+m) = m  →  L_profit = p / (p + m)
+//     e.g., a 6% raise at a 20% contribution margin tolerates
+//     ~23.1% cover loss before profit returns to baseline.
+//   Requires contribMarginPct > 0; returns 0 otherwise so UI can
+//   treat "no margin supplied" as "no profit break-even to show".
+//
+// Contribution delta (dollars) is the margin-relevant counterpart to
+// the revenue delta already computed: the change in monthly
+// contribution dollars at the given raise × loss × margin.
+//     contribution delta = baseline × [(1-L)(p+m) - m]
+//
+// Band (driven off revenue delta so it remains comparable to prior
+// versions — profit delta is surfaced alongside, not substituted):
 //   > +2% delta    — good  ("real pickup")
 //   0 to +2%       — ok    ("net positive, small")
 //   −1% to 0       — warn  ("wash — watching elasticity")
@@ -333,6 +357,7 @@ function mmCalcPriceRaise(input) {
   var monthlyBaseline = mmNum(input.monthlyBaseline);
   var priceRaisePct = mmClampPct(input.priceRaisePct);
   var coverLossPct = mmClampPct(input.coverLossPct);
+  var contribMarginPct = mmClampPct(input.contribMarginPct);
 
   var newSales = monthlyBaseline * (1 + priceRaisePct) * (1 - coverLossPct);
   var delta = newSales - monthlyBaseline;
@@ -340,6 +365,17 @@ function mmCalcPriceRaise(input) {
 
   var breakEvenCoverLossPct = priceRaisePct > 0
     ? (priceRaisePct / (1 + priceRaisePct))
+    : 0;
+
+  var breakEvenProfitCoverLossPct = (priceRaisePct > 0 && contribMarginPct > 0)
+    ? (priceRaisePct / (priceRaisePct + contribMarginPct))
+    : 0;
+
+  var contribDelta = monthlyBaseline * (
+    (1 - coverLossPct) * (priceRaisePct + contribMarginPct) - contribMarginPct
+  );
+  var contribDeltaPct = (monthlyBaseline > 0 && contribMarginPct > 0)
+    ? (contribDelta / (monthlyBaseline * contribMarginPct))
     : 0;
 
   var band;
@@ -352,12 +388,16 @@ function mmCalcPriceRaise(input) {
     inputs: {
       monthlyBaseline: monthlyBaseline,
       priceRaisePct: priceRaisePct,
-      coverLossPct: coverLossPct
+      coverLossPct: coverLossPct,
+      contribMarginPct: contribMarginPct
     },
     newSales: newSales,
     delta: delta,
     deltaPct: deltaPct,
     breakEvenCoverLossPct: breakEvenCoverLossPct,
+    breakEvenProfitCoverLossPct: breakEvenProfitCoverLossPct,
+    contribDelta: contribDelta,
+    contribDeltaPct: contribDeltaPct,
     band: band
   };
 }

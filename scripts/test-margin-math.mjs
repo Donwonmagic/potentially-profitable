@@ -433,6 +433,41 @@ assertEq('bucket: fixed $60000',  bucketFixedCosts(60000),  'gte60k');
   assertEq('PR: -0.09% -> warn', warn.band, 'warn');
 }
 
+// Profit-based break-even + contribution delta
+//   6% raise at 20% margin -> profit BE = 0.06 / 0.26 ≈ 23.08%
+//   2.5% cover loss at 20% margin:
+//     new contribution = 100000 × 0.975 × 0.26 = 25,350
+//     baseline contrib = 100000 × 0.20      = 20,000
+//     contribDelta     = +5,350 (+26.75% on baseline contribution)
+{
+  const r = calcPriceRaise({
+    monthlyBaseline: 100000,
+    priceRaisePct: 0.06,
+    coverLossPct: 0.025,
+    contribMarginPct: 0.20
+  });
+  assertClose('PR: profit break-even ≈ 23.08%', r.breakEvenProfitCoverLossPct, 0.2308, 0.001);
+  assertClose('PR: contrib delta ≈ +$5,350',    r.contribDelta, 5350, 1);
+  assertClose('PR: contrib deltaPct ≈ +26.75%', r.contribDeltaPct, 0.2675, 0.001);
+}
+
+// Profit break-even is 0 when contribMarginPct is not supplied
+{
+  const r = calcPriceRaise({ monthlyBaseline: 100000, priceRaisePct: 0.06, coverLossPct: 0.025 });
+  assertEq('PR: profit BE = 0 without margin', r.breakEvenProfitCoverLossPct, 0);
+  assertEq('PR: contrib deltaPct = 0 without margin', r.contribDeltaPct, 0);
+}
+
+// At profit break-even the contribution delta is ~zero
+{
+  const p = 0.06, m = 0.20;
+  const L = p / (p + m); // 0.2308
+  const r = calcPriceRaise({
+    monthlyBaseline: 100000, priceRaisePct: p, coverLossPct: L, contribMarginPct: m
+  });
+  assert('PR: near-zero contrib delta at profit BE', Math.abs(r.contribDelta) < 1);
+}
+
 // Privacy: bucket scan
 scan('bucketPriceRaiseTier scan 0-20%', bucketPriceRaiseTier, 0, 0.20, 0.005, PRICE_RAISE_TIERS);
 scan('bucketCoverLoss scan 0-12%',      bucketCoverLoss,      0, 0.12, 0.005, COVER_LOSS_BUCKETS);
