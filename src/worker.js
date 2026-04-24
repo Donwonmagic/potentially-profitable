@@ -44,6 +44,10 @@ import {
   enforceMaxLengths,
   assertSafeHttpUrl,
   pickLang,
+  isOriginAllowed,
+  isHighThreatIP,
+  isTimestampSane,
+  classifySpam,
 } from './lib/validation.js';
 import { withAuditCache } from './lib/audit-cache.js';
 import { createRateLimiter, clientIpFromRequest } from './lib/rate-limit.js';
@@ -439,10 +443,32 @@ function rewriteAuditPageForSnapshot(response, snapshot, token, reqUrl) {
 
 
 async function handleIntake(request, env, ctx) {
+  // Spam-defense layer 1+2: cheap edge checks before parsing the
+  // body. Origin allowlist catches form-action scrapers; Cloudflare
+  // threat score catches bot-network IPs.
+  if (!isOriginAllowed(request)) {
+    console.warn('intake:spam', { reason: 'no-origin' });
+    return jsonResponse({ ok: true, status: 'sent' }, 200);
+  }
+  if (isHighThreatIP(request)) {
+    console.warn('intake:spam', { reason: 'high-threat' });
+    return jsonResponse({ ok: true, status: 'sent' }, 200);
+  }
+
   const body = await parseFormBody(request);
 
   // Silently accept spam so bots get no signal
   if (isSpamHoneypot(body)) {
+    console.warn('intake:spam', { reason: 'honeypot' });
+    return jsonResponse({ ok: true, status: 'sent' }, 200);
+  }
+  if (!isTimestampSane(body)) {
+    console.warn('intake:spam', { reason: 'timestamp' });
+    return jsonResponse({ ok: true, status: 'sent' }, 200);
+  }
+  const heuristic = classifySpam(body);
+  if (heuristic.spam) {
+    console.warn('intake:spam', { reason: 'content', signals: heuristic.reasons });
     return jsonResponse({ ok: true, status: 'sent' }, 200);
   }
 
@@ -494,9 +520,28 @@ async function handleIntake(request, env, ctx) {
 
 
 async function handleChecklist(request, env, ctx) {
+  if (!isOriginAllowed(request)) {
+    console.warn('checklist:spam', { reason: 'no-origin' });
+    return jsonResponse({ ok: true, status: 'sent' }, 200);
+  }
+  if (isHighThreatIP(request)) {
+    console.warn('checklist:spam', { reason: 'high-threat' });
+    return jsonResponse({ ok: true, status: 'sent' }, 200);
+  }
+
   const body = await parseFormBody(request);
 
   if (isSpamHoneypot(body)) {
+    console.warn('checklist:spam', { reason: 'honeypot' });
+    return jsonResponse({ ok: true, status: 'sent' }, 200);
+  }
+  if (!isTimestampSane(body)) {
+    console.warn('checklist:spam', { reason: 'timestamp' });
+    return jsonResponse({ ok: true, status: 'sent' }, 200);
+  }
+  const checklistHeuristic = classifySpam(body);
+  if (checklistHeuristic.spam) {
+    console.warn('checklist:spam', { reason: 'content', signals: checklistHeuristic.reasons });
     return jsonResponse({ ok: true, status: 'sent' }, 200);
   }
 
@@ -526,9 +571,28 @@ async function handleChecklist(request, env, ctx) {
 
 
 async function handleAuditReport(request, env, ctx) {
+  if (!isOriginAllowed(request)) {
+    console.warn('audit-report:spam', { reason: 'no-origin' });
+    return jsonResponse({ ok: true, status: 'sent' }, 200);
+  }
+  if (isHighThreatIP(request)) {
+    console.warn('audit-report:spam', { reason: 'high-threat' });
+    return jsonResponse({ ok: true, status: 'sent' }, 200);
+  }
+
   const body = await parseFormBody(request);
 
   if (isSpamHoneypot(body)) {
+    console.warn('audit-report:spam', { reason: 'honeypot' });
+    return jsonResponse({ ok: true, status: 'sent' }, 200);
+  }
+  if (!isTimestampSane(body)) {
+    console.warn('audit-report:spam', { reason: 'timestamp' });
+    return jsonResponse({ ok: true, status: 'sent' }, 200);
+  }
+  const auditHeuristic = classifySpam(body);
+  if (auditHeuristic.spam) {
+    console.warn('audit-report:spam', { reason: 'content', signals: auditHeuristic.reasons });
     return jsonResponse({ ok: true, status: 'sent' }, 200);
   }
 
