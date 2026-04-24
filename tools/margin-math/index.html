@@ -175,6 +175,24 @@
     .mm-safety td:nth-child(2)::before{content:'Margin Math: ';color:var(--stone);font-weight:500}
     .mm-safety td:nth-child(3)::before{content:'Typical free tool: ';color:var(--stone);font-weight:500}
   }
+  /* 4-tier data-sharing taxonomy — each tier gets a left-border
+     color-coded to its sensitivity. Escalates green → teal →
+     amber → rust from Public through Regulated. */
+  .mm-tiers{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:960px;margin:24px auto 0}
+  @media (max-width:740px){.mm-tiers{grid-template-columns:1fr}}
+  .mm-tier{padding:18px 20px;border:1px solid var(--line);border-left-width:4px;border-radius:10px;background:var(--white);display:flex;flex-direction:column;gap:10px}
+  .mm-tier[data-tier="public"]     {border-left-color:#1F6B3A;background:#FAFBF9}
+  .mm-tier[data-tier="competitive"]{border-left-color:var(--teal);background:#F8FBFB}
+  .mm-tier[data-tier="operational"]{border-left-color:#8A6018;background:#FCFAF4}
+  .mm-tier[data-tier="regulated"]  {border-left-color:var(--rust);background:#FCF7F3}
+  .mm-tier header{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0}
+  .mm-tier-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);padding:2px 8px;border-radius:4px;background:var(--cream-2);flex:0 0 auto}
+  .mm-tier h3{font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0;line-height:1.3}
+  .mm-tier-desc{font-size:13.5px;line-height:1.5;color:var(--ink-soft);margin:0}
+  .mm-tier-examples{margin:0;padding-left:18px;font-size:13px;color:var(--ink-soft);line-height:1.55}
+  .mm-tier-examples li{margin-bottom:4px}
+  .mm-tier-share{font-size:13px;line-height:1.55;color:var(--ink);margin:auto 0 0;padding-top:8px;border-top:1px dashed var(--line)}
+  .mm-tier-foot{max-width:760px;margin:20px auto 0;padding:14px 18px;background:var(--cream-2);border:1px solid var(--line);border-radius:10px;font-size:13.5px;line-height:1.65;color:var(--ink-soft)}
 </style>
 </head>
 <body>
@@ -617,6 +635,64 @@
 
   <p style="max-width:760px;margin:16px auto 0;font-size:13px;line-height:1.6;color:var(--stone);">
     Apply the same five tests to any calculator, estimator, or "free audit" you encounter — especially one asking for revenue, margin, food cost, or labor numbers. A tool that silently POSTs your inputs is storing them. A tool with no in-page privacy claim is dodging the question. You're allowed to walk away.
+  </p>
+</div></section>
+
+<section class="block" id="data-sharing"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">What to share, where</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">Four tiers of your business data</h2>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Not every number belongs in every conversation. Most small-business owners carry all their data in the same mental bucket — which means the supplier list and the tax ID get the same protection (often the same low level of it). Four tiers, each with a different audience and a different level of caution.</p>
+  </div>
+
+  <div class="mm-tiers">
+    <article class="mm-tier" data-tier="public">
+      <header><span class="mm-tier-label">Tier 1</span><h3>Public</h3></header>
+      <p class="mm-tier-desc">Everything anyone can find on your site, your listing, or a walk-by.</p>
+      <ul class="mm-tier-examples">
+        <li>Menu, hours, photos</li>
+        <li>Address, phone, website URL</li>
+        <li>Schema.org markup, cuisine tags, service attributes</li>
+      </ul>
+      <p class="mm-tier-share"><strong>Share with:</strong> Anyone. Optimize aggressively — this is how customers find you.</p>
+    </article>
+
+    <article class="mm-tier" data-tier="competitive">
+      <header><span class="mm-tier-label">Tier 2</span><h3>Competitive-sensitive</h3></header>
+      <p class="mm-tier-desc">Legal to share, but useful to a rival — or leverage for a platform.</p>
+      <ul class="mm-tier-examples">
+        <li>Cost of goods, supplier list, negotiated pricing</li>
+        <li>Commission tier you actually pay (not the public rate)</li>
+        <li>Labor schedule template, daypart mix, menu-engineering matrix</li>
+      </ul>
+      <p class="mm-tier-share"><strong>Share with:</strong> Bookkeeper, consultant, broker — under NDA. Not platforms, not competitors, not "free audit" tools that keep your input.</p>
+    </article>
+
+    <article class="mm-tier" data-tier="operational">
+      <header><span class="mm-tier-label">Tier 3</span><h3>Operational-confidential</h3></header>
+      <p class="mm-tier-desc">Your actual operating numbers, customer pipeline, employee details.</p>
+      <ul class="mm-tier-examples">
+        <li>Monthly P&amp;L, actual food cost %, actual margins</li>
+        <li>Reservations pipeline, customer database, loyalty data</li>
+        <li>Employee names, schedules, tipped-employee distributions</li>
+      </ul>
+      <p class="mm-tier-share"><strong>Share with:</strong> Inside the business only. POS vendor, payroll processor, accountant — and only under a written contract that specifies what they can and can't do with it.</p>
+    </article>
+
+    <article class="mm-tier" data-tier="regulated">
+      <header><span class="mm-tier-label">Tier 4</span><h3>Regulated</h3></header>
+      <p class="mm-tier-desc">Legally protected. Losing this has fines, lawsuits, or criminal exposure attached.</p>
+      <ul class="mm-tier-examples">
+        <li>SSN, EIN, other tax identifiers</li>
+        <li>Customer card data (PCI scope), employee bank details</li>
+        <li>Food-safety logs, health-department correspondence, liquor-license status, I-9s</li>
+      </ul>
+      <p class="mm-tier-share"><strong>Handle with:</strong> Encrypted storage, access logging, contracts with cybersecurity terms. Never email. Never in a shared spreadsheet. If a vendor asks for this casually, that alone is a flag.</p>
+    </article>
+  </div>
+
+  <p class="mm-tier-foot">
+    Apply this anywhere you're asked to hand data over — vendor evaluations, contracts, loan applications, "free audit" intakes. The pattern: <strong>data never flows up a tier.</strong> A Tier 3 vendor doesn't get Tier 4 access just because they asked. A Tier 1 audience (a platform, a listing site, a competitor) doesn't get Tier 2. The easiest way to reduce your attack surface is to stop volunteering data that wasn't actually required.
   </p>
 </div></section>
 
