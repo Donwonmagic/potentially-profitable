@@ -1,395 +1,395 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-20T17:59:17.682Z",
+  "generatedAt": "2026-04-24T17:24:20.826Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "zm_yunxi",
   "language": "zh",
-  "total": 710.4,
+  "total": 712.89,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "你并不想涨价。你的成本已经涨了,你供应商的成本也已经涨了,而在你脑子的某个角落你知道,大概四个月前,账就已经算不拢了。你一直在硬撑着菜单上的价格,因为你记得上一次街对面那家餐厅一口气涨价的结果,你宁愿自己吃掉那部分毛利,也不愿意失去一个老顾客。",
+      "text": "You do not want to raise prices. Your costs have already gone up, your suppliers' costs have already gone up, and somewhere in the back of your head you know the math stopped working about four months ago. You have been holding the line on menu prices because you remember what happened the last time the restaurant across the street tried a liv increase in one shot, and you would rather eat the margin than lose a regular.",
       "start": 0,
-      "end": 19.91
+      "end": 17.67
     },
     {
       "id": 1,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "我理解这种恐惧。我也觉得,这种恐惧通常是在保护你去躲错了风险。问题不是「我该不该涨价?」——某一天,如果你继续吞下每一次成本上涨,你就得关门。真正的问题是哪些菜、涨多少、按什么顺序,这样菜单上的数字可以往上走,而你的预订数量不至于往下掉。",
-      "start": 20.26,
-      "end": 38.52
+      "text": "I understand the fear. I also think the fear is usually solving for the wrong risk. The question is not should I raise prices — at some point, if you keep eating every cost increase, you close. The question is which items, by how much, and in what order , so that the numbers on the menu can go up without your reservation count going down.",
+      "start": 18.19,
+      "end": 34.99
     },
     {
       "id": 2,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
-      "text": "这篇文章是我帮独立餐厅老板在同一周之内同时给菜单和网站重新定价时用的操作手册。算账是餐厅特定的,执行是网站特定的,两边只有合在一起才起作用。这里的数字只是示意,是从我合作的独立餐厅里反复看到的规律里提炼出来的——不是来自已发布的数据集。你自己的菜单会有不一样的地方。能通用的,是这盘棋的形状。",
-      "start": 38.87,
-      "end": 62.47
+      "text": "This post is the playbook I use when I help restaurant operators reprice their menu and their website in the same week. The math is restaurant-specific, the execution is website-specific, and the two halves only work together. These numbers are illustrative, drawn from patterns I see across the independent restaurants I work with — not from a published dataset. Your own menu will vary. The shape of the move is the part that generalizes.",
+      "start": 35.51,
+      "end": 57.56
     },
     {
       "id": 3,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "没人愿意坐下来算的那笔不安的账。",
-      "start": 63.57,
-      "end": 66.14
+      "text": "The anxious math nobody wants to run.",
+      "start": 58.66,
+      "end": 61.12
     },
     {
       "id": 4,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "先做这一个计算。把最近九十天的销售数据拉出来。拿出你的食材成本百分比——你付给供应商的钱除以你收客人的钱。如果以前是 30 %,现在是 34 %,这四个百分点的漂移,就是你的利润正从后门走出去。对一个年营业额一百二十万美元的独立餐厅来说,这四个点差不多是四万八千美元——比一位可靠的副厨师长的年薪还多,在不声不响中就蒸发掉了。",
-      "start": 66.84,
-      "end": 94.47
+      "text": "Before anything else, do this one calculation. Pull the last ninety days of sales. Take your food cost percentage — what you are paying suppliers divided by what you charge guests. If it used to be 30% and it is now 34%, that four-point drift is your profit margin walking out the back door. For an independent restaurant doing 1.2 dollarsM a year, that four points is around 48,000 dollars — more than a reliable sous chef's salary, evaporating quietly.",
+      "start": 61.82,
+      "end": 89.57
     },
     {
       "id": 5,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
-      "text": "现在做那个让你不舒服的计算。如果你把整份菜单平均涨 6 %,结果因此失去了 3 % 的桌次,你的营业额几乎纹丝不动——但你的毛利几乎完全恢复,因为你在边缘失去的那些桌次本来就是消费最低的那一批。这就是整盘棋。难点在于:要拿到那 6 %,而不让那 3 % 变成 15 %。",
-      "start": 94.82,
-      "end": 116.08
+      "text": "Now do the uncomfortable one. If you raise your menu by an average of 6% across the board, and you lose 3% of your covers as a result, your revenue barely moves — but your margin recovers almost entirely, because the covers you lose at the margin were the lowest-spending ones anyway. That is the whole game. The trick is getting the 6% without the 3% becoming 15%.",
+      "start": 90.09,
+      "end": 112.55
     },
     {
       "id": 6,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(6)",
-      "text": "做错了是这样:每道菜一律涨一个固定百分比,一份新的 P D F 菜单在周末上传,然后到了周一早上,老顾客们打开手机,看到上周还卖 17 美元的汉堡现在卖 19 美元,于是默默地去别家订了位。数字上去了,预订数量下来了,而现在责任是你的——不是通胀的。",
-      "start": 116.43,
-      "end": 137.27
+      "text": "Getting it wrong looks like this: a flat percentage bump on every item, a new P D F menu uploaded over the weekend, and a Monday morning where regulars open their phones, see the same burger that was 17 dollars last week now at 19 dollars, and quietly book somewhere else. The numbers went up, the reservation count went down, and now it is your fault — not inflation's.",
+      "start": 113.07,
+      "end": 133.75
     },
     {
       "id": 7,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(7)",
-      "text": "做对的样子,是三层结构。",
-      "start": 137.62,
-      "end": 140.36
+      "text": "Getting it right looks like three tiers.",
+      "start": 134.27,
+      "end": 136.91
     },
     {
       "id": 8,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "这是三层涨价策略,一张图说完。第一层:锚定菜——客人记住你菜单的那几道菜,那只汉堡,那只大家期待的招牌鸡。这些你保持不动。碰都别碰。第二层:中坚菜——你菜单中段的劳动力,大部分主菜、大部分意面、大部分披萨。这些涨 4 到 6 个百分点。第三层:招牌菜——主厨菜单、限定菜、只有你这样做的那道菜。这些涨 8 到 12 个百分点。客人会记得锚定菜,中坚菜的涨价他感受一次就忘,招牌菜他根本不会质疑,因为招牌菜从一开始就不是一道用来比价的菜。结果:毛利回来了。",
-      "start": 141.16,
-      "end": 175.29
+      "text": "Here is the three-tier price-raise strategy, in one picture. Tier one: anchor items — the dishes guests remember your menu by, the burger or the chicken sandwich everyone expects. Hold those. Do not touch them. Tier two: core items — your mid-menu workhorses, most entrées, most pastas, most pizzas. Raise those by four to six percent. Tier three: signature items — your chef's menu, the specials, the one dish that only you make this way. Raise those by eight to twelve percent. The guest remembers the anchor, feels the core move once and forgets it, and does not question the signature because the signature was never a price-comparison item to begin with. Result: margin recovered.",
+      "start": 137.71,
+      "end": 175.32
     },
     {
       "id": 9,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(8)",
-      "text": "逻辑很简单:客人不会在菜单上均匀地感知价格变化。他们最容易注意到的,是那些可以和别家比较的菜。他们最不容易注意到的,是只有你做的那些菜。操作手册就是:把涨价放在客人最不容易察觉的地方,让锚定菜保持原样,这样客人打开菜单时,它还感觉像是「你的」。",
-      "start": 176.04,
-      "end": 196
+      "text": "The logic is simple: guests do not notice price changes evenly across the menu. They notice them most on the items they have compared to other restaurants. They notice them least on the items that only you make. The playbook is to take your raise in the places the guest is least likely to feel it, and to leave the anchor items as-is so the menu still feels like \"yours\" when they open it.",
+      "start": 176.07,
+      "end": 194.08
     },
     {
       "id": 10,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "三个层次,近距离看。",
-      "start": 197.1,
-      "end": 198.99
+      "text": "The tiers, up close.",
+      "start": 195.18,
+      "end": 196.73
     },
     {
       "id": 11,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(1)",
-      "text": "第一层——永远不要动的锚定菜。",
-      "start": 200.09,
-      "end": 202.55
+      "text": "Tier 1 — Anchors you never touch.",
+      "start": 197.83,
+      "end": 200.22
     },
     {
       "id": 12,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(9)",
-      "text": "每一份菜单里都有三到五道菜,在客人的记忆里承重。汉堡、恺撒沙拉、餐厅招牌的那道鸡、那款卖 14 美元的招牌鸡尾酒。这些不仅仅是菜——它们是参考价格。客人打开你的菜单,会先扫一眼这些数字,通常是下意识地扫,然后判断你是不是「还是之前那个价」,还是有哪里变了。",
-      "start": 203.25,
-      "end": 222.55
+      "text": "Every menu has three to five items that are load-bearing in the guest's memory. The burger, the Caesar, the house chicken, the signature cocktail at 14 dollars. These are not just menu items — they are reference prices. When a guest opens your menu, they scan for those numbers first, usually unconsciously, to decide whether you are \"the same price you were\" or whether something has changed.",
+      "start": 200.92,
+      "end": 222.62
     },
     {
       "id": 13,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(10)",
-      "text": "让锚定菜保持原样。把毛利吃在它们身上。这是反直觉的——你的本能是在每道菜上都加一点——但锚定菜是任何一个价格动作会被拿出来讨论的地方。汉堡贵一美元,一周之内就会出现在某条 Yelp 评论里。一道夹在另外十二道意面当中的意面贵两美元,没人会注意。",
-      "start": 222.9,
-      "end": 242.98
+      "text": "Leave the anchors alone. Eat the margin on them. This is counterintuitive — your instinct is to raise every item a little — but the anchor items are where any price movement gets talked about . A 1 dollars bump on the burger will show up in a Yelp review within a week. A 2 dollars bump on a pasta dish that is on the menu alongside twelve other pastas, nobody notices.",
+      "start": 223.14,
+      "end": 242.24
     },
     {
       "id": 14,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(11)",
-      "text": "还有一个附带的好处。把锚定菜的价格撑住,会给你在未来的对话里一句真正的话:「我们的汉堡从二零二四年开始一直卖 17 美元。」这句话你可以说出口。在意价格的客人会敬重;不在意价格的客人,根本不会把它放在心上。每个人都赢到一点小小的东西。",
-      "start": 243.33,
-      "end": 265.14
+      "text": "There is a secondary benefit. Holding anchor prices gives you a true line in future conversation: \"We have held our burger at 17 dollars since twenty twenty-four.\" That is a sentence you can say out loud. Guests who care about prices respect it. Guests who do not care about prices never think about it. Everybody wins a small thing.",
+      "start": 242.76,
+      "end": 259.18
     },
     {
       "id": 15,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(2)",
-      "text": "第二层——中坚菜,涨 4 到 6 个百分点。",
-      "start": 266.24,
-      "end": 270.24
+      "text": "Tier 2 — Core items, raised 4 to 6 percent.",
+      "start": 260.28,
+      "end": 264.8
     },
     {
       "id": 16,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(12)",
-      "text": "菜单的中段,就是加权平均的涨价真正发生的地方。大多数主菜。大多数意面。大多数披萨,如果你是一家披萨店的话。这些是客人经常点、但不会有精确到美元记忆的菜。他们记得「大概二十块左右」。从 21 涨到 22.25,在这个记忆容差之内。从 21 涨到 25,就不在。",
-      "start": 270.94,
-      "end": 293.38
+      "text": "The core of your menu is where the weighted-average raise actually happens. Most of your entrées. Most of your pastas. Most of your pizzas, if you are a pizza place. These are the items guests order regularly but do not have an exact-dollar memory of. They remember \"it was around twenty bucks.\" A move from 21 dollars to 22.25 dollars is inside that memory tolerance. A move from 21 dollars to 25 dollars is not.",
+      "start": 265.5,
+      "end": 290.07
     },
     {
       "id": 17,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(13)",
-      "text": "4 到 6 个百分点是最舒服的区间。低于 4 %,你几乎收不回毛利,政治资本却白白花掉了。高于 6 %,客人开始感觉菜单「感觉上」贵了,就算他们说不出具体是哪道菜。在中坚菜这一档待在这个区间,你就能悄悄地把因成本通胀失去的毛利找回大约三分之二。",
-      "start": 293.73,
-      "end": 313.2
+      "text": "Four to six percent is the sweet spot. Below 4%, you barely recover margin and you have spent political capital for nothing. Above 6%, guests start to notice the menu \"feels\" more expensive, even if they cannot point to a specific item. Stay in that band on the core and you will recover roughly two thirds of the margin you have lost to cost inflation, silently.",
+      "start": 290.59,
+      "end": 310.75
     },
     {
       "id": 18,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(14)",
-      "text": "一条战术注意事项:涨中坚菜的价格时,别凑到整美元。从 21 到 22 的跳感觉比从 21 到 21.75 的跳要大。大脑会锚定在最前面那个数字。从「二十一点几」跳到「二十二点几」,在客人脑子里是另一个价格档位;从「二十一点几」跳到「二十一点更多一点」,还是同一档。",
-      "start": 313.55,
-      "end": 335.19
+      "text": "One tactical note: when you raise core items, do not round to the dollar . A jump from 21 dollars to 22 dollars feels bigger than a jump from 21 dollars to 21.75 dollars. The brain anchors on the leading digit. Going from twenty-one-something to twenty-two-something is a different price bracket in the guest's head. Twenty-one-something to twenty-one-something-bigger is the same bracket.",
+      "start": 311.27,
+      "end": 333.47
     },
     {
       "id": 19,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(3)",
-      "text": "第三层——招牌菜,涨 8 到 12 个百分点。",
-      "start": 336.29,
-      "end": 341.07
+      "text": "Tier 3 — Signature items, raised 8 to 12 percent.",
+      "start": 334.57,
+      "end": 339.63
     },
     {
       "id": 20,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(15)",
-      "text": "你的招牌菜,是客人没法拿去别家比较的那些菜。品鉴菜单。主厨特别菜。那道只有你这样做的菜,街对面那家的店没有这种版本。这些菜的价格弹性,和你菜单上其他菜是不一样的——客人不是在你这一版和别人那一版之间选,而是选要不要点你这一版。",
-      "start": 341.77,
-      "end": 359.82
+      "text": "Your signature items are the ones guests cannot compare to anywhere else. The tasting menu. The chef's special. The one dish you are known for that does not exist in the same form down the street. These are price-inelastic in a way the rest of your menu is not — guests are not choosing between your version and someone else's, they are choosing whether to order your version at all.",
+      "start": 340.33,
+      "end": 357.97
     },
     {
       "id": 21,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(16)",
-      "text": "这些菜大胆涨 8 到 12 个百分点,不用犹豫。如果主厨品鉴菜单原来是 85 美元,就把它涨到 92 或者 95。为品鉴菜单来的客人,早就已经越过了价格敏感的那道门槛——他是带着决心走进来的。他付的是体验,而那份体验本来就值比你平常收的更多的价。",
-      "start": 360.17,
-      "end": 381.3
+      "text": "Raise these 8 to 12 percent without flinching. If the chef's tasting menu was 85 dollars, take it to 92 dollars or 95 dollars. The guest who is there for the tasting menu is already past the price-sensitivity threshold — they walked in committed. What they are paying for is the experience, and that experience is worth more than you usually charge for it anyway.",
+      "start": 358.49,
+      "end": 380.2
     },
     {
       "id": 22,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(17)",
-      "text": "这里常见的错误方向反过来:把招牌菜看得比中坚菜还要小心,因为「那些是贵的菜」。错。贵的菜是价格比较压力最小的菜。是最容易把毛利补回来的地方。",
-      "start": 381.65,
-      "end": 394.33
+      "text": "The common mistake here is the opposite direction: treating signature items with more caution than core items because \"they are the expensive ones.\" Wrong. The expensive items are the ones with the least price-comparison pressure. They are the easiest place to recover margin.",
+      "start": 380.72,
+      "end": 395.87
     },
     {
       "id": 23,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "让涨价站得住脚的网站动作。",
-      "start": 395.43,
-      "end": 399.09
+      "text": "The website moves that make a price raise stick.",
+      "start": 396.97,
+      "end": 399.85
     },
     {
       "id": 24,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(18)",
-      "text": "菜单是工作的一半。另一半,是客人在决定是否预订之前看到的那个网站。大多数餐厅涨完价之后,什么也不改,这就是为什么一次 5 % 的涨价,在客人脑子里会变成被感知的 12 % 涨价。网站上的三个动作,能扛下大部分的重活。",
-      "start": 399.79,
-      "end": 418.91
+      "text": "The menu is half the work. The other half is the website the guest looks at before they decide to book. Most restaurants raise prices and then change nothing else online, which is how a 5% raise becomes a 12% perceived raise in the guest's head. Three website moves do a lot of the heavy lifting.",
+      "start": 400.55,
+      "end": 416.53
     },
     {
       "id": 25,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(4)",
-      "text": "一、不要改数字——改数字周围的东西。",
-      "start": 420.01,
-      "end": 423.33
+      "text": "1. Do not change the numbers — change what is around them.",
+      "start": 417.63,
+      "end": 421.3
     },
     {
       "id": 26,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(19)",
-      "text": "如果你的菜单页只是一个菜名加价格的列表,一次涨价读起来就是一个赤裸裸的涨价。客人扫一眼,看到一个更大的数字,就缩了一下。",
-      "start": 424.03,
-      "end": 434.81
+      "text": "If your menu page just shows a list of dishes with prices, a price bump reads as a naked increase. Guests scan, they see a bigger number, they flinch.",
+      "start": 422,
+      "end": 431.06
     },
     {
       "id": 27,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(20)",
-      "text": "如果你的菜单页把一道菜和一段合格的描述放在一起——原料来源、烹饪方法、让这一版是「你的」的那个细节——价格就落在了上下文里。那不再是「24 美元买一个鸡肉三明治」,而是「24 美元买一份煎烤半只鸡,棕黄油肉汁,来自一家你能说出名字的农场,以一种你能描述得出的方式上桌」。价格没有变,但客人用来评价它的那个框架变了。",
-      "start": 435.16,
-      "end": 458.86
+      "text": "If your menu page shows a dish with a proper description — the sourcing, the cooking method, the one detail that makes this version yours — the price reads in context. It is not \"24 dollars for a chicken sandwich,\" it is \"24 dollars for a pan-roasted half chicken with brown-butter jus, from a farm you can name, served in a way you can describe.\" The price has not changed, but the frame the guest evaluates it in has.",
+      "start": 431.58,
+      "end": 454.59
     },
     {
       "id": 28,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(21)",
-      "text": "每当你涨一个价,你就在同一时间重写那段描述。两句话。一些具体的东西。本周打开你网站的客人看到「鸡肉 24 美元 — 煎烤半只鸡,棕黄油肉汁,盐水浸泡两小时」,读到的是一家在自己产品上投入的餐厅。看到「鸡肉 24 美元」的客人,读到的是一家刚刚变贵了的餐厅。",
-      "start": 459.21,
-      "end": 477.63
+      "text": "When you raise a price, rewrite the description at the same time . Two sentences. Something specific. The guest who opens your site this week and sees \"Chicken 24 dollars — pan-roasted half-bird, brown-butter jus, two-hour brine\" reads that as a restaurant investing in its product. The guest who sees \"Chicken 24 dollars\" reads a restaurant that just got more expensive.",
+      "start": 455.11,
+      "end": 477.51
     },
     {
       "id": 29,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(5)",
-      "text": "二、至少换一张照片。",
-      "start": 478.73,
-      "end": 480.64
+      "text": "2. Update at least one photograph.",
+      "start": 478.61,
+      "end": 480.72
     },
     {
       "id": 30,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(22)",
-      "text": "这听上去很表面。其实不是。菜单上那些视觉上动过的菜——新的摆盘、新的点缀、新的照片——会按新的画面来被估价,而不是按旧价格的记忆。用手机翻看你菜单页的客人,对「这道菜的新版本卖 24 美元」和「去年我吃过的那道菜,只是现在卖 24 美元」这两种感受,是非常不一样的。",
-      "start": 481.34,
-      "end": 502.07
+      "text": "This sounds superficial. It is not. Menu items that have visually moved — a new plating, a new garnish, a new photograph — get priced against the new image, not the old price memory. A guest scrolling your menu page on a phone will evaluate \"the new version of this dish at 24 dollars\" very differently from \"the same dish I had last year, but 24 dollars now.\"",
+      "start": 481.42,
+      "end": 501.93
     },
     {
       "id": 31,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(23)",
-      "text": "你不需要把整份菜单重新拍一遍。挑出涨价幅度最大的那三道菜,让厨房在某个星期二下午花一个小时,重新出一版新鲜的成品。自然光、干净的桌面,手机拍就够了,只要你拍得还行。九十分钟,三张新照片。那三张照片,能把接下来六个月里关于这三道菜价格的对话都化解掉。",
-      "start": 502.42,
-      "end": 522.58
+      "text": "You do not need to re-shoot the whole menu. Pick the three items that moved the most in price and have your kitchen plate a fresh version for an hour on a Tuesday afternoon. Natural light, clean table, phone camera is fine if you are handy with it. Ninety minutes, three new photos. Those three photos neutralize the price conversation on those three items for the next six months.",
+      "start": 502.28,
+      "end": 520.92
     },
     {
       "id": 32,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(6)",
-      "text": "三、在公布新价格之前,把过期的促销全部下掉。",
-      "start": 523.68,
-      "end": 527.52
+      "text": "3. Remove stale discounts before you publish the new prices.",
+      "start": 522.02,
+      "end": 525.65
     },
     {
       "id": 33,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(24)",
-      "text": "我审查过的每一家餐厅网站,都有至少一个过期的「促销」躲在某个角落——一个仍然指向旧价格的欢乐时光板块、一条宣传十月就已经结束的夏日特惠的横幅、一份叫做「二零二四春季」的 P D F 菜单,还被侧栏链着。这些在涨价的节点上就是毒药,因为它们在告诉客人「真正的价格比这一页上写的要低」。",
-      "start": 528.22,
-      "end": 549.85
+      "text": "Every restaurant site I audit has at least one stale \"promo\" somewhere — a happy-hour box that is still pointing at the old pricing, a banner about a summer special that ended in October, a P D F menu titled \"Spring twenty twenty-four\" still linked from a sidebar. These are death on a price raise, because they tell the guest \"the real price is lower than what is on this page.\"",
+      "start": 526.35,
+      "end": 545.47
     },
     {
       "id": 34,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(25)",
-      "text": "在公布新菜单之前,花上一个小时,就像一个第一次来的访客那样,把你自己的网站走一遍。每一个出现价格的地方。每一条横幅。每一份 P D F。只要和新菜单对不上,就干掉它。一个在首页看到 17 美元汉堡、又在菜单页看到 19 美元汉堡的客人,已经被训练成了相信你的餐厅不诚实,哪怕你本来就打算下周修首页。",
-      "start": 550.2,
-      "end": 574.97
+      "text": "Spend an hour before you publish the new menu walking your own site as if you were a first-time visitor. Every price that shows up anywhere. Every banner. Every P D F. If it does not match the new menu, kill it. A guest who finds a 17 dollars burger on the homepage but a 19 dollars burger on the menu page has just been trained to believe your restaurant is dishonest, even though you were planning to fix the homepage next week.",
+      "start": 545.82,
+      "end": 570.97
     },
     {
       "id": 35,
       "kind": "quote",
       "selector": "#post-body > p:nth-of-type(26)",
-      "text": "你网站上每一份过期的促销,都是一个反对真正价格的论据。你不是在帮客人省钱,你是在给他一个不相信新价格的理由。",
-      "start": 575.72,
-      "end": 585.18
+      "text": "Every stale discount on your site is an argument against the real price. You are not saving the guest money, you are giving them a reason not to trust the new one.",
+      "start": 571.72,
+      "end": 580.66
     },
     {
       "id": 36,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "这一周要做什么。",
-      "start": 586.28,
-      "end": 587.57
+      "text": "What to do this week.",
+      "start": 581.76,
+      "end": 583.12
     },
     {
       "id": 37,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(27)",
-      "text": "如果你已经把一次涨价推迟了三个月,而这篇文章终于让你愿意动手了,那么这是一份诚实的七天节奏。它不华丽,也不需要华丽。",
-      "start": 588.27,
-      "end": 597.74
+      "text": "If you have been putting off a price raise for three months and this post has you finally willing, here is the honest seven-day sequence. It is not glamorous and it does not need to be.",
+      "start": 583.82,
+      "end": 593.94
     },
     {
       "id": 38,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "星期一。把过去九十天按菜出单的销售数据拉出来。给每一道菜打上「锚定」、「中坚」或「招牌」的标签。有几道菜你会和自己意见不合——这就是重点,它是一个决定,不是一个算法。",
-      "start": 598.09,
-      "end": 611.33
+      "text": "Monday. Pull your last ninety days of sales by item. Tag every item as anchor, core, or signature. You will disagree with yourself on a few — that&rsquo;s the point, it&rsquo;s a decision, not an algorithm.",
+      "start": 594.46,
+      "end": 608.46
     },
     {
       "id": 39,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "星期二。起草新价格。锚定菜保持不动。中坚菜上调 4 到 6 %,避开整美元的跳价。招牌菜上调 8 到 12 %。按销量加权——你要的是加权 5 到 6 %,不是每道菜都涨 5 到 6 %。",
-      "start": 611.65,
-      "end": 627.35
+      "text": "Tuesday. Draft the new prices. Anchors held. Core items up 4–6%, avoiding round-dollar jumps. Signatures up 8–12%. Weighted-average it against volume — you&rsquo;re aiming for a weighted 5–6%, not a flat 5–6% on every item.",
+      "start": 608.78,
+      "end": 625.64
     },
     {
       "id": 40,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "星期三。把你涨了超过一美元的每一道菜的描述都重写一遍。两句话,具体。原料来源、烹饪方法、只有你知道的那个细节。",
-      "start": 627.67,
-      "end": 635.73
+      "text": "Wednesday. Rewrite the descriptions on any item you raised more than a dollar. Two sentences, specific. Sourcing, method, the detail only you know.",
+      "start": 625.96,
+      "end": 635.58
     },
     {
       "id": 41,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "星期四。把涨价幅度最大的三道菜重新拍一遍。手机 + 自然光 + 厨房一个小时的时间。",
-      "start": 636.05,
-      "end": 644.14
+      "text": "Thursday. Re-shoot three dishes with the biggest price moves. Phone + natural light + hour of kitchen time.",
+      "start": 635.9,
+      "end": 642.81
     },
     {
       "id": 42,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "星期五。冷启动审一遍自己的网站。每一个显示价格的页面、每一条旧的促销横幅、每一份 P D F 菜单。只要和新价格相冲突,就拿掉。",
-      "start": 644.46,
-      "end": 654.47
+      "text": "Friday. Audit your own website cold. Every page that shows a price, every old promo banner, every P D F menu. Remove anything that contradicts the new pricing.",
+      "start": 643.13,
+      "end": 654.2
     },
     {
       "id": 43,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
-      "text": "星期六。上线。先菜单页,再首页板块,最后是 P D F 菜单。告诉接待和服务员,哪三道菜涨得最多,这样那一个会问起的客人来了,他们是有准备的。",
-      "start": 654.79,
-      "end": 666.92
+      "text": "Saturday. Publish. Menu page first, homepage blocks second, P D F menu last. Tell your host and servers the three items that moved most so they&rsquo;re ready for the one guest who asks.",
+      "start": 654.52,
+      "end": 667.12
     },
     {
       "id": 44,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(7)",
-      "text": "星期天。盯着接下来两周的预订数。如果跌超过 5 %,你拿多了。如果持平,或者动得少于 2 %,你拿得还不够——九十天以后你可以再回来加 3 %。",
-      "start": 667.24,
-      "end": 681.05
+      "text": "Sunday. Watch your reservation count for the next two weeks. If it drops more than 5%, you took too much. If it holds or moves less than 2%, you didn&rsquo;t take enough — and you can come back for another 3% in ninety days.",
+      "start": 667.44,
+      "end": 682.07
     },
     {
       "id": 45,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(28)",
-      "text": "这就是整套操作手册。三个层次、三个网站动作、七天。",
-      "start": 681.4,
-      "end": 685.61
+      "text": "That is the whole playbook. Three tiers, three website moves, seven days.",
+      "start": 682.59,
+      "end": 687.77
     },
     {
       "id": 46,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(29)",
-      "text": "你不是在想方设法从客人身上多榨出来点什么——你是在想办法,不要再在你已经有的客人身上亏钱了。这个区分很重要。一家因为不肯涨价而悄悄走向倒闭的餐厅,关门的方式,和一家用错的方法涨了价的餐厅,是一样的。至少在后面那种结局里,老板是自己选的。",
-      "start": 685.96,
-      "end": 701.97
+      "text": "You are not trying to extract more from the guest — you are trying to stop losing money on the guest you already have. The distinction matters. A restaurant that is quietly going broke because it will not raise prices closes the same as a restaurant that raised prices the wrong way. One of those outcomes, the operator at least got to choose.",
+      "start": 688.29,
+      "end": 704.01
     },
     {
       "id": 47,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(30)",
-      "text": "定价让它活下来。把描述写得让它能落地。把照片拍好,让计数器重置。然后让老顾客们像以往一样,重新走回来。",
-      "start": 702.32,
-      "end": 710.4
+      "text": "Price it to survive. Describe it to land. Photograph it to reset. Then let the regulars show back up, the same way they always have.",
+      "start": 704.53,
+      "end": 712.89
     }
   ]
 }
