@@ -285,7 +285,7 @@
         <span class="mm-badge-safe" title="Every number you type is processed in your browser. Nothing is sent to our servers.">Stays in your browser</span>
       </div>
       <h3>Delivery Break-Even</h3>
-      <p>See what each order actually nets you on a third-party platform vs. the same order taken direct.</p>
+      <p>See what each order actually nets you on a third-party <a href="/glossary/#aggregator" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">aggregator</a> vs. the same order taken <a href="/glossary/#direct-ordering" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">direct</a>.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Delivery break-even calculator">
         <label for="dbe-ticket">
@@ -337,7 +337,7 @@
         <span class="mm-badge-safe" title="Every number you type is processed in your browser. Nothing is sent to our servers.">Stays in your browser</span>
       </div>
       <h3>Prime Cost Check</h3>
-      <p>Two inputs — food cost and labor cost as percentages of sales — placed against the 55-65% healthy band the NRA publishes for full-service independents.</p>
+      <p>Two inputs — <a href="/glossary/#food-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">food cost</a> and <a href="/glossary/#labor-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">labor cost</a> as percentages of sales — placed against the 55-65% healthy <a href="/glossary/#prime-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">prime cost</a> band the NRA publishes for full-service independents.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Prime cost check">
         <label for="pc-food">
@@ -378,7 +378,7 @@
         <span class="mm-badge-safe" title="Every number you type is processed in your browser. Nothing is sent to our servers.">Stays in your browser</span>
       </div>
       <h3>Break-Even Covers</h3>
-      <p>How many covers a night does your fixed overhead demand? Optional: enter your typical daily volume to see monthly headroom above break-even.</p>
+      <p>How many <a href="/glossary/#cover" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">covers</a> a night does your <a href="/glossary/#fixed-costs" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">fixed overhead</a> demand? Optional: enter your typical daily volume to see monthly headroom above <a href="/glossary/#break-even" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">break-even</a>.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Break-even covers calculator">
         <label for="bec-fixed">
@@ -426,7 +426,7 @@
         <span class="mm-badge-safe" title="Every number you type is processed in your browser. Nothing is sent to our servers.">Stays in your browser</span>
       </div>
       <h3>Price-Raise Simulator</h3>
-      <p>Model a price raise against an assumed cover-loss elasticity. The default for each tier comes from our menu-pricing guide — override with the slider if your customers are more or less elastic than typical.</p>
+      <p>Model a price raise against an assumed cover-loss <a href="/glossary/#elasticity" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">elasticity</a>. The default for each tier comes from our menu-pricing guide — override with the slider if your customers are more or less elastic than typical.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Price-raise simulator">
         <label for="pr-baseline">
@@ -486,7 +486,7 @@
         <span class="mm-step-num" aria-hidden="true">1</span>
         <div class="mm-step-body">
           <h3 class="mm-step-title">Your numbers never leave this page.</h3>
-          <p class="mm-step-claim">No <code>fetch()</code>, <code>XMLHttpRequest</code>, or form submission fires when you type a financial number. The calculator math runs entirely in your browser.</p>
+          <p class="mm-step-claim">No <a href="/glossary/#fetch-request" style="color:inherit;border-bottom:1px dashed var(--teal);"><code>fetch()</code></a>, <code>XMLHttpRequest</code>, or form submission fires when you type a financial number. The calculator math runs entirely <a href="/glossary/#client-side" style="color:inherit;border-bottom:1px dashed var(--teal);">in your browser</a>.</p>
           <details class="mm-step-inspect"><summary>Inspect this</summary>
             <div class="mm-step-verify">Open DevTools (<kbd>Cmd+Opt+I</kbd> / <kbd>Ctrl+Shift+I</kbd>) &rarr; <strong>Network</strong> tab. Type a number into the calculator above. The request list should not grow. If it does, that's a bug — tell us.</div>
           </details>
@@ -551,7 +551,7 @@
         <span class="mm-step-num" aria-hidden="true">6</span>
         <div class="mm-step-body">
           <h3 class="mm-step-title">Shareable URLs keep numbers out of the server logs.</h3>
-          <p class="mm-step-claim">When we ship "Save this scenario" (later phase), the numbers will be encoded in the URL <strong>fragment</strong> — after the <code>#</code>. Per HTTP specification, browsers never send fragments to servers. The permalink works; the server never sees its contents.</p>
+          <p class="mm-step-claim">When we ship "Save this scenario" (later phase), the numbers will be encoded in the <a href="/glossary/#url-fragment" style="color:inherit;border-bottom:1px dashed var(--teal);">URL <strong>fragment</strong></a> — after the <code>#</code>. Per HTTP specification, browsers never send fragments to servers. The permalink works; the server never sees its contents.</p>
           <details class="mm-step-inspect"><summary>Inspect this</summary>
             <div class="mm-step-verify">Links like <code>&hellip;/margin-math/#calc=delivery&amp;t=25&amp;f=30</code> hydrate the state locally. We also set <code>&lt;meta name="referrer" content="no-referrer"&gt;</code> on this page — so outbound clicks can't leak the fragment to a third party via Referer.</div>
           </details>

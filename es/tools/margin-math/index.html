@@ -268,7 +268,7 @@
         <span class="mm-badge-safe" title="Cada número que escribes se procesa en tu navegador. Nada se envía a nuestros servidores.">Se queda en tu navegador</span>
       </div>
       <h3>Punto de equilibrio con delivery</h3>
-      <p>Mira lo que cada orden de verdad te deja en una plataforma de terceros vs. la misma orden directa.</p>
+      <p>Mira lo que cada orden de verdad te deja en un <a href="/es/glossary/#aggregator" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">agregador</a> de terceros vs. la misma orden tomada <a href="/es/glossary/#direct-ordering" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">directa</a>.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Calculadora de punto de equilibrio con delivery">
         <label for="dbe-ticket">
@@ -320,7 +320,7 @@
         <span class="mm-badge-safe" title="Cada número que escribes se procesa en tu navegador. Nada se envía a nuestros servidores.">Se queda en tu navegador</span>
       </div>
       <h3>Chequeo de prime cost</h3>
-      <p>Dos entradas — food cost y labor cost como porcentajes de ventas — contra la franja saludable 55-65% que publica la NRA para restaurantes independientes de servicio completo.</p>
+      <p>Dos entradas — <a href="/es/glossary/#food-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">food cost</a> y <a href="/es/glossary/#labor-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">labor cost</a> como porcentajes de ventas — contra la franja saludable 55-65% del <a href="/es/glossary/#prime-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">prime cost</a> que publica la NRA para restaurantes independientes de servicio completo.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Chequeo de prime cost">
         <label for="pc-food">
@@ -361,7 +361,7 @@
         <span class="mm-badge-safe" title="Cada número que escribes se procesa en tu navegador. Nada se envía a nuestros servidores.">Se queda en tu navegador</span>
       </div>
       <h3>Cubiertos para romper el punto</h3>
-      <p>¿Cuántos cubiertos por noche exige tu overhead fijo? Opcional: ingresa tus cubiertos diarios típicos para ver el colchón mensual sobre el punto de equilibrio.</p>
+      <p>¿Cuántos <a href="/es/glossary/#cover" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">cubiertos</a> por noche exige tu <a href="/es/glossary/#fixed-costs" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">overhead fijo</a>? Opcional: ingresa tus cubiertos diarios típicos para ver el colchón mensual sobre el <a href="/es/glossary/#break-even" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">punto de equilibrio</a>.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Calculadora de cubiertos para romper el punto">
         <label for="bec-fixed">
@@ -409,7 +409,7 @@
         <span class="mm-badge-safe" title="Cada número que escribes se procesa en tu navegador. Nada se envía a nuestros servidores.">Se queda en tu navegador</span>
       </div>
       <h3>Simulador de alza de precios</h3>
-      <p>Modela un alza de precios contra una elasticidad asumida de pérdida de cubiertos. El valor por defecto de cada nivel viene de nuestra guía de precios de menú — anula con el deslizador si tus clientes son más o menos elásticos que el típico.</p>
+      <p>Modela un alza de precios contra una <a href="/es/glossary/#elasticity" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">elasticidad</a> asumida de pérdida de cubiertos. El valor por defecto de cada nivel viene de nuestra guía de precios de menú — anula con el deslizador si tus clientes son más o menos elásticos que el típico.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Simulador de alza de precios">
         <label for="pr-baseline">
@@ -469,7 +469,7 @@
         <span class="mm-step-num" aria-hidden="true">1</span>
         <div class="mm-step-body">
           <h3 class="mm-step-title">Tus números nunca salen de esta página.</h3>
-          <p class="mm-step-claim">Ninguna llamada a <code>fetch()</code>, <code>XMLHttpRequest</code>, o envío de formulario se dispara cuando escribes un número financiero. La matemática corre entera en tu navegador.</p>
+          <p class="mm-step-claim">Ninguna llamada a <a href="/es/glossary/#fetch-request" style="color:inherit;border-bottom:1px dashed var(--teal);"><code>fetch()</code></a>, <code>XMLHttpRequest</code>, o envío de formulario se dispara cuando escribes un número financiero. La matemática corre entera <a href="/es/glossary/#client-side" style="color:inherit;border-bottom:1px dashed var(--teal);">en tu navegador</a>.</p>
           <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
             <div class="mm-step-verify">Abre DevTools (<kbd>Cmd+Opt+I</kbd> / <kbd>Ctrl+Shift+I</kbd>) &rarr; pestaña <strong>Network</strong>. Escribe un número en la calculadora. La lista de solicitudes no debe crecer. Si crece, es un bug — avísanos.</div>
           </details>
@@ -534,7 +534,7 @@
         <span class="mm-step-num" aria-hidden="true">6</span>
         <div class="mm-step-body">
           <h3 class="mm-step-title">Las URLs compartibles mantienen los números fuera de los logs del servidor.</h3>
-          <p class="mm-step-claim">Cuando enviemos "Guardar este escenario" (fase posterior), los números irán codificados en el <strong>fragmento</strong> de la URL — después del <code>#</code>. Según la especificación HTTP, los navegadores nunca envían el fragmento al servidor. El enlace funciona; el servidor nunca ve su contenido.</p>
+          <p class="mm-step-claim">Cuando enviemos "Guardar este escenario" (fase posterior), los números irán codificados en el <a href="/es/glossary/#url-fragment" style="color:inherit;border-bottom:1px dashed var(--teal);"><strong>fragmento</strong> de la URL</a> — después del <code>#</code>. Según la especificación HTTP, los navegadores nunca envían el fragmento al servidor. El enlace funciona; el servidor nunca ve su contenido.</p>
           <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
             <div class="mm-step-verify">Enlaces como <code>&hellip;/margin-math/#calc=delivery&amp;t=25&amp;f=30</code> hidratan el estado localmente. También ponemos <code>&lt;meta name="referrer" content="no-referrer"&gt;</code> en esta página — para que clics salientes no filtren el fragmento vía Referer.</div>
           </details>
