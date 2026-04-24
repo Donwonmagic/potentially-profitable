@@ -1029,6 +1029,32 @@
   </div>
 </aside>
 
+<aside class="mc-drawer" data-drawer-id="brand" role="dialog" aria-modal="true" aria-labelledby="drawer-brand-title" data-open="false" inert>
+  <div class="mc-drawer-head">
+    <p class="mc-drawer-eyebrow">Brand system</p>
+    <button type="button" class="mc-drawer-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+  </div>
+  <div class="mc-drawer-body">
+    <h2 id="drawer-brand-title">Your logo is one ingredient, not the recipe</h2>
+    <p class="mc-drawer-lede">Two restaurants can launch with equally strong marks; six months later the one with a documented brand system looks the same on its menu, its Instagram, and its takeout bag — and the one without it doesn't.</p>
+    <ul>
+      <li><strong>Colors are the biggest tone carrier after the logo.</strong> A primary, a secondary, a handful of accents, and two neutrals — each with a documented accessible pair. That's what the site renders; that's what print vendors should receive.</li>
+      <li><strong>Contrast failures make menus unreadable.</strong> Brand colors that look lovely in the logo can fall well below the WCAG 4.5:1 threshold on a busy menu page. Every pair needs to be graded, not eyeballed.</li>
+      <li><strong>Every surface gets the same token.</strong> We ship the palette as CSS custom properties + design tokens so the site, your future dev, and any print vendor all read from the same source.</li>
+      <li><strong>Monochrome variant is not optional.</strong> Embroidery, foil emboss, laser-engraved coasters — they need a one-color version of the mark. The absence of one is the single clearest "this identity wasn't finished" tell.</li>
+      <li><strong>Documented usage rules prevent drift.</strong> Clearspace, minimum sizes, misuse examples. Owners underestimate how much work a two-page usage guide saves over five years of vendor handoffs.</li>
+    </ul>
+  </div>
+  <div class="mc-drawer-foot">
+    <p class="mc-drawer-foot-text">Want to see a palette extracted from your logo — with WCAG grading and exportable CSS tokens — before we talk? The Brand Suite tool is free, runs in your browser, and leaves nothing behind.</p>
+    <a class="mc-drawer-foot-btn" href="/tools/brand-suite/">Open Brand Suite
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+  </div>
+</aside>
+
 <script>
   /* Menu-card drawer controller. Two educational drawers triggered
      by [data-drawer="reserve"] and [data-drawer="live"] on the
@@ -1229,6 +1255,16 @@
         <h3>Photos that make people hungry</h3>
         <p class="desc">A responsive gallery that treats your food, space, and crew the way they deserve. Bring your own photographer or we'll recommend one in the DMV — either way, the site is built to show them off.</p>
         <button type="button" class="service-link" data-drawer="photo" aria-label="Why food photography matters — open info">
+          Learn more
+          <svg class="service-link-arrow" viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </button>
+      </div>
+
+      <div class="service reveal">
+        <div class="label">Brand system</div>
+        <h3>A palette that works everywhere</h3>
+        <p class="desc">Your brand colors should read on a menu, a sign, and a phone screen — not just in the logo file. We document palette + contrast pairs as CSS tokens alongside the site, so every surface stays legible and recognizable.</p>
+        <button type="button" class="service-link" data-drawer="brand" aria-label="Why a documented brand system matters — open info">
           Learn more
           <svg class="service-link-arrow" viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </button>
@@ -1531,7 +1567,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and an 89-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a 97-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
