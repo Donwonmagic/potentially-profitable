@@ -1,355 +1,355 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-18T18:29:57.160Z",
+  "generatedAt": "2026-04-24T17:28:04.521Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "ff_siwis",
   "language": "fr",
-  "total": 530.12,
+  "total": 645.69,
   "chunks": [
     {
       "id": 0,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "Pourquoi les avis comptent plus que tu ne le penses.",
+      "text": "Why reviews matter more than you think.",
       "start": 0,
-      "end": 2.85
+      "end": 3.06
     },
     {
       "id": 1,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Les avis Google sont le signal de confiance le plus visible qu'un restaurant possède. Avant qu'un nouveau client ne franchisse ta porte, il a déjà lu ce que les trente dernières personnes ont dit de toi — et il l'a fait sur le même écran où il a vérifié tes horaires, ta carte et ton adresse. Ton Google Business Profile, c'est ta vitrine pour les gens qui ne sont pas encore entrés, et les avis sont ce qui est exposé dans cette vitrine.",
-      "start": 3.3,
-      "end": 23.29
+      "text": "Google reviews are the single most visible trust signal a restaurant has. Before a new customer walks through your door, they have already read what the last thirty people said about you — and they did it on the same screen where they checked your hours, your menu, and your location. Your Google Business Profile is your storefront for people who have not been in yet, and reviews are the window display.",
+      "start": 3.76,
+      "end": 32.64
     },
     {
       "id": 2,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "Mais voici la partie que la plupart des restaurateurs manquent : les avis ne sont pas qu'une preuve sociale. C'est un facteur de classement. La documentation officielle de Google confirme que le nombre et la note des avis influencent le positionnement de ton entreprise dans la recherche locale et sur Google Maps. Les recherches du secteur S E O montrent aussi, de façon constante, que la fraîcheur compte — les restaurants qui reçoivent un flux régulier d'avis récents ont tendance à mieux se classer que ceux dont le profil est figé. Un restaurant avec 340 avis et une moyenne de 4,6 apparaîtra constamment au-dessus d'un restaurant identique avec 28 avis et 4,8, parce que Google pèse le volume en même temps que la note, et les avis frais signalent une affaire vivante.",
-      "start": 23.61,
-      "end": 62.9
+      "text": "But here is the part most restaurant owners miss: reviews are not just social proof. They are a ranking factor. Google's own documentation confirms that review count and review score influence how your business ranks in local search results and Google Maps. S E O industry research also consistently shows that recency matters — restaurants with a steady stream of recent reviews tend to rank above those with stale profiles. A restaurant with 340 reviews and a 4.6 average will consistently appear above an identical restaurant with 28 reviews and a 4.8, because Google weighs volume alongside the star count, and fresh reviews signal an active business.",
+      "start": 33.16,
+      "end": 79.37
     },
     {
       "id": 3,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
-      "text": "Les calculs sont simples. Si tu sers 200 couverts par jour et que 1 % d'entre eux laissent un avis, tu ajoutes deux avis par jour — soixante par mois. La plupart de tes concurrents en ajoutent deux par mois, peut-être cinq. En six mois, tu deviens le restaurant le plus noté de ton quartier sur Google Maps. Ce n'est pas une campagne marketing. C'est un système.",
-      "start": 63.22,
-      "end": 82.37
+      "text": "The math is simple. If you serve 200 covers a day and 1% of them leave a review, you are adding two reviews a day — sixty a month. Most of your competitors are adding two a month, maybe five. Within six months, you are the most-reviewed restaurant in your neighborhood on Google Maps. That is not a marketing campaign. That is a system.",
+      "start": 79.89,
+      "end": 101.87
     },
     {
       "id": 4,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "Le système : cinq pièces qui tournent toutes seules.",
-      "start": 83.17,
-      "end": 85.84
+      "text": "The system: five pieces that run themselves.",
+      "start": 102.97,
+      "end": 106.14
     },
     {
       "id": 5,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "J'ai monté un programme d'avis chez Tacombi, sur les établissements de Bethesda et d'Arlington, qui ne reposait sur aucune personne en particulier pour se rappeler de demander. Voici la structure, honnêtement — ce n'est pas compliqué, c'est juste discipliné.",
-      "start": 86.29,
-      "end": 100.27
+      "text": "I built a review program at Tacombi's Bethesda and Arlington locations that did not depend on any single person remembering to ask. Here is the structure, honestly — it is not complicated, it is just disciplined.",
+      "start": 106.84,
+      "end": 123.04
     },
     {
       "id": 6,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(1)",
-      "text": "1. La carte postale avec QR code.",
-      "start": 101.07,
-      "end": 102.53
+      "text": "1. The QR postcard.",
+      "start": 124.14,
+      "end": 125.68
     },
     {
       "id": 7,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Imprime une petite carte — de la taille d'un ticket ou d'une carte postale — avec un QR code qui pointe directement vers ta page d'avis Google. Pas ton site web. Pas ton Instagram. Spécifiquement l'invite d'avis Google, pour que le client scanne, touche un nombre d'étoiles, tape une phrase, et ait fini en moins de trente secondes.",
-      "start": 102.98,
-      "end": 121.47
+      "text": "Print a small card — receipt-sized or postcard-sized — with a QR code that links directly to your Google review page. Not your website. Not your Instagram. The Google review prompt specifically , so the customer scans, taps a star rating, types a sentence, and they are done in under thirty seconds.",
+      "start": 126.38,
+      "end": 147.26
     },
     {
       "id": 8,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(6)",
-      "text": "Chez Tacombi, on imprimait des cartes postales bilingues (anglais et espagnol) qui disaient « On aime les tacos ? Faites-le savoir ! » avec un QR code qui menait droit à la page d'avis Google. La carte avait aussi un rabais de quartier au verso — mais ce rabais était une offre de bienvenue au voisin, autonome, pas conditionnée au dépôt d'un avis. Cette distinction compte : la politique de Google interdit d'offrir quelque incitation que ce soit en échange d'un avis, point. Tu peux demander des avis et tu peux faire tourner des promotions séparées, mais tu ne peux pas lier les deux.",
-      "start": 121.79,
-      "end": 154.91
+      "text": "At Tacombi, we printed bilingual postcards (English and Spanish) that said \"Love tacos? Let the world know!\" with a QR code linking straight to the Google review page. The card also had a neighborhood discount on the back — but that discount was a standalone neighbor welcome offer, not conditioned on leaving a review. This distinction matters: Google's policies prohibit offering any incentive in exchange for a review, period. You can ask for reviews and you can run separate promotions, but you cannot tie the two together.",
+      "start": 147.78,
+      "end": 183.77
     },
     {
       "id": 9,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(7)",
-      "text": "Comment obtenir ton lien d'avis direct : ouvre Google Maps, trouve ton restaurant, clique sur « Écrire un avis », et copie l'URL depuis ton navigateur. Ou va sur le tableau de bord de ton Google Business Profile, clique sur « Demander des avis », et Google te donne un lien court que tu peux coller dans n'importe quel générateur de QR code.",
-      "start": 155.23,
-      "end": 174.27
+      "text": "How to get your direct review link: open Google Maps, find your restaurant, click \"Write a review,\" and copy the U R L from your browser. Or go to your Google Business Profile dashboard, click \"Ask for reviews,\" and Google gives you a short link you can paste into any QR code generator.",
+      "start": 184.29,
+      "end": 204.23
     },
     {
       "id": 10,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(2)",
-      "text": "2. Le moment.",
-      "start": 175.07,
-      "end": 176.37
+      "text": "2. The timing.",
+      "start": 205.33,
+      "end": 206.69
     },
     {
       "id": 11,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(8)",
-      "text": "Ne donne pas la carte avec l'addition. Donne-la après que le repas est payé — quand le client est debout, heureux, sur le point de sortir. La psychologie est simple : il s'est déjà engagé sur l'expérience, la transaction est close, et il est au moment de plus haute satisfaction de sa visite. Si tu la lui tends pendant qu'il hésite encore sur le dessert, ça a l'air d'un sondage. Si tu la lui tends au moment où il enfile son manteau, ça a l'air d'un compliment.",
-      "start": 176.82,
-      "end": 198.75
+      "text": "Do not hand the card out with the check. Hand it out after the meal is paid — when the customer is standing, happy, and about to walk out. The psychology is straightforward: they have already committed to the experience, the transaction is closed, and they are in the highest-satisfaction moment of the visit. If you hand it to them while they are still deciding on dessert, it feels like a survey. If you hand it to them as they are putting on their coat, it feels like a compliment.",
+      "start": 207.39,
+      "end": 242.57
     },
     {
       "id": 12,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Chez Tacombi, l'accueil ou le serveur tendait la carte avec un simple « Merci d'être passé — si vous avez trente secondes, un avis Google nous ferait vraiment plaisir. Il y a un petit merci au dos. » C'est tout. Aucun script de plus de deux phrases.",
-      "start": 199.07,
-      "end": 212.87
+      "text": "At Tacombi, the host or the server would hand the card with a simple \"Thanks for coming in — if you have thirty seconds, we would love a Google review. There is a little thank-you on the back.\" That is it. No script longer than two sentences.",
+      "start": 243.09,
+      "end": 260.72
     },
     {
       "id": 13,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(3)",
-      "text": "3. L'adhésion de l'équipe.",
-      "start": 213.67,
-      "end": 215.13
+      "text": "3. The staff buy-in.",
+      "start": 261.82,
+      "end": 263.89
     },
     {
       "id": 14,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(10)",
-      "text": "Le système meurt au moment où ton équipe trouve ça pénible. Voici comment l'éviter :",
-      "start": 215.58,
-      "end": 221.02
+      "text": "The system dies the moment your staff thinks it is annoying. Here is how to prevent that:",
+      "start": 264.59,
+      "end": 271.45
     },
     {
       "id": 15,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Explique le pourquoi. « Les avis Google, c'est comme ça que les nouveaux clients nous trouvent. Plus d'avis, ça veut dire plus de couverts, ce qui veut dire plus d'heures et de meilleurs shifts pour tout le monde. » C'est un briefing d'avant-service de deux phrases, pas un module de formation.",
-      "start": 221.24,
-      "end": 236.57
+      "text": "Explain the why. \"Google reviews are how new people find us. More reviews means more covers, which means more hours and better shifts for everyone.\" That is a two-sentence pre-shift briefing, not a training module.",
+      "start": 271.8,
+      "end": 287.41
     },
     {
       "id": 16,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Rends l'effort nul. La carte fait le travail. Le membre de l'équipe la tend, c'est tout. Pas de discours, pas d'argumentaire, pas de « Vous voudriez bien…? » — juste « Tenez, il y a un merci au dos. »",
-      "start": 236.79,
-      "end": 247.41
+      "text": "Make it zero-effort. The card does the work. The staff member just hands it over. No speech, no pitch, no \"Would you mind...?\" — just \"Here you go, there is a thank-you on the back.\"",
+      "start": 287.73,
+      "end": 302.51
     },
     {
       "id": 17,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Ne le lie jamais à des indicateurs de performance. Le moment où tu dis « je veux que chaque serveur obtienne trois avis par shift », tu as transformé une demande sincère en quota, et ton équipe va te le reprocher. Laisse les cartes faire le travail de volume.",
-      "start": 247.63,
-      "end": 262.6
+      "text": "Never tie it to performance metrics. The moment you say \"I want each server to get three reviews per shift,\" you have turned a genuine ask into a quota, and your staff will resent it. Let the postcards do the volume work.",
+      "start": 302.83,
+      "end": 319.65
     },
     {
       "id": 18,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(4)",
-      "text": "4. L'habitude de répondre.",
-      "start": 263.4,
-      "end": 264.89
+      "text": "4. The response habit.",
+      "start": 320.75,
+      "end": 322.38
     },
     {
       "id": 19,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(11)",
-      "text": "Répondre aux avis — surtout aux mauvais — compte plus que la plupart des propriétaires ne le réalisent. La documentation officielle de Google dit que répondre aux avis améliore ton classement local. Mais la vraie raison est plus simple : un client potentiel qui lit un mauvais avis suivi d'une réponse attentionnée du propriétaire se dit « cet endroit tient à ses clients ». Un mauvais avis sans réponse dit « ils ne les lisent même pas. »",
-      "start": 265.34,
-      "end": 286.09
+      "text": "Responding to reviews — especially the bad ones — matters more than most owners realize. Google's own help documentation says that responding to reviews improves your local ranking. But the real reason is simpler: a potential customer reading a bad review followed by a thoughtful owner response thinks \"that place cares.\" A bad review with no response says \"they do not read these.\"",
+      "start": 323.08,
+      "end": 347.48
     },
     {
       "id": 20,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(12)",
-      "text": "Mets une alarme quotidienne. Cinq minutes, une fois par jour, tu réponds à chaque nouvel avis. Garde ça court, précis, humain. « Merci, Maria — content que les esquites t'aient plu. On se voit mardi prochain » bat « Merci pour vos aimables paroles ! Nous avons hâte de vous servir à nouveau ! » à chaque fois. La première réponse sonne comme une personne. La seconde sonne comme un robot.",
-      "start": 286.41,
-      "end": 304.67
+      "text": "Set a daily alarm. Five minutes, once a day, respond to every new review. Keep it short, specific, and human. \"Thanks, Maria — glad you liked the esquites. See you next Tuesday\" beats \"Thank you for your kind words! We look forward to serving you again!\" every time. The first one sounds like a person. The second one sounds like a bot.",
+      "start": 347.83,
+      "end": 371.5
     },
     {
       "id": 21,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(5)",
-      "text": "5. La visibilité en salle.",
-      "start": 305.47,
-      "end": 307.32
+      "text": "5. The in-store visibility.",
+      "start": 372.6,
+      "end": 375.28
     },
     {
       "id": 22,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Mets ta note Google là où les clients peuvent la voir. Un petit panneau près de l'accueil ou de la caisse qui dit « 4,6 étoiles sur Google — 340 avis » fait deux choses : il dit aux clients contents que laisser un avis est une chose normale à faire ici (preuve sociale), et il dit aux clients mécontents que ce restaurant prend les retours au sérieux (ce qui, parfois, désamorce une plainte avant qu'elle ne devienne un avis une étoile).",
-      "start": 307.77,
-      "end": 328
+      "text": "Put your Google rating where customers can see it. A small sign near the host stand or the register that says \"4.6 stars on Google — 340 reviews\" does two things: it tells happy customers that reviewing is a normal thing to do here (social proof), and it tells unhappy customers that this restaurant takes feedback seriously (which sometimes defuses a complaint before it becomes a 1-star review).",
+      "start": 375.98,
+      "end": 404.97
     },
     {
       "id": 23,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(14)",
-      "text": "Mets à jour le chiffre tous les mois. Voir le compteur grimper, ça motive aussi l'équipe.",
-      "start": 328.32,
-      "end": 334.42
+      "text": "Update the number monthly. Watching the count climb is motivating for staff too.",
+      "start": 405.49,
+      "end": 412.11
     },
     {
       "id": 24,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "Ce qu'il ne faut pas faire.",
-      "start": 335.22,
-      "end": 336.42
+      "text": "What not to do.",
+      "start": 413.21,
+      "end": 414.8
     },
     {
       "id": 25,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(15)",
-      "text": "J'ai vu des restaurants saboter leurs propres programmes d'avis de quelques façons prévisibles. Évite celles-ci :",
-      "start": 336.87,
-      "end": 343.24
+      "text": "I have watched restaurants sabotage their own review programs in a few predictable ways. Avoid these:",
+      "start": 415.5,
+      "end": 424.5
     },
     {
       "id": 26,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "N'achète pas d'avis. La détection de Google est meilleure que tu ne le crois, et la sanction — voir tout ton historique d'avis effacé — est catastrophique. Un seul lot de faux avis peut défaire des années de vrais avis.",
-      "start": 343.46,
-      "end": 356.65
+      "text": "Do not buy reviews. Google's detection is better than you think, and the penalty — having your entire review history stripped — is catastrophic. One batch of fake reviews can undo years of real ones.",
+      "start": 424.85,
+      "end": 440.64
     },
     {
       "id": 27,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Ne filtre pas les avis. Certains outils demandent « Comment s'est passée votre expérience ? » et n'affichent le lien Google que si la réponse est positive. Google interdit cela explicitement. Si tu demandes des avis, demande-les à tout le monde — pas seulement aux gens contents.",
-      "start": 356.87,
-      "end": 373.24
+      "text": "Do not review-gate. Some tools ask \"How was your experience?\" and only show the Google review link if the answer is positive. Google explicitly prohibits this. If you ask for reviews, ask everyone — not just the happy people.",
+      "start": 440.96,
+      "end": 458.34
     },
     {
       "id": 28,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "N'ignore pas les mauvais avis. Un avis une étoile avec une réponse réfléchie du propriétaire fait moins de dégâts qu'un avis trois étoiles dans le silence. Les clients potentiels lisent les réponses. C'est ta chance de montrer ta fibre.",
-      "start": 373.46,
-      "end": 386.91
+      "text": "Do not ignore bad reviews. A 1-star review with a thoughtful owner response is less damaging than a 3-star review with silence. Potential customers read the responses. That is your chance to show character.",
+      "start": 458.66,
+      "end": 474.37
     },
     {
       "id": 29,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "Ne demande pas sur les réseaux sociaux. « Laissez-nous un avis Google ! » en post Instagram touche les gens qui te suivent déjà — pas les gens qui viennent de manger chez toi pour la première fois. Le système de la carte postale à la sortie touche le bon public au bon moment.",
-      "start": 387.13,
-      "end": 402.84
+      "text": "Do not ask on social media. \"Leave us a Google review!\" as an Instagram post reaches the people who already follow you — not the people who just ate at your restaurant for the first time. The postcard-at-checkout system reaches the right audience at the right moment.",
+      "start": 474.69,
+      "end": 492.68
     },
     {
       "id": 30,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "L'effet cumulatif.",
-      "start": 403.64,
-      "end": 404.77
+      "text": "The compounding effect.",
+      "start": 493.78,
+      "end": 495.31
     },
     {
       "id": 31,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(16)",
-      "text": "Voici ce que la plupart des propriétaires ne voient pas parce qu'ils lâchent au bout de deux semaines : les avis Google se cumulent. Un restaurant qui reçoit 60 avis par mois n'a pas juste plus d'avis — il a plus d'avis récents. Google pèse la fraîcheur. Un client potentiel voit « il y a 2 semaines » sur l'avis le plus récent et se dit « cet endroit est vivant ». Il voit « il y a 8 mois » et se dit « est-ce que ce restaurant existe encore ? »",
-      "start": 405.22,
-      "end": 425.25
+      "text": "Here is what most owners do not see because they quit after two weeks: Google reviews compound. A restaurant that gets 60 reviews a month does not just have more reviews — it has more recent reviews. Google weighs recency. A potential customer sees \"2 weeks ago\" on the most recent review and thinks \"this place is active.\" They see \"8 months ago\" and think \"is this place still open?\"",
+      "start": 496.01,
+      "end": 522.25
     },
     {
       "id": 32,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(17)",
-      "text": "Après six mois de distribution régulière de cartes postales, les établissements Tacombi avec lesquels je travaillais avaient une vélocité d'avis qui les plaçait parmi les restaurants les plus notés de leurs quartiers respectifs sur Google Maps. Pas parce qu'on a fait de la pub. Pas parce qu'on a mendié. Parce qu'on a monté un système et qu'on l'a laissé tourner.",
-      "start": 425.47,
-      "end": 444.45
+      "text": "After six months of consistent postcard distribution, the Tacombi locations I worked with had a review velocity that put them among the most-reviewed restaurants in their respective neighborhoods on Google Maps. Not because we ran ads. Not because we begged. Because we built a system and let it run.",
+      "start": 522.6,
+      "end": 542.3
     },
     {
       "id": 33,
       "kind": "quote",
       "selector": "#post-body > p:nth-of-type(18)",
-      "text": "Les avis se cumulent. Soixante par mois, ça ne veut pas juste dire plus d'étoiles — ça veut dire plus d'étoiles récentes, qui est ce qui intéresse Google autant que les clients.",
-      "start": 445,
-      "end": 454.73
+      "text": "Reviews compound. Sixty a month does not just mean more stars — it means more recent stars, which is what Google and customers both care about.",
+      "start": 543.05,
+      "end": 554.23
     },
     {
       "id": 34,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "La mise en place en dix minutes.",
-      "start": 455.53,
-      "end": 457.27
+      "text": "The ten-minute setup.",
+      "start": 555.33,
+      "end": 557.17
     },
     {
       "id": 35,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(19)",
-      "text": "Si tu veux démarrer aujourd'hui, voici la liste de tâches :",
-      "start": 457.72,
-      "end": 461.48
+      "text": "If you want to start this today, here is the punch list:",
+      "start": 557.87,
+      "end": 562.15
     },
     {
       "id": 36,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Récupère ton lien d'avis Google. Tableau de bord Google Business Profile → « Demander des avis » → copie le lien court.",
-      "start": 461.7,
-      "end": 469.41
+      "text": "Get your Google review link. Google Business Profile dashboard → \"Ask for reviews\" → copy the short link.",
+      "start": 562.5,
+      "end": 572.37
     },
     {
       "id": 37,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Génère un QR code. Colle le lien dans n'importe quel générateur de QR code gratuit (qr-code-generator.com fait très bien l'affaire). Télécharge l'image.",
-      "start": 469.63,
-      "end": 478.35
+      "text": "Generate a QR code. Paste the link into any free QR generator (qr-code-generator.com works fine). Download the image.",
+      "start": 572.69,
+      "end": 582.27
     },
     {
       "id": 38,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Dessine une carte postale. Format ticket de caisse ou carte postale standard. Ton logo, une ligne pour la demande, le QR code, et un petit merci incitatif au verso. Canva, un imprimeur du coin, ou ton graphiste peuvent faire ça en une heure.",
-      "start": 478.57,
-      "end": 491.99
+      "text": "Design a postcard. Receipt-sized or standard postcard. Your logo, a one-line ask, the QR code, and a small thank-you incentive on the back. Canva, a local print shop, or your designer can do this in an hour.",
+      "start": 582.59,
+      "end": 599.06
     },
     {
       "id": 39,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "Imprime-en 500. Ça coûte entre 30 et 60 dollars dans la plupart des imprimeries. Soit 500 avis potentiels pour moins que le coût d'une seule pub Instagram.",
-      "start": 492.21,
-      "end": 502.47
+      "text": "Print 500. Costs 30 dollars–60 dollars at most print shops. That is 500 potential reviews for less than the cost of a single Instagram ad.",
+      "start": 599.38,
+      "end": 611.13
     },
     {
       "id": 40,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "Brief ton équipe. Deux phrases en pré-service : « On les donne après la clôture de l'addition. Pas d'argumentaire — on tend, on dit merci. »",
-      "start": 502.69,
-      "end": 510.66
+      "text": "Brief your team. Two-sentence pre-shift: \"Hand these out after the check is closed. Do not pitch — just hand it over and say thanks.\"",
+      "start": 611.45,
+      "end": 623.24
     },
     {
       "id": 41,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
-      "text": "Mets une alarme quotidienne. Cinq minutes, une fois par jour, tu réponds à chaque nouvel avis. Court, précis, humain.",
-      "start": 510.88,
-      "end": 517.4
+      "text": "Set a daily alarm. Five minutes, once a day, respond to every new review. Short, specific, human.",
+      "start": 623.56,
+      "end": 630.88
     },
     {
       "id": 42,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(20)",
-      "text": "C'est tout. Pas d'abonnement à un logiciel. Pas d'agence marketing. Pas de validation de budget. Tout le système coûte environ 50 dollars et dix minutes à mettre en place, et il tourne indéfiniment.",
-      "start": 517.72,
-      "end": 530.12
+      "text": "That is it. No software subscription. No marketing agency. No budget approval. The whole system costs about 50 dollars and ten minutes to set up, and it runs indefinitely.",
+      "start": 631.4,
+      "end": 645.69
     }
   ]
 }
