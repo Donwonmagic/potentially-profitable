@@ -2507,6 +2507,24 @@
     color: #1F6B3A;
     font-weight: 500;
   }
+  /* Margin Math cross-link — nudges the reader from the audit's
+     margin-health diagnosis into a client-side calculator where
+     they can run their own numbers. Sits at the bottom of the
+     card with a subtle border separator. */
+  .margin-health-crosslink {
+    margin: 14px 0 0;
+    padding-top: 12px;
+    border-top: 1px dashed var(--line);
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .margin-health-crosslink a {
+    color: var(--teal);
+    font-weight: 600;
+    border-bottom: 1px dashed currentColor;
+    text-decoration: none;
+  }
 
   /* Phase 4 #1: benchmark provenance info glyph. Small ⓘ that carries
      the methodology string in its title attribute. Button styling
@@ -5330,6 +5348,7 @@
           <ul class="margin-health-leaks" id="marginHealthLeaks"></ul>
         </div>
         <p class="margin-health-empty audit-empty-state" id="marginHealthEmpty" hidden data-tr="marginHealth.emptyState">No leaks detected — your site is set up to keep the margin in-house on every order.</p>
+        <p class="margin-health-crosslink">Want to run the actual math on your own numbers? <a href="/tools/margin-math/">Margin Math</a> is a set of client-side calculators for the DoorDash / price-raise / prime-cost / break-even decisions — your numbers stay in your browser.</p>
       </section>
 
       <!-- Phase L1: Email gate retired. Deep tier now renders
