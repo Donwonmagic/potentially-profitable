@@ -1,395 +1,395 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-20T17:50:53.999Z",
+  "generatedAt": "2026-04-24T17:11:14.177Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "ff_siwis",
   "language": "fr",
-  "total": 715.62,
+  "total": 889.86,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Tu n'as pas envie d'augmenter les prix. Tes coûts ont déjà grimpé, les coûts de tes fournisseurs ont déjà grimpé, et quelque part au fond de ta tête tu sais que le calcul ne tombe plus juste depuis quelque chose comme quatre mois. Tu tiens la ligne sur les prix du menu parce que tu te souviens de ce qui est arrivé au restaurant d'en face la dernière fois qu'il a tenté une hausse directe d'un coup, et tu préfères manger la marge plutôt que perdre un habitué.",
+      "text": "You do not want to raise prices. Your costs have already gone up, your suppliers' costs have already gone up, and somewhere in the back of your head you know the math stopped working about four months ago. You have been holding the line on menu prices because you remember what happened the last time the restaurant across the street tried a liv increase in one shot, and you would rather eat the margin than lose a regular.",
       "start": 0,
-      "end": 20.27
+      "end": 25.08
     },
     {
       "id": 1,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "Je comprends la peur. Je pense aussi que la peur se trompe généralement de risque. La question n'est pas « est-ce que je devrais augmenter les prix ? » — à un moment donné, si tu continues à absorber chaque hausse de coût, tu fermes. La question, c'est quels plats, de combien, et dans quel ordre, pour que les chiffres du menu puissent monter sans que ton nombre de réservations descende.",
-      "start": 20.79,
-      "end": 40.47
+      "text": "I understand the fear. I also think the fear is usually solving for the wrong risk. The question is not should I raise prices — at some point, if you keep eating every cost increase, you close. The question is which items, by how much, and in what order , so that the numbers on the menu can go up without your reservation count going down.",
+      "start": 25.6,
+      "end": 46.45
     },
     {
       "id": 2,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
-      "text": "Ce post, c'est le playbook que j'utilise quand j'aide des restaurateurs à reprixer leur menu et leur site web la même semaine. Les calculs sont propres au restaurant, l'exécution est propre au site, et les deux moitiés ne marchent que mises ensemble. Ces chiffres sont illustratifs, tirés de motifs que je vois dans les restaurants indépendants avec lesquels je bosse — pas d'un jeu de données publié. Ton menu à toi va varier. La forme de la manœuvre, c'est ça qui se généralise.",
-      "start": 40.99,
-      "end": 64.14
+      "text": "This post is the playbook I use when I help restaurant operators reprice their menu and their website in the same week. The math is restaurant-specific, the execution is website-specific, and the two halves only work together. These numbers are illustrative, drawn from patterns I see across the independent restaurants I work with — not from a published dataset. Your own menu will vary. The shape of the move is the part that generalizes.",
+      "start": 46.97,
+      "end": 75.78
     },
     {
       "id": 3,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "Le calcul anxieux que personne n'a envie de faire.",
-      "start": 65.24,
-      "end": 67.64
+      "text": "The anxious math nobody wants to run.",
+      "start": 76.88,
+      "end": 80.14
     },
     {
       "id": 4,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Avant tout, fais ce calcul-là. Sors les ventes des quatre-vingt-dix derniers jours. Prends ton pourcentage de coût matière — ce que tu payes aux fournisseurs divisé par ce que tu factures au client. Si avant c'était 30 % et maintenant c'est 34 %, ce glissement de quatre points, c'est ta marge qui sort par la porte de derrière. Pour un restaurant indépendant qui fait 1,2 million de dollars par an, ces quatre points représentent environ 48 000 dollars — plus que le salaire d'un sous-chef fiable, qui s'évapore en silence.",
-      "start": 68.34,
-      "end": 94.39
+      "text": "Before anything else, do this one calculation. Pull the last ninety days of sales. Take your food cost percentage — what you are paying suppliers divided by what you charge guests. If it used to be 30% and it is now 34%, that four-point drift is your profit margin walking out the back door. For an independent restaurant doing 1.2 dollarsM a year, that four points is around 48,000 dollars — more than a reliable sous chef's salary, evaporating quietly.",
+      "start": 80.84,
+      "end": 115.52
     },
     {
       "id": 5,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Maintenant, fais l'inconfortable. Si tu augmentes ton menu de 6 % en moyenne, tous plats confondus, et que tu perds 3 % de tes couverts en conséquence, ton chiffre d'affaires bouge à peine — mais ta marge se reconstitue presque entièrement, parce que les couverts que tu perds en marge étaient de toute façon les moins dépensiers. C'est tout le jeu. Le truc, c'est d'obtenir ce 6 % sans que le 3 % se transforme en 15 %.",
-      "start": 94.91,
-      "end": 114.73
+      "text": "Now do the uncomfortable one. If you raise your menu by an average of 6% across the board, and you lose 3% of your covers as a result, your revenue barely moves — but your margin recovers almost entirely, because the covers you lose at the margin were the lowest-spending ones anyway. That is the whole game. The trick is getting the 6% without the 3% becoming 15%.",
+      "start": 116.04,
+      "end": 142.51
     },
     {
       "id": 6,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(6)",
-      "text": "Se planter, ça ressemble à ça : une augmentation uniforme en pourcentage sur chaque plat, un nouveau menu en P D F mis en ligne pendant le week-end, et un lundi matin où les habitués ouvrent leur téléphone, voient le même burger qui était à 17 dollars la semaine dernière maintenant à 19, et réservent tranquillement ailleurs. Les chiffres ont monté, le nombre de réservations a descendu, et maintenant c'est de ta faute — pas celle de l'inflation.",
-      "start": 115.25,
-      "end": 135.71
+      "text": "Getting it wrong looks like this: a flat percentage bump on every item, a new P D F menu uploaded over the weekend, and a Monday morning where regulars open their phones, see the same burger that was 17 dollars last week now at 19 dollars, and quietly book somewhere else. The numbers went up, the reservation count went down, and now it is your fault — not inflation's.",
+      "start": 143.03,
+      "end": 167.09
     },
     {
       "id": 7,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(7)",
-      "text": "Faire ça bien, ça passe par trois niveaux.",
-      "start": 136.23,
-      "end": 138.24
+      "text": "Getting it right looks like three tiers.",
+      "start": 167.61,
+      "end": 169.91
     },
     {
       "id": 8,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Voici la stratégie d'augmentation à trois niveaux, en une image. Niveau un : les plats d'ancrage — les plats par lesquels les clients se souviennent de ton menu, le burger ou le poulet que tout le monde attend. Ceux-là, tu les laisses tranquilles. Tu n'y touches pas. Niveau deux : les plats du cœur du menu — tes bêtes de somme, la plupart des entrées, la plupart des pâtes, la plupart des pizzas. Tu les montes de quatre à six pour cent. Niveau trois : les plats signature — le menu du chef, les suggestions du jour, le seul plat que toi seul prépares de cette façon. Ceux-là, tu les montes de huit à douze pour cent. Le client se souvient de l'ancre, ressent la hausse des plats du cœur une fois et l'oublie, et ne remet pas en question le plat signature, parce que le signature n'a jamais été un plat à comparer en prix de toute façon. Résultat : marge récupérée.",
-      "start": 139.04,
-      "end": 176.82
+      "text": "Here is the three-tier price-raise strategy, in one picture. Tier one: anchor items — the dishes guests remember your menu by, the burger or the chicken sandwich everyone expects. Hold those. Do not touch them. Tier two: core items — your mid-menu workhorses, most entrées, most pastas, most pizzas. Raise those by four to six percent. Tier three: signature items — your chef's menu, the specials, the one dish that only you make this way. Raise those by eight to twelve percent. The guest remembers the anchor, feels the core move once and forgets it, and does not question the signature because the signature was never a price-comparison item to begin with. Result: margin recovered.",
+      "start": 170.71,
+      "end": 214.45
     },
     {
       "id": 9,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(8)",
-      "text": "La logique est simple : les clients ne remarquent pas les changements de prix de façon uniforme sur le menu. Ils les remarquent surtout sur les plats qu'ils ont comparés à d'autres restaurants. Ils les remarquent le moins sur les plats que toi seul prépares. Le playbook, c'est de prendre ton augmentation aux endroits où le client est le moins susceptible de la sentir, et de laisser les plats d'ancrage en place pour que le menu ait toujours l'air « du tien » quand il l'ouvre.",
-      "start": 177.57,
-      "end": 198.57
+      "text": "The logic is simple: guests do not notice price changes evenly across the menu. They notice them most on the items they have compared to other restaurants. They notice them least on the items that only you make. The playbook is to take your raise in the places the guest is least likely to feel it, and to leave the anchor items as-is so the menu still feels like \"yours\" when they open it.",
+      "start": 215.2,
+      "end": 243.93
     },
     {
       "id": 10,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "Les trois niveaux, de près.",
-      "start": 199.67,
-      "end": 200.7
+      "text": "The tiers, up close.",
+      "start": 245.03,
+      "end": 246.83
     },
     {
       "id": 11,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(1)",
-      "text": "Niveau 1 — Les ancres auxquelles tu ne touches jamais.",
-      "start": 201.8,
-      "end": 203.94
+      "text": "Tier 1 — Anchors you never touch.",
+      "start": 247.93,
+      "end": 249.5
     },
     {
       "id": 12,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Chaque menu a trois à cinq plats qui portent la mémoire du client. Le burger, la salade César, le poulet de la maison, le cocktail signature à 14 dollars. Ce ne sont pas juste des plats — ce sont des prix de référence. Quand un client ouvre ton menu, il scanne ces chiffres-là en premier, souvent sans s'en rendre compte, pour décider si tu es « au même prix qu'avant » ou si quelque chose a changé.",
-      "start": 204.64,
-      "end": 223.93
+      "text": "Every menu has three to five items that are load-bearing in the guest's memory. The burger, the Caesar, the house chicken, the signature cocktail at 14 dollars. These are not just menu items — they are reference prices. When a guest opens your menu, they scan for those numbers first, usually unconsciously, to decide whether you are \"the same price you were\" or whether something has changed.",
+      "start": 250.2,
+      "end": 277.38
     },
     {
       "id": 13,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(10)",
-      "text": "Laisse les ancres tranquilles. Mange la marge dessus. C'est contre-intuitif — ton instinct te dit d'augmenter un peu chaque plat — mais les plats d'ancrage, c'est là où le moindre mouvement de prix se raconte. Un dollar de plus sur le burger, et ça se retrouve dans un avis Yelp en une semaine. Deux dollars de plus sur un plat de pâtes qui est au menu à côté de douze autres pâtes, personne ne remarque.",
-      "start": 224.45,
-      "end": 244.18
+      "text": "Leave the anchors alone. Eat the margin on them. This is counterintuitive — your instinct is to raise every item a little — but the anchor items are where any price movement gets talked about . A 1 dollars bump on the burger will show up in a Yelp review within a week. A 2 dollars bump on a pasta dish that is on the menu alongside twelve other pastas, nobody notices.",
+      "start": 277.9,
+      "end": 304.74
     },
     {
       "id": 14,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(11)",
-      "text": "Il y a un bénéfice secondaire. Tenir les prix d'ancrage te donne une vraie ligne dans les conversations futures : « on a tenu notre burger à 17 dollars depuis deux mille vingt-quatre. » C'est une phrase que tu peux prononcer à voix haute. Les clients qui font attention au prix la respectent. Les clients qui n'y font pas attention n'y pensent jamais. Tout le monde gagne un petit quelque chose.",
-      "start": 244.7,
-      "end": 263.33
+      "text": "There is a secondary benefit. Holding anchor prices gives you a true line in future conversation: \"We have held our burger at 17 dollars since twenty twenty-four.\" That is a sentence you can say out loud. Guests who care about prices respect it. Guests who do not care about prices never think about it. Everybody wins a small thing.",
+      "start": 305.26,
+      "end": 326.84
     },
     {
       "id": 15,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(2)",
-      "text": "Niveau 2 — Les plats du cœur, augmentés de 4 à 6 pour cent.",
-      "start": 264.43,
-      "end": 267.62
+      "text": "Tier 2 — Core items, raised 4 to 6 percent.",
+      "start": 327.94,
+      "end": 331.15
     },
     {
       "id": 16,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(12)",
-      "text": "Le cœur du menu, c'est là que la hausse pondérée en moyenne se joue vraiment. La plupart de tes plats principaux. La plupart de tes pâtes. La plupart de tes pizzas, si tu es une pizzeria. Ce sont les plats que les clients commandent régulièrement sans en avoir un souvenir exact au dollar près. Ils se rappellent « c'était autour de vingt balles ». Passer de 21 à 22,25 dollars reste dans cette marge de mémoire. Passer de 21 à 25, non.",
-      "start": 268.32,
-      "end": 291.2
+      "text": "The core of your menu is where the weighted-average raise actually happens. Most of your entrées. Most of your pastas. Most of your pizzas, if you are a pizza place. These are the items guests order regularly but do not have an exact-dollar memory of. They remember \"it was around twenty bucks.\" A move from 21 dollars to 22.25 dollars is inside that memory tolerance. A move from 21 dollars to 25 dollars is not.",
+      "start": 331.85,
+      "end": 361.41
     },
     {
       "id": 17,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Quatre à six pour cent, c'est le point d'équilibre. En dessous de 4 %, tu ne récupères presque rien et tu as dépensé du capital politique pour rien. Au-dessus de 6 %, les clients commencent à avoir l'impression que le menu « est » plus cher, même s'ils ne peuvent pointer aucun plat en particulier. Reste dans cette fourchette sur le cœur du menu et tu récupéreras environ les deux tiers de la marge perdue à cause de l'inflation des coûts, en silence.",
-      "start": 291.72,
-      "end": 312.46
+      "text": "Four to six percent is the sweet spot. Below 4%, you barely recover margin and you have spent political capital for nothing. Above 6%, guests start to notice the menu \"feels\" more expensive, even if they cannot point to a specific item. Stay in that band on the core and you will recover roughly two thirds of the margin you have lost to cost inflation, silently.",
+      "start": 361.93,
+      "end": 385.25
     },
     {
       "id": 18,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(14)",
-      "text": "Une note tactique : quand tu augmentes les plats du cœur, ne t'arrête pas au dollar rond. Un saut de 21 à 22 dollars paraît plus grand qu'un saut de 21 à 21,75. Le cerveau s'ancre sur le premier chiffre. Passer de vingt-et-un-et-des-poussières à vingt-deux-et-des-poussières, c'est une autre tranche de prix dans la tête du client. Passer de vingt-et-un-et-des-poussières à vingt-et-un-et-un-peu-plus, c'est la même tranche.",
-      "start": 312.98,
-      "end": 332.4
+      "text": "One tactical note: when you raise core items, do not round to the dollar . A jump from 21 dollars to 22 dollars feels bigger than a jump from 21 dollars to 21.75 dollars. The brain anchors on the leading digit. Going from twenty-one-something to twenty-two-something is a different price bracket in the guest's head. Twenty-one-something to twenty-one-something-bigger is the same bracket.",
+      "start": 385.77,
+      "end": 412.55
     },
     {
       "id": 19,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(3)",
-      "text": "Niveau 3 — Les plats signature, augmentés de 8 à 12 pour cent.",
-      "start": 333.5,
-      "end": 336.61
+      "text": "Tier 3 — Signature items, raised 8 to 12 percent.",
+      "start": 413.65,
+      "end": 417.29
     },
     {
       "id": 20,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(15)",
-      "text": "Tes plats signature, ce sont ceux que le client ne peut comparer nulle part ailleurs. Le menu dégustation. Le plat du chef. Le plat pour lequel on te connaît, qui n'existe pas sous cette forme dans la rue d'à côté. Ceux-là ont une élasticité-prix que le reste de ton menu n'a pas — le client ne choisit pas entre ta version et celle d'un autre, il choisit s'il commande ta version ou pas du tout.",
-      "start": 337.31,
-      "end": 356.87
+      "text": "Your signature items are the ones guests cannot compare to anywhere else. The tasting menu. The chef's special. The one dish you are known for that does not exist in the same form down the street. These are price-inelastic in a way the rest of your menu is not — guests are not choosing between your version and someone else's, they are choosing whether to order your version at all.",
+      "start": 417.99,
+      "end": 443.73
     },
     {
       "id": 21,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(16)",
-      "text": "Augmente-les de 8 à 12 pour cent sans broncher. Si le menu dégustation du chef était à 85 dollars, passe-le à 92 ou à 95. Le client qui est là pour le menu dégustation est déjà au-delà du seuil de sensibilité au prix — il est entré engagé. Ce qu'il paye, c'est l'expérience, et cette expérience vaut de toute façon plus que ce que tu factures d'habitude.",
-      "start": 357.39,
-      "end": 377.64
+      "text": "Raise these 8 to 12 percent without flinching. If the chef's tasting menu was 85 dollars, take it to 92 dollars or 95 dollars. The guest who is there for the tasting menu is already past the price-sensitivity threshold — they walked in committed. What they are paying for is the experience, and that experience is worth more than you usually charge for it anyway.",
+      "start": 444.25,
+      "end": 471.53
     },
     {
       "id": 22,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(17)",
-      "text": "L'erreur courante ici, c'est la direction inverse : traiter les plats signature avec plus de précaution que les plats du cœur parce que « ce sont les plats chers ». Faux. Les plats chers sont ceux qui ont le moins de pression de comparaison de prix. C'est le meilleur endroit pour récupérer de la marge.",
-      "start": 378.16,
-      "end": 394.47
+      "text": "The common mistake here is the opposite direction: treating signature items with more caution than core items because \"they are the expensive ones.\" Wrong. The expensive items are the ones with the least price-comparison pressure. They are the easiest place to recover margin.",
+      "start": 472.05,
+      "end": 491.28
     },
     {
       "id": 23,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "Les coups sur le site qui font tenir une hausse de prix.",
-      "start": 395.57,
-      "end": 399.69
+      "text": "The website moves that make a price raise stick.",
+      "start": 492.38,
+      "end": 495.07
     },
     {
       "id": 24,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(18)",
-      "text": "Le menu, c'est la moitié du travail. L'autre moitié, c'est le site que le client regarde avant de décider de réserver. La plupart des restaurants augmentent leurs prix et ne changent rien d'autre en ligne, et c'est comme ça qu'une hausse de 5 % devient une hausse perçue de 12 % dans la tête du client. Trois coups sur le site font la majorité du travail lourd.",
-      "start": 400.39,
-      "end": 419.36
+      "text": "The menu is half the work. The other half is the website the guest looks at before they decide to book. Most restaurants raise prices and then change nothing else online, which is how a 5% raise becomes a 12% perceived raise in the guest's head. Three website moves do a lot of the heavy lifting.",
+      "start": 495.77,
+      "end": 514.88
     },
     {
       "id": 25,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(4)",
-      "text": "1. Ne change pas les chiffres — change ce qui les entoure.",
-      "start": 420.46,
-      "end": 423.33
+      "text": "1. Do not change the numbers — change what is around them.",
+      "start": 515.98,
+      "end": 520.17
     },
     {
       "id": 26,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(19)",
-      "text": "Si ta page menu se contente d'afficher une liste de plats avec des prix, une augmentation de prix se lit comme une hausse à nu. Le client scanne, il voit un chiffre plus gros, il se recroqueville.",
-      "start": 424.03,
-      "end": 435.02
+      "text": "If your menu page just shows a list of dishes with prices, a price bump reads as a naked increase. Guests scan, they see a bigger number, they flinch.",
+      "start": 520.87,
+      "end": 533.36
     },
     {
       "id": 27,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(20)",
-      "text": "Si ta page menu montre un plat avec une vraie description — la provenance, la méthode de cuisson, le détail qui fait que cette version est la tienne — le prix se lit dans son contexte. Ce n'est plus « 24 dollars pour un sandwich au poulet », c'est « 24 dollars pour une demi-volaille rôtie au four, jus au beurre noisette, d'une ferme que tu peux nommer, servie d'une façon que tu peux décrire ». Le prix n'a pas bougé, mais le cadre dans lequel le client l'évalue, si.",
-      "start": 435.54,
-      "end": 456.72
+      "text": "If your menu page shows a dish with a proper description — the sourcing, the cooking method, the one detail that makes this version yours — the price reads in context. It is not \"24 dollars for a chicken sandwich,\" it is \"24 dollars for a pan-roasted half chicken with brown-butter jus, from a farm you can name, served in a way you can describe.\" The price has not changed, but the frame the guest evaluates it in has.",
+      "start": 533.88,
+      "end": 561.5
     },
     {
       "id": 28,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(21)",
-      "text": "Quand tu augmentes un prix, réécris la description en même temps. Deux phrases. Quelque chose de précis. Le client qui ouvre ton site cette semaine et qui voit « Poulet 24 dollars — demi-volaille rôtie, jus au beurre noisette, saumure de deux heures » lit ça comme un restaurant qui investit dans son produit. Celui qui voit « Poulet 24 dollars » lit un restaurant qui vient juste de devenir plus cher.",
-      "start": 457.24,
-      "end": 476.48
+      "text": "When you raise a price, rewrite the description at the same time . Two sentences. Something specific. The guest who opens your site this week and sees \"Chicken 24 dollars — pan-roasted half-bird, brown-butter jus, two-hour brine\" reads that as a restaurant investing in its product. The guest who sees \"Chicken 24 dollars\" reads a restaurant that just got more expensive.",
+      "start": 562.02,
+      "end": 588.8
     },
     {
       "id": 29,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(5)",
-      "text": "2. Remplace au moins une photo.",
-      "start": 477.58,
-      "end": 479.35
+      "text": "2. Update at least one photograph.",
+      "start": 589.9,
+      "end": 592.44
     },
     {
       "id": 30,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(22)",
-      "text": "Ça a l'air superficiel. Ça ne l'est pas. Les plats qui ont visuellement bougé — un nouveau dressage, une nouvelle garniture, une nouvelle photo — sont évalués contre la nouvelle image, pas contre le souvenir de l'ancien prix. Un client qui parcourt ta page menu sur son téléphone évaluera « la nouvelle version de ce plat à 24 dollars » très différemment de « le même plat que j'ai eu l'an dernier, mais à 24 maintenant ».",
-      "start": 480.05,
-      "end": 500.88
+      "text": "This sounds superficial. It is not. Menu items that have visually moved — a new plating, a new garnish, a new photograph — get priced against the new image, not the old price memory. A guest scrolling your menu page on a phone will evaluate \"the new version of this dish at 24 dollars\" very differently from \"the same dish I had last year, but 24 dollars now.\"",
+      "start": 593.14,
+      "end": 623.49
     },
     {
       "id": 31,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(23)",
-      "text": "Tu n'as pas besoin de refaire les photos de tout le menu. Prends les trois plats qui ont le plus bougé en prix et fais dresser une version fraîche par ta cuisine pendant une heure un mardi après-midi. Lumière naturelle, table propre, l'appareil photo du téléphone convient si tu as la main. Quatre-vingt-dix minutes, trois nouvelles photos. Ces trois photos neutralisent la conversation sur le prix pour ces trois plats pendant les six mois qui suivent.",
-      "start": 501.4,
-      "end": 521.46
+      "text": "You do not need to re-shoot the whole menu. Pick the three items that moved the most in price and have your kitchen plate a fresh version for an hour on a Tuesday afternoon. Natural light, clean table, phone camera is fine if you are handy with it. Ninety minutes, three new photos. Those three photos neutralize the price conversation on those three items for the next six months.",
+      "start": 623.84,
+      "end": 650.67
     },
     {
       "id": 32,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(6)",
-      "text": "3. Enlève les promos périmées avant de publier les nouveaux prix.",
-      "start": 522.56,
-      "end": 526.31
+      "text": "3. Remove stale discounts before you publish the new prices.",
+      "start": 651.77,
+      "end": 656.29
     },
     {
       "id": 33,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(24)",
-      "text": "Chaque site de restaurant que j'audite a au moins une « promo » périmée quelque part — un encart happy hour qui pointe encore vers les anciens prix, une bannière sur un menu d'été qui s'est terminé en octobre, un menu en P D F intitulé « Printemps deux mille vingt-quatre » toujours lié depuis une barre latérale. Ce sont des poisons au moment d'augmenter, parce qu'elles disent au client « le vrai prix est plus bas que ce qui est sur cette page ».",
-      "start": 527.01,
-      "end": 546.29
+      "text": "Every restaurant site I audit has at least one stale \"promo\" somewhere — a happy-hour box that is still pointing at the old pricing, a banner about a summer special that ended in October, a P D F menu titled \"Spring twenty twenty-four\" still linked from a sidebar. These are death on a price raise, because they tell the guest \"the real price is lower than what is on this page.\"",
+      "start": 656.99,
+      "end": 678.79
     },
     {
       "id": 34,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(25)",
-      "text": "Passe une heure avant de publier le nouveau menu à parcourir ton propre site comme si c'était la première fois que tu y venais. Chaque prix qui s'affiche quelque part. Chaque bannière. Chaque P D F. Si ça ne correspond pas au nouveau menu, tu tues. Un client qui trouve un burger à 17 dollars sur la page d'accueil mais un burger à 19 sur la page menu vient d'être entraîné à croire que ton restaurant est malhonnête — même si tu comptais mettre à jour la page d'accueil la semaine prochaine.",
-      "start": 546.81,
-      "end": 568.33
+      "text": "Spend an hour before you publish the new menu walking your own site as if you were a first-time visitor. Every price that shows up anywhere. Every banner. Every P D F. If it does not match the new menu, kill it. A guest who finds a 17 dollars burger on the homepage but a 19 dollars burger on the menu page has just been trained to believe your restaurant is dishonest, even though you were planning to fix the homepage next week.",
+      "start": 679.14,
+      "end": 712.42
     },
     {
       "id": 35,
       "kind": "quote",
       "selector": "#post-body > p:nth-of-type(26)",
-      "text": "Chaque promo périmée sur ton site est un argument contre le vrai prix. Tu n'économises pas d'argent au client, tu lui donnes une raison de ne pas faire confiance au nouveau.",
-      "start": 569.08,
-      "end": 578.9
+      "text": "Every stale discount on your site is an argument against the real price. You are not saving the guest money, you are giving them a reason not to trust the new one.",
+      "start": 713.17,
+      "end": 726.09
     },
     {
       "id": 36,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "Ce qu'il faut faire cette semaine.",
-      "start": 580,
-      "end": 581.08
+      "text": "What to do this week.",
+      "start": 727.19,
+      "end": 728.98
     },
     {
       "id": 37,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(27)",
-      "text": "Si tu repousses une hausse de prix depuis trois mois et que ce post t'a enfin convaincu, voici la séquence honnête sur sept jours. Ce n'est pas glamour et ça n'a pas besoin de l'être.",
-      "start": 581.78,
-      "end": 592.08
+      "text": "If you have been putting off a price raise for three months and this post has you finally willing, here is the honest seven-day sequence. It is not glamorous and it does not need to be.",
+      "start": 729.68,
+      "end": 743.9
     },
     {
       "id": 38,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Lundi. Sors les ventes des quatre-vingt-dix derniers jours, plat par plat. Classe chaque plat en ancre, cœur, ou signature. Tu vas être en désaccord avec toi-même sur quelques-uns — c'est ça, le but, c'est une décision, pas un algorithme.",
-      "start": 592.6,
-      "end": 605.43
+      "text": "Monday. Pull your last ninety days of sales by item. Tag every item as anchor, core, or signature. You will disagree with yourself on a few — that&rsquo;s the point, it&rsquo;s a decision, not an algorithm.",
+      "start": 744.42,
+      "end": 761.05
     },
     {
       "id": 39,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Mardi. Rédige les nouveaux prix. Ancres tenues. Plats du cœur en hausse de 4 à 6 %, en évitant les sauts au dollar rond. Signatures en hausse de 8 à 12 %. Pondère contre les volumes — tu vises 5 à 6 % pondéré, pas un plat 5 à 6 % sur chaque plat.",
-      "start": 605.75,
-      "end": 623.87
+      "text": "Tuesday. Draft the new prices. Anchors held. Core items up 4–6%, avoiding round-dollar jumps. Signatures up 8–12%. Weighted-average it against volume — you&rsquo;re aiming for a weighted 5–6%, not a flat 5–6% on every item.",
+      "start": 761.37,
+      "end": 780
     },
     {
       "id": 40,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Mercredi. Réécris la description sur tout plat que tu as augmenté de plus d'un dollar. Deux phrases, précises. Provenance, méthode, le détail que toi seul connais.",
-      "start": 624.19,
-      "end": 633.93
+      "text": "Wednesday. Rewrite the descriptions on any item you raised more than a dollar. Two sentences, specific. Sourcing, method, the detail only you know.",
+      "start": 780.32,
+      "end": 793.51
     },
     {
       "id": 41,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "Jeudi. Refais la photo de trois plats qui ont le plus bougé en prix. Téléphone + lumière naturelle + une heure de temps en cuisine.",
-      "start": 634.25,
-      "end": 641.09
+      "text": "Thursday. Re-shoot three dishes with the biggest price moves. Phone + natural light + hour of kitchen time.",
+      "start": 793.83,
+      "end": 803.37
     },
     {
       "id": 42,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "Vendredi. Audite ton propre site à froid. Chaque page qui affiche un prix, chaque vieille bannière de promo, chaque menu en P D F. Retire tout ce qui contredit la nouvelle grille.",
-      "start": 641.41,
-      "end": 653.17
+      "text": "Friday. Audit your own website cold. Every page that shows a price, every old promo banner, every P D F menu. Remove anything that contradicts the new pricing.",
+      "start": 803.69,
+      "end": 817.07
     },
     {
       "id": 43,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
-      "text": "Samedi. Tu publies. Page menu d'abord, blocs de la page d'accueil ensuite, menu en P D F en dernier. Préviens l'accueil et les serveurs des trois plats qui ont le plus bougé pour qu'ils soient prêts face à l'un ou l'autre client qui pose la question.",
-      "start": 653.49,
-      "end": 667.23
+      "text": "Saturday. Publish. Menu page first, homepage blocks second, P D F menu last. Tell your host and servers the three items that moved most so they&rsquo;re ready for the one guest who asks.",
+      "start": 817.39,
+      "end": 832.14
     },
     {
       "id": 44,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(7)",
-      "text": "Dimanche. Surveille ton nombre de réservations sur les deux semaines qui suivent. S'il baisse de plus de 5 %, tu as pris trop. S'il tient ou bouge de moins de 2 %, tu n'as pas assez pris — et tu peux revenir pour 3 % de plus dans quatre-vingt-dix jours.",
-      "start": 667.55,
-      "end": 682.68
+      "text": "Sunday. Watch your reservation count for the next two weeks. If it drops more than 5%, you took too much. If it holds or moves less than 2%, you didn&rsquo;t take enough — and you can come back for another 3% in ninety days.",
+      "start": 832.46,
+      "end": 850.05
     },
     {
       "id": 45,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(28)",
-      "text": "Voilà tout le playbook. Trois niveaux, trois coups sur le site, sept jours.",
-      "start": 683.2,
-      "end": 688.02
+      "text": "That is the whole playbook. Three tiers, three website moves, seven days.",
+      "start": 850.57,
+      "end": 856.41
     },
     {
       "id": 46,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(29)",
-      "text": "Tu n'essaies pas d'extraire plus du client — tu essaies d'arrêter de perdre de l'argent sur le client que tu as déjà. La distinction compte. Un restaurant qui coule doucement parce qu'il n'augmente pas ses prix ferme de la même manière qu'un restaurant qui a augmenté ses prix n'importe comment. De ces deux issues, il y en a au moins une où l'opérateur a choisi.",
-      "start": 688.54,
-      "end": 706.25
+      "text": "You are not trying to extract more from the guest — you are trying to stop losing money on the guest you already have. The distinction matters. A restaurant that is quietly going broke because it will not raise prices closes the same as a restaurant that raised prices the wrong way. One of those outcomes, the operator at least got to choose.",
+      "start": 856.93,
+      "end": 878.31
     },
     {
       "id": 47,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(30)",
-      "text": "Fixe le prix pour survivre. Décris-le pour qu'il passe. Photographie-le pour remettre les compteurs à zéro. Puis laisse les habitués revenir, comme ils l'ont toujours fait.",
-      "start": 706.77,
-      "end": 715.62
+      "text": "Price it to survive. Describe it to land. Photograph it to reset. Then let the regulars show back up, the same way they always have.",
+      "start": 878.83,
+      "end": 889.86
     }
   ]
 }
