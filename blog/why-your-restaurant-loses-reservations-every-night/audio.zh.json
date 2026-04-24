@@ -1,395 +1,395 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-18T18:59:33.515Z",
+  "generatedAt": "2026-04-24T16:48:34.048Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "zm_yunxi",
   "language": "zh",
-  "total": 745,
+  "total": 756.99,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "您的餐厅每天晚上营业，一定数量的人决定在您的餐厅预订餐桌。他们点击您的网站，一路上某个地方出了问题，然后他们悄悄地在其他地方预订。你永远不会看到他们。他们从不抱怨。他们就这样离开了——而你却永远不会发现。",
+      "text": "Every night your restaurant is open, a certain number of people decide to book a table at your place. They tap your website, something goes wrong somewhere along the way, and they quietly book somewhere else. You never see them. They never complain. They just leave — and you find out about it never.",
       "start": 0,
-      "end": 15.87
+      "end": 14.42
     },
     {
       "id": 1,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "我要给那些丢失的预订打电话。根据我审核独立餐厅网站的经验，大多数运营商在预订流量有机会发挥作用之前就泄露了四分之一到一半的意图驱动移动流量。这篇文章将这种损失分为六个具体原因，向您展示如何估计每个原因给您造成的实际损失，并为您提供每个原因的解决方案。",
-      "start": 16.09,
-      "end": 37.5
+      "text": "I am going to call those lost reservations . In my experience auditing independent restaurant websites, most operators are leaking somewhere between a quarter and a half of their intent-driven mobile traffic before the reservation flow even gets a chance to work. This post breaks that loss down into its six specific causes, shows you how to estimate what each one is costing you in real dollars, and gives you the fix for every one.",
+      "start": 14.94,
+      "end": 36.28
     },
     {
       "id": 2,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "预订渠道——它通常是什么样子的。",
-      "start": 38.3,
-      "end": 41.23
+      "text": "The reservation funnel — what it typically looks like.",
+      "start": 37.38,
+      "end": 40.61
     },
     {
       "id": 3,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
-      "text": "下面是一个典型的独立餐厅网站的预订漏斗的形状——我在审核真实网站时看到的那种。我是根据我反复观察的模式得出的，而不是从已发布的数据集中得出的，因此将具体数字视为说明性的，而不是测量的。您自己的餐厅的人数会根据您的菜单、您的社区、您的客户以及是一月的星期二还是六月的星期六而有所不同。",
-      "start": 41.68,
-      "end": 65.4
+      "text": "Below is the shape of a reservation funnel for a typical independent restaurant website — the kind I see when I audit real sites. I am drawing this from patterns I observe repeatedly, not from a published dataset, so treat the specific numbers as illustrative, not measured. Your own restaurant's numbers will vary based on your menu, your neighborhood, your clientele, and whether it is a Tuesday in January or a Saturday in June.",
+      "start": 41.31,
+      "end": 64.02
     },
     {
       "id": 4,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "不变的是泄漏的形状。我审计过的每个餐厅网站大致都在这些地方，大致按照这个顺序有下降。",
-      "start": 65.62,
-      "end": 73.92
+      "text": "What does not vary is the shape of the leak. Every restaurant site I have ever audited has drop-offs in roughly these places, in roughly this order.",
+      "start": 64.54,
+      "end": 73.03
     },
     {
       "id": 5,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "这是漏斗的形状。在一百名有意到达的移动访问者中，大约有十五人因页面加载缓慢而流失。另外八个人因为手机上无法打开菜单而下车。还有四人离开，因为他们无法判断您现在是否营业。由于预订按钮被隐藏，十号失去了气味。 13 次从笨重的第三方预订嵌入中退回。另外三人因确认焦虑而下降——无法保证预订确实完成。到最后，最初的一百人中有四十七人完成了预订。大约一半。您的数字会有所不同，但泄漏的形状不会。",
-      "start": 74.47,
-      "end": 104.41
+      "text": "Here is the shape of that funnel. Out of a hundred mobile visitors who arrive with intent, about fifteen are lost to slow page load. Another eight drop off when the menu will not open on their phone. Four more leave because they cannot tell if you are open right now. Ten lose the scent because the reservation button is hidden. Thirteen bounce from a clunky third-party booking embed. Three more fall off at confirmation anxiety — no reassurance that the booking actually went through. By the end, forty-seven of the original hundred complete a reservation. Roughly half. Your numbers will vary, but the shape of the leak does not.",
+      "start": 73.83,
+      "end": 106.26
     },
     {
       "id": 6,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
-      "text": "大约一半。超过一半的人在一个糟糕的网站上。大约三分之一的下降发生在访问者甚至没有看到你的菜单之前，这是令人刺痛的部分——这是你通过 Google Business Profile 优化和周三 Instagram 帖子支付的流量，而且它在没有阅读菜肴描述的情况下就离开了。",
-      "start": 104.91,
-      "end": 125.21
+      "text": "Roughly half. More than half on a bad site. About a third of the drop happens before the visitor has even seen your menu, which is the part that stings — that is traffic you paid for with Google Business Profile optimization and a Wednesday Instagram post, and it is leaving without ever reading a dish description.",
+      "start": 107.01,
+      "end": 122.7
     },
     {
       "id": 7,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "为什么预订渠道是您会发现的最诚实的营销统计数据。",
-      "start": 126.01,
-      "end": 130.69
+      "text": "Why the reservation funnel is the most honest marketing stat you will find.",
+      "start": 123.8,
+      "end": 128.48
     },
     {
       "id": 8,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(6)",
-      "text": "大多数餐厅的网站指标都是虚荣的。页面浏览量、独立访问者、跳出率、平均会话持续时间——它们都是浮动数字，与业务没有明显的联系，这就是为什么大多数餐厅老板每季度浏览一次它们，然后关闭分析选项卡。",
-      "start": 131.14,
-      "end": 145.45
+      "text": "Most website metrics for restaurants are vanity. Page views, unique visitors, bounce rate, average session duration — they are floating numbers that do not obviously connect to the business, which is why most restaurant owners glance at them once a quarter and then close the analytics tab.",
+      "start": 129.18,
+      "end": 144.4
     },
     {
       "id": 9,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(7)",
-      "text": "预订渠道是唯一直接且明确地映射到收入的指标。如果您每月失去 50 个预订，而您的平均赔付金额为 55 美元，那么您可以在头脑中进行数学计算 - 无需估计，无需解释，无需关心“跳出率”是 37% 还是 42%。你清楚地知道桌上还剩下多少钱。",
-      "start": 145.67,
-      "end": 165.81
+      "text": "The reservation funnel is the only metric that maps directly and unambiguously to revenue. If you lose 50 reservations a month, and your average cover is fifty-five dollars, then you can do the math in your head — without estimating, without interpreting, without caring whether the \"bounce rate\" was 37% or 42%. You know exactly how much money you left on the table.",
+      "start": 144.92,
+      "end": 167.01
     },
     {
       "id": 10,
       "kind": "figure",
       "selector": "#post-body > div:nth-of-type(1)",
-      "text": "这是诚实的数字。如果你每个月留下 50 个预订，十二个月的平均费用为 55 美元，那么每年就有 33000 美元——收入永远不会进门。",
-      "start": 166.36,
-      "end": 177.7
+      "text": "Here is the honest number. If you leave fifty reservations on the table each month, at a fifty-five dollar average cover across twelve months, that is thirty-three thousand dollars a year — revenue that never walked through the door.",
+      "start": 167.81,
+      "end": 180.65
     },
     {
       "id": 11,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(8)",
-      "text": "对于大多数独立餐厅来说，这个数字比完全定制重建、一年的持续护理和专业摄影师的成本总和还要高。每天晚上，当你在厨房专注于服务时，这种损失就会悄然发生——这意味着这是最简单的收入恢复方式，因为顾客已经想预订了。他们就是做不到。",
-      "start": 178.2,
-      "end": 196.53
+      "text": "For most independent restaurants, that number is larger than the cost of a full custom rebuild, a year of ongoing care, and a professional photographer combined. And the loss is happening every night, quietly, while you are in the kitchen focused on service — which means it is the easiest kind of revenue recovery there is, because the customers already wanted to book. They just could not.",
+      "start": 181.4,
+      "end": 199.93
     },
     {
       "id": 12,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "六个泄漏，按顺序。",
-      "start": 197.33,
-      "end": 198.82
+      "text": "The six leaks, in order.",
+      "start": 201.03,
+      "end": 202.89
     },
     {
       "id": 13,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(9)",
-      "text": "以下是每个下降点实际出现的问题以及如何修复它。",
-      "start": 199.27,
-      "end": 203.88
+      "text": "Here is what is actually going wrong at each drop point, and how to plug it.",
+      "start": 203.59,
+      "end": 208.27
     },
     {
       "id": 14,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(1)",
-      "text": "漏洞一——您的网站在手机上速度很慢。",
-      "start": 204.68,
-      "end": 207.7
+      "text": "Leak number 1 — Your site is slow on a phone.",
+      "start": 209.37,
+      "end": 212.84
     },
     {
       "id": 15,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(10)",
-      "text": "如果您的主页在手机上加载的时间超过三秒，那么您可能已经失去了大约一半点击您链接的人。这不是我的号码，而是 Google 的号码。他们的移动页面速度研究一致表明，大多数移动访问者会从加载时间超过三秒的页面跳出，此后每多一秒，跳出率就会急剧上升。",
-      "start": 208.15,
-      "end": 227.89
+      "text": "If your homepage takes longer than three seconds to load on a phone, you have probably already lost about half of the people who tapped your link. That is not my number — it is Google's. Their mobile page-speed research consistently shows that the majority of mobile visitors bounce from pages that take longer than three seconds to load , and every additional second after that makes the bounce rate climb sharply.",
+      "start": 213.54,
+      "end": 232.78
     },
     {
       "id": 16,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(11)",
-      "text": "大多数餐厅网站我会在四到七秒内审核真实 4G 连接上的负载。有时十个。所有者几乎永远不知道，因为他们只是从办公桌上通过办公室 WiFi 加载了网站，这些网站已经缓存在浏览器中。",
-      "start": 228.11,
-      "end": 242.95
+      "text": "Most restaurant sites I audit load in four to seven seconds on a real 4G connection. Sometimes ten. The owner almost never knows, because they have only ever loaded their site from their desk, on office wifi, already cached in their browser.",
+      "start": 233.3,
+      "end": 246.64
     },
     {
       "id": 17,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(12)",
-      "text": "如何在三十秒内测试它：在手机上打开您的网站。使用蜂窝数据，而不是 WiFi。点击链接时开始计时，看到链接后停止计时并点击“预约”按钮。如果超过三秒，则您得到了第 1 号泄漏 - 您可以在我们的免费餐厅网站审核中确认确切的数字。",
-      "start": 243.17,
-      "end": 260.79
+      "text": "How to test it in thirty seconds: pull up your site on your phone. Use cellular data, not wifi. Start timing the moment you tap the link, stop timing the moment you can see and tap the \"Reserve\" button. If it is more than three seconds, you have got Leak number 1 — and you can confirm the exact number in our free Restaurant Website Audit .",
+      "start": 247.16,
+      "end": 264.36
     },
     {
       "id": 18,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(13)",
-      "text": "解决方法：在像 Wix 或 Squarespace 这样的模板上，您可以压缩图像并禁用装饰小部件，但您最终会遇到平台的天花板。在自定义网站上，不到两秒的移动加载并不是升级，而是起点。",
-      "start": 261.01,
-      "end": 275.52
+      "text": "The fix: on a template like Wix or Squarespace, you can compress images and disable decorative widgets, but you are eventually bumping into the platform's ceiling. On a custom site, sub-two-second mobile load is not an upgrade — it is the starting point.",
+      "start": 264.88,
+      "end": 279.24
     },
     {
       "id": 19,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(2)",
-      "text": "泄漏编号 2 — 您的菜单是 PDF。",
-      "start": 276.32,
-      "end": 279.48
+      "text": "Leak number 2 — Your menu is a P D F.",
+      "start": 280.34,
+      "end": 283.26
     },
     {
       "id": 20,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(14)",
-      "text": "这是关于 PDF 的有趣部分：从技术上讲，它们是文档，而不是网页。 iPhone 上的 Safari 必须下载它们，将它们交给单独的 PDF 查看器，然后以桌面大小呈现它们 - 这意味着您的客户会看到一堵难以阅读的文本小墙，并且必须进行捏缩放才能阅读单个菜肴名称。如果他们在周二晚上饿着肚子去某个地方，他们就不会做这项工作。他们只需关闭选项卡并尝试 Google Maps 上的下一个位置。",
-      "start": 279.93,
-      "end": 308.66
+      "text": "Here is the fun part about PDFs: technically they are documents, not web pages. Safari on iPhone has to download them, hand them to a separate P D F viewer, and then render them at desktop size — which means your customer sees a tiny wall of unreadable text and has to pinch-zoom to read a single dish name. If they are walking somewhere hungry on a Tuesday night, they do not do that work. They just close the tab and try the next place on Google Maps.",
+      "start": 283.96,
+      "end": 307.65
     },
     {
       "id": 21,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(15)",
-      "text": "PDF 菜单的存在是因为它们对于餐馆来说很容易制作。您可以从 Illustrator 导出打印的菜单，上传它，链接到它。完毕。但“对餐厅来说很方便”和“对顾客来说很方便”并不是一回事——而顾客就是拥有信用卡的人。",
-      "start": 308.88,
-      "end": 324.39
+      "text": "P D F menus exist because they are easy for restaurants to produce. You export the printed menu from Illustrator, upload it, link to it. Done. But \"easy for the restaurant\" and \"easy for the customer\" are not the same thing — and the customer is the one with the credit card.",
+      "start": 308.17,
+      "end": 323.79
     },
     {
       "id": 22,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(16)",
-      "text": "如何在三十秒内测试它：打开手机上的菜单链接。你能在不捏缩放的情况下读懂第一道菜的名称和价格吗？如果没有 — 泄漏编号 2。",
-      "start": 324.61,
-      "end": 334.86
+      "text": "How to test it in thirty seconds: open your menu link on your phone. Can you read the name and the price of the first dish without pinching to zoom? If no — Leak number 2.",
+      "start": 324.31,
+      "end": 334.23
     },
     {
       "id": 23,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(17)",
-      "text": "解决方法：用真正的 HTML 菜单页替换 PDF。是的，这意味着您现在必须维护两个版本（打印的卡片和网页），但是一个精心构建的自定义站点可以从一个事实来源驱动这两个版本 - 您更新 Google 表或 CMS，并且 Web 菜单和打印导出一起刷新。这是半天的设置，之后每周都会收回成本。",
-      "start": 335.08,
-      "end": 358.44
+      "text": "The fix: replace the P D F with a real H T M L menu page. Yes, it means you now have to maintain two versions (the printed card and the web page), but a well-built custom site can drive both from one source of truth — you update a Google Sheet or a C M S, and both the web menu and the print export refresh together. That is a half-day of setup that pays for itself every week after.",
+      "start": 334.75,
+      "end": 356.42
     },
     {
       "id": 24,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(3)",
-      "text": "泄密之三——你的工作时间被隐藏了。",
-      "start": 359.24,
-      "end": 362.54
+      "text": "Leak number 3 — Your hours are hiding.",
+      "start": 357.52,
+      "end": 360.41
     },
     {
       "id": 25,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(18)",
-      "text": "餐厅网站上最常见的问题是“你们现在营业吗？” - 大多数网站都会通过将时间隐藏在页脚中、将其隐藏在“访问”选项卡后面或仅在单独的联系页面上显示来回答这个问题。访问者很少点击。他们只是切换回 Google 并在其他地方预订。",
-      "start": 362.99,
-      "end": 381.3
+      "text": "The single most common question on a restaurant website is \"are you open right now?\" — and most sites answer it by burying the hours in the footer, hiding them behind a \"Visit\" tab, or showing them only on a separate Contact page. The visitor rarely clicks. They just switch back to Google and book somewhere else.",
+      "start": 361.11,
+      "end": 377.16
     },
     {
       "id": 26,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(19)",
-      "text": "这不是我的预感。 Nielsen Norman Group 对本地商业网站的研究多次发现，时间和地点是小型企业网站上搜索次数最多的信息，也是最常被隐藏的信息。业主通常认为营业时间“在页脚中，人们可以在其中找到它们”，而没有测试当从未见过页脚存在的首次访问者试图在五秒钟内找到它们时会发生什么。",
-      "start": 381.52,
-      "end": 404.96
+      "text": "This is not my hunch. Read Don's 2-minute summary ↗ Nielsen Norman Group's research on local business websites has repeatedly found that hours and location are the most-searched-for information on small-business sites — and the most frequently hidden. Owners often think the hours liv \"in the footer, where people will find them,\" without testing what happens when a first-time visitor, who is never seen the footer exist, tries to find them in five seconds.",
+      "start": 377.68,
+      "end": 401.15
     },
     {
       "id": 27,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(20)",
-      "text": "如何在三十秒内测试它：冷打开您的网站。计算在不滚动或单击任何内容的情况下您可以看到今天的小时数之前需要经过多少秒。如果超过 5 个，则属于第 3 号泄漏。",
-      "start": 405.18,
-      "end": 417.85
+      "text": "How to test it in thirty seconds: open your site cold. Time how many seconds pass before you can see today's hours without scrolling or clicking anything. If it is more than five, you have got Leak number 3.",
+      "start": 401.67,
+      "end": 413.46
     },
     {
       "id": 28,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(21)",
-      "text": "解决方法：将时间放在英雄中，或者放在粘性标题中，或者放在一个小的“现在开放·直到晚上 10 点”徽章中，该徽章会根据当前时间自动更新。徽章是我最喜欢的——它需要大约 30 行 JavaScript 代码，它可以在访问者需要的时候让他们放心。",
-      "start": 418.07,
-      "end": 437.04
+      "text": "The fix: put hours in the hero, or in a sticky header, or in a small \"OPEN NOW · until 10 PM\" badge that auto-updates based on the current time. The badge is my favorite — it takes about thirty lines of JavaScript and it reassures the visitor at exactly the moment they need it.",
+      "start": 413.98,
+      "end": 429.79
     },
     {
       "id": 29,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(4)",
-      "text": "泄漏之四——预订按钮被掩埋或丢失。",
-      "start": 437.84,
-      "end": 440.72
+      "text": "Leak number 4 — The reservation button is buried or missing.",
+      "start": 430.89,
+      "end": 435.21
     },
     {
       "id": 30,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(22)",
-      "text": "有些餐厅网站的主页上根本没有预订按钮。其他人有一个，但它位于右上角的下拉菜单中，或者是长英雄底部的小文本链接，或者仅位于“联系”页面上。这是最让我沮丧的泄漏，因为修复成本如此之低，而且影响如此明显。",
-      "start": 441.17,
-      "end": 457.35
+      "text": "Some restaurant sites do not have a reservation button on the homepage at all. Others have one, but it is in a dropdown menu at the top right, or it is a small text link at the bottom of a long hero, or it only lives on the \"Contact\" page. This is the leak that frustrates me the most, because the fix is so cheap and the impact is so obvious.",
+      "start": 435.91,
+      "end": 453.7
     },
     {
       "id": 31,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(23)",
-      "text": "这里有一个完善的用户体验原则——菲茨定律，用简单的英语来说就是：按钮越难触及，人们按下它的频率就越低。导航顶部的预订按钮需要点击才能打开，然后再次点击才能选择，其点击难度是屏幕底部永久可见的按钮的两倍。您在点击路径的每一步都会失去转化。",
-      "start": 457.57,
-      "end": 477.21
+      "text": "There is a well-established U X principle here — Read Don's 2-minute summary ↗ Fitts's Law , which in plain English says: the harder a button is to reach, the less often people press it . A reservation button at the top of a nav that requires a tap to open and then a second tap to select is twice as hard to hit as a button that is permanently visible at the bottom of the screen. You lose conversion at every step of the tap path.",
+      "start": 454.22,
+      "end": 475.86
     },
     {
       "id": 32,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(24)",
-      "text": "如何在三十秒内测试它：在手机上打开您的主页。无需滚动或打开任何菜单，您可以通过一个手势点击“预订”吗？如果没有 — 泄漏编号 4。",
-      "start": 477.43,
-      "end": 487.72
+      "text": "How to test it in thirty seconds: open your homepage on your phone. Without scrolling or opening any menus, can you tap \"Reserve\" in a single gesture? If not — Leak number 4.",
+      "start": 476.38,
+      "end": 488.27
     },
     {
       "id": 33,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(25)",
-      "text": "解决方法：在每个移动页面上添加粘性屏幕底部预订 CTA。在自定义网站上可能需要一个小时的工作。在大多数模板构建器上，您可以使用浮动小部件来近似它。不管怎样，这都是你可以为转化而做出的最高 R O 改变——而我审计过的大多数餐厅甚至从未考虑过这一点。",
-      "start": 487.94,
-      "end": 506.74
+      "text": "The fix: add a sticky bottom-of-screen reservation C T A on every mobile page. It is maybe an hour of work on a custom site. On most template builders you can approximate it with a floating widget. Either way, it is the single highest-R O I change you can make for conversion — and most of the restaurants I have audited have never even considered it.",
+      "start": 488.79,
+      "end": 505.67
     },
     {
       "id": 34,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(5)",
-      "text": "泄漏编号 5 — 预留流动摩擦。",
-      "start": 507.54,
-      "end": 509.74
+      "text": "Leak number 5 — Reservation flow friction.",
+      "start": 506.77,
+      "end": 510.03
     },
     {
       "id": 35,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(26)",
-      "text": "这就是大多数餐厅预订渠道实际上崩溃的地方。访问者点击“预订”，这意味着他们已经加入——点击一两次即可完成转化。大多数餐厅网站都使用预订平台，将一两次点击变成七次。",
-      "start": 510.19,
-      "end": 523.47
+      "text": "This is where most restaurant reservation funnels actually fall apart. The visitor tapped \"Reserve,\" which means they are in — the conversion is one or two clicks from happening. And most restaurant sites use a booking platform that turns those one or two clicks into seven.",
+      "start": 510.73,
+      "end": 525.23
     },
     {
       "id": 36,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(27)",
-      "text": "典型的预订小部件要求的内容如下：聚会人数、日期、时间、替代时间、姓名、电话、电子邮件、您悄悄注册的帐户密码、电话验证码、“同意条款”，有时是作为抵押品的信用卡，有时是证明您是人类的验证码。到了第七步，顾客已经忘记了他们为什么想要意大利菜。",
-      "start": 523.69,
-      "end": 542.65
+      "text": "Here is what a typical reservation widget asks for: party size, date, time, alternative time, name, phone, email, password for the account you are being quietly signed up for, phone-verification code, \"agree to terms,\" sometimes a credit card held as collateral, sometimes a captcha to prove you are human. By step seven, the customer has forgotten why they wanted Italian food.",
+      "start": 525.75,
+      "end": 548.2
     },
     {
       "id": 37,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(28)",
-      "text": "Baymard Institute 对电子商务结账放弃的研究发现，在线零售中的平均购物车放弃率徘徊在 70% 左右，而购物者提到的首要原因之一是“该网站希望我创建一个帐户”。预订表单与结帐表单有着不同的含义，它们都面临着同样的动态：每一个额外的字段、每一个不必要的帐户、每一个额外的屏幕都与人们退出直接相关。",
-      "start": 542.87,
-      "end": 567.62
+      "text": "Baymard Institute's research on e-commerce checkout abandonment finds that the average cart-abandonment rate in online retail hovers around 70% , and one of the top reasons cited by shoppers is \"the site wanted me to create an account.\" Reservation forms are checkout forms wearing a different hat, and they suffer the same dynamic: every additional field, every unnecessary account, every extra screen correlates directly with people dropping out.",
+      "start": 548.72,
+      "end": 572.88
     },
     {
       "id": 38,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(29)",
-      "text": "如何在三十秒内测试它：假装您是首次顾客，并实际在您自己的餐厅端到端预订餐桌。计算不同的屏幕和必填字段。如果你超过了 6 个，那就是第 5 号泄漏——我审核的大多数餐厅都在 8 到 12 之间。",
-      "start": 567.84,
-      "end": 582.22
+      "text": "How to test it in thirty seconds: pretend you are a first-time customer and actually book a table at your own restaurant end-to-end. Count the distinct screens and required fields. If you got past six, that is Leak number 5 — and most restaurants I audit land between eight and twelve.",
+      "start": 573.4,
+      "end": 588.25
     },
     {
       "id": 39,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(30)",
-      "text": "解决方法：选择一个默认流程步骤较少的预订平台（主要参与者差异很大），或者 - 如果您的数量足够低 - 使用简单的嵌入式表单，询问姓名、日期、时间、聚会规模和电子邮件，并向您的房东发送电子邮件。当您的数量增加时，您会重新考虑平台决策。不要为简单的预订而支付复杂的系统费用。",
-      "start": 582.44,
-      "end": 604.17
+      "text": "The fix: pick a reservation platform whose default flow has fewer steps (the major players vary a lot), or — if your volume is low enough — use a simple embedded form that asks for name, date, time, party size, and email, and emails your host stand. When your volume grows, you revisit the platform decision. Do not pay a complex system for simple bookings.",
+      "start": 588.77,
+      "end": 609.79
     },
     {
       "id": 40,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(6)",
-      "text": "泄漏之六——确认焦虑。",
-      "start": 604.97,
-      "end": 606.7
+      "text": "Leak number 6 — Confirmation anxiety.",
+      "start": 610.89,
+      "end": 613.97
     },
     {
       "id": 41,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(31)",
-      "text": "这个在漏斗上很小（大约一百个人中有三个），但它很讨厌，因为它对你来说是看不见的。发生的情况是这样的：客户完成预订，预订小部件会闪烁“谢谢！”屏幕，然后……什么也没有。没有电子邮件。没有短信。没有纸质痕迹。他们等了几个小时，开始怀疑预订是否成功，然后悄悄打电话给其他地方“以防万一”。有时他们会期待系统中不存在的表。无论哪种结果，都比他们从未尝试预订的体验更糟糕。",
-      "start": 607.15,
-      "end": 635.26
+      "text": "This one is small on the funnel (about three people out of a hundred) but it is nasty because it is invisible to you. Here is what happens: the customer completes the booking, the reservation widget flashes a \"thanks!\" screen, and then... nothing. No email. No text message. No paper trail. They wait a few hours, start to doubt the booking went through, and quietly call somewhere else \"just in case.\" Sometimes they show up expecting a table that does not exist in the system. Either outcome is a worse experience than if they would never tried to book at all.",
+      "start": 614.67,
+      "end": 645.84
     },
     {
       "id": 42,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(32)",
-      "text": "如何在三十秒内测试它：立即在您自己的餐厅进行真正的预订。确认电子邮件会在一分钟内到达吗？是来自您餐厅的名称，还是通用的“OpenTable 预订”地址？是否明确注明日期、时间、聚会人数以及如何修改或取消？它是餐厅的签名吗？还是感觉像是机器人写的？",
-      "start": 635.48,
-      "end": 654.6
+      "text": "How to test it in thirty seconds: book a real reservation at your own restaurant right now. Does a confirmation email arrive within a minute? Is it from your restaurant's name, or a generic \"OpenTable Reservations\" address? Does it clearly state the date, time, party size, and how to modify or cancel? Is it signed by the restaurant — or does it feel like a robot wrote it?",
+      "start": 646.36,
+      "end": 668.04
     },
     {
       "id": 43,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(33)",
-      "text": "解决办法：这是纯操作。确保您的预订系统立即发送一封格式正确的确认电子邮件。将发送者名称自定义为餐厅，而不是平台。添加当天的提醒电子邮件。如果您当前的平台不允许您自定义确认，请询问您的提供商 - 大多数人会在询问时将其打开。如果他们不这样做，那就是改变平台的原因。",
-      "start": 654.82,
-      "end": 677.6
+      "text": "The fix: it is pure operations. Make sure your reservation system sends an instant, well-formatted confirmation email. Customize the sender name to be the restaurant, not the platform. Add a reminder email the day-of. If your current platform will not let you customize the confirmation, ask your provider — most will turn it on when asked. If they will not, that is a reason to change platforms.",
+      "start": 668.56,
+      "end": 689.81
     },
     {
       "id": 44,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "修正数学。",
-      "start": 678.4,
-      "end": 679.46
+      "text": "The fix math.",
+      "start": 690.91,
+      "end": 691.93
     },
     {
       "id": 45,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(34)",
-      "text": "通常最让餐馆老板感到惊讶的是：修复四大漏洞——加载缓慢、P D F 菜单、隐藏营业时间和缺少预订按钮——通常需要在定制网站上花费一个下午的时间来集中精力。六次泄漏中的四次在一次会议中关闭，费用为审计费用加上几个小时的工作。在像 Wix 或 Squarespace 这样的模板网站上，四个中的三个在不重建的情况下实际上无法修复，这是“廉价”平台的安静成本 - 即使找到泄漏也无法关闭它们。",
-      "start": 679.91,
-      "end": 710.76
+      "text": "Here is the thing that usually surprises restaurant owners most: fixing the top four leaks — slow load, P D F menu, hidden hours, and missing reservation button — typically takes a single focused afternoon on a custom-built site. Four of the six leaks, closed in one session, for the cost of an audit plus a few hours of work. On a template site like Wix or Squarespace, three of the four are not really fixable without a rebuild, which is the quiet cost of the \"cheap\" platform — you cannot close the leaks even after you find them.",
+      "start": 692.63,
+      "end": 721.18
     },
     {
       "id": 46,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(35)",
-      "text": "剩下的两个泄漏（预订流程摩擦和确认焦虑）通常根本不是代码问题 - 它们是平台选择或操作问题。解决这些问题需要更长的时间，但几乎总是值得付出努力。",
-      "start": 710.98,
-      "end": 723.74
+      "text": "The remaining two leaks (reservation flow friction and confirmation anxiety) usually are not code problems at all — they are platform-choice or operational problems. They take longer to address, but they are almost always worth the effort.",
+      "start": 721.7,
+      "end": 735.04
     },
     {
       "id": 47,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(36)",
-      "text": "如果您关闭所有六个，您可能会恢复今天损失的 30% 到 50% 的流量。你的实际恢复将取决于你的菜单、你的客户以及网站一开始泄漏的严重程度——但方向是单向的，而且复合是真实的。每个月你都把漏洞留在原地，你就是在点燃客户已经向你提供的钱。",
-      "start": 723.96,
-      "end": 745
+      "text": "If you close all six, you will probably recover somewhere between 30 and 50% of the traffic you are losing today. Your actual recovery will depend on your menu, your clientele, and how badly the site was leaking to start with — but the direction is one-way, and the compounding is real. Every month you leave the leaks in place, you are lighting money on fire that the customer was already holding out to you.",
+      "start": 735.56,
+      "end": 756.99
     }
   ]
 }

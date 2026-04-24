@@ -267,8 +267,25 @@ function renderPost(postDir) {
 
     let langChunks = chunks;
     if (lang !== 'en') {
-      console.log(`  · translating ${chunks.length} chunks → ${lang}`);
-      langChunks = translateChunksFor(chunks, lang);
+      // --use-existing-translations: skip the translator call and use
+      // the chunks[] already present in audio.<lang>.json. This is how
+      // we ship native (hand-written or Claude-written) translations
+      // without round-tripping through Google Translate. The extractor
+      // still provides kind/selector/etc. metadata; we only replace
+      // the `text` field per-chunk from the existing manifest.
+      if (flags.has('--use-existing-translations') && fs.existsSync(jsonPath)) {
+        const existing = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+        const byId = new Map();
+        for (const c of (existing.chunks || [])) byId.set(c.id, c);
+        langChunks = chunks.map((c) => {
+          const prev = byId.get(c.id);
+          return prev ? { ...c, text: prev.text } : c;
+        });
+        console.log(`  · using existing ${lang} translations (${langChunks.length} chunks)`);
+      } else {
+        console.log(`  · translating ${chunks.length} chunks → ${lang}`);
+        langChunks = translateChunksFor(chunks, lang);
+      }
     }
     renderLanguage(postDir, langChunks, lang);
   }
