@@ -455,8 +455,12 @@
       <span class="mm-action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg></span>
       Agrega un chequeo mensual a tu calendario
     </button>
+    <button type="button" class="mm-action" id="mm-copy-text" data-default-label="Copiar como texto plano">
+      <span class="mm-action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h12"/></svg></span>
+      Copiar como texto plano
+    </button>
   </div>
-  <p class="mm-action-note">La impresión corre en tu navegador; el calendario descarga un archivo <code>.ics</code> que contiene sólo la URL de tu escenario actual. Nada se sube a nuestro servidor.</p>
+  <p class="mm-action-note">La impresión abre el diálogo de tu navegador; el calendario descarga un archivo <code>.ics</code>; el texto va a tu portapapeles. Las tres acciones corren del lado cliente — nada se sube a nuestro servidor.</p>
 </div></div></section>
 
 <section class="block"><div class="container container-wide">
@@ -1896,6 +1900,130 @@
       btn.removeAttribute('data-copied');
       btn.textContent = original;
     }, 2600);
+  });
+})();
+
+/* Copiar escenario como texto plano. Compone un bloque compacto y
+ * etiquetado con el estado actual de cada calculadora, útil para
+ * pegarlo en un correo al contador, una nota o un doc compartido.
+ * Lee los valores visibles del DOM para que el texto refleje
+ * exactamente lo que ve el dueño en pantalla. */
+(function(){
+  var btn = document.getElementById('mm-copy-text');
+  if (!btn) return;
+  var copyLabel = btn.getAttribute('data-default-label') || 'Copiar como texto plano';
+
+  function sectionDelivery(){
+    var card = document.querySelector('[data-calc="delivery-breakeven"]');
+    if (!card) return null;
+    var tierBtn = card.querySelector('.mm-tier-btns button[aria-pressed="true"]');
+    var tierText = tierBtn ? tierBtn.firstChild.textContent.trim() + ' (' + tierBtn.querySelector('small').textContent + ')' : '';
+    return [
+      'Punto de equilibrio con delivery',
+      '  Ticket promedio:       $' + card.querySelector('#dbe-ticket').value,
+      '  Food cost:             ' + card.querySelector('#dbe-foodcost').value + '%',
+      '  Nivel de comisión:     ' + tierText,
+      '  Órdenes/mes:           ' + card.querySelector('#dbe-orders').value,
+      '  Por orden en plataforma: ' + card.querySelector('#dbe-platform').textContent.trim(),
+      '  Por orden directa:       ' + card.querySelector('#dbe-direct').textContent.trim(),
+      '  Diferencia mensual:      ' + card.querySelector('#dbe-monthly').textContent.trim()
+    ].join('\n');
+  }
+
+  function sectionPrimeCost(){
+    var card = document.querySelector('[data-calc="prime-cost"]');
+    if (!card) return null;
+    var segBtn = card.querySelector('.mm-tier-btns button[aria-pressed="true"][data-segment]');
+    var seg = segBtn ? segBtn.firstChild.textContent.trim() : 'Servicio completo';
+    return [
+      'Chequeo de prime cost (' + seg + ')',
+      '  Food cost:  ' + card.querySelector('#pc-food').value + '%',
+      '  Labor cost: ' + card.querySelector('#pc-labor').value + '%',
+      '  Prime cost: ' + card.querySelector('#pc-total').textContent.trim() +
+        ' — ' + card.querySelector('#pc-band-label').textContent.trim()
+    ].join('\n');
+  }
+
+  function sectionBreakEvenCovers(){
+    var card = document.querySelector('[data-calc="break-even-covers"]');
+    if (!card) return null;
+    var lines = [
+      'Cubiertos para romper el punto',
+      '  Costos fijos mensuales:    $' + card.querySelector('#bec-fixed').value,
+      '  Ticket promedio:           $' + card.querySelector('#bec-check').value,
+      '  Margen por cubierto:       ' + card.querySelector('#bec-margin').value + '%',
+      '  Días abiertos/mes:         ' + card.querySelector('#bec-days').value,
+      '  Cubiertos/día típicos:     ' + card.querySelector('#bec-typical').value,
+      '  Cubiertos/día para romper: ' + card.querySelector('#bec-daily').textContent.trim()
+    ];
+    var headroomBlock = card.querySelector('#bec-headroom-block');
+    if (headroomBlock && headroomBlock.style.display !== 'none') {
+      lines.push('  Colchón mensual:           ' + card.querySelector('#bec-headroom').textContent.trim());
+      lines.push('  ' + card.querySelector('#bec-cap').textContent.trim());
+    }
+    return lines.join('\n');
+  }
+
+  function sectionPriceRaise(){
+    var card = document.querySelector('[data-calc="price-raise"]');
+    if (!card) return null;
+    var tierBtn = card.querySelector('.mm-tier-btns button[aria-pressed="true"]');
+    var tierText = tierBtn ? tierBtn.firstChild.textContent.trim() + ' (' + tierBtn.querySelector('small').textContent + ')' : '';
+    return [
+      'Simulador de alza de precios',
+      '  Ventas mensuales actuales: $' + card.querySelector('#pr-baseline').value,
+      '  Nivel del alza:            ' + tierText,
+      '  Pérdida asumida:           ' + card.querySelector('#pr-loss').value + '%',
+      '  Margen de contribución:    ' + card.querySelector('#pr-margin').value + '%',
+      '  Nuevas ventas mensuales:   ' + card.querySelector('#pr-new').textContent.trim(),
+      '  Equilibrio (utilidad):     ' + card.querySelector('#pr-breakeven-profit').textContent.trim(),
+      '  ' + card.querySelector('#pr-breakeven-rev').textContent.trim(),
+      '  Delta mensual ingresos:    ' + card.querySelector('#pr-delta').textContent.trim() +
+        ' (' + card.querySelector('#pr-delta-pct').textContent.trim() + ')',
+      '  ' + card.querySelector('#pr-contrib-delta').textContent.trim()
+    ].join('\n');
+  }
+
+  function composeText(){
+    var date = new Date().toLocaleDateString(document.documentElement.lang || 'es',
+      { month: 'long', day: 'numeric', year: 'numeric' });
+    var parts = [
+      'Cálculo de Margen — foto del escenario',
+      'Fecha: ' + date,
+      ''
+    ];
+    var sections = [sectionDelivery(), sectionPrimeCost(), sectionBreakEvenCovers(), sectionPriceRaise()];
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i]) {
+        parts.push(sections[i]);
+        parts.push('');
+      }
+    }
+    parts.push('Reabrir este escenario:');
+    parts.push(location.href);
+    return parts.join('\n');
+  }
+
+  btn.addEventListener('click', function(){
+    window.__mmUserInteracted = true;
+    if (window.__mmSyncFragment) window.__mmSyncFragment();
+    var text = composeText();
+    var flash = function(label){
+      btn.setAttribute('data-copied', 'true');
+      btn.textContent = label;
+      setTimeout(function(){
+        btn.removeAttribute('data-copied');
+        btn.textContent = copyLabel;
+      }, 2600);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(
+        function(){ flash('Escenario copiado como texto'); },
+        function(){ flash('No se pudo copiar — selecciónalo manualmente'); }
+      );
+    } else {
+      flash('No se pudo copiar — selecciónalo manualmente');
+    }
   });
 })();
 
