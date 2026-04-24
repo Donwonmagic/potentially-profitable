@@ -498,6 +498,221 @@ ${cards}
 ${siteFooter()}`;
 }
 
+// ---------- glossary parser ----------
+//
+// Parse /glossary/index.html and return { sections, terms }. The
+// glossary's HTML is hand-authored but highly regular — each
+// section is <section class="gloss-section" id="X">, each term is
+// <article class="gloss-term" id="slug" data-industries="...">
+// with predictable child elements.
+
+function parseGlossary() {
+  const file = join(REPO, 'glossary/index.html');
+  const html = readFileSync(file, 'utf8');
+
+  // First pull section headers so we can attach each term to its section.
+  const sectionMap = {};
+  const sectionRe = /<section class="gloss-section" id="([a-z0-9-]+)" aria-labelledby="[^"]*">[\s\S]*?<h2[^>]*>([\s\S]*?)<\/h2>\s*<p>([\s\S]*?)<\/p>/g;
+  for (const m of html.matchAll(sectionRe)) {
+    const slug = m[1];
+    sectionMap[slug] = {
+      slug,
+      name: stripTags(m[2]).trim(),
+      description: stripTags(m[3]).trim(),
+      topics: tagsDoc.glossary_section_to_topics[slug] || [],
+    };
+  }
+
+  // Now walk terms. Track current section by which section-bracket each term falls inside.
+  const terms = [];
+  // Use a global regex that captures the term opener and content up to its closing tag.
+  const termRe = /<article class="gloss-term" id="([a-z0-9-]+)" data-industries="([^"]*)">([\s\S]*?)<\/article>/g;
+
+  // Build a map of [start, end, slug] for each section so we can attach
+  // each term to its parent.
+  const sectionSpans = [];
+  const sectionStartRe = /<section class="gloss-section" id="([a-z0-9-]+)"/g;
+  for (const m of html.matchAll(sectionStartRe)) {
+    sectionSpans.push({ slug: m[1], start: m.index });
+  }
+  // End of each section is the start of the next one (or end of file).
+  sectionSpans.forEach((s, i) => {
+    s.end = i + 1 < sectionSpans.length ? sectionSpans[i + 1].start : html.length;
+  });
+
+  for (const m of html.matchAll(termRe)) {
+    const offset = m.index;
+    const sectionSpan = sectionSpans.find(s => offset >= s.start && offset < s.end);
+    if (!sectionSpan) continue;
+    const sectionSlug = sectionSpan.slug;
+
+    const slug = m[1];
+    const industries = m[2];
+    const inner = m[3];
+
+    // h3 with optional <span class="gloss-aka">
+    const h3m = inner.match(/<h3>([\s\S]*?)<\/h3>/);
+    let head = '', aka = '';
+    if (h3m) {
+      const akaM = h3m[1].match(/<span class="gloss-aka">([\s\S]*?)<\/span>/);
+      if (akaM) {
+        aka = akaM[1].trim();
+        head = h3m[1].replace(/<span class="gloss-aka">[\s\S]*?<\/span>/, '').trim();
+      } else {
+        head = h3m[1].trim();
+      }
+    }
+
+    // Tags
+    const tagsM = inner.match(/<div class="gloss-tags">([\s\S]*?)<\/div>/);
+    const tagsHtml = tagsM ? tagsM[1].trim() : '';
+
+    // Definition
+    const defM = inner.match(/<p class="gloss-term-def">([\s\S]*?)<\/p>/);
+    const defHtml = defM ? defM[1].trim() : '';
+
+    // Why it matters — strip the leading <strong>Why it matters</strong>.
+    const whyM = inner.match(/<p class="gloss-term-why">[\s\S]*?<strong>[\s\S]*?<\/strong>([\s\S]*?)<\/p>/);
+    const whyHtml = whyM ? whyM[1].trim() : '';
+
+    // Optional research link. Source HTML wraps the link with a
+    // leading `<strong>See the research</strong>` literal — strip
+    // that since the rendered page has its own label.
+    const researchM = inner.match(/<p class="gloss-term-research">([\s\S]*?)<\/p>/);
+    let researchHtml = null, researchUrl = null;
+    if (researchM) {
+      researchHtml = researchM[1]
+        .replace(/<strong>\s*See the research\s*<\/strong>/i, '')
+        .trim();
+      const urlM = researchM[1].match(/href="([^"]+)"/);
+      if (urlM) researchUrl = urlM[1];
+    }
+
+    // Topic resolution: term overrides take precedence over section topics.
+    const topics = tagsDoc.glossary_term_overrides[slug] || sectionMap[sectionSlug]?.topics || [];
+
+    terms.push({
+      slug,
+      head,
+      aka,
+      tagsHtml,
+      industries,
+      defHtml,
+      whyHtml,
+      researchHtml,
+      researchUrl,
+      sectionSlug,
+      sectionName: sectionMap[sectionSlug]?.name || sectionSlug,
+      topics,
+    });
+  }
+
+  return { sections: sectionMap, terms };
+}
+
+function stripTags(s) {
+  return String(s).replace(/<[^>]+>/g, '');
+}
+
+// Render one per-term glossary page. Conservative HTML — definition
+// and "why it matters" are pasted as-is from the source (they may
+// contain inline <code>, <em>, etc.).
+function renderTermPage(term, allTerms) {
+  const canonical = `https://muntin.digital/glossary/${term.slug}/`;
+  const altUrl = `/es/glossary/${term.slug}/`;
+  const headPlain = stripTags(term.head);
+  const desc = `${headPlain}: ${stripTags(term.defHtml).slice(0, 155).trim()}${stripTags(term.defHtml).length > 155 ? '…' : ''}`;
+
+  // Sibling terms in the same section (for "More in this section")
+  const siblings = allTerms
+    .filter(t => t.sectionSlug === term.sectionSlug && t.slug !== term.slug)
+    .slice(0, 6);
+
+  // Related topic chips — link out to /learn/topics/<slug>/
+  const topicChips = term.topics
+    .map(t => TOPIC_BY_SLUG[t])
+    .filter(Boolean)
+    .map(t => `<a class="term-topic-chip" href="/learn/topics/${esc(t.slug)}/">${esc(t.name)}</a>`)
+    .join('\n          ');
+
+  const researchBlock = term.researchHtml
+    ? `<aside class="term-research">
+      <p class="term-research-label">See the research</p>
+      <p>${term.researchHtml}</p>
+    </aside>`
+    : '';
+
+  const siblingsBlock = siblings.length
+    ? `<section class="term-siblings">
+  <div class="container">
+    <header class="term-siblings-head">
+      <span class="eyebrow">More in ${esc(term.sectionName)}</span>
+    </header>
+    <ul class="term-siblings-list">
+      ${siblings.map(s =>
+        `<li><a href="/glossary/${esc(s.slug)}/"><strong>${s.head}</strong>${s.aka ? `<span> — ${s.aka}</span>` : ''}</a></li>`
+      ).join('\n      ')}
+    </ul>
+  </div>
+</section>`
+    : '';
+
+  return `${pageHead({
+    title: `${headPlain} — Muntin Digital glossary`,
+    description: desc,
+    canonical,
+    ogImage: '/brand/og/glossary.png',
+  })}
+${navHeader(altUrl)}
+
+<nav class="breadcrumb container" aria-label="Breadcrumb">
+  <a href="/">Home</a>
+  <span class="breadcrumb-sep" aria-hidden="true">›</span>
+  <a href="/glossary/">Glossary</a>
+  <span class="breadcrumb-sep" aria-hidden="true">›</span>
+  <span aria-current="page">${esc(headPlain)}</span>
+</nav>
+
+<section class="term-page">
+  <div class="container term-page-inner">
+    <header class="term-head">
+      <span class="eyebrow"><a href="/glossary/#${esc(term.sectionSlug)}">${esc(term.sectionName)}</a></span>
+      <h1 class="term-h1">${term.head}</h1>
+      ${term.aka ? `<p class="term-aka">${term.aka}</p>` : ''}
+      <div class="term-meta">
+        <div class="term-tags">${term.tagsHtml}</div>
+        ${topicChips ? `<div class="term-topics">${topicChips}</div>` : ''}
+      </div>
+    </header>
+
+    <div class="term-body">
+      <p class="term-def">${term.defHtml}</p>
+      <h2 class="term-why-h">Why it matters</h2>
+      <p class="term-why">${term.whyHtml}</p>
+      ${researchBlock}
+    </div>
+  </div>
+</section>
+
+${siblingsBlock}
+
+<section class="block final">
+  <div class="container">
+    <div class="section-header reveal section-center">
+      <span class="eyebrow">Glossary</span>
+      <h2>Browse all<br><span class="serif-italic">97 terms.</span></h2>
+      <p class="final-sub">Plain-English definitions for every term in your audit, organized by category.</p>
+    </div>
+    <div class="hero-ctas reveal hero-ctas-center">
+      <a class="btn btn-primary" href="/glossary/">Open the full glossary</a>
+      <a class="btn btn-ghost" href="/learn/">Back to the Library</a>
+    </div>
+  </div>
+</section>
+
+${siteFooter()}`;
+}
+
 // ---------- research backlinks ----------
 //
 // Walk every blog post, count which research notes it cites, and
@@ -604,6 +819,19 @@ for (const researchSlug of Object.keys(tagsDoc.research_notes)) {
   const list = cites[researchSlug] || [];
   const action = injectCitedIn(researchSlug, list);
   console.log(`  ${researchSlug.padEnd(34)} ${list.length} citing post(s) — ${action}`);
+}
+
+// Per-term glossary pages — generate /glossary/<slug>/ for each
+// of the 96 terms in the source glossary file. Pages cross-link
+// to siblings in the same section and to topic pages.
+{
+  const { terms } = parseGlossary();
+  let count = 0;
+  for (const term of terms) {
+    write(join(REPO, 'glossary', term.slug, 'index.html'), renderTermPage(term, terms));
+    count++;
+  }
+  console.log(`\nPer-term glossary pages: ${count} term page(s) generated.`);
 }
 
 // Update the "Cited in N articles" labels on the research hub
