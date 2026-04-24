@@ -95,6 +95,20 @@
   .gbp-grade[data-grade-band="ok"]   .gbp-grade-band{background:#FDEFE3;color:#8A3E16}
   .gbp-grade[data-grade-band="bad"]  .gbp-grade-band{background:#F7E7DC;color:#B8541A}
   .gbp-grade-note{font-size:12px;color:var(--stone);text-align:center;margin:-14px 0 22px}
+  /* Desambiguador — aparece cuando Places devuelve varios candidatos
+     y los dos primeros están cerca por número de reseñas, o la
+     consulta apenas coincide con el nombre del primer candidato. Al
+     elegir, re-renderizamos desde el arreglo candidates[] del cliente;
+     no se dispara un segundo llamado a la API. */
+  .gbp-picker{margin:0 auto 6px}
+  .gbp-picker-head{font-size:15px;color:var(--ink-soft);text-align:center;margin:0 0 16px}
+  .gbp-picker-list{display:flex;flex-direction:column;gap:8px}
+  .gbp-picker-btn{display:block;width:100%;padding:14px 18px;border:1px solid var(--line);border-radius:10px;background:var(--white);text-align:left;cursor:pointer;font:inherit;color:inherit;transition:border-color 140ms,background 140ms,transform 140ms}
+  .gbp-picker-btn:hover,.gbp-picker-btn:focus-visible{border-color:var(--teal);background:var(--cream-2);transform:translateY(-1px);outline:none}
+  .gbp-picker-btn h4{font-size:15px;font-weight:600;color:var(--ink);margin:0 0 2px}
+  .gbp-picker-btn p{font-size:13px;color:var(--stone);margin:0}
+  .gbp-picker-meta{font-size:12px;color:var(--ink-soft);margin-top:6px}
+  .gbp-picker-meta span+span{margin-left:10px}
 </style>
 </head>
 <body>
@@ -306,6 +320,115 @@
     return peerMediansPromise;
   }
 
+  // ----- Desambiguación ------------------------------------------
+  function gbpTokenize(s){
+    if(!s)return[];
+    var toks=s.toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').trim().split(/\s+/);
+    var out=[];
+    for(var i=0;i<toks.length;i++){if(toks[i].length>=2)out.push(toks[i])}
+    return out;
+  }
+  function gbpTokenOverlap(query,candidate){
+    var a=gbpTokenize(query), b=gbpTokenize((candidate.name||'')+' '+(candidate.address||''));
+    if(!a.length||!b.length)return 0;
+    var setB={};for(var i=0;i<b.length;i++)setB[b[i]]=1;
+    var hit=0;for(var j=0;j<a.length;j++)if(setB[a[j]])hit++;
+    return hit/a.length;
+  }
+  function gbpShouldShowPicker(candidates,query){
+    if(!candidates||candidates.length<2)return false;
+    var top=candidates[0], second=candidates[1];
+    var lowGap=(top.reviewCount||0)<2*(second.reviewCount||0);
+    var lowOverlap=gbpTokenOverlap(query,top)<0.7;
+    return lowGap||lowOverlap;
+  }
+
+  // ----- Render helpers -------------------------------------------
+  function renderBusinessCard(chosen){
+    var bannerHtml='';
+    if(chosen.businessStatus&&chosen.businessStatus!=='OPERATIONAL'){
+      var closedLabel=chosen.businessStatus==='CLOSED_TEMPORARILY'?'Cerrado temporalmente':'Cerrado permanentemente';
+      var closedBody=chosen.businessStatus==='CLOSED_TEMPORARILY'
+        ?'Google muestra esta ficha como cerrada temporalmente. Reábrela en el panel de Business Profile antes de arreglar cualquier otra cosa — mientras esté marcada como cerrada, Maps la oculta en la mayoría de las búsquedas.'
+        :'Google muestra esta ficha como cerrada permanentemente. Si el negocio sigue activo con otro nombre o dueño, reclámala en el panel de Business Profile — una ficha cerrada no aparece en los resultados locales.';
+      bannerHtml='<div class="gbp-check" style="background:rgba(184,84,26,.08);border-color:var(--rust);margin-bottom:20px"><div class="mark fail">&#10005;</div><div><h3>'+closedLabel+'</h3><p>'+closedBody+'</p></div></div>';
+    }
+    return bannerHtml
+      +stars(chosen.rating)
+      +'<div class="gbp-rating">'+(chosen.rating||'—')+'</div>'
+      +'<div class="gbp-reviews">'+(chosen.reviewCount||0)+' reseñas</div>'
+      +'<h2>'+(chosen.name||'')+'</h2>'
+      +'<p>'+(chosen.address||'')+'</p>';
+  }
+
+  function renderFor(chosen,peerMedians,query,wasPicked){
+    bizEl.innerHTML=renderBusinessCard(chosen);
+
+    var scored=window.gbpScoreCandidate(chosen,peerMedians,null,'es');
+    var bandLabel=scored.band==='good'?'Fuerte':scored.band==='ok'?'Mixto':'Débil';
+    var gradeHtml='<div class="gbp-grade" data-grade-band="'+scored.band+'">'
+      +'<span class="gbp-grade-letter">'+scored.letter+'</span>'
+      +'<span class="gbp-grade-score">'+scored.total+' / '+scored.max+'</span>'
+      +'<span class="gbp-grade-band">'+bandLabel+'</span>'
+      +'</div>';
+    var remaining=100-scored.max;
+    var noteHtml=remaining>0
+      ?'<p class="gbp-grade-note">De '+scored.max+' — el Deep Scan desbloquea los '+remaining+' puntos restantes (velocidad de reseñas, tasa de respuesta, NAP).</p>'
+      :'';
+
+    var checksHtml='';
+    for(var i=0;i<scored.groups.length;i++){
+      var g=scored.groups[i];
+      for(var j=0;j<g.checks.length;j++)checksHtml+=renderCheck(g.checks[j]);
+    }
+    checksEl.innerHTML=gradeHtml+noteHtml+checksHtml;
+
+    result.classList.add('visible');
+    result.scrollIntoView({behavior:'smooth',block:'start'});
+
+    if(window.plausible)window.plausible('GBP Grader',{props:{
+      grade_letter:   scored.letter,
+      grade_band:     scored.band,
+      scaled_bucket:  scored.scaled>=85?'85+':scored.scaled>=70?'70-84':scored.scaled>=55?'55-69':scored.scaled>=40?'40-54':'lt40',
+      reviews_bucket: reviewsBucket(chosen.reviewCount||0),
+      has_website:    chosen.website?'yes':'no',
+      has_hours:      chosen.hasHours?'yes':'no',
+      has_phone:      chosen.nationalPhoneNumber?'yes':'no',
+      has_category:   chosen.primaryTypeDisplayName?'yes':'no',
+      status:         chosen.businessStatus||'unknown',
+      peer_source:    scored.peerMedian.source,
+      picked:         wasPicked?'yes':'no'
+    }});
+  }
+
+  function showPicker(candidates,query,peerMedians){
+    var list=candidates.slice(0,5);
+    var html='<div class="gbp-picker"><p class="gbp-picker-head">Encontramos varias. ¿Cuál es la tuya?</p><div class="gbp-picker-list" role="list">';
+    for(var i=0;i<list.length;i++){
+      var c=list[i];
+      var rating=c.rating?('&#9733; '+c.rating+' · '+(c.reviewCount||0)+' reseñas'):'Sin reseñas aún';
+      var cat=c.primaryTypeDisplayName?'<span>'+c.primaryTypeDisplayName+'</span>':'';
+      html+='<button type="button" class="gbp-picker-btn" data-idx="'+i+'" role="listitem">'
+        +'<h4>'+(c.name||'(ficha sin nombre)')+'</h4>'
+        +'<p>'+(c.address||'')+'</p>'
+        +'<div class="gbp-picker-meta"><span>'+rating+'</span>'+cat+'</div>'
+        +'</button>';
+    }
+    html+='</div></div>';
+    bizEl.innerHTML=html;
+    checksEl.innerHTML='';
+    result.classList.add('visible');
+    result.scrollIntoView({behavior:'smooth',block:'start'});
+
+    bizEl.querySelector('.gbp-picker-list').addEventListener('click',function(ev){
+      var btn=ev.target.closest('.gbp-picker-btn');
+      if(!btn)return;
+      var idx=parseInt(btn.getAttribute('data-idx'),10);
+      if(isNaN(idx)||!list[idx])return;
+      renderFor(list[idx],peerMedians,query,true);
+    });
+  }
+
   form.addEventListener('submit',function(e){
     e.preventDefault();
     var q=input.value.trim();
@@ -320,56 +443,12 @@
       var d=arr[0], peerMedians=arr[1];
       if(!d.ok)throw new Error(d.error||'La búsqueda falló');
 
-      var bannerHtml='';
-      if(d.businessStatus&&d.businessStatus!=='OPERATIONAL'){
-        var closedLabel=d.businessStatus==='CLOSED_TEMPORARILY'?'Cerrado temporalmente':'Cerrado permanentemente';
-        var closedBody=d.businessStatus==='CLOSED_TEMPORARILY'
-          ?'Google muestra esta ficha como cerrada temporalmente. Reábrela en el panel de Business Profile antes de arreglar cualquier otra cosa — mientras esté marcada como cerrada, Maps la oculta en la mayoría de las búsquedas.'
-          :'Google muestra esta ficha como cerrada permanentemente. Si el negocio sigue activo con otro nombre o dueño, reclámala en el panel de Business Profile — una ficha cerrada no aparece en los resultados locales.';
-        bannerHtml='<div class="gbp-check" style="background:rgba(184,84,26,.08);border-color:var(--rust);margin-bottom:20px"><div class="mark fail">&#10005;</div><div><h3>'+closedLabel+'</h3><p>'+closedBody+'</p></div></div>';
+      var candidates=d.candidates||[d];
+      if(gbpShouldShowPicker(candidates,q)){
+        showPicker(candidates,q,peerMedians);
+      }else{
+        renderFor(candidates[0],peerMedians,q,false);
       }
-      bizEl.innerHTML=bannerHtml
-        +stars(d.rating)
-        +'<div class="gbp-rating">'+(d.rating||'—')+'</div>'
-        +'<div class="gbp-reviews">'+d.reviewCount+' reseñas</div>'
-        +'<h2>'+d.name+'</h2>'
-        +'<p>'+d.address+'</p>';
-
-      var scored=window.gbpScoreCandidate(d,peerMedians,null,'es');
-      var bandLabel=scored.band==='good'?'Fuerte':scored.band==='ok'?'Mixto':'Débil';
-      var gradeHtml='<div class="gbp-grade" data-grade-band="'+scored.band+'">'
-        +'<span class="gbp-grade-letter">'+scored.letter+'</span>'
-        +'<span class="gbp-grade-score">'+scored.total+' / '+scored.max+'</span>'
-        +'<span class="gbp-grade-band">'+bandLabel+'</span>'
-        +'</div>';
-      var remaining=100-scored.max;
-      var noteHtml=remaining>0
-        ?'<p class="gbp-grade-note">De '+scored.max+' — el Deep Scan desbloquea los '+remaining+' puntos restantes (velocidad de reseñas, tasa de respuesta, NAP).</p>'
-        :'';
-
-      var checksHtml='';
-      for(var i=0;i<scored.groups.length;i++){
-        var g=scored.groups[i];
-        for(var j=0;j<g.checks.length;j++){
-          checksHtml+=renderCheck(g.checks[j]);
-        }
-      }
-      checksEl.innerHTML=gradeHtml+noteHtml+checksHtml;
-
-      result.classList.add('visible');
-      result.scrollIntoView({behavior:'smooth',block:'start'});
-      if(window.plausible)window.plausible('GBP Grader',{props:{
-        grade_letter:   scored.letter,
-        grade_band:     scored.band,
-        scaled_bucket:  scored.scaled>=85?'85+':scored.scaled>=70?'70-84':scored.scaled>=55?'55-69':scored.scaled>=40?'40-54':'lt40',
-        reviews_bucket: reviewsBucket(d.reviewCount||0),
-        has_website:    d.website?'yes':'no',
-        has_hours:      d.hasHours?'yes':'no',
-        has_phone:      d.nationalPhoneNumber?'yes':'no',
-        has_category:   d.primaryTypeDisplayName?'yes':'no',
-        status:         d.businessStatus||'unknown',
-        peer_source:    scored.peerMedian.source
-      }});
     }).catch(function(err){
       alert(err.message||'No se pudo encontrar ese negocio. Prueba agregando el nombre de la ciudad.');
     }).finally(function(){btn.disabled=false;btn.textContent='Calificar'});
