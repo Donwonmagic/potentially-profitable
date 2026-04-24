@@ -125,6 +125,28 @@
   .mm-step-verify{margin:8px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:6px;font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
   .mm-step-verify code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:var(--white);padding:1px 5px;border-radius:3px;border:1px solid var(--line);font-size:12px}
   .mm-step-verify kbd{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:var(--white);padding:1px 5px;border-radius:3px;border:1px solid var(--line);font-size:11px;box-shadow:0 1px 0 var(--line-dark)}
+  /* Tabla de checklist de seguridad — Margin Math vs. herramienta
+     gratuita típica. Convierte la meta-afirmación en una comparación. */
+  .mm-safety-wrap{max-width:960px;margin:20px auto 0;overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--white)}
+  .mm-safety{width:100%;border-collapse:collapse;font-size:13.5px}
+  .mm-safety thead th{background:var(--cream-2);text-align:left;padding:12px 16px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);border-bottom:1px solid var(--line)}
+  .mm-safety tbody td{padding:14px 16px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.55}
+  .mm-safety tbody tr:last-child td{border-bottom:0}
+  .mm-safety td:first-child{font-weight:500;color:var(--ink)}
+  .mm-safety-hint{display:block;margin-top:4px;font-size:12px;color:var(--stone);font-weight:400}
+  .mm-safety-pass{color:#1F6B3A;font-weight:600}
+  .mm-safety-pass::before{content:'\2713  ';font-weight:800}
+  .mm-safety-fail{color:var(--rust);font-weight:600}
+  .mm-safety-fail::before{content:'\2715  ';font-weight:800}
+  @media (max-width:720px){
+    .mm-safety,.mm-safety thead,.mm-safety tbody,.mm-safety tr,.mm-safety td,.mm-safety th{display:block}
+    .mm-safety thead{display:none}
+    .mm-safety tr{border-bottom:1px solid var(--line);padding:14px 16px}
+    .mm-safety tr:last-child{border-bottom:0}
+    .mm-safety td{padding:2px 0;border:0}
+    .mm-safety td:nth-child(2)::before{content:'Margin Math: ';color:var(--stone);font-weight:500}
+    .mm-safety td:nth-child(3)::before{content:'Herramienta típica: ';color:var(--stone);font-weight:500}
+  }
 </style>
 </head>
 <body>
@@ -382,6 +404,57 @@
       </div>
     </article>
   </div>
+</div></section>
+
+<section class="block" id="how-to-check"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">Aplica esto en cualquier parte</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">Cómo comprobar si cualquier herramienta es segura</h2>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Cinco pruebas que puedes correr en cualquier herramienta financiera gratuita antes de escribir un solo número real. Nos calificamos nosotros al lado de una herramienta gratuita de captación típica para que la diferencia sea concreta, no retórica.</p>
+  </div>
+
+  <div class="mm-safety-wrap">
+    <table class="mm-safety">
+      <thead>
+        <tr>
+          <th scope="col">La prueba</th>
+          <th scope="col">Cálculo de Margen</th>
+          <th scope="col">Herramienta típica</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1. ¿Al escribir un número se dispara una solicitud de red?</strong><span class="mm-safety-hint">Abre DevTools &rarr; Network. Escribe.</span></td>
+          <td class="mm-safety-pass">Ninguna solicitud se dispara.</td>
+          <td class="mm-safety-fail">Cada tecla hace POST al servidor.</td>
+        </tr>
+        <tr>
+          <td><strong>2. ¿La afirmación de privacidad está junto a la entrada?</strong><span class="mm-safety-hint">No enterrada en una política.</span></td>
+          <td class="mm-safety-pass">Insignia "Se queda en tu navegador" en cada tarjeta, panel de 8 pasos en la página.</td>
+          <td class="mm-safety-fail">Enlace a Política de Privacidad solo en el pie; consentimiento implícito al enviar.</td>
+        </tr>
+        <tr>
+          <td><strong>3. ¿Hay un gate de cuenta / newsletter / cookies?</strong><span class="mm-safety-hint">Cualquier cosa que exija "aceptar todo" antes de poder usar la herramienta.</span></td>
+          <td class="mm-safety-pass">Nada — sin gate, sin popup, sin banner de cookies.</td>
+          <td class="mm-safety-fail">"Deja tu email para ver tus resultados."</td>
+        </tr>
+        <tr>
+          <td><strong>4. ¿Analítica de terceros, session replay, scripts de marketing?</strong><span class="mm-safety-hint">DevTools &rarr; Network &rarr; filtra JS.</span></td>
+          <td class="mm-safety-pass">Solo Plausible (privacidad primero); props con buckets (nunca valores crudos).</td>
+          <td class="mm-safety-fail">Google Analytics, Meta Pixel, HubSpot, session replay — apilados.</td>
+        </tr>
+        <tr>
+          <td><strong>5. ¿El código fuente es legible?</strong><span class="mm-safety-hint">Click derecho &rarr; Ver código fuente.</span></td>
+          <td class="mm-safety-pass">Sin minificar, bajo ~500 líneas, cada función matemática con nombre.</td>
+          <td class="mm-safety-fail">Bundle minificado de SaaS; matemática escondida en un dashboard.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="max-width:760px;margin:16px auto 0;font-size:13px;line-height:1.6;color:var(--stone);">
+    Aplica estas cinco pruebas a cualquier calculadora, estimador o "auditoría gratis" que encuentres — sobre todo la que te pida ingresos, margen, food cost o costo de mano de obra. Una herramienta que silenciosamente hace POST con tus entradas las está guardando. Una herramienta sin afirmación de privacidad en la página está esquivando la pregunta. Tienes permiso de irte.
+  </p>
 </div></section>
 
 <section class="block"><div class="container">

@@ -130,6 +130,28 @@
   .mm-step-verify{margin:8px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:6px;font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
   .mm-step-verify code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:var(--white);padding:1px 5px;border-radius:3px;border:1px solid var(--line);font-size:12px}
   .mm-step-verify kbd{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:var(--white);padding:1px 5px;border-radius:3px;border:1px solid var(--line);font-size:11px;box-shadow:0 1px 0 var(--line-dark)}
+  /* Safety-checklist table — Margin Math vs. typical free tool.
+     Turns the meta-claim into a side-by-side comparison. */
+  .mm-safety-wrap{max-width:960px;margin:20px auto 0;overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--white)}
+  .mm-safety{width:100%;border-collapse:collapse;font-size:13.5px}
+  .mm-safety thead th{background:var(--cream-2);text-align:left;padding:12px 16px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);border-bottom:1px solid var(--line)}
+  .mm-safety tbody td{padding:14px 16px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.55}
+  .mm-safety tbody tr:last-child td{border-bottom:0}
+  .mm-safety td:first-child{font-weight:500;color:var(--ink)}
+  .mm-safety-hint{display:block;margin-top:4px;font-size:12px;color:var(--stone);font-weight:400}
+  .mm-safety-pass{color:#1F6B3A;font-weight:600}
+  .mm-safety-pass::before{content:'\2713  ';font-weight:800}
+  .mm-safety-fail{color:var(--rust);font-weight:600}
+  .mm-safety-fail::before{content:'\2715  ';font-weight:800}
+  @media (max-width:720px){
+    .mm-safety,.mm-safety thead,.mm-safety tbody,.mm-safety tr,.mm-safety td,.mm-safety th{display:block}
+    .mm-safety thead{display:none}
+    .mm-safety tr{border-bottom:1px solid var(--line);padding:14px 16px}
+    .mm-safety tr:last-child{border-bottom:0}
+    .mm-safety td{padding:2px 0;border:0}
+    .mm-safety td:nth-child(2)::before{content:'Margin Math: ';color:var(--stone);font-weight:500}
+    .mm-safety td:nth-child(3)::before{content:'Typical free tool: ';color:var(--stone);font-weight:500}
+  }
 </style>
 </head>
 <body>
@@ -398,6 +420,57 @@
       </div>
     </article>
   </div>
+</div></section>
+
+<section class="block" id="how-to-check"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">Apply this anywhere</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">How to check if any tool is safe</h2>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Five tests you can run on any free financial tool you encounter — before you type a single real number into it. We score ourselves alongside a typical lead-generation free tool so the difference is concrete, not rhetorical.</p>
+  </div>
+
+  <div class="mm-safety-wrap">
+    <table class="mm-safety">
+      <thead>
+        <tr>
+          <th scope="col">The test</th>
+          <th scope="col">Margin Math</th>
+          <th scope="col">Typical free tool</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1. Does typing a number trigger a network request?</strong><span class="mm-safety-hint">Open DevTools &rarr; Network. Type.</span></td>
+          <td class="mm-safety-pass">No requests fire.</td>
+          <td class="mm-safety-fail">Every keystroke POSTs to a server.</td>
+        </tr>
+        <tr>
+          <td><strong>2. Is the privacy claim at the point of input?</strong><span class="mm-safety-hint">Not buried in a policy page.</span></td>
+          <td class="mm-safety-pass">"Stays in your browser" badge on every card, full 8-step panel in-page.</td>
+          <td class="mm-safety-fail">Privacy Policy link in footer only; implicit consent on submit.</td>
+        </tr>
+        <tr>
+          <td><strong>3. Is there an account / newsletter / cookie gate?</strong><span class="mm-safety-hint">Anything demanding "accept all" before you can use the tool.</span></td>
+          <td class="mm-safety-pass">Nothing — no gate, no popup, no cookie banner.</td>
+          <td class="mm-safety-fail">"Enter your email to see your results."</td>
+        </tr>
+        <tr>
+          <td><strong>4. Any third-party analytics, session replay, marketing scripts?</strong><span class="mm-safety-hint">DevTools &rarr; Network &rarr; filter JS.</span></td>
+          <td class="mm-safety-pass">Privacy-first Plausible only; bucket props (never raw values).</td>
+          <td class="mm-safety-fail">Google Analytics, Meta Pixel, HubSpot, session replay — stacked.</td>
+        </tr>
+        <tr>
+          <td><strong>5. Is the source code readable?</strong><span class="mm-safety-hint">Right-click &rarr; View Source.</span></td>
+          <td class="mm-safety-pass">Unminified, under ~500 lines, every math function named.</td>
+          <td class="mm-safety-fail">Minified SaaS bundle; math hidden inside a framework dashboard.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="max-width:760px;margin:16px auto 0;font-size:13px;line-height:1.6;color:var(--stone);">
+    Apply the same five tests to any calculator, estimator, or "free audit" you encounter — especially one asking for revenue, margin, food cost, or labor numbers. A tool that silently POSTs your inputs is storing them. A tool with no in-page privacy claim is dodging the question. You're allowed to walk away.
+  </p>
 </div></section>
 
 <section class="block"><div class="container">
