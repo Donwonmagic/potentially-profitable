@@ -27,6 +27,234 @@ const tagsDoc = JSON.parse(readFileSync(join(DATA, 'library-tags.json'), 'utf8')
 const TOPICS = topicsDoc.topics;
 const TOPIC_BY_SLUG = Object.fromEntries(TOPICS.map(t => [t.slug, t]));
 
+// ---------- locales ----------
+//
+// The build runs once per locale. EN output lives at the repo root;
+// ES output lives under /es/. Content metadata (titles, deks) for
+// ES is parsed from the existing translated pages — single source
+// of truth stays in the published Spanish content, not in JSON
+// duplicates that would drift.
+
+const LOCALES = ['en', 'es'];
+
+// UI string table. Every string my generated pages display lives
+// here. Keep keys terse; keep values plain (no markup).
+const STRINGS = {
+  en: {
+    breadcrumb_home: 'Home',
+    breadcrumb_learn: 'Learn',
+    breadcrumb_topics: 'Topics',
+    breadcrumb_glossary: 'Glossary',
+    breadcrumb_aria: 'Breadcrumb',
+    skip_link: 'Skip to main content',
+    topics_hub_eyebrow: 'Six lenses on the same library',
+    topics_hub_h1_l1: 'Browse by',
+    topics_hub_h1_l2: "what you're trying to fix.",
+    topics_hub_sub: "The articles, research, tools, and checklists that make up the Library, regrouped by the question that brought you here. Pick the one that sounds like your week.",
+    topic_eyebrow: 'Topic',
+    topic_section_articles_eyebrow: 'Articles',
+    topic_section_articles_h2: 'Read the playbooks.',
+    topic_section_research_eyebrow: 'Research',
+    topic_section_research_h2: 'The evidence behind the playbooks.',
+    topic_section_tools_eyebrow: 'Free tools',
+    topic_section_tools_h2: 'Run a check on your own site.',
+    topic_section_checklists_eyebrow: 'Checklists',
+    topic_section_checklists_h2: 'Workbooks for this topic.',
+    topic_other_eyebrow: 'Other topics',
+    topic_other_h2_l1: 'Or browse a',
+    topic_other_h2_l2: 'different angle.',
+    topic_back_btn: 'Back to the Library',
+    topic_back_btn_alt: 'All articles',
+    open_tool_cta: 'Open the tool',
+    open_checklist_cta: 'Open the checklist',
+    cited_in_eyebrow: 'Cited in',
+    cited_in_singular: 'article uses',
+    cited_in_plural: 'articles use',
+    cited_in_suffix: 'this research.',
+    see_also_label: 'See also',
+    see_also_kind_article: 'Article',
+    see_also_kind_research: 'Research',
+    see_also_kind_tool: 'Tool',
+    tool_deep_eyebrow: 'Learn more',
+    tool_deep_h2: 'Why this tool exists.',
+    tool_deep_blurb: 'Every check this tool runs maps to a specific concept in the Library. Two starting points — one definition, one playbook.',
+    tool_deep_kind_glossary: 'Glossary',
+    tool_deep_kind_article: 'Article',
+    tool_deep_cta_glossary: 'Read the definition',
+    tool_deep_cta_article: 'Read the playbook',
+    term_aria_breadcrumb: 'Breadcrumb',
+    term_more_in_section: 'More in',
+    term_final_eyebrow: 'Glossary',
+    term_final_h2_l1: 'Browse all',
+    term_final_h2_l2: '97 terms.',
+    term_final_sub: 'Plain-English definitions for every term in your audit, organized by category.',
+    term_final_btn: 'Open the full glossary',
+    term_final_btn_alt: 'Back to the Library',
+    research_see: 'See the research',
+  },
+  es: {
+    breadcrumb_home: 'Inicio',
+    breadcrumb_learn: 'Aprende',
+    breadcrumb_topics: 'Temas',
+    breadcrumb_glossary: 'Glosario',
+    breadcrumb_aria: 'Migas de pan',
+    skip_link: 'Saltar al contenido principal',
+    topics_hub_eyebrow: 'Seis lentes para la misma biblioteca',
+    topics_hub_h1_l1: 'Explora según',
+    topics_hub_h1_l2: 'lo que estás arreglando.',
+    topics_hub_sub: 'Los artículos, investigación, herramientas y listas de la biblioteca, reagrupados según la pregunta que te trajo aquí. Elige el que suena a tu semana.',
+    topic_eyebrow: 'Tema',
+    topic_section_articles_eyebrow: 'Artículos',
+    topic_section_articles_h2: 'Lee las guías.',
+    topic_section_research_eyebrow: 'Investigación',
+    topic_section_research_h2: 'La evidencia detrás de las guías.',
+    topic_section_tools_eyebrow: 'Herramientas gratis',
+    topic_section_tools_h2: 'Revisa tu propio sitio.',
+    topic_section_checklists_eyebrow: 'Listas',
+    topic_section_checklists_h2: 'Workbooks para este tema.',
+    topic_other_eyebrow: 'Otros temas',
+    topic_other_h2_l1: 'O explora desde',
+    topic_other_h2_l2: 'otro ángulo.',
+    topic_back_btn: 'Volver a la biblioteca',
+    topic_back_btn_alt: 'Todos los artículos',
+    open_tool_cta: 'Abrir la herramienta',
+    open_checklist_cta: 'Abrir la lista',
+    cited_in_eyebrow: 'Citada en',
+    cited_in_singular: 'artículo usa',
+    cited_in_plural: 'artículos usan',
+    cited_in_suffix: 'esta investigación.',
+    see_also_label: 'Ver también',
+    see_also_kind_article: 'Artículo',
+    see_also_kind_research: 'Investigación',
+    see_also_kind_tool: 'Herramienta',
+    tool_deep_eyebrow: 'Aprende más',
+    tool_deep_h2: 'Por qué existe esta herramienta.',
+    tool_deep_blurb: 'Cada chequeo que esta herramienta hace conecta con un concepto específico en la biblioteca. Dos puntos de partida — una definición, una guía.',
+    tool_deep_kind_glossary: 'Glosario',
+    tool_deep_kind_article: 'Artículo',
+    tool_deep_cta_glossary: 'Leer la definición',
+    tool_deep_cta_article: 'Leer la guía',
+    term_aria_breadcrumb: 'Migas de pan',
+    term_more_in_section: 'Más en',
+    term_final_eyebrow: 'Glosario',
+    term_final_h2_l1: 'Explora los',
+    term_final_h2_l2: '97 términos.',
+    term_final_sub: 'Definiciones en lenguaje claro para cada término en tu auditoría, organizadas por categoría.',
+    term_final_btn: 'Abrir el glosario completo',
+    term_final_btn_alt: 'Volver a la biblioteca',
+    research_see: 'Ver la investigación',
+  },
+};
+
+function t(locale, key) {
+  return STRINGS[locale]?.[key] ?? STRINGS.en[key] ?? `[?${key}]`;
+}
+
+// Build a URL prefix for the locale. EN lives at root; ES lives at /es.
+function urlPrefix(locale) {
+  return locale === 'en' ? '' : `/${locale}`;
+}
+
+// Build an absolute URL on muntin.digital for the given locale + path.
+function urlFor(locale, path) {
+  // path starts with '/'. Insert locale prefix between the host and path.
+  const prefix = locale === 'en' ? '' : `/${locale}`;
+  return `https://muntin.digital${prefix}${path}`;
+}
+
+// Build a same-origin URL (no host) for the locale + path.
+function pathFor(locale, path) {
+  const prefix = locale === 'en' ? '' : `/${locale}`;
+  return `${prefix}${path}`;
+}
+
+// Resolve the on-disk output directory for the locale. EN writes to
+// the repo root; ES writes to <repo>/es/.
+function outDir(locale) {
+  return locale === 'en' ? REPO : join(REPO, locale);
+}
+
+// Decode a small set of HTML entities found in scraped ES titles.
+function decodeEntities(s) {
+  if (!s) return s;
+  return s
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&apos;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&aacute;/gi, 'á')
+    .replace(/&eacute;/gi, 'é')
+    .replace(/&iacute;/gi, 'í')
+    .replace(/&oacute;/gi, 'ó')
+    .replace(/&uacute;/gi, 'ú')
+    .replace(/&ntilde;/gi, 'ñ')
+    .replace(/&iquest;/gi, '¿')
+    .replace(/&iexcl;/gi, '¡')
+    .replace(/&mdash;/gi, '—')
+    .replace(/&ndash;/gi, '–')
+    .replace(/&hellip;/gi, '…')
+    .replace(/&rsquo;/gi, "'")
+    .replace(/&lsquo;/gi, "'")
+    .replace(/&ldquo;/gi, '"')
+    .replace(/&rdquo;/gi, '"');
+}
+
+// Read title + meta description from an existing HTML file. Strips
+// "| Muntin Digital" suffix and decodes common HTML entities. Used
+// to pull authoritative ES content metadata from the published
+// Spanish pages instead of duplicating into JSON.
+const _metaCache = new Map();
+function pageMeta(file) {
+  if (_metaCache.has(file)) return _metaCache.get(file);
+  let html = '';
+  try { html = readFileSync(file, 'utf8'); } catch { return { title: '', dek: '' }; }
+  const titleM = html.match(/<title>([\s\S]*?)<\/title>/i);
+  const descM = html.match(/<meta[^>]*\bname=["']description["'][^>]*\bcontent=["']([^"']*)["']/i)
+             || html.match(/<meta[^>]*\bcontent=["']([^"']*)["'][^>]*\bname=["']description["']/i);
+  const title = titleM ? decodeEntities(titleM[1]).replace(/\s*\|\s*Muntin Digital\s*$/, '').trim() : '';
+  const dek = descM ? decodeEntities(descM[1]).trim() : '';
+  const out = { title, dek };
+  _metaCache.set(file, out);
+  return out;
+}
+
+// Locale-aware metadata for a piece of content. EN reads tagsDoc;
+// ES reads the corresponding ES page's <title> + <meta description>.
+function getMeta(locale, kind, slug) {
+  if (locale === 'en') {
+    const dict = tagsDoc[kind === 'blog' ? 'blog_posts' : kind === 'research' ? 'research_notes' : kind];
+    return dict?.[slug] || {};
+  }
+  // ES: scrape the page
+  let file;
+  switch (kind) {
+    case 'blog': file = join(REPO, 'es/blog', slug, 'index.html'); break;
+    case 'research': file = join(REPO, 'es/learn/research', slug, 'index.html'); break;
+    case 'tools': file = join(REPO, 'es/tools', slug, 'index.html'); break;
+    case 'checklists': file = join(REPO, 'es/resources', slug, 'index.html'); break;
+    default: return {};
+  }
+  const { title, dek } = pageMeta(file);
+  // Inherit topics + date from EN tagsDoc (those are facts, not language)
+  const dict = tagsDoc[kind === 'blog' ? 'blog_posts' : kind === 'research' ? 'research_notes' : kind];
+  const enMeta = dict?.[slug] || {};
+  return {
+    ...enMeta,
+    title: title || enMeta.title || slug,
+    dek: dek || enMeta.dek || '',
+  };
+}
+
+// Topic name + blurb in the requested locale.
+function topicLabel(locale, topic) {
+  if (locale === 'es') {
+    return { name: topic.name_es || topic.name, blurb: topic.blurb_es || topic.blurb };
+  }
+  return { name: topic.name, blurb: topic.blurb };
+}
+
 // ---------- helpers ----------
 
 function ensureDir(p) {
@@ -50,39 +278,47 @@ function esc(s) {
 
 // Index every piece of content by topic slug, in the order it should
 // appear on the topic page (newest articles first; tools and research
-// in the order declared in the tag file).
-function indexByTopic() {
-  const out = Object.fromEntries(TOPICS.map(t => [t.slug, {
+// in the order declared in the tag file). Locale-aware: ES pulls
+// titles + deks from the published Spanish pages.
+function indexByTopic(locale) {
+  const out = Object.fromEntries(TOPICS.map(tp => [tp.slug, {
     articles: [],
     research: [],
     tools: [],
     checklists: [],
   }]));
 
-  for (const [slug, meta] of Object.entries(tagsDoc.blog_posts)) {
-    for (const t of meta.topics) {
-      if (out[t]) out[t].articles.push({ slug, ...meta });
+  for (const [slug, enMeta] of Object.entries(tagsDoc.blog_posts)) {
+    const meta = getMeta(locale, 'blog', slug);
+    const merged = { slug, ...enMeta, title: meta.title, dek: meta.dek };
+    for (const tp of (enMeta.topics || [])) {
+      if (out[tp]) out[tp].articles.push(merged);
     }
   }
-  for (const [slug, meta] of Object.entries(tagsDoc.research_notes)) {
-    for (const t of meta.topics) {
-      if (out[t]) out[t].research.push({ slug, ...meta });
+  for (const [slug, enMeta] of Object.entries(tagsDoc.research_notes)) {
+    const meta = getMeta(locale, 'research', slug);
+    const merged = { slug, ...enMeta, title: meta.title, dek: meta.dek };
+    for (const tp of (enMeta.topics || [])) {
+      if (out[tp]) out[tp].research.push(merged);
     }
   }
-  for (const [slug, meta] of Object.entries(tagsDoc.tools)) {
-    for (const t of meta.topics) {
-      if (out[t]) out[t].tools.push({ slug, ...meta });
+  for (const [slug, enMeta] of Object.entries(tagsDoc.tools)) {
+    const meta = getMeta(locale, 'tools', slug);
+    const merged = { slug, ...enMeta, title: meta.title, dek: meta.dek };
+    for (const tp of (enMeta.topics || [])) {
+      if (out[tp]) out[tp].tools.push(merged);
     }
   }
-  for (const [slug, meta] of Object.entries(tagsDoc.checklists)) {
-    for (const t of meta.topics) {
-      if (out[t]) out[t].checklists.push({ slug, ...meta });
+  for (const [slug, enMeta] of Object.entries(tagsDoc.checklists)) {
+    const meta = getMeta(locale, 'checklists', slug);
+    const merged = { slug, ...enMeta, title: meta.title, dek: meta.dek };
+    for (const tp of (enMeta.topics || [])) {
+      if (out[tp]) out[tp].checklists.push(merged);
     }
   }
 
-  // Articles sorted newest first
-  for (const t of Object.keys(out)) {
-    out[t].articles.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  for (const tp of Object.keys(out)) {
+    out[tp].articles.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
   }
 
   return out;
@@ -90,9 +326,16 @@ function indexByTopic() {
 
 // ---------- shared head/nav/footer fragments ----------
 
-function pageHead({ title, description, canonical, ogImage = '/brand/og/library.png' }) {
+function pageHead(locale, { title, description, canonical, ogImage = '/brand/og/library.png' }) {
+  // Compute hreflang counterparts. canonical is locale-correct
+  // already; build the other locale's URL by toggling the /es/ prefix.
+  const enUrl = locale === 'en' ? canonical : canonical.replace('https://muntin.digital/es/', 'https://muntin.digital/');
+  const esUrl = locale === 'es' ? canonical : canonical.replace('https://muntin.digital/', 'https://muntin.digital/es/');
+  const ogLocale = locale === 'es' ? 'es_US' : 'en_US';
+  const ogAltLocale = locale === 'es' ? 'en_US' : 'es_US';
+  const lang = locale;
   return `<!doctype html>
-<html lang="en">
+<html lang="${lang}">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -101,11 +344,11 @@ function pageHead({ title, description, canonical, ogImage = '/brand/og/library.
 <meta name="description" content="${esc(description)}" />
 <meta name="theme-color" content="#1F4E5B" />
 <link rel="canonical" href="${esc(canonical)}" />
-<link rel="alternate" hreflang="en" href="${esc(canonical)}" />
-<link rel="alternate" hreflang="es" href="${esc(canonical.replace('https://muntin.digital/', 'https://muntin.digital/es/'))}" />
-<link rel="alternate" hreflang="x-default" href="${esc(canonical)}" />
-<meta property="og:locale" content="en_US" />
-<meta property="og:locale:alternate" content="es_US" />
+<link rel="alternate" hreflang="en" href="${esc(enUrl)}" />
+<link rel="alternate" hreflang="es" href="${esc(esUrl)}" />
+<link rel="alternate" hreflang="x-default" href="${esc(enUrl)}" />
+<meta property="og:locale" content="${ogLocale}" />
+<meta property="og:locale:alternate" content="${ogAltLocale}" />
 
 <meta property="og:type" content="website" />
 <meta property="og:title" content="${esc(title)}" />
@@ -283,10 +526,10 @@ function siteFooter() {
 
 // ---------- topic page renderer ----------
 
-function topicArticleCard({ slug, title, dek, date }) {
-  const human = date ? new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+function topicArticleCard(locale, { slug, title, dek, date }) {
+  const human = date ? new Date(date).toLocaleDateString(locale === 'es' ? 'es-US' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
   return `<li>
-        <a class="topic-article-card" href="/blog/${esc(slug)}/">
+        <a class="topic-article-card" href="${pathFor(locale, '/blog/' + slug + '/')}">
           ${human ? `<span class="topic-article-date">${esc(human)}</span>` : ''}
           <h3>${esc(title)}</h3>
           <p>${esc(dek)}</p>
@@ -294,40 +537,43 @@ function topicArticleCard({ slug, title, dek, date }) {
       </li>`;
 }
 
-function topicResearchCard({ slug, title, source, dek }) {
+function topicResearchCard(locale, { slug, title, source, dek }) {
   return `<li>
-        <a class="topic-research-card" href="/learn/research/${esc(slug)}/">
-          <span class="topic-research-source">${esc(source || 'Research')}</span>
+        <a class="topic-research-card" href="${pathFor(locale, '/learn/research/' + slug + '/')}">
+          <span class="topic-research-source">${esc(source || (locale === 'es' ? 'Investigación' : 'Research'))}</span>
           <h4>${esc(title)}</h4>
           <p>${esc(dek)}</p>
         </a>
       </li>`;
 }
 
-function topicToolCard({ slug, title, dek }) {
+function topicToolCard(locale, { slug, title, dek }) {
   return `<li>
-        <a class="topic-tool-card" href="/tools/${esc(slug)}/">
+        <a class="topic-tool-card" href="${pathFor(locale, '/tools/' + slug + '/')}">
           <h4>${esc(title)}</h4>
           <p>${esc(dek)}</p>
-          <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
+          <span class="topic-tool-cta">${esc(t(locale, 'open_tool_cta'))} <span aria-hidden="true">→</span></span>
         </a>
       </li>`;
 }
 
-function topicChecklistCard({ slug, title, dek }) {
+function topicChecklistCard(locale, { slug, title, dek }) {
   return `<li>
-        <a class="topic-tool-card" href="/resources/${esc(slug)}/">
+        <a class="topic-tool-card" href="${pathFor(locale, '/resources/' + slug + '/')}">
           <h4>${esc(title)}</h4>
           <p>${esc(dek)}</p>
-          <span class="topic-tool-cta">Open the checklist <span aria-hidden="true">→</span></span>
+          <span class="topic-tool-cta">${esc(t(locale, 'open_checklist_cta'))} <span aria-hidden="true">→</span></span>
         </a>
       </li>`;
 }
 
-function renderTopicPage(topic, content) {
-  const canonical = `https://muntin.digital/learn/topics/${topic.slug}/`;
-  const altUrl = `/es/learn/topics/${topic.slug}/`;
-  const desc = `Everything in the Muntin Digital library about ${topic.name.toLowerCase()} — articles, research, tools, and checklists.`;
+function renderTopicPage(locale, topic, content) {
+  const { name, blurb } = topicLabel(locale, topic);
+  const canonical = urlFor(locale, `/learn/topics/${topic.slug}/`);
+  const altUrl = locale === 'en' ? `/es/learn/topics/${topic.slug}/` : `/learn/topics/${topic.slug}/`;
+  const desc = locale === 'es'
+    ? `Todo en la biblioteca Muntin Digital sobre ${name.toLowerCase()} — artículos, investigación, herramientas y listas.`
+    : `Everything in the Muntin Digital library about ${name.toLowerCase()} — articles, research, tools, and checklists.`;
 
   const sections = [];
 
@@ -336,11 +582,11 @@ function renderTopicPage(topic, content) {
 <section class="topic-section">
   <div class="container">
     <header class="topic-section-head">
-      <span class="eyebrow">Articles</span>
-      <h2>Read the playbooks.</h2>
+      <span class="eyebrow">${esc(t(locale, 'topic_section_articles_eyebrow'))}</span>
+      <h2>${esc(t(locale, 'topic_section_articles_h2'))}</h2>
     </header>
     <ul class="topic-article-list">
-      ${content.articles.map(topicArticleCard).join('\n')}
+      ${content.articles.map(item => topicArticleCard(locale, item)).join('\n')}
     </ul>
   </div>
 </section>`);
@@ -351,11 +597,11 @@ function renderTopicPage(topic, content) {
 <section class="topic-section topic-section-alt">
   <div class="container">
     <header class="topic-section-head">
-      <span class="eyebrow">Research</span>
-      <h2>The evidence behind the playbooks.</h2>
+      <span class="eyebrow">${esc(t(locale, 'topic_section_research_eyebrow'))}</span>
+      <h2>${esc(t(locale, 'topic_section_research_h2'))}</h2>
     </header>
     <ul class="topic-research-list">
-      ${content.research.map(topicResearchCard).join('\n')}
+      ${content.research.map(item => topicResearchCard(locale, item)).join('\n')}
     </ul>
   </div>
 </section>`);
@@ -366,11 +612,11 @@ function renderTopicPage(topic, content) {
 <section class="topic-section">
   <div class="container">
     <header class="topic-section-head">
-      <span class="eyebrow">Free tools</span>
-      <h2>Run a check on your own site.</h2>
+      <span class="eyebrow">${esc(t(locale, 'topic_section_tools_eyebrow'))}</span>
+      <h2>${esc(t(locale, 'topic_section_tools_h2'))}</h2>
     </header>
     <ul class="topic-tool-list">
-      ${content.tools.map(topicToolCard).join('\n')}
+      ${content.tools.map(item => topicToolCard(locale, item)).join('\n')}
     </ul>
   </div>
 </section>`);
@@ -381,39 +627,39 @@ function renderTopicPage(topic, content) {
 <section class="topic-section topic-section-alt">
   <div class="container">
     <header class="topic-section-head">
-      <span class="eyebrow">Checklists</span>
-      <h2>Workbooks for this topic.</h2>
+      <span class="eyebrow">${esc(t(locale, 'topic_section_checklists_eyebrow'))}</span>
+      <h2>${esc(t(locale, 'topic_section_checklists_h2'))}</h2>
     </header>
     <ul class="topic-tool-list">
-      ${content.checklists.map(topicChecklistCard).join('\n')}
+      ${content.checklists.map(item => topicChecklistCard(locale, item)).join('\n')}
     </ul>
   </div>
 </section>`);
   }
 
-  return `${pageHead({
-    title: `${topic.name} — Muntin Digital library`,
+  return `${pageHead(locale, {
+    title: locale === 'es' ? `${name} — Biblioteca Muntin Digital` : `${name} — Muntin Digital library`,
     description: desc,
     canonical,
   })}
 ${navHeader(altUrl)}
 
-<nav class="breadcrumb container" aria-label="Breadcrumb">
-  <a href="/">Home</a>
+<nav class="breadcrumb container" aria-label="${esc(t(locale, 'breadcrumb_aria'))}">
+  <a href="${pathFor(locale, '/')}">${esc(t(locale, 'breadcrumb_home'))}</a>
   <span class="breadcrumb-sep" aria-hidden="true">›</span>
-  <a href="/learn/">Learn</a>
+  <a href="${pathFor(locale, '/learn/')}">${esc(t(locale, 'breadcrumb_learn'))}</a>
   <span class="breadcrumb-sep" aria-hidden="true">›</span>
-  <a href="/learn/topics/">Topics</a>
+  <a href="${pathFor(locale, '/learn/topics/')}">${esc(t(locale, 'breadcrumb_topics'))}</a>
   <span class="breadcrumb-sep" aria-hidden="true">›</span>
-  <span aria-current="page">${esc(topic.name)}</span>
+  <span aria-current="page">${esc(name)}</span>
 </nav>
 
 <section class="hero hero-medium">
   <div class="container">
     <div class="hero-center">
-      <span class="eyebrow">Topic</span>
-      <h1 class="mt-20 topic-hero-h1">${esc(topic.name)}</h1>
-      <p class="hero-sub hero-sub-narrow">${esc(topic.blurb)}</p>
+      <span class="eyebrow">${esc(t(locale, 'topic_eyebrow'))}</span>
+      <h1 class="mt-20 topic-hero-h1">${esc(name)}</h1>
+      <p class="hero-sub hero-sub-narrow">${esc(blurb)}</p>
     </div>
   </div>
 </section>
@@ -423,15 +669,18 @@ ${sections.join('\n')}
 <section class="block final">
   <div class="container">
     <div class="section-header reveal section-center">
-      <span class="eyebrow">Other topics</span>
-      <h2>Or browse a<br><span class="serif-italic">different angle.</span></h2>
+      <span class="eyebrow">${esc(t(locale, 'topic_other_eyebrow'))}</span>
+      <h2>${esc(t(locale, 'topic_other_h2_l1'))}<br><span class="serif-italic">${esc(t(locale, 'topic_other_h2_l2'))}</span></h2>
     </div>
     <ul class="topic-other-list">
-      ${TOPICS.filter(t => t.slug !== topic.slug).map(t => `<li><a href="/learn/topics/${esc(t.slug)}/">${esc(t.name)}</a></li>`).join('\n      ')}
+      ${TOPICS.filter(tp => tp.slug !== topic.slug).map(tp => {
+        const lbl = topicLabel(locale, tp);
+        return `<li><a href="${pathFor(locale, '/learn/topics/' + tp.slug + '/')}">${esc(lbl.name)}</a></li>`;
+      }).join('\n      ')}
     </ul>
     <div class="hero-ctas reveal hero-ctas-center" style="margin-top:32px">
-      <a class="btn btn-primary" href="/learn/">Back to the Library</a>
-      <a class="btn btn-ghost" href="/blog/">All articles</a>
+      <a class="btn btn-primary" href="${pathFor(locale, '/learn/')}">${esc(t(locale, 'topic_back_btn'))}</a>
+      <a class="btn btn-ghost" href="${pathFor(locale, '/blog/')}">${esc(t(locale, 'topic_back_btn_alt'))}</a>
     </div>
   </div>
 </section>
@@ -439,49 +688,58 @@ ${sections.join('\n')}
 ${siteFooter()}`;
 }
 
-function renderTopicsHub() {
-  const canonical = 'https://muntin.digital/learn/topics/';
-  const altUrl = '/es/learn/topics/';
+function renderTopicsHub(locale, byTopicForLocale) {
+  const canonical = urlFor(locale, '/learn/topics/');
+  const altUrl = locale === 'en' ? '/es/learn/topics/' : '/learn/topics/';
   const cards = TOPICS.map(topic => {
-    const c = byTopic[topic.slug];
+    const lbl = topicLabel(locale, topic);
+    const c = byTopicForLocale[topic.slug];
     const counts = [];
-    if (c.articles.length) counts.push(`${c.articles.length} ${c.articles.length === 1 ? 'article' : 'articles'}`);
-    if (c.research.length) counts.push(`${c.research.length} research`);
-    if (c.tools.length) counts.push(`${c.tools.length} ${c.tools.length === 1 ? 'tool' : 'tools'}`);
+    if (locale === 'es') {
+      if (c.articles.length) counts.push(`${c.articles.length} ${c.articles.length === 1 ? 'artículo' : 'artículos'}`);
+      if (c.research.length) counts.push(`${c.research.length} ${c.research.length === 1 ? 'estudio' : 'estudios'}`);
+      if (c.tools.length) counts.push(`${c.tools.length} ${c.tools.length === 1 ? 'herramienta' : 'herramientas'}`);
+    } else {
+      if (c.articles.length) counts.push(`${c.articles.length} ${c.articles.length === 1 ? 'article' : 'articles'}`);
+      if (c.research.length) counts.push(`${c.research.length} research`);
+      if (c.tools.length) counts.push(`${c.tools.length} ${c.tools.length === 1 ? 'tool' : 'tools'}`);
+    }
     return `<li>
-      <a class="topics-hub-card" href="/learn/topics/${esc(topic.slug)}/">
-        <h3>${esc(topic.name)}</h3>
-        <p>${esc(topic.blurb)}</p>
+      <a class="topics-hub-card" href="${pathFor(locale, '/learn/topics/' + topic.slug + '/')}">
+        <h3>${esc(lbl.name)}</h3>
+        <p>${esc(lbl.blurb)}</p>
         <span class="topics-hub-meta">${counts.join(' · ')}</span>
       </a>
     </li>`;
   }).join('\n');
 
-  return `${pageHead({
-    title: 'Topics — Muntin Digital library',
-    description: 'Browse the Muntin Digital library by topic — speed and mobile, conversions and reservations, local SEO, operations and margin, trust and reviews, brand and design.',
+  return `${pageHead(locale, {
+    title: locale === 'es' ? 'Temas — Biblioteca Muntin Digital' : 'Topics — Muntin Digital library',
+    description: locale === 'es'
+      ? 'Explora la biblioteca Muntin Digital por tema — velocidad y móvil, conversiones y reservas, SEO local, operaciones y margen, confianza y reseñas, marca y diseño.'
+      : 'Browse the Muntin Digital library by topic — speed and mobile, conversions and reservations, local SEO, operations and margin, trust and reviews, brand and design.',
     canonical,
   })}
 ${navHeader(altUrl)}
 
-<nav class="breadcrumb container" aria-label="Breadcrumb">
-  <a href="/">Home</a>
+<nav class="breadcrumb container" aria-label="${esc(t(locale, 'breadcrumb_aria'))}">
+  <a href="${pathFor(locale, '/')}">${esc(t(locale, 'breadcrumb_home'))}</a>
   <span class="breadcrumb-sep" aria-hidden="true">›</span>
-  <a href="/learn/">Learn</a>
+  <a href="${pathFor(locale, '/learn/')}">${esc(t(locale, 'breadcrumb_learn'))}</a>
   <span class="breadcrumb-sep" aria-hidden="true">›</span>
-  <span aria-current="page">Topics</span>
+  <span aria-current="page">${esc(t(locale, 'breadcrumb_topics'))}</span>
 </nav>
 
 <section class="hero hero-medium">
   <div class="container">
     <div class="hero-center">
-      <span class="eyebrow">Six lenses on the same library</span>
+      <span class="eyebrow">${esc(t(locale, 'topics_hub_eyebrow'))}</span>
       <h1 class="mt-20">
-        Browse by<br>
-        <span class="serif-italic">what you're trying to fix.</span>
+        ${esc(t(locale, 'topics_hub_h1_l1'))}<br>
+        <span class="serif-italic">${esc(t(locale, 'topics_hub_h1_l2'))}</span>
       </h1>
       <p class="hero-sub hero-sub-narrow">
-        The articles, research, tools, and checklists that make up the Library, regrouped by the question that brought you here. Pick the one that sounds like your week.
+        ${esc(t(locale, 'topics_hub_sub'))}
       </p>
     </div>
   </div>
@@ -506,8 +764,10 @@ ${siteFooter()}`;
 // <article class="gloss-term" id="slug" data-industries="...">
 // with predictable child elements.
 
-function parseGlossary() {
-  const file = join(REPO, 'glossary/index.html');
+function parseGlossary(locale = 'en') {
+  const file = locale === 'es'
+    ? join(REPO, 'es/glossary/index.html')
+    : join(REPO, 'glossary/index.html');
   const html = readFileSync(file, 'utf8');
 
   // First pull section headers so we can attach each term to its section.
@@ -576,13 +836,14 @@ function parseGlossary() {
     const whyHtml = whyM ? whyM[1].trim() : '';
 
     // Optional research link. Source HTML wraps the link with a
-    // leading `<strong>See the research</strong>` literal — strip
-    // that since the rendered page has its own label.
+    // leading `<strong>See the research</strong>` (or
+    // `<strong>Ver la investigación</strong>` in ES) literal — strip
+    // either since the rendered page has its own label.
     const researchM = inner.match(/<p class="gloss-term-research">([\s\S]*?)<\/p>/);
     let researchHtml = null, researchUrl = null;
     if (researchM) {
       researchHtml = researchM[1]
-        .replace(/<strong>\s*See the research\s*<\/strong>/i, '')
+        .replace(/<strong>\s*(See the research|Ver la investigaci[óo]n)\s*<\/strong>/i, '')
         .trim();
       const urlM = researchM[1].match(/href="([^"]+)"/);
       if (urlM) researchUrl = urlM[1];
@@ -617,27 +878,36 @@ function stripTags(s) {
 // Render one per-term glossary page. Conservative HTML — definition
 // and "why it matters" are pasted as-is from the source (they may
 // contain inline <code>, <em>, etc.).
-function renderTermPage(term, allTerms) {
-  const canonical = `https://muntin.digital/glossary/${term.slug}/`;
-  const altUrl = `/es/glossary/${term.slug}/`;
+function renderTermPage(locale, term, allTerms) {
+  const canonical = urlFor(locale, `/glossary/${term.slug}/`);
+  const altUrl = locale === 'en' ? `/es/glossary/${term.slug}/` : `/glossary/${term.slug}/`;
   const headPlain = stripTags(term.head);
   const desc = `${headPlain}: ${stripTags(term.defHtml).slice(0, 155).trim()}${stripTags(term.defHtml).length > 155 ? '…' : ''}`;
 
+  // The "Why it matters" heading is part of the source HTML; the
+  // EN file says "Why it matters", the ES file says "Por qué importa".
+  // We strip the leading <strong> in the parser, so the rendered
+  // page needs its own <h2> — pick by locale.
+  const whyH = locale === 'es' ? 'Por qué importa' : 'Why it matters';
+
   // Sibling terms in the same section (for "More in this section")
   const siblings = allTerms
-    .filter(t => t.sectionSlug === term.sectionSlug && t.slug !== term.slug)
+    .filter(tm => tm.sectionSlug === term.sectionSlug && tm.slug !== term.slug)
     .slice(0, 6);
 
   // Related topic chips — link out to /learn/topics/<slug>/
   const topicChips = term.topics
-    .map(t => TOPIC_BY_SLUG[t])
+    .map(tp => TOPIC_BY_SLUG[tp])
     .filter(Boolean)
-    .map(t => `<a class="term-topic-chip" href="/learn/topics/${esc(t.slug)}/">${esc(t.name)}</a>`)
+    .map(tp => {
+      const lbl = topicLabel(locale, tp);
+      return `<a class="term-topic-chip" href="${pathFor(locale, '/learn/topics/' + tp.slug + '/')}">${esc(lbl.name)}</a>`;
+    })
     .join('\n          ');
 
   const researchBlock = term.researchHtml
     ? `<aside class="term-research">
-      <p class="term-research-label">See the research</p>
+      <p class="term-research-label">${esc(t(locale, 'research_see'))}</p>
       <p>${term.researchHtml}</p>
     </aside>`
     : '';
@@ -646,29 +916,29 @@ function renderTermPage(term, allTerms) {
     ? `<section class="term-siblings">
   <div class="container">
     <header class="term-siblings-head">
-      <span class="eyebrow">More in ${esc(term.sectionName)}</span>
+      <span class="eyebrow">${esc(t(locale, 'term_more_in_section'))} ${esc(term.sectionName)}</span>
     </header>
     <ul class="term-siblings-list">
       ${siblings.map(s =>
-        `<li><a href="/glossary/${esc(s.slug)}/"><strong>${s.head}</strong>${s.aka ? `<span> — ${s.aka}</span>` : ''}</a></li>`
+        `<li><a href="${pathFor(locale, '/glossary/' + s.slug + '/')}"><strong>${s.head}</strong>${s.aka ? `<span> — ${s.aka}</span>` : ''}</a></li>`
       ).join('\n      ')}
     </ul>
   </div>
 </section>`
     : '';
 
-  return `${pageHead({
-    title: `${headPlain} — Muntin Digital glossary`,
+  return `${pageHead(locale, {
+    title: locale === 'es' ? `${headPlain} — Glosario Muntin Digital` : `${headPlain} — Muntin Digital glossary`,
     description: desc,
     canonical,
     ogImage: '/brand/og/glossary.png',
   })}
 ${navHeader(altUrl)}
 
-<nav class="breadcrumb container" aria-label="Breadcrumb">
-  <a href="/">Home</a>
+<nav class="breadcrumb container" aria-label="${esc(t(locale, 'term_aria_breadcrumb'))}">
+  <a href="${pathFor(locale, '/')}">${esc(t(locale, 'breadcrumb_home'))}</a>
   <span class="breadcrumb-sep" aria-hidden="true">›</span>
-  <a href="/glossary/">Glossary</a>
+  <a href="${pathFor(locale, '/glossary/')}">${esc(t(locale, 'breadcrumb_glossary'))}</a>
   <span class="breadcrumb-sep" aria-hidden="true">›</span>
   <span aria-current="page">${esc(headPlain)}</span>
 </nav>
@@ -676,7 +946,7 @@ ${navHeader(altUrl)}
 <section class="term-page">
   <div class="container term-page-inner">
     <header class="term-head">
-      <span class="eyebrow"><a href="/glossary/#${esc(term.sectionSlug)}">${esc(term.sectionName)}</a></span>
+      <span class="eyebrow"><a href="${pathFor(locale, '/glossary/#' + term.sectionSlug)}">${esc(term.sectionName)}</a></span>
       <h1 class="term-h1">${term.head}</h1>
       ${term.aka ? `<p class="term-aka">${term.aka}</p>` : ''}
       <div class="term-meta">
@@ -687,7 +957,7 @@ ${navHeader(altUrl)}
 
     <div class="term-body">
       <p class="term-def">${term.defHtml}</p>
-      <h2 class="term-why-h">Why it matters</h2>
+      <h2 class="term-why-h">${esc(whyH)}</h2>
       <p class="term-why">${term.whyHtml}</p>
       ${researchBlock}
     </div>
@@ -699,13 +969,13 @@ ${siblingsBlock}
 <section class="block final">
   <div class="container">
     <div class="section-header reveal section-center">
-      <span class="eyebrow">Glossary</span>
-      <h2>Browse all<br><span class="serif-italic">97 terms.</span></h2>
-      <p class="final-sub">Plain-English definitions for every term in your audit, organized by category.</p>
+      <span class="eyebrow">${esc(t(locale, 'term_final_eyebrow'))}</span>
+      <h2>${esc(t(locale, 'term_final_h2_l1'))}<br><span class="serif-italic">${esc(t(locale, 'term_final_h2_l2'))}</span></h2>
+      <p class="final-sub">${esc(t(locale, 'term_final_sub'))}</p>
     </div>
     <div class="hero-ctas reveal hero-ctas-center">
-      <a class="btn btn-primary" href="/glossary/">Open the full glossary</a>
-      <a class="btn btn-ghost" href="/learn/">Back to the Library</a>
+      <a class="btn btn-primary" href="${pathFor(locale, '/glossary/')}">${esc(t(locale, 'term_final_btn'))}</a>
+      <a class="btn btn-ghost" href="${pathFor(locale, '/learn/')}">${esc(t(locale, 'term_final_btn_alt'))}</a>
     </div>
   </div>
 </section>
@@ -721,44 +991,52 @@ ${siteFooter()}`;
 
 import { readdirSync, statSync } from 'node:fs';
 
-function findCitations() {
+function findCitations(locale) {
   const cites = {}; // research-slug -> [{slug, title}]
-  for (const [postSlug, postMeta] of Object.entries(tagsDoc.blog_posts)) {
-    const file = join(REPO, 'blog', postSlug, 'index.html');
-    const html = readFileSync(file, 'utf8');
-    // Match /learn/research/<slug>/ inside the article body. We match
-    // anywhere on the page; if a cite shows up in 'further reading'
-    // or in a sidebar, that still counts as a citation.
+  const blogRoot = locale === 'es' ? join(REPO, 'es/blog') : join(REPO, 'blog');
+  // Match either /learn/research/<slug>/ or /es/learn/research/<slug>/
+  const researchPathRe = /\/(?:es\/)?learn\/research\/([a-z0-9-]+)\//g;
+  for (const [postSlug] of Object.entries(tagsDoc.blog_posts)) {
+    const file = join(blogRoot, postSlug, 'index.html');
+    let html = '';
+    try { html = readFileSync(file, 'utf8'); } catch { continue; }
+    // Strip auto-generated sidebars before scanning. The see-also and
+    // cited-in regions surface research links algorithmically; treating
+    // them as "citations" creates a circular bump in the counts.
+    // Editorial Further Reading picks are intentional but conventional
+    // sidebar — also excluded so the count reflects only in-body cites.
+    const cleaned = html
+      .replace(/<!-- LIBRARY:see-also:start -->[\s\S]*?<!-- LIBRARY:see-also:end -->/g, '')
+      .replace(/<!-- LIBRARY:cited-in:start -->[\s\S]*?<!-- LIBRARY:cited-in:end -->/g, '')
+      .replace(/<aside class="further-reading">[\s\S]*?<\/aside>/g, '');
     const seen = new Set();
-    for (const m of html.matchAll(/\/learn\/research\/([a-z0-9-]+)\//g)) {
-      seen.add(m[1]);
-    }
+    for (const m of cleaned.matchAll(researchPathRe)) seen.add(m[1]);
+    const meta = getMeta(locale, 'blog', postSlug);
     for (const researchSlug of seen) {
       if (!cites[researchSlug]) cites[researchSlug] = [];
-      cites[researchSlug].push({ slug: postSlug, title: postMeta.title });
+      cites[researchSlug].push({ slug: postSlug, title: meta.title });
     }
   }
-  // Sort each list by title for stable output
   for (const s of Object.keys(cites)) {
     cites[s].sort((a, b) => a.title.localeCompare(b.title));
   }
   return cites;
 }
 
-function renderCitedInBlock(researchSlug, citations) {
+function renderCitedInBlock(locale, researchSlug, citations) {
   if (!citations || !citations.length) {
     return `<!-- LIBRARY:cited-in:start --><!-- LIBRARY:cited-in:end -->`;
   }
   const items = citations.map(c =>
-    `      <li><a href="/blog/${esc(c.slug)}/">${esc(c.title)}</a></li>`
+    `      <li><a href="${pathFor(locale, '/blog/' + c.slug + '/')}">${esc(c.title)}</a></li>`
   ).join('\n');
-  const noun = citations.length === 1 ? 'article uses' : 'articles use';
+  const noun = citations.length === 1 ? t(locale, 'cited_in_singular') : t(locale, 'cited_in_plural');
   return `<!-- LIBRARY:cited-in:start -->
 <section class="block research-cited-in" aria-labelledby="cited-in-h">
   <div class="container">
     <header class="research-cited-in-head">
-      <span class="eyebrow">Cited in</span>
-      <h2 id="cited-in-h">${citations.length} ${noun} this research.</h2>
+      <span class="eyebrow">${esc(t(locale, 'cited_in_eyebrow'))}</span>
+      <h2 id="cited-in-h">${citations.length} ${esc(noun)} ${esc(t(locale, 'cited_in_suffix'))}</h2>
     </header>
     <ul class="research-cited-in-list">
 ${items}
@@ -768,24 +1046,22 @@ ${items}
 <!-- LIBRARY:cited-in:end -->`;
 }
 
-function injectCitedIn(researchSlug, citations) {
-  const file = join(REPO, 'learn/research', researchSlug, 'index.html');
-  const html = readFileSync(file, 'utf8');
-  const block = renderCitedInBlock(researchSlug, citations);
+function injectCitedIn(locale, researchSlug, citations) {
+  const root = locale === 'es' ? join(REPO, 'es/learn/research') : join(REPO, 'learn/research');
+  const file = join(root, researchSlug, 'index.html');
+  let html = '';
+  try { html = readFileSync(file, 'utf8'); } catch { return 'skipped'; }
+  const block = renderCitedInBlock(locale, researchSlug, citations);
 
-  // If markers exist, replace the marked region.
   const markerRe = /<!-- LIBRARY:cited-in:start -->[\s\S]*?<!-- LIBRARY:cited-in:end -->/;
   if (markerRe.test(html)) {
     writeFileSync(file, html.replace(markerRe, block), 'utf8');
     return 'updated';
   }
 
-  // First run — inject the block right before the "More research"
-  // / "Next in research" section. Every research note has
-  // `<section class="block bg-cream2">` as that section's opener.
   const anchor = '<section class="block bg-cream2">';
   if (!html.includes(anchor)) {
-    console.warn(`  warning: ${researchSlug}: no injection anchor found, skipping`);
+    console.warn(`  warning: ${locale}/${researchSlug}: no injection anchor found, skipping`);
     return 'skipped';
   }
   const replaced = html.replace(anchor, `${block}\n\n${anchor}`);
@@ -801,40 +1077,43 @@ function injectCitedIn(researchSlug, citations) {
 // already linked in the page's editorial "Further reading" aside —
 // the See Also block is meant to complement, not duplicate.
 
-function relatedItemsFor(sourceSlug, sourceTopics, existingHrefs = new Set()) {
+function relatedItemsFor(locale, sourceSlug, sourceTopics, existingHrefs = new Set()) {
   const sourceTopicSet = new Set(sourceTopics);
   const candidates = [];
 
-  for (const [slug, meta] of Object.entries(tagsDoc.blog_posts)) {
+  for (const [slug, enMeta] of Object.entries(tagsDoc.blog_posts)) {
     if (slug === sourceSlug) continue;
-    const overlap = (meta.topics || []).filter(t => sourceTopicSet.has(t)).length;
+    const overlap = (enMeta.topics || []).filter(tp => sourceTopicSet.has(tp)).length;
     if (!overlap) continue;
+    const meta = getMeta(locale, 'blog', slug);
     candidates.push({
       kind: 'article',
-      url: `/blog/${slug}/`,
+      url: pathFor(locale, `/blog/${slug}/`),
       title: meta.title,
       dek: meta.dek,
       score: overlap,
-      date: meta.date,
+      date: enMeta.date,
     });
   }
-  for (const [slug, meta] of Object.entries(tagsDoc.research_notes)) {
-    const overlap = (meta.topics || []).filter(t => sourceTopicSet.has(t)).length;
+  for (const [slug, enMeta] of Object.entries(tagsDoc.research_notes)) {
+    const overlap = (enMeta.topics || []).filter(tp => sourceTopicSet.has(tp)).length;
     if (!overlap) continue;
+    const meta = getMeta(locale, 'research', slug);
     candidates.push({
       kind: 'research',
-      url: `/learn/research/${slug}/`,
+      url: pathFor(locale, `/learn/research/${slug}/`),
       title: meta.title,
       dek: meta.dek,
       score: overlap,
     });
   }
-  for (const [slug, meta] of Object.entries(tagsDoc.tools)) {
-    const overlap = (meta.topics || []).filter(t => sourceTopicSet.has(t)).length;
+  for (const [slug, enMeta] of Object.entries(tagsDoc.tools)) {
+    const overlap = (enMeta.topics || []).filter(tp => sourceTopicSet.has(tp)).length;
     if (!overlap) continue;
+    const meta = getMeta(locale, 'tools', slug);
     candidates.push({
       kind: 'tool',
-      url: `/tools/${slug}/`,
+      url: pathFor(locale, `/tools/${slug}/`),
       title: meta.title,
       dek: meta.dek,
       score: overlap,
@@ -875,15 +1154,19 @@ function relatedItemsFor(sourceSlug, sourceTopics, existingHrefs = new Set()) {
   return picked;
 }
 
-function renderSeeAlso(items) {
+function renderSeeAlso(locale, items) {
   if (!items.length) {
     return `<!-- LIBRARY:see-also:start --><!-- LIBRARY:see-also:end -->`;
   }
-  const kindLabel = { article: 'Article', research: 'Research', tool: 'Tool' };
+  const kindLabel = {
+    article: t(locale, 'see_also_kind_article'),
+    research: t(locale, 'see_also_kind_research'),
+    tool: t(locale, 'see_also_kind_tool'),
+  };
   const cards = items.map(it =>
     `      <li>
         <a class="see-also-card" href="${esc(it.url)}">
-          <span class="see-also-kind">${esc(kindLabel[it.kind] || 'Read')}</span>
+          <span class="see-also-kind">${esc(kindLabel[it.kind] || '')}</span>
           <h3>${esc(it.title)}</h3>
           <p>${esc(it.dek || '')}</p>
         </a>
@@ -891,7 +1174,7 @@ function renderSeeAlso(items) {
   ).join('\n');
   return `<!-- LIBRARY:see-also:start -->
 <aside class="see-also" aria-labelledby="see-also-h">
-  <p class="see-also-label" id="see-also-h">See also</p>
+  <p class="see-also-label" id="see-also-h">${esc(t(locale, 'see_also_label'))}</p>
   <ul class="see-also-list">
 ${cards}
     </ul>
@@ -899,10 +1182,12 @@ ${cards}
 <!-- LIBRARY:see-also:end -->`;
 }
 
-function injectSeeAlso(blogSlug, items) {
-  const file = join(REPO, 'blog', blogSlug, 'index.html');
-  const html = readFileSync(file, 'utf8');
-  const block = renderSeeAlso(items);
+function injectSeeAlso(locale, blogSlug, items) {
+  const root = locale === 'es' ? join(REPO, 'es/blog') : join(REPO, 'blog');
+  const file = join(root, blogSlug, 'index.html');
+  let html = '';
+  try { html = readFileSync(file, 'utf8'); } catch { return 'skipped'; }
+  const block = renderSeeAlso(locale, items);
 
   const markerRe = /<!-- LIBRARY:see-also:start -->[\s\S]*?<!-- LIBRARY:see-also:end -->/;
   if (markerRe.test(html)) {
@@ -910,11 +1195,9 @@ function injectSeeAlso(blogSlug, items) {
     return 'updated';
   }
 
-  // First run — inject between the end of the article and the
-  // editorial further-reading aside. Every blog post has both.
   const anchor = '<aside class="further-reading">';
   if (!html.includes(anchor)) {
-    console.warn(`  warning: ${blogSlug}: no injection anchor, skipping`);
+    console.warn(`  warning: ${locale}/${blogSlug}: no injection anchor, skipping`);
     return 'skipped';
   }
   const replaced = html.replace(anchor, `${block}\n\n    ${anchor}`);
@@ -922,9 +1205,11 @@ function injectSeeAlso(blogSlug, items) {
   return 'inserted';
 }
 
-function existingFurtherReadingHrefs(blogSlug) {
-  const file = join(REPO, 'blog', blogSlug, 'index.html');
-  const html = readFileSync(file, 'utf8');
+function existingFurtherReadingHrefs(locale, blogSlug) {
+  const root = locale === 'es' ? join(REPO, 'es/blog') : join(REPO, 'blog');
+  const file = join(root, blogSlug, 'index.html');
+  let html = '';
+  try { html = readFileSync(file, 'utf8'); } catch { return new Set(); }
   const m = html.match(/<aside class="further-reading">([\s\S]*?)<\/aside>/);
   if (!m) return new Set();
   const hrefs = new Set();
@@ -940,29 +1225,32 @@ function existingFurtherReadingHrefs(blogSlug) {
 // from tool result → educational ecosystem (the missing piece in
 // the original UX audit). Idempotent via comment markers.
 
-function renderToolDeepLinks(tool, glossaryTerm, article) {
+function renderToolDeepLinks(locale, tool, glossaryTerm, article) {
   const topicChips = (tool.topics || [])
-    .map(t => TOPIC_BY_SLUG[t])
+    .map(tp => TOPIC_BY_SLUG[tp])
     .filter(Boolean)
-    .map(t => `<a class="tool-deep-topic" href="/learn/topics/${esc(t.slug)}/">${esc(t.name)}</a>`)
+    .map(tp => {
+      const lbl = topicLabel(locale, tp);
+      return `<a class="tool-deep-topic" href="${pathFor(locale, '/learn/topics/' + tp.slug + '/')}">${esc(lbl.name)}</a>`;
+    })
     .join('\n        ');
 
   const termCard = glossaryTerm
-    ? `<a class="tool-deep-card tool-deep-card-term" href="/glossary/${esc(glossaryTerm.slug)}/">
-          <span class="tool-deep-kind">Glossary</span>
+    ? `<a class="tool-deep-card tool-deep-card-term" href="${pathFor(locale, '/glossary/' + glossaryTerm.slug + '/')}">
+          <span class="tool-deep-kind">${esc(t(locale, 'tool_deep_kind_glossary'))}</span>
           <h3>${glossaryTerm.head}</h3>
           ${glossaryTerm.aka ? `<p class="tool-deep-aka">${glossaryTerm.aka}</p>` : ''}
           <p class="tool-deep-snippet">${esc(stripTags(glossaryTerm.defHtml).slice(0, 140))}${stripTags(glossaryTerm.defHtml).length > 140 ? '…' : ''}</p>
-          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
+          <span class="tool-deep-cta">${esc(t(locale, 'tool_deep_cta_glossary'))} <span aria-hidden="true">→</span></span>
         </a>`
     : '';
 
   const articleCard = article
-    ? `<a class="tool-deep-card tool-deep-card-article" href="/blog/${esc(article.slug)}/">
-          <span class="tool-deep-kind">Article</span>
+    ? `<a class="tool-deep-card tool-deep-card-article" href="${pathFor(locale, '/blog/' + article.slug + '/')}">
+          <span class="tool-deep-kind">${esc(t(locale, 'tool_deep_kind_article'))}</span>
           <h3>${esc(article.title)}</h3>
           <p class="tool-deep-snippet">${esc(article.dek)}</p>
-          <span class="tool-deep-cta">Read the playbook <span aria-hidden="true">→</span></span>
+          <span class="tool-deep-cta">${esc(t(locale, 'tool_deep_cta_article'))} <span aria-hidden="true">→</span></span>
         </a>`
     : '';
 
@@ -970,9 +1258,9 @@ function renderToolDeepLinks(tool, glossaryTerm, article) {
 <section class="tool-deep-links" aria-labelledby="tool-deep-h">
   <div class="container">
     <header class="tool-deep-head">
-      <span class="eyebrow">Learn more</span>
-      <h2 id="tool-deep-h">Why this tool exists.</h2>
-      <p class="tool-deep-blurb">Every check this tool runs maps to a specific concept in the Library. Two starting points — one definition, one playbook.</p>
+      <span class="eyebrow">${esc(t(locale, 'tool_deep_eyebrow'))}</span>
+      <h2 id="tool-deep-h">${esc(t(locale, 'tool_deep_h2'))}</h2>
+      <p class="tool-deep-blurb">${esc(t(locale, 'tool_deep_blurb'))}</p>
       ${topicChips ? `<div class="tool-deep-topics">${topicChips}</div>` : ''}
     </header>
     <div class="tool-deep-grid">
@@ -984,17 +1272,17 @@ function renderToolDeepLinks(tool, glossaryTerm, article) {
 <!-- LIBRARY:tool-deep-links:end -->`;
 }
 
-function injectToolDeepLinks(toolSlug, tool, glossaryTerm, article) {
-  const file = join(REPO, 'tools', toolSlug, 'index.html');
+function injectToolDeepLinks(locale, toolSlug, tool, glossaryTerm, article) {
+  const root = locale === 'es' ? join(REPO, 'es/tools') : join(REPO, 'tools');
+  const file = join(root, toolSlug, 'index.html');
   let html;
   try {
     html = readFileSync(file, 'utf8');
   } catch {
-    console.warn(`  warning: ${toolSlug}: file not found, skipping`);
     return 'skipped';
   }
 
-  const block = renderToolDeepLinks(tool, glossaryTerm, article);
+  const block = renderToolDeepLinks(locale, tool, glossaryTerm, article);
 
   const markerRe = /<!-- LIBRARY:tool-deep-links:start -->[\s\S]*?<!-- LIBRARY:tool-deep-links:end -->/;
   if (markerRe.test(html)) {
@@ -1002,11 +1290,10 @@ function injectToolDeepLinks(toolSlug, tool, glossaryTerm, article) {
     return 'updated';
   }
 
-  // First run — inject right before </main>.
   const anchor = '</main>';
   const idx = html.indexOf(anchor);
   if (idx < 0) {
-    console.warn(`  warning: ${toolSlug}: no </main> anchor, skipping`);
+    console.warn(`  warning: ${locale}/${toolSlug}: no </main> anchor, skipping`);
     return 'skipped';
   }
   const replaced = html.slice(0, idx) + block + '\n\n' + html.slice(idx);
@@ -1016,103 +1303,104 @@ function injectToolDeepLinks(toolSlug, tool, glossaryTerm, article) {
 
 // ---------- run ----------
 
-const byTopic = indexByTopic();
+let byTopic; // module-level reference for the topics hub renderer
 
-// Topics hub
-write(join(REPO, 'learn/topics/index.html'), renderTopicsHub());
+for (const locale of LOCALES) {
+  console.log(`\n=== Building locale: ${locale} ===`);
+  byTopic = indexByTopic(locale);
+  const outBase = locale === 'en' ? REPO : join(REPO, locale);
 
-// Six topic pages
-for (const topic of TOPICS) {
-  const content = byTopic[topic.slug];
-  write(join(REPO, 'learn/topics', topic.slug, 'index.html'), renderTopicPage(topic, content));
-}
+  // Topics hub
+  write(join(outBase, 'learn/topics/index.html'), renderTopicsHub(locale, byTopic));
 
-console.log(`Built /learn/topics/ + ${TOPICS.length} topic pages.`);
-for (const t of TOPICS) {
-  const c = byTopic[t.slug];
-  console.log(`  ${t.slug.padEnd(20)} → ${c.articles.length} articles, ${c.research.length} research, ${c.tools.length} tools, ${c.checklists.length} checklists`);
-}
-
-// Research backlinks
-const cites = findCitations();
-console.log(`\nResearch backlinks:`);
-for (const researchSlug of Object.keys(tagsDoc.research_notes)) {
-  const list = cites[researchSlug] || [];
-  const action = injectCitedIn(researchSlug, list);
-  console.log(`  ${researchSlug.padEnd(34)} ${list.length} citing post(s) — ${action}`);
-}
-
-// Tool deep-links — every tool gets a Library block at the bottom
-// surfacing its curated glossary term + article + topic chips.
-{
-  const { terms } = parseGlossary();
-  const termBySlug = Object.fromEntries(terms.map(t => [t.slug, t]));
-  console.log(`\nTool deep-links:`);
-  for (const [toolSlug, tool] of Object.entries(tagsDoc.tools)) {
-    const term = termBySlug[tool.glossary_term];
-    const articleSlug = tool.article;
-    const articleMeta = articleSlug ? tagsDoc.blog_posts[articleSlug] : null;
-    const article = articleMeta ? { slug: articleSlug, ...articleMeta } : null;
-    const action = injectToolDeepLinks(toolSlug, tool, term, article);
-    const refs = [];
-    if (term) refs.push(`glossary:${term.slug}`);
-    if (article) refs.push(`article:${article.slug}`);
-    console.log(`  ${toolSlug.padEnd(22)} → ${refs.join(', ').padEnd(60)} — ${action}`);
+  // Six topic pages
+  for (const topic of TOPICS) {
+    const content = byTopic[topic.slug];
+    write(join(outBase, 'learn/topics', topic.slug, 'index.html'), renderTopicPage(locale, topic, content));
   }
-}
 
-// "See also" blocks on blog posts. Each post gets up to 3
-// algorithmic recommendations based on shared topic tags,
-// preferring a mix of article + research + tool over three of
-// the same kind. Skips anything already linked in the editorial
-// Further Reading aside.
-console.log(`\nSee-also blocks:`);
-for (const [blogSlug, postMeta] of Object.entries(tagsDoc.blog_posts)) {
-  const existing = existingFurtherReadingHrefs(blogSlug);
-  const items = relatedItemsFor(blogSlug, postMeta.topics, existing);
-  const action = injectSeeAlso(blogSlug, items);
-  console.log(`  ${blogSlug.padEnd(56)} ${items.length} item(s) — ${action}`);
-}
-
-// Per-term glossary pages — generate /glossary/<slug>/ for each
-// of the 96 terms in the source glossary file. Pages cross-link
-// to siblings in the same section and to topic pages.
-{
-  const { terms } = parseGlossary();
-  let count = 0;
-  for (const term of terms) {
-    write(join(REPO, 'glossary', term.slug, 'index.html'), renderTermPage(term, terms));
-    count++;
+  console.log(`Built ${pathFor(locale, '/learn/topics/')} + ${TOPICS.length} topic pages.`);
+  for (const tp of TOPICS) {
+    const c = byTopic[tp.slug];
+    console.log(`  ${tp.slug.padEnd(20)} → ${c.articles.length} articles, ${c.research.length} research, ${c.tools.length} tools, ${c.checklists.length} checklists`);
   }
-  console.log(`\nPer-term glossary pages: ${count} term page(s) generated.`);
-}
 
-// Update the "Cited in N articles" labels on the research hub
-// (/learn/research/index.html) so the counts match the new
-// research backlinks. Keeps the index hub honest as posts are
-// added.
-{
-  const file = join(REPO, 'learn/research/index.html');
-  let html = readFileSync(file, 'utf8');
-  let changed = 0;
+  // Research backlinks
+  const cites = findCitations(locale);
+  console.log(`\nResearch backlinks (${locale}):`);
   for (const researchSlug of Object.keys(tagsDoc.research_notes)) {
-    const n = (cites[researchSlug] || []).length;
-    const noun = n === 1 ? 'article' : 'articles';
-    // Find the card for this slug, then replace its count span.
-    // The structure is stable: <a class="research-index-card"
-    // href="/learn/research/SLUG/"> ... <span class="research-index-uses">
-    // Cited in <strong>N</strong> article(s)</span>.
-    const cardRe = new RegExp(
-      `(<a class="research-index-card" href="/learn/research/${researchSlug}/">[\\s\\S]*?<span class="research-index-uses">Cited in <strong>)(\\d+)(</strong> )(article|articles)(<\\/span>)`,
-    );
-    const replaced = html.replace(cardRe, (_m, p1, _old, p3, _oldNoun, p5) => {
-      changed++;
-      return `${p1}${n}${p3}${noun}${p5}`;
-    });
-    if (replaced !== html) html = replaced;
+    const list = cites[researchSlug] || [];
+    const action = injectCitedIn(locale, researchSlug, list);
+    console.log(`  ${researchSlug.padEnd(34)} ${list.length} citing post(s) — ${action}`);
   }
-  if (changed) {
-    writeFileSync(file, html, 'utf8');
-    console.log(`Updated ${changed} citation count(s) on /learn/research/`);
+
+  // Tool deep-links — every tool gets a Library block at the bottom
+  // surfacing its curated glossary term + article + topic chips.
+  {
+    const { terms } = parseGlossary(locale);
+    const termBySlug = Object.fromEntries(terms.map(tm => [tm.slug, tm]));
+    console.log(`\nTool deep-links (${locale}):`);
+    for (const [toolSlug, tool] of Object.entries(tagsDoc.tools)) {
+      const term = termBySlug[tool.glossary_term];
+      const articleSlug = tool.article;
+      const articleMeta = articleSlug ? getMeta(locale, 'blog', articleSlug) : null;
+      const article = articleMeta && articleMeta.title ? { slug: articleSlug, ...articleMeta } : null;
+      const action = injectToolDeepLinks(locale, toolSlug, tool, term, article);
+      const refs = [];
+      if (term) refs.push(`glossary:${term.slug}`);
+      if (article) refs.push(`article:${article.slug}`);
+      console.log(`  ${toolSlug.padEnd(22)} → ${refs.join(', ').padEnd(60)} — ${action}`);
+    }
+  }
+
+  // See-also blocks on blog posts.
+  console.log(`\nSee-also blocks (${locale}):`);
+  for (const [blogSlug, enMeta] of Object.entries(tagsDoc.blog_posts)) {
+    const existing = existingFurtherReadingHrefs(locale, blogSlug);
+    const items = relatedItemsFor(locale, blogSlug, enMeta.topics, existing);
+    const action = injectSeeAlso(locale, blogSlug, items);
+    console.log(`  ${blogSlug.padEnd(56)} ${items.length} item(s) — ${action}`);
+  }
+
+  // Per-term glossary pages
+  {
+    const { terms } = parseGlossary(locale);
+    let count = 0;
+    for (const term of terms) {
+      write(join(outBase, 'glossary', term.slug, 'index.html'), renderTermPage(locale, term, terms));
+      count++;
+    }
+    console.log(`\nPer-term glossary pages (${locale}): ${count} term page(s) generated.`);
+  }
+
+  // Update the "Cited in N articles" labels on the research hub.
+  // Both locales have a research hub with the same DOM pattern.
+  {
+    const file = join(outBase, 'learn/research/index.html');
+    let html = '';
+    try { html = readFileSync(file, 'utf8'); } catch { html = ''; }
+    if (!html) continue;
+    let changed = 0;
+    const labelRe = locale === 'es' ? /Citada en/ : /Cited in/;
+    const labelText = locale === 'es' ? 'Citada en' : 'Cited in';
+    const singular = locale === 'es' ? 'artículo' : 'article';
+    const plural = locale === 'es' ? 'artículos' : 'articles';
+    for (const researchSlug of Object.keys(tagsDoc.research_notes)) {
+      const n = (cites[researchSlug] || []).length;
+      const noun = n === 1 ? singular : plural;
+      const hrefBase = pathFor(locale, `/learn/research/${researchSlug}/`);
+      const cardRe = new RegExp(
+        `(<a class="research-index-card" href="${hrefBase.replace(/\//g, '\\/')}">[\\s\\S]*?<span class="research-index-uses">${labelText} <strong>)(\\d+)(</strong> )(\\S+)(<\\/span>)`,
+      );
+      const replaced = html.replace(cardRe, (_m, p1, _old, p3, _oldNoun, p5) => {
+        changed++;
+        return `${p1}${n}${p3}${noun}${p5}`;
+      });
+      if (replaced !== html) html = replaced;
+    }
+    if (changed) {
+      writeFileSync(file, html, 'utf8');
+      console.log(`Updated ${changed} citation count(s) on ${pathFor(locale, '/learn/research/')}`);
+    }
   }
 }
