@@ -261,7 +261,7 @@
     <div class="gbp-cta">
       <p>¿Quieres optimizar tu ficha? Lee la <a href="/blog/drafts/how-to-set-up-google-business-profile-for-your-restaurant/" style="color:var(--teal);font-weight:500;border-bottom:1px dashed currentColor;">guía completa de configuración de GBP</a> con instrucciones paso a paso.</p>
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-        <a class="btn btn-primary" href="/es/tools/audits/restaurant/">Diagnóstico de restaurante</a>
+        <a class="btn btn-primary" id="gbpAuditLink" href="/es/tools/audits/restaurant/">Diagnóstico de restaurante</a>
         </div>
     </div>
   </div>
@@ -775,6 +775,20 @@
     var deepHtml=renderDeepScan(chosen.placeId);
     var methodHtml=renderMethodology(peerMedians);
     checksEl.innerHTML=deltaHtml+gaugeHtml+fixFirstHtml+catsHtml+deepHtml+methodHtml;
+
+    // Handoff (Sprint 3B): prefill el CTA del Diagnóstico con el
+    // sitio de esta ficha — esa herramienta ya fusiona /api/gbp-details
+    // del mismo placeId cuando se ejecuta automáticamente.
+    var auditLink=document.getElementById('gbpAuditLink');
+    if(auditLink){
+      if(chosen.website){
+        auditLink.href='/es/tools/audits/restaurant/?url='+encodeURIComponent(chosen.website);
+        auditLink.textContent='Correr el diagnóstico de este sitio';
+      }else{
+        auditLink.href='/es/tools/audits/restaurant/';
+        auditLink.textContent='Diagnóstico de restaurante';
+      }
+    }
 
     var btn=document.getElementById('gbpDeepBtn');
     if(btn)btn.addEventListener('click',function(){runDeepScan(btn.getAttribute('data-place-id'))});
