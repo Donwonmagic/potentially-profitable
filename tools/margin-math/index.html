@@ -105,10 +105,33 @@
   .mm-monthly-value{font-family:var(--font-display);font-size:36px;font-weight:500;color:var(--rust);font-variant-numeric:tabular-nums;line-height:1.1}
   .mm-monthly-subtext{font-size:12px;color:var(--stone)}
   .mm-recommendation{font-size:13px;line-height:1.55;padding:10px 12px;border-radius:8px}
-  .mm-recommendation[data-rec="keep"]{background:#E7F5EC;color:#1F6B3A}
-  .mm-recommendation[data-rec="optimize"]{background:#FDEFE3;color:#8A3E16}
-  .mm-recommendation[data-rec="consider-leaving"]{background:#F7E7DC;color:#B8541A}
+  .mm-recommendation[data-rec="keep"],   .mm-recommendation[data-band="good"]{background:#E7F5EC;color:#1F6B3A}
+  .mm-recommendation[data-rec="optimize"],.mm-recommendation[data-band="ok"]  {background:#FDEFE3;color:#8A3E16}
+  .mm-recommendation[data-band="warn"]                                          {background:#FCE4D4;color:#8A3E16}
+  .mm-recommendation[data-rec="consider-leaving"],.mm-recommendation[data-band="bad"]{background:#F7E7DC;color:#B8541A}
+  .mm-recommendation[data-band="below"]                                         {background:var(--teal-tint);color:var(--teal)}
   .mm-recommendation a{color:inherit;font-weight:700;border-bottom:1px solid currentColor}
+  /* Big-number color variants for non-monetary calculators (Prime Cost
+     shows a percentage, not a dollar delta). Reuses the .mm-monthly
+     layout; band drives the color. */
+  .mm-monthly[data-band] .mm-monthly-value{transition:color 200ms var(--ease-out)}
+  .mm-monthly[data-band="good"]  .mm-monthly-value{color:#1F6B3A}
+  .mm-monthly[data-band="ok"]    .mm-monthly-value{color:#8A3E16}
+  .mm-monthly[data-band="warn"]  .mm-monthly-value{color:#8A3E16}
+  .mm-monthly[data-band="bad"]   .mm-monthly-value{color:var(--rust)}
+  .mm-monthly[data-band="below"] .mm-monthly-value{color:var(--teal)}
+  /* Prime Cost band scale — horizontal 5-segment pill from 40% to
+     80% prime cost. Marker indicates the user's current position. */
+  .mm-pc-scale-wrap{position:relative;margin:4px 4px 2px}
+  .mm-pc-scale{display:flex;height:10px;border-radius:5px;overflow:hidden}
+  .mm-pc-scale > span{flex:1;min-width:0}
+  .mm-pc-scale > span:nth-child(1){background:var(--teal-tint)}
+  .mm-pc-scale > span:nth-child(2){background:#E7F5EC}
+  .mm-pc-scale > span:nth-child(3){background:#FDEFE3}
+  .mm-pc-scale > span:nth-child(4){background:#FCE4D4}
+  .mm-pc-scale > span:nth-child(5){background:#F7E7DC}
+  .mm-pc-marker{position:absolute;top:-3px;width:4px;height:16px;background:var(--ink);border-radius:2px;transform:translateX(-2px);transition:left 200ms var(--ease-out)}
+  .mm-pc-axis{display:flex;justify-content:space-between;font-size:10px;color:var(--stone);margin-top:6px;padding:0 2px;font-variant-numeric:tabular-nums}
   .mm-blog-link{margin-top:4px;font-size:12px;color:var(--teal);text-decoration:none;font-weight:600}
   .mm-blog-link:hover{color:var(--teal-dark);border-bottom:1px dashed currentColor}
   /* Privacy-promise steps — 8 verifiable claims, each with an
@@ -290,10 +313,46 @@
 
       <a class="mm-blog-link" href="/blog/is-doordash-worth-it-for-restaurants-in-2026/">Read the full analysis: Is DoorDash worth it in 2026? &rarr;</a>
     </article>
-    <article class="mm-card mm-coming" aria-disabled="true">
-      <span class="mm-card-eyebrow">Phase 2 &middot; Coming</span>
+    <article class="mm-card mm-live" data-calc="prime-cost">
+      <div class="mm-card-header">
+        <span class="mm-card-eyebrow">Calculator 2 of 4</span>
+        <span class="mm-badge-safe" title="Every number you type is processed in your browser. Nothing is sent to our servers.">Stays in your browser</span>
+      </div>
       <h3>Prime Cost Check</h3>
-      <p>Plug in your food cost and labor cost as percentages of sales. See where you land against the 55–65% healthy band and what the first move is if you&apos;re outside it.</p>
+      <p>Two inputs — food cost and labor cost as percentages of sales — placed against the 55-65% healthy band the NRA publishes for full-service independents.</p>
+
+      <form class="mm-form" onsubmit="return false;" aria-label="Prime cost check">
+        <label for="pc-food">
+          <span>Food cost (% of sales) <output id="pc-food-val" for="pc-food">30%</output></span>
+          <input type="range" id="pc-food" min="15" max="50" step="1" value="30" aria-describedby="pc-food-val" />
+        </label>
+        <label for="pc-labor">
+          <span>Labor cost (% of sales) <output id="pc-labor-val" for="pc-labor">32%</output></span>
+          <input type="range" id="pc-labor" min="15" max="50" step="1" value="32" aria-describedby="pc-labor-val" />
+        </label>
+      </form>
+
+      <div class="mm-results" aria-live="polite" aria-atomic="true">
+        <div class="mm-monthly" id="pc-head" data-band="ok">
+          <span class="mm-monthly-label">Your prime cost</span>
+          <span class="mm-monthly-value" id="pc-total">62%</span>
+          <span class="mm-monthly-subtext" id="pc-band-label">Acceptable — edging up, watch it</span>
+        </div>
+        <div class="mm-pc-scale-wrap">
+          <div class="mm-pc-scale" aria-hidden="true">
+            <span title="Below 55%: verify inputs"></span>
+            <span title="55-60%: healthy"></span>
+            <span title="60-65%: watch"></span>
+            <span title="65-70%: pressure"></span>
+            <span title="70%+: unsustainable"></span>
+          </div>
+          <div class="mm-pc-marker" id="pc-marker" style="left:55%"></div>
+          <div class="mm-pc-axis"><span>40%</span><span>55%</span><span>65%</span><span>70%</span><span>80%</span></div>
+        </div>
+        <div class="mm-recommendation" id="pc-rec" data-band="ok"></div>
+      </div>
+
+      <a class="mm-blog-link" href="/blog/is-doordash-worth-it-for-restaurants-in-2026/#prime-cost">What's a healthy prime cost, and where do the numbers come from? &rarr;</a>
     </article>
     <article class="mm-card mm-coming" aria-disabled="true">
       <span class="mm-card-eyebrow">Phase 2 &middot; Coming</span>
@@ -590,6 +649,89 @@
   });
 
   // Initial boot render — does NOT fire analytics.
+  render();
+})();
+
+/* Prime Cost Check calculator wiring. Separate IIFE so each
+ * calculator's state is fully isolated and independently auditable. */
+(function(){
+  if (!window.MM) return;
+  var card = document.querySelector('[data-calc="prime-cost"]');
+  if (!card) return;
+
+  var foodEl      = card.querySelector('#pc-food');
+  var foodValEl   = card.querySelector('#pc-food-val');
+  var laborEl     = card.querySelector('#pc-labor');
+  var laborValEl  = card.querySelector('#pc-labor-val');
+  var totalEl     = card.querySelector('#pc-total');
+  var headEl      = card.querySelector('#pc-head');
+  var bandLabelEl = card.querySelector('#pc-band-label');
+  var markerEl    = card.querySelector('#pc-marker');
+  var recEl       = card.querySelector('#pc-rec');
+
+  var firstInteractionFired = false;
+
+  var BAND_LABELS = {
+    'below': 'Below typical — verify inputs',
+    'good':  'Healthy',
+    'ok':    'Acceptable — edging up, watch it',
+    'warn':  'Pressure zone',
+    'bad':   'Unsustainable without correction'
+  };
+  var REC_COPY = {
+    'below': 'Below 55% is tight. Double-check every cost is captured — paper goods, portions, waste, payroll taxes, tipped-employee contribution. If all in and you\'re still here, you\'re operating lean; document the system that got you here.',
+    'good':  'In the sweet spot where independents with staying power tend to land. Don\'t drift — check weekly. One bad supplier month or a staffing incident moves you into the 60s.',
+    'ok':    'Acceptable but yellow. 60-65% has no cushion — one cost spike and you\'re above the healthy band. Tighten one category this month: either food cost (portion spec, waste log) or labor (schedule tightening, cross-training).',
+    'warn':  'Pressure zone. At 65-70% you still have room to correct, but not much. The typical first move is back-of-house labor (faster to adjust than food cost), then a menu re-engineering pass on low-margin items.',
+    'bad':   'Above 70% is unsustainable without intervention. Usual repair order: labor first (fastest lever), then re-engineer your 3-5 lowest-margin items, then a full supplier audit. If the number won\'t come down, the business model needs a harder conversation.'
+  };
+
+  // Map primeCostPct to position on a 40%-80% scale (so 60% shows
+  // near the middle, 80% at the right edge). Clamps to [0, 100].
+  function markerLeft(pct){
+    var scaled = (pct - 0.40) / 0.40 * 100;
+    if (scaled < 0)   return 0;
+    if (scaled > 100) return 100;
+    return scaled;
+  }
+
+  function render(){
+    var result = window.MM.calcPrimeCost({
+      foodCostPct:  foodEl.value,
+      laborCostPct: laborEl.value
+    });
+
+    foodValEl.textContent  = foodEl.value + '%';
+    laborValEl.textContent = laborEl.value + '%';
+    totalEl.textContent    = Math.round(result.primeCostPct * 100) + '%';
+
+    headEl.setAttribute('data-band', result.band);
+    bandLabelEl.textContent = BAND_LABELS[result.band] || '';
+
+    markerEl.style.left = markerLeft(result.primeCostPct) + '%';
+
+    recEl.setAttribute('data-band', result.band);
+    recEl.textContent = REC_COPY[result.band] || '';
+
+    return result;
+  }
+
+  function maybeFireAnalytics(result){
+    if (firstInteractionFired || !window.plausible) return;
+    firstInteractionFired = true;
+    window.plausible('Margin Math PrimeCost', { props: {
+      foodcost_bucket:   window.MM.bucketFoodCost(foodEl.value),
+      prime_cost_bucket: window.MM.bucketPrimeCost(result.primeCostPct),
+      band:              result.band
+    }});
+  }
+
+  function onInput(){ maybeFireAnalytics(render()); }
+
+  foodEl.addEventListener('input', onInput);
+  laborEl.addEventListener('input', onInput);
+
+  // Initial render — no analytics fire.
   render();
 })();
 </script>
