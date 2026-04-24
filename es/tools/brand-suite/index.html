@@ -388,7 +388,12 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Descargar tokens.json
         </button>
+        <button type="button" class="bs-export-btn" id="bsDownloadZip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M10 12v6"/><path d="M10 12h2"/></svg>
+          Descargar paquete ZIP
+        </button>
       </div>
+      <p style="margin:0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);">El ZIP reúne <code>palette.css</code>, <code>tokens.json</code> y un <code>README.md</code> en texto plano con los roles de cada color y sus pares accesibles. Se arma en tu navegador con un empaquetador ZIP de 50 líneas — sin biblioteca externa, sin subida.</p>
       <pre class="bs-export-preview" id="bsExportPreview" aria-label="Vista previa de variables CSS"></pre>
     </div>
   </div>
@@ -671,6 +676,7 @@
   var exportPreview = document.getElementById('bsExportPreview');
   var copyCssBtn = document.getElementById('bsCopyCss');
   var downloadTokensBtn = document.getElementById('bsDownloadTokens');
+  var downloadZipBtn = document.getElementById('bsDownloadZip');
 
   var MAX_BYTES = 10 * 1024 * 1024;
   var DOWNSAMPLE = 100;
@@ -850,6 +856,162 @@
     if (!latestPalette) return;
     downloadBlob(buildTokensJson(latestPalette), 'brand-tokens.json', 'application/json');
     if (window.plausible) window.plausible('Brand Suite Export', { props: { format: 'tokens-json' } });
+  });
+
+  // ----- Paquete ZIP (escritor inline, sin dependencias) -----
+  var CRC_TABLE = (function(){
+    var t = new Uint32Array(256);
+    for (var n = 0; n < 256; n++) {
+      var c = n;
+      for (var k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+      t[n] = c >>> 0;
+    }
+    return t;
+  })();
+  function crc32(bytes){
+    var c = 0xFFFFFFFF;
+    for (var i = 0; i < bytes.length; i++) c = CRC_TABLE[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+    return (c ^ 0xFFFFFFFF) >>> 0;
+  }
+  function strToBytes(s){ return new TextEncoder().encode(s); }
+
+  function buildZipBlob(entries){
+    var parts = [];
+    var centralParts = [];
+    var offset = 0;
+    for (var i = 0; i < entries.length; i++) {
+      var e = entries[i];
+      var nameBytes = strToBytes(e.name);
+      var data = e.data;
+      var crc = crc32(data);
+      var size = data.length;
+
+      var lfh = new Uint8Array(30 + nameBytes.length);
+      var lv = new DataView(lfh.buffer);
+      lv.setUint32(0, 0x04034b50, true);
+      lv.setUint16(4, 20, true);
+      lv.setUint16(6, 0x0800, true);
+      lv.setUint16(8, 0, true);
+      lv.setUint16(10, 0, true);
+      lv.setUint16(12, 0x21, true);
+      lv.setUint32(14, crc, true);
+      lv.setUint32(18, size, true);
+      lv.setUint32(22, size, true);
+      lv.setUint16(26, nameBytes.length, true);
+      lv.setUint16(28, 0, true);
+      lfh.set(nameBytes, 30);
+      parts.push(lfh);
+      parts.push(data);
+
+      var cd = new Uint8Array(46 + nameBytes.length);
+      var cv = new DataView(cd.buffer);
+      cv.setUint32(0, 0x02014b50, true);
+      cv.setUint16(4, 20, true);
+      cv.setUint16(6, 20, true);
+      cv.setUint16(8, 0x0800, true);
+      cv.setUint16(10, 0, true);
+      cv.setUint16(12, 0, true);
+      cv.setUint16(14, 0x21, true);
+      cv.setUint32(16, crc, true);
+      cv.setUint32(20, size, true);
+      cv.setUint32(24, size, true);
+      cv.setUint16(28, nameBytes.length, true);
+      cv.setUint16(30, 0, true);
+      cv.setUint16(32, 0, true);
+      cv.setUint16(34, 0, true);
+      cv.setUint16(36, 0, true);
+      cv.setUint32(38, 0, true);
+      cv.setUint32(42, offset, true);
+      cd.set(nameBytes, 46);
+      centralParts.push(cd);
+
+      offset += lfh.length + data.length;
+    }
+    var cdStart = offset;
+    var cdSize = 0;
+    for (var j = 0; j < centralParts.length; j++) { cdSize += centralParts[j].length; parts.push(centralParts[j]); }
+
+    var eocd = new Uint8Array(22);
+    var ev = new DataView(eocd.buffer);
+    ev.setUint32(0, 0x06054b50, true);
+    ev.setUint16(4, 0, true);
+    ev.setUint16(6, 0, true);
+    ev.setUint16(8, entries.length, true);
+    ev.setUint16(10, entries.length, true);
+    ev.setUint32(12, cdSize, true);
+    ev.setUint32(16, cdStart, true);
+    ev.setUint16(20, 0, true);
+    parts.push(eocd);
+
+    return new Blob(parts, { type: 'application/zip' });
+  }
+
+  function buildReadme(palette){
+    var p = palette.slice(0, 5);
+    var lines = [];
+    lines.push('# Tu kit inicial de Suite de Marca');
+    lines.push('');
+    lines.push('Extraído de tu logo con Suite de Marca el ' + new Date().toISOString().slice(0, 10) + '.');
+    lines.push('Todo lo que incluye este paquete se generó en tu navegador. El archivo que subiste nunca salió de tu dispositivo.');
+    lines.push('');
+    lines.push('## Qué incluye este paquete');
+    lines.push('');
+    lines.push('- `palette.css` — un bloque `:root{}` con propiedades personalizadas de CSS. Pégalo en tu hoja de estilos principal.');
+    lines.push('- `tokens.json` — los mismos valores como lista plana de tokens compatible con Figma.');
+    lines.push('- `README.md` — este archivo.');
+    lines.push('');
+    lines.push('## Tu paleta');
+    lines.push('');
+    lines.push('| Rol | Hex | Participación | Sobre crema (#FAF7F2) | Sobre tinta (#1A1612) |');
+    lines.push('|-----|-----|---------------|-----------------------|----------------------|');
+    p.forEach(function(entry, i){
+      var role = ROLE_NAMES[i] || ('Color ' + (i + 1));
+      var onCream = window.BS.deriveAccessiblePair(entry.hex, CREAM).toUpperCase();
+      var onInk   = window.BS.deriveAccessiblePair(entry.hex, INK).toUpperCase();
+      lines.push('| ' + role + ' | `' + entry.hex.toUpperCase() + '` | ' + Math.round(entry.dominancePct * 100) + '% | `' + onCream + '` | `' + onInk + '` |');
+    });
+    lines.push('');
+    lines.push('## Pares accesibles');
+    lines.push('');
+    lines.push('Cada color tiene un vecino con luminosidad desplazada que alcanza WCAG AA (4.5:1) sobre el fondo nombrado. Usa la variante sobre-crema para texto sobre el token de superficie clara, y la variante sobre-tinta para texto sobre el token de superficie oscura.');
+    lines.push('');
+    lines.push('## Es un kit inicial, no una marca terminada');
+    lines.push('');
+    lines.push('Suite de Marca extrae colores y evalúa el contraste. No:');
+    lines.push('');
+    lines.push('- diseña un logo ni revisa el que tienes');
+    lines.push('- produce variantes monocromáticas o invertidas');
+    lines.push('- recomienda combinaciones tipográficas');
+    lines.push('- escribe reglas de uso ni un PDF de guía de estilo');
+    lines.push('');
+    lines.push('Para un sistema de marca que puedas entregar a un desarrollador, a un bordador o a una imprenta de rótulos, necesitas un diseñador.');
+    lines.push('');
+    lines.push('Muntin Digital: Identidad de Marca — https://muntin.digital/es/services/#brand');
+    return lines.join('\n') + '\n';
+  }
+
+  function buildAndDownloadZip(palette){
+    var cssText = buildCssBlock(palette);
+    var tokensText = buildTokensJson(palette);
+    var readmeText = buildReadme(palette);
+    var blob = buildZipBlob([
+      { name: 'palette.css',  data: strToBytes(cssText) },
+      { name: 'tokens.json',  data: strToBytes(tokensText) },
+      { name: 'README.md',    data: strToBytes(readmeText) }
+    ]);
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'suite-de-marca.zip';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+  }
+
+  downloadZipBtn.addEventListener('click', function(){
+    if (!latestPalette) return;
+    buildAndDownloadZip(latestPalette);
+    if (window.plausible) window.plausible('Brand Suite Export', { props: { format: 'zip' } });
   });
 
   function renderPalette(palette){
