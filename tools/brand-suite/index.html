@@ -71,6 +71,45 @@
   .mm-next-links{display:flex;flex-wrap:wrap;gap:10px}
   .mm-next-links a{font-size:14px;padding:10px 16px;border:1px solid var(--line-dark);border-radius:999px;background:var(--white);color:var(--ink);text-decoration:none;font-weight:500}
   .mm-next-links a:hover{border-color:var(--teal);color:var(--teal)}
+  /* Brand Suite — workspace (upload → preview → palette).
+     Same page-scoped-CSS posture as the rest of the tools. */
+  .bs-workspace{max-width:840px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
+  .bs-upload{position:relative;border:2px dashed var(--line-dark);border-radius:14px;background:var(--cream-2);padding:40px 24px;text-align:center;transition:background 180ms var(--ease-out),border-color 180ms var(--ease-out)}
+  .bs-upload.dragover{border-color:var(--teal);background:var(--teal-tint)}
+  .bs-upload input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0}
+  .bs-upload input[type="file"]:focus-visible + .bs-upload-label{outline:2px solid var(--teal);outline-offset:4px;border-radius:10px}
+  .bs-upload-label{display:flex;flex-direction:column;align-items:center;gap:10px;pointer-events:none}
+  .bs-upload-icon{width:48px;height:48px;color:var(--teal);opacity:.7}
+  .bs-upload-title{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink)}
+  .bs-upload-hint{font-size:13px;color:var(--stone);max-width:440px;line-height:1.5}
+  .bs-preview{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:640px){.bs-preview{grid-template-columns:1fr}}
+  .bs-preview-swatch{margin:0;padding:32px 16px;border-radius:12px;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center;justify-content:center;min-height:200px}
+  .bs-preview-swatch[data-ground="cream"]{background:#FAF7F2;border:1px solid var(--line)}
+  .bs-preview-swatch[data-ground="ink"]{background:#14161A;color:var(--cream);border:1px solid #14161A}
+  .bs-preview-swatch img{max-width:100%;max-height:160px;display:block;object-fit:contain}
+  .bs-preview-swatch figcaption{font-size:12px;color:var(--stone);letter-spacing:.04em}
+  .bs-preview-swatch[data-ground="ink"] figcaption{color:var(--cream-2)}
+  .bs-preview-swatch figcaption code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px}
+  .bs-palette-wrap{display:flex;flex-direction:column;gap:10px}
+  .bs-palette-wrap h2{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0}
+  .bs-palette{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+  @media(max-width:640px){.bs-palette{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  .bs-chip{display:flex;flex-direction:column;gap:6px;padding:0;border:1px solid var(--line);border-radius:10px;background:var(--white);cursor:pointer;font:inherit;color:inherit;overflow:hidden;transition:transform 140ms var(--ease-out),border-color 140ms var(--ease-out)}
+  .bs-chip:hover{border-color:var(--teal);transform:translateY(-1px)}
+  .bs-chip:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+  .bs-chip-swatch{width:100%;aspect-ratio:1/1;display:block}
+  .bs-chip-meta{padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+  .bs-chip-role{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--stone)}
+  .bs-chip-hex{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+  .bs-chip-share{font-size:11px;color:var(--stone)}
+  .bs-chip.copied{border-color:#1F6B3A;background:#E7F5EC}
+  .bs-chip.copied .bs-chip-role{color:#1F6B3A}
+  .bs-palette-hint{font-size:12px;color:var(--stone);margin:0}
+  .bs-status{min-height:24px;font-size:13px;color:var(--stone);text-align:center}
+  .bs-status.bs-status-error{color:var(--rust)}
+  .bs-status.bs-status-working::before{content:'';display:inline-block;width:12px;height:12px;margin-right:8px;border:2px solid var(--line-dark);border-top-color:var(--teal);border-radius:50%;vertical-align:middle;animation:bs-spin 800ms linear infinite}
+  @keyframes bs-spin{to{transform:rotate(360deg)}}
   /* Live-calculator styles — shared by all four calculators. The
      "Stays in your browser" badge is visible on every card to
      reinforce the architectural promise. Real-time updates via
@@ -278,20 +317,38 @@
 </div></div></section>
 
 <section class="block"><div class="container container-wide">
-  <div class="mm-grid" aria-label="Tool roadmap">
-    <article class="mm-card mm-coming" aria-disabled="true" style="grid-column:1 / -1;">
-      <span class="mm-card-eyebrow">Phase 0 &middot; Scaffolding</span>
-      <h3>The tool is being built in the open.</h3>
-      <p>You&rsquo;re looking at the scaffolding. The upload zone, palette extractor, contrast grid, and CSS/tokens export all land in subsequent sprints. Everything below — the privacy panel, the safety checklist, the data-sharing taxonomy — already applies to how this tool will work. Come back soon, or bookmark this page and it&rsquo;ll have teeth next time.</p>
-      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;line-height:1.6;color:var(--stone);">
-        <li><strong>Phase 1</strong> &mdash; palette-extraction math module + 50-assertion test suite</li>
-        <li><strong>Phase 2</strong> &mdash; upload zone, Web-Worker k-means, palette display</li>
-        <li><strong>Phase 3</strong> &mdash; WCAG contrast grid + copy-CSS-vars + tokens JSON</li>
-        <li><strong>Phase 4</strong> &mdash; ZIP bundle via local JSZip + glossary section (8 new Brand &amp; Design terms)</li>
-        <li><strong>Phase 5</strong> &mdash; privacy-literacy panels rephrased for pixel data + the &ldquo;What this isn&rsquo;t&rdquo; positioning</li>
-        <li><strong>Phase 6</strong> &mdash; cross-tool handoff from /services/#brand, /for/restaurants/, Margin Math, GBP Grader</li>
-      </ul>
-    </article>
+  <div class="bs-workspace">
+    <div class="bs-upload" id="bsDrop">
+      <input type="file" id="bsFileInput" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml" aria-describedby="bsUploadHint" />
+      <div class="bs-upload-label">
+        <svg class="bs-upload-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="7" y="7" width="34" height="34" rx="4"/>
+          <polyline points="16 26 24 18 32 26"/>
+          <line x1="24" y1="18" x2="24" y2="34"/>
+        </svg>
+        <span class="bs-upload-title">Drop your logo, or click to select</span>
+        <span class="bs-upload-hint" id="bsUploadHint">PNG, JPG, WebP, or SVG &middot; stays in your browser &middot; nothing is uploaded</span>
+      </div>
+    </div>
+
+    <div class="bs-status" id="bsStatus" role="status" aria-live="polite"></div>
+
+    <div class="bs-preview" id="bsPreview" hidden>
+      <figure class="bs-preview-swatch" data-ground="cream">
+        <img id="bsImgCream" alt="Your logo on a cream ground" />
+        <figcaption>On cream (<code>#FAF7F2</code>)</figcaption>
+      </figure>
+      <figure class="bs-preview-swatch" data-ground="ink">
+        <img id="bsImgInk" alt="Your logo on an ink ground" />
+        <figcaption>On ink (<code>#14161A</code>)</figcaption>
+      </figure>
+    </div>
+
+    <div class="bs-palette-wrap" id="bsPaletteWrap" hidden>
+      <h2>Extracted palette</h2>
+      <div class="bs-palette" id="bsPalette" role="list"></div>
+      <p class="bs-palette-hint">Click any chip to copy its hex to your clipboard. Contrast grid + CSS export land in Phase 3.</p>
+    </div>
   </div>
 </div></section>
 
@@ -360,9 +417,9 @@
         <span class="mm-step-num" aria-hidden="true">5</span>
         <div class="mm-step-body">
           <h3 class="mm-step-title">No third-party scripts touch the inputs.</h3>
-          <p class="mm-step-claim">This page loads exactly two JavaScript files: site-wide <code>site.js</code> (nav + language switch) and tool-specific <code>brand-suite.js</code> (the math). Plus one analytics script (Plausible) that receives the bucket values. Nothing else.</p>
+          <p class="mm-step-claim">This page loads three same-origin JavaScript files: site-wide <code>site.js</code> (nav + language switch), tool-specific <code>brand-suite.js</code> (the math), and <code>brand-worker.js</code> (the Web Worker that runs k-means off the UI thread). Plus one analytics script (Plausible) that receives the bucket values. Nothing else.</p>
           <details class="mm-step-inspect"><summary>Inspect this</summary>
-            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filter <strong>JS</strong>. Reload. You should see <code>plausible.io/js/…</code>, <code>site.js</code>, and <code>brand-suite.js</code>. No Google Tag Manager, no Meta Pixel, no chat widget, no session replay.</div>
+            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filter <strong>JS</strong>. Reload then drop a logo. You should see <code>plausible.io/js/…</code>, <code>site.js</code>, <code>brand-suite.js</code>, and <code>brand-worker.js</code>. No Google Tag Manager, no Meta Pixel, no chat widget, no session replay, no CDN-fetched dependencies.</div>
           </details>
         </div>
       </div>
@@ -542,5 +599,205 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="./brand-suite.js?v=20260424-bs1"></script>
+<script>
+/* Brand Suite — upload + palette wiring.
+ *
+ * Privacy invariants enforced by this code:
+ *   - File bytes are read via URL.createObjectURL → Image → Canvas.
+ *     No fetch(), no FormData, no form submit fires.
+ *   - The Web Worker handles k-means in isolation; it only sees the
+ *     sampled pixel array, not the original file.
+ *   - Plausible event carries enumerated bucket values only. No
+ *     filename, no hex values, no byte counts.
+ */
+(function(){
+  if (!window.BS) return;
+
+  var dropZone  = document.getElementById('bsDrop');
+  var fileInput = document.getElementById('bsFileInput');
+  var statusEl  = document.getElementById('bsStatus');
+  var preview   = document.getElementById('bsPreview');
+  var imgCream  = document.getElementById('bsImgCream');
+  var imgInk    = document.getElementById('bsImgInk');
+  var paletteWrap = document.getElementById('bsPaletteWrap');
+  var paletteEl = document.getElementById('bsPalette');
+
+  var MAX_BYTES = 10 * 1024 * 1024;  // 10MB sanity cap — the browser can read larger, but a logo this big is almost certainly a misdrop
+  var DOWNSAMPLE = 100;              // clustering runs on ≤100×100; logos rarely need more
+  var ROLE_NAMES = ['Primary', 'Secondary', 'Accent 1', 'Accent 2', 'Neutral'];
+
+  // Spin up the worker lazily on first valid drop so the page's
+  // initial load stays light. Falls back to main-thread extraction
+  // if Worker isn't available (rare; old browsers).
+  var worker = null;
+  var requestCounter = 0;
+  var pending = {};
+  function ensureWorker(){
+    if (worker) return worker;
+    try {
+      worker = new Worker('./brand-worker.js?v=20260424-bs1');
+      worker.addEventListener('message', function(ev){
+        var data = ev.data || {};
+        var cb = pending[data.requestId];
+        if (!cb) return;
+        delete pending[data.requestId];
+        if (data.type === 'palette') cb(null, data.palette);
+        else                         cb(new Error(data.message || 'worker-error'));
+      });
+    } catch (_) { worker = null; }
+    return worker;
+  }
+
+  function setStatus(msg, kind){
+    statusEl.textContent = msg || '';
+    statusEl.className = 'bs-status' + (kind ? ' bs-status-' + kind : '');
+  }
+
+  function sampleCanvasPixels(canvas){
+    var ctx = canvas.getContext('2d');
+    var data;
+    try { data = ctx.getImageData(0, 0, canvas.width, canvas.height).data; }
+    catch (_) { return []; }
+    var out = [];
+    for (var i = 0; i < data.length; i += 4) {
+      var a = data[i + 3];
+      if (a < 128) continue;  // skip transparent pixels so a logo on a transparent ground doesn't poison the palette with black
+      out.push([data[i], data[i + 1], data[i + 2]]);
+    }
+    return out;
+  }
+
+  function extractAndRender(pixels, file){
+    setStatus('Extracting palette…', 'working');
+    ensureWorker();
+    var requestId = ++requestCounter;
+    function onDone(err, palette){
+      if (err) {
+        // Main-thread fallback: run extraction synchronously
+        try { palette = window.BS.extractPalette(pixels, { k: 5, seed: 1 }); }
+        catch (e) { setStatus('Could not extract a palette. Try a different logo.', 'error'); return; }
+      }
+      renderPalette(palette);
+      paletteWrap.hidden = false;
+      setStatus('');
+      firePlausible(palette, file);
+    }
+    pending[requestId] = onDone;
+    if (worker) {
+      worker.postMessage({ type: 'extract', pixels: pixels, k: 5, seed: 1, requestId: requestId });
+    } else {
+      // No Worker support; run immediately on main thread.
+      onDone(new Error('no-worker'));
+    }
+  }
+
+  function renderPalette(palette){
+    paletteEl.innerHTML = '';
+    palette.slice(0, 5).forEach(function(entry, i){
+      var role = ROLE_NAMES[i] || ('Color ' + (i + 1));
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'bs-chip';
+      btn.setAttribute('role', 'listitem');
+      btn.setAttribute('aria-label', role + ' ' + entry.hex + '. Click to copy.');
+      btn.innerHTML =
+        '<span class="bs-chip-swatch" style="background:' + entry.hex + '"></span>' +
+        '<span class="bs-chip-meta">' +
+          '<span class="bs-chip-role">' + role + '</span>' +
+          '<span class="bs-chip-hex">' + entry.hex.toUpperCase() + '</span>' +
+          '<span class="bs-chip-share">' + Math.round(entry.dominancePct * 100) + '% share</span>' +
+        '</span>';
+      btn.addEventListener('click', function(){
+        var hex = entry.hex.toUpperCase();
+        var done = function(){
+          btn.classList.add('copied');
+          var role = btn.querySelector('.bs-chip-role');
+          var orig = role.textContent;
+          role.textContent = 'Copied';
+          setTimeout(function(){ btn.classList.remove('copied'); role.textContent = orig; }, 1200);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(hex).then(done, function(){ done(); });
+        } else { done(); }
+      });
+      paletteEl.appendChild(btn);
+    });
+  }
+
+  var firstEventFired = false;
+  function firePlausible(palette, file){
+    if (firstEventFired || !window.plausible) return;
+    firstEventFired = true;
+    var primaryHex = palette[0] ? palette[0].hex : '#000000';
+    window.plausible('Brand Suite Extract', { props: {
+      file_type:    window.BS.bucketFileType(file.type),
+      size_bucket:  window.BS.bucketLogoSize(file.size),
+      palette_size: String(palette.length),
+      primary_hue:  window.BS.bucketDominantHue(primaryHex)
+    }});
+  }
+
+  function handleFile(file){
+    if (!file) return;
+    if (file.size > MAX_BYTES) {
+      setStatus('That file is larger than 10 MB. Crop or resize and try again.', 'error');
+      return;
+    }
+    setStatus('Loading your logo…', 'working');
+    var url = URL.createObjectURL(file);
+    var img = new Image();
+    img.onload = function(){
+      // Show preview (two swatches)
+      imgCream.src = url;
+      imgInk.src   = url;
+      preview.hidden = false;
+      // Draw to offscreen canvas downsampled to clustering resolution
+      var canvas = document.createElement('canvas');
+      var scale = Math.min(1, DOWNSAMPLE / Math.max(img.width, img.height));
+      canvas.width  = Math.max(1, Math.round(img.width  * scale));
+      canvas.height = Math.max(1, Math.round(img.height * scale));
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      var pixels = sampleCanvasPixels(canvas);
+      if (!pixels.length) {
+        setStatus('Could not read any opaque pixels from that logo.', 'error');
+        return;
+      }
+      extractAndRender(pixels, file);
+    };
+    img.onerror = function(){
+      setStatus('Could not read that file as an image.', 'error');
+      URL.revokeObjectURL(url);
+    };
+    img.src = url;
+  }
+
+  fileInput.addEventListener('change', function(){
+    if (fileInput.files && fileInput.files[0]) handleFile(fileInput.files[0]);
+  });
+
+  // Drag-and-drop
+  ;['dragenter', 'dragover'].forEach(function(t){
+    dropZone.addEventListener(t, function(ev){
+      ev.preventDefault();
+      ev.stopPropagation();
+      dropZone.classList.add('dragover');
+    });
+  });
+  ;['dragleave', 'drop'].forEach(function(t){
+    dropZone.addEventListener(t, function(ev){
+      ev.preventDefault();
+      ev.stopPropagation();
+      dropZone.classList.remove('dragover');
+    });
+  });
+  dropZone.addEventListener('drop', function(ev){
+    if (ev.dataTransfer && ev.dataTransfer.files && ev.dataTransfer.files[0]) {
+      handleFile(ev.dataTransfer.files[0]);
+    }
+  });
+})();
+</script>
 </body>
 </html>

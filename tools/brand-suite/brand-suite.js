@@ -407,11 +407,15 @@ function bsBucketFileType(mimeOrExt) {
 }
 
 // ------------------------------------------------------------
-// Dual export
+// Dual export — browser window + Web Worker self + Node module.
+// In a Web Worker `typeof window === 'undefined'` but `self` is the
+// worker global scope; in the browser `self === window`; in Node
+// neither exists and we take the module.exports branch. Attaching
+// to `self` unifies the browser + worker paths.
 // ------------------------------------------------------------
 
-if (typeof window !== 'undefined') {
-  window.BS = {
+if (typeof self !== 'undefined' && typeof module === 'undefined') {
+  self.BS = {
     hexToRgb:             bsHexToRgb,
     rgbToHex:             bsRgbToHex,
     contrastRatio:        bsContrastRatio,
