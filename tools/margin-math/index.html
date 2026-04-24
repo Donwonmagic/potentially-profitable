@@ -134,6 +134,12 @@
   .mm-pc-axis{display:flex;justify-content:space-between;font-size:10px;color:var(--stone);margin-top:6px;padding:0 2px;font-variant-numeric:tabular-nums}
   .mm-blog-link{margin-top:4px;font-size:12px;color:var(--teal);text-decoration:none;font-weight:600}
   .mm-blog-link:hover{color:var(--teal-dark);border-bottom:1px dashed currentColor}
+  /* "Not modeled" footnote — tells the reader what the calculator is
+     deliberately leaving out so point estimates aren't over-trusted.
+     Quiet visually: sits below results, above any blog link, without
+     competing with the big numbers. */
+  .mm-footnote{margin:-2px 0 0;font-size:11.5px;line-height:1.55;color:var(--stone)}
+  .mm-footnote strong{color:var(--ink-soft);font-weight:600}
   /* Privacy-promise steps — 8 verifiable claims, each with an
      inline "Inspect this" expander. Keyboard-operable via native
      <details>. Invite the audit; don't dodge it. */
@@ -329,6 +335,7 @@
         <div class="mm-recommendation" id="dbe-rec" data-rec="consider-leaving"></div>
       </div>
 
+      <p class="mm-footnote"><strong>Not modeled:</strong> sponsored-listing ("Boost") ad spend, packaging, direct-channel subscription fees, the labor minute per ticket. Subtract yours before acting on the number.</p>
       <a class="mm-blog-link" href="/blog/is-doordash-worth-it-for-restaurants-in-2026/">Read the full analysis: Is DoorDash worth it in 2026? &rarr;</a>
     </article>
     <article class="mm-card mm-live" data-calc="prime-cost">

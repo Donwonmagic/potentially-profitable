@@ -130,6 +130,11 @@
   .mm-pc-axis{display:flex;justify-content:space-between;font-size:10px;color:var(--stone);margin-top:6px;padding:0 2px;font-variant-numeric:tabular-nums}
   .mm-blog-link{margin-top:4px;font-size:12px;color:var(--teal);text-decoration:none;font-weight:600}
   .mm-blog-link:hover{color:var(--teal-dark);border-bottom:1px dashed currentColor}
+  /* "No se modela" — pie de nota que dice qué deja fuera la
+     calculadora para no sobre-confiar en el resultado. Discreto
+     visualmente: bajo los resultados, sobre el enlace al blog. */
+  .mm-footnote{margin:-2px 0 0;font-size:11.5px;line-height:1.55;color:var(--stone)}
+  .mm-footnote strong{color:var(--ink-soft);font-weight:600}
   /* Pasos de la promesa de privacidad — 8 afirmaciones verificables,
      cada una con un expansor "Inspecciona esto". */
   .mm-steps{display:flex;flex-direction:column;gap:10px;max-width:760px;margin:20px auto 0}
@@ -312,6 +317,7 @@
         <div class="mm-recommendation" id="dbe-rec" data-rec="consider-leaving"></div>
       </div>
 
+      <p class="mm-footnote"><strong>No se modela:</strong> gasto en listados patrocinados ("Boost"), empaque, tarifas de suscripción del canal directo, el minuto de labor por ticket. Réstalos antes de actuar sobre el número.</p>
       <a class="mm-blog-link" href="/blog/is-doordash-worth-it-for-restaurants-in-2026/">Lee el análisis completo: ¿Vale la pena DoorDash en 2026? &rarr;</a>
     </article>
     <article class="mm-card mm-live" data-calc="prime-cost">
