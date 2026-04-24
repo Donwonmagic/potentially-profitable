@@ -113,6 +113,35 @@
   /* Contrast grid — 5x5 matrix of pair ratios. Top-row and
      first-column header cells render as pure color blocks so the
      grid reads as a visual key without extra labels. */
+
+  /* Restaurant-menu live-preview fixture. Demonstrates what the
+     extracted palette looks like applied to a realistic restaurant
+     site card: eyebrow, display heading, accent line, body copy, two
+     menu rows, a reserve-a-table CTA, and an hours line. Colors are
+     assigned per role via JS; deriveAccessiblePair enforces 4.5:1
+     on every text run. */
+  .bs-fixture-wrap{display:flex;flex-direction:column;gap:10px}
+  .bs-fixture-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .bs-fixture-head h2{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0}
+  .bs-fixture-hint{font-size:12.5px;color:var(--stone)}
+  .bs-fixture-card{padding:32px 36px;border-radius:14px;border:1px solid var(--line);font-family:var(--font-body);overflow:hidden}
+  @media(max-width:640px){.bs-fixture-card{padding:24px 22px}}
+  .bs-fixture-eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin:0 0 14px}
+  .bs-fixture-display{font-family:var(--font-display);font-size:clamp(22px,3vw,30px);font-weight:500;line-height:1.18;margin:0 0 12px;letter-spacing:-.01em}
+  .bs-fixture-accent{width:48px;height:3px;margin:0 0 18px;border-radius:1px}
+  .bs-fixture-body{font-size:14.5px;line-height:1.7;margin:0 0 22px;max-width:560px}
+  .bs-fixture-menu{margin:0 0 24px;padding:18px 20px;border-radius:10px}
+  .bs-fixture-menu-row{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,.06)}
+  .bs-fixture-menu-row:first-child{padding-top:0}
+  .bs-fixture-menu-row:last-child{padding-bottom:0;border-bottom:0}
+  .bs-fixture-menu-item{min-width:0}
+  .bs-fixture-menu-item strong{display:block;font-family:var(--font-display);font-weight:500;font-size:15.5px;line-height:1.25}
+  .bs-fixture-menu-item span{display:block;font-size:13px;line-height:1.55;margin-top:4px}
+  .bs-fixture-menu-price{font-family:var(--font-display);font-size:15px;font-weight:500;white-space:nowrap;align-self:flex-start}
+  .bs-fixture-cta{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:999px;font-size:13px;font-weight:600;text-decoration:none;border:0;cursor:default}
+  .bs-fixture-cta svg{width:12px;height:12px}
+  .bs-fixture-hours{margin:22px 0 0;font-size:12.5px;line-height:1.6}
+
   .bs-contrast-wrap{display:flex;flex-direction:column;gap:10px}
   .bs-contrast-wrap h2{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0}
   .bs-contrast-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--white)}
@@ -382,6 +411,39 @@
       <h2>Extracted palette</h2>
       <div class="bs-palette" id="bsPalette" role="list"></div>
       <p class="bs-palette-hint">Click any chip to copy its hex to your clipboard.</p>
+    </div>
+
+    <div class="bs-fixture-wrap" id="bsFixtureWrap" hidden>
+      <div class="bs-fixture-head">
+        <h2>Your palette in context</h2>
+        <span class="bs-fixture-hint">Sample restaurant card &middot; text colors nudged for WCAG AA</span>
+      </div>
+      <article class="bs-fixture-card" id="bsFxCard" aria-label="Sample restaurant menu card rendered in your extracted palette">
+        <p class="bs-fixture-eyebrow" id="bsFxEyebrow">Osteria Giardino &middot; Silver Spring</p>
+        <h3 class="bs-fixture-display" id="bsFxDisplay">Rustic pastas and natural wine, made by hand.</h3>
+        <div class="bs-fixture-accent" id="bsFxAccent" aria-hidden="true"></div>
+        <p class="bs-fixture-body" id="bsFxBody">Our menu shifts with what the farms bring us each week. Dinner service starts at 5 PM; reservations recommended Thursday through Sunday.</p>
+        <div class="bs-fixture-menu" id="bsFxMenu">
+          <div class="bs-fixture-menu-row">
+            <div class="bs-fixture-menu-item">
+              <strong>Cacio e pepe</strong>
+              <span>Tonnarelli, pecorino romano, cracked black pepper.</span>
+            </div>
+            <span class="bs-fixture-menu-price">$24</span>
+          </div>
+          <div class="bs-fixture-menu-row">
+            <div class="bs-fixture-menu-item">
+              <strong>Brodetto di pesce</strong>
+              <span>Adriatic fish stew, grilled country bread, salsa verde.</span>
+            </div>
+            <span class="bs-fixture-menu-price">$38</span>
+          </div>
+        </div>
+        <span class="bs-fixture-cta" id="bsFxCta" role="button" tabindex="-1" aria-disabled="true">Reserve a table
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </span>
+        <p class="bs-fixture-hours" id="bsFxHours">Tue&ndash;Sun, 5&ndash;10 PM &middot; 912 Main St, Silver Spring, MD</p>
+      </article>
     </div>
 
     <div class="bs-contrast-wrap" id="bsContrastWrap" hidden>
@@ -751,6 +813,7 @@
   var imgInk    = document.getElementById('bsImgInk');
   var paletteWrap = document.getElementById('bsPaletteWrap');
   var paletteEl = document.getElementById('bsPalette');
+  var fixtureWrap = document.getElementById('bsFixtureWrap');
   var contrastWrap = document.getElementById('bsContrastWrap');
   var contrastTable = document.getElementById('bsContrastTable');
   var exportWrap  = document.getElementById('bsExport');
@@ -825,6 +888,8 @@
       latestPalette = palette;
       renderPalette(palette);
       paletteWrap.hidden = false;
+      renderFixture(palette);
+      fixtureWrap.hidden = false;
       renderContrastGrid(palette);
       contrastWrap.hidden = false;
       renderExports(palette);
@@ -864,6 +929,59 @@
     });
     body += '</tbody>';
     contrastTable.innerHTML = head + body;
+  }
+
+  // ----- Live-preview restaurant-menu fixture -----
+  // Applies the extracted palette to a sample restaurant card.
+  // Role conventions:
+  //   0 primary    -> display heading + CTA background
+  //   1 secondary  -> card surface (background)
+  //   2 accent-1   -> eyebrow color + underline accent
+  //   3 accent-2   -> menu block surface (nested background)
+  //   4 neutral    -> body/description text
+  // Every text color is run through deriveAccessiblePair so the
+  // fixture stays readable even when the source palette includes
+  // low-contrast pairs — the WCAG grid below the fixture shows the
+  // raw math; the fixture shows what 'use the palette correctly' looks like.
+  function renderFixture(palette){
+    var p = palette.slice(0, 5);
+    if (!p.length) return;
+    var primary   = p[0].hex;
+    var secondary = p[1] ? p[1].hex : CREAM;
+    var accent1   = p[2] ? p[2].hex : primary;
+    var accent2   = p[3] ? p[3].hex : secondary;
+    var neutral   = p[4] ? p[4].hex : INK;
+
+    // Pick whichever of our brand-neutral text colors (cream or ink)
+    // contrasts better with the CTA's primary background; no new color
+    // invented just for the button.
+    var ctaText = window.BS.contrastRatio(CREAM, primary) >= window.BS.contrastRatio(INK, primary) ? CREAM : INK;
+
+    var card = document.getElementById('bsFxCard');
+    card.style.background   = secondary;
+    card.style.borderColor  = 'rgba(0,0,0,.08)';
+
+    document.getElementById('bsFxEyebrow').style.color = window.BS.deriveAccessiblePair(accent1, secondary);
+    document.getElementById('bsFxDisplay').style.color = window.BS.deriveAccessiblePair(primary, secondary);
+    document.getElementById('bsFxAccent').style.background = accent1;
+    document.getElementById('bsFxBody').style.color   = window.BS.deriveAccessiblePair(neutral, secondary);
+    document.getElementById('bsFxHours').style.color  = window.BS.deriveAccessiblePair(neutral, secondary);
+
+    var menu = document.getElementById('bsFxMenu');
+    menu.style.background = accent2;
+    var menuBody   = window.BS.deriveAccessiblePair(neutral, accent2);
+    var menuHeading= window.BS.deriveAccessiblePair(primary, accent2);
+    var menuPrice  = window.BS.deriveAccessiblePair(accent1, accent2);
+    var strongs = menu.getElementsByTagName('strong');
+    for (var i = 0; i < strongs.length; i++) strongs[i].style.color = menuHeading;
+    var descs = menu.querySelectorAll('.bs-fixture-menu-item span');
+    for (var j = 0; j < descs.length; j++) descs[j].style.color = menuBody;
+    var prices = menu.getElementsByClassName('bs-fixture-menu-price');
+    for (var k = 0; k < prices.length; k++) prices[k].style.color = menuPrice;
+
+    var cta = document.getElementById('bsFxCta');
+    cta.style.background = primary;
+    cta.style.color = ctaText;
   }
 
   // ----- CSS variables export -----
