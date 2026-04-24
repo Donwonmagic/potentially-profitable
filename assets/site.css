@@ -2670,6 +2670,32 @@ br.br-lg{display:none}
   color:var(--teal);
 }
 
+/* /services/ inline secondary CTA — sits between Web Builds and
+   Process, breaking the run of "Book a 20-min call" buttons with
+   a no-commit "Run a free audit first" affordance. */
+.services-aside-cta{
+  background:var(--cream);
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  padding:24px 0;
+}
+.services-aside-cta-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:24px;flex-wrap:wrap;
+}
+.services-aside-cta strong{
+  display:block;
+  font-family:var(--font-display);
+  font-size:18px;font-weight:500;letter-spacing:-0.005em;
+  color:var(--ink);margin-bottom:4px;
+}
+.services-aside-cta span{
+  display:block;
+  font-size:14.5px;color:var(--stone);line-height:1.5;
+  max-width:560px;
+}
+.services-aside-cta .btn{ flex-shrink:0; }
+
 /* /services/ — Care Plans and Social Media tier grids ship
    collapsed by default. Web Builds and Brand & Design stay
    expanded (the most-clicked entry points). Reduces the four
