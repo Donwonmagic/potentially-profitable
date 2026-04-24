@@ -208,6 +208,13 @@
     return'<div class="gbp-check"><div class="mark '+cls+'">'+mark+'</div><div><h3>'+title+'</h3><p>'+text+'</p></div></div>';
   }
 
+  function reviewsBucket(n){
+    if(n>=300)return'300+';
+    if(n>=100)return'100-299';
+    if(n>=30)return'30-99';
+    return'0-29';
+  }
+
   form.addEventListener('submit',function(e){
     e.preventDefault();
     var q=input.value.trim();
@@ -221,7 +228,16 @@
       if(!d.ok)throw new Error(d.error||'La búsqueda falló');
 
       // Business card
-      bizEl.innerHTML=stars(d.rating)
+      var bannerHtml='';
+      if(d.businessStatus&&d.businessStatus!=='OPERATIONAL'){
+        var closedLabel=d.businessStatus==='CLOSED_TEMPORARILY'?'Cerrado temporalmente':'Cerrado permanentemente';
+        var closedBody=d.businessStatus==='CLOSED_TEMPORARILY'
+          ?'Google muestra esta ficha como cerrada temporalmente. Reábrela en el panel de Business Profile antes de arreglar cualquier otra cosa — mientras esté marcada como cerrada, Maps la oculta en la mayoría de las búsquedas.'
+          :'Google muestra esta ficha como cerrada permanentemente. Si el negocio sigue activo con otro nombre o dueño, reclámala en el panel de Business Profile — una ficha cerrada no aparece en los resultados locales.';
+        bannerHtml='<div class="gbp-check" style="background:rgba(184,84,26,.08);border-color:var(--rust);margin-bottom:20px"><div class="mark fail">&#10005;</div><div><h3>'+closedLabel+'</h3><p>'+closedBody+'</p></div></div>';
+      }
+      bizEl.innerHTML=bannerHtml
+        +stars(d.rating)
         +'<div class="gbp-rating">'+(d.rating||'—')+'</div>'
         +'<div class="gbp-reviews">'+d.reviewCount+' reseñas</div>'
         +'<h2>'+d.name+'</h2>'
@@ -230,35 +246,59 @@
       // Grade checks
       var html='';
 
-      // Reviews
+      // Categoría principal
+      html+=d.primaryTypeDisplayName
+        ?check(true,'Categoría principal definida ('+d.primaryTypeDisplayName+')','La categoría principal es el factor on-page más importante para el ranking local. Mantenla específica — "Pizzería napolitana" siempre le gana a "Restaurante".')
+        :check(false,'Falta la categoría principal','Sin categoría principal, Google no sabe en qué búsquedas mostrarte. Define una en tu panel de Business Profile — elige la coincidencia más específica disponible.');
+
+      // Reseñas
       if(d.reviewCount>=100)html+=check(true,'Buen número de reseñas ('+d.reviewCount+')','Tienes más de 100 reseñas — eso te pone por delante de la mayoría de los negocios locales. Mantén el ritmo con un sistema de reseñas.');
       else if(d.reviewCount>=30)html+=check(null,'Número de reseñas decente ('+d.reviewCount+')','Estás por encima de cero, pero es con 100+ que empiezas a dominar la búsqueda local. Un programa de tarjetas con código QR para pedir reseñas puede acelerarlo.');
       else html+=check(false,'Pocas reseñas ('+d.reviewCount+')','Con menos de 30 reseñas es difícil posicionar en el paquete local. La mayoría de los competidores tienen más. Arranca un programa sistemático de reseñas — <a href="/blog/how-to-get-more-google-reviews-for-your-restaurant/" style="color:var(--teal)">acá te explica cómo</a>.');
 
-      // Rating
+      // Calificación
       if(d.rating>=4.5)html+=check(true,'Calificación excelente ('+d.rating+')','4,5+ le dice al cliente y a Google que vale la pena la visita.');
       else if(d.rating>=4.0)html+=check(null,'Buena calificación ('+d.rating+')','Sólida, pero hay espacio para subir. Responde a cada reseña — especialmente a las críticas.');
       else if(d.rating)html+=check(false,'La calificación necesita trabajo ('+d.rating+')','Por debajo de 4,0 es una bandera roja para la mayoría de los clientes que buscan por la zona. Lee tus reseñas de 1 a 3 estrellas buscando patrones y aborda las causas raíz.');
 
-      // Photos
+      // Fotos
       if(d.photoCount>=10)html+=check(true,'Buen número de fotos ('+d.photoCount+')','Google dice que los negocios con fotos reciben 42 % más solicitudes de direcciones. Estás muy por encima del mínimo.');
       else if(d.photoCount>=3)html+=check(null,'Algunas fotos ('+d.photoCount+')','Tienes unas cuantas, pero apunta a 10 o más. Agrega fotos del interior, del equipo y de lo mejor de tu trabajo. Sube fotos nuevas cada mes.');
       else html+=check(false,'Pocas o ninguna foto ('+d.photoCount+')','Las fichas sin fotos reciben muchísima menos interacción. Sube al menos 10: interior, exterior, equipo, productos/servicios.');
 
-      // Hours
+      // Horarios
       html+=d.hasHours
         ?check(true,'Los horarios están puestos','Tu ficha muestra cuándo estás abierto. Asegúrate de que coincidan con los de tu sitio y actualízalos para las fiestas.')
         :check(false,'Faltan los horarios','Sin horarios en tu ficha, los clientes no saben cuándo estás abierto. Agrégalos ya — es una de las razones más comunes por las que la gente se salta un negocio en Maps.');
 
-      // Website
+      // Teléfono
+      html+=d.nationalPhoneNumber
+        ?check(true,'Número de teléfono listado','Los clientes pueden llamar con un toque desde Maps. Confirma que ese número coincida con el de tu sitio.')
+        :check(false,'Sin número de teléfono','Tu ficha no tiene número de teléfono. Esa es la acción #1 en Maps — agrégalo en el panel de Business Profile.');
+
+      // Sitio web
       html+=d.website
         ?check(true,'Sitio web enlazado','Tu ficha enlaza a <a href="'+d.website+'" target="_blank" rel="noopener" style="color:var(--teal)">'+d.website.replace(/^https?:\/\//,'').replace(/\/$/,'')+'</a>.')
         :check(false,'Sin sitio web enlazado','Tu ficha no tiene URL de sitio web. Hasta un sitio simple de una página es mejor que nada — es adonde Google manda a quienes quieren saber más.');
 
+      // Resumen editorial
+      html+=d.editorialSummary
+        ?check(true,'Hay resumen editorial','Google le escribió un resumen corto a tu ficha. Eso suele significar que el perfil está lo suficientemente completo como para que los propios sistemas de Google lo describan con confianza.')
+        :check(null,'Sin resumen editorial','Google los redacta automáticamente para fichas que considera bien pobladas. Mientras más completo esté tu perfil, más probable es que aparezca — no lo controlas tú, pero es una buena señal de qué tan completo está.');
+
       checksEl.innerHTML=html;
       result.classList.add('visible');
       result.scrollIntoView({behavior:'smooth',block:'start'});
-      if(window.plausible)window.plausible('GBP Grader',{props:{rating:d.rating,reviews:d.reviewCount,q:q}});
+      // Analítica: sólo buckets derivados. Los nombres de negocios nunca salen del Worker.
+      if(window.plausible)window.plausible('GBP Grader',{props:{
+        reviews_bucket: reviewsBucket(d.reviewCount||0),
+        rating_band: d.rating>=4.5?'45+':d.rating>=4.0?'40-44':d.rating?'lt40':'none',
+        has_website: d.website?'yes':'no',
+        has_hours: d.hasHours?'yes':'no',
+        has_phone: d.nationalPhoneNumber?'yes':'no',
+        has_category: d.primaryTypeDisplayName?'yes':'no',
+        status: d.businessStatus||'unknown'
+      }});
     }).catch(function(err){
       alert(err.message||'No se pudo encontrar ese negocio. Prueba agregando el nombre de la ciudad.');
     }).finally(function(){btn.disabled=false;btn.textContent='Calificar'});
