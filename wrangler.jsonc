@@ -149,32 +149,28 @@
   // distinction is purely in the migration directive.
   "migrations": [
     { "tag": "v1", "new_sqlite_classes": ["RateLimiter"] }
+  ],
+
+  // D1 / Sprint 3C — AUDIT_SNAPSHOTS KV binding activated. Backs
+  // /api/audit-snapshot (src/lib/audit-snapshots.js): 90-day TTL,
+  // ~30-80 KB per snapshot, unlisted-resource security model
+  // (token is the only gate). Powers both the restaurant audit's
+  // share URLs and the GBP grader's share URLs.
+  "kv_namespaces": [
+    { "binding": "AUDIT_SNAPSHOTS", "id": "f661208f47644e32bfe965e46f42f88a" }
   ]
 
   // ─────────────────────────────────────────────────────────────────
-  // Optional KV bindings (provisioned on demand):
+  // Optional bindings still staged, provisioned on demand:
   //
   // Sprint T3 — AUDIT_CACHE:
   // Create the namespace via `wrangler kv:namespace create AUDIT_CACHE`
-  // and paste the returned id below. The Worker's src/lib/audit-cache.js
-  // reads env.AUDIT_CACHE when present and caches PSI / Places / schema
-  // / crawl responses for 1-6 hours keyed by URL. When the binding is
-  // absent, every cache call no-ops and the audit runs identically to
-  // today — no code change required when the binding appears.
-  //
-  // D1 — AUDIT_SNAPSHOTS:
-  // Create via `wrangler kv:namespace create AUDIT_SNAPSHOTS`. Backs the
-  // /api/audit-snapshot endpoint (src/lib/audit-snapshots.js) — persists
-  // serialized audit state so the owner can share a permalink instead of
-  // downloading a PDF. 90-day TTL, ~30-80 KB per snapshot, token is the
-  // only gate (unlisted resource, not secret). When the binding is
-  // absent the endpoint returns 503 with error=snapshot-storage-
-  // unavailable and the audit tool keeps working without share links.
-  //
-  //   "kv_namespaces": [
-  //     { "binding": "AUDIT_CACHE",     "id": "<paste-from-wrangler-output>" },
-  //     { "binding": "AUDIT_SNAPSHOTS", "id": "f661208f47644e32bfe965e46f42f88a" }
-  //   ]
+  // and add the returned id to the kv_namespaces array above. The
+  // Worker's src/lib/audit-cache.js reads env.AUDIT_CACHE when
+  // present and caches PSI / Places / schema / crawl responses for
+  // 1-6 hours. When the binding is absent, every cache call no-ops
+  // and the audit runs identically to today — no code change
+  // required when the binding appears.
   //
   // And for the AI Gateway that powers the facts dossier (T4):
   //
