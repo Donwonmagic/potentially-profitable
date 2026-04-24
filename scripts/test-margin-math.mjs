@@ -285,6 +285,31 @@ assert('PRIME_COST_SEGMENT_KEYS contains full-service', PRIME_COST_SEGMENT_KEYS.
 assert('PRIME_COST_SEGMENT_KEYS contains fast-casual',  PRIME_COST_SEGMENT_KEYS.indexOf('fast-casual')  >= 0);
 assert('PRIME_COST_SEGMENT_KEYS contains fine-dining',  PRIME_COST_SEGMENT_KEYS.indexOf('fine-dining')  >= 0);
 
+// Privacy invariant: the result.segment echoed back to the UI (and
+// from there to Plausible as the `segment` prop) is always from the
+// fixed enum, even when garbage flows in. The UI uses result.segment
+// as its wire to analytics, so this guarantee closes the trust
+// boundary between decodeState (which may carry any string from the
+// URL fragment) and the bucket/enum discipline that every other
+// Plausible value already follows.
+{
+  const garbage = [
+    undefined, null, '', '  ', 'cloud-kitchen', 'full_service', 'FULL-SERVICE',
+    '<script>', '0', '42', 'true', 'full-service_HIDDEN', '__proto__', 'constructor'
+  ];
+  garbage.forEach(function(g){
+    const r = calcPrimeCost({ foodCostPct: 0.30, laborCostPct: 0.32, segment: g });
+    assert(
+      'garbage segment → enum value (input: ' + JSON.stringify(g) + ')',
+      PRIME_COST_SEGMENT_KEYS.indexOf(r.segment) >= 0
+    );
+    assert(
+      'garbage segment does not echo back through result.segment',
+      typeof g === 'string' ? r.segment !== g || PRIME_COST_SEGMENT_KEYS.indexOf(g) >= 0 : true
+    );
+  });
+}
+
 // Overflow clamp
 {
   const r = calcPrimeCost({ foodCostPct: 0.60, laborCostPct: 0.60 });

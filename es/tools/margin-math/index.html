@@ -1546,7 +1546,7 @@
     window.plausible('Margin Math PrimeCost', { props: {
       foodcost_bucket:   window.MM.bucketFoodCost(foodEl.value),
       prime_cost_bucket: window.MM.bucketPrimeCost(result.primeCostPct),
-      segment:           currentSegment,
+      segment:           result.segment,
       band:              result.band
     }});
   }

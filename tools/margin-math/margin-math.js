@@ -419,8 +419,11 @@ function mmCalcPrimeCost(input) {
   input = input || {};
   var foodCostPct = mmClampPct(input.foodCostPct);
   var laborCostPct = mmClampPct(input.laborCostPct);
+  // Guard against prototype-accessor strings ("__proto__",
+  // "constructor", etc.) by checking the explicit key list instead
+  // of relying on object-key truthiness.
   var segment = input.segment;
-  if (!MM_PRIME_COST_SEGMENTS[segment]) segment = 'full-service';
+  if (MM_PRIME_COST_SEGMENT_KEYS.indexOf(segment) < 0) segment = 'full-service';
   var primeCostPct = foodCostPct + laborCostPct;
   if (primeCostPct > 1) primeCostPct = 1;
 
