@@ -55,20 +55,9 @@
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
 <link rel="stylesheet" href="/assets/site.css?v=20260422-cohesion">
 <style>
-  .cmp-hero{max-width:720px;margin:0 auto;text-align:center}
-  .cmp-inputs{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;max-width:640px;margin:32px auto 0;align-items:center}
-  .cmp-inputs input{padding:14px 18px;border:2px solid var(--line-dark);border-radius:12px;font:inherit;font-size:16px;background:var(--white);color:var(--ink);width:100%}
-  .cmp-inputs input:focus{border-color:var(--teal);outline:none}
-  .cmp-inputs .vs{font-family:var(--font-display);font-size:18px;color:var(--stone);font-weight:500;text-align:center}
-  .cmp-btn{display:block;margin:20px auto 0;padding:16px 36px;border:0;border-radius:12px;background:var(--teal);color:var(--cream);font:inherit;font-size:16px;font-weight:600;cursor:pointer}
-  .cmp-btn:hover{background:var(--teal-dark)}
-  .cmp-btn:disabled{opacity:.5;cursor:wait}
-  @media(max-width:640px){.cmp-inputs{grid-template-columns:1fr;}.cmp-inputs .vs{display:none}}
-  .cmp-note{font-size:13px;color:var(--stone);margin-top:14px;text-align:center}
-  .cmp-status{text-align:center;margin-top:24px;font-size:14px;color:var(--stone)}
-  .cmp-result{display:none;max-width:680px;margin:40px auto 0}
-  .cmp-result.visible{display:block}
-  .cmp-table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--white)}
+  /* Tool-specific result rendering. Form, hero, note, result container,
+     and CTA card live in site.css under "TOOL SHELL" — see /docs/. */
+  .cmp-table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:var(--r-input);overflow:hidden;background:var(--white)}
   .cmp-table th,.cmp-table td{padding:14px 18px;text-align:center;font-size:15px}
   .cmp-table thead th{background:var(--cream-2);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);border-bottom:1px solid var(--line)}
   .cmp-table thead th:first-child{text-align:left}
@@ -78,11 +67,9 @@
   .cmp-table .win{color:#1f9d55;font-weight:700}
   .cmp-table .lose{color:var(--rust)}
   .cmp-table .tie{color:var(--stone)}
-  .cmp-winner{text-align:center;margin:24px 0;padding:20px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px}
+  .cmp-winner{text-align:center;margin:24px 0;padding:20px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input)}
   .cmp-winner h3{font-family:var(--font-display);font-size:22px;font-weight:500;margin:0 0 6px;color:var(--ink)}
   .cmp-winner p{font-size:14px;color:var(--stone);margin:0}
-  .cmp-cta{margin-top:28px;padding:28px 32px;background:var(--cream-2);border:1px solid var(--line);border-radius:14px;text-align:center}
-  .cmp-cta p{font-size:15px;color:var(--stone);margin:0 0 16px}
 </style>
 </head>
 <body>
@@ -102,7 +89,19 @@
     <nav class="nav-links" aria-label="Primary">
       <a href="/services/">Services</a>
       <a href="/for/restaurants/">Restaurants</a>
-      <a href="/learn/">Learn</a>
+      <div class="nav-library-wrap">
+        <a href="/learn/" class="nav-library-trigger" aria-haspopup="true">Library<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-library-menu" role="menu" aria-label="Library sections">
+          <a href="/learn/" role="menuitem"><strong>Library home</strong><span>The hub of everything below</span></a>
+          <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
+          <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
+          <a href="/blog/" role="menuitem"><strong>Articles</strong><span>The how-to playbooks</span></a>
+          <a href="/tools/" role="menuitem"><strong>Free tools</strong><span>Run a check on your own site</span></a>
+          <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span>97 terms in plain English</span></a>
+          <a href="/learn/research/" role="menuitem"><strong>Research</strong><span>The evidence behind the playbooks</span></a>
+          <a href="/resources/" role="menuitem"><strong>Checklists &amp; guides</strong><span>Workbooks you can save</span></a>
+        </div>
+      </div>
       <a href="/work/">Work</a>
       <a href="/about/">About</a>
     </nav>
@@ -128,7 +127,17 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/services/">Services</a>
     <a href="/for/restaurants/">Restaurants</a>
-    <a href="/learn/">Learn</a>
+    <details class="mobile-library">
+      <summary>Library</summary>
+      <a href="/learn/">Library home</a>
+      <a href="/learn/start-here/">Start here</a>
+      <a href="/learn/topics/">Topics</a>
+      <a href="/blog/">Articles</a>
+      <a href="/tools/">Free tools</a>
+      <a href="/glossary/">Glossary</a>
+      <a href="/learn/research/">Research</a>
+      <a href="/resources/">Checklists &amp; guides</a>
+    </details>
     <a href="/work/">Work</a>
     <a href="/about/">About</a>
     <button type="button" class="mobile-search js-open-search">
@@ -174,6 +183,34 @@
   <p class="cmp-status" id="cmpStatus" hidden></p>
   <div class="cmp-result" id="cmpResult" aria-live="polite"></div>
 </div></div></section>
+<!-- LIBRARY:tool-deep-links:start -->
+<section class="tool-deep-links" aria-labelledby="tool-deep-h">
+  <div class="container">
+    <header class="tool-deep-head">
+      <span class="eyebrow">Learn more</span>
+      <h2 id="tool-deep-h">Why this tool exists.</h2>
+      <p class="tool-deep-blurb">Every check this tool runs maps to a specific concept in the Library. Two starting points — one definition, one playbook.</p>
+      <div class="tool-deep-topics"><a class="tool-deep-topic" href="/learn/topics/speed-mobile/">Speed &amp; Mobile</a></div>
+    </header>
+    <div class="tool-deep-grid">
+      <a class="tool-deep-card tool-deep-card-term" href="/glossary/lighthouse/">
+          <span class="tool-deep-kind">Glossary</span>
+          <h3>Lighthouse</h3>
+          <p class="tool-deep-aka">Google's audit engine</p>
+          <p class="tool-deep-snippet">The open-source auditing tool Google ships inside Chrome and inside PageSpeed Insights. It simulates a mobile page load and scores your site…</p>
+          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-article" href="/blog/wix-vs-custom-for-restaurants/">
+          <span class="tool-deep-kind">Article</span>
+          <h3>Wix vs Custom for Restaurants</h3>
+          <p class="tool-deep-snippet">An honest comparison of Wix and a custom-built restaurant website. Six places Wix runs out of room, the ROI math that makes the switch worth it, and when Wix is actually the right call.</p>
+          <span class="tool-deep-cta">Read the playbook <span aria-hidden="true">→</span></span>
+        </a>
+    </div>
+  </div>
+</section>
+<!-- LIBRARY:tool-deep-links:end -->
+
 </main>
 
 <footer><div class="container">

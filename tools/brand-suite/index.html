@@ -54,19 +54,19 @@
      calculator-specific layouts land with each phase. Palette borrows
      tokens from site.css; no new primitives introduced here. */
   .mm-hero{max-width:720px;margin:0 auto;text-align:center}
-  .mm-pledge{display:inline-flex;align-items:center;gap:8px;margin:22px auto 0;padding:8px 16px;border:1px solid #1F6B3A;background:#E7F5EC;color:#1F6B3A;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.02em}
+  .mm-pledge{display:inline-flex;align-items:center;gap:8px;margin:22px auto 0;padding:8px 16px;border:1px solid var(--status-good);background:var(--status-good-tint);color:var(--status-good);border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.02em}
   .mm-pledge::before{content:'\2713';font-weight:700}
   .mm-pledge a{color:inherit;text-decoration:underline;text-underline-offset:2px}
   .mm-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:760px;margin:0 auto}
   @media (max-width:720px){.mm-grid{grid-template-columns:1fr}}
-  .mm-card{display:flex;flex-direction:column;padding:22px;border:1px solid var(--line);border-radius:14px;background:var(--white);gap:12px;position:relative}
+  .mm-card{display:flex;flex-direction:column;padding:22px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);gap:12px;position:relative}
   .mm-card.mm-coming{background:var(--cream-2);border-style:dashed;opacity:.85}
   .mm-card-eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
   .mm-card.mm-coming .mm-card-eyebrow{color:var(--stone)}
   .mm-card h3{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0;line-height:1.25}
   .mm-card p{font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0}
   .mm-card-link{margin-top:auto;font-size:13px;font-weight:600;color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor;padding-bottom:1px;align-self:flex-start}
-  .mm-next{margin:48px auto 0;max-width:760px;padding:24px;background:var(--cream-2);border:1px solid var(--line);border-radius:14px}
+  .mm-next{margin:48px auto 0;max-width:760px;padding:24px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-md)}
   .mm-next h2{font-family:var(--font-display);font-size:22px;font-weight:500;margin:0 0 12px;color:var(--ink)}
   .mm-next-links{display:flex;flex-wrap:wrap;gap:10px}
   .mm-next-links a{font-size:14px;padding:10px 16px;border:1px solid var(--line-dark);border-radius:999px;background:var(--white);color:var(--ink);text-decoration:none;font-weight:500}
@@ -74,19 +74,19 @@
   /* Brand Suite — workspace (upload → preview → palette).
      Same page-scoped-CSS posture as the rest of the tools. */
   .bs-workspace{max-width:840px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
-  .bs-upload{position:relative;border:2px dashed var(--line-dark);border-radius:14px;background:var(--cream-2);padding:40px 24px;text-align:center;transition:background 180ms var(--ease-out),border-color 180ms var(--ease-out)}
+  .bs-upload{position:relative;border:2px dashed var(--line-dark);border-radius:var(--r-md);background:var(--cream-2);padding:40px 24px;text-align:center;transition:background 180ms var(--ease-out),border-color 180ms var(--ease-out)}
   .bs-upload.dragover{border-color:var(--teal);background:var(--teal-tint)}
   .bs-upload input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0}
-  .bs-upload input[type="file"]:focus-visible + .bs-upload-label{outline:2px solid var(--teal);outline-offset:4px;border-radius:10px}
+  .bs-upload input[type="file"]:focus-visible + .bs-upload-label{outline:2px solid var(--teal);outline-offset:4px;border-radius:var(--r-input)}
   .bs-upload-label{display:flex;flex-direction:column;align-items:center;gap:10px;pointer-events:none}
   .bs-upload-icon{width:48px;height:48px;color:var(--teal);opacity:.7}
   .bs-upload-title{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink)}
   .bs-upload-hint{font-size:13px;color:var(--stone);max-width:440px;line-height:1.5}
   .bs-preview{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   @media(max-width:640px){.bs-preview{grid-template-columns:1fr}}
-  .bs-preview-swatch{margin:0;padding:32px 16px;border-radius:12px;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center;justify-content:center;min-height:200px}
-  .bs-preview-swatch[data-ground="cream"]{background:#FAF7F2;border:1px solid var(--line)}
-  .bs-preview-swatch[data-ground="ink"]{background:#14161A;color:var(--cream);border:1px solid #14161A}
+  .bs-preview-swatch{margin:0;padding:32px 16px;border-radius:var(--r-input);text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center;justify-content:center;min-height:200px}
+  .bs-preview-swatch[data-ground="cream"]{background:var(--cream);border:1px solid var(--line)}
+  .bs-preview-swatch[data-ground="ink"]{background:var(--ink);color:var(--cream);border:1px solid var(--ink)}
   .bs-preview-swatch img{max-width:100%;max-height:160px;display:block;object-fit:contain}
   .bs-preview-swatch figcaption{font-size:12px;color:var(--stone);letter-spacing:.04em}
   .bs-preview-swatch[data-ground="ink"] figcaption{color:var(--cream-2)}
@@ -95,7 +95,7 @@
   .bs-palette-wrap h2{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0}
   .bs-palette{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
   @media(max-width:640px){.bs-palette{grid-template-columns:repeat(2,minmax(0,1fr))}}
-  .bs-chip{display:flex;flex-direction:column;gap:6px;padding:0;border:1px solid var(--line);border-radius:10px;background:var(--white);cursor:pointer;font:inherit;color:inherit;overflow:hidden;transition:transform 140ms var(--ease-out),border-color 140ms var(--ease-out)}
+  .bs-chip{display:flex;flex-direction:column;gap:6px;padding:0;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);cursor:pointer;font:inherit;color:inherit;overflow:hidden;transition:transform 140ms var(--ease-out),border-color 140ms var(--ease-out)}
   .bs-chip:hover{border-color:var(--teal);transform:translateY(-1px)}
   .bs-chip:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
   .bs-chip-swatch{width:100%;aspect-ratio:1/1;display:block}
@@ -103,8 +103,8 @@
   .bs-chip-role{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--stone)}
   .bs-chip-hex{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
   .bs-chip-share{font-size:11px;color:var(--stone)}
-  .bs-chip.copied{border-color:#1F6B3A;background:#E7F5EC}
-  .bs-chip.copied .bs-chip-role{color:#1F6B3A}
+  .bs-chip.copied{border-color:var(--status-good);background:var(--status-good-tint)}
+  .bs-chip.copied .bs-chip-role{color:var(--status-good)}
   .bs-palette-hint{font-size:12px;color:var(--stone);margin:0}
   .bs-status{min-height:24px;font-size:13px;color:var(--stone);text-align:center}
   .bs-status.bs-status-error{color:var(--rust)}
@@ -124,13 +124,13 @@
   .bs-fixture-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
   .bs-fixture-head h2{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0}
   .bs-fixture-hint{font-size:12.5px;color:var(--stone)}
-  .bs-fixture-card{padding:32px 36px;border-radius:14px;border:1px solid var(--line);font-family:var(--font-body);overflow:hidden}
+  .bs-fixture-card{padding:32px 36px;border-radius:var(--r-md);border:1px solid var(--line);font-family:var(--font-body);overflow:hidden}
   @media(max-width:640px){.bs-fixture-card{padding:24px 22px}}
   .bs-fixture-eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin:0 0 14px}
   .bs-fixture-display{font-family:var(--font-display);font-size:clamp(22px,3vw,30px);font-weight:500;line-height:1.18;margin:0 0 12px;letter-spacing:-.01em}
-  .bs-fixture-accent{width:48px;height:3px;margin:0 0 18px;border-radius:1px}
+  .bs-fixture-accent{width:48px;height:3px;margin:0 0 18px;border-radius:999px}
   .bs-fixture-body{font-size:14.5px;line-height:1.7;margin:0 0 22px;max-width:560px}
-  .bs-fixture-menu{margin:0 0 24px;padding:18px 20px;border-radius:10px}
+  .bs-fixture-menu{margin:0 0 24px;padding:18px 20px;border-radius:var(--r-input)}
   .bs-fixture-menu-row{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,.06)}
   .bs-fixture-menu-row:first-child{padding-top:0}
   .bs-fixture-menu-row:last-child{padding-bottom:0;border-bottom:0}
@@ -144,93 +144,93 @@
 
   .bs-contrast-wrap{display:flex;flex-direction:column;gap:10px}
   .bs-contrast-wrap h2{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0}
-  .bs-contrast-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--white)}
+  .bs-contrast-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
   .bs-contrast-table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed;min-width:420px}
   .bs-contrast-table th,.bs-contrast-table td{border:1px solid var(--line);padding:0;text-align:center;vertical-align:middle;height:56px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-weight:500}
   .bs-contrast-table thead th:first-child,.bs-contrast-table tbody th{width:56px;min-width:56px}
   .bs-contrast-table thead th{background:var(--cream-2)}
   .bs-contrast-table tbody th{font-size:0}
   .bs-contrast-table td[data-grade="diag"]{background:var(--cream-2);color:var(--stone-2);font-family:inherit;font-weight:400}
-  .bs-contrast-table td[data-grade="AAA"]{background:#E7F5EC;color:#1F6B3A}
-  .bs-contrast-table td[data-grade="AA"]{background:#EDF7F0;color:#1F6B3A}
-  .bs-contrast-table td[data-grade="AA-large"]{background:#FDEFE3;color:#8A3E16}
-  .bs-contrast-table td[data-grade="fail"]{background:#F7E7DC;color:#B8541A}
+  .bs-contrast-table td[data-grade="AAA"]{background:var(--status-good-tint);color:var(--status-good)}
+  .bs-contrast-table td[data-grade="AA"]{background:var(--status-good-tint);color:var(--status-good)}
+  .bs-contrast-table td[data-grade="AA-large"]{background:var(--status-warn-tint);color:var(--status-warn-deep)}
+  .bs-contrast-table td[data-grade="fail"]{background:var(--status-bad-tint);color:var(--rust)}
   .bs-contrast-hint{font-size:12px;color:var(--stone);margin:0;line-height:1.5}
   .bs-contrast-legend{display:inline-flex;gap:10px;flex-wrap:wrap;margin-top:4px}
   .bs-contrast-legend span{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--ink-soft)}
-  .bs-contrast-legend span::before{content:'';display:inline-block;width:10px;height:10px;border-radius:3px;border:1px solid var(--line)}
-  .bs-contrast-legend span[data-l="AAA"]::before     {background:#E7F5EC}
-  .bs-contrast-legend span[data-l="AA"]::before      {background:#EDF7F0}
-  .bs-contrast-legend span[data-l="AA-large"]::before{background:#FDEFE3}
-  .bs-contrast-legend span[data-l="fail"]::before    {background:#F7E7DC}
+  .bs-contrast-legend span::before{content:'';display:inline-block;width:10px;height:10px;border-radius:var(--r-sm);border:1px solid var(--line)}
+  .bs-contrast-legend span[data-l="AAA"]::before     {background:var(--status-good-tint)}
+  .bs-contrast-legend span[data-l="AA"]::before      {background:var(--status-good-tint)}
+  .bs-contrast-legend span[data-l="AA-large"]::before{background:var(--status-warn-tint)}
+  .bs-contrast-legend span[data-l="fail"]::before    {background:var(--status-bad-tint)}
   /* Export row — copy CSS vars + download tokens.json */
   .bs-export{display:flex;flex-direction:column;gap:12px}
   .bs-export-row{display:flex;gap:10px;flex-wrap:wrap}
   .bs-export-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background 160ms var(--ease-out),color 160ms var(--ease-out)}
   .bs-export-btn:hover{background:var(--teal);color:var(--cream)}
   .bs-export-btn svg{width:14px;height:14px}
-  .bs-export-btn.copied{background:#E7F5EC;color:#1F6B3A;border-color:#1F6B3A}
-  .bs-export-preview{margin:0;padding:14px 16px;background:var(--ink);color:var(--cream-2);border-radius:10px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.5;overflow-x:auto;white-space:pre;max-height:280px;overflow-y:auto}
+  .bs-export-btn.copied{background:var(--status-good-tint);color:var(--status-good);border-color:var(--status-good)}
+  .bs-export-preview{margin:0;padding:14px 16px;background:var(--ink);color:var(--cream-2);border-radius:var(--r-input);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.5;overflow-x:auto;white-space:pre;max-height:280px;overflow-y:auto}
   /* Live-calculator styles — shared by all four calculators. The
      "Stays in your browser" badge is visible on every card to
      reinforce the architectural promise. Real-time updates via
      aria-live="polite" results region. */
   .mm-card.mm-live{border-style:solid}
   .mm-card-header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:space-between}
-  .mm-badge-safe{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:#E7F5EC;color:#1F6B3A;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.04em}
+  .mm-badge-safe{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:var(--status-good-tint);color:var(--status-good);border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.04em}
   .mm-badge-safe::before{content:'\2713';font-weight:800}
   .mm-form{display:flex;flex-direction:column;gap:14px;margin:6px 0 0}
   .mm-form label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:var(--ink-soft)}
   .mm-form label > span{display:flex;align-items:center;justify-content:space-between;gap:8px}
   .mm-form label > span > output{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums;min-width:56px;text-align:right}
   .mm-form input[type="range"]{width:100%;accent-color:var(--teal);cursor:grab}
-  .mm-form input[type="range"]:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:4px}
-  .mm-form input[type="number"]{padding:8px 10px;border:1px solid var(--line-dark);border-radius:8px;font:inherit;font-size:15px;background:var(--white);color:var(--ink);width:100%;box-sizing:border-box}
+  .mm-form input[type="range"]:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:var(--r-sm)}
+  .mm-form input[type="number"]{padding:8px 10px;border:1px solid var(--line-dark);border-radius:var(--r-sm);font:inherit;font-size:15px;background:var(--white);color:var(--ink);width:100%;box-sizing:border-box}
   .mm-form input[type="number"]:focus{border-color:var(--teal);outline:none}
   .mm-tier-group{display:flex;gap:6px;border:0;padding:0;margin:0}
   .mm-tier-group legend{font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:6px;padding:0}
   .mm-tier-btns{display:flex;gap:6px;width:100%}
-  .mm-tier-btns button{flex:1;padding:10px 8px;border:1px solid var(--line-dark);border-radius:10px;background:var(--white);font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;transition:border-color 140ms,background 140ms;line-height:1.3}
+  .mm-tier-btns button{flex:1;padding:10px 8px;border:1px solid var(--line-dark);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;transition:border-color 140ms,background 140ms;line-height:1.3}
   .mm-tier-btns button small{display:block;font-size:11px;font-weight:500;color:var(--stone);margin-top:2px}
   .mm-tier-btns button:hover{border-color:var(--teal)}
   .mm-tier-btns button[aria-pressed="true"]{border-color:var(--teal);background:var(--teal-tint);color:var(--teal)}
   .mm-tier-btns button[aria-pressed="true"] small{color:var(--teal-dark)}
-  .mm-results{margin-top:4px;padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:var(--cream-2);display:flex;flex-direction:column;gap:12px}
+  .mm-results{margin-top:4px;padding:14px 16px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--cream-2);display:flex;flex-direction:column;gap:12px}
   .mm-per-order{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .mm-per-order-col{display:flex;flex-direction:column;gap:2px;text-align:center;padding:10px;background:var(--white);border-radius:8px;border:1px solid var(--line)}
+  .mm-per-order-col{display:flex;flex-direction:column;gap:2px;text-align:center;padding:10px;background:var(--white);border-radius:var(--r-sm);border:1px solid var(--line)}
   .mm-result-label{font-size:11px;font-weight:600;color:var(--stone);letter-spacing:.04em;text-transform:uppercase}
   .mm-result-value{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
   .mm-monthly{text-align:center;padding:8px 0;border-top:1px dashed var(--line-dark);display:flex;flex-direction:column;gap:2px}
   .mm-monthly-label{font-size:12px;font-weight:600;color:var(--stone);letter-spacing:.04em;text-transform:uppercase}
   .mm-monthly-value{font-family:var(--font-display);font-size:36px;font-weight:500;color:var(--rust);font-variant-numeric:tabular-nums;line-height:1.1}
   .mm-monthly-subtext{font-size:12px;color:var(--stone)}
-  .mm-recommendation{font-size:13px;line-height:1.55;padding:10px 12px;border-radius:8px}
-  .mm-recommendation[data-rec="keep"],   .mm-recommendation[data-band="good"]{background:#E7F5EC;color:#1F6B3A}
-  .mm-recommendation[data-rec="optimize"],.mm-recommendation[data-band="ok"]  {background:#FDEFE3;color:#8A3E16}
-  .mm-recommendation[data-band="warn"]                                          {background:#FCE4D4;color:#8A3E16}
-  .mm-recommendation[data-rec="consider-leaving"],.mm-recommendation[data-band="bad"]{background:#F7E7DC;color:#B8541A}
+  .mm-recommendation{font-size:13px;line-height:1.55;padding:10px 12px;border-radius:var(--r-sm)}
+  .mm-recommendation[data-rec="keep"],   .mm-recommendation[data-band="good"]{background:var(--status-good-tint);color:var(--status-good)}
+  .mm-recommendation[data-rec="optimize"],.mm-recommendation[data-band="ok"]  {background:var(--status-warn-tint);color:var(--status-warn-deep)}
+  .mm-recommendation[data-band="warn"]                                          {background:#FCE4D4;color:var(--status-warn-deep)}
+  .mm-recommendation[data-rec="consider-leaving"],.mm-recommendation[data-band="bad"]{background:var(--status-bad-tint);color:var(--rust)}
   .mm-recommendation[data-band="below"]                                         {background:var(--teal-tint);color:var(--teal)}
   .mm-recommendation a{color:inherit;font-weight:700;border-bottom:1px solid currentColor}
   /* Big-number color variants for non-monetary calculators (Prime Cost
      shows a percentage, not a dollar delta). Reuses the .mm-monthly
      layout; band drives the color. */
   .mm-monthly[data-band] .mm-monthly-value{transition:color 200ms var(--ease-out)}
-  .mm-monthly[data-band="good"]  .mm-monthly-value{color:#1F6B3A}
-  .mm-monthly[data-band="ok"]    .mm-monthly-value{color:#8A3E16}
-  .mm-monthly[data-band="warn"]  .mm-monthly-value{color:#8A3E16}
+  .mm-monthly[data-band="good"]  .mm-monthly-value{color:var(--status-good)}
+  .mm-monthly[data-band="ok"]    .mm-monthly-value{color:var(--status-warn-deep)}
+  .mm-monthly[data-band="warn"]  .mm-monthly-value{color:var(--status-warn-deep)}
   .mm-monthly[data-band="bad"]   .mm-monthly-value{color:var(--rust)}
   .mm-monthly[data-band="below"] .mm-monthly-value{color:var(--teal)}
   /* Prime Cost band scale — horizontal 5-segment pill from 40% to
      80% prime cost. Marker indicates the user's current position. */
   .mm-pc-scale-wrap{position:relative;margin:4px 4px 2px}
-  .mm-pc-scale{display:flex;height:10px;border-radius:5px;overflow:hidden}
+  .mm-pc-scale{display:flex;height:10px;border-radius:999px;overflow:hidden}
   .mm-pc-scale > span{flex:1;min-width:0}
   .mm-pc-scale > span:nth-child(1){background:var(--teal-tint)}
-  .mm-pc-scale > span:nth-child(2){background:#E7F5EC}
-  .mm-pc-scale > span:nth-child(3){background:#FDEFE3}
+  .mm-pc-scale > span:nth-child(2){background:var(--status-good-tint)}
+  .mm-pc-scale > span:nth-child(3){background:var(--status-warn-tint)}
   .mm-pc-scale > span:nth-child(4){background:#FCE4D4}
-  .mm-pc-scale > span:nth-child(5){background:#F7E7DC}
-  .mm-pc-marker{position:absolute;top:-3px;width:4px;height:16px;background:var(--ink);border-radius:2px;transform:translateX(-2px);transition:left 200ms var(--ease-out)}
+  .mm-pc-scale > span:nth-child(5){background:var(--status-bad-tint)}
+  .mm-pc-marker{position:absolute;top:-3px;width:4px;height:16px;background:var(--ink);border-radius:999px;transform:translateX(-2px);transition:left 200ms var(--ease-out)}
   .mm-pc-axis{display:flex;justify-content:space-between;font-size:10px;color:var(--stone);margin-top:6px;padding:0 2px;font-variant-numeric:tabular-nums}
   .mm-blog-link{margin-top:4px;font-size:12px;color:var(--teal);text-decoration:none;font-weight:600}
   .mm-blog-link:hover{color:var(--teal-dark);border-bottom:1px dashed currentColor}
@@ -238,7 +238,7 @@
      inline "Inspect this" expander. Keyboard-operable via native
      <details>. Invite the audit; don't dodge it. */
   .mm-steps{display:flex;flex-direction:column;gap:10px;max-width:760px;margin:20px auto 0}
-  .mm-step{border:1px solid var(--line);border-radius:10px;background:var(--white);padding:16px 18px}
+  .mm-step{border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);padding:16px 18px}
   .mm-step-head{display:flex;gap:14px;align-items:flex-start}
   .mm-step-num{flex:0 0 28px;height:28px;border-radius:50%;background:var(--teal-tint);color:var(--teal);font-family:var(--font-display);font-weight:500;font-size:15px;display:flex;align-items:center;justify-content:center}
   .mm-step-body{flex:1;min-width:0}
@@ -250,19 +250,19 @@
   .mm-step-inspect summary::after{content:'\25BE';font-size:10px;transition:transform 140ms var(--ease-out)}
   .mm-step-inspect[open] summary::after{transform:rotate(180deg)}
   .mm-step-inspect summary:hover{color:var(--teal-dark)}
-  .mm-step-verify{margin:8px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:6px;font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
-  .mm-step-verify code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:var(--white);padding:1px 5px;border-radius:3px;border:1px solid var(--line);font-size:12px}
-  .mm-step-verify kbd{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:var(--white);padding:1px 5px;border-radius:3px;border:1px solid var(--line);font-size:11px;box-shadow:0 1px 0 var(--line-dark)}
+  .mm-step-verify{margin:8px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:var(--r-sm);font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
+  .mm-step-verify code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:var(--white);padding:1px 5px;border-radius:var(--r-sm);border:1px solid var(--line);font-size:12px}
+  .mm-step-verify kbd{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:var(--white);padding:1px 5px;border-radius:var(--r-sm);border:1px solid var(--line);font-size:11px;box-shadow:0 1px 0 var(--line-dark)}
   /* Safety-checklist table — Margin Math vs. typical free tool.
      Turns the meta-claim into a side-by-side comparison. */
-  .mm-safety-wrap{max-width:960px;margin:20px auto 0;overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--white)}
+  .mm-safety-wrap{max-width:960px;margin:20px auto 0;overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
   .mm-safety{width:100%;border-collapse:collapse;font-size:13.5px}
   .mm-safety thead th{background:var(--cream-2);text-align:left;padding:12px 16px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);border-bottom:1px solid var(--line)}
   .mm-safety tbody td{padding:14px 16px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.55}
   .mm-safety tbody tr:last-child td{border-bottom:0}
   .mm-safety td:first-child{font-weight:500;color:var(--ink)}
   .mm-safety-hint{display:block;margin-top:4px;font-size:12px;color:var(--stone);font-weight:400}
-  .mm-safety-pass{color:#1F6B3A;font-weight:600}
+  .mm-safety-pass{color:var(--status-good);font-weight:600}
   .mm-safety-pass::before{content:'\2713  ';font-weight:800}
   .mm-safety-fail{color:var(--rust);font-weight:600}
   .mm-safety-fail::before{content:'\2715  ';font-weight:800}
@@ -280,19 +280,19 @@
      amber → rust from Public through Regulated. */
   .mm-tiers{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:960px;margin:24px auto 0}
   @media (max-width:740px){.mm-tiers{grid-template-columns:1fr}}
-  .mm-tier{padding:18px 20px;border:1px solid var(--line);border-left-width:4px;border-radius:10px;background:var(--white);display:flex;flex-direction:column;gap:10px}
-  .mm-tier[data-tier="public"]     {border-left-color:#1F6B3A;background:#FAFBF9}
+  .mm-tier{padding:18px 20px;border:1px solid var(--line);border-left-width:4px;border-radius:var(--r-input);background:var(--white);display:flex;flex-direction:column;gap:10px}
+  .mm-tier[data-tier="public"]     {border-left-color:var(--status-good);background:#FAFBF9}
   .mm-tier[data-tier="competitive"]{border-left-color:var(--teal);background:#F8FBFB}
   .mm-tier[data-tier="operational"]{border-left-color:#8A6018;background:#FCFAF4}
   .mm-tier[data-tier="regulated"]  {border-left-color:var(--rust);background:#FCF7F3}
   .mm-tier header{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0}
-  .mm-tier-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);padding:2px 8px;border-radius:4px;background:var(--cream-2);flex:0 0 auto}
+  .mm-tier-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);padding:2px 8px;border-radius:var(--r-sm);background:var(--cream-2);flex:0 0 auto}
   .mm-tier h3{font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0;line-height:1.3}
   .mm-tier-desc{font-size:13.5px;line-height:1.5;color:var(--ink-soft);margin:0}
   .mm-tier-examples{margin:0;padding-left:18px;font-size:13px;color:var(--ink-soft);line-height:1.55}
   .mm-tier-examples li{margin-bottom:4px}
   .mm-tier-share{font-size:13px;line-height:1.55;color:var(--ink);margin:auto 0 0;padding-top:8px;border-top:1px dashed var(--line)}
-  .mm-tier-foot{max-width:760px;margin:20px auto 0;padding:14px 18px;background:var(--cream-2);border:1px solid var(--line);border-radius:10px;font-size:13.5px;line-height:1.65;color:var(--ink-soft)}
+  .mm-tier-foot{max-width:760px;margin:20px auto 0;padding:14px 18px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input);font-size:13.5px;line-height:1.65;color:var(--ink-soft)}
 </style>
 </head>
 <body>
@@ -312,7 +312,19 @@
     <nav class="nav-links" aria-label="Primary">
       <a href="/services/">Services</a>
       <a href="/for/restaurants/">Restaurants</a>
-      <a href="/learn/">Learn</a>
+      <div class="nav-library-wrap">
+        <a href="/learn/" class="nav-library-trigger" aria-haspopup="true">Library<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-library-menu" role="menu" aria-label="Library sections">
+          <a href="/learn/" role="menuitem"><strong>Library home</strong><span>The hub of everything below</span></a>
+          <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
+          <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
+          <a href="/blog/" role="menuitem"><strong>Articles</strong><span>The how-to playbooks</span></a>
+          <a href="/tools/" role="menuitem"><strong>Free tools</strong><span>Run a check on your own site</span></a>
+          <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span>97 terms in plain English</span></a>
+          <a href="/learn/research/" role="menuitem"><strong>Research</strong><span>The evidence behind the playbooks</span></a>
+          <a href="/resources/" role="menuitem"><strong>Checklists &amp; guides</strong><span>Workbooks you can save</span></a>
+        </div>
+      </div>
       <a href="/work/">Work</a>
       <a href="/about/">About</a>
     </nav>
@@ -338,7 +350,17 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/services/">Services</a>
     <a href="/for/restaurants/">Restaurants</a>
-    <a href="/learn/">Learn</a>
+    <details class="mobile-library">
+      <summary>Library</summary>
+      <a href="/learn/">Library home</a>
+      <a href="/learn/start-here/">Start here</a>
+      <a href="/learn/topics/">Topics</a>
+      <a href="/blog/">Articles</a>
+      <a href="/tools/">Free tools</a>
+      <a href="/glossary/">Glossary</a>
+      <a href="/learn/research/">Research</a>
+      <a href="/resources/">Checklists &amp; guides</a>
+    </details>
     <a href="/work/">Work</a>
     <a href="/about/">About</a>
     <button type="button" class="mobile-search js-open-search">
@@ -399,11 +421,11 @@
     <div class="bs-preview" id="bsPreview" hidden>
       <figure class="bs-preview-swatch" data-ground="cream">
         <img id="bsImgCream" alt="Your logo on a cream ground" />
-        <figcaption>On cream (<code>#FAF7F2</code>)</figcaption>
+        <figcaption>On cream (<code>var(--cream)</code>)</figcaption>
       </figure>
       <figure class="bs-preview-swatch" data-ground="ink">
         <img id="bsImgInk" alt="Your logo on an ink ground" />
-        <figcaption>On ink (<code>#14161A</code>)</figcaption>
+        <figcaption>On ink (<code>var(--ink)</code>)</figcaption>
       </figure>
     </div>
 
@@ -730,33 +752,33 @@
   </div>
 
   <div style="max-width:760px;margin:24px auto 0;display:flex;flex-direction:column;gap:14px;">
-    <article style="border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:var(--white);">
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
       <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">Not a logo design tool.</h3>
       <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Brand Suite reads a logo you already have. It will not draw a new mark, fix a kerning issue, or turn a phone photo of your sign into a vector. If you don't have a logo you're happy with yet, the palette extraction will reflect that — garbage in, garbage out.</p>
     </article>
 
-    <article style="border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:var(--white);">
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
       <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">Not a <a href="/glossary/#monochrome-variant" style="color:inherit;border-bottom:1px dashed var(--teal);">monochrome</a> or variant generator.</h3>
       <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">A finished identity needs a one-color version for embroidery, foil, and small-scale print — and often an inverted variant for dark-ground layouts. Brand Suite doesn't produce those in v1. A designer does it properly.</p>
     </article>
 
-    <article style="border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:var(--white);">
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
       <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">Not a <a href="/glossary/#typography-pairing" style="color:inherit;border-bottom:1px dashed var(--teal);">typography pairing</a>.</h3>
       <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">The preview uses our site's fonts for context, not a recommendation. Typography pairing is the second-biggest tone carrier after color; guessing at it algorithmically produces results that all look the same. Curated work, not a heuristic.</p>
     </article>
 
-    <article style="border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:var(--white);">
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
       <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">Not a usage-guidelines document.</h3>
       <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">The README in the ZIP names each color's role and its accessible pairs. It doesn't cover <a href="/glossary/#clearspace" style="color:inherit;border-bottom:1px dashed var(--teal);">clearspace</a>, minimum sizes, misuse examples, voice, photography direction, or the other chapters of a real style guide. Those are what the paid identity service delivers.</p>
     </article>
 
-    <article style="border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:var(--white);">
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
       <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">Not a mockup or a finished website.</h3>
       <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">The live-preview block shows the palette applied to one sample card. It's a legibility check, not a portfolio piece. Business cards, menu covers, Instagram grids, storefront signage — those are design projects, not one-click exports.</p>
     </article>
   </div>
 
-  <div style="max-width:760px;margin:28px auto 0;padding:20px 22px;background:var(--teal-tint);border-radius:12px;border:1px solid var(--line);">
+  <div style="max-width:760px;margin:28px auto 0;padding:20px 22px;background:var(--teal-tint);border-radius:var(--r-input);border:1px solid var(--line);">
     <p style="margin:0 0 8px;font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);">When you want a finished identity, hire a designer.</p>
     <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:var(--ink-soft);">A Brand Identity engagement covers the concept work, the usage rules, the variants, the typography, and a deliverables package you can hand to any vendor. Bring the palette and tokens you generated here — they're useful starting reference.</p>
     <a href="/services/#brand" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:var(--teal);color:var(--cream);border-radius:999px;text-decoration:none;font-size:13px;font-weight:600;">See Brand Identity (from \$1.5k)
@@ -777,6 +799,34 @@
     </div>
   </div>
 </div></section>
+<!-- LIBRARY:tool-deep-links:start -->
+<section class="tool-deep-links" aria-labelledby="tool-deep-h">
+  <div class="container">
+    <header class="tool-deep-head">
+      <span class="eyebrow">Learn more</span>
+      <h2 id="tool-deep-h">Why this tool exists.</h2>
+      <p class="tool-deep-blurb">Every check this tool runs maps to a specific concept in the Library. Two starting points — one definition, one playbook.</p>
+      <div class="tool-deep-topics"><a class="tool-deep-topic" href="/learn/topics/brand-design/">Brand &amp; Design</a></div>
+    </header>
+    <div class="tool-deep-grid">
+      <a class="tool-deep-card tool-deep-card-term" href="/glossary/brand-identity/">
+          <span class="tool-deep-kind">Glossary</span>
+          <h3>Brand identity</h3>
+          <p class="tool-deep-aka">the full visible system around your logo</p>
+          <p class="tool-deep-snippet">The full visible system that carries a business across every touchpoint — logo, colors, typography, voice, and the rules for using them. A l…</p>
+          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-article" href="/blog/wix-vs-custom-for-restaurants/">
+          <span class="tool-deep-kind">Article</span>
+          <h3>Wix vs Custom for Restaurants</h3>
+          <p class="tool-deep-snippet">An honest comparison of Wix and a custom-built restaurant website. Six places Wix runs out of room, the ROI math that makes the switch worth it, and when Wix is actually the right call.</p>
+          <span class="tool-deep-cta">Read the playbook <span aria-hidden="true">→</span></span>
+        </a>
+    </div>
+  </div>
+</section>
+<!-- LIBRARY:tool-deep-links:end -->
+
 </main>
 
 <footer><div class="container">
@@ -827,8 +877,8 @@
   var ROLE_NAMES = ['Primary', 'Secondary', 'Accent 1', 'Accent 2', 'Neutral'];
   var ROLE_VARS  = ['--brand-primary', '--brand-secondary', '--brand-accent-1', '--brand-accent-2', '--brand-neutral'];
   var TOKEN_NAMES = ['brand.primary', 'brand.secondary', 'brand.accent-1', 'brand.accent-2', 'brand.neutral'];
-  var CREAM = '#FAF7F2';
-  var INK   = '#14161A';
+  var CREAM = 'var(--cream)';
+  var INK   = 'var(--ink)';
 
   // Most recent palette — held on closure so the export buttons can
   // rebuild CSS/tokens without re-running extraction.
@@ -1180,7 +1230,7 @@
     lines.push('');
     lines.push('## Your palette');
     lines.push('');
-    lines.push('| Role | Hex | Share | On cream (#FAF7F2) | On ink (#1A1612) |');
+    lines.push('| Role | Hex | Share | On cream (var(--cream)) | On ink (#1A1612) |');
     lines.push('|------|-----|-------|--------------------|------------------|');
     p.forEach(function(entry, i){
       var role = ROLE_NAMES[i] || ('Color ' + (i + 1));

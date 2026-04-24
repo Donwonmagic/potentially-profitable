@@ -152,7 +152,19 @@
     <nav class="nav-links" aria-label="Primary">
       <a href="/services/">Services</a>
       <a href="/for/restaurants/">Restaurants</a>
-      <a href="/learn/">Learn</a>
+      <div class="nav-library-wrap">
+        <a href="/learn/" class="nav-library-trigger" aria-haspopup="true">Library<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-library-menu" role="menu" aria-label="Library sections">
+          <a href="/learn/" role="menuitem"><strong>Library home</strong><span>The hub of everything below</span></a>
+          <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
+          <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
+          <a href="/blog/" role="menuitem"><strong>Articles</strong><span>The how-to playbooks</span></a>
+          <a href="/tools/" role="menuitem"><strong>Free tools</strong><span>Run a check on your own site</span></a>
+          <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span>97 terms in plain English</span></a>
+          <a href="/learn/research/" role="menuitem"><strong>Research</strong><span>The evidence behind the playbooks</span></a>
+          <a href="/resources/" role="menuitem"><strong>Checklists &amp; guides</strong><span>Workbooks you can save</span></a>
+        </div>
+      </div>
       <a href="/work/">Work</a>
       <a href="/about/">About</a>
     </nav>
@@ -178,7 +190,17 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/services/">Services</a>
     <a href="/for/restaurants/">Restaurants</a>
-    <a href="/learn/">Learn</a>
+    <details class="mobile-library">
+      <summary>Library</summary>
+      <a href="/learn/">Library home</a>
+      <a href="/learn/start-here/">Start here</a>
+      <a href="/learn/topics/">Topics</a>
+      <a href="/blog/">Articles</a>
+      <a href="/tools/">Free tools</a>
+      <a href="/glossary/">Glossary</a>
+      <a href="/learn/research/">Research</a>
+      <a href="/resources/">Checklists &amp; guides</a>
+    </details>
     <a href="/work/">Work</a>
     <a href="/about/">About</a>
     <button type="button" class="mobile-search js-open-search">
@@ -320,6 +342,22 @@
   </div>
 </section>
 
+<!-- ============ INLINE SECONDARY CTA (audit) ============
+     Breaks the "Book a 20-min call" monotony between sections.
+     Steers low-commitment visitors toward a free tool that reveals
+     real value before they consider hiring. -->
+<aside class="services-aside-cta" aria-label="Try a free audit first">
+  <div class="container services-aside-cta-inner">
+    <div>
+      <strong>Not ready to book?</strong>
+      <span>See how your current site scores first — the free Restaurant Website Audit runs in about 30 seconds.</span>
+    </div>
+    <a class="btn btn-ghost" href="/tools/audits/restaurant/">Run the free audit
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+  </div>
+</aside>
+
 <!-- ============ PROCESS ============ -->
 <section class="block process" id="process" aria-labelledby="process-heading">
   <div class="container">
@@ -361,42 +399,48 @@
       <p>Websites evolve. Menus change, new photos come in, features grow. A Care Plan keeps the person who built your site hands-on and available &mdash; so updates happen fast and you can focus on running your business.</p>
     </div>
 
-    <div class="care">
-      <div class="plan reveal">
-        <h3>Essentials</h3>
-        <div class="p-price">$125<small>/mo</small></div>
-        <ul>
-          <li>Fast, monitored hosting</li>
-          <li>Daily backups</li>
-          <li>Security &amp; dependency updates</li>
-          <li>Uptime alerts</li>
-          <li>Email support (48h)</li>
-        </ul>
+    <details class="services-collapse">
+      <summary>
+        <span class="services-collapse-summary">Show the three Care Plans</span>
+        <span class="services-collapse-prices">$125 · $225 · $350 / mo</span>
+      </summary>
+      <div class="care services-collapse-body">
+        <div class="plan reveal">
+          <h3>Essentials</h3>
+          <div class="p-price">$125<small>/mo</small></div>
+          <ul>
+            <li>Fast, monitored hosting</li>
+            <li>Daily backups</li>
+            <li>Security &amp; dependency updates</li>
+            <li>Uptime alerts</li>
+            <li>Email support (48h)</li>
+          </ul>
+        </div>
+        <div class="plan featured reveal">
+          <div class="badge">Most chosen</div>
+          <h3>Standard Care</h3>
+          <div class="p-price">$225<small>/mo</small></div>
+          <ul>
+            <li>Everything in Essentials</li>
+            <li>Up to 2 hours of content edits / month</li>
+            <li>Quarterly performance review</li>
+            <li>Priority support (same-day)</li>
+            <li>Analytics summary each month</li>
+          </ul>
+        </div>
+        <div class="plan reveal">
+          <h3>Concierge</h3>
+          <div class="p-price">$350<small>/mo</small></div>
+          <ul>
+            <li>Everything in Standard Care</li>
+            <li>Up to 5 hours of content &amp; feature work</li>
+            <li>Monthly strategy call</li>
+            <li>SEO &amp; local search tuning</li>
+            <li>Direct phone &amp; text access</li>
+          </ul>
+        </div>
       </div>
-      <div class="plan featured reveal">
-        <div class="badge">Most chosen</div>
-        <h3>Standard Care</h3>
-        <div class="p-price">$225<small>/mo</small></div>
-        <ul>
-          <li>Everything in Essentials</li>
-          <li>Up to 2 hours of content edits / month</li>
-          <li>Quarterly performance review</li>
-          <li>Priority support (same-day)</li>
-          <li>Analytics summary each month</li>
-        </ul>
-      </div>
-      <div class="plan reveal">
-        <h3>Concierge</h3>
-        <div class="p-price">$350<small>/mo</small></div>
-        <ul>
-          <li>Everything in Standard Care</li>
-          <li>Up to 5 hours of content &amp; feature work</li>
-          <li>Monthly strategy call</li>
-          <li>SEO &amp; local search tuning</li>
-          <li>Direct phone &amp; text access</li>
-        </ul>
-      </div>
-    </div>
+    </details>
   </div>
 </section>
 
@@ -462,46 +506,52 @@
       <p>Your social media should tell the same story as your website. Because one person creates both, it always will.</p>
     </div>
 
-    <div class="services">
-      <div class="service reveal">
-        <div class="label">You post</div>
-        <h3>Content Kit</h3>
-        <div class="price">$500<small>&ndash;$800/mo</small></div>
-        <p class="desc">Branded graphics, captions, and a content calendar &mdash; you handle the posting.</p>
-        <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>12&ndash;16 branded graphics/month</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Captions &amp; hashtag strategy</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Monthly content calendar</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>2&ndash;3 platforms (IG, FB, GBP)</li>
-        </ul>
-      </div>
+    <details class="services-collapse">
+      <summary>
+        <span class="services-collapse-summary">Show the three Social packages</span>
+        <span class="services-collapse-prices">$500 · $1,200 · $2,500+ / mo</span>
+      </summary>
+      <div class="services services-collapse-body">
+        <div class="service reveal">
+          <div class="label">You post</div>
+          <h3>Content Kit</h3>
+          <div class="price">$500<small>&ndash;$800/mo</small></div>
+          <p class="desc">Branded graphics, captions, and a content calendar &mdash; you handle the posting.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>12&ndash;16 branded graphics/month</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Captions &amp; hashtag strategy</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Monthly content calendar</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>2&ndash;3 platforms (IG, FB, GBP)</li>
+          </ul>
+        </div>
 
-      <div class="service reveal">
-        <div class="label">We post</div>
-        <h3>Presence</h3>
-        <div class="price">$1,200<small>&ndash;$1,800/mo</small></div>
-        <p class="desc">Full posting and scheduling across your platforms, with approval flow and performance tracking.</p>
-        <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>16&ndash;20 posts/month, 3 platforms</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Content calendar + approval flow</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Basic community engagement</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Monthly performance snapshot</li>
-        </ul>
-      </div>
+        <div class="service reveal">
+          <div class="label">We post</div>
+          <h3>Presence</h3>
+          <div class="price">$1,200<small>&ndash;$1,800/mo</small></div>
+          <p class="desc">Full posting and scheduling across your platforms, with approval flow and performance tracking.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>16&ndash;20 posts/month, 3 platforms</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Content calendar + approval flow</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Basic community engagement</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Monthly performance snapshot</li>
+          </ul>
+        </div>
 
-      <div class="service reveal">
-        <div class="label">We manage</div>
-        <h3>Full Management</h3>
-        <div class="price">$2,500<small>&ndash;$3,500/mo</small></div>
-        <p class="desc">Everything in Presence plus community management, analytics, and quarterly strategy.</p>
-        <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Comments, DMs, review management</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Monthly analytics + recommendations</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Quarterly strategy refresh</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Ad-hoc story &amp; reel content</li>
-        </ul>
+        <div class="service reveal">
+          <div class="label">We manage</div>
+          <h3>Full Management</h3>
+          <div class="price">$2,500<small>&ndash;$3,500/mo</small></div>
+          <p class="desc">Everything in Presence plus community management, analytics, and quarterly strategy.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Comments, DMs, review management</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Monthly analytics + recommendations</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Quarterly strategy refresh</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Ad-hoc story &amp; reel content</li>
+          </ul>
+        </div>
       </div>
-    </div>
+    </details>
 
     <div class="bundle-bar reveal">
       <div class="bundle-inner">
@@ -642,15 +692,16 @@
       </nav>
 
       <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Learn</p>
+        <p class="foot-heading" id="foot-learn">Library</p>
         <ul class="foot-links">
           <li><a href="/learn/">Library home</a></li>
           <li><a href="/learn/start-here/">Start here</a></li>
+          <li><a href="/learn/topics/">Topics</a></li>
           <li><a href="/blog/">Articles</a></li>
           <li><a href="/tools/">Free tools</a></li>
           <li><a href="/glossary/">Glossary</a></li>
           <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/resources/restaurant-website-checklist/">Restaurant checklist</a></li>
+          <li><a href="/resources/">Checklists &amp; guides</a></li>
         </ul>
       </nav>
 
