@@ -494,9 +494,17 @@
         <span class="mm-badge-safe" title="Every number you type is processed in your browser. Nothing is sent to our servers.">Stays in your browser</span>
       </div>
       <h3>Prime Cost Check</h3>
-      <p>Two inputs — <a href="/glossary/#food-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">food cost</a> and <a href="/glossary/#labor-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">labor cost</a> as percentages of sales — placed against the 55-65% healthy <a href="/glossary/#prime-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">prime cost</a> band the NRA publishes for full-service independents.</p>
+      <p>Two inputs — <a href="/glossary/#food-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">food cost</a> and <a href="/glossary/#labor-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">labor cost</a> as percentages of sales — placed against the healthy <a href="/glossary/#prime-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">prime cost</a> band for your restaurant type. Full-service sits at 55–65%; fast-casual tightens at the top; fine-dining runs naturally higher.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Prime cost check">
+        <fieldset class="mm-tier-group">
+          <legend>Restaurant type</legend>
+          <div class="mm-tier-btns" role="radiogroup" aria-label="Restaurant type">
+            <button type="button" data-segment="full-service" aria-pressed="true"  role="radio">Full-service<small>55–65%</small></button>
+            <button type="button" data-segment="fast-casual"  aria-pressed="false" role="radio">Fast-casual<small>55–65%</small></button>
+            <button type="button" data-segment="fine-dining"  aria-pressed="false" role="radio">Fine-dining<small>60–70%</small></button>
+          </div>
+        </fieldset>
         <label for="pc-food">
           <span>Food cost (% of sales) <output id="pc-food-val" for="pc-food">30%</output></span>
           <input type="range" id="pc-food" min="15" max="50" step="1" value="30" aria-describedby="pc-food-val" />
@@ -916,7 +924,7 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="./margin-math.js?v=20260424-mm2"></script>
+<script src="./margin-math.js?v=20260424-mm3"></script>
 <script>
 /* Shared scenario sync. Each calculator IIFE registers its own
  * getState() closure; on user interaction we re-encode the full
@@ -1118,18 +1126,57 @@
   var markerEl    = card.querySelector('#pc-marker');
   var recEl       = card.querySelector('#pc-rec');
   var escalateEl  = card.querySelector('#pc-escalate');
+  var segmentBtns = card.querySelectorAll('.mm-tier-btns button[data-segment]');
+  var scaleSpans  = card.querySelectorAll('.mm-pc-scale > span');
+  var axisEl      = card.querySelector('.mm-pc-axis');
 
+  var currentSegment = 'full-service';
   var firstInteractionFired = false;
+
+  // Scale + axis layout per segment. flex-grow values sum arbitrarily;
+  // they're relative widths across the 40–80% visual range. The
+  // axis labels are the visible boundary markers beneath the scale.
+  var SCALE_LAYOUT = {
+    'full-service': { grow: [15, 5, 5, 5, 10], axis: ['40%', '55%', '65%', '70%', '80%'] },
+    'fast-casual':  { grow: [15, 5, 5, 3, 12], axis: ['40%', '55%', '65%', '68%', '80%'] },
+    'fine-dining':  { grow: [20, 5, 5, 5,  5], axis: ['40%', '60%', '70%', '75%', '80%'] }
+  };
+
+  function applyScaleLayout(segment){
+    var layout = SCALE_LAYOUT[segment] || SCALE_LAYOUT['full-service'];
+    for (var i = 0; i < scaleSpans.length; i++) {
+      scaleSpans[i].style.flexGrow = layout.grow[i] || 1;
+    }
+    if (axisEl) {
+      var labels = axisEl.children;
+      for (var j = 0; j < labels.length && j < layout.axis.length; j++) {
+        labels[j].textContent = layout.axis[j];
+      }
+    }
+  }
+
+  function setSegment(segment, focusBtn){
+    if (!SCALE_LAYOUT[segment]) segment = 'full-service';
+    currentSegment = segment;
+    Array.prototype.forEach.call(segmentBtns, function(b){
+      var pressed = b.getAttribute('data-segment') === segment;
+      b.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+    });
+    applyScaleLayout(segment);
+  }
 
   var hydrated = (window.__mmHydratedState && window.__mmHydratedState.pc) || null;
   if (hydrated) {
     if (hydrated.f !== undefined) foodEl.value = hydrated.f;
     if (hydrated.l !== undefined) laborEl.value = hydrated.l;
+    if (hydrated.s) setSegment(hydrated.s);
   }
+  // Apply initial scale layout (so default full-service renders proportional).
+  applyScaleLayout(currentSegment);
   if (window.__mmCalcs) {
     window.__mmCalcs.push({
       ns: 'pc',
-      getState: function(){ return { f: foodEl.value, l: laborEl.value }; }
+      getState: function(){ return { f: foodEl.value, l: laborEl.value, s: currentSegment }; }
     });
   }
 
@@ -1160,7 +1207,8 @@
   function render(){
     var result = window.MM.calcPrimeCost({
       foodCostPct:  foodEl.value,
-      laborCostPct: laborEl.value
+      laborCostPct: laborEl.value,
+      segment:      currentSegment
     });
 
     foodValEl.textContent  = foodEl.value + '%';
@@ -1192,6 +1240,7 @@
     window.plausible('Margin Math PrimeCost', { props: {
       foodcost_bucket:   window.MM.bucketFoodCost(foodEl.value),
       prime_cost_bucket: window.MM.bucketPrimeCost(result.primeCostPct),
+      segment:           currentSegment,
       band:              result.band
     }});
   }
@@ -1204,6 +1253,13 @@
 
   foodEl.addEventListener('input', onInput);
   laborEl.addEventListener('input', onInput);
+
+  Array.prototype.forEach.call(segmentBtns, function(btn){
+    btn.addEventListener('click', function(){
+      setSegment(btn.getAttribute('data-segment'));
+      onInput();
+    });
+  });
 
   // Initial render — no analytics fire, no fragment sync.
   render();

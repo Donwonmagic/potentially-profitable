@@ -27,6 +27,8 @@ const mmSrc = readFileSync(
 const {
   calcDeliveryBreakeven,
   calcPrimeCost,
+  PRIME_COST_SEGMENTS,
+  PRIME_COST_SEGMENT_KEYS,
   calcBreakEvenCovers,
   calcPriceRaise,
   encodeState,
@@ -225,6 +227,61 @@ assertEq('prime @ 65% -> warn',  calcPrimeCost({ foodCostPct: 0.33, laborCostPct
 assertEq('prime @ 69% -> warn',  calcPrimeCost({ foodCostPct: 0.34, laborCostPct: 0.35 }).band, 'warn');
 assertEq('prime @ 70% -> bad',   calcPrimeCost({ foodCostPct: 0.35, laborCostPct: 0.35 }).band, 'bad');
 assertEq('prime @ 80% -> bad',   calcPrimeCost({ foodCostPct: 0.40, laborCostPct: 0.40 }).band, 'bad');
+
+// Segment-aware bands.
+//
+// full-service (default): matches the historical thresholds above.
+//   echoed through segment input.
+// fast-casual: same lower bands, but "warn" compresses (65-68) and
+//   "bad" lands at ≥68%.
+// fine-dining: every threshold shifts up by 5 percentage points.
+assertEq('prime segment default is full-service',
+  calcPrimeCost({ foodCostPct: 0.30, laborCostPct: 0.32 }).segment, 'full-service');
+assertEq('prime segment unknown falls back to full-service',
+  calcPrimeCost({ foodCostPct: 0.30, laborCostPct: 0.32, segment: 'cloud-kitchen' }).segment, 'full-service');
+
+// fast-casual boundaries. Thresholds < 55 / 55 / 60 / 65 / 68 ≤.
+// Note: 65% is the "warn" lower bound here (same as full-service);
+// the difference vs. full-service is the "bad" boundary moving from
+// 70% down to 68%.
+assertEq('fast-casual @ 64% -> ok',
+  calcPrimeCost({ foodCostPct: 0.32, laborCostPct: 0.32, segment: 'fast-casual' }).band, 'ok');
+assertEq('fast-casual @ 65% -> warn',
+  calcPrimeCost({ foodCostPct: 0.33, laborCostPct: 0.32, segment: 'fast-casual' }).band, 'warn');
+assertEq('fast-casual @ 67% -> warn',
+  calcPrimeCost({ foodCostPct: 0.33, laborCostPct: 0.34, segment: 'fast-casual' }).band, 'warn');
+assertEq('fast-casual @ 68% -> bad',
+  calcPrimeCost({ foodCostPct: 0.34, laborCostPct: 0.34, segment: 'fast-casual' }).band, 'bad');
+assertEq('fast-casual @ 70% -> bad',
+  calcPrimeCost({ foodCostPct: 0.35, laborCostPct: 0.35, segment: 'fast-casual' }).band, 'bad');
+
+// fine-dining boundaries
+assertEq('fine-dining @ 59% -> below',
+  calcPrimeCost({ foodCostPct: 0.29, laborCostPct: 0.30, segment: 'fine-dining' }).band, 'below');
+assertEq('fine-dining @ 60% -> good',
+  calcPrimeCost({ foodCostPct: 0.30, laborCostPct: 0.30, segment: 'fine-dining' }).band, 'good');
+assertEq('fine-dining @ 65% -> ok',
+  calcPrimeCost({ foodCostPct: 0.33, laborCostPct: 0.32, segment: 'fine-dining' }).band, 'ok');
+assertEq('fine-dining @ 70% -> warn',
+  calcPrimeCost({ foodCostPct: 0.35, laborCostPct: 0.35, segment: 'fine-dining' }).band, 'warn');
+assertEq('fine-dining @ 75% -> bad',
+  calcPrimeCost({ foodCostPct: 0.38, laborCostPct: 0.37, segment: 'fine-dining' }).band, 'bad');
+
+// A 70% prime cost is classified differently per segment — this is
+// the whole point of the segmentation.
+assertEq('70% prime: full-service -> bad',
+  calcPrimeCost({ foodCostPct: 0.35, laborCostPct: 0.35, segment: 'full-service' }).band, 'bad');
+assertEq('70% prime: fast-casual -> bad',
+  calcPrimeCost({ foodCostPct: 0.35, laborCostPct: 0.35, segment: 'fast-casual' }).band, 'bad');
+assertEq('70% prime: fine-dining -> warn',
+  calcPrimeCost({ foodCostPct: 0.35, laborCostPct: 0.35, segment: 'fine-dining' }).band, 'warn');
+
+// Exposure + enum
+assert('PRIME_COST_SEGMENTS exposed', PRIME_COST_SEGMENTS && typeof PRIME_COST_SEGMENTS === 'object');
+assertEq('PRIME_COST_SEGMENT_KEYS length', PRIME_COST_SEGMENT_KEYS.length, 3);
+assert('PRIME_COST_SEGMENT_KEYS contains full-service', PRIME_COST_SEGMENT_KEYS.indexOf('full-service') >= 0);
+assert('PRIME_COST_SEGMENT_KEYS contains fast-casual',  PRIME_COST_SEGMENT_KEYS.indexOf('fast-casual')  >= 0);
+assert('PRIME_COST_SEGMENT_KEYS contains fine-dining',  PRIME_COST_SEGMENT_KEYS.indexOf('fine-dining')  >= 0);
 
 // Overflow clamp
 {

@@ -214,20 +214,33 @@ function mmBucketPrimeCost(pct) {
 // Inputs:
 //   foodCostPct         — food cost as fraction of sales (0..1 or 0..100)
 //   laborCostPct        — labor cost as fraction of sales (0..1 or 0..100)
+//   segment             — 'full-service' (default) | 'fast-casual' | 'fine-dining'
 //
 // Output:
 //   primeCostPct        — sum, capped at 100%
 //   band                — 'below' | 'good' | 'ok' | 'warn' | 'bad'
+//   segment             — echoed back for consumer display
 //
-// Band thresholds (anchored to NRA benchmarks cited in the DoorDash
-// post; 55-65% is the widely-published healthy range for full-service
-// independents):
-//   < 55%   — below ("unusually tight; confirm costs are fully in")
-//   55-59%  — good  (healthy lower half)
-//   60-64%  — ok    (healthy upper half; watch trend)
-//   65-69%  — warn  (pressure zone)
-//   >= 70%  — bad   (unsustainable without correction)
+// Segment-specific band thresholds, anchored to NRA benchmarks for
+// independent operators. Full-service sits at the canonical 55–65%
+// healthy band; fast-casual has tighter margins that escalate to
+// "bad" sooner; fine-dining carries a naturally higher healthy band
+// from the labor and ingredient profile of table-service dining.
+//
+//   full-service:  < 55  below | 55-60 good | 60-65 ok | 65-70 warn | ≥ 70 bad
+//   fast-casual:   < 55  below | 55-60 good | 60-65 ok | 65-68 warn | ≥ 68 bad
+//   fine-dining:   < 60  below | 60-65 good | 65-70 ok | 70-75 warn | ≥ 75 bad
+//
+// Unknown segment values fall back to 'full-service' silently so a
+// stale fragment link can't break the calculator.
 // ------------------------------------------------------------
+
+var MM_PRIME_COST_SEGMENTS = {
+  'full-service': { thresholds: [0.55, 0.60, 0.65, 0.70] },
+  'fast-casual':  { thresholds: [0.55, 0.60, 0.65, 0.68] },
+  'fine-dining':  { thresholds: [0.60, 0.65, 0.70, 0.75] }
+};
+var MM_PRIME_COST_SEGMENT_KEYS = ['full-service', 'fast-casual', 'fine-dining'];
 
 // ------------------------------------------------------------
 // Break-Even Covers
@@ -406,23 +419,28 @@ function mmCalcPrimeCost(input) {
   input = input || {};
   var foodCostPct = mmClampPct(input.foodCostPct);
   var laborCostPct = mmClampPct(input.laborCostPct);
+  var segment = input.segment;
+  if (!MM_PRIME_COST_SEGMENTS[segment]) segment = 'full-service';
   var primeCostPct = foodCostPct + laborCostPct;
   if (primeCostPct > 1) primeCostPct = 1;
 
+  var t = MM_PRIME_COST_SEGMENTS[segment].thresholds;
   var band;
-  if (primeCostPct < 0.55)       band = 'below';
-  else if (primeCostPct < 0.60)  band = 'good';
-  else if (primeCostPct < 0.65)  band = 'ok';
-  else if (primeCostPct < 0.70)  band = 'warn';
-  else                           band = 'bad';
+  if (primeCostPct < t[0])      band = 'below';
+  else if (primeCostPct < t[1]) band = 'good';
+  else if (primeCostPct < t[2]) band = 'ok';
+  else if (primeCostPct < t[3]) band = 'warn';
+  else                          band = 'bad';
 
   return {
     inputs: {
       foodCostPct: foodCostPct,
-      laborCostPct: laborCostPct
+      laborCostPct: laborCostPct,
+      segment: segment
     },
     primeCostPct: primeCostPct,
-    band: band
+    band: band,
+    segment: segment
   };
 }
 
@@ -457,7 +475,7 @@ function mmCalcPrimeCost(input) {
 var MM_FRAGMENT_VERSION = '1';
 var MM_FRAGMENT_KEYS = {
   dbe: ['t', 'f', 'c', 'o'],
-  pc:  ['f', 'l'],
+  pc:  ['f', 'l', 's'],
   bec: ['fx', 'k', 'm', 'd', 'tp'],
   pr:  ['b', 't', 'l', 'm']
 };
@@ -538,6 +556,8 @@ if (typeof window !== 'undefined') {
     COMMISSION_TIERS: MM_COMMISSION_TIERS,
     PRIME_COST_BUCKETS: MM_PRIME_COST_BUCKETS,
     PRIME_COST_BANDS: MM_PRIME_COST_BANDS,
+    PRIME_COST_SEGMENTS:     MM_PRIME_COST_SEGMENTS,
+    PRIME_COST_SEGMENT_KEYS: MM_PRIME_COST_SEGMENT_KEYS,
     FIXED_COST_BUCKETS: MM_FIXED_COST_BUCKETS,
     BREAKEVEN_BANDS: MM_BREAKEVEN_BANDS,
     PRICE_RAISE_TIERS: MM_PRICE_RAISE_TIERS,
@@ -574,6 +594,8 @@ if (typeof module !== 'undefined' && module.exports) {
     COMMISSION_TIERS: MM_COMMISSION_TIERS,
     PRIME_COST_BUCKETS: MM_PRIME_COST_BUCKETS,
     PRIME_COST_BANDS: MM_PRIME_COST_BANDS,
+    PRIME_COST_SEGMENTS:     MM_PRIME_COST_SEGMENTS,
+    PRIME_COST_SEGMENT_KEYS: MM_PRIME_COST_SEGMENT_KEYS,
     FIXED_COST_BUCKETS: MM_FIXED_COST_BUCKETS,
     BREAKEVEN_BANDS: MM_BREAKEVEN_BANDS,
     PRICE_RAISE_TIERS: MM_PRICE_RAISE_TIERS,

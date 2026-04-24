@@ -474,9 +474,17 @@
         <span class="mm-badge-safe" title="Cada número que escribes se procesa en tu navegador. Nada se envía a nuestros servidores.">Se queda en tu navegador</span>
       </div>
       <h3>Chequeo de prime cost</h3>
-      <p>Dos entradas — <a href="/es/glossary/#food-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">food cost</a> y <a href="/es/glossary/#labor-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">labor cost</a> como porcentajes de ventas — contra la franja saludable 55-65% del <a href="/es/glossary/#prime-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">prime cost</a> que publica la NRA para restaurantes independientes de servicio completo.</p>
+      <p>Dos entradas — <a href="/es/glossary/#food-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">food cost</a> y <a href="/es/glossary/#labor-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">labor cost</a> como porcentajes de ventas — contra la franja saludable del <a href="/es/glossary/#prime-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">prime cost</a> según tu tipo de restaurante. Servicio completo va en 55–65%; fast-casual se aprieta en el tope; fine-dining corre naturalmente más alto.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Chequeo de prime cost">
+        <fieldset class="mm-tier-group">
+          <legend>Tipo de restaurante</legend>
+          <div class="mm-tier-btns" role="radiogroup" aria-label="Tipo de restaurante">
+            <button type="button" data-segment="full-service" aria-pressed="true"  role="radio">Servicio completo<small>55–65%</small></button>
+            <button type="button" data-segment="fast-casual"  aria-pressed="false" role="radio">Fast-casual<small>55–65%</small></button>
+            <button type="button" data-segment="fine-dining"  aria-pressed="false" role="radio">Fine-dining<small>60–70%</small></button>
+          </div>
+        </fieldset>
         <label for="pc-food">
           <span>Food cost (% de ventas) <output id="pc-food-val" for="pc-food">30%</output></span>
           <input type="range" id="pc-food" min="15" max="50" step="1" value="30" aria-describedby="pc-food-val" />
@@ -896,7 +904,7 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/es/terms.html">Términos</a><a href="/es/privacy.html">Privacidad</a><a href="/es/accessibility.html">Accesibilidad</a><a href="/es/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="./margin-math.js?v=20260424-mm2"></script>
+<script src="./margin-math.js?v=20260424-mm3"></script>
 <script>
 /* Sincronía de escenario compartida. Cada IIFE de calculadora
  * registra su propia función getState(); al interactuar, re-codifica
@@ -1087,18 +1095,56 @@
   var markerEl    = card.querySelector('#pc-marker');
   var recEl       = card.querySelector('#pc-rec');
   var escalateEl  = card.querySelector('#pc-escalate');
+  var segmentBtns = card.querySelectorAll('.mm-tier-btns button[data-segment]');
+  var scaleSpans  = card.querySelectorAll('.mm-pc-scale > span');
+  var axisEl      = card.querySelector('.mm-pc-axis');
 
+  var currentSegment = 'full-service';
   var firstInteractionFired = false;
+
+  // Layout de escala + eje por segmento. Los flex-grow suman algo
+  // arbitrario; son anchos relativos dentro del rango visual 40–80%.
+  // Las etiquetas del eje son los marcadores de frontera visibles.
+  var SCALE_LAYOUT = {
+    'full-service': { grow: [15, 5, 5, 5, 10], axis: ['40%', '55%', '65%', '70%', '80%'] },
+    'fast-casual':  { grow: [15, 5, 5, 3, 12], axis: ['40%', '55%', '65%', '68%', '80%'] },
+    'fine-dining':  { grow: [20, 5, 5, 5,  5], axis: ['40%', '60%', '70%', '75%', '80%'] }
+  };
+
+  function applyScaleLayout(segment){
+    var layout = SCALE_LAYOUT[segment] || SCALE_LAYOUT['full-service'];
+    for (var i = 0; i < scaleSpans.length; i++) {
+      scaleSpans[i].style.flexGrow = layout.grow[i] || 1;
+    }
+    if (axisEl) {
+      var labels = axisEl.children;
+      for (var j = 0; j < labels.length && j < layout.axis.length; j++) {
+        labels[j].textContent = layout.axis[j];
+      }
+    }
+  }
+
+  function setSegment(segment){
+    if (!SCALE_LAYOUT[segment]) segment = 'full-service';
+    currentSegment = segment;
+    Array.prototype.forEach.call(segmentBtns, function(b){
+      var pressed = b.getAttribute('data-segment') === segment;
+      b.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+    });
+    applyScaleLayout(segment);
+  }
 
   var hydrated = (window.__mmHydratedState && window.__mmHydratedState.pc) || null;
   if (hydrated) {
     if (hydrated.f !== undefined) foodEl.value = hydrated.f;
     if (hydrated.l !== undefined) laborEl.value = hydrated.l;
+    if (hydrated.s) setSegment(hydrated.s);
   }
+  applyScaleLayout(currentSegment);
   if (window.__mmCalcs) {
     window.__mmCalcs.push({
       ns: 'pc',
-      getState: function(){ return { f: foodEl.value, l: laborEl.value }; }
+      getState: function(){ return { f: foodEl.value, l: laborEl.value, s: currentSegment }; }
     });
   }
 
@@ -1127,7 +1173,8 @@
   function render(){
     var result = window.MM.calcPrimeCost({
       foodCostPct:  foodEl.value,
-      laborCostPct: laborEl.value
+      laborCostPct: laborEl.value,
+      segment:      currentSegment
     });
 
     foodValEl.textContent  = foodEl.value + '%';
@@ -1159,6 +1206,7 @@
     window.plausible('Margin Math PrimeCost', { props: {
       foodcost_bucket:   window.MM.bucketFoodCost(foodEl.value),
       prime_cost_bucket: window.MM.bucketPrimeCost(result.primeCostPct),
+      segment:           currentSegment,
       band:              result.band
     }});
   }
@@ -1171,6 +1219,13 @@
 
   foodEl.addEventListener('input', onInput);
   laborEl.addEventListener('input', onInput);
+
+  Array.prototype.forEach.call(segmentBtns, function(btn){
+    btn.addEventListener('click', function(){
+      setSegment(btn.getAttribute('data-segment'));
+      onInput();
+    });
+  });
 
   render();
 })();
