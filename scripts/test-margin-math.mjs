@@ -19,16 +19,20 @@ const require = createRequire(import.meta.url);
 
 const {
   calcDeliveryBreakeven,
+  calcPrimeCost,
   formatMoney,
   formatPct,
   bucketTicket,
   bucketFoodCost,
   bucketCommission,
+  bucketPrimeCost,
   clampPct,
   num,
   TICKET_BUCKETS,
   FOODCOST_BUCKETS,
   COMMISSION_TIERS,
+  PRIME_COST_BUCKETS,
+  PRIME_COST_BANDS,
   RECOMMENDATIONS,
   DIRECT_PROCESSING_PCT
 } = require('../tools/margin-math/margin-math.js');
@@ -175,6 +179,69 @@ assertEq('bucket: food 38%',   bucketFoodCost(0.38),    'gte38');
 assertEq('bucket: commission 17%', bucketCommission(0.17), 'basic');
 assertEq('bucket: commission 18%', bucketCommission(0.18), 'plus');
 assertEq('bucket: commission 27%', bucketCommission(0.27), 'premier');
+
+// ------------------------------------------------------------
+// Prime Cost Check
+// ------------------------------------------------------------
+{
+  const r = calcPrimeCost({ foodCostPct: 0.30, laborCostPct: 0.32 });
+  assertClose('prime cost sums food + labor', r.primeCostPct, 0.62);
+  assertEq('prime cost band @ 62% = ok', r.band, 'ok');
+}
+{
+  // pct input normalization (30 vs 0.30)
+  const a = calcPrimeCost({ foodCostPct: 30, laborCostPct: 32 });
+  const b = calcPrimeCost({ foodCostPct: 0.30, laborCostPct: 0.32 });
+  assertClose('pct input normalizes: prime cost %', a.primeCostPct, b.primeCostPct);
+}
+// Band boundaries
+assertEq('prime @ 54% -> below', calcPrimeCost({ foodCostPct: 0.27, laborCostPct: 0.27 }).band, 'below');
+assertEq('prime @ 55% -> good',  calcPrimeCost({ foodCostPct: 0.27, laborCostPct: 0.28 }).band, 'good');
+assertEq('prime @ 59% -> good',  calcPrimeCost({ foodCostPct: 0.30, laborCostPct: 0.29 }).band, 'good');
+assertEq('prime @ 60% -> ok',    calcPrimeCost({ foodCostPct: 0.30, laborCostPct: 0.30 }).band, 'ok');
+assertEq('prime @ 64% -> ok',    calcPrimeCost({ foodCostPct: 0.32, laborCostPct: 0.32 }).band, 'ok');
+assertEq('prime @ 65% -> warn',  calcPrimeCost({ foodCostPct: 0.33, laborCostPct: 0.32 }).band, 'warn');
+assertEq('prime @ 69% -> warn',  calcPrimeCost({ foodCostPct: 0.34, laborCostPct: 0.35 }).band, 'warn');
+assertEq('prime @ 70% -> bad',   calcPrimeCost({ foodCostPct: 0.35, laborCostPct: 0.35 }).band, 'bad');
+assertEq('prime @ 80% -> bad',   calcPrimeCost({ foodCostPct: 0.40, laborCostPct: 0.40 }).band, 'bad');
+
+// Overflow clamp
+{
+  const r = calcPrimeCost({ foodCostPct: 0.60, laborCostPct: 0.60 });
+  assertEq('prime cost caps at 100%', r.primeCostPct, 1);
+  assertEq('overflow prime -> bad',   r.band, 'bad');
+}
+
+// Prime-cost bucket scan (privacy enum)
+scan('bucketPrimeCost scan 0-100%', bucketPrimeCost, 0, 100, 1, PRIME_COST_BUCKETS);
+assertEq('bucket: prime 54%', bucketPrimeCost(0.54), 'lt55');
+assertEq('bucket: prime 55%', bucketPrimeCost(0.55), '55-59');
+assertEq('bucket: prime 60%', bucketPrimeCost(0.60), '60-64');
+assertEq('bucket: prime 65%', bucketPrimeCost(0.65), '65-69');
+assertEq('bucket: prime 70%', bucketPrimeCost(0.70), 'gte70');
+
+// Privacy: bucketPrimeCost can't leak a raw string either
+{
+  const poison = '0.626_HIDDEN';
+  const out = bucketPrimeCost(poison);
+  assert('no "HIDDEN" leak from bucketPrimeCost', ('' + out).indexOf('HIDDEN') === -1);
+}
+
+// Band name is always from the fixed PRIME_COST_BANDS enum
+{
+  const bandsSeen = new Set();
+  for (let f = 0; f <= 1; f += 0.05) {
+    for (let l = 0; l <= 1; l += 0.05) {
+      const r = calcPrimeCost({ foodCostPct: f, laborCostPct: l });
+      bandsSeen.add(r.band);
+      if (!PRIME_COST_BANDS.includes(r.band)) {
+        console.log('FAIL  band name not in enum: ' + JSON.stringify(r.band));
+        failures++;
+      }
+    }
+  }
+  console.log('PASS  calcPrimeCost band names all in enum (' + bandsSeen.size + ' distinct)');
+}
 
 // ------------------------------------------------------------
 // Privacy-critical: no raw string ever leaked

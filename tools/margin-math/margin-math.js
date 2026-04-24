@@ -136,6 +136,8 @@ var MM_TICKET_BUCKETS = ['lt15', '15-24', '25-39', 'gte40'];
 var MM_FOODCOST_BUCKETS = ['lt28', '28-32', '33-37', 'gte38'];
 var MM_COMMISSION_TIERS = ['basic', 'plus', 'premier'];
 var MM_RECOMMENDATIONS = ['keep', 'optimize', 'consider-leaving'];
+var MM_PRIME_COST_BUCKETS = ['lt55', '55-59', '60-64', '65-69', 'gte70'];
+var MM_PRIME_COST_BANDS = ['below', 'good', 'ok', 'warn', 'bad'];
 
 function mmBucketTicket(ticket) {
   var t = mmNum(ticket);
@@ -162,21 +164,81 @@ function mmBucketCommission(pct) {
   return 'premier';
 }
 
+function mmBucketPrimeCost(pct) {
+  // Prime-cost buckets mirror the band thresholds exactly. No decimal
+  // precision leaked; every return value is from MM_PRIME_COST_BUCKETS.
+  var p = mmClampPct(pct);
+  if (p < 0.55) return 'lt55';
+  if (p < 0.60) return '55-59';
+  if (p < 0.65) return '60-64';
+  if (p < 0.70) return '65-69';
+  return 'gte70';
+}
+
 // ------------------------------------------------------------
-// Browser + Node dual export
+// Prime Cost Check
+//
+// Inputs:
+//   foodCostPct         — food cost as fraction of sales (0..1 or 0..100)
+//   laborCostPct        — labor cost as fraction of sales (0..1 or 0..100)
+//
+// Output:
+//   primeCostPct        — sum, capped at 100%
+//   band                — 'below' | 'good' | 'ok' | 'warn' | 'bad'
+//
+// Band thresholds (anchored to NRA benchmarks cited in the DoorDash
+// post; 55-65% is the widely-published healthy range for full-service
+// independents):
+//   < 55%   — below ("unusually tight; confirm costs are fully in")
+//   55-59%  — good  (healthy lower half)
+//   60-64%  — ok    (healthy upper half; watch trend)
+//   65-69%  — warn  (pressure zone)
+//   >= 70%  — bad   (unsustainable without correction)
+// ------------------------------------------------------------
+
+function mmCalcPrimeCost(input) {
+  input = input || {};
+  var foodCostPct = mmClampPct(input.foodCostPct);
+  var laborCostPct = mmClampPct(input.laborCostPct);
+  var primeCostPct = foodCostPct + laborCostPct;
+  if (primeCostPct > 1) primeCostPct = 1;
+
+  var band;
+  if (primeCostPct < 0.55)       band = 'below';
+  else if (primeCostPct < 0.60)  band = 'good';
+  else if (primeCostPct < 0.65)  band = 'ok';
+  else if (primeCostPct < 0.70)  band = 'warn';
+  else                           band = 'bad';
+
+  return {
+    inputs: {
+      foodCostPct: foodCostPct,
+      laborCostPct: laborCostPct
+    },
+    primeCostPct: primeCostPct,
+    band: band
+  };
+}
+
+// ------------------------------------------------------------
+// Dual export
 // ------------------------------------------------------------
 
 if (typeof window !== 'undefined') {
   window.MM = {
     calcDeliveryBreakeven: mmCalcDeliveryBreakeven,
+    calcPrimeCost:         mmCalcPrimeCost,
     formatMoney: mmFormatMoney,
     formatPct: mmFormatPct,
     bucketTicket: mmBucketTicket,
     bucketFoodCost: mmBucketFoodCost,
     bucketCommission: mmBucketCommission,
+    bucketPrimeCost: mmBucketPrimeCost,
     TICKET_BUCKETS: MM_TICKET_BUCKETS,
     FOODCOST_BUCKETS: MM_FOODCOST_BUCKETS,
     COMMISSION_TIERS: MM_COMMISSION_TIERS,
+    PRIME_COST_BUCKETS: MM_PRIME_COST_BUCKETS,
+    PRIME_COST_BANDS: MM_PRIME_COST_BANDS,
     RECOMMENDATIONS: MM_RECOMMENDATIONS,
     DIRECT_PROCESSING_PCT: MM_DIRECT_PROCESSING_PCT
   };
@@ -185,16 +247,20 @@ if (typeof window !== 'undefined') {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     calcDeliveryBreakeven: mmCalcDeliveryBreakeven,
+    calcPrimeCost:         mmCalcPrimeCost,
     formatMoney: mmFormatMoney,
     formatPct: mmFormatPct,
     bucketTicket: mmBucketTicket,
     bucketFoodCost: mmBucketFoodCost,
     bucketCommission: mmBucketCommission,
+    bucketPrimeCost: mmBucketPrimeCost,
     clampPct: mmClampPct,
     num: mmNum,
     TICKET_BUCKETS: MM_TICKET_BUCKETS,
     FOODCOST_BUCKETS: MM_FOODCOST_BUCKETS,
     COMMISSION_TIERS: MM_COMMISSION_TIERS,
+    PRIME_COST_BUCKETS: MM_PRIME_COST_BUCKETS,
+    PRIME_COST_BANDS: MM_PRIME_COST_BANDS,
     RECOMMENDATIONS: MM_RECOMMENDATIONS,
     DIRECT_PROCESSING_PCT: MM_DIRECT_PROCESSING_PCT
   };
