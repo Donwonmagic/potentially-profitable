@@ -338,10 +338,53 @@
 
       <a class="mm-blog-link" href="/blog/is-doordash-worth-it-for-restaurants-in-2026/#prime-cost">¿Qué es un prime cost saludable y de dónde vienen los números? &rarr;</a>
     </article>
-    <article class="mm-card mm-coming" aria-disabled="true">
-      <span class="mm-card-eyebrow">Fase 2 &middot; Próximamente</span>
+    <article class="mm-card mm-live" data-calc="break-even-covers">
+      <div class="mm-card-header">
+        <span class="mm-card-eyebrow">Calculadora 3 de 4</span>
+        <span class="mm-badge-safe" title="Cada número que escribes se procesa en tu navegador. Nada se envía a nuestros servidores.">Se queda en tu navegador</span>
+      </div>
       <h3>Cubiertos para romper el punto</h3>
-      <p>Costos fijos mensuales, ticket promedio, margen por cubierto. Salida: cubiertos por día para llegar a cero, y el colchón que queda arriba.</p>
+      <p>¿Cuántos cubiertos por noche exige tu overhead fijo? Opcional: ingresa tus cubiertos diarios típicos para ver el colchón mensual sobre el punto de equilibrio.</p>
+
+      <form class="mm-form" onsubmit="return false;" aria-label="Calculadora de cubiertos para romper el punto">
+        <label for="bec-fixed">
+          <span>Costos fijos mensuales ($)</span>
+          <input type="number" id="bec-fixed" min="0" max="200000" step="100" value="15000" inputmode="numeric" placeholder="renta + seguro + préstamo + SaaS, sumados" />
+        </label>
+        <label for="bec-check">
+          <span>Ticket promedio <output id="bec-check-val" for="bec-check">$35</output></span>
+          <input type="range" id="bec-check" min="10" max="100" step="1" value="35" aria-describedby="bec-check-val" />
+        </label>
+        <label for="bec-margin">
+          <span>Margen de contribución / cubierto <output id="bec-margin-val" for="bec-margin">20%</output></span>
+          <input type="range" id="bec-margin" min="5" max="50" step="1" value="20" aria-describedby="bec-margin-val" />
+          <small style="color:var(--stone);font-weight:400;font-size:12px;line-height:1.4;">Lo que aporta un cubierto después de comida, labor por hora y comisiones de tarjeta. No es lo mismo que el margen operativo.</small>
+        </label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <label for="bec-days">
+            <span>Días abierto/mes</span>
+            <input type="number" id="bec-days" min="1" max="31" step="1" value="28" inputmode="numeric" />
+          </label>
+          <label for="bec-typical">
+            <span>Cubiertos/día típicos <small style="color:var(--stone);font-weight:400;">opcional</small></span>
+            <input type="number" id="bec-typical" min="0" max="1000" step="1" value="150" inputmode="numeric" placeholder="ej., 120" />
+          </label>
+        </div>
+      </form>
+
+      <div class="mm-results" aria-live="polite" aria-atomic="true">
+        <div class="mm-monthly" id="bec-head" data-band="ok">
+          <span class="mm-monthly-label">Cubiertos/día solo para romper el punto</span>
+          <span class="mm-monthly-value" id="bec-daily">77</span>
+          <span class="mm-monthly-subtext" id="bec-sub">$7 de contribución por cubierto &middot; 28 días abiertos/mes</span>
+        </div>
+        <div id="bec-headroom-block" style="border-top:1px dashed var(--line-dark);padding-top:10px;margin-top:2px;text-align:center;display:flex;flex-direction:column;gap:2px;">
+          <span class="mm-monthly-label">Colchón mensual a volumen típico</span>
+          <span class="mm-monthly-value" id="bec-headroom" style="color:#1F6B3A;font-family:var(--font-display);font-size:28px;font-weight:500;font-variant-numeric:tabular-nums;line-height:1.1;">$14,400</span>
+          <span class="mm-monthly-subtext" id="bec-cap">a 150 cubiertos/día, 51% de la capacidad va a costos fijos</span>
+        </div>
+        <div class="mm-recommendation" id="bec-rec" data-band="ok"></div>
+      </div>
     </article>
     <article class="mm-card mm-coming" aria-disabled="true">
       <span class="mm-card-eyebrow">Fase 3 &middot; Próximamente</span>
@@ -704,6 +747,95 @@
 
   foodEl.addEventListener('input', onInput);
   laborEl.addEventListener('input', onInput);
+
+  render();
+})();
+
+/* Calculadora de cubiertos para romper el punto — IIFE aislado. */
+(function(){
+  if (!window.MM) return;
+  var card = document.querySelector('[data-calc="break-even-covers"]');
+  if (!card) return;
+
+  var fixedEl       = card.querySelector('#bec-fixed');
+  var checkEl       = card.querySelector('#bec-check');
+  var checkValEl    = card.querySelector('#bec-check-val');
+  var marginEl      = card.querySelector('#bec-margin');
+  var marginValEl   = card.querySelector('#bec-margin-val');
+  var daysEl        = card.querySelector('#bec-days');
+  var typicalEl     = card.querySelector('#bec-typical');
+  var dailyEl       = card.querySelector('#bec-daily');
+  var subEl         = card.querySelector('#bec-sub');
+  var headEl        = card.querySelector('#bec-head');
+  var headroomBlock = card.querySelector('#bec-headroom-block');
+  var headroomEl    = card.querySelector('#bec-headroom');
+  var capEl         = card.querySelector('#bec-cap');
+  var recEl         = card.querySelector('#bec-rec');
+
+  var firstInteractionFired = false;
+
+  var REC_COPY = {
+    'good': 'Los costos fijos son una porción cómoda de la operación. Estás con verdadero colchón. La palanca a vigilar son los costos fijos que se arrastran (suscripciones SaaS, alzas pequeñas de proveedores) — no se sienten como crisis pero suman.',
+    'ok':   'Terreno típico — la mayor parte del mes va a cubrir el overhead, el resto es tuyo. Una semana floja tuerce la matemática. Vale la pena saber con precisión qué días de la semana cargan el margen para poderlos defender.',
+    'warn': 'Apretado. Una racha floja tira el mes a pérdida. Si es crónico, revisa primero si los costos fijos son de verdad fijos (renegociar el stack de SaaS y seguros suele ser más rápido que subir tráfico), luego si los cubiertos típicos se pueden estirar (servicio extra, un nuevo daypart).',
+    'bad':  'En punto de equilibrio con volumen típico — no hay margen de error. Dos palancas: cortar fijos (la más difícil, la más lenta), o subir contribución por cubierto (re-ingeniar el menú hacia platos de alto margen, subir precio en los platos firma). Pueden hacer falta las dos.',
+    'na':   ''
+  };
+
+  function render(){
+    var result = window.MM.calcBreakEvenCovers({
+      fixedMonthlyCosts:   fixedEl.value,
+      avgCheck:            checkEl.value,
+      avgMarginPct:        marginEl.value,
+      openDaysPerMonth:    daysEl.value,
+      typicalCoversPerDay: typicalEl.value
+    });
+
+    checkValEl.textContent  = window.MM.formatMoney(checkEl.value);
+    marginValEl.textContent = marginEl.value + '%';
+    dailyEl.textContent     = Math.ceil(result.coversToBreakEvenDaily || 0).toString();
+    subEl.textContent       = window.MM.formatMoney(result.contributionPerCover) +
+                              ' de contribución por cubierto · ' +
+                              result.inputs.openDaysPerMonth + ' días abiertos';
+
+    if (result.band) {
+      headEl.setAttribute('data-band', result.band);
+      headroomBlock.style.display = 'flex';
+      var positive = result.monthlyHeadroom >= 0;
+      headroomEl.textContent = (positive ? '' : '-') + window.MM.formatMoney(Math.abs(result.monthlyHeadroom));
+      headroomEl.style.color = positive ? '#1F6B3A' : 'var(--rust)';
+      var capPct = Math.round((result.capacityUtilization || 0) * 100);
+      capEl.textContent = 'a ' + Math.round(result.inputs.typicalCoversPerDay) +
+                          ' cubiertos/día, ' + capPct + '% de la capacidad va a costos fijos';
+      recEl.setAttribute('data-band', result.band);
+      recEl.textContent = REC_COPY[result.band] || '';
+      recEl.style.display = '';
+    } else {
+      headEl.setAttribute('data-band', 'ok');
+      headroomBlock.style.display = 'none';
+      recEl.style.display = 'none';
+    }
+
+    return result;
+  }
+
+  function maybeFireAnalytics(result){
+    if (firstInteractionFired || !window.plausible) return;
+    firstInteractionFired = true;
+    window.plausible('Margin Math BreakEvenCovers', { props: {
+      fixed_bucket:  window.MM.bucketFixedCosts(fixedEl.value),
+      ticket_bucket: window.MM.bucketTicket(checkEl.value),
+      band:          result.band || 'na'
+    }});
+  }
+
+  function onInput(){ maybeFireAnalytics(render()); }
+
+  fixedEl.addEventListener('input', onInput);
+  checkEl.addEventListener('input', onInput);
+  marginEl.addEventListener('input', onInput);
+  daysEl.addEventListener('input', onInput);
+  typicalEl.addEventListener('input', onInput);
 
   render();
 })();
