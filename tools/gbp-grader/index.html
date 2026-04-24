@@ -84,6 +84,17 @@
   .gbp-check p{font-size:13.5px;line-height:1.5;color:var(--ink-soft);margin:0}
   .gbp-cta{margin-top:28px;padding:28px 32px;background:var(--cream-2);border:1px solid var(--line);border-radius:14px;text-align:center}
   .gbp-cta p{font-size:15px;color:var(--stone);margin:0 0 16px}
+  /* Aggregate-grade chip — shown above the check list once a score is
+     computed. Sprint 1D replaces this with a proper SVG gauge; for
+     now the chip borrows grade-band colors from the audit tool. */
+  .gbp-grade{display:flex;align-items:center;gap:14px;justify-content:center;margin:0 0 22px;padding:14px 22px;border:1px solid var(--line);border-radius:12px;background:var(--cream-2)}
+  .gbp-grade-letter{font-family:var(--font-display);font-size:28px;font-weight:500;line-height:1;color:var(--ink)}
+  .gbp-grade-score{font-size:15px;color:var(--ink-soft)}
+  .gbp-grade-band{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+  .gbp-grade[data-grade-band="good"] .gbp-grade-band{background:#E7F5EC;color:#1F6B3A}
+  .gbp-grade[data-grade-band="ok"]   .gbp-grade-band{background:#FDEFE3;color:#8A3E16}
+  .gbp-grade[data-grade-band="bad"]  .gbp-grade-band{background:#F7E7DC;color:#B8541A}
+  .gbp-grade-note{font-size:12px;color:var(--stone);text-align:center;margin:-14px 0 22px}
 </style>
 </head>
 <body>
@@ -196,6 +207,7 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="./gbp-grader.js?v=20260424-gbp1"></script>
 <script>
 (function(){
   var form=document.getElementById('gbpForm');
@@ -205,6 +217,62 @@
   var bizEl=document.getElementById('gbpBiz');
   var checksEl=document.getElementById('gbpChecks');
 
+  // ----- Copy table -------------------------------------------------
+  // Keyed by [check.id][state] -> {title, body}. Placeholders in curly
+  // braces are filled in by interp() from the check result object plus
+  // the resolved place. This separates copy from scoring; Sprint 1E
+  // extracts this into gbp-grader.js for i18n symmetry.
+  var COPY={
+    primary_category:{
+      pass:{title:'Primary category set ({category})',body:'Your primary category is the single biggest on-page factor for local ranking. Keep it specific — "Neapolitan pizza restaurant" beats "Restaurant" every time.'},
+      warn:{title:'Primary category is generic ({category})',body:'"{category}" is too broad for Google to match you to specific searches. Pick the most specific category available in your Business Profile dashboard.'},
+      fail:{title:'Primary category missing',body:'Without a primary category, Google has no idea which searches to show you in. Set one in your Business Profile dashboard — pick the most specific match available.'}
+    },
+    hours:{
+      pass:{title:'Hours are set',body:'Your listing shows when you\'re open. Make sure they match your website and update them for holidays.'},
+      fail:{title:'Hours missing',body:'No hours on your listing means customers don\'t know when you\'re open. Add them immediately — this is one of the most common reasons people skip a business on Maps.'}
+    },
+    phone:{
+      pass:{title:'Phone number listed',body:'Customers can tap-to-call from Maps. Make sure this number matches the one on your website.'},
+      fail:{title:'No phone number',body:'Your listing has no phone number. That\'s the #1 tap action on Maps — add it in your Business Profile dashboard.'}
+    },
+    rating:{
+      pass:{title:'Excellent rating ({rating})',body:'4.5+ tells customers and Google you\'re worth the visit.'},
+      warn:{title:'Good rating ({rating})',body:'Solid, but there\'s room to climb. Respond to every review — especially the critical ones.'},
+      fail:{title:'Rating needs work ({rating})',body:'Below 4.0 is a red flag for most customers searching locally. Read your 1-3 star reviews for patterns and address the root causes.'}
+    },
+    review_volume:{
+      pass:{title:'Strong review count ({count})',body:'You\'re at or above the peer median of {peerMedian} reviews for your category. Keep the velocity up with a review system.'},
+      warn:{title:'Review count below peer median ({count})',body:'Peers in your category sit around {peerMedian}. A QR review postcard program can close the gap — <a href="/blog/how-to-get-more-google-reviews-for-your-restaurant/" style="color:var(--teal)">here\'s how</a>.'},
+      fail:{title:'Low review count ({count})',body:'Well under the peer median of {peerMedian}. Under half of peer volume makes it hard to rank in the local pack. Start a systematic review program.'}
+    },
+    photos:{
+      pass:{title:'Good photo count ({photoCount})',body:'Google says businesses with photos get 42% more direction requests. You\'re well above the minimum.'},
+      warn:{title:'Some photos ({photoCount})',body:'You have a few, but aim for 10+. Add interior shots, team photos, and your best work. Upload new ones monthly.'},
+      fail:{title:'Few or no photos ({photoCount})',body:'Listings without photos get significantly less engagement. Upload at least 10: interior, exterior, team, products/services.'}
+    },
+    editorial_summary:{
+      pass:{title:'Editorial summary present',body:'Google has written a short summary for your listing. That usually means your profile is well-populated enough that Google\'s own systems can describe it confidently.'},
+      warn:{title:'No editorial summary',body:'Google writes these automatically for listings it considers well-populated. The more complete your profile, the more likely one appears — not owner-controllable, but a good completeness signal.'}
+    },
+    website:{
+      pass:{title:'Website linked',body:'Your listing links to <a href="{website}" target="_blank" rel="noopener" style="color:var(--teal)">{hostname}</a>.'},
+      fail:{title:'No website linked',body:'Your listing has no website URL. Even a simple one-page site is better than nothing — it\'s where Google sends people who want to learn more.'}
+    },
+    service_attrs:{
+      pass:{title:'Service attributes populated ({attrCount} of {attrTotal})',body:'Dine-in, takeout, delivery, cuisine flags — Google uses these to match your listing to search intent. Well done.'},
+      warn:{title:'Some service attributes set ({attrCount} of {attrTotal})',body:'Each attribute helps Google match your listing to more queries. Set dine-in/takeout/delivery plus the relevant serves* flags in your Business Profile dashboard.'},
+      fail:{title:'Few service attributes ({attrCount} of {attrTotal})',body:'This is a quick, free lever most owners miss. Set dine-in/takeout/delivery plus cuisine flags — each one opens you up to more searches.'}
+    }
+  };
+
+  // Checks hidden from the flat list (Sprint 1B).
+  //  - operational: shown as the red banner above the business card
+  //  - hours_fresh: overlaps visually with `hours`; surfaces in Sprint 1D IA
+  //  - review_recency, nap, owner_reply: Deep Scan only
+  var HIDDEN_CHECK_IDS={operational:1,hours_fresh:1,review_recency:1,nap:1,owner_reply:1};
+
+  // ----- Helpers ----------------------------------------------------
   function stars(rating){
     var full=Math.floor(rating||0);
     var html='<div class="gbp-stars">';
@@ -213,13 +281,6 @@
     return html;
   }
 
-  function check(pass,title,text){
-    var cls=pass===true?'pass':pass===false?'fail':'warn';
-    var mark=pass===true?'&#10003;':pass===false?'&#10005;':'~';
-    return'<div class="gbp-check"><div class="mark '+cls+'">'+mark+'</div><div><h3>'+title+'</h3><p>'+text+'</p></div></div>';
-  }
-
-  // Derived bucket — keeps raw business names out of analytics payloads.
   function reviewsBucket(n){
     if(n>=300)return'300+';
     if(n>=100)return'100-299';
@@ -227,6 +288,46 @@
     return'0-29';
   }
 
+  function interp(tpl,vars){
+    return tpl.replace(/\{(\w+)\}/g,function(_,k){return vars[k]!=null?vars[k]:''});
+  }
+
+  function hostname(u){return(u||'').replace(/^https?:\/\//,'').replace(/\/$/,'')}
+
+  function checkVars(c,d){
+    return{
+      category:   c.value || '',
+      count:      c.value != null ? c.value : '',
+      peerMedian: c.peerMedian || '',
+      rating:     c.value != null ? c.value : '',
+      photoCount: c.value != null ? c.value : '',
+      website:    c.value || '',
+      hostname:   hostname(c.value),
+      attrCount:  c.value != null ? c.value : '',
+      attrTotal:  c.total || ''
+    };
+  }
+
+  function renderCheck(c,d){
+    if(HIDDEN_CHECK_IDS[c.id])return'';
+    if(c.state==='skipped')return'';
+    var copy=COPY[c.id]&&COPY[c.id][c.state];
+    if(!copy)return'';
+    var vars=checkVars(c,d);
+    var cls=c.state==='pass'?'pass':c.state==='fail'?'fail':'warn';
+    var mark=c.state==='pass'?'&#10003;':c.state==='fail'?'&#10005;':'~';
+    return'<div class="gbp-check"><div class="mark '+cls+'">'+mark+'</div><div><h3>'+interp(copy.title,vars)+'</h3><p>'+interp(copy.body,vars)+'</p></div></div>';
+  }
+
+  // ----- Peer medians (lazy fetch, cached for the tab lifetime) -----
+  var peerMediansPromise=null;
+  function loadPeerMedians(){
+    if(peerMediansPromise)return peerMediansPromise;
+    peerMediansPromise=fetch('./peer-medians.json').then(function(r){return r.json()}).catch(function(){return null});
+    return peerMediansPromise;
+  }
+
+  // ----- Main submit handler ---------------------------------------
   form.addEventListener('submit',function(e){
     e.preventDefault();
     var q=input.value.trim();
@@ -234,12 +335,14 @@
     btn.disabled=true;btn.textContent='Looking up…';
     result.classList.remove('visible');
 
-    fetch('/api/gbp-lookup?q='+encodeURIComponent(q))
-    .then(function(r){return r.json()})
-    .then(function(d){
+    Promise.all([
+      fetch('/api/gbp-lookup?q='+encodeURIComponent(q)).then(function(r){return r.json()}),
+      loadPeerMedians()
+    ]).then(function(arr){
+      var d=arr[0], peerMedians=arr[1];
       if(!d.ok)throw new Error(d.error||'Lookup failed');
 
-      // Business card
+      // Business card (+ closed banner when applicable)
       var bannerHtml='';
       if(d.businessStatus&&d.businessStatus!=='OPERATIONAL'){
         var closedLabel=d.businessStatus==='CLOSED_TEMPORARILY'?'Temporarily closed':'Permanently closed';
@@ -255,61 +358,45 @@
         +'<h2>'+d.name+'</h2>'
         +'<p>'+d.address+'</p>';
 
-      // Grade checks
-      var html='';
+      // Score the listing
+      var scored=window.gbpScoreCandidate(d,peerMedians,null,'en');
+      var bandLabel=scored.band==='good'?'Strong':scored.band==='ok'?'Mixed':'Weak';
+      var gradeHtml='<div class="gbp-grade" data-grade-band="'+scored.band+'">'
+        +'<span class="gbp-grade-letter">'+scored.letter+'</span>'
+        +'<span class="gbp-grade-score">'+scored.total+' / '+scored.max+'</span>'
+        +'<span class="gbp-grade-band">'+bandLabel+'</span>'
+        +'</div>';
+      // Note when Deep Scan would add more signal
+      var remaining=100-scored.max;
+      var noteHtml=remaining>0
+        ?'<p class="gbp-grade-note">Out of '+scored.max+' — Deep Scan unlocks the remaining '+remaining+' points (review velocity, response rate, NAP).</p>'
+        :'';
 
-      // Primary category (single highest-weight on-page factor per Whitespark 2023)
-      html+=d.primaryTypeDisplayName
-        ?check(true,'Primary category set ('+d.primaryTypeDisplayName+')','Your primary category is the single biggest on-page factor for local ranking. Keep it specific — "Neapolitan pizza restaurant" beats "Restaurant" every time.')
-        :check(false,'Primary category missing','Without a primary category, Google has no idea which searches to show you in. Set one in your Business Profile dashboard — pick the most specific match available.');
+      // Check list (flat for 1B; collapsible category cards in 1E)
+      var checksHtml='';
+      for(var i=0;i<scored.groups.length;i++){
+        var g=scored.groups[i];
+        for(var j=0;j<g.checks.length;j++){
+          checksHtml+=renderCheck(g.checks[j],d);
+        }
+      }
+      checksEl.innerHTML=gradeHtml+noteHtml+checksHtml;
 
-      // Reviews
-      if(d.reviewCount>=100)html+=check(true,'Strong review count ('+d.reviewCount+')','You have over 100 reviews — that puts you ahead of most local businesses. Keep the velocity up with a review system.');
-      else if(d.reviewCount>=30)html+=check(null,'Decent review count ('+d.reviewCount+')','You\'re above zero, but 100+ is where you start dominating local search. A QR review postcard program can accelerate this.');
-      else html+=check(false,'Low review count ('+d.reviewCount+')','Under 30 reviews makes it hard to rank in the local pack. Most competitors have more. Start a systematic review program — <a href="/blog/how-to-get-more-google-reviews-for-your-restaurant/" style="color:var(--teal)">here\'s how</a>.');
-
-      // Rating
-      if(d.rating>=4.5)html+=check(true,'Excellent rating ('+d.rating+')','4.5+ tells customers and Google you\'re worth the visit.');
-      else if(d.rating>=4.0)html+=check(null,'Good rating ('+d.rating+')','Solid, but there\'s room to climb. Respond to every review — especially the critical ones.');
-      else if(d.rating)html+=check(false,'Rating needs work ('+d.rating+')','Below 4.0 is a red flag for most customers searching locally. Read your 1-3 star reviews for patterns and address the root causes.');
-
-      // Photos
-      if(d.photoCount>=10)html+=check(true,'Good photo count ('+d.photoCount+')','Google says businesses with photos get 42% more direction requests. You\'re well above the minimum.');
-      else if(d.photoCount>=3)html+=check(null,'Some photos ('+d.photoCount+')','You have a few, but aim for 10+. Add interior shots, team photos, and your best work. Upload new ones monthly.');
-      else html+=check(false,'Few or no photos ('+d.photoCount+')','Listings without photos get significantly less engagement. Upload at least 10: interior, exterior, team, products/services.');
-
-      // Hours
-      html+=d.hasHours
-        ?check(true,'Hours are set','Your listing shows when you\'re open. Make sure they match your website and update them for holidays.')
-        :check(false,'Hours missing','No hours on your listing means customers don\'t know when you\'re open. Add them immediately — this is one of the most common reasons people skip a business on Maps.');
-
-      // Phone
-      html+=d.nationalPhoneNumber
-        ?check(true,'Phone number listed','Customers can tap-to-call from Maps. Make sure this number matches the one on your website.')
-        :check(false,'No phone number','Your listing has no phone number. That\'s the #1 tap action on Maps — add it in your Business Profile dashboard.');
-
-      // Website
-      html+=d.website
-        ?check(true,'Website linked','Your listing links to <a href="'+d.website+'" target="_blank" rel="noopener" style="color:var(--teal)">'+d.website.replace(/^https?:\/\//,'').replace(/\/$/,'')+'</a>.')
-        :check(false,'No website linked','Your listing has no website URL. Even a simple one-page site is better than nothing — it\'s where Google sends people who want to learn more.');
-
-      // Editorial summary (curated by Google — presence is an enrichment signal)
-      html+=d.editorialSummary
-        ?check(true,'Editorial summary present','Google has written a short summary for your listing. That usually means your profile is well-populated enough that Google\'s own systems can describe it confidently.')
-        :check(null,'No editorial summary','Google writes these automatically for listings it considers well-populated. The more complete your profile, the more likely one appears — not owner-controllable, but a good completeness signal.');
-
-      checksEl.innerHTML=html;
       result.classList.add('visible');
       result.scrollIntoView({behavior:'smooth',block:'start'});
+
       // Analytics: derived buckets only. Raw business names never leave the Worker.
       if(window.plausible)window.plausible('GBP Grader',{props:{
+        grade_letter:   scored.letter,
+        grade_band:     scored.band,
+        scaled_bucket:  scored.scaled>=85?'85+':scored.scaled>=70?'70-84':scored.scaled>=55?'55-69':scored.scaled>=40?'40-54':'lt40',
         reviews_bucket: reviewsBucket(d.reviewCount||0),
-        rating_band: d.rating>=4.5?'45+':d.rating>=4.0?'40-44':d.rating?'lt40':'none',
-        has_website: d.website?'yes':'no',
-        has_hours: d.hasHours?'yes':'no',
-        has_phone: d.nationalPhoneNumber?'yes':'no',
-        has_category: d.primaryTypeDisplayName?'yes':'no',
-        status: d.businessStatus||'unknown'
+        has_website:    d.website?'yes':'no',
+        has_hours:      d.hasHours?'yes':'no',
+        has_phone:      d.nationalPhoneNumber?'yes':'no',
+        has_category:   d.primaryTypeDisplayName?'yes':'no',
+        status:         d.businessStatus||'unknown',
+        peer_source:    scored.peerMedian.source
       }});
     }).catch(function(err){
       alert(err.message||'Could not look up that business. Try adding your city name.');
