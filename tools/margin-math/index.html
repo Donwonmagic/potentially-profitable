@@ -111,6 +111,25 @@
   .mm-recommendation a{color:inherit;font-weight:700;border-bottom:1px solid currentColor}
   .mm-blog-link{margin-top:4px;font-size:12px;color:var(--teal);text-decoration:none;font-weight:600}
   .mm-blog-link:hover{color:var(--teal-dark);border-bottom:1px dashed currentColor}
+  /* Privacy-promise steps — 8 verifiable claims, each with an
+     inline "Inspect this" expander. Keyboard-operable via native
+     <details>. Invite the audit; don't dodge it. */
+  .mm-steps{display:flex;flex-direction:column;gap:10px;max-width:760px;margin:20px auto 0}
+  .mm-step{border:1px solid var(--line);border-radius:10px;background:var(--white);padding:16px 18px}
+  .mm-step-head{display:flex;gap:14px;align-items:flex-start}
+  .mm-step-num{flex:0 0 28px;height:28px;border-radius:50%;background:var(--teal-tint);color:var(--teal);font-family:var(--font-display);font-weight:500;font-size:15px;display:flex;align-items:center;justify-content:center}
+  .mm-step-body{flex:1;min-width:0}
+  .mm-step-title{font-size:15px;font-weight:600;color:var(--ink);margin:0 0 4px;line-height:1.35}
+  .mm-step-claim{font-size:13.5px;color:var(--ink-soft);line-height:1.55;margin:0}
+  .mm-step-inspect{margin-top:10px;font-size:12.5px}
+  .mm-step-inspect summary{cursor:pointer;font-weight:700;color:var(--teal);list-style:none;display:inline-flex;align-items:center;gap:4px;letter-spacing:.02em}
+  .mm-step-inspect summary::-webkit-details-marker{display:none}
+  .mm-step-inspect summary::after{content:'\25BE';font-size:10px;transition:transform 140ms var(--ease-out)}
+  .mm-step-inspect[open] summary::after{transform:rotate(180deg)}
+  .mm-step-inspect summary:hover{color:var(--teal-dark)}
+  .mm-step-verify{margin:8px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:6px;font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
+  .mm-step-verify code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:var(--white);padding:1px 5px;border-radius:3px;border:1px solid var(--line);font-size:12px}
+  .mm-step-verify kbd{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:var(--white);padding:1px 5px;border-radius:3px;border:1px solid var(--line);font-size:11px;box-shadow:0 1px 0 var(--line-dark)}
 </style>
 </head>
 <body>
@@ -271,8 +290,113 @@
   <div style="max-width:760px;margin:0 auto;">
     <span class="eyebrow">Lead by example</span>
     <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">How we protect the numbers you type</h2>
-    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">The calculators above don&apos;t exist yet — this page is still being built. When each one lands, it will ship with a numbered, inspectable list of the steps we take to keep your inputs out of our hands. Every claim will be verifiable in your own browser in under a minute; we&apos;ll show you how to check us.</p>
-    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:12px 0 0;">You can start verifying right now: open DevTools &rarr; Network tab and reload this page. You&apos;ll see a handful of same-origin requests plus one call to <code>plausible.io</code> (analytics, with a strict allow-list of event properties — no raw numbers, ever). Nothing else.</p>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Eight claims. Each one is verifiable in your own browser in under a minute. If any of them turn out to be wrong, we want you to find out first — open every "Inspect this" and check us.</p>
+  </div>
+
+  <div class="mm-steps" aria-label="Privacy-protection steps">
+    <article class="mm-step">
+      <div class="mm-step-head">
+        <span class="mm-step-num" aria-hidden="true">1</span>
+        <div class="mm-step-body">
+          <h3 class="mm-step-title">Your numbers never leave this page.</h3>
+          <p class="mm-step-claim">No <code>fetch()</code>, <code>XMLHttpRequest</code>, or form submission fires when you type a financial number. The calculator math runs entirely in your browser.</p>
+          <details class="mm-step-inspect"><summary>Inspect this</summary>
+            <div class="mm-step-verify">Open DevTools (<kbd>Cmd+Opt+I</kbd> / <kbd>Ctrl+Shift+I</kbd>) &rarr; <strong>Network</strong> tab. Type a number into the calculator above. The request list should not grow. If it does, that's a bug — tell us.</div>
+          </details>
+        </div>
+      </div>
+    </article>
+
+    <article class="mm-step">
+      <div class="mm-step-head">
+        <span class="mm-step-num" aria-hidden="true">2</span>
+        <div class="mm-step-body">
+          <h3 class="mm-step-title">There's no server to store them on.</h3>
+          <p class="mm-step-claim">The only endpoint this page uses is <code>GET /tools/margin-math/</code>. No <code>/api/margin-math-save</code>, no <code>/api/calculate</code>, no logger. The Worker can't hear you.</p>
+          <details class="mm-step-inspect"><summary>Inspect this</summary>
+            <div class="mm-step-verify">From a terminal: <code>curl -X POST https://muntin.digital/tools/margin-math/</code>. Response: <code>405 Method Not Allowed</code> (or similar) — there's nothing listening for POSTs.</div>
+          </details>
+        </div>
+      </div>
+    </article>
+
+    <article class="mm-step">
+      <div class="mm-step-head">
+        <span class="mm-step-num" aria-hidden="true">3</span>
+        <div class="mm-step-body">
+          <h3 class="mm-step-title">Analytics sees only buckets, never numbers.</h3>
+          <p class="mm-step-claim">Plausible receives properties from a short, fixed list of enumerated values. A \$25 ticket becomes <code>25-39</code>. A 30% food cost becomes <code>28-32</code>. Your raw numbers are never a value on any event.</p>
+          <details class="mm-step-inspect"><summary>Inspect this</summary>
+            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filter <code>plausible</code>. Interact with the calculator. When the event fires, look at its payload. Values like <code>ticket_bucket: "25-39"</code> — never <code>ticket: 25.00</code>.</div>
+          </details>
+        </div>
+      </div>
+    </article>
+
+    <article class="mm-step">
+      <div class="mm-step-head">
+        <span class="mm-step-num" aria-hidden="true">4</span>
+        <div class="mm-step-body">
+          <h3 class="mm-step-title">No cookies, no localStorage, no sessionStorage — for your inputs.</h3>
+          <p class="mm-step-claim">Your typed numbers live only in JavaScript variables, which disappear when you close the tab. There's no persistent state for the calculator.</p>
+          <details class="mm-step-inspect"><summary>Inspect this</summary>
+            <div class="mm-step-verify">DevTools &rarr; <strong>Application</strong> &rarr; <strong>Storage</strong>. Use the calculator. Check Cookies, Local Storage, Session Storage, IndexedDB for this origin — the panels stay empty of any financial value.</div>
+          </details>
+        </div>
+      </div>
+    </article>
+
+    <article class="mm-step">
+      <div class="mm-step-head">
+        <span class="mm-step-num" aria-hidden="true">5</span>
+        <div class="mm-step-body">
+          <h3 class="mm-step-title">No third-party scripts touch the inputs.</h3>
+          <p class="mm-step-claim">This page loads exactly two JavaScript files: site-wide <code>site.js</code> (nav + language switch) and tool-specific <code>margin-math.js</code> (the math). Plus one analytics script (Plausible) that receives the bucket values. Nothing else.</p>
+          <details class="mm-step-inspect"><summary>Inspect this</summary>
+            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filter <strong>JS</strong>. Reload. You should see <code>plausible.io/js/…</code>, <code>site.js</code>, and <code>margin-math.js</code>. No Google Tag Manager, no Meta Pixel, no chat widget, no session replay.</div>
+          </details>
+        </div>
+      </div>
+    </article>
+
+    <article class="mm-step">
+      <div class="mm-step-head">
+        <span class="mm-step-num" aria-hidden="true">6</span>
+        <div class="mm-step-body">
+          <h3 class="mm-step-title">Shareable URLs keep numbers out of the server logs.</h3>
+          <p class="mm-step-claim">When we ship "Save this scenario" (later phase), the numbers will be encoded in the URL <strong>fragment</strong> — after the <code>#</code>. Per HTTP specification, browsers never send fragments to servers. The permalink works; the server never sees its contents.</p>
+          <details class="mm-step-inspect"><summary>Inspect this</summary>
+            <div class="mm-step-verify">Links like <code>&hellip;/margin-math/#calc=delivery&amp;t=25&amp;f=30</code> hydrate the state locally. We also set <code>&lt;meta name="referrer" content="no-referrer"&gt;</code> on this page — so outbound clicks can't leak the fragment to a third party via Referer.</div>
+          </details>
+        </div>
+      </div>
+    </article>
+
+    <article class="mm-step">
+      <div class="mm-step-head">
+        <span class="mm-step-num" aria-hidden="true">7</span>
+        <div class="mm-step-body">
+          <h3 class="mm-step-title">The source is readable.</h3>
+          <p class="mm-step-claim">No build step, no minification, no framework. The math module is plain JavaScript — you can read every line.</p>
+          <details class="mm-step-inspect"><summary>Inspect this</summary>
+            <div class="mm-step-verify">Right-click this page &rarr; <em>View Page Source</em>. Or open <code>/tools/margin-math/margin-math.js</code> directly. Search for <code>function mmCalcDeliveryBreakeven</code> — that's the whole math, in the open.</div>
+          </details>
+        </div>
+      </div>
+    </article>
+
+    <article class="mm-step">
+      <div class="mm-step-head">
+        <span class="mm-step-num" aria-hidden="true">8</span>
+        <div class="mm-step-body">
+          <h3 class="mm-step-title">Nothing persists beyond this tab.</h3>
+          <p class="mm-step-claim">Close the tab, reopen the tool: every calculator resets to default. There's no account, no saved history, no "welcome back."</p>
+          <details class="mm-step-inspect"><summary>Inspect this</summary>
+            <div class="mm-step-verify">Change every slider and input. Close the tab. Reopen <code>/tools/margin-math/</code>. Everything is back to its starting value.</div>
+          </details>
+        </div>
+      </div>
+    </article>
   </div>
 </div></section>
 
