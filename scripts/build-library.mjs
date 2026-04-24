@@ -498,6 +498,86 @@ ${cards}
 ${siteFooter()}`;
 }
 
+// ---------- research backlinks ----------
+//
+// Walk every blog post, count which research notes it cites, and
+// stamp a "Cited in" block on each research note. Idempotent —
+// replaces the existing block between the LIBRARY:cited-in markers.
+
+import { readdirSync, statSync } from 'node:fs';
+
+function findCitations() {
+  const cites = {}; // research-slug -> [{slug, title}]
+  for (const [postSlug, postMeta] of Object.entries(tagsDoc.blog_posts)) {
+    const file = join(REPO, 'blog', postSlug, 'index.html');
+    const html = readFileSync(file, 'utf8');
+    // Match /learn/research/<slug>/ inside the article body. We match
+    // anywhere on the page; if a cite shows up in 'further reading'
+    // or in a sidebar, that still counts as a citation.
+    const seen = new Set();
+    for (const m of html.matchAll(/\/learn\/research\/([a-z0-9-]+)\//g)) {
+      seen.add(m[1]);
+    }
+    for (const researchSlug of seen) {
+      if (!cites[researchSlug]) cites[researchSlug] = [];
+      cites[researchSlug].push({ slug: postSlug, title: postMeta.title });
+    }
+  }
+  // Sort each list by title for stable output
+  for (const s of Object.keys(cites)) {
+    cites[s].sort((a, b) => a.title.localeCompare(b.title));
+  }
+  return cites;
+}
+
+function renderCitedInBlock(researchSlug, citations) {
+  if (!citations || !citations.length) {
+    return `<!-- LIBRARY:cited-in:start --><!-- LIBRARY:cited-in:end -->`;
+  }
+  const items = citations.map(c =>
+    `      <li><a href="/blog/${esc(c.slug)}/">${esc(c.title)}</a></li>`
+  ).join('\n');
+  const noun = citations.length === 1 ? 'article uses' : 'articles use';
+  return `<!-- LIBRARY:cited-in:start -->
+<section class="block research-cited-in" aria-labelledby="cited-in-h">
+  <div class="container">
+    <header class="research-cited-in-head">
+      <span class="eyebrow">Cited in</span>
+      <h2 id="cited-in-h">${citations.length} ${noun} this research.</h2>
+    </header>
+    <ul class="research-cited-in-list">
+${items}
+    </ul>
+  </div>
+</section>
+<!-- LIBRARY:cited-in:end -->`;
+}
+
+function injectCitedIn(researchSlug, citations) {
+  const file = join(REPO, 'learn/research', researchSlug, 'index.html');
+  const html = readFileSync(file, 'utf8');
+  const block = renderCitedInBlock(researchSlug, citations);
+
+  // If markers exist, replace the marked region.
+  const markerRe = /<!-- LIBRARY:cited-in:start -->[\s\S]*?<!-- LIBRARY:cited-in:end -->/;
+  if (markerRe.test(html)) {
+    writeFileSync(file, html.replace(markerRe, block), 'utf8');
+    return 'updated';
+  }
+
+  // First run — inject the block right before the "More research"
+  // / "Next in research" section. Every research note has
+  // `<section class="block bg-cream2">` as that section's opener.
+  const anchor = '<section class="block bg-cream2">';
+  if (!html.includes(anchor)) {
+    console.warn(`  warning: ${researchSlug}: no injection anchor found, skipping`);
+    return 'skipped';
+  }
+  const replaced = html.replace(anchor, `${block}\n\n${anchor}`);
+  writeFileSync(file, replaced, 'utf8');
+  return 'inserted';
+}
+
 // ---------- run ----------
 
 const byTopic = indexByTopic();
@@ -515,4 +595,43 @@ console.log(`Built /learn/topics/ + ${TOPICS.length} topic pages.`);
 for (const t of TOPICS) {
   const c = byTopic[t.slug];
   console.log(`  ${t.slug.padEnd(20)} → ${c.articles.length} articles, ${c.research.length} research, ${c.tools.length} tools, ${c.checklists.length} checklists`);
+}
+
+// Research backlinks
+const cites = findCitations();
+console.log(`\nResearch backlinks:`);
+for (const researchSlug of Object.keys(tagsDoc.research_notes)) {
+  const list = cites[researchSlug] || [];
+  const action = injectCitedIn(researchSlug, list);
+  console.log(`  ${researchSlug.padEnd(34)} ${list.length} citing post(s) — ${action}`);
+}
+
+// Update the "Cited in N articles" labels on the research hub
+// (/learn/research/index.html) so the counts match the new
+// research backlinks. Keeps the index hub honest as posts are
+// added.
+{
+  const file = join(REPO, 'learn/research/index.html');
+  let html = readFileSync(file, 'utf8');
+  let changed = 0;
+  for (const researchSlug of Object.keys(tagsDoc.research_notes)) {
+    const n = (cites[researchSlug] || []).length;
+    const noun = n === 1 ? 'article' : 'articles';
+    // Find the card for this slug, then replace its count span.
+    // The structure is stable: <a class="research-index-card"
+    // href="/learn/research/SLUG/"> ... <span class="research-index-uses">
+    // Cited in <strong>N</strong> article(s)</span>.
+    const cardRe = new RegExp(
+      `(<a class="research-index-card" href="/learn/research/${researchSlug}/">[\\s\\S]*?<span class="research-index-uses">Cited in <strong>)(\\d+)(</strong> )(article|articles)(<\\/span>)`,
+    );
+    const replaced = html.replace(cardRe, (_m, p1, _old, p3, _oldNoun, p5) => {
+      changed++;
+      return `${p1}${n}${p3}${noun}${p5}`;
+    });
+    if (replaced !== html) html = replaced;
+  }
+  if (changed) {
+    writeFileSync(file, html, 'utf8');
+    console.log(`Updated ${changed} citation count(s) on /learn/research/`);
+  }
 }
