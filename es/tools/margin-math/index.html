@@ -132,6 +132,17 @@
   .mm-action-icon{display:inline-flex;width:14px;height:14px;flex:0 0 14px;align-items:center;justify-content:center}
   .mm-action-icon svg{width:100%;height:auto;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
   .mm-action-note{text-align:center;margin:8px auto 0;max-width:520px;font-size:11.5px;color:var(--stone);line-height:1.5}
+  /* Banner de escenario cargado — aparece sólo en visitas de
+     regreso (cuando el fragmento de la URL trae estado de alguna
+     calculadora). Descartable durante la sesión. */
+  .mm-scenario-banner{max-width:760px;margin:0 auto 20px;padding:12px 18px;background:var(--teal-tint);color:var(--teal-dark);border-radius:10px;font-size:13.5px;line-height:1.5;display:none;gap:12px;align-items:center;border:1px solid rgba(31,78,91,0.12)}
+  .mm-scenario-banner[data-visible="true"]{display:flex}
+  .mm-scenario-banner-text{flex:1}
+  .mm-scenario-banner-text strong{color:var(--teal)}
+  .mm-scenario-banner-dismiss{background:none;border:0;padding:4px;color:inherit;cursor:pointer;opacity:.7;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;line-height:0}
+  .mm-scenario-banner-dismiss:hover{opacity:1}
+  .mm-scenario-banner-dismiss:focus-visible{outline:2px solid currentColor;outline-offset:2px;opacity:1}
+  @media print { .mm-scenario-banner { display: none !important; } }
   /* Hoja de impresión — convierte la página en un Reporte Mensual
      de Margen de una sola hoja. Conserva las cuatro tarjetas
      (entradas + resultados como texto estático) y quita todo el
@@ -409,6 +420,12 @@
 </div></div></section>
 
 <section class="block"><div class="container container-wide">
+  <div class="mm-scenario-banner" id="mm-scenario-banner" role="status" aria-live="polite">
+    <span class="mm-scenario-banner-text"><strong>Cargado desde un escenario guardado.</strong> Tus números están puestos abajo — mueve los deslizadores para ver qué cambia.</span>
+    <button type="button" class="mm-scenario-banner-dismiss" aria-label="Cerrar">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+  </div>
   <div class="mm-grid" aria-label="Calculadoras">
     <article class="mm-card mm-live" data-calc="delivery-breakeven">
       <div class="mm-card-header">
@@ -935,6 +952,31 @@
       history.replaceState(null, '', '#' + window.MM.encodeState(state));
     } catch (_e) { /* no fatal */ }
   };
+})();
+
+/* Banner de escenario cargado. Aparece sólo cuando la página se
+ * carga con un fragmento que trae estado real de alguna calculadora
+ * — no en una visita en frío. Descartable durante la sesión. */
+(function(){
+  var banner = document.getElementById('mm-scenario-banner');
+  if (!banner) return;
+  var hydrated = window.__mmHydratedState || {};
+  var hasState = false;
+  for (var k in hydrated) {
+    if (hydrated.hasOwnProperty(k) && hydrated[k] && typeof hydrated[k] === 'object') {
+      for (var inner in hydrated[k]) {
+        if (hydrated[k].hasOwnProperty(inner)) { hasState = true; break; }
+      }
+    }
+    if (hasState) break;
+  }
+  if (hasState) banner.setAttribute('data-visible', 'true');
+  var dismiss = banner.querySelector('.mm-scenario-banner-dismiss');
+  if (dismiss) {
+    dismiss.addEventListener('click', function(){
+      banner.removeAttribute('data-visible');
+    });
+  }
 })();
 
 /* Calculadora Punto de equilibrio con delivery — cableado.
