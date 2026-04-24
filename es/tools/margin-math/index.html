@@ -107,6 +107,31 @@
   .mm-copy-link::before{content:'';width:10px;height:10px;border:1.5px solid currentColor;border-radius:2px;box-shadow:-3px 3px 0 -1.5px currentColor,-3px 3px 0 0 var(--white);display:inline-block;margin-right:2px;flex:0 0 10px}
   .mm-copy-link[data-copied="true"]{color:#1F6B3A}
   .mm-copy-link[data-copied="true"]::before{content:'\2713';border:0;box-shadow:none;width:auto;height:auto;font-weight:800;color:inherit;margin-right:1px;font-size:13px;line-height:1}
+  /* Cascada — "a dónde va cada dólar de una orden". Desglose en
+     dos barras apiladas del $ticket: food cost / comisión o
+     procesamiento / lo que te queda. Se ubica bajo los números por
+     orden para contar la historia por dólar; el delta mensual de
+     abajo escala la misma figura a un mes. */
+  .mm-wf{display:flex;flex-direction:column;gap:6px;margin-top:2px;padding-top:10px;border-top:1px dashed var(--line-dark)}
+  .mm-wf-row{display:grid;grid-template-columns:64px 1fr;gap:10px;align-items:center}
+  .mm-wf-label{font-size:10.5px;color:var(--stone);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+  .mm-wf-bar{display:flex;height:14px;border-radius:3px;overflow:hidden;border:1px solid var(--line);background:var(--white)}
+  .mm-wf-seg{display:block;height:100%;transition:width 220ms var(--ease-out);min-width:0}
+  .mm-wf-food{background:#B89A6E}
+  .mm-wf-fee{background:var(--rust)}
+  .mm-wf-margin{background:#1F6B3A}
+  .mm-wf-legend{list-style:none;padding:0;margin:4px 0 0;display:flex;flex-wrap:wrap;gap:10px 14px;font-size:10.5px;color:var(--stone);justify-content:center}
+  .mm-wf-legend li{display:inline-flex;align-items:center;gap:5px}
+  .mm-wf-dot{display:inline-block;width:8px;height:8px;border-radius:2px;flex:0 0 8px}
+  @media print {
+    .mm-wf-bar{border-color:#000 !important}
+    .mm-wf-food{background:#ddd !important}
+    .mm-wf-fee{background:#888 !important}
+    .mm-wf-margin{background:#222 !important}
+    .mm-wf-dot{border:0.5pt solid #000}
+    .mm-wf-label{color:#000 !important}
+    .mm-wf-legend{color:#000 !important}
+  }
   /* Escalación por mala banda — solo aparece en la peor banda de
      cada calculadora, enrutando al Diagnóstico de Restaurante
      completo. Más discreto que la .mm-recommendation coloreada
@@ -512,6 +537,29 @@
             <span class="mm-result-label">Por orden directa</span>
             <span class="mm-result-value" id="dbe-direct">$16.75</span>
           </div>
+        </div>
+        <div class="mm-wf" aria-label="A dónde va cada dólar de una orden">
+          <div class="mm-wf-row">
+            <span class="mm-wf-label">Plataforma</span>
+            <div class="mm-wf-bar" role="img" aria-label="Desglose de una orden en la plataforma">
+              <span class="mm-wf-seg mm-wf-food"   id="dbe-wf-p-food"></span>
+              <span class="mm-wf-seg mm-wf-fee"    id="dbe-wf-p-fee"></span>
+              <span class="mm-wf-seg mm-wf-margin" id="dbe-wf-p-keep"></span>
+            </div>
+          </div>
+          <div class="mm-wf-row">
+            <span class="mm-wf-label">Directa</span>
+            <div class="mm-wf-bar" role="img" aria-label="Desglose de una orden directa">
+              <span class="mm-wf-seg mm-wf-food"   id="dbe-wf-d-food"></span>
+              <span class="mm-wf-seg mm-wf-fee"    id="dbe-wf-d-fee"></span>
+              <span class="mm-wf-seg mm-wf-margin" id="dbe-wf-d-keep"></span>
+            </div>
+          </div>
+          <ul class="mm-wf-legend">
+            <li><span class="mm-wf-dot mm-wf-food"></span>Food cost</li>
+            <li><span class="mm-wf-dot mm-wf-fee"></span>Plataforma / procesamiento</li>
+            <li><span class="mm-wf-dot mm-wf-margin"></span>Lo que te queda</li>
+          </ul>
         </div>
         <div class="mm-monthly">
           <span class="mm-monthly-label">Diferencia mensual</span>
@@ -1205,6 +1253,12 @@
   var recEl         = card.querySelector('#dbe-rec');
   var suggestEl     = card.querySelector('#dbe-suggest');
   var escalateEl    = card.querySelector('#dbe-escalate');
+  var wfPFood       = card.querySelector('#dbe-wf-p-food');
+  var wfPFee        = card.querySelector('#dbe-wf-p-fee');
+  var wfPKeep       = card.querySelector('#dbe-wf-p-keep');
+  var wfDFood       = card.querySelector('#dbe-wf-d-food');
+  var wfDFee        = card.querySelector('#dbe-wf-d-fee');
+  var wfDKeep       = card.querySelector('#dbe-wf-d-keep');
 
   var currentTier = 'plus';
   var currentCommission = 0.25;
@@ -1251,6 +1305,30 @@
 
     ticketValEl.textContent   = window.MM.formatMoney(ticketEl.value);
     foodcostValEl.textContent = foodcostEl.value + '%';
+
+    // Los anchos de la cascada son razones — no dependen del valor
+    // del ticket, así que se actualizan incluso cuando la guarda
+    // de ticket=0 toma el control.
+    var foodPct = result.inputs.foodCostPct * 100;
+    var commPct = result.inputs.commissionPct * 100;
+    var procPct = result.inputs.directProcessingPct * 100;
+    var keepP = Math.max(0, 100 - foodPct - commPct);
+    var keepD = Math.max(0, 100 - foodPct - procPct);
+    wfPFood.style.width = foodPct + '%';
+    wfPFee.style.width  = commPct + '%';
+    wfPKeep.style.width = keepP   + '%';
+    wfDFood.style.width = foodPct + '%';
+    wfDFee.style.width  = procPct + '%';
+    wfDKeep.style.width = keepD   + '%';
+    if (result.inputs.ticket > 0) {
+      var t = result.inputs.ticket;
+      wfPFood.title = 'Food cost: ' + window.MM.formatMoney(t * result.inputs.foodCostPct);
+      wfPFee.title  = 'Comisión de plataforma: ' + window.MM.formatMoney(t * result.inputs.commissionPct);
+      wfPKeep.title = 'Te queda: ' + window.MM.formatMoney(result.perOrderOnPlatform);
+      wfDFood.title = 'Food cost: ' + window.MM.formatMoney(t * result.inputs.foodCostPct);
+      wfDFee.title  = 'Procesamiento de tarjeta: ' + window.MM.formatMoney(t * result.inputs.directProcessingPct);
+      wfDKeep.title = 'Te queda: ' + window.MM.formatMoney(result.perOrderDirect);
+    }
 
     // Guardas de estado vacío. Un ticket en cero vuelve inútil cada
     // resultado; pide el dato en vez de mostrar $0 en silencio.
