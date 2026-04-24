@@ -402,10 +402,55 @@
         <div class="mm-recommendation" id="bec-rec" data-band="ok"></div>
       </div>
     </article>
-    <article class="mm-card mm-coming" aria-disabled="true">
-      <span class="mm-card-eyebrow">Phase 3 &middot; Coming</span>
+    <article class="mm-card mm-live" data-calc="price-raise">
+      <div class="mm-card-header">
+        <span class="mm-card-eyebrow">Calculator 4 of 4</span>
+        <span class="mm-badge-safe" title="Every number you type is processed in your browser. Nothing is sent to our servers.">Stays in your browser</span>
+      </div>
       <h3>Price-Raise Simulator</h3>
-      <p>Model a 3%, 6%, 8% or 12% price raise with assumed cover-loss elasticity. Three side-by-side scenarios matching our menu-pricing guide.</p>
+      <p>Model a price raise against an assumed cover-loss elasticity. The default for each tier comes from our menu-pricing guide — override with the slider if your customers are more or less elastic than typical.</p>
+
+      <form class="mm-form" onsubmit="return false;" aria-label="Price-raise simulator">
+        <label for="pr-baseline">
+          <span>Current monthly sales ($)</span>
+          <input type="number" id="pr-baseline" min="0" max="10000000" step="100" value="100000" inputmode="numeric" placeholder="e.g., 85000" />
+        </label>
+        <fieldset class="mm-tier-group">
+          <legend>Raise tier</legend>
+          <div class="mm-tier-btns" role="radiogroup" aria-label="Price-raise tier">
+            <button type="button" data-tier="small"      data-raise="0.03" data-default-loss="0.01"  aria-pressed="false" role="radio">3%<small>anchors</small></button>
+            <button type="button" data-tier="core"       data-raise="0.06" data-default-loss="0.025" aria-pressed="true"  role="radio">6%<small>core</small></button>
+            <button type="button" data-tier="signature"  data-raise="0.08" data-default-loss="0.035" aria-pressed="false" role="radio">8%<small>signature</small></button>
+            <button type="button" data-tier="aggressive" data-raise="0.12" data-default-loss="0.05"  aria-pressed="false" role="radio">12%<small>aggressive</small></button>
+          </div>
+        </fieldset>
+        <label for="pr-loss">
+          <span>Assumed cover loss <output id="pr-loss-val" for="pr-loss">2.5%</output></span>
+          <input type="range" id="pr-loss" min="0" max="80" step="1" value="25" aria-describedby="pr-loss-val" />
+          <small style="color:var(--stone);font-weight:400;font-size:12px;line-height:1.4;">Slider units are tenths of a percent (so 25 = 2.5%). Defaults reset when you switch tier.</small>
+        </label>
+      </form>
+
+      <div class="mm-results" aria-live="polite" aria-atomic="true">
+        <div class="mm-per-order">
+          <div class="mm-per-order-col">
+            <span class="mm-result-label">New monthly sales</span>
+            <span class="mm-result-value" id="pr-new">$103,350</span>
+          </div>
+          <div class="mm-per-order-col">
+            <span class="mm-result-label">Break-even cover loss</span>
+            <span class="mm-result-value" id="pr-breakeven">5.7%</span>
+          </div>
+        </div>
+        <div class="mm-monthly" id="pr-head" data-band="good">
+          <span class="mm-monthly-label">Monthly delta</span>
+          <span class="mm-monthly-value" id="pr-delta">+$3,350</span>
+          <span class="mm-monthly-subtext" id="pr-delta-pct">+3.4% on baseline</span>
+        </div>
+        <div class="mm-recommendation" id="pr-rec" data-band="good"></div>
+      </div>
+
+      <a class="mm-blog-link" href="/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Read the full strategy: Raising menu prices without losing reservations &rarr;</a>
     </article>
   </div>
 </div></section>
@@ -864,6 +909,91 @@
   marginEl.addEventListener('input', onInput);
   daysEl.addEventListener('input', onInput);
   typicalEl.addEventListener('input', onInput);
+
+  render();
+})();
+
+/* Price-Raise Simulator calculator wiring. Isolated IIFE. */
+(function(){
+  if (!window.MM) return;
+  var card = document.querySelector('[data-calc="price-raise"]');
+  if (!card) return;
+
+  var baselineEl  = card.querySelector('#pr-baseline');
+  var tierBtns    = card.querySelectorAll('.mm-tier-btns button');
+  var lossEl      = card.querySelector('#pr-loss');
+  var lossValEl   = card.querySelector('#pr-loss-val');
+  var newEl       = card.querySelector('#pr-new');
+  var breakevenEl = card.querySelector('#pr-breakeven');
+  var headEl      = card.querySelector('#pr-head');
+  var deltaEl     = card.querySelector('#pr-delta');
+  var deltaPctEl  = card.querySelector('#pr-delta-pct');
+  var recEl       = card.querySelector('#pr-rec');
+
+  var currentRaise = 0.06;
+  var currentTier  = 'core';
+  var userOverrodeLoss = false;  // resets when a new tier is picked
+  var firstInteractionFired = false;
+
+  var REC_COPY = {
+    'good': 'Strong net pickup. The raise is working — you\'re trading a bit of cover volume for more margin per cover, and the math lands in your favor. Protect the signature items; they carry the pricing power.',
+    'ok':   'Small net positive. The raise paid for the lost covers plus a sliver of margin. If your elasticity guess is right, this is the sweet spot — modest headroom without risking reservations.',
+    'warn': 'Near-wash. You\'re trading covers for the same revenue — not a loss, but not the point of raising. Either the raise was too aggressive for your elasticity, or hold back and re-evaluate on anchor items before rolling wider.',
+    'bad':  'Losing ground. Net revenue drops at this raise × elasticity combo. Two options: hold this raise but only on the items customers notice least (signatures beat anchors), or pull back to a smaller tier. Test with an anchor-held approach first.'
+  };
+
+  function render(){
+    var result = window.MM.calcPriceRaise({
+      monthlyBaseline: baselineEl.value,
+      priceRaisePct:   currentRaise,
+      coverLossPct:    parseFloat(lossEl.value) / 1000  // slider is tenths-of-percent
+    });
+
+    lossValEl.textContent = (parseFloat(lossEl.value) / 10).toFixed(1) + '%';
+    newEl.textContent     = window.MM.formatMoney(result.newSales);
+    breakevenEl.textContent = (result.breakEvenCoverLossPct * 100).toFixed(1) + '%';
+    deltaEl.textContent   = (result.delta >= 0 ? '+' : '-') + window.MM.formatMoney(Math.abs(result.delta));
+    deltaEl.style.color   = result.delta >= 0 ? '#1F6B3A' : 'var(--rust)';
+    deltaPctEl.textContent = (result.deltaPct >= 0 ? '+' : '') + (result.deltaPct * 100).toFixed(2) + '% on baseline';
+    headEl.setAttribute('data-band', result.band);
+    recEl.setAttribute('data-band', result.band);
+    recEl.textContent = REC_COPY[result.band] || '';
+
+    return result;
+  }
+
+  function maybeFireAnalytics(result){
+    if (firstInteractionFired || !window.plausible) return;
+    firstInteractionFired = true;
+    window.plausible('Margin Math PriceRaise', { props: {
+      raise_tier:       currentTier,
+      cover_loss_bucket: window.MM.bucketCoverLoss(parseFloat(lossEl.value) / 1000),
+      band:             result.band
+    }});
+  }
+
+  function onInput(){ maybeFireAnalytics(render()); }
+
+  baselineEl.addEventListener('input', onInput);
+  lossEl.addEventListener('input', function(){ userOverrodeLoss = true; onInput(); });
+
+  Array.prototype.forEach.call(tierBtns, function(btn){
+    btn.addEventListener('click', function(){
+      Array.prototype.forEach.call(tierBtns, function(b){
+        b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+      });
+      currentTier  = btn.getAttribute('data-tier');
+      currentRaise = parseFloat(btn.getAttribute('data-raise'));
+      // Reset the cover-loss slider to this tier's default so the
+      // scenario jumps to a sensible baseline — but only if the user
+      // hasn't already manually overridden it, so we don't trample
+      // their in-flight exploration.
+      var defaultLoss = parseFloat(btn.getAttribute('data-default-loss'));
+      lossEl.value = Math.round(defaultLoss * 1000);  // slider is tenths-of-percent
+      userOverrodeLoss = false;
+      onInput();
+    });
+  });
 
   render();
 })();
