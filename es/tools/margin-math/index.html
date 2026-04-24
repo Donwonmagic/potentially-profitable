@@ -97,6 +97,16 @@
   .mm-result-label{font-size:11px;font-weight:600;color:var(--stone);letter-spacing:.04em;text-transform:uppercase}
   .mm-result-value{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
   .mm-result-sub{font-size:11px;color:var(--stone);font-variant-numeric:tabular-nums;margin-top:1px;letter-spacing:.01em}
+  /* "Copiar enlace del escenario" — acción discreta por calculadora
+     que escribe el estado actual en el fragmento de la URL para que
+     el dueño pueda marcarlo o compartirlo. Sin viaje al servidor; el
+     fragmento nunca sale del navegador. */
+  .mm-copy-link{align-self:flex-start;margin-top:-2px;font-size:12px;font-weight:600;color:var(--teal);background:none;border:0;padding:0;cursor:pointer;letter-spacing:.01em;display:inline-flex;align-items:center;gap:5px;font-family:inherit}
+  .mm-copy-link:hover{color:var(--teal-dark)}
+  .mm-copy-link:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:3px}
+  .mm-copy-link::before{content:'';width:10px;height:10px;border:1.5px solid currentColor;border-radius:2px;box-shadow:-3px 3px 0 -1.5px currentColor,-3px 3px 0 0 var(--white);display:inline-block;margin-right:2px;flex:0 0 10px}
+  .mm-copy-link[data-copied="true"]{color:#1F6B3A}
+  .mm-copy-link[data-copied="true"]::before{content:'\2713';border:0;box-shadow:none;width:auto;height:auto;font-weight:800;color:inherit;margin-right:1px;font-size:13px;line-height:1}
   .mm-monthly{text-align:center;padding:8px 0;border-top:1px dashed var(--line-dark);display:flex;flex-direction:column;gap:2px}
   .mm-monthly-label{font-size:12px;font-weight:600;color:var(--stone);letter-spacing:.04em;text-transform:uppercase}
   .mm-monthly-value{font-family:var(--font-display);font-size:36px;font-weight:500;color:var(--rust);font-variant-numeric:tabular-nums;line-height:1.1}
@@ -330,6 +340,7 @@
       </div>
 
       <p class="mm-footnote"><strong>No se modela:</strong> gasto en listados patrocinados ("Boost"), empaque, tarifas de suscripción del canal directo, el minuto de labor por ticket. Réstalos antes de actuar sobre el número.</p>
+      <button type="button" class="mm-copy-link" data-copy-link data-copy-label="Copiar enlace del escenario" data-copied-label="Enlace copiado — pégalo para guardarlo">Copiar enlace del escenario</button>
       <a class="mm-blog-link" href="/blog/is-doordash-worth-it-for-restaurants-in-2026/">Lee el análisis completo: ¿Vale la pena DoorDash en 2026? &rarr;</a>
     </article>
     <article class="mm-card mm-live" data-calc="prime-cost">
@@ -371,6 +382,7 @@
         <div class="mm-recommendation" id="pc-rec" data-band="ok"></div>
       </div>
 
+      <button type="button" class="mm-copy-link" data-copy-link data-copy-label="Copiar enlace del escenario" data-copied-label="Enlace copiado — pégalo para guardarlo">Copiar enlace del escenario</button>
       <a class="mm-blog-link" href="/blog/is-doordash-worth-it-for-restaurants-in-2026/#prime-cost">¿Qué es un prime cost saludable y de dónde vienen los números? &rarr;</a>
     </article>
     <article class="mm-card mm-live" data-calc="break-even-covers">
@@ -424,6 +436,7 @@
         </div>
         <div class="mm-recommendation" id="bec-rec" data-band="ok"></div>
       </div>
+      <button type="button" class="mm-copy-link" data-copy-link data-copy-label="Copiar enlace del escenario" data-copied-label="Enlace copiado — pégalo para guardarlo">Copiar enlace del escenario</button>
     </article>
     <article class="mm-card mm-live" data-calc="price-raise">
       <div class="mm-card-header">
@@ -480,6 +493,7 @@
         <div class="mm-recommendation" id="pr-rec" data-band="good"></div>
       </div>
 
+      <button type="button" class="mm-copy-link" data-copy-link data-copy-label="Copiar enlace del escenario" data-copied-label="Enlace copiado — pégalo para guardarlo">Copiar enlace del escenario</button>
       <a class="mm-blog-link" href="/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Lee la estrategia completa: Subir precios sin perder reservas &rarr;</a>
     </article>
   </div>
@@ -562,10 +576,10 @@
       <div class="mm-step-head">
         <span class="mm-step-num" aria-hidden="true">6</span>
         <div class="mm-step-body">
-          <h3 class="mm-step-title">Las URLs compartibles mantienen los números fuera de los logs del servidor.</h3>
-          <p class="mm-step-claim">Cuando enviemos "Guardar este escenario" (fase posterior), los números irán codificados en el <a href="/es/glossary/#url-fragment" style="color:inherit;border-bottom:1px dashed var(--teal);"><strong>fragmento</strong> de la URL</a> — después del <code>#</code>. Según la especificación HTTP, los navegadores nunca envían el fragmento al servidor. El enlace funciona; el servidor nunca ve su contenido.</p>
+          <h3 class="mm-step-title">Los enlaces de escenario mantienen los números fuera de los logs del servidor.</h3>
+          <p class="mm-step-claim">Tus entradas viven en el <a href="/es/glossary/#url-fragment" style="color:inherit;border-bottom:1px dashed var(--teal);"><strong>fragmento</strong> de la URL</a> — la parte después del <code>#</code>. Según la especificación HTTP, los navegadores nunca envían el fragmento al servidor. Pulsa <strong>Copiar enlace del escenario</strong> en cualquier calculadora: el enlace que pegas es un rastro auditable que tú controlas — nada sale de tu navegador cuando mueves un deslizador, y nada sale del nuestro cuando compartes el enlace.</p>
           <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
-            <div class="mm-step-verify">Enlaces como <code>&hellip;/margin-math/#calc=delivery&amp;t=25&amp;f=30</code> hidratan el estado localmente. También ponemos <code>&lt;meta name="referrer" content="no-referrer"&gt;</code> en esta página — para que clics salientes no filtren el fragmento vía Referer.</div>
+            <div class="mm-step-verify">Mueve cualquier deslizador y mira la barra de direcciones. Se actualiza a algo como <code>&hellip;/margin-math/#v=1&amp;dbe.t=25&amp;dbe.f=30&amp;pc.f=32&amp;pc.l=34</code>. Ese fragmento nunca viaja en una solicitud HTTP. También ponemos <code>&lt;meta name="referrer" content="no-referrer"&gt;</code> en esta página para que clics salientes no lo filtren a terceros vía el encabezado Referer.</div>
           </details>
         </div>
       </div>
@@ -732,8 +746,36 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/es/terms.html">Términos</a><a href="/es/privacy.html">Privacidad</a><a href="/es/accessibility.html">Accesibilidad</a><a href="/es/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="./margin-math.js?v=20260424-mm1"></script>
+<script src="./margin-math.js?v=20260424-mm2"></script>
 <script>
+/* Sincronía de escenario compartida. Cada IIFE de calculadora
+ * registra su propia función getState(); al interactuar, re-codifica
+ * todo el estado en el fragmento de la URL vía history.replaceState —
+ * sin navegación, sin red, sin nueva entrada en el historial.
+ *
+ * La hidratación desde un enlace guardado va al revés: decodifica el
+ * fragmento una vez al arrancar, lo guarda en __mmHydratedState, y
+ * cada IIFE lee sólo su propio namespace. Un enlace con sólo parte
+ * de un namespace (p. ej. "#v=1&dbe.t=30") se respeta — cada otra
+ * calculadora mantiene sus valores por defecto. */
+(function(){
+  if (!window.MM) return;
+  window.__mmCalcs = [];
+  window.__mmHydratedState = window.MM.decodeState(location.hash);
+  window.__mmUserInteracted = false;
+  window.__mmSyncFragment = function(){
+    if (!window.__mmUserInteracted) return;
+    var state = {};
+    for (var i = 0; i < window.__mmCalcs.length; i++) {
+      var c = window.__mmCalcs[i];
+      state[c.ns] = c.getState();
+    }
+    try {
+      history.replaceState(null, '', '#' + window.MM.encodeState(state));
+    } catch (_e) { /* no fatal */ }
+  };
+})();
+
 /* Calculadora Punto de equilibrio con delivery — cableado.
  *
  * Invariantes de privacidad (aplicadas aquí):
@@ -762,6 +804,31 @@
   var currentTier = 'plus';
   var currentCommission = 0.25;
   var firstInteractionFired = false;
+
+  var hydrated = (window.__mmHydratedState && window.__mmHydratedState.dbe) || null;
+  if (hydrated) {
+    if (hydrated.t !== undefined) ticketEl.value = hydrated.t;
+    if (hydrated.f !== undefined) foodcostEl.value = hydrated.f;
+    if (hydrated.o !== undefined) ordersEl.value = hydrated.o;
+    if (hydrated.c) {
+      var btn = card.querySelector('.mm-tier-btns button[data-tier="' + hydrated.c + '"]');
+      if (btn) {
+        Array.prototype.forEach.call(tierBtns, function(b){
+          b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+        });
+        currentTier = hydrated.c;
+        currentCommission = parseFloat(btn.getAttribute('data-pct'));
+      }
+    }
+  }
+  if (window.__mmCalcs) {
+    window.__mmCalcs.push({
+      ns: 'dbe',
+      getState: function(){
+        return { t: ticketEl.value, f: foodcostEl.value, c: currentTier, o: ordersEl.value };
+      }
+    });
+  }
 
   var REC_COPY = {
     'keep': 'A esta tasa, las órdenes por agregador son razonables como marketing — clientes nuevos a los que no hubieras llegado. Vigila el volumen.',
@@ -820,7 +887,11 @@
     }});
   }
 
-  function onInput(){ maybeFireAnalytics(render()); }
+  function onInput(){
+    window.__mmUserInteracted = true;
+    maybeFireAnalytics(render());
+    if (window.__mmSyncFragment) window.__mmSyncFragment();
+  }
 
   ticketEl.addEventListener('input', onInput);
   foodcostEl.addEventListener('input', onInput);
@@ -857,6 +928,18 @@
   var recEl       = card.querySelector('#pc-rec');
 
   var firstInteractionFired = false;
+
+  var hydrated = (window.__mmHydratedState && window.__mmHydratedState.pc) || null;
+  if (hydrated) {
+    if (hydrated.f !== undefined) foodEl.value = hydrated.f;
+    if (hydrated.l !== undefined) laborEl.value = hydrated.l;
+  }
+  if (window.__mmCalcs) {
+    window.__mmCalcs.push({
+      ns: 'pc',
+      getState: function(){ return { f: foodEl.value, l: laborEl.value }; }
+    });
+  }
 
   var BAND_LABELS = {
     'below': 'Debajo de lo típico — verifica las entradas',
@@ -911,7 +994,11 @@
     }});
   }
 
-  function onInput(){ maybeFireAnalytics(render()); }
+  function onInput(){
+    window.__mmUserInteracted = true;
+    maybeFireAnalytics(render());
+    if (window.__mmSyncFragment) window.__mmSyncFragment();
+  }
 
   foodEl.addEventListener('input', onInput);
   laborEl.addEventListener('input', onInput);
@@ -941,6 +1028,26 @@
   var recEl         = card.querySelector('#bec-rec');
 
   var firstInteractionFired = false;
+
+  var hydrated = (window.__mmHydratedState && window.__mmHydratedState.bec) || null;
+  if (hydrated) {
+    if (hydrated.fx !== undefined) fixedEl.value   = hydrated.fx;
+    if (hydrated.k  !== undefined) checkEl.value   = hydrated.k;
+    if (hydrated.m  !== undefined) marginEl.value  = hydrated.m;
+    if (hydrated.d  !== undefined) daysEl.value    = hydrated.d;
+    if (hydrated.tp !== undefined) typicalEl.value = hydrated.tp;
+  }
+  if (window.__mmCalcs) {
+    window.__mmCalcs.push({
+      ns: 'bec',
+      getState: function(){
+        return {
+          fx: fixedEl.value, k: checkEl.value, m: marginEl.value,
+          d: daysEl.value,   tp: typicalEl.value
+        };
+      }
+    });
+  }
 
   var REC_COPY = {
     'good': 'Los costos fijos son una porción cómoda de la operación. Estás con verdadero colchón. La palanca a vigilar son los costos fijos que se arrastran (suscripciones SaaS, alzas pequeñas de proveedores) — no se sienten como crisis pero suman.',
@@ -1018,7 +1125,11 @@
     }});
   }
 
-  function onInput(){ maybeFireAnalytics(render()); }
+  function onInput(){
+    window.__mmUserInteracted = true;
+    maybeFireAnalytics(render());
+    if (window.__mmSyncFragment) window.__mmSyncFragment();
+  }
 
   fixedEl.addEventListener('input', onInput);
   checkEl.addEventListener('input', onInput);
@@ -1053,6 +1164,35 @@
   var currentRaise = 0.06;
   var currentTier  = 'core';
   var firstInteractionFired = false;
+
+  var hydrated = (window.__mmHydratedState && window.__mmHydratedState.pr) || null;
+  if (hydrated) {
+    if (hydrated.b !== undefined) baselineEl.value = hydrated.b;
+    if (hydrated.l !== undefined) lossEl.value     = hydrated.l;
+    if (hydrated.m !== undefined) marginEl.value   = hydrated.m;
+    if (hydrated.t) {
+      var btn = card.querySelector('.mm-tier-btns button[data-tier="' + hydrated.t + '"]');
+      if (btn) {
+        Array.prototype.forEach.call(tierBtns, function(b){
+          b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+        });
+        currentTier  = hydrated.t;
+        currentRaise = parseFloat(btn.getAttribute('data-raise'));
+        if (hydrated.l === undefined) {
+          var defaultLoss = parseFloat(btn.getAttribute('data-default-loss'));
+          lossEl.value = (defaultLoss * 100).toFixed(1);
+        }
+      }
+    }
+  }
+  if (window.__mmCalcs) {
+    window.__mmCalcs.push({
+      ns: 'pr',
+      getState: function(){
+        return { b: baselineEl.value, t: currentTier, l: lossEl.value, m: marginEl.value };
+      }
+    });
+  }
 
   var REC_COPY = {
     'good': 'Pickup neto fuerte. El alza está funcionando — estás cambiando un poco de volumen de cubiertos por más margen por cubierto, y la matemática cae a tu favor. Protege los platos firma; ahí está el poder de precio.',
@@ -1115,7 +1255,11 @@
     }});
   }
 
-  function onInput(){ maybeFireAnalytics(render()); }
+  function onInput(){
+    window.__mmUserInteracted = true;
+    maybeFireAnalytics(render());
+    if (window.__mmSyncFragment) window.__mmSyncFragment();
+  }
 
   baselineEl.addEventListener('input', onInput);
   lossEl.addEventListener('input', onInput);
@@ -1135,6 +1279,42 @@
   });
 
   render();
+})();
+
+/* Manejadores del botón Copiar enlace del escenario. Escribe
+ * location.href al portapapeles; cambia brevemente el texto del
+ * botón; lo regresa. Si la Clipboard API está bloqueada, indica
+ * "Copia desde la barra de direcciones". El clic también marca
+ * __mmUserInteracted para que el fragmento se actualice aun si el
+ * usuario llega a la página y pulsa copiar de inmediato. */
+(function(){
+  var buttons = document.querySelectorAll('[data-copy-link]');
+  if (!buttons.length) return;
+  Array.prototype.forEach.call(buttons, function(btn){
+    var copyLabel   = btn.getAttribute('data-copy-label')   || 'Copiar enlace del escenario';
+    var copiedLabel = btn.getAttribute('data-copied-label') || 'Enlace copiado';
+    btn.addEventListener('click', function(){
+      window.__mmUserInteracted = true;
+      if (window.__mmSyncFragment) window.__mmSyncFragment();
+      var href = location.href;
+      var flash = function(label){
+        btn.setAttribute('data-copied', 'true');
+        btn.textContent = label;
+        setTimeout(function(){
+          btn.removeAttribute('data-copied');
+          btn.textContent = copyLabel;
+        }, 2600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(href).then(
+          function(){ flash(copiedLabel); },
+          function(){ flash('Copia desde la barra de direcciones'); }
+        );
+      } else {
+        flash('Copia desde la barra de direcciones');
+      }
+    });
+  });
 })();
 </script>
 </body>

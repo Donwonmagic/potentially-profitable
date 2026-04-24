@@ -15,13 +15,22 @@
 // Exits non-zero on failure.
 
 import { createRequire } from 'node:module';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, resolve } from 'node:path';
 const require = createRequire(import.meta.url);
+const mmSrc = readFileSync(
+  resolve(dirname(fileURLToPath(import.meta.url)), '../tools/margin-math/margin-math.js'),
+  'utf8'
+);
 
 const {
   calcDeliveryBreakeven,
   calcPrimeCost,
   calcBreakEvenCovers,
   calcPriceRaise,
+  encodeState,
+  decodeState,
   formatMoney,
   formatPct,
   bucketTicket,
@@ -44,7 +53,9 @@ const {
   COVER_LOSS_BUCKETS,
   PRICE_RAISE_BANDS,
   RECOMMENDATIONS,
-  DIRECT_PROCESSING_PCT
+  DIRECT_PROCESSING_PCT,
+  FRAGMENT_VERSION,
+  FRAGMENT_KEYS
 } = require('../tools/margin-math/margin-math.js');
 
 let failures = 0;
@@ -518,6 +529,100 @@ assertEq('bucket: price-raise 12%',   bucketPriceRaiseTier(0.12),  'aggressive')
   const leakedAny = buckets.some(function(b) { return ('' + b).indexOf('SECRET') !== -1; });
   assert('no raw "SECRET" string leaks through any bucket fn', !leakedAny);
 }
+
+// ------------------------------------------------------------
+// URL-fragment scenario encode / decode
+//
+// Round-trip tests, version-tag presence, and forward-compat guards.
+// The encoder intentionally emits raw values — unlike the Plausible
+// bucket helpers — because permalinks are the user's own shareable
+// link, not telemetry. A separate assertion below confirms the
+// encoder implementation does not reach into any bucket function.
+// ------------------------------------------------------------
+{
+  // Empty state → just a version marker
+  assertEq('encode: empty state emits v=1 only', encodeState({}), 'v=' + FRAGMENT_VERSION);
+  assertEq('encode: undefined input is safe',    encodeState(),   'v=' + FRAGMENT_VERSION);
+}
+
+{
+  const state = {
+    dbe: { t: '25', f: '30', c: 'plus',       o: '150' },
+    pc:  { f: '32', l: '34' },
+    bec: { fx: '15000', k: '45', m: '22', d: '28', tp: '150' },
+    pr:  { b: '120000', t: 'core', l: '2.5', m: '20' }
+  };
+  const encoded = encodeState(state);
+  assert('encode: starts with v=', encoded.indexOf('v=' + FRAGMENT_VERSION + '&') === 0);
+  const decoded = decodeState(encoded);
+  assertEq('round-trip: dbe.t', decoded.dbe.t, '25');
+  assertEq('round-trip: dbe.c', decoded.dbe.c, 'plus');
+  assertEq('round-trip: pc.f',  decoded.pc.f,  '32');
+  assertEq('round-trip: bec.fx', decoded.bec.fx, '15000');
+  assertEq('round-trip: bec.tp', decoded.bec.tp, '150');
+  assertEq('round-trip: pr.t',  decoded.pr.t,  'core');
+  assertEq('round-trip: pr.l',  decoded.pr.l,  '2.5');
+  assertEq('round-trip: pr.m',  decoded.pr.m,  '20');
+}
+
+{
+  // Partial state (cross-calc pre-fill style)
+  const partial = encodeState({ dbe: { t: '40' } });
+  assertEq('encode: partial omits unset keys', partial, 'v=' + FRAGMENT_VERSION + '&dbe.t=40');
+  const d = decodeState('v=1&dbe.t=40');
+  assertEq('decode: partial leaves others absent', d.pc, undefined);
+  assertEq('decode: partial reads single key', d.dbe.t, '40');
+}
+
+{
+  // Leading hash is tolerated
+  assertEq('decode: leading hash is stripped', decodeState('#v=1&dbe.t=42').dbe.t, '42');
+}
+
+{
+  // Unknown namespaces / keys are dropped
+  const d = decodeState('v=1&unknown.x=1&dbe.bogus=1&dbe.t=7');
+  assertEq('decode: unknown namespace dropped', d.unknown, undefined);
+  assertEq('decode: unknown key dropped',       d.dbe.bogus, undefined);
+  assertEq('decode: known key kept',            d.dbe.t,  '7');
+}
+
+{
+  // Malformed input must not throw
+  const tries = [
+    '',
+    '#',
+    '===',
+    '&&&',
+    'v=1&=abc',
+    'v=1&dbe.t=%E0%A4%A'  // invalid percent-escape
+  ];
+  let ok = true;
+  tries.forEach(function(s){
+    try { decodeState(s); } catch (_e) { ok = false; }
+  });
+  assert('decode: malformed inputs do not throw', ok);
+}
+
+{
+  // Separation-of-concerns: source of mmEncodeState / mmDecodeState
+  // must not reference any bucket helper. Permalinks emit raw user
+  // values; buckets exist to redact raw values before they reach
+  // Plausible. The two paths must never cross.
+  for (const name of ['mmEncodeState', 'mmDecodeState']) {
+    const re = new RegExp('function ' + name + '[\\s\\S]*?^\\}', 'm');
+    const block = mmSrc.match(re);
+    assert('source: ' + name + ' block exists', !!block);
+    if (block) {
+      const touches = block[0].match(/mmBucket[A-Za-z]+/);
+      assert('source: ' + name + ' does not call any mmBucket*', !touches);
+    }
+  }
+}
+
+// Also proves we imported the two new names
+assertEq('FRAGMENT_VERSION is exposed', FRAGMENT_VERSION, '1');
+assert('FRAGMENT_KEYS is exposed', FRAGMENT_KEYS && typeof FRAGMENT_KEYS === 'object');
 
 // ------------------------------------------------------------
 // Summary

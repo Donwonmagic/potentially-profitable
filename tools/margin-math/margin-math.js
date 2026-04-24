@@ -427,6 +427,90 @@ function mmCalcPrimeCost(input) {
 }
 
 // ------------------------------------------------------------
+// URL-fragment scenario encode / decode
+//
+// Shareable scenarios live in the URL fragment (after `#`) so the
+// browser never sends the encoded state to the server. `v=1` is a
+// forward-compat version tag. Keys are flat, dot-namespaced by
+// calculator, so a partial link — e.g. `#v=1&dbe.t=30` — still
+// loads cleanly (every decoder reads only its own namespace).
+//
+// Schema:
+//   v=1                     version marker (required)
+//   dbe.t  dbe.f  dbe.c  dbe.o          Delivery Break-Even
+//   pc.f   pc.l                          Prime Cost
+//   bec.fx bec.k  bec.m  bec.d  bec.tp   Break-Even Covers
+//   pr.b   pr.t   pr.l   pr.m            Price-Raise
+//
+// Only the tier fields (`dbe.c`, `pr.t`) are enumerated strings; all
+// others are numeric strings. The decoder does NOT validate numeric
+// bounds — that's the consumer UI's job (clamp via input min/max).
+//
+// Separation-of-concerns invariant:
+//   These functions are fully disjoint from the Plausible bucket
+//   helpers. Analytics remain bucket-only; permalinks intentionally
+//   emit raw values because they are the user's own link, not
+//   telemetry the server sees. The test suite asserts neither path
+//   calls into the other.
+// ------------------------------------------------------------
+
+var MM_FRAGMENT_VERSION = '1';
+var MM_FRAGMENT_KEYS = {
+  dbe: ['t', 'f', 'c', 'o'],
+  pc:  ['f', 'l'],
+  bec: ['fx', 'k', 'm', 'd', 'tp'],
+  pr:  ['b', 't', 'l', 'm']
+};
+
+function mmEncodeState(state) {
+  // Pure: given a { dbe, pc, bec, pr } partial object, return a URL
+  // fragment string (without leading `#`). Missing values are
+  // omitted entirely so the link stays compact.
+  state = state || {};
+  var parts = ['v=' + MM_FRAGMENT_VERSION];
+  Object.keys(MM_FRAGMENT_KEYS).forEach(function(ns){
+    var sub = state[ns];
+    if (!sub) return;
+    MM_FRAGMENT_KEYS[ns].forEach(function(k){
+      var v = sub[k];
+      if (v === undefined || v === null || v === '') return;
+      parts.push(ns + '.' + k + '=' + encodeURIComponent(String(v)));
+    });
+  });
+  return parts.join('&');
+}
+
+function mmDecodeState(hash) {
+  // Pure: accept a fragment string (leading `#` optional) and return
+  // a { dbe, pc, bec, pr } partial object with only the keys that
+  // were present. Silently ignores unknown namespaces/keys so a
+  // future schema version can forward-compat with this decoder.
+  if (typeof hash !== 'string') return {};
+  if (hash.charAt(0) === '#') hash = hash.slice(1);
+  if (!hash) return {};
+  var out = {};
+  var pairs = hash.split('&');
+  for (var i = 0; i < pairs.length; i++) {
+    var eq = pairs[i].indexOf('=');
+    if (eq < 0) continue;
+    var rawKey = pairs[i].slice(0, eq);
+    var rawVal = pairs[i].slice(eq + 1);
+    if (!rawKey) continue;
+    var dot = rawKey.indexOf('.');
+    if (dot < 0) continue;  // skips v=1, and any non-namespaced key
+    var ns = rawKey.slice(0, dot);
+    var k  = rawKey.slice(dot + 1);
+    if (!MM_FRAGMENT_KEYS[ns]) continue;
+    if (MM_FRAGMENT_KEYS[ns].indexOf(k) < 0) continue;
+    var val;
+    try { val = decodeURIComponent(rawVal); } catch (_e) { continue; }
+    if (!out[ns]) out[ns] = {};
+    out[ns][k] = val;
+  }
+  return out;
+}
+
+// ------------------------------------------------------------
 // Dual export
 // ------------------------------------------------------------
 
@@ -436,6 +520,10 @@ if (typeof window !== 'undefined') {
     calcPrimeCost:         mmCalcPrimeCost,
     calcBreakEvenCovers:   mmCalcBreakEvenCovers,
     calcPriceRaise:        mmCalcPriceRaise,
+    encodeState: mmEncodeState,
+    decodeState: mmDecodeState,
+    FRAGMENT_VERSION: MM_FRAGMENT_VERSION,
+    FRAGMENT_KEYS:    MM_FRAGMENT_KEYS,
     formatMoney: mmFormatMoney,
     formatPct: mmFormatPct,
     bucketTicket: mmBucketTicket,
@@ -466,6 +554,10 @@ if (typeof module !== 'undefined' && module.exports) {
     calcPrimeCost:         mmCalcPrimeCost,
     calcBreakEvenCovers:   mmCalcBreakEvenCovers,
     calcPriceRaise:        mmCalcPriceRaise,
+    encodeState: mmEncodeState,
+    decodeState: mmDecodeState,
+    FRAGMENT_VERSION: MM_FRAGMENT_VERSION,
+    FRAGMENT_KEYS:    MM_FRAGMENT_KEYS,
     formatMoney: mmFormatMoney,
     formatPct: mmFormatPct,
     bucketTicket: mmBucketTicket,
