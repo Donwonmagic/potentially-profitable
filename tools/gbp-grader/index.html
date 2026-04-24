@@ -574,15 +574,49 @@
   // can re-score with the extra payload without re-fetching /api/gbp-lookup.
   var deepScanState={chosen:null,peerMedians:null,query:null,wasPicked:false,data:null,inFlight:false};
 
+  // ----- 24h client-side lockout ----------------------------------
+  // Mirrors the Worker's 24h gbp-details KV cache. Prevents quota-
+  // burning repeat clicks and gives the user a clear "you already
+  // scanned this today" signal. Storage is per-placeId and best-
+  // effort — a private-mode failure falls through silently.
+  var GBP_DEEP_TTL_MS=24*60*60*1000;
+  function gbpDeepLockKey(placeId){return'gbpGrader:deep:'+placeId}
+  function gbpDeepLockRemaining(placeId){
+    try{
+      var raw=window.localStorage.getItem(gbpDeepLockKey(placeId));
+      if(!raw)return 0;
+      var expiresAt=parseInt(raw,10);
+      if(isNaN(expiresAt))return 0;
+      var left=expiresAt-Date.now();
+      return left>0?left:0;
+    }catch(e){return 0}
+  }
+  function gbpDeepLockSet(placeId){
+    try{window.localStorage.setItem(gbpDeepLockKey(placeId),String(Date.now()+GBP_DEEP_TTL_MS))}catch(e){}
+  }
+  function gbpDeepLockLabel(ms){
+    var hours=Math.floor(ms/3600000);
+    if(hours>=1)return'in '+hours+'h';
+    var mins=Math.max(1,Math.floor(ms/60000));
+    return'in '+mins+' min';
+  }
+
   function renderDeepScan(placeId){
     if(deepScanState.data){
       return'<div class="gbp-deep gbp-deep-done"><p class="gbp-deep-label">Deep Scan complete</p></div>';
     }
     if(!placeId)return'';
+    var remaining=gbpDeepLockRemaining(placeId);
+    if(remaining>0){
+      return'<div class="gbp-deep gbp-deep-done">'
+        +'<p class="gbp-deep-label">Deep-scanned recently · try again '+gbpDeepLockLabel(remaining)+'</p>'
+        +'<p class="gbp-deep-note">Google caches review details for 24 hours — we mirror that cache to avoid unnecessary lookups.</p>'
+        +'</div>';
+    }
     return'<div class="gbp-deep" id="gbpDeepWrap">'
       +'<p class="gbp-deep-label">Want a deeper grade?</p>'
       +'<button type="button" class="gbp-deep-btn" id="gbpDeepBtn" data-place-id="'+placeId+'">Deep scan reviews (+20 pts)</button>'
-      +'<p class="gbp-deep-note">Reads review recency and owner reply rate. About ten seconds.</p>'
+      +'<p class="gbp-deep-note">Reads review recency, owner reply rate, and NAP consistency. About ten seconds.</p>'
       +'</div>';
   }
 
@@ -688,6 +722,7 @@
           ownerReplyRate:      (typeof details.ownerReplyRate==='number')?details.ownerReplyRate:null,
           nap:                 computeNap(deepScanState.chosen,schema)
         };
+        gbpDeepLockSet(placeId);  // mirror the 24h backend cache
         renderFor(deepScanState.chosen,deepScanState.peerMedians,deepScanState.query,deepScanState.wasPicked);
         if(window.plausible)window.plausible('GBP Deep Scan',{props:{
           owner_reply_bucket: (deepScanState.data.ownerReplyRate==null)?'unknown':deepScanState.data.ownerReplyRate>=0.6?'60+':deepScanState.data.ownerReplyRate>=0.2?'20-59':'lt20',
