@@ -157,6 +157,19 @@
   .gbp-methodology-body ul{margin:0 0 10px;padding-left:18px}
   .gbp-methodology-body li{margin:0 0 4px}
   .gbp-methodology-body em{color:var(--stone);font-style:normal;font-size:12px}
+  /* Deep Scan opcional — aparece entre las tarjetas de categoría y la
+     metodología. Un click pega a /api/gbp-details (cache 24h), lee
+     recencia de reseñas y tasa de respuesta del dueño, y desbloquea
+     los 20 puntos restantes. Se oculta una vez ejecutado. */
+  .gbp-deep{margin:0 0 22px;padding:18px 20px;border:1px dashed var(--teal);border-radius:10px;background:var(--teal-tint);text-align:center}
+  .gbp-deep-label{font-size:14px;color:var(--ink-soft);margin:0 0 10px;font-weight:500}
+  .gbp-deep-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border:0;border-radius:999px;background:var(--teal);color:var(--cream);font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:background 160ms var(--ease-out),transform 160ms var(--ease-out)}
+  .gbp-deep-btn:hover{background:var(--teal-dark);transform:translateY(-1px)}
+  .gbp-deep-btn:disabled{opacity:.55;cursor:wait;transform:none}
+  .gbp-deep-note{font-size:12px;color:var(--stone);margin:10px 0 0}
+  .gbp-deep-done{background:var(--cream-2);border-style:solid;border-color:var(--line)}
+  .gbp-deep-done .gbp-deep-label{color:var(--stone)}
+  .gbp-deep-done .gbp-deep-label::before{content:'\2713  ';color:#1F6B3A;font-weight:700}
 </style>
 </head>
 <body>
@@ -512,10 +525,69 @@
       +'</details>';
   }
 
+  var deepScanState={chosen:null,peerMedians:null,query:null,wasPicked:false,data:null,inFlight:false};
+
+  function renderDeepScan(placeId){
+    if(deepScanState.data){
+      return'<div class="gbp-deep gbp-deep-done"><p class="gbp-deep-label">Deep Scan completado</p></div>';
+    }
+    if(!placeId)return'';
+    return'<div class="gbp-deep" id="gbpDeepWrap">'
+      +'<p class="gbp-deep-label">¿Quieres una calificación más profunda?</p>'
+      +'<button type="button" class="gbp-deep-btn" id="gbpDeepBtn" data-place-id="'+placeId+'">Deep scan reseñas (+20 pts)</button>'
+      +'<p class="gbp-deep-note">Lee recencia de reseñas y tasa de respuesta del dueño. Unos diez segundos.</p>'
+      +'</div>';
+  }
+
+  function newestReviewAgeDays(reviews){
+    if(!reviews||!reviews.length)return null;
+    var newest=0;
+    for(var i=0;i<reviews.length;i++){
+      var t=reviews[i].publishTime;
+      if(!t)continue;
+      var ms=Date.parse(t);
+      if(isNaN(ms))continue;
+      if(ms>newest)newest=ms;
+    }
+    if(!newest)return null;
+    return Math.max(0,Math.round((Date.now()-newest)/86400000));
+  }
+
+  function runDeepScan(placeId){
+    if(deepScanState.inFlight||!placeId)return;
+    deepScanState.inFlight=true;
+    var btn=document.getElementById('gbpDeepBtn');
+    if(btn){btn.disabled=true;btn.textContent='Escaneando…'}
+    fetch('/api/gbp-details?placeId='+encodeURIComponent(placeId))
+      .then(function(r){return r.json()})
+      .then(function(d){
+        if(!d||!d.ok)throw new Error(d&&d.error?d.error:'deep-scan-failed');
+        deepScanState.data={
+          newestReviewAgeDays: newestReviewAgeDays(d.reviews),
+          ownerReplyRate:      (typeof d.ownerReplyRate==='number')?d.ownerReplyRate:null
+        };
+        renderFor(deepScanState.chosen,deepScanState.peerMedians,deepScanState.query,deepScanState.wasPicked);
+        if(window.plausible)window.plausible('GBP Deep Scan',{props:{
+          owner_reply_bucket: (deepScanState.data.ownerReplyRate==null)?'unknown':deepScanState.data.ownerReplyRate>=0.6?'60+':deepScanState.data.ownerReplyRate>=0.2?'20-59':'lt20',
+          recency_bucket:     (deepScanState.data.newestReviewAgeDays==null)?'unknown':deepScanState.data.newestReviewAgeDays<=30?'le30':deepScanState.data.newestReviewAgeDays<=90?'31-90':'gt90'
+        }});
+      })
+      .catch(function(err){
+        alert('Deep Scan falló. ' + (err.message || 'Intenta en un minuto.'));
+        if(btn){btn.disabled=false;btn.textContent='Deep scan reseñas (+20 pts)'}
+      })
+      .finally(function(){deepScanState.inFlight=false});
+  }
+
   function renderFor(chosen,peerMedians,query,wasPicked){
+    deepScanState.chosen=chosen;
+    deepScanState.peerMedians=peerMedians;
+    deepScanState.query=query;
+    deepScanState.wasPicked=wasPicked;
+
     bizEl.innerHTML=renderBusinessCard(chosen);
 
-    var scored=window.gbpScoreCandidate(chosen,peerMedians,null,'es');
+    var scored=window.gbpScoreCandidate(chosen,peerMedians,deepScanState.data,'es');
     var gaugeHtml=renderGauge(scored);
     var fixFirstHtml=renderFixFirst(scored);
 
@@ -525,8 +597,12 @@
     }
     catsHtml+='</div>';
 
+    var deepHtml=renderDeepScan(chosen.placeId);
     var methodHtml=renderMethodology(peerMedians);
-    checksEl.innerHTML=gaugeHtml+fixFirstHtml+catsHtml+methodHtml;
+    checksEl.innerHTML=gaugeHtml+fixFirstHtml+catsHtml+deepHtml+methodHtml;
+
+    var btn=document.getElementById('gbpDeepBtn');
+    if(btn)btn.addEventListener('click',function(){runDeepScan(btn.getAttribute('data-place-id'))});
 
     result.classList.add('visible');
     result.scrollIntoView({behavior:'smooth',block:'start'});
@@ -543,7 +619,8 @@
       status:         chosen.businessStatus||'unknown',
       peer_source:    scored.peerMedian.source,
       picked:         wasPicked?'yes':'no',
-      fix_first:      scored.fixFirst?scored.fixFirst.id:'none'
+      fix_first:      scored.fixFirst?scored.fixFirst.id:'none',
+      deep_scan:      deepScanState.data?'yes':'no'
     }});
   }
 
@@ -571,6 +648,7 @@
       if(!btn)return;
       var idx=parseInt(btn.getAttribute('data-idx'),10);
       if(isNaN(idx)||!list[idx])return;
+      deepScanState.data=null;
       renderFor(list[idx],peerMedians,query,true);
     });
   }
@@ -590,6 +668,7 @@
       if(!d.ok)throw new Error(d.error||'La búsqueda falló');
 
       var candidates=d.candidates||[d];
+      deepScanState.data=null;
       if(gbpShouldShowPicker(candidates,q)){
         showPicker(candidates,q,peerMedians);
       }else{
