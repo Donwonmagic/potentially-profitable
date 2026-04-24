@@ -539,6 +539,32 @@
   </div>
 </aside>
 
+<aside class="mc-drawer" data-drawer-id="brand" role="dialog" aria-modal="true" aria-labelledby="drawer-brand-title" data-open="false" inert>
+  <div class="mc-drawer-head">
+    <p class="mc-drawer-eyebrow">Sistema de marca</p>
+    <button type="button" class="mc-drawer-close" aria-label="Cerrar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+  </div>
+  <div class="mc-drawer-body">
+    <h2 id="drawer-brand-title">Tu logo es un ingrediente, no la receta</h2>
+    <p class="mc-drawer-lede">Dos restaurantes pueden abrir con marcas igualmente fuertes; seis meses después, el que tiene un sistema de marca documentado se ve igual en su menú, su Instagram y su bolsa para llevar — y el otro no.</p>
+    <ul>
+      <li><strong>Los colores son el mayor portador de tono después del logo.</strong> Un primario, un secundario, un puñado de acentos y dos neutros — cada uno con un par accesible documentado. Eso es lo que renderiza el sitio; eso es lo que deberían recibir tus proveedores de impresión.</li>
+      <li><strong>Los fallos de contraste hacen menús ilegibles.</strong> Colores de marca que lucen preciosos en el logo pueden caer muy por debajo del umbral WCAG de 4.5:1 en una página de menú densa. Cada par se evalúa, no se estima a ojo.</li>
+      <li><strong>Cada superficie usa el mismo token.</strong> Entregamos la paleta como propiedades personalizadas de CSS + tokens de diseño para que el sitio, tu futuro desarrollador y cualquier proveedor de impresión lean de la misma fuente.</li>
+      <li><strong>La variante monocromática no es opcional.</strong> Bordado, relieve, posavasos grabados con láser — necesitan una versión de un solo color del símbolo. Su ausencia es la señal más clara de "esta identidad no se terminó".</li>
+      <li><strong>Las reglas de uso documentadas evitan la deriva.</strong> Espacio de resguardo, tamaños mínimos, ejemplos de mal uso. Los dueños subestiman cuánto trabajo ahorra una guía de uso de dos páginas a lo largo de cinco años de entregas a proveedores.</li>
+    </ul>
+  </div>
+  <div class="mc-drawer-foot">
+    <p class="mc-drawer-foot-text">¿Quieres ver una paleta extraída de tu logo — con evaluación WCAG y tokens CSS exportables — antes de que hablemos? La Suite de Marca es gratuita, corre en tu navegador y no deja nada detrás.</p>
+    <a class="mc-drawer-foot-btn" href="/es/tools/brand-suite/">Abrir Suite de Marca
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+  </div>
+</aside>
+
 <script>
   /* Controlador de drawers — espejo del script en /for/restaurants/.
      Cualquier [data-drawer] en la página abre su drawer; Esc,
@@ -733,6 +759,16 @@
         <h3>Fotos que dan hambre</h3>
         <p class="desc">Una galería responsiva que trata a tu comida, tu espacio y tu equipo como merecen. Trae a tu fotógrafo o te recomendamos uno en el DMV — de cualquier forma, el sitio está construido para que luzca.</p>
         <button type="button" class="service-link" data-drawer="photo" aria-label="Por qué importa la fotografía de comida — abrir información">
+          Saber más
+          <svg class="service-link-arrow" viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </button>
+      </div>
+
+      <div class="service reveal">
+        <div class="label">Sistema de marca</div>
+        <h3>Una paleta que funciona en todas partes</h3>
+        <p class="desc">Los colores de tu marca deben leerse en un menú, un letrero y una pantalla de celular — no solo en el archivo del logo. Documentamos la paleta y los pares de contraste como tokens CSS junto con el sitio, para que cada superficie siga siendo legible y reconocible.</p>
+        <button type="button" class="service-link" data-drawer="brand" aria-label="Por qué importa un sistema de marca documentado — abrir información">
           Saber más
           <svg class="service-link-arrow" viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </button>
