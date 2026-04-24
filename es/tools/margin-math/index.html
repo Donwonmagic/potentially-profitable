@@ -107,6 +107,15 @@
   .mm-copy-link::before{content:'';width:10px;height:10px;border:1.5px solid currentColor;border-radius:2px;box-shadow:-3px 3px 0 -1.5px currentColor,-3px 3px 0 0 var(--white);display:inline-block;margin-right:2px;flex:0 0 10px}
   .mm-copy-link[data-copied="true"]{color:#1F6B3A}
   .mm-copy-link[data-copied="true"]::before{content:'\2713';border:0;box-shadow:none;width:auto;height:auto;font-weight:800;color:inherit;margin-right:1px;font-size:13px;line-height:1}
+  /* Escalación por mala banda — solo aparece en la peor banda de
+     cada calculadora, enrutando al Diagnóstico de Restaurante
+     completo. Más discreto que la .mm-recommendation coloreada
+     para que no compitan. */
+  .mm-escalate{margin:10px 0 0;padding:12px 14px;border-radius:10px;background:var(--cream-2);border:1px solid var(--line);font-size:13px;line-height:1.55;color:var(--ink-soft);display:none;gap:12px;align-items:center;flex-wrap:wrap}
+  .mm-escalate[data-visible="true"]{display:flex}
+  .mm-escalate p{margin:0;flex:1;min-width:180px}
+  .mm-escalate a{color:var(--rust);font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap}
+  .mm-escalate a:hover{color:#8A3E16}
   .mm-monthly{text-align:center;padding:8px 0;border-top:1px dashed var(--line-dark);display:flex;flex-direction:column;gap:2px}
   .mm-monthly-label{font-size:12px;font-weight:600;color:var(--stone);letter-spacing:.04em;text-transform:uppercase}
   .mm-monthly-value{font-family:var(--font-display);font-size:36px;font-weight:500;color:var(--rust);font-variant-numeric:tabular-nums;line-height:1.1}
@@ -337,6 +346,10 @@
           <span class="mm-monthly-subtext" id="dbe-monthly-sub">se va por la puerta vs. directa</span>
         </div>
         <div class="mm-recommendation" id="dbe-rec" data-rec="consider-leaving"></div>
+        <div class="mm-escalate" id="dbe-escalate">
+          <p>Cuando la matemática del canal se ve así de hostil, la palanca casi siempre es estructural — overhead fijo, mezcla de menú o configuración del pedido en línea. Un Diagnóstico de Restaurante de 15 minutos mapea los tres principales en tu caso.</p>
+          <a href="/es/tools/audits/restaurant/">Correr el Diagnóstico de Restaurante &rarr;</a>
+        </div>
       </div>
 
       <p class="mm-footnote"><strong>No se modela:</strong> gasto en listados patrocinados ("Boost"), empaque, tarifas de suscripción del canal directo, el minuto de labor por ticket. Réstalos antes de actuar sobre el número.</p>
@@ -380,6 +393,10 @@
           <div class="mm-pc-axis"><span>40%</span><span>55%</span><span>65%</span><span>70%</span><span>80%</span></div>
         </div>
         <div class="mm-recommendation" id="pc-rec" data-band="ok"></div>
+        <div class="mm-escalate" id="pc-escalate">
+          <p>Arriba de 70% de prime cost rara vez se arregla solo. El Diagnóstico de Restaurante revisa la pauta de horarios, la mezcla del menú y la economía del canal juntos — ahí están las jugadas reales.</p>
+          <a href="/es/tools/audits/restaurant/">Correr el Diagnóstico de Restaurante &rarr;</a>
+        </div>
       </div>
 
       <button type="button" class="mm-copy-link" data-copy-link data-copy-label="Copiar enlace del escenario" data-copied-label="Enlace copiado — pégalo para guardarlo">Copiar enlace del escenario</button>
@@ -435,6 +452,10 @@
           <span class="mm-monthly-subtext" id="bec-cap">a 150 cubiertos/día, 51% de la capacidad va a costos fijos</span>
         </div>
         <div class="mm-recommendation" id="bec-rec" data-band="ok"></div>
+        <div class="mm-escalate" id="bec-escalate">
+          <p>Estar en punto de equilibrio con volumen típico significa que cada pregunta estructural importa — renta, menú, mezcla de dayparts, márgenes por canal. El Diagnóstico de Restaurante los mapea en una sola pasada.</p>
+          <a href="/es/tools/audits/restaurant/">Correr el Diagnóstico de Restaurante &rarr;</a>
+        </div>
       </div>
       <button type="button" class="mm-copy-link" data-copy-link data-copy-label="Copiar enlace del escenario" data-copied-label="Enlace copiado — pégalo para guardarlo">Copiar enlace del escenario</button>
     </article>
@@ -491,6 +512,10 @@
           <span class="mm-monthly-subtext" id="pr-contrib-delta" style="margin-top:6px;color:var(--ink-soft);">Delta de contribución: +$5,350 (+26.7%)</span>
         </div>
         <div class="mm-recommendation" id="pr-rec" data-band="good"></div>
+        <div class="mm-escalate" id="pr-escalate">
+          <p>Perder terreno con un alza general suele indicar que los ítems equivocados cargaron el aumento. El Diagnóstico de Restaurante re-ingenia el menú para que el alza caiga sobre los platos firma de baja elasticidad.</p>
+          <a href="/es/tools/audits/restaurant/">Correr el Diagnóstico de Restaurante &rarr;</a>
+        </div>
       </div>
 
       <button type="button" class="mm-copy-link" data-copy-link data-copy-label="Copiar enlace del escenario" data-copied-label="Enlace copiado — pégalo para guardarlo">Copiar enlace del escenario</button>
@@ -800,6 +825,7 @@
   var monthlyEl     = card.querySelector('#dbe-monthly');
   var monthlySubEl  = card.querySelector('#dbe-monthly-sub');
   var recEl         = card.querySelector('#dbe-rec');
+  var escalateEl    = card.querySelector('#dbe-escalate');
 
   var currentTier = 'plus';
   var currentCommission = 0.25;
@@ -856,6 +882,7 @@
       monthlySubEl.textContent = 'Ingresa tu ticket promedio arriba';
       recEl.removeAttribute('data-rec');
       recEl.textContent = '';
+      if (escalateEl) escalateEl.removeAttribute('data-visible');
       return result;
     }
 
@@ -872,6 +899,14 @@
 
     recEl.setAttribute('data-rec', result.recommendation);
     recEl.textContent = REC_COPY[result.recommendation] || '';
+
+    if (escalateEl) {
+      if (result.recommendation === 'consider-leaving') {
+        escalateEl.setAttribute('data-visible', 'true');
+      } else {
+        escalateEl.removeAttribute('data-visible');
+      }
+    }
 
     return result;
   }
@@ -926,6 +961,7 @@
   var bandLabelEl = card.querySelector('#pc-band-label');
   var markerEl    = card.querySelector('#pc-marker');
   var recEl       = card.querySelector('#pc-rec');
+  var escalateEl  = card.querySelector('#pc-escalate');
 
   var firstInteractionFired = false;
 
@@ -981,6 +1017,14 @@
     recEl.setAttribute('data-band', result.band);
     recEl.textContent = REC_COPY[result.band] || '';
 
+    if (escalateEl) {
+      if (result.band === 'bad') {
+        escalateEl.setAttribute('data-visible', 'true');
+      } else {
+        escalateEl.removeAttribute('data-visible');
+      }
+    }
+
     return result;
   }
 
@@ -1026,6 +1070,7 @@
   var headroomEl    = card.querySelector('#bec-headroom');
   var capEl         = card.querySelector('#bec-cap');
   var recEl         = card.querySelector('#bec-rec');
+  var escalateEl    = card.querySelector('#bec-escalate');
 
   var firstInteractionFired = false;
 
@@ -1078,6 +1123,7 @@
       headEl.setAttribute('data-band', 'ok');
       headroomBlock.style.display = 'none';
       recEl.style.display = 'none';
+      if (escalateEl) escalateEl.removeAttribute('data-visible');
       return result;
     }
     if (result.contributionPerCover === 0) {
@@ -1086,6 +1132,7 @@
       headEl.setAttribute('data-band', 'ok');
       headroomBlock.style.display = 'none';
       recEl.style.display = 'none';
+      if (escalateEl) escalateEl.removeAttribute('data-visible');
       return result;
     }
 
@@ -1106,10 +1153,18 @@
       recEl.setAttribute('data-band', result.band);
       recEl.textContent = REC_COPY[result.band] || '';
       recEl.style.display = '';
+      if (escalateEl) {
+        if (result.band === 'bad') {
+          escalateEl.setAttribute('data-visible', 'true');
+        } else {
+          escalateEl.removeAttribute('data-visible');
+        }
+      }
     } else {
       headEl.setAttribute('data-band', 'ok');
       headroomBlock.style.display = 'none';
       recEl.style.display = 'none';
+      if (escalateEl) escalateEl.removeAttribute('data-visible');
     }
 
     return result;
@@ -1160,6 +1215,7 @@
   var deltaPctEl  = card.querySelector('#pr-delta-pct');
   var contribDeltaEl = card.querySelector('#pr-contrib-delta');
   var recEl       = card.querySelector('#pr-rec');
+  var escalateEl  = card.querySelector('#pr-escalate');
 
   var currentRaise = 0.06;
   var currentTier  = 'core';
@@ -1226,6 +1282,7 @@
       headEl.setAttribute('data-band', 'ok');
       recEl.removeAttribute('data-band');
       recEl.textContent = '';
+      if (escalateEl) escalateEl.removeAttribute('data-visible');
       return result;
     }
 
@@ -1241,6 +1298,14 @@
     headEl.setAttribute('data-band', result.band);
     recEl.setAttribute('data-band', result.band);
     recEl.textContent = REC_COPY[result.band] || '';
+
+    if (escalateEl) {
+      if (result.band === 'bad') {
+        escalateEl.setAttribute('data-visible', 'true');
+      } else {
+        escalateEl.removeAttribute('data-visible');
+      }
+    }
 
     return result;
   }

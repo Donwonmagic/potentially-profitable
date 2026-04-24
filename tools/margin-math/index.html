@@ -111,6 +111,14 @@
   .mm-copy-link::before{content:'';width:10px;height:10px;border:1.5px solid currentColor;border-radius:2px;box-shadow:-3px 3px 0 -1.5px currentColor,-3px 3px 0 0 var(--white);display:inline-block;margin-right:2px;flex:0 0 10px}
   .mm-copy-link[data-copied="true"]{color:#1F6B3A}
   .mm-copy-link[data-copied="true"]::before{content:'\2713';border:0;box-shadow:none;width:auto;height:auto;font-weight:800;color:inherit;margin-right:1px;font-size:13px;line-height:1}
+  /* Bad-band escalation — only surfaces on the worst band of each
+     calculator, routing to the full Restaurant Audit. Quieter than
+     the band-colored .mm-recommendation so the two don't compete. */
+  .mm-escalate{margin:10px 0 0;padding:12px 14px;border-radius:10px;background:var(--cream-2);border:1px solid var(--line);font-size:13px;line-height:1.55;color:var(--ink-soft);display:none;gap:12px;align-items:center;flex-wrap:wrap}
+  .mm-escalate[data-visible="true"]{display:flex}
+  .mm-escalate p{margin:0;flex:1;min-width:180px}
+  .mm-escalate a{color:var(--rust);font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap}
+  .mm-escalate a:hover{color:#8A3E16}
   .mm-monthly{text-align:center;padding:8px 0;border-top:1px dashed var(--line-dark);display:flex;flex-direction:column;gap:2px}
   .mm-monthly-label{font-size:12px;font-weight:600;color:var(--stone);letter-spacing:.04em;text-transform:uppercase}
   .mm-monthly-value{font-family:var(--font-display);font-size:36px;font-weight:500;color:var(--rust);font-variant-numeric:tabular-nums;line-height:1.1}
@@ -355,6 +363,10 @@
           <span class="mm-monthly-subtext" id="dbe-monthly-sub">walks out the door vs. direct</span>
         </div>
         <div class="mm-recommendation" id="dbe-rec" data-rec="consider-leaving"></div>
+        <div class="mm-escalate" id="dbe-escalate">
+          <p>When the channel math looks this hostile, the lever is usually structural — fixed overhead, menu mix, or online-ordering setup. A 15-minute Restaurant Audit maps the top three in your case.</p>
+          <a href="/tools/audits/restaurant/">Run the Restaurant Audit &rarr;</a>
+        </div>
       </div>
 
       <p class="mm-footnote"><strong>Not modeled:</strong> sponsored-listing ("Boost") ad spend, packaging, direct-channel subscription fees, the labor minute per ticket. Subtract yours before acting on the number.</p>
@@ -398,6 +410,10 @@
           <div class="mm-pc-axis"><span>40%</span><span>55%</span><span>65%</span><span>70%</span><span>80%</span></div>
         </div>
         <div class="mm-recommendation" id="pc-rec" data-band="ok"></div>
+        <div class="mm-escalate" id="pc-escalate">
+          <p>Above 70% prime cost rarely fixes itself. The Restaurant Audit walks the labor schedule, menu mix, and channel economics together — which is where the real moves hide.</p>
+          <a href="/tools/audits/restaurant/">Run the Restaurant Audit &rarr;</a>
+        </div>
       </div>
 
       <button type="button" class="mm-copy-link" data-copy-link data-copy-label="Copy scenario link" data-copied-label="Link copied — paste to bookmark">Copy scenario link</button>
@@ -453,6 +469,10 @@
           <span class="mm-monthly-subtext" id="bec-cap">at 150 covers/day, 51% of capacity goes to fixed costs</span>
         </div>
         <div class="mm-recommendation" id="bec-rec" data-band="ok"></div>
+        <div class="mm-escalate" id="bec-escalate">
+          <p>Break-even on typical volume means every structural question matters — rent, menu, daypart mix, channel margins. The Restaurant Audit maps them in one pass.</p>
+          <a href="/tools/audits/restaurant/">Run the Restaurant Audit &rarr;</a>
+        </div>
       </div>
       <button type="button" class="mm-copy-link" data-copy-link data-copy-label="Copy scenario link" data-copied-label="Link copied — paste to bookmark">Copy scenario link</button>
     </article>
@@ -509,6 +529,10 @@
           <span class="mm-monthly-subtext" id="pr-contrib-delta" style="margin-top:6px;color:var(--ink-soft);">Contribution delta: +$5,350 (+26.7%)</span>
         </div>
         <div class="mm-recommendation" id="pr-rec" data-band="good"></div>
+        <div class="mm-escalate" id="pr-escalate">
+          <p>Losing ground on a blanket raise usually means the wrong items carried the increase. The Restaurant Audit re-engineers the menu so the raise lands on low-elasticity signatures instead.</p>
+          <a href="/tools/audits/restaurant/">Run the Restaurant Audit &rarr;</a>
+        </div>
       </div>
 
       <button type="button" class="mm-copy-link" data-copy-link data-copy-label="Copy scenario link" data-copied-label="Link copied — paste to bookmark">Copy scenario link</button>
@@ -818,6 +842,7 @@
   var monthlyEl     = card.querySelector('#dbe-monthly');
   var monthlySubEl  = card.querySelector('#dbe-monthly-sub');
   var recEl         = card.querySelector('#dbe-rec');
+  var escalateEl    = card.querySelector('#dbe-escalate');
 
   var currentTier = 'plus';
   var currentCommission = 0.25;
@@ -879,6 +904,7 @@
       monthlySubEl.textContent = 'Set your average ticket above';
       recEl.removeAttribute('data-rec');
       recEl.textContent = '';
+      if (escalateEl) escalateEl.removeAttribute('data-visible');
       return result;
     }
 
@@ -895,6 +921,14 @@
 
     recEl.setAttribute('data-rec', result.recommendation);
     recEl.textContent = REC_COPY[result.recommendation] || '';
+
+    if (escalateEl) {
+      if (result.recommendation === 'consider-leaving') {
+        escalateEl.setAttribute('data-visible', 'true');
+      } else {
+        escalateEl.removeAttribute('data-visible');
+      }
+    }
 
     return result;
   }
@@ -955,6 +989,7 @@
   var bandLabelEl = card.querySelector('#pc-band-label');
   var markerEl    = card.querySelector('#pc-marker');
   var recEl       = card.querySelector('#pc-rec');
+  var escalateEl  = card.querySelector('#pc-escalate');
 
   var firstInteractionFired = false;
 
@@ -1012,6 +1047,14 @@
     recEl.setAttribute('data-band', result.band);
     recEl.textContent = REC_COPY[result.band] || '';
 
+    if (escalateEl) {
+      if (result.band === 'bad') {
+        escalateEl.setAttribute('data-visible', 'true');
+      } else {
+        escalateEl.removeAttribute('data-visible');
+      }
+    }
+
     return result;
   }
 
@@ -1058,6 +1101,7 @@
   var headroomEl    = card.querySelector('#bec-headroom');
   var capEl         = card.querySelector('#bec-cap');
   var recEl         = card.querySelector('#bec-rec');
+  var escalateEl    = card.querySelector('#bec-escalate');
 
   var firstInteractionFired = false;
 
@@ -1110,6 +1154,7 @@
       headEl.setAttribute('data-band', 'ok');
       headroomBlock.style.display = 'none';
       recEl.style.display = 'none';
+      if (escalateEl) escalateEl.removeAttribute('data-visible');
       return result;
     }
     if (result.contributionPerCover === 0) {
@@ -1118,6 +1163,7 @@
       headEl.setAttribute('data-band', 'ok');
       headroomBlock.style.display = 'none';
       recEl.style.display = 'none';
+      if (escalateEl) escalateEl.removeAttribute('data-visible');
       return result;
     }
 
@@ -1138,11 +1184,19 @@
       recEl.setAttribute('data-band', result.band);
       recEl.textContent = REC_COPY[result.band] || '';
       recEl.style.display = '';
+      if (escalateEl) {
+        if (result.band === 'bad') {
+          escalateEl.setAttribute('data-visible', 'true');
+        } else {
+          escalateEl.removeAttribute('data-visible');
+        }
+      }
     } else {
       // No typical covers supplied — hide the headroom block + recommendation
       headEl.setAttribute('data-band', 'ok');
       headroomBlock.style.display = 'none';
       recEl.style.display = 'none';
+      if (escalateEl) escalateEl.removeAttribute('data-visible');
     }
 
     return result;
@@ -1193,6 +1247,7 @@
   var deltaPctEl  = card.querySelector('#pr-delta-pct');
   var contribDeltaEl = card.querySelector('#pr-contrib-delta');
   var recEl       = card.querySelector('#pr-rec');
+  var escalateEl  = card.querySelector('#pr-escalate');
 
   var currentRaise = 0.06;
   var currentTier  = 'core';
@@ -1261,6 +1316,7 @@
       headEl.setAttribute('data-band', 'ok');
       recEl.removeAttribute('data-band');
       recEl.textContent = '';
+      if (escalateEl) escalateEl.removeAttribute('data-visible');
       return result;
     }
 
@@ -1276,6 +1332,14 @@
     headEl.setAttribute('data-band', result.band);
     recEl.setAttribute('data-band', result.band);
     recEl.textContent = REC_COPY[result.band] || '';
+
+    if (escalateEl) {
+      if (result.band === 'bad') {
+        escalateEl.setAttribute('data-visible', 'true');
+      } else {
+        escalateEl.removeAttribute('data-visible');
+      }
+    }
 
     return result;
   }
