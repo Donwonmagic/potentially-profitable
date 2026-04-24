@@ -146,6 +146,15 @@
   .mm-scenario-banner-dismiss:hover{opacity:1}
   .mm-scenario-banner-dismiss:focus-visible{outline:2px solid currentColor;outline-offset:2px;opacity:1}
   @media print { .mm-scenario-banner { display: none !important; } }
+  /* Benchmarks-last-updated line — a small, dated annotation that
+     gives returning visitors a reason to pay attention. Every
+     calculator's thresholds trace to published industry references;
+     this footer documents when those references were last reviewed. */
+  .mm-benchmarks{text-align:center;margin:22px auto 0;max-width:760px;font-size:11.5px;color:var(--stone);line-height:1.6;padding:0 12px}
+  .mm-benchmarks time{color:var(--ink-soft);font-weight:600}
+  .mm-benchmarks a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+  .mm-benchmarks a:hover{color:var(--teal-dark)}
+  @media print { .mm-benchmarks { display: none !important; } }
   /* Print stylesheet — turns the page into a one-sheet Monthly
      Margin Report. Keeps the four calculator cards (inputs + results
      as static text) and strips every non-essential surround. The
@@ -680,6 +689,12 @@
       <a class="mm-blog-link" href="/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Read the full strategy: Raising menu prices without losing reservations &rarr;</a>
     </article>
   </div>
+  <p class="mm-benchmarks">
+    Benchmarks last reviewed <time datetime="2026-04-24">April 24, 2026</time> &middot;
+    DoorDash commission tiers (15 / 25 / 30%), NRA healthy prime cost band (55–65% full-service),
+    and fast-casual + fine-dining segments calibrated for 2026.
+    Sources cited in <a href="/blog/is-doordash-worth-it-for-restaurants-in-2026/">Is DoorDash worth it in 2026?</a>
+  </p>
 </div></section>
 
 <section class="block" id="how-we-protect"><div class="container">

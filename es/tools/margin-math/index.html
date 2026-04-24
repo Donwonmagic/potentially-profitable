@@ -143,6 +143,15 @@
   .mm-scenario-banner-dismiss:hover{opacity:1}
   .mm-scenario-banner-dismiss:focus-visible{outline:2px solid currentColor;outline-offset:2px;opacity:1}
   @media print { .mm-scenario-banner { display: none !important; } }
+  /* Línea de benchmarks actualizados — anotación pequeña y fechada
+     que da al visitante recurrente una razón para volver. Los
+     umbrales de cada calculadora tienen referencias publicadas del
+     sector; este pie documenta cuándo se revisaron por última vez. */
+  .mm-benchmarks{text-align:center;margin:22px auto 0;max-width:760px;font-size:11.5px;color:var(--stone);line-height:1.6;padding:0 12px}
+  .mm-benchmarks time{color:var(--ink-soft);font-weight:600}
+  .mm-benchmarks a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+  .mm-benchmarks a:hover{color:var(--teal-dark)}
+  @media print { .mm-benchmarks { display: none !important; } }
   /* Hoja de impresión — convierte la página en un Reporte Mensual
      de Margen de una sola hoja. Conserva las cuatro tarjetas
      (entradas + resultados como texto estático) y quita todo el
@@ -659,6 +668,12 @@
       <a class="mm-blog-link" href="/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Lee la estrategia completa: Subir precios sin perder reservas &rarr;</a>
     </article>
   </div>
+  <p class="mm-benchmarks">
+    Benchmarks revisados por última vez el <time datetime="2026-04-24">24 de abril de 2026</time> &middot;
+    Niveles de comisión de DoorDash (15 / 25 / 30%), franja saludable de prime cost de la NRA
+    (55–65% servicio completo) y segmentos fast-casual + fine-dining calibrados para 2026.
+    Fuentes citadas en <a href="/blog/is-doordash-worth-it-for-restaurants-in-2026/">¿Vale la pena DoorDash en 2026?</a>
+  </p>
 </div></section>
 
 <section class="block" id="how-we-protect"><div class="container">
