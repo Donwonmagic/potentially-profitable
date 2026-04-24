@@ -54,6 +54,27 @@
      8/10/12/14 drift the next tool was going to introduce. Keep
      --r-sm (8px) for compact UI and --r-md (14px) for cards / CTAs. */
   --r-input: 12px;
+
+  /* Status palette — used by tool result UIs that grade or assess
+     (Restaurant Audit, GBP Grader, Margin Math health bands, Brand
+     Suite contrast checks). Distinct from the lighter --status-pass
+     green used inline by the smaller tools (#1f9d55), which signals
+     a single check passed; this triad signals a primary grade.
+
+     Don't introduce a fourth color when grading. If the existing
+     three don't fit, the categorization is wrong, not the palette. */
+  --status-good:        #1F6B3A;   /* pass band, deeper than #1f9d55 */
+  --status-good-tint:   #E7F5EC;   /* good background chip */
+  --status-warn:        #8A6018;   /* warn text */
+  --status-warn-deep:   #8A3E16;   /* warn text, slightly redder */
+  --status-warn-fill:   #C28B2E;   /* warn fill (stars, bars) */
+  --status-warn-tint:   #FDEFE3;   /* warn background chip */
+  --status-bad-tint:    #F7E7DC;   /* bad background chip; pairs with --rust */
+
+  /* Inline indicator green — the brighter pass color used for
+     individual check marks on tools that don't grade. Distinct from
+     --status-good (which is for primary grades). */
+  --status-pass:        #1f9d55;
 }
 
 /* ============ SELF-HOSTED WEB FONTS ============

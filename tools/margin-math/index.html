@@ -54,19 +54,19 @@
      calculator-specific layouts land with each phase. Palette borrows
      tokens from site.css; no new primitives introduced here. */
   .mm-hero{max-width:720px;margin:0 auto;text-align:center}
-  .mm-pledge{display:inline-flex;align-items:center;gap:8px;margin:22px auto 0;padding:8px 16px;border:1px solid #1F6B3A;background:#E7F5EC;color:#1F6B3A;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.02em}
+  .mm-pledge{display:inline-flex;align-items:center;gap:8px;margin:22px auto 0;padding:8px 16px;border:1px solid var(--status-good);background:var(--status-good-tint);color:var(--status-good);border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.02em}
   .mm-pledge::before{content:'\2713';font-weight:700}
   .mm-pledge a{color:inherit;text-decoration:underline;text-underline-offset:2px}
   .mm-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:760px;margin:0 auto}
   @media (max-width:720px){.mm-grid{grid-template-columns:1fr}}
-  .mm-card{display:flex;flex-direction:column;padding:22px;border:1px solid var(--line);border-radius:14px;background:var(--white);gap:12px;position:relative}
+  .mm-card{display:flex;flex-direction:column;padding:22px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);gap:12px;position:relative}
   .mm-card.mm-coming{background:var(--cream-2);border-style:dashed;opacity:.85}
   .mm-card-eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
   .mm-card.mm-coming .mm-card-eyebrow{color:var(--stone)}
   .mm-card h3{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0;line-height:1.25}
   .mm-card p{font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0}
   .mm-card-link{margin-top:auto;font-size:13px;font-weight:600;color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor;padding-bottom:1px;align-self:flex-start}
-  .mm-next{margin:48px auto 0;max-width:760px;padding:24px;background:var(--cream-2);border:1px solid var(--line);border-radius:14px}
+  .mm-next{margin:48px auto 0;max-width:760px;padding:24px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-md)}
   .mm-next h2{font-family:var(--font-display);font-size:22px;font-weight:500;margin:0 0 12px;color:var(--ink)}
   .mm-next-links{display:flex;flex-wrap:wrap;gap:10px}
   .mm-next-links a{font-size:14px;padding:10px 16px;border:1px solid var(--line-dark);border-radius:999px;background:var(--white);color:var(--ink);text-decoration:none;font-weight:500}
@@ -77,27 +77,27 @@
      aria-live="polite" results region. */
   .mm-card.mm-live{border-style:solid}
   .mm-card-header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:space-between}
-  .mm-badge-safe{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:#E7F5EC;color:#1F6B3A;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.04em}
+  .mm-badge-safe{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:var(--status-good-tint);color:var(--status-good);border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.04em}
   .mm-badge-safe::before{content:'\2713';font-weight:800}
   .mm-form{display:flex;flex-direction:column;gap:14px;margin:6px 0 0}
   .mm-form label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:var(--ink-soft)}
   .mm-form label > span{display:flex;align-items:center;justify-content:space-between;gap:8px}
   .mm-form label > span > output{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums;min-width:56px;text-align:right}
   .mm-form input[type="range"]{width:100%;accent-color:var(--teal);cursor:grab}
-  .mm-form input[type="range"]:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:4px}
-  .mm-form input[type="number"]{padding:8px 10px;border:1px solid var(--line-dark);border-radius:8px;font:inherit;font-size:15px;background:var(--white);color:var(--ink);width:100%;box-sizing:border-box}
+  .mm-form input[type="range"]:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:var(--r-sm)}
+  .mm-form input[type="number"]{padding:8px 10px;border:1px solid var(--line-dark);border-radius:var(--r-sm);font:inherit;font-size:15px;background:var(--white);color:var(--ink);width:100%;box-sizing:border-box}
   .mm-form input[type="number"]:focus{border-color:var(--teal);outline:none}
   .mm-tier-group{display:flex;gap:6px;border:0;padding:0;margin:0}
   .mm-tier-group legend{font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:6px;padding:0}
   .mm-tier-btns{display:flex;gap:6px;width:100%}
-  .mm-tier-btns button{flex:1;padding:10px 8px;border:1px solid var(--line-dark);border-radius:10px;background:var(--white);font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;transition:border-color 140ms,background 140ms;line-height:1.3}
+  .mm-tier-btns button{flex:1;padding:10px 8px;border:1px solid var(--line-dark);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;transition:border-color 140ms,background 140ms;line-height:1.3}
   .mm-tier-btns button small{display:block;font-size:11px;font-weight:500;color:var(--stone);margin-top:2px}
   .mm-tier-btns button:hover{border-color:var(--teal)}
   .mm-tier-btns button[aria-pressed="true"]{border-color:var(--teal);background:var(--teal-tint);color:var(--teal)}
   .mm-tier-btns button[aria-pressed="true"] small{color:var(--teal-dark)}
-  .mm-results{margin-top:4px;padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:var(--cream-2);display:flex;flex-direction:column;gap:12px}
+  .mm-results{margin-top:4px;padding:14px 16px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--cream-2);display:flex;flex-direction:column;gap:12px}
   .mm-per-order{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .mm-per-order-col{display:flex;flex-direction:column;gap:2px;text-align:center;padding:10px;background:var(--white);border-radius:8px;border:1px solid var(--line)}
+  .mm-per-order-col{display:flex;flex-direction:column;gap:2px;text-align:center;padding:10px;background:var(--white);border-radius:var(--r-sm);border:1px solid var(--line)}
   .mm-result-label{font-size:11px;font-weight:600;color:var(--stone);letter-spacing:.04em;text-transform:uppercase}
   .mm-result-value{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
   .mm-result-sub{font-size:11px;color:var(--stone);font-variant-numeric:tabular-nums;margin-top:1px;letter-spacing:.01em}
@@ -107,9 +107,9 @@
      fragment never leaves the browser. */
   .mm-copy-link{align-self:flex-start;margin-top:-2px;font-size:12px;font-weight:600;color:var(--teal);background:none;border:0;padding:0;cursor:pointer;letter-spacing:.01em;display:inline-flex;align-items:center;gap:5px;font-family:inherit}
   .mm-copy-link:hover{color:var(--teal-dark)}
-  .mm-copy-link:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:3px}
-  .mm-copy-link::before{content:'';width:10px;height:10px;border:1.5px solid currentColor;border-radius:2px;box-shadow:-3px 3px 0 -1.5px currentColor,-3px 3px 0 0 var(--white);display:inline-block;margin-right:2px;flex:0 0 10px}
-  .mm-copy-link[data-copied="true"]{color:#1F6B3A}
+  .mm-copy-link:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:var(--r-sm)}
+  .mm-copy-link::before{content:'';width:10px;height:10px;border:1.5px solid currentColor;border-radius:var(--r-sm);box-shadow:-3px 3px 0 -1.5px currentColor,-3px 3px 0 0 var(--white);display:inline-block;margin-right:2px;flex:0 0 10px}
+  .mm-copy-link[data-copied="true"]{color:var(--status-good)}
   .mm-copy-link[data-copied="true"]::before{content:'\2713';border:0;box-shadow:none;width:auto;height:auto;font-weight:800;color:inherit;margin-right:1px;font-size:13px;line-height:1}
   /* Waterfall — "where each dollar of this order goes." A two-row
      stacked-bar breakdown of the $ticket into food cost / platform
@@ -119,14 +119,14 @@
   .mm-wf{display:flex;flex-direction:column;gap:6px;margin-top:2px;padding-top:10px;border-top:1px dashed var(--line-dark)}
   .mm-wf-row{display:grid;grid-template-columns:64px 1fr;gap:10px;align-items:center}
   .mm-wf-label{font-size:10.5px;color:var(--stone);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
-  .mm-wf-bar{display:flex;height:14px;border-radius:3px;overflow:hidden;border:1px solid var(--line);background:var(--white)}
+  .mm-wf-bar{display:flex;height:14px;border-radius:999px;overflow:hidden;border:1px solid var(--line);background:var(--white)}
   .mm-wf-seg{display:block;height:100%;transition:width 220ms var(--ease-out);min-width:0}
   .mm-wf-food{background:#B89A6E}
   .mm-wf-fee{background:var(--rust)}
-  .mm-wf-margin{background:#1F6B3A}
+  .mm-wf-margin{background:var(--status-good)}
   .mm-wf-legend{list-style:none;padding:0;margin:4px 0 0;display:flex;flex-wrap:wrap;gap:10px 14px;font-size:10.5px;color:var(--stone);justify-content:center}
   .mm-wf-legend li{display:inline-flex;align-items:center;gap:5px}
-  .mm-wf-dot{display:inline-block;width:8px;height:8px;border-radius:2px;flex:0 0 8px}
+  .mm-wf-dot{display:inline-block;width:8px;height:8px;border-radius:50%;flex:0 0 8px}
   @media print {
     .mm-wf-bar{border-color:#000 !important}
     .mm-wf-food{background:#ddd !important}
@@ -139,17 +139,17 @@
   /* Bad-band escalation — only surfaces on the worst band of each
      calculator, routing to the full Restaurant Audit. Quieter than
      the band-colored .mm-recommendation so the two don't compete. */
-  .mm-escalate{margin:10px 0 0;padding:12px 14px;border-radius:10px;background:var(--cream-2);border:1px solid var(--line);font-size:13px;line-height:1.55;color:var(--ink-soft);display:none;gap:12px;align-items:center;flex-wrap:wrap}
+  .mm-escalate{margin:10px 0 0;padding:12px 14px;border-radius:var(--r-input);background:var(--cream-2);border:1px solid var(--line);font-size:13px;line-height:1.55;color:var(--ink-soft);display:none;gap:12px;align-items:center;flex-wrap:wrap}
   .mm-escalate[data-visible="true"]{display:flex}
   .mm-escalate p{margin:0;flex:1;min-width:180px}
   .mm-escalate a{color:var(--rust);font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap}
-  .mm-escalate a:hover{color:#8A3E16}
+  .mm-escalate a:hover{color:var(--status-warn-deep)}
   /* Cross-calculator suggestion — appears on mid-severity bands
      (warn / optimize / ok) to nudge the user toward the next
      calculator that usually matters for this pattern. Mutually
      exclusive in practice with .mm-escalate (which is worst-band
      only), so the user sees at most one "where next" row at a time. */
-  .mm-cross-suggest{margin:8px 0 0;padding:10px 14px;border-radius:8px;background:var(--teal-tint);color:var(--teal-dark);font-size:12.5px;line-height:1.5;display:none;gap:10px;align-items:center;flex-wrap:wrap}
+  .mm-cross-suggest{margin:8px 0 0;padding:10px 14px;border-radius:var(--r-sm);background:var(--teal-tint);color:var(--teal-dark);font-size:12.5px;line-height:1.5;display:none;gap:10px;align-items:center;flex-wrap:wrap}
   .mm-cross-suggest[data-visible="true"]{display:flex}
   .mm-cross-suggest span{flex:1;min-width:180px}
   .mm-cross-suggest a{color:var(--teal);font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap}
@@ -160,7 +160,7 @@
      dependency: the definition text travels with the markup so the
      privacy posture survives intact. Keyboard-accessible via focus
      and Escape-to-close; hover-to-open is pointer-only. */
-  .mm-popover{position:absolute;z-index:120;max-width:320px;padding:12px 14px;background:var(--white);border:1px solid var(--line-dark);border-radius:8px;box-shadow:0 10px 28px rgba(0,0,0,0.12),0 2px 6px rgba(0,0,0,0.04);font-size:13px;line-height:1.55;color:var(--ink-soft);pointer-events:auto}
+  .mm-popover{position:absolute;z-index:120;max-width:320px;padding:12px 14px;background:var(--white);border:1px solid var(--line-dark);border-radius:var(--r-sm);box-shadow:var(--elev-3);font-size:13px;line-height:1.55;color:var(--ink-soft);pointer-events:auto}
   .mm-popover[hidden]{display:none}
   .mm-popover-term{display:block;font-family:var(--font-display);font-size:14px;font-weight:500;color:var(--ink);margin:0 0 4px;letter-spacing:.01em}
   .mm-popover-def{display:block;margin:0 0 8px}
@@ -192,11 +192,11 @@
      URL fragment carries any calculator state). Gives bookmark
      traffic a moment of orientation: "yes, your saved numbers are
      loaded; tweak from there." Dismissable in-session. */
-  .mm-scenario-banner{max-width:760px;margin:0 auto 20px;padding:12px 18px;background:var(--teal-tint);color:var(--teal-dark);border-radius:10px;font-size:13.5px;line-height:1.5;display:none;gap:12px;align-items:center;border:1px solid rgba(31,78,91,0.12)}
+  .mm-scenario-banner{max-width:760px;margin:0 auto 20px;padding:12px 18px;background:var(--teal-tint);color:var(--teal-dark);border-radius:var(--r-input);font-size:13.5px;line-height:1.5;display:none;gap:12px;align-items:center;border:1px solid rgba(31,78,91,0.12)}
   .mm-scenario-banner[data-visible="true"]{display:flex}
   .mm-scenario-banner-text{flex:1}
   .mm-scenario-banner-text strong{color:var(--teal)}
-  .mm-scenario-banner-dismiss{background:none;border:0;padding:4px;color:inherit;cursor:pointer;opacity:.7;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;line-height:0}
+  .mm-scenario-banner-dismiss{background:none;border:0;padding:4px;color:inherit;cursor:pointer;opacity:.7;border-radius:var(--r-sm);display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;line-height:0}
   .mm-scenario-banner-dismiss:hover{opacity:1}
   .mm-scenario-banner-dismiss:focus-visible{outline:2px solid currentColor;outline-offset:2px;opacity:1}
   @media print { .mm-scenario-banner { display: none !important; } }
@@ -302,33 +302,33 @@
   .mm-monthly-label{font-size:12px;font-weight:600;color:var(--stone);letter-spacing:.04em;text-transform:uppercase}
   .mm-monthly-value{font-family:var(--font-display);font-size:36px;font-weight:500;color:var(--rust);font-variant-numeric:tabular-nums;line-height:1.1}
   .mm-monthly-subtext{font-size:12px;color:var(--stone)}
-  .mm-recommendation{font-size:13px;line-height:1.55;padding:10px 12px;border-radius:8px}
-  .mm-recommendation[data-rec="keep"],   .mm-recommendation[data-band="good"]{background:#E7F5EC;color:#1F6B3A}
-  .mm-recommendation[data-rec="optimize"],.mm-recommendation[data-band="ok"]  {background:#FDEFE3;color:#8A3E16}
-  .mm-recommendation[data-band="warn"]                                          {background:#FCE4D4;color:#8A3E16}
-  .mm-recommendation[data-rec="consider-leaving"],.mm-recommendation[data-band="bad"]{background:#F7E7DC;color:#B8541A}
+  .mm-recommendation{font-size:13px;line-height:1.55;padding:10px 12px;border-radius:var(--r-sm)}
+  .mm-recommendation[data-rec="keep"],   .mm-recommendation[data-band="good"]{background:var(--status-good-tint);color:var(--status-good)}
+  .mm-recommendation[data-rec="optimize"],.mm-recommendation[data-band="ok"]  {background:var(--status-warn-tint);color:var(--status-warn-deep)}
+  .mm-recommendation[data-band="warn"]                                          {background:#FCE4D4;color:var(--status-warn-deep)}
+  .mm-recommendation[data-rec="consider-leaving"],.mm-recommendation[data-band="bad"]{background:var(--status-bad-tint);color:var(--rust)}
   .mm-recommendation[data-band="below"]                                         {background:var(--teal-tint);color:var(--teal)}
   .mm-recommendation a{color:inherit;font-weight:700;border-bottom:1px solid currentColor}
   /* Big-number color variants for non-monetary calculators (Prime Cost
      shows a percentage, not a dollar delta). Reuses the .mm-monthly
      layout; band drives the color. */
   .mm-monthly[data-band] .mm-monthly-value{transition:color 200ms var(--ease-out)}
-  .mm-monthly[data-band="good"]  .mm-monthly-value{color:#1F6B3A}
-  .mm-monthly[data-band="ok"]    .mm-monthly-value{color:#8A3E16}
-  .mm-monthly[data-band="warn"]  .mm-monthly-value{color:#8A3E16}
+  .mm-monthly[data-band="good"]  .mm-monthly-value{color:var(--status-good)}
+  .mm-monthly[data-band="ok"]    .mm-monthly-value{color:var(--status-warn-deep)}
+  .mm-monthly[data-band="warn"]  .mm-monthly-value{color:var(--status-warn-deep)}
   .mm-monthly[data-band="bad"]   .mm-monthly-value{color:var(--rust)}
   .mm-monthly[data-band="below"] .mm-monthly-value{color:var(--teal)}
   /* Prime Cost band scale — horizontal 5-segment pill from 40% to
      80% prime cost. Marker indicates the user's current position. */
   .mm-pc-scale-wrap{position:relative;margin:4px 4px 2px}
-  .mm-pc-scale{display:flex;height:10px;border-radius:5px;overflow:hidden}
+  .mm-pc-scale{display:flex;height:10px;border-radius:999px;overflow:hidden}
   .mm-pc-scale > span{flex:1;min-width:0}
   .mm-pc-scale > span:nth-child(1){background:var(--teal-tint)}
-  .mm-pc-scale > span:nth-child(2){background:#E7F5EC}
-  .mm-pc-scale > span:nth-child(3){background:#FDEFE3}
+  .mm-pc-scale > span:nth-child(2){background:var(--status-good-tint)}
+  .mm-pc-scale > span:nth-child(3){background:var(--status-warn-tint)}
   .mm-pc-scale > span:nth-child(4){background:#FCE4D4}
-  .mm-pc-scale > span:nth-child(5){background:#F7E7DC}
-  .mm-pc-marker{position:absolute;top:-3px;width:4px;height:16px;background:var(--ink);border-radius:2px;transform:translateX(-2px);transition:left 200ms var(--ease-out)}
+  .mm-pc-scale > span:nth-child(5){background:var(--status-bad-tint)}
+  .mm-pc-marker{position:absolute;top:-3px;width:4px;height:16px;background:var(--ink);border-radius:999px;transform:translateX(-2px);transition:left 200ms var(--ease-out)}
   .mm-pc-axis{display:flex;justify-content:space-between;font-size:10px;color:var(--stone);margin-top:6px;padding:0 2px;font-variant-numeric:tabular-nums}
   .mm-blog-link{margin-top:4px;font-size:12px;color:var(--teal);text-decoration:none;font-weight:600}
   .mm-blog-link:hover{color:var(--teal-dark);border-bottom:1px dashed currentColor}
@@ -347,13 +347,13 @@
   .mm-mini-help summary::after{content:'\25BE';font-size:9px;transition:transform 140ms var(--ease-out)}
   .mm-mini-help[open] summary::after{transform:rotate(180deg)}
   .mm-mini-help summary:hover{color:var(--teal-dark)}
-  .mm-mini-help-body{margin:6px 0 0;padding:9px 11px;background:var(--cream-2);border-radius:6px;color:var(--ink-soft);line-height:1.55;font-weight:400;font-size:12.5px}
+  .mm-mini-help-body{margin:6px 0 0;padding:9px 11px;background:var(--cream-2);border-radius:var(--r-sm);color:var(--ink-soft);line-height:1.55;font-weight:400;font-size:12.5px}
   .mm-mini-help-body strong{color:var(--ink);font-weight:600}
   /* Privacy-promise steps — 8 verifiable claims, each with an
      inline "Inspect this" expander. Keyboard-operable via native
      <details>. Invite the audit; don't dodge it. */
   .mm-steps{display:flex;flex-direction:column;gap:10px;max-width:760px;margin:20px auto 0}
-  .mm-step{border:1px solid var(--line);border-radius:10px;background:var(--white);padding:16px 18px}
+  .mm-step{border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);padding:16px 18px}
   .mm-step-head{display:flex;gap:14px;align-items:flex-start}
   .mm-step-num{flex:0 0 28px;height:28px;border-radius:50%;background:var(--teal-tint);color:var(--teal);font-family:var(--font-display);font-weight:500;font-size:15px;display:flex;align-items:center;justify-content:center}
   .mm-step-body{flex:1;min-width:0}
@@ -365,19 +365,19 @@
   .mm-step-inspect summary::after{content:'\25BE';font-size:10px;transition:transform 140ms var(--ease-out)}
   .mm-step-inspect[open] summary::after{transform:rotate(180deg)}
   .mm-step-inspect summary:hover{color:var(--teal-dark)}
-  .mm-step-verify{margin:8px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:6px;font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
-  .mm-step-verify code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:var(--white);padding:1px 5px;border-radius:3px;border:1px solid var(--line);font-size:12px}
-  .mm-step-verify kbd{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:var(--white);padding:1px 5px;border-radius:3px;border:1px solid var(--line);font-size:11px;box-shadow:0 1px 0 var(--line-dark)}
+  .mm-step-verify{margin:8px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:var(--r-sm);font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
+  .mm-step-verify code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:var(--white);padding:1px 5px;border-radius:var(--r-sm);border:1px solid var(--line);font-size:12px}
+  .mm-step-verify kbd{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:var(--white);padding:1px 5px;border-radius:var(--r-sm);border:1px solid var(--line);font-size:11px;box-shadow:0 1px 0 var(--line-dark)}
   /* Safety-checklist table — Margin Math vs. typical free tool.
      Turns the meta-claim into a side-by-side comparison. */
-  .mm-safety-wrap{max-width:960px;margin:20px auto 0;overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--white)}
+  .mm-safety-wrap{max-width:960px;margin:20px auto 0;overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
   .mm-safety{width:100%;border-collapse:collapse;font-size:13.5px}
   .mm-safety thead th{background:var(--cream-2);text-align:left;padding:12px 16px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);border-bottom:1px solid var(--line)}
   .mm-safety tbody td{padding:14px 16px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.55}
   .mm-safety tbody tr:last-child td{border-bottom:0}
   .mm-safety td:first-child{font-weight:500;color:var(--ink)}
   .mm-safety-hint{display:block;margin-top:4px;font-size:12px;color:var(--stone);font-weight:400}
-  .mm-safety-pass{color:#1F6B3A;font-weight:600}
+  .mm-safety-pass{color:var(--status-good);font-weight:600}
   .mm-safety-pass::before{content:'\2713  ';font-weight:800}
   .mm-safety-fail{color:var(--rust);font-weight:600}
   .mm-safety-fail::before{content:'\2715  ';font-weight:800}
@@ -395,19 +395,19 @@
      amber → rust from Public through Regulated. */
   .mm-tiers{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:960px;margin:24px auto 0}
   @media (max-width:740px){.mm-tiers{grid-template-columns:1fr}}
-  .mm-tier{padding:18px 20px;border:1px solid var(--line);border-left-width:4px;border-radius:10px;background:var(--white);display:flex;flex-direction:column;gap:10px}
-  .mm-tier[data-tier="public"]     {border-left-color:#1F6B3A;background:#FAFBF9}
+  .mm-tier{padding:18px 20px;border:1px solid var(--line);border-left-width:4px;border-radius:var(--r-input);background:var(--white);display:flex;flex-direction:column;gap:10px}
+  .mm-tier[data-tier="public"]     {border-left-color:var(--status-good);background:#FAFBF9}
   .mm-tier[data-tier="competitive"]{border-left-color:var(--teal);background:#F8FBFB}
-  .mm-tier[data-tier="operational"]{border-left-color:#8A6018;background:#FCFAF4}
+  .mm-tier[data-tier="operational"]{border-left-color:var(--status-warn);background:#FCFAF4}
   .mm-tier[data-tier="regulated"]  {border-left-color:var(--rust);background:#FCF7F3}
   .mm-tier header{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0}
-  .mm-tier-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);padding:2px 8px;border-radius:4px;background:var(--cream-2);flex:0 0 auto}
+  .mm-tier-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);padding:2px 8px;border-radius:var(--r-sm);background:var(--cream-2);flex:0 0 auto}
   .mm-tier h3{font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0;line-height:1.3}
   .mm-tier-desc{font-size:13.5px;line-height:1.5;color:var(--ink-soft);margin:0}
   .mm-tier-examples{margin:0;padding-left:18px;font-size:13px;color:var(--ink-soft);line-height:1.55}
   .mm-tier-examples li{margin-bottom:4px}
   .mm-tier-share{font-size:13px;line-height:1.55;color:var(--ink);margin:auto 0 0;padding-top:8px;border-top:1px dashed var(--line)}
-  .mm-tier-foot{max-width:760px;margin:20px auto 0;padding:14px 18px;background:var(--cream-2);border:1px solid var(--line);border-radius:10px;font-size:13.5px;line-height:1.65;color:var(--ink-soft)}
+  .mm-tier-foot{max-width:760px;margin:20px auto 0;padding:14px 18px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input);font-size:13.5px;line-height:1.65;color:var(--ink-soft)}
 </style>
 </head>
 <body>
@@ -726,7 +726,7 @@
         </div>
         <div id="bec-headroom-block" style="border-top:1px dashed var(--line-dark);padding-top:10px;margin-top:2px;text-align:center;display:flex;flex-direction:column;gap:2px;">
           <span class="mm-monthly-label">Monthly cushion at typical volume</span>
-          <span class="mm-monthly-value" id="bec-headroom" style="color:#1F6B3A;font-family:var(--font-display);font-size:28px;font-weight:500;font-variant-numeric:tabular-nums;line-height:1.1;">$14,400</span>
+          <span class="mm-monthly-value" id="bec-headroom" style="color:var(--status-good);font-family:var(--font-display);font-size:28px;font-weight:500;font-variant-numeric:tabular-nums;line-height:1.1;">$14,400</span>
           <span class="mm-monthly-subtext" id="bec-cap">at 150 covers/day, 51% of capacity goes to fixed costs</span>
         </div>
         <div class="mm-recommendation" id="bec-rec" data-band="ok"></div>
@@ -1763,7 +1763,7 @@
       headroomBlock.style.display = 'flex';
       var positive = result.monthlyHeadroom >= 0;
       headroomEl.textContent = (positive ? '' : '-') + window.MM.formatMoney(Math.abs(result.monthlyHeadroom));
-      headroomEl.style.color = positive ? '#1F6B3A' : 'var(--rust)';
+      headroomEl.style.color = positive ? 'var(--status-good)' : 'var(--rust)';
       var capPct = Math.round((result.capacityUtilization || 0) * 100);
       capEl.textContent = 'at ' + Math.round(result.inputs.typicalCoversPerDay) +
                           ' covers/day, ' + capPct + '% of capacity goes to fixed costs';
@@ -1920,7 +1920,7 @@
     beProfitEl.textContent  = (result.breakEvenProfitCoverLossPct * 100).toFixed(1) + '%';
     beRevEl.textContent     = 'Revenue: ' + (result.breakEvenCoverLossPct * 100).toFixed(1) + '%';
     deltaEl.textContent     = (result.delta >= 0 ? '+' : '-') + window.MM.formatMoney(Math.abs(result.delta));
-    deltaEl.style.color     = result.delta >= 0 ? '#1F6B3A' : 'var(--rust)';
+    deltaEl.style.color     = result.delta >= 0 ? 'var(--status-good)' : 'var(--rust)';
     deltaPctEl.textContent  = (result.deltaPct >= 0 ? '+' : '') + (result.deltaPct * 100).toFixed(2) + '% on baseline';
     contribDeltaEl.textContent = 'Contribution delta: ' +
       (result.contribDelta >= 0 ? '+' : '-') + window.MM.formatMoney(Math.abs(result.contribDelta)) +

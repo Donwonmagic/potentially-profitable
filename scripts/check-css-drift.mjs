@@ -22,29 +22,43 @@ import { fileURLToPath } from 'node:url';
 const REPO = join(fileURLToPath(import.meta.url), '..', '..');
 const TOOLS_DIR = join(REPO, 'tools');
 
-// Pages that opt out of the guard for now. Each one is a known
-// follow-up tracked in docs/design-system.md. The four below are
-// the bespoke tools — they each carry enough of their own
-// vocabulary (calculator states, palette previews, grader colors,
-// audit result tree) that a careful migration is its own pass.
+// Pages that opt out of the guard. Each one is a bespoke tool
+// whose unique component vocabulary (calculator states, palette
+// previews, audit result tree) needs its own careful pass. As
+// tools tokenize, they graduate off this list.
+//
+// Graduated in the bespoke-tool migration sprint:
+//   tools/gbp-grader/index.html  — full tokenization
+//   tools/margin-math/index.html — full tokenization (calculator
+//     panel tints + waterfall colors allowlisted with intent)
+//   tools/brand-suite/index.html — full tokenization
+//
+// Restaurant Audit (4,662 lines of inline CSS) got a selective
+// sweep — top-frequency hex (rust, teal, status family, cream,
+// teal-tint) was tokenized, dropping ~70 hex occurrences. The
+// audit's bespoke earthtone palette (E6DFCE, EFC4AA, etc.) is
+// intentional design vocabulary; full migration is a future pass.
 const EXCLUSIONS = new Set([
-  'tools/margin-math/index.html',
-  'tools/brand-suite/index.html',
   'tools/audits/restaurant/index.html',
-  'tools/gbp-grader/index.html',
 ]);
 
 // Hex colors we tolerate inside tool inline CSS.
 // Brand colors live as CSS vars; status colors are reused across tools.
 const ALLOWED_HEX = new Set([
-  '#1f9d55', // good (also seen as #1F9D55)
-  '#1F9D55',
-  '#8A6018', // warn text
-  '#8a6018',
-  '#C28B2E', // warn fill
-  '#c28b2e',
-  '#e6f4ec', // good chip background
-  '#E6F4EC',
+  // Inline indicator green (small pass marks across most tools)
+  '#1f9d55', '#1F9D55',
+  // Status warn family (text + fill) — also covered by --status-* tokens
+  // but raw hex is allowed inside tools to avoid a token-vs-hex flip-flop.
+  '#8A6018', '#8a6018', '#C28B2E', '#c28b2e', '#e6f4ec', '#E6F4EC',
+  // Margin Math calculator vocabulary — tightly coupled to the
+  // calculator UI; not promoted to global tokens because they're
+  // single-use. Allowlisted with intent.
+  '#B89A6E', // waterfall "food cost" segment (warm beige)
+  '#FCE4D4', // softer warn band tint
+  '#FCFAF4', // calculator panel "good" tint
+  '#FCF7F3', // calculator panel "warn" tint
+  '#FAFBF9', // calculator panel "ok" tint
+  '#F8FBFB', // calculator panel "info" tint
 ]);
 
 // Radii allowed as raw px — full pill (999) and circle (50%) only.
@@ -71,16 +85,52 @@ function walkHtml(dir, out = []) {
 
 function extractInlineStyles(html) {
   // Concatenates all <style>...</style> blocks (skipping the
-  // 1-line FOUC guard which is universally allowed).
+  // 1-line FOUC guard which is universally allowed). Content inside
+  // @media print { ... } is also stripped — print stylesheets
+  // legitimately use pure-grey hex (#000, #555, #ddd) and tiny
+  // radii for paper output, and applying the screen design tokens
+  // would render incorrectly on monochrome printers.
   const blocks = [];
   const re = /<style[^>]*>([\s\S]*?)<\/style>/gi;
   let m;
   while ((m = re.exec(html))) {
     const body = m[1];
     if (/^\s*\.breadcrumb\s*\{/.test(body) && body.length < 120) continue;
-    blocks.push(body);
+    blocks.push(stripMediaPrint(body));
   }
   return blocks.join('\n');
+}
+
+// Remove balanced `@media print { ... }` blocks, including nested
+// braces. Returns the surrounding CSS untouched.
+function stripMediaPrint(css) {
+  let out = '';
+  let i = 0;
+  while (i < css.length) {
+    const idx = css.indexOf('@media', i);
+    if (idx < 0) { out += css.slice(i); break; }
+    // Check whether this @media is a print rule
+    const decl = css.slice(idx, idx + 60);
+    if (!/print/.test(decl)) {
+      // Not a print rule — keep going past the @media keyword
+      out += css.slice(i, idx + 6);
+      i = idx + 6;
+      continue;
+    }
+    out += css.slice(i, idx);
+    // Find the opening brace
+    const open = css.indexOf('{', idx);
+    if (open < 0) break;
+    let depth = 1;
+    let j = open + 1;
+    while (j < css.length && depth > 0) {
+      if (css[j] === '{') depth++;
+      else if (css[j] === '}') depth--;
+      j++;
+    }
+    i = j; // skip past the closing brace
+  }
+  return out;
 }
 
 function scan(file) {
@@ -90,10 +140,12 @@ function scan(file) {
 
   const issues = [];
 
-  // 1) Raw border-radius px values
-  for (const m of css.matchAll(/border-radius\s*:\s*([^;]+);/g)) {
+  // 1) Raw border-radius px values. Terminate on `;` OR `}` —
+  // the last declaration in a CSS block legitimately omits the
+  // trailing `;`, and without `}` as a stop the regex would slurp
+  // the next rule's value into this one.
+  for (const m of css.matchAll(/border-radius\s*:\s*([^;}]+)[;}]/g)) {
     const value = m[1];
-    // multi-value (e.g. "8px 8px 0 0") — split and check each
     const parts = value.trim().split(/\s+/);
     for (const p of parts) {
       if (/^\d+(\.\d+)?px$/.test(p) && !isAllowedRadius(p)) {
@@ -103,7 +155,7 @@ function scan(file) {
   }
 
   // 2) Raw rgba box-shadow
-  for (const m of css.matchAll(/box-shadow\s*:\s*([^;]+);/g)) {
+  for (const m of css.matchAll(/box-shadow\s*:\s*([^;}]+)[;}]/g)) {
     const value = m[1];
     if (/rgba?\(/.test(value) && !/var\(--(elev|ring)/.test(value)) {
       issues.push(`raw box-shadow with rgba (use --elev-1/2/3 or --ring-focus): ${value.slice(0, 60).trim()}`);

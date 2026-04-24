@@ -57,9 +57,9 @@
 <style>
   .gbp-hero{max-width:680px;margin:0 auto;text-align:center}
   .gbp-form{display:flex;gap:10px;max-width:560px;margin:32px auto 0}
-  .gbp-form input{flex:1;padding:16px 20px;border:2px solid var(--line-dark);border-radius:12px;font:inherit;font-size:17px;background:var(--white);color:var(--ink)}
+  .gbp-form input{flex:1;padding:16px 20px;border:2px solid var(--line-dark);border-radius:var(--r-input);font:inherit;font-size:17px;background:var(--white);color:var(--ink)}
   .gbp-form input:focus{border-color:var(--teal);outline:none}
-  .gbp-form button{padding:16px 28px;border:0;border-radius:12px;background:var(--teal);color:var(--cream);font:inherit;font-size:16px;font-weight:600;cursor:pointer;white-space:nowrap}
+  .gbp-form button{padding:16px 28px;border:0;border-radius:var(--r-input);background:var(--teal);color:var(--cream);font:inherit;font-size:16px;font-weight:600;cursor:pointer;white-space:nowrap}
   .gbp-form button:hover{background:var(--teal-dark)}
   .gbp-form button:disabled{opacity:.5;cursor:wait}
   @media(max-width:640px){.gbp-form{flex-direction:column}}
@@ -70,19 +70,19 @@
   .gbp-biz h2{font-family:var(--font-display);font-size:28px;font-weight:500;margin:0 0 4px;color:var(--ink)}
   .gbp-biz p{font-size:14px;color:var(--stone);margin:0}
   .gbp-stars{font-size:32px;margin:12px 0 4px;letter-spacing:2px}
-  .gbp-stars .filled{color:#C28B2E}
+  .gbp-stars .filled{color:var(--status-warn-fill)}
   .gbp-stars .empty{color:var(--line-dark)}
   .gbp-rating{font-family:var(--font-display);font-size:40px;font-weight:500;color:var(--ink)}
   .gbp-reviews{font-size:15px;color:var(--stone);margin-top:2px}
   .gbp-checks{display:flex;flex-direction:column;gap:10px;margin-top:24px}
-  .gbp-check{display:flex;gap:14px;padding:18px;border:1px solid var(--line);border-radius:10px;background:var(--white);align-items:flex-start}
+  .gbp-check{display:flex;gap:14px;padding:18px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);align-items:flex-start}
   .gbp-check .mark{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 32px;font-size:16px;font-weight:700}
-  .gbp-check .mark.pass{background:rgba(31,157,85,.1);color:#1f9d55}
-  .gbp-check .mark.warn{background:rgba(194,139,46,.1);color:#8A6018}
+  .gbp-check .mark.pass{background:rgba(31,157,85,.1);color:var(--status-pass)}
+  .gbp-check .mark.warn{background:rgba(194,139,46,.1);color:var(--status-warn)}
   .gbp-check .mark.fail{background:rgba(184,84,26,.08);color:var(--rust)}
   .gbp-check h3{font-size:15px;font-weight:600;color:var(--ink);margin:0 0 4px}
   .gbp-check p{font-size:13.5px;line-height:1.5;color:var(--ink-soft);margin:0}
-  .gbp-cta{margin-top:28px;padding:28px 32px;background:var(--cream-2);border:1px solid var(--line);border-radius:14px;text-align:center}
+  .gbp-cta{margin-top:28px;padding:28px 32px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-md);text-align:center}
   .gbp-cta p{font-size:15px;color:var(--stone);margin:0 0 16px}
   /* Hero gauge — SVG ring showing the aggregate grade. Accessible:
      wrapped in <figure role="img" aria-label="…"> so screen readers
@@ -93,22 +93,22 @@
   .gbp-gauge-svg{width:200px;height:200px;max-width:100%;display:block}
   .gbp-gauge-track{stroke:var(--line);stroke-width:10;fill:none;stroke-linecap:round}
   .gbp-gauge-arc{stroke-width:10;fill:none;stroke-linecap:round;transition:stroke-dashoffset 600ms var(--ease-out)}
-  .gbp-gauge[data-grade-band="good"] .gbp-gauge-arc{stroke:#1F6B3A}
-  .gbp-gauge[data-grade-band="ok"]   .gbp-gauge-arc{stroke:#8A6018}
+  .gbp-gauge[data-grade-band="good"] .gbp-gauge-arc{stroke:var(--status-good)}
+  .gbp-gauge[data-grade-band="ok"]   .gbp-gauge-arc{stroke:var(--status-warn)}
   .gbp-gauge[data-grade-band="bad"]  .gbp-gauge-arc{stroke:var(--rust)}
   .gbp-gauge-letter{font-family:var(--font-display);font-size:62px;font-weight:500;fill:var(--ink);dominant-baseline:central}
   .gbp-gauge-score{font-size:12px;fill:var(--stone);font-weight:500;letter-spacing:.04em}
   .gbp-gauge-caption{display:flex;flex-direction:column;align-items:center;gap:4px;margin:0}
   .gbp-grade-band{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
-  .gbp-gauge[data-grade-band="good"] .gbp-grade-band{background:#E7F5EC;color:#1F6B3A}
-  .gbp-gauge[data-grade-band="ok"]   .gbp-grade-band{background:#FDEFE3;color:#8A3E16}
-  .gbp-gauge[data-grade-band="bad"]  .gbp-grade-band{background:#F7E7DC;color:#B8541A}
+  .gbp-gauge[data-grade-band="good"] .gbp-grade-band{background:var(--status-good-tint);color:var(--status-good)}
+  .gbp-gauge[data-grade-band="ok"]   .gbp-grade-band{background:var(--status-warn-tint);color:var(--status-warn-deep)}
+  .gbp-gauge[data-grade-band="bad"]  .gbp-grade-band{background:var(--status-bad-tint);color:var(--rust)}
   .gbp-gauge-out-of{font-size:12px;color:var(--stone)}
   /* Fix-this-first banner — highlighted on teal-tint, pointing at the
      highest-weight failing check. The CTA targets the generic GBP
      dashboard URL; Google's per-section edit URLs redirect inside
      authenticated flows, so per-check deep links would rot quickly. */
-  .gbp-fix-first{margin:0 0 22px;padding:20px 22px;border:1px solid var(--teal);border-left-width:4px;border-radius:10px;background:var(--teal-tint)}
+  .gbp-fix-first{margin:0 0 22px;padding:20px 22px;border:1px solid var(--teal);border-left-width:4px;border-radius:var(--r-input);background:var(--teal-tint)}
   .gbp-fix-first-label{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
   .gbp-fix-first h3{font-size:16px;font-weight:600;color:var(--ink);margin:0 0 6px}
   .gbp-fix-first p{font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0 0 12px}
@@ -123,7 +123,7 @@
   .gbp-picker{margin:0 auto 6px}
   .gbp-picker-head{font-size:15px;color:var(--ink-soft);text-align:center;margin:0 0 16px}
   .gbp-picker-list{display:flex;flex-direction:column;gap:8px}
-  .gbp-picker-btn{display:block;width:100%;padding:14px 18px;border:1px solid var(--line);border-radius:10px;background:var(--white);text-align:left;cursor:pointer;font:inherit;color:inherit;transition:border-color 140ms,background 140ms,transform 140ms}
+  .gbp-picker-btn{display:block;width:100%;padding:14px 18px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);text-align:left;cursor:pointer;font:inherit;color:inherit;transition:border-color 140ms,background 140ms,transform 140ms}
   .gbp-picker-btn:hover,.gbp-picker-btn:focus-visible{border-color:var(--teal);background:var(--cream-2);transform:translateY(-1px);outline:none}
   .gbp-picker-btn h4{font-size:15px;font-weight:600;color:var(--ink);margin:0 0 2px}
   .gbp-picker-btn p{font-size:13px;color:var(--stone);margin:0}
@@ -134,9 +134,9 @@
      Engagement, Discoverability) replace the 1B flat check list; each
      header shows a per-group band and "X of Y passed" count. */
   .gbp-cats{display:flex;flex-direction:column;gap:10px;margin:0 0 22px}
-  .gbp-cat{border:1px solid var(--line);border-left-width:3px;border-radius:10px;background:var(--white);overflow:hidden}
-  .gbp-cat[data-grade-band="good"]{border-left-color:#1F6B3A}
-  .gbp-cat[data-grade-band="ok"]  {border-left-color:#8A6018}
+  .gbp-cat{border:1px solid var(--line);border-left-width:3px;border-radius:var(--r-input);background:var(--white);overflow:hidden}
+  .gbp-cat[data-grade-band="good"]{border-left-color:var(--status-good)}
+  .gbp-cat[data-grade-band="ok"]  {border-left-color:var(--status-warn)}
   .gbp-cat[data-grade-band="bad"] {border-left-color:var(--rust)}
   .gbp-cat-head{list-style:none;display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;user-select:none}
   .gbp-cat-head::-webkit-details-marker{display:none}
@@ -149,7 +149,7 @@
   .gbp-cat-empty{font-size:13px;color:var(--stone);font-style:italic;padding:0 4px 4px}
   /* Methodology disclosure — tucked at the bottom for credibility
      without cluttering the default view. */
-  .gbp-methodology{margin:0 0 22px;border:1px solid var(--line);border-radius:10px;background:var(--cream-2)}
+  .gbp-methodology{margin:0 0 22px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--cream-2)}
   .gbp-methodology summary{list-style:none;cursor:pointer;padding:14px 18px;font-size:14px;font-weight:600;color:var(--ink-soft);display:flex;align-items:center;gap:10px}
   .gbp-methodology summary::-webkit-details-marker{display:none}
   .gbp-methodology summary::after{content:'▾';margin-left:auto;font-size:12px;color:var(--stone);transition:transform 180ms var(--ease-out)}
@@ -163,7 +163,7 @@
      methodology disclosure. One click hits /api/gbp-details (24h
      cached), reads review recency and owner-reply rate, and unlocks
      the remaining 20 points of the rubric. Stays hidden once run. */
-  .gbp-deep{margin:0 0 22px;padding:18px 20px;border:1px dashed var(--teal);border-radius:10px;background:var(--teal-tint);text-align:center}
+  .gbp-deep{margin:0 0 22px;padding:18px 20px;border:1px dashed var(--teal);border-radius:var(--r-input);background:var(--teal-tint);text-align:center}
   .gbp-deep-label{font-size:14px;color:var(--ink-soft);margin:0 0 10px;font-weight:500}
   .gbp-deep-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border:0;border-radius:999px;background:var(--teal);color:var(--cream);font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:background 160ms var(--ease-out),transform 160ms var(--ease-out)}
   .gbp-deep-btn:hover{background:var(--teal-dark);transform:translateY(-1px)}
@@ -171,14 +171,14 @@
   .gbp-deep-note{font-size:12px;color:var(--stone);margin:10px 0 0}
   .gbp-deep-done{background:var(--cream-2);border-style:solid;border-color:var(--line)}
   .gbp-deep-done .gbp-deep-label{color:var(--stone)}
-  .gbp-deep-done .gbp-deep-label::before{content:'\2713  ';color:#1F6B3A;font-weight:700}
+  .gbp-deep-done .gbp-deep-label::before{content:'\2713  ';color:var(--status-good);font-weight:700}
   /* "Since last check" delta strip — visible when the same placeId
      has been graded before (at least 1h ago). Small, horizontal,
      above the gauge. Pure visual — no extra network calls. */
   .gbp-delta{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 0 18px;padding:10px 16px;border:1px solid var(--line);border-radius:999px;background:var(--white);font-size:13px;color:var(--ink-soft);flex-wrap:wrap}
   .gbp-delta-since{color:var(--stone);font-size:12px}
   .gbp-delta-sep{color:var(--line-dark)}
-  .gbp-delta-up{color:#1F6B3A;font-weight:600}
+  .gbp-delta-up{color:var(--status-good);font-weight:600}
   .gbp-delta-down{color:var(--rust);font-weight:600}
   .gbp-delta-flat{color:var(--stone)}
   /* Share-link row — sits inside the CTA box, above the audit
@@ -191,7 +191,7 @@
   .gbp-share-url{display:none;width:100%;max-width:420px;font-size:12px;color:var(--stone);text-align:center;word-break:break-all}
   .gbp-share-url.visible{display:block}
   .gbp-share-url a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
-  .gbp-share-hint{display:block;margin-top:4px;color:#1F6B3A;font-weight:600}
+  .gbp-share-hint{display:block;margin-top:4px;color:var(--status-good);font-weight:600}
 </style>
 </head>
 <body>

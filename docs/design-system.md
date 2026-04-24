@@ -172,7 +172,48 @@ The Phase 1 cohesion pass (April 2026) consolidated:
   token.
 - Added this doc + the drift guard.
 
-Margin Math, Brand Suite, GBP Grader, and the Restaurant Audit's
-4,662-line inline CSS are deliberately deferred — their components
-are substantial enough that a careful migration is a separate
-pass. They're listed in `EXCLUSIONS` in `scripts/check-css-drift.mjs`.
+### Bespoke tool migrations
+
+The four bespoke tools (Margin Math, Brand Suite, GBP Grader, and
+the Restaurant Audit) opted out of the original drift guard
+because each carried enough unique component vocabulary that
+a careful migration was its own pass.
+
+In a follow-up sprint, three of the four were tokenized and
+graduated off the exclusion list:
+
+- **GBP Grader** — full tokenization. Status triad (good/warn/bad)
+  uses `--status-*` tokens; radii use the standard `--r-*` scale.
+- **Margin Math** — full tokenization. Calculator-specific colors
+  (waterfall food brown, panel band tints) are intentional design
+  vocabulary, allowlisted in `scripts/check-css-drift.mjs` with
+  inline comments.
+- **Brand Suite** — full tokenization including the WCAG contrast
+  AA cell tint (was a near-duplicate of `--status-good-tint`).
+
+The **Restaurant Audit** (4,662 lines of inline CSS) received a
+selective sweep — top-frequency hex (rust, teal, status family,
+cream, teal-tint) was replaced, dropping ~70 hex occurrences.
+The audit's bespoke earthtone palette (`#E6DFCE`, `#EFC4AA`,
+`#C7DFE4`, etc.) is intentional design vocabulary for the result
+tree; full migration is a future pass and the file remains in
+`EXCLUSIONS` in `scripts/check-css-drift.mjs`.
+
+### Status palette tokens
+
+Added during the bespoke-tool migration:
+
+```css
+--status-good:        #1F6B3A;   /* primary grade pass */
+--status-good-tint:   #E7F5EC;
+--status-warn:        #8A6018;
+--status-warn-deep:   #8A3E16;
+--status-warn-fill:   #C28B2E;
+--status-warn-tint:   #FDEFE3;
+--status-bad-tint:    #F7E7DC;   /* pairs with --rust */
+--status-pass:        #1f9d55;   /* inline indicator green */
+```
+
+Use `--status-good` for primary grade displays; use `--status-pass`
+(brighter) for inline check marks. Different greens, different
+purposes.
