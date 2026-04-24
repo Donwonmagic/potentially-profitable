@@ -170,6 +170,14 @@
   .gbp-deep-done{background:var(--cream-2);border-style:solid;border-color:var(--line)}
   .gbp-deep-done .gbp-deep-label{color:var(--stone)}
   .gbp-deep-done .gbp-deep-label::before{content:'\2713  ';color:#1F6B3A;font-weight:700}
+  /* Tira "Desde la última revisión" — visible cuando el mismo
+     placeId ya ha sido calificado antes (al menos hace 1h). */
+  .gbp-delta{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 0 18px;padding:10px 16px;border:1px solid var(--line);border-radius:999px;background:var(--white);font-size:13px;color:var(--ink-soft);flex-wrap:wrap}
+  .gbp-delta-since{color:var(--stone);font-size:12px}
+  .gbp-delta-sep{color:var(--line-dark)}
+  .gbp-delta-up{color:#1F6B3A;font-weight:600}
+  .gbp-delta-down{color:var(--rust);font-weight:600}
+  .gbp-delta-flat{color:var(--stone)}
 </style>
 </head>
 <body>
@@ -532,6 +540,65 @@
 
   var deepScanState={chosen:null,peerMedians:null,query:null,wasPicked:false,data:null,inFlight:false};
 
+  // ----- Instantánea y comparación (Sprint 3A) -------------------
+  var GBP_SNAPSHOT_MIN_AGE_MS=60*60*1000;
+  function gbpSnapshotKey(placeId){return'gbpGrader:lastScan:'+placeId}
+  function gbpSnapshotLoad(placeId){
+    if(!placeId)return null;
+    try{
+      var raw=window.localStorage.getItem(gbpSnapshotKey(placeId));
+      if(!raw)return null;
+      var obj=JSON.parse(raw);
+      if(!obj||typeof obj!=='object')return null;
+      return obj;
+    }catch(e){return null}
+  }
+  function gbpSnapshotSave(placeId,chosen,scored){
+    if(!placeId)return;
+    var snap={
+      ts:         Date.now(),
+      rating:     chosen.rating||null,
+      reviewCount:chosen.reviewCount||0,
+      photoCount: chosen.photoCount||0,
+      scaled:     scored.scaled,
+      letter:     scored.letter
+    };
+    try{window.localStorage.setItem(gbpSnapshotKey(placeId),JSON.stringify(snap))}catch(e){}
+  }
+  function gbpRelativeAge(ms){
+    var sec=Math.floor((Date.now()-ms)/1000);
+    if(sec<3600)return'hace '+Math.max(1,Math.round(sec/60))+' minutos';
+    if(sec<86400)return'hace '+Math.max(1,Math.round(sec/3600))+' horas';
+    var days=Math.max(1,Math.round(sec/86400));
+    return days===1?'ayer':'hace '+days+' días';
+  }
+  function gbpDeltaSpan(label,before,after,formatter){
+    if(before==null||after==null)return'';
+    if(before===after)return'<span class="gbp-delta-flat">'+label+' sin cambios</span>';
+    var diff=after-before;
+    var cls=diff>0?'gbp-delta-up':'gbp-delta-down';
+    var sign=diff>0?'+':'';
+    var fmt=formatter||function(v){return v};
+    return'<span class="'+cls+'">'+label+' '+fmt(before)+'→'+fmt(after)+' ('+sign+fmt(diff)+')</span>';
+  }
+  function renderDelta(chosen,scored){
+    if(!chosen||!chosen.placeId)return'';
+    var prev=gbpSnapshotLoad(chosen.placeId);
+    if(!prev)return'';
+    if(Date.now()-prev.ts<GBP_SNAPSHOT_MIN_AGE_MS)return'';
+    var parts=[];
+    var pReviews=gbpDeltaSpan('reseñas',prev.reviewCount,chosen.reviewCount||0);
+    var pRating =gbpDeltaSpan('calif.', prev.rating,     chosen.rating,     function(v){return v==null?'—':(''+v)});
+    var pPhotos =gbpDeltaSpan('fotos',  prev.photoCount, chosen.photoCount||0);
+    var pGrade  =gbpDeltaSpan('puntaje',prev.scaled,     scored.scaled);
+    [pReviews,pRating,pPhotos,pGrade].forEach(function(s){if(s)parts.push(s)});
+    if(!parts.length)return'';
+    return'<div class="gbp-delta"><span class="gbp-delta-since">Desde '+gbpRelativeAge(prev.ts)+'</span>'
+      +'<span class="gbp-delta-sep">·</span>'
+      +parts.join('<span class="gbp-delta-sep">·</span>')
+      +'</div>';
+  }
+
   // ----- Bloqueo cliente de 24h ----------------------------------
   // Refleja el cache KV de 24h del Worker. Previene clicks repetidos
   // que queman cuota y le da al usuario una señal clara de "ya
@@ -694,6 +761,8 @@
     bizEl.innerHTML=renderBusinessCard(chosen);
 
     var scored=window.gbpScoreCandidate(chosen,peerMedians,deepScanState.data,'es');
+    var deltaHtml=renderDelta(chosen,scored);
+    gbpSnapshotSave(chosen.placeId,chosen,scored);
     var gaugeHtml=renderGauge(scored);
     var fixFirstHtml=renderFixFirst(scored);
 
@@ -705,7 +774,7 @@
 
     var deepHtml=renderDeepScan(chosen.placeId);
     var methodHtml=renderMethodology(peerMedians);
-    checksEl.innerHTML=gaugeHtml+fixFirstHtml+catsHtml+deepHtml+methodHtml;
+    checksEl.innerHTML=deltaHtml+gaugeHtml+fixFirstHtml+catsHtml+deepHtml+methodHtml;
 
     var btn=document.getElementById('gbpDeepBtn');
     if(btn)btn.addEventListener('click',function(){runDeepScan(btn.getAttribute('data-place-id'))});
