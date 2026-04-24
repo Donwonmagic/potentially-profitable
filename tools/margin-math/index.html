@@ -38,7 +38,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/tools/margin-math/#tool","name":"Margin Math","description":"Client-side finance calculators for independent restaurants: delivery break-even, price-raise simulation, prime cost check, break-even covers. Owner inputs stay in the browser.","url":"https://muntin.digital/tools/margin-math/","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://muntin.digital/tools/"},{"@type":"ListItem","position":3,"name":"Margin Math","item":"https://muntin.digital/tools/margin-math/"}]}]}
+{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/tools/margin-math/#tool","name":"Margin Math","description":"Client-side finance calculators for independent restaurants: delivery break-even, price-raise simulation, prime cost check, break-even covers. Owner inputs stay in the browser.","url":"https://muntin.digital/tools/margin-math/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["en","es"],"isAccessibleForFree":true,"browserRequirements":"Requires a modern browser with JavaScript enabled","keywords":"restaurant finance calculator, delivery break-even, DoorDash commission, prime cost, menu pricing, break-even covers, price elasticity, restaurant margins","audience":{"@type":"BusinessAudience","audienceType":"Independent restaurant owners and operators"},"featureList":["Delivery break-even vs. direct ordering per-order math","Prime cost check calibrated per restaurant segment","Break-even covers with capacity utilization","Price-raise simulator with profit and revenue break-even","Shareable URL-fragment scenario links","Printable Monthly Margin Report","Monthly .ics calendar reminder","Client-side: no fetch, no storage, no account"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},{"@type":"FAQPage","@id":"https://muntin.digital/tools/margin-math/#faq","mainEntity":[{"@type":"Question","name":"Do my numbers leave the page when I use Margin Math?","acceptedAnswer":{"@type":"Answer","text":"No. No fetch(), XMLHttpRequest, or form submission fires when you type a financial number. The calculator math runs entirely in your browser. The page is static HTML plus two unminified JavaScript files you can read directly."}},{"@type":"Question","name":"Does Margin Math require an account, email, or cookie consent?","acceptedAnswer":{"@type":"Answer","text":"No. No sign-up, no newsletter gate, no cookie banner. You can use every calculator without identifying yourself. Analytics is privacy-first Plausible with bucketed properties only — never your raw values."}},{"@type":"Question","name":"Can I share a Margin Math scenario with my bookkeeper?","acceptedAnswer":{"@type":"Answer","text":"Yes. Each calculator has a Copy scenario link button that encodes your inputs in the URL fragment (after the #). Browsers never send fragments to servers per the HTTP specification, so the link works while the server never sees its contents. A Copy as plain text button composes a labeled summary for email or notes."}},{"@type":"Question","name":"What benchmarks do the calculators use?","acceptedAnswer":{"@type":"Answer","text":"Delivery Break-Even uses DoorDash's published commission tiers at approximately 15%, 25%, and 30%. Prime Cost uses the National Restaurant Association's 55 to 65 percent healthy band for full-service independents, with separate thresholds for fast-casual (compressed at the top) and fine-dining (shifted up five points). Benchmarks are dated in the footer and last reviewed April 2026."}},{"@type":"Question","name":"Is the source code open and readable?","acceptedAnswer":{"@type":"Answer","text":"Yes. No build step, no minification, no framework. The math module lives at /tools/margin-math/margin-math.js as plain JavaScript under roughly five hundred lines, and every calculation function is named. Right-click View Page Source to read the UI directly."}},{"@type":"Question","name":"Can I run Margin Math as a monthly review?","acceptedAnswer":{"@type":"Answer","text":"Yes. Print this month's report opens a browser-native print dialog that renders a clean single-sheet Monthly Margin Report with a timestamp and a Reopen this scenario URL. Add a monthly check-in to your calendar downloads an .ics file with a twelve-occurrence monthly recurring event linked to the current scenario. Both actions are 100 percent client-side."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://muntin.digital/tools/"},{"@type":"ListItem","position":3,"name":"Margin Math","item":"https://muntin.digital/tools/margin-math/"}]}]}
 </script>
 <!-- i18n:preconnect START (generated by scripts/enrich-post-seo-v2.py) -->
 <link rel="preconnect" href="https://plausible.io" crossorigin />
@@ -100,6 +100,204 @@
   .mm-per-order-col{display:flex;flex-direction:column;gap:2px;text-align:center;padding:10px;background:var(--white);border-radius:8px;border:1px solid var(--line)}
   .mm-result-label{font-size:11px;font-weight:600;color:var(--stone);letter-spacing:.04em;text-transform:uppercase}
   .mm-result-value{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
+  .mm-result-sub{font-size:11px;color:var(--stone);font-variant-numeric:tabular-nums;margin-top:1px;letter-spacing:.01em}
+  /* "Copy scenario link" — a discreet per-calculator action that
+     writes the current state into the URL fragment so the owner can
+     bookmark or share the scenario. No server round-trip; the
+     fragment never leaves the browser. */
+  .mm-copy-link{align-self:flex-start;margin-top:-2px;font-size:12px;font-weight:600;color:var(--teal);background:none;border:0;padding:0;cursor:pointer;letter-spacing:.01em;display:inline-flex;align-items:center;gap:5px;font-family:inherit}
+  .mm-copy-link:hover{color:var(--teal-dark)}
+  .mm-copy-link:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:3px}
+  .mm-copy-link::before{content:'';width:10px;height:10px;border:1.5px solid currentColor;border-radius:2px;box-shadow:-3px 3px 0 -1.5px currentColor,-3px 3px 0 0 var(--white);display:inline-block;margin-right:2px;flex:0 0 10px}
+  .mm-copy-link[data-copied="true"]{color:#1F6B3A}
+  .mm-copy-link[data-copied="true"]::before{content:'\2713';border:0;box-shadow:none;width:auto;height:auto;font-weight:800;color:inherit;margin-right:1px;font-size:13px;line-height:1}
+  /* Waterfall — "where each dollar of this order goes." A two-row
+     stacked-bar breakdown of the $ticket into food cost / platform
+     or processing fee / what-you-keep. Sits beneath the per-order
+     numbers so the visual tells the per-dollar story, and the
+     monthly delta below scales it up. */
+  .mm-wf{display:flex;flex-direction:column;gap:6px;margin-top:2px;padding-top:10px;border-top:1px dashed var(--line-dark)}
+  .mm-wf-row{display:grid;grid-template-columns:64px 1fr;gap:10px;align-items:center}
+  .mm-wf-label{font-size:10.5px;color:var(--stone);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+  .mm-wf-bar{display:flex;height:14px;border-radius:3px;overflow:hidden;border:1px solid var(--line);background:var(--white)}
+  .mm-wf-seg{display:block;height:100%;transition:width 220ms var(--ease-out);min-width:0}
+  .mm-wf-food{background:#B89A6E}
+  .mm-wf-fee{background:var(--rust)}
+  .mm-wf-margin{background:#1F6B3A}
+  .mm-wf-legend{list-style:none;padding:0;margin:4px 0 0;display:flex;flex-wrap:wrap;gap:10px 14px;font-size:10.5px;color:var(--stone);justify-content:center}
+  .mm-wf-legend li{display:inline-flex;align-items:center;gap:5px}
+  .mm-wf-dot{display:inline-block;width:8px;height:8px;border-radius:2px;flex:0 0 8px}
+  @media print {
+    .mm-wf-bar{border-color:#000 !important}
+    .mm-wf-food{background:#ddd !important}
+    .mm-wf-fee{background:#888 !important}
+    .mm-wf-margin{background:#222 !important}
+    .mm-wf-dot{border:0.5pt solid #000}
+    .mm-wf-label{color:#000 !important}
+    .mm-wf-legend{color:#000 !important}
+  }
+  /* Bad-band escalation — only surfaces on the worst band of each
+     calculator, routing to the full Restaurant Audit. Quieter than
+     the band-colored .mm-recommendation so the two don't compete. */
+  .mm-escalate{margin:10px 0 0;padding:12px 14px;border-radius:10px;background:var(--cream-2);border:1px solid var(--line);font-size:13px;line-height:1.55;color:var(--ink-soft);display:none;gap:12px;align-items:center;flex-wrap:wrap}
+  .mm-escalate[data-visible="true"]{display:flex}
+  .mm-escalate p{margin:0;flex:1;min-width:180px}
+  .mm-escalate a{color:var(--rust);font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap}
+  .mm-escalate a:hover{color:#8A3E16}
+  /* Cross-calculator suggestion — appears on mid-severity bands
+     (warn / optimize / ok) to nudge the user toward the next
+     calculator that usually matters for this pattern. Mutually
+     exclusive in practice with .mm-escalate (which is worst-band
+     only), so the user sees at most one "where next" row at a time. */
+  .mm-cross-suggest{margin:8px 0 0;padding:10px 14px;border-radius:8px;background:var(--teal-tint);color:var(--teal-dark);font-size:12.5px;line-height:1.5;display:none;gap:10px;align-items:center;flex-wrap:wrap}
+  .mm-cross-suggest[data-visible="true"]{display:flex}
+  .mm-cross-suggest span{flex:1;min-width:180px}
+  .mm-cross-suggest a{color:var(--teal);font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap}
+  .mm-cross-suggest a:hover{color:var(--teal-dark)}
+  @media print { .mm-cross-suggest { display: none !important; } }
+  /* Glossary popover — reads definitions from data-def attributes on
+     the underlined in-card links. No fetch, no build, no new script
+     dependency: the definition text travels with the markup so the
+     privacy posture survives intact. Keyboard-accessible via focus
+     and Escape-to-close; hover-to-open is pointer-only. */
+  .mm-popover{position:absolute;z-index:120;max-width:320px;padding:12px 14px;background:var(--white);border:1px solid var(--line-dark);border-radius:8px;box-shadow:0 10px 28px rgba(0,0,0,0.12),0 2px 6px rgba(0,0,0,0.04);font-size:13px;line-height:1.55;color:var(--ink-soft);pointer-events:auto}
+  .mm-popover[hidden]{display:none}
+  .mm-popover-term{display:block;font-family:var(--font-display);font-size:14px;font-weight:500;color:var(--ink);margin:0 0 4px;letter-spacing:.01em}
+  .mm-popover-def{display:block;margin:0 0 8px}
+  .mm-popover-link{display:inline-flex;align-items:center;gap:3px;color:var(--teal);font-size:12.5px;font-weight:600;text-decoration:none;border-bottom:1px dashed currentColor;padding-bottom:1px}
+  .mm-popover-link:hover{color:var(--teal-dark)}
+  .mm-popover::before{content:'';position:absolute;top:-6px;left:20px;width:10px;height:10px;background:var(--white);border-left:1px solid var(--line-dark);border-top:1px solid var(--line-dark);transform:rotate(45deg)}
+  .mm-popover[data-flip="true"]::before{top:auto;bottom:-6px;border:0;border-right:1px solid var(--line-dark);border-bottom:1px solid var(--line-dark)}
+  @media print { .mm-popover { display: none !important; } }
+  @media (prefers-reduced-motion: no-preference) {
+    .mm-popover{animation:mm-pop-in 120ms var(--ease-out)}
+    @keyframes mm-pop-in { from { opacity:0; transform:translateY(-2px); } to { opacity:1; transform:translateY(0); } }
+  }
+  /* Monthly-report actions — signature Muntin deliverable + .ics
+     reminder. Both actions are 100% client-side: the print dialog
+     is browser-native; the .ics is generated in-browser and
+     downloaded locally. Sits in the hero so the month-end rhythm
+     is the first thing an owner sees on a return visit. */
+  .mm-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px 0 0}
+  .mm-action{font-family:inherit;font-size:13.5px;font-weight:600;padding:10px 18px;border-radius:999px;cursor:pointer;border:1px solid var(--line-dark);background:var(--white);color:var(--ink);display:inline-flex;align-items:center;gap:8px;transition:border-color 140ms,color 140ms,background 140ms,transform 140ms;line-height:1.2}
+  .mm-action:hover{border-color:var(--teal);color:var(--teal)}
+  .mm-action:active{transform:translateY(1px)}
+  .mm-action:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+  .mm-action-primary{background:var(--teal);color:var(--white);border-color:var(--teal)}
+  .mm-action-primary:hover{background:var(--teal-dark);color:var(--white);border-color:var(--teal-dark)}
+  .mm-action-icon{display:inline-flex;width:14px;height:14px;flex:0 0 14px;align-items:center;justify-content:center}
+  .mm-action-icon svg{width:100%;height:auto;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+  .mm-action-note{text-align:center;margin:8px auto 0;max-width:520px;font-size:11.5px;color:var(--stone);line-height:1.5}
+  /* Scenario-diff banner — surfaces only on return visits (when the
+     URL fragment carries any calculator state). Gives bookmark
+     traffic a moment of orientation: "yes, your saved numbers are
+     loaded; tweak from there." Dismissable in-session. */
+  .mm-scenario-banner{max-width:760px;margin:0 auto 20px;padding:12px 18px;background:var(--teal-tint);color:var(--teal-dark);border-radius:10px;font-size:13.5px;line-height:1.5;display:none;gap:12px;align-items:center;border:1px solid rgba(31,78,91,0.12)}
+  .mm-scenario-banner[data-visible="true"]{display:flex}
+  .mm-scenario-banner-text{flex:1}
+  .mm-scenario-banner-text strong{color:var(--teal)}
+  .mm-scenario-banner-dismiss{background:none;border:0;padding:4px;color:inherit;cursor:pointer;opacity:.7;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;line-height:0}
+  .mm-scenario-banner-dismiss:hover{opacity:1}
+  .mm-scenario-banner-dismiss:focus-visible{outline:2px solid currentColor;outline-offset:2px;opacity:1}
+  @media print { .mm-scenario-banner { display: none !important; } }
+  /* Benchmarks-last-updated line — a small, dated annotation that
+     gives returning visitors a reason to pay attention. Every
+     calculator's thresholds trace to published industry references;
+     this footer documents when those references were last reviewed. */
+  .mm-benchmarks{text-align:center;margin:22px auto 0;max-width:760px;font-size:11.5px;color:var(--stone);line-height:1.6;padding:0 12px}
+  .mm-benchmarks time{color:var(--ink-soft);font-weight:600}
+  .mm-benchmarks a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+  .mm-benchmarks a:hover{color:var(--teal-dark)}
+  @media print { .mm-benchmarks { display: none !important; } }
+  /* Print stylesheet — turns the page into a one-sheet Monthly
+     Margin Report. Keeps the four calculator cards (inputs + results
+     as static text) and strips every non-essential surround. The
+     date header and scenario-link footer are data-attribute driven
+     so JS can stamp them just before window.print(). */
+  @media print {
+    @page { margin: 12mm 14mm; size: letter; }
+    body { background: #fff; color: #000; font-size: 10pt; }
+    header.nav, .mobile-menu, .lang-hint, footer, .skip-link, .breadcrumb,
+    section#how-we-protect, section#how-to-check, section#data-sharing,
+    .mm-next, .foot-cta, .hero .mm-pledge, .nav-search-btn, .lang-switch,
+    .mm-badge-safe, .mm-copy-link, .mm-blog-link, .mm-mini-help,
+    [data-copy-link], .mm-escalate,
+    .mm-actions, .mm-action-note { display: none !important; }
+    .hero { padding: 0 !important; margin: 0 0 6pt !important; text-align: left; }
+    .hero .container, .hero .container-wide, main .container, main .container-wide { padding: 0 !important; max-width: none !important; }
+    .hero h1 { font-size: 14pt; margin: 0 0 2pt; }
+    .hero h1 br, .hero .serif-italic { display: none; }
+    .hero-sub { display: none; }
+    .eyebrow { display: none; }
+    main::before {
+      content: 'Margin Math — Monthly Report';
+      display: block;
+      font-family: var(--font-display);
+      font-size: 17pt;
+      font-weight: 500;
+      border-bottom: 0.5pt solid #000;
+      padding-bottom: 3pt;
+      margin: 0 0 3pt;
+      letter-spacing: 0.01em;
+    }
+    body[data-print-date]::before {
+      content: attr(data-print-date) '  ·  muntin.digital/tools/margin-math/';
+      display: block;
+      font-size: 9pt;
+      color: #555;
+      margin: 0 0 10pt;
+      letter-spacing: 0.02em;
+    }
+    .mm-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 8pt !important; }
+    .mm-card { break-inside: avoid; page-break-inside: avoid; border: 0.5pt solid #555 !important; background: #fff !important; padding: 10pt !important; border-radius: 3pt !important; gap: 6pt !important; }
+    .mm-card-header { gap: 6pt; }
+    .mm-card-eyebrow { color: #555; font-size: 8pt; letter-spacing: 0.08em; }
+    .mm-card h3 { margin: 2pt 0 4pt; font-size: 12pt; }
+    .mm-card p { font-size: 9pt; margin: 0 0 4pt; line-height: 1.4; color: #222; }
+    .mm-card p a { color: #000; border: 0; text-decoration: none; }
+    /* Inputs: pipe the slider's <output> value as text, hide the slider. */
+    .mm-form label { display: block; font-size: 9pt; margin: 0 0 2pt; color: #000; font-weight: 500; gap: 0 !important; }
+    .mm-form label > span { display: inline; font-weight: 500; }
+    .mm-form label > span > output { font-weight: 700; margin-left: 3pt; }
+    .mm-form label > small { display: none; }
+    .mm-form input[type="range"] { display: none !important; }
+    .mm-form input[type="number"] { border: 0 !important; background: transparent !important; padding: 0 !important; color: #000; font-weight: 700; font-size: 10pt; width: auto !important; -webkit-appearance: none; appearance: none; display: inline-block; }
+    .mm-tier-group { margin: 0 0 2pt; }
+    .mm-tier-group legend { font-size: 9pt; font-weight: 500; padding: 0; margin: 0 0 1pt; }
+    .mm-tier-btns { gap: 0 !important; }
+    .mm-tier-btns button { display: none !important; }
+    .mm-tier-btns button[aria-pressed="true"] { display: inline-block !important; border: 0.5pt solid #000 !important; background: none !important; color: #000 !important; padding: 1pt 5pt !important; font-weight: 700; border-radius: 2pt !important; font-size: 9pt; }
+    .mm-tier-btns button[aria-pressed="true"] small { color: #555; font-size: 8pt; margin-top: 0; }
+    /* Results */
+    .mm-results { background: none !important; border: 0.5pt solid #999 !important; padding: 6pt 8pt !important; margin-top: 4pt !important; border-radius: 2pt !important; gap: 5pt !important; }
+    .mm-monthly, .mm-per-order-col { padding: 3pt 0 !important; }
+    .mm-per-order-col { border: 0.5pt dotted #999 !important; background: none !important; padding: 3pt 4pt !important; }
+    .mm-monthly-value { font-size: 18pt !important; color: #000 !important; }
+    .mm-result-value { font-size: 13pt !important; color: #000 !important; }
+    .mm-result-label, .mm-monthly-label { color: #555; font-size: 8pt !important; }
+    .mm-monthly-subtext, .mm-result-sub { color: #555; font-size: 8pt; }
+    .mm-recommendation { background: #f4f4f4 !important; color: #000 !important; font-size: 9pt !important; padding: 5pt 7pt !important; line-height: 1.4; border-radius: 2pt !important; }
+    .mm-recommendation a { color: #000; }
+    .mm-footnote { font-size: 8pt; color: #555; margin: 2pt 0 0; }
+    .mm-pc-scale-wrap { margin: 3pt 0 !important; }
+    .mm-pc-scale { height: 4pt !important; }
+    .mm-pc-scale > span { background: #fff !important; border: 0.5pt solid #999 !important; }
+    .mm-pc-marker { background: #000 !important; height: 8pt !important; width: 2pt !important; top: -2pt !important; }
+    .mm-pc-axis { font-size: 7pt; }
+    /* Footer caption: current scenario URL so the printout is a
+       bookmarkable artifact. Truncates gracefully on overflow. */
+    body[data-print-url] main::after {
+      content: 'Reopen this scenario: ' attr(data-print-url);
+      display: block;
+      font-size: 7.5pt;
+      color: #555;
+      margin-top: 10pt;
+      padding-top: 4pt;
+      border-top: 0.5pt solid #bbb;
+      overflow-wrap: anywhere;
+      page-break-inside: avoid;
+    }
+  }
   .mm-monthly{text-align:center;padding:8px 0;border-top:1px dashed var(--line-dark);display:flex;flex-direction:column;gap:2px}
   .mm-monthly-label{font-size:12px;font-weight:600;color:var(--stone);letter-spacing:.04em;text-transform:uppercase}
   .mm-monthly-value{font-family:var(--font-display);font-size:36px;font-weight:500;color:var(--rust);font-variant-numeric:tabular-nums;line-height:1.1}
@@ -134,6 +332,23 @@
   .mm-pc-axis{display:flex;justify-content:space-between;font-size:10px;color:var(--stone);margin-top:6px;padding:0 2px;font-variant-numeric:tabular-nums}
   .mm-blog-link{margin-top:4px;font-size:12px;color:var(--teal);text-decoration:none;font-weight:600}
   .mm-blog-link:hover{color:var(--teal-dark);border-bottom:1px dashed currentColor}
+  /* "Not modeled" footnote — tells the reader what the calculator is
+     deliberately leaving out so point estimates aren't over-trusted.
+     Quiet visually: sits below results, above any blog link, without
+     competing with the big numbers. */
+  .mm-footnote{margin:-2px 0 0;font-size:11.5px;line-height:1.55;color:var(--stone)}
+  .mm-footnote strong{color:var(--ink-soft);font-weight:600}
+  /* Small in-field helper — an expandable "Worked example" revealer
+     that sits under a form field without dominating it. Shares the
+     visual vocabulary with .mm-step-inspect but is form-scoped. */
+  .mm-mini-help{margin:-4px 0 2px;font-size:12px}
+  .mm-mini-help summary{cursor:pointer;color:var(--teal);font-weight:600;list-style:none;display:inline-flex;align-items:center;gap:4px;letter-spacing:.01em}
+  .mm-mini-help summary::-webkit-details-marker{display:none}
+  .mm-mini-help summary::after{content:'\25BE';font-size:9px;transition:transform 140ms var(--ease-out)}
+  .mm-mini-help[open] summary::after{transform:rotate(180deg)}
+  .mm-mini-help summary:hover{color:var(--teal-dark)}
+  .mm-mini-help-body{margin:6px 0 0;padding:9px 11px;background:var(--cream-2);border-radius:6px;color:var(--ink-soft);line-height:1.55;font-weight:400;font-size:12.5px}
+  .mm-mini-help-body strong{color:var(--ink);font-weight:600}
   /* Privacy-promise steps — 8 verifiable claims, each with an
      inline "Inspect this" expander. Keyboard-operable via native
      <details>. Invite the audit; don't dodge it. */
@@ -275,17 +490,38 @@
   <h1>Math for your<br><span class="serif-italic">specific restaurant.</span></h1>
   <p class="hero-sub" style="margin:20px auto 0;max-width:580px;">Four calculators for the decisions owners actually wrestle with — delivery break-even, price-raise simulation, prime cost, covers needed per night. Type your numbers; we do the math in your browser. No sign-up, no uploading, no server ever sees what you type.</p>
   <a href="#how-we-protect" class="mm-pledge">Stays in your browser. <a href="#how-we-protect">See how we verified it</a></a>
+  <div class="mm-actions" role="group" aria-label="Monthly Margin Report actions">
+    <button type="button" class="mm-action mm-action-primary" id="mm-print-report" data-default-label="Print this month's report">
+      <span class="mm-action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 9V3h10v6"/><rect x="4" y="9" width="16" height="9" rx="1"/><path d="M7 15h10v6H7z"/></svg></span>
+      Print this month's report
+    </button>
+    <button type="button" class="mm-action" id="mm-add-ics" data-default-label="Add a monthly check-in to your calendar">
+      <span class="mm-action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg></span>
+      Add a monthly check-in to your calendar
+    </button>
+    <button type="button" class="mm-action" id="mm-copy-text" data-default-label="Copy as plain text">
+      <span class="mm-action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h12"/></svg></span>
+      Copy as plain text
+    </button>
+  </div>
+  <p class="mm-action-note">Print opens your browser's dialog; calendar downloads an <code>.ics</code> file; text is copied to your clipboard. All three run client-side — nothing is uploaded to our server.</p>
 </div></div></section>
 
 <section class="block"><div class="container container-wide">
+  <div class="mm-scenario-banner" id="mm-scenario-banner" role="status" aria-live="polite">
+    <span class="mm-scenario-banner-text"><strong>Loaded from a saved scenario.</strong> Your numbers are filled in below — tweak the sliders to see what's changed.</span>
+    <button type="button" class="mm-scenario-banner-dismiss" aria-label="Dismiss">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+  </div>
   <div class="mm-grid" aria-label="Calculators">
-    <article class="mm-card mm-live" data-calc="delivery-breakeven">
+    <article class="mm-card mm-live" id="calc-delivery" data-calc="delivery-breakeven">
       <div class="mm-card-header">
         <span class="mm-card-eyebrow">Calculator 1 of 4</span>
         <span class="mm-badge-safe" title="Every number you type is processed in your browser. Nothing is sent to our servers.">Stays in your browser</span>
       </div>
       <h3>Delivery Break-Even</h3>
-      <p>See what each order actually nets you on a third-party <a href="/glossary/#aggregator" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">aggregator</a> vs. the same order taken <a href="/glossary/#direct-ordering" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">direct</a>.</p>
+      <p>See what each order actually nets you on a third-party <a href="/glossary/#aggregator" data-term="Aggregator" data-def="A third-party ordering platform (DoorDash, Uber Eats, Grubhub) that lists your menu, takes the customer's order, handles delivery, and takes a commission — typically 15–30% per order." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">aggregator</a> vs. the same order taken <a href="/glossary/#direct-ordering" data-term="Direct ordering" data-def="Orders placed through your own website, app, or phone, using payment processing you choose — no marketplace commission. Typical cost is 2–3% payment processing plus any ordering-platform fee." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">direct</a>.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Delivery break-even calculator">
         <label for="dbe-ticket">
@@ -321,25 +557,66 @@
             <span class="mm-result-value" id="dbe-direct">$16.75</span>
           </div>
         </div>
+        <div class="mm-wf" aria-label="Where each dollar of an order goes">
+          <div class="mm-wf-row">
+            <span class="mm-wf-label">Platform</span>
+            <div class="mm-wf-bar" role="img" aria-label="Breakdown of one order on the platform">
+              <span class="mm-wf-seg mm-wf-food"   id="dbe-wf-p-food"></span>
+              <span class="mm-wf-seg mm-wf-fee"    id="dbe-wf-p-fee"></span>
+              <span class="mm-wf-seg mm-wf-margin" id="dbe-wf-p-keep"></span>
+            </div>
+          </div>
+          <div class="mm-wf-row">
+            <span class="mm-wf-label">Direct</span>
+            <div class="mm-wf-bar" role="img" aria-label="Breakdown of one order taken direct">
+              <span class="mm-wf-seg mm-wf-food"   id="dbe-wf-d-food"></span>
+              <span class="mm-wf-seg mm-wf-fee"    id="dbe-wf-d-fee"></span>
+              <span class="mm-wf-seg mm-wf-margin" id="dbe-wf-d-keep"></span>
+            </div>
+          </div>
+          <ul class="mm-wf-legend">
+            <li><span class="mm-wf-dot mm-wf-food"></span>Food cost</li>
+            <li><span class="mm-wf-dot mm-wf-fee"></span>Platform / processing</li>
+            <li><span class="mm-wf-dot mm-wf-margin"></span>What you keep</li>
+          </ul>
+        </div>
         <div class="mm-monthly">
           <span class="mm-monthly-label">Monthly difference</span>
           <span class="mm-monthly-value" id="dbe-monthly">$550</span>
           <span class="mm-monthly-subtext" id="dbe-monthly-sub">walks out the door vs. direct</span>
         </div>
         <div class="mm-recommendation" id="dbe-rec" data-rec="consider-leaving"></div>
+        <div class="mm-cross-suggest" id="dbe-suggest">
+          <span>High aggregator commission usually squeezes what's already a thin margin. Check your prime cost for confirmation.</span>
+          <a href="#calc-primecost">Prime Cost below &rarr;</a>
+        </div>
+        <div class="mm-escalate" id="dbe-escalate">
+          <p>When the channel math looks this hostile, the lever is usually structural — fixed overhead, menu mix, or online-ordering setup. A 15-minute Restaurant Audit maps the top three in your case.</p>
+          <a href="/tools/audits/restaurant/">Run the Restaurant Audit &rarr;</a>
+        </div>
       </div>
 
+      <p class="mm-footnote"><strong>Not modeled:</strong> sponsored-listing ("Boost") ad spend, packaging, direct-channel subscription fees, the labor minute per ticket. Subtract yours before acting on the number.</p>
+      <button type="button" class="mm-copy-link" data-copy-link data-copy-label="Copy scenario link" data-copied-label="Link copied — paste to bookmark">Copy scenario link</button>
       <a class="mm-blog-link" href="/blog/is-doordash-worth-it-for-restaurants-in-2026/">Read the full analysis: Is DoorDash worth it in 2026? &rarr;</a>
     </article>
-    <article class="mm-card mm-live" data-calc="prime-cost">
+    <article class="mm-card mm-live" id="calc-primecost" data-calc="prime-cost">
       <div class="mm-card-header">
         <span class="mm-card-eyebrow">Calculator 2 of 4</span>
         <span class="mm-badge-safe" title="Every number you type is processed in your browser. Nothing is sent to our servers.">Stays in your browser</span>
       </div>
       <h3>Prime Cost Check</h3>
-      <p>Two inputs — <a href="/glossary/#food-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">food cost</a> and <a href="/glossary/#labor-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">labor cost</a> as percentages of sales — placed against the 55-65% healthy <a href="/glossary/#prime-cost" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">prime cost</a> band the NRA publishes for full-service independents.</p>
+      <p>Two inputs — <a href="/glossary/#food-cost" data-term="Food cost" data-def="Cost of ingredients as a percentage of the revenue they generate. 28–35% is typical for full-service independents; lower for beverage-heavy concepts, higher for raw-ingredient-heavy ones." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">food cost</a> and <a href="/glossary/#labor-cost" data-term="Labor cost" data-def="Wages + payroll taxes + tipped-employee contribution as a percentage of sales. Covers front-of-house and back-of-house; doesn't include management salary (usually tracked separately)." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">labor cost</a> as percentages of sales — placed against the healthy <a href="/glossary/#prime-cost" data-term="Prime cost" data-def="Food cost + labor cost combined. The single most-watched line in restaurant finance — 55–65% is the NRA's healthy band for full-service independents. Higher for fine-dining, tighter at the top for fast-casual." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">prime cost</a> band for your restaurant type. Full-service sits at 55–65%; fast-casual tightens at the top; fine-dining runs naturally higher.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Prime cost check">
+        <fieldset class="mm-tier-group">
+          <legend>Restaurant type</legend>
+          <div class="mm-tier-btns" role="radiogroup" aria-label="Restaurant type">
+            <button type="button" data-segment="full-service" aria-pressed="true"  role="radio">Full-service<small>55–65%</small></button>
+            <button type="button" data-segment="fast-casual"  aria-pressed="false" role="radio">Fast-casual<small>55–65%</small></button>
+            <button type="button" data-segment="fine-dining"  aria-pressed="false" role="radio">Fine-dining<small>60–70%</small></button>
+          </div>
+        </fieldset>
         <label for="pc-food">
           <span>Food cost (% of sales) <output id="pc-food-val" for="pc-food">30%</output></span>
           <input type="range" id="pc-food" min="15" max="50" step="1" value="30" aria-describedby="pc-food-val" />
@@ -368,17 +645,26 @@
           <div class="mm-pc-axis"><span>40%</span><span>55%</span><span>65%</span><span>70%</span><span>80%</span></div>
         </div>
         <div class="mm-recommendation" id="pc-rec" data-band="ok"></div>
+        <div class="mm-cross-suggest" id="pc-suggest">
+          <span>A stressed prime cost usually shows up first as tight covers per night. Run the covers math next.</span>
+          <a href="#calc-breakeven">Break-Even Covers below &rarr;</a>
+        </div>
+        <div class="mm-escalate" id="pc-escalate">
+          <p>Above 70% prime cost rarely fixes itself. The Restaurant Audit walks the labor schedule, menu mix, and channel economics together — which is where the real moves hide.</p>
+          <a href="/tools/audits/restaurant/">Run the Restaurant Audit &rarr;</a>
+        </div>
       </div>
 
+      <button type="button" class="mm-copy-link" data-copy-link data-copy-label="Copy scenario link" data-copied-label="Link copied — paste to bookmark">Copy scenario link</button>
       <a class="mm-blog-link" href="/blog/is-doordash-worth-it-for-restaurants-in-2026/#prime-cost">What's a healthy prime cost, and where do the numbers come from? &rarr;</a>
     </article>
-    <article class="mm-card mm-live" data-calc="break-even-covers">
+    <article class="mm-card mm-live" id="calc-breakeven" data-calc="break-even-covers">
       <div class="mm-card-header">
         <span class="mm-card-eyebrow">Calculator 3 of 4</span>
         <span class="mm-badge-safe" title="Every number you type is processed in your browser. Nothing is sent to our servers.">Stays in your browser</span>
       </div>
       <h3>Break-Even Covers</h3>
-      <p>How many <a href="/glossary/#cover" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">covers</a> a night does your <a href="/glossary/#fixed-costs" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">fixed overhead</a> demand? Optional: enter your typical daily volume to see monthly headroom above <a href="/glossary/#break-even" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">break-even</a>.</p>
+      <p>How many <a href="/glossary/#cover" data-term="Cover" data-def="One served guest. A table of four is four covers. The standard unit for measuring restaurant volume and calculating per-guest economics." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">covers</a> a night does your <a href="/glossary/#fixed-costs" data-term="Fixed costs" data-def="Monthly costs that don't flex with volume — rent, insurance, loan payments, SaaS, liability coverage, base management salary. Typically 20–30% of revenue." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">fixed overhead</a> demand? Optional: enter your typical daily volume to see monthly headroom above <a href="/glossary/#break-even" data-term="Break-even" data-def="The volume at which contribution margin exactly covers fixed costs — one more cover is the first dollar of profit; one fewer is the first dollar of loss." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">break-even</a>.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Break-even covers calculator">
         <label for="bec-fixed">
@@ -394,6 +680,10 @@
           <input type="range" id="bec-margin" min="5" max="50" step="1" value="20" aria-describedby="bec-margin-val" />
           <small style="color:var(--stone);font-weight:400;font-size:12px;line-height:1.4;">What a cover contributes after food, hourly labor, and card fees. Not the same as operating margin.</small>
         </label>
+        <details class="mm-mini-help">
+          <summary>Worked example</summary>
+          <p class="mm-mini-help-body">A <strong>$40</strong> check with <strong>$12</strong> food + <strong>$8</strong> hourly labor + <strong>$1</strong> card fee = <strong>$19</strong> contribution, or <strong>47.5%</strong>. If you only have monthly totals, divide your variable contribution (sales &minus; COGS &minus; variable labor &minus; card fees) by sales.</p>
+        </details>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
           <label for="bec-days">
             <span>Days open/month</span>
@@ -418,15 +708,24 @@
           <span class="mm-monthly-subtext" id="bec-cap">at 150 covers/day, 51% of capacity goes to fixed costs</span>
         </div>
         <div class="mm-recommendation" id="bec-rec" data-band="ok"></div>
+        <div class="mm-cross-suggest" id="bec-suggest">
+          <span>Tight on covers? The fastest unlock is usually pricing on your signature items, not pulling extra volume.</span>
+          <a href="#calc-priceraise">Price-Raise Simulator below &rarr;</a>
+        </div>
+        <div class="mm-escalate" id="bec-escalate">
+          <p>Break-even on typical volume means every structural question matters — rent, menu, daypart mix, channel margins. The Restaurant Audit maps them in one pass.</p>
+          <a href="/tools/audits/restaurant/">Run the Restaurant Audit &rarr;</a>
+        </div>
       </div>
+      <button type="button" class="mm-copy-link" data-copy-link data-copy-label="Copy scenario link" data-copied-label="Link copied — paste to bookmark">Copy scenario link</button>
     </article>
-    <article class="mm-card mm-live" data-calc="price-raise">
+    <article class="mm-card mm-live" id="calc-priceraise" data-calc="price-raise">
       <div class="mm-card-header">
         <span class="mm-card-eyebrow">Calculator 4 of 4</span>
         <span class="mm-badge-safe" title="Every number you type is processed in your browser. Nothing is sent to our servers.">Stays in your browser</span>
       </div>
       <h3>Price-Raise Simulator</h3>
-      <p>Model a price raise against an assumed cover-loss <a href="/glossary/#elasticity" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">elasticity</a>. The default for each tier comes from our menu-pricing guide — override with the slider if your customers are more or less elastic than typical.</p>
+      <p>Model a price raise against an assumed cover-loss <a href="/glossary/#elasticity" data-term="Price elasticity" data-def="How much cover volume moves when a price moves. High elasticity = price-sensitive customers (small raise, big cover drop). Low elasticity = pricing power — customers keep coming even at higher prices, and raises mostly stick." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">elasticity</a>. The default for each tier comes from our menu-pricing guide — override with the slider if your customers are more or less elastic than typical.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Price-raise simulator">
         <label for="pr-baseline">
@@ -444,8 +743,13 @@
         </fieldset>
         <label for="pr-loss">
           <span>Assumed cover loss <output id="pr-loss-val" for="pr-loss">2.5%</output></span>
-          <input type="range" id="pr-loss" min="0" max="80" step="1" value="25" aria-describedby="pr-loss-val" />
-          <small style="color:var(--stone);font-weight:400;font-size:12px;line-height:1.4;">Slider units are tenths of a percent (so 25 = 2.5%). Defaults reset when you switch tier.</small>
+          <input type="range" id="pr-loss" min="0" max="15" step="0.1" value="2.5" aria-describedby="pr-loss-val" />
+          <small style="color:var(--stone);font-weight:400;font-size:12px;line-height:1.4;">Defaults reset when you switch tier.</small>
+        </label>
+        <label for="pr-margin">
+          <span>Contribution margin <output id="pr-margin-val" for="pr-margin">20%</output></span>
+          <input type="range" id="pr-margin" min="5" max="50" step="1" value="20" aria-describedby="pr-margin-val" />
+          <small style="color:var(--stone);font-weight:400;font-size:12px;line-height:1.4;">What each cover contributes after food, variable labor, and card fees. Unlocks the profit-based break-even below — more forgiving than revenue because lost covers only cost you their margin, not the whole ticket.</small>
         </label>
       </form>
 
@@ -456,28 +760,45 @@
             <span class="mm-result-value" id="pr-new">$103,350</span>
           </div>
           <div class="mm-per-order-col">
-            <span class="mm-result-label">Break-even cover loss</span>
-            <span class="mm-result-value" id="pr-breakeven">5.7%</span>
+            <span class="mm-result-label">Break-even cover loss (profit)</span>
+            <span class="mm-result-value" id="pr-breakeven-profit">23.1%</span>
+            <span class="mm-result-sub" id="pr-breakeven-rev">Revenue: 5.7%</span>
           </div>
         </div>
         <div class="mm-monthly" id="pr-head" data-band="good">
-          <span class="mm-monthly-label">Monthly delta</span>
+          <span class="mm-monthly-label">Monthly revenue delta</span>
           <span class="mm-monthly-value" id="pr-delta">+$3,350</span>
           <span class="mm-monthly-subtext" id="pr-delta-pct">+3.4% on baseline</span>
+          <span class="mm-monthly-subtext" id="pr-contrib-delta" style="margin-top:6px;color:var(--ink-soft);">Contribution delta: +$5,350 (+26.7%)</span>
         </div>
         <div class="mm-recommendation" id="pr-rec" data-band="good"></div>
+        <div class="mm-cross-suggest" id="pr-suggest">
+          <span>When raise math is tight, prime cost is usually running hot. Check food + labor against the band.</span>
+          <a href="#calc-primecost">Prime Cost above &rarr;</a>
+        </div>
+        <div class="mm-escalate" id="pr-escalate">
+          <p>Losing ground on a blanket raise usually means the wrong items carried the increase. The Restaurant Audit re-engineers the menu so the raise lands on low-elasticity signatures instead.</p>
+          <a href="/tools/audits/restaurant/">Run the Restaurant Audit &rarr;</a>
+        </div>
       </div>
 
+      <button type="button" class="mm-copy-link" data-copy-link data-copy-label="Copy scenario link" data-copied-label="Link copied — paste to bookmark">Copy scenario link</button>
       <a class="mm-blog-link" href="/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Read the full strategy: Raising menu prices without losing reservations &rarr;</a>
     </article>
   </div>
+  <p class="mm-benchmarks">
+    Benchmarks last reviewed <time datetime="2026-04-24">April 24, 2026</time> &middot;
+    DoorDash commission tiers (15 / 25 / 30%), NRA healthy prime cost band (55–65% full-service),
+    and fast-casual + fine-dining segments calibrated for 2026.
+    Sources cited in <a href="/blog/is-doordash-worth-it-for-restaurants-in-2026/">Is DoorDash worth it in 2026?</a>
+  </p>
 </div></section>
 
 <section class="block" id="how-we-protect"><div class="container">
   <div style="max-width:760px;margin:0 auto;">
     <span class="eyebrow">Lead by example</span>
     <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">How we protect the numbers you type</h2>
-    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Eight claims. Each one is verifiable in your own browser in under a minute. If any of them turn out to be wrong, we want you to find out first — open every "Inspect this" and check us.</p>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Nine claims. Each one is verifiable in your own browser in under a minute. If any of them turn out to be wrong, we want you to find out first — open every "Inspect this" and check us.</p>
   </div>
 
   <div class="mm-steps" aria-label="Privacy-protection steps">
@@ -538,9 +859,9 @@
         <span class="mm-step-num" aria-hidden="true">5</span>
         <div class="mm-step-body">
           <h3 class="mm-step-title">No third-party scripts touch the inputs.</h3>
-          <p class="mm-step-claim">This page loads exactly two JavaScript files: site-wide <code>site.js</code> (nav + language switch) and tool-specific <code>margin-math.js</code> (the math). Plus one analytics script (Plausible) that receives the bucket values. Nothing else.</p>
+          <p class="mm-step-claim">This page loads exactly two JavaScript files: site-wide <code>site.js</code> (nav + language switch) and tool-specific <code>margin-math.js</code> (the math). Plus one analytics script (Plausible) that receives the bucket values. Glossary hover popovers read their definitions from <code>data-def</code> attributes in the HTML itself — no additional fetch fires when you hover.</p>
           <details class="mm-step-inspect"><summary>Inspect this</summary>
-            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filter <strong>JS</strong>. Reload. You should see <code>plausible.io/js/…</code>, <code>site.js</code>, and <code>margin-math.js</code>. No Google Tag Manager, no Meta Pixel, no chat widget, no session replay.</div>
+            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filter <strong>JS</strong>. Reload. You should see <code>plausible.io/js/…</code>, <code>site.js</code>, and <code>margin-math.js</code>. Hover any underlined glossary term in a calculator — the request list does not grow. No Google Tag Manager, no Meta Pixel, no chat widget, no session replay.</div>
           </details>
         </div>
       </div>
@@ -550,10 +871,10 @@
       <div class="mm-step-head">
         <span class="mm-step-num" aria-hidden="true">6</span>
         <div class="mm-step-body">
-          <h3 class="mm-step-title">Shareable URLs keep numbers out of the server logs.</h3>
-          <p class="mm-step-claim">When we ship "Save this scenario" (later phase), the numbers will be encoded in the <a href="/glossary/#url-fragment" style="color:inherit;border-bottom:1px dashed var(--teal);">URL <strong>fragment</strong></a> — after the <code>#</code>. Per HTTP specification, browsers never send fragments to servers. The permalink works; the server never sees its contents.</p>
+          <h3 class="mm-step-title">Shareable scenario links keep numbers out of the server logs.</h3>
+          <p class="mm-step-claim">Your inputs live in the <a href="/glossary/#url-fragment" style="color:inherit;border-bottom:1px dashed var(--teal);">URL <strong>fragment</strong></a> — the part after the <code>#</code>. Per HTTP specification, browsers never send fragments to servers. Click <strong>Copy scenario link</strong> on any calculator: the link you paste is an audit trail you control — nothing leaves your browser when you move a slider, and nothing leaves ours when you share the link.</p>
           <details class="mm-step-inspect"><summary>Inspect this</summary>
-            <div class="mm-step-verify">Links like <code>&hellip;/margin-math/#calc=delivery&amp;t=25&amp;f=30</code> hydrate the state locally. We also set <code>&lt;meta name="referrer" content="no-referrer"&gt;</code> on this page — so outbound clicks can't leak the fragment to a third party via Referer.</div>
+            <div class="mm-step-verify">Move any slider and watch the URL bar. It updates to something like <code>&hellip;/margin-math/#v=1&amp;dbe.t=25&amp;dbe.f=30&amp;pc.f=32&amp;pc.l=34</code>. That fragment is never in an HTTP request. We also set <code>&lt;meta name="referrer" content="no-referrer"&gt;</code> on this page so outbound clicks can't leak it to a third party via the Referer header.</div>
           </details>
         </div>
       </div>
@@ -580,6 +901,19 @@
           <p class="mm-step-claim">Close the tab, reopen the tool: every calculator resets to default. There's no account, no saved history, no "welcome back."</p>
           <details class="mm-step-inspect"><summary>Inspect this</summary>
             <div class="mm-step-verify">Change every slider and input. Close the tab. Reopen <code>/tools/margin-math/</code>. Everything is back to its starting value.</div>
+          </details>
+        </div>
+      </div>
+    </article>
+
+    <article class="mm-step">
+      <div class="mm-step-head">
+        <span class="mm-step-num" aria-hidden="true">9</span>
+        <div class="mm-step-body">
+          <h3 class="mm-step-title">The Monthly Report and calendar reminder are 100% client-side.</h3>
+          <p class="mm-step-claim">"Print this month's report" opens your browser's native print dialog — we never see the output. "Add a monthly check-in" generates an <code>.ics</code> file in your browser and downloads it locally. The calendar event includes only the URL fragment shown in your address bar.</p>
+          <details class="mm-step-inspect"><summary>Inspect this</summary>
+            <div class="mm-step-verify">DevTools &rarr; Network. Click <strong>Print this month's report</strong> — no new requests. Click <strong>Add monthly check-in</strong> — still no new requests; a <code>margin-math-monthly.ics</code> download appears. Open it with a text editor: every field in the event is a plain-text copy of values already visible to you.</div>
           </details>
         </div>
       </div>
@@ -720,8 +1054,208 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="./margin-math.js?v=20260424-mm1"></script>
+<script src="./margin-math.js?v=20260424-mm4"></script>
 <script>
+/* Shared scenario sync. Each calculator IIFE registers its own
+ * getState() closure; on user interaction we re-encode the full
+ * state into the URL fragment via history.replaceState — no
+ * navigation, no network, no history entry per keystroke.
+ *
+ * Hydration from a saved link happens the other way: decode the
+ * fragment once at boot, stash it in __mmHydratedState, and let each
+ * IIFE read only its own namespace. A link containing only a partial
+ * namespace (e.g. just "#v=1&dbe.t=30") is honored — every other
+ * calculator keeps its defaults. */
+(function(){
+  if (!window.MM) return;
+  window.__mmCalcs = [];
+  // decodeState gets the raw fragment; crossFillState propagates
+  // shared concepts (food cost, average check, contribution margin)
+  // across calculators where one set the value and another didn't.
+  window.__mmHydratedState = window.MM.crossFillState(window.MM.decodeState(location.hash));
+  window.__mmUserInteracted = false;
+  window.__mmSyncFragment = function(){
+    if (!window.__mmUserInteracted) return;  // don't trample URL until user acts
+    var state = {};
+    for (var i = 0; i < window.__mmCalcs.length; i++) {
+      var c = window.__mmCalcs[i];
+      state[c.ns] = c.getState();
+    }
+    try {
+      history.replaceState(null, '', '#' + window.MM.encodeState(state));
+    } catch (_e) { /* non-fatal */ }
+  };
+})();
+
+/* Glossary hover popovers. Intercepts clicks and hover on glossary
+ * links *inside the calculator cards* that carry inline data-def
+ * attributes. Everything else — blog-link targets, privacy-panel
+ * terms, header nav — navigates normally.
+ *
+ * Why inline data attributes and not fetch():
+ *   - Preserves the privacy-panel claim that the page doesn't add
+ *     new network requests beyond the two shipped JS files + the
+ *     analytics beacon. The popover definitions travel with the
+ *     HTML already being served.
+ *   - Keyboard + screen-reader users can still navigate to the
+ *     glossary; the popover is an in-flow shortcut, not a
+ *     replacement. Every popover exposes a "View in glossary" link
+ *     that does the real navigation.
+ *
+ * Hover-to-open is restricted to pointer:fine devices via matchMedia.
+ * Touch users tap the link once to open the popover (then tap the
+ * "View in glossary" link inside it to navigate), keeping behaviour
+ * identical to the native anchor for assistive tech. */
+(function(){
+  var grid = document.querySelector('.mm-grid');
+  if (!grid) return;
+  var triggers = grid.querySelectorAll('a[data-term][data-def]');
+  if (!triggers.length) return;
+
+  // Single shared popover element — cheaper than creating one per
+  // trigger, and prevents two popovers from ever being visible at
+  // the same time.
+  var pop = document.createElement('div');
+  pop.className = 'mm-popover';
+  pop.setAttribute('role', 'tooltip');
+  pop.setAttribute('hidden', '');
+  pop.innerHTML =
+    '<span class="mm-popover-term"></span>' +
+    '<span class="mm-popover-def"></span>' +
+    '<a class="mm-popover-link" href="#">View in glossary →</a>';
+  document.body.appendChild(pop);
+  var termEl = pop.querySelector('.mm-popover-term');
+  var defEl  = pop.querySelector('.mm-popover-def');
+  var linkEl = pop.querySelector('.mm-popover-link');
+
+  var activeTrigger = null;
+  var openTimer = null;
+  var closeTimer = null;
+  var hoverCapable = (typeof window.matchMedia === 'function')
+    ? window.matchMedia('(hover: hover) and (pointer: fine)').matches
+    : false;
+
+  function position(trigger){
+    // Position below the trigger; if that would overflow the
+    // viewport, flip above. Horizontal-clamp to viewport with a
+    // 12px margin so the popover never touches the edge.
+    var r = trigger.getBoundingClientRect();
+    pop.style.left = '0px';  // reset before measuring
+    pop.style.top  = '0px';
+    pop.removeAttribute('data-flip');
+    pop.hidden = false;
+    var popRect = pop.getBoundingClientRect();
+    var top = r.bottom + window.scrollY + 10;
+    var wouldOverflow = (r.bottom + 10 + popRect.height) > window.innerHeight;
+    if (wouldOverflow && r.top - 10 - popRect.height > 0) {
+      top = r.top + window.scrollY - popRect.height - 10;
+      pop.setAttribute('data-flip', 'true');
+    }
+    var left = r.left + window.scrollX;
+    var maxLeft = window.scrollX + document.documentElement.clientWidth - popRect.width - 12;
+    if (left > maxLeft) left = maxLeft;
+    if (left < window.scrollX + 12) left = window.scrollX + 12;
+    pop.style.left = left + 'px';
+    pop.style.top  = top  + 'px';
+  }
+
+  function open(trigger){
+    clearTimeout(closeTimer);
+    if (activeTrigger === trigger && !pop.hidden) return;
+    activeTrigger = trigger;
+    termEl.textContent = trigger.getAttribute('data-term') || '';
+    defEl.textContent  = trigger.getAttribute('data-def') || '';
+    linkEl.setAttribute('href', trigger.getAttribute('href'));
+    position(trigger);
+  }
+
+  function close(){
+    activeTrigger = null;
+    pop.hidden = true;
+    clearTimeout(openTimer);
+    clearTimeout(closeTimer);
+  }
+
+  function scheduleOpen(trigger){
+    clearTimeout(openTimer);
+    clearTimeout(closeTimer);
+    openTimer = setTimeout(function(){ open(trigger); }, 140);
+  }
+  function scheduleClose(){
+    clearTimeout(openTimer);
+    clearTimeout(closeTimer);
+    closeTimer = setTimeout(close, 180);
+  }
+
+  // Trigger wiring. Hover: pointer-only, delayed. Focus: always.
+  // Click: always — toggles, prevents navigation so in-flow stays in flow.
+  Array.prototype.forEach.call(triggers, function(trigger){
+    if (hoverCapable) {
+      trigger.addEventListener('mouseenter', function(){ scheduleOpen(trigger); });
+      trigger.addEventListener('mouseleave', function(){ scheduleClose(); });
+    }
+    trigger.addEventListener('focus', function(){ open(trigger); });
+    trigger.addEventListener('blur',  function(){ scheduleClose(); });
+    trigger.addEventListener('click', function(e){
+      e.preventDefault();
+      if (activeTrigger === trigger && !pop.hidden) {
+        close();
+      } else {
+        open(trigger);
+      }
+    });
+  });
+
+  // Popover itself: hover inside keeps it open; click outside closes.
+  if (hoverCapable) {
+    pop.addEventListener('mouseenter', function(){ clearTimeout(closeTimer); });
+    pop.addEventListener('mouseleave', function(){ scheduleClose(); });
+  }
+  document.addEventListener('click', function(e){
+    if (pop.hidden) return;
+    if (pop.contains(e.target)) return;
+    for (var i = 0; i < triggers.length; i++) {
+      if (triggers[i].contains(e.target)) return;
+    }
+    close();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && !pop.hidden) {
+      close();
+      if (activeTrigger) activeTrigger.focus();
+    }
+  });
+  window.addEventListener('resize', close);
+  window.addEventListener('scroll', function(){
+    if (!pop.hidden && activeTrigger) position(activeTrigger);
+  }, { passive: true });
+})();
+
+/* Scenario-diff banner. Appears only when the page is loaded with a
+ * fragment that carries real calculator state — not a cold visit.
+ * Dismissable; does not persist across reloads (in-session only). */
+(function(){
+  var banner = document.getElementById('mm-scenario-banner');
+  if (!banner) return;
+  var hydrated = window.__mmHydratedState || {};
+  var hasState = false;
+  for (var k in hydrated) {
+    if (hydrated.hasOwnProperty(k) && hydrated[k] && typeof hydrated[k] === 'object') {
+      for (var inner in hydrated[k]) {
+        if (hydrated[k].hasOwnProperty(inner)) { hasState = true; break; }
+      }
+    }
+    if (hasState) break;
+  }
+  if (hasState) banner.setAttribute('data-visible', 'true');
+  var dismiss = banner.querySelector('.mm-scenario-banner-dismiss');
+  if (dismiss) {
+    dismiss.addEventListener('click', function(){
+      banner.removeAttribute('data-visible');
+    });
+  }
+})();
+
 /* Delivery Break-Even calculator wiring.
  *
  * Privacy invariants this code enforces:
@@ -746,10 +1280,45 @@
   var monthlyEl     = card.querySelector('#dbe-monthly');
   var monthlySubEl  = card.querySelector('#dbe-monthly-sub');
   var recEl         = card.querySelector('#dbe-rec');
+  var suggestEl     = card.querySelector('#dbe-suggest');
+  var escalateEl    = card.querySelector('#dbe-escalate');
+  var wfPFood       = card.querySelector('#dbe-wf-p-food');
+  var wfPFee        = card.querySelector('#dbe-wf-p-fee');
+  var wfPKeep       = card.querySelector('#dbe-wf-p-keep');
+  var wfDFood       = card.querySelector('#dbe-wf-d-food');
+  var wfDFee        = card.querySelector('#dbe-wf-d-fee');
+  var wfDKeep       = card.querySelector('#dbe-wf-d-keep');
 
   var currentTier = 'plus';
   var currentCommission = 0.25;
   var firstInteractionFired = false;
+
+  // Hydrate from a saved scenario fragment if present. Applied before
+  // the first render so the initial paint shows the saved state.
+  var hydrated = (window.__mmHydratedState && window.__mmHydratedState.dbe) || null;
+  if (hydrated) {
+    if (hydrated.t !== undefined) ticketEl.value = hydrated.t;
+    if (hydrated.f !== undefined) foodcostEl.value = hydrated.f;
+    if (hydrated.o !== undefined) ordersEl.value = hydrated.o;
+    if (hydrated.c) {
+      var btn = card.querySelector('.mm-tier-btns button[data-tier="' + hydrated.c + '"]');
+      if (btn) {
+        Array.prototype.forEach.call(tierBtns, function(b){
+          b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+        });
+        currentTier = hydrated.c;
+        currentCommission = parseFloat(btn.getAttribute('data-pct'));
+      }
+    }
+  }
+  if (window.__mmCalcs) {
+    window.__mmCalcs.push({
+      ns: 'dbe',
+      getState: function(){
+        return { t: ticketEl.value, f: foodcostEl.value, c: currentTier, o: ordersEl.value };
+      }
+    });
+  }
 
   // Recommendation copy is co-located with the wiring because each
   // string is context-specific to this calculator and its state.
@@ -770,13 +1339,73 @@
 
     ticketValEl.textContent   = window.MM.formatMoney(ticketEl.value);
     foodcostValEl.textContent = foodcostEl.value + '%';
-    platformEl.textContent    = window.MM.formatMoney(result.perOrderOnPlatform);
-    directEl.textContent      = window.MM.formatMoney(result.perOrderDirect);
-    monthlyEl.textContent     = window.MM.formatMoney(result.monthlyDelta);
-    monthlySubEl.textContent  = result.monthlyDelta > 0 ? 'walks out the door vs. direct' : 'no delta at these inputs';
+
+    // Waterfall widths are ratios — independent of ticket value, so
+    // they update even when the ticket empty-state kicks in below.
+    var foodPct = result.inputs.foodCostPct * 100;
+    var commPct = result.inputs.commissionPct * 100;
+    var procPct = result.inputs.directProcessingPct * 100;
+    var keepP = Math.max(0, 100 - foodPct - commPct);
+    var keepD = Math.max(0, 100 - foodPct - procPct);
+    wfPFood.style.width = foodPct + '%';
+    wfPFee.style.width  = commPct + '%';
+    wfPKeep.style.width = keepP   + '%';
+    wfDFood.style.width = foodPct + '%';
+    wfDFee.style.width  = procPct + '%';
+    wfDKeep.style.width = keepD   + '%';
+    // Tooltips carry the dollar amount per segment when ticket > 0.
+    if (result.inputs.ticket > 0) {
+      var t = result.inputs.ticket;
+      wfPFood.title = 'Food cost: ' + window.MM.formatMoney(t * result.inputs.foodCostPct);
+      wfPFee.title  = 'Platform commission: ' + window.MM.formatMoney(t * result.inputs.commissionPct);
+      wfPKeep.title = 'You keep: ' + window.MM.formatMoney(result.perOrderOnPlatform);
+      wfDFood.title = 'Food cost: ' + window.MM.formatMoney(t * result.inputs.foodCostPct);
+      wfDFee.title  = 'Card processing: ' + window.MM.formatMoney(t * result.inputs.directProcessingPct);
+      wfDKeep.title = 'You keep: ' + window.MM.formatMoney(result.perOrderDirect);
+    }
+
+    // Empty-state guards. A zero ticket makes every result 0; surface
+    // that as a prompt instead of silently showing $0.
+    if (result.inputs.ticket === 0) {
+      platformEl.textContent   = '—';
+      directEl.textContent     = '—';
+      monthlyEl.textContent    = '—';
+      monthlySubEl.textContent = 'Set your average ticket above';
+      recEl.removeAttribute('data-rec');
+      recEl.textContent = '';
+      if (suggestEl)  suggestEl.removeAttribute('data-visible');
+      if (escalateEl) escalateEl.removeAttribute('data-visible');
+      return result;
+    }
+
+    platformEl.textContent = window.MM.formatMoney(result.perOrderOnPlatform);
+    directEl.textContent   = window.MM.formatMoney(result.perOrderDirect);
+
+    if (result.inputs.ordersPerMonth === 0) {
+      monthlyEl.textContent    = '—';
+      monthlySubEl.textContent = 'Enter orders/month to see monthly impact';
+    } else {
+      monthlyEl.textContent    = window.MM.formatMoney(result.monthlyDelta);
+      monthlySubEl.textContent = result.monthlyDelta > 0 ? 'walks out the door vs. direct' : 'no delta at these inputs';
+    }
 
     recEl.setAttribute('data-rec', result.recommendation);
     recEl.textContent = REC_COPY[result.recommendation] || '';
+
+    if (escalateEl) {
+      if (result.recommendation === 'consider-leaving') {
+        escalateEl.setAttribute('data-visible', 'true');
+      } else {
+        escalateEl.removeAttribute('data-visible');
+      }
+    }
+    if (suggestEl) {
+      if (result.recommendation === 'optimize') {
+        suggestEl.setAttribute('data-visible', 'true');
+      } else {
+        suggestEl.removeAttribute('data-visible');
+      }
+    }
 
     return result;
   }
@@ -795,7 +1424,11 @@
     }});
   }
 
-  function onInput(){ maybeFireAnalytics(render()); }
+  function onInput(){
+    window.__mmUserInteracted = true;
+    maybeFireAnalytics(render());
+    if (window.__mmSyncFragment) window.__mmSyncFragment();
+  }
 
   ticketEl.addEventListener('input', onInput);
   foodcostEl.addEventListener('input', onInput);
@@ -812,7 +1445,8 @@
     });
   });
 
-  // Initial boot render — does NOT fire analytics.
+  // Initial boot render — does NOT fire analytics and does NOT sync
+  // the fragment (the fragment is already the source of truth here).
   render();
 })();
 
@@ -832,8 +1466,61 @@
   var bandLabelEl = card.querySelector('#pc-band-label');
   var markerEl    = card.querySelector('#pc-marker');
   var recEl       = card.querySelector('#pc-rec');
+  var suggestEl   = card.querySelector('#pc-suggest');
+  var escalateEl  = card.querySelector('#pc-escalate');
+  var segmentBtns = card.querySelectorAll('.mm-tier-btns button[data-segment]');
+  var scaleSpans  = card.querySelectorAll('.mm-pc-scale > span');
+  var axisEl      = card.querySelector('.mm-pc-axis');
 
+  var currentSegment = 'full-service';
   var firstInteractionFired = false;
+
+  // Scale + axis layout per segment. flex-grow values sum arbitrarily;
+  // they're relative widths across the 40–80% visual range. The
+  // axis labels are the visible boundary markers beneath the scale.
+  var SCALE_LAYOUT = {
+    'full-service': { grow: [15, 5, 5, 5, 10], axis: ['40%', '55%', '65%', '70%', '80%'] },
+    'fast-casual':  { grow: [15, 5, 5, 3, 12], axis: ['40%', '55%', '65%', '68%', '80%'] },
+    'fine-dining':  { grow: [20, 5, 5, 5,  5], axis: ['40%', '60%', '70%', '75%', '80%'] }
+  };
+
+  function applyScaleLayout(segment){
+    var layout = SCALE_LAYOUT[segment] || SCALE_LAYOUT['full-service'];
+    for (var i = 0; i < scaleSpans.length; i++) {
+      scaleSpans[i].style.flexGrow = layout.grow[i] || 1;
+    }
+    if (axisEl) {
+      var labels = axisEl.children;
+      for (var j = 0; j < labels.length && j < layout.axis.length; j++) {
+        labels[j].textContent = layout.axis[j];
+      }
+    }
+  }
+
+  function setSegment(segment, focusBtn){
+    if (!SCALE_LAYOUT[segment]) segment = 'full-service';
+    currentSegment = segment;
+    Array.prototype.forEach.call(segmentBtns, function(b){
+      var pressed = b.getAttribute('data-segment') === segment;
+      b.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+    });
+    applyScaleLayout(segment);
+  }
+
+  var hydrated = (window.__mmHydratedState && window.__mmHydratedState.pc) || null;
+  if (hydrated) {
+    if (hydrated.f !== undefined) foodEl.value = hydrated.f;
+    if (hydrated.l !== undefined) laborEl.value = hydrated.l;
+    if (hydrated.s) setSegment(hydrated.s);
+  }
+  // Apply initial scale layout (so default full-service renders proportional).
+  applyScaleLayout(currentSegment);
+  if (window.__mmCalcs) {
+    window.__mmCalcs.push({
+      ns: 'pc',
+      getState: function(){ return { f: foodEl.value, l: laborEl.value, s: currentSegment }; }
+    });
+  }
 
   var BAND_LABELS = {
     'below': 'Below typical — verify inputs',
@@ -862,7 +1549,8 @@
   function render(){
     var result = window.MM.calcPrimeCost({
       foodCostPct:  foodEl.value,
-      laborCostPct: laborEl.value
+      laborCostPct: laborEl.value,
+      segment:      currentSegment
     });
 
     foodValEl.textContent  = foodEl.value + '%';
@@ -877,6 +1565,21 @@
     recEl.setAttribute('data-band', result.band);
     recEl.textContent = REC_COPY[result.band] || '';
 
+    if (escalateEl) {
+      if (result.band === 'bad') {
+        escalateEl.setAttribute('data-visible', 'true');
+      } else {
+        escalateEl.removeAttribute('data-visible');
+      }
+    }
+    if (suggestEl) {
+      if (result.band === 'warn') {
+        suggestEl.setAttribute('data-visible', 'true');
+      } else {
+        suggestEl.removeAttribute('data-visible');
+      }
+    }
+
     return result;
   }
 
@@ -886,16 +1589,28 @@
     window.plausible('Margin Math PrimeCost', { props: {
       foodcost_bucket:   window.MM.bucketFoodCost(foodEl.value),
       prime_cost_bucket: window.MM.bucketPrimeCost(result.primeCostPct),
+      segment:           result.segment,
       band:              result.band
     }});
   }
 
-  function onInput(){ maybeFireAnalytics(render()); }
+  function onInput(){
+    window.__mmUserInteracted = true;
+    maybeFireAnalytics(render());
+    if (window.__mmSyncFragment) window.__mmSyncFragment();
+  }
 
   foodEl.addEventListener('input', onInput);
   laborEl.addEventListener('input', onInput);
 
-  // Initial render — no analytics fire.
+  Array.prototype.forEach.call(segmentBtns, function(btn){
+    btn.addEventListener('click', function(){
+      setSegment(btn.getAttribute('data-segment'));
+      onInput();
+    });
+  });
+
+  // Initial render — no analytics fire, no fragment sync.
   render();
 })();
 
@@ -919,8 +1634,30 @@
   var headroomEl    = card.querySelector('#bec-headroom');
   var capEl         = card.querySelector('#bec-cap');
   var recEl         = card.querySelector('#bec-rec');
+  var suggestEl     = card.querySelector('#bec-suggest');
+  var escalateEl    = card.querySelector('#bec-escalate');
 
   var firstInteractionFired = false;
+
+  var hydrated = (window.__mmHydratedState && window.__mmHydratedState.bec) || null;
+  if (hydrated) {
+    if (hydrated.fx !== undefined) fixedEl.value   = hydrated.fx;
+    if (hydrated.k  !== undefined) checkEl.value   = hydrated.k;
+    if (hydrated.m  !== undefined) marginEl.value  = hydrated.m;
+    if (hydrated.d  !== undefined) daysEl.value    = hydrated.d;
+    if (hydrated.tp !== undefined) typicalEl.value = hydrated.tp;
+  }
+  if (window.__mmCalcs) {
+    window.__mmCalcs.push({
+      ns: 'bec',
+      getState: function(){
+        return {
+          fx: fixedEl.value, k: checkEl.value, m: marginEl.value,
+          d: daysEl.value,   tp: typicalEl.value
+        };
+      }
+    });
+  }
 
   var REC_COPY = {
     'good': 'Fixed costs are a comfortable share of operations. You\'re running with real cushion. The lever to watch is creeping fixed costs (SaaS subscriptions, small supplier increases) — they don\'t feel like crises but add up.',
@@ -941,10 +1678,35 @@
 
     checkValEl.textContent  = window.MM.formatMoney(checkEl.value);
     marginValEl.textContent = marginEl.value + '%';
-    dailyEl.textContent     = Math.ceil(result.coversToBreakEvenDaily || 0).toString();
-    subEl.textContent       = window.MM.formatMoney(result.contributionPerCover) +
-                              ' contribution / cover · ' +
-                              result.inputs.openDaysPerMonth + ' open days';
+
+    // Empty-state guards. Zero fixed costs or zero contribution per
+    // cover makes the breakeven meaningless — prompt for the missing
+    // input instead of showing a confusing "0".
+    if (result.inputs.fixedMonthlyCosts === 0) {
+      dailyEl.textContent = '—';
+      subEl.textContent   = 'Enter your fixed monthly costs above';
+      headEl.setAttribute('data-band', 'ok');
+      headroomBlock.style.display = 'none';
+      recEl.style.display = 'none';
+      if (suggestEl)  suggestEl.removeAttribute('data-visible');
+      if (escalateEl) escalateEl.removeAttribute('data-visible');
+      return result;
+    }
+    if (result.contributionPerCover === 0) {
+      dailyEl.textContent = '—';
+      subEl.textContent   = 'Enter average check and contribution margin';
+      headEl.setAttribute('data-band', 'ok');
+      headroomBlock.style.display = 'none';
+      recEl.style.display = 'none';
+      if (suggestEl)  suggestEl.removeAttribute('data-visible');
+      if (escalateEl) escalateEl.removeAttribute('data-visible');
+      return result;
+    }
+
+    dailyEl.textContent = Math.ceil(result.coversToBreakEvenDaily || 0).toString();
+    subEl.textContent   = window.MM.formatMoney(result.contributionPerCover) +
+                          ' contribution / cover · ' +
+                          result.inputs.openDaysPerMonth + ' open days';
 
     if (result.band) {
       headEl.setAttribute('data-band', result.band);
@@ -958,11 +1720,27 @@
       recEl.setAttribute('data-band', result.band);
       recEl.textContent = REC_COPY[result.band] || '';
       recEl.style.display = '';
+      if (escalateEl) {
+        if (result.band === 'bad') {
+          escalateEl.setAttribute('data-visible', 'true');
+        } else {
+          escalateEl.removeAttribute('data-visible');
+        }
+      }
+      if (suggestEl) {
+        if (result.band === 'warn') {
+          suggestEl.setAttribute('data-visible', 'true');
+        } else {
+          suggestEl.removeAttribute('data-visible');
+        }
+      }
     } else {
       // No typical covers supplied — hide the headroom block + recommendation
       headEl.setAttribute('data-band', 'ok');
       headroomBlock.style.display = 'none';
       recEl.style.display = 'none';
+      if (suggestEl)  suggestEl.removeAttribute('data-visible');
+      if (escalateEl) escalateEl.removeAttribute('data-visible');
     }
 
     return result;
@@ -978,7 +1756,11 @@
     }});
   }
 
-  function onInput(){ maybeFireAnalytics(render()); }
+  function onInput(){
+    window.__mmUserInteracted = true;
+    maybeFireAnalytics(render());
+    if (window.__mmSyncFragment) window.__mmSyncFragment();
+  }
 
   fixedEl.addEventListener('input', onInput);
   checkEl.addEventListener('input', onInput);
@@ -999,17 +1781,53 @@
   var tierBtns    = card.querySelectorAll('.mm-tier-btns button');
   var lossEl      = card.querySelector('#pr-loss');
   var lossValEl   = card.querySelector('#pr-loss-val');
+  var marginEl    = card.querySelector('#pr-margin');
+  var marginValEl = card.querySelector('#pr-margin-val');
   var newEl       = card.querySelector('#pr-new');
-  var breakevenEl = card.querySelector('#pr-breakeven');
+  var beProfitEl  = card.querySelector('#pr-breakeven-profit');
+  var beRevEl     = card.querySelector('#pr-breakeven-rev');
   var headEl      = card.querySelector('#pr-head');
   var deltaEl     = card.querySelector('#pr-delta');
   var deltaPctEl  = card.querySelector('#pr-delta-pct');
+  var contribDeltaEl = card.querySelector('#pr-contrib-delta');
   var recEl       = card.querySelector('#pr-rec');
+  var suggestEl   = card.querySelector('#pr-suggest');
+  var escalateEl  = card.querySelector('#pr-escalate');
 
   var currentRaise = 0.06;
   var currentTier  = 'core';
   var userOverrodeLoss = false;  // resets when a new tier is picked
   var firstInteractionFired = false;
+
+  var hydrated = (window.__mmHydratedState && window.__mmHydratedState.pr) || null;
+  if (hydrated) {
+    if (hydrated.b !== undefined) baselineEl.value = hydrated.b;
+    if (hydrated.l !== undefined) lossEl.value     = hydrated.l;
+    if (hydrated.m !== undefined) marginEl.value   = hydrated.m;
+    if (hydrated.t) {
+      var btn = card.querySelector('.mm-tier-btns button[data-tier="' + hydrated.t + '"]');
+      if (btn) {
+        Array.prototype.forEach.call(tierBtns, function(b){
+          b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+        });
+        currentTier  = hydrated.t;
+        currentRaise = parseFloat(btn.getAttribute('data-raise'));
+        // A hydrated l overrides the tier default — don't clobber it.
+        if (hydrated.l === undefined) {
+          var defaultLoss = parseFloat(btn.getAttribute('data-default-loss'));
+          lossEl.value = (defaultLoss * 100).toFixed(1);
+        }
+      }
+    }
+  }
+  if (window.__mmCalcs) {
+    window.__mmCalcs.push({
+      ns: 'pr',
+      getState: function(){
+        return { b: baselineEl.value, t: currentTier, l: lossEl.value, m: marginEl.value };
+      }
+    });
+  }
 
   var REC_COPY = {
     'good': 'Strong net pickup. The raise is working — you\'re trading a bit of cover volume for more margin per cover, and the math lands in your favor. Protect the signature items; they carry the pricing power.',
@@ -1020,20 +1838,61 @@
 
   function render(){
     var result = window.MM.calcPriceRaise({
-      monthlyBaseline: baselineEl.value,
-      priceRaisePct:   currentRaise,
-      coverLossPct:    parseFloat(lossEl.value) / 1000  // slider is tenths-of-percent
+      monthlyBaseline:  baselineEl.value,
+      priceRaisePct:    currentRaise,
+      coverLossPct:     parseFloat(lossEl.value) / 100,  // slider is percent
+      contribMarginPct: parseFloat(marginEl.value) / 100
     });
 
-    lossValEl.textContent = (parseFloat(lossEl.value) / 10).toFixed(1) + '%';
-    newEl.textContent     = window.MM.formatMoney(result.newSales);
-    breakevenEl.textContent = (result.breakEvenCoverLossPct * 100).toFixed(1) + '%';
-    deltaEl.textContent   = (result.delta >= 0 ? '+' : '-') + window.MM.formatMoney(Math.abs(result.delta));
-    deltaEl.style.color   = result.delta >= 0 ? '#1F6B3A' : 'var(--rust)';
-    deltaPctEl.textContent = (result.deltaPct >= 0 ? '+' : '') + (result.deltaPct * 100).toFixed(2) + '% on baseline';
+    lossValEl.textContent   = parseFloat(lossEl.value).toFixed(1) + '%';
+    marginValEl.textContent = marginEl.value + '%';
+
+    // Empty-state guard. Without a baseline, every dollar number is 0
+    // and unusable. Break-even percentages stay accurate because they
+    // don't depend on baseline, so leave those populated.
+    if (result.inputs.monthlyBaseline === 0) {
+      newEl.textContent          = '—';
+      deltaEl.textContent        = '—';
+      deltaEl.style.color        = 'var(--stone)';
+      deltaPctEl.textContent     = 'Enter your current monthly sales above';
+      contribDeltaEl.textContent = '';
+      beProfitEl.textContent  = (result.breakEvenProfitCoverLossPct * 100).toFixed(1) + '%';
+      beRevEl.textContent     = 'Revenue: ' + (result.breakEvenCoverLossPct * 100).toFixed(1) + '%';
+      headEl.setAttribute('data-band', 'ok');
+      recEl.removeAttribute('data-band');
+      recEl.textContent = '';
+      if (suggestEl)  suggestEl.removeAttribute('data-visible');
+      if (escalateEl) escalateEl.removeAttribute('data-visible');
+      return result;
+    }
+
+    newEl.textContent       = window.MM.formatMoney(result.newSales);
+    beProfitEl.textContent  = (result.breakEvenProfitCoverLossPct * 100).toFixed(1) + '%';
+    beRevEl.textContent     = 'Revenue: ' + (result.breakEvenCoverLossPct * 100).toFixed(1) + '%';
+    deltaEl.textContent     = (result.delta >= 0 ? '+' : '-') + window.MM.formatMoney(Math.abs(result.delta));
+    deltaEl.style.color     = result.delta >= 0 ? '#1F6B3A' : 'var(--rust)';
+    deltaPctEl.textContent  = (result.deltaPct >= 0 ? '+' : '') + (result.deltaPct * 100).toFixed(2) + '% on baseline';
+    contribDeltaEl.textContent = 'Contribution delta: ' +
+      (result.contribDelta >= 0 ? '+' : '-') + window.MM.formatMoney(Math.abs(result.contribDelta)) +
+      ' (' + (result.contribDeltaPct >= 0 ? '+' : '') + (result.contribDeltaPct * 100).toFixed(1) + '%)';
     headEl.setAttribute('data-band', result.band);
     recEl.setAttribute('data-band', result.band);
     recEl.textContent = REC_COPY[result.band] || '';
+
+    if (escalateEl) {
+      if (result.band === 'bad') {
+        escalateEl.setAttribute('data-visible', 'true');
+      } else {
+        escalateEl.removeAttribute('data-visible');
+      }
+    }
+    if (suggestEl) {
+      if (result.band === 'warn' || result.band === 'ok') {
+        suggestEl.setAttribute('data-visible', 'true');
+      } else {
+        suggestEl.removeAttribute('data-visible');
+      }
+    }
 
     return result;
   }
@@ -1043,15 +1902,20 @@
     firstInteractionFired = true;
     window.plausible('Margin Math PriceRaise', { props: {
       raise_tier:       currentTier,
-      cover_loss_bucket: window.MM.bucketCoverLoss(parseFloat(lossEl.value) / 1000),
+      cover_loss_bucket: window.MM.bucketCoverLoss(parseFloat(lossEl.value) / 100),
       band:             result.band
     }});
   }
 
-  function onInput(){ maybeFireAnalytics(render()); }
+  function onInput(){
+    window.__mmUserInteracted = true;
+    maybeFireAnalytics(render());
+    if (window.__mmSyncFragment) window.__mmSyncFragment();
+  }
 
   baselineEl.addEventListener('input', onInput);
   lossEl.addEventListener('input', function(){ userOverrodeLoss = true; onInput(); });
+  marginEl.addEventListener('input', onInput);
 
   Array.prototype.forEach.call(tierBtns, function(btn){
     btn.addEventListener('click', function(){
@@ -1065,13 +1929,272 @@
       // hasn't already manually overridden it, so we don't trample
       // their in-flight exploration.
       var defaultLoss = parseFloat(btn.getAttribute('data-default-loss'));
-      lossEl.value = Math.round(defaultLoss * 1000);  // slider is tenths-of-percent
+      lossEl.value = (defaultLoss * 100).toFixed(1);  // slider is percent
       userOverrodeLoss = false;
       onInput();
     });
   });
 
   render();
+})();
+
+/* Monthly Margin Report — print. Stamps date + scenario URL onto
+ * <body> so the print stylesheet renders the header caption and
+ * footer "Reopen this scenario" line, then triggers the browser's
+ * native print dialog. The attributes are cleared after the dialog
+ * closes so they can't re-trigger print CSS on subsequent prints. */
+(function(){
+  var btn = document.getElementById('mm-print-report');
+  if (!btn) return;
+  btn.addEventListener('click', function(){
+    window.__mmUserInteracted = true;
+    if (window.__mmSyncFragment) window.__mmSyncFragment();
+    var now = new Date();
+    var dateLabel = now.toLocaleDateString(document.documentElement.lang || 'en-US',
+      { month: 'long', day: 'numeric', year: 'numeric' });
+    document.body.setAttribute('data-print-date', dateLabel);
+    document.body.setAttribute('data-print-url', location.href);
+    try { window.print(); }
+    finally {
+      setTimeout(function(){
+        document.body.removeAttribute('data-print-date');
+        document.body.removeAttribute('data-print-url');
+      }, 800);
+    }
+  });
+})();
+
+/* Monthly Margin Report — .ics calendar reminder. Generates a small
+ * VCALENDAR text in-browser containing a monthly recurring event
+ * with the current scenario URL; triggers a file download. No
+ * server involvement. Apple Calendar, Google Calendar, and Outlook
+ * all accept this file format. */
+(function(){
+  var btn = document.getElementById('mm-add-ics');
+  if (!btn) return;
+  var pad = function(n){ return n < 10 ? '0' + n : '' + n; };
+  var icsDate = function(d){
+    return d.getUTCFullYear() + pad(d.getUTCMonth() + 1) + pad(d.getUTCDate()) +
+           'T' + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + pad(d.getUTCSeconds()) + 'Z';
+  };
+  // ICS text-value escaping: backslash-escape \ , ; and replace \n
+  // with a literal \n per RFC 5545.
+  var icsEscape = function(s){
+    return String(s)
+      .replace(/\\/g, '\\\\')
+      .replace(/,/g, '\\,')
+      .replace(/;/g, '\\;')
+      .replace(/\n/g, '\\n');
+  };
+  btn.addEventListener('click', function(){
+    window.__mmUserInteracted = true;
+    if (window.__mmSyncFragment) window.__mmSyncFragment();
+    var start = new Date();
+    start.setDate(start.getDate() + 30);
+    start.setHours(10, 0, 0, 0);
+    var end = new Date(start.getTime() + 30 * 60 * 1000);
+    var uid = 'margin-math-' + start.getTime() + '@muntin.digital';
+    var href = location.href;
+    var summary = 'Margin Math — run this month’s numbers';
+    var description = 'A 30-day check-in on your restaurant numbers. Reopen your saved scenario: ' + href;
+    var lines = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Muntin Digital//Margin Math//EN',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      'UID:' + uid,
+      'DTSTAMP:' + icsDate(new Date()),
+      'DTSTART:' + icsDate(start),
+      'DTEND:' + icsDate(end),
+      'RRULE:FREQ=MONTHLY;COUNT=12',
+      'SUMMARY:' + icsEscape(summary),
+      'DESCRIPTION:' + icsEscape(description),
+      'URL:' + href,
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ];
+    var blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'margin-math-monthly.ics';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 200);
+    var original = btn.getAttribute('data-default-label') || btn.textContent.trim();
+    btn.setAttribute('data-copied', 'true');
+    btn.textContent = 'Reminder downloaded';
+    setTimeout(function(){
+      btn.removeAttribute('data-copied');
+      // Preserve the inner icon — easiest is to rebuild the button
+      // via the original label. The icon was decorative and the
+      // "downloaded" state is a brief confirmation, so dropping it
+      // during the flash is acceptable.
+      btn.textContent = original;
+    }, 2600);
+  });
+})();
+
+/* Copy scenario as plain text. Composes a compact, labeled text
+ * block summarizing the current state of every calculator, suitable
+ * for pasting into an email to a bookkeeper, a sticky note, or a
+ * shared doc. Reads displayed values off the DOM so the formatted
+ * text mirrors exactly what the owner sees on screen. */
+(function(){
+  var btn = document.getElementById('mm-copy-text');
+  if (!btn) return;
+  var copyLabel = btn.getAttribute('data-default-label') || 'Copy as plain text';
+
+  function sectionDelivery(){
+    var card = document.querySelector('[data-calc="delivery-breakeven"]');
+    if (!card) return null;
+    var tierBtn = card.querySelector('.mm-tier-btns button[aria-pressed="true"]');
+    var tierText = tierBtn ? tierBtn.firstChild.textContent.trim() + ' (' + tierBtn.querySelector('small').textContent + ')' : '';
+    return [
+      'Delivery Break-Even',
+      '  Avg ticket:            $' + card.querySelector('#dbe-ticket').value,
+      '  Food cost:             ' + card.querySelector('#dbe-foodcost').value + '%',
+      '  Commission tier:       ' + tierText,
+      '  Orders/month:          ' + card.querySelector('#dbe-orders').value,
+      '  Per order on platform: ' + card.querySelector('#dbe-platform').textContent.trim(),
+      '  Per order direct:      ' + card.querySelector('#dbe-direct').textContent.trim(),
+      '  Monthly delta:         ' + card.querySelector('#dbe-monthly').textContent.trim()
+    ].join('\n');
+  }
+
+  function sectionPrimeCost(){
+    var card = document.querySelector('[data-calc="prime-cost"]');
+    if (!card) return null;
+    var segBtn = card.querySelector('.mm-tier-btns button[aria-pressed="true"][data-segment]');
+    var seg = segBtn ? segBtn.firstChild.textContent.trim() : 'full-service';
+    return [
+      'Prime Cost Check (' + seg + ')',
+      '  Food cost:  ' + card.querySelector('#pc-food').value + '%',
+      '  Labor cost: ' + card.querySelector('#pc-labor').value + '%',
+      '  Prime cost: ' + card.querySelector('#pc-total').textContent.trim() +
+        ' — ' + card.querySelector('#pc-band-label').textContent.trim()
+    ].join('\n');
+  }
+
+  function sectionBreakEvenCovers(){
+    var card = document.querySelector('[data-calc="break-even-covers"]');
+    if (!card) return null;
+    var lines = [
+      'Break-Even Covers',
+      '  Fixed monthly costs: $' + card.querySelector('#bec-fixed').value,
+      '  Avg check:           $' + card.querySelector('#bec-check').value,
+      '  Margin per cover:    ' + card.querySelector('#bec-margin').value + '%',
+      '  Days open/month:     ' + card.querySelector('#bec-days').value,
+      '  Typical covers/day:  ' + card.querySelector('#bec-typical').value,
+      '  Covers/day to break even: ' + card.querySelector('#bec-daily').textContent.trim()
+    ];
+    var headroomBlock = card.querySelector('#bec-headroom-block');
+    if (headroomBlock && headroomBlock.style.display !== 'none') {
+      lines.push('  Monthly cushion:     ' + card.querySelector('#bec-headroom').textContent.trim());
+      lines.push('  ' + card.querySelector('#bec-cap').textContent.trim());
+    }
+    return lines.join('\n');
+  }
+
+  function sectionPriceRaise(){
+    var card = document.querySelector('[data-calc="price-raise"]');
+    if (!card) return null;
+    var tierBtn = card.querySelector('.mm-tier-btns button[aria-pressed="true"]');
+    var tierText = tierBtn ? tierBtn.firstChild.textContent.trim() + ' (' + tierBtn.querySelector('small').textContent + ')' : '';
+    return [
+      'Price-Raise Simulator',
+      '  Current monthly sales: $' + card.querySelector('#pr-baseline').value,
+      '  Raise tier:            ' + tierText,
+      '  Assumed cover loss:    ' + card.querySelector('#pr-loss').value + '%',
+      '  Contribution margin:   ' + card.querySelector('#pr-margin').value + '%',
+      '  New monthly sales:     ' + card.querySelector('#pr-new').textContent.trim(),
+      '  Break-even (profit):   ' + card.querySelector('#pr-breakeven-profit').textContent.trim(),
+      '  ' + card.querySelector('#pr-breakeven-rev').textContent.trim(),
+      '  Monthly revenue delta: ' + card.querySelector('#pr-delta').textContent.trim() +
+        ' (' + card.querySelector('#pr-delta-pct').textContent.trim() + ')',
+      '  ' + card.querySelector('#pr-contrib-delta').textContent.trim()
+    ].join('\n');
+  }
+
+  function composeText(){
+    var date = new Date().toLocaleDateString(document.documentElement.lang || 'en-US',
+      { month: 'long', day: 'numeric', year: 'numeric' });
+    var parts = [
+      'Margin Math — scenario snapshot',
+      'Date: ' + date,
+      ''
+    ];
+    var sections = [sectionDelivery(), sectionPrimeCost(), sectionBreakEvenCovers(), sectionPriceRaise()];
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i]) {
+        parts.push(sections[i]);
+        parts.push('');
+      }
+    }
+    parts.push('Reopen this scenario:');
+    parts.push(location.href);
+    return parts.join('\n');
+  }
+
+  btn.addEventListener('click', function(){
+    window.__mmUserInteracted = true;
+    if (window.__mmSyncFragment) window.__mmSyncFragment();
+    var text = composeText();
+    var flash = function(label){
+      btn.setAttribute('data-copied', 'true');
+      btn.textContent = label;
+      setTimeout(function(){
+        btn.removeAttribute('data-copied');
+        btn.textContent = copyLabel;
+      }, 2600);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(
+        function(){ flash('Scenario copied as text'); },
+        function(){ flash('Copy failed — try selecting manually'); }
+      );
+    } else {
+      flash('Copy failed — try selecting manually');
+    }
+  });
+})();
+
+/* Copy-scenario-link button handlers. Writes location.href to the
+ * clipboard; updates the button text briefly; reverts. Falls back to
+ * "copy from address bar" messaging if the Clipboard API is blocked.
+ * The click also flips __mmUserInteracted so the fragment is flushed
+ * even if the user landed on the page and immediately hit copy. */
+(function(){
+  var buttons = document.querySelectorAll('[data-copy-link]');
+  if (!buttons.length) return;
+  Array.prototype.forEach.call(buttons, function(btn){
+    var copyLabel   = btn.getAttribute('data-copy-label')   || 'Copy scenario link';
+    var copiedLabel = btn.getAttribute('data-copied-label') || 'Link copied';
+    btn.addEventListener('click', function(){
+      window.__mmUserInteracted = true;
+      if (window.__mmSyncFragment) window.__mmSyncFragment();
+      var href = location.href;
+      var flash = function(label){
+        btn.setAttribute('data-copied', 'true');
+        btn.textContent = label;
+        setTimeout(function(){
+          btn.removeAttribute('data-copied');
+          btn.textContent = copyLabel;
+        }, 2600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(href).then(
+          function(){ flash(copiedLabel); },
+          function(){ flash('Copy from your address bar'); }
+        );
+      } else {
+        flash('Copy from your address bar');
+      }
+    });
+  });
 })();
 </script>
 </body>

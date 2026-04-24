@@ -214,20 +214,33 @@ function mmBucketPrimeCost(pct) {
 // Inputs:
 //   foodCostPct         — food cost as fraction of sales (0..1 or 0..100)
 //   laborCostPct        — labor cost as fraction of sales (0..1 or 0..100)
+//   segment             — 'full-service' (default) | 'fast-casual' | 'fine-dining'
 //
 // Output:
 //   primeCostPct        — sum, capped at 100%
 //   band                — 'below' | 'good' | 'ok' | 'warn' | 'bad'
+//   segment             — echoed back for consumer display
 //
-// Band thresholds (anchored to NRA benchmarks cited in the DoorDash
-// post; 55-65% is the widely-published healthy range for full-service
-// independents):
-//   < 55%   — below ("unusually tight; confirm costs are fully in")
-//   55-59%  — good  (healthy lower half)
-//   60-64%  — ok    (healthy upper half; watch trend)
-//   65-69%  — warn  (pressure zone)
-//   >= 70%  — bad   (unsustainable without correction)
+// Segment-specific band thresholds, anchored to NRA benchmarks for
+// independent operators. Full-service sits at the canonical 55–65%
+// healthy band; fast-casual has tighter margins that escalate to
+// "bad" sooner; fine-dining carries a naturally higher healthy band
+// from the labor and ingredient profile of table-service dining.
+//
+//   full-service:  < 55  below | 55-60 good | 60-65 ok | 65-70 warn | ≥ 70 bad
+//   fast-casual:   < 55  below | 55-60 good | 60-65 ok | 65-68 warn | ≥ 68 bad
+//   fine-dining:   < 60  below | 60-65 good | 65-70 ok | 70-75 warn | ≥ 75 bad
+//
+// Unknown segment values fall back to 'full-service' silently so a
+// stale fragment link can't break the calculator.
 // ------------------------------------------------------------
+
+var MM_PRIME_COST_SEGMENTS = {
+  'full-service': { thresholds: [0.55, 0.60, 0.65, 0.70] },
+  'fast-casual':  { thresholds: [0.55, 0.60, 0.65, 0.68] },
+  'fine-dining':  { thresholds: [0.60, 0.65, 0.70, 0.75] }
+};
+var MM_PRIME_COST_SEGMENT_KEYS = ['full-service', 'fast-casual', 'fine-dining'];
 
 // ------------------------------------------------------------
 // Break-Even Covers
@@ -317,11 +330,35 @@ function mmCalcBreakEvenCovers(input) {
 // without-losing-reservations/ walks through why this holds for the
 // 3-12% raise range the calculator supports.
 //
-// Break-even cover loss: the loss at which newSales = baseline.
-//   breakEven = priceRaise / (1 + priceRaise)
-//   e.g., 6% raise tolerates ~5.66% cover loss before it's a wash.
+// Two break-even cover-loss thresholds are reported:
 //
-// Band:
+//   Revenue break-even: cover loss at which newSales = baseline.
+//     L_rev = p / (1 + p)
+//     e.g., a 6% raise tolerates ~5.66% cover loss before revenue
+//     returns to baseline.
+//
+//   Profit break-even: cover loss at which new contribution =
+//   baseline contribution. Variable cost per cover (food, variable
+//   labor, card fees) is unchanged by a menu-price change, so each
+//   lost cover only costs you its contribution margin, not the whole
+//   ticket — which means the profit break-even is much more generous
+//   than the revenue one for low-margin restaurants.
+//     Derivation (m = contribution margin per cover as a fraction):
+//       new contribution = N(1-L) × [T(1+p) - T(1-m)] = N(1-L)T(p+m)
+//       baseline contribution = NTm
+//       setting equal: (1-L)(p+m) = m  →  L_profit = p / (p + m)
+//     e.g., a 6% raise at a 20% contribution margin tolerates
+//     ~23.1% cover loss before profit returns to baseline.
+//   Requires contribMarginPct > 0; returns 0 otherwise so UI can
+//   treat "no margin supplied" as "no profit break-even to show".
+//
+// Contribution delta (dollars) is the margin-relevant counterpart to
+// the revenue delta already computed: the change in monthly
+// contribution dollars at the given raise × loss × margin.
+//     contribution delta = baseline × [(1-L)(p+m) - m]
+//
+// Band (driven off revenue delta so it remains comparable to prior
+// versions — profit delta is surfaced alongside, not substituted):
 //   > +2% delta    — good  ("real pickup")
 //   0 to +2%       — ok    ("net positive, small")
 //   −1% to 0       — warn  ("wash — watching elasticity")
@@ -333,6 +370,7 @@ function mmCalcPriceRaise(input) {
   var monthlyBaseline = mmNum(input.monthlyBaseline);
   var priceRaisePct = mmClampPct(input.priceRaisePct);
   var coverLossPct = mmClampPct(input.coverLossPct);
+  var contribMarginPct = mmClampPct(input.contribMarginPct);
 
   var newSales = monthlyBaseline * (1 + priceRaisePct) * (1 - coverLossPct);
   var delta = newSales - monthlyBaseline;
@@ -340,6 +378,17 @@ function mmCalcPriceRaise(input) {
 
   var breakEvenCoverLossPct = priceRaisePct > 0
     ? (priceRaisePct / (1 + priceRaisePct))
+    : 0;
+
+  var breakEvenProfitCoverLossPct = (priceRaisePct > 0 && contribMarginPct > 0)
+    ? (priceRaisePct / (priceRaisePct + contribMarginPct))
+    : 0;
+
+  var contribDelta = monthlyBaseline * (
+    (1 - coverLossPct) * (priceRaisePct + contribMarginPct) - contribMarginPct
+  );
+  var contribDeltaPct = (monthlyBaseline > 0 && contribMarginPct > 0)
+    ? (contribDelta / (monthlyBaseline * contribMarginPct))
     : 0;
 
   var band;
@@ -352,12 +401,16 @@ function mmCalcPriceRaise(input) {
     inputs: {
       monthlyBaseline: monthlyBaseline,
       priceRaisePct: priceRaisePct,
-      coverLossPct: coverLossPct
+      coverLossPct: coverLossPct,
+      contribMarginPct: contribMarginPct
     },
     newSales: newSales,
     delta: delta,
     deltaPct: deltaPct,
     breakEvenCoverLossPct: breakEvenCoverLossPct,
+    breakEvenProfitCoverLossPct: breakEvenProfitCoverLossPct,
+    contribDelta: contribDelta,
+    contribDeltaPct: contribDeltaPct,
     band: band
   };
 }
@@ -366,24 +419,153 @@ function mmCalcPrimeCost(input) {
   input = input || {};
   var foodCostPct = mmClampPct(input.foodCostPct);
   var laborCostPct = mmClampPct(input.laborCostPct);
+  // Guard against prototype-accessor strings ("__proto__",
+  // "constructor", etc.) by checking the explicit key list instead
+  // of relying on object-key truthiness.
+  var segment = input.segment;
+  if (MM_PRIME_COST_SEGMENT_KEYS.indexOf(segment) < 0) segment = 'full-service';
   var primeCostPct = foodCostPct + laborCostPct;
   if (primeCostPct > 1) primeCostPct = 1;
 
+  var t = MM_PRIME_COST_SEGMENTS[segment].thresholds;
   var band;
-  if (primeCostPct < 0.55)       band = 'below';
-  else if (primeCostPct < 0.60)  band = 'good';
-  else if (primeCostPct < 0.65)  band = 'ok';
-  else if (primeCostPct < 0.70)  band = 'warn';
-  else                           band = 'bad';
+  if (primeCostPct < t[0])      band = 'below';
+  else if (primeCostPct < t[1]) band = 'good';
+  else if (primeCostPct < t[2]) band = 'ok';
+  else if (primeCostPct < t[3]) band = 'warn';
+  else                          band = 'bad';
 
   return {
     inputs: {
       foodCostPct: foodCostPct,
-      laborCostPct: laborCostPct
+      laborCostPct: laborCostPct,
+      segment: segment
     },
     primeCostPct: primeCostPct,
-    band: band
+    band: band,
+    segment: segment
   };
+}
+
+// ------------------------------------------------------------
+// URL-fragment scenario encode / decode
+//
+// Shareable scenarios live in the URL fragment (after `#`) so the
+// browser never sends the encoded state to the server. `v=1` is a
+// forward-compat version tag. Keys are flat, dot-namespaced by
+// calculator, so a partial link — e.g. `#v=1&dbe.t=30` — still
+// loads cleanly (every decoder reads only its own namespace).
+//
+// Schema:
+//   v=1                     version marker (required)
+//   dbe.t  dbe.f  dbe.c  dbe.o          Delivery Break-Even
+//   pc.f   pc.l                          Prime Cost
+//   bec.fx bec.k  bec.m  bec.d  bec.tp   Break-Even Covers
+//   pr.b   pr.t   pr.l   pr.m            Price-Raise
+//
+// Only the tier fields (`dbe.c`, `pr.t`) are enumerated strings; all
+// others are numeric strings. The decoder does NOT validate numeric
+// bounds — that's the consumer UI's job (clamp via input min/max).
+//
+// Separation-of-concerns invariant:
+//   These functions are fully disjoint from the Plausible bucket
+//   helpers. Analytics remain bucket-only; permalinks intentionally
+//   emit raw values because they are the user's own link, not
+//   telemetry the server sees. The test suite asserts neither path
+//   calls into the other.
+// ------------------------------------------------------------
+
+var MM_FRAGMENT_VERSION = '1';
+var MM_FRAGMENT_KEYS = {
+  dbe: ['t', 'f', 'c', 'o'],
+  pc:  ['f', 'l', 's'],
+  bec: ['fx', 'k', 'm', 'd', 'tp'],
+  pr:  ['b', 't', 'l', 'm']
+};
+
+function mmEncodeState(state) {
+  // Pure: given a { dbe, pc, bec, pr } partial object, return a URL
+  // fragment string (without leading `#`). Missing values are
+  // omitted entirely so the link stays compact.
+  state = state || {};
+  var parts = ['v=' + MM_FRAGMENT_VERSION];
+  Object.keys(MM_FRAGMENT_KEYS).forEach(function(ns){
+    var sub = state[ns];
+    if (!sub) return;
+    MM_FRAGMENT_KEYS[ns].forEach(function(k){
+      var v = sub[k];
+      if (v === undefined || v === null || v === '') return;
+      parts.push(ns + '.' + k + '=' + encodeURIComponent(String(v)));
+    });
+  });
+  return parts.join('&');
+}
+
+// Cross-calculator pre-fill. A restaurant's food-cost percentage, its
+// average check, and its contribution margin are single facts about
+// the operation — not three. When the owner sets one of these in
+// whichever calculator they happened to open first, the other
+// calculators that take the same concept should adopt the value
+// unless the user explicitly gave them a different one.
+//
+// This seeds at hydrate-time only: once the calculators are live,
+// each owns its own state and the user is free to diverge.
+//
+// Pairs are symmetric — each call propagates A → B if A is set and
+// B is missing, and B → A in the opposite case. If both (or neither)
+// are set, nothing happens.
+var MM_CROSS_FILL_PAIRS = [
+  ['dbe', 'f', 'pc',  'f'],   // food cost (% of sales)
+  ['dbe', 't', 'bec', 'k'],   // average ticket / average check ($)
+  ['bec', 'm', 'pr',  'm']    // contribution margin (%)
+];
+
+function mmCrossFillState(state) {
+  state = state || {};
+  for (var i = 0; i < MM_CROSS_FILL_PAIRS.length; i++) {
+    var p = MM_CROSS_FILL_PAIRS[i];
+    var aNs = p[0], aKey = p[1], bNs = p[2], bKey = p[3];
+    var aVal = state[aNs] ? state[aNs][aKey] : undefined;
+    var bVal = state[bNs] ? state[bNs][bKey] : undefined;
+    if (aVal !== undefined && bVal === undefined) {
+      if (!state[bNs]) state[bNs] = {};
+      state[bNs][bKey] = aVal;
+    } else if (bVal !== undefined && aVal === undefined) {
+      if (!state[aNs]) state[aNs] = {};
+      state[aNs][aKey] = bVal;
+    }
+  }
+  return state;
+}
+
+function mmDecodeState(hash) {
+  // Pure: accept a fragment string (leading `#` optional) and return
+  // a { dbe, pc, bec, pr } partial object with only the keys that
+  // were present. Silently ignores unknown namespaces/keys so a
+  // future schema version can forward-compat with this decoder.
+  if (typeof hash !== 'string') return {};
+  if (hash.charAt(0) === '#') hash = hash.slice(1);
+  if (!hash) return {};
+  var out = {};
+  var pairs = hash.split('&');
+  for (var i = 0; i < pairs.length; i++) {
+    var eq = pairs[i].indexOf('=');
+    if (eq < 0) continue;
+    var rawKey = pairs[i].slice(0, eq);
+    var rawVal = pairs[i].slice(eq + 1);
+    if (!rawKey) continue;
+    var dot = rawKey.indexOf('.');
+    if (dot < 0) continue;  // skips v=1, and any non-namespaced key
+    var ns = rawKey.slice(0, dot);
+    var k  = rawKey.slice(dot + 1);
+    if (!MM_FRAGMENT_KEYS[ns]) continue;
+    if (MM_FRAGMENT_KEYS[ns].indexOf(k) < 0) continue;
+    var val;
+    try { val = decodeURIComponent(rawVal); } catch (_e) { continue; }
+    if (!out[ns]) out[ns] = {};
+    out[ns][k] = val;
+  }
+  return out;
 }
 
 // ------------------------------------------------------------
@@ -396,6 +578,12 @@ if (typeof window !== 'undefined') {
     calcPrimeCost:         mmCalcPrimeCost,
     calcBreakEvenCovers:   mmCalcBreakEvenCovers,
     calcPriceRaise:        mmCalcPriceRaise,
+    encodeState: mmEncodeState,
+    decodeState: mmDecodeState,
+    crossFillState: mmCrossFillState,
+    FRAGMENT_VERSION: MM_FRAGMENT_VERSION,
+    FRAGMENT_KEYS:    MM_FRAGMENT_KEYS,
+    CROSS_FILL_PAIRS: MM_CROSS_FILL_PAIRS,
     formatMoney: mmFormatMoney,
     formatPct: mmFormatPct,
     bucketTicket: mmBucketTicket,
@@ -410,6 +598,8 @@ if (typeof window !== 'undefined') {
     COMMISSION_TIERS: MM_COMMISSION_TIERS,
     PRIME_COST_BUCKETS: MM_PRIME_COST_BUCKETS,
     PRIME_COST_BANDS: MM_PRIME_COST_BANDS,
+    PRIME_COST_SEGMENTS:     MM_PRIME_COST_SEGMENTS,
+    PRIME_COST_SEGMENT_KEYS: MM_PRIME_COST_SEGMENT_KEYS,
     FIXED_COST_BUCKETS: MM_FIXED_COST_BUCKETS,
     BREAKEVEN_BANDS: MM_BREAKEVEN_BANDS,
     PRICE_RAISE_TIERS: MM_PRICE_RAISE_TIERS,
@@ -426,6 +616,12 @@ if (typeof module !== 'undefined' && module.exports) {
     calcPrimeCost:         mmCalcPrimeCost,
     calcBreakEvenCovers:   mmCalcBreakEvenCovers,
     calcPriceRaise:        mmCalcPriceRaise,
+    encodeState: mmEncodeState,
+    decodeState: mmDecodeState,
+    crossFillState: mmCrossFillState,
+    FRAGMENT_VERSION: MM_FRAGMENT_VERSION,
+    FRAGMENT_KEYS:    MM_FRAGMENT_KEYS,
+    CROSS_FILL_PAIRS: MM_CROSS_FILL_PAIRS,
     formatMoney: mmFormatMoney,
     formatPct: mmFormatPct,
     bucketTicket: mmBucketTicket,
@@ -442,6 +638,8 @@ if (typeof module !== 'undefined' && module.exports) {
     COMMISSION_TIERS: MM_COMMISSION_TIERS,
     PRIME_COST_BUCKETS: MM_PRIME_COST_BUCKETS,
     PRIME_COST_BANDS: MM_PRIME_COST_BANDS,
+    PRIME_COST_SEGMENTS:     MM_PRIME_COST_SEGMENTS,
+    PRIME_COST_SEGMENT_KEYS: MM_PRIME_COST_SEGMENT_KEYS,
     FIXED_COST_BUCKETS: MM_FIXED_COST_BUCKETS,
     BREAKEVEN_BANDS: MM_BREAKEVEN_BANDS,
     PRICE_RAISE_TIERS: MM_PRICE_RAISE_TIERS,
