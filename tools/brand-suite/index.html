@@ -424,8 +424,8 @@
 <section class="block" id="how-we-protect"><div class="container">
   <div style="max-width:760px;margin:0 auto;">
     <span class="eyebrow">Lead by example</span>
-    <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">How we protect the numbers you type</h2>
-    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Eight claims. Each one is verifiable in your own browser in under a minute. If any of them turn out to be wrong, we want you to find out first — open every "Inspect this" and check us.</p>
+    <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">How we protect the logo you upload</h2>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">A logo in progress is sensitive: it might be a rebrand you haven't announced, a concept you haven't shown a partner, a finished mark you paid real money for. Nine claims. Each is verifiable in your own browser in under a minute. If any of them turn out to be wrong, we want you to find out first — open every "Inspect this" and check us.</p>
   </div>
 
   <div class="mm-steps" aria-label="Privacy-protection steps">
@@ -433,10 +433,10 @@
       <div class="mm-step-head">
         <span class="mm-step-num" aria-hidden="true">1</span>
         <div class="mm-step-body">
-          <h3 class="mm-step-title">Your numbers never leave this page.</h3>
-          <p class="mm-step-claim">No <a href="/glossary/#fetch-request" style="color:inherit;border-bottom:1px dashed var(--teal);"><code>fetch()</code></a>, <code>XMLHttpRequest</code>, or form submission fires when you type a financial number. The calculator math runs entirely <a href="/glossary/#client-side" style="color:inherit;border-bottom:1px dashed var(--teal);">in your browser</a>.</p>
+          <h3 class="mm-step-title">Your logo never leaves this page.</h3>
+          <p class="mm-step-claim">No <a href="/glossary/#fetch-request" style="color:inherit;border-bottom:1px dashed var(--teal);"><code>fetch()</code></a>, <code>XMLHttpRequest</code>, <code>FormData</code>, or form submit fires when you drop a file. The browser reads the pixels via <code>URL.createObjectURL()</code> and paints them onto a canvas — everything after that is <a href="/glossary/#client-side" style="color:inherit;border-bottom:1px dashed var(--teal);">client-side</a>.</p>
           <details class="mm-step-inspect"><summary>Inspect this</summary>
-            <div class="mm-step-verify">Open DevTools (<kbd>Cmd+Opt+I</kbd> / <kbd>Ctrl+Shift+I</kbd>) &rarr; <strong>Network</strong> tab. Type a number into the calculator above. The request list should not grow. If it does, that's a bug — tell us.</div>
+            <div class="mm-step-verify">Open DevTools (<kbd>Cmd+Opt+I</kbd> / <kbd>Ctrl+Shift+I</kbd>) &rarr; <strong>Network</strong> tab. Drop a logo into the upload zone above. The request list should not grow. If it does, that's a bug — tell us.</div>
           </details>
         </div>
       </div>
@@ -446,8 +446,8 @@
       <div class="mm-step-head">
         <span class="mm-step-num" aria-hidden="true">2</span>
         <div class="mm-step-body">
-          <h3 class="mm-step-title">There's no server to store them on.</h3>
-          <p class="mm-step-claim">The only endpoint this page uses is <code>GET /tools/brand-suite/</code>. No <code>/api/brand-suite-save</code>, no <code>/api/calculate</code>, no logger. The Worker can't hear you.</p>
+          <h3 class="mm-step-title">There's no server to upload it to.</h3>
+          <p class="mm-step-claim">The only endpoint this page uses is <code>GET /tools/brand-suite/</code>. No <code>/api/brand-suite-upload</code>, no <code>/api/extract-palette</code>, no logger. The Worker can't hear you.</p>
           <details class="mm-step-inspect"><summary>Inspect this</summary>
             <div class="mm-step-verify">From a terminal: <code>curl -X POST https://muntin.digital/tools/brand-suite/</code>. Response: <code>405 Method Not Allowed</code> (or similar) — there's nothing listening for POSTs.</div>
           </details>
@@ -459,10 +459,10 @@
       <div class="mm-step-head">
         <span class="mm-step-num" aria-hidden="true">3</span>
         <div class="mm-step-body">
-          <h3 class="mm-step-title">Analytics sees only buckets, never numbers.</h3>
-          <p class="mm-step-claim">Plausible receives properties from a short, fixed list of enumerated values. A \$25 ticket becomes <code>25-39</code>. A 30% food cost becomes <code>28-32</code>. Your raw numbers are never a value on any event.</p>
+          <h3 class="mm-step-title">Analytics sees only buckets, never pixels or filenames.</h3>
+          <p class="mm-step-claim">Plausible receives properties from a short, fixed list of enumerated values. A 1.3&nbsp;MB PNG becomes <code>file_type: "png"</code> + <code>size_bucket: "500kb-2mb"</code>. A teal logo becomes <code>primary_hue: "teal"</code>. Your raw hex values, filename, and bytes are never a value on any event.</p>
           <details class="mm-step-inspect"><summary>Inspect this</summary>
-            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filter <code>plausible</code>. Interact with the calculator. When the event fires, look at its payload. Values like <code>ticket_bucket: "25-39"</code> — never <code>ticket: 25.00</code>.</div>
+            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filter <code>plausible</code>. Drop a logo; extract a palette. When the event fires, look at its payload. Values like <code>primary_hue: "teal"</code> — never <code>primary_hex: "#1F4E5B"</code>, never <code>filename: "client-draft-v7.png"</code>.</div>
           </details>
         </div>
       </div>
@@ -472,10 +472,10 @@
       <div class="mm-step-head">
         <span class="mm-step-num" aria-hidden="true">4</span>
         <div class="mm-step-body">
-          <h3 class="mm-step-title">No cookies, no localStorage, no sessionStorage — for your inputs.</h3>
-          <p class="mm-step-claim">Your typed numbers live only in JavaScript variables, which disappear when you close the tab. There's no persistent state for the calculator.</p>
+          <h3 class="mm-step-title">No cookies, no localStorage, no IndexedDB — for image data or derived colors.</h3>
+          <p class="mm-step-claim">The pixel array and the extracted palette live only in JavaScript variables, which disappear when you close the tab. There's no persistent state for the tool.</p>
           <details class="mm-step-inspect"><summary>Inspect this</summary>
-            <div class="mm-step-verify">DevTools &rarr; <strong>Application</strong> &rarr; <strong>Storage</strong>. Use the calculator. Check Cookies, Local Storage, Session Storage, IndexedDB for this origin — the panels stay empty of any financial value.</div>
+            <div class="mm-step-verify">DevTools &rarr; <strong>Application</strong> &rarr; <strong>Storage</strong>. Upload a logo; extract a palette. Check Cookies, Local Storage, Session Storage, IndexedDB for this origin — the panels stay empty of any image data, any hex value, any filename.</div>
           </details>
         </div>
       </div>
@@ -485,10 +485,10 @@
       <div class="mm-step-head">
         <span class="mm-step-num" aria-hidden="true">5</span>
         <div class="mm-step-body">
-          <h3 class="mm-step-title">No third-party scripts touch the inputs.</h3>
-          <p class="mm-step-claim">This page loads three same-origin JavaScript files: site-wide <code>site.js</code> (nav + language switch), tool-specific <code>brand-suite.js</code> (the math), and <code>brand-worker.js</code> (the Web Worker that runs k-means off the UI thread). Plus one analytics script (Plausible) that receives the bucket values. Nothing else.</p>
+          <h3 class="mm-step-title">No third-party scripts touch the pixels.</h3>
+          <p class="mm-step-claim">This page loads three same-origin JavaScript files: site-wide <code>site.js</code> (nav + language switch), tool-specific <code>brand-suite.js</code> (math + UI), and <code>brand-worker.js</code> (the Web Worker that runs k-means off the UI thread). Plus one analytics script (Plausible) that receives the bucket values. Nothing else — no Google Tag Manager, no Meta Pixel, no chat widget, no session replay, no CDN-fetched dependencies. The ZIP writer is inline in this page's JavaScript; it isn't a third-party library.</p>
           <details class="mm-step-inspect"><summary>Inspect this</summary>
-            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filter <strong>JS</strong>. Reload then drop a logo. You should see <code>plausible.io/js/…</code>, <code>site.js</code>, <code>brand-suite.js</code>, and <code>brand-worker.js</code>. No Google Tag Manager, no Meta Pixel, no chat widget, no session replay, no CDN-fetched dependencies.</div>
+            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filter <strong>JS</strong>. Reload then drop a logo. You should see <code>plausible.io/js/…</code>, <code>site.js</code>, <code>brand-suite.js</code>, and <code>brand-worker.js</code>. That's it.</div>
           </details>
         </div>
       </div>
@@ -498,10 +498,10 @@
       <div class="mm-step-head">
         <span class="mm-step-num" aria-hidden="true">6</span>
         <div class="mm-step-body">
-          <h3 class="mm-step-title">Shareable URLs keep numbers out of the server logs.</h3>
-          <p class="mm-step-claim">When we ship "Save this scenario" (later phase), the numbers will be encoded in the <a href="/glossary/#url-fragment" style="color:inherit;border-bottom:1px dashed var(--teal);">URL <strong>fragment</strong></a> — after the <code>#</code>. Per HTTP specification, browsers never send fragments to servers. The permalink works; the server never sees its contents.</p>
+          <h3 class="mm-step-title">Outbound links can't leak what you opened.</h3>
+          <p class="mm-step-claim">This page sets <code>&lt;meta name="referrer" content="no-referrer"&gt;</code>. When you click a link out of Brand Suite (to the glossary, to a blog post, to the services page), the destination never sees the <a href="/glossary/#url-fragment" style="color:inherit;border-bottom:1px dashed var(--teal);">URL</a> you came from — so even if we added a "save this palette" share link later (encoded in the URL <strong>fragment</strong>), no third party could harvest it via the Referer header.</p>
           <details class="mm-step-inspect"><summary>Inspect this</summary>
-            <div class="mm-step-verify">Links like <code>&hellip;/brand-suite/#palette=brand&amp;p1=1F4E5B</code> hydrate the state locally. We also set <code>&lt;meta name="referrer" content="no-referrer"&gt;</code> on this page — so outbound clicks can't leak the fragment to a third party via Referer.</div>
+            <div class="mm-step-verify">View source on this page. Find the line <code>&lt;meta name="referrer" content="no-referrer"&gt;</code> in the <code>&lt;head&gt;</code>. Click any outbound link; confirm the destination's <code>Referer</code> request header is absent.</div>
           </details>
         </div>
       </div>
@@ -512,9 +512,9 @@
         <span class="mm-step-num" aria-hidden="true">7</span>
         <div class="mm-step-body">
           <h3 class="mm-step-title">The source is readable.</h3>
-          <p class="mm-step-claim">No build step, no minification, no framework. The math module is plain JavaScript — you can read every line.</p>
+          <p class="mm-step-claim">No build step, no minification, no framework. The math module is plain JavaScript — you can read every line, including the 50-line ZIP writer we inlined instead of pulling in a 100&nbsp;KB dependency.</p>
           <details class="mm-step-inspect"><summary>Inspect this</summary>
-            <div class="mm-step-verify">Right-click this page &rarr; <em>View Page Source</em>. Or open <code>/tools/brand-suite/brand-suite.js</code> directly. Search for <code>function extractPalette</code> — that's the whole math, in the open.</div>
+            <div class="mm-step-verify">Right-click this page &rarr; <em>View Page Source</em>. Or open <code>/tools/brand-suite/brand-suite.js</code> directly. Search for <code>function extractPalette</code> — that's the whole k-means, in the open. Search for <code>buildZipBlob</code> in this page's <code>&lt;script&gt;</code> — that's the ZIP writer.</div>
           </details>
         </div>
       </div>
@@ -525,9 +525,22 @@
         <span class="mm-step-num" aria-hidden="true">8</span>
         <div class="mm-step-body">
           <h3 class="mm-step-title">Nothing persists beyond this tab.</h3>
-          <p class="mm-step-claim">Close the tab, reopen the tool: every calculator resets to default. There's no account, no saved history, no "welcome back."</p>
+          <p class="mm-step-claim">Close the tab, reopen the tool: the upload zone is empty, the palette strip is blank, the contrast grid is hidden. There's no account, no saved history, no "welcome back, here's your last logo."</p>
           <details class="mm-step-inspect"><summary>Inspect this</summary>
-            <div class="mm-step-verify">Change every slider and input. Close the tab. Reopen <code>/tools/brand-suite/</code>. Everything is back to its starting value.</div>
+            <div class="mm-step-verify">Upload a logo, generate exports, download the ZIP. Close the tab. Reopen <code>/tools/brand-suite/</code>. Every surface is back to its starting state.</div>
+          </details>
+        </div>
+      </div>
+    </article>
+
+    <article class="mm-step">
+      <div class="mm-step-head">
+        <span class="mm-step-num" aria-hidden="true">9</span>
+        <div class="mm-step-body">
+          <h3 class="mm-step-title">The Web Worker that clusters your pixels has no network access.</h3>
+          <p class="mm-step-claim">Clustering runs in <code>brand-worker.js</code> — a Web Worker loaded from the same origin. Its only inputs are the pixel array we pass via <code>postMessage</code> and the k value. It imports only <code>./brand-suite.js</code> (same origin), and our code never hands it a <code>fetch</code>, a socket, or any network primitive. The worker dies when the tab closes.</p>
+          <details class="mm-step-inspect"><summary>Inspect this</summary>
+            <div class="mm-step-verify">Open <code>/tools/brand-suite/brand-worker.js</code> directly. The whole file is under 60 lines — count the fetches, XHRs, and WebSockets. You'll find zero.</div>
           </details>
         </div>
       </div>
@@ -539,7 +552,7 @@
   <div style="max-width:760px;margin:0 auto;">
     <span class="eyebrow">Apply this anywhere</span>
     <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">How to check if any tool is safe</h2>
-    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Five tests you can run on any free financial tool you encounter — before you type a single real number into it. We score ourselves alongside a typical lead-generation free tool so the difference is concrete, not rhetorical.</p>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Five tests you can run on any free creative tool — palette extractor, logo resizer, brand-mood generator, favicon builder — before you upload a work-in-progress mark. We score ourselves alongside a typical lead-generation free tool so the difference is concrete, not rhetorical.</p>
   </div>
 
   <div class="mm-safety-wrap">
@@ -547,34 +560,34 @@
       <thead>
         <tr>
           <th scope="col">The test</th>
-          <th scope="col">Margin Math</th>
+          <th scope="col">Brand Suite</th>
           <th scope="col">Typical free tool</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong>1. Does typing a number trigger a network request?</strong><span class="mm-safety-hint">Open DevTools &rarr; Network. Type.</span></td>
+          <td><strong>1. Does uploading a file trigger a network request?</strong><span class="mm-safety-hint">Open DevTools &rarr; Network. Drop a file.</span></td>
           <td class="mm-safety-pass">No requests fire.</td>
-          <td class="mm-safety-fail">Every keystroke POSTs to a server.</td>
+          <td class="mm-safety-fail">The file POSTs to a server the moment you drop it.</td>
         </tr>
         <tr>
-          <td><strong>2. Is the privacy claim at the point of input?</strong><span class="mm-safety-hint">Not buried in a policy page.</span></td>
-          <td class="mm-safety-pass">"Stays in your browser" badge on every card, full 8-step panel in-page.</td>
+          <td><strong>2. Is the privacy claim at the point of upload?</strong><span class="mm-safety-hint">Not buried in a policy page.</span></td>
+          <td class="mm-safety-pass">"Stays in your browser" badge next to the dropzone, full 9-step panel in-page.</td>
           <td class="mm-safety-fail">Privacy Policy link in footer only; implicit consent on submit.</td>
         </tr>
         <tr>
           <td><strong>3. Is there an account / newsletter / cookie gate?</strong><span class="mm-safety-hint">Anything demanding "accept all" before you can use the tool.</span></td>
           <td class="mm-safety-pass">Nothing — no gate, no popup, no cookie banner.</td>
-          <td class="mm-safety-fail">"Enter your email to see your results."</td>
+          <td class="mm-safety-fail">"Enter your email to unlock your palette."</td>
         </tr>
         <tr>
           <td><strong>4. Any third-party analytics, session replay, marketing scripts?</strong><span class="mm-safety-hint">DevTools &rarr; Network &rarr; filter JS.</span></td>
-          <td class="mm-safety-pass">Privacy-first Plausible only; bucket props (never raw values).</td>
+          <td class="mm-safety-pass">Privacy-first Plausible only; bucket props (never hex values, never filenames).</td>
           <td class="mm-safety-fail">Google Analytics, Meta Pixel, HubSpot, session replay — stacked.</td>
         </tr>
         <tr>
           <td><strong>5. Is the source code readable?</strong><span class="mm-safety-hint">Right-click &rarr; View Source.</span></td>
-          <td class="mm-safety-pass">Unminified, under ~500 lines, every math function named.</td>
+          <td class="mm-safety-pass">Unminified, under ~600 lines, every math function + the ZIP writer named.</td>
           <td class="mm-safety-fail">Minified SaaS bundle; math hidden inside a framework dashboard.</td>
         </tr>
       </tbody>
@@ -582,7 +595,7 @@
   </div>
 
   <p style="max-width:760px;margin:16px auto 0;font-size:13px;line-height:1.6;color:var(--stone);">
-    Apply the same five tests to any calculator, estimator, or "free audit" you encounter — especially one asking for revenue, margin, food cost, or labor numbers. A tool that silently POSTs your inputs is storing them. A tool with no in-page privacy claim is dodging the question. You're allowed to walk away.
+    Apply the same five tests to any creative-workflow tool that asks for an upload — logos, photos, invoices, contracts, ID scans. A tool that silently POSTs your file is storing it. A tool with no in-page privacy claim is dodging the question. You're allowed to walk away before you drag anything in.
   </p>
 </div></section>
 
@@ -590,16 +603,16 @@
   <div style="max-width:760px;margin:0 auto;">
     <span class="eyebrow">What to share, where</span>
     <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">Four tiers of your business data</h2>
-    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Not every number belongs in every conversation. Most small-business owners carry all their data in the same mental bucket — which means the supplier list and the tax ID get the same protection (often the same low level of it). Four tiers, each with a different audience and a different level of caution.</p>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Not every asset belongs in every conversation. A logo in progress is mid-tier — more sensitive than a public menu, less sensitive than a tax ID, but routinely handed over to free tools as if it were Tier 1. Four tiers, each with a different audience and a different level of caution. Your brand assets usually live in Tiers 1–2.</p>
   </div>
 
   <div class="mm-tiers">
     <article class="mm-tier" data-tier="public">
       <header><span class="mm-tier-label">Tier 1</span><h3>Public</h3></header>
-      <p class="mm-tier-desc">Everything anyone can find on your site, your listing, or a walk-by.</p>
+      <p class="mm-tier-desc">Everything anyone can find on your site, your listing, or a walk-by — including any logo already in the wild.</p>
       <ul class="mm-tier-examples">
-        <li>Menu, hours, photos</li>
-        <li>Address, phone, website URL</li>
+        <li>Published logo on your sign, site, menu, social profiles</li>
+        <li>Menu, hours, photos, address, phone</li>
         <li>Schema.org markup, cuisine tags, service attributes</li>
       </ul>
       <p class="mm-tier-share"><strong>Share with:</strong> Anyone. Optimize aggressively — this is how customers find you.</p>
@@ -607,13 +620,14 @@
 
     <article class="mm-tier" data-tier="competitive">
       <header><span class="mm-tier-label">Tier 2</span><h3>Competitive-sensitive</h3></header>
-      <p class="mm-tier-desc">Legal to share, but useful to a rival — or leverage for a platform.</p>
+      <p class="mm-tier-desc">Legal to share, but useful to a rival — or leverage for a platform. Most in-progress brand work lives here.</p>
       <ul class="mm-tier-examples">
+        <li>Unreleased logo drafts, rebrand concepts, unfinished wordmarks</li>
         <li>Cost of goods, supplier list, negotiated pricing</li>
         <li>Commission tier you actually pay (not the public rate)</li>
         <li>Labor schedule template, daypart mix, menu-engineering matrix</li>
       </ul>
-      <p class="mm-tier-share"><strong>Share with:</strong> Bookkeeper, consultant, broker — under NDA. Not platforms, not competitors, not "free audit" tools that keep your input.</p>
+      <p class="mm-tier-share"><strong>Share with:</strong> Designer, bookkeeper, consultant, broker — under NDA. Not platforms, not competitors, not "free tools" that keep your upload.</p>
     </article>
 
     <article class="mm-tier" data-tier="operational">
@@ -644,14 +658,58 @@
   </p>
 </div></section>
 
+<section class="block" id="what-this-isnt"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">Honest framing</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">What this isn't</h2>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Brand Suite is a starter kit — it extracts colors from a logo you already like and grades the accessibility math. It doesn't build the brand. These limits are load-bearing, not decorative: a free tool that quietly claimed otherwise would waste your time and undercut our studio's actual work.</p>
+  </div>
+
+  <div style="max-width:760px;margin:24px auto 0;display:flex;flex-direction:column;gap:14px;">
+    <article style="border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">Not a logo design tool.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Brand Suite reads a logo you already have. It will not draw a new mark, fix a kerning issue, or turn a phone photo of your sign into a vector. If you don't have a logo you're happy with yet, the palette extraction will reflect that — garbage in, garbage out.</p>
+    </article>
+
+    <article style="border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">Not a <a href="/glossary/#monochrome-variant" style="color:inherit;border-bottom:1px dashed var(--teal);">monochrome</a> or variant generator.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">A finished identity needs a one-color version for embroidery, foil, and small-scale print — and often an inverted variant for dark-ground layouts. Brand Suite doesn't produce those in v1. A designer does it properly.</p>
+    </article>
+
+    <article style="border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">Not a <a href="/glossary/#typography-pairing" style="color:inherit;border-bottom:1px dashed var(--teal);">typography pairing</a>.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">The preview uses our site's fonts for context, not a recommendation. Typography pairing is the second-biggest tone carrier after color; guessing at it algorithmically produces results that all look the same. Curated work, not a heuristic.</p>
+    </article>
+
+    <article style="border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">Not a usage-guidelines document.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">The README in the ZIP names each color's role and its accessible pairs. It doesn't cover <a href="/glossary/#clearspace" style="color:inherit;border-bottom:1px dashed var(--teal);">clearspace</a>, minimum sizes, misuse examples, voice, photography direction, or the other chapters of a real style guide. Those are what the paid identity service delivers.</p>
+    </article>
+
+    <article style="border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">Not a mockup or a finished website.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">The live-preview block shows the palette applied to one sample card. It's a legibility check, not a portfolio piece. Business cards, menu covers, Instagram grids, storefront signage — those are design projects, not one-click exports.</p>
+    </article>
+  </div>
+
+  <div style="max-width:760px;margin:28px auto 0;padding:20px 22px;background:var(--teal-tint);border-radius:12px;border:1px solid var(--line);">
+    <p style="margin:0 0 8px;font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);">When you want a finished identity, hire a designer.</p>
+    <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:var(--ink-soft);">A Brand Identity engagement covers the concept work, the usage rules, the variants, the typography, and a deliverables package you can hand to any vendor. Bring the palette and tokens you generated here — they're useful starting reference.</p>
+    <a href="/services/#brand" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:var(--teal);color:var(--cream);border-radius:999px;text-decoration:none;font-size:13px;font-weight:600;">See Brand Identity (from \$1.5k)
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px;"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+  </div>
+</div></section>
+
 <section class="block"><div class="container">
   <div class="mm-next">
     <h2>Where to go next</h2>
     <div class="mm-next-links">
-      <a href="/tools/gbp-grader/">Grade your GBP</a>
+      <a href="/glossary/#brand-design">Glossary: Brand &amp; design terms</a>
+      <a href="/tools/margin-math/">Do the math: Margin Math</a>
+      <a href="/tools/gbp-grader/">Grade your Google Business Profile</a>
       <a href="/tools/audits/restaurant/">Run the full Restaurant Audit</a>
-      <a href="/blog/is-doordash-worth-it-for-restaurants-in-2026/">Read: Is DoorDash worth it in 2026?</a>
-      <a href="/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Read: Raising menu prices without losing reservations</a>
+      <a href="/services/#brand">Hire the studio for a finished identity</a>
     </div>
   </div>
 </div></section>

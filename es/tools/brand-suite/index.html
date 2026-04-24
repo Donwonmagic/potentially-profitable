@@ -402,8 +402,8 @@
 <section class="block" id="how-we-protect"><div class="container">
   <div style="max-width:760px;margin:0 auto;">
     <span class="eyebrow">Predicar con el ejemplo</span>
-    <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">Cómo protegemos los números que escribes</h2>
-    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Ocho afirmaciones. Cada una se puede verificar en tu propio navegador en menos de un minuto. Si alguna resulta falsa, queremos que lo encuentres tú primero — abre cada "Inspecciona esto" y compruébanos.</p>
+    <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">Cómo protegemos el logo que subes</h2>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Un logo en proceso es sensible: puede ser un rebrand que aún no anuncias, un concepto que no le has mostrado a un socio, una marca terminada por la que pagaste dinero real. Nueve afirmaciones. Cada una se puede verificar en tu propio navegador en menos de un minuto. Si alguna resulta falsa, queremos que lo encuentres tú primero — abre cada "Inspecciona esto" y compruébanos.</p>
   </div>
 
   <div class="mm-steps" aria-label="Pasos de protección de privacidad">
@@ -411,10 +411,10 @@
       <div class="mm-step-head">
         <span class="mm-step-num" aria-hidden="true">1</span>
         <div class="mm-step-body">
-          <h3 class="mm-step-title">Tus números nunca salen de esta página.</h3>
-          <p class="mm-step-claim">Ninguna llamada a <a href="/es/glossary/#fetch-request" style="color:inherit;border-bottom:1px dashed var(--teal);"><code>fetch()</code></a>, <code>XMLHttpRequest</code>, o envío de formulario se dispara cuando escribes un número financiero. La matemática corre entera <a href="/es/glossary/#client-side" style="color:inherit;border-bottom:1px dashed var(--teal);">en tu navegador</a>.</p>
+          <h3 class="mm-step-title">Tu logo nunca sale de esta página.</h3>
+          <p class="mm-step-claim">Ninguna llamada a <a href="/es/glossary/#fetch-request" style="color:inherit;border-bottom:1px dashed var(--teal);"><code>fetch()</code></a>, <code>XMLHttpRequest</code>, <code>FormData</code>, ni envío de formulario se dispara cuando sueltas un archivo. El navegador lee los píxeles vía <code>URL.createObjectURL()</code> y los dibuja sobre un canvas — todo lo demás es <a href="/es/glossary/#client-side" style="color:inherit;border-bottom:1px dashed var(--teal);">del lado del cliente</a>.</p>
           <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
-            <div class="mm-step-verify">Abre DevTools (<kbd>Cmd+Opt+I</kbd> / <kbd>Ctrl+Shift+I</kbd>) &rarr; pestaña <strong>Network</strong>. Escribe un número en la calculadora. La lista de solicitudes no debe crecer. Si crece, es un bug — avísanos.</div>
+            <div class="mm-step-verify">Abre DevTools (<kbd>Cmd+Opt+I</kbd> / <kbd>Ctrl+Shift+I</kbd>) &rarr; pestaña <strong>Network</strong>. Suelta un logo en la zona de carga de arriba. La lista de solicitudes no debe crecer. Si crece, es un bug — avísanos.</div>
           </details>
         </div>
       </div>
@@ -424,8 +424,8 @@
       <div class="mm-step-head">
         <span class="mm-step-num" aria-hidden="true">2</span>
         <div class="mm-step-body">
-          <h3 class="mm-step-title">No hay servidor donde guardarlos.</h3>
-          <p class="mm-step-claim">El único endpoint que usa esta página es <code>GET /tools/brand-suite/</code>. Ni <code>/api/brand-suite-save</code>, ni <code>/api/calculate</code>, ni logger. El Worker no te escucha.</p>
+          <h3 class="mm-step-title">No hay servidor al que subirlo.</h3>
+          <p class="mm-step-claim">El único endpoint que usa esta página es <code>GET /tools/brand-suite/</code>. Ni <code>/api/brand-suite-upload</code>, ni <code>/api/extract-palette</code>, ni logger. El Worker no te escucha.</p>
           <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
             <div class="mm-step-verify">Desde un terminal: <code>curl -X POST https://muntin.digital/tools/brand-suite/</code>. Respuesta: <code>405 Method Not Allowed</code> (o similar) — nada está escuchando POSTs.</div>
           </details>
@@ -437,10 +437,10 @@
       <div class="mm-step-head">
         <span class="mm-step-num" aria-hidden="true">3</span>
         <div class="mm-step-body">
-          <h3 class="mm-step-title">La analítica ve sólo buckets, nunca números.</h3>
-          <p class="mm-step-claim">Plausible recibe propiedades de una lista corta y fija de valores enumerados. Un ticket de \$25 se convierte en <code>25-39</code>. Un food cost de 30% se convierte en <code>28-32</code>. Tus números crudos nunca son un valor en ningún evento.</p>
+          <h3 class="mm-step-title">La analítica ve sólo buckets, nunca píxeles ni nombres de archivo.</h3>
+          <p class="mm-step-claim">Plausible recibe propiedades de una lista corta y fija de valores enumerados. Un PNG de 1.3&nbsp;MB se convierte en <code>file_type: "png"</code> + <code>size_bucket: "500kb-2mb"</code>. Un logo teal se convierte en <code>primary_hue: "teal"</code>. Tus valores hex crudos, el nombre de archivo y los bytes nunca son un valor en ningún evento.</p>
           <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
-            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filtra <code>plausible</code>. Interactúa con la calculadora. Cuando se dispare el evento, mira el payload. Valores como <code>ticket_bucket: "25-39"</code> — nunca <code>ticket: 25.00</code>.</div>
+            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filtra <code>plausible</code>. Suelta un logo; extrae una paleta. Cuando se dispare el evento, mira el payload. Valores como <code>primary_hue: "teal"</code> — nunca <code>primary_hex: "#1F4E5B"</code>, nunca <code>filename: "borrador-cliente-v7.png"</code>.</div>
           </details>
         </div>
       </div>
@@ -450,10 +450,10 @@
       <div class="mm-step-head">
         <span class="mm-step-num" aria-hidden="true">4</span>
         <div class="mm-step-body">
-          <h3 class="mm-step-title">Sin cookies, sin localStorage, sin sessionStorage — para tus entradas.</h3>
-          <p class="mm-step-claim">Tus números escritos viven sólo en variables de JavaScript, que desaparecen al cerrar la pestaña. No hay estado persistente para la calculadora.</p>
+          <h3 class="mm-step-title">Sin cookies, sin localStorage, sin IndexedDB — para datos de imagen ni colores derivados.</h3>
+          <p class="mm-step-claim">El arreglo de píxeles y la paleta extraída viven sólo en variables de JavaScript, que desaparecen al cerrar la pestaña. No hay estado persistente para la herramienta.</p>
           <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
-            <div class="mm-step-verify">DevTools &rarr; <strong>Application</strong> &rarr; <strong>Storage</strong>. Usa la calculadora. Revisa Cookies, Local Storage, Session Storage, IndexedDB para este origen — los paneles siguen vacíos de cualquier valor financiero.</div>
+            <div class="mm-step-verify">DevTools &rarr; <strong>Application</strong> &rarr; <strong>Storage</strong>. Sube un logo; extrae una paleta. Revisa Cookies, Local Storage, Session Storage, IndexedDB para este origen — los paneles siguen vacíos de cualquier dato de imagen, de cualquier valor hex, de cualquier nombre de archivo.</div>
           </details>
         </div>
       </div>
@@ -463,10 +463,10 @@
       <div class="mm-step-head">
         <span class="mm-step-num" aria-hidden="true">5</span>
         <div class="mm-step-body">
-          <h3 class="mm-step-title">Ningún script de terceros toca las entradas.</h3>
-          <p class="mm-step-claim">Esta página carga tres archivos JavaScript del mismo origen: el <code>site.js</code> del sitio (nav + switch de idioma), <code>brand-suite.js</code> específico de la herramienta (la matemática), y <code>brand-worker.js</code> (el Web Worker que corre k-means fuera del hilo principal). Más un script de analítica (Plausible) que recibe los valores bucket. Nada más.</p>
+          <h3 class="mm-step-title">Ningún script de terceros toca los píxeles.</h3>
+          <p class="mm-step-claim">Esta página carga tres archivos JavaScript del mismo origen: el <code>site.js</code> del sitio (nav + switch de idioma), <code>brand-suite.js</code> específico de la herramienta (matemática + UI), y <code>brand-worker.js</code> (el Web Worker que corre k-means fuera del hilo principal). Más un script de analítica (Plausible) que recibe los valores bucket. Nada más — sin Google Tag Manager, sin Meta Pixel, sin widget de chat, sin session replay, sin dependencias fetched desde CDN. El empaquetador ZIP va inline en el JavaScript de esta página; no es una biblioteca de terceros.</p>
           <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
-            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filtra <strong>JS</strong>. Recarga y luego suelta un logo. Deberías ver <code>plausible.io/js/…</code>, <code>site.js</code>, <code>brand-suite.js</code>, y <code>brand-worker.js</code>. Sin Google Tag Manager, sin Meta Pixel, sin widget de chat, sin session replay, sin dependencias fetched desde CDN.</div>
+            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filtra <strong>JS</strong>. Recarga y luego suelta un logo. Deberías ver <code>plausible.io/js/…</code>, <code>site.js</code>, <code>brand-suite.js</code>, y <code>brand-worker.js</code>. Eso es todo.</div>
           </details>
         </div>
       </div>
@@ -476,10 +476,10 @@
       <div class="mm-step-head">
         <span class="mm-step-num" aria-hidden="true">6</span>
         <div class="mm-step-body">
-          <h3 class="mm-step-title">Las URLs compartibles mantienen los números fuera de los logs del servidor.</h3>
-          <p class="mm-step-claim">Cuando enviemos "Guardar este escenario" (fase posterior), los números irán codificados en el <a href="/es/glossary/#url-fragment" style="color:inherit;border-bottom:1px dashed var(--teal);"><strong>fragmento</strong> de la URL</a> — después del <code>#</code>. Según la especificación HTTP, los navegadores nunca envían el fragmento al servidor. El enlace funciona; el servidor nunca ve su contenido.</p>
+          <h3 class="mm-step-title">Los enlaces salientes no pueden filtrar lo que abriste.</h3>
+          <p class="mm-step-claim">Esta página pone <code>&lt;meta name="referrer" content="no-referrer"&gt;</code>. Cuando haces clic a un enlace que sale de Suite de Marca (al glosario, a un artículo, a la página de servicios), el destino nunca ve la <a href="/es/glossary/#url-fragment" style="color:inherit;border-bottom:1px dashed var(--teal);">URL</a> de la que viniste — así, aunque agregáramos más adelante un enlace "guarda esta paleta" (codificado en el <strong>fragmento</strong> de la URL), ningún tercero podría cosecharlo vía el encabezado Referer.</p>
           <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
-            <div class="mm-step-verify">Enlaces como <code>&hellip;/brand-suite/#palette=brand&amp;p1=1F4E5B</code> hidratan el estado localmente. También ponemos <code>&lt;meta name="referrer" content="no-referrer"&gt;</code> en esta página — para que clics salientes no filtren el fragmento vía Referer.</div>
+            <div class="mm-step-verify">Mira el código fuente de esta página. Busca la línea <code>&lt;meta name="referrer" content="no-referrer"&gt;</code> en el <code>&lt;head&gt;</code>. Haz clic en cualquier enlace saliente; confirma que el encabezado <code>Referer</code> de la solicitud del destino está ausente.</div>
           </details>
         </div>
       </div>
@@ -490,9 +490,9 @@
         <span class="mm-step-num" aria-hidden="true">7</span>
         <div class="mm-step-body">
           <h3 class="mm-step-title">El código fuente es legible.</h3>
-          <p class="mm-step-claim">Sin paso de build, sin minificación, sin framework. El módulo de matemáticas es JavaScript plano — puedes leer cada línea.</p>
+          <p class="mm-step-claim">Sin paso de build, sin minificación, sin framework. El módulo de matemáticas es JavaScript plano — puedes leer cada línea, incluyendo el empaquetador ZIP de 50 líneas que pusimos inline en lugar de importar una dependencia de 100&nbsp;KB.</p>
           <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
-            <div class="mm-step-verify">Click derecho en esta página &rarr; <em>Ver código fuente</em>. O abre <code>/tools/brand-suite/brand-suite.js</code> directo. Busca <code>function extractPalette</code> — esa es toda la matemática, a la vista.</div>
+            <div class="mm-step-verify">Click derecho en esta página &rarr; <em>Ver código fuente</em>. O abre <code>/tools/brand-suite/brand-suite.js</code> directo. Busca <code>function extractPalette</code> — ese es todo el k-means, a la vista. Busca <code>buildZipBlob</code> en el <code>&lt;script&gt;</code> de esta página — ese es el empaquetador ZIP.</div>
           </details>
         </div>
       </div>
@@ -503,9 +503,22 @@
         <span class="mm-step-num" aria-hidden="true">8</span>
         <div class="mm-step-body">
           <h3 class="mm-step-title">Nada persiste más allá de esta pestaña.</h3>
-          <p class="mm-step-claim">Cierra la pestaña, reabre la herramienta: cada calculadora vuelve a sus valores por defecto. No hay cuenta, ni historial guardado, ni "bienvenido de vuelta."</p>
+          <p class="mm-step-claim">Cierra la pestaña, reabre la herramienta: la zona de carga vacía, la tira de paleta en blanco, la cuadrícula de contraste oculta. No hay cuenta, ni historial guardado, ni "bienvenido de vuelta, aquí tienes tu último logo."</p>
           <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
-            <div class="mm-step-verify">Cambia cada deslizador y campo. Cierra la pestaña. Reabre <code>/tools/brand-suite/</code>. Todo volvió a su valor inicial.</div>
+            <div class="mm-step-verify">Sube un logo, genera las exportaciones, descarga el ZIP. Cierra la pestaña. Reabre <code>/tools/brand-suite/</code>. Cada superficie volvió a su estado inicial.</div>
+          </details>
+        </div>
+      </div>
+    </article>
+
+    <article class="mm-step">
+      <div class="mm-step-head">
+        <span class="mm-step-num" aria-hidden="true">9</span>
+        <div class="mm-step-body">
+          <h3 class="mm-step-title">El Web Worker que agrupa tus píxeles no tiene acceso a la red.</h3>
+          <p class="mm-step-claim">La agrupación corre en <code>brand-worker.js</code> — un Web Worker cargado desde el mismo origen. Sus únicas entradas son el arreglo de píxeles que pasamos vía <code>postMessage</code> y el valor k. Importa sólo <code>./brand-suite.js</code> (mismo origen), y nuestro código nunca le entrega un <code>fetch</code>, un socket, ni ninguna primitiva de red. El worker muere al cerrar la pestaña.</p>
+          <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
+            <div class="mm-step-verify">Abre <code>/tools/brand-suite/brand-worker.js</code> directo. El archivo completo está bajo las 60 líneas — cuenta los fetches, XHRs y WebSockets. Encontrarás cero.</div>
           </details>
         </div>
       </div>
@@ -517,7 +530,7 @@
   <div style="max-width:760px;margin:0 auto;">
     <span class="eyebrow">Aplica esto en cualquier parte</span>
     <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">Cómo comprobar si cualquier herramienta es segura</h2>
-    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Cinco pruebas que puedes correr en cualquier herramienta financiera gratuita antes de escribir un solo número real. Nos calificamos nosotros al lado de una herramienta gratuita de captación típica para que la diferencia sea concreta, no retórica.</p>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Cinco pruebas que puedes correr en cualquier herramienta creativa gratuita — extractor de paletas, redimensionador de logos, generador de moods de marca, constructor de favicon — antes de subir una marca en proceso. Nos calificamos nosotros al lado de una herramienta gratuita de captación típica para que la diferencia sea concreta, no retórica.</p>
   </div>
 
   <div class="mm-safety-wrap">
@@ -525,34 +538,34 @@
       <thead>
         <tr>
           <th scope="col">La prueba</th>
-          <th scope="col">Cálculo de Margen</th>
+          <th scope="col">Suite de Marca</th>
           <th scope="col">Herramienta típica</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong>1. ¿Al escribir un número se dispara una solicitud de red?</strong><span class="mm-safety-hint">Abre DevTools &rarr; Network. Escribe.</span></td>
+          <td><strong>1. ¿Al subir un archivo se dispara una solicitud de red?</strong><span class="mm-safety-hint">Abre DevTools &rarr; Network. Suelta un archivo.</span></td>
           <td class="mm-safety-pass">Ninguna solicitud se dispara.</td>
-          <td class="mm-safety-fail">Cada tecla hace POST al servidor.</td>
+          <td class="mm-safety-fail">El archivo hace POST al servidor en cuanto lo sueltas.</td>
         </tr>
         <tr>
-          <td><strong>2. ¿La afirmación de privacidad está junto a la entrada?</strong><span class="mm-safety-hint">No enterrada en una política.</span></td>
-          <td class="mm-safety-pass">Insignia "Se queda en tu navegador" en cada tarjeta, panel de 8 pasos en la página.</td>
+          <td><strong>2. ¿La afirmación de privacidad está junto al punto de carga?</strong><span class="mm-safety-hint">No enterrada en una política.</span></td>
+          <td class="mm-safety-pass">Insignia "Se queda en tu navegador" junto a la zona de carga, panel de 9 pasos en la página.</td>
           <td class="mm-safety-fail">Enlace a Política de Privacidad solo en el pie; consentimiento implícito al enviar.</td>
         </tr>
         <tr>
           <td><strong>3. ¿Hay un gate de cuenta / newsletter / cookies?</strong><span class="mm-safety-hint">Cualquier cosa que exija "aceptar todo" antes de poder usar la herramienta.</span></td>
           <td class="mm-safety-pass">Nada — sin gate, sin popup, sin banner de cookies.</td>
-          <td class="mm-safety-fail">"Deja tu email para ver tus resultados."</td>
+          <td class="mm-safety-fail">"Deja tu email para desbloquear tu paleta."</td>
         </tr>
         <tr>
           <td><strong>4. ¿Analítica de terceros, session replay, scripts de marketing?</strong><span class="mm-safety-hint">DevTools &rarr; Network &rarr; filtra JS.</span></td>
-          <td class="mm-safety-pass">Solo Plausible (privacidad primero); props con buckets (nunca valores crudos).</td>
+          <td class="mm-safety-pass">Solo Plausible (privacidad primero); props con buckets (nunca valores hex, nunca nombres de archivo).</td>
           <td class="mm-safety-fail">Google Analytics, Meta Pixel, HubSpot, session replay — apilados.</td>
         </tr>
         <tr>
           <td><strong>5. ¿El código fuente es legible?</strong><span class="mm-safety-hint">Click derecho &rarr; Ver código fuente.</span></td>
-          <td class="mm-safety-pass">Sin minificar, bajo ~500 líneas, cada función matemática con nombre.</td>
+          <td class="mm-safety-pass">Sin minificar, bajo ~600 líneas, cada función matemática + el empaquetador ZIP con nombre.</td>
           <td class="mm-safety-fail">Bundle minificado de SaaS; matemática escondida en un dashboard.</td>
         </tr>
       </tbody>
@@ -560,7 +573,7 @@
   </div>
 
   <p style="max-width:760px;margin:16px auto 0;font-size:13px;line-height:1.6;color:var(--stone);">
-    Aplica estas cinco pruebas a cualquier calculadora, estimador o "auditoría gratis" que encuentres — sobre todo la que te pida ingresos, margen, food cost o costo de mano de obra. Una herramienta que silenciosamente hace POST con tus entradas las está guardando. Una herramienta sin afirmación de privacidad en la página está esquivando la pregunta. Tienes permiso de irte.
+    Aplica estas cinco pruebas a cualquier herramienta de flujo creativo que pida una carga — logos, fotos, facturas, contratos, escaneos de identificación. Una herramienta que silenciosamente hace POST con tu archivo lo está guardando. Una herramienta sin afirmación de privacidad en la página está esquivando la pregunta. Tienes permiso de irte antes de arrastrar nada.
   </p>
 </div></section>
 
@@ -568,16 +581,16 @@
   <div style="max-width:760px;margin:0 auto;">
     <span class="eyebrow">Qué compartir, dónde</span>
     <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">Cuatro niveles de los datos de tu negocio</h2>
-    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">No todo número pertenece a toda conversación. La mayoría de los dueños cargan todos sus datos en el mismo balde mental — lo que significa que la lista de proveedores y el número de identificación fiscal reciben la misma protección (a menudo el mismo nivel bajo). Cuatro niveles, cada uno con distinta audiencia y distinto nivel de cuidado.</p>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">No todo activo pertenece a toda conversación. Un logo en proceso es de nivel medio — más sensible que un menú público, menos sensible que un número fiscal, pero entregado rutinariamente a herramientas gratis como si fuera Nivel 1. Cuatro niveles, cada uno con distinta audiencia y distinto nivel de cuidado. Tus activos de marca suelen vivir en los Niveles 1–2.</p>
   </div>
 
   <div class="mm-tiers">
     <article class="mm-tier" data-tier="public">
       <header><span class="mm-tier-label">Nivel 1</span><h3>Público</h3></header>
-      <p class="mm-tier-desc">Todo lo que cualquiera puede encontrar en tu sitio, tu ficha o caminando por delante.</p>
+      <p class="mm-tier-desc">Todo lo que cualquiera puede encontrar en tu sitio, tu ficha o caminando por delante — incluyendo cualquier logo que ya esté publicado.</p>
       <ul class="mm-tier-examples">
-        <li>Menú, horarios, fotos</li>
-        <li>Dirección, teléfono, URL del sitio</li>
+        <li>Logo publicado en tu letrero, sitio, menú, perfiles sociales</li>
+        <li>Menú, horarios, fotos, dirección, teléfono</li>
         <li>Marcado schema.org, etiquetas de cocina, atributos de servicio</li>
       </ul>
       <p class="mm-tier-share"><strong>Compartir con:</strong> Cualquiera. Optimiza agresivamente — así es como los clientes te encuentran.</p>
@@ -585,13 +598,14 @@
 
     <article class="mm-tier" data-tier="competitive">
       <header><span class="mm-tier-label">Nivel 2</span><h3>Sensible a la competencia</h3></header>
-      <p class="mm-tier-desc">Legal compartirlo, pero útil para un rival — o palanca para una plataforma.</p>
+      <p class="mm-tier-desc">Legal compartirlo, pero útil para un rival — o palanca para una plataforma. La mayor parte del trabajo de marca en proceso vive aquí.</p>
       <ul class="mm-tier-examples">
+        <li>Borradores de logo no publicados, conceptos de rebrand, logotipos sin terminar</li>
         <li>Costo de bienes, lista de proveedores, precios negociados</li>
         <li>El nivel de comisión que de verdad pagas (no la tarifa pública)</li>
         <li>Plantilla de horarios, mezcla de dayparts, matriz de ingeniería del menú</li>
       </ul>
-      <p class="mm-tier-share"><strong>Compartir con:</strong> Contador, consultor, broker — bajo NDA. No plataformas, no competidores, no "auditorías gratis" que guarden tu entrada.</p>
+      <p class="mm-tier-share"><strong>Compartir con:</strong> Diseñador, contador, consultor, broker — bajo NDA. No plataformas, no competidores, no "herramientas gratis" que guarden tu carga.</p>
     </article>
 
     <article class="mm-tier" data-tier="operational">
@@ -622,14 +636,58 @@
   </p>
 </div></section>
 
+<section class="block" id="what-this-isnt"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">Marco honesto</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">Qué no es esta herramienta</h2>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Suite de Marca es un kit inicial — extrae colores de un logo que ya te gusta y evalúa la matemática de accesibilidad. No construye la marca. Estos límites son estructurales, no decorativos: una herramienta gratis que silenciosamente afirmara lo contrario haría perder tu tiempo y debilitaría el trabajo real del estudio.</p>
+  </div>
+
+  <div style="max-width:760px;margin:24px auto 0;display:flex;flex-direction:column;gap:14px;">
+    <article style="border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No es una herramienta de diseño de logos.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Suite de Marca lee un logo que ya tienes. No dibujará una marca nueva, no corregirá un problema de kerning, ni convertirá una foto con el celular de tu letrero en vectores. Si aún no tienes un logo que te convenza, la extracción de paleta lo reflejará — basura entra, basura sale.</p>
+    </article>
+
+    <article style="border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No es un generador de <a href="/es/glossary/#monochrome-variant" style="color:inherit;border-bottom:1px dashed var(--teal);">variantes monocromáticas</a>.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Una identidad terminada necesita una versión de un solo color para bordado, relieve e impresión a pequeña escala — y con frecuencia una variante invertida para composiciones sobre fondo oscuro. Suite de Marca no las produce en v1. Un diseñador lo hace como debe ser.</p>
+    </article>
+
+    <article style="border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No es una <a href="/es/glossary/#typography-pairing" style="color:inherit;border-bottom:1px dashed var(--teal);">combinación tipográfica</a>.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">La vista previa usa las tipografías de nuestro sitio para dar contexto, no como recomendación. La combinación tipográfica es el segundo mayor portador de tono después del color; adivinarla algorítmicamente produce resultados que se ven todos iguales. Trabajo curado, no una heurística.</p>
+    </article>
+
+    <article style="border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No es un documento de reglas de uso.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">El README del ZIP nombra el rol de cada color y sus pares accesibles. No cubre <a href="/es/glossary/#clearspace" style="color:inherit;border-bottom:1px dashed var(--teal);">espacio de resguardo</a>, tamaños mínimos, ejemplos de mal uso, voz, dirección fotográfica ni los otros capítulos de una guía de estilo real. Eso es lo que entrega el servicio pagado de identidad.</p>
+    </article>
+
+    <article style="border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No es una mockup ni un sitio web terminado.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">El bloque de vista previa muestra la paleta aplicada a una sola tarjeta de ejemplo. Es una comprobación de legibilidad, no una pieza de portafolio. Tarjetas de presentación, portadas de menú, grids de Instagram, rótulos de fachada — son proyectos de diseño, no exportaciones de un clic.</p>
+    </article>
+  </div>
+
+  <div style="max-width:760px;margin:28px auto 0;padding:20px 22px;background:var(--teal-tint);border-radius:12px;border:1px solid var(--line);">
+    <p style="margin:0 0 8px;font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);">Cuando quieras una identidad terminada, contrata a un diseñador.</p>
+    <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:var(--ink-soft);">Un proyecto de Identidad de Marca cubre el trabajo de concepto, las reglas de uso, las variantes, la tipografía y un paquete de entregables que puedas pasarle a cualquier proveedor. Trae la paleta y los tokens que generaste aquí — son material de referencia útil.</p>
+    <a href="/es/services/#brand" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:var(--teal);color:var(--cream);border-radius:999px;text-decoration:none;font-size:13px;font-weight:600;">Ver Identidad de Marca (desde \$1.5k)
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px;"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+  </div>
+</div></section>
+
 <section class="block"><div class="container">
   <div class="mm-next">
     <h2>A dónde seguir</h2>
     <div class="mm-next-links">
-      <a href="/es/tools/gbp-grader/">Califica tu GBP</a>
+      <a href="/es/glossary/#brand-design">Glosario: Marca y diseño</a>
+      <a href="/es/tools/margin-math/">Haz los números: Cálculo de Margen</a>
+      <a href="/es/tools/gbp-grader/">Califica tu Google Business Profile</a>
       <a href="/es/tools/audits/restaurant/">Corre el diagnóstico completo</a>
-      <a href="/blog/is-doordash-worth-it-for-restaurants-in-2026/">Lee: ¿Vale la pena DoorDash en 2026?</a>
-      <a href="/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Lee: Subir precios sin perder reservas</a>
+      <a href="/es/services/#brand">Contrata al estudio para una identidad terminada</a>
     </div>
   </div>
 </div></section>
