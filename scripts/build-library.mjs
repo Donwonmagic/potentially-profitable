@@ -1625,8 +1625,7 @@ for (const locale of LOCALES) {
     try { html = readFileSync(file, 'utf8'); } catch { html = ''; }
     if (!html) continue;
     let changed = 0;
-    const labelRe = locale === 'es' ? /Citada en/ : /Cited in/;
-    const labelText = locale === 'es' ? 'Citada en' : 'Cited in';
+    const labelText = locale === 'es' ? 'Citado en' : 'Cited in';
     const singular = locale === 'es' ? 'artículo' : 'article';
     const plural = locale === 'es' ? 'artículos' : 'articles';
     for (const researchSlug of Object.keys(tagsDoc.research_notes)) {
