@@ -2586,6 +2586,60 @@ br.br-lg{display:none}
   color:var(--stone);font-size:13.5px;
 }
 
+/* /services/ — Care Plans and Social Media tier grids ship
+   collapsed by default. Web Builds and Brand & Design stay
+   expanded (the most-clicked entry points). Reduces the four
+   stacked tier grids on the page to two visible by default; the
+   other two are one click away. Keyboard-accessible via native
+   <details>/<summary>. */
+.services-collapse{
+  margin-top:32px;
+  border:1px solid var(--line);
+  border-radius:var(--r-md);
+  background:var(--white);
+  overflow:hidden;
+}
+.services-collapse > summary{
+  list-style:none;cursor:pointer;
+  padding:22px 28px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;flex-wrap:wrap;
+  background:var(--white);
+  transition:background var(--t-fast) var(--ease);
+}
+.services-collapse > summary::-webkit-details-marker{ display:none; }
+.services-collapse > summary:hover{ background:var(--cream); }
+.services-collapse-summary{
+  font-family:var(--font-display);
+  font-size:clamp(18px,2vw,22px);
+  font-weight:500;letter-spacing:-0.005em;color:var(--ink);
+  display:inline-flex;align-items:center;gap:12px;
+}
+.services-collapse-summary::after{
+  content:'';display:inline-block;
+  width:10px;height:10px;
+  border-right:1.8px solid var(--teal);border-bottom:1.8px solid var(--teal);
+  transform:rotate(45deg);
+  transition:transform var(--t-fast) var(--ease);
+  margin-left:4px;
+}
+.services-collapse[open] > summary .services-collapse-summary::after{
+  transform:rotate(-135deg);margin-bottom:-4px;
+}
+.services-collapse-prices{
+  font-family:var(--font-body);font-size:13px;
+  color:var(--stone);font-variant-numeric:tabular-nums;
+  letter-spacing:0.02em;
+}
+.services-collapse-body{
+  padding:8px 28px 28px;
+  border-top:1px solid var(--line);
+}
+@media (max-width:640px){
+  .services-collapse > summary{ padding:18px 22px; }
+  .services-collapse-body{ padding:8px 22px 22px; }
+}
+
 /* /for/restaurants/ — case study row. Two restaurant projects
    (Irish Inn + Tacombi) presented as a side-by-side pair. The
    single-card "coming soon" treatment that lived here pre-Phase-3
