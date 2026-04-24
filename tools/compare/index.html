@@ -55,20 +55,9 @@
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
 <link rel="stylesheet" href="/assets/site.css?v=20260422-cohesion">
 <style>
-  .cmp-hero{max-width:720px;margin:0 auto;text-align:center}
-  .cmp-inputs{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;max-width:640px;margin:32px auto 0;align-items:center}
-  .cmp-inputs input{padding:14px 18px;border:2px solid var(--line-dark);border-radius:12px;font:inherit;font-size:16px;background:var(--white);color:var(--ink);width:100%}
-  .cmp-inputs input:focus{border-color:var(--teal);outline:none}
-  .cmp-inputs .vs{font-family:var(--font-display);font-size:18px;color:var(--stone);font-weight:500;text-align:center}
-  .cmp-btn{display:block;margin:20px auto 0;padding:16px 36px;border:0;border-radius:12px;background:var(--teal);color:var(--cream);font:inherit;font-size:16px;font-weight:600;cursor:pointer}
-  .cmp-btn:hover{background:var(--teal-dark)}
-  .cmp-btn:disabled{opacity:.5;cursor:wait}
-  @media(max-width:640px){.cmp-inputs{grid-template-columns:1fr;}.cmp-inputs .vs{display:none}}
-  .cmp-note{font-size:13px;color:var(--stone);margin-top:14px;text-align:center}
-  .cmp-status{text-align:center;margin-top:24px;font-size:14px;color:var(--stone)}
-  .cmp-result{display:none;max-width:680px;margin:40px auto 0}
-  .cmp-result.visible{display:block}
-  .cmp-table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--white)}
+  /* Tool-specific result rendering. Form, hero, note, result container,
+     and CTA card live in site.css under "TOOL SHELL" — see /docs/. */
+  .cmp-table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:var(--r-input);overflow:hidden;background:var(--white)}
   .cmp-table th,.cmp-table td{padding:14px 18px;text-align:center;font-size:15px}
   .cmp-table thead th{background:var(--cream-2);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);border-bottom:1px solid var(--line)}
   .cmp-table thead th:first-child{text-align:left}
@@ -78,11 +67,9 @@
   .cmp-table .win{color:#1f9d55;font-weight:700}
   .cmp-table .lose{color:var(--rust)}
   .cmp-table .tie{color:var(--stone)}
-  .cmp-winner{text-align:center;margin:24px 0;padding:20px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px}
+  .cmp-winner{text-align:center;margin:24px 0;padding:20px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input)}
   .cmp-winner h3{font-family:var(--font-display);font-size:22px;font-weight:500;margin:0 0 6px;color:var(--ink)}
   .cmp-winner p{font-size:14px;color:var(--stone);margin:0}
-  .cmp-cta{margin-top:28px;padding:28px 32px;background:var(--cream-2);border:1px solid var(--line);border-radius:14px;text-align:center}
-  .cmp-cta p{font-size:15px;color:var(--stone);margin:0 0 16px}
 </style>
 </head>
 <body>
