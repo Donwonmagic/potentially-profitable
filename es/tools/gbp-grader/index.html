@@ -178,6 +178,17 @@
   .gbp-delta-up{color:#1F6B3A;font-weight:600}
   .gbp-delta-down{color:var(--rust);font-weight:600}
   .gbp-delta-flat{color:var(--stone)}
+  /* Fila de compartir — dentro del cuadro CTA, sobre el botón de
+     handoff al diagnóstico. Guarda el estado actual en KV vía
+     /api/audit-snapshot (Sprint 3C). */
+  .gbp-share{margin:0 0 14px;display:flex;flex-direction:column;align-items:center;gap:8px}
+  .gbp-share-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background 160ms var(--ease-out),color 160ms var(--ease-out)}
+  .gbp-share-btn:hover{background:var(--teal);color:var(--cream)}
+  .gbp-share-btn:disabled{opacity:.55;cursor:wait}
+  .gbp-share-url{display:none;width:100%;max-width:420px;font-size:12px;color:var(--stone);text-align:center;word-break:break-all}
+  .gbp-share-url.visible{display:block}
+  .gbp-share-url a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+  .gbp-share-hint{display:block;margin-top:4px;color:#1F6B3A;font-weight:600}
 </style>
 </head>
 <body>
@@ -259,6 +270,10 @@
     <div class="gbp-biz" id="gbpBiz"></div>
     <div class="gbp-checks" id="gbpChecks"></div>
     <div class="gbp-cta">
+      <div class="gbp-share" id="gbpShareRow" hidden>
+        <button type="button" class="gbp-share-btn" id="gbpShareBtn">Guardar enlace compartible</button>
+        <div class="gbp-share-url" id="gbpShareUrl"></div>
+      </div>
       <p>¿Quieres optimizar tu ficha? Lee la <a href="/blog/drafts/how-to-set-up-google-business-profile-for-your-restaurant/" style="color:var(--teal);font-weight:500;border-bottom:1px dashed currentColor;">guía completa de configuración de GBP</a> con instrucciones paso a paso.</p>
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
         <a class="btn btn-primary" id="gbpAuditLink" href="/es/tools/audits/restaurant/">Diagnóstico de restaurante</a>
@@ -790,6 +805,19 @@
       }
     }
 
+    // Compartir (Sprint 3C): mostrar la fila de guardar-enlace y
+    // resetear su estado en cada render.
+    var shareRow=document.getElementById('gbpShareRow');
+    var shareBtn=document.getElementById('gbpShareBtn');
+    var shareUrlBox=document.getElementById('gbpShareUrl');
+    if(shareRow){
+      shareRow.hidden=false;
+      shareBtn.disabled=false;
+      shareBtn.textContent='Guardar enlace compartible';
+      shareUrlBox.className='gbp-share-url';
+      shareUrlBox.innerHTML='';
+    }
+
     var btn=document.getElementById('gbpDeepBtn');
     if(btn)btn.addEventListener('click',function(){runDeepScan(btn.getAttribute('data-place-id'))});
 
@@ -867,6 +895,69 @@
       alert(err.message||'No se pudo encontrar ese negocio. Prueba agregando el nombre de la ciudad.');
     }).finally(function(){btn.disabled=false;btn.textContent='Calificar'});
   });
+
+  // ----- Compartir: guardar snapshot + permalink (Sprint 3C) -------
+  (function wireShare(){
+    var btnS=document.getElementById('gbpShareBtn');
+    if(!btnS)return;
+    btnS.addEventListener('click',function(){
+      var chosen=deepScanState.chosen;
+      if(!chosen){return}
+      var scored=window.gbpScoreCandidate(chosen,deepScanState.peerMedians,deepScanState.data,'es');
+      var auditedUrl=chosen.googleMapsUri||chosen.website||'https://business.google.com/';
+      var body={
+        auditedUrl: auditedUrl,
+        score:      scored.scaled,
+        verdict:    scored.letter+' · '+(scored.band==='good'?'Fuerte':scored.band==='ok'?'Mixto':'Débil'),
+        language:   'es',
+        subtype:    'gbp-grader',
+        results:    { chosen: chosen, deepScan: deepScanState.data||null },
+        meta:       { placeId: chosen.placeId||null, query: deepScanState.query||null, picked: !!deepScanState.wasPicked }
+      };
+      btnS.disabled=true; btnS.textContent='Guardando…';
+      fetch('/api/audit-snapshot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
+        .then(function(r){return r.json()})
+        .then(function(resp){
+          if(!resp||!resp.ok)throw new Error(resp&&resp.error?resp.error:'snapshot-failed');
+          var shareUrl=window.location.origin+'/es/tools/gbp-grader/?s='+encodeURIComponent(resp.token);
+          var urlBox=document.getElementById('gbpShareUrl');
+          urlBox.innerHTML='<a href="'+shareUrl+'">'+shareUrl+'</a><span class="gbp-share-hint">Enlace copiado al portapapeles</span>';
+          urlBox.className='gbp-share-url visible';
+          btnS.textContent='Guardado';
+          if(navigator.clipboard&&navigator.clipboard.writeText){
+            navigator.clipboard.writeText(shareUrl).catch(function(){});
+          }
+          if(window.plausible)window.plausible('GBP Share Saved',{props:{
+            grade_letter: scored.letter,
+            grade_band:   scored.band,
+            deep_scan:    deepScanState.data?'yes':'no'
+          }});
+        })
+        .catch(function(err){
+          alert('No se pudo guardar el enlace. ' + (err.message||'Intenta de nuevo.'));
+          btnS.disabled=false; btnS.textContent='Guardar enlace compartible';
+        });
+    });
+  })();
+
+  // ----- Hidratación desde ?s=TOKEN (Sprint 3C) --------------------
+  (function hydrateFromShareUrl(){
+    var params=new URLSearchParams(window.location.search||'');
+    var token=params.get('s');
+    if(!token)return;
+    Promise.all([
+      fetch('/api/audit-snapshot?s='+encodeURIComponent(token)).then(function(r){return r.json()}),
+      loadPeerMedians()
+    ]).then(function(arr){
+      var resp=arr[0], peerMedians=arr[1];
+      if(!resp||!resp.ok||!resp.snapshot)throw new Error(resp&&resp.error?resp.error:'snapshot-missing');
+      if(resp.snapshot.subtype&&resp.snapshot.subtype!=='gbp-grader')throw new Error('wrong-tool');
+      var chosen=resp.snapshot.results&&resp.snapshot.results.chosen;
+      if(!chosen)throw new Error('snapshot-empty');
+      deepScanState.data=(resp.snapshot.results&&resp.snapshot.results.deepScan)||null;
+      renderFor(chosen,peerMedians,resp.snapshot.meta&&resp.snapshot.meta.query||'',!!(resp.snapshot.meta&&resp.snapshot.meta.picked));
+    }).catch(function(){});
+  })();
 })();
 </script>
 </body>
