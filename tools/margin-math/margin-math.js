@@ -138,6 +138,8 @@ var MM_COMMISSION_TIERS = ['basic', 'plus', 'premier'];
 var MM_RECOMMENDATIONS = ['keep', 'optimize', 'consider-leaving'];
 var MM_PRIME_COST_BUCKETS = ['lt55', '55-59', '60-64', '65-69', 'gte70'];
 var MM_PRIME_COST_BANDS = ['below', 'good', 'ok', 'warn', 'bad'];
+var MM_FIXED_COST_BUCKETS = ['lt5k', '5-15k', '15-30k', '30-60k', 'gte60k'];
+var MM_BREAKEVEN_BANDS = ['good', 'ok', 'warn', 'bad', 'na'];
 
 function mmBucketTicket(ticket) {
   var t = mmNum(ticket);
@@ -162,6 +164,15 @@ function mmBucketCommission(pct) {
   if (p < 0.18) return 'basic';
   if (p < 0.27) return 'plus';
   return 'premier';
+}
+
+function mmBucketFixedCosts(dollars) {
+  var d = mmNum(dollars);
+  if (d < 5000)  return 'lt5k';
+  if (d < 15000) return '5-15k';
+  if (d < 30000) return '15-30k';
+  if (d < 60000) return '30-60k';
+  return 'gte60k';
 }
 
 function mmBucketPrimeCost(pct) {
@@ -196,6 +207,80 @@ function mmBucketPrimeCost(pct) {
 //   >= 70%  — bad   (unsustainable without correction)
 // ------------------------------------------------------------
 
+// ------------------------------------------------------------
+// Break-Even Covers
+//
+// Inputs (all optional, defaulted):
+//   fixedMonthlyCosts        — rent + insurance + utilities + loan + SaaS, etc. ($)
+//   avgCheck                 — average ticket size ($)
+//   avgMarginPct             — contribution margin per cover after variable
+//                               costs (food, hourly labor, card fees) (0..1 or 0..100)
+//   openDaysPerMonth         — days open (defaulted to 28 if not supplied)
+//   typicalCoversPerDay      — OPTIONAL; enables capacity-utilization band
+//                               + monthly headroom. Zero/blank skips the band.
+//
+// Model:
+//   contributionPerCover      = avgCheck × avgMarginPct
+//   coversToBreakEvenMonthly  = fixedMonthlyCosts / contributionPerCover
+//   coversToBreakEvenDaily    = coversToBreakEvenMonthly / openDaysPerMonth
+//   capacityUtilization       = coversToBreakEvenDaily / typicalCoversPerDay
+//                               (fraction of daily covers spent on fixed costs)
+//   monthlyHeadroom           = (typical − breakeven) × openDaysPerMonth ×
+//                                contributionPerCover
+//
+// Capacity bands (only emitted when typicalCoversPerDay > 0):
+//   ≤ 40%   — good   ("fixed costs are a comfortable share of operations")
+//   41-65%  — ok     ("typical; most of the month is spent clearing fixed")
+//   66-85%  — warn   ("tight; one slow week tips into loss")
+//   > 85%   — bad    ("at break-even; no margin for error")
+// ------------------------------------------------------------
+
+function mmCalcBreakEvenCovers(input) {
+  input = input || {};
+  var fixedMonthlyCosts = mmNum(input.fixedMonthlyCosts);
+  var avgCheck = mmNum(input.avgCheck);
+  var avgMarginPct = mmClampPct(input.avgMarginPct);
+  var openDaysPerMonth = mmNum(input.openDaysPerMonth);
+  if (openDaysPerMonth <= 0) openDaysPerMonth = 28;
+  if (openDaysPerMonth > 31) openDaysPerMonth = 31;
+  var typicalCoversPerDay = mmNum(input.typicalCoversPerDay);
+
+  var contributionPerCover = avgCheck * avgMarginPct;
+  var coversToBreakEvenMonthly = contributionPerCover > 0
+    ? fixedMonthlyCosts / contributionPerCover
+    : 0;
+  var coversToBreakEvenDaily = coversToBreakEvenMonthly / openDaysPerMonth;
+
+  var band = null;
+  var capacityUtilization = null;
+  var monthlyHeadroom = null;
+  if (typicalCoversPerDay > 0 && contributionPerCover > 0) {
+    capacityUtilization = coversToBreakEvenDaily / typicalCoversPerDay;
+    monthlyHeadroom = (typicalCoversPerDay - coversToBreakEvenDaily)
+                      * openDaysPerMonth * contributionPerCover;
+    if (capacityUtilization <= 0.40)      band = 'good';
+    else if (capacityUtilization <= 0.65) band = 'ok';
+    else if (capacityUtilization <= 0.85) band = 'warn';
+    else                                   band = 'bad';
+  }
+
+  return {
+    inputs: {
+      fixedMonthlyCosts: fixedMonthlyCosts,
+      avgCheck: avgCheck,
+      avgMarginPct: avgMarginPct,
+      openDaysPerMonth: openDaysPerMonth,
+      typicalCoversPerDay: typicalCoversPerDay
+    },
+    contributionPerCover: contributionPerCover,
+    coversToBreakEvenMonthly: coversToBreakEvenMonthly,
+    coversToBreakEvenDaily: coversToBreakEvenDaily,
+    capacityUtilization: capacityUtilization,
+    monthlyHeadroom: monthlyHeadroom,
+    band: band
+  };
+}
+
 function mmCalcPrimeCost(input) {
   input = input || {};
   var foodCostPct = mmClampPct(input.foodCostPct);
@@ -228,17 +313,21 @@ if (typeof window !== 'undefined') {
   window.MM = {
     calcDeliveryBreakeven: mmCalcDeliveryBreakeven,
     calcPrimeCost:         mmCalcPrimeCost,
+    calcBreakEvenCovers:   mmCalcBreakEvenCovers,
     formatMoney: mmFormatMoney,
     formatPct: mmFormatPct,
     bucketTicket: mmBucketTicket,
     bucketFoodCost: mmBucketFoodCost,
     bucketCommission: mmBucketCommission,
     bucketPrimeCost: mmBucketPrimeCost,
+    bucketFixedCosts: mmBucketFixedCosts,
     TICKET_BUCKETS: MM_TICKET_BUCKETS,
     FOODCOST_BUCKETS: MM_FOODCOST_BUCKETS,
     COMMISSION_TIERS: MM_COMMISSION_TIERS,
     PRIME_COST_BUCKETS: MM_PRIME_COST_BUCKETS,
     PRIME_COST_BANDS: MM_PRIME_COST_BANDS,
+    FIXED_COST_BUCKETS: MM_FIXED_COST_BUCKETS,
+    BREAKEVEN_BANDS: MM_BREAKEVEN_BANDS,
     RECOMMENDATIONS: MM_RECOMMENDATIONS,
     DIRECT_PROCESSING_PCT: MM_DIRECT_PROCESSING_PCT
   };
@@ -248,12 +337,14 @@ if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     calcDeliveryBreakeven: mmCalcDeliveryBreakeven,
     calcPrimeCost:         mmCalcPrimeCost,
+    calcBreakEvenCovers:   mmCalcBreakEvenCovers,
     formatMoney: mmFormatMoney,
     formatPct: mmFormatPct,
     bucketTicket: mmBucketTicket,
     bucketFoodCost: mmBucketFoodCost,
     bucketCommission: mmBucketCommission,
     bucketPrimeCost: mmBucketPrimeCost,
+    bucketFixedCosts: mmBucketFixedCosts,
     clampPct: mmClampPct,
     num: mmNum,
     TICKET_BUCKETS: MM_TICKET_BUCKETS,
@@ -261,6 +352,8 @@ if (typeof module !== 'undefined' && module.exports) {
     COMMISSION_TIERS: MM_COMMISSION_TIERS,
     PRIME_COST_BUCKETS: MM_PRIME_COST_BUCKETS,
     PRIME_COST_BANDS: MM_PRIME_COST_BANDS,
+    FIXED_COST_BUCKETS: MM_FIXED_COST_BUCKETS,
+    BREAKEVEN_BANDS: MM_BREAKEVEN_BANDS,
     RECOMMENDATIONS: MM_RECOMMENDATIONS,
     DIRECT_PROCESSING_PCT: MM_DIRECT_PROCESSING_PCT
   };

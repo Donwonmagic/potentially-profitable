@@ -20,12 +20,14 @@ const require = createRequire(import.meta.url);
 const {
   calcDeliveryBreakeven,
   calcPrimeCost,
+  calcBreakEvenCovers,
   formatMoney,
   formatPct,
   bucketTicket,
   bucketFoodCost,
   bucketCommission,
   bucketPrimeCost,
+  bucketFixedCosts,
   clampPct,
   num,
   TICKET_BUCKETS,
@@ -33,6 +35,8 @@ const {
   COMMISSION_TIERS,
   PRIME_COST_BUCKETS,
   PRIME_COST_BANDS,
+  FIXED_COST_BUCKETS,
+  BREAKEVEN_BANDS,
   RECOMMENDATIONS,
   DIRECT_PROCESSING_PCT
 } = require('../tools/margin-math/margin-math.js');
@@ -241,6 +245,126 @@ assertEq('bucket: prime 70%', bucketPrimeCost(0.70), 'gte70');
     }
   }
   console.log('PASS  calcPrimeCost band names all in enum (' + bandsSeen.size + ' distinct)');
+}
+
+// ------------------------------------------------------------
+// Break-Even Covers
+//
+// Canonical fixture: $15k fixed, $35 avg check, 20% margin,
+// 28 open days. Contribution per cover = $7. Monthly break-even
+// covers = 15000 / 7 = 2142.86 → 76.5 covers/day.
+// ------------------------------------------------------------
+{
+  const r = calcBreakEvenCovers({
+    fixedMonthlyCosts: 15000,
+    avgCheck: 35,
+    avgMarginPct: 0.20,
+    openDaysPerMonth: 28
+  });
+  assertClose('BEC: contribution per cover = $7', r.contributionPerCover, 7.00);
+  assertClose('BEC: monthly covers = 2143',       r.coversToBreakEvenMonthly, 2142.86, 0.1);
+  assertClose('BEC: daily covers ≈ 76.5',         r.coversToBreakEvenDaily, 76.5, 0.1);
+  assertEq('BEC: no typical -> band null',        r.band, null);
+  assertEq('BEC: no typical -> headroom null',    r.monthlyHeadroom, null);
+}
+
+// With typicalCoversPerDay set, capacity band emerges.
+{
+  // typical 150/day, break-even ~76.5/day → utilization 51% → ok
+  const r = calcBreakEvenCovers({
+    fixedMonthlyCosts: 15000, avgCheck: 35, avgMarginPct: 0.20,
+    openDaysPerMonth: 28, typicalCoversPerDay: 150
+  });
+  assertClose('BEC: capacity ~51%', r.capacityUtilization, 0.51, 0.02);
+  assertEq('BEC: 51% capacity -> ok', r.band, 'ok');
+  // Headroom = (150 − 2142.857/28) × 28 × $7 = (150×28 − 2142.857) × 7
+  //          = (4200 − 2142.857) × 7 = 2057.143 × 7 = $14,400
+  assertClose('BEC: monthly headroom = $14,400', r.monthlyHeadroom, 14400, 1);
+}
+
+// Band boundaries at capacity-utilization
+{
+  // 40%: good. typical = 76.5/0.40 = 191.25; round to 192 → ~0.398
+  const good = calcBreakEvenCovers({
+    fixedMonthlyCosts: 15000, avgCheck: 35, avgMarginPct: 0.20,
+    openDaysPerMonth: 28, typicalCoversPerDay: 192
+  });
+  assertEq('BEC: capacity ~40% -> good', good.band, 'good');
+
+  // 65%: typical = 76.5/0.65 = 117.7; round to 118 → 0.648
+  const ok = calcBreakEvenCovers({
+    fixedMonthlyCosts: 15000, avgCheck: 35, avgMarginPct: 0.20,
+    openDaysPerMonth: 28, typicalCoversPerDay: 118
+  });
+  assertEq('BEC: capacity ~65% -> ok', ok.band, 'ok');
+
+  // ~80%: typical = 76.5/0.80 = 96 → utilization 0.797, safely warn
+  const warn = calcBreakEvenCovers({
+    fixedMonthlyCosts: 15000, avgCheck: 35, avgMarginPct: 0.20,
+    openDaysPerMonth: 28, typicalCoversPerDay: 96
+  });
+  assertEq('BEC: capacity ~80% -> warn', warn.band, 'warn');
+
+  // >85%: typical = 80 → 0.956
+  const bad = calcBreakEvenCovers({
+    fixedMonthlyCosts: 15000, avgCheck: 35, avgMarginPct: 0.20,
+    openDaysPerMonth: 28, typicalCoversPerDay: 80
+  });
+  assertEq('BEC: capacity >85% -> bad', bad.band, 'bad');
+}
+
+// Zero contribution margin: no math panic, covers = 0.
+{
+  const r = calcBreakEvenCovers({
+    fixedMonthlyCosts: 15000, avgCheck: 35, avgMarginPct: 0,
+    openDaysPerMonth: 28
+  });
+  assertEq('BEC: zero margin -> covers 0', r.coversToBreakEvenMonthly, 0);
+  assertEq('BEC: zero margin -> daily 0',  r.coversToBreakEvenDaily, 0);
+  assertEq('BEC: zero margin -> band null',r.band, null);
+}
+
+// openDays clamp
+{
+  const a = calcBreakEvenCovers({ fixedMonthlyCosts: 15000, avgCheck: 35, avgMarginPct: 0.20, openDaysPerMonth: 0 });
+  assertEq('BEC: zero openDays clamps to 28', a.inputs.openDaysPerMonth, 28);
+  const b = calcBreakEvenCovers({ fixedMonthlyCosts: 15000, avgCheck: 35, avgMarginPct: 0.20, openDaysPerMonth: 99 });
+  assertEq('BEC: 99 openDays clamps to 31',   b.inputs.openDaysPerMonth, 31);
+}
+
+// Privacy: fixed-cost bucket enum
+scan('bucketFixedCosts scan $0-$100k',  bucketFixedCosts, 0, 100000, 1000, FIXED_COST_BUCKETS);
+assertEq('bucket: fixed $4999',   bucketFixedCosts(4999),   'lt5k');
+assertEq('bucket: fixed $5000',   bucketFixedCosts(5000),   '5-15k');
+assertEq('bucket: fixed $15000',  bucketFixedCosts(15000),  '15-30k');
+assertEq('bucket: fixed $30000',  bucketFixedCosts(30000),  '30-60k');
+assertEq('bucket: fixed $60000',  bucketFixedCosts(60000),  'gte60k');
+
+// Privacy: no raw leak
+{
+  const poison = '42000_HIDDEN';
+  assert('no "HIDDEN" leak from bucketFixedCosts',
+    ('' + bucketFixedCosts(poison)).indexOf('HIDDEN') === -1);
+}
+
+// Band sweep for Break-Even Covers: every band returned is in the enum.
+{
+  const bandsSeen = new Set();
+  for (let fixed = 0; fixed <= 50000; fixed += 2500) {
+    for (let typical = 0; typical <= 300; typical += 15) {
+      const r = calcBreakEvenCovers({
+        fixedMonthlyCosts: fixed, avgCheck: 30, avgMarginPct: 0.22,
+        openDaysPerMonth: 28, typicalCoversPerDay: typical
+      });
+      bandsSeen.add(r.band);
+      const b = r.band == null ? 'na' : r.band;
+      if (!BREAKEVEN_BANDS.includes(b)) {
+        console.log('FAIL  BEC band not in enum: ' + JSON.stringify(r.band));
+        failures++;
+      }
+    }
+  }
+  console.log('PASS  calcBreakEvenCovers band names all in enum (' + bandsSeen.size + ' distinct)');
 }
 
 // ------------------------------------------------------------
