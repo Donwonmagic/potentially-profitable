@@ -779,10 +779,29 @@
 
     ticketValEl.textContent   = window.MM.formatMoney(ticketEl.value);
     foodcostValEl.textContent = foodcostEl.value + '%';
-    platformEl.textContent    = window.MM.formatMoney(result.perOrderOnPlatform);
-    directEl.textContent      = window.MM.formatMoney(result.perOrderDirect);
-    monthlyEl.textContent     = window.MM.formatMoney(result.monthlyDelta);
-    monthlySubEl.textContent  = result.monthlyDelta > 0 ? 'se va por la puerta vs. directa' : 'sin diferencia con estos valores';
+
+    // Guardas de estado vacío. Un ticket en cero vuelve inútil cada
+    // resultado; pide el dato en vez de mostrar $0 en silencio.
+    if (result.inputs.ticket === 0) {
+      platformEl.textContent   = '—';
+      directEl.textContent     = '—';
+      monthlyEl.textContent    = '—';
+      monthlySubEl.textContent = 'Ingresa tu ticket promedio arriba';
+      recEl.removeAttribute('data-rec');
+      recEl.textContent = '';
+      return result;
+    }
+
+    platformEl.textContent = window.MM.formatMoney(result.perOrderOnPlatform);
+    directEl.textContent   = window.MM.formatMoney(result.perOrderDirect);
+
+    if (result.inputs.ordersPerMonth === 0) {
+      monthlyEl.textContent    = '—';
+      monthlySubEl.textContent = 'Ingresa órdenes/mes para ver el impacto mensual';
+    } else {
+      monthlyEl.textContent    = window.MM.formatMoney(result.monthlyDelta);
+      monthlySubEl.textContent = result.monthlyDelta > 0 ? 'se va por la puerta vs. directa' : 'sin diferencia con estos valores';
+    }
 
     recEl.setAttribute('data-rec', result.recommendation);
     recEl.textContent = REC_COPY[result.recommendation] || '';
@@ -942,10 +961,31 @@
 
     checkValEl.textContent  = window.MM.formatMoney(checkEl.value);
     marginValEl.textContent = marginEl.value + '%';
-    dailyEl.textContent     = Math.ceil(result.coversToBreakEvenDaily || 0).toString();
-    subEl.textContent       = window.MM.formatMoney(result.contributionPerCover) +
-                              ' de contribución por cubierto · ' +
-                              result.inputs.openDaysPerMonth + ' días abiertos';
+
+    // Guardas de estado vacío. Costos fijos en cero o contribución por
+    // cubierto en cero vuelven inútil el equilibrio — pide el dato
+    // faltante en vez de mostrar un "0" confuso.
+    if (result.inputs.fixedMonthlyCosts === 0) {
+      dailyEl.textContent = '—';
+      subEl.textContent   = 'Ingresa tus costos fijos mensuales arriba';
+      headEl.setAttribute('data-band', 'ok');
+      headroomBlock.style.display = 'none';
+      recEl.style.display = 'none';
+      return result;
+    }
+    if (result.contributionPerCover === 0) {
+      dailyEl.textContent = '—';
+      subEl.textContent   = 'Ingresa ticket promedio y margen de contribución';
+      headEl.setAttribute('data-band', 'ok');
+      headroomBlock.style.display = 'none';
+      recEl.style.display = 'none';
+      return result;
+    }
+
+    dailyEl.textContent = Math.ceil(result.coversToBreakEvenDaily || 0).toString();
+    subEl.textContent   = window.MM.formatMoney(result.contributionPerCover) +
+                          ' de contribución por cubierto · ' +
+                          result.inputs.openDaysPerMonth + ' días abiertos';
 
     if (result.band) {
       headEl.setAttribute('data-band', result.band);
@@ -1031,6 +1071,24 @@
 
     lossValEl.textContent   = parseFloat(lossEl.value).toFixed(1) + '%';
     marginValEl.textContent = marginEl.value + '%';
+
+    // Guarda de estado vacío. Sin base, los dólares son 0 e inútiles.
+    // Los puntos de equilibrio son independientes de la base, así que
+    // se mantienen visibles.
+    if (result.inputs.monthlyBaseline === 0) {
+      newEl.textContent          = '—';
+      deltaEl.textContent        = '—';
+      deltaEl.style.color        = 'var(--stone)';
+      deltaPctEl.textContent     = 'Ingresa tus ventas mensuales actuales arriba';
+      contribDeltaEl.textContent = '';
+      beProfitEl.textContent  = (result.breakEvenProfitCoverLossPct * 100).toFixed(1) + '%';
+      beRevEl.textContent     = 'Ingresos: ' + (result.breakEvenCoverLossPct * 100).toFixed(1) + '%';
+      headEl.setAttribute('data-band', 'ok');
+      recEl.removeAttribute('data-band');
+      recEl.textContent = '';
+      return result;
+    }
+
     newEl.textContent       = window.MM.formatMoney(result.newSales);
     beProfitEl.textContent  = (result.breakEvenProfitCoverLossPct * 100).toFixed(1) + '%';
     beRevEl.textContent     = 'Ingresos: ' + (result.breakEvenCoverLossPct * 100).toFixed(1) + '%';
