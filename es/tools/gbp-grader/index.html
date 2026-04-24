@@ -84,17 +84,36 @@
   .gbp-check p{font-size:13.5px;line-height:1.5;color:var(--ink-soft);margin:0}
   .gbp-cta{margin-top:28px;padding:28px 32px;background:var(--cream-2);border:1px solid var(--line);border-radius:14px;text-align:center}
   .gbp-cta p{font-size:15px;color:var(--stone);margin:0 0 16px}
-  /* Calificación agregada — aparece sobre la lista de chequeos. Sprint
-     1D reemplaza esto con un gauge SVG; por ahora el chip toma los
-     mismos colores grade-band del diagnóstico de restaurantes. */
-  .gbp-grade{display:flex;align-items:center;gap:14px;justify-content:center;margin:0 0 22px;padding:14px 22px;border:1px solid var(--line);border-radius:12px;background:var(--cream-2)}
-  .gbp-grade-letter{font-family:var(--font-display);font-size:28px;font-weight:500;line-height:1;color:var(--ink)}
-  .gbp-grade-score{font-size:15px;color:var(--ink-soft)}
+  /* Gauge principal — aro SVG con la calificación agregada.
+     Accesible: envuelto en <figure role="img" aria-label="…"> para
+     que los lectores de pantalla anuncien el grado sin recorrer el
+     SVG. El color del arco sigue al grade-band. */
+  .gbp-gauge{display:flex;flex-direction:column;align-items:center;gap:10px;margin:0 0 22px}
+  .gbp-gauge-svg{width:200px;height:200px;max-width:100%;display:block}
+  .gbp-gauge-track{stroke:var(--line);stroke-width:10;fill:none;stroke-linecap:round}
+  .gbp-gauge-arc{stroke-width:10;fill:none;stroke-linecap:round;transition:stroke-dashoffset 600ms var(--ease-out)}
+  .gbp-gauge[data-grade-band="good"] .gbp-gauge-arc{stroke:#1F6B3A}
+  .gbp-gauge[data-grade-band="ok"]   .gbp-gauge-arc{stroke:#8A6018}
+  .gbp-gauge[data-grade-band="bad"]  .gbp-gauge-arc{stroke:var(--rust)}
+  .gbp-gauge-letter{font-family:var(--font-display);font-size:62px;font-weight:500;fill:var(--ink);dominant-baseline:central}
+  .gbp-gauge-score{font-size:12px;fill:var(--stone);font-weight:500;letter-spacing:.04em}
+  .gbp-gauge-caption{display:flex;flex-direction:column;align-items:center;gap:4px;margin:0}
   .gbp-grade-band{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
-  .gbp-grade[data-grade-band="good"] .gbp-grade-band{background:#E7F5EC;color:#1F6B3A}
-  .gbp-grade[data-grade-band="ok"]   .gbp-grade-band{background:#FDEFE3;color:#8A3E16}
-  .gbp-grade[data-grade-band="bad"]  .gbp-grade-band{background:#F7E7DC;color:#B8541A}
-  .gbp-grade-note{font-size:12px;color:var(--stone);text-align:center;margin:-14px 0 22px}
+  .gbp-gauge[data-grade-band="good"] .gbp-grade-band{background:#E7F5EC;color:#1F6B3A}
+  .gbp-gauge[data-grade-band="ok"]   .gbp-grade-band{background:#FDEFE3;color:#8A3E16}
+  .gbp-gauge[data-grade-band="bad"]  .gbp-grade-band{background:#F7E7DC;color:#B8541A}
+  .gbp-gauge-out-of{font-size:12px;color:var(--stone)}
+  /* Banner "Arregla esto primero" — destaca el chequeo de mayor peso
+     que esté fallando. El CTA apunta al panel general de GBP;
+     enlaces profundos por sección se rompen dentro de los flujos
+     autenticados de Google. */
+  .gbp-fix-first{margin:0 0 22px;padding:20px 22px;border:1px solid var(--teal);border-left-width:4px;border-radius:10px;background:var(--teal-tint)}
+  .gbp-fix-first-label{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
+  .gbp-fix-first h3{font-size:16px;font-weight:600;color:var(--ink);margin:0 0 6px}
+  .gbp-fix-first p{font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0 0 12px}
+  .gbp-fix-first a{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor;padding-bottom:1px}
+  .gbp-fix-first a:hover{color:var(--teal-dark)}
+  .gbp-fix-first a svg{width:14px;height:14px}
   /* Desambiguador — aparece cuando Places devuelve varios candidatos
      y los dos primeros están cerca por número de reseñas, o la
      consulta apenas coincide con el nombre del primer candidato. Al
@@ -267,6 +286,18 @@
 
   var HIDDEN_CHECK_IDS={operational:1,hours_fresh:1,review_recency:1,nap:1,owner_reply:1};
 
+  var FIX_FIRST_COPY={
+    primary_category:{title:'Define tu categoría principal',body:'Es el factor on-page más importante para el ranking local. En tu panel de Business Profile, abre "Editar perfil" → "Acerca de" → "Categoría" y elige la coincidencia más específica disponible.'},
+    hours:{title:'Agrega tus horarios',body:'Es una de las razones más comunes por las que la gente se salta una ficha en Maps. Abre "Editar perfil" → "Horario" y define horarios regulares para cada día que abras.'},
+    phone:{title:'Agrega tu número de teléfono',body:'La llamada con un toque es la acción #1 en Maps. Agrégalo en "Editar perfil" → "Contacto" para que los clientes te alcancen en un toque.'},
+    rating:{title:'Tu calificación necesita atención',body:'Por debajo de 4,0 es una bandera roja para la mayoría. Lee tus reseñas de 1 a 3 estrellas buscando patrones y aborda las causas raíz — después responde públicamente. Incluso a las negativas.'},
+    review_volume:{title:'Sube tu número de reseñas',body:'Estás muy por debajo de la mediana de pares de tu categoría. Arranca un programa sistemático de reseñas — una tarjeta QR en la caja es la palanca más simple. Apunta a la mediana en 90 días.'},
+    photos:{title:'Agrega más fotos',body:'Las fichas con 10+ fotos reciben 42 % más solicitudes de direcciones. Sube fotos del interior, exterior, equipo, y producto/servicio en tu panel de Business Profile.'},
+    website:{title:'Enlaza un sitio web',body:'Hasta un sitio simple de una página vale más que ninguno — es adonde Google manda a quienes quieren saber más. Agrega la URL en "Editar perfil" → "Contacto" → "Sitio web".'},
+    service_attrs:{title:'Completa tus atributos de servicio',body:'Servicio en mesa, para llevar, delivery, reservas, banderas de cocina — cada uno te abre a más búsquedas. Configúralos en "Editar perfil" → "Más".'},
+    hours_fresh:{title:'Completa tu horario semanal',body:'Tu ficha no muestra un horario semanal completo. Abre "Editar perfil" → "Horario" y cubre cada día que abras.'}
+  };
+
   function stars(rating){
     var full=Math.floor(rating||0);
     var html='<div class="gbp-stars">';
@@ -361,27 +392,54 @@
       +'<p>'+(chosen.address||'')+'</p>';
   }
 
+  function renderGauge(scored){
+    var r=70, c=2*Math.PI*r;
+    var pct=Math.max(0,Math.min(1,(scored.scaled||0)/100));
+    var offset=Math.round(c*(1-pct)*100)/100;
+    var bandLabel=scored.band==='good'?'Fuerte':scored.band==='ok'?'Mixto':'Débil';
+    var aria='Calificación '+scored.letter+', '+scored.scaled+' de 100';
+    var remaining=100-scored.max;
+    var outOfHtml=remaining>0
+      ?'<span class="gbp-gauge-out-of">'+scored.total+' de '+scored.max+' puntos Fast Scan · Deep Scan desbloquea +'+remaining+'</span>'
+      :'<span class="gbp-gauge-out-of">'+scored.total+' de '+scored.max+' puntos</span>';
+    return'<figure class="gbp-gauge" role="img" aria-label="'+aria+'" data-grade-band="'+scored.band+'">'
+      +'<svg class="gbp-gauge-svg" viewBox="0 0 200 200" aria-hidden="true">'
+      +  '<circle class="gbp-gauge-track" cx="100" cy="100" r="'+r+'"/>'
+      +  '<circle class="gbp-gauge-arc"   cx="100" cy="100" r="'+r+'" stroke-dasharray="'+c.toFixed(2)+'" stroke-dashoffset="'+offset+'" transform="rotate(-90 100 100)"/>'
+      +  '<text class="gbp-gauge-letter" x="100" y="100" text-anchor="middle">'+scored.letter+'</text>'
+      +  '<text class="gbp-gauge-score"  x="100" y="140" text-anchor="middle">'+scored.scaled+' / 100</text>'
+      +'</svg>'
+      +'<figcaption class="gbp-gauge-caption"><span class="gbp-grade-band">'+bandLabel+'</span>'+outOfHtml+'</figcaption>'
+      +'</figure>';
+  }
+
+  function renderFixFirst(scored){
+    if(!scored.fixFirst||scored.forcedF)return'';
+    var copy=FIX_FIRST_COPY[scored.fixFirst.id];
+    if(!copy)return'';
+    return'<section class="gbp-fix-first" role="region" aria-label="Arregla esto primero">'
+      +'<span class="gbp-fix-first-label">Arregla esto primero</span>'
+      +'<h3>'+copy.title+'</h3>'
+      +'<p>'+copy.body+'</p>'
+      +'<a href="https://business.google.com/" target="_blank" rel="noopener">Abrir panel de Business Profile'
+      +  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>'
+      +'</a>'
+      +'</section>';
+  }
+
   function renderFor(chosen,peerMedians,query,wasPicked){
     bizEl.innerHTML=renderBusinessCard(chosen);
 
     var scored=window.gbpScoreCandidate(chosen,peerMedians,null,'es');
-    var bandLabel=scored.band==='good'?'Fuerte':scored.band==='ok'?'Mixto':'Débil';
-    var gradeHtml='<div class="gbp-grade" data-grade-band="'+scored.band+'">'
-      +'<span class="gbp-grade-letter">'+scored.letter+'</span>'
-      +'<span class="gbp-grade-score">'+scored.total+' / '+scored.max+'</span>'
-      +'<span class="gbp-grade-band">'+bandLabel+'</span>'
-      +'</div>';
-    var remaining=100-scored.max;
-    var noteHtml=remaining>0
-      ?'<p class="gbp-grade-note">De '+scored.max+' — el Deep Scan desbloquea los '+remaining+' puntos restantes (velocidad de reseñas, tasa de respuesta, NAP).</p>'
-      :'';
+    var gaugeHtml=renderGauge(scored);
+    var fixFirstHtml=renderFixFirst(scored);
 
     var checksHtml='';
     for(var i=0;i<scored.groups.length;i++){
       var g=scored.groups[i];
       for(var j=0;j<g.checks.length;j++)checksHtml+=renderCheck(g.checks[j]);
     }
-    checksEl.innerHTML=gradeHtml+noteHtml+checksHtml;
+    checksEl.innerHTML=gaugeHtml+fixFirstHtml+checksHtml;
 
     result.classList.add('visible');
     result.scrollIntoView({behavior:'smooth',block:'start'});
@@ -397,7 +455,8 @@
       has_category:   chosen.primaryTypeDisplayName?'yes':'no',
       status:         chosen.businessStatus||'unknown',
       peer_source:    scored.peerMedian.source,
-      picked:         wasPicked?'yes':'no'
+      picked:         wasPicked?'yes':'no',
+      fix_first:      scored.fixFirst?scored.fixFirst.id:'none'
     }});
   }
 
