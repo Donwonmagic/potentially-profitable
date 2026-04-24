@@ -2208,6 +2208,21 @@ br.br-lg{display:none}
 .research-index-uses{font-family:var(--font-body);font-size:12px;color:var(--stone-2);letter-spacing:0.04em}
 .research-index-uses strong{color:var(--teal);font-weight:600}
 
+/* Resources hub — index of free checklists and guides. Same shape
+   as .research-index so a reader who's seen one immediately knows
+   how to read the other. */
+.resources-index{list-style:none;margin:32px auto 0;padding:0;max-width:920px;display:grid;gap:18px}
+.resources-index-card{display:block;padding:32px 36px;background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);text-decoration:none;color:inherit;transition:transform var(--t-med) var(--ease-out),box-shadow var(--t-med) var(--ease-out),border-color var(--t-fast) var(--ease)}
+.resources-index-card:hover:not(.resources-index-card-soon){transform:translateY(-3px);box-shadow:var(--elev-2);border-color:var(--teal)}
+.resources-index-card-soon{cursor:default;background:var(--cream-2);color:var(--stone)}
+.resources-index-kind{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);display:inline-block;margin-bottom:14px}
+.resources-index-card-soon .resources-index-kind{color:var(--stone)}
+.resources-index-card h3{font-family:var(--font-display);font-size:clamp(22px,2.6vw,28px);font-weight:500;letter-spacing:-0.01em;margin:0 0 10px;color:var(--ink);line-height:1.2}
+.resources-index-card-soon h3{color:var(--ink-soft)}
+.resources-index-card p{font-size:15.5px;line-height:1.6;color:var(--stone);margin:0 0 16px}
+.resources-index-cta{font-family:var(--font-body);font-size:14px;font-weight:600;color:var(--teal);display:inline-flex;align-items:center;gap:6px}
+.resources-index-card-soon .resources-index-cta{color:var(--stone-2)}
+
 .research-method{max-width:720px;margin:72px auto 0;padding-top:40px;border-top:1px solid var(--line)}
 .research-method h3{font-family:var(--font-display);font-size:22px;font-weight:500;letter-spacing:-0.01em;margin:0 0 14px;color:var(--ink)}
 .research-method p{font-size:15.5px;line-height:1.65;color:var(--stone);margin:0 0 14px}

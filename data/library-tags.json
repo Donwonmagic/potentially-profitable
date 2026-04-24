@@ -1,0 +1,78 @@
+{
+  "_doc": "Maps every piece of long-form content to one or more topic slugs. The build script (scripts/build-library.mjs) reads this and uses it to: (a) populate /learn/topics/<slug>/ pages, (b) inject 'See also' blocks into article footers, (c) pick the topic chip on per-term glossary pages. Add a new article? Add it here.",
+
+  "glossary_section_to_topics": {
+    "basics": ["conversions"],
+    "mobile": ["speed-mobile"],
+    "conversions": ["conversions"],
+    "trust": ["trust-reviews"],
+    "findability": ["local-seo"],
+    "subtypes": [],
+    "restaurant-numbers": ["operations-margin"],
+    "data-literacy": ["brand-design"],
+    "brand-design": ["brand-design"]
+  },
+
+  "glossary_term_overrides": {
+    "_doc": "Override or add topics for individual terms whose primary topic is not their parent section.",
+    "wcag-contrast": ["trust-reviews", "brand-design"],
+    "domain-name": ["brand-design"],
+    "professional-email": ["brand-design"],
+    "real-photos": ["trust-reviews", "brand-design"],
+    "click-to-call": ["conversions"],
+    "click-to-directions": ["conversions"],
+    "hours-visibility": ["conversions"],
+    "copyable-address": ["conversions"],
+    "html-menu": ["conversions"],
+    "cuisine-pitch": ["brand-design"],
+    "dietary-markers": ["conversions"],
+    "lighthouse": ["speed-mobile"],
+    "pagespeed-insights": ["speed-mobile"],
+    "schema": ["local-seo"],
+    "open-graph": ["local-seo", "brand-design"],
+    "gbp": ["local-seo"],
+    "nap-consistency": ["local-seo"],
+    "rich-results": ["local-seo"],
+    "newsletter-capture": ["conversions"],
+    "gift-card-checkout": ["conversions", "operations-margin"],
+    "catering-page": ["conversions", "operations-margin"],
+    "honest-pricing": ["trust-reviews", "operations-margin"]
+  },
+
+  "blog_posts": {
+    "why-your-restaurant-loses-reservations-every-night": ["conversions", "speed-mobile"],
+    "how-much-does-a-custom-restaurant-website-cost-in-2026": ["operations-margin", "brand-design"],
+    "how-to-get-more-google-reviews-for-your-restaurant": ["trust-reviews", "local-seo"],
+    "how-to-raise-restaurant-menu-prices-without-losing-reservations": ["operations-margin", "conversions"],
+    "how-to-set-up-google-business-profile-for-your-restaurant": ["local-seo"],
+    "is-doordash-worth-it-for-restaurants-in-2026": ["operations-margin"],
+    "wix-vs-custom-for-restaurants": ["brand-design", "operations-margin"]
+  },
+
+  "research_notes": {
+    "mobile-page-speed-3-second-rule": ["speed-mobile", "conversions"],
+    "local-business-websites": ["conversions", "local-seo"],
+    "fittss-law": ["conversions"],
+    "cart-abandonment-rate": ["conversions"],
+    "lighthouse-performance-scoring": ["speed-mobile"]
+  },
+
+  "tools": {
+    "_doc": "The free tools surfaced inside topic pages. Slug = directory under /tools/. Maps to topic.",
+    "audits/restaurant": ["conversions", "speed-mobile", "local-seo", "trust-reviews"],
+    "speed-test": ["speed-mobile"],
+    "mobile-check": ["speed-mobile"],
+    "seo-grader": ["local-seo"],
+    "schema-check": ["local-seo"],
+    "search-ideas": ["local-seo"],
+    "tech-stack": ["brand-design"],
+    "compare": ["speed-mobile"],
+    "gbp-grader": ["local-seo", "trust-reviews"],
+    "margin-math": ["operations-margin"],
+    "brand-suite": ["brand-design"]
+  },
+
+  "checklists": {
+    "restaurant-website-checklist": ["conversions", "speed-mobile", "local-seo", "trust-reviews"]
+  }
+}
