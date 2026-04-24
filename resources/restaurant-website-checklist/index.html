@@ -1333,6 +1333,16 @@
     outline: none;
   }
   .learn-more-btn svg { width: 12px; height: 12px; }
+  /* .check-item is a CSS grid (44-68px num column + 1fr body column).
+     The learn-more-btn is a direct grid child, so by default it auto-
+     places in the narrow first column on a new row — which forces the
+     text to wrap into a cramped two-line pill. Pin it to the body
+     column (2) and align it to the start so it sits flush under the
+     Fix row, not under the number. */
+  .learn-more-btn {
+    grid-column: 2;
+    justify-self: start;
+  }
   @media (max-width: 640px) {
     .learn-more-btn { padding: 8px 14px; min-height: 36px; font-size: 13px; }
   }
