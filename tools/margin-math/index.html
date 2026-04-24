@@ -71,6 +71,46 @@
   .mm-next-links{display:flex;flex-wrap:wrap;gap:10px}
   .mm-next-links a{font-size:14px;padding:10px 16px;border:1px solid var(--line-dark);border-radius:999px;background:var(--white);color:var(--ink);text-decoration:none;font-weight:500}
   .mm-next-links a:hover{border-color:var(--teal);color:var(--teal)}
+  /* Live-calculator styles — shared by all four calculators. The
+     "Stays in your browser" badge is visible on every card to
+     reinforce the architectural promise. Real-time updates via
+     aria-live="polite" results region. */
+  .mm-card.mm-live{border-style:solid}
+  .mm-card-header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:space-between}
+  .mm-badge-safe{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:#E7F5EC;color:#1F6B3A;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.04em}
+  .mm-badge-safe::before{content:'\2713';font-weight:800}
+  .mm-form{display:flex;flex-direction:column;gap:14px;margin:6px 0 0}
+  .mm-form label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:var(--ink-soft)}
+  .mm-form label > span{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .mm-form label > span > output{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums;min-width:56px;text-align:right}
+  .mm-form input[type="range"]{width:100%;accent-color:var(--teal);cursor:grab}
+  .mm-form input[type="range"]:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:4px}
+  .mm-form input[type="number"]{padding:8px 10px;border:1px solid var(--line-dark);border-radius:8px;font:inherit;font-size:15px;background:var(--white);color:var(--ink);width:100%;box-sizing:border-box}
+  .mm-form input[type="number"]:focus{border-color:var(--teal);outline:none}
+  .mm-tier-group{display:flex;gap:6px;border:0;padding:0;margin:0}
+  .mm-tier-group legend{font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:6px;padding:0}
+  .mm-tier-btns{display:flex;gap:6px;width:100%}
+  .mm-tier-btns button{flex:1;padding:10px 8px;border:1px solid var(--line-dark);border-radius:10px;background:var(--white);font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;transition:border-color 140ms,background 140ms;line-height:1.3}
+  .mm-tier-btns button small{display:block;font-size:11px;font-weight:500;color:var(--stone);margin-top:2px}
+  .mm-tier-btns button:hover{border-color:var(--teal)}
+  .mm-tier-btns button[aria-pressed="true"]{border-color:var(--teal);background:var(--teal-tint);color:var(--teal)}
+  .mm-tier-btns button[aria-pressed="true"] small{color:var(--teal-dark)}
+  .mm-results{margin-top:4px;padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:var(--cream-2);display:flex;flex-direction:column;gap:12px}
+  .mm-per-order{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .mm-per-order-col{display:flex;flex-direction:column;gap:2px;text-align:center;padding:10px;background:var(--white);border-radius:8px;border:1px solid var(--line)}
+  .mm-result-label{font-size:11px;font-weight:600;color:var(--stone);letter-spacing:.04em;text-transform:uppercase}
+  .mm-result-value{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
+  .mm-monthly{text-align:center;padding:8px 0;border-top:1px dashed var(--line-dark);display:flex;flex-direction:column;gap:2px}
+  .mm-monthly-label{font-size:12px;font-weight:600;color:var(--stone);letter-spacing:.04em;text-transform:uppercase}
+  .mm-monthly-value{font-family:var(--font-display);font-size:36px;font-weight:500;color:var(--rust);font-variant-numeric:tabular-nums;line-height:1.1}
+  .mm-monthly-subtext{font-size:12px;color:var(--stone)}
+  .mm-recommendation{font-size:13px;line-height:1.55;padding:10px 12px;border-radius:8px}
+  .mm-recommendation[data-rec="keep"]{background:#E7F5EC;color:#1F6B3A}
+  .mm-recommendation[data-rec="optimize"]{background:#FDEFE3;color:#8A3E16}
+  .mm-recommendation[data-rec="consider-leaving"]{background:#F7E7DC;color:#B8541A}
+  .mm-recommendation a{color:inherit;font-weight:700;border-bottom:1px solid currentColor}
+  .mm-blog-link{margin-top:4px;font-size:12px;color:var(--teal);text-decoration:none;font-weight:600}
+  .mm-blog-link:hover{color:var(--teal-dark);border-bottom:1px dashed currentColor}
 </style>
 </head>
 <body>
@@ -157,10 +197,57 @@
 
 <section class="block"><div class="container container-wide">
   <div class="mm-grid" aria-label="Calculators">
-    <article class="mm-card mm-coming" aria-disabled="true">
-      <span class="mm-card-eyebrow">Phase 1 &middot; Coming</span>
+    <article class="mm-card mm-live" data-calc="delivery-breakeven">
+      <div class="mm-card-header">
+        <span class="mm-card-eyebrow">Calculator 1 of 4</span>
+        <span class="mm-badge-safe" title="Every number you type is processed in your browser. Nothing is sent to our servers.">Stays in your browser</span>
+      </div>
       <h3>Delivery Break-Even</h3>
-      <p>Ticket size, food cost %, commission tier — see exactly how much each DoorDash order nets you vs. the same order direct. Mirrors the math in our DoorDash 2026 post.</p>
+      <p>See what each order actually nets you on a third-party platform vs. the same order taken direct.</p>
+
+      <form class="mm-form" onsubmit="return false;" aria-label="Delivery break-even calculator">
+        <label for="dbe-ticket">
+          <span>Average ticket <output id="dbe-ticket-val" for="dbe-ticket">$25</output></span>
+          <input type="range" id="dbe-ticket" min="10" max="100" step="1" value="25" aria-describedby="dbe-ticket-val" />
+        </label>
+        <label for="dbe-foodcost">
+          <span>Food cost (% of sales) <output id="dbe-foodcost-val" for="dbe-foodcost">30%</output></span>
+          <input type="range" id="dbe-foodcost" min="20" max="45" step="1" value="30" aria-describedby="dbe-foodcost-val" />
+        </label>
+        <fieldset class="mm-tier-group">
+          <legend>Aggregator commission tier</legend>
+          <div class="mm-tier-btns" role="radiogroup" aria-label="Commission tier">
+            <button type="button" data-tier="basic"   data-pct="0.15" aria-pressed="false" role="radio">Basic<small>~15%</small></button>
+            <button type="button" data-tier="plus"    data-pct="0.25" aria-pressed="true"  role="radio">Plus<small>~25%</small></button>
+            <button type="button" data-tier="premier" data-pct="0.30" aria-pressed="false" role="radio">Premier<small>~30%</small></button>
+          </div>
+        </fieldset>
+        <label for="dbe-orders">
+          <span>Orders per month</span>
+          <input type="number" id="dbe-orders" min="0" max="10000" step="1" value="100" inputmode="numeric" />
+        </label>
+      </form>
+
+      <div class="mm-results" aria-live="polite" aria-atomic="true">
+        <div class="mm-per-order">
+          <div class="mm-per-order-col">
+            <span class="mm-result-label">Per order on platform</span>
+            <span class="mm-result-value" id="dbe-platform">$11.25</span>
+          </div>
+          <div class="mm-per-order-col">
+            <span class="mm-result-label">Per order direct</span>
+            <span class="mm-result-value" id="dbe-direct">$16.75</span>
+          </div>
+        </div>
+        <div class="mm-monthly">
+          <span class="mm-monthly-label">Monthly difference</span>
+          <span class="mm-monthly-value" id="dbe-monthly">$550</span>
+          <span class="mm-monthly-subtext" id="dbe-monthly-sub">walks out the door vs. direct</span>
+        </div>
+        <div class="mm-recommendation" id="dbe-rec" data-rec="consider-leaving"></div>
+      </div>
+
+      <a class="mm-blog-link" href="/blog/is-doordash-worth-it-for-restaurants-in-2026/">Read the full analysis: Is DoorDash worth it in 2026? &rarr;</a>
     </article>
     <article class="mm-card mm-coming" aria-disabled="true">
       <span class="mm-card-eyebrow">Phase 2 &middot; Coming</span>
@@ -213,5 +300,101 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="./margin-math.js?v=20260424-mm1"></script>
+<script>
+/* Delivery Break-Even calculator wiring.
+ *
+ * Privacy invariants this code enforces:
+ *   - No fetch(), no XMLHttpRequest, no form submit.
+ *   - No localStorage / sessionStorage / cookie write.
+ *   - Plausible event fires at most once per page load, with values
+ *     drawn from the bucket helpers only (no raw inputs).
+ */
+(function(){
+  if (!window.MM) return;
+  var card = document.querySelector('[data-calc="delivery-breakeven"]');
+  if (!card) return;
+
+  var ticketEl      = card.querySelector('#dbe-ticket');
+  var ticketValEl   = card.querySelector('#dbe-ticket-val');
+  var foodcostEl    = card.querySelector('#dbe-foodcost');
+  var foodcostValEl = card.querySelector('#dbe-foodcost-val');
+  var ordersEl      = card.querySelector('#dbe-orders');
+  var tierBtns      = card.querySelectorAll('.mm-tier-btns button');
+  var platformEl    = card.querySelector('#dbe-platform');
+  var directEl      = card.querySelector('#dbe-direct');
+  var monthlyEl     = card.querySelector('#dbe-monthly');
+  var monthlySubEl  = card.querySelector('#dbe-monthly-sub');
+  var recEl         = card.querySelector('#dbe-rec');
+
+  var currentTier = 'plus';
+  var currentCommission = 0.25;
+  var firstInteractionFired = false;
+
+  // Recommendation copy is co-located with the wiring because each
+  // string is context-specific to this calculator and its state.
+  // Later sprints may extract a shared copy map; for now, inline.
+  var REC_COPY = {
+    'keep': 'At this rate, aggregator orders are reasonable as marketing — new customers you wouldn\'t have reached otherwise. Keep an eye on the volume.',
+    'optimize': 'The gap is real. Every shifted order adds up. Push your website\'s order button harder; nudge regulars toward direct.',
+    'consider-leaving': 'The math is hostile. Each dollar shifted back to direct pulls real margin back to you.'
+  };
+
+  function render(){
+    var result = window.MM.calcDeliveryBreakeven({
+      ticket:         ticketEl.value,
+      foodCostPct:    foodcostEl.value,
+      commissionPct:  currentCommission,
+      ordersPerMonth: ordersEl.value
+    });
+
+    ticketValEl.textContent   = window.MM.formatMoney(ticketEl.value);
+    foodcostValEl.textContent = foodcostEl.value + '%';
+    platformEl.textContent    = window.MM.formatMoney(result.perOrderOnPlatform);
+    directEl.textContent      = window.MM.formatMoney(result.perOrderDirect);
+    monthlyEl.textContent     = window.MM.formatMoney(result.monthlyDelta);
+    monthlySubEl.textContent  = result.monthlyDelta > 0 ? 'walks out the door vs. direct' : 'no delta at these inputs';
+
+    recEl.setAttribute('data-rec', result.recommendation);
+    recEl.textContent = REC_COPY[result.recommendation] || '';
+
+    return result;
+  }
+
+  // Fired only from user-driven event handlers, never from the
+  // initial boot render. Ensures the event counts real engagement,
+  // and never leaks raw input (bucket helpers only).
+  function maybeFireAnalytics(result){
+    if (firstInteractionFired || !window.plausible) return;
+    firstInteractionFired = true;
+    window.plausible('Margin Math DeliveryBreakeven', { props: {
+      ticket_bucket:   window.MM.bucketTicket(ticketEl.value),
+      foodcost_bucket: window.MM.bucketFoodCost(foodcostEl.value),
+      commission_tier: currentTier,
+      recommendation:  result.recommendation
+    }});
+  }
+
+  function onInput(){ maybeFireAnalytics(render()); }
+
+  ticketEl.addEventListener('input', onInput);
+  foodcostEl.addEventListener('input', onInput);
+  ordersEl.addEventListener('input', onInput);
+
+  Array.prototype.forEach.call(tierBtns, function(btn){
+    btn.addEventListener('click', function(){
+      Array.prototype.forEach.call(tierBtns, function(b){
+        b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+      });
+      currentTier      = btn.getAttribute('data-tier');
+      currentCommission = parseFloat(btn.getAttribute('data-pct'));
+      onInput();
+    });
+  });
+
+  // Initial boot render — does NOT fire analytics.
+  render();
+})();
+</script>
 </body>
 </html>
