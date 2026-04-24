@@ -354,10 +354,53 @@
 
       <a class="mm-blog-link" href="/blog/is-doordash-worth-it-for-restaurants-in-2026/#prime-cost">What's a healthy prime cost, and where do the numbers come from? &rarr;</a>
     </article>
-    <article class="mm-card mm-coming" aria-disabled="true">
-      <span class="mm-card-eyebrow">Phase 2 &middot; Coming</span>
+    <article class="mm-card mm-live" data-calc="break-even-covers">
+      <div class="mm-card-header">
+        <span class="mm-card-eyebrow">Calculator 3 of 4</span>
+        <span class="mm-badge-safe" title="Every number you type is processed in your browser. Nothing is sent to our servers.">Stays in your browser</span>
+      </div>
       <h3>Break-Even Covers</h3>
-      <p>Fixed monthly costs, average check, margin per cover. Out: covers per day needed to hit zero, and the headroom above.</p>
+      <p>How many covers a night does your fixed overhead demand? Optional: enter your typical daily volume to see monthly headroom above break-even.</p>
+
+      <form class="mm-form" onsubmit="return false;" aria-label="Break-even covers calculator">
+        <label for="bec-fixed">
+          <span>Fixed monthly costs ($)</span>
+          <input type="number" id="bec-fixed" min="0" max="200000" step="100" value="15000" inputmode="numeric" placeholder="rent + insurance + loan + SaaS, summed" />
+        </label>
+        <label for="bec-check">
+          <span>Average check <output id="bec-check-val" for="bec-check">$35</output></span>
+          <input type="range" id="bec-check" min="10" max="100" step="1" value="35" aria-describedby="bec-check-val" />
+        </label>
+        <label for="bec-margin">
+          <span>Contribution margin / cover <output id="bec-margin-val" for="bec-margin">20%</output></span>
+          <input type="range" id="bec-margin" min="5" max="50" step="1" value="20" aria-describedby="bec-margin-val" />
+          <small style="color:var(--stone);font-weight:400;font-size:12px;line-height:1.4;">What a cover contributes after food, hourly labor, and card fees. Not the same as operating margin.</small>
+        </label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <label for="bec-days">
+            <span>Days open/month</span>
+            <input type="number" id="bec-days" min="1" max="31" step="1" value="28" inputmode="numeric" />
+          </label>
+          <label for="bec-typical">
+            <span>Typical covers/day <small style="color:var(--stone);font-weight:400;">optional</small></span>
+            <input type="number" id="bec-typical" min="0" max="1000" step="1" value="150" inputmode="numeric" placeholder="e.g., 120" />
+          </label>
+        </div>
+      </form>
+
+      <div class="mm-results" aria-live="polite" aria-atomic="true">
+        <div class="mm-monthly" id="bec-head" data-band="ok">
+          <span class="mm-monthly-label">Covers/day just to break even</span>
+          <span class="mm-monthly-value" id="bec-daily">77</span>
+          <span class="mm-monthly-subtext" id="bec-sub">$7 contribution per cover &middot; 28 open days/month</span>
+        </div>
+        <div id="bec-headroom-block" style="border-top:1px dashed var(--line-dark);padding-top:10px;margin-top:2px;text-align:center;display:flex;flex-direction:column;gap:2px;">
+          <span class="mm-monthly-label">Monthly cushion at typical volume</span>
+          <span class="mm-monthly-value" id="bec-headroom" style="color:#1F6B3A;font-family:var(--font-display);font-size:28px;font-weight:500;font-variant-numeric:tabular-nums;line-height:1.1;">$14,400</span>
+          <span class="mm-monthly-subtext" id="bec-cap">at 150 covers/day, 51% of capacity goes to fixed costs</span>
+        </div>
+        <div class="mm-recommendation" id="bec-rec" data-band="ok"></div>
+      </div>
     </article>
     <article class="mm-card mm-coming" aria-disabled="true">
       <span class="mm-card-eyebrow">Phase 3 &middot; Coming</span>
@@ -732,6 +775,96 @@
   laborEl.addEventListener('input', onInput);
 
   // Initial render — no analytics fire.
+  render();
+})();
+
+/* Break-Even Covers calculator wiring. Isolated IIFE. */
+(function(){
+  if (!window.MM) return;
+  var card = document.querySelector('[data-calc="break-even-covers"]');
+  if (!card) return;
+
+  var fixedEl       = card.querySelector('#bec-fixed');
+  var checkEl       = card.querySelector('#bec-check');
+  var checkValEl    = card.querySelector('#bec-check-val');
+  var marginEl      = card.querySelector('#bec-margin');
+  var marginValEl   = card.querySelector('#bec-margin-val');
+  var daysEl        = card.querySelector('#bec-days');
+  var typicalEl     = card.querySelector('#bec-typical');
+  var dailyEl       = card.querySelector('#bec-daily');
+  var subEl         = card.querySelector('#bec-sub');
+  var headEl        = card.querySelector('#bec-head');
+  var headroomBlock = card.querySelector('#bec-headroom-block');
+  var headroomEl    = card.querySelector('#bec-headroom');
+  var capEl         = card.querySelector('#bec-cap');
+  var recEl         = card.querySelector('#bec-rec');
+
+  var firstInteractionFired = false;
+
+  var REC_COPY = {
+    'good': 'Fixed costs are a comfortable share of operations. You\'re running with real cushion. The lever to watch is creeping fixed costs (SaaS subscriptions, small supplier increases) — they don\'t feel like crises but add up.',
+    'ok':   'Typical territory — most of the month is spent clearing fixed overhead, the rest is yours. One slow week tilts the math. Worth knowing exactly which days of the week carry the margin so you can defend them.',
+    'warn': 'Tight. One slow stretch tips into a loss month. If this is chronic, look first at whether fixed costs are actually fixed (renegotiate the SaaS and insurance stack is often faster than raising traffic), then at whether typical covers can stretch (extra service, new daypart).',
+    'bad':  'At break-even on typical volume — there\'s no margin for error. Two levers: cut fixed (hardest, slowest), or lift contribution per cover (re-engineer the menu toward high-margin items, raise prices on the signature ones). Both may be required.',
+    'na':   ''
+  };
+
+  function render(){
+    var result = window.MM.calcBreakEvenCovers({
+      fixedMonthlyCosts:   fixedEl.value,
+      avgCheck:            checkEl.value,
+      avgMarginPct:        marginEl.value,
+      openDaysPerMonth:    daysEl.value,
+      typicalCoversPerDay: typicalEl.value
+    });
+
+    checkValEl.textContent  = window.MM.formatMoney(checkEl.value);
+    marginValEl.textContent = marginEl.value + '%';
+    dailyEl.textContent     = Math.ceil(result.coversToBreakEvenDaily || 0).toString();
+    subEl.textContent       = window.MM.formatMoney(result.contributionPerCover) +
+                              ' contribution / cover · ' +
+                              result.inputs.openDaysPerMonth + ' open days';
+
+    if (result.band) {
+      headEl.setAttribute('data-band', result.band);
+      headroomBlock.style.display = 'flex';
+      var positive = result.monthlyHeadroom >= 0;
+      headroomEl.textContent = (positive ? '' : '-') + window.MM.formatMoney(Math.abs(result.monthlyHeadroom));
+      headroomEl.style.color = positive ? '#1F6B3A' : 'var(--rust)';
+      var capPct = Math.round((result.capacityUtilization || 0) * 100);
+      capEl.textContent = 'at ' + Math.round(result.inputs.typicalCoversPerDay) +
+                          ' covers/day, ' + capPct + '% of capacity goes to fixed costs';
+      recEl.setAttribute('data-band', result.band);
+      recEl.textContent = REC_COPY[result.band] || '';
+      recEl.style.display = '';
+    } else {
+      // No typical covers supplied — hide the headroom block + recommendation
+      headEl.setAttribute('data-band', 'ok');
+      headroomBlock.style.display = 'none';
+      recEl.style.display = 'none';
+    }
+
+    return result;
+  }
+
+  function maybeFireAnalytics(result){
+    if (firstInteractionFired || !window.plausible) return;
+    firstInteractionFired = true;
+    window.plausible('Margin Math BreakEvenCovers', { props: {
+      fixed_bucket:  window.MM.bucketFixedCosts(fixedEl.value),
+      ticket_bucket: window.MM.bucketTicket(checkEl.value),
+      band:          result.band || 'na'
+    }});
+  }
+
+  function onInput(){ maybeFireAnalytics(render()); }
+
+  fixedEl.addEventListener('input', onInput);
+  checkEl.addEventListener('input', onInput);
+  marginEl.addEventListener('input', onInput);
+  daysEl.addEventListener('input', onInput);
+  typicalEl.addEventListener('input', onInput);
+
   render();
 })();
 </script>
