@@ -112,6 +112,7 @@
 .me-whatif[data-empty="true"] .me-whatif-flip{display:none}
 .me-whatif-empty{font-size:13px;color:var(--stone);font-style:italic;display:none}
 .me-whatif[data-empty="true"] .me-whatif-empty{display:block}
+.me-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .me-paste{display:flex;flex-direction:column;gap:10px}
 .me-paste textarea{width:100%;min-height:160px;padding:12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;line-height:1.5;color:var(--ink);resize:vertical}
 .me-paste textarea:focus{outline:2px solid var(--teal);outline-offset:1px}
@@ -141,7 +142,7 @@
   body{background:#fff !important;color:#000 !important}
   header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,.me-input,
   #what-this-does,#how-private,#what-this-isnt,.me-export-row,
-  .mm-next,.me-empty-state,#meEmptyHint{display:none !important}
+  .mm-next,.me-empty-state,#meEmptyHint,.me-whatif{display:none !important}
   /* Hide the long export-section copy + share-link caveat too */
   .me-output > div > h2 + p,.me-export-row ~ p,.me-warnings{display:none !important}
   .me-output{margin-top:14px;gap:12px}
@@ -259,12 +260,13 @@
     <div>
       <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px;">The matrix <span id="meMatrixBadge" hidden class="me-matrix-badge">By category</span></h2>
       <div class="me-matrix-wrap">
-        <svg class="me-matrix-svg" id="meMatrix" viewBox="0 0 720 540" role="img" aria-label="Menu engineering matrix"></svg>
+        <svg class="me-matrix-svg" id="meMatrix" viewBox="0 0 720 540" role="img" aria-label="Menu engineering matrix" aria-describedby="meMatrixA11yList"></svg>
+        <ul id="meMatrixA11yList" class="me-sr-only"></ul>
         <div class="me-matrix-legend" aria-hidden="true">
-          <span><i class="me-q-Star"></i> Star</span>
-          <span><i class="me-q-Plowhorse"></i> Plowhorse</span>
-          <span><i class="me-q-Puzzle"></i> Puzzle</span>
-          <span><i class="me-q-Dog"></i> Dog</span>
+          <span><i class="me-q-Star"></i> Star ★</span>
+          <span><i class="me-q-Plowhorse"></i> Plowhorse ▲</span>
+          <span><i class="me-q-Puzzle"></i> Puzzle ◆</span>
+          <span><i class="me-q-Dog"></i> Dog ●</span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--stone);margin:8px 0 0;">x-axis: contribution margin per sale (\$). y-axis: share of total covers (%). Median lines split the grid; items at exactly the median fall to the upper-right side.</p>
@@ -682,22 +684,48 @@
 
     // Plot each item.
     var QC = { Star: '#1F4E5B', Plowhorse: '#C68A2C', Puzzle: '#6E5DB3', Dog: '#B8541A' };
+    var QGLYPH = { Star: '★', Plowhorse: '▲', Puzzle: '◆', Dog: '●' };
     items.forEach(function(it){
       var cx = sx(it.cm_dollars);
       var cy = sy(it.share);
       var color = QC[it.quadrant] || '#14161A';
-      svg += '<circle cx="' + cx + '" cy="' + cy + '" r="6" fill="' + color + '" stroke="#FAF7F2" stroke-width="1.5">';
+      var glyph = QGLYPH[it.quadrant] || '';
+      svg += '<g>';
+      svg += '<circle cx="' + cx + '" cy="' + cy + '" r="8" fill="' + color + '" stroke="#FAF7F2" stroke-width="1.5">';
       svg += '<title>' + escHtml(it.item) + ' · CM ' + fmtMoney(it.cm_dollars) + ' · ' + fmtPct(it.share) + ' share · ' + it.quadrant + '</title>';
       svg += '</circle>';
-      // Label, only for items where we have name and there's space.
+      // Quadrant glyph centered in dot — second relevance cue beyond color.
+      svg += '<text x="' + cx + '" y="' + (cy + 3) + '" font-size="9" fill="#FAF7F2" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle" pointer-events="none" aria-hidden="true">' + glyph + '</text>';
+      svg += '</g>';
+      // Visible item-name label, only for items where we have name and there's space.
       if (it.item) {
-        svg += '<text x="' + (cx + 9) + '" y="' + (cy + 4) + '" font-size="10" fill="#14161A" font-family="Inter,sans-serif">' + escHtml(it.item.length > 18 ? it.item.slice(0, 17) + '…' : it.item) + '</text>';
+        svg += '<text x="' + (cx + 11) + '" y="' + (cy + 4) + '" font-size="10" fill="#14161A" font-family="Inter,sans-serif" aria-hidden="true">' + escHtml(it.item.length > 18 ? it.item.slice(0, 17) + '…' : it.item) + '</text>';
       }
     });
 
     matrixSvg.innerHTML = svg;
     var badge = document.getElementById('meMatrixBadge');
     if (badge) badge.hidden = !byCategory;
+
+    // Visually-hidden item list — the matrix's accessible description.
+    // Screen readers and keyboard users get the same data the dots
+    // encode, in plain order.
+    var a11yList = document.getElementById('meMatrixA11yList');
+    if (a11yList) {
+      var preamble = byCategory
+        ? 'Per-category split. ' + items.length + ' items in the matrix.'
+        : items.length + ' items plotted by contribution margin and share of covers.';
+      a11yList.innerHTML =
+        '<li>' + escHtml(preamble) + '</li>' +
+        items.map(function(it){
+          return '<li>' + escHtml(it.item || '(unnamed)') +
+                 ' — ' + it.quadrant +
+                 ' — contribution margin ' + fmtMoney(it.cm_dollars) +
+                 ', ' + fmtPct(it.share) + ' share' +
+                 (it.category ? ', category ' + escHtml(it.category) : '') +
+                 '</li>';
+        }).join('');
+    }
   }
 
   function paintActions(summary){
