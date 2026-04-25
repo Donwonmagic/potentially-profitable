@@ -38,8 +38,16 @@ const TOOLS_DIR = join(REPO, 'tools');
 // teal-tint) was tokenized, dropping ~70 hex occurrences. The
 // audit's bespoke earthtone palette (E6DFCE, EFC4AA, etc.) is
 // intentional design vocabulary; full migration is a future pass.
+//
+// menu-copy and menu-engineering shipped after the bespoke-tool
+// migration with their own quadrant palettes (Stars/Plowhorses/
+// Puzzles/Dogs use purple/gold/blue/green). Same pattern as
+// Margin Math at its launch — opted out pending a tokenization
+// pass.
 const EXCLUSIONS = new Set([
   'tools/audits/restaurant/index.html',
+  'tools/menu-copy/index.html',
+  'tools/menu-engineering/index.html',
 ]);
 
 // Hex colors we tolerate inside tool inline CSS.
