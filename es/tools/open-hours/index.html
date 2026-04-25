@@ -96,6 +96,40 @@
 
 .oh-empty{padding:18px;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--cream-2);font-size:13.5px;color:var(--stone);text-align:center}
 
+.oh-closures{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.oh-closures-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.oh-closures-head h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0}
+.oh-closures-head .oh-count{font-size:12px;color:var(--stone);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.oh-holiday-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;max-height:380px;overflow-y:auto;padding-right:4px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+.oh-holiday{display:grid;grid-template-columns:24px 1fr auto;gap:10px;align-items:start;padding:10px 14px;border-bottom:1px solid var(--line);cursor:pointer}
+.oh-holiday:last-child{border-bottom:0}
+.oh-holiday:hover{background:var(--cream-2)}
+.oh-holiday[data-checked="true"]{background:rgba(31,78,91,0.04)}
+.oh-holiday input[type="checkbox"]{margin:2px 0 0;cursor:pointer}
+.oh-holiday-name{font-size:14px;font-weight:600;color:var(--ink);line-height:1.4}
+.oh-holiday-note{font-size:12.5px;color:var(--ink-soft);line-height:1.45;margin-top:1px}
+.oh-holiday-date{font-size:12px;color:var(--stone);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap;align-self:center}
+
+.oh-custom{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:10px 14px;background:var(--cream-2);border-radius:var(--r-input);font-size:13px}
+.oh-custom input[type="date"], .oh-custom input[type="text"]{padding:6px 8px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font:inherit;font-size:13px;color:var(--ink)}
+.oh-custom input[type="text"]{flex:1;min-width:160px}
+
+.oh-compare{margin-top:18px;padding:16px;border:1px dashed var(--line-dark);border-radius:var(--r-input);background:var(--white)}
+.oh-compare summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.oh-compare summary::after{content:"+";font-size:18px;color:var(--stone)}
+.oh-compare[open] summary::after{content:"\2212"}
+.oh-compare summary::-webkit-details-marker{display:none}
+.oh-compare-body{margin-top:12px;display:flex;flex-direction:column;gap:10px}
+.oh-compare textarea{width:100%;min-height:100px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.5;color:var(--ink);resize:vertical}
+.oh-diff{display:grid;grid-template-columns:84px 1fr 1fr;gap:8px;font-size:12.5px;line-height:1.5}
+.oh-diff-row{display:contents}
+.oh-diff-row > *{padding:6px 10px;border-bottom:1px solid var(--line)}
+.oh-diff-row[data-match="true"] > *{color:var(--stone)}
+.oh-diff-row[data-match="false"] > *{background:rgba(184,84,26,0.06);color:var(--ink)}
+.oh-diff-day{font-weight:600;color:var(--ink)}
+.oh-diff-cell{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px}
+.oh-diff-empty{font-style:italic;color:var(--stone)}
+
 @media print{
   body{background:#fff !important;color:#000 !important}
   header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,.oh-form,
@@ -165,6 +199,31 @@
       <div class="oh-warnings" id="ohWarnings" aria-live="polite" style="margin-top:10px;"></div>
     </div>
 
+    <div class="oh-closures">
+      <div class="oh-closures-head">
+        <h3>¿Algún día cerrado próximamente?</h3>
+        <span class="oh-count" id="ohClosureCount">0 seleccionados</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--stone);margin:0;line-height:1.55;">Marca cualquier feriado en el que vayas a cerrar. Los agregamos al archivo &ldquo;Añadir cierres a mi calendario&rdquo; abajo.</p>
+      <ul class="oh-holiday-list" id="ohHolidayList" aria-label="Feriados próximos"></ul>
+
+      <div class="oh-custom">
+        <span style="font-weight:600;color:var(--ink);">Cierre personalizado:</span>
+        <input type="date" id="ohCustomDate" aria-label="Fecha del cierre" />
+        <input type="text" id="ohCustomName" placeholder="ej. Evento privado, vacaciones de verano" aria-label="Nombre del cierre" />
+        <button type="button" class="oh-task-btn" id="ohAddCustom">+ añadir</button>
+      </div>
+    </div>
+
+    <details class="oh-compare">
+      <summary>¿Ya tienes el horario publicado en otra parte? Pégalo para comparar.</summary>
+      <div class="oh-compare-body">
+        <p style="margin:0;font-size:12.5px;color:var(--ink-soft);line-height:1.55;">Pega tu horario actual de Google o Yelp aquí. Lo comparamos contra lo que ingresaste arriba y marcamos cualquier día que no coincida. (Buscamos líneas tipo &ldquo;lunes: 11 AM&ndash;9 PM&rdquo;; las diferencias menores de formato se ignoran.)</p>
+        <textarea id="ohCompareText" spellcheck="false" placeholder="lunes: 11 AM – 9 PM&#10;martes: 11 AM – 9 PM&#10;miércoles: cerrado&#10;..."></textarea>
+        <div id="ohDiffResult" aria-live="polite"></div>
+      </div>
+    </details>
+
     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
       <button type="button" class="oh-task-btn" id="ohLoadSample">Cargar restaurante de ejemplo</button>
       <button type="button" class="oh-task-btn" id="ohClear">Borrar todo</button>
@@ -225,7 +284,52 @@
       </div>
     </article>
 
-    <p style="font-size:12.5px;color:var(--stone);margin:0;line-height:1.6;text-align:center;"><strong>Fase 2 (próximamente):</strong> bloques para Yelp + Apple Maps, selector de feriados, y un letrero imprimible para tu puerta.</p>
+    <article class="oh-task-card">
+      <header class="oh-task-head">
+        <h3>Actualiza Yelp.</h3>
+        <span class="oh-task-format">Para Yelp Business</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">Yelp usa un formato un poco distinto al de Google. Lo mismo &mdash; entra, busca &ldquo;Información del negocio,&rdquo; pega esto.</p>
+      <pre class="oh-task-block" id="ohYelpBlock" aria-label="Bloque para Yelp"></pre>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn oh-task-btn-primary" data-copy-target="ohYelpBlock" data-copy-label="Copiar para Yelp">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copiar para Yelp
+        </button>
+      </div>
+    </article>
+
+    <article class="oh-task-card">
+      <header class="oh-task-head">
+        <h3>Actualiza Apple Maps.</h3>
+        <span class="oh-task-format">Para Apple Business Connect</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">Apple Business Connect es gratis y es el segundo mapa más consultado después de Google. Entra a <a href="https://businessconnect.apple.com" target="_blank" rel="noopener" style="color:var(--teal);">businessconnect.apple.com</a> y pega esto en tu horario.</p>
+      <pre class="oh-task-block" id="ohAppleBlock" aria-label="Bloque para Apple Maps"></pre>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn oh-task-btn-primary" data-copy-target="ohAppleBlock" data-copy-label="Copiar para Apple Maps">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copiar para Apple Maps
+        </button>
+      </div>
+    </article>
+
+    <article class="oh-task-card" id="ohIcsCard" hidden>
+      <header class="oh-task-head">
+        <h3>Añade los cierres a tu calendario.</h3>
+        <span class="oh-task-format">Como archivo iCalendar (.ics)</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">Descarga este archivo y haz doble click en tu teléfono o computadora. Tu app de calendario te ofrecerá agregar las fechas &mdash; vas a recibir un recordatorio el día antes de cada cierre para avisarle al equipo. Funciona con Apple Calendar, Google Calendar y Outlook.</p>
+      <p style="margin:8px 0 0;font-size:12px;color:var(--stone);" id="ohIcsCount">0 cierres seleccionados.</p>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn oh-task-btn-primary" id="ohDownloadIcs">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span data-label="Añadir cierres a mi calendario">Añadir cierres a mi calendario</span>
+        </button>
+      </div>
+    </article>
+
+    <p style="font-size:12.5px;color:var(--stone);margin:0;line-height:1.6;text-align:center;"><strong>Fase 3 (próximamente):</strong> un Letrero de Puerta imprimible, una Ficha de Horario para compartir, y un paquete ZIP con todo.</p>
 
   </div>
 </div></section>
@@ -305,8 +409,22 @@
   var emptyHint  = document.getElementById('ohEmptyHint');
   var checklist  = document.getElementById('ohChecklist');
   var googleBlock= document.getElementById('ohGoogleBlock');
+  var yelpBlock  = document.getElementById('ohYelpBlock');
+  var appleBlock = document.getElementById('ohAppleBlock');
   var jsonLdBlock= document.getElementById('ohJsonLdBlock');
   var emailBlock = document.getElementById('ohEmailBlock');
+  var holidayList= document.getElementById('ohHolidayList');
+  var closureCount = document.getElementById('ohClosureCount');
+  var icsCard    = document.getElementById('ohIcsCard');
+  var icsCountEl = document.getElementById('ohIcsCount');
+  var customDate = document.getElementById('ohCustomDate');
+  var customName = document.getElementById('ohCustomName');
+  var addCustomBtn = document.getElementById('ohAddCustom');
+  var compareText = document.getElementById('ohCompareText');
+  var diffResult = document.getElementById('ohDiffResult');
+
+  var selectedClosures = {};
+  var customCounter = 0;
 
   var SAMPLE = {
     name: 'Osteria Giardino',
@@ -403,6 +521,201 @@
     rerender();
   }
 
+  // ----- Selector de feriados -----
+  function fmtHolidayDate(iso, locale){
+    var p = String(iso).split('-');
+    if (p.length !== 3) return iso;
+    var d = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2]));
+    return d.toLocaleDateString('es-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+  }
+
+  function renderHolidayList(){
+    var holidays = window.OH.holidaysInRange();
+    if (!holidays.length) { holidayList.innerHTML = ''; return; }
+    holidayList.innerHTML = holidays.map(function(h){
+      var checked = !!selectedClosures[h.id];
+      return '<li class="oh-holiday" data-checked="' + checked + '" data-id="' + escAttr(h.id) + '">' +
+             '<input type="checkbox" ' + (checked ? 'checked' : '') + ' aria-label="Cerrado en ' + escAttr(h.name) + '" />' +
+             '<div><div class="oh-holiday-name">' + escHtml(h.name) + '</div>' +
+             '<div class="oh-holiday-note">' + escHtml(h.note || '') + '</div></div>' +
+             '<div class="oh-holiday-date">' + escHtml(fmtHolidayDate(h.date)) + '</div>' +
+             '</li>';
+    }).join('');
+  }
+
+  function renderCustomClosures(){
+    var existing = holidayList.querySelectorAll('[data-source="custom"]');
+    existing.forEach(function(n){ n.parentNode.removeChild(n); });
+    Object.keys(selectedClosures).forEach(function(id){
+      if (!/^custom-/.test(id)) return;
+      var c = selectedClosures[id];
+      var li = document.createElement('li');
+      li.className = 'oh-holiday';
+      li.setAttribute('data-checked', 'true');
+      li.setAttribute('data-id', id);
+      li.setAttribute('data-source', 'custom');
+      li.innerHTML =
+        '<input type="checkbox" checked aria-label="Cerrado en ' + escAttr(c.name) + '" />' +
+        '<div><div class="oh-holiday-name">' + escHtml(c.name) + '</div>' +
+        '<div class="oh-holiday-note">Cierre personalizado</div></div>' +
+        '<div class="oh-holiday-date">' + escHtml(fmtHolidayDate(c.date)) + '</div>';
+      holidayList.appendChild(li);
+    });
+  }
+
+  function getClosureList(){
+    return Object.keys(selectedClosures).map(function(id){
+      var c = selectedClosures[id];
+      return { id: id, name: c.name, date: c.date };
+    }).sort(function(a, b){ return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; });
+  }
+
+  function paintClosureCount(){
+    var n = Object.keys(selectedClosures).length;
+    closureCount.textContent = n + ' seleccionados';
+    if (icsCard) {
+      icsCard.hidden = n === 0;
+      if (icsCountEl) icsCountEl.textContent = n + ' cierre' + (n === 1 ? '' : 's') + ' seleccionado' + (n === 1 ? '' : 's') + '.';
+    }
+  }
+
+  holidayList.addEventListener('click', function(ev){
+    var li = ev.target.closest('.oh-holiday');
+    if (!li) return;
+    var id = li.getAttribute('data-id');
+    if (!id) return;
+    var cb = li.querySelector('input[type="checkbox"]');
+    if (ev.target !== cb) cb.checked = !cb.checked;
+    if (cb.checked) {
+      var holidays = window.OH.holidaysInRange();
+      var preset = holidays.find(function(h){ return h.id === id; });
+      if (preset) selectedClosures[id] = { name: preset.name, date: preset.date, source: 'preset' };
+    } else {
+      delete selectedClosures[id];
+      if (li.getAttribute('data-source') === 'custom') li.parentNode.removeChild(li);
+      else li.setAttribute('data-checked', 'false');
+    }
+    if (cb.checked) li.setAttribute('data-checked', 'true');
+    paintClosureCount();
+  });
+
+  addCustomBtn.addEventListener('click', function(){
+    var date = customDate.value;
+    var name = (customName.value || '').trim();
+    if (!date) return;
+    if (!name) name = 'Cerrado';
+    var id = 'custom-' + (++customCounter);
+    selectedClosures[id] = { name: name, date: date, source: 'custom' };
+    customDate.value = '';
+    customName.value = '';
+    renderCustomClosures();
+    paintClosureCount();
+  });
+
+  var icsBtn = document.getElementById('ohDownloadIcs');
+  if (icsBtn) {
+    icsBtn.addEventListener('click', function(){
+      var closures = getClosureList();
+      if (!closures.length) return;
+      var ics = window.OH.generateIcs(closures);
+      var blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'horario-cierres.ics';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'ics' } });
+      var span = icsBtn.querySelector('[data-label]');
+      if (span) {
+        var orig = span.getAttribute('data-label');
+        span.textContent = '✓ Descargado — ábrelo en tu teléfono';
+        setTimeout(function(){ span.textContent = orig; }, 2400);
+      }
+    });
+  }
+
+  // ----- Modo de comparación -----
+  function parseCompareInput(text){
+    var out = {};
+    DAYS.forEach(function(d){ out[d] = null; });
+    var lines = String(text || '').split(/\r?\n/);
+    var dayNames = {
+      mon: 'Mon', monday: 'Mon', lun: 'Mon', lunes: 'Mon',
+      tue: 'Tue', tuesday: 'Tue', mar: 'Tue', martes: 'Tue',
+      wed: 'Wed', wednesday: 'Wed', mie: 'Wed', 'miércoles': 'Wed', miercoles: 'Wed',
+      thu: 'Thu', thursday: 'Thu', jue: 'Thu', jueves: 'Thu',
+      fri: 'Fri', friday: 'Fri', vie: 'Fri', viernes: 'Fri',
+      sat: 'Sat', saturday: 'Sat', sab: 'Sat', 'sábado': 'Sat', sabado: 'Sat',
+      sun: 'Sun', sunday: 'Sun', dom: 'Sun', domingo: 'Sun'
+    };
+    lines.forEach(function(line){
+      var m = /^([A-Za-zÁÉÍÓÚáéíóúñÑ]+)[\s:.,-]+(.*)$/.exec(line.trim());
+      if (!m) return;
+      var key = m[1].toLowerCase();
+      var canon = dayNames[key];
+      if (!canon) return;
+      var rest = m[2].trim();
+      if (!rest || /^closed$/i.test(rest) || /^cerrado$/i.test(rest)) {
+        out[canon] = 'closed'; return;
+      }
+      var ranges = rest.split(/\s*,\s*/).map(function(r){
+        var rm = /([0-9].*?)\s*[-–to]+\s*([0-9].*)/.exec(r);
+        if (!rm) return null;
+        var open = window.OH.parseTime(rm[1]);
+        var close = window.OH.parseTime(rm[2]);
+        if (!open || !close) return null;
+        return open + '-' + close;
+      }).filter(Boolean);
+      out[canon] = ranges.length ? ranges.join(',') : null;
+    });
+    return out;
+  }
+
+  function normalizeCurrentWeek(){
+    var out = {};
+    DAYS.forEach(function(d){
+      var services = (week[d] || []).map(function(s){
+        var open = window.OH.parseTime(s.opens);
+        var close = window.OH.parseTime(s.closes);
+        if (!open || !close) return null;
+        return open + '-' + close;
+      }).filter(Boolean);
+      out[d] = services.length ? services.join(',') : 'closed';
+    });
+    return out;
+  }
+
+  function paintDiff(){
+    var pasted = (compareText.value || '').trim();
+    if (!pasted) { diffResult.innerHTML = ''; return; }
+    var pastedHours = parseCompareInput(pasted);
+    var currentHours = normalizeCurrentWeek();
+    var rows = DAYS.map(function(d, idx){
+      var p = pastedHours[d];
+      var c = currentHours[d];
+      var match;
+      if (p == null) match = null;
+      else match = (p === c);
+      var pasted = p == null ? '<span class="oh-diff-empty">(no está en lo pegado)</span>' : (p === 'closed' ? 'cerrado' : escHtml(p));
+      var current = c === 'closed' ? 'cerrado' : escHtml(c);
+      return '<div class="oh-diff-row" data-match="' + (match === false ? 'false' : 'true') + '">' +
+             '<div class="oh-diff-day">' + DAY_FULL[idx] + '</div>' +
+             '<div class="oh-diff-cell">Pegado: ' + pasted + '</div>' +
+             '<div class="oh-diff-cell">Arriba: ' + current + '</div></div>';
+    }).join('');
+    var mismatches = DAYS.filter(function(d){
+      var p = pastedHours[d]; if (p == null) return false;
+      return p !== currentHours[d];
+    }).length;
+    var hint = mismatches === 0
+      ? '<p style="font-size:13px;color:var(--status-good);margin:8px 0 0;font-weight:600;">✓ Todos los días coinciden con lo que ingresaste arriba.</p>'
+      : '<p style="font-size:13px;color:var(--rust);margin:8px 0 0;font-weight:600;">⚠ ' + mismatches + ' día' + (mismatches === 1 ? '' : 's') + ' no coincide' + (mismatches === 1 ? '' : 'n') + '. Actualiza la fuente equivocada.</p>';
+    diffResult.innerHTML = '<div class="oh-diff" style="margin-top:8px;border:1px solid var(--line);border-radius:var(--r-sm);overflow:hidden;">' + rows + '</div>' + hint;
+  }
+  if (compareText) compareText.addEventListener('input', paintDiff);
+
   // ----- Render outputs from current state -----
   var rafQueued = false;
   function rerender(){
@@ -422,10 +735,13 @@
       }
       output.hidden = false;
       emptyHint.hidden = true;
-      googleBlock.textContent = window.OH.generatePlatformCopy(input, 'google');
+      googleBlock.textContent = window.OH.generatePlatformCopy(input, 'google', 'es');
+      yelpBlock.textContent   = window.OH.generatePlatformCopy(input, 'yelp', 'es');
+      appleBlock.textContent  = window.OH.generatePlatformCopy(input, 'apple', 'es');
       jsonLdBlock.textContent = window.OH.generateJsonLdScript(input);
-      emailBlock.textContent  = window.OH.generateBuilderEmail(input);
+      emailBlock.textContent  = window.OH.generateBuilderEmail(input, 'es');
       paintChecklist(v);
+      paintDiff();
       firePlausibleOnce(v);
     });
   }
@@ -459,8 +775,10 @@
         text: 'Cross-platform copy generated'
       },
       {
-        ok: false,
-        text: 'Sign ready to print (coming in next release)'
+        ok: Object.keys(selectedClosures).length > 0,
+        text: Object.keys(selectedClosures).length > 0
+          ? Object.keys(selectedClosures).length + ' cierre' + (Object.keys(selectedClosures).length === 1 ? '' : 's') + ' agregado' + (Object.keys(selectedClosures).length === 1 ? '' : 's') + ' al calendario'
+          : 'Marca cualquier cierre por feriado (opcional) y agrégalo al calendario'
       }
     ];
     checklist.innerHTML = items.map(function(it){
@@ -560,8 +878,10 @@
     } else { settle('Select manually', 'error'); }
   }
 
-  // Initial render: empty week + empty form.
+  // Render inicial: semana vacía + lista de feriados.
   renderWeek();
+  renderHolidayList();
+  paintClosureCount();
   rerender();
 })();
 </script>

@@ -266,6 +266,104 @@ assertEq('formatTime 09:00 ES', O.formatTime('09:00', 'es'), '09:00');
 }
 
 // ------------------------------------------------------------
+// Holiday helpers — date computation + range filtering
+// ------------------------------------------------------------
+
+// nthWeekdayOfMonth — pure date math
+{
+  // 4th Thursday of November 2026 = Nov 26, 2026
+  const tg = O.nthWeekdayOfMonth(2026, 11, 4, 4);
+  assertEq('Thanksgiving 2026', tg.toISOString().slice(0, 10), '2026-11-26');
+  // 3rd Monday of January 2026 = Jan 19, 2026 (MLK Day)
+  const mlk = O.nthWeekdayOfMonth(2026, 1, 1, 3);
+  assertEq('MLK Day 2026',      mlk.toISOString().slice(0, 10), '2026-01-19');
+  // 2nd Sunday of May 2026 = May 10 (Mother's Day)
+  const md = O.nthWeekdayOfMonth(2026, 5, 0, 2);
+  assertEq("Mother's Day 2026", md.toISOString().slice(0, 10), '2026-05-10');
+}
+
+// lastWeekdayOfMonth — Memorial Day (last Monday of May)
+{
+  const m = O.lastWeekdayOfMonth(2026, 5, 1);
+  assertEq('Memorial Day 2026', m.toISOString().slice(0, 10), '2026-05-25');
+  const m27 = O.lastWeekdayOfMonth(2027, 5, 1);
+  assertEq('Memorial Day 2027', m27.toISOString().slice(0, 10), '2027-05-31');
+}
+
+// Easter — anonymous Gregorian
+assertEq('Easter 2026 (Apr 5)',  O.easterDate(2026).toISOString().slice(0, 10), '2026-04-05');
+assertEq('Easter 2027 (Mar 28)', O.easterDate(2027).toISOString().slice(0, 10), '2027-03-28');
+assertEq('Easter 2024 (Mar 31)', O.easterDate(2024).toISOString().slice(0, 10), '2024-03-31');
+assertEq('Easter 2030 (Apr 21)', O.easterDate(2030).toISOString().slice(0, 10), '2030-04-21');
+
+// holidaysForYear — full slate
+{
+  const h = O.holidaysForYear(2026);
+  assert('14 holidays/year', h.length === 14);
+  const ids = h.map(x => x.id);
+  ['new-years','mlk','mardi-gras','easter','mothers-day','memorial-day',
+   'fathers-day','july-4','labor-day','thanksgiving','black-friday',
+   'christmas-eve','christmas-day','new-years-eve'].forEach(id => {
+    assert('holiday id present: ' + id, ids.includes(id));
+  });
+  // Black Friday is Thanksgiving + 1
+  const tg = h.find(x => x.id === 'thanksgiving').date;
+  const bf = h.find(x => x.id === 'black-friday').date;
+  const tgDate = new Date(tg + 'T00:00:00Z');
+  const bfDate = new Date(bf + 'T00:00:00Z');
+  assertEq('Black Friday = Thanksgiving + 1 day',
+           (bfDate - tgDate) / (24 * 3600 * 1000), 1);
+}
+
+// holidaysInRange — filter
+{
+  const r = O.holidaysInRange(
+    new Date(Date.UTC(2026, 10, 1)),  // Nov 1 2026
+    new Date(Date.UTC(2026, 11, 31))  // Dec 31 2026
+  );
+  const ids = r.map(x => x.id);
+  assert('Nov-Dec range includes Thanksgiving', ids.includes('thanksgiving'));
+  assert('Nov-Dec range includes Christmas',    ids.includes('christmas-day'));
+  assert('Nov-Dec range excludes July 4',       !ids.includes('july-4'));
+}
+
+// 12-month rolling default range covers a full year
+{
+  const r = O.holidaysInRange(new Date(Date.UTC(2026, 5, 1)));  // June 1 2026 default end
+  // Default end = +365 days. Should hit at least one of every type
+  // across the year. We're just checking length is ≥ 12 (reasonable
+  // count for any 12-month window).
+  assert('default 12-month range yields ≥ 12 holidays', r.length >= 12);
+}
+
+// ------------------------------------------------------------
+// ICS generation with selected closures
+// ------------------------------------------------------------
+{
+  const ics = O.generateIcs([
+    { date: '2026-12-25', name: 'Christmas Day' },
+    { date: '2026-11-26', name: 'Thanksgiving' },
+    { date: '2026-07-04', name: 'July 4' }
+  ]);
+  // Three VEVENT blocks
+  const eventCount = (ics.match(/BEGIN:VEVENT/g) || []).length;
+  assertEq('ICS event count', eventCount, 3);
+  assert('ICS Thanksgiving DTSTART', /DTSTART;VALUE=DATE:20261126/.test(ics));
+  assert('ICS Christmas SUMMARY',     /SUMMARY:Closed — Christmas Day/.test(ics));
+  // UIDs are unique
+  const uids = (ics.match(/UID:[^\r]+/g) || []).map(x => x.trim());
+  assertEq('ICS uids unique', new Set(uids).size, uids.length);
+}
+
+// ICS with custom closure containing punctuation in name
+{
+  const ics = O.generateIcs([{ date: '2026-08-15', name: "Vacation; family" }]);
+  // Semicolons stripped from SUMMARY (RFC 5545 quoting)
+  assert('ICS strips semicolons from name',
+         !/SUMMARY:[^\r]*;/.test(ics.match(/SUMMARY:[^\r]+/)[0]));
+}
+
+// ------------------------------------------------------------
 // Privacy-critical bucket helpers — enum purity + poison strings
 // ------------------------------------------------------------
 {

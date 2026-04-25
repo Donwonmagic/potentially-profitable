@@ -409,6 +409,127 @@ function ohGenerateIcs(closures, options) {
 }
 
 // ------------------------------------------------------------
+// Holiday data
+//
+// Returns the rolling-12-month list of holidays a US restaurant is
+// likely to consider for closure or modified hours. Each entry has:
+//   id        — stable slug (used as React-key equivalent)
+//   name      — display string
+//   date      — 'YYYY-MM-DD'
+//   note      — short guidance line ("most restaurants close",
+//               "early close common", etc.); the UI surfaces this
+//               so the owner can decide quickly.
+//
+// Floating dates (Memorial Day, Thanksgiving, etc.) are computed
+// from rules; fixed dates are formatted from numeric month + day.
+// Easter dates are computed via the canonical anonymous Gregorian
+// algorithm. Range default: 12 months from today (UTC).
+// ------------------------------------------------------------
+
+function ohNthWeekdayOfMonth(year, month, weekday, n) {
+  // month: 1-12; weekday: 0=Sun..6=Sat; n: 1-5 (1st, 2nd, 3rd, 4th, 5th)
+  var d = new Date(Date.UTC(year, month - 1, 1));
+  var firstWd = d.getUTCDay();
+  var offset = (weekday - firstWd + 7) % 7;
+  var day = 1 + offset + (n - 1) * 7;
+  return new Date(Date.UTC(year, month - 1, day));
+}
+
+function ohLastWeekdayOfMonth(year, month, weekday) {
+  // month: 1-12; weekday: 0=Sun..6=Sat
+  var d = new Date(Date.UTC(year, month, 0)); // last day of month
+  var lastDay = d.getUTCDate();
+  var lastWd = d.getUTCDay();
+  var offset = (lastWd - weekday + 7) % 7;
+  var day = lastDay - offset;
+  return new Date(Date.UTC(year, month - 1, day));
+}
+
+function ohEasterDate(year) {
+  // Anonymous Gregorian algorithm.
+  var a = year % 19;
+  var b = Math.floor(year / 100), c = year % 100;
+  var d = Math.floor(b / 4),       e = b % 4;
+  var f = Math.floor((b + 8) / 25);
+  var g = Math.floor((b - f + 1) / 3);
+  var h = (19 * a + b - d - g + 15) % 30;
+  var i = Math.floor(c / 4),       k = c % 4;
+  var l = (32 + 2 * e + 2 * i - h - k) % 7;
+  var m = Math.floor((a + 11 * h + 22 * l) / 451);
+  var month = Math.floor((h + l - 7 * m + 114) / 31);
+  var day = ((h + l - 7 * m + 114) % 31) + 1;
+  return new Date(Date.UTC(year, month - 1, day));
+}
+
+function ohFmtDate(d) {
+  var y = d.getUTCFullYear();
+  var m = ohPad2(d.getUTCMonth() + 1);
+  var day = ohPad2(d.getUTCDate());
+  return y + '-' + m + '-' + day;
+}
+
+function ohHolidaysForYear(year) {
+  // Returns the full year's slate. Caller filters by date range.
+  var easter = ohEasterDate(year);
+  // Mardi Gras (Fat Tuesday) is 47 days before Easter.
+  var mardiGras = new Date(easter); mardiGras.setUTCDate(mardiGras.getUTCDate() - 47);
+  // Mother's Day = 2nd Sunday of May.
+  var mothers = ohNthWeekdayOfMonth(year, 5, 0, 2);
+  // Father's Day = 3rd Sunday of June.
+  var fathers = ohNthWeekdayOfMonth(year, 6, 0, 3);
+  // Memorial Day = last Monday of May.
+  var memorial = ohLastWeekdayOfMonth(year, 5, 1);
+  // Labor Day = 1st Monday of September.
+  var labor = ohNthWeekdayOfMonth(year, 9, 1, 1);
+  // Thanksgiving = 4th Thursday of November.
+  var thanksgiving = ohNthWeekdayOfMonth(year, 11, 4, 4);
+  // Black Friday = day after Thanksgiving.
+  var blackFriday = new Date(thanksgiving); blackFriday.setUTCDate(blackFriday.getUTCDate() + 1);
+
+  return [
+    { id: 'new-years',     name: "New Year's Day",     date: year + '-01-01', note: 'Most restaurants close or open late.' },
+    { id: 'mlk',           name: 'MLK Jr. Day',        date: ohFmtDate(ohNthWeekdayOfMonth(year, 1, 1, 3)), note: 'Federal holiday; up to you.' },
+    { id: 'mardi-gras',    name: 'Mardi Gras',         date: ohFmtDate(mardiGras),                          note: 'Some restaurants run a special menu instead of closing.' },
+    { id: 'easter',        name: 'Easter Sunday',      date: ohFmtDate(easter),                             note: 'Brunch service common; full-day close also common.' },
+    { id: 'mothers-day',   name: "Mother's Day",       date: ohFmtDate(mothers),                            note: 'Busiest brunch of the year — usually open with reservations.' },
+    { id: 'memorial-day',  name: 'Memorial Day',       date: ohFmtDate(memorial),                           note: 'Outdoor patio kickoff; most casual restaurants stay open.' },
+    { id: 'fathers-day',   name: "Father's Day",       date: ohFmtDate(fathers),                            note: 'Steakhouse Sunday; usually open.' },
+    { id: 'july-4',        name: 'Independence Day',   date: year + '-07-04',                               note: 'Many restaurants close, especially with patios near fireworks.' },
+    { id: 'labor-day',     name: 'Labor Day',          date: ohFmtDate(labor),                              note: 'Last summer holiday; up to you.' },
+    { id: 'thanksgiving',  name: 'Thanksgiving',       date: ohFmtDate(thanksgiving),                       note: 'Most independent restaurants close.' },
+    { id: 'black-friday',  name: 'Day After Thanksgiving', date: ohFmtDate(blackFriday),                    note: 'Optional close; staff often appreciates it.' },
+    { id: 'christmas-eve', name: 'Christmas Eve',      date: year + '-12-24',                               note: 'Early close (5–7 PM) is the norm.' },
+    { id: 'christmas-day', name: 'Christmas Day',      date: year + '-12-25',                               note: 'Most restaurants close.' },
+    { id: 'new-years-eve', name: "New Year's Eve",     date: year + '-12-31',                               note: 'Special menu / late close common.' }
+  ];
+}
+
+function ohHolidaysInRange(startDate, endDate) {
+  // startDate / endDate as Date objects (defaults: today + 365 days UTC).
+  var now = new Date();
+  var start = startDate || new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+  var end = endDate;
+  if (!end) {
+    end = new Date(start);
+    end.setUTCDate(end.getUTCDate() + 365);
+  }
+  var startMs = start.getTime();
+  var endMs = end.getTime();
+  var startYear = start.getUTCFullYear();
+  var endYear = end.getUTCFullYear();
+  var pool = [];
+  for (var y = startYear; y <= endYear; y++) pool = pool.concat(ohHolidaysForYear(y));
+  return pool.filter(function(h){
+    var t = Date.UTC(
+      parseInt(h.date.slice(0, 4), 10),
+      parseInt(h.date.slice(5, 7), 10) - 1,
+      parseInt(h.date.slice(8, 10), 10)
+    );
+    return t >= startMs && t <= endMs;
+  }).sort(function(a, b){ return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; });
+}
+
+// ------------------------------------------------------------
 // Plausible bucket helpers — enum-locked, privacy-critical.
 // Same pattern as menu-engineering / menu-copy.
 // ------------------------------------------------------------
@@ -462,6 +583,12 @@ var OH_PUBLIC = {
   generatePlatformCopy: ohGeneratePlatformCopy,
   generateBuilderEmail: ohGenerateBuilderEmail,
   generateIcs:         ohGenerateIcs,
+  // Holiday helpers
+  easterDate:          ohEasterDate,
+  nthWeekdayOfMonth:   ohNthWeekdayOfMonth,
+  lastWeekdayOfMonth:  ohLastWeekdayOfMonth,
+  holidaysForYear:     ohHolidaysForYear,
+  holidaysInRange:     ohHolidaysInRange,
   // Bucket helpers
   bucketWeeklyOpenDays: ohBucketWeeklyOpenDays,
   bucketServiceTiers:   ohBucketServiceTiers,

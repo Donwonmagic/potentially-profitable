@@ -96,6 +96,40 @@
 
 .oh-empty{padding:18px;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--cream-2);font-size:13.5px;color:var(--stone);text-align:center}
 
+.oh-closures{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.oh-closures-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.oh-closures-head h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0}
+.oh-closures-head .oh-count{font-size:12px;color:var(--stone);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.oh-holiday-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;max-height:380px;overflow-y:auto;padding-right:4px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+.oh-holiday{display:grid;grid-template-columns:24px 1fr auto;gap:10px;align-items:start;padding:10px 14px;border-bottom:1px solid var(--line);cursor:pointer}
+.oh-holiday:last-child{border-bottom:0}
+.oh-holiday:hover{background:var(--cream-2)}
+.oh-holiday[data-checked="true"]{background:rgba(31,78,91,0.04)}
+.oh-holiday input[type="checkbox"]{margin:2px 0 0;cursor:pointer}
+.oh-holiday-name{font-size:14px;font-weight:600;color:var(--ink);line-height:1.4}
+.oh-holiday-note{font-size:12.5px;color:var(--ink-soft);line-height:1.45;margin-top:1px}
+.oh-holiday-date{font-size:12px;color:var(--stone);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap;align-self:center}
+
+.oh-custom{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:10px 14px;background:var(--cream-2);border-radius:var(--r-input);font-size:13px}
+.oh-custom input[type="date"], .oh-custom input[type="text"]{padding:6px 8px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font:inherit;font-size:13px;color:var(--ink)}
+.oh-custom input[type="text"]{flex:1;min-width:160px}
+
+.oh-compare{margin-top:18px;padding:16px;border:1px dashed var(--line-dark);border-radius:var(--r-input);background:var(--white)}
+.oh-compare summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.oh-compare summary::after{content:"+";font-size:18px;color:var(--stone)}
+.oh-compare[open] summary::after{content:"\2212"}
+.oh-compare summary::-webkit-details-marker{display:none}
+.oh-compare-body{margin-top:12px;display:flex;flex-direction:column;gap:10px}
+.oh-compare textarea{width:100%;min-height:100px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.5;color:var(--ink);resize:vertical}
+.oh-diff{display:grid;grid-template-columns:84px 1fr 1fr;gap:8px;font-size:12.5px;line-height:1.5}
+.oh-diff-row{display:contents}
+.oh-diff-row > *{padding:6px 10px;border-bottom:1px solid var(--line)}
+.oh-diff-row[data-match="true"] > *{color:var(--stone)}
+.oh-diff-row[data-match="false"] > *{background:rgba(184,84,26,0.06);color:var(--ink)}
+.oh-diff-day{font-weight:600;color:var(--ink)}
+.oh-diff-cell{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px}
+.oh-diff-empty{font-style:italic;color:var(--stone)}
+
 @media print{
   body{background:#fff !important;color:#000 !important}
   header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,.oh-form,
@@ -165,6 +199,31 @@
       <div class="oh-warnings" id="ohWarnings" aria-live="polite" style="margin-top:10px;"></div>
     </div>
 
+    <div class="oh-closures">
+      <div class="oh-closures-head">
+        <h3>Any closed days coming up?</h3>
+        <span class="oh-count" id="ohClosureCount">0 selected</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--stone);margin:0;line-height:1.55;">Check any holiday you'll be closed for. We'll add them to the &ldquo;Add closures to my phone calendar&rdquo; download below.</p>
+      <ul class="oh-holiday-list" id="ohHolidayList" aria-label="Upcoming holidays"></ul>
+
+      <div class="oh-custom">
+        <span style="font-weight:600;color:var(--ink);">Custom closure:</span>
+        <input type="date" id="ohCustomDate" aria-label="Custom closure date" />
+        <input type="text" id="ohCustomName" placeholder="e.g. Private event, summer break" aria-label="Custom closure name" />
+        <button type="button" class="oh-task-btn" id="ohAddCustom">+ add</button>
+      </div>
+    </div>
+
+    <details class="oh-compare">
+      <summary>Already have hours posted somewhere? Paste them to compare.</summary>
+      <div class="oh-compare-body">
+        <p style="margin:0;font-size:12.5px;color:var(--ink-soft);line-height:1.55;">Paste your current Google or Yelp hours here. We'll diff them against what you entered above and flag any days that don't match. (We're looking for &ldquo;Monday: 11 AM&ndash;9 PM&rdquo;-style lines; minor formatting differences are ignored.)</p>
+        <textarea id="ohCompareText" spellcheck="false" placeholder="Monday: 11 AM – 9 PM&#10;Tuesday: 11 AM – 9 PM&#10;Wednesday: closed&#10;..."></textarea>
+        <div id="ohDiffResult" aria-live="polite"></div>
+      </div>
+    </details>
+
     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
       <button type="button" class="oh-task-btn" id="ohLoadSample">Load a sample restaurant</button>
       <button type="button" class="oh-task-btn" id="ohClear">Clear all</button>
@@ -225,7 +284,52 @@
       </div>
     </article>
 
-    <p style="font-size:12.5px;color:var(--stone);margin:0;line-height:1.6;text-align:center;"><strong>Phase 2 (coming soon):</strong> Yelp + Apple Maps blocks, holiday-closure picker, and a printable sign for your door.</p>
+    <article class="oh-task-card">
+      <header class="oh-task-head">
+        <h3>Update Yelp.</h3>
+        <span class="oh-task-format">For Yelp Business</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">Yelp uses a slightly different format than Google. Same drill — sign in, find &ldquo;Business Information,&rdquo; paste this in.</p>
+      <pre class="oh-task-block" id="ohYelpBlock" aria-label="Yelp paste block"></pre>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn oh-task-btn-primary" data-copy-target="ohYelpBlock" data-copy-label="Copy for Yelp">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy for Yelp
+        </button>
+      </div>
+    </article>
+
+    <article class="oh-task-card">
+      <header class="oh-task-head">
+        <h3>Update Apple Maps.</h3>
+        <span class="oh-task-format">For Apple Business Connect</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">Apple Business Connect is free and the second-most-checked map after Google. Sign in at <a href="https://businessconnect.apple.com" target="_blank" rel="noopener" style="color:var(--teal);">businessconnect.apple.com</a> and paste this into your hours.</p>
+      <pre class="oh-task-block" id="ohAppleBlock" aria-label="Apple Maps paste block"></pre>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn oh-task-btn-primary" data-copy-target="ohAppleBlock" data-copy-label="Copy for Apple Maps">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy for Apple Maps
+        </button>
+      </div>
+    </article>
+
+    <article class="oh-task-card" id="ohIcsCard" hidden>
+      <header class="oh-task-head">
+        <h3>Add the closures to your phone calendar.</h3>
+        <span class="oh-task-format">As an iCalendar (.ics) file</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">Download this file and double-click it on your phone or computer. Your calendar app will offer to add the dates &mdash; you'll get a reminder the morning before each closure so you can tell your staff. Works with Apple Calendar, Google Calendar, and Outlook.</p>
+      <p style="margin:8px 0 0;font-size:12px;color:var(--stone);" id="ohIcsCount">0 closures selected.</p>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn oh-task-btn-primary" id="ohDownloadIcs">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span data-label="Add closures to my calendar">Add closures to my calendar</span>
+        </button>
+      </div>
+    </article>
+
+    <p style="font-size:12.5px;color:var(--stone);margin:0;line-height:1.6;text-align:center;"><strong>Phase 3 (coming soon):</strong> a printable Storefront Sign for your door, an Open Hours Card to share, and a ZIP bundle with everything in it.</p>
 
   </div>
 </div></section>
@@ -305,8 +409,25 @@
   var emptyHint  = document.getElementById('ohEmptyHint');
   var checklist  = document.getElementById('ohChecklist');
   var googleBlock= document.getElementById('ohGoogleBlock');
+  var yelpBlock  = document.getElementById('ohYelpBlock');
+  var appleBlock = document.getElementById('ohAppleBlock');
   var jsonLdBlock= document.getElementById('ohJsonLdBlock');
   var emailBlock = document.getElementById('ohEmailBlock');
+  var holidayList= document.getElementById('ohHolidayList');
+  var closureCount = document.getElementById('ohClosureCount');
+  var icsCard    = document.getElementById('ohIcsCard');
+  var icsCountEl = document.getElementById('ohIcsCount');
+  var customDate = document.getElementById('ohCustomDate');
+  var customName = document.getElementById('ohCustomName');
+  var addCustomBtn = document.getElementById('ohAddCustom');
+  var compareText = document.getElementById('ohCompareText');
+  var diffResult = document.getElementById('ohDiffResult');
+
+  // Closures state — picked holidays + custom entries.
+  // selectedClosures maps holiday id (or 'custom-N' for custom) →
+  // { id, name, date, source: 'preset' | 'custom' }.
+  var selectedClosures = {};
+  var customCounter = 0;
 
   var SAMPLE = {
     name: 'Osteria Giardino',
@@ -403,6 +524,222 @@
     rerender();
   }
 
+  // ----- Holiday picker -----
+  function fmtHolidayDate(iso, locale){
+    // Parse YYYY-MM-DD as UTC to avoid local-tz off-by-one.
+    var p = String(iso).split('-');
+    if (p.length !== 3) return iso;
+    var d = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2]));
+    if (locale === 'es') {
+      return d.toLocaleDateString('es-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+    }
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+  }
+
+  function renderHolidayList(){
+    var holidays = window.OH.holidaysInRange();
+    if (!holidays.length) { holidayList.innerHTML = ''; return; }
+    holidayList.innerHTML = holidays.map(function(h){
+      var checked = !!selectedClosures[h.id];
+      return '<li class="oh-holiday" data-checked="' + checked + '" data-id="' + escAttr(h.id) + '">' +
+             '<input type="checkbox" ' + (checked ? 'checked' : '') + ' aria-label="Closed on ' + escAttr(h.name) + '" />' +
+             '<div><div class="oh-holiday-name">' + escHtml(h.name) + '</div>' +
+             '<div class="oh-holiday-note">' + escHtml(h.note || '') + '</div></div>' +
+             '<div class="oh-holiday-date">' + escHtml(fmtHolidayDate(h.date)) + '</div>' +
+             '</li>';
+    }).join('');
+  }
+
+  function renderCustomClosures(){
+    // Custom closures get appended after the preset list.
+    var existing = holidayList.querySelectorAll('[data-source="custom"]');
+    existing.forEach(function(n){ n.parentNode.removeChild(n); });
+    Object.keys(selectedClosures).forEach(function(id){
+      if (!/^custom-/.test(id)) return;
+      var c = selectedClosures[id];
+      var li = document.createElement('li');
+      li.className = 'oh-holiday';
+      li.setAttribute('data-checked', 'true');
+      li.setAttribute('data-id', id);
+      li.setAttribute('data-source', 'custom');
+      li.innerHTML =
+        '<input type="checkbox" checked aria-label="Closed on ' + escAttr(c.name) + '" />' +
+        '<div><div class="oh-holiday-name">' + escHtml(c.name) + '</div>' +
+        '<div class="oh-holiday-note">Custom closure</div></div>' +
+        '<div class="oh-holiday-date">' + escHtml(fmtHolidayDate(c.date)) + '</div>';
+      holidayList.appendChild(li);
+    });
+  }
+
+  function getClosureList(){
+    // Returns the array form sorted chronologically, suitable for
+    // ohGenerateIcs.
+    return Object.keys(selectedClosures).map(function(id){
+      var c = selectedClosures[id];
+      return { id: id, name: c.name, date: c.date };
+    }).sort(function(a, b){ return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; });
+  }
+
+  function paintClosureCount(){
+    var n = Object.keys(selectedClosures).length;
+    closureCount.textContent = n + ' selected';
+    if (icsCard) {
+      icsCard.hidden = n === 0;
+      if (icsCountEl) icsCountEl.textContent = n + ' closure' + (n === 1 ? '' : 's') + ' selected.';
+    }
+  }
+
+  holidayList.addEventListener('click', function(ev){
+    var li = ev.target.closest('.oh-holiday');
+    if (!li) return;
+    var id = li.getAttribute('data-id');
+    if (!id) return;
+    var cb = li.querySelector('input[type="checkbox"]');
+    // Click anywhere on the row toggles the checkbox (unless the user
+    // clicked the checkbox itself, which already toggled).
+    if (ev.target !== cb) cb.checked = !cb.checked;
+    if (cb.checked) {
+      // Look up the holiday in the preset list, or it's a custom row.
+      var holidays = window.OH.holidaysInRange();
+      var preset = holidays.find(function(h){ return h.id === id; });
+      if (preset) {
+        selectedClosures[id] = { name: preset.name, date: preset.date, source: 'preset' };
+      }
+      // Custom closures live in selectedClosures already.
+    } else {
+      delete selectedClosures[id];
+      // Re-render so the stale row drops if it was a custom entry.
+      if (li.getAttribute('data-source') === 'custom') {
+        li.parentNode.removeChild(li);
+      } else {
+        li.setAttribute('data-checked', 'false');
+      }
+    }
+    if (cb.checked) li.setAttribute('data-checked', 'true');
+    paintClosureCount();
+  });
+
+  addCustomBtn.addEventListener('click', function(){
+    var date = customDate.value;
+    var name = (customName.value || '').trim();
+    if (!date) return;
+    if (!name) name = 'Closed';
+    var id = 'custom-' + (++customCounter);
+    selectedClosures[id] = { name: name, date: date, source: 'custom' };
+    customDate.value = '';
+    customName.value = '';
+    renderCustomClosures();
+    paintClosureCount();
+  });
+
+  // ----- ICS download -----
+  var icsBtn = document.getElementById('ohDownloadIcs');
+  if (icsBtn) {
+    icsBtn.addEventListener('click', function(){
+      var closures = getClosureList();
+      if (!closures.length) return;
+      var ics = window.OH.generateIcs(closures);
+      var blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'open-hours-closures.ics';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'ics' } });
+      // Visual confirmation on the button text.
+      var span = icsBtn.querySelector('[data-label]');
+      if (span) {
+        var orig = span.getAttribute('data-label');
+        span.textContent = '✓ Downloaded — open it on your phone';
+        setTimeout(function(){ span.textContent = orig; }, 2400);
+      }
+    });
+  }
+
+  // ----- Compare-mode (paste-from-Google diff) -----
+  function parseCompareInput(text){
+    // Loose parser: looks for "<Day>: <hours>" lines. Returns
+    // { Mon: 'normalized', Tue: 'normalized', ... }. Times are
+    // normalized to "HH:MM-HH:MM" or 'closed'.
+    var out = {};
+    DAYS.forEach(function(d){ out[d] = null; });
+    var lines = String(text || '').split(/\r?\n/);
+    var dayNames = {
+      mon: 'Mon', monday: 'Mon', tue: 'Tue', tues: 'Tue', tuesday: 'Tue',
+      wed: 'Wed', wednesday: 'Wed', thu: 'Thu', thur: 'Thu', thurs: 'Thu',
+      thursday: 'Thu', fri: 'Fri', friday: 'Fri', sat: 'Sat', saturday: 'Sat',
+      sun: 'Sun', sunday: 'Sun'
+    };
+    lines.forEach(function(line){
+      var m = /^([A-Za-z]+)[\s:.,-]+(.*)$/.exec(line.trim());
+      if (!m) return;
+      var key = m[1].toLowerCase();
+      var canon = dayNames[key];
+      if (!canon) return;
+      var rest = m[2].trim();
+      if (!rest || /^closed$/i.test(rest) || /^cerrado$/i.test(rest)) {
+        out[canon] = 'closed'; return;
+      }
+      // Capture each "X – Y" range; tolerate hyphens, en-dashes, "to".
+      var ranges = rest.split(/\s*,\s*/).map(function(r){
+        var rm = /([0-9].*?)\s*[-–to]+\s*([0-9].*)/.exec(r);
+        if (!rm) return null;
+        var open = window.OH.parseTime(rm[1]);
+        var close = window.OH.parseTime(rm[2]);
+        if (!open || !close) return null;
+        return open + '-' + close;
+      }).filter(Boolean);
+      out[canon] = ranges.length ? ranges.join(',') : null;
+    });
+    return out;
+  }
+
+  function normalizeCurrentWeek(){
+    // Same shape as parseCompareInput's output, computed from `week`.
+    var out = {};
+    DAYS.forEach(function(d){
+      var services = (week[d] || []).map(function(s){
+        var open = window.OH.parseTime(s.opens);
+        var close = window.OH.parseTime(s.closes);
+        if (!open || !close) return null;
+        return open + '-' + close;
+      }).filter(Boolean);
+      out[d] = services.length ? services.join(',') : 'closed';
+    });
+    return out;
+  }
+
+  function paintDiff(){
+    var pasted = (compareText.value || '').trim();
+    if (!pasted) { diffResult.innerHTML = ''; return; }
+    var pastedHours = parseCompareInput(pasted);
+    var currentHours = normalizeCurrentWeek();
+    var rows = DAYS.map(function(d, idx){
+      var p = pastedHours[d];
+      var c = currentHours[d];
+      var match;
+      if (p == null) match = null; // Day missing from pasted text — skip.
+      else match = (p === c);
+      var pasted = p == null ? '<span class="oh-diff-empty">(not in your paste)</span>' : (p === 'closed' ? 'closed' : escHtml(p));
+      var current = c === 'closed' ? 'closed' : escHtml(c);
+      return '<div class="oh-diff-row" data-match="' + (match === false ? 'false' : 'true') + '">' +
+             '<div class="oh-diff-day">' + DAY_FULL[idx] + '</div>' +
+             '<div class="oh-diff-cell">Pasted: ' + pasted + '</div>' +
+             '<div class="oh-diff-cell">Above: ' + current + '</div></div>';
+    }).join('');
+    var mismatches = DAYS.filter(function(d){
+      var p = pastedHours[d]; if (p == null) return false;
+      return p !== currentHours[d];
+    }).length;
+    var hint = mismatches === 0
+      ? '<p style="font-size:13px;color:var(--status-good);margin:8px 0 0;font-weight:600;">✓ All days match what you entered above.</p>'
+      : '<p style="font-size:13px;color:var(--rust);margin:8px 0 0;font-weight:600;">⚠ ' + mismatches + ' day' + (mismatches === 1 ? '' : 's') + ' don\'t match. Update whichever source is wrong.</p>';
+    diffResult.innerHTML = '<div class="oh-diff" style="margin-top:8px;border:1px solid var(--line);border-radius:var(--r-sm);overflow:hidden;">' + rows + '</div>' + hint;
+  }
+  if (compareText) compareText.addEventListener('input', paintDiff);
+
   // ----- Render outputs from current state -----
   var rafQueued = false;
   function rerender(){
@@ -423,9 +760,12 @@
       output.hidden = false;
       emptyHint.hidden = true;
       googleBlock.textContent = window.OH.generatePlatformCopy(input, 'google');
+      yelpBlock.textContent   = window.OH.generatePlatformCopy(input, 'yelp');
+      appleBlock.textContent  = window.OH.generatePlatformCopy(input, 'apple');
       jsonLdBlock.textContent = window.OH.generateJsonLdScript(input);
       emailBlock.textContent  = window.OH.generateBuilderEmail(input);
       paintChecklist(v);
+      paintDiff();
       firePlausibleOnce(v);
     });
   }
@@ -459,8 +799,10 @@
         text: 'Cross-platform copy generated'
       },
       {
-        ok: false,
-        text: 'Sign ready to print (coming in next release)'
+        ok: Object.keys(selectedClosures).length > 0,
+        text: Object.keys(selectedClosures).length > 0
+          ? Object.keys(selectedClosures).length + ' closure' + (Object.keys(selectedClosures).length === 1 ? '' : 's') + ' added to calendar'
+          : 'Pick any holiday closures (optional) and add them to your calendar'
       }
     ];
     checklist.innerHTML = items.map(function(it){
@@ -560,8 +902,10 @@
     } else { settle('Select manually', 'error'); }
   }
 
-  // Initial render: empty week + empty form.
+  // Initial render: empty week + empty form + holiday list.
   renderWeek();
+  renderHolidayList();
+  paintClosureCount();
   rerender();
 })();
 </script>
