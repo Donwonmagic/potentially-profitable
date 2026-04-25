@@ -92,14 +92,21 @@ function meMedian(values) {
 
 var ME_QUADRANTS = ['Star', 'Plowhorse', 'Puzzle', 'Dog'];
 
-function meSummariseMenu(rawItems) {
-  // Input: array of raw item objects.
+function meSummariseMenu(rawItems, options) {
+  // Input:
+  //   rawItems: array of raw item objects.
+  //   options: { groupBy: 'category' } — when set, run the median split
+  //            within each category. Items with no category fall under
+  //            the implicit '(uncategorised)' bucket.
   // Output: {
   //   items: enriched items (incl. cm, share, quadrant),
   //   totals: { revenue, food_cost, contribution_margin, units, item_count, prime_cost_pct },
-  //   thresholds: { median_cm_dollars, median_share },
+  //   thresholds: { median_cm_dollars, median_share },        // whole-menu split
+  //   thresholds_by_category: { <cat>: { median_cm_dollars, median_share, item_count } },
+  //   group_by: 'category' | undefined,
   //   warnings: array of strings describing degenerate cases
   // }
+  var groupBy = options && options.groupBy === 'category' ? 'category' : undefined;
   var items = (rawItems || []).map(meNormalizeItem).filter(function(it){
     // Drop completely empty rows (no name AND no numbers); leave
     // the rest alone so users see warnings on partial input.
@@ -112,6 +119,8 @@ function meSummariseMenu(rawItems) {
       items: [],
       totals: { revenue: 0, food_cost: 0, contribution_margin: 0, units: 0, item_count: 0, prime_cost_pct: 0 },
       thresholds: { median_cm_dollars: 0, median_share: 0 },
+      thresholds_by_category: {},
+      group_by: groupBy,
       warnings: ['No items entered yet.']
     };
   }
@@ -165,17 +174,58 @@ function meSummariseMenu(rawItems) {
     warnings.push('Every item has the same sales count — the y-axis collapses. Add real units_sold figures.');
   }
 
-  // Assign quadrants. Items with negative CM always land in Dog.
+  // Per-category thresholds always computed — even in whole-menu mode,
+  // the per-category breakdown is useful in the per-item table.
+  var thresholdsByCategory = {};
+  var byCat = {};
   enriched.forEach(function(e){
-    var highCm = e.cm_dollars >= medianCm;
-    var highPop = e.share >= medianShare;
-    if (e.cm_dollars < 0) {
+    var cat = e.category || '(uncategorised)';
+    if (!byCat[cat]) byCat[cat] = [];
+    byCat[cat].push(e);
+  });
+  Object.keys(byCat).forEach(function(cat){
+    var grp = byCat[cat];
+    var grpCms = grp.map(function(e){ return e.cm_dollars; });
+    var grpShares = grp.filter(function(e){ return e.units_sold > 0; }).map(function(e){ return e.share; });
+    thresholdsByCategory[cat] = {
+      median_cm_dollars: meMedian(grpCms),
+      median_share: grpShares.length ? meMedian(grpShares) : 0,
+      item_count: grp.length
+    };
+  });
+
+  // Assign quadrants. Items with non-positive CM always land in Dog —
+  // a zero-CM item (sold at exact cost, comp, free promo) is making
+  // the rest of the menu work harder for it, regardless of popularity.
+  // In `groupBy: 'category'` mode the median split runs within each
+  // category (a $38 entrée and a $6 bread basket should not share an
+  // x-axis). Per Pavesic's refinement of Kasavana & Smith.
+  enriched.forEach(function(e){
+    var thr;
+    if (groupBy === 'category') {
+      var cat = e.category || '(uncategorised)';
+      thr = thresholdsByCategory[cat];
+    } else {
+      thr = { median_cm_dollars: medianCm, median_share: medianShare };
+    }
+    var highCm = e.cm_dollars >= thr.median_cm_dollars;
+    var highPop = e.share >= thr.median_share;
+    if (e.cm_dollars <= 0) {
       e.quadrant = 'Dog';
     } else if (highCm && highPop)        e.quadrant = 'Star';
     else if (!highCm && highPop)         e.quadrant = 'Plowhorse';
     else if (highCm && !highPop)         e.quadrant = 'Puzzle';
     else                                 e.quadrant = 'Dog';
   });
+
+  if (groupBy === 'category') {
+    var thinCats = Object.keys(thresholdsByCategory).filter(function(c){
+      return thresholdsByCategory[c].item_count < 3;
+    });
+    if (thinCats.length) {
+      warnings.push('Categories with fewer than 3 items have unstable medians: ' + thinCats.join(', ') + '.');
+    }
+  }
 
   // Totals.
   var revenue = 0, foodCost = 0, contributionMargin = 0;
@@ -200,6 +250,8 @@ function meSummariseMenu(rawItems) {
       median_cm_dollars: medianCm,
       median_share: medianShare
     },
+    thresholds_by_category: thresholdsByCategory,
+    group_by: groupBy,
     warnings: warnings
   };
 }
@@ -212,7 +264,7 @@ function meSummariseMenu(rawItems) {
 // vs after" view. Pure: never mutates the input items.
 // ------------------------------------------------------------
 
-function meSimulateChange(items, changes) {
+function meSimulateChange(items, changes, options) {
   var byIndex = {};
   (changes || []).forEach(function(c){ if (typeof c.index === 'number') byIndex[c.index] = c; });
   var patched = (items || []).map(function(it, idx){
@@ -226,7 +278,7 @@ function meSimulateChange(items, changes) {
       category:   it.category
     };
   });
-  return meSummariseMenu(patched);
+  return meSummariseMenu(patched, options);
 }
 
 // ------------------------------------------------------------

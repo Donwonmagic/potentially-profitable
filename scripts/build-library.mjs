@@ -1253,7 +1253,7 @@ function renderToolDeepLinks(locale, tool, glossaryTerms, articles) {
     })
     .join('\n        ');
 
-  const termCards = (glossaryTerms || []).slice(0, 2).map(term => `<a class="tool-deep-card tool-deep-card-term" href="${pathFor(locale, '/glossary/' + term.slug + '/')}">
+  const termCards = (glossaryTerms || []).slice(0, 4).map(term => `<a class="tool-deep-card tool-deep-card-term" href="${pathFor(locale, '/glossary/' + term.slug + '/')}">
           <span class="tool-deep-kind">${esc(t(locale, 'tool_deep_kind_glossary'))}</span>
           <h3>${term.head}</h3>
           ${term.aka ? `<p class="tool-deep-aka">${term.aka}</p>` : ''}
