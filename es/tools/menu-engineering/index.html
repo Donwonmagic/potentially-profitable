@@ -723,17 +723,26 @@
     var byQ = { Star: [], Plowhorse: [], Puzzle: [], Dog: [] };
     summary.items.forEach(function(it){ if (byQ[it.quadrant]) byQ[it.quadrant].push(it); });
     var actions = window.ME.ACTIONS_EN;
+    var toolLinks = {
+      Plowhorse: { href: '/es/tools/margin-math/#calc-priceraise', label: 'Re-costear en Margin Math &rarr;' },
+      Puzzle:    { href: '/es/tools/menu-copy/',                    label: 'Re-describir en Inspector de Copy &rarr;' }
+    };
     var html = '';
     ['Star','Plowhorse','Puzzle','Dog'].forEach(function(q){
       var a = actions[q];
       var list = byQ[q].map(function(it){
-        return '<li>' + escHtml(it.item || '(unnamed)') + ' &middot; ' + fmtMoney(it.cm_dollars) + ' CM &middot; ' + fmtPct(it.share) + '</li>';
+        return '<li>' + escHtml(it.item || '(sin nombre)') + ' &middot; ' + fmtMoney(it.cm_dollars) + ' CM &middot; ' + fmtPct(it.share) + '</li>';
       }).join('');
+      var tool = toolLinks[q];
+      var toolLine = tool && byQ[q].length > 0
+        ? '<p style="margin:8px 0 0;font-size:12px;"><a href="' + tool.href + '" style="color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor;">' + tool.label + '</a></p>'
+        : '';
       html += '<article class="me-action-card" data-q="' + q + '">' +
               '<h3>' + q + 's <span style="font-size:13px;font-weight:400;color:var(--stone);">(' + byQ[q].length + ')</span></h3>' +
               '<p class="me-action-headline">' + escHtml(a.headline) + '</p>' +
               '<p class="me-action-detail">' + escHtml(a.detail) + '</p>' +
-              (list ? '<ul class="me-action-items">' + list + '</ul>' : '<p style="font-size:12px;color:var(--stone);margin:0;">No items in this quadrant on this run.</p>') +
+              (list ? '<ul class="me-action-items">' + list + '</ul>' : '<p style="font-size:12px;color:var(--stone);margin:0;">Sin platos en este cuadrante.</p>') +
+              toolLine +
               '</article>';
     });
     actionsEl.innerHTML = html;

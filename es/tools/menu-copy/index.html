@@ -1,0 +1,1164 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="referrer" content="no-referrer" />
+<title>Inspector de Copy de Menú — Diagnóstico gratuito de lenguaje de menú | Muntin Digital</title>
+<meta name="description" content="Pega la descripción de un plato. Mira qué falta, qué funciona, qué arrastra — y por qué. Una herramienta para enseñar, no para reescribir. Se queda en tu navegador." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/es/tools/menu-copy/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/tools/menu-copy/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/menu-copy/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/menu-copy/" />
+<meta property="og:locale" content="es_US" />
+<meta property="og:locale:alternate" content="en_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Menu Copy Inspector — Free Menu-Language Diagnostic" />
+<meta property="og:description" content="Paste a dish description. The tool teaches you what to look for — sensory adjectives, provenance, hedge words, length, pricing — without rewriting it for you." />
+<meta property="og:url" content="https://muntin.digital/tools/menu-copy/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Menu Copy Inspector — Free Menu-Language Diagnostic" />
+<meta name="twitter:description" content="Paste a dish description. See sensory / provenance / technique / hedge / length / pricing diagnostics. Stays in your browser." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<link rel="preconnect" href="https://plausible.io" crossorigin />
+<link rel="dns-prefetch" href="https://plausible.io" />
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
+<link rel="stylesheet" href="/assets/site.css?v=20260424-bs1" />
+<style>.breadcrumb{visibility:hidden;padding-top:100px}
+/* === Menu Copy Inspector tool-scoped styles. Page-prefix .mc-*. === */
+.mc-input{display:flex;flex-direction:column;gap:14px}
+.mc-form{display:grid;grid-template-columns:1.6fr 1fr;gap:14px;align-items:start}
+@media(max-width:720px){.mc-form{grid-template-columns:1fr}}
+.mc-form-field{display:flex;flex-direction:column;gap:6px}
+.mc-form-field label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
+.mc-form-field input,.mc-form-field textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font:inherit;color:var(--ink);font-size:14px;line-height:1.55}
+.mc-form-field textarea{min-height:120px;resize:vertical;font-family:Georgia,"Times New Roman",serif;font-size:15px}
+.mc-form-field input:focus,.mc-form-field textarea:focus{outline:2px solid var(--teal);outline-offset:1px}
+.mc-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.mc-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background 140ms var(--ease-out),color 140ms var(--ease-out)}
+.mc-btn:hover{background:var(--teal);color:var(--cream)}
+.mc-btn-ghost{border-color:var(--line-dark);color:var(--ink)}
+.mc-btn-ghost:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+
+/* Annotated description — color-coded inline marks. */
+.mc-annotated{padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);font-family:Georgia,"Times New Roman",serif;font-size:18px;line-height:1.7;color:var(--ink)}
+.mc-mark{position:relative;border-bottom-width:2px;border-bottom-style:solid;padding:0 1px;cursor:help}
+.mc-mark[data-kind="sensory"]   {border-color:#1F4E5B}
+.mc-mark[data-kind="provenance"]{border-color:#3A6BB3}
+.mc-mark[data-kind="technique"] {border-color:#C68A2C}
+.mc-mark[data-kind="hedge"]     {border-color:var(--rust);background:rgba(184,84,26,0.08)}
+.mc-legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--ink-soft);margin-top:8px}
+.mc-legend span{display:inline-flex;align-items:center;gap:4px}
+.mc-legend i{display:inline-block;width:16px;height:0;border-bottom-width:2px;border-bottom-style:solid}
+.mc-legend i[data-kind="sensory"]   {border-color:#1F4E5B}
+.mc-legend i[data-kind="provenance"]{border-color:#3A6BB3}
+.mc-legend i[data-kind="technique"] {border-color:#C68A2C}
+.mc-legend i[data-kind="hedge"]     {border-color:var(--rust)}
+
+/* Scorecard */
+.mc-scorecard{display:flex;flex-direction:column;gap:14px}
+.mc-verdict{display:flex;align-items:center;gap:14px;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+.mc-verdict-pill{padding:6px 14px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cream)}
+.mc-verdict-pill[data-v="polish"]{background:var(--teal)}
+.mc-verdict-pill[data-v="edit"]  {background:#C68A2C}
+.mc-verdict-pill[data-v="rewrite"]{background:var(--rust)}
+.mc-verdict-score{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:24px;font-weight:600;color:var(--ink)}
+.mc-verdict-text{font-size:13.5px;line-height:1.5;color:var(--ink-soft);flex:1}
+.mc-axes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media(max-width:720px){.mc-axes{grid-template-columns:1fr}}
+.mc-axis{padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+.mc-axis-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);font-weight:700}
+.mc-axis-value{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:18px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;margin-top:4px}
+.mc-axis-detail{font-size:12px;line-height:1.5;color:var(--ink-soft);margin-top:4px}
+
+/* Action ladder */
+.mc-actions-list{display:flex;flex-direction:column;gap:10px}
+.mc-action{padding:14px 16px;border:1px solid var(--line);border-left-width:4px;border-radius:var(--r-input);background:var(--white)}
+.mc-action[data-lift="large"]  {border-left-color:var(--teal)}
+.mc-action[data-lift="medium"] {border-left-color:#C68A2C}
+.mc-action[data-lift="small"]  {border-left-color:var(--stone)}
+.mc-action-head{font-size:14px;font-weight:600;color:var(--ink);margin:0 0 4px}
+.mc-action-detail{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:0}
+.mc-action-lift{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);float:right}
+
+.mc-empty{padding:18px;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--cream-2);font-size:13.5px;color:var(--stone);text-align:center}
+
+.mc-modes{display:inline-flex;gap:0;border:1px solid var(--line);border-radius:999px;background:var(--white);padding:3px;margin-bottom:6px}
+.mc-mode-btn{padding:6px 14px;border:none;background:transparent;font:inherit;font-size:12.5px;font-weight:600;color:var(--stone);cursor:pointer;border-radius:999px}
+.mc-mode-btn[aria-selected="true"]{background:var(--teal);color:var(--cream)}
+
+.mc-paste{display:flex;flex-direction:column;gap:10px}
+.mc-paste textarea{width:100%;min-height:160px;padding:12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;line-height:1.5;color:var(--ink);resize:vertical}
+.mc-paste textarea:focus{outline:2px solid var(--teal);outline-offset:1px}
+.mc-paste-hint{font-size:12px;color:var(--stone);margin:0;line-height:1.55}
+.mc-paste-actions{display:flex;gap:8px;flex-wrap:wrap}
+
+.mc-bulk-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:18px}
+@media(max-width:720px){.mc-bulk-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.mc-bulk-card{padding:12px 14px;border:1px solid var(--line);border-left-width:4px;border-radius:var(--r-input);background:var(--white)}
+.mc-bulk-card[data-v="polish"]{border-left-color:var(--teal)}
+.mc-bulk-card[data-v="edit"]{border-left-color:#C68A2C}
+.mc-bulk-card[data-v="rewrite"]{border-left-color:var(--rust)}
+.mc-bulk-card[data-v="total"]{border-left-color:var(--stone)}
+.mc-bulk-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);font-weight:700}
+.mc-bulk-value{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:22px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;margin-top:4px;line-height:1.1}
+.mc-bulk-sub{font-size:11px;color:var(--stone);margin-top:2px}
+
+.mc-table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+.mc-table{width:100%;border-collapse:collapse;font-size:13px;min-width:680px}
+.mc-table thead th{background:var(--cream-2);font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--stone);text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line)}
+.mc-table td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.mc-table td.mc-num{text-align:right;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-variant-numeric:tabular-nums}
+.mc-table .mc-row-name{font-weight:600;color:var(--ink)}
+.mc-table .mc-row-desc{font-size:12.5px;color:var(--ink-soft);font-family:Georgia,"Times New Roman",serif;line-height:1.5;max-width:320px}
+.mc-v-pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--cream)}
+.mc-v-pill[data-v="polish"]{background:var(--teal)}
+.mc-v-pill[data-v="edit"]{background:#C68A2C}
+.mc-v-pill[data-v="rewrite"]{background:var(--rust)}
+
+.mc-export-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.mc-export-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background 160ms var(--ease-out),color 160ms var(--ease-out)}
+.mc-export-btn:hover{background:var(--teal);color:var(--cream)}
+.mc-export-btn svg{width:14px;height:14px}
+.mc-export-btn.copied{background:var(--status-good-tint);color:var(--status-good);border-color:var(--status-good)}
+.mc-export-btn.copy-failed{background:rgba(184,84,26,0.06);color:var(--rust);border-color:var(--rust)}
+.mc-export-btn-primary{background:var(--teal);color:var(--cream)}
+.mc-export-btn-primary:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+
+.mc-explorer{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px}
+.mc-pattern-card{padding:16px 18px;border:1px solid var(--line);border-left-width:4px;border-radius:var(--r-input);background:var(--white);display:flex;flex-direction:column;gap:8px}
+.mc-pattern-card[data-kind="sensory"]   {border-left-color:#1F4E5B}
+.mc-pattern-card[data-kind="provenance"]{border-left-color:#3A6BB3}
+.mc-pattern-card[data-kind="technique"] {border-left-color:#C68A2C}
+.mc-pattern-card[data-kind="hedge"]     {border-left-color:var(--rust)}
+.mc-pattern-card[data-kind="length"]    {border-left-color:var(--stone)}
+.mc-pattern-card[data-kind="pricing"]   {border-left-color:#7A6FB3}
+.mc-pattern-card h3{font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0}
+.mc-pattern-card .mc-pattern-meta{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);font-weight:700}
+.mc-pattern-card p{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink-soft)}
+.mc-pattern-card .mc-pattern-cite{font-size:12px;color:var(--stone);font-style:italic}
+.mc-pattern-words{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.mc-pattern-words code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;padding:2px 6px;background:var(--cream-2);border-radius:4px;color:var(--ink-soft)}
+.mc-pattern-words .mc-pattern-more{font-size:11px;color:var(--stone);font-style:italic}
+
+@media print{
+  body{background:#fff !important;color:#000 !important}
+  header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,.mc-input,
+  #how-private,.mm-next,#what-this-isnt{display:none !important}
+  .mc-annotated,.mc-verdict,.mc-axis,.mc-action{break-inside:avoid;page-break-inside:avoid}
+  a[href]:after{content:'' !important}
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/es/services/">Servicios</a>
+      <a href="/es/for/restaurants/">Restaurantes</a>
+      <a href="/es/learn/" class="nav-library-trigger">Biblioteca</a>
+      <a href="/es/work/">Trabajo</a>
+      <a href="/es/about/">Nosotros</a>
+    </nav>
+    <nav class="lang-switch" aria-label="Idioma">
+      <a href="/tools/menu-copy/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
+      <span class="lang-switch-current" aria-current="true">ES</span>
+    </nav>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Reserva una llamada de 20 min<span class="sr-only"> (abre en pestaña nueva)</span></a>
+  </div>
+</header>
+<nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/es/">Inicio</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><a href="/es/tools/">Herramientas</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><span aria-current="page">Inspector de Copy de Menú</span></nav>
+<main id="main">
+
+<section class="block"><div class="container">
+  <div style="max-width:760px;margin:0 auto;text-align:center;">
+    <span class="eyebrow">Herramienta gratis · se queda en tu navegador</span>
+    <h1 style="font-family:var(--font-display);font-size:clamp(34px,4.5vw,52px);font-weight:500;color:var(--ink);margin:14px 0 14px;line-height:1.1;">Lee tu menú como lo lee un comensal.</h1>
+    <p style="font-size:17px;line-height:1.6;color:var(--ink-soft);margin:0 0 14px;">Pega la descripción de un plato y obtén seis diagnósticos — adjetivos sensoriales, señales de procedencia, palabras de técnica, extensión, palabras de relleno, precio — cada uno anotado con la investigación detrás. El Inspector te enseña qué buscar. No reescribe por ti.</p>
+    <p style="font-size:13px;color:var(--stone);margin:0;"><a href="#how-private" style="color:inherit;border-bottom:1px dashed var(--teal);">Cómo cuidamos la privacidad de tu copy</a> · <a href="/es/glossary/menu-copy/" style="color:inherit;border-bottom:1px dashed var(--teal);">¿Qué es el copy de menú?</a></p>
+  </div>
+</div></section>
+
+<section class="block"><div class="container">
+  <div class="mc-input">
+    <div class="mc-modes" role="tablist" aria-label="Modo de entrada">
+      <button type="button" class="mc-mode-btn" role="tab" aria-selected="true"  data-mode="single">Un plato</button>
+      <button type="button" class="mc-mode-btn" role="tab" aria-selected="false" data-mode="whole">Menú completo</button>
+    </div>
+    <div class="mc-form" data-mode="single">
+      <div class="mc-form-field">
+        <label for="mcDesc">Descripción del plato</label>
+        <textarea id="mcDesc" spellcheck="true" autocomplete="off" placeholder="Pega una descripción aquí, por ejemplo: &#10;Tonnarelli with smoky pecorino, cracked black pepper, and aged Tuscan olive oil."></textarea>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="mc-form-field">
+          <label for="mcName">Nombre del plato</label>
+          <input type="text" id="mcName" placeholder="ej. Tonnarelli al pepe" />
+        </div>
+        <div class="mc-form-field">
+          <label for="mcPrice">Precio</label>
+          <input type="text" id="mcPrice" inputmode="decimal" placeholder="$24" />
+        </div>
+        <div class="mc-form-field">
+          <label for="mcTier">Categoría del restaurante</label>
+          <select id="mcTier" style="padding:11px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:14px;color:var(--ink);">
+            <option value="casual">Casual (rango 9–15 palabras)</option>
+            <option value="fineDining">Alta cocina (rango 12–22 palabras)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="mc-actions" data-mode="single">
+      <button type="button" class="mc-btn mc-btn-ghost" id="mcLoadSample">Cargar plato de ejemplo</button>
+      <button type="button" class="mc-btn mc-btn-ghost" id="mcSampleNext">Probar otro ejemplo</button>
+      <button type="button" class="mc-btn mc-btn-ghost" id="mcClear">Borrar</button>
+      <span style="margin-left:auto;font-size:12.5px;color:var(--stone);">Diagnóstico en vivo — cada tecla actualiza el resultado.</span>
+    </div>
+
+    <div class="mc-paste" data-mode="whole" hidden>
+      <p class="mc-paste-hint">Pega un CSV o TSV con una fila por plato. La primera fila debería ser un encabezado — los nombres típicos (<code>Plato</code>, <code>Descripción</code>, <code>Precio</code>) se mapean automáticamente. Funciona con tabs y comas; CSV con comillas también. <strong>Tip:</strong> si solo tienes nombre + descripción en una pegada, el parser lo descifra.</p>
+      <textarea id="mcPasteArea" spellcheck="false" autocomplete="off" placeholder="Plato,Descripción,Precio&#10;Tonnarelli al pepe,Hand-rolled tonnarelli with smoky pecorino and cracked pepper.,$24&#10;House salad,Our nice fresh house salad — just simply our best.,$12.99"></textarea>
+      <div class="mc-paste-actions">
+        <button type="button" class="mc-btn" id="mcParse">Analizar menú pegado</button>
+        <button type="button" class="mc-btn mc-btn-ghost" id="mcPasteSample">Pegar un CSV de ejemplo</button>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section class="block" id="mcOutput" data-mode="single" hidden><div class="container">
+  <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:24px;align-items:start;">
+    <div style="display:flex;flex-direction:column;gap:18px;min-width:0;">
+      <div>
+        <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px;">Descripción anotada</h2>
+        <div class="mc-annotated" id="mcAnnotated" aria-live="polite"></div>
+        <div class="mc-legend" aria-hidden="true">
+          <span><i data-kind="sensory"></i> Adjetivo sensorial</span>
+          <span><i data-kind="provenance"></i> Señal de procedencia</span>
+          <span><i data-kind="technique"></i> Técnica</span>
+          <span><i data-kind="hedge"></i> Relleno (arrastra)</span>
+        </div>
+      </div>
+      <div>
+        <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px;">Pasos sugeridos</h2>
+        <div class="mc-actions-list" id="mcActions" aria-label="Movimientos recomendados en orden de prioridad"></div>
+        <p style="font-size:12.5px;color:var(--stone);margin:10px 0 0;line-height:1.55;">Cada paso es una <em>dirección</em>, no una reescritura. El Inspector te enseña qué buscar, no qué palabras usar.</p>
+      </div>
+    </div>
+    <div class="mc-scorecard">
+      <div class="mc-verdict" id="mcVerdict"></div>
+      <div class="mc-axes" id="mcAxes" aria-label="Per-axis diagnostics"></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="block" id="mcWholeOutput" data-mode="whole" hidden><div class="container">
+  <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 14px;">Diagnóstico de menú completo</h2>
+  <div class="mc-bulk-summary" id="mcBulkSummary" aria-label="Resumen del menú"></div>
+  <div class="mc-table-wrap">
+    <table class="mc-table" id="mcBulkTable" aria-label="Diagnósticos por plato"></table>
+  </div>
+  <div style="margin-top:18px;">
+    <h3 style="font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 10px;">Exportar</h3>
+    <div class="mc-export-row">
+      <button type="button" class="mc-export-btn mc-export-btn-primary" id="mcDownloadCard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="12" y1="3" x2="12" y2="10"/></svg>
+        Descargar Ficha de Copy (PNG)
+      </button>
+      <button type="button" class="mc-export-btn" id="mcCopyCsv">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copiar como CSV
+      </button>
+      <button type="button" class="mc-export-btn" id="mcDownloadJson">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Descargar menu-copy-analysis.json
+      </button>
+      <button type="button" class="mc-export-btn" id="mcDownloadZip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M10 12v6"/><path d="M10 12h2"/></svg>
+        Descargar paquete ZIP
+      </button>
+    </div>
+    <p style="margin:10px 0 0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);">El <strong>PNG de Ficha de Copy</strong> es una imagen de 1200×1500 con la copy original a la izquierda, el diagnóstico a la derecha y una leyenda didáctica abajo — diseñada para que un chef o redactor la lea sin abrir esta URL. Hasta 4 platos por ficha; menús más largos generan una serie numerada. El CSV refleja los puntajes por plato; el JSON incluye la matemática completa + umbrales; el ZIP empaqueta todo más un README. Todo se compone en tu navegador — sin subida.</p>
+  </div>
+</div></section>
+
+<section class="block" id="mcEmptyHint"><div class="container">
+  <div class="mc-empty" id="mcEmpty">Escribe o pega una descripción arriba. O haz click en <button type="button" class="mc-btn mc-btn-ghost" id="mcEmptyLoad" style="padding:4px 10px;font-size:12px;">Cargar plato de ejemplo</button> para ver los diagnósticos sobre un ejemplo elegido a mano.</div>
+
+  <div style="max-width:1100px;margin:32px auto 0;">
+    <span class="eyebrow">Explorador de patrones</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:10px 0 4px;">Los seis patrones que el Inspector busca</h2>
+    <p style="font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0;">Léelos una vez y empezarás a verlos en tu propio menú. Léelos diez veces y no vas a necesitar esta herramienta. Cada tarjeta lista el léxico real que usa el motor de reglas; todo es código abierto en <code>/tools/menu-copy/menu-copy.js</code>.</p>
+    <div class="mc-explorer" id="mcExplorer" aria-label="Explorador de patrones"></div>
+  </div>
+</div></section>
+
+<section class="block" id="what-this-does"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">En lenguaje sencillo</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,34px);font-weight:500;color:var(--ink);margin:12px 0 14px;">Qué hace esta herramienta, en cuatro frases</h2>
+    <ol style="margin:0;padding-left:1.2em;font-size:15px;line-height:1.7;color:var(--ink-soft);display:flex;flex-direction:column;gap:8px;">
+      <li><strong>Pegas una descripción.</strong> Un plato a la vez, o un menú completo por CSV/TSV. El texto se queda en tu navegador y nunca sale.</li>
+      <li><strong>Obtienes seis diagnósticos.</strong> Adjetivos sensoriales, señales de procedencia, palabras de técnica, extensión, palabras de relleno, presentación de precio — cada uno evaluado contra metas respaldadas por investigación y anotado en línea para que veas qué se disparó.</li>
+      <li><strong>Obtienes una escalera de acciones, no una reescritura.</strong> El Inspector te dice qué dirección ayudaría — "añade 1 palabra sensorial", "nombra al productor", "corta estas palabras de relleno" — y explica por qué cada movimiento importa. Por diseño, nunca escoge las palabras por ti.</li>
+      <li><strong>Obtienes cuatro formas de llevártelo.</strong> La Ficha de Copy es un PNG de 1200&times;1500 con anotaciones + tarjetas diseñado para un lector no técnico. El CSV refleja los puntajes por plato. El JSON está estructurado para cualquier herramienta posterior. El ZIP empaqueta los cuatro.</li>
+    </ol>
+    <p style="font-size:13.5px;line-height:1.6;color:var(--stone);margin:14px 0 0;"><strong>No</strong> es un reescritor, un análisis de voz / tono, ni un sustituto de la ingeniería de menú. <a href="#what-this-isnt" style="color:inherit;border-bottom:1px dashed var(--teal);">Más sobre los límites abajo</a>.</p>
+  </div>
+</div></section>
+
+<section class="block bg-cream2" id="how-private"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">Predicar con el ejemplo</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:12px 0 12px;">Tu copy de menú se queda en tu navegador.</h2>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0 0 14px;">El motor completo de reglas — el léxico sensorial, la lista de técnicas, la lista de relleno — viene embebido en <code>/tools/menu-copy/menu-copy.js</code>, un único script sin dependencias que puedes leer directo. Sin subida, sin cuenta, sin escrituras a <code>localStorage</code>. Abre DevTools → Network y escribe en el cuadro: la lista de peticiones no crece.</p>
+    <p style="font-size:13px;color:var(--stone);margin:0;">Un recorrido verificable de nueve pasos y una Ficha de Copy imprimible llegan en una versión siguiente. Para la misma postura hoy, mira <a href="/es/tools/brand-suite/#how-we-protect" style="color:inherit;border-bottom:1px dashed var(--teal);">cómo Suite de Marca protege tu logo</a> — esta herramienta usa la misma arquitectura.</p>
+  </div>
+</div></section>
+
+<section class="block" id="what-this-isnt"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">Marco honesto</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">Qué no es</h2>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">El Inspector es filoso, pero es una herramienta específica — diseñada para enseñar, no para escribir. Saber qué no es es lo que lo hace durablemente útil.</p>
+  </div>
+  <div style="max-width:760px;margin:24px auto 0;display:flex;flex-direction:column;gap:14px;">
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No es un reescritor.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Por diseño. En 2027 cualquier chatbot reescribirá copy de menú adecuadamente; lo que ningún chatbot hace bien es enseñarle a un dueño a leer su propia copy con criterio. El Inspector te dice qué falta — no qué palabras usar para arreglarlo. Diez corridas trimestrales en dos años y vas a escribir mejores menús desde cero.</p>
+    </article>
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No es un análisis de voz / tono.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Un perfil de voz a nivel sistema (&ldquo;suenas como un farm-to-table de 2015&rdquo;) es una oferta paga aparte. El Inspector lee platos, no sistemas. Si el menú entero sale como &ldquo;voz ausente&rdquo; — densidad de señal baja, palabras genéricas en todas partes — es problema de voz de marca, no de pulido de copy.</p>
+    </article>
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No sustituye a la ingeniería de menú.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Una copy pulida sobre un Perro sigue siendo un Perro. Corre primero la <a href="/es/tools/menu-engineering/" style="color:inherit;border-bottom:1px dashed var(--teal);">Matriz de Ingeniería de Menú</a> para saber qué platos vale la pena reescribir. El Inspector es el <em>cómo</em>; la Matriz es el <em>cuál</em>.</p>
+    </article>
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No es un modelo completo de lenguaje.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Los léxicos están curados, no son exhaustivos. Un adjetivo sensorial que el Inspector no reconoce (o un ingrediente regional que debería marcar procedencia) no se va a disparar. Los diagnósticos son conservadores a propósito — los falsos negativos son más fáciles de arreglar que los falsos positivos. La v1 del léxico reconoce inglés; el soporte completo de español viene en camino.</p>
+    </article>
+  </div>
+  <div style="max-width:760px;margin:24px auto 0;padding:20px 22px;background:var(--cream-2,var(--cream));border-radius:var(--r-input);border:1px solid var(--line);">
+    <p style="margin:0 0 8px;font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);">Lo que <em>sí</em> es: una mejora permanente de habilidad que puedes correr trimestralmente.</p>
+    <p style="margin:0;font-size:14px;line-height:1.65;color:var(--ink-soft);">Tres audiencias, tres entregas. La <strong>Ficha de Copy</strong> es el visual que un lector no técnico puede usar — llévala al chef antes de la próxima reimpresión del menú. El <strong>CSV</strong> es para el contador o el operador haciendo comparaciones trimestrales. El <strong>JSON</strong> es para un desarrollador construyendo algo sobre tus datos. El Inspector mismo es el beneficio a fuego lento: diez dueños que lo corren una vez por trimestre durante dos años escriben mejores menús desde cero que antes.</p>
+  </div>
+  <div style="max-width:760px;margin:18px auto 0;padding:20px 22px;background:var(--teal-tint);border-radius:var(--r-input);border:1px solid var(--line);">
+    <p style="margin:0 0 8px;font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);">Cuando quieras una reescritura de voz, contrata al estudio.</p>
+    <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:var(--ink-soft);">Si el Inspector marca &ldquo;Reescribir&rdquo; en la mayoría de tu menú, no tienes problema de copy — tienes problema de voz. El trabajo de voz de marca es la oferta paga del estudio. Trae tu Ficha de Copy a la primera llamada.</p>
+    <a href="/es/services/" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:var(--teal);color:var(--cream);border-radius:999px;text-decoration:none;font-size:13px;font-weight:600;">Ver voz de marca y menú
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px;"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+  </div>
+</div></section>
+
+<section class="block"><div class="container">
+  <div class="mm-next">
+    <h2>A dónde seguir</h2>
+    <div class="mm-next-links">
+      <a href="/es/tools/menu-engineering/">Encuentra qué platos arreglar: Matriz de Ingeniería de Menú</a>
+      <a href="/es/tools/margin-math/">Corre la matemática unitaria: Margin Math</a>
+      <a href="/es/glossary/menu-copy/">Glosario: Copy de menú</a>
+      <a href="/es/glossary/sensory-adjective/">Glosario: Adjetivo sensorial</a>
+      <a href="/es/services/">Contrata al estudio para reescribir tu voz de marca</a>
+    </div>
+  </div>
+</div></section>
+
+<!-- LIBRARY:tool-deep-links:start -->
+<section class="tool-deep-links" aria-labelledby="tool-deep-h">
+  <div class="container">
+    <header class="tool-deep-head">
+      <span class="eyebrow">Aprende más</span>
+      <h2 id="tool-deep-h">Por qué existe esta herramienta.</h2>
+      <p class="tool-deep-blurb">Cada chequeo que esta herramienta hace conecta con un concepto específico en la biblioteca. Dos puntos de partida — una definición, una guía.</p>
+      <div class="tool-deep-topics"><a class="tool-deep-topic" href="/es/learn/topics/operations-margin/">Operaciones y margen</a>
+        <a class="tool-deep-topic" href="/es/learn/topics/conversions/">Conversiones y reservas</a></div>
+    </header>
+    <div class="tool-deep-grid">
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/menu-copy/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Copy de menú</h3>
+          <p class="tool-deep-aka">el lenguaje que vende, separado del plato</p>
+          <p class="tool-deep-snippet">Las palabras que acompañan a cada plato — la oración descriptiva, el nombre del plato, el precio tal como aparece en la página — vistas como…</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/sensory-adjective/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Adjetivo sensorial</h3>
+          <p class="tool-deep-aka">una palabra que nombra sabor, textura, temperatura o preparación</p>
+          <p class="tool-deep-snippet">Un modificador en la descripción de un plato que nombra una cualidad perceptual — sabor (ahumado, salobre, picante), textura (crocante, sedo…</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-article" href="/es/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">
+          <span class="tool-deep-kind">Artículo</span>
+          <h3>Cómo subir los precios del menú del restaurante sin perder reservas</h3>
+          <p class="tool-deep-snippet">El manual honesto para subir los precios del menú en el sitio web de un restaurante independiente en 2026 — qué platos subir, cuáles mantener, cómo escalonarlo, y los cambios en la web que evitan que caigan las reservas cuando los números del menú suben.</p>
+          <span class="tool-deep-cta">Leer la guía <span aria-hidden="true">→</span></span>
+        </a>
+    </div>
+  </div>
+</section>
+<!-- LIBRARY:tool-deep-links:end -->
+
+</main>
+<footer class="foot">
+  <div class="container foot-inner">
+    <div class="foot-col foot-brand"><a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home"><img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async"><sup class="tm" aria-hidden="true">&#8482;</sup></a><p class="foot-tagline">Structure Brings Clarity.</p></div>
+  </div>
+  <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/es/terms.html">Términos</a><a href="/es/privacy.html">Privacidad</a><a href="/es/accessibility.html">Accesibilidad</a><a href="/es/cookies.html">Cookies</a></nav></div>
+</footer>
+<script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="/tools/menu-engineering/menu-engineering.js?v=20260425-me1"></script>
+<script src="/tools/menu-copy/menu-copy.js?v=20260425-mc1"></script>
+<script src="/tools/menu-copy/card-render.js?v=20260425-mc2"></script>
+<script>
+/* Menu Copy Inspector — input wiring + live render.
+ *
+ * Privacy invariants enforced by this code:
+ *   - All math is window.MC. No fetch, no XHR, no FormData.
+ *   - Plausible event values are enum-bucketed via window.MC.
+ *   - No localStorage / sessionStorage / cookies. */
+(function(){
+  if (!window.MC) return;
+
+  var SAMPLES = [
+    {
+      name: 'Tonnarelli al pepe',
+      price: '$24',
+      description: 'Hand-rolled tonnarelli with smoky pecorino, cracked black pepper, and aged Tuscan olive oil.',
+      tier: 'casual'
+    },
+    {
+      name: 'House salad',
+      price: '$12.99',
+      description: 'Our nice fresh house salad — just simply our best.',
+      tier: 'casual'
+    },
+    {
+      name: 'Branzino',
+      price: '$38',
+      description: 'Whole Adriatic branzino salt-baked tableside, finished with charred Meyer lemon and Sicilian olive oil from Frantoio Galantino.',
+      tier: 'fineDining'
+    },
+    {
+      name: 'Pasta',
+      price: '$22',
+      description: 'Pasta.',
+      tier: 'casual'
+    },
+    {
+      name: 'Bolognese',
+      price: '$26',
+      description: 'Slow-simmered Bolognese over hand-cut pappardelle with Parmigiano-Reggiano aged 24 months.',
+      tier: 'casual'
+    },
+    {
+      name: 'Tomato toast',
+      price: '$14',
+      description: 'Heirloom tomatoes from Whitmore Farm on toasted country bread with sea salt, basil, and house-pressed olive oil.',
+      tier: 'casual'
+    },
+    {
+      name: 'Pork chop',
+      price: '$32',
+      description: 'A really nice pork chop with roasted vegetables and a delicious sauce — our chef’s favorite!',
+      tier: 'casual'
+    },
+    {
+      name: 'Carbonara',
+      price: '$23',
+      description: 'House-made guanciale, slow-braised eggs from Cream Line Dairy, pecorino di fossa.',
+      tier: 'casual'
+    }
+  ];
+
+  var descEl    = document.getElementById('mcDesc');
+  var nameEl    = document.getElementById('mcName');
+  var priceEl   = document.getElementById('mcPrice');
+  var tierEl    = document.getElementById('mcTier');
+  var loadBtn   = document.getElementById('mcLoadSample');
+  var nextBtn   = document.getElementById('mcSampleNext');
+  var clearBtn  = document.getElementById('mcClear');
+  var emptyLoad = document.getElementById('mcEmptyLoad');
+  var output    = document.getElementById('mcOutput');
+  var emptyHint = document.getElementById('mcEmptyHint');
+  var annotated = document.getElementById('mcAnnotated');
+  var verdictEl = document.getElementById('mcVerdict');
+  var axesEl    = document.getElementById('mcAxes');
+  var actionsEl = document.getElementById('mcActions');
+
+  var sampleCursor = 0;
+  var firstAnalysisFired = false;
+
+  function escHtml(v){
+    return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  function escAttr(v){
+    return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  }
+
+  function readForm(){
+    return {
+      name: nameEl.value || '',
+      price: priceEl.value || '',
+      description: descEl.value || '',
+      tier: tierEl.value || 'casual'
+    };
+  }
+
+  function loadSample(idx){
+    var s = SAMPLES[idx % SAMPLES.length];
+    descEl.value = s.description;
+    nameEl.value = s.name;
+    priceEl.value = s.price;
+    tierEl.value = s.tier || 'casual';
+    rerender();
+  }
+
+  // Annotate the description by walking word-by-word, inserting <span>
+  // wrappers for every word that fired in any rule family. Higher-
+  // priority kinds win when a word would qualify for several (hedge >
+  // sensory > technique).
+  function annotate(input, scored){
+    var text = input.description || '';
+    if (!text) return '<span style="color:var(--stone);">Type a description above to see annotations.</span>';
+
+    // Build a set of (lowercased token → kind) markings.
+    var marks = {};
+    function mark(words, kind, priority){
+      (words || []).forEach(function(w){
+        var t = String(w).toLowerCase();
+        if (!marks[t] || marks[t].priority < priority) {
+          marks[t] = { kind: kind, priority: priority };
+        }
+      });
+    }
+    if (scored) {
+      mark(scored.hedges.hits.map(function(h){ return h.word; }), 'hedge', 4);
+      mark(scored.sensory.hits.map(function(h){ return h.word; }), 'sensory', 3);
+      mark(scored.technique.hits, 'technique', 2);
+      mark(scored.provenance.hits.map(function(h){ return h.word; }), 'provenance', 1);
+    }
+
+    // Walk the original text, preserving punctuation + spacing.
+    var parts = text.split(/(\s+)/);
+    var html = parts.map(function(part){
+      if (/^\s+$/.test(part)) return part;
+      var stripped = window.MC.normalizeWord(part);
+      if (!stripped) return escHtml(part);
+      var hit = marks[stripped];
+      if (!hit) {
+        // Multi-word marks (e.g. "house-made") — match against the
+        // already-hyphenated form.
+        hit = marks[part.toLowerCase().replace(/[.,;:!?]+$/g, '')];
+      }
+      if (!hit) return escHtml(part);
+      var tooltip = ({
+        sensory:    'Sensory adjective — Wansink (2005) found descriptive labels lift selection +27% on average.',
+        provenance: 'Provenance signal — concrete origin lifts selection 13–20% in restaurant-research literature.',
+        technique:  'Technique word — communicates competence; Aaker-style brand-claim signal.',
+        hedge:      'Hedge word — Cornell research links these to reduced selection rate.'
+      })[hit.kind] || '';
+      return '<span class="mc-mark" data-kind="' + hit.kind + '" title="' + escAttr(tooltip) + '">' + escHtml(part) + '</span>';
+    }).join('');
+    return html;
+  }
+
+  function paintVerdict(scored){
+    var v = scored.verdict;
+    var cmt = ({
+      polish:  'Most signals are present. One or two small moves and this description is doing its job.',
+      edit:    'Some pieces are working; one or two are missing. The action ladder shows the highest-leverage moves.',
+      rewrite: 'Multiple signal families are empty or the length / hedge load is dragging hard. Worth rewriting from a fresh angle rather than polishing the current draft.'
+    })[v] || '';
+    verdictEl.innerHTML =
+      '<span class="mc-verdict-pill" data-v="' + v + '">' + v + '</span>' +
+      '<span class="mc-verdict-score">' + scored.score + '<span style="font-size:13px;color:var(--stone);font-weight:400;">/100</span></span>' +
+      '<span class="mc-verdict-text">' + escHtml(cmt) + '</span>';
+  }
+
+  function paintAxes(scored){
+    var rows = [];
+    function axis(label, value, detail){
+      return '<div class="mc-axis"><div class="mc-axis-label">' + escHtml(label) + '</div>' +
+             '<div class="mc-axis-value">' + escHtml(value) + '</div>' +
+             '<div class="mc-axis-detail">' + escHtml(detail) + '</div></div>';
+    }
+    var sCats = scored.sensory.categoriesUsed;
+    var sCount = scored.sensory.count;
+    rows.push(axis(
+      'Sensory',
+      sCount + ' word' + (sCount === 1 ? '' : 's') + ' · ' + sCats + '/4 categories',
+      sCats === 0 ? 'No sensory adjectives — this is the highest-leverage move.' :
+      sCats < 2  ? 'Reaching one more category compounds the lift.' :
+                   'Solid sensory base across multiple dimensions.'
+    ));
+    rows.push(axis(
+      'Provenance',
+      scored.provenance.count + ' signal' + (scored.provenance.count === 1 ? '' : 's'),
+      scored.provenance.count === 0 ? 'No origin or producer named — adding one carries 13–20% lift.' :
+                                      'Concrete origin signals are present.'
+    ));
+    rows.push(axis(
+      'Technique',
+      scored.technique.count + ' word' + (scored.technique.count === 1 ? '' : 's'),
+      scored.technique.count === 0 ? 'Nothing tells the diner what was DONE to the food.' :
+                                     'Technique words communicate competence.'
+    ));
+    rows.push(axis(
+      'Length',
+      scored.length.words + ' words · ' + scored.length.range.label,
+      scored.length.verdict === 'in-range'    ? 'Within the sweet spot for this tier.' :
+      scored.length.verdict === 'short-edge'  ? 'Just below the sweet spot.' :
+      scored.length.verdict === 'short'       ? 'Too short — reads as a stub.' :
+      scored.length.verdict === 'long-edge'   ? 'Just above the sweet spot.' :
+                                                'Too long — attention drops past the range.'
+    ));
+    rows.push(axis(
+      'Hedges',
+      scored.hedges.count + ' flagged',
+      scored.hedges.count === 0 ? 'No filler words detected.' :
+      scored.hedges.hits.map(function(h){ return h.word; }).join(', ')
+    ));
+    if (scored.pricing.hasPrice) {
+      rows.push(axis(
+        'Pricing',
+        scored.pricing.raw,
+        scored.pricing.signals.join(' ')
+      ));
+    } else {
+      rows.push(axis('Pricing', '—', 'Add a price to score how it reads on the menu.'));
+    }
+    axesEl.innerHTML = rows.join('');
+  }
+
+  function paintActions(scored){
+    var moves = window.MC.actionLadder(scored);
+    if (!moves.length) {
+      actionsEl.innerHTML = '<div class="mc-empty">Nothing flagged. The description is clearing every diagnostic.</div>';
+      return;
+    }
+    actionsEl.innerHTML = moves.map(function(m){
+      return '<div class="mc-action" data-lift="' + m.lift + '">' +
+             '<p class="mc-action-head"><span class="mc-action-lift">' + m.lift + ' lift</span>' + escHtml(m.headline) + '</p>' +
+             '<p class="mc-action-detail">' + escHtml(m.detail) + '</p></div>';
+    }).join('');
+  }
+
+  function firePlausibleOnce(scored){
+    if (firstAnalysisFired || !window.plausible) return;
+    firstAnalysisFired = true;
+    window.plausible('Menu Copy Inspector Analysis', { props: {
+      verdict: scored.verdict,
+      length:  scored.length.verdict
+    }});
+  }
+
+  var rafQueued = false;
+  function rerender(){
+    if (rafQueued) return;
+    rafQueued = true;
+    requestAnimationFrame(function(){
+      rafQueued = false;
+      var input = readForm();
+      if (!input.description.trim()) {
+        output.hidden = true;
+        emptyHint.hidden = false;
+        return;
+      }
+      var scored = window.MC.scoreItem(input, { locale: 'es' });
+      output.hidden = false;
+      emptyHint.hidden = true;
+      annotated.innerHTML = annotate(input, scored);
+      paintVerdict(scored);
+      paintAxes(scored);
+      paintActions(scored);
+      firePlausibleOnce(scored);
+    });
+  }
+
+  // ----- Explorador de patrones -----
+  function renderExplorer(){
+    var explorer = document.getElementById('mcExplorer');
+    if (!explorer || !window.MC) return;
+    function pickSample(arr, n){
+      n = Math.min(n, arr.length);
+      var step = Math.max(1, Math.floor(arr.length / n));
+      var out = [];
+      for (var i = 0; i < arr.length && out.length < n; i += step) out.push(arr[i]);
+      return out;
+    }
+    function wordList(words, maxShow){
+      maxShow = maxShow || 12;
+      var sample = pickSample(words, maxShow);
+      var html = sample.map(function(w){ return '<code>' + escHtml(w) + '</code>'; }).join('');
+      if (words.length > maxShow) {
+        html += '<span class="mc-pattern-more">+' + (words.length - maxShow) + ' más</span>';
+      }
+      return html;
+    }
+    var hedgeKeys = Object.keys(window.MC.HEDGES_ES || window.MC.HEDGES || {});
+    var cards = [
+      {
+        kind: 'sensory',
+        label: 'Mayor palanca',
+        title: 'Adjetivos sensoriales',
+        body: 'Palabras que nombran sabor, textura, temperatura o preparación. Wansink (2005) halló que las etiquetas descriptivas elevan la tasa de selección +27% en promedio.',
+        cite: 'Wansink (2005); Cornell SHA',
+        words: (window.MC.SENSORY_FLAVOR_ES || []).concat(window.MC.SENSORY_TEXTURE_ES || []).concat(window.MC.SENSORY_TEMPERATURE_ES || []).concat(window.MC.SENSORY_PREP_ES || [])
+      },
+      {
+        kind: 'provenance',
+        label: 'Señal concreta',
+        title: 'Procedencia',
+        body: 'Productor nombrado, región, raza, edad, o cualquier origen concreto. La elevación de selección en estudios promedia 13–20% por una señal creíble.',
+        cite: 'Cornell SHA',
+        words: (window.MC.PROVENANCE_KEYWORDS_ES || []).concat(window.MC.PROVENANCE_REGIONS_ES || [])
+      },
+      {
+        kind: 'technique',
+        label: 'Señal de competencia',
+        title: 'Técnica',
+        body: 'Lo que se le HIZO a la comida — braseado, ahumado, añejado. Comunica oficio. Audiencia distinta a la sensorial; ambas se apilan sobre el mismo plato.',
+        cite: 'Aaker (credibilidad de claim de marca)',
+        words: window.MC.TECHNIQUES_ES || window.MC.TECHNIQUES
+      },
+      {
+        kind: 'length',
+        label: 'Punto dulce',
+        title: 'Extensión',
+        body: 'Casual: 9–15 palabras por descripción. Alta cocina: 12–22. Bajo 6 se lee como recortado; pasando 25 la atención cae en picada.',
+        cite: 'Cornell SHA, estudio multi-tier',
+        words: ['9–15 (casual)', '12–22 (alta cocina)', '6 = piso', '25 = techo']
+      },
+      {
+        kind: 'hedge',
+        label: 'Arrastre',
+        title: 'Palabras de relleno',
+        body: 'Relleno que no aporta información y que demostradamente reduce la tasa de selección. Cada uso debería ser deliberado; el reflejo es el problema.',
+        cite: 'Cornell SHA análisis de hedges',
+        words: hedgeKeys
+      },
+      {
+        kind: 'pricing',
+        label: 'Presentación por plato',
+        title: 'Formato de precio',
+        body: 'Si el precio usa signo de dólar, decimales o precio psicológico (.95, .99). Cada convención señala algo del tier y la voz de marca.',
+        cite: 'Kimes & Wirtz, Cornell SHA',
+        words: ['$24', '24', '$24.00', '$19.95', '$19.99']
+      }
+    ];
+    explorer.innerHTML = cards.map(function(c){
+      return '<article class="mc-pattern-card" data-kind="' + c.kind + '">' +
+             '<span class="mc-pattern-meta">' + escHtml(c.label) + '</span>' +
+             '<h3>' + escHtml(c.title) + '</h3>' +
+             '<p>' + escHtml(c.body) + '</p>' +
+             '<div class="mc-pattern-words">' + wordList(c.words, c.kind === 'hedge' ? 16 : (c.kind === 'length' || c.kind === 'pricing' ? 99 : 12)) + '</div>' +
+             '<p class="mc-pattern-cite">' + escHtml(c.cite) + '</p>' +
+             '</article>';
+    }).join('');
+  }
+  renderExplorer();
+
+  loadBtn.addEventListener('click',   function(){ loadSample(0); sampleCursor = 1; });
+  emptyLoad.addEventListener('click', function(){ loadSample(0); sampleCursor = 1; });
+  nextBtn.addEventListener('click',   function(){ loadSample(sampleCursor); sampleCursor = (sampleCursor + 1) % SAMPLES.length; });
+  clearBtn.addEventListener('click',  function(){ descEl.value = ''; nameEl.value = ''; priceEl.value = ''; rerender(); });
+  ['input', 'change'].forEach(function(ev){
+    descEl.addEventListener(ev, rerender);
+    nameEl.addEventListener(ev, rerender);
+    priceEl.addEventListener(ev, rerender);
+    tierEl.addEventListener(ev, rerender);
+  });
+
+  var modeBtns = document.querySelectorAll('.mc-mode-btn');
+  var modePanels = {
+    single: document.querySelectorAll('[data-mode="single"]'),
+    whole:  document.querySelectorAll('[data-mode="whole"]')
+  };
+  function setMode(mode){
+    modeBtns.forEach(function(b){
+      b.setAttribute('aria-selected', b.getAttribute('data-mode') === mode ? 'true' : 'false');
+    });
+    Object.keys(modePanels).forEach(function(m){
+      modePanels[m].forEach(function(el){
+        if (el.classList.contains('mc-mode-btn')) return;
+        if (el.classList.contains('mc-input')) return;
+        el.hidden = (m !== mode);
+      });
+    });
+    if (mode === 'whole') {
+      output.hidden = true;
+      emptyHint.hidden = true;
+    } else {
+      var who = document.getElementById('mcWholeOutput');
+      if (who) who.hidden = true;
+      rerender();
+    }
+  }
+  modeBtns.forEach(function(b){
+    b.addEventListener('click', function(){ setMode(b.getAttribute('data-mode')); });
+  });
+
+  var pasteArea  = document.getElementById('mcPasteArea');
+  var parseBtn   = document.getElementById('mcParse');
+  var pasteSampleBtn = document.getElementById('mcPasteSample');
+  var wholeOut   = document.getElementById('mcWholeOutput');
+  var bulkSummary = document.getElementById('mcBulkSummary');
+  var bulkTable  = document.getElementById('mcBulkTable');
+
+  function parseMenuPaste(text){
+    if (!window.ME || !window.ME.parseTabularText) return parseFallback(text);
+    var raw = window.ME.parseTabularText(text);
+    var origLines = String(text || '').split(/\r?\n/).filter(function(l){ return l.trim().length > 0; });
+    var headerCells = [];
+    if (origLines.length) {
+      var delim = window.ME.detectDelimiter(text);
+      headerCells = origLines[0].split(delim instanceof RegExp ? delim : delim).map(function(s){
+        return String(s).trim().toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+      });
+    }
+    var descIdx = -1;
+    headerCells.forEach(function(h, i){
+      if (descIdx >= 0) return;
+      if (h === 'description' || h === 'desc' || h === 'descripcion' || h === 'descripción' || h === 'descripcion del plato') {
+        descIdx = i;
+      }
+    });
+    var items;
+    if (descIdx >= 0) {
+      var hasHeader = raw.headerRowDetected;
+      var dataLines = origLines.slice(hasHeader ? 1 : 0);
+      var priceIdx = headerCells.findIndex(function(h){ return h === 'price' || h === 'precio'; });
+      var nameIdx  = headerCells.findIndex(function(h){ return h === 'item' || h === 'name' || h === 'dish' || h === 'menu item' || h === 'plato' || h === 'nombre'; });
+      if (nameIdx < 0) nameIdx = 0;
+      items = dataLines.map(function(line){
+        var cells = String(line).split(/\t|,/).map(function(c){ return c.replace(/^"(.*)"$/, '$1').trim(); });
+        return { name: cells[nameIdx] || '', description: cells[descIdx] || '', price: priceIdx >= 0 ? (cells[priceIdx] || '') : '' };
+      });
+    } else {
+      items = raw.items.map(function(it){ return { name: it.item, description: it.category || '', price: it.price }; });
+    }
+    return { items: items, warnings: raw.warnings || [], descCol: descIdx >= 0 };
+  }
+  function parseFallback(text){
+    var lines = String(text || '').split(/\r?\n/).filter(function(l){ return l.trim().length > 0; });
+    if (!lines.length) return { items: [], warnings: ['Pegado vacío.'] };
+    return { items: lines.map(function(line){
+      var cells = line.split(/\t|,(?=(?:[^"]*"[^"]*")*[^"]*$)/).map(function(c){ return c.trim().replace(/^"(.*)"$/, '$1'); });
+      return { name: cells[0] || '', description: cells[1] || '', price: cells[2] || '' };
+    }), warnings: ['Parser de respaldo.'] };
+  }
+
+  function renderBulk(items){
+    if (!items || !items.length) { wholeOut.hidden = true; return; }
+    wholeOut.hidden = false;
+    var summary = window.MC.scoreMenu(items, { locale: 'es' });
+    var counts = { polish: 0, edit: 0, rewrite: 0 };
+    summary.items.forEach(function(it){ counts[it.verdict]++; });
+    bulkSummary.innerHTML =
+      bulkCard('Platos',   summary.summary.itemCount, 'descripciones analizadas',     'total') +
+      bulkCard('Pulir',    counts.polish,             'la mayoría de señales presentes', 'polish') +
+      bulkCard('Editar',   counts.edit,               '1–2 ajustes específicos',       'edit') +
+      bulkCard('Reescribir', counts.rewrite,          'vale la pena empezar de cero',  'rewrite');
+    var rows = summary.items.map(function(it){
+      return '<tr>' +
+             '<td><div class="mc-row-name">' + escHtml(it.name || '(sin nombre)') + '</div>' +
+                 '<div class="mc-row-desc">' + escHtml(it.description || '') + '</div></td>' +
+             '<td class="mc-num">' + it.length.words + '</td>' +
+             '<td class="mc-num">' + it.sensory.count + '/' + it.sensory.categoriesUsed + 'c</td>' +
+             '<td class="mc-num">' + it.provenance.count + '</td>' +
+             '<td class="mc-num">' + it.technique.count + '</td>' +
+             '<td class="mc-num">' + it.hedges.count + '</td>' +
+             '<td class="mc-num">' + it.score + '</td>' +
+             '<td><span class="mc-v-pill" data-v="' + it.verdict + '">' + it.verdict + '</span></td>' +
+             '</tr>';
+    }).join('');
+    bulkTable.innerHTML =
+      '<thead><tr><th>Plato / descripción</th><th class="mc-num">Palabras</th><th class="mc-num">Sensorial</th><th class="mc-num">Proc.</th><th class="mc-num">Téc.</th><th class="mc-num">Relleno</th><th class="mc-num">Puntaje</th><th>Veredicto</th></tr></thead>' +
+      '<tbody>' + rows + '</tbody>';
+    if (window.plausible) {
+      window.plausible('Menu Copy Inspector Analysis', { props: {
+        item_count:    window.MC.bucketItemCount(summary.summary.itemCount),
+        avg_words:     window.MC.bucketAvgWordCount(summary.summary.avgWordCount),
+        rewrite_ratio: window.MC.bucketRewriteRatio(summary.summary.itemCount, summary.summary.rewriteCount)
+      }});
+    }
+    return summary;
+  }
+  function bulkCard(label, value, sub, kind){
+    return '<div class="mc-bulk-card" data-v="' + kind + '">' +
+           '<div class="mc-bulk-label">' + escHtml(label) + '</div>' +
+           '<div class="mc-bulk-value">' + escHtml(String(value)) + '</div>' +
+           '<div class="mc-bulk-sub">' + escHtml(sub) + '</div></div>';
+  }
+  var latestSummary = null;
+  function rerunBulk(){
+    var parsed = parseMenuPaste(pasteArea.value || '');
+    latestSummary = renderBulk(parsed.items);
+  }
+  parseBtn.addEventListener('click', rerunBulk);
+  pasteSampleBtn.addEventListener('click', function(){
+    pasteArea.value =
+      'Plato,Descripción,Precio\n' +
+      'Tonnarelli al pepe,Hand-rolled tonnarelli with smoky pecorino, cracked black pepper, and aged Tuscan olive oil.,$24\n' +
+      'House salad,Our nice fresh house salad — just simply our best.,$12.99\n' +
+      'Branzino,Whole Adriatic branzino salt-baked tableside with charred Meyer lemon.,$38';
+    rerunBulk();
+  });
+
+  var copyCsvBtn      = document.getElementById('mcCopyCsv');
+  var downloadJsonBtn = document.getElementById('mcDownloadJson');
+  var downloadCardBtn = document.getElementById('mcDownloadCard');
+
+  function buildCsv(){
+    if (!latestSummary) return '';
+    var lines = ['Plato,Descripción,Precio,Palabras,Sensorial count,Sensorial cats,Procedencia,Técnica,Relleno,Veredicto extensión,Puntaje,Veredicto'];
+    latestSummary.items.forEach(function(it){
+      function csvCell(v){
+        var str = String(v == null ? '' : v);
+        return /[",\n]/.test(str) ? '"' + str.replace(/"/g, '""') + '"' : str;
+      }
+      lines.push([csvCell(it.name), csvCell(it.description), csvCell(it.price), it.length.words, it.sensory.count, it.sensory.categoriesUsed, it.provenance.count, it.technique.count, it.hedges.count, it.length.verdict, it.score, it.verdict].join(','));
+    });
+    return lines.join('\n');
+  }
+  function buildJson(){
+    if (!latestSummary) return '{}';
+    return JSON.stringify({
+      meta: {
+        tool: 'Muntin Digital — Inspector de Copy de Menú',
+        url: 'https://muntin.digital/es/tools/menu-copy/',
+        generated_at: new Date().toISOString(),
+        method: 'Six rules-based diagnostics (sensory, provenance, technique, length, hedge, pricing).'
+      },
+      summary: latestSummary.summary,
+      items: latestSummary.items
+    }, null, 2);
+  }
+  function downloadBlob(blob, filename){
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+  }
+  copyCsvBtn.addEventListener('click', function(){
+    var csv = buildCsv();
+    var orig = copyCsvBtn.lastChild.nodeValue;
+    var settle = function(label, kind){
+      copyCsvBtn.classList.remove('copied');
+      copyCsvBtn.classList.add(kind === 'error' ? 'copy-failed' : 'copied');
+      copyCsvBtn.lastChild.nodeValue = label;
+      setTimeout(function(){
+        copyCsvBtn.classList.remove('copied');
+        copyCsvBtn.classList.remove('copy-failed');
+        copyCsvBtn.lastChild.nodeValue = orig;
+      }, kind === 'error' ? 2400 : 1400);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(csv).then(function(){ settle(' Copiado', 'ok'); }, function(){ settle(' No se copió', 'error'); });
+    } else { settle(' No soportado', 'error'); }
+    if (window.plausible) window.plausible('Menu Copy Inspector Export', { props: { format: 'csv' } });
+  });
+  downloadJsonBtn.addEventListener('click', function(){
+    var blob = new Blob([buildJson()], { type: 'application/json' });
+    downloadBlob(blob, 'menu-copy-analysis.json');
+    if (window.plausible) window.plausible('Menu Copy Inspector Export', { props: { format: 'json' } });
+  });
+
+  function buildCardCanvases(){
+    if (!window.MCCard || !latestSummary) return [];
+    return window.MCCard.renderCopyCards({
+      summary: latestSummary,
+      strings: window.MCCard.DEFAULT_STRINGS_ES
+    });
+  }
+  downloadCardBtn.addEventListener('click', function(){
+    if (!latestSummary || !latestSummary.items.length) return;
+    var canvases = buildCardCanvases();
+    if (!canvases.length) return;
+    if (canvases.length === 1) {
+      window.MCCard.canvasToPngBlob(canvases[0]).then(function(blob){
+        downloadBlob(blob, 'ficha-copy.png');
+        if (window.plausible) window.plausible('Menu Copy Inspector Export', { props: { format: 'card-png' } });
+      });
+    } else {
+      Promise.all(canvases.map(window.MCCard.canvasToPngBlob)).then(function(blobs){
+        Promise.all(blobs.map(function(b){
+          return new Promise(function(res){
+            var r = new FileReader();
+            r.onload = function(){ res(new Uint8Array(r.result)); };
+            r.readAsArrayBuffer(b);
+          });
+        })).then(function(byteArrays){
+          var entries = byteArrays.map(function(bytes, i){
+            return { name: 'ficha-copy-' + (i + 1) + '.png', data: bytes };
+          });
+          downloadBlob(buildZipBlob(entries), 'fichas-copy.zip');
+          if (window.plausible) window.plausible('Menu Copy Inspector Export', { props: { format: 'card-png-multi' } });
+        });
+      });
+    }
+  });
+
+  // ----- ZIP bundle export -----
+  var CRC_TABLE = (function(){
+    var t = new Uint32Array(256);
+    for (var n = 0; n < 256; n++) {
+      var c = n;
+      for (var k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+      t[n] = c >>> 0;
+    }
+    return t;
+  })();
+  function crc32(bytes){
+    var c = 0xFFFFFFFF;
+    for (var i = 0; i < bytes.length; i++) c = CRC_TABLE[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+    return (c ^ 0xFFFFFFFF) >>> 0;
+  }
+  function strToBytes(s){ return new TextEncoder().encode(s); }
+
+  function buildZipBlob(entries){
+    var parts = [], centralParts = [], offset = 0;
+    var nowDate = new Date();
+    var dosTime = ((nowDate.getHours() & 0x1F) << 11) | ((nowDate.getMinutes() & 0x3F) << 5) | ((nowDate.getSeconds() / 2) & 0x1F);
+    var dosDate = (((nowDate.getFullYear() - 1980) & 0x7F) << 9) | (((nowDate.getMonth() + 1) & 0x0F) << 5) | (nowDate.getDate() & 0x1F);
+    entries.forEach(function(entry){
+      var nameBytes = strToBytes(entry.name);
+      var crc = crc32(entry.data);
+      var size = entry.data.length;
+      var lh = new Uint8Array(30 + nameBytes.length);
+      var dv = new DataView(lh.buffer);
+      dv.setUint32(0, 0x04034b50, true);
+      dv.setUint16(4, 20, true); dv.setUint16(6, 0, true); dv.setUint16(8, 0, true);
+      dv.setUint16(10, dosTime, true); dv.setUint16(12, dosDate, true);
+      dv.setUint32(14, crc, true); dv.setUint32(18, size, true); dv.setUint32(22, size, true);
+      dv.setUint16(26, nameBytes.length, true); dv.setUint16(28, 0, true);
+      lh.set(nameBytes, 30);
+      parts.push(lh); parts.push(entry.data);
+      var ch = new Uint8Array(46 + nameBytes.length);
+      var cv = new DataView(ch.buffer);
+      cv.setUint32(0, 0x02014b50, true);
+      cv.setUint16(4, 20, true); cv.setUint16(6, 20, true); cv.setUint16(8, 0, true); cv.setUint16(10, 0, true);
+      cv.setUint16(12, dosTime, true); cv.setUint16(14, dosDate, true);
+      cv.setUint32(16, crc, true); cv.setUint32(20, size, true); cv.setUint32(24, size, true);
+      cv.setUint16(28, nameBytes.length, true);
+      cv.setUint16(30, 0, true); cv.setUint16(32, 0, true); cv.setUint16(34, 0, true); cv.setUint16(36, 0, true);
+      cv.setUint32(38, 0, true); cv.setUint32(42, offset, true);
+      ch.set(nameBytes, 46);
+      centralParts.push(ch);
+      offset += lh.length + entry.data.length;
+    });
+    var cdSize = 0;
+    centralParts.forEach(function(c){ cdSize += c.length; });
+    var cdStart = offset;
+    centralParts.forEach(function(c){ parts.push(c); });
+    var eocd = new Uint8Array(22);
+    var ev = new DataView(eocd.buffer);
+    ev.setUint32(0, 0x06054b50, true);
+    ev.setUint16(4, 0, true); ev.setUint16(6, 0, true);
+    ev.setUint16(8, entries.length, true); ev.setUint16(10, entries.length, true);
+    ev.setUint32(12, cdSize, true); ev.setUint32(16, cdStart, true); ev.setUint16(20, 0, true);
+    parts.push(eocd);
+    return new Blob(parts, { type: 'application/zip' });
+  }
+
+  function buildReadme(){
+    if (!latestSummary) return '';
+    var s = latestSummary.summary;
+    var counts = { polish: 0, edit: 0, rewrite: 0 };
+    latestSummary.items.forEach(function(it){ counts[it.verdict]++; });
+    var lines = [];
+    lines.push('# Tu diagnóstico de copy de menú');
+    lines.push('');
+    lines.push('Generado por **Inspector de Copy de Menú** el ' + new Date().toISOString().slice(0, 10) + '.');
+    lines.push('Todo en este paquete se compuso en tu navegador. Tu copy de menú nunca salió de tu dispositivo.');
+    lines.push('');
+    lines.push('## Qué incluye este paquete');
+    lines.push('');
+    lines.push('- `ficha-copy-*.png` — la(s) **Ficha(s) de Copy**, imágenes de 1200×1500 con descripciones anotadas y tarjetas por plato. Hasta 4 platos por página.');
+    lines.push('- `menu-copy-data.csv` — tabla por plato con los seis diagnósticos.');
+    lines.push('- `menu-copy-analysis.json` — los mismos datos más metadatos del método.');
+    lines.push('- `README.md` — este archivo.');
+    lines.push('');
+    lines.push('## A simple vista');
+    lines.push('');
+    lines.push('- Platos analizados: **' + s.itemCount + '**');
+    lines.push('- Pulir: **' + counts.polish + '**  |  Editar: **' + counts.edit + '**  |  Reescribir: **' + counts.rewrite + '**');
+    lines.push('');
+    lines.push('## Método');
+    lines.push('');
+    lines.push('Seis diagnósticos basados en reglas: adjetivos sensoriales (Wansink 2005), señales de procedencia, palabras de técnica, distribución de extensión (sensible al tier), palabras de relleno (lista negra Cornell), presentación de precio (Kimes & Wirtz).');
+    lines.push('');
+    lines.push('## Hecho por Muntin Digital');
+    lines.push('');
+    lines.push('Inspector de Copy de Menú es una herramienta gratuita de **Muntin Digital** — un estudio web de restaurantes de una sola persona en Silver Spring, Maryland.');
+    lines.push('');
+    lines.push('- Estudio: https://muntin.digital');
+    lines.push('- Voz de marca (pago): https://muntin.digital/es/services/');
+    lines.push('- Herramienta: https://muntin.digital/es/tools/menu-copy/');
+    lines.push('');
+    lines.push('> La estructura aporta claridad.');
+    return lines.join('\n') + '\n';
+  }
+
+  var downloadZipBtn = document.getElementById('mcDownloadZip');
+  if (downloadZipBtn) {
+    downloadZipBtn.addEventListener('click', function(){
+      if (!latestSummary || !latestSummary.items.length) return;
+      var csv = buildCsv();
+      var json = buildJson();
+      var readme = buildReadme();
+      var canvases = buildCardCanvases();
+      Promise.all(canvases.map(window.MCCard.canvasToPngBlob)).then(function(blobs){
+        Promise.all(blobs.map(function(b){
+          return new Promise(function(res){
+            var r = new FileReader();
+            r.onload = function(){ res(new Uint8Array(r.result)); };
+            r.readAsArrayBuffer(b);
+          });
+        })).then(function(byteArrays){
+          var entries = [];
+          byteArrays.forEach(function(bytes, i){
+            entries.push({ name: 'ficha-copy-' + (i + 1) + '.png', data: bytes });
+          });
+          entries.push({ name: 'menu-copy-data.csv',     data: strToBytes(csv) });
+          entries.push({ name: 'menu-copy-analysis.json', data: strToBytes(json) });
+          entries.push({ name: 'README.md',              data: strToBytes(readme) });
+          downloadBlob(buildZipBlob(entries), 'inspector-copy-paquete.zip');
+        });
+      });
+      if (window.plausible) window.plausible('Menu Copy Inspector Export', { props: { format: 'zip' } });
+    });
+  }
+})();
+</script>
+</body>
+</html>
