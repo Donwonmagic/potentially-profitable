@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema#",
-  "_comment": "OG card manifest. Each entry produces <slug>.svg + <slug>.png in brand/og/. kind selects the template (page|article|research|tool). accent keys into PALETTE in scripts/build-og-cards.mjs. focus is an optional module { type: 'type'|'funnel'|'stat'|'score-ring'|'list'|'quote', ...data }. locale is for hreflang pairing; ES cards use slug '-es' suffix.",
+  "_comment": "OG card manifest. Each entry produces <slug>.svg + <slug>.png in brand/og/. kind selects the template (page|article|research|tool). accent keys into PALETTE in scripts/build-og-cards.mjs (per accent rule: speed/mobile=teal, conversions/reservations=rust, local-seo=teal, margin/operations=gold, trust=ink, brand=cream-on-ink/teal-on-cream, research=rust, tools=gold, hubs=ink). glyph keys into the GLYPHS registry in build-og-cards.mjs and renders left of the eyebrow as a subject cue. focus is an optional module { type: 'type'|'funnel'|'stat'|'score-ring'|'list'|'quote'|'checks', ...data }. locale is for hreflang pairing; ES cards use slug '-es' suffix.",
   "cards": [
     {
       "slug": "system",
@@ -13,7 +13,9 @@
       "title_italic": "system",
       "title_2": "is built.",
       "dek": "Tokens, scripts, translation pipeline, search, research. The moving parts, named.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      }
     },
     {
       "slug": "system-es",
@@ -25,7 +27,10 @@
       "title_italic": "este",
       "title_2": "sistema.",
       "dek": "Tokens, scripts, pipeline de traducción, búsqueda, investigación. Las piezas, con nombre.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "code"
     },
     {
       "slug": "learn",
@@ -37,7 +42,10 @@
       "title_italic": "web",
       "title_2": "that sells.",
       "dek": "Articles, research, tools, and a glossary — built to compound.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "glossary"
     },
     {
       "slug": "learn-es",
@@ -49,7 +57,10 @@
       "title_italic": "web",
       "title_2": "que vende.",
       "dek": "Artículos, investigación, herramientas y un glosario — construidos para acumular.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "glossary"
     },
     {
       "slug": "learn-start-here",
@@ -70,7 +81,8 @@
           "The math of fixing it",
           "Tools to check your own site"
         ]
-      }
+      },
+      "glyph": "glossary"
     },
     {
       "slug": "learn-start-here-es",
@@ -91,7 +103,8 @@
           "Las cuentas de arreglarlo",
           "Herramientas para revisar tu web"
         ]
-      }
+      },
+      "glyph": "glossary"
     },
     {
       "slug": "learn-research",
@@ -108,7 +121,8 @@
         "value": "5",
         "caption": "research notes, each a primary source",
         "source": "CITED ACROSS THE LIBRARY"
-      }
+      },
+      "glyph": "research"
     },
     {
       "slug": "learn-research-es",
@@ -125,9 +139,9 @@
         "value": "5",
         "caption": "notas de investigación, cada una una fuente primaria",
         "source": "CITADAS EN TODA LA BIBLIOTECA"
-      }
+      },
+      "glyph": "research"
     },
-
     {
       "slug": "library",
       "kind": "page",
@@ -138,7 +152,10 @@
       "title_italic": "library,",
       "title_2": "one click in.",
       "dek": "Articles, tools, research, and a 97-term glossary — built to compound.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "glossary"
     },
     {
       "slug": "library-es",
@@ -150,9 +167,11 @@
       "title_italic": "biblioteca,",
       "title_2": "a un clic.",
       "dek": "Artículos, herramientas, investigación y un glosario de 97 términos — diseñado para acumularse.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "glossary"
     },
-
     {
       "slug": "topics",
       "kind": "page",
@@ -163,7 +182,10 @@
       "title_italic": "one",
       "title_2": "library.",
       "dek": "Speed, conversions, local SEO, margin, trust, brand — pick the angle that matches your week.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "glossary"
     },
     {
       "slug": "topics-es",
@@ -175,9 +197,11 @@
       "title_italic": "una",
       "title_2": "biblioteca.",
       "dek": "Velocidad, conversiones, SEO local, margen, confianza, marca — elige el ángulo que cuadra con tu semana.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "glossary"
     },
-
     {
       "slug": "topic-speed-mobile",
       "kind": "page",
@@ -188,7 +212,10 @@
       "title_italic": "costs",
       "title_2": "you a diner.",
       "dek": "Why mobile load time decides the booking — and the 80/20 of speed work that moves the needle.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "speed"
     },
     {
       "slug": "topic-speed-mobile-es",
@@ -200,9 +227,11 @@
       "title_italic": "te cuesta",
       "title_2": "un comensal.",
       "dek": "Por qué el tiempo de carga móvil decide la reserva — y el 80/20 que mueve la aguja.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "speed"
     },
-
     {
       "slug": "topic-conversions",
       "kind": "page",
@@ -213,7 +242,10 @@
       "title_italic": "to a",
       "title_2": "booked table.",
       "dek": "The funnel six leaks every restaurant site has — and the fix for each.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "conversions"
     },
     {
       "slug": "topic-conversions-es",
@@ -225,9 +257,11 @@
       "title_italic": "a la mesa",
       "title_2": "reservada.",
       "dek": "Las seis fugas que tiene todo embudo de restaurante — y el arreglo para cada una.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "conversions"
     },
-
     {
       "slug": "topic-local-seo",
       "kind": "page",
@@ -238,7 +272,10 @@
       "title_italic": "decides",
       "title_2": "what to show.",
       "dek": "GBP, schema, reviews, and the on-site signals that put you in the map pack.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "local-seo"
     },
     {
       "slug": "topic-local-seo-es",
@@ -250,9 +287,11 @@
       "title_italic": "decide",
       "title_2": "qué mostrar.",
       "dek": "GBP, schema, reseñas, y las señales en el sitio que te ponen en el mapa.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "local-seo"
     },
-
     {
       "slug": "topic-operations-margin",
       "kind": "page",
@@ -263,7 +302,10 @@
       "title_italic": "math",
       "title_2": "of independence.",
       "dek": "Delivery, pricing, prime cost, and the website's role in protecting margin.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "margin"
     },
     {
       "slug": "topic-operations-margin-es",
@@ -275,9 +317,11 @@
       "title_italic": "honestas",
       "title_2": "de la independencia.",
       "dek": "Delivery, precios, costo primo, y el papel del sitio en proteger el margen.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "margin"
     },
-
     {
       "slug": "topic-trust-reviews",
       "kind": "page",
@@ -288,7 +332,10 @@
       "title_italic": "that",
       "title_2": "compound.",
       "dek": "Reviews, photos, response systems — the slow-build trust that keeps first-time guests.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "trust"
     },
     {
       "slug": "topic-trust-reviews-es",
@@ -300,9 +347,11 @@
       "title_italic": "que",
       "title_2": "se acumulan.",
       "dek": "Reseñas, fotos, sistemas de respuesta — la confianza que mantiene al primer visitante.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "trust"
     },
-
     {
       "slug": "topic-brand-design",
       "kind": "page",
@@ -313,7 +362,10 @@
       "title_italic": "palette —",
       "title_2": "before the food.",
       "dek": "Why a website's voice and craft decide whether a guest believes the food.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
     },
     {
       "slug": "topic-brand-design-es",
@@ -325,9 +377,11 @@
       "title_italic": "paleta —",
       "title_2": "antes del plato.",
       "dek": "Por qué la voz y el oficio del sitio deciden si un huésped cree en la comida.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
     },
-
     {
       "slug": "research-mobile-page-speed",
       "kind": "research",
@@ -342,7 +396,8 @@
         "value": "53%",
         "caption": "bounce after a 3-second mobile load",
         "source": "N = 900,000 MOBILE ADS · 2017"
-      }
+      },
+      "glyph": "speed"
     },
     {
       "slug": "research-mobile-page-speed-es",
@@ -358,9 +413,9 @@
         "value": "53%",
         "caption": "rebota tras 3 segundos de carga en móvil",
         "source": "N = 900,000 ANUNCIOS MÓVILES · 2017"
-      }
+      },
+      "glyph": "speed"
     },
-
     {
       "slug": "research-fittss-law",
       "kind": "research",
@@ -375,7 +430,8 @@
         "text": "The time to acquire a target is a function of its distance and size.",
         "attribution": "PAUL FITTS, 1954",
         "wrap": 26
-      }
+      },
+      "glyph": "research"
     },
     {
       "slug": "research-fittss-law-es",
@@ -391,9 +447,9 @@
         "text": "El tiempo para alcanzar un blanco depende de su distancia y tamaño.",
         "attribution": "PAUL FITTS, 1954",
         "wrap": 26
-      }
+      },
+      "glyph": "research"
     },
-
     {
       "slug": "research-local-business-websites",
       "kind": "research",
@@ -412,7 +468,8 @@
           "Phone · contact",
           "Menu or services"
         ]
-      }
+      },
+      "glyph": "local-seo"
     },
     {
       "slug": "research-local-business-websites-es",
@@ -432,9 +489,9 @@
           "Teléfono · contacto",
           "Menú o servicios"
         ]
-      }
+      },
+      "glyph": "local-seo"
     },
-
     {
       "slug": "research-cart-abandonment-rate",
       "kind": "research",
@@ -449,7 +506,8 @@
         "value": "70.19%",
         "caption": "of online carts abandoned (mean across 49 studies)",
         "source": "2024 — BAYMARD.COM/LISTS/CART-ABANDONMENT-RATE"
-      }
+      },
+      "glyph": "conversions"
     },
     {
       "slug": "research-cart-abandonment-rate-es",
@@ -465,9 +523,9 @@
         "value": "70.19%",
         "caption": "de carritos abandonados (promedio de 49 estudios)",
         "source": "2024 — BAYMARD.COM/LISTS/CART-ABANDONMENT-RATE"
-      }
+      },
+      "glyph": "conversions"
     },
-
     {
       "slug": "research-lighthouse-performance-scoring",
       "kind": "research",
@@ -481,7 +539,8 @@
         "type": "score-ring",
         "value": 90,
         "label": "THE GREEN THRESHOLD"
-      }
+      },
+      "glyph": "speed"
     },
     {
       "slug": "research-lighthouse-performance-scoring-es",
@@ -496,9 +555,9 @@
         "type": "score-ring",
         "value": 90,
         "label": "EL UMBRAL VERDE"
-      }
+      },
+      "glyph": "speed"
     },
-
     {
       "slug": "blog-losing-reservations",
       "kind": "article",
@@ -511,10 +570,23 @@
       "focus": {
         "type": "funnel",
         "label": "THE FUNNEL",
-        "data": [100, 85, 73, 50, 47],
-        "labels": [100, 85, 73, 50, 47],
+        "data": [
+          100,
+          85,
+          73,
+          50,
+          47
+        ],
+        "labels": [
+          100,
+          85,
+          73,
+          50,
+          47
+        ],
         "lost_label": "53 lost per 100 visitors"
-      }
+      },
+      "glyph": "reservations"
     },
     {
       "slug": "blog-losing-reservations-es",
@@ -528,12 +600,24 @@
       "focus": {
         "type": "funnel",
         "label": "EL EMBUDO",
-        "data": [100, 85, 73, 50, 47],
-        "labels": [100, 85, 73, 50, 47],
+        "data": [
+          100,
+          85,
+          73,
+          50,
+          47
+        ],
+        "labels": [
+          100,
+          85,
+          73,
+          50,
+          47
+        ],
         "lost_label": "53 perdidas por cada 100 visitas"
-      }
+      },
+      "glyph": "reservations"
     },
-
     {
       "slug": "blog-doordash-math",
       "kind": "article",
@@ -548,7 +632,8 @@
         "value": "30%",
         "caption": "platform fee against a 12% operating margin",
         "source": "DOORDASH PARTNER AGREEMENT · 2026"
-      }
+      },
+      "glyph": "delivery"
     },
     {
       "slug": "blog-doordash-math-es",
@@ -564,9 +649,9 @@
         "value": "30%",
         "caption": "comisión de la plataforma contra un margen operativo del 12%",
         "source": "ACUERDO PARTNER DOORDASH · 2026"
-      }
+      },
+      "glyph": "delivery"
     },
-
     {
       "slug": "blog-menu-prices",
       "kind": "article",
@@ -585,7 +670,8 @@
           "Reset the anchor",
           "Protect the loved item"
         ]
-      }
+      },
+      "glyph": "margin"
     },
     {
       "slug": "blog-menu-prices-es",
@@ -605,9 +691,9 @@
           "Restablece el ancla",
           "Protege el plato querido"
         ]
-      }
+      },
+      "glyph": "margin"
     },
-
     {
       "slug": "blog-restaurant-cost",
       "kind": "article",
@@ -622,7 +708,8 @@
         "value": "$3–15k",
         "caption": "end-to-end build — templated to bespoke",
         "source": "MUNTIN DIGITAL · 2026 INDEX"
-      }
+      },
+      "glyph": "margin"
     },
     {
       "slug": "blog-restaurant-cost-es",
@@ -638,9 +725,9 @@
         "value": "$3–15k",
         "caption": "desarrollo completo — plantilla a medida",
         "source": "MUNTIN DIGITAL · ÍNDICE 2026"
-      }
+      },
+      "glyph": "margin"
     },
-
     {
       "slug": "blog-wix-vs-custom",
       "kind": "article",
@@ -659,7 +746,8 @@
           "Template ceiling vs. craft",
           "Lock-in vs. portability"
         ]
-      }
+      },
+      "glyph": "brand"
     },
     {
       "slug": "blog-wix-vs-custom-es",
@@ -679,9 +767,9 @@
           "Techo de plantilla vs. oficio",
           "Dependencia vs. portabilidad"
         ]
-      }
+      },
+      "glyph": "brand"
     },
-
     {
       "slug": "audit",
       "kind": "tool",
@@ -695,7 +783,8 @@
         "type": "score-ring",
         "value": 75,
         "label": "A REAL RESULT"
-      }
+      },
+      "glyph": "audit"
     },
     {
       "slug": "audit-es",
@@ -710,9 +799,9 @@
         "type": "score-ring",
         "value": 75,
         "label": "UN RESULTADO REAL"
-      }
+      },
+      "glyph": "audit"
     },
-
     {
       "slug": "audit-restaurants",
       "kind": "tool",
@@ -725,11 +814,21 @@
       "focus": {
         "type": "checks",
         "items": [
-          { "label": "Mobile-friendly menu", "pass": true },
-          { "label": "Schema markup", "pass": false },
-          { "label": "Online ordering", "pass": true }
+          {
+            "label": "Mobile-friendly menu",
+            "pass": true
+          },
+          {
+            "label": "Schema markup",
+            "pass": false
+          },
+          {
+            "label": "Online ordering",
+            "pass": true
+          }
         ]
-      }
+      },
+      "glyph": "audit"
     },
     {
       "slug": "audit-restaurants-es",
@@ -743,13 +842,22 @@
       "focus": {
         "type": "checks",
         "items": [
-          { "label": "Menú amigable en móvil", "pass": true },
-          { "label": "Marcado de esquema", "pass": false },
-          { "label": "Pedidos en línea", "pass": true }
+          {
+            "label": "Menú amigable en móvil",
+            "pass": true
+          },
+          {
+            "label": "Marcado de esquema",
+            "pass": false
+          },
+          {
+            "label": "Pedidos en línea",
+            "pass": true
+          }
         ]
-      }
+      },
+      "glyph": "audit"
     },
-
     {
       "slug": "tool-margin-math",
       "kind": "tool",
@@ -759,7 +867,10 @@
       "title_italic": "math",
       "title_2": "for your menu.",
       "dek": "Delivery break-even, price raise, prime cost, covers — run in your browser, by you.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "margin"
     },
     {
       "slug": "tool-margin-math-es",
@@ -770,9 +881,11 @@
       "title_italic": "margen",
       "title_2": "para tu menú.",
       "dek": "Punto de equilibrio con delivery, alza de precios, prime cost, cubiertos — corre en tu navegador.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "margin"
     },
-
     {
       "slug": "tool-brand-suite",
       "kind": "tool",
@@ -782,7 +895,10 @@
       "title_italic": "from your",
       "title_2": "logo.",
       "dek": "Palette, accessible pairs, WCAG grid, CSS tokens — extracted from your mark, in your browser.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
     },
     {
       "slug": "tool-brand-suite-es",
@@ -793,9 +909,11 @@
       "title_italic": "desde tu",
       "title_2": "logo.",
       "dek": "Paleta, pares accesibles, cuadrícula WCAG, tokens CSS — desde tu marca, en tu navegador.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
     },
-
     {
       "slug": "home",
       "kind": "page",
@@ -806,7 +924,10 @@
       "title_italic": "web",
       "title_2": "that sells.",
       "dek": "A free library of articles, tools, and research — and the studio behind them.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
     },
     {
       "slug": "home-es",
@@ -818,9 +939,11 @@
       "title_italic": "web",
       "title_2": "que vende.",
       "dek": "Una biblioteca gratis de artículos, herramientas e investigación — y el estudio detrás.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
     },
-
     {
       "slug": "about",
       "kind": "page",
@@ -831,7 +954,10 @@
       "title_italic": "I wish",
       "title_2": "had existed.",
       "dek": "A decade on the dining-room floor. The studio that came out of it. DMV based.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
     },
     {
       "slug": "about-es",
@@ -843,9 +969,11 @@
       "title_italic": "que quería",
       "title_2": "haber tenido.",
       "dek": "Una década en el salón. El estudio que salió de eso. Con base en DMV.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
     },
-
     {
       "slug": "services",
       "kind": "page",
@@ -864,7 +992,8 @@
           "Full visual identity",
           "Monthly management"
         ]
-      }
+      },
+      "glyph": "audit"
     },
     {
       "slug": "services-es",
@@ -884,9 +1013,9 @@
           "Identidad visual completa",
           "Gestión mensual"
         ]
-      }
+      },
+      "glyph": "audit"
     },
-
     {
       "slug": "restaurants",
       "kind": "page",
@@ -897,7 +1026,10 @@
       "title_italic": "that matches",
       "title_2": "the room.",
       "dek": "Built by someone who works hospitality nights. Silver Spring, MD.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "reservations"
     },
     {
       "slug": "restaurants-es",
@@ -909,7 +1041,10 @@
       "title_italic": "a la altura",
       "title_2": "de la sala.",
       "dek": "Hecha por alguien que trabaja turnos de hospitalidad. Silver Spring, MD.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "reservations"
     }
   ]
 }
