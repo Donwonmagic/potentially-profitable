@@ -327,14 +327,16 @@ function indexByTopic(locale) {
 // ---------- shared head/nav/footer fragments ----------
 
 function pageHead(locale, { title, description, canonical, ogImage }) {
-  // Default OG image: reuse the existing /brand/og/learn.png card.
-  // Per-page templates (term pages, etc.) override via the ogImage
-  // option. Adding topic/library-specific OG cards is a follow-up;
-  // for now the Library hub card is a fine fallback.
+  // Default OG image: the Library hub card. Renderers (renderTopicsHub,
+  // renderTopicPage, renderTermPage) override via ogImage when they
+  // have a more specific card. ES pages use the -es suffix.
   if (!ogImage) {
-    ogImage = locale === 'es' ? '/brand/og/learn-es.png' : '/brand/og/learn.png';
-  } else if (locale === 'es' && ogImage === '/brand/og/glossary.png') {
-    ogImage = '/brand/og/glossary-es.png';
+    ogImage = locale === 'es' ? '/brand/og/library-es.png' : '/brand/og/library.png';
+  } else if (locale === 'es') {
+    // Swap any EN-suffixed default to its ES counterpart.
+    if (ogImage === '/brand/og/glossary.png') ogImage = '/brand/og/glossary-es.png';
+    if (ogImage === '/brand/og/learn.png') ogImage = '/brand/og/learn-es.png';
+    if (ogImage === '/brand/og/topics.png') ogImage = '/brand/og/topics-es.png';
   }
   // Compute hreflang counterparts. canonical is locale-correct
   // already; build the other locale's URL by toggling the /es/ prefix.
@@ -646,10 +648,16 @@ function renderTopicPage(locale, topic, content) {
 </section>`);
   }
 
+  // Topic-specific OG card. Slug pattern is "topic-<slug>" (or
+  // "-es" suffix for ES). Falls back to library default if a
+  // bespoke card is missing — pageHead handles that.
+  const topicCardSlug = `topic-${topic.slug}${locale === 'es' ? '-es' : ''}`;
+
   return `${pageHead(locale, {
     title: locale === 'es' ? `${name} — Biblioteca Muntin Digital` : `${name} — Muntin Digital library`,
     description: desc,
     canonical,
+    ogImage: `/brand/og/${topicCardSlug}.png`,
   })}
 ${navHeader(altUrl)}
 
@@ -728,6 +736,7 @@ function renderTopicsHub(locale, byTopicForLocale) {
       ? 'Explora la biblioteca Muntin Digital por tema — velocidad y móvil, conversiones y reservas, SEO local, operaciones y margen, confianza y reseñas, marca y diseño.'
       : 'Browse the Muntin Digital library by topic — speed and mobile, conversions and reservations, local SEO, operations and margin, trust and reviews, brand and design.',
     canonical,
+    ogImage: locale === 'es' ? '/brand/og/topics-es.png' : '/brand/og/topics.png',
   })}
 ${navHeader(altUrl)}
 
@@ -1310,6 +1319,222 @@ function injectToolDeepLinks(locale, toolSlug, tool, glossaryTerm, article) {
   return 'inserted';
 }
 
+// ---------- glossary auto-linker ----------
+//
+// For every blog post, find the first whole-word mention of each
+// glossary term inside the article body and wrap it with a link
+// to the term's standalone page (/glossary/<slug>/). Skips:
+//
+//   - already-linked text (<a>...</a>)
+//   - code / pre / kbd / samp blocks
+//   - headings (h1-h6)
+//   - <aside> blocks (further-reading, see-also, sources)
+//   - <details> blocks (cite drawers)
+//   - <svg> / <style> / <script>
+//
+// Idempotent via LIBRARY:autolink:start/end markers — re-runs strip
+// any prior auto-links from the source first, then re-stamp from
+// scratch. Hand-edits inside marker pairs will be lost on rebuild;
+// editorial links should live OUTSIDE markers.
+
+const AUTOLINK_SKIP_TAGS = new Set([
+  'a', 'code', 'pre', 'kbd', 'samp',
+  'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+  'aside', 'details', 'svg', 'style', 'script',
+]);
+
+const AUTOLINK_VOID_TAGS = new Set([
+  'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input',
+  'link', 'meta', 'param', 'source', 'track', 'wbr',
+]);
+
+// Walk article body chars; return list of safe [start, end) ranges
+// where matching is allowed. Tracks a skip-stack of nested tags;
+// when the stack contains any AUTOLINK_SKIP_TAGS member, we're not
+// in a safe zone.
+function computeSafeRanges(html, articleStart, articleEnd) {
+  const ranges = [];
+  const stack = [];
+  let i = articleStart;
+  let segStart = -1;
+
+  const isSafe = () => stack.every(t => !AUTOLINK_SKIP_TAGS.has(t));
+
+  function openSeg(at) { if (segStart < 0 && isSafe()) segStart = at; }
+  function closeSeg(at) {
+    if (segStart >= 0 && at > segStart) ranges.push([segStart, at]);
+    segStart = -1;
+  }
+
+  while (i < articleEnd) {
+    const c = html[i];
+    if (c !== '<') { openSeg(i); i++; continue; }
+
+    // Hit a tag — close any open text segment.
+    closeSeg(i);
+
+    // Comment: <!-- ... -->
+    if (html.startsWith('<!--', i)) {
+      const end = html.indexOf('-->', i + 4);
+      i = end < 0 ? articleEnd : end + 3;
+      continue;
+    }
+    // CDATA / doctype — skip to next >
+    if (html[i + 1] === '!' || html[i + 1] === '?') {
+      const end = html.indexOf('>', i);
+      i = end < 0 ? articleEnd : end + 1;
+      continue;
+    }
+    // Closing tag </x>
+    if (html[i + 1] === '/') {
+      const end = html.indexOf('>', i);
+      if (end < 0) { i = articleEnd; continue; }
+      const name = html.slice(i + 2, end).trim().toLowerCase().split(/\s+/)[0];
+      // Pop matching tag from stack (or nearest match)
+      for (let k = stack.length - 1; k >= 0; k--) {
+        if (stack[k] === name) { stack.splice(k, 1); break; }
+      }
+      i = end + 1;
+      continue;
+    }
+    // Opening tag <x ...>
+    const end = html.indexOf('>', i);
+    if (end < 0) { i = articleEnd; continue; }
+    const tagBody = html.slice(i + 1, end).trim();
+    const selfClose = tagBody.endsWith('/');
+    const name = tagBody.split(/[\s/]/)[0].toLowerCase();
+    if (!selfClose && !AUTOLINK_VOID_TAGS.has(name)) {
+      stack.push(name);
+    }
+    i = end + 1;
+  }
+  closeSeg(articleEnd);
+  return ranges;
+}
+
+// Escape a term head so it can be embedded in a regex source.
+function escapeRegex(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function autoLinkGlossary(locale, blogSlug, terms) {
+  const root = locale === 'es' ? join(REPO, 'es/blog') : join(REPO, 'blog');
+  const file = join(root, blogSlug, 'index.html');
+  let html;
+  try { html = readFileSync(file, 'utf8'); } catch { return 0; }
+
+  // Idempotent reset — strip every prior auto-link marker pair,
+  // restoring the inner text. Run before searching so prior matches
+  // don't pollute the safe-range map.
+  html = html.replace(
+    /<!-- LIBRARY:autolink:start --><a [^>]*>([\s\S]*?)<\/a><!-- LIBRARY:autolink:end -->/g,
+    (_m, inner) => inner,
+  );
+
+  const articleStart = html.indexOf('<article class="article-body"');
+  if (articleStart < 0) return 0;
+  const articleEnd = html.indexOf('</article>', articleStart);
+  if (articleEnd < 0) return 0;
+
+  const safeRanges = computeSafeRanges(html, articleStart, articleEnd);
+  if (!safeRanges.length) return 0;
+
+  // Sort terms by head length DESC so multi-word terms ("Core Web
+  // Vitals") match before sub-words ("Core").
+  const sorted = [...terms].sort((a, b) => {
+    const al = stripTags(a.head).length;
+    const bl = stripTags(b.head).length;
+    return bl - al;
+  });
+
+  // Track placed matches to avoid overlapping links.
+  const placed = []; // sorted by start ascending
+
+  function isFree(s, e) {
+    for (const p of placed) {
+      if (s < p.end && e > p.start) return false;
+    }
+    return true;
+  }
+
+  for (const term of sorted) {
+    const head = decodeEntities(stripTags(term.head)).trim();
+    if (!head || head.length < 3) continue;
+    // Word-boundary, case-insensitive. Allow internal whitespace
+    // collapse to handle rare double-spaces in source.
+    const re = new RegExp(`\\b${escapeRegex(head).replace(/\\ /g, '\\s+')}\\b`, 'i');
+    let placedHere = false;
+    for (const [rs, re2] of safeRanges) {
+      if (placedHere) break;
+      const slice = html.slice(rs, re2);
+      const m = re.exec(slice);
+      if (!m) continue;
+      const mStart = rs + m.index;
+      const mEnd = mStart + m[0].length;
+      if (!isFree(mStart, mEnd)) continue;
+      placed.push({ start: mStart, end: mEnd, term });
+      placed.sort((a, b) => a.start - b.start);
+      placedHere = true;
+    }
+  }
+
+  if (!placed.length) return 0;
+
+  // Apply in reverse offset order so earlier offsets stay valid.
+  placed.sort((a, b) => b.start - a.start);
+  for (const p of placed) {
+    const matched = html.slice(p.start, p.end);
+    const url = pathFor(locale, `/glossary/${p.term.slug}/`);
+    const link = `<!-- LIBRARY:autolink:start --><a href="${url}">${matched}</a><!-- LIBRARY:autolink:end -->`;
+    html = html.slice(0, p.start) + link + html.slice(p.end);
+  }
+
+  writeFileSync(file, html, 'utf8');
+  return placed.length;
+}
+
+// ---------- glossary hub permalinks ----------
+//
+// Each term in /glossary/index.html (and the ES mirror) gets a
+// small "Open the term page →" link injected right before its
+// closing </article> tag. Idempotent — markers (LIBRARY:gloss-perma:
+// start/end) wrap the link so re-runs replace, not append. Points
+// readers from the scannable hub at /glossary/ into the standalone
+// term page at /glossary/<slug>/ — the URL blog prose now links to.
+
+function injectGlossaryPermalinks(locale) {
+  const file = locale === 'es'
+    ? join(REPO, 'es/glossary/index.html')
+    : join(REPO, 'glossary/index.html');
+  let html;
+  try { html = readFileSync(file, 'utf8'); } catch { return 0; }
+
+  // Strip any existing permalink markers, then inject fresh ones.
+  // This keeps the script idempotent even if a term's slug or label
+  // changes.
+  const stripped = html.replace(
+    /\n?\s*<!-- LIBRARY:gloss-perma:start -->[\s\S]*?<!-- LIBRARY:gloss-perma:end -->/g,
+    '',
+  );
+
+  const label = locale === 'es' ? 'Abrir la página del término' : 'Open the term page';
+
+  // For each <article class="gloss-term" id="X" data-industries="...">
+  // ... </article>, inject a permalink right before the closing.
+  let count = 0;
+  const out = stripped.replace(
+    /(<article class="gloss-term" id="([a-z0-9-]+)"[^>]*>[\s\S]*?)(\n\s*<\/article>)/g,
+    (_m, body, slug, close) => {
+      count++;
+      const block = `\n        <!-- LIBRARY:gloss-perma:start -->\n        <p class="gloss-term-permalink"><a href="${pathFor(locale, '/glossary/' + slug + '/')}">${label} <span aria-hidden="true">&rarr;</span></a></p>\n        <!-- LIBRARY:gloss-perma:end -->`;
+      return body + block + close;
+    },
+  );
+
+  if (out !== html) writeFileSync(file, out, 'utf8');
+  return count;
+}
+
 // ---------- run ----------
 
 let byTopic; // module-level reference for the topics hub renderer
@@ -1382,6 +1607,25 @@ for (const locale of LOCALES) {
     console.log(`\nPer-term glossary pages (${locale}): ${count} term page(s) generated.`);
   }
 
+  // Glossary hub permalinks — connect the scannable hub at
+  // /glossary/ into the standalone term pages at /glossary/<slug>/.
+  {
+    const stamped = injectGlossaryPermalinks(locale);
+    console.log(`Glossary hub permalinks (${locale}): ${stamped} term(s) stamped.`);
+  }
+
+  // Glossary auto-linker — for every blog post, find the first
+  // whole-word mention of each glossary term in the article body
+  // and wrap it with a link to that term's standalone page.
+  {
+    const { terms } = parseGlossary(locale);
+    console.log(`\nGlossary auto-link (${locale}):`);
+    for (const blogSlug of Object.keys(tagsDoc.blog_posts)) {
+      const linked = autoLinkGlossary(locale, blogSlug, terms);
+      console.log(`  ${blogSlug.padEnd(56)} ${linked} link(s) stamped`);
+    }
+  }
+
   // Update the "Cited in N articles" labels on the research hub.
   // Both locales have a research hub with the same DOM pattern.
   {
@@ -1390,8 +1634,7 @@ for (const locale of LOCALES) {
     try { html = readFileSync(file, 'utf8'); } catch { html = ''; }
     if (!html) continue;
     let changed = 0;
-    const labelRe = locale === 'es' ? /Citada en/ : /Cited in/;
-    const labelText = locale === 'es' ? 'Citada en' : 'Cited in';
+    const labelText = locale === 'es' ? 'Citado en' : 'Cited in';
     const singular = locale === 'es' ? 'artículo' : 'article';
     const plural = locale === 'es' ? 'artículos' : 'articles';
     for (const researchSlug of Object.keys(tagsDoc.research_notes)) {
