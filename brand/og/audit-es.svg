@@ -6,11 +6,36 @@
     </radialGradient>
   </defs>
   <rect width="1200" height="630" fill="#1F4E5B"/>
+  
+    <defs>
+      <pattern id="muntinField" x="0" y="0" width="140" height="140"
+               patternUnits="userSpaceOnUse">
+        <g transform="translate(18, 18)"
+           fill="none" stroke="#FAF7F2" stroke-width="1.5"
+           stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="0" y="0" width="104" height="104"/>
+          <line x1="52" y1="0" x2="52" y2="104"/>
+          <line x1="0" y1="36" x2="104" y2="36"/>
+        </g>
+      </pattern>
+    </defs>
+    <rect width="1200" height="630"
+          fill="url(#muntinField)" opacity="0.05"/>
+  
   <rect width="1200" height="630" fill="url(#toolglow)"/>
   <rect x="0" y="0" width="12" height="252" fill="#C5A059"/>
   <rect x="0" y="252" width="12" height="378" fill="#C5A059" opacity="0.4"/>
 
-  <text x="80" y="104"
+  
+    <g transform="translate(80, 78) scale(1.5)"
+       fill="none" stroke="#C5A059" stroke-width="1.167"
+       stroke-linecap="round" stroke-linejoin="round"
+       color="#C5A059" opacity="0.85">
+      <rect x="4" y="4" width="16" height="16" rx="1"/>
+          <polyline points="8 12 11 15 16 9"/>
+    </g>
+  
+  <text x="136" y="104"
         font-family="Inter, Arial, sans-serif" font-size="13"
         font-weight="700" letter-spacing="4" fill="#C5A059">GRATIS · 30 SEGUNDOS · SIN REGISTRO</text>
 
