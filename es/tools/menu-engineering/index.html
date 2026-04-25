@@ -1,0 +1,1104 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="referrer" content="no-referrer" />
+<title>Matriz de Ingeniería de Menú — Analizador gratuito de menú | Muntin Digital</title>
+<meta name="description" content="Pega tu menú — platos, precios, costo de comida, unidades vendidas — y obtén una matriz de Estrellas / Caballos de tiro / Acertijos / Perros con una acción corta por plato. Tus datos se quedan en tu navegador." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/es/tools/menu-engineering/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/tools/menu-engineering/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/menu-engineering/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/menu-engineering/" />
+<meta property="og:locale" content="es_US" />
+<meta property="og:locale:alternate" content="en_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Menu Engineering Matrix — Free Restaurant Menu Analyzer" />
+<meta property="og:description" content="Paste your menu, get a 2×2 of Stars / Plowhorses / Puzzles / Dogs and one action per item. Stays in your browser." />
+<meta property="og:url" content="https://muntin.digital/tools/menu-engineering/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Menu Engineering Matrix — Free Restaurant Menu Analyzer" />
+<meta name="twitter:description" content="Paste your menu. Get a Stars / Plowhorses / Puzzles / Dogs matrix and one-line actions per item." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<link rel="preconnect" href="https://plausible.io" crossorigin />
+<link rel="dns-prefetch" href="https://plausible.io" />
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
+<link rel="stylesheet" href="/assets/site.css?v=20260424-bs1" />
+<style>.breadcrumb{visibility:hidden;padding-top:100px}
+/* === Menu Engineering tool-scoped styles. Page-prefix .me-*. === */
+.me-input{display:flex;flex-direction:column;gap:14px}
+.me-input-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.me-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background 140ms var(--ease-out),color 140ms var(--ease-out)}
+.me-btn:hover{background:var(--teal);color:var(--cream)}
+.me-btn-ghost{border-color:var(--line-dark);color:var(--ink)}
+.me-btn-ghost:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.me-grid-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+.me-grid{width:100%;border-collapse:collapse;font-size:13px;min-width:560px}
+.me-grid th,.me-grid td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+.me-grid thead th{background:var(--cream-2);font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--stone);text-transform:uppercase}
+.me-grid input[type="text"],.me-grid input[type="number"]{width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font:inherit;font-size:13px;color:var(--ink)}
+.me-grid input:focus{outline:2px solid var(--teal);outline-offset:1px}
+.me-grid td.me-num input{text-align:right;font-variant-numeric:tabular-nums;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.me-grid td.me-row-actions{width:36px;text-align:center}
+.me-grid .me-remove-row{background:none;border:none;color:var(--stone);cursor:pointer;font-size:18px;line-height:1;padding:0 6px}
+.me-grid .me-remove-row:hover{color:var(--rust)}
+.me-warnings{display:flex;flex-direction:column;gap:6px;font-size:13px;line-height:1.55}
+.me-warnings li{padding:8px 12px;border-radius:var(--r-sm);background:rgba(184,84,26,0.06);color:var(--rust);border:1px solid rgba(184,84,26,0.18);list-style:none}
+.me-warnings ul{margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.me-output{display:flex;flex-direction:column;gap:24px}
+.me-totals{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media(max-width:720px){.me-totals{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.me-totals-card{padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+.me-totals-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);font-weight:700}
+.me-totals-value{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:18px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;margin-top:4px}
+.me-totals-sub{font-size:11px;color:var(--stone);margin-top:2px}
+.me-matrix-wrap{padding:18px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+.me-matrix-svg{width:100%;height:auto;display:block}
+.me-matrix-legend{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:12px;font-size:12px}
+.me-matrix-legend span{display:inline-flex;align-items:center;gap:6px;color:var(--ink-soft)}
+.me-matrix-legend i{display:inline-block;width:10px;height:10px;border-radius:50%}
+.me-q-Star      {background:var(--teal)}
+.me-q-Plowhorse {background:#C68A2C}
+.me-q-Puzzle    {background:#6E5DB3}
+.me-q-Dog       {background:var(--rust)}
+.me-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media(max-width:720px){.me-actions{grid-template-columns:1fr}}
+.me-action-card{padding:18px 20px;border:1px solid var(--line);border-left-width:4px;border-radius:var(--r-input);background:var(--white);display:flex;flex-direction:column;gap:8px}
+.me-action-card[data-q="Star"]{border-left-color:var(--teal);background:#F8FBFB}
+.me-action-card[data-q="Plowhorse"]{border-left-color:#C68A2C;background:#FCFAF4}
+.me-action-card[data-q="Puzzle"]{border-left-color:#6E5DB3;background:#FAF8FC}
+.me-action-card[data-q="Dog"]{border-left-color:var(--rust);background:#FCF7F3}
+.me-action-card h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0}
+.me-action-card .me-action-headline{font-size:14px;font-weight:600;color:var(--ink);margin:0}
+.me-action-card .me-action-detail{font-size:13.5px;line-height:1.55;color:var(--ink-soft);margin:0}
+.me-action-card .me-action-items{margin:6px 0 0;padding:0;list-style:none;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;color:var(--ink);display:flex;flex-direction:column;gap:2px}
+.me-action-card .me-action-items li{padding:2px 0}
+.me-empty-state{padding:18px;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--cream-2);font-size:13.5px;color:var(--stone);text-align:center}
+.me-modes{display:inline-flex;gap:0;border:1px solid var(--line);border-radius:999px;background:var(--white);padding:3px;margin-bottom:6px}
+.me-mode-btn{padding:6px 14px;border:none;background:transparent;font:inherit;font-size:12.5px;font-weight:600;color:var(--stone);cursor:pointer;border-radius:999px}
+.me-mode-btn[aria-selected="true"]{background:var(--teal);color:var(--cream)}
+.me-paste{display:flex;flex-direction:column;gap:10px}
+.me-paste textarea{width:100%;min-height:160px;padding:12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;line-height:1.5;color:var(--ink);resize:vertical}
+.me-paste textarea:focus{outline:2px solid var(--teal);outline-offset:1px}
+.me-paste-hint{font-size:12px;color:var(--stone);margin:0}
+.me-paste-actions{display:flex;gap:8px;flex-wrap:wrap}
+.me-export-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.me-export-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background 160ms var(--ease-out),color 160ms var(--ease-out)}
+.me-export-btn:hover{background:var(--teal);color:var(--cream)}
+.me-export-btn svg{width:14px;height:14px}
+.me-export-btn.copied{background:var(--status-good-tint);color:var(--status-good);border-color:var(--status-good)}
+.me-export-btn.copy-failed{background:rgba(184,84,26,0.06);color:var(--rust);border-color:var(--rust)}
+.me-export-btn-primary{background:var(--teal);color:var(--cream)}
+.me-export-btn-primary:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.me-table{width:100%;border-collapse:collapse;font-size:13px;background:var(--white);border:1px solid var(--line);border-radius:var(--r-input);overflow:hidden}
+.me-table th,.me-table td{padding:8px 12px;border-bottom:1px solid var(--line);text-align:left;font-variant-numeric:tabular-nums}
+.me-table th{background:var(--cream-2);font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--stone);text-transform:uppercase}
+.me-table td.me-num{text-align:right;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.me-table .me-q-pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--cream)}
+.me-table .me-q-pill[data-q="Star"]{background:var(--teal)}
+.me-table .me-q-pill[data-q="Plowhorse"]{background:#C68A2C}
+.me-table .me-q-pill[data-q="Puzzle"]{background:#6E5DB3}
+.me-table .me-q-pill[data-q="Dog"]{background:var(--rust)}
+@media print{
+  body{background:#fff !important;color:#000 !important}
+  header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,.me-input,
+  #what-this-does,#how-private,#what-this-isnt,.me-export-row,
+  .mm-next,.me-empty-state,#meEmptyHint{display:none !important}
+  .me-output > div > h2 + p,details,.me-warnings{display:none !important}
+  .me-output{margin-top:14px;gap:12px}
+  .me-matrix-wrap,.me-action-card,.me-table,.me-totals-card{break-inside:avoid;page-break-inside:avoid}
+  .me-actions{break-before:auto}
+  .me-matrix-svg{max-height:5in}
+  a[href]:after{content:'' !important}
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<!-- NAV_PLACEHOLDER -->
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/es/services/">Servicios</a>
+      <a href="/es/for/restaurants/">Restaurantes</a>
+      <a href="/es/learn/" class="nav-library-trigger">Biblioteca</a>
+      <a href="/es/work/">Trabajo</a>
+      <a href="/es/about/">Nosotros</a>
+    </nav>
+    <nav class="lang-switch" aria-label="Idioma">
+      <a href="/tools/menu-engineering/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
+      <span class="lang-switch-current" aria-current="true">ES</span>
+    </nav>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Reserva una llamada de 20 min<span class="sr-only"> (abre en pestaña nueva)</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/es/">Inicio</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><a href="/es/tools/">Herramientas</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><span aria-current="page">Matriz de Ingeniería de Menú</span></nav>
+<main id="main">
+
+<!-- HERO_PLACEHOLDER -->
+<section class="block"><div class="container">
+  <div style="max-width:760px;margin:0 auto;text-align:center;">
+    <span class="eyebrow">Herramienta gratis · se queda en tu navegador</span>
+    <h1 style="font-family:var(--font-display);font-size:clamp(34px,4.5vw,52px);font-weight:500;color:var(--ink);margin:14px 0 14px;line-height:1.1;">Deja de adivinar qué platos están cargando su peso.</h1>
+    <p style="font-size:17px;line-height:1.6;color:var(--ink-soft);margin:0 0 14px;">Pega tu menú — nombre, precio, costo de comida, unidades vendidas — y obtén una matriz de Estrellas / Caballos de tiro / Acertijos / Perros con una acción corta por plato. La matemática corre en tu navegador; nada se sube.</p>
+    <p style="font-size:13px;color:var(--stone);margin:0;"><a href="#how-private" style="color:inherit;border-bottom:1px dashed var(--teal);">Cómo cuidamos la privacidad de tus números</a> · <a href="/es/glossary/menu-engineering/" style="color:inherit;border-bottom:1px dashed var(--teal);">¿Qué es la ingeniería de menú?</a></p>
+  </div>
+</div></section>
+
+<!-- INPUT_PLACEHOLDER -->
+<section class="block"><div class="container">
+  <div class="me-input">
+    <div class="me-modes" role="tablist" aria-label="Modo de entrada">
+      <button type="button" class="me-mode-btn" role="tab" aria-selected="true"  data-mode="manual">Escribir o pegar valores</button>
+      <button type="button" class="me-mode-btn" role="tab" aria-selected="false" data-mode="paste">Pegar de hoja de cálculo</button>
+    </div>
+
+    <div class="me-input-actions" data-mode="manual">
+      <button type="button" class="me-btn" id="meAddRow">+ Añadir plato</button>
+      <button type="button" class="me-btn me-btn-ghost" id="meLoadSample">Cargar menú de ejemplo</button>
+      <button type="button" class="me-btn me-btn-ghost" id="meClear">Borrar todo</button>
+      <span style="margin-left:auto;font-size:12.5px;color:var(--stone);">
+        ¿Quieres ver un ejemplo primero? <button type="button" class="me-btn me-btn-ghost" id="meLoadSampleAlt" style="padding:4px 10px;font-size:12px;">Probar con 12 platos</button>
+      </span>
+    </div>
+
+    <div class="me-grid-wrap" data-mode="manual">
+      <table class="me-grid" id="meGrid" aria-label="Cuadrícula de entrada de platos">
+        <thead><tr>
+          <th scope="col" style="width:34%">Plato</th>
+          <th scope="col" style="width:14%">Precio</th>
+          <th scope="col" style="width:14%">Costo de comida</th>
+          <th scope="col" style="width:14%">Unidades</th>
+          <th scope="col" style="width:18%">Categoría (opcional)</th>
+          <th scope="col" aria-label="Eliminar"></th>
+        </tr></thead>
+        <tbody id="meGridBody"></tbody>
+      </table>
+    </div>
+
+    <div class="me-paste" data-mode="paste" hidden>
+      <p class="me-paste-hint">Pega un bloque CSV/TSV o una selección de hoja de cálculo. La primera fila debería ser un encabezado — los nombres típicos (<code>Plato</code>, <code>Precio</code>, <code>Costo</code>, <code>Unidades</code>, <code>Categoría</code>) se mapean automáticamente. Funciona con tabs y comas; CSV con comillas también.</p>
+      <textarea id="mePasteArea" spellcheck="false" autocomplete="off" placeholder="Plato,Precio,Costo,Unidades,Categoría&#10;Cacio e pepe,24,6,80,Pasta&#10;Bolognese,26,9,60,Pasta"></textarea>
+      <div class="me-paste-actions">
+        <button type="button" class="me-btn" id="meParse">Analizar menú pegado</button>
+        <button type="button" class="me-btn me-btn-ghost" id="mePasteSample">Pegar un CSV de ejemplo</button>
+      </div>
+    </div>
+
+    <div class="me-warnings" id="meWarnings" aria-live="polite"></div>
+  </div>
+</div></section>
+
+<!-- OUTPUT_PLACEHOLDER -->
+<section class="block" id="meOutput" hidden><div class="container">
+  <div class="me-output">
+
+    <div class="me-totals" id="meTotals" aria-label="Menu totals"></div>
+
+    <div>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px;">La matriz</h2>
+      <div class="me-matrix-wrap">
+        <svg class="me-matrix-svg" id="meMatrix" viewBox="0 0 720 540" role="img" aria-label="Menu engineering matrix"></svg>
+        <div class="me-matrix-legend" aria-hidden="true">
+          <span><i class="me-q-Star"></i> Star</span>
+          <span><i class="me-q-Plowhorse"></i> Plowhorse</span>
+          <span><i class="me-q-Puzzle"></i> Puzzle</span>
+          <span><i class="me-q-Dog"></i> Dog</span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--stone);margin:8px 0 0;">eje x: margen de contribución por venta (\$). eje y: porcentaje de cubiertos vendidos. Las líneas de mediana dividen la cuadrícula; los platos exactamente en la mediana caen al lado superior-derecho.</p>
+    </div>
+
+    <div>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px;">Plan de acción por cuadrante</h2>
+      <div class="me-actions" id="meActions" aria-label="Acciones recomendadas por cuadrante"></div>
+    </div>
+
+    <div>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px;">Matemática por plato</h2>
+      <div style="overflow-x:auto;">
+        <table class="me-table" id="meItemTable" aria-label="Margen de contribución y cuadrante por plato"></table>
+      </div>
+    </div>
+
+    <div>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px;">Exportar</h2>
+      <div class="me-export-row">
+        <button type="button" class="me-export-btn me-export-btn-primary" id="meDownloadPng">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="12" y1="3" x2="12" y2="10"/></svg>
+          Descargar Ficha de Menú (PNG)
+        </button>
+        <button type="button" class="me-export-btn" id="meCopyCsv">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copiar como CSV
+        </button>
+        <button type="button" class="me-export-btn" id="meDownloadJson">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Descargar menu-analysis.json
+        </button>
+        <button type="button" class="me-export-btn" id="meDownloadZip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M10 12v6"/><path d="M10 12h2"/></svg>
+          Descargar paquete ZIP
+        </button>
+        <button type="button" class="me-export-btn" id="meShareLink">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          Generar enlace para compartir
+        </button>
+      </div>
+      <details style="margin-top:8px;font-size:12.5px;color:var(--stone);">
+        <summary style="cursor:pointer;color:var(--ink-soft);">Sobre el enlace para compartir</summary>
+        <p style="margin:8px 0 0;line-height:1.55;">A diferencia del resto del toolkit, este enlace <strong>sí</strong> contiene tus datos del menú — los nombres y números se codifican en el fragmento de URL después de <code>#m=</code>. El fragmento nunca llega a nuestros servidores (los navegadores no envían fragmentos según la spec HTTP), pero quien recibe el enlace puede recrear el mismo análisis. Trátalo como un archivo adjunto: mándalo a donde mandarías un CSV. No lo pegues en un canal público.</p>
+      </details>
+      <p style="margin:10px 0 0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);">La <strong>Ficha de Menú PNG</strong> es una imagen de 1200×1500 con la matriz + tarjetas de acción por cuadrante — compártela con tu chef o socio. El CSV refleja los datos de entrada más el cuadrante calculado. El JSON incluye umbrales y matemática completa por plato. El paquete ZIP empaqueta los cuatro (PNG + CSV + JSON + README). Todo en tu navegador — sin subida.</p>
+    </div>
+
+  </div>
+</div></section>
+
+<section class="block" id="meEmptyHint"><div class="container">
+  <div class="me-empty-state" id="meEmptyState">Agrega al menos 2 platos arriba para dibujar la matriz. O haz click en <button type="button" class="me-btn me-btn-ghost" id="meEmptyLoadSample" style="padding:4px 10px;font-size:12px;">Cargar menú de ejemplo</button> para ver cómo funciona con 12 platos italianos.</div>
+</div></section>
+
+<!-- PRIVACY_PLACEHOLDER -->
+<section class="block" id="what-this-does"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">En lenguaje sencillo</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,34px);font-weight:500;color:var(--ink);margin:12px 0 14px;">Qué hace esta herramienta, en cuatro frases</h2>
+    <ol style="margin:0;padding-left:1.2em;font-size:15px;line-height:1.7;color:var(--ink-soft);display:flex;flex-direction:column;gap:8px;">
+      <li><strong>Ingresas tu menú.</strong> Platos, precios, costo de comida y unidades vendidas en el periodo elegido — escritos o pegados desde una hoja de cálculo. Los datos se quedan en tu navegador y nunca salen.</li>
+      <li><strong>Obtienes una matriz 2&times;2.</strong> Cada plato se grafica contra la mediana del margen de contribución y la mediana de la cuota del menú, y cae en uno de cuatro cuadrantes: Estrella, Caballo de tiro, Acertijo o Perro.</li>
+      <li><strong>Obtienes una acción por plato.</strong> Las Estrellas se protegen, los Caballos de tiro se recostean, los Acertijos se refotografían y reposicionan, los Perros se descartan o reemplazan. El plan de acción es la entrega.</li>
+      <li><strong>Obtienes cuatro formas de llevártelo.</strong> La Ficha de Menú es un PNG de 1200&times;1500 que puedes mandar por correo o imprimir. El CSV refleja la matemática por plato. El JSON está estructurado para cualquier herramienta posterior. El ZIP empaqueta los cuatro (PNG + CSV + JSON + README).</li>
+    </ol>
+    <p style="font-size:13.5px;line-height:1.6;color:var(--stone);margin:14px 0 0;"><strong>No</strong> es un conector de POS, una calculadora de costo de receta, ni un servicio de rediseño de menú. <a href="#what-this-isnt" style="color:inherit;border-bottom:1px dashed var(--teal);">Más sobre los límites abajo</a>.</p>
+  </div>
+</div></section>
+
+<section class="block bg-cream2" id="how-private"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">Predicar con el ejemplo</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:12px 0 12px;">Los datos de tu menú se quedan en tu navegador.</h2>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0 0 14px;">Sin subida, sin cuenta, sin escrituras a <code>localStorage</code>. Cierra la pestaña y el formulario queda vacío. Abre DevTools → Network y dale click a <em>Añadir plato</em> o <em>Cargar menú de ejemplo</em> — la lista de peticiones no crecerá. El módulo de matemática completo es JavaScript en <code>/tools/menu-engineering/menu-engineering.js</code>; click derecho <em>Ver código fuente</em> y léelo.</p>
+    <p style="font-size:13px;color:var(--stone);margin:0;">Un recorrido verificable de nueve pasos y una Ficha de Menú imprimible llegan en una versión siguiente. Para la misma postura hoy, mira <a href="/es/tools/brand-suite/#how-we-protect" style="color:inherit;border-bottom:1px dashed var(--teal);">cómo Suite de Marca protege tu logo</a> — esta herramienta usa la misma arquitectura.</p>
+  </div>
+</div></section>
+
+<!-- NEXT_PLACEHOLDER -->
+<section class="block" id="what-this-isnt"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">Marco honesto</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">Qué no es</h2>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">La Matriz de Ingeniería de Menú corre la matemática sobre datos que ya tienes. Es filosa, pero es una herramienta específica — no un sustituto del trabajo más duro que convierte un Perro en una Estrella.</p>
+  </div>
+
+  <div style="max-width:760px;margin:24px auto 0;display:flex;flex-direction:column;gap:14px;">
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No es un conector de POS.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Tú escribes o pegas tus datos; la matemática corre localmente. Conectar a Toast, Square o Lightspeed invierte ese flujo y rompe la postura de privacidad. Sacar un reporte de ventas a mano cada mes es el precio de mantenerlo del lado del cliente.</p>
+    </article>
+
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No es una calculadora de costo de receta.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">El costo del plato es tu input, no tu output. Inferirlo desde los precios de ingredientes + tamaños de porción es su propio problema legítimamente complejo. Hasta que esa herramienta exista, el número del chef es el input correcto aquí.</p>
+    </article>
+
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No es un rediseño de menú.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">La Matriz te dice sobre qué actuar — re-fotografía este Acertijo, descarta ese Perro, re-costea ese Caballo de tiro. Diseñar un menú nuevo alrededor de ese plan es trabajo del estudio. La salida es un brief, no un final.</p>
+    </article>
+
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No es una conclusión de un solo momento.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Un Perro en el brunch puede ser una Estrella en la cena. Un Caballo de tiro de verano puede ser un Acertijo en invierno. Corre el análisis una vez por trimestre, separadamente para servicios con tráfico distinto. La tendencia entre periodos es su propia función (planificada).</p>
+    </article>
+  </div>
+
+  <div style="max-width:760px;margin:24px auto 0;padding:20px 22px;background:var(--cream-2,var(--cream));border-radius:var(--r-input);border:1px solid var(--line);">
+    <p style="margin:0 0 8px;font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);">Lo que <em>sí</em> es: un ejercicio de 30 minutos que se paga solo.</p>
+    <p style="margin:0;font-size:14px;line-height:1.65;color:var(--ink-soft);">Tres audiencias, tres entregas. Llévale la <strong>Ficha de Menú</strong> a tu chef — los cuatro cuadrantes son el plan de acción. Llévale el <strong>CSV</strong> a tu contador — la columna de margen de contribución es la que de verdad le importa. Llévale el <strong>JSON</strong> a un desarrollador que esté construyendo algo sobre tus datos. La Ficha es el archivo que tus socios no técnicos sí pueden usar.</p>
+  </div>
+
+  <div style="max-width:760px;margin:18px auto 0;padding:20px 22px;background:var(--teal-tint);border-radius:var(--r-input);border:1px solid var(--line);">
+    <p style="margin:0 0 8px;font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);">Cuando quieras un rediseño, contrata al estudio.</p>
+    <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:var(--ink-soft);">Un rediseño de menú convierte el plan de acción en un menú impreso, fotografiado y on-brand. Trae tu Ficha de Menú a la primera llamada — son 30 minutos del proyecto ya hechos.</p>
+    <a href="/es/services/" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:var(--teal);color:var(--cream);border-radius:999px;text-decoration:none;font-size:13px;font-weight:600;">Ver Identidad de marca y menú
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px;"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+  </div>
+</div></section>
+
+<section class="block"><div class="container">
+  <div class="mm-next">
+    <h2>A dónde seguir</h2>
+    <div class="mm-next-links">
+      <a href="/es/tools/margin-math/">Pasa un Caballo de tiro por Margin Math</a>
+      <a href="/es/tools/brand-suite/">Re-fotografía un Acertijo: Suite de Marca</a>
+      <a href="/es/tools/audits/restaurant/">Corre el diagnóstico completo</a>
+      <a href="/es/glossary/menu-engineering/">Glosario: Ingeniería de menú</a>
+      <a href="/es/services/">Contrata al estudio para rediseñar el menú</a>
+    </div>
+  </div>
+</div></section>
+
+<!-- LIBRARY:tool-deep-links:start -->
+<section class="tool-deep-links" aria-labelledby="tool-deep-h">
+  <div class="container">
+    <header class="tool-deep-head">
+      <span class="eyebrow">Aprende más</span>
+      <h2 id="tool-deep-h">Por qué existe esta herramienta.</h2>
+      <p class="tool-deep-blurb">Cada chequeo que esta herramienta hace conecta con un concepto específico en la biblioteca. Dos puntos de partida — una definición, una guía.</p>
+      <div class="tool-deep-topics"><a class="tool-deep-topic" href="/es/learn/topics/operations-margin/">Operaciones y margen</a></div>
+    </header>
+    <div class="tool-deep-grid">
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/menu-engineering/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Ingeniería de menú</h3>
+          <p class="tool-deep-aka">tratar cada plato como una decisión de portafolio, no como una línea de P&amp;L</p>
+          <p class="tool-deep-snippet">Un análisis clásico de la industria restaurantera (Kasavana &amp;amp; Smith, 1990) que grafica cada plato en un 2&amp;times;2 de margen de contribuc…</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/contribution-margin/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Margen de contribución</h3>
+          <p class="tool-deep-aka">lo que una venta de un plato aporta a cubrir costos fijos y utilidad</p>
+          <p class="tool-deep-snippet">Para un plato individual: precio de venta menos el costo variable de producir una unidad (costo de comida emplatado). Se reporta en dólares …</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-article" href="/es/blog/is-doordash-worth-it-for-restaurants-in-2026/">
+          <span class="tool-deep-kind">Artículo</span>
+          <h3>¿Vale la pena DoorDash? Las matemáticas honestas para 2026</h3>
+          <p class="tool-deep-snippet">Las matemáticas honestas de DoorDash y la entrega de terceros para restaurantes independientes en 2026: en qué se convertirán realmente $100 de ingresos por entrega, cuándo todavía tiene sentido, cuándo no, y cómo construir su propio flujo de pedidos para que pueda elegir.</p>
+          <span class="tool-deep-cta">Leer la guía <span aria-hidden="true">→</span></span>
+        </a>
+    </div>
+  </div>
+</section>
+<!-- LIBRARY:tool-deep-links:end -->
+
+</main>
+<!-- FOOTER_PLACEHOLDER -->
+<footer class="foot">
+  <div class="container foot-inner">
+    <div class="foot-col foot-brand"><a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home"><img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async"><sup class="tm" aria-hidden="true">&#8482;</sup></a><p class="foot-tagline">Structure Brings Clarity.</p></div>
+  </div>
+  <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/es/terms.html">Términos</a><a href="/es/privacy.html">Privacidad</a><a href="/es/accessibility.html">Accesibilidad</a><a href="/es/cookies.html">Cookies</a></nav></div>
+</footer>
+<script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="/tools/menu-engineering/menu-engineering.js?v=20260425-me1"></script>
+<script src="/tools/menu-engineering/card-render.js?v=20260425-me2"></script>
+<!-- IIFE_PLACEHOLDER -->
+<script>
+/* Menu Engineering Matrix — input + matrix rendering.
+ *
+ * Privacy invariants enforced by this code:
+ *   - All math is window.ME (./menu-engineering.js). No fetch, no
+ *     XMLHttpRequest, no FormData. Every render is pure local DOM.
+ *   - Plausible event values are enum-bucketed via window.ME helpers;
+ *     no item name, price, or count ever appears as a property value.
+ *   - No localStorage / sessionStorage / cookies. Closing the tab
+ *     wipes state. */
+(function(){
+  if (!window.ME) return;
+
+  var SAMPLE = [
+    { item: 'Cacio e pepe',     price: 24, food_cost: 6,    units_sold: 80,  category: 'Pasta' },
+    { item: 'Bolognese',        price: 26, food_cost: 9,    units_sold: 60,  category: 'Pasta' },
+    { item: 'Carbonara',        price: 25, food_cost: 7,    units_sold: 70,  category: 'Pasta' },
+    { item: 'Branzino',         price: 38, food_cost: 12,   units_sold: 14,  category: 'Mains' },
+    { item: 'Pork chop',        price: 32, food_cost: 14,   units_sold: 9,   category: 'Mains' },
+    { item: 'Lamb ragu',        price: 30, food_cost: 11,   units_sold: 22,  category: 'Mains' },
+    { item: 'Caesar',           price: 14, food_cost: 4,    units_sold: 50,  category: 'Starters' },
+    { item: 'Burrata + tomato', price: 18, food_cost: 7,    units_sold: 35,  category: 'Starters' },
+    { item: 'House wine',       price: 12, food_cost: 4,    units_sold: 90,  category: 'Drinks' },
+    { item: 'Espresso martini', price: 16, food_cost: 5,    units_sold: 28,  category: 'Drinks' },
+    { item: 'Tiramisu',         price: 11, food_cost: 3,    units_sold: 30,  category: 'Dessert' },
+    { item: 'Bread basket',     price: 6,  food_cost: 1.5,  units_sold: 110, category: 'Sides' }
+  ];
+
+  var gridBody     = document.getElementById('meGridBody');
+  var addRowBtn    = document.getElementById('meAddRow');
+  var loadSample   = document.getElementById('meLoadSample');
+  var loadSampleAlt= document.getElementById('meLoadSampleAlt');
+  var loadSampleE  = document.getElementById('meEmptyLoadSample');
+  var clearBtn     = document.getElementById('meClear');
+  var output       = document.getElementById('meOutput');
+  var emptyHint    = document.getElementById('meEmptyHint');
+  var totalsEl     = document.getElementById('meTotals');
+  var actionsEl    = document.getElementById('meActions');
+  var itemTable    = document.getElementById('meItemTable');
+  var matrixSvg    = document.getElementById('meMatrix');
+  var warningsEl   = document.getElementById('meWarnings');
+
+  var firstAnalysisFired = false;
+
+  function readGrid(){
+    var rows = gridBody.querySelectorAll('tr');
+    var items = [];
+    for (var i = 0; i < rows.length; i++){
+      var inputs = rows[i].querySelectorAll('input');
+      items.push({
+        item:       inputs[0] ? inputs[0].value : '',
+        price:      inputs[1] ? inputs[1].value : '',
+        food_cost:  inputs[2] ? inputs[2].value : '',
+        units_sold: inputs[3] ? inputs[3].value : '',
+        category:   inputs[4] ? inputs[4].value : ''
+      });
+    }
+    return items;
+  }
+
+  function addRow(item){
+    item = item || { item: '', price: '', food_cost: '', units_sold: '', category: '' };
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td><input type="text" placeholder="e.g. Cacio e pepe" value="' + escAttr(item.item) + '" /></td>' +
+      '<td class="me-num"><input type="number" inputmode="decimal" step="0.01" min="0" placeholder="24" value="' + escAttr(item.price) + '" /></td>' +
+      '<td class="me-num"><input type="number" inputmode="decimal" step="0.01" min="0" placeholder="6" value="' + escAttr(item.food_cost) + '" /></td>' +
+      '<td class="me-num"><input type="number" inputmode="numeric" step="1" min="0" placeholder="80" value="' + escAttr(item.units_sold) + '" /></td>' +
+      '<td><input type="text" placeholder="(Pasta, Mains…)" value="' + escAttr(item.category) + '" /></td>' +
+      '<td class="me-row-actions"><button type="button" class="me-remove-row" aria-label="Remove row">×</button></td>';
+    gridBody.appendChild(tr);
+    return tr;
+  }
+
+  function escAttr(v){
+    return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  }
+
+  function clearGrid(){
+    gridBody.innerHTML = '';
+    for (var i = 0; i < 8; i++) addRow();
+    rerender();
+  }
+
+  function loadSampleData(){
+    gridBody.innerHTML = '';
+    SAMPLE.forEach(function(it){ addRow(it); });
+    rerender();
+  }
+
+  // Render: read grid → summarise → paint. Debounced via rAF since
+  // input events fire often.
+  var rafQueued = false;
+  function rerender(){
+    if (rafQueued) return;
+    rafQueued = true;
+    requestAnimationFrame(function(){
+      rafQueued = false;
+      var raw = readGrid();
+      var summary = window.ME.summariseMenu(raw);
+      paintWarnings(summary.warnings);
+      var meaningful = summary.totals.item_count >= 2;
+      if (!meaningful) {
+        output.hidden = true;
+        emptyHint.hidden = false;
+        return;
+      }
+      output.hidden = false;
+      emptyHint.hidden = true;
+      paintTotals(summary.totals);
+      paintMatrix(summary);
+      paintActions(summary);
+      paintItemTable(summary.items);
+      firePlausibleOnce(summary);
+    });
+  }
+
+  function paintWarnings(warns){
+    if (!warns || !warns.length) { warningsEl.innerHTML = ''; return; }
+    var html = '<ul>';
+    warns.forEach(function(w){ html += '<li>' + escHtml(w) + '</li>'; });
+    html += '</ul>';
+    warningsEl.innerHTML = html;
+  }
+
+  function escHtml(v){
+    return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function fmtMoney(n){ return '$' + (Math.round(n * 100) / 100).toLocaleString(); }
+  function fmtPct(n){ return Math.round(n * 100) + '%'; }
+
+  function paintTotals(t){
+    totalsEl.innerHTML =
+      card('Items',         String(t.item_count), '') +
+      card('Total revenue', fmtMoney(t.revenue), 'across all items') +
+      card('Food cost',     fmtMoney(t.food_cost), fmtPct(t.prime_cost_pct) + ' of revenue') +
+      card('Contribution',  fmtMoney(t.contribution_margin), 'after food cost');
+    function card(label, value, sub){
+      return '<div class="me-totals-card"><div class="me-totals-label">' + escHtml(label) + '</div>' +
+             '<div class="me-totals-value">' + escHtml(value) + '</div>' +
+             (sub ? '<div class="me-totals-sub">' + escHtml(sub) + '</div>' : '') + '</div>';
+    }
+  }
+
+  // SVG matrix. Coordinates in viewBox 720×540. 60px gutters. Median
+  // lines split the inner plot area; items plotted by CM dollars (x)
+  // and share (y, inverted so high pop is up).
+  function paintMatrix(summary){
+    var W = 720, H = 540, P = 60;
+    var x0 = P, x1 = W - P, y0 = 30, y1 = H - P;
+    var items = summary.items;
+    if (!items.length) { matrixSvg.innerHTML = ''; return; }
+
+    var cms = items.map(function(i){ return i.cm_dollars; });
+    var shares = items.map(function(i){ return i.share; });
+    var minCm = Math.min.apply(null, cms.concat(0));
+    var maxCm = Math.max.apply(null, cms);
+    var maxShare = Math.max.apply(null, shares);
+    if (maxCm === minCm) maxCm = minCm + 1;
+    if (maxShare === 0) maxShare = 1;
+    // Pad axes so dots aren't on the edge.
+    var cmRange = maxCm - minCm;
+    minCm -= cmRange * 0.08;
+    maxCm += cmRange * 0.08;
+    maxShare = maxShare * 1.10;
+
+    function sx(cm){ return x0 + ((cm - minCm) / (maxCm - minCm)) * (x1 - x0); }
+    function sy(sh){ return y1 - (sh / maxShare) * (y1 - y0); }
+
+    var medX = sx(summary.thresholds.median_cm_dollars);
+    var medY = sy(summary.thresholds.median_share);
+
+    var svg = '';
+    // Background frame
+    svg += '<rect x="' + x0 + '" y="' + y0 + '" width="' + (x1 - x0) + '" height="' + (y1 - y0) + '" fill="#FAF7F2" stroke="#E5E0D8" />';
+    // Quadrant tints (subtle)
+    svg += '<rect x="' + medX + '" y="' + y0 + '" width="' + (x1 - medX) + '" height="' + (medY - y0) + '" fill="#1F4E5B" opacity="0.04" />';
+    svg += '<rect x="' + x0 + '" y="' + y0 + '" width="' + (medX - x0) + '" height="' + (medY - y0) + '" fill="#C68A2C" opacity="0.05" />';
+    svg += '<rect x="' + medX + '" y="' + medY + '" width="' + (x1 - medX) + '" height="' + (y1 - medY) + '" fill="#6E5DB3" opacity="0.05" />';
+    svg += '<rect x="' + x0 + '" y="' + medY + '" width="' + (medX - x0) + '" height="' + (y1 - medY) + '" fill="#B8541A" opacity="0.05" />';
+    // Median lines
+    svg += '<line x1="' + medX + '" y1="' + y0 + '" x2="' + medX + '" y2="' + y1 + '" stroke="#14161A" stroke-dasharray="4 4" stroke-width="1" />';
+    svg += '<line x1="' + x0 + '" y1="' + medY + '" x2="' + x1 + '" y2="' + medY + '" stroke="#14161A" stroke-dasharray="4 4" stroke-width="1" />';
+    // Quadrant labels
+    svg += '<text x="' + (x0 + 8) + '" y="' + (y0 + 18) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif">Plowhorses · popular but thin</text>';
+    svg += '<text x="' + (x1 - 8) + '" y="' + (y0 + 18) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif" text-anchor="end">Stars · push them</text>';
+    svg += '<text x="' + (x0 + 8) + '" y="' + (y1 - 10) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif">Dogs · drop or replace</text>';
+    svg += '<text x="' + (x1 - 8) + '" y="' + (y1 - 10) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif" text-anchor="end">Puzzles · reposition</text>';
+    // Axis labels
+    svg += '<text x="' + (W / 2) + '" y="' + (H - 18) + '" font-size="12" fill="#14161A" font-family="Inter,sans-serif" text-anchor="middle">Contribution margin per sale &rarr;</text>';
+    svg += '<text x="20" y="' + ((y0 + y1) / 2) + '" font-size="12" fill="#14161A" font-family="Inter,sans-serif" transform="rotate(-90 20 ' + ((y0 + y1) / 2) + ')" text-anchor="middle">&uarr; Share of total covers</text>';
+
+    // Plot each item.
+    var QC = { Star: '#1F4E5B', Plowhorse: '#C68A2C', Puzzle: '#6E5DB3', Dog: '#B8541A' };
+    items.forEach(function(it){
+      var cx = sx(it.cm_dollars);
+      var cy = sy(it.share);
+      var color = QC[it.quadrant] || '#14161A';
+      svg += '<circle cx="' + cx + '" cy="' + cy + '" r="6" fill="' + color + '" stroke="#FAF7F2" stroke-width="1.5">';
+      svg += '<title>' + escHtml(it.item) + ' · CM ' + fmtMoney(it.cm_dollars) + ' · ' + fmtPct(it.share) + ' share · ' + it.quadrant + '</title>';
+      svg += '</circle>';
+      // Label, only for items where we have name and there's space.
+      if (it.item) {
+        svg += '<text x="' + (cx + 9) + '" y="' + (cy + 4) + '" font-size="10" fill="#14161A" font-family="Inter,sans-serif">' + escHtml(it.item.length > 18 ? it.item.slice(0, 17) + '…' : it.item) + '</text>';
+      }
+    });
+
+    matrixSvg.innerHTML = svg;
+  }
+
+  function paintActions(summary){
+    var byQ = { Star: [], Plowhorse: [], Puzzle: [], Dog: [] };
+    summary.items.forEach(function(it){ if (byQ[it.quadrant]) byQ[it.quadrant].push(it); });
+    var actions = window.ME.ACTIONS_EN;
+    var html = '';
+    ['Star','Plowhorse','Puzzle','Dog'].forEach(function(q){
+      var a = actions[q];
+      var list = byQ[q].map(function(it){
+        return '<li>' + escHtml(it.item || '(unnamed)') + ' &middot; ' + fmtMoney(it.cm_dollars) + ' CM &middot; ' + fmtPct(it.share) + '</li>';
+      }).join('');
+      html += '<article class="me-action-card" data-q="' + q + '">' +
+              '<h3>' + q + 's <span style="font-size:13px;font-weight:400;color:var(--stone);">(' + byQ[q].length + ')</span></h3>' +
+              '<p class="me-action-headline">' + escHtml(a.headline) + '</p>' +
+              '<p class="me-action-detail">' + escHtml(a.detail) + '</p>' +
+              (list ? '<ul class="me-action-items">' + list + '</ul>' : '<p style="font-size:12px;color:var(--stone);margin:0;">No items in this quadrant on this run.</p>') +
+              '</article>';
+    });
+    actionsEl.innerHTML = html;
+  }
+
+  function paintItemTable(items){
+    var rows = items.map(function(it){
+      return '<tr>' +
+             '<td>' + escHtml(it.item || '(unnamed)') + '</td>' +
+             '<td>' + escHtml(it.category || '') + '</td>' +
+             '<td class="me-num">' + fmtMoney(it.price) + '</td>' +
+             '<td class="me-num">' + fmtMoney(it.food_cost) + '</td>' +
+             '<td class="me-num">' + fmtMoney(it.cm_dollars) + '</td>' +
+             '<td class="me-num">' + fmtPct(it.cm_percent) + '</td>' +
+             '<td class="me-num">' + escHtml(String(it.units_sold)) + '</td>' +
+             '<td class="me-num">' + fmtPct(it.share) + '</td>' +
+             '<td><span class="me-q-pill" data-q="' + it.quadrant + '">' + it.quadrant + '</span></td>' +
+             '</tr>';
+    }).join('');
+    itemTable.innerHTML =
+      '<thead><tr><th>Item</th><th>Category</th><th class="me-num">Price</th><th class="me-num">Food cost</th><th class="me-num">CM $</th><th class="me-num">CM %</th><th class="me-num">Units</th><th class="me-num">Share</th><th>Quadrant</th></tr></thead>' +
+      '<tbody>' + rows + '</tbody>';
+  }
+
+  function firePlausibleOnce(summary){
+    if (firstAnalysisFired || !window.plausible) return;
+    var meaningful = summary.totals.item_count >= 2;
+    if (!meaningful) return;
+    firstAnalysisFired = true;
+    var dogCount = summary.items.filter(function(it){ return it.quadrant === 'Dog'; }).length;
+    window.plausible('Menu Engineering Analysis', { props: {
+      menu_size:        window.ME.bucketMenuSize(summary.totals.item_count),
+      prime_cost_band:  window.ME.bucketPrimeCostBand(summary.totals.food_cost, summary.totals.revenue),
+      dogs_ratio:       window.ME.bucketDogsRatio(summary.totals.item_count, dogCount)
+    }});
+  }
+
+  // ----- Wire UI -----
+  addRowBtn.addEventListener('click', function(){ addRow(); rerender(); });
+  loadSample.addEventListener('click', loadSampleData);
+  if (loadSampleAlt) loadSampleAlt.addEventListener('click', loadSampleData);
+  if (loadSampleE)   loadSampleE.addEventListener('click', loadSampleData);
+  clearBtn.addEventListener('click', clearGrid);
+
+  gridBody.addEventListener('input', rerender);
+  gridBody.addEventListener('click', function(ev){
+    var rm = ev.target.closest('.me-remove-row');
+    if (!rm) return;
+    var tr = rm.closest('tr');
+    if (tr) tr.parentNode.removeChild(tr);
+    rerender();
+  });
+
+  // Initial state: 8 empty rows so a power user can paste-and-tab.
+  for (var i = 0; i < 8; i++) addRow();
+
+  // ----- Mode switching -----
+  var modeBtns = document.querySelectorAll('.me-mode-btn');
+  var modePanels = {
+    manual: document.querySelectorAll('[data-mode="manual"]'),
+    paste:  document.querySelectorAll('[data-mode="paste"]')
+  };
+  function setMode(mode){
+    modeBtns.forEach(function(b){
+      b.setAttribute('aria-selected', b.getAttribute('data-mode') === mode ? 'true' : 'false');
+    });
+    Object.keys(modePanels).forEach(function(m){
+      modePanels[m].forEach(function(el){
+        if (el.classList.contains('me-mode-btn')) return;
+        el.hidden = (m !== mode);
+      });
+    });
+  }
+  modeBtns.forEach(function(b){
+    b.addEventListener('click', function(){ setMode(b.getAttribute('data-mode')); });
+  });
+
+  // ----- Paste-table parser -----
+  var pasteArea = document.getElementById('mePasteArea');
+  var parseBtn  = document.getElementById('meParse');
+  var pasteSampleBtn = document.getElementById('mePasteSample');
+
+  parseBtn.addEventListener('click', function(){
+    var text = pasteArea.value || '';
+    var parsed = window.ME.parseTabularText(text);
+    if (!parsed.items.length) {
+      paintWarnings(parsed.warnings.length ? parsed.warnings : ['No se pudieron leer filas. Verifica que pegaste al menos una fila de datos.']);
+      return;
+    }
+    gridBody.innerHTML = '';
+    parsed.items.forEach(function(it){ addRow(it); });
+    setMode('manual');
+    rerender();
+    if (parsed.warnings && parsed.warnings.length) {
+      requestAnimationFrame(function(){
+        var existing = warningsEl.querySelector('ul') ? warningsEl.querySelector('ul').innerHTML : '';
+        var extra = parsed.warnings.map(function(w){ return '<li>' + escHtml(w) + '</li>'; }).join('');
+        warningsEl.innerHTML = '<ul>' + existing + extra + '</ul>';
+      });
+    }
+  });
+
+  pasteSampleBtn.addEventListener('click', function(){
+    var lines = ['Plato,Precio,Costo,Unidades,Categoría'];
+    SAMPLE.forEach(function(it){
+      lines.push([it.item, it.price, it.food_cost, it.units_sold, it.category].join(','));
+    });
+    pasteArea.value = lines.join('\n');
+  });
+
+  // ----- Exports -----
+  var copyCsvBtn      = document.getElementById('meCopyCsv');
+  var downloadJsonBtn = document.getElementById('meDownloadJson');
+  var downloadPngBtn  = document.getElementById('meDownloadPng');
+
+  function buildCsv(){
+    var s = window.ME.summariseMenu(readGrid());
+    var lines = ['Plato,Categoría,Precio,Costo de comida,CM dólares,CM porcentaje,Unidades,Cuota,Cuadrante'];
+    s.items.forEach(function(it){
+      function csvCell(v){
+        var str = String(v == null ? '' : v);
+        return /[",\n]/.test(str) ? '"' + str.replace(/"/g, '""') + '"' : str;
+      }
+      lines.push([
+        csvCell(it.item),
+        csvCell(it.category),
+        it.price.toFixed(2),
+        it.food_cost.toFixed(2),
+        it.cm_dollars.toFixed(2),
+        (it.cm_percent * 100).toFixed(1) + '%',
+        it.units_sold,
+        (it.share * 100).toFixed(1) + '%',
+        it.quadrant
+      ].join(','));
+    });
+    return lines.join('\n');
+  }
+
+  function buildJson(){
+    var s = window.ME.summariseMenu(readGrid());
+    var dogCount = s.items.filter(function(it){ return it.quadrant === 'Dog'; }).length;
+    return JSON.stringify({
+      meta: {
+        tool: 'Muntin Digital — Matriz de Ingeniería de Menú',
+        url: 'https://muntin.digital/es/tools/menu-engineering/',
+        generated_at: new Date().toISOString(),
+        method: 'Kasavana & Smith median-split: contribution-margin dollars × menu-mix share'
+      },
+      totals: s.totals,
+      thresholds: s.thresholds,
+      items: s.items,
+      counts: {
+        Star:      s.items.filter(function(i){ return i.quadrant === 'Star'; }).length,
+        Plowhorse: s.items.filter(function(i){ return i.quadrant === 'Plowhorse'; }).length,
+        Puzzle:    s.items.filter(function(i){ return i.quadrant === 'Puzzle'; }).length,
+        Dog:       dogCount
+      },
+      warnings: s.warnings
+    }, null, 2);
+  }
+
+  function downloadBlob(blob, filename){
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+  }
+
+  copyCsvBtn.addEventListener('click', function(){
+    var csv = buildCsv();
+    var orig = copyCsvBtn.lastChild.nodeValue;
+    var settle = function(label, kind){
+      copyCsvBtn.classList.remove('copied');
+      copyCsvBtn.classList.add(kind === 'error' ? 'copy-failed' : 'copied');
+      copyCsvBtn.lastChild.nodeValue = label;
+      setTimeout(function(){
+        copyCsvBtn.classList.remove('copied');
+        copyCsvBtn.classList.remove('copy-failed');
+        copyCsvBtn.lastChild.nodeValue = orig;
+      }, kind === 'error' ? 2400 : 1400);
+    };
+    var ok   = function(){ settle(' Copiado', 'ok'); };
+    var fail = function(){ settle(' No se copió — selecciona manualmente', 'error'); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(csv).then(ok, fail);
+    } else { fail(); }
+    if (window.plausible) window.plausible('Menu Engineering Export', { props: { format: 'csv' } });
+  });
+
+  downloadJsonBtn.addEventListener('click', function(){
+    var blob = new Blob([buildJson()], { type: 'application/json' });
+    downloadBlob(blob, 'menu-analysis.json');
+    if (window.plausible) window.plausible('Menu Engineering Export', { props: { format: 'json' } });
+  });
+
+  function buildMenuCardBlob(){
+    if (!window.MECard) return Promise.reject(new Error('card-render module not loaded'));
+    var summary = window.ME.summariseMenu(readGrid());
+    var canvas  = window.MECard.renderMenuCard({
+      summary: summary,
+      strings: window.MECard.DEFAULT_STRINGS_ES
+    });
+    return window.MECard.canvasToPngBlob(canvas);
+  }
+
+  downloadPngBtn.addEventListener('click', function(){
+    buildMenuCardBlob().then(function(blob){
+      downloadBlob(blob, 'ficha-menu.png');
+      if (window.plausible) window.plausible('Menu Engineering Export', { props: { format: 'card-png' } });
+    }).catch(function(err){
+      console.warn('Menu Card render failed', err);
+    });
+  });
+
+  // ----- ZIP bundle export (mirrors Brand Suite / EN) -----
+  var CRC_TABLE = (function(){
+    var t = new Uint32Array(256);
+    for (var n = 0; n < 256; n++) {
+      var c = n;
+      for (var k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+      t[n] = c >>> 0;
+    }
+    return t;
+  })();
+  function crc32(bytes){
+    var c = 0xFFFFFFFF;
+    for (var i = 0; i < bytes.length; i++) c = CRC_TABLE[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+    return (c ^ 0xFFFFFFFF) >>> 0;
+  }
+  function strToBytes(s){ return new TextEncoder().encode(s); }
+
+  function buildZipBlob(entries){
+    var parts = [];
+    var centralParts = [];
+    var offset = 0;
+    var nowDate = new Date();
+    var dosTime = ((nowDate.getHours() & 0x1F) << 11) | ((nowDate.getMinutes() & 0x3F) << 5) | ((nowDate.getSeconds() / 2) & 0x1F);
+    var dosDate = (((nowDate.getFullYear() - 1980) & 0x7F) << 9) | (((nowDate.getMonth() + 1) & 0x0F) << 5) | (nowDate.getDate() & 0x1F);
+    entries.forEach(function(entry){
+      var nameBytes = strToBytes(entry.name);
+      var crc = crc32(entry.data);
+      var size = entry.data.length;
+      var localHeader = new Uint8Array(30 + nameBytes.length);
+      var dv = new DataView(localHeader.buffer);
+      dv.setUint32(0,  0x04034b50, true);
+      dv.setUint16(4,  20, true);
+      dv.setUint16(6,  0, true);
+      dv.setUint16(8,  0, true);
+      dv.setUint16(10, dosTime, true);
+      dv.setUint16(12, dosDate, true);
+      dv.setUint32(14, crc, true);
+      dv.setUint32(18, size, true);
+      dv.setUint32(22, size, true);
+      dv.setUint16(26, nameBytes.length, true);
+      dv.setUint16(28, 0, true);
+      localHeader.set(nameBytes, 30);
+      parts.push(localHeader); parts.push(entry.data);
+      var central = new Uint8Array(46 + nameBytes.length);
+      var cv = new DataView(central.buffer);
+      cv.setUint32(0,  0x02014b50, true);
+      cv.setUint16(4,  20, true);
+      cv.setUint16(6,  20, true);
+      cv.setUint16(8,  0, true);
+      cv.setUint16(10, 0, true);
+      cv.setUint16(12, dosTime, true);
+      cv.setUint16(14, dosDate, true);
+      cv.setUint32(16, crc, true);
+      cv.setUint32(20, size, true);
+      cv.setUint32(24, size, true);
+      cv.setUint16(28, nameBytes.length, true);
+      cv.setUint16(30, 0, true);
+      cv.setUint16(32, 0, true);
+      cv.setUint16(34, 0, true);
+      cv.setUint16(36, 0, true);
+      cv.setUint32(38, 0, true);
+      cv.setUint32(42, offset, true);
+      central.set(nameBytes, 46);
+      centralParts.push(central);
+      offset += localHeader.length + entry.data.length;
+    });
+    var cdSize = 0;
+    centralParts.forEach(function(c){ cdSize += c.length; });
+    var cdStart = offset;
+    centralParts.forEach(function(c){ parts.push(c); });
+    var eocd = new Uint8Array(22);
+    var ev = new DataView(eocd.buffer);
+    ev.setUint32(0,  0x06054b50, true);
+    ev.setUint16(4,  0, true);
+    ev.setUint16(6,  0, true);
+    ev.setUint16(8,  entries.length, true);
+    ev.setUint16(10, entries.length, true);
+    ev.setUint32(12, cdSize, true);
+    ev.setUint32(16, cdStart, true);
+    ev.setUint16(20, 0, true);
+    parts.push(eocd);
+    return new Blob(parts, { type: 'application/zip' });
+  }
+
+  function buildReadme(summary){
+    var t = summary.totals;
+    var byQ = { Star: 0, Plowhorse: 0, Puzzle: 0, Dog: 0 };
+    summary.items.forEach(function(it){ if (byQ[it.quadrant] != null) byQ[it.quadrant]++; });
+    var lines = [];
+    lines.push('# Tu reporte de ingeniería de menú');
+    lines.push('');
+    lines.push('Generado por **Matriz de Ingeniería de Menú** el ' + new Date().toISOString().slice(0, 10) + '.');
+    lines.push('Todo en este paquete se compuso en tu navegador. Los datos que tipeaste nunca salieron de tu dispositivo.');
+    lines.push('');
+    lines.push('## Qué incluye este paquete');
+    lines.push('');
+    lines.push('- `ficha-menu.png` — la **Ficha de Menú**, una imagen de 1200×1500 con tu matriz y las tarjetas de acción por cuadrante. Mándala al chef, pégala atrás de barra, o imprímela.');
+    lines.push('- `menu-data.csv` — tabla por plato con cuadrante calculado, margen de contribución y cuota. Re-ábrelo en cualquier hoja de cálculo.');
+    lines.push('- `menu-analysis.json` — los mismos datos más umbrales y totales, listos para alimentar otra herramienta o script.');
+    lines.push('- `README.md` — este archivo.');
+    lines.push('');
+    lines.push('## A simple vista');
+    lines.push('');
+    lines.push('- Platos analizados: **' + t.item_count + '**');
+    lines.push('- Ingreso total: **' + (Math.round(t.revenue * 100) / 100).toLocaleString() + '**');
+    lines.push('- Costo de comida: **' + (Math.round(t.food_cost * 100) / 100).toLocaleString() + '** (' + Math.round(t.prime_cost_pct * 100) + '% del ingreso)');
+    lines.push('- Margen de contribución: **' + (Math.round(t.contribution_margin * 100) / 100).toLocaleString() + '**');
+    lines.push('');
+    lines.push('Estrellas · ' + byQ.Star + '  |  Caballos de tiro · ' + byQ.Plowhorse + '  |  Acertijos · ' + byQ.Puzzle + '  |  Perros · ' + byQ.Dog);
+    lines.push('');
+    lines.push('## Método');
+    lines.push('');
+    lines.push('División por mediana de **margen de contribución en dólares** (eje x) y **cuota de cubiertos** (eje y), según Kasavana & Smith (1990). Los platos exactamente en la mediana caen al lado superior-derecho. Los platos con CM negativo siempre caen en Perros, sin importar la popularidad.');
+    lines.push('');
+    lines.push('## Lo que no es esta herramienta');
+    lines.push('');
+    lines.push('- Un conector de POS. Tú tipeaste los datos; nosotros corrimos la matemática.');
+    lines.push('- Una calculadora de costo de receta. El costo del plato es tu input, no tu output.');
+    lines.push('- Un servicio de rediseño de menú. La Matriz te dice sobre qué actuar; el rediseño es trabajo del estudio.');
+    lines.push('');
+    lines.push('## Hecho por Muntin Digital');
+    lines.push('');
+    lines.push('Matriz de Ingeniería de Menú es una herramienta gratuita de **Muntin Digital** — un estudio web de restaurantes de una sola persona en Silver Spring, Maryland.');
+    lines.push('');
+    lines.push('- Estudio: https://muntin.digital');
+    lines.push('- Identidad de Marca: https://muntin.digital/es/services/#brand');
+    lines.push('- Herramienta: https://muntin.digital/es/tools/menu-engineering/');
+    lines.push('');
+    lines.push('> La estructura aporta claridad.');
+    return lines.join('\n') + '\n';
+  }
+
+  // ----- Share link (URL fragment) -----
+  var shareBtn = document.getElementById('meShareLink');
+
+  function buildFragmentFromGrid(){
+    var items = readGrid().filter(function(it){
+      return it.item || it.price || it.food_cost || it.units_sold;
+    });
+    if (!items.length) return null;
+    var lines = items.map(function(it){
+      function safe(v){ return String(v == null ? '' : v).replace(/\t/g, ' '); }
+      return [safe(it.item), safe(it.price), safe(it.food_cost), safe(it.units_sold), safe(it.category)].join('\t');
+    });
+    return encodeURIComponent(lines.join('\n'));
+  }
+
+  if (shareBtn) {
+    shareBtn.addEventListener('click', function(){
+      var frag = buildFragmentFromGrid();
+      var orig = shareBtn.lastChild.nodeValue;
+      var settle = function(label, kind){
+        shareBtn.classList.remove('copied');
+        shareBtn.classList.add(kind === 'error' ? 'copy-failed' : 'copied');
+        shareBtn.lastChild.nodeValue = label;
+        setTimeout(function(){
+          shareBtn.classList.remove('copied');
+          shareBtn.classList.remove('copy-failed');
+          shareBtn.lastChild.nodeValue = orig;
+        }, kind === 'error' ? 3000 : 1800);
+      };
+      if (!frag) { settle(' Agrega platos primero', 'error'); return; }
+      var url = window.location.origin + window.location.pathname + '#m=' + frag;
+      try { history.replaceState(null, '', '#m=' + frag); } catch (_) {}
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(
+          function(){ settle(' Enlace copiado — contiene datos del menú', 'ok'); },
+          function(){ settle(' Copia desde la barra de URL', 'error'); }
+        );
+      } else {
+        settle(' URL actualizada — copia desde ahí', 'ok');
+      }
+      if (window.plausible) window.plausible('Menu Engineering Export', { props: { format: 'share-link' } });
+    });
+  }
+
+  function rehydrateFromFragment(){
+    var hash = window.location.hash || '';
+    var m = /(?:^|[#&])m=([^&]+)/.exec(hash);
+    if (!m) return false;
+    var raw;
+    try { raw = decodeURIComponent(m[1]); } catch (_) { return false; }
+    var lines = raw.split(/\n/).filter(function(l){ return l.trim().length > 0; });
+    if (!lines.length) return false;
+    if (lines.length > 100) lines = lines.slice(0, 100);
+    gridBody.innerHTML = '';
+    lines.forEach(function(line){
+      var cells = line.split('\t');
+      addRow({
+        item:       cells[0] || '',
+        price:      cells[1] || '',
+        food_cost:  cells[2] || '',
+        units_sold: cells[3] || '',
+        category:   cells[4] || ''
+      });
+    });
+    rerender();
+    setMode('manual');
+    requestAnimationFrame(function(){
+      var existing = warningsEl.querySelector('ul') ? warningsEl.querySelector('ul').innerHTML : '';
+      warningsEl.innerHTML = '<ul>' + existing + '<li style="background:rgba(31,78,91,0.06);color:var(--teal);border-color:rgba(31,78,91,0.18);">Menú cargado desde el fragmento de URL — comparte este enlace para compartir el análisis.</li></ul>';
+    });
+    return true;
+  }
+  setTimeout(rehydrateFromFragment, 0);
+
+  var downloadZipBtn = document.getElementById('meDownloadZip');
+  if (downloadZipBtn) {
+    downloadZipBtn.addEventListener('click', function(){
+      var summary = window.ME.summariseMenu(readGrid());
+      var csv = buildCsv();
+      var json = buildJson();
+      var readme = buildReadme(summary);
+      buildMenuCardBlob().then(function(pngBlob){
+        var reader = new FileReader();
+        reader.onload = function(){
+          var entries = [
+            { name: 'ficha-menu.png',     data: new Uint8Array(reader.result) },
+            { name: 'menu-data.csv',      data: strToBytes(csv) },
+            { name: 'menu-analysis.json', data: strToBytes(json) },
+            { name: 'README.md',          data: strToBytes(readme) }
+          ];
+          downloadBlob(buildZipBlob(entries), 'ingenieria-de-menu.zip');
+        };
+        reader.onerror = function(){
+          var entries = [
+            { name: 'menu-data.csv',      data: strToBytes(csv) },
+            { name: 'menu-analysis.json', data: strToBytes(json) },
+            { name: 'README.md',          data: strToBytes(readme) }
+          ];
+          downloadBlob(buildZipBlob(entries), 'ingenieria-de-menu.zip');
+        };
+        reader.readAsArrayBuffer(pngBlob);
+      }).catch(function(){
+        var entries = [
+          { name: 'menu-data.csv',      data: strToBytes(csv) },
+          { name: 'menu-analysis.json', data: strToBytes(json) },
+          { name: 'README.md',          data: strToBytes(readme) }
+        ];
+        downloadBlob(buildZipBlob(entries), 'ingenieria-de-menu.zip');
+      });
+      if (window.plausible) window.plausible('Menu Engineering Export', { props: { format: 'zip' } });
+    });
+  }
+})();
+</script>
+</body>
+</html>
