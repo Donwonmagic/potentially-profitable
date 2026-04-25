@@ -280,8 +280,12 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Descargar menu-copy-analysis.json
       </button>
+      <button type="button" class="mc-export-btn" id="mcDownloadZip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M10 12v6"/><path d="M10 12h2"/></svg>
+        Descargar paquete ZIP
+      </button>
     </div>
-    <p style="margin:10px 0 0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);">El PNG de Ficha de Copy es por ahora un marcador — la Fase 3 envía la versión diseñada de 1200×1500 con la copy anotada y las tarjetas por plato lado a lado. El CSV refleja los puntajes por plato; el JSON incluye la matemática completa por plato + umbrales. Todo se compone en tu navegador — sin subida.</p>
+    <p style="margin:10px 0 0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);">El <strong>PNG de Ficha de Copy</strong> es una imagen de 1200×1500 con la copy original a la izquierda, el diagnóstico a la derecha y una leyenda didáctica abajo — diseñada para que un chef o redactor la lea sin abrir esta URL. Hasta 4 platos por ficha; menús más largos generan una serie numerada. El CSV refleja los puntajes por plato; el JSON incluye la matemática completa + umbrales; el ZIP empaqueta todo más un README. Todo se compone en tu navegador — sin subida.</p>
   </div>
 </div></section>
 
@@ -295,6 +299,43 @@
     <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:12px 0 12px;">Tu copy de menú se queda en tu navegador.</h2>
     <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0 0 14px;">El motor completo de reglas — el léxico sensorial, la lista de técnicas, la lista de relleno — viene embebido en <code>/tools/menu-copy/menu-copy.js</code>, un único script sin dependencias que puedes leer directo. Sin subida, sin cuenta, sin escrituras a <code>localStorage</code>. Abre DevTools → Network y escribe en el cuadro: la lista de peticiones no crece.</p>
     <p style="font-size:13px;color:var(--stone);margin:0;">Un recorrido verificable de nueve pasos y una Ficha de Copy imprimible llegan en una versión siguiente. Para la misma postura hoy, mira <a href="/es/tools/brand-suite/#how-we-protect" style="color:inherit;border-bottom:1px dashed var(--teal);">cómo Suite de Marca protege tu logo</a> — esta herramienta usa la misma arquitectura.</p>
+  </div>
+</div></section>
+
+<section class="block" id="what-this-isnt"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">Marco honesto</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">Qué no es</h2>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">El Inspector es filoso, pero es una herramienta específica — diseñada para enseñar, no para escribir. Saber qué no es es lo que lo hace durablemente útil.</p>
+  </div>
+  <div style="max-width:760px;margin:24px auto 0;display:flex;flex-direction:column;gap:14px;">
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No es un reescritor.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Por diseño. En 2027 cualquier chatbot reescribirá copy de menú adecuadamente; lo que ningún chatbot hace bien es enseñarle a un dueño a leer su propia copy con criterio. El Inspector te dice qué falta — no qué palabras usar para arreglarlo. Diez corridas trimestrales en dos años y vas a escribir mejores menús desde cero.</p>
+    </article>
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No es un análisis de voz / tono.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Un perfil de voz a nivel sistema (&ldquo;suenas como un farm-to-table de 2015&rdquo;) es una oferta paga aparte. El Inspector lee platos, no sistemas. Si el menú entero sale como &ldquo;voz ausente&rdquo; — densidad de señal baja, palabras genéricas en todas partes — es problema de voz de marca, no de pulido de copy.</p>
+    </article>
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No sustituye a la ingeniería de menú.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Una copy pulida sobre un Perro sigue siendo un Perro. Corre primero la <a href="/es/tools/menu-engineering/" style="color:inherit;border-bottom:1px dashed var(--teal);">Matriz de Ingeniería de Menú</a> para saber qué platos vale la pena reescribir. El Inspector es el <em>cómo</em>; la Matriz es el <em>cuál</em>.</p>
+    </article>
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No es un modelo completo de lenguaje.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Los léxicos están curados, no son exhaustivos. Un adjetivo sensorial que el Inspector no reconoce (o un ingrediente regional que debería marcar procedencia) no se va a disparar. Los diagnósticos son conservadores a propósito — los falsos negativos son más fáciles de arreglar que los falsos positivos. La v1 del léxico reconoce inglés; el soporte completo de español viene en camino.</p>
+    </article>
+  </div>
+  <div style="max-width:760px;margin:24px auto 0;padding:20px 22px;background:var(--cream-2,var(--cream));border-radius:var(--r-input);border:1px solid var(--line);">
+    <p style="margin:0 0 8px;font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);">Lo que <em>sí</em> es: una mejora permanente de habilidad que puedes correr trimestralmente.</p>
+    <p style="margin:0;font-size:14px;line-height:1.65;color:var(--ink-soft);">Tres audiencias, tres entregas. La <strong>Ficha de Copy</strong> es el visual que un lector no técnico puede usar — llévala al chef antes de la próxima reimpresión del menú. El <strong>CSV</strong> es para el contador o el operador haciendo comparaciones trimestrales. El <strong>JSON</strong> es para un desarrollador construyendo algo sobre tus datos. El Inspector mismo es el beneficio a fuego lento: diez dueños que lo corren una vez por trimestre durante dos años escriben mejores menús desde cero que antes.</p>
+  </div>
+  <div style="max-width:760px;margin:18px auto 0;padding:20px 22px;background:var(--teal-tint);border-radius:var(--r-input);border:1px solid var(--line);">
+    <p style="margin:0 0 8px;font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);">Cuando quieras una reescritura de voz, contrata al estudio.</p>
+    <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:var(--ink-soft);">Si el Inspector marca &ldquo;Reescribir&rdquo; en la mayoría de tu menú, no tienes problema de copy — tienes problema de voz. El trabajo de voz de marca es la oferta paga del estudio. Trae tu Ficha de Copy a la primera llamada.</p>
+    <a href="/es/services/" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:var(--teal);color:var(--cream);border-radius:999px;text-decoration:none;font-size:13px;font-weight:600;">Ver voz de marca y menú
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px;"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
   </div>
 </div></section>
 
@@ -321,6 +362,7 @@
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/menu-engineering/menu-engineering.js?v=20260425-me1"></script>
 <script src="/tools/menu-copy/menu-copy.js?v=20260425-mc1"></script>
+<script src="/tools/menu-copy/card-render.js?v=20260425-mc2"></script>
 <script>
 /* Menu Copy Inspector — input wiring + live render.
  *
@@ -795,52 +837,171 @@
     if (window.plausible) window.plausible('Menu Copy Inspector Export', { props: { format: 'json' } });
   });
 
-  function buildPlaceholderCardPng(){
-    return new Promise(function(resolve, reject){
-      if (!latestSummary) { reject(new Error('Sin análisis')); return; }
-      var rows = latestSummary.items.slice(0, 12).map(function(it, i){
-        var y = 220 + i * 80;
-        var color = ({ polish: '#1F4E5B', edit: '#C68A2C', rewrite: '#B8541A' })[it.verdict];
-        return [
-          '<rect x="48" y="' + y + '" width="1104" height="60" fill="#FFFFFF" stroke="#E5E0D8" />',
-          '<rect x="48" y="' + y + '" width="6" height="60" fill="' + color + '" />',
-          '<text x="68" y="' + (y + 24) + '" font-size="16" font-family="Inter,sans-serif" font-weight="600" fill="#14161A">' + (it.name || '(sin nombre)').replace(/[<>&]/g, '') + '</text>',
-          '<text x="68" y="' + (y + 46) + '" font-size="12" font-family="Inter,sans-serif" fill="#5A5752">' + String(it.length.words) + ' palabras · sens ' + it.sensory.count + ' · proc ' + it.provenance.count + ' · téc ' + it.technique.count + ' · rell ' + it.hedges.count + '</text>',
-          '<text x="1132" y="' + (y + 36) + '" font-size="14" font-family="Inter,sans-serif" font-weight="700" fill="' + color + '" text-anchor="end">' + it.verdict.toUpperCase() + '  ' + it.score + '</text>'
-        ].join('');
-      }).join('');
-      var card =
-        '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">' +
-        '<rect width="1200" height="1500" fill="#F2EEE5"/>' +
-        '<rect x="0" y="0" width="1200" height="120" fill="#14161A"/>' +
-        '<text x="48" y="62" font-size="32" font-family="Inter,sans-serif" font-weight="600" fill="#FAF7F2">Diagnóstico de copy de menú</text>' +
-        '<text x="48" y="92" font-size="14" font-family="Inter,sans-serif" fill="rgba(250,247,242,0.72)">Estrellas · Caballos · Acertijos · Perros del lenguaje</text>' +
-        '<text x="1152" y="62" font-size="14" font-family="Inter,sans-serif" fill="rgba(250,247,242,0.72)" text-anchor="end">' + new Date().toISOString().slice(0, 10) + '</text>' +
-        '<g>' + rows + '</g>' +
-        '<rect x="0" y="1440" width="1200" height="60" fill="#14161A"/>' +
-        '<text x="48" y="1478" font-size="14" font-family="Inter,sans-serif" fill="#FAF7F2">Generado con Inspector de Copy de Menú (placeholder)</text>' +
-        '<text x="1152" y="1478" font-size="14" font-family="Inter,sans-serif" fill="rgba(250,247,242,0.7)" text-anchor="end">muntin.digital/es/tools/menu-copy/</text>' +
-        '</svg>';
-      var img = new Image();
-      var blobUrl = URL.createObjectURL(new Blob([card], { type: 'image/svg+xml' }));
-      img.onload = function(){
-        var canvas = document.createElement('canvas');
-        canvas.width = 1200; canvas.height = 1500;
-        var ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, 1200, 1500);
-        URL.revokeObjectURL(blobUrl);
-        canvas.toBlob(function(blob){ blob ? resolve(blob) : reject(new Error('toBlob null')); }, 'image/png');
-      };
-      img.onerror = function(){ URL.revokeObjectURL(blobUrl); reject(new Error('svg fail')); };
-      img.src = blobUrl;
+  function buildCardCanvases(){
+    if (!window.MCCard || !latestSummary) return [];
+    return window.MCCard.renderCopyCards({
+      summary: latestSummary,
+      strings: window.MCCard.DEFAULT_STRINGS_ES
     });
   }
   downloadCardBtn.addEventListener('click', function(){
-    buildPlaceholderCardPng().then(function(blob){
-      downloadBlob(blob, 'ficha-copy.png');
-      if (window.plausible) window.plausible('Menu Copy Inspector Export', { props: { format: 'card-png' } });
-    }).catch(function(err){ console.warn('Render failed', err); });
+    if (!latestSummary || !latestSummary.items.length) return;
+    var canvases = buildCardCanvases();
+    if (!canvases.length) return;
+    if (canvases.length === 1) {
+      window.MCCard.canvasToPngBlob(canvases[0]).then(function(blob){
+        downloadBlob(blob, 'ficha-copy.png');
+        if (window.plausible) window.plausible('Menu Copy Inspector Export', { props: { format: 'card-png' } });
+      });
+    } else {
+      Promise.all(canvases.map(window.MCCard.canvasToPngBlob)).then(function(blobs){
+        Promise.all(blobs.map(function(b){
+          return new Promise(function(res){
+            var r = new FileReader();
+            r.onload = function(){ res(new Uint8Array(r.result)); };
+            r.readAsArrayBuffer(b);
+          });
+        })).then(function(byteArrays){
+          var entries = byteArrays.map(function(bytes, i){
+            return { name: 'ficha-copy-' + (i + 1) + '.png', data: bytes };
+          });
+          downloadBlob(buildZipBlob(entries), 'fichas-copy.zip');
+          if (window.plausible) window.plausible('Menu Copy Inspector Export', { props: { format: 'card-png-multi' } });
+        });
+      });
+    }
   });
+
+  // ----- ZIP bundle export -----
+  var CRC_TABLE = (function(){
+    var t = new Uint32Array(256);
+    for (var n = 0; n < 256; n++) {
+      var c = n;
+      for (var k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+      t[n] = c >>> 0;
+    }
+    return t;
+  })();
+  function crc32(bytes){
+    var c = 0xFFFFFFFF;
+    for (var i = 0; i < bytes.length; i++) c = CRC_TABLE[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+    return (c ^ 0xFFFFFFFF) >>> 0;
+  }
+  function strToBytes(s){ return new TextEncoder().encode(s); }
+
+  function buildZipBlob(entries){
+    var parts = [], centralParts = [], offset = 0;
+    var nowDate = new Date();
+    var dosTime = ((nowDate.getHours() & 0x1F) << 11) | ((nowDate.getMinutes() & 0x3F) << 5) | ((nowDate.getSeconds() / 2) & 0x1F);
+    var dosDate = (((nowDate.getFullYear() - 1980) & 0x7F) << 9) | (((nowDate.getMonth() + 1) & 0x0F) << 5) | (nowDate.getDate() & 0x1F);
+    entries.forEach(function(entry){
+      var nameBytes = strToBytes(entry.name);
+      var crc = crc32(entry.data);
+      var size = entry.data.length;
+      var lh = new Uint8Array(30 + nameBytes.length);
+      var dv = new DataView(lh.buffer);
+      dv.setUint32(0, 0x04034b50, true);
+      dv.setUint16(4, 20, true); dv.setUint16(6, 0, true); dv.setUint16(8, 0, true);
+      dv.setUint16(10, dosTime, true); dv.setUint16(12, dosDate, true);
+      dv.setUint32(14, crc, true); dv.setUint32(18, size, true); dv.setUint32(22, size, true);
+      dv.setUint16(26, nameBytes.length, true); dv.setUint16(28, 0, true);
+      lh.set(nameBytes, 30);
+      parts.push(lh); parts.push(entry.data);
+      var ch = new Uint8Array(46 + nameBytes.length);
+      var cv = new DataView(ch.buffer);
+      cv.setUint32(0, 0x02014b50, true);
+      cv.setUint16(4, 20, true); cv.setUint16(6, 20, true); cv.setUint16(8, 0, true); cv.setUint16(10, 0, true);
+      cv.setUint16(12, dosTime, true); cv.setUint16(14, dosDate, true);
+      cv.setUint32(16, crc, true); cv.setUint32(20, size, true); cv.setUint32(24, size, true);
+      cv.setUint16(28, nameBytes.length, true);
+      cv.setUint16(30, 0, true); cv.setUint16(32, 0, true); cv.setUint16(34, 0, true); cv.setUint16(36, 0, true);
+      cv.setUint32(38, 0, true); cv.setUint32(42, offset, true);
+      ch.set(nameBytes, 46);
+      centralParts.push(ch);
+      offset += lh.length + entry.data.length;
+    });
+    var cdSize = 0;
+    centralParts.forEach(function(c){ cdSize += c.length; });
+    var cdStart = offset;
+    centralParts.forEach(function(c){ parts.push(c); });
+    var eocd = new Uint8Array(22);
+    var ev = new DataView(eocd.buffer);
+    ev.setUint32(0, 0x06054b50, true);
+    ev.setUint16(4, 0, true); ev.setUint16(6, 0, true);
+    ev.setUint16(8, entries.length, true); ev.setUint16(10, entries.length, true);
+    ev.setUint32(12, cdSize, true); ev.setUint32(16, cdStart, true); ev.setUint16(20, 0, true);
+    parts.push(eocd);
+    return new Blob(parts, { type: 'application/zip' });
+  }
+
+  function buildReadme(){
+    if (!latestSummary) return '';
+    var s = latestSummary.summary;
+    var counts = { polish: 0, edit: 0, rewrite: 0 };
+    latestSummary.items.forEach(function(it){ counts[it.verdict]++; });
+    var lines = [];
+    lines.push('# Tu diagnóstico de copy de menú');
+    lines.push('');
+    lines.push('Generado por **Inspector de Copy de Menú** el ' + new Date().toISOString().slice(0, 10) + '.');
+    lines.push('Todo en este paquete se compuso en tu navegador. Tu copy de menú nunca salió de tu dispositivo.');
+    lines.push('');
+    lines.push('## Qué incluye este paquete');
+    lines.push('');
+    lines.push('- `ficha-copy-*.png` — la(s) **Ficha(s) de Copy**, imágenes de 1200×1500 con descripciones anotadas y tarjetas por plato. Hasta 4 platos por página.');
+    lines.push('- `menu-copy-data.csv` — tabla por plato con los seis diagnósticos.');
+    lines.push('- `menu-copy-analysis.json` — los mismos datos más metadatos del método.');
+    lines.push('- `README.md` — este archivo.');
+    lines.push('');
+    lines.push('## A simple vista');
+    lines.push('');
+    lines.push('- Platos analizados: **' + s.itemCount + '**');
+    lines.push('- Pulir: **' + counts.polish + '**  |  Editar: **' + counts.edit + '**  |  Reescribir: **' + counts.rewrite + '**');
+    lines.push('');
+    lines.push('## Método');
+    lines.push('');
+    lines.push('Seis diagnósticos basados en reglas: adjetivos sensoriales (Wansink 2005), señales de procedencia, palabras de técnica, distribución de extensión (sensible al tier), palabras de relleno (lista negra Cornell), presentación de precio (Kimes & Wirtz).');
+    lines.push('');
+    lines.push('## Hecho por Muntin Digital');
+    lines.push('');
+    lines.push('Inspector de Copy de Menú es una herramienta gratuita de **Muntin Digital** — un estudio web de restaurantes de una sola persona en Silver Spring, Maryland.');
+    lines.push('');
+    lines.push('- Estudio: https://muntin.digital');
+    lines.push('- Voz de marca (pago): https://muntin.digital/es/services/');
+    lines.push('- Herramienta: https://muntin.digital/es/tools/menu-copy/');
+    lines.push('');
+    lines.push('> La estructura aporta claridad.');
+    return lines.join('\n') + '\n';
+  }
+
+  var downloadZipBtn = document.getElementById('mcDownloadZip');
+  if (downloadZipBtn) {
+    downloadZipBtn.addEventListener('click', function(){
+      if (!latestSummary || !latestSummary.items.length) return;
+      var csv = buildCsv();
+      var json = buildJson();
+      var readme = buildReadme();
+      var canvases = buildCardCanvases();
+      Promise.all(canvases.map(window.MCCard.canvasToPngBlob)).then(function(blobs){
+        Promise.all(blobs.map(function(b){
+          return new Promise(function(res){
+            var r = new FileReader();
+            r.onload = function(){ res(new Uint8Array(r.result)); };
+            r.readAsArrayBuffer(b);
+          });
+        })).then(function(byteArrays){
+          var entries = [];
+          byteArrays.forEach(function(bytes, i){
+            entries.push({ name: 'ficha-copy-' + (i + 1) + '.png', data: bytes });
+          });
+          entries.push({ name: 'menu-copy-data.csv',     data: strToBytes(csv) });
+          entries.push({ name: 'menu-copy-analysis.json', data: strToBytes(json) });
+          entries.push({ name: 'README.md',              data: strToBytes(readme) });
+          downloadBlob(buildZipBlob(entries), 'inspector-copy-paquete.zip');
+        });
+      });
+      if (window.plausible) window.plausible('Menu Copy Inspector Export', { props: { format: 'zip' } });
+    });
+  }
 })();
 </script>
 </body>
