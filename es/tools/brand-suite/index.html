@@ -97,6 +97,7 @@
   .bs-chip-swatch{width:100%;aspect-ratio:1/1;display:block}
   .bs-chip-meta{padding:10px 12px;display:flex;flex-direction:column;gap:2px}
   .bs-chip-role{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--stone)}
+  .bs-chip-sublabel{font-size:10.5px;line-height:1.35;color:var(--ink-soft);font-style:italic}
   .bs-chip-hex{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
   .bs-chip-share{font-size:11px;color:var(--stone)}
   .bs-chip-warn{font-size:11px;color:var(--rust);display:inline-flex;align-items:center;gap:4px}
@@ -107,6 +108,23 @@
   .bs-chip.copy-failed .bs-chip-role{color:var(--rust)}
   .bs-palette-hint{font-size:12px;color:var(--stone);margin:0}
   .bs-palette-mono-flag{font-size:12px;color:var(--rust);margin:0}
+  .bs-using{margin-top:12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);padding:0}
+  .bs-using>summary{cursor:pointer;padding:14px 18px;font-size:14px;font-weight:600;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .bs-using>summary::after{content:"+";font-size:22px;font-weight:400;color:var(--stone);line-height:1}
+  .bs-using[open]>summary::after{content:"\2212"}
+  .bs-using>summary::-webkit-details-marker{display:none}
+  .bs-using-body{padding:0 18px 18px}
+  .bs-using-list{margin:0;padding:0 0 0 22px;display:flex;flex-direction:column;gap:14px}
+  .bs-using-list li{font-size:13px;line-height:1.55;color:var(--ink-soft)}
+  .bs-using-list strong{color:var(--ink);font-weight:600}
+  .bs-using-list p{margin:4px 0 0}
+  .bs-devtools-tour{border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+  .bs-devtools-tour>summary{cursor:pointer;padding:14px 18px;font-size:14px;font-weight:600;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .bs-devtools-tour>summary::after{content:"+";font-size:22px;font-weight:400;color:var(--stone);line-height:1}
+  .bs-devtools-tour[open]>summary::after{content:"\2212"}
+  .bs-devtools-tour>summary::-webkit-details-marker{display:none}
+  .bs-devtools-tour .bs-devtools-cue{font-weight:400;color:var(--stone);font-size:12.5px}
+  .bs-devtools-tour .mm-steps{margin-top:6px;padding:0 18px 18px}
   .bs-status{min-height:24px;font-size:13px;color:var(--stone);text-align:center}
   .bs-status.bs-status-error{color:var(--rust)}
   .bs-status.bs-status-working::before{content:'';display:inline-block;width:12px;height:12px;margin-right:8px;border:2px solid var(--line-dark);border-top-color:var(--teal);border-radius:50%;vertical-align:middle;animation:bs-spin 800ms linear infinite}
@@ -176,6 +194,24 @@
   .bs-export-btn.copy-failed{background:rgba(184,84,26,0.06);color:var(--rust);border-color:var(--rust)}
   .bs-export-btn-primary{background:var(--teal);color:var(--cream)}
   .bs-export-btn-primary:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+
+  /* Hoja de impresión — colapsa la página en una hoja inicial de una
+     sola página que un dueño de restaurante puede mandarle a un
+     diseñador o a una imprenta. */
+  @media print {
+    body{background:#fff !important;color:#000 !important}
+    header.site-nav, .breadcrumb, .bs-devtools-tour, #how-to-check, #what-this-isnt,
+    .bs-export, #how-we-protect, .foot, footer, .lang-hint, .mm-next, .nav-search,
+    .bs-upload-zone, .bs-status, .bs-cb-toggle{display:none !important}
+    .bs-using[open]>.bs-using-body, .bs-using-body{display:block !important}
+    .bs-using>summary{display:none !important}
+    .bs-using{border:none !important;padding:0 !important}
+    .bs-palette{break-inside:avoid;page-break-inside:avoid}
+    .bs-fixture-card{break-inside:avoid;page-break-inside:avoid}
+    .bs-contrast-table{break-inside:avoid;page-break-inside:avoid;font-size:10px !important}
+    .bs-preview, .bs-fixture-wrap, .bs-contrast-wrap, .bs-palette-wrap, .bs-using{margin-top:14px !important}
+    a[href]:after{content:"" !important}
+  }
   .bs-export-preview{margin:0;padding:14px 16px;background:var(--ink);color:var(--cream-2);border-radius:var(--r-input);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.5;overflow-x:auto;white-space:pre;max-height:280px;overflow-y:auto}
   /* Estilos de calculadora en vivo — compartidos por las cuatro
      calculadoras. La insignia "Se queda en tu navegador" aparece
@@ -426,6 +462,26 @@
       <div class="bs-palette" id="bsPalette" role="list"></div>
       <p class="bs-palette-hint">Haz click en cualquier chip para copiar su hex al portapapeles. Los roles se asignan por intención cromática — el color más saturado ancla al Primario, no el píxel más abundante.</p>
       <p class="bs-palette-mono-flag" id="bsPaletteMonoFlag" hidden>Este logo se lee como monocromático. Los roles de abajo etiquetan los extremos de claridad; tómalos como punto de partida, no como sistema.</p>
+
+      <details class="bs-using">
+        <summary>Cómo usar tu paleta &mdash; para un lector no técnico</summary>
+        <div class="bs-using-body">
+          <ol class="bs-using-list">
+            <li>
+              <strong>Elige un color de superficie.</strong>
+              <p>Un color domina todo lo demás &mdash; la pared detrás del pizarrón del menú, el fondo de tu cuadrícula de Instagram, el papel crema de tu menú. Usa el chip <strong>Neutro</strong> (o el más claro de los dos clusters más grandes). La contención en esta capa es lo que hace que el resto se lea.</p>
+            </li>
+            <li>
+              <strong>Elige un color héroe.</strong>
+              <p>El único color en el que quieres que el ojo del comensal aterrice primero &mdash; el botón &ldquo;Reservar mesa&rdquo;, el toldo, el eyebrow del encabezado del menú. Usa <strong>Primario</strong>. Cada valor de par accesible te dice qué color de texto poner encima para que se lea.</p>
+            </li>
+            <li>
+              <strong>Usa el resto con moderación.</strong>
+              <p>Acento 1, Acento 2 y Secundario son para divisores, precios, sub-encabezados, estados hover &mdash; una decisión a la vez. Una página que usa los cinco a tope se lee como cinco marcas distintas. <a href="/es/glossary/color-palette/">Más sobre disciplina de paleta &rarr;</a></p>
+            </li>
+          </ol>
+        </div>
+      </details>
     </div>
 
     <div class="bs-fixture-wrap" id="bsFixtureWrap" hidden>
@@ -513,12 +569,29 @@
   </div>
 </div></section>
 
+<section class="block" id="what-this-does"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">En lenguaje sencillo</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,34px);font-weight:500;color:var(--ink);margin:12px 0 14px;">Qué hace esta herramienta, en cuatro frases</h2>
+    <ol style="margin:0;padding-left:1.2em;font-size:15px;line-height:1.7;color:var(--ink-soft);display:flex;flex-direction:column;gap:8px;">
+      <li><strong>Sueltas un logo.</strong> Tu navegador toma muestras de los píxeles en una pequeña cuadrícula &mdash; el archivo nunca sale de tu dispositivo.</li>
+      <li><strong>Obtienes una paleta de cinco colores.</strong> Los colores se sacan de tu logo con un algoritmo de agrupación que corre en la página, ordenados por intención cromática (Primario, Secundario, acentos, Neutro).</li>
+      <li><strong>Obtienes matemática de accesibilidad.</strong> Cada par recibe una calificación de contraste WCAG, y cada color trae un &ldquo;par accesible&rdquo; ligeramente desplazado, seguro para usar como texto sobre crema o tinta.</li>
+      <li><strong>Obtienes cuatro formas de llevártelo.</strong> El Panel Muntin es una sola imagen PNG compartible. Las variables CSS se pegan en una hoja de estilos. El tokens.json entra en Figma. El ZIP empaqueta todo lo anterior más un README.</li>
+    </ol>
+    <p style="font-size:13.5px;line-height:1.6;color:var(--stone);margin:14px 0 0;"><strong>No</strong> es un generador de logos, una identidad de marca terminada ni una recomendación tipográfica. <a href="#what-this-isnt" style="color:inherit;border-bottom:1px dashed var(--teal);">Más sobre los límites abajo</a>.</p>
+  </div>
+</div></section>
+
 <section class="block" id="how-we-protect"><div class="container">
   <div style="max-width:760px;margin:0 auto;">
     <span class="eyebrow">Predicar con el ejemplo</span>
     <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">Cómo protegemos el logo que subes</h2>
-    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Un logo en proceso es sensible: puede ser un rebrand que aún no anuncias, un concepto que no le has mostrado a un socio, una marca terminada por la que pagaste dinero real. Nueve afirmaciones. Cada una se puede verificar en tu propio navegador en menos de un minuto. Si alguna resulta falsa, queremos que lo encuentres tú primero — abre cada "Inspecciona esto" y compruébanos.</p>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0 0 14px;">Un logo en proceso es sensible: puede ser un rebrand que aún no anuncias, un concepto que no le has mostrado a un socio, una marca terminada por la que pagaste dinero real. Nueve afirmaciones. Cada una se puede verificar en tu propio navegador en menos de un minuto.</p>
   </div>
+
+  <details class="bs-devtools-tour" style="max-width:920px;margin:14px auto 0;">
+    <summary>Verifica el reclamo tú mismo <span class="bs-devtools-cue">&middot; para desarrolladores</span></summary>
 
   <div class="mm-steps" aria-label="Pasos de protección de privacidad">
     <article class="mm-step">
@@ -638,6 +711,7 @@
       </div>
     </article>
   </div>
+  </details>
 </div></section>
 
 <section class="block" id="how-to-check"><div class="container">
@@ -802,9 +876,9 @@
   <div class="mm-next">
     <h2>A dónde seguir</h2>
     <div class="mm-next-links">
-      <a href="/es/glossary/#brand-design">Glosario: Marca y diseño</a>
-      <a href="/es/tools/margin-math/">Haz los números: Cálculo de Margen</a>
-      <a href="/es/tools/gbp-grader/">Califica tu Google Business Profile</a>
+      <a href="/es/glossary/color-palette/">Glosario: Paleta de colores</a>
+      <a href="/es/glossary/design-token/">Glosario: Tokens de diseño</a>
+      <a href="/es/learn/topics/brand-design/">Tema: Marca y diseño</a>
       <a href="/es/tools/audits/restaurant/">Corre el diagnóstico completo</a>
       <a href="/es/services/#brand">Contrata al estudio para una identidad terminada</a>
     </div>
@@ -827,10 +901,17 @@
           <p class="tool-deep-snippet">El sistema visible completo que lleva a un negocio por cada punto de contacto — logo, colores, tipografía, voz y las reglas para usarlos. Un…</p>
           <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
         </a>
-      <a class="tool-deep-card tool-deep-card-article" href="/es/blog/wix-vs-custom-for-restaurants/">
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/color-palette/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Paleta de colores</h3>
+          <p class="tool-deep-aka">el conjunto curado de colores que le pertenecen a tu marca</p>
+          <p class="tool-deep-snippet">El conjunto curado de colores que le pertenecen a una marca — típicamente un primario, un secundario, un pequeño número de acentos y un par …</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-article" href="/es/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/">
           <span class="tool-deep-kind">Artículo</span>
-          <h3>Wix vs. a medida para restaurantes: qué se rompe primero</h3>
-          <p class="tool-deep-snippet">Una comparación honesta entre Wix y un sitio web a medida para restaurante. Seis lugares donde Wix se queda corto para un restaurante independiente, la cuenta de ROI que hace que valga la pena cambiar, y cuándo Wix sí es la respuesta correcta.</p>
+          <h3>¿Cuánto cuesta un sitio a medida para restaurante en 2026?</h3>
+          <p class="tool-deep-snippet">Cuánto cuesta un sitio a medida para restaurante en 2026, desglosado rubro por rubro — de USD 2,500 a 15,000+. Números reales, contrapartes reales, y lo que nadie más te dice.</p>
           <span class="tool-deep-cta">Leer la guía <span aria-hidden="true">→</span></span>
         </a>
     </div>
@@ -893,6 +974,14 @@
   var MAX_BYTES = 10 * 1024 * 1024;
   var DOWNSAMPLE = 100;
   var ROLE_NAMES = ['Primario', 'Secundario', 'Acento 1', 'Acento 2', 'Neutro'];
+  // Sublabel en lenguaje sencillo, dirigido a un lector no técnico.
+  var ROLE_SUBLABELS = [
+    'el que llama a la acción',
+    'el que apoya',
+    'el que resalta',
+    'el que acentúa',
+    'el que enmarca'
+  ];
   var ROLE_VARS  = ['--brand-primary', '--brand-secondary', '--brand-accent-1', '--brand-accent-2', '--brand-neutral'];
   var TOKEN_NAMES = ['brand.primary', 'brand.secondary', 'brand.accent-1', 'brand.accent-2', 'brand.neutral'];
   var CREAM = 'var(--cream)';
@@ -970,30 +1059,7 @@
         try { palette = window.BS.extractPalette(pixels, { k: 5, seed: 1 }); }
         catch (e) { setStatus('No se pudo extraer paleta. Prueba con otro logo.', 'error'); return; }
       }
-      // Reordenamos por intención cromática (Primario = más saturado).
-      var roleResult = window.BS.assignRoles(palette, { roleNames: ROLE_NAMES });
-      latestPalette = roleResult.entries.map(function(e){
-        return { hex: e.hex, dominancePct: e.dominancePct };
-      });
-      latestMonochromatic = roleResult.monochromatic;
-      latestSimilarities = window.BS.paletteSimilarities(latestPalette);
-      paletteMonoFlag.hidden = !latestMonochromatic;
-      // Despliegue progresivo: paleta primero, el resto en frames
-      // subsiguientes para que la página se sienta receptiva.
-      renderPalette(latestPalette);
-      paletteWrap.hidden = false;
-      setStatus('');
-      requestAnimationFrame(function(){
-        renderFixture(latestPalette);
-        fixtureWrap.hidden = false;
-        requestAnimationFrame(function(){
-          renderContrastGrid(latestPalette);
-          contrastWrap.hidden = false;
-          renderExports(latestPalette);
-          exportWrap.hidden = false;
-          firePlausible(latestPalette, file);
-        });
-      });
+      hydratePalette(palette, { source: 'extract', file: file });
     }
     pending[requestId] = onDone;
     if (worker) {
@@ -1009,6 +1075,59 @@
       onDone(new Error('no-worker'));
     }
   }
+
+  // Camino de render unificado. Llamado por la respuesta del worker
+  // (extracción nueva) y por el rehydrador del fragmento de URL.
+  function hydratePalette(palette, opts){
+    opts = opts || {};
+    var roleResult = window.BS.assignRoles(palette, { roleNames: ROLE_NAMES });
+    latestPalette = roleResult.entries.map(function(e){
+      return { hex: e.hex, dominancePct: e.dominancePct };
+    });
+    latestMonochromatic = roleResult.monochromatic;
+    latestSimilarities = window.BS.paletteSimilarities(latestPalette);
+    paletteMonoFlag.hidden = !latestMonochromatic;
+    renderPalette(latestPalette);
+    paletteWrap.hidden = false;
+    setStatus('');
+    requestAnimationFrame(function(){
+      renderFixture(latestPalette);
+      fixtureWrap.hidden = false;
+      requestAnimationFrame(function(){
+        renderContrastGrid(latestPalette);
+        contrastWrap.hidden = false;
+        renderExports(latestPalette);
+        exportWrap.hidden = false;
+        if (opts.source === 'extract') firePlausible(latestPalette, opts.file);
+      });
+    });
+    try {
+      var enc = latestPalette.map(function(e){ return e.hex.replace('#', '').toUpperCase(); }).join(',');
+      history.replaceState(null, '', '#p=' + enc);
+    } catch (_) {}
+  }
+
+  function paletteFromHexList(hexList){
+    var n = hexList.length;
+    return hexList.map(function(h){
+      return { hex: '#' + h.toUpperCase().replace('#', ''), dominancePct: n > 0 ? 1 / n : 0 };
+    });
+  }
+
+  (function rehydrateFromFragment(){
+    var frag = window.location.hash || '';
+    var m = /(?:^|[#&])p=([0-9A-Fa-f,]+)/.exec(frag);
+    if (!m) return;
+    var hexes = m[1].split(',').filter(function(s){ return /^[0-9a-f]{6}$/i.test(s); });
+    if (!hexes.length || hexes.length > 8) return;
+    var palette = paletteFromHexList(hexes);
+    if (!window.BS || !window.BS.assignRoles) {
+      window.addEventListener('load', function(){ hydratePalette(palette, { source: 'fragment' }); });
+    } else {
+      hydratePalette(palette, { source: 'fragment' });
+    }
+    setStatus('Paleta cargada desde la URL — comparte este enlace para compartir la paleta.', '');
+  })();
 
   // Cuadrícula triangular superior. WCAG es simétrico (A-sobre-B = B-sobre-A);
   // omitir el espejo reduce ruido visual. Los swatches de cabecera muestran
@@ -1436,10 +1555,12 @@
         var simRole = ROLE_NAMES[simIdx] || ('Color ' + (simIdx + 1));
         simHtml = '<span class="bs-chip-warn">visualmente similar a ' + simRole + '</span>';
       }
+      var sublabel = ROLE_SUBLABELS[i] || '';
       btn.innerHTML =
         '<span class="bs-chip-swatch" style="background:' + entry.hex + '"></span>' +
         '<span class="bs-chip-meta">' +
           '<span class="bs-chip-role">' + role + '</span>' +
+          (sublabel ? '<span class="bs-chip-sublabel">' + sublabel + '</span>' : '') +
           '<span class="bs-chip-hex">' + entry.hex.toUpperCase() + '</span>' +
           '<span class="bs-chip-share">' + Math.round(entry.dominancePct * 100) + '% del total</span>' +
           simHtml +

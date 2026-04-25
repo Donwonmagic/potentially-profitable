@@ -1714,6 +1714,42 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
+      <article class="gloss-term" id="design-token" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Design token<span class="gloss-aka">a name for a decision, not a value</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">A named reference for a brand decision — a color, a font size, a corner radius, a spacing step — exported as a portable file (CSS variables, JSON, or a Figma library) so the same value lives in one place and every surface that uses it stays in sync.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Hex codes scattered across a stylesheet are how a brand drifts. Tokens are how it doesn't. When the palette is named once (<code>--brand-primary</code>) and referenced everywhere, swapping rust for olive is a one-line change instead of a search-and-replace across forty files. <a href="/tools/brand-suite/">Brand Suite</a> exports a starter set of tokens from any logo.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/glossary/design-token/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="accessible-pair" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Accessible pair<span class="gloss-aka">a brand color, nudged until text on it clears WCAG AA</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">A version of a brand color whose lightness has been shifted just far enough — preserving hue and feel — that text rendered in it on a named background reaches the WCAG AA contrast threshold (4.5:1 for normal text). Two pairs are usually generated for each color: one on a light surface, one on a dark surface.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Brand teal looks great in the logo and unreadable as 14px body text on cream. Designing a usable system means knowing both the brand color *and* its accessible neighbor — and using the right one in each context. <a href="/tools/brand-suite/">Brand Suite</a> derives them automatically and exports both variants as CSS tokens.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/glossary/accessible-pair/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="color-blindness" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Color blindness<span class="gloss-aka">why two distinct brand colors can collapse to one</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">A set of inherited vision conditions — protanopia, deuteranopia, tritanopia, and milder partial forms — in which one of the three cone-cell types is missing or weakened. The eye no longer distinguishes certain hue pairs (most commonly red from green), even when they look obviously different to other readers.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Roughly 8% of men and 0.5% of women experience some form. A palette that grades AA on luminance can still merge a "go" green into a "stop" red for a deuteranope, sinking accessibility despite passing automated checks. <a href="/tools/brand-suite/">Brand Suite</a> includes a Brettel/Viénot simulation toggle on its contrast grid so the math gets a vision-model sanity check too.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/glossary/color-blindness/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
     </div>
   </section>
 
