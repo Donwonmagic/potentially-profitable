@@ -329,7 +329,51 @@
       </div>
     </article>
 
-    <p style="font-size:12.5px;color:var(--stone);margin:0;line-height:1.6;text-align:center;"><strong>Phase 3 (coming soon):</strong> a printable Storefront Sign for your door, an Open Hours Card to share, and a ZIP bundle with everything in it.</p>
+    <article class="oh-task-card">
+      <header class="oh-task-head">
+        <h3>Print this and tape it to your door.</h3>
+        <span class="oh-task-format">Letter / A4 portrait</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">A clean, large-type sign with your weekly hours and the next four closures. Print it, trim, and tape inside the door — or slot it into an A-frame board out front. Reprint when the closures list goes stale; it's a built-in reminder to revisit your hours.</p>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn oh-task-btn-primary" id="ohPrintSign">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Print storefront sign
+        </button>
+        <button type="button" class="oh-task-btn" id="ohDownloadSign">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download as PNG
+        </button>
+      </div>
+    </article>
+
+    <article class="oh-task-card">
+      <header class="oh-task-head">
+        <h3>Send a snapshot to a partner or accountant.</h3>
+        <span class="oh-task-format">1200×1500 PNG</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">The Open Hours Card bundles your weekly grid, upcoming closures, the website code, and the Google paste block into one shareable image. Email it to a partner or accountant; print it for the back-of-house clipboard. Same idea as the Storefront Sign, sized for a screen instead of a door.</p>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn oh-task-btn-primary" id="ohDownloadCard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
+          Download Open Hours Card
+        </button>
+      </div>
+    </article>
+
+    <article class="oh-task-card">
+      <header class="oh-task-head">
+        <h3>Get everything in one ZIP.</h3>
+        <span class="oh-task-format">ZIP bundle</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">One file containing the printable Sign, the shareable Card, the website code in a ready-to-paste HTML file, the calendar (.ics) closures file, a plain-text version of all the platform copy, and a README that ties it together. Forward to an assistant, a developer, or a future you who reruns this in three months.</p>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn" id="ohDownloadZip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M10 12v6"/><path d="M10 12h2"/></svg>
+          Download ZIP bundle
+        </button>
+      </div>
+    </article>
 
   </div>
 </div></section>
@@ -352,6 +396,49 @@
       <li><strong>Privacy-safe analytics.</strong> Plausible counts how many people use the tool, but never sees your hours, your restaurant name, or your city. Only enum-bucketed values like &ldquo;<code>4-5 days open</code>&rdquo; pass through.</li>
     </ol>
     <p style="font-size:13px;color:var(--stone);margin:14px 0 0;">A nine-step verifiable tour and a printable Storefront Sign land in the next release. For the same posture today, see <a href="/tools/brand-suite/#how-we-protect" style="color:inherit;border-bottom:1px dashed var(--teal);">how Brand Suite protects your logo</a>.</p>
+  </div>
+</div></section>
+
+<section class="block" id="what-this-isnt"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">Honest framing</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">What this isn't</h2>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Open Hours is the cleanest 15 minutes you can spend on the most thankless part of running a restaurant. Knowing what it doesn't do keeps the expectations honest.</p>
+  </div>
+
+  <div style="max-width:760px;margin:24px auto 0;display:flex;flex-direction:column;gap:14px;">
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">Not an auto-syncer.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Tools like Yext do this — they push a single source to every platform on a schedule. They cost \$199+/month and authenticate as you. Open Hours is the no-account, no-API alternative: you copy and paste. Slower, but the privacy posture stays clean and the math is auditable.</p>
+    </article>
+
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">Not a wait-time predictor or reservation widget.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Those are operational tools that need real-time data. Open Hours sets the static hours; reservation availability and wait times are downstream concerns.</p>
+    </article>
+
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">Not a multi-location dashboard.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">v1 is single-restaurant. If you operate three locations with different hours, you'll run the tool three times. Multi-location management is a separate market that demands different infrastructure.</p>
+    </article>
+
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">Not a permanent solution to a recurring problem.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Hours drift. Holidays come around. Staff changes. Once a quarter, run this again. The Storefront Sign goes stale on its own — when the next-four-closures list runs out, that's your prompt. The tool is most useful as a quarterly ritual, not a one-and-done.</p>
+    </article>
+  </div>
+
+  <div style="max-width:760px;margin:24px auto 0;padding:20px 22px;background:var(--cream-2,var(--cream));border-radius:var(--r-input);border:1px solid var(--line);">
+    <p style="margin:0 0 8px;font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);">What this <em>is</em>: 15 minutes that prevent a year of drift.</p>
+    <p style="margin:0;font-size:14px;line-height:1.65;color:var(--ink-soft);">Four audiences, four artifacts. The <strong>Storefront Sign</strong> is for the diner walking past at 10 PM. The <strong>Google paste block</strong> is for the searcher checking their phone. The <strong>website code</strong> is for the developer who built your site (or the one who'll inherit it). The <strong>calendar file</strong> is for you, three weeks before each holiday, when you've forgotten you said you'd close.</p>
+  </div>
+
+  <div style="max-width:760px;margin:18px auto 0;padding:20px 22px;background:var(--teal-tint);border-radius:var(--r-input);border:1px solid var(--line);">
+    <p style="margin:0 0 8px;font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);">When you want this kept synced for you, hire the studio.</p>
+    <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:var(--ink-soft);">A custom restaurant website built by us has hours wired to a single source — change them in one place, every page updates instantly, the JSON-LD stays current. The studio's web work is what turns this 15-minute tool into something that stays right by itself.</p>
+    <a href="/services/" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:var(--teal);color:var(--cream);border-radius:999px;text-decoration:none;font-size:13px;font-weight:600;">See restaurant websites
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px;"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
   </div>
 </div></section>
 
@@ -380,6 +467,7 @@
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="./open-hours.js?v=20260425-oh1"></script>
+<script src="./sign-render.js?v=20260425-oh2"></script>
 <script>
 /* Open Hours — week-grid input + live output render.
  *
@@ -803,6 +891,12 @@
         text: Object.keys(selectedClosures).length > 0
           ? Object.keys(selectedClosures).length + ' closure' + (Object.keys(selectedClosures).length === 1 ? '' : 's') + ' added to calendar'
           : 'Pick any holiday closures (optional) and add them to your calendar'
+      },
+      {
+        ok: v.summary.openDaysCount > 0,
+        text: v.summary.openDaysCount > 0
+          ? 'Sign + Card ready to print or share'
+          : 'Sign + Card unlock once you enter at least one day of hours'
       }
     ];
     checklist.innerHTML = items.map(function(it){
@@ -900,6 +994,221 @@
         function(){ settle('Select manually', 'error'); }
       );
     } else { settle('Select manually', 'error'); }
+  }
+
+  // ----- Storefront Sign + Open Hours Card -----
+  function buildRenderInput(){
+    var input = { name: nameEl.value, city: cityEl.value, week: week };
+    var v = window.OH.validateHours(input);
+    return {
+      summary: v,
+      closures: getClosureList(),
+      jsonLd:    window.OH.generateJsonLd(input),
+      googleCopy: window.OH.generatePlatformCopy(input, 'google'),
+      formatTime: window.OH.formatTime,
+      strings:   (window.OHSign && window.OHSign.DEFAULT_STRINGS_EN) || {}
+    };
+  }
+
+  function downloadCanvasAsPng(canvas, filename){
+    return window.OHSign.canvasToPngBlob(canvas).then(function(blob){
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url; a.download = filename;
+      document.body.appendChild(a); a.click();
+      setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+    });
+  }
+
+  var printSignBtn = document.getElementById('ohPrintSign');
+  var downloadSignBtn = document.getElementById('ohDownloadSign');
+  var downloadCardBtn = document.getElementById('ohDownloadCard');
+
+  if (printSignBtn) {
+    printSignBtn.addEventListener('click', function(){
+      if (!window.OHSign) return;
+      var ctx = buildRenderInput();
+      var canvas = window.OHSign.renderStorefrontSign(ctx);
+      window.OHSign.canvasToPngBlob(canvas).then(function(blob){
+        var url = URL.createObjectURL(blob);
+        // Open the PNG in a new tab and trigger print. Browser-native
+        // print dialog gives the owner full control over paper size.
+        var w = window.open(url, '_blank');
+        if (w) {
+          w.addEventListener('load', function(){ w.focus(); w.print(); });
+        }
+        setTimeout(function(){ URL.revokeObjectURL(url); }, 30000);
+      });
+      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'sign-print' } });
+    });
+  }
+  if (downloadSignBtn) {
+    downloadSignBtn.addEventListener('click', function(){
+      if (!window.OHSign) return;
+      var ctx = buildRenderInput();
+      var canvas = window.OHSign.renderStorefrontSign(ctx);
+      downloadCanvasAsPng(canvas, 'open-hours-sign.png');
+      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'sign-png' } });
+    });
+  }
+  if (downloadCardBtn) {
+    downloadCardBtn.addEventListener('click', function(){
+      if (!window.OHSign) return;
+      var ctx = buildRenderInput();
+      var canvas = window.OHSign.renderOpenHoursCard(ctx);
+      downloadCanvasAsPng(canvas, 'open-hours-card.png');
+      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'card-png' } });
+    });
+  }
+
+  // ----- ZIP bundle export (inline store-only writer; same pattern
+  // as Brand Suite + Menu Engineering + Menu Copy) -----
+  var CRC_TABLE = (function(){
+    var t = new Uint32Array(256);
+    for (var n = 0; n < 256; n++) {
+      var c = n;
+      for (var k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+      t[n] = c >>> 0;
+    }
+    return t;
+  })();
+  function crc32(bytes){
+    var c = 0xFFFFFFFF;
+    for (var i = 0; i < bytes.length; i++) c = CRC_TABLE[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+    return (c ^ 0xFFFFFFFF) >>> 0;
+  }
+  function strToBytes(s){ return new TextEncoder().encode(s); }
+  function buildZipBlob(entries){
+    var parts = [], centralParts = [], offset = 0;
+    var nowDate = new Date();
+    var dosTime = ((nowDate.getHours() & 0x1F) << 11) | ((nowDate.getMinutes() & 0x3F) << 5) | ((nowDate.getSeconds() / 2) & 0x1F);
+    var dosDate = (((nowDate.getFullYear() - 1980) & 0x7F) << 9) | (((nowDate.getMonth() + 1) & 0x0F) << 5) | (nowDate.getDate() & 0x1F);
+    entries.forEach(function(entry){
+      var nameBytes = strToBytes(entry.name);
+      var crc = crc32(entry.data);
+      var size = entry.data.length;
+      var lh = new Uint8Array(30 + nameBytes.length);
+      var dv = new DataView(lh.buffer);
+      dv.setUint32(0, 0x04034b50, true); dv.setUint16(4, 20, true); dv.setUint16(6, 0, true);
+      dv.setUint16(8, 0, true); dv.setUint16(10, dosTime, true); dv.setUint16(12, dosDate, true);
+      dv.setUint32(14, crc, true); dv.setUint32(18, size, true); dv.setUint32(22, size, true);
+      dv.setUint16(26, nameBytes.length, true); dv.setUint16(28, 0, true);
+      lh.set(nameBytes, 30);
+      parts.push(lh); parts.push(entry.data);
+      var ch = new Uint8Array(46 + nameBytes.length);
+      var cv = new DataView(ch.buffer);
+      cv.setUint32(0, 0x02014b50, true); cv.setUint16(4, 20, true); cv.setUint16(6, 20, true);
+      cv.setUint16(8, 0, true); cv.setUint16(10, 0, true);
+      cv.setUint16(12, dosTime, true); cv.setUint16(14, dosDate, true);
+      cv.setUint32(16, crc, true); cv.setUint32(20, size, true); cv.setUint32(24, size, true);
+      cv.setUint16(28, nameBytes.length, true);
+      cv.setUint16(30, 0, true); cv.setUint16(32, 0, true); cv.setUint16(34, 0, true); cv.setUint16(36, 0, true);
+      cv.setUint32(38, 0, true); cv.setUint32(42, offset, true);
+      ch.set(nameBytes, 46);
+      centralParts.push(ch);
+      offset += lh.length + entry.data.length;
+    });
+    var cdSize = 0; centralParts.forEach(function(c){ cdSize += c.length; });
+    var cdStart = offset;
+    centralParts.forEach(function(c){ parts.push(c); });
+    var eocd = new Uint8Array(22);
+    var ev = new DataView(eocd.buffer);
+    ev.setUint32(0, 0x06054b50, true);
+    ev.setUint16(4, 0, true); ev.setUint16(6, 0, true);
+    ev.setUint16(8, entries.length, true); ev.setUint16(10, entries.length, true);
+    ev.setUint32(12, cdSize, true); ev.setUint32(16, cdStart, true); ev.setUint16(20, 0, true);
+    parts.push(eocd);
+    return new Blob(parts, { type: 'application/zip' });
+  }
+  function buildReadme(input){
+    var lines = [];
+    lines.push('# Open Hours — your bundle');
+    lines.push('');
+    lines.push('Generated by **Open Hours** on ' + new Date().toISOString().slice(0, 10) + '.');
+    lines.push('Composed in your browser. Your hours data never left your device.');
+    lines.push('');
+    lines.push('## What’s in this bundle');
+    lines.push('');
+    lines.push('- `open-hours-sign.png` — printable storefront sign. Letter/A4 portrait. Print, trim, tape inside the door.');
+    lines.push('- `open-hours-card.png` — shareable image (1200×1500). Bundles weekly grid, closures, JSON-LD, and Google paste block. Email this to a partner.');
+    lines.push('- `website-hours.html` — the JSON-LD `<script>` block to paste into your website. Copy it to whoever made your site; the email template at the top is ready-to-go.');
+    lines.push('- `closures.ics` — calendar file with one entry per closure. Double-click on your phone or computer to import.');
+    lines.push('- `cross-platform.txt` — Google, Yelp, and Apple Maps paste blocks side-by-side.');
+    lines.push('- `README.md` — this file.');
+    lines.push('');
+    lines.push('## Method');
+    lines.push('');
+    lines.push('Hours validation surfaces overlap and AM/PM mistakes inline. Cross-platform paste blocks are formatted to each platform’s conventions. The website JSON-LD validates against Schema.org `OpeningHoursSpecification`. The ICS file complies with RFC 5545.');
+    lines.push('');
+    lines.push('## What this isn’t');
+    lines.push('');
+    lines.push('- Auto-syncing across platforms. You copy and paste; we never authenticate as you.');
+    lines.push('- A wait-time predictor or reservation widget. Different tool entirely.');
+    lines.push('- A multi-location dashboard. v1 is single-restaurant; multi-location is its own market.');
+    lines.push('');
+    lines.push('## Made by Muntin Digital');
+    lines.push('');
+    lines.push('- Studio: https://muntin.digital');
+    lines.push('- Tool: https://muntin.digital/tools/open-hours/');
+    lines.push('');
+    lines.push('> Structure brings clarity.');
+    return lines.join('\n') + '\n';
+  }
+
+  var downloadZipBtn = document.getElementById('ohDownloadZip');
+  if (downloadZipBtn) {
+    downloadZipBtn.addEventListener('click', function(){
+      if (!window.OHSign) return;
+      var ctx = buildRenderInput();
+      var input = { name: nameEl.value, city: cityEl.value, week: week };
+      var jsonLdHtml = '<!doctype html>\n<html><head>\n' +
+        '<!-- Paste the <script> block below into your site’s <head>. -->\n' +
+        window.OH.generateJsonLdScript(input) +
+        '\n</head>\n<body><p>This file isn’t the website. Copy the <code>&lt;script&gt;</code> tag above into your real site’s <code>&lt;head&gt;</code>.</p></body></html>\n';
+      var crossPlatform = [
+        '=== Google Business Profile ===',
+        window.OH.generatePlatformCopy(input, 'google'),
+        '',
+        '=== Yelp ===',
+        window.OH.generatePlatformCopy(input, 'yelp'),
+        '',
+        '=== Apple Maps ===',
+        window.OH.generatePlatformCopy(input, 'apple')
+      ].join('\n');
+      var ics = window.OH.generateIcs(getClosureList());
+      var readme = buildReadme(input);
+
+      var sign = window.OHSign.renderStorefrontSign(ctx);
+      var card = window.OHSign.renderOpenHoursCard(ctx);
+      Promise.all([
+        window.OHSign.canvasToPngBlob(sign),
+        window.OHSign.canvasToPngBlob(card)
+      ]).then(function(blobs){
+        return Promise.all(blobs.map(function(b){
+          return new Promise(function(res){
+            var r = new FileReader();
+            r.onload = function(){ res(new Uint8Array(r.result)); };
+            r.readAsArrayBuffer(b);
+          });
+        }));
+      }).then(function(byteArrays){
+        var entries = [
+          { name: 'open-hours-sign.png',  data: byteArrays[0] },
+          { name: 'open-hours-card.png',  data: byteArrays[1] },
+          { name: 'website-hours.html',   data: strToBytes(jsonLdHtml) },
+          { name: 'closures.ics',         data: strToBytes(ics) },
+          { name: 'cross-platform.txt',   data: strToBytes(crossPlatform) },
+          { name: 'README.md',            data: strToBytes(readme) }
+        ];
+        var blob = buildZipBlob(entries);
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url; a.download = 'open-hours-bundle.zip';
+        document.body.appendChild(a); a.click();
+        setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+      });
+      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'zip' } });
+    });
   }
 
   // Initial render: empty week + empty form + holiday list.
