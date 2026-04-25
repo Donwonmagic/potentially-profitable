@@ -21,7 +21,7 @@
 <meta property="og:description" content="Free tools that know your industry. Restaurant audit is live — mobile speed, menu readability, ordering detection, and more. About thirty seconds, no signup." />
 <meta property="og:url" content="https://muntin.digital/tools/" />
 <meta property="og:site_name" content="Muntin Digital" />
-<meta property="og:image" content="https://muntin.digital/brand/og/audit.png" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tools.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -29,7 +29,7 @@
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Free Tools for Restaurants &amp; Small Businesses | Muntin Digital" />
 <meta name="twitter:description" content="Free tools that know your industry. Restaurant audit is live — about thirty seconds, no signup required." />
-<meta name="twitter:image" content="https://muntin.digital/brand/og/audit.png" />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tools.png" />
 
 <!-- Favicons -->
 <!-- Favicons. Order matters: SVG first for high-DPI scalable, then a
@@ -94,98 +94,6 @@
      'Home > Page' links at the top-left of the viewport. -->
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
 <link rel="stylesheet" href="/assets/site.css?v=20260422-cohesion">
-
-<style>
-  .tool-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-    margin-top: 56px;
-  }
-  @media (max-width: 960px) { .tool-grid { grid-template-columns: 1fr; } }
-
-  .tool-card {
-    display: flex;
-    flex-direction: column;
-    padding: 36px 32px;
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-radius: var(--r-md);
-    text-decoration: none;
-    color: inherit;
-    transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out), border-color var(--t-fast);
-    position: relative;
-    overflow: hidden;
-  }
-  .tool-card.live:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 40px rgba(20, 22, 26, 0.08);
-    border-color: var(--teal);
-  }
-  .tool-card.soon {
-    cursor: default;
-    background: var(--cream-2);
-    color: var(--stone);
-  }
-  .tool-card .status {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 4px 12px;
-    border-radius: 999px;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    align-self: flex-start;
-  }
-  .tool-card.live .status {
-    background: #e6f4ec;
-    color: #1f9d55;
-  }
-  .tool-card.live .status::before {
-    content: ''; width: 7px; height: 7px; border-radius: 50%;
-    background: #1f9d55;
-    box-shadow: 0 0 0 3px rgba(31, 157, 85, 0.18);
-    animation: pulse 2s ease-in-out infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { box-shadow: 0 0 0 3px rgba(31, 157, 85, 0.18); }
-    50%      { box-shadow: 0 0 0 5px rgba(31, 157, 85, 0.10); }
-  }
-  .tool-card.soon .status {
-    background: var(--line);
-    color: var(--stone);
-  }
-  .tool-card h3 {
-    font-family: var(--font-display);
-    font-size: clamp(24px, 2.6vw, 32px);
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    color: var(--ink);
-    margin: 0 0 10px;
-  }
-  .tool-card.soon h3 { color: var(--ink-soft); }
-  .tool-card p {
-    font-size: 15px;
-    line-height: 1.6;
-    color: var(--stone);
-    margin: 0 0 24px;
-    flex: 1;
-  }
-  .tool-card .cta {
-    font-family: var(--font-body);
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--teal);
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .tool-card.soon .cta { color: var(--stone-2); }
-  .tool-card .cta svg { width: 16px; height: 16px; }
-</style>
 </head>
 <body>
 
@@ -206,7 +114,19 @@
     <nav class="nav-links" aria-label="Primary">
       <a href="/services/">Services</a>
       <a href="/for/restaurants/">Restaurants</a>
-      <a href="/learn/">Learn</a>
+      <div class="nav-library-wrap">
+        <a href="/learn/" class="nav-library-trigger" aria-haspopup="true">Library<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-library-menu" role="menu" aria-label="Library sections">
+          <a href="/learn/" role="menuitem"><strong>Library home</strong><span>The hub of everything below</span></a>
+          <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
+          <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
+          <a href="/blog/" role="menuitem"><strong>Articles</strong><span>The how-to playbooks</span></a>
+          <a href="/tools/" role="menuitem"><strong>Free tools</strong><span>Run a check on your own site</span></a>
+          <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span>97 terms in plain English</span></a>
+          <a href="/learn/research/" role="menuitem"><strong>Research</strong><span>The evidence behind the playbooks</span></a>
+          <a href="/resources/" role="menuitem"><strong>Checklists &amp; guides</strong><span>Workbooks you can save</span></a>
+        </div>
+      </div>
       <a href="/work/">Work</a>
       <a href="/about/">About</a>
     </nav>
@@ -232,7 +152,17 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/services/">Services</a>
     <a href="/for/restaurants/">Restaurants</a>
-    <a href="/learn/">Learn</a>
+    <details class="mobile-library">
+      <summary>Library</summary>
+      <a href="/learn/">Library home</a>
+      <a href="/learn/start-here/">Start here</a>
+      <a href="/learn/topics/">Topics</a>
+      <a href="/blog/">Articles</a>
+      <a href="/tools/">Free tools</a>
+      <a href="/glossary/">Glossary</a>
+      <a href="/learn/research/">Research</a>
+      <a href="/resources/">Checklists &amp; guides</a>
+    </details>
     <a href="/work/">Work</a>
     <a href="/about/">About</a>
     <button type="button" class="mobile-search js-open-search">
@@ -295,16 +225,37 @@
         <span class="cta">Run the restaurant audit <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
 
+      <a href="/tools/gbp-grader/" class="tool-card live">
+        <span class="status">Live</span>
+        <h3>Google Business Profile Grader</h3>
+        <p>Search your business name and see how your Google listing stacks up — rating, reviews, photos, categories, hours — with specific fixes for what's missing. About ten seconds.</p>
+        <span class="cta">Grade your GBP <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+      </a>
+
+      <a href="/tools/margin-math/" class="tool-card live">
+        <span class="status">Live</span>
+        <h3>Margin Math</h3>
+        <p>Four decision-support calculators — delivery break-even, prime cost, covers needed, price-raise simulation — plus a printable Monthly Margin Report, shareable scenario links, and a calendar reminder. Your numbers stay in your browser; open DevTools and watch.</p>
+        <span class="cta">Run the math <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+      </a>
+
+      <a href="/tools/brand-suite/" class="tool-card live">
+        <span class="status">Live</span>
+        <h3>Brand Suite</h3>
+        <p>Drop in your logo and get a color palette, accessible pairs, and CSS tokens — all in your browser. A starter kit for the system that goes around your mark. No upload, no sign-up.</p>
+        <span class="cta">Open Brand Suite <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+      </a>
+
       <div class="tool-card soon" aria-disabled="true">
         <span class="status">Coming</span>
         <h3>More Tools in Development</h3>
-        <p>Speed test, SEO grader, mobile checker, schema checker, tech stack detector, competitor comparison, GBP grader, and local search ideas — all in active development and coming soon.</p>
+        <p>Speed test, SEO grader, mobile checker, schema checker, tech stack detector, competitor comparison, and local search ideas — all in active development and coming soon.</p>
         <span class="cta">Coming soon</span>
       </div>
 
     </div>
     <p class="section-aside" style="text-align:center;margin-top:32px;">
-      Two live audits, more tools coming. All free, no signup, no email required.
+      Two live tools, more coming. All free, no signup, no email required.
     </p>
   </div>
 </section>
@@ -344,7 +295,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a 72-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a 97-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -359,15 +310,16 @@
       </nav>
 
       <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Learn</p>
+        <p class="foot-heading" id="foot-learn">Library</p>
         <ul class="foot-links">
           <li><a href="/learn/">Library home</a></li>
           <li><a href="/learn/start-here/">Start here</a></li>
+          <li><a href="/learn/topics/">Topics</a></li>
           <li><a href="/blog/">Articles</a></li>
           <li><a href="/tools/">Free tools</a></li>
           <li><a href="/glossary/">Glossary</a></li>
           <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/resources/restaurant-website-checklist/">Restaurant checklist</a></li>
+          <li><a href="/resources/">Checklists &amp; guides</a></li>
         </ul>
       </nav>
 

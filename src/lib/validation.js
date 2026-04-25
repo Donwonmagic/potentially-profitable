@@ -136,6 +136,159 @@ export function prettyUrl(raw) {
   return raw.trim().replace(/^https?:\/\//i, '').replace(/\/$/, '');
 }
 
+// ============================================================
+// Spam-defense layer (added when the site moved off Formspree).
+// Each helper is independent and silent on rejection — every
+// caller is expected to translate a `false` (or `spam: true`) into
+// the same 200 OK { status: 'sent' } response the honeypot already
+// returns, so probing bots can't tell which signal tripped them.
+// ============================================================
+
+/**
+ * Verify the request originated from a Muntin-owned page. We trust
+ * `Origin` first because some browsers strip Referer for privacy;
+ * fall back to `Referer` so a legitimate same-origin POST that lost
+ * its Origin header (e.g. older Safari + form action submit) still
+ * passes. Allowlist:
+ *   - https://muntin.digital + https://www.muntin.digital
+ *   - any *.muntin.digital subdomain (preview branches)
+ *   - any *-muntin-digital.don-28d.workers.dev (Cloudflare preview URL)
+ *   - http(s)://localhost:* and 127.0.0.1:* for local `wrangler` dev
+ *
+ * Direct cURL POSTs and form-action scrapers usually have neither
+ * header populated; they fail this check before the body is parsed.
+ */
+const ORIGIN_ALLOW_LITERALS = new Set([
+  'https://muntin.digital',
+  'https://www.muntin.digital',
+]);
+const ORIGIN_ALLOW_PATTERNS = [
+  /^https:\/\/[A-Za-z0-9-]+\.muntin\.digital$/,
+  /^https:\/\/[A-Za-z0-9-]+-muntin-digital\.don-28d\.workers\.dev$/,
+  /^https?:\/\/localhost(?::\d+)?$/,
+  /^https?:\/\/127\.0\.0\.1(?::\d+)?$/,
+];
+function originMatches(value) {
+  if (!value) return false;
+  // Referer is a full URL — pull just the origin component.
+  let probe = value;
+  try { probe = new URL(value).origin; }
+  catch (_) { /* value already looked like an origin (no path); leave as-is */ }
+  if (ORIGIN_ALLOW_LITERALS.has(probe)) return true;
+  return ORIGIN_ALLOW_PATTERNS.some(function(re){ return re.test(probe); });
+}
+export function isOriginAllowed(request) {
+  if (!request || !request.headers) return false;
+  const origin = request.headers.get('origin') || '';
+  if (origin && originMatches(origin)) return true;
+  const referer = request.headers.get('referer') || '';
+  if (referer && originMatches(referer)) return true;
+  return false;
+}
+
+/**
+ * Cloudflare populates `request.cf.threatScore` (0–100) on the
+ * Workers free plan based on the source IP's reputation across the
+ * Cloudflare network. ≥ 30 is the documented "suspicious" threshold;
+ * we use that as the reject line. Returns false on any plan or
+ * runtime that doesn't expose the field, so this is a one-way
+ * filter — never a false-positive against legit traffic just
+ * because the field is missing.
+ */
+export function isHighThreatIP(request) {
+  try {
+    const score = request && request.cf && request.cf.threatScore;
+    if (typeof score !== 'number') return false;
+    return score >= 30;
+  } catch (_) { return false; }
+}
+
+/**
+ * Submit-timing trap. Pages that load assets/site.js stamp a hidden
+ * `_ts` input with `Date.now()` at DOMContentLoaded; the worker
+ * checks the elapsed window on submit. Real users take at least a
+ * few seconds to fill a form; bots that POST raw HTML without
+ * running JS won't have the field at all. Returns true when the
+ * timestamp is present, parseable, and the gap is between
+ * MIN_TS_AGE_MS and MAX_TS_AGE_MS.
+ *
+ * Min 1500ms catches the dumbest auto-submit bots without flagging
+ * a fast typist. Max 30 minutes lets the audit-tool flow (which
+ * spends ~30s+ on a Lighthouse run before the user even sees the
+ * email-the-PDF form) pass cleanly.
+ */
+const MIN_TS_AGE_MS = 1500;
+const MAX_TS_AGE_MS = 30 * 60 * 1000;
+export function isTimestampSane(body) {
+  if (!body) return false;
+  const raw = parseInt(String(body._ts || ''), 10);
+  if (!raw || Number.isNaN(raw)) return false;
+  const elapsed = Date.now() - raw;
+  if (elapsed < MIN_TS_AGE_MS) return false;
+  if (elapsed > MAX_TS_AGE_MS) return false;
+  return true;
+}
+
+/**
+ * Content-heuristic spam classifier. Concatenates the free-text
+ * fields a real submission could carry, caps the blob at 5KB so a
+ * malicious payload can't burn CPU here, then runs a small set of
+ * cheap regex tests. Returns { spam, reasons } so the worker can
+ * both reject and emit a single audit-log line naming the signals
+ * that triggered. Each reason is a short tag — easy to grep in
+ * `wrangler tail` and stable across releases.
+ *
+ * Reasons:
+ *   links:N      — 3+ explicit URLs / "www." mentions
+ *   caps         — 30+ consecutive uppercase Latin chars (shouting)
+ *   non-target-script — Cyrillic/CJK/Hangul detected, locale en/es
+ *   keyword      — known SEO/casino/forex/escort/loan-spam phrase
+ *   repeat       — 15+ consecutive identical chars (e.g. "aaaaaaaa…")
+ *
+ * Locale 'es' allows Spanish accented chars and Latin script; we
+ * don't treat those as suspicious because the Spanish surface is
+ * a real user audience.
+ */
+const SPAM_KEYWORD_RE = new RegExp(
+  '\\b(' + [
+    'seo services', 'seo expert', 'seo agency', 'rank higher',
+    'guaranteed traffic', 'guaranteed ranking', 'increase your ranking',
+    'submit your website', 'submit your site', 'add your link',
+    'backlinks?', 'link building', 'pbn',
+    'cheap viagra', 'cialis online', 'casino', 'gambling',
+    'escort', 'onlyfans',
+    'forex', 'crypto investment', 'investment opportunity',
+    'loan offer', 'pre-approved loan', 'nigerian prince',
+    'bitcoin doubler', 'recovery agent', 'wallet recovery',
+  ].join('|') + ')\\b',
+  'i'
+);
+const NON_TARGET_SCRIPT_RE = /[Ѐ-ӿ一-鿿぀-ゟ゠-ヿ가-힯]/;
+export function classifySpam(body) {
+  const reasons = [];
+  if (!body) return { spam: false, reasons: reasons };
+  const fields = [
+    body.name, body.business, body.website, body.goals,
+    body.message, body.summary, body.user_corrections,
+    body.restaurant, body.referral, body.services,
+  ].filter(function(v){ return typeof v === 'string'; });
+  const blob = fields.join(' ').slice(0, 5000);
+  if (!blob.trim()) return { spam: false, reasons: reasons };
+
+  const links = (blob.match(/https?:\/\/|www\./gi) || []).length;
+  if (links >= 3) reasons.push('links:' + links);
+  if (/[A-Z]{30,}/.test(blob)) reasons.push('caps');
+
+  const locale = String((body.locale || 'en')).toLowerCase();
+  if ((locale === 'en' || locale === 'es') && NON_TARGET_SCRIPT_RE.test(blob)) {
+    reasons.push('non-target-script');
+  }
+  if (SPAM_KEYWORD_RE.test(blob)) reasons.push('keyword');
+  if (/(.)\1{14,}/.test(blob)) reasons.push('repeat');
+
+  return { spam: reasons.length > 0, reasons: reasons };
+}
+
 /**
  * Sprint E1: SSRF guard for user-supplied URLs that the Worker will
  * fetch server-side (seo-check, schema-check, page-crawl). Returns

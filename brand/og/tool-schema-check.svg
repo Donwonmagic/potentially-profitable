@@ -1,43 +1,87 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
-  <rect width="1200" height="630" fill="#14161A"/>
   <defs>
-    <radialGradient id="schglow" cx="75%" cy="30%" r="55%">
-      <stop offset="0%" stop-color="#1F4E5B" stop-opacity="0.3"/>
-      <stop offset="100%" stop-color="#14161A" stop-opacity="0"/>
+    <radialGradient id="toolglow" cx="82%" cy="28%" r="65%">
+      <stop offset="0%" stop-color="#FAF7F2" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#1F4E5B" stop-opacity="0"/>
     </radialGradient>
   </defs>
-  <rect width="1200" height="630" fill="url(#schglow)"/>
+  <rect width="1200" height="630" fill="#1F4E5B"/>
+  
+    <defs>
+      <pattern id="muntinField" x="0" y="0" width="140" height="140"
+               patternUnits="userSpaceOnUse">
+        <g transform="translate(18, 18)"
+           fill="none" stroke="#FAF7F2" stroke-width="1.5"
+           stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="0" y="0" width="104" height="104"/>
+          <line x1="52" y1="0" x2="52" y2="104"/>
+          <line x1="0" y1="36" x2="104" y2="36"/>
+        </g>
+      </pattern>
+    </defs>
+    <rect width="1200" height="630"
+          fill="url(#muntinField)" opacity="0.05"/>
+  
+  <rect width="1200" height="630" fill="url(#toolglow)"/>
+  <rect x="0" y="0" width="12" height="252" fill="#C5A059"/>
+  <rect x="0" y="252" width="12" height="378" fill="#C5A059" opacity="0.4"/>
 
-  <text x="72" y="90" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#FAF7F2" letter-spacing="5" opacity="0.55">FREE TOOL · SCHEMA · 10 SECONDS</text>
+  
+    <g transform="translate(80, 78) scale(1.5)"
+       fill="none" stroke="#C5A059" stroke-width="1.167"
+       stroke-linecap="round" stroke-linejoin="round"
+       color="#C5A059" opacity="0.85">
+      <polyline points="8 6 3 12 8 18"/>
+          <polyline points="16 6 21 12 16 18"/>
+          <line x1="14" y1="4" x2="10" y2="20"/>
+    </g>
+  
+  <text x="136" y="104"
+        font-family="Inter, Arial, sans-serif" font-size="13"
+        font-weight="700" letter-spacing="4" fill="#C5A059">FREE TOOL · SCHEMA</text>
 
-  <text x="72" y="210" font-family="Fraunces, Georgia, serif" font-size="68" font-weight="500" fill="#FAF7F2" letter-spacing="-2">Does Google</text>
-  <text x="72" y="285" font-family="Fraunces, Georgia, serif" font-size="68" font-weight="500" fill="#FAF7F2" letter-spacing="-2">understand you?</text>
-  <text x="72" y="355" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="30" font-weight="400" fill="#FAF7F2" opacity="0.65">Check your schema. See what Google sees.</text>
+  <text x="80" y="192"
+        font-family="Fraunces, Georgia, serif" font-size="62"
+        font-weight="500" letter-spacing="-2" fill="#FAF7F2">Does Google</text>
+  <text x="80" y="264"
+        font-family="Fraunces, Georgia, serif" font-style="italic"
+        font-size="62" font-weight="400" letter-spacing="-2"
+        fill="#C5A059">understand</text>
+  <text x="80" y="336"
+        font-family="Fraunces, Georgia, serif" font-size="62"
+        font-weight="500" letter-spacing="-2" fill="#FAF7F2">your business?</text>
 
-  <g transform="translate(750, 130)" font-family="ui-monospace, Menlo, monospace" font-size="14">
-    <rect x="0" y="0" width="380" height="320" rx="10" fill="#FAF7F2" opacity="0.06"/>
-    <text x="22" y="36" fill="#FAF7F2" opacity="0.4">&lt;script type="application/ld+json"&gt;</text>
-    <text x="22" y="62" fill="#FAF7F2" opacity="0.85">{</text>
-    <text x="40" y="84" fill="#C9A84C">"@context":</text>
-    <text x="120" y="84" fill="#FAF7F2" opacity="0.8">"schema.org",</text>
-    <text x="40" y="106" fill="#C9A84C">"@type":</text>
-    <text x="92" y="106" fill="#FAF7F2" opacity="0.8">"Restaurant",</text>
-    <text x="40" y="128" fill="#C9A84C">"name":</text>
-    <text x="85" y="128" fill="#FAF7F2" opacity="0.8">"Your Restaurant",</text>
-    <text x="40" y="150" fill="#C9A84C">"priceRange":</text>
-    <text x="125" y="150" fill="#FAF7F2" opacity="0.8">"$$",</text>
-    <text x="40" y="172" fill="#C9A84C">"servesCuisine":</text>
-    <text x="146" y="172" fill="#FAF7F2" opacity="0.8">"Mexican",</text>
-    <text x="40" y="194" fill="#C9A84C">"openingHours":</text>
-    <text x="137" y="194" fill="#FAF7F2" opacity="0.8">"Mo-Su 11:00-22:00"</text>
-    <text x="22" y="216" fill="#FAF7F2" opacity="0.85">}</text>
-    <text x="22" y="240" fill="#FAF7F2" opacity="0.4">&lt;/script&gt;</text>
-    <circle cx="340" cy="280" r="18" fill="#1f9d55"/>
-    <path d="M330 280 L337 287 L350 274" stroke="#FAF7F2" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <text x="22" y="290" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#FAF7F2" opacity="0.75">Schema valid</text>
-  </g>
+  <text x="80" y="416"
+        font-family="Inter, Arial, sans-serif" font-size="20"
+        font-weight="400" fill="#FAF7F2" opacity="0.72">Detect the structured data on your site — see what Google is reading about you.</text>
 
-  <rect y="580" width="1200" height="50" fill="#1F4E5B" opacity="0.2"/>
-  <text x="72" y="612" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#FAF7F2" letter-spacing="2" opacity="0.6">RICH RESULTS · HOURS · PRICE · MENU</text>
-  <text x="1128" y="612" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600" fill="#FAF7F2" letter-spacing="1" opacity="0.7">muntin.digital</text>
+  
+    <g transform="translate(760, 140)"
+       stroke="#FAF7F2" stroke-width="12"
+       stroke-linecap="square" stroke-linejoin="miter"
+       fill="none" opacity="0.14">
+      <rect x="0" y="0" width="340" height="340"/>
+      <line x1="170" y1="0" x2="170" y2="340"/>
+      <line x1="0" y1="119" x2="340" y2="119"/>
+    </g>
+  
+
+  
+    <g transform="translate(80, 552)" fill="#FAF7F2" opacity="0.6">
+      <circle cx="8" cy="8" r="8" fill="none" stroke="#FAF7F2" stroke-width="1"/>
+      <text x="8" y="12" text-anchor="middle"
+            font-family="Fraunces, Georgia, serif" font-style="italic"
+            font-size="11" font-weight="500" fill="#FAF7F2">d</text>
+    </g>
+  
+  
+    <line x1="80" y1="584" x2="1120" y2="584"
+          stroke="rgba(250,247,242,0.2)" stroke-width="1"/>
+    <text x="80" y="614"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="2" fill="rgba(250,247,242,0.6)">MUNTIN DIGITAL</text>
+    <text x="1120" y="614" text-anchor="end"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="1" fill="rgba(250,247,242,0.6)">muntin.digital</text>
+  
 </svg>

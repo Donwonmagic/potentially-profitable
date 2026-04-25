@@ -214,7 +214,19 @@
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/services/">Servicios</a>
       <a href="/es/for/restaurants/">Restaurantes</a>
-      <a href="/es/learn/">Aprende</a>
+      <div class="nav-library-wrap">
+        <a href="/es/learn/" class="nav-library-trigger" aria-haspopup="true">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-library-menu" role="menu" aria-label="Secciones de la biblioteca">
+          <a href="/es/learn/" role="menuitem"><strong>Inicio de la biblioteca</strong><span>El centro de todo lo de abajo</span></a>
+          <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
+          <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
+          <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
+          <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
+          <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span>97 términos en lenguaje claro</span></a>
+          <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
+          <a href="/es/resources/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+        </div>
+      </div>
       <a href="/es/work/">Proyectos</a>
       <a href="/es/about/">Sobre Don</a>
     </nav>
@@ -240,7 +252,17 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/services/">Servicios</a>
     <a href="/es/for/restaurants/">Restaurantes</a>
-    <a href="/es/learn/">Aprende</a>
+    <details class="mobile-library">
+      <summary>Biblioteca</summary>
+      <a href="/es/learn/">Inicio de la biblioteca</a>
+      <a href="/es/learn/start-here/">Empieza aquí</a>
+      <a href="/es/learn/topics/">Temas</a>
+      <a href="/es/blog/">Artículos</a>
+      <a href="/es/tools/">Herramientas gratis</a>
+      <a href="/es/glossary/">Glosario</a>
+      <a href="/es/learn/research/">Investigación</a>
+      <a href="/es/resources/">Listas y recursos</a>
+    </details>
     <a href="/es/work/">Proyectos</a>
     <a href="/es/about/">Sobre Don</a>
     <button type="button" class="mobile-search js-open-search">
@@ -454,8 +476,8 @@
     </ul>
   </div>
   <div class="mc-drawer-foot">
-    <p class="mc-drawer-foot-text">¿Quieres ver cómo se compara tu flujo de pedidos? Corre el diagnóstico gratuito.</p>
-    <a class="mc-drawer-foot-btn" href="/es/tools/audits/restaurant/">Diagnosticar mi sitio
+    <p class="mc-drawer-foot-text">¿Quieres correr la matemática real de lo que delivery te está costando? Pon tus números en Cálculo de Margen — tus números se quedan en tu navegador.</p>
+    <a class="mc-drawer-foot-btn" href="/es/tools/margin-math/">Correr Cálculo de Margen
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
     </a>
   </div>
@@ -480,8 +502,8 @@
     </ul>
   </div>
   <div class="mc-drawer-foot">
-    <p class="mc-drawer-foot-text">¿Quieres ver cómo está tu Google Business Profile? Corre el diagnóstico gratuito.</p>
-    <a class="mc-drawer-foot-btn" href="/es/tools/audits/restaurant/">Diagnosticar mi sitio
+    <p class="mc-drawer-foot-text">¿Quieres ver cómo está tu Google Business Profile? Califícalo gratis en unos diez segundos — o corre el diagnóstico completo.</p>
+    <a class="mc-drawer-foot-btn" href="/es/tools/gbp-grader/">Calificar mi GBP
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
     </a>
   </div>
@@ -534,6 +556,32 @@
   <div class="mc-drawer-foot">
     <p class="mc-drawer-foot-text">¿Quieres ver cómo están trabajando tus fotos actuales? Corre el diagnóstico gratuito.</p>
     <a class="mc-drawer-foot-btn" href="/es/tools/audits/restaurant/">Diagnosticar mi sitio
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+  </div>
+</aside>
+
+<aside class="mc-drawer" data-drawer-id="brand" role="dialog" aria-modal="true" aria-labelledby="drawer-brand-title" data-open="false" inert>
+  <div class="mc-drawer-head">
+    <p class="mc-drawer-eyebrow">Sistema de marca</p>
+    <button type="button" class="mc-drawer-close" aria-label="Cerrar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+  </div>
+  <div class="mc-drawer-body">
+    <h2 id="drawer-brand-title">Tu logo es un ingrediente, no la receta</h2>
+    <p class="mc-drawer-lede">Dos restaurantes pueden abrir con marcas igualmente fuertes; seis meses después, el que tiene un sistema de marca documentado se ve igual en su menú, su Instagram y su bolsa para llevar — y el otro no.</p>
+    <ul>
+      <li><strong>Los colores son el mayor portador de tono después del logo.</strong> Un primario, un secundario, un puñado de acentos y dos neutros — cada uno con un par accesible documentado. Eso es lo que renderiza el sitio; eso es lo que deberían recibir tus proveedores de impresión.</li>
+      <li><strong>Los fallos de contraste hacen menús ilegibles.</strong> Colores de marca que lucen preciosos en el logo pueden caer muy por debajo del umbral WCAG de 4.5:1 en una página de menú densa. Cada par se evalúa, no se estima a ojo.</li>
+      <li><strong>Cada superficie usa el mismo token.</strong> Entregamos la paleta como propiedades personalizadas de CSS + tokens de diseño para que el sitio, tu futuro desarrollador y cualquier proveedor de impresión lean de la misma fuente.</li>
+      <li><strong>La variante monocromática no es opcional.</strong> Bordado, relieve, posavasos grabados con láser — necesitan una versión de un solo color del símbolo. Su ausencia es la señal más clara de "esta identidad no se terminó".</li>
+      <li><strong>Las reglas de uso documentadas evitan la deriva.</strong> Espacio de resguardo, tamaños mínimos, ejemplos de mal uso. Los dueños subestiman cuánto trabajo ahorra una guía de uso de dos páginas a lo largo de cinco años de entregas a proveedores.</li>
+    </ul>
+  </div>
+  <div class="mc-drawer-foot">
+    <p class="mc-drawer-foot-text">¿Quieres ver una paleta extraída de tu logo — con evaluación WCAG y tokens CSS exportables — antes de que hablemos? La Suite de Marca es gratuita, corre en tu navegador y no deja nada detrás.</p>
+    <a class="mc-drawer-foot-btn" href="/es/tools/brand-suite/">Abrir Suite de Marca
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
     </a>
   </div>
@@ -737,6 +785,16 @@
           <svg class="service-link-arrow" viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </button>
       </div>
+
+      <div class="service reveal">
+        <div class="label">Sistema de marca</div>
+        <h3>Una paleta que funciona en todas partes</h3>
+        <p class="desc">Los colores de tu marca deben leerse en un menú, un letrero y una pantalla de celular — no solo en el archivo del logo. Documentamos la paleta y los pares de contraste como tokens CSS junto con el sitio, para que cada superficie siga siendo legible y reconocible.</p>
+        <button type="button" class="service-link" data-drawer="brand" aria-label="Por qué importa un sistema de marca documentado — abrir información">
+          Saber más
+          <svg class="service-link-arrow" viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </button>
+      </div>
     </div>
   </div>
 </section>
@@ -767,31 +825,42 @@
   </div>
 </section>
 
-<!-- ============ CASE STUDY TEASER ============ -->
+<!-- ============ CASE STUDIES ============
+     Dos restaurantes desde adentro de la cocina — un clásico de
+     Glen Echo abierto desde 1931 y tres años de trabajo in-house
+     en una taquería con cinco ubicaciones en el DMV. -->
 <section class="block" id="work">
   <div class="container">
     <div class="section-header reveal">
-      <span class="eyebrow">Estudio de rediseño</span>
-      <h2>Un clásico de Glen Echo,<br>reimaginado.</h2>
-      <p>The Irish Inn at Glen Echo lleva siendo una institución gastronómica del área de Washington desde 1931 — un lugar al que Bethesda Magazine, el Washington Post y Washingtonian vuelven. El sitio actual (en <a href="https://irishinnglenecho.com" target="_blank" rel="noopener">irishinnglenecho.com</a>) no está a la altura del salón. Este es nuestro reemplazo propuesto: un estudio de rediseño independiente que explora lo que el sitio podría ser.</p>
+      <span class="eyebrow">Casos de restaurante</span>
+      <h2>Dos restaurantes,<br><span class="serif-italic">desde adentro de la cocina.</span></h2>
+      <p>Los dos proyectos corrieron por años, no semanas. Los dos se construyeron alrededor del flujo de trabajo real del operador. Los dos casos cuentan qué cambió y por qué.</p>
     </div>
 
-    <div class="work-coming-soon reveal">
-      <div class="coming-soon-grid">
-        <div class="coming-soon-card">
-          <div class="coming-soon-icon" aria-hidden="true">
-            <svg viewBox="0 0 128 128" fill="none" width="32" height="32" aria-hidden="true"><g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"><rect x="18" y="18" width="92" height="92"/><line x1="64" y1="18" x2="64" y2="110"/><line x1="18" y1="49" x2="110" y2="49"/></g></svg>
-          </div>
-          <h3>The Irish Inn at Glen Echo</h3>
-          <p>Estudio completo de rediseño para un clásico de Glen Echo, abierto desde 1931. Nueva arquitectura de información — hero dividido para el Pub y el Comedor servido desde un menú unificado —, un carrusel de testimonios con citas reales del Washington Post, Bethesda Magazine y Washingtonian, y una sección de origen que pone al frente a productores de Maryland y Virginia, carnes heritage y pesca sostenible. Playfair Display y Lato, acentos dorados cálidos sobre neutro profundo, HTML/CSS/JS sin frameworks.</p>
-          <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:24px;">
-            <a href="/es/work/irish-inn-glen-echo/" class="btn btn-primary">Leer el caso completo
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
-            </a>
-            <a href="https://irishinnglenecho.com" target="_blank" rel="noopener" class="btn btn-ghost">Ver el sitio actual</a>
-          </div>
+    <div class="restaurant-cases reveal">
+      <a href="/es/work/irish-inn-glen-echo/" class="restaurant-case">
+        <span class="restaurant-case-kicker">In-house · Clásico de 1931</span>
+        <h3>The Irish Inn at Glen Echo</h3>
+        <p>Un año y medio dentro de una institución gastronómica del área de Washington a la que Bethesda Magazine, el Washington Post y Washingtonian vuelven. Diseño de menú, desarrollo de logo, campañas de temporada, y un estudio completo de rediseño del sitio — hero dividido para el Pub y el Comedor, citas reales de la prensa, y transparencia de origen para productores de Maryland y pesca sostenible.</p>
+        <div class="restaurant-case-tags">
+          <span class="gallery-tag">Restaurante</span>
+          <span class="gallery-tag">Glen Echo, MD</span>
+          <span class="gallery-tag">Marca + web</span>
         </div>
-      </div>
+        <span class="restaurant-case-cta">Leer el caso completo <span aria-hidden="true">→</span></span>
+      </a>
+
+      <a href="/es/work/tacombi/" class="restaurant-case">
+        <span class="restaurant-case-kicker">In-house · Taquería de 5 sedes</span>
+        <h3>Tacombi</h3>
+        <p>Tres años de marketing in-house e involucramiento comunitario en las ubicaciones DMV de Tacombi. Campañas de barrio, promociones cruzadas con Landmark Theaters, el programa de lealtad Taco Taco Club, y materiales impresos — todo diseñado desde detrás del mostrador, no detrás de un deck.</p>
+        <div class="restaurant-case-tags">
+          <span class="gallery-tag">Restaurante</span>
+          <span class="gallery-tag">Bethesda &middot; Arlington</span>
+          <span class="gallery-tag">Marketing + marca</span>
+        </div>
+        <span class="restaurant-case-cta">Ver el trabajo <span aria-hidden="true">→</span></span>
+      </a>
     </div>
   </div>
 </section>
@@ -961,14 +1030,20 @@
       <a class="learn-tool" href="/es/tools/audits/restaurant/">
         <span class="learn-tool-kicker">Diagnóstico gratis · ~30 seg</span>
         <h3>Califica tu propio sitio.</h3>
-        <p>Veintitrés verificaciones conscientes de restaurante — velocidad móvil, legibilidad del menú, flujo de reservas, Google Business Profile, schema. Top tres arreglos por impacto.</p>
+        <p>Verificaciones conscientes de restaurante — velocidad móvil, legibilidad del menú, flujo de reservas, Google Business Profile, schema. Top tres arreglos por impacto.</p>
         <span class="learn-tool-cta">Ejecutar el diagnóstico →</span>
       </a>
       <a class="learn-tool" href="/es/resources/restaurant-website-checklist/">
         <span class="learn-tool-kicker">Checklist · 10 min</span>
-        <h3>La rúbrica de 23 puntos.</h3>
-        <p>Un checklist imprimible que puedes correr en tu propio sitio o pasárselo a la agencia que estás auditando. La misma rúbrica que usa la herramienta gratis, con espacio para notas.</p>
+        <h3>La rúbrica de 30 puntos.</h3>
+        <p>Un checklist imprimible que puedes correr en tu propio sitio o pasárselo a la agencia que estás auditando. Guarda tu progreso en el navegador, imprime una hoja de auditoría limpia al final.</p>
         <span class="learn-tool-cta">Abrir el checklist →</span>
+      </a>
+      <a class="learn-tool" href="/es/learn/topics/">
+        <span class="learn-tool-kicker">Temas · el nuevo centro</span>
+        <h3>Explora según lo que arreglas.</h3>
+        <p>Seis lentes para la biblioteca — velocidad y móvil, conversiones y reservas, SEO local, operaciones y margen, confianza y reseñas, marca y diseño.</p>
+        <span class="learn-tool-cta">Explorar los temas →</span>
       </a>
       <a class="learn-tool" href="/es/blog/">
         <span class="learn-tool-kicker">Artículos · ensayos honestos</span>
@@ -1035,7 +1110,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de 72 t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de 97 t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -1050,15 +1125,16 @@
       </nav>
 
       <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Aprende</p>
+        <p class="foot-heading" id="foot-learn">Biblioteca</p>
         <ul class="foot-links">
-          <li><a href="/es/learn/">Biblioteca</a></li>
+          <li><a href="/es/learn/">Inicio de la biblioteca</a></li>
           <li><a href="/es/learn/start-here/">Empieza aquí</a></li>
+          <li><a href="/es/learn/topics/">Temas</a></li>
           <li><a href="/es/blog/">Artículos</a></li>
           <li><a href="/es/tools/">Herramientas gratis</a></li>
           <li><a href="/es/glossary/">Glosario</a></li>
           <li><a href="/es/learn/research/">Investigación</a></li>
-          <li><a href="/es/resources/restaurant-website-checklist/">Checklist para tu sitio</a></li>
+          <li><a href="/es/resources/">Listas y recursos</a></li>
         </ul>
       </nav>
 

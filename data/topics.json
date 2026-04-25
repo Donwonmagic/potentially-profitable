@@ -1,0 +1,53 @@
+{
+  "_doc": "The six topics that organize the Library. Each topic has an EN and an ES variant (the ES build reads .es). Slugs are stable URL identifiers — never rename without redirects.",
+  "topics": [
+    {
+      "slug": "speed-mobile",
+      "name": "Speed & Mobile",
+      "name_es": "Velocidad y móvil",
+      "blurb": "Why every second of load time costs you diners, and the 80/20 of speed work that actually moves the needle.",
+      "blurb_es": "Por qué cada segundo de carga te cuesta comensales, y el 80/20 del trabajo de velocidad que realmente mueve la aguja.",
+      "intent": "A reader landing here wants to fix a slow site, understand Core Web Vitals, or learn what mobile-first really means for a small-business website."
+    },
+    {
+      "slug": "conversions",
+      "name": "Conversions & Reservations",
+      "name_es": "Conversiones y reservas",
+      "blurb": "The patterns that turn a passing visitor into a booked table — and the leaks that quietly cost you bookings every night.",
+      "blurb_es": "Los patrones que convierten a un visitante en una mesa reservada — y las fugas que silenciosamente te cuestan reservas cada noche.",
+      "intent": "A reader landing here is trying to recover lost intent — fix their reservation funnel, reduce abandonment, or understand why traffic isn't converting."
+    },
+    {
+      "slug": "local-seo",
+      "name": "Local SEO & Discovery",
+      "name_es": "SEO local y descubrimiento",
+      "blurb": "How Google decides which local restaurant to show — Google Business Profile, schema, reviews, and the on-site signals that matter.",
+      "blurb_es": "Cómo Google decide qué restaurante local mostrar — Google Business Profile, schema, reseñas, y las señales en el sitio que importan.",
+      "intent": "A reader landing here wants to be found in local search and the map pack."
+    },
+    {
+      "slug": "operations-margin",
+      "name": "Operations & Margin",
+      "name_es": "Operaciones y margen",
+      "blurb": "The honest math of running an independent restaurant — delivery, pricing, prime cost, and the website's role in protecting margin.",
+      "blurb_es": "Las cuentas honestas de un restaurante independiente — delivery, precios, costo primo, y el papel del sitio en proteger el margen.",
+      "intent": "A reader landing here is making a financial decision about delivery, pricing, third-party platforms, or whether to invest in a custom website."
+    },
+    {
+      "slug": "trust-reviews",
+      "name": "Trust & Reviews",
+      "name_es": "Confianza y reseñas",
+      "blurb": "Reviews, photos, response systems — the slow-compounding signals that keep first-time guests from bouncing.",
+      "blurb_es": "Reseñas, fotos, sistemas de respuesta — las señales que se acumulan lentamente y evitan que los primeros visitantes se vayan.",
+      "intent": "A reader landing here wants to build credibility — get more reviews, respond well, and surface social proof on the site."
+    },
+    {
+      "slug": "brand-design",
+      "name": "Brand & Design",
+      "name_es": "Marca y diseño",
+      "blurb": "Why the website's tone, type, and palette decide whether a guest believes the food before they taste it.",
+      "blurb_es": "Por qué el tono, la tipografía y la paleta del sitio deciden si un huésped cree en la comida antes de probarla.",
+      "intent": "A reader landing here is making brand or visual decisions — Wix vs custom, colors, photography, voice."
+    }
+  ]
+}

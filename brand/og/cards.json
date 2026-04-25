@@ -1,18 +1,21 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema#",
-  "_comment": "OG card manifest. Each entry produces <slug>.svg + <slug>.png in brand/og/. kind selects the template (page|article|research|tool). accent keys into PALETTE in scripts/build-og-cards.mjs. focus is an optional module { type: 'type'|'funnel'|'stat'|'score-ring'|'list'|'quote', ...data }. locale is for hreflang pairing; ES cards use slug '-es' suffix.",
+  "_comment": "OG card manifest. Each entry produces <slug>.svg + <slug>.png in brand/og/. kind selects the template (page|article|research|tool). accent keys into PALETTE in scripts/build-og-cards.mjs (per accent rule: speed/mobile=teal, conversions/reservations=rust, local-seo=teal, margin/operations=gold, trust=ink, brand=cream-on-ink/teal-on-cream, research=rust, tools=gold, hubs=ink). glyph keys into the GLYPHS registry in build-og-cards.mjs and renders left of the eyebrow as a subject cue. focus is an optional module { type: 'type'|'funnel'|'stat'|'score-ring'|'list'|'quote'|'checks', ...data }. locale is for hreflang pairing; ES cards use slug '-es' suffix.",
   "cards": [
     {
       "slug": "system",
       "kind": "page",
       "locale": "en",
       "accent": "ink",
+      "glyph": "code",
       "eyebrow": "COLOPHON",
       "title_1": "How this",
       "title_italic": "system",
       "title_2": "is built.",
       "dek": "Tokens, scripts, translation pipeline, search, research. The moving parts, named.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      }
     },
     {
       "slug": "system-es",
@@ -24,7 +27,10 @@
       "title_italic": "este",
       "title_2": "sistema.",
       "dek": "Tokens, scripts, pipeline de traducción, búsqueda, investigación. Las piezas, con nombre.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "code"
     },
     {
       "slug": "learn",
@@ -36,7 +42,10 @@
       "title_italic": "web",
       "title_2": "that sells.",
       "dek": "Articles, research, tools, and a glossary — built to compound.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "glossary"
     },
     {
       "slug": "learn-es",
@@ -48,7 +57,10 @@
       "title_italic": "web",
       "title_2": "que vende.",
       "dek": "Artículos, investigación, herramientas y un glosario — construidos para acumular.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "glossary"
     },
     {
       "slug": "learn-start-here",
@@ -69,7 +81,8 @@
           "The math of fixing it",
           "Tools to check your own site"
         ]
-      }
+      },
+      "glyph": "glossary"
     },
     {
       "slug": "learn-start-here-es",
@@ -90,7 +103,8 @@
           "Las cuentas de arreglarlo",
           "Herramientas para revisar tu web"
         ]
-      }
+      },
+      "glyph": "glossary"
     },
     {
       "slug": "learn-research",
@@ -107,7 +121,8 @@
         "value": "5",
         "caption": "research notes, each a primary source",
         "source": "CITED ACROSS THE LIBRARY"
-      }
+      },
+      "glyph": "research"
     },
     {
       "slug": "learn-research-es",
@@ -124,9 +139,249 @@
         "value": "5",
         "caption": "notas de investigación, cada una una fuente primaria",
         "source": "CITADAS EN TODA LA BIBLIOTECA"
-      }
+      },
+      "glyph": "research"
     },
-
+    {
+      "slug": "library",
+      "kind": "page",
+      "locale": "en",
+      "accent": "ink",
+      "eyebrow": "THE LIBRARY",
+      "title_1": "The whole",
+      "title_italic": "library,",
+      "title_2": "one click in.",
+      "dek": "Articles, tools, research, and a 97-term glossary — built to compound.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "glossary"
+    },
+    {
+      "slug": "library-es",
+      "kind": "page",
+      "locale": "es",
+      "accent": "ink",
+      "eyebrow": "LA BIBLIOTECA",
+      "title_1": "Toda la",
+      "title_italic": "biblioteca,",
+      "title_2": "a un clic.",
+      "dek": "Artículos, herramientas, investigación y un glosario de 97 términos — diseñado para acumularse.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "glossary"
+    },
+    {
+      "slug": "topics",
+      "kind": "page",
+      "locale": "en",
+      "accent": "ink",
+      "eyebrow": "BROWSE BY TOPIC",
+      "title_1": "Six lenses,",
+      "title_italic": "one",
+      "title_2": "library.",
+      "dek": "Speed, conversions, local SEO, margin, trust, brand — pick the angle that matches your week.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "glossary"
+    },
+    {
+      "slug": "topics-es",
+      "kind": "page",
+      "locale": "es",
+      "accent": "ink",
+      "eyebrow": "EXPLORA POR TEMA",
+      "title_1": "Seis lentes,",
+      "title_italic": "una",
+      "title_2": "biblioteca.",
+      "dek": "Velocidad, conversiones, SEO local, margen, confianza, marca — elige el ángulo que cuadra con tu semana.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "glossary"
+    },
+    {
+      "slug": "topic-speed-mobile",
+      "kind": "page",
+      "locale": "en",
+      "accent": "teal",
+      "eyebrow": "SPEED & MOBILE",
+      "title_1": "Every second",
+      "title_italic": "costs",
+      "title_2": "you a diner.",
+      "dek": "Why mobile load time decides the booking — and the 80/20 of speed work that moves the needle.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "speed"
+    },
+    {
+      "slug": "topic-speed-mobile-es",
+      "kind": "page",
+      "locale": "es",
+      "accent": "teal",
+      "eyebrow": "VELOCIDAD Y MÓVIL",
+      "title_1": "Cada segundo",
+      "title_italic": "te cuesta",
+      "title_2": "un comensal.",
+      "dek": "Por qué el tiempo de carga móvil decide la reserva — y el 80/20 que mueve la aguja.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "speed"
+    },
+    {
+      "slug": "topic-conversions",
+      "kind": "page",
+      "locale": "en",
+      "accent": "rust",
+      "eyebrow": "CONVERSIONS & RESERVATIONS",
+      "title_1": "From a tap",
+      "title_italic": "to a",
+      "title_2": "booked table.",
+      "dek": "The funnel six leaks every restaurant site has — and the fix for each.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "conversions"
+    },
+    {
+      "slug": "topic-conversions-es",
+      "kind": "page",
+      "locale": "es",
+      "accent": "rust",
+      "eyebrow": "CONVERSIONES Y RESERVAS",
+      "title_1": "Del toque",
+      "title_italic": "a la mesa",
+      "title_2": "reservada.",
+      "dek": "Las seis fugas que tiene todo embudo de restaurante — y el arreglo para cada una.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "conversions"
+    },
+    {
+      "slug": "topic-local-seo",
+      "kind": "page",
+      "locale": "en",
+      "accent": "teal",
+      "eyebrow": "LOCAL SEO & DISCOVERY",
+      "title_1": "How Google",
+      "title_italic": "decides",
+      "title_2": "what to show.",
+      "dek": "GBP, schema, reviews, and the on-site signals that put you in the map pack.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "local-seo"
+    },
+    {
+      "slug": "topic-local-seo-es",
+      "kind": "page",
+      "locale": "es",
+      "accent": "teal",
+      "eyebrow": "SEO LOCAL Y DESCUBRIMIENTO",
+      "title_1": "Cómo Google",
+      "title_italic": "decide",
+      "title_2": "qué mostrar.",
+      "dek": "GBP, schema, reseñas, y las señales en el sitio que te ponen en el mapa.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "local-seo"
+    },
+    {
+      "slug": "topic-operations-margin",
+      "kind": "page",
+      "locale": "en",
+      "accent": "gold",
+      "eyebrow": "OPERATIONS & MARGIN",
+      "title_1": "The honest",
+      "title_italic": "math",
+      "title_2": "of independence.",
+      "dek": "Delivery, pricing, prime cost, and the website's role in protecting margin.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "margin"
+    },
+    {
+      "slug": "topic-operations-margin-es",
+      "kind": "page",
+      "locale": "es",
+      "accent": "gold",
+      "eyebrow": "OPERACIONES Y MARGEN",
+      "title_1": "Las cuentas",
+      "title_italic": "honestas",
+      "title_2": "de la independencia.",
+      "dek": "Delivery, precios, costo primo, y el papel del sitio en proteger el margen.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "margin"
+    },
+    {
+      "slug": "topic-trust-reviews",
+      "kind": "page",
+      "locale": "en",
+      "accent": "ink",
+      "eyebrow": "TRUST & REVIEWS",
+      "title_1": "The signals",
+      "title_italic": "that",
+      "title_2": "compound.",
+      "dek": "Reviews, photos, response systems — the slow-build trust that keeps first-time guests.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "trust"
+    },
+    {
+      "slug": "topic-trust-reviews-es",
+      "kind": "page",
+      "locale": "es",
+      "accent": "ink",
+      "eyebrow": "CONFIANZA Y RESEÑAS",
+      "title_1": "Las señales",
+      "title_italic": "que",
+      "title_2": "se acumulan.",
+      "dek": "Reseñas, fotos, sistemas de respuesta — la confianza que mantiene al primer visitante.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "trust"
+    },
+    {
+      "slug": "topic-brand-design",
+      "kind": "page",
+      "locale": "en",
+      "accent": "cream",
+      "eyebrow": "BRAND & DESIGN",
+      "title_1": "Tone, type,",
+      "title_italic": "palette —",
+      "title_2": "before the food.",
+      "dek": "Why a website's voice and craft decide whether a guest believes the food.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
+    },
+    {
+      "slug": "topic-brand-design-es",
+      "kind": "page",
+      "locale": "es",
+      "accent": "cream",
+      "eyebrow": "MARCA Y DISEÑO",
+      "title_1": "Tono, tipo,",
+      "title_italic": "paleta —",
+      "title_2": "antes del plato.",
+      "dek": "Por qué la voz y el oficio del sitio deciden si un huésped cree en la comida.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
+    },
     {
       "slug": "research-mobile-page-speed",
       "kind": "research",
@@ -141,7 +396,8 @@
         "value": "53%",
         "caption": "bounce after a 3-second mobile load",
         "source": "N = 900,000 MOBILE ADS · 2017"
-      }
+      },
+      "glyph": "speed"
     },
     {
       "slug": "research-mobile-page-speed-es",
@@ -157,9 +413,9 @@
         "value": "53%",
         "caption": "rebota tras 3 segundos de carga en móvil",
         "source": "N = 900,000 ANUNCIOS MÓVILES · 2017"
-      }
+      },
+      "glyph": "speed"
     },
-
     {
       "slug": "research-fittss-law",
       "kind": "research",
@@ -174,7 +430,8 @@
         "text": "The time to acquire a target is a function of its distance and size.",
         "attribution": "PAUL FITTS, 1954",
         "wrap": 26
-      }
+      },
+      "glyph": "research"
     },
     {
       "slug": "research-fittss-law-es",
@@ -190,9 +447,9 @@
         "text": "El tiempo para alcanzar un blanco depende de su distancia y tamaño.",
         "attribution": "PAUL FITTS, 1954",
         "wrap": 26
-      }
+      },
+      "glyph": "research"
     },
-
     {
       "slug": "research-local-business-websites",
       "kind": "research",
@@ -211,7 +468,8 @@
           "Phone · contact",
           "Menu or services"
         ]
-      }
+      },
+      "glyph": "local-seo"
     },
     {
       "slug": "research-local-business-websites-es",
@@ -231,9 +489,9 @@
           "Teléfono · contacto",
           "Menú o servicios"
         ]
-      }
+      },
+      "glyph": "local-seo"
     },
-
     {
       "slug": "research-cart-abandonment-rate",
       "kind": "research",
@@ -248,7 +506,8 @@
         "value": "70.19%",
         "caption": "of online carts abandoned (mean across 49 studies)",
         "source": "2024 — BAYMARD.COM/LISTS/CART-ABANDONMENT-RATE"
-      }
+      },
+      "glyph": "conversions"
     },
     {
       "slug": "research-cart-abandonment-rate-es",
@@ -264,9 +523,9 @@
         "value": "70.19%",
         "caption": "de carritos abandonados (promedio de 49 estudios)",
         "source": "2024 — BAYMARD.COM/LISTS/CART-ABANDONMENT-RATE"
-      }
+      },
+      "glyph": "conversions"
     },
-
     {
       "slug": "research-lighthouse-performance-scoring",
       "kind": "research",
@@ -280,7 +539,8 @@
         "type": "score-ring",
         "value": 90,
         "label": "THE GREEN THRESHOLD"
-      }
+      },
+      "glyph": "speed"
     },
     {
       "slug": "research-lighthouse-performance-scoring-es",
@@ -295,9 +555,9 @@
         "type": "score-ring",
         "value": 90,
         "label": "EL UMBRAL VERDE"
-      }
+      },
+      "glyph": "speed"
     },
-
     {
       "slug": "blog-losing-reservations",
       "kind": "article",
@@ -310,10 +570,23 @@
       "focus": {
         "type": "funnel",
         "label": "THE FUNNEL",
-        "data": [100, 85, 73, 50, 47],
-        "labels": [100, 85, 73, 50, 47],
+        "data": [
+          100,
+          85,
+          73,
+          50,
+          47
+        ],
+        "labels": [
+          100,
+          85,
+          73,
+          50,
+          47
+        ],
         "lost_label": "53 lost per 100 visitors"
-      }
+      },
+      "glyph": "reservations"
     },
     {
       "slug": "blog-losing-reservations-es",
@@ -327,12 +600,24 @@
       "focus": {
         "type": "funnel",
         "label": "EL EMBUDO",
-        "data": [100, 85, 73, 50, 47],
-        "labels": [100, 85, 73, 50, 47],
+        "data": [
+          100,
+          85,
+          73,
+          50,
+          47
+        ],
+        "labels": [
+          100,
+          85,
+          73,
+          50,
+          47
+        ],
         "lost_label": "53 perdidas por cada 100 visitas"
-      }
+      },
+      "glyph": "reservations"
     },
-
     {
       "slug": "blog-doordash-math",
       "kind": "article",
@@ -347,7 +632,8 @@
         "value": "30%",
         "caption": "platform fee against a 12% operating margin",
         "source": "DOORDASH PARTNER AGREEMENT · 2026"
-      }
+      },
+      "glyph": "delivery"
     },
     {
       "slug": "blog-doordash-math-es",
@@ -363,9 +649,9 @@
         "value": "30%",
         "caption": "comisión de la plataforma contra un margen operativo del 12%",
         "source": "ACUERDO PARTNER DOORDASH · 2026"
-      }
+      },
+      "glyph": "delivery"
     },
-
     {
       "slug": "blog-menu-prices",
       "kind": "article",
@@ -384,7 +670,8 @@
           "Reset the anchor",
           "Protect the loved item"
         ]
-      }
+      },
+      "glyph": "margin"
     },
     {
       "slug": "blog-menu-prices-es",
@@ -404,9 +691,9 @@
           "Restablece el ancla",
           "Protege el plato querido"
         ]
-      }
+      },
+      "glyph": "margin"
     },
-
     {
       "slug": "blog-restaurant-cost",
       "kind": "article",
@@ -421,7 +708,8 @@
         "value": "$3–15k",
         "caption": "end-to-end build — templated to bespoke",
         "source": "MUNTIN DIGITAL · 2026 INDEX"
-      }
+      },
+      "glyph": "margin"
     },
     {
       "slug": "blog-restaurant-cost-es",
@@ -437,9 +725,9 @@
         "value": "$3–15k",
         "caption": "desarrollo completo — plantilla a medida",
         "source": "MUNTIN DIGITAL · ÍNDICE 2026"
-      }
+      },
+      "glyph": "margin"
     },
-
     {
       "slug": "blog-wix-vs-custom",
       "kind": "article",
@@ -458,7 +746,8 @@
           "Template ceiling vs. craft",
           "Lock-in vs. portability"
         ]
-      }
+      },
+      "glyph": "brand"
     },
     {
       "slug": "blog-wix-vs-custom-es",
@@ -478,9 +767,9 @@
           "Techo de plantilla vs. oficio",
           "Dependencia vs. portabilidad"
         ]
-      }
+      },
+      "glyph": "brand"
     },
-
     {
       "slug": "audit",
       "kind": "tool",
@@ -494,7 +783,8 @@
         "type": "score-ring",
         "value": 75,
         "label": "A REAL RESULT"
-      }
+      },
+      "glyph": "audit"
     },
     {
       "slug": "audit-es",
@@ -509,9 +799,9 @@
         "type": "score-ring",
         "value": 75,
         "label": "UN RESULTADO REAL"
-      }
+      },
+      "glyph": "audit"
     },
-
     {
       "slug": "audit-restaurants",
       "kind": "tool",
@@ -524,11 +814,21 @@
       "focus": {
         "type": "checks",
         "items": [
-          { "label": "Mobile-friendly menu", "pass": true },
-          { "label": "Schema markup", "pass": false },
-          { "label": "Online ordering", "pass": true }
+          {
+            "label": "Mobile-friendly menu",
+            "pass": true
+          },
+          {
+            "label": "Schema markup",
+            "pass": false
+          },
+          {
+            "label": "Online ordering",
+            "pass": true
+          }
         ]
-      }
+      },
+      "glyph": "audit"
     },
     {
       "slug": "audit-restaurants-es",
@@ -542,13 +842,78 @@
       "focus": {
         "type": "checks",
         "items": [
-          { "label": "Menú amigable en móvil", "pass": true },
-          { "label": "Marcado de esquema", "pass": false },
-          { "label": "Pedidos en línea", "pass": true }
+          {
+            "label": "Menú amigable en móvil",
+            "pass": true
+          },
+          {
+            "label": "Marcado de esquema",
+            "pass": false
+          },
+          {
+            "label": "Pedidos en línea",
+            "pass": true
+          }
         ]
-      }
+      },
+      "glyph": "audit"
     },
-
+    {
+      "slug": "tool-margin-math",
+      "kind": "tool",
+      "locale": "en",
+      "eyebrow": "FREE · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Margin",
+      "title_italic": "math",
+      "title_2": "for your menu.",
+      "dek": "Delivery break-even, price raise, prime cost, covers — run in your browser, by you.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "margin"
+    },
+    {
+      "slug": "tool-margin-math-es",
+      "kind": "tool",
+      "locale": "es",
+      "eyebrow": "GRATIS · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Cálculo de",
+      "title_italic": "margen",
+      "title_2": "para tu menú.",
+      "dek": "Punto de equilibrio con delivery, alza de precios, prime cost, cubiertos — corre en tu navegador.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "margin"
+    },
+    {
+      "slug": "tool-brand-suite",
+      "kind": "tool",
+      "locale": "en",
+      "eyebrow": "FREE · YOUR LOGO NEVER LEAVES YOUR BROWSER",
+      "title_1": "Brand suite",
+      "title_italic": "from your",
+      "title_2": "logo.",
+      "dek": "Palette, accessible pairs, WCAG grid, CSS tokens — extracted from your mark, in your browser.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
+    },
+    {
+      "slug": "tool-brand-suite-es",
+      "kind": "tool",
+      "locale": "es",
+      "eyebrow": "GRATIS · TU LOGO NUNCA SALE DEL NAVEGADOR",
+      "title_1": "Suite de marca",
+      "title_italic": "desde tu",
+      "title_2": "logo.",
+      "dek": "Paleta, pares accesibles, cuadrícula WCAG, tokens CSS — desde tu marca, en tu navegador.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
+    },
     {
       "slug": "home",
       "kind": "page",
@@ -559,7 +924,10 @@
       "title_italic": "web",
       "title_2": "that sells.",
       "dek": "A free library of articles, tools, and research — and the studio behind them.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
     },
     {
       "slug": "home-es",
@@ -571,9 +939,11 @@
       "title_italic": "web",
       "title_2": "que vende.",
       "dek": "Una biblioteca gratis de artículos, herramientas e investigación — y el estudio detrás.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
     },
-
     {
       "slug": "about",
       "kind": "page",
@@ -584,7 +954,10 @@
       "title_italic": "I wish",
       "title_2": "had existed.",
       "dek": "A decade on the dining-room floor. The studio that came out of it. DMV based.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
     },
     {
       "slug": "about-es",
@@ -596,9 +969,11 @@
       "title_italic": "que quería",
       "title_2": "haber tenido.",
       "dek": "Una década en el salón. El estudio que salió de eso. Con base en DMV.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
     },
-
     {
       "slug": "services",
       "kind": "page",
@@ -617,7 +992,8 @@
           "Full visual identity",
           "Monthly management"
         ]
-      }
+      },
+      "glyph": "audit"
     },
     {
       "slug": "services-es",
@@ -637,9 +1013,9 @@
           "Identidad visual completa",
           "Gestión mensual"
         ]
-      }
+      },
+      "glyph": "audit"
     },
-
     {
       "slug": "restaurants",
       "kind": "page",
@@ -650,7 +1026,10 @@
       "title_italic": "that matches",
       "title_2": "the room.",
       "dek": "Built by someone who works hospitality nights. Silver Spring, MD.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "reservations"
     },
     {
       "slug": "restaurants-es",
@@ -662,7 +1041,3046 @@
       "title_italic": "a la altura",
       "title_2": "de la sala.",
       "dek": "Hecha por alguien que trabaja turnos de hospitalidad. Silver Spring, MD.",
-      "focus": { "type": "type" }
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "reservations"
+    },
+    {
+      "slug": "blog",
+      "kind": "page",
+      "locale": "en",
+      "accent": "ink",
+      "glyph": "glossary",
+      "eyebrow": "ARTICLES",
+      "title_1": "Honest essays",
+      "title_italic": "about the",
+      "title_2": "small-business web.",
+      "dek": "Plain math, named tradeoffs, written from inside hospitality.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "blog-es",
+      "kind": "page",
+      "locale": "es",
+      "accent": "ink",
+      "glyph": "glossary",
+      "eyebrow": "ARTÍCULOS",
+      "title_1": "Ensayos honestos",
+      "title_italic": "sobre la",
+      "title_2": "web de negocios.",
+      "dek": "Cuentas claras, decisiones nombradas, escritos desde adentro.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "glossary",
+      "kind": "page",
+      "locale": "en",
+      "accent": "ink",
+      "glyph": "glossary",
+      "eyebrow": "WEBSITE GLOSSARY",
+      "title_1": "Plain English,",
+      "title_italic": "every",
+      "title_2": "term defined.",
+      "dek": "Ninety-seven definitions written for owners, not developers.",
+      "focus": {
+        "type": "stat",
+        "value": "97",
+        "caption": "terms, every one written for owners",
+        "source": "THE GLOSSARY"
+      }
+    },
+    {
+      "slug": "glossary-es",
+      "kind": "page",
+      "locale": "es",
+      "accent": "ink",
+      "glyph": "glossary",
+      "eyebrow": "GLOSARIO WEB",
+      "title_1": "Español claro,",
+      "title_italic": "cada",
+      "title_2": "término definido.",
+      "dek": "Noventa y siete definiciones escritas para dueños, no para programadores.",
+      "focus": {
+        "type": "stat",
+        "value": "97",
+        "caption": "términos, todos escritos para dueños",
+        "source": "EL GLOSARIO"
+      }
+    },
+    {
+      "slug": "work",
+      "kind": "page",
+      "locale": "en",
+      "accent": "ink",
+      "glyph": "brand",
+      "eyebrow": "SELECTED CASE STUDIES",
+      "title_1": "Range, by",
+      "title_italic": "showing",
+      "title_2": "the work.",
+      "dek": "A landmark restaurant redesign and a pre-launch lifestyle brand narrative.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "work-es",
+      "kind": "page",
+      "locale": "es",
+      "accent": "ink",
+      "glyph": "brand",
+      "eyebrow": "ESTUDIOS DE CASO",
+      "title_1": "Rango,",
+      "title_italic": "mostrando",
+      "title_2": "el trabajo.",
+      "dek": "Un rediseño de restaurante histórico y una marca de estilo de vida pre-lanzamiento.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "tools",
+      "kind": "page",
+      "locale": "en",
+      "accent": "ink",
+      "glyph": "audit",
+      "eyebrow": "FREE TOOLS",
+      "title_1": "Eight ways to",
+      "title_italic": "check",
+      "title_2": "your own site.",
+      "dek": "No signup. Each tool answers one specific question — in about thirty seconds.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "tools-es",
+      "kind": "page",
+      "locale": "es",
+      "accent": "ink",
+      "glyph": "audit",
+      "eyebrow": "HERRAMIENTAS GRATIS",
+      "title_1": "Ocho formas de",
+      "title_italic": "revisar",
+      "title_2": "tu propio sitio.",
+      "dek": "Sin registro. Cada herramienta responde una pregunta — en treinta segundos.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "resources",
+      "kind": "page",
+      "locale": "en",
+      "accent": "ink",
+      "glyph": "resources",
+      "eyebrow": "RESOURCES",
+      "title_1": "Free checklists",
+      "title_italic": "and",
+      "title_2": "interactive guides.",
+      "dek": "Audit your own restaurant website in minutes. Progress saves automatically.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "resources-es",
+      "kind": "page",
+      "locale": "es",
+      "accent": "ink",
+      "glyph": "resources",
+      "eyebrow": "RECURSOS",
+      "title_1": "Listas gratis",
+      "title_italic": "y",
+      "title_2": "guías interactivas.",
+      "dek": "Audita tu propia web de restaurante en minutos. Tu progreso se guarda solo.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "checklist",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "audit",
+      "eyebrow": "FREE INTERACTIVE CHECKLIST",
+      "title_1": "Thirty things",
+      "title_italic": "your site",
+      "title_2": "should do in 2026.",
+      "dek": "Score your own restaurant website in ten minutes. Progress saves automatically.",
+      "focus": {
+        "type": "checks",
+        "items": [
+          {
+            "label": "Phone number tap-to-call",
+            "pass": true
+          },
+          {
+            "label": "Menu loads in under 2 s",
+            "pass": true
+          },
+          {
+            "label": "Reservation in viewport",
+            "pass": false
+          },
+          {
+            "label": "Schema marks the cuisine",
+            "pass": false
+          }
+        ]
+      }
+    },
+    {
+      "slug": "checklist-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "audit",
+      "eyebrow": "LISTA INTERACTIVA GRATIS",
+      "title_1": "Treinta cosas",
+      "title_italic": "que tu web",
+      "title_2": "debe hacer en 2026.",
+      "dek": "Califica tu propia web de restaurante en diez minutos. Tu progreso se guarda solo.",
+      "focus": {
+        "type": "checks",
+        "items": [
+          {
+            "label": "Teléfono toca-para-llamar",
+            "pass": true
+          },
+          {
+            "label": "Menú carga en menos de 2 s",
+            "pass": true
+          },
+          {
+            "label": "Reserva visible al cargar",
+            "pass": false
+          },
+          {
+            "label": "Schema marca la cocina",
+            "pass": false
+          }
+        ]
+      }
+    },
+    {
+      "slug": "tool-mobile-check",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "speed",
+      "eyebrow": "FREE TOOL · MOBILE CHECK",
+      "title_1": "Three mobile",
+      "title_italic": "checks",
+      "title_2": "in ten seconds.",
+      "dek": "Viewport, tap targets, text size — graded against current Google standards.",
+      "focus": {
+        "type": "checks",
+        "items": [
+          {
+            "label": "Viewport set",
+            "pass": true
+          },
+          {
+            "label": "Tap targets ≥ 44 px",
+            "pass": true
+          },
+          {
+            "label": "Body text ≥ 16 px",
+            "pass": true
+          },
+          {
+            "label": "Reservation in fold",
+            "pass": false
+          }
+        ]
+      }
+    },
+    {
+      "slug": "tool-mobile-check-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "speed",
+      "eyebrow": "HERRAMIENTA · MÓVIL",
+      "title_1": "Tres pruebas",
+      "title_italic": "móviles",
+      "title_2": "en diez segundos.",
+      "dek": "Viewport, tamaño de toque y texto — calificados contra los estándares de Google.",
+      "focus": {
+        "type": "checks",
+        "items": [
+          {
+            "label": "Viewport configurado",
+            "pass": true
+          },
+          {
+            "label": "Toques ≥ 44 px",
+            "pass": true
+          },
+          {
+            "label": "Texto ≥ 16 px",
+            "pass": true
+          },
+          {
+            "label": "Reserva visible al cargar",
+            "pass": false
+          }
+        ]
+      }
+    },
+    {
+      "slug": "tool-schema-check",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "code",
+      "eyebrow": "FREE TOOL · SCHEMA",
+      "title_1": "Does Google",
+      "title_italic": "understand",
+      "title_2": "your business?",
+      "dek": "Detect the structured data on your site — see what Google is reading about you.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "tool-schema-check-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "code",
+      "eyebrow": "HERRAMIENTA · SCHEMA",
+      "title_1": "¿Google",
+      "title_italic": "entiende",
+      "title_2": "tu negocio?",
+      "dek": "Detecta los datos estructurados — mira lo que Google lee sobre ti.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "tool-speed-test",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "speed",
+      "eyebrow": "FREE TOOL · SPEED",
+      "title_1": "How fast is",
+      "title_italic": "your site,",
+      "title_2": "in plain English?",
+      "dek": "One mobile speed number, named in everyday terms. Ten seconds. No signup.",
+      "focus": {
+        "type": "score-ring",
+        "value": 72,
+        "label": "MOBILE PERFORMANCE"
+      }
+    },
+    {
+      "slug": "tool-speed-test-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "speed",
+      "eyebrow": "HERRAMIENTA · VELOCIDAD",
+      "title_1": "¿Qué tan rápido",
+      "title_italic": "es tu sitio,",
+      "title_2": "en español claro?",
+      "dek": "Un solo número de velocidad móvil, en palabras cotidianas. Diez segundos.",
+      "focus": {
+        "type": "score-ring",
+        "value": 72,
+        "label": "RENDIMIENTO MÓVIL"
+      }
+    },
+    {
+      "slug": "tool-tech-stack",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "code",
+      "eyebrow": "FREE TOOL · TECH STACK",
+      "title_1": "What is",
+      "title_italic": "your site",
+      "title_2": "actually built on?",
+      "dek": "CMS, analytics, booking platform, fonts — detected in ten seconds. No signup.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "tool-tech-stack-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "code",
+      "eyebrow": "HERRAMIENTA · STACK",
+      "title_1": "¿Sobre qué",
+      "title_italic": "está hecho",
+      "title_2": "tu sitio web?",
+      "dek": "CMS, analítica, plataforma de reservas, tipografía — detectados en diez segundos.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "tool-gbp-grader",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "local-seo",
+      "eyebrow": "FREE TOOL · GBP GRADER",
+      "title_1": "Grade your",
+      "title_italic": "Google",
+      "title_2": "Business Profile.",
+      "dek": "See how your GBP stacks up against the local competition — in about ten seconds.",
+      "focus": {
+        "type": "score-ring",
+        "value": 64,
+        "label": "GBP COMPLETENESS"
+      }
+    },
+    {
+      "slug": "tool-gbp-grader-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "local-seo",
+      "eyebrow": "HERRAMIENTA · GBP",
+      "title_1": "Califica tu",
+      "title_italic": "Perfil de",
+      "title_2": "Empresa de Google.",
+      "dek": "Mira cómo tu GBP se compara con la competencia local — en diez segundos.",
+      "focus": {
+        "type": "score-ring",
+        "value": 64,
+        "label": "PERFIL COMPLETO"
+      }
+    },
+    {
+      "slug": "tool-compare",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "brand",
+      "eyebrow": "FREE TOOL · COMPARE",
+      "title_1": "Your site,",
+      "title_italic": "side by side",
+      "title_2": "with a competitor.",
+      "dek": "Two URLs. Speed, mobile, SEO. Free, ten seconds, no signup.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "tool-compare-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "brand",
+      "eyebrow": "HERRAMIENTA · COMPARAR",
+      "title_1": "Tu sitio,",
+      "title_italic": "lado a lado",
+      "title_2": "con un competidor.",
+      "dek": "Dos URLs. Velocidad, móvil, SEO. Gratis, diez segundos, sin registro.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "tool-search-ideas",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "local-seo",
+      "eyebrow": "FREE TOOL · SEARCH IDEAS",
+      "title_1": "What people",
+      "title_italic": "actually",
+      "title_2": "search near you.",
+      "dek": "Real Google autocomplete suggestions for your business type and city. Free.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "tool-search-ideas-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "local-seo",
+      "eyebrow": "HERRAMIENTA · BÚSQUEDAS",
+      "title_1": "Lo que la gente",
+      "title_italic": "busca",
+      "title_2": "cerca de ti.",
+      "dek": "Sugerencias reales de Google autocomplete para tu tipo de negocio y ciudad.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "tool-seo-grader",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "local-seo",
+      "eyebrow": "FREE TOOL · SEO GRADER",
+      "title_1": "Grade your",
+      "title_italic": "title and",
+      "title_2": "meta description.",
+      "dek": "Length, intent, brand placement — graded in ten seconds. Free.",
+      "focus": {
+        "type": "score-ring",
+        "value": 81,
+        "label": "TITLE + META"
+      }
+    },
+    {
+      "slug": "tool-seo-grader-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "local-seo",
+      "eyebrow": "HERRAMIENTA · SEO",
+      "title_1": "Califica tu",
+      "title_italic": "título y",
+      "title_2": "meta descripción.",
+      "dek": "Largo, intención, marca — calificados en diez segundos. Gratis.",
+      "focus": {
+        "type": "score-ring",
+        "value": 81,
+        "label": "TÍTULO + META"
+      }
+    },
+    {
+      "slug": "work-tacombi",
+      "kind": "page",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "brand",
+      "eyebrow": "CASE STUDY · TACOMBI",
+      "title_1": "Three years",
+      "title_italic": "of neighborhood",
+      "title_2": "marketing.",
+      "dek": "Cross-promotions, loyalty, print collateral — designed from inside the restaurant.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "work-tacombi-es",
+      "kind": "page",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "brand",
+      "eyebrow": "CASO · TACOMBI",
+      "title_1": "Tres años",
+      "title_italic": "de marketing",
+      "title_2": "de barrio.",
+      "dek": "Promociones, lealtad, impresos — diseñados desde adentro del restaurante.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "work-irish-inn",
+      "kind": "page",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "brand",
+      "eyebrow": "CASE STUDY · IRISH INN",
+      "title_1": "A 1931",
+      "title_italic": "landmark,",
+      "title_2": "reimagined.",
+      "dek": "An independent redesign study for a Washington-area dining institution.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "work-irish-inn-es",
+      "kind": "page",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "brand",
+      "eyebrow": "CASO · IRISH INN",
+      "title_1": "Un ícono",
+      "title_italic": "de 1931,",
+      "title_2": "reimaginado.",
+      "dek": "Un estudio de rediseño independiente para una institución gastronómica de Washington.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "work-off-day-collective",
+      "kind": "page",
+      "locale": "en",
+      "accent": "ink",
+      "glyph": "brand",
+      "eyebrow": "CASE STUDY · OFF DAY COLLECTIVE",
+      "title_1": "Silence,",
+      "title_italic": "curated",
+      "title_2": "before pixels.",
+      "dek": "Brand strategy and design — what intentional rest looks like before launch.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "work-off-day-collective-es",
+      "kind": "page",
+      "locale": "es",
+      "accent": "ink",
+      "glyph": "brand",
+      "eyebrow": "CASO · OFF DAY COLLECTIVE",
+      "title_1": "Silencio,",
+      "title_italic": "curado antes",
+      "title_2": "de los pixeles.",
+      "dek": "Estrategia de marca y diseño — el descanso intencional antes del lanzamiento.",
+      "focus": {
+        "type": "type"
+      }
+    },
+    {
+      "slug": "blog-google-reviews",
+      "kind": "article",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "reviews",
+      "eyebrow": "REVIEWS · PRACTICAL",
+      "title_1": "How to get",
+      "title_italic": "more Google",
+      "title_2": "reviews.",
+      "dek": "QR postcards, timing, staff scripts, and the one thing most owners skip."
+    },
+    {
+      "slug": "blog-google-reviews-es",
+      "kind": "article",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "reviews",
+      "eyebrow": "RESEÑAS · PRÁCTICO",
+      "title_1": "Cómo conseguir",
+      "title_italic": "más reseñas",
+      "title_2": "en Google.",
+      "dek": "Tarjetas con QR, tiempos, guiones y lo único que casi todos olvidan."
+    },
+    {
+      "slug": "blog-google-business-profile-setup",
+      "kind": "article",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "LOCAL SEO · SETUP",
+      "title_1": "Set up",
+      "title_italic": "Google Business",
+      "title_2": "Profile.",
+      "dek": "Claiming, verification, categories, photos, menu links — and the settings most owners miss."
+    },
+    {
+      "slug": "blog-google-business-profile-setup-es",
+      "kind": "article",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "SEO LOCAL · CONFIGURACIÓN",
+      "title_1": "Configura tu",
+      "title_italic": "Perfil de",
+      "title_2": "Empresa.",
+      "dek": "Reclamo, verificación, categorías, fotos, menú — y los ajustes que casi todos olvidan."
+    },
+    {
+      "slug": "blog-google-find-a-table",
+      "kind": "article",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "reservations",
+      "eyebrow": "RESERVATIONS · DISCOVERY",
+      "title_1": "Recover",
+      "title_italic": "reservations from",
+      "title_2": "Find-a-Table.",
+      "dek": "How Google's reservation surface works — and the integrations that get you in it."
+    },
+    {
+      "slug": "blog-pos-comparison",
+      "kind": "article",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "code",
+      "eyebrow": "OPERATIONS · POS",
+      "title_1": "Toast vs Square",
+      "title_italic": "vs Clover for",
+      "title_2": "restaurants.",
+      "dek": "Hardware, fees, lock-in, integrations — compared in plain numbers."
+    },
+    {
+      "slug": "blog-restaurant-website-pages",
+      "kind": "article",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "brand",
+      "eyebrow": "WEB · ESSENTIALS",
+      "title_1": "What should",
+      "title_italic": "be on a",
+      "title_2": "restaurant site.",
+      "dek": "The fewest pages that still cover everything a diner needs to decide."
+    },
+    {
+      "slug": "blog-chatgpt-restaurant-website",
+      "kind": "article",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "code",
+      "eyebrow": "AI · CRAFT",
+      "title_1": "Can ChatGPT",
+      "title_italic": "write your",
+      "title_2": "restaurant site?",
+      "dek": "What it can draft, what it gets wrong, and where a human still has to sit."
+    },
+    {
+      "slug": "blog-one-percent-margin",
+      "kind": "article",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "MARGIN · WEB",
+      "title_1": "Five web",
+      "title_italic": "changes that",
+      "title_2": "recover 1% margin.",
+      "dek": "Where the website is leaking money — and the smallest interventions that close the gap."
+    },
+    {
+      "slug": "blog-restaurant-app",
+      "kind": "article",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "code",
+      "eyebrow": "APPS · SHOULD YOU?",
+      "title_1": "Should your",
+      "title_italic": "restaurant",
+      "title_2": "have an app?",
+      "dek": "When an app earns its weight, when a website is enough, and what most owners miss."
+    },
+    {
+      "slug": "blog-restaurant-need-website",
+      "kind": "article",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "brand",
+      "eyebrow": "WEB · BASICS",
+      "title_1": "Does my",
+      "title_italic": "restaurant",
+      "title_2": "need a website?",
+      "dek": "When social media is enough, when it isn't, and what a website actually owes a diner."
+    },
+    {
+      "slug": "term-above-the-fold",
+      "kind": "research",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONS",
+      "title_1": "Above",
+      "title_italic": "the",
+      "title_2": "fold",
+      "dek": "The part of your homepage a visitor sees without scrolling."
+    },
+    {
+      "slug": "term-aggregator",
+      "kind": "research",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "RESTAURANT NUMBERS",
+      "title_1": "",
+      "title_italic": "Aggregator",
+      "title_2": "",
+      "dek": "A third-party marketplace that takes orders on your behalf (DoorDash, Uber Eats, Grubhub) and keeps a…"
+    },
+    {
+      "slug": "term-alt-text",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "FINDABILITY",
+      "title_1": "Alt",
+      "title_italic": "text",
+      "title_2": "",
+      "dek": "A short written description of every image, set via the alt=\"…\" attribute in the HTML."
+    },
+    {
+      "slug": "term-apple-bing-maps",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "FINDABILITY",
+      "title_1": "Apple Maps",
+      "title_italic": "&",
+      "title_2": "Bing Places",
+      "dek": "The non-Google map services — Apple Maps Connect (for iPhone users) and Bing Places (for Edge, Cortana, and…"
+    },
+    {
+      "slug": "term-average-check",
+      "kind": "research",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "RESTAURANT NUMBERS",
+      "title_1": "Average",
+      "title_italic": "check",
+      "title_2": "",
+      "dek": "Also called \"average ticket."
+    },
+    {
+      "slug": "term-body-text-size",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MOBILE & SPEED",
+      "title_1": "Body",
+      "title_italic": "text",
+      "title_2": "size",
+      "dek": "The default size of regular paragraph text on your site."
+    },
+    {
+      "slug": "term-bounce-rate",
+      "kind": "research",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONS",
+      "title_1": "Bounce",
+      "title_italic": "rate",
+      "title_2": "",
+      "dek": "The percentage of visitors who land on your site and leave without clicking anything — no menu page, no…"
+    },
+    {
+      "slug": "term-brand-identity",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "brand",
+      "eyebrow": "BRAND & DESIGN",
+      "title_1": "Brand",
+      "title_italic": "identity",
+      "title_2": "",
+      "dek": "The full visible system that carries a business across every touchpoint — logo, colors, typography, voice,…"
+    },
+    {
+      "slug": "term-break-even",
+      "kind": "research",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "RESTAURANT NUMBERS",
+      "title_1": "",
+      "title_italic": "Break-even",
+      "title_2": "",
+      "dek": "The sales volume at which revenue equals total costs."
+    },
+    {
+      "slug": "term-canonical-url",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "FINDABILITY",
+      "title_1": "Canonical",
+      "title_italic": "URL",
+      "title_2": "",
+      "dek": "A tag in a page's HTML that tells Google \"this is the real address for this page, ignore any duplicates\"."
+    },
+    {
+      "slug": "term-catering-page",
+      "kind": "research",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONS",
+      "title_1": "Catering /",
+      "title_italic": "private-events",
+      "title_2": "page",
+      "dek": "A dedicated page explaining your catering or private-event offering — minimums, packages, sample menus, lead…"
+    },
+    {
+      "slug": "term-cdn",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MOBILE & SPEED",
+      "title_1": "",
+      "title_italic": "CDN",
+      "title_2": "",
+      "dek": "A global network of servers — Cloudflare, Fastly, AWS CloudFront — that keep cached copies of your site close…"
+    },
+    {
+      "slug": "term-clearspace",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "brand",
+      "eyebrow": "BRAND & DESIGN",
+      "title_1": "",
+      "title_italic": "Clearspace",
+      "title_2": "",
+      "dek": "The minimum empty area that must surround a logo, usually measured in multiples of the mark's x-height or in…"
+    },
+    {
+      "slug": "term-click-to-call",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "glossary",
+      "eyebrow": "THE BASICS",
+      "title_1": "",
+      "title_italic": "Click-to-call",
+      "title_2": "",
+      "dek": "A phone number on your site that, when tapped on a phone, opens the dialer with your number pre-filled —…"
+    },
+    {
+      "slug": "term-click-to-directions",
+      "kind": "research",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONS",
+      "title_1": "",
+      "title_italic": "Click-to-directions",
+      "title_2": "",
+      "dek": "Tapping your address on a phone should launch Apple Maps or Google Maps with your business pre-filled as the…"
+    },
+    {
+      "slug": "term-client-side",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "code",
+      "eyebrow": "DATA & PRIVACY",
+      "title_1": "",
+      "title_italic": "Client-side",
+      "title_2": "",
+      "dek": "Computation that happens inside your browser tab, not on a server."
+    },
+    {
+      "slug": "term-cls",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MOBILE & SPEED",
+      "title_1": "Cumulative",
+      "title_italic": "Layout",
+      "title_2": "Shift",
+      "dek": "A score that measures how much your page jumps around as it loads — when a banner slides in, an image arrives…"
+    },
+    {
+      "slug": "term-color-palette",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "brand",
+      "eyebrow": "BRAND & DESIGN",
+      "title_1": "Color",
+      "title_italic": "palette",
+      "title_2": "",
+      "dek": "The curated set of colors that belong to a brand — typically a primary, a secondary, a small number of…"
+    },
+    {
+      "slug": "term-commission",
+      "kind": "research",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "RESTAURANT NUMBERS",
+      "title_1": "",
+      "title_italic": "Commission",
+      "title_2": "",
+      "dek": "The percentage an aggregator or payment platform keeps per transaction."
+    },
+    {
+      "slug": "term-conversion-rate",
+      "kind": "research",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONS",
+      "title_1": "Conversion",
+      "title_italic": "rate",
+      "title_2": "",
+      "dek": "The percentage of visitors who do the specific thing you wanted them to do — book a reservation, place an…"
+    },
+    {
+      "slug": "term-cookie-banner",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "trust",
+      "eyebrow": "TRUST",
+      "title_1": "Cookie",
+      "title_italic": "banner",
+      "title_2": "",
+      "dek": "The small bar or modal at the bottom of a page asking visitors to accept tracking cookies."
+    },
+    {
+      "slug": "term-copyable-address",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "glossary",
+      "eyebrow": "THE BASICS",
+      "title_1": "Copyable",
+      "title_italic": "address",
+      "title_2": "",
+      "dek": "Your street address as real, selectable text on the page — not baked into an image or a graphic."
+    },
+    {
+      "slug": "term-core-web-vitals",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MOBILE & SPEED",
+      "title_1": "Core",
+      "title_italic": "Web",
+      "title_2": "Vitals",
+      "dek": "Google's three performance scores for a real page load on a phone — one for loading speed (LCP), one for…"
+    },
+    {
+      "slug": "term-cover",
+      "kind": "research",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "RESTAURANT NUMBERS",
+      "title_1": "",
+      "title_italic": "Cover",
+      "title_2": "",
+      "dek": "One customer seated and served."
+    },
+    {
+      "slug": "term-cta",
+      "kind": "research",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONS",
+      "title_1": "Call",
+      "title_italic": "to",
+      "title_2": "action",
+      "dek": "The specific button or link that asks a visitor to do the next thing — \"Reserve a Table\", \"Order Online\",…"
+    },
+    {
+      "slug": "term-cuisine-pitch",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "glossary",
+      "eyebrow": "THE BASICS",
+      "title_1": "One-sentence",
+      "title_italic": "pitch",
+      "title_2": "",
+      "dek": "A single sentence — usually in the hero — that tells a first-time visitor your cuisine, neighborhood, and…"
+    },
+    {
+      "slug": "term-dietary-markers",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "glossary",
+      "eyebrow": "THE BASICS",
+      "title_1": "Dietary &",
+      "title_italic": "allergen",
+      "title_2": "markers",
+      "dek": "Small labels next to menu items indicating gluten-free, vegan, vegetarian, dairy-free, or nut-containing…"
+    },
+    {
+      "slug": "term-direct-ordering",
+      "kind": "research",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "RESTAURANT NUMBERS",
+      "title_1": "Direct",
+      "title_italic": "ordering",
+      "title_2": "",
+      "dek": "A customer ordering through your own website or POS (Toast, Square, Olo, ChowNow), bypassing aggregators."
+    },
+    {
+      "slug": "term-domain-name",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "glossary",
+      "eyebrow": "THE BASICS",
+      "title_1": "Domain",
+      "title_italic": "name",
+      "title_2": "",
+      "dek": "The human-readable address people type to reach your site — \"rowhousegarden."
+    },
+    {
+      "slug": "term-elasticity",
+      "kind": "research",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "RESTAURANT NUMBERS",
+      "title_1": "Price",
+      "title_italic": "elasticity",
+      "title_2": "",
+      "dek": "How much cover count changes when prices change."
+    },
+    {
+      "slug": "term-favicon",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "brand",
+      "eyebrow": "BRAND & DESIGN",
+      "title_1": "",
+      "title_italic": "Favicon",
+      "title_2": "",
+      "dek": "The small icon displayed in the browser tab and in bookmark lists."
+    },
+    {
+      "slug": "term-fcp",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MOBILE & SPEED",
+      "title_1": "First",
+      "title_italic": "Contentful",
+      "title_2": "Paint",
+      "dek": "The moment the browser paints the first piece of your page — usually a headline, a logo, or a patch of…"
+    },
+    {
+      "slug": "term-fetch-request",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "code",
+      "eyebrow": "DATA & PRIVACY",
+      "title_1": "Fetch",
+      "title_italic": "request",
+      "title_2": "",
+      "dek": "The browser's way of sending data to a server over HTTP."
+    },
+    {
+      "slug": "term-fixed-costs",
+      "kind": "research",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "RESTAURANT NUMBERS",
+      "title_1": "Fixed",
+      "title_italic": "costs",
+      "title_2": "",
+      "dek": "Costs that don't change with sales volume: rent, insurance, loan payments, base utilities, SaaS subscriptions…"
+    },
+    {
+      "slug": "term-food-cost",
+      "kind": "research",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "RESTAURANT NUMBERS",
+      "title_1": "Food",
+      "title_italic": "cost",
+      "title_2": "",
+      "dek": "The cost of ingredients, alcohol, and consumables (paper goods, to-go packaging) expressed as a percentage of…"
+    },
+    {
+      "slug": "term-form-abandonment",
+      "kind": "research",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONS",
+      "title_1": "Form",
+      "title_italic": "abandonment",
+      "title_2": "",
+      "dek": "When a visitor starts filling out a form — reservation, contact, inquiry — and leaves before submitting."
+    },
+    {
+      "slug": "term-funnel",
+      "kind": "research",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONS",
+      "title_1": "",
+      "title_italic": "Funnel",
+      "title_2": "",
+      "dek": "The sequence of steps a visitor goes through before becoming a customer — landing page → menu page → reserve…"
+    },
+    {
+      "slug": "term-gbp",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "FINDABILITY",
+      "title_1": "Google",
+      "title_italic": "Business",
+      "title_2": "Profile",
+      "dek": "Your business's free listing on Google Maps and Google Search — the panel on the right of a search that shows…"
+    },
+    {
+      "slug": "term-gift-card-checkout",
+      "kind": "research",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONS",
+      "title_1": "Gift-card",
+      "title_italic": "checkout",
+      "title_2": "",
+      "dek": "A page on your site where someone can buy a gift card in minutes, usually delivered as an email with a code…"
+    },
+    {
+      "slug": "term-hero",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "glossary",
+      "eyebrow": "THE BASICS",
+      "title_1": "Hero",
+      "title_italic": "section",
+      "title_2": "",
+      "dek": "The large top section of your homepage, above everything else."
+    },
+    {
+      "slug": "term-honest-pricing",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "trust",
+      "eyebrow": "TRUST",
+      "title_1": "Honest",
+      "title_italic": "menu",
+      "title_2": "prices",
+      "dek": "Showing the price of every dish on your menu page — or, for tasting-menu formats, prominently stating the…"
+    },
+    {
+      "slug": "term-hosting",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "glossary",
+      "eyebrow": "THE BASICS",
+      "title_1": "Web",
+      "title_italic": "hosting",
+      "title_2": "",
+      "dek": "The server, somewhere on the internet, that sends your website to a visitor's phone when they type your…"
+    },
+    {
+      "slug": "term-hours-visibility",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "glossary",
+      "eyebrow": "THE BASICS",
+      "title_1": "Hours",
+      "title_italic": "visibility",
+      "title_2": "",
+      "dek": "Whether today's hours are visible on your homepage within five seconds of landing, without scrolling or…"
+    },
+    {
+      "slug": "term-html-menu",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "glossary",
+      "eyebrow": "THE BASICS",
+      "title_1": "HTML",
+      "title_italic": "menu",
+      "title_2": "",
+      "dek": "A menu built as real text on a web page, instead of as a PDF file or a photograph of a printed card."
+    },
+    {
+      "slug": "term-https",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "trust",
+      "eyebrow": "TRUST",
+      "title_1": "",
+      "title_italic": "HTTPS",
+      "title_2": "",
+      "dek": "The little padlock icon in the browser's address bar."
+    },
+    {
+      "slug": "term-inp",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MOBILE & SPEED",
+      "title_1": "Interaction to",
+      "title_italic": "Next",
+      "title_2": "Paint",
+      "dek": "How long your site takes to respond after a visitor taps, clicks, or types something."
+    },
+    {
+      "slug": "term-labor-cost",
+      "kind": "research",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "RESTAURANT NUMBERS",
+      "title_1": "Labor",
+      "title_italic": "cost",
+      "title_2": "",
+      "dek": "Wages, payroll taxes, and the tipped-employee contribution expressed as a percentage of sales."
+    },
+    {
+      "slug": "term-last-updated-signal",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "trust",
+      "eyebrow": "TRUST",
+      "title_1": "Last-updated",
+      "title_italic": "signal",
+      "title_2": "",
+      "dek": "Anything on your site that subtly tells a visitor \"someone is still running this place\" — a seasonal menu…"
+    },
+    {
+      "slug": "term-lazy-loading",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MOBILE & SPEED",
+      "title_1": "Lazy",
+      "title_italic": "loading",
+      "title_2": "",
+      "dek": "A technique where images and videos further down the page don't start downloading until the visitor actually…"
+    },
+    {
+      "slug": "term-lcp",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MOBILE & SPEED",
+      "title_1": "Largest",
+      "title_italic": "Contentful",
+      "title_2": "Paint",
+      "dek": "How long it takes for the biggest visible chunk of your homepage — usually the hero image or the headline —…"
+    },
+    {
+      "slug": "term-lighthouse",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MOBILE & SPEED",
+      "title_1": "",
+      "title_italic": "Lighthouse",
+      "title_2": "",
+      "dek": "The open-source auditing tool Google ships inside Chrome and inside PageSpeed Insights."
+    },
+    {
+      "slug": "term-logo-lockup",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "brand",
+      "eyebrow": "BRAND & DESIGN",
+      "title_1": "Logo",
+      "title_italic": "lockup",
+      "title_2": "",
+      "dek": "A fixed composition of a mark, a wordmark, and sometimes a tagline, designed as one asset — spacing,…"
+    },
+    {
+      "slug": "term-margin",
+      "kind": "research",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "RESTAURANT NUMBERS",
+      "title_1": "",
+      "title_italic": "Margin",
+      "title_2": "",
+      "dek": "Sales minus costs."
+    },
+    {
+      "slug": "term-margin-math",
+      "kind": "research",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "RESTAURANT NUMBERS",
+      "title_1": "Margin",
+      "title_italic": "Math",
+      "title_2": "",
+      "dek": "Four browser-side calculators — Delivery Break-Even, Prime Cost Check, Break-Even Covers, Price-Raise…"
+    },
+    {
+      "slug": "term-meta-description",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "FINDABILITY",
+      "title_1": "Meta",
+      "title_italic": "description",
+      "title_2": "",
+      "dek": "The short paragraph of text Google shows underneath the blue headline in a search result."
+    },
+    {
+      "slug": "term-mobile-first-indexing",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "FINDABILITY",
+      "title_1": "Mobile-first",
+      "title_italic": "indexing",
+      "title_2": "",
+      "dek": "Google's rule, in effect since 2019, that it only looks at the mobile version of your site when deciding how…"
+    },
+    {
+      "slug": "term-monochrome-variant",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "brand",
+      "eyebrow": "BRAND & DESIGN",
+      "title_1": "Monochrome",
+      "title_italic": "variant",
+      "title_2": "",
+      "dek": "A single-color version of a logo, usually pure black and pure white (and occasionally a single brand color),…"
+    },
+    {
+      "slug": "term-nap-consistency",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "FINDABILITY",
+      "title_1": "NAP",
+      "title_italic": "consistency",
+      "title_2": "",
+      "dek": "Your business name, address, and phone number written identically across your website, Google Business…"
+    },
+    {
+      "slug": "term-newsletter-capture",
+      "kind": "research",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONS",
+      "title_1": "Newsletter",
+      "title_italic": "capture",
+      "title_2": "",
+      "dek": "A simple form on your site that collects an email address in exchange for an actual reason to give it —…"
+    },
+    {
+      "slug": "term-online-ordering",
+      "kind": "research",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONS",
+      "title_1": "Online",
+      "title_italic": "ordering",
+      "title_2": "link",
+      "dek": "A button on your menu page that links directly to your pickup or delivery checkout — not a landing page, not…"
+    },
+    {
+      "slug": "term-open-graph",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "FINDABILITY",
+      "title_1": "Open",
+      "title_italic": "Graph",
+      "title_2": "",
+      "dek": "A set of meta tags that tell Facebook, Instagram, LinkedIn, iMessage, and Slack how to preview your link when…"
+    },
+    {
+      "slug": "term-pagespeed-insights",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MOBILE & SPEED",
+      "title_1": "PageSpeed",
+      "title_italic": "Insights",
+      "title_2": "",
+      "dek": "Google's free web tool at pagespeed."
+    },
+    {
+      "slug": "term-prime-cost",
+      "kind": "research",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "RESTAURANT NUMBERS",
+      "title_1": "Prime",
+      "title_italic": "cost",
+      "title_2": "",
+      "dek": "Your food cost plus your labor cost, expressed as a percentage of sales."
+    },
+    {
+      "slug": "term-privacy-policy",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "trust",
+      "eyebrow": "TRUST",
+      "title_1": "Privacy",
+      "title_italic": "policy",
+      "title_2": "",
+      "dek": "A page on your site (usually at /privacy) that plainly states what information you collect from visitors,…"
+    },
+    {
+      "slug": "term-professional-email",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "glossary",
+      "eyebrow": "THE BASICS",
+      "title_1": "Professional",
+      "title_italic": "email",
+      "title_2": "",
+      "dek": "Email that runs on your own domain (hello@rowhousegarden."
+    },
+    {
+      "slug": "term-real-photos",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "trust",
+      "eyebrow": "TRUST",
+      "title_1": "Real",
+      "title_italic": "photos",
+      "title_2": "",
+      "dek": "Photographs of your space, your food, and your team — not royalty-free stock images licensed from an agency."
+    },
+    {
+      "slug": "term-reservation-link",
+      "kind": "research",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONS",
+      "title_1": "Reservation",
+      "title_italic": "link",
+      "title_2": "",
+      "dek": "A persistent link — in the nav, in the hero, and in the mobile footer — that starts a reservation flow."
+    },
+    {
+      "slug": "term-responsive-design",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MOBILE & SPEED",
+      "title_1": "Responsive",
+      "title_italic": "design",
+      "title_2": "",
+      "dek": "A design approach where the same page automatically rearranges itself to fit whatever screen it lands on —…"
+    },
+    {
+      "slug": "term-rich-results",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "FINDABILITY",
+      "title_1": "Rich",
+      "title_italic": "results",
+      "title_2": "",
+      "dek": "Enhanced Google search results that show more than a plain blue link — star ratings, hours, prices, FAQ…"
+    },
+    {
+      "slug": "term-robots-txt",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "FINDABILITY",
+      "title_1": "",
+      "title_italic": "robots.txt",
+      "title_2": "",
+      "dek": "A tiny plain-text file at /robots."
+    },
+    {
+      "slug": "term-schema",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "FINDABILITY",
+      "title_1": "Schema",
+      "title_italic": "markup",
+      "title_2": "",
+      "dek": "Invisible tags on your page that spell out, in a format Google can read directly, exactly what kind of…"
+    },
+    {
+      "slug": "term-search-console",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "FINDABILITY",
+      "title_1": "Google",
+      "title_italic": "Search",
+      "title_2": "Console",
+      "dek": "The free Google dashboard that shows you which search terms people used to find your site, which pages they…"
+    },
+    {
+      "slug": "term-sitemap",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "FINDABILITY",
+      "title_1": "",
+      "title_italic": "Sitemap",
+      "title_2": "",
+      "dek": "A file at /sitemap."
+    },
+    {
+      "slug": "term-social-proof",
+      "kind": "research",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONS",
+      "title_1": "Social",
+      "title_italic": "proof",
+      "title_2": "",
+      "dek": "A quote, star rating, or press mention surfaced on your homepage — ideally in or near the hero, not buried on…"
+    },
+    {
+      "slug": "term-ssl-certificate",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "trust",
+      "eyebrow": "TRUST",
+      "title_1": "SSL",
+      "title_italic": "certificate",
+      "title_2": "",
+      "dek": "A small file your web server uses to prove it's really you and to encrypt the connection to a visitor's…"
+    },
+    {
+      "slug": "term-sticky-footer",
+      "kind": "research",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONS",
+      "title_1": "Sticky",
+      "title_italic": "mobile",
+      "title_2": "footer",
+      "dek": "A thin bar pinned to the bottom of every mobile page holding one or two of your most important actions —…"
+    },
+    {
+      "slug": "term-subtype-bakery",
+      "kind": "research",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "reservations",
+      "eyebrow": "RESTAURANT SUBTYPES",
+      "title_1": "Bakery",
+      "title_italic": "/",
+      "title_2": "pâtisserie",
+      "dek": "Bakeries, patisseries, and dessert shops where custom-cake intake and wholesale accounts are the margin…"
+    },
+    {
+      "slug": "term-subtype-bar-pub",
+      "kind": "research",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "reservations",
+      "eyebrow": "RESTAURANT SUBTYPES",
+      "title_1": "Bar /",
+      "title_italic": "pub",
+      "title_2": "/ brewery",
+      "dek": "Bars, pubs, taprooms, breweries, wine bars, cocktail rooms — drink-led spots where private-party events and…"
+    },
+    {
+      "slug": "term-subtype-cafe",
+      "kind": "research",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "reservations",
+      "eyebrow": "RESTAURANT SUBTYPES",
+      "title_1": "Café /",
+      "title_italic": "coffee",
+      "title_2": "shop",
+      "dek": "Coffee-led spots where morning traffic is 80% of revenue and the two most-read pieces of content are hours…"
+    },
+    {
+      "slug": "term-subtype-casual-dining",
+      "kind": "research",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "reservations",
+      "eyebrow": "RESTAURANT SUBTYPES",
+      "title_1": "Casual",
+      "title_italic": "/",
+      "title_2": "full-service",
+      "dek": "Sit-down restaurants that live in both worlds — reservations for dinner rushes, online ordering for lunch…"
+    },
+    {
+      "slug": "term-subtype-catering-only",
+      "kind": "research",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "reservations",
+      "eyebrow": "RESTAURANT SUBTYPES",
+      "title_1": "Catering-only /",
+      "title_italic": "private",
+      "title_2": "events",
+      "dek": "Businesses that exist primarily to serve off-premise events — corporate catering, wedding catering,…"
+    },
+    {
+      "slug": "term-subtype-fast-casual",
+      "kind": "research",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "reservations",
+      "eyebrow": "RESTAURANT SUBTYPES",
+      "title_1": "Fast-casual",
+      "title_italic": "/",
+      "title_2": "quick-service",
+      "dek": "Counter-service restaurants where online ordering IS the business model."
+    },
+    {
+      "slug": "term-subtype-fine-dining",
+      "kind": "research",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "reservations",
+      "eyebrow": "RESTAURANT SUBTYPES",
+      "title_1": "",
+      "title_italic": "Fine-dining",
+      "title_2": "",
+      "dek": "Tasting-menu or prix-fixe restaurants where the reservation is the conversion, the wine list is marketing,…"
+    },
+    {
+      "slug": "term-subtype-food-truck",
+      "kind": "research",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "reservations",
+      "eyebrow": "RESTAURANT SUBTYPES",
+      "title_1": "Food truck",
+      "title_italic": "/",
+      "title_2": "pop-up",
+      "dek": "Mobile kitchens and pop-ups where the primary content question is \"where are you today?"
+    },
+    {
+      "slug": "term-subtype-ghost-kitchen",
+      "kind": "research",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "reservations",
+      "eyebrow": "RESTAURANT SUBTYPES",
+      "title_1": "Ghost kitchen",
+      "title_italic": "/",
+      "title_2": "delivery-only",
+      "dek": "Virtual brands and cloud kitchens that operate exclusively through aggregators — no dine-in, no pickup…"
+    },
+    {
+      "slug": "term-subtype-pizzeria",
+      "kind": "research",
+      "locale": "en",
+      "accent": "rust",
+      "glyph": "reservations",
+      "eyebrow": "RESTAURANT SUBTYPES",
+      "title_1": "",
+      "title_italic": "Pizzeria",
+      "title_2": "",
+      "dek": "Pizza-first restaurants where ordering IS the business and every Slice/DoorDash/Grubhub pie costs 20-30% in…"
+    },
+    {
+      "slug": "term-tap-targets",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MOBILE & SPEED",
+      "title_1": "Tap",
+      "title_italic": "targets",
+      "title_2": "",
+      "dek": "Any clickable element — button, link, menu item — that a finger taps on a phone."
+    },
+    {
+      "slug": "term-terms-of-service",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "trust",
+      "eyebrow": "TRUST",
+      "title_1": "Terms",
+      "title_italic": "of",
+      "title_2": "Service",
+      "dek": "A page covering the rules of using your site — reservation cancellation policy, gift-card terms, any disputes."
+    },
+    {
+      "slug": "term-title-tag",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "FINDABILITY",
+      "title_1": "Title",
+      "title_italic": "tag",
+      "title_2": "",
+      "dek": "The line of text that shows up as the clickable blue headline of your page in Google search results, and as…"
+    },
+    {
+      "slug": "term-ttfb",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MOBILE & SPEED",
+      "title_1": "Time to",
+      "title_italic": "First",
+      "title_2": "Byte",
+      "dek": "How long it takes your web server to send the very first byte of a page after a visitor requests it."
+    },
+    {
+      "slug": "term-typography-pairing",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "brand",
+      "eyebrow": "BRAND & DESIGN",
+      "title_1": "Typography",
+      "title_italic": "pairing",
+      "title_2": "",
+      "dek": "The combination of a display typeface (used for headings and signage) and a body typeface (used for long-form…"
+    },
+    {
+      "slug": "term-url-fragment",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "code",
+      "eyebrow": "DATA & PRIVACY",
+      "title_1": "URL",
+      "title_italic": "fragment",
+      "title_2": "",
+      "dek": "The portion of a URL that comes after the # symbol (sometimes called the \"hash\")."
+    },
+    {
+      "slug": "term-variable-costs",
+      "kind": "research",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "RESTAURANT NUMBERS",
+      "title_1": "Variable",
+      "title_italic": "costs",
+      "title_2": "",
+      "dek": "Costs that scale with sales volume: food ingredients, hourly labor (cooks, servers, bussers, dishwashers),…"
+    },
+    {
+      "slug": "term-viewport-meta",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MOBILE & SPEED",
+      "title_1": "Viewport",
+      "title_italic": "meta",
+      "title_2": "tag",
+      "dek": "A single line of code in the <head> of every page (<meta name=\"viewport\" content=\"width=device-width,…"
+    },
+    {
+      "slug": "term-wcag-contrast",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "brand",
+      "eyebrow": "BRAND & DESIGN",
+      "title_1": "WCAG",
+      "title_italic": "contrast",
+      "title_2": "",
+      "dek": "A ratio, on a scale from 1 to 21, measuring how readable a text color is against its background."
+    },
+    {
+      "slug": "term-working-contact-form",
+      "kind": "research",
+      "locale": "en",
+      "accent": "teal",
+      "glyph": "trust",
+      "eyebrow": "TRUST",
+      "title_1": "Working",
+      "title_italic": "contact",
+      "title_2": "form",
+      "dek": "A form where a visitor can type a question or an inquiry and actually get a response."
+    },
+    {
+      "slug": "term-above-the-fold-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONES",
+      "title_1": "Sobre",
+      "title_italic": "el",
+      "title_2": "pliegue",
+      "dek": "La parte de tu portada que el visitante ve sin hacer scroll."
+    },
+    {
+      "slug": "term-aggregator-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "NÚMEROS DEL RESTAURANTE",
+      "title_1": "",
+      "title_italic": "Agregador",
+      "title_2": "",
+      "dek": "Un marketplace de terceros que toma órdenes en tu nombre (DoorDash, Uber Eats, Grubhub) y se queda con una…"
+    },
+    {
+      "slug": "term-alt-text-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "QUE TE ENCUENTREN",
+      "title_1": "Texto",
+      "title_italic": "alternativo",
+      "title_2": "",
+      "dek": "Una descripción escrita breve de cada imagen, puesta mediante el atributo alt=\"…\" en el HTML."
+    },
+    {
+      "slug": "term-apple-bing-maps-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "QUE TE ENCUENTREN",
+      "title_1": "Apple Maps",
+      "title_italic": "y",
+      "title_2": "Bing Places",
+      "dek": "Los servicios de mapas que no son de Google — Apple Maps Connect (para quienes usan iPhone) y Bing Places…"
+    },
+    {
+      "slug": "term-average-check-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "NÚMEROS DEL RESTAURANTE",
+      "title_1": "Ticket",
+      "title_italic": "promedio",
+      "title_2": "",
+      "dek": "También llamado \"average check."
+    },
+    {
+      "slug": "term-body-text-size-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MÓVIL Y VELOCIDAD",
+      "title_1": "Tamaño del",
+      "title_italic": "texto",
+      "title_2": "de cuerpo",
+      "dek": "El tamaño por defecto del texto de párrafo normal en tu sitio."
+    },
+    {
+      "slug": "term-bounce-rate-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONES",
+      "title_1": "Tasa",
+      "title_italic": "de",
+      "title_2": "rebote",
+      "dek": "El porcentaje de visitantes que llegan a tu sitio y se van sin hacer clic en nada — ninguna página de menú,…"
+    },
+    {
+      "slug": "term-brand-identity-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "brand",
+      "eyebrow": "MARCA Y DISEÑO",
+      "title_1": "Identidad",
+      "title_italic": "de",
+      "title_2": "marca",
+      "dek": "El sistema visible completo que lleva a un negocio por cada punto de contacto — logo, colores, tipografía,…"
+    },
+    {
+      "slug": "term-break-even-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "NÚMEROS DEL RESTAURANTE",
+      "title_1": "Punto",
+      "title_italic": "de",
+      "title_2": "equilibrio",
+      "dek": "El volumen de ventas al que los ingresos igualan los costos totales."
+    },
+    {
+      "slug": "term-canonical-url-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "QUE TE ENCUENTREN",
+      "title_1": "URL",
+      "title_italic": "canónica",
+      "title_2": "",
+      "dek": "Una etiqueta en el HTML de una página que le dice a Google \"esta es la dirección real de esta página, ignora…"
+    },
+    {
+      "slug": "term-catering-page-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONES",
+      "title_1": "Página de",
+      "title_italic": "catering",
+      "title_2": "/ eventos privados",
+      "dek": "Una página dedicada que explica tu oferta de catering o de eventos privados — mínimos, paquetes, menús de…"
+    },
+    {
+      "slug": "term-cdn-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MÓVIL Y VELOCIDAD",
+      "title_1": "",
+      "title_italic": "CDN",
+      "title_2": "",
+      "dek": "Una red global de servidores — Cloudflare, Fastly, AWS CloudFront — que mantienen copias en caché de tu sitio…"
+    },
+    {
+      "slug": "term-clearspace-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "brand",
+      "eyebrow": "MARCA Y DISEÑO",
+      "title_1": "Espacio",
+      "title_italic": "de",
+      "title_2": "resguardo",
+      "dek": "El área vacía mínima que debe rodear a un logo, medida habitualmente en múltiplos de la altura-x del símbolo,…"
+    },
+    {
+      "slug": "term-click-to-call-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "glossary",
+      "eyebrow": "LO BÁSICO",
+      "title_1": "Toque",
+      "title_italic": "para",
+      "title_2": "llamar",
+      "dek": "Un número de teléfono en tu sitio que, al tocarlo en un celular, abre el marcador con tu número ya cargado —…"
+    },
+    {
+      "slug": "term-click-to-directions-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONES",
+      "title_1": "Clic",
+      "title_italic": "para",
+      "title_2": "indicaciones",
+      "dek": "Tocar tu dirección en un celular debería abrir Apple Maps o Google Maps con tu negocio ya cargado como…"
+    },
+    {
+      "slug": "term-client-side-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "code",
+      "eyebrow": "DATOS Y PRIVACIDAD",
+      "title_1": "Del lado",
+      "title_italic": "del",
+      "title_2": "cliente",
+      "dek": "Cómputo que ocurre dentro de tu pestaña del navegador, no en un servidor."
+    },
+    {
+      "slug": "term-cls-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MÓVIL Y VELOCIDAD",
+      "title_1": "Cumulative",
+      "title_italic": "Layout",
+      "title_2": "Shift",
+      "dek": "Una calificación que mide cuánto salta tu página mientras carga — cuando entra un banner, llega tarde una…"
+    },
+    {
+      "slug": "term-color-palette-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "brand",
+      "eyebrow": "MARCA Y DISEÑO",
+      "title_1": "Paleta",
+      "title_italic": "de",
+      "title_2": "colores",
+      "dek": "El conjunto curado de colores que le pertenecen a una marca — típicamente un primario, un secundario, un…"
+    },
+    {
+      "slug": "term-commission-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "NÚMEROS DEL RESTAURANTE",
+      "title_1": "",
+      "title_italic": "Comisión",
+      "title_2": "",
+      "dek": "El porcentaje que un agregador o plataforma de pago se queda por transacción."
+    },
+    {
+      "slug": "term-conversion-rate-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONES",
+      "title_1": "Tasa",
+      "title_italic": "de",
+      "title_2": "conversión",
+      "dek": "El porcentaje de visitantes que hacen la cosa específica que querías que hicieran — reservar, hacer un…"
+    },
+    {
+      "slug": "term-cookie-banner-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "trust",
+      "eyebrow": "CONFIANZA",
+      "title_1": "Banner",
+      "title_italic": "de",
+      "title_2": "cookies",
+      "dek": "La barra pequeña o el modal abajo de la página que pide al visitante que acepte cookies de seguimiento."
+    },
+    {
+      "slug": "term-copyable-address-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "glossary",
+      "eyebrow": "LO BÁSICO",
+      "title_1": "Dirección",
+      "title_italic": "copiable",
+      "title_2": "",
+      "dek": "Tu dirección como texto real y seleccionable en la página — no horneada dentro de una imagen o de un gráfico."
+    },
+    {
+      "slug": "term-core-web-vitals-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MÓVIL Y VELOCIDAD",
+      "title_1": "Core",
+      "title_italic": "Web",
+      "title_2": "Vitals",
+      "dek": "Las tres calificaciones de desempeño de Google para la carga real de una página en un celular — una para…"
+    },
+    {
+      "slug": "term-cover-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "NÚMEROS DEL RESTAURANTE",
+      "title_1": "",
+      "title_italic": "Cubierto",
+      "title_2": "",
+      "dek": "Un cliente sentado y servido."
+    },
+    {
+      "slug": "term-cta-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONES",
+      "title_1": "Llamada a",
+      "title_italic": "la",
+      "title_2": "acción",
+      "dek": "El botón o enlace específico que le pide al visitante hacer lo siguiente — «Reservar mesa», «Pedir en línea»,…"
+    },
+    {
+      "slug": "term-cuisine-pitch-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "glossary",
+      "eyebrow": "LO BÁSICO",
+      "title_1": "Presentación en",
+      "title_italic": "una",
+      "title_2": "oración",
+      "dek": "Una sola oración — normalmente en el hero — que le dice al visitante de primera vez tu cocina, tu barrio y tu…"
+    },
+    {
+      "slug": "term-dietary-markers-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "glossary",
+      "eyebrow": "LO BÁSICO",
+      "title_1": "Señales de",
+      "title_italic": "dieta",
+      "title_2": "y alérgenos",
+      "dek": "Etiquetas pequeñas junto a los platos del menú que indican preparaciones sin gluten, veganas, vegetarianas,…"
+    },
+    {
+      "slug": "term-direct-ordering-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "NÚMEROS DEL RESTAURANTE",
+      "title_1": "Pedidos",
+      "title_italic": "directos",
+      "title_2": "",
+      "dek": "Un cliente ordenando a través de tu propio sitio web o POS (Toast, Square, Olo, ChowNow), sin pasar por…"
+    },
+    {
+      "slug": "term-domain-name-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "glossary",
+      "eyebrow": "LO BÁSICO",
+      "title_1": "Nombre",
+      "title_italic": "de",
+      "title_2": "dominio",
+      "dek": "La dirección legible que la gente tipea para llegar a tu sitio — «rowhousegarden."
+    },
+    {
+      "slug": "term-elasticity-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "NÚMEROS DEL RESTAURANTE",
+      "title_1": "Elasticidad",
+      "title_italic": "de",
+      "title_2": "precio",
+      "dek": "Cuánto cambia el conteo de cubiertos cuando cambian los precios."
+    },
+    {
+      "slug": "term-favicon-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "brand",
+      "eyebrow": "MARCA Y DISEÑO",
+      "title_1": "",
+      "title_italic": "Favicon",
+      "title_2": "",
+      "dek": "El pequeño ícono mostrado en la pestaña del navegador y en las listas de favoritos."
+    },
+    {
+      "slug": "term-fcp-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MÓVIL Y VELOCIDAD",
+      "title_1": "First",
+      "title_italic": "Contentful",
+      "title_2": "Paint",
+      "dek": "El momento en que el navegador pinta el primer pedazo de tu página — normalmente un titular, un logo, o una…"
+    },
+    {
+      "slug": "term-fetch-request-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "code",
+      "eyebrow": "DATOS Y PRIVACIDAD",
+      "title_1": "Solicitud",
+      "title_italic": "fetch",
+      "title_2": "",
+      "dek": "La forma del navegador de enviar datos a un servidor sobre HTTP."
+    },
+    {
+      "slug": "term-fixed-costs-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "NÚMEROS DEL RESTAURANTE",
+      "title_1": "Costos",
+      "title_italic": "fijos",
+      "title_2": "",
+      "dek": "Costos que no cambian con el volumen de ventas: renta, seguro, pagos de préstamo, servicios básicos,…"
+    },
+    {
+      "slug": "term-food-cost-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "NÚMEROS DEL RESTAURANTE",
+      "title_1": "Food",
+      "title_italic": "cost",
+      "title_2": "",
+      "dek": "El costo de los ingredientes, alcohol y consumibles (productos de papel, empaque para llevar) expresado como…"
+    },
+    {
+      "slug": "term-form-abandonment-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONES",
+      "title_1": "Abandono",
+      "title_italic": "de",
+      "title_2": "formulario",
+      "dek": "Cuando un visitante empieza a llenar un formulario — reserva, contacto, consulta — y se va antes de enviarlo."
+    },
+    {
+      "slug": "term-funnel-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONES",
+      "title_1": "",
+      "title_italic": "Embudo",
+      "title_2": "",
+      "dek": "La secuencia de pasos por los que pasa un visitante antes de convertirse en cliente — página de aterrizaje →…"
+    },
+    {
+      "slug": "term-gbp-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "QUE TE ENCUENTREN",
+      "title_1": "Ficha de",
+      "title_italic": "Google",
+      "title_2": "Business",
+      "dek": "El listado gratuito de tu negocio en Google Maps y en Google Search — ese panel que aparece a la derecha del…"
+    },
+    {
+      "slug": "term-gift-card-checkout-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONES",
+      "title_1": "Compra de",
+      "title_italic": "tarjeta",
+      "title_2": "de regalo",
+      "dek": "Una página en tu sitio donde alguien puede comprar una tarjeta de regalo en minutos, que normalmente llega…"
+    },
+    {
+      "slug": "term-hero-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "glossary",
+      "eyebrow": "LO BÁSICO",
+      "title_1": "Sección",
+      "title_italic": "hero",
+      "title_2": "",
+      "dek": "La sección grande de arriba en tu portada, encima de todo lo demás."
+    },
+    {
+      "slug": "term-honest-pricing-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "trust",
+      "eyebrow": "CONFIANZA",
+      "title_1": "Precios honestos",
+      "title_italic": "en",
+      "title_2": "el menú",
+      "dek": "Mostrar el precio de cada plato en tu página de menú — o, en menús de degustación, indicar bien visible el…"
+    },
+    {
+      "slug": "term-hosting-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "glossary",
+      "eyebrow": "LO BÁSICO",
+      "title_1": "Hosting",
+      "title_italic": "web",
+      "title_2": "",
+      "dek": "El servidor, en algún lugar del internet, que le envía tu sitio al celular del visitante cuando este tipea tu…"
+    },
+    {
+      "slug": "term-hours-visibility-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "glossary",
+      "eyebrow": "LO BÁSICO",
+      "title_1": "Visibilidad",
+      "title_italic": "de",
+      "title_2": "horarios",
+      "dek": "Si los horarios de hoy se ven en tu portada dentro de los cinco segundos de haber llegado, sin hacer scroll…"
+    },
+    {
+      "slug": "term-html-menu-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "glossary",
+      "eyebrow": "LO BÁSICO",
+      "title_1": "Menú",
+      "title_italic": "en",
+      "title_2": "HTML",
+      "dek": "Un menú construido como texto real en una página web, en vez de como un archivo PDF o una foto de una carta…"
+    },
+    {
+      "slug": "term-https-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "trust",
+      "eyebrow": "CONFIANZA",
+      "title_1": "",
+      "title_italic": "HTTPS",
+      "title_2": "",
+      "dek": "El pequeño ícono de candado en la barra de direcciones del navegador."
+    },
+    {
+      "slug": "term-inp-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MÓVIL Y VELOCIDAD",
+      "title_1": "Interaction to",
+      "title_italic": "Next",
+      "title_2": "Paint",
+      "dek": "Cuánto tarda tu sitio en responder después de que un visitante toca, hace clic o teclea algo."
+    },
+    {
+      "slug": "term-labor-cost-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "NÚMEROS DEL RESTAURANTE",
+      "title_1": "Labor",
+      "title_italic": "cost",
+      "title_2": "",
+      "dek": "Sueldos, impuestos de nómina y el aporte del empleado de propinas expresado como porcentaje de ventas."
+    },
+    {
+      "slug": "term-last-updated-signal-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "trust",
+      "eyebrow": "CONFIANZA",
+      "title_1": "Señal de",
+      "title_italic": "última",
+      "title_2": "actualización",
+      "dek": "Cualquier cosa en tu sitio que le diga al visitante, con sutileza, «alguien sigue llevando este lugar» — una…"
+    },
+    {
+      "slug": "term-lazy-loading-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MÓVIL Y VELOCIDAD",
+      "title_1": "Carga",
+      "title_italic": "diferida",
+      "title_2": "",
+      "dek": "Una técnica en la que las imágenes y los videos más abajo de la página no empiezan a descargar hasta que el…"
+    },
+    {
+      "slug": "term-lcp-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MÓVIL Y VELOCIDAD",
+      "title_1": "Largest",
+      "title_italic": "Contentful",
+      "title_2": "Paint",
+      "dek": "Cuánto tarda en terminarse de dibujar la pieza visible más grande de tu portada — normalmente la foto del…"
+    },
+    {
+      "slug": "term-lighthouse-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MÓVIL Y VELOCIDAD",
+      "title_1": "",
+      "title_italic": "Lighthouse",
+      "title_2": "",
+      "dek": "La herramienta de auditoría de código abierto que Google trae dentro de Chrome y dentro de PageSpeed Insights."
+    },
+    {
+      "slug": "term-logo-lockup-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "brand",
+      "eyebrow": "MARCA Y DISEÑO",
+      "title_1": "Composición de",
+      "title_italic": "logo",
+      "title_2": "(lockup)",
+      "dek": "Una composición fija de un símbolo, un logotipo y a veces un lema, diseñada como un único activo — con…"
+    },
+    {
+      "slug": "term-margin-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "NÚMEROS DEL RESTAURANTE",
+      "title_1": "",
+      "title_italic": "Margen",
+      "title_2": "",
+      "dek": "Ventas menos costos."
+    },
+    {
+      "slug": "term-margin-math-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "NÚMEROS DEL RESTAURANTE",
+      "title_1": "Cálculo",
+      "title_italic": "de",
+      "title_2": "Margen",
+      "dek": "Cuatro calculadoras que corren en tu navegador — Punto de equilibrio con delivery, Chequeo de prime cost,…"
+    },
+    {
+      "slug": "term-meta-description-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "QUE TE ENCUENTREN",
+      "title_1": "Meta",
+      "title_italic": "descripción",
+      "title_2": "",
+      "dek": "El párrafo corto que Google muestra debajo del titular azul en un resultado de búsqueda."
+    },
+    {
+      "slug": "term-mobile-first-indexing-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "QUE TE ENCUENTREN",
+      "title_1": "Indexación",
+      "title_italic": "móvil",
+      "title_2": "primero",
+      "dek": "La regla de Google, vigente desde 2019, de que solo mira la versión móvil de tu sitio para decidir cómo…"
+    },
+    {
+      "slug": "term-monochrome-variant-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "brand",
+      "eyebrow": "MARCA Y DISEÑO",
+      "title_1": "Variante",
+      "title_italic": "monocromática",
+      "title_2": "",
+      "dek": "Una versión de un solo color de un logo, normalmente en negro puro y blanco puro (y ocasionalmente en un solo…"
+    },
+    {
+      "slug": "term-nap-consistency-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "QUE TE ENCUENTREN",
+      "title_1": "Consistencia",
+      "title_italic": "de",
+      "title_2": "NAP",
+      "dek": "El nombre, la dirección y el teléfono de tu negocio escritos igualito en tu sitio web, en la ficha de Google…"
+    },
+    {
+      "slug": "term-newsletter-capture-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONES",
+      "title_1": "Captura",
+      "title_italic": "de",
+      "title_2": "newsletter",
+      "dek": "Un formulario simple en tu sitio que recibe una dirección de correo a cambio de una razón concreta para darla…"
+    },
+    {
+      "slug": "term-online-ordering-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONES",
+      "title_1": "Enlace de",
+      "title_italic": "pedidos",
+      "title_2": "en línea",
+      "dek": "Un botón en tu página de menú que enlaza directo al checkout de recoger o de delivery — no a una página de…"
+    },
+    {
+      "slug": "term-open-graph-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "QUE TE ENCUENTREN",
+      "title_1": "Open",
+      "title_italic": "Graph",
+      "title_2": "",
+      "dek": "Un conjunto de etiquetas meta que le dicen a Facebook, Instagram, LinkedIn, iMessage y Slack cómo mostrar la…"
+    },
+    {
+      "slug": "term-pagespeed-insights-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MÓVIL Y VELOCIDAD",
+      "title_1": "PageSpeed",
+      "title_italic": "Insights",
+      "title_2": "",
+      "dek": "La herramienta web gratuita de Google en pagespeed."
+    },
+    {
+      "slug": "term-prime-cost-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "NÚMEROS DEL RESTAURANTE",
+      "title_1": "Prime",
+      "title_italic": "cost",
+      "title_2": "",
+      "dek": "Tu food cost más tu labor cost, expresado como porcentaje de ventas."
+    },
+    {
+      "slug": "term-privacy-policy-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "trust",
+      "eyebrow": "CONFIANZA",
+      "title_1": "Política",
+      "title_italic": "de",
+      "title_2": "privacidad",
+      "dek": "Una página en tu sitio (normalmente en /privacy) que indica con claridad qué información recopilas de los…"
+    },
+    {
+      "slug": "term-professional-email-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "glossary",
+      "eyebrow": "LO BÁSICO",
+      "title_1": "Correo",
+      "title_italic": "profesional",
+      "title_2": "",
+      "dek": "Correo que corre en tu propio dominio (hola@rowhousegarden."
+    },
+    {
+      "slug": "term-real-photos-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "trust",
+      "eyebrow": "CONFIANZA",
+      "title_1": "Fotos",
+      "title_italic": "reales",
+      "title_2": "",
+      "dek": "Fotografías de tu espacio, de tu comida y de tu equipo — no imágenes de stock con licencia de una agencia."
+    },
+    {
+      "slug": "term-reservation-link-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONES",
+      "title_1": "Enlace",
+      "title_italic": "de",
+      "title_2": "reserva",
+      "dek": "Un enlace persistente — en la navegación, en el hero, y en el pie móvil — que arranca un flujo de reserva."
+    },
+    {
+      "slug": "term-responsive-design-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MÓVIL Y VELOCIDAD",
+      "title_1": "Diseño",
+      "title_italic": "responsivo",
+      "title_2": "",
+      "dek": "Un enfoque de diseño en el que la misma página se reacomoda automáticamente para caber en la pantalla donde…"
+    },
+    {
+      "slug": "term-rich-results-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "QUE TE ENCUENTREN",
+      "title_1": "Resultados",
+      "title_italic": "enriquecidos",
+      "title_2": "",
+      "dek": "Resultados de Google mejorados que muestran más que un enlace azul simple — calificaciones con estrellas,…"
+    },
+    {
+      "slug": "term-robots-txt-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "QUE TE ENCUENTREN",
+      "title_1": "",
+      "title_italic": "robots.txt",
+      "title_2": "",
+      "dek": "Un archivito de texto plano en /robots."
+    },
+    {
+      "slug": "term-schema-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "QUE TE ENCUENTREN",
+      "title_1": "Marcado",
+      "title_italic": "schema",
+      "title_2": "",
+      "dek": "Etiquetas invisibles en tu página que le dicen a Google, en un formato que lee directo, exactamente qué tipo…"
+    },
+    {
+      "slug": "term-search-console-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "QUE TE ENCUENTREN",
+      "title_1": "Google",
+      "title_italic": "Search",
+      "title_2": "Console",
+      "dek": "El panel gratuito de Google que te muestra con qué términos de búsqueda llegó la gente a tu sitio, en qué…"
+    },
+    {
+      "slug": "term-sitemap-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "QUE TE ENCUENTREN",
+      "title_1": "Mapa",
+      "title_italic": "del",
+      "title_2": "sitio",
+      "dek": "Un archivo en /sitemap."
+    },
+    {
+      "slug": "term-social-proof-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONES",
+      "title_1": "Prueba",
+      "title_italic": "social",
+      "title_2": "",
+      "dek": "Una cita, una calificación con estrellas o una mención de prensa puesta arriba en la portada — idealmente en…"
+    },
+    {
+      "slug": "term-ssl-certificate-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "trust",
+      "eyebrow": "CONFIANZA",
+      "title_1": "Certificado",
+      "title_italic": "SSL",
+      "title_2": "",
+      "dek": "Un archivo pequeño que tu servidor web usa para probar que eres tú de verdad y para cifrar la conexión hacia…"
+    },
+    {
+      "slug": "term-sticky-footer-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "conversions",
+      "eyebrow": "CONVERSIONES",
+      "title_1": "Pie",
+      "title_italic": "móvil",
+      "title_2": "fijo",
+      "dek": "Una barra delgada anclada al fondo de cada página móvil que sostiene una o dos de tus acciones más…"
+    },
+    {
+      "slug": "term-subtype-bakery-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "reservations",
+      "eyebrow": "SUBTIPOS DE RESTAURANTE",
+      "title_1": "Panadería",
+      "title_italic": "/",
+      "title_2": "repostería",
+      "dek": "Panaderías, pastelerías y dulcerías donde los encargos de pasteles personalizados y las cuentas mayoristas…"
+    },
+    {
+      "slug": "term-subtype-bar-pub-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "reservations",
+      "eyebrow": "SUBTIPOS DE RESTAURANTE",
+      "title_1": "Bar /",
+      "title_italic": "pub",
+      "title_2": "/ cervecería",
+      "dek": "Bares, pubs, taprooms, cervecerías, bares de vinos, coctelerías — lugares con eje en las bebidas donde los…"
+    },
+    {
+      "slug": "term-subtype-cafe-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "reservations",
+      "eyebrow": "SUBTIPOS DE RESTAURANTE",
+      "title_1": "Café",
+      "title_italic": "/",
+      "title_2": "cafetería",
+      "dek": "Lugares con eje en el café donde el tráfico de la mañana es el 80 % de los ingresos y los dos datos que más…"
+    },
+    {
+      "slug": "term-subtype-casual-dining-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "reservations",
+      "eyebrow": "SUBTIPOS DE RESTAURANTE",
+      "title_1": "Casual /",
+      "title_italic": "servicio",
+      "title_2": "completo",
+      "dek": "Restaurantes de mesa que viven en los dos mundos — reservas para la hora pico de la cena, pedidos en línea…"
+    },
+    {
+      "slug": "term-subtype-catering-only-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "reservations",
+      "eyebrow": "SUBTIPOS DE RESTAURANTE",
+      "title_1": "Solo catering",
+      "title_italic": "/",
+      "title_2": "eventos privados",
+      "dek": "Negocios que existen principalmente para servir eventos fuera del local — catering corporativo, catering de…"
+    },
+    {
+      "slug": "term-subtype-fast-casual-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "reservations",
+      "eyebrow": "SUBTIPOS DE RESTAURANTE",
+      "title_1": "Fast-casual /",
+      "title_italic": "servicio",
+      "title_2": "rápido",
+      "dek": "Restaurantes de mostrador donde pedir en línea ES el modelo de negocio."
+    },
+    {
+      "slug": "term-subtype-fine-dining-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "reservations",
+      "eyebrow": "SUBTIPOS DE RESTAURANTE",
+      "title_1": "Alta",
+      "title_italic": "cocina",
+      "title_2": "",
+      "dek": "Restaurantes de menú de degustación o prix-fixe donde la reserva es la conversión, la carta de vinos es…"
+    },
+    {
+      "slug": "term-subtype-food-truck-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "reservations",
+      "eyebrow": "SUBTIPOS DE RESTAURANTE",
+      "title_1": "Food truck",
+      "title_italic": "/",
+      "title_2": "pop-up",
+      "dek": "Cocinas móviles y pop-ups donde la pregunta central del contenido es \"¿dónde están hoy?"
+    },
+    {
+      "slug": "term-subtype-ghost-kitchen-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "reservations",
+      "eyebrow": "SUBTIPOS DE RESTAURANTE",
+      "title_1": "Cocina fantasma",
+      "title_italic": "/",
+      "title_2": "solo entrega",
+      "dek": "Marcas virtuales y cloud kitchens que operan exclusivamente por agregadores — sin mesa, sin ventanilla de…"
+    },
+    {
+      "slug": "term-subtype-pizzeria-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "rust",
+      "glyph": "reservations",
+      "eyebrow": "SUBTIPOS DE RESTAURANTE",
+      "title_1": "",
+      "title_italic": "Pizzería",
+      "title_2": "",
+      "dek": "Restaurantes donde la pizza es el eje y pedir ES el negocio — cada pizza por Slice/DoorDash/Grubhub se lleva…"
+    },
+    {
+      "slug": "term-tap-targets-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MÓVIL Y VELOCIDAD",
+      "title_1": "Objetivos",
+      "title_italic": "de",
+      "title_2": "toque",
+      "dek": "Cualquier elemento clicable — botón, enlace, ítem de menú — que un dedo toca en un celular."
+    },
+    {
+      "slug": "term-terms-of-service-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "trust",
+      "eyebrow": "CONFIANZA",
+      "title_1": "Términos",
+      "title_italic": "del",
+      "title_2": "servicio",
+      "dek": "Una página que cubre las reglas de usar tu sitio — política de cancelación de reservas, términos de tarjetas…"
+    },
+    {
+      "slug": "term-title-tag-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "local-seo",
+      "eyebrow": "QUE TE ENCUENTREN",
+      "title_1": "Etiqueta",
+      "title_italic": "de",
+      "title_2": "título",
+      "dek": "El renglón de texto que aparece como titular azul clicable de tu página en los resultados de Google, y como…"
+    },
+    {
+      "slug": "term-ttfb-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MÓVIL Y VELOCIDAD",
+      "title_1": "Time to",
+      "title_italic": "First",
+      "title_2": "Byte",
+      "dek": "Cuánto tarda tu servidor web en enviar el primer byte de una página después de que un visitante la pide."
+    },
+    {
+      "slug": "term-typography-pairing-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "brand",
+      "eyebrow": "MARCA Y DISEÑO",
+      "title_1": "Combinación",
+      "title_italic": "tipográfica",
+      "title_2": "",
+      "dek": "La combinación de una tipografía display (usada para titulares y rótulos) y una tipografía de cuerpo (usada…"
+    },
+    {
+      "slug": "term-url-fragment-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "code",
+      "eyebrow": "DATOS Y PRIVACIDAD",
+      "title_1": "Fragmento",
+      "title_italic": "de",
+      "title_2": "URL",
+      "dek": "La porción de una URL que viene después del símbolo # (a veces llamada \"hash\")."
+    },
+    {
+      "slug": "term-variable-costs-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "margin",
+      "eyebrow": "NÚMEROS DEL RESTAURANTE",
+      "title_1": "Costos",
+      "title_italic": "variables",
+      "title_2": "",
+      "dek": "Costos que escalan con el volumen de ventas: ingredientes, labor por hora (cocineros, meseros, bus,…"
+    },
+    {
+      "slug": "term-viewport-meta-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "speed",
+      "eyebrow": "MÓVIL Y VELOCIDAD",
+      "title_1": "Etiqueta",
+      "title_italic": "meta",
+      "title_2": "viewport",
+      "dek": "Una sola línea de código en el <head> de cada página (<meta name=\"viewport\" content=\"width=device-width,…"
+    },
+    {
+      "slug": "term-wcag-contrast-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "brand",
+      "eyebrow": "MARCA Y DISEÑO",
+      "title_1": "Contraste",
+      "title_italic": "WCAG",
+      "title_2": "",
+      "dek": "Una razón, en una escala del 1 al 21, que mide qué tan legible es un color de texto contra su fondo."
+    },
+    {
+      "slug": "term-working-contact-form-es",
+      "kind": "research",
+      "locale": "es",
+      "accent": "teal",
+      "glyph": "trust",
+      "eyebrow": "CONFIANZA",
+      "title_1": "Formulario de",
+      "title_italic": "contacto",
+      "title_2": "que funciona",
+      "dek": "Un formulario donde un visitante puede escribir una pregunta o una consulta y de verdad recibir respuesta."
     }
   ]
 }

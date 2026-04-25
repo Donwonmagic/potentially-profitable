@@ -279,7 +279,19 @@
     <nav class="nav-links" aria-label="Primary">
       <a href="/services/">Services</a>
       <a href="/for/restaurants/">Restaurants</a>
-      <a href="/learn/">Learn</a>
+      <div class="nav-library-wrap">
+        <a href="/learn/" class="nav-library-trigger" aria-haspopup="true">Library<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-library-menu" role="menu" aria-label="Library sections">
+          <a href="/learn/" role="menuitem"><strong>Library home</strong><span>The hub of everything below</span></a>
+          <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
+          <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
+          <a href="/blog/" role="menuitem"><strong>Articles</strong><span>The how-to playbooks</span></a>
+          <a href="/tools/" role="menuitem"><strong>Free tools</strong><span>Run a check on your own site</span></a>
+          <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span>97 terms in plain English</span></a>
+          <a href="/learn/research/" role="menuitem"><strong>Research</strong><span>The evidence behind the playbooks</span></a>
+          <a href="/resources/" role="menuitem"><strong>Checklists &amp; guides</strong><span>Workbooks you can save</span></a>
+        </div>
+      </div>
       <a href="/work/">Work</a>
       <a href="/about/">About</a>
     </nav>
@@ -305,7 +317,17 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/services/">Services</a>
     <a href="/for/restaurants/">Restaurants</a>
-    <a href="/learn/">Learn</a>
+    <details class="mobile-library">
+      <summary>Library</summary>
+      <a href="/learn/">Library home</a>
+      <a href="/learn/start-here/">Start here</a>
+      <a href="/learn/topics/">Topics</a>
+      <a href="/blog/">Articles</a>
+      <a href="/tools/">Free tools</a>
+      <a href="/glossary/">Glossary</a>
+      <a href="/learn/research/">Research</a>
+      <a href="/resources/">Checklists &amp; guides</a>
+    </details>
     <a href="/work/">Work</a>
     <a href="/about/">About</a>
     <button type="button" class="mobile-search js-open-search">
@@ -397,9 +419,14 @@
   <div class="container">
     <article class="article-body" id="post-body">
 
+      <aside class="post-toolcallout" style="margin:0 0 28px;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:10px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
+        <span style="flex:1;min-width:220px;font-size:14px;line-height:1.55;color:var(--ink-soft);">Want to plug in <em>your</em> ticket, food cost, commission tier, and order volume as you read? <strong style="color:var(--ink);">Open the Delivery Break-Even calculator in a second tab.</strong> Your numbers stay in your browser.</span>
+        <a href="/tools/margin-math/" style="font-weight:700;font-size:14px;color:var(--teal);text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap;">Open the calculator &rarr;</a>
+      </aside>
+
       <p>Every operator I talk to is asking some version of the same question this year. "Am I still making money on DoorDash?" Usually the question comes out after a second glass of wine, usually on a slow Tuesday, usually about six months after the last time they promised themselves they'd run the actual math.</p>
 
-      <p>So let's run it. The honest way. Not the way DoorDash presents it in your dashboard, not the way a consultant presents it with a custom slide, but the way the money actually moves from a guest&rsquo;s phone into your bank account. <strong>Your exact numbers will vary</strong> — commission tiers, promotional codes, your specific marketplace category — but the <em>shape</em> of the math is universal, and it's what determines whether DoorDash is a revenue source, a marketing channel, or a slow leak.</p>
+      <p>So let's run it. The honest way. Not the way DoorDash presents it in your dashboard, not the way a consultant presents it with a custom slide, but the way the money actually moves from a guest&rsquo;s phone into your bank account. <strong>Your exact numbers will vary</strong> — <!-- LIBRARY:autolink:start --><a href="/glossary/commission/">commission</a><!-- LIBRARY:autolink:end --> tiers, promotional codes, your specific marketplace category — but the <em>shape</em> of the math is universal, and it's what determines whether DoorDash is a revenue source, a marketing channel, or a slow leak.</p>
 
       <h2>What $100 of DoorDash revenue actually becomes</h2>
 
@@ -417,7 +444,7 @@
             <div class="dd-line"><span class="i18n">Gross</span><span class="dd-val">$100.00</span></div>
             <div class="dd-line"><span class="i18n">DoorDash commission (~22%)</span><span class="dd-val">&minus;&thinsp;$22.00</span></div>
             <div class="dd-line"><span class="i18n">Payment processing</span><span class="dd-val">&minus;&thinsp;$2.00</span></div>
-            <div class="dd-line"><span class="i18n">Food cost (~30%)</span><span class="dd-val">&minus;&thinsp;$30.00</span></div>
+            <div class="dd-line"><span class="i18n"><!-- LIBRARY:autolink:start --><a href="/glossary/food-cost/">Food cost</a><!-- LIBRARY:autolink:end --> (~30%)</span><span class="dd-val">&minus;&thinsp;$30.00</span></div>
             <div class="dd-total">
               <span class="dd-total-label i18n">You keep</span>
               <span class="dd-total-val">$46</span>
@@ -449,7 +476,7 @@
 
       <h3>1. Guests already know about you from somewhere else</h3>
 
-      <p>Five years of Google Business Profile dominance mean that when someone thinks "I want Thai tonight," their discovery path is now much more likely to be Google Maps than a delivery app. They search, they see your restaurant with photos, reviews, hours, and — crucially — a "Website" link. They&rsquo;ve already found you. The question is just whether they end up on your site or on DoorDash&rsquo;s listing of you.</p>
+      <p>Five years of <!-- LIBRARY:autolink:start --><a href="/glossary/gbp/">Google Business Profile</a><!-- LIBRARY:autolink:end --> dominance mean that when someone thinks "I want Thai tonight," their discovery path is now much more likely to be Google Maps than a delivery app. They search, they see your restaurant with photos, reviews, hours, and — crucially — a "Website" link. They&rsquo;ve already found you. The question is just whether they end up on your site or on DoorDash&rsquo;s listing of you.</p>
 
       <p>So the incremental-customer claim only holds if DoorDash is the <em>only</em> way they would have encountered your restaurant. For restaurants that run a decent GBP, an Instagram presence, and a functional website, this is increasingly rare.</p>
 
@@ -469,7 +496,7 @@
 
       <div class="inline-cta">
         <h4 class="i18n">Want the own-ordering math on your specific restaurant?</h4>
-        <p class="i18n">On a 20-minute call I&rsquo;ll pull your DoorDash portal, estimate the break-even order count for your own ordering page, and sketch what the transition would look like given your current POS. Free for independent operators.</p>
+        <p class="i18n">On a 20-minute call I&rsquo;ll pull your DoorDash portal, estimate the <!-- LIBRARY:autolink:start --><a href="/glossary/break-even/">break-even</a><!-- LIBRARY:autolink:end --> order count for your own ordering page, and sketch what the transition would look like given your current POS. Free for independent operators.</p>
         <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
@@ -481,7 +508,7 @@
 
       <ul>
         <li><strong>You&rsquo;re genuinely discovery-constrained.</strong> Newer restaurant, thin GBP presence, no established word-of-mouth yet &mdash; DoorDash is a marketing channel that happens to bill as a commission. Pay the tax while you build the audience, then re-evaluate.</li>
-        <li><strong>Your own-ordering volume is under 50 orders a week.</strong> Below that threshold, the fixed costs of an own-ordering setup (photography, menu maintenance, occasional customer service) eat the margin savings. Wait for volume.</li>
+        <li><strong>Your own-ordering volume is under 50 orders a week.</strong> Below that threshold, the <!-- LIBRARY:autolink:start --><a href="/glossary/fixed-costs/">fixed costs</a><!-- LIBRARY:autolink:end --> of an own-ordering setup (photography, menu maintenance, occasional customer service) eat the <!-- LIBRARY:autolink:start --><a href="/glossary/margin/">margin</a><!-- LIBRARY:autolink:end --> savings. Wait for volume.</li>
         <li><strong>You have a takeout-heavy concept in a high-commute area.</strong> Office-worker lunch orders, dinner-on-the-commute pickups &mdash; guests in these contexts heavily use delivery apps because that&rsquo;s where their routine already lives. Meet them where they are.</li>
       </ul>
 
@@ -500,11 +527,50 @@
 
       <p>None of this is "fire DoorDash." It's "stop paying them for orders they didn&rsquo;t earn." Which is a very different move.</p>
 
-      <p>Your regulars aren&rsquo;t loyal to DoorDash &mdash; they&rsquo;re loyal to you, and they use whichever channel is in front of them. Make your own channel the one in front of them. Put the "Order online" button above the fold on your homepage. Put the QR code for your ordering page at the host stand and on the receipt. Have the cashier say "next time, order direct from our site and we save fifteen percent in fees." Every regular who switches is fifteen bucks back in your pocket on a hundred-dollar order.</p>
+      <p>Your regulars aren&rsquo;t loyal to DoorDash &mdash; they&rsquo;re loyal to you, and they use whichever channel is in front of them. Make your own channel the one in front of them. Put the "Order online" button <!-- LIBRARY:autolink:start --><a href="/glossary/above-the-fold/">above the fold</a><!-- LIBRARY:autolink:end --> on your homepage. Put the QR code for your ordering page at the host stand and on the receipt. Have the cashier say "next time, order direct from our site and we save fifteen percent in fees." Every regular who switches is fifteen bucks back in your pocket on a hundred-dollar order.</p>
 
       <p>That&rsquo;s not rebellion. That&rsquo;s just running the math.</p>
 
     </article>
+
+    <aside class="post-end-mark" aria-hidden="true">
+  <hr/>
+  <span class="post-end-glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+  <rect x="4" y="4" width="16" height="16"/>
+  <line x1="12" y1="4" x2="12" y2="20"/>
+  <line x1="4" y1="10" x2="20" y2="10"/>
+</svg></span>
+  <p>More from the library.</p>
+</aside>
+
+    <!-- LIBRARY:see-also:start -->
+<aside class="see-also" aria-labelledby="see-also-h">
+  <p class="see-also-label" id="see-also-h">See also</p>
+  <ul class="see-also-list">
+      <li>
+        <a class="see-also-card" href="/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">
+          <span class="see-also-kind">Article</span>
+          <h3>How to Raise Restaurant Menu Prices Without Losing Reservations</h3>
+          <p>The honest playbook for raising menu prices on an independent restaurant&#39;s website in 2026 — which items to raise, how to stage it, and the website moves that protect reservations.</p>
+        </a>
+      </li>
+      <li>
+        <a class="see-also-card" href="/tools/margin-math/">
+          <span class="see-also-kind">Tool</span>
+          <h3>Margin Math</h3>
+          <p>Four calculators for the financial decisions every independent restaurant has to make — delivery break-even, prime cost, covers needed, price-raise simulation.</p>
+        </a>
+      </li>
+      <li>
+        <a class="see-also-card" href="/blog/wix-vs-custom-for-restaurants/">
+          <span class="see-also-kind">Article</span>
+          <h3>Wix vs Custom for Restaurants</h3>
+          <p>An honest comparison of Wix and a custom-built restaurant website. Six places Wix runs out of room, the ROI math that makes the switch worth it, and when Wix is actually the right call.</p>
+        </a>
+      </li>
+    </ul>
+</aside>
+<!-- LIBRARY:see-also:end -->
 
     <aside class="further-reading">
       <p class="label i18n">Keep reading</p>
@@ -566,7 +632,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a 72-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a 97-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -581,15 +647,16 @@
       </nav>
 
       <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Learn</p>
+        <p class="foot-heading" id="foot-learn">Library</p>
         <ul class="foot-links">
           <li><a href="/learn/">Library home</a></li>
           <li><a href="/learn/start-here/">Start here</a></li>
+          <li><a href="/learn/topics/">Topics</a></li>
           <li><a href="/blog/">Articles</a></li>
           <li><a href="/tools/">Free tools</a></li>
           <li><a href="/glossary/">Glossary</a></li>
           <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/resources/restaurant-website-checklist/">Restaurant checklist</a></li>
+          <li><a href="/resources/">Checklists &amp; guides</a></li>
         </ul>
       </nav>
 

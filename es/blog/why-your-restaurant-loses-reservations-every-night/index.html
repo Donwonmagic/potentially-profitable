@@ -501,7 +501,19 @@
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/services/">Servicios</a>
       <a href="/es/for/restaurants/">Restaurantes</a>
-      <a href="/es/learn/">Aprende</a>
+      <div class="nav-library-wrap">
+        <a href="/es/learn/" class="nav-library-trigger" aria-haspopup="true">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-library-menu" role="menu" aria-label="Secciones de la biblioteca">
+          <a href="/es/learn/" role="menuitem"><strong>Inicio de la biblioteca</strong><span>El centro de todo lo de abajo</span></a>
+          <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
+          <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
+          <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
+          <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
+          <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span>97 términos en lenguaje claro</span></a>
+          <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
+          <a href="/es/resources/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+        </div>
+      </div>
       <a href="/es/work/">Proyectos</a>
       <a href="/es/about/">Sobre Don</a>
     </nav>
@@ -527,7 +539,17 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/services/">Servicios</a>
     <a href="/es/for/restaurants/">Restaurantes</a>
-    <a href="/es/learn/">Aprende</a>
+    <details class="mobile-library">
+      <summary>Biblioteca</summary>
+      <a href="/es/learn/">Inicio de la biblioteca</a>
+      <a href="/es/learn/start-here/">Empieza aquí</a>
+      <a href="/es/learn/topics/">Temas</a>
+      <a href="/es/blog/">Artículos</a>
+      <a href="/es/tools/">Herramientas gratis</a>
+      <a href="/es/glossary/">Glosario</a>
+      <a href="/es/learn/research/">Investigación</a>
+      <a href="/es/resources/">Listas y recursos</a>
+    </details>
     <a href="/es/work/">Proyectos</a>
     <a href="/es/about/">Sobre Don</a>
     <button type="button" class="mobile-search js-open-search">
@@ -611,7 +633,7 @@
 
       <h2>El embudo de reservas — cómo se ve normalmente</h2>
 
-      <p>Abajo está la forma de un embudo de reservas para un sitio típico de restaurante independiente — el tipo que veo cuando audito sitios reales. <strong>Lo estoy dibujando a partir de patrones que observo repetidamente, no de un dataset publicado, así que trata los números específicos como orientativos, no como definitivos.</strong> Los números de tu propio restaurante van a variar según tu menú, tu barrio, tu clientela y si es un martes de enero o un sábado de junio.</p>
+      <p>Abajo está la forma de un <!-- LIBRARY:autolink:start --><a href="/es/glossary/funnel/">embudo</a><!-- LIBRARY:autolink:end --> de reservas para un sitio típico de restaurante independiente — el tipo que veo cuando audito sitios reales. <strong>Lo estoy dibujando a partir de patrones que observo repetidamente, no de un dataset publicado, así que trata los números específicos como orientativos, no como definitivos.</strong> Los números de tu propio restaurante van a variar según tu menú, tu barrio, tu clientela y si es un martes de enero o un sábado de junio.</p>
 
       <p>Lo que no varía es la <em>forma</em> de la fuga. Todo sitio de restaurante que he auditado tiene caídas más o menos en estos lugares, más o menos en este orden.</p>
 
@@ -653,9 +675,9 @@
 
       <h2>Por qué el embudo de reservas es la métrica de marketing más honesta que vas a encontrar</h2>
 
-      <p>La mayoría de las métricas web para restaurantes son vanidad. Páginas vistas, visitantes únicos, tasa de rebote, duración promedio de sesión — son números flotantes que no se conectan obviamente con el negocio, por eso la mayoría de los dueños las miran de reojo una vez por trimestre y cierran la pestaña de analítica.</p>
+      <p>La mayoría de las métricas web para restaurantes son vanidad. Páginas vistas, visitantes únicos, <!-- LIBRARY:autolink:start --><a href="/es/glossary/bounce-rate/">tasa de rebote</a><!-- LIBRARY:autolink:end -->, duración promedio de sesión — son números flotantes que no se conectan obviamente con el negocio, por eso la mayoría de los dueños las miran de reojo una vez por trimestre y cierran la pestaña de analítica.</p>
 
-      <p>El embudo de reservas es la única métrica que se traduce directa e inequívocamente en ingresos. Si pierdes 50 reservas al mes, y tu cubierto promedio es de cincuenta y cinco dólares, entonces puedes hacer la cuenta en la cabeza — sin estimar, sin interpretar, sin importar si la "tasa de rebote" fue 37 % o 42 %. Sabes exactamente cuánta plata dejaste sobre la mesa.</p>
+      <p>El embudo de reservas es la única métrica que se traduce directa e inequívocamente en ingresos. Si pierdes 50 reservas al mes, y tu <!-- LIBRARY:autolink:start --><a href="/es/glossary/cover/">cubierto</a><!-- LIBRARY:autolink:end --> promedio es de cincuenta y cinco dólares, entonces puedes hacer la cuenta en la cabeza — sin estimar, sin interpretar, sin importar si la "tasa de rebote" fue 37 % o 42 %. Sabes exactamente cuánta plata dejaste sobre la mesa.</p>
 
       <div class="revenue-math" data-audio-alt="Este es el número honesto. Si dejas cincuenta reservas sobre la mesa cada mes, a un cubierto promedio de cincuenta y cinco dólares por doce meses, son treinta y tres mil dólares al año — ingreso que nunca cruzó la puerta.">
         <span class="tag i18n">El número honesto</span>
@@ -736,12 +758,51 @@
 
       <div class="inline-cta">
         <h4 class="i18n">¿Quieres ver qué fugas tiene tu sitio?</h4>
-        <p class="i18n">El Diagnóstico gratis de sitios de restaurante corre un escaneo real de Lighthouse en móvil en unos treinta segundos y marca las fugas específicas que este artículo recorre. O agenda una llamada de veinte minutos y repasamos tu sitio juntos por Zoom, fuga por fuga.</p>
+        <p class="i18n">El Diagnóstico gratis de sitios de restaurante corre un escaneo real de <!-- LIBRARY:autolink:start --><a href="/es/glossary/lighthouse/">Lighthouse</a><!-- LIBRARY:autolink:end --> en móvil en unos treinta segundos y marca las fugas específicas que este artículo recorre. O agenda una llamada de veinte minutos y repasamos tu sitio juntos por Zoom, fuga por fuga.</p>
         <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Agenda una llamada de 20 min<span class="sr-only"> (se abre en una pestaña nueva)</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
       </div>
     </article>
+
+    <aside class="post-end-mark" aria-hidden="true">
+  <hr/>
+  <span class="post-end-glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+  <rect x="4" y="4" width="16" height="16"/>
+  <line x1="12" y1="4" x2="12" y2="20"/>
+  <line x1="4" y1="10" x2="20" y2="10"/>
+</svg></span>
+  <p>Más desde la biblioteca.</p>
+</aside>
+
+    <!-- LIBRARY:see-also:start -->
+<aside class="see-also" aria-labelledby="see-also-h">
+  <p class="see-also-label" id="see-also-h">Ver también</p>
+  <ul class="see-also-list">
+      <li>
+        <a class="see-also-card" href="/es/learn/research/mobile-page-speed-3-second-rule/">
+          <span class="see-also-kind">Investigación</span>
+          <h3>La regla de los 3 segundos en móvil — Nota de investigación</h3>
+          <p>Investigación de referencia de Google: la mayoría de los visitantes móviles abandona las páginas que tardan más de 3 segundos en cargar. Resumen de Muntin del estudio, qué significan los números para un sitio de restaurante, y un enlace al original.</p>
+        </a>
+      </li>
+      <li>
+        <a class="see-also-card" href="/es/tools/mobile-check/">
+          <span class="see-also-kind">Herramienta</span>
+          <h3>¿Mi sitio es apto para móvil? Revisión gratis</h3>
+          <p>Revisa si tu sitio funciona en el teléfono en 10 segundos. Viewport, tamaño de los botones, tamaño del texto — tres revisiones, en español claro, con arreglos concretos. Gratis, sin registro.</p>
+        </a>
+      </li>
+      <li>
+        <a class="see-also-card" href="/es/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">
+          <span class="see-also-kind">Artículo</span>
+          <h3>Cómo subir los precios del menú del restaurante sin perder reservas</h3>
+          <p>El manual honesto para subir los precios del menú en el sitio web de un restaurante independiente en 2026 — qué platos subir, cuáles mantener, cómo escalonarlo, y los cambios en la web que evitan que caigan las reservas cuando los números del menú suben.</p>
+        </a>
+      </li>
+    </ul>
+</aside>
+<!-- LIBRARY:see-also:end -->
 
     <aside class="further-reading">
       <p class="label">Sigue leyendo</p>
@@ -805,7 +866,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de 72 t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de 97 t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -820,15 +881,16 @@
       </nav>
 
       <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Aprende</p>
+        <p class="foot-heading" id="foot-learn">Biblioteca</p>
         <ul class="foot-links">
-          <li><a href="/es/learn/">Biblioteca</a></li>
+          <li><a href="/es/learn/">Inicio de la biblioteca</a></li>
           <li><a href="/es/learn/start-here/">Empieza aquí</a></li>
+          <li><a href="/es/learn/topics/">Temas</a></li>
           <li><a href="/es/blog/">Artículos</a></li>
           <li><a href="/es/tools/">Herramientas gratis</a></li>
           <li><a href="/es/glossary/">Glosario</a></li>
           <li><a href="/es/learn/research/">Investigación</a></li>
-          <li><a href="/es/resources/restaurant-website-checklist/">Checklist para tu sitio</a></li>
+          <li><a href="/es/resources/">Listas y recursos</a></li>
         </ul>
       </nav>
 

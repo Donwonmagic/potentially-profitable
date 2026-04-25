@@ -686,7 +686,19 @@
     <nav class="nav-links" aria-label="Primary">
       <a href="/services/">Services</a>
       <a href="/for/restaurants/">Restaurants</a>
-      <a href="/learn/">Learn</a>
+      <div class="nav-library-wrap">
+        <a href="/learn/" class="nav-library-trigger" aria-haspopup="true">Library<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-library-menu" role="menu" aria-label="Library sections">
+          <a href="/learn/" role="menuitem"><strong>Library home</strong><span>The hub of everything below</span></a>
+          <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
+          <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
+          <a href="/blog/" role="menuitem"><strong>Articles</strong><span>The how-to playbooks</span></a>
+          <a href="/tools/" role="menuitem"><strong>Free tools</strong><span>Run a check on your own site</span></a>
+          <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span>97 terms in plain English</span></a>
+          <a href="/learn/research/" role="menuitem"><strong>Research</strong><span>The evidence behind the playbooks</span></a>
+          <a href="/resources/" role="menuitem"><strong>Checklists &amp; guides</strong><span>Workbooks you can save</span></a>
+        </div>
+      </div>
       <a href="/work/">Work</a>
       <a href="/about/">About</a>
     </nav>
@@ -712,7 +724,17 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/services/">Services</a>
     <a href="/for/restaurants/">Restaurants</a>
-    <a href="/learn/">Learn</a>
+    <details class="mobile-library">
+      <summary>Library</summary>
+      <a href="/learn/">Library home</a>
+      <a href="/learn/start-here/">Start here</a>
+      <a href="/learn/topics/">Topics</a>
+      <a href="/blog/">Articles</a>
+      <a href="/tools/">Free tools</a>
+      <a href="/glossary/">Glossary</a>
+      <a href="/learn/research/">Research</a>
+      <a href="/resources/">Checklists &amp; guides</a>
+    </details>
     <a href="/work/">Work</a>
     <a href="/about/">About</a>
     <button type="button" class="mobile-search js-open-search">
@@ -944,8 +966,8 @@
     </ul>
   </div>
   <div class="mc-drawer-foot">
-    <p class="mc-drawer-foot-text">Want to see how your ordering flow measures up? Run the free restaurant audit.</p>
-    <a class="mc-drawer-foot-btn" href="/tools/audits/restaurant/">Audit my site
+    <p class="mc-drawer-foot-text">Want to run the actual math on what delivery is costing you? Plug your numbers into Margin Math — your numbers stay in your browser.</p>
+    <a class="mc-drawer-foot-btn" href="/tools/margin-math/">Run Margin Math
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
     </a>
   </div>
@@ -970,8 +992,8 @@
     </ul>
   </div>
   <div class="mc-drawer-foot">
-    <p class="mc-drawer-foot-text">Want to see how your Google Business Profile is doing? Run the free restaurant audit.</p>
-    <a class="mc-drawer-foot-btn" href="/tools/audits/restaurant/">Audit my site
+    <p class="mc-drawer-foot-text">Want to see how your Google Business Profile is doing? Grade it free in about ten seconds — or run the full restaurant audit.</p>
+    <a class="mc-drawer-foot-btn" href="/tools/gbp-grader/">Grade my GBP
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
     </a>
   </div>
@@ -1024,6 +1046,32 @@
   <div class="mc-drawer-foot">
     <p class="mc-drawer-foot-text">Want to see how your current photos are working for you? Run the free restaurant audit.</p>
     <a class="mc-drawer-foot-btn" href="/tools/audits/restaurant/">Audit my site
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+  </div>
+</aside>
+
+<aside class="mc-drawer" data-drawer-id="brand" role="dialog" aria-modal="true" aria-labelledby="drawer-brand-title" data-open="false" inert>
+  <div class="mc-drawer-head">
+    <p class="mc-drawer-eyebrow">Brand system</p>
+    <button type="button" class="mc-drawer-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+  </div>
+  <div class="mc-drawer-body">
+    <h2 id="drawer-brand-title">Your logo is one ingredient, not the recipe</h2>
+    <p class="mc-drawer-lede">Two restaurants can launch with equally strong marks; six months later the one with a documented brand system looks the same on its menu, its Instagram, and its takeout bag — and the one without it doesn't.</p>
+    <ul>
+      <li><strong>Colors are the biggest tone carrier after the logo.</strong> A primary, a secondary, a handful of accents, and two neutrals — each with a documented accessible pair. That's what the site renders; that's what print vendors should receive.</li>
+      <li><strong>Contrast failures make menus unreadable.</strong> Brand colors that look lovely in the logo can fall well below the WCAG 4.5:1 threshold on a busy menu page. Every pair needs to be graded, not eyeballed.</li>
+      <li><strong>Every surface gets the same token.</strong> We ship the palette as CSS custom properties + design tokens so the site, your future dev, and any print vendor all read from the same source.</li>
+      <li><strong>Monochrome variant is not optional.</strong> Embroidery, foil emboss, laser-engraved coasters — they need a one-color version of the mark. The absence of one is the single clearest "this identity wasn't finished" tell.</li>
+      <li><strong>Documented usage rules prevent drift.</strong> Clearspace, minimum sizes, misuse examples. Owners underestimate how much work a two-page usage guide saves over five years of vendor handoffs.</li>
+    </ul>
+  </div>
+  <div class="mc-drawer-foot">
+    <p class="mc-drawer-foot-text">Want to see a palette extracted from your logo — with WCAG grading and exportable CSS tokens — before we talk? The Brand Suite tool is free, runs in your browser, and leaves nothing behind.</p>
+    <a class="mc-drawer-foot-btn" href="/tools/brand-suite/">Open Brand Suite
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
     </a>
   </div>
@@ -1233,6 +1281,16 @@
           <svg class="service-link-arrow" viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </button>
       </div>
+
+      <div class="service reveal">
+        <div class="label">Brand system</div>
+        <h3>A palette that works everywhere</h3>
+        <p class="desc">Your brand colors should read on a menu, a sign, and a phone screen — not just in the logo file. We document palette + contrast pairs as CSS tokens alongside the site, so every surface stays legible and recognizable.</p>
+        <button type="button" class="service-link" data-drawer="brand" aria-label="Why a documented brand system matters — open info">
+          Learn more
+          <svg class="service-link-arrow" viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </button>
+      </div>
     </div>
   </div>
 </section>
@@ -1263,31 +1321,44 @@
   </div>
 </section>
 
-<!-- ============ CASE STUDY TEASER ============ -->
+<!-- ============ CASE STUDIES ============
+     Two restaurants from inside the kitchen — a 1931 Glen Echo
+     dining landmark and three years of in-house work at a
+     Mexican-style taquería with five DMV locations. Two cards
+     instead of one (the previous build only surfaced Irish Inn).
+================================================================== -->
 <section class="block" id="work">
   <div class="container">
     <div class="section-header reveal">
-      <span class="eyebrow">Redesign study</span>
-      <h2>A Glen Echo landmark,<br>reimagined.</h2>
-      <p>The Irish Inn at Glen Echo has been a Washington-area dining institution since 1931 — a place Bethesda Magazine, the Washington Post, and Washingtonian all return to. Its current website (live at <a href="https://irishinnglenecho.com" target="_blank" rel="noopener">irishinnglenecho.com</a>) doesn't match the room. This is our proposed replacement: an independent redesign study exploring what the site could be.</p>
+      <span class="eyebrow">Restaurant case studies</span>
+      <h2>Two restaurants,<br><span class="serif-italic">from inside the kitchen.</span></h2>
+      <p>Both projects ran for years, not weeks. Both were built around the operator's actual workflow. Both pages walk through what changed and why.</p>
     </div>
 
-    <div class="work-coming-soon reveal">
-      <div class="coming-soon-grid">
-        <div class="coming-soon-card">
-          <div class="coming-soon-icon" aria-hidden="true">
-            <svg viewBox="0 0 128 128" fill="none" width="32" height="32" aria-hidden="true"><g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"><rect x="18" y="18" width="92" height="92"/><line x1="64" y1="18" x2="64" y2="110"/><line x1="18" y1="49" x2="110" y2="49"/></g></svg>
-          </div>
-          <h3>The Irish Inn at Glen Echo</h3>
-          <p>Full redesign study for a 1931 Glen Echo dining landmark. New information architecture — split hero for the Pub and the Dining Room served from a single unified menu — plus a testimonial ticker pulling real quotes from the Washington Post, Bethesda Magazine, and Washingtonian, and a sourcing section that foregrounds Maryland &amp; Virginia farmers, heritage meats, and sustainable seafood. Playfair Display &amp; Lato, warm gold accents on deep neutral, vanilla HTML/CSS/JS.</p>
-          <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:24px;">
-            <a href="/work/irish-inn-glen-echo/" class="btn btn-primary">Read the full case study
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
-            </a>
-            <a href="https://irishinnglenecho.com" target="_blank" rel="noopener" class="btn btn-ghost">See the current site</a>
-          </div>
+    <div class="restaurant-cases reveal">
+      <a href="/work/irish-inn-glen-echo/" class="restaurant-case">
+        <span class="restaurant-case-kicker">In-house · 1931 dining landmark</span>
+        <h3>The Irish Inn at Glen Echo</h3>
+        <p>A year and a half inside a Washington-area dining institution Bethesda Magazine, the Washington Post, and Washingtonian all return to. Menu design, logo development, seasonal campaigns, and a full website redesign study — split hero for the Pub and Dining Room, real quotes from press, sourcing transparency for Maryland farmers and sustainable seafood.</p>
+        <div class="restaurant-case-tags">
+          <span class="gallery-tag">Restaurant</span>
+          <span class="gallery-tag">Glen Echo, MD</span>
+          <span class="gallery-tag">Brand + web</span>
         </div>
-      </div>
+        <span class="restaurant-case-cta">Read the case study <span aria-hidden="true">→</span></span>
+      </a>
+
+      <a href="/work/tacombi/" class="restaurant-case">
+        <span class="restaurant-case-kicker">In-house · 5-location taquería</span>
+        <h3>Tacombi</h3>
+        <p>Three years of in-house marketing and community engagement across Tacombi's DMV locations. Neighborhood campaigns, cross-promotions with Landmark Theaters, the Taco Taco Club loyalty program, print collateral — all designed from behind the counter, not behind a deck.</p>
+        <div class="restaurant-case-tags">
+          <span class="gallery-tag">Restaurant</span>
+          <span class="gallery-tag">Bethesda &middot; Arlington</span>
+          <span class="gallery-tag">Marketing + brand</span>
+        </div>
+        <span class="restaurant-case-cta">See the work <span aria-hidden="true">→</span></span>
+      </a>
     </div>
   </div>
 </section>
@@ -1456,14 +1527,20 @@
       <a class="learn-tool" href="/tools/audits/restaurant/">
         <span class="learn-tool-kicker">Free audit · ~30 seconds</span>
         <h3>Score your own site.</h3>
-        <p>Twenty-three restaurant-aware checks — mobile speed, menu legibility, reservation flow, Google Business Profile, schema. Top three fixes ranked by impact.</p>
+        <p>Restaurant-aware checks — mobile speed, menu legibility, reservation flow, Google Business Profile, schema. Top three fixes ranked by impact.</p>
         <span class="learn-tool-cta">Run the audit →</span>
       </a>
       <a class="learn-tool" href="/resources/restaurant-website-checklist/">
         <span class="learn-tool-kicker">Checklist · 10 min</span>
-        <h3>The 23-check rubric.</h3>
-        <p>A printable checklist you can run on your own site or hand to the agency you're auditing. Same rubric the free tool uses, with room for notes.</p>
+        <h3>The 30-check rubric.</h3>
+        <p>A printable checklist you can run on your own site or hand to the agency you're auditing. Save your progress in the browser, print a clean audit sheet at the end.</p>
         <span class="learn-tool-cta">Open the checklist →</span>
+      </a>
+      <a class="learn-tool" href="/learn/topics/">
+        <span class="learn-tool-kicker">Topics · the new hub</span>
+        <h3>Browse by what you're fixing.</h3>
+        <p>Six lenses on the library — speed &amp; mobile, conversions &amp; reservations, local SEO, operations &amp; margin, trust &amp; reviews, brand &amp; design.</p>
+        <span class="learn-tool-cta">Browse topics →</span>
       </a>
       <a class="learn-tool" href="/blog/">
         <span class="learn-tool-kicker">Articles · honest essays</span>
@@ -1531,7 +1608,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a 72-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a 97-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -1546,15 +1623,16 @@
       </nav>
 
       <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Learn</p>
+        <p class="foot-heading" id="foot-learn">Library</p>
         <ul class="foot-links">
           <li><a href="/learn/">Library home</a></li>
           <li><a href="/learn/start-here/">Start here</a></li>
+          <li><a href="/learn/topics/">Topics</a></li>
           <li><a href="/blog/">Articles</a></li>
           <li><a href="/tools/">Free tools</a></li>
           <li><a href="/glossary/">Glossary</a></li>
           <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/resources/restaurant-website-checklist/">Restaurant checklist</a></li>
+          <li><a href="/resources/">Checklists &amp; guides</a></li>
         </ul>
       </nav>
 

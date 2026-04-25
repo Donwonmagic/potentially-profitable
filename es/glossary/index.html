@@ -332,7 +332,19 @@
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/services/">Servicios</a>
       <a href="/es/for/restaurants/">Restaurantes</a>
-      <a href="/es/learn/">Aprende</a>
+      <div class="nav-library-wrap">
+        <a href="/es/learn/" class="nav-library-trigger" aria-haspopup="true">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-library-menu" role="menu" aria-label="Secciones de la biblioteca">
+          <a href="/es/learn/" role="menuitem"><strong>Inicio de la biblioteca</strong><span>El centro de todo lo de abajo</span></a>
+          <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
+          <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
+          <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
+          <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
+          <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span>97 términos en lenguaje claro</span></a>
+          <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
+          <a href="/es/resources/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+        </div>
+      </div>
       <a href="/es/work/">Proyectos</a>
       <a href="/es/about/">Sobre Don</a>
     </nav>
@@ -358,7 +370,17 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/services/">Servicios</a>
     <a href="/es/for/restaurants/">Restaurantes</a>
-    <a href="/es/learn/">Aprende</a>
+    <details class="mobile-library">
+      <summary>Biblioteca</summary>
+      <a href="/es/learn/">Inicio de la biblioteca</a>
+      <a href="/es/learn/start-here/">Empieza aquí</a>
+      <a href="/es/learn/topics/">Temas</a>
+      <a href="/es/blog/">Artículos</a>
+      <a href="/es/tools/">Herramientas gratis</a>
+      <a href="/es/glossary/">Glosario</a>
+      <a href="/es/learn/research/">Investigación</a>
+      <a href="/es/resources/">Listas y recursos</a>
+    </details>
     <a href="/es/work/">Proyectos</a>
     <a href="/es/about/">Sobre Don</a>
     <button type="button" class="mobile-search js-open-search">
@@ -420,6 +442,9 @@
         </div>
         <p class="gloss-term-def">Un menú construido como texto real en una página web, en vez de como un archivo PDF o una foto de una carta impresa. Texto real significa que los celulares lo pueden renderizar en tamaños legibles, Google lo puede indexar, y los lectores de pantalla lo pueden leer en voz alta.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Los menús en PDF son la razón más común por la que un sitio de restaurante pierde visitantes móviles. Descargan lento, abren en un visor aparte, obligan al zoom con dos dedos, y fallan directamente en celulares viejos. Un menú en HTML es buscable, rápido, se actualiza en segundos, y le da a Google una lista rastreable de lo que de verdad sirves.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/html-menu/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="hero" data-industries="restaurants all">
@@ -429,6 +454,9 @@
         </div>
         <p class="gloss-term-def">La sección grande de arriba en tu portada, encima de todo lo demás. Es la única zona que la mayoría de los visitantes de primera vez van a ver antes de decidir si siguen leyendo o se van.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Tu hero tiene unos cuatro segundos para responder: qué clase de negocio es este, dónde está, y qué puedo hacer aquí ahora mismo. Si esas tres respuestas no están claras sin hacer scroll, estás perdiendo visitantes que ya estaban listos para ser clientes.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/hero/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="click-to-call" data-industries="restaurants all">
@@ -439,6 +467,9 @@
         <p class="gloss-term-def">Un número de teléfono en tu sitio que, al tocarlo en un celular, abre el marcador con tu número ya cargado — en vez de ser texto plano que el visitante tiene que copiar. Construido con un enlace <code>href="tel:+1555…"</code>.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Si un cliente tiene que copiar tu número, cambiar de app, pegarlo y marcar, muchos no lo van a hacer. Un toque, un timbrazo — ese es el camino más corto entre «tengo hambre» o «necesito un corte de pelo» y pagarte a ti.</p>
               <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/local-business-websites/">Usabilidad de sitios de negocios locales <span aria-hidden="true">↗</span></a></p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/click-to-call/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="hours-visibility" data-industries="restaurants all">
@@ -449,6 +480,9 @@
         <p class="gloss-term-def">Si los horarios de hoy se ven en tu portada dentro de los cinco segundos de haber llegado, sin hacer scroll ni clic. Distinto de simplemente <em>tener</em> horarios en algún lado del sitio.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>«¿Están abiertos ahora?» es la pregunta más común que se hace un visitante. Esconde la respuesta a tres clics de profundidad y se la van a hacer al sitio de tu competidor.</p>
               <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/local-business-websites/">Usabilidad de sitios de negocios locales <span aria-hidden="true">↗</span></a></p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/hours-visibility/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="copyable-address" data-industries="restaurants all">
@@ -458,6 +492,9 @@
         </div>
         <p class="gloss-term-def">Tu dirección como texto real y seleccionable en la página — no horneada dentro de una imagen o de un gráfico. Idealmente envuelta en un enlace de Google Maps para que al tocarla abra las indicaciones.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Si un cliente no puede mantener presionada y copiar tu dirección en el celular, no la puede pegar en Maps, Uber, ni en un mensaje para un amigo. Las direcciones en texto también alimentan el índice de negocios locales de los buscadores; las direcciones en imagen no.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/copyable-address/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="cuisine-pitch" data-industries="restaurants">
@@ -467,6 +504,9 @@
         </div>
         <p class="gloss-term-def">Una sola oración — normalmente en el hero — que le dice al visitante de primera vez tu cocina, tu barrio y tu ambiente. Ejemplo: «Pizza napolitana al horno de leña en el centro de Silver Spring, abierta hasta tarde».</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Cuatro segundos después de llegar, un visitante ya clasificó tu restaurante o se fue. Una oración de presentación hace esa clasificación por ellos para que no tengan que adivinar desde un logo.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/cuisine-pitch/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="domain-name" data-industries="all">
@@ -476,6 +516,9 @@
         </div>
         <p class="gloss-term-def">La dirección legible que la gente tipea para llegar a tu sitio — «rowhousegarden.com». La compras cada año a un registrador (Namecheap, Google Domains, Cloudflare) y la apuntas al hosting que corra tu sitio.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Tu dominio es la única pieza de tu marca que vive en letreros, menús, biografías de Instagram y recibos impresos. Que sea tuyo directamente (no a través de un constructor que «lo incluye»), pon la renovación anual en débito automático, y elige algo lo bastante corto para decirlo en voz alta sin deletrearlo.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/domain-name/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="hosting" data-industries="all">
@@ -485,6 +528,9 @@
         </div>
         <p class="gloss-term-def">El servidor, en algún lugar del internet, que le envía tu sitio al celular del visitante cuando este tipea tu dominio. El hosting para negocios pequeños cuesta entre USD 5 y 30 al mes (Cloudflare Pages, Netlify, SiteGround, DreamHost); los constructores específicos para restaurantes como Squarespace incluyen el hosting en su suscripción.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Un mal hosting hace que toda otra optimización sea inútil — un sitio rápido sobre un host lento, carga lento igual. Un buen hosting te da HTTPS gratis, caché global gratis, y 99,9 % de disponibilidad sin que tengas que pensarlo.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/hosting/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="professional-email" data-industries="restaurants all">
@@ -494,6 +540,9 @@
         </div>
         <p class="gloss-term-def">Correo que corre en tu propio dominio (hola@rowhousegarden.com) en vez de una dirección gratis de Gmail o Yahoo. Suele costar entre USD 6 y 12 al mes por buzón con Google Workspace o Microsoft 365.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Más allá de la primera impresión, las direcciones gratuitas tienen cinco veces más probabilidad de caer en spam cuando respondes a consultas de reservas o facturas. Un correo que cuadra con el dominio también le dice al cliente que eres dueño de verdad de tu presencia en línea.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/professional-email/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="dietary-markers" data-industries="restaurants">
@@ -503,6 +552,9 @@
         </div>
         <p class="gloss-term-def">Etiquetas pequeñas junto a los platos del menú que indican preparaciones sin gluten, veganas, vegetarianas, sin lácteos o con frutos secos. Lo mejor es ponerlas como texto o símbolos SVG con leyenda — no como iconitos que se desvanecen en la pantalla del teléfono o ante un lector de pantalla.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Las restricciones alimentarias deciden dónde come un grupo. Si en un grupo de cuatro hay alguien celíaco o vegano y tu menú no dice nada, el grupo elige el restaurante que sí fue claro. Las etiquetas también bajan las interrupciones al personal: el comensal se autoselecciona antes de pedir, en vez de preguntarle al mesero plato por plato.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/dietary-markers/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
     </div>
@@ -524,6 +576,9 @@
         <p class="gloss-term-def">Las tres calificaciones de desempeño de Google para la carga real de una página en un celular — una para velocidad de carga (LCP), una para estabilidad del diseño (CLS), y una para capacidad de respuesta (INP). Las ves como barras de colores en cualquier reporte de diagnóstico.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Google usa explícitamente Core Web Vitals como señal de posicionamiento en la búsqueda. Dos restaurantes con menús idénticos y Google Business Profiles idénticos van a posicionar distinto si a uno le dan verde las vitals y al otro le dan rojo.</p>
               <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/lighthouse-performance-scoring/">Cómo califica Lighthouse el rendimiento <span aria-hidden="true">↗</span></a></p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/core-web-vitals/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="lcp" data-industries="restaurants all">
@@ -534,6 +589,9 @@
         <p class="gloss-term-def">Cuánto tarda en terminarse de dibujar la pieza visible más grande de tu portada — normalmente la foto del hero o el titular — en un celular. Menos de 2,5 segundos es «bueno», más de 4 segundos es «pobre».</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>El LCP es lo que el visitante siente como «la página ya cargó». Cada segundo extra manda más gente al botón atrás. La investigación de Google pone el salto de rebote en cerca del 32 % cuando el tiempo de carga pasa de 1 s a 3 s.</p>
               <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/lighthouse-performance-scoring/">Cómo califica Lighthouse el rendimiento <span aria-hidden="true">↗</span></a></p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/lcp/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="cls" data-industries="restaurants all">
@@ -544,6 +602,9 @@
         <p class="gloss-term-def">Una calificación que mide cuánto <em>salta</em> tu página mientras carga — cuando entra un banner, llega tarde una imagen, o una fuente que carga tarde empuja el texto hacia abajo. Más bajo, mejor; por debajo de 0,1 es bueno.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Si un cliente toca «Reservar» y el botón salta en el último milisegundo porque llegó una foto y lo empujó hacia abajo, toca algo equivocado y se va. Un diseño estable mantiene intactas las conversiones.</p>
               <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/lighthouse-performance-scoring/">Cómo califica Lighthouse el rendimiento <span aria-hidden="true">↗</span></a></p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/cls/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="inp" data-industries="all">
@@ -553,6 +614,9 @@
         </div>
         <p class="gloss-term-def">Cuánto tarda tu sitio en responder después de que un visitante toca, hace clic o teclea algo. Se mide en milisegundos; menos de 200 ms es bueno, más de 500 ms se siente roto.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Cuando una página «se siente lenta», casi siempre el culpable es este — no el tiempo de carga. Un widget de chat pesado de un tercero o un pixel de seguimiento mal configurado suele ser el arreglo.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/inp/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="viewport-meta" data-industries="all">
@@ -563,6 +627,9 @@
         <p class="gloss-term-def">Una sola línea de código en el &lt;head&gt; de cada página (<code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</code>) que le dice a los celulares «renderiza esta página al ancho del celular, no al del escritorio».</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Sin ella, los celulares renderizan cada página como si fuera un monitor de escritorio y luego la encogen — todo se ve chiquito, ilegible, inutilizable. El arreglo es literalmente una línea; la diferencia antes/después en móvil es de la noche al día.</p>
               <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/mobile-page-speed-3-second-rule/">La regla de los 3 segundos en móvil <span aria-hidden="true">↗</span></a></p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/viewport-meta/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="tap-targets" data-industries="restaurants all">
@@ -573,6 +640,9 @@
         <p class="gloss-term-def">Cualquier elemento clicable — botón, enlace, ítem de menú — que un dedo toca en un celular. Google y Apple recomiendan un área mínima de toque de 44×44 píxeles con espacio entre vecinos.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Los objetivos de toque apretados producen el «dedo gordo» que abre la cosa equivocada. Después de uno o dos de esos, la mayoría de los visitantes se van. Los objetivos más grandes también hacen el sitio usable para clientes mayores y para quien tenga limitaciones motrices o de destreza.</p>
               <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/fittss-law/">Ley de Fitts <span aria-hidden="true">↗</span></a></p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/tap-targets/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="body-text-size" data-industries="restaurants all">
@@ -582,6 +652,9 @@
         </div>
         <p class="gloss-term-def">El tamaño por defecto del texto de párrafo normal en tu sitio. En celulares, 16 píxeles es el piso absoluto; 17–18 px es más cómodo para leer menús, descripciones y contenido de posts.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Por debajo de 16 px, iOS Safari hace zoom forzado en los campos de entrada cuando un visitante los toca, y eso rompe el diseño. Y cualquier cosa más chica es simplemente más difícil de leer en un celular, con prisa o con poca luz.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/body-text-size/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="lighthouse" data-industries="restaurants all">
@@ -592,6 +665,9 @@
         <p class="gloss-term-def">La herramienta de auditoría de código abierto que Google trae dentro de Chrome y dentro de PageSpeed Insights. Simula una carga de página en móvil y califica tu sitio en desempeño, SEO, accesibilidad y buenas prácticas.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Lighthouse es el mismo motor que Google usa para posicionar tu sitio — así que su puntuación no es consultiva, es la boleta de calificaciones. Nuestro diagnóstico de restaurante corre un Lighthouse real sobre tu URL y traduce los números a arreglos específicos para tu negocio.</p>
               <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/lighthouse-performance-scoring/">Cómo califica Lighthouse el rendimiento <span aria-hidden="true">↗</span></a></p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/lighthouse/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="pagespeed-insights" data-industries="restaurants all">
@@ -601,6 +677,9 @@
         </div>
         <p class="gloss-term-def">La herramienta web gratuita de Google en pagespeed.web.dev que corre una auditoría de Lighthouse sobre cualquier URL y te muestra tus Core Web Vitals más una lista priorizada de arreglos. Construida sobre el motor de Lighthouse.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>PSI es la herramienta con la que Google mira tu sitio, así que su puntuación es lo más cerca que vas a estar de la opinión de Google sobre ti sin trabajar ahí. Córrelo una vez al mes; córrelo otra vez después de cualquier cambio grande.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/pagespeed-insights/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="fcp" data-industries="all">
@@ -611,6 +690,9 @@
         <p class="gloss-term-def">El momento en que el navegador pinta el <em>primer</em> pedazo de tu página — normalmente un titular, un logo, o una zona de color de fondo. Se mide en segundos. Menos de 1,8 s es bueno, más de 3 s es pobre.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>El FCP es la señal de «algo está pasando». Una pantalla blanca en blanco por tres segundos se lee como rota aunque la página esté por cargar; un primer pintado antes de 1,8 s le dice al visitante que el sitio está funcionando y te da tiempo para terminar de cargar.</p>
               <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/lighthouse-performance-scoring/">Cómo califica Lighthouse el rendimiento <span aria-hidden="true">↗</span></a></p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/fcp/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="ttfb" data-industries="all">
@@ -620,6 +702,9 @@
         </div>
         <p class="gloss-term-def">Cuánto tarda tu servidor web en enviar el primer byte de una página después de que un visitante la pide. Se mide en milisegundos. Menos de 200 ms es bueno, más de 600 ms apunta a un host lento o a un sitio mal configurado.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Un mal TTFB casi siempre es un problema de hosting, no de diseño. Toda otra métrica de velocidad lo hereda — no puedes renderizar lo que todavía no se envió. Si tu TTFB es pobre, cámbiate de hosting o pon un CDN antes de optimizar cualquier otra cosa.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/ttfb/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="cdn" data-industries="all">
@@ -629,6 +714,9 @@
         </div>
         <p class="gloss-term-def">Una red global de servidores — Cloudflare, Fastly, AWS CloudFront — que mantienen copias en caché de tu sitio cerca de cada visitante del mundo, para que la página viaje 30 millas en vez de 3.000. La mayoría de los buenos hosts te lo conecta gratis.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Un CDN es la mejora de velocidad más grande del tipo «no tengo que pensarlo» disponible. Aunque la mitad de tus clientes esté en una sola ciudad, la otra mitad recibe el mismo sitio rápido, y tu servidor de origen hace dramáticamente menos trabajo.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/cdn/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="responsive-design" data-industries="restaurants all">
@@ -638,6 +726,9 @@
         </div>
         <p class="gloss-term-def">Un enfoque de diseño en el que la misma página se reacomoda automáticamente para caber en la pantalla donde aterrice — celular, tableta, escritorio — sin un sitio móvil separado. Es el estándar desde cerca de 2015.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Aproximadamente dos tercios de tus visitantes llegan por celular. Un sitio no responsivo los trata como de segunda clase. Google también penaliza explícitamente los sitios que no son amigables con móvil bajo su regla de indexación mobile-first.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/responsive-design/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="lazy-loading" data-industries="all">
@@ -647,6 +738,9 @@
         </div>
         <p class="gloss-term-def">Una técnica en la que las imágenes y los videos más abajo de la página no empiezan a descargar hasta que el visitante de verdad hace scroll cerca de ellos. Viene integrada en HTML moderno vía <code>loading="lazy"</code>.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Una portada con doce fotos de comida no necesita descargar las doce antes de que la parte de arriba sea usable. La carga diferida deja que tu hero se pinte en menos de un segundo mientras la parte de abajo se alista en segundo plano.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/lazy-loading/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
     </div>
@@ -668,6 +762,9 @@
         <p class="gloss-term-def">El botón o enlace específico que le pide al visitante hacer lo siguiente — «Reservar mesa», «Pedir en línea», «Reservar una clase», «Pedir cotización». Normalmente llamativo, claramente etiquetado, y repetido en momentos naturales de la página.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>El tráfico sin un siguiente paso claro convierte a una fracción de la tasa. Cada página debería tener un único CTA primario inconfundible — la acción que más te gustaría que un visitante tome — y debería verse en la primera pantalla, no escondido al fondo.</p>
               <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/fittss-law/">Ley de Fitts <span aria-hidden="true">↗</span></a></p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/cta/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="reservation-link" data-industries="restaurants">
@@ -678,6 +775,9 @@
         <p class="gloss-term-def">Un enlace persistente — en la navegación, en el hero, y en el pie móvil — que arranca un flujo de reserva. Idealmente conectado a la plataforma en la que tu puesto de host ya confía (OpenTable, Resy, Tock, Square) para que las reservas caigan en el mismo sistema que el equipo ya revisa.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Una reserva que hay que mandar por correo, o que vive a tres clics de profundidad, es una reserva que la mitad de los visitantes abandona. Un toque, una reserva, una confirmación — ese es el estándar al que ya están acostumbrados los comensales.</p>
               <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/cart-abandonment-rate/">La tasa del 70% de abandono de carrito <span aria-hidden="true">↗</span></a></p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/reservation-link/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="online-ordering" data-industries="restaurants">
@@ -688,6 +788,9 @@
         <p class="gloss-term-def">Un botón en tu página de menú que enlaza directo al checkout de recoger o de delivery — no a una página de aterrizaje, no a una pantalla intermedia. O una redirección a tu proveedor de POS (Toast/Square/ChowNow), o un checkout directo corriendo sobre tu propio procesador de pagos.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Cada toque extra entre un visitante con hambre y un checkout baja las tasas de finalización de forma medible. Los checkouts directos también te dejan quedarte con más margen que las apps tipo marketplace como DoorDash o Grubhub.</p>
               <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/cart-abandonment-rate/">La tasa del 70% de abandono de carrito <span aria-hidden="true">↗</span></a></p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/online-ordering/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="click-to-directions" data-industries="restaurants all">
@@ -697,6 +800,9 @@
         </div>
         <p class="gloss-term-def">Tocar tu dirección en un celular debería abrir Apple Maps o Google Maps con tu negocio ya cargado como destino. Construido con una URL de Google Maps (o el protocolo nativo <code>maps:</code>) en lugar de texto plano.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Los clientes ya parados en la banqueta con tu sitio abierto no deberían tener que retipear tu dirección en la app de mapas. Un enlace de indicaciones que funcione es el camino más corto entre «ya voy» y «ya llegué».</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/click-to-directions/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="sticky-footer" data-industries="restaurants all">
@@ -707,6 +813,9 @@
         <p class="gloss-term-def">Una barra delgada anclada al fondo de cada página móvil que sostiene una o dos de tus acciones más importantes — normalmente Llamar, Reservar o Pedir. Se queda visible incluso mientras el visitante hace scroll por el menú o el blog.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Un visitante que se convence en algún punto a la mitad de tu menú no debería tener que volver a subir hasta arriba para actuar. Un pie móvil fijo mantiene el siguiente paso a un pulgar de distancia en todo momento.</p>
               <p class="gloss-term-research"><strong>Ver la investigación</strong> <a href="/es/learn/research/fittss-law/">Ley de Fitts <span aria-hidden="true">↗</span></a></p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/sticky-footer/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="social-proof" data-industries="restaurants all">
@@ -716,6 +825,9 @@
         </div>
         <p class="gloss-term-def">Una cita, una calificación con estrellas o una mención de prensa puesta arriba en la portada — idealmente en o cerca del hero, no enterrada en una página de testimonios — que le dice al visitante de primera vez que otra gente ya probó el lugar y le gustó.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Los desconocidos confían más en otros desconocidos que en tu propio copy de marketing. Una cita real de una reseña real («la mejor carbonara de Bethesda — Washington Post») sobre el pliegue hace más trabajo de conversión que tres párrafos de tu propia prosa.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/social-proof/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="above-the-fold" data-industries="restaurants all">
@@ -725,6 +837,9 @@
         </div>
         <p class="gloss-term-def">La parte de tu portada que el visitante ve sin hacer scroll. El término viene de los periódicos — la mitad de la portada que era visible antes de desdoblarlo. En móvil, son normalmente los primeros ~600 píxeles de la página.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Una fracción considerable de tus visitantes nunca hace scroll. Lo que necesitas que sepan o hagan — qué eres, dónde estás, cómo reservar — tiene que vivir sobre el pliegue, o da lo mismo que no exista.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/above-the-fold/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="bounce-rate" data-industries="restaurants all">
@@ -734,6 +849,9 @@
         </div>
         <p class="gloss-term-def">El porcentaje de visitantes que llegan a tu sitio y se van sin hacer clic en nada — ninguna página de menú, ningún botón de reservar, ninguna segunda página. Un número alto significa que la página no respondió lo que venían a preguntar.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>La tasa de rebote es un espejo honesto. 70 % o más en tu portada normalmente significa que el hero no responde la pregunta «qué lugar es este» lo bastante rápido, o que la cosa que venían buscando (menú, horarios, enlace de reserva) no es obvia.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/bounce-rate/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="conversion-rate" data-industries="restaurants all">
@@ -743,6 +861,9 @@
         </div>
         <p class="gloss-term-def">El porcentaje de visitantes que hacen la cosa específica que querías que hicieran — reservar, hacer un pedido, llenar un formulario de contacto. Una tasa de reserva del 3 % en un sitio de restaurante es sólida; una tasa de pedidos en línea del 10 % en la página de menú es excelente.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>El tráfico es vanidad; las conversiones son ingresos. Duplicar tu tasa de conversión suele ser más barato que duplicar tu tráfico — y compone cada vez que un visitante nuevo aparece.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/conversion-rate/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="funnel" data-industries="restaurants all">
@@ -752,6 +873,9 @@
         </div>
         <p class="gloss-term-def">La secuencia de pasos por los que pasa un visitante antes de convertirse en cliente — página de aterrizaje → página de menú → botón de reservar → formulario de reserva → confirmación. Se llama «embudo» porque cada paso pierde parte de la gente que pasó por el anterior.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>La mayoría de los problemas de conversión viven en un paso específico, no en todos. Mapear tu embudo te dice si los visitantes se están cayendo en el menú, en el formulario de reserva, o en el correo de confirmación — para que sepas cuál arreglar primero.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/funnel/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="form-abandonment" data-industries="restaurants all">
@@ -761,6 +885,9 @@
         </div>
         <p class="gloss-term-def">Cuando un visitante empieza a llenar un formulario — reserva, contacto, consulta — y se va antes de enviarlo. Normalmente lo causa tener demasiados campos obligatorios, errores poco claros, o un formulario que no funciona en su celular.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Un visitante que empieza un formulario ya decidió que quiere darte su negocio. Perderlo a la mitad es una falla singularmente cara. Los arreglos casi siempre son formularios más chicos, etiquetas más claras, y flujos probados en móvil.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/form-abandonment/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="gift-card-checkout" data-industries="restaurants">
@@ -770,6 +897,9 @@
         </div>
         <p class="gloss-term-def">Una página en tu sitio donde alguien puede comprar una tarjeta de regalo en minutos, que normalmente llega como un correo con un código que la persona que la recibe canjea en el local o en línea. Square, Toast, Shopify y proveedores especializados como Yiftee o GiftFly ofrecen un widget para pegar y listo.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Las tarjetas de regalo son la transacción con mayor margen que corre un restaurante — más o menos una de cada cuatro nunca se canjea, y las que sí se canjean traen una mesa completa, no un comensal solo. Un enlace de "Tarjetas de regalo" en el header suma una vía de ingresos que casi no cuesta nada y corre sola todo el año, con un pico en diciembre que puede tapar un enero flojo.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/gift-card-checkout/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="newsletter-capture" data-industries="restaurants all">
@@ -779,6 +909,9 @@
         </div>
         <p class="gloss-term-def">Un formulario simple en tu sitio que recibe una dirección de correo a cambio de una razón concreta para darla — "sé el primero en enterarte del menú de primavera", "invitaciones a eventos", un perk pequeño en la primera visita. Se suele conectar a Mailchimp, Beehiiv, ConvertKit o Klaviyo.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Una lista de correo propia es el único canal de marketing que dueñas por completo — ninguna plataforma puede limitarte, cobrarte por llegar a tu propia audiencia, o desaparecer de la noche a la mañana. Una lista de mil direcciones se vuelve una forma confiable de llenar los martes, hacer el soft-launch de un menú nuevo, o agotar una cena con entradas en una sola tarde.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/newsletter-capture/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="catering-page" data-industries="restaurants">
@@ -788,6 +921,9 @@
         </div>
         <p class="gloss-term-def">Una página dedicada que explica tu oferta de catering o de eventos privados — mínimos, paquetes, menús de ejemplo, tiempo mínimo de aviso y un formulario de consulta que aterriza en el buzón correcto. Separada del menú regular para que un planificador corporativo evalúe si encaja en menos de un minuto.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>El catering y los alquileres del lugar son los cubiertos más rentables que vas a servir: cantidad de gente garantizada, preparación por lotes, y un solo punto de contacto. Una página que responde las preguntas obvias (cuánta gente, cuánto cuesta, con cuánto tiempo de aviso) filtra a los curiosos y entrega contactos calificados — los que ya están listos para mandar una orden de compra.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/catering-page/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
     </div>
@@ -808,6 +944,9 @@
         </div>
         <p class="gloss-term-def">El pequeño ícono de candado en la barra de direcciones del navegador. Significa que tu sitio se sirve por una conexión segura y cifrada — todo entre el visitante y tu servidor va codificado en tránsito.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Los navegadores modernos marcan los sitios no-HTTPS con una advertencia grande de «No seguro». Google usa HTTPS como señal de posicionamiento desde 2014. La mayoría de los buenos hosts te lo dan gratis vía Let's Encrypt o Cloudflare; si el tuyo cobra extra, cámbiate.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/https/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="honest-pricing" data-industries="restaurants">
@@ -817,6 +956,9 @@
         </div>
         <p class="gloss-term-def">Mostrar el precio de cada plato en tu página de menú — o, en menús de degustación, indicar bien visible el total. Nada de «consulta por precio», ni cargos escondidos en letra chica.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Los comensales de primera vez que escanean tu menú en el celular interpretan los precios escondidos como o caros o evasivos. Ninguna de las dos gana la reserva. La transparencia convierte mejor que el misterio, siempre.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/honest-pricing/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="last-updated-signal" data-industries="restaurants all">
@@ -826,6 +968,9 @@
         </div>
         <p class="gloss-term-def">Cualquier cosa en tu sitio que le diga al visitante, con sutileza, «alguien sigue llevando este lugar» — una etiqueta de menú de temporada, una sección de «especiales de esta semana», un post de blog reciente, una mención de prensa fechada, o incluso un sello de última actualización en el pie.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Un sitio viejo se siente como un negocio cerrado. Los visitantes que no están seguros de si sigues operando no manejan hasta allá para averiguarlo — eligen el lugar cuyo sitio se ve mantenido.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/last-updated-signal/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="working-contact-form" data-industries="restaurants all">
@@ -835,6 +980,9 @@
         </div>
         <p class="gloss-term-def">Un formulario donde un visitante puede escribir una pregunta o una consulta y de verdad recibir respuesta. «Que funciona» es la palabra importante — el formulario envía, el correo llega a una bandeja que alguien revisa, y un humano responde.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Los formularios de contacto rotos están en todas partes, y cada uno le está costando negocio a alguien en silencio. Prueba el tuyo mandándote un mensaje una vez al trimestre. Si nada cae en cinco minutos en una bandeja que de verdad revisas, reemplázalo.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/working-contact-form/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="wcag-contrast" data-industries="restaurants all">
@@ -844,6 +992,9 @@
         </div>
         <p class="gloss-term-def">Un estándar de legibilidad que exige que el texto de cuerpo contraste al menos 4,5:1 contra su fondo, y el texto grande al menos 3:1. Gris claro sobre crema se ve refinado en una maqueta de diseño y falla muy mal bajo el sol.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>WCAG AA es la base legal de accesibilidad en Estados Unidos y la UE, y es también simplemente qué tan legible es tu menú en una terraza al mediodía. Reprobar deja afuera a clientes con baja visión e invita demandas de cumplimiento ADA.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/wcag-contrast/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="real-photos" data-industries="restaurants all">
@@ -853,6 +1004,9 @@
         </div>
         <p class="gloss-term-def">Fotografías de <em>tu</em> espacio, de <em>tu</em> comida y de <em>tu</em> equipo — no imágenes de stock con licencia de una agencia.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Los visitantes huelen las fotos de stock a la primera, y se leen como deshonestas — «no mostrarían su propio lugar si no hubiera algo mal con él». Una sesión de dos horas con un fotógrafo local le gana por años a una biblioteca entera de stock.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/real-photos/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="ssl-certificate" data-industries="all">
@@ -862,6 +1016,9 @@
         </div>
         <p class="gloss-term-def">Un archivo pequeño que tu servidor web usa para probar que eres tú de verdad y para cifrar la conexión hacia el navegador del visitante. HTTPS es el resultado; el certificado SSL (o más correctamente, TLS) es la prueba que está debajo.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Los hosts modernos los emiten gratis y los renuevan solos vía Let's Encrypt. Si alguien te está cotizando uno — o peor, tu certificado caducó en silencio y los visitantes ven una advertencia roja que da miedo — ambas cosas se resuelven cambiándote a un mejor host.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/ssl-certificate/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="privacy-policy" data-industries="restaurants all">
@@ -871,6 +1028,9 @@
         </div>
         <p class="gloss-term-def">Una página en tu sitio (normalmente en /privacy) que indica con claridad qué información recopilas de los visitantes, para qué la usas, y cómo la mantienes segura. Legalmente obligatoria en la UE (GDPR), en California (CCPA), y en una lista creciente de estados en EE. UU.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Aunque solo recopiles correos por un formulario de contacto, no tener política de privacidad es una exposición legal y una bandera roja de confianza. La buena noticia: una página honesta de una sola hoja satisface la mayoría de las reglas. No hace falta que la escriba un abogado para un sitio que solo tiene horarios y menú.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/privacy-policy/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="cookie-banner" data-industries="restaurants all">
@@ -880,6 +1040,9 @@
         </div>
         <p class="gloss-term-def">La barra pequeña o el modal abajo de la página que pide al visitante que acepte cookies de seguimiento. Obligatorio por ley en la UE y en partes de EE. UU. si corres analítica o pixeles de publicidad; innecesario si usas una herramienta de analítica amigable con la privacidad (como Plausible) que no deja cookies de seguimiento.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Los banners de cookies se cierran en milisegundos y arruinan la primera impresión. La respuesta más limpia para la mayoría de los negocios pequeños es usar analítica que no lo requiera — tu sitio se queda legal <em>y</em> se queda sin molestar.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/cookie-banner/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="terms-of-service" data-industries="restaurants all">
@@ -889,6 +1052,9 @@
         </div>
         <p class="gloss-term-def">Una página que cubre las reglas de usar tu sitio — política de cancelación de reservas, términos de tarjetas de regalo, cualquier disputa. Menos estrictamente obligatoria que la política de privacidad, pero muy recomendada para cualquier negocio que tome pagos o depósitos en línea.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Una página clara de términos corta de raíz la mayoría de las disputas por contracargo y los desacuerdos por cancelación. Tu procesador (Stripe, Square) también te va a pedir un enlace a ella durante el alta.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/terms-of-service/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
     </div>
@@ -909,6 +1075,9 @@
         </div>
         <p class="gloss-term-def">El listado gratuito de tu negocio en Google Maps y en Google Search — ese panel que aparece a la derecha del buscador con el nombre, horarios, fotos, reseñas y el enlace al menú o a reservas. Se reclama y se edita en google.com/business.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Para la mayoría de los negocios locales pequeños, la ficha de Google Business trae más gente nueva que el propio sitio web. Una ficha bien puesta — con las categorías correctas, buenas fotos, horarios completos y un enlace al menú actual — suele ser la hora mejor invertida en marketing de todo el año.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/gbp/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="title-tag" data-industries="restaurants all">
@@ -918,6 +1087,9 @@
         </div>
         <p class="gloss-term-def">El renglón de texto que aparece como titular azul clicable de tu página en los resultados de Google, y como nombre de la pestaña del navegador. Se pone en el HTML con <code>&lt;title&gt;…&lt;/title&gt;</code>. Si son menos de 60 caracteres, Google no lo corta.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>La etiqueta de título es la señal de SEO en la página que más pesa y que más controlas. Para un restaurante la fórmula es: nombre + tipo de cocina + ciudad ("Rowhouse &amp; Garden — Restaurante italiano en Silver Spring, MD").</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/title-tag/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="meta-description" data-industries="restaurants all">
@@ -927,6 +1099,9 @@
         </div>
         <p class="gloss-term-def">El párrafo corto que Google muestra debajo del titular azul en un resultado de búsqueda. Se pone en el HTML con <code>&lt;meta name="description" content="…"&gt;</code>. Unos 150–160 caracteres; todo lo que pase, se corta.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>La meta descripción no afecta directamente al ranking, pero sí a si hacen clic o no. Una descripción afilada y concreta — con horario, barrio y un diferenciador — rinde en porcentajes de dos dígitos más que una genérica.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/meta-description/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="schema" data-industries="restaurants all">
@@ -936,6 +1111,9 @@
         </div>
         <p class="gloss-term-def">Etiquetas invisibles en tu página que le dicen a Google, en un formato que lee directo, <em>exactamente</em> qué tipo de negocio eres — "soy un Restaurante, aquí está mi tipo de cocina, mi dirección, mi horario, el URL del menú". Suele escribirse como un script JSON-LD en el &lt;head&gt; de la página.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>El schema es lo que permite que Google muestre tu horario, rango de precios y calificación en el propio resultado de búsqueda (un "resultado enriquecido"), en lugar de un simple enlace azul. Sin él estás adivinando si Google entendió tu negocio; con él, se lo estás diciendo.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/schema/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="alt-text" data-industries="restaurants all">
@@ -945,6 +1123,9 @@
         </div>
         <p class="gloss-term-def">Una descripción escrita breve de cada imagen, puesta mediante el atributo <code>alt="…"</code> en el HTML. Los lectores de pantalla la leen en voz alta; Google la usa para entender qué hay en la foto.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Un buen texto alternativo abre tu sitio a visitantes ciegos y con baja visión (legalmente exigido en muchas jurisdicciones), ayuda a que Google Imágenes te mande tráfico y le da a tu sitio la chance de salir en búsquedas por voz. "IMG_2041.jpg" no le sirve a nadie.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/alt-text/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="sitemap" data-industries="restaurants all">
@@ -954,6 +1135,9 @@
         </div>
         <p class="gloss-term-def">Un archivo en <code>/sitemap.xml</code> de tu dominio que lista todas las páginas públicas de tu sitio. Lo envías una vez a Google Search Console y a Bing Webmaster Tools para que sepan dónde mirar.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Sin mapa del sitio, Google termina encontrando tus páginas, pero despacio. Con uno, las nuevas entradas de blog, los menús actualizados y los especiales se indexan en días en vez de semanas. Una configuración única que rinde para siempre.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/sitemap/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="search-console" data-industries="restaurants all">
@@ -963,6 +1147,9 @@
         </div>
         <p class="gloss-term-def">El panel gratuito de Google que te muestra con qué términos de búsqueda llegó la gente a tu sitio, en qué páginas aterrizó y si Google tiene problemas para indexar alguna. Está en search.google.com/search-console.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Search Console es la única forma de saber qué piensa Google de tu sitio de verdad. Todo dueño de pequeño negocio con sitio debería tenerlo reclamado y revisarlo una vez al mes — ahí es donde notas las caídas de tráfico antes de que se vuelvan un problema.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/search-console/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="canonical-url" data-industries="all">
@@ -972,6 +1159,9 @@
         </div>
         <p class="gloss-term-def">Una etiqueta en el HTML de una página que le dice a Google "esta es la dirección real de esta página, ignora los duplicados". Importa cuando el mismo contenido vive en varios URLs (con y sin www, con y sin parámetros de seguimiento, versiones para imprimir).</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Sin canónica, Google no sabe qué versión de una página rankear y termina dividiendo la señal de SEO entre tres copias. Una etiqueta de un solo renglón concentra todo el crédito de búsqueda en la versión a la que sí quieres que llegue la gente.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/canonical-url/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="robots-txt" data-industries="all">
@@ -981,6 +1171,9 @@
         </div>
         <p class="gloss-term-def">Un archivito de texto plano en <code>/robots.txt</code> de tu dominio que les dice a los rastreadores de los buscadores qué partes del sitio pueden leer y cuáles no. Suele ser un archivo de cinco líneas; a veces es la razón silenciosa de que una página no aparezca en Google.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Un robots.txt mal puesto o demasiado restrictivo por accidente es una de las causas más comunes de "¿por qué mi sitio es invisible en Google?". Un solo error ahí, y la mitad de tus páginas desaparecen del buscador de la noche a la mañana.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/robots-txt/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="open-graph" data-industries="restaurants all">
@@ -990,6 +1183,9 @@
         </div>
         <p class="gloss-term-def">Un conjunto de etiquetas meta que le dicen a Facebook, Instagram, LinkedIn, iMessage y Slack cómo mostrar la vista previa de tu enlace cuando alguien lo pega — qué imagen usar, qué titular, qué descripción.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Sin etiquetas Open Graph, un enlace compartido sale como un cuadro gris con el nombre de tu dominio, y la gente lo ignora. Con una buena foto de comida y un titular afilado, ese mismo enlace se convierte en un aviso en miniatura cada vez que alguien te menciona en redes.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/open-graph/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="rich-results" data-industries="restaurants all">
@@ -999,6 +1195,9 @@
         </div>
         <p class="gloss-term-def">Resultados de Google mejorados que muestran más que un enlace azul simple — calificaciones con estrellas, horario, precios, desplegables de preguntas frecuentes, carruseles de imágenes. Se desbloquean poniendo el schema correcto en la página.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Un resultado con 4,8 estrellas y un "$$" al lado recibe muchos más clics que un resultado de solo texto justo encima. Los resultados enriquecidos son de las pocas palancas de SEO donde un arreglo técnico pequeño produce un triunfo visible, en primera página.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/rich-results/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="nap-consistency" data-industries="restaurants all">
@@ -1008,6 +1207,9 @@
         </div>
         <p class="gloss-term-def">El nombre, la dirección y el teléfono de tu negocio escritos igualito en tu sitio web, en la ficha de Google Business, en Yelp, en Apple Maps, en Facebook y en cualquier otro directorio. "Suite 200" vs. "Ste. 200" a Google le cuenta como inconsistencia.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Google compara tu NAP entre todas las menciones de tu negocio en la web y baja de posición a las fichas con datos que no cuadran — lo lee como "este negocio puede que no sea real". Una limpieza única recupera posiciones que no sabías que habías perdido.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/nap-consistency/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="apple-bing-maps" data-industries="restaurants all">
@@ -1017,6 +1219,9 @@
         </div>
         <p class="gloss-term-def">Los servicios de mapas que no son de Google — Apple Maps Connect (para quienes usan iPhone) y Bing Places (para Edge, Cortana y los Copilot estilo ChatGPT) — donde también puedes reclamar y editar la ficha de tu negocio gratis.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Más o menos la mitad de los teléfonos en EE. UU. son iPhones. Una ficha de Apple Maps desatendida manda a todo cliente que le pregunta a Siri a la dirección equivocada o derecho a la competencia. Reclamar estas fichas dos veces al año es una hora de trabajo por años de beneficio.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/apple-bing-maps/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="mobile-first-indexing" data-industries="restaurants all">
@@ -1026,6 +1231,9 @@
         </div>
         <p class="gloss-term-def">La regla de Google, vigente desde 2019, de que <em>solo</em> mira la versión móvil de tu sitio para decidir cómo rankearlo. Lo bien que se comporte tu versión de escritorio ya no importa si la móvil está mal.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Cada diagnóstico, cada arreglo, cada ajuste de copy hay que probarlo primero en el teléfono. En 2026 el escritorio es un extra; el móvil es lo que Google realmente califica.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/mobile-first-indexing/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
     </div>
@@ -1047,6 +1255,9 @@
         </div>
         <p class="gloss-term-def">Restaurantes de menú de degustación o prix-fixe donde la reserva es la conversión, la carta de vinos es marketing y la integración con OpenTable/Resy/Tock define el embudo de reservas. Schema: <code>Restaurant</code>.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>El diagnóstico pondera las <a href="#reservation-link">reservas</a> con un peso de 2,0× en alta cocina y la página de <a href="#catering-page">eventos privados</a> con 1,5× — un solo alquiler corporativo de fin de año paga una semana floja. Pistas de plataforma comunes: Resy, Tock, SevenRooms, OpenTable. Señales de palabras clave: menú de degustación, prix fixe, barra del chef, sommelier, degustación, Michelin, omakase.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/subtype-fine-dining/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="subtype-casual-dining" data-industries="restaurants">
@@ -1056,6 +1267,9 @@
         </div>
         <p class="gloss-term-def">Restaurantes de mesa que viven en los dos mundos — reservas para la hora pico de la cena, pedidos en línea para el almuerzo para llevar. Lugares de barrio, comedores para familias, bistrós de servicio completo. Schema: <code>Restaurant</code>, <code>FoodEstablishment</code>.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>Que falten reservas o pedidos directos manda ingresos a OpenTable, a DoorDash o a un competidor que tenga los dos. El diagnóstico pondera las <a href="#reservation-link">conversiones</a> con 1,5× y espera las dos vías. Plataformas comunes: OpenTable, Yelp Reservations, Toast, Square. Señales de palabras clave: comedor, barra completa, almuerzo y cena, platos de la casa, apto para familias, lugar de barrio.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/subtype-casual-dining/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="subtype-fast-casual" data-industries="restaurants">
@@ -1065,6 +1279,9 @@
         </div>
         <p class="gloss-term-def">Restaurantes de mostrador donde pedir en línea ES el modelo de negocio. Cada pedido por DoorDash/Grubhub cuesta 20–30 % de comisión; cada pedido por tu propio Toast o ChowNow se queda con el margen. Schema: <code>FastFoodRestaurant</code>.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>El diagnóstico pondera las <a href="#online-ordering">conversiones</a> con 2,0× y el <a href="#html-menu">formato del menú</a> con 1,5× — en fast-casual el menú ES la página de conversión; los precios, los nombres de los platos y el botón de "Pedir" de un toque tienen que vivir juntos. Pistas de plataforma: Toast, ChowNow, Square, BentoBox, Popmenu, Slice, Menufy, Olo, Lunchbox. Señales de palabras clave: pedir en línea, recoger, curbside, para llevar, fast-casual, servicio de mostrador.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/subtype-fast-casual/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="subtype-cafe" data-industries="restaurants">
@@ -1074,6 +1291,9 @@
         </div>
         <p class="gloss-term-def">Lugares con eje en el café donde el tráfico de la mañana es el 80 % de los ingresos y los dos datos que más busca la gente son el horario y la dirección. Schema: <code>CafeOrCoffeeShop</code>.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>El diagnóstico prioriza la <a href="#hours-visibility">visibilidad del horario</a>, un teléfono que se pueda tocar y un menú legible; las reservas no aplican, y los flujos grandes de pedidos en línea son un extra, no lo central. Pistas de plataforma: Square (dominante en el POS de cafés), Toast, ChowNow. Señales de palabras clave: espresso, capuchino, pour-over, cafetería, origen único, cold brew. Las tostadurías y las panaderías con un buen programa de café suelen clasificarse también acá.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/subtype-cafe/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="subtype-bakery" data-industries="restaurants">
@@ -1083,6 +1303,9 @@
         </div>
         <p class="gloss-term-def">Panaderías, pastelerías y dulcerías donde los encargos de pasteles personalizados y las cuentas mayoristas son el motor de margen que hay por debajo del mostrador. Schema: <code>Bakery</code>, <code>IceCreamShop</code>.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>El diagnóstico pondera el flujo de venta mayorista / pedidos personalizados con 2,0× en panaderías y trata las <a href="#dietary-markers">señales de alérgenos</a> como una cuestión de confianza y seguridad, no solo de marketing — un cliente encargando un pastel de boda para un niño con alergia a los frutos secos necesita confiar en la política de contaminación cruzada antes de reservar. Pistas de plataforma: Square, Toast. Señales de palabras clave: pan, croissants, masa madre, pastelería, pastel personalizado, pastel de boda.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/subtype-bakery/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="subtype-bar-pub" data-industries="restaurants">
@@ -1092,6 +1315,9 @@
         </div>
         <p class="gloss-term-def">Bares, pubs, taprooms, cervecerías, bares de vinos, coctelerías — lugares con eje en las bebidas donde los eventos privados y la claridad del happy hour mueven la conversión. Schema: <code>BarOrPub</code>, <code>Brewery</code>, <code>Winery</code>, <code>Distillery</code>.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>El diagnóstico añade una revisión de aviso de mayoría de edad (peso 2,0× en bar/pub, 0 en cualquier otro subtipo) y trata la página de <a href="#catering-page">eventos privados</a> como crítica para los ingresos. Las cartas de cocteles y de cerveza de barril rotan constantemente, así que la revisión del <a href="#html-menu">menú en HTML</a> también pesa más acá. Pistas de plataforma: Tripleseat para eventos, OpenTable/Resy/SevenRooms para reservas. Señales de palabras clave: cocteles, cerveza artesanal, de barril, happy hour, gastropub, taproom, speakeasy, cervecería.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/subtype-bar-pub/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="subtype-pizzeria" data-industries="restaurants">
@@ -1101,6 +1327,9 @@
         </div>
         <p class="gloss-term-def">Restaurantes donde la pizza es el eje y pedir ES el negocio — cada pizza por Slice/DoorDash/Grubhub se lleva 20–30 % de comisión. Schema: <code>Restaurant</code>, <code>FastFoodRestaurant</code>.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>El diagnóstico pondera las <a href="#online-ordering">conversiones</a> con 2,0× y añade una revisión del radio de entrega con 1,5×. Un flujo de pedido directo (Toast, ChowNow, Square o Slice Direct) frente a mandar todo por los agregadores es la diferencia entre ~78 % y ~55 % de margen bruto por pizza. Pistas de plataforma: Slice es la señal más clara, después Toast, ChowNow, DoorDash, Grubhub. Señales de palabras clave: pizza, napolitana, horno de leña, carbón, siciliana, estilo Detroit, calzone.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/subtype-pizzeria/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="subtype-food-truck" data-industries="restaurants">
@@ -1110,6 +1339,9 @@
         </div>
         <p class="gloss-term-def">Cocinas móviles y pop-ups donde la pregunta central del contenido es "¿dónde están hoy?" — y un mapa fijo de local es peor que no tener mapa. Schema: <code>Restaurant</code>, <code>FastFoodRestaurant</code>.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>El diagnóstico pondera la página del horario del food truck con 2,0× en este subtipo y le baja el peso al <a href="#click-to-directions">mapa</a> porque una dirección fija del hogar es la respuesta equivocada — un bloque dinámico de "ubicación de hoy", un feed de Instagram o un calendario de horarios es lo que el cliente realmente necesita. Las reservas no aplican; las consultas de catering son la vía de contactos con más margen. Señales de palabras clave: food truck, ubicación de hoy, horario de esta semana, pop-up, dónde estamos hoy, cocina móvil.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/subtype-food-truck/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="subtype-ghost-kitchen" data-industries="restaurants">
@@ -1119,6 +1351,9 @@
         </div>
         <p class="gloss-term-def">Marcas virtuales y cloud kitchens que operan exclusivamente por agregadores — sin mesa, sin ventanilla de recogida, el cliente nunca pisa el lugar. Schema: <code>Restaurant</code>, <code>FastFoodRestaurant</code>.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>El diagnóstico pondera la revisión del "aviso explícito de solo-entrega" con 2,0× en este subtipo; sin un banner claro de "cocina virtual / sin mesa", los clientes se aparecen en persona a una dirección vacía y dejan reseñas de una estrella. Los enlaces a agregadores (DoorDash, Uber Eats, Grubhub, Caviar, Deliveroo) son la conversión principal; los mapas fijos de local no sirven. Señales de palabras clave: cocina fantasma, cocina virtual, solo entrega, cloud kitchen, sin mesa.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/subtype-ghost-kitchen/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
       <article class="gloss-term" id="subtype-catering-only" data-industries="restaurants">
@@ -1128,6 +1363,342 @@
         </div>
         <p class="gloss-term-def">Negocios que existen principalmente para servir eventos fuera del local — catering corporativo, catering de bodas, trabajo de chef privado, catering drop-off, cenas pop-up. Schema: <code>FoodEstablishment</code>, <code>Restaurant</code>.</p>
         <p class="gloss-term-why"><strong>Por qué importa</strong>El sitio entero ES la <a href="#catering-page">página de catering</a>; el diagnóstico pondera esa revisión con 2,5× en este subtipo. Los planificadores de eventos comparando proveedores buscan "catering [barrio]" y aterrizan directo en páginas de catering — los paquetes, el precio por cabeza, el tiempo mínimo de aviso y un formulario estructurado de cotización son las superficies críticas. Pistas de plataforma: ezCater, CaterTrax, Tripleseat. Señales de palabras clave: menú de catering, eventos privados, catering corporativo, catering de bodas, catering drop-off, solicitar cotización, off-premise.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/subtype-catering-only/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+    </div>
+  </section>
+
+  <section class="gloss-section" id="restaurant-numbers" aria-labelledby="restaurant-numbers-h">
+    <header class="gloss-section-head">
+      <span class="eyebrow">Categoría</span>
+      <h2 id="restaurant-numbers-h">Números del restaurante</h2>
+      <p>El vocabulario de las finanzas de un restaurante. Los mismos términos aparecen en cada negociación de contrato, conversación con proveedor y pitch de "auditoría gratis". Nombrarlos con precisión es cómo dejas de que te hablen por encima.</p>
+    </header>
+    <div class="gloss-terms">
+
+      <article class="gloss-term" id="prime-cost" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Prime cost<span class="gloss-aka">food cost + labor cost, como % de ventas</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">Tu food cost más tu labor cost, expresado como porcentaje de ventas. Los independientes saludables caen entre 55–65%; por encima de 70% es operacionalmente insostenible sin un cambio duro.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>Prime cost es el mejor pulso de un número de la salud operativa de un restaurante. Todo lo demás (renta, seguro, SaaS, pagos de préstamo) es más o menos fijo — prime es la palanca más grande que puedes mover semana a semana. El <a href="/tools/margin-math/#prime-cost">Chequeo de Prime Cost</a> en Cálculo de Margen grafica tus dos entradas contra la franja saludable.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/prime-cost/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="food-cost" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Food cost<span class="gloss-aka">costo de los insumos, como % de ventas</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">El costo de los ingredientes, alcohol y consumibles (productos de papel, empaque para llevar) expresado como porcentaje de ventas. Target 28–32% para la mayoría de los formatos; pizzerías y cafés a menudo corren más bajo, steakhouses y sushi más alto.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>Cada punto por encima del target es margen que se escapa por la puerta de la cocina — y típicamente es la palanca más rápida de arreglar, mediante specs de porción, logs de merma, auditorías de proveedores e ingeniería de menú.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/food-cost/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="labor-cost" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Labor cost<span class="gloss-aka">sueldos + impuestos de nómina, como % de ventas</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">Sueldos, impuestos de nómina y el aporte del empleado de propinas expresado como porcentaje de ventas. Target 28–32% para la mayoría de los formatos, con quick-service en la parte baja y full-service en la parte alta.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>Los mercados laborales al alza hacen de este el campo de batalla del margen de los 2020. Labor tiene un radio de giro más rápido que food cost — puedes ajustar un horario esta semana; no puedes renegociar un contrato de tomate. Cuando prime cost se calienta, aquí es donde los dueños miran primero.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/labor-cost/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="cover" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Cubierto<span class="gloss-aka">un cliente servido</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">Un cliente sentado y servido. La unidad base de volumen de ventas en la industria restaurantera. "Hicimos 180 cubiertos el sábado" significa que entraron 180 clientes y comieron.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>Cubiertos por día × ticket promedio = ingresos. La mayoría de la matemática de restaurante empieza aquí. Al comparar turnos, ubicaciones o temporadas, los cubiertos son la métrica más limpia porque no los distorsionan los cambios de precios en el menú. La calculadora de <a href="/tools/margin-math/#break-even-covers">Cubiertos para romper el punto</a> responde "¿cuántos cubiertos por día exige mi overhead fijo?"</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/cover/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="average-check" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Ticket promedio<span class="gloss-aka">ventas totales ÷ cubiertos</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">También llamado "average check." Ventas totales divididas entre cubiertos totales. Si 180 cubiertos gastaron \$4,500 en total, el ticket promedio es \$25.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>La palanca que se mueve cuando subes precios, vendes postres, desplazas hacia la cena y alejas del almuerzo, o rediseñas el menú para liderar con ítems de mayor margen. Un alza de 6% sobre el ticket promedio se compone en ingresos significativos sin cambiar el conteo de cubiertos — ver el <a href="/tools/margin-math/">Simulador de alza de precios</a>.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/average-check/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="aggregator" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Agregador<span class="gloss-aka">plataforma de delivery de terceros</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">Un marketplace de terceros que toma órdenes en tu nombre (DoorDash, Uber Eats, Grubhub) y se queda con una comisión por transacción. No es lo mismo que pedidos directos a través de tu propio sitio.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>La mayor presión de margen para la mayoría de los restaurantes independientes desde 2020. Si un agregador es rentable para ti depende de la incrementalidad de cubiertos (¿trae clientes nuevos?) y del nivel de comisión. El <a href="/blog/is-doordash-worth-it-for-restaurants-in-2026/">post de matemática de DoorDash</a> recorre los números; la <a href="/tools/margin-math/">calculadora de Punto de Equilibrio con Delivery</a> los corre sobre los tuyos.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/aggregator/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="commission" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Comisión<span class="gloss-aka">el % que la plataforma se lleva por orden</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">El porcentaje que un agregador o plataforma de pago se queda por transacción. Agregadores: 15–30% según nivel (marketing, delivery, colocación prioritaria). Procesadores de pago en pedidos directos: típicamente 2–3%.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>En una orden de \$25 a 25% de comisión y 2% de procesamiento, te quedas con \$18,25 antes de food cost. En la misma orden directa a 3% de procesamiento, te quedas con \$24,25. La diferencia de \$6 por orden es donde empieza la conversación de recuperación de margen.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/commission/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="direct-ordering" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Pedidos directos<span class="gloss-aka">órdenes a través de tu propio sitio</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">Un cliente ordenando a través de tu propio sitio web o POS (Toast, Square, Olo, ChowNow), sin pasar por agregadores. Pagas solo la comisión de procesamiento de tarjeta — sin comisión de plataforma.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>La palanca primaria de recuperación de margen disponible para la mayoría de los restaurantes. Cada orden desplazada se queda con la comisión que hubiera ido a una plataforma. Dos patrones funcionan: CTAs agresivos en el sitio con unit economics obviamente mejores (p.ej., lealtad gratis en directo), y empujones dentro del restaurante (códigos QR en menús, señalética cerca de la puerta) hacia el camino directo.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/direct-ordering/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="break-even" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Punto de equilibrio<span class="gloss-aka">donde los ingresos igualan los costos</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">El volumen de ventas al que los ingresos igualan los costos totales. Por debajo del punto de equilibrio, cada cubierto pierde dinero. Por encima, cada cubierto es ganancia. Se expresa como "ventas de equilibrio," "cubiertos de equilibrio" o "días de equilibrio."</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>Saber el número por debajo del cual estás perdiendo dinero es la diferencia entre "fue una semana lenta" y "fue una semana de pérdida." La calculadora de <a href="/tools/margin-math/#break-even-covers">Cubiertos para romper el punto</a> trabaja hacia atrás desde tus costos fijos para mostrar el piso de cubiertos/día.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/break-even/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="margin" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Margen<span class="gloss-aka">ventas menos costos; varios tipos</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">Ventas menos costos. <em>Margen bruto</em> = ventas − food cost. <em>Margen de contribución</em> = ventas − costos variables (food + labor por hora + comisiones de tarjeta). <em>Margen operativo</em> = ventas − (food + labor + costos fijos). La palabra sola es ambigua — siempre pregunta cuál margen.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>Consultores, prestamistas y proveedores usan "margen" con soltura. Saber cuál está sobre la mesa en una conversación específica te evita estar de acuerdo con un número que suena bien pero se refiere a otra línea. Cuando Cálculo de Margen dice "contribución por cubierto," quiere decir margen bruto menos costos variables, que es el input correcto para la matemática de punto de equilibrio — no margen operativo.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/margin/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="elasticity" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Elasticidad de precio<span class="gloss-aka">cómo se mueven los cubiertos con el precio</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">Cuánto cambia el conteo de cubiertos cuando cambian los precios. Regla práctica en comedor independiente: un alza de 6% en el menú típicamente pierde 2–3% de cubiertos. La elasticidad varía por ítem (firmas: baja; anclas: alta), por daypart y por barrio.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>Toda la matemática de una alza de precios vive en este coeficiente. Dos restaurantes pueden subir 6% y obtener resultados opuestos — uno gana margen; otro pierde cubiertos. El <a href="/tools/margin-math/">Simulador de alza de precios</a> te deja marcar la elasticidad con un deslizador para que modeles "si mi estimación está mal por un punto, ¿qué pasa?"</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/elasticity/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="fixed-costs" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Costos fijos<span class="gloss-aka">costos que no escalan con las ventas</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">Costos que no cambian con el volumen de ventas: renta, seguro, pagos de préstamo, servicios básicos, suscripciones SaaS (POS, reservas, nómina, herramientas de marketing), gerencia asalariada, iguala del contador. Independientes de si hiciste 40 o 400 cubiertos anoche.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>El piso que tus cubiertos tienen que cruzar cada mes antes de que empiece la ganancia. El primer lugar donde buscar cuando un negocio que "se siente bien" sigue teniendo meses negativos — los costos fijos se arrastran despacio (un nuevo SaaS por trimestre, una cláusula de escalación de renta) y nadie se da cuenta hasta que el total mueve el punto de equilibrio.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/fixed-costs/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="variable-costs" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Costos variables<span class="gloss-aka">costos que escalan con las ventas</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">Costos que escalan con el volumen de ventas: ingredientes, labor por hora (cocineros, meseros, bus, lavaplatos), procesamiento de tarjeta, comisiones de agregador, servicios variables (gas mientras se cocina), empaque de para llevar.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>Cada venta tiene un costo marginal. Saber cuál es te dice qué órdenes realmente vale la pena tomar — especialmente útil al decidir si un daypart, especial o canal específico se paga a sí mismo al margen.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/variable-costs/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="margin-math" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Cálculo de Margen<span class="gloss-aka">calculadoras de finanzas de restaurante del lado cliente</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span><span class="gloss-tag">Herramientas</span></div>
+        </div>
+        <p class="gloss-term-def">Cuatro calculadoras que corren en tu navegador — Punto de equilibrio con delivery, Chequeo de prime cost, Cubiertos para romper el punto, Simulador de alza de precios — más un Reporte Mensual de Margen imprimible, enlaces de escenario compartibles vía fragmento de URL y un recordatorio mensual al calendario en archivo <code>.ics</code>. Cada entrada se queda en tu navegador; ningún endpoint del servidor recibe tus números.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>Cada término de esta sección es algo que <a href="/es/tools/margin-math/">Cálculo de Margen</a> computa. La herramienta está diseñada para correrse cada mes — imprime el reporte, ponlo junto a tu P&amp;L, compara con el mes pasado y luego pásalo a tu contador. La afirmación de privacidad es inspeccionable: sin <a href="/es/glossary/#fetch-request"><code>fetch()</code></a> al escribir, sin <a href="/es/glossary/#client-side">almacenamiento</a>, sin cookies. Click derecho <em>Ver código fuente</em> en la página de la herramienta — el módulo de matemáticas está sin minificar y bajo ~500 líneas.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/margin-math/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+    </div>
+  </section>
+
+  <section class="gloss-section" id="data-literacy" aria-labelledby="data-literacy-h">
+    <header class="gloss-section-head">
+      <span class="eyebrow">Categoría</span>
+      <h2 id="data-literacy-h">Datos y privacidad</h2>
+      <p>Un pequeño vocabulario para evaluar si cualquier herramienta — la nuestra o la de cualquier otro — es honesta acerca de qué hace con tus números. Aplica a cada "auditoría gratis," calculadora o formulario de intake que encontrarás.</p>
+    </header>
+    <div class="gloss-terms">
+
+      <article class="gloss-term" id="client-side" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Del lado del cliente<span class="gloss-aka">cómputo en tu navegador, no en un servidor</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Todos</span></div>
+        </div>
+        <p class="gloss-term-def">Cómputo que ocurre dentro de tu pestaña del navegador, no en un servidor. Una herramienta del lado del cliente toma tus entradas, corre la matemática en JavaScript, y muestra el resultado — sin transmitir jamás las entradas por la red. Cuando cierras la pestaña, las entradas se van.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>La única prueba técnica que separa herramientas que pueden ver tus números de herramientas que solo pueden mostrártelos de vuelta. <a href="/tools/margin-math/">Cálculo de Margen</a> es del lado del cliente en las cuatro calculadoras — y te invita a comprobarlo con DevTools antes de que escribas nada sensible.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/client-side/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="fetch-request" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Solicitud fetch<span class="gloss-aka">el navegador envía datos a un servidor</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Todos</span></div>
+        </div>
+        <p class="gloss-term-def">La forma del navegador de enviar datos a un servidor sobre HTTP. Visible en la pestaña Network de DevTools. Las herramientas modernas pueden usar <code>fetch()</code>, <code>XMLHttpRequest</code> o un submit de formulario para enviar los datos.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>Si al escribir un número en el formulario de una herramienta gratis se dispara una solicitud fetch, tu entrada acaba de salir de tu dispositivo. El chequeo de seguridad más rápido sobre cualquier herramienta: abre DevTools → Network, empieza a escribir, mira crecer la lista de solicitudes. Si crece con cada tecla, la herramienta está registrando lo que escribes. <a href="/tools/margin-math/#how-we-protect">Mira cómo lo verificamos para Cálculo de Margen</a>.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/fetch-request/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="url-fragment" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Fragmento de URL<span class="gloss-aka">la parte después del #</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Todos</span></div>
+        </div>
+        <p class="gloss-term-def">La porción de una URL que viene después del símbolo <code>#</code> (a veces llamada "hash"). Según la especificación HTTP, los navegadores nunca transmiten los fragmentos a los servidores — se leen y usan sólo del lado del cliente.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>Un patrón limpio para herramientas del lado del cliente que necesitan una URL de "guarda este escenario": codifica las entradas en el fragmento, pásale al lector un enlace que se puede guardar como favorito, y mantén al servidor completamente fuera del loop. El permalink funciona; el servidor nunca ve lo que hay adentro. Cuando las URLs compartibles de Cálculo de Margen aterricen, ese es el diseño.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/url-fragment/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+    </div>
+  </section>
+
+  <section class="gloss-section" id="brand-design" aria-labelledby="brand-design-h">
+    <header class="gloss-section-head">
+      <span class="eyebrow">Categoría</span>
+      <h2 id="brand-design-h">Marca y diseño</h2>
+      <p>El pequeño conjunto de palabras que todo dueño con un logo debería conocer antes de entregarlo a un diseñador, un desarrollador, una imprenta de rótulos o un proveedor de impresión. La mayoría son invisibles hasta que faltan.</p>
+    </header>
+    <div class="gloss-terms">
+
+      <article class="gloss-term" id="brand-identity" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Identidad de marca<span class="gloss-aka">el sistema visible completo alrededor de tu logo</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Todos</span></div>
+        </div>
+        <p class="gloss-term-def">El sistema visible completo que lleva a un negocio por cada punto de contacto — logo, colores, tipografía, voz y las reglas para usarlos. Un logo es un ingrediente; una identidad de marca es la receta que le dice al diseñador, al desarrollador, al proveedor de impresión y a la imprenta de rótulos cómo usarlo.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>La diferencia entre "logo bonito" y "negocio reconocible." Dos restaurantes pueden empezar con marcas igualmente fuertes; seis meses después, el que tiene una identidad escrita se ve igual en su menú, en su grid de Instagram, en su letrero de neón y en su bolsa para llevar — y el otro no. <a href="/es/tools/brand-suite/">Suite de Marca</a> genera una paleta + tokens para empezar; un sistema de identidad terminado es trabajo de diseñador.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/brand-identity/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="logo-lockup" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Composición de logo (lockup)<span class="gloss-aka">símbolo + logotipo + lema opcional, como una unidad</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Todos</span></div>
+        </div>
+        <p class="gloss-term-def">Una composición fija de un símbolo, un logotipo y a veces un lema, diseñada como un único activo — con espaciado, alineación y proporciones fijadas. La composición es el activo que los diseñadores entregan a proveedores el 90% de las veces. El símbolo solo cubre el otro 10%: el favicon, la foto de perfil, un posavasos con relieve.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>Cuando una imprenta o un desarrollador te pide "envíanos tu logo", lo correcto es mandar una composición — no una captura de pantalla, no el símbolo estirado por su cuenta. Las identidades que se entregan sin composición se reensamblan de forma inconsistente por cada proveedor que las toca.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/logo-lockup/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="clearspace" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Espacio de resguardo<span class="gloss-aka">la zona vacía alrededor del logo</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Todos</span></div>
+        </div>
+        <p class="gloss-term-def">El área vacía mínima que debe rodear a un logo, medida habitualmente en múltiplos de la altura-x del símbolo, o en una unidad definida como "una altura de mayúscula del logotipo". Nada más — texto, otros logos, fotos, bordes — está permitido dentro de esa zona.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>La primera regla de cualquier guía de estilo competente. El espacio de resguardo protege al símbolo del ruido visual y es la regla que con más frecuencia viola una imprenta bienintencionada que apiña "una cosa más" al lado del logo en un volante.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/clearspace/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="color-palette" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Paleta de colores<span class="gloss-aka">el conjunto curado de colores que le pertenecen a tu marca</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Todos</span></div>
+        </div>
+        <p class="gloss-term-def">El conjunto curado de colores que le pertenecen a una marca — típicamente un primario, un secundario, un pequeño número de acentos y un par de neutros. Cada color tiene un valor hex definido (y con frecuencia equivalentes CMYK / Pantone para imprenta), un rol y un par accesible documentado para texto.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>Después del logo mismo, la paleta es el mayor portador único del carácter de marca. Un restaurante con una paleta definida se renderiza consistentemente en su menú, su sitio web, su grid de Instagram y su bolsa para llevar; sin ella, cada proveedor inventa la suya. <a href="/es/tools/brand-suite/">Suite de Marca</a> extrae una paleta de un logo cargado en el navegador.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/color-palette/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="wcag-contrast" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Contraste WCAG<span class="gloss-aka">qué tan legible es el texto contra su fondo</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Todos</span></div>
+        </div>
+        <p class="gloss-term-def">Una razón, en una escala del 1 al 21, que mide qué tan legible es un color de texto contra su fondo. Definida por las Web Content Accessibility Guidelines (WCAG). El umbral AA para texto de cuerpo normal es <strong>4.5:1</strong>; el umbral AAA es <strong>7:1</strong>. Al texto grande (18pt, o 14pt negrita) se le permite pasar en 3:1.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>Colores de marca que lucen preciosos en el logo pero fallan el contraste en un menú hacen ese menú ilegible para una fracción significativa de clientes — y son el problema de accesibilidad más común en sitios de negocios pequeños. La cuadrícula de contraste de Suite de Marca puntúa cada par de tu paleta.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/wcag-contrast/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="favicon" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Favicon<span class="gloss-aka">el pequeño ícono en la pestaña del navegador</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Todos</span></div>
+        </div>
+        <p class="gloss-term-def">El pequeño ícono mostrado en la pestaña del navegador y en las listas de favoritos. Los sitios modernos lo entregan en múltiples tamaños — 16, 32, 192, 512 píxeles — porque cada contexto (pestaña, favorito, ícono de pantalla de inicio) muestrea un tamaño distinto. Normalmente es una versión simplificada del símbolo, no de la composición completa.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>El punto de contacto más pequeño que tiene tu marca y el más visto una vez que un cliente guarda tu sitio como favorito o lo añade a su pantalla de inicio. Un favicon faltante o gris por defecto es una de las primeras señales que usan los visitantes para juzgar si un sitio es un negocio real.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/favicon/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="typography-pairing" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Combinación tipográfica<span class="gloss-aka">una tipografía display + una de cuerpo que funcionen juntas</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Todos</span></div>
+        </div>
+        <p class="gloss-term-def">La combinación de una tipografía display (usada para titulares y rótulos) y una tipografía de cuerpo (usada para lectura larga) que juntas llevan el tono de una marca. Una serif display + una sans geométrica de cuerpo es una combinación clásica. Combinaciones equivocadas "se sienten mal" a los visitantes sin que puedan decir por qué.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>Después del color, el segundo mayor portador de tono en una identidad de marca. La diferencia entre "este restaurante se siente artesanal y de vieja escuela" y "este restaurante se siente como una cadena de 2008" es, con frecuencia, 60% tipografía.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/typography-pairing/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="monochrome-variant" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Variante monocromática<span class="gloss-aka">versión de un solo color del logo</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Todos</span></div>
+        </div>
+        <p class="gloss-term-def">Una versión de un solo color de un logo, normalmente en negro puro y blanco puro (y ocasionalmente en un solo color de marca), diseñada para contextos donde el color completo no se puede reproducir: bordado, impresión con relieve, impresión a pequeña escala, grabado láser, un aviso en un periódico.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>Cada logo necesita una versión mono. Su ausencia es la señal número uno para un diseñador de que una identidad no quedó terminada — y la razón número uno de por qué un restaurante acaba con una reproducción turbia y pixelada en un polo de personal.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/monochrome-variant/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
       </article>
 
     </div>
@@ -1153,7 +1724,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de 72 t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de 97 t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -1168,15 +1739,16 @@
       </nav>
 
       <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Aprende</p>
+        <p class="foot-heading" id="foot-learn">Biblioteca</p>
         <ul class="foot-links">
-          <li><a href="/es/learn/">Biblioteca</a></li>
+          <li><a href="/es/learn/">Inicio de la biblioteca</a></li>
           <li><a href="/es/learn/start-here/">Empieza aquí</a></li>
+          <li><a href="/es/learn/topics/">Temas</a></li>
           <li><a href="/es/blog/">Artículos</a></li>
           <li><a href="/es/tools/">Herramientas gratis</a></li>
           <li><a href="/es/glossary/">Glosario</a></li>
           <li><a href="/es/learn/research/">Investigación</a></li>
-          <li><a href="/es/resources/restaurant-website-checklist/">Checklist para tu sitio</a></li>
+          <li><a href="/es/resources/">Listas y recursos</a></li>
         </ul>
       </nav>
 

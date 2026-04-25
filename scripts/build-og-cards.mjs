@@ -69,6 +69,16 @@ const PALETTE = {
   dim:    "rgba(250,247,242,0.55)",
 };
 
+// Whisper-muntin background field. The muntin grid is the brand
+// leitmotif; tiling it as a near-invisible texture (3-5%) reinforces
+// the mark without becoming ornament. Stay sub-6% — past that it
+// reads as decoration and competes with the focus module. Stroke
+// width is 1.5 (hairline) — heavier strokes summed across the dense
+// grid compound and make the texture feel decorative even at low %.
+const MUNTIN_FIELD_OPACITY_DARK  = 0.05;  // ink / teal grounds
+const MUNTIN_FIELD_OPACITY_LIGHT = 0.045; // cream grounds (less needed; cream is reflective)
+const MUNTIN_FIELD_STROKE        = 1.5;
+
 // -------------------------------------------------------------
 // helpers
 // -------------------------------------------------------------
@@ -82,6 +92,129 @@ function xmlEscape(s) {
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
+}
+
+// -------------------------------------------------------------
+// glyph registry — page-relevance cue
+// -------------------------------------------------------------
+//
+// Each card may declare a `glyph` field. The glyph renders as a small
+// line-stroked mark to the LEFT of the eyebrow text — a second
+// relevance cue beyond the eyebrow copy and the focus module. Same
+// drawing language as /brand/icons/ (24-unit grid, stroke-only,
+// 1.75 stroke at viewBox scale).
+//
+// Hard cap: 16 entries long-term. If a card's subject doesn't fit
+// one of these, it shouldn't carry a glyph — leave the field unset.
+const GLYPHS = {
+  // Reused verbatim from /brand/icons/.
+  speed: `<polygon points="13 2 4 14 11 14 10 22 20 10 13 10 14 2"/>`,
+  trust: `<path d="M12 3 L20 6 V12 C20 16.5 16.5 19.5 12 21 C7.5 19.5 4 16.5 4 12 V6 Z"/>
+          <polyline points="9 12 11.5 14.5 15.5 10"/>`,
+  brand: `<rect x="4" y="4" width="16" height="16" rx="1"/>
+          <line x1="12" y1="4.5" x2="12" y2="19.5"/>
+          <line x1="4.5" y1="10" x2="19.5" y2="10"/>`,
+  code:  `<polyline points="8 6 3 12 8 18"/>
+          <polyline points="16 6 21 12 16 18"/>
+          <line x1="14" y1="4" x2="10" y2="20"/>`,
+  audit: `<rect x="4" y="4" width="16" height="16" rx="1"/>
+          <polyline points="8 12 11 15 16 9"/>`,
+  // New: drawn to match the existing icon vocabulary.
+  conversions: `<line x1="4" y1="6" x2="20" y2="6"/>
+                <line x1="6" y1="11" x2="18" y2="11"/>
+                <line x1="9" y1="16" x2="15" y2="16"/>
+                <polyline points="10 19 12 21 14 19"/>`,
+  "local-seo": `<path d="M12 22 C7 16 4 12 4 9 a8 8 0 0 1 16 0 c0 3 -3 7 -8 13 z"/>
+                <circle cx="12" cy="9" r="2.5"/>`,
+  margin: `<rect x="3.5" y="3.5" width="6" height="6" rx="0.5"/>
+           <rect x="14.5" y="14.5" width="6" height="6" rx="0.5"/>
+           <line x1="20" y1="4" x2="4" y2="20"/>`,
+  reservations: `<rect x="3.5" y="5" width="17" height="15" rx="1.5"/>
+                 <line x1="3.5" y1="10" x2="20.5" y2="10"/>
+                 <line x1="8" y1="3" x2="8" y2="7"/>
+                 <line x1="16" y1="3" x2="16" y2="7"/>
+                 <rect x="9" y="13" width="4" height="4" fill="currentColor" stroke="none"/>`,
+  delivery: `<path d="M5 8 L19 8 L18 21 L6 21 Z"/>
+             <path d="M9 8 V5.5 a3 3 0 0 1 6 0 V8"/>
+             <line x1="6" y1="11" x2="18" y2="11"/>`,
+  reviews: `<polyline points="6 4 4 4 4 20 6 20"/>
+            <polyline points="18 4 20 4 20 20 18 20"/>
+            <polygon points="12 7 13.5 10.5 17 10.8 14.3 13.2 15.2 16.7 12 14.8 8.8 16.7 9.7 13.2 7 10.8 10.5 10.5"/>`,
+  glossary: `<path d="M3 6 L12 5 L21 6 L21 19 L12 18 L3 19 Z"/>
+             <line x1="12" y1="5" x2="12" y2="18"/>
+             <line x1="6" y1="9" x2="9" y2="9"/>
+             <line x1="15" y1="9" x2="18" y2="9"/>`,
+  resources: `<rect x="5" y="5" width="14" height="16" rx="1.5"/>
+              <rect x="9" y="3" width="6" height="3.5" rx="0.5"/>
+              <line x1="8" y1="12" x2="16" y2="12"/>
+              <line x1="8" y1="15.5" x2="16" y2="15.5"/>`,
+  research: `<circle cx="12" cy="12" r="8"/>
+             <line x1="12" y1="4" x2="12" y2="20"/>
+             <line x1="4" y1="12" x2="20" y2="12"/>
+             <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/>`,
+};
+
+/**
+ * Render a glyph at (x, y) anchored at its top-left corner. Size in
+ * px. Stroke color inherits from `color`; fills inside the registry
+ * paths (e.g. reservations' booked cell, research's center dot)
+ * resolve via `currentColor` so they pick up the same accent. The
+ * `transform` scales the 24-unit registry path to the requested size.
+ */
+function glyph({ id, x, y, size = 36, color, opacity = 0.78 }) {
+  const path = GLYPHS[id];
+  if (!path) return "";
+  const scale = size / 24;
+  return `
+    <g transform="translate(${x}, ${y}) scale(${scale})"
+       fill="none" stroke="${color}" stroke-width="${(1.75 / scale).toFixed(3)}"
+       stroke-linecap="round" stroke-linejoin="round"
+       color="${color}" opacity="${opacity}">
+      ${path}
+    </g>
+  `;
+}
+
+/** Width consumed by an eyebrow-leading glyph (glyph + gap). */
+const GLYPH_GUTTER = 56;
+
+// -------------------------------------------------------------
+// muntin field — whisper background texture
+// -------------------------------------------------------------
+
+/**
+ * Tiled muntin-mark pattern at very low opacity. Reinforces the brand
+ * leitmotif as ground texture without becoming ornament. Render
+ * directly after the bg fill in each template, before any glow.
+ *
+ * onLight=true uses MUNTIN_FIELD_OPACITY_LIGHT and ink stroke (for
+ * cream cards). onLight=false uses MUNTIN_FIELD_OPACITY_DARK and
+ * cream stroke (for ink/teal cards).
+ */
+function muntinField({ onLight = false } = {}) {
+  const stroke = onLight ? PALETTE.ink : PALETTE.cream;
+  const opacity = onLight ? MUNTIN_FIELD_OPACITY_LIGHT : MUNTIN_FIELD_OPACITY_DARK;
+  const cell = 140;            // tile size, tuned for 1200x630 canvas
+  const inset = 18;            // breathing room inside each tile
+  const innerW = cell - inset * 2;
+  const innerH = innerW;
+  const lintel = Math.round(innerH * 0.35);
+  return `
+    <defs>
+      <pattern id="muntinField" x="0" y="0" width="${cell}" height="${cell}"
+               patternUnits="userSpaceOnUse">
+        <g transform="translate(${inset}, ${inset})"
+           fill="none" stroke="${stroke}" stroke-width="${MUNTIN_FIELD_STROKE}"
+           stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="0" y="0" width="${innerW}" height="${innerH}"/>
+          <line x1="${innerW / 2}" y1="0" x2="${innerW / 2}" y2="${innerH}"/>
+          <line x1="0" y1="${lintel}" x2="${innerW}" y2="${lintel}"/>
+        </g>
+      </pattern>
+    </defs>
+    <rect width="${CANVAS_W}" height="${CANVAS_H}"
+          fill="url(#muntinField)" opacity="${opacity}"/>
+  `;
 }
 
 // -------------------------------------------------------------
@@ -440,6 +573,11 @@ function renderPage(card) {
   const yT2 = snap(392);         // 392
   const yDek = snap(472);        // 472
 
+  const glyphSvg = card.glyph
+    ? glyph({ id: card.glyph, x: EDGE, y: yEyebrow - 26, size: 36, color: accentHex, opacity: 0.78 })
+    : "";
+  const eyebrowX = EDGE + (card.glyph ? GLYPH_GUTTER : 0);
+
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CANVAS_W} ${CANVAS_H}" width="${CANVAS_W}" height="${CANVAS_H}">
   <defs>
     <radialGradient id="glow" cx="85%" cy="20%" r="70%">
@@ -448,11 +586,13 @@ function renderPage(card) {
     </radialGradient>
   </defs>
   <rect width="${CANVAS_W}" height="${CANVAS_H}" fill="${bg}"/>
+  ${muntinField({ onLight: false })}
   <rect width="${CANVAS_W}" height="${CANVAS_H}" fill="url(#glow)"/>
 
   ${focus}
 
-  <text x="${EDGE}" y="${yEyebrow}"
+  ${glyphSvg}
+  <text x="${eyebrowX}" y="${yEyebrow}"
         font-family="Inter, Arial, sans-serif" font-size="14"
         font-weight="700" letter-spacing="5" fill="${fg}" opacity="0.55">${xmlEscape(eyebrow)}</text>
 
@@ -506,11 +646,18 @@ function renderResearch(card) {
   const yT2 = snap(328);
   const yDek = snap(408);
 
+  const glyphSvg = card.glyph
+    ? glyph({ id: card.glyph, x: EDGE, y: yEyebrow - 26, size: 36, color: accentHex, opacity: 0.85 })
+    : "";
+  const eyebrowX = EDGE + (card.glyph ? GLYPH_GUTTER : 0);
+
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CANVAS_W} ${CANVAS_H}" width="${CANVAS_W}" height="${CANVAS_H}">
   <rect width="${CANVAS_W}" height="${CANVAS_H}" fill="${bg}"/>
+  ${muntinField({ onLight: true })}
   ${categoryStrip(accentHex)}
 
-  <text x="${EDGE}" y="${yEyebrow}"
+  ${glyphSvg}
+  <text x="${eyebrowX}" y="${yEyebrow}"
         font-family="Inter, Arial, sans-serif" font-size="13"
         font-weight="700" letter-spacing="4" fill="${accentHex}">${xmlEscape(eyebrow)}</text>
 
@@ -563,11 +710,18 @@ function renderArticle(card) {
   const yT2 = snap(328);
   const yDek = snap(408);
 
+  const glyphSvg = card.glyph
+    ? glyph({ id: card.glyph, x: EDGE, y: yEyebrow - 26, size: 36, color: accentHex, opacity: 0.85 })
+    : "";
+  const eyebrowX = EDGE + (card.glyph ? GLYPH_GUTTER : 0);
+
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CANVAS_W} ${CANVAS_H}" width="${CANVAS_W}" height="${CANVAS_H}">
   <rect width="${CANVAS_W}" height="${CANVAS_H}" fill="${bg}"/>
+  ${muntinField({ onLight: true })}
   ${categoryStrip(accentHex)}
 
-  <text x="${EDGE}" y="${yEyebrow}"
+  ${glyphSvg}
+  <text x="${eyebrowX}" y="${yEyebrow}"
         font-family="Inter, Arial, sans-serif" font-size="13"
         font-weight="700" letter-spacing="4" fill="${accentHex}">${xmlEscape(eyebrow)}</text>
 
@@ -620,6 +774,11 @@ function renderTool(card) {
   const yT2 = snap(336);
   const yDek = snap(416);
 
+  const glyphSvg = card.glyph
+    ? glyph({ id: card.glyph, x: EDGE, y: yEyebrow - 26, size: 36, color: accentHex, opacity: 0.85 })
+    : "";
+  const eyebrowX = EDGE + (card.glyph ? GLYPH_GUTTER : 0);
+
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CANVAS_W} ${CANVAS_H}" width="${CANVAS_W}" height="${CANVAS_H}">
   <defs>
     <radialGradient id="toolglow" cx="82%" cy="28%" r="65%">
@@ -628,11 +787,13 @@ function renderTool(card) {
     </radialGradient>
   </defs>
   <rect width="${CANVAS_W}" height="${CANVAS_H}" fill="${bg}"/>
+  ${muntinField({ onLight: false })}
   <rect width="${CANVAS_W}" height="${CANVAS_H}" fill="url(#toolglow)"/>
   <rect x="0" y="0" width="12" height="${CANVAS_H * 0.4}" fill="${accentHex}"/>
   <rect x="0" y="${CANVAS_H * 0.4}" width="12" height="${CANVAS_H * 0.6}" fill="${accentHex}" opacity="0.4"/>
 
-  <text x="${EDGE}" y="${yEyebrow}"
+  ${glyphSvg}
+  <text x="${eyebrowX}" y="${yEyebrow}"
         font-family="Inter, Arial, sans-serif" font-size="13"
         font-weight="700" letter-spacing="4" fill="${accentHex}">${xmlEscape(eyebrow)}</text>
 

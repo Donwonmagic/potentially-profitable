@@ -1,31 +1,73 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
   <rect width="1200" height="630" fill="#FAF7F2"/>
-  <rect x="0" y="0" width="6" height="630" fill="#C28B2E"/>
+  
+    <defs>
+      <pattern id="muntinField" x="0" y="0" width="140" height="140"
+               patternUnits="userSpaceOnUse">
+        <g transform="translate(18, 18)"
+           fill="none" stroke="#14161A" stroke-width="1.5"
+           stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="0" y="0" width="104" height="104"/>
+          <line x1="52" y1="0" x2="52" y2="104"/>
+          <line x1="0" y1="36" x2="104" y2="36"/>
+        </g>
+      </pattern>
+    </defs>
+    <rect width="1200" height="630"
+          fill="url(#muntinField)" opacity="0.045"/>
+  
+  
+    <rect x="0" y="0" width="12" height="252" fill="#1F4E5B"/>
+    <rect x="0" y="252" width="12" height="378" fill="#1F4E5B" opacity="0.4"/>
+  
 
-  <text x="72" y="90" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#C28B2E" letter-spacing="5">MARKETING · GOOGLE REVIEWS</text>
+  
+    <g transform="translate(80, 70) scale(1.5)"
+       fill="none" stroke="#1F4E5B" stroke-width="1.167"
+       stroke-linecap="round" stroke-linejoin="round"
+       color="#1F4E5B" opacity="0.85">
+      <polyline points="6 4 4 4 4 20 6 20"/>
+            <polyline points="18 4 20 4 20 20 18 20"/>
+            <polygon points="12 7 13.5 10.5 17 10.8 14.3 13.2 15.2 16.7 12 14.8 8.8 16.7 9.7 13.2 7 10.8 10.5 10.5"/>
+    </g>
+  
+  <text x="136" y="96"
+        font-family="Inter, Arial, sans-serif" font-size="13"
+        font-weight="700" letter-spacing="4" fill="#1F4E5B">REVIEWS · PRACTICAL</text>
 
-  <text x="72" y="200" font-family="Fraunces, Georgia, serif" font-size="56" font-weight="500" fill="#14161A" letter-spacing="-2">How to Get More</text>
-  <text x="72" y="272" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="60" font-weight="400" fill="#1F4E5B" letter-spacing="-2">Google Reviews</text>
-  <text x="72" y="336" font-family="Fraunces, Georgia, serif" font-size="44" font-weight="500" fill="#14161A" letter-spacing="-1">for Your Restaurant</text>
+  <text x="80" y="184"
+        font-family="Fraunces, Georgia, serif" font-size="58"
+        font-weight="500" letter-spacing="-2" fill="#14161A">How to get</text>
+  <text x="80" y="256"
+        font-family="Fraunces, Georgia, serif" font-style="italic"
+        font-size="58" font-weight="400" letter-spacing="-2"
+        fill="#1F4E5B">more Google</text>
+  <text x="80" y="328"
+        font-family="Fraunces, Georgia, serif" font-size="58"
+        font-weight="500" letter-spacing="-2" fill="#14161A">reviews.</text>
 
-  <!-- Right: five stars with review count -->
-  <g transform="translate(860, 150)">
-    <text x="0" y="0" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#6B6B6B" letter-spacing="2">THE SYSTEM</text>
-    <!-- Stars -->
-    <polygon points="20,30 26,46 43,47 30,57 34,73 20,64 6,73 10,57 -3,47 14,46" fill="#C28B2E"/>
-    <polygon points="70,30 76,46 93,47 80,57 84,73 70,64 56,73 60,57 47,47 64,46" fill="#C28B2E"/>
-    <polygon points="120,30 126,46 143,47 130,57 134,73 120,64 106,73 110,57 97,47 114,46" fill="#C28B2E"/>
-    <polygon points="170,30 176,46 193,47 180,57 184,73 170,64 156,73 160,57 147,47 164,46" fill="#C28B2E"/>
-    <polygon points="220,30 226,46 243,47 230,57 234,73 220,64 206,73 210,57 197,47 214,46" fill="#E8E2D6"/>
-    <text x="260" y="60" font-family="Fraunces, Georgia, serif" font-size="28" font-weight="500" fill="#14161A">4.6</text>
-    <text x="0" y="105" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#6B6B6B">340 reviews · 60/month</text>
-    <rect x="0" y="125" width="280" height="1" fill="#E8E2D6"/>
-    <text x="0" y="150" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#1F4E5B">QR cards · Timing · Staff scripts</text>
-  </g>
+  <text x="80" y="408"
+        font-family="Inter, Arial, sans-serif" font-size="20"
+        font-weight="400" fill="#6B6B6B">QR postcards, timing, staff scripts, and the one thing most owners skip.</text>
 
-  <text x="72" y="420" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="500" fill="#6B6B6B">A system that runs itself. From inside the restaurant.</text>
+  
 
-  <line x1="0" y1="590" x2="1200" y2="590" stroke="#E8E2D6" stroke-width="1"/>
-  <text x="72" y="616" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#6B6B6B" letter-spacing="2">MUNTIN DIGITAL</text>
-  <text x="1128" y="616" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#6B6B6B" letter-spacing="1">muntin.digital/blog</text>
+  
+    <g transform="translate(80, 552)" fill="#6B6B6B" opacity="0.6">
+      <circle cx="8" cy="8" r="8" fill="none" stroke="#6B6B6B" stroke-width="1"/>
+      <text x="8" y="12" text-anchor="middle"
+            font-family="Fraunces, Georgia, serif" font-style="italic"
+            font-size="11" font-weight="500" fill="#6B6B6B">d</text>
+    </g>
+  
+  
+    <line x1="80" y1="584" x2="1120" y2="584"
+          stroke="#E8E2D6" stroke-width="1"/>
+    <text x="80" y="614"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="2" fill="#6B6B6B">MUNTIN DIGITAL</text>
+    <text x="1120" y="614" text-anchor="end"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="1" fill="#6B6B6B">muntin.digital</text>
+  
 </svg>

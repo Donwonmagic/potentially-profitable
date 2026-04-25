@@ -1,45 +1,86 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
-  <rect width="1200" height="630" fill="#14161A"/>
   <defs>
-    <radialGradient id="srchglow-es" cx="78%" cy="30%" r="55%">
-      <stop offset="0%" stop-color="#1F4E5B" stop-opacity="0.3"/>
-      <stop offset="100%" stop-color="#14161A" stop-opacity="0"/>
+    <radialGradient id="toolglow" cx="82%" cy="28%" r="65%">
+      <stop offset="0%" stop-color="#FAF7F2" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#1F4E5B" stop-opacity="0"/>
     </radialGradient>
   </defs>
-  <rect width="1200" height="630" fill="url(#srchglow-es)"/>
+  <rect width="1200" height="630" fill="#1F4E5B"/>
+  
+    <defs>
+      <pattern id="muntinField" x="0" y="0" width="140" height="140"
+               patternUnits="userSpaceOnUse">
+        <g transform="translate(18, 18)"
+           fill="none" stroke="#FAF7F2" stroke-width="1.5"
+           stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="0" y="0" width="104" height="104"/>
+          <line x1="52" y1="0" x2="52" y2="104"/>
+          <line x1="0" y1="36" x2="104" y2="36"/>
+        </g>
+      </pattern>
+    </defs>
+    <rect width="1200" height="630"
+          fill="url(#muntinField)" opacity="0.05"/>
+  
+  <rect width="1200" height="630" fill="url(#toolglow)"/>
+  <rect x="0" y="0" width="12" height="252" fill="#C5A059"/>
+  <rect x="0" y="252" width="12" height="378" fill="#C5A059" opacity="0.4"/>
 
-  <text x="72" y="90" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#FAF7F2" letter-spacing="5" opacity="0.55">HERRAMIENTA GRATIS · IDEAS DE BÚSQUEDA</text>
-
-  <text x="72" y="210" font-family="Fraunces, Georgia, serif" font-size="68" font-weight="500" fill="#FAF7F2" letter-spacing="-2">¿Qué busca la gente</text>
-  <text x="72" y="285" font-family="Fraunces, Georgia, serif" font-size="68" font-weight="500" fill="#FAF7F2" letter-spacing="-2">cerca de mí?</text>
-  <text x="72" y="355" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="30" font-weight="400" fill="#FAF7F2" opacity="0.65">Sugerencias reales de Google. Tu ciudad, tu negocio.</text>
-
-  <!-- Search input + suggestions mockup -->
-  <g transform="translate(750, 140)" font-family="Inter, Arial, sans-serif">
-    <rect x="0" y="0" width="380" height="58" rx="29" fill="#FAF7F2" opacity="0.1"/>
-    <circle cx="32" cy="29" r="8" fill="none" stroke="#FAF7F2" stroke-width="2" opacity="0.7"/>
-    <line x1="38" y1="35" x2="44" y2="41" stroke="#FAF7F2" stroke-width="2" opacity="0.7"/>
-    <text x="56" y="35" font-size="15" fill="#FAF7F2" opacity="0.85">tacos silver spring</text>
-
-    <g transform="translate(0, 78)">
-      <rect x="0" y="0" width="380" height="44" rx="8" fill="#FAF7F2" opacity="0.06"/>
-      <text x="20" y="28" font-size="14" fill="#FAF7F2" opacity="0.8">tacos silver spring <tspan fill="#C9A84C" font-weight="600">maryland</tspan></text>
+  
+    <g transform="translate(80, 78) scale(1.5)"
+       fill="none" stroke="#C5A059" stroke-width="1.167"
+       stroke-linecap="round" stroke-linejoin="round"
+       color="#C5A059" opacity="0.85">
+      <path d="M12 22 C7 16 4 12 4 9 a8 8 0 0 1 16 0 c0 3 -3 7 -8 13 z"/>
+                <circle cx="12" cy="9" r="2.5"/>
     </g>
-    <g transform="translate(0, 130)">
-      <rect x="0" y="0" width="380" height="44" rx="8" fill="#FAF7F2" opacity="0.06"/>
-      <text x="20" y="28" font-size="14" fill="#FAF7F2" opacity="0.8">tacos silver spring <tspan fill="#C9A84C" font-weight="600">al pastor</tspan></text>
-    </g>
-    <g transform="translate(0, 182)">
-      <rect x="0" y="0" width="380" height="44" rx="8" fill="#FAF7F2" opacity="0.06"/>
-      <text x="20" y="28" font-size="14" fill="#FAF7F2" opacity="0.8">tacos silver spring <tspan fill="#C9A84C" font-weight="600">abiertos ahora</tspan></text>
-    </g>
-    <g transform="translate(0, 234)">
-      <rect x="0" y="0" width="380" height="44" rx="8" fill="#FAF7F2" opacity="0.06"/>
-      <text x="20" y="28" font-size="14" fill="#FAF7F2" opacity="0.8">tacos silver spring <tspan fill="#C9A84C" font-weight="600">delivery</tspan></text>
-    </g>
-  </g>
+  
+  <text x="136" y="104"
+        font-family="Inter, Arial, sans-serif" font-size="13"
+        font-weight="700" letter-spacing="4" fill="#C5A059">HERRAMIENTA · BÚSQUEDAS</text>
 
-  <rect y="580" width="1200" height="50" fill="#1F4E5B" opacity="0.2"/>
-  <text x="72" y="612" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#FAF7F2" letter-spacing="2" opacity="0.6">SUGERENCIAS REALES · TU CIUDAD</text>
-  <text x="1128" y="612" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600" fill="#FAF7F2" letter-spacing="1" opacity="0.7">muntin.digital/es</text>
+  <text x="80" y="192"
+        font-family="Fraunces, Georgia, serif" font-size="62"
+        font-weight="500" letter-spacing="-2" fill="#FAF7F2">Lo que la gente</text>
+  <text x="80" y="264"
+        font-family="Fraunces, Georgia, serif" font-style="italic"
+        font-size="62" font-weight="400" letter-spacing="-2"
+        fill="#C5A059">busca</text>
+  <text x="80" y="336"
+        font-family="Fraunces, Georgia, serif" font-size="62"
+        font-weight="500" letter-spacing="-2" fill="#FAF7F2">cerca de ti.</text>
+
+  <text x="80" y="416"
+        font-family="Inter, Arial, sans-serif" font-size="20"
+        font-weight="400" fill="#FAF7F2" opacity="0.72">Sugerencias reales de Google autocomplete para tu tipo de negocio y ciudad.</text>
+
+  
+    <g transform="translate(760, 140)"
+       stroke="#FAF7F2" stroke-width="12"
+       stroke-linecap="square" stroke-linejoin="miter"
+       fill="none" opacity="0.14">
+      <rect x="0" y="0" width="340" height="340"/>
+      <line x1="170" y1="0" x2="170" y2="340"/>
+      <line x1="0" y1="119" x2="340" y2="119"/>
+    </g>
+  
+
+  
+    <g transform="translate(80, 552)" fill="#FAF7F2" opacity="0.6">
+      <circle cx="8" cy="8" r="8" fill="none" stroke="#FAF7F2" stroke-width="1"/>
+      <text x="8" y="12" text-anchor="middle"
+            font-family="Fraunces, Georgia, serif" font-style="italic"
+            font-size="11" font-weight="500" fill="#FAF7F2">d</text>
+    </g>
+  
+  
+    <line x1="80" y1="584" x2="1120" y2="584"
+          stroke="rgba(250,247,242,0.2)" stroke-width="1"/>
+    <text x="80" y="614"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="2" fill="rgba(250,247,242,0.6)">MUNTIN DIGITAL</text>
+    <text x="1120" y="614" text-anchor="end"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="1" fill="rgba(250,247,242,0.6)">muntin.digital</text>
+  
 </svg>

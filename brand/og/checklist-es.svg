@@ -1,42 +1,109 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
-  <rect width="1200" height="630" fill="#FAF7F2"/>
+  <defs>
+    <radialGradient id="toolglow" cx="82%" cy="28%" r="65%">
+      <stop offset="0%" stop-color="#FAF7F2" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#1F4E5B" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#1F4E5B"/>
+  
+    <defs>
+      <pattern id="muntinField" x="0" y="0" width="140" height="140"
+               patternUnits="userSpaceOnUse">
+        <g transform="translate(18, 18)"
+           fill="none" stroke="#FAF7F2" stroke-width="1.5"
+           stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="0" y="0" width="104" height="104"/>
+          <line x1="52" y1="0" x2="52" y2="104"/>
+          <line x1="0" y1="36" x2="104" y2="36"/>
+        </g>
+      </pattern>
+    </defs>
+    <rect width="1200" height="630"
+          fill="url(#muntinField)" opacity="0.05"/>
+  
+  <rect width="1200" height="630" fill="url(#toolglow)"/>
+  <rect x="0" y="0" width="12" height="252" fill="#C5A059"/>
+  <rect x="0" y="252" width="12" height="378" fill="#C5A059" opacity="0.4"/>
 
-  <!-- Left content zone -->
-  <text x="72" y="90" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#1F4E5B" letter-spacing="5">HERRAMIENTA GRATIS · 10 MINUTOS</text>
+  
+    <g transform="translate(80, 78) scale(1.5)"
+       fill="none" stroke="#C5A059" stroke-width="1.167"
+       stroke-linecap="round" stroke-linejoin="round"
+       color="#C5A059" opacity="0.85">
+      <rect x="4" y="4" width="16" height="16" rx="1"/>
+          <polyline points="8 12 11 15 16 9"/>
+    </g>
+  
+  <text x="136" y="104"
+        font-family="Inter, Arial, sans-serif" font-size="13"
+        font-weight="700" letter-spacing="4" fill="#C5A059">LISTA INTERACTIVA GRATIS</text>
 
-  <text x="72" y="190" font-family="Fraunces, Georgia, serif" font-size="64" font-weight="500" fill="#14161A" letter-spacing="-2">El checklist para</text>
-  <text x="72" y="265" font-family="Fraunces, Georgia, serif" font-size="64" font-weight="500" fill="#14161A" letter-spacing="-2">sitios de restaurante</text>
-  <text x="72" y="330" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="32" font-weight="400" fill="#1F4E5B">30 cosas que tu sitio debería hacer en 2026.</text>
+  <text x="80" y="192"
+        font-family="Fraunces, Georgia, serif" font-size="62"
+        font-weight="500" letter-spacing="-2" fill="#FAF7F2">Treinta cosas</text>
+  <text x="80" y="264"
+        font-family="Fraunces, Georgia, serif" font-style="italic"
+        font-size="62" font-weight="400" letter-spacing="-2"
+        fill="#C5A059">que tu web</text>
+  <text x="80" y="336"
+        font-family="Fraunces, Georgia, serif" font-size="62"
+        font-weight="500" letter-spacing="-2" fill="#FAF7F2">debe hacer en 2026.</text>
 
-  <text x="72" y="400" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="500" fill="#6B6B6B">Interactivo. Gratis. Tu progreso se guarda solo.</text>
+  <text x="80" y="416"
+        font-family="Inter, Arial, sans-serif" font-size="20"
+        font-weight="400" fill="#FAF7F2" opacity="0.72">Califica tu propia web de restaurante en diez minutos. Tu progreso se guarda solo.</text>
 
-  <!-- Right side: mini checklist preview -->
-  <rect x="780" y="80" width="360" height="470" rx="12" fill="#FFFFFF" stroke="#E8E2D6" stroke-width="1.5"/>
+  
+        <rect x="740" y="160" width="380" height="64" rx="10" fill="rgba(250,247,242,0.08)"/>
+        <circle cx="772" cy="192" r="18" fill="none" stroke="#3AA368" stroke-width="1.5" opacity="0.4"/>
+        <path d="M762 192 L769 199 L783 185"
+              stroke="#3AA368" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="804" y="198"
+              font-family="Inter, Arial, sans-serif" font-size="17"
+              font-weight="500" fill="#FAF7F2" opacity="0.9">Teléfono toca-para-llamar</text>
+      
+        <rect x="740" y="232" width="380" height="64" rx="10" fill="rgba(250,247,242,0.08)"/>
+        <circle cx="772" cy="264" r="18" fill="none" stroke="#3AA368" stroke-width="1.5" opacity="0.4"/>
+        <path d="M762 264 L769 271 L783 257"
+              stroke="#3AA368" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="804" y="270"
+              font-family="Inter, Arial, sans-serif" font-size="17"
+              font-weight="500" fill="#FAF7F2" opacity="0.9">Menú carga en menos de 2 s</text>
+      
+        <rect x="740" y="304" width="380" height="64" rx="10" fill="rgba(250,247,242,0.08)"/>
+        <circle cx="772" cy="336" r="18" fill="none" stroke="#B8541A" stroke-width="1.5" opacity="0.4"/>
+        <path d="M763 327 L781 345 M781 327 L763 345"
+              stroke="#B8541A" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <text x="804" y="342"
+              font-family="Inter, Arial, sans-serif" font-size="17"
+              font-weight="500" fill="#FAF7F2" opacity="0.9">Reserva visible al cargar</text>
+      
+        <rect x="740" y="376" width="380" height="64" rx="10" fill="rgba(250,247,242,0.08)"/>
+        <circle cx="772" cy="408" r="18" fill="none" stroke="#B8541A" stroke-width="1.5" opacity="0.4"/>
+        <path d="M763 399 L781 417 M781 399 L763 417"
+              stroke="#B8541A" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <text x="804" y="414"
+              font-family="Inter, Arial, sans-serif" font-size="17"
+              font-weight="500" fill="#FAF7F2" opacity="0.9">Schema marca la cocina</text>
+      
 
-  <!-- Checked items -->
-  <circle cx="815" cy="128" r="12" fill="#1F4E5B"/><path d="M809 128 L813 132 L822 123" stroke="#FAF7F2" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <rect x="840" y="120" width="180" height="8" rx="4" fill="#E8E2D6"/><rect x="840" y="136" width="120" height="6" rx="3" fill="#F3EEE3"/>
-
-  <circle cx="815" cy="185" r="12" fill="#1F4E5B"/><path d="M809 185 L813 189 L822 180" stroke="#FAF7F2" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <rect x="840" y="177" width="200" height="8" rx="4" fill="#E8E2D6"/><rect x="840" y="193" width="140" height="6" rx="3" fill="#F3EEE3"/>
-
-  <circle cx="815" cy="242" r="12" fill="#1F4E5B"/><path d="M809 242 L813 246 L822 237" stroke="#FAF7F2" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <rect x="840" y="234" width="160" height="8" rx="4" fill="#E8E2D6"/><rect x="840" y="250" width="100" height="6" rx="3" fill="#F3EEE3"/>
-
-  <!-- Unchecked items -->
-  <circle cx="815" cy="299" r="12" fill="none" stroke="#E8E2D6" stroke-width="2"/>
-  <rect x="840" y="291" width="190" height="8" rx="4" fill="#E8E2D6"/><rect x="840" y="307" width="130" height="6" rx="3" fill="#F3EEE3"/>
-
-  <circle cx="815" cy="356" r="12" fill="none" stroke="#E8E2D6" stroke-width="2"/>
-  <rect x="840" y="348" width="170" height="8" rx="4" fill="#E8E2D6"/><rect x="840" y="364" width="110" height="6" rx="3" fill="#F3EEE3"/>
-
-  <!-- Progress bar at bottom of card -->
-  <rect x="800" y="500" width="320" height="8" rx="4" fill="#E8E2D6"/>
-  <rect x="800" y="500" width="192" height="8" rx="4" fill="#1F4E5B"/>
-  <text x="800" y="530" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="600" fill="#1F4E5B">3 de 5 completados</text>
-
-  <!-- Bottom bar -->
-  <line x1="0" y1="590" x2="1200" y2="590" stroke="#E8E2D6" stroke-width="1"/>
-  <text x="72" y="616" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#6B6B6B" letter-spacing="2">MUNTIN DIGITAL</text>
-  <text x="1128" y="616" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#6B6B6B" letter-spacing="1">muntin.digital/es</text>
+  
+    <g transform="translate(80, 552)" fill="#FAF7F2" opacity="0.6">
+      <circle cx="8" cy="8" r="8" fill="none" stroke="#FAF7F2" stroke-width="1"/>
+      <text x="8" y="12" text-anchor="middle"
+            font-family="Fraunces, Georgia, serif" font-style="italic"
+            font-size="11" font-weight="500" fill="#FAF7F2">d</text>
+    </g>
+  
+  
+    <line x1="80" y1="584" x2="1120" y2="584"
+          stroke="rgba(250,247,242,0.2)" stroke-width="1"/>
+    <text x="80" y="614"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="2" fill="rgba(250,247,242,0.6)">MUNTIN DIGITAL</text>
+    <text x="1120" y="614" text-anchor="end"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="1" fill="rgba(250,247,242,0.6)">muntin.digital</text>
+  
 </svg>

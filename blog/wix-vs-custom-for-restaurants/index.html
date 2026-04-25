@@ -509,7 +509,19 @@
     <nav class="nav-links" aria-label="Primary">
       <a href="/services/">Services</a>
       <a href="/for/restaurants/">Restaurants</a>
-      <a href="/learn/">Learn</a>
+      <div class="nav-library-wrap">
+        <a href="/learn/" class="nav-library-trigger" aria-haspopup="true">Library<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-library-menu" role="menu" aria-label="Library sections">
+          <a href="/learn/" role="menuitem"><strong>Library home</strong><span>The hub of everything below</span></a>
+          <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
+          <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
+          <a href="/blog/" role="menuitem"><strong>Articles</strong><span>The how-to playbooks</span></a>
+          <a href="/tools/" role="menuitem"><strong>Free tools</strong><span>Run a check on your own site</span></a>
+          <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span>97 terms in plain English</span></a>
+          <a href="/learn/research/" role="menuitem"><strong>Research</strong><span>The evidence behind the playbooks</span></a>
+          <a href="/resources/" role="menuitem"><strong>Checklists &amp; guides</strong><span>Workbooks you can save</span></a>
+        </div>
+      </div>
       <a href="/work/">Work</a>
       <a href="/about/">About</a>
     </nav>
@@ -535,7 +547,17 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/services/">Services</a>
     <a href="/for/restaurants/">Restaurants</a>
-    <a href="/learn/">Learn</a>
+    <details class="mobile-library">
+      <summary>Library</summary>
+      <a href="/learn/">Library home</a>
+      <a href="/learn/start-here/">Start here</a>
+      <a href="/learn/topics/">Topics</a>
+      <a href="/blog/">Articles</a>
+      <a href="/tools/">Free tools</a>
+      <a href="/glossary/">Glossary</a>
+      <a href="/learn/research/">Research</a>
+      <a href="/resources/">Checklists &amp; guides</a>
+    </details>
     <a href="/work/">Work</a>
     <a href="/about/">About</a>
     <button type="button" class="mobile-search js-open-search">
@@ -645,7 +667,7 @@
       <h2>Break #1 — Menu management is a trap</h2>
       <p>Wix has a "menu" widget. It looks great in the template preview. You drop in your categories, your dishes, your prices, and it renders a clean card layout on the page.</p>
       <p>Here's what you don't see until you've lived with it: <strong>your menu is inside Wix's closed system, not inside real HTML on your page.</strong> That sounds like a technicality. It isn't.</p>
-      <p>What it means in practice: Google can't cleanly crawl individual dish descriptions, so you don't rank for "chicken parm near me" the way you could. Diners can't tap a dish to share it with a friend. When you update the menu on Wix, you still have to update it again on Google Business Profile, on DoorDash, on Yelp, and anywhere else your menu lives — because nothing auto-syncs. The "easy updates" pitch quietly becomes "four separate places to update every time you change a price."</p>
+      <p>What it means in practice: Google can't cleanly crawl individual dish descriptions, so you don't rank for "chicken parm near me" the way you could. Diners can't tap a dish to share it with a friend. When you update the menu on Wix, you still have to update it again on <!-- LIBRARY:autolink:start --><a href="/glossary/gbp/">Google Business Profile</a><!-- LIBRARY:autolink:end -->, on DoorDash, on Yelp, and anywhere else your menu lives — because nothing auto-syncs. The "easy updates" pitch quietly becomes "four separate places to update every time you change a price."</p>
       <p>A custom site with a real menu CMS updates once and pushes everywhere that's wired up. A Wix menu updates in one place and leaves the other four stale.</p>
 
       <figure class="article-figure">
@@ -662,7 +684,7 @@
             </ul>
           </div>
           <div class="cvo-side open">
-            <div class="cvo-subtitle i18n">Custom HTML menu</div>
+            <div class="cvo-subtitle i18n">Custom <!-- LIBRARY:autolink:start --><a href="/glossary/html-menu/">HTML menu</a><!-- LIBRARY:autolink:end --></div>
             <h4 class="cvo-title i18n">Open system</h4>
             <ul>
               <li><span class="mark">✓</span><span class="i18n">Crawlable as Google Restaurant schema</span></li>
@@ -678,7 +700,7 @@
 
       <h2>Break #2 — Mobile load speed is always slower than it should be</h2>
       <p>This is the one I can prove with a URL: run any Wix restaurant site through <a href="/tools/audits/restaurant/">the free Restaurant Website Audit</a> and look at the Performance score. You'll almost always see something in the 40s or 50s out of 100. That's not the restaurant's fault — it's the platform.</p>
-      <p>Wix templates ship a lot of JavaScript by default — enough that, in my audit experience, Lighthouse performance scores on mobile Wix restaurant sites consistently land below 60. On a 4G connection outside your restaurant, that often translates into a first-contentful-paint that runs four seconds or longer. Google's mobile page-speed research consistently shows that <strong>the majority of mobile visitors bounce from pages that take longer than three seconds to load</strong> — which means a slow Wix site is quietly losing a meaningful portion of its hungry mobile traffic before anyone ever sees the menu.</p>
+      <p>Wix templates ship a lot of JavaScript by default — enough that, in my audit experience, <!-- LIBRARY:autolink:start --><a href="/glossary/lighthouse/">Lighthouse</a><!-- LIBRARY:autolink:end --> performance scores on mobile Wix restaurant sites consistently land below 60. On a 4G connection outside your restaurant, that often translates into a first-contentful-paint that runs four seconds or longer. Google's mobile page-speed research consistently shows that <strong>the majority of mobile visitors bounce from pages that take longer than three seconds to load</strong> — which means a slow Wix site is quietly losing a meaningful portion of its hungry mobile traffic before anyone ever sees the menu.</p>
 
       <details class="cite">
         <summary>Source: Google mobile page speed research</summary>
@@ -728,12 +750,12 @@
       <p>A custom site lets you pick the reservation system that actually fits your workflow and wire it in cleanly — whichever platform that happens to be.</p>
 
       <h2>Break #4 — SEO is "template-good," not "actually good"</h2>
-      <p>Wix will tell you its SEO is strong. Technically it's not wrong: title tags exist, a sitemap gets generated, pages are indexable. That's the floor. It's not the ceiling.</p>
+      <p>Wix will tell you its SEO is strong. Technically it's not wrong: title tags exist, a <!-- LIBRARY:autolink:start --><a href="/glossary/sitemap/">sitemap</a><!-- LIBRARY:autolink:end --> gets generated, pages are indexable. That's the floor. It's not the ceiling.</p>
       <p>Where I consistently see Wix fall short in restaurant audits:</p>
       <ul>
-        <li><strong>Restaurant schema markup</strong> (the JSON-LD that tells Google your cuisine, hours, price range, menu URL, and reviews) is, in most Wix restaurant templates I've audited, either missing entirely or left with empty placeholders an owner doesn't know to hunt down and fill in.</li>
+        <li><strong>Restaurant <!-- LIBRARY:autolink:start --><a href="/glossary/schema/">schema markup</a><!-- LIBRARY:autolink:end --></strong> (the JSON-LD that tells Google your cuisine, hours, price range, menu URL, and reviews) is, in most Wix restaurant templates I've audited, either missing entirely or left with empty placeholders an owner doesn't know to hunt down and fill in.</li>
         <li><strong>Meta descriptions</strong> tend to auto-generate from page copy unless you manually override every page — and in practice, most owners don't. The result is Google search snippets that read like "Welcome to Our Home Page — We are excited to share…"</li>
-        <li><strong>Image alt text</strong> often defaults to the filename if you don't manually set it. Every photo you upload comes in as <code>IMG_2041.jpg</code> and stays that way, invisible to Google Image Search.</li>
+        <li><strong>Image <!-- LIBRARY:autolink:start --><a href="/glossary/alt-text/">alt text</a><!-- LIBRARY:autolink:end --></strong> often defaults to the filename if you don't manually set it. Every photo you upload comes in as <code>IMG_2041.jpg</code> and stays that way, invisible to Google Image Search.</li>
         <li><strong>Site speed</strong> — already covered in Break #2 — is itself a ranking factor, and the scores I see on Wix restaurant templates are typically low enough to affect mobile-first rankings.</li>
       </ul>
       <p>The net effect: you rank for your own restaurant name (which anyone can do), and you don't rank for "[cuisine] near me" or "best [dish] in [city]," which is where the new customers come from.</p>
@@ -764,7 +786,7 @@
       </details>
 
       <p>The raw difference is about $1,900 over two years. That's real money. Now layer in the thing the Wix math conveniently leaves out:</p>
-      <p>A Wix site loading slowly on mobile, with thin schema and a hard-to-read menu, in my audit experience can easily cost a restaurant <strong>several reservations a week</strong> compared to what a well-built site would convert — people who tapped the link, waited three seconds, couldn't read the menu on their phone, and booked somewhere else. At an average cover of $55, even three lost reservations a week works out to roughly <strong>$8,500 a year</strong> in gross revenue that never walked through the door. (Your actual numbers will depend on your volume and menu, but the direction is always the same.)</p>
+      <p>A Wix site loading slowly on mobile, with thin schema and a hard-to-read menu, in my audit experience can easily cost a restaurant <strong>several reservations a week</strong> compared to what a well-built site would convert — people who tapped the link, waited three seconds, couldn't read the menu on their phone, and booked somewhere else. At an average <!-- LIBRARY:autolink:start --><a href="/glossary/cover/">cover</a><!-- LIBRARY:autolink:end --> of $55, even three lost reservations a week works out to roughly <strong>$8,500 a year</strong> in gross revenue that never walked through the door. (Your actual numbers will depend on your volume and menu, but the direction is always the same.)</p>
       <p>The custom site pays for itself somewhere in the first four months of recovered reservations. Everything after that is pure delta.</p>
 
       <p class="pull-quote">The custom site pays for itself in the first four months of recovered reservations. Everything after that is pure delta.</p>
@@ -791,6 +813,45 @@
         </a>
       </div>
     </article>
+
+    <aside class="post-end-mark" aria-hidden="true">
+  <hr/>
+  <span class="post-end-glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+  <rect x="4" y="4" width="16" height="16"/>
+  <line x1="12" y1="4" x2="12" y2="20"/>
+  <line x1="4" y1="10" x2="20" y2="10"/>
+</svg></span>
+  <p>More from the library.</p>
+</aside>
+
+    <!-- LIBRARY:see-also:start -->
+<aside class="see-also" aria-labelledby="see-also-h">
+  <p class="see-also-label" id="see-also-h">See also</p>
+  <ul class="see-also-list">
+      <li>
+        <a class="see-also-card" href="/tools/brand-suite/">
+          <span class="see-also-kind">Tool</span>
+          <h3>Brand Suite</h3>
+          <p>Drop a logo. Get a usable color palette, accessible pairs, and the CSS tokens to ship them.</p>
+        </a>
+      </li>
+      <li>
+        <a class="see-also-card" href="/blog/is-doordash-worth-it-for-restaurants-in-2026/">
+          <span class="see-also-kind">Article</span>
+          <h3>Is DoorDash Worth It for Restaurants in 2026?</h3>
+          <p>The honest math of DoorDash and third-party delivery for independent restaurants — what $100 of delivery revenue actually becomes, when it makes sense, and how to build your own-ordering flow.</p>
+        </a>
+      </li>
+      <li>
+        <a class="see-also-card" href="/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">
+          <span class="see-also-kind">Article</span>
+          <h3>How to Raise Restaurant Menu Prices Without Losing Reservations</h3>
+          <p>The honest playbook for raising menu prices on an independent restaurant&#39;s website in 2026 — which items to raise, how to stage it, and the website moves that protect reservations.</p>
+        </a>
+      </li>
+    </ul>
+</aside>
+<!-- LIBRARY:see-also:end -->
 
     <aside class="further-reading">
       <p class="label">Further reading</p>
@@ -832,7 +893,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a 72-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a 97-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -847,15 +908,16 @@
       </nav>
 
       <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Learn</p>
+        <p class="foot-heading" id="foot-learn">Library</p>
         <ul class="foot-links">
           <li><a href="/learn/">Library home</a></li>
           <li><a href="/learn/start-here/">Start here</a></li>
+          <li><a href="/learn/topics/">Topics</a></li>
           <li><a href="/blog/">Articles</a></li>
           <li><a href="/tools/">Free tools</a></li>
           <li><a href="/glossary/">Glossary</a></li>
           <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/resources/restaurant-website-checklist/">Restaurant checklist</a></li>
+          <li><a href="/resources/">Checklists &amp; guides</a></li>
         </ul>
       </nav>
 

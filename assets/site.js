@@ -3147,3 +3147,36 @@
     }
     function escapeAttr(s) { return escapeHtml(s); }
   })();
+
+// ============================================================
+// Spam-defense: stamp every /api/* form with a load-time
+// timestamp. Pairs with isTimestampSane() in src/lib/validation.js
+// — the worker rejects any submit that's missing the field (i.e.
+// the bot didn't run JS) or that arrives faster than 1.5s after
+// page load (i.e. an instant-submit auto-poster). Safe to run
+// more than once: the IIFE finds an existing _ts input before
+// creating one, so a re-render that re-mounts a form updates
+// rather than duplicates the field. Auto-applies to all current
+// and future forms whose action starts with "/api/".
+// ============================================================
+(function stampFormTimestamps(){
+  function stamp() {
+    var ts = String(Date.now());
+    var forms = document.querySelectorAll('form[action^="/api/"]');
+    for (var i = 0; i < forms.length; i++) {
+      var form = forms[i];
+      var existing = form.querySelector('input[name="_ts"]');
+      if (existing) { existing.value = ts; continue; }
+      var input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = '_ts';
+      input.value = ts;
+      form.appendChild(input);
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', stamp);
+  } else {
+    stamp();
+  }
+})();

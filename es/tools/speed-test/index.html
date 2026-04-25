@@ -184,7 +184,19 @@
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/services/">Servicios</a>
       <a href="/es/for/restaurants/">Restaurantes</a>
-      <a href="/es/learn/">Aprende</a>
+      <div class="nav-library-wrap">
+        <a href="/es/learn/" class="nav-library-trigger" aria-haspopup="true">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-library-menu" role="menu" aria-label="Secciones de la biblioteca">
+          <a href="/es/learn/" role="menuitem"><strong>Inicio de la biblioteca</strong><span>El centro de todo lo de abajo</span></a>
+          <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
+          <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
+          <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
+          <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
+          <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span>97 términos en lenguaje claro</span></a>
+          <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
+          <a href="/es/resources/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+        </div>
+      </div>
       <a href="/es/work/">Proyectos</a>
       <a href="/es/about/">Sobre Don</a>
     </nav>
@@ -210,7 +222,17 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/services/">Servicios</a>
     <a href="/es/for/restaurants/">Restaurantes</a>
-    <a href="/es/learn/">Aprende</a>
+    <details class="mobile-library">
+      <summary>Biblioteca</summary>
+      <a href="/es/learn/">Inicio de la biblioteca</a>
+      <a href="/es/learn/start-here/">Empieza aquí</a>
+      <a href="/es/learn/topics/">Temas</a>
+      <a href="/es/blog/">Artículos</a>
+      <a href="/es/tools/">Herramientas gratis</a>
+      <a href="/es/glossary/">Glosario</a>
+      <a href="/es/learn/research/">Investigación</a>
+      <a href="/es/resources/">Listas y recursos</a>
+    </details>
     <a href="/es/work/">Proyectos</a>
     <a href="/es/about/">Sobre Don</a>
     <button type="button" class="mobile-search js-open-search">
@@ -235,6 +257,7 @@
 <section class="hero hero-tight">
   <div class="container">
     <div class="speed-hero">
+      <div class="tool-hero-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 4 14 11 14 10 22 20 10 13 10 14 2"/></svg></div>
       <span class="eyebrow">Herramienta gratis &middot; 10 segundos</span>
       <h1>¿Qué tan rápido es tu <span class="serif-italic">sitio?</span></h1>
       <p class="hero-sub" style="margin:20px auto 0; max-width:520px;">
@@ -292,6 +315,34 @@
     </div>
   </div>
 </section>
+
+<!-- LIBRARY:tool-deep-links:start -->
+<section class="tool-deep-links" aria-labelledby="tool-deep-h">
+  <div class="container">
+    <header class="tool-deep-head">
+      <span class="eyebrow">Aprende más</span>
+      <h2 id="tool-deep-h">Por qué existe esta herramienta.</h2>
+      <p class="tool-deep-blurb">Cada chequeo que esta herramienta hace conecta con un concepto específico en la biblioteca. Dos puntos de partida — una definición, una guía.</p>
+      <div class="tool-deep-topics"><a class="tool-deep-topic" href="/es/learn/topics/speed-mobile/">Velocidad y móvil</a></div>
+    </header>
+    <div class="tool-deep-grid">
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/core-web-vitals/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Core Web Vitals</h3>
+          <p class="tool-deep-aka">CWV</p>
+          <p class="tool-deep-snippet">Las tres calificaciones de desempeño de Google para la carga real de una página en un celular — una para velocidad de carga (LCP), una para …</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-article" href="/es/blog/why-your-restaurant-loses-reservations-every-night/">
+          <span class="tool-deep-kind">Artículo</span>
+          <h3>Por qué tu restaurante pierde reservas cada noche (y cómo arreglarlo)</h3>
+          <p class="tool-deep-snippet">Un embudo real de pérdida de reservas — los seis lugares donde el sitio web de tu restaurante está silenciosamente perdiendo a comensales con intención, lo que cada fuga te cuesta en dólares, y el arreglo para cada una.</p>
+          <span class="tool-deep-cta">Leer la guía <span aria-hidden="true">→</span></span>
+        </a>
+    </div>
+  </div>
+</section>
+<!-- LIBRARY:tool-deep-links:end -->
 
 </main>
 

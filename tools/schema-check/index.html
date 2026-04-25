@@ -56,17 +56,8 @@
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
 <link rel="stylesheet" href="/assets/site.css?v=20260422-cohesion">
 <style>
-  .sch-hero{max-width:680px;margin:0 auto;text-align:center}
-  .sch-form{display:flex;gap:10px;max-width:560px;margin:32px auto 0}
-  .sch-form input{flex:1;padding:16px 20px;border:2px solid var(--line-dark);border-radius:12px;font:inherit;font-size:17px;background:var(--white);color:var(--ink)}
-  .sch-form input:focus{border-color:var(--teal);outline:none}
-  .sch-form button{padding:16px 28px;border:0;border-radius:12px;background:var(--teal);color:var(--cream);font:inherit;font-size:16px;font-weight:600;cursor:pointer;white-space:nowrap}
-  .sch-form button:hover{background:var(--teal-dark)}
-  .sch-form button:disabled{opacity:.5;cursor:wait}
-  @media(max-width:640px){.sch-form{flex-direction:column}}
-  .sch-note{font-size:13px;color:var(--stone);margin-top:14px;text-align:center}
-  .sch-result{display:none;max-width:560px;margin:48px auto 0}
-  .sch-result.visible{display:block}
+  /* Tool-specific result rendering. Form, hero, note, result container,
+     and CTA card live in site.css under "TOOL SHELL" — see /docs/. */
   .sch-verdict{text-align:center;margin-bottom:28px}
   .sch-verdict .icon{width:80px;height:80px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:16px}
   .sch-verdict .icon.found{background:rgba(31,157,85,.1);color:#1f9d55}
@@ -74,15 +65,13 @@
   .sch-verdict h2{font-family:var(--font-display);font-size:28px;font-weight:500;margin:0 0 8px}
   .sch-verdict p{font-size:16px;color:var(--stone);margin:0}
   .sch-types{list-style:none;padding:0;margin:0 0 24px}
-  .sch-types li{display:flex;gap:12px;padding:16px;border:1px solid var(--line);border-radius:10px;background:var(--white);margin-bottom:10px;align-items:flex-start}
-  .sch-types .tag{padding:4px 10px;border-radius:6px;font-size:13px;font-weight:600;white-space:nowrap;flex:0 0 auto}
+  .sch-types li{display:flex;gap:12px;padding:16px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);margin-bottom:10px;align-items:flex-start}
+  .sch-types .tag{padding:4px 10px;border-radius:var(--r-sm);font-size:13px;font-weight:600;white-space:nowrap;flex:0 0 auto}
   .sch-types .tag.good{background:rgba(31,157,85,.1);color:#1f9d55}
   .sch-types .tag.generic{background:rgba(194,139,46,.1);color:#8A6018}
   .sch-types .tag.none{background:rgba(184,84,26,.08);color:var(--rust)}
   .sch-types .detail{font-size:14.5px;color:var(--ink-soft);line-height:1.5}
   .sch-types .detail strong{color:var(--ink)}
-  .sch-cta{margin-top:28px;padding:28px 32px;background:var(--cream-2);border:1px solid var(--line);border-radius:14px;text-align:center}
-  .sch-cta p{font-size:15px;color:var(--stone);margin:0 0 16px}
 </style>
 </head>
 <body>
@@ -102,7 +91,19 @@
     <nav class="nav-links" aria-label="Primary">
       <a href="/services/">Services</a>
       <a href="/for/restaurants/">Restaurants</a>
-      <a href="/learn/">Learn</a>
+      <div class="nav-library-wrap">
+        <a href="/learn/" class="nav-library-trigger" aria-haspopup="true">Library<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-library-menu" role="menu" aria-label="Library sections">
+          <a href="/learn/" role="menuitem"><strong>Library home</strong><span>The hub of everything below</span></a>
+          <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
+          <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
+          <a href="/blog/" role="menuitem"><strong>Articles</strong><span>The how-to playbooks</span></a>
+          <a href="/tools/" role="menuitem"><strong>Free tools</strong><span>Run a check on your own site</span></a>
+          <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span>97 terms in plain English</span></a>
+          <a href="/learn/research/" role="menuitem"><strong>Research</strong><span>The evidence behind the playbooks</span></a>
+          <a href="/resources/" role="menuitem"><strong>Checklists &amp; guides</strong><span>Workbooks you can save</span></a>
+        </div>
+      </div>
       <a href="/work/">Work</a>
       <a href="/about/">About</a>
     </nav>
@@ -128,7 +129,17 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/services/">Services</a>
     <a href="/for/restaurants/">Restaurants</a>
-    <a href="/learn/">Learn</a>
+    <details class="mobile-library">
+      <summary>Library</summary>
+      <a href="/learn/">Library home</a>
+      <a href="/learn/start-here/">Start here</a>
+      <a href="/learn/topics/">Topics</a>
+      <a href="/blog/">Articles</a>
+      <a href="/tools/">Free tools</a>
+      <a href="/glossary/">Glossary</a>
+      <a href="/learn/research/">Research</a>
+      <a href="/resources/">Checklists &amp; guides</a>
+    </details>
     <a href="/work/">Work</a>
     <a href="/about/">About</a>
     <button type="button" class="mobile-search js-open-search">
@@ -161,7 +172,8 @@
 <nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><a href="/tools/">Tools</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><span aria-current="page">Schema Check</span></nav>
 
 <section class="hero hero-tight"><div class="container"><div class="sch-hero">
-  <span class="eyebrow">Free tool &middot; 10 seconds</span>
+  <div class="tool-hero-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="8 6 3 12 8 18"/><polyline points="16 6 21 12 16 18"/><line x1="14" y1="4" x2="10" y2="20"/></svg></div>
+      <span class="eyebrow">Free tool &middot; 10 seconds</span>
   <h1>Does Google understand<br><span class="serif-italic">your business?</span></h1>
   <p class="hero-sub" style="margin:20px auto 0;max-width:540px;">Schema markup tells Google what kind of business you are — your hours, your type, your location. Paste your URL and see what Google sees.</p>
   <form class="sch-form" id="schForm" novalidate>
@@ -180,6 +192,34 @@
     </div>
   </div>
 </div></div></section>
+<!-- LIBRARY:tool-deep-links:start -->
+<section class="tool-deep-links" aria-labelledby="tool-deep-h">
+  <div class="container">
+    <header class="tool-deep-head">
+      <span class="eyebrow">Learn more</span>
+      <h2 id="tool-deep-h">Why this tool exists.</h2>
+      <p class="tool-deep-blurb">Every check this tool runs maps to a specific concept in the Library. Two starting points — one definition, one playbook.</p>
+      <div class="tool-deep-topics"><a class="tool-deep-topic" href="/learn/topics/local-seo/">Local SEO &amp; Discovery</a></div>
+    </header>
+    <div class="tool-deep-grid">
+      <a class="tool-deep-card tool-deep-card-term" href="/glossary/schema/">
+          <span class="tool-deep-kind">Glossary</span>
+          <h3>Schema markup</h3>
+          <p class="tool-deep-aka">JSON-LD, structured data, schema.org</p>
+          <p class="tool-deep-snippet">Invisible tags on your page that spell out, in a format Google can read directly, exactly what kind of business you are — &quot;I&#39;m a Restaurant,…</p>
+          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-article" href="/blog/how-to-set-up-google-business-profile-for-your-restaurant/">
+          <span class="tool-deep-kind">Article</span>
+          <h3>How to Set Up Google Business Profile for Your Restaurant</h3>
+          <p class="tool-deep-snippet">A step-by-step guide to claiming, verifying, and optimizing Google Business Profile for your restaurant — categories, photos, menu links, and the settings most owners miss.</p>
+          <span class="tool-deep-cta">Read the playbook <span aria-hidden="true">→</span></span>
+        </a>
+    </div>
+  </div>
+</section>
+<!-- LIBRARY:tool-deep-links:end -->
+
 </main>
 <footer><div class="container">
   <div class="foot-cta"><div class="foot-cta-text">Ready to build something worth the time?</div><a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a></div>

@@ -1,28 +1,72 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
   <rect width="1200" height="630" fill="#FAF7F2"/>
-  <rect x="0" y="0" width="6" height="630" fill="#1F4E5B"/>
+  
+    <defs>
+      <pattern id="muntinField" x="0" y="0" width="140" height="140"
+               patternUnits="userSpaceOnUse">
+        <g transform="translate(18, 18)"
+           fill="none" stroke="#14161A" stroke-width="1.5"
+           stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="0" y="0" width="104" height="104"/>
+          <line x1="52" y1="0" x2="52" y2="104"/>
+          <line x1="0" y1="36" x2="104" y2="36"/>
+        </g>
+      </pattern>
+    </defs>
+    <rect width="1200" height="630"
+          fill="url(#muntinField)" opacity="0.045"/>
+  
+  
+    <rect x="0" y="0" width="12" height="252" fill="#1F4E5B"/>
+    <rect x="0" y="252" width="12" height="378" fill="#1F4E5B" opacity="0.4"/>
+  
 
-  <text x="72" y="90" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#1F4E5B" letter-spacing="5">HOW-TO · LOCAL SEO · 2026</text>
+  
+    <g transform="translate(80, 70) scale(1.5)"
+       fill="none" stroke="#1F4E5B" stroke-width="1.167"
+       stroke-linecap="round" stroke-linejoin="round"
+       color="#1F4E5B" opacity="0.85">
+      <path d="M12 22 C7 16 4 12 4 9 a8 8 0 0 1 16 0 c0 3 -3 7 -8 13 z"/>
+                <circle cx="12" cy="9" r="2.5"/>
+    </g>
+  
+  <text x="136" y="96"
+        font-family="Inter, Arial, sans-serif" font-size="13"
+        font-weight="700" letter-spacing="4" fill="#1F4E5B">LOCAL SEO · SETUP</text>
 
-  <text x="72" y="200" font-family="Fraunces, Georgia, serif" font-size="52" font-weight="500" fill="#14161A" letter-spacing="-2">How to Set Up</text>
-  <text x="72" y="272" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="56" font-weight="400" fill="#1F4E5B" letter-spacing="-2">Google Business Profile</text>
-  <text x="72" y="336" font-family="Fraunces, Georgia, serif" font-size="44" font-weight="500" fill="#14161A" letter-spacing="-1">for Your Restaurant</text>
+  <text x="80" y="184"
+        font-family="Fraunces, Georgia, serif" font-size="58"
+        font-weight="500" letter-spacing="-2" fill="#14161A">Set up</text>
+  <text x="80" y="256"
+        font-family="Fraunces, Georgia, serif" font-style="italic"
+        font-size="58" font-weight="400" letter-spacing="-2"
+        fill="#1F4E5B">Google Business</text>
+  <text x="80" y="328"
+        font-family="Fraunces, Georgia, serif" font-size="58"
+        font-weight="500" letter-spacing="-2" fill="#14161A">Profile.</text>
 
-  <!-- Right: 7-step checklist preview -->
-  <g transform="translate(870, 145)">
-    <text x="0" y="0" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#6B6B6B" letter-spacing="2">7 STEPS</text>
-    <circle cx="12" cy="28" r="9" fill="#1F4E5B"/><text x="8" y="33" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#FAF7F2">1</text><text x="30" y="33" font-family="Inter, Arial, sans-serif" font-size="14" fill="#14161A">Claim your listing</text>
-    <circle cx="12" cy="58" r="9" fill="#1F4E5B"/><text x="8" y="63" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#FAF7F2">2</text><text x="30" y="63" font-family="Inter, Arial, sans-serif" font-size="14" fill="#14161A">Verify ownership</text>
-    <circle cx="12" cy="88" r="9" fill="#1F4E5B"/><text x="8" y="93" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#FAF7F2">3</text><text x="30" y="93" font-family="Inter, Arial, sans-serif" font-size="14" fill="#14161A">Choose categories</text>
-    <circle cx="12" cy="118" r="9" fill="#1F4E5B"/><text x="8" y="123" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#FAF7F2">4</text><text x="30" y="123" font-family="Inter, Arial, sans-serif" font-size="14" fill="#14161A">Complete every field</text>
-    <circle cx="12" cy="148" r="9" fill="#1F4E5B"/><text x="8" y="153" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#FAF7F2">5</text><text x="30" y="153" font-family="Inter, Arial, sans-serif" font-size="14" fill="#14161A">Add real photos</text>
-    <circle cx="12" cy="178" r="9" fill="#1F4E5B"/><text x="8" y="183" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#FAF7F2">6</text><text x="30" y="183" font-family="Inter, Arial, sans-serif" font-size="14" fill="#14161A">Set up Posts</text>
-    <circle cx="12" cy="208" r="9" fill="#1F4E5B"/><text x="8" y="213" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#FAF7F2">7</text><text x="30" y="213" font-family="Inter, Arial, sans-serif" font-size="14" fill="#14161A">Respond to reviews</text>
-  </g>
+  <text x="80" y="408"
+        font-family="Inter, Arial, sans-serif" font-size="20"
+        font-weight="400" fill="#6B6B6B">Claiming, verification, categories, photos, menu links — and the settings most owners miss.</text>
 
-  <text x="72" y="420" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="500" fill="#6B6B6B">The complete setup and optimization guide. 30 minutes.</text>
+  
 
-  <line x1="0" y1="590" x2="1200" y2="590" stroke="#E8E2D6" stroke-width="1"/>
-  <text x="72" y="616" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#6B6B6B" letter-spacing="2">MUNTIN DIGITAL</text>
-  <text x="1128" y="616" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#6B6B6B" letter-spacing="1">muntin.digital/blog</text>
+  
+    <g transform="translate(80, 552)" fill="#6B6B6B" opacity="0.6">
+      <circle cx="8" cy="8" r="8" fill="none" stroke="#6B6B6B" stroke-width="1"/>
+      <text x="8" y="12" text-anchor="middle"
+            font-family="Fraunces, Georgia, serif" font-style="italic"
+            font-size="11" font-weight="500" fill="#6B6B6B">d</text>
+    </g>
+  
+  
+    <line x1="80" y1="584" x2="1120" y2="584"
+          stroke="#E8E2D6" stroke-width="1"/>
+    <text x="80" y="614"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="2" fill="#6B6B6B">MUNTIN DIGITAL</text>
+    <text x="1120" y="614" text-anchor="end"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="1" fill="#6B6B6B">muntin.digital</text>
+  
 </svg>

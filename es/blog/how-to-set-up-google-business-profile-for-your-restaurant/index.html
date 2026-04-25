@@ -254,7 +254,19 @@
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/services/">Servicios</a>
       <a href="/es/for/restaurants/">Restaurantes</a>
-      <a href="/es/learn/">Aprende</a>
+      <div class="nav-library-wrap">
+        <a href="/es/learn/" class="nav-library-trigger" aria-haspopup="true">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-library-menu" role="menu" aria-label="Secciones de la biblioteca">
+          <a href="/es/learn/" role="menuitem"><strong>Inicio de la biblioteca</strong><span>El centro de todo lo de abajo</span></a>
+          <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
+          <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
+          <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
+          <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
+          <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span>97 términos en lenguaje claro</span></a>
+          <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
+          <a href="/es/resources/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+        </div>
+      </div>
       <a href="/es/work/">Proyectos</a>
       <a href="/es/about/">Sobre Don</a>
     </nav>
@@ -280,7 +292,17 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/services/">Servicios</a>
     <a href="/es/for/restaurants/">Restaurantes</a>
-    <a href="/es/learn/">Aprende</a>
+    <details class="mobile-library">
+      <summary>Biblioteca</summary>
+      <a href="/es/learn/">Inicio de la biblioteca</a>
+      <a href="/es/learn/start-here/">Empieza aquí</a>
+      <a href="/es/learn/topics/">Temas</a>
+      <a href="/es/blog/">Artículos</a>
+      <a href="/es/tools/">Herramientas gratis</a>
+      <a href="/es/glossary/">Glosario</a>
+      <a href="/es/learn/research/">Investigación</a>
+      <a href="/es/resources/">Listas y recursos</a>
+    </details>
     <a href="/es/work/">Proyectos</a>
     <a href="/es/about/">Sobre Don</a>
     <button type="button" class="mobile-search js-open-search">
@@ -455,7 +477,7 @@
         <li><strong>Descripción del negocio.</strong> Tienes 750 caracteres. Úsalos. Nombra tu cocina, tu barrio, tu filosofía de origen y tus platos de la casa. Esto lo rastrea Google y lo muestra al cliente.</li>
         <li><strong>Enlace al menú.</strong> Apúntalo a la página del menú en tu sitio web, no a un PDF. Si todavía no tienes sitio, puedes usar el editor de menú integrado de Google — pero una página web real es mejor para el SEO y para la experiencia de lectura del cliente.</li>
         <li><strong>Enlace de reservas.</strong> Si usas OpenTable, Resy, Tock o cualquier otra plataforma, agrega aquí el URL directo de reserva. Google va a mostrar un botón de "Reservar mesa" en tu ficha.</li>
-        <li><strong>Enlace de pedidos.</strong> Misma idea — apunta a tu página de pedido directo (a través de Toast, Square o tu sitio), no a un agregador de terceros que te cobra 30 %.</li>
+        <li><strong>Enlace de pedidos.</strong> Misma idea — apunta a tu página de pedido directo (a través de Toast, Square o tu sitio), no a un <!-- LIBRARY:autolink:start --><a href="/es/glossary/aggregator/">agregador</a><!-- LIBRARY:autolink:end --> de terceros que te cobra 30 %.</li>
         <li><strong>Atributos.</strong> Google te deja especificar: terraza, accesible para silla de ruedas, acepta reservas, bueno para grupos, bueno para niños, sirve alcohol, música en vivo, etc. Marca cada atributo que aplique. Estos filtran las búsquedas del cliente ("restaurantes con terraza cerca de mí").</li>
         <li><strong>Fecha de apertura.</strong> Si tu restaurante lleva abierto desde 1931 (como uno de los míos), pon esa fecha. La trayectoria es una señal de confianza.</li>
       </ul>
@@ -524,6 +546,45 @@
 
     </article>
 
+    <aside class="post-end-mark" aria-hidden="true">
+  <hr/>
+  <span class="post-end-glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+  <rect x="4" y="4" width="16" height="16"/>
+  <line x1="12" y1="4" x2="12" y2="20"/>
+  <line x1="4" y1="10" x2="20" y2="10"/>
+</svg></span>
+  <p>Más desde la biblioteca.</p>
+</aside>
+
+    <!-- LIBRARY:see-also:start -->
+<aside class="see-also" aria-labelledby="see-also-h">
+  <p class="see-also-label" id="see-also-h">Ver también</p>
+  <ul class="see-also-list">
+      <li>
+        <a class="see-also-card" href="/es/tools/schema-check/">
+          <span class="see-also-kind">Herramienta</span>
+          <h3>¿Google entiende mi negocio? Revisión gratis de schema</h3>
+          <p>Revisa si Google sabe qué tipo de negocio eres. Escaneamos tu sitio buscando datos estructurados y te decimos qué hay, qué falta y cómo arreglarlo. Gratis, 10 segundos.</p>
+        </a>
+      </li>
+      <li>
+        <a class="see-also-card" href="/es/learn/research/local-business-websites/">
+          <span class="see-also-kind">Investigación</span>
+          <h3>Usabilidad de sitios de negocios locales — Nota de investigación</h3>
+          <p>La investigación del Nielsen Norman Group sobre qué buscan de verdad los clientes en el sitio de un negocio pequeño — los horarios y la ubicación encabezan la lista, y ambos son lo más escondido. Resumen de Muntin y un enlace al original.</p>
+        </a>
+      </li>
+      <li>
+        <a class="see-also-card" href="/es/tools/search-ideas/">
+          <span class="see-also-kind">Herramienta</span>
+          <h3>¿Qué busca la gente cerca de mí? Ideas gratis de búsqueda local</h3>
+          <p>Mira qué buscan de verdad las personas de tu barrio. Escribe tu tipo de negocio y tu ciudad — te damos los patrones de búsqueda reales de Google. Ideas gratis de contenido para tu sitio y tu Google Business Profile.</p>
+        </a>
+      </li>
+    </ul>
+</aside>
+<!-- LIBRARY:see-also:end -->
+
     <aside class="further-reading">
       <p class="label">Sigue leyendo</p>
       <a href="/es/blog/how-to-get-more-google-reviews-for-your-restaurant/">
@@ -560,7 +621,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de 72 t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de 97 t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -575,15 +636,16 @@
       </nav>
 
       <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Aprende</p>
+        <p class="foot-heading" id="foot-learn">Biblioteca</p>
         <ul class="foot-links">
-          <li><a href="/es/learn/">Biblioteca</a></li>
+          <li><a href="/es/learn/">Inicio de la biblioteca</a></li>
           <li><a href="/es/learn/start-here/">Empieza aquí</a></li>
+          <li><a href="/es/learn/topics/">Temas</a></li>
           <li><a href="/es/blog/">Artículos</a></li>
           <li><a href="/es/tools/">Herramientas gratis</a></li>
           <li><a href="/es/glossary/">Glosario</a></li>
           <li><a href="/es/learn/research/">Investigación</a></li>
-          <li><a href="/es/resources/restaurant-website-checklist/">Checklist para tu sitio</a></li>
+          <li><a href="/es/resources/">Listas y recursos</a></li>
         </ul>
       </nav>
 

@@ -235,7 +235,19 @@
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/services/">Servicios</a>
       <a href="/es/for/restaurants/">Restaurantes</a>
-      <a href="/es/learn/">Aprende</a>
+      <div class="nav-library-wrap">
+        <a href="/es/learn/" class="nav-library-trigger" aria-haspopup="true">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-library-menu" role="menu" aria-label="Secciones de la biblioteca">
+          <a href="/es/learn/" role="menuitem"><strong>Inicio de la biblioteca</strong><span>El centro de todo lo de abajo</span></a>
+          <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
+          <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
+          <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
+          <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
+          <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span>97 términos en lenguaje claro</span></a>
+          <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
+          <a href="/es/resources/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+        </div>
+      </div>
       <a href="/es/work/">Proyectos</a>
       <a href="/es/about/">Sobre Don</a>
     </nav>
@@ -261,7 +273,17 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/services/">Servicios</a>
     <a href="/es/for/restaurants/">Restaurantes</a>
-    <a href="/es/learn/">Aprende</a>
+    <details class="mobile-library">
+      <summary>Biblioteca</summary>
+      <a href="/es/learn/">Inicio de la biblioteca</a>
+      <a href="/es/learn/start-here/">Empieza aquí</a>
+      <a href="/es/learn/topics/">Temas</a>
+      <a href="/es/blog/">Artículos</a>
+      <a href="/es/tools/">Herramientas gratis</a>
+      <a href="/es/glossary/">Glosario</a>
+      <a href="/es/learn/research/">Investigación</a>
+      <a href="/es/resources/">Listas y recursos</a>
+    </details>
     <a href="/es/work/">Proyectos</a>
     <a href="/es/about/">Sobre Don</a>
     <button type="button" class="mobile-search js-open-search">
@@ -333,7 +355,7 @@
 
       <h2>Por qué las reseñas importan más de lo que crees</h2>
       <p>Las reseñas de Google son la señal de confianza más visible que tiene un restaurante. Antes de que un cliente nuevo cruce tu puerta, ya leyó lo que las últimas treinta personas dijeron de ti — y lo hizo en la misma pantalla en la que revisó tu horario, tu menú y tu ubicación. Tu Google Business Profile es tu fachada para la gente que todavía no ha entrado, y las reseñas son el aparador.</p>
-      <p>Pero esta es la parte que la mayoría de los dueños se pierde: <strong>las reseñas no son solo prueba social. Son un factor de ranking.</strong> La propia documentación de Google confirma que el número de reseñas y la calificación influyen en la posición de tu negocio en los resultados de búsqueda local y en Google Maps. La investigación de la industria de SEO también muestra de forma consistente que la frescura importa — los restaurantes con un flujo constante de reseñas recientes suelen posicionar arriba de los que tienen perfiles viejos. Un restaurante con 340 reseñas y 4,6 promedio va a aparecer consistentemente arriba de un restaurante idéntico con 28 reseñas y 4,8, porque Google pondera el volumen junto con la calificación, y las reseñas frescas señalan que el negocio está activo.</p>
+      <p>Pero esta es la parte que la mayoría de los dueños se pierde: <strong>las reseñas no son solo <!-- LIBRARY:autolink:start --><a href="/es/glossary/social-proof/">prueba social</a><!-- LIBRARY:autolink:end -->. Son un factor de ranking.</strong> La propia documentación de Google confirma que el número de reseñas y la calificación influyen en la posición de tu negocio en los resultados de búsqueda local y en Google Maps. La investigación de la industria de SEO también muestra de forma consistente que la frescura importa — los restaurantes con un flujo constante de reseñas recientes suelen posicionar arriba de los que tienen perfiles viejos. Un restaurante con 340 reseñas y 4,6 promedio va a aparecer consistentemente arriba de un restaurante idéntico con 28 reseñas y 4,8, porque Google pondera el volumen junto con la calificación, y las reseñas frescas señalan que el negocio está activo.</p>
 
       <details class="cite">
         <summary>Fuente: Ayuda de Google Business Profile</summary>
@@ -421,6 +443,45 @@
 
     </article>
 
+    <aside class="post-end-mark" aria-hidden="true">
+  <hr/>
+  <span class="post-end-glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+  <rect x="4" y="4" width="16" height="16"/>
+  <line x1="12" y1="4" x2="12" y2="20"/>
+  <line x1="4" y1="10" x2="20" y2="10"/>
+</svg></span>
+  <p>Más desde la biblioteca.</p>
+</aside>
+
+    <!-- LIBRARY:see-also:start -->
+<aside class="see-also" aria-labelledby="see-also-h">
+  <p class="see-also-label" id="see-also-h">Ver también</p>
+  <ul class="see-also-list">
+      <li>
+        <a class="see-also-card" href="/es/tools/audits/restaurant/">
+          <span class="see-also-kind">Herramienta</span>
+          <h3>Auditoría gratuita para sitios de restaurante — Puntúa tu sitio en unos treinta segundos</h3>
+          <p>Audita el sitio web de tu restaurante en unos treinta segundos. Velocidad móvil, legibilidad del menú, tocar para llamar, detección de pedidos en línea y reservas, Perfil de Empresa de Google — una auditoría real para restaurantes, no una puntuación genérica de Lighthouse. Gratis, sin registro.</p>
+        </a>
+      </li>
+      <li>
+        <a class="see-also-card" href="/es/learn/research/local-business-websites/">
+          <span class="see-also-kind">Investigación</span>
+          <h3>Usabilidad de sitios de negocios locales — Nota de investigación</h3>
+          <p>La investigación del Nielsen Norman Group sobre qué buscan de verdad los clientes en el sitio de un negocio pequeño — los horarios y la ubicación encabezan la lista, y ambos son lo más escondido. Resumen de Muntin y un enlace al original.</p>
+        </a>
+      </li>
+      <li>
+        <a class="see-also-card" href="/es/tools/gbp-grader/">
+          <span class="see-also-kind">Herramienta</span>
+          <h3>Califica tu Google Business Profile — Revisión gratis de tu GBP</h3>
+          <p>Mira cómo se compara tu Google Business Profile — reseñas, fotos, categorías, horarios y qué tan completo está. Con arreglos específicos para lo que te falta.</p>
+        </a>
+      </li>
+    </ul>
+</aside>
+<!-- LIBRARY:see-also:end -->
+
     <aside class="further-reading">
       <p class="label">Sigue leyendo</p>
       <a href="/es/blog/how-to-set-up-google-business-profile-for-your-restaurant/">
@@ -461,7 +522,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de 72 t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de 97 t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -476,15 +537,16 @@
       </nav>
 
       <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Aprende</p>
+        <p class="foot-heading" id="foot-learn">Biblioteca</p>
         <ul class="foot-links">
-          <li><a href="/es/learn/">Biblioteca</a></li>
+          <li><a href="/es/learn/">Inicio de la biblioteca</a></li>
           <li><a href="/es/learn/start-here/">Empieza aquí</a></li>
+          <li><a href="/es/learn/topics/">Temas</a></li>
           <li><a href="/es/blog/">Artículos</a></li>
           <li><a href="/es/tools/">Herramientas gratis</a></li>
           <li><a href="/es/glossary/">Glosario</a></li>
           <li><a href="/es/learn/research/">Investigación</a></li>
-          <li><a href="/es/resources/restaurant-website-checklist/">Checklist para tu sitio</a></li>
+          <li><a href="/es/resources/">Listas y recursos</a></li>
         </ul>
       </nav>
 

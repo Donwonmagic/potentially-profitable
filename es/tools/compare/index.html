@@ -108,7 +108,19 @@
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/services/">Servicios</a>
       <a href="/es/for/restaurants/">Restaurantes</a>
-      <a href="/es/learn/">Aprende</a>
+      <div class="nav-library-wrap">
+        <a href="/es/learn/" class="nav-library-trigger" aria-haspopup="true">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-library-menu" role="menu" aria-label="Secciones de la biblioteca">
+          <a href="/es/learn/" role="menuitem"><strong>Inicio de la biblioteca</strong><span>El centro de todo lo de abajo</span></a>
+          <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
+          <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
+          <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
+          <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
+          <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span>97 términos en lenguaje claro</span></a>
+          <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
+          <a href="/es/resources/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+        </div>
+      </div>
       <a href="/es/work/">Proyectos</a>
       <a href="/es/about/">Sobre Don</a>
     </nav>
@@ -134,7 +146,17 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/services/">Servicios</a>
     <a href="/es/for/restaurants/">Restaurantes</a>
-    <a href="/es/learn/">Aprende</a>
+    <details class="mobile-library">
+      <summary>Biblioteca</summary>
+      <a href="/es/learn/">Inicio de la biblioteca</a>
+      <a href="/es/learn/start-here/">Empieza aquí</a>
+      <a href="/es/learn/topics/">Temas</a>
+      <a href="/es/blog/">Artículos</a>
+      <a href="/es/tools/">Herramientas gratis</a>
+      <a href="/es/glossary/">Glosario</a>
+      <a href="/es/learn/research/">Investigación</a>
+      <a href="/es/resources/">Listas y recursos</a>
+    </details>
     <a href="/es/work/">Proyectos</a>
     <a href="/es/about/">Sobre Don</a>
     <button type="button" class="mobile-search js-open-search">
@@ -150,7 +172,8 @@
 <nav class="breadcrumb container" aria-label="Ruta de navegación"><a href="/es/">Inicio</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><a href="/es/tools/">Herramientas</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><span aria-current="page">Comparar</span></nav>
 
 <section class="hero hero-tight"><div class="container"><div class="cmp-hero">
-  <span class="eyebrow">Herramienta gratis &middot; 30 segundos</span>
+  <div class="tool-hero-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="1"/><line x1="12" y1="4.5" x2="12" y2="19.5"/><line x1="4.5" y1="10" x2="19.5" y2="10"/></svg></div>
+      <span class="eyebrow">Herramienta gratis &middot; 30 segundos</span>
   <h1>Tu sitio vs.<br><span class="serif-italic">el de ellos.</span></h1>
   <p class="hero-sub" style="margin:20px auto 0;max-width:540px;">Pega dos URLs y mira quién gana en velocidad, móvil, SEO y accesibilidad — lado a lado, en español claro.</p>
   <div class="cmp-inputs">
@@ -163,6 +186,34 @@
   <p class="cmp-status" id="cmpStatus" hidden></p>
   <div class="cmp-result" id="cmpResult" aria-live="polite"></div>
 </div></div></section>
+<!-- LIBRARY:tool-deep-links:start -->
+<section class="tool-deep-links" aria-labelledby="tool-deep-h">
+  <div class="container">
+    <header class="tool-deep-head">
+      <span class="eyebrow">Aprende más</span>
+      <h2 id="tool-deep-h">Por qué existe esta herramienta.</h2>
+      <p class="tool-deep-blurb">Cada chequeo que esta herramienta hace conecta con un concepto específico en la biblioteca. Dos puntos de partida — una definición, una guía.</p>
+      <div class="tool-deep-topics"><a class="tool-deep-topic" href="/es/learn/topics/speed-mobile/">Velocidad y móvil</a></div>
+    </header>
+    <div class="tool-deep-grid">
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/lighthouse/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Lighthouse</h3>
+          <p class="tool-deep-aka">el motor de auditoría de Google</p>
+          <p class="tool-deep-snippet">La herramienta de auditoría de código abierto que Google trae dentro de Chrome y dentro de PageSpeed Insights. Simula una carga de página en…</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-article" href="/es/blog/wix-vs-custom-for-restaurants/">
+          <span class="tool-deep-kind">Artículo</span>
+          <h3>Wix vs. a medida para restaurantes: qué se rompe primero</h3>
+          <p class="tool-deep-snippet">Una comparación honesta entre Wix y un sitio web a medida para restaurante. Seis lugares donde Wix se queda corto para un restaurante independiente, la cuenta de ROI que hace que valga la pena cambiar, y cuándo Wix sí es la respuesta correcta.</p>
+          <span class="tool-deep-cta">Leer la guía <span aria-hidden="true">→</span></span>
+        </a>
+    </div>
+  </div>
+</section>
+<!-- LIBRARY:tool-deep-links:end -->
+
 </main>
 
 <footer><div class="container">
