@@ -193,6 +193,19 @@ h3{font-size:clamp(22px,2.2vw,30px)}
 p{margin:0}
 .eyebrow{font-family:var(--font-body);font-size:13px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);display:inline-flex;align-items:center;gap:10px}
 .eyebrow::before{content:'';width:28px;height:1px;background:var(--teal)}
+/* Eyebrow with leading glyph: replaces the 28px rule with a 24px line-stroked SVG mark in the same accent color. Used to add a page-relevance cue without breaking the eyebrow's existing inline-flex rhythm. */
+.eyebrow--glyph::before{display:none}
+.eyebrow--glyph .eyebrow-glyph{width:24px;height:24px;flex:0 0 24px;color:currentColor;opacity:.85}
+.eyebrow--glyph .eyebrow-glyph svg{width:100%;height:100%;display:block}
+/* Tool page hero glyph: 48px line-stroked mark above the eyebrow. Sits above the H1 to give the page a one-glance identity cue before the type takes over. */
+.tool-hero-glyph{width:48px;height:48px;color:var(--teal);opacity:.78;margin:0 auto 18px}
+.tool-hero-glyph svg{width:100%;height:100%;display:block}
+/* Post-end mark: muntin pane signature + italic line that closes a blog post before the related-posts module. */
+.post-end-mark{display:flex;flex-direction:column;align-items:center;gap:18px;margin:80px auto 64px;color:var(--stone)}
+.post-end-mark hr{border:none;border-top:1px solid var(--line);width:80px;margin:0}
+.post-end-mark .post-end-glyph{width:24px;height:24px;color:var(--teal);opacity:.65}
+.post-end-mark .post-end-glyph svg{width:100%;height:100%;display:block}
+.post-end-mark p{font-family:var(--font-display);font-style:italic;font-size:18px;color:var(--stone);margin:0}
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
 .btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;letter-spacing:-0.005em;transition:transform var(--t-fast) var(--ease),background var(--t-fast) var(--ease),color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease);white-space:nowrap}
 .btn svg{width:16px;height:16px;transition:transform var(--t-med) var(--ease-out)}
