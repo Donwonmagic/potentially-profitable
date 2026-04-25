@@ -86,6 +86,22 @@
 .me-action-card .me-action-items{margin:6px 0 0;padding:0;list-style:none;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;color:var(--ink);display:flex;flex-direction:column;gap:2px}
 .me-action-card .me-action-items li{padding:2px 0}
 .me-empty-state{padding:18px;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--cream-2);font-size:13.5px;color:var(--stone);text-align:center}
+.me-modes{display:inline-flex;gap:0;border:1px solid var(--line);border-radius:999px;background:var(--white);padding:3px;margin-bottom:6px}
+.me-mode-btn{padding:6px 14px;border:none;background:transparent;font:inherit;font-size:12.5px;font-weight:600;color:var(--stone);cursor:pointer;border-radius:999px}
+.me-mode-btn[aria-selected="true"]{background:var(--teal);color:var(--cream)}
+.me-paste{display:flex;flex-direction:column;gap:10px}
+.me-paste textarea{width:100%;min-height:160px;padding:12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;line-height:1.5;color:var(--ink);resize:vertical}
+.me-paste textarea:focus{outline:2px solid var(--teal);outline-offset:1px}
+.me-paste-hint{font-size:12px;color:var(--stone);margin:0}
+.me-paste-actions{display:flex;gap:8px;flex-wrap:wrap}
+.me-export-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.me-export-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background 160ms var(--ease-out),color 160ms var(--ease-out)}
+.me-export-btn:hover{background:var(--teal);color:var(--cream)}
+.me-export-btn svg{width:14px;height:14px}
+.me-export-btn.copied{background:var(--status-good-tint);color:var(--status-good);border-color:var(--status-good)}
+.me-export-btn.copy-failed{background:rgba(184,84,26,0.06);color:var(--rust);border-color:var(--rust)}
+.me-export-btn-primary{background:var(--teal);color:var(--cream)}
+.me-export-btn-primary:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
 .me-table{width:100%;border-collapse:collapse;font-size:13px;background:var(--white);border:1px solid var(--line);border-radius:var(--r-input);overflow:hidden}
 .me-table th,.me-table td{padding:8px 12px;border-bottom:1px solid var(--line);text-align:left;font-variant-numeric:tabular-nums}
 .me-table th{background:var(--cream-2);font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--stone);text-transform:uppercase}
@@ -151,7 +167,12 @@
 <!-- INPUT_PLACEHOLDER -->
 <section class="block"><div class="container">
   <div class="me-input">
-    <div class="me-input-actions">
+    <div class="me-modes" role="tablist" aria-label="Input mode">
+      <button type="button" class="me-mode-btn" role="tab" aria-selected="true"  data-mode="manual">Type or click in</button>
+      <button type="button" class="me-mode-btn" role="tab" aria-selected="false" data-mode="paste">Paste from spreadsheet</button>
+    </div>
+
+    <div class="me-input-actions" data-mode="manual">
       <button type="button" class="me-btn" id="meAddRow">+ Add item</button>
       <button type="button" class="me-btn me-btn-ghost" id="meLoadSample">Load sample menu</button>
       <button type="button" class="me-btn me-btn-ghost" id="meClear">Clear all</button>
@@ -159,7 +180,8 @@
         Need a worked example first? <button type="button" class="me-btn me-btn-ghost" id="meLoadSampleAlt" style="padding:4px 10px;font-size:12px;">Try with 12 sample items</button>
       </span>
     </div>
-    <div class="me-grid-wrap">
+
+    <div class="me-grid-wrap" data-mode="manual">
       <table class="me-grid" id="meGrid" aria-label="Menu items input grid">
         <thead><tr>
           <th scope="col" style="width:34%">Item</th>
@@ -172,6 +194,16 @@
         <tbody id="meGridBody"></tbody>
       </table>
     </div>
+
+    <div class="me-paste" data-mode="paste" hidden>
+      <p class="me-paste-hint">Paste a CSV/TSV block or a spreadsheet selection. The first row should be a header — typical column names (<code>Item</code>, <code>Price</code>, <code>Food cost</code>, <code>Units sold</code>, <code>Category</code>) auto-map. Tabs and commas both work; quoted-CSV is supported.</p>
+      <textarea id="mePasteArea" spellcheck="false" autocomplete="off" placeholder="Item,Price,Food cost,Units sold,Category&#10;Cacio e pepe,24,6,80,Pasta&#10;Bolognese,26,9,60,Pasta"></textarea>
+      <div class="me-paste-actions">
+        <button type="button" class="me-btn" id="meParse">Analyse pasted menu</button>
+        <button type="button" class="me-btn me-btn-ghost" id="mePasteSample">Paste a sample CSV</button>
+      </div>
+    </div>
+
     <div class="me-warnings" id="meWarnings" aria-live="polite"></div>
   </div>
 </div></section>
@@ -206,6 +238,25 @@
       <div style="overflow-x:auto;">
         <table class="me-table" id="meItemTable" aria-label="Per-item contribution margin and quadrant"></table>
       </div>
+    </div>
+
+    <div>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px;">Export</h2>
+      <div class="me-export-row">
+        <button type="button" class="me-export-btn me-export-btn-primary" id="meDownloadPng">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="12" y1="3" x2="12" y2="10"/></svg>
+          Download Menu Card (PNG)
+        </button>
+        <button type="button" class="me-export-btn" id="meCopyCsv">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy as CSV
+        </button>
+        <button type="button" class="me-export-btn" id="meDownloadJson">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download menu-analysis.json
+        </button>
+      </div>
+      <p style="margin:10px 0 0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);">The Menu Card PNG bakes the matrix + quadrant counts into a 1200×1500 image, designed to share with your chef or partner. The CSV mirrors the input plus computed quadrant. The JSON file includes thresholds and full per-item math. Composed entirely in your browser — no upload.</p>
     </div>
 
   </div>
@@ -531,6 +582,206 @@
 
   // Initial state: 8 empty rows so a power user can paste-and-tab.
   for (var i = 0; i < 8; i++) addRow();
+
+  // ----- Mode switching -----
+  var modeBtns = document.querySelectorAll('.me-mode-btn');
+  var modePanels = {
+    manual: document.querySelectorAll('[data-mode="manual"]'),
+    paste:  document.querySelectorAll('[data-mode="paste"]')
+  };
+  function setMode(mode){
+    modeBtns.forEach(function(b){
+      b.setAttribute('aria-selected', b.getAttribute('data-mode') === mode ? 'true' : 'false');
+    });
+    Object.keys(modePanels).forEach(function(m){
+      modePanels[m].forEach(function(el){
+        if (el.classList.contains('me-mode-btn')) return;
+        el.hidden = (m !== mode);
+      });
+    });
+  }
+  modeBtns.forEach(function(b){
+    b.addEventListener('click', function(){ setMode(b.getAttribute('data-mode')); });
+  });
+
+  // ----- Paste-table parser -----
+  var pasteArea = document.getElementById('mePasteArea');
+  var parseBtn  = document.getElementById('meParse');
+  var pasteSampleBtn = document.getElementById('mePasteSample');
+
+  parseBtn.addEventListener('click', function(){
+    var text = pasteArea.value || '';
+    var parsed = window.ME.parseTabularText(text);
+    if (!parsed.items.length) {
+      paintWarnings(parsed.warnings.length ? parsed.warnings : ['No rows could be parsed. Check that you pasted at least one data row.']);
+      return;
+    }
+    // Re-fill the manual grid so the user can tweak after parsing.
+    gridBody.innerHTML = '';
+    parsed.items.forEach(function(it){ addRow(it); });
+    setMode('manual');
+    rerender();
+    if (parsed.warnings && parsed.warnings.length) {
+      // Re-paint warnings AFTER summariseMenu's warnings (rerender clears).
+      requestAnimationFrame(function(){
+        var existing = warningsEl.querySelector('ul') ? warningsEl.querySelector('ul').innerHTML : '';
+        var extra = parsed.warnings.map(function(w){ return '<li>' + escHtml(w) + '</li>'; }).join('');
+        warningsEl.innerHTML = '<ul>' + existing + extra + '</ul>';
+      });
+    }
+  });
+
+  pasteSampleBtn.addEventListener('click', function(){
+    var lines = ['Item,Price,Food cost,Units sold,Category'];
+    SAMPLE.forEach(function(it){
+      lines.push([it.item, it.price, it.food_cost, it.units_sold, it.category].join(','));
+    });
+    pasteArea.value = lines.join('\n');
+  });
+
+  // ----- Exports -----
+  var copyCsvBtn      = document.getElementById('meCopyCsv');
+  var downloadJsonBtn = document.getElementById('meDownloadJson');
+  var downloadPngBtn  = document.getElementById('meDownloadPng');
+
+  function buildCsv(){
+    var s = window.ME.summariseMenu(readGrid());
+    var lines = ['Item,Category,Price,Food cost,CM dollars,CM percent,Units sold,Share,Quadrant'];
+    s.items.forEach(function(it){
+      function csvCell(v){
+        var str = String(v == null ? '' : v);
+        return /[",\n]/.test(str) ? '"' + str.replace(/"/g, '""') + '"' : str;
+      }
+      lines.push([
+        csvCell(it.item),
+        csvCell(it.category),
+        it.price.toFixed(2),
+        it.food_cost.toFixed(2),
+        it.cm_dollars.toFixed(2),
+        (it.cm_percent * 100).toFixed(1) + '%',
+        it.units_sold,
+        (it.share * 100).toFixed(1) + '%',
+        it.quadrant
+      ].join(','));
+    });
+    return lines.join('\n');
+  }
+
+  function buildJson(){
+    var s = window.ME.summariseMenu(readGrid());
+    var dogCount = s.items.filter(function(it){ return it.quadrant === 'Dog'; }).length;
+    return JSON.stringify({
+      meta: {
+        tool: 'Muntin Digital — Menu Engineering Matrix',
+        url: 'https://muntin.digital/tools/menu-engineering/',
+        generated_at: new Date().toISOString(),
+        method: 'Kasavana & Smith median-split: contribution-margin dollars × menu-mix share'
+      },
+      totals: s.totals,
+      thresholds: s.thresholds,
+      items: s.items,
+      counts: {
+        Star:      s.items.filter(function(i){ return i.quadrant === 'Star'; }).length,
+        Plowhorse: s.items.filter(function(i){ return i.quadrant === 'Plowhorse'; }).length,
+        Puzzle:    s.items.filter(function(i){ return i.quadrant === 'Puzzle'; }).length,
+        Dog:       dogCount
+      },
+      warnings: s.warnings
+    }, null, 2);
+  }
+
+  function downloadBlob(blob, filename){
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+  }
+
+  copyCsvBtn.addEventListener('click', function(){
+    var csv = buildCsv();
+    var orig = copyCsvBtn.lastChild.nodeValue;
+    var settle = function(label, kind){
+      copyCsvBtn.classList.remove('copied');
+      copyCsvBtn.classList.add(kind === 'error' ? 'copy-failed' : 'copied');
+      copyCsvBtn.lastChild.nodeValue = label;
+      setTimeout(function(){
+        copyCsvBtn.classList.remove('copied');
+        copyCsvBtn.classList.remove('copy-failed');
+        copyCsvBtn.lastChild.nodeValue = orig;
+      }, kind === 'error' ? 2400 : 1400);
+    };
+    var ok   = function(){ settle(' Copied CSV', 'ok'); };
+    var fail = function(){ settle(' Copy failed — select manually', 'error'); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(csv).then(ok, fail);
+    } else { fail(); }
+    if (window.plausible) window.plausible('Menu Engineering Export', { props: { format: 'csv' } });
+  });
+
+  downloadJsonBtn.addEventListener('click', function(){
+    var blob = new Blob([buildJson()], { type: 'application/json' });
+    downloadBlob(blob, 'menu-analysis.json');
+    if (window.plausible) window.plausible('Menu Engineering Export', { props: { format: 'json' } });
+  });
+
+  // SVG → PNG via canvas. Same-origin SVG, no remote fonts → no
+  // canvas-tainting. Phase 2 ships the placeholder Menu Card (the
+  // matrix on a cream ground with a header band + footer strip);
+  // Phase 3 swaps in the full 1200×1500 designed Menu Card.
+  function buildPlaceholderMenuCardPng(){
+    return new Promise(function(resolve, reject){
+      var svg = document.getElementById('meMatrix');
+      if (!svg) { reject(new Error('no matrix')); return; }
+      // Read the inner SVG markup and wrap it in a sized SVG element
+      // so the rasteriser knows the canvas size.
+      var svgMarkup = svg.outerHTML
+        .replace(/<svg([^>]*)>/, '<svg$1 xmlns="http://www.w3.org/2000/svg" width="720" height="540">');
+      // Build the wrapping card: 1200×1500 with header + footer.
+      var card =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">' +
+        '<rect width="1200" height="1500" fill="#FAF7F2"/>' +
+        '<rect x="0" y="0" width="1200" height="120" fill="#14161A"/>' +
+        '<text x="48" y="76" font-size="32" font-family="Inter,sans-serif" font-weight="600" fill="#FAF7F2">Menu Action Plan</text>' +
+        '<text x="1152" y="76" font-size="16" font-family="Inter,sans-serif" fill="rgba(250,247,242,0.72)" text-anchor="end">' + new Date().toISOString().slice(0, 10) + '</text>' +
+        '<g transform="translate(96, 200) scale(1.4)">' +
+        svgMarkup
+          .replace(/^<svg[^>]*>/, '')
+          .replace(/<\/svg>$/, '') +
+        '</g>' +
+        '<rect x="0" y="1440" width="1200" height="60" fill="#14161A"/>' +
+        '<text x="48" y="1478" font-size="14" font-family="Inter,sans-serif" fill="#FAF7F2">Generated by Menu Engineering Matrix</text>' +
+        '<text x="1152" y="1478" font-size="14" font-family="Inter,sans-serif" fill="rgba(250,247,242,0.7)" text-anchor="end">muntin.digital/tools/menu-engineering/</text>' +
+        '</svg>';
+      var img = new Image();
+      var blobUrl = URL.createObjectURL(new Blob([card], { type: 'image/svg+xml' }));
+      img.onload = function(){
+        var canvas = document.createElement('canvas');
+        canvas.width = 1200; canvas.height = 1500;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, 1200, 1500);
+        URL.revokeObjectURL(blobUrl);
+        canvas.toBlob(function(blob){
+          if (blob) resolve(blob); else reject(new Error('toBlob null'));
+        }, 'image/png');
+      };
+      img.onerror = function(){
+        URL.revokeObjectURL(blobUrl);
+        reject(new Error('svg image load failed'));
+      };
+      img.src = blobUrl;
+    });
+  }
+
+  downloadPngBtn.addEventListener('click', function(){
+    buildPlaceholderMenuCardPng().then(function(blob){
+      downloadBlob(blob, 'menu-card.png');
+      if (window.plausible) window.plausible('Menu Engineering Export', { props: { format: 'card-png' } });
+    }).catch(function(err){
+      console.warn('Menu Card render failed', err);
+    });
+  });
 })();
 </script>
 </body>

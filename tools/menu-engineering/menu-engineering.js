@@ -253,6 +253,155 @@ var ME_ACTIONS_EN = {
 };
 
 // ------------------------------------------------------------
+// Tabular text parsing — accepts CSV, TSV, or directly-pasted
+// spreadsheet selections. Auto-detects delimiter (tab vs comma)
+// and auto-maps column headers to the canonical fields.
+//
+// Privacy posture: pure string parsing, no network, no eval.
+// ------------------------------------------------------------
+
+// Header aliases for each canonical field. Matching is case-
+// insensitive and ignores punctuation/spacing. Both EN and ES
+// header conventions covered so a Spanish-language POS export
+// auto-maps too.
+var ME_HEADER_ALIASES = {
+  item:       ['item', 'name', 'dish', 'menu item', 'product', 'plato', 'nombre', 'producto'],
+  price:      ['price', 'sell price', 'menu price', 'list price', 'precio', 'pvp'],
+  food_cost:  ['food cost', 'cost', 'plate cost', 'cogs', 'recipe cost', 'costo', 'costo de comida', 'costo del plato'],
+  units_sold: ['units sold', 'units', 'qty', 'quantity', 'sold', 'sales', 'count', 'unidades', 'cantidad', 'vendidos', 'ventas'],
+  category:   ['category', 'section', 'menu section', 'group', 'categoria', 'categoría', 'sección', 'seccion', 'grupo']
+};
+
+function meNormalizeHeader(s) {
+  return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+function meDetectDelimiter(text) {
+  // First non-empty line decides. Prefer tab if present, else comma,
+  // else fall back to any run of 2+ spaces.
+  var firstLine = String(text || '').split(/\r?\n/).find(function(l){ return l.trim().length > 0; }) || '';
+  if (firstLine.indexOf('\t') >= 0) return '\t';
+  if (firstLine.indexOf(',')  >= 0) return ',';
+  return /\s{2,}/.test(firstLine) ? /\s{2,}/ : ',';
+}
+
+function meSplitCsvLine(line, delim) {
+  // Minimal CSV-aware splitter: handles "..." quoted cells with
+  // doubled-quote escapes ("a ""b"" c"). Tab/regex delimiters skip
+  // the quote logic since spreadsheets don't quote tab-delimited.
+  if (delim instanceof RegExp || delim === '\t') {
+    return String(line).split(delim).map(function(s){ return s.trim(); });
+  }
+  var out = [];
+  var cur = '';
+  var inQuotes = false;
+  for (var i = 0; i < line.length; i++) {
+    var ch = line.charAt(i);
+    if (inQuotes) {
+      if (ch === '"') {
+        if (line.charAt(i + 1) === '"') { cur += '"'; i++; }
+        else inQuotes = false;
+      } else {
+        cur += ch;
+      }
+    } else if (ch === '"') {
+      inQuotes = true;
+    } else if (ch === delim) {
+      out.push(cur.trim()); cur = '';
+    } else {
+      cur += ch;
+    }
+  }
+  out.push(cur.trim());
+  return out;
+}
+
+function meAutoMapHeaders(headers) {
+  // Returns a mapping { item: colIndex, price: colIndex, ... } where
+  // any field with no confident match is omitted. Caller can override.
+  var normalized = headers.map(meNormalizeHeader);
+  var mapping = {};
+  Object.keys(ME_HEADER_ALIASES).forEach(function(field){
+    var aliases = ME_HEADER_ALIASES[field].map(meNormalizeHeader);
+    for (var i = 0; i < normalized.length; i++) {
+      if (aliases.indexOf(normalized[i]) >= 0) {
+        mapping[field] = i;
+        break;
+      }
+    }
+  });
+  return mapping;
+}
+
+function meHasHeaderRow(firstCells) {
+  // Heuristic: if at least half the cells are non-numeric, treat as
+  // a header row. Pure pasted data tends to be all numeric (except
+  // the item column); a header row is overwhelmingly text.
+  var nonNumeric = 0;
+  for (var i = 0; i < firstCells.length; i++) {
+    var s = String(firstCells[i]).trim();
+    if (s === '') continue;
+    if (isNaN(meCoerceNumber(s))) nonNumeric++;
+  }
+  // Account for the item-name column always being non-numeric.
+  return nonNumeric >= Math.max(2, Math.ceil(firstCells.length / 2));
+}
+
+function meParseTabularText(text) {
+  // Returns { items: [...], mapping, headerRowDetected, warnings }.
+  // items is in the canonical {item, price, food_cost, units_sold,
+  // category} shape; ready to feed straight into summariseMenu.
+  var raw = String(text || '').replace(/^﻿/, '');  // strip BOM
+  if (!raw.trim()) return { items: [], mapping: {}, headerRowDetected: false, warnings: ['Pasted text was empty.'] };
+
+  var lines = raw.split(/\r?\n/).filter(function(l){ return l.trim().length > 0; });
+  var delim = meDetectDelimiter(raw);
+  var rows = lines.map(function(l){ return meSplitCsvLine(l, delim); });
+  if (!rows.length) return { items: [], mapping: {}, headerRowDetected: false, warnings: ['No rows detected.'] };
+
+  var warnings = [];
+  var headerRowDetected = meHasHeaderRow(rows[0]);
+  var mapping;
+  var dataRows;
+  if (headerRowDetected) {
+    mapping = meAutoMapHeaders(rows[0]);
+    dataRows = rows.slice(1);
+  } else {
+    // No header — assume positional order: item, price, food_cost, units_sold, [category].
+    mapping = { item: 0, price: 1, food_cost: 2, units_sold: 3 };
+    if (rows[0].length >= 5) mapping.category = 4;
+    dataRows = rows;
+    warnings.push('No header row detected — assumed columns: Item, Price, Food cost, Units sold, [Category].');
+  }
+
+  if (mapping.item == null && mapping.price == null) {
+    return { items: [], mapping: mapping, headerRowDetected: headerRowDetected,
+             warnings: warnings.concat(['Could not find an Item or Price column. Add a header row, or paste exactly: Item, Price, Food cost, Units sold.']) };
+  }
+
+  // Track which mandatory fields are missing so the caller can warn.
+  ['item', 'price', 'food_cost', 'units_sold'].forEach(function(field){
+    if (mapping[field] == null) warnings.push('Could not find a "' + field.replace('_', ' ') + '" column — items will be parsed without it.');
+  });
+
+  var items = dataRows.map(function(cells){
+    function pick(field) {
+      var idx = mapping[field];
+      return idx == null || idx >= cells.length ? '' : cells[idx];
+    }
+    return {
+      item:       pick('item'),
+      price:      pick('price'),
+      food_cost:  pick('food_cost'),
+      units_sold: pick('units_sold'),
+      category:   pick('category')
+    };
+  });
+
+  return { items: items, mapping: mapping, headerRowDetected: headerRowDetected, warnings: warnings };
+}
+
+// ------------------------------------------------------------
 // Plausible bucket helpers — enum-locked, privacy-critical.
 // No raw input value (item name, price, count) ever appears in a
 // bucket return; tests sweep across full input ranges + poison
@@ -305,6 +454,9 @@ var ME_PUBLIC = {
   median:              meMedian,
   summariseMenu:       meSummariseMenu,
   simulateChange:      meSimulateChange,
+  parseTabularText:    meParseTabularText,
+  detectDelimiter:     meDetectDelimiter,
+  autoMapHeaders:      meAutoMapHeaders,
   bucketMenuSize:      meBucketMenuSize,
   bucketPrimeCostBand: meBucketPrimeCostBand,
   bucketDogsRatio:     meBucketDogsRatio,
@@ -312,7 +464,8 @@ var ME_PUBLIC = {
   SIZE_BUCKETS:        ME_SIZE_BUCKETS,
   PRIME_COST_BANDS:    ME_PRIME_COST_BANDS,
   DOGS_RATIO_BUCKETS:  ME_DOGS_RATIO_BUCKETS,
-  ACTIONS_EN:          ME_ACTIONS_EN
+  ACTIONS_EN:          ME_ACTIONS_EN,
+  HEADER_ALIASES:      ME_HEADER_ALIASES
 };
 
 if (typeof self !== 'undefined' && typeof module === 'undefined') {

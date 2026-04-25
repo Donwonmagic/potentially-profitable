@@ -236,6 +236,98 @@ assertEq('median negatives', M.median([-3, -1, 1, 3]), 0);
 }
 
 // ------------------------------------------------------------
+// parseTabularText — paste-from-spreadsheet
+// ------------------------------------------------------------
+
+// CSV with header row + 5 columns including category
+{
+  const csv = 'Item,Price,Food cost,Units sold,Category\nCacio e pepe,24,6,80,Pasta\nBolognese,26,9,60,Pasta';
+  const r = M.parseTabularText(csv);
+  assertEq('CSV header detected', r.headerRowDetected, true);
+  assertEq('CSV mapping all 5', r.mapping, { item: 0, price: 1, food_cost: 2, units_sold: 3, category: 4 });
+  assertEq('CSV row count', r.items.length, 2);
+  assertEq('CSV first item name', r.items[0].item, 'Cacio e pepe');
+  assertEq('CSV warnings none', r.warnings.length, 0);
+}
+
+// TSV (tab-delimited) with Spanish headers
+{
+  const tsv = 'Plato\tPrecio\tCosto\tUnidades\nTacos\t12\t4\t100\nQuesadilla\t14\t5\t60';
+  const r = M.parseTabularText(tsv);
+  assertEq('TSV ES header detected', r.headerRowDetected, true);
+  assertEq('TSV ES mapping found', r.mapping.item, 0);
+  assertEq('TSV ES price mapped',  r.mapping.price, 1);
+  assertEq('TSV ES food_cost mapped', r.mapping.food_cost, 2);
+  assertEq('TSV ES units_sold mapped', r.mapping.units_sold, 3);
+}
+
+// CSV with quoted cell containing a comma
+{
+  const csv = 'Item,Price,Food cost,Units sold\n"Pollo, lemon",18,5,40';
+  const r = M.parseTabularText(csv);
+  assertEq('quoted-comma cell preserved', r.items[0].item, 'Pollo, lemon');
+  assertEq('quoted-comma cell parsed price', r.items[0].price, '18');
+}
+
+// CSV with doubled-quote escape
+{
+  const csv = 'Item,Price,Food cost,Units sold\n"The ""special""",22,7,15';
+  const r = M.parseTabularText(csv);
+  assertEq('doubled-quote unescaped', r.items[0].item, 'The "special"');
+}
+
+// No header row — positional fallback with warning
+{
+  const data = 'Tacos,12,4,100\nQuesadilla,14,5,60\nBurrito,18,6,40';
+  const r = M.parseTabularText(data);
+  assertEq('no-header positional mapping', r.mapping, { item: 0, price: 1, food_cost: 2, units_sold: 3 });
+  assertEq('no-header detected', r.headerRowDetected, false);
+  assert('no-header surfaces warning', r.warnings.some(w => /No header row/i.test(w)));
+  assertEq('no-header item count', r.items.length, 3);
+}
+
+// Empty input
+{
+  const r = M.parseTabularText('');
+  assertEq('empty text → no items', r.items.length, 0);
+  assert('empty text warns',        r.warnings.length > 0);
+}
+
+// Whitespace-only input
+{
+  const r = M.parseTabularText('   \n\n  \n');
+  assertEq('whitespace → no items', r.items.length, 0);
+}
+
+// Items round-trip into summariseMenu
+{
+  const csv = 'Item,Price,Food cost,Units sold,Category\n' +
+              'Cacio e pepe,24,6,80,Pasta\nBolognese,26,9,60,Pasta\n' +
+              'Branzino,38,12,12,Mains\nCaesar,14,4,50,Starters\n' +
+              'House wine,12,4,90,Drinks\nTiramisu,11,3,30,Dessert\n' +
+              'Pork chop,32,14,8,Mains\nBread basket,6,1.5,110,Sides';
+  const parsed = M.parseTabularText(csv);
+  const summary = M.summariseMenu(parsed.items);
+  assertEq('parser → summariser round-trip count', summary.totals.item_count, 8);
+  const cacio = summary.items.find(it => it.item === 'Cacio e pepe');
+  assertEq('round-tripped Cacio is Star', cacio.quadrant, 'Star');
+}
+
+// Headers with weird casing/punctuation auto-map
+{
+  const csv = 'MENU ITEM, list-price, COGS, qty\nFoo,10,3,5';
+  const r = M.parseTabularText(csv);
+  assertEq('headers auto-normalize: item',       r.mapping.item, 0);
+  assertEq('headers auto-normalize: price',      r.mapping.price, 1);
+  assertEq('headers auto-normalize: food_cost',  r.mapping.food_cost, 2);
+  assertEq('headers auto-normalize: units_sold', r.mapping.units_sold, 3);
+}
+
+// detectDelimiter
+assertEq('detect tab',   M.detectDelimiter('a\tb\tc\nd\te\tf'), '\t');
+assertEq('detect comma', M.detectDelimiter('a,b,c\nd,e,f'),     ',');
+
+// ------------------------------------------------------------
 // QUADRANTS enum stability
 // ------------------------------------------------------------
 assertEq('QUADRANTS exposes 4 labels', M.QUADRANTS, ['Star', 'Plowhorse', 'Puzzle', 'Dog']);
