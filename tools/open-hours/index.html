@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="referrer" content="no-referrer" />
+<title>Open Hours — Get your restaurant hours right everywhere | Muntin Digital</title>
+<meta name="description" content="Fill out your hours once. Walk away with a sign for the door, the exact text to paste into Google, and what to send your website builder. About 15 minutes. Stays in your browser." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/tools/open-hours/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/tools/open-hours/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/open-hours/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/open-hours/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="es_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Open Hours — Get your restaurant hours right everywhere" />
+<meta property="og:description" content="Fill out your hours once. Walk away with a sign for the door, the exact text to paste into Google, and what to send your website builder. Stays in your browser." />
+<meta property="og:url" content="https://muntin.digital/tools/open-hours/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Open Hours — Get your restaurant hours right everywhere" />
+<meta name="twitter:description" content="Fill out your hours once. Walk away with what you need for Google, your website, and your door. Stays in your browser." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<link rel="preconnect" href="https://plausible.io" crossorigin />
+<link rel="dns-prefetch" href="https://plausible.io" />
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
+<link rel="stylesheet" href="/assets/site.css?v=20260424-bs1" />
+<style>.breadcrumb{visibility:hidden;padding-top:100px}
+/* === Open Hours tool-scoped styles. Page-prefix .oh-*. === */
+.oh-form{display:flex;flex-direction:column;gap:18px}
+.oh-row{display:grid;grid-template-columns:140px 1fr;gap:14px;align-items:center}
+@media(max-width:640px){.oh-row{grid-template-columns:1fr}}
+.oh-row > label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
+.oh-row input[type="text"]{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:14px;color:var(--ink);width:100%}
+.oh-row input:focus{outline:2px solid var(--teal);outline-offset:1px}
+
+.oh-week{display:flex;flex-direction:column;gap:10px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);padding:14px}
+.oh-day-row{display:grid;grid-template-columns:84px 1fr auto;gap:14px;align-items:start;padding:8px 0;border-bottom:1px solid var(--line)}
+.oh-day-row:last-child{border-bottom:0}
+.oh-day-name{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink);padding-top:6px}
+.oh-day-name small{display:block;font-family:var(--font-body,inherit);font-size:11px;font-weight:400;color:var(--stone);letter-spacing:.04em;text-transform:uppercase;margin-top:2px}
+.oh-services{display:flex;flex-direction:column;gap:6px}
+.oh-service{display:grid;grid-template-columns:auto 100px auto 100px auto auto;gap:6px;align-items:center;font-size:13px}
+@media(max-width:640px){.oh-service{grid-template-columns:1fr 1fr;gap:4px}}
+.oh-service input[type="text"]{padding:6px 8px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font:inherit;font-size:13px;color:var(--ink);width:100%;font-variant-numeric:tabular-nums}
+.oh-service .oh-service-label{font-size:11px;color:var(--stone);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.oh-service .oh-next-day{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--stone)}
+.oh-service .oh-next-day input{margin:0}
+.oh-service .oh-remove{background:none;border:none;color:var(--stone);cursor:pointer;font-size:18px;line-height:1;padding:0 4px}
+.oh-service .oh-remove:hover{color:var(--rust)}
+.oh-add-service{padding:4px 10px;border:1px dashed var(--line-dark);border-radius:999px;background:transparent;font:inherit;font-size:11px;font-weight:600;color:var(--stone);cursor:pointer;align-self:flex-start}
+.oh-add-service:hover{border-color:var(--teal);color:var(--teal)}
+.oh-day-closed{font-size:12px;color:var(--stone);font-style:italic;align-self:center}
+
+.oh-warnings{display:flex;flex-direction:column;gap:6px;font-size:13px;line-height:1.55}
+.oh-warnings li{padding:8px 12px;border-radius:var(--r-sm);background:rgba(184,84,26,0.06);color:var(--rust);border:1px solid rgba(184,84,26,0.18);list-style:none}
+.oh-warnings ul{margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+
+.oh-checklist{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.oh-check-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font-size:14px}
+.oh-check-item[data-state="ok"]{border-color:var(--status-good);background:var(--status-good-tint)}
+.oh-check-item[data-state="ok"] .oh-check-icon{color:var(--status-good)}
+.oh-check-item[data-state="todo"] .oh-check-icon{color:var(--stone)}
+.oh-check-icon{font-size:20px;line-height:1}
+.oh-check-text{flex:1}
+.oh-check-fix{font-size:12px;color:var(--teal);font-weight:600;text-decoration:none;border-bottom:1px dashed currentColor}
+
+.oh-output{display:flex;flex-direction:column;gap:24px}
+.oh-task-card{padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+.oh-task-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.oh-task-head h3{font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0}
+.oh-task-format{font-size:11px;color:var(--stone);letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.oh-task-recipe{display:flex;flex-direction:column;gap:6px;font-size:13.5px;line-height:1.55;color:var(--ink-soft);margin:8px 0 12px;padding:10px 14px;background:var(--cream-2);border-radius:var(--r-sm)}
+.oh-task-recipe li{margin-left:18px;list-style:decimal}
+.oh-task-recipe ol{margin:0;padding:0}
+.oh-task-block{margin:0;padding:14px 16px;background:var(--ink);color:var(--cream-2);border-radius:var(--r-input);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;line-height:1.5;overflow-x:auto;white-space:pre-wrap;word-break:break-word}
+.oh-task-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.oh-task-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:background 140ms var(--ease-out),color 140ms var(--ease-out)}
+.oh-task-btn:hover{background:var(--teal);color:var(--cream)}
+.oh-task-btn-primary{background:var(--teal);color:var(--cream)}
+.oh-task-btn-primary:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.oh-task-btn.copied{background:var(--status-good-tint);color:var(--status-good);border-color:var(--status-good)}
+.oh-task-btn.copy-failed{background:rgba(184,84,26,0.06);color:var(--rust);border-color:var(--rust)}
+.oh-task-btn svg{width:13px;height:13px}
+
+.oh-empty{padding:18px;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--cream-2);font-size:13.5px;color:var(--stone);text-align:center}
+
+@media print{
+  body{background:#fff !important;color:#000 !important}
+  header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,.oh-form,
+  #how-private,#what-this-isnt,.mm-next{display:none !important}
+  .oh-task-card,.oh-week{break-inside:avoid;page-break-inside:avoid}
+  a[href]:after{content:'' !important}
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/for/restaurants/">Restaurants</a>
+      <a href="/learn/" class="nav-library-trigger">Library</a>
+      <a href="/work/">Work</a>
+      <a href="/about/">About</a>
+    </nav>
+    <nav class="lang-switch" aria-label="Language">
+      <a href="/es/tools/open-hours/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
+      <span class="lang-switch-current" aria-current="true">EN</span>
+    </nav>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a>
+  </div>
+</header>
+<nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><a href="/tools/">Tools</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><span aria-current="page">Open Hours</span></nav>
+
+<main id="main">
+
+<section class="block"><div class="container">
+  <div style="max-width:760px;margin:0 auto;text-align:center;">
+    <span class="eyebrow">Free tool · stays in your browser</span>
+    <h1 style="font-family:var(--font-display);font-size:clamp(34px,4.5vw,52px);font-weight:500;color:var(--ink);margin:14px 0 14px;line-height:1.1;">Get your hours right everywhere.</h1>
+    <p style="font-size:17px;line-height:1.6;color:var(--ink-soft);margin:0 0 14px;">Fill out the times once. Walk away with a sign for the door, the exact words to paste into Google, and a block of code to send whoever made your website. About 15 minutes.</p>
+    <p style="font-size:13px;color:var(--stone);margin:0;"><a href="#how-private" style="color:inherit;border-bottom:1px dashed var(--teal);">How we keep your hours private</a> · <a href="/glossary/hours-of-operation/" style="color:inherit;border-bottom:1px dashed var(--teal);">Why this matters</a></p>
+  </div>
+</div></section>
+
+<!-- INPUT_PLACEHOLDER -->
+<section class="block"><div class="container">
+  <div class="oh-form">
+    <div class="oh-row">
+      <label for="ohName">Restaurant name</label>
+      <input type="text" id="ohName" placeholder="e.g. Osteria Giardino" autocomplete="organization" />
+    </div>
+    <div class="oh-row">
+      <label for="ohCity">City</label>
+      <input type="text" id="ohCity" placeholder="e.g. Silver Spring" autocomplete="address-level2" />
+    </div>
+
+    <div>
+      <label style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);display:block;margin-bottom:8px;">What times are you open?</label>
+      <p style="font-size:12.5px;color:var(--stone);margin:0 0 10px;line-height:1.55;">Type times like <code>11 AM</code>, <code>5 PM</code>, or <code>21:00</code> — the tool understands all of them. Leave both boxes empty for a closed day. If you close after midnight (last call at 1 AM), check &ldquo;closes next day.&rdquo;</p>
+      <div class="oh-week" id="ohWeek" aria-label="Weekly hours grid"></div>
+      <div class="oh-warnings" id="ohWarnings" aria-live="polite" style="margin-top:10px;"></div>
+    </div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+      <button type="button" class="oh-task-btn" id="ohLoadSample">Load a sample restaurant</button>
+      <button type="button" class="oh-task-btn" id="ohClear">Clear all</button>
+      <span style="margin-left:auto;font-size:12.5px;color:var(--stone);">Live preview — every change updates the outputs.</span>
+    </div>
+  </div>
+</div></section>
+
+<!-- OUTPUT_PLACEHOLDER -->
+<section class="block bg-cream2" id="ohOutput" hidden><div class="container">
+  <div class="oh-output">
+
+    <div>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 6px;">Your checklist</h2>
+      <p style="font-size:13px;color:var(--stone);margin:0 0 4px;">Five greens means you're done. Tap any item to fix it.</p>
+      <div class="oh-checklist" id="ohChecklist" aria-label="Completion checklist"></div>
+    </div>
+
+    <article class="oh-task-card">
+      <header class="oh-task-head">
+        <h3>Update Google.</h3>
+        <span class="oh-task-format">For Google Business Profile</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">Copy the block below and paste it into your Google Business Profile hours field. Three steps:</p>
+      <div class="oh-task-recipe">
+        <ol>
+          <li>Go to <a href="https://business.google.com" target="_blank" rel="noopener" style="color:var(--teal);">business.google.com</a> and sign in.</li>
+          <li>Click <strong>Edit profile</strong> &rarr; <strong>Hours</strong>.</li>
+          <li>Paste this in (or copy day-by-day if Google asks for one day at a time) and save.</li>
+        </ol>
+      </div>
+      <pre class="oh-task-block" id="ohGoogleBlock" aria-label="Google paste block"></pre>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn oh-task-btn-primary" data-copy-target="ohGoogleBlock" data-copy-label="Copy for Google">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy for Google
+        </button>
+      </div>
+    </article>
+
+    <article class="oh-task-card">
+      <header class="oh-task-head">
+        <h3>Send this to whoever made your website.</h3>
+        <span class="oh-task-format" title="Schema.org OpeningHoursSpecification JSON-LD">For your website builder</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">If a developer or agency built your site, send them the email and code below. They'll know exactly what to do with it. <em>(For the technically curious: this is Schema.org <code>OpeningHoursSpecification</code> JSON-LD — the format Google reads to show your hours in search results.)</em></p>
+      <div class="oh-task-recipe" id="ohEmailBlock" style="white-space:pre-line;"></div>
+      <pre class="oh-task-block" id="ohJsonLdBlock" aria-label="JSON-LD code block"></pre>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn oh-task-btn-primary" id="ohCopyEmail" data-copy-label="Copy email + code">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Copy email + code
+        </button>
+        <button type="button" class="oh-task-btn" data-copy-target="ohJsonLdBlock" data-copy-label="Copy code only">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          Copy code only
+        </button>
+      </div>
+    </article>
+
+    <p style="font-size:12.5px;color:var(--stone);margin:0;line-height:1.6;text-align:center;"><strong>Phase 2 (coming soon):</strong> Yelp + Apple Maps blocks, holiday-closure picker, and a printable sign for your door.</p>
+
+  </div>
+</div></section>
+
+<section class="block" id="ohEmptyHint"><div class="container">
+  <div class="oh-empty">Fill out at least one day's hours above to see your outputs. Or click <button type="button" class="oh-task-btn" id="ohEmptyLoad" style="padding:4px 10px;font-size:12px;">Load a sample restaurant</button> to see how it works.</div>
+</div></section>
+
+<!-- PRIVACY_PLACEHOLDER -->
+<section class="block bg-cream2" id="how-private"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">Lead by example</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:12px 0 12px;">Your hours stay in your browser.</h2>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0 0 14px;">Five claims, each verifiable in DevTools in under a minute:</p>
+    <ol style="margin:0;padding-left:1.4em;font-size:14.5px;line-height:1.7;color:var(--ink-soft);display:flex;flex-direction:column;gap:6px;">
+      <li><strong>No upload.</strong> Nothing in the form is sent to a server. Open DevTools &rarr; Network and type &mdash; the request list doesn't grow.</li>
+      <li><strong>No account, no email.</strong> The page works without identifying you in any way.</li>
+      <li><strong>No browser memory.</strong> Closing the tab clears everything. The form is empty when you reopen the URL.</li>
+      <li><strong>Open code.</strong> The whole engine is plain JavaScript at <code>/tools/open-hours/open-hours.js</code> &mdash; right-click <em>View Page Source</em> to read it.</li>
+      <li><strong>Privacy-safe analytics.</strong> Plausible counts how many people use the tool, but never sees your hours, your restaurant name, or your city. Only enum-bucketed values like &ldquo;<code>4-5 days open</code>&rdquo; pass through.</li>
+    </ol>
+    <p style="font-size:13px;color:var(--stone);margin:14px 0 0;">A nine-step verifiable tour and a printable Storefront Sign land in the next release. For the same posture today, see <a href="/tools/brand-suite/#how-we-protect" style="color:inherit;border-bottom:1px dashed var(--teal);">how Brand Suite protects your logo</a>.</p>
+  </div>
+</div></section>
+
+<!-- NEXT_PLACEHOLDER -->
+<section class="block"><div class="container">
+  <div class="mm-next">
+    <h2>Where to go next</h2>
+    <div class="mm-next-links">
+      <a href="/tools/audits/restaurant/">Run the full Restaurant Audit</a>
+      <a href="/tools/gbp-grader/">Grade your Google Business Profile</a>
+      <a href="/tools/menu-engineering/">Audit which menu items are pulling weight</a>
+      <a href="/glossary/hours-of-operation/">Glossary: Hours of operation</a>
+      <a href="/services/">Hire the studio to keep this synced for you</a>
+    </div>
+  </div>
+</div></section>
+
+</main>
+
+<footer class="foot">
+  <div class="container foot-inner">
+    <div class="foot-col foot-brand"><a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home"><img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async"><sup class="tm" aria-hidden="true">&#8482;</sup></a><p class="foot-tagline">Structure Brings Clarity.</p></div>
+  </div>
+  <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
+</footer>
+
+<script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="./open-hours.js?v=20260425-oh1"></script>
+<script>
+/* Open Hours — week-grid input + live output render.
+ *
+ * Privacy invariants enforced by this code:
+ *   - All math is window.OH (./open-hours.js). No fetch, no XHR.
+ *   - Plausible event values are enum-bucketed via window.OH helpers.
+ *   - No localStorage / sessionStorage / cookies. */
+(function(){
+  if (!window.OH) return;
+
+  var DAYS = window.OH.DAYS;
+  var DAY_FULL = window.OH.DAYS_FULL;
+
+  // Held on closure as the source of truth for the week. Each day
+  // is an array of {label, opens, closes, closesNextDay} services.
+  var week = {};
+  DAYS.forEach(function(d){ week[d] = []; });
+
+  var nameEl     = document.getElementById('ohName');
+  var cityEl     = document.getElementById('ohCity');
+  var weekEl     = document.getElementById('ohWeek');
+  var warningsEl = document.getElementById('ohWarnings');
+  var loadBtn    = document.getElementById('ohLoadSample');
+  var emptyLoad  = document.getElementById('ohEmptyLoad');
+  var clearBtn   = document.getElementById('ohClear');
+  var output     = document.getElementById('ohOutput');
+  var emptyHint  = document.getElementById('ohEmptyHint');
+  var checklist  = document.getElementById('ohChecklist');
+  var googleBlock= document.getElementById('ohGoogleBlock');
+  var jsonLdBlock= document.getElementById('ohJsonLdBlock');
+  var emailBlock = document.getElementById('ohEmailBlock');
+
+  var SAMPLE = {
+    name: 'Osteria Giardino',
+    city: 'Silver Spring',
+    week: {
+      Mon: [],
+      Tue: [{ label: 'Dinner', opens: '5 PM',  closes: '10 PM' }],
+      Wed: [{ label: 'Dinner', opens: '5 PM',  closes: '10 PM' }],
+      Thu: [{ label: 'Dinner', opens: '5 PM',  closes: '10 PM' }],
+      Fri: [{ label: 'Dinner', opens: '5 PM',  closes: '11 PM' }],
+      Sat: [
+        { label: 'Brunch', opens: '11 AM', closes: '3 PM' },
+        { label: 'Dinner', opens: '5 PM',  closes: '11 PM' }
+      ],
+      Sun: [
+        { label: 'Brunch', opens: '11 AM', closes: '3 PM' },
+        { label: 'Dinner', opens: '5 PM',  closes: '9 PM'  }
+      ]
+    }
+  };
+
+  function escHtml(v){
+    return String(v == null ? '' : v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+  function escAttr(v){
+    return String(v == null ? '' : v).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+  }
+
+  // ----- Week grid rendering -----
+  function renderWeek(){
+    weekEl.innerHTML = '';
+    DAYS.forEach(function(d, idx){
+      var row = document.createElement('div');
+      row.className = 'oh-day-row';
+      row.setAttribute('data-day', d);
+      var nameCell = '<div class="oh-day-name">' + DAY_FULL[idx] + '<small>' + d + '</small></div>';
+      var servicesHtml = '<div class="oh-services">';
+      var services = week[d] || [];
+      if (services.length === 0) {
+        servicesHtml += '<span class="oh-day-closed">Closed</span>';
+      } else {
+        services.forEach(function(s, sidx){
+          servicesHtml += renderServiceRow(d, sidx, s);
+        });
+      }
+      servicesHtml += '</div>';
+      var addBtn = '<button type="button" class="oh-add-service" data-add-day="' + d + '">+ ' + (services.length === 0 ? 'add hours' : 'add another service') + '</button>';
+      row.innerHTML = nameCell + servicesHtml + addBtn;
+      weekEl.appendChild(row);
+    });
+  }
+
+  function renderServiceRow(day, idx, s){
+    return '<div class="oh-service" data-day="' + day + '" data-idx="' + idx + '">' +
+      '<input type="text" class="oh-svc-label" placeholder="Lunch / Dinner" value="' + escAttr(s.label || '') + '" aria-label="Service label" />' +
+      '<input type="text" class="oh-svc-opens" placeholder="11 AM" value="' + escAttr(s.opens || '') + '" inputmode="text" aria-label="Opens" />' +
+      '<span class="oh-service-label">to</span>' +
+      '<input type="text" class="oh-svc-closes" placeholder="9 PM" value="' + escAttr(s.closes || '') + '" inputmode="text" aria-label="Closes" />' +
+      '<label class="oh-next-day"><input type="checkbox" class="oh-svc-next" ' + (s.closesNextDay ? 'checked' : '') + ' /> closes next day</label>' +
+      '<button type="button" class="oh-remove" aria-label="Remove this service">×</button>' +
+      '</div>';
+  }
+
+  function readGrid(){
+    // Walk DOM and rebuild `week` from the inputs. Unparseable times
+    // pass through to validation, where the warning surfaces.
+    DAYS.forEach(function(d){ week[d] = []; });
+    var rows = weekEl.querySelectorAll('.oh-service');
+    rows.forEach(function(r){
+      var d = r.getAttribute('data-day');
+      if (!d) return;
+      week[d].push({
+        label:        r.querySelector('.oh-svc-label').value || '',
+        opens:        r.querySelector('.oh-svc-opens').value || '',
+        closes:       r.querySelector('.oh-svc-closes').value || '',
+        closesNextDay: r.querySelector('.oh-svc-next').checked
+      });
+    });
+  }
+
+  function loadSample(){
+    week = JSON.parse(JSON.stringify(SAMPLE.week));
+    nameEl.value = SAMPLE.name;
+    cityEl.value = SAMPLE.city;
+    renderWeek();
+    rerender();
+  }
+
+  function clearAll(){
+    DAYS.forEach(function(d){ week[d] = []; });
+    nameEl.value = '';
+    cityEl.value = '';
+    renderWeek();
+    rerender();
+  }
+
+  // ----- Render outputs from current state -----
+  var rafQueued = false;
+  function rerender(){
+    if (rafQueued) return;
+    rafQueued = true;
+    requestAnimationFrame(function(){
+      rafQueued = false;
+      readGrid();
+      var input = { name: nameEl.value, city: cityEl.value, week: week };
+      var v = window.OH.validateHours(input);
+      paintWarnings(v.warnings);
+      var anyOpen = v.summary.openDaysCount > 0;
+      if (!anyOpen) {
+        output.hidden = true;
+        emptyHint.hidden = false;
+        return;
+      }
+      output.hidden = false;
+      emptyHint.hidden = true;
+      googleBlock.textContent = window.OH.generatePlatformCopy(input, 'google');
+      jsonLdBlock.textContent = window.OH.generateJsonLdScript(input);
+      emailBlock.textContent  = window.OH.generateBuilderEmail(input);
+      paintChecklist(v);
+      firePlausibleOnce(v);
+    });
+  }
+
+  function paintWarnings(warns){
+    if (!warns || !warns.length) { warningsEl.innerHTML = ''; return; }
+    var html = '<ul>';
+    warns.forEach(function(w){ html += '<li>' + escHtml(w.message) + '</li>'; });
+    html += '</ul>';
+    warningsEl.innerHTML = html;
+  }
+
+  function paintChecklist(v){
+    var items = [
+      {
+        ok: v.summary.openDaysCount > 0,
+        text: v.summary.openDaysCount > 0
+          ? 'Hours entered for ' + v.summary.openDaysCount + ' day' + (v.summary.openDaysCount === 1 ? '' : 's')
+          : 'No hours entered yet'
+      },
+      {
+        ok: v.warnings.length === 0,
+        text: v.warnings.length === 0 ? 'No conflicts within a day' : v.warnings.length + ' issue' + (v.warnings.length === 1 ? '' : 's') + ' to resolve'
+      },
+      {
+        ok: !!v.name,
+        text: v.name ? 'Restaurant name set: "' + v.name + '"' : 'Add a restaurant name (used in your website code)'
+      },
+      {
+        ok: v.summary.openDaysCount > 0 && v.warnings.length === 0,
+        text: 'Cross-platform copy generated'
+      },
+      {
+        ok: false,
+        text: 'Sign ready to print (coming in next release)'
+      }
+    ];
+    checklist.innerHTML = items.map(function(it){
+      var state = it.ok ? 'ok' : 'todo';
+      var icon = it.ok ? '✓' : '○';
+      return '<div class="oh-check-item" data-state="' + state + '">' +
+             '<span class="oh-check-icon" aria-hidden="true">' + icon + '</span>' +
+             '<span class="oh-check-text">' + escHtml(it.text) + '</span>' +
+             '</div>';
+    }).join('');
+  }
+
+  var firstFired = false;
+  function firePlausibleOnce(v){
+    if (firstFired || !window.plausible) return;
+    if (v.summary.openDaysCount === 0) return;
+    firstFired = true;
+    window.plausible('Open Hours Render', { props: {
+      open_days:    window.OH.bucketWeeklyOpenDays(v.summary.openDaysCount),
+      service_tier: window.OH.bucketServiceTiers({ week: v.week }),
+      closures:     window.OH.bucketClosureCount(0) // Phase 2 wires closures
+    }});
+  }
+
+  // ----- Wire UI -----
+  weekEl.addEventListener('input', rerender);
+  weekEl.addEventListener('change', rerender);
+  weekEl.addEventListener('click', function(ev){
+    var add = ev.target.closest('.oh-add-service');
+    if (add) {
+      var d = add.getAttribute('data-add-day');
+      readGrid();
+      week[d] = week[d] || [];
+      week[d].push({ label: '', opens: '', closes: '', closesNextDay: false });
+      renderWeek();
+      rerender();
+      // Focus first empty input on the row we just added.
+      var rows = weekEl.querySelectorAll('.oh-day-row[data-day="' + d + '"] .oh-svc-opens');
+      if (rows.length) rows[rows.length - 1].focus();
+      return;
+    }
+    var rm = ev.target.closest('.oh-remove');
+    if (rm) {
+      var svc = rm.closest('.oh-service');
+      var dd = svc.getAttribute('data-day');
+      var ix = parseInt(svc.getAttribute('data-idx'), 10);
+      readGrid();
+      if (week[dd] && !isNaN(ix)) {
+        week[dd].splice(ix, 1);
+        renderWeek();
+        rerender();
+      }
+    }
+  });
+  nameEl.addEventListener('input', rerender);
+  cityEl.addEventListener('input', rerender);
+  loadBtn.addEventListener('click', loadSample);
+  if (emptyLoad) emptyLoad.addEventListener('click', loadSample);
+  clearBtn.addEventListener('click', clearAll);
+
+  // Copy buttons — `data-copy-target` for plain copy of an element's
+  // text; `#ohCopyEmail` is special-case to combine email + JSON-LD.
+  document.addEventListener('click', function(ev){
+    var btn = ev.target.closest('[data-copy-target]');
+    if (btn) {
+      var target = document.getElementById(btn.getAttribute('data-copy-target'));
+      if (!target) return;
+      doCopy(btn, target.textContent);
+      if (window.plausible) window.plausible('Open Hours Export', { props: { format: btn.getAttribute('data-copy-target') } });
+    }
+    if (ev.target.closest('#ohCopyEmail')) {
+      var em = emailBlock.textContent || '';
+      var jl = jsonLdBlock.textContent || '';
+      doCopy(ev.target.closest('#ohCopyEmail'), em + '\n\n' + jl);
+      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'builder-email' } });
+    }
+  });
+  function doCopy(btn, text){
+    var label = btn.getAttribute('data-copy-label') || '';
+    var orig = btn.textContent.trim();
+    function settle(t, kind){
+      btn.classList.remove('copied'); btn.classList.remove('copy-failed');
+      btn.classList.add(kind === 'error' ? 'copy-failed' : 'copied');
+      // Replace last text node only, preserving the SVG icon.
+      var last = btn.lastChild;
+      if (last && last.nodeType === 3) last.nodeValue = ' ' + t;
+      setTimeout(function(){
+        btn.classList.remove('copied'); btn.classList.remove('copy-failed');
+        if (last && last.nodeType === 3) last.nodeValue = ' ' + label;
+      }, kind === 'error' ? 2400 : 1400);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(
+        function(){ settle('Copied', 'ok'); },
+        function(){ settle('Select manually', 'error'); }
+      );
+    } else { settle('Select manually', 'error'); }
+  }
+
+  // Initial render: empty week + empty form.
+  renderWeek();
+  rerender();
+})();
+</script>
+</body>
+</html>
