@@ -155,6 +155,13 @@ function bsOklabDistance(a, b) {
 // and chroma feel stay intact.
 // ------------------------------------------------------------
 
+// Site brand neutrals — used as the *last-resort* fallback when no
+// in-gamut adjustment of the source color reaches the contrast target.
+// Hard-coding these keeps the JS dependency-free; they match
+// var(--ink) and var(--cream) in assets/site.css.
+var BS_INK   = '#14161A';
+var BS_CREAM = '#FAF7F2';
+
 function bsDeriveAccessiblePair(hex, groundHex, targetRatio) {
   var tgt = typeof targetRatio === 'number' ? targetRatio : 4.5;
   var rgb = bsHexToRgb(hex);
@@ -167,18 +174,234 @@ function bsDeriveAccessiblePair(hex, groundHex, targetRatio) {
   var groundLab = bsRgbToOklab(ground.r, ground.g, ground.b);
   // Walk AWAY from the ground's L — if ground is light, go darker; if dark, go lighter.
   var step = groundLab.L > 0.5 ? -0.02 : 0.02;
-  var L = lab.L;
-  for (var i = 0; i < 50; i++) {
-    L += step;
-    if (L < 0 || L > 1) break;
-    var adjusted = bsOklabToRgb(L, lab.a, lab.b);
-    var candidateHex = bsRgbToHex(adjusted.r, adjusted.g, adjusted.b);
-    if (bsContrastRatio(candidateHex, groundHex) >= tgt) return candidateHex;
+
+  // First pass: walk L with original chroma. If a saturated source
+  // can't reach the target along pure L (out-of-gamut clamping
+  // produces a muddy shade), try again with progressively reduced
+  // chroma so we stay in the source's hue family.
+  var chromaScales = [1.0, 0.8, 0.6, 0.4, 0.2];
+  for (var s = 0; s < chromaScales.length; s++) {
+    var scale = chromaScales[s];
+    var L = lab.L;
+    for (var i = 0; i < 50; i++) {
+      L += step;
+      if (L < 0 || L > 1) break;
+      var a2 = lab.a * scale;
+      var b2 = lab.b * scale;
+      var adjusted = bsOklabToRgb(L, a2, b2);
+      var candidateHex = bsRgbToHex(adjusted.r, adjusted.g, adjusted.b);
+      if (bsContrastRatio(candidateHex, groundHex) >= tgt) return candidateHex;
+    }
   }
-  // Could not reach target — return the most extreme adjustment we tried.
-  var clampedL = step > 0 ? 1 : 0;
-  var extreme = bsOklabToRgb(clampedL, lab.a, lab.b);
-  return bsRgbToHex(extreme.r, extreme.g, extreme.b);
+  // Last resort: fall back to whichever site neutral (ink / cream)
+  // contrasts more strongly with the ground. Never invent an
+  // off-brand muddy color.
+  var inkR   = bsContrastRatio(BS_INK,   groundHex);
+  var creamR = bsContrastRatio(BS_CREAM, groundHex);
+  return inkR >= creamR ? BS_INK : BS_CREAM;
+}
+
+// ------------------------------------------------------------
+// Role assignment
+//
+// Earlier versions sorted by raw dominance and labeled the most
+// abundant cluster "Primary". A black-heavy or white-grounded logo
+// would name the achromatic background the Primary — useless.
+// Roles should be earned by chromatic intent, not pixel count.
+//
+// Algorithm:
+//   1. Mark each cluster achromatic if OKLab chroma < CHROMA_FLOOR.
+//   2. Among non-achromatic clusters, sort by chroma desc and pick:
+//      Primary  = most chromatic
+//      Secondary= next most chromatic with min hue distance from Primary
+//      Accents  = remaining chromatic in hue-distance order
+//   3. Neutral = the achromatic cluster with highest dominance, or
+//      whichever extreme (lightest/darkest) when no clear neutral.
+//   4. Monochromatic fallback (no chromatic clusters): label by L
+//      extremes ("Dark"/"Light"/"Mid").
+//
+// Returns the input array re-ordered with role + roleVar + tokenName
+// fields attached, and a `monochromatic: bool` flag on the array.
+// Pure (no globals); deterministic.
+// ------------------------------------------------------------
+var BS_ROLE_NAMES_EN  = ['Primary', 'Secondary', 'Accent 1', 'Accent 2', 'Neutral'];
+var BS_ROLE_VARS      = ['--brand-primary', '--brand-secondary', '--brand-accent-1', '--brand-accent-2', '--brand-neutral'];
+var BS_TOKEN_NAMES    = ['brand.primary', 'brand.secondary', 'brand.accent-1', 'brand.accent-2', 'brand.neutral'];
+
+function bsClusterChroma(lab) {
+  return Math.sqrt(lab.a * lab.a + lab.b * lab.b);
+}
+
+function bsHueAngleDeg(lab) {
+  // Atan2 of OKLab a,b. Normalised to [0, 360).
+  if (lab.a === 0 && lab.b === 0) return 0;
+  var h = Math.atan2(lab.b, lab.a) * 180 / Math.PI;
+  if (h < 0) h += 360;
+  return h;
+}
+
+function bsHueDistance(h1, h2) {
+  var d = Math.abs(h1 - h2);
+  return d > 180 ? 360 - d : d;
+}
+
+function bsAssignRoles(palette, options) {
+  options = options || {};
+  var roleNames = options.roleNames || BS_ROLE_NAMES_EN;
+  var chromaFloor = options.chromaFloor || 0.04;
+  var minSecondaryHueDist = options.minSecondaryHueDist || 30;
+
+  if (!palette || !palette.length) return { entries: [], monochromatic: false };
+
+  // Annotate each entry with computed OKLab features.
+  var annotated = palette.map(function(entry, idx) {
+    var rgb = bsHexToRgb(entry.hex) || { r: 0, g: 0, b: 0 };
+    var lab = bsRgbToOklab(rgb.r, rgb.g, rgb.b);
+    return {
+      hex: entry.hex,
+      dominancePct: entry.dominancePct,
+      _orig: idx,
+      _lab: lab,
+      _chroma: bsClusterChroma(lab),
+      _hue: bsHueAngleDeg(lab),
+      _achromatic: bsClusterChroma(lab) < chromaFloor
+    };
+  });
+
+  var chromatic = annotated.filter(function(e){ return !e._achromatic; });
+  var achromatic = annotated.filter(function(e){ return e._achromatic; });
+  // Capture the truly-chromatic count BEFORE the mutating shift/splice
+  // calls below — that's what determines the monochromatic flag.
+  var monochromatic = chromatic.length === 0 && annotated.length > 0;
+
+  // Primary = most-chromatic non-achromatic.
+  // Secondary = next most-chromatic at min hue distance from Primary.
+  // Accents = remaining chromatic, ordered by descending hue distance from Primary.
+  var ordered = [];
+  if (chromatic.length) {
+    chromatic.sort(function(a, b){ return b._chroma - a._chroma; });
+    var primary = chromatic.shift();
+    ordered.push(primary);
+    var secondary = null;
+    for (var i = 0; i < chromatic.length; i++) {
+      if (bsHueDistance(chromatic[i]._hue, primary._hue) >= minSecondaryHueDist) {
+        secondary = chromatic.splice(i, 1)[0];
+        break;
+      }
+    }
+    if (!secondary && chromatic.length) secondary = chromatic.shift();
+    if (secondary) ordered.push(secondary);
+    chromatic.sort(function(a, b){
+      return bsHueDistance(b._hue, primary._hue) - bsHueDistance(a._hue, primary._hue);
+    });
+    ordered = ordered.concat(chromatic);
+  }
+
+  // Neutral: pick the achromatic cluster with the highest dominance,
+  // breaking ties toward the darker. If only one achromatic cluster
+  // exists, take it. If none, fill with whichever remaining chromatic
+  // has the lowest chroma (best surrogate).
+  achromatic.sort(function(a, b){
+    if (b.dominancePct !== a.dominancePct) return b.dominancePct - a.dominancePct;
+    return a._lab.L - b._lab.L;
+  });
+  if (achromatic.length) {
+    ordered.push(achromatic.shift());
+    // Any leftover achromatics fill remaining slots after the primary chain.
+    ordered = ordered.concat(achromatic);
+  }
+
+  // Truncate / pad to roleNames length and attach role labels.
+  var out = ordered.slice(0, roleNames.length).map(function(entry, i) {
+    return {
+      hex: entry.hex,
+      dominancePct: entry.dominancePct,
+      role: roleNames[i] || ('Color ' + (i + 1)),
+      roleVar: BS_ROLE_VARS[i] || ('--brand-color-' + (i + 1)),
+      tokenName: BS_TOKEN_NAMES[i] || ('brand.color-' + (i + 1)),
+      chroma: entry._chroma,
+      hueDeg: entry._hue,
+      achromatic: entry._achromatic
+    };
+  });
+  return { entries: out, monochromatic: monochromatic };
+}
+
+// ------------------------------------------------------------
+// Similarity flagging
+//
+// Two clusters that survive merge but are close in OKLab will read
+// as "the same color" to a human eye even though contrast math
+// gives them different hex values. Flag pairs within OKLab distance
+// SIMILARITY_THRESHOLD so the UI can warn rather than silently
+// presenting them as distinct roles.
+// ------------------------------------------------------------
+function bsPaletteSimilarities(palette, threshold) {
+  var t = typeof threshold === 'number' ? threshold : 0.12;
+  var labs = palette.map(function(p){
+    var rgb = bsHexToRgb(p.hex) || { r: 0, g: 0, b: 0 };
+    return bsRgbToOklab(rgb.r, rgb.g, rgb.b);
+  });
+  var pairs = [];
+  for (var i = 0; i < labs.length; i++) {
+    for (var j = i + 1; j < labs.length; j++) {
+      var d = bsOklabDistance(labs[i], labs[j]);
+      if (d < t) pairs.push({ a: i, b: j, distance: d });
+    }
+  }
+  return pairs;
+}
+
+// ------------------------------------------------------------
+// Color-blindness simulation
+//
+// Brettel/Viénot/Mollon (1997) projection matrices applied in linear
+// RGB. Each dichromacy projects the visible-color volume onto the
+// confusion-line plane, collapsing the missing-cone dimension. The
+// matrices below are the standard sRGB-space approximations widely
+// cited in color-vision research; they're a perceptual preview, not
+// a clinical simulation.
+//
+// Reference: Viénot, Brettel, Mollon (1999), "Digital video
+// colourmaps for checking the legibility of displays by dichromats."
+// ------------------------------------------------------------
+var BS_CB_MATRICES = {
+  protanopia: [
+    [0.567, 0.433, 0.000],
+    [0.558, 0.442, 0.000],
+    [0.000, 0.242, 0.758]
+  ],
+  deuteranopia: [
+    [0.625, 0.375, 0.000],
+    [0.700, 0.300, 0.000],
+    [0.000, 0.300, 0.700]
+  ],
+  tritanopia: [
+    [0.950, 0.050, 0.000],
+    [0.000, 0.433, 0.567],
+    [0.000, 0.475, 0.525]
+  ]
+};
+var BS_CB_TYPES = ['normal', 'protanopia', 'deuteranopia', 'tritanopia'];
+
+function bsSimulateColorBlindness(hex, type) {
+  if (!type || type === 'normal') return hex;
+  var M = BS_CB_MATRICES[type];
+  if (!M) return hex;
+  var rgb = bsHexToRgb(hex);
+  if (!rgb) return hex;
+  // Apply in linear space so we don't get gamma-distortion on transforms.
+  var rl = bsSrgbToLinearChannel(rgb.r);
+  var gl = bsSrgbToLinearChannel(rgb.g);
+  var bl = bsSrgbToLinearChannel(rgb.b);
+  var nr = M[0][0] * rl + M[0][1] * gl + M[0][2] * bl;
+  var ng = M[1][0] * rl + M[1][1] * gl + M[1][2] * bl;
+  var nb = M[2][0] * rl + M[2][1] * gl + M[2][2] * bl;
+  function linToSrgb(c){
+    var v = c <= 0.0031308 ? 12.92 * c : 1.055 * Math.pow(Math.max(c, 0), 1 / 2.4) - 0.055;
+    return Math.max(0, Math.min(255, Math.round(v * 255)));
+  }
+  return bsRgbToHex(linToSrgb(nr), linToSrgb(ng), linToSrgb(nb));
 }
 
 // ------------------------------------------------------------
@@ -414,44 +637,36 @@ function bsBucketFileType(mimeOrExt) {
 // to `self` unifies the browser + worker paths.
 // ------------------------------------------------------------
 
+var BS_PUBLIC = {
+  hexToRgb:               bsHexToRgb,
+  rgbToHex:               bsRgbToHex,
+  contrastRatio:          bsContrastRatio,
+  gradeContrast:          bsGradeContrast,
+  rgbToOklab:             bsRgbToOklab,
+  oklabToRgb:             bsOklabToRgb,
+  oklabDistance:          bsOklabDistance,
+  deriveAccessiblePair:   bsDeriveAccessiblePair,
+  extractPalette:         bsExtractPalette,
+  assignRoles:            bsAssignRoles,
+  paletteSimilarities:    bsPaletteSimilarities,
+  simulateColorBlindness: bsSimulateColorBlindness,
+  bucketDominantHue:      bsBucketDominantHue,
+  bucketLogoSize:         bsBucketLogoSize,
+  bucketFileType:         bsBucketFileType,
+  CONTRAST_GRADES:        BS_CONTRAST_GRADES,
+  HUE_FAMILIES:           BS_HUE_FAMILIES,
+  SIZE_BUCKETS:           BS_SIZE_BUCKETS,
+  FILE_TYPES:             BS_FILE_TYPES,
+  CB_TYPES:               BS_CB_TYPES,
+  ROLE_NAMES_EN:          BS_ROLE_NAMES_EN,
+  ROLE_VARS:              BS_ROLE_VARS,
+  TOKEN_NAMES:            BS_TOKEN_NAMES
+};
+
 if (typeof self !== 'undefined' && typeof module === 'undefined') {
-  self.BS = {
-    hexToRgb:             bsHexToRgb,
-    rgbToHex:             bsRgbToHex,
-    contrastRatio:        bsContrastRatio,
-    gradeContrast:        bsGradeContrast,
-    rgbToOklab:           bsRgbToOklab,
-    oklabToRgb:           bsOklabToRgb,
-    oklabDistance:        bsOklabDistance,
-    deriveAccessiblePair: bsDeriveAccessiblePair,
-    extractPalette:       bsExtractPalette,
-    bucketDominantHue:    bsBucketDominantHue,
-    bucketLogoSize:       bsBucketLogoSize,
-    bucketFileType:       bsBucketFileType,
-    CONTRAST_GRADES:      BS_CONTRAST_GRADES,
-    HUE_FAMILIES:         BS_HUE_FAMILIES,
-    SIZE_BUCKETS:         BS_SIZE_BUCKETS,
-    FILE_TYPES:           BS_FILE_TYPES
-  };
+  self.BS = BS_PUBLIC;
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = {
-    hexToRgb:             bsHexToRgb,
-    rgbToHex:             bsRgbToHex,
-    contrastRatio:        bsContrastRatio,
-    gradeContrast:        bsGradeContrast,
-    rgbToOklab:           bsRgbToOklab,
-    oklabToRgb:           bsOklabToRgb,
-    oklabDistance:        bsOklabDistance,
-    deriveAccessiblePair: bsDeriveAccessiblePair,
-    extractPalette:       bsExtractPalette,
-    bucketDominantHue:    bsBucketDominantHue,
-    bucketLogoSize:       bsBucketLogoSize,
-    bucketFileType:       bsBucketFileType,
-    CONTRAST_GRADES:      BS_CONTRAST_GRADES,
-    HUE_FAMILIES:         BS_HUE_FAMILIES,
-    SIZE_BUCKETS:         BS_SIZE_BUCKETS,
-    FILE_TYPES:           BS_FILE_TYPES
-  };
+  module.exports = BS_PUBLIC;
 }

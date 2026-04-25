@@ -21,6 +21,12 @@
 
 importScripts('./brand-suite.js');
 
+// Defensive cap. The caller already truncates to <= 20000 pixels before
+// postMessage, but a malformed message must not be allowed to spin
+// k-means on an unbounded array. If exceeded we sample down uniformly
+// rather than refuse — matches the caller's behavior.
+var WORKER_MAX_PIXELS = 20000;
+
 self.addEventListener('message', function(ev) {
   var msg = ev.data || {};
   var requestId = msg.requestId || null;
@@ -34,7 +40,14 @@ self.addEventListener('message', function(ev) {
       self.postMessage({ type: 'error', message: 'brand-suite.js not loaded in worker', requestId: requestId });
       return;
     }
-    var palette = self.BS.extractPalette(msg.pixels || [], {
+    var pixels = msg.pixels || [];
+    if (pixels.length > WORKER_MAX_PIXELS) {
+      var stride = pixels.length / WORKER_MAX_PIXELS;
+      var sampled = new Array(WORKER_MAX_PIXELS);
+      for (var i = 0; i < WORKER_MAX_PIXELS; i++) sampled[i] = pixels[Math.floor(i * stride)];
+      pixels = sampled;
+    }
+    var palette = self.BS.extractPalette(pixels, {
       k: msg.k || 5,
       seed: msg.seed || 1,
       maxIterations: msg.maxIterations || 8,

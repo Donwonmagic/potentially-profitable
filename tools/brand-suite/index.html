@@ -101,11 +101,27 @@
   .bs-chip-swatch{width:100%;aspect-ratio:1/1;display:block}
   .bs-chip-meta{padding:10px 12px;display:flex;flex-direction:column;gap:2px}
   .bs-chip-role{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--stone)}
+  .bs-chip-sublabel{font-size:10.5px;line-height:1.35;color:var(--ink-soft);font-style:italic}
   .bs-chip-hex{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
   .bs-chip-share{font-size:11px;color:var(--stone)}
+  .bs-chip-warn{font-size:11px;color:var(--rust);display:inline-flex;align-items:center;gap:4px}
+  .bs-chip-warn::before{content:"⚠";font-size:11px}
   .bs-chip.copied{border-color:var(--status-good);background:var(--status-good-tint)}
   .bs-chip.copied .bs-chip-role{color:var(--status-good)}
+  .bs-chip.copy-failed{border-color:var(--rust);background:rgba(184,84,26,0.06)}
+  .bs-chip.copy-failed .bs-chip-role{color:var(--rust)}
   .bs-palette-hint{font-size:12px;color:var(--stone);margin:0}
+  .bs-palette-mono-flag{font-size:12px;color:var(--rust);margin:0}
+  .bs-using{margin-top:12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);padding:0}
+  .bs-using>summary{cursor:pointer;padding:14px 18px;font-size:14px;font-weight:600;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .bs-using>summary::after{content:"+";font-size:22px;font-weight:400;color:var(--stone);line-height:1}
+  .bs-using[open]>summary::after{content:"\2212"}
+  .bs-using>summary::-webkit-details-marker{display:none}
+  .bs-using-body{padding:0 18px 18px}
+  .bs-using-list{margin:0;padding:0 0 0 22px;display:flex;flex-direction:column;gap:14px}
+  .bs-using-list li{font-size:13px;line-height:1.55;color:var(--ink-soft)}
+  .bs-using-list strong{color:var(--ink);font-weight:600}
+  .bs-using-list p{margin:4px 0 0}
   .bs-status{min-height:24px;font-size:13px;color:var(--stone);text-align:center}
   .bs-status.bs-status-error{color:var(--rust)}
   .bs-status.bs-status-working::before{content:'';display:inline-block;width:12px;height:12px;margin-right:8px;border:2px solid var(--line-dark);border-top-color:var(--teal);border-radius:50%;vertical-align:middle;animation:bs-spin 800ms linear infinite}
@@ -144,6 +160,16 @@
 
   .bs-contrast-wrap{display:flex;flex-direction:column;gap:10px}
   .bs-contrast-wrap h2{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0}
+  .bs-contrast-head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+  .bs-cb-toggle{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .bs-cb-label{font-size:11px;font-weight:600;color:var(--stone);letter-spacing:.06em;text-transform:uppercase}
+  .bs-cb-btn{padding:5px 11px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink);font:inherit;font-size:12px;font-weight:500;cursor:pointer;transition:background 140ms var(--ease-out),border-color 140ms var(--ease-out)}
+  .bs-cb-btn:hover{border-color:var(--teal)}
+  .bs-cb-btn[aria-pressed="true"]{background:var(--teal);color:var(--cream);border-color:var(--teal)}
+  .bs-contrast-table thead th .bs-grid-hex,
+  .bs-contrast-table tbody th .bs-grid-hex{position:absolute;inset:auto 4px 4px 4px;font-size:9px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--cream);text-shadow:0 1px 2px rgba(0,0,0,.45);font-weight:600;letter-spacing:.02em;text-align:right}
+  .bs-contrast-table thead th, .bs-contrast-table tbody th{position:relative}
+  .bs-contrast-table td[data-grade="empty"]{background:repeating-linear-gradient(135deg,transparent 0 6px,rgba(0,0,0,.03) 6px 12px);color:transparent}
   .bs-contrast-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
   .bs-contrast-table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed;min-width:420px}
   .bs-contrast-table th,.bs-contrast-table td{border:1px solid var(--line);padding:0;text-align:center;vertical-align:middle;height:56px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-weight:500}
@@ -170,6 +196,29 @@
   .bs-export-btn:hover{background:var(--teal);color:var(--cream)}
   .bs-export-btn svg{width:14px;height:14px}
   .bs-export-btn.copied{background:var(--status-good-tint);color:var(--status-good);border-color:var(--status-good)}
+  .bs-export-btn.copy-failed{background:rgba(184,84,26,0.06);color:var(--rust);border-color:var(--rust)}
+  .bs-export-btn-primary{background:var(--teal);color:var(--cream)}
+  .bs-export-btn-primary:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+
+  /* Print stylesheet — collapses the page into a one-page starter sheet
+     a restaurant owner can hand to a designer or a printer. Hides the
+     hero, the privacy tour, the "what this isn't" framing, the export
+     buttons, and the site nav/footer; keeps the palette, the fixture,
+     the contrast grid, and the "Using your palette" guidance. */
+  @media print {
+    body{background:#fff !important;color:#000 !important}
+    header.site-nav, .breadcrumb, .bs-devtools-tour, #how-to-check, #what-this-isnt,
+    .bs-export, #how-we-protect, .foot, footer, .lang-hint, .mm-next, .nav-search,
+    .bs-upload-zone, .bs-status, .bs-cb-toggle{display:none !important}
+    .bs-using[open]>.bs-using-body, .bs-using-body{display:block !important}
+    .bs-using>summary{display:none !important}
+    .bs-using{border:none !important;padding:0 !important}
+    .bs-palette{break-inside:avoid;page-break-inside:avoid}
+    .bs-fixture-card{break-inside:avoid;page-break-inside:avoid}
+    .bs-contrast-table{break-inside:avoid;page-break-inside:avoid;font-size:10px !important}
+    .bs-preview, .bs-fixture-wrap, .bs-contrast-wrap, .bs-palette-wrap, .bs-using{margin-top:14px !important}
+    a[href]:after{content:"" !important}
+  }
   .bs-export-preview{margin:0;padding:14px 16px;background:var(--ink);color:var(--cream-2);border-radius:var(--r-input);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.5;overflow-x:auto;white-space:pre;max-height:280px;overflow-y:auto}
   /* Live-calculator styles — shared by all four calculators. The
      "Stays in your browser" badge is visible on every card to
@@ -238,6 +287,13 @@
      inline "Inspect this" expander. Keyboard-operable via native
      <details>. Invite the audit; don't dodge it. */
   .mm-steps{display:flex;flex-direction:column;gap:10px;max-width:760px;margin:20px auto 0}
+  .bs-devtools-tour{border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+  .bs-devtools-tour>summary{cursor:pointer;padding:14px 18px;font-size:14px;font-weight:600;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .bs-devtools-tour>summary::after{content:"+";font-size:22px;font-weight:400;color:var(--stone);line-height:1}
+  .bs-devtools-tour[open]>summary::after{content:"\2212"}
+  .bs-devtools-tour>summary::-webkit-details-marker{display:none}
+  .bs-devtools-tour .bs-devtools-cue{font-weight:400;color:var(--stone);font-size:12.5px}
+  .bs-devtools-tour .mm-steps{margin-top:6px;padding:0 18px 18px}
   .mm-step{border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);padding:16px 18px}
   .mm-step-head{display:flex;gap:14px;align-items:flex-start}
   .mm-step-num{flex:0 0 28px;height:28px;border-radius:50%;background:var(--teal-tint);color:var(--teal);font-family:var(--font-display);font-weight:500;font-size:15px;display:flex;align-items:center;justify-content:center}
@@ -433,7 +489,28 @@
     <div class="bs-palette-wrap" id="bsPaletteWrap" hidden>
       <h2>Extracted palette</h2>
       <div class="bs-palette" id="bsPalette" role="list"></div>
-      <p class="bs-palette-hint">Click any chip to copy its hex to your clipboard.</p>
+      <p class="bs-palette-hint">Click any chip to copy its hex to your clipboard. Roles are assigned by chromatic intent — the most saturated color anchors Primary, not the most abundant pixel.</p>
+      <p class="bs-palette-mono-flag" id="bsPaletteMonoFlag" hidden>This logo reads as monochromatic. The roles below label the lightness extremes; treat them as a starter, not a system.</p>
+
+      <details class="bs-using">
+        <summary>Using your palette &mdash; for a non-technical reader</summary>
+        <div class="bs-using-body">
+          <ol class="bs-using-list">
+            <li>
+              <strong>Pick one surface color.</strong>
+              <p>One color dominates everything else &mdash; the wall behind your menu chalkboard, the background of your Instagram grid, the cream stock of your menu. Use the <strong>Neutral</strong> chip (or whichever of the two largest clusters is lightest) here. Restraint at this layer is what makes the rest readable.</p>
+            </li>
+            <li>
+              <strong>Pick one hero color.</strong>
+              <p>The one color you want a diner&rsquo;s eye to land on first &mdash; the &ldquo;Reserve a table&rdquo; button, your storefront awning, the eyebrow on a menu header. Use <strong>Primary</strong>. Each accessible-pair value in the export tells you what text color to put on top so it actually reads.</p>
+            </li>
+            <li>
+              <strong>Use the rest sparingly.</strong>
+              <p>Accent 1, Accent 2, and Secondary are for dividers, pricing, sub-headlines, hover states &mdash; one decision at a time. A page that uses all five colors at full strength reads as five different brands. <a href="/glossary/color-palette/">More on palette discipline &rarr;</a></p>
+            </li>
+          </ol>
+        </div>
+      </details>
     </div>
 
     <div class="bs-fixture-wrap" id="bsFixtureWrap" hidden>
@@ -470,12 +547,21 @@
     </div>
 
     <div class="bs-contrast-wrap" id="bsContrastWrap" hidden>
-      <h2>WCAG contrast grid</h2>
+      <div class="bs-contrast-head">
+        <h2>WCAG contrast grid</h2>
+        <div class="bs-cb-toggle" id="bsCbToggle" role="radiogroup" aria-label="Color-blindness simulation">
+          <span class="bs-cb-label">Simulate vision</span>
+          <button type="button" class="bs-cb-btn" data-cb="normal" aria-pressed="true">Normal</button>
+          <button type="button" class="bs-cb-btn" data-cb="deuteranopia" aria-pressed="false">Deuteran</button>
+          <button type="button" class="bs-cb-btn" data-cb="protanopia" aria-pressed="false">Protan</button>
+          <button type="button" class="bs-cb-btn" data-cb="tritanopia" aria-pressed="false">Tritan</button>
+        </div>
+      </div>
       <div class="bs-contrast-scroll">
         <table class="bs-contrast-table" id="bsContrastTable" aria-label="Contrast ratios between every pair of palette colors"></table>
       </div>
       <p class="bs-contrast-hint">
-        Ratios of 7+ clear AAA (normal text, any size). 4.5+ clears AA. 3+ clears AA for large text only (18pt+ or 14pt bold). Below 3 fails for body copy.
+        Read pair-wise: each cell is text-on-color contrast for that pair. Diagonal duplicates omitted. Ratios of 7+ clear AAA (normal text). 4.5+ clears AA. 3+ clears AA for large text only (18pt+ or 14pt bold). Below 3 fails for body copy. The simulation toggle re-renders the grid through Brettel/Viénot dichromacy projections — perceptual preview, not a clinical test.
         <br>
         <span class="bs-contrast-legend">
           <span data-l="AAA">AAA &ge; 7</span>
@@ -489,6 +575,10 @@
     <div class="bs-export" id="bsExport" hidden>
       <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0;">Export</h2>
       <div class="bs-export-row">
+        <button type="button" class="bs-export-btn bs-export-btn-primary" id="bsDownloadPane">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Download Muntin Pane (PNG)
+        </button>
         <button type="button" class="bs-export-btn" id="bsCopyCss">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
           Copy CSS variables
@@ -502,9 +592,23 @@
           Download ZIP bundle
         </button>
       </div>
-      <p style="margin:0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);">The ZIP packages <code>palette.css</code>, <code>tokens.json</code>, and a plain-text <code>README.md</code> naming each color's role and accessible pairs. Built in your browser with a 50-line store-only ZIP writer — no third-party library, no upload.</p>
+      <p style="margin:0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);">The <strong>Muntin Pane</strong> is a 1200&times;1260 PNG arranging your logo, palette, type sample, and menu preview into the same 2&times;2 grid as our brand mark — one shareable file you can email to a designer, post to Instagram, or print. The ZIP includes the Pane plus <code>palette.css</code>, <code>tokens.json</code>, and a <code>README.md</code> naming each color's role. Everything is composed and packaged in your browser — no upload.</p>
       <pre class="bs-export-preview" id="bsExportPreview" aria-label="CSS variables preview"></pre>
     </div>
+  </div>
+</div></section>
+
+<section class="block" id="what-this-does"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">Plain English</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,34px);font-weight:500;color:var(--ink);margin:12px 0 14px;">What this does, in four sentences</h2>
+    <ol style="margin:0;padding-left:1.2em;font-size:15px;line-height:1.7;color:var(--ink-soft);display:flex;flex-direction:column;gap:8px;">
+      <li><strong>You drop a logo.</strong> Your browser samples the pixels into a small grid &mdash; the file itself never leaves your device.</li>
+      <li><strong>You get a five-color palette.</strong> The colors are pulled from your logo by a clustering algorithm that runs in the page, sorted into roles (Primary, Secondary, accents, Neutral) by chromatic intent.</li>
+      <li><strong>You get accessibility math.</strong> Every pair gets a WCAG contrast grade, and each color comes with a slightly-shifted &ldquo;accessible pair&rdquo; that&rsquo;s safe to use as text on cream or ink.</li>
+      <li><strong>You get four ways to take it with you.</strong> The Muntin Pane is a single shareable PNG. The CSS variables paste into a stylesheet. The tokens.json drops into Figma. The ZIP packages all of the above plus a README.</li>
+    </ol>
+    <p style="font-size:13.5px;line-height:1.6;color:var(--stone);margin:14px 0 0;">It is <strong>not</strong> a logo generator, a finished brand identity, or a typography recommendation. <a href="#what-this-isnt" style="color:inherit;border-bottom:1px dashed var(--teal);">More on the limits below</a>.</p>
   </div>
 </div></section>
 
@@ -512,8 +616,11 @@
   <div style="max-width:760px;margin:0 auto;">
     <span class="eyebrow">Lead by example</span>
     <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">How we protect the logo you upload</h2>
-    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">A logo in progress is sensitive: it might be a rebrand you haven't announced, a concept you haven't shown a partner, a finished mark you paid real money for. Nine claims. Each is verifiable in your own browser in under a minute. If any of them turn out to be wrong, we want you to find out first — open every "Inspect this" and check us.</p>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0 0 14px;">A logo in progress is sensitive: it might be a rebrand you haven't announced, a concept you haven't shown a partner, a finished mark you paid real money for. Nine claims. Each is verifiable in your own browser in under a minute. If any of them turn out to be wrong, we want you to find out first.</p>
   </div>
+
+  <details class="bs-devtools-tour" style="max-width:920px;margin:14px auto 0;">
+    <summary>Verify the claim yourself <span class="bs-devtools-cue">&middot; for developers</span></summary>
 
   <div class="mm-steps" aria-label="Privacy-protection steps">
     <article class="mm-step">
@@ -633,6 +740,7 @@
       </div>
     </article>
   </div>
+  </details>
 </div></section>
 
 <section class="block" id="how-to-check"><div class="container">
@@ -779,9 +887,14 @@
     </article>
   </div>
 
-  <div style="max-width:760px;margin:28px auto 0;padding:20px 22px;background:var(--teal-tint);border-radius:var(--r-input);border:1px solid var(--line);">
+  <div style="max-width:760px;margin:24px auto 0;padding:20px 22px;background:var(--cream-2,var(--cream));border-radius:var(--r-input);border:1px solid var(--line);">
+    <p style="margin:0 0 8px;font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);">What this <em>is</em>: a starter kit to think with.</p>
+    <p style="margin:0;font-size:14px;line-height:1.65;color:var(--ink-soft);">Three audiences, three handoffs, one free tool. Bring the <strong>Muntin Pane</strong> to a designer — it shows your palette in context on a single page. Bring the <strong>CSS variables</strong> to a developer — they paste straight into a stylesheet. Bring the <strong>hex codes</strong> to a printer or signmaker — that's the language of every print spec sheet. The Pane is the file a non-technical reader can actually share; the rest is for the people building things for you.</p>
+  </div>
+
+  <div style="max-width:760px;margin:18px auto 0;padding:20px 22px;background:var(--teal-tint);border-radius:var(--r-input);border:1px solid var(--line);">
     <p style="margin:0 0 8px;font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);">When you want a finished identity, hire a designer.</p>
-    <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:var(--ink-soft);">A Brand Identity engagement covers the concept work, the usage rules, the variants, the typography, and a deliverables package you can hand to any vendor. Bring the palette and tokens you generated here — they're useful starting reference.</p>
+    <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:var(--ink-soft);">A Brand Identity engagement covers the concept work, the usage rules, the variants, the typography, and a deliverables package you can hand to any vendor. Bring the Muntin Pane, the palette, and the tokens you generated here — that's 30 minutes of the engagement already done.</p>
     <a href="/services/#brand" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:var(--teal);color:var(--cream);border-radius:999px;text-decoration:none;font-size:13px;font-weight:600;">See Brand Identity (from \$1.5k)
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px;"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
     </a>
@@ -792,9 +905,9 @@
   <div class="mm-next">
     <h2>Where to go next</h2>
     <div class="mm-next-links">
-      <a href="/glossary/#brand-design">Glossary: Brand &amp; design terms</a>
-      <a href="/tools/margin-math/">Do the math: Margin Math</a>
-      <a href="/tools/gbp-grader/">Grade your Google Business Profile</a>
+      <a href="/glossary/color-palette/">Glossary: Color palette</a>
+      <a href="/glossary/design-token/">Glossary: Design tokens</a>
+      <a href="/learn/topics/brand-design/">Topic: Brand &amp; design</a>
       <a href="/tools/audits/restaurant/">Run the full Restaurant Audit</a>
       <a href="/services/#brand">Hire the studio for a finished identity</a>
     </div>
@@ -817,10 +930,17 @@
           <p class="tool-deep-snippet">The full visible system that carries a business across every touchpoint — logo, colors, typography, voice, and the rules for using them. A l…</p>
           <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
         </a>
-      <a class="tool-deep-card tool-deep-card-article" href="/blog/wix-vs-custom-for-restaurants/">
+      <a class="tool-deep-card tool-deep-card-term" href="/glossary/color-palette/">
+          <span class="tool-deep-kind">Glossary</span>
+          <h3>Color palette</h3>
+          <p class="tool-deep-aka">the curated set of colors that belong to your brand</p>
+          <p class="tool-deep-snippet">The curated set of colors that belong to a brand — typically a primary, a secondary, a small number of accents, and a couple of neutrals. Ea…</p>
+          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-article" href="/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/">
           <span class="tool-deep-kind">Article</span>
-          <h3>Wix vs Custom for Restaurants</h3>
-          <p class="tool-deep-snippet">An honest comparison of Wix and a custom-built restaurant website. Six places Wix runs out of room, the ROI math that makes the switch worth it, and when Wix is actually the right call.</p>
+          <h3>How Much Does a Custom Restaurant Website Cost in 2026?</h3>
+          <p class="tool-deep-snippet">Custom restaurant website costs in 2026, itemized line by line — from $2,500 to $15,000+. Real numbers, real tradeoffs, and what nobody else is saying.</p>
           <span class="tool-deep-cta">Read the playbook <span aria-hidden="true">→</span></span>
         </a>
     </div>
@@ -842,6 +962,7 @@
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="./brand-suite.js?v=20260424-bs1"></script>
+<script src="./pane-render.js?v=20260425-bs2"></script>
 <script>
 /* Brand Suite — upload + palette wiring.
  *
@@ -864,6 +985,7 @@
   var imgInk    = document.getElementById('bsImgInk');
   var paletteWrap = document.getElementById('bsPaletteWrap');
   var paletteEl = document.getElementById('bsPalette');
+  var paletteMonoFlag = document.getElementById('bsPaletteMonoFlag');
   var fixtureWrap = document.getElementById('bsFixtureWrap');
   var contrastWrap = document.getElementById('bsContrastWrap');
   var contrastTable = document.getElementById('bsContrastTable');
@@ -872,18 +994,38 @@
   var copyCssBtn = document.getElementById('bsCopyCss');
   var downloadTokensBtn = document.getElementById('bsDownloadTokens');
   var downloadZipBtn = document.getElementById('bsDownloadZip');
+  var downloadPaneBtn = document.getElementById('bsDownloadPane');
+  // Held on closure so the Pane export can re-render from the same
+  // already-decoded image the preview swatches use. The image is a
+  // local Blob URL — never a network resource.
+  var latestLogoImage = null;
 
   var MAX_BYTES = 10 * 1024 * 1024;  // 10MB sanity cap — the browser can read larger, but a logo this big is almost certainly a misdrop
   var DOWNSAMPLE = 100;              // clustering runs on ≤100×100; logos rarely need more
   var ROLE_NAMES = ['Primary', 'Secondary', 'Accent 1', 'Accent 2', 'Neutral'];
+  // Plain-English sublabel for each role, audience-tuned for a non-
+  // technical reader (e.g. a restaurant owner). The technical role
+  // label stays — both audiences served in one chip.
+  var ROLE_SUBLABELS = [
+    'the one that calls to action',
+    'the one that supports',
+    'the one that highlights',
+    'the one that accents',
+    'the one that frames'
+  ];
   var ROLE_VARS  = ['--brand-primary', '--brand-secondary', '--brand-accent-1', '--brand-accent-2', '--brand-neutral'];
   var TOKEN_NAMES = ['brand.primary', 'brand.secondary', 'brand.accent-1', 'brand.accent-2', 'brand.neutral'];
   var CREAM = 'var(--cream)';
   var INK   = 'var(--ink)';
 
   // Most recent palette — held on closure so the export buttons can
-  // rebuild CSS/tokens without re-running extraction.
+  // rebuild CSS/tokens without re-running extraction. The palette is
+  // re-ordered by bsAssignRoles so position 0 is Primary, etc.
   var latestPalette = null;
+  // Pairwise similarity warnings (indexes into latestPalette).
+  var latestSimilarities = [];
+  // Whether the source logo reads as effectively monochromatic.
+  var latestMonochromatic = false;
 
   // Spin up the worker lazily on first valid drop so the page's
   // initial load stays light. Falls back to main-thread extraction
@@ -912,6 +1054,11 @@
     statusEl.className = 'bs-status' + (kind ? ' bs-status-' + kind : '');
   }
 
+  // Hard ceiling. With DOWNSAMPLE=100 a normal logo lands at <=10000 pixels.
+  // Tall vertical or extreme-aspect uploads can blow past that; truncate
+  // uniformly so the worker never sees an unbounded array.
+  var MAX_SAMPLED_PIXELS = 20000;
+
   function sampleCanvasPixels(canvas){
     var ctx = canvas.getContext('2d');
     var data;
@@ -923,33 +1070,48 @@
       if (a < 128) continue;  // skip transparent pixels so a logo on a transparent ground doesn't poison the palette with black
       out.push([data[i], data[i + 1], data[i + 2]]);
     }
+    if (out.length > MAX_SAMPLED_PIXELS) {
+      var stride = out.length / MAX_SAMPLED_PIXELS;
+      var trimmed = new Array(MAX_SAMPLED_PIXELS);
+      for (var j = 0; j < MAX_SAMPLED_PIXELS; j++) trimmed[j] = out[Math.floor(j * stride)];
+      out = trimmed;
+    }
     return out;
   }
+
+  // Worker timeout. K-means on <=20000 pixels finishes in tens of ms on
+  // any modern device, so 2s is a generous ceiling that catches a hung
+  // worker (rare, but possible on a constrained mobile browser).
+  var WORKER_TIMEOUT_MS = 2000;
 
   function extractAndRender(pixels, file){
     setStatus('Extracting palette…', 'working');
     ensureWorker();
     var requestId = ++requestCounter;
+    var settled = false;
+    var timeoutHandle = null;
     function onDone(err, palette){
+      if (settled) return;
+      settled = true;
+      if (timeoutHandle) { clearTimeout(timeoutHandle); timeoutHandle = null; }
       if (err) {
         // Main-thread fallback: run extraction synchronously
         try { palette = window.BS.extractPalette(pixels, { k: 5, seed: 1 }); }
         catch (e) { setStatus('Could not extract a palette. Try a different logo.', 'error'); return; }
       }
-      latestPalette = palette;
-      renderPalette(palette);
-      paletteWrap.hidden = false;
-      renderFixture(palette);
-      fixtureWrap.hidden = false;
-      renderContrastGrid(palette);
-      contrastWrap.hidden = false;
-      renderExports(palette);
-      exportWrap.hidden = false;
-      setStatus('');
-      firePlausible(palette, file);
+      hydratePalette(palette, { source: 'extract', file: file });
     }
     pending[requestId] = onDone;
     if (worker) {
+      timeoutHandle = setTimeout(function(){
+        if (settled) return;
+        // Worker hung. Tear it down so the next drop spins a fresh one,
+        // then fall back to main-thread extraction.
+        delete pending[requestId];
+        try { worker.terminate(); } catch (_) {}
+        worker = null;
+        onDone(new Error('worker-timeout'));
+      }, WORKER_TIMEOUT_MS);
       worker.postMessage({ type: 'extract', pixels: pixels, k: 5, seed: 1, requestId: requestId });
     } else {
       // No Worker support; run immediately on main thread.
@@ -957,17 +1119,98 @@
     }
   }
 
+  // Single render path. Called both by the worker reply (after fresh
+  // extraction) and by the URL-fragment rehydrator (no upload, no logo).
+  function hydratePalette(palette, opts){
+    opts = opts || {};
+    var roleResult = window.BS.assignRoles(palette, { roleNames: ROLE_NAMES });
+    latestPalette = roleResult.entries.map(function(e){
+      return { hex: e.hex, dominancePct: e.dominancePct };
+    });
+    latestMonochromatic = roleResult.monochromatic;
+    latestSimilarities = window.BS.paletteSimilarities(latestPalette);
+    paletteMonoFlag.hidden = !latestMonochromatic;
+    renderPalette(latestPalette);
+    paletteWrap.hidden = false;
+    setStatus('');
+    requestAnimationFrame(function(){
+      renderFixture(latestPalette);
+      fixtureWrap.hidden = false;
+      requestAnimationFrame(function(){
+        renderContrastGrid(latestPalette);
+        contrastWrap.hidden = false;
+        renderExports(latestPalette);
+        exportWrap.hidden = false;
+        if (opts.source === 'extract') firePlausible(latestPalette, opts.file);
+      });
+    });
+    // Update the URL fragment so the page reloads to the same palette,
+    // and the user can share a link to a designer / partner. Encodes
+    // only hex values — no logo bytes, no dominance — so the privacy
+    // architecture isn't widened.
+    try {
+      var enc = latestPalette.map(function(e){ return e.hex.replace('#', '').toUpperCase(); }).join(',');
+      history.replaceState(null, '', '#p=' + enc);
+    } catch (_) {}
+  }
+
+  // Equal-share synthetic palette so role assignment + similarity still
+  // run on the rehydrated entries the same way they would after extract.
+  function paletteFromHexList(hexList){
+    var n = hexList.length;
+    return hexList.map(function(h){
+      return { hex: '#' + h.toUpperCase().replace('#', ''), dominancePct: n > 0 ? 1 / n : 0 };
+    });
+  }
+
+  // Fragment rehydration. URL like #p=1F4E5B,B8541A,FAF7F2 — each token
+  // a 6-char hex. Skips the upload zone and renders directly. The page
+  // doesn't show a logo (we don't have the bytes), but every other
+  // export surface works. Same-origin only; no fetch.
+  (function rehydrateFromFragment(){
+    var frag = window.location.hash || '';
+    var m = /(?:^|[#&])p=([0-9A-Fa-f,]+)/.exec(frag);
+    if (!m) return;
+    var hexes = m[1].split(',').filter(function(s){ return /^[0-9a-f]{6}$/i.test(s); });
+    if (!hexes.length || hexes.length > 8) return;
+    var palette = paletteFromHexList(hexes);
+    // Defer until BS is loaded (script order guarantees it but defensive).
+    if (!window.BS || !window.BS.assignRoles) {
+      window.addEventListener('load', function(){ hydratePalette(palette, { source: 'fragment' }); });
+    } else {
+      hydratePalette(palette, { source: 'fragment' });
+    }
+    setStatus('Loaded palette from URL — share this link to share the palette.', '');
+  })();
+
   // ----- Contrast grid renderer -----
+  // Upper-triangular layout: WCAG contrast is symmetric (A-on-B equals
+  // B-on-A), so we drop the mirror half. Header swatches carry the hex
+  // as a small overlay so sighted readers don't have to hover. The
+  // simulation parameter applies a Brettel/Viénot dichromacy
+  // projection to every chip + cell input so the grid re-grades under
+  // the chosen vision model.
+  var currentSimulation = 'normal';
   function renderContrastGrid(palette){
     var p = palette.slice(0, 5);
+    var simulated = p.map(function(c){
+      return { hex: window.BS.simulateColorBlindness(c.hex, currentSimulation), source: c.hex };
+    });
     var head = '<thead><tr><th scope="col" aria-label=""></th>';
-    p.forEach(function(c){ head += '<th scope="col" style="background:' + c.hex + '" aria-label="' + c.hex + '"></th>'; });
+    simulated.forEach(function(c){
+      head += '<th scope="col" style="background:' + c.hex + '" aria-label="' + c.hex + '">' +
+              '<span class="bs-grid-hex">' + c.hex.toUpperCase() + '</span></th>';
+    });
     head += '</tr></thead>';
     var body = '<tbody>';
-    p.forEach(function(rowColor, i){
-      body += '<tr><th scope="row" style="background:' + rowColor.hex + '" aria-label="' + rowColor.hex + '"></th>';
-      p.forEach(function(colColor, j){
-        if (i === j) {
+    simulated.forEach(function(rowColor, i){
+      body += '<tr><th scope="row" style="background:' + rowColor.hex + '" aria-label="' + rowColor.hex + '">' +
+              '<span class="bs-grid-hex">' + rowColor.hex.toUpperCase() + '</span></th>';
+      simulated.forEach(function(colColor, j){
+        if (j < i) {
+          // Mirror cell — left blank to remove visual noise.
+          body += '<td data-grade="empty" aria-hidden="true"></td>';
+        } else if (i === j) {
           body += '<td data-grade="diag">—</td>';
         } else {
           var ratio = window.BS.contrastRatio(rowColor.hex, colColor.hex);
@@ -981,6 +1224,23 @@
     body += '</tbody>';
     contrastTable.innerHTML = head + body;
   }
+
+  // Wire color-blindness toggle. Only re-renders the contrast grid;
+  // the palette + fixture intentionally stay in true color since the
+  // grid is the place that surfaces accessibility math.
+  (function(){
+    var toggle = document.getElementById('bsCbToggle');
+    if (!toggle) return;
+    toggle.addEventListener('click', function(ev){
+      var btn = ev.target.closest('.bs-cb-btn');
+      if (!btn) return;
+      var btns = toggle.querySelectorAll('.bs-cb-btn');
+      for (var i = 0; i < btns.length; i++) btns[i].setAttribute('aria-pressed', 'false');
+      btn.setAttribute('aria-pressed', 'true');
+      currentSimulation = btn.getAttribute('data-cb') || 'normal';
+      if (latestPalette) renderContrastGrid(latestPalette);
+    });
+  })();
 
   // ----- Live-preview restaurant-menu fixture -----
   // Applies the extracted palette to a sample restaurant card.
@@ -1104,18 +1364,24 @@
   copyCssBtn.addEventListener('click', function(){
     if (!latestPalette) return;
     var css = buildCssBlock(latestPalette);
-    var done = function(){
-      copyCssBtn.classList.add('copied');
-      var orig = copyCssBtn.lastChild.nodeValue;
-      copyCssBtn.lastChild.nodeValue = ' Copied CSS';
+    var orig = copyCssBtn.lastChild.nodeValue;
+    var settle = function(label, kind){
+      copyCssBtn.classList.remove('copied');
+      copyCssBtn.classList.add(kind === 'error' ? 'copy-failed' : 'copied');
+      copyCssBtn.lastChild.nodeValue = label;
       setTimeout(function(){
         copyCssBtn.classList.remove('copied');
+        copyCssBtn.classList.remove('copy-failed');
         copyCssBtn.lastChild.nodeValue = orig;
-      }, 1400);
+      }, kind === 'error' ? 2600 : 1400);
     };
+    var ok = function(){ settle(' Copied CSS', 'ok'); };
+    var fail = function(){ settle(' Copy failed — select manually', 'error'); };
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(css).then(done, function(){ done(); });
-    } else { done(); }
+      navigator.clipboard.writeText(css).then(ok, fail);
+    } else {
+      fail();
+    }
     if (window.plausible) window.plausible('Brand Suite Export', { props: { format: 'css' } });
   });
 
@@ -1225,6 +1491,7 @@
     lines.push('');
     lines.push('## What’s in this bundle');
     lines.push('');
+    lines.push('- `brand-pane.png` — the **Muntin Pane**, a 1200×1260 image arranging your logo, palette, type sample, and a menu preview into the same 2×2 grid as the Muntin Digital mark. Email it to a designer, post it to Instagram, or print it.');
     lines.push('- `palette.css` — a `:root{}` block of CSS custom properties. Paste into your main stylesheet.');
     lines.push('- `tokens.json` — the same values as a flat, Figma-compatible token list.');
     lines.push('- `README.md` — this file.');
@@ -1269,22 +1536,80 @@
     return lines.join('\n') + '\n';
   }
 
+  // ----- Muntin Pane export -----
+  // The Pane is a 1200x1260 PNG that arranges logo + palette + type
+  // sample + restaurant fixture into a 2x2 grid mirroring the brand
+  // mark. The free analog of the paid Brand Board PDF — a single
+  // shareable file a non-technical reader can actually use.
+  function renderPaneCanvas(palette){
+    if (!window.BSPane || !palette || !palette.length) return null;
+    return window.BSPane.renderMuntinPane({
+      palette:              palette,
+      logoImage:            latestLogoImage,
+      contrastRatio:        window.BS.contrastRatio,
+      deriveAccessiblePair: window.BS.deriveAccessiblePair,
+      roleNames:            ROLE_NAMES,
+      strings:              window.BSPane.DEFAULT_STRINGS_EN
+    });
+  }
+  function paneBlob(palette){
+    var canvas = renderPaneCanvas(palette);
+    if (!canvas) return Promise.resolve(null);
+    return window.BSPane.canvasToPngBlob(canvas);
+  }
+
+  downloadPaneBtn.addEventListener('click', function(){
+    if (!latestPalette) return;
+    paneBlob(latestPalette).then(function(blob){
+      if (!blob) return;
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'brand-pane.png';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function(){
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 0);
+      if (window.plausible) window.plausible('Brand Suite Export', { props: { format: 'pane-png' } });
+    });
+  });
+
   function buildAndDownloadZip(palette){
     var cssText = buildCssBlock(palette);
     var tokensText = buildTokensJson(palette);
     var readmeText = buildReadme(palette);
-    var blob = buildZipBlob([
-      { name: 'palette.css',  data: strToBytes(cssText) },
-      { name: 'tokens.json',  data: strToBytes(tokensText) },
-      { name: 'README.md',    data: strToBytes(readmeText) }
-    ]);
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = 'brand-suite.zip';
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+    // Try to include the Pane PNG; if rendering fails (no logo loaded
+    // yet, no canvas support), the ZIP still ships the text artifacts.
+    paneBlob(palette).then(function(paneBytes){
+      var entries = [
+        { name: 'palette.css',  data: strToBytes(cssText) },
+        { name: 'tokens.json',  data: strToBytes(tokensText) },
+        { name: 'README.md',    data: strToBytes(readmeText) }
+      ];
+      var emit = function(){
+        var blob = buildZipBlob(entries);
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'brand-suite.zip';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+      };
+      if (paneBytes) {
+        var reader = new FileReader();
+        reader.onload = function(){
+          entries.unshift({ name: 'brand-pane.png', data: new Uint8Array(reader.result) });
+          emit();
+        };
+        reader.onerror = function(){ emit(); };
+        reader.readAsArrayBuffer(paneBytes);
+      } else {
+        emit();
+      }
+    });
   }
 
   downloadZipBtn.addEventListener('click', function(){
@@ -1292,6 +1617,17 @@
     buildAndDownloadZip(latestPalette);
     if (window.plausible) window.plausible('Brand Suite Export', { props: { format: 'zip' } });
   });
+
+  function similarityFor(idx){
+    // Returns the index of the role this entry is visually similar to,
+    // or -1 if no similarity flag applies.
+    for (var i = 0; i < latestSimilarities.length; i++) {
+      var pair = latestSimilarities[i];
+      if (pair.a === idx) return pair.b;
+      if (pair.b === idx) return pair.a;
+    }
+    return -1;
+  }
 
   function renderPalette(palette){
     paletteEl.innerHTML = '';
@@ -1302,25 +1638,43 @@
       btn.className = 'bs-chip';
       btn.setAttribute('role', 'listitem');
       btn.setAttribute('aria-label', role + ' ' + entry.hex + '. Click to copy.');
+      var simIdx = similarityFor(i);
+      var simHtml = '';
+      if (simIdx > -1) {
+        var simRole = ROLE_NAMES[simIdx] || ('Color ' + (simIdx + 1));
+        simHtml = '<span class="bs-chip-warn">visually similar to ' + simRole + '</span>';
+      }
+      var sublabel = ROLE_SUBLABELS[i] || '';
       btn.innerHTML =
         '<span class="bs-chip-swatch" style="background:' + entry.hex + '"></span>' +
         '<span class="bs-chip-meta">' +
           '<span class="bs-chip-role">' + role + '</span>' +
+          (sublabel ? '<span class="bs-chip-sublabel">' + sublabel + '</span>' : '') +
           '<span class="bs-chip-hex">' + entry.hex.toUpperCase() + '</span>' +
           '<span class="bs-chip-share">' + Math.round(entry.dominancePct * 100) + '% share</span>' +
+          simHtml +
         '</span>';
       btn.addEventListener('click', function(){
         var hex = entry.hex.toUpperCase();
-        var done = function(){
-          btn.classList.add('copied');
-          var role = btn.querySelector('.bs-chip-role');
-          var orig = role.textContent;
-          role.textContent = 'Copied';
-          setTimeout(function(){ btn.classList.remove('copied'); role.textContent = orig; }, 1200);
+        var roleEl = btn.querySelector('.bs-chip-role');
+        var orig = roleEl.textContent;
+        var settle = function(label, kind){
+          btn.classList.remove('copied');
+          btn.classList.add(kind === 'error' ? 'copy-failed' : 'copied');
+          roleEl.textContent = label;
+          setTimeout(function(){
+            btn.classList.remove('copied');
+            btn.classList.remove('copy-failed');
+            roleEl.textContent = orig;
+          }, kind === 'error' ? 2200 : 1200);
         };
+        var ok = function(){ settle('Copied', 'ok'); };
+        var fail = function(){ settle('Copy failed', 'error'); };
         if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(hex).then(done, function(){ done(); });
-        } else { done(); }
+          navigator.clipboard.writeText(hex).then(ok, fail);
+        } else {
+          fail();
+        }
       });
       paletteEl.appendChild(btn);
     });
@@ -1339,6 +1693,55 @@
     }});
   }
 
+  // Strip <script> elements and any external href / xlink:href attributes
+  // from an SVG document. Keeps data: URIs and same-document #fragment
+  // references — those can't reach the network. Returns the serialized
+  // sanitized SVG as a string, or null if parsing fails.
+  function sanitizeSvgText(text){
+    try {
+      var parser = new DOMParser();
+      var doc = parser.parseFromString(text, 'image/svg+xml');
+      if (!doc || doc.querySelector('parsererror')) return null;
+      var root = doc.documentElement;
+      if (!root || root.nodeName.toLowerCase() !== 'svg') return null;
+      var scripts = root.querySelectorAll('script');
+      for (var i = 0; i < scripts.length; i++) scripts[i].parentNode.removeChild(scripts[i]);
+      var all = root.querySelectorAll('*');
+      function stripExternalHref(el, attrName){
+        var v = el.getAttribute(attrName);
+        if (v == null) return;
+        var t = v.trim().toLowerCase();
+        // Allow same-document fragments and inline data URIs only.
+        if (t.indexOf('#') === 0 || t.indexOf('data:') === 0) return;
+        el.removeAttribute(attrName);
+      }
+      stripExternalHref(root, 'href');
+      stripExternalHref(root, 'xlink:href');
+      for (var j = 0; j < all.length; j++) {
+        var el = all[j];
+        // Remove on* event-handler attributes.
+        var attrs = el.attributes;
+        for (var k = attrs.length - 1; k >= 0; k--) {
+          var name = attrs[k].name;
+          if (name.toLowerCase().indexOf('on') === 0) el.removeAttribute(name);
+        }
+        stripExternalHref(el, 'href');
+        stripExternalHref(el, 'xlink:href');
+      }
+      return new XMLSerializer().serializeToString(doc);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function loadAsImage(blob, onReady, onFail){
+    var url = URL.createObjectURL(blob);
+    var img = new Image();
+    img.onload = function(){ onReady(img, url); };
+    img.onerror = function(){ URL.revokeObjectURL(url); onFail(); };
+    img.src = url;
+  }
+
   function handleFile(file){
     if (!file) return;
     if (file.size > MAX_BYTES) {
@@ -1346,32 +1749,57 @@
       return;
     }
     setStatus('Loading your logo…', 'working');
-    var url = URL.createObjectURL(file);
-    var img = new Image();
-    img.onload = function(){
-      // Show preview (two swatches)
-      imgCream.src = url;
-      imgInk.src   = url;
-      preview.hidden = false;
-      // Draw to offscreen canvas downsampled to clustering resolution
-      var canvas = document.createElement('canvas');
-      var scale = Math.min(1, DOWNSAMPLE / Math.max(img.width, img.height));
-      canvas.width  = Math.max(1, Math.round(img.width  * scale));
-      canvas.height = Math.max(1, Math.round(img.height * scale));
-      var ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      var pixels = sampleCanvasPixels(canvas);
-      if (!pixels.length) {
-        setStatus('Could not read any opaque pixels from that logo.', 'error');
-        return;
-      }
-      extractAndRender(pixels, file);
-    };
-    img.onerror = function(){
-      setStatus('Could not read that file as an image.', 'error');
-      URL.revokeObjectURL(url);
-    };
-    img.src = url;
+
+    function proceed(blob){
+      loadAsImage(blob, function(img, url){
+        // Show preview (two swatches)
+        imgCream.src = url;
+        imgInk.src   = url;
+        preview.hidden = false;
+        latestLogoImage = img;
+        // Draw to offscreen canvas downsampled to clustering resolution
+        var canvas = document.createElement('canvas');
+        var w = img.naturalWidth  || img.width  || 0;
+        var h = img.naturalHeight || img.height || 0;
+        if (w === 0 || h === 0) {
+          setStatus('Could not read that file as an image.', 'error');
+          return;
+        }
+        var scale = Math.min(1, DOWNSAMPLE / Math.max(w, h));
+        canvas.width  = Math.max(1, Math.round(w * scale));
+        canvas.height = Math.max(1, Math.round(h * scale));
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        var pixels = sampleCanvasPixels(canvas);
+        if (!pixels.length) {
+          setStatus('Could not read any opaque pixels from that logo.', 'error');
+          return;
+        }
+        extractAndRender(pixels, file);
+      }, function(){
+        setStatus('Could not read that file as an image.', 'error');
+      });
+    }
+
+    var isSvg = (file.type && /svg/i.test(file.type)) || /\.svg$/i.test(file.name || '');
+    if (isSvg) {
+      // SVGs can carry external <image href>, <use xlink:href>, or
+      // <script> nodes. Read as text, sanitize, then load — keeps the
+      // canvas un-tainted and the privacy posture intact.
+      var reader = new FileReader();
+      reader.onload = function(){
+        var sanitized = sanitizeSvgText(String(reader.result || ''));
+        if (!sanitized) {
+          setStatus('This SVG references external files or could not be parsed. Flatten to PNG and try again.', 'error');
+          return;
+        }
+        proceed(new Blob([sanitized], { type: 'image/svg+xml' }));
+      };
+      reader.onerror = function(){ setStatus('Could not read that SVG.', 'error'); };
+      reader.readAsText(file);
+      return;
+    }
+    proceed(file);
   }
 
   fileInput.addEventListener('change', function(){

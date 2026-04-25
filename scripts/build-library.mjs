@@ -1243,7 +1243,7 @@ function existingFurtherReadingHrefs(locale, blogSlug) {
 // from tool result → educational ecosystem (the missing piece in
 // the original UX audit). Idempotent via comment markers.
 
-function renderToolDeepLinks(locale, tool, glossaryTerm, article) {
+function renderToolDeepLinks(locale, tool, glossaryTerms, articles) {
   const topicChips = (tool.topics || [])
     .map(tp => TOPIC_BY_SLUG[tp])
     .filter(Boolean)
@@ -1253,24 +1253,20 @@ function renderToolDeepLinks(locale, tool, glossaryTerm, article) {
     })
     .join('\n        ');
 
-  const termCard = glossaryTerm
-    ? `<a class="tool-deep-card tool-deep-card-term" href="${pathFor(locale, '/glossary/' + glossaryTerm.slug + '/')}">
+  const termCards = (glossaryTerms || []).slice(0, 2).map(term => `<a class="tool-deep-card tool-deep-card-term" href="${pathFor(locale, '/glossary/' + term.slug + '/')}">
           <span class="tool-deep-kind">${esc(t(locale, 'tool_deep_kind_glossary'))}</span>
-          <h3>${glossaryTerm.head}</h3>
-          ${glossaryTerm.aka ? `<p class="tool-deep-aka">${glossaryTerm.aka}</p>` : ''}
-          <p class="tool-deep-snippet">${esc(stripTags(glossaryTerm.defHtml).slice(0, 140))}${stripTags(glossaryTerm.defHtml).length > 140 ? '…' : ''}</p>
+          <h3>${term.head}</h3>
+          ${term.aka ? `<p class="tool-deep-aka">${term.aka}</p>` : ''}
+          <p class="tool-deep-snippet">${esc(stripTags(term.defHtml).slice(0, 140))}${stripTags(term.defHtml).length > 140 ? '…' : ''}</p>
           <span class="tool-deep-cta">${esc(t(locale, 'tool_deep_cta_glossary'))} <span aria-hidden="true">→</span></span>
-        </a>`
-    : '';
+        </a>`).join('\n      ');
 
-  const articleCard = article
-    ? `<a class="tool-deep-card tool-deep-card-article" href="${pathFor(locale, '/blog/' + article.slug + '/')}">
+  const articleCards = (articles || []).slice(0, 1).map(article => `<a class="tool-deep-card tool-deep-card-article" href="${pathFor(locale, '/blog/' + article.slug + '/')}">
           <span class="tool-deep-kind">${esc(t(locale, 'tool_deep_kind_article'))}</span>
           <h3>${esc(article.title)}</h3>
           <p class="tool-deep-snippet">${esc(article.dek)}</p>
           <span class="tool-deep-cta">${esc(t(locale, 'tool_deep_cta_article'))} <span aria-hidden="true">→</span></span>
-        </a>`
-    : '';
+        </a>`).join('\n      ');
 
   return `<!-- LIBRARY:tool-deep-links:start -->
 <section class="tool-deep-links" aria-labelledby="tool-deep-h">
@@ -1282,15 +1278,15 @@ function renderToolDeepLinks(locale, tool, glossaryTerm, article) {
       ${topicChips ? `<div class="tool-deep-topics">${topicChips}</div>` : ''}
     </header>
     <div class="tool-deep-grid">
-      ${termCard}
-      ${articleCard}
+      ${termCards}
+      ${articleCards}
     </div>
   </div>
 </section>
 <!-- LIBRARY:tool-deep-links:end -->`;
 }
 
-function injectToolDeepLinks(locale, toolSlug, tool, glossaryTerm, article) {
+function injectToolDeepLinks(locale, toolSlug, tool, glossaryTerms, articles) {
   const root = locale === 'es' ? join(REPO, 'es/tools') : join(REPO, 'tools');
   const file = join(root, toolSlug, 'index.html');
   let html;
@@ -1300,7 +1296,7 @@ function injectToolDeepLinks(locale, toolSlug, tool, glossaryTerm, article) {
     return 'skipped';
   }
 
-  const block = renderToolDeepLinks(locale, tool, glossaryTerm, article);
+  const block = renderToolDeepLinks(locale, tool, glossaryTerms, articles);
 
   const markerRe = /<!-- LIBRARY:tool-deep-links:start -->[\s\S]*?<!-- LIBRARY:tool-deep-links:end -->/;
   if (markerRe.test(html)) {
@@ -1569,20 +1565,30 @@ for (const locale of LOCALES) {
   }
 
   // Tool deep-links — every tool gets a Library block at the bottom
-  // surfacing its curated glossary term + article + topic chips.
+  // surfacing curated glossary terms + articles + topic chips. Tools
+  // can declare either the singular keys (`glossary_term` / `article`)
+  // or the array forms (`glossary_terms` / `articles`); the renderer
+  // shows up to 2 glossary cards + 1 article card.
   {
     const { terms } = parseGlossary(locale);
     const termBySlug = Object.fromEntries(terms.map(tm => [tm.slug, tm]));
     console.log(`\nTool deep-links (${locale}):`);
     for (const [toolSlug, tool] of Object.entries(tagsDoc.tools)) {
-      const term = termBySlug[tool.glossary_term];
-      const articleSlug = tool.article;
-      const articleMeta = articleSlug ? getMeta(locale, 'blog', articleSlug) : null;
-      const article = articleMeta && articleMeta.title ? { slug: articleSlug, ...articleMeta } : null;
-      const action = injectToolDeepLinks(locale, toolSlug, tool, term, article);
+      const termSlugs = Array.isArray(tool.glossary_terms)
+        ? tool.glossary_terms
+        : (tool.glossary_term ? [tool.glossary_term] : []);
+      const articleSlugs = Array.isArray(tool.articles)
+        ? tool.articles
+        : (tool.article ? [tool.article] : []);
+      const glossaryTerms = termSlugs.map(s => termBySlug[s]).filter(Boolean);
+      const articles = articleSlugs.map(slug => {
+        const meta = getMeta(locale, 'blog', slug);
+        return meta && meta.title ? { slug, ...meta } : null;
+      }).filter(Boolean);
+      const action = injectToolDeepLinks(locale, toolSlug, tool, glossaryTerms, articles);
       const refs = [];
-      if (term) refs.push(`glossary:${term.slug}`);
-      if (article) refs.push(`article:${article.slug}`);
+      glossaryTerms.forEach(t => refs.push(`glossary:${t.slug}`));
+      articles.forEach(a => refs.push(`article:${a.slug}`));
       console.log(`  ${toolSlug.padEnd(22)} → ${refs.join(', ').padEnd(60)} — ${action}`);
     }
   }
