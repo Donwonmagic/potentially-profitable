@@ -281,6 +281,116 @@ assertEq('OKLab roundtrip (184,84,26)', roundtrip(184, 84, 26),   { r: 184, g: 8
 }
 
 // ------------------------------------------------------------
+// Role assignment — Phase C §2.1
+// ------------------------------------------------------------
+{
+  // A black-heavy logo with a saturated red accent. Dominance order is
+  // [black, red, white]; role order should put RED first (Primary) since
+  // it's the most chromatic, NOT black.
+  const palette = [
+    { hex: '#101010', dominancePct: 0.65 },  // black, achromatic
+    { hex: '#D03A2C', dominancePct: 0.25 },  // red, chromatic
+    { hex: '#F5F5F5', dominancePct: 0.10 }   // white, achromatic
+  ];
+  const result = B.assignRoles(palette);
+  assertEq('role assignment: red beats black for Primary',
+           result.entries[0].hex, '#D03A2C');
+  assertEq('role assignment: Primary label',
+           result.entries[0].role, 'Primary');
+  // The achromatic with higher dominance should land as the Neutral.
+  const neutralEntry = result.entries.find(e => e.hex === '#101010');
+  assert('role assignment: black appears in roled output', !!neutralEntry);
+  assertEq('role assignment: monochromatic flag false', result.monochromatic, false);
+}
+
+{
+  // Monochromatic logo — three grays. assignRoles should set the flag.
+  const palette = [
+    { hex: '#202020', dominancePct: 0.5 },
+    { hex: '#909090', dominancePct: 0.3 },
+    { hex: '#F0F0F0', dominancePct: 0.2 }
+  ];
+  const result = B.assignRoles(palette);
+  assertEq('monochromatic flag true when no chroma', result.monochromatic, true);
+  assert('monochromatic still produces entries', result.entries.length >= 1);
+}
+
+{
+  // Hue-distance secondary pick. Primary red (~0°) + cyan (~180°) +
+  // pink (~5°). Secondary should be cyan, NOT pink, because pink is
+  // too close in hue to the primary.
+  const palette = [
+    { hex: '#D03A2C', dominancePct: 0.4 },  // red ~ 5°
+    { hex: '#E89890', dominancePct: 0.3 },  // soft pink, hue near red
+    { hex: '#3AC8D0', dominancePct: 0.3 }   // cyan ~ 180°
+  ];
+  const result = B.assignRoles(palette);
+  assertEq('Primary is the most chromatic red', result.entries[0].hex, '#D03A2C');
+  // Secondary should be cyan (hue-distant), not the soft pink.
+  assertEq('Secondary is hue-distant cyan, not near-hue pink',
+           result.entries[1].hex, '#3AC8D0');
+}
+
+{
+  // Spanish role names propagate when roleNames passed.
+  const palette = [{ hex: '#1F4E5B', dominancePct: 1 }];
+  const result = B.assignRoles(palette, { roleNames: ['Primario', 'Secundario', 'Acento 1', 'Acento 2', 'Neutro'] });
+  assertEq('localized role label', result.entries[0].role, 'Primario');
+}
+
+// ------------------------------------------------------------
+// Pairwise similarity — Phase C §2.2
+// ------------------------------------------------------------
+{
+  const palette = [
+    { hex: '#1F4E5B', dominancePct: 0.5 },  // teal
+    { hex: '#205060', dominancePct: 0.3 },  // near-duplicate teal
+    { hex: '#B8541A', dominancePct: 0.2 }   // rust
+  ];
+  const sims = B.paletteSimilarities(palette);
+  assert('similar pair flagged', sims.some(p => (p.a === 0 && p.b === 1) || (p.a === 1 && p.b === 0)));
+  assert('rust not flagged similar to teals', !sims.some(p => p.a === 2 || p.b === 2));
+}
+{
+  // No similarity below threshold.
+  const sims = B.paletteSimilarities([
+    { hex: '#FF0000', dominancePct: 0.5 },
+    { hex: '#00FF00', dominancePct: 0.5 }
+  ]);
+  assertEq('distinct colors → no similarity flag', sims.length, 0);
+}
+
+// ------------------------------------------------------------
+// Color-blindness simulation — Phase C §2.4
+// ------------------------------------------------------------
+assertEq('simulate normal returns input', B.simulateColorBlindness('#FF0000', 'normal'), '#FF0000');
+{
+  // Each transform must produce a valid hex and differ from the input
+  // for a saturated red.
+  for (const type of ['protanopia', 'deuteranopia', 'tritanopia']) {
+    const out = B.simulateColorBlindness('#FF0000', type);
+    assert('simulate ' + type + ' returns valid 7-char hex',
+           /^#[0-9a-f]{6}$/i.test(out));
+    assert('simulate ' + type + ' shifts saturated red',
+           out.toLowerCase() !== '#ff0000');
+  }
+}
+{
+  // Black and white are confusion-line invariants. Both should round-
+  // trip cleanly through every projection.
+  for (const type of ['protanopia', 'deuteranopia', 'tritanopia']) {
+    assertEq('simulate ' + type + ' on black', B.simulateColorBlindness('#000000', type), '#000000');
+    const w = B.simulateColorBlindness('#FFFFFF', type);
+    assert('simulate ' + type + ' on white stays near white', w.toLowerCase() === '#ffffff');
+  }
+}
+{
+  // CB_TYPES enum exposed and includes 'normal'.
+  assert('CB_TYPES exposes normal', B.CB_TYPES.includes('normal'));
+  assert('CB_TYPES exposes deuteranopia', B.CB_TYPES.includes('deuteranopia'));
+}
+
+// ------------------------------------------------------------
 // Privacy-critical: bucket enum purity + raw-string poison test
 // ------------------------------------------------------------
 

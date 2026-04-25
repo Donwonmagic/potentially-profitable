@@ -99,11 +99,14 @@
   .bs-chip-role{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--stone)}
   .bs-chip-hex{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
   .bs-chip-share{font-size:11px;color:var(--stone)}
+  .bs-chip-warn{font-size:11px;color:var(--rust);display:inline-flex;align-items:center;gap:4px}
+  .bs-chip-warn::before{content:"⚠";font-size:11px}
   .bs-chip.copied{border-color:var(--status-good);background:var(--status-good-tint)}
   .bs-chip.copied .bs-chip-role{color:var(--status-good)}
   .bs-chip.copy-failed{border-color:var(--rust);background:rgba(184,84,26,0.06)}
   .bs-chip.copy-failed .bs-chip-role{color:var(--rust)}
   .bs-palette-hint{font-size:12px;color:var(--stone);margin:0}
+  .bs-palette-mono-flag{font-size:12px;color:var(--rust);margin:0}
   .bs-status{min-height:24px;font-size:13px;color:var(--stone);text-align:center}
   .bs-status.bs-status-error{color:var(--rust)}
   .bs-status.bs-status-working::before{content:'';display:inline-block;width:12px;height:12px;margin-right:8px;border:2px solid var(--line-dark);border-top-color:var(--teal);border-radius:50%;vertical-align:middle;animation:bs-spin 800ms linear infinite}
@@ -135,6 +138,16 @@
 
   .bs-contrast-wrap{display:flex;flex-direction:column;gap:10px}
   .bs-contrast-wrap h2{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0}
+  .bs-contrast-head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+  .bs-cb-toggle{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .bs-cb-label{font-size:11px;font-weight:600;color:var(--stone);letter-spacing:.06em;text-transform:uppercase}
+  .bs-cb-btn{padding:5px 11px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink);font:inherit;font-size:12px;font-weight:500;cursor:pointer;transition:background 140ms var(--ease-out),border-color 140ms var(--ease-out)}
+  .bs-cb-btn:hover{border-color:var(--teal)}
+  .bs-cb-btn[aria-pressed="true"]{background:var(--teal);color:var(--cream);border-color:var(--teal)}
+  .bs-contrast-table thead th .bs-grid-hex,
+  .bs-contrast-table tbody th .bs-grid-hex{position:absolute;inset:auto 4px 4px 4px;font-size:9px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--cream);text-shadow:0 1px 2px rgba(0,0,0,.45);font-weight:600;letter-spacing:.02em;text-align:right}
+  .bs-contrast-table thead th, .bs-contrast-table tbody th{position:relative}
+  .bs-contrast-table td[data-grade="empty"]{background:repeating-linear-gradient(135deg,transparent 0 6px,rgba(0,0,0,.03) 6px 12px);color:transparent}
   .bs-contrast-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
   .bs-contrast-table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed;min-width:420px}
   .bs-contrast-table th,.bs-contrast-table td{border:1px solid var(--line);padding:0;text-align:center;vertical-align:middle;height:56px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-weight:500}
@@ -411,7 +424,8 @@
     <div class="bs-palette-wrap" id="bsPaletteWrap" hidden>
       <h2>Paleta extraída</h2>
       <div class="bs-palette" id="bsPalette" role="list"></div>
-      <p class="bs-palette-hint">Haz click en cualquier chip para copiar su hex al portapapeles.</p>
+      <p class="bs-palette-hint">Haz click en cualquier chip para copiar su hex al portapapeles. Los roles se asignan por intención cromática — el color más saturado ancla al Primario, no el píxel más abundante.</p>
+      <p class="bs-palette-mono-flag" id="bsPaletteMonoFlag" hidden>Este logo se lee como monocromático. Los roles de abajo etiquetan los extremos de claridad; tómalos como punto de partida, no como sistema.</p>
     </div>
 
     <div class="bs-fixture-wrap" id="bsFixtureWrap" hidden>
@@ -448,12 +462,21 @@
     </div>
 
     <div class="bs-contrast-wrap" id="bsContrastWrap" hidden>
-      <h2>Cuadrícula de contraste WCAG</h2>
+      <div class="bs-contrast-head">
+        <h2>Cuadrícula de contraste WCAG</h2>
+        <div class="bs-cb-toggle" id="bsCbToggle" role="radiogroup" aria-label="Simulación de daltonismo">
+          <span class="bs-cb-label">Simular vista</span>
+          <button type="button" class="bs-cb-btn" data-cb="normal" aria-pressed="true">Normal</button>
+          <button type="button" class="bs-cb-btn" data-cb="deuteranopia" aria-pressed="false">Deuteran</button>
+          <button type="button" class="bs-cb-btn" data-cb="protanopia" aria-pressed="false">Protan</button>
+          <button type="button" class="bs-cb-btn" data-cb="tritanopia" aria-pressed="false">Tritan</button>
+        </div>
+      </div>
       <div class="bs-contrast-scroll">
         <table class="bs-contrast-table" id="bsContrastTable" aria-label="Ratios de contraste entre cada par de colores de la paleta"></table>
       </div>
       <p class="bs-contrast-hint">
-        Ratios de 7+ cumplen AAA (texto normal, cualquier tamaño). 4,5+ cumple AA. 3+ cumple AA solo para texto grande (18pt+ o 14pt negrita). Por debajo de 3 falla para texto de cuerpo.
+        Lee de a pares: cada celda es el contraste de texto sobre color para ese par. Se omiten los duplicados de la diagonal. Ratios de 7+ cumplen AAA (texto normal, cualquier tamaño). 4,5+ cumple AA. 3+ cumple AA solo para texto grande (18pt+ o 14pt negrita). Por debajo de 3 falla para texto de cuerpo. El conmutador de simulación re-renderiza la cuadrícula con proyecciones Brettel/Viénot — vista perceptual, no diagnóstico clínico.
         <br>
         <span class="bs-contrast-legend">
           <span data-l="AAA">AAA &ge; 7</span>
@@ -853,6 +876,7 @@
   var imgInk    = document.getElementById('bsImgInk');
   var paletteWrap = document.getElementById('bsPaletteWrap');
   var paletteEl = document.getElementById('bsPalette');
+  var paletteMonoFlag = document.getElementById('bsPaletteMonoFlag');
   var fixtureWrap = document.getElementById('bsFixtureWrap');
   var contrastWrap = document.getElementById('bsContrastWrap');
   var contrastTable = document.getElementById('bsContrastTable');
@@ -873,7 +897,10 @@
   var TOKEN_NAMES = ['brand.primary', 'brand.secondary', 'brand.accent-1', 'brand.accent-2', 'brand.neutral'];
   var CREAM = 'var(--cream)';
   var INK   = 'var(--ink)';
+  // Paleta más reciente, ordenada por bsAssignRoles.
   var latestPalette = null;
+  var latestSimilarities = [];
+  var latestMonochromatic = false;
 
   var worker = null;
   var requestCounter = 0;
@@ -943,21 +970,28 @@
         try { palette = window.BS.extractPalette(pixels, { k: 5, seed: 1 }); }
         catch (e) { setStatus('No se pudo extraer paleta. Prueba con otro logo.', 'error'); return; }
       }
-      latestPalette = palette;
+      // Reordenamos por intención cromática (Primario = más saturado).
+      var roleResult = window.BS.assignRoles(palette, { roleNames: ROLE_NAMES });
+      latestPalette = roleResult.entries.map(function(e){
+        return { hex: e.hex, dominancePct: e.dominancePct };
+      });
+      latestMonochromatic = roleResult.monochromatic;
+      latestSimilarities = window.BS.paletteSimilarities(latestPalette);
+      paletteMonoFlag.hidden = !latestMonochromatic;
       // Despliegue progresivo: paleta primero, el resto en frames
       // subsiguientes para que la página se sienta receptiva.
-      renderPalette(palette);
+      renderPalette(latestPalette);
       paletteWrap.hidden = false;
       setStatus('');
       requestAnimationFrame(function(){
-        renderFixture(palette);
+        renderFixture(latestPalette);
         fixtureWrap.hidden = false;
         requestAnimationFrame(function(){
-          renderContrastGrid(palette);
+          renderContrastGrid(latestPalette);
           contrastWrap.hidden = false;
-          renderExports(palette);
+          renderExports(latestPalette);
           exportWrap.hidden = false;
-          firePlausible(palette, file);
+          firePlausible(latestPalette, file);
         });
       });
     }
@@ -976,16 +1010,30 @@
     }
   }
 
+  // Cuadrícula triangular superior. WCAG es simétrico (A-sobre-B = B-sobre-A);
+  // omitir el espejo reduce ruido visual. Los swatches de cabecera muestran
+  // el hex como overlay para que el lector no tenga que pasar el cursor.
+  // El parámetro currentSimulation aplica una proyección Brettel/Viénot.
+  var currentSimulation = 'normal';
   function renderContrastGrid(palette){
     var p = palette.slice(0, 5);
+    var simulated = p.map(function(c){
+      return { hex: window.BS.simulateColorBlindness(c.hex, currentSimulation), source: c.hex };
+    });
     var head = '<thead><tr><th scope="col" aria-label=""></th>';
-    p.forEach(function(c){ head += '<th scope="col" style="background:' + c.hex + '" aria-label="' + c.hex + '"></th>'; });
+    simulated.forEach(function(c){
+      head += '<th scope="col" style="background:' + c.hex + '" aria-label="' + c.hex + '">' +
+              '<span class="bs-grid-hex">' + c.hex.toUpperCase() + '</span></th>';
+    });
     head += '</tr></thead>';
     var body = '<tbody>';
-    p.forEach(function(rowColor, i){
-      body += '<tr><th scope="row" style="background:' + rowColor.hex + '" aria-label="' + rowColor.hex + '"></th>';
-      p.forEach(function(colColor, j){
-        if (i === j) {
+    simulated.forEach(function(rowColor, i){
+      body += '<tr><th scope="row" style="background:' + rowColor.hex + '" aria-label="' + rowColor.hex + '">' +
+              '<span class="bs-grid-hex">' + rowColor.hex.toUpperCase() + '</span></th>';
+      simulated.forEach(function(colColor, j){
+        if (j < i) {
+          body += '<td data-grade="empty" aria-hidden="true"></td>';
+        } else if (i === j) {
           body += '<td data-grade="diag">—</td>';
         } else {
           var ratio = window.BS.contrastRatio(rowColor.hex, colColor.hex);
@@ -999,6 +1047,20 @@
     body += '</tbody>';
     contrastTable.innerHTML = head + body;
   }
+
+  (function(){
+    var toggle = document.getElementById('bsCbToggle');
+    if (!toggle) return;
+    toggle.addEventListener('click', function(ev){
+      var btn = ev.target.closest('.bs-cb-btn');
+      if (!btn) return;
+      var btns = toggle.querySelectorAll('.bs-cb-btn');
+      for (var i = 0; i < btns.length; i++) btns[i].setAttribute('aria-pressed', 'false');
+      btn.setAttribute('aria-pressed', 'true');
+      currentSimulation = btn.getAttribute('data-cb') || 'normal';
+      if (latestPalette) renderContrastGrid(latestPalette);
+    });
+  })();
 
   // Bloque de vista previa — misma lógica de roles que la versión EN.
   function renderFixture(palette){
@@ -1350,6 +1412,15 @@
     if (window.plausible) window.plausible('Brand Suite Export', { props: { format: 'zip' } });
   });
 
+  function similarityFor(idx){
+    for (var i = 0; i < latestSimilarities.length; i++) {
+      var pair = latestSimilarities[i];
+      if (pair.a === idx) return pair.b;
+      if (pair.b === idx) return pair.a;
+    }
+    return -1;
+  }
+
   function renderPalette(palette){
     paletteEl.innerHTML = '';
     palette.slice(0, 5).forEach(function(entry, i){
@@ -1359,12 +1430,19 @@
       btn.className = 'bs-chip';
       btn.setAttribute('role', 'listitem');
       btn.setAttribute('aria-label', role + ' ' + entry.hex + '. Click para copiar.');
+      var simIdx = similarityFor(i);
+      var simHtml = '';
+      if (simIdx > -1) {
+        var simRole = ROLE_NAMES[simIdx] || ('Color ' + (simIdx + 1));
+        simHtml = '<span class="bs-chip-warn">visualmente similar a ' + simRole + '</span>';
+      }
       btn.innerHTML =
         '<span class="bs-chip-swatch" style="background:' + entry.hex + '"></span>' +
         '<span class="bs-chip-meta">' +
           '<span class="bs-chip-role">' + role + '</span>' +
           '<span class="bs-chip-hex">' + entry.hex.toUpperCase() + '</span>' +
           '<span class="bs-chip-share">' + Math.round(entry.dominancePct * 100) + '% del total</span>' +
+          simHtml +
         '</span>';
       btn.addEventListener('click', function(){
         var hex = entry.hex.toUpperCase();

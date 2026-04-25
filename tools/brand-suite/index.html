@@ -103,11 +103,14 @@
   .bs-chip-role{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--stone)}
   .bs-chip-hex{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
   .bs-chip-share{font-size:11px;color:var(--stone)}
+  .bs-chip-warn{font-size:11px;color:var(--rust);display:inline-flex;align-items:center;gap:4px}
+  .bs-chip-warn::before{content:"⚠";font-size:11px}
   .bs-chip.copied{border-color:var(--status-good);background:var(--status-good-tint)}
   .bs-chip.copied .bs-chip-role{color:var(--status-good)}
   .bs-chip.copy-failed{border-color:var(--rust);background:rgba(184,84,26,0.06)}
   .bs-chip.copy-failed .bs-chip-role{color:var(--rust)}
   .bs-palette-hint{font-size:12px;color:var(--stone);margin:0}
+  .bs-palette-mono-flag{font-size:12px;color:var(--rust);margin:0}
   .bs-status{min-height:24px;font-size:13px;color:var(--stone);text-align:center}
   .bs-status.bs-status-error{color:var(--rust)}
   .bs-status.bs-status-working::before{content:'';display:inline-block;width:12px;height:12px;margin-right:8px;border:2px solid var(--line-dark);border-top-color:var(--teal);border-radius:50%;vertical-align:middle;animation:bs-spin 800ms linear infinite}
@@ -146,6 +149,16 @@
 
   .bs-contrast-wrap{display:flex;flex-direction:column;gap:10px}
   .bs-contrast-wrap h2{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0}
+  .bs-contrast-head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+  .bs-cb-toggle{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .bs-cb-label{font-size:11px;font-weight:600;color:var(--stone);letter-spacing:.06em;text-transform:uppercase}
+  .bs-cb-btn{padding:5px 11px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink);font:inherit;font-size:12px;font-weight:500;cursor:pointer;transition:background 140ms var(--ease-out),border-color 140ms var(--ease-out)}
+  .bs-cb-btn:hover{border-color:var(--teal)}
+  .bs-cb-btn[aria-pressed="true"]{background:var(--teal);color:var(--cream);border-color:var(--teal)}
+  .bs-contrast-table thead th .bs-grid-hex,
+  .bs-contrast-table tbody th .bs-grid-hex{position:absolute;inset:auto 4px 4px 4px;font-size:9px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--cream);text-shadow:0 1px 2px rgba(0,0,0,.45);font-weight:600;letter-spacing:.02em;text-align:right}
+  .bs-contrast-table thead th, .bs-contrast-table tbody th{position:relative}
+  .bs-contrast-table td[data-grade="empty"]{background:repeating-linear-gradient(135deg,transparent 0 6px,rgba(0,0,0,.03) 6px 12px);color:transparent}
   .bs-contrast-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
   .bs-contrast-table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed;min-width:420px}
   .bs-contrast-table th,.bs-contrast-table td{border:1px solid var(--line);padding:0;text-align:center;vertical-align:middle;height:56px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-weight:500}
@@ -437,7 +450,8 @@
     <div class="bs-palette-wrap" id="bsPaletteWrap" hidden>
       <h2>Extracted palette</h2>
       <div class="bs-palette" id="bsPalette" role="list"></div>
-      <p class="bs-palette-hint">Click any chip to copy its hex to your clipboard.</p>
+      <p class="bs-palette-hint">Click any chip to copy its hex to your clipboard. Roles are assigned by chromatic intent — the most saturated color anchors Primary, not the most abundant pixel.</p>
+      <p class="bs-palette-mono-flag" id="bsPaletteMonoFlag" hidden>This logo reads as monochromatic. The roles below label the lightness extremes; treat them as a starter, not a system.</p>
     </div>
 
     <div class="bs-fixture-wrap" id="bsFixtureWrap" hidden>
@@ -474,12 +488,21 @@
     </div>
 
     <div class="bs-contrast-wrap" id="bsContrastWrap" hidden>
-      <h2>WCAG contrast grid</h2>
+      <div class="bs-contrast-head">
+        <h2>WCAG contrast grid</h2>
+        <div class="bs-cb-toggle" id="bsCbToggle" role="radiogroup" aria-label="Color-blindness simulation">
+          <span class="bs-cb-label">Simulate vision</span>
+          <button type="button" class="bs-cb-btn" data-cb="normal" aria-pressed="true">Normal</button>
+          <button type="button" class="bs-cb-btn" data-cb="deuteranopia" aria-pressed="false">Deuteran</button>
+          <button type="button" class="bs-cb-btn" data-cb="protanopia" aria-pressed="false">Protan</button>
+          <button type="button" class="bs-cb-btn" data-cb="tritanopia" aria-pressed="false">Tritan</button>
+        </div>
+      </div>
       <div class="bs-contrast-scroll">
         <table class="bs-contrast-table" id="bsContrastTable" aria-label="Contrast ratios between every pair of palette colors"></table>
       </div>
       <p class="bs-contrast-hint">
-        Ratios of 7+ clear AAA (normal text, any size). 4.5+ clears AA. 3+ clears AA for large text only (18pt+ or 14pt bold). Below 3 fails for body copy.
+        Read pair-wise: each cell is text-on-color contrast for that pair. Diagonal duplicates omitted. Ratios of 7+ clear AAA (normal text). 4.5+ clears AA. 3+ clears AA for large text only (18pt+ or 14pt bold). Below 3 fails for body copy. The simulation toggle re-renders the grid through Brettel/Viénot dichromacy projections — perceptual preview, not a clinical test.
         <br>
         <span class="bs-contrast-legend">
           <span data-l="AAA">AAA &ge; 7</span>
@@ -878,6 +901,7 @@
   var imgInk    = document.getElementById('bsImgInk');
   var paletteWrap = document.getElementById('bsPaletteWrap');
   var paletteEl = document.getElementById('bsPalette');
+  var paletteMonoFlag = document.getElementById('bsPaletteMonoFlag');
   var fixtureWrap = document.getElementById('bsFixtureWrap');
   var contrastWrap = document.getElementById('bsContrastWrap');
   var contrastTable = document.getElementById('bsContrastTable');
@@ -901,8 +925,13 @@
   var INK   = 'var(--ink)';
 
   // Most recent palette — held on closure so the export buttons can
-  // rebuild CSS/tokens without re-running extraction.
+  // rebuild CSS/tokens without re-running extraction. The palette is
+  // re-ordered by bsAssignRoles so position 0 is Primary, etc.
   var latestPalette = null;
+  // Pairwise similarity warnings (indexes into latestPalette).
+  var latestSimilarities = [];
+  // Whether the source logo reads as effectively monochromatic.
+  var latestMonochromatic = false;
 
   // Spin up the worker lazily on first valid drop so the page's
   // initial load stays light. Falls back to main-thread extraction
@@ -976,21 +1005,29 @@
         try { palette = window.BS.extractPalette(pixels, { k: 5, seed: 1 }); }
         catch (e) { setStatus('Could not extract a palette. Try a different logo.', 'error'); return; }
       }
-      latestPalette = palette;
+      // Re-order by chromatic intent so Primary is the most saturated
+      // color, not the most abundant pixel.
+      var roleResult = window.BS.assignRoles(palette, { roleNames: ROLE_NAMES });
+      latestPalette = roleResult.entries.map(function(e){
+        return { hex: e.hex, dominancePct: e.dominancePct };
+      });
+      latestMonochromatic = roleResult.monochromatic;
+      latestSimilarities = window.BS.paletteSimilarities(latestPalette);
+      paletteMonoFlag.hidden = !latestMonochromatic;
       // Progressive reveal: palette first (the headline), then the rest in
       // the next frames so the page feels responsive on slow devices.
-      renderPalette(palette);
+      renderPalette(latestPalette);
       paletteWrap.hidden = false;
       setStatus('');
       requestAnimationFrame(function(){
-        renderFixture(palette);
+        renderFixture(latestPalette);
         fixtureWrap.hidden = false;
         requestAnimationFrame(function(){
-          renderContrastGrid(palette);
+          renderContrastGrid(latestPalette);
           contrastWrap.hidden = false;
-          renderExports(palette);
+          renderExports(latestPalette);
           exportWrap.hidden = false;
-          firePlausible(palette, file);
+          firePlausible(latestPalette, file);
         });
       });
     }
@@ -1013,16 +1050,33 @@
   }
 
   // ----- Contrast grid renderer -----
+  // Upper-triangular layout: WCAG contrast is symmetric (A-on-B equals
+  // B-on-A), so we drop the mirror half. Header swatches carry the hex
+  // as a small overlay so sighted readers don't have to hover. The
+  // simulation parameter applies a Brettel/Viénot dichromacy
+  // projection to every chip + cell input so the grid re-grades under
+  // the chosen vision model.
+  var currentSimulation = 'normal';
   function renderContrastGrid(palette){
     var p = palette.slice(0, 5);
+    var simulated = p.map(function(c){
+      return { hex: window.BS.simulateColorBlindness(c.hex, currentSimulation), source: c.hex };
+    });
     var head = '<thead><tr><th scope="col" aria-label=""></th>';
-    p.forEach(function(c){ head += '<th scope="col" style="background:' + c.hex + '" aria-label="' + c.hex + '"></th>'; });
+    simulated.forEach(function(c){
+      head += '<th scope="col" style="background:' + c.hex + '" aria-label="' + c.hex + '">' +
+              '<span class="bs-grid-hex">' + c.hex.toUpperCase() + '</span></th>';
+    });
     head += '</tr></thead>';
     var body = '<tbody>';
-    p.forEach(function(rowColor, i){
-      body += '<tr><th scope="row" style="background:' + rowColor.hex + '" aria-label="' + rowColor.hex + '"></th>';
-      p.forEach(function(colColor, j){
-        if (i === j) {
+    simulated.forEach(function(rowColor, i){
+      body += '<tr><th scope="row" style="background:' + rowColor.hex + '" aria-label="' + rowColor.hex + '">' +
+              '<span class="bs-grid-hex">' + rowColor.hex.toUpperCase() + '</span></th>';
+      simulated.forEach(function(colColor, j){
+        if (j < i) {
+          // Mirror cell — left blank to remove visual noise.
+          body += '<td data-grade="empty" aria-hidden="true"></td>';
+        } else if (i === j) {
           body += '<td data-grade="diag">—</td>';
         } else {
           var ratio = window.BS.contrastRatio(rowColor.hex, colColor.hex);
@@ -1036,6 +1090,23 @@
     body += '</tbody>';
     contrastTable.innerHTML = head + body;
   }
+
+  // Wire color-blindness toggle. Only re-renders the contrast grid;
+  // the palette + fixture intentionally stay in true color since the
+  // grid is the place that surfaces accessibility math.
+  (function(){
+    var toggle = document.getElementById('bsCbToggle');
+    if (!toggle) return;
+    toggle.addEventListener('click', function(ev){
+      var btn = ev.target.closest('.bs-cb-btn');
+      if (!btn) return;
+      var btns = toggle.querySelectorAll('.bs-cb-btn');
+      for (var i = 0; i < btns.length; i++) btns[i].setAttribute('aria-pressed', 'false');
+      btn.setAttribute('aria-pressed', 'true');
+      currentSimulation = btn.getAttribute('data-cb') || 'normal';
+      if (latestPalette) renderContrastGrid(latestPalette);
+    });
+  })();
 
   // ----- Live-preview restaurant-menu fixture -----
   // Applies the extracted palette to a sample restaurant card.
@@ -1413,6 +1484,17 @@
     if (window.plausible) window.plausible('Brand Suite Export', { props: { format: 'zip' } });
   });
 
+  function similarityFor(idx){
+    // Returns the index of the role this entry is visually similar to,
+    // or -1 if no similarity flag applies.
+    for (var i = 0; i < latestSimilarities.length; i++) {
+      var pair = latestSimilarities[i];
+      if (pair.a === idx) return pair.b;
+      if (pair.b === idx) return pair.a;
+    }
+    return -1;
+  }
+
   function renderPalette(palette){
     paletteEl.innerHTML = '';
     palette.slice(0, 5).forEach(function(entry, i){
@@ -1422,12 +1504,19 @@
       btn.className = 'bs-chip';
       btn.setAttribute('role', 'listitem');
       btn.setAttribute('aria-label', role + ' ' + entry.hex + '. Click to copy.');
+      var simIdx = similarityFor(i);
+      var simHtml = '';
+      if (simIdx > -1) {
+        var simRole = ROLE_NAMES[simIdx] || ('Color ' + (simIdx + 1));
+        simHtml = '<span class="bs-chip-warn">visually similar to ' + simRole + '</span>';
+      }
       btn.innerHTML =
         '<span class="bs-chip-swatch" style="background:' + entry.hex + '"></span>' +
         '<span class="bs-chip-meta">' +
           '<span class="bs-chip-role">' + role + '</span>' +
           '<span class="bs-chip-hex">' + entry.hex.toUpperCase() + '</span>' +
           '<span class="bs-chip-share">' + Math.round(entry.dominancePct * 100) + '% share</span>' +
+          simHtml +
         '</span>';
       btn.addEventListener('click', function(){
         var hex = entry.hex.toUpperCase();
