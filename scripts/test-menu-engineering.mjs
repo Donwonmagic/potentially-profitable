@@ -200,6 +200,22 @@ assertEq('median negatives', M.median([-3, -1, 1, 3]), 0);
   assert('negative CM dollars', byName['Loss leader'].cm_dollars < 0);
 }
 
+// Zero-CM items (sold at exact cost / comp) also land in Dog
+{
+  const r = M.summariseMenu([
+    { item: 'Comp dessert', price: 10, food_cost: 10, units_sold: 100 },
+    { item: 'Normal',       price: 20, food_cost: 6,  units_sold: 30 },
+    { item: 'Other',        price: 15, food_cost: 5,  units_sold: 20 },
+    { item: 'Pasta',        price: 18, food_cost: 6,  units_sold: 25 },
+    { item: 'Salad',        price: 12, food_cost: 3,  units_sold: 18 },
+    { item: 'Wine',         price: 10, food_cost: 4,  units_sold: 40 }
+  ]);
+  const byName = {};
+  r.items.forEach(it => { byName[it.item] = it; });
+  assertEq('zero CM → Dog regardless of popularity', byName['Comp dessert'].quadrant, 'Dog');
+  assertEq('zero CM dollars exactly 0', byName['Comp dessert'].cm_dollars, 0);
+}
+
 // ------------------------------------------------------------
 // simulateChange — pure, never mutates input
 // ------------------------------------------------------------

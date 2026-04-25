@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <radialGradient id="toolglow" cx="82%" cy="28%" r="65%">
+      <stop offset="0%" stop-color="#FAF7F2" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#1F4E5B" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#1F4E5B"/>
+
+    <defs>
+      <pattern id="muntinField" x="0" y="0" width="140" height="140"
+               patternUnits="userSpaceOnUse">
+        <g transform="translate(18, 18)"
+           fill="none" stroke="#FAF7F2" stroke-width="1.5"
+           stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="0" y="0" width="104" height="104"/>
+          <line x1="52" y1="0" x2="52" y2="104"/>
+          <line x1="0" y1="36" x2="104" y2="36"/>
+        </g>
+      </pattern>
+    </defs>
+    <rect width="1200" height="630"
+          fill="url(#muntinField)" opacity="0.05"/>
+
+  <rect width="1200" height="630" fill="url(#toolglow)"/>
+  <rect x="0" y="0" width="12" height="252" fill="#C5A059"/>
+  <rect x="0" y="252" width="12" height="378" fill="#C5A059" opacity="0.4"/>
+
+
+    <g transform="translate(80, 78) scale(1.5)"
+       fill="none" stroke="#C5A059" stroke-width="1.167"
+       stroke-linecap="round" stroke-linejoin="round"
+       color="#C5A059" opacity="0.85">
+      <rect x="3.5" y="3.5" width="6" height="6" rx="0.5"/>
+      <rect x="14.5" y="3.5" width="6" height="6" rx="0.5"/>
+      <rect x="3.5" y="14.5" width="6" height="6" rx="0.5"/>
+      <rect x="14.5" y="14.5" width="6" height="6" rx="0.5"/>
+    </g>
+
+  <text x="136" y="104"
+        font-family="Inter, Arial, sans-serif" font-size="13"
+        font-weight="700" letter-spacing="4" fill="#C5A059">FREE · YOUR MENU NEVER LEAVES YOUR BROWSER</text>
+
+  <text x="80" y="192"
+        font-family="Fraunces, Georgia, serif" font-size="62"
+        font-weight="500" letter-spacing="-2" fill="#FAF7F2">Menu</text>
+  <text x="80" y="264"
+        font-family="Fraunces, Georgia, serif" font-style="italic"
+        font-size="62" font-weight="400" letter-spacing="-2"
+        fill="#C5A059">engineering</text>
+  <text x="80" y="336"
+        font-family="Fraunces, Georgia, serif" font-size="62"
+        font-weight="500" letter-spacing="-2" fill="#FAF7F2">for your dishes.</text>
+
+  <text x="80" y="416"
+        font-family="Inter, Arial, sans-serif" font-size="20"
+        font-weight="400" fill="#FAF7F2" opacity="0.72">Stars, Plowhorses, Puzzles, Dogs — paste your menu, get the action plan.</text>
+
+
+    <g transform="translate(760, 140)">
+      <g stroke="#FAF7F2" stroke-width="12"
+         stroke-linecap="square" stroke-linejoin="miter"
+         fill="none" opacity="0.18">
+        <rect x="0" y="0" width="340" height="340"/>
+        <line x1="170" y1="0" x2="170" y2="340"/>
+        <line x1="0" y1="170" x2="340" y2="170"/>
+      </g>
+      <g font-family="Inter, Arial, sans-serif" font-size="11"
+         font-weight="700" letter-spacing="2"
+         fill="#FAF7F2" opacity="0.55">
+        <text x="20" y="26">PLOWHORSE</text>
+        <text x="320" y="26" text-anchor="end">STAR</text>
+        <text x="20" y="324">DOG</text>
+        <text x="320" y="324" text-anchor="end">PUZZLE</text>
+      </g>
+      <g opacity="0.95">
+        <circle cx="240" cy="60"  r="9" fill="#FAF7F2"/>
+        <circle cx="278" cy="92"  r="9" fill="#FAF7F2"/>
+        <circle cx="80"  cy="78"  r="9" fill="#C5A059"/>
+        <circle cx="262" cy="240" r="9" fill="#FAF7F2" opacity="0.6"/>
+        <circle cx="78"  cy="262" r="9" fill="#C5A059" opacity="0.6"/>
+      </g>
+    </g>
+
+
+
+    <g transform="translate(80, 552)" fill="#FAF7F2" opacity="0.6">
+      <circle cx="8" cy="8" r="8" fill="none" stroke="#FAF7F2" stroke-width="1"/>
+      <text x="8" y="12" text-anchor="middle"
+            font-family="Fraunces, Georgia, serif" font-style="italic"
+            font-size="11" font-weight="500" fill="#FAF7F2">d</text>
+    </g>
+
+
+    <line x1="80" y1="584" x2="1120" y2="584"
+          stroke="rgba(250,247,242,0.2)" stroke-width="1"/>
+    <text x="80" y="614"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="2" fill="rgba(250,247,242,0.6)">MUNTIN DIGITAL</text>
+    <text x="1120" y="614" text-anchor="end"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="1" fill="rgba(250,247,242,0.6)">muntin.digital</text>
+
+</svg>

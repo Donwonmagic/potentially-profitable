@@ -165,11 +165,13 @@ function meSummariseMenu(rawItems) {
     warnings.push('Every item has the same sales count — the y-axis collapses. Add real units_sold figures.');
   }
 
-  // Assign quadrants. Items with negative CM always land in Dog.
+  // Assign quadrants. Items with non-positive CM always land in Dog —
+  // a zero-CM item (sold at exact cost, comp, free promo) is making
+  // the rest of the menu work harder for it, regardless of popularity.
   enriched.forEach(function(e){
     var highCm = e.cm_dollars >= medianCm;
     var highPop = e.share >= medianShare;
-    if (e.cm_dollars < 0) {
+    if (e.cm_dollars <= 0) {
       e.quadrant = 'Dog';
     } else if (highCm && highPop)        e.quadrant = 'Star';
     else if (!highCm && highPop)         e.quadrant = 'Plowhorse';

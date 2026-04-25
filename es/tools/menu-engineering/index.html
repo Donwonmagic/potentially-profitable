@@ -19,14 +19,14 @@
 <meta property="og:description" content="Paste your menu, get a 2×2 of Stars / Plowhorses / Puzzles / Dogs and one action per item. Stays in your browser." />
 <meta property="og:url" content="https://muntin.digital/tools/menu-engineering/" />
 <meta property="og:site_name" content="Muntin Digital" />
-<meta property="og:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-menu-engineering-es.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Menu Engineering Matrix — Free Restaurant Menu Analyzer" />
 <meta name="twitter:description" content="Paste your menu. Get a Stars / Plowhorses / Puzzles / Dogs matrix and one-line actions per item." />
-<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-menu-engineering-es.png" />
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
@@ -116,7 +116,7 @@
   header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,.me-input,
   #what-this-does,#how-private,#what-this-isnt,.me-export-row,
   .mm-next,.me-empty-state,#meEmptyHint{display:none !important}
-  .me-output > div > h2 + p,details,.me-warnings{display:none !important}
+  .me-output > div > h2 + p,.me-export-row ~ p,.me-warnings{display:none !important}
   .me-output{margin-top:14px;gap:12px}
   .me-matrix-wrap,.me-action-card,.me-table,.me-totals-card{break-inside:avoid;page-break-inside:avoid}
   .me-actions{break-before:auto}
@@ -232,6 +232,7 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--stone);margin:8px 0 0;">eje x: margen de contribución por venta (\$). eje y: porcentaje de cubiertos vendidos. Las líneas de mediana dividen la cuadrícula; los platos exactamente en la mediana caen al lado superior-derecho.</p>
+      <p style="font-size:12px;color:var(--stone);margin:4px 0 0;font-style:italic;">Método: Kasavana &amp; Smith (1990). División por mediana — un plato disparado no jala la barra.</p>
     </div>
 
     <div>
@@ -270,10 +271,7 @@
           Generar enlace para compartir
         </button>
       </div>
-      <details style="margin-top:8px;font-size:12.5px;color:var(--stone);">
-        <summary style="cursor:pointer;color:var(--ink-soft);">Sobre el enlace para compartir</summary>
-        <p style="margin:8px 0 0;line-height:1.55;">A diferencia del resto del toolkit, este enlace <strong>sí</strong> contiene tus datos del menú — los nombres y números se codifican en el fragmento de URL después de <code>#m=</code>. El fragmento nunca llega a nuestros servidores (los navegadores no envían fragmentos según la spec HTTP), pero quien recibe el enlace puede recrear el mismo análisis. Trátalo como un archivo adjunto: mándalo a donde mandarías un CSV. No lo pegues en un canal público.</p>
-      </details>
+      <p style="margin:8px 0 0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);"><strong>Aviso sobre el enlace:</strong> a diferencia de los demás exports, lleva tus datos del menú dentro del fragmento de URL (<code>#m=</code>). El fragmento nunca llega a nuestros servidores, pero quien reciba el enlace puede recrear el análisis. Mándalo a donde mandarías un CSV — no a donde pegarías un enlace público.</p>
       <p style="margin:10px 0 0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);">La <strong>Ficha de Menú PNG</strong> es una imagen de 1200×1500 con la matriz + tarjetas de acción por cuadrante — compártela con tu chef o socio. El CSV refleja los datos de entrada más el cuadrante calculado. El JSON incluye umbrales y matemática completa por plato. El paquete ZIP empaqueta los cuatro (PNG + CSV + JSON + README). Todo en tu navegador — sin subida.</p>
     </div>
 
@@ -304,7 +302,7 @@
     <span class="eyebrow">Predicar con el ejemplo</span>
     <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:12px 0 12px;">Los datos de tu menú se quedan en tu navegador.</h2>
     <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0 0 14px;">Sin subida, sin cuenta, sin escrituras a <code>localStorage</code>. Cierra la pestaña y el formulario queda vacío. Abre DevTools → Network y dale click a <em>Añadir plato</em> o <em>Cargar menú de ejemplo</em> — la lista de peticiones no crecerá. El módulo de matemática completo es JavaScript en <code>/tools/menu-engineering/menu-engineering.js</code>; click derecho <em>Ver código fuente</em> y léelo.</p>
-    <p style="font-size:13px;color:var(--stone);margin:0;">Un recorrido verificable de nueve pasos y una Ficha de Menú imprimible llegan en una versión siguiente. Para la misma postura hoy, mira <a href="/es/tools/brand-suite/#how-we-protect" style="color:inherit;border-bottom:1px dashed var(--teal);">cómo Suite de Marca protege tu logo</a> — esta herramienta usa la misma arquitectura.</p>
+    <p style="font-size:13px;color:var(--stone);margin:0;">Misma arquitectura que Suite de Marca — mira <a href="/es/tools/brand-suite/#how-we-protect" style="color:inherit;border-bottom:1px dashed var(--teal);">cómo Suite de Marca protege tu logo</a> para la misma postura, paso por paso.</p>
   </div>
 </div></section>
 
@@ -389,6 +387,20 @@
           <p class="tool-deep-snippet">Para un plato individual: precio de venta menos el costo variable de producir una unidad (costo de comida emplatado). Se reporta en dólares …</p>
           <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
         </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/food-cost/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Food cost</h3>
+          <p class="tool-deep-aka">costo de los insumos, como % de ventas</p>
+          <p class="tool-deep-snippet">El costo de los ingredientes, alcohol y consumibles (productos de papel, empaque para llevar) expresado como porcentaje de ventas. Target…</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/prime-cost/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Prime cost</h3>
+          <p class="tool-deep-aka">food cost + labor cost, como % de ventas</p>
+          <p class="tool-deep-snippet">Tu food cost más tu labor cost, expresado como porcentaje de ventas. Los independientes saludables caen entre 55–65%; por encima de 70%…</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
       <a class="tool-deep-card tool-deep-card-article" href="/es/blog/is-doordash-worth-it-for-restaurants-in-2026/">
           <span class="tool-deep-kind">Artículo</span>
           <h3>¿Vale la pena DoorDash? Las matemáticas honestas para 2026</h3>
@@ -409,8 +421,8 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/es/terms.html">Términos</a><a href="/es/privacy.html">Privacidad</a><a href="/es/accessibility.html">Accesibilidad</a><a href="/es/cookies.html">Cookies</a></nav></div>
 </footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="/tools/menu-engineering/menu-engineering.js?v=20260425-me1"></script>
-<script src="/tools/menu-engineering/card-render.js?v=20260425-me2"></script>
+<script src="/tools/menu-engineering/menu-engineering.js?v=20260425-me5"></script>
+<script src="/tools/menu-engineering/card-render.js?v=20260425-me5"></script>
 <!-- IIFE_PLACEHOLDER -->
 <script>
 /* Menu Engineering Matrix — input + matrix rendering.
@@ -989,21 +1001,28 @@
   // ----- Share link (URL fragment) -----
   var shareBtn = document.getElementById('meShareLink');
 
+  var SHARE_LINK_MAX_ITEMS = 100;
+
   function buildFragmentFromGrid(){
     var items = readGrid().filter(function(it){
       return it.item || it.price || it.food_cost || it.units_sold;
     });
     if (!items.length) return null;
+    var truncated = false;
+    if (items.length > SHARE_LINK_MAX_ITEMS) {
+      items = items.slice(0, SHARE_LINK_MAX_ITEMS);
+      truncated = true;
+    }
     var lines = items.map(function(it){
       function safe(v){ return String(v == null ? '' : v).replace(/\t/g, ' '); }
       return [safe(it.item), safe(it.price), safe(it.food_cost), safe(it.units_sold), safe(it.category)].join('\t');
     });
-    return encodeURIComponent(lines.join('\n'));
+    return { fragment: encodeURIComponent(lines.join('\n')), truncated: truncated };
   }
 
   if (shareBtn) {
     shareBtn.addEventListener('click', function(){
-      var frag = buildFragmentFromGrid();
+      var built = buildFragmentFromGrid();
       var orig = shareBtn.lastChild.nodeValue;
       var settle = function(label, kind){
         shareBtn.classList.remove('copied');
@@ -1015,12 +1034,21 @@
           shareBtn.lastChild.nodeValue = orig;
         }, kind === 'error' ? 3000 : 1800);
       };
-      if (!frag) { settle(' Agrega platos primero', 'error'); return; }
-      var url = window.location.origin + window.location.pathname + '#m=' + frag;
-      try { history.replaceState(null, '', '#m=' + frag); } catch (_) {}
+      if (!built) { settle(' Agrega platos primero', 'error'); return; }
+      var url = window.location.origin + window.location.pathname + '#m=' + built.fragment;
+      try { history.replaceState(null, '', '#m=' + built.fragment); } catch (_) {}
+      if (built.truncated) {
+        var existing = warningsEl.querySelector('ul') ? warningsEl.querySelector('ul').innerHTML : '';
+        warningsEl.innerHTML = '<ul>' + existing +
+          '<li>Enlace recortado a los primeros ' + SHARE_LINK_MAX_ITEMS +
+          ' platos — algunos clientes de correo cortan URLs más largas. Usa el ZIP para el menú completo.</li></ul>';
+      }
+      var okLabel = built.truncated
+        ? ' Enlace copiado — primeros ' + SHARE_LINK_MAX_ITEMS + ' platos'
+        : ' Enlace copiado — contiene datos del menú';
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(url).then(
-          function(){ settle(' Enlace copiado — contiene datos del menú', 'ok'); },
+          function(){ settle(okLabel, 'ok'); },
           function(){ settle(' Copia desde la barra de URL', 'error'); }
         );
       } else {
