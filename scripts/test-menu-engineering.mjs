@@ -200,6 +200,97 @@ assertEq('median negatives', M.median([-3, -1, 1, 3]), 0);
   assert('negative CM dollars', byName['Loss leader'].cm_dollars < 0);
 }
 
+// ------------------------------------------------------------
+// Category-aware split (groupBy: 'category')
+// Per Pavesic's refinement: a $38 branzino and a $6 bread basket
+// should not share an x-axis. The median runs within each category.
+// ------------------------------------------------------------
+{
+  // Fixture: two categories, each with three items spanning low/high CM.
+  // Whole-menu and per-category classification differ by design.
+  const items = [
+    { item: 'Cheap pasta',  category: 'Pasta', price: 12, food_cost: 4, units_sold: 80 },
+    { item: 'Mid pasta',    category: 'Pasta', price: 18, food_cost: 6, units_sold: 60 },
+    { item: 'Lux pasta',    category: 'Pasta', price: 26, food_cost: 8, units_sold: 30 },
+    { item: 'Cheap entrée', category: 'Mains', price: 24, food_cost: 9, units_sold: 25 },
+    { item: 'Mid entrée',   category: 'Mains', price: 32, food_cost: 12, units_sold: 18 },
+    { item: 'Lux entrée',   category: 'Mains', price: 48, food_cost: 16, units_sold: 8  }
+  ];
+
+  // Whole-menu: medians span both categories — Pasta items mostly low-CM.
+  const whole = M.summariseMenu(items);
+  const wholeByName = Object.fromEntries(whole.items.map(it => [it.item, it]));
+  // Default mode populates thresholds_by_category but doesn't use it for assignment.
+  assert('thresholds_by_category present in default mode', whole.thresholds_by_category && whole.thresholds_by_category.Pasta);
+  assertEq('group_by undefined in default mode', whole.group_by, undefined);
+
+  // By-category: each category gets its own split.
+  const split = M.summariseMenu(items, { groupBy: 'category' });
+  const byName = Object.fromEntries(split.items.map(it => [it.item, it]));
+  assertEq('group_by stamped in result', split.group_by, 'category');
+
+  // Within Pasta — median CM is the Mid pasta value (12). Cheap < median = low CM.
+  // Median share within Pasta: shares are { Cheap: 80/sumPasta, Mid: 60, Lux: 30 } → median = Mid.
+  // Cheap pasta: low-CM, high-pop → Plowhorse.
+  // Mid pasta: median-CM, median-pop → both ≥ median → Star.
+  // Lux pasta: high-CM, low-pop → Puzzle.
+  assertEq('Pasta Cheap = Plowhorse (per-cat)',  byName['Cheap pasta'].quadrant, 'Plowhorse');
+  assertEq('Pasta Mid = Star (per-cat median lands high)', byName['Mid pasta'].quadrant,    'Star');
+  assertEq('Pasta Lux = Puzzle (per-cat)',       byName['Lux pasta'].quadrant,    'Puzzle');
+
+  // Within Mains — same shape: cheap=Plowhorse, mid=Star, lux=Puzzle.
+  assertEq('Mains Cheap = Plowhorse (per-cat)',  byName['Cheap entrée'].quadrant, 'Plowhorse');
+  assertEq('Mains Mid = Star (per-cat)',         byName['Mid entrée'].quadrant,    'Star');
+  assertEq('Mains Lux = Puzzle (per-cat)',       byName['Lux entrée'].quadrant,    'Puzzle');
+
+  // Whole-menu mode runs a single median: every Pasta item except Lux falls
+  // below the entrées' CM, so Pasta items are mostly Plowhorses/Dogs.
+  assert('whole-menu reclassifies at least one item differently from per-cat',
+    Object.keys(byName).some(name => wholeByName[name].quadrant !== byName[name].quadrant));
+
+  // Per-category thresholds are exposed.
+  assert('Pasta median > 0', split.thresholds_by_category.Pasta.median_cm_dollars > 0);
+  assert('Mains median > 0', split.thresholds_by_category.Mains.median_cm_dollars > 0);
+}
+
+// By-category warns about thin categories (<3 items)
+{
+  const items = [
+    { item: 'Solo pasta', category: 'Pasta', price: 18, food_cost: 6, units_sold: 50 },
+    { item: 'Mid entrée', category: 'Mains', price: 32, food_cost: 12, units_sold: 18 },
+    { item: 'Lux entrée', category: 'Mains', price: 48, food_cost: 16, units_sold: 8  },
+    { item: 'Cheap entrée', category: 'Mains', price: 24, food_cost: 9, units_sold: 25 }
+  ];
+  const r = M.summariseMenu(items, { groupBy: 'category' });
+  assert('thin category warning surfaces', r.warnings.some(w => /fewer than 3|unstable medians/i.test(w)));
+}
+
+// Items with no category fall into '(uncategorised)' bucket
+{
+  const items = [
+    { item: 'Anonymous A', price: 10, food_cost: 3, units_sold: 20 },
+    { item: 'Anonymous B', price: 14, food_cost: 4, units_sold: 30 },
+    { item: 'Anonymous C', price: 18, food_cost: 6, units_sold: 15 }
+  ];
+  const r = M.summariseMenu(items, { groupBy: 'category' });
+  assert('uncategorised bucket created', r.thresholds_by_category['(uncategorised)']);
+  assertEq('uncategorised bucket size', r.thresholds_by_category['(uncategorised)'].item_count, 3);
+}
+
+// simulateChange forwards options through to summariseMenu
+{
+  const items = [
+    { item: 'A', category: 'X', price: 12, food_cost: 4, units_sold: 50 },
+    { item: 'B', category: 'X', price: 18, food_cost: 6, units_sold: 30 },
+    { item: 'C', category: 'X', price: 24, food_cost: 8, units_sold: 10 },
+    { item: 'D', category: 'Y', price: 20, food_cost: 8, units_sold: 25 },
+    { item: 'E', category: 'Y', price: 30, food_cost: 10, units_sold: 12 },
+    { item: 'F', category: 'Y', price: 40, food_cost: 14, units_sold: 6  }
+  ];
+  const r = M.simulateChange(items, [{ index: 0, price: 30 }], { groupBy: 'category' });
+  assertEq('simulateChange forwards groupBy', r.group_by, 'category');
+}
+
 // Zero-CM items (sold at exact cost / comp) also land in Dog
 {
   const r = M.summariseMenu([

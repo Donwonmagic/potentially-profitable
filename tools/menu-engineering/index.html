@@ -89,6 +89,13 @@
 .me-modes{display:inline-flex;gap:0;border:1px solid var(--line);border-radius:999px;background:var(--white);padding:3px;margin-bottom:6px}
 .me-mode-btn{padding:6px 14px;border:none;background:transparent;font:inherit;font-size:12.5px;font-weight:600;color:var(--stone);cursor:pointer;border-radius:999px}
 .me-mode-btn[aria-selected="true"]{background:var(--teal);color:var(--cream)}
+.me-scope{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-soft);margin-top:4px}
+.me-scope-label{font-weight:600;color:var(--stone);letter-spacing:.04em;text-transform:uppercase;font-size:11px}
+.me-scope-group{display:inline-flex;gap:0;border:1px solid var(--line);border-radius:999px;background:var(--white);padding:3px}
+.me-scope-btn{padding:5px 12px;border:none;background:transparent;font:inherit;font-size:12px;font-weight:600;color:var(--stone);cursor:pointer;border-radius:999px}
+.me-scope-btn[aria-pressed="true"]{background:var(--ink);color:var(--cream)}
+.me-scope-hint{font-size:11.5px;color:var(--stone)}
+.me-matrix-badge{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border:1px solid var(--line);background:var(--cream-2);border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);margin-left:8px}
 .me-paste{display:flex;flex-direction:column;gap:10px}
 .me-paste textarea{width:100%;min-height:160px;padding:12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;line-height:1.5;color:var(--ink);resize:vertical}
 .me-paste textarea:focus{outline:2px solid var(--teal);outline-offset:1px}
@@ -182,6 +189,15 @@
       <button type="button" class="me-mode-btn" role="tab" aria-selected="false" data-mode="paste">Paste from spreadsheet</button>
     </div>
 
+    <div class="me-scope" role="radiogroup" aria-label="Analysis scope">
+      <span class="me-scope-label">Analyse:</span>
+      <span class="me-scope-group">
+        <button type="button" class="me-scope-btn" role="radio" aria-pressed="true"  data-scope="whole">Whole menu</button>
+        <button type="button" class="me-scope-btn" role="radio" aria-pressed="false" data-scope="category">By category</button>
+      </span>
+      <span class="me-scope-hint">Per-category split runs the median within each section so a $38 entrée and a $6 side don't share an x-axis.</span>
+    </div>
+
     <div class="me-input-actions" data-mode="manual">
       <button type="button" class="me-btn" id="meAddRow">+ Add item</button>
       <button type="button" class="me-btn me-btn-ghost" id="meLoadSample">Load sample menu</button>
@@ -225,7 +241,7 @@
     <div class="me-totals" id="meTotals" aria-label="Menu totals"></div>
 
     <div>
-      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px;">The matrix</h2>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px;">The matrix <span id="meMatrixBadge" hidden class="me-matrix-badge">By category</span></h2>
       <div class="me-matrix-wrap">
         <svg class="me-matrix-svg" id="meMatrix" viewBox="0 0 720 540" role="img" aria-label="Menu engineering matrix"></svg>
         <div class="me-matrix-legend" aria-hidden="true">
@@ -425,7 +441,7 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
 </footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="./menu-engineering.js?v=20260425-me5"></script>
+<script src="./menu-engineering.js?v=20260425-me6"></script>
 <script src="./card-render.js?v=20260425-me5"></script>
 <!-- IIFE_PLACEHOLDER -->
 <script>
@@ -471,6 +487,11 @@
   var warningsEl   = document.getElementById('meWarnings');
 
   var firstAnalysisFired = false;
+  // Analysis scope — either undefined (whole menu) or 'category'
+  // (per-category median split per Pavesic's refinement).
+  var currentGroupBy = null;
+  function summariseOptions(){ return currentGroupBy ? { groupBy: currentGroupBy } : undefined; }
+  function currentSummary(){ return window.ME.summariseMenu(readGrid(), summariseOptions()); }
 
   function readGrid(){
     var rows = gridBody.querySelectorAll('tr');
@@ -527,7 +548,7 @@
     requestAnimationFrame(function(){
       rafQueued = false;
       var raw = readGrid();
-      var summary = window.ME.summariseMenu(raw);
+      var summary = window.ME.summariseMenu(raw, summariseOptions());
       paintWarnings(summary.warnings);
       var meaningful = summary.totals.item_count >= 2;
       if (!meaningful) {
@@ -601,22 +622,28 @@
     var medX = sx(summary.thresholds.median_cm_dollars);
     var medY = sy(summary.thresholds.median_share);
 
+    var byCategory = summary.group_by === 'category';
+
     var svg = '';
     // Background frame
     svg += '<rect x="' + x0 + '" y="' + y0 + '" width="' + (x1 - x0) + '" height="' + (y1 - y0) + '" fill="#FAF7F2" stroke="#E5E0D8" />';
-    // Quadrant tints (subtle)
-    svg += '<rect x="' + medX + '" y="' + y0 + '" width="' + (x1 - medX) + '" height="' + (medY - y0) + '" fill="#1F4E5B" opacity="0.04" />';
-    svg += '<rect x="' + x0 + '" y="' + y0 + '" width="' + (medX - x0) + '" height="' + (medY - y0) + '" fill="#C68A2C" opacity="0.05" />';
-    svg += '<rect x="' + medX + '" y="' + medY + '" width="' + (x1 - medX) + '" height="' + (y1 - medY) + '" fill="#6E5DB3" opacity="0.05" />';
-    svg += '<rect x="' + x0 + '" y="' + medY + '" width="' + (medX - x0) + '" height="' + (y1 - medY) + '" fill="#B8541A" opacity="0.05" />';
-    // Median lines
-    svg += '<line x1="' + medX + '" y1="' + y0 + '" x2="' + medX + '" y2="' + y1 + '" stroke="#14161A" stroke-dasharray="4 4" stroke-width="1" />';
-    svg += '<line x1="' + x0 + '" y1="' + medY + '" x2="' + x1 + '" y2="' + medY + '" stroke="#14161A" stroke-dasharray="4 4" stroke-width="1" />';
-    // Quadrant labels
-    svg += '<text x="' + (x0 + 8) + '" y="' + (y0 + 18) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif">Plowhorses · popular but thin</text>';
-    svg += '<text x="' + (x1 - 8) + '" y="' + (y0 + 18) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif" text-anchor="end">Stars · push them</text>';
-    svg += '<text x="' + (x0 + 8) + '" y="' + (y1 - 10) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif">Dogs · drop or replace</text>';
-    svg += '<text x="' + (x1 - 8) + '" y="' + (y1 - 10) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif" text-anchor="end">Puzzles · reposition</text>';
+    if (!byCategory) {
+      // Quadrant tints (subtle) — only meaningful with a single shared median.
+      svg += '<rect x="' + medX + '" y="' + y0 + '" width="' + (x1 - medX) + '" height="' + (medY - y0) + '" fill="#1F4E5B" opacity="0.04" />';
+      svg += '<rect x="' + x0 + '" y="' + y0 + '" width="' + (medX - x0) + '" height="' + (medY - y0) + '" fill="#C68A2C" opacity="0.05" />';
+      svg += '<rect x="' + medX + '" y="' + medY + '" width="' + (x1 - medX) + '" height="' + (y1 - medY) + '" fill="#6E5DB3" opacity="0.05" />';
+      svg += '<rect x="' + x0 + '" y="' + medY + '" width="' + (medX - x0) + '" height="' + (y1 - medY) + '" fill="#B8541A" opacity="0.05" />';
+      // Median lines
+      svg += '<line x1="' + medX + '" y1="' + y0 + '" x2="' + medX + '" y2="' + y1 + '" stroke="#14161A" stroke-dasharray="4 4" stroke-width="1" />';
+      svg += '<line x1="' + x0 + '" y1="' + medY + '" x2="' + x1 + '" y2="' + medY + '" stroke="#14161A" stroke-dasharray="4 4" stroke-width="1" />';
+      // Quadrant labels
+      svg += '<text x="' + (x0 + 8) + '" y="' + (y0 + 18) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif">Plowhorses · popular but thin</text>';
+      svg += '<text x="' + (x1 - 8) + '" y="' + (y0 + 18) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif" text-anchor="end">Stars · push them</text>';
+      svg += '<text x="' + (x0 + 8) + '" y="' + (y1 - 10) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif">Dogs · drop or replace</text>';
+      svg += '<text x="' + (x1 - 8) + '" y="' + (y1 - 10) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif" text-anchor="end">Puzzles · reposition</text>';
+    } else {
+      svg += '<text x="' + ((x0 + x1) / 2) + '" y="' + (y0 + 18) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif" text-anchor="middle">Per-category split — quadrants in the per-item table below</text>';
+    }
     // Axis labels
     svg += '<text x="' + (W / 2) + '" y="' + (H - 18) + '" font-size="12" fill="#14161A" font-family="Inter,sans-serif" text-anchor="middle">Contribution margin per sale &rarr;</text>';
     svg += '<text x="20" y="' + ((y0 + y1) / 2) + '" font-size="12" fill="#14161A" font-family="Inter,sans-serif" transform="rotate(-90 20 ' + ((y0 + y1) / 2) + ')" text-anchor="middle">&uarr; Share of total covers</text>';
@@ -637,6 +664,8 @@
     });
 
     matrixSvg.innerHTML = svg;
+    var badge = document.getElementById('meMatrixBadge');
+    if (badge) badge.hidden = !byCategory;
   }
 
   function paintActions(summary){
@@ -731,6 +760,19 @@
     b.addEventListener('click', function(){ setMode(b.getAttribute('data-mode')); });
   });
 
+  // ----- Scope toggle (whole menu vs by-category) -----
+  var scopeBtns = document.querySelectorAll('.me-scope-btn');
+  scopeBtns.forEach(function(b){
+    b.addEventListener('click', function(){
+      var scope = b.getAttribute('data-scope');
+      currentGroupBy = scope === 'category' ? 'category' : null;
+      scopeBtns.forEach(function(other){
+        other.setAttribute('aria-pressed', other === b ? 'true' : 'false');
+      });
+      rerender();
+    });
+  });
+
   // ----- Paste-table parser -----
   var pasteArea = document.getElementById('mePasteArea');
   var parseBtn  = document.getElementById('meParse');
@@ -772,7 +814,7 @@
   var downloadPngBtn  = document.getElementById('meDownloadPng');
 
   function buildCsv(){
-    var s = window.ME.summariseMenu(readGrid());
+    var s = currentSummary();
     var lines = ['Item,Category,Price,Food cost,CM dollars,CM percent,Units sold,Share,Quadrant'];
     s.items.forEach(function(it){
       function csvCell(v){
@@ -795,17 +837,21 @@
   }
 
   function buildJson(){
-    var s = window.ME.summariseMenu(readGrid());
+    var s = currentSummary();
     var dogCount = s.items.filter(function(it){ return it.quadrant === 'Dog'; }).length;
     return JSON.stringify({
       meta: {
         tool: 'Muntin Digital — Menu Engineering Matrix',
         url: 'https://muntin.digital/tools/menu-engineering/',
         generated_at: new Date().toISOString(),
-        method: 'Kasavana & Smith median-split: contribution-margin dollars × menu-mix share'
+        method: s.group_by === 'category'
+          ? 'Pavesic per-category median-split (Kasavana & Smith refinement): contribution-margin dollars × menu-mix share, computed within each category'
+          : 'Kasavana & Smith median-split: contribution-margin dollars × menu-mix share'
       },
       totals: s.totals,
       thresholds: s.thresholds,
+      thresholds_by_category: s.thresholds_by_category,
+      group_by: s.group_by || 'whole',
       items: s.items,
       counts: {
         Star:      s.items.filter(function(i){ return i.quadrant === 'Star'; }).length,
@@ -856,7 +902,7 @@
   // ----- Menu Card render via window.MECard (canvas-2d, no SVG) -----
   function buildMenuCardBlob(){
     if (!window.MECard) return Promise.reject(new Error('card-render module not loaded'));
-    var summary = window.ME.summariseMenu(readGrid());
+    var summary = currentSummary();
     var canvas  = window.MECard.renderMenuCard({
       summary: summary,
       strings: window.MECard.DEFAULT_STRINGS_EN
@@ -1120,7 +1166,7 @@
   var downloadZipBtn = document.getElementById('meDownloadZip');
   if (downloadZipBtn) {
     downloadZipBtn.addEventListener('click', function(){
-      var summary = window.ME.summariseMenu(readGrid());
+      var summary = currentSummary();
       var csv = buildCsv();
       var json = buildJson();
       var readme = buildReadme(summary);
