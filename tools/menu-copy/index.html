@@ -95,6 +95,51 @@
 
 .mc-empty{padding:18px;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--cream-2);font-size:13.5px;color:var(--stone);text-align:center}
 
+/* Mode picker (Single / Whole menu). */
+.mc-modes{display:inline-flex;gap:0;border:1px solid var(--line);border-radius:999px;background:var(--white);padding:3px;margin-bottom:6px}
+.mc-mode-btn{padding:6px 14px;border:none;background:transparent;font:inherit;font-size:12.5px;font-weight:600;color:var(--stone);cursor:pointer;border-radius:999px}
+.mc-mode-btn[aria-selected="true"]{background:var(--teal);color:var(--cream)}
+
+/* Whole-menu paste + table */
+.mc-paste{display:flex;flex-direction:column;gap:10px}
+.mc-paste textarea{width:100%;min-height:160px;padding:12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;line-height:1.5;color:var(--ink);resize:vertical}
+.mc-paste textarea:focus{outline:2px solid var(--teal);outline-offset:1px}
+.mc-paste-hint{font-size:12px;color:var(--stone);margin:0;line-height:1.55}
+.mc-paste-actions{display:flex;gap:8px;flex-wrap:wrap}
+
+.mc-bulk-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:18px}
+@media(max-width:720px){.mc-bulk-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.mc-bulk-card{padding:12px 14px;border:1px solid var(--line);border-left-width:4px;border-radius:var(--r-input);background:var(--white)}
+.mc-bulk-card[data-v="polish"]{border-left-color:var(--teal)}
+.mc-bulk-card[data-v="edit"]{border-left-color:#C68A2C}
+.mc-bulk-card[data-v="rewrite"]{border-left-color:var(--rust)}
+.mc-bulk-card[data-v="total"]{border-left-color:var(--stone)}
+.mc-bulk-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);font-weight:700}
+.mc-bulk-value{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:22px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;margin-top:4px;line-height:1.1}
+.mc-bulk-sub{font-size:11px;color:var(--stone);margin-top:2px}
+
+.mc-table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+.mc-table{width:100%;border-collapse:collapse;font-size:13px;min-width:680px}
+.mc-table thead th{background:var(--cream-2);font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--stone);text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line)}
+.mc-table td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.mc-table td.mc-num{text-align:right;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-variant-numeric:tabular-nums}
+.mc-table .mc-row-name{font-weight:600;color:var(--ink)}
+.mc-table .mc-row-desc{font-size:12.5px;color:var(--ink-soft);font-family:Georgia,"Times New Roman",serif;line-height:1.5;max-width:320px}
+.mc-v-pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--cream)}
+.mc-v-pill[data-v="polish"]{background:var(--teal)}
+.mc-v-pill[data-v="edit"]{background:#C68A2C}
+.mc-v-pill[data-v="rewrite"]{background:var(--rust)}
+
+/* Export row */
+.mc-export-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.mc-export-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background 160ms var(--ease-out),color 160ms var(--ease-out)}
+.mc-export-btn:hover{background:var(--teal);color:var(--cream)}
+.mc-export-btn svg{width:14px;height:14px}
+.mc-export-btn.copied{background:var(--status-good-tint);color:var(--status-good);border-color:var(--status-good)}
+.mc-export-btn.copy-failed{background:rgba(184,84,26,0.06);color:var(--rust);border-color:var(--rust)}
+.mc-export-btn-primary{background:var(--teal);color:var(--cream)}
+.mc-export-btn-primary:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+
 @media print{
   body{background:#fff !important;color:#000 !important}
   header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,.mc-input,
@@ -146,7 +191,11 @@
 
 <section class="block"><div class="container">
   <div class="mc-input">
-    <div class="mc-form">
+    <div class="mc-modes" role="tablist" aria-label="Input mode">
+      <button type="button" class="mc-mode-btn" role="tab" aria-selected="true"  data-mode="single">Single dish</button>
+      <button type="button" class="mc-mode-btn" role="tab" aria-selected="false" data-mode="whole">Whole menu</button>
+    </div>
+    <div class="mc-form" data-mode="single">
       <div class="mc-form-field">
         <label for="mcDesc">Dish description</label>
         <textarea id="mcDesc" spellcheck="true" autocomplete="off" placeholder="Paste a description here, like: &#10;Tonnarelli with smoky pecorino, cracked black pepper, and aged Tuscan olive oil."></textarea>
@@ -169,16 +218,25 @@
         </div>
       </div>
     </div>
-    <div class="mc-actions">
+    <div class="mc-actions" data-mode="single">
       <button type="button" class="mc-btn mc-btn-ghost" id="mcLoadSample">Load a sample dish</button>
       <button type="button" class="mc-btn mc-btn-ghost" id="mcSampleNext">Try another sample</button>
       <button type="button" class="mc-btn mc-btn-ghost" id="mcClear">Clear</button>
       <span style="margin-left:auto;font-size:12.5px;color:var(--stone);">Live diagnostic — every keystroke updates the scorecard.</span>
     </div>
+
+    <div class="mc-paste" data-mode="whole" hidden>
+      <p class="mc-paste-hint">Paste a CSV or TSV with one row per dish. The first row should be a header — typical names (<code>Item</code>, <code>Description</code>, <code>Price</code>, <code>Tier</code>) auto-map. Tabs and commas both work; quoted-CSV is supported. <strong>Tip:</strong> if you only have name + description in one paste, the parser will figure it out.</p>
+      <textarea id="mcPasteArea" spellcheck="false" autocomplete="off" placeholder="Item,Description,Price&#10;Tonnarelli al pepe,Hand-rolled tonnarelli with smoky pecorino and cracked pepper.,$24&#10;House salad,Our nice fresh delicious house salad — just simply our best.,$12.99"></textarea>
+      <div class="mc-paste-actions">
+        <button type="button" class="mc-btn" id="mcParse">Analyze pasted menu</button>
+        <button type="button" class="mc-btn mc-btn-ghost" id="mcPasteSample">Paste a sample CSV</button>
+      </div>
+    </div>
   </div>
 </div></section>
 
-<section class="block" id="mcOutput" hidden><div class="container">
+<section class="block" id="mcOutput" data-mode="single" hidden><div class="container">
   <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:24px;align-items:start;">
     <div style="display:flex;flex-direction:column;gap:18px;min-width:0;">
       <div>
@@ -201,6 +259,32 @@
       <div class="mc-verdict" id="mcVerdict"></div>
       <div class="mc-axes" id="mcAxes" aria-label="Per-axis diagnostics"></div>
     </div>
+  </div>
+</div></section>
+
+<section class="block" id="mcWholeOutput" data-mode="whole" hidden><div class="container">
+  <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 14px;">Menu-wide diagnostic</h2>
+  <div class="mc-bulk-summary" id="mcBulkSummary" aria-label="Menu summary"></div>
+  <div class="mc-table-wrap">
+    <table class="mc-table" id="mcBulkTable" aria-label="Per-item diagnostics"></table>
+  </div>
+  <div style="margin-top:18px;">
+    <h3 style="font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 10px;">Export</h3>
+    <div class="mc-export-row">
+      <button type="button" class="mc-export-btn mc-export-btn-primary" id="mcDownloadCard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="12" y1="3" x2="12" y2="10"/></svg>
+        Download Copy Card (PNG)
+      </button>
+      <button type="button" class="mc-export-btn" id="mcCopyCsv">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copy as CSV
+      </button>
+      <button type="button" class="mc-export-btn" id="mcDownloadJson">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download menu-copy-analysis.json
+      </button>
+    </div>
+    <p style="margin:10px 0 0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);">The Copy Card PNG is currently a placeholder — Phase 3 ships a designed 1200×1500 with side-by-side annotated copy and per-item scorecards. The CSV mirrors per-item scores; the JSON file includes full per-item math + thresholds. Composed entirely in your browser — no upload.</p>
   </div>
 </div></section>
 
@@ -238,6 +322,8 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
 </footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<!-- Menu Engineering's parseTabularText reused for whole-menu paste -->
+<script src="/tools/menu-engineering/menu-engineering.js?v=20260425-me1"></script>
 <script src="./menu-copy.js?v=20260425-mc1"></script>
 <script>
 /* Menu Copy Inspector — input wiring + live render.
@@ -514,6 +600,344 @@
     nameEl.addEventListener(ev, rerender);
     priceEl.addEventListener(ev, rerender);
     tierEl.addEventListener(ev, rerender);
+  });
+
+  // ----- Mode switching (Single / Whole menu) -----
+  var modeBtns = document.querySelectorAll('.mc-mode-btn');
+  var modePanels = {
+    single: document.querySelectorAll('[data-mode="single"]'),
+    whole:  document.querySelectorAll('[data-mode="whole"]')
+  };
+  function setMode(mode){
+    modeBtns.forEach(function(b){
+      b.setAttribute('aria-selected', b.getAttribute('data-mode') === mode ? 'true' : 'false');
+    });
+    Object.keys(modePanels).forEach(function(m){
+      modePanels[m].forEach(function(el){
+        if (el.classList.contains('mc-mode-btn')) return;
+        // Skip the always-on input wrapper (`.mc-input` itself).
+        if (el.classList.contains('mc-input')) return;
+        var matches = (m === mode);
+        if (matches) {
+          el.hidden = false;
+        } else {
+          el.hidden = true;
+        }
+      });
+    });
+    // Hide single-mode output when switching to whole-menu, and vice versa.
+    if (mode === 'whole') {
+      output.hidden = true;
+      emptyHint.hidden = true;
+    } else {
+      var who = document.getElementById('mcWholeOutput');
+      if (who) who.hidden = true;
+      // Re-evaluate single-mode output state from current input.
+      rerender();
+    }
+  }
+  modeBtns.forEach(function(b){
+    b.addEventListener('click', function(){ setMode(b.getAttribute('data-mode')); });
+  });
+
+  // ----- Whole-menu paste handler -----
+  var pasteArea  = document.getElementById('mcPasteArea');
+  var parseBtn   = document.getElementById('mcParse');
+  var pasteSampleBtn = document.getElementById('mcPasteSample');
+  var wholeOut   = document.getElementById('mcWholeOutput');
+  var bulkSummary = document.getElementById('mcBulkSummary');
+  var bulkTable  = document.getElementById('mcBulkTable');
+
+  // The Menu Engineering parser knows {item, price, food_cost,
+  // units_sold, category}. We only need {item, description, price}
+  // here, so we re-map the parser's output. The Inspector's parser
+  // also accepts an inline alternate header with "description" or
+  // "desc" — we add that mapping ourselves since parseTabularText
+  // doesn't know about it.
+  function parseMenuPaste(text){
+    if (!window.ME || !window.ME.parseTabularText) {
+      // Fall back to a minimal CSV split if parseTabularText isn't loaded.
+      return parseFallback(text);
+    }
+    var raw = window.ME.parseTabularText(text);
+    // raw.items have shape { item, price, food_cost, units_sold, category }.
+    // Re-interpret food_cost/units_sold/category cells that actually
+    // contain the description by sniffing for the "description" column.
+    var origLines = String(text || '').split(/\r?\n/).filter(function(l){ return l.trim().length > 0; });
+    var headerCells = [];
+    if (origLines.length) {
+      var delim = window.ME.detectDelimiter(text);
+      // Use a simple split — the parser's normalized headers help us
+      // figure out which column is the description.
+      headerCells = origLines[0].split(delim instanceof RegExp ? delim : delim).map(function(s){
+        return String(s).trim().toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+      });
+    }
+    var descIdx = -1;
+    headerCells.forEach(function(h, i){
+      if (descIdx >= 0) return;
+      if (h === 'description' || h === 'desc' || h === 'descripcion' || h === 'descripción' || h === 'descripcion del plato') {
+        descIdx = i;
+      }
+    });
+
+    var items;
+    if (descIdx >= 0) {
+      // Re-split each non-header line with the same delimiter, take the
+      // description from descIdx, item from column 0, price from any
+      // recognised "price" column.
+      var hasHeader = raw.headerRowDetected;
+      var dataLines = origLines.slice(hasHeader ? 1 : 0);
+      var priceIdx = headerCells.findIndex(function(h){ return h === 'price' || h === 'precio'; });
+      var nameIdx  = headerCells.findIndex(function(h){ return h === 'item' || h === 'name' || h === 'dish' || h === 'menu item' || h === 'plato' || h === 'nombre'; });
+      if (nameIdx < 0) nameIdx = 0;
+      items = dataLines.map(function(line){
+        var cells = String(line).split(/\t|,/).map(function(c){ return c.replace(/^"(.*)"$/, '$1').trim(); });
+        return {
+          name: cells[nameIdx] || '',
+          description: cells[descIdx] || '',
+          price: priceIdx >= 0 ? (cells[priceIdx] || '') : ''
+        };
+      });
+    } else {
+      // No description column. Treat each item's "category" cell as a
+      // description if non-numeric, else fall back to the line itself.
+      // For simplicity, surface a warning instead.
+      items = raw.items.map(function(it){
+        return {
+          name: it.item,
+          description: it.category || '',
+          price: it.price
+        };
+      });
+    }
+    return { items: items, warnings: raw.warnings || [], descCol: descIdx >= 0 };
+  }
+
+  function parseFallback(text){
+    var lines = String(text || '').split(/\r?\n/).filter(function(l){ return l.trim().length > 0; });
+    if (!lines.length) return { items: [], warnings: ['Pasted text was empty.'] };
+    return {
+      items: lines.map(function(line){
+        var cells = line.split(/\t|,(?=(?:[^"]*"[^"]*")*[^"]*$)/).map(function(c){ return c.trim().replace(/^"(.*)"$/, '$1'); });
+        return { name: cells[0] || '', description: cells[1] || '', price: cells[2] || '' };
+      }),
+      warnings: ['Parser fallback — install Menu Engineering for full CSV support.']
+    };
+  }
+
+  function fmtPct(n){ return (n * 100).toFixed(0) + '%'; }
+
+  function renderBulk(items){
+    if (!items || !items.length) {
+      wholeOut.hidden = true;
+      return;
+    }
+    wholeOut.hidden = false;
+    var summary = window.MC.scoreMenu(items);
+    var counts = { polish: 0, edit: 0, rewrite: 0 };
+    summary.items.forEach(function(it){ counts[it.verdict]++; });
+
+    bulkSummary.innerHTML =
+      bulkCard('Items',     summary.summary.itemCount,    'total descriptions analysed', 'total') +
+      bulkCard('Polish',    counts.polish,                'most signals present',         'polish') +
+      bulkCard('Edit',      counts.edit,                  '1–2 specific tweaks needed',   'edit') +
+      bulkCard('Rewrite',   counts.rewrite,               'worth starting fresh',         'rewrite');
+
+    var rows = summary.items.map(function(it){
+      return '<tr>' +
+             '<td><div class="mc-row-name">' + escHtml(it.name || '(unnamed)') + '</div>' +
+                 '<div class="mc-row-desc">' + escHtml(it.description || '') + '</div></td>' +
+             '<td class="mc-num">' + it.length.words + '</td>' +
+             '<td class="mc-num">' + it.sensory.count + '/' + it.sensory.categoriesUsed + 'c</td>' +
+             '<td class="mc-num">' + it.provenance.count + '</td>' +
+             '<td class="mc-num">' + it.technique.count + '</td>' +
+             '<td class="mc-num">' + it.hedges.count + '</td>' +
+             '<td class="mc-num">' + it.score + '</td>' +
+             '<td><span class="mc-v-pill" data-v="' + it.verdict + '">' + it.verdict + '</span></td>' +
+             '</tr>';
+    }).join('');
+    bulkTable.innerHTML =
+      '<thead><tr><th>Item / description</th><th class="mc-num">Words</th><th class="mc-num">Sensory</th><th class="mc-num">Prov.</th><th class="mc-num">Tech.</th><th class="mc-num">Hedge</th><th class="mc-num">Score</th><th>Verdict</th></tr></thead>' +
+      '<tbody>' + rows + '</tbody>';
+
+    // Plausible — fire once per parse with enum-bucketed props.
+    if (window.plausible) {
+      window.plausible('Menu Copy Inspector Analysis', { props: {
+        item_count:    window.MC.bucketItemCount(summary.summary.itemCount),
+        avg_words:     window.MC.bucketAvgWordCount(summary.summary.avgWordCount),
+        rewrite_ratio: window.MC.bucketRewriteRatio(summary.summary.itemCount, summary.summary.rewriteCount)
+      }});
+    }
+    return summary;
+  }
+
+  function bulkCard(label, value, sub, kind){
+    return '<div class="mc-bulk-card" data-v="' + kind + '">' +
+           '<div class="mc-bulk-label">' + escHtml(label) + '</div>' +
+           '<div class="mc-bulk-value">' + escHtml(String(value)) + '</div>' +
+           '<div class="mc-bulk-sub">' + escHtml(sub) + '</div></div>';
+  }
+
+  // Held on closure so exports can reuse the most-recent analysis.
+  var latestSummary = null;
+  function rerunBulk(){
+    var parsed = parseMenuPaste(pasteArea.value || '');
+    latestSummary = renderBulk(parsed.items);
+  }
+
+  parseBtn.addEventListener('click', rerunBulk);
+
+  pasteSampleBtn.addEventListener('click', function(){
+    pasteArea.value =
+      'Item,Description,Price\n' +
+      'Tonnarelli al pepe,Hand-rolled tonnarelli with smoky pecorino, cracked black pepper, and aged Tuscan olive oil.,$24\n' +
+      'House salad,Our nice fresh house salad — just simply our best.,$12.99\n' +
+      'Branzino,Whole Adriatic branzino salt-baked tableside with charred Meyer lemon.,$38\n' +
+      'Pork chop,Pork chop with vegetables.,$32\n' +
+      'Bolognese,Slow-simmered Bolognese over hand-cut pappardelle with Parmigiano-Reggiano aged 24 months.,$26\n' +
+      'Tomato toast,Heirloom tomatoes from Whitmore Farm on toasted country bread with sea salt and basil.,$14';
+    rerunBulk();
+  });
+
+  // ----- Exports -----
+  var copyCsvBtn      = document.getElementById('mcCopyCsv');
+  var downloadJsonBtn = document.getElementById('mcDownloadJson');
+  var downloadCardBtn = document.getElementById('mcDownloadCard');
+
+  function buildCsv(){
+    if (!latestSummary) return '';
+    var lines = ['Item,Description,Price,Words,Sensory count,Sensory cats,Provenance,Technique,Hedges,Length verdict,Score,Verdict'];
+    latestSummary.items.forEach(function(it){
+      function csvCell(v){
+        var str = String(v == null ? '' : v);
+        return /[",\n]/.test(str) ? '"' + str.replace(/"/g, '""') + '"' : str;
+      }
+      lines.push([
+        csvCell(it.name),
+        csvCell(it.description),
+        csvCell(it.price),
+        it.length.words,
+        it.sensory.count,
+        it.sensory.categoriesUsed,
+        it.provenance.count,
+        it.technique.count,
+        it.hedges.count,
+        it.length.verdict,
+        it.score,
+        it.verdict
+      ].join(','));
+    });
+    return lines.join('\n');
+  }
+
+  function buildJson(){
+    if (!latestSummary) return '{}';
+    return JSON.stringify({
+      meta: {
+        tool: 'Muntin Digital — Menu Copy Inspector',
+        url: 'https://muntin.digital/tools/menu-copy/',
+        generated_at: new Date().toISOString(),
+        method: 'Six rules-based diagnostics (sensory, provenance, technique, length, hedge, pricing) per Wansink (2005) + Cornell SHA menu-language research.'
+      },
+      summary: latestSummary.summary,
+      items: latestSummary.items
+    }, null, 2);
+  }
+
+  function downloadBlob(blob, filename){
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+  }
+
+  copyCsvBtn.addEventListener('click', function(){
+    var csv = buildCsv();
+    var orig = copyCsvBtn.lastChild.nodeValue;
+    var settle = function(label, kind){
+      copyCsvBtn.classList.remove('copied');
+      copyCsvBtn.classList.add(kind === 'error' ? 'copy-failed' : 'copied');
+      copyCsvBtn.lastChild.nodeValue = label;
+      setTimeout(function(){
+        copyCsvBtn.classList.remove('copied');
+        copyCsvBtn.classList.remove('copy-failed');
+        copyCsvBtn.lastChild.nodeValue = orig;
+      }, kind === 'error' ? 2400 : 1400);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(csv).then(
+        function(){ settle(' Copied CSV', 'ok'); },
+        function(){ settle(' Copy failed', 'error'); }
+      );
+    } else { settle(' Copy unsupported', 'error'); }
+    if (window.plausible) window.plausible('Menu Copy Inspector Export', { props: { format: 'csv' } });
+  });
+
+  downloadJsonBtn.addEventListener('click', function(){
+    var blob = new Blob([buildJson()], { type: 'application/json' });
+    downloadBlob(blob, 'menu-copy-analysis.json');
+    if (window.plausible) window.plausible('Menu Copy Inspector Export', { props: { format: 'json' } });
+  });
+
+  // Placeholder Copy Card. Phase 3 swaps in card-render.js with the
+  // designed two-column annotated view; for now we render a simple
+  // 1200×1500 SVG card with the bulk summary so the export hook is
+  // wired and Plausible can track usage.
+  function buildPlaceholderCardPng(){
+    return new Promise(function(resolve, reject){
+      if (!latestSummary) { reject(new Error('No analysis to export')); return; }
+      var counts = { polish: 0, edit: 0, rewrite: 0 };
+      latestSummary.items.forEach(function(it){ counts[it.verdict]++; });
+      var rows = latestSummary.items.slice(0, 12).map(function(it, i){
+        var y = 220 + i * 80;
+        var color = ({ polish: '#1F4E5B', edit: '#C68A2C', rewrite: '#B8541A' })[it.verdict];
+        return [
+          '<rect x="48" y="' + y + '" width="1104" height="60" fill="#FFFFFF" stroke="#E5E0D8" />',
+          '<rect x="48" y="' + y + '" width="6" height="60" fill="' + color + '" />',
+          '<text x="68" y="' + (y + 24) + '" font-size="16" font-family="Inter,sans-serif" font-weight="600" fill="#14161A">' +
+            (it.name || '(unnamed)').replace(/[<>&]/g, '') + '</text>',
+          '<text x="68" y="' + (y + 46) + '" font-size="12" font-family="Inter,sans-serif" fill="#5A5752">' +
+            String(it.length.words) + ' words · sensory ' + it.sensory.count + ' · prov ' + it.provenance.count +
+            ' · tech ' + it.technique.count + ' · hedge ' + it.hedges.count + '</text>',
+          '<text x="1132" y="' + (y + 36) + '" font-size="14" font-family="Inter,sans-serif" font-weight="700" fill="' + color + '" text-anchor="end">' +
+            it.verdict.toUpperCase() + '  ' + it.score + '</text>'
+        ].join('');
+      }).join('');
+      var card =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">' +
+        '<rect width="1200" height="1500" fill="#F2EEE5"/>' +
+        '<rect x="0" y="0" width="1200" height="120" fill="#14161A"/>' +
+        '<text x="48" y="62" font-size="32" font-family="Inter,sans-serif" font-weight="600" fill="#FAF7F2">Menu Copy Diagnostics</text>' +
+        '<text x="48" y="92" font-size="14" font-family="Inter,sans-serif" fill="rgba(250,247,242,0.72)">Stars · Plowhorses · Puzzles · Dogs of menu language</text>' +
+        '<text x="1152" y="62" font-size="14" font-family="Inter,sans-serif" fill="rgba(250,247,242,0.72)" text-anchor="end">' + new Date().toISOString().slice(0, 10) + '</text>' +
+        '<g>' + rows + '</g>' +
+        '<rect x="0" y="1440" width="1200" height="60" fill="#14161A"/>' +
+        '<text x="48" y="1478" font-size="14" font-family="Inter,sans-serif" fill="#FAF7F2">Generated by Menu Copy Inspector (placeholder card)</text>' +
+        '<text x="1152" y="1478" font-size="14" font-family="Inter,sans-serif" fill="rgba(250,247,242,0.7)" text-anchor="end">muntin.digital/tools/menu-copy/</text>' +
+        '</svg>';
+      var img = new Image();
+      var blobUrl = URL.createObjectURL(new Blob([card], { type: 'image/svg+xml' }));
+      img.onload = function(){
+        var canvas = document.createElement('canvas');
+        canvas.width = 1200; canvas.height = 1500;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, 1200, 1500);
+        URL.revokeObjectURL(blobUrl);
+        canvas.toBlob(function(blob){ blob ? resolve(blob) : reject(new Error('toBlob null')); }, 'image/png');
+      };
+      img.onerror = function(){ URL.revokeObjectURL(blobUrl); reject(new Error('svg image load failed')); };
+      img.src = blobUrl;
+    });
+  }
+
+  downloadCardBtn.addEventListener('click', function(){
+    buildPlaceholderCardPng().then(function(blob){
+      downloadBlob(blob, 'copy-card.png');
+      if (window.plausible) window.plausible('Menu Copy Inspector Export', { props: { format: 'card-png' } });
+    }).catch(function(err){ console.warn('Copy Card render failed', err); });
   });
 })();
 </script>
