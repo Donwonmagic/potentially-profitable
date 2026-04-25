@@ -137,6 +137,22 @@
 .mc-export-btn-primary{background:var(--teal);color:var(--cream)}
 .mc-export-btn-primary:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
 
+.mc-explorer{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px}
+.mc-pattern-card{padding:16px 18px;border:1px solid var(--line);border-left-width:4px;border-radius:var(--r-input);background:var(--white);display:flex;flex-direction:column;gap:8px}
+.mc-pattern-card[data-kind="sensory"]   {border-left-color:#1F4E5B}
+.mc-pattern-card[data-kind="provenance"]{border-left-color:#3A6BB3}
+.mc-pattern-card[data-kind="technique"] {border-left-color:#C68A2C}
+.mc-pattern-card[data-kind="hedge"]     {border-left-color:var(--rust)}
+.mc-pattern-card[data-kind="length"]    {border-left-color:var(--stone)}
+.mc-pattern-card[data-kind="pricing"]   {border-left-color:#7A6FB3}
+.mc-pattern-card h3{font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0}
+.mc-pattern-card .mc-pattern-meta{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);font-weight:700}
+.mc-pattern-card p{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink-soft)}
+.mc-pattern-card .mc-pattern-cite{font-size:12px;color:var(--stone);font-style:italic}
+.mc-pattern-words{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.mc-pattern-words code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;padding:2px 6px;background:var(--cream-2);border-radius:4px;color:var(--ink-soft)}
+.mc-pattern-words .mc-pattern-more{font-size:11px;color:var(--stone);font-style:italic}
+
 @media print{
   body{background:#fff !important;color:#000 !important}
   header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,.mc-input,
@@ -182,7 +198,7 @@
     <span class="eyebrow">Herramienta gratis · se queda en tu navegador</span>
     <h1 style="font-family:var(--font-display);font-size:clamp(34px,4.5vw,52px);font-weight:500;color:var(--ink);margin:14px 0 14px;line-height:1.1;">Lee tu menú como lo lee un comensal.</h1>
     <p style="font-size:17px;line-height:1.6;color:var(--ink-soft);margin:0 0 14px;">Pega la descripción de un plato y obtén seis diagnósticos — adjetivos sensoriales, señales de procedencia, palabras de técnica, extensión, palabras de relleno, precio — cada uno anotado con la investigación detrás. El Inspector te enseña qué buscar. No reescribe por ti.</p>
-    <p style="font-size:13px;color:var(--stone);margin:0;"><a href="#how-private" style="color:inherit;border-bottom:1px dashed var(--teal);">Cómo cuidamos la privacidad de tu copy</a> · <a href="/es/glossary/menu-copy/" style="color:inherit;border-bottom:1px dashed var(--teal);">¿Qué es el copy de menú?</a> · <em style="font-style:italic;color:var(--rust);">Nota: el léxico v1 reconoce inglés. Soporte completo de español llega en una versión siguiente.</em></p>
+    <p style="font-size:13px;color:var(--stone);margin:0;"><a href="#how-private" style="color:inherit;border-bottom:1px dashed var(--teal);">Cómo cuidamos la privacidad de tu copy</a> · <a href="/es/glossary/menu-copy/" style="color:inherit;border-bottom:1px dashed var(--teal);">¿Qué es el copy de menú?</a></p>
   </div>
 </div></section>
 
@@ -291,6 +307,27 @@
 
 <section class="block" id="mcEmptyHint"><div class="container">
   <div class="mc-empty" id="mcEmpty">Escribe o pega una descripción arriba. O haz click en <button type="button" class="mc-btn mc-btn-ghost" id="mcEmptyLoad" style="padding:4px 10px;font-size:12px;">Cargar plato de ejemplo</button> para ver los diagnósticos sobre un ejemplo elegido a mano.</div>
+
+  <div style="max-width:1100px;margin:32px auto 0;">
+    <span class="eyebrow">Explorador de patrones</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:10px 0 4px;">Los seis patrones que el Inspector busca</h2>
+    <p style="font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0;">Léelos una vez y empezarás a verlos en tu propio menú. Léelos diez veces y no vas a necesitar esta herramienta. Cada tarjeta lista el léxico real que usa el motor de reglas; todo es código abierto en <code>/tools/menu-copy/menu-copy.js</code>.</p>
+    <div class="mc-explorer" id="mcExplorer" aria-label="Explorador de patrones"></div>
+  </div>
+</div></section>
+
+<section class="block" id="what-this-does"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">En lenguaje sencillo</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,34px);font-weight:500;color:var(--ink);margin:12px 0 14px;">Qué hace esta herramienta, en cuatro frases</h2>
+    <ol style="margin:0;padding-left:1.2em;font-size:15px;line-height:1.7;color:var(--ink-soft);display:flex;flex-direction:column;gap:8px;">
+      <li><strong>Pegas una descripción.</strong> Un plato a la vez, o un menú completo por CSV/TSV. El texto se queda en tu navegador y nunca sale.</li>
+      <li><strong>Obtienes seis diagnósticos.</strong> Adjetivos sensoriales, señales de procedencia, palabras de técnica, extensión, palabras de relleno, presentación de precio — cada uno evaluado contra metas respaldadas por investigación y anotado en línea para que veas qué se disparó.</li>
+      <li><strong>Obtienes una escalera de acciones, no una reescritura.</strong> El Inspector te dice qué dirección ayudaría — "añade 1 palabra sensorial", "nombra al productor", "corta estas palabras de relleno" — y explica por qué cada movimiento importa. Por diseño, nunca escoge las palabras por ti.</li>
+      <li><strong>Obtienes cuatro formas de llevártelo.</strong> La Ficha de Copy es un PNG de 1200&times;1500 con anotaciones + tarjetas diseñado para un lector no técnico. El CSV refleja los puntajes por plato. El JSON está estructurado para cualquier herramienta posterior. El ZIP empaqueta los cuatro.</li>
+    </ol>
+    <p style="font-size:13.5px;line-height:1.6;color:var(--stone);margin:14px 0 0;"><strong>No</strong> es un reescritor, un análisis de voz / tono, ni un sustituto de la ingeniería de menú. <a href="#what-this-isnt" style="color:inherit;border-bottom:1px dashed var(--teal);">Más sobre los límites abajo</a>.</p>
+  </div>
 </div></section>
 
 <section class="block bg-cream2" id="how-private"><div class="container">
@@ -351,6 +388,42 @@
     </div>
   </div>
 </div></section>
+
+<!-- LIBRARY:tool-deep-links:start -->
+<section class="tool-deep-links" aria-labelledby="tool-deep-h">
+  <div class="container">
+    <header class="tool-deep-head">
+      <span class="eyebrow">Aprende más</span>
+      <h2 id="tool-deep-h">Por qué existe esta herramienta.</h2>
+      <p class="tool-deep-blurb">Cada chequeo que esta herramienta hace conecta con un concepto específico en la biblioteca. Dos puntos de partida — una definición, una guía.</p>
+      <div class="tool-deep-topics"><a class="tool-deep-topic" href="/es/learn/topics/operations-margin/">Operaciones y margen</a>
+        <a class="tool-deep-topic" href="/es/learn/topics/conversions/">Conversiones y reservas</a></div>
+    </header>
+    <div class="tool-deep-grid">
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/menu-copy/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Copy de menú</h3>
+          <p class="tool-deep-aka">el lenguaje que vende, separado del plato</p>
+          <p class="tool-deep-snippet">Las palabras que acompañan a cada plato — la oración descriptiva, el nombre del plato, el precio tal como aparece en la página — vistas como…</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/sensory-adjective/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Adjetivo sensorial</h3>
+          <p class="tool-deep-aka">una palabra que nombra sabor, textura, temperatura o preparación</p>
+          <p class="tool-deep-snippet">Un modificador en la descripción de un plato que nombra una cualidad perceptual — sabor (ahumado, salobre, picante), textura (crocante, sedo…</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-article" href="/es/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">
+          <span class="tool-deep-kind">Artículo</span>
+          <h3>Cómo subir los precios del menú del restaurante sin perder reservas</h3>
+          <p class="tool-deep-snippet">El manual honesto para subir los precios del menú en el sitio web de un restaurante independiente en 2026 — qué platos subir, cuáles mantener, cómo escalonarlo, y los cambios en la web que evitan que caigan las reservas cuando los números del menú suben.</p>
+          <span class="tool-deep-cta">Leer la guía <span aria-hidden="true">→</span></span>
+        </a>
+    </div>
+  </div>
+</section>
+<!-- LIBRARY:tool-deep-links:end -->
 
 </main>
 <footer class="foot">
@@ -618,7 +691,7 @@
         emptyHint.hidden = false;
         return;
       }
-      var scored = window.MC.scoreItem(input);
+      var scored = window.MC.scoreItem(input, { locale: 'es' });
       output.hidden = false;
       emptyHint.hidden = true;
       annotated.innerHTML = annotate(input, scored);
@@ -628,6 +701,89 @@
       firePlausibleOnce(scored);
     });
   }
+
+  // ----- Explorador de patrones -----
+  function renderExplorer(){
+    var explorer = document.getElementById('mcExplorer');
+    if (!explorer || !window.MC) return;
+    function pickSample(arr, n){
+      n = Math.min(n, arr.length);
+      var step = Math.max(1, Math.floor(arr.length / n));
+      var out = [];
+      for (var i = 0; i < arr.length && out.length < n; i += step) out.push(arr[i]);
+      return out;
+    }
+    function wordList(words, maxShow){
+      maxShow = maxShow || 12;
+      var sample = pickSample(words, maxShow);
+      var html = sample.map(function(w){ return '<code>' + escHtml(w) + '</code>'; }).join('');
+      if (words.length > maxShow) {
+        html += '<span class="mc-pattern-more">+' + (words.length - maxShow) + ' más</span>';
+      }
+      return html;
+    }
+    var hedgeKeys = Object.keys(window.MC.HEDGES_ES || window.MC.HEDGES || {});
+    var cards = [
+      {
+        kind: 'sensory',
+        label: 'Mayor palanca',
+        title: 'Adjetivos sensoriales',
+        body: 'Palabras que nombran sabor, textura, temperatura o preparación. Wansink (2005) halló que las etiquetas descriptivas elevan la tasa de selección +27% en promedio.',
+        cite: 'Wansink (2005); Cornell SHA',
+        words: (window.MC.SENSORY_FLAVOR_ES || []).concat(window.MC.SENSORY_TEXTURE_ES || []).concat(window.MC.SENSORY_TEMPERATURE_ES || []).concat(window.MC.SENSORY_PREP_ES || [])
+      },
+      {
+        kind: 'provenance',
+        label: 'Señal concreta',
+        title: 'Procedencia',
+        body: 'Productor nombrado, región, raza, edad, o cualquier origen concreto. La elevación de selección en estudios promedia 13–20% por una señal creíble.',
+        cite: 'Cornell SHA',
+        words: (window.MC.PROVENANCE_KEYWORDS_ES || []).concat(window.MC.PROVENANCE_REGIONS_ES || [])
+      },
+      {
+        kind: 'technique',
+        label: 'Señal de competencia',
+        title: 'Técnica',
+        body: 'Lo que se le HIZO a la comida — braseado, ahumado, añejado. Comunica oficio. Audiencia distinta a la sensorial; ambas se apilan sobre el mismo plato.',
+        cite: 'Aaker (credibilidad de claim de marca)',
+        words: window.MC.TECHNIQUES_ES || window.MC.TECHNIQUES
+      },
+      {
+        kind: 'length',
+        label: 'Punto dulce',
+        title: 'Extensión',
+        body: 'Casual: 9–15 palabras por descripción. Alta cocina: 12–22. Bajo 6 se lee como recortado; pasando 25 la atención cae en picada.',
+        cite: 'Cornell SHA, estudio multi-tier',
+        words: ['9–15 (casual)', '12–22 (alta cocina)', '6 = piso', '25 = techo']
+      },
+      {
+        kind: 'hedge',
+        label: 'Arrastre',
+        title: 'Palabras de relleno',
+        body: 'Relleno que no aporta información y que demostradamente reduce la tasa de selección. Cada uso debería ser deliberado; el reflejo es el problema.',
+        cite: 'Cornell SHA análisis de hedges',
+        words: hedgeKeys
+      },
+      {
+        kind: 'pricing',
+        label: 'Presentación por plato',
+        title: 'Formato de precio',
+        body: 'Si el precio usa signo de dólar, decimales o precio psicológico (.95, .99). Cada convención señala algo del tier y la voz de marca.',
+        cite: 'Kimes & Wirtz, Cornell SHA',
+        words: ['$24', '24', '$24.00', '$19.95', '$19.99']
+      }
+    ];
+    explorer.innerHTML = cards.map(function(c){
+      return '<article class="mc-pattern-card" data-kind="' + c.kind + '">' +
+             '<span class="mc-pattern-meta">' + escHtml(c.label) + '</span>' +
+             '<h3>' + escHtml(c.title) + '</h3>' +
+             '<p>' + escHtml(c.body) + '</p>' +
+             '<div class="mc-pattern-words">' + wordList(c.words, c.kind === 'hedge' ? 16 : (c.kind === 'length' || c.kind === 'pricing' ? 99 : 12)) + '</div>' +
+             '<p class="mc-pattern-cite">' + escHtml(c.cite) + '</p>' +
+             '</article>';
+    }).join('');
+  }
+  renderExplorer();
 
   loadBtn.addEventListener('click',   function(){ loadSample(0); sampleCursor = 1; });
   emptyLoad.addEventListener('click', function(){ loadSample(0); sampleCursor = 1; });
@@ -722,7 +878,7 @@
   function renderBulk(items){
     if (!items || !items.length) { wholeOut.hidden = true; return; }
     wholeOut.hidden = false;
-    var summary = window.MC.scoreMenu(items);
+    var summary = window.MC.scoreMenu(items, { locale: 'es' });
     var counts = { polish: 0, edit: 0, rewrite: 0 };
     summary.items.forEach(function(it){ counts[it.verdict]++; });
     bulkSummary.innerHTML =

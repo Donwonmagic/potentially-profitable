@@ -140,6 +140,23 @@
 .mc-export-btn-primary{background:var(--teal);color:var(--cream)}
 .mc-export-btn-primary:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
 
+/* Pattern Explorer — the educational core, visible when no item is loaded. */
+.mc-explorer{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px}
+.mc-pattern-card{padding:16px 18px;border:1px solid var(--line);border-left-width:4px;border-radius:var(--r-input);background:var(--white);display:flex;flex-direction:column;gap:8px}
+.mc-pattern-card[data-kind="sensory"]   {border-left-color:#1F4E5B}
+.mc-pattern-card[data-kind="provenance"]{border-left-color:#3A6BB3}
+.mc-pattern-card[data-kind="technique"] {border-left-color:#C68A2C}
+.mc-pattern-card[data-kind="hedge"]     {border-left-color:var(--rust)}
+.mc-pattern-card[data-kind="length"]    {border-left-color:var(--stone)}
+.mc-pattern-card[data-kind="pricing"]   {border-left-color:#7A6FB3}
+.mc-pattern-card h3{font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0}
+.mc-pattern-card .mc-pattern-meta{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);font-weight:700}
+.mc-pattern-card p{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink-soft)}
+.mc-pattern-card .mc-pattern-cite{font-size:12px;color:var(--stone);font-style:italic}
+.mc-pattern-words{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.mc-pattern-words code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;padding:2px 6px;background:var(--cream-2);border-radius:4px;color:var(--ink-soft)}
+.mc-pattern-words .mc-pattern-more{font-size:11px;color:var(--stone);font-style:italic}
+
 @media print{
   body{background:#fff !important;color:#000 !important}
   header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,.mc-input,
@@ -294,6 +311,27 @@
 
 <section class="block" id="mcEmptyHint"><div class="container">
   <div class="mc-empty" id="mcEmpty">Type or paste a description above. Or click <button type="button" class="mc-btn mc-btn-ghost" id="mcEmptyLoad" style="padding:4px 10px;font-size:12px;">Load a sample dish</button> to see the diagnostics on a hand-picked example.</div>
+
+  <div style="max-width:1100px;margin:32px auto 0;">
+    <span class="eyebrow">Pattern Explorer</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:10px 0 4px;">The six patterns the Inspector watches for</h2>
+    <p style="font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0;">Read these once and you'll start seeing them in your own menu. Read them ten times and you won't need this tool. Each card lists the actual lexicon the rules engine uses; everything is open-source in <code>/tools/menu-copy/menu-copy.js</code>.</p>
+    <div class="mc-explorer" id="mcExplorer" aria-label="Pattern Explorer card grid"></div>
+  </div>
+</div></section>
+
+<section class="block" id="what-this-does"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">Plain English</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,34px);font-weight:500;color:var(--ink);margin:12px 0 14px;">What this does, in four sentences</h2>
+    <ol style="margin:0;padding-left:1.2em;font-size:15px;line-height:1.7;color:var(--ink-soft);display:flex;flex-direction:column;gap:8px;">
+      <li><strong>You paste a description.</strong> One dish at a time, or a whole menu via a CSV/TSV. The text sits in your browser and never leaves it.</li>
+      <li><strong>You get six diagnostics.</strong> Sensory adjectives, provenance signals, technique words, length, hedge words, pricing presentation — each scored against research-backed targets and annotated inline so you see what fired.</li>
+      <li><strong>You get an action ladder, not a rewrite.</strong> The Inspector tells you which direction would help — "add 1 sensory word," "name the producer," "cut these hedges" — and explains why each move matters. By design, it never picks the words for you.</li>
+      <li><strong>You get four ways to take it with you.</strong> The Copy Card is a 1200&times;1500 PNG with annotations + scorecards designed for a non-technical reader. The CSV mirrors per-item scores. The JSON is structured for any downstream tool. The ZIP packages all four (PNG + CSV + JSON + README).</li>
+    </ol>
+    <p style="font-size:13.5px;line-height:1.6;color:var(--stone);margin:14px 0 0;">It is <strong>not</strong> a rewriter, a voice / tone analysis, or a substitute for menu engineering. <a href="#what-this-isnt" style="color:inherit;border-bottom:1px dashed var(--teal);">More on the limits below</a>.</p>
+  </div>
 </div></section>
 
 <section class="block bg-cream2" id="how-private"><div class="container">
@@ -360,6 +398,42 @@
     </div>
   </div>
 </div></section>
+
+<!-- LIBRARY:tool-deep-links:start -->
+<section class="tool-deep-links" aria-labelledby="tool-deep-h">
+  <div class="container">
+    <header class="tool-deep-head">
+      <span class="eyebrow">Learn more</span>
+      <h2 id="tool-deep-h">Why this tool exists.</h2>
+      <p class="tool-deep-blurb">Every check this tool runs maps to a specific concept in the Library. Two starting points — one definition, one playbook.</p>
+      <div class="tool-deep-topics"><a class="tool-deep-topic" href="/learn/topics/operations-margin/">Operations &amp; Margin</a>
+        <a class="tool-deep-topic" href="/learn/topics/conversions/">Conversions &amp; Reservations</a></div>
+    </header>
+    <div class="tool-deep-grid">
+      <a class="tool-deep-card tool-deep-card-term" href="/glossary/menu-copy/">
+          <span class="tool-deep-kind">Glossary</span>
+          <h3>Menu copy</h3>
+          <p class="tool-deep-aka">the language doing the selling, separate from the dish</p>
+          <p class="tool-deep-snippet">The words next to each item — the descriptive sentence, the dish name, the price as it appears on the page — viewed as a separate craft from…</p>
+          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/glossary/sensory-adjective/">
+          <span class="tool-deep-kind">Glossary</span>
+          <h3>Sensory adjective</h3>
+          <p class="tool-deep-aka">a word that names a flavor, texture, temperature, or preparation</p>
+          <p class="tool-deep-snippet">A modifier in a menu description that names a perceptual quality of the dish — flavor (smoky, briny, tangy), texture (crispy, silky, chewy),…</p>
+          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-article" href="/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">
+          <span class="tool-deep-kind">Article</span>
+          <h3>How to Raise Restaurant Menu Prices Without Losing Reservations</h3>
+          <p class="tool-deep-snippet">The honest playbook for raising menu prices on an independent restaurant&#39;s website in 2026 — which items to raise, how to stage it, and the website moves that protect reservations.</p>
+          <span class="tool-deep-cta">Read the playbook <span aria-hidden="true">→</span></span>
+        </a>
+    </div>
+  </div>
+</section>
+<!-- LIBRARY:tool-deep-links:end -->
 
 </main>
 <footer class="foot">
@@ -638,6 +712,93 @@
       firePlausibleOnce(scored);
     });
   }
+
+  // ----- Pattern Explorer (educational core) -----
+  // Renders a card grid of the lexicons the rules engine uses so a
+  // first-time visitor can read through them once and pick up the
+  // mental model. Visible whenever the empty-state hint is.
+  function renderExplorer(){
+    var explorer = document.getElementById('mcExplorer');
+    if (!explorer || !window.MC) return;
+    function pickSample(arr, n){
+      // Deterministic sample so the page renders consistently across reloads.
+      n = Math.min(n, arr.length);
+      var step = Math.max(1, Math.floor(arr.length / n));
+      var out = [];
+      for (var i = 0; i < arr.length && out.length < n; i += step) out.push(arr[i]);
+      return out;
+    }
+    function wordList(words, maxShow){
+      maxShow = maxShow || 12;
+      var sample = pickSample(words, maxShow);
+      var html = sample.map(function(w){ return '<code>' + escHtml(w) + '</code>'; }).join('');
+      if (words.length > maxShow) {
+        html += '<span class="mc-pattern-more">+' + (words.length - maxShow) + ' more</span>';
+      }
+      return html;
+    }
+    var hedgeKeys = Object.keys(window.MC.HEDGES || {});
+    var cards = [
+      {
+        kind: 'sensory',
+        label: 'Highest leverage',
+        title: 'Sensory adjectives',
+        body: 'Words that name flavor, texture, temperature, or preparation. Wansink (2005) found descriptive labels lift selection rate +27% on average.',
+        cite: 'Wansink (2005); Cornell SHA replication',
+        words: window.MC.SENSORY_FLAVOR.concat(window.MC.SENSORY_TEXTURE).concat(window.MC.SENSORY_TEMPERATURE).concat(window.MC.SENSORY_PREP)
+      },
+      {
+        kind: 'provenance',
+        label: 'Concrete signal',
+        title: 'Provenance',
+        body: 'Named producer, region, breed, age, or any concrete origin. Selection-rate lift in restaurant studies averages 13–20% from adding one credible signal.',
+        cite: 'Cornell SHA menu-language research',
+        words: window.MC.PROVENANCE_KEYWORDS.concat(window.MC.PROVENANCE_REGIONS)
+      },
+      {
+        kind: 'technique',
+        label: 'Competence cue',
+        title: 'Technique',
+        body: 'What was DONE to the food — braised, charred, dry-aged. Communicates craft. Different audience response than sensory; both can stack on the same dish.',
+        cite: 'Aaker (brand-claim credibility)',
+        words: window.MC.TECHNIQUES
+      },
+      {
+        kind: 'length',
+        label: 'Sweet spot',
+        title: 'Length',
+        body: 'Casual: 9–15 words per description. Fine dining: 12–22. Below 6 reads as a stub; past 25 attention drops sharply.',
+        cite: 'Cornell SHA, multi-tier study',
+        words: ['9–15 (casual)', '12–22 (fine dining)', '6 = floor', '25 = ceiling']
+      },
+      {
+        kind: 'hedge',
+        label: 'Drag',
+        title: 'Hedge words',
+        body: 'Filler that adds no information and demonstrably reduces selection rate. Each one is a deliberate choice; reflexive use is the problem.',
+        cite: 'Cornell SHA hedge analysis',
+        words: hedgeKeys
+      },
+      {
+        kind: 'pricing',
+        label: 'Per-item presentation',
+        title: 'Pricing format',
+        body: 'Whether the price uses a dollar sign, decimals, or charm pricing (.95, .99). Each convention signals something about the tier and brand voice.',
+        cite: 'Kimes & Wirtz, Cornell SHA',
+        words: ['$24', '24', '$24.00', '$19.95', '$19.99']
+      }
+    ];
+    explorer.innerHTML = cards.map(function(c){
+      return '<article class="mc-pattern-card" data-kind="' + c.kind + '">' +
+             '<span class="mc-pattern-meta">' + escHtml(c.label) + '</span>' +
+             '<h3>' + escHtml(c.title) + '</h3>' +
+             '<p>' + escHtml(c.body) + '</p>' +
+             '<div class="mc-pattern-words">' + wordList(c.words, c.kind === 'hedge' ? 16 : (c.kind === 'length' || c.kind === 'pricing' ? 99 : 12)) + '</div>' +
+             '<p class="mc-pattern-cite">' + escHtml(c.cite) + '</p>' +
+             '</article>';
+    }).join('');
+  }
+  renderExplorer();
 
   loadBtn.addEventListener('click',   function(){ loadSample(0); sampleCursor = 1; });
   emptyLoad.addEventListener('click', function(){ loadSample(0); sampleCursor = 1; });

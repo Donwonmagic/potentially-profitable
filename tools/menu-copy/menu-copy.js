@@ -181,6 +181,135 @@ var MC_PROVENANCE_REGIONS = [
 ];
 
 // ------------------------------------------------------------
+// Spanish lexicons (Phase 4)
+//
+// These are NOT translations of the EN lists — Spanish menu-copy
+// patterns differ in register, conventional vocabulary, and
+// pricing-presentation conventions. Curated independently per the
+// plan in /root/.claude/plans/transient-sparking-galaxy.md.
+//
+// The page passes locale: 'es' on the ES tool page; the scoring
+// functions select the right lexicon per call. EN remains the
+// default so existing scoreItem() calls work unchanged.
+// ------------------------------------------------------------
+
+var MC_SENSORY_FLAVOR_ES = [
+  'ahumado', 'amargo', 'ácido', 'acidulado', 'azucarado', 'cítrico',
+  'dulce', 'especiado', 'fresco', 'herbáceo', 'mantecoso', 'mineral',
+  'nuez', 'picante', 'profundo', 'redondo', 'robusto', 'sabroso',
+  'salado', 'salobre', 'sazonado', 'suave', 'tostado', 'umami'
+];
+var MC_SENSORY_TEXTURE_ES = [
+  'aireado', 'al dente', 'compacto', 'crocante', 'crujiente', 'cremoso',
+  'denso', 'esponjoso', 'firme', 'fundente', 'jugoso', 'meloso',
+  'pegajoso', 'sedoso', 'suculento', 'terso', 'tierno', 'untuoso'
+];
+var MC_SENSORY_TEMPERATURE_ES = [
+  'ardiente', 'caliente', 'cálido', 'helado', 'fresco', 'frío',
+  'humeante', 'tibio', 'fundido', 'derretido'
+];
+var MC_SENSORY_PREP_ES = [
+  'añejado', 'asado', 'al carbón', 'a la brasa', 'a la leña', 'a la parrilla',
+  'a la plancha', 'a la sal', 'al horno', 'al vapor', 'braseado', 'caramelizado',
+  'cocido', 'confitado', 'curado', 'dorado', 'encurtido', 'estofado',
+  'fermentado', 'frito', 'glaseado', 'grillado', 'hecho a mano',
+  'horneado', 'macerado', 'marinado', 'reducido', 'rostizado', 'salteado',
+  'sellado', 'tostado', 'flameado', 'ahumado'
+];
+
+// Spanish technique lexicon — culinary craft signals. Plural forms
+// for multi-word entries are listed explicitly because the v1
+// stem-matcher is English-biased (-ed/-ing/-s/-y stripping doesn't
+// fit Spanish gender + number morphology).
+var MC_TECHNIQUES_ES = [
+  'asado', 'asados', 'a la brasa', 'al carbón', 'a la leña', 'a la parrilla',
+  'a la plancha', 'a la sal', 'al horno', 'al vapor', 'apanado',
+  'braseado', 'braseados', 'cocido', 'cocidos', 'confitado', 'confitados',
+  'curado', 'curados', 'deshuesado', 'dorado', 'dorados',
+  'emparedado', 'empanizado', 'enrollado', 'envuelto', 'envueltos', 'estofado', 'estofados',
+  'fermentado', 'fermentados', 'flameado', 'frito', 'fritos', 'glaseado', 'glaseados', 'grillado',
+  'hecho a mano', 'hechos a mano', 'hecha a mano', 'hechas a mano',
+  'horneado', 'horneados', 'macerado', 'marinado', 'marinados', 'pochado',
+  'prensado', 'reducido', 'relleno', 'rellenos', 'rostizado', 'rostizados', 'salado',
+  'salteado', 'salteados', 'sellado', 'sous vide', 'tostado', 'tostados', 'envasado al vacío'
+];
+
+// Spanish hedges. Cornell research on hedges replicates broadly
+// across languages but the specific words differ; these are the
+// most common Spanish-language fillers that drag selection.
+var MC_HEDGES_ES = {
+  'rico':         "vago — todo plato debería aspirar a más.",
+  'delicioso':    "circular — el menú no es el lugar para reclamar deliciosidad.",
+  'bueno':        "positivo vago — qué lo hace bueno?",
+  'sabroso':      "evocativo débil — nombra un sabor.",
+  'fresco':       "sobreusado al punto de no significar nada; especifica cuándo o dónde.",
+  'auténtico':    "claim que invita escepticismo; muestra procedencia en su lugar.",
+  'tradicional':  "claim de autoridad que necesita respaldo concreto.",
+  'casero':       "necesita un sustantivo concreto.",
+  'nuestro':      "redundante: el lector ya asume.",
+  'gourmet':      "registro mal calibrado fuera de alta cocina; clisé adentro.",
+  'artesanal':    "diluido por uso ubicuo.",
+  'simplemente':  "relleno — promete facilidad pero baja la artesanía percibida.",
+  'sólo':         "relleno — usualmente se quita limpio.",
+  'mejor':        "comparativo sin referente.",
+  'único':        "diferenciador vago.",
+  'especial':     "diferenciador vago.",
+  'genial':       "positivo vago.",
+  'increíble':    "marketing-speak — los lectores lo ignoran.",
+  'famoso':       "claim que necesita evidencia."
+};
+
+// Spanish provenance keywords.
+var MC_PROVENANCE_KEYWORDS_ES = [
+  'hecho en casa', 'hecho a mano', 'de la casa', 'de origen', 'de productor',
+  'de granja', 'pequeña granja', 'de pesca', 'pesca del día', 'silvestre',
+  'orgánico', 'biodinámico', 'de temporada', 'de pastura', 'de libre pastoreo',
+  'criado en pastura', 'capturado a la línea', 'añejado', 'curado en casa',
+  'fermentado en casa', 'cosechado a mano', 'patrimonial', 'reliquia'
+];
+
+// Spanish provenance regions (Latin America + Spain biased toward
+// likely DMV-area Spanish-speaking restaurant audience).
+var MC_PROVENANCE_REGIONS_ES = [
+  'oaxaca', 'oaxaqueño', 'oaxaqueña', 'puebla', 'poblano', 'poblana',
+  'yucatán', 'yucateco', 'yucateca', 'veracruz', 'veracruzano',
+  'chiapas', 'chiapaneco', 'jalisco', 'tapatío', 'sonora', 'sonorense',
+  'baja california', 'baja', 'sinaloa', 'sinaloense', 'michoacán',
+  'antioquia', 'paisa', 'valle del cauca', 'caribe', 'caribeño',
+  'pacífico colombiano', 'andina', 'argentina', 'pampeano',
+  'salamanca', 'galicia', 'gallego', 'gallega', 'asturias', 'andalucía',
+  'andaluz', 'cataluña', 'catalán', 'país vasco', 'vasco', 'rioja',
+  'mediterráneo', 'atlántico'
+];
+
+// Lexicon selector. EN is default; passing locale 'es' switches to
+// the Spanish lists. Other locales fall back to EN.
+function mcLexiconsFor(locale) {
+  if (locale === 'es') {
+    return {
+      flavor:      MC_SENSORY_FLAVOR_ES,
+      texture:     MC_SENSORY_TEXTURE_ES,
+      temperature: MC_SENSORY_TEMPERATURE_ES,
+      preparation: MC_SENSORY_PREP_ES,
+      technique:   MC_TECHNIQUES_ES,
+      hedges:      MC_HEDGES_ES,
+      provenance_keywords: MC_PROVENANCE_KEYWORDS_ES,
+      provenance_regions:  MC_PROVENANCE_REGIONS_ES
+    };
+  }
+  return {
+    flavor:      MC_SENSORY_FLAVOR,
+    texture:     MC_SENSORY_TEXTURE,
+    temperature: MC_SENSORY_TEMPERATURE,
+    preparation: MC_SENSORY_PREP,
+    technique:   MC_TECHNIQUES,
+    hedges:      MC_HEDGES,
+    provenance_keywords: MC_PROVENANCE_KEYWORDS,
+    provenance_regions:  MC_PROVENANCE_REGIONS
+  };
+}
+
+// ------------------------------------------------------------
 // Tokenisation + matching helpers
 // ------------------------------------------------------------
 
@@ -243,7 +372,8 @@ function mcStemMatches(token, lexiconWord) {
 // Returns { count, byCategory, hits: [{word, category}], categoriesUsed }.
 // ------------------------------------------------------------
 
-function mcScoreSensory(text) {
+function mcScoreSensory(text, locale) {
+  var lex = mcLexiconsFor(locale);
   var tokens = mcTokenize(text);
   var hits = [];
   var byCategory = { flavor: 0, texture: 0, temperature: 0, preparation: 0 };
@@ -277,10 +407,10 @@ function mcScoreSensory(text) {
     });
   }
 
-  pickup('flavor',      MC_SENSORY_FLAVOR);
-  pickup('texture',     MC_SENSORY_TEXTURE);
-  pickup('temperature', MC_SENSORY_TEMPERATURE);
-  pickup('preparation', MC_SENSORY_PREP);
+  pickup('flavor',      lex.flavor);
+  pickup('texture',     lex.texture);
+  pickup('temperature', lex.temperature);
+  pickup('preparation', lex.preparation);
 
   var categoriesUsed = 0;
   Object.keys(byCategory).forEach(function(c){ if (byCategory[c] > 0) categoriesUsed++; });
@@ -302,7 +432,8 @@ function mcScoreSensory(text) {
 //   'capitalized' — sequence of 2+ capitalised tokens (proper noun)
 // ------------------------------------------------------------
 
-function mcScoreProvenance(text) {
+function mcScoreProvenance(text, locale) {
+  var lex = mcLexiconsFor(locale);
   var hits = [];
   var seen = {};
   function pushHit(kind, word) {
@@ -313,12 +444,12 @@ function mcScoreProvenance(text) {
   }
 
   // 1. Keyword matches (multi-word and single-word entries).
-  MC_PROVENANCE_KEYWORDS.forEach(function(kw){
+  lex.provenance_keywords.forEach(function(kw){
     if (mcPhraseAppears(text, kw)) pushHit('keyword', kw);
   });
 
   // 2. Region matches (case-insensitive whole-token).
-  MC_PROVENANCE_REGIONS.forEach(function(region){
+  lex.provenance_regions.forEach(function(region){
     if (mcPhraseAppears(text, region)) pushHit('region', region);
   });
 
@@ -350,13 +481,13 @@ function mcScoreProvenance(text) {
 // Returns { count, hits: [string] }.
 // ------------------------------------------------------------
 
-function mcScoreTechnique(text) {
+function mcScoreTechnique(text, locale) {
+  var lex = mcLexiconsFor(locale);
   var tokens = mcTokenize(text);
   var hits = [];
   var seen = {};
 
-  // Multi-word entries first.
-  MC_TECHNIQUES.forEach(function(entry){
+  lex.technique.forEach(function(entry){
     if (/\s|-/.test(entry) && mcPhraseAppears(text, entry)) {
       var k = entry.toLowerCase();
       if (seen[k]) return;
@@ -364,9 +495,8 @@ function mcScoreTechnique(text) {
       hits.push(entry);
     }
   });
-  // Single-word stems.
   tokens.forEach(function(tok){
-    MC_TECHNIQUES.forEach(function(entry){
+    lex.technique.forEach(function(entry){
       if (/\s|-/.test(entry)) return;
       if (mcStemMatches(tok, entry)) {
         if (seen[tok]) return;
@@ -409,14 +539,15 @@ function mcScoreLength(text, tier) {
 // Returns { count, hits: [{word, reason}] }.
 // ------------------------------------------------------------
 
-function mcScoreHedges(text) {
+function mcScoreHedges(text, locale) {
+  var lex = mcLexiconsFor(locale);
   var tokens = mcTokenize(text);
   var hits = [];
   var seen = {};
   tokens.forEach(function(tok){
-    if (MC_HEDGES[tok] && !seen[tok]) {
+    if (lex.hedges[tok] && !seen[tok]) {
       seen[tok] = true;
-      hits.push({ word: tok, reason: MC_HEDGES[tok] });
+      hits.push({ word: tok, reason: lex.hedges[tok] });
     }
   });
   return { count: hits.length, hits: hits };
@@ -520,20 +651,22 @@ function mcAggregateVerdict(parts) {
 // Public scoreItem — wraps all rule families for a single item.
 // ------------------------------------------------------------
 
-function mcScoreItem(input) {
+function mcScoreItem(input, options) {
   var item = input || {};
+  var locale = (options && options.locale) || item.locale || 'en';
   var description = String(item.description || '');
-  var sensory    = mcScoreSensory(description);
-  var provenance = mcScoreProvenance(description);
-  var technique  = mcScoreTechnique(description);
+  var sensory    = mcScoreSensory(description, locale);
+  var provenance = mcScoreProvenance(description, locale);
+  var technique  = mcScoreTechnique(description, locale);
   var length     = mcScoreLength(description, item.tier);
-  var hedges     = mcScoreHedges(description);
+  var hedges     = mcScoreHedges(description, locale);
   var pricing    = mcScorePricing(item.price);
   var agg        = mcAggregateVerdict({ sensory: sensory, provenance: provenance, technique: technique, length: length, hedges: hedges });
   return {
     name: String(item.name || ''),
     description: description,
     price: String(item.price == null ? '' : item.price),
+    locale: locale,
     sensory: sensory,
     provenance: provenance,
     technique: technique,
@@ -547,8 +680,8 @@ function mcScoreItem(input) {
 
 // Score a list of items. Returns the per-item analyses + a small
 // "summary" object the UI uses for the page-level bucket events.
-function mcScoreMenu(items) {
-  var list = (items || []).map(mcScoreItem);
+function mcScoreMenu(items, options) {
+  var list = (items || []).map(function(it){ return mcScoreItem(it, options); });
   var totalWords = 0;
   var rewriteCount = 0;
   list.forEach(function(it){
@@ -703,6 +836,16 @@ var MC_PUBLIC = {
   HEDGES:              MC_HEDGES,
   PROVENANCE_KEYWORDS: MC_PROVENANCE_KEYWORDS,
   PROVENANCE_REGIONS:  MC_PROVENANCE_REGIONS,
+  // Spanish lexicons (Phase 4)
+  SENSORY_FLAVOR_ES:      MC_SENSORY_FLAVOR_ES,
+  SENSORY_TEXTURE_ES:     MC_SENSORY_TEXTURE_ES,
+  SENSORY_TEMPERATURE_ES: MC_SENSORY_TEMPERATURE_ES,
+  SENSORY_PREP_ES:        MC_SENSORY_PREP_ES,
+  TECHNIQUES_ES:          MC_TECHNIQUES_ES,
+  HEDGES_ES:              MC_HEDGES_ES,
+  PROVENANCE_KEYWORDS_ES: MC_PROVENANCE_KEYWORDS_ES,
+  PROVENANCE_REGIONS_ES:  MC_PROVENANCE_REGIONS_ES,
+  lexiconsFor:            mcLexiconsFor,
   // Enums
   VERDICTS:                MC_VERDICTS,
   ITEM_COUNT_BUCKETS:      MC_ITEM_COUNT_BUCKETS,
