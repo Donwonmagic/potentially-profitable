@@ -255,8 +255,12 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Download menu-analysis.json
         </button>
+        <button type="button" class="me-export-btn" id="meDownloadZip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M10 12v6"/><path d="M10 12h2"/></svg>
+          Download ZIP bundle
+        </button>
       </div>
-      <p style="margin:10px 0 0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);">The Menu Card PNG bakes the matrix + quadrant counts into a 1200×1500 image, designed to share with your chef or partner. The CSV mirrors the input plus computed quadrant. The JSON file includes thresholds and full per-item math. Composed entirely in your browser — no upload.</p>
+      <p style="margin:10px 0 0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);">The <strong>Menu Card PNG</strong> is a 1200×1500 image with the matrix + per-quadrant action cards — share it with your chef or partner. The CSV mirrors the input plus computed quadrant. The JSON includes thresholds and full per-item math. The ZIP bundle packages all four (PNG + CSV + JSON + README). Composed in your browser; nothing uploads.</p>
     </div>
 
   </div>
@@ -277,6 +281,49 @@
 </div></section>
 
 <!-- NEXT_PLACEHOLDER -->
+<section class="block" id="what-this-isnt"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">Honest framing</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">What this isn't</h2>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Menu Engineering Matrix runs the math on data you already have. It is sharp, but it is one specific tool — not a substitute for the harder work that turns a Dog into a Star.</p>
+  </div>
+
+  <div style="max-width:760px;margin:24px auto 0;display:flex;flex-direction:column;gap:14px;">
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">Not a POS connector.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">You type or paste your data; the math runs locally. Connecting to Toast, Square, or Lightspeed inverts that flow and breaks the privacy posture. Pulling a sales report manually each month is the price of keeping it client-side.</p>
+    </article>
+
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">Not a recipe-cost calculator.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Plated food cost is your input, not your output. Inferring it from ingredient prices + portion sizes is its own legitimately complex problem. Until that tool exists, your chef's plate-cost number is the right input here.</p>
+    </article>
+
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">Not a menu redesign.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">The Matrix tells you what to act on — re-photograph this Puzzle, drop that Dog, re-cost this Plowhorse. Designing a new menu around that action plan is paid studio work. The output is a brief, not a final.</p>
+    </article>
+
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">Not a single-snapshot conclusion.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">A Dog at brunch can be a Star at dinner. A summer Plowhorse can become a winter Puzzle. Run the analysis once a quarter, separately for service periods that have meaningfully different traffic. Trend across periods is its own (planned) feature.</p>
+    </article>
+  </div>
+
+  <div style="max-width:760px;margin:24px auto 0;padding:20px 22px;background:var(--cream-2,var(--cream));border-radius:var(--r-input);border:1px solid var(--line);">
+    <p style="margin:0 0 8px;font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);">What this <em>is</em>: a 30-minute exercise that pays for itself.</p>
+    <p style="margin:0;font-size:14px;line-height:1.65;color:var(--ink-soft);">Three audiences, three handoffs. Bring the <strong>Menu Card</strong> to your chef — the four quadrants are the action plan. Bring the <strong>CSV</strong> to your accountant — the contribution-margin column is what they actually care about. Bring the <strong>JSON</strong> to a developer building anything on top of your menu data. The Card is the file your non-technical partners can actually use.</p>
+  </div>
+
+  <div style="max-width:760px;margin:18px auto 0;padding:20px 22px;background:var(--teal-tint);border-radius:var(--r-input);border:1px solid var(--line);">
+    <p style="margin:0 0 8px;font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);">When you want a redesign, hire the studio.</p>
+    <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:var(--ink-soft);">A menu redesign turns the action plan into a printed, photographed, on-brand menu. Bring your Menu Card to the kickoff call — that's 30 minutes of the engagement already done.</p>
+    <a href="/services/" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:var(--teal);color:var(--cream);border-radius:999px;text-decoration:none;font-size:13px;font-weight:600;">See Brand &amp; menu identity
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px;"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+  </div>
+</div></section>
+
 <section class="block"><div class="container">
   <div class="mm-next">
     <h2>Where to go next</h2>
@@ -300,6 +347,7 @@
 </footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="./menu-engineering.js?v=20260425-me1"></script>
+<script src="./card-render.js?v=20260425-me2"></script>
 <!-- IIFE_PLACEHOLDER -->
 <script>
 /* Menu Engineering Matrix — input + matrix rendering.
@@ -726,62 +774,209 @@
     if (window.plausible) window.plausible('Menu Engineering Export', { props: { format: 'json' } });
   });
 
-  // SVG → PNG via canvas. Same-origin SVG, no remote fonts → no
-  // canvas-tainting. Phase 2 ships the placeholder Menu Card (the
-  // matrix on a cream ground with a header band + footer strip);
-  // Phase 3 swaps in the full 1200×1500 designed Menu Card.
-  function buildPlaceholderMenuCardPng(){
-    return new Promise(function(resolve, reject){
-      var svg = document.getElementById('meMatrix');
-      if (!svg) { reject(new Error('no matrix')); return; }
-      // Read the inner SVG markup and wrap it in a sized SVG element
-      // so the rasteriser knows the canvas size.
-      var svgMarkup = svg.outerHTML
-        .replace(/<svg([^>]*)>/, '<svg$1 xmlns="http://www.w3.org/2000/svg" width="720" height="540">');
-      // Build the wrapping card: 1200×1500 with header + footer.
-      var card =
-        '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">' +
-        '<rect width="1200" height="1500" fill="#FAF7F2"/>' +
-        '<rect x="0" y="0" width="1200" height="120" fill="#14161A"/>' +
-        '<text x="48" y="76" font-size="32" font-family="Inter,sans-serif" font-weight="600" fill="#FAF7F2">Menu Action Plan</text>' +
-        '<text x="1152" y="76" font-size="16" font-family="Inter,sans-serif" fill="rgba(250,247,242,0.72)" text-anchor="end">' + new Date().toISOString().slice(0, 10) + '</text>' +
-        '<g transform="translate(96, 200) scale(1.4)">' +
-        svgMarkup
-          .replace(/^<svg[^>]*>/, '')
-          .replace(/<\/svg>$/, '') +
-        '</g>' +
-        '<rect x="0" y="1440" width="1200" height="60" fill="#14161A"/>' +
-        '<text x="48" y="1478" font-size="14" font-family="Inter,sans-serif" fill="#FAF7F2">Generated by Menu Engineering Matrix</text>' +
-        '<text x="1152" y="1478" font-size="14" font-family="Inter,sans-serif" fill="rgba(250,247,242,0.7)" text-anchor="end">muntin.digital/tools/menu-engineering/</text>' +
-        '</svg>';
-      var img = new Image();
-      var blobUrl = URL.createObjectURL(new Blob([card], { type: 'image/svg+xml' }));
-      img.onload = function(){
-        var canvas = document.createElement('canvas');
-        canvas.width = 1200; canvas.height = 1500;
-        var ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, 1200, 1500);
-        URL.revokeObjectURL(blobUrl);
-        canvas.toBlob(function(blob){
-          if (blob) resolve(blob); else reject(new Error('toBlob null'));
-        }, 'image/png');
-      };
-      img.onerror = function(){
-        URL.revokeObjectURL(blobUrl);
-        reject(new Error('svg image load failed'));
-      };
-      img.src = blobUrl;
+  // ----- Menu Card render via window.MECard (canvas-2d, no SVG) -----
+  function buildMenuCardBlob(){
+    if (!window.MECard) return Promise.reject(new Error('card-render module not loaded'));
+    var summary = window.ME.summariseMenu(readGrid());
+    var canvas  = window.MECard.renderMenuCard({
+      summary: summary,
+      strings: window.MECard.DEFAULT_STRINGS_EN
     });
+    return window.MECard.canvasToPngBlob(canvas);
   }
 
   downloadPngBtn.addEventListener('click', function(){
-    buildPlaceholderMenuCardPng().then(function(blob){
+    buildMenuCardBlob().then(function(blob){
       downloadBlob(blob, 'menu-card.png');
       if (window.plausible) window.plausible('Menu Engineering Export', { props: { format: 'card-png' } });
     }).catch(function(err){
       console.warn('Menu Card render failed', err);
     });
   });
+
+  // ----- ZIP bundle export -----
+  // Inline store-only ZIP writer, same approach as Brand Suite.
+  // Bundles menu-card.png + menu-data.csv + menu-analysis.json +
+  // README.md so a chef receives a single file with everything.
+  var CRC_TABLE = (function(){
+    var t = new Uint32Array(256);
+    for (var n = 0; n < 256; n++) {
+      var c = n;
+      for (var k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+      t[n] = c >>> 0;
+    }
+    return t;
+  })();
+  function crc32(bytes){
+    var c = 0xFFFFFFFF;
+    for (var i = 0; i < bytes.length; i++) c = CRC_TABLE[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+    return (c ^ 0xFFFFFFFF) >>> 0;
+  }
+  function strToBytes(s){ return new TextEncoder().encode(s); }
+
+  function buildZipBlob(entries){
+    var parts = [];
+    var centralParts = [];
+    var offset = 0;
+    var nowDate = new Date();
+    var dosTime = ((nowDate.getHours() & 0x1F) << 11) | ((nowDate.getMinutes() & 0x3F) << 5) | ((nowDate.getSeconds() / 2) & 0x1F);
+    var dosDate = (((nowDate.getFullYear() - 1980) & 0x7F) << 9) | (((nowDate.getMonth() + 1) & 0x0F) << 5) | (nowDate.getDate() & 0x1F);
+
+    entries.forEach(function(entry){
+      var nameBytes = strToBytes(entry.name);
+      var crc = crc32(entry.data);
+      var size = entry.data.length;
+      var localHeader = new Uint8Array(30 + nameBytes.length);
+      var dv = new DataView(localHeader.buffer);
+      dv.setUint32(0,  0x04034b50, true);
+      dv.setUint16(4,  20, true);
+      dv.setUint16(6,  0, true);
+      dv.setUint16(8,  0, true);  // store
+      dv.setUint16(10, dosTime, true);
+      dv.setUint16(12, dosDate, true);
+      dv.setUint32(14, crc, true);
+      dv.setUint32(18, size, true);
+      dv.setUint32(22, size, true);
+      dv.setUint16(26, nameBytes.length, true);
+      dv.setUint16(28, 0, true);
+      localHeader.set(nameBytes, 30);
+      parts.push(localHeader);
+      parts.push(entry.data);
+
+      var central = new Uint8Array(46 + nameBytes.length);
+      var cv = new DataView(central.buffer);
+      cv.setUint32(0,  0x02014b50, true);
+      cv.setUint16(4,  20, true);
+      cv.setUint16(6,  20, true);
+      cv.setUint16(8,  0, true);
+      cv.setUint16(10, 0, true);
+      cv.setUint16(12, dosTime, true);
+      cv.setUint16(14, dosDate, true);
+      cv.setUint32(16, crc, true);
+      cv.setUint32(20, size, true);
+      cv.setUint32(24, size, true);
+      cv.setUint16(28, nameBytes.length, true);
+      cv.setUint16(30, 0, true);
+      cv.setUint16(32, 0, true);
+      cv.setUint16(34, 0, true);
+      cv.setUint16(36, 0, true);
+      cv.setUint32(38, 0, true);
+      cv.setUint32(42, offset, true);
+      central.set(nameBytes, 46);
+      centralParts.push(central);
+
+      offset += localHeader.length + entry.data.length;
+    });
+
+    var cdSize = 0;
+    centralParts.forEach(function(c){ cdSize += c.length; });
+    var cdStart = offset;
+    centralParts.forEach(function(c){ parts.push(c); });
+
+    var eocd = new Uint8Array(22);
+    var ev = new DataView(eocd.buffer);
+    ev.setUint32(0,  0x06054b50, true);
+    ev.setUint16(4,  0, true);
+    ev.setUint16(6,  0, true);
+    ev.setUint16(8,  entries.length, true);
+    ev.setUint16(10, entries.length, true);
+    ev.setUint32(12, cdSize, true);
+    ev.setUint32(16, cdStart, true);
+    ev.setUint16(20, 0, true);
+    parts.push(eocd);
+
+    return new Blob(parts, { type: 'application/zip' });
+  }
+
+  function buildReadme(summary){
+    var t = summary.totals;
+    var byQ = { Star: 0, Plowhorse: 0, Puzzle: 0, Dog: 0 };
+    summary.items.forEach(function(it){ if (byQ[it.quadrant] != null) byQ[it.quadrant]++; });
+    var lines = [];
+    lines.push('# Your menu engineering report');
+    lines.push('');
+    lines.push('Generated by **Menu Engineering Matrix** on ' + new Date().toISOString().slice(0, 10) + '.');
+    lines.push('Everything in this bundle was composed in your browser. The data you typed never left your device.');
+    lines.push('');
+    lines.push('## What’s in this bundle');
+    lines.push('');
+    lines.push('- `menu-card.png` — the **Menu Card**, a 1200×1500 image arranging your matrix and per-quadrant action cards. Email it to your chef, post it back-of-house, or print it.');
+    lines.push('- `menu-data.csv` — a per-item table with computed quadrant, contribution margin, and share. Reopen in any spreadsheet.');
+    lines.push('- `menu-analysis.json` — the same data plus thresholds and totals, ready to feed into another tool or script.');
+    lines.push('- `README.md` — this file.');
+    lines.push('');
+    lines.push('## At a glance');
+    lines.push('');
+    lines.push('- Items analysed: **' + t.item_count + '**');
+    lines.push('- Total revenue: **' + (Math.round(t.revenue * 100) / 100).toLocaleString() + '** (period of your data)');
+    lines.push('- Food cost: **' + (Math.round(t.food_cost * 100) / 100).toLocaleString() + '** (' + Math.round(t.prime_cost_pct * 100) + '% of revenue)');
+    lines.push('- Contribution margin: **' + (Math.round(t.contribution_margin * 100) / 100).toLocaleString() + '**');
+    lines.push('');
+    lines.push('Stars · ' + byQ.Star + '  |  Plowhorses · ' + byQ.Plowhorse + '  |  Puzzles · ' + byQ.Puzzle + '  |  Dogs · ' + byQ.Dog);
+    lines.push('');
+    lines.push('## Method');
+    lines.push('');
+    lines.push('Median split on **contribution-margin dollars** (x-axis) and **menu-mix share** (y-axis), per Kasavana & Smith (1990). Items at exactly the median land on the upper-right side of the cut. Negative-CM items always land in Dog regardless of popularity.');
+    lines.push('');
+    lines.push('## What this isn’t');
+    lines.push('');
+    lines.push('- A POS connector. You typed the data; we did the math.');
+    lines.push('- A recipe-cost calculator. Plated food cost is your input, not your output.');
+    lines.push('- A menu-design service. The Matrix tells you what to act on; the redesign is paid studio work.');
+    lines.push('');
+    lines.push('## Made by Muntin Digital');
+    lines.push('');
+    lines.push('Menu Engineering Matrix is a free tool from **Muntin Digital** — a one-person restaurant web studio in Silver Spring, Maryland.');
+    lines.push('');
+    lines.push('- Studio: https://muntin.digital');
+    lines.push('- Brand Identity: https://muntin.digital/services/#brand');
+    lines.push('- Tool: https://muntin.digital/tools/menu-engineering/');
+    lines.push('');
+    lines.push('> Structure brings clarity.');
+    return lines.join('\n') + '\n';
+  }
+
+  // Add ZIP button reference + handler.
+  var downloadZipBtn = document.getElementById('meDownloadZip');
+  if (downloadZipBtn) {
+    downloadZipBtn.addEventListener('click', function(){
+      var summary = window.ME.summariseMenu(readGrid());
+      var csv = buildCsv();
+      var json = buildJson();
+      var readme = buildReadme(summary);
+      buildMenuCardBlob().then(function(pngBlob){
+        var reader = new FileReader();
+        reader.onload = function(){
+          var entries = [
+            { name: 'menu-card.png',      data: new Uint8Array(reader.result) },
+            { name: 'menu-data.csv',      data: strToBytes(csv) },
+            { name: 'menu-analysis.json', data: strToBytes(json) },
+            { name: 'README.md',          data: strToBytes(readme) }
+          ];
+          var blob = buildZipBlob(entries);
+          downloadBlob(blob, 'menu-engineering-bundle.zip');
+        };
+        reader.onerror = function(){
+          // Fallback: ZIP without the card
+          var entries = [
+            { name: 'menu-data.csv',      data: strToBytes(csv) },
+            { name: 'menu-analysis.json', data: strToBytes(json) },
+            { name: 'README.md',          data: strToBytes(readme) }
+          ];
+          downloadBlob(buildZipBlob(entries), 'menu-engineering-bundle.zip');
+        };
+        reader.readAsArrayBuffer(pngBlob);
+      }).catch(function(){
+        var entries = [
+          { name: 'menu-data.csv',      data: strToBytes(csv) },
+          { name: 'menu-analysis.json', data: strToBytes(json) },
+          { name: 'README.md',          data: strToBytes(readme) }
+        ];
+        downloadBlob(buildZipBlob(entries), 'menu-engineering-bundle.zip');
+      });
+      if (window.plausible) window.plausible('Menu Engineering Export', { props: { format: 'zip' } });
+    });
+  }
 })();
 </script>
 </body>

@@ -255,8 +255,12 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Descargar menu-analysis.json
         </button>
+        <button type="button" class="me-export-btn" id="meDownloadZip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M10 12v6"/><path d="M10 12h2"/></svg>
+          Descargar paquete ZIP
+        </button>
       </div>
-      <p style="margin:10px 0 0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);">La Ficha de Menú PNG funde la matriz + conteos por cuadrante en una imagen de 1200×1500, lista para mandarle al chef o socio. El CSV refleja los datos de entrada más el cuadrante calculado. El JSON incluye umbrales y matemática completa por plato. Todo se compone en tu navegador — sin subida.</p>
+      <p style="margin:10px 0 0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);">La <strong>Ficha de Menú PNG</strong> es una imagen de 1200×1500 con la matriz + tarjetas de acción por cuadrante — compártela con tu chef o socio. El CSV refleja los datos de entrada más el cuadrante calculado. El JSON incluye umbrales y matemática completa por plato. El paquete ZIP empaqueta los cuatro (PNG + CSV + JSON + README). Todo en tu navegador — sin subida.</p>
     </div>
 
   </div>
@@ -277,6 +281,49 @@
 </div></section>
 
 <!-- NEXT_PLACEHOLDER -->
+<section class="block" id="what-this-isnt"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">Marco honesto</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">Qué no es</h2>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">La Matriz de Ingeniería de Menú corre la matemática sobre datos que ya tienes. Es filosa, pero es una herramienta específica — no un sustituto del trabajo más duro que convierte un Perro en una Estrella.</p>
+  </div>
+
+  <div style="max-width:760px;margin:24px auto 0;display:flex;flex-direction:column;gap:14px;">
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No es un conector de POS.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Tú escribes o pegas tus datos; la matemática corre localmente. Conectar a Toast, Square o Lightspeed invierte ese flujo y rompe la postura de privacidad. Sacar un reporte de ventas a mano cada mes es el precio de mantenerlo del lado del cliente.</p>
+    </article>
+
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No es una calculadora de costo de receta.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">El costo del plato es tu input, no tu output. Inferirlo desde los precios de ingredientes + tamaños de porción es su propio problema legítimamente complejo. Hasta que esa herramienta exista, el número del chef es el input correcto aquí.</p>
+    </article>
+
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No es un rediseño de menú.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">La Matriz te dice sobre qué actuar — re-fotografía este Acertijo, descarta ese Perro, re-costea ese Caballo de tiro. Diseñar un menú nuevo alrededor de ese plan es trabajo del estudio. La salida es un brief, no un final.</p>
+    </article>
+
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No es una conclusión de un solo momento.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Un Perro en el brunch puede ser una Estrella en la cena. Un Caballo de tiro de verano puede ser un Acertijo en invierno. Corre el análisis una vez por trimestre, separadamente para servicios con tráfico distinto. La tendencia entre periodos es su propia función (planificada).</p>
+    </article>
+  </div>
+
+  <div style="max-width:760px;margin:24px auto 0;padding:20px 22px;background:var(--cream-2,var(--cream));border-radius:var(--r-input);border:1px solid var(--line);">
+    <p style="margin:0 0 8px;font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);">Lo que <em>sí</em> es: un ejercicio de 30 minutos que se paga solo.</p>
+    <p style="margin:0;font-size:14px;line-height:1.65;color:var(--ink-soft);">Tres audiencias, tres entregas. Llévale la <strong>Ficha de Menú</strong> a tu chef — los cuatro cuadrantes son el plan de acción. Llévale el <strong>CSV</strong> a tu contador — la columna de margen de contribución es la que de verdad le importa. Llévale el <strong>JSON</strong> a un desarrollador que esté construyendo algo sobre tus datos. La Ficha es el archivo que tus socios no técnicos sí pueden usar.</p>
+  </div>
+
+  <div style="max-width:760px;margin:18px auto 0;padding:20px 22px;background:var(--teal-tint);border-radius:var(--r-input);border:1px solid var(--line);">
+    <p style="margin:0 0 8px;font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);">Cuando quieras un rediseño, contrata al estudio.</p>
+    <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:var(--ink-soft);">Un rediseño de menú convierte el plan de acción en un menú impreso, fotografiado y on-brand. Trae tu Ficha de Menú a la primera llamada — son 30 minutos del proyecto ya hechos.</p>
+    <a href="/es/services/" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:var(--teal);color:var(--cream);border-radius:999px;text-decoration:none;font-size:13px;font-weight:600;">Ver Identidad de marca y menú
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px;"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+  </div>
+</div></section>
+
 <section class="block"><div class="container">
   <div class="mm-next">
     <h2>A dónde seguir</h2>
@@ -300,6 +347,7 @@
 </footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/menu-engineering/menu-engineering.js?v=20260425-me1"></script>
+<script src="/tools/menu-engineering/card-render.js?v=20260425-me2"></script>
 <!-- IIFE_PLACEHOLDER -->
 <script>
 /* Menu Engineering Matrix — input + matrix rendering.
@@ -724,55 +772,195 @@
     if (window.plausible) window.plausible('Menu Engineering Export', { props: { format: 'json' } });
   });
 
-  function buildPlaceholderMenuCardPng(){
-    return new Promise(function(resolve, reject){
-      var svg = document.getElementById('meMatrix');
-      if (!svg) { reject(new Error('no matrix')); return; }
-      var svgMarkup = svg.outerHTML
-        .replace(/<svg([^>]*)>/, '<svg$1 xmlns="http://www.w3.org/2000/svg" width="720" height="540">');
-      var card =
-        '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">' +
-        '<rect width="1200" height="1500" fill="#FAF7F2"/>' +
-        '<rect x="0" y="0" width="1200" height="120" fill="#14161A"/>' +
-        '<text x="48" y="76" font-size="32" font-family="Inter,sans-serif" font-weight="600" fill="#FAF7F2">Plan de acción del menú</text>' +
-        '<text x="1152" y="76" font-size="16" font-family="Inter,sans-serif" fill="rgba(250,247,242,0.72)" text-anchor="end">' + new Date().toISOString().slice(0, 10) + '</text>' +
-        '<g transform="translate(96, 200) scale(1.4)">' +
-        svgMarkup
-          .replace(/^<svg[^>]*>/, '')
-          .replace(/<\/svg>$/, '') +
-        '</g>' +
-        '<rect x="0" y="1440" width="1200" height="60" fill="#14161A"/>' +
-        '<text x="48" y="1478" font-size="14" font-family="Inter,sans-serif" fill="#FAF7F2">Generado con Matriz de Ingeniería de Menú</text>' +
-        '<text x="1152" y="1478" font-size="14" font-family="Inter,sans-serif" fill="rgba(250,247,242,0.7)" text-anchor="end">muntin.digital/es/tools/menu-engineering/</text>' +
-        '</svg>';
-      var img = new Image();
-      var blobUrl = URL.createObjectURL(new Blob([card], { type: 'image/svg+xml' }));
-      img.onload = function(){
-        var canvas = document.createElement('canvas');
-        canvas.width = 1200; canvas.height = 1500;
-        var ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, 1200, 1500);
-        URL.revokeObjectURL(blobUrl);
-        canvas.toBlob(function(blob){
-          if (blob) resolve(blob); else reject(new Error('toBlob null'));
-        }, 'image/png');
-      };
-      img.onerror = function(){
-        URL.revokeObjectURL(blobUrl);
-        reject(new Error('svg image load failed'));
-      };
-      img.src = blobUrl;
+  function buildMenuCardBlob(){
+    if (!window.MECard) return Promise.reject(new Error('card-render module not loaded'));
+    var summary = window.ME.summariseMenu(readGrid());
+    var canvas  = window.MECard.renderMenuCard({
+      summary: summary,
+      strings: window.MECard.DEFAULT_STRINGS_ES
     });
+    return window.MECard.canvasToPngBlob(canvas);
   }
 
   downloadPngBtn.addEventListener('click', function(){
-    buildPlaceholderMenuCardPng().then(function(blob){
+    buildMenuCardBlob().then(function(blob){
       downloadBlob(blob, 'ficha-menu.png');
       if (window.plausible) window.plausible('Menu Engineering Export', { props: { format: 'card-png' } });
     }).catch(function(err){
       console.warn('Menu Card render failed', err);
     });
   });
+
+  // ----- ZIP bundle export (mirrors Brand Suite / EN) -----
+  var CRC_TABLE = (function(){
+    var t = new Uint32Array(256);
+    for (var n = 0; n < 256; n++) {
+      var c = n;
+      for (var k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+      t[n] = c >>> 0;
+    }
+    return t;
+  })();
+  function crc32(bytes){
+    var c = 0xFFFFFFFF;
+    for (var i = 0; i < bytes.length; i++) c = CRC_TABLE[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+    return (c ^ 0xFFFFFFFF) >>> 0;
+  }
+  function strToBytes(s){ return new TextEncoder().encode(s); }
+
+  function buildZipBlob(entries){
+    var parts = [];
+    var centralParts = [];
+    var offset = 0;
+    var nowDate = new Date();
+    var dosTime = ((nowDate.getHours() & 0x1F) << 11) | ((nowDate.getMinutes() & 0x3F) << 5) | ((nowDate.getSeconds() / 2) & 0x1F);
+    var dosDate = (((nowDate.getFullYear() - 1980) & 0x7F) << 9) | (((nowDate.getMonth() + 1) & 0x0F) << 5) | (nowDate.getDate() & 0x1F);
+    entries.forEach(function(entry){
+      var nameBytes = strToBytes(entry.name);
+      var crc = crc32(entry.data);
+      var size = entry.data.length;
+      var localHeader = new Uint8Array(30 + nameBytes.length);
+      var dv = new DataView(localHeader.buffer);
+      dv.setUint32(0,  0x04034b50, true);
+      dv.setUint16(4,  20, true);
+      dv.setUint16(6,  0, true);
+      dv.setUint16(8,  0, true);
+      dv.setUint16(10, dosTime, true);
+      dv.setUint16(12, dosDate, true);
+      dv.setUint32(14, crc, true);
+      dv.setUint32(18, size, true);
+      dv.setUint32(22, size, true);
+      dv.setUint16(26, nameBytes.length, true);
+      dv.setUint16(28, 0, true);
+      localHeader.set(nameBytes, 30);
+      parts.push(localHeader); parts.push(entry.data);
+      var central = new Uint8Array(46 + nameBytes.length);
+      var cv = new DataView(central.buffer);
+      cv.setUint32(0,  0x02014b50, true);
+      cv.setUint16(4,  20, true);
+      cv.setUint16(6,  20, true);
+      cv.setUint16(8,  0, true);
+      cv.setUint16(10, 0, true);
+      cv.setUint16(12, dosTime, true);
+      cv.setUint16(14, dosDate, true);
+      cv.setUint32(16, crc, true);
+      cv.setUint32(20, size, true);
+      cv.setUint32(24, size, true);
+      cv.setUint16(28, nameBytes.length, true);
+      cv.setUint16(30, 0, true);
+      cv.setUint16(32, 0, true);
+      cv.setUint16(34, 0, true);
+      cv.setUint16(36, 0, true);
+      cv.setUint32(38, 0, true);
+      cv.setUint32(42, offset, true);
+      central.set(nameBytes, 46);
+      centralParts.push(central);
+      offset += localHeader.length + entry.data.length;
+    });
+    var cdSize = 0;
+    centralParts.forEach(function(c){ cdSize += c.length; });
+    var cdStart = offset;
+    centralParts.forEach(function(c){ parts.push(c); });
+    var eocd = new Uint8Array(22);
+    var ev = new DataView(eocd.buffer);
+    ev.setUint32(0,  0x06054b50, true);
+    ev.setUint16(4,  0, true);
+    ev.setUint16(6,  0, true);
+    ev.setUint16(8,  entries.length, true);
+    ev.setUint16(10, entries.length, true);
+    ev.setUint32(12, cdSize, true);
+    ev.setUint32(16, cdStart, true);
+    ev.setUint16(20, 0, true);
+    parts.push(eocd);
+    return new Blob(parts, { type: 'application/zip' });
+  }
+
+  function buildReadme(summary){
+    var t = summary.totals;
+    var byQ = { Star: 0, Plowhorse: 0, Puzzle: 0, Dog: 0 };
+    summary.items.forEach(function(it){ if (byQ[it.quadrant] != null) byQ[it.quadrant]++; });
+    var lines = [];
+    lines.push('# Tu reporte de ingeniería de menú');
+    lines.push('');
+    lines.push('Generado por **Matriz de Ingeniería de Menú** el ' + new Date().toISOString().slice(0, 10) + '.');
+    lines.push('Todo en este paquete se compuso en tu navegador. Los datos que tipeaste nunca salieron de tu dispositivo.');
+    lines.push('');
+    lines.push('## Qué incluye este paquete');
+    lines.push('');
+    lines.push('- `ficha-menu.png` — la **Ficha de Menú**, una imagen de 1200×1500 con tu matriz y las tarjetas de acción por cuadrante. Mándala al chef, pégala atrás de barra, o imprímela.');
+    lines.push('- `menu-data.csv` — tabla por plato con cuadrante calculado, margen de contribución y cuota. Re-ábrelo en cualquier hoja de cálculo.');
+    lines.push('- `menu-analysis.json` — los mismos datos más umbrales y totales, listos para alimentar otra herramienta o script.');
+    lines.push('- `README.md` — este archivo.');
+    lines.push('');
+    lines.push('## A simple vista');
+    lines.push('');
+    lines.push('- Platos analizados: **' + t.item_count + '**');
+    lines.push('- Ingreso total: **' + (Math.round(t.revenue * 100) / 100).toLocaleString() + '**');
+    lines.push('- Costo de comida: **' + (Math.round(t.food_cost * 100) / 100).toLocaleString() + '** (' + Math.round(t.prime_cost_pct * 100) + '% del ingreso)');
+    lines.push('- Margen de contribución: **' + (Math.round(t.contribution_margin * 100) / 100).toLocaleString() + '**');
+    lines.push('');
+    lines.push('Estrellas · ' + byQ.Star + '  |  Caballos de tiro · ' + byQ.Plowhorse + '  |  Acertijos · ' + byQ.Puzzle + '  |  Perros · ' + byQ.Dog);
+    lines.push('');
+    lines.push('## Método');
+    lines.push('');
+    lines.push('División por mediana de **margen de contribución en dólares** (eje x) y **cuota de cubiertos** (eje y), según Kasavana & Smith (1990). Los platos exactamente en la mediana caen al lado superior-derecho. Los platos con CM negativo siempre caen en Perros, sin importar la popularidad.');
+    lines.push('');
+    lines.push('## Lo que no es esta herramienta');
+    lines.push('');
+    lines.push('- Un conector de POS. Tú tipeaste los datos; nosotros corrimos la matemática.');
+    lines.push('- Una calculadora de costo de receta. El costo del plato es tu input, no tu output.');
+    lines.push('- Un servicio de rediseño de menú. La Matriz te dice sobre qué actuar; el rediseño es trabajo del estudio.');
+    lines.push('');
+    lines.push('## Hecho por Muntin Digital');
+    lines.push('');
+    lines.push('Matriz de Ingeniería de Menú es una herramienta gratuita de **Muntin Digital** — un estudio web de restaurantes de una sola persona en Silver Spring, Maryland.');
+    lines.push('');
+    lines.push('- Estudio: https://muntin.digital');
+    lines.push('- Identidad de Marca: https://muntin.digital/es/services/#brand');
+    lines.push('- Herramienta: https://muntin.digital/es/tools/menu-engineering/');
+    lines.push('');
+    lines.push('> La estructura aporta claridad.');
+    return lines.join('\n') + '\n';
+  }
+
+  var downloadZipBtn = document.getElementById('meDownloadZip');
+  if (downloadZipBtn) {
+    downloadZipBtn.addEventListener('click', function(){
+      var summary = window.ME.summariseMenu(readGrid());
+      var csv = buildCsv();
+      var json = buildJson();
+      var readme = buildReadme(summary);
+      buildMenuCardBlob().then(function(pngBlob){
+        var reader = new FileReader();
+        reader.onload = function(){
+          var entries = [
+            { name: 'ficha-menu.png',     data: new Uint8Array(reader.result) },
+            { name: 'menu-data.csv',      data: strToBytes(csv) },
+            { name: 'menu-analysis.json', data: strToBytes(json) },
+            { name: 'README.md',          data: strToBytes(readme) }
+          ];
+          downloadBlob(buildZipBlob(entries), 'ingenieria-de-menu.zip');
+        };
+        reader.onerror = function(){
+          var entries = [
+            { name: 'menu-data.csv',      data: strToBytes(csv) },
+            { name: 'menu-analysis.json', data: strToBytes(json) },
+            { name: 'README.md',          data: strToBytes(readme) }
+          ];
+          downloadBlob(buildZipBlob(entries), 'ingenieria-de-menu.zip');
+        };
+        reader.readAsArrayBuffer(pngBlob);
+      }).catch(function(){
+        var entries = [
+          { name: 'menu-data.csv',      data: strToBytes(csv) },
+          { name: 'menu-analysis.json', data: strToBytes(json) },
+          { name: 'README.md',          data: strToBytes(readme) }
+        ];
+        downloadBlob(buildZipBlob(entries), 'ingenieria-de-menu.zip');
+      });
+      if (window.plausible) window.plausible('Menu Engineering Export', { props: { format: 'zip' } });
+    });
+  }
 })();
 </script>
 </body>
