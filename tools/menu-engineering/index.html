@@ -112,10 +112,20 @@
 .me-table .me-q-pill[data-q="Puzzle"]{background:#6E5DB3}
 .me-table .me-q-pill[data-q="Dog"]{background:var(--rust)}
 @media print{
-  header.nav,.breadcrumb,.foot,footer,.me-input,.lang-hint,.foot-cta{display:none !important}
-  .me-output{margin-top:14px}
-  .me-matrix-wrap, .me-action-card, .me-table, .me-totals-card{break-inside:avoid;page-break-inside:avoid}
-  body{background:#fff !important}
+  /* One-page printable action sheet. Keep totals, matrix, action
+     cards, per-item table; hide the entire page chrome and any
+     non-print surfaces. */
+  body{background:#fff !important;color:#000 !important}
+  header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,.me-input,
+  #what-this-does,#how-private,#what-this-isnt,.me-export-row,
+  .mm-next,.me-empty-state,#meEmptyHint{display:none !important}
+  /* Hide the long export-section copy + share-link details too */
+  .me-output > div > h2 + p,details,.me-warnings{display:none !important}
+  .me-output{margin-top:14px;gap:12px}
+  .me-matrix-wrap,.me-action-card,.me-table,.me-totals-card{break-inside:avoid;page-break-inside:avoid}
+  .me-actions{break-before:auto}
+  .me-matrix-svg{max-height:5in}
+  a[href]:after{content:'' !important}
 }
 </style>
 </head>
@@ -259,7 +269,15 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M10 12v6"/><path d="M10 12h2"/></svg>
           Download ZIP bundle
         </button>
+        <button type="button" class="me-export-btn" id="meShareLink">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          Generate share link
+        </button>
       </div>
+      <details style="margin-top:8px;font-size:12.5px;color:var(--stone);">
+        <summary style="cursor:pointer;color:var(--ink-soft);">About the share link</summary>
+        <p style="margin:8px 0 0;line-height:1.55;">Unlike the rest of the toolkit, the share link <strong>does</strong> contain your menu data — item names and numbers are encoded in the URL fragment after <code>#m=</code>. The fragment never reaches our servers (browsers don't send fragments per the HTTP spec), but anyone you forward the link to can rehydrate the same analysis. Treat it like a spreadsheet attachment: send it where you'd email a CSV. Don't paste it into a public channel.</p>
+      </details>
       <p style="margin:10px 0 0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);">The <strong>Menu Card PNG</strong> is a 1200×1500 image with the matrix + per-quadrant action cards — share it with your chef or partner. The CSV mirrors the input plus computed quadrant. The JSON includes thresholds and full per-item math. The ZIP bundle packages all four (PNG + CSV + JSON + README). Composed in your browser; nothing uploads.</p>
     </div>
 
@@ -271,6 +289,20 @@
 </div></section>
 
 <!-- PRIVACY_PLACEHOLDER -->
+<section class="block" id="what-this-does"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">Plain English</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,34px);font-weight:500;color:var(--ink);margin:12px 0 14px;">What this does, in four sentences</h2>
+    <ol style="margin:0;padding-left:1.2em;font-size:15px;line-height:1.7;color:var(--ink-soft);display:flex;flex-direction:column;gap:8px;">
+      <li><strong>You enter your menu.</strong> Items, prices, food cost, and units sold over a chosen period — typed in or pasted from a spreadsheet. The data sits in your browser and never leaves it.</li>
+      <li><strong>You get a 2&times;2 matrix.</strong> Each item is plotted against the median contribution margin and the median menu-mix share, landing in one of four quadrants: Star, Plowhorse, Puzzle, or Dog.</li>
+      <li><strong>You get an action per item.</strong> Stars get protected, Plowhorses get re-engineered for cost, Puzzles get re-photographed and repositioned, Dogs get dropped or replaced. The action plan is the deliverable.</li>
+      <li><strong>You get four ways to take it with you.</strong> The Menu Card is a 1200&times;1500 PNG you can email or print. The CSV mirrors the per-item math. The JSON is structured for any downstream tool. The ZIP packages all four (PNG + CSV + JSON + README).</li>
+    </ol>
+    <p style="font-size:13.5px;line-height:1.6;color:var(--stone);margin:14px 0 0;">It is <strong>not</strong> a POS connector, a recipe-cost calculator, or a menu-redesign service. <a href="#what-this-isnt" style="color:inherit;border-bottom:1px dashed var(--teal);">More on the limits below</a>.</p>
+  </div>
+</div></section>
+
 <section class="block bg-cream2" id="how-private"><div class="container">
   <div style="max-width:760px;margin:0 auto;">
     <span class="eyebrow">Lead by example</span>
@@ -336,6 +368,41 @@
     </div>
   </div>
 </div></section>
+
+<!-- LIBRARY:tool-deep-links:start -->
+<section class="tool-deep-links" aria-labelledby="tool-deep-h">
+  <div class="container">
+    <header class="tool-deep-head">
+      <span class="eyebrow">Learn more</span>
+      <h2 id="tool-deep-h">Why this tool exists.</h2>
+      <p class="tool-deep-blurb">Every check this tool runs maps to a specific concept in the Library. Two starting points — one definition, one playbook.</p>
+      <div class="tool-deep-topics"><a class="tool-deep-topic" href="/learn/topics/operations-margin/">Operations &amp; Margin</a></div>
+    </header>
+    <div class="tool-deep-grid">
+      <a class="tool-deep-card tool-deep-card-term" href="/glossary/menu-engineering/">
+          <span class="tool-deep-kind">Glossary</span>
+          <h3>Menu engineering</h3>
+          <p class="tool-deep-aka">treating each dish as a portfolio decision, not a P&amp;L line</p>
+          <p class="tool-deep-snippet">A 50-year-old restaurant analysis (Kasavana &amp;amp; Smith, 1990) that plots every menu item on a 2&amp;times;2 of contribution margin (\$ per sale…</p>
+          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/glossary/contribution-margin/">
+          <span class="tool-deep-kind">Glossary</span>
+          <h3>Contribution margin</h3>
+          <p class="tool-deep-aka">what one sale of an item adds to covering fixed costs and profit</p>
+          <p class="tool-deep-snippet">For a single menu item: sale price minus the variable cost of producing one unit (plated food cost). Reported in dollars (CM&amp;nbsp;\$) and as…</p>
+          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-article" href="/blog/is-doordash-worth-it-for-restaurants-in-2026/">
+          <span class="tool-deep-kind">Article</span>
+          <h3>Is DoorDash Worth It for Restaurants in 2026?</h3>
+          <p class="tool-deep-snippet">The honest math of DoorDash and third-party delivery for independent restaurants — what $100 of delivery revenue actually becomes, when it makes sense, and how to build your own-ordering flow.</p>
+          <span class="tool-deep-cta">Read the playbook <span aria-hidden="true">→</span></span>
+        </a>
+    </div>
+  </div>
+</section>
+<!-- LIBRARY:tool-deep-links:end -->
 
 </main>
 <!-- FOOTER_PLACEHOLDER -->
@@ -936,7 +1003,89 @@
     return lines.join('\n') + '\n';
   }
 
-  // Add ZIP button reference + handler.
+  // ----- Share link (URL fragment) -----
+  // Unlike Brand Suite (which auto-updates the fragment with palette
+  // hex values that aren't sensitive on their own), Menu Engineering's
+  // fragment contains pasted item names + prices. We gate behind an
+  // explicit button + a one-line confirmation, never auto-update.
+  var shareBtn = document.getElementById('meShareLink');
+
+  function buildFragmentFromGrid(){
+    var items = readGrid().filter(function(it){
+      return it.item || it.price || it.food_cost || it.units_sold;
+    });
+    if (!items.length) return null;
+    // TSV is URL-safe after encodeURIComponent and survives clipboard
+    // round-trips better than CSV.
+    var lines = items.map(function(it){
+      function safe(v){ return String(v == null ? '' : v).replace(/\t/g, ' '); }
+      return [safe(it.item), safe(it.price), safe(it.food_cost), safe(it.units_sold), safe(it.category)].join('\t');
+    });
+    return encodeURIComponent(lines.join('\n'));
+  }
+
+  if (shareBtn) {
+    shareBtn.addEventListener('click', function(){
+      var frag = buildFragmentFromGrid();
+      var orig = shareBtn.lastChild.nodeValue;
+      var settle = function(label, kind){
+        shareBtn.classList.remove('copied');
+        shareBtn.classList.add(kind === 'error' ? 'copy-failed' : 'copied');
+        shareBtn.lastChild.nodeValue = label;
+        setTimeout(function(){
+          shareBtn.classList.remove('copied');
+          shareBtn.classList.remove('copy-failed');
+          shareBtn.lastChild.nodeValue = orig;
+        }, kind === 'error' ? 3000 : 1800);
+      };
+      if (!frag) { settle(' Add items first', 'error'); return; }
+      var url = window.location.origin + window.location.pathname + '#m=' + frag;
+      try { history.replaceState(null, '', '#m=' + frag); } catch (_) {}
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(
+          function(){ settle(' Link copied — contains menu data', 'ok'); },
+          function(){ settle(' Update URL bar manually', 'error'); }
+        );
+      } else {
+        settle(' URL bar updated — copy from there', 'ok');
+      }
+      if (window.plausible) window.plausible('Menu Engineering Export', { props: { format: 'share-link' } });
+    });
+  }
+
+  function rehydrateFromFragment(){
+    var hash = window.location.hash || '';
+    var m = /(?:^|[#&])m=([^&]+)/.exec(hash);
+    if (!m) return false;
+    var raw;
+    try { raw = decodeURIComponent(m[1]); } catch (_) { return false; }
+    var lines = raw.split(/\n/).filter(function(l){ return l.trim().length > 0; });
+    if (!lines.length) return false;
+    if (lines.length > 100) lines = lines.slice(0, 100); // sanity cap
+    gridBody.innerHTML = '';
+    lines.forEach(function(line){
+      var cells = line.split('\t');
+      addRow({
+        item:       cells[0] || '',
+        price:      cells[1] || '',
+        food_cost:  cells[2] || '',
+        units_sold: cells[3] || '',
+        category:   cells[4] || ''
+      });
+    });
+    rerender();
+    setMode('manual');
+    // Surface a small note that the menu was loaded from a URL.
+    requestAnimationFrame(function(){
+      var existing = warningsEl.querySelector('ul') ? warningsEl.querySelector('ul').innerHTML : '';
+      warningsEl.innerHTML = '<ul>' + existing + '<li style="background:rgba(31,78,91,0.06);color:var(--teal);border-color:rgba(31,78,91,0.18);">Menu loaded from URL fragment — share this link to share the analysis.</li></ul>';
+    });
+    return true;
+  }
+  // Defer rehydration to next tick so all init has run first.
+  setTimeout(rehydrateFromFragment, 0);
+
+  // ----- ZIP -----
   var downloadZipBtn = document.getElementById('meDownloadZip');
   if (downloadZipBtn) {
     downloadZipBtn.addEventListener('click', function(){

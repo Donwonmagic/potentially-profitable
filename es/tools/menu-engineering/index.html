@@ -112,10 +112,16 @@
 .me-table .me-q-pill[data-q="Puzzle"]{background:#6E5DB3}
 .me-table .me-q-pill[data-q="Dog"]{background:var(--rust)}
 @media print{
-  header.nav,.breadcrumb,.foot,footer,.me-input,.lang-hint,.foot-cta{display:none !important}
-  .me-output{margin-top:14px}
-  .me-matrix-wrap, .me-action-card, .me-table, .me-totals-card{break-inside:avoid;page-break-inside:avoid}
-  body{background:#fff !important}
+  body{background:#fff !important;color:#000 !important}
+  header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,.me-input,
+  #what-this-does,#how-private,#what-this-isnt,.me-export-row,
+  .mm-next,.me-empty-state,#meEmptyHint{display:none !important}
+  .me-output > div > h2 + p,details,.me-warnings{display:none !important}
+  .me-output{margin-top:14px;gap:12px}
+  .me-matrix-wrap,.me-action-card,.me-table,.me-totals-card{break-inside:avoid;page-break-inside:avoid}
+  .me-actions{break-before:auto}
+  .me-matrix-svg{max-height:5in}
+  a[href]:after{content:'' !important}
 }
 </style>
 </head>
@@ -259,7 +265,15 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M10 12v6"/><path d="M10 12h2"/></svg>
           Descargar paquete ZIP
         </button>
+        <button type="button" class="me-export-btn" id="meShareLink">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          Generar enlace para compartir
+        </button>
       </div>
+      <details style="margin-top:8px;font-size:12.5px;color:var(--stone);">
+        <summary style="cursor:pointer;color:var(--ink-soft);">Sobre el enlace para compartir</summary>
+        <p style="margin:8px 0 0;line-height:1.55;">A diferencia del resto del toolkit, este enlace <strong>sí</strong> contiene tus datos del menú — los nombres y números se codifican en el fragmento de URL después de <code>#m=</code>. El fragmento nunca llega a nuestros servidores (los navegadores no envían fragmentos según la spec HTTP), pero quien recibe el enlace puede recrear el mismo análisis. Trátalo como un archivo adjunto: mándalo a donde mandarías un CSV. No lo pegues en un canal público.</p>
+      </details>
       <p style="margin:10px 0 0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);">La <strong>Ficha de Menú PNG</strong> es una imagen de 1200×1500 con la matriz + tarjetas de acción por cuadrante — compártela con tu chef o socio. El CSV refleja los datos de entrada más el cuadrante calculado. El JSON incluye umbrales y matemática completa por plato. El paquete ZIP empaqueta los cuatro (PNG + CSV + JSON + README). Todo en tu navegador — sin subida.</p>
     </div>
 
@@ -271,6 +285,20 @@
 </div></section>
 
 <!-- PRIVACY_PLACEHOLDER -->
+<section class="block" id="what-this-does"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">En lenguaje sencillo</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,34px);font-weight:500;color:var(--ink);margin:12px 0 14px;">Qué hace esta herramienta, en cuatro frases</h2>
+    <ol style="margin:0;padding-left:1.2em;font-size:15px;line-height:1.7;color:var(--ink-soft);display:flex;flex-direction:column;gap:8px;">
+      <li><strong>Ingresas tu menú.</strong> Platos, precios, costo de comida y unidades vendidas en el periodo elegido — escritos o pegados desde una hoja de cálculo. Los datos se quedan en tu navegador y nunca salen.</li>
+      <li><strong>Obtienes una matriz 2&times;2.</strong> Cada plato se grafica contra la mediana del margen de contribución y la mediana de la cuota del menú, y cae en uno de cuatro cuadrantes: Estrella, Caballo de tiro, Acertijo o Perro.</li>
+      <li><strong>Obtienes una acción por plato.</strong> Las Estrellas se protegen, los Caballos de tiro se recostean, los Acertijos se refotografían y reposicionan, los Perros se descartan o reemplazan. El plan de acción es la entrega.</li>
+      <li><strong>Obtienes cuatro formas de llevártelo.</strong> La Ficha de Menú es un PNG de 1200&times;1500 que puedes mandar por correo o imprimir. El CSV refleja la matemática por plato. El JSON está estructurado para cualquier herramienta posterior. El ZIP empaqueta los cuatro (PNG + CSV + JSON + README).</li>
+    </ol>
+    <p style="font-size:13.5px;line-height:1.6;color:var(--stone);margin:14px 0 0;"><strong>No</strong> es un conector de POS, una calculadora de costo de receta, ni un servicio de rediseño de menú. <a href="#what-this-isnt" style="color:inherit;border-bottom:1px dashed var(--teal);">Más sobre los límites abajo</a>.</p>
+  </div>
+</div></section>
+
 <section class="block bg-cream2" id="how-private"><div class="container">
   <div style="max-width:760px;margin:0 auto;">
     <span class="eyebrow">Predicar con el ejemplo</span>
@@ -336,6 +364,41 @@
     </div>
   </div>
 </div></section>
+
+<!-- LIBRARY:tool-deep-links:start -->
+<section class="tool-deep-links" aria-labelledby="tool-deep-h">
+  <div class="container">
+    <header class="tool-deep-head">
+      <span class="eyebrow">Aprende más</span>
+      <h2 id="tool-deep-h">Por qué existe esta herramienta.</h2>
+      <p class="tool-deep-blurb">Cada chequeo que esta herramienta hace conecta con un concepto específico en la biblioteca. Dos puntos de partida — una definición, una guía.</p>
+      <div class="tool-deep-topics"><a class="tool-deep-topic" href="/es/learn/topics/operations-margin/">Operaciones y margen</a></div>
+    </header>
+    <div class="tool-deep-grid">
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/menu-engineering/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Ingeniería de menú</h3>
+          <p class="tool-deep-aka">tratar cada plato como una decisión de portafolio, no como una línea de P&amp;L</p>
+          <p class="tool-deep-snippet">Un análisis clásico de la industria restaurantera (Kasavana &amp;amp; Smith, 1990) que grafica cada plato en un 2&amp;times;2 de margen de contribuc…</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/contribution-margin/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Margen de contribución</h3>
+          <p class="tool-deep-aka">lo que una venta de un plato aporta a cubrir costos fijos y utilidad</p>
+          <p class="tool-deep-snippet">Para un plato individual: precio de venta menos el costo variable de producir una unidad (costo de comida emplatado). Se reporta en dólares …</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-article" href="/es/blog/is-doordash-worth-it-for-restaurants-in-2026/">
+          <span class="tool-deep-kind">Artículo</span>
+          <h3>¿Vale la pena DoorDash? Las matemáticas honestas para 2026</h3>
+          <p class="tool-deep-snippet">Las matemáticas honestas de DoorDash y la entrega de terceros para restaurantes independientes en 2026: en qué se convertirán realmente $100 de ingresos por entrega, cuándo todavía tiene sentido, cuándo no, y cómo construir su propio flujo de pedidos para que pueda elegir.</p>
+          <span class="tool-deep-cta">Leer la guía <span aria-hidden="true">→</span></span>
+        </a>
+    </div>
+  </div>
+</section>
+<!-- LIBRARY:tool-deep-links:end -->
 
 </main>
 <!-- FOOTER_PLACEHOLDER -->
@@ -922,6 +985,80 @@
     lines.push('> La estructura aporta claridad.');
     return lines.join('\n') + '\n';
   }
+
+  // ----- Share link (URL fragment) -----
+  var shareBtn = document.getElementById('meShareLink');
+
+  function buildFragmentFromGrid(){
+    var items = readGrid().filter(function(it){
+      return it.item || it.price || it.food_cost || it.units_sold;
+    });
+    if (!items.length) return null;
+    var lines = items.map(function(it){
+      function safe(v){ return String(v == null ? '' : v).replace(/\t/g, ' '); }
+      return [safe(it.item), safe(it.price), safe(it.food_cost), safe(it.units_sold), safe(it.category)].join('\t');
+    });
+    return encodeURIComponent(lines.join('\n'));
+  }
+
+  if (shareBtn) {
+    shareBtn.addEventListener('click', function(){
+      var frag = buildFragmentFromGrid();
+      var orig = shareBtn.lastChild.nodeValue;
+      var settle = function(label, kind){
+        shareBtn.classList.remove('copied');
+        shareBtn.classList.add(kind === 'error' ? 'copy-failed' : 'copied');
+        shareBtn.lastChild.nodeValue = label;
+        setTimeout(function(){
+          shareBtn.classList.remove('copied');
+          shareBtn.classList.remove('copy-failed');
+          shareBtn.lastChild.nodeValue = orig;
+        }, kind === 'error' ? 3000 : 1800);
+      };
+      if (!frag) { settle(' Agrega platos primero', 'error'); return; }
+      var url = window.location.origin + window.location.pathname + '#m=' + frag;
+      try { history.replaceState(null, '', '#m=' + frag); } catch (_) {}
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(
+          function(){ settle(' Enlace copiado — contiene datos del menú', 'ok'); },
+          function(){ settle(' Copia desde la barra de URL', 'error'); }
+        );
+      } else {
+        settle(' URL actualizada — copia desde ahí', 'ok');
+      }
+      if (window.plausible) window.plausible('Menu Engineering Export', { props: { format: 'share-link' } });
+    });
+  }
+
+  function rehydrateFromFragment(){
+    var hash = window.location.hash || '';
+    var m = /(?:^|[#&])m=([^&]+)/.exec(hash);
+    if (!m) return false;
+    var raw;
+    try { raw = decodeURIComponent(m[1]); } catch (_) { return false; }
+    var lines = raw.split(/\n/).filter(function(l){ return l.trim().length > 0; });
+    if (!lines.length) return false;
+    if (lines.length > 100) lines = lines.slice(0, 100);
+    gridBody.innerHTML = '';
+    lines.forEach(function(line){
+      var cells = line.split('\t');
+      addRow({
+        item:       cells[0] || '',
+        price:      cells[1] || '',
+        food_cost:  cells[2] || '',
+        units_sold: cells[3] || '',
+        category:   cells[4] || ''
+      });
+    });
+    rerender();
+    setMode('manual');
+    requestAnimationFrame(function(){
+      var existing = warningsEl.querySelector('ul') ? warningsEl.querySelector('ul').innerHTML : '';
+      warningsEl.innerHTML = '<ul>' + existing + '<li style="background:rgba(31,78,91,0.06);color:var(--teal);border-color:rgba(31,78,91,0.18);">Menú cargado desde el fragmento de URL — comparte este enlace para compartir el análisis.</li></ul>';
+    });
+    return true;
+  }
+  setTimeout(rehydrateFromFragment, 0);
 
   var downloadZipBtn = document.getElementById('meDownloadZip');
   if (downloadZipBtn) {
