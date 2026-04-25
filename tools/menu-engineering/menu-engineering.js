@@ -1,0 +1,323 @@
+/**
+ * Menu Engineering Matrix — pure math + classification.
+ *
+ * Loaded as a classic script in ./index.html (EN + ES). Also Node-
+ * importable for unit tests via scripts/test-menu-engineering.mjs.
+ * Dual-export pattern matches brand-suite.js + margin-math.js.
+ *
+ * Privacy invariants (tested in scripts/test-menu-engineering.mjs):
+ *   1. Every exported function is pure — no fetch, no localStorage,
+ *      no cookies, no side effects beyond attaching to window.ME.
+ *   2. Bucket helpers (meBucketMenuSize, meBucketPrimeCostBand,
+ *      meBucketDogsRatio) return values only from fixed enumerated
+ *      sets. No raw input value (item name, hex price) is ever
+ *      reflected.
+ *
+ * Method reference:
+ *   - Kasavana & Smith, "Menu Engineering: A Practical Guide to
+ *     Menu Analysis" (1990) — the canonical Stars / Plowhorses /
+ *     Puzzles / Dogs framework. Median split on contribution-margin
+ *     dollars × menu-mix share.
+ */
+
+// ------------------------------------------------------------
+// Item normalization + contribution margin
+// ------------------------------------------------------------
+
+function meCoerceNumber(v) {
+  // Accepts numbers, numeric strings ("$24.50", "24.50", "1,250"),
+  // and returns a finite number or NaN. Null and empty string → 0
+  // so empty rows in the manual-entry grid don't poison the totals.
+  if (v == null || v === '') return 0;
+  if (typeof v === 'number') return isFinite(v) ? v : NaN;
+  var s = String(v).trim().replace(/[$\s]/g, '').replace(/,/g, '');
+  if (s === '') return 0;
+  var n = parseFloat(s);
+  return isFinite(n) ? n : NaN;
+}
+
+function meNormalizeItem(raw) {
+  // Returns a clean item object. Fields: item (string), price,
+  // food_cost, units_sold (numbers), category (optional string).
+  return {
+    item:       String((raw && raw.item) || '').trim(),
+    price:      meCoerceNumber(raw && raw.price),
+    food_cost:  meCoerceNumber(raw && raw.food_cost),
+    units_sold: meCoerceNumber(raw && raw.units_sold),
+    category:   raw && raw.category ? String(raw.category).trim() : ''
+  };
+}
+
+function meContributionMargin(item) {
+  // CM dollars: price - food_cost.
+  // CM percent: CM dollars / price (0 if price is 0).
+  // Always returns finite numbers; negatives are valid (a money-
+  // losing item has negative CM and the UI flags it).
+  var n = meNormalizeItem(item);
+  var dollars = n.price - n.food_cost;
+  var pct = n.price > 0 ? dollars / n.price : 0;
+  return { dollars: dollars, percent: pct };
+}
+
+// ------------------------------------------------------------
+// Median utility — used for both axes of the matrix.
+// Median (not mean) is the standard menu-engineering convention so
+// one runaway item doesn't drag the bar.
+// ------------------------------------------------------------
+
+function meMedian(values) {
+  if (!values || !values.length) return 0;
+  var sorted = values.slice().sort(function(a, b){ return a - b; });
+  var n = sorted.length;
+  var mid = Math.floor(n / 2);
+  return n % 2 === 0 ? (sorted[mid - 1] + sorted[mid]) / 2 : sorted[mid];
+}
+
+// ------------------------------------------------------------
+// Quadrant assignment
+//
+// Median split on:
+//   x: contribution-margin dollars
+//   y: menu-mix share (units_sold / total_units)
+//
+// Quadrants:
+//   high CM × high pop = Star
+//   low  CM × high pop = Plowhorse
+//   high CM × low  pop = Puzzle
+//   low  CM × low  pop = Dog
+//
+// Items at exactly the median go to the "high" side (>=) so the
+// classification is total and stable across reruns.
+// ------------------------------------------------------------
+
+var ME_QUADRANTS = ['Star', 'Plowhorse', 'Puzzle', 'Dog'];
+
+function meSummariseMenu(rawItems) {
+  // Input: array of raw item objects.
+  // Output: {
+  //   items: enriched items (incl. cm, share, quadrant),
+  //   totals: { revenue, food_cost, contribution_margin, units, item_count, prime_cost_pct },
+  //   thresholds: { median_cm_dollars, median_share },
+  //   warnings: array of strings describing degenerate cases
+  // }
+  var items = (rawItems || []).map(meNormalizeItem).filter(function(it){
+    // Drop completely empty rows (no name AND no numbers); leave
+    // the rest alone so users see warnings on partial input.
+    return it.item || it.price || it.food_cost || it.units_sold;
+  });
+
+  var warnings = [];
+  if (items.length === 0) {
+    return {
+      items: [],
+      totals: { revenue: 0, food_cost: 0, contribution_margin: 0, units: 0, item_count: 0, prime_cost_pct: 0 },
+      thresholds: { median_cm_dollars: 0, median_share: 0 },
+      warnings: ['No items entered yet.']
+    };
+  }
+  if (items.length < 6) {
+    warnings.push('Fewer than 6 items — the median split is unstable. Add more items for a reliable matrix.');
+  }
+
+  // Compute totals + per-item CM and share.
+  var totalUnits = 0;
+  for (var i = 0; i < items.length; i++) totalUnits += items[i].units_sold;
+
+  var enriched = items.map(function(it){
+    var cm = meContributionMargin(it);
+    var share = totalUnits > 0 ? it.units_sold / totalUnits : 0;
+    return {
+      item: it.item,
+      price: it.price,
+      food_cost: it.food_cost,
+      units_sold: it.units_sold,
+      category: it.category,
+      cm_dollars: cm.dollars,
+      cm_percent: cm.percent,
+      share: share,
+      revenue: it.price * it.units_sold,
+      total_food_cost: it.food_cost * it.units_sold
+    };
+  });
+
+  // Thresholds: median CM dollars and median share, computed only
+  // over items with non-zero data so a placeholder row of all zeros
+  // doesn't drag the median to zero. If everything is zero (e.g.
+  // user pasted prices but no units), thresholds fall back to zero
+  // and the UI will surface a warning.
+  var nonZeroCmValues = enriched.map(function(e){ return e.cm_dollars; });
+  var nonZeroShareValues = enriched
+    .filter(function(e){ return e.units_sold > 0; })
+    .map(function(e){ return e.share; });
+
+  var medianCm = meMedian(nonZeroCmValues);
+  var medianShare = nonZeroShareValues.length ? meMedian(nonZeroShareValues) : 0;
+
+  // Detect axis-collapse: every item at the same CM (or same share).
+  var distinctCms = {};
+  enriched.forEach(function(e){ distinctCms[e.cm_dollars.toFixed(4)] = true; });
+  if (Object.keys(distinctCms).length <= 1 && enriched.length > 1) {
+    warnings.push('Every item has the same contribution margin — the x-axis collapses. Check that prices and food costs vary across items.');
+  }
+  var distinctShares = {};
+  enriched.forEach(function(e){ distinctShares[e.share.toFixed(4)] = true; });
+  if (Object.keys(distinctShares).length <= 1 && enriched.length > 1) {
+    warnings.push('Every item has the same sales count — the y-axis collapses. Add real units_sold figures.');
+  }
+
+  // Assign quadrants. Items with negative CM always land in Dog.
+  enriched.forEach(function(e){
+    var highCm = e.cm_dollars >= medianCm;
+    var highPop = e.share >= medianShare;
+    if (e.cm_dollars < 0) {
+      e.quadrant = 'Dog';
+    } else if (highCm && highPop)        e.quadrant = 'Star';
+    else if (!highCm && highPop)         e.quadrant = 'Plowhorse';
+    else if (highCm && !highPop)         e.quadrant = 'Puzzle';
+    else                                 e.quadrant = 'Dog';
+  });
+
+  // Totals.
+  var revenue = 0, foodCost = 0, contributionMargin = 0;
+  enriched.forEach(function(e){
+    revenue += e.revenue;
+    foodCost += e.total_food_cost;
+    contributionMargin += e.cm_dollars * e.units_sold;
+  });
+  var primeCostPct = revenue > 0 ? foodCost / revenue : 0;
+
+  return {
+    items: enriched,
+    totals: {
+      revenue: revenue,
+      food_cost: foodCost,
+      contribution_margin: contributionMargin,
+      units: totalUnits,
+      item_count: enriched.length,
+      prime_cost_pct: primeCostPct
+    },
+    thresholds: {
+      median_cm_dollars: medianCm,
+      median_share: medianShare
+    },
+    warnings: warnings
+  };
+}
+
+// ------------------------------------------------------------
+// What-if simulation
+//
+// changes is a list of { index, price?, food_cost?, units_sold? }
+// patches. Returns a fresh summary so the caller can render a "before
+// vs after" view. Pure: never mutates the input items.
+// ------------------------------------------------------------
+
+function meSimulateChange(items, changes) {
+  var byIndex = {};
+  (changes || []).forEach(function(c){ if (typeof c.index === 'number') byIndex[c.index] = c; });
+  var patched = (items || []).map(function(it, idx){
+    var p = byIndex[idx];
+    if (!p) return it;
+    return {
+      item:       it.item,
+      price:      p.price       != null ? p.price       : it.price,
+      food_cost:  p.food_cost   != null ? p.food_cost   : it.food_cost,
+      units_sold: p.units_sold  != null ? p.units_sold  : it.units_sold,
+      category:   it.category
+    };
+  });
+  return meSummariseMenu(patched);
+}
+
+// ------------------------------------------------------------
+// Recommended action per quadrant — short, on-brand language.
+// ------------------------------------------------------------
+
+var ME_ACTIONS_EN = {
+  Star: {
+    headline: 'Protect them.',
+    detail: 'These already work. Don’t mess with the recipe; protect the price; feature them in photos, in the server’s spiel, on the homepage.'
+  },
+  Plowhorse: {
+    headline: 'Re-engineer the cost.',
+    detail: 'Popular but margin-thin. Walk the recipe back through Margin Math: a 5–10% portion-size or sourcing change can lift CM without losing volume.'
+  },
+  Puzzle: {
+    headline: 'Reposition them.',
+    detail: 'Profitable but ignored. Re-photograph, re-describe, move higher on the menu, train the staff to suggest. Most Puzzles are presentation problems, not product problems.'
+  },
+  Dog: {
+    headline: 'Drop or replace.',
+    detail: 'Low margin, low volume. Every Dog you keep is a slot you can’t use for something better. Replace with a tested LTO; if it sticks, promote it.'
+  }
+};
+
+// ------------------------------------------------------------
+// Plausible bucket helpers — enum-locked, privacy-critical.
+// No raw input value (item name, price, count) ever appears in a
+// bucket return; tests sweep across full input ranges + poison
+// strings to lock this property.
+// ------------------------------------------------------------
+
+var ME_SIZE_BUCKETS = ['lt-10-items', '10-25-items', '25-50-items', 'gt-50-items'];
+
+function meBucketMenuSize(itemCount) {
+  var n = typeof itemCount === 'number' && isFinite(itemCount) && itemCount >= 0 ? Math.floor(itemCount) : 0;
+  if (n < 10)  return 'lt-10-items';
+  if (n < 25)  return '10-25-items';
+  if (n < 50)  return '25-50-items';
+  return 'gt-50-items';
+}
+
+var ME_PRIME_COST_BANDS = ['lt-25pct', '25-30pct', '30-35pct', 'gt-35pct'];
+
+function meBucketPrimeCostBand(totalFoodCost, totalRevenue) {
+  var fc = typeof totalFoodCost === 'number' && isFinite(totalFoodCost) && totalFoodCost >= 0 ? totalFoodCost : 0;
+  var r  = typeof totalRevenue   === 'number' && isFinite(totalRevenue)  && totalRevenue  >= 0 ? totalRevenue  : 0;
+  if (r <= 0) return 'lt-25pct';
+  var ratio = fc / r;
+  if (ratio < 0.25) return 'lt-25pct';
+  if (ratio < 0.30) return '25-30pct';
+  if (ratio < 0.35) return '30-35pct';
+  return 'gt-35pct';
+}
+
+var ME_DOGS_RATIO_BUCKETS = ['none', 'lt-10pct', '10-25pct', 'gt-25pct'];
+
+function meBucketDogsRatio(itemCount, dogCount) {
+  var n = typeof itemCount === 'number' && isFinite(itemCount) && itemCount > 0 ? itemCount : 0;
+  var d = typeof dogCount  === 'number' && isFinite(dogCount)  && dogCount  >= 0 ? dogCount  : 0;
+  if (n === 0 || d === 0) return 'none';
+  var ratio = d / n;
+  if (ratio < 0.10) return 'lt-10pct';
+  if (ratio < 0.25) return '10-25pct';
+  return 'gt-25pct';
+}
+
+// ------------------------------------------------------------
+// Dual export — browser window + Node module.
+// ------------------------------------------------------------
+
+var ME_PUBLIC = {
+  coerceNumber:        meCoerceNumber,
+  normalizeItem:       meNormalizeItem,
+  contributionMargin:  meContributionMargin,
+  median:              meMedian,
+  summariseMenu:       meSummariseMenu,
+  simulateChange:      meSimulateChange,
+  bucketMenuSize:      meBucketMenuSize,
+  bucketPrimeCostBand: meBucketPrimeCostBand,
+  bucketDogsRatio:     meBucketDogsRatio,
+  QUADRANTS:           ME_QUADRANTS,
+  SIZE_BUCKETS:        ME_SIZE_BUCKETS,
+  PRIME_COST_BANDS:    ME_PRIME_COST_BANDS,
+  DOGS_RATIO_BUCKETS:  ME_DOGS_RATIO_BUCKETS,
+  ACTIONS_EN:          ME_ACTIONS_EN
+};
+
+if (typeof self !== 'undefined' && typeof module === 'undefined') {
+  self.ME = ME_PUBLIC;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = ME_PUBLIC;
+}
