@@ -105,6 +105,8 @@
   .bs-chip-share{font-size:11px;color:var(--stone)}
   .bs-chip.copied{border-color:var(--status-good);background:var(--status-good-tint)}
   .bs-chip.copied .bs-chip-role{color:var(--status-good)}
+  .bs-chip.copy-failed{border-color:var(--rust);background:rgba(184,84,26,0.06)}
+  .bs-chip.copy-failed .bs-chip-role{color:var(--rust)}
   .bs-palette-hint{font-size:12px;color:var(--stone);margin:0}
   .bs-status{min-height:24px;font-size:13px;color:var(--stone);text-align:center}
   .bs-status.bs-status-error{color:var(--rust)}
@@ -170,6 +172,7 @@
   .bs-export-btn:hover{background:var(--teal);color:var(--cream)}
   .bs-export-btn svg{width:14px;height:14px}
   .bs-export-btn.copied{background:var(--status-good-tint);color:var(--status-good);border-color:var(--status-good)}
+  .bs-export-btn.copy-failed{background:rgba(184,84,26,0.06);color:var(--rust);border-color:var(--rust)}
   .bs-export-preview{margin:0;padding:14px 16px;background:var(--ink);color:var(--cream-2);border-radius:var(--r-input);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.5;overflow-x:auto;white-space:pre;max-height:280px;overflow-y:auto}
   /* Live-calculator styles — shared by all four calculators. The
      "Stays in your browser" badge is visible on every card to
@@ -911,6 +914,11 @@
     statusEl.className = 'bs-status' + (kind ? ' bs-status-' + kind : '');
   }
 
+  // Hard ceiling. With DOWNSAMPLE=100 a normal logo lands at <=10000 pixels.
+  // Tall vertical or extreme-aspect uploads can blow past that; truncate
+  // uniformly so the worker never sees an unbounded array.
+  var MAX_SAMPLED_PIXELS = 20000;
+
   function sampleCanvasPixels(canvas){
     var ctx = canvas.getContext('2d');
     var data;
@@ -922,33 +930,64 @@
       if (a < 128) continue;  // skip transparent pixels so a logo on a transparent ground doesn't poison the palette with black
       out.push([data[i], data[i + 1], data[i + 2]]);
     }
+    if (out.length > MAX_SAMPLED_PIXELS) {
+      var stride = out.length / MAX_SAMPLED_PIXELS;
+      var trimmed = new Array(MAX_SAMPLED_PIXELS);
+      for (var j = 0; j < MAX_SAMPLED_PIXELS; j++) trimmed[j] = out[Math.floor(j * stride)];
+      out = trimmed;
+    }
     return out;
   }
+
+  // Worker timeout. K-means on <=20000 pixels finishes in tens of ms on
+  // any modern device, so 2s is a generous ceiling that catches a hung
+  // worker (rare, but possible on a constrained mobile browser).
+  var WORKER_TIMEOUT_MS = 2000;
 
   function extractAndRender(pixels, file){
     setStatus('Extracting palette…', 'working');
     ensureWorker();
     var requestId = ++requestCounter;
+    var settled = false;
+    var timeoutHandle = null;
     function onDone(err, palette){
+      if (settled) return;
+      settled = true;
+      if (timeoutHandle) { clearTimeout(timeoutHandle); timeoutHandle = null; }
       if (err) {
         // Main-thread fallback: run extraction synchronously
         try { palette = window.BS.extractPalette(pixels, { k: 5, seed: 1 }); }
         catch (e) { setStatus('Could not extract a palette. Try a different logo.', 'error'); return; }
       }
       latestPalette = palette;
+      // Progressive reveal: palette first (the headline), then the rest in
+      // the next frames so the page feels responsive on slow devices.
       renderPalette(palette);
       paletteWrap.hidden = false;
-      renderFixture(palette);
-      fixtureWrap.hidden = false;
-      renderContrastGrid(palette);
-      contrastWrap.hidden = false;
-      renderExports(palette);
-      exportWrap.hidden = false;
       setStatus('');
-      firePlausible(palette, file);
+      requestAnimationFrame(function(){
+        renderFixture(palette);
+        fixtureWrap.hidden = false;
+        requestAnimationFrame(function(){
+          renderContrastGrid(palette);
+          contrastWrap.hidden = false;
+          renderExports(palette);
+          exportWrap.hidden = false;
+          firePlausible(palette, file);
+        });
+      });
     }
     pending[requestId] = onDone;
     if (worker) {
+      timeoutHandle = setTimeout(function(){
+        if (settled) return;
+        // Worker hung. Tear it down so the next drop spins a fresh one,
+        // then fall back to main-thread extraction.
+        delete pending[requestId];
+        try { worker.terminate(); } catch (_) {}
+        worker = null;
+        onDone(new Error('worker-timeout'));
+      }, WORKER_TIMEOUT_MS);
       worker.postMessage({ type: 'extract', pixels: pixels, k: 5, seed: 1, requestId: requestId });
     } else {
       // No Worker support; run immediately on main thread.
@@ -1103,18 +1142,24 @@
   copyCssBtn.addEventListener('click', function(){
     if (!latestPalette) return;
     var css = buildCssBlock(latestPalette);
-    var done = function(){
-      copyCssBtn.classList.add('copied');
-      var orig = copyCssBtn.lastChild.nodeValue;
-      copyCssBtn.lastChild.nodeValue = ' Copied CSS';
+    var orig = copyCssBtn.lastChild.nodeValue;
+    var settle = function(label, kind){
+      copyCssBtn.classList.remove('copied');
+      copyCssBtn.classList.add(kind === 'error' ? 'copy-failed' : 'copied');
+      copyCssBtn.lastChild.nodeValue = label;
       setTimeout(function(){
         copyCssBtn.classList.remove('copied');
+        copyCssBtn.classList.remove('copy-failed');
         copyCssBtn.lastChild.nodeValue = orig;
-      }, 1400);
+      }, kind === 'error' ? 2600 : 1400);
     };
+    var ok = function(){ settle(' Copied CSS', 'ok'); };
+    var fail = function(){ settle(' Copy failed — select manually', 'error'); };
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(css).then(done, function(){ done(); });
-    } else { done(); }
+      navigator.clipboard.writeText(css).then(ok, fail);
+    } else {
+      fail();
+    }
     if (window.plausible) window.plausible('Brand Suite Export', { props: { format: 'css' } });
   });
 
@@ -1310,16 +1355,25 @@
         '</span>';
       btn.addEventListener('click', function(){
         var hex = entry.hex.toUpperCase();
-        var done = function(){
-          btn.classList.add('copied');
-          var role = btn.querySelector('.bs-chip-role');
-          var orig = role.textContent;
-          role.textContent = 'Copied';
-          setTimeout(function(){ btn.classList.remove('copied'); role.textContent = orig; }, 1200);
+        var roleEl = btn.querySelector('.bs-chip-role');
+        var orig = roleEl.textContent;
+        var settle = function(label, kind){
+          btn.classList.remove('copied');
+          btn.classList.add(kind === 'error' ? 'copy-failed' : 'copied');
+          roleEl.textContent = label;
+          setTimeout(function(){
+            btn.classList.remove('copied');
+            btn.classList.remove('copy-failed');
+            roleEl.textContent = orig;
+          }, kind === 'error' ? 2200 : 1200);
         };
+        var ok = function(){ settle('Copied', 'ok'); };
+        var fail = function(){ settle('Copy failed', 'error'); };
         if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(hex).then(done, function(){ done(); });
-        } else { done(); }
+          navigator.clipboard.writeText(hex).then(ok, fail);
+        } else {
+          fail();
+        }
       });
       paletteEl.appendChild(btn);
     });
@@ -1338,6 +1392,55 @@
     }});
   }
 
+  // Strip <script> elements and any external href / xlink:href attributes
+  // from an SVG document. Keeps data: URIs and same-document #fragment
+  // references — those can't reach the network. Returns the serialized
+  // sanitized SVG as a string, or null if parsing fails.
+  function sanitizeSvgText(text){
+    try {
+      var parser = new DOMParser();
+      var doc = parser.parseFromString(text, 'image/svg+xml');
+      if (!doc || doc.querySelector('parsererror')) return null;
+      var root = doc.documentElement;
+      if (!root || root.nodeName.toLowerCase() !== 'svg') return null;
+      var scripts = root.querySelectorAll('script');
+      for (var i = 0; i < scripts.length; i++) scripts[i].parentNode.removeChild(scripts[i]);
+      var all = root.querySelectorAll('*');
+      function stripExternalHref(el, attrName){
+        var v = el.getAttribute(attrName);
+        if (v == null) return;
+        var t = v.trim().toLowerCase();
+        // Allow same-document fragments and inline data URIs only.
+        if (t.indexOf('#') === 0 || t.indexOf('data:') === 0) return;
+        el.removeAttribute(attrName);
+      }
+      stripExternalHref(root, 'href');
+      stripExternalHref(root, 'xlink:href');
+      for (var j = 0; j < all.length; j++) {
+        var el = all[j];
+        // Remove on* event-handler attributes.
+        var attrs = el.attributes;
+        for (var k = attrs.length - 1; k >= 0; k--) {
+          var name = attrs[k].name;
+          if (name.toLowerCase().indexOf('on') === 0) el.removeAttribute(name);
+        }
+        stripExternalHref(el, 'href');
+        stripExternalHref(el, 'xlink:href');
+      }
+      return new XMLSerializer().serializeToString(doc);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function loadAsImage(blob, onReady, onFail){
+    var url = URL.createObjectURL(blob);
+    var img = new Image();
+    img.onload = function(){ onReady(img, url); };
+    img.onerror = function(){ URL.revokeObjectURL(url); onFail(); };
+    img.src = url;
+  }
+
   function handleFile(file){
     if (!file) return;
     if (file.size > MAX_BYTES) {
@@ -1345,32 +1448,56 @@
       return;
     }
     setStatus('Loading your logo…', 'working');
-    var url = URL.createObjectURL(file);
-    var img = new Image();
-    img.onload = function(){
-      // Show preview (two swatches)
-      imgCream.src = url;
-      imgInk.src   = url;
-      preview.hidden = false;
-      // Draw to offscreen canvas downsampled to clustering resolution
-      var canvas = document.createElement('canvas');
-      var scale = Math.min(1, DOWNSAMPLE / Math.max(img.width, img.height));
-      canvas.width  = Math.max(1, Math.round(img.width  * scale));
-      canvas.height = Math.max(1, Math.round(img.height * scale));
-      var ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      var pixels = sampleCanvasPixels(canvas);
-      if (!pixels.length) {
-        setStatus('Could not read any opaque pixels from that logo.', 'error');
-        return;
-      }
-      extractAndRender(pixels, file);
-    };
-    img.onerror = function(){
-      setStatus('Could not read that file as an image.', 'error');
-      URL.revokeObjectURL(url);
-    };
-    img.src = url;
+
+    function proceed(blob){
+      loadAsImage(blob, function(img, url){
+        // Show preview (two swatches)
+        imgCream.src = url;
+        imgInk.src   = url;
+        preview.hidden = false;
+        // Draw to offscreen canvas downsampled to clustering resolution
+        var canvas = document.createElement('canvas');
+        var w = img.naturalWidth  || img.width  || 0;
+        var h = img.naturalHeight || img.height || 0;
+        if (w === 0 || h === 0) {
+          setStatus('Could not read that file as an image.', 'error');
+          return;
+        }
+        var scale = Math.min(1, DOWNSAMPLE / Math.max(w, h));
+        canvas.width  = Math.max(1, Math.round(w * scale));
+        canvas.height = Math.max(1, Math.round(h * scale));
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        var pixels = sampleCanvasPixels(canvas);
+        if (!pixels.length) {
+          setStatus('Could not read any opaque pixels from that logo.', 'error');
+          return;
+        }
+        extractAndRender(pixels, file);
+      }, function(){
+        setStatus('Could not read that file as an image.', 'error');
+      });
+    }
+
+    var isSvg = (file.type && /svg/i.test(file.type)) || /\.svg$/i.test(file.name || '');
+    if (isSvg) {
+      // SVGs can carry external <image href>, <use xlink:href>, or
+      // <script> nodes. Read as text, sanitize, then load — keeps the
+      // canvas un-tainted and the privacy posture intact.
+      var reader = new FileReader();
+      reader.onload = function(){
+        var sanitized = sanitizeSvgText(String(reader.result || ''));
+        if (!sanitized) {
+          setStatus('This SVG references external files or could not be parsed. Flatten to PNG and try again.', 'error');
+          return;
+        }
+        proceed(new Blob([sanitized], { type: 'image/svg+xml' }));
+      };
+      reader.onerror = function(){ setStatus('Could not read that SVG.', 'error'); };
+      reader.readAsText(file);
+      return;
+    }
+    proceed(file);
   }
 
   fileInput.addEventListener('change', function(){

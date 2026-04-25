@@ -200,6 +200,86 @@ assertEq('OKLab roundtrip (184,84,26)', roundtrip(184, 84, 26),   { r: 184, g: 8
   assertEq('same seed → same output', a.map(p => p.hex), b.map(p => p.hex));
 }
 
+// Fixture 6: single-color input — palette has exactly one entry, no crash.
+{
+  const pixels = [];
+  for (let i = 0; i < 80; i++) pixels.push([31, 78, 91]);
+  const palette = B.extractPalette(pixels, { k: 5 });
+  assert('single-color → 1 palette entry', palette.length === 1);
+  assertClose('single-color dominance = 1', palette[0].dominancePct, 1, 0.001);
+}
+
+// Fixture 7: near-monochrome (L-only variation). All pixels share hue+chroma;
+// k-means should not crash and should return a valid palette.
+{
+  const pixels = [];
+  for (let i = 0; i < 50; i++) pixels.push([200, 200, 200]);
+  for (let i = 0; i < 50; i++) pixels.push([120, 120, 120]);
+  for (let i = 0; i < 50; i++) pixels.push([40,  40,  40 ]);
+  const palette = B.extractPalette(pixels, { k: 3 });
+  assert('near-monochrome → at least 1 entry', palette.length >= 1);
+  for (const entry of palette) {
+    assertEq('mono entry is achromatic', B.bucketDominantHue(entry.hex), 'achromatic');
+  }
+}
+
+// Fixture 8: saturated complementary pair (red + cyan).
+{
+  const pixels = [];
+  for (let i = 0; i < 100; i++) pixels.push([220, 30, 30]);
+  for (let i = 0; i < 100; i++) pixels.push([30, 220, 220]);
+  const palette = B.extractPalette(pixels, { k: 2 });
+  assertEq('complementary pair → 2 entries', palette.length, 2);
+  const fams = palette.map(p => B.bucketDominantHue(p.hex)).sort();
+  assertEq('complementary families = cyan + red', fams, ['cyan', 'red']);
+}
+
+// Fixture 9: high-entropy (random-ish) input — must converge without throwing.
+{
+  const pixels = [];
+  let seed = 7;
+  function rand() { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; }
+  for (let i = 0; i < 400; i++) {
+    pixels.push([Math.floor(rand() * 256), Math.floor(rand() * 256), Math.floor(rand() * 256)]);
+  }
+  const palette = B.extractPalette(pixels, { k: 5 });
+  assert('high-entropy → between 1 and 5 entries', palette.length >= 1 && palette.length <= 5);
+  const sum = palette.reduce((s, p) => s + p.dominancePct, 0);
+  assertClose('high-entropy shares sum to 1', sum, 1, 0.001);
+}
+
+// Fixture 10: k clamping. Worker accepts k=0 or k=99; extractPalette must
+// clamp to [2,8]. Asking for k=1 with 2 colors should still produce a sane
+// palette (the implementation clamps k to a min of 2 — that's the contract).
+{
+  const pixels = [];
+  for (let i = 0; i < 30; i++) pixels.push([255, 0, 0]);
+  for (let i = 0; i < 30; i++) pixels.push([0, 0, 255]);
+  const wide = B.extractPalette(pixels, { k: 99 });
+  assert('k=99 clamps to <=8', wide.length <= 8);
+  const tight = B.extractPalette(pixels, { k: 0 });
+  assert('k=0 still produces >=1 entry', tight.length >= 1);
+}
+
+// Fixture 11: deriveAccessiblePair on a color already over the target —
+// returns the input unchanged. (Already covered above for ink-on-cream;
+// re-check with an arbitrary mid-light surface.)
+{
+  const pair = B.deriveAccessiblePair('#000000', '#FFFFFF');
+  assertEq('already-AAA pair unchanged', pair, '#000000');
+}
+
+// Fixture 12: deriveAccessiblePair gamut clamp — pure saturated yellow on
+// cream cannot reach 4.5:1 along pure L. Must still clear the target by
+// some path (chroma reduction or fallback to ink), never return an off-
+// brand muddy color silently.
+{
+  const yellow = '#FFD400';
+  const pair = B.deriveAccessiblePair(yellow, '#FAF7F2');
+  const ratio = B.contrastRatio(pair, '#FAF7F2');
+  assert('saturated yellow on cream clears 4.5 after derivation', ratio >= 4.5);
+}
+
 // ------------------------------------------------------------
 // Privacy-critical: bucket enum purity + raw-string poison test
 // ------------------------------------------------------------

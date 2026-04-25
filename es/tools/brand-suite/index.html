@@ -101,6 +101,8 @@
   .bs-chip-share{font-size:11px;color:var(--stone)}
   .bs-chip.copied{border-color:var(--status-good);background:var(--status-good-tint)}
   .bs-chip.copied .bs-chip-role{color:var(--status-good)}
+  .bs-chip.copy-failed{border-color:var(--rust);background:rgba(184,84,26,0.06)}
+  .bs-chip.copy-failed .bs-chip-role{color:var(--rust)}
   .bs-palette-hint{font-size:12px;color:var(--stone);margin:0}
   .bs-status{min-height:24px;font-size:13px;color:var(--stone);text-align:center}
   .bs-status.bs-status-error{color:var(--rust)}
@@ -158,6 +160,7 @@
   .bs-export-btn:hover{background:var(--teal);color:var(--cream)}
   .bs-export-btn svg{width:14px;height:14px}
   .bs-export-btn.copied{background:var(--status-good-tint);color:var(--status-good);border-color:var(--status-good)}
+  .bs-export-btn.copy-failed{background:rgba(184,84,26,0.06);color:var(--rust);border-color:var(--rust)}
   .bs-export-preview{margin:0;padding:14px 16px;background:var(--ink);color:var(--cream-2);border-radius:var(--r-input);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.5;overflow-x:auto;white-space:pre;max-height:280px;overflow-y:auto}
   /* Estilos de calculadora en vivo — compartidos por las cuatro
      calculadoras. La insignia "Se queda en tu navegador" aparece
@@ -814,7 +817,7 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/es/terms.html">Términos</a><a href="/es/privacy.html">Privacidad</a><a href="/es/accessibility.html">Accesibilidad</a><a href="/es/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="./brand-suite.js?v=20260424-bs1"></script>
+<script src="/tools/brand-suite/brand-suite.js?v=20260424-bs1"></script>
 <script>
 /* Suite de Marca — cableado de subida + paleta.
  *
@@ -862,7 +865,7 @@
   function ensureWorker(){
     if (worker) return worker;
     try {
-      worker = new Worker('./brand-worker.js?v=20260424-bs1');
+      worker = new Worker('/tools/brand-suite/brand-worker.js?v=20260424-bs1');
       worker.addEventListener('message', function(ev){
         var data = ev.data || {};
         var cb = pending[data.requestId];
@@ -880,6 +883,11 @@
     statusEl.className = 'bs-status' + (kind ? ' bs-status-' + kind : '');
   }
 
+  // Tope duro. Con DOWNSAMPLE=100 un logo normal queda en <=10000 píxeles.
+  // Subidas verticales o de proporción extrema pueden sobrepasarlo;
+  // truncamos uniformemente para que el worker nunca vea un arreglo sin tope.
+  var MAX_SAMPLED_PIXELS = 20000;
+
   function sampleCanvasPixels(canvas){
     var ctx = canvas.getContext('2d');
     var data;
@@ -891,32 +899,61 @@
       if (a < 128) continue;
       out.push([data[i], data[i + 1], data[i + 2]]);
     }
+    if (out.length > MAX_SAMPLED_PIXELS) {
+      var stride = out.length / MAX_SAMPLED_PIXELS;
+      var trimmed = new Array(MAX_SAMPLED_PIXELS);
+      for (var j = 0; j < MAX_SAMPLED_PIXELS; j++) trimmed[j] = out[Math.floor(j * stride)];
+      out = trimmed;
+    }
     return out;
   }
+
+  // Tope del worker. K-means sobre <=20000 píxeles termina en
+  // decenas de ms en cualquier dispositivo moderno, así que 2s es
+  // un techo generoso que captura un worker colgado.
+  var WORKER_TIMEOUT_MS = 2000;
 
   function extractAndRender(pixels, file){
     setStatus('Extrayendo paleta…', 'working');
     ensureWorker();
     var requestId = ++requestCounter;
+    var settled = false;
+    var timeoutHandle = null;
     function onDone(err, palette){
+      if (settled) return;
+      settled = true;
+      if (timeoutHandle) { clearTimeout(timeoutHandle); timeoutHandle = null; }
       if (err) {
         try { palette = window.BS.extractPalette(pixels, { k: 5, seed: 1 }); }
         catch (e) { setStatus('No se pudo extraer paleta. Prueba con otro logo.', 'error'); return; }
       }
       latestPalette = palette;
+      // Despliegue progresivo: paleta primero, el resto en frames
+      // subsiguientes para que la página se sienta receptiva.
       renderPalette(palette);
       paletteWrap.hidden = false;
-      renderFixture(palette);
-      fixtureWrap.hidden = false;
-      renderContrastGrid(palette);
-      contrastWrap.hidden = false;
-      renderExports(palette);
-      exportWrap.hidden = false;
       setStatus('');
-      firePlausible(palette, file);
+      requestAnimationFrame(function(){
+        renderFixture(palette);
+        fixtureWrap.hidden = false;
+        requestAnimationFrame(function(){
+          renderContrastGrid(palette);
+          contrastWrap.hidden = false;
+          renderExports(palette);
+          exportWrap.hidden = false;
+          firePlausible(palette, file);
+        });
+      });
     }
     pending[requestId] = onDone;
     if (worker) {
+      timeoutHandle = setTimeout(function(){
+        if (settled) return;
+        delete pending[requestId];
+        try { worker.terminate(); } catch (_) {}
+        worker = null;
+        onDone(new Error('worker-timeout'));
+      }, WORKER_TIMEOUT_MS);
       worker.postMessage({ type: 'extract', pixels: pixels, k: 5, seed: 1, requestId: requestId });
     } else {
       onDone(new Error('no-worker'));
@@ -1054,18 +1091,24 @@
   copyCssBtn.addEventListener('click', function(){
     if (!latestPalette) return;
     var css = buildCssBlock(latestPalette);
-    var done = function(){
-      copyCssBtn.classList.add('copied');
-      var orig = copyCssBtn.lastChild.nodeValue;
-      copyCssBtn.lastChild.nodeValue = ' Copiado';
+    var orig = copyCssBtn.lastChild.nodeValue;
+    var settle = function(label, kind){
+      copyCssBtn.classList.remove('copied');
+      copyCssBtn.classList.add(kind === 'error' ? 'copy-failed' : 'copied');
+      copyCssBtn.lastChild.nodeValue = label;
       setTimeout(function(){
         copyCssBtn.classList.remove('copied');
+        copyCssBtn.classList.remove('copy-failed');
         copyCssBtn.lastChild.nodeValue = orig;
-      }, 1400);
+      }, kind === 'error' ? 2600 : 1400);
     };
+    var ok   = function(){ settle(' Copiado', 'ok'); };
+    var fail = function(){ settle(' No se pudo copiar — selecciona manualmente', 'error'); };
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(css).then(done, function(){ done(); });
-    } else { done(); }
+      navigator.clipboard.writeText(css).then(ok, fail);
+    } else {
+      fail();
+    }
     if (window.plausible) window.plausible('Brand Suite Export', { props: { format: 'css' } });
   });
 
@@ -1259,16 +1302,25 @@
         '</span>';
       btn.addEventListener('click', function(){
         var hex = entry.hex.toUpperCase();
-        var done = function(){
-          btn.classList.add('copied');
-          var roleEl = btn.querySelector('.bs-chip-role');
-          var orig = roleEl.textContent;
-          roleEl.textContent = 'Copiado';
-          setTimeout(function(){ btn.classList.remove('copied'); roleEl.textContent = orig; }, 1200);
+        var roleEl = btn.querySelector('.bs-chip-role');
+        var orig = roleEl.textContent;
+        var settle = function(label, kind){
+          btn.classList.remove('copied');
+          btn.classList.add(kind === 'error' ? 'copy-failed' : 'copied');
+          roleEl.textContent = label;
+          setTimeout(function(){
+            btn.classList.remove('copied');
+            btn.classList.remove('copy-failed');
+            roleEl.textContent = orig;
+          }, kind === 'error' ? 2200 : 1200);
         };
+        var ok   = function(){ settle('Copiado', 'ok'); };
+        var fail = function(){ settle('No se copió', 'error'); };
         if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(hex).then(done, function(){ done(); });
-        } else { done(); }
+          navigator.clipboard.writeText(hex).then(ok, fail);
+        } else {
+          fail();
+        }
       });
       paletteEl.appendChild(btn);
     });
@@ -1287,6 +1339,51 @@
     }});
   }
 
+  // Limpia el SVG: quita <script> y href / xlink:href externos.
+  // Conserva data: y fragmentos #foo del mismo documento.
+  function sanitizeSvgText(text){
+    try {
+      var parser = new DOMParser();
+      var doc = parser.parseFromString(text, 'image/svg+xml');
+      if (!doc || doc.querySelector('parsererror')) return null;
+      var root = doc.documentElement;
+      if (!root || root.nodeName.toLowerCase() !== 'svg') return null;
+      var scripts = root.querySelectorAll('script');
+      for (var i = 0; i < scripts.length; i++) scripts[i].parentNode.removeChild(scripts[i]);
+      function stripExternalHref(el, attrName){
+        var v = el.getAttribute(attrName);
+        if (v == null) return;
+        var t = v.trim().toLowerCase();
+        if (t.indexOf('#') === 0 || t.indexOf('data:') === 0) return;
+        el.removeAttribute(attrName);
+      }
+      stripExternalHref(root, 'href');
+      stripExternalHref(root, 'xlink:href');
+      var all = root.querySelectorAll('*');
+      for (var j = 0; j < all.length; j++) {
+        var el = all[j];
+        var attrs = el.attributes;
+        for (var k = attrs.length - 1; k >= 0; k--) {
+          var name = attrs[k].name;
+          if (name.toLowerCase().indexOf('on') === 0) el.removeAttribute(name);
+        }
+        stripExternalHref(el, 'href');
+        stripExternalHref(el, 'xlink:href');
+      }
+      return new XMLSerializer().serializeToString(doc);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function loadAsImage(blob, onReady, onFail){
+    var url = URL.createObjectURL(blob);
+    var img = new Image();
+    img.onload = function(){ onReady(img, url); };
+    img.onerror = function(){ URL.revokeObjectURL(url); onFail(); };
+    img.src = url;
+  }
+
   function handleFile(file){
     if (!file) return;
     if (file.size > MAX_BYTES) {
@@ -1294,30 +1391,51 @@
       return;
     }
     setStatus('Cargando tu logo…', 'working');
-    var url = URL.createObjectURL(file);
-    var img = new Image();
-    img.onload = function(){
-      imgCream.src = url;
-      imgInk.src   = url;
-      preview.hidden = false;
-      var canvas = document.createElement('canvas');
-      var scale = Math.min(1, DOWNSAMPLE / Math.max(img.width, img.height));
-      canvas.width  = Math.max(1, Math.round(img.width  * scale));
-      canvas.height = Math.max(1, Math.round(img.height * scale));
-      var ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      var pixels = sampleCanvasPixels(canvas);
-      if (!pixels.length) {
-        setStatus('No se pudo leer ningún píxel opaco de ese logo.', 'error');
-        return;
-      }
-      extractAndRender(pixels, file);
-    };
-    img.onerror = function(){
-      setStatus('No se pudo leer ese archivo como imagen.', 'error');
-      URL.revokeObjectURL(url);
-    };
-    img.src = url;
+
+    function proceed(blob){
+      loadAsImage(blob, function(img, url){
+        imgCream.src = url;
+        imgInk.src   = url;
+        preview.hidden = false;
+        var canvas = document.createElement('canvas');
+        var w = img.naturalWidth  || img.width  || 0;
+        var h = img.naturalHeight || img.height || 0;
+        if (w === 0 || h === 0) {
+          setStatus('No se pudo leer ese archivo como imagen.', 'error');
+          return;
+        }
+        var scale = Math.min(1, DOWNSAMPLE / Math.max(w, h));
+        canvas.width  = Math.max(1, Math.round(w * scale));
+        canvas.height = Math.max(1, Math.round(h * scale));
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        var pixels = sampleCanvasPixels(canvas);
+        if (!pixels.length) {
+          setStatus('No se pudo leer ningún píxel opaco de ese logo.', 'error');
+          return;
+        }
+        extractAndRender(pixels, file);
+      }, function(){
+        setStatus('No se pudo leer ese archivo como imagen.', 'error');
+      });
+    }
+
+    var isSvg = (file.type && /svg/i.test(file.type)) || /\.svg$/i.test(file.name || '');
+    if (isSvg) {
+      var reader = new FileReader();
+      reader.onload = function(){
+        var sanitized = sanitizeSvgText(String(reader.result || ''));
+        if (!sanitized) {
+          setStatus('Este SVG referencia archivos externos o no se pudo leer. Aplánalo a PNG e inténtalo de nuevo.', 'error');
+          return;
+        }
+        proceed(new Blob([sanitized], { type: 'image/svg+xml' }));
+      };
+      reader.onerror = function(){ setStatus('No se pudo leer ese SVG.', 'error'); };
+      reader.readAsText(file);
+      return;
+    }
+    proceed(file);
   }
 
   fileInput.addEventListener('change', function(){
