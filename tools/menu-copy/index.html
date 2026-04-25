@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="referrer" content="no-referrer" />
+<title>Menu Copy Inspector — Free Menu-Language Diagnostic | Muntin Digital</title>
+<meta name="description" content="Paste a dish description. See what's missing, what's working, what's dragging — and why. A teaching tool, not a rewriter. Stays in your browser." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/tools/menu-copy/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/tools/menu-copy/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/menu-copy/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/menu-copy/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="es_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Menu Copy Inspector — Free Menu-Language Diagnostic" />
+<meta property="og:description" content="Paste a dish description. The tool teaches you what to look for — sensory adjectives, provenance, hedge words, length, pricing — without rewriting it for you." />
+<meta property="og:url" content="https://muntin.digital/tools/menu-copy/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Menu Copy Inspector — Free Menu-Language Diagnostic" />
+<meta name="twitter:description" content="Paste a dish description. See sensory / provenance / technique / hedge / length / pricing diagnostics. Stays in your browser." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<link rel="preconnect" href="https://plausible.io" crossorigin />
+<link rel="dns-prefetch" href="https://plausible.io" />
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
+<link rel="stylesheet" href="/assets/site.css?v=20260424-bs1" />
+<style>.breadcrumb{visibility:hidden;padding-top:100px}
+/* === Menu Copy Inspector tool-scoped styles. Page-prefix .mc-*. === */
+.mc-input{display:flex;flex-direction:column;gap:14px}
+.mc-form{display:grid;grid-template-columns:1.6fr 1fr;gap:14px;align-items:start}
+@media(max-width:720px){.mc-form{grid-template-columns:1fr}}
+.mc-form-field{display:flex;flex-direction:column;gap:6px}
+.mc-form-field label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
+.mc-form-field input,.mc-form-field textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font:inherit;color:var(--ink);font-size:14px;line-height:1.55}
+.mc-form-field textarea{min-height:120px;resize:vertical;font-family:Georgia,"Times New Roman",serif;font-size:15px}
+.mc-form-field input:focus,.mc-form-field textarea:focus{outline:2px solid var(--teal);outline-offset:1px}
+.mc-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.mc-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background 140ms var(--ease-out),color 140ms var(--ease-out)}
+.mc-btn:hover{background:var(--teal);color:var(--cream)}
+.mc-btn-ghost{border-color:var(--line-dark);color:var(--ink)}
+.mc-btn-ghost:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+
+/* Annotated description — color-coded inline marks. */
+.mc-annotated{padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);font-family:Georgia,"Times New Roman",serif;font-size:18px;line-height:1.7;color:var(--ink)}
+.mc-mark{position:relative;border-bottom-width:2px;border-bottom-style:solid;padding:0 1px;cursor:help}
+.mc-mark[data-kind="sensory"]   {border-color:#1F4E5B}
+.mc-mark[data-kind="provenance"]{border-color:#3A6BB3}
+.mc-mark[data-kind="technique"] {border-color:#C68A2C}
+.mc-mark[data-kind="hedge"]     {border-color:var(--rust);background:rgba(184,84,26,0.08)}
+.mc-legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--ink-soft);margin-top:8px}
+.mc-legend span{display:inline-flex;align-items:center;gap:4px}
+.mc-legend i{display:inline-block;width:16px;height:0;border-bottom-width:2px;border-bottom-style:solid}
+.mc-legend i[data-kind="sensory"]   {border-color:#1F4E5B}
+.mc-legend i[data-kind="provenance"]{border-color:#3A6BB3}
+.mc-legend i[data-kind="technique"] {border-color:#C68A2C}
+.mc-legend i[data-kind="hedge"]     {border-color:var(--rust)}
+
+/* Scorecard */
+.mc-scorecard{display:flex;flex-direction:column;gap:14px}
+.mc-verdict{display:flex;align-items:center;gap:14px;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+.mc-verdict-pill{padding:6px 14px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cream)}
+.mc-verdict-pill[data-v="polish"]{background:var(--teal)}
+.mc-verdict-pill[data-v="edit"]  {background:#C68A2C}
+.mc-verdict-pill[data-v="rewrite"]{background:var(--rust)}
+.mc-verdict-score{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:24px;font-weight:600;color:var(--ink)}
+.mc-verdict-text{font-size:13.5px;line-height:1.5;color:var(--ink-soft);flex:1}
+.mc-axes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media(max-width:720px){.mc-axes{grid-template-columns:1fr}}
+.mc-axis{padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+.mc-axis-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);font-weight:700}
+.mc-axis-value{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:18px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;margin-top:4px}
+.mc-axis-detail{font-size:12px;line-height:1.5;color:var(--ink-soft);margin-top:4px}
+
+/* Action ladder */
+.mc-actions-list{display:flex;flex-direction:column;gap:10px}
+.mc-action{padding:14px 16px;border:1px solid var(--line);border-left-width:4px;border-radius:var(--r-input);background:var(--white)}
+.mc-action[data-lift="large"]  {border-left-color:var(--teal)}
+.mc-action[data-lift="medium"] {border-left-color:#C68A2C}
+.mc-action[data-lift="small"]  {border-left-color:var(--stone)}
+.mc-action-head{font-size:14px;font-weight:600;color:var(--ink);margin:0 0 4px}
+.mc-action-detail{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:0}
+.mc-action-lift{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);float:right}
+
+.mc-empty{padding:18px;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--cream-2);font-size:13.5px;color:var(--stone);text-align:center}
+
+@media print{
+  body{background:#fff !important;color:#000 !important}
+  header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,.mc-input,
+  #how-private,.mm-next,#what-this-isnt{display:none !important}
+  .mc-annotated,.mc-verdict,.mc-axis,.mc-action{break-inside:avoid;page-break-inside:avoid}
+  a[href]:after{content:'' !important}
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/for/restaurants/">Restaurants</a>
+      <a href="/learn/" class="nav-library-trigger">Library</a>
+      <a href="/work/">Work</a>
+      <a href="/about/">About</a>
+    </nav>
+    <nav class="lang-switch" aria-label="Language">
+      <a href="/es/tools/menu-copy/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
+      <span class="lang-switch-current" aria-current="true">EN</span>
+    </nav>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a>
+  </div>
+</header>
+<nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><a href="/tools/">Tools</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><span aria-current="page">Menu Copy Inspector</span></nav>
+<main id="main">
+
+<section class="block"><div class="container">
+  <div style="max-width:760px;margin:0 auto;text-align:center;">
+    <span class="eyebrow">Free tool · stays in your browser</span>
+    <h1 style="font-family:var(--font-display);font-size:clamp(34px,4.5vw,52px);font-weight:500;color:var(--ink);margin:14px 0 14px;line-height:1.1;">See your menu the way a diner does.</h1>
+    <p style="font-size:17px;line-height:1.6;color:var(--ink-soft);margin:0 0 14px;">Paste a dish description, get six diagnostics — sensory adjectives, provenance signals, technique words, length, hedge words, pricing — each annotated with the research behind it. The Inspector teaches you what to look for. It does not rewrite for you.</p>
+    <p style="font-size:13px;color:var(--stone);margin:0;"><a href="#how-private" style="color:inherit;border-bottom:1px dashed var(--teal);">How we keep your copy private</a> · <a href="/glossary/menu-copy/" style="color:inherit;border-bottom:1px dashed var(--teal);">What is menu copy?</a></p>
+  </div>
+</div></section>
+
+<section class="block"><div class="container">
+  <div class="mc-input">
+    <div class="mc-form">
+      <div class="mc-form-field">
+        <label for="mcDesc">Dish description</label>
+        <textarea id="mcDesc" spellcheck="true" autocomplete="off" placeholder="Paste a description here, like: &#10;Tonnarelli with smoky pecorino, cracked black pepper, and aged Tuscan olive oil."></textarea>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="mc-form-field">
+          <label for="mcName">Dish name</label>
+          <input type="text" id="mcName" placeholder="e.g. Tonnarelli al pepe" />
+        </div>
+        <div class="mc-form-field">
+          <label for="mcPrice">Price</label>
+          <input type="text" id="mcPrice" inputmode="decimal" placeholder="$24" />
+        </div>
+        <div class="mc-form-field">
+          <label for="mcTier">Restaurant tier</label>
+          <select id="mcTier" style="padding:11px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:14px;color:var(--ink);">
+            <option value="casual">Casual (9–15 word range)</option>
+            <option value="fineDining">Fine dining (12–22 word range)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="mc-actions">
+      <button type="button" class="mc-btn mc-btn-ghost" id="mcLoadSample">Load a sample dish</button>
+      <button type="button" class="mc-btn mc-btn-ghost" id="mcSampleNext">Try another sample</button>
+      <button type="button" class="mc-btn mc-btn-ghost" id="mcClear">Clear</button>
+      <span style="margin-left:auto;font-size:12.5px;color:var(--stone);">Live diagnostic — every keystroke updates the scorecard.</span>
+    </div>
+  </div>
+</div></section>
+
+<section class="block" id="mcOutput" hidden><div class="container">
+  <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:24px;align-items:start;">
+    <div style="display:flex;flex-direction:column;gap:18px;min-width:0;">
+      <div>
+        <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px;">Annotated description</h2>
+        <div class="mc-annotated" id="mcAnnotated" aria-live="polite"></div>
+        <div class="mc-legend" aria-hidden="true">
+          <span><i data-kind="sensory"></i> Sensory adjective</span>
+          <span><i data-kind="provenance"></i> Provenance signal</span>
+          <span><i data-kind="technique"></i> Technique</span>
+          <span><i data-kind="hedge"></i> Hedge (drag)</span>
+        </div>
+      </div>
+      <div>
+        <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px;">Action ladder</h2>
+        <div class="mc-actions-list" id="mcActions" aria-label="Recommended moves in priority order"></div>
+        <p style="font-size:12.5px;color:var(--stone);margin:10px 0 0;line-height:1.55;">Each move is a <em>direction</em>, not a rewrite. The Inspector teaches you what to look for, not which words to use.</p>
+      </div>
+    </div>
+    <div class="mc-scorecard">
+      <div class="mc-verdict" id="mcVerdict"></div>
+      <div class="mc-axes" id="mcAxes" aria-label="Per-axis diagnostics"></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="block" id="mcEmptyHint"><div class="container">
+  <div class="mc-empty" id="mcEmpty">Type or paste a description above. Or click <button type="button" class="mc-btn mc-btn-ghost" id="mcEmptyLoad" style="padding:4px 10px;font-size:12px;">Load a sample dish</button> to see the diagnostics on a hand-picked example.</div>
+</div></section>
+
+<section class="block bg-cream2" id="how-private"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">Lead by example</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:12px 0 12px;">Your menu copy stays in your browser.</h2>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0 0 14px;">The whole rules engine — the sensory lexicon, the technique list, the hedge blocklist — is bundled in <code>/tools/menu-copy/menu-copy.js</code>, a single dependency-free script you can read directly. No upload, no account, no <code>localStorage</code> writes. Open DevTools → Network and type into the box: the request list does not grow.</p>
+    <p style="font-size:13px;color:var(--stone);margin:0;">A nine-step verifiable privacy tour and a printable Copy Card land in a follow-up release. For the same posture today, see <a href="/tools/brand-suite/#how-we-protect" style="color:inherit;border-bottom:1px dashed var(--teal);">how Brand Suite protects your logo</a> — this tool is built on the same architecture.</p>
+  </div>
+</div></section>
+
+<section class="block"><div class="container">
+  <div class="mm-next">
+    <h2>Where to go next</h2>
+    <div class="mm-next-links">
+      <a href="/tools/menu-engineering/">Find which items to fix: Menu Engineering Matrix</a>
+      <a href="/tools/margin-math/">Run the unit math: Margin Math</a>
+      <a href="/glossary/menu-copy/">Glossary: Menu copy</a>
+      <a href="/glossary/sensory-adjective/">Glossary: Sensory adjective</a>
+      <a href="/services/">Hire the studio for a brand-voice rewrite</a>
+    </div>
+  </div>
+</div></section>
+
+</main>
+<footer class="foot">
+  <div class="container foot-inner">
+    <div class="foot-col foot-brand"><a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home"><img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async"><sup class="tm" aria-hidden="true">&#8482;</sup></a><p class="foot-tagline">Structure Brings Clarity.</p></div>
+  </div>
+  <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
+</footer>
+<script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="./menu-copy.js?v=20260425-mc1"></script>
+<script>
+/* Menu Copy Inspector — input wiring + live render.
+ *
+ * Privacy invariants enforced by this code:
+ *   - All math is window.MC. No fetch, no XHR, no FormData.
+ *   - Plausible event values are enum-bucketed via window.MC.
+ *   - No localStorage / sessionStorage / cookies. */
+(function(){
+  if (!window.MC) return;
+
+  var SAMPLES = [
+    {
+      name: 'Tonnarelli al pepe',
+      price: '$24',
+      description: 'Hand-rolled tonnarelli with smoky pecorino, cracked black pepper, and aged Tuscan olive oil.',
+      tier: 'casual'
+    },
+    {
+      name: 'House salad',
+      price: '$12.99',
+      description: 'Our nice fresh house salad — just simply our best.',
+      tier: 'casual'
+    },
+    {
+      name: 'Branzino',
+      price: '$38',
+      description: 'Whole Adriatic branzino salt-baked tableside, finished with charred Meyer lemon and Sicilian olive oil from Frantoio Galantino.',
+      tier: 'fineDining'
+    },
+    {
+      name: 'Pasta',
+      price: '$22',
+      description: 'Pasta.',
+      tier: 'casual'
+    },
+    {
+      name: 'Bolognese',
+      price: '$26',
+      description: 'Slow-simmered Bolognese over hand-cut pappardelle with Parmigiano-Reggiano aged 24 months.',
+      tier: 'casual'
+    },
+    {
+      name: 'Tomato toast',
+      price: '$14',
+      description: 'Heirloom tomatoes from Whitmore Farm on toasted country bread with sea salt, basil, and house-pressed olive oil.',
+      tier: 'casual'
+    },
+    {
+      name: 'Pork chop',
+      price: '$32',
+      description: 'A really nice pork chop with roasted vegetables and a delicious sauce — our chef’s favorite!',
+      tier: 'casual'
+    },
+    {
+      name: 'Carbonara',
+      price: '$23',
+      description: 'House-made guanciale, slow-braised eggs from Cream Line Dairy, pecorino di fossa.',
+      tier: 'casual'
+    }
+  ];
+
+  var descEl    = document.getElementById('mcDesc');
+  var nameEl    = document.getElementById('mcName');
+  var priceEl   = document.getElementById('mcPrice');
+  var tierEl    = document.getElementById('mcTier');
+  var loadBtn   = document.getElementById('mcLoadSample');
+  var nextBtn   = document.getElementById('mcSampleNext');
+  var clearBtn  = document.getElementById('mcClear');
+  var emptyLoad = document.getElementById('mcEmptyLoad');
+  var output    = document.getElementById('mcOutput');
+  var emptyHint = document.getElementById('mcEmptyHint');
+  var annotated = document.getElementById('mcAnnotated');
+  var verdictEl = document.getElementById('mcVerdict');
+  var axesEl    = document.getElementById('mcAxes');
+  var actionsEl = document.getElementById('mcActions');
+
+  var sampleCursor = 0;
+  var firstAnalysisFired = false;
+
+  function escHtml(v){
+    return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  function escAttr(v){
+    return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  }
+
+  function readForm(){
+    return {
+      name: nameEl.value || '',
+      price: priceEl.value || '',
+      description: descEl.value || '',
+      tier: tierEl.value || 'casual'
+    };
+  }
+
+  function loadSample(idx){
+    var s = SAMPLES[idx % SAMPLES.length];
+    descEl.value = s.description;
+    nameEl.value = s.name;
+    priceEl.value = s.price;
+    tierEl.value = s.tier || 'casual';
+    rerender();
+  }
+
+  // Annotate the description by walking word-by-word, inserting <span>
+  // wrappers for every word that fired in any rule family. Higher-
+  // priority kinds win when a word would qualify for several (hedge >
+  // sensory > technique).
+  function annotate(input, scored){
+    var text = input.description || '';
+    if (!text) return '<span style="color:var(--stone);">Type a description above to see annotations.</span>';
+
+    // Build a set of (lowercased token → kind) markings.
+    var marks = {};
+    function mark(words, kind, priority){
+      (words || []).forEach(function(w){
+        var t = String(w).toLowerCase();
+        if (!marks[t] || marks[t].priority < priority) {
+          marks[t] = { kind: kind, priority: priority };
+        }
+      });
+    }
+    if (scored) {
+      mark(scored.hedges.hits.map(function(h){ return h.word; }), 'hedge', 4);
+      mark(scored.sensory.hits.map(function(h){ return h.word; }), 'sensory', 3);
+      mark(scored.technique.hits, 'technique', 2);
+      mark(scored.provenance.hits.map(function(h){ return h.word; }), 'provenance', 1);
+    }
+
+    // Walk the original text, preserving punctuation + spacing.
+    var parts = text.split(/(\s+)/);
+    var html = parts.map(function(part){
+      if (/^\s+$/.test(part)) return part;
+      var stripped = window.MC.normalizeWord(part);
+      if (!stripped) return escHtml(part);
+      var hit = marks[stripped];
+      if (!hit) {
+        // Multi-word marks (e.g. "house-made") — match against the
+        // already-hyphenated form.
+        hit = marks[part.toLowerCase().replace(/[.,;:!?]+$/g, '')];
+      }
+      if (!hit) return escHtml(part);
+      var tooltip = ({
+        sensory:    'Sensory adjective — Wansink (2005) found descriptive labels lift selection +27% on average.',
+        provenance: 'Provenance signal — concrete origin lifts selection 13–20% in restaurant-research literature.',
+        technique:  'Technique word — communicates competence; Aaker-style brand-claim signal.',
+        hedge:      'Hedge word — Cornell research links these to reduced selection rate.'
+      })[hit.kind] || '';
+      return '<span class="mc-mark" data-kind="' + hit.kind + '" title="' + escAttr(tooltip) + '">' + escHtml(part) + '</span>';
+    }).join('');
+    return html;
+  }
+
+  function paintVerdict(scored){
+    var v = scored.verdict;
+    var cmt = ({
+      polish:  'Most signals are present. One or two small moves and this description is doing its job.',
+      edit:    'Some pieces are working; one or two are missing. The action ladder shows the highest-leverage moves.',
+      rewrite: 'Multiple signal families are empty or the length / hedge load is dragging hard. Worth rewriting from a fresh angle rather than polishing the current draft.'
+    })[v] || '';
+    verdictEl.innerHTML =
+      '<span class="mc-verdict-pill" data-v="' + v + '">' + v + '</span>' +
+      '<span class="mc-verdict-score">' + scored.score + '<span style="font-size:13px;color:var(--stone);font-weight:400;">/100</span></span>' +
+      '<span class="mc-verdict-text">' + escHtml(cmt) + '</span>';
+  }
+
+  function paintAxes(scored){
+    var rows = [];
+    function axis(label, value, detail){
+      return '<div class="mc-axis"><div class="mc-axis-label">' + escHtml(label) + '</div>' +
+             '<div class="mc-axis-value">' + escHtml(value) + '</div>' +
+             '<div class="mc-axis-detail">' + escHtml(detail) + '</div></div>';
+    }
+    var sCats = scored.sensory.categoriesUsed;
+    var sCount = scored.sensory.count;
+    rows.push(axis(
+      'Sensory',
+      sCount + ' word' + (sCount === 1 ? '' : 's') + ' · ' + sCats + '/4 categories',
+      sCats === 0 ? 'No sensory adjectives — this is the highest-leverage move.' :
+      sCats < 2  ? 'Reaching one more category compounds the lift.' :
+                   'Solid sensory base across multiple dimensions.'
+    ));
+    rows.push(axis(
+      'Provenance',
+      scored.provenance.count + ' signal' + (scored.provenance.count === 1 ? '' : 's'),
+      scored.provenance.count === 0 ? 'No origin or producer named — adding one carries 13–20% lift.' :
+                                      'Concrete origin signals are present.'
+    ));
+    rows.push(axis(
+      'Technique',
+      scored.technique.count + ' word' + (scored.technique.count === 1 ? '' : 's'),
+      scored.technique.count === 0 ? 'Nothing tells the diner what was DONE to the food.' :
+                                     'Technique words communicate competence.'
+    ));
+    rows.push(axis(
+      'Length',
+      scored.length.words + ' words · ' + scored.length.range.label,
+      scored.length.verdict === 'in-range'    ? 'Within the sweet spot for this tier.' :
+      scored.length.verdict === 'short-edge'  ? 'Just below the sweet spot.' :
+      scored.length.verdict === 'short'       ? 'Too short — reads as a stub.' :
+      scored.length.verdict === 'long-edge'   ? 'Just above the sweet spot.' :
+                                                'Too long — attention drops past the range.'
+    ));
+    rows.push(axis(
+      'Hedges',
+      scored.hedges.count + ' flagged',
+      scored.hedges.count === 0 ? 'No filler words detected.' :
+      scored.hedges.hits.map(function(h){ return h.word; }).join(', ')
+    ));
+    if (scored.pricing.hasPrice) {
+      rows.push(axis(
+        'Pricing',
+        scored.pricing.raw,
+        scored.pricing.signals.join(' ')
+      ));
+    } else {
+      rows.push(axis('Pricing', '—', 'Add a price to score how it reads on the menu.'));
+    }
+    axesEl.innerHTML = rows.join('');
+  }
+
+  function paintActions(scored){
+    var moves = window.MC.actionLadder(scored);
+    if (!moves.length) {
+      actionsEl.innerHTML = '<div class="mc-empty">Nothing flagged. The description is clearing every diagnostic.</div>';
+      return;
+    }
+    actionsEl.innerHTML = moves.map(function(m){
+      return '<div class="mc-action" data-lift="' + m.lift + '">' +
+             '<p class="mc-action-head"><span class="mc-action-lift">' + m.lift + ' lift</span>' + escHtml(m.headline) + '</p>' +
+             '<p class="mc-action-detail">' + escHtml(m.detail) + '</p></div>';
+    }).join('');
+  }
+
+  function firePlausibleOnce(scored){
+    if (firstAnalysisFired || !window.plausible) return;
+    firstAnalysisFired = true;
+    window.plausible('Menu Copy Inspector Analysis', { props: {
+      verdict: scored.verdict,
+      length:  scored.length.verdict
+    }});
+  }
+
+  var rafQueued = false;
+  function rerender(){
+    if (rafQueued) return;
+    rafQueued = true;
+    requestAnimationFrame(function(){
+      rafQueued = false;
+      var input = readForm();
+      if (!input.description.trim()) {
+        output.hidden = true;
+        emptyHint.hidden = false;
+        return;
+      }
+      var scored = window.MC.scoreItem(input);
+      output.hidden = false;
+      emptyHint.hidden = true;
+      annotated.innerHTML = annotate(input, scored);
+      paintVerdict(scored);
+      paintAxes(scored);
+      paintActions(scored);
+      firePlausibleOnce(scored);
+    });
+  }
+
+  loadBtn.addEventListener('click',   function(){ loadSample(0); sampleCursor = 1; });
+  emptyLoad.addEventListener('click', function(){ loadSample(0); sampleCursor = 1; });
+  nextBtn.addEventListener('click',   function(){ loadSample(sampleCursor); sampleCursor = (sampleCursor + 1) % SAMPLES.length; });
+  clearBtn.addEventListener('click',  function(){ descEl.value = ''; nameEl.value = ''; priceEl.value = ''; rerender(); });
+  ['input', 'change'].forEach(function(ev){
+    descEl.addEventListener(ev, rerender);
+    nameEl.addEventListener(ev, rerender);
+    priceEl.addEventListener(ev, rerender);
+    tierEl.addEventListener(ev, rerender);
+  });
+})();
+</script>
+</body>
+</html>
