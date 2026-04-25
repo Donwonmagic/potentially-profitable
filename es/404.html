@@ -22,6 +22,8 @@
 
 <style>
   .err-hero { padding: 120px 0 40px; text-align: center; }
+  .err-window { width: clamp(120px, 14vw, 180px); margin: 0 auto 36px; color: var(--teal); opacity: .65; }
+  .err-window svg { width: 100%; height: auto; display: block; }
   .err-code { font-family: var(--font-display); font-size: clamp(80px, 14vw, 160px); font-weight: 500; line-height: 1; color: var(--teal); letter-spacing: -0.03em; margin: 0; }
   .err-code .slash { color: var(--amber); font-style: italic; font-weight: 400; }
   .err-hero h1 { font-family: var(--font-display); font-size: clamp(28px, 4vw, 44px); font-weight: 500; letter-spacing: -0.01em; margin: 24px 0 20px; color: var(--ink); }
@@ -124,6 +126,15 @@
 
 <main id="main">
   <section class="err-hero container">
+    <div class="err-window" aria-hidden="true">
+      <svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter">
+        <rect x="6" y="6" width="108" height="108"/>
+        <line x1="60" y1="6" x2="60" y2="114"/>
+        <line x1="6" y1="48" x2="114" y2="48"/>
+        <line x1="60" y1="6" x2="114" y2="6" stroke-dasharray="4 6"/>
+        <line x1="114" y1="6" x2="114" y2="48" stroke-dasharray="4 6"/>
+      </svg>
+    </div>
     <p class="err-code">4<span class="slash">0</span>4</p>
     <h1>Esa página no está aquí.</h1>
     <p>O la URL tiene un error de tipeo, o la página se movió. Le pasa a los mejores. Esto es lo que la gente normalmente busca cuando termina aquí por error.</p>

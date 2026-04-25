@@ -1,43 +1,75 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
   <rect width="1200" height="630" fill="#FAF7F2"/>
-  <rect x="0" y="0" width="6" height="630" fill="#C5A059"/>
+  
+    <defs>
+      <pattern id="muntinField" x="0" y="0" width="140" height="140"
+               patternUnits="userSpaceOnUse">
+        <g transform="translate(18, 18)"
+           fill="none" stroke="#14161A" stroke-width="1.5"
+           stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="0" y="0" width="104" height="104"/>
+          <line x1="52" y1="0" x2="52" y2="104"/>
+          <line x1="0" y1="36" x2="104" y2="36"/>
+        </g>
+      </pattern>
+    </defs>
+    <rect width="1200" height="630"
+          fill="url(#muntinField)" opacity="0.045"/>
+  
+  
+    <rect x="0" y="0" width="12" height="252" fill="#B8541A"/>
+    <rect x="0" y="252" width="12" height="378" fill="#B8541A" opacity="0.4"/>
+  
 
-  <text x="72" y="90" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#C5A059" letter-spacing="5">CONVERSION · GOOGLE</text>
+  
+    <g transform="translate(80, 70) scale(1.5)"
+       fill="none" stroke="#B8541A" stroke-width="1.167"
+       stroke-linecap="round" stroke-linejoin="round"
+       color="#B8541A" opacity="0.85">
+      <rect x="3.5" y="5" width="17" height="15" rx="1.5"/>
+                 <line x1="3.5" y1="10" x2="20.5" y2="10"/>
+                 <line x1="8" y1="3" x2="8" y2="7"/>
+                 <line x1="16" y1="3" x2="16" y2="7"/>
+                 <rect x="9" y="13" width="4" height="4" fill="currentColor" stroke="none"/>
+    </g>
+  
+  <text x="136" y="96"
+        font-family="Inter, Arial, sans-serif" font-size="13"
+        font-weight="700" letter-spacing="4" fill="#B8541A">RESERVATIONS · DISCOVERY</text>
 
-  <text x="72" y="200" font-family="Fraunces, Georgia, serif" font-size="52" font-weight="500" fill="#14161A" letter-spacing="-2">How to stop losing</text>
-  <text x="72" y="270" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="52" font-weight="400" fill="#1F4E5B" letter-spacing="-2">reservations to Google’s</text>
-  <text x="72" y="340" font-family="Fraunces, Georgia, serif" font-size="44" font-weight="500" fill="#14161A" letter-spacing="-1">“find a table” feature</text>
+  <text x="80" y="184"
+        font-family="Fraunces, Georgia, serif" font-size="58"
+        font-weight="500" letter-spacing="-2" fill="#14161A">Recover</text>
+  <text x="80" y="256"
+        font-family="Fraunces, Georgia, serif" font-style="italic"
+        font-size="58" font-weight="400" letter-spacing="-2"
+        fill="#B8541A">reservations from</text>
+  <text x="80" y="328"
+        font-family="Fraunces, Georgia, serif" font-size="58"
+        font-weight="500" letter-spacing="-2" fill="#14161A">Find-a-Table.</text>
 
-  <!-- Right: flow diagram showing bypass -->
-  <g transform="translate(850, 140)">
-    <!-- Top: Google Maps box -->
-    <rect x="60" y="0" width="160" height="48" rx="8" fill="#FFFFFF" stroke="#E8E2D6" stroke-width="1.5"/>
-    <text x="140" y="29" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#14161A">Google Maps</text>
+  <text x="80" y="408"
+        font-family="Inter, Arial, sans-serif" font-size="20"
+        font-weight="400" fill="#6B6B6B">How Google's reservation surface works — and the integrations that get you in it.</text>
 
-    <!-- Left branch: find-a-table bypass -->
-    <line x1="90" y1="48" x2="50" y2="95" stroke="#B8541A" stroke-width="2" stroke-dasharray="4,4"/>
-    <rect x="0" y="96" width="130" height="44" rx="8" fill="#B8541A"/>
-    <text x="65" y="122" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#FAF7F2" letter-spacing="1">OPENTABLE</text>
+  
 
-    <line x1="65" y1="140" x2="65" y2="180" stroke="#B8541A" stroke-width="2"/>
-    <rect x="0" y="182" width="130" height="44" rx="8" fill="#B8541A"/>
-    <text x="65" y="209" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#FAF7F2" letter-spacing="1">BOOKING</text>
-
-    <!-- Dotted skip-your-site indicator -->
-    <text x="65" y="248" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10" font-style="italic" fill="#B8541A">(skips your site)</text>
-
-    <!-- Right branch: the fix -->
-    <line x1="190" y1="48" x2="215" y2="95" stroke="#1F4E5B" stroke-width="2"/>
-    <rect x="150" y="96" width="130" height="44" rx="8" fill="#FFFFFF" stroke="#1F4E5B" stroke-width="2"/>
-    <text x="215" y="122" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#1F4E5B" letter-spacing="1">YOUR SITE</text>
-
-    <line x1="215" y1="140" x2="215" y2="180" stroke="#1F4E5B" stroke-width="2"/>
-    <rect x="150" y="182" width="130" height="44" rx="8" fill="#1F4E5B"/>
-    <text x="215" y="209" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#FAF7F2" letter-spacing="1">BOOKING</text>
-
-    <text x="215" y="248" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10" font-style="italic" fill="#1F4E5B">(you keep the guest)</text>
-  </g>
-
-  <text x="72" y="570" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#6B6B6B" letter-spacing="2">MUNTIN DIGITAL</text>
-  <text x="1128" y="570" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="500" fill="#6B6B6B">muntin.digital/blog</text>
+  
+    <g transform="translate(80, 552)" fill="#6B6B6B" opacity="0.6">
+      <circle cx="8" cy="8" r="8" fill="none" stroke="#6B6B6B" stroke-width="1"/>
+      <text x="8" y="12" text-anchor="middle"
+            font-family="Fraunces, Georgia, serif" font-style="italic"
+            font-size="11" font-weight="500" fill="#6B6B6B">d</text>
+    </g>
+  
+  
+    <line x1="80" y1="584" x2="1120" y2="584"
+          stroke="#E8E2D6" stroke-width="1"/>
+    <text x="80" y="614"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="2" fill="#6B6B6B">MUNTIN DIGITAL</text>
+    <text x="1120" y="614" text-anchor="end"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="1" fill="#6B6B6B">muntin.digital</text>
+  
 </svg>
