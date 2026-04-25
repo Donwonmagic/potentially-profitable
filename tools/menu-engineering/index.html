@@ -96,6 +96,22 @@
 .me-scope-btn[aria-pressed="true"]{background:var(--ink);color:var(--cream)}
 .me-scope-hint{font-size:11.5px;color:var(--stone)}
 .me-matrix-badge{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border:1px solid var(--line);background:var(--cream-2);border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);margin-left:8px}
+.me-whatif{padding:18px 20px;border:1px solid var(--line);border-left:4px solid #C68A2C;border-radius:var(--r-input);background:#FCFAF4;display:flex;flex-direction:column;gap:12px;margin-top:18px}
+.me-whatif h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0}
+.me-whatif p{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink-soft)}
+.me-whatif-controls{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.me-whatif-controls label{font-size:13px;font-weight:600;color:var(--ink);display:inline-flex;align-items:center;gap:10px}
+.me-whatif-controls input[type=range]{flex:1;min-width:180px;max-width:340px;accent-color:#C68A2C}
+.me-whatif-pct{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:14px;font-weight:600;color:#C68A2C;min-width:42px;text-align:right}
+.me-whatif-readout{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;color:var(--ink);background:var(--white);padding:10px 14px;border:1px solid var(--line);border-radius:var(--r-sm);line-height:1.55}
+.me-whatif-readout strong{color:var(--ink);font-weight:700}
+.me-whatif-flip{display:flex;flex-direction:column;gap:2px;margin-top:6px;font-size:12.5px}
+.me-whatif-flip span{color:var(--stone)}
+.me-whatif[data-empty="true"] .me-whatif-controls,
+.me-whatif[data-empty="true"] .me-whatif-readout,
+.me-whatif[data-empty="true"] .me-whatif-flip{display:none}
+.me-whatif-empty{font-size:13px;color:var(--stone);font-style:italic;display:none}
+.me-whatif[data-empty="true"] .me-whatif-empty{display:block}
 .me-paste{display:flex;flex-direction:column;gap:10px}
 .me-paste textarea{width:100%;min-height:160px;padding:12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;line-height:1.5;color:var(--ink);resize:vertical}
 .me-paste textarea:focus{outline:2px solid var(--teal);outline-offset:1px}
@@ -264,6 +280,21 @@
       <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px;">Per-item math</h2>
       <div style="overflow-x:auto;">
         <table class="me-table" id="meItemTable" aria-label="Per-item contribution margin and quadrant"></table>
+      </div>
+
+      <div class="me-whatif" id="meWhatIf" data-empty="true" aria-live="polite">
+        <h3>Re-engineer the Plowhorses</h3>
+        <p>Plowhorses are popular but margin-thin. The standard playbook: a 5–10% price tweak or sourcing change. Drag the slider to rehearse before you touch the menu — the input above is unchanged.</p>
+        <div class="me-whatif-controls">
+          <label>
+            Price uplift on every Plowhorse:
+            <input type="range" id="meWhatIfRange" min="0" max="15" step="1" value="5" aria-describedby="meWhatIfReadout">
+            <span class="me-whatif-pct" id="meWhatIfPct">+5%</span>
+          </label>
+        </div>
+        <div class="me-whatif-readout" id="meWhatIfReadout"></div>
+        <ul class="me-whatif-flip" id="meWhatIfFlips"></ul>
+        <p class="me-whatif-empty">Add Plowhorse-quadrant items to rehearse. Run a sample menu above to see this in action.</p>
       </div>
     </div>
 
@@ -562,6 +593,7 @@
       paintMatrix(summary);
       paintActions(summary);
       paintItemTable(summary.items);
+      paintWhatIf(summary);
       firePlausibleOnce(summary);
     });
   }
@@ -705,6 +737,84 @@
     itemTable.innerHTML =
       '<thead><tr><th>Item</th><th>Category</th><th class="me-num">Price</th><th class="me-num">Food cost</th><th class="me-num">CM $</th><th class="me-num">CM %</th><th class="me-num">Units</th><th class="me-num">Share</th><th>Quadrant</th></tr></thead>' +
       '<tbody>' + rows + '</tbody>';
+  }
+
+  // ----- What-if: Plowhorse price uplift simulator -----
+  // Wires window.ME.simulateChange (already pure + tested) into a
+  // single live readout. Picks every Plowhorse-quadrant item, applies
+  // the uplift, and surfaces the contribution-margin delta + any
+  // items that flipped quadrants.
+  var whatIfBox      = document.getElementById('meWhatIf');
+  var whatIfRange    = document.getElementById('meWhatIfRange');
+  var whatIfPct      = document.getElementById('meWhatIfPct');
+  var whatIfReadout  = document.getElementById('meWhatIfReadout');
+  var whatIfFlips    = document.getElementById('meWhatIfFlips');
+  var whatIfFiredBucket = null;
+
+  function paintWhatIf(summary){
+    var items = summary.items;
+    var raw = readGrid().filter(function(it){
+      return it.item || it.price || it.food_cost || it.units_sold;
+    });
+    var plowhorseIndices = [];
+    items.forEach(function(it, idx){
+      if (it.quadrant === 'Plowhorse') plowhorseIndices.push(idx);
+    });
+    if (!plowhorseIndices.length || !whatIfBox) {
+      if (whatIfBox) whatIfBox.setAttribute('data-empty', 'true');
+      return;
+    }
+    whatIfBox.setAttribute('data-empty', 'false');
+    var pct = parseInt(whatIfRange.value, 10) || 0;
+    whatIfPct.textContent = (pct === 0 ? '0%' : '+' + pct + '%');
+    var changes = plowhorseIndices.map(function(idx){
+      var current = raw[idx];
+      var price = window.ME.coerceNumber(current && current.price);
+      return { index: idx, price: price * (1 + pct / 100) };
+    });
+    var after = window.ME.simulateChange(raw, changes, summariseOptions());
+
+    var beforeCm = summary.totals.contribution_margin;
+    var afterCm  = after.totals.contribution_margin;
+    var delta    = afterCm - beforeCm;
+    var revenueBefore = summary.totals.revenue;
+    var deltaPctOfRev = revenueBefore > 0 ? (delta / revenueBefore) : 0;
+
+    whatIfReadout.innerHTML =
+      '<strong>Before:</strong> ' + plowhorseIndices.length + ' Plowhorses · ' +
+        fmtMoney(beforeCm) + ' total contribution. ' +
+      '<strong>After:</strong> ' + fmtMoney(afterCm) + ' total contribution ' +
+      '(<strong>' + (delta >= 0 ? '+' : '') + fmtMoney(delta) + '</strong>, ' +
+      (deltaPctOfRev >= 0 ? '+' : '') + Math.round(deltaPctOfRev * 1000) / 10 + '% of revenue).';
+
+    // Quadrant flips: which Plowhorses become Stars.
+    var afterByName = {};
+    after.items.forEach(function(it){ afterByName[it.item] = it; });
+    var flipped = [];
+    plowhorseIndices.forEach(function(idx){
+      var name = items[idx].item;
+      if (!name) return;
+      var afterIt = afterByName[name];
+      if (afterIt && afterIt.quadrant !== 'Plowhorse') {
+        flipped.push({ name: name, to: afterIt.quadrant });
+      }
+    });
+    whatIfFlips.innerHTML = flipped.length
+      ? flipped.map(function(f){ return '<li>' + escHtml(f.name) + ' &middot; <span>Plowhorse &rarr; ' + f.to + '</span></li>'; }).join('')
+      : '<li><span>No Plowhorses flipped quadrants at this uplift. Try a higher value.</span></li>';
+  }
+
+  if (whatIfRange) {
+    whatIfRange.addEventListener('input', function(){
+      var summary = currentSummary();
+      paintWhatIf(summary);
+      if (window.plausible && whatIfFiredBucket !== whatIfRange.value) {
+        whatIfFiredBucket = whatIfRange.value;
+        var pct = parseInt(whatIfRange.value, 10) || 0;
+        var bucket = pct === 0 ? '0pct' : pct < 5 ? 'lt-5pct' : pct < 10 ? '5-10pct' : '10-15pct';
+        window.plausible('Menu Engineering Whatif', { props: { uplift_band: bucket } });
+      }
+    });
   }
 
   function firePlausibleOnce(summary){
