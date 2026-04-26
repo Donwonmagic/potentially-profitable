@@ -203,10 +203,15 @@
     'whole duck':           0.45,
     'whole rabbit':         0.50,
     'pork shoulder':        0.75,
-    'pork loin':            0.85,
-    'pork belly':           0.90,
-    'bacon':                0.55,           // shrink in cook
-    'ribeye':               0.75,           // bone-in
+    'pork loin':             0.85,
+    'pork belly':            0.90,
+    // Bacon yield depends on whether the row captures cook-shrink.
+    // We keep two entries so a row can choose the right physics; a
+    // bare "bacon" lookup defaults to "raw" (1.00) since most prep
+    // sheets list bacon as an AP weight.
+    'bacon (raw)':           1.00,
+    'bacon (cooked)':        0.55,
+    'ribeye':                0.75,           // bone-in
     'striploin':            0.80,
     'tenderloin':           0.85,
     'short rib':            0.65,
@@ -219,6 +224,7 @@
     // Seafood
     'whole salmon':         0.55,
     'salmon fillet':        0.95,
+    'salmon (skin-on fillet)': 0.80,        // skin off + portion trim
     'whole halibut':        0.50,
     'whole branzino':       0.55,
     'whole sea bass':       0.55,
@@ -233,6 +239,25 @@
     'clams':                0.30,
     'whole crab':           0.25,
     'scallops':             1.00,           // already shucked at most ports
+    'octopus':              0.45,           // tentacle yield after braise
+    'squid':                0.80,
+
+    // Aromatics & specialty produce
+    'ginger':               0.85,
+    'lemongrass':           0.45,           // tender white core only
+    'bok choy':             0.80,
+    'napa':                 0.80,
+    'daikon':               0.85,
+
+    // Plant-protein staples (no trim, listed for autocomplete + clarity)
+    'tofu (firm)':          1.00,
+    'tempeh':               1.00,
+    'paneer':               1.00,
+
+    // Pantry pastes / condiments common in independent kitchens
+    'miso':                 1.00,
+    'gochujang':            1.00,
+    'harissa':              1.00,
 
     // Dairy & shelf items (default 100%, listed for autocomplete)
     'butter':               1.00,
@@ -281,6 +306,10 @@
     // forms ("tomatoes" → "tomato", "carrots" → "carrot").
     var noParens = key.replace(/\s*\([^)]*\)\s*/g, '').trim();
     if (YIELD_TABLE[noParens] != null) return YIELD_TABLE[noParens];
+    // Bare "bacon" lookups default to the raw entry — most prep sheets
+    // list bacon as an AP weight; cook-shrink is the rarer case and
+    // requires the explicit "bacon (cooked)" name.
+    if (noParens === 'bacon') return YIELD_TABLE['bacon (raw)'];
     var stripS = noParens.replace(/s$/, '');
     if (YIELD_TABLE[stripS] != null) return YIELD_TABLE[stripS];
     var stripEs = noParens.replace(/es$/, '');
@@ -423,6 +452,34 @@
   }
 
   // ============================================================
+  // formatRowMath — produce a one-line equation showing how a single
+  // row's cost was derived. Used by the form's "Show the math"
+  // disclosure so the AP→EP→plate physics is visible to the reader.
+  // Returns '' for rows that didn't compute a usable cost (warnings
+  // surface separately).
+  // ============================================================
+  function formatRowMath(row, computed) {
+    if (!row || !computed) return '';
+    if (!isFinite(computed.usedCost) || computed.usedCost <= 0) return '';
+    if (computed.warning && computed.warning !== 'unknown-yield') return '';
+    var ap = '$' + Number(row.apPrice).toFixed(2);
+    var apQty = String(row.apQty);
+    var apUnit = String(row.apUnit || '');
+    var apUnitCost = '$' + Number(computed.apUnitCost).toFixed(4);
+    var yieldStr = Math.round(Number(computed.yieldPercent) * 100) + '%';
+    var epUnitCost = '$' + Number(computed.epUnitCost).toFixed(4);
+    var usedQty = String(row.usedQty);
+    var usedUnit = String(row.usedUnit || '');
+    var usedCost = '$' + Number(computed.usedCost).toFixed(2);
+    var ep = (yieldStr === '100%')
+      ? apUnitCost + ' (no yield loss)'
+      : apUnitCost + ' ÷ ' + yieldStr + ' = ' + epUnitCost + ' / ' + apUnit;
+    return ap + ' ÷ ' + apQty + ' ' + apUnit + ' = ' + apUnitCost + ' / ' + apUnit +
+           ' · ' + ep +
+           ' · × ' + usedQty + ' ' + usedUnit + ' = ' + usedCost;
+  }
+
+  // ============================================================
   // Suggested menu prices at 28% / 30% / 33% food-cost targets.
   // Each entry includes the suggested price and the contribution
   // margin in dollars at that price.
@@ -517,6 +574,20 @@
     usedUnit:     ['used unit', 'used_unit', 'recipe unit', 'serving unit', 'portion unit',
                    'unidad usada', 'unidad receta', 'unidad de porción']
   };
+
+  // Yield-input forgiveness. Accepts "75%", "75", "0.75" and returns
+  // a string in the canonical 0..1 fractional form. Empty/null inputs
+  // pass through as-is so the form's "auto" placeholder still fires.
+  function normalizeYieldInput(raw) {
+    if (raw == null) return null;
+    var s = String(raw).trim();
+    if (s === '') return '';
+    var hadPct = s.indexOf('%') !== -1;
+    var n = Number(s.replace(/%/g, '').trim());
+    if (!isFinite(n)) return s;
+    if (hadPct || n > 1) return String(n / 100);
+    return String(n);
+  }
 
   function detectDelimiter(text){
     var firstLine = String(text).split(/\r?\n/)[0] || '';
@@ -613,6 +684,17 @@
       return cleanString(s).replace(/^[$]/, '').replace(/,/g, '');
     }
     var NUMERIC_FIELDS = { apPrice: 1, apQty: 1, usedQty: 1, yieldPercent: 1 };
+    // Aliases mapping common spreadsheet unit names onto the canonical
+    // dropdown values. "case" is intentionally collapsed to "each"
+    // because case counts vary by supplier — the warning surfaces so
+    // the owner can verify the AP qty number captures actual count.
+    var UNIT_ALIASES = { 'case': 'each', 'cs': 'each', 'cs.': 'each' };
+    var caseSeen = false;
+    function mapUnit(u){
+      var v = String(u || '').trim().toLowerCase();
+      if (UNIT_ALIASES[v]) { caseSeen = caseSeen || v === 'case' || v === 'cs' || v === 'cs.'; return UNIT_ALIASES[v]; }
+      return u;
+    }
     var rows = dataRows.map(function(cells){
       function pick(field){
         var idx = mapping[field];
@@ -620,27 +702,326 @@
         return NUMERIC_FIELDS[field] ? cleanNumber(cells[idx]) : cleanString(cells[idx]);
       }
       // Yield handling — accept "75%", "0.75", "75" all as 0.75.
-      var rawY = pick('yieldPercent');
-      var y = rawY;
-      if (rawY) {
-        var n = Number(rawY.replace(/%/g, ''));
-        if (isFinite(n)) {
-          if (rawY.indexOf('%') !== -1 || n > 1) y = String(n / 100);
-          else y = String(n);
-        }
-      }
+      // Shared with the form's blur handler so both entry paths obey
+      // the same forgiveness rules.
+      var y = normalizeYieldInput(pick('yieldPercent'));
+      if (y == null) y = '';
       return {
         ingredient:   pick('ingredient'),
         apPrice:      pick('apPrice'),
         apQty:        pick('apQty'),
-        apUnit:       pick('apUnit') || 'lb',
+        apUnit:       mapUnit(pick('apUnit')) || 'lb',
         yieldPercent: y,
         usedQty:      pick('usedQty'),
-        usedUnit:     pick('usedUnit') || 'oz'
+        usedUnit:     mapUnit(pick('usedUnit')) || 'oz'
       };
     });
+    if (caseSeen) {
+      warnings.push('"case" was treated as "each" — case counts vary by supplier. Verify the AP qty captures the actual unit count (e.g. 24 for a case of 24).');
+    }
 
     return { rows: rows, mapping: mapping, headerRowDetected: headerRowDetected, warnings: warnings };
+  }
+
+  // ============================================================
+  // bottleneckLine — the single ingredient that dominates plate cost.
+  // Returns { name, share } when one ingredient accounts for ≥30%
+  // of plate cost; null otherwise. The chef knows which ingredient
+  // moved their menu — the tool surfaces it.
+  // ============================================================
+  function bottleneckLine(summary) {
+    if (!summary || !Array.isArray(summary.ingredients) || !summary.ingredients.length) return null;
+    if (!isFinite(summary.batchCost) || summary.batchCost <= 0) return null;
+    var top = null;
+    for (var i = 0; i < summary.ingredients.length; i++) {
+      var ing = summary.ingredients[i];
+      if (!ing || !isFinite(ing.usedCost) || ing.usedCost <= 0) continue;
+      if (!top || ing.usedCost > top.usedCost) top = ing;
+    }
+    if (!top) return null;
+    var share = top.usedCost / summary.batchCost;
+    if (share < 0.30) return null;
+    return { name: top.ingredient || '', share: share, dollars: top.usedCost };
+  }
+
+  // ============================================================
+  // recommendedTier — picks one of the three suggested-price tiers
+  // as the default for this dish. Deterministic; used to render a
+  // RECOMMENDED pill next to the right row.
+  //
+  // Rule:
+  //   - Recipe contains ≥4 perishable rows or ≥2 protein rows → 30% (casual)
+  //   - 'unknown-yield' warning fires → 28% (fine-dining; absorbs uncertainty)
+  //   - Otherwise → 33% (high-volume)
+  // ============================================================
+  var PERISHABLE_KEYS = (function(){
+    var set = {};
+    [
+      'romaine','iceberg','butter lettuce','green leaf','red leaf','spinach','kale','arugula','swiss chard','collard greens',
+      'broccoli','cauliflower','brussels sprouts','cabbage','asparagus','celery','fennel','leek','scallion',
+      'tomato','cherry tomato','bell pepper','jalapeño','cucumber','eggplant','zucchini','butternut squash','acorn squash',
+      'basil','parsley','cilantro','mint','rosemary','thyme','oregano','tarragon','dill',
+      'avocado','strawberry','blueberry','raspberry','mango','pineapple','watermelon','cantaloupe','grapefruit','orange','lemon','lime'
+    ].forEach(function(k){ set[k] = true; });
+    return set;
+  })();
+  var PROTEIN_KEYS = (function(){
+    var set = {};
+    [
+      'whole chicken','chicken breast','chicken thigh','whole turkey','whole duck','whole rabbit',
+      'pork shoulder','pork loin','pork belly','bacon (raw)','bacon (cooked)','ribeye','striploin','tenderloin','short rib',
+      'lamb shoulder','lamb leg','ground beef','ground pork','ground turkey',
+      'whole salmon','salmon fillet','salmon (skin-on fillet)','whole halibut','whole branzino','whole sea bass','whole snapper','whole trout',
+      'tuna loin','lobster (whole)','shrimp (head-on)','shrimp (shell-on)','shrimp (p&d)','mussels','clams','whole crab','scallops','octopus','squid',
+      'tofu (firm)','tempeh','paneer'
+    ].forEach(function(k){ set[k] = true; });
+    return set;
+  })();
+  function recommendedTier(summary) {
+    if (!summary || !Array.isArray(summary.ingredients) || !summary.ingredients.length) return 'high-volume';
+    if (Array.isArray(summary.warnings) && summary.warnings.indexOf('unknown-yield') !== -1) {
+      return 'fine-dining';
+    }
+    var perishable = 0, protein = 0;
+    summary.ingredients.forEach(function(ing){
+      var key = String(ing.ingredient || '').trim().toLowerCase();
+      if (PERISHABLE_KEYS[key]) perishable++;
+      if (PROTEIN_KEYS[key])    protein++;
+    });
+    if (perishable >= 4 || protein >= 2) return 'casual';
+    return 'high-volume';
+  }
+
+  // ============================================================
+  // URL-fragment scenario encoding (Phase D — Muntin signature).
+  //
+  // The Cost Drift Check-in needs the calendar reminder to lead the
+  // owner back to a fully-rehydrated form. Same shape as Open Hours
+  // and Margin Math (URL-safe key=value pairs, not base64) so the
+  // family pattern is recognisable across the suite.
+  //
+  // Fragment schema (v1):
+  //   v=1
+  //   n=<urlencoded dish name>
+  //   p=<portions>
+  //   d=<YYYY-MM-DD baseline date — when this costing was captured>
+  //   i=<row1>;<row2>;...   each row pipe-delimited:
+  //                          name|apPrice|apQty|apUnit|yield|usedQty|usedUnit
+  //   mode=recost            present when the recheck UI should open
+  //
+  // Privacy-safe: data lives only in the user's URL bar; per HTTP
+  // spec, fragments after `#` are never sent to a server. Forward-
+  // compat: unknown keys are ignored on decode.
+  // ============================================================
+  var PC_FRAGMENT_VERSION = '1';
+
+  // encodeURIComponent leaves "|", ";", "&", and "=" untouched, but
+  // those are our row/segment/pair delimiters. Hard-encode them so a
+  // dish name like "Tinga & Mole; Pico|Salsa" round-trips cleanly.
+  function encodeRowField(s) {
+    return encodeURIComponent(String(s == null ? '' : s))
+      .replace(/\|/g, '%7C')
+      .replace(/;/g,  '%3B')
+      .replace(/&/g,  '%26')
+      .replace(/=/g,  '%3D');
+  }
+
+  function encodeRecipe(recipe, options) {
+    if (!recipe) return '';
+    options = options || {};
+    var rows = (recipe.rows || []).filter(function(r){
+      return r && (r.ingredient || r.apPrice || r.apQty || r.usedQty);
+    });
+    var parts = [];
+    parts.push('v=' + PC_FRAGMENT_VERSION);
+    if (recipe.name)     parts.push('n=' + encodeRowField(recipe.name));
+    if (recipe.portions) parts.push('p=' + Number(recipe.portions));
+    if (options.date)    parts.push('d=' + encodeRowField(options.date));
+    if (rows.length) {
+      parts.push('i=' + rows.map(function(r){
+        return [
+          encodeRowField(r.ingredient || ''),
+          encodeRowField(r.apPrice    || ''),
+          encodeRowField(r.apQty      || ''),
+          encodeRowField(r.apUnit     || ''),
+          encodeRowField(r.yieldPercent || ''),
+          encodeRowField(r.usedQty    || ''),
+          encodeRowField(r.usedUnit   || '')
+        ].join('|');
+      }).join(';'));
+    }
+    if (options.mode) parts.push('mode=' + encodeRowField(options.mode));
+    return parts.join('&');
+  }
+
+  function decodeRecipe(fragment) {
+    var s = String(fragment || '').replace(/^#/, '');
+    if (!s) return null;
+    var pairs = s.split('&');
+    // Pair values are kept ENCODED until field extraction. Decoding
+    // eagerly here would re-introduce literal "|" and ";" inside
+    // ingredient names and corrupt the field/row split.
+    var raw = {};
+    for (var i = 0; i < pairs.length; i++) {
+      var eq = pairs[i].indexOf('=');
+      if (eq === -1) continue;
+      raw[pairs[i].slice(0, eq)] = pairs[i].slice(eq + 1);
+    }
+    function dec(v) { try { return decodeURIComponent(v); } catch (e) { return v; } }
+    if (raw.v !== PC_FRAGMENT_VERSION) return null;
+    var rows = [];
+    if (raw.i) {
+      raw.i.split(';').forEach(function(seg){
+        if (!seg) return;
+        var parts = seg.split('|').map(dec);
+        rows.push({
+          ingredient:   parts[0] || '',
+          apPrice:      parts[1] || '',
+          apQty:        parts[2] || '',
+          apUnit:       parts[3] || 'lb',
+          yieldPercent: parts[4] || '',
+          usedQty:      parts[5] || '',
+          usedUnit:     parts[6] || 'oz'
+        });
+      });
+    }
+    return {
+      name:     raw.n != null ? dec(raw.n) : '',
+      portions: Number(raw.p) || 1,
+      rows:     rows,
+      date:     raw.d != null ? dec(raw.d) : '',
+      mode:     raw.mode != null ? dec(raw.mode) : ''
+    };
+  }
+
+  // ============================================================
+  // generateQuarterlyIcs — RFC 5545 calendar reminder, 8 events at
+  // 3-month intervals (mirrors Open Hours's signature). DTSTART is
+  // 90 days from today; URL field carries the rehydration link.
+  // ============================================================
+  function generateQuarterlyIcs(scenarioUrl, options) {
+    options = options || {};
+    var locale = options.locale === 'es' ? 'es' : 'en';
+    var url = String(scenarioUrl || '');
+    var dishName = String(options.dishName || '').trim();
+    var summary = locale === 'es'
+      ? 'Costo del plato — revisión trimestral' + (dishName ? ' (' + dishName + ')' : '')
+      : 'Plate cost — quarterly recipe recheck' + (dishName ? ' (' + dishName + ')' : '');
+    var description = locale === 'es'
+      ? ('Re-costea esta receta. Los precios de las facturas se mueven cada mes; ' +
+         'una vez al trimestre, abre el escenario guardado y captura los costos de hoy. ' +
+         'Reabre el escenario: ' + url)
+      : ('Recost this recipe. Invoice prices drift monthly; once a quarter, ' +
+         'reopen the saved scenario and type today\'s prices. ' +
+         'Reopen the scenario: ' + url);
+    var alarmMsg = locale === 'es'
+      ? 'Recordatorio: re-costea ' + (dishName || 'la receta') + ' mañana'
+      : 'Reminder: recost ' + (dishName || 'the recipe') + ' tomorrow';
+
+    var p2 = function(n){ return (n < 10 ? '0' : '') + n; };
+    var icsDate = function(d){
+      return d.getUTCFullYear() + p2(d.getUTCMonth() + 1) + p2(d.getUTCDate()) +
+             'T' + p2(d.getUTCHours()) + p2(d.getUTCMinutes()) + p2(d.getUTCSeconds()) + 'Z';
+    };
+    var slug = (dishName || 'recipe').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    var start = new Date();
+    start.setUTCDate(start.getUTCDate() + 90);
+    start.setUTCHours(15, 0, 0, 0);
+    var end = new Date(start.getTime() + 30 * 60 * 1000);
+    var uid = 'pc-quarterly-' + slug + '-' + start.getTime() + '@muntin.digital';
+
+    var lines = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Muntin Digital//Plate Cost Calculator//' + (locale === 'es' ? 'ES' : 'EN'),
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      'UID:' + uid,
+      'DTSTAMP:' + icsDate(new Date()),
+      'DTSTART:' + icsDate(start),
+      'DTEND:' + icsDate(end),
+      'RRULE:FREQ=MONTHLY;INTERVAL=3;COUNT=8',
+      'SUMMARY:' + summary,
+      'DESCRIPTION:' + description.replace(/\n/g, '\\n'),
+      'URL:' + url,
+      'BEGIN:VALARM',
+      'TRIGGER:-P1D',
+      'ACTION:DISPLAY',
+      'DESCRIPTION:' + alarmMsg,
+      'END:VALARM',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ];
+    return lines.join('\r\n') + '\r\n';
+  }
+
+  // ============================================================
+  // verdictForDrift — produces a one-sentence Drift Verdict given
+  // old plate cost, new plate cost, and the menu price the dish
+  // currently sells at. Returns { tone, copyEN, copyES }.
+  //
+  // Tone bands:
+  //   'improved' — new plate cost is meaningfully lower (< -5% of old)
+  //   'steady'   — drift within ±5% AND food-cost % stays in band
+  //   'slipped'  — drift > +5% but still within target food-cost band
+  //   'crossed'  — food-cost % crosses out of healthy band (>33%)
+  // ============================================================
+  function verdictForDrift(oldPlate, newPlate, menuPrice) {
+    var op = Number(oldPlate);
+    var np = Number(newPlate);
+    if (!isFinite(op) || op <= 0 || !isFinite(np) || np < 0) {
+      return { tone: 'unknown', copyEN: '', copyES: '' };
+    }
+    var driftPct = (np - op) / op;
+    var mp = Number(menuPrice);
+    var foodCostPct = (isFinite(mp) && mp > 0) ? (np / mp) : null;
+    var driftPctRound = Math.round(driftPct * 100);
+    var driftAbsRound = Math.abs(driftPctRound);
+    var fcPctRound = foodCostPct != null ? Math.round(foodCostPct * 100) : null;
+    var fcStr = fcPctRound != null ? fcPctRound + '%' : null;
+
+    if (foodCostPct != null && foodCostPct > 0.33 && (foodCostPct - (op / mp)) > 0.02) {
+      // Food-cost % crossed out of the healthy band on this drift.
+      return {
+        tone: 'crossed',
+        driftPct: driftPctRound,
+        foodCostPct: fcPctRound,
+        copyEN: 'Crossed out of the healthy food-cost band — at the current menu price, this dish is now ' +
+                fcStr + ' food cost (was ' + Math.round((op / mp) * 100) + '%). Consider raising the menu price or substituting.',
+        copyES: 'Cruzó fuera de la banda saludable — al precio actual del menú, este plato es ahora ' +
+                fcStr + ' de costo de alimento (antes ' + Math.round((op / mp) * 100) + '%). Considera subir el precio o sustituir.'
+      };
+    }
+    if (driftPct > 0.05) {
+      return {
+        tone: 'slipped',
+        driftPct: driftPctRound,
+        foodCostPct: fcPctRound,
+        copyEN: 'Plate cost up ' + driftPctRound + '% since the baseline' +
+                (fcStr ? ' (now ' + fcStr + ' food cost at the current menu price)' : '') +
+                '. Still in band — but the trend is one to watch.',
+        copyES: 'Costo del plato +' + driftPctRound + '% desde la base' +
+                (fcStr ? ' (ahora ' + fcStr + ' de costo de alimento al precio actual)' : '') +
+                '. Aún en banda — pero la tendencia merece atención.'
+      };
+    }
+    if (driftPct < -0.05) {
+      return {
+        tone: 'improved',
+        driftPct: driftPctRound,
+        foodCostPct: fcPctRound,
+        copyEN: 'Plate cost down ' + Math.abs(driftPctRound) + '% — the dish is more profitable than three months ago.',
+        copyES: 'Costo del plato −' + Math.abs(driftPctRound) + '% — el plato rinde más que hace tres meses.'
+      };
+    }
+    return {
+      tone: 'steady',
+      driftPct: driftPctRound,
+      foodCostPct: fcPctRound,
+      copyEN: 'Steady — within ' + driftAbsRound + '% of the baseline. No action needed this quarter.',
+      copyES: 'Estable — dentro de ' + driftAbsRound + '% de la base. Sin acción este trimestre.'
+    };
   }
 
   // ============================================================
@@ -677,6 +1058,20 @@
     if (v < 10) return '5-10';
     return 'gt-10';
   }
+  // Cost Drift Check-in tracking — buckets the % change between the
+  // baseline plate cost and today's recosted plate cost. Enum-locked
+  // exactly like the others; poison-safe.
+  function bucketDriftBand(oldPlate, newPlate) {
+    var op = Number(oldPlate);
+    var np = Number(newPlate);
+    if (!isFinite(op) || op <= 0 || !isFinite(np) || np < 0) return 'invalid';
+    var d = (np - op) / op;
+    if (d <= -0.10) return 'lt-neg-10';
+    if (d <= -0.05) return 'neg-5-to-10';
+    if (d <  0.05) return 'steady';
+    if (d <  0.10) return 'pos-5-to-10';
+    return 'gt-pos-10';
+  }
 
   // ============================================================
   // Sample recipe — Cacio e pepe. Five ingredients; tight; uses two
@@ -704,20 +1099,23 @@
   // Spanish-speaking chef would actually use on the prep sheet.
   // Same numbers (so the Plate Card output matches between locales)
   // but locale-appropriate ingredient names + dish title.
+  // Spanish sample is a dish a Spanish-speaking kitchen actually
+  // cooks (rather than a translated Roman pasta). Five rows, mixes
+  // weight + count + volume so every code path still fires.
   var SAMPLE_RECIPE_ES = {
-    name:     'Cacio e pepe',
-    portions: 1,
+    name:     'Tinga de pollo',
+    portions: 4,
     rows: [
-      { ingredient: 'Tonnarelli (pasta seca)', apPrice: 4.50, apQty: 1,    apUnit: 'lb',
-        yieldPercent: 1.00, usedQty: 4,   usedUnit: 'oz' },
-      { ingredient: 'Pecorino Romano',          apPrice: 18,   apQty: 1,    apUnit: 'lb',
-        yieldPercent: 0.95, usedQty: 1.5, usedUnit: 'oz' },
-      { ingredient: 'Pimienta negra en grano', apPrice: 12,   apQty: 8,    apUnit: 'oz',
-        yieldPercent: 1.00, usedQty: 0.05, usedUnit: 'oz' },
-      { ingredient: 'Aceite de oliva',          apPrice: 24,   apQty: 1,    apUnit: 'l',
-        yieldPercent: 1.00, usedQty: 1,    usedUnit: 'tbsp' },
-      { ingredient: 'Sal marina',               apPrice: 6,    apQty: 26,   apUnit: 'oz',
-        yieldPercent: 1.00, usedQty: 0.1,  usedUnit: 'oz' }
+      { ingredient: 'Pechuga de pollo',     apPrice: 18,    apQty: 4,  apUnit: 'lb',
+        yieldPercent: 0.95, usedQty: 1.5, usedUnit: 'lb' },
+      { ingredient: 'Tomate Roma',          apPrice: 6,     apQty: 2,  apUnit: 'lb',
+        yieldPercent: 0.91, usedQty: 12,  usedUnit: 'oz' },
+      { ingredient: 'Cebolla blanca',       apPrice: 1.50,  apQty: 1,  apUnit: 'lb',
+        yieldPercent: 0.88, usedQty: 4,   usedUnit: 'oz' },
+      { ingredient: 'Chipotle en adobo',    apPrice: 4.50,  apQty: 8,  apUnit: 'oz',
+        yieldPercent: 1.00, usedQty: 1,   usedUnit: 'oz' },
+      { ingredient: 'Aceite de oliva',      apPrice: 24,    apQty: 1,  apUnit: 'l',
+        yieldPercent: 1.00, usedQty: 2,   usedUnit: 'tbsp' }
     ]
   };
 
@@ -728,14 +1126,23 @@
     computeIngredientCost: computeIngredientCost,
     computePlateCost:      computePlateCost,
     suggestMenuPrices:     suggestMenuPrices,
+    formatRowMath:         formatRowMath,
+    bottleneckLine:        bottleneckLine,
+    recommendedTier:       recommendedTier,
     validateRecipe:        validateRecipe,
     convertUnits:          convertUnits,
     lookupYield:           lookupYield,
     normalizeUnit:         normalizeUnit,
     parseTabularText:      parseTabularText,
+    normalizeYieldInput:   normalizeYieldInput,
+    encodeRecipe:          encodeRecipe,
+    decodeRecipe:          decodeRecipe,
+    generateQuarterlyIcs:  generateQuarterlyIcs,
+    verdictForDrift:       verdictForDrift,
     bucketIngredientCount: bucketIngredientCount,
     bucketYieldUsage:      bucketYieldUsage,
     bucketPlateCostBand:   bucketPlateCostBand,
+    bucketDriftBand:       bucketDriftBand,
     YIELD_TABLE:           YIELD_TABLE,
     UNITS:                 UNITS,
     FOOD_COST_TARGETS:     FOOD_COST_TARGETS,

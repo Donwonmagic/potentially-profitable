@@ -394,6 +394,216 @@ poison.forEach(function(p){
 });
 
 // ============================================================
+// Phase A — yield-input forgiveness, table widening, formatRowMath
+// ============================================================
+
+assertEq('normalizeYieldInput("75")',     PC.normalizeYieldInput('75'),     '0.75');
+assertEq('normalizeYieldInput("75%")',    PC.normalizeYieldInput('75%'),    '0.75');
+assertEq('normalizeYieldInput("0.75")',   PC.normalizeYieldInput('0.75'),   '0.75');
+assertEq('normalizeYieldInput("100")',    PC.normalizeYieldInput('100'),    '1');
+assertEq('normalizeYieldInput("100%")',   PC.normalizeYieldInput('100%'),   '1');
+assertEq('normalizeYieldInput("")',       PC.normalizeYieldInput(''),       '');
+assertEq('normalizeYieldInput(null)',     PC.normalizeYieldInput(null),     null);
+assertEq('normalizeYieldInput("garbage")',PC.normalizeYieldInput('garbage'),'garbage');
+
+assertEq('Tofu (firm) yield is 1.00',         PC.lookupYield('Tofu (firm)'),         1.00);
+assertEq('Ginger yield is 0.85',              PC.lookupYield('Ginger'),              0.85);
+assertEq('Lemongrass yield is 0.45',          PC.lookupYield('lemongrass'),          0.45);
+assertEq('Octopus yield is 0.45',             PC.lookupYield('octopus'),             0.45);
+assertEq('Salmon (skin-on fillet) is 0.80',   PC.lookupYield('Salmon (skin-on fillet)'), 0.80);
+assertEq('Bacon (raw) is 1.00',               PC.lookupYield('bacon (raw)'),         1.00);
+assertEq('Bacon (cooked) is 0.55',            PC.lookupYield('bacon (cooked)'),      0.55);
+assertEq('Bare "bacon" defaults to raw 1.00', PC.lookupYield('bacon'),               1.00);
+assertEq('Miso yield is 1.00',                PC.lookupYield('miso'),                1.00);
+assertEq('Gochujang yield is 1.00',           PC.lookupYield('gochujang'),           1.00);
+
+// formatRowMath produces a one-line equation for usable rows and
+// returns '' for warning rows (so the disclosure stays empty).
+const fmRow = {
+  ingredient: 'Pecorino Romano', apPrice: 18, apQty: 1, apUnit: 'lb',
+  yieldPercent: 0.95, usedQty: 1.5, usedUnit: 'oz'
+};
+const fmCalc = PC.computeIngredientCost(fmRow);
+const fmStr = PC.formatRowMath(fmRow, fmCalc);
+assert('formatRowMath returns non-empty for usable row', fmStr.length > 0, fmStr);
+assert('formatRowMath includes AP price',                fmStr.indexOf('$18.00') !== -1);
+assert('formatRowMath includes yield percent',           fmStr.indexOf('95%') !== -1);
+assert('formatRowMath includes used cost',               fmStr.indexOf('$1.78') !== -1 || fmStr.indexOf('$1.77') !== -1);
+
+const fmWarnRow = { ingredient: 'X', apPrice: 0, apQty: 0, apUnit: 'lb', usedQty: 1, usedUnit: 'oz' };
+const fmWarnCalc = PC.computeIngredientCost(fmWarnRow);
+assertEq('formatRowMath empty for warning row', PC.formatRowMath(fmWarnRow, fmWarnCalc), '');
+
+// 100%-yield rows skip the yield-division clause.
+const fm100 = PC.computeIngredientCost({
+  ingredient: 'Olive oil', apPrice: 24, apQty: 1, apUnit: 'l',
+  yieldPercent: 1.00, usedQty: 1, usedUnit: 'tbsp'
+});
+const fm100Str = PC.formatRowMath({ ingredient: 'Olive oil', apPrice: 24, apQty: 1, apUnit: 'l', yieldPercent: 1.00, usedQty: 1, usedUnit: 'tbsp' }, fm100);
+assert('formatRowMath omits yield division at 100%', fm100Str.indexOf('no yield loss') !== -1, fm100Str);
+
+// Paste-handler: "case" gets aliased to "each" + a warning surfaces.
+const casePaste = PC.parseTabularText(
+  'Ingredient,AP price,AP qty,AP unit,Yield %,Used qty,Used unit\n' +
+  'Romaine,28,24,case,75,1,each\n'
+);
+assertEq('case alias maps to each',  casePaste.rows[0].apUnit, 'each');
+assert('case alias surfaces warning', casePaste.warnings.some(function(w){ return w.indexOf('case') !== -1; }));
+
+// Paste-handler: "75" without % is interpreted as 0.75 (forgiveness).
+assertEq('paste yield "75" → 0.75',  casePaste.rows[0].yieldPercent, '0.75');
+
+// ============================================================
+// Phase D — URL-fragment encoder/decoder, quarterly ICS, drift verdict
+// ============================================================
+
+const driftRecipe = {
+  name: 'Cacio e pepe',
+  portions: 2,
+  rows: [
+    { ingredient: 'Tonnarelli', apPrice: 4.50, apQty: 1, apUnit: 'lb',
+      yieldPercent: 1.00, usedQty: 4, usedUnit: 'oz' },
+    { ingredient: 'Pecorino Romano', apPrice: 18, apQty: 1, apUnit: 'lb',
+      yieldPercent: 0.95, usedQty: 1.5, usedUnit: 'oz' }
+  ]
+};
+const enc = PC.encodeRecipe(driftRecipe, { date: '2026-04-26' });
+assert('encodeRecipe → starts with v=1', enc.indexOf('v=1') === 0, enc);
+assert('encodeRecipe → carries dish name',     enc.indexOf('n=Cacio') !== -1, enc);
+assert('encodeRecipe → carries portions',      enc.indexOf('p=2') !== -1, enc);
+assert('encodeRecipe → carries baseline date', enc.indexOf('d=2026-04-26') !== -1, enc);
+
+const dec = PC.decodeRecipe(enc);
+assertEq('decodeRecipe → name round-trips',     dec.name, 'Cacio e pepe');
+assertEq('decodeRecipe → portions round-trip',  dec.portions, 2);
+assertEq('decodeRecipe → date round-trips',     dec.date, '2026-04-26');
+assertEq('decodeRecipe → row count',            dec.rows.length, 2);
+assertEq('decodeRecipe → row 0 ingredient',     dec.rows[0].ingredient, 'Tonnarelli');
+assertEq('decodeRecipe → row 0 apUnit',         dec.rows[0].apUnit, 'lb');
+assertEq('decodeRecipe → row 1 yieldPercent',   dec.rows[1].yieldPercent, '0.95');
+assertEq('decodeRecipe → row 1 usedQty',        dec.rows[1].usedQty, '1.5');
+
+const encMode = PC.encodeRecipe(driftRecipe, { date: '2026-04-26', mode: 'recost' });
+assert('encodeRecipe with mode=recost', encMode.indexOf('mode=recost') !== -1, encMode);
+const decMode = PC.decodeRecipe('#' + encMode);
+assertEq('decodeRecipe accepts leading #', decMode.mode, 'recost');
+
+assertEq('decodeRecipe rejects bad version', PC.decodeRecipe('v=99&n=foo'), null);
+assertEq('decodeRecipe of empty → null',     PC.decodeRecipe(''),           null);
+
+// Recipe with embedded delimiters (|, ;, &, =) round-trips.
+const trickyRecipe = {
+  name: 'Tinga & Mole; Pico|Salsa',
+  portions: 1,
+  rows: [{ ingredient: 'Beef|Brisket; AKA = "punta"', apPrice: 8, apQty: 1, apUnit: 'lb', yieldPercent: 0.7, usedQty: 4, usedUnit: 'oz' }]
+};
+const trickyEnc = PC.encodeRecipe(trickyRecipe);
+const trickyDec = PC.decodeRecipe(trickyEnc);
+assertEq('tricky name round-trips',          trickyDec.name, 'Tinga & Mole; Pico|Salsa');
+assertEq('tricky ingredient round-trips',    trickyDec.rows[0].ingredient, 'Beef|Brisket; AKA = "punta"');
+
+// Quarterly ICS — RFC 5545 surface checks.
+const ics = PC.generateQuarterlyIcs('https://muntin.digital/tools/plate-cost/#v=1&n=Cacio', { locale: 'en', dishName: 'Cacio e pepe' });
+assert('ICS begins with VCALENDAR',            ics.indexOf('BEGIN:VCALENDAR') === 0, ics.slice(0,32));
+assert('ICS has CRLF line endings',            ics.indexOf('\r\n') !== -1);
+assert('ICS contains 8-event RRULE',           ics.indexOf('RRULE:FREQ=MONTHLY;INTERVAL=3;COUNT=8') !== -1);
+assert('ICS carries scenario URL',             ics.indexOf('URL:https://muntin.digital') !== -1);
+assert('ICS carries dish name in SUMMARY',     ics.indexOf('Cacio e pepe') !== -1);
+assert('ICS has VALARM',                       ics.indexOf('BEGIN:VALARM') !== -1);
+assert('ICS PRODID identifies Plate Cost',     ics.indexOf('Plate Cost Calculator') !== -1);
+
+const icsEs = PC.generateQuarterlyIcs('https://muntin.digital/es/tools/plate-cost/#v=1', { locale: 'es', dishName: 'Tinga' });
+assert('ES ICS PRODID locale ES',              icsEs.indexOf('//ES') !== -1);
+assert('ES ICS summary in Spanish',            icsEs.indexOf('Costo del plato') !== -1);
+
+// verdictForDrift — bands.
+const vSteady = PC.verdictForDrift(4.00, 4.10, 14.00);
+assertEq('drift +2.5% → steady',               vSteady.tone, 'steady');
+const vSlipped = PC.verdictForDrift(4.00, 4.40, 14.00);
+assertEq('drift +10% (still ≤33% FC) → slipped', vSlipped.tone, 'slipped');
+const vCrossed = PC.verdictForDrift(4.00, 5.00, 14.00); // 5/14 ≈ 36% — crossed band
+assertEq('drift crosses food-cost band → crossed', vCrossed.tone, 'crossed');
+const vImproved = PC.verdictForDrift(4.00, 3.60, 14.00);
+assertEq('drift −10% → improved',              vImproved.tone, 'improved');
+const vBad = PC.verdictForDrift(0, 4.00, 14.00);
+assertEq('zero baseline → unknown tone',       vBad.tone, 'unknown');
+assert('verdict copy non-empty (EN)',          vSlipped.copyEN.length > 0);
+assert('verdict copy non-empty (ES)',          vSlipped.copyES.length > 0);
+
+// bucketDriftBand — enum-locked.
+const DRIFT_BUCKETS = ['invalid','lt-neg-10','neg-5-to-10','steady','pos-5-to-10','gt-pos-10'];
+[null, undefined, NaN, '<script>', 'Infinity', '0xff'].forEach(function(p){
+  assert('no leak from bucketDriftBand(' + JSON.stringify(p) + ', 1)',
+    DRIFT_BUCKETS.indexOf(PC.bucketDriftBand(p, 1)) !== -1);
+});
+assertEq('drift +20% bucket',                  PC.bucketDriftBand(4, 4.80), 'gt-pos-10');
+assertEq('drift +7% bucket',                   PC.bucketDriftBand(4, 4.28), 'pos-5-to-10');
+assertEq('drift 0% bucket',                    PC.bucketDriftBand(4, 4),    'steady');
+assertEq('drift -7% bucket',                   PC.bucketDriftBand(4, 3.72), 'neg-5-to-10');
+assertEq('drift -20% bucket',                  PC.bucketDriftBand(4, 3.20), 'lt-neg-10');
+assertEq('drift invalid (zero)',               PC.bucketDriftBand(0, 4),    'invalid');
+
+// ============================================================
+// Phase E — bottleneckLine, recommendedTier
+// ============================================================
+
+const bnSummary = PC.computePlateCost({
+  name: 'X', portions: 1,
+  rows: [
+    { ingredient: 'Pecorino Romano', apPrice: 18, apQty: 1, apUnit: 'lb', yieldPercent: 0.95, usedQty: 1.5, usedUnit: 'oz' },
+    { ingredient: 'Olive oil',       apPrice: 24, apQty: 1, apUnit: 'l',  yieldPercent: 1.00, usedQty: 1, usedUnit: 'tbsp' }
+  ]
+});
+const bn = PC.bottleneckLine(bnSummary);
+assert('bottleneckLine returns an object',         bn && typeof bn === 'object');
+assertEq('bottleneckLine names dominant ingredient', bn.name, 'Pecorino Romano');
+assert('bottleneckLine share is ≥ 0.30',           bn.share >= 0.30);
+
+// All-balanced recipe → no bottleneck (each row < 30%).
+const balanced = PC.computePlateCost({
+  name: 'B', portions: 1,
+  rows: [
+    { ingredient: 'A', apPrice: 4, apQty: 1, apUnit: 'lb', yieldPercent: 1, usedQty: 4, usedUnit: 'oz' },
+    { ingredient: 'B', apPrice: 4, apQty: 1, apUnit: 'lb', yieldPercent: 1, usedQty: 4, usedUnit: 'oz' },
+    { ingredient: 'C', apPrice: 4, apQty: 1, apUnit: 'lb', yieldPercent: 1, usedQty: 4, usedUnit: 'oz' },
+    { ingredient: 'D', apPrice: 4, apQty: 1, apUnit: 'lb', yieldPercent: 1, usedQty: 4, usedUnit: 'oz' }
+  ]
+});
+assertEq('bottleneckLine null when balanced', PC.bottleneckLine(balanced), null);
+
+// recommendedTier — protein-heavy → casual.
+const tProtein = PC.computePlateCost({ name: 'P', portions: 1, rows: [
+  { ingredient: 'Chicken breast', apPrice: 6, apQty: 1, apUnit: 'lb', yieldPercent: 0.95, usedQty: 6, usedUnit: 'oz' },
+  { ingredient: 'Salmon fillet',  apPrice: 14, apQty: 1, apUnit: 'lb', yieldPercent: 0.95, usedQty: 4, usedUnit: 'oz' }
+] });
+assertEq('recommendedTier protein-heavy → casual', PC.recommendedTier(tProtein), 'casual');
+
+// recommendedTier — perishable-heavy → casual.
+const tPerish = PC.computePlateCost({ name: 'V', portions: 1, rows: [
+  { ingredient: 'Romaine',  apPrice: 1, apQty: 1, apUnit: 'lb', yieldPercent: 0.75, usedQty: 4, usedUnit: 'oz' },
+  { ingredient: 'Tomato',   apPrice: 1, apQty: 1, apUnit: 'lb', yieldPercent: 0.91, usedQty: 4, usedUnit: 'oz' },
+  { ingredient: 'Cucumber', apPrice: 1, apQty: 1, apUnit: 'lb', yieldPercent: 0.95, usedQty: 4, usedUnit: 'oz' },
+  { ingredient: 'Avocado',  apPrice: 2, apQty: 1, apUnit: 'lb', yieldPercent: 0.75, usedQty: 4, usedUnit: 'oz' }
+] });
+assertEq('recommendedTier perishable-heavy → casual', PC.recommendedTier(tPerish), 'casual');
+
+// recommendedTier — unknown yield → fine-dining (absorbs risk).
+const tUnknown = PC.computePlateCost({ name: 'U', portions: 1, rows: [
+  { ingredient: 'Dragonfruit', apPrice: 8, apQty: 1, apUnit: 'lb', usedQty: 2, usedUnit: 'oz' }
+] });
+assertEq('recommendedTier with unknown-yield → fine-dining', PC.recommendedTier(tUnknown), 'fine-dining');
+
+// recommendedTier — neither → high-volume.
+const tHV = PC.computePlateCost({ name: 'H', portions: 1, rows: [
+  { ingredient: 'Flour', apPrice: 1, apQty: 1, apUnit: 'lb', yieldPercent: 1, usedQty: 4, usedUnit: 'oz' },
+  { ingredient: 'Sugar', apPrice: 1, apQty: 1, apUnit: 'lb', yieldPercent: 1, usedQty: 4, usedUnit: 'oz' }
+] });
+assertEq('recommendedTier shelf-staples → high-volume', PC.recommendedTier(tHV), 'high-volume');
+
+// Spanish sample is now Tinga de pollo.
+assertEq('SAMPLE_RECIPE_ES is Tinga de pollo', PC.SAMPLE_RECIPE_ES.name, 'Tinga de pollo');
+
+// ============================================================
 console.log('\n' + (failures === 0
   ? '✓ all plate-cost assertions pass'
   : '✗ ' + failures + ' plate-cost assertion(s) failed'));

@@ -19,18 +19,21 @@
 <meta property="og:description" content="Type a recipe. Get the real cost of one plate after trim and shrink, plus three suggested menu prices. Stays in your browser." />
 <meta property="og:url" content="https://muntin.digital/tools/plate-cost/" />
 <meta property="og:site_name" content="Muntin Digital" />
-<meta property="og:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-plate-cost.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Plate Cost Calculator — What does each plate actually cost?" />
 <meta name="twitter:description" content="Type a recipe. Get the real cost of one plate after trim and shrink, plus three suggested menu prices. Stays in your browser." />
-<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-plate-cost.png" />
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/tools/plate-cost/#tool","name":"Plate Cost Calculator","description":"Client-side recipe → plate-cost calculator for independent restaurants. Walks the AP→EP→plate math across ~80 canonical yields, suggests three menu prices, and exports a printable Plate Card. Recipes stay in the browser.","url":"https://muntin.digital/tools/plate-cost/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["en","es"],"isAccessibleForFree":true,"browserRequirements":"Requires a modern browser with JavaScript enabled","keywords":"plate cost calculator, recipe costing, food cost percent, AP EP yield, edible portion cost, restaurant menu pricing, contribution margin, kitchen costing","audience":{"@type":"BusinessAudience","audienceType":"Independent restaurant owners and operators"},"featureList":["AP→EP yield correction across ~80 canonical ingredients","Paste-from-spreadsheet import (CSV/TSV with English + Spanish header aliases)","Three-target menu pricing at 28% / 30% / 33% food-cost benchmarks","Printable Plate Card PNG for the kitchen wall","ZIP bundle (Plate Card + recipe.html + recipe.csv + plate-cost.json + README)","One-click handoff to Menu Engineering and Margin Math","Cost Drift Check-in — quarterly recost reminder with URL-fragment scenario rehydration","Client-side: no fetch, no storage, no account"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},{"@type":"FAQPage","@id":"https://muntin.digital/tools/plate-cost/#faq","mainEntity":[{"@type":"Question","name":"Do my recipes leave the page when I use the Plate Cost Calculator?","acceptedAnswer":{"@type":"Answer","text":"No. Open DevTools → Network. Type a recipe and click Compute — zero requests fire. The math runs entirely on your device. The page is static HTML plus two unminified JavaScript files you can read directly."}},{"@type":"Question","name":"What is plate cost, and what does the calculator account for?","acceptedAnswer":{"@type":"Answer","text":"Plate cost is what it costs you in ingredients to send one finished plate to the pass — after trim, peel, bone, and shrink. The calculator walks the math from as-purchased (AP) cost on your invoice to edible-portion (EP) cost using a yield percentage, then multiplies by the portion you actually use per plate. It excludes labour and overhead — those belong in Margin Math's prime-cost calculator."}},{"@type":"Question","name":"What are the three suggested menu prices based on?","acceptedAnswer":{"@type":"Answer","text":"Three target food-cost percentages from the National Restaurant Association's benchmark guidance: 28% (fine-dining, where labour is high), 30% (the casual full-service benchmark), and 33% (high-volume kitchens with lower labour). Each row shows the suggested menu price plus the contribution margin you keep per plate at that price."}},{"@type":"Question","name":"Can I share a recipe scenario with my chef or accountant?","acceptedAnswer":{"@type":"Answer","text":"Yes. Click Save & remind me to recost in 90 days — the tool encodes the recipe into the URL fragment of a downloaded calendar (.ics) reminder. Per the HTTP spec, the part of a URL after # is never sent to a server, so the reminder lives only on your device. You can also export the recipe as CSV, JSON, a printable HTML page, or a Plate Card PNG."}},{"@type":"Question","name":"Where do the canonical yield percentages come from?","acceptedAnswer":{"@type":"Answer","text":"The Culinary Institute of America's standard yield tables and the Restaurant Association's purchasing handbook. Numbers are the most-commonly-cited typical yield for a properly-handled ingredient — a chef's gut yield will vary by ±5%. You can override any one if your supplier's product yields differently."}},{"@type":"Question","name":"Is the source code open and readable?","acceptedAnswer":{"@type":"Answer","text":"Yes. No build step, no minification, no framework. The math module lives at /tools/plate-cost/plate-cost.js as plain JavaScript with named functions. Right-click View Page Source to read the UI directly."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://muntin.digital/tools/"},{"@type":"ListItem","position":3,"name":"Plate Cost Calculator","item":"https://muntin.digital/tools/plate-cost/"}]}]}
+</script>
 <link rel="preconnect" href="https://plausible.io" crossorigin />
 <link rel="dns-prefetch" href="https://plausible.io" />
 <script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
@@ -55,6 +58,10 @@
 .pc-grid input[type="number"]{text-align:right}
 .pc-grid .pc-num{width:84px;text-align:right;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--ink-soft)}
 .pc-grid .pc-warn{font-size:11px;color:var(--rust);font-weight:600}
+.pc-grid .pc-math-toggle{display:inline-block;margin-top:4px;font-size:10.5px;color:var(--stone);cursor:pointer;border-bottom:1px dashed var(--line-dark);padding-bottom:1px;background:none;border-left:0;border-top:0;border-right:0;font-family:inherit;font-weight:500;letter-spacing:.02em;text-transform:lowercase}
+.pc-grid .pc-math-toggle:hover{color:var(--teal);border-bottom-color:var(--teal)}
+.pc-grid .pc-math-line{display:block;margin-top:6px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10.5px;color:var(--ink-soft);line-height:1.55;background:var(--cream-2);padding:6px 8px;border-radius:var(--r-sm);font-variant-numeric:tabular-nums;white-space:normal;word-break:break-word}
+.pc-grid .pc-math-row[hidden]{display:none}
 .pc-grid .pc-remove{background:none;border:none;color:var(--stone);cursor:pointer;font-size:18px;line-height:1;padding:0 4px}
 .pc-grid .pc-remove:hover{color:var(--rust)}
 .pc-grid-actions{display:flex;gap:8px;flex-wrap:wrap;padding:10px 12px;background:var(--cream-2);border-top:1px solid var(--line)}
@@ -123,6 +130,82 @@
 .pc-paste-btn{padding:6px 14px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12px;font-weight:600;cursor:pointer}
 .pc-paste-btn:hover{background:var(--teal);color:var(--cream)}
 
+/* Cost Drift Check-in — the Muntin signature for Plate Cost */
+.pc-signature{margin-top:18px;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+.pc-signature-eyebrow{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+.pc-signature h3{font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px;line-height:1.25}
+.pc-signature-blurb{font-size:13.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 12px}
+.pc-signature-fine{font-size:11.5px;color:var(--stone);line-height:1.55;margin:8px 0 0}
+.pc-signature-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:8px}
+.pc-signature-status{font-size:12px;color:var(--status-good);font-weight:600;display:none;align-items:center;gap:6px}
+.pc-signature-status[data-shown="true"]{display:inline-flex}
+
+body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
+.pc-recost-banner{display:none;align-items:flex-start;gap:14px;padding:14px 18px;margin:0 0 14px;border:1px solid var(--teal);border-left-width:4px;border-radius:var(--r-md);background:var(--cream-2)}
+.pc-recost-banner-body{flex:1;font-size:13.5px;line-height:1.55;color:var(--ink)}
+.pc-recost-banner-eyebrow{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);margin-bottom:2px}
+.pc-recost-banner strong{color:var(--ink)}
+.pc-recost-reset{padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--stone);font:inherit;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none}
+.pc-recost-reset:hover{border-color:var(--rust);color:var(--rust)}
+
+body[data-pc-mode="recost"] .pc-grid table{font-size:12.5px}
+.pc-prev-cell{display:none;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;color:var(--stone);font-variant-numeric:tabular-nums}
+body[data-pc-mode="recost"] .pc-prev-cell{display:block}
+.pc-prev-label{font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--stone);font-weight:700;margin-bottom:2px;display:block}
+
+.pc-drift-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 10px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-radius:999px;font-variant-numeric:tabular-nums;margin-left:8px;vertical-align:middle}
+.pc-drift-pill[data-tone="steady"]   {background:var(--status-good-tint);color:var(--status-good)}
+.pc-drift-pill[data-tone="improved"] {background:var(--status-good-tint);color:var(--status-good)}
+.pc-drift-pill[data-tone="slipped"]  {background:rgba(198,138,44,0.10);color:#956A1A}
+.pc-drift-pill[data-tone="crossed"]  {background:rgba(184,84,26,0.10);color:var(--rust)}
+.pc-headline-old{font-size:13px;color:var(--stone);text-decoration:line-through;margin-right:8px;font-variant-numeric:tabular-nums}
+.pc-verdict{margin-top:10px;padding:10px 14px;border-radius:var(--r-sm);font-size:13px;line-height:1.5;border:1px solid var(--line)}
+.pc-verdict[data-tone="steady"]   {background:var(--status-good-tint);color:var(--status-good);border-color:rgba(46,125,50,0.18)}
+.pc-verdict[data-tone="improved"] {background:var(--status-good-tint);color:var(--status-good);border-color:rgba(46,125,50,0.18)}
+.pc-verdict[data-tone="slipped"]  {background:rgba(198,138,44,0.06);color:#956A1A;border-color:rgba(198,138,44,0.22)}
+.pc-verdict[data-tone="crossed"]  {background:rgba(184,84,26,0.06);color:var(--rust);border-color:rgba(184,84,26,0.22)}
+
+.pc-bottleneck{margin:8px 0 0;font-size:13px;color:var(--ink-soft);line-height:1.5;font-style:italic}
+.pc-bottleneck strong{color:var(--ink);font-style:normal}
+
+.pc-price-row{position:relative}
+.pc-price-row[data-recommended="true"]{background:var(--cream-2);margin:0 -22px;padding-left:22px;padding-right:22px}
+.pc-price-row[data-recommended="true"]:first-of-type{border-top:0}
+.pc-rec-pill{display:inline-block;padding:1px 8px;background:var(--teal);color:var(--cream);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;margin-left:6px;vertical-align:middle}
+.pc-rec-rationale{font-size:11.5px;color:var(--ink-soft);margin:4px 0 0;line-height:1.45;font-style:italic}
+
+/* Mobile-first card layout for the ingredient grid below 720px.
+   Replaces the horizontal-scroll table with stacked cards, one per
+   row, with grouped fields so an owner can edit on a phone without
+   pinching to zoom. CSS-only — no JS rewrite. */
+@media (max-width: 720px) {
+  .pc-grid{overflow-x:visible}
+  .pc-grid table, .pc-grid thead, .pc-grid tbody, .pc-grid tr, .pc-grid td{display:block}
+  .pc-grid table{min-width:0}
+  .pc-grid thead{display:none}
+  .pc-grid tr{padding:14px 12px;border-bottom:1px solid var(--line);position:relative}
+  .pc-grid tr:last-child{border-bottom:0}
+  .pc-grid tr.pc-math-row{padding:0 12px 14px}
+  .pc-grid td{padding:6px 0;border:0}
+  .pc-grid td:nth-child(1)::before{content:"Ingredient";display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  .pc-grid td:nth-child(2)::before{content:"AP price ($)";display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  .pc-grid td:nth-child(3)::before{content:"AP qty";display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  .pc-grid td:nth-child(4)::before{content:"AP unit";display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  .pc-grid td:nth-child(5)::before{content:"Yield %";display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  .pc-grid td:nth-child(6)::before{content:"Used qty";display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  .pc-grid td:nth-child(7)::before{content:"Used unit";display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  .pc-grid td:nth-child(8)::before{content:"Cost on plate";display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  /* Pair fields side-by-side: AP price | AP qty | AP unit on one row
+     when the screen is wide enough; Yield + Used qty + Used unit on
+     another. Keeps the ingredient + cost cells full-width for legibility. */
+  .pc-grid tr{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;align-items:start}
+  .pc-grid td:nth-child(1){grid-column:1 / span 2}
+  .pc-grid td:nth-child(8){grid-column:1 / span 2;font-family:var(--font-display);font-size:18px;font-variant-numeric:tabular-nums;color:var(--ink);text-align:left}
+  .pc-grid td:nth-child(9){position:absolute;top:10px;right:10px;padding:0}
+  .pc-grid input,.pc-grid select{font-size:14px;padding:9px 10px}
+  .pc-grid .pc-num{width:auto;text-align:left}
+}
+
 @media print{
   body{background:#fff !important;color:#000 !important}
   header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,
@@ -188,7 +271,7 @@
   <ol class="pc-privacy-list">
     <li><div><strong>No upload.</strong><p>Open DevTools &rarr; Network. Type a recipe, click <em>Compute</em>. Zero requests fire. The math runs on your device.</p></div></li>
     <li><div><strong>No storage.</strong><p>Close the tab and reload this URL. The form is empty. We don&rsquo;t use <code>localStorage</code>, <code>sessionStorage</code>, or cookies for your recipe data.</p></div></li>
-    <li><div><strong>No URL leakage.</strong><p>Unlike some tools that encode state in the address bar, this one never serialises your recipe to the URL. Your dish names stay yours.</p></div></li>
+    <li><div><strong>URL-fragment encoding is opt-in.</strong><p>The address bar stays empty until you click <em>Save &amp; remind me to recost</em>. Then the recipe is encoded into the link the calendar reminder carries. Per the HTTP spec, the part of a URL after <code>#</code> is never sent to a server &mdash; so the reminder lives only on your device, and the recipe never crosses the network.</p></div></li>
     <li><div><strong>One bundled script.</strong><p>The tool loads <code>/tools/plate-cost/plate-cost.js</code> from this domain. No CDN, no analytics-tied recipe data, no third-party tracker reading the form.</p></div></li>
     <li><div><strong>Anonymous, enum-bucketed analytics only.</strong><p>We log that &ldquo;a 4–7 ingredient recipe was costed&rdquo; in three or four buckets — never the ingredient names, prices, or recipe content.</p></div></li>
   </ol>
@@ -200,6 +283,13 @@
   <p style="font-size:13.5px;color:var(--stone);margin:0 0 16px;line-height:1.55;">Five common ingredients to start. Add or remove rows as needed. The tool fills in canonical yields for ~80 common ingredients automatically — override any one if your supplier&rsquo;s product yields differently.</p>
 
   <div class="pc-form">
+    <div class="pc-recost-banner" id="pcRecostBanner" role="region" aria-live="polite">
+      <div class="pc-recost-banner-body">
+        <span class="pc-recost-banner-eyebrow">Recost from quarterly check-in</span>
+        <span>This recipe was costed on <strong id="pcBaselineDate">—</strong>. Type today&rsquo;s invoice prices into the AP price column &mdash; the headline below shows the drift since the baseline.</span>
+      </div>
+      <a href="/tools/plate-cost/" class="pc-recost-reset" id="pcRecostReset">Reset to fresh recipe</a>
+    </div>
     <div class="pc-meta">
       <label>Dish name <small style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--stone);">(used on the result panel and exports)</small>
         <input type="text" id="pcName" placeholder="e.g. Cacio e pepe" autocomplete="off" />
@@ -221,6 +311,7 @@
       </div>
     </details>
 
+    <datalist id="pcYieldNames"></datalist>
     <div class="pc-grid" role="region" aria-label="Recipe ingredient grid">
       <table>
         <thead>
@@ -251,12 +342,14 @@
     <div class="pc-result" id="pcResult" style="display:none;">
       <div class="pc-headline">
         <p class="pc-headline-eyebrow">Plate cost</p>
-        <p class="pc-headline-num" id="pcHeadlineNum">$0.00</p>
+        <p class="pc-headline-num" id="pcHeadlineNum"><span class="pc-headline-old" id="pcHeadlineOld" hidden></span>$0.00<span class="pc-drift-pill" id="pcDriftPill" hidden></span></p>
         <p class="pc-headline-batch" id="pcHeadlineBatch"></p>
         <p class="pc-headline-explainer">That&rsquo;s what it costs you in ingredients to send this dish to the pass, after trim and shrink. Excludes labour and overhead.</p>
         <span class="pc-headline-confidence" id="pcConfidence" data-level="high">High confidence</span>
+        <p class="pc-bottleneck" id="pcBottleneck" hidden></p>
+        <p class="pc-verdict" id="pcVerdict" hidden></p>
       </div>
-      <div class="pc-prices">
+      <div class="pc-prices" id="pc-prices">
         <h3>Three suggested menu prices</h3>
         <p class="pc-prices-dek">Each row works backwards from a target food-cost percent. The dollars on the right are what you keep per plate after ingredients.</p>
         <div id="pcPriceRows"></div>
@@ -273,6 +366,19 @@
       <button type="button" class="pc-action-btn" id="pcPushMm">Use in Margin Math &rarr;</button>
       <button type="button" class="pc-action-btn" id="pcPushPb">Brief your photographer &rarr;</button>
     </div>
+
+    <article class="pc-signature" id="pcSignature" style="display:none;">
+      <p class="pc-signature-eyebrow">Cost Drift Check-in &middot; iCalendar (.ics) &middot; 8 events / 2 years</p>
+      <h3>Get a quarterly nudge to recost this dish.</h3>
+      <p class="pc-signature-blurb">Invoice prices drift every month. Download an 8-event reminder &mdash; once a quarter for two years &mdash; and your calendar will ping you 90 days from today with a one-click link back to this exact recipe. The reminder URL contains the recipe in a format only your browser reads. When you open it next quarter, the form is pre-loaded and you type today&rsquo;s prices side-by-side with the originals.</p>
+      <div class="pc-signature-actions">
+        <button type="button" class="pc-action-btn pc-action-btn-primary" id="pcSaveQuarterly">
+          Save &amp; remind me to recost in 90 days
+        </button>
+        <span class="pc-signature-status" id="pcQuarterlyStatus" data-shown="false">&#x2713; 8 quarterly reminders downloaded</span>
+      </div>
+      <p class="pc-signature-fine">No account, no email. The reminder lives only on your device. The recipe lives only in the URL fragment of the calendar reminder &mdash; never on a server.</p>
+    </article>
 
     <div class="pc-empty" id="pcEmpty">
       Fill in a row above &mdash; or <button type="button" class="pc-sample-btn" id="pcSample2" style="margin:0 6px;">load the sample recipe</button> &mdash; to see the math.
@@ -317,7 +423,7 @@
     <header class="tool-deep-head">
       <span class="eyebrow">Learn more</span>
       <h2 id="tool-deep-h">Why this tool exists.</h2>
-      <p class="tool-deep-blurb">Every check this tool runs maps to a specific concept in the Library. Two starting points — one definition, one playbook.</p>
+      <p class="tool-deep-blurb">Every number this tool produces maps to a specific concept in the Library. Five definitions and a playbook — read in any order.</p>
       <div class="tool-deep-topics"><a class="tool-deep-topic" href="/learn/topics/operations-margin/">Operations &amp; Margin</a></div>
     </header>
     <div class="tool-deep-grid">
@@ -335,11 +441,25 @@
           <p class="tool-deep-snippet">For a given ingredient: the percentage of as-purchased weight that survives trim, peel, bone, fat, and cooking shrinkage. Romaine yields abo…</p>
           <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
         </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/glossary/edible-portion/">
+          <span class="tool-deep-kind">Glossary</span>
+          <h3>Edible portion (EP)</h3>
+          <p class="tool-deep-aka">the cost of one usable ounce after trim</p>
+          <p class="tool-deep-snippet">EP cost is AP cost divided by yield. The conceptual handle that lets an owner audit any recipe's plate cost in their head, straight from the invoice…</p>
+          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/glossary/food-cost/">
+          <span class="tool-deep-kind">Glossary</span>
+          <h3>Food cost %</h3>
+          <p class="tool-deep-aka">cost of goods sold, as a % of sales</p>
+          <p class="tool-deep-snippet">Every point over target is margin walking out the kitchen door — and it's typically the fastest lever to fix, through portion specs, waste logs, and menu engineering…</p>
+          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
+        </a>
       <a class="tool-deep-card tool-deep-card-term" href="/glossary/contribution-margin/">
           <span class="tool-deep-kind">Glossary</span>
           <h3>Contribution margin</h3>
-          <p class="tool-deep-aka">what one sale of an item adds to covering fixed costs and profit</p>
-          <p class="tool-deep-snippet">For a single menu item: sale price minus the variable cost of producing one unit (plated food cost). Reported in dollars (CM&amp;nbsp;\$) and as…</p>
+          <p class="tool-deep-aka">what one sale of an item adds to fixed costs and profit</p>
+          <p class="tool-deep-snippet">Most operators optimise on food-cost percent, but the dollar figure is what pays rent. Menu engineering plots CM dollars, not CM percent…</p>
           <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
         </a>
       <a class="tool-deep-card tool-deep-card-article" href="/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">
@@ -362,7 +482,7 @@
 </footer>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="/tools/plate-cost/plate-cost.js?v=20260426-pc1"></script>
+<script src="/tools/plate-cost/plate-cost.js?v=20260426-pcE"></script>
 <script src="/tools/plate-cost/card-render.js?v=20260426-pc2"></script>
 <script>
 (function(){
@@ -393,8 +513,33 @@
   var latestSummary = null;
   var latestRecipe  = null;
 
+  // Cost Drift Check-in state — populated from the URL fragment when
+  // the page is opened from a quarterly reminder. baselinePlateCost
+  // is the plate cost computed from the baseline recipe (the one the
+  // owner saved 90 days ago). When set, the headline renders the
+  // drift delta + verdict line.
+  var driftBaseline = null; // { plateCost, recipe, date }
+
   // Units allowed in the dropdown — filtered to the most common.
+  // The "case" unit was removed from the dropdown — its count varies
+  // by supplier (12, 24, 30…) so a fixed canonical of 1 was silently
+  // wrong. Owners who paste "case" still get auto-mapped to "each"
+  // by the paste handler, with a hint asking them to confirm.
   var UNIT_OPTIONS = ['g','kg','oz','lb','ml','l','tsp','tbsp','fl-oz','cup','qt','gal','each','dozen'];
+
+  // Populate the ingredient autocomplete from the canonical yield
+  // table. Native <datalist> works on every target including iOS
+  // Safari with no JS framework.
+  var datalistEl = document.getElementById('pcYieldNames');
+  if (datalistEl && PC.YIELD_TABLE) {
+    var ingredientKeys = Object.keys(PC.YIELD_TABLE).sort();
+    datalistEl.innerHTML = ingredientKeys.map(function(k){
+      // Title-case the suggestion so the list reads like a prep
+      // sheet, not a lookup-key dump.
+      var label = k.replace(/\b([a-z])/g, function(_, c){ return c.toUpperCase(); });
+      return '<option value="' + label + '"></option>';
+    }).join('');
+  }
 
   // -------------------- Row helpers --------------------
   function blankRow() {
@@ -412,7 +557,7 @@
 
   function rowHtml(row, idx) {
     return '<tr data-idx="' + idx + '">' +
-      '<td><input type="text" data-field="ingredient" value="' + esc(row.ingredient) + '" placeholder="e.g. Romaine" /></td>' +
+      '<td><input type="text" data-field="ingredient" list="pcYieldNames" autocomplete="off" value="' + esc(row.ingredient) + '" placeholder="e.g. Romaine" /></td>' +
       '<td><input type="number" data-field="apPrice" min="0" step="0.01" value="' + esc(row.apPrice) + '" /></td>' +
       '<td><input type="number" data-field="apQty" min="0" step="0.01" value="' + esc(row.apQty) + '" /></td>' +
       '<td>' + unitSelect('apUnit', row.apUnit) + '</td>' +
@@ -477,6 +622,8 @@
       emptyEl.style.display  = 'block';
       warningsEl.style.display = 'none';
       if (actionsEl) actionsEl.style.display = 'none';
+      var sigEl = document.getElementById('pcSignature');
+      if (sigEl) sigEl.style.display = 'none';
       latestSummary = null;
       latestRecipe  = null;
       Array.prototype.forEach.call(rowsEl.querySelectorAll('[data-cell="cost"]'), function(c){
@@ -487,16 +634,37 @@
 
     var summary = PC.computePlateCost(recipe);
 
-    // Per-row cost cells
-    Array.prototype.forEach.call(rowsEl.querySelectorAll('tr'), function(tr, i){
+    // Per-row cost cells. When a row has a usable cost, append a
+    // tiny "Show the math" disclosure so the AP→EP→plate physics is
+    // visible to the reader — the educational moment the page hero
+    // promises ("the math the tool teaches…").
+    var trNodes = rowsEl.querySelectorAll('tr');
+    Array.prototype.forEach.call(trNodes, function(tr, i){
       var cell = tr.querySelector('[data-cell="cost"]');
       var row  = summary.ingredients[i];
+      // Drop any prior math row; we re-render every cycle.
+      var nextSibling = tr.nextElementSibling;
+      if (nextSibling && nextSibling.classList.contains('pc-math-row')) {
+        nextSibling.parentNode.removeChild(nextSibling);
+      }
       if (!row) { cell.textContent = '—'; return; }
       if (row.warning && WARNING_COPY[row.warning]) {
         cell.innerHTML = '<span class="pc-warn">' + WARNING_COPY[row.warning] + '</span>';
-      } else {
-        cell.textContent = fmtMoney(row.usedCost);
+        return;
       }
+      var math = PC.formatRowMath(recipe.rows[i], row);
+      if (!math) {
+        cell.textContent = fmtMoney(row.usedCost);
+        return;
+      }
+      cell.innerHTML = fmtMoney(row.usedCost) +
+        '<button type="button" class="pc-math-toggle" aria-expanded="false">show math</button>';
+      var mathTr = document.createElement('tr');
+      mathTr.className = 'pc-math-row';
+      mathTr.hidden = true;
+      mathTr.innerHTML = '<td colspan="9"><span class="pc-math-line">' +
+        esc(math) + '</span></td>';
+      tr.parentNode.insertBefore(mathTr, tr.nextSibling);
     });
 
     // Headline
@@ -513,14 +681,26 @@
       : summary.confidence === 'medium' ? 'Medium confidence — see warnings'
       : 'Low confidence — fix warnings to refine';
 
-    // Three suggested menu prices
+    // Three suggested menu prices, with one row marked RECOMMENDED
+    // based on the recipe's profile (perishable / protein / unknown
+    // yield). The owner keeps full agency — the others stay visible.
     var prices = PC.suggestMenuPrices(summary.plateCost);
+    var recTier = PC.recommendedTier(summary);
+    var recRationale = {
+      'casual':       'Default for protein-heavy or perishable-rich dishes — covers prep + waste with margin to spare.',
+      'fine-dining':  'Default while a yield assumption is uncertain — a tighter food-cost target absorbs the risk.',
+      'high-volume':  'Default when ingredients are stable and the kitchen runs lean on labour.'
+    };
     priceRowsEl.innerHTML = prices.map(function(p){
-      return '<div class="pc-price-row">' +
+      var isRec = p.label === recTier;
+      return '<div class="pc-price-row"' + (isRec ? ' data-recommended="true"' : '') + '>' +
         '<div class="pc-price-target">' + Math.round(p.target * 100) + '%</div>' +
         '<div class="pc-price-mid">' +
-          '<span class="pc-price-label">' + p.label + '</span>' +
+          '<span class="pc-price-label">' + p.label +
+            (isRec ? '<span class="pc-rec-pill">Recommended</span>' : '') +
+          '</span>' +
           '<span class="pc-price-note">' + esc(p.note) + '</span>' +
+          (isRec ? '<span class="pc-rec-rationale">' + esc(recRationale[recTier] || '') + '</span>' : '') +
         '</div>' +
         '<div>' +
           '<div class="pc-price-amount">' + fmtMoney(p.price) + '</div>' +
@@ -528,6 +708,21 @@
         '</div>' +
       '</div>';
     }).join('');
+
+    // Bottleneck callout — surfaces only when one ingredient ≥ 30%
+    // of plate cost. The line a chef will quote at the prep meeting.
+    var bottleneckEl = document.getElementById('pcBottleneck');
+    var bottleneck = PC.bottleneckLine(summary);
+    if (bottleneckEl) {
+      if (bottleneck) {
+        bottleneckEl.innerHTML = '<strong>' + esc(bottleneck.name) + '</strong> is ' +
+          Math.round(bottleneck.share * 100) + '% of your plate cost. Watch its invoice.';
+        bottleneckEl.hidden = false;
+      } else {
+        bottleneckEl.hidden = true;
+        bottleneckEl.textContent = '';
+      }
+    }
 
     // Top-of-form warnings (deduped recipe-level)
     var warningCopy = {
@@ -550,12 +745,119 @@
     resultEl.style.display = 'grid';
     emptyEl.style.display  = 'none';
     actionsEl.style.display = 'flex';
+    var sigEl2 = document.getElementById('pcSignature');
+    if (sigEl2) sigEl2.style.display = 'block';
 
     // Cache the latest summary so export handlers can read it
     // without re-running computePlateCost.
     latestSummary = summary;
     latestRecipe  = recipe;
+
+    renderDriftLayer(summary);
   }
+
+  // Cost Drift Check-in render — when a baseline is loaded, the
+  // headline shows old → new plate cost with a drift pill and a
+  // one-sentence verdict. When no baseline, this is a no-op so the
+  // first-time experience stays clean.
+  var headlineOldEl = document.getElementById('pcHeadlineOld');
+  var driftPillEl   = document.getElementById('pcDriftPill');
+  var verdictEl     = document.getElementById('pcVerdict');
+  var pushMeBtnEl   = document.getElementById('pcPushMe');
+  var pushMeOriginalLabel = pushMeBtnEl ? pushMeBtnEl.textContent : '';
+  function renderDriftLayer(summary) {
+    if (!driftBaseline || !summary || !isFinite(summary.plateCost) || summary.plateCost <= 0) {
+      if (headlineOldEl) { headlineOldEl.hidden = true; headlineOldEl.textContent = ''; }
+      if (driftPillEl)   { driftPillEl.hidden   = true; driftPillEl.textContent   = ''; }
+      if (verdictEl)     { verdictEl.hidden     = true; verdictEl.textContent     = ''; }
+      if (pushMeBtnEl)   { pushMeBtnEl.textContent = pushMeOriginalLabel || 'Add to Menu Engineering →'; }
+      return;
+    }
+    var op = driftBaseline.plateCost;
+    var np = summary.plateCost;
+    var driftPct = (np - op) / op;
+    var driftPctRound = Math.round(driftPct * 100);
+    var sign = driftPctRound > 0 ? '+' : '';
+    // Use the 30%-target menu price as the proxy for "current menu
+    // price" so the verdict's food-cost band logic works even when
+    // the owner hasn't told us their actual price.
+    var prices = PC.suggestMenuPrices(op);
+    var seedPrice = prices.length > 1 ? prices[1].price : op / 0.30;
+    var verdict = PC.verdictForDrift(op, np, seedPrice);
+    headlineOldEl.textContent = fmtMoney(op);
+    headlineOldEl.hidden = false;
+    driftPillEl.textContent = sign + driftPctRound + '%';
+    driftPillEl.dataset.tone = verdict.tone;
+    driftPillEl.hidden = false;
+    verdictEl.textContent = verdict.copyEN;
+    verdictEl.dataset.tone = verdict.tone;
+    verdictEl.hidden = !verdict.copyEN;
+    if (pushMeBtnEl) {
+      pushMeBtnEl.textContent = (verdict.tone === 'crossed' || verdict.tone === 'slipped')
+        ? 'Send the new costing to Menu Engineering →'
+        : (pushMeOriginalLabel || 'Add to Menu Engineering →');
+    }
+  }
+
+  // Hydrate from the URL fragment when present. This is the entry
+  // path from a quarterly calendar reminder. When mode=recost, we
+  // flip data-pc-mode so the recost banner + drift layer activate.
+  function hydrateFromFragment() {
+    if (typeof location === 'undefined' || !location.hash) return;
+    var hydrated = PC.decodeRecipe(location.hash);
+    if (!hydrated || !hydrated.rows || !hydrated.rows.length) return;
+    nameEl.value = hydrated.name || '';
+    portionsEl.value = String(hydrated.portions || 1);
+    rerenderRows(hydrated.rows.map(function(r){ return Object.assign({}, r); }));
+    if (hydrated.mode === 'recost') {
+      document.body.setAttribute('data-pc-mode', 'recost');
+      var dateEl = document.getElementById('pcBaselineDate');
+      if (dateEl) dateEl.textContent = hydrated.date || '—';
+      // Compute the baseline plate cost from the hydrated recipe
+      // BEFORE the user starts editing — that's the snapshot the
+      // owner saved 90 days ago. Subsequent renders will compare
+      // today's edits against this baseline.
+      var baselineSummary = PC.computePlateCost({
+        name: hydrated.name, portions: hydrated.portions, rows: hydrated.rows
+      });
+      driftBaseline = {
+        plateCost: baselineSummary.plateCost,
+        recipe:    hydrated,
+        date:      hydrated.date || ''
+      };
+    }
+    renderResults();
+    if (window.plausible) {
+      window.plausible('Plate Cost Signature', { props: {
+        action: hydrated.mode === 'recost' ? 'recost-opened' : 'rehydrated'
+      } });
+    }
+  }
+
+  // Save & remind handler — encodes the current recipe + today's date
+  // into the URL fragment, builds an 8-event quarterly ICS pointing
+  // back to that fragment, and triggers the download.
+  var signatureEl   = document.getElementById('pcSignature');
+  var saveQBtn      = document.getElementById('pcSaveQuarterly');
+  var quarterlyStat = document.getElementById('pcQuarterlyStatus');
+  if (saveQBtn) saveQBtn.addEventListener('click', function(){
+    if (!latestSummary || !latestRecipe) return;
+    var today = new Date().toISOString().slice(0, 10);
+    var fragment = PC.encodeRecipe(latestRecipe, { date: today, mode: 'recost' });
+    var scenarioUrl = location.origin + location.pathname + '#' + fragment;
+    var dishName = (latestRecipe.name || '').trim();
+    var ics = PC.generateQuarterlyIcs(scenarioUrl, { locale: 'en', dishName: dishName });
+    var slug = (dishName || 'recipe').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'recipe';
+    downloadBlob(new Blob([ics], { type: 'text/calendar;charset=utf-8' }),
+                 'plate-cost-quarterly-' + slug + '.ics');
+    if (quarterlyStat) {
+      quarterlyStat.dataset.shown = 'true';
+      setTimeout(function(){ quarterlyStat.dataset.shown = 'false'; }, 5000);
+    }
+    if (window.plausible) {
+      window.plausible('Plate Cost Signature', { props: { action: 'quarterly-saved' } });
+    }
+  });
 
   // -------------------- Event handlers --------------------
   function rerenderRows(rows) {
@@ -569,8 +871,34 @@
       var tr = e.target.closest('tr');
       if (tr) tr.remove();
       renderResults();
+      return;
+    }
+    if (e.target.classList.contains('pc-math-toggle')) {
+      var srcRow = e.target.closest('tr');
+      var mathRow = srcRow && srcRow.nextElementSibling;
+      if (mathRow && mathRow.classList.contains('pc-math-row')) {
+        var open = mathRow.hidden;
+        mathRow.hidden = !open;
+        e.target.setAttribute('aria-expanded', String(open));
+        e.target.textContent = open ? 'hide math' : 'show math';
+      }
     }
   });
+  // Yield-input forgiveness — owners type "75" or "75%" instead of
+  // "0.75". Mirrors the same percent-aware logic the paste handler
+  // already uses (PC.normalizeYieldInput) so a single source of truth
+  // governs both entry paths.
+  rowsEl.addEventListener('blur', function(e){
+    var el = e.target;
+    if (!el || el.dataset.field !== 'yieldPercent') return;
+    var raw = el.value;
+    if (raw == null || raw === '') return;
+    var normalized = PC.normalizeYieldInput(raw);
+    if (normalized != null && String(normalized) !== String(raw)) {
+      el.value = normalized;
+      renderResults();
+    }
+  }, true);
   if (portionsEl) portionsEl.addEventListener('input', renderResults);
   if (nameEl)     nameEl.addEventListener('input', renderResults);
 
@@ -1032,8 +1360,11 @@
   }
 
   // -------------------- Initial state --------------------
+  // Render five blank rows by default; if a quarterly reminder URL
+  // hydrates the form, the rows + drift layer take over.
   rerenderRows(Array.from({ length: 5 }, blankRow));
-  renderResults();
+  hydrateFromFragment();
+  if (!driftBaseline) renderResults();
 })();
 </script>
 </body>
