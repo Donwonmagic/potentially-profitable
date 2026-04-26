@@ -208,6 +208,20 @@
       <input type="text" id="ohCity" placeholder="e.g. Silver Spring" autocomplete="address-level2" />
     </div>
 
+    <details class="oh-address-extra" style="border:1px dashed var(--line-dark);border-radius:var(--r-input);padding:14px 18px;background:var(--white);">
+      <summary style="cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px;">
+        <span>Add a street address &mdash; <span style="color:var(--stone);font-weight:400;">recommended for Google Rich Results</span></span>
+        <span style="font-size:18px;color:var(--stone);" class="oh-address-toggle">+</span>
+      </summary>
+      <div style="margin-top:12px;display:grid;grid-template-columns:1fr 100px 120px;gap:10px;">
+        <input type="text" id="ohStreet" placeholder="Street address (e.g. 8512 Fenton St)" autocomplete="street-address" aria-label="Street address" style="padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:14px;color:var(--ink);" />
+        <input type="text" id="ohRegion" placeholder="State (MD)" autocomplete="address-level1" aria-label="State or region" maxlength="3" style="padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:14px;color:var(--ink);text-transform:uppercase;" />
+        <input type="text" id="ohPostal" placeholder="ZIP (20910)" autocomplete="postal-code" aria-label="ZIP / postal code" inputmode="numeric" style="padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums;" />
+      </div>
+      <p style="margin:10px 0 0;font-size:12px;color:var(--stone);line-height:1.55;">All optional. Skipping these still gives you a working JSON-LD block. Adding them turns the block into a Rich-Results-ready Restaurant entry &mdash; the same data Google wants for the &ldquo;restaurants near me&rdquo; carousel.</p>
+    </details>
+    <style>.oh-address-extra[open] .oh-address-toggle{transform:rotate(45deg);transition:transform 140ms var(--ease-out)}.oh-address-extra summary::-webkit-details-marker{display:none}@media(max-width:640px){.oh-address-extra div{grid-template-columns:1fr !important}}</style>
+
     <div>
       <label style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);display:block;margin-bottom:8px;">What times are you open?</label>
       <p style="font-size:12.5px;color:var(--stone);margin:0 0 10px;line-height:1.55;">Type times like <code>11 AM</code>, <code>5 PM</code>, or <code>21:00</code> — the tool understands all of them. Leave both boxes empty for a closed day. If you close after midnight (last call at 1 AM), check &ldquo;closes next day.&rdquo;</p>
@@ -288,6 +302,22 @@
       <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">If a developer or agency built your site, send them the email and code below. They'll know exactly what to do with it. <em>(For the technically curious: this is Schema.org <code>OpeningHoursSpecification</code> JSON-LD — the format Google reads to show your hours in search results.)</em></p>
       <div class="oh-task-recipe" id="ohEmailBlock" style="white-space:pre-line;"></div>
       <pre class="oh-task-block" id="ohJsonLdBlock" aria-label="JSON-LD code block"></pre>
+      <details class="oh-cms-hints" style="margin-top:10px;border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 14px;background:var(--cream-2);">
+        <summary style="cursor:pointer;font-size:12.5px;font-weight:600;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center;">
+          <span>Where this goes on common site builders</span>
+          <span style="font-size:16px;color:var(--stone);" class="oh-cms-toggle">+</span>
+        </summary>
+        <table style="width:100%;border-collapse:collapse;margin-top:10px;font-size:12.5px;line-height:1.55;">
+          <thead><tr style="text-align:left;border-bottom:1px solid var(--line);"><th style="padding:6px 8px;font-weight:600;color:var(--stone);font-size:11px;letter-spacing:.04em;text-transform:uppercase;">Site builder</th><th style="padding:6px 8px;font-weight:600;color:var(--stone);font-size:11px;letter-spacing:.04em;text-transform:uppercase;">Where to paste</th></tr></thead>
+          <tbody style="font-size:13px;">
+            <tr><td style="padding:6px 8px;font-weight:600;border-bottom:1px solid var(--line);">Squarespace</td><td style="padding:6px 8px;color:var(--ink-soft);border-bottom:1px solid var(--line);">Settings &rarr; Advanced &rarr; Code Injection &rarr; <strong>Header</strong></td></tr>
+            <tr><td style="padding:6px 8px;font-weight:600;border-bottom:1px solid var(--line);">WordPress</td><td style="padding:6px 8px;color:var(--ink-soft);border-bottom:1px solid var(--line);">Theme <code>header.php</code>, or use a &ldquo;Header &amp; Footer&rdquo; plugin</td></tr>
+            <tr><td style="padding:6px 8px;font-weight:600;border-bottom:1px solid var(--line);">Wix</td><td style="padding:6px 8px;color:var(--ink-soft);border-bottom:1px solid var(--line);">Settings &rarr; Custom Code &rarr; Add Custom Code &rarr; <strong>Head</strong></td></tr>
+            <tr><td style="padding:6px 8px;font-weight:600;">Webflow</td><td style="padding:6px 8px;color:var(--ink-soft);">Project Settings &rarr; Custom Code &rarr; <strong>Head Code</strong></td></tr>
+          </tbody>
+        </table>
+      </details>
+      <style>.oh-cms-hints[open] .oh-cms-toggle{transform:rotate(45deg);transition:transform 140ms var(--ease-out)}.oh-cms-hints summary::-webkit-details-marker{display:none}</style>
       <div class="oh-task-actions">
         <button type="button" class="oh-task-btn oh-task-btn-primary" id="ohCopyEmail" data-copy-label="Copy email + code">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
@@ -300,27 +330,40 @@
       </div>
     </article>
 
-    <article class="oh-task-card">
+    <article class="oh-task-card oh-serp-card">
       <header class="oh-task-head">
-        <h3>Update Yelp.</h3>
-        <span class="oh-task-format">For Yelp Business</span>
+        <h3>What customers will see in Google.</h3>
+        <span class="oh-task-format">Rich Result preview</span>
       </header>
-      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">Yelp uses a slightly different format than Google. Same drill — sign in, find &ldquo;Business Information,&rdquo; paste this in.</p>
-      <pre class="oh-task-block" id="ohYelpBlock" aria-label="Yelp paste block"></pre>
-      <div class="oh-task-actions">
-        <button type="button" class="oh-task-btn oh-task-btn-primary" data-copy-target="ohYelpBlock" data-copy-label="Copy for Yelp">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          Copy for Yelp
-        </button>
-      </div>
+      <p style="margin:0 0 12px;font-size:14px;line-height:1.55;color:var(--ink-soft);">Roughly what a searcher sees when Google reads the code on your site. Open / Closed updates live based on the time right now.</p>
+      <div id="ohSerpPreview" class="oh-serp" aria-label="Google rich result preview"></div>
+      <p style="margin:10px 0 0;font-size:12px;color:var(--stone);line-height:1.55;">Real Google rendering varies (mobile vs. desktop, signed-in state, your industry). The structure, day grid, and Open/Closed status are what you control via the JSON-LD block above.</p>
     </article>
+    <style>
+.oh-serp{border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);padding:18px 20px;font-size:14px;line-height:1.45;color:var(--ink);box-shadow:0 1px 2px rgba(20,22,26,0.04)}
+.oh-serp-row1{font-size:11.5px;color:var(--stone);font-weight:500;letter-spacing:.02em;display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px}
+.oh-serp-row1 .oh-serp-stars{color:#E2A037;letter-spacing:1px}
+.oh-serp-row1 .oh-serp-sep{color:var(--line-dark)}
+.oh-serp-name{font-family:var(--font-display);font-size:20px;font-weight:500;color:#1A0DAB;margin:2px 0 6px;line-height:1.2}
+.oh-serp-status{font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:6px;margin:4px 0}
+.oh-serp-status[data-state="open"]{color:var(--status-good,#1F7A33)}
+.oh-serp-status[data-state="closed"]{color:var(--rust)}
+.oh-serp-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:0;margin:10px 0 0;font-size:11.5px;border:1px solid var(--line);border-radius:var(--r-sm);overflow:hidden}
+.oh-serp-grid > div{padding:6px 4px;text-align:center;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.oh-serp-grid > div:nth-child(7n){border-right:0}
+.oh-serp-grid > div:nth-child(n+8){border-bottom:0}
+.oh-serp-grid .oh-serp-day{font-weight:600;color:var(--stone);background:var(--cream-2);font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+.oh-serp-grid .oh-serp-hours{color:var(--ink);font-variant-numeric:tabular-nums;font-size:11px;line-height:1.3}
+.oh-serp-grid .oh-serp-hours[data-closed="true"]{color:var(--stone);font-style:italic}
+.oh-serp-addr{margin:8px 0 0;font-size:12.5px;color:var(--stone)}
+    </style>
 
     <article class="oh-task-card">
       <header class="oh-task-head">
         <h3>Update Apple Maps.</h3>
         <span class="oh-task-format">For Apple Business Connect</span>
       </header>
-      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">Apple Business Connect is free and the second-most-checked map after Google. Sign in at <a href="https://businessconnect.apple.com" target="_blank" rel="noopener" style="color:var(--teal);">businessconnect.apple.com</a> and paste this into your hours.</p>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">Apple Business Connect is free and now the second-most-checked map after Google &mdash; bigger than Yelp on iPhone. Sign in at <a href="https://businessconnect.apple.com" target="_blank" rel="noopener" style="color:var(--teal);">businessconnect.apple.com</a> and paste this into your hours.</p>
       <pre class="oh-task-block" id="ohAppleBlock" aria-label="Apple Maps paste block"></pre>
       <div class="oh-task-actions">
         <button type="button" class="oh-task-btn oh-task-btn-primary" data-copy-target="ohAppleBlock" data-copy-label="Copy for Apple Maps">
@@ -329,6 +372,28 @@
         </button>
       </div>
     </article>
+
+    <details class="oh-task-card oh-other-platforms" style="padding:0;">
+      <summary style="cursor:pointer;padding:18px 20px;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;">
+        <span>
+          <span style="display:block;font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);">Other listing platforms</span>
+          <span style="display:block;font-size:13px;color:var(--stone);margin-top:2px;">Yelp &mdash; smaller share than Apple Maps for most independents, but worth keeping in sync if you're claimed there.</span>
+        </span>
+        <span style="font-size:18px;color:var(--stone);" class="oh-other-toggle">+</span>
+      </summary>
+      <div style="padding:0 20px 18px;">
+        <h3 style="font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink);margin:6px 0 6px;">Update Yelp</h3>
+        <p style="margin:0 0 8px;font-size:13.5px;line-height:1.55;color:var(--ink-soft);">Yelp uses a slightly different format than Google. Sign in, find &ldquo;Business Information,&rdquo; paste this in.</p>
+        <pre class="oh-task-block" id="ohYelpBlock" aria-label="Yelp paste block"></pre>
+        <div class="oh-task-actions">
+          <button type="button" class="oh-task-btn oh-task-btn-primary" data-copy-target="ohYelpBlock" data-copy-label="Copy for Yelp">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy for Yelp
+          </button>
+        </div>
+      </div>
+    </details>
+    <style>.oh-other-platforms[open] .oh-other-toggle{transform:rotate(45deg);transition:transform 140ms var(--ease-out)}.oh-other-platforms summary::-webkit-details-marker{display:none}</style>
 
     <article class="oh-task-card" id="ohIcsCard" hidden>
       <header class="oh-task-head">
@@ -539,8 +604,8 @@
 </footer>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="./open-hours.js?v=20260426-oh3"></script>
-<script src="./sign-render.js?v=20260426-oh4"></script>
+<script src="./open-hours.js?v=20260426-oh5"></script>
+<script src="./sign-render.js?v=20260426-oh6"></script>
 <script>
 /* Open Hours — week-grid input + live output render.
  *
@@ -951,10 +1016,132 @@
       appleBlock.textContent  = window.OH.generatePlatformCopy(input, 'apple');
       jsonLdBlock.textContent = window.OH.generateJsonLdScript(input);
       emailBlock.textContent  = window.OH.generateBuilderEmail(input);
+      paintSerpPreview(v, input);
       paintChecklist(v);
       paintDiff();
       firePlausibleOnce(v);
     });
+  }
+
+  function paintSerpPreview(v, input){
+    // Mock of a Google rich-result card. Pure render; no fetch.
+    var el = document.getElementById('ohSerpPreview');
+    if (!el) return;
+    var fmt = window.OH.formatTime;
+    var name = (input && input.name) || (v && v.name) || 'Your restaurant';
+    var city = (input && input.city) || (v && v.city) || '';
+    var street = (input && input.street) || '';
+    var region = (input && input.region) || '';
+    var postal = (input && input.postalCode) || '';
+    var addrParts = [street, [city, region].filter(Boolean).join(', '), postal].filter(Boolean);
+    var addrLine = addrParts.length ? addrParts.join(' · ') : (city ? city : '');
+
+    // Open/Closed status from current local time.
+    var now = new Date();
+    var jsDay = now.getDay(); // 0=Sun..6=Sat
+    // Map JS Sunday-first → our Mon-first DAYS array index
+    var dayIdx = (jsDay + 6) % 7;
+    var dayKey = DAYS[dayIdx];
+    var prevKey = DAYS[(dayIdx + 6) % 7];
+    var nowMin = now.getHours() * 60 + now.getMinutes();
+    var status = 'closed';
+    var nextChange = '';
+
+    function timeMin(hhmm){
+      if (typeof hhmm !== 'string') return null;
+      var m = /^(\d{2}):(\d{2})$/.exec(hhmm); if (!m) return null;
+      return parseInt(m[1],10)*60 + parseInt(m[2],10);
+    }
+    var todayServices = (v.week[dayKey] || []).slice().sort(function(a,b){
+      return timeMin(a.opens) - timeMin(b.opens);
+    });
+    var prevServices = (v.week[prevKey] || []);
+
+    // Check if a previous-day next-day-spillover is still active.
+    for (var i = 0; i < prevServices.length; i++) {
+      var ps = prevServices[i];
+      if (ps.closesNextDay) {
+        var psClose = timeMin(ps.closes);
+        if (psClose != null && nowMin < psClose) {
+          status = 'open';
+          nextChange = 'Closes ' + fmt(ps.closes);
+          break;
+        }
+      }
+    }
+    if (status === 'closed') {
+      for (var j = 0; j < todayServices.length; j++) {
+        var s = todayServices[j];
+        var so = timeMin(s.opens), sc = timeMin(s.closes);
+        if (so == null || sc == null) continue;
+        var effClose = sc + (s.closesNextDay ? 1440 : 0);
+        if (nowMin >= so && nowMin < effClose) {
+          status = 'open';
+          nextChange = 'Closes ' + fmt(s.closes) + (s.closesNextDay ? ' (next day)' : '');
+          break;
+        }
+        if (nowMin < so) {
+          status = 'closed';
+          nextChange = 'Opens ' + fmt(s.opens);
+          break;
+        }
+      }
+      // If today has no upcoming service, find next day with hours.
+      if (!nextChange) {
+        for (var d = 1; d <= 7; d++) {
+          var nextKey = DAYS[(dayIdx + d) % 7];
+          var ns = (v.week[nextKey] || [])[0];
+          if (ns) {
+            nextChange = 'Opens ' + window.OH.DAYS_FULL[(dayIdx + d) % 7].slice(0,3) + ' ' + fmt(ns.opens);
+            break;
+          }
+        }
+      }
+    }
+
+    // Build day grid (Mon..Sun)
+    var gridHtml = '';
+    DAYS.forEach(function(d, idx){
+      gridHtml += '<div class="oh-serp-day">' + d.slice(0,3) + '</div>';
+    });
+    DAYS.forEach(function(d, idx){
+      var services = v.week[d] || [];
+      if (!services.length) {
+        gridHtml += '<div class="oh-serp-hours" data-closed="true">closed</div>';
+      } else {
+        var label = services.map(function(s){
+          var openH = parseInt(s.opens.slice(0,2),10);
+          var closeH = parseInt(s.closes.slice(0,2),10);
+          // Compact format for grid: "5–10p", "11a–3p"
+          function compact(h, m){
+            var ampm = h >= 12 ? 'p' : 'a';
+            var h12 = h === 0 ? 12 : (h > 12 ? h - 12 : h);
+            return h12 + (m > 0 ? ':' + (m<10?'0':'') + m : '') + ampm;
+          }
+          var om = parseInt(s.opens.slice(3,5),10);
+          var cm = parseInt(s.closes.slice(3,5),10);
+          return compact(openH, om) + '–' + compact(closeH, cm);
+        }).join(' / ');
+        gridHtml += '<div class="oh-serp-hours">' + escHtml(label) + '</div>';
+      }
+    });
+
+    el.innerHTML =
+      '<div class="oh-serp-row1">' +
+        '<span class="oh-serp-stars" aria-hidden="true">★★★★☆</span>' +
+        '<span>4.6</span>' +
+        '<span class="oh-serp-sep">·</span>' +
+        '<span>Restaurant</span>' +
+        (city ? '<span class="oh-serp-sep">·</span><span>' + escHtml(city) + '</span>' : '') +
+      '</div>' +
+      '<div class="oh-serp-name">' + escHtml(name) + '</div>' +
+      '<div class="oh-serp-status" data-state="' + status + '">' +
+        '<span aria-hidden="true">' + (status === 'open' ? '●' : '○') + '</span>' +
+        '<span>' + (status === 'open' ? 'Open now' : 'Closed') +
+                   (nextChange ? ' · ' + escHtml(nextChange) : '') + '</span>' +
+      '</div>' +
+      '<div class="oh-serp-grid">' + gridHtml + '</div>' +
+      (addrLine ? '<div class="oh-serp-addr">' + escHtml(addrLine) + '</div>' : '');
   }
 
   function paintWarnings(warns){
@@ -1052,6 +1239,10 @@
   });
   nameEl.addEventListener('input', rerender);
   cityEl.addEventListener('input', rerender);
+  ['ohStreet','ohRegion','ohPostal'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('input', rerender);
+  });
   loadBtn.addEventListener('click', loadSample);
   if (emptyLoad) emptyLoad.addEventListener('click', loadSample);
   clearBtn.addEventListener('click', clearAll);
