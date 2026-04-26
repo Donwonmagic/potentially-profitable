@@ -32,15 +32,21 @@
   // each photo is composed for. Pixel resolutions are the
   // platform-published current values; aspect ratios are the math.
   // ============================================================
+  // Specs reviewed: 2026-04. Sources: Meta Help Center (Instagram
+  // feed 4:5 best-practice), Google Business Profile help (cover
+  // image minimum 1200×675), Yelp partner guidance (featured image
+  // 1920×1280). Owner can still tick the 1:1 grid-square sub-option
+  // for grid-harmony with older 1:1 posts.
   var SURFACES = {
-    'web-hero':     { label: 'Web hero',          ratio: 16/9,    pixels: { w: 1920, h: 1080 }, negDefault: 'right'  },
-    'og-card':      { label: 'OG card',           ratio: 1.91,    pixels: { w: 1200, h: 630  }, negDefault: 'bottom' },
-    'yelp':         { label: 'Yelp featured',     ratio: 3/2,     pixels: { w: 1500, h: 1000 }, negDefault: 'none'   },
-    'gbp-cover':    { label: 'Google Business',   ratio: 16/9,    pixels: { w: 1080, h: 608  }, negDefault: 'none'   },
-    'ig-grid':      { label: 'Instagram grid',    ratio: 1,       pixels: { w: 1080, h: 1080 }, negDefault: 'none'   },
-    'ig-story':     { label: 'Instagram story',   ratio: 9/16,    pixels: { w: 1080, h: 1920 }, negDefault: 'top'    },
-    'menu-inline':  { label: 'Menu page inline',  ratio: 4/3,     pixels: { w: 1200, h: 900  }, negDefault: 'none'   },
-    'apple-maps':   { label: 'Apple Maps',        ratio: 4/3,     pixels: { w: 1024, h: 768  }, negDefault: 'none'   }
+    'web-hero':       { label: 'Web hero',         ratio: 16/9,    pixels: { w: 1920, h: 1080 }, negDefault: 'right'  },
+    'og-card':        { label: 'OG card',          ratio: 1.91,    pixels: { w: 1200, h: 630  }, negDefault: 'bottom' },
+    'yelp':           { label: 'Yelp featured',    ratio: 3/2,     pixels: { w: 1920, h: 1280 }, negDefault: 'none'   },
+    'gbp-cover':      { label: 'Google Business',  ratio: 16/9,    pixels: { w: 1200, h: 675  }, negDefault: 'none'   },
+    'ig-grid':        { label: 'Instagram feed',   ratio: 4/5,     pixels: { w: 1080, h: 1350 }, negDefault: 'none'   },
+    'ig-grid-square': { label: 'Instagram square', ratio: 1,       pixels: { w: 1080, h: 1080 }, negDefault: 'none'   },
+    'ig-story':       { label: 'Instagram story',  ratio: 9/16,    pixels: { w: 1080, h: 1920 }, negDefault: 'top'    },
+    'menu-inline':    { label: 'Menu page inline', ratio: 4/3,     pixels: { w: 1200, h: 900  }, negDefault: 'none'   },
+    'apple-maps':     { label: 'Apple Maps',       ratio: 4/3,     pixels: { w: 1024, h: 768  }, negDefault: 'none'   }
   };
 
   // Constrained vocabularies (the §3 Risk-1 mitigation: math, not text).
@@ -66,14 +72,15 @@
       case 'og-card':     base = { angle: '45deg',     lighting: 'warm-window' };  break;
       case 'yelp':        base = { angle: '45deg',     lighting: 'warm-window' };  break;
       case 'gbp-cover':   base = { angle: '45deg',     lighting: 'warm-window' };  break;
-      case 'ig-grid':     base = { angle: '45deg',     lighting: 'bright-table' }; break;
+      case 'ig-grid':
+      case 'ig-grid-square': base = { angle: '45deg', lighting: 'bright-table' }; break;
       case 'ig-story':    base = { angle: 'overhead',  lighting: 'bright-table' }; break;
       case 'menu-inline': base = { angle: 'overhead',  lighting: 'warm-window' };  break;
       case 'apple-maps':  base = { angle: 'room',      lighting: 'ambient' };      break;
       default:            base = { angle: '45deg',     lighting: 'warm-window' };
     }
     // Category nudges
-    if (category === 'dessert' && (surfaceKey === 'web-hero' || surfaceKey === 'ig-grid' || surfaceKey === 'menu-inline')) {
+    if (category === 'dessert' && (surfaceKey === 'web-hero' || surfaceKey === 'ig-grid' || surfaceKey === 'ig-grid-square' || surfaceKey === 'menu-inline')) {
       base.angle = 'overhead';
     }
     if (category === 'drink') {

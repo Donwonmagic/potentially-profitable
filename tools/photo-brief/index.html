@@ -53,6 +53,15 @@
 .pb-meta input,.pb-meta select{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums}
 .pb-meta input:focus,.pb-meta select:focus{outline:2px solid var(--teal);outline-offset:1px}
 
+.pb-srcframe{margin:0;padding:14px 16px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+.pb-srcframe legend{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);padding:0;margin:0 8px 0 0}
+.pb-srcframe label{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink);cursor:pointer;padding:4px 10px;border:1px solid var(--line);border-radius:999px;background:var(--white);transition:border-color 140ms var(--ease-out)}
+.pb-srcframe label:hover{border-color:var(--teal)}
+.pb-srcframe label small{color:var(--stone);font-size:11px;font-weight:400}
+.pb-srcframe input[type="radio"]{margin:0;cursor:pointer}
+.pb-srcframe label[data-checked="true"]{border-color:var(--teal);background:rgba(31,78,91,0.04)}
+.pb-srcframe-note{flex-basis:100%;margin:0;font-size:11.5px;color:var(--stone);line-height:1.5}
+
 .pb-grid{border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);overflow-x:auto}
 .pb-grid table{width:100%;border-collapse:collapse;font-size:13px;min-width:640px}
 .pb-grid th{padding:10px 8px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);background:var(--cream-2);border-bottom:1px solid var(--line);white-space:nowrap}
@@ -101,8 +110,8 @@
 .pb-coverage-tile{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font-size:12px;line-height:1.4}
 .pb-coverage-title{font-weight:600;color:var(--ink);margin:0 0 2px}
 .pb-coverage-ratio{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;color:var(--stone);font-variant-numeric:tabular-nums}
-.pb-coverage-crop{display:block;margin:6px 0;height:48px;background:var(--cream-2);border:1px solid var(--line);position:relative}
-.pb-coverage-crop::after{content:"";position:absolute;border:2px solid var(--teal);box-sizing:border-box;top:0;left:0;width:100%;height:100%}
+.pb-coverage-crop{display:block;margin:6px 0;height:48px;background:var(--cream-2);border:1px solid var(--line);position:relative;--pb-crop-w:100%;--pb-crop-h:100%;--pb-crop-x:0%;--pb-crop-y:0%}
+.pb-coverage-crop::after{content:"";position:absolute;background:rgba(31,78,91,0.10);border:2px solid var(--teal);box-sizing:border-box;top:var(--pb-crop-y);left:var(--pb-crop-x);width:var(--pb-crop-w);height:var(--pb-crop-h)}
 
 .pb-empty{padding:24px;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--cream-2);font-size:13.5px;color:var(--stone);text-align:center;margin-top:24px}
 
@@ -218,6 +227,14 @@
       </label>
     </div>
 
+    <fieldset class="pb-srcframe" id="pbSrcFrame" aria-describedby="pbSrcFrameNote">
+      <legend>Source frame</legend>
+      <label data-checked="true"><input type="radio" name="pbSrcRatio" value="3:2" checked /> 3:2 <small>DSLR / mirrorless</small></label>
+      <label><input type="radio" name="pbSrcRatio" value="4:3" /> 4:3 <small>phone / Micro Four Thirds</small></label>
+      <label><input type="radio" name="pbSrcRatio" value="16:9" /> 16:9 <small>cinema / video-first</small></label>
+      <p class="pb-srcframe-note" id="pbSrcFrameNote">Ask the photographer what their camera shoots. The crop math and the printed brief redraw to match.</p>
+    </fieldset>
+
     <div>
       <label style="display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:8px;">What dishes are we shooting?</label>
       <p style="font-size:12.5px;color:var(--stone);margin:0 0 10px;line-height:1.55;">Six rows to start. Add or remove. Categories drive the default angle / lighting recommendations &mdash; you can override per-shot in the brief.</p>
@@ -257,6 +274,7 @@
       <label style="display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:8px;">Where are the photos going?</label>
       <p style="font-size:12.5px;color:var(--stone);margin:0 0 10px;line-height:1.55;">Tick every destination you publish to. Each surface has a canonical aspect ratio &mdash; the brief computes which surfaces share crops so the photographer doesn&rsquo;t shoot the same dish 8 times.</p>
       <div class="pb-surfaces" id="pbSurfaces" role="group" aria-label="Destination surfaces"></div>
+      <p style="font-size:11.5px;color:var(--stone);margin:8px 0 0;line-height:1.5;"><strong style="color:var(--ink-soft);font-weight:600;">Specs reviewed: 2026-04.</strong> Instagram&rsquo;s feed default is 4:5 (1080&times;1350) for new posts; tick <em>Instagram square</em> if you&rsquo;re feeding an older 1:1 grid. Google Business minimum is 1200&times;675; Yelp featured is 1920&times;1280. Platforms drift &mdash; we recheck quarterly.</p>
     </div>
 
     <!-- MATH SUMMARY (the §3 Risk-2 mitigation rendered as UI) -->
@@ -393,6 +411,7 @@
   var nameEl       = document.getElementById('pbName');
   var photogEl     = document.getElementById('pbPhotographer');
   var dayRateEl    = document.getElementById('pbDayRate');
+  var srcFrameEl   = document.getElementById('pbSrcFrame');
   var rowsEl       = document.getElementById('pbRows');
   var addRowBtn    = document.getElementById('pbAddRow');
   var sampleBtn    = document.getElementById('pbSample');
@@ -469,7 +488,7 @@
     }).join('');
   }
   function ratioLabel(r){
-    var presets = [[16/9,'16:9'],[1.91,'1.91:1'],[3/2,'3:2'],[1,'1:1'],[9/16,'9:16'],[4/3,'4:3']];
+    var presets = [[16/9,'16:9'],[1.91,'1.91:1'],[3/2,'3:2'],[1,'1:1'],[9/16,'9:16'],[4/3,'4:3'],[4/5,'4:5']];
     for (var i = 0; i < presets.length; i++) {
       if (Math.abs(presets[i][0] - r) < 0.005) return presets[i][1];
     }
@@ -481,6 +500,22 @@
       if (cb.checked) out.push(cb.dataset.surface);
     });
     return out;
+  }
+
+  // -------------------- Source-frame ratio --------------------
+  // The aspect ratio the photographer's camera produces. Threaded
+  // through the crop math, the printable brief, and the exports.
+  var SRC_RATIOS = { '3:2': 3/2, '4:3': 4/3, '16:9': 16/9 };
+  function readSourceRatio(){
+    if (!srcFrameEl) return 3/2;
+    var checked = srcFrameEl.querySelector('input[name="pbSrcRatio"]:checked');
+    var key = checked ? checked.value : '3:2';
+    return SRC_RATIOS[key] || 3/2;
+  }
+  function readSourceRatioLabel(){
+    if (!srcFrameEl) return '3:2';
+    var checked = srcFrameEl.querySelector('input[name="pbSrcRatio"]:checked');
+    return checked ? checked.value : '3:2';
   }
 
   // -------------------- Warning gates (Risk-3 mitigation) --------------------
@@ -525,23 +560,39 @@
   }
 
   // -------------------- Coverage strip render --------------------
+  // The teal overlay's CSS variables are computed per-tile so the
+  // visual matches the math (was previously hardcoded to 100% × 100%).
+  function cropOverlayStyle(crop){
+    var pct = Math.max(0, Math.min(1, crop.cropFraction || 1));
+    var w = '100%', h = '100%', x = '0%', y = '0%';
+    if (crop.axis === 'horizontal') {
+      w = (pct * 100).toFixed(2) + '%';
+      x = ((1 - pct) * 50).toFixed(2) + '%'; // centred horizontally
+    } else if (crop.axis === 'vertical') {
+      h = (pct * 100).toFixed(2) + '%';
+      y = ((1 - pct) * 50).toFixed(2) + '%'; // centred vertically
+    }
+    return '--pb-crop-w:' + w + ';--pb-crop-h:' + h + ';--pb-crop-x:' + x + ';--pb-crop-y:' + y;
+  }
   function renderCoverage(checkedSurfaces){
     if (!checkedSurfaces.length) {
       coverageWrap.style.display = 'none';
       coverageEl.innerHTML = '';
       return;
     }
+    var src = readSourceRatio();
+    var srcLabel = ratioLabel(src);
     coverageEl.innerHTML = checkedSurfaces.map(function(key){
-      var s   = PB.SURFACES[key];
-      var crop = PB.computeCropRectangle(3/2, key);
+      var s    = PB.SURFACES[key];
+      var crop = PB.computeCropRectangle(src, key);
       var cropPct = Math.round(crop.cropFraction * 100);
       var axisCopy = crop.axis === 'exact' ? 'No crop'
                     : (crop.axis === 'horizontal' ? cropPct + '% width' : cropPct + '% height');
       return '<div class="pb-coverage-tile">' +
         '<p class="pb-coverage-title">' + s.label + '</p>' +
         '<span class="pb-coverage-ratio">' + ratioLabel(s.ratio) + ' &middot; ' + s.pixels.w + '&times;' + s.pixels.h + '</span>' +
-        '<span class="pb-coverage-crop" aria-hidden="true"></span>' +
-        '<span class="pb-coverage-ratio">From 3:2: ' + axisCopy + '</span>' +
+        '<span class="pb-coverage-crop" aria-hidden="true" style="' + cropOverlayStyle(crop) + '"></span>' +
+        '<span class="pb-coverage-ratio">From ' + srcLabel + ': ' + axisCopy + '</span>' +
       '</div>';
     }).join('');
     coverageWrap.style.display = '';
@@ -573,6 +624,8 @@
       photographer: photogEl ? photogEl.value.trim() : '',
       dishes:       dishes,
       surfaces:     surfaces,
+      sourceRatio:  readSourceRatio(),
+      sourceRatioLabel: readSourceRatioLabel(),
       dayRate:      dayRate,
       dedup:        dedup,
       roi:          roi,
@@ -611,6 +664,13 @@
     renderResults();
   });
   if (dayRateEl) dayRateEl.addEventListener('input', renderResults);
+  if (srcFrameEl) srcFrameEl.addEventListener('change', function(e){
+    Array.prototype.forEach.call(srcFrameEl.querySelectorAll('label'), function(l){
+      var inp = l.querySelector('input[type="radio"]');
+      l.dataset.checked = (inp && inp.checked) ? 'true' : 'false';
+    });
+    renderResults();
+  });
 
   if (addRowBtn) addRowBtn.addEventListener('click', function(){
     var current = readRows();
@@ -641,6 +701,7 @@
     rows.push(['Restaurant', latestSummary.restaurant || '']);
     rows.push(['Photographer', latestSummary.photographer || '']);
     rows.push(['Day rate', '$' + latestSummary.dayRate.toFixed(2)]);
+    rows.push(['Source frame ratio', latestSummary.sourceRatioLabel || '3:2']);
     rows.push(['Source frames (deduped)', String(latestSummary.dedup.dedup)]);
     rows.push(['Naive shot count',         String(latestSummary.dedup.naive)]);
     rows.push(['Estimated days',           String(latestSummary.roi.days)]);
@@ -683,6 +744,8 @@
       restaurant:   latestSummary.restaurant,
       photographer: latestSummary.photographer,
       dayRate:      latestSummary.dayRate,
+      sourceRatio:      latestSummary.sourceRatio,
+      sourceRatioLabel: latestSummary.sourceRatioLabel,
       surfaces:     latestSummary.surfaces,
       palette:      latestSummary.palette,
       margins:      latestSummary.margins,
@@ -749,13 +812,20 @@
     var coverage = latestSummary.surfaces.map(function(key){
       return { surface: PB.SURFACES[key], key: key };
     });
+    var srcRatio = latestSummary.sourceRatio || 3/2;
+    var srcLabel = latestSummary.sourceRatioLabel || '3:2';
+    var strings  = Object.assign({}, window.PBCard.DEFAULT_STRINGS_EN, {
+      coverageTitle: 'Surface coverage · ' + srcLabel + ' source crops'
+    });
     return {
       restaurant:   latestSummary.restaurant,
       photographer: latestSummary.photographer,
       summary:      latestSummary,
       palette:      latestSummary.palette,
       coverage:     coverage,
-      strings:      window.PBCard.DEFAULT_STRINGS_EN
+      sourceRatio:  srcRatio,
+      sourceRatioLabel: srcLabel,
+      strings:      strings
     };
   }
   var downloadBriefBtn = document.getElementById('pbDownloadBrief');
