@@ -1950,6 +1950,69 @@ br.br-lg{display:none}
 @media (max-width:960px){ .tool-roadmap .tool-grid{ grid-template-columns:repeat(2,1fr); } }
 @media (max-width:560px){ .tool-roadmap .tool-grid{ grid-template-columns:1fr; } }
 
+/* ---------- Per-tool "Keep going" knit-in (Phase 3 cohesion pass) ----
+   Renders at the bottom of every live tool page (between
+   <!-- tool-knit -->...<!-- /tool-knit --> sentinels) by
+   scripts/inject-tool-knit.mjs. Four columns: topic, related tools,
+   articles, glossary terms. Closes the educational loop — every tool
+   now points back into the library. */
+.tool-knit{
+  margin-top:48px;
+  padding:48px 0 32px;
+  background:var(--cream-2);
+  border-top:1px solid var(--line);
+}
+.tool-knit__h{
+  font-family:var(--font-display);
+  font-size:clamp(22px,2.4vw,28px);
+  font-weight:500;
+  letter-spacing:-0.01em;
+  color:var(--ink);
+  margin:0 0 28px;
+}
+.tool-knit__grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:24px 32px;
+}
+.tool-knit__col h3{
+  font-family:var(--font-body);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--stone);
+  margin:0 0 12px;
+}
+.tool-knit__col ul{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:grid;
+  gap:8px;
+}
+.tool-knit__col a{
+  font-size:15px;
+  line-height:1.45;
+  color:var(--ink);
+  text-decoration:none;
+  border-bottom:1px solid var(--line);
+  padding-bottom:2px;
+  transition:color var(--t-fast), border-color var(--t-fast);
+}
+.tool-knit__col a:hover,
+.tool-knit__col a:focus-visible{
+  color:var(--teal);
+  border-bottom-color:var(--teal);
+  outline:none;
+}
+@media (max-width:900px){
+  .tool-knit__grid{ grid-template-columns:repeat(2,1fr); }
+}
+@media (max-width:520px){
+  .tool-knit__grid{ grid-template-columns:1fr; }
+}
+
 /* Tool page hero — centered intro shared by all single-input tools. */
 .cmp-hero,
 .speed-hero,
