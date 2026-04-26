@@ -165,6 +165,47 @@ body[data-pc-mode="recost"] .pc-prev-cell{display:block}
 .pc-verdict[data-tone="slipped"]  {background:rgba(198,138,44,0.06);color:#956A1A;border-color:rgba(198,138,44,0.22)}
 .pc-verdict[data-tone="crossed"]  {background:rgba(184,84,26,0.06);color:var(--rust);border-color:rgba(184,84,26,0.22)}
 
+.pc-bottleneck{margin:8px 0 0;font-size:13px;color:var(--ink-soft);line-height:1.5;font-style:italic}
+.pc-bottleneck strong{color:var(--ink);font-style:normal}
+
+.pc-price-row{position:relative}
+.pc-price-row[data-recommended="true"]{background:var(--cream-2);margin:0 -22px;padding-left:22px;padding-right:22px}
+.pc-price-row[data-recommended="true"]:first-of-type{border-top:0}
+.pc-rec-pill{display:inline-block;padding:1px 8px;background:var(--teal);color:var(--cream);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;margin-left:6px;vertical-align:middle}
+.pc-rec-rationale{font-size:11.5px;color:var(--ink-soft);margin:4px 0 0;line-height:1.45;font-style:italic}
+
+/* Mobile-first card layout for the ingredient grid below 720px.
+   Replaces the horizontal-scroll table with stacked cards, one per
+   row, with grouped fields so an owner can edit on a phone without
+   pinching to zoom. CSS-only — no JS rewrite. */
+@media (max-width: 720px) {
+  .pc-grid{overflow-x:visible}
+  .pc-grid table, .pc-grid thead, .pc-grid tbody, .pc-grid tr, .pc-grid td{display:block}
+  .pc-grid table{min-width:0}
+  .pc-grid thead{display:none}
+  .pc-grid tr{padding:14px 12px;border-bottom:1px solid var(--line);position:relative}
+  .pc-grid tr:last-child{border-bottom:0}
+  .pc-grid tr.pc-math-row{padding:0 12px 14px}
+  .pc-grid td{padding:6px 0;border:0}
+  .pc-grid td:nth-child(1)::before{content:"Ingredient";display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  .pc-grid td:nth-child(2)::before{content:"AP price ($)";display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  .pc-grid td:nth-child(3)::before{content:"AP qty";display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  .pc-grid td:nth-child(4)::before{content:"AP unit";display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  .pc-grid td:nth-child(5)::before{content:"Yield %";display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  .pc-grid td:nth-child(6)::before{content:"Used qty";display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  .pc-grid td:nth-child(7)::before{content:"Used unit";display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  .pc-grid td:nth-child(8)::before{content:"Cost on plate";display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  /* Pair fields side-by-side: AP price | AP qty | AP unit on one row
+     when the screen is wide enough; Yield + Used qty + Used unit on
+     another. Keeps the ingredient + cost cells full-width for legibility. */
+  .pc-grid tr{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;align-items:start}
+  .pc-grid td:nth-child(1){grid-column:1 / span 2}
+  .pc-grid td:nth-child(8){grid-column:1 / span 2;font-family:var(--font-display);font-size:18px;font-variant-numeric:tabular-nums;color:var(--ink);text-align:left}
+  .pc-grid td:nth-child(9){position:absolute;top:10px;right:10px;padding:0}
+  .pc-grid input,.pc-grid select{font-size:14px;padding:9px 10px}
+  .pc-grid .pc-num{width:auto;text-align:left}
+}
+
 @media print{
   body{background:#fff !important;color:#000 !important}
   header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,
@@ -270,6 +311,7 @@ body[data-pc-mode="recost"] .pc-prev-cell{display:block}
       </div>
     </details>
 
+    <datalist id="pcYieldNames"></datalist>
     <div class="pc-grid" role="region" aria-label="Recipe ingredient grid">
       <table>
         <thead>
@@ -304,9 +346,10 @@ body[data-pc-mode="recost"] .pc-prev-cell{display:block}
         <p class="pc-headline-batch" id="pcHeadlineBatch"></p>
         <p class="pc-headline-explainer">That&rsquo;s what it costs you in ingredients to send this dish to the pass, after trim and shrink. Excludes labour and overhead.</p>
         <span class="pc-headline-confidence" id="pcConfidence" data-level="high">High confidence</span>
+        <p class="pc-bottleneck" id="pcBottleneck" hidden></p>
         <p class="pc-verdict" id="pcVerdict" hidden></p>
       </div>
-      <div class="pc-prices">
+      <div class="pc-prices" id="pc-prices">
         <h3>Three suggested menu prices</h3>
         <p class="pc-prices-dek">Each row works backwards from a target food-cost percent. The dollars on the right are what you keep per plate after ingredients.</p>
         <div id="pcPriceRows"></div>
@@ -438,7 +481,7 @@ body[data-pc-mode="recost"] .pc-prev-cell{display:block}
 </footer>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="/tools/plate-cost/plate-cost.js?v=20260426-pcD"></script>
+<script src="/tools/plate-cost/plate-cost.js?v=20260426-pcE"></script>
 <script src="/tools/plate-cost/card-render.js?v=20260426-pc2"></script>
 <script>
 (function(){
@@ -483,6 +526,20 @@ body[data-pc-mode="recost"] .pc-prev-cell{display:block}
   // by the paste handler, with a hint asking them to confirm.
   var UNIT_OPTIONS = ['g','kg','oz','lb','ml','l','tsp','tbsp','fl-oz','cup','qt','gal','each','dozen'];
 
+  // Populate the ingredient autocomplete from the canonical yield
+  // table. Native <datalist> works on every target including iOS
+  // Safari with no JS framework.
+  var datalistEl = document.getElementById('pcYieldNames');
+  if (datalistEl && PC.YIELD_TABLE) {
+    var ingredientKeys = Object.keys(PC.YIELD_TABLE).sort();
+    datalistEl.innerHTML = ingredientKeys.map(function(k){
+      // Title-case the suggestion so the list reads like a prep
+      // sheet, not a lookup-key dump.
+      var label = k.replace(/\b([a-z])/g, function(_, c){ return c.toUpperCase(); });
+      return '<option value="' + label + '"></option>';
+    }).join('');
+  }
+
   // -------------------- Row helpers --------------------
   function blankRow() {
     return { ingredient: '', apPrice: '', apQty: '', apUnit: 'lb',
@@ -499,7 +556,7 @@ body[data-pc-mode="recost"] .pc-prev-cell{display:block}
 
   function rowHtml(row, idx) {
     return '<tr data-idx="' + idx + '">' +
-      '<td><input type="text" data-field="ingredient" value="' + esc(row.ingredient) + '" placeholder="e.g. Romaine" /></td>' +
+      '<td><input type="text" data-field="ingredient" list="pcYieldNames" autocomplete="off" value="' + esc(row.ingredient) + '" placeholder="e.g. Romaine" /></td>' +
       '<td><input type="number" data-field="apPrice" min="0" step="0.01" value="' + esc(row.apPrice) + '" /></td>' +
       '<td><input type="number" data-field="apQty" min="0" step="0.01" value="' + esc(row.apQty) + '" /></td>' +
       '<td>' + unitSelect('apUnit', row.apUnit) + '</td>' +
@@ -623,14 +680,26 @@ body[data-pc-mode="recost"] .pc-prev-cell{display:block}
       : summary.confidence === 'medium' ? 'Medium confidence — see warnings'
       : 'Low confidence — fix warnings to refine';
 
-    // Three suggested menu prices
+    // Three suggested menu prices, with one row marked RECOMMENDED
+    // based on the recipe's profile (perishable / protein / unknown
+    // yield). The owner keeps full agency — the others stay visible.
     var prices = PC.suggestMenuPrices(summary.plateCost);
+    var recTier = PC.recommendedTier(summary);
+    var recRationale = {
+      'casual':       'Default for protein-heavy or perishable-rich dishes — covers prep + waste with margin to spare.',
+      'fine-dining':  'Default while a yield assumption is uncertain — a tighter food-cost target absorbs the risk.',
+      'high-volume':  'Default when ingredients are stable and the kitchen runs lean on labour.'
+    };
     priceRowsEl.innerHTML = prices.map(function(p){
-      return '<div class="pc-price-row">' +
+      var isRec = p.label === recTier;
+      return '<div class="pc-price-row"' + (isRec ? ' data-recommended="true"' : '') + '>' +
         '<div class="pc-price-target">' + Math.round(p.target * 100) + '%</div>' +
         '<div class="pc-price-mid">' +
-          '<span class="pc-price-label">' + p.label + '</span>' +
+          '<span class="pc-price-label">' + p.label +
+            (isRec ? '<span class="pc-rec-pill">Recommended</span>' : '') +
+          '</span>' +
           '<span class="pc-price-note">' + esc(p.note) + '</span>' +
+          (isRec ? '<span class="pc-rec-rationale">' + esc(recRationale[recTier] || '') + '</span>' : '') +
         '</div>' +
         '<div>' +
           '<div class="pc-price-amount">' + fmtMoney(p.price) + '</div>' +
@@ -638,6 +707,21 @@ body[data-pc-mode="recost"] .pc-prev-cell{display:block}
         '</div>' +
       '</div>';
     }).join('');
+
+    // Bottleneck callout — surfaces only when one ingredient ≥ 30%
+    // of plate cost. The line a chef will quote at the prep meeting.
+    var bottleneckEl = document.getElementById('pcBottleneck');
+    var bottleneck = PC.bottleneckLine(summary);
+    if (bottleneckEl) {
+      if (bottleneck) {
+        bottleneckEl.innerHTML = '<strong>' + esc(bottleneck.name) + '</strong> is ' +
+          Math.round(bottleneck.share * 100) + '% of your plate cost. Watch its invoice.';
+        bottleneckEl.hidden = false;
+      } else {
+        bottleneckEl.hidden = true;
+        bottleneckEl.textContent = '';
+      }
+    }
 
     // Top-of-form warnings (deduped recipe-level)
     var warningCopy = {

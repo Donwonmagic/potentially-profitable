@@ -544,6 +544,66 @@ assertEq('drift -20% bucket',                  PC.bucketDriftBand(4, 3.20), 'lt-
 assertEq('drift invalid (zero)',               PC.bucketDriftBand(0, 4),    'invalid');
 
 // ============================================================
+// Phase E — bottleneckLine, recommendedTier
+// ============================================================
+
+const bnSummary = PC.computePlateCost({
+  name: 'X', portions: 1,
+  rows: [
+    { ingredient: 'Pecorino Romano', apPrice: 18, apQty: 1, apUnit: 'lb', yieldPercent: 0.95, usedQty: 1.5, usedUnit: 'oz' },
+    { ingredient: 'Olive oil',       apPrice: 24, apQty: 1, apUnit: 'l',  yieldPercent: 1.00, usedQty: 1, usedUnit: 'tbsp' }
+  ]
+});
+const bn = PC.bottleneckLine(bnSummary);
+assert('bottleneckLine returns an object',         bn && typeof bn === 'object');
+assertEq('bottleneckLine names dominant ingredient', bn.name, 'Pecorino Romano');
+assert('bottleneckLine share is ≥ 0.30',           bn.share >= 0.30);
+
+// All-balanced recipe → no bottleneck (each row < 30%).
+const balanced = PC.computePlateCost({
+  name: 'B', portions: 1,
+  rows: [
+    { ingredient: 'A', apPrice: 4, apQty: 1, apUnit: 'lb', yieldPercent: 1, usedQty: 4, usedUnit: 'oz' },
+    { ingredient: 'B', apPrice: 4, apQty: 1, apUnit: 'lb', yieldPercent: 1, usedQty: 4, usedUnit: 'oz' },
+    { ingredient: 'C', apPrice: 4, apQty: 1, apUnit: 'lb', yieldPercent: 1, usedQty: 4, usedUnit: 'oz' },
+    { ingredient: 'D', apPrice: 4, apQty: 1, apUnit: 'lb', yieldPercent: 1, usedQty: 4, usedUnit: 'oz' }
+  ]
+});
+assertEq('bottleneckLine null when balanced', PC.bottleneckLine(balanced), null);
+
+// recommendedTier — protein-heavy → casual.
+const tProtein = PC.computePlateCost({ name: 'P', portions: 1, rows: [
+  { ingredient: 'Chicken breast', apPrice: 6, apQty: 1, apUnit: 'lb', yieldPercent: 0.95, usedQty: 6, usedUnit: 'oz' },
+  { ingredient: 'Salmon fillet',  apPrice: 14, apQty: 1, apUnit: 'lb', yieldPercent: 0.95, usedQty: 4, usedUnit: 'oz' }
+] });
+assertEq('recommendedTier protein-heavy → casual', PC.recommendedTier(tProtein), 'casual');
+
+// recommendedTier — perishable-heavy → casual.
+const tPerish = PC.computePlateCost({ name: 'V', portions: 1, rows: [
+  { ingredient: 'Romaine',  apPrice: 1, apQty: 1, apUnit: 'lb', yieldPercent: 0.75, usedQty: 4, usedUnit: 'oz' },
+  { ingredient: 'Tomato',   apPrice: 1, apQty: 1, apUnit: 'lb', yieldPercent: 0.91, usedQty: 4, usedUnit: 'oz' },
+  { ingredient: 'Cucumber', apPrice: 1, apQty: 1, apUnit: 'lb', yieldPercent: 0.95, usedQty: 4, usedUnit: 'oz' },
+  { ingredient: 'Avocado',  apPrice: 2, apQty: 1, apUnit: 'lb', yieldPercent: 0.75, usedQty: 4, usedUnit: 'oz' }
+] });
+assertEq('recommendedTier perishable-heavy → casual', PC.recommendedTier(tPerish), 'casual');
+
+// recommendedTier — unknown yield → fine-dining (absorbs risk).
+const tUnknown = PC.computePlateCost({ name: 'U', portions: 1, rows: [
+  { ingredient: 'Dragonfruit', apPrice: 8, apQty: 1, apUnit: 'lb', usedQty: 2, usedUnit: 'oz' }
+] });
+assertEq('recommendedTier with unknown-yield → fine-dining', PC.recommendedTier(tUnknown), 'fine-dining');
+
+// recommendedTier — neither → high-volume.
+const tHV = PC.computePlateCost({ name: 'H', portions: 1, rows: [
+  { ingredient: 'Flour', apPrice: 1, apQty: 1, apUnit: 'lb', yieldPercent: 1, usedQty: 4, usedUnit: 'oz' },
+  { ingredient: 'Sugar', apPrice: 1, apQty: 1, apUnit: 'lb', yieldPercent: 1, usedQty: 4, usedUnit: 'oz' }
+] });
+assertEq('recommendedTier shelf-staples → high-volume', PC.recommendedTier(tHV), 'high-volume');
+
+// Spanish sample is now Tinga de pollo.
+assertEq('SAMPLE_RECIPE_ES is Tinga de pollo', PC.SAMPLE_RECIPE_ES.name, 'Tinga de pollo');
+
+// ============================================================
 console.log('\n' + (failures === 0
   ? '✓ all plate-cost assertions pass'
   : '✗ ' + failures + ' plate-cost assertion(s) failed'));

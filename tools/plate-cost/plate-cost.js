@@ -724,6 +724,75 @@
   }
 
   // ============================================================
+  // bottleneckLine — the single ingredient that dominates plate cost.
+  // Returns { name, share } when one ingredient accounts for ≥30%
+  // of plate cost; null otherwise. The chef knows which ingredient
+  // moved their menu — the tool surfaces it.
+  // ============================================================
+  function bottleneckLine(summary) {
+    if (!summary || !Array.isArray(summary.ingredients) || !summary.ingredients.length) return null;
+    if (!isFinite(summary.batchCost) || summary.batchCost <= 0) return null;
+    var top = null;
+    for (var i = 0; i < summary.ingredients.length; i++) {
+      var ing = summary.ingredients[i];
+      if (!ing || !isFinite(ing.usedCost) || ing.usedCost <= 0) continue;
+      if (!top || ing.usedCost > top.usedCost) top = ing;
+    }
+    if (!top) return null;
+    var share = top.usedCost / summary.batchCost;
+    if (share < 0.30) return null;
+    return { name: top.ingredient || '', share: share, dollars: top.usedCost };
+  }
+
+  // ============================================================
+  // recommendedTier — picks one of the three suggested-price tiers
+  // as the default for this dish. Deterministic; used to render a
+  // RECOMMENDED pill next to the right row.
+  //
+  // Rule:
+  //   - Recipe contains ≥4 perishable rows or ≥2 protein rows → 30% (casual)
+  //   - 'unknown-yield' warning fires → 28% (fine-dining; absorbs uncertainty)
+  //   - Otherwise → 33% (high-volume)
+  // ============================================================
+  var PERISHABLE_KEYS = (function(){
+    var set = {};
+    [
+      'romaine','iceberg','butter lettuce','green leaf','red leaf','spinach','kale','arugula','swiss chard','collard greens',
+      'broccoli','cauliflower','brussels sprouts','cabbage','asparagus','celery','fennel','leek','scallion',
+      'tomato','cherry tomato','bell pepper','jalapeño','cucumber','eggplant','zucchini','butternut squash','acorn squash',
+      'basil','parsley','cilantro','mint','rosemary','thyme','oregano','tarragon','dill',
+      'avocado','strawberry','blueberry','raspberry','mango','pineapple','watermelon','cantaloupe','grapefruit','orange','lemon','lime'
+    ].forEach(function(k){ set[k] = true; });
+    return set;
+  })();
+  var PROTEIN_KEYS = (function(){
+    var set = {};
+    [
+      'whole chicken','chicken breast','chicken thigh','whole turkey','whole duck','whole rabbit',
+      'pork shoulder','pork loin','pork belly','bacon (raw)','bacon (cooked)','ribeye','striploin','tenderloin','short rib',
+      'lamb shoulder','lamb leg','ground beef','ground pork','ground turkey',
+      'whole salmon','salmon fillet','salmon (skin-on fillet)','whole halibut','whole branzino','whole sea bass','whole snapper','whole trout',
+      'tuna loin','lobster (whole)','shrimp (head-on)','shrimp (shell-on)','shrimp (p&d)','mussels','clams','whole crab','scallops','octopus','squid',
+      'tofu (firm)','tempeh','paneer'
+    ].forEach(function(k){ set[k] = true; });
+    return set;
+  })();
+  function recommendedTier(summary) {
+    if (!summary || !Array.isArray(summary.ingredients) || !summary.ingredients.length) return 'high-volume';
+    if (Array.isArray(summary.warnings) && summary.warnings.indexOf('unknown-yield') !== -1) {
+      return 'fine-dining';
+    }
+    var perishable = 0, protein = 0;
+    summary.ingredients.forEach(function(ing){
+      var key = String(ing.ingredient || '').trim().toLowerCase();
+      if (PERISHABLE_KEYS[key]) perishable++;
+      if (PROTEIN_KEYS[key])    protein++;
+    });
+    if (perishable >= 4 || protein >= 2) return 'casual';
+    return 'high-volume';
+  }
+
+  // ============================================================
   // URL-fragment scenario encoding (Phase D — Muntin signature).
   //
   // The Cost Drift Check-in needs the calendar reminder to lead the
@@ -1030,20 +1099,23 @@
   // Spanish-speaking chef would actually use on the prep sheet.
   // Same numbers (so the Plate Card output matches between locales)
   // but locale-appropriate ingredient names + dish title.
+  // Spanish sample is a dish a Spanish-speaking kitchen actually
+  // cooks (rather than a translated Roman pasta). Five rows, mixes
+  // weight + count + volume so every code path still fires.
   var SAMPLE_RECIPE_ES = {
-    name:     'Cacio e pepe',
-    portions: 1,
+    name:     'Tinga de pollo',
+    portions: 4,
     rows: [
-      { ingredient: 'Tonnarelli (pasta seca)', apPrice: 4.50, apQty: 1,    apUnit: 'lb',
-        yieldPercent: 1.00, usedQty: 4,   usedUnit: 'oz' },
-      { ingredient: 'Pecorino Romano',          apPrice: 18,   apQty: 1,    apUnit: 'lb',
-        yieldPercent: 0.95, usedQty: 1.5, usedUnit: 'oz' },
-      { ingredient: 'Pimienta negra en grano', apPrice: 12,   apQty: 8,    apUnit: 'oz',
-        yieldPercent: 1.00, usedQty: 0.05, usedUnit: 'oz' },
-      { ingredient: 'Aceite de oliva',          apPrice: 24,   apQty: 1,    apUnit: 'l',
-        yieldPercent: 1.00, usedQty: 1,    usedUnit: 'tbsp' },
-      { ingredient: 'Sal marina',               apPrice: 6,    apQty: 26,   apUnit: 'oz',
-        yieldPercent: 1.00, usedQty: 0.1,  usedUnit: 'oz' }
+      { ingredient: 'Pechuga de pollo',     apPrice: 18,    apQty: 4,  apUnit: 'lb',
+        yieldPercent: 0.95, usedQty: 1.5, usedUnit: 'lb' },
+      { ingredient: 'Tomate Roma',          apPrice: 6,     apQty: 2,  apUnit: 'lb',
+        yieldPercent: 0.91, usedQty: 12,  usedUnit: 'oz' },
+      { ingredient: 'Cebolla blanca',       apPrice: 1.50,  apQty: 1,  apUnit: 'lb',
+        yieldPercent: 0.88, usedQty: 4,   usedUnit: 'oz' },
+      { ingredient: 'Chipotle en adobo',    apPrice: 4.50,  apQty: 8,  apUnit: 'oz',
+        yieldPercent: 1.00, usedQty: 1,   usedUnit: 'oz' },
+      { ingredient: 'Aceite de oliva',      apPrice: 24,    apQty: 1,  apUnit: 'l',
+        yieldPercent: 1.00, usedQty: 2,   usedUnit: 'tbsp' }
     ]
   };
 
@@ -1055,6 +1127,8 @@
     computePlateCost:      computePlateCost,
     suggestMenuPrices:     suggestMenuPrices,
     formatRowMath:         formatRowMath,
+    bottleneckLine:        bottleneckLine,
+    recommendedTier:       recommendedTier,
     validateRecipe:        validateRecipe,
     convertUnits:          convertUnits,
     lookupYield:           lookupYield,
