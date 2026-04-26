@@ -330,15 +330,27 @@
       <a href="/for/restaurants/">Restaurants</a>
       <div class="nav-library-wrap">
         <a href="/learn/" class="nav-library-trigger" aria-haspopup="true">Library<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <div class="nav-library-menu" role="menu" aria-label="Library sections">
-          <a href="/learn/" role="menuitem"><strong>Library home</strong><span>The hub of everything below</span></a>
-          <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
-          <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
-          <a href="/blog/" role="menuitem"><strong>Articles</strong><span>The how-to playbooks</span></a>
-          <a href="/tools/" role="menuitem"><strong>Free tools</strong><span>Run a check on your own site</span></a>
-          <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span>97 terms in plain English</span></a>
-          <a href="/learn/research/" role="menuitem"><strong>Research</strong><span>The evidence behind the playbooks</span></a>
-          <a href="/resources/" role="menuitem"><strong>Checklists &amp; guides</strong><span>Workbooks you can save</span></a>
+        <div class="nav-library-menu nav-library-menu--mega" role="menu" aria-label="Library sections">
+          <a class="nav-library-menu__home" href="/learn/" role="menuitem">
+            <strong>Library home</strong>
+            <span>The hub of everything below &rarr;</span>
+          </a>
+          <div class="nav-library-menu__col">
+            <h4>Learn</h4>
+            <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
+            <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
+            <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span><!-- count:glossary.terms -->116<!-- /count --> terms in plain English</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Read</h4>
+            <a href="/blog/" role="menuitem"><strong>Articles</strong><span>The how-to playbooks</span></a>
+            <a href="/learn/research/" role="menuitem"><strong>Research</strong><span>The evidence behind the playbooks</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Do</h4>
+            <a href="/tools/" role="menuitem"><strong>Free tools</strong><span>Run a check on your own site</span></a>
+            <a href="/learn/checklists/" role="menuitem"><strong>Checklists &amp; guides</strong><span>Workbooks you can save</span></a>
+          </div>
         </div>
       </div>
       <a href="/work/">Work</a>
@@ -369,13 +381,16 @@
     <details class="mobile-library">
       <summary>Library</summary>
       <a href="/learn/">Library home</a>
+      <p class="mobile-library__group">Learn</p>
       <a href="/learn/start-here/">Start here</a>
       <a href="/learn/topics/">Topics</a>
-      <a href="/blog/">Articles</a>
-      <a href="/tools/">Free tools</a>
       <a href="/glossary/">Glossary</a>
+      <p class="mobile-library__group">Read</p>
+      <a href="/blog/">Articles</a>
       <a href="/learn/research/">Research</a>
-      <a href="/resources/">Checklists &amp; guides</a>
+      <p class="mobile-library__group">Do</p>
+      <a href="/tools/">Free tools</a>
+      <a href="/learn/checklists/">Checklists &amp; guides</a>
     </details>
     <a href="/work/">Work</a>
     <a href="/about/">About</a>
@@ -432,6 +447,45 @@
       <a class="gloss-jump" href="#findability">Findability</a>
       <a class="gloss-jump" href="#subtypes">Subtypes</a>
     </nav>
+    <div class="gloss-filters" role="group" aria-label="Filter glossary by topic">
+      <span class="gloss-filters-label">Topic</span>
+      <button type="button" class="gloss-topic-filter" data-topic="all" aria-pressed="true">All topics</button>
+      <button type="button" class="gloss-topic-filter" data-topic="speed-mobile" aria-pressed="false">Speed</button>
+      <button type="button" class="gloss-topic-filter" data-topic="conversions" aria-pressed="false">Conversions</button>
+      <button type="button" class="gloss-topic-filter" data-topic="local-seo" aria-pressed="false">Local SEO</button>
+      <button type="button" class="gloss-topic-filter" data-topic="operations-margin" aria-pressed="false">Operations</button>
+      <button type="button" class="gloss-topic-filter" data-topic="trust-reviews" aria-pressed="false">Trust</button>
+      <button type="button" class="gloss-topic-filter" data-topic="brand-design" aria-pressed="false">Brand</button>
+    </div>
+    <nav class="gloss-az" aria-label="Jump to a letter">
+      <span class="gloss-filters-label">A&ndash;Z</span>
+      <button type="button" class="gloss-az-letter" data-letter="a">A</button>
+      <button type="button" class="gloss-az-letter" data-letter="b">B</button>
+      <button type="button" class="gloss-az-letter" data-letter="c">C</button>
+      <button type="button" class="gloss-az-letter" data-letter="d">D</button>
+      <button type="button" class="gloss-az-letter" data-letter="e">E</button>
+      <button type="button" class="gloss-az-letter" data-letter="f">F</button>
+      <button type="button" class="gloss-az-letter" data-letter="g">G</button>
+      <button type="button" class="gloss-az-letter" data-letter="h">H</button>
+      <button type="button" class="gloss-az-letter" data-letter="i">I</button>
+      <button type="button" class="gloss-az-letter" data-letter="j">J</button>
+      <button type="button" class="gloss-az-letter" data-letter="k">K</button>
+      <button type="button" class="gloss-az-letter" data-letter="l">L</button>
+      <button type="button" class="gloss-az-letter" data-letter="m">M</button>
+      <button type="button" class="gloss-az-letter" data-letter="n">N</button>
+      <button type="button" class="gloss-az-letter" data-letter="o">O</button>
+      <button type="button" class="gloss-az-letter" data-letter="p">P</button>
+      <button type="button" class="gloss-az-letter" data-letter="q">Q</button>
+      <button type="button" class="gloss-az-letter" data-letter="r">R</button>
+      <button type="button" class="gloss-az-letter" data-letter="s">S</button>
+      <button type="button" class="gloss-az-letter" data-letter="t">T</button>
+      <button type="button" class="gloss-az-letter" data-letter="u">U</button>
+      <button type="button" class="gloss-az-letter" data-letter="v">V</button>
+      <button type="button" class="gloss-az-letter" data-letter="w">W</button>
+      <button type="button" class="gloss-az-letter" data-letter="x">X</button>
+      <button type="button" class="gloss-az-letter" data-letter="y">Y</button>
+      <button type="button" class="gloss-az-letter" data-letter="z">Z</button>
+    </nav>
     <div class="gloss-filters" role="group" aria-label="Filter glossary by industry">
       <span class="gloss-filters-label">Show terms for</span>
       <button type="button" class="gloss-filter" data-filter="all" aria-pressed="true">All industries</button>
@@ -448,7 +502,7 @@
     </header>
     <div class="gloss-terms">
 
-      <article class="gloss-term" id="html-menu" data-industries="restaurants">
+      <article class="gloss-term" id="html-menu" data-industries="restaurants" data-topics="conversions">
         <div class="gloss-term-head">
           <h3>HTML menu<span class="gloss-aka">not a PDF, not an image</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -460,7 +514,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="hero" data-industries="restaurants all">
+      <article class="gloss-term" id="hero" data-industries="restaurants all" data-topics="conversions">
         <div class="gloss-term-head">
           <h3>Hero section<span class="gloss-aka">the first block a visitor sees</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -472,7 +526,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="click-to-call" data-industries="restaurants all">
+      <article class="gloss-term" id="click-to-call" data-industries="restaurants all" data-topics="conversions">
         <div class="gloss-term-head">
           <h3>Click-to-call<span class="gloss-aka">tap-to-call, tel: link</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -485,7 +539,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="hours-visibility" data-industries="restaurants all">
+      <article class="gloss-term" id="hours-visibility" data-industries="restaurants all" data-topics="conversions">
         <div class="gloss-term-head">
           <h3>Hours visibility</h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -498,7 +552,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="copyable-address" data-industries="restaurants all">
+      <article class="gloss-term" id="copyable-address" data-industries="restaurants all" data-topics="conversions">
         <div class="gloss-term-head">
           <h3>Copyable address</h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -510,7 +564,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="cuisine-pitch" data-industries="restaurants">
+      <article class="gloss-term" id="cuisine-pitch" data-industries="restaurants" data-topics="brand-design">
         <div class="gloss-term-head">
           <h3>One-sentence pitch<span class="gloss-aka">the sub-head under your name</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -522,7 +576,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="domain-name" data-industries="all">
+      <article class="gloss-term" id="domain-name" data-industries="all" data-topics="brand-design">
         <div class="gloss-term-head">
           <h3>Domain name<span class="gloss-aka">your web address, your URL</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -534,7 +588,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="hosting" data-industries="all">
+      <article class="gloss-term" id="hosting" data-industries="all" data-topics="conversions">
         <div class="gloss-term-head">
           <h3>Web hosting<span class="gloss-aka">where your site actually lives</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -546,7 +600,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="professional-email" data-industries="restaurants all">
+      <article class="gloss-term" id="professional-email" data-industries="restaurants all" data-topics="brand-design">
         <div class="gloss-term-head">
           <h3>Professional email<span class="gloss-aka">you@yourdomain.com</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -558,7 +612,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="dietary-markers" data-industries="restaurants">
+      <article class="gloss-term" id="dietary-markers" data-industries="restaurants" data-topics="conversions">
         <div class="gloss-term-head">
           <h3>Dietary &amp; allergen markers<span class="gloss-aka">GF, V, VG, DF, N — labels on the menu</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -581,7 +635,7 @@
     </header>
     <div class="gloss-terms">
 
-      <article class="gloss-term" id="core-web-vitals" data-industries="restaurants all">
+      <article class="gloss-term" id="core-web-vitals" data-industries="restaurants all" data-topics="speed-mobile">
         <div class="gloss-term-head">
           <h3>Core Web Vitals<span class="gloss-aka">CWV</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -594,7 +648,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="lcp" data-industries="restaurants all">
+      <article class="gloss-term" id="lcp" data-industries="restaurants all" data-topics="speed-mobile">
         <div class="gloss-term-head">
           <h3>Largest Contentful Paint<span class="gloss-aka">LCP</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -607,7 +661,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="cls" data-industries="restaurants all">
+      <article class="gloss-term" id="cls" data-industries="restaurants all" data-topics="speed-mobile">
         <div class="gloss-term-head">
           <h3>Cumulative Layout Shift<span class="gloss-aka">CLS</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -620,7 +674,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="inp" data-industries="all">
+      <article class="gloss-term" id="inp" data-industries="all" data-topics="speed-mobile">
         <div class="gloss-term-head">
           <h3>Interaction to Next Paint<span class="gloss-aka">INP, formerly FID</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -632,7 +686,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="viewport-meta" data-industries="all">
+      <article class="gloss-term" id="viewport-meta" data-industries="all" data-topics="speed-mobile">
         <div class="gloss-term-head">
           <h3>Viewport meta tag</h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -645,7 +699,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="tap-targets" data-industries="restaurants all">
+      <article class="gloss-term" id="tap-targets" data-industries="restaurants all" data-topics="speed-mobile">
         <div class="gloss-term-head">
           <h3>Tap targets<span class="gloss-aka">button size on phones</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -658,7 +712,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="body-text-size" data-industries="restaurants all">
+      <article class="gloss-term" id="body-text-size" data-industries="restaurants all" data-topics="speed-mobile">
         <div class="gloss-term-head">
           <h3>Body text size<span class="gloss-aka">minimum readable font size on phones</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -670,7 +724,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="lighthouse" data-industries="restaurants all">
+      <article class="gloss-term" id="lighthouse" data-industries="restaurants all" data-topics="speed-mobile">
         <div class="gloss-term-head">
           <h3>Lighthouse<span class="gloss-aka">Google's audit engine</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -683,7 +737,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="pagespeed-insights" data-industries="restaurants all">
+      <article class="gloss-term" id="pagespeed-insights" data-industries="restaurants all" data-topics="speed-mobile">
         <div class="gloss-term-head">
           <h3>PageSpeed Insights<span class="gloss-aka">PSI, pagespeed.web.dev</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -695,7 +749,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="fcp" data-industries="all">
+      <article class="gloss-term" id="fcp" data-industries="all" data-topics="speed-mobile">
         <div class="gloss-term-head">
           <h3>First Contentful Paint<span class="gloss-aka">FCP</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -708,7 +762,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="ttfb" data-industries="all">
+      <article class="gloss-term" id="ttfb" data-industries="all" data-topics="speed-mobile">
         <div class="gloss-term-head">
           <h3>Time to First Byte<span class="gloss-aka">TTFB, server response time</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -720,7 +774,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="cdn" data-industries="all">
+      <article class="gloss-term" id="cdn" data-industries="all" data-topics="speed-mobile">
         <div class="gloss-term-head">
           <h3>CDN<span class="gloss-aka">Content Delivery Network, "the edge"</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -732,7 +786,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="responsive-design" data-industries="restaurants all">
+      <article class="gloss-term" id="responsive-design" data-industries="restaurants all" data-topics="speed-mobile">
         <div class="gloss-term-head">
           <h3>Responsive design<span class="gloss-aka">mobile-first, adaptive layout</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -744,7 +798,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="lazy-loading" data-industries="all">
+      <article class="gloss-term" id="lazy-loading" data-industries="all" data-topics="speed-mobile">
         <div class="gloss-term-head">
           <h3>Lazy loading<span class="gloss-aka">deferred loading, below-the-fold loading</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -767,7 +821,7 @@
     </header>
     <div class="gloss-terms">
 
-      <article class="gloss-term" id="cta" data-industries="restaurants all">
+      <article class="gloss-term" id="cta" data-industries="restaurants all" data-topics="conversions">
         <div class="gloss-term-head">
           <h3>Call to action<span class="gloss-aka">CTA</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -780,7 +834,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="reservation-link" data-industries="restaurants">
+      <article class="gloss-term" id="reservation-link" data-industries="restaurants" data-topics="conversions">
         <div class="gloss-term-head">
           <h3>Reservation link<span class="gloss-aka">OpenTable, Resy, Tock, built-in form</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -793,7 +847,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="online-ordering" data-industries="restaurants">
+      <article class="gloss-term" id="online-ordering" data-industries="restaurants" data-topics="conversions">
         <div class="gloss-term-head">
           <h3>Online ordering link<span class="gloss-aka">Toast, Square, ChowNow, direct checkout</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -806,7 +860,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="click-to-directions" data-industries="restaurants all">
+      <article class="gloss-term" id="click-to-directions" data-industries="restaurants all" data-topics="conversions">
         <div class="gloss-term-head">
           <h3>Click-to-directions</h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -818,7 +872,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="sticky-footer" data-industries="restaurants all">
+      <article class="gloss-term" id="sticky-footer" data-industries="restaurants all" data-topics="conversions">
         <div class="gloss-term-head">
           <h3>Sticky mobile footer<span class="gloss-aka">persistent bottom bar on phones</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -831,7 +885,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="social-proof" data-industries="restaurants all">
+      <article class="gloss-term" id="social-proof" data-industries="restaurants all" data-topics="conversions">
         <div class="gloss-term-head">
           <h3>Social proof<span class="gloss-aka">reviews, press, star ratings</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -843,7 +897,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="above-the-fold" data-industries="restaurants all">
+      <article class="gloss-term" id="above-the-fold" data-industries="restaurants all" data-topics="conversions">
         <div class="gloss-term-head">
           <h3>Above the fold<span class="gloss-aka">the first screen, "what loads first"</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -855,7 +909,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="bounce-rate" data-industries="restaurants all">
+      <article class="gloss-term" id="bounce-rate" data-industries="restaurants all" data-topics="conversions">
         <div class="gloss-term-head">
           <h3>Bounce rate</h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -867,7 +921,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="conversion-rate" data-industries="restaurants all">
+      <article class="gloss-term" id="conversion-rate" data-industries="restaurants all" data-topics="conversions">
         <div class="gloss-term-head">
           <h3>Conversion rate</h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -879,7 +933,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="funnel" data-industries="restaurants all">
+      <article class="gloss-term" id="funnel" data-industries="restaurants all" data-topics="conversions">
         <div class="gloss-term-head">
           <h3>Funnel<span class="gloss-aka">the path from visitor to customer</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -891,7 +945,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="form-abandonment" data-industries="restaurants all">
+      <article class="gloss-term" id="form-abandonment" data-industries="restaurants all" data-topics="conversions">
         <div class="gloss-term-head">
           <h3>Form abandonment</h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -903,7 +957,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="gift-card-checkout" data-industries="restaurants">
+      <article class="gloss-term" id="gift-card-checkout" data-industries="restaurants" data-topics="conversions operations-margin">
         <div class="gloss-term-head">
           <h3>Gift-card checkout<span class="gloss-aka">e-gift, digital gift card</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -915,7 +969,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="newsletter-capture" data-industries="restaurants all">
+      <article class="gloss-term" id="newsletter-capture" data-industries="restaurants all" data-topics="conversions">
         <div class="gloss-term-head">
           <h3>Newsletter capture<span class="gloss-aka">email signup, list-building</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -927,7 +981,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="catering-page" data-industries="restaurants">
+      <article class="gloss-term" id="catering-page" data-industries="restaurants" data-topics="conversions operations-margin">
         <div class="gloss-term-head">
           <h3>Catering / private-events page<span class="gloss-aka">buyouts, off-site, private dining</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -950,7 +1004,7 @@
     </header>
     <div class="gloss-terms">
 
-      <article class="gloss-term" id="https" data-industries="restaurants all">
+      <article class="gloss-term" id="https" data-industries="restaurants all" data-topics="trust-reviews">
         <div class="gloss-term-head">
           <h3>HTTPS<span class="gloss-aka">SSL certificate, the padlock</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -962,7 +1016,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="honest-pricing" data-industries="restaurants">
+      <article class="gloss-term" id="honest-pricing" data-industries="restaurants" data-topics="trust-reviews operations-margin">
         <div class="gloss-term-head">
           <h3>Honest menu prices</h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -974,7 +1028,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="last-updated-signal" data-industries="restaurants all">
+      <article class="gloss-term" id="last-updated-signal" data-industries="restaurants all" data-topics="trust-reviews">
         <div class="gloss-term-head">
           <h3>Last-updated signal<span class="gloss-aka">seasonal menu badge, "this week", dated posts</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -986,7 +1040,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="working-contact-form" data-industries="restaurants all">
+      <article class="gloss-term" id="working-contact-form" data-industries="restaurants all" data-topics="trust-reviews">
         <div class="gloss-term-head">
           <h3>Working contact form</h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -998,7 +1052,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="wcag-contrast" data-industries="restaurants all">
+      <article class="gloss-term" id="wcag-contrast" data-industries="restaurants all" data-topics="trust-reviews brand-design">
         <div class="gloss-term-head">
           <h3>WCAG AA contrast<span class="gloss-aka">accessible color contrast</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1010,7 +1064,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="real-photos" data-industries="restaurants all">
+      <article class="gloss-term" id="real-photos" data-industries="restaurants all" data-topics="trust-reviews brand-design">
         <div class="gloss-term-head">
           <h3>Real photos<span class="gloss-aka">not stock photography</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1022,7 +1076,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="photo-brief" data-industries="restaurants all">
+      <article class="gloss-term" id="photo-brief" data-industries="restaurants all" data-topics="trust-reviews">
         <div class="gloss-term-head">
           <h3>Photo brief<span class="gloss-aka">the one-page sheet you walk into a photoshoot with</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1034,7 +1088,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="aspect-ratio" data-industries="restaurants all">
+      <article class="gloss-term" id="aspect-ratio" data-industries="restaurants all" data-topics="trust-reviews">
         <div class="gloss-term-head">
           <h3>Aspect ratio<span class="gloss-aka">the proportion between width and height, locked by the destination</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1046,7 +1100,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="hero-shot" data-industries="restaurants all">
+      <article class="gloss-term" id="hero-shot" data-industries="restaurants all" data-topics="trust-reviews">
         <div class="gloss-term-head">
           <h3>Hero shot<span class="gloss-aka">the one photo per surface that does the load-bearing visual work</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1058,7 +1112,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="ssl-certificate" data-industries="all">
+      <article class="gloss-term" id="ssl-certificate" data-industries="all" data-topics="trust-reviews">
         <div class="gloss-term-head">
           <h3>SSL certificate<span class="gloss-aka">TLS certificate, the thing behind the padlock</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -1070,7 +1124,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="privacy-policy" data-industries="restaurants all">
+      <article class="gloss-term" id="privacy-policy" data-industries="restaurants all" data-topics="trust-reviews">
         <div class="gloss-term-head">
           <h3>Privacy policy</h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1082,7 +1136,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="cookie-banner" data-industries="restaurants all">
+      <article class="gloss-term" id="cookie-banner" data-industries="restaurants all" data-topics="trust-reviews">
         <div class="gloss-term-head">
           <h3>Cookie banner<span class="gloss-aka">cookie notice, consent banner</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1094,7 +1148,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="terms-of-service" data-industries="restaurants all">
+      <article class="gloss-term" id="terms-of-service" data-industries="restaurants all" data-topics="trust-reviews">
         <div class="gloss-term-head">
           <h3>Terms of Service<span class="gloss-aka">terms and conditions, ToS</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1117,7 +1171,7 @@
     </header>
     <div class="gloss-terms">
 
-      <article class="gloss-term" id="gbp" data-industries="restaurants all">
+      <article class="gloss-term" id="gbp" data-industries="restaurants all" data-topics="local-seo">
         <div class="gloss-term-head">
           <h3>Google Business Profile<span class="gloss-aka">GBP, formerly Google My Business</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1129,7 +1183,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="title-tag" data-industries="restaurants all">
+      <article class="gloss-term" id="title-tag" data-industries="restaurants all" data-topics="local-seo">
         <div class="gloss-term-head">
           <h3>Title tag<span class="gloss-aka">the page's &lt;title&gt;</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1141,7 +1195,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="meta-description" data-industries="restaurants all">
+      <article class="gloss-term" id="meta-description" data-industries="restaurants all" data-topics="local-seo">
         <div class="gloss-term-head">
           <h3>Meta description</h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1153,7 +1207,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="schema" data-industries="restaurants all">
+      <article class="gloss-term" id="schema" data-industries="restaurants all" data-topics="local-seo">
         <div class="gloss-term-head">
           <h3>Schema markup<span class="gloss-aka">JSON-LD, structured data, schema.org</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1165,7 +1219,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="alt-text" data-industries="restaurants all">
+      <article class="gloss-term" id="alt-text" data-industries="restaurants all" data-topics="local-seo">
         <div class="gloss-term-head">
           <h3>Alt text<span class="gloss-aka">image descriptions</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1177,7 +1231,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="sitemap" data-industries="restaurants all">
+      <article class="gloss-term" id="sitemap" data-industries="restaurants all" data-topics="local-seo">
         <div class="gloss-term-head">
           <h3>Sitemap<span class="gloss-aka">sitemap.xml</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1189,7 +1243,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="search-console" data-industries="restaurants all">
+      <article class="gloss-term" id="search-console" data-industries="restaurants all" data-topics="local-seo">
         <div class="gloss-term-head">
           <h3>Google Search Console<span class="gloss-aka">GSC</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1201,7 +1255,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="canonical-url" data-industries="all">
+      <article class="gloss-term" id="canonical-url" data-industries="all" data-topics="local-seo">
         <div class="gloss-term-head">
           <h3>Canonical URL<span class="gloss-aka">rel=canonical, the "official" address</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -1213,7 +1267,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="robots-txt" data-industries="all">
+      <article class="gloss-term" id="robots-txt" data-industries="all" data-topics="local-seo">
         <div class="gloss-term-head">
           <h3>robots.txt</h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -1225,7 +1279,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="open-graph" data-industries="restaurants all">
+      <article class="gloss-term" id="open-graph" data-industries="restaurants all" data-topics="local-seo brand-design">
         <div class="gloss-term-head">
           <h3>Open Graph<span class="gloss-aka">og:image, social share cards, link previews</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1237,19 +1291,19 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="rich-results" data-industries="restaurants all">
+      <article class="gloss-term" id="rich-results" data-industries="restaurants all" data-topics="local-seo">
         <div class="gloss-term-head">
           <h3>Rich results<span class="gloss-aka">rich snippets, SERP features</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
         <p class="gloss-term-def">Enhanced Google search results that show more than a plain blue link — star ratings, hours, prices, FAQ dropdowns, image carousels. Unlocked by having the right schema markup on your page.</p>
-        <p class="gloss-term-why"><strong>Why it matters</strong>A result with a 4.8-star rating and a "$$" price next to it gets clicked far more often than a text-only result directly above it. Rich results are one of the few SEO levers where a small technical fix produces a visible, front-page win.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>A result with a 4.8-star rating and a "$" price next to it gets clicked far more often than a text-only result directly above it. Rich results are one of the few SEO levers where a small technical fix produces a visible, front-page win.</p>
         <!-- LIBRARY:gloss-perma:start -->
         <p class="gloss-term-permalink"><a href="/glossary/rich-results/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="nap-consistency" data-industries="restaurants all">
+      <article class="gloss-term" id="nap-consistency" data-industries="restaurants all" data-topics="local-seo">
         <div class="gloss-term-head">
           <h3>NAP consistency<span class="gloss-aka">name, address, phone — everywhere the same</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1261,7 +1315,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="hours-of-operation" data-industries="restaurants all">
+      <article class="gloss-term" id="hours-of-operation" data-industries="restaurants all" data-topics="local-seo">
         <div class="gloss-term-head">
           <h3>Hours of operation<span class="gloss-aka">the times your restaurant is open, expressed in a way every map and listing service can read</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1273,7 +1327,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="special-hours" data-industries="restaurants all">
+      <article class="gloss-term" id="special-hours" data-industries="restaurants all" data-topics="local-seo">
         <div class="gloss-term-head">
           <h3>Special hours<span class="gloss-aka">the override for any day that doesn't follow your usual schedule</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1285,7 +1339,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="structured-data" data-industries="restaurants all">
+      <article class="gloss-term" id="structured-data" data-industries="restaurants all" data-topics="local-seo">
         <div class="gloss-term-head">
           <h3>Structured data<span class="gloss-aka">the machine-readable copy of your site that Google reads</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -1297,7 +1351,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="apple-bing-maps" data-industries="restaurants all">
+      <article class="gloss-term" id="apple-bing-maps" data-industries="restaurants all" data-topics="local-seo">
         <div class="gloss-term-head">
           <h3>Apple Maps &amp; Bing Places</h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1309,7 +1363,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="mobile-first-indexing" data-industries="restaurants all">
+      <article class="gloss-term" id="mobile-first-indexing" data-industries="restaurants all" data-topics="local-seo">
         <div class="gloss-term-head">
           <h3>Mobile-first indexing</h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1464,7 +1518,7 @@
     </header>
     <div class="gloss-terms">
 
-      <article class="gloss-term" id="prime-cost" data-industries="restaurants all">
+      <article class="gloss-term" id="prime-cost" data-industries="restaurants all" data-topics="operations-margin">
         <div class="gloss-term-head">
           <h3>Prime cost<span class="gloss-aka">food cost + labor cost, as a % of sales</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1476,7 +1530,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="food-cost" data-industries="restaurants all">
+      <article class="gloss-term" id="food-cost" data-industries="restaurants all" data-topics="operations-margin">
         <div class="gloss-term-head">
           <h3>Food cost<span class="gloss-aka">cost of goods sold, as a % of sales</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1488,7 +1542,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="labor-cost" data-industries="restaurants all">
+      <article class="gloss-term" id="labor-cost" data-industries="restaurants all" data-topics="operations-margin">
         <div class="gloss-term-head">
           <h3>Labor cost<span class="gloss-aka">wages + payroll taxes, as a % of sales</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1500,7 +1554,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="cover" data-industries="restaurants all">
+      <article class="gloss-term" id="cover" data-industries="restaurants all" data-topics="operations-margin">
         <div class="gloss-term-head">
           <h3>Cover<span class="gloss-aka">one customer served</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1512,7 +1566,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="average-check" data-industries="restaurants all">
+      <article class="gloss-term" id="average-check" data-industries="restaurants all" data-topics="operations-margin">
         <div class="gloss-term-head">
           <h3>Average check<span class="gloss-aka">total sales ÷ covers</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1524,7 +1578,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="aggregator" data-industries="restaurants all">
+      <article class="gloss-term" id="aggregator" data-industries="restaurants all" data-topics="operations-margin">
         <div class="gloss-term-head">
           <h3>Aggregator<span class="gloss-aka">third-party delivery platform</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1536,7 +1590,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="commission" data-industries="restaurants all">
+      <article class="gloss-term" id="commission" data-industries="restaurants all" data-topics="operations-margin">
         <div class="gloss-term-head">
           <h3>Commission<span class="gloss-aka">the % a platform takes per order</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1548,7 +1602,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="direct-ordering" data-industries="restaurants all">
+      <article class="gloss-term" id="direct-ordering" data-industries="restaurants all" data-topics="operations-margin">
         <div class="gloss-term-head">
           <h3>Direct ordering<span class="gloss-aka">orders through your own site</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1560,7 +1614,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="menu-engineering" data-industries="restaurants all">
+      <article class="gloss-term" id="menu-engineering" data-industries="restaurants all" data-topics="operations-margin">
         <div class="gloss-term-head">
           <h3>Menu engineering<span class="gloss-aka">treating each dish as a portfolio decision, not a P&amp;L line</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1572,7 +1626,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="contribution-margin" data-industries="restaurants all">
+      <article class="gloss-term" id="contribution-margin" data-industries="restaurants all" data-topics="operations-margin">
         <div class="gloss-term-head">
           <h3>Contribution margin<span class="gloss-aka">what one sale of an item adds to covering fixed costs and profit</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1584,7 +1638,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="menu-mix" data-industries="restaurants all">
+      <article class="gloss-term" id="menu-mix" data-industries="restaurants all" data-topics="operations-margin">
         <div class="gloss-term-head">
           <h3>Menu mix<span class="gloss-aka">the share of total sales each item commands</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1596,7 +1650,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="plate-cost" data-industries="restaurants all">
+      <article class="gloss-term" id="plate-cost" data-industries="restaurants all" data-topics="operations-margin">
         <div class="gloss-term-head">
           <h3>Plate cost<span class="gloss-aka">the real ingredient cost of one finished plate</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1608,7 +1662,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="yield-percent" data-industries="restaurants all">
+      <article class="gloss-term" id="yield-percent" data-industries="restaurants all" data-topics="operations-margin">
         <div class="gloss-term-head">
           <h3>Yield percent<span class="gloss-aka">the share of what you bought that ends up on a plate</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1620,7 +1674,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="edible-portion" data-industries="restaurants all">
+      <article class="gloss-term" id="edible-portion" data-industries="restaurants all" data-topics="operations-margin">
         <div class="gloss-term-head">
           <h3>Edible portion (EP)<span class="gloss-aka">the cost of one usable ounce after trim</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1632,7 +1686,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="menu-copy" data-industries="restaurants all">
+      <article class="gloss-term" id="menu-copy" data-industries="restaurants all" data-topics="operations-margin">
         <div class="gloss-term-head">
           <h3>Menu copy<span class="gloss-aka">the language doing the selling, separate from the dish</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1644,7 +1698,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="sensory-adjective" data-industries="restaurants all">
+      <article class="gloss-term" id="sensory-adjective" data-industries="restaurants all" data-topics="operations-margin">
         <div class="gloss-term-head">
           <h3>Sensory adjective<span class="gloss-aka">a word that names a flavor, texture, temperature, or preparation</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1656,7 +1710,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="charm-pricing" data-industries="restaurants all">
+      <article class="gloss-term" id="charm-pricing" data-industries="restaurants all" data-topics="operations-margin">
         <div class="gloss-term-head">
           <h3>Charm pricing<span class="gloss-aka">prices ending in .95, .99, or .49</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1668,7 +1722,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="break-even" data-industries="restaurants all">
+      <article class="gloss-term" id="break-even" data-industries="restaurants all" data-topics="operations-margin">
         <div class="gloss-term-head">
           <h3>Break-even<span class="gloss-aka">where revenue equals costs</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1680,7 +1734,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="margin" data-industries="restaurants all">
+      <article class="gloss-term" id="margin" data-industries="restaurants all" data-topics="operations-margin">
         <div class="gloss-term-head">
           <h3>Margin<span class="gloss-aka">sales minus costs; several kinds</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1692,7 +1746,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="elasticity" data-industries="restaurants all">
+      <article class="gloss-term" id="elasticity" data-industries="restaurants all" data-topics="operations-margin">
         <div class="gloss-term-head">
           <h3>Price elasticity<span class="gloss-aka">how cover count moves with price</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1704,7 +1758,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="fixed-costs" data-industries="restaurants all">
+      <article class="gloss-term" id="fixed-costs" data-industries="restaurants all" data-topics="operations-margin">
         <div class="gloss-term-head">
           <h3>Fixed costs<span class="gloss-aka">costs that don't scale with sales</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1716,7 +1770,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="variable-costs" data-industries="restaurants all">
+      <article class="gloss-term" id="variable-costs" data-industries="restaurants all" data-topics="operations-margin">
         <div class="gloss-term-head">
           <h3>Variable costs<span class="gloss-aka">costs that scale with sales</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -1728,7 +1782,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="margin-math" data-industries="restaurants all">
+      <article class="gloss-term" id="margin-math" data-industries="restaurants all" data-topics="operations-margin">
         <div class="gloss-term-head">
           <h3>Margin Math<span class="gloss-aka">client-side restaurant finance calculators</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span><span class="gloss-tag">Tools</span></div>
@@ -1751,7 +1805,7 @@
     </header>
     <div class="gloss-terms">
 
-      <article class="gloss-term" id="client-side" data-industries="restaurants all">
+      <article class="gloss-term" id="client-side" data-industries="restaurants all" data-topics="brand-design">
         <div class="gloss-term-head">
           <h3>Client-side<span class="gloss-aka">computation in your browser, not on a server</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -1763,7 +1817,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="fetch-request" data-industries="restaurants all">
+      <article class="gloss-term" id="fetch-request" data-industries="restaurants all" data-topics="brand-design">
         <div class="gloss-term-head">
           <h3>Fetch request<span class="gloss-aka">the browser sends data to a server</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -1775,7 +1829,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="url-fragment" data-industries="restaurants all">
+      <article class="gloss-term" id="url-fragment" data-industries="restaurants all" data-topics="brand-design">
         <div class="gloss-term-head">
           <h3>URL fragment<span class="gloss-aka">the part of a URL after the #</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -1798,7 +1852,7 @@
     </header>
     <div class="gloss-terms">
 
-      <article class="gloss-term" id="brand-identity" data-industries="restaurants all">
+      <article class="gloss-term" id="brand-identity" data-industries="restaurants all" data-topics="brand-design">
         <div class="gloss-term-head">
           <h3>Brand identity<span class="gloss-aka">the full visible system around your logo</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -1810,7 +1864,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="logo-lockup" data-industries="restaurants all">
+      <article class="gloss-term" id="logo-lockup" data-industries="restaurants all" data-topics="brand-design">
         <div class="gloss-term-head">
           <h3>Logo lockup<span class="gloss-aka">mark + wordmark + optional tagline, as one unit</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -1822,7 +1876,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="clearspace" data-industries="restaurants all">
+      <article class="gloss-term" id="clearspace" data-industries="restaurants all" data-topics="brand-design">
         <div class="gloss-term-head">
           <h3>Clearspace<span class="gloss-aka">the empty zone around a logo</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -1834,7 +1888,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="color-palette" data-industries="restaurants all">
+      <article class="gloss-term" id="color-palette" data-industries="restaurants all" data-topics="brand-design">
         <div class="gloss-term-head">
           <h3>Color palette<span class="gloss-aka">the curated set of colors that belong to your brand</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -1846,7 +1900,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="wcag-contrast" data-industries="restaurants all">
+      <article class="gloss-term" id="wcag-contrast" data-industries="restaurants all" data-topics="trust-reviews brand-design">
         <div class="gloss-term-head">
           <h3>WCAG contrast<span class="gloss-aka">how readable text is against its background</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -1858,7 +1912,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="favicon" data-industries="restaurants all">
+      <article class="gloss-term" id="favicon" data-industries="restaurants all" data-topics="brand-design">
         <div class="gloss-term-head">
           <h3>Favicon<span class="gloss-aka">the small icon in the browser tab</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -1870,7 +1924,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="typography-pairing" data-industries="restaurants all">
+      <article class="gloss-term" id="typography-pairing" data-industries="restaurants all" data-topics="brand-design">
         <div class="gloss-term-head">
           <h3>Typography pairing<span class="gloss-aka">display + body typefaces that work together</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -1882,7 +1936,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="monochrome-variant" data-industries="restaurants all">
+      <article class="gloss-term" id="monochrome-variant" data-industries="restaurants all" data-topics="brand-design">
         <div class="gloss-term-head">
           <h3>Monochrome variant<span class="gloss-aka">one-color version of the logo</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -1894,7 +1948,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="design-token" data-industries="restaurants all">
+      <article class="gloss-term" id="design-token" data-industries="restaurants all" data-topics="brand-design">
         <div class="gloss-term-head">
           <h3>Design token<span class="gloss-aka">a name for a decision, not a value</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -1906,7 +1960,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="accessible-pair" data-industries="restaurants all">
+      <article class="gloss-term" id="accessible-pair" data-industries="restaurants all" data-topics="brand-design">
         <div class="gloss-term-head">
           <h3>Accessible pair<span class="gloss-aka">a brand color, nudged until text on it clears WCAG AA</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -1918,7 +1972,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="color-blindness" data-industries="restaurants all">
+      <article class="gloss-term" id="color-blindness" data-industries="restaurants all" data-topics="brand-design">
         <div class="gloss-term-head">
           <h3>Color blindness<span class="gloss-aka">why two distinct brand colors can collapse to one</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -1953,7 +2007,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a 97-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->116<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -1977,7 +2031,7 @@
           <li><a href="/tools/">Free tools</a></li>
           <li><a href="/glossary/">Glossary</a></li>
           <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/resources/">Checklists &amp; guides</a></li>
+          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
         </ul>
       </nav>
 
@@ -2059,6 +2113,119 @@
         }
       });
     });
+  })();
+
+  // Glossary topic filter — same pattern as the industry filter above,
+  // but toggles data-active-topic on <main>. CSS hides any .gloss-term
+  // whose data-topics list does not contain the active topic. Initial
+  // state from ?topic=<slug> for shareable filtered links.
+  (function(){
+    var TOPICS = ['all','speed-mobile','conversions','local-seo','operations-margin','trust-reviews','brand-design'];
+    var main = document.getElementById('main');
+    var status = document.getElementById('gloss-filter-status');
+    var chips = document.querySelectorAll('.gloss-topic-filter');
+    if (!main || !chips.length) return;
+
+    function apply(slug, options){
+      var valid = TOPICS.indexOf(slug) !== -1 ? slug : 'all';
+      if (valid === 'all') {
+        main.removeAttribute('data-active-topic');
+      } else {
+        main.setAttribute('data-active-topic', valid);
+      }
+      chips.forEach(function(chip){
+        var active = chip.getAttribute('data-topic') === valid;
+        chip.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+      if (status) {
+        status.textContent = valid === 'all'
+          ? 'Showing glossary terms across all topics.'
+          : 'Showing glossary terms for ' + valid.replace(/-/g, ' ') + '.';
+      }
+      if (options && options.updateUrl){
+        var url = new URL(window.location.href);
+        if (valid === 'all') url.searchParams.delete('topic');
+        else url.searchParams.set('topic', valid);
+        window.history.replaceState({}, '', url.toString());
+      }
+    }
+
+    var params = new URLSearchParams(window.location.search);
+    apply(params.get('topic') || 'all', { updateUrl:false });
+
+    chips.forEach(function(chip){
+      chip.addEventListener('click', function(){
+        apply(chip.getAttribute('data-topic'), { updateUrl:true });
+        if (window.plausible) {
+          window.plausible('Glossary Topic', { props: { topic: chip.getAttribute('data-topic') } });
+        }
+      });
+    });
+  })();
+
+  // A–Z jump bar — clicking a letter scrolls to the first visible
+  // (non-display:none) glossary term whose id starts with that
+  // letter. "Visible" matters because the topic + industry filters
+  // may have hidden the alphabetically-first term; we want the next
+  // one a reader can actually see. Letters with zero matching terms
+  // dim themselves so the bar stays honest.
+  (function(){
+    var bar = document.querySelector('.gloss-az');
+    if (!bar) return;
+    var letters = bar.querySelectorAll('.gloss-az-letter');
+
+    function visible(el){
+      // Walk up; if any ancestor is display:none, the term is hidden.
+      // Cheaper than getComputedStyle on every term.
+      while (el) {
+        var s = el.style;
+        if (s && s.display === 'none') return false;
+        // The active filter rules use display:none via the
+        // [data-active-*] selectors — getComputedStyle catches that.
+        var cs = window.getComputedStyle(el);
+        if (cs.display === 'none') return false;
+        el = el.parentElement;
+        if (el && el.tagName === 'BODY') return true;
+      }
+      return true;
+    }
+
+    function termsByLetter(letter){
+      var sel = '.gloss-term[id^="' + letter + '"]';
+      return Array.from(document.querySelectorAll(sel));
+    }
+
+    function refreshDisabled(){
+      letters.forEach(function(btn){
+        var letter = btn.getAttribute('data-letter');
+        var any = termsByLetter(letter).some(visible);
+        btn.toggleAttribute('disabled', !any);
+        btn.setAttribute('aria-disabled', any ? 'false' : 'true');
+      });
+    }
+
+    letters.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var letter = btn.getAttribute('data-letter');
+        var target = termsByLetter(letter).find(visible);
+        if (!target) return;
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (window.plausible) {
+          window.plausible('Glossary AZ', { props: { letter: letter } });
+        }
+      });
+    });
+
+    // Refresh disabled state whenever the filters change. The two
+    // filter modules above don't emit events, so listen for chip
+    // clicks at document scope (cheap).
+    document.addEventListener('click', function(e){
+      if (e.target.closest('.gloss-filter, .gloss-topic-filter')) {
+        // Defer until the click handlers above have updated the DOM.
+        setTimeout(refreshDisabled, 0);
+      }
+    });
+    refreshDisabled();
   })();
 </script>
 </body>

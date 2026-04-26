@@ -141,7 +141,7 @@ function assertShellInvariants(label, html) {
   assert('checklistAutoResponder: primaryCta routes to live page (D12b)',
     out.html.indexOf('Open your checklist') !== -1 && out.html.indexOf('<table') !== -1);
   assert('checklistAutoResponder: primary CTA href is the live page, not a .pdf',
-    out.html.indexOf('/resources/restaurant-website-checklist/"') !== -1
+    out.html.indexOf('/learn/checklists/restaurant-website-checklist/"') !== -1
     && out.html.indexOf('muntin-restaurant-website-checklist.pdf') === -1);
   assert('checklistAutoResponder: Calendly CTA via secondary helper',
     out.html.indexOf('calendly.com/dongoldstein-accts/muntinconsult') !== -1);
@@ -308,7 +308,7 @@ function assertShellInvariants(label, html) {
   assert('ES checklistAutoResponder: primaryCta label ES (D12b)',
     out.html.indexOf('Abrir tu checklist') !== -1);
   assert('ES checklistAutoResponder: primary CTA href is the live page, not a .pdf',
-    out.html.indexOf('/es/resources/restaurant-website-checklist/"') !== -1
+    out.html.indexOf('/es/learn/checklists/restaurant-website-checklist/"') !== -1
     && out.html.indexOf('muntin-restaurant-website-checklist-es.pdf') === -1);
   assert('ES checklistAutoResponder: secondaryCta label ES',
     out.html.indexOf('Agenda una llamada de 20 min') !== -1);

@@ -126,15 +126,27 @@
       <a href="/es/for/restaurants/">Restaurantes</a>
       <div class="nav-library-wrap">
         <a href="/es/learn/" class="nav-library-trigger" aria-haspopup="true">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <div class="nav-library-menu" role="menu" aria-label="Secciones de la biblioteca">
-          <a href="/es/learn/" role="menuitem"><strong>Inicio de la biblioteca</strong><span>El centro de todo lo de abajo</span></a>
-          <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
-          <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
-          <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
-          <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
-          <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span>97 términos en lenguaje claro</span></a>
-          <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
-          <a href="/es/resources/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+        <div class="nav-library-menu nav-library-menu--mega" role="menu" aria-label="Secciones de la biblioteca">
+          <a class="nav-library-menu__home" href="/es/learn/" role="menuitem">
+            <strong>Inicio de la biblioteca</strong>
+            <span>El centro de todo lo de abajo &rarr;</span>
+          </a>
+          <div class="nav-library-menu__col">
+            <h4>Aprende</h4>
+            <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
+            <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
+            <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span><!-- count:glossary.terms -->116<!-- /count --> términos en lenguaje claro</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Lee</h4>
+            <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
+            <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Haz</h4>
+            <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
+            <a href="/es/learn/checklists/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+          </div>
         </div>
       </div>
       <a href="/es/work/">Proyectos</a>
@@ -165,13 +177,16 @@
     <details class="mobile-library">
       <summary>Biblioteca</summary>
       <a href="/es/learn/">Inicio de la biblioteca</a>
+      <p class="mobile-library__group">Aprende</p>
       <a href="/es/learn/start-here/">Empieza aquí</a>
       <a href="/es/learn/topics/">Temas</a>
-      <a href="/es/blog/">Artículos</a>
-      <a href="/es/tools/">Herramientas gratis</a>
       <a href="/es/glossary/">Glosario</a>
+      <p class="mobile-library__group">Lee</p>
+      <a href="/es/blog/">Artículos</a>
       <a href="/es/learn/research/">Investigación</a>
-      <a href="/es/resources/">Listas y recursos</a>
+      <p class="mobile-library__group">Haz</p>
+      <a href="/es/tools/">Herramientas gratis</a>
+      <a href="/es/learn/checklists/">Listas y recursos</a>
     </details>
     <a href="/es/work/">Proyectos</a>
     <a href="/es/about/">Sobre Don</a>
@@ -207,86 +222,194 @@
   </div>
 </section>
 
+<!-- tools:auto -->
 <section class="block">
   <div class="container container-wide">
+    <aside class="tool-goals" aria-labelledby="tool-goals-heading">
+  <span class="eyebrow">Cuando ya sabes qué duele</span>
+  <h2 id="tool-goals-heading">Empieza con un objetivo.</h2>
+  <ul>
+      <li><strong>Subir precios</strong> <a href="/es/tools/plate-cost/">Costo del Plato</a> &middot; <a href="/es/tools/menu-engineering/">Matriz de Ingeniería de Menú</a> &middot; <a href="/es/tools/margin-math/">Cálculo de Margen</a></li>
+      <li><strong>Arreglar tu ficha de Google</strong> <a href="/es/tools/gbp-grader/">Calificador de Google Business Profile</a> &middot; <a href="/es/tools/audits/restaurant/">Diagnóstico de sitio de restaurante</a> &middot; <a href="/es/tools/open-hours/">Horario Abierto</a></li>
+      <li><strong>Refrescar tu marca</strong> <a href="/es/tools/brand-suite/">Suite de Marca</a> &middot; <a href="/es/tools/photo-brief/">Constructor de Brief de Fotos</a> &middot; <a href="/es/tools/menu-copy/">Inspector de Copy de Menú</a></li>
+  </ul>
+</aside>
+
+    <nav class="tool-chipnav" aria-label="Saltar a un tema">
+      <a href="#operations-margin">Operaciones y Márgenes</a>
+      <a href="#local-seo">SEO local y Presencia</a>
+      <a href="#conversions">Conversiones y Contenido</a>
+      <a href="#brand-design">Marca y Diseño</a>
+      <a href="#roadmap" class="tool-chipnav__roadmap">En camino</a>
+    </nav>
+
+    <section id="operations-margin" class="tool-cluster" aria-labelledby="cluster-operations-margin-heading">
+    <header class="tool-cluster__head">
+      <h2 id="cluster-operations-margin-heading">Operaciones y Márgenes</h2>
+      <p>La matemática honesta de un restaurante independiente — costo de comida, mezcla de menú y los precios que protegen tu margen.</p>
+      <a class="tool-cluster__topic" href="/es/learn/topics/operations-margin/">Ver el tema completo <span aria-hidden="true">&rarr;</span></a>
+    </header>
     <div class="tool-grid">
-
-      <a href="/es/tools/audits/restaurant/" class="tool-card live">
-        <span class="status">En vivo</span>
-        <h3>Diagnóstico de sitio de restaurante</h3>
-        <p>Pega la URL de tu restaurante y recibe un diagnóstico móvil real en unos treinta segundos — desempeño, SEO, accesibilidad, y diez chequeos específicos de restaurante en español claro.</p>
-        <span class="cta">Correr el diagnóstico <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
-      </a>
-
-      <a href="/es/tools/gbp-grader/" class="tool-card live">
-        <span class="status">En vivo</span>
-        <h3>Calificador de Google Business Profile</h3>
-        <p>Busca el nombre de tu negocio y mira cómo se compara tu ficha de Google — calificación, reseñas, fotos, categorías, horarios — con arreglos específicos para lo que te falta. Unos diez segundos.</p>
-        <span class="cta">Califica tu GBP <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
-      </a>
-
-      <a href="/es/tools/margin-math/" class="tool-card live">
+      <a href="/es/tools/margin-math/" class="tool-card tool-card--compact live">
         <span class="status">En vivo</span>
         <h3>Cálculo de Margen</h3>
-        <p>Cuatro calculadoras de decisión — punto de equilibrio con delivery, prime cost, cubiertos necesarios, simulador de alza de precios — más un Reporte Mensual de Margen imprimible, enlaces de escenario para compartir y un recordatorio al calendario. Tus números se quedan en tu navegador; abre DevTools y míralo.</p>
-        <span class="cta">Corre la matemática <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <p>Cuatro calculadoras — punto de equilibrio con delivery, prime cost, cubiertos necesarios, simulador de alza de precios. Se queda en tu navegador.</p>
+        <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">Te llevas:</span> Números honestos para tus decisiones de precio más difíciles.</p>
+        <span class="cta">Corre la matemática <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
-
-      <a href="/es/tools/brand-suite/" class="tool-card live">
-        <span class="status">En vivo</span>
-        <h3>Suite de Marca</h3>
-        <p>Suelta tu logo y obtén paleta de color, pares accesibles y tokens CSS — todo en tu navegador. Un punto de partida para el sistema alrededor de tu marca. Sin subir nada, sin registro.</p>
-        <span class="cta">Abrir Suite de Marca <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
-      </a>
-
-      <a href="/es/tools/menu-engineering/" class="tool-card live">
+      <a href="/es/tools/menu-engineering/" class="tool-card tool-card--compact live">
         <span class="status">En vivo</span>
         <h3>Matriz de Ingeniería de Menú</h3>
-        <p>Pega tu menú — platos, precios, costo de comida, unidades vendidas — y obtén un 2×2 de Estrellas / Caballos de tiro / Acertijos / Perros con una acción corta por plato. El análisis clásico de la industria restaurantera, corrido sobre tus propios números. Se queda en tu navegador.</p>
-        <span class="cta">Abrir Ingeniería de Menú <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <p>Pega tu menú — platos, precios, costo de comida, unidades vendidas. Obtén un 2×2 de Estrellas, Caballos, Acertijos y Perros con una acción por plato.</p>
+        <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">Te llevas:</span> Una acción por plato — mantén, empuja, rediseña o quita.</p>
+        <span class="cta">Abrir Ingeniería de Menú <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
-
-      <a href="/es/tools/menu-copy/" class="tool-card live">
-        <span class="status">En vivo</span>
-        <h3>Inspector de Copy de Menú</h3>
-        <p>Pega la descripción de un plato. Obtén seis diagnósticos — adjetivos sensoriales, procedencia, técnica, extensión, palabras de relleno, precio — anotados con la investigación detrás de cada uno. Una herramienta para enseñar, no para reescribir; te enseña a leer tu propio menú con criterio. Se queda en tu navegador.</p>
-        <span class="cta">Abrir Inspector de Copy <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
-      </a>
-
-      <a href="/es/tools/open-hours/" class="tool-card live">
-        <span class="status">En vivo</span>
-        <h3>Horario Abierto</h3>
-        <p>Pon bien tu horario en todas partes. Llena los horarios una vez y llévate el texto exacto para pegar en Google y un bloque de código para mandar a quien hizo tu sitio. Unos 15 minutos. Se queda en tu navegador.</p>
-        <span class="cta">Abrir Horario Abierto <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
-      </a>
-
-      <a href="/es/tools/plate-cost/" class="tool-card live">
+      <a href="/es/tools/plate-cost/" class="tool-card tool-card--compact live">
         <span class="status">En vivo</span>
         <h3>Costo del Plato</h3>
-        <p>Escribe una receta — qué compraste, cuánto usaste, cuánto rinde después de limpiar. La herramienta hace la matemática de la factura al plato y sugiere tres precios de menú. Unos 5 minutos por plato. Se queda en tu navegador.</p>
-        <span class="cta">Abrir Costo del Plato <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <p>Escribe una receta — qué compraste, cuánto usaste, cuánto rinde. La herramienta hace la matemática del recibo al plato y sugiere tres precios.</p>
+        <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">Te llevas:</span> Un precio defendible para cada plato del menú.</p>
+        <span class="cta">Abrir Costo del Plato <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
+    </div>
+  </section>
 
-      <a href="/es/tools/photo-brief/" class="tool-card live">
+    <section id="local-seo" class="tool-cluster" aria-labelledby="cluster-local-seo-heading">
+    <header class="tool-cluster__head">
+      <h2 id="cluster-local-seo-heading">SEO local y Presencia</h2>
+      <p>Cómo Google decide qué restaurante mostrar — tu ficha, tus horarios, tu sitio, las señales en página que importan.</p>
+      <a class="tool-cluster__topic" href="/es/learn/topics/local-seo/">Ver el tema completo <span aria-hidden="true">&rarr;</span></a>
+    </header>
+    <div class="tool-grid">
+      <a href="/es/tools/audits/restaurant/" class="tool-card tool-card--compact live">
+        <span class="status">En vivo</span>
+        <h3>Diagnóstico de sitio de restaurante</h3>
+        <p>Pega la URL de tu restaurante y recibe un diagnóstico móvil real en unos treinta segundos — desempeño, SEO, accesibilidad, y diez chequeos específicos en español claro.</p>
+        <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">Te llevas:</span> Una lista accionable de lo que está roto en tu sitio.</p>
+        <span class="cta">Correr el diagnóstico <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+      </a>
+      <a href="/es/tools/gbp-grader/" class="tool-card tool-card--compact live">
+        <span class="status">En vivo</span>
+        <h3>Calificador de Google Business Profile</h3>
+        <p>Busca el nombre de tu negocio. Mira cómo se compara tu ficha de Google — calificación, reseñas, fotos, categorías, horarios — con arreglos específicos.</p>
+        <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">Te llevas:</span> Arreglos específicos para los huecos en tu ficha de Google.</p>
+        <span class="cta">Califica tu GBP <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+      </a>
+      <a href="/es/tools/open-hours/" class="tool-card tool-card--compact live">
+        <span class="status">En vivo</span>
+        <h3>Horario Abierto</h3>
+        <p>Llena los horarios una vez. Llévate el texto exacto para Google y un bloque de código para tu sitio. Unos 15 minutos.</p>
+        <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">Te llevas:</span> El texto exacto que Google y tu sitio quieren para tus horarios.</p>
+        <span class="cta">Abrir Horario Abierto <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+      </a>
+    </div>
+  </section>
+
+    <section id="conversions" class="tool-cluster" aria-labelledby="cluster-conversions-heading">
+    <header class="tool-cluster__head">
+      <h2 id="cluster-conversions-heading">Conversiones y Contenido</h2>
+      <p>Los patrones que convierten a un visitante en una mesa reservada — copy del menú, fotos, y las pequeñas fricciones que te cuestan reservas.</p>
+      <a class="tool-cluster__topic" href="/es/learn/topics/conversions/">Ver el tema completo <span aria-hidden="true">&rarr;</span></a>
+    </header>
+    <div class="tool-grid">
+      <a href="/es/tools/menu-copy/" class="tool-card tool-card--compact live">
+        <span class="status">En vivo</span>
+        <h3>Inspector de Copy de Menú</h3>
+        <p>Pega la descripción de un plato. Seis diagnósticos — palabras sensoriales, procedencia, técnica, extensión, relleno, precio — con la investigación detrás.</p>
+        <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">Te llevas:</span> Un ojo entrenado para leer tu propio menú con criterio.</p>
+        <span class="cta">Abrir Inspector de Copy <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+      </a>
+      <a href="/es/tools/photo-brief/" class="tool-card tool-card--compact live">
         <span class="status">En vivo</span>
         <h3>Constructor de Brief de Fotos</h3>
-        <p>Lista tus platos, marca a dónde van las fotos (Yelp, Google, Instagram, tu menú). Llévate un brief de una página que te consigue las fotos correctas en una sesión &mdash; y una Tarjeta de Fotos de Marca de larga vida para la pared de la cocina. Unos 10 minutos. Se queda en tu navegador.</p>
-        <span class="cta">Abrir Constructor de Brief de Fotos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <p>Lista tus platos, marca a dónde van las fotos (Yelp, Google, Instagram, tu menú). Llévate un brief de una página y las fotos correctas en una sesión.</p>
+        <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">Te llevas:</span> Un brief de una página que tu fotógrafo puede cumplir en una visita.</p>
+        <span class="cta">Abrir Brief de Fotos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
-
-      <div class="tool-card soon" aria-disabled="true">
-        <span class="status">En camino</span>
-        <h3>Más herramientas en desarrollo</h3>
-        <p>Prueba de velocidad, calificador de SEO, revisor móvil, revisor de schema, detector de stack tecnológico, comparador de competencia, e ideas de búsqueda local — todas en desarrollo activo y próximamente disponibles.</p>
-        <span class="cta">Próximamente</span>
-      </div>
-
     </div>
+  </section>
+
+    <section id="brand-design" class="tool-cluster" aria-labelledby="cluster-brand-design-heading">
+    <header class="tool-cluster__head">
+      <h2 id="cluster-brand-design-heading">Marca y Diseño</h2>
+      <p>El sistema alrededor de tu marca — paleta, pares de color accesibles, tokens que puedes pasar a cualquier herramienta o desarrollador.</p>
+      <a class="tool-cluster__topic" href="/es/learn/topics/brand-design/">Ver el tema completo <span aria-hidden="true">&rarr;</span></a>
+    </header>
+    <div class="tool-grid">
+      <a href="/es/tools/brand-suite/" class="tool-card tool-card--compact live">
+        <span class="status">En vivo</span>
+        <h3>Suite de Marca</h3>
+        <p>Suelta tu logo. Llévate una paleta, pares de color accesibles y tokens CSS — un punto de partida para el sistema alrededor de tu marca.</p>
+        <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">Te llevas:</span> Tokens que puedes pegar en cualquier herramienta o pasar a un desarrollador.</p>
+        <span class="cta">Abrir Suite de Marca <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+      </a>
+    </div>
+  </section>
+
+  <section id="roadmap" class="tool-roadmap" aria-labelledby="roadmap-heading">
+    <header class="tool-roadmap__head">
+      <span class="eyebrow">En el roadmap</span>
+      <h2 id="roadmap-heading">Próximamente — y por qué cada una está en la lista.</h2>
+      <p>Cada próxima herramienta está etiquetada con el tema al que pertenece. El orden cambia según lo que más nos piden los restaurantes.</p>
+    </header>
+      <div class="tool-roadmap__group" data-cluster="speed-mobile">
+        <h3 class="tool-roadmap__cluster">Velocidad y móvil</h3>
+        <ul class="tool-grid">
+        <li class="tool-card tool-card--roadmap soon" aria-disabled="true">
+          <span class="status">En camino</span>
+          <h3>Prueba de Velocidad</h3>
+          <p>Pega una URL. Recibe un puntaje de velocidad respaldado por Lighthouse con los archivos que te frenan.</p>
+        </li>
+        <li class="tool-card tool-card--roadmap soon" aria-disabled="true">
+          <span class="status">En camino</span>
+          <h3>Revisor Móvil</h3>
+          <p>¿Cómo se ve tu sitio en los teléfonos que usan tus comensales? Capturas reales con los problemas señalados.</p>
+        </li>
+        <li class="tool-card tool-card--roadmap soon" aria-disabled="true">
+          <span class="status">En camino</span>
+          <h3>Detector de Stack</h3>
+          <p>¿En qué está construido tu sitio? CMS, hosting, scripts, trackers — las partes que deciden qué es posible.</p>
+        </li>
+        </ul>
+      </div>
+      <div class="tool-roadmap__group" data-cluster="local-seo">
+        <h3 class="tool-roadmap__cluster">SEO local y descubrimiento</h3>
+        <ul class="tool-grid">
+        <li class="tool-card tool-card--roadmap soon" aria-disabled="true">
+          <span class="status">En camino</span>
+          <h3>Calificador de SEO</h3>
+          <p>Lo básico de SEO en página, calificado como Google realmente posiciona restaurantes — títulos, schema, contenido.</p>
+        </li>
+        <li class="tool-card tool-card--roadmap soon" aria-disabled="true">
+          <span class="status">En camino</span>
+          <h3>Revisor de Schema</h3>
+          <p>¿Tu structured data dice lo que Google necesita? Restaurant, Menu, Review, OpeningHoursSpecification — validado.</p>
+        </li>
+        <li class="tool-card tool-card--roadmap soon" aria-disabled="true">
+          <span class="status">En camino</span>
+          <h3>Ideas de Búsqueda Local</h3>
+          <p>¿Qué escribe la gente para encontrar un restaurante como el tuyo? Keywords de cola larga con intención, no vanidad.</p>
+        </li>
+        </ul>
+      </div>
+      <div class="tool-roadmap__group" data-cluster="conversions">
+        <h3 class="tool-roadmap__cluster">Conversiones y reservas</h3>
+        <ul class="tool-grid">
+        <li class="tool-card tool-card--roadmap soon" aria-disabled="true">
+          <span class="status">En camino</span>
+          <h3>Comparador de Competencia</h3>
+          <p>Lado a lado: tu restaurante vs el de la cuadra. Velocidad, SEO, fotos, reseñas — dónde realmente estás.</p>
+        </li>
+        </ul>
+      </div>
+  </section>
+
     <p class="section-aside" style="text-align:center;margin-top:32px;">
       Herramientas gratis, sin registro, sin correo. Más en camino.
     </p>
   </div>
 </section>
+<!-- /tools:auto -->
 
 <section class="block final">
   <div class="container">
@@ -323,7 +446,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de 97 t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->116<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -347,7 +470,7 @@
           <li><a href="/es/tools/">Herramientas gratis</a></li>
           <li><a href="/es/glossary/">Glosario</a></li>
           <li><a href="/es/learn/research/">Investigación</a></li>
-          <li><a href="/es/resources/">Listas y recursos</a></li>
+          <li><a href="/es/learn/checklists/">Listas y recursos</a></li>
         </ul>
       </nav>
 

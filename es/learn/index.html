@@ -56,7 +56,7 @@
         { "@type": "Blog",           "url": "https://muntin.digital/es/blog/",     "name": "Artículos" },
         { "@type": "CollectionPage", "url": "https://muntin.digital/es/tools/",    "name": "Herramientas gratis" },
         { "@type": "DefinedTermSet", "url": "https://muntin.digital/es/glossary/", "name": "Glosario" },
-        { "@type": "WebPage",        "url": "https://muntin.digital/es/resources/restaurant-website-checklist/", "name": "Checklist para tu sitio de restaurante" }
+        { "@type": "WebPage",        "url": "https://muntin.digital/es/learn/checklists/restaurant-website-checklist/", "name": "Checklist para tu sitio de restaurante" }
       ]
     },
     {
@@ -120,15 +120,27 @@
       <a href="/es/for/restaurants/">Restaurantes</a>
       <div class="nav-library-wrap">
         <a href="/es/learn/" class="nav-library-trigger" aria-haspopup="true">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <div class="nav-library-menu" role="menu" aria-label="Secciones de la biblioteca">
-          <a href="/es/learn/" role="menuitem"><strong>Inicio de la biblioteca</strong><span>El centro de todo lo de abajo</span></a>
-          <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
-          <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
-          <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
-          <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
-          <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span>97 términos en lenguaje claro</span></a>
-          <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
-          <a href="/es/resources/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+        <div class="nav-library-menu nav-library-menu--mega" role="menu" aria-label="Secciones de la biblioteca">
+          <a class="nav-library-menu__home" href="/es/learn/" role="menuitem">
+            <strong>Inicio de la biblioteca</strong>
+            <span>El centro de todo lo de abajo &rarr;</span>
+          </a>
+          <div class="nav-library-menu__col">
+            <h4>Aprende</h4>
+            <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
+            <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
+            <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span><!-- count:glossary.terms -->116<!-- /count --> términos en lenguaje claro</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Lee</h4>
+            <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
+            <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Haz</h4>
+            <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
+            <a href="/es/learn/checklists/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+          </div>
         </div>
       </div>
       <a href="/es/work/">Proyectos</a>
@@ -159,13 +171,16 @@
     <details class="mobile-library">
       <summary>Biblioteca</summary>
       <a href="/es/learn/">Inicio de la biblioteca</a>
+      <p class="mobile-library__group">Aprende</p>
       <a href="/es/learn/start-here/">Empieza aquí</a>
       <a href="/es/learn/topics/">Temas</a>
-      <a href="/es/blog/">Artículos</a>
-      <a href="/es/tools/">Herramientas gratis</a>
       <a href="/es/glossary/">Glosario</a>
+      <p class="mobile-library__group">Lee</p>
+      <a href="/es/blog/">Artículos</a>
       <a href="/es/learn/research/">Investigación</a>
-      <a href="/es/resources/">Listas y recursos</a>
+      <p class="mobile-library__group">Haz</p>
+      <a href="/es/tools/">Herramientas gratis</a>
+      <a href="/es/learn/checklists/">Listas y recursos</a>
     </details>
     <a href="/es/work/">Proyectos</a>
     <a href="/es/about/">Sobre Don</a>
@@ -219,6 +234,40 @@
   </div>
 </section>
 
+<!-- recently-added -->
+<section class="block recently-added" aria-labelledby="recently-added-heading">
+  <div class="container">
+    <header class="recently-added__head">
+      <span class="eyebrow">Recién publicado</span>
+      <h2 id="recently-added-heading">Añadido recientemente.</h2>
+    </header>
+    <ul class="recently-added__grid">
+      <li>
+        <a class="recently-added__card" href="/es/tools/plate-cost/">
+          <span class="recently-added__eyebrow">Nueva herramienta</span>
+          <h3>Costo del Plato</h3>
+          <span class="recently-added__date" aria-label="2026-04-26">2026-04-26</span>
+        </a>
+      </li>
+      <li>
+        <a class="recently-added__card" href="/es/tools/photo-brief/">
+          <span class="recently-added__eyebrow">Nueva herramienta</span>
+          <h3>Constructor de Brief de Fotos</h3>
+          <span class="recently-added__date" aria-label="2026-04-26">2026-04-26</span>
+        </a>
+      </li>
+      <li>
+        <a class="recently-added__card" href="/es/tools/open-hours/">
+          <span class="recently-added__eyebrow">Nueva herramienta</span>
+          <h3>Horario Abierto</h3>
+          <span class="recently-added__date" aria-label="2026-04-25">2026-04-25</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>
+<!-- /recently-added -->
+
 <!-- ============ BROWSE BY TOPIC ============
      Los seis temas viven en /es/learn/topics/<slug>/ — cada uno
      una página real de agregación con todos los artículos,
@@ -269,18 +318,18 @@
         <a class="learn-quick-card" href="/es/tools/">
           <span class="learn-quick-kind">Herramientas gratis</span>
           <h3>Revisa tu propio sitio.</h3>
-          <p>Once utilidades pequeñas — velocidad, móvil, SEO, schema, GBP, márgenes, suite de marca.</p>
+          <p><!-- count:tools.live -->9<!-- /count --> utilidades pequeñas en <!-- count:topics -->6<!-- /count --> temas — precios, SEO, marca, horarios, contenido, operaciones.</p>
         </a>
       </li>
       <li>
         <a class="learn-quick-card" href="/es/glossary/">
           <span class="learn-quick-kind">Glosario</span>
           <h3>Definiciones en lenguaje claro.</h3>
-          <p>97 términos de web, SEO y operaciones de restaurante — escritos como te los explicaría un amigo.</p>
+          <p><!-- count:glossary.terms -->116<!-- /count --> términos de web, SEO y operaciones de restaurante — escritos como te los explicaría un amigo.</p>
         </a>
       </li>
       <li>
-        <a class="learn-quick-card" href="/es/resources/">
+        <a class="learn-quick-card" href="/es/learn/checklists/">
           <span class="learn-quick-kind">Listas y guías</span>
           <h3>Workbooks que puedes guardar.</h3>
           <p>Listas interactivas. Córrelas en tu propio sitio o pásaselas a una agencia.</p>
@@ -326,7 +375,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de 97 t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->116<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -350,7 +399,7 @@
           <li><a href="/es/tools/">Herramientas gratis</a></li>
           <li><a href="/es/glossary/">Glosario</a></li>
           <li><a href="/es/learn/research/">Investigación</a></li>
-          <li><a href="/es/resources/">Listas y recursos</a></li>
+          <li><a href="/es/learn/checklists/">Listas y recursos</a></li>
         </ul>
       </nav>
 

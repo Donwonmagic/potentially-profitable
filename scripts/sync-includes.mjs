@@ -41,7 +41,7 @@ const NON_DEFAULT_LOCALES = LOCALES.filter((l) => l !== 'en');
 // existing footer that already links to the restaurant checklist is
 // using the canonical main-funnel footer; anything else is a tool
 // utility page and gets left alone.
-const FOOTER_MAIN_FUNNEL_MARKER = '/resources/restaurant-website-checklist/';
+const FOOTER_MAIN_FUNNEL_MARKER = '/learn/checklists/restaurant-website-checklist/';
 
 // The nav block: <header class="nav" id="nav">...</header>.
 // Single occurrence per page; anchored by the unique id.
