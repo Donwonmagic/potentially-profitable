@@ -1205,10 +1205,46 @@
           <h3>Consistencia de NAP<span class="gloss-aka">nombre, dirección, teléfono — iguales en todas partes</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
         </div>
-        <p class="gloss-term-def">El nombre, la dirección y el teléfono de tu negocio escritos igualito en tu sitio web, en la ficha de Google Business, en Yelp, en Apple Maps, en Facebook y en cualquier otro directorio. "Suite 200" vs. "Ste. 200" a Google le cuenta como inconsistencia.</p>
-        <p class="gloss-term-why"><strong>Por qué importa</strong>Google compara tu NAP entre todas las menciones de tu negocio en la web y baja de posición a las fichas con datos que no cuadran — lo lee como "este negocio puede que no sea real". Una limpieza única recupera posiciones que no sabías que habías perdido.</p>
+        <p class="gloss-term-def">El nombre, la dirección y el teléfono de tu negocio escritos igualito en tu sitio web, en la ficha de Google Business, en Yelp, en Apple Maps, en Facebook y en cualquier otro directorio. "Suite 200" vs. "Ste. 200" a Google le cuenta como inconsistencia. Cada vez más, el horario también entra aquí — Google trata los conflictos de día de la semana igual que los de dirección.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>Google compara tu NAP entre todas las menciones de tu negocio en la web y baja de posición a las fichas con datos que no cuadran — lo lee como "este negocio puede que no sea real". Una limpieza única recupera posiciones que no sabías que habías perdido. <a href="/es/tools/open-hours/">Horario Abierto</a> cubre la parte del horario; el resto es un ajuste aparte.</p>
         <!-- LIBRARY:gloss-perma:start -->
         <p class="gloss-term-permalink"><a href="/es/glossary/nap-consistency/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="hours-of-operation" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Horario de operación<span class="gloss-aka">los horarios de tu restaurante en un formato que cualquier mapa o listado pueda leer</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">La representación estructurada de cuándo está abierto un restaurante a lo largo de la semana — codificada de varias formas: campos de Google Business Profile, Información de Negocio en Yelp, entradas en Apple Business Connect, <code>OpeningHoursSpecification</code> de Schema.org en tu sitio, y un cartel hecho a mano en la puerta. Cada superficie tiene un formato distinto; la decisión de fondo es la misma.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>Tener mal el horario en un solo lugar es la causa #2 de malas reseñas después del menú desactualizado, y la causa #1 del deterioro de calidad de la ficha de Google Business. Los comensales revisan Google antes de salir de casa; un &ldquo;cerrado&rdquo; que aparece en sábado al almuerzo manda la mesa al competidor. <a href="/es/tools/open-hours/">Horario Abierto</a> es el ajuste de 15 minutos que mantiene los seis lugares alineados.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/hours-of-operation/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="special-hours" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Horarios especiales<span class="gloss-aka">la excepción para cualquier día que no sigue tu horario habitual</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurantes</span></div>
+        </div>
+        <p class="gloss-term-def">Una entidad aparte del horario regular en el modelo de datos de Google: excepciones por fecha para feriados, eventos privados, cierres por clima, y días con horario modificado (cierre temprano en la víspera de Navidad, sólo brunch en el Día de la Madre). En Schema.org se traduce a entradas <code>OpeningHoursSpecification</code> adicionales con fechas <code>validFrom</code>/<code>validThrough</code>.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>La mayoría de los dueños llena el horario regular una vez y no vuelve a tocar el modelo de datos. Google marca como &ldquo;puede tener información imprecisa&rdquo; — una bajada suave en búsqueda local — las fichas donde el horario regular contradice un cierre conocido (&ldquo;Lun: 11–9&rdquo; saliendo en Navidad). Mantener los horarios especiales es la mitad de la administración de horarios que requiere un calendario, no un llenado de una sola vez.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/special-hours/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="structured-data" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Datos estructurados<span class="gloss-aka">la copia legible por máquina de tu sitio que Google sí lee</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Todos</span></div>
+        </div>
+        <p class="gloss-term-def">Un pequeño bloque JSON embebido en el <code>&lt;head&gt;</code> de tu sitio que refleja el contenido visible (horarios, dirección, platos del menú, reseñas, precios) en un formato que los buscadores pueden indexar sin tener que entender tu diseño. La convención es el vocabulario de Schema.org, expresado como JSON-LD; lo que reconoces como &ldquo;<a href="/es/glossary/rich-results/">resultado enriquecido</a>&rdquo; en la página de resultados es consecuencia de estos datos.</p>
+        <p class="gloss-term-why"><strong>Por qué importa</strong>La copia legible por máquina decide qué muestra Google en tu ficha, en tu panel de conocimiento y en la primera pantalla de &ldquo;[nombre del restaurante] horario&rdquo;. Un diseño bonito no importa si los datos estructurados faltan o están mal — Google no ve CSS. <a href="/es/tools/open-hours/">Horario Abierto</a> genera la parte del horario de tus datos estructurados automáticamente; mandarle el bloque a quien hizo tu sitio normalmente le toma cinco minutos instalarlo.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/es/glossary/structured-data/">Abrir la página del término <span aria-hidden="true">&rarr;</span></a></p>
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 

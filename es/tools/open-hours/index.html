@@ -1,0 +1,1338 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="referrer" content="no-referrer" />
+<title>Horario Abierto — Pon bien tu horario en todas partes | Muntin Digital</title>
+<meta name="description" content="Llena los horarios una vez. Llévate un letrero para la puerta, el texto exacto para pegar en Google y lo que necesitas mandar a quien hizo tu sitio. Unos 15 minutos. Se queda en tu navegador." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/es/tools/open-hours/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/tools/open-hours/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/open-hours/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/open-hours/" />
+<meta property="og:locale" content="es_US" />
+<meta property="og:locale:alternate" content="en_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Open Hours — Get your restaurant hours right everywhere" />
+<meta property="og:description" content="Fill out your hours once. Walk away with a sign for the door, the exact text to paste into Google, and what to send your website builder. Stays in your browser." />
+<meta property="og:url" content="https://muntin.digital/tools/open-hours/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Open Hours — Get your restaurant hours right everywhere" />
+<meta name="twitter:description" content="Fill out your hours once. Walk away with what you need for Google, your website, and your door. Stays in your browser." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<link rel="preconnect" href="https://plausible.io" crossorigin />
+<link rel="dns-prefetch" href="https://plausible.io" />
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
+<link rel="stylesheet" href="/assets/site.css?v=20260424-bs1" />
+<style>.breadcrumb{visibility:hidden;padding-top:100px}
+/* === Open Hours tool-scoped styles. Page-prefix .oh-*. === */
+.oh-form{display:flex;flex-direction:column;gap:18px}
+.oh-row{display:grid;grid-template-columns:140px 1fr;gap:14px;align-items:center}
+@media(max-width:640px){.oh-row{grid-template-columns:1fr}}
+.oh-row > label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
+.oh-row input[type="text"]{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:14px;color:var(--ink);width:100%}
+.oh-row input:focus{outline:2px solid var(--teal);outline-offset:1px}
+
+.oh-week{display:flex;flex-direction:column;gap:10px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);padding:14px}
+.oh-day-row{display:grid;grid-template-columns:84px 1fr auto;gap:14px;align-items:start;padding:8px 0;border-bottom:1px solid var(--line)}
+.oh-day-row:last-child{border-bottom:0}
+.oh-day-name{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink);padding-top:6px}
+.oh-day-name small{display:block;font-family:var(--font-body,inherit);font-size:11px;font-weight:400;color:var(--stone);letter-spacing:.04em;text-transform:uppercase;margin-top:2px}
+.oh-services{display:flex;flex-direction:column;gap:6px}
+.oh-service{display:grid;grid-template-columns:auto 100px auto 100px auto auto;gap:6px;align-items:center;font-size:13px}
+@media(max-width:640px){.oh-service{grid-template-columns:1fr 1fr;gap:4px}}
+.oh-service input[type="text"]{padding:6px 8px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font:inherit;font-size:13px;color:var(--ink);width:100%;font-variant-numeric:tabular-nums}
+.oh-service .oh-service-label{font-size:11px;color:var(--stone);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.oh-service .oh-next-day{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--stone)}
+.oh-service .oh-next-day input{margin:0}
+.oh-service .oh-remove{background:none;border:none;color:var(--stone);cursor:pointer;font-size:18px;line-height:1;padding:0 4px}
+.oh-service .oh-remove:hover{color:var(--rust)}
+.oh-add-service{padding:4px 10px;border:1px dashed var(--line-dark);border-radius:999px;background:transparent;font:inherit;font-size:11px;font-weight:600;color:var(--stone);cursor:pointer;align-self:flex-start}
+.oh-add-service:hover{border-color:var(--teal);color:var(--teal)}
+.oh-day-closed{font-size:12px;color:var(--stone);font-style:italic;align-self:center}
+
+.oh-warnings{display:flex;flex-direction:column;gap:6px;font-size:13px;line-height:1.55}
+.oh-warnings li{padding:8px 12px;border-radius:var(--r-sm);background:rgba(184,84,26,0.06);color:var(--rust);border:1px solid rgba(184,84,26,0.18);list-style:none}
+.oh-warnings ul{margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+
+.oh-checklist{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.oh-check-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font-size:14px}
+.oh-check-item[data-state="ok"]{border-color:var(--status-good);background:var(--status-good-tint)}
+.oh-check-item[data-state="ok"] .oh-check-icon{color:var(--status-good)}
+.oh-check-item[data-state="todo"] .oh-check-icon{color:var(--stone)}
+.oh-check-icon{font-size:20px;line-height:1}
+.oh-check-text{flex:1}
+.oh-check-fix{font-size:12px;color:var(--teal);font-weight:600;text-decoration:none;border-bottom:1px dashed currentColor}
+
+.oh-output{display:flex;flex-direction:column;gap:24px}
+.oh-task-card{padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+.oh-task-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.oh-task-head h3{font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0}
+.oh-task-format{font-size:11px;color:var(--stone);letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.oh-task-recipe{display:flex;flex-direction:column;gap:6px;font-size:13.5px;line-height:1.55;color:var(--ink-soft);margin:8px 0 12px;padding:10px 14px;background:var(--cream-2);border-radius:var(--r-sm)}
+.oh-task-recipe li{margin-left:18px;list-style:decimal}
+.oh-task-recipe ol{margin:0;padding:0}
+.oh-task-block{margin:0;padding:14px 16px;background:var(--ink);color:var(--cream-2);border-radius:var(--r-input);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;line-height:1.5;overflow-x:auto;white-space:pre-wrap;word-break:break-word}
+.oh-task-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.oh-task-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:background 140ms var(--ease-out),color 140ms var(--ease-out)}
+.oh-task-btn:hover{background:var(--teal);color:var(--cream)}
+.oh-task-btn-primary{background:var(--teal);color:var(--cream)}
+.oh-task-btn-primary:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.oh-task-btn.copied{background:var(--status-good-tint);color:var(--status-good);border-color:var(--status-good)}
+.oh-task-btn.copy-failed{background:rgba(184,84,26,0.06);color:var(--rust);border-color:var(--rust)}
+.oh-task-btn svg{width:13px;height:13px}
+
+.oh-empty{padding:18px;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--cream-2);font-size:13.5px;color:var(--stone);text-align:center}
+
+.oh-closures{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.oh-closures-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.oh-closures-head h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0}
+.oh-closures-head .oh-count{font-size:12px;color:var(--stone);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.oh-holiday-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;max-height:380px;overflow-y:auto;padding-right:4px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+.oh-holiday{display:grid;grid-template-columns:24px 1fr auto;gap:10px;align-items:start;padding:10px 14px;border-bottom:1px solid var(--line);cursor:pointer}
+.oh-holiday:last-child{border-bottom:0}
+.oh-holiday:hover{background:var(--cream-2)}
+.oh-holiday[data-checked="true"]{background:rgba(31,78,91,0.04)}
+.oh-holiday input[type="checkbox"]{margin:2px 0 0;cursor:pointer}
+.oh-holiday-name{font-size:14px;font-weight:600;color:var(--ink);line-height:1.4}
+.oh-holiday-note{font-size:12.5px;color:var(--ink-soft);line-height:1.45;margin-top:1px}
+.oh-holiday-date{font-size:12px;color:var(--stone);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap;align-self:center}
+
+.oh-custom{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:10px 14px;background:var(--cream-2);border-radius:var(--r-input);font-size:13px}
+.oh-custom input[type="date"], .oh-custom input[type="text"]{padding:6px 8px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font:inherit;font-size:13px;color:var(--ink)}
+.oh-custom input[type="text"]{flex:1;min-width:160px}
+
+.oh-compare{margin-top:18px;padding:16px;border:1px dashed var(--line-dark);border-radius:var(--r-input);background:var(--white)}
+.oh-compare summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.oh-compare summary::after{content:"+";font-size:18px;color:var(--stone)}
+.oh-compare[open] summary::after{content:"\2212"}
+.oh-compare summary::-webkit-details-marker{display:none}
+.oh-compare-body{margin-top:12px;display:flex;flex-direction:column;gap:10px}
+.oh-compare textarea{width:100%;min-height:100px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.5;color:var(--ink);resize:vertical}
+.oh-diff{display:grid;grid-template-columns:84px 1fr 1fr;gap:8px;font-size:12.5px;line-height:1.5}
+.oh-diff-row{display:contents}
+.oh-diff-row > *{padding:6px 10px;border-bottom:1px solid var(--line)}
+.oh-diff-row[data-match="true"] > *{color:var(--stone)}
+.oh-diff-row[data-match="false"] > *{background:rgba(184,84,26,0.06);color:var(--ink)}
+.oh-diff-day{font-weight:600;color:var(--ink)}
+.oh-diff-cell{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px}
+.oh-diff-empty{font-style:italic;color:var(--stone)}
+
+.oh-archetypes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px}
+.oh-archetype{padding:16px 18px;border:1px solid var(--line);border-left-width:4px;border-radius:var(--r-input);background:var(--white);display:flex;flex-direction:column;gap:8px}
+.oh-archetype[data-tier="casual"]   {border-left-color:var(--teal)}
+.oh-archetype[data-tier="brunch"]   {border-left-color:#C68A2C}
+.oh-archetype[data-tier="latebar"]  {border-left-color:#6E5DB3}
+.oh-archetype[data-tier="brewery"]  {border-left-color:var(--rust)}
+.oh-archetype h3{font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0}
+.oh-archetype .oh-archetype-meta{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);font-weight:700}
+.oh-archetype p{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink-soft)}
+.oh-archetype-pattern{margin:0;padding:8px 12px;background:var(--cream-2);border-radius:var(--r-sm);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.6;color:var(--ink);white-space:pre-line}
+.oh-archetype button{align-self:flex-start;padding:6px 14px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:background 140ms var(--ease-out),color 140ms var(--ease-out)}
+.oh-archetype button:hover{background:var(--teal);color:var(--cream)}
+
+@media print{
+  body{background:#fff !important;color:#000 !important}
+  header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,.oh-form,
+  #how-private,#what-this-isnt,.mm-next{display:none !important}
+  .oh-task-card,.oh-week{break-inside:avoid;page-break-inside:avoid}
+  a[href]:after{content:'' !important}
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/es/services/">Servicios</a>
+      <a href="/es/for/restaurants/">Restaurantes</a>
+      <a href="/es/learn/" class="nav-library-trigger">Biblioteca</a>
+      <a href="/es/work/">Trabajo</a>
+      <a href="/es/about/">Nosotros</a>
+    </nav>
+    <nav class="lang-switch" aria-label="Idioma">
+      <a href="/tools/open-hours/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
+      <span class="lang-switch-current" aria-current="true">ES</span>
+    </nav>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Reserva una llamada de 20 min<span class="sr-only"> (abre en pestaña nueva)</span></a>
+  </div>
+</header>
+<nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/es/">Inicio</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><a href="/es/tools/">Herramientas</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><span aria-current="page">Horario Abierto</span></nav>
+
+<main id="main">
+
+<section class="block"><div class="container">
+  <div style="max-width:760px;margin:0 auto;text-align:center;">
+    <span class="eyebrow">Herramienta gratis · se queda en tu navegador</span>
+    <h1 style="font-family:var(--font-display);font-size:clamp(34px,4.5vw,52px);font-weight:500;color:var(--ink);margin:14px 0 14px;line-height:1.1;">Pon bien tu horario en todas partes.</h1>
+    <p style="font-size:17px;line-height:1.6;color:var(--ink-soft);margin:0 0 14px;">Llena los horarios una vez. Llévate un letrero para la puerta, las palabras exactas para pegar en Google y un bloque de código para mandar a quien hizo tu sitio web. Unos 15 minutos.</p>
+    <p style="font-size:13px;color:var(--stone);margin:0;"><a href="#how-private" style="color:inherit;border-bottom:1px dashed var(--teal);">Cómo cuidamos la privacidad de tus horarios</a> · <a href="/es/glossary/hours-of-operation/" style="color:inherit;border-bottom:1px dashed var(--teal);">Por qué esto importa</a></p>
+  </div>
+</div></section>
+
+<!-- INPUT_PLACEHOLDER -->
+<section class="block"><div class="container">
+  <div class="oh-form">
+    <div class="oh-row">
+      <label for="ohName">Nombre del restaurante</label>
+      <input type="text" id="ohName" placeholder="ej. Osteria Giardino" autocomplete="organization" />
+    </div>
+    <div class="oh-row">
+      <label for="ohCity">Ciudad</label>
+      <input type="text" id="ohCity" placeholder="ej. Silver Spring" autocomplete="address-level2" />
+    </div>
+
+    <div>
+      <label style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);display:block;margin-bottom:8px;">¿A qué hora abres?</label>
+      <p style="font-size:12.5px;color:var(--stone);margin:0 0 10px;line-height:1.55;">Escribe los horarios como <code>11 AM</code>, <code>5 PM</code>, o <code>21:00</code> — la herramienta los entiende todos. Deja las dos casillas vacías para un día cerrado. Si cierras después de medianoche (última llamada a la 1 AM), marca &ldquo;cierra al día siguiente.&rdquo;</p>
+      <div class="oh-week" id="ohWeek" aria-label="Cuadrícula semanal de horarios"></div>
+      <div class="oh-warnings" id="ohWarnings" aria-live="polite" style="margin-top:10px;"></div>
+    </div>
+
+    <div class="oh-closures">
+      <div class="oh-closures-head">
+        <h3>¿Algún día cerrado próximamente?</h3>
+        <span class="oh-count" id="ohClosureCount">0 seleccionados</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--stone);margin:0;line-height:1.55;">Marca cualquier feriado en el que vayas a cerrar. Los agregamos al archivo &ldquo;Añadir cierres a mi calendario&rdquo; abajo.</p>
+      <ul class="oh-holiday-list" id="ohHolidayList" aria-label="Feriados próximos"></ul>
+
+      <div class="oh-custom">
+        <span style="font-weight:600;color:var(--ink);">Cierre personalizado:</span>
+        <input type="date" id="ohCustomDate" aria-label="Fecha del cierre" />
+        <input type="text" id="ohCustomName" placeholder="ej. Evento privado, vacaciones de verano" aria-label="Nombre del cierre" />
+        <button type="button" class="oh-task-btn" id="ohAddCustom">+ añadir</button>
+      </div>
+    </div>
+
+    <details class="oh-compare">
+      <summary>¿Ya tienes el horario publicado en otra parte? Pégalo para comparar.</summary>
+      <div class="oh-compare-body">
+        <p style="margin:0;font-size:12.5px;color:var(--ink-soft);line-height:1.55;">Pega tu horario actual de Google o Yelp aquí. Lo comparamos contra lo que ingresaste arriba y marcamos cualquier día que no coincida. (Buscamos líneas tipo &ldquo;lunes: 11 AM&ndash;9 PM&rdquo;; las diferencias menores de formato se ignoran.)</p>
+        <textarea id="ohCompareText" spellcheck="false" placeholder="lunes: 11 AM – 9 PM&#10;martes: 11 AM – 9 PM&#10;miércoles: cerrado&#10;..."></textarea>
+        <div id="ohDiffResult" aria-live="polite"></div>
+      </div>
+    </details>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+      <button type="button" class="oh-task-btn" id="ohLoadSample">Cargar restaurante de ejemplo</button>
+      <button type="button" class="oh-task-btn" id="ohClear">Borrar todo</button>
+      <span style="margin-left:auto;font-size:12.5px;color:var(--stone);">Vista previa en vivo — cada cambio actualiza los resultados.</span>
+    </div>
+  </div>
+</div></section>
+
+<!-- OUTPUT_PLACEHOLDER -->
+<section class="block bg-cream2" id="ohOutput" hidden><div class="container">
+  <div class="oh-output">
+
+    <div>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 6px;">Tu lista</h2>
+      <p style="font-size:13px;color:var(--stone);margin:0 0 4px;">Cinco verdes y terminaste. Toca cualquier punto pendiente para arreglarlo.</p>
+      <div class="oh-checklist" id="ohChecklist" aria-label="Lista de verificación"></div>
+    </div>
+
+    <article class="oh-task-card">
+      <header class="oh-task-head">
+        <h3>Actualiza Google.</h3>
+        <span class="oh-task-format">Para Google Business Profile</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">Copia el bloque de abajo y pégalo en el campo de horarios de tu perfil de Google Business. Tres pasos:</p>
+      <div class="oh-task-recipe">
+        <ol>
+          <li>Entra a <a href="https://business.google.com" target="_blank" rel="noopener" style="color:var(--teal);">business.google.com</a> e inicia sesión.</li>
+          <li>Haz click en <strong>Editar perfil</strong> &rarr; <strong>Horarios</strong>.</li>
+          <li>Pega esto (o copia día por día si Google te pide uno a la vez) y guarda.</li>
+        </ol>
+      </div>
+      <pre class="oh-task-block" id="ohGoogleBlock" aria-label="Bloque para Google"></pre>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn oh-task-btn-primary" data-copy-target="ohGoogleBlock" data-copy-label="Copiar para Google">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copiar para Google
+        </button>
+      </div>
+    </article>
+
+    <article class="oh-task-card">
+      <header class="oh-task-head">
+        <h3>Manda esto a quien hizo tu sitio.</h3>
+        <span class="oh-task-format" title="Schema.org OpeningHoursSpecification JSON-LD">Para quien hizo tu sitio</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">Si un desarrollador o agencia hizo tu sitio, mándales el correo y el código de abajo. Sabrán exactamente qué hacer con él. <em>(Para los curiosos técnicos: esto es Schema.org <code>OpeningHoursSpecification</code> JSON-LD — el formato que Google lee para mostrar tus horarios en los resultados.)</em></p>
+      <div class="oh-task-recipe" id="ohEmailBlock" style="white-space:pre-line;"></div>
+      <pre class="oh-task-block" id="ohJsonLdBlock" aria-label="Bloque de código JSON-LD"></pre>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn oh-task-btn-primary" id="ohCopyEmail" data-copy-label="Copiar correo + código">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Copiar correo + código
+        </button>
+        <button type="button" class="oh-task-btn" data-copy-target="ohJsonLdBlock" data-copy-label="Solo el código">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          Solo el código
+        </button>
+      </div>
+    </article>
+
+    <article class="oh-task-card">
+      <header class="oh-task-head">
+        <h3>Actualiza Yelp.</h3>
+        <span class="oh-task-format">Para Yelp Business</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">Yelp usa un formato un poco distinto al de Google. Lo mismo &mdash; entra, busca &ldquo;Información del negocio,&rdquo; pega esto.</p>
+      <pre class="oh-task-block" id="ohYelpBlock" aria-label="Bloque para Yelp"></pre>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn oh-task-btn-primary" data-copy-target="ohYelpBlock" data-copy-label="Copiar para Yelp">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copiar para Yelp
+        </button>
+      </div>
+    </article>
+
+    <article class="oh-task-card">
+      <header class="oh-task-head">
+        <h3>Actualiza Apple Maps.</h3>
+        <span class="oh-task-format">Para Apple Business Connect</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">Apple Business Connect es gratis y es el segundo mapa más consultado después de Google. Entra a <a href="https://businessconnect.apple.com" target="_blank" rel="noopener" style="color:var(--teal);">businessconnect.apple.com</a> y pega esto en tu horario.</p>
+      <pre class="oh-task-block" id="ohAppleBlock" aria-label="Bloque para Apple Maps"></pre>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn oh-task-btn-primary" data-copy-target="ohAppleBlock" data-copy-label="Copiar para Apple Maps">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copiar para Apple Maps
+        </button>
+      </div>
+    </article>
+
+    <article class="oh-task-card" id="ohIcsCard" hidden>
+      <header class="oh-task-head">
+        <h3>Añade los cierres a tu calendario.</h3>
+        <span class="oh-task-format">Como archivo iCalendar (.ics)</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">Descarga este archivo y haz doble click en tu teléfono o computadora. Tu app de calendario te ofrecerá agregar las fechas &mdash; vas a recibir un recordatorio el día antes de cada cierre para avisarle al equipo. Funciona con Apple Calendar, Google Calendar y Outlook.</p>
+      <p style="margin:8px 0 0;font-size:12px;color:var(--stone);" id="ohIcsCount">0 cierres seleccionados.</p>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn oh-task-btn-primary" id="ohDownloadIcs">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span data-label="Añadir cierres a mi calendario">Añadir cierres a mi calendario</span>
+        </button>
+      </div>
+    </article>
+
+    <article class="oh-task-card">
+      <header class="oh-task-head">
+        <h3>Imprime esto y pégalo a tu puerta.</h3>
+        <span class="oh-task-format">Carta / A4 vertical</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">Un letrero limpio, en tipografía grande, con tu horario semanal y los siguientes cuatro cierres. Imprímelo, recórtalo y pégalo dentro de la puerta — o ponlo en un caballete afuera. Reimprímelo cuando la lista de cierres se vacíe; es un recordatorio incorporado para revisar el horario.</p>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn oh-task-btn-primary" id="ohPrintSign">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Imprimir letrero de puerta
+        </button>
+        <button type="button" class="oh-task-btn" id="ohDownloadSign">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Descargar como PNG
+        </button>
+      </div>
+    </article>
+
+    <article class="oh-task-card">
+      <header class="oh-task-head">
+        <h3>Manda una imagen a un socio o contador.</h3>
+        <span class="oh-task-format">PNG 1200×1500</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">La Ficha de Horario empaqueta el horario semanal, los cierres próximos, el código del sitio y el bloque para Google en una sola imagen compartible. Mándasela a un socio o contador; imprímela para la pinza de cocina. La misma idea que el Letrero de Puerta, pero pensada para una pantalla.</p>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn oh-task-btn-primary" id="ohDownloadCard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
+          Descargar Ficha de Horario
+        </button>
+      </div>
+    </article>
+
+    <article class="oh-task-card">
+      <header class="oh-task-head">
+        <h3>Todo en un solo ZIP.</h3>
+        <span class="oh-task-format">Paquete ZIP</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">Un archivo con el Letrero imprimible, la Ficha compartible, el código del sitio listo en un HTML, los cierres en .ics, los textos de plataforma en plano, y un README que lo amarra todo. Mándaselo a un asistente, a un desarrollador, o al tú del futuro que volverá a correr esto en tres meses.</p>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn" id="ohDownloadZip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M10 12v6"/><path d="M10 12h2"/></svg>
+          Descargar paquete ZIP
+        </button>
+      </div>
+    </article>
+
+  </div>
+</div></section>
+
+<section class="block" id="ohEmptyHint"><div class="container">
+  <div class="oh-empty">Llena al menos un día de horario arriba para ver los resultados. O haz click en <button type="button" class="oh-task-btn" id="ohEmptyLoad" style="padding:4px 10px;font-size:12px;">Cargar restaurante de ejemplo</button> para ver cómo funciona.</div>
+
+  <div style="max-width:1100px;margin:32px auto 0;">
+    <span class="eyebrow">Lo típico</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:10px 0 4px;">¿Cuál se parece más al tuyo?</h2>
+    <p style="font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0;">Cada tarjeta es un patrón real de horarios de un arquetipo distinto. Haz click en cualquiera para cargarlo como punto de partida — luego ajustas los horarios al tuyo. Más rápido que escribir 7 días desde cero.</p>
+    <div class="oh-archetypes" id="ohArchetypes" aria-label="Patrones iniciales por arquetipo de restaurante"></div>
+  </div>
+</div></section>
+
+<!-- PRIVACY_PLACEHOLDER -->
+<section class="block" id="what-this-does"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">En lenguaje sencillo</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,34px);font-weight:500;color:var(--ink);margin:12px 0 14px;">Qué hace esta herramienta, en cuatro frases</h2>
+    <ol style="margin:0;padding-left:1.2em;font-size:15px;line-height:1.7;color:var(--ink-soft);display:flex;flex-direction:column;gap:8px;">
+      <li><strong>Llenas los horarios.</strong> Día por día, en el formato que te salga natural &mdash; &ldquo;5 PM&rdquo; o &ldquo;17:00&rdquo;, los dos funcionan. Opcional: marca qué feriados vas a cerrar.</li>
+      <li><strong>La herramienta traduce en silencio.</strong> Por detrás, tus horas se convierten al formato exacto de Google, al formato exacto de Yelp, al formato exacto de Apple Maps, y al código estructurado que Google lee para mostrar tus horarios en los resultados de búsqueda.</li>
+      <li><strong>Te llevas cuatro artefactos.</strong> Un letrero imprimible para la puerta, un bloque para pegar en Google, un bloque de código para mandarle a quien hizo tu sitio, y un archivo de calendario con tus cierres. Cada uno responde a una frase que el dueño podría escribir en búsqueda.</li>
+      <li><strong>Lo vuelves a correr el próximo trimestre.</strong> Los horarios cambian. Vienen feriados. El Letrero de Puerta queda viejo a propósito &mdash; cuando su lista de cierres se acaba, ese es el recordatorio para volver.</li>
+    </ol>
+    <p style="font-size:13.5px;line-height:1.6;color:var(--stone);margin:14px 0 0;"><strong>No</strong> es un sincronizador automático, predictor de tiempo de espera, ni panel multi-sucursal. <a href="#what-this-isnt" style="color:inherit;border-bottom:1px dashed var(--teal);">Más sobre los límites abajo</a>.</p>
+  </div>
+</div></section>
+
+<section class="block bg-cream2" id="how-private"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">Predicar con el ejemplo</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:12px 0 12px;">Tus horarios se quedan en tu navegador.</h2>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0 0 14px;">Cinco afirmaciones, cada una verificable en DevTools en menos de un minuto:</p>
+    <ol style="margin:0;padding-left:1.4em;font-size:14.5px;line-height:1.7;color:var(--ink-soft);display:flex;flex-direction:column;gap:6px;">
+      <li><strong>Nada se sube.</strong> Lo que escribes en el formulario nunca llega a un servidor. Abre DevTools &rarr; Network y escribe — la lista de peticiones no crece.</li>
+      <li><strong>Sin cuenta, sin correo.</strong> La página funciona sin identificarte de ninguna manera.</li>
+      <li><strong>Sin memoria del navegador.</strong> Cerrar la pestaña borra todo. El formulario sale vacío cuando reabres la URL.</li>
+      <li><strong>Código abierto.</strong> El motor completo es JavaScript plano en <code>/tools/open-hours/open-hours.js</code> &mdash; click derecho <em>Ver código fuente</em>.</li>
+      <li><strong>Analítica que respeta la privacidad.</strong> Plausible cuenta cuánta gente usa la herramienta, pero nunca ve tus horarios, ni el nombre del restaurante, ni la ciudad. Solo valores en categoría como &ldquo;<code>4-5 días abierto</code>&rdquo; pasan por ahí.</li>
+    </ol>
+    <p style="font-size:13px;color:var(--stone);margin:14px 0 0;">Un recorrido verificable de nueve pasos y un Letrero de Puerta imprimible llegan en la siguiente versión. Para la misma postura hoy, mira <a href="/es/tools/brand-suite/#how-we-protect" style="color:inherit;border-bottom:1px dashed var(--teal);">cómo Suite de Marca protege tu logo</a>.</p>
+  </div>
+</div></section>
+
+<section class="block" id="what-this-isnt"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">Marco honesto</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">Qué no es</h2>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Horario Abierto son los 15 minutos más limpios que puedes invertir en la parte más ingrata de un restaurante. Saber qué no hace mantiene las expectativas honestas.</p>
+  </div>
+
+  <div style="max-width:760px;margin:24px auto 0;display:flex;flex-direction:column;gap:14px;">
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No es un sincronizador automático.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Servicios como Yext hacen eso — empujan una sola fuente a cada plataforma según un calendario. Cuestan \$199+/mes y se autentican como tú. Horario Abierto es la alternativa sin cuenta, sin API: tú copias y pegas. Más lento, pero la postura de privacidad queda limpia y la matemática es auditable.</p>
+    </article>
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No predice tiempos de espera ni gestiona reservas.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Esas son herramientas operativas que necesitan datos en tiempo real. Horario Abierto define el horario fijo; tiempos de espera y disponibilidad de reserva son problemas distintos.</p>
+    </article>
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No es un panel multi-sucursal.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">v1 es de un solo restaurante. Si operas tres sucursales con horarios distintos, vas a correr la herramienta tres veces. La gestión multi-sucursal es un mercado distinto que demanda otra infraestructura.</p>
+    </article>
+    <article style="border:1px solid var(--line);border-radius:var(--r-input);padding:16px 18px;background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 6px;">No es una solución permanente a un problema recurrente.</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);">Los horarios cambian. Vienen feriados. El equipo cambia. Una vez por trimestre, vuelves a correr esto. El Letrero de Puerta se queda viejo solo — cuando la lista de los próximos cuatro cierres se acaba, ese es tu recordatorio. La herramienta es más útil como un ritual trimestral, no como un &ldquo;una y listo.&rdquo;</p>
+    </article>
+  </div>
+
+  <div style="max-width:760px;margin:24px auto 0;padding:20px 22px;background:var(--cream-2,var(--cream));border-radius:var(--r-input);border:1px solid var(--line);">
+    <p style="margin:0 0 8px;font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);">Lo que <em>sí</em> es: 15 minutos que previenen un año de drift.</p>
+    <p style="margin:0;font-size:14px;line-height:1.65;color:var(--ink-soft);">Cuatro audiencias, cuatro entregas. El <strong>Letrero de Puerta</strong> es para el comensal que pasa caminando a las 10 PM. El <strong>bloque para Google</strong> es para quien busca en su teléfono. El <strong>código del sitio</strong> es para quien construyó tu sitio (o quien lo va a heredar). El <strong>archivo de calendario</strong> es para ti, tres semanas antes de cada feriado, cuando ya se te olvidó que dijiste que ibas a cerrar.</p>
+  </div>
+
+  <div style="max-width:760px;margin:18px auto 0;padding:20px 22px;background:var(--teal-tint);border-radius:var(--r-input);border:1px solid var(--line);">
+    <p style="margin:0 0 8px;font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);">Cuando quieras esto sincronizado por ti, contrata al estudio.</p>
+    <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:var(--ink-soft);">Un sitio web de restaurante hecho por nosotros tiene los horarios cableados a una sola fuente — los cambias en un lugar, todas las páginas se actualizan al instante, el JSON-LD queda al día. El trabajo web del estudio es lo que convierte esta herramienta de 15 minutos en algo que se mantiene correcto solo.</p>
+    <a href="/es/services/" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:var(--teal);color:var(--cream);border-radius:999px;text-decoration:none;font-size:13px;font-weight:600;">Ver sitios web de restaurante
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px;"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+  </div>
+</div></section>
+
+<!-- NEXT_PLACEHOLDER -->
+<section class="block"><div class="container">
+  <div class="mm-next">
+    <h2>A dónde seguir</h2>
+    <div class="mm-next-links">
+      <a href="/es/tools/audits/restaurant/">Corre el diagnóstico completo</a>
+      <a href="/es/tools/gbp-grader/">Califica tu perfil de Google Business</a>
+      <a href="/es/tools/menu-engineering/">Audita qué platos están pulling weight</a>
+      <a href="/es/glossary/hours-of-operation/">Glosario: Horario de operación</a>
+      <a href="/es/services/">Contrata al estudio para mantener esto sincronizado</a>
+    </div>
+  </div>
+</div></section>
+
+<!-- LIBRARY:tool-deep-links:start -->
+<section class="tool-deep-links" aria-labelledby="tool-deep-h">
+  <div class="container">
+    <header class="tool-deep-head">
+      <span class="eyebrow">Aprende más</span>
+      <h2 id="tool-deep-h">Por qué existe esta herramienta.</h2>
+      <p class="tool-deep-blurb">Cada chequeo que esta herramienta hace conecta con un concepto específico en la biblioteca. Dos puntos de partida — una definición, una guía.</p>
+      <div class="tool-deep-topics"><a class="tool-deep-topic" href="/es/learn/topics/local-seo/">SEO local y descubrimiento</a>
+        <a class="tool-deep-topic" href="/es/learn/topics/trust-reviews/">Confianza y reseñas</a></div>
+    </header>
+    <div class="tool-deep-grid">
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/hours-of-operation/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Horario de operación</h3>
+          <p class="tool-deep-aka">los horarios de tu restaurante en un formato que cualquier mapa o listado pueda leer</p>
+          <p class="tool-deep-snippet">La representación estructurada de cuándo está abierto un restaurante a lo largo de la semana — codificada de varias formas: campos de Google…</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/special-hours/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Horarios especiales</h3>
+          <p class="tool-deep-aka">la excepción para cualquier día que no sigue tu horario habitual</p>
+          <p class="tool-deep-snippet">Una entidad aparte del horario regular en el modelo de datos de Google: excepciones por fecha para feriados, eventos privados, cierres por c…</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-article" href="/es/blog/how-to-set-up-google-business-profile-for-your-restaurant/">
+          <span class="tool-deep-kind">Artículo</span>
+          <h3>Cómo configurar el Google Business Profile de tu restaurante (Guía 2026)</h3>
+          <p class="tool-deep-snippet">Guía paso a paso para configurar y optimizar el Google Business Profile de tu restaurante. Reclamación, verificación, categorías, fotos, enlaces al menú y los ajustes que la mayoría de los dueños se salta.</p>
+          <span class="tool-deep-cta">Leer la guía <span aria-hidden="true">→</span></span>
+        </a>
+    </div>
+  </div>
+</section>
+<!-- LIBRARY:tool-deep-links:end -->
+
+</main>
+
+<footer class="foot">
+  <div class="container foot-inner">
+    <div class="foot-col foot-brand"><a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home"><img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async"><sup class="tm" aria-hidden="true">&#8482;</sup></a><p class="foot-tagline">Structure Brings Clarity.</p></div>
+  </div>
+  <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/es/terms.html">Términos</a><a href="/es/privacy.html">Privacidad</a><a href="/es/accessibility.html">Accesibilidad</a><a href="/es/cookies.html">Cookies</a></nav></div>
+</footer>
+
+<script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="/tools/open-hours/open-hours.js?v=20260425-oh1"></script>
+<script src="/tools/open-hours/sign-render.js?v=20260425-oh2"></script>
+<script>
+/* Open Hours — week-grid input + live output render.
+ *
+ * Privacy invariants enforced by this code:
+ *   - All math is window.OH (./open-hours.js). No fetch, no XHR.
+ *   - Plausible event values are enum-bucketed via window.OH helpers.
+ *   - No localStorage / sessionStorage / cookies. */
+(function(){
+  if (!window.OH) return;
+
+  var DAYS = window.OH.DAYS;
+  var DAY_FULL = window.OH.DAYS_FULL;
+
+  // Held on closure as the source of truth for the week. Each day
+  // is an array of {label, opens, closes, closesNextDay} services.
+  var week = {};
+  DAYS.forEach(function(d){ week[d] = []; });
+
+  var nameEl     = document.getElementById('ohName');
+  var cityEl     = document.getElementById('ohCity');
+  var weekEl     = document.getElementById('ohWeek');
+  var warningsEl = document.getElementById('ohWarnings');
+  var loadBtn    = document.getElementById('ohLoadSample');
+  var emptyLoad  = document.getElementById('ohEmptyLoad');
+  var clearBtn   = document.getElementById('ohClear');
+  var output     = document.getElementById('ohOutput');
+  var emptyHint  = document.getElementById('ohEmptyHint');
+  var checklist  = document.getElementById('ohChecklist');
+  var googleBlock= document.getElementById('ohGoogleBlock');
+  var yelpBlock  = document.getElementById('ohYelpBlock');
+  var appleBlock = document.getElementById('ohAppleBlock');
+  var jsonLdBlock= document.getElementById('ohJsonLdBlock');
+  var emailBlock = document.getElementById('ohEmailBlock');
+  var holidayList= document.getElementById('ohHolidayList');
+  var closureCount = document.getElementById('ohClosureCount');
+  var icsCard    = document.getElementById('ohIcsCard');
+  var icsCountEl = document.getElementById('ohIcsCount');
+  var customDate = document.getElementById('ohCustomDate');
+  var customName = document.getElementById('ohCustomName');
+  var addCustomBtn = document.getElementById('ohAddCustom');
+  var compareText = document.getElementById('ohCompareText');
+  var diffResult = document.getElementById('ohDiffResult');
+
+  var selectedClosures = {};
+  var customCounter = 0;
+
+  var SAMPLE = {
+    name: 'Osteria Giardino',
+    city: 'Silver Spring',
+    week: {
+      Mon: [],
+      Tue: [{ label: 'Dinner', opens: '5 PM',  closes: '10 PM' }],
+      Wed: [{ label: 'Dinner', opens: '5 PM',  closes: '10 PM' }],
+      Thu: [{ label: 'Dinner', opens: '5 PM',  closes: '10 PM' }],
+      Fri: [{ label: 'Dinner', opens: '5 PM',  closes: '11 PM' }],
+      Sat: [
+        { label: 'Brunch', opens: '11 AM', closes: '3 PM' },
+        { label: 'Dinner', opens: '5 PM',  closes: '11 PM' }
+      ],
+      Sun: [
+        { label: 'Brunch', opens: '11 AM', closes: '3 PM' },
+        { label: 'Dinner', opens: '5 PM',  closes: '9 PM'  }
+      ]
+    }
+  };
+
+  function escHtml(v){
+    return String(v == null ? '' : v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+  function escAttr(v){
+    return String(v == null ? '' : v).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+  }
+
+  // ----- Week grid rendering -----
+  function renderWeek(){
+    weekEl.innerHTML = '';
+    DAYS.forEach(function(d, idx){
+      var row = document.createElement('div');
+      row.className = 'oh-day-row';
+      row.setAttribute('data-day', d);
+      var nameCell = '<div class="oh-day-name">' + DAY_FULL[idx] + '<small>' + d + '</small></div>';
+      var servicesHtml = '<div class="oh-services">';
+      var services = week[d] || [];
+      if (services.length === 0) {
+        servicesHtml += '<span class="oh-day-closed">Closed</span>';
+      } else {
+        services.forEach(function(s, sidx){
+          servicesHtml += renderServiceRow(d, sidx, s);
+        });
+      }
+      servicesHtml += '</div>';
+      var addBtn = '<button type="button" class="oh-add-service" data-add-day="' + d + '">+ ' + (services.length === 0 ? 'add hours' : 'add another service') + '</button>';
+      row.innerHTML = nameCell + servicesHtml + addBtn;
+      weekEl.appendChild(row);
+    });
+  }
+
+  function renderServiceRow(day, idx, s){
+    return '<div class="oh-service" data-day="' + day + '" data-idx="' + idx + '">' +
+      '<input type="text" class="oh-svc-label" placeholder="Lunch / Dinner" value="' + escAttr(s.label || '') + '" aria-label="Service label" />' +
+      '<input type="text" class="oh-svc-opens" placeholder="11 AM" value="' + escAttr(s.opens || '') + '" inputmode="text" aria-label="Opens" />' +
+      '<span class="oh-service-label">to</span>' +
+      '<input type="text" class="oh-svc-closes" placeholder="9 PM" value="' + escAttr(s.closes || '') + '" inputmode="text" aria-label="Closes" />' +
+      '<label class="oh-next-day"><input type="checkbox" class="oh-svc-next" ' + (s.closesNextDay ? 'checked' : '') + ' /> closes next day</label>' +
+      '<button type="button" class="oh-remove" aria-label="Remove this service">×</button>' +
+      '</div>';
+  }
+
+  function readGrid(){
+    // Walk DOM and rebuild `week` from the inputs. Unparseable times
+    // pass through to validation, where the warning surfaces.
+    DAYS.forEach(function(d){ week[d] = []; });
+    var rows = weekEl.querySelectorAll('.oh-service');
+    rows.forEach(function(r){
+      var d = r.getAttribute('data-day');
+      if (!d) return;
+      week[d].push({
+        label:        r.querySelector('.oh-svc-label').value || '',
+        opens:        r.querySelector('.oh-svc-opens').value || '',
+        closes:       r.querySelector('.oh-svc-closes').value || '',
+        closesNextDay: r.querySelector('.oh-svc-next').checked
+      });
+    });
+  }
+
+  function loadSample(){
+    week = JSON.parse(JSON.stringify(SAMPLE.week));
+    nameEl.value = SAMPLE.name;
+    cityEl.value = SAMPLE.city;
+    renderWeek();
+    rerender();
+  }
+
+  function clearAll(){
+    DAYS.forEach(function(d){ week[d] = []; });
+    nameEl.value = '';
+    cityEl.value = '';
+    renderWeek();
+    rerender();
+  }
+
+  // ----- Selector de feriados -----
+  function fmtHolidayDate(iso, locale){
+    var p = String(iso).split('-');
+    if (p.length !== 3) return iso;
+    var d = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2]));
+    return d.toLocaleDateString('es-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+  }
+
+  function renderHolidayList(){
+    var holidays = window.OH.holidaysInRange(null, null, 'es');
+    if (!holidays.length) { holidayList.innerHTML = ''; return; }
+    holidayList.innerHTML = holidays.map(function(h){
+      var checked = !!selectedClosures[h.id];
+      return '<li class="oh-holiday" data-checked="' + checked + '" data-id="' + escAttr(h.id) + '">' +
+             '<input type="checkbox" ' + (checked ? 'checked' : '') + ' aria-label="Cerrado en ' + escAttr(h.name) + '" />' +
+             '<div><div class="oh-holiday-name">' + escHtml(h.name) + '</div>' +
+             '<div class="oh-holiday-note">' + escHtml(h.note || '') + '</div></div>' +
+             '<div class="oh-holiday-date">' + escHtml(fmtHolidayDate(h.date)) + '</div>' +
+             '</li>';
+    }).join('');
+  }
+
+  function renderCustomClosures(){
+    var existing = holidayList.querySelectorAll('[data-source="custom"]');
+    existing.forEach(function(n){ n.parentNode.removeChild(n); });
+    Object.keys(selectedClosures).forEach(function(id){
+      if (!/^custom-/.test(id)) return;
+      var c = selectedClosures[id];
+      var li = document.createElement('li');
+      li.className = 'oh-holiday';
+      li.setAttribute('data-checked', 'true');
+      li.setAttribute('data-id', id);
+      li.setAttribute('data-source', 'custom');
+      li.innerHTML =
+        '<input type="checkbox" checked aria-label="Cerrado en ' + escAttr(c.name) + '" />' +
+        '<div><div class="oh-holiday-name">' + escHtml(c.name) + '</div>' +
+        '<div class="oh-holiday-note">Cierre personalizado</div></div>' +
+        '<div class="oh-holiday-date">' + escHtml(fmtHolidayDate(c.date)) + '</div>';
+      holidayList.appendChild(li);
+    });
+  }
+
+  function getClosureList(){
+    return Object.keys(selectedClosures).map(function(id){
+      var c = selectedClosures[id];
+      return { id: id, name: c.name, date: c.date };
+    }).sort(function(a, b){ return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; });
+  }
+
+  function paintClosureCount(){
+    var n = Object.keys(selectedClosures).length;
+    closureCount.textContent = n + ' seleccionados';
+    if (icsCard) {
+      icsCard.hidden = n === 0;
+      if (icsCountEl) icsCountEl.textContent = n + ' cierre' + (n === 1 ? '' : 's') + ' seleccionado' + (n === 1 ? '' : 's') + '.';
+    }
+  }
+
+  holidayList.addEventListener('click', function(ev){
+    var li = ev.target.closest('.oh-holiday');
+    if (!li) return;
+    var id = li.getAttribute('data-id');
+    if (!id) return;
+    var cb = li.querySelector('input[type="checkbox"]');
+    if (ev.target !== cb) cb.checked = !cb.checked;
+    if (cb.checked) {
+      var holidays = window.OH.holidaysInRange(null, null, 'es');
+      var preset = holidays.find(function(h){ return h.id === id; });
+      if (preset) selectedClosures[id] = { name: preset.name, date: preset.date, source: 'preset' };
+    } else {
+      delete selectedClosures[id];
+      if (li.getAttribute('data-source') === 'custom') li.parentNode.removeChild(li);
+      else li.setAttribute('data-checked', 'false');
+    }
+    if (cb.checked) li.setAttribute('data-checked', 'true');
+    paintClosureCount();
+  });
+
+  addCustomBtn.addEventListener('click', function(){
+    var date = customDate.value;
+    var name = (customName.value || '').trim();
+    if (!date) return;
+    if (!name) name = 'Cerrado';
+    var id = 'custom-' + (++customCounter);
+    selectedClosures[id] = { name: name, date: date, source: 'custom' };
+    customDate.value = '';
+    customName.value = '';
+    renderCustomClosures();
+    paintClosureCount();
+  });
+
+  var icsBtn = document.getElementById('ohDownloadIcs');
+  if (icsBtn) {
+    icsBtn.addEventListener('click', function(){
+      var closures = getClosureList();
+      if (!closures.length) return;
+      var ics = window.OH.generateIcs(closures);
+      var blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'horario-cierres.ics';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'ics' } });
+      var span = icsBtn.querySelector('[data-label]');
+      if (span) {
+        var orig = span.getAttribute('data-label');
+        span.textContent = '✓ Descargado — ábrelo en tu teléfono';
+        setTimeout(function(){ span.textContent = orig; }, 2400);
+      }
+    });
+  }
+
+  // ----- Modo de comparación -----
+  function parseCompareInput(text){
+    var out = {};
+    DAYS.forEach(function(d){ out[d] = null; });
+    var lines = String(text || '').split(/\r?\n/);
+    var dayNames = {
+      mon: 'Mon', monday: 'Mon', lun: 'Mon', lunes: 'Mon',
+      tue: 'Tue', tuesday: 'Tue', mar: 'Tue', martes: 'Tue',
+      wed: 'Wed', wednesday: 'Wed', mie: 'Wed', 'miércoles': 'Wed', miercoles: 'Wed',
+      thu: 'Thu', thursday: 'Thu', jue: 'Thu', jueves: 'Thu',
+      fri: 'Fri', friday: 'Fri', vie: 'Fri', viernes: 'Fri',
+      sat: 'Sat', saturday: 'Sat', sab: 'Sat', 'sábado': 'Sat', sabado: 'Sat',
+      sun: 'Sun', sunday: 'Sun', dom: 'Sun', domingo: 'Sun'
+    };
+    lines.forEach(function(line){
+      var m = /^([A-Za-zÁÉÍÓÚáéíóúñÑ]+)[\s:.,-]+(.*)$/.exec(line.trim());
+      if (!m) return;
+      var key = m[1].toLowerCase();
+      var canon = dayNames[key];
+      if (!canon) return;
+      var rest = m[2].trim();
+      if (!rest || /^closed$/i.test(rest) || /^cerrado$/i.test(rest)) {
+        out[canon] = 'closed'; return;
+      }
+      var ranges = rest.split(/\s*,\s*/).map(function(r){
+        var rm = /([0-9].*?)\s*[-–to]+\s*([0-9].*)/.exec(r);
+        if (!rm) return null;
+        var open = window.OH.parseTime(rm[1]);
+        var close = window.OH.parseTime(rm[2]);
+        if (!open || !close) return null;
+        return open + '-' + close;
+      }).filter(Boolean);
+      out[canon] = ranges.length ? ranges.join(',') : null;
+    });
+    return out;
+  }
+
+  function normalizeCurrentWeek(){
+    var out = {};
+    DAYS.forEach(function(d){
+      var services = (week[d] || []).map(function(s){
+        var open = window.OH.parseTime(s.opens);
+        var close = window.OH.parseTime(s.closes);
+        if (!open || !close) return null;
+        return open + '-' + close;
+      }).filter(Boolean);
+      out[d] = services.length ? services.join(',') : 'closed';
+    });
+    return out;
+  }
+
+  function paintDiff(){
+    var pasted = (compareText.value || '').trim();
+    if (!pasted) { diffResult.innerHTML = ''; return; }
+    var pastedHours = parseCompareInput(pasted);
+    var currentHours = normalizeCurrentWeek();
+    var rows = DAYS.map(function(d, idx){
+      var p = pastedHours[d];
+      var c = currentHours[d];
+      var match;
+      if (p == null) match = null;
+      else match = (p === c);
+      var pasted = p == null ? '<span class="oh-diff-empty">(no está en lo pegado)</span>' : (p === 'closed' ? 'cerrado' : escHtml(p));
+      var current = c === 'closed' ? 'cerrado' : escHtml(c);
+      return '<div class="oh-diff-row" data-match="' + (match === false ? 'false' : 'true') + '">' +
+             '<div class="oh-diff-day">' + DAY_FULL[idx] + '</div>' +
+             '<div class="oh-diff-cell">Pegado: ' + pasted + '</div>' +
+             '<div class="oh-diff-cell">Arriba: ' + current + '</div></div>';
+    }).join('');
+    var mismatches = DAYS.filter(function(d){
+      var p = pastedHours[d]; if (p == null) return false;
+      return p !== currentHours[d];
+    }).length;
+    var hint = mismatches === 0
+      ? '<p style="font-size:13px;color:var(--status-good);margin:8px 0 0;font-weight:600;">✓ Todos los días coinciden con lo que ingresaste arriba.</p>'
+      : '<p style="font-size:13px;color:var(--rust);margin:8px 0 0;font-weight:600;">⚠ ' + mismatches + ' día' + (mismatches === 1 ? '' : 's') + ' no coincide' + (mismatches === 1 ? '' : 'n') + '. Actualiza la fuente equivocada.</p>';
+    diffResult.innerHTML = '<div class="oh-diff" style="margin-top:8px;border:1px solid var(--line);border-radius:var(--r-sm);overflow:hidden;">' + rows + '</div>' + hint;
+  }
+  if (compareText) compareText.addEventListener('input', paintDiff);
+
+  // ----- Render outputs from current state -----
+  var rafQueued = false;
+  function rerender(){
+    if (rafQueued) return;
+    rafQueued = true;
+    requestAnimationFrame(function(){
+      rafQueued = false;
+      readGrid();
+      var input = { name: nameEl.value, city: cityEl.value, week: week };
+      var v = window.OH.validateHours(input);
+      paintWarnings(v.warnings);
+      var anyOpen = v.summary.openDaysCount > 0;
+      if (!anyOpen) {
+        output.hidden = true;
+        emptyHint.hidden = false;
+        return;
+      }
+      output.hidden = false;
+      emptyHint.hidden = true;
+      googleBlock.textContent = window.OH.generatePlatformCopy(input, 'google', 'es');
+      yelpBlock.textContent   = window.OH.generatePlatformCopy(input, 'yelp', 'es');
+      appleBlock.textContent  = window.OH.generatePlatformCopy(input, 'apple', 'es');
+      jsonLdBlock.textContent = window.OH.generateJsonLdScript(input);
+      emailBlock.textContent  = window.OH.generateBuilderEmail(input, 'es');
+      paintChecklist(v);
+      paintDiff();
+      firePlausibleOnce(v);
+    });
+  }
+
+  function paintWarnings(warns){
+    if (!warns || !warns.length) { warningsEl.innerHTML = ''; return; }
+    var html = '<ul>';
+    warns.forEach(function(w){ html += '<li>' + escHtml(w.message) + '</li>'; });
+    html += '</ul>';
+    warningsEl.innerHTML = html;
+  }
+
+  function paintChecklist(v){
+    var items = [
+      {
+        ok: v.summary.openDaysCount > 0,
+        text: v.summary.openDaysCount > 0
+          ? 'Hours entered for ' + v.summary.openDaysCount + ' day' + (v.summary.openDaysCount === 1 ? '' : 's')
+          : 'No hours entered yet'
+      },
+      {
+        ok: v.warnings.length === 0,
+        text: v.warnings.length === 0 ? 'No conflicts within a day' : v.warnings.length + ' issue' + (v.warnings.length === 1 ? '' : 's') + ' to resolve'
+      },
+      {
+        ok: !!v.name,
+        text: v.name ? 'Restaurant name set: "' + v.name + '"' : 'Add a restaurant name (used in your website code)'
+      },
+      {
+        ok: v.summary.openDaysCount > 0 && v.warnings.length === 0,
+        text: 'Cross-platform copy generated'
+      },
+      {
+        ok: Object.keys(selectedClosures).length > 0,
+        text: Object.keys(selectedClosures).length > 0
+          ? Object.keys(selectedClosures).length + ' cierre' + (Object.keys(selectedClosures).length === 1 ? '' : 's') + ' agregado' + (Object.keys(selectedClosures).length === 1 ? '' : 's') + ' al calendario'
+          : 'Marca cualquier cierre por feriado (opcional) y agrégalo al calendario'
+      },
+      {
+        ok: v.summary.openDaysCount > 0,
+        text: v.summary.openDaysCount > 0
+          ? 'Letrero + Ficha listos para imprimir o compartir'
+          : 'Letrero + Ficha se desbloquean al ingresar al menos un día de horario'
+      }
+    ];
+    checklist.innerHTML = items.map(function(it){
+      var state = it.ok ? 'ok' : 'todo';
+      var icon = it.ok ? '✓' : '○';
+      return '<div class="oh-check-item" data-state="' + state + '">' +
+             '<span class="oh-check-icon" aria-hidden="true">' + icon + '</span>' +
+             '<span class="oh-check-text">' + escHtml(it.text) + '</span>' +
+             '</div>';
+    }).join('');
+  }
+
+  var firstFired = false;
+  function firePlausibleOnce(v){
+    if (firstFired || !window.plausible) return;
+    if (v.summary.openDaysCount === 0) return;
+    firstFired = true;
+    window.plausible('Open Hours Render', { props: {
+      open_days:    window.OH.bucketWeeklyOpenDays(v.summary.openDaysCount),
+      service_tier: window.OH.bucketServiceTiers({ week: v.week }),
+      closures:     window.OH.bucketClosureCount(0) // Phase 2 wires closures
+    }});
+  }
+
+  // ----- Wire UI -----
+  weekEl.addEventListener('input', rerender);
+  weekEl.addEventListener('change', rerender);
+  weekEl.addEventListener('click', function(ev){
+    var add = ev.target.closest('.oh-add-service');
+    if (add) {
+      var d = add.getAttribute('data-add-day');
+      readGrid();
+      week[d] = week[d] || [];
+      week[d].push({ label: '', opens: '', closes: '', closesNextDay: false });
+      renderWeek();
+      rerender();
+      // Focus first empty input on the row we just added.
+      var rows = weekEl.querySelectorAll('.oh-day-row[data-day="' + d + '"] .oh-svc-opens');
+      if (rows.length) rows[rows.length - 1].focus();
+      return;
+    }
+    var rm = ev.target.closest('.oh-remove');
+    if (rm) {
+      var svc = rm.closest('.oh-service');
+      var dd = svc.getAttribute('data-day');
+      var ix = parseInt(svc.getAttribute('data-idx'), 10);
+      readGrid();
+      if (week[dd] && !isNaN(ix)) {
+        week[dd].splice(ix, 1);
+        renderWeek();
+        rerender();
+      }
+    }
+  });
+  nameEl.addEventListener('input', rerender);
+  cityEl.addEventListener('input', rerender);
+  loadBtn.addEventListener('click', loadSample);
+  if (emptyLoad) emptyLoad.addEventListener('click', loadSample);
+  clearBtn.addEventListener('click', clearAll);
+
+  // Copy buttons — `data-copy-target` for plain copy of an element's
+  // text; `#ohCopyEmail` is special-case to combine email + JSON-LD.
+  document.addEventListener('click', function(ev){
+    var btn = ev.target.closest('[data-copy-target]');
+    if (btn) {
+      var target = document.getElementById(btn.getAttribute('data-copy-target'));
+      if (!target) return;
+      doCopy(btn, target.textContent);
+      if (window.plausible) window.plausible('Open Hours Export', { props: { format: btn.getAttribute('data-copy-target') } });
+    }
+    if (ev.target.closest('#ohCopyEmail')) {
+      var em = emailBlock.textContent || '';
+      var jl = jsonLdBlock.textContent || '';
+      doCopy(ev.target.closest('#ohCopyEmail'), em + '\n\n' + jl);
+      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'builder-email' } });
+    }
+  });
+  function doCopy(btn, text){
+    var label = btn.getAttribute('data-copy-label') || '';
+    var orig = btn.textContent.trim();
+    function settle(t, kind){
+      btn.classList.remove('copied'); btn.classList.remove('copy-failed');
+      btn.classList.add(kind === 'error' ? 'copy-failed' : 'copied');
+      // Replace last text node only, preserving the SVG icon.
+      var last = btn.lastChild;
+      if (last && last.nodeType === 3) last.nodeValue = ' ' + t;
+      setTimeout(function(){
+        btn.classList.remove('copied'); btn.classList.remove('copy-failed');
+        if (last && last.nodeType === 3) last.nodeValue = ' ' + label;
+      }, kind === 'error' ? 2400 : 1400);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(
+        function(){ settle('Copied', 'ok'); },
+        function(){ settle('Select manually', 'error'); }
+      );
+    } else { settle('Select manually', 'error'); }
+  }
+
+  // ----- Letrero de Puerta + Ficha de Horario -----
+  function buildRenderInput(){
+    var input = { name: nameEl.value, city: cityEl.value, week: week };
+    var v = window.OH.validateHours(input);
+    return {
+      summary: v,
+      closures: getClosureList(),
+      jsonLd:    window.OH.generateJsonLd(input),
+      googleCopy: window.OH.generatePlatformCopy(input, 'google', 'es'),
+      formatTime: window.OH.formatTime,
+      strings:   (window.OHSign && window.OHSign.DEFAULT_STRINGS_ES) || {},
+      locale:    'es'
+    };
+  }
+  function downloadCanvasAsPng(canvas, filename){
+    return window.OHSign.canvasToPngBlob(canvas).then(function(blob){
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url; a.download = filename;
+      document.body.appendChild(a); a.click();
+      setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+    });
+  }
+  var printSignBtn = document.getElementById('ohPrintSign');
+  var downloadSignBtn = document.getElementById('ohDownloadSign');
+  var downloadCardBtn = document.getElementById('ohDownloadCard');
+  if (printSignBtn) {
+    printSignBtn.addEventListener('click', function(){
+      if (!window.OHSign) return;
+      var canvas = window.OHSign.renderStorefrontSign(buildRenderInput());
+      window.OHSign.canvasToPngBlob(canvas).then(function(blob){
+        var url = URL.createObjectURL(blob);
+        var w = window.open(url, '_blank');
+        if (w) w.addEventListener('load', function(){ w.focus(); w.print(); });
+        setTimeout(function(){ URL.revokeObjectURL(url); }, 30000);
+      });
+      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'sign-print' } });
+    });
+  }
+  if (downloadSignBtn) {
+    downloadSignBtn.addEventListener('click', function(){
+      if (!window.OHSign) return;
+      downloadCanvasAsPng(window.OHSign.renderStorefrontSign(buildRenderInput()), 'letrero-horario.png');
+      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'sign-png' } });
+    });
+  }
+  if (downloadCardBtn) {
+    downloadCardBtn.addEventListener('click', function(){
+      if (!window.OHSign) return;
+      downloadCanvasAsPng(window.OHSign.renderOpenHoursCard(buildRenderInput()), 'ficha-horario.png');
+      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'card-png' } });
+    });
+  }
+
+  // ----- Paquete ZIP -----
+  var CRC_TABLE = (function(){
+    var t = new Uint32Array(256);
+    for (var n = 0; n < 256; n++) {
+      var c = n;
+      for (var k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+      t[n] = c >>> 0;
+    }
+    return t;
+  })();
+  function crc32(bytes){
+    var c = 0xFFFFFFFF;
+    for (var i = 0; i < bytes.length; i++) c = CRC_TABLE[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+    return (c ^ 0xFFFFFFFF) >>> 0;
+  }
+  function strToBytes(s){ return new TextEncoder().encode(s); }
+  function buildZipBlob(entries){
+    var parts = [], centralParts = [], offset = 0;
+    var nowDate = new Date();
+    var dosTime = ((nowDate.getHours() & 0x1F) << 11) | ((nowDate.getMinutes() & 0x3F) << 5) | ((nowDate.getSeconds() / 2) & 0x1F);
+    var dosDate = (((nowDate.getFullYear() - 1980) & 0x7F) << 9) | (((nowDate.getMonth() + 1) & 0x0F) << 5) | (nowDate.getDate() & 0x1F);
+    entries.forEach(function(entry){
+      var nameBytes = strToBytes(entry.name);
+      var crc = crc32(entry.data);
+      var size = entry.data.length;
+      var lh = new Uint8Array(30 + nameBytes.length);
+      var dv = new DataView(lh.buffer);
+      dv.setUint32(0, 0x04034b50, true); dv.setUint16(4, 20, true); dv.setUint16(6, 0, true);
+      dv.setUint16(8, 0, true); dv.setUint16(10, dosTime, true); dv.setUint16(12, dosDate, true);
+      dv.setUint32(14, crc, true); dv.setUint32(18, size, true); dv.setUint32(22, size, true);
+      dv.setUint16(26, nameBytes.length, true); dv.setUint16(28, 0, true);
+      lh.set(nameBytes, 30);
+      parts.push(lh); parts.push(entry.data);
+      var ch = new Uint8Array(46 + nameBytes.length);
+      var cv = new DataView(ch.buffer);
+      cv.setUint32(0, 0x02014b50, true); cv.setUint16(4, 20, true); cv.setUint16(6, 20, true);
+      cv.setUint16(8, 0, true); cv.setUint16(10, 0, true);
+      cv.setUint16(12, dosTime, true); cv.setUint16(14, dosDate, true);
+      cv.setUint32(16, crc, true); cv.setUint32(20, size, true); cv.setUint32(24, size, true);
+      cv.setUint16(28, nameBytes.length, true);
+      cv.setUint16(30, 0, true); cv.setUint16(32, 0, true); cv.setUint16(34, 0, true); cv.setUint16(36, 0, true);
+      cv.setUint32(38, 0, true); cv.setUint32(42, offset, true);
+      ch.set(nameBytes, 46);
+      centralParts.push(ch);
+      offset += lh.length + entry.data.length;
+    });
+    var cdSize = 0; centralParts.forEach(function(c){ cdSize += c.length; });
+    var cdStart = offset;
+    centralParts.forEach(function(c){ parts.push(c); });
+    var eocd = new Uint8Array(22);
+    var ev = new DataView(eocd.buffer);
+    ev.setUint32(0, 0x06054b50, true);
+    ev.setUint16(4, 0, true); ev.setUint16(6, 0, true);
+    ev.setUint16(8, entries.length, true); ev.setUint16(10, entries.length, true);
+    ev.setUint32(12, cdSize, true); ev.setUint32(16, cdStart, true); ev.setUint16(20, 0, true);
+    parts.push(eocd);
+    return new Blob(parts, { type: 'application/zip' });
+  }
+  function buildReadme(){
+    var lines = [];
+    lines.push('# Horario Abierto — tu paquete');
+    lines.push('');
+    lines.push('Generado por **Horario Abierto** el ' + new Date().toISOString().slice(0, 10) + '.');
+    lines.push('Compuesto en tu navegador. Tus datos nunca salieron de tu dispositivo.');
+    lines.push('');
+    lines.push('## Qué incluye');
+    lines.push('');
+    lines.push('- `letrero-horario.png` — letrero imprimible para la puerta. Carta/A4 vertical.');
+    lines.push('- `ficha-horario.png` — imagen compartible (1200×1500) con horario, cierres, código del sitio y bloque para Google.');
+    lines.push('- `website-hours.html` — el `<script>` JSON-LD para pegar en tu sitio. Mándalo a quien construyó el sitio.');
+    lines.push('- `closures.ics` — archivo de calendario con un evento por cierre. Doble-click en tu teléfono o computadora para importar.');
+    lines.push('- `cross-platform.txt` — bloques para Google, Yelp y Apple Maps lado a lado.');
+    lines.push('- `README.md` — este archivo.');
+    lines.push('');
+    lines.push('## Hecho por Muntin Digital');
+    lines.push('');
+    lines.push('- Estudio: https://muntin.digital');
+    lines.push('- Herramienta: https://muntin.digital/es/tools/open-hours/');
+    lines.push('');
+    lines.push('> La estructura aporta claridad.');
+    return lines.join('\n') + '\n';
+  }
+  var downloadZipBtn = document.getElementById('ohDownloadZip');
+  if (downloadZipBtn) {
+    downloadZipBtn.addEventListener('click', function(){
+      if (!window.OHSign) return;
+      var ctx = buildRenderInput();
+      var input = { name: nameEl.value, city: cityEl.value, week: week };
+      var jsonLdHtml = '<!doctype html>\n<html><head>\n' +
+        '<!-- Pega el bloque <script> de abajo en el <head> de tu sitio. -->\n' +
+        window.OH.generateJsonLdScript(input) + '\n</head>\n<body><p>Este archivo no es el sitio. Copia la etiqueta <code>&lt;script&gt;</code> dentro del <code>&lt;head&gt;</code> de tu sitio real.</p></body></html>\n';
+      var crossPlatform = [
+        '=== Google Business Profile ===',
+        window.OH.generatePlatformCopy(input, 'google', 'es'),
+        '',
+        '=== Yelp ===',
+        window.OH.generatePlatformCopy(input, 'yelp', 'es'),
+        '',
+        '=== Apple Maps ===',
+        window.OH.generatePlatformCopy(input, 'apple', 'es')
+      ].join('\n');
+      var ics = window.OH.generateIcs(getClosureList());
+      var readme = buildReadme();
+      var sign = window.OHSign.renderStorefrontSign(ctx);
+      var card = window.OHSign.renderOpenHoursCard(ctx);
+      Promise.all([window.OHSign.canvasToPngBlob(sign), window.OHSign.canvasToPngBlob(card)]).then(function(blobs){
+        return Promise.all(blobs.map(function(b){
+          return new Promise(function(res){
+            var r = new FileReader();
+            r.onload = function(){ res(new Uint8Array(r.result)); };
+            r.readAsArrayBuffer(b);
+          });
+        }));
+      }).then(function(byteArrays){
+        var entries = [
+          { name: 'letrero-horario.png',  data: byteArrays[0] },
+          { name: 'ficha-horario.png',    data: byteArrays[1] },
+          { name: 'website-hours.html',   data: strToBytes(jsonLdHtml) },
+          { name: 'closures.ics',         data: strToBytes(ics) },
+          { name: 'cross-platform.txt',   data: strToBytes(crossPlatform) },
+          { name: 'README.md',            data: strToBytes(readme) }
+        ];
+        var blob = buildZipBlob(entries);
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url; a.download = 'horario-abierto-paquete.zip';
+        document.body.appendChild(a); a.click();
+        setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+      });
+      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'zip' } });
+    });
+  }
+
+  // ----- "Lo típico" — patrones iniciales por arquetipo -----
+  var ARCHETYPES = [
+    {
+      id: 'casual', tier: 'casual',
+      name: 'Restaurante casual',
+      meta: 'Mar–Dom · una sola cena',
+      blurb: 'El patrón por defecto para un restaurante independiente con cena. Cierra los lunes. Cierre tarde viernes y sábado.',
+      pattern: 'Lun: cerrado\nMar–Jue: 5 PM – 10 PM\nVie–Sáb: 5 PM – 11 PM\nDom: 5 PM – 9 PM',
+      week: {
+        Mon: [],
+        Tue: [{ label: 'Cena', opens: '5 PM', closes: '10 PM' }],
+        Wed: [{ label: 'Cena', opens: '5 PM', closes: '10 PM' }],
+        Thu: [{ label: 'Cena', opens: '5 PM', closes: '10 PM' }],
+        Fri: [{ label: 'Cena', opens: '5 PM', closes: '11 PM' }],
+        Sat: [{ label: 'Cena', opens: '5 PM', closes: '11 PM' }],
+        Sun: [{ label: 'Cena', opens: '5 PM', closes: '9 PM' }]
+      }
+    },
+    {
+      id: 'brunch', tier: 'brunch',
+      name: 'Brunch + cena',
+      meta: 'Mié–Dom · servicio dividido',
+      blurb: 'Lugares con brunch como ancla y un servicio de cena aparte. El brunch define al arquetipo; la cena es el segundo flujo de ingreso.',
+      pattern: 'Lun–Mar: cerrado\nMié–Vie: solo cena (5–10 PM)\nSáb–Dom: brunch (10 AM–3 PM) + cena (5–10 PM)',
+      week: {
+        Mon: [], Tue: [],
+        Wed: [{ label: 'Cena', opens: '5 PM', closes: '10 PM' }],
+        Thu: [{ label: 'Cena', opens: '5 PM', closes: '10 PM' }],
+        Fri: [{ label: 'Cena', opens: '5 PM', closes: '10 PM' }],
+        Sat: [
+          { label: 'Brunch', opens: '10 AM', closes: '3 PM' },
+          { label: 'Cena', opens: '5 PM', closes: '10 PM' }
+        ],
+        Sun: [
+          { label: 'Brunch', opens: '10 AM', closes: '3 PM' },
+          { label: 'Cena', opens: '5 PM', closes: '10 PM' }
+        ]
+      }
+    },
+    {
+      id: 'latebar', tier: 'latebar',
+      name: 'Bar / coctelería de noche',
+      meta: '7 días · cierre pasada la medianoche',
+      blurb: 'Bar de cócteles o lugar nocturno. La función "cierra al día siguiente" existe para este arquetipo — cierre del bar a la 1 AM técnicamente es del día siguiente.',
+      pattern: 'Lun–Jue: 5 PM – 1 AM (siguiente día)\nVie–Sáb: 5 PM – 2 AM (siguiente día)\nDom: 5 PM – medianoche',
+      week: {
+        Mon: [{ label: 'Servicio', opens: '5 PM', closes: '1 AM', closesNextDay: true }],
+        Tue: [{ label: 'Servicio', opens: '5 PM', closes: '1 AM', closesNextDay: true }],
+        Wed: [{ label: 'Servicio', opens: '5 PM', closes: '1 AM', closesNextDay: true }],
+        Thu: [{ label: 'Servicio', opens: '5 PM', closes: '1 AM', closesNextDay: true }],
+        Fri: [{ label: 'Servicio', opens: '5 PM', closes: '2 AM', closesNextDay: true }],
+        Sat: [{ label: 'Servicio', opens: '5 PM', closes: '2 AM', closesNextDay: true }],
+        Sun: [{ label: 'Servicio', opens: '5 PM', closes: '12 AM', closesNextDay: true }]
+      }
+    },
+    {
+      id: 'brewery', tier: 'brewery',
+      name: 'Cervecería con cocina',
+      meta: 'Almuerzo + cena · fin de semana continuo',
+      blurb: 'Cervecería o salón de cerveza con cocina. Suele tener servicio continuo los fines de semana; almuerzo entre semana es opcional.',
+      pattern: 'Lun: cerrado\nMar–Jue: 4 PM – 10 PM\nVie: 4 PM – 11 PM\nSáb: 12 PM – 11 PM (continuo)\nDom: 12 PM – 9 PM (continuo)',
+      week: {
+        Mon: [],
+        Tue: [{ label: 'Servicio', opens: '4 PM', closes: '10 PM' }],
+        Wed: [{ label: 'Servicio', opens: '4 PM', closes: '10 PM' }],
+        Thu: [{ label: 'Servicio', opens: '4 PM', closes: '10 PM' }],
+        Fri: [{ label: 'Servicio', opens: '4 PM', closes: '11 PM' }],
+        Sat: [{ label: 'Servicio', opens: '12 PM', closes: '11 PM' }],
+        Sun: [{ label: 'Servicio', opens: '12 PM', closes: '9 PM' }]
+      }
+    }
+  ];
+
+  function renderArchetypes() {
+    var grid = document.getElementById('ohArchetypes');
+    if (!grid) return;
+    grid.innerHTML = ARCHETYPES.map(function(a){
+      return '<article class="oh-archetype" data-tier="' + a.tier + '">' +
+             '<span class="oh-archetype-meta">' + escHtml(a.meta) + '</span>' +
+             '<h3>' + escHtml(a.name) + '</h3>' +
+             '<p>' + escHtml(a.blurb) + '</p>' +
+             '<pre class="oh-archetype-pattern">' + escHtml(a.pattern) + '</pre>' +
+             '<button type="button" data-archetype="' + a.id + '">Cargar este patrón &rarr;</button>' +
+             '</article>';
+    }).join('');
+  }
+  document.addEventListener('click', function(ev){
+    var btn = ev.target.closest('[data-archetype]');
+    if (!btn) return;
+    var id = btn.getAttribute('data-archetype');
+    var a = ARCHETYPES.find(function(x){ return x.id === id; });
+    if (!a) return;
+    week = JSON.parse(JSON.stringify(a.week));
+    renderWeek();
+    rerender();
+    var formEl = document.querySelector('.oh-form');
+    if (formEl && formEl.scrollIntoView) formEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (window.plausible) window.plausible('Open Hours Render', { props: { source: 'archetype-' + id } });
+  });
+  renderArchetypes();
+
+  // Render inicial: semana vacía + lista de feriados.
+  renderWeek();
+  renderHolidayList();
+  paintClosureCount();
+  rerender();
+})();
+</script>
+</body>
+</html>
