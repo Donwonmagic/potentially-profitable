@@ -93,6 +93,14 @@ const RENDERERS = [
     renderEntries: ['renderPlateCard'],
     enToolName:   'Plate Cost Calculator',
     esToolName:   'Calculadora de Costo del Plato'
+  },
+  {
+    label:        'Photo Brief — Photo Brief + Brand Photo Card',
+    modulePath:   'tools/photo-brief/card-render.js',
+    moduleApi:    'PBCard',
+    renderEntries: ['renderPhotoBrief', 'renderBrandPhotoCard'],
+    enToolName:   'Photo Brief Builder',
+    esToolName:   'Constructor de Brief de Fotos'
   }
 ];
 

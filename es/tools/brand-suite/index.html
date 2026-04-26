@@ -881,6 +881,7 @@
       <a href="/es/glossary/design-token/">Glosario: Tokens de diseño</a>
       <a href="/es/learn/topics/brand-design/">Tema: Marca y diseño</a>
       <a href="/es/tools/audits/restaurant/">Corre el diagnóstico completo</a>
+      <a href="/es/tools/photo-brief/" id="bsNextPhotoBrief">Crea el brief con tu paleta</a>
       <a href="/es/services/#brand">Contrata al estudio para una identidad terminada</a>
     </div>
   </div>
@@ -1098,6 +1099,13 @@
     renderPalette(latestPalette);
     paletteWrap.hidden = false;
     setStatus('');
+    var pbChip = document.getElementById('bsNextPhotoBrief');
+    if (pbChip && latestPalette && latestPalette.length) {
+      var paletteFrag = latestPalette.map(function(e){
+        return String(e.hex || '').replace(/^#/, '').toUpperCase();
+      }).filter(function(h){ return /^[0-9A-F]{3,8}$/.test(h); }).join('-');
+      pbChip.href = '/es/tools/photo-brief/#palette=' + paletteFrag;
+    }
     requestAnimationFrame(function(){
       renderFixture(latestPalette);
       fixtureWrap.hidden = false;

@@ -796,16 +796,35 @@
     var actions = window.ME.ACTIONS_EN;
     // Per-quadrant tool deeplinks. The Puzzle quadrant is the
     // re-describe / re-photograph quadrant — point at Menu Copy
-    // Inspector for the language half.
+    // Inspector for the language half. Stars and Plowhorses get a
+    // Photo Brief link with the items pre-encoded so the brief
+    // arrives populated.
+    function priorityForQ(q){
+      return q === 'Star' ? 'hero' : (q === 'Plowhorse' ? 'secondary' : 'standard');
+    }
+    function briefLinkFor(q, items){
+      // Mirrors the format encodeStarsFragment uses in photo-brief.js:
+      // "name|category|priority" joined with "~", URL-encoded.
+      var lines = items.map(function(it){
+        var name = String(it.item || '').replace(/\|/g, '');
+        var cat  = String(it.category || 'main').toLowerCase().replace(/[^a-z]/g, '') || 'main';
+        return [name, cat, priorityForQ(q)].join('|');
+      }).join('~');
+      return '/tools/photo-brief/#stars=' + encodeURIComponent(lines);
+    }
     var toolLinks = {
-      Plowhorse: [
+      Star: function(items){ return [
+        { href: briefLinkFor('Star', items), label: 'Brief these for your photographer &rarr;' }
+      ]; },
+      Plowhorse: function(items){ return [
         { href: '/tools/margin-math/#calc-priceraise', label: 'Re-cost in Margin Math &rarr;' },
-        { href: '/tools/plate-cost/',                  label: 'Audit ingredient cost in Plate Cost &rarr;' }
-      ],
-      Puzzle: [
+        { href: '/tools/plate-cost/',                  label: 'Audit ingredient cost in Plate Cost &rarr;' },
+        { href: briefLinkFor('Plowhorse', items),      label: 'Brief these for your photographer &rarr;' }
+      ]; },
+      Puzzle: function(items){ return [
         { href: '/tools/menu-copy/',                   label: 'Re-describe in Menu Copy Inspector &rarr;' },
         { href: '/tools/plate-cost/',                  label: 'Re-cost the recipe in Plate Cost &rarr;' }
-      ]
+      ]; }
     };
     var html = '';
     ['Star','Plowhorse','Puzzle','Dog'].forEach(function(q){
@@ -813,7 +832,7 @@
       var list = byQ[q].map(function(it){
         return '<li>' + escHtml(it.item || '(unnamed)') + ' &middot; ' + fmtMoney(it.cm_dollars) + ' CM &middot; ' + fmtPct(it.share) + '</li>';
       }).join('');
-      var tools = toolLinks[q] || [];
+      var tools = (toolLinks[q] ? toolLinks[q](byQ[q]) : []) || [];
       var toolLine = tools.length && byQ[q].length > 0
         ? tools.map(function(tool){
             return '<p style="margin:8px 0 0;font-size:12px;"><a href="' + tool.href + '" style="color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor;">' + tool.label + '</a></p>';
