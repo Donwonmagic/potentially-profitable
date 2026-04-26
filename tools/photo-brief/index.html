@@ -131,6 +131,24 @@
 .pb-handoff-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px dashed var(--teal);border-radius:999px;background:transparent;color:var(--teal);font-size:12.5px;font-weight:600;text-decoration:none;transition:background 140ms var(--ease-out),color 140ms var(--ease-out)}
 .pb-handoff-btn:hover{background:var(--teal);color:var(--cream);border-style:solid}
 
+/* Reshoot Check-in — the Muntin signature for Photo Brief. */
+.pb-signature{margin-top:18px;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+.pb-signature-eyebrow{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin:0 0 6px}
+.pb-signature h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 8px;line-height:1.3}
+.pb-signature-blurb{font-size:13.5px;color:var(--ink-soft);line-height:1.6;margin:0 0 12px}
+.pb-signature-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.pb-signature-status{font-size:12px;color:var(--status-good);opacity:0;transition:opacity 240ms var(--ease-out)}
+.pb-signature-status[data-shown="true"]{opacity:1}
+.pb-drift-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 10px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-radius:999px;font-variant-numeric:tabular-nums;margin-left:8px;vertical-align:middle}
+.pb-drift-pill[data-tone="fresh"]{background:var(--status-good-tint);color:var(--status-good)}
+.pb-drift-pill[data-tone="due"]  {background:rgba(198,138,44,0.10);color:#956A1A}
+.pb-drift-pill[data-tone="stale"]{background:rgba(184,84,26,0.12);color:var(--rust)}
+.pb-drift-pill[data-tone="cold"] {background:rgba(184,84,26,0.18);color:var(--rust)}
+.pb-reshoot-banner{display:none;margin:0 0 14px;padding:12px 14px;border:1px solid rgba(198,138,44,0.30);border-left-width:4px;border-left-color:#C68A2C;border-radius:var(--r-sm);background:rgba(198,138,44,0.06)}
+body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
+.pb-reshoot-banner h3{font-family:var(--font-display);font-size:15px;font-weight:600;margin:0 0 4px;color:var(--ink)}
+.pb-reshoot-banner p{margin:0;font-size:13px;line-height:1.55;color:var(--ink-soft)}
+
 .pb-privacy-list{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none;counter-reset:pb-step}
 .pb-privacy-list li{counter-increment:pb-step;display:grid;grid-template-columns:32px 1fr;gap:14px;align-items:start;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white)}
 .pb-privacy-list li::before{content:counter(pb-step);font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--teal);font-variant-numeric:tabular-nums}
@@ -325,6 +343,23 @@
       <a class="pb-handoff-btn" href="/glossary/photo-brief/" data-target="glossary">Photo glossary <span aria-hidden="true">&rarr;</span></a>
     </div>
 
+    <!-- Reshoot banner — visible only in reshoot mode (URL-fragment hydration) -->
+    <div class="pb-reshoot-banner" id="pbReshootBanner" aria-live="polite">
+      <h3>Reshoot mode <span class="pb-drift-pill" id="pbDriftPill" hidden></span></h3>
+      <p id="pbReshootCopy">Last brief: <strong id="pbBaselineDate">&mdash;</strong>. Walk the dining room, the menu, your Google Business Profile. Tick the dishes that have changed since this brief — the Reshoot Ticket lists only those.</p>
+    </div>
+
+    <!-- Reshoot Check-in — the Muntin signature -->
+    <section class="pb-signature" id="pbSignature" style="display:none;">
+      <p class="pb-signature-eyebrow">Reshoot Check-in &middot; iCalendar (.ics) &middot; 8 events / 2 years</p>
+      <h3>Don&rsquo;t pay for a full session when six frames will do.</h3>
+      <p class="pb-signature-blurb">Restaurant photos go stale slowly. Six months in, two dishes are 86&rsquo;d; twelve months in, the room got repainted; eighteen months in, the homepage looks like 2024 and the regulars feel it but can&rsquo;t say why. Download a quarterly reminder &mdash; once every three months for two years &mdash; and your calendar will ping you with a one-click link back to this exact brief. The reminder URL contains the brief in a format only your browser reads.</p>
+      <div class="pb-signature-actions">
+        <button type="button" class="pb-action-btn pb-action-btn-primary" id="pbSaveQuarterly">Save &amp; remind me to rebrief in 90 days <span class="pb-action-fmt">.ics</span></button>
+        <span class="pb-signature-status" id="pbQuarterlyStatus" data-shown="false">Reminder downloaded — open it to add to your calendar.</span>
+      </div>
+    </section>
+
     <div class="pb-empty" id="pbEmpty">
       List a dish above &mdash; or <button type="button" class="pb-sample-btn" id="pbSample2" style="margin:0 6px;">load the sample brief</button> &mdash; to see the math.
     </div>
@@ -448,6 +483,11 @@
   var actionsEl    = document.getElementById('pbActions');
   var handoffEl    = document.getElementById('pbHandoff');
   var toMenuEngEl  = document.getElementById('pbToMenuEng');
+  var signatureEl  = document.getElementById('pbSignature');
+  var saveQBtn     = document.getElementById('pbSaveQuarterly');
+  var quarterlyStat= document.getElementById('pbQuarterlyStatus');
+  var driftPillEl  = document.getElementById('pbDriftPill');
+  var baselineDateEl = document.getElementById('pbBaselineDate');
 
   // Latest computed results — cached for export handlers.
   var latestSummary = null;
@@ -636,8 +676,9 @@
       mathEl.style.display = 'none';
       coverageWrap.style.display = 'none';
       emptyEl.style.display = '';
-      if (actionsEl) actionsEl.style.display = 'none';
-      if (handoffEl) handoffEl.style.display = 'none';
+      if (actionsEl)   actionsEl.style.display = 'none';
+      if (handoffEl)   handoffEl.style.display = 'none';
+      if (signatureEl) signatureEl.style.display = 'none';
       latestSummary = null;
       return;
     }
@@ -657,8 +698,9 @@
       palette:      fragmentState.palette.slice(),
       margins:      fragmentState.margins.slice()
     };
-    if (actionsEl) actionsEl.style.display = 'flex';
-    if (handoffEl) handoffEl.style.display = 'flex';
+    if (actionsEl)   actionsEl.style.display = 'flex';
+    if (handoffEl)   handoffEl.style.display = 'flex';
+    if (signatureEl) signatureEl.style.display = 'block';
     if (toMenuEngEl) {
       var stars = PB.encodeStarsFragment(dishes);
       toMenuEngEl.href = '/tools/menu-engineering/' + (stars ? '#stars=' + stars : '');
@@ -1123,9 +1165,46 @@
   // -------------------- Cross-tool fragment readers --------------------
   // Read fragments on load. The form rehydrates from cross-tool data
   // when present; warning gates flip off accordingly.
+  var briefHydrated = null; // populated by readFragments() if #brief=…
   function readFragments(){
     var hash = (window.location.hash || '').replace(/^#/, '');
     if (!hash) return;
+    // Reshoot Check-in rehydration takes precedence — when the hash
+    // begins with brief=… the form is rebuilt from the saved state.
+    if (hash.indexOf('brief=') === 0 || /(^|&)v=/.test(hash)) {
+      var hyd = PB.decodeBriefFragment(hash);
+      if (hyd && hyd.dishes && hyd.dishes.length) {
+        briefHydrated = hyd;
+        nameEl.value = hyd.restaurant || '';
+        if (photogEl)  photogEl.value  = hyd.photographer || '';
+        if (dayRateEl) dayRateEl.value = String(hyd.dayRate || 1800);
+        if (srcFrameEl && hyd.sourceRatioLabel) {
+          var radio = srcFrameEl.querySelector('input[value="' + hyd.sourceRatioLabel + '"]');
+          if (radio) {
+            radio.checked = true;
+            Array.prototype.forEach.call(srcFrameEl.querySelectorAll('label'), function(l){
+              var inp = l.querySelector('input[type="radio"]');
+              l.dataset.checked = (inp && inp.checked) ? 'true' : 'false';
+            });
+          }
+        }
+        rerenderRows(hyd.dishes.map(function(d){
+          return { name: d.name, category: d.category || 'main', priority: d.priority || 'standard' };
+        }));
+        renderSurfaces(hyd.surfaces && hyd.surfaces.length ? hyd.surfaces : DEFAULT_ON);
+        if (hyd.mode === 'reshoot') {
+          document.body.setAttribute('data-pb-mode', 'reshoot');
+        }
+        if (baselineDateEl) baselineDateEl.textContent = hyd.baselineDate || '—';
+        renderDriftPill(hyd.baselineDate);
+        if (window.plausible) {
+          window.plausible('Photo Brief Signature', { props: {
+            action: hyd.mode === 'reshoot' ? 'reshoot-opened' : 'rehydrated'
+          } });
+        }
+        return;
+      }
+    }
     var params = new URLSearchParams(hash.replace(/&amp;/g, '&'));
     var stars   = params.get('stars');
     var palette = params.get('palette');
@@ -1140,10 +1219,52 @@
     }
   }
 
+  // Drift pill rendering — when a baseline date is loaded, the pill
+  // shows fresh / due / stale / cold based on age in months.
+  function renderDriftPill(baselineDate){
+    if (!driftPillEl) return;
+    if (!baselineDate) { driftPillEl.hidden = true; driftPillEl.textContent = ''; return; }
+    var v = PB.verdictForAge(baselineDate);
+    if (v.tone === 'unknown') { driftPillEl.hidden = true; driftPillEl.textContent = ''; return; }
+    driftPillEl.dataset.tone = v.tone;
+    driftPillEl.textContent = v.tone.toUpperCase() + ' · ' + v.months + ' MO';
+    driftPillEl.hidden = false;
+    driftPillEl.title = v.copyEN;
+  }
+
+  // Save & remind handler — encodes the current brief + today's date
+  // into the URL fragment, builds a quarterly ICS pointing back, and
+  // triggers the download.
+  if (saveQBtn) saveQBtn.addEventListener('click', function(){
+    if (!latestSummary) return;
+    var today = new Date().toISOString().slice(0, 10);
+    var brief = {
+      restaurant:       latestSummary.restaurant,
+      photographer:     latestSummary.photographer,
+      dayRate:          latestSummary.dayRate,
+      sourceRatioLabel: latestSummary.sourceRatioLabel,
+      surfaces:         latestSummary.surfaces,
+      dishes:           latestSummary.dishes
+    };
+    var fragment = PB.encodeBriefFragment(brief, { date: today, mode: 'reshoot' });
+    var scenarioUrl = location.origin + location.pathname + '#brief=' + fragment;
+    var ics = PB.generateQuarterlyIcs(scenarioUrl, { restaurant: brief.restaurant, locale: 'en' });
+    var slug = (brief.restaurant || 'photo-brief').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'photo-brief';
+    downloadBlob(new Blob([ics], { type: 'text/calendar;charset=utf-8' }),
+                 'photo-brief-quarterly-' + slug + '.ics');
+    if (quarterlyStat) {
+      quarterlyStat.dataset.shown = 'true';
+      setTimeout(function(){ quarterlyStat.dataset.shown = 'false'; }, 5000);
+    }
+    if (window.plausible) {
+      window.plausible('Photo Brief Signature', { props: { action: 'quarterly-saved' } });
+    }
+  });
+
   // -------------------- Initial state --------------------
   readFragments();
-  if (!fragmentState.stars.length) rerenderRows(Array.from({ length: 6 }, blankRow));
-  renderSurfaces(DEFAULT_ON);
+  if (!briefHydrated && !fragmentState.stars.length) rerenderRows(Array.from({ length: 6 }, blankRow));
+  if (!briefHydrated) renderSurfaces(DEFAULT_ON);
   renderWarnings();
   renderResults();
 })();
