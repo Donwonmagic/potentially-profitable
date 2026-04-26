@@ -2607,8 +2607,8 @@
   })();
 
   /* ============ PHASE M6: Checklist Learn-more popover ============
-   * Wires the .learn-more-btn buttons on /resources/restaurant-
-   * website-checklist/ to the single shared <dialog id="checklistPopover">
+   * Wires the .learn-more-btn buttons on /learn/checklists/
+   * restaurant-website-checklist/ to the single shared <dialog id="checklistPopover">
    * added in Sprint M5. Click a Learn-more button, the handler reads
    * the button's data-popover-* attributes, populates the dialog's
    * title / body / glossary link / optional audit link, and calls
@@ -2757,11 +2757,11 @@
     // than in Pagefind meta tags so it's trivial to extend.
     function classify(url) {
       const u = url.replace(/^https?:\/\/[^/]+/, '').replace(/^\/es\//, '/');
-      if (u.startsWith('/blog/'))      return i18n('search.kind_article',   'Article');
-      if (u.startsWith('/tools/'))     return i18n('search.kind_tool',      'Tool');
-      if (u.startsWith('/glossary/'))  return i18n('search.kind_term',      'Glossary');
-      if (u.startsWith('/resources/')) return i18n('search.kind_resource',  'Guide');
-      if (u.startsWith('/learn/'))     return i18n('search.kind_library',   'Library');
+      if (u.startsWith('/blog/'))            return i18n('search.kind_article',   'Article');
+      if (u.startsWith('/tools/'))           return i18n('search.kind_tool',      'Tool');
+      if (u.startsWith('/glossary/'))        return i18n('search.kind_term',      'Glossary');
+      if (u.startsWith('/learn/checklists/')) return i18n('search.kind_resource',  'Guide');
+      if (u.startsWith('/learn/'))           return i18n('search.kind_library',   'Library');
       if (u.startsWith('/work/'))      return i18n('search.kind_case',      'Case study');
       if (u.startsWith('/services/'))  return i18n('search.kind_service',   'Services');
       if (u.startsWith('/for/'))       return i18n('search.kind_industry',  'For you');

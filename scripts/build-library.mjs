@@ -11,7 +11,7 @@
 //
 // The script is idempotent — every output file is fully overwritten
 // from the data files on each run. Hand-edited content lives only in
-// /blog/, /learn/research/, /tools/, /resources/, /glossary/. The
+// /blog/, /learn/research/, /tools/, /learn/checklists/, /glossary/. The
 // generated pages are pure aggregation.
 
 import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
@@ -502,7 +502,7 @@ function siteFooter() {
           <li><a href="/tools/">Free tools</a></li>
           <li><a href="/glossary/">Glossary</a></li>
           <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/resources/">Checklists &amp; guides</a></li>
+          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
         </ul>
       </nav>
 
@@ -570,7 +570,7 @@ function topicToolCard(locale, { slug, title, dek }) {
 
 function topicChecklistCard(locale, { slug, title, dek }) {
   return `<li>
-        <a class="topic-tool-card" href="${pathFor(locale, '/resources/' + slug + '/')}">
+        <a class="topic-tool-card" href="${pathFor(locale, '/learn/checklists/' + slug + '/')}">
           <h4>${esc(title)}</h4>
           <p>${esc(dek)}</p>
           <span class="topic-tool-cta">${esc(t(locale, 'open_checklist_cta'))} <span aria-hidden="true">→</span></span>

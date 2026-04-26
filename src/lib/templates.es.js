@@ -193,7 +193,7 @@ export function intakeAutoResponder(body) {
 // ============================================================
 //
 // Fires when someone submits the /api/checklist form on
-// /es/resources/restaurant-website-checklist/. The form carries
+// /es/learn/checklists/restaurant-website-checklist/. The form carries
 // <input name="locale" value="es"> so templates.js dispatches
 // here.
 //
@@ -240,7 +240,7 @@ function checklistKindEs(body) {
     businessLabel: 'Restaurante',
     businessField,
     items:         30,
-    pageUrl:       'https://muntin.digital/es/resources/restaurant-website-checklist/',
+    pageUrl:       'https://muntin.digital/es/learn/checklists/restaurant-website-checklist/',
     // D12b: pdfUrl retired alongside the static Puppeteer-rendered
     // PDF. The interactive page IS the deliverable; printing /
     // saving-as-PDF is a browser-native affordance on the live URL.

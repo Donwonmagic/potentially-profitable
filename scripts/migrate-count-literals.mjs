@@ -69,6 +69,28 @@ const RULES = [
     find:    '<span class="serif-italic">97 términos.</span>',
     replace: '<span class="serif-italic"><!-- count:glossary.terms -->97<!-- /count --> términos.</span>',
   },
+  // Phase 5.5 — /resources/ folded into /learn/checklists/. Page
+  // footers don't get synced (same FOOTER_MAIN_FUNNEL_MARKER quirk),
+  // so the hand-frozen Library-column links in static pages need a
+  // one-shot literal swap. The matched strings are deliberately
+  // narrow (the exact <li> wrapper) so we don't accidentally rewrite
+  // a future contextual link to the old path.
+  {
+    find:    '<li><a href="/resources/">Checklists &amp; guides</a></li>',
+    replace: '<li><a href="/learn/checklists/">Checklists &amp; guides</a></li>',
+  },
+  {
+    find:    '<li><a href="/es/resources/">Listas y recursos</a></li>',
+    replace: '<li><a href="/es/learn/checklists/">Listas y recursos</a></li>',
+  },
+  // Contextual deep-links to the checklist itself, scattered across
+  // blog posts, topic pages, the About and For-Restaurants pages.
+  // The 301 redirect handles them, but rewriting in place avoids the
+  // hop. Idempotent — guarded by the find-string still being present.
+  {
+    find:    '/resources/restaurant-website-checklist/',
+    replace: '/learn/checklists/restaurant-website-checklist/',
+  },
 ];
 
 function collectHtml(dir, out = []) {

@@ -337,7 +337,7 @@ function checklistKind(body) {
     businessLabel: 'Restaurant',
     businessField,
     items:         24,
-    pageUrl:       'https://muntin.digital/resources/restaurant-website-checklist/',
+    pageUrl:       'https://muntin.digital/learn/checklists/restaurant-website-checklist/',
     // D12b: pdfUrl retired alongside the static Puppeteer-rendered
     // PDF. The interactive page now IS the deliverable; printing /
     // saving-as-PDF is a browser-native affordance on the live URL.
