@@ -191,13 +191,6 @@
      toggles the attribute. */
   main[data-active-filter="restaurants"] .gloss-term:not([data-industries~="restaurants"]){display:none}
 
-  /* Section-level hide: if a section ends up with zero visible terms
-     under the active filter, fade its header and show a small note.
-     Implemented without :has() fallback — if :has() isn't available
-     the section just shows its heading with no body, which is fine. */
-  .gloss-section-empty-note{display:none;font-size:14px;color:var(--stone);font-style:italic}
-  main[data-active-filter="restaurants"] .gloss-section:has(.gloss-term[data-industries~="restaurants"],.gloss-term[data-industries~="all"]) .gloss-section-empty-note{display:none}
-
   /* Filter bar — sticky under the nav so filter state is always one
      click away even after a long scroll. Chips are real buttons so
      they're keyboard + screen-reader navigable without JS. Active
@@ -446,6 +439,9 @@
       <a class="gloss-jump" href="#trust">Trust</a>
       <a class="gloss-jump" href="#findability">Findability</a>
       <a class="gloss-jump" href="#subtypes">Subtypes</a>
+      <a class="gloss-jump" href="#restaurant-numbers">Restaurant numbers</a>
+      <a class="gloss-jump" href="#data-literacy">Data &amp; privacy</a>
+      <a class="gloss-jump" href="#brand-design">Brand &amp; design</a>
     </nav>
     <div class="gloss-filters" role="group" aria-label="Filter glossary by topic">
       <span class="gloss-filters-label">Topic</span>
@@ -686,7 +682,7 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="viewport-meta" data-industries="all" data-topics="speed-mobile">
+      <article class="gloss-term" id="viewport-meta" data-industries="restaurants all" data-topics="speed-mobile">
         <div class="gloss-term-head">
           <h3>Viewport meta tag</h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
@@ -1052,18 +1048,6 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
-      <article class="gloss-term" id="wcag-contrast" data-industries="restaurants all" data-topics="trust-reviews brand-design">
-        <div class="gloss-term-head">
-          <h3>WCAG AA contrast<span class="gloss-aka">accessible color contrast</span></h3>
-          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
-        </div>
-        <p class="gloss-term-def">A readability standard that requires body text to contrast at least 4.5:1 against its background, and large text at least 3:1. Light grey on cream looks refined in a design mockup and fails badly in sunlight.</p>
-        <p class="gloss-term-why"><strong>Why it matters</strong>WCAG AA is the legal accessibility baseline in the US and EU, and it's also simply how readable your menu is on a patio at noon. Failing it shuts out customers with low vision and invites ADA-compliance lawsuits.</p>
-        <!-- LIBRARY:gloss-perma:start -->
-        <p class="gloss-term-permalink"><a href="/glossary/wcag-contrast/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
-        <!-- LIBRARY:gloss-perma:end -->
-      </article>
-
       <article class="gloss-term" id="real-photos" data-industries="restaurants all" data-topics="trust-reviews brand-design">
         <div class="gloss-term-head">
           <h3>Real photos<span class="gloss-aka">not stock photography</span></h3>
@@ -1336,6 +1320,30 @@
         <p class="gloss-term-why"><strong>Why it matters</strong>Most owners enter regular hours once and never touch the data model again. Google flags listings where regular hours conflict with widely-known holiday closures (your "Mon: 11–9" still showing on Christmas Day) as "may have inaccurate info" — a soft demotion in local search. Maintaining special hours is the half of hours-management that requires a calendar, not a one-time fill-in.</p>
         <!-- LIBRARY:gloss-perma:start -->
         <p class="gloss-term-permalink"><a href="/glossary/special-hours/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="holiday-hours" data-industries="restaurants all" data-topics="local-seo">
+        <div class="gloss-term-head">
+          <h3>Holiday hours<span class="gloss-aka">the recurring per-date overrides every restaurant has to make every year</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
+        </div>
+        <p class="gloss-term-def">The subset of <a href="/glossary/special-hours/">special hours</a> that recur on a calendar — closed on Thanksgiving and Christmas Day, early-close on Christmas Eve, brunch-only on Mother's Day, extended hours for St. Patrick's Day. Distinct from one-off closures only in that they come back next year. Captured in Schema.org as <code>specialOpeningHoursSpecification</code> entries with <code>validFrom</code>/<code>validThrough</code> set to the holiday date.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>The customer searching "is [restaurant] open today?" on Thanksgiving morning needs an authoritative answer. If your Google Business Profile or your site's JSON-LD still shows the standard schedule, the customer either takes the trip and finds you closed (negative review territory) or skips to the chain that bothered to post their holiday hours. <a href="/tools/open-hours/">Open Hours</a> ships a holiday picker pre-populated with the dates that matter and produces an <code>.ics</code> calendar file with day-before alarms.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/glossary/holiday-hours/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="opening-hours-specification" data-industries="restaurants all" data-topics="local-seo">
+        <div class="gloss-term-head">
+          <h3>OpeningHoursSpecification<span class="gloss-aka">the Schema.org type Google reads to render your hours in search results</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
+        </div>
+        <p class="gloss-term-def">A specific Schema.org structured-data type for representing when a place is open. Lives inside a <a href="/glossary/schema/"><code>Restaurant</code></a> JSON-LD block as one or more entries with <code>dayOfWeek</code>, <code>opens</code>, and <code>closes</code> fields. Holiday overrides use the same type via the parallel <code>specialOpeningHoursSpecification</code> property. The format Google's Rich Results parser actually consumes — the difference between "hours vary" and a full weekly grid in your search snippet.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>The customer searching "is [restaurant] open right now?" doesn't open your website — they glance at the rich snippet and decide. Without an <code>OpeningHoursSpecification</code> block on every page, Google falls back to "hours vary" or to whatever your Google Business Profile says, and when those two sources disagree your listing inherits the lower confidence. <a href="/tools/open-hours/">Open Hours</a> generates a complete block (with the cross-midnight defensive pattern handled correctly) for any week + closure schedule you enter.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/glossary/opening-hours-specification/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
@@ -1902,11 +1910,11 @@
 
       <article class="gloss-term" id="wcag-contrast" data-industries="restaurants all" data-topics="trust-reviews brand-design">
         <div class="gloss-term-head">
-          <h3>WCAG contrast<span class="gloss-aka">how readable text is against its background</span></h3>
+          <h3>WCAG AA contrast<span class="gloss-aka">accessible color contrast</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">All</span></div>
         </div>
-        <p class="gloss-term-def">A ratio, on a scale from 1 to 21, measuring how readable a text color is against its background. Defined by the Web Content Accessibility Guidelines (WCAG). The AA threshold for normal body text is <strong>4.5:1</strong>; the AAA threshold is <strong>7:1</strong>. Large text (18pt, or 14pt bold) is allowed to pass at 3:1.</p>
-        <p class="gloss-term-why"><strong>Why it matters</strong>Brand colors that look lovely in the logo but fail contrast on a menu make the menu unreadable for a meaningful slice of customers — and are the single most common accessibility problem on small-business sites. Brand Suite's contrast grid scores every pair in your palette.</p>
+        <p class="gloss-term-def">A readability standard, defined by the Web Content Accessibility Guidelines (WCAG), that requires body text to contrast at least <strong>4.5:1</strong> against its background and large text (18pt, or 14pt bold) at least <strong>3:1</strong>. The AAA threshold is <strong>7:1</strong>. Light grey on cream looks refined in a design mockup and fails badly in sunlight.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>WCAG AA is the legal accessibility baseline in the US and EU, and it's also simply how readable your menu is on a patio at noon. Brand colors that look lovely in the logo but fail contrast on a menu shut out customers with low vision and invite ADA-compliance lawsuits. <a href="/tools/brand-suite/">Brand Suite</a>'s contrast grid scores every pair in your palette.</p>
         <!-- LIBRARY:gloss-perma:start -->
         <p class="gloss-term-permalink"><a href="/glossary/wcag-contrast/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
         <!-- LIBRARY:gloss-perma:end -->
