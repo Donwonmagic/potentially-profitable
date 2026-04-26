@@ -125,6 +125,8 @@
 .pb-action-btn-primary{background:var(--teal);color:var(--cream)}
 .pb-action-btn-primary:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
 .pb-action-btn.copied{background:var(--status-good-tint);color:var(--status-good);border-color:var(--status-good)}
+.pb-action-btn[data-state="loading"]{background:var(--cream-2);color:var(--stone);border-color:var(--line);cursor:progress}
+.pb-action-btn[data-state="error"]{background:rgba(184,84,26,0.08);color:var(--rust);border-color:var(--rust)}
 .pb-action-btn .pb-action-fmt{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10.5px;font-weight:700;color:inherit;opacity:.7}
 
 .pb-handoff{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px;padding:14px 18px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--cream-2)}
@@ -888,28 +890,49 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
       strings:      strings
     };
   }
+  // Estado de carga compartido para los botones de exportación.
+  function withLoading(btn, work) {
+    if (!btn) return work();
+    var orig = btn.innerHTML;
+    btn.disabled = true;
+    btn.dataset.state = 'loading';
+    btn.textContent = 'Generando…';
+    function restore() {
+      btn.disabled = false;
+      btn.dataset.state = '';
+      btn.innerHTML = orig;
+    }
+    var p;
+    try { p = Promise.resolve(work()); } catch (e) { restore(); return Promise.reject(e); }
+    return p.then(function(v){ restore(); return v; }, function(err){ restore(); throw err; });
+  }
+
   var downloadBriefBtn = document.getElementById('pbDownloadBrief');
   var downloadCardBtn  = document.getElementById('pbDownloadCard');
   if (downloadBriefBtn) downloadBriefBtn.addEventListener('click', function(){
     if (!latestSummary || !window.PBCard) return;
-    window.PBCard.awaitFonts().then(function(){
-      var canvas = window.PBCard.renderPhotoBrief(buildBriefRenderOpts());
-      return window.PBCard.canvasToPngBlob(canvas);
-    }).then(function(blob){
-      if (!blob) return;
-      downloadBlob(blob, 'brief-fotos-' + briefSlug() + '.png');
-      if (window.plausible) window.plausible('Photo Brief Export', { props: { format: 'brief-png' } });
+    withLoading(downloadBriefBtn, function(){
+      return window.PBCard.awaitFonts().then(function(){
+        var canvas = window.PBCard.renderPhotoBrief(buildBriefRenderOpts());
+        return window.PBCard.canvasToPngBlob(canvas);
+      }).then(function(blob){
+        if (!blob) return;
+        downloadBlob(blob, 'brief-fotos-' + briefSlug() + '.png');
+        if (window.plausible) window.plausible('Photo Brief Export', { props: { format: 'brief-png' } });
+      });
     });
   });
   if (downloadCardBtn) downloadCardBtn.addEventListener('click', function(){
     if (!latestSummary || !window.PBCard) return;
-    window.PBCard.awaitFonts().then(function(){
-      var canvas = window.PBCard.renderBrandPhotoCard(buildBriefRenderOpts());
-      return window.PBCard.canvasToPngBlob(canvas);
-    }).then(function(blob){
-      if (!blob) return;
-      downloadBlob(blob, 'tarjeta-fotos-marca-' + briefSlug() + '.png');
-      if (window.plausible) window.plausible('Photo Brief Export', { props: { format: 'card-png' } });
+    withLoading(downloadCardBtn, function(){
+      return window.PBCard.awaitFonts().then(function(){
+        var canvas = window.PBCard.renderBrandPhotoCard(buildBriefRenderOpts());
+        return window.PBCard.canvasToPngBlob(canvas);
+      }).then(function(blob){
+        if (!blob) return;
+        downloadBlob(blob, 'tarjeta-fotos-marca-' + briefSlug() + '.png');
+        if (window.plausible) window.plausible('Photo Brief Export', { props: { format: 'card-png' } });
+      });
     });
   });
 
@@ -1044,22 +1067,26 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
   var downloadZipBtn = document.getElementById('pbDownloadZip');
   if (downloadZipBtn) downloadZipBtn.addEventListener('click', function(){
     if (!latestSummary || !window.PBCard) return;
-    window.PBCard.awaitFonts().then(function(){
-      var briefCanvas = window.PBCard.renderPhotoBrief(buildBriefRenderOpts());
-      var cardCanvas  = window.PBCard.renderBrandPhotoCard(buildBriefRenderOpts());
-      return Promise.all([
-        window.PBCard.canvasToPngBlob(briefCanvas),
-        window.PBCard.canvasToPngBlob(cardCanvas)
-      ]);
-    }).then(function(blobs){
-      if (!blobs || !blobs[0]) return;
-      Promise.all(blobs.map(function(b){
-        return new Promise(function(res){
-          var r = new FileReader();
-          r.onload = function(){ res(new Uint8Array(r.result)); };
-          r.readAsArrayBuffer(b);
-        });
-      })).then(function(byteArrays){
+    withLoading(downloadZipBtn, function(){
+      return window.PBCard.awaitFonts().then(function(){
+        var briefCanvas = window.PBCard.renderPhotoBrief(buildBriefRenderOpts());
+        var cardCanvas  = window.PBCard.renderBrandPhotoCard(buildBriefRenderOpts());
+        return Promise.all([
+          window.PBCard.canvasToPngBlob(briefCanvas),
+          window.PBCard.canvasToPngBlob(cardCanvas)
+        ]);
+      }).then(function(blobs){
+        if (!blobs || !blobs[0]) throw new Error('canvas-blob');
+        return Promise.all(blobs.map(function(b){
+          return new Promise(function(res, rej){
+            var r = new FileReader();
+            r.onload  = function(){ res(new Uint8Array(r.result)); };
+            r.onerror = function(){ rej(r.error || new Error('filereader')); };
+            r.onabort = function(){ rej(new Error('filereader-abort')); };
+            try { r.readAsArrayBuffer(b); } catch (e) { rej(e); }
+          });
+        }));
+      }).then(function(byteArrays){
         var slug = briefSlug();
         var entries = [
           { name: 'brief-fotos.png',      data: byteArrays[0] },
@@ -1071,6 +1098,12 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
         ];
         downloadBlob(buildZipBlob(entries), 'brief-fotos-' + slug + '.zip');
         if (window.plausible) window.plausible('Photo Brief Export', { props: { format: 'zip' } });
+      }).catch(function(err){
+        downloadZipBtn.title = 'No se pudo empaquetar el ZIP — prueba las descargas individuales arriba.';
+        downloadZipBtn.dataset.state = 'error';
+        if (window.plausible) window.plausible('Photo Brief Export', { props: { format: 'zip-error' } });
+        setTimeout(function(){ downloadZipBtn.dataset.state = ''; }, 4000);
+        throw err;
       });
     });
   });
@@ -1090,10 +1123,13 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
     }
     rerenderRows(parsed.rows);
     renderResults();
-    pasteHint.style.color = parsed.warnings.length ? 'var(--rust)' : 'var(--status-good)';
-    pasteHint.textContent = parsed.warnings.length
-      ? parsed.warnings[0]
-      : 'Se procesaron ' + parsed.rows.length + ' plato' + (parsed.rows.length === 1 ? '' : 's') + '.';
+    if (parsed.warnings.length) {
+      pasteHint.style.color = 'var(--rust)';
+      pasteHint.textContent = parsed.warnings.join(' · ');
+    } else {
+      pasteHint.style.color = 'var(--status-good)';
+      pasteHint.textContent = 'Se procesaron ' + parsed.rows.length + ' plato' + (parsed.rows.length === 1 ? '' : 's') + '.';
+    }
     fireBucketEvent('paste');
   });
 

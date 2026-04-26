@@ -592,20 +592,38 @@
                warnings: warnings.concat(['Could not find a Dish/Name column. Add a header row, or paste columns in this order: Dish, Category, Priority.']) };
     }
 
-    var rows = dataRows.map(function(cells){
+    // Track silent normalizations so the UI can surface them. Owners
+    // who paste "pizza" or "starter" deserve to know the tool re-
+    // bucketed those into 'main' / 'appetizer' before the brief renders.
+    var normalizations = [];
+    var rows = dataRows.map(function(cells, i){
       function pick(field){
         var idx = mapping[field];
         if (idx == null || idx >= cells.length) return '';
         return String(cells[idx] == null ? '' : cells[idx]).trim();
       }
-      return {
-        name:     pick('name'),
-        category: normalizeCategory(pick('category')),
-        priority: normalizePriority(pick('priority'))
-      };
+      var rawCat  = pick('category');
+      var rawPri  = pick('priority');
+      var category = normalizeCategory(rawCat);
+      var priority = normalizePriority(rawPri);
+      if (rawCat && category !== rawCat && CATEGORIES.indexOf(rawCat) === -1) {
+        normalizations.push({ rowIndex: i + 1, field: 'category', original: rawCat, normalized: category });
+      }
+      if (rawPri && priority !== rawPri.toLowerCase() && ['hero','standard','secondary'].indexOf(rawPri.toLowerCase()) === -1) {
+        normalizations.push({ rowIndex: i + 1, field: 'priority', original: rawPri, normalized: priority });
+      }
+      return { name: pick('name'), category: category, priority: priority };
     }).filter(function(r){ return r.name; });
 
-    return { rows: rows, mapping: mapping, headerRowDetected: headerRowDetected, warnings: warnings };
+    if (normalizations.length) {
+      var sample = normalizations.slice(0, 3).map(function(n){
+        return '"' + n.original + '" → ' + n.normalized;
+      }).join(', ');
+      var more = normalizations.length > 3 ? ' (+' + (normalizations.length - 3) + ' more)' : '';
+      warnings.push('Reinterpreted ' + normalizations.length + ' value(s): ' + sample + more + '. Edit the dropdowns if any of those are wrong.');
+    }
+
+    return { rows: rows, mapping: mapping, headerRowDetected: headerRowDetected, warnings: warnings, normalizations: normalizations };
   }
 
   // ============================================================
