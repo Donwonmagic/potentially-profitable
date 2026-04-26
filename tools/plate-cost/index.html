@@ -19,14 +19,14 @@
 <meta property="og:description" content="Type a recipe. Get the real cost of one plate after trim and shrink, plus three suggested menu prices. Stays in your browser." />
 <meta property="og:url" content="https://muntin.digital/tools/plate-cost/" />
 <meta property="og:site_name" content="Muntin Digital" />
-<meta property="og:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-plate-cost.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Plate Cost Calculator — What does each plate actually cost?" />
 <meta name="twitter:description" content="Type a recipe. Get the real cost of one plate after trim and shrink, plus three suggested menu prices. Stays in your browser." />
-<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-plate-cost.png" />
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
@@ -55,6 +55,10 @@
 .pc-grid input[type="number"]{text-align:right}
 .pc-grid .pc-num{width:84px;text-align:right;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--ink-soft)}
 .pc-grid .pc-warn{font-size:11px;color:var(--rust);font-weight:600}
+.pc-grid .pc-math-toggle{display:inline-block;margin-top:4px;font-size:10.5px;color:var(--stone);cursor:pointer;border-bottom:1px dashed var(--line-dark);padding-bottom:1px;background:none;border-left:0;border-top:0;border-right:0;font-family:inherit;font-weight:500;letter-spacing:.02em;text-transform:lowercase}
+.pc-grid .pc-math-toggle:hover{color:var(--teal);border-bottom-color:var(--teal)}
+.pc-grid .pc-math-line{display:block;margin-top:6px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10.5px;color:var(--ink-soft);line-height:1.55;background:var(--cream-2);padding:6px 8px;border-radius:var(--r-sm);font-variant-numeric:tabular-nums;white-space:normal;word-break:break-word}
+.pc-grid .pc-math-row[hidden]{display:none}
 .pc-grid .pc-remove{background:none;border:none;color:var(--stone);cursor:pointer;font-size:18px;line-height:1;padding:0 4px}
 .pc-grid .pc-remove:hover{color:var(--rust)}
 .pc-grid-actions{display:flex;gap:8px;flex-wrap:wrap;padding:10px 12px;background:var(--cream-2);border-top:1px solid var(--line)}
@@ -354,7 +358,7 @@
 </footer>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="/tools/plate-cost/plate-cost.js?v=20260426-pc1"></script>
+<script src="/tools/plate-cost/plate-cost.js?v=20260426-pcA"></script>
 <script src="/tools/plate-cost/card-render.js?v=20260426-pc2"></script>
 <script>
 (function(){
@@ -386,6 +390,10 @@
   var latestRecipe  = null;
 
   // Units allowed in the dropdown — filtered to the most common.
+  // The "case" unit was removed from the dropdown — its count varies
+  // by supplier (12, 24, 30…) so a fixed canonical of 1 was silently
+  // wrong. Owners who paste "case" still get auto-mapped to "each"
+  // by the paste handler, with a hint asking them to confirm.
   var UNIT_OPTIONS = ['g','kg','oz','lb','ml','l','tsp','tbsp','fl-oz','cup','qt','gal','each','dozen'];
 
   // -------------------- Row helpers --------------------
@@ -479,16 +487,37 @@
 
     var summary = PC.computePlateCost(recipe);
 
-    // Per-row cost cells
-    Array.prototype.forEach.call(rowsEl.querySelectorAll('tr'), function(tr, i){
+    // Per-row cost cells. When a row has a usable cost, append a
+    // tiny "Show the math" disclosure so the AP→EP→plate physics is
+    // visible to the reader — the educational moment the page hero
+    // promises ("the math the tool teaches…").
+    var trNodes = rowsEl.querySelectorAll('tr');
+    Array.prototype.forEach.call(trNodes, function(tr, i){
       var cell = tr.querySelector('[data-cell="cost"]');
       var row  = summary.ingredients[i];
+      // Drop any prior math row; we re-render every cycle.
+      var nextSibling = tr.nextElementSibling;
+      if (nextSibling && nextSibling.classList.contains('pc-math-row')) {
+        nextSibling.parentNode.removeChild(nextSibling);
+      }
       if (!row) { cell.textContent = '—'; return; }
       if (row.warning && WARNING_COPY[row.warning]) {
         cell.innerHTML = '<span class="pc-warn">' + WARNING_COPY[row.warning] + '</span>';
-      } else {
-        cell.textContent = fmtMoney(row.usedCost);
+        return;
       }
+      var math = PC.formatRowMath(recipe.rows[i], row);
+      if (!math) {
+        cell.textContent = fmtMoney(row.usedCost);
+        return;
+      }
+      cell.innerHTML = fmtMoney(row.usedCost) +
+        '<button type="button" class="pc-math-toggle" aria-expanded="false">show math</button>';
+      var mathTr = document.createElement('tr');
+      mathTr.className = 'pc-math-row';
+      mathTr.hidden = true;
+      mathTr.innerHTML = '<td colspan="9"><span class="pc-math-line">' +
+        esc(math) + '</span></td>';
+      tr.parentNode.insertBefore(mathTr, tr.nextSibling);
     });
 
     // Headline
@@ -561,8 +590,34 @@
       var tr = e.target.closest('tr');
       if (tr) tr.remove();
       renderResults();
+      return;
+    }
+    if (e.target.classList.contains('pc-math-toggle')) {
+      var srcRow = e.target.closest('tr');
+      var mathRow = srcRow && srcRow.nextElementSibling;
+      if (mathRow && mathRow.classList.contains('pc-math-row')) {
+        var open = mathRow.hidden;
+        mathRow.hidden = !open;
+        e.target.setAttribute('aria-expanded', String(open));
+        e.target.textContent = open ? 'hide math' : 'show math';
+      }
     }
   });
+  // Yield-input forgiveness — owners type "75" or "75%" instead of
+  // "0.75". Mirrors the same percent-aware logic the paste handler
+  // already uses (PC.normalizeYieldInput) so a single source of truth
+  // governs both entry paths.
+  rowsEl.addEventListener('blur', function(e){
+    var el = e.target;
+    if (!el || el.dataset.field !== 'yieldPercent') return;
+    var raw = el.value;
+    if (raw == null || raw === '') return;
+    var normalized = PC.normalizeYieldInput(raw);
+    if (normalized != null && String(normalized) !== String(raw)) {
+      el.value = normalized;
+      renderResults();
+    }
+  }, true);
   if (portionsEl) portionsEl.addEventListener('input', renderResults);
   if (nameEl)     nameEl.addEventListener('input', renderResults);
 

@@ -203,10 +203,15 @@
     'whole duck':           0.45,
     'whole rabbit':         0.50,
     'pork shoulder':        0.75,
-    'pork loin':            0.85,
-    'pork belly':           0.90,
-    'bacon':                0.55,           // shrink in cook
-    'ribeye':               0.75,           // bone-in
+    'pork loin':             0.85,
+    'pork belly':            0.90,
+    // Bacon yield depends on whether the row captures cook-shrink.
+    // We keep two entries so a row can choose the right physics; a
+    // bare "bacon" lookup defaults to "raw" (1.00) since most prep
+    // sheets list bacon as an AP weight.
+    'bacon (raw)':           1.00,
+    'bacon (cooked)':        0.55,
+    'ribeye':                0.75,           // bone-in
     'striploin':            0.80,
     'tenderloin':           0.85,
     'short rib':            0.65,
@@ -219,6 +224,7 @@
     // Seafood
     'whole salmon':         0.55,
     'salmon fillet':        0.95,
+    'salmon (skin-on fillet)': 0.80,        // skin off + portion trim
     'whole halibut':        0.50,
     'whole branzino':       0.55,
     'whole sea bass':       0.55,
@@ -233,6 +239,25 @@
     'clams':                0.30,
     'whole crab':           0.25,
     'scallops':             1.00,           // already shucked at most ports
+    'octopus':              0.45,           // tentacle yield after braise
+    'squid':                0.80,
+
+    // Aromatics & specialty produce
+    'ginger':               0.85,
+    'lemongrass':           0.45,           // tender white core only
+    'bok choy':             0.80,
+    'napa':                 0.80,
+    'daikon':               0.85,
+
+    // Plant-protein staples (no trim, listed for autocomplete + clarity)
+    'tofu (firm)':          1.00,
+    'tempeh':               1.00,
+    'paneer':               1.00,
+
+    // Pantry pastes / condiments common in independent kitchens
+    'miso':                 1.00,
+    'gochujang':            1.00,
+    'harissa':              1.00,
 
     // Dairy & shelf items (default 100%, listed for autocomplete)
     'butter':               1.00,
@@ -281,6 +306,10 @@
     // forms ("tomatoes" → "tomato", "carrots" → "carrot").
     var noParens = key.replace(/\s*\([^)]*\)\s*/g, '').trim();
     if (YIELD_TABLE[noParens] != null) return YIELD_TABLE[noParens];
+    // Bare "bacon" lookups default to the raw entry — most prep sheets
+    // list bacon as an AP weight; cook-shrink is the rarer case and
+    // requires the explicit "bacon (cooked)" name.
+    if (noParens === 'bacon') return YIELD_TABLE['bacon (raw)'];
     var stripS = noParens.replace(/s$/, '');
     if (YIELD_TABLE[stripS] != null) return YIELD_TABLE[stripS];
     var stripEs = noParens.replace(/es$/, '');
@@ -423,6 +452,34 @@
   }
 
   // ============================================================
+  // formatRowMath — produce a one-line equation showing how a single
+  // row's cost was derived. Used by the form's "Show the math"
+  // disclosure so the AP→EP→plate physics is visible to the reader.
+  // Returns '' for rows that didn't compute a usable cost (warnings
+  // surface separately).
+  // ============================================================
+  function formatRowMath(row, computed) {
+    if (!row || !computed) return '';
+    if (!isFinite(computed.usedCost) || computed.usedCost <= 0) return '';
+    if (computed.warning && computed.warning !== 'unknown-yield') return '';
+    var ap = '$' + Number(row.apPrice).toFixed(2);
+    var apQty = String(row.apQty);
+    var apUnit = String(row.apUnit || '');
+    var apUnitCost = '$' + Number(computed.apUnitCost).toFixed(4);
+    var yieldStr = Math.round(Number(computed.yieldPercent) * 100) + '%';
+    var epUnitCost = '$' + Number(computed.epUnitCost).toFixed(4);
+    var usedQty = String(row.usedQty);
+    var usedUnit = String(row.usedUnit || '');
+    var usedCost = '$' + Number(computed.usedCost).toFixed(2);
+    var ep = (yieldStr === '100%')
+      ? apUnitCost + ' (no yield loss)'
+      : apUnitCost + ' ÷ ' + yieldStr + ' = ' + epUnitCost + ' / ' + apUnit;
+    return ap + ' ÷ ' + apQty + ' ' + apUnit + ' = ' + apUnitCost + ' / ' + apUnit +
+           ' · ' + ep +
+           ' · × ' + usedQty + ' ' + usedUnit + ' = ' + usedCost;
+  }
+
+  // ============================================================
   // Suggested menu prices at 28% / 30% / 33% food-cost targets.
   // Each entry includes the suggested price and the contribution
   // margin in dollars at that price.
@@ -517,6 +574,20 @@
     usedUnit:     ['used unit', 'used_unit', 'recipe unit', 'serving unit', 'portion unit',
                    'unidad usada', 'unidad receta', 'unidad de porción']
   };
+
+  // Yield-input forgiveness. Accepts "75%", "75", "0.75" and returns
+  // a string in the canonical 0..1 fractional form. Empty/null inputs
+  // pass through as-is so the form's "auto" placeholder still fires.
+  function normalizeYieldInput(raw) {
+    if (raw == null) return null;
+    var s = String(raw).trim();
+    if (s === '') return '';
+    var hadPct = s.indexOf('%') !== -1;
+    var n = Number(s.replace(/%/g, '').trim());
+    if (!isFinite(n)) return s;
+    if (hadPct || n > 1) return String(n / 100);
+    return String(n);
+  }
 
   function detectDelimiter(text){
     var firstLine = String(text).split(/\r?\n/)[0] || '';
@@ -613,6 +684,17 @@
       return cleanString(s).replace(/^[$]/, '').replace(/,/g, '');
     }
     var NUMERIC_FIELDS = { apPrice: 1, apQty: 1, usedQty: 1, yieldPercent: 1 };
+    // Aliases mapping common spreadsheet unit names onto the canonical
+    // dropdown values. "case" is intentionally collapsed to "each"
+    // because case counts vary by supplier — the warning surfaces so
+    // the owner can verify the AP qty number captures actual count.
+    var UNIT_ALIASES = { 'case': 'each', 'cs': 'each', 'cs.': 'each' };
+    var caseSeen = false;
+    function mapUnit(u){
+      var v = String(u || '').trim().toLowerCase();
+      if (UNIT_ALIASES[v]) { caseSeen = caseSeen || v === 'case' || v === 'cs' || v === 'cs.'; return UNIT_ALIASES[v]; }
+      return u;
+    }
     var rows = dataRows.map(function(cells){
       function pick(field){
         var idx = mapping[field];
@@ -620,25 +702,23 @@
         return NUMERIC_FIELDS[field] ? cleanNumber(cells[idx]) : cleanString(cells[idx]);
       }
       // Yield handling — accept "75%", "0.75", "75" all as 0.75.
-      var rawY = pick('yieldPercent');
-      var y = rawY;
-      if (rawY) {
-        var n = Number(rawY.replace(/%/g, ''));
-        if (isFinite(n)) {
-          if (rawY.indexOf('%') !== -1 || n > 1) y = String(n / 100);
-          else y = String(n);
-        }
-      }
+      // Shared with the form's blur handler so both entry paths obey
+      // the same forgiveness rules.
+      var y = normalizeYieldInput(pick('yieldPercent'));
+      if (y == null) y = '';
       return {
         ingredient:   pick('ingredient'),
         apPrice:      pick('apPrice'),
         apQty:        pick('apQty'),
-        apUnit:       pick('apUnit') || 'lb',
+        apUnit:       mapUnit(pick('apUnit')) || 'lb',
         yieldPercent: y,
         usedQty:      pick('usedQty'),
-        usedUnit:     pick('usedUnit') || 'oz'
+        usedUnit:     mapUnit(pick('usedUnit')) || 'oz'
       };
     });
+    if (caseSeen) {
+      warnings.push('"case" was treated as "each" — case counts vary by supplier. Verify the AP qty captures the actual unit count (e.g. 24 for a case of 24).');
+    }
 
     return { rows: rows, mapping: mapping, headerRowDetected: headerRowDetected, warnings: warnings };
   }
@@ -728,11 +808,13 @@
     computeIngredientCost: computeIngredientCost,
     computePlateCost:      computePlateCost,
     suggestMenuPrices:     suggestMenuPrices,
+    formatRowMath:         formatRowMath,
     validateRecipe:        validateRecipe,
     convertUnits:          convertUnits,
     lookupYield:           lookupYield,
     normalizeUnit:         normalizeUnit,
     parseTabularText:      parseTabularText,
+    normalizeYieldInput:   normalizeYieldInput,
     bucketIngredientCount: bucketIngredientCount,
     bucketYieldUsage:      bucketYieldUsage,
     bucketPlateCostBand:   bucketPlateCostBand,

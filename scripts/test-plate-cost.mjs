@@ -394,6 +394,66 @@ poison.forEach(function(p){
 });
 
 // ============================================================
+// Phase A — yield-input forgiveness, table widening, formatRowMath
+// ============================================================
+
+assertEq('normalizeYieldInput("75")',     PC.normalizeYieldInput('75'),     '0.75');
+assertEq('normalizeYieldInput("75%")',    PC.normalizeYieldInput('75%'),    '0.75');
+assertEq('normalizeYieldInput("0.75")',   PC.normalizeYieldInput('0.75'),   '0.75');
+assertEq('normalizeYieldInput("100")',    PC.normalizeYieldInput('100'),    '1');
+assertEq('normalizeYieldInput("100%")',   PC.normalizeYieldInput('100%'),   '1');
+assertEq('normalizeYieldInput("")',       PC.normalizeYieldInput(''),       '');
+assertEq('normalizeYieldInput(null)',     PC.normalizeYieldInput(null),     null);
+assertEq('normalizeYieldInput("garbage")',PC.normalizeYieldInput('garbage'),'garbage');
+
+assertEq('Tofu (firm) yield is 1.00',         PC.lookupYield('Tofu (firm)'),         1.00);
+assertEq('Ginger yield is 0.85',              PC.lookupYield('Ginger'),              0.85);
+assertEq('Lemongrass yield is 0.45',          PC.lookupYield('lemongrass'),          0.45);
+assertEq('Octopus yield is 0.45',             PC.lookupYield('octopus'),             0.45);
+assertEq('Salmon (skin-on fillet) is 0.80',   PC.lookupYield('Salmon (skin-on fillet)'), 0.80);
+assertEq('Bacon (raw) is 1.00',               PC.lookupYield('bacon (raw)'),         1.00);
+assertEq('Bacon (cooked) is 0.55',            PC.lookupYield('bacon (cooked)'),      0.55);
+assertEq('Bare "bacon" defaults to raw 1.00', PC.lookupYield('bacon'),               1.00);
+assertEq('Miso yield is 1.00',                PC.lookupYield('miso'),                1.00);
+assertEq('Gochujang yield is 1.00',           PC.lookupYield('gochujang'),           1.00);
+
+// formatRowMath produces a one-line equation for usable rows and
+// returns '' for warning rows (so the disclosure stays empty).
+const fmRow = {
+  ingredient: 'Pecorino Romano', apPrice: 18, apQty: 1, apUnit: 'lb',
+  yieldPercent: 0.95, usedQty: 1.5, usedUnit: 'oz'
+};
+const fmCalc = PC.computeIngredientCost(fmRow);
+const fmStr = PC.formatRowMath(fmRow, fmCalc);
+assert('formatRowMath returns non-empty for usable row', fmStr.length > 0, fmStr);
+assert('formatRowMath includes AP price',                fmStr.indexOf('$18.00') !== -1);
+assert('formatRowMath includes yield percent',           fmStr.indexOf('95%') !== -1);
+assert('formatRowMath includes used cost',               fmStr.indexOf('$1.78') !== -1 || fmStr.indexOf('$1.77') !== -1);
+
+const fmWarnRow = { ingredient: 'X', apPrice: 0, apQty: 0, apUnit: 'lb', usedQty: 1, usedUnit: 'oz' };
+const fmWarnCalc = PC.computeIngredientCost(fmWarnRow);
+assertEq('formatRowMath empty for warning row', PC.formatRowMath(fmWarnRow, fmWarnCalc), '');
+
+// 100%-yield rows skip the yield-division clause.
+const fm100 = PC.computeIngredientCost({
+  ingredient: 'Olive oil', apPrice: 24, apQty: 1, apUnit: 'l',
+  yieldPercent: 1.00, usedQty: 1, usedUnit: 'tbsp'
+});
+const fm100Str = PC.formatRowMath({ ingredient: 'Olive oil', apPrice: 24, apQty: 1, apUnit: 'l', yieldPercent: 1.00, usedQty: 1, usedUnit: 'tbsp' }, fm100);
+assert('formatRowMath omits yield division at 100%', fm100Str.indexOf('no yield loss') !== -1, fm100Str);
+
+// Paste-handler: "case" gets aliased to "each" + a warning surfaces.
+const casePaste = PC.parseTabularText(
+  'Ingredient,AP price,AP qty,AP unit,Yield %,Used qty,Used unit\n' +
+  'Romaine,28,24,case,75,1,each\n'
+);
+assertEq('case alias maps to each',  casePaste.rows[0].apUnit, 'each');
+assert('case alias surfaces warning', casePaste.warnings.some(function(w){ return w.indexOf('case') !== -1; }));
+
+// Paste-handler: "75" without % is interpreted as 0.75 (forgiveness).
+assertEq('paste yield "75" → 0.75',  casePaste.rows[0].yieldPercent, '0.75');
+
+// ============================================================
 console.log('\n' + (failures === 0
   ? '✓ all plate-cost assertions pass'
   : '✗ ' + failures + ' plate-cost assertion(s) failed'));
