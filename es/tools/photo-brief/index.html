@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="referrer" content="no-referrer" />
+<title>Constructor de Brief de Fotos — Entra a la sesión con tu fotógrafo con un brief de una página | Muntin Digital</title>
+<meta name="description" content="Escribe tus platos y dónde van las fotos (Yelp, Google, Instagram, tu menú). Llévate un brief de una página que te consigue las fotos correctas en una sesión. Unos 10 minutos. Se queda en tu navegador." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/es/tools/photo-brief/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/tools/photo-brief/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/photo-brief/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/photo-brief/" />
+<meta property="og:locale" content="es_US" />
+<meta property="og:locale:alternate" content="en_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Constructor de Brief de Fotos — Entra a la sesión con un brief de una página" />
+<meta property="og:description" content="Escribe tus platos y dónde van las fotos. Llévate un brief que te consigue las fotos correctas en una sesión. Se queda en tu navegador." />
+<meta property="og:url" content="https://muntin.digital/es/tools/photo-brief/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Photo Brief Builder" />
+<meta name="twitter:description" content="A one-page brief that gets you the right photos in one shoot. Stays in your browser." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<link rel="preconnect" href="https://plausible.io" crossorigin />
+<link rel="dns-prefetch" href="https://plausible.io" />
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
+<link rel="stylesheet" href="/assets/site.css?v=20260424-bs1" />
+<style>.breadcrumb{visibility:hidden;padding-top:100px}
+/* === Photo Brief Builder tool-scoped styles. Page-prefix .pb-*. === */
+.pb-warnings{display:flex;flex-direction:column;gap:10px;margin:0 0 18px}
+.pb-warning{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:start;padding:14px 16px;border:1px solid rgba(198,138,44,0.25);border-left-width:4px;border-left-color:#C68A2C;border-radius:var(--r-input);background:rgba(198,138,44,0.06)}
+.pb-warning-icon{font-size:18px;line-height:1.3}
+.pb-warning h3{font-family:var(--font-display);font-size:15px;font-weight:600;margin:0 0 4px;color:var(--ink)}
+.pb-warning p{margin:0;font-size:13px;line-height:1.55;color:var(--ink-soft)}
+.pb-warning a.pb-fix{display:inline-block;padding:6px 12px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font-size:12px;font-weight:600;text-decoration:none;white-space:nowrap}
+.pb-warning a.pb-fix:hover{background:var(--teal);color:var(--cream)}
+
+.pb-form{display:flex;flex-direction:column;gap:18px}
+.pb-meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;align-items:end}
+@media(max-width:760px){.pb-meta{grid-template-columns:1fr}}
+.pb-meta label{display:flex;flex-direction:column;gap:4px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
+.pb-meta input,.pb-meta select{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums}
+.pb-meta input:focus,.pb-meta select:focus{outline:2px solid var(--teal);outline-offset:1px}
+
+.pb-grid{border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);overflow-x:auto}
+.pb-grid table{width:100%;border-collapse:collapse;font-size:13px;min-width:640px}
+.pb-grid th{padding:10px 8px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);background:var(--cream-2);border-bottom:1px solid var(--line);white-space:nowrap}
+.pb-grid td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
+.pb-grid tr:last-child td{border-bottom:0}
+.pb-grid input,.pb-grid select{width:100%;padding:7px 8px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font:inherit;font-size:13px;color:var(--ink)}
+.pb-grid input:focus,.pb-grid select:focus{outline:2px solid var(--teal);outline-offset:1px}
+.pb-grid .pb-num{width:60px;text-align:right;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--ink-soft)}
+.pb-grid .pb-prio{width:100px}
+.pb-grid .pb-remove{background:none;border:none;color:var(--stone);cursor:pointer;font-size:18px;line-height:1;padding:0 4px}
+.pb-grid .pb-remove:hover{color:var(--rust)}
+.pb-grid-actions{display:flex;gap:8px;flex-wrap:wrap;padding:10px 12px;background:var(--cream-2);border-top:1px solid var(--line)}
+.pb-add-row,.pb-sample-btn,.pb-clear-btn{padding:6px 14px;border:1px dashed var(--line-dark);border-radius:999px;background:transparent;font:inherit;font-size:12px;font-weight:600;color:var(--stone);cursor:pointer}
+.pb-add-row:hover,.pb-sample-btn:hover{border-color:var(--teal);color:var(--teal)}
+.pb-clear-btn{margin-left:auto}
+.pb-clear-btn:hover{border-color:var(--rust);color:var(--rust)}
+
+.pb-surfaces{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.pb-surface{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);cursor:pointer;transition:border-color 140ms var(--ease-out)}
+.pb-surface:hover{border-color:var(--teal)}
+.pb-surface input[type="checkbox"]{margin:3px 0 0;cursor:pointer}
+.pb-surface .pb-surface-title{font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.3}
+.pb-surface .pb-surface-meta{display:block;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;color:var(--stone);margin-top:2px;font-variant-numeric:tabular-nums}
+.pb-surface[data-checked="true"]{border-color:var(--teal);background:rgba(31,78,91,0.04)}
+
+.pb-math{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-top:24px}
+@media(max-width:880px){.pb-math{grid-template-columns:1fr}}
+.pb-math-card{padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+.pb-math-eyebrow{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin:0 0 6px}
+.pb-math-num{font-family:var(--font-display);font-size:clamp(28px,4vw,40px);font-weight:500;color:var(--ink);line-height:1;margin:0 0 6px;font-variant-numeric:tabular-nums}
+.pb-math-detail{font-size:12.5px;color:var(--ink-soft);line-height:1.55;margin:0}
+.pb-math-detail strong{color:var(--ink)}
+
+.pb-coverage{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:12px}
+.pb-coverage-tile{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font-size:12px;line-height:1.4}
+.pb-coverage-title{font-weight:600;color:var(--ink);margin:0 0 2px}
+.pb-coverage-ratio{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;color:var(--stone);font-variant-numeric:tabular-nums}
+.pb-coverage-crop{display:block;margin:6px 0;height:48px;background:var(--cream-2);border:1px solid var(--line);position:relative}
+.pb-coverage-crop::after{content:"";position:absolute;border:2px solid var(--teal);box-sizing:border-box;top:0;left:0;width:100%;height:100%}
+
+.pb-empty{padding:24px;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--cream-2);font-size:13.5px;color:var(--stone);text-align:center;margin-top:24px}
+
+.pb-privacy-list{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none;counter-reset:pb-step}
+.pb-privacy-list li{counter-increment:pb-step;display:grid;grid-template-columns:32px 1fr;gap:14px;align-items:start;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white)}
+.pb-privacy-list li::before{content:counter(pb-step);font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--teal);font-variant-numeric:tabular-nums}
+.pb-privacy-list li strong{display:block;font-size:14px;color:var(--ink);margin-bottom:2px}
+.pb-privacy-list li p{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:0}
+.pb-privacy-list code{font-size:12px;background:var(--cream-2);padding:1px 4px;border-radius:3px}
+
+@media print{
+  body{background:#fff !important;color:#000 !important}
+  header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,
+  #how-private,#what-this-isnt,.pb-grid-actions,.pb-clear-btn,.pb-sample-btn{display:none !important}
+  .pb-math-card,.pb-coverage-tile,.pb-grid{break-inside:avoid;page-break-inside:avoid}
+  a[href]:after{content:'' !important}
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/for/restaurants/">Restaurants</a>
+      <a href="/learn/" class="nav-library-trigger">Library</a>
+      <a href="/work/">Work</a>
+      <a href="/about/">About</a>
+    </nav>
+    <nav class="lang-switch" aria-label="Idioma">
+      <a href="/tools/photo-brief/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
+      <span class="lang-switch-current" aria-current="true">ES</span>
+    </nav>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Reservar llamada de 20 min<span class="sr-only"> (abre en pestaña nueva)</span></a>
+  </div>
+</header>
+<nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/es/">Inicio</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><a href="/es/tools/">Herramientas</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><span aria-current="page">Constructor de Brief de Fotos</span></nav>
+
+<main id="main">
+<!-- HERO -->
+<section class="block"><div class="container">
+  <div style="max-width:760px;margin:0 auto;text-align:center;">
+    <span class="eyebrow">Herramienta gratis · se queda en tu navegador</span>
+    <h1 style="font-family:var(--font-display);font-size:clamp(34px,4.5vw,52px);font-weight:500;color:var(--ink);margin:14px 0 14px;line-height:1.1;">Entra a la sesión con tu fotógrafo con un brief de una página.</h1>
+    <p style="font-size:17px;line-height:1.6;color:var(--ink-soft);margin:0 0 14px;">Escribe tus platos y dónde van las fotos &mdash; Yelp, Google, Instagram, tu menú. Llévate un brief que te consigue las fotos correctas en una sesión, en vez de 80 fotos genéricas en tres. Unos 10 minutos.</p>
+    <p style="font-size:13px;color:var(--stone);margin:0;"><a href="#how-private" style="color:inherit;border-bottom:1px dashed var(--teal);">Cómo mantenemos privado tu brief</a> &middot; <a href="/es/glossary/photo-brief/" style="color:inherit;border-bottom:1px dashed var(--teal);">Por qué esto importa</a></p>
+  </div>
+</div></section>
+
+<!-- PRE-SHOOT WARNING GATES (load-bearing — Risk 3 mitigation).
+     Render conditionally based on what cross-tool data is present.
+     Without input data, the brief is the worst version of itself —
+     and we say so. -->
+<section class="block"><div class="container" style="max-width:920px;">
+  <div class="pb-warnings" id="pbWarnings" aria-live="polite"></div>
+</div></section>
+
+<!-- QUÉ HACE (en cuatro frases) -->
+<section class="block"><div class="container" style="max-width:760px;">
+  <div style="padding:18px 22px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);font-size:14.5px;line-height:1.65;color:var(--ink-soft);">
+    <p style="margin:0;"><strong style="color:var(--ink);">Qué hace.</strong> Listas tus platos (o los importas de Ingeniería de Menú), marcas a qué destinos sirven las fotos, y la herramienta calcula el conjunto mínimo de tomas que cubre todo. Saca un Brief de Fotos imprimible organizado por superficie de destino, con composición / iluminación / aspecto por toma. Luego una Tarjeta de Fotos de Marca que el chef puede pegar en la pared de la cocina. Nada sale del navegador; cierras la pestaña y el brief desaparece.</p>
+  </div>
+</div></section>
+
+<!-- PANEL DE PRIVACIDAD (5 afirmaciones) -->
+<section class="block" id="how-private"><div class="container" style="max-width:760px;">
+  <h2 style="font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0 0 6px;">Tu brief no sale de este navegador.</h2>
+  <p style="font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0 0 16px;">Cinco afirmaciones verificables &mdash; cada una la puedes confirmar tú mismo en DevTools en menos de un minuto.</p>
+  <ol class="pb-privacy-list">
+    <li><div><strong>Sin envío.</strong><p>No se sube ninguna foto, no se procesa ninguna imagen. Abre DevTools &rarr; Red. Escribe un brief, haz clic en Calcular. Cero peticiones se disparan.</p></div></li>
+    <li><div><strong>Sin guardado.</strong><p>Cierra la pestaña y recarga esta URL. El formulario está vacío. No usamos <code>localStorage</code>, <code>sessionStorage</code>, ni cookies para tus datos.</p></div></li>
+    <li><div><strong>Los fragmentos de URL son solo de lectura.</strong><p>Cuando llegas desde Ingeniería de Menú o Suite de Marca, los datos del fragmento llenan el formulario &mdash; pero la página nunca re-codifica tus ediciones a la URL automáticamente. Compartir es un acto deliberado, no un accidente.</p></div></li>
+    <li><div><strong>Un solo script empaquetado.</strong><p>La herramienta carga <code>/tools/photo-brief/photo-brief.js</code> desde este dominio. Sin CDN, sin analítica vinculada a tus datos, sin rastreador de terceros leyendo el formulario.</p></div></li>
+    <li><div><strong>Solo analítica anónima en cubetas (enums).</strong><p>Registramos que &ldquo;se construyó un brief de 11&ndash;25 tomas&rdquo; en tres o cuatro cubetas &mdash; nunca los nombres de platos, el nombre del fotógrafo, ni el contenido del brief.</p></div></li>
+  </ol>
+</div></section>
+
+<!-- FORMULARIO -->
+<section class="block"><div class="container" style="max-width:920px;">
+  <h2 style="font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0 0 6px;">Construye tu brief.</h2>
+  <p style="font-size:13.5px;color:var(--stone);margin:0 0 16px;line-height:1.55;">Lista los platos que quieres fotografiar y marca los destinos. La matemática calcula el número mínimo de tomas que cubre cada destino con corte de aspecto &mdash; tú entras con el brief correcto, el fotógrafo trabaja medio día en lugar de tres.</p>
+
+  <div class="pb-form">
+    <div class="pb-meta">
+      <label>Nombre del restaurante <small style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--stone);">(va en el brief)</small>
+        <input type="text" id="pbName" placeholder="ej. Osteria Giardino" autocomplete="organization" />
+      </label>
+      <label>Nombre del fotógrafo <small style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--stone);">(opcional &mdash; personaliza el brief)</small>
+        <input type="text" id="pbPhotographer" placeholder="ej. Alex Reyes" autocomplete="off" />
+      </label>
+      <label>Tarifa diaria del fotógrafo ($) <small style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--stone);">(usada en la matemática de ROI)</small>
+        <input type="number" id="pbDayRate" min="0" step="50" value="1800" />
+      </label>
+    </div>
+
+    <div>
+      <label style="display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:8px;">¿Qué platos vamos a fotografiar?</label>
+      <p style="font-size:12.5px;color:var(--stone);margin:0 0 10px;line-height:1.55;">Seis filas para empezar. Agrega o quita. Las categorías determinan los ángulos / iluminación por defecto &mdash; puedes sobrescribir por toma en el brief.</p>
+      <div class="pb-grid" role="region" aria-label="Cuadrícula de platos">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col" style="min-width:200px;">Plato</th>
+              <th scope="col" style="width:140px;">Categoría</th>
+              <th scope="col" style="width:120px;">Prioridad</th>
+              <th scope="col" style="width:30px;"></th>
+            </tr>
+          </thead>
+          <tbody id="pbRows"></tbody>
+        </table>
+        <div class="pb-grid-actions">
+          <button type="button" class="pb-add-row" id="pbAddRow">+ Agregar plato</button>
+          <button type="button" class="pb-sample-btn" id="pbSample">Cargar brief de muestra</button>
+          <button type="button" class="pb-clear-btn" id="pbClear">Limpiar</button>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <label style="display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:8px;">¿A dónde van las fotos?</label>
+      <p style="font-size:12.5px;color:var(--stone);margin:0 0 10px;line-height:1.55;">Marca todos los destinos donde publicas. Cada superficie tiene una proporción canónica &mdash; el brief calcula qué superficies comparten cortes para que el fotógrafo no fotografíe el mismo plato 8 veces.</p>
+      <div class="pb-surfaces" id="pbSurfaces" role="group" aria-label="Superficies de destino"></div>
+    </div>
+
+    <!-- RESUMEN MATEMÁTICO -->
+    <div class="pb-math" id="pbMath" style="display:none;">
+      <div class="pb-math-card">
+        <p class="pb-math-eyebrow">Tomas fuente</p>
+        <p class="pb-math-num" id="pbDedupNum">0</p>
+        <p class="pb-math-detail">Reducidas desde <strong id="pbNaiveNum">0</strong> tomas ingenuas. Una toma fuente sirve varios destinos con corte de aspecto &mdash; ver el brief.</p>
+      </div>
+      <div class="pb-math-card">
+        <p class="pb-math-eyebrow">Sesión estimada</p>
+        <p class="pb-math-num" id="pbDaysNum">0</p>
+        <p class="pb-math-detail"><strong id="pbDaysLabel">días</strong> a <strong id="pbRateNum">$1,800</strong>/día &middot; <strong id="pbCostNum">$0</strong> total &middot; <strong id="pbPerShotNum">$0</strong>/toma.</p>
+      </div>
+      <div class="pb-math-card">
+        <p class="pb-math-eyebrow">Meses al punto de equilibrio</p>
+        <p class="pb-math-num" id="pbPaybackNum">&mdash;</p>
+        <p class="pb-math-detail">Reemplazar 3 de las fotos peor performantes con un lift típico de foto descriptiva (Wansink 2005 / Cornell SHA 2014, rango medio). Ajusta los datos para modelar el tuyo.</p>
+      </div>
+    </div>
+
+    <!-- COBERTURA DE SUPERFICIES -->
+    <div id="pbCoverageWrap" style="display:none;margin-top:18px;">
+      <p style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin:0 0 8px;">Cobertura de superficies &middot; mapa de proporción</p>
+      <div class="pb-coverage" id="pbCoverage"></div>
+    </div>
+
+    <div class="pb-empty" id="pbEmpty">
+      Lista un plato arriba &mdash; o <button type="button" class="pb-sample-btn" id="pbSample2" style="margin:0 6px;">carga el brief de muestra</button> &mdash; para ver la matemática.
+    </div>
+  </div>
+</div></section>
+
+<!-- QUÉ ES / QUÉ NO ES -->
+<section class="block" id="what-this-isnt"><div class="container" style="max-width:760px;">
+  <h2 style="font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0 0 6px;">Qué <em>es</em>, y qué <em>no es</em>.</h2>
+  <p style="font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0 0 18px;">Una herramienta que funciona puede ser honesta sobre sus bordes. El Constructor de Brief de Fotos hace cinco cosas bien y un puñado de cosas relacionadas para nada.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 0 24px;">
+    <div style="padding:16px 18px;border:1px solid var(--line);border-left-width:4px;border-left-color:var(--status-good);border-radius:var(--r-sm);background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:15px;font-weight:600;margin:0 0 8px;color:var(--ink);">Qué es</h3>
+      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.6;color:var(--ink-soft);">
+        <li>Una <strong>lista de tomas estructurada</strong> que el fotógrafo sigue durante la sesión.</li>
+        <li>La <strong>matemática de reducción</strong> que convierte 288 fotos ingenuas en 36 tomas fuente.</li>
+        <li>El <strong>mapa de proporciones</strong> que muestra a qué superficie sirve cada toma.</li>
+        <li>Un <strong>Brief de Fotos</strong> imprimible + una <strong>Tarjeta de Fotos de Marca</strong> de larga vida.</li>
+        <li>Un punto de partida para una sesión de un día en vez de una tarde sin fin.</li>
+      </ul>
+    </div>
+    <div style="padding:16px 18px;border:1px solid var(--line);border-left-width:4px;border-left-color:var(--rust);border-radius:var(--r-sm);background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:15px;font-weight:600;margin:0 0 8px;color:var(--ink);">Qué no es</h3>
+      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.6;color:var(--ink-soft);">
+        <li>Una <strong>sesión de fotos real</strong>. El brief es el brief; tú lo llevas a un fotógrafo.</li>
+        <li>Un <strong>retocador de fotos o generador de imágenes con IA</strong>. No se suben imágenes, no se producen imágenes.</li>
+        <li>Un <strong>directorio de fotógrafos</strong>. Elige el tuyo; sugerimos en la página de servicios.</li>
+        <li>Un <strong>sistema de gestión de archivos</strong>. El brief te da una convención de nombres; tú almacenas los archivos.</li>
+        <li>Un <strong>moodboard</strong>. La inspiración editorial va antes; esto es la tabla pre-sesión.</li>
+      </ul>
+    </div>
+  </div>
+
+  <p style="font-size:13.5px;color:var(--ink-soft);line-height:1.6;margin:0;padding:14px 16px;background:var(--cream-2);border-radius:var(--r-sm);"><strong>Lo que sigue.</strong> El brief es más útil cuando consume datos del resto del toolkit. <a href="/es/tools/menu-engineering/" style="color:var(--teal);font-weight:600;text-decoration:none;border-bottom:1px dashed currentColor;">Ingeniería de Menú</a> te dice qué platos son Estrellas; <a href="/es/tools/brand-suite/" style="color:var(--teal);font-weight:600;text-decoration:none;border-bottom:1px dashed currentColor;">Suite de Marca</a> te da el mundo de color sobre el que estilizar; <a href="/es/tools/plate-cost/" style="color:var(--teal);font-weight:600;text-decoration:none;border-bottom:1px dashed currentColor;">Costo del Plato</a> marca los platos de alto margen que vale la pena iluminar. Corre esos primero cuando puedas &mdash; el brief queda 3&times; más corto y 3&times; más útil.</p>
+</div></section>
+</main>
+<footer class="foot">
+  <div class="container foot-inner">
+    <div class="foot-col foot-brand"><a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home"><img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async"><sup class="tm" aria-hidden="true">&#8482;</sup></a><p class="foot-tagline">Structure Brings Clarity.</p></div>
+  </div>
+  <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
+</footer>
+
+<script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="/tools/photo-brief/photo-brief.js?v=20260426-pb1"></script>
+<script>
+(function(){
+  'use strict';
+  if (!window.PB) return;
+  var PB = window.PB;
+
+  // -------------------- DOM hooks --------------------
+  var nameEl       = document.getElementById('pbName');
+  var photogEl     = document.getElementById('pbPhotographer');
+  var dayRateEl    = document.getElementById('pbDayRate');
+  var rowsEl       = document.getElementById('pbRows');
+  var addRowBtn    = document.getElementById('pbAddRow');
+  var sampleBtn    = document.getElementById('pbSample');
+  var sampleBtn2   = document.getElementById('pbSample2');
+  var clearBtn     = document.getElementById('pbClear');
+  var surfacesEl   = document.getElementById('pbSurfaces');
+  var warningsEl   = document.getElementById('pbWarnings');
+  var mathEl       = document.getElementById('pbMath');
+  var emptyEl      = document.getElementById('pbEmpty');
+  var coverageWrap = document.getElementById('pbCoverageWrap');
+  var coverageEl   = document.getElementById('pbCoverage');
+
+  // Result-render hooks
+  var dedupNum   = document.getElementById('pbDedupNum');
+  var naiveNum   = document.getElementById('pbNaiveNum');
+  var daysNum    = document.getElementById('pbDaysNum');
+  var daysLabel  = document.getElementById('pbDaysLabel');
+  var rateNum    = document.getElementById('pbRateNum');
+  var costNum    = document.getElementById('pbCostNum');
+  var perShotNum = document.getElementById('pbPerShotNum');
+  var paybackNum = document.getElementById('pbPaybackNum');
+
+  // Cross-tool fragment data, populated on load.
+  var fragmentState = { stars: [], palette: [], margins: [] };
+
+  // -------------------- Row helpers --------------------
+  function blankRow(){ return { name: '', category: 'main', priority: 'standard' }; }
+  function esc(v){ return String(v == null ? '' : v).replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+  function rowHtml(row){
+    var catOpts = PB.CATEGORIES.map(function(c){
+      return '<option value="' + c + '"' + (c === row.category ? ' selected' : '') + '>' + c + '</option>';
+    }).join('');
+    var prioOpts = ['hero','standard','secondary'].map(function(p){
+      return '<option value="' + p + '"' + (p === row.priority ? ' selected' : '') + '>' + p + '</option>';
+    }).join('');
+    return '<tr>' +
+      '<td><input type="text" data-field="name" value="' + esc(row.name) + '" placeholder="e.g. Cacio e pepe" /></td>' +
+      '<td><select data-field="category">' + catOpts + '</select></td>' +
+      '<td class="pb-prio"><select data-field="priority">' + prioOpts + '</select></td>' +
+      '<td><button type="button" class="pb-remove" aria-label="Remove dish">&times;</button></td>' +
+      '</tr>';
+  }
+  function readRows(){
+    var out = [];
+    Array.prototype.forEach.call(rowsEl.querySelectorAll('tr'), function(tr){
+      var row = blankRow();
+      Array.prototype.forEach.call(tr.querySelectorAll('[data-field]'), function(el){
+        row[el.dataset.field] = el.value;
+      });
+      out.push(row);
+    });
+    return out;
+  }
+  function rerenderRows(rows){ rowsEl.innerHTML = rows.map(rowHtml).join(''); }
+
+  // -------------------- Surface checklist --------------------
+  // Default-on: web-hero, gbp-cover, ig-grid, menu-inline (the four
+  // highest-leverage for an independent restaurant per the plan §1).
+  var DEFAULT_ON = ['web-hero', 'gbp-cover', 'ig-grid', 'menu-inline'];
+  function renderSurfaces(checkedKeys){
+    surfacesEl.innerHTML = Object.keys(PB.SURFACES).map(function(key){
+      var s = PB.SURFACES[key];
+      var checked = checkedKeys.indexOf(key) !== -1;
+      return '<label class="pb-surface" data-checked="' + (checked ? 'true' : 'false') + '">' +
+        '<input type="checkbox" data-surface="' + key + '"' + (checked ? ' checked' : '') + ' />' +
+        '<div><span class="pb-surface-title">' + s.label + '</span>' +
+        '<span class="pb-surface-meta">' + s.pixels.w + '&times;' + s.pixels.h +
+        ' &middot; ' + ratioLabel(s.ratio) + '</span></div>' +
+      '</label>';
+    }).join('');
+  }
+  function ratioLabel(r){
+    var presets = [[16/9,'16:9'],[1.91,'1.91:1'],[3/2,'3:2'],[1,'1:1'],[9/16,'9:16'],[4/3,'4:3']];
+    for (var i = 0; i < presets.length; i++) {
+      if (Math.abs(presets[i][0] - r) < 0.005) return presets[i][1];
+    }
+    return r.toFixed(2);
+  }
+  function readCheckedSurfaces(){
+    var out = [];
+    Array.prototype.forEach.call(surfacesEl.querySelectorAll('input[data-surface]'), function(cb){
+      if (cb.checked) out.push(cb.dataset.surface);
+    });
+    return out;
+  }
+
+  // -------------------- Warning gates (Risk-3 mitigation) --------------------
+  // The brief is the worst version of itself when no cross-tool data
+  // is present. The page says so plainly and links to the source
+  // tools so the owner can come back with real data.
+  function renderWarnings(){
+    var warnings = [];
+    if (!fragmentState.stars.length) {
+      warnings.push({
+        title: 'Estás listando platos sin saber cuáles son Estrellas.',
+        body:  'Corre Ingeniería de Menú primero para identificar los 5–8 platos que merecen trato de héroe. El brief será 3× más corto y 3× más útil.',
+        href:  '/es/tools/menu-engineering/',
+        cta:   'Abrir Ingeniería de Menú →'
+      });
+    }
+    if (!fragmentState.palette.length) {
+      warnings.push({
+        title: 'Estás estilizando sin paleta.',
+        body:  'Corre Suite de Marca primero — el fotógrafo estiliza a tu mundo de color, no a un preset genérico de tonos cálidos.',
+        href:  '/es/tools/brand-suite/',
+        cta:   'Abrir Suite de Marca →'
+      });
+    }
+    if (!fragmentState.margins.length) {
+      warnings.push({
+        title: 'Sin datos de costo del plato.',
+        body:  'Costo del Plato marca qué platos valen el tiempo de iluminación. Opcional, pero el brief se afina con eso.',
+        href:  '/es/tools/plate-cost/',
+        cta:   'Abrir Costo del Plato →'
+      });
+    }
+    if (!warnings.length) {
+      warningsEl.innerHTML = '';
+      return;
+    }
+    warningsEl.innerHTML = warnings.map(function(w){
+      return '<div class="pb-warning"><span class="pb-warning-icon" aria-hidden="true">▲</span>' +
+        '<div><h3>' + esc(w.title) + '</h3><p>' + esc(w.body) + '</p></div>' +
+        '<a class="pb-fix" href="' + esc(w.href) + '">' + esc(w.cta) + '</a></div>';
+    }).join('');
+  }
+
+  // -------------------- Coverage strip render --------------------
+  function renderCoverage(checkedSurfaces){
+    if (!checkedSurfaces.length) {
+      coverageWrap.style.display = 'none';
+      coverageEl.innerHTML = '';
+      return;
+    }
+    coverageEl.innerHTML = checkedSurfaces.map(function(key){
+      var s   = PB.SURFACES[key];
+      var crop = PB.computeCropRectangle(3/2, key);
+      var cropPct = Math.round(crop.cropFraction * 100);
+      var axisCopy = crop.axis === 'exact' ? 'Sin corte'
+                    : (crop.axis === 'horizontal' ? cropPct + '% ancho' : cropPct + '% alto');
+      return '<div class="pb-coverage-tile">' +
+        '<p class="pb-coverage-title">' + s.label + '</p>' +
+        '<span class="pb-coverage-ratio">' + ratioLabel(s.ratio) + ' &middot; ' + s.pixels.w + '&times;' + s.pixels.h + '</span>' +
+        '<span class="pb-coverage-crop" aria-hidden="true"></span>' +
+        '<span class="pb-coverage-ratio">Desde 3:2: ' + axisCopy + '</span>' +
+      '</div>';
+    }).join('');
+    coverageWrap.style.display = '';
+  }
+
+  // -------------------- Render --------------------
+  function fmtMoney(n){
+    if (!isFinite(n) || n <= 0) return '$0';
+    return '$' + Math.round(n).toLocaleString();
+  }
+  function renderResults(){
+    var dishes   = readRows().filter(function(r){ return r.name && r.name.trim(); });
+    var surfaces = readCheckedSurfaces();
+    var dayRate  = Number(dayRateEl.value) || 1800;
+
+    if (!dishes.length || !surfaces.length) {
+      mathEl.style.display = 'none';
+      coverageWrap.style.display = 'none';
+      emptyEl.style.display = '';
+      return;
+    }
+
+    var dedup = PB.dedupShotList(dishes, surfaces, 3);
+    var roi   = PB.computeRoiMath(dedup.dedup, dayRate);
+
+    dedupNum.textContent  = String(dedup.dedup);
+    naiveNum.textContent  = String(dedup.naive);
+    daysNum.textContent   = String(roi.days);
+    daysLabel.textContent = roi.days === 1 ? 'day' : 'days';
+    rateNum.textContent   = fmtMoney(dayRate);
+    costNum.textContent   = fmtMoney(roi.totalCost);
+    perShotNum.textContent= fmtMoney(roi.costPerShot);
+    paybackNum.textContent= roi.paybackMonths ? roi.paybackMonths.toFixed(1) : '—';
+
+    renderCoverage(surfaces);
+    mathEl.style.display = '';
+    emptyEl.style.display = 'none';
+    fireBucketEvent();
+  }
+
+  // -------------------- Event handlers --------------------
+  rowsEl.addEventListener('input', renderResults);
+  rowsEl.addEventListener('change', renderResults);
+  rowsEl.addEventListener('click', function(e){
+    if (e.target.classList.contains('pb-remove')) {
+      var tr = e.target.closest('tr');
+      if (tr) { tr.remove(); renderResults(); }
+    }
+  });
+  surfacesEl.addEventListener('change', function(e){
+    var lbl = e.target.closest('.pb-surface');
+    if (lbl) lbl.dataset.checked = e.target.checked ? 'true' : 'false';
+    renderResults();
+  });
+  if (dayRateEl) dayRateEl.addEventListener('input', renderResults);
+
+  if (addRowBtn) addRowBtn.addEventListener('click', function(){
+    var current = readRows();
+    current.push(blankRow());
+    rerenderRows(current);
+    renderResults();
+  });
+
+  function loadSample(){
+    var s = PB.SAMPLE_RECIPE_ES || PB.SAMPLE_RECIPE_EN;
+    nameEl.value     = s.name;
+    if (photogEl) photogEl.value = s.photographer || '';
+    dayRateEl.value  = String(s.dayRate);
+    rerenderRows(s.dishes.map(function(d){ return Object.assign({}, d); }));
+    renderSurfaces(s.surfaces);
+    renderResults();
+  }
+  if (sampleBtn)  sampleBtn.addEventListener('click', loadSample);
+  if (sampleBtn2) sampleBtn2.addEventListener('click', loadSample);
+
+  if (clearBtn) clearBtn.addEventListener('click', function(){
+    if (!confirm('¿Limpiar el brief y empezar de nuevo?')) return;
+    nameEl.value = '';
+    if (photogEl) photogEl.value = '';
+    dayRateEl.value = '1800';
+    rerenderRows(Array.from({ length: 6 }, blankRow));
+    renderSurfaces(DEFAULT_ON);
+    renderResults();
+  });
+
+  // -------------------- Plausible bucketing --------------------
+  var bucketTimer = null;
+  function fireBucketEvent(label){
+    if (!window.plausible) return;
+    if (bucketTimer) clearTimeout(bucketTimer);
+    bucketTimer = setTimeout(function(){
+      var dishes = readRows().filter(function(r){ return r.name && r.name.trim(); });
+      var surfaces = readCheckedSurfaces();
+      var dedup = dishes.length && surfaces.length ? PB.dedupShotList(dishes, surfaces, 3) : { dedup: 0 };
+      var props = {
+        shot_count:        PB.bucketShotCount(dedup.dedup),
+        surface_coverage:  PB.bucketSurfaceCoverage(surfaces),
+        source_mode:       PB.bucketSourceMode({
+          hasStars:   !!fragmentState.stars.length,
+          hasPalette: !!fragmentState.palette.length,
+          hasMargins: !!fragmentState.margins.length,
+          userEdited: true
+        })
+      };
+      if (label) props.context = label;
+      window.plausible('Photo Brief Compute', { props: props });
+    }, 1200);
+  }
+
+  // -------------------- Cross-tool fragment readers --------------------
+  // Read fragments on load. The form rehydrates from cross-tool data
+  // when present; warning gates flip off accordingly.
+  function readFragments(){
+    var hash = (window.location.hash || '').replace(/^#/, '');
+    if (!hash) return;
+    var params = new URLSearchParams(hash.replace(/&amp;/g, '&'));
+    var stars   = params.get('stars');
+    var palette = params.get('palette');
+    var margins = params.get('margins');
+    if (stars)   fragmentState.stars   = PB.decodeStarsFragment(stars);
+    if (palette) fragmentState.palette = PB.decodePaletteFragment(palette);
+    if (margins) fragmentState.margins = PB.decodeMarginsFragment(margins);
+    if (fragmentState.stars.length) {
+      rerenderRows(fragmentState.stars.map(function(d){
+        return { name: d.name, category: d.category || 'main', priority: d.priority || 'standard' };
+      }));
+    }
+  }
+
+  // -------------------- Initial state --------------------
+  readFragments();
+  if (!fragmentState.stars.length) rerenderRows(Array.from({ length: 6 }, blankRow));
+  renderSurfaces(DEFAULT_ON);
+  renderWarnings();
+  renderResults();
+})();
+</script>
+</body>
+</html>
