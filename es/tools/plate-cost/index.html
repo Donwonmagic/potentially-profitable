@@ -19,18 +19,21 @@
 <meta property="og:description" content="Escribe una receta. Obtén el costo real de un plato después de la merma y la limpieza, más tres precios de menú sugeridos. Se queda en tu navegador." />
 <meta property="og:url" content="https://muntin.digital/es/tools/plate-cost/" />
 <meta property="og:site_name" content="Muntin Digital" />
-<meta property="og:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-plate-cost-es.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Costo del Plato — ¿Cuánto cuesta de verdad cada plato?" />
 <meta name="twitter:description" content="Escribe una receta. Obtén el costo real de un plato después de la merma y la limpieza, más tres precios de menú sugeridos. Se queda en tu navegador." />
-<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-plate-cost-es.png" />
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/es/tools/plate-cost/#tool","name":"Calculadora de Costo del Plato","description":"Calculadora de costo de receta a plato del lado del cliente para restaurantes independientes. Camina la matemática AP→EP→plato con ~80 rendimientos canónicos, sugiere tres precios de menú y exporta una Tarjeta del Plato imprimible. Las recetas se quedan en el navegador.","url":"https://muntin.digital/es/tools/plate-cost/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["es","en"],"isAccessibleForFree":true,"browserRequirements":"Requiere un navegador moderno con JavaScript","keywords":"calculadora costo del plato, costeo de receta, porcentaje de costo de alimento, AP EP rendimiento, costo porción comestible, precios de menú, margen de contribución","audience":{"@type":"BusinessAudience","audienceType":"Dueños y operadores de restaurantes independientes"},"featureList":["Corrección de rendimiento AP→EP con ~80 ingredientes canónicos","Importación desde hoja de cálculo (CSV/TSV con encabezados en inglés y español)","Tres precios meta de menú al 28% / 30% / 33% de costo de alimento","Tarjeta del Plato imprimible para la pared de la cocina","Paquete ZIP (Tarjeta + recipe.html + recipe.csv + plate-cost.json + README)","Conexión directa con Menu Engineering y Margin Math","Revisión de Deriva de Costo — recordatorio trimestral con rehidratación de receta vía URL","Del lado del cliente: sin fetch, sin almacenamiento, sin cuenta"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},{"@type":"FAQPage","@id":"https://muntin.digital/es/tools/plate-cost/#faq","mainEntity":[{"@type":"Question","name":"¿Mis recetas salen del navegador cuando uso la calculadora?","acceptedAnswer":{"@type":"Answer","text":"No. Abre DevTools → Network. Escribe una receta y haz clic en Calcular — no se dispara ninguna petición. La matemática corre en tu dispositivo. La página es HTML estático más dos archivos JavaScript sin minificar que puedes leer directamente."}},{"@type":"Question","name":"¿Qué es el costo del plato y qué considera la calculadora?","acceptedAnswer":{"@type":"Answer","text":"El costo del plato es lo que te cuesta en ingredientes mandar un plato terminado al pase — después de la limpieza, pelado, deshuesado y merma. La calculadora camina la matemática del costo de compra (AP) al costo de porción comestible (EP) usando un porcentaje de rendimiento, y multiplica por la porción que realmente usas por plato. No incluye mano de obra ni gastos generales — eso pertenece a la calculadora de costo primo en Margin Math."}},{"@type":"Question","name":"¿En qué se basan los tres precios de menú sugeridos?","acceptedAnswer":{"@type":"Answer","text":"Tres porcentajes meta de costo de alimento de la guía de la National Restaurant Association: 28% (alta cocina, donde la mano de obra es alta), 30% (referencia para servicio completo casual) y 33% (cocinas de alto volumen con menor mano de obra). Cada fila muestra el precio sugerido más el margen de contribución que te quedas por plato."}},{"@type":"Question","name":"¿Puedo compartir un escenario con mi chef o contador?","acceptedAnswer":{"@type":"Answer","text":"Sí. Haz clic en Guardar y recordarme volver a costear en 90 días — la herramienta codifica la receta en el fragmento URL de un recordatorio de calendario (.ics) descargado. Según la especificación HTTP, lo que va después de # nunca se envía al servidor, así que el recordatorio vive solo en tu dispositivo. También puedes exportar la receta como CSV, JSON, una página HTML imprimible o una Tarjeta del Plato PNG."}},{"@type":"Question","name":"¿De dónde vienen los porcentajes de rendimiento canónicos?","acceptedAnswer":{"@type":"Answer","text":"De las tablas estándar de rendimiento del Culinary Institute of America y del manual de compras de la Restaurant Association. Los números son el rendimiento típico más citado para un ingrediente bien manejado — el rendimiento real de un chef varía ±5%. Puedes anular cualquiera si el producto de tu proveedor rinde diferente."}},{"@type":"Question","name":"¿El código fuente es abierto y legible?","acceptedAnswer":{"@type":"Answer","text":"Sí. Sin paso de build, sin minificación, sin framework. El módulo de matemática vive en /tools/plate-cost/plate-cost.js como JavaScript plano con funciones nombradas. Haz clic derecho en Ver código fuente para leer la UI directamente."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://muntin.digital/es/tools/"},{"@type":"ListItem","position":3,"name":"Calculadora de Costo del Plato","item":"https://muntin.digital/es/tools/plate-cost/"}]}]}
+</script>
 <link rel="preconnect" href="https://plausible.io" crossorigin />
 <link rel="dns-prefetch" href="https://plausible.io" />
 <script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
@@ -123,6 +126,74 @@
 .pc-paste-btn{padding:6px 14px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12px;font-weight:600;cursor:pointer}
 .pc-paste-btn:hover{background:var(--teal);color:var(--cream)}
 
+/* Cost Drift Check-in — the Muntin signature for Plate Cost */
+.pc-signature{margin-top:18px;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+.pc-signature-eyebrow{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+.pc-signature h3{font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px;line-height:1.25}
+.pc-signature-blurb{font-size:13.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 12px}
+.pc-signature-fine{font-size:11.5px;color:var(--stone);line-height:1.55;margin:8px 0 0}
+.pc-signature-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:8px}
+.pc-signature-status{font-size:12px;color:var(--status-good);font-weight:600;display:none;align-items:center;gap:6px}
+.pc-signature-status[data-shown="true"]{display:inline-flex}
+
+body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
+.pc-recost-banner{display:none;align-items:flex-start;gap:14px;padding:14px 18px;margin:0 0 14px;border:1px solid var(--teal);border-left-width:4px;border-radius:var(--r-md);background:var(--cream-2)}
+.pc-recost-banner-body{flex:1;font-size:13.5px;line-height:1.55;color:var(--ink)}
+.pc-recost-banner-eyebrow{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);margin-bottom:2px}
+.pc-recost-banner strong{color:var(--ink)}
+.pc-recost-reset{padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--stone);font:inherit;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none}
+.pc-recost-reset:hover{border-color:var(--rust);color:var(--rust)}
+
+.pc-drift-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 10px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-radius:999px;font-variant-numeric:tabular-nums;margin-left:8px;vertical-align:middle}
+.pc-drift-pill[data-tone="steady"]   {background:var(--status-good-tint);color:var(--status-good)}
+.pc-drift-pill[data-tone="improved"] {background:var(--status-good-tint);color:var(--status-good)}
+.pc-drift-pill[data-tone="slipped"]  {background:rgba(198,138,44,0.10);color:#956A1A}
+.pc-drift-pill[data-tone="crossed"]  {background:rgba(184,84,26,0.10);color:var(--rust)}
+.pc-headline-old{font-size:13px;color:var(--stone);text-decoration:line-through;margin-right:8px;font-variant-numeric:tabular-nums}
+.pc-verdict{margin-top:10px;padding:10px 14px;border-radius:var(--r-sm);font-size:13px;line-height:1.5;border:1px solid var(--line)}
+.pc-verdict[data-tone="steady"]   {background:var(--status-good-tint);color:var(--status-good);border-color:rgba(46,125,50,0.18)}
+.pc-verdict[data-tone="improved"] {background:var(--status-good-tint);color:var(--status-good);border-color:rgba(46,125,50,0.18)}
+.pc-verdict[data-tone="slipped"]  {background:rgba(198,138,44,0.06);color:#956A1A;border-color:rgba(198,138,44,0.22)}
+.pc-verdict[data-tone="crossed"]  {background:rgba(184,84,26,0.06);color:var(--rust);border-color:rgba(184,84,26,0.22)}
+
+.pc-bottleneck{margin:8px 0 0;font-size:13px;color:var(--ink-soft);line-height:1.5;font-style:italic}
+.pc-bottleneck strong{color:var(--ink);font-style:normal}
+
+.pc-grid .pc-math-toggle{display:inline-block;margin-top:4px;font-size:10.5px;color:var(--stone);cursor:pointer;border-bottom:1px dashed var(--line-dark);padding-bottom:1px;background:none;border-left:0;border-top:0;border-right:0;font-family:inherit;font-weight:500;letter-spacing:.02em;text-transform:lowercase}
+.pc-grid .pc-math-toggle:hover{color:var(--teal);border-bottom-color:var(--teal)}
+.pc-grid .pc-math-line{display:block;margin-top:6px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10.5px;color:var(--ink-soft);line-height:1.55;background:var(--cream-2);padding:6px 8px;border-radius:var(--r-sm);font-variant-numeric:tabular-nums;white-space:normal;word-break:break-word}
+.pc-grid .pc-math-row[hidden]{display:none}
+
+.pc-price-row{position:relative}
+.pc-price-row[data-recommended="true"]{background:var(--cream-2);margin:0 -22px;padding-left:22px;padding-right:22px}
+.pc-price-row[data-recommended="true"]:first-of-type{border-top:0}
+.pc-rec-pill{display:inline-block;padding:1px 8px;background:var(--teal);color:var(--cream);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;margin-left:6px;vertical-align:middle}
+.pc-rec-rationale{font-size:11.5px;color:var(--ink-soft);margin:4px 0 0;line-height:1.45;font-style:italic}
+
+@media (max-width: 720px) {
+  .pc-grid{overflow-x:visible}
+  .pc-grid table, .pc-grid thead, .pc-grid tbody, .pc-grid tr, .pc-grid td{display:block}
+  .pc-grid table{min-width:0}
+  .pc-grid thead{display:none}
+  .pc-grid tr{padding:14px 12px;border-bottom:1px solid var(--line);position:relative;display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;align-items:start}
+  .pc-grid tr:last-child{border-bottom:0}
+  .pc-grid tr.pc-math-row{padding:0 12px 14px}
+  .pc-grid td{padding:6px 0;border:0}
+  .pc-grid td:nth-child(1)::before{content:"Ingrediente";display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  .pc-grid td:nth-child(2)::before{content:"Precio AP ($)";display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  .pc-grid td:nth-child(3)::before{content:"Cant. AP";display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  .pc-grid td:nth-child(4)::before{content:"Unidad AP";display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  .pc-grid td:nth-child(5)::before{content:"Rend. %";display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  .pc-grid td:nth-child(6)::before{content:"Cant. usada";display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  .pc-grid td:nth-child(7)::before{content:"Unidad usada";display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  .pc-grid td:nth-child(8)::before{content:"Costo en plato";display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  .pc-grid td:nth-child(1){grid-column:1 / span 2}
+  .pc-grid td:nth-child(8){grid-column:1 / span 2;font-family:var(--font-display);font-size:18px;font-variant-numeric:tabular-nums;color:var(--ink);text-align:left}
+  .pc-grid td:nth-child(9){position:absolute;top:10px;right:10px;padding:0}
+  .pc-grid input,.pc-grid select{font-size:14px;padding:9px 10px}
+  .pc-grid .pc-num{width:auto;text-align:left}
+}
+
 @media print{
   body{background:#fff !important;color:#000 !important}
   header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,
@@ -188,7 +259,7 @@
   <ol class="pc-privacy-list">
     <li><div><strong>Sin envío.</strong><p>Abre DevTools &rarr; Red. Escribe una receta, haz clic en <em>Calcular</em>. Cero peticiones se disparan. La matemática corre en tu dispositivo.</p></div></li>
     <li><div><strong>Sin guardado.</strong><p>Cierra la pestaña y recarga esta URL. El formulario está vacío. No usamos <code>localStorage</code>, <code>sessionStorage</code>, ni cookies para tus datos de receta.</p></div></li>
-    <li><div><strong>Sin fuga en la URL.</strong><p>A diferencia de otras herramientas que codifican el estado en la barra de direcciones, ésta nunca serializa tu receta a la URL. Los nombres de tus platos siguen siendo tuyos.</p></div></li>
+    <li><div><strong>La codificación en la URL es opcional.</strong><p>La barra de direcciones queda vacía hasta que haces clic en <em>Guardar y recordarme volver a costear</em>. Entonces la receta se codifica en el enlace que lleva el recordatorio del calendario. Según la especificación HTTP, la parte de una URL después de <code>#</code> nunca se envía al servidor &mdash; el recordatorio vive solo en tu dispositivo, y la receta nunca cruza la red.</p></div></li>
     <li><div><strong>Un solo script empaquetado.</strong><p>La herramienta carga <code>/tools/plate-cost/plate-cost.js</code> desde este dominio. Sin CDN, sin analítica vinculada a tus recetas, sin rastreador de terceros leyendo el formulario.</p></div></li>
     <li><div><strong>Solo analítica anónima en cubetas (enums).</strong><p>Registramos que &ldquo;se calculó una receta de 4–7 ingredientes&rdquo; en tres o cuatro cubetas — nunca los nombres de ingredientes, precios, ni contenido de la receta.</p></div></li>
   </ol>
@@ -221,6 +292,15 @@
       </div>
     </details>
 
+    <div class="pc-recost-banner" id="pcRecostBanner" role="region" aria-live="polite">
+      <div class="pc-recost-banner-body">
+        <span class="pc-recost-banner-eyebrow">Re-costeo desde la revisión trimestral</span>
+        <span>Esta receta se costeó el <strong id="pcBaselineDate">—</strong>. Escribe los precios de hoy en la columna de Precio AP &mdash; el titular de abajo muestra la deriva desde la base.</span>
+      </div>
+      <a href="/es/tools/plate-cost/" class="pc-recost-reset" id="pcRecostReset">Empezar de cero</a>
+    </div>
+
+    <datalist id="pcYieldNames"></datalist>
     <div class="pc-grid" role="region" aria-label="Cuadrícula de ingredientes">
       <table>
         <thead>
@@ -251,12 +331,14 @@
     <div class="pc-result" id="pcResult" style="display:none;">
       <div class="pc-headline">
         <p class="pc-headline-eyebrow">Costo del plato</p>
-        <p class="pc-headline-num" id="pcHeadlineNum">$0.00</p>
+        <p class="pc-headline-num" id="pcHeadlineNum"><span class="pc-headline-old" id="pcHeadlineOld" hidden></span>$0.00<span class="pc-drift-pill" id="pcDriftPill" hidden></span></p>
         <p class="pc-headline-batch" id="pcHeadlineBatch"></p>
         <p class="pc-headline-explainer">Eso es lo que te cuesta en ingredientes mandar este plato al pase, después de la limpieza y la merma. No incluye mano de obra ni gastos generales.</p>
         <span class="pc-headline-confidence" id="pcConfidence" data-level="high">Alta confianza</span>
+        <p class="pc-bottleneck" id="pcBottleneck" hidden></p>
+        <p class="pc-verdict" id="pcVerdict" hidden></p>
       </div>
-      <div class="pc-prices">
+      <div class="pc-prices" id="pc-prices">
         <h3>Tres precios de menú sugeridos</h3>
         <p class="pc-prices-dek">Cada fila trabaja hacia atrás desde un porcentaje meta de costo de alimento. Los dólares de la derecha son lo que te quedas por plato después de ingredientes.</p>
         <div id="pcPriceRows"></div>
@@ -272,6 +354,19 @@
       <button type="button" class="pc-action-btn" id="pcPushMe">Agregar a Ingeniería de Menú &rarr;</button>
       <button type="button" class="pc-action-btn" id="pcPushMm">Usar en Margen Math &rarr;</button>
     </div>
+
+    <article class="pc-signature" id="pcSignature" style="display:none;">
+      <p class="pc-signature-eyebrow">Revisión de Deriva de Costo &middot; iCalendar (.ics) &middot; 8 eventos / 2 años</p>
+      <h3>Recibe un recordatorio trimestral para re-costear este plato.</h3>
+      <p class="pc-signature-blurb">Los precios de las facturas se mueven cada mes. Descarga un recordatorio de 8 eventos &mdash; uno por trimestre durante dos años &mdash; y tu calendario te avisará en 90 días con un enlace de un clic a esta receta exacta. La URL del recordatorio contiene la receta en un formato que solo lee tu navegador. Cuando lo abras el próximo trimestre, el formulario ya estará pre-cargado y solo escribes los precios de hoy junto a los originales.</p>
+      <div class="pc-signature-actions">
+        <button type="button" class="pc-action-btn pc-action-btn-primary" id="pcSaveQuarterly">
+          Guardar y recordarme volver a costear en 90 días
+        </button>
+        <span class="pc-signature-status" id="pcQuarterlyStatus" data-shown="false">&#x2713; 8 recordatorios trimestrales descargados</span>
+      </div>
+      <p class="pc-signature-fine">Sin cuenta, sin correo. El recordatorio vive solo en tu dispositivo. La receta vive solo en el fragmento de URL del recordatorio del calendario &mdash; nunca en un servidor.</p>
+    </article>
 
     <div class="pc-empty" id="pcEmpty">
       Llena una fila arriba &mdash; o <button type="button" class="pc-sample-btn" id="pcSample2" style="margin:0 6px;">carga la receta de muestra</button> &mdash; para ver la matemática.
@@ -316,7 +411,7 @@
     <header class="tool-deep-head">
       <span class="eyebrow">Aprende más</span>
       <h2 id="tool-deep-h">Por qué existe esta herramienta.</h2>
-      <p class="tool-deep-blurb">Cada chequeo que esta herramienta hace conecta con un concepto específico en la biblioteca. Dos puntos de partida — una definición, una guía.</p>
+      <p class="tool-deep-blurb">Cada número que esta herramienta produce conecta con un concepto específico en la biblioteca. Cinco definiciones y una guía — léelas en cualquier orden.</p>
       <div class="tool-deep-topics"><a class="tool-deep-topic" href="/es/learn/topics/operations-margin/">Operaciones y margen</a></div>
     </header>
     <div class="tool-deep-grid">
@@ -332,6 +427,27 @@
           <h3>Porcentaje de rendimiento</h3>
           <p class="tool-deep-aka">la parte de lo comprado que termina en un plato</p>
           <p class="tool-deep-snippet">Para un ingrediente dado: el porcentaje del peso tal como se compra que sobrevive a la limpieza, el pelado, los huesos, la grasa y la merma …</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/edible-portion/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Porción comestible (EP)</h3>
+          <p class="tool-deep-aka">el costo de una onza usable después de limpiar</p>
+          <p class="tool-deep-snippet">El costo EP es el costo AP dividido por el rendimiento. La forma en que un dueño puede auditar el costo del plato de cualquier receta — directo de la factura.</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/food-cost/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>% de costo de alimento</h3>
+          <p class="tool-deep-aka">el costo de los productos vendidos como % de las ventas</p>
+          <p class="tool-deep-snippet">Cada punto sobre la meta es margen que se va por la puerta de la cocina — y suele ser la palanca más rápida de mover, vía especificaciones de porción, registros de merma y ingeniería de menú.</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/contribution-margin/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Margen de contribución</h3>
+          <p class="tool-deep-aka">lo que aporta una venta a costos fijos y a la utilidad</p>
+          <p class="tool-deep-snippet">La mayoría optimiza el % de costo de alimento, pero la cifra en dólares es la que paga la renta. La ingeniería de menú gráfica el CM en dólares, no en porcentaje.</p>
           <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
         </a>
       <a class="tool-deep-card tool-deep-card-article" href="/es/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">
@@ -354,7 +470,7 @@
 </footer>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="/tools/plate-cost/plate-cost.js?v=20260426-pc1"></script>
+<script src="/tools/plate-cost/plate-cost.js?v=20260426-pcE"></script>
 <script src="/tools/plate-cost/card-render.js?v=20260426-pc2"></script>
 <script>
 (function(){
@@ -381,9 +497,23 @@
 
   var latestSummary = null;
   var latestRecipe  = null;
+  var driftBaseline = null;
 
   // Units allowed in the dropdown — filtered to the most common.
   var UNIT_OPTIONS = ['g','kg','oz','lb','ml','l','tsp','tbsp','fl-oz','cup','qt','gal','each','dozen'];
+
+  // Populate the ingredient autocomplete from the canonical yield
+  // table. Title-case the labels so the suggestion list reads like
+  // a prep sheet. EN keys appear because the yield table is
+  // bilingual-key-by-name; the paste handler aliases Spanish names.
+  var datalistEl = document.getElementById('pcYieldNames');
+  if (datalistEl && PC.YIELD_TABLE) {
+    var ingredientKeys = Object.keys(PC.YIELD_TABLE).sort();
+    datalistEl.innerHTML = ingredientKeys.map(function(k){
+      var label = k.replace(/\b([a-z])/g, function(_, c){ return c.toUpperCase(); });
+      return '<option value="' + label + '"></option>';
+    }).join('');
+  }
 
   // -------------------- Row helpers --------------------
   function blankRow() {
@@ -401,7 +531,7 @@
 
   function rowHtml(row, idx) {
     return '<tr data-idx="' + idx + '">' +
-      '<td><input type="text" data-field="ingredient" value="' + esc(row.ingredient) + '" placeholder="e.g. Romaine" /></td>' +
+      '<td><input type="text" data-field="ingredient" list="pcYieldNames" autocomplete="off" value="' + esc(row.ingredient) + '" placeholder="ej. Romaine" /></td>' +
       '<td><input type="number" data-field="apPrice" min="0" step="0.01" value="' + esc(row.apPrice) + '" /></td>' +
       '<td><input type="number" data-field="apQty" min="0" step="0.01" value="' + esc(row.apQty) + '" /></td>' +
       '<td>' + unitSelect('apUnit', row.apUnit) + '</td>' +
@@ -467,6 +597,8 @@
       emptyEl.style.display  = 'block';
       warningsEl.style.display = 'none';
       if (actionsEl) actionsEl.style.display = 'none';
+      var sigEl = document.getElementById('pcSignature');
+      if (sigEl) sigEl.style.display = 'none';
       latestSummary = null;
       latestRecipe  = null;
       Array.prototype.forEach.call(rowsEl.querySelectorAll('[data-cell="cost"]'), function(c){
@@ -477,20 +609,42 @@
 
     var summary = PC.computePlateCost(recipe);
 
-    // Per-row cost cells
-    Array.prototype.forEach.call(rowsEl.querySelectorAll('tr'), function(tr, i){
+    // Per-row cost cells with the "Show the math" disclosure.
+    var trNodes = rowsEl.querySelectorAll('tr');
+    Array.prototype.forEach.call(trNodes, function(tr, i){
       var cell = tr.querySelector('[data-cell="cost"]');
       var row  = summary.ingredients[i];
+      var nextSibling = tr.nextElementSibling;
+      if (nextSibling && nextSibling.classList.contains('pc-math-row')) {
+        nextSibling.parentNode.removeChild(nextSibling);
+      }
       if (!row) { cell.textContent = '—'; return; }
       if (row.warning && WARNING_COPY[row.warning]) {
         cell.innerHTML = '<span class="pc-warn">' + WARNING_COPY[row.warning] + '</span>';
-      } else {
-        cell.textContent = fmtMoney(row.usedCost);
+        return;
       }
+      var math = PC.formatRowMath(recipe.rows[i], row);
+      if (!math) { cell.textContent = fmtMoney(row.usedCost); return; }
+      cell.innerHTML = fmtMoney(row.usedCost) +
+        '<button type="button" class="pc-math-toggle" aria-expanded="false">mostrar matemática</button>';
+      var mathTr = document.createElement('tr');
+      mathTr.className = 'pc-math-row';
+      mathTr.hidden = true;
+      mathTr.innerHTML = '<td colspan="9"><span class="pc-math-line">' + esc(math) + '</span></td>';
+      tr.parentNode.insertBefore(mathTr, tr.nextSibling);
     });
 
     // Headline
-    headlineNum.textContent = fmtMoney(summary.plateCost);
+    headlineNum.childNodes[1] && (headlineNum.childNodes[1].nodeValue = '');
+    // Replace the text-node child that holds the dollar amount,
+    // preserving the old/pill children that bracket it.
+    (function(){
+      var nodes = headlineNum.childNodes;
+      for (var i = 0; i < nodes.length; i++) {
+        if (nodes[i].nodeType === 3) { nodes[i].nodeValue = fmtMoney(summary.plateCost); return; }
+      }
+      headlineNum.textContent = fmtMoney(summary.plateCost);
+    })();
     if (summary.portions > 1) {
       headlineBatch.textContent = 'Costo de la tanda ' + fmtMoney(summary.batchCost) +
         ' · ' + summary.portions + ' porciones';
@@ -503,14 +657,24 @@
       : summary.confidence === 'medium' ? 'Confianza media — revisa las advertencias'
       : 'Baja confianza — corrige las advertencias para afinar';
 
-    // Three suggested menu prices
+    // Three suggested menu prices, with one row marked RECOMENDADO.
     var prices = PC.suggestMenuPrices(summary.plateCost);
+    var recTier = PC.recommendedTier(summary);
+    var recRationale = {
+      'casual':       'Predeterminado para platos con muchos perecederos o proteínas — cubre prep + merma con margen.',
+      'fine-dining':  'Predeterminado mientras un rendimiento sea incierto — una meta más estricta absorbe el riesgo.',
+      'high-volume':  'Predeterminado cuando los ingredientes son estables y la cocina opera ligera de mano de obra.'
+    };
     priceRowsEl.innerHTML = prices.map(function(p){
-      return '<div class="pc-price-row">' +
+      var isRec = p.label === recTier;
+      return '<div class="pc-price-row"' + (isRec ? ' data-recommended="true"' : '') + '>' +
         '<div class="pc-price-target">' + Math.round(p.target * 100) + '%</div>' +
         '<div class="pc-price-mid">' +
-          '<span class="pc-price-label">' + p.label + '</span>' +
+          '<span class="pc-price-label">' + p.label +
+            (isRec ? '<span class="pc-rec-pill">Recomendado</span>' : '') +
+          '</span>' +
           '<span class="pc-price-note">' + esc(p.note) + '</span>' +
+          (isRec ? '<span class="pc-rec-rationale">' + esc(recRationale[recTier] || '') + '</span>' : '') +
         '</div>' +
         '<div>' +
           '<div class="pc-price-amount">' + fmtMoney(p.price) + '</div>' +
@@ -518,6 +682,20 @@
         '</div>' +
       '</div>';
     }).join('');
+
+    // Bottleneck callout
+    var bottleneckEl = document.getElementById('pcBottleneck');
+    var bottleneck = PC.bottleneckLine(summary);
+    if (bottleneckEl) {
+      if (bottleneck) {
+        bottleneckEl.innerHTML = '<strong>' + esc(bottleneck.name) + '</strong> es el ' +
+          Math.round(bottleneck.share * 100) + '% del costo de tu plato. Vigila su factura.';
+        bottleneckEl.hidden = false;
+      } else {
+        bottleneckEl.hidden = true;
+        bottleneckEl.textContent = '';
+      }
+    }
 
     // Top-of-form warnings (deduped recipe-level)
     var warningCopy = {
@@ -540,9 +718,98 @@
     resultEl.style.display = 'grid';
     emptyEl.style.display  = 'none';
     actionsEl.style.display = 'flex';
+    var sigEl2 = document.getElementById('pcSignature');
+    if (sigEl2) sigEl2.style.display = 'block';
     latestSummary = summary;
     latestRecipe  = recipe;
+    renderDriftLayer(summary);
   }
+
+  // Cost Drift Check-in render (ES copy).
+  var headlineOldEl = document.getElementById('pcHeadlineOld');
+  var driftPillEl   = document.getElementById('pcDriftPill');
+  var verdictEl     = document.getElementById('pcVerdict');
+  var pushMeBtnEl   = document.getElementById('pcPushMe');
+  var pushMeOriginalLabel = pushMeBtnEl ? pushMeBtnEl.textContent : '';
+  function renderDriftLayer(summary) {
+    if (!driftBaseline || !summary || !isFinite(summary.plateCost) || summary.plateCost <= 0) {
+      if (headlineOldEl) { headlineOldEl.hidden = true; headlineOldEl.textContent = ''; }
+      if (driftPillEl)   { driftPillEl.hidden   = true; driftPillEl.textContent   = ''; }
+      if (verdictEl)     { verdictEl.hidden     = true; verdictEl.textContent     = ''; }
+      if (pushMeBtnEl)   { pushMeBtnEl.textContent = pushMeOriginalLabel || 'Agregar a Ingeniería de Menú →'; }
+      return;
+    }
+    var op = driftBaseline.plateCost;
+    var np = summary.plateCost;
+    var driftPct = (np - op) / op;
+    var driftPctRound = Math.round(driftPct * 100);
+    var sign = driftPctRound > 0 ? '+' : '';
+    var prices = PC.suggestMenuPrices(op);
+    var seedPrice = prices.length > 1 ? prices[1].price : op / 0.30;
+    var verdict = PC.verdictForDrift(op, np, seedPrice);
+    headlineOldEl.textContent = fmtMoney(op);
+    headlineOldEl.hidden = false;
+    driftPillEl.textContent = sign + driftPctRound + '%';
+    driftPillEl.dataset.tone = verdict.tone;
+    driftPillEl.hidden = false;
+    verdictEl.textContent = verdict.copyES;
+    verdictEl.dataset.tone = verdict.tone;
+    verdictEl.hidden = !verdict.copyES;
+    if (pushMeBtnEl) {
+      pushMeBtnEl.textContent = (verdict.tone === 'crossed' || verdict.tone === 'slipped')
+        ? 'Mandar el nuevo costeo a Ingeniería de Menú →'
+        : (pushMeOriginalLabel || 'Agregar a Ingeniería de Menú →');
+    }
+  }
+
+  function hydrateFromFragment() {
+    if (typeof location === 'undefined' || !location.hash) return;
+    var hydrated = PC.decodeRecipe(location.hash);
+    if (!hydrated || !hydrated.rows || !hydrated.rows.length) return;
+    nameEl.value = hydrated.name || '';
+    portionsEl.value = String(hydrated.portions || 1);
+    rerenderRows(hydrated.rows.map(function(r){ return Object.assign({}, r); }));
+    if (hydrated.mode === 'recost') {
+      document.body.setAttribute('data-pc-mode', 'recost');
+      var dateEl = document.getElementById('pcBaselineDate');
+      if (dateEl) dateEl.textContent = hydrated.date || '—';
+      var baselineSummary = PC.computePlateCost({
+        name: hydrated.name, portions: hydrated.portions, rows: hydrated.rows
+      });
+      driftBaseline = {
+        plateCost: baselineSummary.plateCost,
+        recipe:    hydrated,
+        date:      hydrated.date || ''
+      };
+    }
+    renderResults();
+    if (window.plausible) {
+      window.plausible('Plate Cost Signature', { props: {
+        action: hydrated.mode === 'recost' ? 'recost-opened' : 'rehydrated'
+      } });
+    }
+  }
+
+  var saveQBtn      = document.getElementById('pcSaveQuarterly');
+  var quarterlyStat = document.getElementById('pcQuarterlyStatus');
+  if (saveQBtn) saveQBtn.addEventListener('click', function(){
+    if (!latestSummary || !latestRecipe) return;
+    var today = new Date().toISOString().slice(0, 10);
+    var fragment = PC.encodeRecipe(latestRecipe, { date: today, mode: 'recost' });
+    var scenarioUrl = location.origin + location.pathname + '#' + fragment;
+    var dishName = (latestRecipe.name || '').trim();
+    var ics = PC.generateQuarterlyIcs(scenarioUrl, { locale: 'es', dishName: dishName });
+    var slug = (dishName || 'receta').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'receta';
+    downloadBlob(new Blob([ics], { type: 'text/calendar;charset=utf-8' }),
+                 'plate-cost-quarterly-' + slug + '.ics');
+    if (quarterlyStat) {
+      quarterlyStat.dataset.shown = 'true';
+      setTimeout(function(){ quarterlyStat.dataset.shown = 'false'; }, 5000);
+    }
+    if (window.plausible) {
+      window.plausible('Plate Cost Signature', { props: { action: 'quarterly-saved' } });
+    }
+  });
 
   // -------------------- Event handlers --------------------
   function rerenderRows(rows) {
@@ -556,8 +823,31 @@
       var tr = e.target.closest('tr');
       if (tr) tr.remove();
       renderResults();
+      return;
+    }
+    if (e.target.classList.contains('pc-math-toggle')) {
+      var srcRow = e.target.closest('tr');
+      var mathRow = srcRow && srcRow.nextElementSibling;
+      if (mathRow && mathRow.classList.contains('pc-math-row')) {
+        var open = mathRow.hidden;
+        mathRow.hidden = !open;
+        e.target.setAttribute('aria-expanded', String(open));
+        e.target.textContent = open ? 'ocultar matemática' : 'mostrar matemática';
+      }
     }
   });
+  // Yield-input forgiveness on blur (ES) — same primitive as EN.
+  rowsEl.addEventListener('blur', function(e){
+    var el = e.target;
+    if (!el || el.dataset.field !== 'yieldPercent') return;
+    var raw = el.value;
+    if (raw == null || raw === '') return;
+    var normalized = PC.normalizeYieldInput(raw);
+    if (normalized != null && String(normalized) !== String(raw)) {
+      el.value = normalized;
+      renderResults();
+    }
+  }, true);
   if (portionsEl) portionsEl.addEventListener('input', renderResults);
   if (nameEl)     nameEl.addEventListener('input', renderResults);
 
@@ -959,7 +1249,8 @@
 
   // -------------------- Initial state --------------------
   rerenderRows(Array.from({ length: 5 }, blankRow));
-  renderResults();
+  hydrateFromFragment();
+  if (!driftBaseline) renderResults();
 })();
 </script>
 </body>
