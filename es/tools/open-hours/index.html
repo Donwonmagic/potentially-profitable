@@ -1065,11 +1065,19 @@
   var printSignBtn = document.getElementById('ohPrintSign');
   var downloadSignBtn = document.getElementById('ohDownloadSign');
   var downloadCardBtn = document.getElementById('ohDownloadCard');
+  // Wait for the page's web fonts before painting any Card surface so
+  // Fraunces / Inter render rather than the system fallback.
+  function withFonts(fn){
+    var p = (window.OHSign && window.OHSign.awaitFonts) ? window.OHSign.awaitFonts() : Promise.resolve();
+    return p.then(fn);
+  }
   if (printSignBtn) {
     printSignBtn.addEventListener('click', function(){
       if (!window.OHSign) return;
-      var canvas = window.OHSign.renderStorefrontSign(buildRenderInput());
-      window.OHSign.canvasToPngBlob(canvas).then(function(blob){
+      withFonts(function(){
+        var canvas = window.OHSign.renderStorefrontSign(buildRenderInput());
+        return window.OHSign.canvasToPngBlob(canvas);
+      }).then(function(blob){
         var url = URL.createObjectURL(blob);
         var w = window.open(url, '_blank');
         if (w) w.addEventListener('load', function(){ w.focus(); w.print(); });
@@ -1081,14 +1089,18 @@
   if (downloadSignBtn) {
     downloadSignBtn.addEventListener('click', function(){
       if (!window.OHSign) return;
-      downloadCanvasAsPng(window.OHSign.renderStorefrontSign(buildRenderInput()), 'letrero-horario.png');
+      withFonts(function(){
+        return downloadCanvasAsPng(window.OHSign.renderStorefrontSign(buildRenderInput()), 'letrero-horario.png');
+      });
       if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'sign-png' } });
     });
   }
   if (downloadCardBtn) {
     downloadCardBtn.addEventListener('click', function(){
       if (!window.OHSign) return;
-      downloadCanvasAsPng(window.OHSign.renderOpenHoursCard(buildRenderInput()), 'ficha-horario.png');
+      withFonts(function(){
+        return downloadCanvasAsPng(window.OHSign.renderOpenHoursCard(buildRenderInput()), 'ficha-horario.png');
+      });
       if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'card-png' } });
     });
   }
@@ -1196,9 +1208,11 @@
       ].join('\n');
       var ics = window.OH.generateIcs(getClosureList());
       var readme = buildReadme();
-      var sign = window.OHSign.renderStorefrontSign(ctx);
-      var card = window.OHSign.renderOpenHoursCard(ctx);
-      Promise.all([window.OHSign.canvasToPngBlob(sign), window.OHSign.canvasToPngBlob(card)]).then(function(blobs){
+      withFonts(function(){
+        var sign = window.OHSign.renderStorefrontSign(ctx);
+        var card = window.OHSign.renderOpenHoursCard(ctx);
+        return Promise.all([window.OHSign.canvasToPngBlob(sign), window.OHSign.canvasToPngBlob(card)]);
+      }).then(function(blobs){
         return Promise.all(blobs.map(function(b){
           return new Promise(function(res){
             var r = new FileReader();

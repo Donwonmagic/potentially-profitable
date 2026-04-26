@@ -854,14 +854,19 @@
   });
 
   // ----- Menu Card render via window.MECard (canvas-2d, no SVG) -----
+  // Wait for web fonts before painting so the Card uses Fraunces /
+  // Inter rather than the system fallback. No-op in environments
+  // without document.fonts.
   function buildMenuCardBlob(){
     if (!window.MECard) return Promise.reject(new Error('card-render module not loaded'));
-    var summary = window.ME.summariseMenu(readGrid());
-    var canvas  = window.MECard.renderMenuCard({
-      summary: summary,
-      strings: window.MECard.DEFAULT_STRINGS_EN
+    return window.MECard.awaitFonts().then(function(){
+      var summary = window.ME.summariseMenu(readGrid());
+      var canvas  = window.MECard.renderMenuCard({
+        summary: summary,
+        strings: window.MECard.DEFAULT_STRINGS_EN
+      });
+      return window.MECard.canvasToPngBlob(canvas);
     });
-    return window.MECard.canvasToPngBlob(canvas);
   }
 
   downloadPngBtn.addEventListener('click', function(){

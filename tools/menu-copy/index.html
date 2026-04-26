@@ -1101,10 +1101,17 @@
       strings: window.MCCard.DEFAULT_STRINGS_EN
     });
   }
+  // Await web fonts before rendering so the Card paints with Fraunces
+  // and Inter rather than the system fallback. No-op without
+  // document.fonts.
+  function buildCardCanvasesAfterFonts(){
+    var p = (window.MCCard && window.MCCard.awaitFonts) ? window.MCCard.awaitFonts() : Promise.resolve();
+    return p.then(buildCardCanvases);
+  }
 
   downloadCardBtn.addEventListener('click', function(){
     if (!latestSummary || !latestSummary.items.length) return;
-    var canvases = buildCardCanvases();
+    buildCardCanvasesAfterFonts().then(function(canvases){
     if (!canvases.length) return;
     if (canvases.length === 1) {
       window.MCCard.canvasToPngBlob(canvases[0]).then(function(blob){
@@ -1130,6 +1137,7 @@
         });
       });
     }
+    });
   });
 
   // ----- ZIP bundle export -----
@@ -1276,7 +1284,7 @@
       var csv = buildCsv();
       var json = buildJson();
       var readme = buildReadme();
-      var canvases = buildCardCanvases();
+      buildCardCanvasesAfterFonts().then(function(canvases){
       Promise.all(canvases.map(window.MCCard.canvasToPngBlob)).then(function(blobs){
         Promise.all(blobs.map(function(b){
           return new Promise(function(res){
@@ -1294,6 +1302,7 @@
           entries.push({ name: 'README.md',              data: strToBytes(readme) });
           downloadBlob(buildZipBlob(entries), 'menu-copy-bundle.zip');
         });
+      });
       });
       if (window.plausible) window.plausible('Menu Copy Inspector Export', { props: { format: 'zip' } });
     });

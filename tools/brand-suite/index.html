@@ -1552,9 +1552,14 @@
     });
   }
   function paneBlob(palette){
-    var canvas = renderPaneCanvas(palette);
-    if (!canvas) return Promise.resolve(null);
-    return window.BSPane.canvasToPngBlob(canvas);
+    // Wait for the page's web fonts before painting so the Card
+    // composes with Fraunces / Inter rather than the system fallback.
+    return (window.BSPane && window.BSPane.awaitFonts ? window.BSPane.awaitFonts() : Promise.resolve())
+      .then(function(){
+        var canvas = renderPaneCanvas(palette);
+        if (!canvas) return null;
+        return window.BSPane.canvasToPngBlob(canvas);
+      });
   }
 
   downloadPaneBtn.addEventListener('click', function(){

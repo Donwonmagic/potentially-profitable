@@ -1097,12 +1097,22 @@
   var downloadSignBtn = document.getElementById('ohDownloadSign');
   var downloadCardBtn = document.getElementById('ohDownloadCard');
 
+  // Wait for the page's web fonts before painting any Card surface so
+  // Fraunces / Inter render rather than the system fallback. No-op
+  // without document.fonts.
+  function withFonts(fn){
+    var p = (window.OHSign && window.OHSign.awaitFonts) ? window.OHSign.awaitFonts() : Promise.resolve();
+    return p.then(fn);
+  }
+
   if (printSignBtn) {
     printSignBtn.addEventListener('click', function(){
       if (!window.OHSign) return;
-      var ctx = buildRenderInput();
-      var canvas = window.OHSign.renderStorefrontSign(ctx);
-      window.OHSign.canvasToPngBlob(canvas).then(function(blob){
+      withFonts(function(){
+        var ctx = buildRenderInput();
+        var canvas = window.OHSign.renderStorefrontSign(ctx);
+        return window.OHSign.canvasToPngBlob(canvas);
+      }).then(function(blob){
         var url = URL.createObjectURL(blob);
         // Open the PNG in a new tab and trigger print. Browser-native
         // print dialog gives the owner full control over paper size.
@@ -1118,18 +1128,22 @@
   if (downloadSignBtn) {
     downloadSignBtn.addEventListener('click', function(){
       if (!window.OHSign) return;
-      var ctx = buildRenderInput();
-      var canvas = window.OHSign.renderStorefrontSign(ctx);
-      downloadCanvasAsPng(canvas, 'open-hours-sign.png');
+      withFonts(function(){
+        var ctx = buildRenderInput();
+        var canvas = window.OHSign.renderStorefrontSign(ctx);
+        return downloadCanvasAsPng(canvas, 'open-hours-sign.png');
+      });
       if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'sign-png' } });
     });
   }
   if (downloadCardBtn) {
     downloadCardBtn.addEventListener('click', function(){
       if (!window.OHSign) return;
-      var ctx = buildRenderInput();
-      var canvas = window.OHSign.renderOpenHoursCard(ctx);
-      downloadCanvasAsPng(canvas, 'open-hours-card.png');
+      withFonts(function(){
+        var ctx = buildRenderInput();
+        var canvas = window.OHSign.renderOpenHoursCard(ctx);
+        return downloadCanvasAsPng(canvas, 'open-hours-card.png');
+      });
       if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'card-png' } });
     });
   }
@@ -1251,12 +1265,14 @@
       var ics = window.OH.generateIcs(getClosureList());
       var readme = buildReadme(input);
 
-      var sign = window.OHSign.renderStorefrontSign(ctx);
-      var card = window.OHSign.renderOpenHoursCard(ctx);
-      Promise.all([
-        window.OHSign.canvasToPngBlob(sign),
-        window.OHSign.canvasToPngBlob(card)
-      ]).then(function(blobs){
+      withFonts(function(){
+        var sign = window.OHSign.renderStorefrontSign(ctx);
+        var card = window.OHSign.renderOpenHoursCard(ctx);
+        return Promise.all([
+          window.OHSign.canvasToPngBlob(sign),
+          window.OHSign.canvasToPngBlob(card)
+        ]);
+      }).then(function(blobs){
         return Promise.all(blobs.map(function(b){
           return new Promise(function(res){
             var r = new FileReader();
