@@ -60,6 +60,9 @@ const STRINGS = {
     topic_section_tools_h2: 'Run a check on your own site.',
     topic_section_checklists_eyebrow: 'Checklists',
     topic_section_checklists_h2: 'Workbooks for this topic.',
+    topic_section_terms_eyebrow: 'Vocabulary',
+    topic_section_terms_h2: 'The words for this topic.',
+    topic_section_terms_more: 'See all in the glossary',
     topic_other_eyebrow: 'Other topics',
     topic_other_h2_l1: 'Or browse a',
     topic_other_h2_l2: 'different angle.',
@@ -112,6 +115,9 @@ const STRINGS = {
     topic_section_tools_h2: 'Revisa tu propio sitio.',
     topic_section_checklists_eyebrow: 'Listas',
     topic_section_checklists_h2: 'Workbooks para este tema.',
+    topic_section_terms_eyebrow: 'Vocabulario',
+    topic_section_terms_h2: 'Las palabras de este tema.',
+    topic_section_terms_more: 'Ver todo en el glosario',
     topic_other_eyebrow: 'Otros temas',
     topic_other_h2_l1: 'O explora desde',
     topic_other_h2_l2: 'otro ángulo.',
@@ -286,6 +292,7 @@ function indexByTopic(locale) {
     research: [],
     tools: [],
     checklists: [],
+    terms: [],
   }]));
 
   for (const [slug, enMeta] of Object.entries(tagsDoc.blog_posts)) {
@@ -316,17 +323,72 @@ function indexByTopic(locale) {
       if (out[tp]) out[tp].checklists.push(merged);
     }
   }
+  for (const term of glossaryTerms(locale)) {
+    for (const tp of term.topics) {
+      if (out[tp]) out[tp].terms.push(term);
+    }
+  }
 
   for (const tp of Object.keys(out)) {
     out[tp].articles.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    // Stable alphabetical order on terms so layouts don't churn between
+    // builds when an author adds a new term in the middle of a section.
+    out[tp].terms.sort((a, b) => a.headword.localeCompare(b.headword, locale === 'es' ? 'es' : 'en'));
   }
 
   return out;
 }
 
+// Parse glossary index for the given locale and return one record per
+// term: { slug, topics: [...], headword, aka }. The data-topics attr
+// is the source of truth (set by scripts/wire-glossary-topics.mjs); the
+// headword is the <h3>'s plain text without the .gloss-aka span; the
+// aka is whatever lives inside that span (may be empty).
+const _glossaryTermsCache = {};
+function glossaryTerms(locale) {
+  if (_glossaryTermsCache[locale]) return _glossaryTermsCache[locale];
+  const file = locale === 'en'
+    ? join(REPO, 'glossary', 'index.html')
+    : join(REPO, 'es', 'glossary', 'index.html');
+  const html = readFileSync(file, 'utf8');
+  // Match: <article class="gloss-term" id="..." ... data-topics="..." ...>
+  //          ... <h3>HEADWORD<span class="gloss-aka">AKA</span></h3>
+  // or       ... <h3>HEADWORD</h3>          (no AKA)
+  const RE = /<article class="gloss-term"\s+id="([^"]+)"[^>]*?data-topics="([^"]*)"[^>]*>[\s\S]*?<h3>([\s\S]*?)<\/h3>/g;
+  const AKA_RE = /<span class="gloss-aka">([\s\S]*?)<\/span>/;
+  const out = [];
+  let m;
+  while ((m = RE.exec(html)) !== null) {
+    const slug   = m[1];
+    const topics = m[2].split(/\s+/).filter(Boolean);
+    let h3       = m[3];
+    let aka      = '';
+    const akaM   = AKA_RE.exec(h3);
+    if (akaM) {
+      aka = decodeBasicEntities(akaM[1]).trim();
+      h3  = h3.replace(AKA_RE, '');
+    }
+    const headword = decodeBasicEntities(h3).replace(/\s+/g, ' ').trim();
+    out.push({ slug, topics, headword, aka });
+  }
+  _glossaryTermsCache[locale] = out;
+  return out;
+}
+
+function decodeBasicEntities(s) {
+  return s
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g,  '<')
+    .replace(/&gt;/g,  '>')
+    .replace(/&quot;/g,'"')
+    .replace(/&#39;/g, "'")
+    .replace(/&ndash;/g, '–')
+    .replace(/&mdash;/g, '—');
+}
+
 // ---------- shared head/nav/footer fragments ----------
 
-function pageHead(locale, { title, description, canonical, ogImage }) {
+function pageHead(locale, { title, description, canonical, ogImage, jsonLd }) {
   // Default OG image: the Library hub card. Renderers (renderTopicsHub,
   // renderTopicPage, renderTermPage) override via ogImage when they
   // have a more specific card. ES pages use the -es suffix.
@@ -385,6 +447,7 @@ function pageHead(locale, { title, description, canonical, ogImage }) {
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
 <link rel="stylesheet" href="/assets/site.css?v=20260425-mobile-library-fix">
+${jsonLd ? `<script type="application/ld+json">\n${JSON.stringify(jsonLd, null, 2)}\n</script>` : ''}
 </head>`;
 }
 
@@ -578,6 +641,14 @@ function topicChecklistCard(locale, { slug, title, dek }) {
       </li>`;
 }
 
+// Reuses .term-siblings-list (already in site.css) for the same compact
+// two-column tile look used on per-term pages — keeps the surface tight
+// and avoids a new component for one renderer.
+function topicTermCard(locale, { slug, headword, aka }) {
+  const akaPart = aka ? `<span> — ${esc(aka)}</span>` : '';
+  return `<li><a href="${pathFor(locale, '/glossary/' + slug + '/')}"><strong>${esc(headword)}</strong>${akaPart}</a></li>`;
+}
+
 function renderTopicPage(locale, topic, content) {
   const { name, blurb } = topicLabel(locale, topic);
   const canonical = urlFor(locale, `/learn/topics/${topic.slug}/`);
@@ -614,6 +685,27 @@ function renderTopicPage(locale, topic, content) {
     <ul class="topic-research-list">
       ${content.research.map(item => topicResearchCard(locale, item)).join('\n')}
     </ul>
+  </div>
+</section>`);
+  }
+
+  if (content.terms.length) {
+    // Cap at 12 to keep the section scannable on a topic page; full
+    // list lives under the "See all in the glossary" link, which deep-
+    // filters the index by this topic via the existing ?topic= chip.
+    const displayTerms = content.terms.slice(0, 12);
+    const moreHref = pathFor(locale, '/glossary/') + `?topic=${topic.slug}`;
+    sections.push(`
+<section class="topic-section">
+  <div class="container">
+    <header class="topic-section-head">
+      <span class="eyebrow">${esc(t(locale, 'topic_section_terms_eyebrow'))}</span>
+      <h2>${esc(t(locale, 'topic_section_terms_h2'))}</h2>
+    </header>
+    <ul class="term-siblings-list">
+      ${displayTerms.map(item => topicTermCard(locale, item)).join('\n      ')}
+    </ul>
+    ${content.terms.length > displayTerms.length ? `<p style="text-align:center;margin-top:24px"><a class="link" href="${esc(moreHref)}">${esc(t(locale, 'topic_section_terms_more'))} (${content.terms.length}) <span aria-hidden="true">→</span></a></p>` : ''}
   </div>
 </section>`);
   }
@@ -804,7 +896,11 @@ function parseGlossary(locale = 'en') {
   // Now walk terms. Track current section by which section-bracket each term falls inside.
   const terms = [];
   // Use a global regex that captures the term opener and content up to its closing tag.
-  const termRe = /<article class="gloss-term" id="([a-z0-9-]+)" data-industries="([^"]*)">([\s\S]*?)<\/article>/g;
+  // The opener carries data-industries plus any number of additional
+  // data-* attributes (data-topics from wire-glossary-topics.mjs and
+  // anything future scripts add) so the [^>]* between data-industries
+  // and `>` is required, not optional.
+  const termRe = /<article class="gloss-term" id="([a-z0-9-]+)"[^>]*data-industries="([^"]*)"[^>]*>([\s\S]*?)<\/article>/g;
 
   // Build a map of [start, end, slug] for each section so we can attach
   // each term to its parent.
@@ -893,6 +989,44 @@ function stripTags(s) {
   return String(s).replace(/<[^>]+>/g, '');
 }
 
+// Term slug → first declared live tool from data/library-tags.json.
+// Used by renderTermPage to swap the generic terminal CTA for a
+// contextual one when the term has an obvious tool destination
+// (e.g., menu-engineering → /tools/menu-engineering/, gbp →
+// /tools/gbp-grader/). Lazy: built once on first call.
+let _toolsCfgCache = null;
+let _toolForTermCache = null;
+function toolForTerm(slug) {
+  if (!_toolsCfgCache) {
+    _toolsCfgCache = JSON.parse(readFileSync(join(DATA, 'tools.json'), 'utf8'));
+  }
+  if (!_toolForTermCache) {
+    // term → ordered list of candidate tool slugs (preserves declaration
+    // order). The lookup below walks the list and returns the first
+    // candidate that's actually live in data/tools.json — so a term
+    // declared against a not-yet-shipped tool falls through to the
+    // next live tool that references it.
+    _toolForTermCache = new Map();
+    for (const [toolKey, t] of Object.entries(tagsDoc.tools || {})) {
+      const refs = []
+        .concat(t.glossary_term ? [t.glossary_term] : [])
+        .concat(t.glossary_terms || []);
+      // library-tags uses "audits/restaurant"; tools.json uses "restaurant-audit".
+      const normalized = toolKey === 'audits/restaurant' ? 'restaurant-audit' : toolKey;
+      for (const term of refs) {
+        if (!_toolForTermCache.has(term)) _toolForTermCache.set(term, []);
+        _toolForTermCache.get(term).push(normalized);
+      }
+    }
+  }
+  const candidates = _toolForTermCache.get(slug) || [];
+  for (const toolSlug of candidates) {
+    const tool = _toolsCfgCache.tools[toolSlug];
+    if (tool && tool.status === 'live') return { slug: toolSlug, ...tool };
+  }
+  return null;
+}
+
 // Render one per-term glossary page. Conservative HTML — definition
 // and "why it matters" are pasted as-is from the source (they may
 // contain inline <code>, <em>, etc.).
@@ -945,11 +1079,56 @@ function renderTermPage(locale, term, allTerms) {
 </section>`
     : '';
 
+  // Per-term JSON-LD: a DefinedTerm that points back to the glossary's
+  // DefinedTermSet. Unlocks rich-result eligibility and tells crawlers
+  // these pages are part of a structured vocabulary, not standalone
+  // articles. inLanguage matches the page locale.
+  const termJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "DefinedTerm",
+        "@id": `${canonical}#term`,
+        "name": headPlain,
+        "description": stripTags(term.defHtml),
+        "url": canonical,
+        "inLanguage": locale === 'es' ? 'es-US' : 'en-US',
+        "inDefinedTermSet": locale === 'es'
+          ? "https://muntin.digital/es/glossary/#glossary"
+          : "https://muntin.digital/glossary/#glossary",
+        ...(term.aka ? { "alternateName": stripTags(term.aka) } : {}),
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": locale === 'es' ? 'Inicio' : 'Home',     "item": locale === 'es' ? "https://muntin.digital/es/" : "https://muntin.digital/" },
+          { "@type": "ListItem", "position": 2, "name": locale === 'es' ? 'Glosario' : 'Glossary', "item": locale === 'es' ? "https://muntin.digital/es/glossary/" : "https://muntin.digital/glossary/" },
+          { "@type": "ListItem", "position": 3, "name": headPlain,                                "item": canonical }
+        ]
+      }
+    ]
+  };
+
+  // Contextual terminal CTA: if this term is the primary glossary
+  // reference for a live tool, send the reader there as the primary
+  // action (with the glossary index as the secondary). Otherwise,
+  // fall back to the generic glossary / library pair.
+  const ctaTool = toolForTerm(term.slug);
+  const ctaPrimaryHref  = ctaTool
+    ? (locale === 'es' ? ctaTool.url_es : ctaTool.url_en)
+    : pathFor(locale, '/glossary/');
+  const ctaPrimaryLabel = ctaTool
+    ? (locale === 'es' ? `Abrir ${ctaTool.title_es}` : `Open ${ctaTool.title_en}`)
+    : t(locale, 'term_final_btn');
+  const ctaSecondaryHref  = ctaTool ? pathFor(locale, '/glossary/') : pathFor(locale, '/learn/');
+  const ctaSecondaryLabel = ctaTool ? t(locale, 'term_final_btn')  : t(locale, 'term_final_btn_alt');
+
   return `${pageHead(locale, {
     title: locale === 'es' ? `${headPlain} — Glosario Muntin Digital` : `${headPlain} — Muntin Digital glossary`,
     description: desc,
     canonical,
     ogImage: '/brand/og/glossary.png',
+    jsonLd: termJsonLd,
   })}
 ${navHeader(altUrl)}
 
@@ -992,12 +1171,14 @@ ${siblingsBlock}
       <p class="final-sub">${esc(t(locale, 'term_final_sub'))}</p>
     </div>
     <div class="hero-ctas reveal hero-ctas-center">
-      <a class="btn btn-primary" href="${pathFor(locale, '/glossary/')}">${esc(t(locale, 'term_final_btn'))}</a>
-      <a class="btn btn-ghost" href="${pathFor(locale, '/learn/')}">${esc(t(locale, 'term_final_btn_alt'))}</a>
+      <a class="btn btn-primary" href="${esc(ctaPrimaryHref)}">${esc(ctaPrimaryLabel)}</a>
+      <a class="btn btn-ghost" href="${esc(ctaSecondaryHref)}">${esc(ctaSecondaryLabel)}</a>
     </div>
   </div>
 </section>
 
+<!-- glossary-knit -->
+<!-- /glossary-knit -->
 ${siteFooter()}`;
 }
 
