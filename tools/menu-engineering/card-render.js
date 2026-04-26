@@ -93,6 +93,53 @@
     return s + suffix;
   }
 
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+  }
+
+  // The Muntin Digital mark — rounded ink tile with the four-pane
+  // window glyph. Drawn directly in canvas (no async image load) so
+  // the PNG composes synchronously. Placed at the median-line
+  // intersection, it makes the matrix unmistakably a Muntin window.
+  function drawBrandMark(ctx, cx, cy, size) {
+    var x = cx - size / 2;
+    var y = cy - size / 2;
+    // Cream halo so plotted dots can't bleed into the mark.
+    ctx.fillStyle = CREAM;
+    ctx.beginPath();
+    ctx.arc(cx, cy, size / 2 + 6, 0, 2 * Math.PI);
+    ctx.fill();
+    // Rounded ink tile
+    ctx.fillStyle = INK;
+    roundRect(ctx, x, y, size, size, size * 0.14);
+    ctx.fill();
+    // Window + muntins glyph
+    ctx.strokeStyle = CREAM;
+    ctx.lineWidth = Math.max(1.5, size * 0.07);
+    ctx.lineCap = 'square';
+    ctx.lineJoin = 'miter';
+    var inset = size * 0.20;
+    var gx = x + inset, gy = y + inset;
+    var gw = size - 2 * inset, gh = size - 2 * inset;
+    ctx.strokeRect(gx, gy, gw, gh);
+    ctx.beginPath();
+    ctx.moveTo(gx + gw / 2, gy);
+    ctx.lineTo(gx + gw / 2, gy + gh);
+    ctx.moveTo(gx, gy + gh * 0.42);
+    ctx.lineTo(gx + gw, gy + gh * 0.42);
+    ctx.stroke();
+  }
+
   // ------------------------------------------------------------
   // Header band
   // ------------------------------------------------------------
@@ -141,12 +188,13 @@
     ctx.textAlign = 'left';
     ctx.fillText(strings.matrixTitle, pad, top + 16);
 
-    // Background panel
+    // Background panel + ink frame echoing the mark's window edge
     ctx.fillStyle = CREAM;
     ctx.fillRect(x0, y0, x1 - x0, y1 - y0);
-    ctx.strokeStyle = LINE;
-    ctx.lineWidth = 1;
-    ctx.strokeRect(x0 + 0.5, y0 + 0.5, x1 - x0 - 1, y1 - y0 - 1);
+    ctx.strokeStyle = INK;
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'square';
+    ctx.strokeRect(x0 + 1, y0 + 1, x1 - x0 - 2, y1 - y0 - 2);
 
     var items = summary.items;
     if (!items.length) {
@@ -184,15 +232,15 @@
     ctx.fillStyle = Q_TINTS.Puzzle;    ctx.fillRect(medX, medY, x1 - medX, y1 - medY);
     ctx.fillStyle = Q_TINTS.Dog;       ctx.fillRect(x0, medY, medX - x0, y1 - medY);
 
-    // Median lines
+    // Median lines — drawn as solid Muntin cross-bars rather than the
+    // dashed convention. The matrix becomes a four-pane window.
     ctx.strokeStyle = INK;
-    ctx.lineWidth = 1;
-    ctx.setLineDash([6, 6]);
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'square';
     ctx.beginPath();
     ctx.moveTo(medX, y0); ctx.lineTo(medX, y1);
     ctx.moveTo(x0, medY); ctx.lineTo(x1, medY);
     ctx.stroke();
-    ctx.setLineDash([]);
 
     // Quadrant labels (plain English in the right corner of each cell)
     ctx.fillStyle = STONE;
@@ -246,6 +294,10 @@
         ctx.fillText(label, cx + 12, cy);
       }
     });
+
+    // Brand mark sits at the muntin intersection, drawn last so it
+    // crowns any dot that happened to land on the median split.
+    drawBrandMark(ctx, medX, medY, 56);
   }
 
   // ------------------------------------------------------------
@@ -253,7 +305,13 @@
   // ------------------------------------------------------------
   function drawActions(ctx, summary, strings){
     var top = H_HEADER + H_MATRIX;
-    var cellW = W / 4;
+    // Match the matrix's horizontal extent so the action band reads as
+    // a continuation of the same window — same left edge, same right
+    // edge, same column rhythm.
+    var pad = 60;
+    var bandLeft = pad;
+    var bandWidth = W - 2 * pad;
+    var cellW = bandWidth / 4;
     var cellH = H_ACTIONS;
 
     // Section title
@@ -261,7 +319,7 @@
     ctx.font = '500 22px ' + FONT_DISPLAY;
     ctx.textBaseline = 'top';
     ctx.textAlign = 'left';
-    ctx.fillText(strings.actionsTitle, 60, top + 16);
+    ctx.fillText(strings.actionsTitle, pad, top + 16);
 
     var bandTop = top + 60;
     var bandH = cellH - 60;
@@ -272,7 +330,7 @@
 
     var QORDER = ['Star', 'Plowhorse', 'Puzzle', 'Dog'];
     QORDER.forEach(function(q, i){
-      var x = i * cellW;
+      var x = bandLeft + i * cellW;
       var y = bandTop;
       // Cell tint
       ctx.fillStyle = Q_TINTS[q];
@@ -397,11 +455,22 @@
   // ------------------------------------------------------------
   // Default copy strings (the page passes locale-appropriate strings)
   // ------------------------------------------------------------
+  // Long-form locale-appropriate dates so the printed Menu Card reads
+  // naturally to a chef. Computed at module load — the same as the
+  // fragment URL's lifetime.
+  function _localDate(locale){
+    try {
+      return new Date().toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' });
+    } catch (_) {
+      return new Date().toISOString().slice(0, 10);
+    }
+  }
+
   var DEFAULT_STRINGS_EN = {
     title:    'Menu Action Plan',
     subtitle: 'Stars · Plowhorses · Puzzles · Dogs',
     brand:    'Muntin Digital',
-    date:     new Date().toISOString().slice(0, 10),
+    date:     _localDate('en-US'),
     matrixTitle:  'The matrix',
     matrixEmpty:  'No items to plot.',
     actionsTitle: 'Action plan by quadrant',
@@ -434,7 +503,7 @@
     title:    'Plan de acción del menú',
     subtitle: 'Estrellas · Caballos de tiro · Acertijos · Perros',
     brand:    'Muntin Digital',
-    date:     new Date().toISOString().slice(0, 10),
+    date:     _localDate('es-ES'),
     matrixTitle:  'La matriz',
     matrixEmpty:  'Sin platos para graficar.',
     actionsTitle: 'Plan de acción por cuadrante',

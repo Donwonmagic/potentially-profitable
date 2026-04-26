@@ -19,14 +19,14 @@
 <meta property="og:description" content="Paste your menu, get a 2×2 of Stars / Plowhorses / Puzzles / Dogs and one action per item. Stays in your browser." />
 <meta property="og:url" content="https://muntin.digital/tools/menu-engineering/" />
 <meta property="og:site_name" content="Muntin Digital" />
-<meta property="og:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-menu-engineering.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Menu Engineering Matrix — Free Restaurant Menu Analyzer" />
 <meta name="twitter:description" content="Paste your menu. Get a Stars / Plowhorses / Puzzles / Dogs matrix and one-line actions per item." />
-<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-menu-engineering.png" />
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
@@ -89,6 +89,30 @@
 .me-modes{display:inline-flex;gap:0;border:1px solid var(--line);border-radius:999px;background:var(--white);padding:3px;margin-bottom:6px}
 .me-mode-btn{padding:6px 14px;border:none;background:transparent;font:inherit;font-size:12.5px;font-weight:600;color:var(--stone);cursor:pointer;border-radius:999px}
 .me-mode-btn[aria-selected="true"]{background:var(--teal);color:var(--cream)}
+.me-scope{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-soft);margin-top:4px}
+.me-scope-label{font-weight:600;color:var(--stone);letter-spacing:.04em;text-transform:uppercase;font-size:11px}
+.me-scope-group{display:inline-flex;gap:0;border:1px solid var(--line);border-radius:999px;background:var(--white);padding:3px}
+.me-scope-btn{padding:5px 12px;border:none;background:transparent;font:inherit;font-size:12px;font-weight:600;color:var(--stone);cursor:pointer;border-radius:999px}
+.me-scope-btn[aria-pressed="true"]{background:var(--ink);color:var(--cream)}
+.me-scope-hint{font-size:11.5px;color:var(--stone)}
+.me-matrix-badge{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border:1px solid var(--line);background:var(--cream-2);border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);margin-left:8px}
+.me-whatif{padding:18px 20px;border:1px solid var(--line);border-left:4px solid #C68A2C;border-radius:var(--r-input);background:#FCFAF4;display:flex;flex-direction:column;gap:12px;margin-top:18px}
+.me-whatif h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0}
+.me-whatif p{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink-soft)}
+.me-whatif-controls{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.me-whatif-controls label{font-size:13px;font-weight:600;color:var(--ink);display:inline-flex;align-items:center;gap:10px}
+.me-whatif-controls input[type=range]{flex:1;min-width:180px;max-width:340px;accent-color:#C68A2C}
+.me-whatif-pct{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:14px;font-weight:600;color:#C68A2C;min-width:42px;text-align:right}
+.me-whatif-readout{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;color:var(--ink);background:var(--white);padding:10px 14px;border:1px solid var(--line);border-radius:var(--r-sm);line-height:1.55}
+.me-whatif-readout strong{color:var(--ink);font-weight:700}
+.me-whatif-flip{display:flex;flex-direction:column;gap:2px;margin-top:6px;font-size:12.5px}
+.me-whatif-flip span{color:var(--stone)}
+.me-whatif[data-empty="true"] .me-whatif-controls,
+.me-whatif[data-empty="true"] .me-whatif-readout,
+.me-whatif[data-empty="true"] .me-whatif-flip{display:none}
+.me-whatif-empty{font-size:13px;color:var(--stone);font-style:italic;display:none}
+.me-whatif[data-empty="true"] .me-whatif-empty{display:block}
+.me-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .me-paste{display:flex;flex-direction:column;gap:10px}
 .me-paste textarea{width:100%;min-height:160px;padding:12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;line-height:1.5;color:var(--ink);resize:vertical}
 .me-paste textarea:focus{outline:2px solid var(--teal);outline-offset:1px}
@@ -118,9 +142,9 @@
   body{background:#fff !important;color:#000 !important}
   header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,.me-input,
   #what-this-does,#how-private,#what-this-isnt,.me-export-row,
-  .mm-next,.me-empty-state,#meEmptyHint{display:none !important}
-  /* Hide the long export-section copy + share-link details too */
-  .me-output > div > h2 + p,details,.me-warnings{display:none !important}
+  .mm-next,.me-empty-state,#meEmptyHint,.me-whatif{display:none !important}
+  /* Hide the long export-section copy + share-link caveat too */
+  .me-output > div > h2 + p,.me-export-row ~ p,.me-warnings{display:none !important}
   .me-output{margin-top:14px;gap:12px}
   .me-matrix-wrap,.me-action-card,.me-table,.me-totals-card{break-inside:avoid;page-break-inside:avoid}
   .me-actions{break-before:auto}
@@ -147,19 +171,81 @@
     <nav class="nav-links" aria-label="Primary">
       <a href="/services/">Services</a>
       <a href="/for/restaurants/">Restaurants</a>
-      <a href="/learn/" class="nav-library-trigger">Library</a>
+      <div class="nav-library-wrap">
+        <a href="/learn/" class="nav-library-trigger" aria-haspopup="true">Library<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-library-menu" role="menu" aria-label="Library sections">
+          <a href="/learn/" role="menuitem"><strong>Library home</strong><span>The hub of everything below</span></a>
+          <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
+          <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
+          <a href="/blog/" role="menuitem"><strong>Articles</strong><span>The how-to playbooks</span></a>
+          <a href="/tools/" role="menuitem"><strong>Free tools</strong><span>Run a check on your own site</span></a>
+          <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span>97 terms in plain English</span></a>
+          <a href="/learn/research/" role="menuitem"><strong>Research</strong><span>The evidence behind the playbooks</span></a>
+          <a href="/resources/" role="menuitem"><strong>Checklists &amp; guides</strong><span>Workbooks you can save</span></a>
+        </div>
+      </div>
       <a href="/work/">Work</a>
       <a href="/about/">About</a>
     </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Search</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+    </button>
     <nav class="lang-switch" aria-label="Language">
       <a href="/es/tools/menu-engineering/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
-    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/services/">Services</a>
+    <a href="/for/restaurants/">Restaurants</a>
+    <details class="mobile-library">
+      <summary>Library</summary>
+      <a href="/learn/">Library home</a>
+      <a href="/learn/start-here/">Start here</a>
+      <a href="/learn/topics/">Topics</a>
+      <a href="/blog/">Articles</a>
+      <a href="/tools/">Free tools</a>
+      <a href="/glossary/">Glossary</a>
+      <a href="/learn/research/">Research</a>
+      <a href="/resources/">Checklists &amp; guides</a>
+    </details>
+    <a href="/work/">Work</a>
+    <a href="/about/">About</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Search the library</span>
+    </button>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a>
+    <a href="/es/tools/menu-engineering/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
+  </nav>
+
+  <!-- Opt-in Spanish banner. Rendered hidden by default; site.js
+       removes the hidden attribute only when (a) the reader's browser
+       lists Spanish in navigator.languages, (b) no md_locale cookie
+       has been set yet, and (c) the banner hasn't been dismissed.
+       Speaks directly in Spanish because its audience, by definition,
+       is a Spanish-speaking visitor. Link target is the page's own
+       hreflang="es" alternate from <head>, read at runtime. -->
+  <aside class="lang-hint" id="langHint" role="complementary" aria-label="Sugerencia de idioma" lang="es" hidden>
+    <div class="container lang-hint-inner">
+      <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
+      <a href="/es/tools/menu-engineering/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
+      <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+      </button>
+    </div>
+  </aside>
 </header>
 <nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><a href="/tools/">Tools</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><span aria-current="page">Menu Engineering Matrix</span></nav>
 <main id="main">
@@ -180,6 +266,15 @@
     <div class="me-modes" role="tablist" aria-label="Input mode">
       <button type="button" class="me-mode-btn" role="tab" aria-selected="true"  data-mode="manual">Type or click in</button>
       <button type="button" class="me-mode-btn" role="tab" aria-selected="false" data-mode="paste">Paste from spreadsheet</button>
+    </div>
+
+    <div class="me-scope" role="radiogroup" aria-label="Analysis scope">
+      <span class="me-scope-label">Analyse:</span>
+      <span class="me-scope-group">
+        <button type="button" class="me-scope-btn" role="radio" aria-pressed="true"  data-scope="whole">Whole menu</button>
+        <button type="button" class="me-scope-btn" role="radio" aria-pressed="false" data-scope="category">By category</button>
+      </span>
+      <span class="me-scope-hint">Per-category split runs the median within each section so a $38 entrée and a $6 side don't share an x-axis.</span>
     </div>
 
     <div class="me-input-actions" data-mode="manual">
@@ -225,17 +320,19 @@
     <div class="me-totals" id="meTotals" aria-label="Menu totals"></div>
 
     <div>
-      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px;">The matrix</h2>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px;">The matrix <span id="meMatrixBadge" hidden class="me-matrix-badge">By category</span></h2>
       <div class="me-matrix-wrap">
-        <svg class="me-matrix-svg" id="meMatrix" viewBox="0 0 720 540" role="img" aria-label="Menu engineering matrix"></svg>
+        <svg class="me-matrix-svg" id="meMatrix" viewBox="0 0 720 540" role="img" aria-label="Menu engineering matrix" aria-describedby="meMatrixA11yList"></svg>
+        <ul id="meMatrixA11yList" class="me-sr-only"></ul>
         <div class="me-matrix-legend" aria-hidden="true">
-          <span><i class="me-q-Star"></i> Star</span>
-          <span><i class="me-q-Plowhorse"></i> Plowhorse</span>
-          <span><i class="me-q-Puzzle"></i> Puzzle</span>
-          <span><i class="me-q-Dog"></i> Dog</span>
+          <span><i class="me-q-Star"></i> Star ★</span>
+          <span><i class="me-q-Plowhorse"></i> Plowhorse ▲</span>
+          <span><i class="me-q-Puzzle"></i> Puzzle ◆</span>
+          <span><i class="me-q-Dog"></i> Dog ●</span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--stone);margin:8px 0 0;">x-axis: contribution margin per sale (\$). y-axis: share of total covers (%). Median lines split the grid; items at exactly the median fall to the upper-right side.</p>
+      <p style="font-size:12px;color:var(--stone);margin:4px 0 0;font-style:italic;">Method: Kasavana &amp; Smith (1990). Median split — one runaway item won't drag the bar.</p>
     </div>
 
     <div>
@@ -247,6 +344,21 @@
       <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px;">Per-item math</h2>
       <div style="overflow-x:auto;">
         <table class="me-table" id="meItemTable" aria-label="Per-item contribution margin and quadrant"></table>
+      </div>
+
+      <div class="me-whatif" id="meWhatIf" data-empty="true" aria-live="polite">
+        <h3>Re-engineer the Plowhorses</h3>
+        <p>Plowhorses are popular but margin-thin. The standard playbook: a 5–10% price tweak or sourcing change. Drag the slider to rehearse before you touch the menu — the input above is unchanged.</p>
+        <div class="me-whatif-controls">
+          <label>
+            Price uplift on every Plowhorse:
+            <input type="range" id="meWhatIfRange" min="0" max="15" step="1" value="5" aria-describedby="meWhatIfReadout">
+            <span class="me-whatif-pct" id="meWhatIfPct">+5%</span>
+          </label>
+        </div>
+        <div class="me-whatif-readout" id="meWhatIfReadout"></div>
+        <ul class="me-whatif-flip" id="meWhatIfFlips"></ul>
+        <p class="me-whatif-empty">Add Plowhorse-quadrant items to rehearse. Run a sample menu above to see this in action.</p>
       </div>
     </div>
 
@@ -274,10 +386,7 @@
           Generate share link
         </button>
       </div>
-      <details style="margin-top:8px;font-size:12.5px;color:var(--stone);">
-        <summary style="cursor:pointer;color:var(--ink-soft);">About the share link</summary>
-        <p style="margin:8px 0 0;line-height:1.55;">Unlike the rest of the toolkit, the share link <strong>does</strong> contain your menu data — item names and numbers are encoded in the URL fragment after <code>#m=</code>. The fragment never reaches our servers (browsers don't send fragments per the HTTP spec), but anyone you forward the link to can rehydrate the same analysis. Treat it like a spreadsheet attachment: send it where you'd email a CSV. Don't paste it into a public channel.</p>
-      </details>
+      <p style="margin:8px 0 0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);"><strong>Heads-up on the share link:</strong> unlike the other exports, it carries your menu data inside the URL fragment (<code>#m=</code>). The fragment never reaches our servers, but anyone you forward the link to can rehydrate the same analysis. Send it where you'd email a CSV — not where you'd paste a public link.</p>
       <p style="margin:10px 0 0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);">The <strong>Menu Card PNG</strong> is a 1200×1500 image with the matrix + per-quadrant action cards — share it with your chef or partner. The CSV mirrors the input plus computed quadrant. The JSON includes thresholds and full per-item math. The ZIP bundle packages all four (PNG + CSV + JSON + README). Composed in your browser; nothing uploads.</p>
     </div>
 
@@ -308,7 +417,7 @@
     <span class="eyebrow">Lead by example</span>
     <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:12px 0 12px;">Your menu data stays in your browser.</h2>
     <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0 0 14px;">No upload, no account, no <code>localStorage</code> writes. Close the tab and the form is empty. Open DevTools → Network and click <em>Add item</em> or <em>Load sample menu</em> — the request list won't grow. The whole math module is plain JavaScript at <code>/tools/menu-engineering/menu-engineering.js</code>; right-click <em>View Page Source</em> and read it.</p>
-    <p style="font-size:13px;color:var(--stone);margin:0;">A nine-step verifiable privacy tour and a printable Menu Card are landing in a follow-up release. For the same posture today, see <a href="/tools/brand-suite/#how-we-protect" style="color:inherit;border-bottom:1px dashed var(--teal);">how Brand Suite protects your logo</a> — this tool is built on the same architecture.</p>
+    <p style="font-size:13px;color:var(--stone);margin:0;">Same architecture as Brand Suite — see <a href="/tools/brand-suite/#how-we-protect" style="color:inherit;border-bottom:1px dashed var(--teal);">how Brand Suite protects your logo</a> for the same posture, point by point.</p>
   </div>
 </div></section>
 
@@ -393,6 +502,20 @@
           <p class="tool-deep-snippet">For a single menu item: sale price minus the variable cost of producing one unit (plated food cost). Reported in dollars (CM&amp;nbsp;\$) and as…</p>
           <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
         </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/glossary/food-cost/">
+          <span class="tool-deep-kind">Glossary</span>
+          <h3>Food cost</h3>
+          <p class="tool-deep-aka">cost of goods sold, as a % of sales</p>
+          <p class="tool-deep-snippet">The cost of ingredients, alcohol, and consumables (paper goods, to-go packaging) expressed as a percentage of sales. Target 28–32% for most …</p>
+          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/glossary/prime-cost/">
+          <span class="tool-deep-kind">Glossary</span>
+          <h3>Prime cost</h3>
+          <p class="tool-deep-aka">food cost + labor cost, as a % of sales</p>
+          <p class="tool-deep-snippet">Your food cost plus your labor cost, expressed as a percentage of sales. Healthy independents land between 55–65%; above 70% is operationall…</p>
+          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
+        </a>
       <a class="tool-deep-card tool-deep-card-article" href="/blog/is-doordash-worth-it-for-restaurants-in-2026/">
           <span class="tool-deep-kind">Article</span>
           <h3>Is DoorDash Worth It for Restaurants in 2026?</h3>
@@ -413,8 +536,8 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
 </footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="./menu-engineering.js?v=20260425-me1"></script>
-<script src="./card-render.js?v=20260425-me2"></script>
+<script src="./menu-engineering.js?v=20260425-me6"></script>
+<script src="./card-render.js?v=20260425-me5"></script>
 <!-- IIFE_PLACEHOLDER -->
 <script>
 /* Menu Engineering Matrix — input + matrix rendering.
@@ -459,6 +582,11 @@
   var warningsEl   = document.getElementById('meWarnings');
 
   var firstAnalysisFired = false;
+  // Analysis scope — either undefined (whole menu) or 'category'
+  // (per-category median split per Pavesic's refinement).
+  var currentGroupBy = null;
+  function summariseOptions(){ return currentGroupBy ? { groupBy: currentGroupBy } : undefined; }
+  function currentSummary(){ return window.ME.summariseMenu(readGrid(), summariseOptions()); }
 
   function readGrid(){
     var rows = gridBody.querySelectorAll('tr');
@@ -515,7 +643,7 @@
     requestAnimationFrame(function(){
       rafQueued = false;
       var raw = readGrid();
-      var summary = window.ME.summariseMenu(raw);
+      var summary = window.ME.summariseMenu(raw, summariseOptions());
       paintWarnings(summary.warnings);
       var meaningful = summary.totals.item_count >= 2;
       if (!meaningful) {
@@ -529,6 +657,7 @@
       paintMatrix(summary);
       paintActions(summary);
       paintItemTable(summary.items);
+      paintWhatIf(summary);
       firePlausibleOnce(summary);
     });
   }
@@ -589,42 +718,76 @@
     var medX = sx(summary.thresholds.median_cm_dollars);
     var medY = sy(summary.thresholds.median_share);
 
+    var byCategory = summary.group_by === 'category';
+
     var svg = '';
     // Background frame
     svg += '<rect x="' + x0 + '" y="' + y0 + '" width="' + (x1 - x0) + '" height="' + (y1 - y0) + '" fill="#FAF7F2" stroke="#E5E0D8" />';
-    // Quadrant tints (subtle)
-    svg += '<rect x="' + medX + '" y="' + y0 + '" width="' + (x1 - medX) + '" height="' + (medY - y0) + '" fill="#1F4E5B" opacity="0.04" />';
-    svg += '<rect x="' + x0 + '" y="' + y0 + '" width="' + (medX - x0) + '" height="' + (medY - y0) + '" fill="#C68A2C" opacity="0.05" />';
-    svg += '<rect x="' + medX + '" y="' + medY + '" width="' + (x1 - medX) + '" height="' + (y1 - medY) + '" fill="#6E5DB3" opacity="0.05" />';
-    svg += '<rect x="' + x0 + '" y="' + medY + '" width="' + (medX - x0) + '" height="' + (y1 - medY) + '" fill="#B8541A" opacity="0.05" />';
-    // Median lines
-    svg += '<line x1="' + medX + '" y1="' + y0 + '" x2="' + medX + '" y2="' + y1 + '" stroke="#14161A" stroke-dasharray="4 4" stroke-width="1" />';
-    svg += '<line x1="' + x0 + '" y1="' + medY + '" x2="' + x1 + '" y2="' + medY + '" stroke="#14161A" stroke-dasharray="4 4" stroke-width="1" />';
-    // Quadrant labels
-    svg += '<text x="' + (x0 + 8) + '" y="' + (y0 + 18) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif">Plowhorses · popular but thin</text>';
-    svg += '<text x="' + (x1 - 8) + '" y="' + (y0 + 18) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif" text-anchor="end">Stars · push them</text>';
-    svg += '<text x="' + (x0 + 8) + '" y="' + (y1 - 10) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif">Dogs · drop or replace</text>';
-    svg += '<text x="' + (x1 - 8) + '" y="' + (y1 - 10) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif" text-anchor="end">Puzzles · reposition</text>';
+    if (!byCategory) {
+      // Quadrant tints (subtle) — only meaningful with a single shared median.
+      svg += '<rect x="' + medX + '" y="' + y0 + '" width="' + (x1 - medX) + '" height="' + (medY - y0) + '" fill="#1F4E5B" opacity="0.04" />';
+      svg += '<rect x="' + x0 + '" y="' + y0 + '" width="' + (medX - x0) + '" height="' + (medY - y0) + '" fill="#C68A2C" opacity="0.05" />';
+      svg += '<rect x="' + medX + '" y="' + medY + '" width="' + (x1 - medX) + '" height="' + (y1 - medY) + '" fill="#6E5DB3" opacity="0.05" />';
+      svg += '<rect x="' + x0 + '" y="' + medY + '" width="' + (medX - x0) + '" height="' + (y1 - medY) + '" fill="#B8541A" opacity="0.05" />';
+      // Median lines
+      svg += '<line x1="' + medX + '" y1="' + y0 + '" x2="' + medX + '" y2="' + y1 + '" stroke="#14161A" stroke-dasharray="4 4" stroke-width="1" />';
+      svg += '<line x1="' + x0 + '" y1="' + medY + '" x2="' + x1 + '" y2="' + medY + '" stroke="#14161A" stroke-dasharray="4 4" stroke-width="1" />';
+      // Quadrant labels
+      svg += '<text x="' + (x0 + 8) + '" y="' + (y0 + 18) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif">Plowhorses · popular but thin</text>';
+      svg += '<text x="' + (x1 - 8) + '" y="' + (y0 + 18) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif" text-anchor="end">Stars · push them</text>';
+      svg += '<text x="' + (x0 + 8) + '" y="' + (y1 - 10) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif">Dogs · drop or replace</text>';
+      svg += '<text x="' + (x1 - 8) + '" y="' + (y1 - 10) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif" text-anchor="end">Puzzles · reposition</text>';
+    } else {
+      svg += '<text x="' + ((x0 + x1) / 2) + '" y="' + (y0 + 18) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif" text-anchor="middle">Per-category split — quadrants in the per-item table below</text>';
+    }
     // Axis labels
     svg += '<text x="' + (W / 2) + '" y="' + (H - 18) + '" font-size="12" fill="#14161A" font-family="Inter,sans-serif" text-anchor="middle">Contribution margin per sale &rarr;</text>';
     svg += '<text x="20" y="' + ((y0 + y1) / 2) + '" font-size="12" fill="#14161A" font-family="Inter,sans-serif" transform="rotate(-90 20 ' + ((y0 + y1) / 2) + ')" text-anchor="middle">&uarr; Share of total covers</text>';
 
     // Plot each item.
     var QC = { Star: '#1F4E5B', Plowhorse: '#C68A2C', Puzzle: '#6E5DB3', Dog: '#B8541A' };
+    var QGLYPH = { Star: '★', Plowhorse: '▲', Puzzle: '◆', Dog: '●' };
     items.forEach(function(it){
       var cx = sx(it.cm_dollars);
       var cy = sy(it.share);
       var color = QC[it.quadrant] || '#14161A';
-      svg += '<circle cx="' + cx + '" cy="' + cy + '" r="6" fill="' + color + '" stroke="#FAF7F2" stroke-width="1.5">';
+      var glyph = QGLYPH[it.quadrant] || '';
+      svg += '<g>';
+      svg += '<circle cx="' + cx + '" cy="' + cy + '" r="8" fill="' + color + '" stroke="#FAF7F2" stroke-width="1.5">';
       svg += '<title>' + escHtml(it.item) + ' · CM ' + fmtMoney(it.cm_dollars) + ' · ' + fmtPct(it.share) + ' share · ' + it.quadrant + '</title>';
       svg += '</circle>';
-      // Label, only for items where we have name and there's space.
+      // Quadrant glyph centered in dot — second relevance cue beyond color.
+      svg += '<text x="' + cx + '" y="' + (cy + 3) + '" font-size="9" fill="#FAF7F2" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle" pointer-events="none" aria-hidden="true">' + glyph + '</text>';
+      svg += '</g>';
+      // Visible item-name label, only for items where we have name and there's space.
       if (it.item) {
-        svg += '<text x="' + (cx + 9) + '" y="' + (cy + 4) + '" font-size="10" fill="#14161A" font-family="Inter,sans-serif">' + escHtml(it.item.length > 18 ? it.item.slice(0, 17) + '…' : it.item) + '</text>';
+        svg += '<text x="' + (cx + 11) + '" y="' + (cy + 4) + '" font-size="10" fill="#14161A" font-family="Inter,sans-serif" aria-hidden="true">' + escHtml(it.item.length > 18 ? it.item.slice(0, 17) + '…' : it.item) + '</text>';
       }
     });
 
     matrixSvg.innerHTML = svg;
+    var badge = document.getElementById('meMatrixBadge');
+    if (badge) badge.hidden = !byCategory;
+
+    // Visually-hidden item list — the matrix's accessible description.
+    // Screen readers and keyboard users get the same data the dots
+    // encode, in plain order.
+    var a11yList = document.getElementById('meMatrixA11yList');
+    if (a11yList) {
+      var preamble = byCategory
+        ? 'Per-category split. ' + items.length + ' items in the matrix.'
+        : items.length + ' items plotted by contribution margin and share of covers.';
+      a11yList.innerHTML =
+        '<li>' + escHtml(preamble) + '</li>' +
+        items.map(function(it){
+          return '<li>' + escHtml(it.item || '(unnamed)') +
+                 ' — ' + it.quadrant +
+                 ' — contribution margin ' + fmtMoney(it.cm_dollars) +
+                 ', ' + fmtPct(it.share) + ' share' +
+                 (it.category ? ', category ' + escHtml(it.category) : '') +
+                 '</li>';
+        }).join('');
+    }
   }
 
   function paintActions(summary){
@@ -686,6 +849,84 @@
       '<tbody>' + rows + '</tbody>';
   }
 
+  // ----- What-if: Plowhorse price uplift simulator -----
+  // Wires window.ME.simulateChange (already pure + tested) into a
+  // single live readout. Picks every Plowhorse-quadrant item, applies
+  // the uplift, and surfaces the contribution-margin delta + any
+  // items that flipped quadrants.
+  var whatIfBox      = document.getElementById('meWhatIf');
+  var whatIfRange    = document.getElementById('meWhatIfRange');
+  var whatIfPct      = document.getElementById('meWhatIfPct');
+  var whatIfReadout  = document.getElementById('meWhatIfReadout');
+  var whatIfFlips    = document.getElementById('meWhatIfFlips');
+  var whatIfFiredBucket = null;
+
+  function paintWhatIf(summary){
+    var items = summary.items;
+    var raw = readGrid().filter(function(it){
+      return it.item || it.price || it.food_cost || it.units_sold;
+    });
+    var plowhorseIndices = [];
+    items.forEach(function(it, idx){
+      if (it.quadrant === 'Plowhorse') plowhorseIndices.push(idx);
+    });
+    if (!plowhorseIndices.length || !whatIfBox) {
+      if (whatIfBox) whatIfBox.setAttribute('data-empty', 'true');
+      return;
+    }
+    whatIfBox.setAttribute('data-empty', 'false');
+    var pct = parseInt(whatIfRange.value, 10) || 0;
+    whatIfPct.textContent = (pct === 0 ? '0%' : '+' + pct + '%');
+    var changes = plowhorseIndices.map(function(idx){
+      var current = raw[idx];
+      var price = window.ME.coerceNumber(current && current.price);
+      return { index: idx, price: price * (1 + pct / 100) };
+    });
+    var after = window.ME.simulateChange(raw, changes, summariseOptions());
+
+    var beforeCm = summary.totals.contribution_margin;
+    var afterCm  = after.totals.contribution_margin;
+    var delta    = afterCm - beforeCm;
+    var revenueBefore = summary.totals.revenue;
+    var deltaPctOfRev = revenueBefore > 0 ? (delta / revenueBefore) : 0;
+
+    whatIfReadout.innerHTML =
+      '<strong>Before:</strong> ' + plowhorseIndices.length + ' Plowhorses · ' +
+        fmtMoney(beforeCm) + ' total contribution. ' +
+      '<strong>After:</strong> ' + fmtMoney(afterCm) + ' total contribution ' +
+      '(<strong>' + (delta >= 0 ? '+' : '') + fmtMoney(delta) + '</strong>, ' +
+      (deltaPctOfRev >= 0 ? '+' : '') + Math.round(deltaPctOfRev * 1000) / 10 + '% of revenue).';
+
+    // Quadrant flips: which Plowhorses become Stars.
+    var afterByName = {};
+    after.items.forEach(function(it){ afterByName[it.item] = it; });
+    var flipped = [];
+    plowhorseIndices.forEach(function(idx){
+      var name = items[idx].item;
+      if (!name) return;
+      var afterIt = afterByName[name];
+      if (afterIt && afterIt.quadrant !== 'Plowhorse') {
+        flipped.push({ name: name, to: afterIt.quadrant });
+      }
+    });
+    whatIfFlips.innerHTML = flipped.length
+      ? flipped.map(function(f){ return '<li>' + escHtml(f.name) + ' &middot; <span>Plowhorse &rarr; ' + f.to + '</span></li>'; }).join('')
+      : '<li><span>No Plowhorses flipped quadrants at this uplift. Try a higher value.</span></li>';
+  }
+
+  if (whatIfRange) {
+    whatIfRange.addEventListener('input', function(){
+      var summary = currentSummary();
+      paintWhatIf(summary);
+      if (window.plausible && whatIfFiredBucket !== whatIfRange.value) {
+        whatIfFiredBucket = whatIfRange.value;
+        var pct = parseInt(whatIfRange.value, 10) || 0;
+        var bucket = pct === 0 ? '0pct' : pct < 5 ? 'lt-5pct' : pct < 10 ? '5-10pct' : '10-15pct';
+        window.plausible('Menu Engineering Whatif', { props: { uplift_band: bucket } });
+      }
+    });
+  }
+
   function firePlausibleOnce(summary){
     if (firstAnalysisFired || !window.plausible) return;
     var meaningful = summary.totals.item_count >= 2;
@@ -739,6 +980,19 @@
     b.addEventListener('click', function(){ setMode(b.getAttribute('data-mode')); });
   });
 
+  // ----- Scope toggle (whole menu vs by-category) -----
+  var scopeBtns = document.querySelectorAll('.me-scope-btn');
+  scopeBtns.forEach(function(b){
+    b.addEventListener('click', function(){
+      var scope = b.getAttribute('data-scope');
+      currentGroupBy = scope === 'category' ? 'category' : null;
+      scopeBtns.forEach(function(other){
+        other.setAttribute('aria-pressed', other === b ? 'true' : 'false');
+      });
+      rerender();
+    });
+  });
+
   // ----- Paste-table parser -----
   var pasteArea = document.getElementById('mePasteArea');
   var parseBtn  = document.getElementById('meParse');
@@ -780,7 +1034,7 @@
   var downloadPngBtn  = document.getElementById('meDownloadPng');
 
   function buildCsv(){
-    var s = window.ME.summariseMenu(readGrid());
+    var s = currentSummary();
     var lines = ['Item,Category,Price,Food cost,CM dollars,CM percent,Units sold,Share,Quadrant'];
     s.items.forEach(function(it){
       function csvCell(v){
@@ -803,17 +1057,21 @@
   }
 
   function buildJson(){
-    var s = window.ME.summariseMenu(readGrid());
+    var s = currentSummary();
     var dogCount = s.items.filter(function(it){ return it.quadrant === 'Dog'; }).length;
     return JSON.stringify({
       meta: {
         tool: 'Muntin Digital — Menu Engineering Matrix',
         url: 'https://muntin.digital/tools/menu-engineering/',
         generated_at: new Date().toISOString(),
-        method: 'Kasavana & Smith median-split: contribution-margin dollars × menu-mix share'
+        method: s.group_by === 'category'
+          ? 'Pavesic per-category median-split (Kasavana & Smith refinement): contribution-margin dollars × menu-mix share, computed within each category'
+          : 'Kasavana & Smith median-split: contribution-margin dollars × menu-mix share'
       },
       totals: s.totals,
       thresholds: s.thresholds,
+      thresholds_by_category: s.thresholds_by_category,
+      group_by: s.group_by || 'whole',
       items: s.items,
       counts: {
         Star:      s.items.filter(function(i){ return i.quadrant === 'Star'; }).length,
@@ -868,7 +1126,7 @@
   function buildMenuCardBlob(){
     if (!window.MECard) return Promise.reject(new Error('card-render module not loaded'));
     return window.MECard.awaitFonts().then(function(){
-      var summary = window.ME.summariseMenu(readGrid());
+      var summary = currentSummary();
       var canvas  = window.MECard.renderMenuCard({
         summary: summary,
         strings: window.MECard.DEFAULT_STRINGS_EN
@@ -1035,23 +1293,33 @@
   // explicit button + a one-line confirmation, never auto-update.
   var shareBtn = document.getElementById('meShareLink');
 
+  // Mirrors the rehydrate cap below — keeps a runaway-menu fragment
+  // small enough to survive email clients and message-app character
+  // limits. Caller warns when truncation kicks in.
+  var SHARE_LINK_MAX_ITEMS = 100;
+
   function buildFragmentFromGrid(){
     var items = readGrid().filter(function(it){
       return it.item || it.price || it.food_cost || it.units_sold;
     });
     if (!items.length) return null;
+    var truncated = false;
+    if (items.length > SHARE_LINK_MAX_ITEMS) {
+      items = items.slice(0, SHARE_LINK_MAX_ITEMS);
+      truncated = true;
+    }
     // TSV is URL-safe after encodeURIComponent and survives clipboard
     // round-trips better than CSV.
     var lines = items.map(function(it){
       function safe(v){ return String(v == null ? '' : v).replace(/\t/g, ' '); }
       return [safe(it.item), safe(it.price), safe(it.food_cost), safe(it.units_sold), safe(it.category)].join('\t');
     });
-    return encodeURIComponent(lines.join('\n'));
+    return { fragment: encodeURIComponent(lines.join('\n')), truncated: truncated };
   }
 
   if (shareBtn) {
     shareBtn.addEventListener('click', function(){
-      var frag = buildFragmentFromGrid();
+      var built = buildFragmentFromGrid();
       var orig = shareBtn.lastChild.nodeValue;
       var settle = function(label, kind){
         shareBtn.classList.remove('copied');
@@ -1063,12 +1331,21 @@
           shareBtn.lastChild.nodeValue = orig;
         }, kind === 'error' ? 3000 : 1800);
       };
-      if (!frag) { settle(' Add items first', 'error'); return; }
-      var url = window.location.origin + window.location.pathname + '#m=' + frag;
-      try { history.replaceState(null, '', '#m=' + frag); } catch (_) {}
+      if (!built) { settle(' Add items first', 'error'); return; }
+      var url = window.location.origin + window.location.pathname + '#m=' + built.fragment;
+      try { history.replaceState(null, '', '#m=' + built.fragment); } catch (_) {}
+      if (built.truncated) {
+        var existing = warningsEl.querySelector('ul') ? warningsEl.querySelector('ul').innerHTML : '';
+        warningsEl.innerHTML = '<ul>' + existing +
+          '<li>Share link truncated to the first ' + SHARE_LINK_MAX_ITEMS +
+          ' items — too long for some email clients otherwise. Use the ZIP bundle for the full menu.</li></ul>';
+      }
+      var okLabel = built.truncated
+        ? ' Link copied — first ' + SHARE_LINK_MAX_ITEMS + ' items'
+        : ' Link copied — contains menu data';
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(url).then(
-          function(){ settle(' Link copied — contains menu data', 'ok'); },
+          function(){ settle(okLabel, 'ok'); },
           function(){ settle(' Update URL bar manually', 'error'); }
         );
       } else {
@@ -1114,7 +1391,7 @@
   var downloadZipBtn = document.getElementById('meDownloadZip');
   if (downloadZipBtn) {
     downloadZipBtn.addEventListener('click', function(){
-      var summary = window.ME.summariseMenu(readGrid());
+      var summary = currentSummary();
       var csv = buildCsv();
       var json = buildJson();
       var readme = buildReadme(summary);

@@ -62,3 +62,28 @@ if (missing.length) {
 }
 
 console.log(`✓ ${checked.size} og:image / twitter:image references resolve (across ${htmlFiles.length} HTML pages)`);
+
+// -------------------------------------------------------------
+// Inverse drift check: warn (don't fail) on PNGs that exist on disk
+// but are not declared in cards.json. This is the gap that allowed
+// 37 tools/work/draft cards to live outside the manifest pre-Sprint-2;
+// catching it early keeps future contributors honest.
+// -------------------------------------------------------------
+try {
+  const manifestPath = path.join(REPO, "brand", "og", "cards.json");
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+  const slugs = new Set(manifest.cards.map((c) => c.slug));
+  const ogDir = path.join(REPO, "brand", "og");
+  const orphans = fs.readdirSync(ogDir)
+    .filter((f) => f.endsWith(".png"))
+    .map((f) => f.replace(/\.png$/, ""))
+    .filter((slug) => !slugs.has(slug));
+  if (orphans.length) {
+    console.warn(`\n⚠  ${orphans.length} PNG(s) in brand/og/ have no manifest entry:`);
+    for (const o of orphans) console.warn(`    ${o}.png`);
+    console.warn(`   These will not be re-rendered when templates change. Add them`);
+    console.warn(`   to brand/og/cards.json or delete the orphan files.\n`);
+  }
+} catch (err) {
+  console.warn(`(skipping orphan-PNG check: ${err.message})`);
+}

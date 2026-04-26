@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#FAF7F2"/>
+  
+    <defs>
+      <pattern id="muntinField" x="0" y="0" width="140" height="140"
+               patternUnits="userSpaceOnUse">
+        <g transform="translate(18, 18)"
+           fill="none" stroke="#14161A" stroke-width="1.5"
+           stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="0" y="0" width="104" height="104"/>
+          <line x1="52" y1="0" x2="52" y2="104"/>
+          <line x1="0" y1="36" x2="104" y2="36"/>
+        </g>
+      </pattern>
+    </defs>
+    <rect width="1200" height="630"
+          fill="url(#muntinField)" opacity="0.045"/>
+  
+  
+    <rect x="0" y="0" width="12" height="252" fill="#1F4E5B"/>
+    <rect x="0" y="252" width="12" height="378" fill="#1F4E5B" opacity="0.4"/>
+  
+
+  
+    <g transform="translate(80, 78) scale(1.5)"
+       fill="none" stroke="#1F4E5B" stroke-width="1.167"
+       stroke-linecap="round" stroke-linejoin="round"
+       color="#1F4E5B" opacity="0.85">
+      <path d="M12 3 L20 6 V12 C20 16.5 16.5 19.5 12 21 C7.5 19.5 4 16.5 4 12 V6 Z"/>
+          <polyline points="9 12 11.5 14.5 15.5 10"/>
+    </g>
+  
+  <text x="136" y="104"
+        font-family="Inter, Arial, sans-serif" font-size="13"
+        font-weight="700" letter-spacing="4" fill="#1F4E5B">TRUST</text>
+
+  <text x="80" y="192"
+        font-family="Fraunces, Georgia, serif" font-size="60"
+        font-weight="500" letter-spacing="-2" fill="#14161A">Working</text>
+  <text x="80" y="264"
+        font-family="Fraunces, Georgia, serif" font-style="italic"
+        font-size="60" font-weight="400" letter-spacing="-2"
+        fill="#1F4E5B">contact</text>
+  <text x="80" y="328"
+        font-family="Fraunces, Georgia, serif" font-size="60"
+        font-weight="500" letter-spacing="-2" fill="#14161A">form</text>
+
+  <text x="80" y="408"
+        font-family="Inter, Arial, sans-serif" font-size="20"
+        font-weight="400" fill="#6B6B6B">A form where a visitor can type a question or an inquiry and actually get a response.</text>
+
+  
+
+  
+    <g transform="translate(80, 552)" fill="#6B6B6B" opacity="0.6">
+      <circle cx="8" cy="8" r="8" fill="none" stroke="#6B6B6B" stroke-width="1"/>
+      <text x="8" y="12" text-anchor="middle"
+            font-family="Fraunces, Georgia, serif" font-style="italic"
+            font-size="11" font-weight="500" fill="#6B6B6B">d</text>
+    </g>
+  
+  
+    <line x1="80" y1="584" x2="1120" y2="584"
+          stroke="#E8E2D6" stroke-width="1"/>
+    <text x="80" y="614"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="2" fill="#6B6B6B">MUNTIN DIGITAL</text>
+    <text x="1120" y="614" text-anchor="end"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="1" fill="#6B6B6B">muntin.digital</text>
+  
+</svg>

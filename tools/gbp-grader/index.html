@@ -53,7 +53,7 @@
 <script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260422-cohesion">
+<link rel="stylesheet" href="/assets/site.css?v=20260425-mobile-library-fix">
 <style>
   .gbp-hero{max-width:680px;margin:0 auto;text-align:center}
   .gbp-form{display:flex;gap:10px;max-width:560px;margin:32px auto 0}
@@ -292,7 +292,8 @@
 <nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><a href="/tools/">Tools</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><span aria-current="page">GBP Grader</span></nav>
 
 <section class="hero hero-tight"><div class="container"><div class="gbp-hero">
-  <span class="eyebrow">Free tool &middot; 10 seconds</span>
+  <div class="tool-hero-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22 C7 16 4 12 4 9 a8 8 0 0 1 16 0 c0 3 -3 7 -8 13 z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
+      <span class="eyebrow">Free tool &middot; 10 seconds</span>
   <h1>Grade your<br><span class="serif-italic">Google Business Profile.</span></h1>
   <p class="hero-sub" style="margin:20px auto 0;max-width:540px;">Search for your business name and see how your profile stacks up — rating, review count, photos, hours, categories — with specific fixes for what's missing.</p>
 
@@ -381,8 +382,8 @@
       fail:{title:'Primary category missing',body:'Without a primary category, Google has no idea which searches to show you in. Set one in your Business Profile dashboard — pick the most specific match available.'}
     },
     hours:{
-      pass:{title:'Hours are set',body:'Your listing shows when you\'re open. Make sure they match your website and update them for holidays.'},
-      fail:{title:'Hours missing',body:'No hours on your listing means customers don\'t know when you\'re open. Add them immediately — this is one of the most common reasons people skip a business on Maps.'}
+      pass:{title:'Hours are set',body:'Your listing shows when you\'re open. Make sure they match your website and update them for holidays. <a href="/tools/open-hours/" style="color:var(--teal);font-weight:600;">Run them through Open Hours to keep all platforms synced →</a>'},
+      fail:{title:'Hours missing',body:'No hours on your listing means customers don\'t know when you\'re open. Add them immediately — this is one of the most common reasons people skip a business on Maps. <a href="/tools/open-hours/" style="color:var(--teal);font-weight:600;">Generate them once with Open Hours →</a>'}
     },
     phone:{
       pass:{title:'Phone number listed',body:'Customers can tap-to-call from Maps. Make sure this number matches the one on your website.'},
@@ -418,8 +419,8 @@
     },
     hours_fresh:{
       pass:{title:'Weekly hours are complete',body:'Your listing shows a full weekly schedule. Keep it accurate — customers treat stale hours as a reason to skip the visit.'},
-      warn:{title:'Regular hours only',body:'You have regular hours but no human-readable weekly schedule exposed. Confirm each day shows open/close times in your Business Profile dashboard.'},
-      fail:{title:'Weekly hours incomplete',body:'Cover every day you\'re open in "Edit profile" → "Hours". A partial schedule reads as a stale listing to both users and Google.'}
+      warn:{title:'Regular hours only',body:'You have regular hours but no human-readable weekly schedule exposed. Confirm each day shows open/close times in your Business Profile dashboard. <a href="/tools/open-hours/" style="color:var(--teal);font-weight:600;">Or rebuild your hours with Open Hours and re-paste →</a>'},
+      fail:{title:'Weekly hours incomplete',body:'Cover every day you\'re open in "Edit profile" → "Hours". A partial schedule reads as a stale listing to both users and Google. <a href="/tools/open-hours/" style="color:var(--teal);font-weight:600;">Generate them with Open Hours →</a>'}
     },
     nap:{
       pass:{title:'NAP matches your website',body:'Phone and address on your Google listing match the LocalBusiness schema on your site. Google loves this kind of consistency — it\'s a trust multiplier.'},
@@ -437,14 +438,14 @@
   // always leads with the verb. CTA points at the generic GBP dashboard.
   var FIX_FIRST_COPY={
     primary_category:{title:'Set your primary category',body:'This is the single biggest on-page factor for local ranking. In your Business Profile dashboard, open "Edit profile" → "About" → "Category" and pick the most specific match available.'},
-    hours:{title:'Add your hours',body:'One of the top reasons people skip a listing on Maps. Open "Edit profile" → "Hours" and set regular hours for every day you\'re open.'},
+    hours:{title:'Add your hours',body:'One of the top reasons people skip a listing on Maps. Open "Edit profile" → "Hours" and set regular hours for every day you\'re open. <a href="/tools/open-hours/" style="color:var(--teal);font-weight:600;">Generate them once with Open Hours →</a>'},
     phone:{title:'Add your phone number',body:'Tap-to-call is the #1 action on Maps. Add it under "Edit profile" → "Contact" so customers can reach you in one tap.'},
     rating:{title:'Your rating needs attention',body:'Below 4.0 is a red flag for most searchers. Read your 1-3 star reviews for patterns and address the root causes — then respond publicly. Even to negative reviews.'},
     review_volume:{title:'Build up your review count',body:'You\'re well under the peer median for your category. Start a systematic review program — a QR postcard at checkout is the simplest lever. Aim for the median within 90 days.'},
     photos:{title:'Add more photos',body:'Listings with 10+ photos get 42% more direction requests. Upload interior, exterior, team, and product/service shots in your Business Profile dashboard.'},
     website:{title:'Link a website',body:'Even a simple one-page site beats none — it\'s where Google sends people who want to learn more. Add the URL under "Edit profile" → "Contact" → "Website".'},
     service_attrs:{title:'Fill in your service attributes',body:'Dine-in, takeout, delivery, reservations, cuisine flags — each one opens you up to more search queries. Set them under "Edit profile" → "More".'},
-    hours_fresh:{title:'Complete your weekly hours',body:'Your listing doesn\'t show a full weekly schedule. Open "Edit profile" → "Hours" and cover every day you\'re open.'}
+    hours_fresh:{title:'Complete your weekly hours',body:'Your listing doesn\'t show a full weekly schedule. Open "Edit profile" → "Hours" and cover every day you\'re open. <a href="/tools/open-hours/" style="color:var(--teal);font-weight:600;">Or use Open Hours to generate the full week →</a>'}
   };
 
   // ----- Helpers ----------------------------------------------------

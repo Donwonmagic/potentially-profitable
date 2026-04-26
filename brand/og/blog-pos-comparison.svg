@@ -1,34 +1,73 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
   <rect width="1200" height="630" fill="#FAF7F2"/>
-  <rect x="0" y="0" width="6" height="630" fill="#C28B2E"/>
+  
+    <defs>
+      <pattern id="muntinField" x="0" y="0" width="140" height="140"
+               patternUnits="userSpaceOnUse">
+        <g transform="translate(18, 18)"
+           fill="none" stroke="#14161A" stroke-width="1.5"
+           stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="0" y="0" width="104" height="104"/>
+          <line x1="52" y1="0" x2="52" y2="104"/>
+          <line x1="0" y1="36" x2="104" y2="36"/>
+        </g>
+      </pattern>
+    </defs>
+    <rect width="1200" height="630"
+          fill="url(#muntinField)" opacity="0.045"/>
+  
+  
+    <rect x="0" y="0" width="12" height="252" fill="#1F4E5B"/>
+    <rect x="0" y="252" width="12" height="378" fill="#1F4E5B" opacity="0.4"/>
+  
 
-  <text x="72" y="90" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#C28B2E" letter-spacing="5">COMPARISON · POS SYSTEMS</text>
+  
+    <g transform="translate(80, 70) scale(1.5)"
+       fill="none" stroke="#1F4E5B" stroke-width="1.167"
+       stroke-linecap="round" stroke-linejoin="round"
+       color="#1F4E5B" opacity="0.85">
+      <polyline points="8 6 3 12 8 18"/>
+          <polyline points="16 6 21 12 16 18"/>
+          <line x1="14" y1="4" x2="10" y2="20"/>
+    </g>
+  
+  <text x="136" y="96"
+        font-family="Inter, Arial, sans-serif" font-size="13"
+        font-weight="700" letter-spacing="4" fill="#1F4E5B">OPERATIONS · POS</text>
 
-  <text x="72" y="200" font-family="Fraunces, Georgia, serif" font-size="56" font-weight="500" fill="#14161A" letter-spacing="-2">Toast vs. Square</text>
-  <text x="72" y="272" font-family="Fraunces, Georgia, serif" font-size="56" font-weight="500" fill="#14161A" letter-spacing="-2">vs. Clover</text>
-  <text x="72" y="340" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="36" font-weight="400" fill="#1F4E5B">Which POS integrates best with your site?</text>
+  <text x="80" y="184"
+        font-family="Fraunces, Georgia, serif" font-size="58"
+        font-weight="500" letter-spacing="-2" fill="#14161A">Toast vs Square</text>
+  <text x="80" y="256"
+        font-family="Fraunces, Georgia, serif" font-style="italic"
+        font-size="58" font-weight="400" letter-spacing="-2"
+        fill="#1F4E5B">vs Clover for</text>
+  <text x="80" y="328"
+        font-family="Fraunces, Georgia, serif" font-size="58"
+        font-weight="500" letter-spacing="-2" fill="#14161A">restaurants.</text>
 
-  <!-- Right: three POS indicator cards -->
-  <g transform="translate(850, 150)">
-    <rect x="0" y="0" width="280" height="56" rx="8" fill="#FFFFFF" stroke="#E8E2D6" stroke-width="1.5"/>
-    <circle cx="32" cy="28" r="10" fill="#1f9d55"/>
-    <text x="54" y="33" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="600" fill="#14161A">Square</text>
-    <text x="240" y="33" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#6B6B6B">Best API</text>
+  <text x="80" y="408"
+        font-family="Inter, Arial, sans-serif" font-size="20"
+        font-weight="400" fill="#6B6B6B">Hardware, fees, lock-in, integrations — compared in plain numbers.</text>
 
-    <rect x="0" y="68" width="280" height="56" rx="8" fill="#FFFFFF" stroke="#E8E2D6" stroke-width="1.5"/>
-    <circle cx="32" cy="96" r="10" fill="#1F4E5B"/>
-    <text x="54" y="101" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="600" fill="#14161A">Toast</text>
-    <text x="240" y="101" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#6B6B6B">Restaurant-built</text>
+  
 
-    <rect x="0" y="136" width="280" height="56" rx="8" fill="#FFFFFF" stroke="#E8E2D6" stroke-width="1.5"/>
-    <circle cx="32" cy="164" r="10" fill="#C28B2E"/>
-    <text x="54" y="169" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="600" fill="#14161A">Clover</text>
-    <text x="240" y="169" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#6B6B6B">Most hardware</text>
-  </g>
-
-  <text x="72" y="430" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="500" fill="#6B6B6B">Strengths, quiet limitations, and which one fits your restaurant.</text>
-
-  <line x1="0" y1="590" x2="1200" y2="590" stroke="#E8E2D6" stroke-width="1"/>
-  <text x="72" y="616" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#6B6B6B" letter-spacing="2">MUNTIN DIGITAL</text>
-  <text x="1128" y="616" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#6B6B6B" letter-spacing="1">muntin.digital/blog</text>
+  
+    <g transform="translate(80, 552)" fill="#6B6B6B" opacity="0.6">
+      <circle cx="8" cy="8" r="8" fill="none" stroke="#6B6B6B" stroke-width="1"/>
+      <text x="8" y="12" text-anchor="middle"
+            font-family="Fraunces, Georgia, serif" font-style="italic"
+            font-size="11" font-weight="500" fill="#6B6B6B">d</text>
+    </g>
+  
+  
+    <line x1="80" y1="584" x2="1120" y2="584"
+          stroke="#E8E2D6" stroke-width="1"/>
+    <text x="80" y="614"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="2" fill="#6B6B6B">MUNTIN DIGITAL</text>
+    <text x="1120" y="614" text-anchor="end"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="1" fill="#6B6B6B">muntin.digital</text>
+  
 </svg>

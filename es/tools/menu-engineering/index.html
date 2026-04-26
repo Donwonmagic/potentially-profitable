@@ -19,14 +19,14 @@
 <meta property="og:description" content="Paste your menu, get a 2×2 of Stars / Plowhorses / Puzzles / Dogs and one action per item. Stays in your browser." />
 <meta property="og:url" content="https://muntin.digital/tools/menu-engineering/" />
 <meta property="og:site_name" content="Muntin Digital" />
-<meta property="og:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-menu-engineering-es.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Menu Engineering Matrix — Free Restaurant Menu Analyzer" />
 <meta name="twitter:description" content="Paste your menu. Get a Stars / Plowhorses / Puzzles / Dogs matrix and one-line actions per item." />
-<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-menu-engineering-es.png" />
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
@@ -89,6 +89,30 @@
 .me-modes{display:inline-flex;gap:0;border:1px solid var(--line);border-radius:999px;background:var(--white);padding:3px;margin-bottom:6px}
 .me-mode-btn{padding:6px 14px;border:none;background:transparent;font:inherit;font-size:12.5px;font-weight:600;color:var(--stone);cursor:pointer;border-radius:999px}
 .me-mode-btn[aria-selected="true"]{background:var(--teal);color:var(--cream)}
+.me-scope{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-soft);margin-top:4px}
+.me-scope-label{font-weight:600;color:var(--stone);letter-spacing:.04em;text-transform:uppercase;font-size:11px}
+.me-scope-group{display:inline-flex;gap:0;border:1px solid var(--line);border-radius:999px;background:var(--white);padding:3px}
+.me-scope-btn{padding:5px 12px;border:none;background:transparent;font:inherit;font-size:12px;font-weight:600;color:var(--stone);cursor:pointer;border-radius:999px}
+.me-scope-btn[aria-pressed="true"]{background:var(--ink);color:var(--cream)}
+.me-scope-hint{font-size:11.5px;color:var(--stone)}
+.me-matrix-badge{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border:1px solid var(--line);background:var(--cream-2);border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);margin-left:8px}
+.me-whatif{padding:18px 20px;border:1px solid var(--line);border-left:4px solid #C68A2C;border-radius:var(--r-input);background:#FCFAF4;display:flex;flex-direction:column;gap:12px;margin-top:18px}
+.me-whatif h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0}
+.me-whatif p{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink-soft)}
+.me-whatif-controls{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.me-whatif-controls label{font-size:13px;font-weight:600;color:var(--ink);display:inline-flex;align-items:center;gap:10px}
+.me-whatif-controls input[type=range]{flex:1;min-width:180px;max-width:340px;accent-color:#C68A2C}
+.me-whatif-pct{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:14px;font-weight:600;color:#C68A2C;min-width:42px;text-align:right}
+.me-whatif-readout{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;color:var(--ink);background:var(--white);padding:10px 14px;border:1px solid var(--line);border-radius:var(--r-sm);line-height:1.55}
+.me-whatif-readout strong{color:var(--ink);font-weight:700}
+.me-whatif-flip{display:flex;flex-direction:column;gap:2px;margin-top:6px;font-size:12.5px}
+.me-whatif-flip span{color:var(--stone)}
+.me-whatif[data-empty="true"] .me-whatif-controls,
+.me-whatif[data-empty="true"] .me-whatif-readout,
+.me-whatif[data-empty="true"] .me-whatif-flip{display:none}
+.me-whatif-empty{font-size:13px;color:var(--stone);font-style:italic;display:none}
+.me-whatif[data-empty="true"] .me-whatif-empty{display:block}
+.me-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .me-paste{display:flex;flex-direction:column;gap:10px}
 .me-paste textarea{width:100%;min-height:160px;padding:12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;line-height:1.5;color:var(--ink);resize:vertical}
 .me-paste textarea:focus{outline:2px solid var(--teal);outline-offset:1px}
@@ -115,8 +139,8 @@
   body{background:#fff !important;color:#000 !important}
   header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,.me-input,
   #what-this-does,#how-private,#what-this-isnt,.me-export-row,
-  .mm-next,.me-empty-state,#meEmptyHint{display:none !important}
-  .me-output > div > h2 + p,details,.me-warnings{display:none !important}
+  .mm-next,.me-empty-state,#meEmptyHint,.me-whatif{display:none !important}
+  .me-output > div > h2 + p,.me-export-row ~ p,.me-warnings{display:none !important}
   .me-output{margin-top:14px;gap:12px}
   .me-matrix-wrap,.me-action-card,.me-table,.me-totals-card{break-inside:avoid;page-break-inside:avoid}
   .me-actions{break-before:auto}
@@ -129,8 +153,14 @@
 <a class="skip-link" href="#main">Skip to main content</a>
 <!-- NAV_PLACEHOLDER -->
 <header class="nav" id="nav">
+  <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
+             Placed inside <header> so sync-includes replaces it atomically
+             along with the rest of the nav block on every build, keeping
+             the partial strictly idempotent. Valid HTML5: <script> may
+             appear in any flow-content context. */
+  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
   <div class="container nav-inner">
-    <a href="/" class="logo" aria-label="Muntin Digital home">
+    <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
       <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
         <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
           <rect x="18" y="18" width="92" height="92"/>
@@ -140,22 +170,67 @@
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
-    <nav class="nav-links" aria-label="Primary">
+    <nav class="nav-links" aria-label="Principal">
       <a href="/es/services/">Servicios</a>
       <a href="/es/for/restaurants/">Restaurantes</a>
-      <a href="/es/learn/" class="nav-library-trigger">Biblioteca</a>
-      <a href="/es/work/">Trabajo</a>
-      <a href="/es/about/">Nosotros</a>
+      <div class="nav-library-wrap">
+        <a href="/es/learn/" class="nav-library-trigger" aria-haspopup="true">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-library-menu" role="menu" aria-label="Secciones de la biblioteca">
+          <a href="/es/learn/" role="menuitem"><strong>Inicio de la biblioteca</strong><span>El centro de todo lo de abajo</span></a>
+          <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
+          <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
+          <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
+          <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
+          <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span>97 términos en lenguaje claro</span></a>
+          <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
+          <a href="/es/resources/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+        </div>
+      </div>
+      <a href="/es/work/">Proyectos</a>
+      <a href="/es/about/">Sobre Don</a>
     </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Buscar</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+    </button>
     <nav class="lang-switch" aria-label="Idioma">
       <a href="/tools/menu-engineering/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
-    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Reserva una llamada de 20 min<span class="sr-only"> (abre en pestaña nueva)</span></a>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Agenda una llamada de 20 min<span class="sr-only"> (se abre en una pestaña nueva)</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
     <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
+    <a href="/es/services/">Servicios</a>
+    <a href="/es/for/restaurants/">Restaurantes</a>
+    <details class="mobile-library">
+      <summary>Biblioteca</summary>
+      <a href="/es/learn/">Inicio de la biblioteca</a>
+      <a href="/es/learn/start-here/">Empieza aquí</a>
+      <a href="/es/learn/topics/">Temas</a>
+      <a href="/es/blog/">Artículos</a>
+      <a href="/es/tools/">Herramientas gratis</a>
+      <a href="/es/glossary/">Glosario</a>
+      <a href="/es/learn/research/">Investigación</a>
+      <a href="/es/resources/">Listas y recursos</a>
+    </details>
+    <a href="/es/work/">Proyectos</a>
+    <a href="/es/about/">Sobre Don</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Buscar en la biblioteca</span>
+    </button>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Agenda una llamada de 20 min<span class="sr-only"> (se abre en una pestaña nueva)</span></a>
+    <a href="/tools/menu-engineering/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
+  </nav>
 </header>
 <nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/es/">Inicio</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><a href="/es/tools/">Herramientas</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><span aria-current="page">Matriz de Ingeniería de Menú</span></nav>
 <main id="main">
@@ -176,6 +251,15 @@
     <div class="me-modes" role="tablist" aria-label="Modo de entrada">
       <button type="button" class="me-mode-btn" role="tab" aria-selected="true"  data-mode="manual">Escribir o pegar valores</button>
       <button type="button" class="me-mode-btn" role="tab" aria-selected="false" data-mode="paste">Pegar de hoja de cálculo</button>
+    </div>
+
+    <div class="me-scope" role="radiogroup" aria-label="Alcance del análisis">
+      <span class="me-scope-label">Analizar:</span>
+      <span class="me-scope-group">
+        <button type="button" class="me-scope-btn" role="radio" aria-pressed="true"  data-scope="whole">Todo el menú</button>
+        <button type="button" class="me-scope-btn" role="radio" aria-pressed="false" data-scope="category">Por categoría</button>
+      </span>
+      <span class="me-scope-hint">La división por categoría calcula la mediana dentro de cada sección — un plato fuerte de $38 y una guarnición de $6 no comparten eje.</span>
     </div>
 
     <div class="me-input-actions" data-mode="manual">
@@ -221,17 +305,19 @@
     <div class="me-totals" id="meTotals" aria-label="Menu totals"></div>
 
     <div>
-      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px;">La matriz</h2>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px;">La matriz <span id="meMatrixBadge" hidden class="me-matrix-badge">Por categoría</span></h2>
       <div class="me-matrix-wrap">
-        <svg class="me-matrix-svg" id="meMatrix" viewBox="0 0 720 540" role="img" aria-label="Menu engineering matrix"></svg>
+        <svg class="me-matrix-svg" id="meMatrix" viewBox="0 0 720 540" role="img" aria-label="Matriz de ingeniería de menú" aria-describedby="meMatrixA11yList"></svg>
+        <ul id="meMatrixA11yList" class="me-sr-only"></ul>
         <div class="me-matrix-legend" aria-hidden="true">
-          <span><i class="me-q-Star"></i> Star</span>
-          <span><i class="me-q-Plowhorse"></i> Plowhorse</span>
-          <span><i class="me-q-Puzzle"></i> Puzzle</span>
-          <span><i class="me-q-Dog"></i> Dog</span>
+          <span><i class="me-q-Star"></i> Estrella ★</span>
+          <span><i class="me-q-Plowhorse"></i> Caballo ▲</span>
+          <span><i class="me-q-Puzzle"></i> Acertijo ◆</span>
+          <span><i class="me-q-Dog"></i> Perro ●</span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--stone);margin:8px 0 0;">eje x: margen de contribución por venta (\$). eje y: porcentaje de cubiertos vendidos. Las líneas de mediana dividen la cuadrícula; los platos exactamente en la mediana caen al lado superior-derecho.</p>
+      <p style="font-size:12px;color:var(--stone);margin:4px 0 0;font-style:italic;">Método: Kasavana &amp; Smith (1990). División por mediana — un plato disparado no jala la barra.</p>
     </div>
 
     <div>
@@ -243,6 +329,21 @@
       <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px;">Matemática por plato</h2>
       <div style="overflow-x:auto;">
         <table class="me-table" id="meItemTable" aria-label="Margen de contribución y cuadrante por plato"></table>
+      </div>
+
+      <div class="me-whatif" id="meWhatIf" data-empty="true" aria-live="polite">
+        <h3>Re-ingeniería de los Caballos de tiro</h3>
+        <p>Los Caballos son populares pero de margen delgado. Receta clásica: un cambio de precio o sourcing de 5–10%. Mueve el slider para ensayar antes de tocar el menú — los datos arriba no cambian.</p>
+        <div class="me-whatif-controls">
+          <label>
+            Alza de precio sobre cada Caballo de tiro:
+            <input type="range" id="meWhatIfRange" min="0" max="15" step="1" value="5" aria-describedby="meWhatIfReadout">
+            <span class="me-whatif-pct" id="meWhatIfPct">+5%</span>
+          </label>
+        </div>
+        <div class="me-whatif-readout" id="meWhatIfReadout"></div>
+        <ul class="me-whatif-flip" id="meWhatIfFlips"></ul>
+        <p class="me-whatif-empty">Agrega platos en el cuadrante Caballos de tiro para ensayar. Carga el menú de ejemplo arriba para verlo en acción.</p>
       </div>
     </div>
 
@@ -270,10 +371,7 @@
           Generar enlace para compartir
         </button>
       </div>
-      <details style="margin-top:8px;font-size:12.5px;color:var(--stone);">
-        <summary style="cursor:pointer;color:var(--ink-soft);">Sobre el enlace para compartir</summary>
-        <p style="margin:8px 0 0;line-height:1.55;">A diferencia del resto del toolkit, este enlace <strong>sí</strong> contiene tus datos del menú — los nombres y números se codifican en el fragmento de URL después de <code>#m=</code>. El fragmento nunca llega a nuestros servidores (los navegadores no envían fragmentos según la spec HTTP), pero quien recibe el enlace puede recrear el mismo análisis. Trátalo como un archivo adjunto: mándalo a donde mandarías un CSV. No lo pegues en un canal público.</p>
-      </details>
+      <p style="margin:8px 0 0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);"><strong>Aviso sobre el enlace:</strong> a diferencia de los demás exports, lleva tus datos del menú dentro del fragmento de URL (<code>#m=</code>). El fragmento nunca llega a nuestros servidores, pero quien reciba el enlace puede recrear el análisis. Mándalo a donde mandarías un CSV — no a donde pegarías un enlace público.</p>
       <p style="margin:10px 0 0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);">La <strong>Ficha de Menú PNG</strong> es una imagen de 1200×1500 con la matriz + tarjetas de acción por cuadrante — compártela con tu chef o socio. El CSV refleja los datos de entrada más el cuadrante calculado. El JSON incluye umbrales y matemática completa por plato. El paquete ZIP empaqueta los cuatro (PNG + CSV + JSON + README). Todo en tu navegador — sin subida.</p>
     </div>
 
@@ -304,7 +402,7 @@
     <span class="eyebrow">Predicar con el ejemplo</span>
     <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:12px 0 12px;">Los datos de tu menú se quedan en tu navegador.</h2>
     <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0 0 14px;">Sin subida, sin cuenta, sin escrituras a <code>localStorage</code>. Cierra la pestaña y el formulario queda vacío. Abre DevTools → Network y dale click a <em>Añadir plato</em> o <em>Cargar menú de ejemplo</em> — la lista de peticiones no crecerá. El módulo de matemática completo es JavaScript en <code>/tools/menu-engineering/menu-engineering.js</code>; click derecho <em>Ver código fuente</em> y léelo.</p>
-    <p style="font-size:13px;color:var(--stone);margin:0;">Un recorrido verificable de nueve pasos y una Ficha de Menú imprimible llegan en una versión siguiente. Para la misma postura hoy, mira <a href="/es/tools/brand-suite/#how-we-protect" style="color:inherit;border-bottom:1px dashed var(--teal);">cómo Suite de Marca protege tu logo</a> — esta herramienta usa la misma arquitectura.</p>
+    <p style="font-size:13px;color:var(--stone);margin:0;">Misma arquitectura que Suite de Marca — mira <a href="/es/tools/brand-suite/#how-we-protect" style="color:inherit;border-bottom:1px dashed var(--teal);">cómo Suite de Marca protege tu logo</a> para la misma postura, paso por paso.</p>
   </div>
 </div></section>
 
@@ -389,6 +487,20 @@
           <p class="tool-deep-snippet">Para un plato individual: precio de venta menos el costo variable de producir una unidad (costo de comida emplatado). Se reporta en dólares …</p>
           <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
         </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/food-cost/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Food cost</h3>
+          <p class="tool-deep-aka">costo de los insumos, como % de ventas</p>
+          <p class="tool-deep-snippet">El costo de los ingredientes, alcohol y consumibles (productos de papel, empaque para llevar) expresado como porcentaje de ventas. Target 28…</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/prime-cost/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Prime cost</h3>
+          <p class="tool-deep-aka">food cost + labor cost, como % de ventas</p>
+          <p class="tool-deep-snippet">Tu food cost más tu labor cost, expresado como porcentaje de ventas. Los independientes saludables caen entre 55–65%; por encima de 70% es o…</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
       <a class="tool-deep-card tool-deep-card-article" href="/es/blog/is-doordash-worth-it-for-restaurants-in-2026/">
           <span class="tool-deep-kind">Artículo</span>
           <h3>¿Vale la pena DoorDash? Las matemáticas honestas para 2026</h3>
@@ -409,8 +521,8 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/es/terms.html">Términos</a><a href="/es/privacy.html">Privacidad</a><a href="/es/accessibility.html">Accesibilidad</a><a href="/es/cookies.html">Cookies</a></nav></div>
 </footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="/tools/menu-engineering/menu-engineering.js?v=20260425-me1"></script>
-<script src="/tools/menu-engineering/card-render.js?v=20260425-me2"></script>
+<script src="/tools/menu-engineering/menu-engineering.js?v=20260425-me6"></script>
+<script src="/tools/menu-engineering/card-render.js?v=20260425-me5"></script>
 <!-- IIFE_PLACEHOLDER -->
 <script>
 /* Menu Engineering Matrix — input + matrix rendering.
@@ -455,6 +567,9 @@
   var warningsEl   = document.getElementById('meWarnings');
 
   var firstAnalysisFired = false;
+  var currentGroupBy = null;
+  function summariseOptions(){ return currentGroupBy ? { groupBy: currentGroupBy } : undefined; }
+  function currentSummary(){ return window.ME.summariseMenu(readGrid(), summariseOptions()); }
 
   function readGrid(){
     var rows = gridBody.querySelectorAll('tr');
@@ -511,7 +626,7 @@
     requestAnimationFrame(function(){
       rafQueued = false;
       var raw = readGrid();
-      var summary = window.ME.summariseMenu(raw);
+      var summary = window.ME.summariseMenu(raw, summariseOptions());
       paintWarnings(summary.warnings);
       var meaningful = summary.totals.item_count >= 2;
       if (!meaningful) {
@@ -525,6 +640,7 @@
       paintMatrix(summary);
       paintActions(summary);
       paintItemTable(summary.items);
+      paintWhatIf(summary);
       firePlausibleOnce(summary);
     });
   }
@@ -585,42 +701,73 @@
     var medX = sx(summary.thresholds.median_cm_dollars);
     var medY = sy(summary.thresholds.median_share);
 
+    var byCategory = summary.group_by === 'category';
+
     var svg = '';
     // Background frame
     svg += '<rect x="' + x0 + '" y="' + y0 + '" width="' + (x1 - x0) + '" height="' + (y1 - y0) + '" fill="#FAF7F2" stroke="#E5E0D8" />';
-    // Quadrant tints (subtle)
-    svg += '<rect x="' + medX + '" y="' + y0 + '" width="' + (x1 - medX) + '" height="' + (medY - y0) + '" fill="#1F4E5B" opacity="0.04" />';
-    svg += '<rect x="' + x0 + '" y="' + y0 + '" width="' + (medX - x0) + '" height="' + (medY - y0) + '" fill="#C68A2C" opacity="0.05" />';
-    svg += '<rect x="' + medX + '" y="' + medY + '" width="' + (x1 - medX) + '" height="' + (y1 - medY) + '" fill="#6E5DB3" opacity="0.05" />';
-    svg += '<rect x="' + x0 + '" y="' + medY + '" width="' + (medX - x0) + '" height="' + (y1 - medY) + '" fill="#B8541A" opacity="0.05" />';
-    // Median lines
-    svg += '<line x1="' + medX + '" y1="' + y0 + '" x2="' + medX + '" y2="' + y1 + '" stroke="#14161A" stroke-dasharray="4 4" stroke-width="1" />';
-    svg += '<line x1="' + x0 + '" y1="' + medY + '" x2="' + x1 + '" y2="' + medY + '" stroke="#14161A" stroke-dasharray="4 4" stroke-width="1" />';
-    // Quadrant labels
-    svg += '<text x="' + (x0 + 8) + '" y="' + (y0 + 18) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif">Plowhorses · popular but thin</text>';
-    svg += '<text x="' + (x1 - 8) + '" y="' + (y0 + 18) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif" text-anchor="end">Stars · push them</text>';
-    svg += '<text x="' + (x0 + 8) + '" y="' + (y1 - 10) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif">Dogs · drop or replace</text>';
-    svg += '<text x="' + (x1 - 8) + '" y="' + (y1 - 10) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif" text-anchor="end">Puzzles · reposition</text>';
+    if (!byCategory) {
+      // Quadrant tints (subtle) — only meaningful with a single shared median.
+      svg += '<rect x="' + medX + '" y="' + y0 + '" width="' + (x1 - medX) + '" height="' + (medY - y0) + '" fill="#1F4E5B" opacity="0.04" />';
+      svg += '<rect x="' + x0 + '" y="' + y0 + '" width="' + (medX - x0) + '" height="' + (medY - y0) + '" fill="#C68A2C" opacity="0.05" />';
+      svg += '<rect x="' + medX + '" y="' + medY + '" width="' + (x1 - medX) + '" height="' + (y1 - medY) + '" fill="#6E5DB3" opacity="0.05" />';
+      svg += '<rect x="' + x0 + '" y="' + medY + '" width="' + (medX - x0) + '" height="' + (y1 - medY) + '" fill="#B8541A" opacity="0.05" />';
+      // Median lines
+      svg += '<line x1="' + medX + '" y1="' + y0 + '" x2="' + medX + '" y2="' + y1 + '" stroke="#14161A" stroke-dasharray="4 4" stroke-width="1" />';
+      svg += '<line x1="' + x0 + '" y1="' + medY + '" x2="' + x1 + '" y2="' + medY + '" stroke="#14161A" stroke-dasharray="4 4" stroke-width="1" />';
+      // Quadrant labels
+      svg += '<text x="' + (x0 + 8) + '" y="' + (y0 + 18) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif">Plowhorses · popular but thin</text>';
+      svg += '<text x="' + (x1 - 8) + '" y="' + (y0 + 18) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif" text-anchor="end">Stars · push them</text>';
+      svg += '<text x="' + (x0 + 8) + '" y="' + (y1 - 10) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif">Dogs · drop or replace</text>';
+      svg += '<text x="' + (x1 - 8) + '" y="' + (y1 - 10) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif" text-anchor="end">Puzzles · reposition</text>';
+    } else {
+      svg += '<text x="' + ((x0 + x1) / 2) + '" y="' + (y0 + 18) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif" text-anchor="middle">División por categoría — cuadrantes en la tabla por plato abajo</text>';
+    }
     // Axis labels
     svg += '<text x="' + (W / 2) + '" y="' + (H - 18) + '" font-size="12" fill="#14161A" font-family="Inter,sans-serif" text-anchor="middle">Contribution margin per sale &rarr;</text>';
     svg += '<text x="20" y="' + ((y0 + y1) / 2) + '" font-size="12" fill="#14161A" font-family="Inter,sans-serif" transform="rotate(-90 20 ' + ((y0 + y1) / 2) + ')" text-anchor="middle">&uarr; Share of total covers</text>';
 
     // Plot each item.
     var QC = { Star: '#1F4E5B', Plowhorse: '#C68A2C', Puzzle: '#6E5DB3', Dog: '#B8541A' };
+    var QGLYPH = { Star: '★', Plowhorse: '▲', Puzzle: '◆', Dog: '●' };
+    var Q_ES = { Star: 'Estrella', Plowhorse: 'Caballo', Puzzle: 'Acertijo', Dog: 'Perro' };
     items.forEach(function(it){
       var cx = sx(it.cm_dollars);
       var cy = sy(it.share);
       var color = QC[it.quadrant] || '#14161A';
-      svg += '<circle cx="' + cx + '" cy="' + cy + '" r="6" fill="' + color + '" stroke="#FAF7F2" stroke-width="1.5">';
-      svg += '<title>' + escHtml(it.item) + ' · CM ' + fmtMoney(it.cm_dollars) + ' · ' + fmtPct(it.share) + ' share · ' + it.quadrant + '</title>';
+      var glyph = QGLYPH[it.quadrant] || '';
+      svg += '<g>';
+      svg += '<circle cx="' + cx + '" cy="' + cy + '" r="8" fill="' + color + '" stroke="#FAF7F2" stroke-width="1.5">';
+      svg += '<title>' + escHtml(it.item) + ' · CM ' + fmtMoney(it.cm_dollars) + ' · ' + fmtPct(it.share) + ' cuota · ' + (Q_ES[it.quadrant] || it.quadrant) + '</title>';
       svg += '</circle>';
-      // Label, only for items where we have name and there's space.
+      svg += '<text x="' + cx + '" y="' + (cy + 3) + '" font-size="9" fill="#FAF7F2" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle" pointer-events="none" aria-hidden="true">' + glyph + '</text>';
+      svg += '</g>';
       if (it.item) {
-        svg += '<text x="' + (cx + 9) + '" y="' + (cy + 4) + '" font-size="10" fill="#14161A" font-family="Inter,sans-serif">' + escHtml(it.item.length > 18 ? it.item.slice(0, 17) + '…' : it.item) + '</text>';
+        svg += '<text x="' + (cx + 11) + '" y="' + (cy + 4) + '" font-size="10" fill="#14161A" font-family="Inter,sans-serif" aria-hidden="true">' + escHtml(it.item.length > 18 ? it.item.slice(0, 17) + '…' : it.item) + '</text>';
       }
     });
 
     matrixSvg.innerHTML = svg;
+    var badge = document.getElementById('meMatrixBadge');
+    if (badge) badge.hidden = !byCategory;
+
+    // Visually-hidden item list — descripción accesible de la matriz.
+    var a11yList = document.getElementById('meMatrixA11yList');
+    if (a11yList) {
+      var preamble = byCategory
+        ? 'División por categoría. ' + items.length + ' platos en la matriz.'
+        : items.length + ' platos graficados por margen de contribución y cuota de cubiertos.';
+      a11yList.innerHTML =
+        '<li>' + escHtml(preamble) + '</li>' +
+        items.map(function(it){
+          return '<li>' + escHtml(it.item || '(sin nombre)') +
+                 ' — ' + (Q_ES[it.quadrant] || it.quadrant) +
+                 ' — margen de contribución ' + fmtMoney(it.cm_dollars) +
+                 ', ' + fmtPct(it.share) + ' cuota' +
+                 (it.category ? ', categoría ' + escHtml(it.category) : '') +
+                 '</li>';
+        }).join('');
+    }
   }
 
   function paintActions(summary){
@@ -679,6 +826,80 @@
       '<tbody>' + rows + '</tbody>';
   }
 
+  // ----- What-if: simulador de alza sobre Caballos de tiro -----
+  var whatIfBox      = document.getElementById('meWhatIf');
+  var whatIfRange    = document.getElementById('meWhatIfRange');
+  var whatIfPct      = document.getElementById('meWhatIfPct');
+  var whatIfReadout  = document.getElementById('meWhatIfReadout');
+  var whatIfFlips    = document.getElementById('meWhatIfFlips');
+  var whatIfFiredBucket = null;
+
+  function paintWhatIf(summary){
+    var items = summary.items;
+    var raw = readGrid().filter(function(it){
+      return it.item || it.price || it.food_cost || it.units_sold;
+    });
+    var plowhorseIndices = [];
+    items.forEach(function(it, idx){
+      if (it.quadrant === 'Plowhorse') plowhorseIndices.push(idx);
+    });
+    if (!plowhorseIndices.length || !whatIfBox) {
+      if (whatIfBox) whatIfBox.setAttribute('data-empty', 'true');
+      return;
+    }
+    whatIfBox.setAttribute('data-empty', 'false');
+    var pct = parseInt(whatIfRange.value, 10) || 0;
+    whatIfPct.textContent = (pct === 0 ? '0%' : '+' + pct + '%');
+    var changes = plowhorseIndices.map(function(idx){
+      var current = raw[idx];
+      var price = window.ME.coerceNumber(current && current.price);
+      return { index: idx, price: price * (1 + pct / 100) };
+    });
+    var after = window.ME.simulateChange(raw, changes, summariseOptions());
+
+    var beforeCm = summary.totals.contribution_margin;
+    var afterCm  = after.totals.contribution_margin;
+    var delta    = afterCm - beforeCm;
+    var revenueBefore = summary.totals.revenue;
+    var deltaPctOfRev = revenueBefore > 0 ? (delta / revenueBefore) : 0;
+
+    whatIfReadout.innerHTML =
+      '<strong>Antes:</strong> ' + plowhorseIndices.length + ' Caballos · ' +
+        fmtMoney(beforeCm) + ' contribución total. ' +
+      '<strong>Después:</strong> ' + fmtMoney(afterCm) + ' contribución total ' +
+      '(<strong>' + (delta >= 0 ? '+' : '') + fmtMoney(delta) + '</strong>, ' +
+      (deltaPctOfRev >= 0 ? '+' : '') + Math.round(deltaPctOfRev * 1000) / 10 + '% de los ingresos).';
+
+    var afterByName = {};
+    after.items.forEach(function(it){ afterByName[it.item] = it; });
+    var flipped = [];
+    plowhorseIndices.forEach(function(idx){
+      var name = items[idx].item;
+      if (!name) return;
+      var afterIt = afterByName[name];
+      if (afterIt && afterIt.quadrant !== 'Plowhorse') {
+        flipped.push({ name: name, to: afterIt.quadrant });
+      }
+    });
+    var Q_ES = { Star: 'Estrella', Plowhorse: 'Caballo', Puzzle: 'Acertijo', Dog: 'Perro' };
+    whatIfFlips.innerHTML = flipped.length
+      ? flipped.map(function(f){ return '<li>' + escHtml(f.name) + ' &middot; <span>Caballo &rarr; ' + (Q_ES[f.to] || f.to) + '</span></li>'; }).join('')
+      : '<li><span>Ningún Caballo cambia de cuadrante con esta alza. Prueba un valor mayor.</span></li>';
+  }
+
+  if (whatIfRange) {
+    whatIfRange.addEventListener('input', function(){
+      var summary = currentSummary();
+      paintWhatIf(summary);
+      if (window.plausible && whatIfFiredBucket !== whatIfRange.value) {
+        whatIfFiredBucket = whatIfRange.value;
+        var pct = parseInt(whatIfRange.value, 10) || 0;
+        var bucket = pct === 0 ? '0pct' : pct < 5 ? 'lt-5pct' : pct < 10 ? '5-10pct' : '10-15pct';
+        window.plausible('Menu Engineering Whatif', { props: { uplift_band: bucket } });
+      }
+    });
+  }
+
   function firePlausibleOnce(summary){
     if (firstAnalysisFired || !window.plausible) return;
     var meaningful = summary.totals.item_count >= 2;
@@ -732,6 +953,19 @@
     b.addEventListener('click', function(){ setMode(b.getAttribute('data-mode')); });
   });
 
+  // ----- Scope toggle (whole menu vs by-category) -----
+  var scopeBtns = document.querySelectorAll('.me-scope-btn');
+  scopeBtns.forEach(function(b){
+    b.addEventListener('click', function(){
+      var scope = b.getAttribute('data-scope');
+      currentGroupBy = scope === 'category' ? 'category' : null;
+      scopeBtns.forEach(function(other){
+        other.setAttribute('aria-pressed', other === b ? 'true' : 'false');
+      });
+      rerender();
+    });
+  });
+
   // ----- Paste-table parser -----
   var pasteArea = document.getElementById('mePasteArea');
   var parseBtn  = document.getElementById('meParse');
@@ -771,7 +1005,7 @@
   var downloadPngBtn  = document.getElementById('meDownloadPng');
 
   function buildCsv(){
-    var s = window.ME.summariseMenu(readGrid());
+    var s = currentSummary();
     var lines = ['Plato,Categoría,Precio,Costo de comida,CM dólares,CM porcentaje,Unidades,Cuota,Cuadrante'];
     s.items.forEach(function(it){
       function csvCell(v){
@@ -794,17 +1028,21 @@
   }
 
   function buildJson(){
-    var s = window.ME.summariseMenu(readGrid());
+    var s = currentSummary();
     var dogCount = s.items.filter(function(it){ return it.quadrant === 'Dog'; }).length;
     return JSON.stringify({
       meta: {
         tool: 'Muntin Digital — Matriz de Ingeniería de Menú',
         url: 'https://muntin.digital/es/tools/menu-engineering/',
         generated_at: new Date().toISOString(),
-        method: 'Kasavana & Smith median-split: contribution-margin dollars × menu-mix share'
+        method: s.group_by === 'category'
+          ? 'Pavesic per-category median-split (refinamiento de Kasavana & Smith): margen de contribución en dólares × cuota de cubiertos, calculado dentro de cada categoría'
+          : 'Kasavana & Smith median-split: contribution-margin dollars × menu-mix share'
       },
       totals: s.totals,
       thresholds: s.thresholds,
+      thresholds_by_category: s.thresholds_by_category,
+      group_by: s.group_by || 'whole',
       items: s.items,
       counts: {
         Star:      s.items.filter(function(i){ return i.quadrant === 'Star'; }).length,
@@ -855,7 +1093,7 @@
   function buildMenuCardBlob(){
     if (!window.MECard) return Promise.reject(new Error('card-render module not loaded'));
     return window.MECard.awaitFonts().then(function(){
-      var summary = window.ME.summariseMenu(readGrid());
+      var summary = currentSummary();
       var canvas  = window.MECard.renderMenuCard({
         summary: summary,
         strings: window.MECard.DEFAULT_STRINGS_ES
@@ -1008,21 +1246,28 @@
   // ----- Share link (URL fragment) -----
   var shareBtn = document.getElementById('meShareLink');
 
+  var SHARE_LINK_MAX_ITEMS = 100;
+
   function buildFragmentFromGrid(){
     var items = readGrid().filter(function(it){
       return it.item || it.price || it.food_cost || it.units_sold;
     });
     if (!items.length) return null;
+    var truncated = false;
+    if (items.length > SHARE_LINK_MAX_ITEMS) {
+      items = items.slice(0, SHARE_LINK_MAX_ITEMS);
+      truncated = true;
+    }
     var lines = items.map(function(it){
       function safe(v){ return String(v == null ? '' : v).replace(/\t/g, ' '); }
       return [safe(it.item), safe(it.price), safe(it.food_cost), safe(it.units_sold), safe(it.category)].join('\t');
     });
-    return encodeURIComponent(lines.join('\n'));
+    return { fragment: encodeURIComponent(lines.join('\n')), truncated: truncated };
   }
 
   if (shareBtn) {
     shareBtn.addEventListener('click', function(){
-      var frag = buildFragmentFromGrid();
+      var built = buildFragmentFromGrid();
       var orig = shareBtn.lastChild.nodeValue;
       var settle = function(label, kind){
         shareBtn.classList.remove('copied');
@@ -1034,12 +1279,21 @@
           shareBtn.lastChild.nodeValue = orig;
         }, kind === 'error' ? 3000 : 1800);
       };
-      if (!frag) { settle(' Agrega platos primero', 'error'); return; }
-      var url = window.location.origin + window.location.pathname + '#m=' + frag;
-      try { history.replaceState(null, '', '#m=' + frag); } catch (_) {}
+      if (!built) { settle(' Agrega platos primero', 'error'); return; }
+      var url = window.location.origin + window.location.pathname + '#m=' + built.fragment;
+      try { history.replaceState(null, '', '#m=' + built.fragment); } catch (_) {}
+      if (built.truncated) {
+        var existing = warningsEl.querySelector('ul') ? warningsEl.querySelector('ul').innerHTML : '';
+        warningsEl.innerHTML = '<ul>' + existing +
+          '<li>Enlace recortado a los primeros ' + SHARE_LINK_MAX_ITEMS +
+          ' platos — algunos clientes de correo cortan URLs más largas. Usa el ZIP para el menú completo.</li></ul>';
+      }
+      var okLabel = built.truncated
+        ? ' Enlace copiado — primeros ' + SHARE_LINK_MAX_ITEMS + ' platos'
+        : ' Enlace copiado — contiene datos del menú';
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(url).then(
-          function(){ settle(' Enlace copiado — contiene datos del menú', 'ok'); },
+          function(){ settle(okLabel, 'ok'); },
           function(){ settle(' Copia desde la barra de URL', 'error'); }
         );
       } else {
@@ -1082,7 +1336,7 @@
   var downloadZipBtn = document.getElementById('meDownloadZip');
   if (downloadZipBtn) {
     downloadZipBtn.addEventListener('click', function(){
-      var summary = window.ME.summariseMenu(readGrid());
+      var summary = currentSummary();
       var csv = buildCsv();
       var json = buildJson();
       var readme = buildReadme(summary);

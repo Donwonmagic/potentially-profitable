@@ -53,7 +53,7 @@
 <script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260422-cohesion">
+<link rel="stylesheet" href="/assets/site.css?v=20260425-mobile-library-fix">
 <style>
   .gbp-hero{max-width:680px;margin:0 auto;text-align:center}
   .gbp-form{display:flex;gap:10px;max-width:560px;margin:32px auto 0}
@@ -278,7 +278,8 @@
 <nav class="breadcrumb container" aria-label="Ruta de navegación"><a href="/es/">Inicio</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><a href="/es/tools/">Herramientas</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><span aria-current="page">Calificador de GBP</span></nav>
 
 <section class="hero hero-tight"><div class="container"><div class="gbp-hero">
-  <span class="eyebrow">Herramienta gratis &middot; 10 segundos</span>
+  <div class="tool-hero-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22 C7 16 4 12 4 9 a8 8 0 0 1 16 0 c0 3 -3 7 -8 13 z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
+      <span class="eyebrow">Herramienta gratis &middot; 10 segundos</span>
   <h1>Califica tu<br><span class="serif-italic">Google Business Profile.</span></h1>
   <p class="hero-sub" style="margin:20px auto 0;max-width:540px;">Busca el nombre de tu negocio y mira cómo se compara tu ficha — calificación, número de reseñas, fotos, horarios, categorías — con arreglos específicos para lo que falta.</p>
 
@@ -363,8 +364,8 @@
       fail:{title:'Falta la categoría principal',body:'Sin categoría principal, Google no sabe en qué búsquedas mostrarte. Define una en tu panel de Business Profile — elige la coincidencia más específica disponible.'}
     },
     hours:{
-      pass:{title:'Los horarios están puestos',body:'Tu ficha muestra cuándo estás abierto. Asegúrate de que coincidan con los de tu sitio y actualízalos para las fiestas.'},
-      fail:{title:'Faltan los horarios',body:'Sin horarios en tu ficha, los clientes no saben cuándo estás abierto. Agrégalos ya — es una de las razones más comunes por las que la gente se salta un negocio en Maps.'}
+      pass:{title:'Los horarios están puestos',body:'Tu ficha muestra cuándo estás abierto. Asegúrate de que coincidan con los de tu sitio y actualízalos para las fiestas. <a href="/es/tools/open-hours/" style="color:var(--teal);font-weight:600;">Pásalos por Open Hours para mantener todas las plataformas en sincronía →</a>'},
+      fail:{title:'Faltan los horarios',body:'Sin horarios en tu ficha, los clientes no saben cuándo estás abierto. Agrégalos ya — es una de las razones más comunes por las que la gente se salta un negocio en Maps. <a href="/es/tools/open-hours/" style="color:var(--teal);font-weight:600;">Genéralos una vez con Open Hours →</a>'}
     },
     phone:{
       pass:{title:'Número de teléfono listado',body:'Los clientes pueden llamar con un toque desde Maps. Confirma que ese número coincida con el de tu sitio.'},
@@ -400,8 +401,8 @@
     },
     hours_fresh:{
       pass:{title:'Horario semanal completo',body:'Tu ficha muestra un horario semanal completo. Mantenlo preciso — los clientes tratan los horarios desactualizados como razón para saltarse la visita.'},
-      warn:{title:'Sólo horario regular',body:'Tienes horario regular pero no hay un horario semanal legible expuesto. Confirma que cada día muestre horas de apertura/cierre en tu panel de Business Profile.'},
-      fail:{title:'Horario semanal incompleto',body:'Cubre cada día que abras en "Editar perfil" → "Horario". Un horario parcial se lee como una ficha desactualizada tanto para los usuarios como para Google.'}
+      warn:{title:'Sólo horario regular',body:'Tienes horario regular pero no hay un horario semanal legible expuesto. Confirma que cada día muestre horas de apertura/cierre en tu panel de Business Profile. <a href="/es/tools/open-hours/" style="color:var(--teal);font-weight:600;">O reconstruye tus horarios con Open Hours y vuelve a pegarlos →</a>'},
+      fail:{title:'Horario semanal incompleto',body:'Cubre cada día que abras en "Editar perfil" → "Horario". Un horario parcial se lee como una ficha desactualizada tanto para los usuarios como para Google. <a href="/es/tools/open-hours/" style="color:var(--teal);font-weight:600;">Genéralos con Open Hours →</a>'}
     },
     nap:{
       pass:{title:'NAP coincide con tu sitio',body:'El teléfono y la dirección en tu ficha de Google coinciden con el schema LocalBusiness de tu sitio. A Google le encanta este tipo de consistencia — es un multiplicador de confianza.'},
@@ -414,14 +415,14 @@
 
   var FIX_FIRST_COPY={
     primary_category:{title:'Define tu categoría principal',body:'Es el factor on-page más importante para el ranking local. En tu panel de Business Profile, abre "Editar perfil" → "Acerca de" → "Categoría" y elige la coincidencia más específica disponible.'},
-    hours:{title:'Agrega tus horarios',body:'Es una de las razones más comunes por las que la gente se salta una ficha en Maps. Abre "Editar perfil" → "Horario" y define horarios regulares para cada día que abras.'},
+    hours:{title:'Agrega tus horarios',body:'Es una de las razones más comunes por las que la gente se salta una ficha en Maps. Abre "Editar perfil" → "Horario" y define horarios regulares para cada día que abras. <a href="/es/tools/open-hours/" style="color:var(--teal);font-weight:600;">Genéralos una vez con Open Hours →</a>'},
     phone:{title:'Agrega tu número de teléfono',body:'La llamada con un toque es la acción #1 en Maps. Agrégalo en "Editar perfil" → "Contacto" para que los clientes te alcancen en un toque.'},
     rating:{title:'Tu calificación necesita atención',body:'Por debajo de 4,0 es una bandera roja para la mayoría. Lee tus reseñas de 1 a 3 estrellas buscando patrones y aborda las causas raíz — después responde públicamente. Incluso a las negativas.'},
     review_volume:{title:'Sube tu número de reseñas',body:'Estás muy por debajo de la mediana de pares de tu categoría. Arranca un programa sistemático de reseñas — una tarjeta QR en la caja es la palanca más simple. Apunta a la mediana en 90 días.'},
     photos:{title:'Agrega más fotos',body:'Las fichas con 10+ fotos reciben 42 % más solicitudes de direcciones. Sube fotos del interior, exterior, equipo, y producto/servicio en tu panel de Business Profile.'},
     website:{title:'Enlaza un sitio web',body:'Hasta un sitio simple de una página vale más que ninguno — es adonde Google manda a quienes quieren saber más. Agrega la URL en "Editar perfil" → "Contacto" → "Sitio web".'},
     service_attrs:{title:'Completa tus atributos de servicio',body:'Servicio en mesa, para llevar, delivery, reservas, banderas de cocina — cada uno te abre a más búsquedas. Configúralos en "Editar perfil" → "Más".'},
-    hours_fresh:{title:'Completa tu horario semanal',body:'Tu ficha no muestra un horario semanal completo. Abre "Editar perfil" → "Horario" y cubre cada día que abras.'}
+    hours_fresh:{title:'Completa tu horario semanal',body:'Tu ficha no muestra un horario semanal completo. Abre "Editar perfil" → "Horario" y cubre cada día que abras. <a href="/es/tools/open-hours/" style="color:var(--teal);font-weight:600;">O usa Open Hours para generar la semana completa →</a>'}
   };
 
   function stars(rating){
