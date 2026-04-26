@@ -85,6 +85,14 @@ const RENDERERS = [
     renderEntries: ['renderStorefrontSign', 'renderOpenHoursCard'],
     enToolName:   'Open Hours',
     esToolName:   'Horario Abierto'
+  },
+  {
+    label:        'Plate Cost — Plate Card',
+    modulePath:   'tools/plate-cost/card-render.js',
+    moduleApi:    'PCCard',
+    renderEntries: ['renderPlateCard'],
+    enToolName:   'Plate Cost Calculator',
+    esToolName:   'Calculadora de Costo del Plato'
   }
 ];
 

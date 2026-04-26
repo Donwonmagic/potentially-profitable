@@ -265,9 +265,11 @@
 
     <div class="pc-actions" id="pcActions" style="display:none;">
       <span class="pc-actions-label">Take this with you</span>
+      <button type="button" class="pc-action-btn pc-action-btn-primary" id="pcDownloadCard">Download Plate Card <span class="pc-action-fmt">.png</span></button>
+      <button type="button" class="pc-action-btn" id="pcDownloadZip">Bundle <span class="pc-action-fmt">.zip</span></button>
       <button type="button" class="pc-action-btn" id="pcCopyCsv">Copy as CSV <span class="pc-action-fmt">.csv</span></button>
       <button type="button" class="pc-action-btn" id="pcDownloadJson">Download <span class="pc-action-fmt">.json</span></button>
-      <button type="button" class="pc-action-btn pc-action-btn-primary" id="pcPushMe">Add to Menu Engineering &rarr;</button>
+      <button type="button" class="pc-action-btn" id="pcPushMe">Add to Menu Engineering &rarr;</button>
       <button type="button" class="pc-action-btn" id="pcPushMm">Use in Margin Math &rarr;</button>
     </div>
 
@@ -275,6 +277,37 @@
       Fill in a row above &mdash; or <button type="button" class="pc-sample-btn" id="pcSample2" style="margin:0 6px;">load the sample recipe</button> &mdash; to see the math.
     </div>
   </div>
+</div></section>
+
+<!-- WHAT THIS IS / ISN'T (honesty framing) -->
+<section class="block" id="what-this-isnt"><div class="container" style="max-width:760px;">
+  <h2 style="font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0 0 6px;">What this <em>is</em>, and what it <em>isn&rsquo;t</em>.</h2>
+  <p style="font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0 0 18px;">A working tool can be honest about its edges. The Plate Cost Calculator does five things well and a handful of related things not at all.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 0 24px;">
+    <div style="padding:16px 18px;border:1px solid var(--line);border-left-width:4px;border-left-color:var(--status-good);border-radius:var(--r-sm);background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:15px;font-weight:600;margin:0 0 8px;color:var(--ink);">What this is</h3>
+      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.6;color:var(--ink-soft);">
+        <li>An honest <strong>plate-cost number</strong> per dish, after AP&rarr;EP yield correction.</li>
+        <li>The <strong>missing input</strong> for Menu Engineering Matrix and Margin Math.</li>
+        <li>A <strong>teaching tool</strong> &mdash; the AP / EP / yield math is visible.</li>
+        <li>A printable <strong>Plate Card</strong> for the kitchen wall.</li>
+        <li>A starting point for an honest conversation with your chef and accountant.</li>
+      </ul>
+    </div>
+    <div style="padding:16px 18px;border:1px solid var(--line);border-left-width:4px;border-left-color:var(--rust);border-radius:var(--r-sm);background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:15px;font-weight:600;margin:0 0 8px;color:var(--ink);">What this isn&rsquo;t</h3>
+      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.6;color:var(--ink-soft);">
+        <li>An <strong>invoice scanner</strong>. Type AP cost from your actual invoice; we don&rsquo;t guess prices.</li>
+        <li>A <strong>recipe substitution engine</strong>. The tool tells you what costs what; it doesn&rsquo;t propose cheaper alternatives.</li>
+        <li>A <strong>POS connector</strong>. The pitch is &ldquo;type your recipe&rdquo; &mdash; a connector inverts that and breaks privacy.</li>
+        <li>A <strong>prime-cost calculator</strong>. Labour is required. Use Margin Math for that.</li>
+        <li>A <strong>menu engineering analysis</strong>. Use Menu Engineering Matrix for the per-dish portfolio call.</li>
+      </ul>
+    </div>
+  </div>
+
+  <p style="font-size:13.5px;color:var(--ink-soft);line-height:1.6;margin:0;padding:14px 16px;background:var(--cream-2);border-radius:var(--r-sm);"><strong>What it does next.</strong> The plate cost is the missing first input for two other tools. Click <em>Add to Menu Engineering</em> to see this dish on the Stars / Plowhorses / Puzzles / Dogs matrix. Click <em>Use in Margin Math</em> to model how it lands against your full prime cost. Or just print the Plate Card and tape it to the wall.</p>
 </div></section>
 
 </main>
@@ -287,6 +320,7 @@
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/plate-cost/plate-cost.js?v=20260426-pc1"></script>
+<script src="/tools/plate-cost/card-render.js?v=20260426-pc2"></script>
 <script>
 (function(){
   'use strict';
@@ -609,6 +643,174 @@
     if (window.plausible) window.plausible('Plate Cost Export', { props: { format: 'json' } });
   });
 
+  // -------------------- recipe.html + README builders --------------------
+  // recipe.html is a one-page printable companion to the Plate Card
+  // PNG. The PNG is for sharing / pinning to the wall; recipe.html is
+  // for owners who'd rather print HTML than a PNG.
+  function escHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function buildRecipeHtml() {
+    if (!latestSummary || !latestRecipe) return '';
+    var prices = PC.suggestMenuPrices(latestSummary.plateCost);
+    var rowsHtml = latestSummary.ingredients.map(function(ing, i){
+      var src = (latestRecipe.rows[i] || {});
+      return '<tr>' +
+        '<td>' + escHtml(ing.ingredient || src.ingredient || '—') + '</td>' +
+        '<td class="num">' + (ing.apUnitCost ? '$' + ing.apUnitCost.toFixed(4) : '—') + '</td>' +
+        '<td class="num">' + (ing.yieldPercent != null && isFinite(ing.yieldPercent)
+          ? Math.round(ing.yieldPercent * 100) + '%' : '—') + '</td>' +
+        '<td class="num">' + escHtml((src.usedQty || '—') + (src.usedUnit ? ' ' + src.usedUnit : '')) + '</td>' +
+        '<td class="num">' + (ing.usedCost ? '$' + ing.usedCost.toFixed(2) : '—') + '</td>' +
+        '</tr>';
+    }).join('\n');
+    var pricesHtml = prices.map(function(p){
+      return '<tr><td class="num">' + Math.round(p.target * 100) + '%</td>' +
+        '<td>' + escHtml(p.label) + '</td>' +
+        '<td class="num">$' + p.price.toFixed(2) + '</td>' +
+        '<td class="num">+$' + p.cmDollars.toFixed(2) + ' kept</td></tr>';
+    }).join('\n');
+    var name = escHtml(latestRecipe.name || 'Plate Cost');
+    var date = new Date().toISOString().slice(0, 10);
+    return '<!doctype html>\n<html lang="en"><head><meta charset="utf-8"/>' +
+      '<title>' + name + ' — Plate Cost · Muntin Digital</title>' +
+      '<style>' +
+        'body{margin:0;padding:32px;font:14px/1.55 -apple-system,Segoe UI,sans-serif;color:#14161A;background:#FAF7F2}' +
+        '.head{border-bottom:2px solid #14161A;padding-bottom:16px;margin-bottom:24px}' +
+        'h1{font-family:Fraunces,Georgia,serif;font-weight:500;font-size:28px;margin:0 0 6px}' +
+        '.eyebrow{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#5A5752;margin:0 0 8px}' +
+        '.cost{font-family:Fraunces,Georgia,serif;font-weight:500;font-size:48px;margin:0;font-variant-numeric:tabular-nums}' +
+        'table{width:100%;border-collapse:collapse;margin:16px 0;font-variant-numeric:tabular-nums}' +
+        'th,td{padding:8px 10px;border-bottom:1px solid #E5E0D8;text-align:left;font-size:13px}' +
+        'th{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#5A5752}' +
+        '.num{text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace}' +
+        'h2{font-family:Fraunces,Georgia,serif;font-weight:500;font-size:18px;margin:24px 0 8px}' +
+        '.foot{margin-top:32px;padding-top:14px;border-top:1px solid #E5E0D8;font-size:11px;color:#5A5752;display:flex;justify-content:space-between}' +
+        '@media print{body{padding:24px;background:#fff} @page{size:auto;margin:14mm}}' +
+      '</style></head><body>' +
+      '<div class="head"><p class="eyebrow">Plate cost — ' + escHtml(date) + '</p>' +
+      '<h1>' + name + '</h1>' +
+      '<p class="cost">$' + latestSummary.plateCost.toFixed(2) +
+        '</p><p style="font-size:12px;color:#5A5752;margin:4px 0 0;">Ingredients only. Excludes labour and overhead.</p>' +
+      '</div>' +
+      '<h2>Recipe — invoice → plate</h2>' +
+      '<table><thead><tr>' +
+        '<th>Ingredient</th><th class="num">AP $/unit</th><th class="num">Yield</th><th class="num">Used</th><th class="num">Cost on plate</th>' +
+      '</tr></thead><tbody>' + rowsHtml + '</tbody></table>' +
+      '<h2>Suggested menu prices</h2>' +
+      '<table><thead><tr>' +
+        '<th class="num">Target</th><th>Tier</th><th class="num">Price</th><th class="num">Margin</th>' +
+      '</tr></thead><tbody>' + pricesHtml + '</tbody></table>' +
+      '<div class="foot"><span>Generated by Muntin · Plate Cost Calculator · muntin.digital</span><span>' + escHtml(date) + '</span></div>' +
+      '</body></html>\n';
+  }
+  function buildReadme() {
+    if (!latestSummary || !latestRecipe) return '';
+    var date = new Date().toISOString().slice(0, 10);
+    var prices = PC.suggestMenuPrices(latestSummary.plateCost);
+    var lines = [];
+    lines.push('# ' + (latestRecipe.name || 'Plate cost') + ' — ' + date);
+    lines.push('');
+    lines.push('Generated by **Plate Cost Calculator** at https://muntin.digital/tools/plate-cost/');
+    lines.push('');
+    lines.push('## Plate cost: $' + latestSummary.plateCost.toFixed(2));
+    lines.push('');
+    lines.push('Ingredients only — excludes labour and overhead.');
+    if (latestRecipe.portions > 1) {
+      lines.push('');
+      lines.push('Batch cost $' + latestSummary.batchCost.toFixed(2) + ' across ' + latestRecipe.portions + ' portions.');
+    }
+    lines.push('');
+    lines.push('## Suggested menu prices');
+    lines.push('');
+    prices.forEach(function(p){
+      lines.push('- **' + Math.round(p.target * 100) + '% target (' + p.label + ')** — sell for $' +
+        p.price.toFixed(2) + ', keep $' + p.cmDollars.toFixed(2) + ' per plate.');
+    });
+    lines.push('');
+    lines.push('## Method');
+    lines.push('');
+    lines.push('AP price ÷ AP qty = AP unit cost · AP unit cost ÷ yield = EP unit cost · EP unit cost × portion = cost on this plate.');
+    lines.push('');
+    lines.push('## Files in this bundle');
+    lines.push('');
+    lines.push('- `plate-card.png` — the printable / shareable card, 1200×1500 PNG.');
+    lines.push('- `recipe.html` — a one-page printable HTML companion.');
+    lines.push('- `recipe.csv` — per-ingredient breakdown for spreadsheets.');
+    lines.push('- `plate-cost.json` — machine-readable analysis (recipe + computed values).');
+    lines.push('- `README.md` — this file.');
+    lines.push('');
+    lines.push('## Privacy');
+    lines.push('');
+    lines.push('Your recipe never left your browser. Verify in DevTools: open this tool, fill in a recipe, click Compute. Zero network requests fire.');
+    return lines.join('\n') + '\n';
+  }
+
+  // -------------------- Plate Card download --------------------
+  // Awaits web fonts so Fraunces / Inter render rather than the
+  // system fallback. The slug is derived from the dish name; falls
+  // back to "recipe" if no name set.
+  function buildPlateCardCanvas() {
+    if (!window.PCCard || !latestSummary || !latestRecipe) return null;
+    var prices = PC.suggestMenuPrices(latestSummary.plateCost);
+    return window.PCCard.renderPlateCard({
+      recipe:    latestRecipe,
+      summary:   latestSummary,
+      suggested: prices,
+      strings:   window.PCCard.DEFAULT_STRINGS_EN
+    });
+  }
+  function plateCardSlug() {
+    return (latestRecipe && latestRecipe.name ? latestRecipe.name : 'recipe')
+      .trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'recipe';
+  }
+
+  var downloadCardBtn = document.getElementById('pcDownloadCard');
+  if (downloadCardBtn) downloadCardBtn.addEventListener('click', function(){
+    if (!latestSummary || !latestRecipe || !window.PCCard) return;
+    window.PCCard.awaitFonts().then(function(){
+      var canvas = buildPlateCardCanvas();
+      if (!canvas) return;
+      return window.PCCard.canvasToPngBlob(canvas);
+    }).then(function(blob){
+      if (!blob) return;
+      downloadBlob(blob, 'plate-card-' + plateCardSlug() + '.png');
+      if (window.plausible) window.plausible('Plate Cost Export', { props: { format: 'card-png' } });
+    });
+  });
+
+  // -------------------- ZIP bundle download --------------------
+  // Bundles plate-card.png + recipe.html + recipe.csv + plate-cost.json
+  // + README.md into one download. Same store-only ZIP primitive as
+  // every other tool's bundle.
+  var downloadZipBtn = document.getElementById('pcDownloadZip');
+  if (downloadZipBtn) downloadZipBtn.addEventListener('click', function(){
+    if (!latestSummary || !latestRecipe || !window.PCCard) return;
+    window.PCCard.awaitFonts().then(function(){
+      var canvas = buildPlateCardCanvas();
+      if (!canvas) return null;
+      return window.PCCard.canvasToPngBlob(canvas);
+    }).then(function(pngBlob){
+      if (!pngBlob) return;
+      var reader = new FileReader();
+      reader.onload = function(){
+        var slug = plateCardSlug();
+        var entries = [
+          { name: 'plate-card.png',   data: new Uint8Array(reader.result) },
+          { name: 'recipe.html',      data: strToBytes(buildRecipeHtml()) },
+          { name: 'recipe.csv',       data: strToBytes(buildCsv()) },
+          { name: 'plate-cost.json',  data: strToBytes(buildJson()) },
+          { name: 'README.md',        data: strToBytes(buildReadme()) }
+        ];
+        downloadBlob(buildZipBlob(entries), 'plate-cost-' + slug + '.zip');
+        if (window.plausible) window.plausible('Plate Cost Export', { props: { format: 'zip' } });
+      };
+      reader.readAsArrayBuffer(pngBlob);
+    });
+  });
+
   // -------------------- Push to Menu Engineering --------------------
   // Reuses Menu Engineering's existing `#m=<encoded TSV>` rehydration
   // (one line per dish, tab-separated). Seeds the menu price at the
@@ -678,6 +880,74 @@
     rerenderRows(Array.from({ length: 5 }, blankRow));
     renderResults();
   });
+
+  // -------------------- Inline ZIP writer (store-only) --------------------
+  // Same primitive as Brand Suite + Menu Engineering + Menu Copy +
+  // Open Hours. ~70 lines, zero deps. Bundles plate-card.png +
+  // recipe.csv + plate-cost.json + recipe.html + README.md so the
+  // owner walks away with one file holding everything.
+  var CRC_TABLE = (function(){
+    var t = new Uint32Array(256);
+    for (var n = 0; n < 256; n++) {
+      var c = n;
+      for (var k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+      t[n] = c >>> 0;
+    }
+    return t;
+  })();
+  function crc32(bytes){
+    var c = 0xFFFFFFFF;
+    for (var i = 0; i < bytes.length; i++) c = CRC_TABLE[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+    return (c ^ 0xFFFFFFFF) >>> 0;
+  }
+  function strToBytes(s){ return new TextEncoder().encode(s); }
+  function buildZipBlob(entries){
+    var parts = [], centralParts = [], offset = 0;
+    var nowDate = new Date();
+    var dosTime = ((nowDate.getHours() & 0x1F) << 11) | ((nowDate.getMinutes() & 0x3F) << 5) | ((nowDate.getSeconds() / 2) & 0x1F);
+    var dosDate = (((nowDate.getFullYear() - 1980) & 0x7F) << 9) | (((nowDate.getMonth() + 1) & 0x0F) << 5) | (nowDate.getDate() & 0x1F);
+    entries.forEach(function(entry){
+      var nameBytes = strToBytes(entry.name);
+      var crc = crc32(entry.data);
+      var size = entry.data.length;
+      var localHeader = new Uint8Array(30 + nameBytes.length);
+      var dv = new DataView(localHeader.buffer);
+      dv.setUint32(0, 0x04034b50, true); dv.setUint16(4, 20, true);
+      dv.setUint16(6, 0, true); dv.setUint16(8, 0, true);
+      dv.setUint16(10, dosTime, true); dv.setUint16(12, dosDate, true);
+      dv.setUint32(14, crc, true); dv.setUint32(18, size, true);
+      dv.setUint32(22, size, true); dv.setUint16(26, nameBytes.length, true);
+      dv.setUint16(28, 0, true);
+      localHeader.set(nameBytes, 30);
+      parts.push(localHeader); parts.push(entry.data);
+      var central = new Uint8Array(46 + nameBytes.length);
+      var cv = new DataView(central.buffer);
+      cv.setUint32(0, 0x02014b50, true); cv.setUint16(4, 20, true);
+      cv.setUint16(6, 20, true); cv.setUint16(8, 0, true);
+      cv.setUint16(10, 0, true); cv.setUint16(12, dosTime, true);
+      cv.setUint16(14, dosDate, true); cv.setUint32(16, crc, true);
+      cv.setUint32(20, size, true); cv.setUint32(24, size, true);
+      cv.setUint16(28, nameBytes.length, true); cv.setUint16(30, 0, true);
+      cv.setUint16(32, 0, true); cv.setUint16(34, 0, true);
+      cv.setUint16(36, 0, true); cv.setUint32(38, 0, true);
+      cv.setUint32(42, offset, true);
+      central.set(nameBytes, 46);
+      centralParts.push(central);
+      offset += localHeader.length + entry.data.length;
+    });
+    var cdSize = 0;
+    centralParts.forEach(function(c){ cdSize += c.length; });
+    var cdStart = offset;
+    centralParts.forEach(function(c){ parts.push(c); });
+    var eocd = new Uint8Array(22);
+    var ev = new DataView(eocd.buffer);
+    ev.setUint32(0, 0x06054b50, true); ev.setUint16(4, 0, true);
+    ev.setUint16(6, 0, true); ev.setUint16(8, entries.length, true);
+    ev.setUint16(10, entries.length, true); ev.setUint32(12, cdSize, true);
+    ev.setUint32(16, cdStart, true); ev.setUint16(20, 0, true);
+    parts.push(eocd);
+    return new Blob(parts, { type: 'application/zip' });
+  }
 
   // -------------------- Plausible bucketing --------------------
   // Only fire when there's something meaningful to bucket. The

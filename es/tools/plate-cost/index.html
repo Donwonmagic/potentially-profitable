@@ -265,9 +265,11 @@
 
     <div class="pc-actions" id="pcActions" style="display:none;">
       <span class="pc-actions-label">Llévatelo</span>
+      <button type="button" class="pc-action-btn pc-action-btn-primary" id="pcDownloadCard">Descargar Ficha del Plato <span class="pc-action-fmt">.png</span></button>
+      <button type="button" class="pc-action-btn" id="pcDownloadZip">Paquete <span class="pc-action-fmt">.zip</span></button>
       <button type="button" class="pc-action-btn" id="pcCopyCsv">Copiar como CSV <span class="pc-action-fmt">.csv</span></button>
       <button type="button" class="pc-action-btn" id="pcDownloadJson">Descargar <span class="pc-action-fmt">.json</span></button>
-      <button type="button" class="pc-action-btn pc-action-btn-primary" id="pcPushMe">Agregar a Ingeniería de Menú &rarr;</button>
+      <button type="button" class="pc-action-btn" id="pcPushMe">Agregar a Ingeniería de Menú &rarr;</button>
       <button type="button" class="pc-action-btn" id="pcPushMm">Usar en Margen Math &rarr;</button>
     </div>
 
@@ -275,6 +277,37 @@
       Llena una fila arriba &mdash; o <button type="button" class="pc-sample-btn" id="pcSample2" style="margin:0 6px;">carga la receta de muestra</button> &mdash; para ver la matemática.
     </div>
   </div>
+</div></section>
+
+<!-- QUÉ ES / QUÉ NO ES (honestidad) -->
+<section class="block" id="what-this-isnt"><div class="container" style="max-width:760px;">
+  <h2 style="font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0 0 6px;">Qué <em>es</em>, y qué <em>no es</em>.</h2>
+  <p style="font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0 0 18px;">Una herramienta que funciona puede ser honesta sobre sus bordes. La Calculadora de Costo del Plato hace cinco cosas bien y un puñado de cosas relacionadas para nada.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 0 24px;">
+    <div style="padding:16px 18px;border:1px solid var(--line);border-left-width:4px;border-left-color:var(--status-good);border-radius:var(--r-sm);background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:15px;font-weight:600;margin:0 0 8px;color:var(--ink);">Qué es</h3>
+      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.6;color:var(--ink-soft);">
+        <li>Un <strong>costo por plato</strong> honesto, con corrección AP&rarr;EP por rendimiento.</li>
+        <li>El <strong>insumo faltante</strong> para Ingeniería de Menú y Margen Math.</li>
+        <li>Una <strong>herramienta para enseñar</strong> &mdash; la matemática AP / EP / rendimiento se ve.</li>
+        <li>Una <strong>Ficha del Plato</strong> imprimible para la pared de la cocina.</li>
+        <li>Un punto de partida para una conversación honesta con tu chef y tu contador.</li>
+      </ul>
+    </div>
+    <div style="padding:16px 18px;border:1px solid var(--line);border-left-width:4px;border-left-color:var(--rust);border-radius:var(--r-sm);background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:15px;font-weight:600;margin:0 0 8px;color:var(--ink);">Qué no es</h3>
+      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.6;color:var(--ink-soft);">
+        <li>Un <strong>escáner de facturas</strong>. Escribe el costo AP de tu factura real; no adivinamos precios.</li>
+        <li>Un <strong>motor de sustitución de recetas</strong>. La herramienta dice qué cuesta qué; no sugiere alternativas más baratas.</li>
+        <li>Un <strong>conector de POS</strong>. La promesa es &ldquo;escribe tu receta&rdquo; &mdash; un conector invierte eso y rompe la privacidad.</li>
+        <li>Un <strong>cálculo de costo primario</strong>. La mano de obra hace falta. Usa Margen Math para eso.</li>
+        <li>Un <strong>análisis de ingeniería de menú</strong>. Usa Ingeniería de Menú para la decisión por plato.</li>
+      </ul>
+    </div>
+  </div>
+
+  <p style="font-size:13.5px;color:var(--ink-soft);line-height:1.6;margin:0;padding:14px 16px;background:var(--cream-2);border-radius:var(--r-sm);"><strong>Lo que sigue.</strong> El costo del plato es el primer insumo faltante para dos otras herramientas. Haz clic en <em>Agregar a Ingeniería de Menú</em> para ver este plato en la matriz de Estrellas / Caballos / Acertijos / Perros. Haz clic en <em>Usar en Margen Math</em> para modelar cómo se asienta contra tu costo primario completo. O simplemente imprime la Ficha y pégala en la pared.</p>
 </div></section>
 
 </main>
@@ -287,6 +320,7 @@
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/plate-cost/plate-cost.js?v=20260426-pc1"></script>
+<script src="/tools/plate-cost/card-render.js?v=20260426-pc2"></script>
 <script>
 (function(){
   'use strict';
@@ -586,6 +620,156 @@
     if (window.plausible) window.plausible('Plate Cost Export', { props: { format: 'json' } });
   });
 
+  // -------------------- recipe.html + README --------------------
+  function escHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function buildRecipeHtml() {
+    if (!latestSummary || !latestRecipe) return '';
+    var prices = PC.suggestMenuPrices(latestSummary.plateCost);
+    var rowsHtml = latestSummary.ingredients.map(function(ing, i){
+      var src = (latestRecipe.rows[i] || {});
+      return '<tr>' +
+        '<td>' + escHtml(ing.ingredient || src.ingredient || '—') + '</td>' +
+        '<td class="num">' + (ing.apUnitCost ? '$' + ing.apUnitCost.toFixed(4) : '—') + '</td>' +
+        '<td class="num">' + (ing.yieldPercent != null && isFinite(ing.yieldPercent)
+          ? Math.round(ing.yieldPercent * 100) + '%' : '—') + '</td>' +
+        '<td class="num">' + escHtml((src.usedQty || '—') + (src.usedUnit ? ' ' + src.usedUnit : '')) + '</td>' +
+        '<td class="num">' + (ing.usedCost ? '$' + ing.usedCost.toFixed(2) : '—') + '</td>' +
+        '</tr>';
+    }).join('\n');
+    var pricesHtml = prices.map(function(p){
+      return '<tr><td class="num">' + Math.round(p.target * 100) + '%</td>' +
+        '<td>' + escHtml(p.label) + '</td>' +
+        '<td class="num">$' + p.price.toFixed(2) + '</td>' +
+        '<td class="num">+$' + p.cmDollars.toFixed(2) + '</td></tr>';
+    }).join('\n');
+    var name = escHtml(latestRecipe.name || 'Costo del plato');
+    var date = new Date().toISOString().slice(0, 10);
+    return '<!doctype html>\n<html lang="es"><head><meta charset="utf-8"/>' +
+      '<title>' + name + ' — Costo del plato · Muntin Digital</title>' +
+      '<style>' +
+        'body{margin:0;padding:32px;font:14px/1.55 -apple-system,Segoe UI,sans-serif;color:#14161A;background:#FAF7F2}' +
+        '.head{border-bottom:2px solid #14161A;padding-bottom:16px;margin-bottom:24px}' +
+        'h1{font-family:Fraunces,Georgia,serif;font-weight:500;font-size:28px;margin:0 0 6px}' +
+        '.eyebrow{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#5A5752;margin:0 0 8px}' +
+        '.cost{font-family:Fraunces,Georgia,serif;font-weight:500;font-size:48px;margin:0;font-variant-numeric:tabular-nums}' +
+        'table{width:100%;border-collapse:collapse;margin:16px 0;font-variant-numeric:tabular-nums}' +
+        'th,td{padding:8px 10px;border-bottom:1px solid #E5E0D8;text-align:left;font-size:13px}' +
+        'th{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#5A5752}' +
+        '.num{text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace}' +
+        'h2{font-family:Fraunces,Georgia,serif;font-weight:500;font-size:18px;margin:24px 0 8px}' +
+        '.foot{margin-top:32px;padding-top:14px;border-top:1px solid #E5E0D8;font-size:11px;color:#5A5752;display:flex;justify-content:space-between}' +
+        '@media print{body{padding:24px;background:#fff} @page{size:auto;margin:14mm}}' +
+      '</style></head><body>' +
+      '<div class="head"><p class="eyebrow">Costo del plato — ' + escHtml(date) + '</p>' +
+      '<h1>' + name + '</h1>' +
+      '<p class="cost">$' + latestSummary.plateCost.toFixed(2) +
+        '</p><p style="font-size:12px;color:#5A5752;margin:4px 0 0;">Solo ingredientes. No incluye mano de obra ni gastos generales.</p></div>' +
+      '<h2>Receta — de la factura al plato</h2>' +
+      '<table><thead><tr>' +
+        '<th>Ingrediente</th><th class="num">AP $/unidad</th><th class="num">Rend.</th><th class="num">Usado</th><th class="num">Costo en plato</th>' +
+      '</tr></thead><tbody>' + rowsHtml + '</tbody></table>' +
+      '<h2>Precios de menú sugeridos</h2>' +
+      '<table><thead><tr>' +
+        '<th class="num">Meta</th><th>Tier</th><th class="num">Precio</th><th class="num">Margen</th>' +
+      '</tr></thead><tbody>' + pricesHtml + '</tbody></table>' +
+      '<div class="foot"><span>Generado por Muntin · Calculadora de Costo del Plato · muntin.digital</span><span>' + escHtml(date) + '</span></div>' +
+      '</body></html>\n';
+  }
+  function buildReadme() {
+    if (!latestSummary || !latestRecipe) return '';
+    var date = new Date().toISOString().slice(0, 10);
+    var prices = PC.suggestMenuPrices(latestSummary.plateCost);
+    var lines = [];
+    lines.push('# ' + (latestRecipe.name || 'Costo del plato') + ' — ' + date);
+    lines.push('');
+    lines.push('Generado por **Calculadora de Costo del Plato** en https://muntin.digital/es/tools/plate-cost/');
+    lines.push('');
+    lines.push('## Costo del plato: $' + latestSummary.plateCost.toFixed(2));
+    lines.push('');
+    lines.push('Solo ingredientes — no incluye mano de obra ni gastos generales.');
+    if (latestRecipe.portions > 1) {
+      lines.push('');
+      lines.push('Costo de la tanda $' + latestSummary.batchCost.toFixed(2) + ' entre ' + latestRecipe.portions + ' porciones.');
+    }
+    lines.push('');
+    lines.push('## Precios de menú sugeridos');
+    lines.push('');
+    prices.forEach(function(p){
+      lines.push('- **' + Math.round(p.target * 100) + '% meta (' + p.label + ')** — vender a $' +
+        p.price.toFixed(2) + ', te quedan $' + p.cmDollars.toFixed(2) + ' por plato.');
+    });
+    lines.push('');
+    lines.push('## Método');
+    lines.push('');
+    lines.push('Precio AP ÷ cantidad AP = costo unitario AP · costo unitario AP ÷ rendimiento = costo unitario EP · costo unitario EP × porción = costo en este plato.');
+    lines.push('');
+    lines.push('## Privacidad');
+    lines.push('');
+    lines.push('Tu receta nunca salió de tu navegador. Verifica en DevTools: abre esta herramienta, llena una receta, haz clic en Calcular. Cero peticiones de red se disparan.');
+    return lines.join('\n') + '\n';
+  }
+
+  // -------------------- Descarga de la Ficha del Plato --------------------
+  function buildPlateCardCanvas() {
+    if (!window.PCCard || !latestSummary || !latestRecipe) return null;
+    var prices = PC.suggestMenuPrices(latestSummary.plateCost);
+    return window.PCCard.renderPlateCard({
+      recipe:    latestRecipe,
+      summary:   latestSummary,
+      suggested: prices,
+      strings:   window.PCCard.DEFAULT_STRINGS_ES
+    });
+  }
+  function plateCardSlug() {
+    return (latestRecipe && latestRecipe.name ? latestRecipe.name : 'receta')
+      .trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'receta';
+  }
+
+  var downloadCardBtn = document.getElementById('pcDownloadCard');
+  if (downloadCardBtn) downloadCardBtn.addEventListener('click', function(){
+    if (!latestSummary || !latestRecipe || !window.PCCard) return;
+    window.PCCard.awaitFonts().then(function(){
+      var canvas = buildPlateCardCanvas();
+      if (!canvas) return;
+      return window.PCCard.canvasToPngBlob(canvas);
+    }).then(function(blob){
+      if (!blob) return;
+      downloadBlob(blob, 'ficha-plato-' + plateCardSlug() + '.png');
+      if (window.plausible) window.plausible('Plate Cost Export', { props: { format: 'card-png' } });
+    });
+  });
+
+  // -------------------- Descarga de paquete ZIP --------------------
+  var downloadZipBtn = document.getElementById('pcDownloadZip');
+  if (downloadZipBtn) downloadZipBtn.addEventListener('click', function(){
+    if (!latestSummary || !latestRecipe || !window.PCCard) return;
+    window.PCCard.awaitFonts().then(function(){
+      var canvas = buildPlateCardCanvas();
+      if (!canvas) return null;
+      return window.PCCard.canvasToPngBlob(canvas);
+    }).then(function(pngBlob){
+      if (!pngBlob) return;
+      var reader = new FileReader();
+      reader.onload = function(){
+        var slug = plateCardSlug();
+        var entries = [
+          { name: 'ficha-plato.png',  data: new Uint8Array(reader.result) },
+          { name: 'receta.html',      data: strToBytes(buildRecipeHtml()) },
+          { name: 'receta.csv',       data: strToBytes(buildCsv()) },
+          { name: 'costo-plato.json', data: strToBytes(buildJson()) },
+          { name: 'README.md',        data: strToBytes(buildReadme()) }
+        ];
+        downloadBlob(buildZipBlob(entries), 'costo-plato-' + slug + '.zip');
+        if (window.plausible) window.plausible('Plate Cost Export', { props: { format: 'zip' } });
+      };
+      reader.readAsArrayBuffer(pngBlob);
+    });
+  });
+
   // -------------------- Llevar a Ingeniería de Menú --------------------
   // Reutiliza la rehidratación `#m=` que Ingeniería de Menú ya soporta.
   // Sembramos el precio en la sugerencia del 30% de costo de alimento —
@@ -652,6 +836,70 @@
     rerenderRows(Array.from({ length: 5 }, blankRow));
     renderResults();
   });
+
+  // -------------------- Escritor ZIP en línea (sin compresión) --------------------
+  var CRC_TABLE = (function(){
+    var t = new Uint32Array(256);
+    for (var n = 0; n < 256; n++) {
+      var c = n;
+      for (var k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+      t[n] = c >>> 0;
+    }
+    return t;
+  })();
+  function crc32(bytes){
+    var c = 0xFFFFFFFF;
+    for (var i = 0; i < bytes.length; i++) c = CRC_TABLE[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+    return (c ^ 0xFFFFFFFF) >>> 0;
+  }
+  function strToBytes(s){ return new TextEncoder().encode(s); }
+  function buildZipBlob(entries){
+    var parts = [], centralParts = [], offset = 0;
+    var nowDate = new Date();
+    var dosTime = ((nowDate.getHours() & 0x1F) << 11) | ((nowDate.getMinutes() & 0x3F) << 5) | ((nowDate.getSeconds() / 2) & 0x1F);
+    var dosDate = (((nowDate.getFullYear() - 1980) & 0x7F) << 9) | (((nowDate.getMonth() + 1) & 0x0F) << 5) | (nowDate.getDate() & 0x1F);
+    entries.forEach(function(entry){
+      var nameBytes = strToBytes(entry.name);
+      var crc = crc32(entry.data);
+      var size = entry.data.length;
+      var localHeader = new Uint8Array(30 + nameBytes.length);
+      var dv = new DataView(localHeader.buffer);
+      dv.setUint32(0, 0x04034b50, true); dv.setUint16(4, 20, true);
+      dv.setUint16(6, 0, true); dv.setUint16(8, 0, true);
+      dv.setUint16(10, dosTime, true); dv.setUint16(12, dosDate, true);
+      dv.setUint32(14, crc, true); dv.setUint32(18, size, true);
+      dv.setUint32(22, size, true); dv.setUint16(26, nameBytes.length, true);
+      dv.setUint16(28, 0, true);
+      localHeader.set(nameBytes, 30);
+      parts.push(localHeader); parts.push(entry.data);
+      var central = new Uint8Array(46 + nameBytes.length);
+      var cv = new DataView(central.buffer);
+      cv.setUint32(0, 0x02014b50, true); cv.setUint16(4, 20, true);
+      cv.setUint16(6, 20, true); cv.setUint16(8, 0, true);
+      cv.setUint16(10, 0, true); cv.setUint16(12, dosTime, true);
+      cv.setUint16(14, dosDate, true); cv.setUint32(16, crc, true);
+      cv.setUint32(20, size, true); cv.setUint32(24, size, true);
+      cv.setUint16(28, nameBytes.length, true); cv.setUint16(30, 0, true);
+      cv.setUint16(32, 0, true); cv.setUint16(34, 0, true);
+      cv.setUint16(36, 0, true); cv.setUint32(38, 0, true);
+      cv.setUint32(42, offset, true);
+      central.set(nameBytes, 46);
+      centralParts.push(central);
+      offset += localHeader.length + entry.data.length;
+    });
+    var cdSize = 0;
+    centralParts.forEach(function(c){ cdSize += c.length; });
+    var cdStart = offset;
+    centralParts.forEach(function(c){ parts.push(c); });
+    var eocd = new Uint8Array(22);
+    var ev = new DataView(eocd.buffer);
+    ev.setUint32(0, 0x06054b50, true); ev.setUint16(4, 0, true);
+    ev.setUint16(6, 0, true); ev.setUint16(8, entries.length, true);
+    ev.setUint16(10, entries.length, true); ev.setUint32(12, cdSize, true);
+    ev.setUint32(16, cdStart, true); ev.setUint16(20, 0, true);
+    parts.push(eocd);
+    return new Blob(parts, { type: 'application/zip' });
+  }
 
   // -------------------- Plausible bucketing --------------------
   // Only fire when there's something meaningful to bucket. The
