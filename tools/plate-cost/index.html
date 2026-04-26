@@ -95,12 +95,33 @@
 
 .pc-empty{padding:24px;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--cream-2);font-size:13.5px;color:var(--stone);text-align:center;margin-top:24px}
 
+.pc-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:18px;padding:14px 18px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+.pc-actions-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-right:8px}
+.pc-action-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:background 140ms var(--ease-out),color 140ms var(--ease-out);text-decoration:none}
+.pc-action-btn:hover{background:var(--teal);color:var(--cream)}
+.pc-action-btn-primary{background:var(--teal);color:var(--cream)}
+.pc-action-btn-primary:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.pc-action-btn.copied{background:var(--status-good-tint);color:var(--status-good);border-color:var(--status-good)}
+.pc-action-btn .pc-action-fmt{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10.5px;font-weight:700;color:inherit;opacity:.7}
+
 .pc-privacy-list{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none;counter-reset:pc-step}
 .pc-privacy-list li{counter-increment:pc-step;display:grid;grid-template-columns:32px 1fr;gap:14px;align-items:start;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white)}
 .pc-privacy-list li::before{content:counter(pc-step);font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--teal);font-variant-numeric:tabular-nums}
 .pc-privacy-list li strong{display:block;font-size:14px;color:var(--ink);margin-bottom:2px}
 .pc-privacy-list li p{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:0}
 .pc-privacy-list code{font-size:12px;background:var(--cream-2);padding:1px 4px;border-radius:3px}
+
+.pc-paste{margin:0 0 14px;padding:14px 16px;border:1px dashed var(--line-dark);border-radius:var(--r-input);background:var(--white)}
+.pc-paste summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.pc-paste summary::after{content:"+";font-size:18px;color:var(--stone)}
+.pc-paste[open] summary::after{content:"\2212"}
+.pc-paste summary::-webkit-details-marker{display:none}
+.pc-paste-body{margin-top:12px;display:flex;flex-direction:column;gap:10px}
+.pc-paste textarea{width:100%;min-height:120px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.5;color:var(--ink);resize:vertical}
+.pc-paste-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pc-paste-actions .pc-paste-hint{font-size:12px;color:var(--stone);margin-left:auto}
+.pc-paste-btn{padding:6px 14px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12px;font-weight:600;cursor:pointer}
+.pc-paste-btn:hover{background:var(--teal);color:var(--cream)}
 
 @media print{
   body{background:#fff !important;color:#000 !important}
@@ -188,6 +209,18 @@
       </label>
     </div>
 
+    <details class="pc-paste">
+      <summary>Have a recipe spreadsheet? Paste it.</summary>
+      <div class="pc-paste-body">
+        <p style="font-size:12.5px;color:var(--ink-soft);line-height:1.55;margin:0;">Drag a row range from Excel / Google Sheets and paste below — or paste a CSV. Headers like <em>Ingredient, AP price, AP qty, AP unit, Yield %, Used qty, Used unit</em> are auto-mapped. The tool also accepts <em>Name, Cost, Qty, Unit, Yield, Amount, Recipe unit</em> as aliases.</p>
+        <textarea id="pcPaste" placeholder="Ingredient,AP price,AP qty,AP unit,Yield %,Used qty,Used unit&#10;Romaine,28,24,each,0.75,1,each&#10;..." spellcheck="false"></textarea>
+        <div class="pc-paste-actions">
+          <button type="button" class="pc-paste-btn" id="pcPasteParse">Parse paste</button>
+          <span class="pc-paste-hint" id="pcPasteHint"></span>
+        </div>
+      </div>
+    </details>
+
     <div class="pc-grid" role="region" aria-label="Recipe ingredient grid">
       <table>
         <thead>
@@ -230,6 +263,14 @@
       </div>
     </div>
 
+    <div class="pc-actions" id="pcActions" style="display:none;">
+      <span class="pc-actions-label">Take this with you</span>
+      <button type="button" class="pc-action-btn" id="pcCopyCsv">Copy as CSV <span class="pc-action-fmt">.csv</span></button>
+      <button type="button" class="pc-action-btn" id="pcDownloadJson">Download <span class="pc-action-fmt">.json</span></button>
+      <button type="button" class="pc-action-btn pc-action-btn-primary" id="pcPushMe">Add to Menu Engineering &rarr;</button>
+      <button type="button" class="pc-action-btn" id="pcPushMm">Use in Margin Math &rarr;</button>
+    </div>
+
     <div class="pc-empty" id="pcEmpty">
       Fill in a row above &mdash; or <button type="button" class="pc-sample-btn" id="pcSample2" style="margin:0 6px;">load the sample recipe</button> &mdash; to see the math.
     </div>
@@ -267,6 +308,13 @@
   var confidenceEl = document.getElementById('pcConfidence');
   var priceRowsEl  = document.getElementById('pcPriceRows');
   var warningsEl   = document.getElementById('pcWarnings');
+  var actionsEl    = document.getElementById('pcActions');
+
+  // Latest computed summary + the recipe that produced it. Cached so
+  // the export handlers (CSV, JSON, push-to-Menu-Engineering) read
+  // from a single source of truth instead of re-running the math.
+  var latestSummary = null;
+  var latestRecipe  = null;
 
   // Units allowed in the dropdown — filtered to the most common.
   var UNIT_OPTIONS = ['g','kg','oz','lb','ml','l','tsp','tbsp','fl-oz','cup','qt','gal','each','dozen'];
@@ -351,6 +399,9 @@
       resultEl.style.display = 'none';
       emptyEl.style.display  = 'block';
       warningsEl.style.display = 'none';
+      if (actionsEl) actionsEl.style.display = 'none';
+      latestSummary = null;
+      latestRecipe  = null;
       Array.prototype.forEach.call(rowsEl.querySelectorAll('[data-cell="cost"]'), function(c){
         c.textContent = '—';
       });
@@ -421,6 +472,12 @@
 
     resultEl.style.display = 'grid';
     emptyEl.style.display  = 'none';
+    actionsEl.style.display = 'flex';
+
+    // Cache the latest summary so export handlers can read it
+    // without re-running computePlateCost.
+    latestSummary = summary;
+    latestRecipe  = recipe;
   }
 
   // -------------------- Event handlers --------------------
@@ -458,6 +515,161 @@
   }
   if (sampleBtn)  sampleBtn.addEventListener('click', loadSample);
   if (sampleBtn2) sampleBtn2.addEventListener('click', loadSample);
+
+  // -------------------- Exports (CSV + JSON) --------------------
+  // CSV is the per-ingredient breakdown — every row's AP cost, EP cost,
+  // used cost, plus a totals row. The owner pastes this into a
+  // spreadsheet for sharing with an accountant or back-of-house.
+  function buildCsv() {
+    if (!latestSummary || !latestRecipe) return '';
+    var rows = [];
+    rows.push(['Dish', latestRecipe.name || '']);
+    rows.push(['Portions', String(latestRecipe.portions)]);
+    rows.push(['Plate cost', latestSummary.plateCost.toFixed(4)]);
+    rows.push(['Batch cost', latestSummary.batchCost.toFixed(4)]);
+    rows.push(['Confidence', latestSummary.confidence]);
+    rows.push([]);
+    rows.push(['Ingredient','AP price','AP qty','AP unit','Yield','Used qty','Used unit',
+               'AP unit cost','EP unit cost','Used cost','Warning']);
+    latestRecipe.rows.forEach(function(r, i){
+      var s = latestSummary.ingredients[i] || {};
+      rows.push([
+        r.ingredient || '',
+        r.apPrice    || '',
+        r.apQty      || '',
+        r.apUnit     || '',
+        s.yieldPercent != null ? Number(s.yieldPercent).toFixed(2) : (r.yieldPercent || ''),
+        r.usedQty    || '',
+        r.usedUnit   || '',
+        s.apUnitCost ? s.apUnitCost.toFixed(4) : '',
+        s.epUnitCost ? s.epUnitCost.toFixed(4) : '',
+        s.usedCost   ? s.usedCost.toFixed(4)   : '',
+        s.warning || ''
+      ]);
+    });
+    return rows.map(function(r){
+      return r.map(function(c){
+        var s = String(c == null ? '' : c);
+        return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+      }).join(',');
+    }).join('\n') + '\n';
+  }
+
+  function buildJson() {
+    if (!latestSummary || !latestRecipe) return '{}';
+    var prices = PC.suggestMenuPrices(latestSummary.plateCost);
+    return JSON.stringify({
+      meta: {
+        tool:      'Plate Cost Calculator',
+        url:       'https://muntin.digital/tools/plate-cost/',
+        generated: new Date().toISOString(),
+        locale:    'en'
+      },
+      recipe:    latestRecipe,
+      summary:   latestSummary,
+      suggested: prices
+    }, null, 2);
+  }
+
+  function downloadBlob(blob, filename) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+  }
+
+  function flashCopied(btn, label) {
+    var orig = btn.innerHTML;
+    btn.classList.add('copied');
+    btn.textContent = label || 'Copied';
+    setTimeout(function(){ btn.classList.remove('copied'); btn.innerHTML = orig; }, 1400);
+  }
+
+  var copyCsvBtn      = document.getElementById('pcCopyCsv');
+  var downloadJsonBtn = document.getElementById('pcDownloadJson');
+  if (copyCsvBtn) copyCsvBtn.addEventListener('click', function(){
+    var csv = buildCsv();
+    if (!csv) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(csv).then(function(){
+        flashCopied(copyCsvBtn);
+        if (window.plausible) window.plausible('Plate Cost Export', { props: { format: 'csv' } });
+      });
+    } else {
+      // Fallback: download instead of copying.
+      downloadBlob(new Blob([csv], { type: 'text/csv' }), 'plate-cost.csv');
+    }
+  });
+  if (downloadJsonBtn) downloadJsonBtn.addEventListener('click', function(){
+    var json = buildJson();
+    if (!json || json === '{}') return;
+    var slug = (latestRecipe.name || 'recipe').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'recipe';
+    downloadBlob(new Blob([json], { type: 'application/json' }), 'plate-cost-' + slug + '.json');
+    if (window.plausible) window.plausible('Plate Cost Export', { props: { format: 'json' } });
+  });
+
+  // -------------------- Push to Menu Engineering --------------------
+  // Reuses Menu Engineering's existing `#m=<encoded TSV>` rehydration
+  // (one line per dish, tab-separated). Seeds the menu price at the
+  // 30%-food-cost suggestion — the owner adjusts in Menu Engineering.
+  var pushMeBtn = document.getElementById('pcPushMe');
+  if (pushMeBtn) pushMeBtn.addEventListener('click', function(){
+    if (!latestSummary || !latestRecipe) return;
+    var prices = PC.suggestMenuPrices(latestSummary.plateCost);
+    var seedPrice = prices.length ? prices[1].price : 0;
+    var line = [
+      latestRecipe.name || 'Untitled dish',
+      seedPrice.toFixed(2),
+      latestSummary.plateCost.toFixed(2),
+      '0',
+      ''
+    ].join('\t');
+    var url = '/tools/menu-engineering/#m=' + encodeURIComponent(line);
+    if (window.plausible) window.plausible('Plate Cost Push', { props: { target: 'menu-engineering' } });
+    window.location.assign(url);
+  });
+
+  // -------------------- Open Margin Math --------------------
+  // Routes the owner to Margin Math's prime-cost calculator (anchored
+  // to #calc-primecost) so they can model labour + food cost together.
+  // We don't prefill — Margin Math takes percentages and we have a
+  // dollar plate cost; the user pastes the number alongside their
+  // menu price. Clipboard primer follows.
+  var pushMmBtn = document.getElementById('pcPushMm');
+  if (pushMmBtn) pushMmBtn.addEventListener('click', function(){
+    if (!latestSummary) return;
+    // Stash the plate cost in clipboard so it's ready to paste.
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText('$' + latestSummary.plateCost.toFixed(2)).catch(function(){});
+    }
+    if (window.plausible) window.plausible('Plate Cost Push', { props: { target: 'margin-math' } });
+    window.location.assign('/tools/margin-math/#calc-primecost');
+  });
+
+  // Paste-from-spreadsheet handler. Replaces the grid with the parsed
+  // rows (or appends, if the user has typed something already and the
+  // grid is in a "extending" state — for v1 we replace).
+  var pasteEl     = document.getElementById('pcPaste');
+  var pasteParse  = document.getElementById('pcPasteParse');
+  var pasteHint   = document.getElementById('pcPasteHint');
+  if (pasteParse) pasteParse.addEventListener('click', function(){
+    var text = pasteEl ? pasteEl.value : '';
+    if (!text.trim()) { pasteHint.textContent = 'Nothing to parse.'; return; }
+    var parsed = PC.parseTabularText(text);
+    if (!parsed.rows.length) {
+      pasteHint.textContent = parsed.warnings[0] || 'Could not parse the paste.';
+      pasteHint.style.color = 'var(--rust)';
+      return;
+    }
+    rerenderRows(parsed.rows);
+    renderResults();
+    pasteHint.style.color = parsed.warnings.length ? 'var(--rust)' : 'var(--status-good)';
+    pasteHint.textContent = parsed.warnings.length
+      ? parsed.warnings[0]
+      : 'Parsed ' + parsed.rows.length + ' ingredient' + (parsed.rows.length === 1 ? '' : 's') + '.';
+    fireBucketEvent('paste');
+  });
 
   if (clearBtn) clearBtn.addEventListener('click', function(){
     if (!confirm('Clear the recipe and start over?')) return;

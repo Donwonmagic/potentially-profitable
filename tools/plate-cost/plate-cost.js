@@ -495,6 +495,155 @@
   }
 
   // ============================================================
+  // Paste-from-spreadsheet parser. Owners with a recipe spreadsheet
+  // paste it directly. Auto-detects delimiter (CSV / TSV / pipe),
+  // auto-maps headers via an alias table, and produces rows in the
+  // plate-cost row shape so they drop into the form unchanged.
+  // ============================================================
+  // Header aliases — English and Spanish header rows both auto-map.
+  var HEADER_ALIASES = {
+    ingredient:   ['ingredient', 'item', 'name', 'product',
+                   'ingrediente', 'producto', 'nombre'],
+    apPrice:      ['ap price', 'ap_price', 'price', 'cost', 'ap cost', 'ap$',
+                   'precio ap', 'precio_ap', 'precio', 'costo'],
+    apQty:        ['ap qty', 'ap_qty', 'ap quantity', 'qty', 'quantity', 'purchased', 'pack size',
+                   'cant. ap', 'cant ap', 'cantidad ap', 'cantidad', 'comprado'],
+    apUnit:       ['ap unit', 'ap_unit', 'unit', 'pack unit', 'purchase unit',
+                   'unidad ap', 'unidad', 'unidad de compra'],
+    yieldPercent: ['yield', 'yield %', 'yield_percent', 'yield_pct', 'yield pct', 'edible',
+                   'rendimiento', 'rendimiento %', 'rend.', 'rend. %', 'rend %'],
+    usedQty:      ['used qty', 'used_qty', 'used', 'recipe qty', 'amount', 'serving', 'portion',
+                   'cant. usada', 'cant usada', 'cantidad usada', 'usado', 'porción'],
+    usedUnit:     ['used unit', 'used_unit', 'recipe unit', 'serving unit', 'portion unit',
+                   'unidad usada', 'unidad receta', 'unidad de porción']
+  };
+
+  function detectDelimiter(text){
+    var firstLine = String(text).split(/\r?\n/)[0] || '';
+    var counts = { ',': 0, '\t': 0, ';': 0, '|': 0 };
+    for (var i = 0; i < firstLine.length; i++) {
+      var c = firstLine[i];
+      if (c in counts) counts[c]++;
+    }
+    var best = ',', bestCount = -1;
+    for (var k in counts) if (counts[k] > bestCount) { best = k; bestCount = counts[k]; }
+    return best;
+  }
+  // Minimal CSV splitter — handles double-quote-quoted fields.
+  function splitCsvLine(line, delim){
+    var out = [], cur = '', inQ = false;
+    for (var i = 0; i < line.length; i++) {
+      var c = line[i];
+      if (inQ) {
+        if (c === '"' && line[i+1] === '"') { cur += '"'; i++; }
+        else if (c === '"') { inQ = false; }
+        else cur += c;
+      } else {
+        if (c === '"') inQ = true;
+        else if (c === delim) { out.push(cur); cur = ''; }
+        else cur += c;
+      }
+    }
+    out.push(cur);
+    return out.map(function(s){ return s.trim(); });
+  }
+  function isHeaderRow(cells){
+    var nonNumeric = 0;
+    for (var i = 0; i < cells.length; i++) {
+      var s = String(cells[i]).trim();
+      if (s === '') continue;
+      if (isNaN(Number(s.replace(/[$,]/g, '')))) nonNumeric++;
+    }
+    return nonNumeric >= Math.max(2, Math.ceil(cells.length / 2));
+  }
+  function autoMapHeaders(headerCells){
+    var mapping = {};
+    headerCells.forEach(function(cell, idx){
+      var norm = String(cell).trim().toLowerCase().replace(/\s+/g, ' ');
+      Object.keys(HEADER_ALIASES).forEach(function(field){
+        if (mapping[field] != null) return;
+        if (HEADER_ALIASES[field].indexOf(norm) !== -1) mapping[field] = idx;
+      });
+    });
+    return mapping;
+  }
+
+  function parseTabularText(text){
+    // Returns { rows: [...], mapping, headerRowDetected, warnings }.
+    // rows are in the same shape that the input grid produces, so
+    // populating the grid is a 1:1 set.
+    var raw = String(text || '').replace(/^﻿/, '');
+    if (!raw.trim()) return { rows: [], mapping: {}, headerRowDetected: false, warnings: ['Pasted text was empty.'] };
+
+    var lines = raw.split(/\r?\n/).filter(function(l){ return l.trim().length > 0; });
+    var delim = detectDelimiter(raw);
+    var cellRows = lines.map(function(l){ return splitCsvLine(l, delim); });
+    if (!cellRows.length) return { rows: [], mapping: {}, headerRowDetected: false, warnings: ['No rows detected.'] };
+
+    var warnings = [];
+    var headerRowDetected = isHeaderRow(cellRows[0]);
+    var mapping;
+    var dataRows;
+    if (headerRowDetected) {
+      mapping = autoMapHeaders(cellRows[0]);
+      dataRows = cellRows.slice(1);
+    } else {
+      // Positional fallback: ingredient, ap_price, ap_qty, ap_unit,
+      // yield, used_qty, used_unit.
+      mapping = { ingredient: 0, apPrice: 1, apQty: 2, apUnit: 3, yieldPercent: 4, usedQty: 5, usedUnit: 6 };
+      dataRows = cellRows;
+      warnings.push('No header row detected — assumed columns: Ingredient, AP price, AP qty, AP unit, Yield %, Used qty, Used unit.');
+    }
+
+    if (mapping.ingredient == null && mapping.apPrice == null) {
+      return { rows: [], mapping: mapping, headerRowDetected: headerRowDetected,
+               warnings: warnings.concat(['Could not find Ingredient or AP price columns. Add a header row, or paste columns in this order: Ingredient, AP price, AP qty, AP unit, Yield %, Used qty, Used unit.']) };
+    }
+
+    ['ingredient','apPrice','apQty','apUnit','usedQty','usedUnit'].forEach(function(f){
+      if (mapping[f] == null) warnings.push('Could not find a "' + f + '" column — those cells will be blank.');
+    });
+
+    // Numeric fields strip $ and thousands-separators; string fields
+    // do not (preserve "Beef, ground" verbatim if quoted).
+    function cleanString(s){
+      return String(s == null ? '' : s).trim();
+    }
+    function cleanNumber(s){
+      return cleanString(s).replace(/^[$]/, '').replace(/,/g, '');
+    }
+    var NUMERIC_FIELDS = { apPrice: 1, apQty: 1, usedQty: 1, yieldPercent: 1 };
+    var rows = dataRows.map(function(cells){
+      function pick(field){
+        var idx = mapping[field];
+        if (idx == null || idx >= cells.length) return '';
+        return NUMERIC_FIELDS[field] ? cleanNumber(cells[idx]) : cleanString(cells[idx]);
+      }
+      // Yield handling — accept "75%", "0.75", "75" all as 0.75.
+      var rawY = pick('yieldPercent');
+      var y = rawY;
+      if (rawY) {
+        var n = Number(rawY.replace(/%/g, ''));
+        if (isFinite(n)) {
+          if (rawY.indexOf('%') !== -1 || n > 1) y = String(n / 100);
+          else y = String(n);
+        }
+      }
+      return {
+        ingredient:   pick('ingredient'),
+        apPrice:      pick('apPrice'),
+        apQty:        pick('apQty'),
+        apUnit:       pick('apUnit') || 'lb',
+        yieldPercent: y,
+        usedQty:      pick('usedQty'),
+        usedUnit:     pick('usedUnit') || 'oz'
+      };
+    });
+
+    return { rows: rows, mapping: mapping, headerRowDetected: headerRowDetected, warnings: warnings };
+  }
+
+  // ============================================================
   // Plausible bucket helpers — every event-property value is one of
   // the declared enum values, never user data. Tested in the test
   // suite with poison-string inputs.
@@ -562,6 +711,7 @@
     convertUnits:          convertUnits,
     lookupYield:           lookupYield,
     normalizeUnit:         normalizeUnit,
+    parseTabularText:      parseTabularText,
     bucketIngredientCount: bucketIngredientCount,
     bucketYieldUsage:      bucketYieldUsage,
     bucketPlateCostBand:   bucketPlateCostBand,

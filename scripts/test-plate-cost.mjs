@@ -251,7 +251,95 @@ assertEq('mixed-category units → valid + warning', v8.valid, true);
 assert('mixed-category warning fires', v8.warnings.length > 0);
 
 // ============================================================
-// 6. Plausible bucket purity — enum-locked across input ranges +
+// 6. Paste-from-spreadsheet — parseTabularText
+// ============================================================
+
+const csv1 = PC.parseTabularText(
+  'Ingredient,AP price,AP qty,AP unit,Yield %,Used qty,Used unit\n' +
+  'Tonnarelli,4.50,1,lb,1.00,4,oz\n' +
+  'Pecorino,18,1,lb,0.95,1.5,oz\n'
+);
+assertEq('csv parses 2 data rows', csv1.rows.length, 2);
+assertEq('csv detects header row', csv1.headerRowDetected, true);
+assertEq('csv first row ingredient', csv1.rows[0].ingredient, 'Tonnarelli');
+assertEq('csv yield 0.95 preserved', csv1.rows[1].yieldPercent, '0.95');
+assert('csv warnings empty for clean paste', csv1.warnings.length === 0,
+  JSON.stringify(csv1.warnings));
+
+// TSV (tab-delimited) detection
+const tsv1 = PC.parseTabularText(
+  'ingredient\tap price\tap qty\tap unit\tused qty\tused unit\n' +
+  'Romaine\t28\t24\teach\t1\teach\n'
+);
+assertEq('tsv parses 1 row',           tsv1.rows.length, 1);
+assertEq('tsv first ingredient',        tsv1.rows[0].ingredient, 'Romaine');
+assertEq('tsv missing yield → blank',   tsv1.rows[0].yieldPercent, '');
+
+// Yield as percent string ("75%") → 0.75
+const csv2 = PC.parseTabularText(
+  'Ingredient,AP price,AP qty,AP unit,Yield %,Used qty,Used unit\n' +
+  'Romaine,28,24,each,75%,4,oz\n'
+);
+assertEq('"75%" yield normalised to 0.75', csv2.rows[0].yieldPercent, '0.75');
+
+// Yield as bare integer ("75") also normalises
+const csv3 = PC.parseTabularText(
+  'Ingredient,AP price,AP qty,AP unit,Yield %,Used qty,Used unit\n' +
+  'Romaine,28,24,each,75,4,oz\n'
+);
+assertEq('"75" yield normalised to 0.75', csv3.rows[0].yieldPercent, '0.75');
+
+// Headerless positional fallback
+const csv4 = PC.parseTabularText('Romaine,28,24,each,0.75,4,oz\nTomato,3,1,lb,0.91,8,oz\n');
+assertEq('headerless falls through positional', csv4.rows.length, 2);
+assertEq('headerless first ingredient',          csv4.rows[0].ingredient, 'Romaine');
+assert('headerless surfaces a warning',           csv4.warnings.length > 0);
+
+// Quoted fields (commas inside ingredient names)
+const csv5 = PC.parseTabularText(
+  'Ingredient,AP price,AP qty,AP unit,Yield %,Used qty,Used unit\n' +
+  '"Beef, ground",6,1,lb,1.00,4,oz\n'
+);
+assertEq('quoted field with comma preserved', csv5.rows[0].ingredient, 'Beef, ground');
+
+// Currency cleaning ($ and commas)
+const csv6 = PC.parseTabularText(
+  'Ingredient,AP price,AP qty,AP unit,Yield %,Used qty,Used unit\n' +
+  'Olive oil,"$1,200",100,l,1.00,1,tbsp\n'
+);
+assertEq('"$1,200" → "1200"', csv6.rows[0].apPrice, '1200');
+
+// Aliases map: "name" / "cost" / "qty" / "unit"
+const csv7 = PC.parseTabularText(
+  'name,cost,qty,unit,yield,amount,recipe unit\n' +
+  'Pasta,4.50,1,lb,1.00,4,oz\n'
+);
+assertEq('alias headers detected — ingredient',   csv7.rows[0].ingredient, 'Pasta');
+assertEq('alias headers detected — apPrice',      csv7.rows[0].apPrice,    '4.50');
+assertEq('alias headers detected — apUnit',       csv7.rows[0].apUnit,     'lb');
+
+// Empty paste
+const csv8 = PC.parseTabularText('');
+assertEq('empty paste → empty rows', csv8.rows.length, 0);
+assert('empty paste surfaces warning', csv8.warnings.length > 0);
+
+// BOM-prefixed paste (Excel exports)
+const csv9 = PC.parseTabularText('﻿Ingredient,AP price,AP qty,AP unit,Used qty,Used unit\nx,1,1,lb,1,oz\n');
+assertEq('BOM stripped, row parses', csv9.rows.length, 1);
+
+// Pasted output flows into computePlateCost end-to-end
+const pasted = PC.parseTabularText(
+  'Ingredient,AP price,AP qty,AP unit,Yield %,Used qty,Used unit\n' +
+  'Romaine,28,24,each,0.75,1,each\n'
+);
+const recipe = { name: 'Salad', portions: 1, rows: pasted.rows };
+const r = PC.computePlateCost(recipe);
+assert('pasted recipe computes a plate cost', r.plateCost > 0);
+near('pasted Romaine plate cost = $28/24 ÷ 0.75',
+     r.plateCost, (28 / 24) / 0.75, 1e-3);
+
+// ============================================================
+// 7. Plausible bucket purity — enum-locked across input ranges +
 // poison strings.
 // ============================================================
 
