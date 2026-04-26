@@ -384,7 +384,7 @@ function pageHead(locale, { title, description, canonical, ogImage }) {
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260425-topics-fix">
+<link rel="stylesheet" href="/assets/site.css?v=20260425-mobile-library-fix">
 </head>`;
 }
 
