@@ -286,6 +286,9 @@
 
     <div class="pb-actions" id="pbActions" style="display:none;">
       <span class="pb-actions-label">Llévatelo</span>
+      <button type="button" class="pb-action-btn pb-action-btn-primary" id="pbDownloadBrief">Descargar Brief de Fotos <span class="pb-action-fmt">.png</span></button>
+      <button type="button" class="pb-action-btn" id="pbDownloadCard">Tarjeta de Fotos de Marca <span class="pb-action-fmt">.png</span></button>
+      <button type="button" class="pb-action-btn" id="pbDownloadZip">Paquete <span class="pb-action-fmt">.zip</span></button>
       <button type="button" class="pb-action-btn" id="pbCopyCsv">Copiar lista de tomas <span class="pb-action-fmt">.csv</span></button>
       <button type="button" class="pb-action-btn" id="pbDownloadJson">Descargar <span class="pb-action-fmt">.json</span></button>
     </div>
@@ -336,6 +339,7 @@
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/photo-brief/photo-brief.js?v=20260426-pb1"></script>
+<script src="/tools/photo-brief/card-render.js?v=20260426-pb2"></script>
 <script>
 (function(){
   'use strict';
@@ -679,6 +683,208 @@
     if (!json || json === '{}') return;
     downloadBlob(new Blob([json], { type: 'application/json' }), 'brief-fotos-' + briefSlug() + '.json');
     if (window.plausible) window.plausible('Photo Brief Export', { props: { format: 'json' } });
+  });
+
+  // -------------------- Descarga del Brief de Fotos / Tarjeta de Fotos --------------------
+  function buildBriefRenderOpts() {
+    if (!latestSummary || !window.PBCard) return null;
+    var coverage = latestSummary.surfaces.map(function(key){
+      return { surface: PB.SURFACES[key], key: key };
+    });
+    return {
+      restaurant:   latestSummary.restaurant,
+      photographer: latestSummary.photographer,
+      summary:      latestSummary,
+      palette:      latestSummary.palette,
+      coverage:     coverage,
+      strings:      window.PBCard.DEFAULT_STRINGS_ES
+    };
+  }
+  var downloadBriefBtn = document.getElementById('pbDownloadBrief');
+  var downloadCardBtn  = document.getElementById('pbDownloadCard');
+  if (downloadBriefBtn) downloadBriefBtn.addEventListener('click', function(){
+    if (!latestSummary || !window.PBCard) return;
+    window.PBCard.awaitFonts().then(function(){
+      var canvas = window.PBCard.renderPhotoBrief(buildBriefRenderOpts());
+      return window.PBCard.canvasToPngBlob(canvas);
+    }).then(function(blob){
+      if (!blob) return;
+      downloadBlob(blob, 'brief-fotos-' + briefSlug() + '.png');
+      if (window.plausible) window.plausible('Photo Brief Export', { props: { format: 'brief-png' } });
+    });
+  });
+  if (downloadCardBtn) downloadCardBtn.addEventListener('click', function(){
+    if (!latestSummary || !window.PBCard) return;
+    window.PBCard.awaitFonts().then(function(){
+      var canvas = window.PBCard.renderBrandPhotoCard(buildBriefRenderOpts());
+      return window.PBCard.canvasToPngBlob(canvas);
+    }).then(function(blob){
+      if (!blob) return;
+      downloadBlob(blob, 'tarjeta-fotos-marca-' + briefSlug() + '.png');
+      if (window.plausible) window.plausible('Photo Brief Export', { props: { format: 'card-png' } });
+    });
+  });
+
+  // -------------------- Paquete ZIP --------------------
+  var CRC_TABLE = (function(){
+    var t = new Uint32Array(256);
+    for (var n = 0; n < 256; n++) {
+      var c = n;
+      for (var k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+      t[n] = c >>> 0;
+    }
+    return t;
+  })();
+  function crc32(bytes){
+    var c = 0xFFFFFFFF;
+    for (var i = 0; i < bytes.length; i++) c = CRC_TABLE[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+    return (c ^ 0xFFFFFFFF) >>> 0;
+  }
+  function strToBytes(s){ return new TextEncoder().encode(s); }
+  function buildZipBlob(entries){
+    var parts = [], centralParts = [], offset = 0;
+    var nowDate = new Date();
+    var dosTime = ((nowDate.getHours() & 0x1F) << 11) | ((nowDate.getMinutes() & 0x3F) << 5) | ((nowDate.getSeconds() / 2) & 0x1F);
+    var dosDate = (((nowDate.getFullYear() - 1980) & 0x7F) << 9) | (((nowDate.getMonth() + 1) & 0x0F) << 5) | (nowDate.getDate() & 0x1F);
+    entries.forEach(function(entry){
+      var nameBytes = strToBytes(entry.name);
+      var crc = crc32(entry.data);
+      var size = entry.data.length;
+      var localHeader = new Uint8Array(30 + nameBytes.length);
+      var dv = new DataView(localHeader.buffer);
+      dv.setUint32(0, 0x04034b50, true); dv.setUint16(4, 20, true);
+      dv.setUint16(6, 0, true); dv.setUint16(8, 0, true);
+      dv.setUint16(10, dosTime, true); dv.setUint16(12, dosDate, true);
+      dv.setUint32(14, crc, true); dv.setUint32(18, size, true);
+      dv.setUint32(22, size, true); dv.setUint16(26, nameBytes.length, true);
+      dv.setUint16(28, 0, true);
+      localHeader.set(nameBytes, 30);
+      parts.push(localHeader); parts.push(entry.data);
+      var central = new Uint8Array(46 + nameBytes.length);
+      var cv = new DataView(central.buffer);
+      cv.setUint32(0, 0x02014b50, true); cv.setUint16(4, 20, true);
+      cv.setUint16(6, 20, true); cv.setUint16(8, 0, true);
+      cv.setUint16(10, 0, true); cv.setUint16(12, dosTime, true);
+      cv.setUint16(14, dosDate, true); cv.setUint32(16, crc, true);
+      cv.setUint32(20, size, true); cv.setUint32(24, size, true);
+      cv.setUint16(28, nameBytes.length, true); cv.setUint16(30, 0, true);
+      cv.setUint16(32, 0, true); cv.setUint16(34, 0, true);
+      cv.setUint16(36, 0, true); cv.setUint32(38, 0, true);
+      cv.setUint32(42, offset, true);
+      central.set(nameBytes, 46);
+      centralParts.push(central);
+      offset += localHeader.length + entry.data.length;
+    });
+    var cdSize = 0;
+    centralParts.forEach(function(c){ cdSize += c.length; });
+    var cdStart = offset;
+    centralParts.forEach(function(c){ parts.push(c); });
+    var eocd = new Uint8Array(22);
+    var ev = new DataView(eocd.buffer);
+    ev.setUint32(0, 0x06054b50, true); ev.setUint16(4, 0, true);
+    ev.setUint16(6, 0, true); ev.setUint16(8, entries.length, true);
+    ev.setUint16(10, entries.length, true); ev.setUint32(12, cdSize, true);
+    ev.setUint32(16, cdStart, true); ev.setUint16(20, 0, true);
+    parts.push(eocd);
+    return new Blob(parts, { type: 'application/zip' });
+  }
+  function escHtml(s){
+    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function buildBriefHtml() {
+    if (!latestSummary) return '';
+    var date = new Date().toISOString().slice(0, 10);
+    var rowsHtml = '';
+    var n = 0;
+    latestSummary.dedup.perDish.forEach(function(d){
+      d.rows.forEach(function(r){
+        n++;
+        rowsHtml += '<tr><td class="num">' + n + '</td>' +
+          '<td>' + escHtml(d.name) + '</td>' +
+          '<td>' + escHtml(d.category) + '</td>' +
+          '<td class="mono">' + escHtml(r.angle) + '</td>' +
+          '<td class="mono">' + escHtml(r.lighting) + '</td>' +
+          '<td class="mono">' + escHtml((r.surfaces || []).join(', ')) + '</td>' +
+          '<td class="mono">' + escHtml(r.negSpace) + '</td></tr>';
+      });
+    });
+    return '<!doctype html>\n<html lang="es"><head><meta charset="utf-8"/>' +
+      '<title>' + escHtml(latestSummary.restaurant || 'Brief de Fotos') + ' — Brief de Fotos · Muntin Digital</title>' +
+      '<style>body{margin:0;padding:32px;font:14px/1.55 -apple-system,Segoe UI,sans-serif;color:#14161A;background:#FAF7F2}' +
+      '.head{border-bottom:2px solid #14161A;padding-bottom:16px;margin-bottom:24px}' +
+      'h1{font-family:Fraunces,Georgia,serif;font-weight:500;font-size:28px;margin:0 0 6px}' +
+      '.eyebrow{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#5A5752;margin:0}' +
+      'table{width:100%;border-collapse:collapse;margin:16px 0;font-variant-numeric:tabular-nums}' +
+      'th,td{padding:8px 10px;border-bottom:1px solid #E5E0D8;text-align:left;font-size:13px}' +
+      'th{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#5A5752}' +
+      '.num{font-family:ui-monospace,Menlo,Consolas,monospace;text-align:right;width:30px}' +
+      '.mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px}' +
+      '.foot{margin-top:32px;padding-top:14px;border-top:1px solid #E5E0D8;font-size:11px;color:#5A5752;display:flex;justify-content:space-between}' +
+      '@media print{body{padding:24px;background:#fff} @page{size:auto;margin:14mm}}' +
+      '</style></head><body>' +
+      '<div class="head"><p class="eyebrow">Brief de Fotos — ' + escHtml(date) + '</p>' +
+      '<h1>' + escHtml(latestSummary.restaurant || 'Brief de Fotos') + '</h1>' +
+      '<p style="font-size:12px;color:#5A5752;margin:4px 0 0;">' +
+        latestSummary.dedup.dedup + ' tomas fuente · ' + latestSummary.roi.days + ' día' + (latestSummary.roi.days === 1 ? '' : 's') +
+        ' a $' + latestSummary.dayRate.toFixed(0) + '/día · $' + latestSummary.roi.totalCost.toFixed(0) + ' total' +
+      '</p></div>' +
+      '<table><thead><tr><th class="num">#</th><th>Plato</th><th>Cat.</th><th>Ángulo</th><th>Luz</th><th>Corta a</th><th>Espacio neg.</th></tr></thead><tbody>' + rowsHtml + '</tbody></table>' +
+      '<div class="foot"><span>Generado por Muntin · Constructor de Brief de Fotos · muntin.digital</span><span>' + escHtml(date) + '</span></div>' +
+      '</body></html>\n';
+  }
+  function buildReadme() {
+    if (!latestSummary) return '';
+    var date = new Date().toISOString().slice(0, 10);
+    var lines = [];
+    lines.push('# ' + (latestSummary.restaurant || 'Brief de Fotos') + ' — ' + date);
+    lines.push('');
+    lines.push('Generado por **Constructor de Brief de Fotos** en https://muntin.digital/es/tools/photo-brief/');
+    lines.push('');
+    lines.push('## Matemática');
+    lines.push('');
+    lines.push('- Tomas fuente (reducidas): **' + latestSummary.dedup.dedup + '**');
+    lines.push('- Tomas ingenuas: ' + latestSummary.dedup.naive);
+    lines.push('- Días estimados: ' + latestSummary.roi.days + ' a $' + latestSummary.dayRate.toFixed(0) + '/día');
+    lines.push('- Costo total: $' + latestSummary.roi.totalCost.toFixed(0));
+    lines.push('- Costo por toma: $' + latestSummary.roi.costPerShot.toFixed(2));
+    lines.push('');
+    lines.push('## Privacidad');
+    lines.push('');
+    lines.push('Tu brief nunca salió de tu navegador.');
+    return lines.join('\n') + '\n';
+  }
+  var downloadZipBtn = document.getElementById('pbDownloadZip');
+  if (downloadZipBtn) downloadZipBtn.addEventListener('click', function(){
+    if (!latestSummary || !window.PBCard) return;
+    window.PBCard.awaitFonts().then(function(){
+      var briefCanvas = window.PBCard.renderPhotoBrief(buildBriefRenderOpts());
+      var cardCanvas  = window.PBCard.renderBrandPhotoCard(buildBriefRenderOpts());
+      return Promise.all([
+        window.PBCard.canvasToPngBlob(briefCanvas),
+        window.PBCard.canvasToPngBlob(cardCanvas)
+      ]);
+    }).then(function(blobs){
+      if (!blobs || !blobs[0]) return;
+      Promise.all(blobs.map(function(b){
+        return new Promise(function(res){
+          var r = new FileReader();
+          r.onload = function(){ res(new Uint8Array(r.result)); };
+          r.readAsArrayBuffer(b);
+        });
+      })).then(function(byteArrays){
+        var slug = briefSlug();
+        var entries = [
+          { name: 'brief-fotos.png',      data: byteArrays[0] },
+          { name: 'tarjeta-fotos-marca.png', data: byteArrays[1] },
+          { name: 'brief.html',           data: strToBytes(buildBriefHtml()) },
+          { name: 'lista-tomas.csv',      data: strToBytes(buildCsv()) },
+          { name: 'brief-fotos.json',     data: strToBytes(buildJson()) },
+          { name: 'README.md',            data: strToBytes(buildReadme()) }
+        ];
+        downloadBlob(buildZipBlob(entries), 'brief-fotos-' + slug + '.zip');
+        if (window.plausible) window.plausible('Photo Brief Export', { props: { format: 'zip' } });
+      });
+    });
   });
 
   // Pegar desde hoja de cálculo.
