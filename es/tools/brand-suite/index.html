@@ -1479,9 +1479,12 @@
     });
   }
   function paneBlob(palette){
-    var canvas = renderPaneCanvas(palette);
-    if (!canvas) return Promise.resolve(null);
-    return window.BSPane.canvasToPngBlob(canvas);
+    return (window.BSPane && window.BSPane.awaitFonts ? window.BSPane.awaitFonts() : Promise.resolve())
+      .then(function(){
+        var canvas = renderPaneCanvas(palette);
+        if (!canvas) return null;
+        return window.BSPane.canvasToPngBlob(canvas);
+      });
   }
 
   downloadPaneBtn.addEventListener('click', function(){

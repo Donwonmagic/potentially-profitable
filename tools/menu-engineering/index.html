@@ -798,8 +798,14 @@
     // re-describe / re-photograph quadrant — point at Menu Copy
     // Inspector for the language half.
     var toolLinks = {
-      Plowhorse: { href: '/tools/margin-math/#calc-priceraise', label: 'Re-cost in Margin Math &rarr;' },
-      Puzzle:    { href: '/tools/menu-copy/',                    label: 'Re-describe in Menu Copy Inspector &rarr;' }
+      Plowhorse: [
+        { href: '/tools/margin-math/#calc-priceraise', label: 'Re-cost in Margin Math &rarr;' },
+        { href: '/tools/plate-cost/',                  label: 'Audit ingredient cost in Plate Cost &rarr;' }
+      ],
+      Puzzle: [
+        { href: '/tools/menu-copy/',                   label: 'Re-describe in Menu Copy Inspector &rarr;' },
+        { href: '/tools/plate-cost/',                  label: 'Re-cost the recipe in Plate Cost &rarr;' }
+      ]
     };
     var html = '';
     ['Star','Plowhorse','Puzzle','Dog'].forEach(function(q){
@@ -807,9 +813,11 @@
       var list = byQ[q].map(function(it){
         return '<li>' + escHtml(it.item || '(unnamed)') + ' &middot; ' + fmtMoney(it.cm_dollars) + ' CM &middot; ' + fmtPct(it.share) + '</li>';
       }).join('');
-      var tool = toolLinks[q];
-      var toolLine = tool && byQ[q].length > 0
-        ? '<p style="margin:8px 0 0;font-size:12px;"><a href="' + tool.href + '" style="color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor;">' + tool.label + '</a></p>'
+      var tools = toolLinks[q] || [];
+      var toolLine = tools.length && byQ[q].length > 0
+        ? tools.map(function(tool){
+            return '<p style="margin:8px 0 0;font-size:12px;"><a href="' + tool.href + '" style="color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor;">' + tool.label + '</a></p>';
+          }).join('')
         : '';
       html += '<article class="me-action-card" data-q="' + q + '">' +
               '<h3>' + q + 's <span style="font-size:13px;font-weight:400;color:var(--stone);">(' + byQ[q].length + ')</span></h3>' +
@@ -1112,14 +1120,19 @@
   });
 
   // ----- Menu Card render via window.MECard (canvas-2d, no SVG) -----
+  // Wait for web fonts before painting so the Card uses Fraunces /
+  // Inter rather than the system fallback. No-op in environments
+  // without document.fonts.
   function buildMenuCardBlob(){
     if (!window.MECard) return Promise.reject(new Error('card-render module not loaded'));
-    var summary = currentSummary();
-    var canvas  = window.MECard.renderMenuCard({
-      summary: summary,
-      strings: window.MECard.DEFAULT_STRINGS_EN
+    return window.MECard.awaitFonts().then(function(){
+      var summary = currentSummary();
+      var canvas  = window.MECard.renderMenuCard({
+        summary: summary,
+        strings: window.MECard.DEFAULT_STRINGS_EN
+      });
+      return window.MECard.canvasToPngBlob(canvas);
     });
-    return window.MECard.canvasToPngBlob(canvas);
   }
 
   downloadPngBtn.addEventListener('click', function(){

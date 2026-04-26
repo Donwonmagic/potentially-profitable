@@ -1,0 +1,1014 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="referrer" content="no-referrer" />
+<title>Plate Cost Calculator — What does each plate actually cost? | Muntin Digital</title>
+<meta name="description" content="Type a recipe. Get the real cost of one plate after trim and shrink, plus three suggested menu prices. About 5 minutes per dish. Stays in your browser." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/tools/plate-cost/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/tools/plate-cost/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/plate-cost/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/plate-cost/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="es_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Plate Cost Calculator — What does each plate actually cost?" />
+<meta property="og:description" content="Type a recipe. Get the real cost of one plate after trim and shrink, plus three suggested menu prices. Stays in your browser." />
+<meta property="og:url" content="https://muntin.digital/tools/plate-cost/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Plate Cost Calculator — What does each plate actually cost?" />
+<meta name="twitter:description" content="Type a recipe. Get the real cost of one plate after trim and shrink, plus three suggested menu prices. Stays in your browser." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<link rel="preconnect" href="https://plausible.io" crossorigin />
+<link rel="dns-prefetch" href="https://plausible.io" />
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
+<link rel="stylesheet" href="/assets/site.css?v=20260424-bs1" />
+<style>.breadcrumb{visibility:hidden;padding-top:100px}
+/* === Plate Cost Calculator tool-scoped styles. Page-prefix .pc-*. === */
+.pc-form{display:flex;flex-direction:column;gap:18px}
+.pc-meta{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:end}
+@media(max-width:640px){.pc-meta{grid-template-columns:1fr}}
+.pc-meta label{display:flex;flex-direction:column;gap:4px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
+.pc-meta input{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums}
+.pc-meta input:focus{outline:2px solid var(--teal);outline-offset:1px}
+
+.pc-grid{border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);overflow-x:auto}
+.pc-grid table{width:100%;border-collapse:collapse;font-size:13px;min-width:780px}
+.pc-grid th{padding:10px 8px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);background:var(--cream-2);border-bottom:1px solid var(--line);white-space:nowrap}
+.pc-grid td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
+.pc-grid tr:last-child td{border-bottom:0}
+.pc-grid input,.pc-grid select{width:100%;padding:7px 8px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font:inherit;font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums}
+.pc-grid input:focus,.pc-grid select:focus{outline:2px solid var(--teal);outline-offset:1px}
+.pc-grid input[type="number"]{text-align:right}
+.pc-grid .pc-num{width:84px;text-align:right;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--ink-soft)}
+.pc-grid .pc-warn{font-size:11px;color:var(--rust);font-weight:600}
+.pc-grid .pc-remove{background:none;border:none;color:var(--stone);cursor:pointer;font-size:18px;line-height:1;padding:0 4px}
+.pc-grid .pc-remove:hover{color:var(--rust)}
+.pc-grid-actions{display:flex;gap:8px;flex-wrap:wrap;padding:10px 12px;background:var(--cream-2);border-top:1px solid var(--line)}
+.pc-add-row{padding:6px 14px;border:1px dashed var(--line-dark);border-radius:999px;background:transparent;font:inherit;font-size:12px;font-weight:600;color:var(--stone);cursor:pointer}
+.pc-add-row:hover{border-color:var(--teal);color:var(--teal)}
+.pc-sample-btn{padding:6px 14px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12px;font-weight:600;cursor:pointer}
+.pc-sample-btn:hover{background:var(--teal);color:var(--cream)}
+.pc-clear-btn{padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--stone);font:inherit;font-size:12px;font-weight:600;cursor:pointer;margin-left:auto}
+.pc-clear-btn:hover{border-color:var(--rust);color:var(--rust)}
+
+.pc-result{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;margin-top:24px}
+@media(max-width:760px){.pc-result{grid-template-columns:1fr}}
+.pc-headline{padding:24px 26px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--cream-2)}
+.pc-headline-eyebrow{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin:0 0 6px}
+.pc-headline-num{font-family:var(--font-display);font-size:clamp(40px,6vw,64px);font-weight:500;color:var(--ink);line-height:1;margin:0 0 10px;font-variant-numeric:tabular-nums}
+.pc-headline-batch{font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums;margin:0 0 8px}
+.pc-headline-explainer{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:0 0 8px}
+.pc-headline-confidence{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-radius:999px}
+.pc-headline-confidence[data-level="high"]  {background:var(--status-good-tint);color:var(--status-good)}
+.pc-headline-confidence[data-level="medium"]{background:rgba(198,138,44,0.10);color:#956A1A}
+.pc-headline-confidence[data-level="low"]   {background:rgba(184,84,26,0.10);color:var(--rust)}
+
+.pc-prices{padding:18px 22px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+.pc-prices h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 4px}
+.pc-prices p.pc-prices-dek{font-size:12.5px;color:var(--stone);margin:0 0 14px;line-height:1.5}
+.pc-price-row{display:grid;grid-template-columns:64px 1fr auto;align-items:baseline;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
+.pc-price-row:first-of-type{border-top:0}
+.pc-price-target{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:14px;font-weight:600;color:var(--ink)}
+.pc-price-mid{display:flex;flex-direction:column;gap:2px;min-width:0}
+.pc-price-label{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--stone)}
+.pc-price-note{font-size:12px;color:var(--ink-soft);line-height:1.45}
+.pc-price-amount{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);text-align:right}
+.pc-price-cm{font-size:11px;color:var(--stone);text-align:right;margin-top:2px}
+
+.pc-warnings{display:flex;flex-direction:column;gap:6px;font-size:13px;line-height:1.55;margin-top:12px}
+.pc-warnings li{padding:8px 12px;border-radius:var(--r-sm);background:rgba(184,84,26,0.06);color:var(--rust);border:1px solid rgba(184,84,26,0.18);list-style:none}
+.pc-warnings ul{margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+
+.pc-empty{padding:24px;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--cream-2);font-size:13.5px;color:var(--stone);text-align:center;margin-top:24px}
+
+.pc-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:18px;padding:14px 18px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+.pc-actions-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-right:8px}
+.pc-action-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:background 140ms var(--ease-out),color 140ms var(--ease-out);text-decoration:none}
+.pc-action-btn:hover{background:var(--teal);color:var(--cream)}
+.pc-action-btn-primary{background:var(--teal);color:var(--cream)}
+.pc-action-btn-primary:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.pc-action-btn.copied{background:var(--status-good-tint);color:var(--status-good);border-color:var(--status-good)}
+.pc-action-btn .pc-action-fmt{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10.5px;font-weight:700;color:inherit;opacity:.7}
+
+.pc-privacy-list{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none;counter-reset:pc-step}
+.pc-privacy-list li{counter-increment:pc-step;display:grid;grid-template-columns:32px 1fr;gap:14px;align-items:start;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white)}
+.pc-privacy-list li::before{content:counter(pc-step);font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--teal);font-variant-numeric:tabular-nums}
+.pc-privacy-list li strong{display:block;font-size:14px;color:var(--ink);margin-bottom:2px}
+.pc-privacy-list li p{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:0}
+.pc-privacy-list code{font-size:12px;background:var(--cream-2);padding:1px 4px;border-radius:3px}
+
+.pc-paste{margin:0 0 14px;padding:14px 16px;border:1px dashed var(--line-dark);border-radius:var(--r-input);background:var(--white)}
+.pc-paste summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.pc-paste summary::after{content:"+";font-size:18px;color:var(--stone)}
+.pc-paste[open] summary::after{content:"\2212"}
+.pc-paste summary::-webkit-details-marker{display:none}
+.pc-paste-body{margin-top:12px;display:flex;flex-direction:column;gap:10px}
+.pc-paste textarea{width:100%;min-height:120px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.5;color:var(--ink);resize:vertical}
+.pc-paste-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pc-paste-actions .pc-paste-hint{font-size:12px;color:var(--stone);margin-left:auto}
+.pc-paste-btn{padding:6px 14px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12px;font-weight:600;cursor:pointer}
+.pc-paste-btn:hover{background:var(--teal);color:var(--cream)}
+
+@media print{
+  body{background:#fff !important;color:#000 !important}
+  header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,
+  #how-private,#what-this-isnt,.mm-next,.pc-grid-actions,.pc-clear-btn,.pc-sample-btn{display:none !important}
+  .pc-headline,.pc-prices,.pc-grid{break-inside:avoid;page-break-inside:avoid}
+  a[href]:after{content:'' !important}
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/for/restaurants/">Restaurants</a>
+      <a href="/learn/" class="nav-library-trigger">Library</a>
+      <a href="/work/">Work</a>
+      <a href="/about/">About</a>
+    </nav>
+    <nav class="lang-switch" aria-label="Language">
+      <a href="/es/tools/plate-cost/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
+      <span class="lang-switch-current" aria-current="true">EN</span>
+    </nav>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a>
+  </div>
+</header>
+<nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><a href="/tools/">Tools</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><span aria-current="page">Plate Cost Calculator</span></nav>
+
+<main id="main">
+
+<!-- HERO -->
+<section class="block"><div class="container">
+  <div style="max-width:760px;margin:0 auto;text-align:center;">
+    <span class="eyebrow">Free tool · stays in your browser</span>
+    <h1 style="font-family:var(--font-display);font-size:clamp(34px,4.5vw,52px);font-weight:500;color:var(--ink);margin:14px 0 14px;line-height:1.1;">What does each plate actually cost?</h1>
+    <p style="font-size:17px;line-height:1.6;color:var(--ink-soft);margin:0 0 14px;">Type a recipe. The tool walks the math from invoice to plate — including the bit most owners skip: the percentage that survives trim, peel, bone, and shrink. About 5 minutes per dish.</p>
+    <p style="font-size:13px;color:var(--stone);margin:0;"><a href="#how-private" style="color:inherit;border-bottom:1px dashed var(--teal);">How we keep your recipes private</a> · <a href="/glossary/plate-cost/" style="color:inherit;border-bottom:1px dashed var(--teal);">Why this matters</a></p>
+  </div>
+</div></section>
+
+<!-- WHAT THIS DOES (plain English, four sentences) -->
+<section class="block"><div class="container" style="max-width:760px;">
+  <div style="padding:18px 22px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);font-size:14.5px;line-height:1.65;color:var(--ink-soft);">
+    <p style="margin:0 0 10px;"><strong style="color:var(--ink);">What this does.</strong> You type a recipe — what you bought, what you used, how much it yields after trim. The tool walks the math from <em>as-purchased</em> cost to <em>edible-portion</em> cost to plate cost. Then it suggests three menu prices, each one targeting a different food-cost percentage. Nothing leaves the browser; close the tab and the recipe is gone.</p>
+  </div>
+</div></section>
+
+<!-- PRIVACY PANEL (5 claims, sharper than priors) -->
+<section class="block" id="how-private"><div class="container" style="max-width:760px;">
+  <h2 style="font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0 0 6px;">Your recipes do not leave this browser.</h2>
+  <p style="font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0 0 16px;">A recipe is a chef&rsquo;s intellectual property. Five verifiable claims — each one you can confirm yourself in your browser&rsquo;s DevTools in under a minute.</p>
+  <ol class="pc-privacy-list">
+    <li><div><strong>No upload.</strong><p>Open DevTools &rarr; Network. Type a recipe, click <em>Compute</em>. Zero requests fire. The math runs on your device.</p></div></li>
+    <li><div><strong>No storage.</strong><p>Close the tab and reload this URL. The form is empty. We don&rsquo;t use <code>localStorage</code>, <code>sessionStorage</code>, or cookies for your recipe data.</p></div></li>
+    <li><div><strong>No URL leakage.</strong><p>Unlike some tools that encode state in the address bar, this one never serialises your recipe to the URL. Your dish names stay yours.</p></div></li>
+    <li><div><strong>One bundled script.</strong><p>The tool loads <code>/tools/plate-cost/plate-cost.js</code> from this domain. No CDN, no analytics-tied recipe data, no third-party tracker reading the form.</p></div></li>
+    <li><div><strong>Anonymous, enum-bucketed analytics only.</strong><p>We log that &ldquo;a 4–7 ingredient recipe was costed&rdquo; in three or four buckets — never the ingredient names, prices, or recipe content.</p></div></li>
+  </ol>
+</div></section>
+
+<!-- INPUT FORM -->
+<section class="block"><div class="container" style="max-width:920px;">
+  <h2 style="font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0 0 6px;">Type a recipe.</h2>
+  <p style="font-size:13.5px;color:var(--stone);margin:0 0 16px;line-height:1.55;">Five common ingredients to start. Add or remove rows as needed. The tool fills in canonical yields for ~80 common ingredients automatically — override any one if your supplier&rsquo;s product yields differently.</p>
+
+  <div class="pc-form">
+    <div class="pc-meta">
+      <label>Dish name <small style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--stone);">(used on the result panel and exports)</small>
+        <input type="text" id="pcName" placeholder="e.g. Cacio e pepe" autocomplete="off" />
+      </label>
+      <label>Portions per recipe <small style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--stone);">(set to 1 for plate-by-plate; higher for batch recipes)</small>
+        <input type="number" id="pcPortions" min="1" step="1" value="1" />
+      </label>
+    </div>
+
+    <details class="pc-paste">
+      <summary>Have a recipe spreadsheet? Paste it.</summary>
+      <div class="pc-paste-body">
+        <p style="font-size:12.5px;color:var(--ink-soft);line-height:1.55;margin:0;">Drag a row range from Excel / Google Sheets and paste below — or paste a CSV. Headers like <em>Ingredient, AP price, AP qty, AP unit, Yield %, Used qty, Used unit</em> are auto-mapped. The tool also accepts <em>Name, Cost, Qty, Unit, Yield, Amount, Recipe unit</em> as aliases.</p>
+        <textarea id="pcPaste" placeholder="Ingredient,AP price,AP qty,AP unit,Yield %,Used qty,Used unit&#10;Romaine,28,24,each,0.75,1,each&#10;..." spellcheck="false"></textarea>
+        <div class="pc-paste-actions">
+          <button type="button" class="pc-paste-btn" id="pcPasteParse">Parse paste</button>
+          <span class="pc-paste-hint" id="pcPasteHint"></span>
+        </div>
+      </div>
+    </details>
+
+    <div class="pc-grid" role="region" aria-label="Recipe ingredient grid">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col" style="min-width:160px;">Ingredient</th>
+            <th scope="col" style="width:90px;">AP price ($)</th>
+            <th scope="col" style="width:80px;">AP qty</th>
+            <th scope="col" style="width:90px;">AP unit</th>
+            <th scope="col" style="width:80px;">Yield&nbsp;%</th>
+            <th scope="col" style="width:80px;">Used qty</th>
+            <th scope="col" style="width:90px;">Used unit</th>
+            <th scope="col" style="width:80px;text-align:right;">Cost</th>
+            <th scope="col" style="width:30px;"></th>
+          </tr>
+        </thead>
+        <tbody id="pcRows"></tbody>
+      </table>
+      <div class="pc-grid-actions">
+        <button type="button" class="pc-add-row" id="pcAddRow">+ Add ingredient</button>
+        <button type="button" class="pc-sample-btn" id="pcSample">Load sample recipe</button>
+        <button type="button" class="pc-clear-btn" id="pcClear">Clear</button>
+      </div>
+    </div>
+
+    <ul class="pc-warnings" id="pcWarnings" aria-live="polite" style="display:none;"></ul>
+
+    <!-- RESULT PANEL -->
+    <div class="pc-result" id="pcResult" style="display:none;">
+      <div class="pc-headline">
+        <p class="pc-headline-eyebrow">Plate cost</p>
+        <p class="pc-headline-num" id="pcHeadlineNum">$0.00</p>
+        <p class="pc-headline-batch" id="pcHeadlineBatch"></p>
+        <p class="pc-headline-explainer">That&rsquo;s what it costs you in ingredients to send this dish to the pass, after trim and shrink. Excludes labour and overhead.</p>
+        <span class="pc-headline-confidence" id="pcConfidence" data-level="high">High confidence</span>
+      </div>
+      <div class="pc-prices">
+        <h3>Three suggested menu prices</h3>
+        <p class="pc-prices-dek">Each row works backwards from a target food-cost percent. The dollars on the right are what you keep per plate after ingredients.</p>
+        <div id="pcPriceRows"></div>
+      </div>
+    </div>
+
+    <div class="pc-actions" id="pcActions" style="display:none;">
+      <span class="pc-actions-label">Take this with you</span>
+      <button type="button" class="pc-action-btn pc-action-btn-primary" id="pcDownloadCard">Download Plate Card <span class="pc-action-fmt">.png</span></button>
+      <button type="button" class="pc-action-btn" id="pcDownloadZip">Bundle <span class="pc-action-fmt">.zip</span></button>
+      <button type="button" class="pc-action-btn" id="pcCopyCsv">Copy as CSV <span class="pc-action-fmt">.csv</span></button>
+      <button type="button" class="pc-action-btn" id="pcDownloadJson">Download <span class="pc-action-fmt">.json</span></button>
+      <button type="button" class="pc-action-btn" id="pcPushMe">Add to Menu Engineering &rarr;</button>
+      <button type="button" class="pc-action-btn" id="pcPushMm">Use in Margin Math &rarr;</button>
+    </div>
+
+    <div class="pc-empty" id="pcEmpty">
+      Fill in a row above &mdash; or <button type="button" class="pc-sample-btn" id="pcSample2" style="margin:0 6px;">load the sample recipe</button> &mdash; to see the math.
+    </div>
+  </div>
+</div></section>
+
+<!-- WHAT THIS IS / ISN'T (honesty framing) -->
+<section class="block" id="what-this-isnt"><div class="container" style="max-width:760px;">
+  <h2 style="font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0 0 6px;">What this <em>is</em>, and what it <em>isn&rsquo;t</em>.</h2>
+  <p style="font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0 0 18px;">A working tool can be honest about its edges. The Plate Cost Calculator does five things well and a handful of related things not at all.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 0 24px;">
+    <div style="padding:16px 18px;border:1px solid var(--line);border-left-width:4px;border-left-color:var(--status-good);border-radius:var(--r-sm);background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:15px;font-weight:600;margin:0 0 8px;color:var(--ink);">What this is</h3>
+      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.6;color:var(--ink-soft);">
+        <li>An honest <strong>plate-cost number</strong> per dish, after AP&rarr;EP yield correction.</li>
+        <li>The <strong>missing input</strong> for Menu Engineering Matrix and Margin Math.</li>
+        <li>A <strong>teaching tool</strong> &mdash; the AP / EP / yield math is visible.</li>
+        <li>A printable <strong>Plate Card</strong> for the kitchen wall.</li>
+        <li>A starting point for an honest conversation with your chef and accountant.</li>
+      </ul>
+    </div>
+    <div style="padding:16px 18px;border:1px solid var(--line);border-left-width:4px;border-left-color:var(--rust);border-radius:var(--r-sm);background:var(--white);">
+      <h3 style="font-family:var(--font-display);font-size:15px;font-weight:600;margin:0 0 8px;color:var(--ink);">What this isn&rsquo;t</h3>
+      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.6;color:var(--ink-soft);">
+        <li>An <strong>invoice scanner</strong>. Type AP cost from your actual invoice; we don&rsquo;t guess prices.</li>
+        <li>A <strong>recipe substitution engine</strong>. The tool tells you what costs what; it doesn&rsquo;t propose cheaper alternatives.</li>
+        <li>A <strong>POS connector</strong>. The pitch is &ldquo;type your recipe&rdquo; &mdash; a connector inverts that and breaks privacy.</li>
+        <li>A <strong>prime-cost calculator</strong>. Labour is required. Use Margin Math for that.</li>
+        <li>A <strong>menu engineering analysis</strong>. Use Menu Engineering Matrix for the per-dish portfolio call.</li>
+      </ul>
+    </div>
+  </div>
+
+  <p style="font-size:13.5px;color:var(--ink-soft);line-height:1.6;margin:0;padding:14px 16px;background:var(--cream-2);border-radius:var(--r-sm);"><strong>What it does next.</strong> The plate cost is the missing first input for two other tools. Click <em>Add to Menu Engineering</em> to see this dish on the Stars / Plowhorses / Puzzles / Dogs matrix. Click <em>Use in Margin Math</em> to model how it lands against your full prime cost. Or just print the Plate Card and tape it to the wall.</p>
+</div></section>
+
+<!-- LIBRARY:tool-deep-links:start -->
+<section class="tool-deep-links" aria-labelledby="tool-deep-h">
+  <div class="container">
+    <header class="tool-deep-head">
+      <span class="eyebrow">Learn more</span>
+      <h2 id="tool-deep-h">Why this tool exists.</h2>
+      <p class="tool-deep-blurb">Every check this tool runs maps to a specific concept in the Library. Two starting points — one definition, one playbook.</p>
+      <div class="tool-deep-topics"><a class="tool-deep-topic" href="/learn/topics/operations-margin/">Operations &amp; Margin</a></div>
+    </header>
+    <div class="tool-deep-grid">
+      <a class="tool-deep-card tool-deep-card-term" href="/glossary/plate-cost/">
+          <span class="tool-deep-kind">Glossary</span>
+          <h3>Plate cost</h3>
+          <p class="tool-deep-aka">the real ingredient cost of one finished plate</p>
+          <p class="tool-deep-snippet">What it costs you in ingredients to send one plate of a dish to the pass, after trim, peel, bone, and shrink. Computed per ingredient as edi…</p>
+          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/glossary/yield-percent/">
+          <span class="tool-deep-kind">Glossary</span>
+          <h3>Yield percent</h3>
+          <p class="tool-deep-aka">the share of what you bought that ends up on a plate</p>
+          <p class="tool-deep-snippet">For a given ingredient: the percentage of as-purchased weight that survives trim, peel, bone, fat, and cooking shrinkage. Romaine yields abo…</p>
+          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-article" href="/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">
+          <span class="tool-deep-kind">Article</span>
+          <h3>How to Raise Restaurant Menu Prices Without Losing Reservations</h3>
+          <p class="tool-deep-snippet">The honest playbook for raising menu prices on an independent restaurant&#39;s website in 2026 — which items to raise, how to stage it, and the website moves that protect reservations.</p>
+          <span class="tool-deep-cta">Read the playbook <span aria-hidden="true">→</span></span>
+        </a>
+    </div>
+  </div>
+</section>
+<!-- LIBRARY:tool-deep-links:end -->
+
+</main>
+<footer class="foot">
+  <div class="container foot-inner">
+    <div class="foot-col foot-brand"><a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home"><img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async"><sup class="tm" aria-hidden="true">&#8482;</sup></a><p class="foot-tagline">Structure Brings Clarity.</p></div>
+  </div>
+  <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
+</footer>
+
+<script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="/tools/plate-cost/plate-cost.js?v=20260426-pc1"></script>
+<script src="/tools/plate-cost/card-render.js?v=20260426-pc2"></script>
+<script>
+(function(){
+  'use strict';
+  if (!window.PC) return;
+  var PC = window.PC;
+
+  // -------------------- DOM hooks --------------------
+  var nameEl     = document.getElementById('pcName');
+  var portionsEl = document.getElementById('pcPortions');
+  var rowsEl     = document.getElementById('pcRows');
+  var addRowBtn  = document.getElementById('pcAddRow');
+  var sampleBtn  = document.getElementById('pcSample');
+  var sampleBtn2 = document.getElementById('pcSample2');
+  var clearBtn   = document.getElementById('pcClear');
+  var resultEl   = document.getElementById('pcResult');
+  var emptyEl    = document.getElementById('pcEmpty');
+  var headlineNum  = document.getElementById('pcHeadlineNum');
+  var headlineBatch= document.getElementById('pcHeadlineBatch');
+  var confidenceEl = document.getElementById('pcConfidence');
+  var priceRowsEl  = document.getElementById('pcPriceRows');
+  var warningsEl   = document.getElementById('pcWarnings');
+  var actionsEl    = document.getElementById('pcActions');
+
+  // Latest computed summary + the recipe that produced it. Cached so
+  // the export handlers (CSV, JSON, push-to-Menu-Engineering) read
+  // from a single source of truth instead of re-running the math.
+  var latestSummary = null;
+  var latestRecipe  = null;
+
+  // Units allowed in the dropdown — filtered to the most common.
+  var UNIT_OPTIONS = ['g','kg','oz','lb','ml','l','tsp','tbsp','fl-oz','cup','qt','gal','each','dozen'];
+
+  // -------------------- Row helpers --------------------
+  function blankRow() {
+    return { ingredient: '', apPrice: '', apQty: '', apUnit: 'lb',
+             yieldPercent: '', usedQty: '', usedUnit: 'oz' };
+  }
+
+  function unitSelect(name, value) {
+    var opts = UNIT_OPTIONS.map(function(u){
+      var sel = (u === value) ? ' selected' : '';
+      return '<option value="' + u + '"' + sel + '>' + u + '</option>';
+    }).join('');
+    return '<select data-field="' + name + '">' + opts + '</select>';
+  }
+
+  function rowHtml(row, idx) {
+    return '<tr data-idx="' + idx + '">' +
+      '<td><input type="text" data-field="ingredient" value="' + esc(row.ingredient) + '" placeholder="e.g. Romaine" /></td>' +
+      '<td><input type="number" data-field="apPrice" min="0" step="0.01" value="' + esc(row.apPrice) + '" /></td>' +
+      '<td><input type="number" data-field="apQty" min="0" step="0.01" value="' + esc(row.apQty) + '" /></td>' +
+      '<td>' + unitSelect('apUnit', row.apUnit) + '</td>' +
+      '<td><input type="number" data-field="yieldPercent" min="0" max="1" step="0.01" value="' + esc(row.yieldPercent) + '" placeholder="auto" /></td>' +
+      '<td><input type="number" data-field="usedQty" min="0" step="0.01" value="' + esc(row.usedQty) + '" /></td>' +
+      '<td>' + unitSelect('usedUnit', row.usedUnit) + '</td>' +
+      '<td class="pc-num" data-cell="cost">&mdash;</td>' +
+      '<td><button type="button" class="pc-remove" aria-label="Remove ingredient" title="Remove">&times;</button></td>' +
+      '</tr>';
+  }
+  function esc(v) {
+    if (v == null) return '';
+    return String(v).replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  }
+
+  function readRows() {
+    var rows = [];
+    Array.prototype.forEach.call(rowsEl.querySelectorAll('tr'), function(tr){
+      var row = blankRow();
+      Array.prototype.forEach.call(tr.querySelectorAll('[data-field]'), function(el){
+        row[el.dataset.field] = el.value;
+      });
+      rows.push(row);
+    });
+    return rows;
+  }
+  function readRecipe() {
+    return {
+      name:     nameEl.value.trim(),
+      portions: Number(portionsEl.value) || 1,
+      rows:     readRows()
+    };
+  }
+
+  // -------------------- Render --------------------
+  function fmtMoney(n) {
+    if (!isFinite(n) || n <= 0) return '$0.00';
+    return '$' + Number(n).toFixed(2);
+  }
+  function fmtPct(n) {
+    return Math.round(Number(n) * 100) + '%';
+  }
+
+  // Per-row warning copy. Maps machine warnings to a one-line owner-facing
+  // explanation. Surfaces as a dim hint in the row's cost cell.
+  var WARNING_COPY = {
+    'mixed-units':     'AP and used units don’t match (weight vs volume).',
+    'zero-yield':      'Yield is 0% — nothing usable from this ingredient.',
+    'over-used':       'Used > 50× the AP qty. Check the unit.',
+    'unknown-yield':   '',          // soft hint; no row warning
+    'invalid-numbers': 'Numbers missing or invalid.'
+  };
+
+  function renderResults() {
+    var recipe = readRecipe();
+    var hasAny = recipe.rows.some(function(r){
+      return r.ingredient || r.apPrice || r.apQty || r.usedQty;
+    });
+
+    if (!hasAny) {
+      resultEl.style.display = 'none';
+      emptyEl.style.display  = 'block';
+      warningsEl.style.display = 'none';
+      if (actionsEl) actionsEl.style.display = 'none';
+      latestSummary = null;
+      latestRecipe  = null;
+      Array.prototype.forEach.call(rowsEl.querySelectorAll('[data-cell="cost"]'), function(c){
+        c.textContent = '—';
+      });
+      return;
+    }
+
+    var summary = PC.computePlateCost(recipe);
+
+    // Per-row cost cells
+    Array.prototype.forEach.call(rowsEl.querySelectorAll('tr'), function(tr, i){
+      var cell = tr.querySelector('[data-cell="cost"]');
+      var row  = summary.ingredients[i];
+      if (!row) { cell.textContent = '—'; return; }
+      if (row.warning && WARNING_COPY[row.warning]) {
+        cell.innerHTML = '<span class="pc-warn">' + WARNING_COPY[row.warning] + '</span>';
+      } else {
+        cell.textContent = fmtMoney(row.usedCost);
+      }
+    });
+
+    // Headline
+    headlineNum.textContent = fmtMoney(summary.plateCost);
+    if (summary.portions > 1) {
+      headlineBatch.textContent = 'Batch cost ' + fmtMoney(summary.batchCost) +
+        ' · ' + summary.portions + ' portions';
+    } else {
+      headlineBatch.textContent = '';
+    }
+    confidenceEl.dataset.level = summary.confidence;
+    confidenceEl.textContent =
+      summary.confidence === 'high' ? 'High confidence'
+      : summary.confidence === 'medium' ? 'Medium confidence — see warnings'
+      : 'Low confidence — fix warnings to refine';
+
+    // Three suggested menu prices
+    var prices = PC.suggestMenuPrices(summary.plateCost);
+    priceRowsEl.innerHTML = prices.map(function(p){
+      return '<div class="pc-price-row">' +
+        '<div class="pc-price-target">' + Math.round(p.target * 100) + '%</div>' +
+        '<div class="pc-price-mid">' +
+          '<span class="pc-price-label">' + p.label + '</span>' +
+          '<span class="pc-price-note">' + esc(p.note) + '</span>' +
+        '</div>' +
+        '<div>' +
+          '<div class="pc-price-amount">' + fmtMoney(p.price) + '</div>' +
+          '<div class="pc-price-cm">+' + fmtMoney(p.cmDollars) + ' kept per plate</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+
+    // Top-of-form warnings (deduped recipe-level)
+    var warningCopy = {
+      'mixed-units':     'Some rows mix weight units with volume units. The math needs the same kind of measure on both sides.',
+      'zero-yield':      'A row has 0% yield set. That row contributes $0 — fix the yield or remove the row.',
+      'over-used':       'A row uses 50× more than was purchased. Likely a unit mistake — double-check the AP unit and used unit.',
+      'unknown-yield':   'One or more ingredients aren’t in the canonical yield table; the tool defaulted to 100% yield. Override the yield column for the most accurate cost.',
+      'invalid-numbers': 'A row has missing or non-numeric prices/quantities. Fill them in to include that ingredient in the plate cost.'
+    };
+    if (summary.warnings.length) {
+      warningsEl.innerHTML = '<ul>' + summary.warnings.map(function(w){
+        return '<li>' + (warningCopy[w] || w) + '</li>';
+      }).join('') + '</ul>';
+      warningsEl.style.display = 'flex';
+    } else {
+      warningsEl.style.display = 'none';
+      warningsEl.innerHTML = '';
+    }
+
+    resultEl.style.display = 'grid';
+    emptyEl.style.display  = 'none';
+    actionsEl.style.display = 'flex';
+
+    // Cache the latest summary so export handlers can read it
+    // without re-running computePlateCost.
+    latestSummary = summary;
+    latestRecipe  = recipe;
+  }
+
+  // -------------------- Event handlers --------------------
+  function rerenderRows(rows) {
+    rowsEl.innerHTML = rows.map(rowHtml).join('');
+  }
+
+  rowsEl.addEventListener('input', renderResults);
+  rowsEl.addEventListener('change', renderResults);
+  rowsEl.addEventListener('click', function(e){
+    if (e.target.classList.contains('pc-remove')) {
+      var tr = e.target.closest('tr');
+      if (tr) tr.remove();
+      renderResults();
+    }
+  });
+  if (portionsEl) portionsEl.addEventListener('input', renderResults);
+  if (nameEl)     nameEl.addEventListener('input', renderResults);
+
+  if (addRowBtn) addRowBtn.addEventListener('click', function(){
+    var current = readRows();
+    current.push(blankRow());
+    rerenderRows(current);
+    renderResults();
+    fireBucketEvent();
+  });
+
+  function loadSample() {
+    var s = PC.SAMPLE_RECIPE_EN;
+    nameEl.value = s.name;
+    portionsEl.value = String(s.portions);
+    rerenderRows(s.rows.map(function(r){ return Object.assign({}, r); }));
+    renderResults();
+    fireBucketEvent('sample');
+  }
+  if (sampleBtn)  sampleBtn.addEventListener('click', loadSample);
+  if (sampleBtn2) sampleBtn2.addEventListener('click', loadSample);
+
+  // -------------------- Exports (CSV + JSON) --------------------
+  // CSV is the per-ingredient breakdown — every row's AP cost, EP cost,
+  // used cost, plus a totals row. The owner pastes this into a
+  // spreadsheet for sharing with an accountant or back-of-house.
+  function buildCsv() {
+    if (!latestSummary || !latestRecipe) return '';
+    var rows = [];
+    rows.push(['Dish', latestRecipe.name || '']);
+    rows.push(['Portions', String(latestRecipe.portions)]);
+    rows.push(['Plate cost', latestSummary.plateCost.toFixed(4)]);
+    rows.push(['Batch cost', latestSummary.batchCost.toFixed(4)]);
+    rows.push(['Confidence', latestSummary.confidence]);
+    rows.push([]);
+    rows.push(['Ingredient','AP price','AP qty','AP unit','Yield','Used qty','Used unit',
+               'AP unit cost','EP unit cost','Used cost','Warning']);
+    latestRecipe.rows.forEach(function(r, i){
+      var s = latestSummary.ingredients[i] || {};
+      rows.push([
+        r.ingredient || '',
+        r.apPrice    || '',
+        r.apQty      || '',
+        r.apUnit     || '',
+        s.yieldPercent != null ? Number(s.yieldPercent).toFixed(2) : (r.yieldPercent || ''),
+        r.usedQty    || '',
+        r.usedUnit   || '',
+        s.apUnitCost ? s.apUnitCost.toFixed(4) : '',
+        s.epUnitCost ? s.epUnitCost.toFixed(4) : '',
+        s.usedCost   ? s.usedCost.toFixed(4)   : '',
+        s.warning || ''
+      ]);
+    });
+    return rows.map(function(r){
+      return r.map(function(c){
+        var s = String(c == null ? '' : c);
+        return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+      }).join(',');
+    }).join('\n') + '\n';
+  }
+
+  function buildJson() {
+    if (!latestSummary || !latestRecipe) return '{}';
+    var prices = PC.suggestMenuPrices(latestSummary.plateCost);
+    return JSON.stringify({
+      meta: {
+        tool:      'Plate Cost Calculator',
+        url:       'https://muntin.digital/tools/plate-cost/',
+        generated: new Date().toISOString(),
+        locale:    'en'
+      },
+      recipe:    latestRecipe,
+      summary:   latestSummary,
+      suggested: prices
+    }, null, 2);
+  }
+
+  function downloadBlob(blob, filename) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+  }
+
+  function flashCopied(btn, label) {
+    var orig = btn.innerHTML;
+    btn.classList.add('copied');
+    btn.textContent = label || 'Copied';
+    setTimeout(function(){ btn.classList.remove('copied'); btn.innerHTML = orig; }, 1400);
+  }
+
+  var copyCsvBtn      = document.getElementById('pcCopyCsv');
+  var downloadJsonBtn = document.getElementById('pcDownloadJson');
+  if (copyCsvBtn) copyCsvBtn.addEventListener('click', function(){
+    var csv = buildCsv();
+    if (!csv) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(csv).then(function(){
+        flashCopied(copyCsvBtn);
+        if (window.plausible) window.plausible('Plate Cost Export', { props: { format: 'csv' } });
+      });
+    } else {
+      // Fallback: download instead of copying.
+      downloadBlob(new Blob([csv], { type: 'text/csv' }), 'plate-cost.csv');
+    }
+  });
+  if (downloadJsonBtn) downloadJsonBtn.addEventListener('click', function(){
+    var json = buildJson();
+    if (!json || json === '{}') return;
+    var slug = (latestRecipe.name || 'recipe').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'recipe';
+    downloadBlob(new Blob([json], { type: 'application/json' }), 'plate-cost-' + slug + '.json');
+    if (window.plausible) window.plausible('Plate Cost Export', { props: { format: 'json' } });
+  });
+
+  // -------------------- recipe.html + README builders --------------------
+  // recipe.html is a one-page printable companion to the Plate Card
+  // PNG. The PNG is for sharing / pinning to the wall; recipe.html is
+  // for owners who'd rather print HTML than a PNG.
+  function escHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function buildRecipeHtml() {
+    if (!latestSummary || !latestRecipe) return '';
+    var prices = PC.suggestMenuPrices(latestSummary.plateCost);
+    var rowsHtml = latestSummary.ingredients.map(function(ing, i){
+      var src = (latestRecipe.rows[i] || {});
+      return '<tr>' +
+        '<td>' + escHtml(ing.ingredient || src.ingredient || '—') + '</td>' +
+        '<td class="num">' + (ing.apUnitCost ? '$' + ing.apUnitCost.toFixed(4) : '—') + '</td>' +
+        '<td class="num">' + (ing.yieldPercent != null && isFinite(ing.yieldPercent)
+          ? Math.round(ing.yieldPercent * 100) + '%' : '—') + '</td>' +
+        '<td class="num">' + escHtml((src.usedQty || '—') + (src.usedUnit ? ' ' + src.usedUnit : '')) + '</td>' +
+        '<td class="num">' + (ing.usedCost ? '$' + ing.usedCost.toFixed(2) : '—') + '</td>' +
+        '</tr>';
+    }).join('\n');
+    var pricesHtml = prices.map(function(p){
+      return '<tr><td class="num">' + Math.round(p.target * 100) + '%</td>' +
+        '<td>' + escHtml(p.label) + '</td>' +
+        '<td class="num">$' + p.price.toFixed(2) + '</td>' +
+        '<td class="num">+$' + p.cmDollars.toFixed(2) + ' kept</td></tr>';
+    }).join('\n');
+    var name = escHtml(latestRecipe.name || 'Plate Cost');
+    var date = new Date().toISOString().slice(0, 10);
+    return '<!doctype html>\n<html lang="en"><head><meta charset="utf-8"/>' +
+      '<title>' + name + ' — Plate Cost · Muntin Digital</title>' +
+      '<style>' +
+        'body{margin:0;padding:32px;font:14px/1.55 -apple-system,Segoe UI,sans-serif;color:#14161A;background:#FAF7F2}' +
+        '.head{border-bottom:2px solid #14161A;padding-bottom:16px;margin-bottom:24px}' +
+        'h1{font-family:Fraunces,Georgia,serif;font-weight:500;font-size:28px;margin:0 0 6px}' +
+        '.eyebrow{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#5A5752;margin:0 0 8px}' +
+        '.cost{font-family:Fraunces,Georgia,serif;font-weight:500;font-size:48px;margin:0;font-variant-numeric:tabular-nums}' +
+        'table{width:100%;border-collapse:collapse;margin:16px 0;font-variant-numeric:tabular-nums}' +
+        'th,td{padding:8px 10px;border-bottom:1px solid #E5E0D8;text-align:left;font-size:13px}' +
+        'th{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#5A5752}' +
+        '.num{text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace}' +
+        'h2{font-family:Fraunces,Georgia,serif;font-weight:500;font-size:18px;margin:24px 0 8px}' +
+        '.foot{margin-top:32px;padding-top:14px;border-top:1px solid #E5E0D8;font-size:11px;color:#5A5752;display:flex;justify-content:space-between}' +
+        '@media print{body{padding:24px;background:#fff} @page{size:auto;margin:14mm}}' +
+      '</style></head><body>' +
+      '<div class="head"><p class="eyebrow">Plate cost — ' + escHtml(date) + '</p>' +
+      '<h1>' + name + '</h1>' +
+      '<p class="cost">$' + latestSummary.plateCost.toFixed(2) +
+        '</p><p style="font-size:12px;color:#5A5752;margin:4px 0 0;">Ingredients only. Excludes labour and overhead.</p>' +
+      '</div>' +
+      '<h2>Recipe — invoice → plate</h2>' +
+      '<table><thead><tr>' +
+        '<th>Ingredient</th><th class="num">AP $/unit</th><th class="num">Yield</th><th class="num">Used</th><th class="num">Cost on plate</th>' +
+      '</tr></thead><tbody>' + rowsHtml + '</tbody></table>' +
+      '<h2>Suggested menu prices</h2>' +
+      '<table><thead><tr>' +
+        '<th class="num">Target</th><th>Tier</th><th class="num">Price</th><th class="num">Margin</th>' +
+      '</tr></thead><tbody>' + pricesHtml + '</tbody></table>' +
+      '<div class="foot"><span>Generated by Muntin · Plate Cost Calculator · muntin.digital</span><span>' + escHtml(date) + '</span></div>' +
+      '</body></html>\n';
+  }
+  function buildReadme() {
+    if (!latestSummary || !latestRecipe) return '';
+    var date = new Date().toISOString().slice(0, 10);
+    var prices = PC.suggestMenuPrices(latestSummary.plateCost);
+    var lines = [];
+    lines.push('# ' + (latestRecipe.name || 'Plate cost') + ' — ' + date);
+    lines.push('');
+    lines.push('Generated by **Plate Cost Calculator** at https://muntin.digital/tools/plate-cost/');
+    lines.push('');
+    lines.push('## Plate cost: $' + latestSummary.plateCost.toFixed(2));
+    lines.push('');
+    lines.push('Ingredients only — excludes labour and overhead.');
+    if (latestRecipe.portions > 1) {
+      lines.push('');
+      lines.push('Batch cost $' + latestSummary.batchCost.toFixed(2) + ' across ' + latestRecipe.portions + ' portions.');
+    }
+    lines.push('');
+    lines.push('## Suggested menu prices');
+    lines.push('');
+    prices.forEach(function(p){
+      lines.push('- **' + Math.round(p.target * 100) + '% target (' + p.label + ')** — sell for $' +
+        p.price.toFixed(2) + ', keep $' + p.cmDollars.toFixed(2) + ' per plate.');
+    });
+    lines.push('');
+    lines.push('## Method');
+    lines.push('');
+    lines.push('AP price ÷ AP qty = AP unit cost · AP unit cost ÷ yield = EP unit cost · EP unit cost × portion = cost on this plate.');
+    lines.push('');
+    lines.push('## Files in this bundle');
+    lines.push('');
+    lines.push('- `plate-card.png` — the printable / shareable card, 1200×1500 PNG.');
+    lines.push('- `recipe.html` — a one-page printable HTML companion.');
+    lines.push('- `recipe.csv` — per-ingredient breakdown for spreadsheets.');
+    lines.push('- `plate-cost.json` — machine-readable analysis (recipe + computed values).');
+    lines.push('- `README.md` — this file.');
+    lines.push('');
+    lines.push('## Privacy');
+    lines.push('');
+    lines.push('Your recipe never left your browser. Verify in DevTools: open this tool, fill in a recipe, click Compute. Zero network requests fire.');
+    return lines.join('\n') + '\n';
+  }
+
+  // -------------------- Plate Card download --------------------
+  // Awaits web fonts so Fraunces / Inter render rather than the
+  // system fallback. The slug is derived from the dish name; falls
+  // back to "recipe" if no name set.
+  function buildPlateCardCanvas() {
+    if (!window.PCCard || !latestSummary || !latestRecipe) return null;
+    var prices = PC.suggestMenuPrices(latestSummary.plateCost);
+    return window.PCCard.renderPlateCard({
+      recipe:    latestRecipe,
+      summary:   latestSummary,
+      suggested: prices,
+      strings:   window.PCCard.DEFAULT_STRINGS_EN
+    });
+  }
+  function plateCardSlug() {
+    return (latestRecipe && latestRecipe.name ? latestRecipe.name : 'recipe')
+      .trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'recipe';
+  }
+
+  var downloadCardBtn = document.getElementById('pcDownloadCard');
+  if (downloadCardBtn) downloadCardBtn.addEventListener('click', function(){
+    if (!latestSummary || !latestRecipe || !window.PCCard) return;
+    window.PCCard.awaitFonts().then(function(){
+      var canvas = buildPlateCardCanvas();
+      if (!canvas) return;
+      return window.PCCard.canvasToPngBlob(canvas);
+    }).then(function(blob){
+      if (!blob) return;
+      downloadBlob(blob, 'plate-card-' + plateCardSlug() + '.png');
+      if (window.plausible) window.plausible('Plate Cost Export', { props: { format: 'card-png' } });
+    });
+  });
+
+  // -------------------- ZIP bundle download --------------------
+  // Bundles plate-card.png + recipe.html + recipe.csv + plate-cost.json
+  // + README.md into one download. Same store-only ZIP primitive as
+  // every other tool's bundle.
+  var downloadZipBtn = document.getElementById('pcDownloadZip');
+  if (downloadZipBtn) downloadZipBtn.addEventListener('click', function(){
+    if (!latestSummary || !latestRecipe || !window.PCCard) return;
+    window.PCCard.awaitFonts().then(function(){
+      var canvas = buildPlateCardCanvas();
+      if (!canvas) return null;
+      return window.PCCard.canvasToPngBlob(canvas);
+    }).then(function(pngBlob){
+      if (!pngBlob) return;
+      var reader = new FileReader();
+      reader.onload = function(){
+        var slug = plateCardSlug();
+        var entries = [
+          { name: 'plate-card.png',   data: new Uint8Array(reader.result) },
+          { name: 'recipe.html',      data: strToBytes(buildRecipeHtml()) },
+          { name: 'recipe.csv',       data: strToBytes(buildCsv()) },
+          { name: 'plate-cost.json',  data: strToBytes(buildJson()) },
+          { name: 'README.md',        data: strToBytes(buildReadme()) }
+        ];
+        downloadBlob(buildZipBlob(entries), 'plate-cost-' + slug + '.zip');
+        if (window.plausible) window.plausible('Plate Cost Export', { props: { format: 'zip' } });
+      };
+      reader.readAsArrayBuffer(pngBlob);
+    });
+  });
+
+  // -------------------- Push to Menu Engineering --------------------
+  // Reuses Menu Engineering's existing `#m=<encoded TSV>` rehydration
+  // (one line per dish, tab-separated). Seeds the menu price at the
+  // 30%-food-cost suggestion — the owner adjusts in Menu Engineering.
+  var pushMeBtn = document.getElementById('pcPushMe');
+  if (pushMeBtn) pushMeBtn.addEventListener('click', function(){
+    if (!latestSummary || !latestRecipe) return;
+    var prices = PC.suggestMenuPrices(latestSummary.plateCost);
+    var seedPrice = prices.length ? prices[1].price : 0;
+    var line = [
+      latestRecipe.name || 'Untitled dish',
+      seedPrice.toFixed(2),
+      latestSummary.plateCost.toFixed(2),
+      '0',
+      ''
+    ].join('\t');
+    var url = '/tools/menu-engineering/#m=' + encodeURIComponent(line);
+    if (window.plausible) window.plausible('Plate Cost Push', { props: { target: 'menu-engineering' } });
+    window.location.assign(url);
+  });
+
+  // -------------------- Open Margin Math --------------------
+  // Routes the owner to Margin Math's prime-cost calculator (anchored
+  // to #calc-primecost) so they can model labour + food cost together.
+  // We don't prefill — Margin Math takes percentages and we have a
+  // dollar plate cost; the user pastes the number alongside their
+  // menu price. Clipboard primer follows.
+  var pushMmBtn = document.getElementById('pcPushMm');
+  if (pushMmBtn) pushMmBtn.addEventListener('click', function(){
+    if (!latestSummary) return;
+    // Stash the plate cost in clipboard so it's ready to paste.
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText('$' + latestSummary.plateCost.toFixed(2)).catch(function(){});
+    }
+    if (window.plausible) window.plausible('Plate Cost Push', { props: { target: 'margin-math' } });
+    window.location.assign('/tools/margin-math/#calc-primecost');
+  });
+
+  // Paste-from-spreadsheet handler. Replaces the grid with the parsed
+  // rows (or appends, if the user has typed something already and the
+  // grid is in a "extending" state — for v1 we replace).
+  var pasteEl     = document.getElementById('pcPaste');
+  var pasteParse  = document.getElementById('pcPasteParse');
+  var pasteHint   = document.getElementById('pcPasteHint');
+  if (pasteParse) pasteParse.addEventListener('click', function(){
+    var text = pasteEl ? pasteEl.value : '';
+    if (!text.trim()) { pasteHint.textContent = 'Nothing to parse.'; return; }
+    var parsed = PC.parseTabularText(text);
+    if (!parsed.rows.length) {
+      pasteHint.textContent = parsed.warnings[0] || 'Could not parse the paste.';
+      pasteHint.style.color = 'var(--rust)';
+      return;
+    }
+    rerenderRows(parsed.rows);
+    renderResults();
+    pasteHint.style.color = parsed.warnings.length ? 'var(--rust)' : 'var(--status-good)';
+    pasteHint.textContent = parsed.warnings.length
+      ? parsed.warnings[0]
+      : 'Parsed ' + parsed.rows.length + ' ingredient' + (parsed.rows.length === 1 ? '' : 's') + '.';
+    fireBucketEvent('paste');
+  });
+
+  if (clearBtn) clearBtn.addEventListener('click', function(){
+    if (!confirm('Clear the recipe and start over?')) return;
+    nameEl.value = '';
+    portionsEl.value = '1';
+    rerenderRows(Array.from({ length: 5 }, blankRow));
+    renderResults();
+  });
+
+  // -------------------- Inline ZIP writer (store-only) --------------------
+  // Same primitive as Brand Suite + Menu Engineering + Menu Copy +
+  // Open Hours. ~70 lines, zero deps. Bundles plate-card.png +
+  // recipe.csv + plate-cost.json + recipe.html + README.md so the
+  // owner walks away with one file holding everything.
+  var CRC_TABLE = (function(){
+    var t = new Uint32Array(256);
+    for (var n = 0; n < 256; n++) {
+      var c = n;
+      for (var k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+      t[n] = c >>> 0;
+    }
+    return t;
+  })();
+  function crc32(bytes){
+    var c = 0xFFFFFFFF;
+    for (var i = 0; i < bytes.length; i++) c = CRC_TABLE[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+    return (c ^ 0xFFFFFFFF) >>> 0;
+  }
+  function strToBytes(s){ return new TextEncoder().encode(s); }
+  function buildZipBlob(entries){
+    var parts = [], centralParts = [], offset = 0;
+    var nowDate = new Date();
+    var dosTime = ((nowDate.getHours() & 0x1F) << 11) | ((nowDate.getMinutes() & 0x3F) << 5) | ((nowDate.getSeconds() / 2) & 0x1F);
+    var dosDate = (((nowDate.getFullYear() - 1980) & 0x7F) << 9) | (((nowDate.getMonth() + 1) & 0x0F) << 5) | (nowDate.getDate() & 0x1F);
+    entries.forEach(function(entry){
+      var nameBytes = strToBytes(entry.name);
+      var crc = crc32(entry.data);
+      var size = entry.data.length;
+      var localHeader = new Uint8Array(30 + nameBytes.length);
+      var dv = new DataView(localHeader.buffer);
+      dv.setUint32(0, 0x04034b50, true); dv.setUint16(4, 20, true);
+      dv.setUint16(6, 0, true); dv.setUint16(8, 0, true);
+      dv.setUint16(10, dosTime, true); dv.setUint16(12, dosDate, true);
+      dv.setUint32(14, crc, true); dv.setUint32(18, size, true);
+      dv.setUint32(22, size, true); dv.setUint16(26, nameBytes.length, true);
+      dv.setUint16(28, 0, true);
+      localHeader.set(nameBytes, 30);
+      parts.push(localHeader); parts.push(entry.data);
+      var central = new Uint8Array(46 + nameBytes.length);
+      var cv = new DataView(central.buffer);
+      cv.setUint32(0, 0x02014b50, true); cv.setUint16(4, 20, true);
+      cv.setUint16(6, 20, true); cv.setUint16(8, 0, true);
+      cv.setUint16(10, 0, true); cv.setUint16(12, dosTime, true);
+      cv.setUint16(14, dosDate, true); cv.setUint32(16, crc, true);
+      cv.setUint32(20, size, true); cv.setUint32(24, size, true);
+      cv.setUint16(28, nameBytes.length, true); cv.setUint16(30, 0, true);
+      cv.setUint16(32, 0, true); cv.setUint16(34, 0, true);
+      cv.setUint16(36, 0, true); cv.setUint32(38, 0, true);
+      cv.setUint32(42, offset, true);
+      central.set(nameBytes, 46);
+      centralParts.push(central);
+      offset += localHeader.length + entry.data.length;
+    });
+    var cdSize = 0;
+    centralParts.forEach(function(c){ cdSize += c.length; });
+    var cdStart = offset;
+    centralParts.forEach(function(c){ parts.push(c); });
+    var eocd = new Uint8Array(22);
+    var ev = new DataView(eocd.buffer);
+    ev.setUint32(0, 0x06054b50, true); ev.setUint16(4, 0, true);
+    ev.setUint16(6, 0, true); ev.setUint16(8, entries.length, true);
+    ev.setUint16(10, entries.length, true); ev.setUint32(12, cdSize, true);
+    ev.setUint32(16, cdStart, true); ev.setUint16(20, 0, true);
+    parts.push(eocd);
+    return new Blob(parts, { type: 'application/zip' });
+  }
+
+  // -------------------- Plausible bucketing --------------------
+  // Only fire when there's something meaningful to bucket. The
+  // bucket helpers themselves are enum-locked; the event carries
+  // no recipe content.
+  var bucketTimer = null;
+  function fireBucketEvent(label) {
+    if (!window.plausible) return;
+    if (bucketTimer) clearTimeout(bucketTimer);
+    bucketTimer = setTimeout(function(){
+      var recipe = readRecipe();
+      var s = PC.computePlateCost(recipe);
+      var props = {
+        ingredient_count: PC.bucketIngredientCount(s.ingredients.length),
+        yield_usage:      PC.bucketYieldUsage(recipe.rows),
+        plate_cost_band:  PC.bucketPlateCostBand(s.plateCost)
+      };
+      if (label) props.context = label;
+      window.plausible('Plate Cost Compute', { props: props });
+    }, 1200);
+  }
+
+  // -------------------- Initial state --------------------
+  rerenderRows(Array.from({ length: 5 }, blankRow));
+  renderResults();
+})();
+</script>
+</body>
+</html>
