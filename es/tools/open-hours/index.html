@@ -19,14 +19,14 @@
 <meta property="og:description" content="Fill out your hours once. Walk away with a sign for the door, the exact text to paste into Google, and what to send your website builder. Stays in your browser." />
 <meta property="og:url" content="https://muntin.digital/tools/open-hours/" />
 <meta property="og:site_name" content="Muntin Digital" />
-<meta property="og:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-open-hours-es.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Open Hours — Get your restaurant hours right everywhere" />
 <meta name="twitter:description" content="Fill out your hours once. Walk away with what you need for Google, your website, and your door. Stays in your browser." />
-<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-open-hours-es.png" />
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
@@ -429,7 +429,7 @@
       <li><strong>Código abierto.</strong> El motor completo es JavaScript plano en <code>/tools/open-hours/open-hours.js</code> &mdash; click derecho <em>Ver código fuente</em>.</li>
       <li><strong>Analítica que respeta la privacidad.</strong> Plausible cuenta cuánta gente usa la herramienta, pero nunca ve tus horarios, ni el nombre del restaurante, ni la ciudad. Solo valores en categoría como &ldquo;<code>4-5 días abierto</code>&rdquo; pasan por ahí.</li>
     </ol>
-    <p style="font-size:13px;color:var(--stone);margin:14px 0 0;">Un recorrido verificable de nueve pasos y un Letrero de Puerta imprimible llegan en la siguiente versión. Para la misma postura hoy, mira <a href="/es/tools/brand-suite/#how-we-protect" style="color:inherit;border-bottom:1px dashed var(--teal);">cómo Suite de Marca protege tu logo</a>.</p>
+    <p style="font-size:13px;color:var(--stone);margin:14px 0 0;">Para la misma postura de privacidad en la familia, mira <a href="/es/tools/brand-suite/#how-we-protect" style="color:inherit;border-bottom:1px dashed var(--teal);">cómo Suite de Marca protege tu logo</a> o <a href="/es/tools/margin-math/#how-private" style="color:inherit;border-bottom:1px dashed var(--teal);">el recorrido verificable de nueve afirmaciones de Margin Math</a>.</p>
   </div>
 </div></section>
 
@@ -533,8 +533,8 @@
 </footer>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="/tools/open-hours/open-hours.js?v=20260425-oh1"></script>
-<script src="/tools/open-hours/sign-render.js?v=20260425-oh2"></script>
+<script src="/tools/open-hours/open-hours.js?v=20260426-oh3"></script>
+<script src="/tools/open-hours/sign-render.js?v=20260426-oh4"></script>
 <script>
 /* Open Hours — week-grid input + live output render.
  *
@@ -879,7 +879,16 @@
     requestAnimationFrame(function(){
       rafQueued = false;
       readGrid();
-      var input = { name: nameEl.value, city: cityEl.value, week: week };
+      // Cierres + dirección opcional fluyen al generador JSON-LD.
+      var input = {
+        name: nameEl.value,
+        city: cityEl.value,
+        week: week,
+        closures: getClosureList(),
+        street:     (document.getElementById('ohStreet') || {}).value || '',
+        region:     (document.getElementById('ohRegion') || {}).value || '',
+        postalCode: (document.getElementById('ohPostal') || {}).value || ''
+      };
       var v = window.OH.validateHours(input);
       paintWarnings(v.warnings);
       var anyOpen = v.summary.openDaysCount > 0;
@@ -1041,7 +1050,15 @@
 
   // ----- Letrero de Puerta + Ficha de Horario -----
   function buildRenderInput(){
-    var input = { name: nameEl.value, city: cityEl.value, week: week };
+    var input = {
+      name: nameEl.value,
+      city: cityEl.value,
+      week: week,
+      closures: getClosureList(),
+      street:     (document.getElementById('ohStreet') || {}).value || '',
+      region:     (document.getElementById('ohRegion') || {}).value || '',
+      postalCode: (document.getElementById('ohPostal') || {}).value || ''
+    };
     var v = window.OH.validateHours(input);
     return {
       summary: v,
@@ -1180,7 +1197,15 @@
     downloadZipBtn.addEventListener('click', function(){
       if (!window.OHSign) return;
       var ctx = buildRenderInput();
-      var input = { name: nameEl.value, city: cityEl.value, week: week };
+      var input = {
+        name: nameEl.value,
+        city: cityEl.value,
+        week: week,
+        closures: getClosureList(),
+        street:     (document.getElementById('ohStreet') || {}).value || '',
+        region:     (document.getElementById('ohRegion') || {}).value || '',
+        postalCode: (document.getElementById('ohPostal') || {}).value || ''
+      };
       var jsonLdHtml = '<!doctype html>\n<html><head>\n' +
         '<!-- Pega el bloque <script> de abajo en el <head> de tu sitio. -->\n' +
         window.OH.generateJsonLdScript(input) + '\n</head>\n<body><p>Este archivo no es el sitio. Copia la etiqueta <code>&lt;script&gt;</code> dentro del <code>&lt;head&gt;</code> de tu sitio real.</p></body></html>\n';

@@ -299,12 +299,21 @@ assertEq('Easter 2030 (Apr 21)', O.easterDate(2030).toISOString().slice(0, 10), 
 // holidaysForYear — full slate
 {
   const h = O.holidaysForYear(2026);
-  assert('14 holidays/year', h.length === 14);
+  assert('19 holidays/year EN', h.length === 19);
   const ids = h.map(x => x.id);
-  ['new-years','mlk','mardi-gras','easter','mothers-day','memorial-day',
-   'fathers-day','july-4','labor-day','thanksgiving','black-friday',
+  ['new-years','mlk','valentines','mardi-gras','st-patricks','easter',
+   'mothers-day','memorial-day','juneteenth','fathers-day','july-4',
+   'labor-day','halloween','veterans-day','thanksgiving','black-friday',
    'christmas-eve','christmas-day','new-years-eve'].forEach(id => {
     assert('holiday id present: ' + id, ids.includes(id));
+  });
+  // Phase A5 — ES slate has more entries due to Latin-American adds.
+  const hEs = O.holidaysForYear(2026, 'es');
+  assert('26 holidays/year ES', hEs.length === 26);
+  const idsEs = hEs.map(x => x.id);
+  ['valentines','st-patricks','juneteenth','halloween','veterans-day',
+   'san-esteban','reyes','dia-muertos','guadalupe'].forEach(id => {
+    assert('ES holiday id present: ' + id, idsEs.includes(id));
   });
   // Black Friday is Thanksgiving + 1
   const tg = h.find(x => x.id === 'thanksgiving').date;
@@ -386,12 +395,113 @@ assertEq('Easter 2030 (Apr 21)', O.easterDate(2030).toISOString().slice(0, 10), 
   assertEq('ICS uids unique', new Set(uids).size, uids.length);
 }
 
-// ICS with custom closure containing punctuation in name
+// ICS with custom closure containing punctuation in name. Phase A1
+// switched from strip-semicolons to RFC-5545-correct backslash escape.
 {
   const ics = O.generateIcs([{ date: '2026-08-15', name: "Vacation; family" }]);
-  // Semicolons stripped from SUMMARY (RFC 5545 quoting)
-  assert('ICS strips semicolons from name',
-         !/SUMMARY:[^\r]*;/.test(ics.match(/SUMMARY:[^\r]+/)[0]));
+  const summaryLine = ics.match(/SUMMARY:[^\r]+/)[0];
+  assert('ICS escapes semicolon (not strip)', /\\;/.test(summaryLine));
+  assert('ICS no bare semicolon in summary value',
+         !/SUMMARY:.*[^\\];/.test(summaryLine));
+}
+
+// Phase A1 — DTEND must be exclusive (DTSTART + 1 day) per RFC 5545.
+// Phase A1 — every closure VEVENT carries a VALARM block.
+{
+  const ics = O.generateIcs([{ date: '2026-04-05', name: 'Easter' }]);
+  assert('ICS DTSTART correct', /DTSTART;VALUE=DATE:20260405/.test(ics));
+  assert('ICS DTEND is exclusive (next day)', /DTEND;VALUE=DATE:20260406/.test(ics));
+  assert('ICS contains VALARM block', /BEGIN:VALARM[\s\S]*TRIGGER:-P1D[\s\S]*ACTION:DISPLAY[\s\S]*END:VALARM/.test(ics));
+}
+
+// Phase A1 — month/year boundary handling for the DTEND increment.
+{
+  const ics = O.generateIcs([
+    { date: '2026-12-31', name: "New Year's Eve" },
+    { date: '2026-01-31', name: 'End of January' }
+  ]);
+  assert('DTEND wraps month → 20270101', /DTEND;VALUE=DATE:20270101/.test(ics));
+  assert('DTEND wraps month → 20260201', /DTEND;VALUE=DATE:20260201/.test(ics));
+}
+
+// Phase A2 — SpecialOpeningHoursSpecification round-trip.
+{
+  const obj = O.generateJsonLd({
+    name: 'Osteria',
+    city: 'Silver Spring',
+    week: { Mon: [{ opens: '17:00', closes: '22:00' }] },
+    closures: [
+      { date: '2026-11-26', name: 'Thanksgiving' },
+      { date: '2026-12-25', name: 'Christmas Day' }
+    ]
+  }, { format: 'object' });
+  assert('JSON-LD has specialOpeningHoursSpecification',
+         Array.isArray(obj.specialOpeningHoursSpecification));
+  assert('SpecialOHS length matches closures',
+         obj.specialOpeningHoursSpecification.length === 2);
+  const first = obj.specialOpeningHoursSpecification[0];
+  assertEq('SpecialOHS validFrom', first.validFrom, '2026-11-26');
+  assertEq('SpecialOHS validThrough', first.validThrough, '2026-11-26');
+  assertEq('SpecialOHS opens',  first.opens,  '00:00');
+  assertEq('SpecialOHS closes', first.closes, '00:00');
+}
+
+// Phase A3 — AM/PM heuristic. Brunch 11:00–15:00 is legitimate, not
+// flagged. "9–11" both AM is flagged.
+{
+  const ok = O.validateHours({
+    week: { Sat: [{ label: 'Brunch', opens: '11:00', closes: '15:00' }] }
+  });
+  assertEq('Brunch 11–15 no warning', ok.warnings.length, 0);
+
+  const flag = O.validateHours({
+    week: { Mon: [{ label: 'Lunch', opens: '09:00', closes: '11:00' }] }
+  });
+  assert('9 AM–11 AM PM-swap warning',
+         flag.warnings.some(w => /PM for the close/.test(w.message)));
+}
+
+// Phase B1 — Full PostalAddress when street/region/postalCode supplied.
+{
+  const obj = O.generateJsonLd({
+    name: 'Osteria', city: 'Silver Spring',
+    street: '123 Main St', region: 'MD', postalCode: '20910',
+    week: { Mon: [{ opens: '17:00', closes: '22:00' }] }
+  }, { format: 'object' });
+  assertEq('PostalAddress streetAddress', obj.address.streetAddress, '123 Main St');
+  assertEq('PostalAddress addressRegion', obj.address.addressRegion, 'MD');
+  assertEq('PostalAddress postalCode',    obj.address.postalCode,    '20910');
+}
+
+// Phase B2 — closesNextDay defensive emit (two consecutive intervals).
+{
+  const obj = O.generateJsonLd({
+    name: 'Late Bar', city: 'DC',
+    week: { Fri: [{ label: 'Service', opens: '17:00', closes: '02:00', closesNextDay: true }] }
+  }, { format: 'object' });
+  const ohs = obj.openingHoursSpecification;
+  // Friday 17:00–23:59 + Saturday 00:00–02:00 = 2 entries
+  assertEq('late-bar OHS count', ohs.length, 2);
+  const fri = ohs.find(e => e.dayOfWeek === 'Friday');
+  const sat = ohs.find(e => e.dayOfWeek === 'Saturday');
+  assert('Friday 17:00–23:59',  fri && fri.opens === '17:00' && fri.closes === '23:59');
+  assert('Saturday 00:00–02:00', sat && sat.opens === '00:00' && sat.closes === '02:00');
+}
+
+// Phase D2 — Quarterly Drift Check-in .ics structure.
+{
+  const ics = O.generateQuarterlyIcs('https://muntin.digital/tools/open-hours/#v=1&n=Test');
+  assert('Quarterly RRULE',
+         /RRULE:FREQ=MONTHLY;INTERVAL=3;COUNT=8/.test(ics));
+  assert('Quarterly URL field carries scenario',
+         /URL:https:\/\/muntin\.digital\/tools\/open-hours\/#v=1/.test(ics));
+  assert('Quarterly SUMMARY (EN)',
+         /SUMMARY:Open Hours.*quarterly hours check-in/.test(ics));
+}
+{
+  const ics = O.generateQuarterlyIcs('https://muntin.digital/es/tools/open-hours/', { locale: 'es' });
+  assert('Quarterly SUMMARY (ES)',
+         /SUMMARY:Horario Abierto.*revisi.n trimestral/.test(ics));
 }
 
 // ------------------------------------------------------------

@@ -176,15 +176,23 @@ function ohValidateDay(day, services) {
       continue;
     }
 
-    // Late close (after 1 AM) without next-day flag → probable bug.
-    if (closeMin >= 0 && closeMin < 6 * 60 && !s.closesNextDay && openMin > closeMin) {
-      // Already caught above.
-    }
-
-    // AM/PM mistake heuristic: the row "opens 9, closes 21" reads
-    // fine, but "opens 9, closes 9" with no next-day is sus.
-    if (openMin === 9 * 60 && closeMin === 9 * 60 && !s.closesNextDay) {
-      warnings.push({ day: day, message: 'On ' + day + ', "' + (s.label || 'service') + '" opens at 9 AM and closes at 9 AM. Did you mean 9 PM (21:00) for the close?' });
+    // AM/PM mistake heuristic (Phase A3 rewrite). Catches the typo
+    // pattern "opens 9, closes 11" where the user meant "9 AM – 11
+    // PM": both times parse as morning AND the gap is suspiciously
+    // short. The close-before-open check above already catches the
+    // commoner "11 – 5" → 11:00-05:00 typo. Constraint: BOTH bounds
+    // strictly before noon, gap ≤ 4 hours, not next-day. Brunch
+    // services that close in the afternoon (11:00–15:00) don't fire.
+    if (!s.closesNextDay && openMin < 12 * 60 && closeMin < 12 * 60 &&
+        closeMin > openMin && (closeMin - openMin) <= 4 * 60) {
+      warnings.push({
+        day: day,
+        message: 'On ' + day + ', "' + (s.label || 'service') +
+                 '" runs only ' + Math.round((closeMin - openMin) / 60) +
+                 ' hour' + ((closeMin - openMin) === 60 ? '' : 's') +
+                 ' (' + ohFormatTime(s.opens) + ' to ' + ohFormatTime(s.closes) +
+                 '). Did you mean PM for the close?'
+      });
     }
 
     // Overlap with the next service.
@@ -223,8 +231,11 @@ function ohValidateHours(input) {
     warnings: allWarnings,
     summary: summary,
     allClear: openDays > 0 && allWarnings.length === 0,
-    name: String((input && input.name) || ''),
-    city: String((input && input.city) || '')
+    name:       String((input && input.name) || ''),
+    city:       String((input && input.city) || ''),
+    street:     String((input && input.street) || ''),
+    region:     String((input && input.region) || ''),
+    postalCode: String((input && input.postalCode) || '')
   };
 }
 
@@ -239,6 +250,15 @@ function ohValidateHours(input) {
 // into shared dayOfWeek arrays so a 7-day-same-hours restaurant
 // renders one OHS, not seven.
 // ------------------------------------------------------------
+
+function ohNextDayName(dayFullName) {
+  // Used by the closesNextDay defensive emit (Phase B2): when a
+  // service crosses midnight we emit two consecutive intervals, the
+  // second on the next day. Wraps Sunday → Monday.
+  var idx = OH_DAYS_FULL.indexOf(dayFullName);
+  if (idx < 0) return dayFullName;
+  return OH_DAYS_FULL[(idx + 1) % 7];
+}
 
 function ohGenerateJsonLd(input, options) {
   options = options || {};
@@ -260,28 +280,74 @@ function ohGenerateJsonLd(input, options) {
   Object.keys(sigToDays).forEach(function(sig){
     var group = sigToDays[sig];
     group.services.forEach(function(s){
-      // Compute closing time. If closesNextDay, Schema accepts a
-      // close that is logically after opens; we emit the literal
-      // close time and let Schema/Google interpret day boundary.
-      entries.push({
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: group.days.length === 1 ? group.days[0] : group.days.slice(),
-        opens: s.opens,
-        closes: s.closes
-      });
+      if (s.closesNextDay && s.closes !== '00:00') {
+        // Phase B2: emit two consecutive intervals so Google's parser
+        // never has to interpret a close-before-open. Same day:
+        // opens → 23:59. Next day: 00:00 → closes.
+        group.days.forEach(function(dayName){
+          entries.push({
+            '@type': 'OpeningHoursSpecification',
+            dayOfWeek: dayName,
+            opens: s.opens,
+            closes: '23:59'
+          });
+          entries.push({
+            '@type': 'OpeningHoursSpecification',
+            dayOfWeek: ohNextDayName(dayName),
+            opens: '00:00',
+            closes: s.closes
+          });
+        });
+      } else {
+        // Same-day close. Single entry covers all days in the group.
+        entries.push({
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: group.days.length === 1 ? group.days[0] : group.days.slice(),
+          opens: s.opens,
+          closes: s.closes === '00:00' && s.closesNextDay ? '23:59' : s.closes
+        });
+      }
     });
   });
+
+  // Phase B1 — full PostalAddress. Emit only the keys that are non-empty
+  // so a single-city user still gets a valid (if minimal) address block.
+  var addr = null;
+  if (v.city || v.street || v.region || v.postalCode) {
+    addr = { '@type': 'PostalAddress' };
+    if (v.street)     addr.streetAddress   = v.street;
+    if (v.city)       addr.addressLocality = v.city;
+    if (v.region)     addr.addressRegion   = v.region;
+    if (v.postalCode) addr.postalCode      = v.postalCode;
+  }
 
   var doc = {
     '@context': 'https://schema.org',
     '@type': 'Restaurant',
     name: v.name || undefined,
-    address: v.city ? {
-      '@type': 'PostalAddress',
-      addressLocality: v.city
-    } : undefined,
+    address: addr || undefined,
     openingHoursSpecification: entries
   };
+
+  // Phase A2 — SpecialOpeningHoursSpecification for picked closures.
+  // Each closure is a fully-closed day: opens=closes=00:00 between
+  // validFrom and validThrough (same date). Without this Google keeps
+  // showing standard hours on Thanksgiving until a customer reports it.
+  var closures = (input && Array.isArray(input.closures)) ? input.closures : [];
+  if (closures.length) {
+    doc.specialOpeningHoursSpecification = closures
+      .filter(function(c){ return c && c.date; })
+      .map(function(c){
+        return {
+          '@type': 'OpeningHoursSpecification',
+          validFrom:    c.date,
+          validThrough: c.date,
+          opens:  '00:00',
+          closes: '00:00'
+        };
+      });
+  }
+
   // Strip undefined keys for clean output.
   Object.keys(doc).forEach(function(k){ if (doc[k] === undefined) delete doc[k]; });
 
@@ -378,8 +444,36 @@ function ohGenerateBuilderEmail(input, locale) {
 // VCALENDAR envelope; v2 wraps each closure in a VEVENT.
 // ------------------------------------------------------------
 
+function ohIcsAddDays(yyyymmdd, days) {
+  // Returns "YYYYMMDD" + N days. Uses UTC to dodge local-tz off-by-one.
+  var y = parseInt(yyyymmdd.slice(0, 4), 10);
+  var m = parseInt(yyyymmdd.slice(4, 6), 10) - 1;
+  var d = parseInt(yyyymmdd.slice(6, 8), 10);
+  var dt = new Date(Date.UTC(y, m, d));
+  dt.setUTCDate(dt.getUTCDate() + days);
+  var p2 = function(n){ return (n < 10 ? '0' : '') + n; };
+  return dt.getUTCFullYear() + p2(dt.getUTCMonth() + 1) + p2(dt.getUTCDate());
+}
+
+function ohIcsEscape(s) {
+  // RFC 5545 text-value escaping.
+  return String(s)
+    .replace(/\\/g, '\\\\')
+    .replace(/,/g, '\\,')
+    .replace(/;/g, '\\;')
+    .replace(/\n/g, '\\n');
+}
+
 function ohGenerateIcs(closures, options) {
+  // Builds a VCALENDAR with one all-day VEVENT per closure. RFC 5545
+  // requires DTEND be exclusive for all-day events, so DTEND = DTSTART+1
+  // (without this, some clients drop the event entirely). Each VEVENT
+  // carries a VALARM that fires the morning before — that's the
+  // "you'll get a reminder the morning before" promise on the page.
   options = options || {};
+  var locale = options.locale === 'es' ? 'es' : 'en';
+  var alarmMsg = locale === 'es' ? 'Cerrado mañana' : 'Closed tomorrow';
+  var summaryPrefix = locale === 'es' ? 'Cerrado — ' : 'Closed — ';
   var lines = [];
   lines.push('BEGIN:VCALENDAR');
   lines.push('VERSION:2.0');
@@ -391,20 +485,74 @@ function ohGenerateIcs(closures, options) {
     if (!c || !c.date) return;
     // c.date: 'YYYY-MM-DD'
     var d = String(c.date).replace(/-/g, '');
-    var name = String(c.name || 'Closed').replace(/[\r\n,;\\]/g, ' ');
+    if (d.length !== 8) return;
+    var dEnd = ohIcsAddDays(d, 1);
+    var name = ohIcsEscape(c.name || (locale === 'es' ? 'Cerrado' : 'Closed'));
     var uid = (options.prefix || 'oh') + '-' + d + '-' + i + '@muntin.digital';
     lines.push('BEGIN:VEVENT');
     lines.push('UID:' + uid);
     lines.push('DTSTAMP:' + d + 'T000000Z');
     lines.push('DTSTART;VALUE=DATE:' + d);
-    lines.push('DTEND;VALUE=DATE:' + d);
-    lines.push('SUMMARY:Closed — ' + name);
+    lines.push('DTEND;VALUE=DATE:' + dEnd);
+    lines.push('SUMMARY:' + summaryPrefix + name);
     lines.push('TRANSP:TRANSPARENT');
+    // Day-before display alarm — fires at 9 AM the prior day in the
+    // user's local TZ (calendar clients expand the relative trigger).
+    lines.push('BEGIN:VALARM');
+    lines.push('TRIGGER:-P1D');
+    lines.push('ACTION:DISPLAY');
+    lines.push('DESCRIPTION:' + alarmMsg + ' — ' + name);
+    lines.push('END:VALARM');
     lines.push('END:VEVENT');
   });
 
   lines.push('END:VCALENDAR');
   // RFC 5545 requires CRLF line endings.
+  return lines.join('\r\n') + '\r\n';
+}
+
+function ohGenerateQuarterlyIcs(scenarioUrl, options) {
+  // Phase D — Quarterly Drift Check-in. 8 occurrences over 2 years
+  // (RRULE:FREQ=MONTHLY;INTERVAL=3;COUNT=8). DTSTART = today + 90 days.
+  // The URL field carries the rehydration link so clicking the calendar
+  // reminder reopens Open Hours with the saved scenario.
+  options = options || {};
+  var locale = options.locale === 'es' ? 'es' : 'en';
+  var url = String(scenarioUrl || '');
+  var summary = locale === 'es'
+    ? 'Horario Abierto — revisión trimestral del horario'
+    : 'Open Hours — quarterly hours check-in';
+  var description = locale === 'es'
+    ? 'Una revisión trimestral del horario de tu restaurante. Reabre tu escenario guardado: ' + url
+    : 'A quarterly check-in on your restaurant hours. Reopen your saved scenario: ' + url;
+  var p2 = function(n){ return (n < 10 ? '0' : '') + n; };
+  var icsDate = function(d){
+    return d.getUTCFullYear() + p2(d.getUTCMonth() + 1) + p2(d.getUTCDate()) +
+           'T' + p2(d.getUTCHours()) + p2(d.getUTCMinutes()) + p2(d.getUTCSeconds()) + 'Z';
+  };
+  var start = new Date();
+  start.setUTCDate(start.getUTCDate() + 90);
+  start.setUTCHours(15, 0, 0, 0); // 10 AM ET / 11 AM EDT-ish; harmless.
+  var end = new Date(start.getTime() + 30 * 60 * 1000);
+  var uid = 'oh-quarterly-' + start.getTime() + '@muntin.digital';
+  var lines = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Muntin Digital//Open Hours//EN',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'BEGIN:VEVENT',
+    'UID:' + uid,
+    'DTSTAMP:' + icsDate(new Date()),
+    'DTSTART:' + icsDate(start),
+    'DTEND:' + icsDate(end),
+    'RRULE:FREQ=MONTHLY;INTERVAL=3;COUNT=8',
+    'SUMMARY:' + ohIcsEscape(summary),
+    'DESCRIPTION:' + ohIcsEscape(description)
+  ];
+  if (url) lines.push('URL:' + url);
+  lines.push('END:VEVENT');
+  lines.push('END:VCALENDAR');
   return lines.join('\r\n') + '\r\n';
 }
 
@@ -500,22 +648,28 @@ function ohHolidaysForYear(year, locale) {
       { id: 'new-years',     name: 'Año Nuevo',           date: year + '-01-01', note: 'La mayoría cierra o abre tarde.' },
       { id: 'reyes',         name: 'Día de Reyes',        date: year + '-01-06', note: 'Tradición en muchas familias latinas; algunos cierran o tienen menú especial.' },
       { id: 'mlk',           name: 'Día de MLK Jr.',      date: ohFmtDate(mlk),  note: 'Feriado federal; depende de ti.' },
+      { id: 'valentines',    name: 'Día de San Valentín', date: year + '-02-14', note: 'Una de las noches más reservadas del año — usualmente abierto con reservas y menú especial.' },
       { id: 'mardi-gras',    name: 'Martes de Carnaval',  date: ohFmtDate(mardiGras), note: 'Algunos restaurantes corren un menú especial en vez de cerrar.' },
+      { id: 'st-patricks',   name: 'Día de San Patricio', date: year + '-03-17', note: 'Noche fuerte para bares y pubs; la mayoría abre con horario extendido.' },
       { id: 'cinco-mayo',    name: 'Cinco de Mayo',       date: year + '-05-05', note: 'Fecha clave para restaurantes mexicanos y mexicano-americanos.' },
       { id: 'easter',        name: 'Domingo de Pascua',   date: ohFmtDate(easter), note: 'Brunch común; cierre todo el día también común.' },
       { id: 'mothers-day',   name: 'Día de la Madre',     date: ohFmtDate(mothers), note: 'El brunch más concurrido del año — usualmente abierto con reservas.' },
       { id: 'memorial-day',  name: 'Memorial Day',        date: ohFmtDate(memorial), note: 'Inicio de temporada de patio; la mayoría sigue abierta.' },
+      { id: 'juneteenth',    name: 'Juneteenth',          date: year + '-06-19', note: 'Feriado federal desde 2021; depende de ti.' },
       { id: 'fathers-day',   name: 'Día del Padre',       date: ohFmtDate(fathers), note: 'Domingo de carne; usualmente abierto.' },
       { id: 'july-4',        name: 'Día de Independencia EE.UU.', date: year + '-07-04', note: 'Muchos cierran, especialmente con patios cerca de fuegos artificiales.' },
       { id: 'hispanic-heritage', name: 'Inicio del Mes de la Herencia Hispana', date: year + '-09-15', note: 'Quince de septiembre — muchos restaurantes corren menús o eventos especiales.' },
       { id: 'mexican-indep', name: 'Día de la Independencia de México', date: year + '-09-16', note: 'Tradición central para restaurantes mexicanos; especiales y eventos.' },
       { id: 'labor-day',     name: 'Día del Trabajo',     date: ohFmtDate(labor), note: 'Último feriado de verano; depende de ti.' },
+      { id: 'halloween',     name: 'Halloween',           date: year + '-10-31', note: 'Punto de decisión para restaurantes con familias; bares suelen tener noche fuerte.' },
       { id: 'dia-muertos',   name: 'Día de los Muertos',  date: year + '-11-02', note: 'Importante para restaurantes mexicanos; muchos corren menús u ofrendas.' },
+      { id: 'veterans-day',  name: 'Día de los Veteranos', date: year + '-11-11', note: 'Feriado federal; depende de ti.' },
       { id: 'thanksgiving',  name: 'Día de Acción de Gracias', date: ohFmtDate(thanksgiving), note: 'La mayoría de los restaurantes independientes cierran.' },
       { id: 'black-friday',  name: 'Día Después del Día de Acción de Gracias', date: ohFmtDate(blackFriday), note: 'Cierre opcional; al equipo le suele gustar.' },
       { id: 'guadalupe',     name: 'Día de la Virgen de Guadalupe', date: year + '-12-12', note: 'Importante para restaurantes mexicanos; algunos corren menús especiales.' },
       { id: 'christmas-eve', name: 'Nochebuena',          date: year + '-12-24', note: 'Cierre temprano (5–7 PM) es lo común.' },
       { id: 'christmas-day', name: 'Navidad',             date: year + '-12-25', note: 'La mayoría cierra.' },
+      { id: 'san-esteban',   name: 'Día de San Esteban',  date: year + '-12-26', note: 'Tradición navideña en algunas familias latinas; cierre opcional.' },
       { id: 'new-years-eve', name: 'Nochevieja',          date: year + '-12-31', note: 'Menú especial / cierre tarde son comunes.' }
     ];
   }
@@ -523,13 +677,18 @@ function ohHolidaysForYear(year, locale) {
   return [
     { id: 'new-years',     name: "New Year's Day",     date: year + '-01-01', note: 'Most restaurants close or open late.' },
     { id: 'mlk',           name: 'MLK Jr. Day',        date: ohFmtDate(mlk), note: 'Federal holiday; up to you.' },
+    { id: 'valentines',    name: "Valentine's Day",    date: year + '-02-14', note: 'One of the most-reserved nights of the year — usually open with reservations and a fixed menu.' },
     { id: 'mardi-gras',    name: 'Mardi Gras',         date: ohFmtDate(mardiGras),                          note: 'Some restaurants run a special menu instead of closing.' },
+    { id: 'st-patricks',   name: "St. Patrick's Day",  date: year + '-03-17', note: 'Big night for bars and pubs; most open with extended hours.' },
     { id: 'easter',        name: 'Easter Sunday',      date: ohFmtDate(easter),                             note: 'Brunch service common; full-day close also common.' },
     { id: 'mothers-day',   name: "Mother's Day",       date: ohFmtDate(mothers),                            note: 'Busiest brunch of the year — usually open with reservations.' },
     { id: 'memorial-day',  name: 'Memorial Day',       date: ohFmtDate(memorial),                           note: 'Outdoor patio kickoff; most casual restaurants stay open.' },
+    { id: 'juneteenth',    name: 'Juneteenth',         date: year + '-06-19', note: 'Federal holiday since 2021; up to you.' },
     { id: 'fathers-day',   name: "Father's Day",       date: ohFmtDate(fathers),                            note: 'Steakhouse Sunday; usually open.' },
     { id: 'july-4',        name: 'Independence Day',   date: year + '-07-04',                               note: 'Many restaurants close, especially with patios near fireworks.' },
     { id: 'labor-day',     name: 'Labor Day',          date: ohFmtDate(labor),                              note: 'Last summer holiday; up to you.' },
+    { id: 'halloween',     name: 'Halloween',          date: year + '-10-31', note: 'Decision point for family-leaning restaurants; bars often run a costume night.' },
+    { id: 'veterans-day',  name: 'Veterans Day',       date: year + '-11-11', note: 'Federal holiday; up to you.' },
     { id: 'thanksgiving',  name: 'Thanksgiving',       date: ohFmtDate(thanksgiving),                       note: 'Most independent restaurants close.' },
     { id: 'black-friday',  name: 'Day After Thanksgiving', date: ohFmtDate(blackFriday),                    note: 'Optional close; staff often appreciates it.' },
     { id: 'christmas-eve', name: 'Christmas Eve',      date: year + '-12-24',                               note: 'Early close (5–7 PM) is the norm.' },
@@ -618,6 +777,7 @@ var OH_PUBLIC = {
   generatePlatformCopy: ohGeneratePlatformCopy,
   generateBuilderEmail: ohGenerateBuilderEmail,
   generateIcs:         ohGenerateIcs,
+  generateQuarterlyIcs: ohGenerateQuarterlyIcs,
   // Holiday helpers
   easterDate:          ohEasterDate,
   nthWeekdayOfMonth:   ohNthWeekdayOfMonth,

@@ -19,14 +19,14 @@
 <meta property="og:description" content="Fill out your hours once. Walk away with a sign for the door, the exact text to paste into Google, and what to send your website builder. Stays in your browser." />
 <meta property="og:url" content="https://muntin.digital/tools/open-hours/" />
 <meta property="og:site_name" content="Muntin Digital" />
-<meta property="og:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-open-hours.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Open Hours — Get your restaurant hours right everywhere" />
 <meta name="twitter:description" content="Fill out your hours once. Walk away with what you need for Google, your website, and your door. Stays in your browser." />
-<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-open-hours.png" />
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
@@ -432,7 +432,7 @@
       <li><strong>Open code.</strong> The whole engine is plain JavaScript at <code>/tools/open-hours/open-hours.js</code> &mdash; right-click <em>View Page Source</em> to read it.</li>
       <li><strong>Privacy-safe analytics.</strong> Plausible counts how many people use the tool, but never sees your hours, your restaurant name, or your city. Only enum-bucketed values like &ldquo;<code>4-5 days open</code>&rdquo; pass through.</li>
     </ol>
-    <p style="font-size:13px;color:var(--stone);margin:14px 0 0;">A nine-step verifiable tour and a printable Storefront Sign land in the next release. For the same posture today, see <a href="/tools/brand-suite/#how-we-protect" style="color:inherit;border-bottom:1px dashed var(--teal);">how Brand Suite protects your logo</a>.</p>
+    <p style="font-size:13px;color:var(--stone);margin:14px 0 0;">For the same privacy posture across the family, see <a href="/tools/brand-suite/#how-we-protect" style="color:inherit;border-bottom:1px dashed var(--teal);">how Brand Suite protects your logo</a> or <a href="/tools/margin-math/#how-private" style="color:inherit;border-bottom:1px dashed var(--teal);">Margin Math's nine-claim verifiable tour</a>.</p>
   </div>
 </div></section>
 
@@ -539,8 +539,8 @@
 </footer>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="./open-hours.js?v=20260425-oh1"></script>
-<script src="./sign-render.js?v=20260425-oh2"></script>
+<script src="./open-hours.js?v=20260426-oh3"></script>
+<script src="./sign-render.js?v=20260426-oh4"></script>
 <script>
 /* Open Hours — week-grid input + live output render.
  *
@@ -828,13 +828,27 @@
     DAYS.forEach(function(d){ out[d] = null; });
     var lines = String(text || '').split(/\r?\n/);
     var dayNames = {
+      // English short + long
       mon: 'Mon', monday: 'Mon', tue: 'Tue', tues: 'Tue', tuesday: 'Tue',
       wed: 'Wed', wednesday: 'Wed', thu: 'Thu', thur: 'Thu', thurs: 'Thu',
       thursday: 'Thu', fri: 'Fri', friday: 'Fri', sat: 'Sat', saturday: 'Sat',
-      sun: 'Sun', sunday: 'Sun'
+      sun: 'Sun', sunday: 'Sun',
+      // Spanish — short + long, with and without diacritics. Phase A4:
+      // compare-mode used to drop every line pasted from Google España
+      // because the day-name lookup only knew English.
+      lun: 'Mon', lunes: 'Mon',
+      mar: 'Tue', martes: 'Tue',
+      mie: 'Wed', 'mié': 'Wed', miercoles: 'Wed', 'miércoles': 'Wed',
+      jue: 'Thu', jueves: 'Thu',
+      vie: 'Fri', viernes: 'Fri',
+      sab: 'Sat', 'sáb': 'Sat', sabado: 'Sat', 'sábado': 'Sat',
+      dom: 'Sun', domingo: 'Sun'
     };
     lines.forEach(function(line){
-      var m = /^([A-Za-z]+)[\s:.,-]+(.*)$/.exec(line.trim());
+      // Phase A4 — allow extended-Latin chars in the day-name capture
+      // so "miércoles" and "sábado" match. The previous [A-Za-z]+
+      // dropped every diacritic-bearing line silently.
+      var m = /^([A-Za-zÀ-ſ]+)[\s:.,-]+(.*)$/.exec(line.trim());
       if (!m) return;
       var key = m[1].toLowerCase();
       var canon = dayNames[key];
@@ -909,7 +923,19 @@
     requestAnimationFrame(function(){
       rafQueued = false;
       readGrid();
-      var input = { name: nameEl.value, city: cityEl.value, week: week };
+      // Closures + optional address fields (street/region/postalCode)
+      // flow into the JSON-LD generator so the dev-email block carries
+      // a full PostalAddress and a SpecialOpeningHoursSpecification per
+      // selected closure.
+      var input = {
+        name: nameEl.value,
+        city: cityEl.value,
+        week: week,
+        closures: getClosureList(),
+        street:     (document.getElementById('ohStreet')   || {}).value || '',
+        region:     (document.getElementById('ohRegion')   || {}).value || '',
+        postalCode: (document.getElementById('ohPostal')   || {}).value || ''
+      };
       var v = window.OH.validateHours(input);
       paintWarnings(v.warnings);
       var anyOpen = v.summary.openDaysCount > 0;
@@ -1071,7 +1097,15 @@
 
   // ----- Storefront Sign + Open Hours Card -----
   function buildRenderInput(){
-    var input = { name: nameEl.value, city: cityEl.value, week: week };
+    var input = {
+      name: nameEl.value,
+      city: cityEl.value,
+      week: week,
+      closures: getClosureList(),
+      street:     (document.getElementById('ohStreet') || {}).value || '',
+      region:     (document.getElementById('ohRegion') || {}).value || '',
+      postalCode: (document.getElementById('ohPostal') || {}).value || ''
+    };
     var v = window.OH.validateHours(input);
     return {
       summary: v,
@@ -1233,7 +1267,16 @@
     downloadZipBtn.addEventListener('click', function(){
       if (!window.OHSign) return;
       var ctx = buildRenderInput();
-      var input = { name: nameEl.value, city: cityEl.value, week: week };
+      // Closures + address fields flow into the JSON-LD packed in the ZIP.
+      var input = {
+        name: nameEl.value,
+        city: cityEl.value,
+        week: week,
+        closures: getClosureList(),
+        street:     (document.getElementById('ohStreet') || {}).value || '',
+        region:     (document.getElementById('ohRegion') || {}).value || '',
+        postalCode: (document.getElementById('ohPostal') || {}).value || ''
+      };
       var jsonLdHtml = '<!doctype html>\n<html><head>\n' +
         '<!-- Paste the <script> block below into your site’s <head>. -->\n' +
         window.OH.generateJsonLdScript(input) +
