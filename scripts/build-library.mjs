@@ -451,8 +451,8 @@ ${jsonLd ? `<script type="application/ld+json">\n${JSON.stringify(jsonLd, null, 
 </head>`;
 }
 
-function navHeader(altUrl) {
-  return `<body>
+function navHeader(altUrl, bodyClass) {
+  return `<body${bodyClass ? ` class="${bodyClass}"` : ''}>
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
@@ -1143,7 +1143,7 @@ ${navHeader(altUrl)}
 <section class="term-page">
   <div class="container term-page-inner">
     <header class="term-head">
-      <span class="eyebrow"><a href="${pathFor(locale, '/glossary/#' + term.sectionSlug)}">${esc(term.sectionName)}</a></span>
+      <span class="eyebrow"><a href="${pathFor(locale, '/glossary/' + term.sectionSlug + '/')}">${esc(term.sectionName)}</a></span>
       <h1 class="term-h1">${term.head}</h1>
       ${term.aka ? `<p class="term-aka">${term.aka}</p>` : ''}
       <div class="term-meta">
@@ -1179,6 +1179,108 @@ ${siblingsBlock}
 
 <!-- glossary-knit -->
 <!-- /glossary-knit -->
+${siteFooter()}`;
+}
+
+// Per-section glossary landing page. One page per section (basics,
+// mobile, conversions, trust, findability, subtypes, restaurant-
+// numbers, data-literacy, brand-design) — bookmarkable, shareable,
+// and printable. Compact card grid (reuses .term-siblings-list)
+// + per-section JSON-LD DefinedTermSet so the subset is also
+// crawlable as a structured vocabulary.
+function renderSectionPage(locale, section, sectionTerms) {
+  const canonical = urlFor(locale, `/glossary/${section.slug}/`);
+  const altUrl = locale === 'es' ? `/glossary/${section.slug}/` : `/es/glossary/${section.slug}/`;
+  const title = locale === 'es'
+    ? `${section.name} — Glosario Muntin Digital`
+    : `${section.name} — Muntin Digital glossary`;
+  const desc = locale === 'es'
+    ? `${section.description} ${sectionTerms.length} términos en lenguaje claro.`
+    : `${section.description} ${sectionTerms.length} terms in plain English.`;
+
+  // DefinedTermSet for just this section, with each term as a member.
+  // The site-wide glossary set lives at /glossary/#glossary; this is
+  // a sibling subset so search engines can group "Restaurant numbers"
+  // distinctly from "Mobile & speed" without inferring it.
+  const sectionJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "DefinedTermSet",
+        "@id": `${canonical}#section`,
+        "name": section.name,
+        "description": section.description,
+        "url": canonical,
+        "inLanguage": locale === 'es' ? 'es-US' : 'en-US',
+        "isPartOf": locale === 'es'
+          ? "https://muntin.digital/es/glossary/#glossary"
+          : "https://muntin.digital/glossary/#glossary",
+        "hasDefinedTerm": sectionTerms.map(term => ({
+          "@type": "DefinedTerm",
+          "@id": `${urlFor(locale, '/glossary/' + term.slug + '/')}#term`,
+          "name": stripTags(term.head),
+          "url": urlFor(locale, '/glossary/' + term.slug + '/'),
+        })),
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": locale === 'es' ? 'Inicio' : 'Home',     "item": locale === 'es' ? "https://muntin.digital/es/" : "https://muntin.digital/" },
+          { "@type": "ListItem", "position": 2, "name": locale === 'es' ? 'Glosario' : 'Glossary', "item": locale === 'es' ? "https://muntin.digital/es/glossary/" : "https://muntin.digital/glossary/" },
+          { "@type": "ListItem", "position": 3, "name": section.name,                              "item": canonical }
+        ]
+      }
+    ]
+  };
+
+  const cardsHtml = sectionTerms.map(term => `<li><a href="${pathFor(locale, '/glossary/' + term.slug + '/')}"><strong>${term.head}</strong>${term.aka ? `<span> — ${term.aka}</span>` : ''}</a></li>`).join('\n      ');
+
+  const backLabel  = locale === 'es' ? 'Glosario completo' : 'Full glossary';
+  const printLabel = locale === 'es' ? 'Imprimir esta sección' : 'Print this section';
+
+  return `${pageHead(locale, {
+    title,
+    description: desc,
+    canonical,
+    ogImage: '/brand/og/glossary.png',
+    jsonLd: sectionJsonLd,
+  })}
+${navHeader(altUrl, 'gloss-section-page')}
+
+<nav class="breadcrumb container" aria-label="${esc(t(locale, 'term_aria_breadcrumb'))}">
+  <a href="${pathFor(locale, '/')}">${esc(t(locale, 'breadcrumb_home'))}</a>
+  <span class="breadcrumb-sep" aria-hidden="true">›</span>
+  <a href="${pathFor(locale, '/glossary/')}">${esc(t(locale, 'breadcrumb_glossary'))}</a>
+  <span class="breadcrumb-sep" aria-hidden="true">›</span>
+  <span aria-current="page">${esc(section.name)}</span>
+</nav>
+
+<section class="hero hero-medium">
+  <div class="container">
+    <div class="hero-center">
+      <span class="eyebrow">${esc(locale === 'es' ? 'Sección del glosario' : 'Glossary section')}</span>
+      <h1 class="mt-20 topic-hero-h1">${esc(section.name)}</h1>
+      <p class="hero-sub hero-sub-narrow">${esc(section.description)}</p>
+    </div>
+  </div>
+</section>
+
+<section class="topic-section">
+  <div class="container">
+    <header class="topic-section-head">
+      <span class="eyebrow">${esc(locale === 'es' ? 'Términos' : 'Terms')}</span>
+      <h2>${sectionTerms.length} ${esc(locale === 'es' ? 'definiciones' : 'definitions')}.</h2>
+    </header>
+    <ul class="term-siblings-list">
+      ${cardsHtml}
+    </ul>
+    <div class="hero-ctas reveal hero-ctas-center" style="margin-top:32px">
+      <a class="btn btn-ghost" href="${pathFor(locale, '/glossary/')}">${esc(backLabel)}</a>
+      <button type="button" class="btn btn-ghost" onclick="window.print()">${esc(printLabel)}</button>
+    </div>
+  </div>
+</section>
+
 ${siteFooter()}`;
 }
 
@@ -1594,6 +1696,39 @@ function escapeRegex(s) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+// Escape a string for use inside an HTML attribute value. Used by the
+// glossary autolinker to stamp data-glossary-* blurbs onto inline term
+// links, where the source text may contain quotes, ampersands, etc.
+function escAttr(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+// Return the first sentence (or the first `cap` characters, whichever
+// is shorter) of a plain-text string. Used to derive the glossary-link
+// hover blurb from the term's full definition. Trims trailing whitespace
+// and adds an ellipsis when the string was truncated. Falls back to the
+// whole string if no sentence-ending punctuation is found within `cap`.
+function firstSentence(text, cap = 180) {
+  const trimmed = text.replace(/\s+/g, ' ').trim();
+  if (!trimmed) return '';
+  // Look for a sentence-ending punctuation followed by space + uppercase
+  // / digit, within the first `cap` chars.
+  const window = trimmed.slice(0, cap + 40);
+  const m = window.match(/[.!?](?=\s+[A-ZÁÉÍÓÚÑ0-9"'(])/);
+  if (m && m.index + 1 <= cap) {
+    return trimmed.slice(0, m.index + 1);
+  }
+  if (trimmed.length <= cap) return trimmed;
+  // Soft truncation at last word boundary inside cap.
+  const cut = trimmed.slice(0, cap);
+  const lastSpace = cut.lastIndexOf(' ');
+  return (lastSpace > 0 ? cut.slice(0, lastSpace) : cut) + '…';
+}
+
 function autoLinkGlossary(locale, blogSlug, terms) {
   const root = locale === 'es' ? join(REPO, 'es/blog') : join(REPO, 'blog');
   const file = join(root, blogSlug, 'index.html');
@@ -1658,11 +1793,21 @@ function autoLinkGlossary(locale, blogSlug, terms) {
   if (!placed.length) return 0;
 
   // Apply in reverse offset order so earlier offsets stay valid.
+  // Each autolink carries data-glossary-* attributes so site.js can
+  // render a hover/focus popover with the term's headword, AKA, and
+  // first-sentence blurb without a network roundtrip — progressive
+  // enhancement only; the link still works without JS.
   placed.sort((a, b) => b.start - a.start);
   for (const p of placed) {
     const matched = html.slice(p.start, p.end);
     const url = pathFor(locale, `/glossary/${p.term.slug}/`);
-    const link = `<!-- LIBRARY:autolink:start --><a href="${url}">${matched}</a><!-- LIBRARY:autolink:end -->`;
+    const head  = decodeEntities(stripTags(p.term.head)).trim();
+    const aka   = p.term.aka ? decodeEntities(stripTags(p.term.aka)).trim() : '';
+    const blurb = firstSentence(decodeEntities(stripTags(p.term.defHtml)).trim(), 180);
+    const dataAttrs = ` data-glossary-head="${escAttr(head)}"` +
+                      (aka ? ` data-glossary-aka="${escAttr(aka)}"` : '') +
+                      ` data-glossary-blurb="${escAttr(blurb)}"`;
+    const link = `<!-- LIBRARY:autolink:start --><a href="${url}"${dataAttrs}>${matched}</a><!-- LIBRARY:autolink:end -->`;
     html = html.slice(0, p.start) + link + html.slice(p.end);
   }
 
@@ -1785,13 +1930,25 @@ for (const locale of LOCALES) {
 
   // Per-term glossary pages
   {
-    const { terms } = parseGlossary(locale);
+    const { sections, terms } = parseGlossary(locale);
     let count = 0;
     for (const term of terms) {
       write(join(outBase, 'glossary', term.slug, 'index.html'), renderTermPage(locale, term, terms));
       count++;
     }
     console.log(`\nPer-term glossary pages (${locale}): ${count} term page(s) generated.`);
+
+    // Per-section landing pages (one bookmark-friendly page per
+    // glossary section). One write per section that has terms; safe
+    // because no term slug collides with a section slug.
+    let sectionCount = 0;
+    for (const section of Object.values(sections)) {
+      const sectionTerms = terms.filter(tm => tm.sectionSlug === section.slug);
+      if (!sectionTerms.length) continue;
+      write(join(outBase, 'glossary', section.slug, 'index.html'), renderSectionPage(locale, section, sectionTerms));
+      sectionCount++;
+    }
+    console.log(`Per-section glossary pages (${locale}): ${sectionCount} section page(s) generated.`);
   }
 
   // Glossary hub permalinks — connect the scannable hub at

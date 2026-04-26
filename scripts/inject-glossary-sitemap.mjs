@@ -37,16 +37,77 @@ function listTermSlugs(rel) {
     .sort();
 }
 
+// Section landing pages live at /glossary/<section-slug>/ alongside
+// per-term pages. Slugs are stable IDs from data/library-tags.json's
+// glossary_section_to_topics keys, kept here in declaration order so
+// sitemap entries appear in a natural reading sequence rather than
+// alphabetical (which would scatter related sections like
+// restaurant-numbers and operations across the file).
+const SECTION_SLUGS = [
+  'basics',
+  'mobile',
+  'conversions',
+  'trust',
+  'findability',
+  'subtypes',
+  'restaurant-numbers',
+  'data-literacy',
+  'brand-design',
+];
+
 function lastMod(rel) {
   const fp = path.join(REPO, rel, 'index.html');
   if (!fs.existsSync(fp)) return null;
   return fs.statSync(fp).mtime.toISOString().slice(0, 10);
 }
 
-const enSlugs = listTermSlugs('glossary');
-const esSlugs = new Set(listTermSlugs('es/glossary'));
+// listTermSlugs walks every directory; remove section slugs so we
+// don't double-list section landing pages as if they were terms.
+// Section pages get listed first in declaration order below.
+const SECTION_SLUG_SET = new Set(SECTION_SLUGS);
+const allEn  = listTermSlugs('glossary');
+const allEs  = listTermSlugs('es/glossary');
+const enSlugs = allEn.filter((s) => !SECTION_SLUG_SET.has(s));
+const esSlugs = new Set(allEs.filter((s) => !SECTION_SLUG_SET.has(s)));
+const enSectionSlugs = SECTION_SLUGS.filter((s) => allEn.includes(s));
+const esSectionSlugs = new Set(SECTION_SLUGS.filter((s) => allEs.includes(s)));
 
 const lines = [];
+
+// Section landing pages first (top of the per-glossary block).
+for (const slug of enSectionSlugs) {
+  const enUrl  = `https://muntin.digital/glossary/${slug}/`;
+  const enLast = lastMod(`glossary/${slug}`);
+  const hasEs  = esSectionSlugs.has(slug);
+
+  lines.push('  <url>');
+  lines.push(`    <loc>${enUrl}</loc>`);
+  if (enLast) lines.push(`    <lastmod>${enLast}</lastmod>`);
+  lines.push('    <changefreq>monthly</changefreq>');
+  lines.push('    <priority>0.6</priority>');
+  if (hasEs) {
+    lines.push(`    <xhtml:link rel="alternate" hreflang="en" href="${enUrl}" />`);
+    lines.push(`    <xhtml:link rel="alternate" hreflang="es" href="https://muntin.digital/es/glossary/${slug}/" />`);
+    lines.push(`    <xhtml:link rel="alternate" hreflang="x-default" href="${enUrl}" />`);
+  }
+  lines.push('  </url>');
+
+  if (hasEs) {
+    const esUrl  = `https://muntin.digital/es/glossary/${slug}/`;
+    const esLast = lastMod(`es/glossary/${slug}`);
+    lines.push('  <url>');
+    lines.push(`    <loc>${esUrl}</loc>`);
+    if (esLast) lines.push(`    <lastmod>${esLast}</lastmod>`);
+    lines.push('    <changefreq>monthly</changefreq>');
+    lines.push('    <priority>0.6</priority>');
+    lines.push(`    <xhtml:link rel="alternate" hreflang="en" href="${enUrl}" />`);
+    lines.push(`    <xhtml:link rel="alternate" hreflang="es" href="${esUrl}" />`);
+    lines.push(`    <xhtml:link rel="alternate" hreflang="x-default" href="${enUrl}" />`);
+    lines.push('  </url>');
+  }
+}
+
+// Per-term pages.
 for (const slug of enSlugs) {
   const enUrl = `https://muntin.digital/glossary/${slug}/`;
   const enLast = lastMod(`glossary/${slug}`);
@@ -102,4 +163,4 @@ if (checkOnly) {
 }
 
 fs.writeFileSync(sitemapPath, next);
-console.log(`sitemap.xml: stamped ${enSlugs.length} EN + ${esSlugs.size} ES term URL(s).`);
+console.log(`sitemap.xml: stamped ${enSectionSlugs.length} EN + ${esSectionSlugs.size} ES section URL(s); ${enSlugs.length} EN + ${esSlugs.size} ES term URL(s).`);
