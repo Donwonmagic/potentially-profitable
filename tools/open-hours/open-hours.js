@@ -468,8 +468,13 @@ function ohFmtDate(d) {
   return y + '-' + m + '-' + day;
 }
 
-function ohHolidaysForYear(year) {
+function ohHolidaysForYear(year, locale) {
   // Returns the full year's slate. Caller filters by date range.
+  // Locale-aware: 'es' substitutes Spanish-language names, adds
+  // Latin-American observances common to DMV-area Spanish-speaking
+  // restaurants (Día de los Muertos, Cinco de Mayo, Hispanic
+  // Heritage Month start), and de-emphasises some US federal
+  // holidays whose closure decisions vary widely.
   var easter = ohEasterDate(year);
   // Mardi Gras (Fat Tuesday) is 47 days before Easter.
   var mardiGras = new Date(easter); mardiGras.setUTCDate(mardiGras.getUTCDate() - 47);
@@ -485,10 +490,39 @@ function ohHolidaysForYear(year) {
   var thanksgiving = ohNthWeekdayOfMonth(year, 11, 4, 4);
   // Black Friday = day after Thanksgiving.
   var blackFriday = new Date(thanksgiving); blackFriday.setUTCDate(blackFriday.getUTCDate() + 1);
+  // MLK Jr. Day = 3rd Monday of January.
+  var mlk = ohNthWeekdayOfMonth(year, 1, 1, 3);
+
+  if (locale === 'es') {
+    // Spanish-language slate. Latin-American observances added,
+    // some US federal holidays kept but with more neutral notes.
+    return [
+      { id: 'new-years',     name: 'Año Nuevo',           date: year + '-01-01', note: 'La mayoría cierra o abre tarde.' },
+      { id: 'reyes',         name: 'Día de Reyes',        date: year + '-01-06', note: 'Tradición en muchas familias latinas; algunos cierran o tienen menú especial.' },
+      { id: 'mlk',           name: 'Día de MLK Jr.',      date: ohFmtDate(mlk),  note: 'Feriado federal; depende de ti.' },
+      { id: 'mardi-gras',    name: 'Martes de Carnaval',  date: ohFmtDate(mardiGras), note: 'Algunos restaurantes corren un menú especial en vez de cerrar.' },
+      { id: 'cinco-mayo',    name: 'Cinco de Mayo',       date: year + '-05-05', note: 'Fecha clave para restaurantes mexicanos y mexicano-americanos.' },
+      { id: 'easter',        name: 'Domingo de Pascua',   date: ohFmtDate(easter), note: 'Brunch común; cierre todo el día también común.' },
+      { id: 'mothers-day',   name: 'Día de la Madre',     date: ohFmtDate(mothers), note: 'El brunch más concurrido del año — usualmente abierto con reservas.' },
+      { id: 'memorial-day',  name: 'Memorial Day',        date: ohFmtDate(memorial), note: 'Inicio de temporada de patio; la mayoría sigue abierta.' },
+      { id: 'fathers-day',   name: 'Día del Padre',       date: ohFmtDate(fathers), note: 'Domingo de carne; usualmente abierto.' },
+      { id: 'july-4',        name: 'Día de Independencia EE.UU.', date: year + '-07-04', note: 'Muchos cierran, especialmente con patios cerca de fuegos artificiales.' },
+      { id: 'hispanic-heritage', name: 'Inicio del Mes de la Herencia Hispana', date: year + '-09-15', note: 'Quince de septiembre — muchos restaurantes corren menús o eventos especiales.' },
+      { id: 'mexican-indep', name: 'Día de la Independencia de México', date: year + '-09-16', note: 'Tradición central para restaurantes mexicanos; especiales y eventos.' },
+      { id: 'labor-day',     name: 'Día del Trabajo',     date: ohFmtDate(labor), note: 'Último feriado de verano; depende de ti.' },
+      { id: 'dia-muertos',   name: 'Día de los Muertos',  date: year + '-11-02', note: 'Importante para restaurantes mexicanos; muchos corren menús u ofrendas.' },
+      { id: 'thanksgiving',  name: 'Día de Acción de Gracias', date: ohFmtDate(thanksgiving), note: 'La mayoría de los restaurantes independientes cierran.' },
+      { id: 'black-friday',  name: 'Día Después del Día de Acción de Gracias', date: ohFmtDate(blackFriday), note: 'Cierre opcional; al equipo le suele gustar.' },
+      { id: 'guadalupe',     name: 'Día de la Virgen de Guadalupe', date: year + '-12-12', note: 'Importante para restaurantes mexicanos; algunos corren menús especiales.' },
+      { id: 'christmas-eve', name: 'Nochebuena',          date: year + '-12-24', note: 'Cierre temprano (5–7 PM) es lo común.' },
+      { id: 'christmas-day', name: 'Navidad',             date: year + '-12-25', note: 'La mayoría cierra.' },
+      { id: 'new-years-eve', name: 'Nochevieja',          date: year + '-12-31', note: 'Menú especial / cierre tarde son comunes.' }
+    ];
+  }
 
   return [
     { id: 'new-years',     name: "New Year's Day",     date: year + '-01-01', note: 'Most restaurants close or open late.' },
-    { id: 'mlk',           name: 'MLK Jr. Day',        date: ohFmtDate(ohNthWeekdayOfMonth(year, 1, 1, 3)), note: 'Federal holiday; up to you.' },
+    { id: 'mlk',           name: 'MLK Jr. Day',        date: ohFmtDate(mlk), note: 'Federal holiday; up to you.' },
     { id: 'mardi-gras',    name: 'Mardi Gras',         date: ohFmtDate(mardiGras),                          note: 'Some restaurants run a special menu instead of closing.' },
     { id: 'easter',        name: 'Easter Sunday',      date: ohFmtDate(easter),                             note: 'Brunch service common; full-day close also common.' },
     { id: 'mothers-day',   name: "Mother's Day",       date: ohFmtDate(mothers),                            note: 'Busiest brunch of the year — usually open with reservations.' },
@@ -504,8 +538,9 @@ function ohHolidaysForYear(year) {
   ];
 }
 
-function ohHolidaysInRange(startDate, endDate) {
+function ohHolidaysInRange(startDate, endDate, locale) {
   // startDate / endDate as Date objects (defaults: today + 365 days UTC).
+  // locale: 'en' (default) or 'es' to switch to the Spanish slate.
   var now = new Date();
   var start = startDate || new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
   var end = endDate;
@@ -518,7 +553,7 @@ function ohHolidaysInRange(startDate, endDate) {
   var startYear = start.getUTCFullYear();
   var endYear = end.getUTCFullYear();
   var pool = [];
-  for (var y = startYear; y <= endYear; y++) pool = pool.concat(ohHolidaysForYear(y));
+  for (var y = startYear; y <= endYear; y++) pool = pool.concat(ohHolidaysForYear(y, locale));
   return pool.filter(function(h){
     var t = Date.UTC(
       parseInt(h.date.slice(0, 4), 10),

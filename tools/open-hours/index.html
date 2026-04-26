@@ -130,6 +130,22 @@
 .oh-diff-cell{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px}
 .oh-diff-empty{font-style:italic;color:var(--stone)}
 
+/* "What's typical" archetype card grid — visible when no analysis
+   is running. A first-time visitor can copy the closest archetype
+   to their own restaurant rather than starting from scratch. */
+.oh-archetypes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px}
+.oh-archetype{padding:16px 18px;border:1px solid var(--line);border-left-width:4px;border-radius:var(--r-input);background:var(--white);display:flex;flex-direction:column;gap:8px}
+.oh-archetype[data-tier="casual"]   {border-left-color:var(--teal)}
+.oh-archetype[data-tier="brunch"]   {border-left-color:#C68A2C}
+.oh-archetype[data-tier="latebar"]  {border-left-color:#6E5DB3}
+.oh-archetype[data-tier="brewery"]  {border-left-color:var(--rust)}
+.oh-archetype h3{font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0}
+.oh-archetype .oh-archetype-meta{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);font-weight:700}
+.oh-archetype p{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink-soft)}
+.oh-archetype-pattern{margin:0;padding:8px 12px;background:var(--cream-2);border-radius:var(--r-sm);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.6;color:var(--ink);white-space:pre-line}
+.oh-archetype button{align-self:flex-start;padding:6px 14px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:background 140ms var(--ease-out),color 140ms var(--ease-out)}
+.oh-archetype button:hover{background:var(--teal);color:var(--cream)}
+
 @media print{
   body{background:#fff !important;color:#000 !important}
   header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,.oh-form,
@@ -380,9 +396,30 @@
 
 <section class="block" id="ohEmptyHint"><div class="container">
   <div class="oh-empty">Fill out at least one day's hours above to see your outputs. Or click <button type="button" class="oh-task-btn" id="ohEmptyLoad" style="padding:4px 10px;font-size:12px;">Load a sample restaurant</button> to see how it works.</div>
+
+  <div style="max-width:1100px;margin:32px auto 0;">
+    <span class="eyebrow">What's typical</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:10px 0 4px;">Closest to your restaurant?</h2>
+    <p style="font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0;">Each card is a real-world hours pattern from a different restaurant archetype. Click any one to load it as a starting point — then change the times to match your own. Faster than typing 7 days from scratch.</p>
+    <div class="oh-archetypes" id="ohArchetypes" aria-label="Restaurant archetype starter patterns"></div>
+  </div>
 </div></section>
 
 <!-- PRIVACY_PLACEHOLDER -->
+<section class="block" id="what-this-does"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">Plain English</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,34px);font-weight:500;color:var(--ink);margin:12px 0 14px;">What this does, in four sentences</h2>
+    <ol style="margin:0;padding-left:1.2em;font-size:15px;line-height:1.7;color:var(--ink-soft);display:flex;flex-direction:column;gap:8px;">
+      <li><strong>You fill out the times.</strong> Day-by-day, in whatever format feels natural &mdash; &ldquo;5 PM&rdquo; or &ldquo;17:00&rdquo;, both work. Optional: pick which holidays you'll be closed for.</li>
+      <li><strong>The tool quietly translates.</strong> Behind the scenes, your times get converted into Google's exact format, Yelp's exact format, Apple Maps' exact format, and the structured-data code Google reads to show your hours in search results.</li>
+      <li><strong>You walk away with four artifacts.</strong> A printable sign for the door, a paste block for Google, a block of code to send your website builder, and a calendar file with your closures. Each one answers a sentence the owner could type into search.</li>
+      <li><strong>You run it again next quarter.</strong> Hours drift. Holidays come around. The Storefront Sign goes stale by design &mdash; when its closure list runs out, that's your prompt to come back.</li>
+    </ol>
+    <p style="font-size:13.5px;line-height:1.6;color:var(--stone);margin:14px 0 0;">It is <strong>not</strong> an auto-syncer, a wait-time predictor, or a multi-location dashboard. <a href="#what-this-isnt" style="color:inherit;border-bottom:1px dashed var(--teal);">More on the limits below</a>.</p>
+  </div>
+</div></section>
+
 <section class="block bg-cream2" id="how-private"><div class="container">
   <div style="max-width:760px;margin:0 auto;">
     <span class="eyebrow">Lead by example</span>
@@ -455,6 +492,42 @@
     </div>
   </div>
 </div></section>
+
+<!-- LIBRARY:tool-deep-links:start -->
+<section class="tool-deep-links" aria-labelledby="tool-deep-h">
+  <div class="container">
+    <header class="tool-deep-head">
+      <span class="eyebrow">Learn more</span>
+      <h2 id="tool-deep-h">Why this tool exists.</h2>
+      <p class="tool-deep-blurb">Every check this tool runs maps to a specific concept in the Library. Two starting points — one definition, one playbook.</p>
+      <div class="tool-deep-topics"><a class="tool-deep-topic" href="/learn/topics/local-seo/">Local SEO &amp; Discovery</a>
+        <a class="tool-deep-topic" href="/learn/topics/trust-reviews/">Trust &amp; Reviews</a></div>
+    </header>
+    <div class="tool-deep-grid">
+      <a class="tool-deep-card tool-deep-card-term" href="/glossary/hours-of-operation/">
+          <span class="tool-deep-kind">Glossary</span>
+          <h3>Hours of operation</h3>
+          <p class="tool-deep-aka">the times your restaurant is open, expressed in a way every map and listing service can read</p>
+          <p class="tool-deep-snippet">The structured representation of when a restaurant is open across the week — encoded variously as Google Business Profile fields, Yelp&#39;s Bus…</p>
+          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/glossary/special-hours/">
+          <span class="tool-deep-kind">Glossary</span>
+          <h3>Special hours</h3>
+          <p class="tool-deep-aka">the override for any day that doesn't follow your usual schedule</p>
+          <p class="tool-deep-snippet">A separate entity in Google&#39;s data model from regular hours: per-date overrides for holidays, private events, weather closures, and modified…</p>
+          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-article" href="/blog/how-to-set-up-google-business-profile-for-your-restaurant/">
+          <span class="tool-deep-kind">Article</span>
+          <h3>How to Set Up Google Business Profile for Your Restaurant</h3>
+          <p class="tool-deep-snippet">A step-by-step guide to claiming, verifying, and optimizing Google Business Profile for your restaurant — categories, photos, menu links, and the settings most owners miss.</p>
+          <span class="tool-deep-cta">Read the playbook <span aria-hidden="true">→</span></span>
+        </a>
+    </div>
+  </div>
+</section>
+<!-- LIBRARY:tool-deep-links:end -->
 
 </main>
 
@@ -1210,6 +1283,116 @@
       if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'zip' } });
     });
   }
+
+  // ----- "What's typical" archetype starter patterns -----
+  // Four canonical hours patterns. Each one is what the closest
+  // archetype looks like in the wild; clicking loads the pattern
+  // into the week grid, where the owner edits the times to match.
+  var ARCHETYPES = [
+    {
+      id: 'casual',
+      tier: 'casual',
+      name: 'Casual full-service',
+      meta: 'Tue–Sun · single dinner service',
+      blurb: 'The default pattern for an independent dinner-focused restaurant. Closed Mondays. Late close on Fridays and Saturdays.',
+      pattern: 'Mon: closed\nTue–Thu: 5 PM – 10 PM\nFri–Sat: 5 PM – 11 PM\nSun: 5 PM – 9 PM',
+      week: {
+        Mon: [],
+        Tue: [{ label: 'Dinner', opens: '5 PM', closes: '10 PM' }],
+        Wed: [{ label: 'Dinner', opens: '5 PM', closes: '10 PM' }],
+        Thu: [{ label: 'Dinner', opens: '5 PM', closes: '10 PM' }],
+        Fri: [{ label: 'Dinner', opens: '5 PM', closes: '11 PM' }],
+        Sat: [{ label: 'Dinner', opens: '5 PM', closes: '11 PM' }],
+        Sun: [{ label: 'Dinner', opens: '5 PM', closes: '9 PM' }]
+      }
+    },
+    {
+      id: 'brunch',
+      tier: 'brunch',
+      name: 'Brunch + dinner',
+      meta: 'Wed–Sun · split service',
+      blurb: 'Brunch-anchored places with a separate dinner service. Brunch is what defines this archetype; dinner is the secondary revenue stream.',
+      pattern: 'Mon–Tue: closed\nWed–Fri: dinner only (5–10 PM)\nSat–Sun: brunch (10 AM–3 PM) + dinner (5–10 PM)',
+      week: {
+        Mon: [],
+        Tue: [],
+        Wed: [{ label: 'Dinner', opens: '5 PM', closes: '10 PM' }],
+        Thu: [{ label: 'Dinner', opens: '5 PM', closes: '10 PM' }],
+        Fri: [{ label: 'Dinner', opens: '5 PM', closes: '10 PM' }],
+        Sat: [
+          { label: 'Brunch', opens: '10 AM', closes: '3 PM' },
+          { label: 'Dinner', opens: '5 PM', closes: '10 PM' }
+        ],
+        Sun: [
+          { label: 'Brunch', opens: '10 AM', closes: '3 PM' },
+          { label: 'Dinner', opens: '5 PM', closes: '10 PM' }
+        ]
+      }
+    },
+    {
+      id: 'latebar',
+      tier: 'latebar',
+      name: 'Late-night bar / cocktail',
+      meta: '7 days · past-midnight close',
+      blurb: 'Cocktail bar or late-night spot. The "closes next day" feature exists for this archetype — bar closes at 1 AM is technically next-day.',
+      pattern: 'Mon–Thu: 5 PM – 1 AM (next day)\nFri–Sat: 5 PM – 2 AM (next day)\nSun: 5 PM – midnight',
+      week: {
+        Mon: [{ label: 'Service', opens: '5 PM', closes: '1 AM', closesNextDay: true }],
+        Tue: [{ label: 'Service', opens: '5 PM', closes: '1 AM', closesNextDay: true }],
+        Wed: [{ label: 'Service', opens: '5 PM', closes: '1 AM', closesNextDay: true }],
+        Thu: [{ label: 'Service', opens: '5 PM', closes: '1 AM', closesNextDay: true }],
+        Fri: [{ label: 'Service', opens: '5 PM', closes: '2 AM', closesNextDay: true }],
+        Sat: [{ label: 'Service', opens: '5 PM', closes: '2 AM', closesNextDay: true }],
+        Sun: [{ label: 'Service', opens: '5 PM', closes: '12 AM', closesNextDay: true }]
+      }
+    },
+    {
+      id: 'brewery',
+      tier: 'brewery',
+      name: 'Brewery with food',
+      meta: 'Lunch + dinner · weekend continuous',
+      blurb: 'Brewery or beer-hall with a kitchen. Often runs continuous service on weekends; weekday lunches optional. Late-evening pours after the kitchen closes are typical but not modeled in v1 (single-service grid only).',
+      pattern: 'Mon: closed\nTue–Thu: 4 PM – 10 PM\nFri: 4 PM – 11 PM\nSat: 12 PM – 11 PM (continuous)\nSun: 12 PM – 9 PM (continuous)',
+      week: {
+        Mon: [],
+        Tue: [{ label: 'Service', opens: '4 PM', closes: '10 PM' }],
+        Wed: [{ label: 'Service', opens: '4 PM', closes: '10 PM' }],
+        Thu: [{ label: 'Service', opens: '4 PM', closes: '10 PM' }],
+        Fri: [{ label: 'Service', opens: '4 PM', closes: '11 PM' }],
+        Sat: [{ label: 'Service', opens: '12 PM', closes: '11 PM' }],
+        Sun: [{ label: 'Service', opens: '12 PM', closes: '9 PM' }]
+      }
+    }
+  ];
+
+  function renderArchetypes() {
+    var grid = document.getElementById('ohArchetypes');
+    if (!grid) return;
+    grid.innerHTML = ARCHETYPES.map(function(a){
+      return '<article class="oh-archetype" data-tier="' + a.tier + '">' +
+             '<span class="oh-archetype-meta">' + escHtml(a.meta) + '</span>' +
+             '<h3>' + escHtml(a.name) + '</h3>' +
+             '<p>' + escHtml(a.blurb) + '</p>' +
+             '<pre class="oh-archetype-pattern">' + escHtml(a.pattern) + '</pre>' +
+             '<button type="button" data-archetype="' + a.id + '">Load this pattern &rarr;</button>' +
+             '</article>';
+    }).join('');
+  }
+  document.addEventListener('click', function(ev){
+    var btn = ev.target.closest('[data-archetype]');
+    if (!btn) return;
+    var id = btn.getAttribute('data-archetype');
+    var a = ARCHETYPES.find(function(x){ return x.id === id; });
+    if (!a) return;
+    week = JSON.parse(JSON.stringify(a.week));
+    renderWeek();
+    rerender();
+    // Scroll to the form so the owner sees the loaded pattern.
+    var formEl = document.querySelector('.oh-form');
+    if (formEl && formEl.scrollIntoView) formEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (window.plausible) window.plausible('Open Hours Render', { props: { source: 'archetype-' + id } });
+  });
+  renderArchetypes();
 
   // Initial render: empty week + empty form + holiday list.
   renderWeek();

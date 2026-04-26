@@ -327,6 +327,37 @@ assertEq('Easter 2030 (Apr 21)', O.easterDate(2030).toISOString().slice(0, 10), 
   assert('Nov-Dec range excludes July 4',       !ids.includes('july-4'));
 }
 
+// Spanish-locale holiday slate — superset of EN with Latin-American
+// observances; a few EN-only ids are absent.
+{
+  const en = O.holidaysForYear(2026);
+  const es = O.holidaysForYear(2026, 'es');
+  assert('ES slate is larger than EN', es.length > en.length);
+  const esIds = es.map(x => x.id);
+  ['cinco-mayo','dia-muertos','reyes','guadalupe','hispanic-heritage','mexican-indep']
+    .forEach(id => assert('ES slate contains: ' + id, esIds.includes(id)));
+  // Spanish names instead of English
+  const newYears = es.find(x => x.id === 'new-years');
+  assertEq('ES new-years uses Spanish name', newYears.name, 'Año Nuevo');
+  // Cinco de Mayo is a fixed date
+  const cinco = es.find(x => x.id === 'cinco-mayo');
+  assertEq('Cinco de Mayo 2026',         cinco.date, '2026-05-05');
+  // Día de los Muertos is November 2
+  const muertos = es.find(x => x.id === 'dia-muertos');
+  assertEq('Día de los Muertos 2026',    muertos.date, '2026-11-02');
+}
+
+// holidaysInRange respects locale parameter
+{
+  const r = O.holidaysInRange(
+    new Date(Date.UTC(2026, 4, 1)),  // May 1 2026
+    new Date(Date.UTC(2026, 4, 31)),
+    'es'
+  );
+  const ids = r.map(x => x.id);
+  assert('ES May range includes Cinco de Mayo', ids.includes('cinco-mayo'));
+}
+
 // 12-month rolling default range covers a full year
 {
   const r = O.holidaysInRange(new Date(Date.UTC(2026, 5, 1)));  // June 1 2026 default end

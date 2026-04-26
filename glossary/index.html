@@ -1218,10 +1218,46 @@
           <h3>NAP consistency<span class="gloss-aka">name, address, phone — everywhere the same</span></h3>
           <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
         </div>
-        <p class="gloss-term-def">Your business name, address, and phone number written identically across your website, Google Business Profile, Yelp, Apple Maps, Facebook, and every other directory. "Suite 200" vs. "Ste. 200" counts as a mismatch to Google.</p>
-        <p class="gloss-term-why"><strong>Why it matters</strong>Google cross-references your NAP across every mention of your business online and downgrades listings with inconsistent info — it reads as "this business might not be real". One tidy-up, done once, recovers rank you didn't know you'd lost.</p>
+        <p class="gloss-term-def">Your business name, address, and phone number written identically across your website, Google Business Profile, Yelp, Apple Maps, Facebook, and every other directory. "Suite 200" vs. "Ste. 200" counts as a mismatch to Google. Increasingly, hours-of-operation matters here too — Google treats day-of-week conflicts the same way it treats address conflicts.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Google cross-references your NAP across every mention of your business online and downgrades listings with inconsistent info — it reads as "this business might not be real". One tidy-up, done once, recovers rank you didn't know you'd lost. <a href="/tools/open-hours/">Open Hours</a> covers the hours half; the other fields are a separate fix-up.</p>
         <!-- LIBRARY:gloss-perma:start -->
         <p class="gloss-term-permalink"><a href="/glossary/nap-consistency/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="hours-of-operation" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Hours of operation<span class="gloss-aka">the times your restaurant is open, expressed in a way every map and listing service can read</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
+        </div>
+        <p class="gloss-term-def">The structured representation of when a restaurant is open across the week — encoded variously as Google Business Profile fields, Yelp's Business Information, Apple Business Connect entries, Schema.org <code>OpeningHoursSpecification</code> on your website, and a handwritten card on your front door. Each surface has a different format; the underlying decision is the same.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Wrong hours in any one place is the #2 driver of bad reviews after stale menus, and the #1 cause of Google Business Profile listing-quality decay. Diners check Google before they leave home; a "closed" listing on a Saturday lunch sends them to a competitor. <a href="/tools/open-hours/">Open Hours</a> is the 15-minute fix-up that keeps the six places aligned.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/glossary/hours-of-operation/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="special-hours" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Special hours<span class="gloss-aka">the override for any day that doesn't follow your usual schedule</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Restaurants</span></div>
+        </div>
+        <p class="gloss-term-def">A separate entity in Google's data model from regular hours: per-date overrides for holidays, private events, weather closures, and modified-hours days (early-close on Christmas Eve, brunch-only on Mother's Day). In Schema.org this maps to additional <code>OpeningHoursSpecification</code> entries with <code>validFrom</code>/<code>validThrough</code> dates.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Most owners enter regular hours once and never touch the data model again. Google flags listings where regular hours conflict with widely-known holiday closures (your "Mon: 11–9" still showing on Christmas Day) as "may have inaccurate info" — a soft demotion in local search. Maintaining special hours is the half of hours-management that requires a calendar, not a one-time fill-in.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/glossary/special-hours/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="structured-data" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Structured data<span class="gloss-aka">the machine-readable copy of your site that Google reads</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">A small JSON block embedded in your website's <code>&lt;head&gt;</code> that mirrors the human-facing content (hours, address, menu items, reviews, prices) in a format search engines can index without parsing your design. The convention is Schema.org's vocabulary, expressed as JSON-LD; what you might recognize as the &ldquo;<a href="/glossary/rich-results/">rich result</a>&rdquo; preview Google shows is downstream of this data.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>The machine-readable copy decides what Google shows in your listing, your knowledge panel, and the first-screen result for "[restaurant name] hours". Pretty design doesn't matter if the structured data is missing or wrong — Google can't see CSS. <a href="/tools/open-hours/">Open Hours</a> generates the hours portion of your structured data automatically; sending the block to a website builder usually takes them five minutes to install.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/glossary/structured-data/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 

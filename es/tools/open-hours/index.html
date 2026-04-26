@@ -130,6 +130,19 @@
 .oh-diff-cell{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px}
 .oh-diff-empty{font-style:italic;color:var(--stone)}
 
+.oh-archetypes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px}
+.oh-archetype{padding:16px 18px;border:1px solid var(--line);border-left-width:4px;border-radius:var(--r-input);background:var(--white);display:flex;flex-direction:column;gap:8px}
+.oh-archetype[data-tier="casual"]   {border-left-color:var(--teal)}
+.oh-archetype[data-tier="brunch"]   {border-left-color:#C68A2C}
+.oh-archetype[data-tier="latebar"]  {border-left-color:#6E5DB3}
+.oh-archetype[data-tier="brewery"]  {border-left-color:var(--rust)}
+.oh-archetype h3{font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0}
+.oh-archetype .oh-archetype-meta{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);font-weight:700}
+.oh-archetype p{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink-soft)}
+.oh-archetype-pattern{margin:0;padding:8px 12px;background:var(--cream-2);border-radius:var(--r-sm);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.6;color:var(--ink);white-space:pre-line}
+.oh-archetype button{align-self:flex-start;padding:6px 14px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:background 140ms var(--ease-out),color 140ms var(--ease-out)}
+.oh-archetype button:hover{background:var(--teal);color:var(--cream)}
+
 @media print{
   body{background:#fff !important;color:#000 !important}
   header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,.oh-form,
@@ -380,9 +393,30 @@
 
 <section class="block" id="ohEmptyHint"><div class="container">
   <div class="oh-empty">Llena al menos un día de horario arriba para ver los resultados. O haz click en <button type="button" class="oh-task-btn" id="ohEmptyLoad" style="padding:4px 10px;font-size:12px;">Cargar restaurante de ejemplo</button> para ver cómo funciona.</div>
+
+  <div style="max-width:1100px;margin:32px auto 0;">
+    <span class="eyebrow">Lo típico</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:10px 0 4px;">¿Cuál se parece más al tuyo?</h2>
+    <p style="font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0;">Cada tarjeta es un patrón real de horarios de un arquetipo distinto. Haz click en cualquiera para cargarlo como punto de partida — luego ajustas los horarios al tuyo. Más rápido que escribir 7 días desde cero.</p>
+    <div class="oh-archetypes" id="ohArchetypes" aria-label="Patrones iniciales por arquetipo de restaurante"></div>
+  </div>
 </div></section>
 
 <!-- PRIVACY_PLACEHOLDER -->
+<section class="block" id="what-this-does"><div class="container">
+  <div style="max-width:760px;margin:0 auto;">
+    <span class="eyebrow">En lenguaje sencillo</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,34px);font-weight:500;color:var(--ink);margin:12px 0 14px;">Qué hace esta herramienta, en cuatro frases</h2>
+    <ol style="margin:0;padding-left:1.2em;font-size:15px;line-height:1.7;color:var(--ink-soft);display:flex;flex-direction:column;gap:8px;">
+      <li><strong>Llenas los horarios.</strong> Día por día, en el formato que te salga natural &mdash; &ldquo;5 PM&rdquo; o &ldquo;17:00&rdquo;, los dos funcionan. Opcional: marca qué feriados vas a cerrar.</li>
+      <li><strong>La herramienta traduce en silencio.</strong> Por detrás, tus horas se convierten al formato exacto de Google, al formato exacto de Yelp, al formato exacto de Apple Maps, y al código estructurado que Google lee para mostrar tus horarios en los resultados de búsqueda.</li>
+      <li><strong>Te llevas cuatro artefactos.</strong> Un letrero imprimible para la puerta, un bloque para pegar en Google, un bloque de código para mandarle a quien hizo tu sitio, y un archivo de calendario con tus cierres. Cada uno responde a una frase que el dueño podría escribir en búsqueda.</li>
+      <li><strong>Lo vuelves a correr el próximo trimestre.</strong> Los horarios cambian. Vienen feriados. El Letrero de Puerta queda viejo a propósito &mdash; cuando su lista de cierres se acaba, ese es el recordatorio para volver.</li>
+    </ol>
+    <p style="font-size:13.5px;line-height:1.6;color:var(--stone);margin:14px 0 0;"><strong>No</strong> es un sincronizador automático, predictor de tiempo de espera, ni panel multi-sucursal. <a href="#what-this-isnt" style="color:inherit;border-bottom:1px dashed var(--teal);">Más sobre los límites abajo</a>.</p>
+  </div>
+</div></section>
+
 <section class="block bg-cream2" id="how-private"><div class="container">
   <div style="max-width:760px;margin:0 auto;">
     <span class="eyebrow">Predicar con el ejemplo</span>
@@ -452,6 +486,42 @@
     </div>
   </div>
 </div></section>
+
+<!-- LIBRARY:tool-deep-links:start -->
+<section class="tool-deep-links" aria-labelledby="tool-deep-h">
+  <div class="container">
+    <header class="tool-deep-head">
+      <span class="eyebrow">Aprende más</span>
+      <h2 id="tool-deep-h">Por qué existe esta herramienta.</h2>
+      <p class="tool-deep-blurb">Cada chequeo que esta herramienta hace conecta con un concepto específico en la biblioteca. Dos puntos de partida — una definición, una guía.</p>
+      <div class="tool-deep-topics"><a class="tool-deep-topic" href="/es/learn/topics/local-seo/">SEO local y descubrimiento</a>
+        <a class="tool-deep-topic" href="/es/learn/topics/trust-reviews/">Confianza y reseñas</a></div>
+    </header>
+    <div class="tool-deep-grid">
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/hours-of-operation/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Horario de operación</h3>
+          <p class="tool-deep-aka">los horarios de tu restaurante en un formato que cualquier mapa o listado pueda leer</p>
+          <p class="tool-deep-snippet">La representación estructurada de cuándo está abierto un restaurante a lo largo de la semana — codificada de varias formas: campos de Google…</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/special-hours/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Horarios especiales</h3>
+          <p class="tool-deep-aka">la excepción para cualquier día que no sigue tu horario habitual</p>
+          <p class="tool-deep-snippet">Una entidad aparte del horario regular en el modelo de datos de Google: excepciones por fecha para feriados, eventos privados, cierres por c…</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-article" href="/es/blog/how-to-set-up-google-business-profile-for-your-restaurant/">
+          <span class="tool-deep-kind">Artículo</span>
+          <h3>Cómo configurar el Google Business Profile de tu restaurante (Guía 2026)</h3>
+          <p class="tool-deep-snippet">Guía paso a paso para configurar y optimizar el Google Business Profile de tu restaurante. Reclamación, verificación, categorías, fotos, enlaces al menú y los ajustes que la mayoría de los dueños se salta.</p>
+          <span class="tool-deep-cta">Leer la guía <span aria-hidden="true">→</span></span>
+        </a>
+    </div>
+  </div>
+</section>
+<!-- LIBRARY:tool-deep-links:end -->
 
 </main>
 
@@ -615,7 +685,7 @@
   }
 
   function renderHolidayList(){
-    var holidays = window.OH.holidaysInRange();
+    var holidays = window.OH.holidaysInRange(null, null, 'es');
     if (!holidays.length) { holidayList.innerHTML = ''; return; }
     holidayList.innerHTML = holidays.map(function(h){
       var checked = !!selectedClosures[h.id];
@@ -672,7 +742,7 @@
     var cb = li.querySelector('input[type="checkbox"]');
     if (ev.target !== cb) cb.checked = !cb.checked;
     if (cb.checked) {
-      var holidays = window.OH.holidaysInRange();
+      var holidays = window.OH.holidaysInRange(null, null, 'es');
       var preset = holidays.find(function(h){ return h.id === id; });
       if (preset) selectedClosures[id] = { name: preset.name, date: preset.date, source: 'preset' };
     } else {
@@ -1155,6 +1225,107 @@
       if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'zip' } });
     });
   }
+
+  // ----- "Lo típico" — patrones iniciales por arquetipo -----
+  var ARCHETYPES = [
+    {
+      id: 'casual', tier: 'casual',
+      name: 'Restaurante casual',
+      meta: 'Mar–Dom · una sola cena',
+      blurb: 'El patrón por defecto para un restaurante independiente con cena. Cierra los lunes. Cierre tarde viernes y sábado.',
+      pattern: 'Lun: cerrado\nMar–Jue: 5 PM – 10 PM\nVie–Sáb: 5 PM – 11 PM\nDom: 5 PM – 9 PM',
+      week: {
+        Mon: [],
+        Tue: [{ label: 'Cena', opens: '5 PM', closes: '10 PM' }],
+        Wed: [{ label: 'Cena', opens: '5 PM', closes: '10 PM' }],
+        Thu: [{ label: 'Cena', opens: '5 PM', closes: '10 PM' }],
+        Fri: [{ label: 'Cena', opens: '5 PM', closes: '11 PM' }],
+        Sat: [{ label: 'Cena', opens: '5 PM', closes: '11 PM' }],
+        Sun: [{ label: 'Cena', opens: '5 PM', closes: '9 PM' }]
+      }
+    },
+    {
+      id: 'brunch', tier: 'brunch',
+      name: 'Brunch + cena',
+      meta: 'Mié–Dom · servicio dividido',
+      blurb: 'Lugares con brunch como ancla y un servicio de cena aparte. El brunch define al arquetipo; la cena es el segundo flujo de ingreso.',
+      pattern: 'Lun–Mar: cerrado\nMié–Vie: solo cena (5–10 PM)\nSáb–Dom: brunch (10 AM–3 PM) + cena (5–10 PM)',
+      week: {
+        Mon: [], Tue: [],
+        Wed: [{ label: 'Cena', opens: '5 PM', closes: '10 PM' }],
+        Thu: [{ label: 'Cena', opens: '5 PM', closes: '10 PM' }],
+        Fri: [{ label: 'Cena', opens: '5 PM', closes: '10 PM' }],
+        Sat: [
+          { label: 'Brunch', opens: '10 AM', closes: '3 PM' },
+          { label: 'Cena', opens: '5 PM', closes: '10 PM' }
+        ],
+        Sun: [
+          { label: 'Brunch', opens: '10 AM', closes: '3 PM' },
+          { label: 'Cena', opens: '5 PM', closes: '10 PM' }
+        ]
+      }
+    },
+    {
+      id: 'latebar', tier: 'latebar',
+      name: 'Bar / coctelería de noche',
+      meta: '7 días · cierre pasada la medianoche',
+      blurb: 'Bar de cócteles o lugar nocturno. La función "cierra al día siguiente" existe para este arquetipo — cierre del bar a la 1 AM técnicamente es del día siguiente.',
+      pattern: 'Lun–Jue: 5 PM – 1 AM (siguiente día)\nVie–Sáb: 5 PM – 2 AM (siguiente día)\nDom: 5 PM – medianoche',
+      week: {
+        Mon: [{ label: 'Servicio', opens: '5 PM', closes: '1 AM', closesNextDay: true }],
+        Tue: [{ label: 'Servicio', opens: '5 PM', closes: '1 AM', closesNextDay: true }],
+        Wed: [{ label: 'Servicio', opens: '5 PM', closes: '1 AM', closesNextDay: true }],
+        Thu: [{ label: 'Servicio', opens: '5 PM', closes: '1 AM', closesNextDay: true }],
+        Fri: [{ label: 'Servicio', opens: '5 PM', closes: '2 AM', closesNextDay: true }],
+        Sat: [{ label: 'Servicio', opens: '5 PM', closes: '2 AM', closesNextDay: true }],
+        Sun: [{ label: 'Servicio', opens: '5 PM', closes: '12 AM', closesNextDay: true }]
+      }
+    },
+    {
+      id: 'brewery', tier: 'brewery',
+      name: 'Cervecería con cocina',
+      meta: 'Almuerzo + cena · fin de semana continuo',
+      blurb: 'Cervecería o salón de cerveza con cocina. Suele tener servicio continuo los fines de semana; almuerzo entre semana es opcional.',
+      pattern: 'Lun: cerrado\nMar–Jue: 4 PM – 10 PM\nVie: 4 PM – 11 PM\nSáb: 12 PM – 11 PM (continuo)\nDom: 12 PM – 9 PM (continuo)',
+      week: {
+        Mon: [],
+        Tue: [{ label: 'Servicio', opens: '4 PM', closes: '10 PM' }],
+        Wed: [{ label: 'Servicio', opens: '4 PM', closes: '10 PM' }],
+        Thu: [{ label: 'Servicio', opens: '4 PM', closes: '10 PM' }],
+        Fri: [{ label: 'Servicio', opens: '4 PM', closes: '11 PM' }],
+        Sat: [{ label: 'Servicio', opens: '12 PM', closes: '11 PM' }],
+        Sun: [{ label: 'Servicio', opens: '12 PM', closes: '9 PM' }]
+      }
+    }
+  ];
+
+  function renderArchetypes() {
+    var grid = document.getElementById('ohArchetypes');
+    if (!grid) return;
+    grid.innerHTML = ARCHETYPES.map(function(a){
+      return '<article class="oh-archetype" data-tier="' + a.tier + '">' +
+             '<span class="oh-archetype-meta">' + escHtml(a.meta) + '</span>' +
+             '<h3>' + escHtml(a.name) + '</h3>' +
+             '<p>' + escHtml(a.blurb) + '</p>' +
+             '<pre class="oh-archetype-pattern">' + escHtml(a.pattern) + '</pre>' +
+             '<button type="button" data-archetype="' + a.id + '">Cargar este patrón &rarr;</button>' +
+             '</article>';
+    }).join('');
+  }
+  document.addEventListener('click', function(ev){
+    var btn = ev.target.closest('[data-archetype]');
+    if (!btn) return;
+    var id = btn.getAttribute('data-archetype');
+    var a = ARCHETYPES.find(function(x){ return x.id === id; });
+    if (!a) return;
+    week = JSON.parse(JSON.stringify(a.week));
+    renderWeek();
+    rerender();
+    var formEl = document.querySelector('.oh-form');
+    if (formEl && formEl.scrollIntoView) formEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (window.plausible) window.plausible('Open Hours Render', { props: { source: 'archetype-' + id } });
+  });
+  renderArchetypes();
 
   // Render inicial: semana vacía + lista de feriados.
   renderWeek();
