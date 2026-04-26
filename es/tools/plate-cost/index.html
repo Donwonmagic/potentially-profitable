@@ -191,7 +191,7 @@
   <ol class="pc-privacy-list">
     <li><div><strong>Sin envío.</strong><p>Abre DevTools &rarr; Red. Escribe una receta, haz clic en <em>Calcular</em>. Cero peticiones se disparan. La matemática corre en tu dispositivo.</p></div></li>
     <li><div><strong>Sin guardado.</strong><p>Cierra la pestaña y recarga esta URL. El formulario está vacío. No usamos <code>localStorage</code>, <code>sessionStorage</code>, ni cookies para tus datos de receta.</p></div></li>
-    <li><div><strong>Sin fuga en la URL.</strong><p>A diferencia de otras herramientas que codifican el estado en la barra de direcciones, ésta nunca serializa tu receta a la URL. Los nombres de tus platos siguen siendo tuyos.</p></div></li>
+    <li><div><strong>La codificación en la URL es opcional.</strong><p>La barra de direcciones queda vacía hasta que haces clic en <em>Guardar y recordarme volver a costear</em>. Entonces la receta se codifica en el enlace que lleva el recordatorio del calendario. Según la especificación HTTP, la parte de una URL después de <code>#</code> nunca se envía al servidor &mdash; el recordatorio vive solo en tu dispositivo, y la receta nunca cruza la red.</p></div></li>
     <li><div><strong>Un solo script empaquetado.</strong><p>La herramienta carga <code>/tools/plate-cost/plate-cost.js</code> desde este dominio. Sin CDN, sin analítica vinculada a tus recetas, sin rastreador de terceros leyendo el formulario.</p></div></li>
     <li><div><strong>Solo analítica anónima en cubetas (enums).</strong><p>Registramos que &ldquo;se calculó una receta de 4–7 ingredientes&rdquo; en tres o cuatro cubetas — nunca los nombres de ingredientes, precios, ni contenido de la receta.</p></div></li>
   </ol>

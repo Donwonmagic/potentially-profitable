@@ -130,6 +130,41 @@
 .pc-paste-btn{padding:6px 14px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12px;font-weight:600;cursor:pointer}
 .pc-paste-btn:hover{background:var(--teal);color:var(--cream)}
 
+/* Cost Drift Check-in — the Muntin signature for Plate Cost */
+.pc-signature{margin-top:18px;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+.pc-signature-eyebrow{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+.pc-signature h3{font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px;line-height:1.25}
+.pc-signature-blurb{font-size:13.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 12px}
+.pc-signature-fine{font-size:11.5px;color:var(--stone);line-height:1.55;margin:8px 0 0}
+.pc-signature-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:8px}
+.pc-signature-status{font-size:12px;color:var(--status-good);font-weight:600;display:none;align-items:center;gap:6px}
+.pc-signature-status[data-shown="true"]{display:inline-flex}
+
+body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
+.pc-recost-banner{display:none;align-items:flex-start;gap:14px;padding:14px 18px;margin:0 0 14px;border:1px solid var(--teal);border-left-width:4px;border-radius:var(--r-md);background:var(--cream-2)}
+.pc-recost-banner-body{flex:1;font-size:13.5px;line-height:1.55;color:var(--ink)}
+.pc-recost-banner-eyebrow{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);margin-bottom:2px}
+.pc-recost-banner strong{color:var(--ink)}
+.pc-recost-reset{padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--stone);font:inherit;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none}
+.pc-recost-reset:hover{border-color:var(--rust);color:var(--rust)}
+
+body[data-pc-mode="recost"] .pc-grid table{font-size:12.5px}
+.pc-prev-cell{display:none;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;color:var(--stone);font-variant-numeric:tabular-nums}
+body[data-pc-mode="recost"] .pc-prev-cell{display:block}
+.pc-prev-label{font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--stone);font-weight:700;margin-bottom:2px;display:block}
+
+.pc-drift-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 10px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-radius:999px;font-variant-numeric:tabular-nums;margin-left:8px;vertical-align:middle}
+.pc-drift-pill[data-tone="steady"]   {background:var(--status-good-tint);color:var(--status-good)}
+.pc-drift-pill[data-tone="improved"] {background:var(--status-good-tint);color:var(--status-good)}
+.pc-drift-pill[data-tone="slipped"]  {background:rgba(198,138,44,0.10);color:#956A1A}
+.pc-drift-pill[data-tone="crossed"]  {background:rgba(184,84,26,0.10);color:var(--rust)}
+.pc-headline-old{font-size:13px;color:var(--stone);text-decoration:line-through;margin-right:8px;font-variant-numeric:tabular-nums}
+.pc-verdict{margin-top:10px;padding:10px 14px;border-radius:var(--r-sm);font-size:13px;line-height:1.5;border:1px solid var(--line)}
+.pc-verdict[data-tone="steady"]   {background:var(--status-good-tint);color:var(--status-good);border-color:rgba(46,125,50,0.18)}
+.pc-verdict[data-tone="improved"] {background:var(--status-good-tint);color:var(--status-good);border-color:rgba(46,125,50,0.18)}
+.pc-verdict[data-tone="slipped"]  {background:rgba(198,138,44,0.06);color:#956A1A;border-color:rgba(198,138,44,0.22)}
+.pc-verdict[data-tone="crossed"]  {background:rgba(184,84,26,0.06);color:var(--rust);border-color:rgba(184,84,26,0.22)}
+
 @media print{
   body{background:#fff !important;color:#000 !important}
   header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,
@@ -195,7 +230,7 @@
   <ol class="pc-privacy-list">
     <li><div><strong>No upload.</strong><p>Open DevTools &rarr; Network. Type a recipe, click <em>Compute</em>. Zero requests fire. The math runs on your device.</p></div></li>
     <li><div><strong>No storage.</strong><p>Close the tab and reload this URL. The form is empty. We don&rsquo;t use <code>localStorage</code>, <code>sessionStorage</code>, or cookies for your recipe data.</p></div></li>
-    <li><div><strong>No URL leakage.</strong><p>Unlike some tools that encode state in the address bar, this one never serialises your recipe to the URL. Your dish names stay yours.</p></div></li>
+    <li><div><strong>URL-fragment encoding is opt-in.</strong><p>The address bar stays empty until you click <em>Save &amp; remind me to recost</em>. Then the recipe is encoded into the link the calendar reminder carries. Per the HTTP spec, the part of a URL after <code>#</code> is never sent to a server &mdash; so the reminder lives only on your device, and the recipe never crosses the network.</p></div></li>
     <li><div><strong>One bundled script.</strong><p>The tool loads <code>/tools/plate-cost/plate-cost.js</code> from this domain. No CDN, no analytics-tied recipe data, no third-party tracker reading the form.</p></div></li>
     <li><div><strong>Anonymous, enum-bucketed analytics only.</strong><p>We log that &ldquo;a 4–7 ingredient recipe was costed&rdquo; in three or four buckets — never the ingredient names, prices, or recipe content.</p></div></li>
   </ol>
@@ -207,6 +242,13 @@
   <p style="font-size:13.5px;color:var(--stone);margin:0 0 16px;line-height:1.55;">Five common ingredients to start. Add or remove rows as needed. The tool fills in canonical yields for ~80 common ingredients automatically — override any one if your supplier&rsquo;s product yields differently.</p>
 
   <div class="pc-form">
+    <div class="pc-recost-banner" id="pcRecostBanner" role="region" aria-live="polite">
+      <div class="pc-recost-banner-body">
+        <span class="pc-recost-banner-eyebrow">Recost from quarterly check-in</span>
+        <span>This recipe was costed on <strong id="pcBaselineDate">—</strong>. Type today&rsquo;s invoice prices into the AP price column &mdash; the headline below shows the drift since the baseline.</span>
+      </div>
+      <a href="/tools/plate-cost/" class="pc-recost-reset" id="pcRecostReset">Reset to fresh recipe</a>
+    </div>
     <div class="pc-meta">
       <label>Dish name <small style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--stone);">(used on the result panel and exports)</small>
         <input type="text" id="pcName" placeholder="e.g. Cacio e pepe" autocomplete="off" />
@@ -258,10 +300,11 @@
     <div class="pc-result" id="pcResult" style="display:none;">
       <div class="pc-headline">
         <p class="pc-headline-eyebrow">Plate cost</p>
-        <p class="pc-headline-num" id="pcHeadlineNum">$0.00</p>
+        <p class="pc-headline-num" id="pcHeadlineNum"><span class="pc-headline-old" id="pcHeadlineOld" hidden></span>$0.00<span class="pc-drift-pill" id="pcDriftPill" hidden></span></p>
         <p class="pc-headline-batch" id="pcHeadlineBatch"></p>
         <p class="pc-headline-explainer">That&rsquo;s what it costs you in ingredients to send this dish to the pass, after trim and shrink. Excludes labour and overhead.</p>
         <span class="pc-headline-confidence" id="pcConfidence" data-level="high">High confidence</span>
+        <p class="pc-verdict" id="pcVerdict" hidden></p>
       </div>
       <div class="pc-prices">
         <h3>Three suggested menu prices</h3>
@@ -279,6 +322,19 @@
       <button type="button" class="pc-action-btn" id="pcPushMe">Add to Menu Engineering &rarr;</button>
       <button type="button" class="pc-action-btn" id="pcPushMm">Use in Margin Math &rarr;</button>
     </div>
+
+    <article class="pc-signature" id="pcSignature" style="display:none;">
+      <p class="pc-signature-eyebrow">Cost Drift Check-in &middot; iCalendar (.ics) &middot; 8 events / 2 years</p>
+      <h3>Get a quarterly nudge to recost this dish.</h3>
+      <p class="pc-signature-blurb">Invoice prices drift every month. Download an 8-event reminder &mdash; once a quarter for two years &mdash; and your calendar will ping you 90 days from today with a one-click link back to this exact recipe. The reminder URL contains the recipe in a format only your browser reads. When you open it next quarter, the form is pre-loaded and you type today&rsquo;s prices side-by-side with the originals.</p>
+      <div class="pc-signature-actions">
+        <button type="button" class="pc-action-btn pc-action-btn-primary" id="pcSaveQuarterly">
+          Save &amp; remind me to recost in 90 days
+        </button>
+        <span class="pc-signature-status" id="pcQuarterlyStatus" data-shown="false">&#x2713; 8 quarterly reminders downloaded</span>
+      </div>
+      <p class="pc-signature-fine">No account, no email. The reminder lives only on your device. The recipe lives only in the URL fragment of the calendar reminder &mdash; never on a server.</p>
+    </article>
 
     <div class="pc-empty" id="pcEmpty">
       Fill in a row above &mdash; or <button type="button" class="pc-sample-btn" id="pcSample2" style="margin:0 6px;">load the sample recipe</button> &mdash; to see the math.
@@ -382,7 +438,7 @@
 </footer>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="/tools/plate-cost/plate-cost.js?v=20260426-pcA"></script>
+<script src="/tools/plate-cost/plate-cost.js?v=20260426-pcD"></script>
 <script src="/tools/plate-cost/card-render.js?v=20260426-pc2"></script>
 <script>
 (function(){
@@ -412,6 +468,13 @@
   // from a single source of truth instead of re-running the math.
   var latestSummary = null;
   var latestRecipe  = null;
+
+  // Cost Drift Check-in state — populated from the URL fragment when
+  // the page is opened from a quarterly reminder. baselinePlateCost
+  // is the plate cost computed from the baseline recipe (the one the
+  // owner saved 90 days ago). When set, the headline renders the
+  // drift delta + verdict line.
+  var driftBaseline = null; // { plateCost, recipe, date }
 
   // Units allowed in the dropdown — filtered to the most common.
   // The "case" unit was removed from the dropdown — its count varies
@@ -501,6 +564,8 @@
       emptyEl.style.display  = 'block';
       warningsEl.style.display = 'none';
       if (actionsEl) actionsEl.style.display = 'none';
+      var sigEl = document.getElementById('pcSignature');
+      if (sigEl) sigEl.style.display = 'none';
       latestSummary = null;
       latestRecipe  = null;
       Array.prototype.forEach.call(rowsEl.querySelectorAll('[data-cell="cost"]'), function(c){
@@ -595,12 +660,119 @@
     resultEl.style.display = 'grid';
     emptyEl.style.display  = 'none';
     actionsEl.style.display = 'flex';
+    var sigEl2 = document.getElementById('pcSignature');
+    if (sigEl2) sigEl2.style.display = 'block';
 
     // Cache the latest summary so export handlers can read it
     // without re-running computePlateCost.
     latestSummary = summary;
     latestRecipe  = recipe;
+
+    renderDriftLayer(summary);
   }
+
+  // Cost Drift Check-in render — when a baseline is loaded, the
+  // headline shows old → new plate cost with a drift pill and a
+  // one-sentence verdict. When no baseline, this is a no-op so the
+  // first-time experience stays clean.
+  var headlineOldEl = document.getElementById('pcHeadlineOld');
+  var driftPillEl   = document.getElementById('pcDriftPill');
+  var verdictEl     = document.getElementById('pcVerdict');
+  var pushMeBtnEl   = document.getElementById('pcPushMe');
+  var pushMeOriginalLabel = pushMeBtnEl ? pushMeBtnEl.textContent : '';
+  function renderDriftLayer(summary) {
+    if (!driftBaseline || !summary || !isFinite(summary.plateCost) || summary.plateCost <= 0) {
+      if (headlineOldEl) { headlineOldEl.hidden = true; headlineOldEl.textContent = ''; }
+      if (driftPillEl)   { driftPillEl.hidden   = true; driftPillEl.textContent   = ''; }
+      if (verdictEl)     { verdictEl.hidden     = true; verdictEl.textContent     = ''; }
+      if (pushMeBtnEl)   { pushMeBtnEl.textContent = pushMeOriginalLabel || 'Add to Menu Engineering →'; }
+      return;
+    }
+    var op = driftBaseline.plateCost;
+    var np = summary.plateCost;
+    var driftPct = (np - op) / op;
+    var driftPctRound = Math.round(driftPct * 100);
+    var sign = driftPctRound > 0 ? '+' : '';
+    // Use the 30%-target menu price as the proxy for "current menu
+    // price" so the verdict's food-cost band logic works even when
+    // the owner hasn't told us their actual price.
+    var prices = PC.suggestMenuPrices(op);
+    var seedPrice = prices.length > 1 ? prices[1].price : op / 0.30;
+    var verdict = PC.verdictForDrift(op, np, seedPrice);
+    headlineOldEl.textContent = fmtMoney(op);
+    headlineOldEl.hidden = false;
+    driftPillEl.textContent = sign + driftPctRound + '%';
+    driftPillEl.dataset.tone = verdict.tone;
+    driftPillEl.hidden = false;
+    verdictEl.textContent = verdict.copyEN;
+    verdictEl.dataset.tone = verdict.tone;
+    verdictEl.hidden = !verdict.copyEN;
+    if (pushMeBtnEl) {
+      pushMeBtnEl.textContent = (verdict.tone === 'crossed' || verdict.tone === 'slipped')
+        ? 'Send the new costing to Menu Engineering →'
+        : (pushMeOriginalLabel || 'Add to Menu Engineering →');
+    }
+  }
+
+  // Hydrate from the URL fragment when present. This is the entry
+  // path from a quarterly calendar reminder. When mode=recost, we
+  // flip data-pc-mode so the recost banner + drift layer activate.
+  function hydrateFromFragment() {
+    if (typeof location === 'undefined' || !location.hash) return;
+    var hydrated = PC.decodeRecipe(location.hash);
+    if (!hydrated || !hydrated.rows || !hydrated.rows.length) return;
+    nameEl.value = hydrated.name || '';
+    portionsEl.value = String(hydrated.portions || 1);
+    rerenderRows(hydrated.rows.map(function(r){ return Object.assign({}, r); }));
+    if (hydrated.mode === 'recost') {
+      document.body.setAttribute('data-pc-mode', 'recost');
+      var dateEl = document.getElementById('pcBaselineDate');
+      if (dateEl) dateEl.textContent = hydrated.date || '—';
+      // Compute the baseline plate cost from the hydrated recipe
+      // BEFORE the user starts editing — that's the snapshot the
+      // owner saved 90 days ago. Subsequent renders will compare
+      // today's edits against this baseline.
+      var baselineSummary = PC.computePlateCost({
+        name: hydrated.name, portions: hydrated.portions, rows: hydrated.rows
+      });
+      driftBaseline = {
+        plateCost: baselineSummary.plateCost,
+        recipe:    hydrated,
+        date:      hydrated.date || ''
+      };
+    }
+    renderResults();
+    if (window.plausible) {
+      window.plausible('Plate Cost Signature', { props: {
+        action: hydrated.mode === 'recost' ? 'recost-opened' : 'rehydrated'
+      } });
+    }
+  }
+
+  // Save & remind handler — encodes the current recipe + today's date
+  // into the URL fragment, builds an 8-event quarterly ICS pointing
+  // back to that fragment, and triggers the download.
+  var signatureEl   = document.getElementById('pcSignature');
+  var saveQBtn      = document.getElementById('pcSaveQuarterly');
+  var quarterlyStat = document.getElementById('pcQuarterlyStatus');
+  if (saveQBtn) saveQBtn.addEventListener('click', function(){
+    if (!latestSummary || !latestRecipe) return;
+    var today = new Date().toISOString().slice(0, 10);
+    var fragment = PC.encodeRecipe(latestRecipe, { date: today, mode: 'recost' });
+    var scenarioUrl = location.origin + location.pathname + '#' + fragment;
+    var dishName = (latestRecipe.name || '').trim();
+    var ics = PC.generateQuarterlyIcs(scenarioUrl, { locale: 'en', dishName: dishName });
+    var slug = (dishName || 'recipe').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'recipe';
+    downloadBlob(new Blob([ics], { type: 'text/calendar;charset=utf-8' }),
+                 'plate-cost-quarterly-' + slug + '.ics');
+    if (quarterlyStat) {
+      quarterlyStat.dataset.shown = 'true';
+      setTimeout(function(){ quarterlyStat.dataset.shown = 'false'; }, 5000);
+    }
+    if (window.plausible) {
+      window.plausible('Plate Cost Signature', { props: { action: 'quarterly-saved' } });
+    }
+  });
 
   // -------------------- Event handlers --------------------
   function rerenderRows(rows) {
@@ -1085,8 +1257,11 @@
   }
 
   // -------------------- Initial state --------------------
+  // Render five blank rows by default; if a quarterly reminder URL
+  // hydrates the form, the rows + drift layer take over.
   rerenderRows(Array.from({ length: 5 }, blankRow));
-  renderResults();
+  hydrateFromFragment();
+  if (!driftBaseline) renderResults();
 })();
 </script>
 </body>

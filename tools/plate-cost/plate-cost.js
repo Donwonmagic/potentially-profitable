@@ -724,6 +724,238 @@
   }
 
   // ============================================================
+  // URL-fragment scenario encoding (Phase D — Muntin signature).
+  //
+  // The Cost Drift Check-in needs the calendar reminder to lead the
+  // owner back to a fully-rehydrated form. Same shape as Open Hours
+  // and Margin Math (URL-safe key=value pairs, not base64) so the
+  // family pattern is recognisable across the suite.
+  //
+  // Fragment schema (v1):
+  //   v=1
+  //   n=<urlencoded dish name>
+  //   p=<portions>
+  //   d=<YYYY-MM-DD baseline date — when this costing was captured>
+  //   i=<row1>;<row2>;...   each row pipe-delimited:
+  //                          name|apPrice|apQty|apUnit|yield|usedQty|usedUnit
+  //   mode=recost            present when the recheck UI should open
+  //
+  // Privacy-safe: data lives only in the user's URL bar; per HTTP
+  // spec, fragments after `#` are never sent to a server. Forward-
+  // compat: unknown keys are ignored on decode.
+  // ============================================================
+  var PC_FRAGMENT_VERSION = '1';
+
+  // encodeURIComponent leaves "|", ";", "&", and "=" untouched, but
+  // those are our row/segment/pair delimiters. Hard-encode them so a
+  // dish name like "Tinga & Mole; Pico|Salsa" round-trips cleanly.
+  function encodeRowField(s) {
+    return encodeURIComponent(String(s == null ? '' : s))
+      .replace(/\|/g, '%7C')
+      .replace(/;/g,  '%3B')
+      .replace(/&/g,  '%26')
+      .replace(/=/g,  '%3D');
+  }
+
+  function encodeRecipe(recipe, options) {
+    if (!recipe) return '';
+    options = options || {};
+    var rows = (recipe.rows || []).filter(function(r){
+      return r && (r.ingredient || r.apPrice || r.apQty || r.usedQty);
+    });
+    var parts = [];
+    parts.push('v=' + PC_FRAGMENT_VERSION);
+    if (recipe.name)     parts.push('n=' + encodeRowField(recipe.name));
+    if (recipe.portions) parts.push('p=' + Number(recipe.portions));
+    if (options.date)    parts.push('d=' + encodeRowField(options.date));
+    if (rows.length) {
+      parts.push('i=' + rows.map(function(r){
+        return [
+          encodeRowField(r.ingredient || ''),
+          encodeRowField(r.apPrice    || ''),
+          encodeRowField(r.apQty      || ''),
+          encodeRowField(r.apUnit     || ''),
+          encodeRowField(r.yieldPercent || ''),
+          encodeRowField(r.usedQty    || ''),
+          encodeRowField(r.usedUnit   || '')
+        ].join('|');
+      }).join(';'));
+    }
+    if (options.mode) parts.push('mode=' + encodeRowField(options.mode));
+    return parts.join('&');
+  }
+
+  function decodeRecipe(fragment) {
+    var s = String(fragment || '').replace(/^#/, '');
+    if (!s) return null;
+    var pairs = s.split('&');
+    // Pair values are kept ENCODED until field extraction. Decoding
+    // eagerly here would re-introduce literal "|" and ";" inside
+    // ingredient names and corrupt the field/row split.
+    var raw = {};
+    for (var i = 0; i < pairs.length; i++) {
+      var eq = pairs[i].indexOf('=');
+      if (eq === -1) continue;
+      raw[pairs[i].slice(0, eq)] = pairs[i].slice(eq + 1);
+    }
+    function dec(v) { try { return decodeURIComponent(v); } catch (e) { return v; } }
+    if (raw.v !== PC_FRAGMENT_VERSION) return null;
+    var rows = [];
+    if (raw.i) {
+      raw.i.split(';').forEach(function(seg){
+        if (!seg) return;
+        var parts = seg.split('|').map(dec);
+        rows.push({
+          ingredient:   parts[0] || '',
+          apPrice:      parts[1] || '',
+          apQty:        parts[2] || '',
+          apUnit:       parts[3] || 'lb',
+          yieldPercent: parts[4] || '',
+          usedQty:      parts[5] || '',
+          usedUnit:     parts[6] || 'oz'
+        });
+      });
+    }
+    return {
+      name:     raw.n != null ? dec(raw.n) : '',
+      portions: Number(raw.p) || 1,
+      rows:     rows,
+      date:     raw.d != null ? dec(raw.d) : '',
+      mode:     raw.mode != null ? dec(raw.mode) : ''
+    };
+  }
+
+  // ============================================================
+  // generateQuarterlyIcs — RFC 5545 calendar reminder, 8 events at
+  // 3-month intervals (mirrors Open Hours's signature). DTSTART is
+  // 90 days from today; URL field carries the rehydration link.
+  // ============================================================
+  function generateQuarterlyIcs(scenarioUrl, options) {
+    options = options || {};
+    var locale = options.locale === 'es' ? 'es' : 'en';
+    var url = String(scenarioUrl || '');
+    var dishName = String(options.dishName || '').trim();
+    var summary = locale === 'es'
+      ? 'Costo del plato — revisión trimestral' + (dishName ? ' (' + dishName + ')' : '')
+      : 'Plate cost — quarterly recipe recheck' + (dishName ? ' (' + dishName + ')' : '');
+    var description = locale === 'es'
+      ? ('Re-costea esta receta. Los precios de las facturas se mueven cada mes; ' +
+         'una vez al trimestre, abre el escenario guardado y captura los costos de hoy. ' +
+         'Reabre el escenario: ' + url)
+      : ('Recost this recipe. Invoice prices drift monthly; once a quarter, ' +
+         'reopen the saved scenario and type today\'s prices. ' +
+         'Reopen the scenario: ' + url);
+    var alarmMsg = locale === 'es'
+      ? 'Recordatorio: re-costea ' + (dishName || 'la receta') + ' mañana'
+      : 'Reminder: recost ' + (dishName || 'the recipe') + ' tomorrow';
+
+    var p2 = function(n){ return (n < 10 ? '0' : '') + n; };
+    var icsDate = function(d){
+      return d.getUTCFullYear() + p2(d.getUTCMonth() + 1) + p2(d.getUTCDate()) +
+             'T' + p2(d.getUTCHours()) + p2(d.getUTCMinutes()) + p2(d.getUTCSeconds()) + 'Z';
+    };
+    var slug = (dishName || 'recipe').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    var start = new Date();
+    start.setUTCDate(start.getUTCDate() + 90);
+    start.setUTCHours(15, 0, 0, 0);
+    var end = new Date(start.getTime() + 30 * 60 * 1000);
+    var uid = 'pc-quarterly-' + slug + '-' + start.getTime() + '@muntin.digital';
+
+    var lines = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Muntin Digital//Plate Cost Calculator//' + (locale === 'es' ? 'ES' : 'EN'),
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      'UID:' + uid,
+      'DTSTAMP:' + icsDate(new Date()),
+      'DTSTART:' + icsDate(start),
+      'DTEND:' + icsDate(end),
+      'RRULE:FREQ=MONTHLY;INTERVAL=3;COUNT=8',
+      'SUMMARY:' + summary,
+      'DESCRIPTION:' + description.replace(/\n/g, '\\n'),
+      'URL:' + url,
+      'BEGIN:VALARM',
+      'TRIGGER:-P1D',
+      'ACTION:DISPLAY',
+      'DESCRIPTION:' + alarmMsg,
+      'END:VALARM',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ];
+    return lines.join('\r\n') + '\r\n';
+  }
+
+  // ============================================================
+  // verdictForDrift — produces a one-sentence Drift Verdict given
+  // old plate cost, new plate cost, and the menu price the dish
+  // currently sells at. Returns { tone, copyEN, copyES }.
+  //
+  // Tone bands:
+  //   'improved' — new plate cost is meaningfully lower (< -5% of old)
+  //   'steady'   — drift within ±5% AND food-cost % stays in band
+  //   'slipped'  — drift > +5% but still within target food-cost band
+  //   'crossed'  — food-cost % crosses out of healthy band (>33%)
+  // ============================================================
+  function verdictForDrift(oldPlate, newPlate, menuPrice) {
+    var op = Number(oldPlate);
+    var np = Number(newPlate);
+    if (!isFinite(op) || op <= 0 || !isFinite(np) || np < 0) {
+      return { tone: 'unknown', copyEN: '', copyES: '' };
+    }
+    var driftPct = (np - op) / op;
+    var mp = Number(menuPrice);
+    var foodCostPct = (isFinite(mp) && mp > 0) ? (np / mp) : null;
+    var driftPctRound = Math.round(driftPct * 100);
+    var driftAbsRound = Math.abs(driftPctRound);
+    var fcPctRound = foodCostPct != null ? Math.round(foodCostPct * 100) : null;
+    var fcStr = fcPctRound != null ? fcPctRound + '%' : null;
+
+    if (foodCostPct != null && foodCostPct > 0.33 && (foodCostPct - (op / mp)) > 0.02) {
+      // Food-cost % crossed out of the healthy band on this drift.
+      return {
+        tone: 'crossed',
+        driftPct: driftPctRound,
+        foodCostPct: fcPctRound,
+        copyEN: 'Crossed out of the healthy food-cost band — at the current menu price, this dish is now ' +
+                fcStr + ' food cost (was ' + Math.round((op / mp) * 100) + '%). Consider raising the menu price or substituting.',
+        copyES: 'Cruzó fuera de la banda saludable — al precio actual del menú, este plato es ahora ' +
+                fcStr + ' de costo de alimento (antes ' + Math.round((op / mp) * 100) + '%). Considera subir el precio o sustituir.'
+      };
+    }
+    if (driftPct > 0.05) {
+      return {
+        tone: 'slipped',
+        driftPct: driftPctRound,
+        foodCostPct: fcPctRound,
+        copyEN: 'Plate cost up ' + driftPctRound + '% since the baseline' +
+                (fcStr ? ' (now ' + fcStr + ' food cost at the current menu price)' : '') +
+                '. Still in band — but the trend is one to watch.',
+        copyES: 'Costo del plato +' + driftPctRound + '% desde la base' +
+                (fcStr ? ' (ahora ' + fcStr + ' de costo de alimento al precio actual)' : '') +
+                '. Aún en banda — pero la tendencia merece atención.'
+      };
+    }
+    if (driftPct < -0.05) {
+      return {
+        tone: 'improved',
+        driftPct: driftPctRound,
+        foodCostPct: fcPctRound,
+        copyEN: 'Plate cost down ' + Math.abs(driftPctRound) + '% — the dish is more profitable than three months ago.',
+        copyES: 'Costo del plato −' + Math.abs(driftPctRound) + '% — el plato rinde más que hace tres meses.'
+      };
+    }
+    return {
+      tone: 'steady',
+      driftPct: driftPctRound,
+      foodCostPct: fcPctRound,
+      copyEN: 'Steady — within ' + driftAbsRound + '% of the baseline. No action needed this quarter.',
+      copyES: 'Estable — dentro de ' + driftAbsRound + '% de la base. Sin acción este trimestre.'
+    };
+  }
+
+  // ============================================================
   // Plausible bucket helpers — every event-property value is one of
   // the declared enum values, never user data. Tested in the test
   // suite with poison-string inputs.
@@ -756,6 +988,20 @@
     if (v < 5) return '2-5';
     if (v < 10) return '5-10';
     return 'gt-10';
+  }
+  // Cost Drift Check-in tracking — buckets the % change between the
+  // baseline plate cost and today's recosted plate cost. Enum-locked
+  // exactly like the others; poison-safe.
+  function bucketDriftBand(oldPlate, newPlate) {
+    var op = Number(oldPlate);
+    var np = Number(newPlate);
+    if (!isFinite(op) || op <= 0 || !isFinite(np) || np < 0) return 'invalid';
+    var d = (np - op) / op;
+    if (d <= -0.10) return 'lt-neg-10';
+    if (d <= -0.05) return 'neg-5-to-10';
+    if (d <  0.05) return 'steady';
+    if (d <  0.10) return 'pos-5-to-10';
+    return 'gt-pos-10';
   }
 
   // ============================================================
@@ -815,9 +1061,14 @@
     normalizeUnit:         normalizeUnit,
     parseTabularText:      parseTabularText,
     normalizeYieldInput:   normalizeYieldInput,
+    encodeRecipe:          encodeRecipe,
+    decodeRecipe:          decodeRecipe,
+    generateQuarterlyIcs:  generateQuarterlyIcs,
+    verdictForDrift:       verdictForDrift,
     bucketIngredientCount: bucketIngredientCount,
     bucketYieldUsage:      bucketYieldUsage,
     bucketPlateCostBand:   bucketPlateCostBand,
+    bucketDriftBand:       bucketDriftBand,
     YIELD_TABLE:           YIELD_TABLE,
     UNITS:                 UNITS,
     FOOD_COST_TARGETS:     FOOD_COST_TARGETS,
