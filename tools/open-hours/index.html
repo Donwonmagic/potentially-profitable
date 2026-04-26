@@ -327,6 +327,10 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
           Copy code only
         </button>
+        <button type="button" class="oh-task-btn" id="ohValidateCode" title="Open this code in our Schema Check tool with one click. Schema.org's validator can also be reached from there.">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          Validate this code
+        </button>
       </div>
     </article>
 
@@ -550,9 +554,10 @@
     <h2>Where to go next</h2>
     <div class="mm-next-links">
       <a href="/tools/audits/restaurant/">Run the full Restaurant Audit</a>
+      <a href="/tools/schema-check/">Validate the JSON-LD at Schema-Check</a>
       <a href="/tools/gbp-grader/">Grade your Google Business Profile</a>
-      <a href="/tools/menu-engineering/">Audit which menu items are pulling weight</a>
-      <a href="/glossary/hours-of-operation/">Glossary: Hours of operation</a>
+      <a href="/glossary/opening-hours-specification/">Glossary: OpeningHoursSpecification</a>
+      <a href="/glossary/holiday-hours/">Glossary: Holiday hours</a>
       <a href="/services/">Hire the studio to keep this synced for you</a>
     </div>
   </div>
@@ -564,7 +569,7 @@
     <header class="tool-deep-head">
       <span class="eyebrow">Learn more</span>
       <h2 id="tool-deep-h">Why this tool exists.</h2>
-      <p class="tool-deep-blurb">Every check this tool runs maps to a specific concept in the Library. Two starting points — one definition, one playbook.</p>
+      <p class="tool-deep-blurb">Every check this tool runs maps to a specific concept in the Library. Five starting points — three definitions, one playbook, and one schema reference.</p>
       <div class="tool-deep-topics"><a class="tool-deep-topic" href="/learn/topics/local-seo/">Local SEO &amp; Discovery</a>
         <a class="tool-deep-topic" href="/learn/topics/trust-reviews/">Trust &amp; Reviews</a></div>
     </header>
@@ -581,6 +586,20 @@
           <h3>Special hours</h3>
           <p class="tool-deep-aka">the override for any day that doesn't follow your usual schedule</p>
           <p class="tool-deep-snippet">A separate entity in Google&#39;s data model from regular hours: per-date overrides for holidays, private events, weather closures, and modified…</p>
+          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/glossary/opening-hours-specification/">
+          <span class="tool-deep-kind">Glossary</span>
+          <h3>OpeningHoursSpecification</h3>
+          <p class="tool-deep-aka">the Schema.org type Google reads to render your hours in search results</p>
+          <p class="tool-deep-snippet">A specific Schema.org structured-data type for representing when a place is open. Lives inside a Restaurant JSON-LD block as one or more entries with dayOfWeek, opens, and closes...</p>
+          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/glossary/holiday-hours/">
+          <span class="tool-deep-kind">Glossary</span>
+          <h3>Holiday hours</h3>
+          <p class="tool-deep-aka">the recurring per-date overrides every restaurant has to make every year</p>
+          <p class="tool-deep-snippet">Closed on Thanksgiving, early-close on Christmas Eve, brunch-only on Mother's Day. The half of hours management that requires a calendar...</p>
           <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
         </a>
       <a class="tool-deep-card tool-deep-card-article" href="/blog/how-to-set-up-google-business-profile-for-your-restaurant/">
@@ -604,8 +623,8 @@
 </footer>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="./open-hours.js?v=20260426-oh5"></script>
-<script src="./sign-render.js?v=20260426-oh6"></script>
+<script src="./open-hours.js?v=20260426-oh7"></script>
+<script src="./sign-render.js?v=20260426-oh8"></script>
 <script>
 /* Open Hours — week-grid input + live output render.
  *
@@ -1256,6 +1275,17 @@
       if (!target) return;
       doCopy(btn, target.textContent);
       if (window.plausible) window.plausible('Open Hours Export', { props: { format: btn.getAttribute('data-copy-target') } });
+    }
+    if (ev.target.closest('#ohValidateCode')) {
+      var jl = jsonLdBlock.textContent || '';
+      if (!jl) return;
+      // Defensive cap — fragment URLs > ~30KB break some browsers.
+      if (jl.length > 30000) {
+        window.open('https://validator.schema.org/', '_blank', 'noopener,noreferrer');
+      } else {
+        window.open('/tools/schema-check/#paste=' + encodeURIComponent(jl), '_blank', 'noopener,noreferrer');
+      }
+      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'validate' } });
     }
     if (ev.target.closest('#ohCopyEmail')) {
       var em = emailBlock.textContent || '';

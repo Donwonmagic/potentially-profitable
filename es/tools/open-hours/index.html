@@ -324,6 +324,10 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
           Solo el código
         </button>
+        <button type="button" class="oh-task-btn" id="ohValidateCode" title="Abre este código en Schema Check con un clic. Desde ahí puedes ir al validador oficial de Schema.org.">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          Validar este código
+        </button>
       </div>
     </article>
 
@@ -544,9 +548,10 @@
     <h2>A dónde seguir</h2>
     <div class="mm-next-links">
       <a href="/es/tools/audits/restaurant/">Corre el diagnóstico completo</a>
+      <a href="/es/tools/schema-check/">Valida el JSON-LD en Schema-Check</a>
       <a href="/es/tools/gbp-grader/">Califica tu perfil de Google Business</a>
-      <a href="/es/tools/menu-engineering/">Audita qué platos están pulling weight</a>
-      <a href="/es/glossary/hours-of-operation/">Glosario: Horario de operación</a>
+      <a href="/es/glossary/opening-hours-specification/">Glosario: OpeningHoursSpecification</a>
+      <a href="/es/glossary/holiday-hours/">Glosario: Horarios festivos</a>
       <a href="/es/services/">Contrata al estudio para mantener esto sincronizado</a>
     </div>
   </div>
@@ -598,8 +603,8 @@
 </footer>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="/tools/open-hours/open-hours.js?v=20260426-oh5"></script>
-<script src="/tools/open-hours/sign-render.js?v=20260426-oh6"></script>
+<script src="/tools/open-hours/open-hours.js?v=20260426-oh7"></script>
+<script src="/tools/open-hours/sign-render.js?v=20260426-oh8"></script>
 <script>
 /* Open Hours — week-grid input + live output render.
  *
@@ -1199,6 +1204,16 @@
       if (!target) return;
       doCopy(btn, target.textContent);
       if (window.plausible) window.plausible('Open Hours Export', { props: { format: btn.getAttribute('data-copy-target') } });
+    }
+    if (ev.target.closest('#ohValidateCode')) {
+      var jlVal = jsonLdBlock.textContent || '';
+      if (!jlVal) return;
+      if (jlVal.length > 30000) {
+        window.open('https://validator.schema.org/', '_blank', 'noopener,noreferrer');
+      } else {
+        window.open('/tools/schema-check/#paste=' + encodeURIComponent(jlVal), '_blank', 'noopener,noreferrer');
+      }
+      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'validate' } });
     }
     if (ev.target.closest('#ohCopyEmail')) {
       var em = emailBlock.textContent || '';
