@@ -339,10 +339,20 @@ p{margin:0}
 }
 .mobile-menu .mobile-library[open] > summary::after{transform:rotate(-135deg);margin-bottom:-2px}
 .mobile-menu .mobile-library a{
+  display:block;
   padding:10px 18px;
   font-size:15px;font-family:var(--font-body);font-weight:500;
   color:var(--ink-soft);
   border-bottom:0;
+  text-decoration:none;
+  border-left:2px solid var(--line);
+  margin-left:6px;
+  transition:border-left-color var(--t-fast) var(--ease),color var(--t-fast) var(--ease);
+}
+.mobile-menu .mobile-library a:hover,
+.mobile-menu .mobile-library a:focus-visible{
+  color:var(--teal);
+  border-left-color:var(--teal);
 }
 .mobile-menu .mobile-library a:last-of-type{padding-bottom:14px}
 
