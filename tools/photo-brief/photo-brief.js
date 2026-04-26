@@ -286,6 +286,144 @@
   }
 
   // ============================================================
+  // Paste-from-spreadsheet parser. Owners with a recipe spreadsheet
+  // or a Menu Engineering CSV paste it directly. Auto-detects
+  // delimiter (CSV / TSV / pipe), auto-maps headers via an alias
+  // table that accepts EN + ES, normalises category + priority to
+  // the declared enums.
+  // ============================================================
+  var HEADER_ALIASES = {
+    name:     ['name', 'dish', 'item', 'product',
+               'plato', 'platillo', 'nombre', 'producto'],
+    category: ['category', 'cat', 'type', 'kind',
+               'categoria', 'categoría', 'tipo'],
+    priority: ['priority', 'rank', 'tier',
+               'prioridad', 'jerarquía']
+  };
+  // Category aliases. Anything not matched falls back to 'main'.
+  var CATEGORY_ALIASES = {
+    'appetizer':  'appetizer', 'app': 'appetizer', 'starter': 'appetizer', 'antipasto': 'appetizer',
+    'main':       'main', 'mains': 'main', 'entree': 'main', 'entrée': 'main',
+    'pasta':      'pasta', 'noodle': 'pasta',
+    'dessert':    'dessert', 'desserts': 'dessert', 'sweet': 'dessert', 'postre': 'dessert',
+    'drink':      'drink', 'drinks': 'drink', 'beverage': 'drink', 'bebida': 'drink', 'cocktail': 'drink',
+    'wholemenu':  'wholeMenu', 'whole-menu': 'wholeMenu', 'menu': 'wholeMenu', 'spread': 'wholeMenu',
+    'room':       'room', 'space': 'room', 'interior': 'room', 'sala': 'room', 'comedor': 'room',
+    // Spanish category names that don't already alias above
+    'aperitivo':  'appetizer', 'entrante': 'appetizer',
+    'principal':  'main', 'plato fuerte': 'main',
+    'cóctel':     'drink'
+  };
+  function normalizeCategory(raw) {
+    if (!raw) return 'main';
+    var k = String(raw).trim().toLowerCase().replace(/[\s_-]+/g, '');
+    return CATEGORY_ALIASES[k] || (CATEGORIES.indexOf(raw) !== -1 ? raw : 'main');
+  }
+  function normalizePriority(raw) {
+    if (!raw) return 'standard';
+    var k = String(raw).trim().toLowerCase();
+    if (k === 'star' || k === 'hero' || k === 'estrella') return 'hero';
+    if (k === 'plowhorse' || k === 'secondary' || k === 'caballo') return 'secondary';
+    return 'standard';
+  }
+
+  function detectDelimiter(text){
+    var firstLine = String(text).split(/\r?\n/)[0] || '';
+    var counts = { ',': 0, '\t': 0, ';': 0, '|': 0 };
+    for (var i = 0; i < firstLine.length; i++) {
+      var c = firstLine[i];
+      if (c in counts) counts[c]++;
+    }
+    var best = ',', bestCount = -1;
+    for (var k in counts) if (counts[k] > bestCount) { best = k; bestCount = counts[k]; }
+    return best;
+  }
+  function splitCsvLine(line, delim){
+    var out = [], cur = '', inQ = false;
+    for (var i = 0; i < line.length; i++) {
+      var c = line[i];
+      if (inQ) {
+        if (c === '"' && line[i+1] === '"') { cur += '"'; i++; }
+        else if (c === '"') { inQ = false; }
+        else cur += c;
+      } else {
+        if (c === '"') inQ = true;
+        else if (c === delim) { out.push(cur); cur = ''; }
+        else cur += c;
+      }
+    }
+    out.push(cur);
+    return out.map(function(s){ return s.trim(); });
+  }
+  function isHeaderRow(cells){
+    // Photo-brief data is all strings, so the numeric-vs-text
+    // heuristic from Plate Cost over-fires. Instead: a row is a
+    // header iff at least one cell matches a known field alias.
+    for (var i = 0; i < cells.length; i++) {
+      var norm = String(cells[i]).trim().toLowerCase().replace(/\s+/g, ' ');
+      if (!norm) continue;
+      for (var field in HEADER_ALIASES) {
+        if (HEADER_ALIASES[field].indexOf(norm) !== -1) return true;
+      }
+    }
+    return false;
+  }
+  function autoMapHeaders(headerCells){
+    var mapping = {};
+    headerCells.forEach(function(cell, idx){
+      var norm = String(cell).trim().toLowerCase().replace(/\s+/g, ' ');
+      Object.keys(HEADER_ALIASES).forEach(function(field){
+        if (mapping[field] != null) return;
+        if (HEADER_ALIASES[field].indexOf(norm) !== -1) mapping[field] = idx;
+      });
+    });
+    return mapping;
+  }
+
+  function parseTabularText(text){
+    var raw = String(text || '').replace(/^﻿/, '');
+    if (!raw.trim()) return { rows: [], mapping: {}, headerRowDetected: false, warnings: ['Pasted text was empty.'] };
+
+    var lines = raw.split(/\r?\n/).filter(function(l){ return l.trim().length > 0; });
+    var delim = detectDelimiter(raw);
+    var cellRows = lines.map(function(l){ return splitCsvLine(l, delim); });
+    if (!cellRows.length) return { rows: [], mapping: {}, headerRowDetected: false, warnings: ['No rows detected.'] };
+
+    var warnings = [];
+    var headerRowDetected = isHeaderRow(cellRows[0]);
+    var mapping;
+    var dataRows;
+    if (headerRowDetected) {
+      mapping = autoMapHeaders(cellRows[0]);
+      dataRows = cellRows.slice(1);
+    } else {
+      mapping = { name: 0, category: 1, priority: 2 };
+      dataRows = cellRows;
+      warnings.push('No header row detected — assumed columns: Dish, Category, Priority.');
+    }
+
+    if (mapping.name == null) {
+      return { rows: [], mapping: mapping, headerRowDetected: headerRowDetected,
+               warnings: warnings.concat(['Could not find a Dish/Name column. Add a header row, or paste columns in this order: Dish, Category, Priority.']) };
+    }
+
+    var rows = dataRows.map(function(cells){
+      function pick(field){
+        var idx = mapping[field];
+        if (idx == null || idx >= cells.length) return '';
+        return String(cells[idx] == null ? '' : cells[idx]).trim();
+      }
+      return {
+        name:     pick('name'),
+        category: normalizeCategory(pick('category')),
+        priority: normalizePriority(pick('priority'))
+      };
+    }).filter(function(r){ return r.name; });
+
+    return { rows: rows, mapping: mapping, headerRowDetected: headerRowDetected, warnings: warnings };
+  }
+
+  // ============================================================
   // Plausible bucket helpers — enum-locked, privacy-critical. Tested
   // with poison-string sweeps (XSS, control chars, SQL fragments).
   // ============================================================
@@ -375,6 +513,9 @@
     decodePaletteFragment:  decodePaletteFragment,
     encodeMarginsFragment:  encodeMarginsFragment,
     decodeMarginsFragment:  decodeMarginsFragment,
+    parseTabularText:       parseTabularText,
+    normalizeCategory:      normalizeCategory,
+    normalizePriority:      normalizePriority,
     bucketShotCount:        bucketShotCount,
     bucketSurfaceCoverage:  bucketSurfaceCoverage,
     bucketSourceMode:       bucketSourceMode,

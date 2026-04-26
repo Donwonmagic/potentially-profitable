@@ -271,6 +271,7 @@
       <button type="button" class="pc-action-btn" id="pcDownloadJson">Download <span class="pc-action-fmt">.json</span></button>
       <button type="button" class="pc-action-btn" id="pcPushMe">Add to Menu Engineering &rarr;</button>
       <button type="button" class="pc-action-btn" id="pcPushMm">Use in Margin Math &rarr;</button>
+      <button type="button" class="pc-action-btn" id="pcPushPb">Brief your photographer &rarr;</button>
     </div>
 
     <div class="pc-empty" id="pcEmpty">
@@ -882,6 +883,24 @@
     }
     if (window.plausible) window.plausible('Plate Cost Push', { props: { target: 'margin-math' } });
     window.location.assign('/tools/margin-math/#calc-primecost');
+  });
+
+  // -------------------- Brief the photographer --------------------
+  // Routes the owner to Photo Brief Builder with the dish name as a
+  // Star (priority=hero) and the margin payload, so the brief arrives
+  // pre-flagged as a high-margin candidate worth lighting time.
+  var pushPbBtn = document.getElementById('pcPushPb');
+  if (pushPbBtn) pushPbBtn.addEventListener('click', function(){
+    if (!latestSummary || !latestRecipe) return;
+    var name = (latestRecipe.name || 'Untitled dish').replace(/\|/g, '');
+    var prices = PC.suggestMenuPrices(latestSummary.plateCost);
+    var seedPrice = prices.length ? prices[1].price : 0;
+    var starsLine    = [name, 'main', 'hero'].join('|');
+    var marginsLine  = [name, latestSummary.plateCost.toFixed(2), seedPrice.toFixed(2)].join('|');
+    var url = '/tools/photo-brief/#stars=' + encodeURIComponent(starsLine) +
+              '&margins=' + encodeURIComponent(marginsLine);
+    if (window.plausible) window.plausible('Plate Cost Push', { props: { target: 'photo-brief' } });
+    window.location.assign(url);
   });
 
   // Paste-from-spreadsheet handler. Replaces the grid with the parsed

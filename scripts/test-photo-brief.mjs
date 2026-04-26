@@ -258,7 +258,52 @@ near('margins round-trip plateCost',   mDec[0].plateCost, marginsIn[0].plateCost
 near('margins round-trip suggestedPrice', mDec[0].suggestedPrice, marginsIn[0].suggestedPrice, 1e-2);
 
 // ============================================================
-// 6. Plausible bucket purity — enum-locked across input ranges +
+// 6. Paste-from-spreadsheet — parseTabularText
+// ============================================================
+
+const csv1 = PB.parseTabularText('Dish,Category,Priority\nCacio e pepe,pasta,hero\nTiramisu,dessert,standard\n');
+assertEq('csv parses 2 data rows', csv1.rows.length, 2);
+assertEq('csv detects header row', csv1.headerRowDetected, true);
+assertEq('csv first dish name', csv1.rows[0].name, 'Cacio e pepe');
+assertEq('csv first category', csv1.rows[0].category, 'pasta');
+assertEq('csv first priority', csv1.rows[0].priority, 'hero');
+
+// TSV detection
+const tsv1 = PB.parseTabularText('name\tcategory\tpriority\nFocaccia\tappetizer\tstandard\n');
+assertEq('tsv parses 1 row', tsv1.rows.length, 1);
+assertEq('tsv first dish', tsv1.rows[0].name, 'Focaccia');
+
+// Spanish header aliases
+const csv2 = PB.parseTabularText('plato,categoria,prioridad\nTiramisú,postre,estrella\n');
+assertEq('Spanish headers parse', csv2.rows[0].name, 'Tiramisú');
+assertEq('Spanish "postre" maps to dessert', csv2.rows[0].category, 'dessert');
+assertEq('Spanish "estrella" maps to hero',  csv2.rows[0].priority, 'hero');
+
+// Headerless positional fallback
+const csv3 = PB.parseTabularText('Salad,appetizer,standard\nChicken,main,hero\n');
+assertEq('headerless falls through positional', csv3.rows.length, 2);
+assert('headerless surfaces a warning',          csv3.warnings.length > 0);
+
+// Quoted commas in dish names
+const csv4 = PB.parseTabularText('Dish,Category\n"Beef, ground",main\n');
+assertEq('quoted comma preserved', csv4.rows[0].name, 'Beef, ground');
+
+// Unknown category falls back to 'main'
+const csv5 = PB.parseTabularText('Dish,Category\nMystery,unknown-cat\n');
+assertEq('unknown category falls to main', csv5.rows[0].category, 'main');
+
+// Empty paste
+const csv6 = PB.parseTabularText('');
+assertEq('empty paste → empty rows', csv6.rows.length, 0);
+assert('empty paste surfaces warning', csv6.warnings.length > 0);
+
+// Star → hero, Plowhorse → secondary
+assertEq('Star priority → hero',          PB.normalizePriority('Star'),      'hero');
+assertEq('Plowhorse priority → secondary',PB.normalizePriority('Plowhorse'), 'secondary');
+assertEq('unknown priority → standard',   PB.normalizePriority('blah'),      'standard');
+
+// ============================================================
+// 7. Plausible bucket purity — enum-locked across input ranges +
 // poison strings.
 // ============================================================
 

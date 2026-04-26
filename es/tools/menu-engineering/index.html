@@ -774,15 +774,30 @@
     var byQ = { Star: [], Plowhorse: [], Puzzle: [], Dog: [] };
     summary.items.forEach(function(it){ if (byQ[it.quadrant]) byQ[it.quadrant].push(it); });
     var actions = window.ME.ACTIONS_EN;
+    function priorityForQ(q){
+      return q === 'Star' ? 'hero' : (q === 'Plowhorse' ? 'secondary' : 'standard');
+    }
+    function briefLinkFor(q, items){
+      var lines = items.map(function(it){
+        var name = String(it.item || '').replace(/\|/g, '');
+        var cat  = String(it.category || 'main').toLowerCase().replace(/[^a-z]/g, '') || 'main';
+        return [name, cat, priorityForQ(q)].join('|');
+      }).join('~');
+      return '/es/tools/photo-brief/#stars=' + encodeURIComponent(lines);
+    }
     var toolLinks = {
-      Plowhorse: [
+      Star: function(items){ return [
+        { href: briefLinkFor('Star', items), label: 'Crear brief para tu fotógrafo &rarr;' }
+      ]; },
+      Plowhorse: function(items){ return [
         { href: '/es/tools/margin-math/#calc-priceraise', label: 'Re-costear en Margin Math &rarr;' },
-        { href: '/es/tools/plate-cost/',                  label: 'Auditar costo de ingredientes en Costo del Plato &rarr;' }
-      ],
-      Puzzle: [
+        { href: '/es/tools/plate-cost/',                  label: 'Auditar costo de ingredientes en Costo del Plato &rarr;' },
+        { href: briefLinkFor('Plowhorse', items),         label: 'Crear brief para tu fotógrafo &rarr;' }
+      ]; },
+      Puzzle: function(items){ return [
         { href: '/es/tools/menu-copy/',                   label: 'Re-describir en Inspector de Copy &rarr;' },
         { href: '/es/tools/plate-cost/',                  label: 'Re-costear la receta en Costo del Plato &rarr;' }
-      ]
+      ]; }
     };
     var html = '';
     ['Star','Plowhorse','Puzzle','Dog'].forEach(function(q){
@@ -790,7 +805,7 @@
       var list = byQ[q].map(function(it){
         return '<li>' + escHtml(it.item || '(sin nombre)') + ' &middot; ' + fmtMoney(it.cm_dollars) + ' CM &middot; ' + fmtPct(it.share) + '</li>';
       }).join('');
-      var tools = toolLinks[q] || [];
+      var tools = (toolLinks[q] ? toolLinks[q](byQ[q]) : []) || [];
       var toolLine = tools.length && byQ[q].length > 0
         ? tools.map(function(tool){
             return '<p style="margin:8px 0 0;font-size:12px;"><a href="' + tool.href + '" style="color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor;">' + tool.label + '</a></p>';

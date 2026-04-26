@@ -909,6 +909,7 @@
       <a href="/glossary/design-token/">Glossary: Design tokens</a>
       <a href="/learn/topics/brand-design/">Topic: Brand &amp; design</a>
       <a href="/tools/audits/restaurant/">Run the full Restaurant Audit</a>
+      <a href="/tools/photo-brief/" id="bsNextPhotoBrief">Brief your photographer with this palette</a>
       <a href="/services/#brand">Hire the studio for a finished identity</a>
     </div>
   </div>
@@ -1140,6 +1141,16 @@
     renderPalette(latestPalette);
     paletteWrap.hidden = false;
     setStatus('');
+    // Update the Photo Brief next-steps chip so it carries the palette
+    // into the brief if the owner clicks. Plain hex codes, joined by
+    // dashes — same format as photo-brief.js's encodePaletteFragment.
+    var pbChip = document.getElementById('bsNextPhotoBrief');
+    if (pbChip && latestPalette && latestPalette.length) {
+      var paletteFrag = latestPalette.map(function(e){
+        return String(e.hex || '').replace(/^#/, '').toUpperCase();
+      }).filter(function(h){ return /^[0-9A-F]{3,8}$/.test(h); }).join('-');
+      pbChip.href = '/tools/photo-brief/#palette=' + paletteFrag;
+    }
     requestAnimationFrame(function(){
       renderFixture(latestPalette);
       fixtureWrap.hidden = false;

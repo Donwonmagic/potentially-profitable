@@ -65,6 +65,17 @@
 .pb-grid .pb-remove{background:none;border:none;color:var(--stone);cursor:pointer;font-size:18px;line-height:1;padding:0 4px}
 .pb-grid .pb-remove:hover{color:var(--rust)}
 .pb-grid-actions{display:flex;gap:8px;flex-wrap:wrap;padding:10px 12px;background:var(--cream-2);border-top:1px solid var(--line)}
+.pb-paste{margin:0 0 14px;padding:14px 16px;border:1px dashed var(--line-dark);border-radius:var(--r-input);background:var(--white)}
+.pb-paste summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.pb-paste summary::after{content:"+";font-size:18px;color:var(--stone)}
+.pb-paste[open] summary::after{content:"\2212"}
+.pb-paste summary::-webkit-details-marker{display:none}
+.pb-paste-body{margin-top:12px;display:flex;flex-direction:column;gap:10px}
+.pb-paste textarea{width:100%;min-height:110px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.5;color:var(--ink);resize:vertical}
+.pb-paste-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pb-paste-actions .pb-paste-hint{font-size:12px;color:var(--stone);margin-left:auto}
+.pb-paste-btn{padding:6px 14px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12px;font-weight:600;cursor:pointer}
+.pb-paste-btn:hover{background:var(--teal);color:var(--cream)}
 .pb-add-row,.pb-sample-btn,.pb-clear-btn{padding:6px 14px;border:1px dashed var(--line-dark);border-radius:999px;background:transparent;font:inherit;font-size:12px;font-weight:600;color:var(--stone);cursor:pointer}
 .pb-add-row:hover,.pb-sample-btn:hover{border-color:var(--teal);color:var(--teal)}
 .pb-clear-btn{margin-left:auto}
@@ -94,6 +105,15 @@
 .pb-coverage-crop::after{content:"";position:absolute;border:2px solid var(--teal);box-sizing:border-box;top:0;left:0;width:100%;height:100%}
 
 .pb-empty{padding:24px;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--cream-2);font-size:13.5px;color:var(--stone);text-align:center;margin-top:24px}
+
+.pb-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:18px;padding:14px 18px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+.pb-actions-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-right:8px}
+.pb-action-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:background 140ms var(--ease-out),color 140ms var(--ease-out);text-decoration:none}
+.pb-action-btn:hover{background:var(--teal);color:var(--cream)}
+.pb-action-btn-primary{background:var(--teal);color:var(--cream)}
+.pb-action-btn-primary:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.pb-action-btn.copied{background:var(--status-good-tint);color:var(--status-good);border-color:var(--status-good)}
+.pb-action-btn .pb-action-fmt{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10.5px;font-weight:700;color:inherit;opacity:.7}
 
 .pb-privacy-list{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none;counter-reset:pb-step}
 .pb-privacy-list li{counter-increment:pb-step;display:grid;grid-template-columns:32px 1fr;gap:14px;align-items:start;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white)}
@@ -201,6 +221,18 @@
     <div>
       <label style="display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:8px;">¿Qué platos vamos a fotografiar?</label>
       <p style="font-size:12.5px;color:var(--stone);margin:0 0 10px;line-height:1.55;">Seis filas para empezar. Agrega o quita. Las categorías determinan los ángulos / iluminación por defecto &mdash; puedes sobrescribir por toma en el brief.</p>
+      <details class="pb-paste">
+        <summary>¿Tienes la lista de platos en una hoja de cálculo? Pégala.</summary>
+        <div class="pb-paste-body">
+          <p style="font-size:12.5px;color:var(--ink-soft);line-height:1.55;margin:0;">Arrastra un rango de filas de Excel / Google Sheets y pégalas abajo &mdash; o pega un CSV. Encabezados como <em>Plato, Categoría, Prioridad</em> se mapean automáticamente (también funcionan los equivalentes en inglés).</p>
+          <textarea id="pbPaste" placeholder="Plato,Categoría,Prioridad&#10;Cacio e pepe,pasta,hero&#10;Tiramisú,postre,standard&#10;..." spellcheck="false"></textarea>
+          <div class="pb-paste-actions">
+            <button type="button" class="pb-paste-btn" id="pbPasteParse">Procesar pegado</button>
+            <span class="pb-paste-hint" id="pbPasteHint"></span>
+          </div>
+        </div>
+      </details>
+
       <div class="pb-grid" role="region" aria-label="Cuadrícula de platos">
         <table>
           <thead>
@@ -250,6 +282,12 @@
     <div id="pbCoverageWrap" style="display:none;margin-top:18px;">
       <p style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin:0 0 8px;">Cobertura de superficies &middot; mapa de proporción</p>
       <div class="pb-coverage" id="pbCoverage"></div>
+    </div>
+
+    <div class="pb-actions" id="pbActions" style="display:none;">
+      <span class="pb-actions-label">Llévatelo</span>
+      <button type="button" class="pb-action-btn" id="pbCopyCsv">Copiar lista de tomas <span class="pb-action-fmt">.csv</span></button>
+      <button type="button" class="pb-action-btn" id="pbDownloadJson">Descargar <span class="pb-action-fmt">.json</span></button>
     </div>
 
     <div class="pb-empty" id="pbEmpty">
@@ -319,6 +357,9 @@
   var emptyEl      = document.getElementById('pbEmpty');
   var coverageWrap = document.getElementById('pbCoverageWrap');
   var coverageEl   = document.getElementById('pbCoverage');
+  var actionsEl    = document.getElementById('pbActions');
+
+  var latestSummary = null;
 
   // Result-render hooks
   var dedupNum   = document.getElementById('pbDedupNum');
@@ -472,11 +513,25 @@
       mathEl.style.display = 'none';
       coverageWrap.style.display = 'none';
       emptyEl.style.display = '';
+      if (actionsEl) actionsEl.style.display = 'none';
+      latestSummary = null;
       return;
     }
 
     var dedup = PB.dedupShotList(dishes, surfaces, 3);
     var roi   = PB.computeRoiMath(dedup.dedup, dayRate);
+    latestSummary = {
+      restaurant:   nameEl.value.trim(),
+      photographer: photogEl ? photogEl.value.trim() : '',
+      dishes:       dishes,
+      surfaces:     surfaces,
+      dayRate:      dayRate,
+      dedup:        dedup,
+      roi:          roi,
+      palette:      fragmentState.palette.slice(),
+      margins:      fragmentState.margins.slice()
+    };
+    if (actionsEl) actionsEl.style.display = 'flex';
 
     dedupNum.textContent  = String(dedup.dedup);
     naiveNum.textContent  = String(dedup.naive);
@@ -527,6 +582,126 @@
   }
   if (sampleBtn)  sampleBtn.addEventListener('click', loadSample);
   if (sampleBtn2) sampleBtn2.addEventListener('click', loadSample);
+
+  // -------------------- Exportaciones (CSV + JSON) --------------------
+  function buildCsv() {
+    if (!latestSummary) return '';
+    var rows = [];
+    rows.push(['Restaurante', latestSummary.restaurant || '']);
+    rows.push(['Fotógrafo', latestSummary.photographer || '']);
+    rows.push(['Tarifa diaria', '$' + latestSummary.dayRate.toFixed(2)]);
+    rows.push(['Tomas fuente (reducidas)', String(latestSummary.dedup.dedup)]);
+    rows.push(['Tomas ingenuas',           String(latestSummary.dedup.naive)]);
+    rows.push(['Días estimados',           String(latestSummary.roi.days)]);
+    rows.push(['Costo total',              '$' + latestSummary.roi.totalCost.toFixed(2)]);
+    rows.push(['Costo por toma',           '$' + latestSummary.roi.costPerShot.toFixed(2)]);
+    rows.push([]);
+    rows.push(['#','Plato','Categoría','Prioridad','Ángulo','Iluminación','Espacio neg.','Superficies']);
+    var n = 0;
+    latestSummary.dedup.perDish.forEach(function(d){
+      d.rows.forEach(function(r){
+        n++;
+        rows.push([
+          String(n), d.name, d.category, d.priority,
+          r.angle, r.lighting, r.negSpace,
+          (r.surfaces || []).join(' / ')
+        ]);
+      });
+    });
+    return rows.map(function(r){
+      return r.map(function(c){
+        var s = String(c == null ? '' : c);
+        return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+      }).join(',');
+    }).join('\n') + '\n';
+  }
+  function buildJson() {
+    if (!latestSummary) return '{}';
+    return JSON.stringify({
+      meta: {
+        tool:      'Constructor de Brief de Fotos',
+        url:       'https://muntin.digital/es/tools/photo-brief/',
+        generated: new Date().toISOString(),
+        locale:    'es'
+      },
+      restaurant:   latestSummary.restaurant,
+      photographer: latestSummary.photographer,
+      dayRate:      latestSummary.dayRate,
+      surfaces:     latestSummary.surfaces,
+      palette:      latestSummary.palette,
+      margins:      latestSummary.margins,
+      shotList:     latestSummary.dedup.perDish,
+      math: {
+        naive:           latestSummary.dedup.naive,
+        deduped:         latestSummary.dedup.dedup,
+        days:            latestSummary.roi.days,
+        totalCost:       latestSummary.roi.totalCost,
+        costPerShot:     latestSummary.roi.costPerShot,
+        monthlyLift:     latestSummary.roi.monthlyLift,
+        paybackMonths:   latestSummary.roi.paybackMonths,
+        assumptions:     latestSummary.roi.assumptions
+      }
+    }, null, 2);
+  }
+  function downloadBlob(blob, filename) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+  }
+  function flashCopied(btn, label){
+    var orig = btn.innerHTML;
+    btn.classList.add('copied');
+    btn.textContent = label || 'Copiado';
+    setTimeout(function(){ btn.classList.remove('copied'); btn.innerHTML = orig; }, 1400);
+  }
+  function briefSlug(){
+    var s = (latestSummary && latestSummary.restaurant) ? latestSummary.restaurant : 'brief-fotos';
+    return s.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'brief-fotos';
+  }
+  var copyCsvBtn      = document.getElementById('pbCopyCsv');
+  var downloadJsonBtn = document.getElementById('pbDownloadJson');
+  if (copyCsvBtn) copyCsvBtn.addEventListener('click', function(){
+    var csv = buildCsv();
+    if (!csv) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(csv).then(function(){
+        flashCopied(copyCsvBtn);
+        if (window.plausible) window.plausible('Photo Brief Export', { props: { format: 'csv' } });
+      });
+    } else {
+      downloadBlob(new Blob([csv], { type: 'text/csv' }), 'brief-fotos-' + briefSlug() + '.csv');
+    }
+  });
+  if (downloadJsonBtn) downloadJsonBtn.addEventListener('click', function(){
+    var json = buildJson();
+    if (!json || json === '{}') return;
+    downloadBlob(new Blob([json], { type: 'application/json' }), 'brief-fotos-' + briefSlug() + '.json');
+    if (window.plausible) window.plausible('Photo Brief Export', { props: { format: 'json' } });
+  });
+
+  // Pegar desde hoja de cálculo.
+  var pasteEl    = document.getElementById('pbPaste');
+  var pasteParse = document.getElementById('pbPasteParse');
+  var pasteHint  = document.getElementById('pbPasteHint');
+  if (pasteParse) pasteParse.addEventListener('click', function(){
+    var text = pasteEl ? pasteEl.value : '';
+    if (!text.trim()) { pasteHint.textContent = 'Nada para procesar.'; return; }
+    var parsed = PB.parseTabularText(text);
+    if (!parsed.rows.length) {
+      pasteHint.textContent = parsed.warnings[0] || 'No se pudo procesar el pegado.';
+      pasteHint.style.color = 'var(--rust)';
+      return;
+    }
+    rerenderRows(parsed.rows);
+    renderResults();
+    pasteHint.style.color = parsed.warnings.length ? 'var(--rust)' : 'var(--status-good)';
+    pasteHint.textContent = parsed.warnings.length
+      ? parsed.warnings[0]
+      : 'Se procesaron ' + parsed.rows.length + ' plato' + (parsed.rows.length === 1 ? '' : 's') + '.';
+    fireBucketEvent('paste');
+  });
 
   if (clearBtn) clearBtn.addEventListener('click', function(){
     if (!confirm('¿Limpiar el brief y empezar de nuevo?')) return;
