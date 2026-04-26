@@ -169,15 +169,23 @@
 
      420px  — ultra-narrow phones. Used only when a layout still feels
               cramped at 640 → 1-col and needs one more squeeze.
-     820px  — nav-specific. The desktop .nav-links hide and the Calendly
-              button moves into the hamburger menu because the header
-              runs out of horizontal room. Not a general-purpose layout
-              breakpoint — do not add unrelated rules here.
+     820px  — nav-specific. The desktop .lang-switch hides because the
+              header is starting to feel tight even before the nav-links
+              and CTA collapse. Not a general-purpose layout breakpoint
+              — do not add unrelated rules here.
+     1100px — nav-specific. The desktop .nav-links and the Calendly CTA
+              collapse into the hamburger menu. The natural content
+              width of logo + 5 nav links + lang-switch + CTA pill is
+              ~1050px, and after container side padding (clamp 20–64px)
+              the nav overflows on iPad 10.2 / iPad Air / iPad Pro 11"
+              in landscape (1080–1194px viewports). iPad Pro 12.9"
+              (1366px → 1200px container) is the smallest viewport
+              that fits the desktop nav cleanly.
 
-   If a new rule needs a breakpoint other than 420, 640, 820, or 960,
-   re-tune the layout instead — the vast majority of "this element
-   squeezes at 760" problems are solved by auto-fit + minmax() or by
-   clamp() on padding/font-size, not by a new breakpoint. */
+   If a new rule needs a breakpoint other than 420, 640, 820, 960, or
+   1100, re-tune the layout instead — the vast majority of "this
+   element squeezes at 760" problems are solved by auto-fit + minmax()
+   or by clamp() on padding/font-size, not by a new breakpoint. */
 
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
@@ -263,7 +271,7 @@ p{margin:0}
 .nav-links a::after{content:'';position:absolute;left:0;right:0;bottom:-6px;height:1px;background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform var(--t-med) var(--ease-out)}
 .nav-links a:hover{color:var(--teal)}
 .nav-links a:hover::after{transform:scaleX(1)}
-@media (max-width:960px){.nav-links{display:none}
+@media (max-width:1100px){.nav-links{display:none}
 }
 
 /* Library dropdown — desktop only. The trigger is a real <a href="/learn/">,
@@ -803,7 +811,7 @@ br.br-lg{display:none}
    container width — the compression shoves the text against one side
    of the pill, which reads as "the text isn't centered". */
 .nav-inner .btn-primary{flex-shrink:0}
-@media (max-width:960px){.nav-inner .btn-primary{display:none}
+@media (max-width:1100px){.nav-inner .btn-primary{display:none}
 .nav-toggle{display:flex}
 .mobile-menu:not([hidden]){display:flex}
 .nav.menu-open{background:var(--cream);border-bottom-color:var(--line)}
