@@ -120,13 +120,24 @@
     //                             + data/tools.json + data/topics.json
     //                             and extracts glossary labels from the
     //                             entry pages' <h1 class="term-h1">.
+    //   wire-glossary-topics.mjs — stamps data-topics="topic1 topic2"
+    //                             onto every <article class="gloss-term">
+    //                             in glossary/index.html (EN + ES) so
+    //                             the topic-cluster filter chips can
+    //                             hide non-matching terms via CSS.
+    //                             Source of truth: data/library-tags.json.
+    //   wire-glossary-knit.mjs   — stamps the "Keep going" 4-column
+    //                             footer (topic / used-in-tools /
+    //                             articles / related-terms) onto every
+    //                             glossary entry page (EN + ES) between
+    //                             <!-- glossary-knit --> sentinels.
     //   pagefind                — builds the static search index after
     //                             the dist/ tree is materialized. Uses
     //                             npx -y so no package.json is needed;
     //                             outputs dist/pagefind/ which site.js
     //                             lazy-loads on first open of the
     //                             search modal. Config at pagefind.yml.
-    "command": "node scripts/build-og-cards.mjs && node scripts/stamp-es-restaurant-audit.mjs && node scripts/sync-includes.mjs && node scripts/build-tools-index.mjs && node scripts/build-site-counts.mjs && node scripts/inject-site-counts.mjs && node scripts/inject-tool-knit.mjs && node scripts/stamp-hreflang.mjs && node scripts/check-locale-parity.mjs --check && node scripts/check-og-images.mjs && mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md --exclude=src --exclude=scripts --exclude=_includes --exclude=pagefind.yml . | tar -xf - -C dist && npx -y pagefind@latest --site dist"
+    "command": "node scripts/build-og-cards.mjs && node scripts/stamp-es-restaurant-audit.mjs && node scripts/sync-includes.mjs && node scripts/build-tools-index.mjs && node scripts/build-site-counts.mjs && node scripts/inject-site-counts.mjs && node scripts/inject-tool-knit.mjs && node scripts/wire-glossary-topics.mjs && node scripts/wire-glossary-knit.mjs && node scripts/stamp-hreflang.mjs && node scripts/check-locale-parity.mjs --check && node scripts/check-og-images.mjs && mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md --exclude=src --exclude=scripts --exclude=_includes --exclude=pagefind.yml . | tar -xf - -C dist && npx -y pagefind@latest --site dist"
   },
   "assets": {
     "directory": "./dist",

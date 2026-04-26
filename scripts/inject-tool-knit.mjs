@@ -70,6 +70,13 @@ function toolUrl(slug, locale) {
   return locale === 'en' ? t.url_en : t.url_es;
 }
 
+// Decode the small set of HTML entities glossary term-h1 elements
+// might use so escText() can re-encode them once instead of producing
+// "&amp;amp;" from "&amp;".
+function decodeEntities(s) {
+  return s.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+}
+
 const glossaryLabelCache = new Map();
 function glossaryLabel(slug, locale) {
   const key = `${locale}:${slug}`;
@@ -80,7 +87,7 @@ function glossaryLabel(slug, locale) {
   if (!fs.existsSync(file)) { glossaryLabelCache.set(key, slug); return slug; }
   const html = fs.readFileSync(file, 'utf8');
   const m = html.match(/<h1 class="term-h1">([^<]+)<\/h1>/);
-  const label = m ? m[1].trim() : slug;
+  const label = m ? decodeEntities(m[1].trim()) : slug;
   glossaryLabelCache.set(key, label);
   return label;
 }
