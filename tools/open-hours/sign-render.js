@@ -209,16 +209,49 @@
       });
     }
 
-    // Footer: "Always-current hours at [URL]"
+    // Footer: city line, then a freshness band ("Printed [date] ·
+    // Reprint after [latest closure date]"), then the brand credit.
+    // The freshness band is the visual realization of the "Sign goes
+    // stale by design" frame the page articulates — it tells the
+    // owner exactly when to come back.
     ctx.fillStyle = STONE;
     ctx.font = '500 16px ' + FONT_BODY;
     ctx.textAlign = 'center';
-    ctx.fillText(strings.signFooterPrefix + ' ' + (summary.city || ''), SIGN_W / 2, SIGN_H - 90);
+    ctx.fillText(strings.signFooterPrefix + ' ' + (summary.city || ''), SIGN_W / 2, SIGN_H - 122);
+
+    // Freshness band
+    var freshness = buildFreshnessLine(closures, locale, strings);
+    ctx.fillStyle = INK;
+    ctx.font = '600 13px ' + FONT_BODY;
+    ctx.textAlign = 'center';
+    drawTrackedText(ctx, freshness.toUpperCase(), SIGN_W / 2, SIGN_H - 92, 3);
+
     ctx.fillStyle = STONE;
     ctx.font = '400 12px ' + FONT_BODY;
     drawTrackedText(ctx, (strings.signFooterCredit || '').toUpperCase(), SIGN_W / 2, SIGN_H - 60, 3);
 
     return canvas;
+  }
+
+  function buildFreshnessLine(closures, locale, strings) {
+    // "Printed Apr 26, 2026 · Reprint after Dec 25, 2026" — the
+    // reprint-after date is the latest closure in the user's list.
+    // If no closures, fall back to "Re-run hours quarterly".
+    var now = new Date();
+    var dateLocale = locale === 'es' ? 'es-US' : 'en-US';
+    var printed = now.toLocaleDateString(dateLocale, { month: 'short', day: 'numeric', year: 'numeric' });
+    var printedLabel = (strings.signPrintedPrefix || 'Printed') + ' ' + printed;
+    if (!closures || !closures.length) {
+      return printedLabel + ' · ' + (strings.signRerunFallback || 'Re-run hours quarterly');
+    }
+    var latest = closures.slice().sort(function(a, b){
+      return a.date < b.date ? 1 : a.date > b.date ? -1 : 0;
+    })[0];
+    if (!latest || !latest.date) return printedLabel;
+    var p = String(latest.date).split('-');
+    var d = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2]));
+    var lastClosure = d.toLocaleDateString(dateLocale, { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+    return printedLabel + ' · ' + (strings.signReprintAfter || 'Reprint after') + ' ' + lastClosure;
   }
 
   function drawTrackedText(ctx, text, cx, y, tracking) {
@@ -252,7 +285,6 @@
     opts = opts || {};
     var summary = opts.summary || { week: {}, name: '', city: '' };
     var closures = opts.closures || [];
-    var jsonLd = opts.jsonLd || '';
     var googleCopy = opts.googleCopy || '';
     var strings = opts.strings || DEFAULT_STRINGS_EN;
     var locale = opts.locale || 'en';
@@ -286,29 +318,85 @@
     ctx.font = '500 13px ' + FONT_BODY;
     ctx.fillText(strings.brand, CARD_W - 48, 50);
 
-    // Body — 4 panels
-    var pad = 40;
-    var panelW = (CARD_W - pad * 3) / 2;
-    var topPanelH = 540;
-    var bottomPanelH = 540;
-    var topY = 120 + 30;
-    var bottomY = topY + topPanelH + 20;
+    // Body — 4-pane muntin window. Phase D6: the four panes are
+    // separated by 3-px ink crossbars that read as muntins, and the
+    // brand mark sits at the intersection. Same visual signature
+    // Menu Engineering's matrix uses (commit b484d25), making the
+    // family resemblance unmistakable.
+    var bodyTop = 150;
+    var bodyBot = CARD_H - 60;
+    var bodyL = 40;
+    var bodyR = CARD_W - 40;
+    var bodyMidX = (bodyL + bodyR) / 2;
+    var bodyMidY = (bodyTop + bodyBot) / 2;
+    var paneInset = 22; // padding inside each pane
+
+    // Outer frame
+    ctx.fillStyle = '#FFFFFF';
+    roundRect(ctx, bodyL, bodyTop, bodyR - bodyL, bodyBot - bodyTop, 10); ctx.fill();
 
     // Top-left — weekly grid
-    drawCardPanel(ctx, pad, topY, panelW, topPanelH);
-    drawWeekPanel(ctx, summary, pad + 24, topY + 24, panelW - 48, topPanelH - 48, strings, locale, formatTime);
-
+    drawWeekPanel(ctx, summary,
+      bodyL + paneInset, bodyTop + paneInset,
+      bodyMidX - bodyL - paneInset * 1.2, bodyMidY - bodyTop - paneInset * 1.2,
+      strings, locale, formatTime);
     // Top-right — closures
-    drawCardPanel(ctx, pad * 2 + panelW, topY, panelW, topPanelH);
-    drawClosuresPanel(ctx, closures, pad * 2 + panelW + 24, topY + 24, panelW - 48, topPanelH - 48, strings, locale);
+    drawClosuresPanel(ctx, closures,
+      bodyMidX + paneInset * 1.2, bodyTop + paneInset,
+      bodyR - bodyMidX - paneInset * 1.2, bodyMidY - bodyTop - paneInset * 1.2,
+      strings, locale);
+    // Bottom-left — Today panel
+    drawTodayPanel(ctx, summary, closures,
+      bodyL + paneInset, bodyMidY + paneInset * 1.2,
+      bodyMidX - bodyL - paneInset * 1.2, bodyBot - bodyMidY - paneInset * 1.2,
+      strings, locale, formatTime);
+    // Bottom-right — Google paste block
+    drawGooglePanel(ctx, googleCopy,
+      bodyMidX + paneInset * 1.2, bodyMidY + paneInset * 1.2,
+      bodyR - bodyMidX - paneInset * 1.2, bodyBot - bodyMidY - paneInset * 1.2,
+      strings.cardGoogleLabel);
 
-    // Bottom-left — JSON-LD
-    drawCardPanel(ctx, pad, bottomY, panelW, bottomPanelH, INK);
-    drawCodePanel(ctx, jsonLd, pad + 18, bottomY + 24, panelW - 36, bottomPanelH - 48, strings.cardJsonLdLabel);
+    // Muntin crossbars — 3px ink, drawn after the panels so they sit
+    // on top. Vertical bar, then horizontal bar.
+    ctx.strokeStyle = INK;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(bodyMidX, bodyTop);
+    ctx.lineTo(bodyMidX, bodyBot);
+    ctx.moveTo(bodyL, bodyMidY);
+    ctx.lineTo(bodyR, bodyMidY);
+    ctx.stroke();
 
-    // Bottom-right — Google copy
-    drawCardPanel(ctx, pad * 2 + panelW, bottomY, panelW, bottomPanelH);
-    drawGooglePanel(ctx, googleCopy, pad * 2 + panelW + 24, bottomY + 24, panelW - 48, bottomPanelH - 48, strings.cardGoogleLabel);
+    // Outer frame stroke
+    ctx.lineWidth = 3;
+    roundRect(ctx, bodyL + 0.5, bodyTop + 0.5, bodyR - bodyL - 1, bodyBot - bodyTop - 1, 10);
+    ctx.stroke();
+
+    // Brand mark at the muntin intersection — cream halo so panel
+    // content can't bleed through, then the window-and-muntin glyph
+    // in the brand teal. Same construction as Menu Engineering.
+    var markSize = 56;
+    var haloR = markSize / 2 + 12;
+    ctx.fillStyle = CREAM2;
+    ctx.beginPath();
+    ctx.arc(bodyMidX, bodyMidY, haloR, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = INK;
+    roundRect(ctx, bodyMidX - markSize / 2, bodyMidY - markSize / 2, markSize, markSize, 6);
+    ctx.fill();
+    ctx.strokeStyle = CREAM;
+    ctx.lineWidth = 4;
+    ctx.lineCap = 'square';
+    ctx.lineJoin = 'miter';
+    var inset = 14;
+    ctx.beginPath();
+    ctx.rect(bodyMidX - markSize / 2 + inset, bodyMidY - markSize / 2 + inset,
+             markSize - inset * 2, markSize - inset * 2);
+    ctx.moveTo(bodyMidX, bodyMidY - markSize / 2 + inset);
+    ctx.lineTo(bodyMidX, bodyMidY + markSize / 2 - inset);
+    ctx.moveTo(bodyMidX - markSize / 2 + inset, bodyMidY - 4);
+    ctx.lineTo(bodyMidX + markSize / 2 - inset, bodyMidY - 4);
+    ctx.stroke();
 
     // Footer
     ctx.fillStyle = INK;
@@ -323,6 +411,115 @@
     ctx.fillText(strings.cardFooterRight, CARD_W - 24, CARD_H - 30);
 
     return canvas;
+  }
+
+  function drawTodayPanel(ctx, summary, closures, x, y, w, h, strings, locale, formatTime) {
+    ctx.fillStyle = INK;
+    ctx.font = '500 18px ' + FONT_DISPLAY;
+    ctx.textBaseline = 'top';
+    ctx.textAlign = 'left';
+    ctx.fillText(strings.cardTodayLabel || 'Today', x, y);
+
+    // Compute Open / Closed status
+    var now = new Date();
+    var jsDay = now.getDay();
+    var dayIdx = (jsDay + 6) % 7;
+    var DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    var DAYS_FULL = locale === 'es'
+      ? ['lunes','martes','miércoles','jueves','viernes','sábado','domingo']
+      : ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+    var nowMin = now.getHours() * 60 + now.getMinutes();
+    function tm(hhmm){
+      if (typeof hhmm !== 'string') return null;
+      var m = /^(\d{2}):(\d{2})$/.exec(hhmm); if (!m) return null;
+      return parseInt(m[1],10)*60 + parseInt(m[2],10);
+    }
+    // Today closed by special-hours? (derived from closures list)
+    var todayIso = now.getFullYear() + '-' +
+                   ('0'+(now.getMonth()+1)).slice(-2) + '-' +
+                   ('0'+now.getDate()).slice(-2);
+    var isHolidayClosed = (closures || []).some(function(c){ return c && c.date === todayIso; });
+
+    var status = 'closed';
+    var detail = '';
+    if (isHolidayClosed) {
+      detail = (locale === 'es' ? 'Hoy: cerrado por feriado' : 'Today: closed for holiday');
+    } else {
+      var prev = (summary.week && summary.week[DAYS[(dayIdx + 6) % 7]]) || [];
+      for (var i = 0; i < prev.length; i++) {
+        if (prev[i].closesNextDay) {
+          var pc = tm(prev[i].closes);
+          if (pc != null && nowMin < pc) {
+            status = 'open';
+            detail = (locale === 'es' ? 'Cierra ' : 'Closes ') + formatTime(prev[i].closes, locale);
+            break;
+          }
+        }
+      }
+      if (status === 'closed') {
+        var todays = ((summary.week && summary.week[DAYS[dayIdx]]) || []).slice().sort(function(a,b){
+          return tm(a.opens) - tm(b.opens);
+        });
+        for (var j = 0; j < todays.length; j++) {
+          var s = todays[j];
+          var so = tm(s.opens), sc = tm(s.closes);
+          if (so == null || sc == null) continue;
+          var eff = sc + (s.closesNextDay ? 1440 : 0);
+          if (nowMin >= so && nowMin < eff) {
+            status = 'open';
+            detail = (locale === 'es' ? 'Cierra ' : 'Closes ') + formatTime(s.closes, locale) +
+                     (s.closesNextDay ? (locale === 'es' ? ' (sig. día)' : ' (next day)') : '');
+            break;
+          }
+          if (nowMin < so) {
+            detail = (locale === 'es' ? 'Abre ' : 'Opens ') + formatTime(s.opens, locale);
+            break;
+          }
+        }
+        if (!detail) {
+          for (var d = 1; d <= 7; d++) {
+            var ns = ((summary.week && summary.week[DAYS[(dayIdx + d) % 7]]) || [])[0];
+            if (ns) {
+              detail = (locale === 'es' ? 'Abre ' : 'Opens ') +
+                       DAYS_FULL[(dayIdx + d) % 7].slice(0, 3) + ' ' +
+                       formatTime(ns.opens, locale);
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    // Status pill
+    var pillY = y + 44;
+    ctx.fillStyle = status === 'open' ? '#1F7A33' : (isHolidayClosed ? '#B8541A' : STONE);
+    ctx.font = '600 32px ' + FONT_DISPLAY;
+    ctx.textAlign = 'left';
+    ctx.fillText(status === 'open'
+      ? (locale === 'es' ? 'Abierto ahora' : 'Open now')
+      : (locale === 'es' ? 'Cerrado' : 'Closed'),
+      x, pillY);
+
+    if (detail) {
+      ctx.fillStyle = INK;
+      ctx.font = '500 16px ' + FONT_BODY;
+      ctx.fillText(detail, x, pillY + 36);
+    }
+
+    // Today's day label + full hours
+    var tStr = (locale === 'es' ? 'Horario hoy' : 'Today\'s hours') + ' (' + DAYS_FULL[dayIdx] + ')';
+    ctx.fillStyle = STONE;
+    ctx.font = '600 11px ' + FONT_BODY;
+    ctx.fillText(tStr.toUpperCase(), x, pillY + 76);
+    var todayServices = (summary.week && summary.week[DAYS[dayIdx]]) || [];
+    var todayLabel = !todayServices.length
+      ? (locale === 'es' ? 'cerrado' : 'closed')
+      : todayServices.map(function(s){
+          return formatTime(s.opens, locale) + ' – ' + formatTime(s.closes, locale);
+        }).join('  ·  ');
+    ctx.fillStyle = INK;
+    ctx.font = '500 14px ' + FONT_BODY;
+    ctx.fillText(todayLabel, x, pillY + 96);
   }
 
   function drawCardPanel(ctx, x, y, w, h, fill) {
@@ -439,11 +636,14 @@
     signClosuresHeader: 'Upcoming closures',
     signFooterPrefix: 'Always-current hours at',
     signFooterCredit: 'Generated by Open Hours · muntin.digital',
+    signPrintedPrefix: 'Printed',
+    signReprintAfter: 'Reprint after',
+    signRerunFallback: 'Re-run hours quarterly',
     cardTitle: 'Open Hours',
     cardWeekLabel: 'Weekly schedule',
     cardClosuresLabel: 'Upcoming closures',
     cardClosuresEmpty: 'No closures selected.',
-    cardJsonLdLabel: 'For your website (JSON-LD)',
+    cardTodayLabel: 'Today',
     cardGoogleLabel: 'For Google Business Profile',
     date: new Date().toISOString().slice(0, 10),
     brand: 'Muntin Digital',
@@ -459,11 +659,14 @@
     signClosuresHeader: 'Próximos cierres',
     signFooterPrefix: 'Horario actualizado en',
     signFooterCredit: 'Generado con Horario Abierto · muntin.digital',
+    signPrintedPrefix: 'Impreso el',
+    signReprintAfter: 'Reimprimir después del',
+    signRerunFallback: 'Vuelve a correr el horario trimestralmente',
     cardTitle: 'Horario Abierto',
     cardWeekLabel: 'Horario semanal',
     cardClosuresLabel: 'Próximos cierres',
     cardClosuresEmpty: 'Sin cierres seleccionados.',
-    cardJsonLdLabel: 'Para tu sitio web (JSON-LD)',
+    cardTodayLabel: 'Hoy',
     cardGoogleLabel: 'Para Google Business Profile',
     date: new Date().toISOString().slice(0, 10),
     brand: 'Muntin Digital',

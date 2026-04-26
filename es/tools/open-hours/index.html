@@ -144,11 +144,61 @@
 .oh-archetype button:hover{background:var(--teal);color:var(--cream)}
 
 @media print{
-  body{background:#fff !important;color:#000 !important}
+  /* Phase D5 — Reporte de Higiene. */
+  @page{margin:14mm 16mm;size:letter}
+  body{background:#fff !important;color:#000 !important;font-size:10pt}
   header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,.oh-form,
-  #how-private,#what-this-isnt,.mm-next{display:none !important}
-  .oh-task-card,.oh-week{break-inside:avoid;page-break-inside:avoid}
+  #how-private,#what-this-isnt,.mm-next,#ohEmptyHint,
+  .tool-deep-links,.oh-archetypes,.oh-task-actions,.oh-task-btn,
+  .oh-other-platforms,.oh-quarterly-card,.oh-cms-hints,
+  .oh-task-card[id="ohIcsCard"],
+  .oh-task-card:has(#ohPrintSign),.oh-task-card:has(#ohDownloadCard),
+  .oh-task-card:has(#ohDownloadZip),.oh-task-card:has(#ohPrintReport){display:none !important}
+  .oh-output{gap:14px !important}
+  .oh-task-card{break-inside:avoid;page-break-inside:avoid;border:1px solid #ccc !important;padding:10px 12px !important;margin:0 !important;box-shadow:none !important;background:#fff !important}
+  .oh-task-card h3{font-size:12pt !important;margin:0 0 4px !important}
+  .oh-task-format{font-size:8pt !important;color:#666 !important}
+  .oh-task-block{font-size:8pt !important;background:#f6f6f6 !important;color:#000 !important;border:1px solid #ddd;padding:8px !important;line-height:1.4 !important;white-space:pre-wrap !important}
+  .oh-checklist .oh-check-item{padding:5px 8px !important;font-size:9pt !important;background:#fff !important;border:1px solid #ddd !important}
+  .oh-week{break-inside:avoid;font-size:9pt !important;padding:8px !important}
+  .oh-day-row{padding:3px 0 !important}
+  .oh-day-name{font-size:9.5pt !important}
+  .oh-service input{border:none !important;background:transparent !important;font-size:9pt !important}
+  .oh-service .oh-remove,.oh-add-service{display:none !important}
+  .oh-warnings{display:none !important}
+  .oh-closures,.oh-compare,details:not([open]){display:none !important}
+  .oh-serp-card{display:none !important}
   a[href]:after{content:'' !important}
+  main::before{
+    content:'Open Hours — Reporte de Higiene';
+    display:block;
+    font-family:var(--font-display);
+    font-size:16pt;
+    font-weight:500;
+    border-bottom:0.5pt solid #000;
+    padding-bottom:3pt;
+    margin:0 0 3pt;
+    letter-spacing:0.01em;
+  }
+  body[data-print-date]::before{
+    content:attr(data-print-date) '  ·  muntin.digital/es/tools/open-hours/';
+    display:block;
+    font-size:9pt;
+    color:#555;
+    margin:0 0 10pt;
+    letter-spacing:0.02em;
+  }
+  body[data-print-url] main::after{
+    content:'Reabrir este escenario: ' attr(data-print-url);
+    display:block;
+    font-size:7pt;
+    color:#555;
+    margin-top:14pt;
+    padding-top:4pt;
+    border-top:0.5pt solid #bbb;
+    overflow-wrap:anywhere;
+    page-break-inside:avoid;
+  }
 }
 </style>
 </head>
@@ -411,6 +461,21 @@
       </div>
     </article>
 
+    <article class="oh-task-card oh-quarterly-card">
+      <header class="oh-task-head">
+        <h3>Recibe un recordatorio trimestral para volver a correr esto.</h3>
+        <span class="oh-task-format">iCalendar (.ics) &middot; 8 eventos / 2 años</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">Los horarios cambian. Los feriados vuelven. El equipo cambia. Descarga un recordatorio de 8 eventos &mdash; uno por trimestre durante dos años &mdash; y tu calendario te avisará a 90 días de hoy con un enlace de un clic a tu escenario guardado. <strong>La URL del recordatorio contiene el estado de tu formulario</strong>, así que cuando hagas clic dentro de tres meses, la cuadrícula semanal, los cierres y la dirección ya están cargados.</p>
+      <p style="margin:8px 0 0;font-size:12px;color:var(--stone);">Sin cuenta, sin correo. El recordatorio vive sólo en tu dispositivo. El escenario vive sólo en la barra de direcciones del recordatorio &mdash; nunca en un servidor.</p>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn oh-task-btn-primary" id="ohDownloadQuarterly">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span data-label="Agregar revisiones trimestrales a mi calendario">Agregar revisiones trimestrales a mi calendario</span>
+        </button>
+      </div>
+    </article>
+
     <article class="oh-task-card">
       <header class="oh-task-head">
         <h3>Imprime esto y pégalo a tu puerta.</h3>
@@ -439,6 +504,21 @@
         <button type="button" class="oh-task-btn oh-task-btn-primary" id="ohDownloadCard">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
           Descargar Ficha de Horario
+        </button>
+      </div>
+    </article>
+
+    <article class="oh-task-card">
+      <header class="oh-task-head">
+        <h3>Imprime el Reporte de Higiene.</h3>
+        <span class="oh-task-format">Carta / A4 una página</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">Un reporte limpio para el back-of-house &mdash; cuadr&iacute;cula semanal, cierres seleccionados, el bloque para Google y el c&oacute;digo JSON-LD, todo en una p&aacute;gina con la fecha de hoy y una URL de re-apertura en el pie. Cl&aacute;valo en el clipboard del gerente. Reenv&iacute;alo a tu contador. Reimpr&iacute;melo cada trimestre.</p>
+      <p style="margin:8px 0 0;font-size:12px;color:var(--stone);">Distinto del Letrero de Puerta &mdash; el letrero es para el cliente en la puerta; este reporte es para el equipo dentro.</p>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn oh-task-btn-primary" id="ohPrintReport">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Imprimir el Reporte de Higiene
         </button>
       </div>
     </article>
@@ -487,20 +567,97 @@
 </div></section>
 
 <section class="block bg-cream2" id="how-private"><div class="container">
-  <div style="max-width:760px;margin:0 auto;">
+  <div style="max-width:780px;margin:0 auto;">
     <span class="eyebrow">Predicar con el ejemplo</span>
     <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:12px 0 12px;">Tus horarios se quedan en tu navegador.</h2>
-    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0 0 14px;">Cinco afirmaciones, cada una verificable en DevTools en menos de un minuto:</p>
-    <ol style="margin:0;padding-left:1.4em;font-size:14.5px;line-height:1.7;color:var(--ink-soft);display:flex;flex-direction:column;gap:6px;">
-      <li><strong>Nada se sube.</strong> Lo que escribes en el formulario nunca llega a un servidor. Abre DevTools &rarr; Network y escribe — la lista de peticiones no crece.</li>
-      <li><strong>Sin cuenta, sin correo.</strong> La página funciona sin identificarte de ninguna manera.</li>
-      <li><strong>Sin memoria del navegador.</strong> Cerrar la pestaña borra todo. El formulario sale vacío cuando reabres la URL.</li>
-      <li><strong>Código abierto.</strong> El motor completo es JavaScript plano en <code>/tools/open-hours/open-hours.js</code> &mdash; click derecho <em>Ver código fuente</em>.</li>
-      <li><strong>Analítica que respeta la privacidad.</strong> Plausible cuenta cuánta gente usa la herramienta, pero nunca ve tus horarios, ni el nombre del restaurante, ni la ciudad. Solo valores en categoría como &ldquo;<code>4-5 días abierto</code>&rdquo; pasan por ahí.</li>
-    </ol>
-    <p style="font-size:13px;color:var(--stone);margin:14px 0 0;">Para la misma postura de privacidad en la familia, mira <a href="/es/tools/brand-suite/#how-we-protect" style="color:inherit;border-bottom:1px dashed var(--teal);">cómo Suite de Marca protege tu logo</a> o <a href="/es/tools/margin-math/#how-private" style="color:inherit;border-bottom:1px dashed var(--teal);">el recorrido verificable de nueve afirmaciones de Margin Math</a>.</p>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0 0 14px;">Nueve afirmaciones, cada una verificable en DevTools en menos de un minuto. Abre el panel de inspección en cualquiera de ellas.</p>
+    <div class="oh-steps">
+      <article class="oh-step">
+        <div class="oh-step-head"><span class="oh-step-num" aria-hidden="true">1</span><div class="oh-step-body">
+          <h3 class="oh-step-title">Tus horarios nunca salen de esta página.</h3>
+          <p class="oh-step-claim">Sin <code>fetch()</code>, sin <code>XMLHttpRequest</code>, sin envíos de formulario al escribir un horario. La validación, el JSON-LD y los generadores de copia para cada plataforma corren en tu navegador.</p>
+          <details class="oh-step-inspect"><summary>Inspecciona</summary><div class="oh-step-verify">DevTools (<kbd>Cmd+Opt+I</kbd> / <kbd>Ctrl+Shift+I</kbd>) &rarr; pestaña <strong>Network</strong>. Escribe un horario en el formulario. La lista de peticiones no debería crecer. Si crece, es un bug — avísanos.</div></details>
+        </div></div>
+      </article>
+      <article class="oh-step">
+        <div class="oh-step-head"><span class="oh-step-num" aria-hidden="true">2</span><div class="oh-step-body">
+          <h3 class="oh-step-title">No hay servidor donde guardarlos.</h3>
+          <p class="oh-step-claim">La herramienta se sirve como página estática. No hay endpoint que acepte horarios, ni base de datos que los reciba, ni cola que los procese.</p>
+          <details class="oh-step-inspect"><summary>Inspecciona</summary><div class="oh-step-verify">Prueba <code>curl -X POST https://muntin.digital/es/tools/open-hours/</code>. Recibes un 405 (Method Not Allowed). La página es HTML estático de sólo lectura.</div></details>
+        </div></div>
+      </article>
+      <article class="oh-step">
+        <div class="oh-step-head"><span class="oh-step-num" aria-hidden="true">3</span><div class="oh-step-body">
+          <h3 class="oh-step-title">La analítica sólo ve categorías, nunca tus horarios.</h3>
+          <p class="oh-step-claim">Plausible cuenta cuántas personas usan la herramienta pero recibe sólo valores enum-bloqueados como <code>4-5 días abierto</code> o <code>multi-service</code>. Tu nombre de restaurante, ciudad, horarios específicos y fechas de cierre nunca se envían.</p>
+          <details class="oh-step-inspect"><summary>Inspecciona</summary><div class="oh-step-verify">DevTools &rarr; Network &rarr; filtra <code>plausible</code>. Después de escribir, los únicos payloads cargan propiedades como <code>open_days: "4-5"</code>. Fuente: helpers de bucket en <code>/tools/open-hours/open-hours.js</code> líneas ~660&ndash;700.</div></details>
+        </div></div>
+      </article>
+      <article class="oh-step">
+        <div class="oh-step-head"><span class="oh-step-num" aria-hidden="true">4</span><div class="oh-step-body">
+          <h3 class="oh-step-title">Sin cookies, sin localStorage, sin sessionStorage.</h3>
+          <p class="oh-step-claim">Nada de tus inputs se escribe en almacenamiento persistente del navegador. Cerrar la pestaña borra el formulario por completo.</p>
+          <details class="oh-step-inspect"><summary>Inspecciona</summary><div class="oh-step-verify">DevTools &rarr; pestaña <strong>Application</strong> &rarr; Storage. Cookies, Local Storage y Session Storage para este origen están vacíos después de escribir en el formulario.</div></details>
+        </div></div>
+      </article>
+      <article class="oh-step">
+        <div class="oh-step-head"><span class="oh-step-num" aria-hidden="true">5</span><div class="oh-step-body">
+          <h3 class="oh-step-title">Ningún script de terceros toca tus inputs.</h3>
+          <p class="oh-step-claim">Plausible se carga desde plausible.io para registrar una vista anónima. Nada más de terceros corre en la página.</p>
+          <details class="oh-step-inspect"><summary>Inspecciona</summary><div class="oh-step-verify">DevTools &rarr; Network &rarr; filtra tipo <em>JS</em>. El único script de otro origen es <code>plausible.io/js/...</code>. Ábrelo; no tiene acceso al formulario &mdash; sólo emite pings de pageview.</div></details>
+        </div></div>
+      </article>
+      <article class="oh-step">
+        <div class="oh-step-head"><span class="oh-step-num" aria-hidden="true">6</span><div class="oh-step-body">
+          <h3 class="oh-step-title">Los enlaces compartibles guardan tus horarios en tu barra de direcciones, no en un servidor.</h3>
+          <p class="oh-step-claim">Cuando copias la URL de esta página, el fragmento después del <code>#</code> contiene tu estado del formulario. Los fragmentos URL <em>nunca se envían al servidor</em> según la spec HTTP &mdash; además agregamos <code>&lt;meta name="referrer" content="no-referrer"&gt;</code> para que los enlaces que abras desde aquí no lo filtren.</p>
+          <details class="oh-step-inspect"><summary>Inspecciona</summary><div class="oh-step-verify">Escribe en el formulario, copia la URL, mírala. Todo después del <code>#</code> son tus datos. Pega la URL en una ventana incógnita &mdash; el formulario se rehidrata localmente; ninguna petición al servidor llevó tus inputs.</div></details>
+        </div></div>
+      </article>
+      <article class="oh-step">
+        <div class="oh-step-head"><span class="oh-step-num" aria-hidden="true">7</span><div class="oh-step-body">
+          <h3 class="oh-step-title">El código fuente se puede leer.</h3>
+          <p class="oh-step-claim">El motor completo es JavaScript plano &mdash; sin minificación, sin bundler. Lee la lógica en <a href="/tools/open-hours/open-hours.js" style="color:inherit;border-bottom:1px dashed var(--teal);"><code>/tools/open-hours/open-hours.js</code></a> y el renderer PNG en <a href="/tools/open-hours/sign-render.js" style="color:inherit;border-bottom:1px dashed var(--teal);"><code>/tools/open-hours/sign-render.js</code></a>.</p>
+          <details class="oh-step-inspect"><summary>Inspecciona</summary><div class="oh-step-verify">Click derecho &rarr; <strong>Ver código fuente</strong> &rarr; abre cualquiera de los <code>.js</code>. Busca <code>fetch</code>, <code>XMLHttpRequest</code>, o <code>localStorage</code> en esos archivos &mdash; no encuentras nada.</div></details>
+        </div></div>
+      </article>
+      <article class="oh-step">
+        <div class="oh-step-head"><span class="oh-step-num" aria-hidden="true">8</span><div class="oh-step-body">
+          <h3 class="oh-step-title">Nada persiste más allá de esta pestaña.</h3>
+          <p class="oh-step-claim">Sin service worker, sin página en segundo plano, sin IndexedDB. Cierra la pestaña y el trabajo se va &mdash; a menos que hayas guardado el fragmento URL.</p>
+          <details class="oh-step-inspect"><summary>Inspecciona</summary><div class="oh-step-verify">Escribe en el formulario. Cierra la pestaña. Reabre <code>muntin.digital/es/tools/open-hours/</code> (sin el fragmento). El formulario está vacío.</div></details>
+        </div></div>
+      </article>
+      <article class="oh-step">
+        <div class="oh-step-head"><span class="oh-step-num" aria-hidden="true">9</span><div class="oh-step-body">
+          <h3 class="oh-step-title">El Letrero, la Tarjeta, el ICS, el ZIP y la Revisi&oacute;n Trimestral son 100% del lado del cliente.</h3>
+          <p class="oh-step-claim">Los PNG usan Canvas. Los archivos ICS usan <code>Blob</code> + <code>URL.createObjectURL</code>. El ZIP se compone en el navegador con un escritor mínimo. Incluso el evento recurrente de la Revisión Trimestral se genera localmente; la URL que carga es solo <code>location.href</code>.</p>
+          <details class="oh-step-inspect"><summary>Inspecciona</summary><div class="oh-step-verify">DevTools &rarr; Network. Haz clic en cualquier descarga (PNG del letrero, ICS de cierres, ICS trimestral, ZIP). El Network no crece &mdash; el archivo viene de una URL <code>blob:</code> compuesta en tu navegador. Abre cualquier <code>.ics</code> en un editor; verás texto plano RFC-5545, sin pixel de tracking.</div></details>
+        </div></div>
+      </article>
+    </div>
+    <p style="font-size:13px;color:var(--stone);margin:18px 0 0;">Para la misma postura de privacidad en la familia, mira <a href="/es/tools/brand-suite/#how-we-protect" style="color:inherit;border-bottom:1px dashed var(--teal);">cómo Suite de Marca protege tu logo</a> o <a href="/es/tools/margin-math/#how-private" style="color:inherit;border-bottom:1px dashed var(--teal);">el recorrido verificable de nueve afirmaciones de Margin Math</a>.</p>
   </div>
-</div></section>
+</div>
+<style>
+.oh-steps{display:flex;flex-direction:column;gap:14px;margin-top:14px}
+.oh-step{padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+.oh-step-head{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start}
+.oh-step-num{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--teal);width:36px;height:36px;border:1.5px solid var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.oh-step-title{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 6px;line-height:1.3}
+.oh-step-claim{font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0}
+.oh-step-claim code{font-size:12.5px;background:var(--cream-2);padding:1px 4px;border-radius:3px}
+.oh-step-inspect{margin-top:8px;font-size:13px}
+.oh-step-inspect summary{cursor:pointer;color:var(--teal);font-weight:600;list-style:none;display:inline-flex;align-items:center;gap:6px}
+.oh-step-inspect summary::-webkit-details-marker{display:none}
+.oh-step-inspect summary::after{content:'+';font-size:14px}
+.oh-step-inspect[open] summary::after{content:'−'}
+.oh-step-verify{margin-top:8px;padding:10px 14px;background:var(--cream-2);border-radius:var(--r-sm);font-size:13px;line-height:1.6;color:var(--ink-soft)}
+.oh-step-verify code{font-size:12.5px}
+.oh-step-verify kbd{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;background:var(--white);border:1px solid var(--line);border-radius:3px;padding:1px 4px}
+@media(max-width:520px){.oh-step-head{grid-template-columns:36px 1fr;gap:10px}.oh-step-num{width:30px;height:30px;font-size:18px}}
+</style>
+</section>
 
 <section class="block" id="what-this-isnt"><div class="container">
   <div style="max-width:760px;margin:0 auto;">
@@ -603,8 +760,8 @@
 </footer>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="/tools/open-hours/open-hours.js?v=20260426-oh7"></script>
-<script src="/tools/open-hours/sign-render.js?v=20260426-oh8"></script>
+<script src="/tools/open-hours/open-hours.js?v=20260426-oh9"></script>
+<script src="/tools/open-hours/sign-render.js?v=20260426-oh10"></script>
 <script>
 /* Open Hours — week-grid input + live output render.
  *
@@ -857,6 +1014,51 @@
         var orig = span.getAttribute('data-label');
         span.textContent = '✓ Descargado — ábrelo en tu teléfono';
         setTimeout(function(){ span.textContent = orig; }, 2400);
+      }
+    });
+  }
+
+  // ----- Imprimir Reporte de Higiene (Phase D5) -----
+  var printReportBtn = document.getElementById('ohPrintReport');
+  if (printReportBtn) {
+    printReportBtn.addEventListener('click', function(){
+      ohUserInteracted = true;
+      ohSyncFragment();
+      var d = new Date();
+      var dateLabel = d.toLocaleDateString('es-US', { month: 'long', day: 'numeric', year: 'numeric' });
+      document.body.setAttribute('data-print-date', dateLabel);
+      document.body.setAttribute('data-print-url', location.href);
+      var cleanup = function(){
+        document.body.removeAttribute('data-print-date');
+        document.body.removeAttribute('data-print-url');
+        window.removeEventListener('afterprint', cleanup);
+      };
+      window.addEventListener('afterprint', cleanup);
+      window.print();
+      setTimeout(cleanup, 8000);
+      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'hygiene-print' } });
+    });
+  }
+
+  // ----- Quarterly Drift Check-in (Phase D2) -----
+  var quarterlyBtn = document.getElementById('ohDownloadQuarterly');
+  if (quarterlyBtn) {
+    quarterlyBtn.addEventListener('click', function(){
+      ohUserInteracted = true;
+      ohSyncFragment();
+      var ics = window.OH.generateQuarterlyIcs(location.href, { locale: 'es' });
+      var blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url; a.download = 'horario-abierto-trimestral.ics';
+      document.body.appendChild(a); a.click();
+      setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'quarterly-ics' } });
+      var span = quarterlyBtn.querySelector('[data-label]');
+      if (span) {
+        var orig = span.getAttribute('data-label');
+        span.textContent = '✓ 8 recordatorios descargados — el primero en 90 días';
+        setTimeout(function(){ span.textContent = orig; }, 2800);
       }
     });
   }
@@ -1548,10 +1750,71 @@
   });
   renderArchetypes();
 
+  // ----- Rehidratación desde fragmento URL (Phase D Muntin signature) -----
+  var ohUserInteracted = false;
+  function ohSyncFragment(){
+    if (!ohUserInteracted) return;
+    try {
+      var state = {
+        name: nameEl.value,
+        city: cityEl.value,
+        street:     (document.getElementById('ohStreet') || {}).value || '',
+        region:     (document.getElementById('ohRegion') || {}).value || '',
+        postalCode: (document.getElementById('ohPostal') || {}).value || '',
+        week: week,
+        closures: getClosureList()
+      };
+      var frag = window.OH.encodeState(state);
+      if (frag.length > 4000) return;
+      history.replaceState(null, '', '#' + frag);
+    } catch (_e) {}
+  }
+  var originalRerender = rerender;
+  rerender = function(){
+    originalRerender();
+    requestAnimationFrame(ohSyncFragment);
+  };
+  ['input','change','click'].forEach(function(evt){
+    document.addEventListener(evt, function(){ ohUserInteracted = true; }, { once: true, passive: true });
+  });
+
+  function ohHydrateFromHash(){
+    var hash = location.hash || '';
+    if (!hash || hash === '#') return false;
+    var holidays = window.OH.holidaysInRange(undefined, undefined, 'es');
+    var st = window.OH.decodeState(hash, holidays);
+    var hasState = !!(st.name || st.city || st.street ||
+      DAYS.some(function(d){ return (st.week[d] || []).length; }) ||
+      (st.closures && st.closures.length));
+    if (!hasState) return false;
+    nameEl.value = st.name || '';
+    cityEl.value = st.city || '';
+    var street = document.getElementById('ohStreet');
+    var region = document.getElementById('ohRegion');
+    var postal = document.getElementById('ohPostal');
+    if (street && st.street) { street.value = st.street;
+      var det = document.querySelector('.oh-address-extra'); if (det) det.open = true;
+    }
+    if (region && st.region) region.value = st.region;
+    if (postal && st.postalCode) postal.value = st.postalCode;
+    DAYS.forEach(function(d){ week[d] = st.week[d] || []; });
+    selectedClosures = {};
+    (st.closures || []).forEach(function(c){
+      selectedClosures[c.id] = { name: c.name, date: c.date, source: c.source || 'preset' };
+      if (/^custom-/.test(c.id)) customCounter = Math.max(customCounter, 1);
+    });
+    return true;
+  }
+
   // Render inicial: semana vacía + lista de feriados.
   renderWeek();
   renderHolidayList();
   paintClosureCount();
+  if (ohHydrateFromHash()) {
+    renderWeek();
+    renderCustomClosures();
+    paintClosureCount();
+  }
   rerender();
 })();
 </script>

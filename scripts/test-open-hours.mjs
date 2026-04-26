@@ -488,6 +488,74 @@ assertEq('Easter 2030 (Apr 21)', O.easterDate(2030).toISOString().slice(0, 10), 
   assert('Saturday 00:00–02:00', sat && sat.opens === '00:00' && sat.closes === '02:00');
 }
 
+// Phase D1 — URL-fragment encode/decode round-trip.
+{
+  const original = {
+    name: 'Osteria Giardino',
+    city: 'Silver Spring',
+    street: '8512 Fenton St',
+    region: 'MD',
+    postalCode: '20910',
+    week: {
+      Mon: [],
+      Tue: [{ label: 'Dinner', opens: '17:00', closes: '22:00', closesNextDay: false }],
+      Wed: [{ label: 'Dinner', opens: '17:00', closes: '22:00', closesNextDay: false }],
+      Thu: [],
+      Fri: [{ label: 'Dinner', opens: '17:00', closes: '23:00', closesNextDay: false }],
+      Sat: [
+        { label: 'Brunch', opens: '11:00', closes: '15:00', closesNextDay: false },
+        { label: 'Dinner', opens: '17:00', closes: '23:00', closesNextDay: false }
+      ],
+      Sun: [{ label: 'Service', opens: '17:00', closes: '01:00', closesNextDay: true }]
+    },
+    closures: [
+      { id: 'thanksgiving', name: 'Thanksgiving', date: '2026-11-26', source: 'preset' },
+      { id: 'custom-2026-08-15', name: 'Private event', date: '2026-08-15', source: 'custom' }
+    ]
+  };
+  const fragment = O.encodeState(original);
+  assert('fragment starts with v=1', /^v=1/.test(fragment));
+  assert('fragment encodes name',    /n=Osteria/.test(fragment));
+  assert('fragment encodes Tue',     /w\.Tue=/.test(fragment));
+  assert('fragment encodes closures', /cl=thanksgiving/.test(fragment));
+
+  const holidays = O.holidaysForYear(2026);
+  const round = O.decodeState(fragment, holidays);
+  assertEq('round-trip name',   round.name,       'Osteria Giardino');
+  assertEq('round-trip city',   round.city,       'Silver Spring');
+  assertEq('round-trip street', round.street,     '8512 Fenton St');
+  assertEq('round-trip region', round.region,     'MD');
+  assertEq('round-trip zip',    round.postalCode, '20910');
+  assertEq('round-trip Mon empty', round.week.Mon.length, 0);
+  assertEq('round-trip Tue dinner',
+           round.week.Tue[0].opens + '-' + round.week.Tue[0].closes,
+           '17:00-22:00');
+  assertEq('round-trip Sat 2 services', round.week.Sat.length, 2);
+  assertEq('round-trip Sun nextDay', round.week.Sun[0].closesNextDay, true);
+  assertEq('round-trip closures count', round.closures.length, 2);
+  assertEq('round-trip preset closure date',
+           round.closures.find(c => c.id === 'thanksgiving').date,
+           '2026-11-26');
+  const customClosure = round.closures.find(c => /^custom-/.test(c.id));
+  assertEq('round-trip custom closure date', customClosure.date, '2026-08-15');
+  assertEq('round-trip custom closure name', customClosure.name, 'Private event');
+}
+
+// Phase D1 — forward-compat: unknown keys ignored.
+{
+  const round = O.decodeState('v=2&n=Test&future_key=ignored&w.Mon=Lunch|11:00|14:00|0');
+  assertEq('forward-compat name',  round.name, 'Test');
+  assertEq('forward-compat Mon',   round.week.Mon[0].opens + '-' + round.week.Mon[0].closes, '11:00-14:00');
+}
+
+// Phase D1 — empty/missing hash returns empty week (no crash).
+{
+  const empty = O.decodeState('');
+  assertEq('empty hash → empty Mon', empty.week.Mon.length, 0);
+  const noHash = O.decodeState();
+  assert('no-arg → object', typeof noHash === 'object');
+}
+
 // Phase D2 — Quarterly Drift Check-in .ics structure.
 {
   const ics = O.generateQuarterlyIcs('https://muntin.digital/tools/open-hours/#v=1&n=Test');

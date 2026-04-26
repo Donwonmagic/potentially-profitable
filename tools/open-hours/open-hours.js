@@ -724,6 +724,151 @@ function ohHolidaysInRange(startDate, endDate, locale) {
 }
 
 // ------------------------------------------------------------
+// URL-fragment scenario encoding (Phase D — Muntin signature).
+//
+// The Quarterly Drift Check-in needs the calendar reminder to lead
+// the owner back to a fully-rehydrated form. Same shape as Margin
+// Math's mmEncodeState/mmDecodeState (URL-safe key=value pairs, not
+// base64) so the family pattern is recognizable.
+//
+// Fragment schema (v1):
+//   v=1
+//   n=<encoded restaurant name>
+//   c=<encoded city>
+//   s=<encoded street>          (optional)
+//   r=<encoded region>          (optional)
+//   z=<encoded postal code>     (optional)
+//   w.Mon=<services-string>     // "Dinner|17:00|22:00|0,Brunch|11:00|15:00|0"
+//   w.Tue=...
+//   cl=<id>,<id>,custom-YYYY-MM-DD-Name
+//
+// Privacy-safe: data lives only in the user's URL bar. forward-compat:
+// unknown keys are ignored on decode so a future v=2 round-trips cleanly.
+// ------------------------------------------------------------
+
+var OH_FRAGMENT_VERSION = '1';
+
+function ohEncodeServices(services) {
+  if (!Array.isArray(services) || !services.length) return '';
+  return services.map(function(s){
+    var label = (s.label || '').replace(/[|,]/g, ' '); // strip our delimiters
+    var open  = ohParseTime(s.opens) || '';
+    var close = ohParseTime(s.closes) || '';
+    var nd    = s.closesNextDay ? '1' : '0';
+    return label + '|' + open + '|' + close + '|' + nd;
+  }).join(',');
+}
+
+function ohDecodeServices(str) {
+  if (!str) return [];
+  return String(str).split(',').map(function(seg){
+    var parts = seg.split('|');
+    if (parts.length < 3) return null;
+    var opens = ohParseTime(parts[1]);
+    var closes = ohParseTime(parts[2]);
+    if (!opens || !closes) return null;
+    return {
+      label: parts[0] || '',
+      opens: opens,
+      closes: closes,
+      closesNextDay: parts[3] === '1'
+    };
+  }).filter(Boolean);
+}
+
+function ohEncodeClosures(closures) {
+  if (!Array.isArray(closures) || !closures.length) return '';
+  return closures.map(function(c){
+    if (!c || !c.date) return '';
+    if (/^custom-/.test(c.id || '')) {
+      var safeName = String(c.name || 'Closed').replace(/[,;\s]+/g, '+');
+      return 'custom-' + c.date + '-' + safeName;
+    }
+    return String(c.id || '');
+  }).filter(Boolean).join(',');
+}
+
+function ohDecodeClosures(str, holidays) {
+  // holidays: optional array from ohHolidaysInRange used to resolve
+  // preset IDs to {name, date}. Without it, preset IDs are dropped.
+  if (!str) return [];
+  var byId = {};
+  (holidays || []).forEach(function(h){ byId[h.id] = h; });
+  return String(str).split(',').map(function(s){
+    if (!s) return null;
+    var custom = /^custom-(\d{4}-\d{2}-\d{2})-(.+)$/.exec(s);
+    if (custom) {
+      return {
+        id: 'custom-' + custom[1],
+        name: String(custom[2]).replace(/\+/g, ' '),
+        date: custom[1],
+        source: 'custom'
+      };
+    }
+    var preset = byId[s];
+    if (preset) return { id: s, name: preset.name, date: preset.date, source: 'preset' };
+    return null;
+  }).filter(Boolean);
+}
+
+function ohEncodeState(state) {
+  state = state || {};
+  var parts = ['v=' + OH_FRAGMENT_VERSION];
+  function push(key, val) {
+    if (val === undefined || val === null || val === '') return;
+    parts.push(key + '=' + encodeURIComponent(String(val)));
+  }
+  push('n', state.name);
+  push('c', state.city);
+  push('s', state.street);
+  push('r', state.region);
+  push('z', state.postalCode);
+  if (state.week && typeof state.week === 'object') {
+    OH_DAYS.forEach(function(d){
+      var enc = ohEncodeServices(state.week[d]);
+      if (enc) parts.push('w.' + d + '=' + encodeURIComponent(enc));
+    });
+  }
+  if (state.closures && state.closures.length) {
+    var clEnc = ohEncodeClosures(state.closures);
+    if (clEnc) parts.push('cl=' + encodeURIComponent(clEnc));
+  }
+  return parts.join('&');
+}
+
+function ohDecodeState(hash, holidays) {
+  // Always returns a week-initialized shape so callers can blindly
+  // access out.week.Mon without null-checking.
+  var out = { week: {} };
+  OH_DAYS.forEach(function(d){ out.week[d] = []; });
+  if (typeof hash !== 'string') return out;
+  if (hash.charAt(0) === '#') hash = hash.slice(1);
+  if (!hash) return out;
+  var pairs = hash.split('&');
+  for (var i = 0; i < pairs.length; i++) {
+    var eq = pairs[i].indexOf('=');
+    if (eq < 0) continue;
+    var key = pairs[i].slice(0, eq);
+    var raw = pairs[i].slice(eq + 1);
+    var val;
+    try { val = decodeURIComponent(raw); } catch (_) { continue; }
+    if (key === 'v') continue;
+    if (key === 'n') out.name = val;
+    else if (key === 'c') out.city = val;
+    else if (key === 's') out.street = val;
+    else if (key === 'r') out.region = val;
+    else if (key === 'z') out.postalCode = val;
+    else if (key === 'cl') out.closures = ohDecodeClosures(val, holidays);
+    else if (key.indexOf('w.') === 0) {
+      var d = key.slice(2);
+      if (OH_DAYS.indexOf(d) >= 0) out.week[d] = ohDecodeServices(val);
+    }
+    // Unknown keys ignored — forward-compat with v=2.
+  }
+  return out;
+}
+
+// ------------------------------------------------------------
 // Plausible bucket helpers — enum-locked, privacy-critical.
 // Same pattern as menu-engineering / menu-copy.
 // ------------------------------------------------------------
@@ -778,6 +923,13 @@ var OH_PUBLIC = {
   generateBuilderEmail: ohGenerateBuilderEmail,
   generateIcs:         ohGenerateIcs,
   generateQuarterlyIcs: ohGenerateQuarterlyIcs,
+  // URL-fragment scenario serialization (Phase D Muntin signature)
+  encodeState:         ohEncodeState,
+  decodeState:         ohDecodeState,
+  encodeServices:      ohEncodeServices,
+  decodeServices:      ohDecodeServices,
+  encodeClosures:      ohEncodeClosures,
+  decodeClosures:      ohDecodeClosures,
   // Holiday helpers
   easterDate:          ohEasterDate,
   nthWeekdayOfMonth:   ohNthWeekdayOfMonth,

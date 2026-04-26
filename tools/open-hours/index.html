@@ -147,11 +147,70 @@
 .oh-archetype button:hover{background:var(--teal);color:var(--cream)}
 
 @media print{
-  body{background:#fff !important;color:#000 !important}
+  /* Phase D5 — Hygiene Report. The "Print the Hygiene Report" button
+     stamps body attributes the rules below read; without those, this
+     block still produces a clean printout (just without the timestamp
+     header / re-open URL footer). */
+  @page{margin:14mm 16mm;size:letter}
+  body{background:#fff !important;color:#000 !important;font-size:10pt}
   header.nav,.breadcrumb,.foot,footer,.lang-hint,.foot-cta,.oh-form,
-  #how-private,#what-this-isnt,.mm-next{display:none !important}
-  .oh-task-card,.oh-week{break-inside:avoid;page-break-inside:avoid}
+  #how-private,#what-this-isnt,.mm-next,#ohEmptyHint,
+  .tool-deep-links,.oh-archetypes,.oh-task-actions,.oh-task-btn,
+  .oh-other-platforms,.oh-quarterly-card,.oh-cms-hints,
+  .oh-task-card[id="ohIcsCard"],
+  .oh-task-card:has(#ohPrintSign),.oh-task-card:has(#ohDownloadCard),
+  .oh-task-card:has(#ohDownloadZip),.oh-task-card:has(#ohPrintReport){display:none !important}
+  .oh-output{gap:14px !important}
+  .oh-task-card{break-inside:avoid;page-break-inside:avoid;border:1px solid #ccc !important;padding:10px 12px !important;margin:0 !important;box-shadow:none !important;background:#fff !important}
+  .oh-task-card h3{font-size:12pt !important;margin:0 0 4px !important}
+  .oh-task-format{font-size:8pt !important;color:#666 !important}
+  .oh-task-block{font-size:8pt !important;background:#f6f6f6 !important;color:#000 !important;border:1px solid #ddd;padding:8px !important;line-height:1.4 !important;white-space:pre-wrap !important}
+  .oh-checklist .oh-check-item{padding:5px 8px !important;font-size:9pt !important;background:#fff !important;border:1px solid #ddd !important}
+  .oh-week{break-inside:avoid;font-size:9pt !important;padding:8px !important}
+  .oh-day-row{padding:3px 0 !important}
+  .oh-day-name{font-size:9.5pt !important}
+  .oh-service input{border:none !important;background:transparent !important;font-size:9pt !important}
+  .oh-service .oh-remove,.oh-add-service{display:none !important}
+  .oh-warnings{display:none !important}
+  .oh-closures,.oh-compare,details:not([open]){display:none !important}
+  .oh-serp-card{display:none !important}  /* SERP preview is mock-only, omit from print */
   a[href]:after{content:'' !important}
+  /* Header band: title + timestamp + URL */
+  main::before{
+    content:'Open Hours — Hygiene Report';
+    display:block;
+    font-family:var(--font-display);
+    font-size:16pt;
+    font-weight:500;
+    border-bottom:0.5pt solid #000;
+    padding-bottom:3pt;
+    margin:0 0 3pt;
+    letter-spacing:0.01em;
+  }
+  body[data-print-date] main::before{
+    /* When the print button stamped the date, append it on a sub-line.
+       Without the attr, only the title shows. */
+  }
+  body[data-print-date]::before{
+    content:attr(data-print-date) '  ·  muntin.digital/tools/open-hours/';
+    display:block;
+    font-size:9pt;
+    color:#555;
+    margin:0 0 10pt;
+    letter-spacing:0.02em;
+  }
+  /* Footer caption: re-open scenario URL (carries the saved state) */
+  body[data-print-url] main::after{
+    content:'Reopen this scenario: ' attr(data-print-url);
+    display:block;
+    font-size:7pt;
+    color:#555;
+    margin-top:14pt;
+    padding-top:4pt;
+    border-top:0.5pt solid #bbb;
+    overflow-wrap:anywhere;
+    page-break-inside:avoid;
+  }
 }
 </style>
 </head>
@@ -414,6 +473,21 @@
       </div>
     </article>
 
+    <article class="oh-task-card oh-quarterly-card">
+      <header class="oh-task-head">
+        <h3>Get a quarterly nudge to re-run this.</h3>
+        <span class="oh-task-format">iCalendar (.ics) &middot; 8 events / 2 years</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">Hours drift. Holidays come around. Staff changes. Download an 8-event reminder &mdash; once a quarter for two years &mdash; and your calendar will ping you 90 days from today with a one-click link back to your saved scenario. <strong>The reminder URL contains your form state</strong>, so when you click it three months from now the week grid, closures, and address are all already filled in.</p>
+      <p style="margin:8px 0 0;font-size:12px;color:var(--stone);">No account, no email. The reminder lives only on your device. The scenario lives only in the URL bar of the calendar reminder &mdash; never on a server.</p>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn oh-task-btn-primary" id="ohDownloadQuarterly">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span data-label="Add quarterly check-ins to my calendar">Add quarterly check-ins to my calendar</span>
+        </button>
+      </div>
+    </article>
+
     <article class="oh-task-card">
       <header class="oh-task-head">
         <h3>Print this and tape it to your door.</h3>
@@ -442,6 +516,21 @@
         <button type="button" class="oh-task-btn oh-task-btn-primary" id="ohDownloadCard">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
           Download Open Hours Card
+        </button>
+      </div>
+    </article>
+
+    <article class="oh-task-card">
+      <header class="oh-task-head">
+        <h3>Print the Hygiene Report.</h3>
+        <span class="oh-task-format">Single-sheet letter / A4</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">A clean back-of-house report &mdash; weekly grid, picked closures, the Google paste block, and the JSON-LD code, all on one printed page with today's date and a re-open URL in the footer. Pin it to the manager's clipboard. Forward it to your accountant. Reprint every quarter.</p>
+      <p style="margin:8px 0 0;font-size:12px;color:var(--stone);">Different from the Storefront Sign &mdash; the Sign is for the customer at the door; this Report is for the staff inside.</p>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn oh-task-btn-primary" id="ohPrintReport">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Print the Hygiene Report
         </button>
       </div>
     </article>
@@ -490,20 +579,97 @@
 </div></section>
 
 <section class="block bg-cream2" id="how-private"><div class="container">
-  <div style="max-width:760px;margin:0 auto;">
+  <div style="max-width:780px;margin:0 auto;">
     <span class="eyebrow">Lead by example</span>
     <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:12px 0 12px;">Your hours stay in your browser.</h2>
-    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0 0 14px;">Five claims, each verifiable in DevTools in under a minute:</p>
-    <ol style="margin:0;padding-left:1.4em;font-size:14.5px;line-height:1.7;color:var(--ink-soft);display:flex;flex-direction:column;gap:6px;">
-      <li><strong>No upload.</strong> Nothing in the form is sent to a server. Open DevTools &rarr; Network and type &mdash; the request list doesn't grow.</li>
-      <li><strong>No account, no email.</strong> The page works without identifying you in any way.</li>
-      <li><strong>No browser memory.</strong> Closing the tab clears everything. The form is empty when you reopen the URL.</li>
-      <li><strong>Open code.</strong> The whole engine is plain JavaScript at <code>/tools/open-hours/open-hours.js</code> &mdash; right-click <em>View Page Source</em> to read it.</li>
-      <li><strong>Privacy-safe analytics.</strong> Plausible counts how many people use the tool, but never sees your hours, your restaurant name, or your city. Only enum-bucketed values like &ldquo;<code>4-5 days open</code>&rdquo; pass through.</li>
-    </ol>
-    <p style="font-size:13px;color:var(--stone);margin:14px 0 0;">For the same privacy posture across the family, see <a href="/tools/brand-suite/#how-we-protect" style="color:inherit;border-bottom:1px dashed var(--teal);">how Brand Suite protects your logo</a> or <a href="/tools/margin-math/#how-private" style="color:inherit;border-bottom:1px dashed var(--teal);">Margin Math's nine-claim verifiable tour</a>.</p>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0 0 14px;">Nine claims, each verifiable in your browser&rsquo;s DevTools in under a minute. Open the inspect panel for any of them.</p>
+    <div class="oh-steps">
+      <article class="oh-step">
+        <div class="oh-step-head"><span class="oh-step-num" aria-hidden="true">1</span><div class="oh-step-body">
+          <h3 class="oh-step-title">Your hours never leave this page.</h3>
+          <p class="oh-step-claim">No <code>fetch()</code>, no <code>XMLHttpRequest</code>, no form submission fires when you type a time. The validation, JSON-LD generation, and platform-copy generators all run entirely in your browser.</p>
+          <details class="oh-step-inspect"><summary>Inspect this</summary><div class="oh-step-verify">Open DevTools (<kbd>Cmd+Opt+I</kbd> / <kbd>Ctrl+Shift+I</kbd>) &rarr; <strong>Network</strong> tab. Type a time into the form. The request list should not grow. If it does, that&rsquo;s a bug &mdash; tell us.</div></details>
+        </div></div>
+      </article>
+      <article class="oh-step">
+        <div class="oh-step-head"><span class="oh-step-num" aria-hidden="true">2</span><div class="oh-step-body">
+          <h3 class="oh-step-title">There&rsquo;s no server to store them on.</h3>
+          <p class="oh-step-claim">The tool ships as a static page. There&rsquo;s no API endpoint that accepts hours, no database that holds them, no queue that processes them.</p>
+          <details class="oh-step-inspect"><summary>Inspect this</summary><div class="oh-step-verify">Try <code>curl -X POST https://muntin.digital/tools/open-hours/</code>. You&rsquo;ll get a 405 (Method Not Allowed). The page is read-only static HTML.</div></details>
+        </div></div>
+      </article>
+      <article class="oh-step">
+        <div class="oh-step-head"><span class="oh-step-num" aria-hidden="true">3</span><div class="oh-step-body">
+          <h3 class="oh-step-title">Analytics sees only buckets, never your hours.</h3>
+          <p class="oh-step-claim">Plausible tracks how many people use the tool but receives only enum-locked values like <code>4-5 days open</code> or <code>multi-service</code>. Your restaurant name, city, specific times, and closure dates are never sent.</p>
+          <details class="oh-step-inspect"><summary>Inspect this</summary><div class="oh-step-verify">DevTools &rarr; Network &rarr; filter <code>plausible</code>. After typing into the form, the only payloads you&rsquo;ll see carry properties like <code>open_days: "4-5"</code>. Source: bucket helpers at <code>/tools/open-hours/open-hours.js</code> lines ~660&ndash;700.</div></details>
+        </div></div>
+      </article>
+      <article class="oh-step">
+        <div class="oh-step-head"><span class="oh-step-num" aria-hidden="true">4</span><div class="oh-step-body">
+          <h3 class="oh-step-title">No cookies, no localStorage, no sessionStorage.</h3>
+          <p class="oh-step-claim">Nothing about your inputs gets written to your browser&rsquo;s persistent storage. Closing the tab clears the form completely.</p>
+          <details class="oh-step-inspect"><summary>Inspect this</summary><div class="oh-step-verify">DevTools &rarr; <strong>Application</strong> tab &rarr; Storage. Cookies, Local Storage, and Session Storage for this origin are all empty after typing into the form. (Pagefind&rsquo;s search-index files appear under Cache Storage; those don&rsquo;t carry your input.)</div></details>
+        </div></div>
+      </article>
+      <article class="oh-step">
+        <div class="oh-step-head"><span class="oh-step-num" aria-hidden="true">5</span><div class="oh-step-body">
+          <h3 class="oh-step-title">No third-party scripts touch the inputs.</h3>
+          <p class="oh-step-claim">Plausible loads from plausible.io to log a single anonymous pageview. Nothing else third-party runs on the page.</p>
+          <details class="oh-step-inspect"><summary>Inspect this</summary><div class="oh-step-verify">DevTools &rarr; Network &rarr; filter type <em>JS</em>. The only off-origin script is <code>plausible.io/js/...</code>. Open it; it has no access to the form &mdash; it just emits pageview pings.</div></details>
+        </div></div>
+      </article>
+      <article class="oh-step">
+        <div class="oh-step-head"><span class="oh-step-num" aria-hidden="true">6</span><div class="oh-step-body">
+          <h3 class="oh-step-title">Shareable scenario links keep your hours in your URL bar, not on a server.</h3>
+          <p class="oh-step-claim">When you copy this page&rsquo;s URL, the fragment after <code>#</code> contains your form state. URL fragments are <em>never sent to the server</em> per the HTTP spec &mdash; we even add <code>&lt;meta name="referrer" content="no-referrer"&gt;</code> so links you click out of the tool don&rsquo;t leak it.</p>
+          <details class="oh-step-inspect"><summary>Inspect this</summary><div class="oh-step-verify">Type into the form, copy the URL, look at it. Everything after <code>#</code> is your data. Now paste the URL into a new incognito window &mdash; the form rehydrates locally; no request to the server carried any of your inputs.</div></details>
+        </div></div>
+      </article>
+      <article class="oh-step">
+        <div class="oh-step-head"><span class="oh-step-num" aria-hidden="true">7</span><div class="oh-step-body">
+          <h3 class="oh-step-title">The source is readable.</h3>
+          <p class="oh-step-claim">The whole engine is plain JavaScript &mdash; no minification, no bundler obfuscation. Read the math at <a href="/tools/open-hours/open-hours.js" style="color:inherit;border-bottom:1px dashed var(--teal);"><code>/tools/open-hours/open-hours.js</code></a> and the PNG renderer at <a href="/tools/open-hours/sign-render.js" style="color:inherit;border-bottom:1px dashed var(--teal);"><code>/tools/open-hours/sign-render.js</code></a>.</p>
+          <details class="oh-step-inspect"><summary>Inspect this</summary><div class="oh-step-verify">Right-click &rarr; <strong>View Page Source</strong> &rarr; click either <code>.js</code> link. Search for <code>fetch</code>, <code>XMLHttpRequest</code>, or <code>localStorage</code> in those files &mdash; you&rsquo;ll find none.</div></details>
+        </div></div>
+      </article>
+      <article class="oh-step">
+        <div class="oh-step-head"><span class="oh-step-num" aria-hidden="true">8</span><div class="oh-step-body">
+          <h3 class="oh-step-title">Nothing persists beyond this tab.</h3>
+          <p class="oh-step-claim">No service worker, no background page, no IndexedDB. Close the tab and the work is gone &mdash; unless you bookmarked the URL fragment.</p>
+          <details class="oh-step-inspect"><summary>Inspect this</summary><div class="oh-step-verify">Type into the form. Close the tab. Reopen <code>muntin.digital/tools/open-hours/</code> (without the fragment). The form is empty.</div></details>
+        </div></div>
+      </article>
+      <article class="oh-step">
+        <div class="oh-step-head"><span class="oh-step-num" aria-hidden="true">9</span><div class="oh-step-body">
+          <h3 class="oh-step-title">The Sign, Card, ICS, ZIP, and Quarterly Check-in are all 100% client-side.</h3>
+          <p class="oh-step-claim">PNG renders use Canvas. ICS files use <code>Blob</code> + <code>URL.createObjectURL</code>. The ZIP is composed in-browser via a small store-only writer. Even the Quarterly Drift Check-in&rsquo;s recurring calendar event is generated locally; the URL it carries is just <code>location.href</code>.</p>
+          <details class="oh-step-inspect"><summary>Inspect this</summary><div class="oh-step-verify">DevTools &rarr; Network. Click any download (Sign PNG, closures ICS, quarterly ICS, ZIP). The Network tab does not grow &mdash; the file came from a <code>blob:</code> URL composed in your browser. Open any <code>.ics</code> file in a text editor; you&rsquo;ll see plain RFC-5545 text, no tracking pixel.</div></details>
+        </div></div>
+      </article>
+    </div>
+    <p style="font-size:13px;color:var(--stone);margin:18px 0 0;">For the same privacy posture across the family, see <a href="/tools/brand-suite/#how-we-protect" style="color:inherit;border-bottom:1px dashed var(--teal);">how Brand Suite protects your logo</a> or <a href="/tools/margin-math/#how-private" style="color:inherit;border-bottom:1px dashed var(--teal);">Margin Math&rsquo;s nine-claim verifiable tour</a>.</p>
   </div>
-</div></section>
+</div>
+<style>
+.oh-steps{display:flex;flex-direction:column;gap:14px;margin-top:14px}
+.oh-step{padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+.oh-step-head{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start}
+.oh-step-num{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--teal);width:36px;height:36px;border:1.5px solid var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.oh-step-title{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 6px;line-height:1.3}
+.oh-step-claim{font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0}
+.oh-step-claim code{font-size:12.5px;background:var(--cream-2);padding:1px 4px;border-radius:3px}
+.oh-step-inspect{margin-top:8px;font-size:13px}
+.oh-step-inspect summary{cursor:pointer;color:var(--teal);font-weight:600;list-style:none;display:inline-flex;align-items:center;gap:6px}
+.oh-step-inspect summary::-webkit-details-marker{display:none}
+.oh-step-inspect summary::after{content:'+';font-size:14px}
+.oh-step-inspect[open] summary::after{content:'−'}
+.oh-step-verify{margin-top:8px;padding:10px 14px;background:var(--cream-2);border-radius:var(--r-sm);font-size:13px;line-height:1.6;color:var(--ink-soft)}
+.oh-step-verify code{font-size:12.5px}
+.oh-step-verify kbd{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;background:var(--white);border:1px solid var(--line);border-radius:3px;padding:1px 4px}
+@media(max-width:520px){.oh-step-head{grid-template-columns:36px 1fr;gap:10px}.oh-step-num{width:30px;height:30px;font-size:18px}}
+</style>
+</section>
 
 <section class="block" id="what-this-isnt"><div class="container">
   <div style="max-width:760px;margin:0 auto;">
@@ -623,8 +789,8 @@
 </footer>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="./open-hours.js?v=20260426-oh7"></script>
-<script src="./sign-render.js?v=20260426-oh8"></script>
+<script src="./open-hours.js?v=20260426-oh9"></script>
+<script src="./sign-render.js?v=20260426-oh10"></script>
 <script>
 /* Open Hours — week-grid input + live output render.
  *
@@ -899,6 +1065,59 @@
         var orig = span.getAttribute('data-label');
         span.textContent = '✓ Downloaded — open it on your phone';
         setTimeout(function(){ span.textContent = orig; }, 2400);
+      }
+    });
+  }
+
+  // ----- Print Hygiene Report (Phase D5) -----
+  // Stamps body attributes the @media print stylesheet reads to inject
+  // a header (date + URL) and a footer (re-open URL with the full
+  // current scenario fragment). Mirrors Margin Math's pattern.
+  var printReportBtn = document.getElementById('ohPrintReport');
+  if (printReportBtn) {
+    printReportBtn.addEventListener('click', function(){
+      ohUserInteracted = true;
+      ohSyncFragment();
+      var d = new Date();
+      var dateLabel = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+      document.body.setAttribute('data-print-date', dateLabel);
+      document.body.setAttribute('data-print-url', location.href);
+      var cleanup = function(){
+        document.body.removeAttribute('data-print-date');
+        document.body.removeAttribute('data-print-url');
+        window.removeEventListener('afterprint', cleanup);
+      };
+      window.addEventListener('afterprint', cleanup);
+      window.print();
+      // Fallback for browsers that fire afterprint inconsistently.
+      setTimeout(cleanup, 8000);
+      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'hygiene-print' } });
+    });
+  }
+
+  // ----- Quarterly Drift Check-in download (Phase D2) -----
+  var quarterlyBtn = document.getElementById('ohDownloadQuarterly');
+  if (quarterlyBtn) {
+    quarterlyBtn.addEventListener('click', function(){
+      // Ensure the URL fragment is current before we read it into the
+      // calendar event.
+      ohUserInteracted = true;
+      ohSyncFragment();
+      var scenarioUrl = location.href;
+      var ics = window.OH.generateQuarterlyIcs(scenarioUrl, { locale: 'en' });
+      var blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'open-hours-quarterly.ics';
+      document.body.appendChild(a); a.click();
+      setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+      if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'quarterly-ics' } });
+      var span = quarterlyBtn.querySelector('[data-label]');
+      if (span) {
+        var orig = span.getAttribute('data-label');
+        span.textContent = '✓ 8 reminders downloaded — first one in 90 days';
+        setTimeout(function(){ span.textContent = orig; }, 2800);
       }
     });
   }
@@ -1658,10 +1877,87 @@
   });
   renderArchetypes();
 
+  // ----- URL-fragment scenario rehydration (Phase D Muntin signature) -----
+  // Mirrors Margin Math's __mmHydratedState pattern. The Quarterly
+  // Drift Check-in .ics carries the page URL with this fragment in
+  // its DESCRIPTION/URL fields; clicking the calendar reminder reopens
+  // Open Hours with the saved scenario fully repopulated.
+  var ohUserInteracted = false;
+  function ohSyncFragment(){
+    if (!ohUserInteracted) return;
+    try {
+      var state = {
+        name: nameEl.value,
+        city: cityEl.value,
+        street:     (document.getElementById('ohStreet') || {}).value || '',
+        region:     (document.getElementById('ohRegion') || {}).value || '',
+        postalCode: (document.getElementById('ohPostal') || {}).value || '',
+        week: week,
+        closures: getClosureList()
+      };
+      var frag = window.OH.encodeState(state);
+      // Cap fragment at 4KB — well below the 32KB+ most browsers
+      // support for the URL hash, but small enough that the URL
+      // remains shareable in chat and email apps.
+      if (frag.length > 4000) return;
+      history.replaceState(null, '', '#' + frag);
+    } catch (_e) { /* non-fatal */ }
+  }
+  // Hook into rerender — runs after grid is normalized.
+  var originalRerender = rerender;
+  rerender = function(){
+    originalRerender();
+    requestAnimationFrame(ohSyncFragment);
+  };
+  // Mark interaction on first user input (avoids trampling URL on a
+  // bookmarked rehydration before the user has touched anything).
+  ['input','change','click'].forEach(function(evt){
+    document.addEventListener(evt, function(){ ohUserInteracted = true; }, { once: true, passive: true });
+  });
+
+  // ----- Hydrate from #fragment if present -----
+  function ohHydrateFromHash(){
+    var hash = location.hash || '';
+    if (!hash || hash === '#') return false;
+    var holidays = window.OH.holidaysInRange();
+    var st = window.OH.decodeState(hash, holidays);
+    if (!st) return false;
+    // Detect "did the fragment carry meaningful state?"
+    var hasState = !!(st.name || st.city || st.street ||
+      OH_DAYS_FULL_KEYS.some(function(d){ return (st.week[d] || []).length; }) ||
+      (st.closures && st.closures.length));
+    if (!hasState) return false;
+    nameEl.value = st.name || '';
+    cityEl.value = st.city || '';
+    var street = document.getElementById('ohStreet');
+    var region = document.getElementById('ohRegion');
+    var postal = document.getElementById('ohPostal');
+    if (street && st.street) { street.value = st.street;
+      var det = document.querySelector('.oh-address-extra'); if (det) det.open = true;
+    }
+    if (region && st.region) region.value = st.region;
+    if (postal && st.postalCode) postal.value = st.postalCode;
+    DAYS.forEach(function(d){ week[d] = st.week[d] || []; });
+    selectedClosures = {};
+    (st.closures || []).forEach(function(c){
+      selectedClosures[c.id] = { name: c.name, date: c.date, source: c.source || 'preset' };
+      if (/^custom-/.test(c.id)) customCounter = Math.max(customCounter, 1);
+    });
+    return true;
+  }
+  var OH_DAYS_FULL_KEYS = DAYS;
+
   // Initial render: empty week + empty form + holiday list.
   renderWeek();
   renderHolidayList();
   paintClosureCount();
+  // Hydrate from URL hash before first render so the form mirrors the
+  // saved scenario when the calendar reminder opens this page.
+  if (ohHydrateFromHash()) {
+    renderWeek();
+    renderCustomClosures();
+    paintClosureCount();
+  }
   rerender();
 })();
 </script>
