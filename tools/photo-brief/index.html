@@ -127,6 +127,10 @@
 .pb-action-btn.copied{background:var(--status-good-tint);color:var(--status-good);border-color:var(--status-good)}
 .pb-action-btn .pb-action-fmt{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10.5px;font-weight:700;color:inherit;opacity:.7}
 
+.pb-handoff{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px;padding:14px 18px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--cream-2)}
+.pb-handoff-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px dashed var(--teal);border-radius:999px;background:transparent;color:var(--teal);font-size:12.5px;font-weight:600;text-decoration:none;transition:background 140ms var(--ease-out),color 140ms var(--ease-out)}
+.pb-handoff-btn:hover{background:var(--teal);color:var(--cream);border-style:solid}
+
 .pb-privacy-list{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none;counter-reset:pb-step}
 .pb-privacy-list li{counter-increment:pb-step;display:grid;grid-template-columns:32px 1fr;gap:14px;align-items:start;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white)}
 .pb-privacy-list li::before{content:counter(pb-step);font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--teal);font-variant-numeric:tabular-nums}
@@ -314,6 +318,13 @@
       <button type="button" class="pb-action-btn" id="pbDownloadJson">Download <span class="pb-action-fmt">.json</span></button>
     </div>
 
+    <div class="pb-handoff" id="pbHandoff" style="display:none;">
+      <span class="pb-actions-label">Next step</span>
+      <a class="pb-handoff-btn" id="pbToMenuEng" href="/tools/menu-engineering/" data-target="menu-engineering">Open in Menu Engineering <span aria-hidden="true">&rarr;</span></a>
+      <a class="pb-handoff-btn" href="/tools/brand-suite/" data-target="brand-suite">Open Brand Suite <span aria-hidden="true">&rarr;</span></a>
+      <a class="pb-handoff-btn" href="/glossary/photo-brief/" data-target="glossary">Photo glossary <span aria-hidden="true">&rarr;</span></a>
+    </div>
+
     <div class="pb-empty" id="pbEmpty">
       List a dish above &mdash; or <button type="button" class="pb-sample-btn" id="pbSample2" style="margin:0 6px;">load the sample brief</button> &mdash; to see the math.
     </div>
@@ -358,7 +369,8 @@
       <h2 id="tool-deep-h">Why this tool exists.</h2>
       <p class="tool-deep-blurb">Every check this tool runs maps to a specific concept in the Library. Two starting points — one definition, one playbook.</p>
       <div class="tool-deep-topics"><a class="tool-deep-topic" href="/learn/topics/brand-design/">Brand &amp; Design</a>
-        <a class="tool-deep-topic" href="/learn/topics/conversions/">Conversions &amp; Reservations</a></div>
+        <a class="tool-deep-topic" href="/learn/topics/conversions/">Conversions &amp; Reservations</a>
+        <a class="tool-deep-topic" href="/learn/topics/trust-reviews/">Trust &amp; Reviews</a></div>
     </header>
     <div class="tool-deep-grid">
       <a class="tool-deep-card tool-deep-card-term" href="/glossary/photo-brief/">
@@ -380,6 +392,13 @@
           <h3>Hero shot</h3>
           <p class="tool-deep-aka">the one photo per surface that does the load-bearing visual work</p>
           <p class="tool-deep-snippet">For a given destination surface (web hero, Yelp featured, Instagram profile-grid lead, Google Business cover), the single photograph that ca…</p>
+          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/glossary/real-photos/">
+          <span class="tool-deep-kind">Glossary</span>
+          <h3>Real photos</h3>
+          <p class="tool-deep-aka">not stock photography</p>
+          <p class="tool-deep-snippet">Photographs of your space, your food, and your team — not royalty-free stock images licensed from an agency.</p>
           <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
         </a>
       <a class="tool-deep-card tool-deep-card-article" href="/blog/why-your-restaurant-loses-reservations-every-night/">
@@ -427,6 +446,8 @@
   var coverageWrap = document.getElementById('pbCoverageWrap');
   var coverageEl   = document.getElementById('pbCoverage');
   var actionsEl    = document.getElementById('pbActions');
+  var handoffEl    = document.getElementById('pbHandoff');
+  var toMenuEngEl  = document.getElementById('pbToMenuEng');
 
   // Latest computed results — cached for export handlers.
   var latestSummary = null;
@@ -616,6 +637,7 @@
       coverageWrap.style.display = 'none';
       emptyEl.style.display = '';
       if (actionsEl) actionsEl.style.display = 'none';
+      if (handoffEl) handoffEl.style.display = 'none';
       latestSummary = null;
       return;
     }
@@ -636,6 +658,11 @@
       margins:      fragmentState.margins.slice()
     };
     if (actionsEl) actionsEl.style.display = 'flex';
+    if (handoffEl) handoffEl.style.display = 'flex';
+    if (toMenuEngEl) {
+      var stars = PB.encodeStarsFragment(dishes);
+      toMenuEngEl.href = '/tools/menu-engineering/' + (stars ? '#stars=' + stars : '');
+    }
 
     dedupNum.textContent  = String(dedup.dedup);
     naiveNum.textContent  = String(dedup.naive);
@@ -667,6 +694,11 @@
     renderResults();
   });
   if (dayRateEl) dayRateEl.addEventListener('input', renderResults);
+  if (handoffEl) handoffEl.addEventListener('click', function(e){
+    var a = e.target.closest('.pb-handoff-btn');
+    if (!a || !window.plausible) return;
+    window.plausible('Photo Brief Push', { props: { target: a.dataset.target || 'unknown' } });
+  });
   if (srcFrameEl) srcFrameEl.addEventListener('change', function(e){
     Array.prototype.forEach.call(srcFrameEl.querySelectorAll('label'), function(l){
       var inp = l.querySelector('input[type="radio"]');
