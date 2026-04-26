@@ -74,8 +74,9 @@
 .pb-grid input:focus,.pb-grid select:focus{outline:2px solid var(--teal);outline-offset:1px}
 .pb-grid .pb-num{width:60px;text-align:right;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--ink-soft)}
 .pb-grid .pb-prio{width:100px}
-.pb-grid .pb-remove{background:none;border:none;color:var(--stone);cursor:pointer;font-size:18px;line-height:1;padding:0 4px}
-.pb-grid .pb-remove:hover{color:var(--rust)}
+.pb-grid .pb-remove{background:none;border:none;color:var(--stone);cursor:pointer;font-size:18px;line-height:1;padding:0;display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;border-radius:var(--r-sm)}
+.pb-grid .pb-remove:hover{color:var(--rust);background:var(--cream-2)}
+.pb-grid .pb-remove:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
 .pb-grid-actions{display:flex;gap:8px;flex-wrap:wrap;padding:10px 12px;background:var(--cream-2);border-top:1px solid var(--line)}
 .pb-paste{margin:0 0 14px;padding:14px 16px;border:1px dashed var(--line-dark);border-radius:var(--r-input);background:var(--white)}
 .pb-paste summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
@@ -272,7 +273,7 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
           <textarea id="pbPaste" placeholder="Plato,Categoría,Prioridad&#10;Cacio e pepe,pasta,hero&#10;Tiramisú,postre,standard&#10;..." spellcheck="false"></textarea>
           <div class="pb-paste-actions">
             <button type="button" class="pb-paste-btn" id="pbPasteParse">Procesar pegado</button>
-            <span class="pb-paste-hint" id="pbPasteHint"></span>
+            <span class="pb-paste-hint" id="pbPasteHint" aria-live="polite" aria-atomic="true"></span>
           </div>
         </div>
       </details>
@@ -516,11 +517,13 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
     var prioOpts = ['hero','standard','secondary'].map(function(p){
       return '<option value="' + p + '"' + (p === row.priority ? ' selected' : '') + '>' + p + '</option>';
     }).join('');
+    var nameForLabel = (row.name || '').trim();
+    var removeLabel = nameForLabel ? 'Eliminar ' + nameForLabel : 'Eliminar plato';
     return '<tr>' +
-      '<td><input type="text" data-field="name" value="' + esc(row.name) + '" placeholder="e.g. Cacio e pepe" /></td>' +
-      '<td><select data-field="category">' + catOpts + '</select></td>' +
-      '<td class="pb-prio"><select data-field="priority">' + prioOpts + '</select></td>' +
-      '<td><button type="button" class="pb-remove" aria-label="Remove dish">&times;</button></td>' +
+      '<td><input type="text" data-field="name" value="' + esc(row.name) + '" placeholder="ej. Cacio e pepe" aria-label="Nombre del plato" /></td>' +
+      '<td><select data-field="category" aria-label="Categoría">' + catOpts + '</select></td>' +
+      '<td class="pb-prio"><select data-field="priority" aria-label="Prioridad">' + prioOpts + '</select></td>' +
+      '<td><button type="button" class="pb-remove" aria-label="' + esc(removeLabel) + '">&times;</button></td>' +
       '</tr>';
   }
   function readRows(){
@@ -721,7 +724,17 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
   }
 
   // -------------------- Event handlers --------------------
-  rowsEl.addEventListener('input', renderResults);
+  rowsEl.addEventListener('input', function(e){
+    if (e.target && e.target.dataset && e.target.dataset.field === 'name') {
+      var tr = e.target.closest('tr');
+      var btn = tr && tr.querySelector('.pb-remove');
+      if (btn) {
+        var v = (e.target.value || '').trim();
+        btn.setAttribute('aria-label', v ? 'Eliminar ' + v : 'Eliminar plato');
+      }
+    }
+    renderResults();
+  });
   rowsEl.addEventListener('change', renderResults);
   rowsEl.addEventListener('click', function(e){
     if (e.target.classList.contains('pb-remove')) {
