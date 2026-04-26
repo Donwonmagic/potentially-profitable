@@ -628,8 +628,14 @@
     summary.items.forEach(function(it){ if (byQ[it.quadrant]) byQ[it.quadrant].push(it); });
     var actions = window.ME.ACTIONS_EN;
     var toolLinks = {
-      Plowhorse: { href: '/es/tools/margin-math/#calc-priceraise', label: 'Re-costear en Margin Math &rarr;' },
-      Puzzle:    { href: '/es/tools/menu-copy/',                    label: 'Re-describir en Inspector de Copy &rarr;' }
+      Plowhorse: [
+        { href: '/es/tools/margin-math/#calc-priceraise', label: 'Re-costear en Margin Math &rarr;' },
+        { href: '/es/tools/plate-cost/',                  label: 'Auditar costo de ingredientes en Costo del Plato &rarr;' }
+      ],
+      Puzzle: [
+        { href: '/es/tools/menu-copy/',                   label: 'Re-describir en Inspector de Copy &rarr;' },
+        { href: '/es/tools/plate-cost/',                  label: 'Re-costear la receta en Costo del Plato &rarr;' }
+      ]
     };
     var html = '';
     ['Star','Plowhorse','Puzzle','Dog'].forEach(function(q){
@@ -637,9 +643,11 @@
       var list = byQ[q].map(function(it){
         return '<li>' + escHtml(it.item || '(sin nombre)') + ' &middot; ' + fmtMoney(it.cm_dollars) + ' CM &middot; ' + fmtPct(it.share) + '</li>';
       }).join('');
-      var tool = toolLinks[q];
-      var toolLine = tool && byQ[q].length > 0
-        ? '<p style="margin:8px 0 0;font-size:12px;"><a href="' + tool.href + '" style="color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor;">' + tool.label + '</a></p>'
+      var tools = toolLinks[q] || [];
+      var toolLine = tools.length && byQ[q].length > 0
+        ? tools.map(function(tool){
+            return '<p style="margin:8px 0 0;font-size:12px;"><a href="' + tool.href + '" style="color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor;">' + tool.label + '</a></p>';
+          }).join('')
         : '';
       html += '<article class="me-action-card" data-q="' + q + '">' +
               '<h3>' + q + 's <span style="font-size:13px;font-weight:400;color:var(--stone);">(' + byQ[q].length + ')</span></h3>' +

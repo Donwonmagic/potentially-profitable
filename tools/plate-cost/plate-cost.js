@@ -700,6 +700,27 @@
     ]
   };
 
+  // Spanish sample — the same recipe, rendered with the names a
+  // Spanish-speaking chef would actually use on the prep sheet.
+  // Same numbers (so the Plate Card output matches between locales)
+  // but locale-appropriate ingredient names + dish title.
+  var SAMPLE_RECIPE_ES = {
+    name:     'Cacio e pepe',
+    portions: 1,
+    rows: [
+      { ingredient: 'Tonnarelli (pasta seca)', apPrice: 4.50, apQty: 1,    apUnit: 'lb',
+        yieldPercent: 1.00, usedQty: 4,   usedUnit: 'oz' },
+      { ingredient: 'Pecorino Romano',          apPrice: 18,   apQty: 1,    apUnit: 'lb',
+        yieldPercent: 0.95, usedQty: 1.5, usedUnit: 'oz' },
+      { ingredient: 'Pimienta negra en grano', apPrice: 12,   apQty: 8,    apUnit: 'oz',
+        yieldPercent: 1.00, usedQty: 0.05, usedUnit: 'oz' },
+      { ingredient: 'Aceite de oliva',          apPrice: 24,   apQty: 1,    apUnit: 'l',
+        yieldPercent: 1.00, usedQty: 1,    usedUnit: 'tbsp' },
+      { ingredient: 'Sal marina',               apPrice: 6,    apQty: 26,   apUnit: 'oz',
+        yieldPercent: 1.00, usedQty: 0.1,  usedUnit: 'oz' }
+    ]
+  };
+
   // ============================================================
   // Public API
   // ============================================================
@@ -718,7 +739,8 @@
     YIELD_TABLE:           YIELD_TABLE,
     UNITS:                 UNITS,
     FOOD_COST_TARGETS:     FOOD_COST_TARGETS,
-    SAMPLE_RECIPE_EN:      SAMPLE_RECIPE_EN
+    SAMPLE_RECIPE_EN:      SAMPLE_RECIPE_EN,
+    SAMPLE_RECIPE_ES:      SAMPLE_RECIPE_ES
   };
 
   if (typeof window !== 'undefined') window.PC = api;

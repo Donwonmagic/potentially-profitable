@@ -310,6 +310,41 @@
   <p style="font-size:13.5px;color:var(--ink-soft);line-height:1.6;margin:0;padding:14px 16px;background:var(--cream-2);border-radius:var(--r-sm);"><strong>Lo que sigue.</strong> El costo del plato es el primer insumo faltante para dos otras herramientas. Haz clic en <em>Agregar a Ingeniería de Menú</em> para ver este plato en la matriz de Estrellas / Caballos / Acertijos / Perros. Haz clic en <em>Usar en Margen Math</em> para modelar cómo se asienta contra tu costo primario completo. O simplemente imprime la Ficha y pégala en la pared.</p>
 </div></section>
 
+<!-- LIBRARY:tool-deep-links:start -->
+<section class="tool-deep-links" aria-labelledby="tool-deep-h">
+  <div class="container">
+    <header class="tool-deep-head">
+      <span class="eyebrow">Aprende más</span>
+      <h2 id="tool-deep-h">Por qué existe esta herramienta.</h2>
+      <p class="tool-deep-blurb">Cada chequeo que esta herramienta hace conecta con un concepto específico en la biblioteca. Dos puntos de partida — una definición, una guía.</p>
+      <div class="tool-deep-topics"><a class="tool-deep-topic" href="/es/learn/topics/operations-margin/">Operaciones y margen</a></div>
+    </header>
+    <div class="tool-deep-grid">
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/plate-cost/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Costo del plato</h3>
+          <p class="tool-deep-aka">el costo real de ingredientes de un plato terminado</p>
+          <p class="tool-deep-snippet">Lo que te cuesta en ingredientes mandar un plato al pase, después de la limpieza, el pelado, el deshuesado y la merma. Se calcula por ingred…</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/yield-percent/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Porcentaje de rendimiento</h3>
+          <p class="tool-deep-aka">la parte de lo comprado que termina en un plato</p>
+          <p class="tool-deep-snippet">Para un ingrediente dado: el porcentaje del peso tal como se compra que sobrevive a la limpieza, el pelado, los huesos, la grasa y la merma …</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-article" href="/es/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">
+          <span class="tool-deep-kind">Artículo</span>
+          <h3>Cómo subir los precios del menú del restaurante sin perder reservas</h3>
+          <p class="tool-deep-snippet">El manual honesto para subir los precios del menú en el sitio web de un restaurante independiente en 2026 — qué platos subir, cuáles mantener, cómo escalonarlo, y los cambios en la web que evitan que caigan las reservas cuando los números del menú suben.</p>
+          <span class="tool-deep-cta">Leer la guía <span aria-hidden="true">→</span></span>
+        </a>
+    </div>
+  </div>
+</section>
+<!-- LIBRARY:tool-deep-links:end -->
+
 </main>
 <footer class="foot">
   <div class="container foot-inner">
@@ -535,7 +570,7 @@
   });
 
   function loadSample() {
-    var s = PC.SAMPLE_RECIPE_EN;
+    var s = PC.SAMPLE_RECIPE_ES || PC.SAMPLE_RECIPE_EN;
     nameEl.value = s.name;
     portionsEl.value = String(s.portions);
     rerenderRows(s.rows.map(function(r){ return Object.assign({}, r); }));
