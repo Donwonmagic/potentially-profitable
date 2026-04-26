@@ -90,13 +90,23 @@
     //                             exist in brand/og/. Catches stale
     //                             slugs + forgotten cards.json
     //                             entries before they ship.
-    //   build-site-counts.mjs   — derives data/site-counts.json from the
-    //                             filesystem (live tool count, glossary
-    //                             term count, topics, articles). Runs
-    //                             after sync-includes so the freshly-
-    //                             stamped nav sentinels are scanned, and
-    //                             before inject-site-counts so the JSON
-    //                             it consumes is current.
+    //   build-tools-index.mjs   — renders /tools/index.html and
+    //                             /es/tools/index.html bodies between
+    //                             <!-- tools:auto -->...<!-- /tools:auto -->
+    //                             sentinels from data/tools.json (4
+    //                             topic clusters, goals launcher, chip
+    //                             nav, roadmap). Runs BEFORE
+    //                             build-site-counts so the JSON it
+    //                             consumes drives both the rendered
+    //                             page and the cross-page count
+    //                             sentinels.
+    //   build-site-counts.mjs   — derives data/site-counts.json from
+    //                             data/tools.json + filesystem (live
+    //                             tool count, coming-soon count,
+    //                             glossary terms, topics, articles).
+    //                             Runs after sync-includes so the
+    //                             freshly-stamped nav sentinels are in
+    //                             place, and before inject-site-counts.
     //   inject-site-counts.mjs  — replaces <!-- count:KEY -->...<!-- /count -->
     //                             sentinels with values from
     //                             data/site-counts.json. MUST run after
@@ -108,7 +118,7 @@
     //                             outputs dist/pagefind/ which site.js
     //                             lazy-loads on first open of the
     //                             search modal. Config at pagefind.yml.
-    "command": "node scripts/build-og-cards.mjs && node scripts/stamp-es-restaurant-audit.mjs && node scripts/sync-includes.mjs && node scripts/build-site-counts.mjs && node scripts/inject-site-counts.mjs && node scripts/stamp-hreflang.mjs && node scripts/check-locale-parity.mjs --check && node scripts/check-og-images.mjs && mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md --exclude=src --exclude=scripts --exclude=_includes --exclude=pagefind.yml . | tar -xf - -C dist && npx -y pagefind@latest --site dist"
+    "command": "node scripts/build-og-cards.mjs && node scripts/stamp-es-restaurant-audit.mjs && node scripts/sync-includes.mjs && node scripts/build-tools-index.mjs && node scripts/build-site-counts.mjs && node scripts/inject-site-counts.mjs && node scripts/stamp-hreflang.mjs && node scripts/check-locale-parity.mjs --check && node scripts/check-og-images.mjs && mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md --exclude=src --exclude=scripts --exclude=_includes --exclude=pagefind.yml . | tar -xf - -C dist && npx -y pagefind@latest --site dist"
   },
   "assets": {
     "directory": "./dist",

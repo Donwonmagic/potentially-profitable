@@ -10,15 +10,15 @@
 //   node scripts/build-site-counts.mjs --check   # exits non-zero if the JSON would change
 //
 // Counting rules (kept here so they're greppable):
-//   tools.live      — <a class="tool-card live"> in tools/index.html
-//   tools.coming    — total tool subdirs minus the live count
+//   tools.live      — entries in data/tools.json with status=live
+//   tools.coming    — entries in data/tools.json roadmap[]
 //   glossary.terms  — directories under glossary/ that contain index.html
 //   topics          — directories under learn/topics/ that contain index.html
 //   articles        — directories under blog/ (excluding /drafts/) with index.html
 //
-// Phase 2 of the cohesion pass will move tool counts to data/tools.json;
-// when that lands, this script will read tools.json instead of scanning
-// HTML. The shape of site-counts.json stays the same.
+// data/tools.json is the source of truth for tool counts (added in
+// Phase 2). Falls back to scanning tools/index.html if the JSON is
+// missing — keeps the script forgiving while the new pipeline rolls in.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -42,19 +42,37 @@ function countDirs(rel, { skip = new Set(), require = 'index.html' } = {}) {
   return n;
 }
 
-function countLiveTools() {
-  const html = fs.readFileSync(path.join(REPO, 'tools', 'index.html'), 'utf8');
-  const matches = html.match(/class="tool-card live"/g);
-  return matches ? matches.length : 0;
+function readToolsJson() {
+  const fp = path.join(REPO, 'data', 'tools.json');
+  if (!fs.existsSync(fp)) return null;
+  try { return JSON.parse(fs.readFileSync(fp, 'utf8')); } catch { return null; }
 }
 
-const liveTools  = countLiveTools();
-const totalTools = countDirs('tools');
+function countToolsFromJson(toolsJson) {
+  const live   = Object.values(toolsJson.tools || {}).filter((t) => t.status === 'live').length;
+  const coming = Array.isArray(toolsJson.roadmap) ? toolsJson.roadmap.length : 0;
+  return { live, coming };
+}
+
+function countToolsFromHtmlFallback() {
+  // Pre-Phase-2 fallback. Matches "tool-card ... live" in any class
+  // attribute order — covers both the legacy "tool-card live" and the
+  // Phase-2 "tool-card tool-card--compact live" rendering.
+  const html = fs.readFileSync(path.join(REPO, 'tools', 'index.html'), 'utf8');
+  const re = /class="tool-card[^"]*\blive\b/g;
+  const matches = html.match(re);
+  const live = matches ? matches.length : 0;
+  const totalDirs = countDirs('tools');
+  return { live, coming: Math.max(0, totalDirs - live) };
+}
+
+const toolsJson = readToolsJson();
+const toolCounts = toolsJson ? countToolsFromJson(toolsJson) : countToolsFromHtmlFallback();
 const counts = {
   _doc: 'Single source of truth for the counts that appear in nav, footer, and library copy. Built by scripts/build-site-counts.mjs from the filesystem; injected into HTML by scripts/inject-site-counts.mjs via <!-- count:KEY -->VALUE<!-- /count --> sentinels.',
   tools: {
-    live:   liveTools,
-    coming: Math.max(0, totalTools - liveTools),
+    live:   toolCounts.live,
+    coming: toolCounts.coming,
   },
   glossary: {
     terms: countDirs('glossary'),

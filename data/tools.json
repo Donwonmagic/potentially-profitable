@@ -1,0 +1,247 @@
+{
+  "_doc": "Single source of truth for the /tools/ landing page (EN + ES). scripts/build-tools-index.mjs reads this and stamps the goals launcher, chip nav, four cluster sections, and a roadmap section between <!-- tools:auto -->...<!-- /tools:auto --> sentinels in tools/index.html and es/tools/index.html. Editing rules: summary ≤ 220 chars; walkaway is exactly one line. Cluster slugs MUST match data/topics.json (the same 6-topic taxonomy used at /learn/topics/<slug>/). Add a tool? Add a tools.<slug> entry plus its slug to the matching clusters[].tools list, run the build script.",
+
+  "clusters": [
+    {
+      "id": "operations-margin",
+      "label_en": "Operations & Margin",
+      "label_es": "Operaciones y Márgenes",
+      "blurb_en": "The honest math of running an independent restaurant — food cost, menu mix, and the prices that protect your margin.",
+      "blurb_es": "La matemática honesta de un restaurante independiente — costo de comida, mezcla de menú y los precios que protegen tu margen.",
+      "tools": ["margin-math", "menu-engineering", "plate-cost"]
+    },
+    {
+      "id": "local-seo",
+      "label_en": "Local SEO & Presence",
+      "label_es": "SEO local y Presencia",
+      "blurb_en": "How Google decides which restaurant to show — your listing, your hours, your site, the on-page signals that matter.",
+      "blurb_es": "Cómo Google decide qué restaurante mostrar — tu ficha, tus horarios, tu sitio, las señales en página que importan.",
+      "tools": ["restaurant-audit", "gbp-grader", "open-hours"]
+    },
+    {
+      "id": "conversions",
+      "label_en": "Conversions & Content",
+      "label_es": "Conversiones y Contenido",
+      "blurb_en": "The patterns that turn a passing visitor into a booked table — menu copy, photos, and the small frictions that quietly cost you bookings.",
+      "blurb_es": "Los patrones que convierten a un visitante en una mesa reservada — copy del menú, fotos, y las pequeñas fricciones que te cuestan reservas.",
+      "tools": ["menu-copy", "photo-brief"]
+    },
+    {
+      "id": "brand-design",
+      "label_en": "Brand & Design",
+      "label_es": "Marca y Diseño",
+      "blurb_en": "The system around your mark — palette, accessible color pairs, tokens you can hand to any builder or developer.",
+      "blurb_es": "El sistema alrededor de tu marca — paleta, pares de color accesibles, tokens que puedes pasar a cualquier herramienta o desarrollador.",
+      "tools": ["brand-suite"]
+    }
+  ],
+
+  "goals": [
+    {
+      "id": "raising-prices",
+      "label_en": "Raising prices",
+      "label_es": "Subir precios",
+      "tools": ["plate-cost", "menu-engineering", "margin-math"]
+    },
+    {
+      "id": "fixing-google",
+      "label_en": "Fixing your Google listing",
+      "label_es": "Arreglar tu ficha de Google",
+      "tools": ["gbp-grader", "restaurant-audit", "open-hours"]
+    },
+    {
+      "id": "refreshing-brand",
+      "label_en": "Refreshing your brand",
+      "label_es": "Refrescar tu marca",
+      "tools": ["brand-suite", "photo-brief", "menu-copy"]
+    }
+  ],
+
+  "tools": {
+    "restaurant-audit": {
+      "title_en": "Restaurant Website Audit",
+      "title_es": "Diagnóstico de sitio de restaurante",
+      "summary_en": "Drop your URL. Get a real mobile audit in about thirty seconds — performance, SEO, accessibility, and ten restaurant-specific checks in plain English.",
+      "summary_es": "Pega la URL de tu restaurante y recibe un diagnóstico móvil real en unos treinta segundos — desempeño, SEO, accesibilidad, y diez chequeos específicos en español claro.",
+      "walkaway_en": "A punch list of what's broken on your restaurant's website.",
+      "walkaway_es": "Una lista accionable de lo que está roto en tu sitio.",
+      "cta_en": "Run the audit",
+      "cta_es": "Correr el diagnóstico",
+      "url_en": "/tools/audits/restaurant/",
+      "url_es": "/es/tools/audits/restaurant/",
+      "cluster": "local-seo",
+      "status": "live"
+    },
+    "gbp-grader": {
+      "title_en": "Google Business Profile Grader",
+      "title_es": "Calificador de Google Business Profile",
+      "summary_en": "Search your business name. See how your Google listing scores — rating, reviews, photos, categories, hours — with the specific fixes for what's missing.",
+      "summary_es": "Busca el nombre de tu negocio. Mira cómo se compara tu ficha de Google — calificación, reseñas, fotos, categorías, horarios — con arreglos específicos.",
+      "walkaway_en": "Specific fixes for the gaps in your Google listing.",
+      "walkaway_es": "Arreglos específicos para los huecos en tu ficha de Google.",
+      "cta_en": "Grade your GBP",
+      "cta_es": "Califica tu GBP",
+      "url_en": "/tools/gbp-grader/",
+      "url_es": "/es/tools/gbp-grader/",
+      "cluster": "local-seo",
+      "status": "live"
+    },
+    "open-hours": {
+      "title_en": "Open Hours",
+      "title_es": "Horario Abierto",
+      "summary_en": "Fill your hours once. Walk away with the exact text for Google and a code block for your website builder. About 15 minutes.",
+      "summary_es": "Llena los horarios una vez. Llévate el texto exacto para Google y un bloque de código para tu sitio. Unos 15 minutos.",
+      "walkaway_en": "The exact hours text Google and your website both want.",
+      "walkaway_es": "El texto exacto que Google y tu sitio quieren para tus horarios.",
+      "cta_en": "Open Open Hours",
+      "cta_es": "Abrir Horario Abierto",
+      "url_en": "/tools/open-hours/",
+      "url_es": "/es/tools/open-hours/",
+      "cluster": "local-seo",
+      "status": "live"
+    },
+    "margin-math": {
+      "title_en": "Margin Math",
+      "title_es": "Cálculo de Margen",
+      "summary_en": "Four restaurant calculators — delivery break-even, prime cost, covers needed, and a price-raise simulator. Stays in your browser.",
+      "summary_es": "Cuatro calculadoras — punto de equilibrio con delivery, prime cost, cubiertos necesarios, simulador de alza de precios. Se queda en tu navegador.",
+      "walkaway_en": "Honest numbers for your hardest pricing decisions.",
+      "walkaway_es": "Números honestos para tus decisiones de precio más difíciles.",
+      "cta_en": "Run the math",
+      "cta_es": "Corre la matemática",
+      "url_en": "/tools/margin-math/",
+      "url_es": "/es/tools/margin-math/",
+      "cluster": "operations-margin",
+      "status": "live"
+    },
+    "menu-engineering": {
+      "title_en": "Menu Engineering Matrix",
+      "title_es": "Matriz de Ingeniería de Menú",
+      "summary_en": "Paste your menu — items, prices, food cost, units sold. Get a 2×2 of Stars, Plowhorses, Puzzles, and Dogs with one action per dish.",
+      "summary_es": "Pega tu menú — platos, precios, costo de comida, unidades vendidas. Obtén un 2×2 de Estrellas, Caballos, Acertijos y Perros con una acción por plato.",
+      "walkaway_en": "An action per dish — keep, push, redesign, or drop.",
+      "walkaway_es": "Una acción por plato — mantén, empuja, rediseña o quita.",
+      "cta_en": "Open Menu Engineering",
+      "cta_es": "Abrir Ingeniería de Menú",
+      "url_en": "/tools/menu-engineering/",
+      "url_es": "/es/tools/menu-engineering/",
+      "cluster": "operations-margin",
+      "status": "live"
+    },
+    "plate-cost": {
+      "title_en": "Plate Cost Calculator",
+      "title_es": "Costo del Plato",
+      "summary_en": "Type a recipe — what you bought, what you used, what it yields. The tool walks the math from invoice to plate cost and suggests three menu prices.",
+      "summary_es": "Escribe una receta — qué compraste, cuánto usaste, cuánto rinde. La herramienta hace la matemática del recibo al plato y sugiere tres precios.",
+      "walkaway_en": "A defendable price for every dish on the menu.",
+      "walkaway_es": "Un precio defendible para cada plato del menú.",
+      "cta_en": "Open Plate Cost",
+      "cta_es": "Abrir Costo del Plato",
+      "url_en": "/tools/plate-cost/",
+      "url_es": "/es/tools/plate-cost/",
+      "cluster": "operations-margin",
+      "status": "live"
+    },
+    "menu-copy": {
+      "title_en": "Menu Copy Inspector",
+      "title_es": "Inspector de Copy de Menú",
+      "summary_en": "Paste a dish description. See six diagnostics — sensory words, provenance, technique, length, hedges, pricing — with the research behind each.",
+      "summary_es": "Pega la descripción de un plato. Seis diagnósticos — palabras sensoriales, procedencia, técnica, extensión, relleno, precio — con la investigación detrás.",
+      "walkaway_en": "A trained eye for reading your own menu critically.",
+      "walkaway_es": "Un ojo entrenado para leer tu propio menú con criterio.",
+      "cta_en": "Open Menu Copy",
+      "cta_es": "Abrir Inspector de Copy",
+      "url_en": "/tools/menu-copy/",
+      "url_es": "/es/tools/menu-copy/",
+      "cluster": "conversions",
+      "status": "live"
+    },
+    "photo-brief": {
+      "title_en": "Photo Brief Builder",
+      "title_es": "Constructor de Brief de Fotos",
+      "summary_en": "List your dishes, tick where the photos go (Yelp, Google, Instagram, your menu). Walk away with a one-page brief that gets you the right photos in one shoot.",
+      "summary_es": "Lista tus platos, marca a dónde van las fotos (Yelp, Google, Instagram, tu menú). Llévate un brief de una página y las fotos correctas en una sesión.",
+      "walkaway_en": "A one-page brief your photographer can shoot in one visit.",
+      "walkaway_es": "Un brief de una página que tu fotógrafo puede cumplir en una visita.",
+      "cta_en": "Open Photo Brief",
+      "cta_es": "Abrir Brief de Fotos",
+      "url_en": "/tools/photo-brief/",
+      "url_es": "/es/tools/photo-brief/",
+      "cluster": "conversions",
+      "status": "live"
+    },
+    "brand-suite": {
+      "title_en": "Brand Suite",
+      "title_es": "Suite de Marca",
+      "summary_en": "Drop in your logo. Walk away with a palette, accessible color pairs, and CSS tokens — a starter kit for the system around your mark.",
+      "summary_es": "Suelta tu logo. Llévate una paleta, pares de color accesibles y tokens CSS — un punto de partida para el sistema alrededor de tu marca.",
+      "walkaway_en": "Tokens you can paste into any builder or hand to a developer.",
+      "walkaway_es": "Tokens que puedes pegar en cualquier herramienta o pasar a un desarrollador.",
+      "cta_en": "Open Brand Suite",
+      "cta_es": "Abrir Suite de Marca",
+      "url_en": "/tools/brand-suite/",
+      "url_es": "/es/tools/brand-suite/",
+      "cluster": "brand-design",
+      "status": "live"
+    }
+  },
+
+  "roadmap": [
+    {
+      "slug": "speed-test",
+      "title_en": "Speed Test",
+      "title_es": "Prueba de Velocidad",
+      "blurb_en": "Drop a URL. Get a Lighthouse-backed speed score with the specific files slowing you down.",
+      "blurb_es": "Pega una URL. Recibe un puntaje de velocidad respaldado por Lighthouse con los archivos que te frenan.",
+      "cluster": "speed-mobile"
+    },
+    {
+      "slug": "mobile-check",
+      "title_en": "Mobile Checker",
+      "title_es": "Revisor Móvil",
+      "blurb_en": "How does your site actually look on the phones your guests use? Real-device snapshots with the issues called out.",
+      "blurb_es": "¿Cómo se ve tu sitio en los teléfonos que usan tus comensales? Capturas reales con los problemas señalados.",
+      "cluster": "speed-mobile"
+    },
+    {
+      "slug": "tech-stack",
+      "title_en": "Tech Stack Detector",
+      "title_es": "Detector de Stack",
+      "blurb_en": "What's your site actually built on? CMS, hosting, scripts, trackers — the parts that decide what's possible.",
+      "blurb_es": "¿En qué está construido tu sitio? CMS, hosting, scripts, trackers — las partes que deciden qué es posible.",
+      "cluster": "speed-mobile"
+    },
+    {
+      "slug": "seo-grader",
+      "title_en": "SEO Grader",
+      "title_es": "Calificador de SEO",
+      "blurb_en": "On-page SEO basics scored against the way Google actually ranks restaurants — titles, schema, content depth.",
+      "blurb_es": "Lo básico de SEO en página, calificado como Google realmente posiciona restaurantes — títulos, schema, contenido.",
+      "cluster": "local-seo"
+    },
+    {
+      "slug": "schema-check",
+      "title_en": "Schema Checker",
+      "title_es": "Revisor de Schema",
+      "blurb_en": "Does your structured data say what Google needs? Restaurant, Menu, Review, OpeningHoursSpecification — validated.",
+      "blurb_es": "¿Tu structured data dice lo que Google necesita? Restaurant, Menu, Review, OpeningHoursSpecification — validado.",
+      "cluster": "local-seo"
+    },
+    {
+      "slug": "search-ideas",
+      "title_en": "Local Search Ideas",
+      "title_es": "Ideas de Búsqueda Local",
+      "blurb_en": "What are people actually typing to find a restaurant like yours? Long-tail keywords with intent, not vanity.",
+      "blurb_es": "¿Qué escribe la gente para encontrar un restaurante como el tuyo? Keywords de cola larga con intención, no vanidad.",
+      "cluster": "local-seo"
+    },
+    {
+      "slug": "compare",
+      "title_en": "Competitor Comparison",
+      "title_es": "Comparador de Competencia",
+      "blurb_en": "Side-by-side: your restaurant vs the one down the street. Speed, SEO, photos, reviews — where you actually stand.",
+      "blurb_es": "Lado a lado: tu restaurante vs el de la cuadra. Velocidad, SEO, fotos, reseñas — dónde realmente estás.",
+      "cluster": "conversions"
+    }
+  ]
+}
