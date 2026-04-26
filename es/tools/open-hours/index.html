@@ -47,6 +47,9 @@
 
 .oh-week{display:flex;flex-direction:column;gap:10px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);padding:14px}
 .oh-day-row{display:grid;grid-template-columns:84px 1fr auto;gap:14px;align-items:start;padding:8px 0;border-bottom:1px solid var(--line)}
+.oh-row-actions{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.oh-copy-prev{padding:3px 10px;border:1px dashed var(--teal);border-radius:999px;background:transparent;font:inherit;font-size:11px;font-weight:600;color:var(--teal);cursor:pointer;white-space:nowrap}
+.oh-copy-prev:hover{background:var(--teal);color:var(--cream)}
 .oh-day-row:last-child{border-bottom:0}
 .oh-day-name{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink);padding-top:6px}
 .oh-day-name small{display:block;font-family:var(--font-body,inherit);font-size:11px;font-weight:400;color:var(--stone);letter-spacing:.04em;text-transform:uppercase;margin-top:2px}
@@ -59,6 +62,8 @@
 .oh-service .oh-next-day input{margin:0}
 .oh-service .oh-remove{background:none;border:none;color:var(--stone);cursor:pointer;font-size:18px;line-height:1;padding:0 4px}
 .oh-service .oh-remove:hover{color:var(--rust)}
+.oh-svc-hint{grid-column:1 / -1;font-size:11px;color:var(--stone);font-variant-numeric:tabular-nums;margin-top:2px;letter-spacing:.02em;display:block}
+@media(max-width:640px){.oh-svc-hint{grid-column:auto}}
 .oh-add-service{padding:4px 10px;border:1px dashed var(--line-dark);border-radius:999px;background:transparent;font:inherit;font-size:11px;font-weight:600;color:var(--stone);cursor:pointer;align-self:flex-start}
 .oh-add-service:hover{border-color:var(--teal);color:var(--teal)}
 .oh-day-closed{font-size:12px;color:var(--stone);font-style:italic;align-self:center}
@@ -101,6 +106,13 @@
 .oh-closures-head h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0}
 .oh-closures-head .oh-count{font-size:12px;color:var(--stone);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
 .oh-holiday-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;max-height:380px;overflow-y:auto;padding-right:4px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+@media(max-width:640px){
+  .oh-holiday-list{max-height:280px}
+  .oh-holiday-list[data-show-all="true"]{max-height:none}
+}
+.oh-holiday-show-all{display:none;align-self:flex-start;padding:6px 14px;border:1px dashed var(--line-dark);border-radius:999px;background:transparent;font:inherit;font-size:12px;font-weight:600;color:var(--stone);cursor:pointer;margin-top:4px}
+.oh-holiday-show-all:hover{border-color:var(--teal);color:var(--teal)}
+@media(max-width:640px){.oh-holiday-show-all{display:inline-flex}}
 .oh-holiday{display:grid;grid-template-columns:24px 1fr auto;gap:10px;align-items:start;padding:10px 14px;border-bottom:1px solid var(--line);cursor:pointer}
 .oh-holiday:last-child{border-bottom:0}
 .oh-holiday:hover{background:var(--cream-2)}
@@ -283,6 +295,7 @@
       </div>
       <p style="font-size:12.5px;color:var(--stone);margin:0;line-height:1.55;">Marca cualquier feriado en el que vayas a cerrar. Los agregamos al archivo &ldquo;Añadir cierres a mi calendario&rdquo; abajo.</p>
       <ul class="oh-holiday-list" id="ohHolidayList" aria-label="Feriados próximos"></ul>
+      <button type="button" class="oh-holiday-show-all" id="ohHolidayShowAll" aria-pressed="false">Mostrar todos los feriados próximos ↓</button>
 
       <div class="oh-custom">
         <span style="font-weight:600;color:var(--ink);">Cierre personalizado:</span>
@@ -760,8 +773,8 @@
 </footer>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="/tools/open-hours/open-hours.js?v=20260426-oh9"></script>
-<script src="/tools/open-hours/sign-render.js?v=20260426-oh10"></script>
+<script src="/tools/open-hours/open-hours.js?v=20260426-oh11"></script>
+<script src="/tools/open-hours/sign-render.js?v=20260426-oh12"></script>
 <script>
 /* Open Hours — week-grid input + live output render.
  *
@@ -853,20 +866,41 @@
         });
       }
       servicesHtml += '</div>';
-      var addBtn = '<button type="button" class="oh-add-service" data-add-day="' + d + '">+ ' + (services.length === 0 ? 'add hours' : 'add another service') + '</button>';
-      row.innerHTML = nameCell + servicesHtml + addBtn;
+      var addBtn = '<button type="button" class="oh-add-service" data-add-day="' + d + '">+ ' + (services.length === 0 ? 'agregar horario' : 'agregar otro servicio') + '</button>';
+      // Phase E1 — chip "igual que <día anterior>" en filas vacías
+      var copyChip = '';
+      if (idx > 0 && services.length === 0) {
+        var prev = week[DAYS[idx - 1]] || [];
+        if (prev.length) {
+          copyChip = '<button type="button" class="oh-copy-prev" data-copy-from="' + DAYS[idx - 1] + '" data-copy-to="' + d + '" title="Copiar el horario de ' + escAttr(DAY_FULL[idx - 1]) + ' a este día">↑ igual que ' + DAY_FULL[idx - 1] + '</button>';
+        }
+      }
+      row.innerHTML = nameCell + servicesHtml + '<div class="oh-row-actions">' + copyChip + addBtn + '</div>';
       weekEl.appendChild(row);
     });
   }
 
   function renderServiceRow(day, idx, s){
+    // Phase E3 — pista bilingüe "Los clientes ven". Aparece sólo
+    // cuando ambos opens y closes parsean a tiempos válidos.
+    var opensIso = window.OH.parseTime(s.opens || '');
+    var closesIso = window.OH.parseTime(s.closes || '');
+    var hint = '';
+    if (opensIso && closesIso) {
+      var en = window.OH.formatTime(opensIso) + '–' + window.OH.formatTime(closesIso);
+      var es = window.OH.formatTime(opensIso, 'es') + '–' + window.OH.formatTime(closesIso, 'es');
+      if (en !== es) {
+        hint = '<span class="oh-svc-hint" aria-hidden="true">' + escHtml(es) + ' (es) · ' + escHtml(en) + ' (en)</span>';
+      }
+    }
     return '<div class="oh-service" data-day="' + day + '" data-idx="' + idx + '">' +
-      '<input type="text" class="oh-svc-label" placeholder="Lunch / Dinner" value="' + escAttr(s.label || '') + '" aria-label="Service label" />' +
-      '<input type="text" class="oh-svc-opens" placeholder="11 AM" value="' + escAttr(s.opens || '') + '" inputmode="text" aria-label="Opens" />' +
-      '<span class="oh-service-label">to</span>' +
-      '<input type="text" class="oh-svc-closes" placeholder="9 PM" value="' + escAttr(s.closes || '') + '" inputmode="text" aria-label="Closes" />' +
-      '<label class="oh-next-day"><input type="checkbox" class="oh-svc-next" ' + (s.closesNextDay ? 'checked' : '') + ' /> closes next day</label>' +
-      '<button type="button" class="oh-remove" aria-label="Remove this service">×</button>' +
+      '<input type="text" class="oh-svc-label" placeholder="Almuerzo / Cena" value="' + escAttr(s.label || '') + '" aria-label="Etiqueta de servicio" />' +
+      '<input type="text" class="oh-svc-opens" placeholder="11:00" value="' + escAttr(s.opens || '') + '" inputmode="text" aria-label="Abre" />' +
+      '<span class="oh-service-label">a</span>' +
+      '<input type="text" class="oh-svc-closes" placeholder="21:00" value="' + escAttr(s.closes || '') + '" inputmode="text" aria-label="Cierra" />' +
+      '<label class="oh-next-day"><input type="checkbox" class="oh-svc-next" ' + (s.closesNextDay ? 'checked' : '') + ' /> cierra al día siguiente</label>' +
+      '<button type="button" class="oh-remove" aria-label="Quitar este servicio">×</button>' +
+      hint +
       '</div>';
   }
 
@@ -984,6 +1018,22 @@
   addCustomBtn.addEventListener('click', function(){
     var date = customDate.value;
     var name = (customName.value || '').trim();
+
+    // Phase E4 — atajo: lista separada por comas en el campo de nombre.
+    var dateList = window.OH.parseDateList(name);
+    if (dateList && dateList.length > 1) {
+      dateList.forEach(function(iso){
+        var id = 'custom-' + (++customCounter);
+        selectedClosures[id] = { name: 'Cerrado', date: iso, source: 'custom' };
+      });
+      customDate.value = '';
+      customName.value = '';
+      renderCustomClosures();
+      paintClosureCount();
+      rerender();
+      return;
+    }
+
     if (!date) return;
     if (!name) name = 'Cerrado';
     var id = 'custom-' + (++customCounter);
@@ -992,6 +1042,7 @@
     customName.value = '';
     renderCustomClosures();
     paintClosureCount();
+    rerender();
   });
 
   var icsBtn = document.getElementById('ohDownloadIcs');
@@ -1037,6 +1088,18 @@
       window.print();
       setTimeout(cleanup, 8000);
       if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'hygiene-print' } });
+    });
+  }
+
+  // ----- Selector de feriados móvil (Phase E2) -----
+  var holidayShowAllBtn = document.getElementById('ohHolidayShowAll');
+  if (holidayShowAllBtn) {
+    holidayShowAllBtn.addEventListener('click', function(){
+      var list = document.getElementById('ohHolidayList');
+      var expanded = list.getAttribute('data-show-all') === 'true';
+      list.setAttribute('data-show-all', expanded ? 'false' : 'true');
+      holidayShowAllBtn.setAttribute('aria-pressed', expanded ? 'false' : 'true');
+      holidayShowAllBtn.textContent = expanded ? 'Mostrar todos los feriados próximos ↓' : 'Mostrar menos ↑';
     });
   }
 
@@ -1361,6 +1424,19 @@
   weekEl.addEventListener('input', rerender);
   weekEl.addEventListener('change', rerender);
   weekEl.addEventListener('click', function(ev){
+    var copy = ev.target.closest('.oh-copy-prev');
+    if (copy) {
+      var fromDay = copy.getAttribute('data-copy-from');
+      var toDay = copy.getAttribute('data-copy-to');
+      readGrid();
+      var src = week[fromDay] || [];
+      week[toDay] = src.map(function(s){
+        return { label: s.label, opens: s.opens, closes: s.closes, closesNextDay: s.closesNextDay };
+      });
+      renderWeek();
+      rerender();
+      return;
+    }
     var add = ev.target.closest('.oh-add-service');
     if (add) {
       var d = add.getAttribute('data-add-day');

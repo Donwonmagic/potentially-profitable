@@ -724,6 +724,48 @@ function ohHolidaysInRange(startDate, endDate, locale) {
 }
 
 // ------------------------------------------------------------
+// Custom-closures from a comma-separated string (Phase E4).
+// Owners often have 3-4 dates in mind at once ("11/27, 12/24, 12/25").
+// Power-user shortcut: paste the dates into the closure-name input
+// and we parse them into N closures. Accepts MM/DD, MM/DD/YYYY, or
+// ISO YYYY-MM-DD; assumes current year if omitted.
+// ------------------------------------------------------------
+
+function ohParseDateList(text) {
+  if (!text) return null;
+  var year = new Date().getUTCFullYear();
+  var raw = String(text).split(/[,;]+/).map(function(s){ return s.trim(); }).filter(Boolean);
+  if (raw.length < 2) return null; // 1-token strings are still names, not date lists
+  var dates = [];
+  for (var i = 0; i < raw.length; i++) {
+    var iso = ohNormalizeDate(raw[i], year);
+    if (!iso) return null;
+    dates.push(iso);
+  }
+  return dates;
+}
+
+function ohNormalizeDate(s, defaultYear) {
+  s = String(s).trim();
+  // ISO: 2026-12-25
+  var iso = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(s);
+  if (iso) {
+    var y = +iso[1], m = +iso[2], d = +iso[3];
+    if (m < 1 || m > 12 || d < 1 || d > 31) return null;
+    return y + '-' + (m<10?'0':'') + m + '-' + (d<10?'0':'') + d;
+  }
+  // US: 12/25 or 12/25/2026 or 12-25
+  var us = /^(\d{1,2})[\/\-](\d{1,2})(?:[\/\-](\d{2,4}))?$/.exec(s);
+  if (us) {
+    var mm = +us[1], dd = +us[2];
+    var yy = us[3] ? (+us[3] < 100 ? 2000 + +us[3] : +us[3]) : defaultYear;
+    if (mm < 1 || mm > 12 || dd < 1 || dd > 31) return null;
+    return yy + '-' + (mm<10?'0':'') + mm + '-' + (dd<10?'0':'') + dd;
+  }
+  return null;
+}
+
+// ------------------------------------------------------------
 // URL-fragment scenario encoding (Phase D — Muntin signature).
 //
 // The Quarterly Drift Check-in needs the calendar reminder to lead
@@ -923,6 +965,9 @@ var OH_PUBLIC = {
   generateBuilderEmail: ohGenerateBuilderEmail,
   generateIcs:         ohGenerateIcs,
   generateQuarterlyIcs: ohGenerateQuarterlyIcs,
+  // Date parsing (Phase E4)
+  parseDateList:       ohParseDateList,
+  normalizeDate:       ohNormalizeDate,
   // URL-fragment scenario serialization (Phase D Muntin signature)
   encodeState:         ohEncodeState,
   decodeState:         ohDecodeState,

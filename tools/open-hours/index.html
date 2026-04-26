@@ -47,6 +47,9 @@
 
 .oh-week{display:flex;flex-direction:column;gap:10px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);padding:14px}
 .oh-day-row{display:grid;grid-template-columns:84px 1fr auto;gap:14px;align-items:start;padding:8px 0;border-bottom:1px solid var(--line)}
+.oh-row-actions{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.oh-copy-prev{padding:3px 10px;border:1px dashed var(--teal);border-radius:999px;background:transparent;font:inherit;font-size:11px;font-weight:600;color:var(--teal);cursor:pointer;white-space:nowrap}
+.oh-copy-prev:hover{background:var(--teal);color:var(--cream)}
 .oh-day-row:last-child{border-bottom:0}
 .oh-day-name{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink);padding-top:6px}
 .oh-day-name small{display:block;font-family:var(--font-body,inherit);font-size:11px;font-weight:400;color:var(--stone);letter-spacing:.04em;text-transform:uppercase;margin-top:2px}
@@ -59,6 +62,8 @@
 .oh-service .oh-next-day input{margin:0}
 .oh-service .oh-remove{background:none;border:none;color:var(--stone);cursor:pointer;font-size:18px;line-height:1;padding:0 4px}
 .oh-service .oh-remove:hover{color:var(--rust)}
+.oh-svc-hint{grid-column:1 / -1;font-size:11px;color:var(--stone);font-variant-numeric:tabular-nums;margin-top:2px;letter-spacing:.02em;display:block}
+@media(max-width:640px){.oh-svc-hint{grid-column:auto}}
 .oh-add-service{padding:4px 10px;border:1px dashed var(--line-dark);border-radius:999px;background:transparent;font:inherit;font-size:11px;font-weight:600;color:var(--stone);cursor:pointer;align-self:flex-start}
 .oh-add-service:hover{border-color:var(--teal);color:var(--teal)}
 .oh-day-closed{font-size:12px;color:var(--stone);font-style:italic;align-self:center}
@@ -101,6 +106,18 @@
 .oh-closures-head h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0}
 .oh-closures-head .oh-count{font-size:12px;color:var(--stone);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
 .oh-holiday-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;max-height:380px;overflow-y:auto;padding-right:4px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+@media(max-width:640px){
+  /* Phase E2 — mobile-first holiday picker. Below 640px, the long
+     scrollable list eats half the viewport. Cap visible height to ~6
+     rows; the user can scroll within the list (it's still scrollable)
+     OR expand .oh-holiday-list with the [data-show-all] attribute
+     toggled by the show-all chip below. */
+  .oh-holiday-list{max-height:280px}
+  .oh-holiday-list[data-show-all="true"]{max-height:none}
+}
+.oh-holiday-show-all{display:none;align-self:flex-start;padding:6px 14px;border:1px dashed var(--line-dark);border-radius:999px;background:transparent;font:inherit;font-size:12px;font-weight:600;color:var(--stone);cursor:pointer;margin-top:4px}
+.oh-holiday-show-all:hover{border-color:var(--teal);color:var(--teal)}
+@media(max-width:640px){.oh-holiday-show-all{display:inline-flex}}
 .oh-holiday{display:grid;grid-template-columns:24px 1fr auto;gap:10px;align-items:start;padding:10px 14px;border-bottom:1px solid var(--line);cursor:pointer}
 .oh-holiday:last-child{border-bottom:0}
 .oh-holiday:hover{background:var(--cream-2)}
@@ -295,6 +312,7 @@
       </div>
       <p style="font-size:12.5px;color:var(--stone);margin:0;line-height:1.55;">Check any holiday you'll be closed for. We'll add them to the &ldquo;Add closures to my phone calendar&rdquo; download below.</p>
       <ul class="oh-holiday-list" id="ohHolidayList" aria-label="Upcoming holidays"></ul>
+      <button type="button" class="oh-holiday-show-all" id="ohHolidayShowAll" aria-pressed="false">Show all upcoming holidays ↓</button>
 
       <div class="oh-custom">
         <span style="font-weight:600;color:var(--ink);">Custom closure:</span>
@@ -789,8 +807,8 @@
 </footer>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="./open-hours.js?v=20260426-oh9"></script>
-<script src="./sign-render.js?v=20260426-oh10"></script>
+<script src="./open-hours.js?v=20260426-oh11"></script>
+<script src="./sign-render.js?v=20260426-oh12"></script>
 <script>
 /* Open Hours — week-grid input + live output render.
  *
@@ -886,12 +904,35 @@
       }
       servicesHtml += '</div>';
       var addBtn = '<button type="button" class="oh-add-service" data-add-day="' + d + '">+ ' + (services.length === 0 ? 'add hours' : 'add another service') + '</button>';
-      row.innerHTML = nameCell + servicesHtml + addBtn;
+      // Phase E1 — "Same as previous" chip. Surfaces only on rows
+      // where (a) the current day is empty AND (b) the prior day has
+      // any services — typical Mon-Fri-same pattern. One click copies.
+      var copyChip = '';
+      if (idx > 0 && services.length === 0) {
+        var prev = week[DAYS[idx - 1]] || [];
+        if (prev.length) {
+          copyChip = '<button type="button" class="oh-copy-prev" data-copy-from="' + DAYS[idx - 1] + '" data-copy-to="' + d + '" title="Copy ' + escAttr(DAY_FULL[idx - 1]) + ' hours into this day">↑ same as ' + DAY_FULL[idx - 1] + '</button>';
+        }
+      }
+      row.innerHTML = nameCell + servicesHtml + '<div class="oh-row-actions">' + copyChip + addBtn + '</div>';
       weekEl.appendChild(row);
     });
   }
 
   function renderServiceRow(day, idx, s){
+    // Phase E3 — bilingual "Customers see" hint. Surfaces only when
+    // both opens and closes parse to valid times. Helps DC's bilingual
+    // market see how the times render in each locale's conventions.
+    var opensIso = window.OH.parseTime(s.opens || '');
+    var closesIso = window.OH.parseTime(s.closes || '');
+    var hint = '';
+    if (opensIso && closesIso) {
+      var en = window.OH.formatTime(opensIso) + '–' + window.OH.formatTime(closesIso);
+      var es = window.OH.formatTime(opensIso, 'es') + '–' + window.OH.formatTime(closesIso, 'es');
+      if (en !== es) {
+        hint = '<span class="oh-svc-hint" aria-hidden="true">' + escHtml(en) + ' (en) · ' + escHtml(es) + ' (es)</span>';
+      }
+    }
     return '<div class="oh-service" data-day="' + day + '" data-idx="' + idx + '">' +
       '<input type="text" class="oh-svc-label" placeholder="Lunch / Dinner" value="' + escAttr(s.label || '') + '" aria-label="Service label" />' +
       '<input type="text" class="oh-svc-opens" placeholder="11 AM" value="' + escAttr(s.opens || '') + '" inputmode="text" aria-label="Opens" />' +
@@ -899,6 +940,7 @@
       '<input type="text" class="oh-svc-closes" placeholder="9 PM" value="' + escAttr(s.closes || '') + '" inputmode="text" aria-label="Closes" />' +
       '<label class="oh-next-day"><input type="checkbox" class="oh-svc-next" ' + (s.closesNextDay ? 'checked' : '') + ' /> closes next day</label>' +
       '<button type="button" class="oh-remove" aria-label="Remove this service">×</button>' +
+      hint +
       '</div>';
   }
 
@@ -1033,6 +1075,24 @@
   addCustomBtn.addEventListener('click', function(){
     var date = customDate.value;
     var name = (customName.value || '').trim();
+
+    // Phase E4 — power-user shortcut: if the name field contains a
+    // comma- or semicolon-separated list of dates ("11/27, 12/24,
+    // 12/25"), batch-create those closures and skip the date input.
+    var dateList = window.OH.parseDateList(name);
+    if (dateList && dateList.length > 1) {
+      dateList.forEach(function(iso){
+        var id = 'custom-' + (++customCounter);
+        selectedClosures[id] = { name: 'Closed', date: iso, source: 'custom' };
+      });
+      customDate.value = '';
+      customName.value = '';
+      renderCustomClosures();
+      paintClosureCount();
+      rerender();
+      return;
+    }
+
     if (!date) return;
     if (!name) name = 'Closed';
     var id = 'custom-' + (++customCounter);
@@ -1041,6 +1101,7 @@
     customName.value = '';
     renderCustomClosures();
     paintClosureCount();
+    rerender();
   });
 
   // ----- ICS download -----
@@ -1092,6 +1153,18 @@
       // Fallback for browsers that fire afterprint inconsistently.
       setTimeout(cleanup, 8000);
       if (window.plausible) window.plausible('Open Hours Export', { props: { format: 'hygiene-print' } });
+    });
+  }
+
+  // ----- Mobile-first holiday picker show-all toggle (Phase E2) -----
+  var holidayShowAllBtn = document.getElementById('ohHolidayShowAll');
+  if (holidayShowAllBtn) {
+    holidayShowAllBtn.addEventListener('click', function(){
+      var list = document.getElementById('ohHolidayList');
+      var expanded = list.getAttribute('data-show-all') === 'true';
+      list.setAttribute('data-show-all', expanded ? 'false' : 'true');
+      holidayShowAllBtn.setAttribute('aria-pressed', expanded ? 'false' : 'true');
+      holidayShowAllBtn.textContent = expanded ? 'Show all upcoming holidays ↓' : 'Show fewer ↑';
     });
   }
 
@@ -1449,6 +1522,19 @@
   weekEl.addEventListener('input', rerender);
   weekEl.addEventListener('change', rerender);
   weekEl.addEventListener('click', function(ev){
+    var copy = ev.target.closest('.oh-copy-prev');
+    if (copy) {
+      var fromDay = copy.getAttribute('data-copy-from');
+      var toDay = copy.getAttribute('data-copy-to');
+      readGrid();
+      var src = week[fromDay] || [];
+      week[toDay] = src.map(function(s){
+        return { label: s.label, opens: s.opens, closes: s.closes, closesNextDay: s.closesNextDay };
+      });
+      renderWeek();
+      rerender();
+      return;
+    }
     var add = ev.target.closest('.oh-add-service');
     if (add) {
       var d = add.getAttribute('data-add-day');

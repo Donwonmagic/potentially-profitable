@@ -488,6 +488,28 @@ assertEq('Easter 2030 (Apr 21)', O.easterDate(2030).toISOString().slice(0, 10), 
   assert('Saturday 00:00–02:00', sat && sat.opens === '00:00' && sat.closes === '02:00');
 }
 
+// Phase E4 — comma-separated date paste.
+{
+  assertEq('parseDateList ISO',
+    O.parseDateList('2026-11-27, 2026-12-24, 2026-12-25'),
+    ['2026-11-27', '2026-12-24', '2026-12-25']);
+  assertEq('parseDateList US (current year)',
+    O.parseDateList('11/27, 12/24, 12/25'),
+    [(new Date().getUTCFullYear()) + '-11-27',
+     (new Date().getUTCFullYear()) + '-12-24',
+     (new Date().getUTCFullYear()) + '-12-25']);
+  assertEq('parseDateList mixed',
+    O.parseDateList('12/25/2026; 2027-01-01'),
+    ['2026-12-25', '2027-01-01']);
+  // Single token isn't a date list (it's a name)
+  assertEq('parseDateList single token → null',
+    O.parseDateList('Private event'), null);
+  assertEq('parseDateList one date → null',
+    O.parseDateList('11/27'), null);
+  assertEq('parseDateList malformed → null',
+    O.parseDateList('xx, yy'), null);
+}
+
 // Phase D1 — URL-fragment encode/decode round-trip.
 {
   const original = {
