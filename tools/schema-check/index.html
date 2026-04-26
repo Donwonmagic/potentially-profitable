@@ -181,6 +181,19 @@
     <button type="submit" id="schSubmit">Check it</button>
   </form>
   <p class="sch-note">Powered by Google PageSpeed Insights. Takes about thirty seconds.</p>
+  <details class="sch-paste-wrap" id="schPasteWrap" style="margin:14px auto 0;max-width:660px;text-align:left;border:1px dashed var(--line-dark);border-radius:var(--r-input);padding:14px 18px;background:var(--white);">
+    <summary style="cursor:pointer;font-size:13px;font-weight:600;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center;">
+      <span>Or validate a JSON-LD snippet directly</span>
+      <span style="font-size:18px;color:var(--stone);" class="sch-paste-toggle">+</span>
+    </summary>
+    <p style="margin:10px 0 6px;font-size:12.5px;color:var(--stone);line-height:1.55;">Useful when you've generated a schema block (e.g. from <a href="/tools/open-hours/" style="color:var(--teal);">Open Hours</a>) and want to verify it before sending to your developer. We deep-link to Google's official validator — your snippet stays in your URL bar, never on a server.</p>
+    <textarea id="schPaste" placeholder='{ "@context": "https://schema.org", "@type": "Restaurant", ... }' aria-label="Paste JSON-LD" style="width:100%;min-height:140px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.5;color:var(--ink);resize:vertical;"></textarea>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px;">
+      <button type="button" id="schValidateBtn" class="btn btn-primary" style="font-size:13px;padding:8px 16px;">Validate at Schema.org &rarr;</button>
+      <span id="schPasteHint" style="font-size:12px;color:var(--stone);"></span>
+    </div>
+  </details>
+  <style>.sch-paste-wrap[open] .sch-paste-toggle{transform:rotate(45deg);transition:transform 140ms var(--ease-out)}.sch-paste-wrap summary::-webkit-details-marker{display:none}</style>
   <div class="sch-result" id="schResult" aria-live="polite">
     <div class="sch-verdict" id="schVerdict"></div>
     <ul class="sch-types" id="schTypes"></ul>
@@ -240,6 +253,56 @@
   var result=document.getElementById('schResult');
   var verdict=document.getElementById('schVerdict');
   var typesList=document.getElementById('schTypes');
+
+  // Fragment input (Phase C2). When the URL carries `#paste=<encoded
+  // JSON-LD>` or `#url=<encoded URL>`, populate the relevant field.
+  // Used by Open Hours' "Validate this code" handoff. Privacy-safe:
+  // the snippet lives in the user's URL bar, never on a server.
+  (function(){
+    var hash = location.hash || '';
+    if (hash.charAt(0) === '#') hash = hash.slice(1);
+    if (!hash) return;
+    var pairs = hash.split('&');
+    for (var i = 0; i < pairs.length; i++) {
+      var eq = pairs[i].indexOf('=');
+      if (eq < 0) continue;
+      var k = pairs[i].slice(0, eq);
+      var raw = pairs[i].slice(eq + 1);
+      var v;
+      try { v = decodeURIComponent(raw); } catch (_) { continue; }
+      if (k === 'paste') {
+        var ta = document.getElementById('schPaste');
+        var wrap = document.getElementById('schPasteWrap');
+        if (ta) ta.value = v;
+        if (wrap) wrap.open = true;
+      } else if (k === 'url') {
+        if (input) input.value = v;
+      }
+    }
+  })();
+
+  // Validator deep-link button (Phase C2). Schema.org's official
+  // validator accepts a code parameter via fragment; we route there.
+  var validateBtn = document.getElementById('schValidateBtn');
+  if (validateBtn) {
+    validateBtn.addEventListener('click', function(){
+      var ta = document.getElementById('schPaste');
+      var hint = document.getElementById('schPasteHint');
+      var text = (ta && ta.value || '').trim();
+      if (!text) { if (hint) hint.textContent = 'Paste your JSON-LD first.'; return; }
+      // Guard against payloads too large for a URL fragment (~32KB
+      // safe limit on most browsers).
+      if (text.length > 30000) {
+        if (hint) hint.textContent = 'Snippet too long — copy and paste manually at validator.schema.org.';
+        return;
+      }
+      // Schema.org Validator accepts code via the fragment "#code=".
+      var url = 'https://validator.schema.org/#code=' + encodeURIComponent(text);
+      window.open(url, '_blank', 'noopener,noreferrer');
+      if (hint) hint.textContent = 'Opened in a new tab.';
+      if (window.plausible) window.plausible('Schema Check Validate', { props: { source: 'paste' } });
+    });
+  }
 
   function norm(u){u=u.trim();if(!u)return'';if(!/^https?:\/\//i.test(u))u='https://'+u;try{new URL(u)}catch(e){return''}return u}
 

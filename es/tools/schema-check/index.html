@@ -181,6 +181,19 @@
     <button type="submit" id="schSubmit">Revisar</button>
   </form>
   <p class="sch-note">Usa Google PageSpeed Insights. Toma unos treinta segundos.</p>
+  <details class="sch-paste-wrap" id="schPasteWrap" style="margin:14px auto 0;max-width:660px;text-align:left;border:1px dashed var(--line-dark);border-radius:var(--r-input);padding:14px 18px;background:var(--white);">
+    <summary style="cursor:pointer;font-size:13px;font-weight:600;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center;">
+      <span>O valida un fragmento JSON-LD directamente</span>
+      <span style="font-size:18px;color:var(--stone);" class="sch-paste-toggle">+</span>
+    </summary>
+    <p style="margin:10px 0 6px;font-size:12.5px;color:var(--stone);line-height:1.55;">Útil cuando generaste un bloque de schema (por ejemplo, desde <a href="/es/tools/open-hours/" style="color:var(--teal);">Open Hours</a>) y quieres verificarlo antes de mandarlo a tu desarrollador. Hacemos un deep-link al validador oficial de Google &mdash; tu fragmento se queda en tu barra de direcciones, nunca en un servidor.</p>
+    <textarea id="schPaste" placeholder='{ "@context": "https://schema.org", "@type": "Restaurant", ... }' aria-label="Pega el JSON-LD" style="width:100%;min-height:140px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.5;color:var(--ink);resize:vertical;"></textarea>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px;">
+      <button type="button" id="schValidateBtn" class="btn btn-primary" style="font-size:13px;padding:8px 16px;">Validar en Schema.org &rarr;</button>
+      <span id="schPasteHint" style="font-size:12px;color:var(--stone);"></span>
+    </div>
+  </details>
+  <style>.sch-paste-wrap[open] .sch-paste-toggle{transform:rotate(45deg);transition:transform 140ms var(--ease-out)}.sch-paste-wrap summary::-webkit-details-marker{display:none}</style>
   <div class="sch-result" id="schResult" aria-live="polite">
     <div class="sch-verdict" id="schVerdict"></div>
     <ul class="sch-types" id="schTypes"></ul>
@@ -236,6 +249,49 @@
 (function(){
   var form=document.getElementById('schForm');
   var input=document.getElementById('schUrl');
+
+  // Fragment input (Phase C2). #paste= or #url=. Used by Open Hours'
+  // "Validar este código" handoff. Privacy-safe: lives only in URL.
+  (function(){
+    var hash = location.hash || '';
+    if (hash.charAt(0) === '#') hash = hash.slice(1);
+    if (!hash) return;
+    var pairs = hash.split('&');
+    for (var i = 0; i < pairs.length; i++) {
+      var eq = pairs[i].indexOf('=');
+      if (eq < 0) continue;
+      var k = pairs[i].slice(0, eq);
+      var raw = pairs[i].slice(eq + 1);
+      var v;
+      try { v = decodeURIComponent(raw); } catch (_) { continue; }
+      if (k === 'paste') {
+        var ta = document.getElementById('schPaste');
+        var wrap = document.getElementById('schPasteWrap');
+        if (ta) ta.value = v;
+        if (wrap) wrap.open = true;
+      } else if (k === 'url') {
+        if (input) input.value = v;
+      }
+    }
+  })();
+
+  var validateBtn = document.getElementById('schValidateBtn');
+  if (validateBtn) {
+    validateBtn.addEventListener('click', function(){
+      var ta = document.getElementById('schPaste');
+      var hint = document.getElementById('schPasteHint');
+      var text = (ta && ta.value || '').trim();
+      if (!text) { if (hint) hint.textContent = 'Pega tu JSON-LD primero.'; return; }
+      if (text.length > 30000) {
+        if (hint) hint.textContent = 'Fragmento muy largo — copia y pega manualmente en validator.schema.org.';
+        return;
+      }
+      var url = 'https://validator.schema.org/#code=' + encodeURIComponent(text);
+      window.open(url, '_blank', 'noopener,noreferrer');
+      if (hint) hint.textContent = 'Abierto en una pestaña nueva.';
+      if (window.plausible) window.plausible('Schema Check Validate', { props: { source: 'paste' } });
+    });
+  }
   var btn=document.getElementById('schSubmit');
   var result=document.getElementById('schResult');
   var verdict=document.getElementById('schVerdict');

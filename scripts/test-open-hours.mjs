@@ -299,12 +299,21 @@ assertEq('Easter 2030 (Apr 21)', O.easterDate(2030).toISOString().slice(0, 10), 
 // holidaysForYear — full slate
 {
   const h = O.holidaysForYear(2026);
-  assert('14 holidays/year', h.length === 14);
+  assert('19 holidays/year EN', h.length === 19);
   const ids = h.map(x => x.id);
-  ['new-years','mlk','mardi-gras','easter','mothers-day','memorial-day',
-   'fathers-day','july-4','labor-day','thanksgiving','black-friday',
+  ['new-years','mlk','valentines','mardi-gras','st-patricks','easter',
+   'mothers-day','memorial-day','juneteenth','fathers-day','july-4',
+   'labor-day','halloween','veterans-day','thanksgiving','black-friday',
    'christmas-eve','christmas-day','new-years-eve'].forEach(id => {
     assert('holiday id present: ' + id, ids.includes(id));
+  });
+  // Phase A5 — ES slate has more entries due to Latin-American adds.
+  const hEs = O.holidaysForYear(2026, 'es');
+  assert('26 holidays/year ES', hEs.length === 26);
+  const idsEs = hEs.map(x => x.id);
+  ['valentines','st-patricks','juneteenth','halloween','veterans-day',
+   'san-esteban','reyes','dia-muertos','guadalupe'].forEach(id => {
+    assert('ES holiday id present: ' + id, idsEs.includes(id));
   });
   // Black Friday is Thanksgiving + 1
   const tg = h.find(x => x.id === 'thanksgiving').date;
@@ -386,12 +395,203 @@ assertEq('Easter 2030 (Apr 21)', O.easterDate(2030).toISOString().slice(0, 10), 
   assertEq('ICS uids unique', new Set(uids).size, uids.length);
 }
 
-// ICS with custom closure containing punctuation in name
+// ICS with custom closure containing punctuation in name. Phase A1
+// switched from strip-semicolons to RFC-5545-correct backslash escape.
 {
   const ics = O.generateIcs([{ date: '2026-08-15', name: "Vacation; family" }]);
-  // Semicolons stripped from SUMMARY (RFC 5545 quoting)
-  assert('ICS strips semicolons from name',
-         !/SUMMARY:[^\r]*;/.test(ics.match(/SUMMARY:[^\r]+/)[0]));
+  const summaryLine = ics.match(/SUMMARY:[^\r]+/)[0];
+  assert('ICS escapes semicolon (not strip)', /\\;/.test(summaryLine));
+  assert('ICS no bare semicolon in summary value',
+         !/SUMMARY:.*[^\\];/.test(summaryLine));
+}
+
+// Phase A1 — DTEND must be exclusive (DTSTART + 1 day) per RFC 5545.
+// Phase A1 — every closure VEVENT carries a VALARM block.
+{
+  const ics = O.generateIcs([{ date: '2026-04-05', name: 'Easter' }]);
+  assert('ICS DTSTART correct', /DTSTART;VALUE=DATE:20260405/.test(ics));
+  assert('ICS DTEND is exclusive (next day)', /DTEND;VALUE=DATE:20260406/.test(ics));
+  assert('ICS contains VALARM block', /BEGIN:VALARM[\s\S]*TRIGGER:-P1D[\s\S]*ACTION:DISPLAY[\s\S]*END:VALARM/.test(ics));
+}
+
+// Phase A1 — month/year boundary handling for the DTEND increment.
+{
+  const ics = O.generateIcs([
+    { date: '2026-12-31', name: "New Year's Eve" },
+    { date: '2026-01-31', name: 'End of January' }
+  ]);
+  assert('DTEND wraps month → 20270101', /DTEND;VALUE=DATE:20270101/.test(ics));
+  assert('DTEND wraps month → 20260201', /DTEND;VALUE=DATE:20260201/.test(ics));
+}
+
+// Phase A2 — SpecialOpeningHoursSpecification round-trip.
+{
+  const obj = O.generateJsonLd({
+    name: 'Osteria',
+    city: 'Silver Spring',
+    week: { Mon: [{ opens: '17:00', closes: '22:00' }] },
+    closures: [
+      { date: '2026-11-26', name: 'Thanksgiving' },
+      { date: '2026-12-25', name: 'Christmas Day' }
+    ]
+  }, { format: 'object' });
+  assert('JSON-LD has specialOpeningHoursSpecification',
+         Array.isArray(obj.specialOpeningHoursSpecification));
+  assert('SpecialOHS length matches closures',
+         obj.specialOpeningHoursSpecification.length === 2);
+  const first = obj.specialOpeningHoursSpecification[0];
+  assertEq('SpecialOHS validFrom', first.validFrom, '2026-11-26');
+  assertEq('SpecialOHS validThrough', first.validThrough, '2026-11-26');
+  assertEq('SpecialOHS opens',  first.opens,  '00:00');
+  assertEq('SpecialOHS closes', first.closes, '00:00');
+}
+
+// Phase A3 — AM/PM heuristic. Brunch 11:00–15:00 is legitimate, not
+// flagged. "9–11" both AM is flagged.
+{
+  const ok = O.validateHours({
+    week: { Sat: [{ label: 'Brunch', opens: '11:00', closes: '15:00' }] }
+  });
+  assertEq('Brunch 11–15 no warning', ok.warnings.length, 0);
+
+  const flag = O.validateHours({
+    week: { Mon: [{ label: 'Lunch', opens: '09:00', closes: '11:00' }] }
+  });
+  assert('9 AM–11 AM PM-swap warning',
+         flag.warnings.some(w => /PM for the close/.test(w.message)));
+}
+
+// Phase B1 — Full PostalAddress when street/region/postalCode supplied.
+{
+  const obj = O.generateJsonLd({
+    name: 'Osteria', city: 'Silver Spring',
+    street: '123 Main St', region: 'MD', postalCode: '20910',
+    week: { Mon: [{ opens: '17:00', closes: '22:00' }] }
+  }, { format: 'object' });
+  assertEq('PostalAddress streetAddress', obj.address.streetAddress, '123 Main St');
+  assertEq('PostalAddress addressRegion', obj.address.addressRegion, 'MD');
+  assertEq('PostalAddress postalCode',    obj.address.postalCode,    '20910');
+}
+
+// Phase B2 — closesNextDay defensive emit (two consecutive intervals).
+{
+  const obj = O.generateJsonLd({
+    name: 'Late Bar', city: 'DC',
+    week: { Fri: [{ label: 'Service', opens: '17:00', closes: '02:00', closesNextDay: true }] }
+  }, { format: 'object' });
+  const ohs = obj.openingHoursSpecification;
+  // Friday 17:00–23:59 + Saturday 00:00–02:00 = 2 entries
+  assertEq('late-bar OHS count', ohs.length, 2);
+  const fri = ohs.find(e => e.dayOfWeek === 'Friday');
+  const sat = ohs.find(e => e.dayOfWeek === 'Saturday');
+  assert('Friday 17:00–23:59',  fri && fri.opens === '17:00' && fri.closes === '23:59');
+  assert('Saturday 00:00–02:00', sat && sat.opens === '00:00' && sat.closes === '02:00');
+}
+
+// Phase E4 — comma-separated date paste.
+{
+  assertEq('parseDateList ISO',
+    O.parseDateList('2026-11-27, 2026-12-24, 2026-12-25'),
+    ['2026-11-27', '2026-12-24', '2026-12-25']);
+  assertEq('parseDateList US (current year)',
+    O.parseDateList('11/27, 12/24, 12/25'),
+    [(new Date().getUTCFullYear()) + '-11-27',
+     (new Date().getUTCFullYear()) + '-12-24',
+     (new Date().getUTCFullYear()) + '-12-25']);
+  assertEq('parseDateList mixed',
+    O.parseDateList('12/25/2026; 2027-01-01'),
+    ['2026-12-25', '2027-01-01']);
+  // Single token isn't a date list (it's a name)
+  assertEq('parseDateList single token → null',
+    O.parseDateList('Private event'), null);
+  assertEq('parseDateList one date → null',
+    O.parseDateList('11/27'), null);
+  assertEq('parseDateList malformed → null',
+    O.parseDateList('xx, yy'), null);
+}
+
+// Phase D1 — URL-fragment encode/decode round-trip.
+{
+  const original = {
+    name: 'Osteria Giardino',
+    city: 'Silver Spring',
+    street: '8512 Fenton St',
+    region: 'MD',
+    postalCode: '20910',
+    week: {
+      Mon: [],
+      Tue: [{ label: 'Dinner', opens: '17:00', closes: '22:00', closesNextDay: false }],
+      Wed: [{ label: 'Dinner', opens: '17:00', closes: '22:00', closesNextDay: false }],
+      Thu: [],
+      Fri: [{ label: 'Dinner', opens: '17:00', closes: '23:00', closesNextDay: false }],
+      Sat: [
+        { label: 'Brunch', opens: '11:00', closes: '15:00', closesNextDay: false },
+        { label: 'Dinner', opens: '17:00', closes: '23:00', closesNextDay: false }
+      ],
+      Sun: [{ label: 'Service', opens: '17:00', closes: '01:00', closesNextDay: true }]
+    },
+    closures: [
+      { id: 'thanksgiving', name: 'Thanksgiving', date: '2026-11-26', source: 'preset' },
+      { id: 'custom-2026-08-15', name: 'Private event', date: '2026-08-15', source: 'custom' }
+    ]
+  };
+  const fragment = O.encodeState(original);
+  assert('fragment starts with v=1', /^v=1/.test(fragment));
+  assert('fragment encodes name',    /n=Osteria/.test(fragment));
+  assert('fragment encodes Tue',     /w\.Tue=/.test(fragment));
+  assert('fragment encodes closures', /cl=thanksgiving/.test(fragment));
+
+  const holidays = O.holidaysForYear(2026);
+  const round = O.decodeState(fragment, holidays);
+  assertEq('round-trip name',   round.name,       'Osteria Giardino');
+  assertEq('round-trip city',   round.city,       'Silver Spring');
+  assertEq('round-trip street', round.street,     '8512 Fenton St');
+  assertEq('round-trip region', round.region,     'MD');
+  assertEq('round-trip zip',    round.postalCode, '20910');
+  assertEq('round-trip Mon empty', round.week.Mon.length, 0);
+  assertEq('round-trip Tue dinner',
+           round.week.Tue[0].opens + '-' + round.week.Tue[0].closes,
+           '17:00-22:00');
+  assertEq('round-trip Sat 2 services', round.week.Sat.length, 2);
+  assertEq('round-trip Sun nextDay', round.week.Sun[0].closesNextDay, true);
+  assertEq('round-trip closures count', round.closures.length, 2);
+  assertEq('round-trip preset closure date',
+           round.closures.find(c => c.id === 'thanksgiving').date,
+           '2026-11-26');
+  const customClosure = round.closures.find(c => /^custom-/.test(c.id));
+  assertEq('round-trip custom closure date', customClosure.date, '2026-08-15');
+  assertEq('round-trip custom closure name', customClosure.name, 'Private event');
+}
+
+// Phase D1 — forward-compat: unknown keys ignored.
+{
+  const round = O.decodeState('v=2&n=Test&future_key=ignored&w.Mon=Lunch|11:00|14:00|0');
+  assertEq('forward-compat name',  round.name, 'Test');
+  assertEq('forward-compat Mon',   round.week.Mon[0].opens + '-' + round.week.Mon[0].closes, '11:00-14:00');
+}
+
+// Phase D1 — empty/missing hash returns empty week (no crash).
+{
+  const empty = O.decodeState('');
+  assertEq('empty hash → empty Mon', empty.week.Mon.length, 0);
+  const noHash = O.decodeState();
+  assert('no-arg → object', typeof noHash === 'object');
+}
+
+// Phase D2 — Quarterly Drift Check-in .ics structure.
+{
+  const ics = O.generateQuarterlyIcs('https://muntin.digital/tools/open-hours/#v=1&n=Test');
+  assert('Quarterly RRULE',
+         /RRULE:FREQ=MONTHLY;INTERVAL=3;COUNT=8/.test(ics));
+  assert('Quarterly URL field carries scenario',
+         /URL:https:\/\/muntin\.digital\/tools\/open-hours\/#v=1/.test(ics));
+  assert('Quarterly SUMMARY (EN)',
+         /SUMMARY:Open Hours.*quarterly hours check-in/.test(ics));
+}
+{
+  const ics = O.generateQuarterlyIcs('https://muntin.digital/es/tools/open-hours/', { locale: 'es' });
+  assert('Quarterly SUMMARY (ES)',
+         /SUMMARY:Horario Abierto.*revisi.n trimestral/.test(ics));
 }
 
 // ------------------------------------------------------------
