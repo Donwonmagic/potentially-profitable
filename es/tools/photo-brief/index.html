@@ -19,18 +19,21 @@
 <meta property="og:description" content="Escribe tus platos y dónde van las fotos. Llévate un brief que te consigue las fotos correctas en una sesión. Se queda en tu navegador." />
 <meta property="og:url" content="https://muntin.digital/es/tools/photo-brief/" />
 <meta property="og:site_name" content="Muntin Digital" />
-<meta property="og:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-photo-brief-es.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Photo Brief Builder" />
 <meta name="twitter:description" content="A one-page brief that gets you the right photos in one shoot. Stays in your browser." />
-<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-margin-math.png" />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-photo-brief-es.png" />
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/es/tools/photo-brief/#tool","name":"Constructor de Brief de Fotos","description":"Constructor de brief de fotos del lado del cliente para restaurantes independientes. Lista platos, marca superficies de destino (Yelp, Google, Instagram, hero web, menú), corre la matemática de corte de aspecto y dedup de tomas, y exporta un Brief de Fotos imprimible y una Tarjeta de Fotos de Marca. El brief se queda en el navegador.","url":"https://muntin.digital/es/tools/photo-brief/","applicationCategory":"DesignApplication","operatingSystem":"Web","inLanguage":["es","en"],"isAccessibleForFree":true,"browserRequirements":"Requiere un navegador moderno con JavaScript habilitado","keywords":"brief de fotos, fotografía de restaurantes, brief de fotografía gastronómica, mapa de proporciones, toma héroe, tarifa diaria fotógrafo, dimensiones de imagen, foto Google Business, proporción Instagram, foto Yelp","audience":{"@type":"BusinessAudience","audienceType":"Dueños y operadores de restaurantes independientes"},"featureList":["Ocho superficies de destino canónicas con especificaciones actuales 2026 (hero web, OG, Yelp, Google Business, Instagram feed 4:5, Instagram cuadrado, Instagram story, menú inline, Apple Maps)","Selector de proporción de toma fuente (3:2 / 4:3 / 16:9) — la matemática del corte se redibuja para coincidir con la cámara del fotógrafo","Dedup de tomas (una toma fuente sirve varios destinos con corte de aspecto)","Matemática de ROI con tarifa diaria del fotógrafo y rango de levante de fotos descriptivas (Wansink/Cornell)","Importar pegando desde hoja de cálculo (CSV/TSV con alias en inglés y español)","PNG imprimible del Brief de Fotos y de la Tarjeta de Fotos de Marca","Paquete ZIP (Brief + Tarjeta + brief.html + shot-list.csv + photo-brief.json + README)","Funnels entrantes desde Ingeniería de Menú, Suite de Marca y Costo del Plato vía datos en fragmento de URL","Del lado del cliente: sin fetch, sin almacenamiento, sin cuenta"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},{"@type":"FAQPage","@id":"https://muntin.digital/es/tools/photo-brief/#faq","mainEntity":[{"@type":"Question","name":"¿Los nombres de mis platos salen de la página cuando uso el Constructor de Brief de Fotos?","acceptedAnswer":{"@type":"Answer","text":"No. Abre DevTools → Network. Escribe un brief y haz clic en cualquier exportación — cero solicitudes con los nombres de tus platos. La matemática corre en tu dispositivo. La página es HTML estático más dos archivos JavaScript no minificados que puedes leer directamente."}},{"@type":"Question","name":"¿De dónde vienen las especificaciones de superficies y con qué frecuencia las revisan?","acceptedAnswer":{"@type":"Answer","text":"Centro de Ayuda de Meta para Instagram (feed por defecto 4:5, 1080×1350; story 9:16, 1080×1920), ayuda de Google Business Profile (portada 16:9, mínimo 1200×675), guía de socios de Yelp (featured 1920×1280) y el protocolo OpenGraph (1.91:1, 1200×630). Las especificaciones se revisan cada trimestre — la lista de superficies muestra la fecha de revisión para que sepas de un vistazo qué tan obsoletos están los valores por defecto."}},{"@type":"Question","name":"¿Qué pasa si mi fotógrafo dispara en 4:3 o 16:9 en lugar de 3:2?","acceptedAnswer":{"@type":"Answer","text":"Elige la proporción de toma fuente arriba del formulario. La matemática del corte, la franja de cobertura en vivo y el PNG imprimible del Brief de Fotos se redibujan para coincidir. Un fotógrafo de celular en 4:3 obtiene cortes correctos; una cámara cinematográfica en 16:9 también. La matemática es sólida para cualquier proporción fuente."}},{"@type":"Question","name":"¿Qué hace exactamente la matemática de deduplicación?","acceptedAnswer":{"@type":"Answer","text":"Ingenuamente, fotografiarías cada plato en cada proporción de cada destino — 6 platos × 4 superficies × 3 ángulos = 72 tomas. La dedup nota que una toma fuente puede servir varios destinos con corte de aspecto. Si hero web, OG y Google Business quieren luz cálida de ventana en ángulo de 45 grados, el fotógrafo dispara esa toma una vez y el brief te dice a qué destinos corta. Un brief típico de 6 platos baja de ~72 tomas ingenuas a ~20 tomas fuente."}},{"@type":"Question","name":"¿Puedo compartir un brief con mi fotógrafo?","acceptedAnswer":{"@type":"Answer","text":"Sí. Descarga el PNG del Brief de Fotos y el paquete ZIP (PNG + HTML imprimible + shot-list CSV + JSON + README). El PNG es para el día de la sesión; el HTML imprimible es la página que el fotógrafo lee en la mesa; el CSV se pega en una hoja de Google Sheets para referencia durante la sesión."}},{"@type":"Question","name":"¿El código fuente es abierto y legible?","acceptedAnswer":{"@type":"Answer","text":"Sí. Sin paso de build, sin minificación, sin framework. El módulo de matemática vive en /tools/photo-brief/photo-brief.js como JavaScript plano con funciones nombradas. Clic derecho en Ver código fuente para leer la UI directamente."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Herramientas","item":"https://muntin.digital/es/tools/"},{"@type":"ListItem","position":3,"name":"Constructor de Brief de Fotos","item":"https://muntin.digital/es/tools/photo-brief/"}]}]}
+</script>
 <link rel="preconnect" href="https://plausible.io" crossorigin />
 <link rel="dns-prefetch" href="https://plausible.io" />
 <script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
@@ -52,6 +55,15 @@
 .pb-meta label{display:flex;flex-direction:column;gap:4px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
 .pb-meta input,.pb-meta select{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums}
 .pb-meta input:focus,.pb-meta select:focus{outline:2px solid var(--teal);outline-offset:1px}
+
+.pb-srcframe{margin:0;padding:14px 16px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+.pb-srcframe legend{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);padding:0;margin:0 8px 0 0}
+.pb-srcframe label{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink);cursor:pointer;padding:4px 10px;border:1px solid var(--line);border-radius:999px;background:var(--white);transition:border-color 140ms var(--ease-out)}
+.pb-srcframe label:hover{border-color:var(--teal)}
+.pb-srcframe label small{color:var(--stone);font-size:11px;font-weight:400}
+.pb-srcframe input[type="radio"]{margin:0;cursor:pointer}
+.pb-srcframe label[data-checked="true"]{border-color:var(--teal);background:rgba(31,78,91,0.04)}
+.pb-srcframe-note{flex-basis:100%;margin:0;font-size:11.5px;color:var(--stone);line-height:1.5}
 
 .pb-grid{border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);overflow-x:auto}
 .pb-grid table{width:100%;border-collapse:collapse;font-size:13px;min-width:640px}
@@ -101,8 +113,8 @@
 .pb-coverage-tile{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font-size:12px;line-height:1.4}
 .pb-coverage-title{font-weight:600;color:var(--ink);margin:0 0 2px}
 .pb-coverage-ratio{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;color:var(--stone);font-variant-numeric:tabular-nums}
-.pb-coverage-crop{display:block;margin:6px 0;height:48px;background:var(--cream-2);border:1px solid var(--line);position:relative}
-.pb-coverage-crop::after{content:"";position:absolute;border:2px solid var(--teal);box-sizing:border-box;top:0;left:0;width:100%;height:100%}
+.pb-coverage-crop{display:block;margin:6px 0;height:48px;background:var(--cream-2);border:1px solid var(--line);position:relative;--pb-crop-w:100%;--pb-crop-h:100%;--pb-crop-x:0%;--pb-crop-y:0%}
+.pb-coverage-crop::after{content:"";position:absolute;background:rgba(31,78,91,0.10);border:2px solid var(--teal);box-sizing:border-box;top:var(--pb-crop-y);left:var(--pb-crop-x);width:var(--pb-crop-w);height:var(--pb-crop-h)}
 
 .pb-empty{padding:24px;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--cream-2);font-size:13.5px;color:var(--stone);text-align:center;margin-top:24px}
 
@@ -113,7 +125,31 @@
 .pb-action-btn-primary{background:var(--teal);color:var(--cream)}
 .pb-action-btn-primary:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
 .pb-action-btn.copied{background:var(--status-good-tint);color:var(--status-good);border-color:var(--status-good)}
+.pb-action-btn[data-state="loading"]{background:var(--cream-2);color:var(--stone);border-color:var(--line);cursor:progress}
+.pb-action-btn[data-state="error"]{background:rgba(184,84,26,0.08);color:var(--rust);border-color:var(--rust)}
 .pb-action-btn .pb-action-fmt{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10.5px;font-weight:700;color:inherit;opacity:.7}
+
+.pb-handoff{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px;padding:14px 18px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--cream-2)}
+.pb-handoff-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px dashed var(--teal);border-radius:999px;background:transparent;color:var(--teal);font-size:12.5px;font-weight:600;text-decoration:none;transition:background 140ms var(--ease-out),color 140ms var(--ease-out)}
+.pb-handoff-btn:hover{background:var(--teal);color:var(--cream);border-style:solid}
+
+/* Reshoot Check-in — la firma Muntin para Brief de Fotos. */
+.pb-signature{margin-top:18px;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+.pb-signature-eyebrow{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin:0 0 6px}
+.pb-signature h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 8px;line-height:1.3}
+.pb-signature-blurb{font-size:13.5px;color:var(--ink-soft);line-height:1.6;margin:0 0 12px}
+.pb-signature-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.pb-signature-status{font-size:12px;color:var(--status-good);opacity:0;transition:opacity 240ms var(--ease-out)}
+.pb-signature-status[data-shown="true"]{opacity:1}
+.pb-drift-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 10px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-radius:999px;font-variant-numeric:tabular-nums;margin-left:8px;vertical-align:middle}
+.pb-drift-pill[data-tone="fresh"]{background:var(--status-good-tint);color:var(--status-good)}
+.pb-drift-pill[data-tone="due"]  {background:rgba(198,138,44,0.10);color:#956A1A}
+.pb-drift-pill[data-tone="stale"]{background:rgba(184,84,26,0.12);color:var(--rust)}
+.pb-drift-pill[data-tone="cold"] {background:rgba(184,84,26,0.18);color:var(--rust)}
+.pb-reshoot-banner{display:none;margin:0 0 14px;padding:12px 14px;border:1px solid rgba(198,138,44,0.30);border-left-width:4px;border-left-color:#C68A2C;border-radius:var(--r-sm);background:rgba(198,138,44,0.06)}
+body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
+.pb-reshoot-banner h3{font-family:var(--font-display);font-size:15px;font-weight:600;margin:0 0 4px;color:var(--ink)}
+.pb-reshoot-banner p{margin:0;font-size:13px;line-height:1.55;color:var(--ink-soft)}
 
 .pb-privacy-list{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none;counter-reset:pb-step}
 .pb-privacy-list li{counter-increment:pb-step;display:grid;grid-template-columns:32px 1fr;gap:14px;align-items:start;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white)}
@@ -218,6 +254,14 @@
       </label>
     </div>
 
+    <fieldset class="pb-srcframe" id="pbSrcFrame" aria-describedby="pbSrcFrameNote">
+      <legend>Toma fuente</legend>
+      <label data-checked="true"><input type="radio" name="pbSrcRatio" value="3:2" checked /> 3:2 <small>réflex / sin espejo</small></label>
+      <label><input type="radio" name="pbSrcRatio" value="4:3" /> 4:3 <small>celular / Micro Cuatro Tercios</small></label>
+      <label><input type="radio" name="pbSrcRatio" value="16:9" /> 16:9 <small>cine / video primero</small></label>
+      <p class="pb-srcframe-note" id="pbSrcFrameNote">Pregúntale al fotógrafo qué proporción captura su cámara. La matemática del corte y el brief impreso se redibujan para coincidir.</p>
+    </fieldset>
+
     <div>
       <label style="display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:8px;">¿Qué platos vamos a fotografiar?</label>
       <p style="font-size:12.5px;color:var(--stone);margin:0 0 10px;line-height:1.55;">Seis filas para empezar. Agrega o quita. Las categorías determinan los ángulos / iluminación por defecto &mdash; puedes sobrescribir por toma en el brief.</p>
@@ -257,6 +301,7 @@
       <label style="display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-bottom:8px;">¿A dónde van las fotos?</label>
       <p style="font-size:12.5px;color:var(--stone);margin:0 0 10px;line-height:1.55;">Marca todos los destinos donde publicas. Cada superficie tiene una proporción canónica &mdash; el brief calcula qué superficies comparten cortes para que el fotógrafo no fotografíe el mismo plato 8 veces.</p>
       <div class="pb-surfaces" id="pbSurfaces" role="group" aria-label="Superficies de destino"></div>
+      <p style="font-size:11.5px;color:var(--stone);margin:8px 0 0;line-height:1.5;"><strong style="color:var(--ink-soft);font-weight:600;">Especificaciones revisadas: 2026-04.</strong> El feed de Instagram usa 4:5 (1080&times;1350) por defecto para publicaciones nuevas; marca <em>Instagram cuadrado</em> si alimentas una cuadrícula 1:1 antigua. El mínimo de Google Business es 1200&times;675; Yelp featured es 1920&times;1280. Las plataformas cambian &mdash; revisamos cada trimestre.</p>
     </div>
 
     <!-- RESUMEN MATEMÁTICO -->
@@ -292,6 +337,30 @@
       <button type="button" class="pb-action-btn" id="pbCopyCsv">Copiar lista de tomas <span class="pb-action-fmt">.csv</span></button>
       <button type="button" class="pb-action-btn" id="pbDownloadJson">Descargar <span class="pb-action-fmt">.json</span></button>
     </div>
+
+    <div class="pb-handoff" id="pbHandoff" style="display:none;">
+      <span class="pb-actions-label">Siguiente paso</span>
+      <a class="pb-handoff-btn" id="pbToMenuEng" href="/es/tools/menu-engineering/" data-target="menu-engineering">Abrir en Ingeniería de Menú <span aria-hidden="true">&rarr;</span></a>
+      <a class="pb-handoff-btn" href="/es/tools/brand-suite/" data-target="brand-suite">Abrir Suite de Marca <span aria-hidden="true">&rarr;</span></a>
+      <a class="pb-handoff-btn" href="/es/glossary/photo-brief/" data-target="glossary">Glosario de fotos <span aria-hidden="true">&rarr;</span></a>
+    </div>
+
+    <!-- Banner del modo reshoot — visible sólo cuando se hidrata desde el fragmento de URL -->
+    <div class="pb-reshoot-banner" id="pbReshootBanner" aria-live="polite">
+      <h3>Modo reshoot <span class="pb-drift-pill" id="pbDriftPill" hidden></span></h3>
+      <p id="pbReshootCopy">Último brief: <strong id="pbBaselineDate">&mdash;</strong>. Camina el comedor, el menú, tu Google Business Profile. Marca los platos que cambiaron — el Reshoot Ticket lista solo esos.</p>
+    </div>
+
+    <!-- Reshoot Check-in — la firma Muntin -->
+    <section class="pb-signature" id="pbSignature" style="display:none;">
+      <p class="pb-signature-eyebrow">Reshoot Check-in &middot; iCalendar (.ics) &middot; 8 eventos / 2 años</p>
+      <h3>No pagues una sesión completa cuando seis tomas alcanzan.</h3>
+      <p class="pb-signature-blurb">Las fotos de restaurante envejecen lento. A los seis meses dos platos están 86&rsquo;d; al año pintaron el comedor; a los 18 meses la portada se ve como 2024 y los habituales lo sienten pero no saben decir por qué. Descarga un recordatorio trimestral &mdash; uno cada tres meses por dos años &mdash; y tu calendario te avisará con un enlace de un clic de regreso a este mismo brief. La URL del recordatorio contiene el brief en un formato que solo tu navegador lee.</p>
+      <div class="pb-signature-actions">
+        <button type="button" class="pb-action-btn pb-action-btn-primary" id="pbSaveQuarterly">Guardar y recordarme rebriefear en 90 días <span class="pb-action-fmt">.ics</span></button>
+        <span class="pb-signature-status" id="pbQuarterlyStatus" data-shown="false">Recordatorio descargado — ábrelo para añadirlo a tu calendario.</span>
+      </div>
+    </section>
 
     <div class="pb-empty" id="pbEmpty">
       Lista un plato arriba &mdash; o <button type="button" class="pb-sample-btn" id="pbSample2" style="margin:0 6px;">carga el brief de muestra</button> &mdash; para ver la matemática.
@@ -337,7 +406,8 @@
       <h2 id="tool-deep-h">Por qué existe esta herramienta.</h2>
       <p class="tool-deep-blurb">Cada chequeo que esta herramienta hace conecta con un concepto específico en la biblioteca. Dos puntos de partida — una definición, una guía.</p>
       <div class="tool-deep-topics"><a class="tool-deep-topic" href="/es/learn/topics/brand-design/">Marca y diseño</a>
-        <a class="tool-deep-topic" href="/es/learn/topics/conversions/">Conversiones y reservas</a></div>
+        <a class="tool-deep-topic" href="/es/learn/topics/conversions/">Conversiones y reservas</a>
+        <a class="tool-deep-topic" href="/es/learn/topics/trust-reviews/">Confianza y reseñas</a></div>
     </header>
     <div class="tool-deep-grid">
       <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/photo-brief/">
@@ -359,6 +429,13 @@
           <h3>Toma hero</h3>
           <p class="tool-deep-aka">la foto por superficie que hace el trabajo visual de fondo</p>
           <p class="tool-deep-snippet">Para una superficie de destino (web hero, destacada de Yelp, lead del perfil de Instagram, portada de Google Business), la única fotografía …</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/real-photos/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Fotos reales</h3>
+          <p class="tool-deep-aka">no fotos de stock</p>
+          <p class="tool-deep-snippet">Fotografías de tu espacio, de tu comida y de tu equipo — no imágenes de stock con licencia de una agencia.</p>
           <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
         </a>
       <a class="tool-deep-card tool-deep-card-article" href="/es/blog/why-your-restaurant-loses-reservations-every-night/">
@@ -393,6 +470,7 @@
   var nameEl       = document.getElementById('pbName');
   var photogEl     = document.getElementById('pbPhotographer');
   var dayRateEl    = document.getElementById('pbDayRate');
+  var srcFrameEl   = document.getElementById('pbSrcFrame');
   var rowsEl       = document.getElementById('pbRows');
   var addRowBtn    = document.getElementById('pbAddRow');
   var sampleBtn    = document.getElementById('pbSample');
@@ -405,6 +483,13 @@
   var coverageWrap = document.getElementById('pbCoverageWrap');
   var coverageEl   = document.getElementById('pbCoverage');
   var actionsEl    = document.getElementById('pbActions');
+  var handoffEl    = document.getElementById('pbHandoff');
+  var toMenuEngEl  = document.getElementById('pbToMenuEng');
+  var signatureEl  = document.getElementById('pbSignature');
+  var saveQBtn     = document.getElementById('pbSaveQuarterly');
+  var quarterlyStat= document.getElementById('pbQuarterlyStatus');
+  var driftPillEl  = document.getElementById('pbDriftPill');
+  var baselineDateEl = document.getElementById('pbBaselineDate');
 
   var latestSummary = null;
 
@@ -468,7 +553,7 @@
     }).join('');
   }
   function ratioLabel(r){
-    var presets = [[16/9,'16:9'],[1.91,'1.91:1'],[3/2,'3:2'],[1,'1:1'],[9/16,'9:16'],[4/3,'4:3']];
+    var presets = [[16/9,'16:9'],[1.91,'1.91:1'],[3/2,'3:2'],[1,'1:1'],[9/16,'9:16'],[4/3,'4:3'],[4/5,'4:5']];
     for (var i = 0; i < presets.length; i++) {
       if (Math.abs(presets[i][0] - r) < 0.005) return presets[i][1];
     }
@@ -480,6 +565,20 @@
       if (cb.checked) out.push(cb.dataset.surface);
     });
     return out;
+  }
+
+  // -------------------- Source-frame ratio --------------------
+  var SRC_RATIOS = { '3:2': 3/2, '4:3': 4/3, '16:9': 16/9 };
+  function readSourceRatio(){
+    if (!srcFrameEl) return 3/2;
+    var checked = srcFrameEl.querySelector('input[name="pbSrcRatio"]:checked');
+    var key = checked ? checked.value : '3:2';
+    return SRC_RATIOS[key] || 3/2;
+  }
+  function readSourceRatioLabel(){
+    if (!srcFrameEl) return '3:2';
+    var checked = srcFrameEl.querySelector('input[name="pbSrcRatio"]:checked');
+    return checked ? checked.value : '3:2';
   }
 
   // -------------------- Warning gates (Risk-3 mitigation) --------------------
@@ -524,23 +623,39 @@
   }
 
   // -------------------- Coverage strip render --------------------
+  // El overlay teal se calcula por tile con variables CSS para que el
+  // visual coincida con la matemática (antes estaba codificado a 100%).
+  function cropOverlayStyle(crop){
+    var pct = Math.max(0, Math.min(1, crop.cropFraction || 1));
+    var w = '100%', h = '100%', x = '0%', y = '0%';
+    if (crop.axis === 'horizontal') {
+      w = (pct * 100).toFixed(2) + '%';
+      x = ((1 - pct) * 50).toFixed(2) + '%';
+    } else if (crop.axis === 'vertical') {
+      h = (pct * 100).toFixed(2) + '%';
+      y = ((1 - pct) * 50).toFixed(2) + '%';
+    }
+    return '--pb-crop-w:' + w + ';--pb-crop-h:' + h + ';--pb-crop-x:' + x + ';--pb-crop-y:' + y;
+  }
   function renderCoverage(checkedSurfaces){
     if (!checkedSurfaces.length) {
       coverageWrap.style.display = 'none';
       coverageEl.innerHTML = '';
       return;
     }
+    var src = readSourceRatio();
+    var srcLabel = ratioLabel(src);
     coverageEl.innerHTML = checkedSurfaces.map(function(key){
-      var s   = PB.SURFACES[key];
-      var crop = PB.computeCropRectangle(3/2, key);
+      var s    = PB.SURFACES[key];
+      var crop = PB.computeCropRectangle(src, key);
       var cropPct = Math.round(crop.cropFraction * 100);
       var axisCopy = crop.axis === 'exact' ? 'Sin corte'
                     : (crop.axis === 'horizontal' ? cropPct + '% ancho' : cropPct + '% alto');
       return '<div class="pb-coverage-tile">' +
         '<p class="pb-coverage-title">' + s.label + '</p>' +
         '<span class="pb-coverage-ratio">' + ratioLabel(s.ratio) + ' &middot; ' + s.pixels.w + '&times;' + s.pixels.h + '</span>' +
-        '<span class="pb-coverage-crop" aria-hidden="true"></span>' +
-        '<span class="pb-coverage-ratio">Desde 3:2: ' + axisCopy + '</span>' +
+        '<span class="pb-coverage-crop" aria-hidden="true" style="' + cropOverlayStyle(crop) + '"></span>' +
+        '<span class="pb-coverage-ratio">Desde ' + srcLabel + ': ' + axisCopy + '</span>' +
       '</div>';
     }).join('');
     coverageWrap.style.display = '';
@@ -560,7 +675,9 @@
       mathEl.style.display = 'none';
       coverageWrap.style.display = 'none';
       emptyEl.style.display = '';
-      if (actionsEl) actionsEl.style.display = 'none';
+      if (actionsEl)   actionsEl.style.display = 'none';
+      if (handoffEl)   handoffEl.style.display = 'none';
+      if (signatureEl) signatureEl.style.display = 'none';
       latestSummary = null;
       return;
     }
@@ -572,13 +689,21 @@
       photographer: photogEl ? photogEl.value.trim() : '',
       dishes:       dishes,
       surfaces:     surfaces,
+      sourceRatio:  readSourceRatio(),
+      sourceRatioLabel: readSourceRatioLabel(),
       dayRate:      dayRate,
       dedup:        dedup,
       roi:          roi,
       palette:      fragmentState.palette.slice(),
       margins:      fragmentState.margins.slice()
     };
-    if (actionsEl) actionsEl.style.display = 'flex';
+    if (actionsEl)   actionsEl.style.display = 'flex';
+    if (handoffEl)   handoffEl.style.display = 'flex';
+    if (signatureEl) signatureEl.style.display = 'block';
+    if (toMenuEngEl) {
+      var stars = PB.encodeStarsFragment(dishes);
+      toMenuEngEl.href = '/es/tools/menu-engineering/' + (stars ? '#stars=' + stars : '');
+    }
 
     dedupNum.textContent  = String(dedup.dedup);
     naiveNum.textContent  = String(dedup.naive);
@@ -610,6 +735,18 @@
     renderResults();
   });
   if (dayRateEl) dayRateEl.addEventListener('input', renderResults);
+  if (handoffEl) handoffEl.addEventListener('click', function(e){
+    var a = e.target.closest('.pb-handoff-btn');
+    if (!a || !window.plausible) return;
+    window.plausible('Photo Brief Push', { props: { target: a.dataset.target || 'unknown' } });
+  });
+  if (srcFrameEl) srcFrameEl.addEventListener('change', function(e){
+    Array.prototype.forEach.call(srcFrameEl.querySelectorAll('label'), function(l){
+      var inp = l.querySelector('input[type="radio"]');
+      l.dataset.checked = (inp && inp.checked) ? 'true' : 'false';
+    });
+    renderResults();
+  });
 
   if (addRowBtn) addRowBtn.addEventListener('click', function(){
     var current = readRows();
@@ -637,6 +774,7 @@
     rows.push(['Restaurante', latestSummary.restaurant || '']);
     rows.push(['Fotógrafo', latestSummary.photographer || '']);
     rows.push(['Tarifa diaria', '$' + latestSummary.dayRate.toFixed(2)]);
+    rows.push(['Proporción de toma fuente', latestSummary.sourceRatioLabel || '3:2']);
     rows.push(['Tomas fuente (reducidas)', String(latestSummary.dedup.dedup)]);
     rows.push(['Tomas ingenuas',           String(latestSummary.dedup.naive)]);
     rows.push(['Días estimados',           String(latestSummary.roi.days)]);
@@ -674,6 +812,8 @@
       restaurant:   latestSummary.restaurant,
       photographer: latestSummary.photographer,
       dayRate:      latestSummary.dayRate,
+      sourceRatio:      latestSummary.sourceRatio,
+      sourceRatioLabel: latestSummary.sourceRatioLabel,
       surfaces:     latestSummary.surfaces,
       palette:      latestSummary.palette,
       margins:      latestSummary.margins,
@@ -734,37 +874,65 @@
     var coverage = latestSummary.surfaces.map(function(key){
       return { surface: PB.SURFACES[key], key: key };
     });
+    var srcRatio = latestSummary.sourceRatio || 3/2;
+    var srcLabel = latestSummary.sourceRatioLabel || '3:2';
+    var strings  = Object.assign({}, window.PBCard.DEFAULT_STRINGS_ES, {
+      coverageTitle: 'Cobertura de superficies · cortes desde ' + srcLabel
+    });
     return {
       restaurant:   latestSummary.restaurant,
       photographer: latestSummary.photographer,
       summary:      latestSummary,
       palette:      latestSummary.palette,
       coverage:     coverage,
-      strings:      window.PBCard.DEFAULT_STRINGS_ES
+      sourceRatio:  srcRatio,
+      sourceRatioLabel: srcLabel,
+      strings:      strings
     };
   }
+  // Estado de carga compartido para los botones de exportación.
+  function withLoading(btn, work) {
+    if (!btn) return work();
+    var orig = btn.innerHTML;
+    btn.disabled = true;
+    btn.dataset.state = 'loading';
+    btn.textContent = 'Generando…';
+    function restore() {
+      btn.disabled = false;
+      btn.dataset.state = '';
+      btn.innerHTML = orig;
+    }
+    var p;
+    try { p = Promise.resolve(work()); } catch (e) { restore(); return Promise.reject(e); }
+    return p.then(function(v){ restore(); return v; }, function(err){ restore(); throw err; });
+  }
+
   var downloadBriefBtn = document.getElementById('pbDownloadBrief');
   var downloadCardBtn  = document.getElementById('pbDownloadCard');
   if (downloadBriefBtn) downloadBriefBtn.addEventListener('click', function(){
     if (!latestSummary || !window.PBCard) return;
-    window.PBCard.awaitFonts().then(function(){
-      var canvas = window.PBCard.renderPhotoBrief(buildBriefRenderOpts());
-      return window.PBCard.canvasToPngBlob(canvas);
-    }).then(function(blob){
-      if (!blob) return;
-      downloadBlob(blob, 'brief-fotos-' + briefSlug() + '.png');
-      if (window.plausible) window.plausible('Photo Brief Export', { props: { format: 'brief-png' } });
+    withLoading(downloadBriefBtn, function(){
+      return window.PBCard.awaitFonts().then(function(){
+        var canvas = window.PBCard.renderPhotoBrief(buildBriefRenderOpts());
+        return window.PBCard.canvasToPngBlob(canvas);
+      }).then(function(blob){
+        if (!blob) return;
+        downloadBlob(blob, 'brief-fotos-' + briefSlug() + '.png');
+        if (window.plausible) window.plausible('Photo Brief Export', { props: { format: 'brief-png' } });
+      });
     });
   });
   if (downloadCardBtn) downloadCardBtn.addEventListener('click', function(){
     if (!latestSummary || !window.PBCard) return;
-    window.PBCard.awaitFonts().then(function(){
-      var canvas = window.PBCard.renderBrandPhotoCard(buildBriefRenderOpts());
-      return window.PBCard.canvasToPngBlob(canvas);
-    }).then(function(blob){
-      if (!blob) return;
-      downloadBlob(blob, 'tarjeta-fotos-marca-' + briefSlug() + '.png');
-      if (window.plausible) window.plausible('Photo Brief Export', { props: { format: 'card-png' } });
+    withLoading(downloadCardBtn, function(){
+      return window.PBCard.awaitFonts().then(function(){
+        var canvas = window.PBCard.renderBrandPhotoCard(buildBriefRenderOpts());
+        return window.PBCard.canvasToPngBlob(canvas);
+      }).then(function(blob){
+        if (!blob) return;
+        downloadBlob(blob, 'tarjeta-fotos-marca-' + briefSlug() + '.png');
+        if (window.plausible) window.plausible('Photo Brief Export', { props: { format: 'card-png' } });
+      });
     });
   });
 
@@ -899,22 +1067,26 @@
   var downloadZipBtn = document.getElementById('pbDownloadZip');
   if (downloadZipBtn) downloadZipBtn.addEventListener('click', function(){
     if (!latestSummary || !window.PBCard) return;
-    window.PBCard.awaitFonts().then(function(){
-      var briefCanvas = window.PBCard.renderPhotoBrief(buildBriefRenderOpts());
-      var cardCanvas  = window.PBCard.renderBrandPhotoCard(buildBriefRenderOpts());
-      return Promise.all([
-        window.PBCard.canvasToPngBlob(briefCanvas),
-        window.PBCard.canvasToPngBlob(cardCanvas)
-      ]);
-    }).then(function(blobs){
-      if (!blobs || !blobs[0]) return;
-      Promise.all(blobs.map(function(b){
-        return new Promise(function(res){
-          var r = new FileReader();
-          r.onload = function(){ res(new Uint8Array(r.result)); };
-          r.readAsArrayBuffer(b);
-        });
-      })).then(function(byteArrays){
+    withLoading(downloadZipBtn, function(){
+      return window.PBCard.awaitFonts().then(function(){
+        var briefCanvas = window.PBCard.renderPhotoBrief(buildBriefRenderOpts());
+        var cardCanvas  = window.PBCard.renderBrandPhotoCard(buildBriefRenderOpts());
+        return Promise.all([
+          window.PBCard.canvasToPngBlob(briefCanvas),
+          window.PBCard.canvasToPngBlob(cardCanvas)
+        ]);
+      }).then(function(blobs){
+        if (!blobs || !blobs[0]) throw new Error('canvas-blob');
+        return Promise.all(blobs.map(function(b){
+          return new Promise(function(res, rej){
+            var r = new FileReader();
+            r.onload  = function(){ res(new Uint8Array(r.result)); };
+            r.onerror = function(){ rej(r.error || new Error('filereader')); };
+            r.onabort = function(){ rej(new Error('filereader-abort')); };
+            try { r.readAsArrayBuffer(b); } catch (e) { rej(e); }
+          });
+        }));
+      }).then(function(byteArrays){
         var slug = briefSlug();
         var entries = [
           { name: 'brief-fotos.png',      data: byteArrays[0] },
@@ -926,6 +1098,12 @@
         ];
         downloadBlob(buildZipBlob(entries), 'brief-fotos-' + slug + '.zip');
         if (window.plausible) window.plausible('Photo Brief Export', { props: { format: 'zip' } });
+      }).catch(function(err){
+        downloadZipBtn.title = 'No se pudo empaquetar el ZIP — prueba las descargas individuales arriba.';
+        downloadZipBtn.dataset.state = 'error';
+        if (window.plausible) window.plausible('Photo Brief Export', { props: { format: 'zip-error' } });
+        setTimeout(function(){ downloadZipBtn.dataset.state = ''; }, 4000);
+        throw err;
       });
     });
   });
@@ -945,10 +1123,13 @@
     }
     rerenderRows(parsed.rows);
     renderResults();
-    pasteHint.style.color = parsed.warnings.length ? 'var(--rust)' : 'var(--status-good)';
-    pasteHint.textContent = parsed.warnings.length
-      ? parsed.warnings[0]
-      : 'Se procesaron ' + parsed.rows.length + ' plato' + (parsed.rows.length === 1 ? '' : 's') + '.';
+    if (parsed.warnings.length) {
+      pasteHint.style.color = 'var(--rust)';
+      pasteHint.textContent = parsed.warnings.join(' · ');
+    } else {
+      pasteHint.style.color = 'var(--status-good)';
+      pasteHint.textContent = 'Se procesaron ' + parsed.rows.length + ' plato' + (parsed.rows.length === 1 ? '' : 's') + '.';
+    }
     fireBucketEvent('paste');
   });
 
@@ -987,11 +1168,44 @@
   }
 
   // -------------------- Cross-tool fragment readers --------------------
-  // Read fragments on load. The form rehydrates from cross-tool data
-  // when present; warning gates flip off accordingly.
+  var briefHydrated = null;
   function readFragments(){
     var hash = (window.location.hash || '').replace(/^#/, '');
     if (!hash) return;
+    if (hash.indexOf('brief=') === 0 || /(^|&)v=/.test(hash)) {
+      var hyd = PB.decodeBriefFragment(hash);
+      if (hyd && hyd.dishes && hyd.dishes.length) {
+        briefHydrated = hyd;
+        nameEl.value = hyd.restaurant || '';
+        if (photogEl)  photogEl.value  = hyd.photographer || '';
+        if (dayRateEl) dayRateEl.value = String(hyd.dayRate || 1800);
+        if (srcFrameEl && hyd.sourceRatioLabel) {
+          var radio = srcFrameEl.querySelector('input[value="' + hyd.sourceRatioLabel + '"]');
+          if (radio) {
+            radio.checked = true;
+            Array.prototype.forEach.call(srcFrameEl.querySelectorAll('label'), function(l){
+              var inp = l.querySelector('input[type="radio"]');
+              l.dataset.checked = (inp && inp.checked) ? 'true' : 'false';
+            });
+          }
+        }
+        rerenderRows(hyd.dishes.map(function(d){
+          return { name: d.name, category: d.category || 'main', priority: d.priority || 'standard' };
+        }));
+        renderSurfaces(hyd.surfaces && hyd.surfaces.length ? hyd.surfaces : DEFAULT_ON);
+        if (hyd.mode === 'reshoot') {
+          document.body.setAttribute('data-pb-mode', 'reshoot');
+        }
+        if (baselineDateEl) baselineDateEl.textContent = hyd.baselineDate || '—';
+        renderDriftPill(hyd.baselineDate);
+        if (window.plausible) {
+          window.plausible('Photo Brief Signature', { props: {
+            action: hyd.mode === 'reshoot' ? 'reshoot-opened' : 'rehydrated'
+          } });
+        }
+        return;
+      }
+    }
     var params = new URLSearchParams(hash.replace(/&amp;/g, '&'));
     var stars   = params.get('stars');
     var palette = params.get('palette');
@@ -1006,10 +1220,47 @@
     }
   }
 
+  function renderDriftPill(baselineDate){
+    if (!driftPillEl) return;
+    if (!baselineDate) { driftPillEl.hidden = true; driftPillEl.textContent = ''; return; }
+    var v = PB.verdictForAge(baselineDate);
+    if (v.tone === 'unknown') { driftPillEl.hidden = true; driftPillEl.textContent = ''; return; }
+    driftPillEl.dataset.tone = v.tone;
+    driftPillEl.textContent = v.tone.toUpperCase() + ' · ' + v.months + ' MES' + (v.months === 1 ? '' : 'ES');
+    driftPillEl.hidden = false;
+    driftPillEl.title = v.copyES;
+  }
+
+  if (saveQBtn) saveQBtn.addEventListener('click', function(){
+    if (!latestSummary) return;
+    var today = new Date().toISOString().slice(0, 10);
+    var brief = {
+      restaurant:       latestSummary.restaurant,
+      photographer:     latestSummary.photographer,
+      dayRate:          latestSummary.dayRate,
+      sourceRatioLabel: latestSummary.sourceRatioLabel,
+      surfaces:         latestSummary.surfaces,
+      dishes:           latestSummary.dishes
+    };
+    var fragment = PB.encodeBriefFragment(brief, { date: today, mode: 'reshoot' });
+    var scenarioUrl = location.origin + location.pathname + '#brief=' + fragment;
+    var ics = PB.generateQuarterlyIcs(scenarioUrl, { restaurant: brief.restaurant, locale: 'es' });
+    var slug = (brief.restaurant || 'photo-brief').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'photo-brief';
+    downloadBlob(new Blob([ics], { type: 'text/calendar;charset=utf-8' }),
+                 'photo-brief-trimestral-' + slug + '.ics');
+    if (quarterlyStat) {
+      quarterlyStat.dataset.shown = 'true';
+      setTimeout(function(){ quarterlyStat.dataset.shown = 'false'; }, 5000);
+    }
+    if (window.plausible) {
+      window.plausible('Photo Brief Signature', { props: { action: 'quarterly-saved' } });
+    }
+  });
+
   // -------------------- Initial state --------------------
   readFragments();
-  if (!fragmentState.stars.length) rerenderRows(Array.from({ length: 6 }, blankRow));
-  renderSurfaces(DEFAULT_ON);
+  if (!briefHydrated && !fragmentState.stars.length) rerenderRows(Array.from({ length: 6 }, blankRow));
+  if (!briefHydrated) renderSurfaces(DEFAULT_ON);
   renderWarnings();
   renderResults();
 })();
