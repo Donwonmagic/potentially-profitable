@@ -1991,20 +1991,68 @@ br.br-lg{display:none}
   display:grid;
   gap:8px;
 }
-.tool-knit__col a{
-  font-size:15px;
-  line-height:1.45;
+/* Each "Keep going" destination is a real button-shaped card, not a
+   bare underlined link. Min 44px touch target, raised surface, arrow
+   affordance on hover. The Topic column has a single bare <a>; the
+   other three wrap their links in <li>. Both render the same way. */
+.tool-knit__col a,
+.tool-knit__col li > a{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  min-height:44px;
+  padding:10px 14px;
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:var(--r-sm,8px);
   color:var(--ink);
+  font-size:15px;
+  line-height:1.35;
+  font-weight:500;
   text-decoration:none;
-  border-bottom:1px solid var(--line);
-  padding-bottom:2px;
-  transition:color var(--t-fast), border-color var(--t-fast);
+  box-shadow:0 1px 0 rgba(20,22,26,0.02);
+  transition:border-color var(--t-fast) var(--ease,cubic-bezier(.22,.61,.36,1)),
+             background var(--t-fast) var(--ease,cubic-bezier(.22,.61,.36,1)),
+             transform var(--t-fast) var(--ease,cubic-bezier(.22,.61,.36,1)),
+             box-shadow var(--t-fast) var(--ease,cubic-bezier(.22,.61,.36,1));
+}
+/* Inline arrow chevron after the label. Authored as a CSS pseudo-
+   element so the existing markup (plain text inside <a>) doesn't
+   need a script regeneration to ship the new affordance. */
+.tool-knit__col a::after,
+.tool-knit__col li > a::after{
+  content:'→';
+  flex:none;
+  color:var(--stone);
+  font-family:var(--font-body);
+  font-size:14px;
+  transform:translateX(0);
+  transition:transform var(--t-fast) var(--ease,cubic-bezier(.22,.61,.36,1)),
+             color var(--t-fast) var(--ease,cubic-bezier(.22,.61,.36,1));
 }
 .tool-knit__col a:hover,
-.tool-knit__col a:focus-visible{
+.tool-knit__col li > a:hover,
+.tool-knit__col a:focus-visible,
+.tool-knit__col li > a:focus-visible{
+  border-color:var(--teal);
+  background:var(--teal-tint);
   color:var(--teal);
-  border-bottom-color:var(--teal);
   outline:none;
+  box-shadow:0 2px 6px rgba(31,78,91,0.10);
+  transform:translateY(-1px);
+}
+.tool-knit__col a:hover::after,
+.tool-knit__col li > a:hover::after,
+.tool-knit__col a:focus-visible::after,
+.tool-knit__col li > a:focus-visible::after{
+  color:var(--teal);
+  transform:translateX(2px);
+}
+.tool-knit__col a:active,
+.tool-knit__col li > a:active{
+  transform:translateY(0);
+  box-shadow:0 1px 0 rgba(20,22,26,0.04);
 }
 @media (max-width:900px){
   .tool-knit__grid{ grid-template-columns:repeat(2,1fr); }
