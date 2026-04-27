@@ -5935,25 +5935,13 @@
   </div>
 </section>
 
-<!-- ============ ALWAYS-VISIBLE FINAL CTA ============ -->
-<section class="block final">
-  <div class="container">
-    <div class="section-header reveal section-center">
-      <span class="eyebrow">Want the real fix?</span>
-      <h2>I build restaurant websites<br>that ace this audit.</h2>
-      <p class="final-sub">If the audit found more red than you're comfortable with, let's talk. Twenty minutes on Zoom, I'll walk through your results live, tell you what I'd do in what order, and give you a realistic budget and timeline. No pitch, no pressure.</p>
-    </div>
-
-    <div class="hero-ctas reveal hero-ctas-center">
-      <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
-      </a>
-      <a class="btn btn-ghost" href="/for/restaurants/">See restaurant services</a>
-    </div>
-  </div>
-</section>
-
 <!-- ============ AUDIT TOOL SCRIPT ============ -->
+<!-- The "Want the real fix?" CTA used to sit here, immediately under
+     the audit results. It now sits at the very bottom of the page,
+     after the Library deep-links and the "Keep going" knit module —
+     so the sequence is: audit → learn what every flag means →
+     keep going into the library → and then, only if the reader
+     wants the real fix, the sales pitch. Learning before selling. -->
 <!-- Shared restaurant detection patterns, checks, and scoring. Loaded
      as a classic script so its top-level `var` declarations are
      available to the IIFE below as globals. subtypes.js loads FIRST
@@ -16068,6 +16056,30 @@
     </div>
   </aside>
 <!-- /tool-knit -->
+
+<!-- ============ FINAL CTA (after the learning sections) ============
+     Moved here from immediately under the audit results so a reader
+     who runs the audit gets the educational on-ramp first — Library
+     deep-links + Keep going — and only then the sales pitch. The
+     copy speaks to the audit ("If the audit found more red than
+     you're comfortable with…"); placement follows the reading
+     sequence, not the other way around. -->
+<section class="block final">
+  <div class="container">
+    <div class="section-header reveal section-center">
+      <span class="eyebrow">Want the real fix?</span>
+      <h2>I build restaurant websites<br>that ace this audit.</h2>
+      <p class="final-sub">If the audit found more red than you're comfortable with, let's talk. Twenty minutes on Zoom, I'll walk through your results live, tell you what I'd do in what order, and give you a realistic budget and timeline. No pitch, no pressure.</p>
+    </div>
+
+    <div class="hero-ctas reveal hero-ctas-center">
+      <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      </a>
+      <a class="btn btn-ghost" href="/for/restaurants/">See restaurant services</a>
+    </div>
+  </div>
+</section>
 </main>
 
 <footer>
