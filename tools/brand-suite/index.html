@@ -2371,6 +2371,18 @@
 
   function handleFile(file){
     if (!file) return;
+    // Reset the file input value so picking the same file again fires
+    // a fresh `change` event. HTML inputs don't fire change for an
+    // identical re-selection, which silently breaks "fix the bg, drop
+    // the same logo again" workflows.
+    if (fileInput) { try { fileInput.value = ''; } catch (_) {} }
+    // Revoke any prior bg-stripped preview blob URL up-front, before
+    // any early return inside proceed() can leak it. Safe to call
+    // even if no URL is held (the inner try/catch swallows).
+    if (latestTransparentUrl) {
+      try { URL.revokeObjectURL(latestTransparentUrl); } catch (_) {}
+      latestTransparentUrl = null;
+    }
     if (file.size > MAX_BYTES) {
       setStatus('That file is larger than 10 MB. Crop or resize and try again.', 'error');
       return;

@@ -2242,6 +2242,16 @@
 
   function handleFile(file){
     if (!file) return;
+    // Reinicia el value del input para que escoger el mismo archivo
+    // dispare un `change` nuevo (los inputs HTML no lo disparan al
+    // re-elegir el mismo archivo).
+    if (fileInput) { try { fileInput.value = ''; } catch (_) {} }
+    // Revoca cualquier blob URL anterior de la previa con fondo
+    // retirado antes de cualquier early-return en proceed().
+    if (latestTransparentUrl) {
+      try { URL.revokeObjectURL(latestTransparentUrl); } catch (_) {}
+      latestTransparentUrl = null;
+    }
     if (file.size > MAX_BYTES) {
       setStatus('Ese archivo pesa más de 10 MB. Recorta o redimensiona e inténtalo de nuevo.', 'error');
       return;
