@@ -638,6 +638,30 @@ function bsBucketFileType(mimeOrExt) {
 // ------------------------------------------------------------
 
 // ============================================================
+// CMYK approximation — naive uncalibrated conversion useful for
+// the Palette Sheet hand-off to a printer. Real CMYK depends on
+// the ink profile, paper, and press; this gives a starting-point
+// the printer can match against. Returns { c, m, y, k } as
+// integers in [0, 100].
+// ============================================================
+function bsRgbToCmyk(r, g, b) {
+  var rN = (r || 0) / 255;
+  var gN = (g || 0) / 255;
+  var bN = (b || 0) / 255;
+  var k = 1 - Math.max(rN, gN, bN);
+  if (k >= 0.999) return { c: 0, m: 0, y: 0, k: 100 };
+  var c = (1 - rN - k) / (1 - k);
+  var m = (1 - gN - k) / (1 - k);
+  var y = (1 - bN - k) / (1 - k);
+  return {
+    c: Math.round(c * 100),
+    m: Math.round(m * 100),
+    y: Math.round(y * 100),
+    k: Math.round(k * 100)
+  };
+}
+
+// ============================================================
 // Background detection + strip — fixes the single-colour-logo
 // extraction case where the background gets clustered as a
 // "Light Neutral" (e.g. white pulled from the canvas around a
@@ -994,6 +1018,7 @@ var BS_PUBLIC = {
   extractPalette:         bsExtractPalette,
   assignRoles:            bsAssignRoles,
   paletteSimilarities:    bsPaletteSimilarities,
+  rgbToCmyk:              bsRgbToCmyk,
   detectBackgroundColor:  bsDetectBackgroundColor,
   stripBackground:        bsStripBackground,
   harmonyAnalogous:           bsHarmonyAnalogous,

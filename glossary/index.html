@@ -1930,6 +1930,66 @@
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
+      <article class="gloss-term" id="color-harmony" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Color harmony<span class="gloss-aka">how the colors in a palette relate to each other on the hue wheel</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">The relationship between the colors in a palette, measured by how far apart their hues sit on the color wheel. Named families — analogous, complementary, split-complementary, triadic, tetradic, monochromatic — each describe a specific spacing pattern that tends to feel intentional to a viewer, rather than accidental.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Most palettes that feel "off" are not using bad individual colors; they are using colors with no readable relationship between them. A harmony principle gives you a defensible reason to keep one color and drop another. <a href="/tools/brand-suite/">Brand Suite</a>'s Palette Workshop generates candidate palettes from one anchor by applying these principles in <a href="/glossary/oklab/">OKLab</a> hue space.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/glossary/color-harmony/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="complementary-colors" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Complementary colors<span class="gloss-aka">two colors on opposite sides of the hue wheel</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">Two colors whose hues sit roughly 180° apart on the color wheel — terracotta and teal, mustard and indigo, brick and forest. The maximum-contrast pairing in <a href="/glossary/color-harmony/">color harmony</a>. Split-complementary softens this by using the two hues 30° on either side of the opposite, producing a less-shouted variant.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Bold and energetic by default — the right tool when a brand needs to feel alive (a tap room, a casual neighborhood spot, a bright daytime concept). Use sparingly: complementary pairs at full saturation can fight each other on the same plate of UI. <a href="/tools/brand-suite/">Brand Suite</a>'s Workshop offers complementary candidates when "bold &amp; energetic" mood is selected.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/glossary/complementary-colors/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="analogous-colors" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Analogous colors<span class="gloss-aka">neighboring hues that sit close together on the wheel</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">A palette built from hues 15–30° apart on the color wheel — terracotta with rust and ochre, forest with sage and juniper. Analogous palettes share a temperature and feel coherent because the eye reads them as variations on one decision rather than competing decisions.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>The right starting point when a brand wants to feel calm, considered, or warm — most independent fine-dining and natural-wine concepts land here. The trade-off is that the palette has less internal contrast, so a strong neutral and a documented <a href="/glossary/accessible-pair/">accessible pair</a> matter more than usual. <a href="/tools/brand-suite/">Brand Suite</a>'s Workshop offers analogous candidates when "calm &amp; considered" or "warm &amp; welcoming" mood is selected.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/glossary/analogous-colors/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="monochromatic-palette" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>Monochromatic palette<span class="gloss-aka">one hue, varied in lightness and chroma</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">A palette built from a single hue rendered at multiple lightness levels — a deep navy paired with a mid-blue, a pale ice, and a near-white tint of the same hue family. The hue stays constant; the lightness and chroma do the work of distinguishing the chips from each other.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>The most restrained of the harmony families, and the natural fit for a brand whose logo is already one strong color. Reads as sophisticated and disciplined; rarely reads as cheap. <a href="/tools/brand-suite/">Brand Suite</a>'s Workshop offers monochromatic candidates when the uploaded logo is single-color, or when "refined &amp; restrained" mood is selected.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/glossary/monochromatic-palette/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="oklab" data-industries="restaurants all">
+        <div class="gloss-term-head">
+          <h3>OKLab<span class="gloss-aka">a perceptual color space — distance in it matches what the eye sees</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">All</span></div>
+        </div>
+        <p class="gloss-term-def">A color space designed so that mathematical distance between two colors matches the perceived difference a human reader sees. Plain RGB does not have this property — two colors close in RGB can look very different, and vice versa. OKLab fixes that by separating lightness (L) from two opponent chroma axes (a, b).</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>Every reliable color decision — k-means clustering for palette extraction, hue rotation for harmony generation, similarity scoring for "these two chips feel identical" warnings — needs a perceptual space to be honest. <a href="/tools/brand-suite/">Brand Suite</a> runs all of its color math in OKLab and only converts back to RGB for display and export.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/glossary/oklab/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
     </div>
   </section>
 
