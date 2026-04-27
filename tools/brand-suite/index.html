@@ -1340,7 +1340,7 @@
   var latestLogoImage = null;
 
   var MAX_BYTES = 10 * 1024 * 1024;  // 10MB sanity cap — the browser can read larger, but a logo this big is almost certainly a misdrop
-  var DOWNSAMPLE = 100;              // clustering runs on ≤100×100; logos rarely need more
+  var DOWNSAMPLE = 200;              // clustering runs on ≤200×200; doubled from 100 to preserve thin features (rust accents, hairlines) and reduce AA-halo dominance after background strip
   var ROLE_NAMES = ['Primary', 'Secondary', 'Accent 1', 'Accent 2', 'Neutral'];
   // Plain-English sublabel for each role, audience-tuned for a non-
   // technical reader (e.g. a restaurant owner). The technical role
@@ -1452,6 +1452,63 @@
       }
     }
     ingest(top); ingest(bottom); ingest(left); ingest(right);
+    return out;
+  }
+
+  // Morphological-erosion sampler. When a clear background colour has
+  // been detected, a flat sampleCanvasPixels() includes both interior
+  // pixels (the actual brand colour) and the AA halo at every edge of
+  // every brand-colour region. Those AA pixels lie on a gradient
+  // between bg and the brand colour — k-means then splits them into
+  // 2-3 separate "shade" clusters, drowning the real palette in
+  // gray-blue artifacts (the bug reported on the Muntin sample).
+  //
+  // The fix: walk the canvas in (x,y) and only keep pixels whose four
+  // immediate neighbours are ALL non-bg-near. AA halo pixels are
+  // exactly the pixels that have at least one bg-near neighbour;
+  // interior pixels are the rest. RGB-euclidean threshold is generous
+  // (90) to catch a wide AA falloff without tuning per-bg.
+  //
+  // Caller decides what to do if the result is too sparse (e.g. logo
+  // is hairline strokes only — no interior pixels to keep). The
+  // current call site falls back to the bg-strip path.
+  function sampleInteriorPixels(canvas, bgRgb, options){
+    options = options || {};
+    var halo = options.haloThreshold == null ? 90 : options.haloThreshold;
+    var halo2 = halo * halo;
+    var ctx = canvas.getContext('2d');
+    var w = canvas.width, h = canvas.height;
+    if (!w || !h || !bgRgb) return [];
+    var data;
+    try { data = ctx.getImageData(0, 0, w, h).data; } catch (_) { return []; }
+    var bgR = bgRgb.r, bgG = bgRgb.g, bgB = bgRgb.b;
+    function nearBg(idx){
+      if (data[idx + 3] < 128) return true; // transparent counts as bg-side
+      var dr = data[idx]     - bgR;
+      var dg = data[idx + 1] - bgG;
+      var db = data[idx + 2] - bgB;
+      return dr * dr + dg * dg + db * db < halo2;
+    }
+    var out = [];
+    for (var y = 0; y < h; y++) {
+      for (var x = 0; x < w; x++) {
+        var i = (y * w + x) * 4;
+        if (data[i + 3] < 128) continue;
+        if (nearBg(i)) continue;            // bg pixel itself — skip
+        // 4-neighbour check; any near-bg neighbour means this is an AA edge.
+        if (x > 0     && nearBg(((y    ) * w + (x - 1)) * 4)) continue;
+        if (x < w - 1 && nearBg(((y    ) * w + (x + 1)) * 4)) continue;
+        if (y > 0     && nearBg(((y - 1) * w + (x    )) * 4)) continue;
+        if (y < h - 1 && nearBg(((y + 1) * w + (x    )) * 4)) continue;
+        out.push([data[i], data[i + 1], data[i + 2]]);
+      }
+    }
+    if (out.length > MAX_SAMPLED_PIXELS) {
+      var stride = out.length / MAX_SAMPLED_PIXELS;
+      var trimmed = new Array(MAX_SAMPLED_PIXELS);
+      for (var j = 0; j < MAX_SAMPLED_PIXELS; j++) trimmed[j] = out[Math.floor(j * stride)];
+      out = trimmed;
+    }
     return out;
   }
 
@@ -2355,13 +2412,27 @@
           ? window.BS.detectBackgroundColor(edges)
           : null;
         if (bg && window.BS.stripBackground) {
-          var stripped = window.BS.stripBackground(pixels, bg.rgb);
-          // Only keep the strip if it didn't remove EVERYTHING (would
-          // happen on a colour-on-its-own-colour image — fall back to
-          // the original sample in that case).
-          if (stripped.length >= 30) {
-            pixels = stripped;
+          // Two-stage strip:
+          //   (1) Erode out AA-halo pixels at the canvas level — pixels
+          //       on the edge between bg and a brand colour, which
+          //       k-means would otherwise split into 2-3 false "shade"
+          //       clusters. Requires spatial info (x,y), so it has to
+          //       happen on the canvas, not the flat pixel array.
+          //   (2) Fall back to a pure colour-distance strip if the
+          //       eroded sample is too sparse (e.g. logo is all
+          //       hairline strokes — no interior pixels exist).
+          var eroded = (bg.confidence >= 0.95)
+            ? sampleInteriorPixels(canvas, bg.rgb)
+            : [];
+          if (eroded.length >= 60) {
+            pixels = eroded;
             latestDetectedBackground = bg;
+          } else {
+            var stripped = window.BS.stripBackground(pixels, bg.rgb);
+            if (stripped.length >= 30) {
+              pixels = stripped;
+              latestDetectedBackground = bg;
+            }
           }
         }
         extractAndRender(pixels, file);

@@ -1298,7 +1298,7 @@
   var latestLogoImage = null;
 
   var MAX_BYTES = 10 * 1024 * 1024;
-  var DOWNSAMPLE = 100;
+  var DOWNSAMPLE = 200;              // duplicado desde 100 para preservar trazos finos (acentos óxido, líneas delgadas) y reducir el dominio del halo de antialiasing tras retirar el fondo.
   var ROLE_NAMES = ['Primario', 'Secundario', 'Acento 1', 'Acento 2', 'Neutro'];
   // Sublabel en lenguaje sencillo, dirigido a un lector no técnico.
   var ROLE_SUBLABELS = [
@@ -1395,6 +1395,62 @@
       }
     }
     ingest(top); ingest(bottom); ingest(left); ingest(right);
+    return out;
+  }
+
+  // Muestreador con erosión morfológica. Cuando se ha detectado un
+  // color de fondo claro, sampleCanvasPixels() incluye tanto los
+  // píxeles interiores (el color real de marca) como el halo de
+  // antialiasing en cada borde de cada región del color de marca.
+  // Esos píxeles AA caen sobre un degradado entre el fondo y el
+  // color de marca — k-means luego los divide en 2 o 3 "tonos"
+  // separados, ahogando la paleta real bajo artefactos gris-azules.
+  //
+  // Solución: recorrer el canvas en (x,y) y conservar sólo píxeles
+  // cuyos cuatro vecinos inmediatos NO estén cerca del fondo. El
+  // halo AA es exactamente el conjunto de píxeles con al menos un
+  // vecino cercano al fondo. Umbral RGB-euclidiano generoso (90)
+  // para cubrir un AA amplio sin afinar por fondo.
+  //
+  // Si el resultado queda demasiado disperso (logo de trazos finos
+  // sin píxeles interiores), el llamador hace fallback al
+  // strip clásico por color.
+  function sampleInteriorPixels(canvas, bgRgb, options){
+    options = options || {};
+    var halo = options.haloThreshold == null ? 90 : options.haloThreshold;
+    var halo2 = halo * halo;
+    var ctx = canvas.getContext('2d');
+    var w = canvas.width, h = canvas.height;
+    if (!w || !h || !bgRgb) return [];
+    var data;
+    try { data = ctx.getImageData(0, 0, w, h).data; } catch (_) { return []; }
+    var bgR = bgRgb.r, bgG = bgRgb.g, bgB = bgRgb.b;
+    function nearBg(idx){
+      if (data[idx + 3] < 128) return true;
+      var dr = data[idx]     - bgR;
+      var dg = data[idx + 1] - bgG;
+      var db = data[idx + 2] - bgB;
+      return dr * dr + dg * dg + db * db < halo2;
+    }
+    var out = [];
+    for (var y = 0; y < h; y++) {
+      for (var x = 0; x < w; x++) {
+        var i = (y * w + x) * 4;
+        if (data[i + 3] < 128) continue;
+        if (nearBg(i)) continue;
+        if (x > 0     && nearBg(((y    ) * w + (x - 1)) * 4)) continue;
+        if (x < w - 1 && nearBg(((y    ) * w + (x + 1)) * 4)) continue;
+        if (y > 0     && nearBg(((y - 1) * w + (x    )) * 4)) continue;
+        if (y < h - 1 && nearBg(((y + 1) * w + (x    )) * 4)) continue;
+        out.push([data[i], data[i + 1], data[i + 2]]);
+      }
+    }
+    if (out.length > MAX_SAMPLED_PIXELS) {
+      var stride = out.length / MAX_SAMPLED_PIXELS;
+      var trimmed = new Array(MAX_SAMPLED_PIXELS);
+      for (var j = 0; j < MAX_SAMPLED_PIXELS; j++) trimmed[j] = out[Math.floor(j * stride)];
+      out = trimmed;
+    }
     return out;
   }
 
@@ -2205,10 +2261,21 @@
           ? window.BS.detectBackgroundColor(edges)
           : null;
         if (bg && window.BS.stripBackground) {
-          var stripped = window.BS.stripBackground(pixels, bg.rgb);
-          if (stripped.length >= 30) {
-            pixels = stripped;
+          // Strip en dos etapas: erosión espacial primero (elimina el
+          // halo AA), fallback al strip por distancia de color si el
+          // sample erosionado queda muy disperso.
+          var eroded = (bg.confidence >= 0.95)
+            ? sampleInteriorPixels(canvas, bg.rgb)
+            : [];
+          if (eroded.length >= 60) {
+            pixels = eroded;
             latestDetectedBackground = bg;
+          } else {
+            var stripped = window.BS.stripBackground(pixels, bg.rgb);
+            if (stripped.length >= 30) {
+              pixels = stripped;
+              latestDetectedBackground = bg;
+            }
           }
         }
         extractAndRender(pixels, file);
