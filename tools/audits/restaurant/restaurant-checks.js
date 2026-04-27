@@ -365,7 +365,7 @@ var RESTAURANT_PRIORITY_CHECKS = [
     type: 'audit',
     audit: 'viewport',
     weight: 2.0, // catastrophic if missing — site is unusable on phones
-    anchor: '#mobile',
+    anchor: '#viewport-meta',
     effort: 'dev',       // 'self' | 'dev' | 'rebuild'
     minutes: 5,          // rough time-to-fix
     impact: 'Without a viewport tag, every phone visitor sees a broken desktop layout. Roughly 70% of restaurant traffic is mobile, which means a missing viewport is 70% of your traffic bouncing on contact.',
@@ -387,7 +387,7 @@ var RESTAURANT_PRIORITY_CHECKS = [
     type: 'audit',
     audit: 'tap-targets',
     weight: 1.0,
-    anchor: '#mobile',
+    anchor: '#tap-targets',
     effort: 'dev',
     minutes: 20,
     impact: "Every missed tap is a frustrated customer. On a restaurant site where the most-tapped button is usually Reserve or Order, small tap targets translate directly into lost bookings.",
@@ -465,7 +465,7 @@ var RESTAURANT_PRIORITY_CHECKS = [
     type: 'audit',
     audit: 'color-contrast',
     weight: 1.0,
-    anchor: '#trust',
+    anchor: '#wcag-contrast',
     effort: 'dev',
     minutes: 15,
     impact: "Roughly 1 in 4 adults over 40 has some form of age-related vision difficulty. If your menu text fails contrast, you're leaving money on the table from the exact demographic that dines out most.",
@@ -561,7 +561,7 @@ var RESTAURANT_PRIORITY_CHECKS = [
     type: 'audit',
     audit: 'font-size',
     weight: 1.0,
-    anchor: '#mobile',
+    anchor: '#body-text-size',
     effort: 'dev',
     minutes: 10,
     impact: "Text below 16px forces iOS to zoom on focus and frustrates every mobile reader. Menu descriptions that look fine on a laptop are often unreadable on a phone at arm's length.",
@@ -638,7 +638,7 @@ var RESTAURANT_PRIORITY_CHECKS = [
   {
     type: 'phone',
     weight: 1.5, // real conversion driver for takeout / walk-in
-    anchor: '#basics',
+    anchor: '#click-to-call',
     effort: 'self',
     minutes: 2,
     impact: "On mobile, every tap that requires copying and pasting instead of tapping costs you customers. Phone calls are still how most takeout orders and reservation questions reach independent restaurants.",
@@ -718,7 +718,7 @@ var RESTAURANT_PRIORITY_CHECKS = [
     type: 'platform',
     platforms: ['maps'],
     weight: 1.0,
-    anchor: '#conversions',
+    anchor: '#click-to-directions',
     effort: 'dev',
     minutes: 15,
     impact: "The path from 'I might check this place out' to 'I am driving there' should be one tap. An embedded map or a Maps link cuts directions friction to zero — plain-text addresses add a whole copy-paste flow before the customer even arrives.",
@@ -778,7 +778,7 @@ var RESTAURANT_PRIORITY_CHECKS = [
     // fine-dining only needs reservations; many restaurants have both.
     platforms: ['ordering', 'reservations'],
     weight: 1.5, // the single biggest direct-conversion lever
-    anchor: '#conversions',
+    anchor: '#cta',
     effort: 'dev',
     minutes: 60,
     impact: "This is the single biggest direct-conversion lever on a restaurant website. Every reservation taken on your own site (instead of OpenTable) keeps the full booking. Every order through your own Toast or Square checkout (instead of DoorDash) keeps the full margin.",
@@ -909,7 +909,7 @@ var RESTAURANT_PRIORITY_CHECKS = [
   {
     type: 'menu-format',
     weight: 1.0,
-    anchor: '#basics',
+    anchor: '#html-menu',
     effort: 'rebuild',
     minutes: 240,
     impact: "PDF menus are the most common mobile-UX sin on restaurant sites. They don't zoom gracefully, they don't link to online ordering, and they make every menu update (new special, changed price) dependent on a developer with InDesign. Replacing a PDF menu with a real HTML menu page typically lifts mobile dwell time by 30-50%.",
@@ -1049,7 +1049,7 @@ var RESTAURANT_PRIORITY_CHECKS = [
   {
     type: 'menu-depth',
     weight: 0.75,
-    anchor: '#basics',
+    anchor: '#honest-pricing',
     effort: 'self',
     minutes: 120,
     impact: 'Menus without visible prices and dish photos underperform by 30-40% on delivery apps and the owner\'s own online-ordering flow. Visitors cross-check prices before tapping "add to cart"; they scroll past items without photos. Adding both is a one-afternoon project for most HTML menus and the single highest-ROI change for ghost-kitchen and fast-casual restaurants.',
@@ -1190,7 +1190,7 @@ var RESTAURANT_PRIORITY_CHECKS = [
   {
     type: 'schema',
     weight: 0.5, // bonus — nice to have, not critical
-    anchor: '#findability',
+    anchor: '#schema',
     effort: 'dev',
     minutes: 20,
     impact: "Restaurant schema markup is how Google learns your hours, cuisine, and price range for local search. Restaurants with proper schema show up in the 'restaurants near me' rich results with photos and ratings — restaurants without it get a plain blue link. The difference in click-through rate is meaningful.",
@@ -1221,7 +1221,7 @@ var RESTAURANT_PRIORITY_CHECKS = [
     // shouldn't lose score; it's a bonus check.
     type: 'dietary',
     weight: 0.75,
-    anchor: '#trust',
+    anchor: '#dietary-markers',
     effort: 'self',
     minutes: 30,
     impact: 'Dietary-aware guests make decisions based on whether they see themselves considered. A single "GF" mark or a "vegan" badge reliably converts more dietary-restricted customers than ten paragraphs of "we can accommodate." Even one marker signals that someone on staff has thought about cross-contamination.',
@@ -1267,7 +1267,7 @@ var RESTAURANT_PRIORITY_CHECKS = [
     // absence is a missed revenue lever, not a broken site.
     type: 'gift-cards',
     weight: 0.5,
-    anchor: '#conversions',
+    anchor: '#gift-card-checkout',
     effort: 'dev',
     minutes: 30,
     impact: 'Gift cards are the highest-margin line on a restaurant site. Every \$50 gift card sold brings in \$50 of revenue AND a future customer; roughly 20-30% of gift cards go unredeemed, which is pure revenue. A visible "Gift Cards" CTA converts more than you would expect, especially around November-December.',
@@ -1331,7 +1331,7 @@ var RESTAURANT_PRIORITY_CHECKS = [
     // Phase H4: Email newsletter capture.
     type: 'email-capture',
     weight: 0.4,
-    anchor: '#conversions',
+    anchor: '#newsletter-capture',
     effort: 'dev',
     minutes: 60,
     impact: 'An email list is the only marketing channel you OWN — Instagram can ghost you, Google can change the rules, but your list keeps compounding. Restaurants with a newsletter capture typically see 3-5x higher repeat-visit rates from subscribers vs. non-subscribers.',
@@ -1355,7 +1355,7 @@ var RESTAURANT_PRIORITY_CHECKS = [
     // boost for fine-dining / bar-pub.
     type: 'catering-page',
     weight: 0.75,
-    anchor: '#conversions',
+    anchor: '#catering-page',
     effort: 'rebuild',
     minutes: 180,
     impact: 'A dedicated catering or private-events page is how most corporate planners and wedding organizers FIND caterers — it captures the long-tail search traffic ("catering Brooklyn", "private dining party of 30") that the homepage never ranks for.',
@@ -1396,7 +1396,7 @@ var RESTAURANT_PRIORITY_CHECKS = [
     // in its own subtypes.js entry without touching this definition.
     type: 'age-gate',
     weight: 1.0, // default unused; all subtypes override to 0
-    anchor: '#trust',
+    anchor: '#subtype-bar-pub',
     effort: 'dev',
     minutes: 45,
     impact: 'For bars, pubs, and breweries, an age-gate on the site shows regulators you care about compliance and protects you if an underage visitor sees your promotional content. Almost every state ABC / TTB program expects it, and platforms increasingly penalize non-compliant sites in ad delivery.',
@@ -1419,7 +1419,7 @@ var RESTAURANT_PRIORITY_CHECKS = [
     // every other subtype.
     type: 'food-truck-schedule',
     weight: 1.0,
-    anchor: '#basics',
+    anchor: '#subtype-food-truck',
     effort: 'dev',
     minutes: 60,
     impact: 'Every food-truck customer arrives with the same question: "where are you today?" A visible weekly schedule, a today\'s-location block, or at minimum a "Find us" page with your Instagram feed is the primary job of a food-truck website.',
@@ -1442,7 +1442,7 @@ var RESTAURANT_PRIORITY_CHECKS = [
     // only" confuses customers who arrive expecting dine-in.
     type: 'aggregator-only',
     weight: 1.0,
-    anchor: '#conversions',
+    anchor: '#subtype-ghost-kitchen',
     effort: 'self',
     minutes: 20,
     impact: 'Ghost kitchens that don\'t explicitly mark "delivery only" or "no dine-in" get customers showing up in person to an empty storefront — worse, getting a one-star review for "I drove there and it was closed." A single visible "Delivery & Pickup Only" banner deflects that confusion.',
@@ -1464,7 +1464,7 @@ var RESTAURANT_PRIORITY_CHECKS = [
     // other subtypes default to 1.0 (not suppressed).
     type: 'wholesale-custom-orders',
     weight: 1.0,
-    anchor: '#conversions',
+    anchor: '#subtype-bakery',
     effort: 'dev',
     minutes: 120,
     impact: 'For bakeries and cafes, custom orders and wholesale accounts are margin multipliers — a single wedding-cake order can match a week of walk-in revenue, and a standing wholesale account compounds month over month.',
@@ -1485,7 +1485,7 @@ var RESTAURANT_PRIORITY_CHECKS = [
     // gives pizzeria weight 1.5; other subtypes 1.0.
     type: 'delivery-radius',
     weight: 1.0,
-    anchor: '#conversions',
+    anchor: '#subtype-pizzeria',
     effort: 'self',
     minutes: 30,
     impact: 'Showing your delivery area saves every "do you deliver to me?" phone call. For pizzerias specifically, explicit zone info matters more than the map pin — a customer two neighborhoods over gives up if you look ambiguous.',
@@ -1505,7 +1505,7 @@ var RESTAURANT_PRIORITY_CHECKS = [
     // Phase H11: Social proof (press, awards, chef bio).
     type: 'social-proof',
     weight: 0.5,
-    anchor: '#trust',
+    anchor: '#social-proof',
     effort: 'self',
     minutes: 45,
     impact: 'Visible press quotes and awards convert skeptical new diners at measurably higher rates. "Featured in Eater" or a Michelin mention on the homepage is the single highest-credibility signal you can show a first-time visitor deciding whether to book.',
@@ -1547,7 +1547,7 @@ var RESTAURANT_PRIORITY_CHECKS = [
     // imagery kills conversion across every subtype.
     type: 'photo-coverage',
     weight: 0.5,
-    anchor: '#mobile',
+    anchor: '#real-photos',
     effort: 'self',
     minutes: 120,
     impact: 'Food photography is how restaurants sell online — a homepage with 3 images converts worse than one with 10, and alt-text makes those images accessible and SEO-indexable. Empty-alt or broken-alt photos are invisible to Google and to screen readers.',
@@ -1575,7 +1575,7 @@ var RESTAURANT_PRIORITY_CHECKS = [
     // the week listed, even if a day is explicitly closed.
     type: 'hours-accuracy',
     weight: 0.6,
-    anchor: '#findability',
+    anchor: '#opening-hours-specification',
     effort: 'dev',
     minutes: 30,
     impact: 'Google Rich Results for restaurants wants a full 7-day hours listing — partial coverage causes the "hours vary" fallback, which erodes trust with "are they open right now?" searchers. Every day needs an entry in openingHoursSpecification, even if opens/closes are null for a closed day.',

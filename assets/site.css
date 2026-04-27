@@ -3866,3 +3866,185 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .gloss-term-permalink a:focus-visible{
   color:var(--teal);border-bottom-color:var(--teal);
 }
+
+/* ===== "Recently added" rail (under glossary hero) =====
+ * Surfaces newest terms to returning readers; populated by
+ * scripts/inject-glossary-recent.mjs from data/glossary-added.json.
+ * Three-up grid on desktop, single column on phones. */
+.gloss-recent{
+  margin:clamp(24px,3vw,40px) auto clamp(28px,4vw,48px);
+  padding:clamp(20px,2.4vw,28px);
+  background:var(--cream-2);
+  border:1px solid var(--line);
+  border-radius:var(--r-md);
+}
+.gloss-recent__head-row{
+  display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;
+  margin-bottom:clamp(16px,2vw,22px);
+}
+.gloss-recent__head-row .eyebrow{color:var(--teal)}
+.gloss-recent__head-row h2{
+  margin:0;
+  font-family:var(--font-display);
+  font-weight:500;
+  font-size:clamp(20px,2vw,24px);
+  letter-spacing:-0.01em;
+  color:var(--ink);
+}
+.gloss-recent__list{
+  list-style:none;padding:0;margin:0;
+  display:grid;gap:12px;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+@media (max-width:900px){.gloss-recent__list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.gloss-recent__list{grid-template-columns:1fr}}
+.gloss-recent__card{
+  display:flex;flex-direction:column;gap:4px;
+  padding:14px 16px;
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:var(--r-sm);
+  text-decoration:none;color:inherit;
+  transition:border-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease);
+}
+.gloss-recent__card:hover,
+.gloss-recent__card:focus-visible{
+  border-color:var(--teal);
+  box-shadow:0 0 0 3px var(--teal-tint);
+  outline:none;
+}
+.gloss-recent__date{
+  font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--stone);
+}
+.gloss-recent__head{
+  font-family:var(--font-display);font-weight:500;font-size:16px;
+  color:var(--ink);line-height:1.25;
+}
+.gloss-recent__note{
+  font-size:13px;line-height:1.45;color:var(--ink-soft);
+}
+
+/* ===== Inline glossary popover =====
+ * Hover/focus tooltip rendered by site.js when a reader interacts with
+ * an in-article autolink (a[data-glossary-blurb]). Single shared popover
+ * positioned above or below the link based on viewport room. Decorative
+ * — the link works without JS; this just shows the definition without
+ * the reader leaving the article. */
+.glossary-popover{
+  position:absolute;
+  top:0;left:0;
+  z-index:120;
+  max-width:360px;
+  padding:14px 16px;
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:var(--r-md);
+  box-shadow:var(--elev-2,0 8px 24px rgba(20,22,26,0.08));
+  pointer-events:none;
+  opacity:0;
+  transform:translateY(4px);
+  transition:opacity var(--t-fast) var(--ease),transform var(--t-fast) var(--ease);
+}
+.glossary-popover.is-visible{
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+}
+.glossary-popover__head{
+  margin:0 0 4px;
+  font-family:var(--font-display);
+  font-weight:500;
+  font-size:16px;
+  color:var(--ink);
+  line-height:1.25;
+}
+.glossary-popover__aka{
+  margin:0 0 8px;
+  font-style:italic;
+  font-size:13px;
+  color:var(--stone);
+  line-height:1.35;
+}
+.glossary-popover__blurb{
+  margin:0 0 10px;
+  font-size:14px;
+  line-height:1.5;
+  color:var(--ink-soft);
+}
+.glossary-popover__more{
+  display:inline-block;
+  font-size:13px;
+  font-weight:500;
+  color:var(--teal);
+  text-decoration:none;
+  border-bottom:1px solid transparent;
+  transition:border-bottom-color var(--t-fast) var(--ease);
+}
+.glossary-popover__more:hover,
+.glossary-popover__more:focus-visible{
+  border-bottom-color:var(--teal);
+}
+@media (prefers-reduced-motion:reduce){
+  .glossary-popover{transition:none}
+}
+@media print{
+  .glossary-popover{display:none !important}
+}
+
+/* ===== Print view for glossary section landing pages =====
+ * Activates only on /glossary/<section>/ pages. Strips site chrome
+ * (nav, footer, CTAs, the print button itself) and reflows the
+ * .term-siblings-list term grid into a dense, two-column page-friendly
+ * card list — the artefact you can tape next to your P&L or hand to a
+ * bookkeeper. Lives behind a body-class predicate so it doesn't affect
+ * blog or term-page printing. */
+.gloss-section-page .nav,
+.gloss-section-page footer,
+.gloss-section-page .breadcrumb,
+.gloss-section-page .lang-hint{display:initial}
+
+@media print{
+  .gloss-section-page .nav,
+  .gloss-section-page footer,
+  .gloss-section-page .breadcrumb,
+  .gloss-section-page .hero-ctas,
+  .gloss-section-page .skip-link,
+  .gloss-section-page .lang-hint,
+  .gloss-section-page .nav-search-btn{display:none !important}
+
+  .gloss-section-page body{background:#fff;color:#000}
+  .gloss-section-page .hero-medium{padding:0 0 12pt}
+  .gloss-section-page .hero-medium h1{font-size:24pt;margin:0}
+  .gloss-section-page .hero-medium .hero-sub{font-size:11pt;color:#333}
+  .gloss-section-page .topic-section{padding:0}
+  .gloss-section-page .topic-section-head h2{font-size:14pt;margin-bottom:8pt}
+  .gloss-section-page .term-siblings-list{
+    grid-template-columns:1fr 1fr !important;
+    gap:6pt !important;
+    page-break-inside:auto;
+  }
+  .gloss-section-page .term-siblings-list a{
+    border:1pt solid #ccc !important;
+    background:#fff !important;
+    padding:6pt 8pt !important;
+    font-size:9.5pt !important;
+    line-height:1.35 !important;
+    page-break-inside:avoid;
+  }
+  .gloss-section-page .term-siblings-list strong{
+    font-size:10.5pt !important;
+    color:#000;
+  }
+  .gloss-section-page .term-siblings-list span{
+    color:#444;
+  }
+  /* Reveal each term URL after the headword for offline reference. */
+  .gloss-section-page .term-siblings-list a::after{
+    content:' — muntin.digital' attr(href);
+    display:block;
+    font-size:7.5pt;
+    color:#777;
+    margin-top:2pt;
+  }
+}

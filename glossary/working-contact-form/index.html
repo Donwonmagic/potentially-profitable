@@ -38,6 +38,45 @@
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
 <link rel="stylesheet" href="/assets/site.css?v=20260425-mobile-library-fix">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "DefinedTerm",
+      "@id": "https://muntin.digital/glossary/working-contact-form/#term",
+      "name": "Working contact form",
+      "description": "A form where a visitor can type a question or an inquiry and actually get a response. \"Working\" is the important word — the form sends, the email arrives in an inbox someone checks, and a human replies.",
+      "url": "https://muntin.digital/glossary/working-contact-form/",
+      "inLanguage": "en-US",
+      "inDefinedTermSet": "https://muntin.digital/glossary/#glossary"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://muntin.digital/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Glossary",
+          "item": "https://muntin.digital/glossary/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Working contact form",
+          "item": "https://muntin.digital/glossary/working-contact-form/"
+        }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -58,31 +97,7 @@
     <nav class="nav-links" aria-label="Primary">
       <a href="/services/">Services</a>
       <a href="/for/restaurants/">Restaurants</a>
-      <div class="nav-library-wrap">
-        <a href="/learn/" class="nav-library-trigger" aria-haspopup="true">Library<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <div class="nav-library-menu nav-library-menu--mega" role="menu" aria-label="Library sections">
-          <a class="nav-library-menu__home" href="/learn/" role="menuitem">
-            <strong>Library home</strong>
-            <span>The hub of everything below &rarr;</span>
-          </a>
-          <div class="nav-library-menu__col">
-            <h4>Learn</h4>
-            <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
-            <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
-            <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span><!-- count:glossary.terms -->116<!-- /count --> terms in plain English</span></a>
-          </div>
-          <div class="nav-library-menu__col">
-            <h4>Read</h4>
-            <a href="/blog/" role="menuitem"><strong>Articles</strong><span>The how-to playbooks</span></a>
-            <a href="/learn/research/" role="menuitem"><strong>Research</strong><span>The evidence behind the playbooks</span></a>
-          </div>
-          <div class="nav-library-menu__col">
-            <h4>Do</h4>
-            <a href="/tools/" role="menuitem"><strong>Free tools</strong><span>Run a check on your own site</span></a>
-            <a href="/learn/checklists/" role="menuitem"><strong>Checklists &amp; guides</strong><span>Workbooks you can save</span></a>
-          </div>
-        </div>
-      </div>
+      <a href="/learn/">Learn</a>
       <a href="/work/">Work</a>
       <a href="/about/">About</a>
     </nav>
@@ -108,20 +123,7 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/services/">Services</a>
     <a href="/for/restaurants/">Restaurants</a>
-    <details class="mobile-library">
-      <summary>Library</summary>
-      <a href="/learn/">Library home</a>
-      <p class="mobile-library__group">Learn</p>
-      <a href="/learn/start-here/">Start here</a>
-      <a href="/learn/topics/">Topics</a>
-      <a href="/glossary/">Glossary</a>
-      <p class="mobile-library__group">Read</p>
-      <a href="/blog/">Articles</a>
-      <a href="/learn/research/">Research</a>
-      <p class="mobile-library__group">Do</p>
-      <a href="/tools/">Free tools</a>
-      <a href="/learn/checklists/">Checklists &amp; guides</a>
-    </details>
+    <a href="/learn/">Learn</a>
     <a href="/work/">Work</a>
     <a href="/about/">About</a>
     <button type="button" class="mobile-search js-open-search">
@@ -132,13 +134,6 @@
     <a href="/es/glossary/working-contact-form/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
-  <!-- Opt-in Spanish banner. Rendered hidden by default; site.js
-       removes the hidden attribute only when (a) the reader's browser
-       lists Spanish in navigator.languages, (b) no md_locale cookie
-       has been set yet, and (c) the banner hasn't been dismissed.
-       Speaks directly in Spanish because its audience, by definition,
-       is a Spanish-speaking visitor. Link target is the page's own
-       hreflang="es" alternate from <head>, read at runtime. -->
   <aside class="lang-hint" id="langHint" role="complementary" aria-label="Sugerencia de idioma" lang="es" hidden>
     <div class="container lang-hint-inner">
       <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
@@ -163,7 +158,7 @@
 <section class="term-page">
   <div class="container term-page-inner">
     <header class="term-head">
-      <span class="eyebrow"><a href="/glossary/#trust">Trust</a></span>
+      <span class="eyebrow"><a href="/glossary/trust/">Trust</a></span>
       <h1 class="term-h1">Working contact form</h1>
       
       <div class="term-meta">
@@ -190,9 +185,9 @@
       <li><a href="/glossary/https/"><strong>HTTPS</strong><span> — SSL certificate, the padlock</span></a></li>
       <li><a href="/glossary/honest-pricing/"><strong>Honest menu prices</strong></a></li>
       <li><a href="/glossary/last-updated-signal/"><strong>Last-updated signal</strong><span> — seasonal menu badge, "this week", dated posts</span></a></li>
-      <li><a href="/glossary/wcag-contrast/"><strong>WCAG AA contrast</strong><span> — accessible color contrast</span></a></li>
       <li><a href="/glossary/real-photos/"><strong>Real photos</strong><span> — not stock photography</span></a></li>
       <li><a href="/glossary/photo-brief/"><strong>Photo brief</strong><span> — the one-page sheet you walk into a photoshoot with</span></a></li>
+      <li><a href="/glossary/aspect-ratio/"><strong>Aspect ratio</strong><span> — the proportion between width and height, locked by the destination</span></a></li>
     </ul>
   </div>
 </section>
@@ -201,7 +196,7 @@
   <div class="container">
     <div class="section-header reveal section-center">
       <span class="eyebrow">Glossary</span>
-      <h2>Browse all<br><span class="serif-italic"><!-- count:glossary.terms -->116<!-- /count --> terms.</span></h2>
+      <h2>Browse all<br><span class="serif-italic">97 terms.</span></h2>
       <p class="final-sub">Plain-English definitions for every term in your audit, organized by category.</p>
     </div>
     <div class="hero-ctas reveal hero-ctas-center">
@@ -210,7 +205,6 @@
     </div>
   </div>
 </section>
-
 
 <!-- glossary-knit -->
 <aside class="glossary-knit" aria-labelledby="glossary-knit-h-working-contact-form">
@@ -230,7 +224,8 @@
       <div class="glossary-knit__col">
         <h3>Read</h3>
         <ul>
-          <li class="glossary-knit__col-empty">Nothing yet</li>
+          <li><a href="/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/">What a custom restaurant site costs in 2026</a></li>
+          <li><a href="/blog/how-to-get-more-google-reviews-for-your-restaurant/">Getting more Google reviews</a></li>
         </ul>
       </div>
       <div class="glossary-knit__col">
@@ -264,7 +259,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->116<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a 97-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">

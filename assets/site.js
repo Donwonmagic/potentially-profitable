@@ -3180,3 +3180,125 @@
     stamp();
   }
 })();
+
+/* ============ Glossary inline popover ============
+ *
+ * Progressive enhancement for in-article glossary autolinks. The build
+ * step (autoLinkGlossary in scripts/build-library.mjs) stamps every
+ * inline /glossary/<term>/ link with three data attributes:
+ *   data-glossary-head   — the term's display headword
+ *   data-glossary-aka    — optional AKA / sub-head
+ *   data-glossary-blurb  — first sentence of the definition
+ *
+ * On hover or keyboard focus this script renders a small popover near
+ * the link with that content + a "read more" link. The link still
+ * works without JS — popover is decoration only. One reusable popover
+ * element is appended to <body>; positioned via getBoundingClientRect.
+ * Dismissal: mouseleave (with grace timer), blur, click outside,
+ * Escape, scroll. Respects prefers-reduced-motion (no fade transition).
+ */
+(function(){
+  if (typeof document === 'undefined') return;
+  var triggers = document.querySelectorAll('a[data-glossary-blurb]');
+  if (!triggers.length) return;
+
+  var popover     = null;
+  var hideTimer   = 0;
+  var activeLink  = null;
+  var prefersReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function ensurePopover(){
+    if (popover) return popover;
+    popover = document.createElement('div');
+    popover.className = 'glossary-popover';
+    popover.setAttribute('role', 'tooltip');
+    popover.setAttribute('aria-hidden', 'true');
+    popover.innerHTML =
+      '<p class="glossary-popover__head"></p>' +
+      '<p class="glossary-popover__aka"></p>' +
+      '<p class="glossary-popover__blurb"></p>' +
+      '<a class="glossary-popover__more" href="#"></a>';
+    document.body.appendChild(popover);
+
+    // Keep open while the cursor is on the popover itself, so the
+    // reader can move from the link to the popover to click "read more".
+    popover.addEventListener('mouseenter', function(){ window.clearTimeout(hideTimer); });
+    popover.addEventListener('mouseleave', scheduleHide);
+    return popover;
+  }
+
+  function show(link){
+    var head  = link.getAttribute('data-glossary-head')  || '';
+    var aka   = link.getAttribute('data-glossary-aka')   || '';
+    var blurb = link.getAttribute('data-glossary-blurb') || '';
+    var href  = link.getAttribute('href') || '';
+    if (!head || !blurb) return;
+
+    var p = ensurePopover();
+    p.querySelector('.glossary-popover__head').textContent = head;
+    var akaEl = p.querySelector('.glossary-popover__aka');
+    akaEl.textContent = aka;
+    akaEl.style.display = aka ? '' : 'none';
+    p.querySelector('.glossary-popover__blurb').textContent = blurb;
+    var more = p.querySelector('.glossary-popover__more');
+    more.setAttribute('href', href);
+    // Localised "read the full definition" label. Read once from the
+    // page's <html lang> attribute — no message bundle needed for one
+    // string used by one component.
+    var lang = (document.documentElement.getAttribute('lang') || 'en').slice(0, 2);
+    more.textContent = (lang === 'es' ? 'Leer la definición completa' : 'Read the full definition') + ' →';
+
+    var rect = link.getBoundingClientRect();
+    var popH = p.offsetHeight || 140;
+    var popW = Math.min(360, window.innerWidth - 24);
+    p.style.maxWidth = popW + 'px';
+    var preferAbove = rect.top > popH + 16;
+    var top  = preferAbove ? (rect.top - popH - 8) : (rect.bottom + 8);
+    var left = Math.max(12, Math.min(window.innerWidth - popW - 12, rect.left + (rect.width / 2) - (popW / 2)));
+    p.style.top  = (top + window.scrollY) + 'px';
+    p.style.left = (left + window.scrollX) + 'px';
+    p.setAttribute('data-position', preferAbove ? 'above' : 'below');
+    p.setAttribute('aria-hidden', 'false');
+    p.classList.add('is-visible');
+    activeLink = link;
+
+    if (window.plausible) {
+      window.plausible('Glossary Popover', { props: { term: href } });
+    }
+  }
+
+  function hide(){
+    if (!popover) return;
+    popover.classList.remove('is-visible');
+    popover.setAttribute('aria-hidden', 'true');
+    activeLink = null;
+  }
+
+  function scheduleHide(){
+    window.clearTimeout(hideTimer);
+    hideTimer = window.setTimeout(hide, prefersReduce ? 0 : 200);
+  }
+
+  for (var i = 0; i < triggers.length; i++) {
+    var link = triggers[i];
+    link.addEventListener('mouseenter', (function(L){ return function(){
+      window.clearTimeout(hideTimer);
+      show(L);
+    }; })(link));
+    link.addEventListener('mouseleave', scheduleHide);
+    link.addEventListener('focus', (function(L){ return function(){
+      window.clearTimeout(hideTimer);
+      show(L);
+    }; })(link));
+    link.addEventListener('blur', scheduleHide);
+  }
+
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && activeLink) {
+      hide();
+      activeLink && activeLink.blur();
+    }
+  });
+  // Hide on scroll (popover would otherwise drift away from its anchor).
+  window.addEventListener('scroll', function(){ if (activeLink) hide(); }, { passive: true });
+})();

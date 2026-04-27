@@ -9,10 +9,16 @@
 //   data/library-tags.json — tools{} carries each tool's
 //     glossary_terms[] / glossary_term and articles[] / article;
 //     blog_posts{} carries each post's topics[]; the script reverses
-//     these mappings so a term page can list its callers.
+//     these mappings so a term page can list its declared callers.
 //   data/topics.json     — topic slugs and EN+ES names.
 //   data/tools.json      — live tool slugs, EN+ES titles, URLs.
 //   data/tool-knit.json  — article labels (label_en / label_es).
+//   blog/<slug>/index.html, tools/<slug>/index.html,
+//     tools/audits/<slug>/index.html, learn/research/<slug>/index.html
+//     — scanned for inline href="/glossary/<term>/" links and
+//     reverse-indexed so any inline reference auto-fills the term's
+//     "Used in" / "Read" columns. Declared mappings (library-tags) win
+//     ordering; discovered mappings backfill until the per-column cap.
 //   glossary/<slug>/index.html (EN + es/) — receives the rendered
 //     module between the sentinels.
 //
@@ -20,12 +26,13 @@
 //   TOPIC          — the term's primary topic (first in its data-topics
 //                    list, computed from library-tags.json the same way
 //                    wire-glossary-topics.mjs does).
-//   USED IN        — every live tool whose library-tags.tools.<slug>
-//                    glossary_terms[] / glossary_term mentions this
-//                    term. Resolves to data/tools.json for label/URL.
-//   READ           — every blog post whose library-tags.tools mentions
-//                    this term as its primary glossary_term, plus any
-//                    posts in the same topic. Capped at 3.
+//   USED IN        — every live tool that (a) declares this term in
+//                    library-tags.tools, OR (b) inline-links to this
+//                    term in its rendered HTML. Cap 3, declared first.
+//   READ           — every blog post that (a) is declared against this
+//                    term in library-tags.tools.<slug>.article(s), OR
+//                    (b) inline-links to this term in its rendered HTML.
+//                    Cap 3, declared first.
 //   RELATED TERMS  — up to 4 sibling glossary slugs that share at
 //                    least one topic with this term. Stable order
 //                    (alphabetical) so layouts don't churn.
@@ -88,29 +95,84 @@ const termIndex = discoverTerms();
 
 // --- reverse maps ------------------------------------------------------
 
-// term slug → list of live tool slugs that reference it.
+// Scan an HTML file for `href="/glossary/<term>/"` references and
+// return the unique set of term slugs found. Used to auto-discover
+// inbound links that aren't declared in library-tags.json.
+const HREF_TERM_RE = /href="\/glossary\/([a-z0-9-]+)\/"/g;
+function termsLinkedFrom(absPath) {
+  if (!fs.existsSync(absPath)) return new Set();
+  const html = fs.readFileSync(absPath, 'utf8');
+  const found = new Set();
+  let m;
+  HREF_TERM_RE.lastIndex = 0;
+  while ((m = HREF_TERM_RE.exec(html)) !== null) {
+    if (termIndex[m[1]]) found.add(m[1]); // only count real terms
+  }
+  return found;
+}
+
+// List the slugs of every direct child directory under a parent that
+// contains an index.html. Used to enumerate /tools/<slug>/, /blog/<slug>/.
+function listSlugDirs(parentRel, { skip = new Set() } = {}) {
+  const parentAbs = path.join(REPO, parentRel);
+  if (!fs.existsSync(parentAbs)) return [];
+  return fs.readdirSync(parentAbs, { withFileTypes: true })
+    .filter((e) => e.isDirectory() && !e.name.startsWith('.') && !skip.has(e.name))
+    .filter((e) => fs.existsSync(path.join(parentAbs, e.name, 'index.html')))
+    .map((e) => e.name);
+}
+
+// term slug → ordered list of live tool slugs that reference it.
+// Order: declared in library-tags.json first (preserves curator intent),
+// then auto-discovered from inline href scans of the rendered tool HTML.
+// Each tool slug appears at most once.
 function buildToolReverse() {
   const map = new Map();
+  const pushOnce = (term, slug) => {
+    if (!map.has(term)) map.set(term, []);
+    if (!map.get(term).includes(slug)) map.get(term).push(slug);
+  };
+
+  // 1. Declared (library-tags.json).
   for (const [toolKey, t] of Object.entries(tags.tools || {})) {
     const refs = []
       .concat(t.glossary_term ? [t.glossary_term] : [])
       .concat(t.glossary_terms || []);
-    for (const term of refs) {
-      if (!map.has(term)) map.set(term, []);
-      // Normalize tool key — library-tags uses "audits/restaurant"
-      // for the restaurant audit; data/tools.json uses
-      // "restaurant-audit". Map them.
-      const normalized = toolKey === 'audits/restaurant' ? 'restaurant-audit' : toolKey;
-      map.get(term).push(normalized);
-    }
+    // Normalize tool key — library-tags uses "audits/restaurant"
+    // for the restaurant audit; data/tools.json uses "restaurant-audit".
+    const normalized = toolKey === 'audits/restaurant' ? 'restaurant-audit' : toolKey;
+    for (const term of refs) pushOnce(term, normalized);
+  }
+
+  // 2. Auto-discovered from /tools/<slug>/index.html. Skip /tools/audits/
+  //    (it lives one level deeper and is handled below).
+  for (const slug of listSlugDirs('tools', { skip: new Set(['audits']) })) {
+    const fp = path.join(REPO, 'tools', slug, 'index.html');
+    for (const term of termsLinkedFrom(fp)) pushOnce(term, slug);
+  }
+
+  // 3. Auto-discovered from /tools/audits/<slug>/index.html. The
+  //    restaurant audit's data/tools.json key is "restaurant-audit".
+  for (const slug of listSlugDirs('tools/audits')) {
+    const fp = path.join(REPO, 'tools', 'audits', slug, 'index.html');
+    const toolKey = slug === 'restaurant' ? 'restaurant-audit' : `audits/${slug}`;
+    for (const term of termsLinkedFrom(fp)) pushOnce(term, toolKey);
   }
   return map;
 }
 const toolByTerm = buildToolReverse();
 
-// term slug → list of blog post slugs (primary association first).
+// term slug → ordered list of blog post slugs that reference it.
+// Order: declared in library-tags.json first, then auto-discovered from
+// inline scans of /blog/<slug>/index.html. Each post slug appears once.
 function buildArticleReverse() {
-  const direct = new Map(); // term → [post slugs explicitly linked via tools entry]
+  const map = new Map();
+  const pushOnce = (term, slug) => {
+    if (!map.has(term)) map.set(term, []);
+    if (!map.get(term).includes(slug)) map.get(term).push(slug);
+  };
+
+  // 1. Declared via tools[].article(s) in library-tags.json.
   for (const t of Object.values(tags.tools || {})) {
     const refs = []
       .concat(t.glossary_term ? [t.glossary_term] : [])
@@ -118,14 +180,15 @@ function buildArticleReverse() {
     const articles = []
       .concat(t.article ? [t.article] : [])
       .concat(t.articles || []);
-    for (const term of refs) {
-      if (!direct.has(term)) direct.set(term, []);
-      for (const a of articles) {
-        if (!direct.get(term).includes(a)) direct.get(term).push(a);
-      }
-    }
+    for (const term of refs) for (const a of articles) pushOnce(term, a);
   }
-  return direct;
+
+  // 2. Auto-discovered from /blog/<slug>/index.html (exclude drafts/).
+  for (const slug of listSlugDirs('blog', { skip: new Set(['drafts']) })) {
+    const fp = path.join(REPO, 'blog', slug, 'index.html');
+    for (const term of termsLinkedFrom(fp)) pushOnce(term, slug);
+  }
+  return map;
 }
 const articleSlugsByTerm = buildArticleReverse();
 
@@ -228,9 +291,27 @@ ${toolsList}
         </ul>
       </div>`;
 
-  // READ — articles linked via library-tags.json, capped at 2 (column
-  // gets a third slot only if no related tools exist).
-  const articleSlugs = (articleSlugsByTerm.get(slug) || []).slice(0, 2);
+  // READ — articles in this priority order, deduped, capped at 3:
+  //   1. Declared in library-tags.tools.<tool>.article(s).
+  //   2. Discovered via inline href scan of /blog/<slug>/index.html.
+  //   3. Topic fallback: posts in library-tags.blog_posts whose
+  //      topics[] overlaps any of this term's topics. Lets unreferenced
+  //      terms still surface relevant reading.
+  const directArticles = articleSlugsByTerm.get(slug) || [];
+  const articleSlugs = [...directArticles];
+  if (articleSlugs.length < 3 && me && me.topics.length) {
+    const myTopicSet = new Set(me.topics);
+    for (const [postSlug, post] of Object.entries(tags.blog_posts || {})) {
+      if (postSlug === '_doc') continue;
+      if (articleSlugs.includes(postSlug)) continue;
+      const postTopics = post.topics || [];
+      if (postTopics.some((t) => myTopicSet.has(t))) {
+        articleSlugs.push(postSlug);
+        if (articleSlugs.length >= 3) break;
+      }
+    }
+  }
+  articleSlugs.length = Math.min(articleSlugs.length, 3);
   const articlesList = articleSlugs.length
     ? articleSlugs.map((as) => `          <li><a href="${escAttr(articleUrl(as, locale))}">${escText(articleLabel(as, locale))}</a></li>`).join('\n')
     : `          <li class="glossary-knit__col-empty">${escText(headings.empty)}</li>`;

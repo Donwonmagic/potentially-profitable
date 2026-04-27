@@ -1,0 +1,19 @@
+{
+  "_doc": "Source-of-truth for the 'Recently added' rail on /glossary/ (EN+ES). Edit this file when a new term lands; scripts/inject-glossary-recent.mjs reads it and stamps the rail between <!-- glossary-recent:start --> sentinels in glossary/index.html and es/glossary/index.html. Order is newest-first; only the first `display_count` entries render. Term slugs must exist as directories under glossary/ (the script verifies and skips orphans).",
+  "updated": "2026-04-26",
+  "display_count": 6,
+  "added": [
+    { "slug": "opening-hours-specification", "date": "2026-04-26", "note": "Re-added from orphan; the Schema.org type Google reads to render hours." },
+    { "slug": "holiday-hours",                "date": "2026-04-26", "note": "Re-added from orphan; the recurring per-date overrides every restaurant has to make." },
+    { "slug": "menu-engineering",             "date": "2026-04-22", "note": "Kasavana & Smith's Star/Plowhorse/Puzzle/Dog framework." },
+    { "slug": "plate-cost",                   "date": "2026-04-22", "note": "What it costs in ingredients to send one finished plate to the pass." },
+    { "slug": "yield-percent",                "date": "2026-04-22", "note": "The share of an as-purchased ingredient that ends up on a plate." },
+    { "slug": "edible-portion",               "date": "2026-04-22", "note": "The cost of one usable ounce after trim, peel, bone, shrink." },
+    { "slug": "photo-brief",                  "date": "2026-04-20", "note": "The structured shot list a restaurant owner walks into a session with." },
+    { "slug": "aspect-ratio",                 "date": "2026-04-20", "note": "Eight surfaces with canonical w:h locked by their destination platform." },
+    { "slug": "hero-shot",                    "date": "2026-04-20", "note": "The one photo per surface that does the load-bearing visual work." },
+    { "slug": "sensory-adjective",            "date": "2026-04-18", "note": "Wansink's lever for the +27% selection lift on descriptive food names." },
+    { "slug": "charm-pricing",                "date": "2026-04-18", "note": "Cents conventions and the dollar-sign-drop research from Cornell." },
+    { "slug": "menu-copy",                    "date": "2026-04-18", "note": "The language doing the selling, separate from the dish itself." }
+  ]
+}
