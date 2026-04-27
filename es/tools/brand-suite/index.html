@@ -1439,10 +1439,27 @@
         var i = (y * w + x) * 4;
         if (data[i + 3] < 128) continue;
         if (nearBg(i)) continue;
-        if (x > 0     && nearBg(((y    ) * w + (x - 1)) * 4)) continue;
-        if (x < w - 1 && nearBg(((y    ) * w + (x + 1)) * 4)) continue;
-        if (y > 0     && nearBg(((y - 1) * w + (x    )) * 4)) continue;
-        if (y < h - 1 && nearBg(((y + 1) * w + (x    )) * 4)) continue;
+        // Erosión a 8 vecinos (relajada desde la regla original de 4
+        // vecinos): un píxel se descarta sólo si TODOS sus 8 vecinos son
+        // cercanos al fondo — un punto aislado sin continuidad con
+        // ninguna otra región de color de marca. Los trazos finos (la
+        // línea óxido del Muntin de 1,7 px de alto tras el reducido,
+        // letras de la subtagline a ~5 px) sobreviven porque tienen
+        // vecinos no-fondo a lo largo de la dirección del trazo. Las
+        // formas sólidas siguen sobreviviendo — los píxeles interiores
+        // están rodeados de no-fondo. Fuera de límites se trata como
+        // lado-fondo; los píxeles del borde del canvas se evalúan
+        // contra los vecinos dentro de límites únicamente.
+        var allBg = true;
+        for (var dy = -1; dy <= 1 && allBg; dy++) {
+          for (var dx = -1; dx <= 1 && allBg; dx++) {
+            if (dx === 0 && dy === 0) continue;
+            var nx = x + dx, ny = y + dy;
+            if (nx < 0 || nx >= w || ny < 0 || ny >= h) continue;
+            if (!nearBg((ny * w + nx) * 4)) allBg = false;
+          }
+        }
+        if (allBg) continue;
         out.push([data[i], data[i + 1], data[i + 2]]);
       }
     }

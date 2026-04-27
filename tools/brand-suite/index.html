@@ -1496,11 +1496,26 @@
         var i = (y * w + x) * 4;
         if (data[i + 3] < 128) continue;
         if (nearBg(i)) continue;            // bg pixel itself — skip
-        // 4-neighbour check; any near-bg neighbour means this is an AA edge.
-        if (x > 0     && nearBg(((y    ) * w + (x - 1)) * 4)) continue;
-        if (x < w - 1 && nearBg(((y    ) * w + (x + 1)) * 4)) continue;
-        if (y > 0     && nearBg(((y - 1) * w + (x    )) * 4)) continue;
-        if (y < h - 1 && nearBg(((y + 1) * w + (x    )) * 4)) continue;
+        // 8-neighbour erosion (relaxed from the original 4-neighbour
+        // rule): a pixel is dropped only if it's an isolated speck —
+        // ALL 8 neighbours bg-near, meaning no continuity to any other
+        // brand-colour region. Hairline strokes (the Muntin rust line
+        // at 1.7 px tall after downsample, tagline letterforms at ~5 px
+        // tall) survive because they have non-bg neighbours along the
+        // stroke direction. Bulk shapes still survive — interior
+        // pixels surround themselves with non-bg.
+        // Out-of-bounds is treated as bg-side, so canvas-edge pixels
+        // are evaluated against their in-bounds neighbours only.
+        var allBg = true;
+        for (var dy = -1; dy <= 1 && allBg; dy++) {
+          for (var dx = -1; dx <= 1 && allBg; dx++) {
+            if (dx === 0 && dy === 0) continue;
+            var nx = x + dx, ny = y + dy;
+            if (nx < 0 || nx >= w || ny < 0 || ny >= h) continue;
+            if (!nearBg((ny * w + nx) * 4)) allBg = false;
+          }
+        }
+        if (allBg) continue;
         out.push([data[i], data[i + 1], data[i + 2]]);
       }
     }
