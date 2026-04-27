@@ -1677,9 +1677,22 @@
   // Limpia el SVG: quita <script> y href / xlink:href externos.
   // Conserva data: y fragmentos #foo del mismo documento.
   function sanitizeSvgText(text){
+    // Camino rápido: si el SVG no trae nada potencialmente peligroso,
+    // se devuelve íntegro. El round-trip DOMParser → XMLSerializer es
+    // semánticamente correcto pero pierde detalles en algunos
+    // navegadores (Safari antiguos han llegado a borrar el xmlns en
+    // serialización). El camino rápido protege a la mayoría de
+    // archivos limpios (exports de Illustrator, nuestra muestra).
+    var raw = String(text || '');
+    if (!raw.trim()) return null;
+    var hasScript     = /<script[\s>]/i.test(raw);
+    var hasOnHandler  = /\son[a-z]+\s*=/i.test(raw);
+    var hasRemoteHref = /(?:xlink:)?href\s*=\s*["']\s*(?!#|data:)[^"'#][^"']*["']/i.test(raw);
+    if (!hasScript && !hasOnHandler && !hasRemoteHref) return raw;
+
     try {
       var parser = new DOMParser();
-      var doc = parser.parseFromString(text, 'image/svg+xml');
+      var doc = parser.parseFromString(raw, 'image/svg+xml');
       if (!doc || doc.querySelector('parsererror')) return null;
       var root = doc.documentElement;
       if (!root || root.nodeName.toLowerCase() !== 'svg') return null;
@@ -1705,6 +1718,9 @@
         stripExternalHref(el, 'href');
         stripExternalHref(el, 'xlink:href');
       }
+      if (!root.getAttribute('xmlns')) {
+        root.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+      }
       return new XMLSerializer().serializeToString(doc);
     } catch (_) {
       return null;
@@ -1727,7 +1743,28 @@
     }
     setStatus('Cargando tu logo…', 'working');
 
-    var isHeic = (file.type && /heic|heif/i.test(file.type)) || /\.(heic|heif)$/i.test(file.name || '');
+    var declaredHeic = (file.type && /heic|heif/i.test(file.type)) || /\.(heic|heif)$/i.test(file.name || '');
+
+    function detectHeicBytes(blob){
+      return new Promise(function(resolve){
+        if (!blob || !blob.slice) return resolve(false);
+        var head = blob.slice(0, 16);
+        var fr = new FileReader();
+        fr.onload = function(){
+          try {
+            var bytes = new Uint8Array(fr.result);
+            if (bytes.length >= 12 &&
+                bytes[4] === 0x66 && bytes[5] === 0x74 && bytes[6] === 0x79 && bytes[7] === 0x70) {
+              var brand = String.fromCharCode(bytes[8], bytes[9], bytes[10], bytes[11]).toLowerCase();
+              if (/^(heic|heix|hevc|mif1|msf1|heim|heis|hevm|hevs)$/.test(brand)) return resolve(true);
+            }
+          } catch (_) {}
+          resolve(false);
+        };
+        fr.onerror = function(){ resolve(false); };
+        fr.readAsArrayBuffer(head);
+      });
+    }
 
     function proceed(blob){
       loadAsImage(blob, function(img, url){
@@ -1739,7 +1776,7 @@
         var w = img.naturalWidth  || img.width  || 0;
         var h = img.naturalHeight || img.height || 0;
         if (w === 0 || h === 0) {
-          setStatus('No se pudo leer ese archivo como imagen.', 'error');
+          setStatus('No se pudo leer ese archivo como imagen (' + (file.type || file.name || 'tipo desconocido') + ').', 'error');
           return;
         }
         var scale = Math.min(1, DOWNSAMPLE / Math.max(w, h));
@@ -1754,11 +1791,13 @@
         }
         extractAndRender(pixels, file);
       }, function(){
-        if (isHeic) {
-          setStatus('Las fotos HEIC del iPhone solo se decodifican en Safari. En tu teléfono: toca la foto, luego Compartir → Guardar en Archivos (o abre Fotos → Editar → Listo) — eso la convierte a JPEG. Suelta el JPEG aquí.', 'error');
-        } else {
-          setStatus('No se pudo leer ese archivo como imagen.', 'error');
-        }
+        detectHeicBytes(blob).then(function(byteSniffHeic){
+          if (declaredHeic || byteSniffHeic) {
+            setStatus('Las fotos HEIC del iPhone solo se decodifican en Safari. En tu teléfono: toca la foto, luego Compartir → Guardar en Archivos (o abre Fotos → Editar → Listo) — eso la convierte a JPEG. Suelta el JPEG aquí.', 'error');
+          } else {
+            setStatus('No se pudo leer ese archivo como imagen (tipo: ' + (file.type || 'desconocido') + (file.name ? ', nombre: ' + file.name : '') + '). Guárdalo de nuevo como PNG o JPEG y sube esa copia.', 'error');
+          }
+        });
       });
     }
 

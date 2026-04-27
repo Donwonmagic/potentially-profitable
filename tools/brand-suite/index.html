@@ -1772,9 +1772,25 @@
   // references — those can't reach the network. Returns the serialized
   // sanitized SVG as a string, or null if parsing fails.
   function sanitizeSvgText(text){
+    // Fast path: if the SVG carries no scripts, no inline event-handler
+    // attributes, and no non-fragment / non-data href, return it
+    // verbatim. The DOMParser → XMLSerializer round-trip below is
+    // semantically correct but historically lossy across browsers
+    // (older Safari has dropped the SVG xmlns on serialize, which then
+    // makes the resulting blob un-renderable as an Image). The fast
+    // path keeps clean inputs (the overwhelming majority — designer
+    // exports, our own bundled sample) byte-for-byte intact.
+    var raw = String(text || '');
+    if (!raw.trim()) return null;
+    var hasScript     = /<script[\s>]/i.test(raw);
+    var hasOnHandler  = /\son[a-z]+\s*=/i.test(raw);
+    var hasRemoteHref = /(?:xlink:)?href\s*=\s*["']\s*(?!#|data:)[^"'#][^"']*["']/i.test(raw);
+    if (!hasScript && !hasOnHandler && !hasRemoteHref) return raw;
+
+    // Heavy path — at least one suspicious attribute. Strip via DOM.
     try {
       var parser = new DOMParser();
-      var doc = parser.parseFromString(text, 'image/svg+xml');
+      var doc = parser.parseFromString(raw, 'image/svg+xml');
       if (!doc || doc.querySelector('parsererror')) return null;
       var root = doc.documentElement;
       if (!root || root.nodeName.toLowerCase() !== 'svg') return null;
@@ -1801,6 +1817,12 @@
         }
         stripExternalHref(el, 'href');
         stripExternalHref(el, 'xlink:href');
+      }
+      // Belt-and-braces: ensure the root retains its SVG xmlns even if
+      // XMLSerializer's behaviour shifts. Without it, the Blob is a
+      // text fragment, not a renderable SVG.
+      if (!root.getAttribute('xmlns')) {
+        root.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
       }
       return new XMLSerializer().serializeToString(doc);
     } catch (_) {
@@ -1829,7 +1851,37 @@
     // decode and throw a load error; we catch that and surface a
     // friendly conversion hint instead of the generic "couldn't read
     // that file" message.
-    var isHeic = (file.type && /heic|heif/i.test(file.type)) || /\.(heic|heif)$/i.test(file.name || '');
+    //
+    // iOS quirk: the file picker sometimes hands a HEIC byte stream
+    // back with a misleading extension/MIME (.jpg / image/jpeg), so
+    // we also peek at the first 12 bytes to look for the HEIC ftyp
+    // box header. If found, treat it as HEIC even if the metadata
+    // says otherwise.
+    var declaredHeic = (file.type && /heic|heif/i.test(file.type)) || /\.(heic|heif)$/i.test(file.name || '');
+
+    function detectHeicBytes(blob){
+      return new Promise(function(resolve){
+        if (!blob || !blob.slice) return resolve(false);
+        var head = blob.slice(0, 16);
+        var fr = new FileReader();
+        fr.onload = function(){
+          try {
+            var bytes = new Uint8Array(fr.result);
+            // ISO-BMFF "ftyp" box at byte offset 4. Brand at offset 8.
+            // HEIC brands: heic, heix, hevc, mif1, msf1, heim, heis,
+            // hevm, hevs.
+            if (bytes.length >= 12 &&
+                bytes[4] === 0x66 && bytes[5] === 0x74 && bytes[6] === 0x79 && bytes[7] === 0x70) {
+              var brand = String.fromCharCode(bytes[8], bytes[9], bytes[10], bytes[11]).toLowerCase();
+              if (/^(heic|heix|hevc|mif1|msf1|heim|heis|hevm|hevs)$/.test(brand)) return resolve(true);
+            }
+          } catch (_) {}
+          resolve(false);
+        };
+        fr.onerror = function(){ resolve(false); };
+        fr.readAsArrayBuffer(head);
+      });
+    }
 
     function proceed(blob){
       loadAsImage(blob, function(img, url){
@@ -1843,7 +1895,7 @@
         var w = img.naturalWidth  || img.width  || 0;
         var h = img.naturalHeight || img.height || 0;
         if (w === 0 || h === 0) {
-          setStatus('Could not read that file as an image.', 'error');
+          setStatus('Could not read that file as an image (' + (file.type || file.name || 'unknown type') + ').', 'error');
           return;
         }
         var scale = Math.min(1, DOWNSAMPLE / Math.max(w, h));
@@ -1858,11 +1910,15 @@
         }
         extractAndRender(pixels, file);
       }, function(){
-        if (isHeic) {
-          setStatus('iPhone HEIC photos only decode in Safari. On your phone: tap the photo, then Share → Save to Files (or open Photos → Edit → Done) — that converts it to JPEG. Drop the JPEG here.', 'error');
-        } else {
-          setStatus('Could not read that file as an image.', 'error');
-        }
+        // Sniff the actual bytes — iOS sometimes hands back HEIC
+        // with a JPEG label.
+        detectHeicBytes(blob).then(function(byteSniffHeic){
+          if (declaredHeic || byteSniffHeic) {
+            setStatus('iPhone HEIC photos only decode in Safari. On your phone: tap the photo, then Share → Save to Files (or open Photos → Edit → Done) — that converts it to JPEG. Drop the JPEG here.', 'error');
+          } else {
+            setStatus('Could not read that file as an image (type: ' + (file.type || 'unknown') + (file.name ? ', name: ' + file.name : '') + '). Try saving it as a fresh PNG or JPEG and uploading the new copy.', 'error');
+          }
+        });
       });
     }
 
