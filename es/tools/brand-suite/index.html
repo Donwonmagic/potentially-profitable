@@ -1332,7 +1332,7 @@
   function ensureWorker(){
     if (worker) return worker;
     try {
-      worker = new Worker('/tools/brand-suite/brand-worker.js?v=20260424-bs1');
+      worker = new Worker('/tools/brand-suite/brand-worker.js?v=20260427-bs2');
       worker.addEventListener('message', function(ev){
         var data = ev.data || {};
         var cb = pending[data.requestId];
@@ -1542,12 +1542,21 @@
     var requestId = ++requestCounter;
     var settled = false;
     var timeoutHandle = null;
+    // Cuando se detectó un fondo claro arriba, reenvía sus coordenadas
+    // OKLab a bsExtractPalette para que el podado de halo AA pueda
+    // ejecutarse. Si no hay fondo, el extractor pasa con backgroundLab
+    // indefinido y el podado se omite.
+    var bgLab = null;
+    if (latestDetectedBackground && window.BS && window.BS.rgbToOklab) {
+      var bgRgb = latestDetectedBackground.rgb;
+      bgLab = window.BS.rgbToOklab(bgRgb.r, bgRgb.g, bgRgb.b);
+    }
     function onDone(err, palette){
       if (settled) return;
       settled = true;
       if (timeoutHandle) { clearTimeout(timeoutHandle); timeoutHandle = null; }
       if (err) {
-        try { palette = window.BS.extractPalette(pixels, { k: 5, seed: 1 }); }
+        try { palette = window.BS.extractPalette(pixels, { k: 5, seed: 1, backgroundLab: bgLab }); }
         catch (e) { setStatus('No se pudo extraer paleta. Prueba con otro logo.', 'error'); return; }
       }
       hydratePalette(palette, { source: 'extract', file: file });
@@ -1561,7 +1570,10 @@
         worker = null;
         onDone(new Error('worker-timeout'));
       }, WORKER_TIMEOUT_MS);
-      worker.postMessage({ type: 'extract', pixels: pixels, k: 5, seed: 1, requestId: requestId });
+      worker.postMessage({
+        type: 'extract', pixels: pixels, k: 5, seed: 1,
+        backgroundLab: bgLab, requestId: requestId
+      });
     } else {
       onDone(new Error('no-worker'));
     }

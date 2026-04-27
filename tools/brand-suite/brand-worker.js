@@ -11,9 +11,12 @@
  *   - Nothing is persisted; the worker dies when the tab closes.
  *
  * Message protocol:
- *   in:  { type: 'extract', pixels: Array<[r,g,b]>, k, seed, requestId }
+ *   in:  { type: 'extract', pixels: Array<[r,g,b]>, k, seed, backgroundLab?, requestId }
  *   out: { type: 'palette', palette: Array<{hex, dominancePct}>, requestId }
  *        or { type: 'error',   message: string,              requestId }
+ *
+ *   backgroundLab is optional — when present, bsExtractPalette runs the
+ *   post-cluster AA-halo prune; when absent, that prune is skipped.
  *
  * requestId is echoed so the caller can correlate requests with
  * responses if they queue multiple extractions.
@@ -51,7 +54,13 @@ self.addEventListener('message', function(ev) {
       k: msg.k || 5,
       seed: msg.seed || 1,
       maxIterations: msg.maxIterations || 8,
-      mergeThreshold: msg.mergeThreshold
+      mergeThreshold: msg.mergeThreshold,
+      // Optional: caller has detected a clear page background and
+      // forwards its OKLab coords so the post-cluster AA-halo prune
+      // can drop bridge clusters between bg and a dominant brand
+      // colour. Plain object of three numbers — structured-clones
+      // across postMessage with no extra effort.
+      backgroundLab: msg.backgroundLab
     });
     self.postMessage({ type: 'palette', palette: palette, requestId: requestId });
   } catch (err) {

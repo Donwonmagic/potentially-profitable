@@ -462,10 +462,21 @@ function bsSeededRandom(seed) {
 
 function bsExtractPalette(pixels, options) {
   options = options || {};
-  var k = Math.max(2, Math.min(8, options.k || 5));
+  // Caller's requested cluster count — used to slice the final output.
+  // Internally we expand to k=8 when caller asks for ≤5 to give the
+  // post-cluster prune cascade (AA-halo + dominance floor) room to
+  // work; without the headroom, k-means returns exactly the requested
+  // number of clusters and we lose the freedom to drop noise.
+  var requestedK = Math.max(2, Math.min(8, options.k || 5));
+  var k = requestedK <= 5 ? 8 : requestedK;
   var maxIterations = options.maxIterations || 8;
   var mergeThreshold = options.mergeThreshold || 0.05;
   var seed = options.seed || 1;
+  // Optional: when the caller has detected a clear page background,
+  // pass its OKLab coords so the post-cluster AA-halo prune can drop
+  // clusters whose centroids lie on the bg→dominant-cluster gradient.
+  // Skipped entirely when undefined.
+  var backgroundLab = options.backgroundLab || null;
 
   if (!pixels || !pixels.length) return [];
 
@@ -544,6 +555,77 @@ function bsExtractPalette(pixels, options) {
   for (var ci3 = 0; ci3 < assignments.length; ci3++) {
     clusterCounts[assignments[ci3]]++;
   }
+  var totalAssigned = assignments.length;
+
+  // ----- AA-halo prune (pre-merge) ------------------------------
+  // When the caller has supplied the page background's OKLab coords,
+  // drop clusters that are AA-halo artifacts of a brand colour. An AA
+  // halo is the sub-cluster of pixels along the bg→brand-colour
+  // gradient — k-means + a long-enough gradient produces 1-3 false
+  // "shade" clusters that drown the real palette in greys.
+  //
+  // A cluster X is AA-halo of host Y when ALL hold:
+  //   1. Y has > 5× X's dominance AND Y's dominance ≥ 10 % of total
+  //      (protects complementary palettes — two brand colours of
+  //      comparable share would otherwise have any midpoint cluster
+  //      between them mistakenly labelled AA).
+  //   2. X's perpendicular distance from the line bg ↔ Y is < 0.04 OKLab.
+  //   3. X's projection along bg→Y is in [0.15, 0.85] (strictly between).
+  //   4. X's chroma < Y's chroma (AA halos are always less saturated
+  //      than the colour they alias — a safety net for bg-between-two-
+  //      colours edge cases).
+  if (backgroundLab && centers.length > 1 && totalAssigned > 0) {
+    // Pass 1 — bg-adjacent residue. A cluster within OKLab 0.10 of bg
+    // is mostly the bg colour itself (erosion didn't clear it, or AA
+    // pixels at the bg-side end of the bg→brand gradient that the
+    // t ∈ [0.15, 0.85] AA-halo rule below excludes by design).
+    for (var bg1 = 0; bg1 < centers.length; bg1++) {
+      if (clusterCounts[bg1] === 0) continue;
+      if (bsOklabDistance(centers[bg1], backgroundLab) < 0.10) clusterCounts[bg1] = 0;
+    }
+    // Pass 2 — AA-halo prune. The four-conjunct rule.
+    for (var hX = 0; hX < centers.length; hX++) {
+      if (clusterCounts[hX] === 0) continue;
+      var domX = clusterCounts[hX] / totalAssigned;
+      var chromaX = bsClusterChroma(centers[hX]);
+      // Vector bg→X
+      var bxL = centers[hX].L - backgroundLab.L;
+      var bxA = centers[hX].a - backgroundLab.a;
+      var bxB = centers[hX].b - backgroundLab.b;
+      // Search for any host Y satisfying conjuncts (1)-(4).
+      var pruned = false;
+      for (var hY = 0; hY < centers.length; hY++) {
+        if (hY === hX || clusterCounts[hY] === 0) continue;
+        var domY = clusterCounts[hY] / totalAssigned;
+        // Conjunct 1: Y dominates by 5× and Y ≥ 10%.
+        if (!(domY > 5 * domX && domY >= 0.10)) continue;
+        // Conjunct 4: X is less chromatic than Y.
+        if (!(chromaX < bsClusterChroma(centers[hY]))) continue;
+        // Vector bg→Y, magnitude squared.
+        var byL = centers[hY].L - backgroundLab.L;
+        var byA = centers[hY].a - backgroundLab.a;
+        var byB = centers[hY].b - backgroundLab.b;
+        var byMag2 = byL * byL + byA * byA + byB * byB;
+        if (byMag2 < 1e-9) continue; // Y == bg: shouldn't happen, skip.
+        // Project bg→X onto bg→Y; t in [0,1] means X is between bg and Y.
+        var dot = bxL * byL + bxA * byA + bxB * byB;
+        var t = dot / byMag2;
+        // Conjunct 3: t strictly between, with margin.
+        if (t < 0.15 || t > 0.85) continue;
+        // Perpendicular distance from X to the line bg↔Y:
+        //   |bg→X − t·(bg→Y)|
+        var pL = bxL - t * byL;
+        var pA = bxA - t * byA;
+        var pB = bxB - t * byB;
+        var perp = Math.sqrt(pL * pL + pA * pA + pB * pB);
+        // Conjunct 2: perpendicular distance < 0.04 OKLab.
+        if (perp >= 0.04) continue;
+        pruned = true;
+        break;
+      }
+      if (pruned) clusterCounts[hX] = 0;
+    }
+  }
 
   // Merge near-duplicate centers (OKLab distance < mergeThreshold)
   for (var mi = 0; mi < centers.length; mi++) {
@@ -555,6 +637,20 @@ function bsExtractPalette(pixels, options) {
         clusterCounts[mi] += clusterCounts[mj];
         clusterCounts[mj] = 0;
       }
+    }
+  }
+
+  // ----- 1 % dominance floor -----------------------------------
+  // After AA-halo prune + merge, drop any cluster whose share is below
+  // 1 % of the total assigned pixel count. These survivors are k-means
+  // residue, sub-pixel features (a single antialiased glyph stroke),
+  // or solo noise pixels — too small to anchor a brand role.
+  var totalForFloor = 0;
+  for (var fc = 0; fc < clusterCounts.length; fc++) totalForFloor += clusterCounts[fc];
+  if (totalForFloor > 0) {
+    for (var fi = 0; fi < clusterCounts.length; fi++) {
+      if (clusterCounts[fi] === 0) continue;
+      if ((clusterCounts[fi] / totalForFloor) < 0.01) clusterCounts[fi] = 0;
     }
   }
 
@@ -571,6 +667,20 @@ function bsExtractPalette(pixels, options) {
     });
   }
   out.sort(function(a, b) { return b.dominancePct - a.dominancePct; });
+  // Truncate to caller's requested cluster count. Internally we ran k=8
+  // for the prune cascade; the caller asked for 5 (or 2/3/etc).
+  if (out.length > requestedK) out = out.slice(0, requestedK);
+  // Re-normalise dominancePct so the remaining entries sum to 1. This
+  // accounts for the pixels that fell into dropped (slice or AA-halo
+  // pruned) clusters — we want the shown percentages to be honest
+  // shares of the displayed palette, not of the pre-prune sample.
+  var sumOut = 0;
+  for (var so = 0; so < out.length; so++) sumOut += out[so].dominancePct;
+  if (sumOut > 0) {
+    for (var nz = 0; nz < out.length; nz++) {
+      out[nz].dominancePct = out[nz].dominancePct / sumOut;
+    }
+  }
   return out;
 }
 
