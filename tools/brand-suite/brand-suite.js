@@ -272,7 +272,26 @@ function bsAssignRoles(palette, options) {
   var achromatic = annotated.filter(function(e){ return e._achromatic; });
   // Capture the truly-chromatic count BEFORE the mutating shift/splice
   // calls below — that's what determines the monochromatic flag.
-  var monochromatic = chromatic.length === 0 && annotated.length > 0;
+  //
+  // Mono in spirit, not just by-the-letter. Three triggers:
+  //   1. No chromatic cluster at all (true greyscale).
+  //   2. Exactly one chromatic cluster + at least one achromatic
+  //      (single brand colour + grey lines / neutrals — the textbook
+  //      single-anchor logo).
+  //   3. One chromatic cluster dominates (≥ 85% share) AND every other
+  //      chromatic cluster is tiny (≤ 5%). The 3 % accent that can't
+  //      carry a brand system on its own — Workshop helps fill it out.
+  // Note: `chromatic` is about to be sorted by chroma below, so use the
+  // dominance-sorted view here for the threshold tests.
+  var chromaticByDominance = chromatic.slice().sort(function(a, b){
+    return (b.dominancePct || 0) - (a.dominancePct || 0);
+  });
+  var topChromaticDom    = chromaticByDominance[0] ? (chromaticByDominance[0].dominancePct || 0) : 0;
+  var secondChromaticDom = chromaticByDominance[1] ? (chromaticByDominance[1].dominancePct || 0) : 0;
+  var monochromatic =
+       (chromatic.length === 0 && annotated.length > 0)
+    || (chromatic.length === 1 && annotated.length > 1)
+    || (chromatic.length >= 1 && topChromaticDom >= 0.85 && secondChromaticDom <= 0.05);
 
   // Primary = most-chromatic non-achromatic.
   // Secondary = next most-chromatic at min hue distance from Primary.
@@ -336,15 +355,26 @@ function bsAssignRoles(palette, options) {
 // SIMILARITY_THRESHOLD so the UI can warn rather than silently
 // presenting them as distinct roles.
 // ------------------------------------------------------------
-function bsPaletteSimilarities(palette, threshold) {
+function bsPaletteSimilarities(palette, threshold, options) {
   var t = typeof threshold === 'number' ? threshold : 0.12;
+  // Dominance floor — palette entries below this share are noise (k-means
+  // residue, sub-1% accents that don't carry visual weight). Flagging them
+  // as "similar to" anything else generates spurious warnings on near-zero
+  // clusters that pollute the UI. Default 3% — meaningful brand colours
+  // come back well above this; AA halos and k-means leftovers come back
+  // well below it.
+  var dominanceFloor = (options && typeof options.dominanceFloor === 'number')
+    ? options.dominanceFloor
+    : 0.03;
   var labs = palette.map(function(p){
     var rgb = bsHexToRgb(p.hex) || { r: 0, g: 0, b: 0 };
     return bsRgbToOklab(rgb.r, rgb.g, rgb.b);
   });
   var pairs = [];
   for (var i = 0; i < labs.length; i++) {
+    if ((palette[i].dominancePct || 0) < dominanceFloor) continue;
     for (var j = i + 1; j < labs.length; j++) {
+      if ((palette[j].dominancePct || 0) < dominanceFloor) continue;
       var d = bsOklabDistance(labs[i], labs[j]);
       if (d < t) pairs.push({ a: i, b: j, distance: d });
     }
@@ -432,10 +462,21 @@ function bsSeededRandom(seed) {
 
 function bsExtractPalette(pixels, options) {
   options = options || {};
-  var k = Math.max(2, Math.min(8, options.k || 5));
+  // Caller's requested cluster count — used to slice the final output.
+  // Internally we expand to k=8 when caller asks for ≤5 to give the
+  // post-cluster prune cascade (AA-halo + dominance floor) room to
+  // work; without the headroom, k-means returns exactly the requested
+  // number of clusters and we lose the freedom to drop noise.
+  var requestedK = Math.max(2, Math.min(8, options.k || 5));
+  var k = requestedK <= 5 ? 8 : requestedK;
   var maxIterations = options.maxIterations || 8;
   var mergeThreshold = options.mergeThreshold || 0.05;
   var seed = options.seed || 1;
+  // Optional: when the caller has detected a clear page background,
+  // pass its OKLab coords so the post-cluster AA-halo prune can drop
+  // clusters whose centroids lie on the bg→dominant-cluster gradient.
+  // Skipped entirely when undefined.
+  var backgroundLab = options.backgroundLab || null;
 
   if (!pixels || !pixels.length) return [];
 
@@ -514,6 +555,77 @@ function bsExtractPalette(pixels, options) {
   for (var ci3 = 0; ci3 < assignments.length; ci3++) {
     clusterCounts[assignments[ci3]]++;
   }
+  var totalAssigned = assignments.length;
+
+  // ----- AA-halo prune (pre-merge) ------------------------------
+  // When the caller has supplied the page background's OKLab coords,
+  // drop clusters that are AA-halo artifacts of a brand colour. An AA
+  // halo is the sub-cluster of pixels along the bg→brand-colour
+  // gradient — k-means + a long-enough gradient produces 1-3 false
+  // "shade" clusters that drown the real palette in greys.
+  //
+  // A cluster X is AA-halo of host Y when ALL hold:
+  //   1. Y has > 5× X's dominance AND Y's dominance ≥ 10 % of total
+  //      (protects complementary palettes — two brand colours of
+  //      comparable share would otherwise have any midpoint cluster
+  //      between them mistakenly labelled AA).
+  //   2. X's perpendicular distance from the line bg ↔ Y is < 0.04 OKLab.
+  //   3. X's projection along bg→Y is in [0.15, 0.85] (strictly between).
+  //   4. X's chroma < Y's chroma (AA halos are always less saturated
+  //      than the colour they alias — a safety net for bg-between-two-
+  //      colours edge cases).
+  if (backgroundLab && centers.length > 1 && totalAssigned > 0) {
+    // Pass 1 — bg-adjacent residue. A cluster within OKLab 0.10 of bg
+    // is mostly the bg colour itself (erosion didn't clear it, or AA
+    // pixels at the bg-side end of the bg→brand gradient that the
+    // t ∈ [0.15, 0.85] AA-halo rule below excludes by design).
+    for (var bg1 = 0; bg1 < centers.length; bg1++) {
+      if (clusterCounts[bg1] === 0) continue;
+      if (bsOklabDistance(centers[bg1], backgroundLab) < 0.10) clusterCounts[bg1] = 0;
+    }
+    // Pass 2 — AA-halo prune. The four-conjunct rule.
+    for (var hX = 0; hX < centers.length; hX++) {
+      if (clusterCounts[hX] === 0) continue;
+      var domX = clusterCounts[hX] / totalAssigned;
+      var chromaX = bsClusterChroma(centers[hX]);
+      // Vector bg→X
+      var bxL = centers[hX].L - backgroundLab.L;
+      var bxA = centers[hX].a - backgroundLab.a;
+      var bxB = centers[hX].b - backgroundLab.b;
+      // Search for any host Y satisfying conjuncts (1)-(4).
+      var pruned = false;
+      for (var hY = 0; hY < centers.length; hY++) {
+        if (hY === hX || clusterCounts[hY] === 0) continue;
+        var domY = clusterCounts[hY] / totalAssigned;
+        // Conjunct 1: Y dominates by 5× and Y ≥ 10%.
+        if (!(domY > 5 * domX && domY >= 0.10)) continue;
+        // Conjunct 4: X is less chromatic than Y.
+        if (!(chromaX < bsClusterChroma(centers[hY]))) continue;
+        // Vector bg→Y, magnitude squared.
+        var byL = centers[hY].L - backgroundLab.L;
+        var byA = centers[hY].a - backgroundLab.a;
+        var byB = centers[hY].b - backgroundLab.b;
+        var byMag2 = byL * byL + byA * byA + byB * byB;
+        if (byMag2 < 1e-9) continue; // Y == bg: shouldn't happen, skip.
+        // Project bg→X onto bg→Y; t in [0,1] means X is between bg and Y.
+        var dot = bxL * byL + bxA * byA + bxB * byB;
+        var t = dot / byMag2;
+        // Conjunct 3: t strictly between, with margin.
+        if (t < 0.15 || t > 0.85) continue;
+        // Perpendicular distance from X to the line bg↔Y:
+        //   |bg→X − t·(bg→Y)|
+        var pL = bxL - t * byL;
+        var pA = bxA - t * byA;
+        var pB = bxB - t * byB;
+        var perp = Math.sqrt(pL * pL + pA * pA + pB * pB);
+        // Conjunct 2: perpendicular distance < 0.04 OKLab.
+        if (perp >= 0.04) continue;
+        pruned = true;
+        break;
+      }
+      if (pruned) clusterCounts[hX] = 0;
+    }
+  }
 
   // Merge near-duplicate centers (OKLab distance < mergeThreshold)
   for (var mi = 0; mi < centers.length; mi++) {
@@ -525,6 +637,20 @@ function bsExtractPalette(pixels, options) {
         clusterCounts[mi] += clusterCounts[mj];
         clusterCounts[mj] = 0;
       }
+    }
+  }
+
+  // ----- 1 % dominance floor -----------------------------------
+  // After AA-halo prune + merge, drop any cluster whose share is below
+  // 1 % of the total assigned pixel count. These survivors are k-means
+  // residue, sub-pixel features (a single antialiased glyph stroke),
+  // or solo noise pixels — too small to anchor a brand role.
+  var totalForFloor = 0;
+  for (var fc = 0; fc < clusterCounts.length; fc++) totalForFloor += clusterCounts[fc];
+  if (totalForFloor > 0) {
+    for (var fi = 0; fi < clusterCounts.length; fi++) {
+      if (clusterCounts[fi] === 0) continue;
+      if ((clusterCounts[fi] / totalForFloor) < 0.01) clusterCounts[fi] = 0;
     }
   }
 
@@ -541,6 +667,20 @@ function bsExtractPalette(pixels, options) {
     });
   }
   out.sort(function(a, b) { return b.dominancePct - a.dominancePct; });
+  // Truncate to caller's requested cluster count. Internally we ran k=8
+  // for the prune cascade; the caller asked for 5 (or 2/3/etc).
+  if (out.length > requestedK) out = out.slice(0, requestedK);
+  // Re-normalise dominancePct so the remaining entries sum to 1. This
+  // accounts for the pixels that fell into dropped (slice or AA-halo
+  // pruned) clusters — we want the shown percentages to be honest
+  // shares of the displayed palette, not of the pre-prune sample.
+  var sumOut = 0;
+  for (var so = 0; so < out.length; so++) sumOut += out[so].dominancePct;
+  if (sumOut > 0) {
+    for (var nz = 0; nz < out.length; nz++) {
+      out[nz].dominancePct = out[nz].dominancePct / sumOut;
+    }
+  }
   return out;
 }
 
@@ -731,6 +871,73 @@ function bsDetectBackgroundColor(edgePixels, options) {
     hex: bsRgbToHex(cr, cg, cb),
     rgb: { r: cr, g: cg, b: cb },
     confidence: confidence
+  };
+}
+
+// Histogram-pivot background detection — fallback for full-bleed
+// logos. When `bsDetectBackgroundColor` returns null because the
+// edge band has no clear dominant colour (a logo extends to all
+// four edges), this looks at the WHOLE pixel sample, finds the
+// dominant colour, and validates it against the edge band. Lower
+// confidence (0.7 vs 0.95+) — the caller should treat the result
+// cautiously and skip high-stakes actions like the visual
+// transparent-PNG strip; cluster-level strip is fine.
+//
+// Validation: the dominant bin must (a) cover at least `minShare`
+// (default 0.40) of the full sample AND (b) appear at least once in
+// the supplied edge sample (cheap sanity check that we're not
+// picking up a centre-of-frame bullseye colour as bg).
+function bsDetectBackgroundColorPivot(allPixels, edgePixels, options) {
+  options = options || {};
+  var minShare = options.minShare == null ? 0.40 : options.minShare;
+  var radius   = options.radius   == null ? 0.05 : options.radius;
+  if (!allPixels || !allPixels.length) return null;
+
+  // Histogram over quantised RGB bins (same 24-step grid as the edge
+  // detector for consistency).
+  var bins = Object.create(null);
+  for (var i = 0; i < allPixels.length; i++) {
+    var p = allPixels[i];
+    if (!p || p.length < 3) continue;
+    var key = bsQuantiseRgb(p[0], p[1], p[2]);
+    if (!bins[key]) bins[key] = { count: 0, sumR: 0, sumG: 0, sumB: 0 };
+    var bin = bins[key];
+    bin.count++;
+    bin.sumR += p[0]; bin.sumG += p[1]; bin.sumB += p[2];
+  }
+
+  // Dominant bin.
+  var best = null;
+  for (var k in bins) {
+    if (!best || bins[k].count > best.count) best = bins[k];
+  }
+  if (!best) return null;
+  var share = best.count / allPixels.length;
+  if (share < minShare) return null;
+
+  var cr = Math.round(best.sumR / best.count);
+  var cg = Math.round(best.sumG / best.count);
+  var cb = Math.round(best.sumB / best.count);
+  var centroidLab = bsRgbToOklab(cr, cg, cb);
+
+  // Edge sanity check — a centre-of-frame bullseye that happens to be
+  // the most common pixel is NOT a background. Require at least one
+  // edge sample within `radius` OKLab of the centroid.
+  if (!edgePixels || !edgePixels.length) return null;
+  var seenAtEdge = false;
+  for (var ej = 0; ej < edgePixels.length; ej++) {
+    var q = edgePixels[ej];
+    if (!q || q.length < 3) continue;
+    var qLab = bsRgbToOklab(q[0], q[1], q[2]);
+    if (bsOklabDistance(centroidLab, qLab) <= radius) { seenAtEdge = true; break; }
+  }
+  if (!seenAtEdge) return null;
+
+  return {
+    hex: bsRgbToHex(cr, cg, cb),
+    rgb: { r: cr, g: cg, b: cb },
+    confidence: 0.70,
+    source: 'pivot'
   };
 }
 
@@ -1020,6 +1227,7 @@ var BS_PUBLIC = {
   paletteSimilarities:    bsPaletteSimilarities,
   rgbToCmyk:              bsRgbToCmyk,
   detectBackgroundColor:  bsDetectBackgroundColor,
+  detectBackgroundColorPivot: bsDetectBackgroundColorPivot,
   stripBackground:        bsStripBackground,
   harmonyAnalogous:           bsHarmonyAnalogous,
   harmonyComplementary:       bsHarmonyComplementary,

@@ -584,6 +584,7 @@
       <div class="bs-palette" id="bsPalette" role="list"></div>
       <p class="bs-palette-hint">Haz click en cualquier chip para copiar su hex al portapapeles. Los roles se asignan por intención cromática — el color más saturado ancla al Primario, no el píxel más abundante.</p>
       <p class="bs-palette-mono-flag" id="bsPaletteMonoFlag" hidden>Este logo se lee como monocromático. Los roles de abajo etiquetan los extremos de claridad; tómalos como punto de partida, no como sistema.</p>
+      <p class="bs-palette-mono-flag" id="bsPaletteLowInfoFlag" hidden>Esta imagen tiene muy poca variación cromática — la paleta extraída quizá no represente un sistema de marca. Prueba el Taller para refinarla, o sube un logo de colores planos.</p>
 
       <details class="bs-using">
         <summary>Cómo usar tu paleta &mdash; para un lector no técnico</summary>
@@ -1284,6 +1285,7 @@
   var paletteWrap = document.getElementById('bsPaletteWrap');
   var paletteEl = document.getElementById('bsPalette');
   var paletteMonoFlag = document.getElementById('bsPaletteMonoFlag');
+  var paletteLowInfoFlag = document.getElementById('bsPaletteLowInfoFlag');
   var fixtureWrap = document.getElementById('bsFixtureWrap');
   var contrastWrap = document.getElementById('bsContrastWrap');
   var contrastTable = document.getElementById('bsContrastTable');
@@ -1329,15 +1331,24 @@
   var worker = null;
   var requestCounter = 0;
   var pending = {};
+  // Marca de tiempo de la solicitud más reciente — extractAndRender
+  // la usa para detectar un worker atascado antes de encolar otra
+  // tarea detrás.
+  var latestRequestStart = 0;
   function ensureWorker(){
     if (worker) return worker;
     try {
-      worker = new Worker('/tools/brand-suite/brand-worker.js?v=20260424-bs1');
+      worker = new Worker('/tools/brand-suite/brand-worker.js?v=20260427-bs2');
       worker.addEventListener('message', function(ev){
         var data = ev.data || {};
         var cb = pending[data.requestId];
         if (!cb) return;
         delete pending[data.requestId];
+        // Descarta respuestas obsoletas: requestCounter es el id de la
+        // solicitud más reciente; respuestas viejas pertenecen a una
+        // carga anterior cuyo resultado no debe parpadear sobre la
+        // paleta cuando ya se inició una extracción nueva.
+        if (data.requestId !== requestCounter) return;
         if (data.type === 'palette') cb(null, data.palette);
         else                         cb(new Error(data.message || 'worker-error'));
       });
@@ -1439,10 +1450,27 @@
         var i = (y * w + x) * 4;
         if (data[i + 3] < 128) continue;
         if (nearBg(i)) continue;
-        if (x > 0     && nearBg(((y    ) * w + (x - 1)) * 4)) continue;
-        if (x < w - 1 && nearBg(((y    ) * w + (x + 1)) * 4)) continue;
-        if (y > 0     && nearBg(((y - 1) * w + (x    )) * 4)) continue;
-        if (y < h - 1 && nearBg(((y + 1) * w + (x    )) * 4)) continue;
+        // Erosión a 8 vecinos (relajada desde la regla original de 4
+        // vecinos): un píxel se descarta sólo si TODOS sus 8 vecinos son
+        // cercanos al fondo — un punto aislado sin continuidad con
+        // ninguna otra región de color de marca. Los trazos finos (la
+        // línea óxido del Muntin de 1,7 px de alto tras el reducido,
+        // letras de la subtagline a ~5 px) sobreviven porque tienen
+        // vecinos no-fondo a lo largo de la dirección del trazo. Las
+        // formas sólidas siguen sobreviviendo — los píxeles interiores
+        // están rodeados de no-fondo. Fuera de límites se trata como
+        // lado-fondo; los píxeles del borde del canvas se evalúan
+        // contra los vecinos dentro de límites únicamente.
+        var allBg = true;
+        for (var dy = -1; dy <= 1 && allBg; dy++) {
+          for (var dx = -1; dx <= 1 && allBg; dx++) {
+            if (dx === 0 && dy === 0) continue;
+            var nx = x + dx, ny = y + dy;
+            if (nx < 0 || nx >= w || ny < 0 || ny >= h) continue;
+            if (!nearBg((ny * w + nx) * 4)) allBg = false;
+          }
+        }
+        if (allBg) continue;
         out.push([data[i], data[i + 1], data[i + 2]]);
       }
     }
@@ -1521,16 +1549,38 @@
 
   function extractAndRender(pixels, file){
     setStatus('Extrayendo paleta…', 'working');
+    // Re-spawn si está atascado: si una solicitud anterior aún sigue
+    // pendiente y lleva más de la mitad del timeout, el worker está
+    // probablemente colgado. Lo derribamos preventivamente para que
+    // esta nueva solicitud se ejecute en un worker fresco en lugar
+    // de hacer cola tras uno colgado (caso de drops rápidos).
+    var pendingCount = 0;
+    for (var k in pending) { if (pending.hasOwnProperty(k)) { pendingCount++; break; } }
+    if (worker && pendingCount > 0 && latestRequestStart && (Date.now() - latestRequestStart) > (WORKER_TIMEOUT_MS / 2)) {
+      try { worker.terminate(); } catch (_) {}
+      worker = null;
+      pending = {};
+    }
+    latestRequestStart = Date.now();
     ensureWorker();
     var requestId = ++requestCounter;
     var settled = false;
     var timeoutHandle = null;
+    // Cuando se detectó un fondo claro arriba, reenvía sus coordenadas
+    // OKLab a bsExtractPalette para que el podado de halo AA pueda
+    // ejecutarse. Si no hay fondo, el extractor pasa con backgroundLab
+    // indefinido y el podado se omite.
+    var bgLab = null;
+    if (latestDetectedBackground && window.BS && window.BS.rgbToOklab) {
+      var bgRgb = latestDetectedBackground.rgb;
+      bgLab = window.BS.rgbToOklab(bgRgb.r, bgRgb.g, bgRgb.b);
+    }
     function onDone(err, palette){
       if (settled) return;
       settled = true;
       if (timeoutHandle) { clearTimeout(timeoutHandle); timeoutHandle = null; }
       if (err) {
-        try { palette = window.BS.extractPalette(pixels, { k: 5, seed: 1 }); }
+        try { palette = window.BS.extractPalette(pixels, { k: 5, seed: 1, backgroundLab: bgLab }); }
         catch (e) { setStatus('No se pudo extraer paleta. Prueba con otro logo.', 'error'); return; }
       }
       hydratePalette(palette, { source: 'extract', file: file });
@@ -1544,7 +1594,10 @@
         worker = null;
         onDone(new Error('worker-timeout'));
       }, WORKER_TIMEOUT_MS);
-      worker.postMessage({ type: 'extract', pixels: pixels, k: 5, seed: 1, requestId: requestId });
+      worker.postMessage({
+        type: 'extract', pixels: pixels, k: 5, seed: 1,
+        backgroundLab: bgLab, requestId: requestId
+      });
     } else {
       onDone(new Error('no-worker'));
     }
@@ -1561,6 +1614,42 @@
     latestMonochromatic = roleResult.monochromatic;
     latestSimilarities = window.BS.paletteSimilarities(latestPalette);
     paletteMonoFlag.hidden = !latestMonochromatic;
+    // §B.6 aviso de baja-información: cuando la paleta cubre una región
+    // diminuta de OKLab — distancia máxima entre pares < 0.20 y rango
+    // total de matiz < 30° — la entrada fue probablemente una foto, un
+    // gradiente o una composición de bajo contraste, no un logo con
+    // colores de marca distintos.
+    if (paletteLowInfoFlag && latestPalette.length >= 2 && window.BS && window.BS.rgbToOklab) {
+      var labs = latestPalette.map(function(p){
+        var rgb = { r: parseInt(p.hex.slice(1,3),16), g: parseInt(p.hex.slice(3,5),16), b: parseInt(p.hex.slice(5,7),16) };
+        return window.BS.rgbToOklab(rgb.r, rgb.g, rgb.b);
+      });
+      var maxDist = 0;
+      for (var li = 0; li < labs.length; li++) {
+        for (var lj = li + 1; lj < labs.length; lj++) {
+          var dl = labs[li].L - labs[lj].L;
+          var da = labs[li].a - labs[lj].a;
+          var db = labs[li].b - labs[lj].b;
+          var d = Math.sqrt(dl*dl + da*da + db*db);
+          if (d > maxDist) maxDist = d;
+        }
+      }
+      var hues = [];
+      for (var hi = 0; hi < labs.length; hi++) {
+        var chroma = Math.sqrt(labs[hi].a * labs[hi].a + labs[hi].b * labs[hi].b);
+        if (chroma >= 0.04) hues.push(Math.atan2(labs[hi].b, labs[hi].a) * 180 / Math.PI);
+      }
+      var hueSpread = 360;
+      if (hues.length >= 2) {
+        var hueMin = Math.min.apply(null, hues);
+        var hueMax = Math.max.apply(null, hues);
+        hueSpread = Math.min(hueMax - hueMin, 360 - (hueMax - hueMin));
+      }
+      var lowInfo = (maxDist < 0.20) && (hues.length >= 2 && hueSpread < 30);
+      paletteLowInfoFlag.hidden = !lowInfo;
+    } else if (paletteLowInfoFlag) {
+      paletteLowInfoFlag.hidden = true;
+    }
     renderPalette(latestPalette);
     paletteWrap.hidden = false;
     setStatus('');
@@ -2213,11 +2302,32 @@
 
   function handleFile(file){
     if (!file) return;
+    // Reinicia el value del input para que escoger el mismo archivo
+    // dispare un `change` nuevo (los inputs HTML no lo disparan al
+    // re-elegir el mismo archivo).
+    if (fileInput) { try { fileInput.value = ''; } catch (_) {} }
+    // Revoca cualquier blob URL anterior de la previa con fondo
+    // retirado antes de cualquier early-return en proceed().
+    if (latestTransparentUrl) {
+      try { URL.revokeObjectURL(latestTransparentUrl); } catch (_) {}
+      latestTransparentUrl = null;
+    }
     if (file.size > MAX_BYTES) {
       setStatus('Ese archivo pesa más de 10 MB. Recorta o redimensiona e inténtalo de nuevo.', 'error');
       return;
     }
     setStatus('Cargando tu logo…', 'working');
+
+    // Rechazo temprano de .ico (B.5). Mensaje específico en lugar del
+    // genérico "no se pudo leer" después de un Image() fallido. Los
+    // .ico contienen varios tamaños incrustados; los navegadores eligen
+    // uno de forma inconsistente, a menudo 16×16 — inútil para extraer
+    // paleta.
+    if ((file.type && /icon|x-icon|vnd\.microsoft\.icon/i.test(file.type)) ||
+        /\.ico$/i.test(file.name || '')) {
+      setStatus('Eso parece un archivo .ico (icono multi-tamaño). La Suite de Marca necesita una sola imagen — exporta el tamaño más grande como PNG e inténtalo con ese.', 'error');
+      return;
+    }
 
     var declaredHeic = (file.type && /heic|heif/i.test(file.type)) || /\.(heic|heif)$/i.test(file.name || '');
 
@@ -2327,6 +2437,16 @@
         var bg = window.BS && window.BS.detectBackgroundColor
           ? window.BS.detectBackgroundColor(edges)
           : null;
+        // Fallback histograma-pivot para logos a sangre completa: cuando
+        // el detector de bordes devuelve null (logo llega a los cuatro
+        // bordes y no hay acuerdo), miramos toda la muestra para hallar
+        // un color dominante. Confianza baja (0.7); el strip visual con
+        // PNG transparente sigue requiriendo 0.95+, así que una
+        // detección equivocada cuesta como mucho una paleta algo más
+        // ruidosa, nunca un previa visualmente arruinado.
+        if (!bg && window.BS && window.BS.detectBackgroundColorPivot) {
+          bg = window.BS.detectBackgroundColorPivot(pixels, edges);
+        }
         if (bg && window.BS.stripBackground) {
           // Strip en dos etapas: erosión espacial primero (elimina el
           // halo AA), fallback al strip por distancia de color si el
@@ -2334,7 +2454,17 @@
           var eroded = (bg.confidence >= 0.95)
             ? sampleInteriorPixels(canvas, bg.rgb)
             : [];
-          if (eroded.length >= 60) {
+          // Auto-detect "el color de marca ES el fondo": si retirar el
+          // fondo elimina más del 95 % de los píxeles, el detector
+          // capturó un color de marca y no un fondo. Se omite el strip
+          // y la versión transparente — k-means + el podado posterior
+          // siguen produciendo una paleta limpia sin borrar la marca.
+          var totalPx = pixels.length;
+          var preStrippedColour = window.BS.stripBackground(pixels, bg.rgb).length;
+          var brandIsBg = totalPx > 0 && (preStrippedColour / totalPx) < 0.05;
+          if (brandIsBg) {
+            bg = null;
+          } else if (eroded.length >= 60) {
             pixels = eroded;
             latestDetectedBackground = bg;
           } else {
@@ -2344,13 +2474,12 @@
               latestDetectedBackground = bg;
             }
           }
-          // Strip visual: además genera una versión con fondo transparente
-          // de la imagen original para los azulejos crema/ink. Los píxeles
-          // de fondo puro pasan a alfa 0; el halo AA recibe una rampa de
-          // alfa suave para que los bordes no marquen un fleco. Solo se
-          // hace si el fondo se detectó con alta confianza — un logo ya en
-          // fondo transparente o sin fondo claro queda sin tocar.
-          if (bg.confidence >= 0.95) {
+          // Strip visual: genera una versión con fondo transparente de
+          // la imagen original para los azulejos crema/ink. Solo se
+          // hace si el fondo se detectó con alta confianza — un logo
+          // ya en fondo transparente, sin fondo claro, o donde el
+          // color de marca era el fondo (brandIsBg) queda sin tocar.
+          if (bg && bg.confidence >= 0.95) {
             makeBackgroundTransparent(img, bg.rgb).then(function(transparentUrl){
               if (transparentUrl) {
                 latestTransparentUrl = transparentUrl;

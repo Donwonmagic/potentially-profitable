@@ -619,6 +619,7 @@
       <div class="bs-palette" id="bsPalette" role="list"></div>
       <p class="bs-palette-hint">Click any chip to copy its hex to your clipboard. Roles are assigned by chromatic intent — the most saturated color anchors Primary, not the most abundant pixel.</p>
       <p class="bs-palette-mono-flag" id="bsPaletteMonoFlag" hidden>This logo reads as monochromatic. The roles below label the lightness extremes; treat them as a starter, not a system.</p>
+      <p class="bs-palette-mono-flag" id="bsPaletteLowInfoFlag" hidden>This image has very subtle colour variation — the extracted palette may not represent a brand system. Try the Workshop to refine, or upload a flat-colour logo.</p>
 
       <details class="bs-using">
         <summary>Using your palette &mdash; for a non-technical reader</summary>
@@ -1325,6 +1326,7 @@
   var paletteWrap = document.getElementById('bsPaletteWrap');
   var paletteEl = document.getElementById('bsPalette');
   var paletteMonoFlag = document.getElementById('bsPaletteMonoFlag');
+  var paletteLowInfoFlag = document.getElementById('bsPaletteLowInfoFlag');
   var fixtureWrap = document.getElementById('bsFixtureWrap');
   var contrastWrap = document.getElementById('bsContrastWrap');
   var contrastTable = document.getElementById('bsContrastTable');
@@ -1384,15 +1386,24 @@
   var worker = null;
   var requestCounter = 0;
   var pending = {};
+  // Timestamp of the most recently issued request — used by
+  // extractAndRender to detect a stuck worker before queueing
+  // another job behind it.
+  var latestRequestStart = 0;
   function ensureWorker(){
     if (worker) return worker;
     try {
-      worker = new Worker('./brand-worker.js?v=20260424-bs1');
+      worker = new Worker('./brand-worker.js?v=20260427-bs2');
       worker.addEventListener('message', function(ev){
         var data = ev.data || {};
         var cb = pending[data.requestId];
         if (!cb) return;
         delete pending[data.requestId];
+        // Drop stale replies. requestCounter tracks the LATEST issued
+        // request id; older replies belong to a prior upload whose
+        // result must not flash into the palette after a newer
+        // extraction has already been kicked off (rapid-drop case).
+        if (data.requestId !== requestCounter) return;
         if (data.type === 'palette') cb(null, data.palette);
         else                         cb(new Error(data.message || 'worker-error'));
       });
@@ -1496,11 +1507,26 @@
         var i = (y * w + x) * 4;
         if (data[i + 3] < 128) continue;
         if (nearBg(i)) continue;            // bg pixel itself — skip
-        // 4-neighbour check; any near-bg neighbour means this is an AA edge.
-        if (x > 0     && nearBg(((y    ) * w + (x - 1)) * 4)) continue;
-        if (x < w - 1 && nearBg(((y    ) * w + (x + 1)) * 4)) continue;
-        if (y > 0     && nearBg(((y - 1) * w + (x    )) * 4)) continue;
-        if (y < h - 1 && nearBg(((y + 1) * w + (x    )) * 4)) continue;
+        // 8-neighbour erosion (relaxed from the original 4-neighbour
+        // rule): a pixel is dropped only if it's an isolated speck —
+        // ALL 8 neighbours bg-near, meaning no continuity to any other
+        // brand-colour region. Hairline strokes (the Muntin rust line
+        // at 1.7 px tall after downsample, tagline letterforms at ~5 px
+        // tall) survive because they have non-bg neighbours along the
+        // stroke direction. Bulk shapes still survive — interior
+        // pixels surround themselves with non-bg.
+        // Out-of-bounds is treated as bg-side, so canvas-edge pixels
+        // are evaluated against their in-bounds neighbours only.
+        var allBg = true;
+        for (var dy = -1; dy <= 1 && allBg; dy++) {
+          for (var dx = -1; dx <= 1 && allBg; dx++) {
+            if (dx === 0 && dy === 0) continue;
+            var nx = x + dx, ny = y + dy;
+            if (nx < 0 || nx >= w || ny < 0 || ny >= h) continue;
+            if (!nearBg((ny * w + nx) * 4)) allBg = false;
+          }
+        }
+        if (allBg) continue;
         out.push([data[i], data[i + 1], data[i + 2]]);
       }
     }
@@ -1579,17 +1605,41 @@
 
   function extractAndRender(pixels, file){
     setStatus('Extracting palette…', 'working');
+    // Respawn-if-stuck: if a previous request is STILL pending and has
+    // been outstanding for more than half the per-request timeout,
+    // the worker is likely wedged on its last job. Tear it down
+    // preemptively so this new request runs on a fresh worker
+    // instead of queueing behind a hung one (rapid-drop / huge-image
+    // case). Only fires when something is actually pending — a
+    // 5-second pause between two clean drops doesn't trigger it.
+    var pendingCount = 0;
+    for (var k in pending) { if (pending.hasOwnProperty(k)) { pendingCount++; break; } }
+    if (worker && pendingCount > 0 && latestRequestStart && (Date.now() - latestRequestStart) > (WORKER_TIMEOUT_MS / 2)) {
+      try { worker.terminate(); } catch (_) {}
+      worker = null;
+      pending = {};
+    }
+    latestRequestStart = Date.now();
     ensureWorker();
     var requestId = ++requestCounter;
     var settled = false;
     var timeoutHandle = null;
+    // When a clear page background was detected upstream, forward its
+    // OKLab coords to bsExtractPalette so the post-cluster AA-halo
+    // prune can run. Skipped when no bg detected (extractor falls
+    // through with backgroundLab undefined → prune disabled).
+    var bgLab = null;
+    if (latestDetectedBackground && window.BS && window.BS.rgbToOklab) {
+      var bgRgb = latestDetectedBackground.rgb;
+      bgLab = window.BS.rgbToOklab(bgRgb.r, bgRgb.g, bgRgb.b);
+    }
     function onDone(err, palette){
       if (settled) return;
       settled = true;
       if (timeoutHandle) { clearTimeout(timeoutHandle); timeoutHandle = null; }
       if (err) {
         // Main-thread fallback: run extraction synchronously
-        try { palette = window.BS.extractPalette(pixels, { k: 5, seed: 1 }); }
+        try { palette = window.BS.extractPalette(pixels, { k: 5, seed: 1, backgroundLab: bgLab }); }
         catch (e) { setStatus('Could not extract a palette. Try a different logo.', 'error'); return; }
       }
       hydratePalette(palette, { source: 'extract', file: file });
@@ -1605,7 +1655,10 @@
         worker = null;
         onDone(new Error('worker-timeout'));
       }, WORKER_TIMEOUT_MS);
-      worker.postMessage({ type: 'extract', pixels: pixels, k: 5, seed: 1, requestId: requestId });
+      worker.postMessage({
+        type: 'extract', pixels: pixels, k: 5, seed: 1,
+        backgroundLab: bgLab, requestId: requestId
+      });
     } else {
       // No Worker support; run immediately on main thread.
       onDone(new Error('no-worker'));
@@ -1623,6 +1676,47 @@
     latestMonochromatic = roleResult.monochromatic;
     latestSimilarities = window.BS.paletteSimilarities(latestPalette);
     paletteMonoFlag.hidden = !latestMonochromatic;
+    // §B.6 low-information warning. When the extracted palette spans
+    // only a tiny region of OKLab — max pairwise distance < 0.20 AND
+    // total hue spread < 30° — the input was likely a photograph, a
+    // gradient, or a low-contrast composition rather than a logo with
+    // distinct brand colours. The palette is technically correct but
+    // probably not what the user thought they were getting; surface a
+    // soft note pointing to the Workshop.
+    if (paletteLowInfoFlag && latestPalette.length >= 2 && window.BS && window.BS.rgbToOklab) {
+      var labs = latestPalette.map(function(p){
+        var rgb = { r: parseInt(p.hex.slice(1,3),16), g: parseInt(p.hex.slice(3,5),16), b: parseInt(p.hex.slice(5,7),16) };
+        return window.BS.rgbToOklab(rgb.r, rgb.g, rgb.b);
+      });
+      var maxDist = 0;
+      for (var li = 0; li < labs.length; li++) {
+        for (var lj = li + 1; lj < labs.length; lj++) {
+          var dl = labs[li].L - labs[lj].L;
+          var da = labs[li].a - labs[lj].a;
+          var db = labs[li].b - labs[lj].b;
+          var d = Math.sqrt(dl*dl + da*da + db*db);
+          if (d > maxDist) maxDist = d;
+        }
+      }
+      // Hue spread — collect angles where chroma is meaningful, find
+      // angular range. If most of the palette is achromatic the hue
+      // gate is meaningless, so we don't flag a B&W logo as "low info".
+      var hues = [];
+      for (var hi = 0; hi < labs.length; hi++) {
+        var chroma = Math.sqrt(labs[hi].a * labs[hi].a + labs[hi].b * labs[hi].b);
+        if (chroma >= 0.04) hues.push(Math.atan2(labs[hi].b, labs[hi].a) * 180 / Math.PI);
+      }
+      var hueSpread = 360;
+      if (hues.length >= 2) {
+        var hueMin = Math.min.apply(null, hues);
+        var hueMax = Math.max.apply(null, hues);
+        hueSpread = Math.min(hueMax - hueMin, 360 - (hueMax - hueMin));
+      }
+      var lowInfo = (maxDist < 0.20) && (hues.length >= 2 && hueSpread < 30);
+      paletteLowInfoFlag.hidden = !lowInfo;
+    } else if (paletteLowInfoFlag) {
+      paletteLowInfoFlag.hidden = true;
+    }
     renderPalette(latestPalette);
     paletteWrap.hidden = false;
     setStatus('');
@@ -2344,11 +2438,36 @@
 
   function handleFile(file){
     if (!file) return;
+    // Reset the file input value so picking the same file again fires
+    // a fresh `change` event. HTML inputs don't fire change for an
+    // identical re-selection, which silently breaks "fix the bg, drop
+    // the same logo again" workflows.
+    if (fileInput) { try { fileInput.value = ''; } catch (_) {} }
+    // Revoke any prior bg-stripped preview blob URL up-front, before
+    // any early return inside proceed() can leak it. Safe to call
+    // even if no URL is held (the inner try/catch swallows).
+    if (latestTransparentUrl) {
+      try { URL.revokeObjectURL(latestTransparentUrl); } catch (_) {}
+      latestTransparentUrl = null;
+    }
     if (file.size > MAX_BYTES) {
       setStatus('That file is larger than 10 MB. Crop or resize and try again.', 'error');
       return;
     }
     setStatus('Loading your logo…', 'working');
+
+    // ICO early-reject (B.5). Surface a specific message instead of
+    // letting the generic "could not read" fire after a failed Image()
+    // decode. .ico files contain multiple embedded sizes; browsers
+    // pick one inconsistently and often render at 16×16, useless for
+    // palette extraction. Extension/MIME match is enough in practice;
+    // a misnamed ICO falls back to the existing "could not read"
+    // path with no regression.
+    if ((file.type && /icon|x-icon|vnd\.microsoft\.icon/i.test(file.type)) ||
+        /\.ico$/i.test(file.name || '')) {
+      setStatus('That looks like a .ico (multi-size icon) file. Brand Suite needs a single image — export the largest size as a PNG and try that.', 'error');
+      return;
+    }
 
     // HEIC / HEIF detection. Safari decodes these natively via the
     // standard <img> path, so on Safari we let the normal flow run
@@ -2480,6 +2599,16 @@
         var bg = window.BS && window.BS.detectBackgroundColor
           ? window.BS.detectBackgroundColor(edges)
           : null;
+        // Histogram-pivot fallback for full-bleed logos. When the edge
+        // detector returns null because the logo extends to all four
+        // edges (no clear edge agreement), look at the WHOLE pixel
+        // sample to find a dominant colour. Lower confidence (0.7),
+        // and the visual transparent-PNG strip is gated at 0.95+ so
+        // wrong detection costs at most a slightly noisier palette,
+        // never a visibly mangled preview tile.
+        if (!bg && window.BS && window.BS.detectBackgroundColorPivot) {
+          bg = window.BS.detectBackgroundColorPivot(pixels, edges);
+        }
         if (bg && window.BS.stripBackground) {
           // Two-stage strip:
           //   (1) Erode out AA-halo pixels at the canvas level — pixels
@@ -2493,7 +2622,21 @@
           var eroded = (bg.confidence >= 0.95)
             ? sampleInteriorPixels(canvas, bg.rgb)
             : [];
-          if (eroded.length >= 60) {
+          // Brand-colour-matches-bg auto-detect (was Layer B.4):
+          // when "stripping the background" would remove >95 % of the
+          // pixels, the detector has caught a brand colour, not a
+          // background. The right move is to skip the strip entirely
+          // and let the original pixels through — k-means + the
+          // post-cluster prune still produce a clean palette without
+          // a transparent-PNG preview that would erase the brand.
+          var totalPx = pixels.length;
+          var preStrippedColour = window.BS.stripBackground(pixels, bg.rgb).length;
+          var brandIsBg = totalPx > 0 && (preStrippedColour / totalPx) < 0.05;
+          if (brandIsBg) {
+            // Don't strip; don't generate a transparent preview. Treat
+            // this image as if no clear bg were detected.
+            bg = null;
+          } else if (eroded.length >= 60) {
             pixels = eroded;
             latestDetectedBackground = bg;
           } else {
@@ -2512,8 +2655,9 @@
           // entirely. Reasonable submissions get the rectangle behind
           // their mark removed automatically; logos already on
           // transparent grounds are unaffected (no clear bg detected →
-          // no transparency pass).
-          if (bg.confidence >= 0.95) {
+          // no transparency pass). Skipped when bg was a brand colour
+          // (brandIsBg above set bg = null).
+          if (bg && bg.confidence >= 0.95) {
             makeBackgroundTransparent(img, bg.rgb).then(function(transparentUrl){
               if (transparentUrl) {
                 latestTransparentUrl = transparentUrl;

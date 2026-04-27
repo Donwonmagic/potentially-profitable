@@ -300,7 +300,54 @@ assertEq('OKLab roundtrip (184,84,26)', roundtrip(184, 84, 26),   { r: 184, g: 8
   // The achromatic with higher dominance should land as the Neutral.
   const neutralEntry = result.entries.find(e => e.hex === '#101010');
   assert('role assignment: black appears in roled output', !!neutralEntry);
-  assertEq('role assignment: monochromatic flag false', result.monochromatic, false);
+  // One chromatic anchor + two achromatic neutrals is monochromatic-in-
+  // spirit per the relaxed §A.5 rule — Workshop should help fill out a
+  // single-anchor palette.
+  assertEq('role assignment: mono flag true (single chromatic + neutrals)',
+           result.monochromatic, true);
+}
+
+{
+  // Two chromatic colours of comparable share + one neutral. NOT mono —
+  // the secondary chromatic is well above the 5% threshold so the rule
+  // recognises this as a real two-colour brand system, not a single
+  // anchor that needs the Workshop to fill out.
+  const palette = [
+    { hex: '#1F4E5B', dominancePct: 0.50 },   // teal — chromatic
+    { hex: '#B8541A', dominancePct: 0.30 },   // rust — chromatic, comparable share
+    { hex: '#F5F5F5', dominancePct: 0.20 }    // white — achromatic
+  ];
+  const result = B.assignRoles(palette);
+  assertEq('role assignment: mono flag false (two real chromatic colours)',
+           result.monochromatic, false);
+}
+
+{
+  // Near-mono: 92% teal + 3% rust + 5% cream — top chromatic ≥ 0.85 AND
+  // second chromatic ≤ 0.05, so the §A.5 rule fires. The 3 % accent
+  // can't carry a brand system on its own.
+  const palette = [
+    { hex: '#1F4E5B', dominancePct: 0.92 },   // teal
+    { hex: '#B8541A', dominancePct: 0.03 },   // tiny rust
+    { hex: '#F3EEE3', dominancePct: 0.05 }    // cream — achromatic
+  ];
+  const result = B.assignRoles(palette);
+  assertEq('role assignment: mono flag true (one dominant + tiny accent)',
+           result.monochromatic, true);
+}
+
+{
+  // Muntin post-fix: 88% teal + 6% rust + 6% ink. Two chromatic colours
+  // (teal + rust) — second chromatic is 6 % > 5 %, so NOT mono. Muntin
+  // ships with a real accent the Workshop should not erase.
+  const palette = [
+    { hex: '#1F4E5B', dominancePct: 0.88 },   // teal
+    { hex: '#B8541A', dominancePct: 0.06 },   // rust
+    { hex: '#1A1612', dominancePct: 0.06 }    // ink — achromatic
+  ];
+  const result = B.assignRoles(palette);
+  assertEq('role assignment: Muntin post-fix is NOT mono (real accent at 6%)',
+           result.monochromatic, false);
 }
 
 {
@@ -358,6 +405,158 @@ assertEq('OKLab roundtrip (184,84,26)', roundtrip(184, 84, 26),   { r: 184, g: 8
     { hex: '#00FF00', dominancePct: 0.5 }
   ]);
   assertEq('distinct colors → no similarity flag', sims.length, 0);
+}
+
+{
+  // §A.4 dominance floor — a 0.5%-share noise cluster sitting next to a
+  // 50%-share brand colour should NOT generate a "visually similar"
+  // warning. Default floor 3 %; below that the entry is k-means residue
+  // and warning the user about it is noise.
+  const palette = [
+    { hex: '#1F4E5B', dominancePct: 0.50 },
+    { hex: '#1F4E5C', dominancePct: 0.005 }   // sub-threshold near-duplicate
+  ];
+  const sims = B.paletteSimilarities(palette);
+  assertEq('sub-3% near-duplicate suppressed by dominance floor', sims.length, 0);
+
+  // Pass floor = 0 explicitly and the same pair IS flagged — confirms
+  // the suppression is the floor, not the distance threshold.
+  const simsAllPairs = B.paletteSimilarities(palette, 0.12, { dominanceFloor: 0 });
+  assertEq('floor=0 → tiny near-duplicate IS flagged', simsAllPairs.length, 1);
+}
+
+// ------------------------------------------------------------
+// Robustness pass §A.1 — AA-halo prune in bsExtractPalette
+// ------------------------------------------------------------
+{
+  // Synthetic Muntin sample at DOWNSAMPLE=200 + 8-neighbour erosion:
+  // ~88% teal, ~6% rust, ~6% near-black, with 30 AA-bridge pixels
+  // sprinkled along the cream→teal OKLab line. WITH backgroundLab
+  // the bridge clusters are pruned; WITHOUT it they survive as 1-3
+  // gray-blue noise clusters. This is the regression-lock fixture
+  // for the flagship demo.
+  const cream = [243, 238, 227];
+  const teal  = [31, 78, 91];
+  const rust  = [184, 84, 26];
+  const dark  = [26, 22, 18];
+  function blend(a, b, t) {
+    return [
+      Math.round(a[0]*(1-t)+b[0]*t),
+      Math.round(a[1]*(1-t)+b[1]*t),
+      Math.round(a[2]*(1-t)+b[2]*t)
+    ];
+  }
+  const pixels = [];
+  for (let i = 0; i < 700; i++) pixels.push(teal);
+  for (let i = 0; i < 60;  i++) pixels.push(rust);
+  for (let i = 0; i < 60;  i++) pixels.push(dark);
+  for (let i = 0; i < 400; i++) pixels.push(blend(teal, cream, (i % 9) * 0.1 + 0.1));
+
+  const bgLab = B.rgbToOklab(243, 238, 227);
+  const palette = B.extractPalette(pixels, { k: 5, backgroundLab: bgLab });
+  // Top entry must be teal-shaped — first two RGB channels in (15..50, 65..95)
+  // (k-means centroid drifts within a couple of units across the OKLab→RGB
+  // round-trip, so we assert a band rather than an exact hex).
+  const topRgb = (function(hex){
+    return [parseInt(hex.slice(1,3),16), parseInt(hex.slice(3,5),16), parseInt(hex.slice(5,7),16)];
+  })(palette[0].hex);
+  assert('Muntin: top entry is teal',
+         topRgb[0] >= 15 && topRgb[0] <= 55 && topRgb[1] >= 60 && topRgb[1] <= 100);
+  assert('Muntin: top dominance ≥ 75%', palette[0].dominancePct >= 0.75);
+  // Rust must appear within 4 RGB units of #B8541A
+  const hasRust = palette.some(p => {
+    const r = parseInt(p.hex.slice(1,3),16);
+    const g = parseInt(p.hex.slice(3,5),16);
+    const b = parseInt(p.hex.slice(5,7),16);
+    return Math.abs(r-184)<=4 && Math.abs(g-84)<=4 && Math.abs(b-26)<=4;
+  });
+  assert('Muntin: rust accent surfaces', hasRust);
+  // Shares sum to 1
+  const sum = palette.reduce((s, p) => s + p.dominancePct, 0);
+  assertClose('Muntin: shares sum to 1', sum, 1, 0.001);
+  // No 0% entries — the dominance floor + AA-halo prune should ensure all entries are real
+  assert('Muntin: no 0%-share entries',
+         palette.every(p => p.dominancePct >= 0.005));
+
+  // Same input WITHOUT backgroundLab — AA-halo prune skipped, gradient
+  // clusters survive. Confirms the prune is what's doing the cleanup.
+  const naivePalette = B.extractPalette(pixels, { k: 5 });
+  // Naive should produce more gray-blue intermediate clusters than the
+  // pruned version. Top entry's dominance is markedly lower because the
+  // gradient pixels split into separate clusters instead of being pruned.
+  assert('without bgLab: top dominance is lower (gradient clusters survive)',
+         naivePalette[0].dominancePct < palette[0].dominancePct);
+}
+
+{
+  // §A.1 conjunct (1) — complementary palette protection. Two brand
+  // colours with comparable dominance + a midpoint cluster between
+  // them. The midpoint is NOT AA-halo because no host has 5× its
+  // dominance. Must survive.
+  const teal     = [31, 78, 91];
+  const rust     = [184, 84, 26];
+  function midpoint(a, b) {
+    return [Math.round((a[0]+b[0])/2), Math.round((a[1]+b[1])/2), Math.round((a[2]+b[2])/2)];
+  }
+  const pixels = [];
+  for (let i = 0; i < 400; i++) pixels.push(teal);   // 40 %
+  for (let i = 0; i < 300; i++) pixels.push(rust);   // 30 %
+  for (let i = 0; i < 300; i++) pixels.push(midpoint(teal, rust));   // 30 %
+  // No bg-stripping happens here (no bg colour in pixels), but we still
+  // pass a bgLab to exercise the prune logic.
+  const bgLab = B.rgbToOklab(243, 238, 227);
+  const palette = B.extractPalette(pixels, { k: 5, backgroundLab: bgLab });
+  // All three input colours should survive — none should be pruned as
+  // AA-halo because no host has 5× the others' dominance.
+  assert('complementary palette: midpoint NOT pruned (≥3 surviving entries)',
+         palette.length >= 3);
+}
+
+// ------------------------------------------------------------
+// Robustness pass §B.3 — bsDetectBackgroundColorPivot
+// ------------------------------------------------------------
+{
+  // Full-bleed logo: a logo where the foreground colour reaches the
+  // edges, so bsDetectBackgroundColor (edge-only) returns null. The
+  // pivot fallback looks at the whole sample and finds a dominant
+  // colour, validating against the edge sample.
+  const cream = [243, 238, 227];
+  const teal  = [31, 78, 91];
+  // 80% cream, 20% teal — teal dominates the visual weight in some
+  // regions but cream is the larger share.
+  const all = [];
+  for (let i = 0; i < 800; i++) all.push(cream);
+  for (let i = 0; i < 200; i++) all.push(teal);
+  // Edge sample includes both colours (some teal at the edges — that's
+  // the "full-bleed" condition).
+  const edges = [];
+  for (let i = 0; i < 30; i++) edges.push(cream);
+  for (let i = 0; i < 30; i++) edges.push(teal);
+
+  // Edge-only detector should fail: edges are split 50/50, no clear
+  // dominant.
+  const edgeOnly = B.detectBackgroundColor(edges);
+  assertEq('edge-only detector: 50/50 edge split returns null', edgeOnly, null);
+
+  // Pivot fallback should succeed and return cream at confidence 0.7.
+  const pivot = B.detectBackgroundColorPivot(all, edges);
+  assert('pivot fallback finds cream', pivot && pivot.hex.toLowerCase() === '#f3eee3');
+  assertEq('pivot fallback confidence', pivot.confidence, 0.70);
+}
+
+{
+  // Pivot guards against centre-of-frame bullseye. Dominant colour is
+  // teal but it never appears at the edges → must return null.
+  const cream = [243, 238, 227];
+  const teal  = [31, 78, 91];
+  const all = [];
+  for (let i = 0; i < 200; i++) all.push(cream);
+  for (let i = 0; i < 800; i++) all.push(teal);
+  const edges = [];
+  for (let i = 0; i < 60; i++) edges.push(cream);  // edges all cream
+  const pivot = B.detectBackgroundColorPivot(all, edges);
+  assertEq('pivot rejects centre-of-frame bullseye (not seen at edge)',
+           pivot, null);
 }
 
 // ------------------------------------------------------------
