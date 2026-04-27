@@ -1329,6 +1329,10 @@
   var worker = null;
   var requestCounter = 0;
   var pending = {};
+  // Marca de tiempo de la solicitud más reciente — extractAndRender
+  // la usa para detectar un worker atascado antes de encolar otra
+  // tarea detrás.
+  var latestRequestStart = 0;
   function ensureWorker(){
     if (worker) return worker;
     try {
@@ -1338,6 +1342,11 @@
         var cb = pending[data.requestId];
         if (!cb) return;
         delete pending[data.requestId];
+        // Descarta respuestas obsoletas: requestCounter es el id de la
+        // solicitud más reciente; respuestas viejas pertenecen a una
+        // carga anterior cuyo resultado no debe parpadear sobre la
+        // paleta cuando ya se inició una extracción nueva.
+        if (data.requestId !== requestCounter) return;
         if (data.type === 'palette') cb(null, data.palette);
         else                         cb(new Error(data.message || 'worker-error'));
       });
@@ -1538,6 +1547,19 @@
 
   function extractAndRender(pixels, file){
     setStatus('Extrayendo paleta…', 'working');
+    // Re-spawn si está atascado: si una solicitud anterior aún sigue
+    // pendiente y lleva más de la mitad del timeout, el worker está
+    // probablemente colgado. Lo derribamos preventivamente para que
+    // esta nueva solicitud se ejecute en un worker fresco en lugar
+    // de hacer cola tras uno colgado (caso de drops rápidos).
+    var pendingCount = 0;
+    for (var k in pending) { if (pending.hasOwnProperty(k)) { pendingCount++; break; } }
+    if (worker && pendingCount > 0 && latestRequestStart && (Date.now() - latestRequestStart) > (WORKER_TIMEOUT_MS / 2)) {
+      try { worker.terminate(); } catch (_) {}
+      worker = null;
+      pending = {};
+    }
+    latestRequestStart = Date.now();
     ensureWorker();
     var requestId = ++requestCounter;
     var settled = false;

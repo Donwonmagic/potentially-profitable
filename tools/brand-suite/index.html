@@ -1384,6 +1384,10 @@
   var worker = null;
   var requestCounter = 0;
   var pending = {};
+  // Timestamp of the most recently issued request — used by
+  // extractAndRender to detect a stuck worker before queueing
+  // another job behind it.
+  var latestRequestStart = 0;
   function ensureWorker(){
     if (worker) return worker;
     try {
@@ -1393,6 +1397,11 @@
         var cb = pending[data.requestId];
         if (!cb) return;
         delete pending[data.requestId];
+        // Drop stale replies. requestCounter tracks the LATEST issued
+        // request id; older replies belong to a prior upload whose
+        // result must not flash into the palette after a newer
+        // extraction has already been kicked off (rapid-drop case).
+        if (data.requestId !== requestCounter) return;
         if (data.type === 'palette') cb(null, data.palette);
         else                         cb(new Error(data.message || 'worker-error'));
       });
@@ -1594,6 +1603,21 @@
 
   function extractAndRender(pixels, file){
     setStatus('Extracting palette…', 'working');
+    // Respawn-if-stuck: if a previous request is STILL pending and has
+    // been outstanding for more than half the per-request timeout,
+    // the worker is likely wedged on its last job. Tear it down
+    // preemptively so this new request runs on a fresh worker
+    // instead of queueing behind a hung one (rapid-drop / huge-image
+    // case). Only fires when something is actually pending — a
+    // 5-second pause between two clean drops doesn't trigger it.
+    var pendingCount = 0;
+    for (var k in pending) { if (pending.hasOwnProperty(k)) { pendingCount++; break; } }
+    if (worker && pendingCount > 0 && latestRequestStart && (Date.now() - latestRequestStart) > (WORKER_TIMEOUT_MS / 2)) {
+      try { worker.terminate(); } catch (_) {}
+      worker = null;
+      pending = {};
+    }
+    latestRequestStart = Date.now();
     ensureWorker();
     var requestId = ++requestCounter;
     var settled = false;
