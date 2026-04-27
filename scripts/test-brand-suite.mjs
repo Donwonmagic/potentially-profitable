@@ -300,7 +300,54 @@ assertEq('OKLab roundtrip (184,84,26)', roundtrip(184, 84, 26),   { r: 184, g: 8
   // The achromatic with higher dominance should land as the Neutral.
   const neutralEntry = result.entries.find(e => e.hex === '#101010');
   assert('role assignment: black appears in roled output', !!neutralEntry);
-  assertEq('role assignment: monochromatic flag false', result.monochromatic, false);
+  // One chromatic anchor + two achromatic neutrals is monochromatic-in-
+  // spirit per the relaxed §A.5 rule — Workshop should help fill out a
+  // single-anchor palette.
+  assertEq('role assignment: mono flag true (single chromatic + neutrals)',
+           result.monochromatic, true);
+}
+
+{
+  // Two chromatic colours of comparable share + one neutral. NOT mono —
+  // the secondary chromatic is well above the 5% threshold so the rule
+  // recognises this as a real two-colour brand system, not a single
+  // anchor that needs the Workshop to fill out.
+  const palette = [
+    { hex: '#1F4E5B', dominancePct: 0.50 },   // teal — chromatic
+    { hex: '#B8541A', dominancePct: 0.30 },   // rust — chromatic, comparable share
+    { hex: '#F5F5F5', dominancePct: 0.20 }    // white — achromatic
+  ];
+  const result = B.assignRoles(palette);
+  assertEq('role assignment: mono flag false (two real chromatic colours)',
+           result.monochromatic, false);
+}
+
+{
+  // Near-mono: 92% teal + 3% rust + 5% cream — top chromatic ≥ 0.85 AND
+  // second chromatic ≤ 0.05, so the §A.5 rule fires. The 3 % accent
+  // can't carry a brand system on its own.
+  const palette = [
+    { hex: '#1F4E5B', dominancePct: 0.92 },   // teal
+    { hex: '#B8541A', dominancePct: 0.03 },   // tiny rust
+    { hex: '#F3EEE3', dominancePct: 0.05 }    // cream — achromatic
+  ];
+  const result = B.assignRoles(palette);
+  assertEq('role assignment: mono flag true (one dominant + tiny accent)',
+           result.monochromatic, true);
+}
+
+{
+  // Muntin post-fix: 88% teal + 6% rust + 6% ink. Two chromatic colours
+  // (teal + rust) — second chromatic is 6 % > 5 %, so NOT mono. Muntin
+  // ships with a real accent the Workshop should not erase.
+  const palette = [
+    { hex: '#1F4E5B', dominancePct: 0.88 },   // teal
+    { hex: '#B8541A', dominancePct: 0.06 },   // rust
+    { hex: '#1A1612', dominancePct: 0.06 }    // ink — achromatic
+  ];
+  const result = B.assignRoles(palette);
+  assertEq('role assignment: Muntin post-fix is NOT mono (real accent at 6%)',
+           result.monochromatic, false);
 }
 
 {
@@ -358,6 +405,24 @@ assertEq('OKLab roundtrip (184,84,26)', roundtrip(184, 84, 26),   { r: 184, g: 8
     { hex: '#00FF00', dominancePct: 0.5 }
   ]);
   assertEq('distinct colors → no similarity flag', sims.length, 0);
+}
+
+{
+  // §A.4 dominance floor — a 0.5%-share noise cluster sitting next to a
+  // 50%-share brand colour should NOT generate a "visually similar"
+  // warning. Default floor 3 %; below that the entry is k-means residue
+  // and warning the user about it is noise.
+  const palette = [
+    { hex: '#1F4E5B', dominancePct: 0.50 },
+    { hex: '#1F4E5C', dominancePct: 0.005 }   // sub-threshold near-duplicate
+  ];
+  const sims = B.paletteSimilarities(palette);
+  assertEq('sub-3% near-duplicate suppressed by dominance floor', sims.length, 0);
+
+  // Pass floor = 0 explicitly and the same pair IS flagged — confirms
+  // the suppression is the floor, not the distance threshold.
+  const simsAllPairs = B.paletteSimilarities(palette, 0.12, { dominanceFloor: 0 });
+  assertEq('floor=0 → tiny near-duplicate IS flagged', simsAllPairs.length, 1);
 }
 
 // ------------------------------------------------------------

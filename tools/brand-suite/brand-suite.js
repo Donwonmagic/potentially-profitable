@@ -272,7 +272,26 @@ function bsAssignRoles(palette, options) {
   var achromatic = annotated.filter(function(e){ return e._achromatic; });
   // Capture the truly-chromatic count BEFORE the mutating shift/splice
   // calls below — that's what determines the monochromatic flag.
-  var monochromatic = chromatic.length === 0 && annotated.length > 0;
+  //
+  // Mono in spirit, not just by-the-letter. Three triggers:
+  //   1. No chromatic cluster at all (true greyscale).
+  //   2. Exactly one chromatic cluster + at least one achromatic
+  //      (single brand colour + grey lines / neutrals — the textbook
+  //      single-anchor logo).
+  //   3. One chromatic cluster dominates (≥ 85% share) AND every other
+  //      chromatic cluster is tiny (≤ 5%). The 3 % accent that can't
+  //      carry a brand system on its own — Workshop helps fill it out.
+  // Note: `chromatic` is about to be sorted by chroma below, so use the
+  // dominance-sorted view here for the threshold tests.
+  var chromaticByDominance = chromatic.slice().sort(function(a, b){
+    return (b.dominancePct || 0) - (a.dominancePct || 0);
+  });
+  var topChromaticDom    = chromaticByDominance[0] ? (chromaticByDominance[0].dominancePct || 0) : 0;
+  var secondChromaticDom = chromaticByDominance[1] ? (chromaticByDominance[1].dominancePct || 0) : 0;
+  var monochromatic =
+       (chromatic.length === 0 && annotated.length > 0)
+    || (chromatic.length === 1 && annotated.length > 1)
+    || (chromatic.length >= 1 && topChromaticDom >= 0.85 && secondChromaticDom <= 0.05);
 
   // Primary = most-chromatic non-achromatic.
   // Secondary = next most-chromatic at min hue distance from Primary.
@@ -336,15 +355,26 @@ function bsAssignRoles(palette, options) {
 // SIMILARITY_THRESHOLD so the UI can warn rather than silently
 // presenting them as distinct roles.
 // ------------------------------------------------------------
-function bsPaletteSimilarities(palette, threshold) {
+function bsPaletteSimilarities(palette, threshold, options) {
   var t = typeof threshold === 'number' ? threshold : 0.12;
+  // Dominance floor — palette entries below this share are noise (k-means
+  // residue, sub-1% accents that don't carry visual weight). Flagging them
+  // as "similar to" anything else generates spurious warnings on near-zero
+  // clusters that pollute the UI. Default 3% — meaningful brand colours
+  // come back well above this; AA halos and k-means leftovers come back
+  // well below it.
+  var dominanceFloor = (options && typeof options.dominanceFloor === 'number')
+    ? options.dominanceFloor
+    : 0.03;
   var labs = palette.map(function(p){
     var rgb = bsHexToRgb(p.hex) || { r: 0, g: 0, b: 0 };
     return bsRgbToOklab(rgb.r, rgb.g, rgb.b);
   });
   var pairs = [];
   for (var i = 0; i < labs.length; i++) {
+    if ((palette[i].dominancePct || 0) < dominanceFloor) continue;
     for (var j = i + 1; j < labs.length; j++) {
+      if ((palette[j].dominancePct || 0) < dominanceFloor) continue;
       var d = bsOklabDistance(labs[i], labs[j]);
       if (d < t) pairs.push({ a: i, b: j, distance: d });
     }
