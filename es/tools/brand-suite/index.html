@@ -1728,6 +1728,25 @@
   }
 
   function loadAsImage(blob, onReady, onFail){
+    // Camino SVG: data: URL en lugar de blob: URL, porque iOS Safari
+    // ha rechazado blob: URLs como <img src> para SVGs en varios
+    // contextos (Modo Privado, referrer estricto). data: URLs siempre
+    // son aceptadas como fuente de <img>.
+    var isSvgBlob = blob && blob.type && /svg/i.test(blob.type);
+    if (isSvgBlob) {
+      var fr = new FileReader();
+      fr.onload = function(){
+        var text = String(fr.result || '');
+        var url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(text);
+        var img = new Image();
+        img.onload  = function(){ onReady(img, url); };
+        img.onerror = function(){ onFail(); };
+        img.src = url;
+      };
+      fr.onerror = function(){ onFail(); };
+      fr.readAsText(blob);
+      return;
+    }
     var url = URL.createObjectURL(blob);
     var img = new Image();
     img.onload = function(){ onReady(img, url); };
@@ -1766,6 +1785,56 @@
       });
     }
 
+    var heicDecoderPromise = null;
+    function loadHeicDecoder(){
+      if (heicDecoderPromise) return heicDecoderPromise;
+      setStatus('Cargando decodificador HEIC…', 'working');
+      heicDecoderPromise = new Promise(function(resolve, reject){
+        var s = document.createElement('script');
+        s.src = '/tools/brand-suite/heic-decoder.js?v=20260427-pb1';
+        s.onload = function(){
+          if (typeof window.libheif !== 'function') return reject(new Error('libheif missing'));
+          var moduleP = window.libheif({
+            locateFile: function(path){ return '/tools/brand-suite/' + path; }
+          });
+          if (moduleP && typeof moduleP.then === 'function') moduleP.then(resolve, reject);
+          else resolve(moduleP);
+        };
+        s.onerror = function(){ reject(new Error('failed to load heic-decoder.js')); };
+        document.head.appendChild(s);
+      });
+      return heicDecoderPromise;
+    }
+
+    function decodeHeicToBlob(file){
+      return file.arrayBuffer().then(function(buf){
+        return loadHeicDecoder().then(function(libheif){
+          var decoder = new libheif.HeifDecoder();
+          var images  = decoder.decode(new Uint8Array(buf));
+          if (!images || !images.length) {
+            throw new Error('HEIC sin imagen decodificable');
+          }
+          var image  = images[0];
+          var w      = image.get_width();
+          var h      = image.get_height();
+          var canvas = document.createElement('canvas');
+          canvas.width = w; canvas.height = h;
+          var ctx = canvas.getContext('2d');
+          var imageData = ctx.createImageData(w, h);
+          return new Promise(function(resolve, reject){
+            image.display(imageData, function(filled){
+              if (!filled) return reject(new Error('display HEIC falló'));
+              ctx.putImageData(filled, 0, 0);
+              canvas.toBlob(function(blob){
+                if (blob) resolve(blob);
+                else reject(new Error('canvas.toBlob devolvió null'));
+              }, 'image/jpeg', 0.95);
+            });
+          });
+        });
+      });
+    }
+
     function proceed(blob){
       loadAsImage(blob, function(img, url){
         imgCream.src = url;
@@ -1793,7 +1862,12 @@
       }, function(){
         detectHeicBytes(blob).then(function(byteSniffHeic){
           if (declaredHeic || byteSniffHeic) {
-            setStatus('Las fotos HEIC del iPhone solo se decodifican en Safari. En tu teléfono: toca la foto, luego Compartir → Guardar en Archivos (o abre Fotos → Editar → Listo) — eso la convierte a JPEG. Suelta el JPEG aquí.', 'error');
+            setStatus('Decodificando HEIC…', 'working');
+            decodeHeicToBlob(file).then(function(jpegBlob){
+              proceed(jpegBlob);
+            }).catch(function(err){
+              setStatus('No se pudo decodificar ese HEIC (' + (err && err.message ? err.message : 'decodificador falló') + '). Guarda la foto como JPEG en el teléfono y sube esa.', 'error');
+            });
           } else {
             setStatus('No se pudo leer ese archivo como imagen (tipo: ' + (file.type || 'desconocido') + (file.name ? ', nombre: ' + file.name : '') + '). Guárdalo de nuevo como PNG o JPEG y sube esa copia.', 'error');
           }
