@@ -637,6 +637,351 @@ function bsBucketFileType(mimeOrExt) {
 // to `self` unifies the browser + worker paths.
 // ------------------------------------------------------------
 
+// ============================================================
+// Background detection + strip — fixes the single-colour-logo
+// extraction case where the background gets clustered as a
+// "Light Neutral" (e.g. white pulled from the canvas around a
+// black wordmark). The page passes in the edge-band pixels
+// separately; we find the dominant edge colour and exclude all
+// pixels within OKLab distance 0.05 of it from the main sample.
+// ============================================================
+
+// Quantise an [r,g,b] triplet to a coarser grid so neighbouring
+// edge pixels (anti-aliased white-vs-near-white) cluster together
+// in the histogram. 24-step bins give 24^3 = 13,824 buckets — fine
+// enough that distinct logo colours stay separate, coarse enough
+// that aliased edges merge into one bucket.
+function bsQuantiseRgb(r, g, b) {
+  var q = function(v) { return Math.min(23, Math.floor(v / 11)); };
+  return q(r) * 24 * 24 + q(g) * 24 + q(b);
+}
+
+// Given an array of edge pixels ([[r,g,b], ...]), find the
+// dominant colour. Returns { hex, rgb: {r,g,b}, confidence } or
+// null if no single colour reaches the validation threshold.
+//
+// validation: at least `threshold` (default 0.7) of edge pixels
+// must lie within OKLab distance 0.05 of the dominant centroid.
+function bsDetectBackgroundColor(edgePixels, options) {
+  options = options || {};
+  var threshold = options.threshold == null ? 0.7  : options.threshold;
+  var radius    = options.radius    == null ? 0.05 : options.radius;
+  if (!edgePixels || !edgePixels.length) return null;
+
+  // Histogram over quantised RGB bins.
+  var bins = Object.create(null);
+  for (var i = 0; i < edgePixels.length; i++) {
+    var p = edgePixels[i];
+    if (!p || p.length < 3) continue;
+    var key = bsQuantiseRgb(p[0], p[1], p[2]);
+    if (!bins[key]) bins[key] = { count: 0, sumR: 0, sumG: 0, sumB: 0 };
+    var bin = bins[key];
+    bin.count++;
+    bin.sumR += p[0]; bin.sumG += p[1]; bin.sumB += p[2];
+  }
+
+  // Find the most-populated bin and compute its centroid.
+  var best = null;
+  for (var k in bins) {
+    if (!best || bins[k].count > best.count) best = bins[k];
+  }
+  if (!best) return null;
+  var cr = Math.round(best.sumR / best.count);
+  var cg = Math.round(best.sumG / best.count);
+  var cb = Math.round(best.sumB / best.count);
+
+  // Validate — count how many edge pixels lie within `radius`
+  // OKLab distance of the centroid.
+  var centroidLab = bsRgbToOklab(cr, cg, cb);
+  var matched = 0;
+  for (var j = 0; j < edgePixels.length; j++) {
+    var q = edgePixels[j];
+    if (!q || q.length < 3) continue;
+    var qLab = bsRgbToOklab(q[0], q[1], q[2]);
+    if (bsOklabDistance(centroidLab, qLab) <= radius) matched++;
+  }
+  var confidence = matched / edgePixels.length;
+  if (confidence < threshold) return null;
+
+  return {
+    hex: bsRgbToHex(cr, cg, cb),
+    rgb: { r: cr, g: cg, b: cb },
+    confidence: confidence
+  };
+}
+
+// Filter cluster pixels to exclude any within `radius` OKLab
+// distance of the supplied background colour. Returns the
+// remaining pixels (in the same [[r,g,b], ...] shape).
+function bsStripBackground(pixels, backgroundRgb, options) {
+  options = options || {};
+  var radius = options.radius == null ? 0.05 : options.radius;
+  if (!pixels || !pixels.length || !backgroundRgb) return pixels || [];
+  var bgLab = bsRgbToOklab(backgroundRgb.r, backgroundRgb.g, backgroundRgb.b);
+  var out = [];
+  for (var i = 0; i < pixels.length; i++) {
+    var p = pixels[i];
+    if (!p || p.length < 3) continue;
+    var pLab = bsRgbToOklab(p[0], p[1], p[2]);
+    if (bsOklabDistance(bgLab, pLab) > radius) out.push(p);
+  }
+  return out;
+}
+
+// ============================================================
+// Colour-harmony generators — produce candidate palettes from an
+// anchor + ground in OKLab. All six return the same role-tagged
+// shape `bsAssignRoles` produces, so downstream rendering is
+// agnostic to whether the palette was extracted or generated.
+// Each generator runs a gamut-clamp pass (out-of-sRGB results
+// get chroma-reduced 20 % at a time until in gamut) and a WCAG
+// contrast pass (every accent must hit ≥ 4.5:1 against ground;
+// fallback shifts L away from ground until it does or clamps to
+// site neutrals).
+// ============================================================
+
+// Convert OKLab → hex with gamut clamping. If the L+a+b point is
+// out-of-sRGB, scales chroma down 20 % per iteration up to 5
+// passes; if still out-of-gamut, clamps to the nearest in-gamut
+// L=anchor point. Returns hex.
+function bsOklabToHexClamped(L, a, b) {
+  var aIn = a, bIn = b;
+  for (var pass = 0; pass < 6; pass++) {
+    var rgb = bsOklabToRgb(L, aIn, bIn);
+    if (rgb.r >= 0 && rgb.r <= 255 &&
+        rgb.g >= 0 && rgb.g <= 255 &&
+        rgb.b >= 0 && rgb.b <= 255) {
+      return bsRgbToHex(Math.round(rgb.r), Math.round(rgb.g), Math.round(rgb.b));
+    }
+    aIn *= 0.8; bIn *= 0.8;
+  }
+  // Final fallback: pure greyscale at this L.
+  var grey = bsOklabToRgb(L, 0, 0);
+  return bsRgbToHex(
+    Math.max(0, Math.min(255, Math.round(grey.r))),
+    Math.max(0, Math.min(255, Math.round(grey.g))),
+    Math.max(0, Math.min(255, Math.round(grey.b)))
+  );
+}
+
+// Rotate an OKLab a/b vector by `degrees` around the origin, at
+// the same chroma. Standard 2-D rotation in the a-b plane.
+function bsRotateHueOklab(lab, degrees) {
+  var rad = (degrees * Math.PI) / 180;
+  var cos = Math.cos(rad), sin = Math.sin(rad);
+  return {
+    L: lab.L,
+    a: lab.a * cos - lab.b * sin,
+    b: lab.a * sin + lab.b * cos
+  };
+}
+
+// Push an OKLab point's L away from the ground's L until WCAG
+// contrast against ground hits ≥ targetRatio. Returns hex.
+function bsForceContrastAgainstGround(lab, groundHex, targetRatio) {
+  var target = targetRatio || 4.5;
+  var hex = bsOklabToHexClamped(lab.L, lab.a, lab.b);
+  if (bsContrastRatio(hex, groundHex) >= target) return hex;
+  // Determine which direction in L moves us away from ground.
+  var groundRgb = bsHexToRgb(groundHex);
+  if (!groundRgb) return hex;
+  var groundLab = bsRgbToOklab(groundRgb.r, groundRgb.g, groundRgb.b);
+  var direction = lab.L < groundLab.L ? -1 : 1;
+  var L = lab.L;
+  for (var step = 0; step < 25; step++) {
+    L += direction * 0.04;
+    if (L < 0 || L > 1) break;
+    hex = bsOklabToHexClamped(L, lab.a, lab.b);
+    if (bsContrastRatio(hex, groundHex) >= target) return hex;
+  }
+  // Last-resort fallback to site neutrals.
+  return groundLab.L > 0.5 ? BS_INK : BS_CREAM;
+}
+
+// Build a role-tagged entry in the same shape `bsAssignRoles`
+// emits, so generated palettes feed every downstream surface
+// (renderPalette, renderFixture, renderContrastGrid, renderExports,
+// renderMuntinPane) unchanged.
+function bsBuildEntry(hex, role, roleVar, tokenName) {
+  var rgb = bsHexToRgb(hex);
+  var lab = rgb ? bsRgbToOklab(rgb.r, rgb.g, rgb.b) : { L: 0, a: 0, b: 0 };
+  return {
+    hex: hex,
+    dominancePct: 0.20,            // synthetic — equal-share for generated palettes
+    role: role,
+    roleVar: roleVar,
+    tokenName: tokenName,
+    chroma: bsClusterChroma(lab),
+    hueDeg: bsHueAngleDeg(lab),
+    achromatic: bsClusterChroma(lab) < 0.04
+  };
+}
+
+// Pad / truncate a list of colour hexes to `count`, label them
+// with the standard role names, and run them through the WCAG
+// guarantee against the chosen ground.
+function bsAssembleHarmony(anchor, ground, accentHexes, count) {
+  // Roles: Primary (anchor) → Secondary (ground) → Accents → Neutral
+  var palette = [];
+  palette.push(bsBuildEntry(anchor, BS_ROLE_NAMES_EN[0], BS_ROLE_VARS[0], BS_TOKEN_NAMES[0]));
+  palette.push(bsBuildEntry(ground, BS_ROLE_NAMES_EN[1], BS_ROLE_VARS[1], BS_TOKEN_NAMES[1]));
+  // Slot accents (3rd, 4th positions)
+  var accentIdx = 0;
+  while (palette.length < Math.min(count, 4) && accentIdx < accentHexes.length) {
+    palette.push(bsBuildEntry(
+      accentHexes[accentIdx],
+      BS_ROLE_NAMES_EN[2 + accentIdx] || ('Accent ' + (accentIdx + 1)),
+      BS_ROLE_VARS[2 + accentIdx]     || ('--brand-accent-' + (accentIdx + 1)),
+      BS_TOKEN_NAMES[2 + accentIdx]   || ('brand.accent-' + (accentIdx + 1))
+    ));
+    accentIdx++;
+  }
+  // Final slot: derived neutral (anchor desaturated to 0.4 chroma factor at mid-L)
+  if (palette.length < count) {
+    var anchorRgb = bsHexToRgb(anchor) || { r: 100, g: 100, b: 100 };
+    var anchorLab = bsRgbToOklab(anchorRgb.r, anchorRgb.g, anchorRgb.b);
+    var neutralLab = { L: 0.45, a: anchorLab.a * 0.15, b: anchorLab.b * 0.15 };
+    var neutralHex = bsOklabToHexClamped(neutralLab.L, neutralLab.a, neutralLab.b);
+    palette.push(bsBuildEntry(neutralHex, BS_ROLE_NAMES_EN[4], BS_ROLE_VARS[4], BS_TOKEN_NAMES[4]));
+  }
+  return palette.slice(0, count);
+}
+
+function bsHarmonyAnalogous(anchor, ground, count) {
+  count = Math.max(3, Math.min(5, count || 5));
+  var rgb = bsHexToRgb(anchor) || { r: 60, g: 100, b: 120 };
+  var anchorLab = bsRgbToOklab(rgb.r, rgb.g, rgb.b);
+  // Generate hue-rotated accents at ±15°, ±30°. Pick the count needed.
+  var offsets = [-30, -15, +15, +30];
+  var hexes = offsets.map(function(d){
+    var rotated = bsRotateHueOklab(anchorLab, d);
+    return bsForceContrastAgainstGround(rotated, ground, 4.5);
+  });
+  return bsAssembleHarmony(anchor, ground, hexes, count);
+}
+
+function bsHarmonyComplementary(anchor, ground, count) {
+  count = Math.max(3, Math.min(5, count || 5));
+  var rgb = bsHexToRgb(anchor) || { r: 60, g: 100, b: 120 };
+  var anchorLab = bsRgbToOklab(rgb.r, rgb.g, rgb.b);
+  var complement = bsRotateHueOklab(anchorLab, 180);
+  // Bridge tones: complement at reduced chroma + a small hue rotation.
+  var bridge1 = { L: complement.L, a: complement.a * 0.4, b: complement.b * 0.4 };
+  var bridge2 = bsRotateHueOklab(anchorLab, 165);
+  var hexes = [
+    bsForceContrastAgainstGround(complement, ground, 4.5),
+    bsForceContrastAgainstGround(bridge1,    ground, 4.5),
+    bsForceContrastAgainstGround(bridge2,    ground, 4.5)
+  ];
+  return bsAssembleHarmony(anchor, ground, hexes, count);
+}
+
+function bsHarmonySplitComplementary(anchor, ground, count) {
+  count = Math.max(3, Math.min(5, count || 5));
+  var rgb = bsHexToRgb(anchor) || { r: 60, g: 100, b: 120 };
+  var anchorLab = bsRgbToOklab(rgb.r, rgb.g, rgb.b);
+  var split1 = bsRotateHueOklab(anchorLab, 150);
+  var split2 = bsRotateHueOklab(anchorLab, 210);
+  // Third accent: a low-chroma version of the anchor.
+  var muted = { L: anchorLab.L, a: anchorLab.a * 0.45, b: anchorLab.b * 0.45 };
+  var hexes = [
+    bsForceContrastAgainstGround(split1, ground, 4.5),
+    bsForceContrastAgainstGround(split2, ground, 4.5),
+    bsForceContrastAgainstGround(muted,  ground, 4.5)
+  ];
+  return bsAssembleHarmony(anchor, ground, hexes, count);
+}
+
+function bsHarmonyTriadic(anchor, ground, count) {
+  count = Math.max(3, Math.min(5, count || 5));
+  var rgb = bsHexToRgb(anchor) || { r: 60, g: 100, b: 120 };
+  var anchorLab = bsRgbToOklab(rgb.r, rgb.g, rgb.b);
+  var triad1 = bsRotateHueOklab(anchorLab, 120);
+  var triad2 = bsRotateHueOklab(anchorLab, 240);
+  // Fourth accent: muted version of anchor for visual breathing room.
+  var muted = { L: Math.min(0.85, anchorLab.L + 0.15), a: anchorLab.a * 0.25, b: anchorLab.b * 0.25 };
+  var hexes = [
+    bsForceContrastAgainstGround(triad1, ground, 4.5),
+    bsForceContrastAgainstGround(triad2, ground, 4.5),
+    bsForceContrastAgainstGround(muted,  ground, 4.5)
+  ];
+  return bsAssembleHarmony(anchor, ground, hexes, count);
+}
+
+function bsHarmonyTetradic(anchor, ground, count) {
+  count = Math.max(3, Math.min(5, count || 5));
+  var rgb = bsHexToRgb(anchor) || { r: 60, g: 100, b: 120 };
+  var anchorLab = bsRgbToOklab(rgb.r, rgb.g, rgb.b);
+  var quad1 = bsRotateHueOklab(anchorLab, 90);
+  var quad2 = bsRotateHueOklab(anchorLab, 180);
+  var quad3 = bsRotateHueOklab(anchorLab, 270);
+  var hexes = [
+    bsForceContrastAgainstGround(quad1, ground, 4.5),
+    bsForceContrastAgainstGround(quad2, ground, 4.5),
+    bsForceContrastAgainstGround(quad3, ground, 4.5)
+  ];
+  return bsAssembleHarmony(anchor, ground, hexes, count);
+}
+
+function bsHarmonyMonochromatic(anchor, ground, count) {
+  count = Math.max(3, Math.min(5, count || 5));
+  var rgb = bsHexToRgb(anchor) || { r: 60, g: 100, b: 120 };
+  var anchorLab = bsRgbToOklab(rgb.r, rgb.g, rgb.b);
+  // Vary only L; preserve hue + chroma.
+  var deltas = [-0.20, -0.10, +0.10, +0.20];
+  var hexes = deltas.map(function(d){
+    var L = Math.max(0.05, Math.min(0.95, anchorLab.L + d));
+    return bsForceContrastAgainstGround({ L: L, a: anchorLab.a, b: anchorLab.b }, ground, 4.5);
+  });
+  return bsAssembleHarmony(anchor, ground, hexes, count);
+}
+
+// Mood → which harmony families produce the candidates. Each mood
+// returns an ordered list of generator functions; the first 3 run
+// (or all of them, for moods with fewer than 3 mapped families).
+var BS_MOOD_TO_HARMONIES = {
+  'calm':     [bsHarmonyAnalogous, bsHarmonyMonochromatic],
+  'warm':     [bsHarmonyAnalogous, bsHarmonyMonochromatic],
+  'bold':     [bsHarmonyComplementary, bsHarmonySplitComplementary, bsHarmonyTriadic],
+  'refined':  [bsHarmonyMonochromatic, bsHarmonyAnalogous],
+  'playful':  [bsHarmonyTriadic, bsHarmonyTetradic, bsHarmonySplitComplementary]
+};
+
+var BS_HARMONY_LABELS = {
+  analogous:        'Analogous',
+  complementary:    'Complementary',
+  splitComplementary:'Split-complementary',
+  triadic:          'Triadic',
+  tetradic:         'Tetradic',
+  monochromatic:    'Monochromatic'
+};
+
+// Produce 1-3 candidate palettes for a given anchor + ground +
+// mood + count. Returns [{ palette, harmonyName, harmonyLabel }, ...].
+function bsGenerateCandidatePalettes(anchor, ground, mood, count) {
+  var families = BS_MOOD_TO_HARMONIES[mood] || BS_MOOD_TO_HARMONIES.calm;
+  var nameByFn = [
+    [bsHarmonyAnalogous,         'analogous'],
+    [bsHarmonyComplementary,     'complementary'],
+    [bsHarmonySplitComplementary,'splitComplementary'],
+    [bsHarmonyTriadic,           'triadic'],
+    [bsHarmonyTetradic,          'tetradic'],
+    [bsHarmonyMonochromatic,     'monochromatic']
+  ];
+  function lookupName(fn) {
+    for (var i = 0; i < nameByFn.length; i++) if (nameByFn[i][0] === fn) return nameByFn[i][1];
+    return 'unknown';
+  }
+  return families.slice(0, 3).map(function(fn){
+    var name = lookupName(fn);
+    return {
+      palette:      fn(anchor, ground, count),
+      harmonyName:  name,
+      harmonyLabel: BS_HARMONY_LABELS[name] || name
+    };
+  });
+}
+
 var BS_PUBLIC = {
   hexToRgb:               bsHexToRgb,
   rgbToHex:               bsRgbToHex,
@@ -649,6 +994,17 @@ var BS_PUBLIC = {
   extractPalette:         bsExtractPalette,
   assignRoles:            bsAssignRoles,
   paletteSimilarities:    bsPaletteSimilarities,
+  detectBackgroundColor:  bsDetectBackgroundColor,
+  stripBackground:        bsStripBackground,
+  harmonyAnalogous:           bsHarmonyAnalogous,
+  harmonyComplementary:       bsHarmonyComplementary,
+  harmonySplitComplementary:  bsHarmonySplitComplementary,
+  harmonyTriadic:             bsHarmonyTriadic,
+  harmonyTetradic:            bsHarmonyTetradic,
+  harmonyMonochromatic:       bsHarmonyMonochromatic,
+  generateCandidatePalettes:  bsGenerateCandidatePalettes,
+  MOOD_TO_HARMONIES:          BS_MOOD_TO_HARMONIES,
+  HARMONY_LABELS:             BS_HARMONY_LABELS,
   simulateColorBlindness: bsSimulateColorBlindness,
   bucketDominantHue:      bsBucketDominantHue,
   bucketLogoSize:         bsBucketLogoSize,

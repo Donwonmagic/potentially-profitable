@@ -132,6 +132,52 @@
 
   /* Bloque de vista previa — tarjeta de un restaurante con la paleta aplicada.
      Los colores de texto pasan por deriveAccessiblePair para garantizar AA. */
+  /* Taller de paleta — guía para logos monocromáticos y operadores
+     que arrancan de cero. Misma estética que el EN. */
+  .bs-workshop-wrap{padding:28px 28px 24px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--cream-2);display:flex;flex-direction:column;gap:24px}
+  .bs-workshop-head .eyebrow{margin-bottom:6px}
+  .bs-workshop-head h2{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0 0 8px;line-height:1.2}
+  .bs-workshop-head p{margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);max-width:680px}
+  .bs-workshop-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:18px;counter-reset:bsws}
+  .bs-workshop-step{padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);transition:border-color 140ms var(--ease-out),box-shadow 140ms var(--ease-out)}
+  .bs-workshop-step[data-active="true"]{border-color:var(--teal);box-shadow:0 0 0 1px var(--teal) inset}
+  .bs-workshop-step[data-done="true"]{border-color:var(--status-good);background:var(--status-good-tint)}
+  .bs-workshop-step-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .bs-workshop-step-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--teal);color:var(--cream);font-family:var(--font-display);font-weight:500;font-size:15px}
+  .bs-workshop-step[data-done="true"] .bs-workshop-step-num{background:var(--status-good)}
+  .bs-workshop-step-head h3{font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0}
+  .bs-workshop-chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+  .bs-workshop-chip{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);cursor:pointer;font:inherit;text-align:left;transition:border-color 140ms var(--ease-out),background 140ms var(--ease-out)}
+  .bs-workshop-chip:hover{border-color:var(--teal)}
+  .bs-workshop-chip[aria-checked="true"]{border-color:var(--teal);background:rgba(31,78,91,0.06)}
+  .bs-workshop-chip strong{font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.3}
+  .bs-workshop-chip small{font-size:11.5px;color:var(--stone);line-height:1.4}
+  .bs-ground-chip{flex-direction:row;align-items:center;gap:10px}
+  .bs-ground-chip strong{flex:0 0 auto;min-width:70px}
+  .bs-ground-chip small{display:none}
+  @media(min-width:540px){.bs-ground-chip small{display:block;flex:1}}
+  .bs-ground-swatch{display:inline-block;width:30px;height:30px;border-radius:6px;flex:0 0 auto}
+  .bs-workshop-why{margin-top:10px;font-size:12.5px;color:var(--stone)}
+  .bs-workshop-why summary{cursor:pointer;color:var(--stone);text-decoration:underline;text-underline-offset:2px;list-style:none}
+  .bs-workshop-why summary::-webkit-details-marker{display:none}
+  .bs-workshop-why summary::before{content:"+ ";font-weight:700}
+  .bs-workshop-why[open] summary::before{content:"\2212  "}
+  .bs-workshop-why p{margin:8px 0 0;line-height:1.55;color:var(--ink-soft)}
+  .bs-workshop-candidates{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .bs-workshop-card{display:flex;flex-direction:column;gap:8px;padding:14px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);cursor:pointer;text-align:left;font:inherit;transition:border-color 140ms var(--ease-out),transform 140ms var(--ease-out)}
+  .bs-workshop-card:hover{border-color:var(--teal);transform:translateY(-2px)}
+  .bs-workshop-card-name{font-family:var(--font-display);font-size:14px;font-weight:600;color:var(--ink);margin:0}
+  .bs-workshop-card-strip{display:flex;height:38px;border-radius:4px;overflow:hidden}
+  .bs-workshop-card-strip-cell{flex:1}
+  .bs-workshop-card-meta{font-size:11.5px;color:var(--stone);line-height:1.45;font-variant-numeric:tabular-nums}
+  .bs-workshop-card-meta strong{color:var(--ink)}
+  .bs-workshop-card-pick{align-self:flex-start;font-size:12px;font-weight:600;color:var(--teal);text-decoration:underline;text-underline-offset:2px}
+  .bs-workshop-after{padding:16px 20px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+  .bs-workshop-after h3{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink);margin:0 0 6px}
+  .bs-workshop-after p{margin:0 0 12px;font-size:13.5px;line-height:1.55;color:var(--ink-soft)}
+  .bs-workshop-refine{padding:7px 14px;border:1px solid var(--teal);border-radius:999px;background:transparent;color:var(--teal);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
+  .bs-workshop-refine:hover{background:var(--teal);color:var(--cream)}
+
   .bs-fixture-wrap{display:flex;flex-direction:column;gap:10px}
   .bs-fixture-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
   .bs-fixture-head h2{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0}
@@ -483,6 +529,78 @@
           </ol>
         </div>
       </details>
+    </div>
+
+    <!-- TALLER DE PALETA — se abre cuando el logo es monocromático,
+         o manualmente vía "Refinar de nuevo". Tres preguntas cortas
+         (estado de ánimo, fondo, conteo) + tres paletas candidatas. -->
+    <div class="bs-workshop-wrap" id="bsWorkshopWrap" hidden>
+      <header class="bs-workshop-head">
+        <span class="eyebrow">Taller de paleta</span>
+        <h2 id="bsWorkshopTitle">Tu logo lleva un solo color. Armemos la paleta alrededor de él.</h2>
+        <p id="bsWorkshopDek">Tres preguntas rápidas &mdash; carácter, fondo y cuántos colores &mdash; y eliges la paleta candidata que se vea como tu restaurante. La matemática (distancia de matiz, contraste WCAG, gama OKLab) corre mientras vas haciendo clic.</p>
+      </header>
+
+      <ol class="bs-workshop-steps" aria-label="Pasos del taller">
+        <li class="bs-workshop-step" data-step="mood" data-active="true">
+          <div class="bs-workshop-step-head">
+            <span class="bs-workshop-step-num">1</span>
+            <h3>¿Qué carácter buscas?</h3>
+          </div>
+          <div class="bs-workshop-chips" role="radiogroup" aria-label="Carácter">
+            <button type="button" class="bs-workshop-chip" data-mood="calm"    role="radio" aria-checked="false"><strong>Sereno y pensado</strong><small>Análogo · matices vecinos, croma bajo</small></button>
+            <button type="button" class="bs-workshop-chip" data-mood="warm"    role="radio" aria-checked="false"><strong>Cálido y acogedor</strong><small>Análogo en tonos tierra · clásico de restaurante</small></button>
+            <button type="button" class="bs-workshop-chip" data-mood="bold"    role="radio" aria-checked="false"><strong>Audaz y enérgico</strong><small>Complementario · matices opuestos, contraste fuerte</small></button>
+            <button type="button" class="bs-workshop-chip" data-mood="refined" role="radio" aria-checked="false"><strong>Refinado y sobrio</strong><small>Monocromático · un matiz, varias luminosidades</small></button>
+            <button type="button" class="bs-workshop-chip" data-mood="playful" role="radio" aria-checked="false"><strong>Vibrante y divertido</strong><small>Triádico / tetrádico · tres o cuatro matices en balance</small></button>
+          </div>
+          <details class="bs-workshop-why">
+            <summary>Por qué preguntamos</summary>
+            <p>El carácter de la paleta cae en una familia de la teoría del color. Las paletas <em>análogas</em> usan matices vecinos (15&ndash;30&deg; aparte) y se ven tranquilas. Las <em>complementarias</em> usan matices opuestos (180&deg;) y se ven con energía. La matemática corre en <a href="/es/glossary/oklab/" style="color:inherit;border-bottom:1px dashed currentColor;">OKLab</a> &mdash; el espacio de color con el que el ojo juzga similitud, no el de la pantalla.</p>
+          </details>
+        </li>
+
+        <li class="bs-workshop-step" data-step="ground">
+          <div class="bs-workshop-step-head">
+            <span class="bs-workshop-step-num">2</span>
+            <h3>¿Cuál es el fondo dominante?</h3>
+          </div>
+          <div class="bs-workshop-chips" role="radiogroup" aria-label="Fondo">
+            <button type="button" class="bs-workshop-chip bs-ground-chip" data-ground="#FAF7F2" role="radio" aria-checked="false"><span class="bs-ground-swatch" style="background:#FAF7F2"></span><strong>Crema</strong><small>Cálido, clásico de restaurante</small></button>
+            <button type="button" class="bs-workshop-chip bs-ground-chip" data-ground="#FFFFFF" role="radio" aria-checked="false"><span class="bs-ground-swatch" style="background:#FFFFFF;border:1px solid var(--line)"></span><strong>Blanco</strong><small>Limpio, moderno</small></button>
+            <button type="button" class="bs-workshop-chip bs-ground-chip" data-ground="#2A2620" role="radio" aria-checked="false"><span class="bs-ground-swatch" style="background:#2A2620"></span><strong>Carbón</strong><small>Atmósfera de noche</small></button>
+            <button type="button" class="bs-workshop-chip bs-ground-chip" data-ground="#14161A" role="radio" aria-checked="false"><span class="bs-ground-swatch" style="background:#14161A"></span><strong>Tinta</strong><small>Sofisticado, alta cocina</small></button>
+          </div>
+          <details class="bs-workshop-why">
+            <summary>Por qué preguntamos</summary>
+            <p>El fondo es la superficie donde vive el 80&#37; de tu diseño: el papel del menú, el fondo del sitio, el feed de Instagram. Tu color principal y los acentos tienen que leerse encima sin esfuerzo. La matemática asegura que cada acento cumpla con el contraste WCAG AA (4.5:1) contra el fondo elegido.</p>
+          </details>
+        </li>
+
+        <li class="bs-workshop-step" data-step="count">
+          <div class="bs-workshop-step-head">
+            <span class="bs-workshop-step-num">3</span>
+            <h3>¿Cuántos colores de acento?</h3>
+          </div>
+          <div class="bs-workshop-chips" role="radiogroup" aria-label="Cuántos colores">
+            <button type="button" class="bs-workshop-chip" data-count="3" role="radio" aria-checked="false"><strong>Uno</strong><small>Color base + fondo + 1 acento. Mínimo.</small></button>
+            <button type="button" class="bs-workshop-chip" data-count="4" role="radio" aria-checked="true"><strong>Unos pocos</strong><small>Color base + fondo + 2 acentos. Lo más común.</small></button>
+            <button type="button" class="bs-workshop-chip" data-count="5" role="radio" aria-checked="false"><strong>Paleta completa</strong><small>Color base + fondo + 2 acentos + neutro.</small></button>
+          </div>
+          <details class="bs-workshop-why">
+            <summary>Por qué preguntamos</summary>
+            <p>La mayoría de las marcas de restaurante usan de 3 a 5 colores. Menos se ve seco; más complica cualquier decisión de diseño. Elige el conjunto más chico que aún te dé lo que necesitas.</p>
+          </details>
+        </li>
+      </ol>
+
+      <div class="bs-workshop-candidates" id="bsWorkshopCandidates" hidden aria-live="polite"></div>
+
+      <div class="bs-workshop-after" id="bsWorkshopAfter" hidden>
+        <h3>Sobre esta paleta</h3>
+        <p id="bsWorkshopAboutText"></p>
+        <button type="button" class="bs-workshop-refine" id="bsWorkshopRefineBtn">Volver a ajustar &rarr;</button>
+      </div>
     </div>
 
     <div class="bs-fixture-wrap" id="bsFixtureWrap" hidden>
@@ -999,6 +1117,9 @@
   var latestPalette = null;
   var latestSimilarities = [];
   var latestMonochromatic = false;
+  // El color de fondo detectado, si lo hay. El Taller lo usa para
+  // sugerir por defecto el "ground" en la pregunta 2.
+  var latestDetectedBackground = null;
 
   var worker = null;
   var requestCounter = 0;
@@ -1046,6 +1167,30 @@
       for (var j = 0; j < MAX_SAMPLED_PIXELS; j++) trimmed[j] = out[Math.floor(j * stride)];
       out = trimmed;
     }
+    return out;
+  }
+
+  // Muestrea las cuatro bandas de borde por separado. El color
+  // dominante entre estos píxeles es casi seguramente el fondo.
+  function sampleEdgePixels(canvas){
+    var ctx = canvas.getContext('2d');
+    var w = canvas.width, h = canvas.height;
+    if (!w || !h) return [];
+    var top, bottom, left, right;
+    try {
+      top    = ctx.getImageData(0, 0, w, 1).data;
+      bottom = ctx.getImageData(0, h - 1, w, 1).data;
+      left   = ctx.getImageData(0, 0, 1, h).data;
+      right  = ctx.getImageData(w - 1, 0, 1, h).data;
+    } catch (_) { return []; }
+    var out = [];
+    function ingest(arr){
+      for (var i = 0; i < arr.length; i += 4) {
+        if (arr[i + 3] < 128) continue;
+        out.push([arr[i], arr[i + 1], arr[i + 2]]);
+      }
+    }
+    ingest(top); ingest(bottom); ingest(left); ingest(right);
     return out;
   }
 
@@ -1807,6 +1952,18 @@
           setStatus('No se pudo leer ningún píxel opaco de ese logo.', 'error');
           return;
         }
+        // Detección + extracción del fondo (mismo flujo que el EN).
+        var edges = sampleEdgePixels(canvas);
+        var bg = window.BS && window.BS.detectBackgroundColor
+          ? window.BS.detectBackgroundColor(edges)
+          : null;
+        if (bg && window.BS.stripBackground) {
+          var stripped = window.BS.stripBackground(pixels, bg.rgb);
+          if (stripped.length >= 30) {
+            pixels = stripped;
+            latestDetectedBackground = bg;
+          }
+        }
         extractAndRender(pixels, file);
       }, function(){
         detectHeicBytes(blob).then(function(byteSniffHeic){
@@ -1886,6 +2043,162 @@
       });
     });
   }
+
+  // ============================================================
+  // Taller de paleta — guía para logos monocromáticos.
+  // ============================================================
+  var workshopWrap        = document.getElementById('bsWorkshopWrap');
+  var workshopCandidates  = document.getElementById('bsWorkshopCandidates');
+  var workshopAfter       = document.getElementById('bsWorkshopAfter');
+  var workshopAboutText   = document.getElementById('bsWorkshopAboutText');
+  var workshopRefineBtn   = document.getElementById('bsWorkshopRefineBtn');
+
+  var wsState = { anchor: null, ground: null, mood: null, count: 4 };
+
+  function snapBackgroundToGround(bgHex){
+    if (!bgHex) return null;
+    var presets = ['#FAF7F2', '#FFFFFF', '#2A2620', '#14161A'];
+    var best = null, bestD = Infinity;
+    var bgRgb = window.BS.hexToRgb(bgHex);
+    if (!bgRgb) return null;
+    var bgLab = window.BS.rgbToOklab(bgRgb.r, bgRgb.g, bgRgb.b);
+    presets.forEach(function(p){
+      var prgb = window.BS.hexToRgb(p);
+      var plab = window.BS.rgbToOklab(prgb.r, prgb.g, prgb.b);
+      var d = window.BS.oklabDistance(bgLab, plab);
+      if (d < bestD) { bestD = d; best = p; }
+    });
+    return bestD < 0.20 ? best : null;
+  }
+
+  function openWorkshop(opts){
+    opts = opts || {};
+    workshopWrap.hidden = false;
+    workshopCandidates.hidden = true;
+    workshopCandidates.innerHTML = '';
+    workshopAfter.hidden = true;
+    workshopWrap.querySelectorAll('.bs-workshop-chip[aria-checked="true"]').forEach(function(c){
+      c.setAttribute('aria-checked', 'false');
+    });
+    workshopWrap.querySelectorAll('.bs-workshop-step').forEach(function(s){
+      s.removeAttribute('data-done');
+    });
+    var firstStep = workshopWrap.querySelector('.bs-workshop-step[data-step="mood"]');
+    if (firstStep) firstStep.setAttribute('data-active', 'true');
+    wsState.anchor = opts.anchor || (latestPalette && latestPalette[0] && latestPalette[0].hex) || '#1F4E5B';
+    wsState.ground = null; wsState.mood = null; wsState.count = 4;
+    var snapped = snapBackgroundToGround(latestDetectedBackground && latestDetectedBackground.hex);
+    if (snapped) {
+      var groundChip = workshopWrap.querySelector('.bs-ground-chip[data-ground="' + snapped + '"]');
+      if (groundChip) { groundChip.setAttribute('aria-checked', 'true'); wsState.ground = snapped; }
+    }
+    var fewChip = workshopWrap.querySelector('.bs-workshop-chip[data-count="4"]');
+    if (fewChip) fewChip.setAttribute('aria-checked', 'true');
+    requestAnimationFrame(function(){
+      workshopWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
+  function maybeRenderCandidates(){
+    if (!wsState.anchor || !wsState.ground || !wsState.mood || !wsState.count) return;
+    var candidates = window.BS.generateCandidatePalettes(
+      wsState.anchor, wsState.ground, wsState.mood, wsState.count
+    );
+    workshopCandidates.innerHTML = candidates.map(function(c, idx){
+      var palette = c.palette;
+      var stripCells = palette.map(function(e){
+        return '<div class="bs-workshop-card-strip-cell" style="background:' + e.hex + '"></div>';
+      }).join('');
+      var anchorHex = palette[0] ? palette[0].hex : wsState.anchor;
+      var contrastVsGround = window.BS.contrastRatio(anchorHex, wsState.ground).toFixed(1);
+      var hueDescriptions = {
+        analogous:        'matices vecinos, ±15–30°',
+        complementary:    'matices opuestos, 180°',
+        splitComplementary:'complemento partido, ±150° / 210°',
+        triadic:          'tres matices, separados 120°',
+        tetradic:         'cuatro matices, separados 90°',
+        monochromatic:    'un matiz, varias luminosidades'
+      };
+      var labels = {
+        analogous: 'Análogo', complementary: 'Complementario',
+        splitComplementary: 'Complemento partido', triadic: 'Triádico',
+        tetradic: 'Tetrádico', monochromatic: 'Monocromático'
+      };
+      return '<button type="button" class="bs-workshop-card" data-candidate-idx="' + idx + '" aria-label="Elegir paleta ' + (labels[c.harmonyName] || c.harmonyLabel) + '">' +
+        '<p class="bs-workshop-card-name">' + (labels[c.harmonyName] || c.harmonyLabel) + '</p>' +
+        '<div class="bs-workshop-card-strip" aria-hidden="true">' + stripCells + '</div>' +
+        '<p class="bs-workshop-card-meta">' + (hueDescriptions[c.harmonyName] || '') + '<br>' +
+        '<strong>' + contrastVsGround + ':1</strong> color base contra fondo · todos los acentos ≥ 4.5:1</p>' +
+        '<span class="bs-workshop-card-pick">Quedarme con esta →</span>' +
+      '</button>';
+    }).join('');
+    workshopCandidates.hidden = false;
+    workshopCandidates._candidates = candidates;
+  }
+
+  workshopWrap.addEventListener('click', function(e){
+    var chip = e.target.closest('.bs-workshop-chip');
+    if (chip) {
+      var step = chip.closest('.bs-workshop-step');
+      if (!step) return;
+      step.querySelectorAll('.bs-workshop-chip').forEach(function(c){ c.setAttribute('aria-checked', 'false'); });
+      chip.setAttribute('aria-checked', 'true');
+      step.setAttribute('data-done', 'true');
+      step.removeAttribute('data-active');
+      var nextStep = step.nextElementSibling;
+      while (nextStep && nextStep.getAttribute('data-done') === 'true') nextStep = nextStep.nextElementSibling;
+      if (nextStep && nextStep.classList.contains('bs-workshop-step')) nextStep.setAttribute('data-active', 'true');
+      var stepKey = step.getAttribute('data-step');
+      if (stepKey === 'mood')   wsState.mood   = chip.getAttribute('data-mood');
+      if (stepKey === 'ground') wsState.ground = chip.getAttribute('data-ground');
+      if (stepKey === 'count')  wsState.count  = Number(chip.getAttribute('data-count')) || 4;
+      maybeRenderCandidates();
+      return;
+    }
+    var card = e.target.closest('.bs-workshop-card');
+    if (card && workshopCandidates._candidates) {
+      var idx = Number(card.getAttribute('data-candidate-idx')) || 0;
+      var picked = workshopCandidates._candidates[idx];
+      if (!picked) return;
+      var paletteHex = picked.palette.map(function(e){ return { hex: e.hex, dominancePct: e.dominancePct }; });
+      hydratePalette(paletteHex, { source: 'workshop' });
+      var anchorHueDeg = picked.palette[0] && picked.palette[0].hueDeg ? Math.round(picked.palette[0].hueDeg) : 0;
+      var aboutLines = {
+        analogous:        'Armonía análoga: los acentos quedan a ±15–30° del color base. Tranquila. Todos los pares cumplen WCAG AA contra el fondo elegido.',
+        complementary:    'Armonía complementaria: el acento queda a 180° del color base. Con energía, pero el contraste se ve vivo sin gritar.',
+        splitComplementary: 'Complemento partido: acentos a 150° y 210° del color base. Es audaz, pero más suave que un complementario directo.',
+        triadic:          'Armonía triádica: tres matices separados 120°. Vibrante y equilibrada; ningún color manda.',
+        tetradic:         'Armonía tetrádica: cuatro matices separados 90°. Rica. Conviene usar uno como dominante y los otros como acentos.',
+        monochromatic:    'Armonía monocromática: un solo matiz con varias luminosidades. Sofisticada y sobria.'
+      };
+      workshopAboutText.textContent = (aboutLines[picked.harmonyName] || picked.harmonyLabel) + ' Color base a ' + anchorHueDeg + '°.';
+      workshopAfter.hidden = false;
+      workshopCandidates.hidden = true;
+      if (window.plausible) {
+        window.plausible('Brand Suite Workshop Pick', { props: { harmony: picked.harmonyName, mood: wsState.mood } });
+      }
+    }
+  });
+
+  if (workshopRefineBtn) workshopRefineBtn.addEventListener('click', function(){
+    openWorkshop({ anchor: wsState.anchor });
+  });
+
+  var lastSeenMonoState = false;
+  function watchMonoFlag(){
+    if (latestMonochromatic && !lastSeenMonoState && latestPalette && latestPalette.length) {
+      lastSeenMonoState = true;
+      openWorkshop({ anchor: latestPalette[0].hex });
+    } else if (!latestMonochromatic) {
+      lastSeenMonoState = false;
+      if (workshopWrap && workshopWrap.hidden === false &&
+          workshopCandidates.hidden && workshopAfter.hidden) {
+        workshopWrap.hidden = true;
+      }
+    }
+    requestAnimationFrame(watchMonoFlag);
+  }
+  if (workshopWrap) requestAnimationFrame(watchMonoFlag);
 })();
 </script>
 </body>
