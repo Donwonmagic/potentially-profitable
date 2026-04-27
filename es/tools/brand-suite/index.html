@@ -53,7 +53,7 @@
   .mm-hero{max-width:720px;margin:0 auto;text-align:center}
   .mm-pledge{display:inline-flex;align-items:center;gap:8px;margin:22px auto 0;padding:8px 16px;border:1px solid var(--status-good);background:var(--status-good-tint);color:var(--status-good);border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.02em}
   .mm-pledge::before{content:'\2713';font-weight:700}
-  .mm-pledge a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+  .mm-pledge .mm-pledge-cta,.mm-pledge a{color:inherit;text-decoration:underline;text-underline-offset:2px}
   .mm-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:760px;margin:0 auto}
   @media (max-width:720px){.mm-grid{grid-template-columns:1fr}}
   .mm-card{display:flex;flex-direction:column;padding:22px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);gap:12px;position:relative}
@@ -425,14 +425,14 @@
       <span class="eyebrow">Una herramienta de Muntin Digital &middot; Tu logo nunca sale de esta página</span>
   <h1>Un kit inicial para el<br>sistema alrededor de <span class="serif-italic">tu marca.</span></h1>
   <p class="hero-sub" style="margin:20px auto 0;max-width:580px;">Un logo es una ventana a tu marca — no el marco completo. Suelta el tuyo; Suite de Marca extrae una paleta, evalúa cada par contra WCAG y te entrega tokens CSS con un README inicial. Construido en el navegador, por el estudio. Tus píxeles nunca tocan un servidor.</p>
-  <a href="#how-we-protect" class="mm-pledge">Se queda en tu navegador. <a href="#how-we-protect">Mira cómo lo verificamos</a></a>
+  <a href="#how-we-protect" class="mm-pledge">Se queda en tu navegador. <span class="mm-pledge-cta">Mira cómo lo verificamos</span></a>
   <p style="margin:14px auto 0;font-size:12.5px;color:var(--stone);max-width:580px;line-height:1.55;">De <a href="/es/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">Muntin Digital</a> — un estudio web de restaurantes de una sola persona en Silver Spring, MD. The window in.</p>
 </div></div></section>
 
 <section class="block"><div class="container container-wide">
   <div class="bs-workspace">
     <div class="bs-upload" id="bsDrop">
-      <input type="file" id="bsFileInput" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml" aria-describedby="bsUploadHint" />
+      <input type="file" id="bsFileInput" accept=".png,.jpg,.jpeg,.webp,.svg,.heic,.heif,image/png,image/jpeg,image/webp,image/svg+xml,image/heic,image/heif" aria-describedby="bsUploadHint" />
       <div class="bs-upload-label">
         <svg class="bs-upload-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <rect x="7" y="7" width="34" height="34" rx="4"/>
@@ -440,7 +440,7 @@
           <line x1="24" y1="18" x2="24" y2="34"/>
         </svg>
         <span class="bs-upload-title">Suelta tu logo, o haz click para seleccionar</span>
-        <span class="bs-upload-hint" id="bsUploadHint">PNG, JPG, WebP o SVG &middot; se queda en tu navegador &middot; nada se sube</span>
+        <span class="bs-upload-hint" id="bsUploadHint">PNG, JPG, WebP, SVG o HEIC de iPhone &middot; se queda en tu navegador &middot; nada se sube</span>
       </div>
     </div>
     <p style="margin:12px auto 0;text-align:center;font-size:13px;color:var(--ink-soft);">¿No sabes qué subir? <button type="button" id="bsDemoBtn" style="background:none;border:0;padding:0;font:inherit;color:var(--teal);border-bottom:1px dashed currentColor;cursor:pointer;">Ver el demo con nuestro propio logo &rarr;</button></p>
@@ -1676,6 +1676,8 @@
     }
     setStatus('Cargando tu logo…', 'working');
 
+    var isHeic = (file.type && /heic|heif/i.test(file.type)) || /\.(heic|heif)$/i.test(file.name || '');
+
     function proceed(blob){
       loadAsImage(blob, function(img, url){
         imgCream.src = url;
@@ -1701,7 +1703,11 @@
         }
         extractAndRender(pixels, file);
       }, function(){
-        setStatus('No se pudo leer ese archivo como imagen.', 'error');
+        if (isHeic) {
+          setStatus('Las fotos HEIC del iPhone solo se decodifican en Safari. En tu teléfono: toca la foto, luego Compartir → Guardar en Archivos (o abre Fotos → Editar → Listo) — eso la convierte a JPEG. Suelta el JPEG aquí.', 'error');
+        } else {
+          setStatus('No se pudo leer ese archivo como imagen.', 'error');
+        }
       });
     }
 
@@ -1755,16 +1761,16 @@
   if (demoBtn) {
     demoBtn.addEventListener('click', function(){
       setStatus('Cargando muestra de Muntin…', 'working');
+      if (window.plausible) window.plausible('Brand Suite Demo');
       fetch('/tools/brand-suite/sample-muntin.svg').then(function(r){
-        if (!r.ok) throw new Error('sample not found');
+        if (!r.ok) throw new Error('sample not found (HTTP ' + r.status + ')');
         return r.blob();
       }).then(function(blob){
         var file = new File([blob], 'sample-muntin.svg', { type: 'image/svg+xml' });
         handleFile(file);
-      }).catch(function(){
-        setStatus('No se pudo cargar la muestra.', 'error');
+      }).catch(function(err){
+        setStatus('No se pudo cargar la muestra (' + (err && err.message ? err.message : 'fetch falló') + '). Sube tu propio logo.', 'error');
       });
-      if (window.plausible) window.plausible('Brand Suite Demo');
     });
   }
 })();
