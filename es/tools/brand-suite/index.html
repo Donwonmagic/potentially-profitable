@@ -1296,6 +1296,7 @@
   // Imagen del logo guardada en cierre para que el export del Panel
   // pueda re-renderizar usando la misma imagen ya decodificada.
   var latestLogoImage = null;
+  var latestTransparentUrl = null;  // blob URL para la vista previa con fondo retirado; se revoca al cargar un logo nuevo.
 
   var MAX_BYTES = 10 * 1024 * 1024;
   var DOWNSAMPLE = 200;              // duplicado desde 100 para preservar trazos finos (acentos óxido, líneas delgadas) y reducir el dominio del halo de antialiasing tras retirar el fondo.
@@ -1452,6 +1453,65 @@
       out = trimmed;
     }
     return out;
+  }
+
+  // Renderiza una versión con fondo transparente de la imagen original
+  // — se usa en las vistas previas crema/ink y en el render del Panel
+  // para que el logo se componga limpiamente sobre el fondo elegido,
+  // no sobre su rectángulo de crema horneado. Mapeo de alfa en dos
+  // zonas:
+  //   d < hardThreshold → alfa 0 (fondo puro, totalmente transparente)
+  //   d < softThreshold → alfa proporcional (halo AA, semitransparente)
+  //   d ≥ softThreshold → alfa 255 (color de marca, totalmente opaco)
+  // d es la distancia RGB-euclidiana al fondo detectado. Resuelve a un
+  // blob URL (el llamador es responsable de revocarlo).
+  function makeBackgroundTransparent(srcImg, bgRgb, options){
+    return new Promise(function(resolve){
+      try {
+        options = options || {};
+        var hard = options.hardThreshold == null ? 30  : options.hardThreshold;
+        var soft = options.softThreshold == null ? 100 : options.softThreshold;
+        var maxDim = options.maxDim || 1200;
+        var w = srcImg.naturalWidth  || srcImg.width  || 0;
+        var h = srcImg.naturalHeight || srcImg.height || 0;
+        if (!w || !h || !bgRgb) { resolve(null); return; }
+        var scale = Math.min(1, maxDim / Math.max(w, h));
+        var canvas = document.createElement('canvas');
+        canvas.width  = Math.max(1, Math.round(w * scale));
+        canvas.height = Math.max(1, Math.round(h * scale));
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(srcImg, 0, 0, canvas.width, canvas.height);
+        var imageData;
+        try { imageData = ctx.getImageData(0, 0, canvas.width, canvas.height); }
+        catch (_) { resolve(null); return; }
+        var data = imageData.data;
+        var bgR = bgRgb.r, bgG = bgRgb.g, bgB = bgRgb.b;
+        var hard2 = hard * hard;
+        var soft2 = soft * soft;
+        var ramp = soft - hard;
+        for (var i = 0; i < data.length; i += 4) {
+          if (data[i + 3] === 0) continue;
+          var dr = data[i]     - bgR;
+          var dg = data[i + 1] - bgG;
+          var db = data[i + 2] - bgB;
+          var d2 = dr * dr + dg * dg + db * db;
+          if (d2 < hard2) {
+            data[i + 3] = 0;
+          } else if (d2 < soft2 && ramp > 0) {
+            var d = Math.sqrt(d2);
+            var t = (d - hard) / ramp;
+            data[i + 3] = Math.round(t * data[i + 3]);
+          }
+        }
+        ctx.putImageData(imageData, 0, 0);
+        canvas.toBlob(function(blob){
+          if (!blob) { resolve(null); return; }
+          resolve(URL.createObjectURL(blob));
+        }, 'image/png');
+      } catch (_) {
+        resolve(null);
+      }
+    });
   }
 
   // Tope del worker. K-means sobre <=20000 píxeles termina en
@@ -2234,6 +2294,13 @@
 
     function proceed(blob){
       loadAsImage(blob, function(img, url){
+        // Revoca cualquier blob URL anterior de la vista previa con
+        // fondo retirado — logo nuevo, canvas nuevo. El navegador
+        // mantiene el blob anterior en memoria hasta que lo liberamos.
+        if (latestTransparentUrl) {
+          try { URL.revokeObjectURL(latestTransparentUrl); } catch (_) {}
+          latestTransparentUrl = null;
+        }
         imgCream.src = url;
         imgInk.src   = url;
         preview.hidden = false;
@@ -2276,6 +2343,21 @@
               pixels = stripped;
               latestDetectedBackground = bg;
             }
+          }
+          // Strip visual: además genera una versión con fondo transparente
+          // de la imagen original para los azulejos crema/ink. Los píxeles
+          // de fondo puro pasan a alfa 0; el halo AA recibe una rampa de
+          // alfa suave para que los bordes no marquen un fleco. Solo se
+          // hace si el fondo se detectó con alta confianza — un logo ya en
+          // fondo transparente o sin fondo claro queda sin tocar.
+          if (bg.confidence >= 0.95) {
+            makeBackgroundTransparent(img, bg.rgb).then(function(transparentUrl){
+              if (transparentUrl) {
+                latestTransparentUrl = transparentUrl;
+                imgCream.src = transparentUrl;
+                imgInk.src   = transparentUrl;
+              }
+            });
           }
         }
         extractAndRender(pixels, file);

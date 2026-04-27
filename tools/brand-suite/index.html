@@ -1338,6 +1338,7 @@
   // already-decoded image the preview swatches use. The image is a
   // local Blob URL — never a network resource.
   var latestLogoImage = null;
+  var latestTransparentUrl = null;  // blob URL for the bg-stripped preview; revoked when a new logo is dropped
 
   var MAX_BYTES = 10 * 1024 * 1024;  // 10MB sanity cap — the browser can read larger, but a logo this big is almost certainly a misdrop
   var DOWNSAMPLE = 200;              // clustering runs on ≤200×200; doubled from 100 to preserve thin features (rust accents, hairlines) and reduce AA-halo dominance after background strip
@@ -1510,6 +1511,65 @@
       out = trimmed;
     }
     return out;
+  }
+
+  // Render a transparent-background version of the source image —
+  // used for the cream/ink preview tiles and the Pane render so the
+  // logo composites cleanly onto whatever ground the page chooses,
+  // not its baked-in cream rectangle. Two-zone alpha mapping:
+  //   d < hardThreshold → alpha 0 (pure bg, fully transparent)
+  //   d < softThreshold → alpha proportional (AA halo, semi-transparent)
+  //   d ≥ softThreshold → alpha 255 (foreground, fully opaque)
+  // d is RGB-euclidean distance from the detected background.
+  // Resolves to a blob URL (caller is responsible for revoking).
+  function makeBackgroundTransparent(srcImg, bgRgb, options){
+    return new Promise(function(resolve){
+      try {
+        options = options || {};
+        var hard = options.hardThreshold == null ? 30  : options.hardThreshold;
+        var soft = options.softThreshold == null ? 100 : options.softThreshold;
+        var maxDim = options.maxDim || 1200;
+        var w = srcImg.naturalWidth  || srcImg.width  || 0;
+        var h = srcImg.naturalHeight || srcImg.height || 0;
+        if (!w || !h || !bgRgb) { resolve(null); return; }
+        var scale = Math.min(1, maxDim / Math.max(w, h));
+        var canvas = document.createElement('canvas');
+        canvas.width  = Math.max(1, Math.round(w * scale));
+        canvas.height = Math.max(1, Math.round(h * scale));
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(srcImg, 0, 0, canvas.width, canvas.height);
+        var imageData;
+        try { imageData = ctx.getImageData(0, 0, canvas.width, canvas.height); }
+        catch (_) { resolve(null); return; }
+        var data = imageData.data;
+        var bgR = bgRgb.r, bgG = bgRgb.g, bgB = bgRgb.b;
+        var hard2 = hard * hard;
+        var soft2 = soft * soft;
+        var ramp = soft - hard;
+        for (var i = 0; i < data.length; i += 4) {
+          if (data[i + 3] === 0) continue;
+          var dr = data[i]     - bgR;
+          var dg = data[i + 1] - bgG;
+          var db = data[i + 2] - bgB;
+          var d2 = dr * dr + dg * dg + db * db;
+          if (d2 < hard2) {
+            data[i + 3] = 0;
+          } else if (d2 < soft2 && ramp > 0) {
+            var d = Math.sqrt(d2);
+            var t = (d - hard) / ramp;            // 0…1 across the AA band
+            data[i + 3] = Math.round(t * data[i + 3]);
+          }
+          // else: leave alpha as-is (foreground)
+        }
+        ctx.putImageData(imageData, 0, 0);
+        canvas.toBlob(function(blob){
+          if (!blob) { resolve(null); return; }
+          resolve(URL.createObjectURL(blob));
+        }, 'image/png');
+      } catch (_) {
+        resolve(null);
+      }
+    });
   }
 
   // Worker timeout. K-means on <=20000 pixels finishes in tens of ms on
@@ -2380,7 +2440,16 @@
 
     function proceed(blob){
       loadAsImage(blob, function(img, url){
-        // Show preview (two swatches)
+        // Revoke any prior bg-stripped preview URL — fresh logo, fresh
+        // canvas. The browser holds the previous blob in memory until
+        // we explicitly release it.
+        if (latestTransparentUrl) {
+          try { URL.revokeObjectURL(latestTransparentUrl); } catch (_) {}
+          latestTransparentUrl = null;
+        }
+        // Show preview (two swatches) — initial src is the raw upload;
+        // we'll swap to a bg-stripped version below if we detect a
+        // clear background.
         imgCream.src = url;
         imgInk.src   = url;
         preview.hidden = false;
@@ -2433,6 +2502,25 @@
               pixels = stripped;
               latestDetectedBackground = bg;
             }
+          }
+          // Visual strip: also generate a transparent-bg version of
+          // the source image for the cream/ink preview tiles. Pure-bg
+          // pixels become alpha 0; the AA halo gets a soft alpha ramp
+          // so edges don't fringe. The whole point of showing a logo
+          // on two grounds is to see how it composites against each —
+          // a logo with a baked-in cream rectangle defeats that test
+          // entirely. Reasonable submissions get the rectangle behind
+          // their mark removed automatically; logos already on
+          // transparent grounds are unaffected (no clear bg detected →
+          // no transparency pass).
+          if (bg.confidence >= 0.95) {
+            makeBackgroundTransparent(img, bg.rgb).then(function(transparentUrl){
+              if (transparentUrl) {
+                latestTransparentUrl = transparentUrl;
+                imgCream.src = transparentUrl;
+                imgInk.src   = transparentUrl;
+              }
+            });
           }
         }
         extractAndRender(pixels, file);
