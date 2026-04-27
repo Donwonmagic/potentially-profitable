@@ -874,6 +874,73 @@ function bsDetectBackgroundColor(edgePixels, options) {
   };
 }
 
+// Histogram-pivot background detection — fallback for full-bleed
+// logos. When `bsDetectBackgroundColor` returns null because the
+// edge band has no clear dominant colour (a logo extends to all
+// four edges), this looks at the WHOLE pixel sample, finds the
+// dominant colour, and validates it against the edge band. Lower
+// confidence (0.7 vs 0.95+) — the caller should treat the result
+// cautiously and skip high-stakes actions like the visual
+// transparent-PNG strip; cluster-level strip is fine.
+//
+// Validation: the dominant bin must (a) cover at least `minShare`
+// (default 0.40) of the full sample AND (b) appear at least once in
+// the supplied edge sample (cheap sanity check that we're not
+// picking up a centre-of-frame bullseye colour as bg).
+function bsDetectBackgroundColorPivot(allPixels, edgePixels, options) {
+  options = options || {};
+  var minShare = options.minShare == null ? 0.40 : options.minShare;
+  var radius   = options.radius   == null ? 0.05 : options.radius;
+  if (!allPixels || !allPixels.length) return null;
+
+  // Histogram over quantised RGB bins (same 24-step grid as the edge
+  // detector for consistency).
+  var bins = Object.create(null);
+  for (var i = 0; i < allPixels.length; i++) {
+    var p = allPixels[i];
+    if (!p || p.length < 3) continue;
+    var key = bsQuantiseRgb(p[0], p[1], p[2]);
+    if (!bins[key]) bins[key] = { count: 0, sumR: 0, sumG: 0, sumB: 0 };
+    var bin = bins[key];
+    bin.count++;
+    bin.sumR += p[0]; bin.sumG += p[1]; bin.sumB += p[2];
+  }
+
+  // Dominant bin.
+  var best = null;
+  for (var k in bins) {
+    if (!best || bins[k].count > best.count) best = bins[k];
+  }
+  if (!best) return null;
+  var share = best.count / allPixels.length;
+  if (share < minShare) return null;
+
+  var cr = Math.round(best.sumR / best.count);
+  var cg = Math.round(best.sumG / best.count);
+  var cb = Math.round(best.sumB / best.count);
+  var centroidLab = bsRgbToOklab(cr, cg, cb);
+
+  // Edge sanity check — a centre-of-frame bullseye that happens to be
+  // the most common pixel is NOT a background. Require at least one
+  // edge sample within `radius` OKLab of the centroid.
+  if (!edgePixels || !edgePixels.length) return null;
+  var seenAtEdge = false;
+  for (var ej = 0; ej < edgePixels.length; ej++) {
+    var q = edgePixels[ej];
+    if (!q || q.length < 3) continue;
+    var qLab = bsRgbToOklab(q[0], q[1], q[2]);
+    if (bsOklabDistance(centroidLab, qLab) <= radius) { seenAtEdge = true; break; }
+  }
+  if (!seenAtEdge) return null;
+
+  return {
+    hex: bsRgbToHex(cr, cg, cb),
+    rgb: { r: cr, g: cg, b: cb },
+    confidence: 0.70,
+    source: 'pivot'
+  };
+}
+
 // Filter cluster pixels to exclude any within `radius` OKLab
 // distance of the supplied background colour. Returns the
 // remaining pixels (in the same [[r,g,b], ...] shape).
@@ -1160,6 +1227,7 @@ var BS_PUBLIC = {
   paletteSimilarities:    bsPaletteSimilarities,
   rgbToCmyk:              bsRgbToCmyk,
   detectBackgroundColor:  bsDetectBackgroundColor,
+  detectBackgroundColorPivot: bsDetectBackgroundColorPivot,
   stripBackground:        bsStripBackground,
   harmonyAnalogous:           bsHarmonyAnalogous,
   harmonyComplementary:       bsHarmonyComplementary,

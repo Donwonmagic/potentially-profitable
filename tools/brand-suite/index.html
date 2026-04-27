@@ -2543,6 +2543,16 @@
         var bg = window.BS && window.BS.detectBackgroundColor
           ? window.BS.detectBackgroundColor(edges)
           : null;
+        // Histogram-pivot fallback for full-bleed logos. When the edge
+        // detector returns null because the logo extends to all four
+        // edges (no clear edge agreement), look at the WHOLE pixel
+        // sample to find a dominant colour. Lower confidence (0.7),
+        // and the visual transparent-PNG strip is gated at 0.95+ so
+        // wrong detection costs at most a slightly noisier palette,
+        // never a visibly mangled preview tile.
+        if (!bg && window.BS && window.BS.detectBackgroundColorPivot) {
+          bg = window.BS.detectBackgroundColorPivot(pixels, edges);
+        }
         if (bg && window.BS.stripBackground) {
           // Two-stage strip:
           //   (1) Erode out AA-halo pixels at the canvas level — pixels
@@ -2556,7 +2566,21 @@
           var eroded = (bg.confidence >= 0.95)
             ? sampleInteriorPixels(canvas, bg.rgb)
             : [];
-          if (eroded.length >= 60) {
+          // Brand-colour-matches-bg auto-detect (was Layer B.4):
+          // when "stripping the background" would remove >95 % of the
+          // pixels, the detector has caught a brand colour, not a
+          // background. The right move is to skip the strip entirely
+          // and let the original pixels through — k-means + the
+          // post-cluster prune still produce a clean palette without
+          // a transparent-PNG preview that would erase the brand.
+          var totalPx = pixels.length;
+          var preStrippedColour = window.BS.stripBackground(pixels, bg.rgb).length;
+          var brandIsBg = totalPx > 0 && (preStrippedColour / totalPx) < 0.05;
+          if (brandIsBg) {
+            // Don't strip; don't generate a transparent preview. Treat
+            // this image as if no clear bg were detected.
+            bg = null;
+          } else if (eroded.length >= 60) {
             pixels = eroded;
             latestDetectedBackground = bg;
           } else {
@@ -2575,8 +2599,9 @@
           // entirely. Reasonable submissions get the rectangle behind
           // their mark removed automatically; logos already on
           // transparent grounds are unaffected (no clear bg detected →
-          // no transparency pass).
-          if (bg.confidence >= 0.95) {
+          // no transparency pass). Skipped when bg was a brand colour
+          // (brandIsBg above set bg = null).
+          if (bg && bg.confidence >= 0.95) {
             makeBackgroundTransparent(img, bg.rgb).then(function(transparentUrl){
               if (transparentUrl) {
                 latestTransparentUrl = transparentUrl;

@@ -2388,6 +2388,16 @@
         var bg = window.BS && window.BS.detectBackgroundColor
           ? window.BS.detectBackgroundColor(edges)
           : null;
+        // Fallback histograma-pivot para logos a sangre completa: cuando
+        // el detector de bordes devuelve null (logo llega a los cuatro
+        // bordes y no hay acuerdo), miramos toda la muestra para hallar
+        // un color dominante. Confianza baja (0.7); el strip visual con
+        // PNG transparente sigue requiriendo 0.95+, así que una
+        // detección equivocada cuesta como mucho una paleta algo más
+        // ruidosa, nunca un previa visualmente arruinado.
+        if (!bg && window.BS && window.BS.detectBackgroundColorPivot) {
+          bg = window.BS.detectBackgroundColorPivot(pixels, edges);
+        }
         if (bg && window.BS.stripBackground) {
           // Strip en dos etapas: erosión espacial primero (elimina el
           // halo AA), fallback al strip por distancia de color si el
@@ -2395,7 +2405,17 @@
           var eroded = (bg.confidence >= 0.95)
             ? sampleInteriorPixels(canvas, bg.rgb)
             : [];
-          if (eroded.length >= 60) {
+          // Auto-detect "el color de marca ES el fondo": si retirar el
+          // fondo elimina más del 95 % de los píxeles, el detector
+          // capturó un color de marca y no un fondo. Se omite el strip
+          // y la versión transparente — k-means + el podado posterior
+          // siguen produciendo una paleta limpia sin borrar la marca.
+          var totalPx = pixels.length;
+          var preStrippedColour = window.BS.stripBackground(pixels, bg.rgb).length;
+          var brandIsBg = totalPx > 0 && (preStrippedColour / totalPx) < 0.05;
+          if (brandIsBg) {
+            bg = null;
+          } else if (eroded.length >= 60) {
             pixels = eroded;
             latestDetectedBackground = bg;
           } else {
@@ -2405,13 +2425,12 @@
               latestDetectedBackground = bg;
             }
           }
-          // Strip visual: además genera una versión con fondo transparente
-          // de la imagen original para los azulejos crema/ink. Los píxeles
-          // de fondo puro pasan a alfa 0; el halo AA recibe una rampa de
-          // alfa suave para que los bordes no marquen un fleco. Solo se
-          // hace si el fondo se detectó con alta confianza — un logo ya en
-          // fondo transparente o sin fondo claro queda sin tocar.
-          if (bg.confidence >= 0.95) {
+          // Strip visual: genera una versión con fondo transparente de
+          // la imagen original para los azulejos crema/ink. Solo se
+          // hace si el fondo se detectó con alta confianza — un logo
+          // ya en fondo transparente, sin fondo claro, o donde el
+          // color de marca era el fondo (brandIsBg) queda sin tocar.
+          if (bg && bg.confidence >= 0.95) {
             makeBackgroundTransparent(img, bg.rgb).then(function(transparentUrl){
               if (transparentUrl) {
                 latestTransparentUrl = transparentUrl;
