@@ -204,7 +204,20 @@ function decodeEntities(s) {
     .replace(/&rsquo;/gi, "'")
     .replace(/&lsquo;/gi, "'")
     .replace(/&ldquo;/gi, '"')
-    .replace(/&rdquo;/gi, '"');
+    .replace(/&rdquo;/gi, '"')
+    .replace(/&divide;/gi, '÷')
+    .replace(/&times;/gi, '×')
+    .replace(/&ge;/gi, '≥')
+    .replace(/&le;/gi, '≤')
+    .replace(/&plusmn;/gi, '±')
+    .replace(/&middot;/gi, '·')
+    .replace(/&copy;/gi, '©')
+    .replace(/&reg;/gi, '®')
+    .replace(/&trade;/gi, '™')
+    .replace(/&deg;/gi, '°')
+    .replace(/&rarr;/gi, '→')
+    .replace(/&larr;/gi, '←')
+    .replace(/&nbsp;/gi, ' ');
 }
 
 // Read title + meta description from an existing HTML file. Strips
