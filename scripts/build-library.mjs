@@ -887,8 +887,15 @@ function parseGlossary(locale = 'en') {
     const slug = m[1];
     sectionMap[slug] = {
       slug,
-      name: stripTags(m[2]).trim(),
-      description: stripTags(m[3]).trim(),
+      // Section name + description are plain-text fields (used in
+      // <title>, JSON-LD names, eyebrow strings interpolated through
+      // esc()). The source HTML carries entity-encoded ampersands
+      // ("Brand &amp; design") which esc() would re-encode into
+      // "&amp;amp;". Decode once here so esc() produces a single
+      // round-trip. Raw-HTML uses (term.head, term.aka) keep their
+      // entities; only plain-text fields get decoded.
+      name: decodeEntities(stripTags(m[2])).trim(),
+      description: decodeEntities(stripTags(m[3])).trim(),
       topics: tagsDoc.glossary_section_to_topics[slug] || [],
     };
   }
@@ -1033,8 +1040,13 @@ function toolForTerm(slug) {
 function renderTermPage(locale, term, allTerms) {
   const canonical = urlFor(locale, `/glossary/${term.slug}/`);
   const altUrl = locale === 'en' ? `/es/glossary/${term.slug}/` : `/glossary/${term.slug}/`;
-  const headPlain = stripTags(term.head);
-  const desc = `${headPlain}: ${stripTags(term.defHtml).slice(0, 155).trim()}${stripTags(term.defHtml).length > 155 ? '…' : ''}`;
+  // headPlain feeds <title>, meta description, the breadcrumb, and
+  // JSON-LD "name" — every use is downstream of esc(). Decode entities
+  // here so a head like "Dietary &amp; allergen markers" survives
+  // round-tripping as a single &amp; in the output, not &amp;amp;.
+  const headPlain = decodeEntities(stripTags(term.head));
+  const defPlain  = decodeEntities(stripTags(term.defHtml));
+  const desc = `${headPlain}: ${defPlain.slice(0, 155).trim()}${defPlain.length > 155 ? '…' : ''}`;
 
   // The "Why it matters" heading is part of the source HTML; the
   // EN file says "Why it matters", the ES file says "Por qué importa".
@@ -1090,13 +1102,13 @@ function renderTermPage(locale, term, allTerms) {
         "@type": "DefinedTerm",
         "@id": `${canonical}#term`,
         "name": headPlain,
-        "description": stripTags(term.defHtml),
+        "description": defPlain,
         "url": canonical,
         "inLanguage": locale === 'es' ? 'es-US' : 'en-US',
         "inDefinedTermSet": locale === 'es'
           ? "https://muntin.digital/es/glossary/#glossary"
           : "https://muntin.digital/glossary/#glossary",
-        ...(term.aka ? { "alternateName": stripTags(term.aka) } : {}),
+        ...(term.aka ? { "alternateName": decodeEntities(stripTags(term.aka)) } : {}),
       },
       {
         "@type": "BreadcrumbList",
@@ -1223,7 +1235,7 @@ function renderSectionPage(locale, section, sectionTerms) {
         "hasDefinedTerm": sectionTerms.map(term => ({
           "@type": "DefinedTerm",
           "@id": `${urlFor(locale, '/glossary/' + term.slug + '/')}#term`,
-          "name": stripTags(term.head),
+          "name": decodeEntities(stripTags(term.head)),
           "url": urlFor(locale, '/glossary/' + term.slug + '/'),
         })),
       },
@@ -1545,7 +1557,7 @@ function renderToolDeepLinks(locale, tool, glossaryTerms, articles) {
           <span class="tool-deep-kind">${esc(t(locale, 'tool_deep_kind_glossary'))}</span>
           <h3>${term.head}</h3>
           ${term.aka ? `<p class="tool-deep-aka">${term.aka}</p>` : ''}
-          <p class="tool-deep-snippet">${esc(stripTags(term.defHtml).slice(0, 140))}${stripTags(term.defHtml).length > 140 ? '…' : ''}</p>
+          <p class="tool-deep-snippet">${esc(decodeEntities(stripTags(term.defHtml)).slice(0, 140))}${decodeEntities(stripTags(term.defHtml)).length > 140 ? '…' : ''}</p>
           <span class="tool-deep-cta">${esc(t(locale, 'tool_deep_cta_glossary'))} <span aria-hidden="true">→</span></span>
         </a>`).join('\n      ');
 
