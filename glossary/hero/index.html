@@ -38,6 +38,46 @@
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
 <link rel="stylesheet" href="/assets/site.css?v=20260425-mobile-library-fix">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "DefinedTerm",
+      "@id": "https://muntin.digital/glossary/hero/#term",
+      "name": "Hero section",
+      "description": "The large top section of your homepage, above everything else. It's the only area most first-time visitors will see before deciding whether to keep reading or leave.",
+      "url": "https://muntin.digital/glossary/hero/",
+      "inLanguage": "en-US",
+      "inDefinedTermSet": "https://muntin.digital/glossary/#glossary",
+      "alternateName": "the first block a visitor sees"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://muntin.digital/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Glossary",
+          "item": "https://muntin.digital/glossary/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Hero section",
+          "item": "https://muntin.digital/glossary/hero/"
+        }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -119,7 +159,7 @@
 <section class="term-page">
   <div class="container term-page-inner">
     <header class="term-head">
-      <span class="eyebrow"><a href="/glossary/#basics">The basics</a></span>
+      <span class="eyebrow"><a href="/glossary/basics/">The basics</a></span>
       <h1 class="term-h1">Hero section</h1>
       <p class="term-aka">the first block a visitor sees</p>
       <div class="term-meta">
@@ -132,10 +172,18 @@
       <p class="term-def">The large top section of your homepage, above everything else. It's the only area most first-time visitors will see before deciding whether to keep reading or leave.</p>
       <h2 class="term-why-h">Why it matters</h2>
       <p class="term-why">Your hero has about four seconds to answer: what kind of business is this, where is it, and what can I do here right now. If those three answers aren't clear without scrolling, you're losing visitors who were ready to become customers.</p>
-      
+      <aside class="term-research">
+      <p class="term-research-label">See the research</p>
+      <p><a href="/learn/research/cart-abandonment-rate/">The 70% cart abandonment rate <span aria-hidden="true">↗</span></a></p>
+    </aside>
+      <!-- glossary-explainer-cue:start -->
+      <!-- glossary-explainer-cue:end -->
     </div>
   </div>
 </section>
+
+<!-- glossary-explainer:start -->
+<!-- glossary-explainer:end -->
 
 <section class="term-siblings">
   <div class="container">
@@ -167,6 +215,8 @@
   </div>
 </section>
 
+<!-- glossary-knit -->
+<!-- /glossary-knit -->
 </main>
 
 <footer>
@@ -209,7 +259,7 @@
           <li><a href="/tools/">Free tools</a></li>
           <li><a href="/glossary/">Glossary</a></li>
           <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/resources/">Checklists &amp; guides</a></li>
+          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
         </ul>
       </nav>
 

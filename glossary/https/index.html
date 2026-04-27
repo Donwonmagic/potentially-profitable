@@ -38,6 +38,46 @@
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
 <link rel="stylesheet" href="/assets/site.css?v=20260425-mobile-library-fix">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "DefinedTerm",
+      "@id": "https://muntin.digital/glossary/https/#term",
+      "name": "HTTPS",
+      "description": "The little padlock icon in the browser's address bar. It means your site is served over a secure, encrypted connection — everything between the visitor and your server is scrambled in transit.",
+      "url": "https://muntin.digital/glossary/https/",
+      "inLanguage": "en-US",
+      "inDefinedTermSet": "https://muntin.digital/glossary/#glossary",
+      "alternateName": "SSL certificate, the padlock"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://muntin.digital/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Glossary",
+          "item": "https://muntin.digital/glossary/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "HTTPS",
+          "item": "https://muntin.digital/glossary/https/"
+        }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -119,7 +159,7 @@
 <section class="term-page">
   <div class="container term-page-inner">
     <header class="term-head">
-      <span class="eyebrow"><a href="/glossary/#trust">Trust</a></span>
+      <span class="eyebrow"><a href="/glossary/trust/">Trust</a></span>
       <h1 class="term-h1">HTTPS</h1>
       <p class="term-aka">SSL certificate, the padlock</p>
       <div class="term-meta">
@@ -133,9 +173,14 @@
       <h2 class="term-why-h">Why it matters</h2>
       <p class="term-why">Modern browsers flag non-HTTPS sites with a big "Not Secure" warning. Google has used HTTPS as a ranking signal since 2014. Most good hosts give it to you for free via Let's Encrypt or Cloudflare; if yours charges extra, move hosts.</p>
       
+      <!-- glossary-explainer-cue:start -->
+      <!-- glossary-explainer-cue:end -->
     </div>
   </div>
 </section>
+
+<!-- glossary-explainer:start -->
+<!-- glossary-explainer:end -->
 
 <section class="term-siblings">
   <div class="container">
@@ -146,9 +191,9 @@
       <li><a href="/glossary/honest-pricing/"><strong>Honest menu prices</strong></a></li>
       <li><a href="/glossary/last-updated-signal/"><strong>Last-updated signal</strong><span> — seasonal menu badge, "this week", dated posts</span></a></li>
       <li><a href="/glossary/working-contact-form/"><strong>Working contact form</strong></a></li>
-      <li><a href="/glossary/wcag-contrast/"><strong>WCAG AA contrast</strong><span> — accessible color contrast</span></a></li>
       <li><a href="/glossary/real-photos/"><strong>Real photos</strong><span> — not stock photography</span></a></li>
       <li><a href="/glossary/photo-brief/"><strong>Photo brief</strong><span> — the one-page sheet you walk into a photoshoot with</span></a></li>
+      <li><a href="/glossary/aspect-ratio/"><strong>Aspect ratio</strong><span> — the proportion between width and height, locked by the destination</span></a></li>
     </ul>
   </div>
 </section>
@@ -167,6 +212,8 @@
   </div>
 </section>
 
+<!-- glossary-knit -->
+<!-- /glossary-knit -->
 </main>
 
 <footer>
@@ -209,7 +256,7 @@
           <li><a href="/tools/">Free tools</a></li>
           <li><a href="/glossary/">Glossary</a></li>
           <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/resources/">Checklists &amp; guides</a></li>
+          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
         </ul>
       </nav>
 

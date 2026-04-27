@@ -276,15 +276,27 @@
       <a href="/for/restaurants/">Restaurants</a>
       <div class="nav-library-wrap">
         <a href="/learn/" class="nav-library-trigger" aria-haspopup="true">Library<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <div class="nav-library-menu" role="menu" aria-label="Library sections">
-          <a href="/learn/" role="menuitem"><strong>Library home</strong><span>The hub of everything below</span></a>
-          <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
-          <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
-          <a href="/blog/" role="menuitem"><strong>Articles</strong><span>The how-to playbooks</span></a>
-          <a href="/tools/" role="menuitem"><strong>Free tools</strong><span>Run a check on your own site</span></a>
-          <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span>97 terms in plain English</span></a>
-          <a href="/learn/research/" role="menuitem"><strong>Research</strong><span>The evidence behind the playbooks</span></a>
-          <a href="/resources/" role="menuitem"><strong>Checklists &amp; guides</strong><span>Workbooks you can save</span></a>
+        <div class="nav-library-menu nav-library-menu--mega" role="menu" aria-label="Library sections">
+          <a class="nav-library-menu__home" href="/learn/" role="menuitem">
+            <strong>Library home</strong>
+            <span>The hub of everything below &rarr;</span>
+          </a>
+          <div class="nav-library-menu__col">
+            <h4>Learn</h4>
+            <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
+            <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
+            <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span><!-- count:glossary.terms -->116<!-- /count --> terms in plain English</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Read</h4>
+            <a href="/blog/" role="menuitem"><strong>Articles</strong><span>The how-to playbooks</span></a>
+            <a href="/learn/research/" role="menuitem"><strong>Research</strong><span>The evidence behind the playbooks</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Do</h4>
+            <a href="/tools/" role="menuitem"><strong>Free tools</strong><span>Run a check on your own site</span></a>
+            <a href="/learn/checklists/" role="menuitem"><strong>Checklists &amp; guides</strong><span>Workbooks you can save</span></a>
+          </div>
         </div>
       </div>
       <a href="/work/">Work</a>
@@ -315,13 +327,16 @@
     <details class="mobile-library">
       <summary>Library</summary>
       <a href="/learn/">Library home</a>
+      <p class="mobile-library__group">Learn</p>
       <a href="/learn/start-here/">Start here</a>
       <a href="/learn/topics/">Topics</a>
-      <a href="/blog/">Articles</a>
-      <a href="/tools/">Free tools</a>
       <a href="/glossary/">Glossary</a>
+      <p class="mobile-library__group">Read</p>
+      <a href="/blog/">Articles</a>
       <a href="/learn/research/">Research</a>
-      <a href="/resources/">Checklists &amp; guides</a>
+      <p class="mobile-library__group">Do</p>
+      <a href="/tools/">Free tools</a>
+      <a href="/learn/checklists/">Checklists &amp; guides</a>
     </details>
     <a href="/work/">Work</a>
     <a href="/about/">About</a>
@@ -420,7 +435,7 @@
         <a href="/tools/margin-math/" style="font-weight:700;font-size:14px;color:var(--teal);text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap;">Open the simulator &rarr;</a>
       </aside>
 
-      <p>You don't want to raise prices. Your costs have already gone up, your suppliers' costs have already gone up, and somewhere in the back of your head you know the math stopped working about four months ago. You've been holding the line on menu prices because you remember what happened the last time the restaurant across the street tried a <span data-say="liv">live</span> increase in one shot, and you'd rather eat the <!-- LIBRARY:autolink:start --><a href="/glossary/margin/">margin</a><!-- LIBRARY:autolink:end --> than lose a regular.</p>
+      <p>You don't want to raise prices. Your costs have already gone up, your suppliers' costs have already gone up, and somewhere in the back of your head you know the math stopped working about four months ago. You've been holding the line on menu prices because you remember what happened the last time the restaurant across the street tried a <span data-say="liv">live</span> increase in one shot, and you'd rather eat the <!-- LIBRARY:autolink:start --><a href="/glossary/margin/" data-glossary-head="Margin" data-glossary-aka="sales minus costs; several kinds" data-glossary-blurb="Sales minus costs.">margin</a><!-- LIBRARY:autolink:end --> than lose a regular.</p>
 
       <p>I understand the fear. I also think the fear is usually solving for the wrong risk. The question isn't <em>should I raise prices</em> — at some point, if you keep eating every cost increase, you close. The question is <strong>which items, by how much, and in what order</strong>, so that the numbers on the menu can go up without your reservation count going down.</p>
 
@@ -428,7 +443,7 @@
 
       <h2>The anxious math nobody wants to run</h2>
 
-      <p>Before anything else, do this one calculation. Pull the last ninety days of sales. Take your <!-- LIBRARY:autolink:start --><a href="/glossary/food-cost/">food cost</a><!-- LIBRARY:autolink:end --> percentage — what you're paying suppliers divided by what you charge guests. If it used to be 30% and it's now 34%, that four-point drift <em>is your profit margin</em> walking out the back door. For an independent restaurant doing $1.2M a year, that four points is around $48,000 — more than a reliable sous chef's salary, evaporating quietly.</p>
+      <p>Before anything else, do this one calculation. Pull the last ninety days of sales. Take your <!-- LIBRARY:autolink:start --><a href="/glossary/food-cost/" data-glossary-head="Food cost" data-glossary-aka="cost of goods sold, as a % of sales" data-glossary-blurb="The cost of ingredients, alcohol, and consumables (paper goods, to-go packaging) expressed as a percentage of sales.">food cost</a><!-- LIBRARY:autolink:end --> percentage — what you're paying suppliers divided by what you charge guests. If it used to be 30% and it's now 34%, that four-point drift <em>is your profit margin</em> walking out the back door. For an independent restaurant doing $1.2M a year, that four points is around $48,000 — more than a reliable sous chef's salary, evaporating quietly.</p>
 
       <p>Now do the uncomfortable one. If you raise your menu by an average of <strong>6%</strong> across the board, and you lose <strong>3% of your covers</strong> as a result, your revenue barely moves — but your margin recovers almost entirely, because the covers you lose at the margin were the lowest-spending ones anyway. That's the whole game. The trick is getting the 6% without the 3% becoming 15%.</p>
 
@@ -657,7 +672,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a 97-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->116<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -681,7 +696,7 @@
           <li><a href="/tools/">Free tools</a></li>
           <li><a href="/glossary/">Glossary</a></li>
           <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/resources/">Checklists &amp; guides</a></li>
+          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
         </ul>
       </nav>
 

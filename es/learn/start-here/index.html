@@ -111,15 +111,27 @@
       <a href="/es/for/restaurants/">Restaurantes</a>
       <div class="nav-library-wrap">
         <a href="/es/learn/" class="nav-library-trigger" aria-haspopup="true">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <div class="nav-library-menu" role="menu" aria-label="Secciones de la biblioteca">
-          <a href="/es/learn/" role="menuitem"><strong>Inicio de la biblioteca</strong><span>El centro de todo lo de abajo</span></a>
-          <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
-          <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
-          <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
-          <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
-          <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span>97 términos en lenguaje claro</span></a>
-          <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
-          <a href="/es/resources/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+        <div class="nav-library-menu nav-library-menu--mega" role="menu" aria-label="Secciones de la biblioteca">
+          <a class="nav-library-menu__home" href="/es/learn/" role="menuitem">
+            <strong>Inicio de la biblioteca</strong>
+            <span>El centro de todo lo de abajo &rarr;</span>
+          </a>
+          <div class="nav-library-menu__col">
+            <h4>Aprende</h4>
+            <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
+            <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
+            <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span><!-- count:glossary.terms -->116<!-- /count --> términos en lenguaje claro</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Lee</h4>
+            <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
+            <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Haz</h4>
+            <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
+            <a href="/es/learn/checklists/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+          </div>
         </div>
       </div>
       <a href="/es/work/">Proyectos</a>
@@ -150,13 +162,16 @@
     <details class="mobile-library">
       <summary>Biblioteca</summary>
       <a href="/es/learn/">Inicio de la biblioteca</a>
+      <p class="mobile-library__group">Aprende</p>
       <a href="/es/learn/start-here/">Empieza aquí</a>
       <a href="/es/learn/topics/">Temas</a>
-      <a href="/es/blog/">Artículos</a>
-      <a href="/es/tools/">Herramientas gratis</a>
       <a href="/es/glossary/">Glosario</a>
+      <p class="mobile-library__group">Lee</p>
+      <a href="/es/blog/">Artículos</a>
       <a href="/es/learn/research/">Investigación</a>
-      <a href="/es/resources/">Listas y recursos</a>
+      <p class="mobile-library__group">Haz</p>
+      <a href="/es/tools/">Herramientas gratis</a>
+      <a href="/es/learn/checklists/">Listas y recursos</a>
     </details>
     <a href="/es/work/">Proyectos</a>
     <a href="/es/about/">Sobre Don</a>
@@ -235,7 +250,20 @@
           <h3>Aprende el vocabulario.</h3>
           <p>Tu diagnóstico acaba de usar palabras como <em>schema</em>, <em>Core Web Vitals</em> y <em>mobile-first indexing</em>. El glosario traduce cada una en lenguaje claro, con una línea de "por qué importa" que conecta cada término con una decisión real de restaurante. Échale un ojo una vez; vuelve cuando un término aparezca por ahí.</p>
           <p class="start-step-why"><strong>Por qué va tercero:</strong> no necesitas memorizar el vocabulario, pero sí reconocerlo la próxima vez que alguien intente venderte algo. El glosario te hace inmune a las tonterías.</p>
-          <a class="btn btn-primary" href="/es/glossary/">Abrir el glosario
+          <p class="start-step-why" style="margin-top:18px"><strong>Si no lees nada más, lee estos diez:</strong></p>
+          <ul class="term-siblings-list">
+            <li><a href="/es/glossary/cuisine-pitch/"><strong>Frase de una línea</strong><span> — la subcabecera bajo tu nombre</span></a></li>
+            <li><a href="/es/glossary/hours-visibility/"><strong>Visibilidad de horario</strong><span> — el horario de hoy, sin scroll</span></a></li>
+            <li><a href="/es/glossary/click-to-call/"><strong>Toque para llamar</strong><span> — un tap, una llamada</span></a></li>
+            <li><a href="/es/glossary/html-menu/"><strong>Menú HTML</strong><span> — no es PDF, no es imagen</span></a></li>
+            <li><a href="/es/glossary/cta/"><strong>Llamada a la acción</strong><span> — el botón de "haz esto ahora"</span></a></li>
+            <li><a href="/es/glossary/reservation-link/"><strong>Enlace de reservas</strong><span> — reserva en un tap, dentro del sistema de tu equipo</span></a></li>
+            <li><a href="/es/glossary/gbp/"><strong>Google Business Profile</strong><span> — el panel que mueve la mayoría del descubrimiento</span></a></li>
+            <li><a href="/es/glossary/nap-consistency/"><strong>Consistencia NAP</strong><span> — nombre, dirección, teléfono — iguales en todas partes</span></a></li>
+            <li><a href="/es/glossary/core-web-vitals/"><strong>Core Web Vitals</strong><span> — los tres puntajes de velocidad de Google</span></a></li>
+            <li><a href="/es/glossary/social-proof/"><strong>Prueba social</strong><span> — reseñas, prensa, estrellas en la página principal</span></a></li>
+          </ul>
+          <a class="btn btn-primary" href="/es/glossary/" style="margin-top:24px">Ver los <!-- count:glossary.terms -->116<!-- /count --> términos
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
           </a>
         </div>
@@ -273,7 +301,7 @@
         <p>Si encontraste una fuga que puedes arreglar tú, regresa a la biblioteca por los artículos más profundos, más herramientas y el checklist.</p>
         <span class="learn-tool-cta">Volver a la biblioteca →</span>
       </a>
-      <a class="learn-tool" href="/es/resources/restaurant-website-checklist/">
+      <a class="learn-tool" href="/es/learn/checklists/restaurant-website-checklist/">
         <span class="learn-tool-kicker">Llévatelo</span>
         <h3>Descarga el checklist.</h3>
         <p>Veintitrés revisiones que puedes correr en tu propio sitio en menos de una hora. Pásaselo a tu equipo o a la agencia con la que ya trabajas.</p>
@@ -323,7 +351,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de 97 t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->116<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -347,7 +375,7 @@
           <li><a href="/es/tools/">Herramientas gratis</a></li>
           <li><a href="/es/glossary/">Glosario</a></li>
           <li><a href="/es/learn/research/">Investigación</a></li>
-          <li><a href="/es/resources/">Listas y recursos</a></li>
+          <li><a href="/es/learn/checklists/">Listas y recursos</a></li>
         </ul>
       </nav>
 

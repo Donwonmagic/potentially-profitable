@@ -38,6 +38,46 @@
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
 <link rel="stylesheet" href="/assets/site.css?v=20260425-mobile-library-fix">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "DefinedTerm",
+      "@id": "https://muntin.digital/glossary/url-fragment/#term",
+      "name": "URL fragment",
+      "description": "The portion of a URL that comes after the # symbol (sometimes called the \"hash\"). Per HTTP specification, browsers never transmit fragments to servers — they're read and used only on the client side.",
+      "url": "https://muntin.digital/glossary/url-fragment/",
+      "inLanguage": "en-US",
+      "inDefinedTermSet": "https://muntin.digital/glossary/#glossary",
+      "alternateName": "the part of a URL after the #"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://muntin.digital/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Glossary",
+          "item": "https://muntin.digital/glossary/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "URL fragment",
+          "item": "https://muntin.digital/glossary/url-fragment/"
+        }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -119,7 +159,7 @@
 <section class="term-page">
   <div class="container term-page-inner">
     <header class="term-head">
-      <span class="eyebrow"><a href="/glossary/#data-literacy">Data &amp;amp; privacy</a></span>
+      <span class="eyebrow"><a href="/glossary/data-literacy/">Data &amp; privacy</a></span>
       <h1 class="term-h1">URL fragment</h1>
       <p class="term-aka">the part of a URL after the #</p>
       <div class="term-meta">
@@ -133,14 +173,19 @@
       <h2 class="term-why-h">Why it matters</h2>
       <p class="term-why">A clean pattern for client-side tools that need a "save this scenario" URL: encode the inputs into the fragment, hand the reader a bookmarkable link, and keep the server entirely out of the loop. The permalink works; the server never sees what's in it. When Margin Math's share URLs ship, this is the design.</p>
       
+      <!-- glossary-explainer-cue:start -->
+      <!-- glossary-explainer-cue:end -->
     </div>
   </div>
 </section>
 
+<!-- glossary-explainer:start -->
+<!-- glossary-explainer:end -->
+
 <section class="term-siblings">
   <div class="container">
     <header class="term-siblings-head">
-      <span class="eyebrow">More in Data &amp;amp; privacy</span>
+      <span class="eyebrow">More in Data &amp; privacy</span>
     </header>
     <ul class="term-siblings-list">
       <li><a href="/glossary/client-side/"><strong>Client-side</strong><span> — computation in your browser, not on a server</span></a></li>
@@ -163,6 +208,8 @@
   </div>
 </section>
 
+<!-- glossary-knit -->
+<!-- /glossary-knit -->
 </main>
 
 <footer>
@@ -205,7 +252,7 @@
           <li><a href="/tools/">Free tools</a></li>
           <li><a href="/glossary/">Glossary</a></li>
           <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/resources/">Checklists &amp; guides</a></li>
+          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
         </ul>
       </nav>
 

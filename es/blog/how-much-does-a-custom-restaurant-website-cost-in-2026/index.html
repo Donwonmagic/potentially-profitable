@@ -497,15 +497,27 @@
       <a href="/es/for/restaurants/">Restaurantes</a>
       <div class="nav-library-wrap">
         <a href="/es/learn/" class="nav-library-trigger" aria-haspopup="true">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <div class="nav-library-menu" role="menu" aria-label="Secciones de la biblioteca">
-          <a href="/es/learn/" role="menuitem"><strong>Inicio de la biblioteca</strong><span>El centro de todo lo de abajo</span></a>
-          <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
-          <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
-          <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
-          <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
-          <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span>97 términos en lenguaje claro</span></a>
-          <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
-          <a href="/es/resources/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+        <div class="nav-library-menu nav-library-menu--mega" role="menu" aria-label="Secciones de la biblioteca">
+          <a class="nav-library-menu__home" href="/es/learn/" role="menuitem">
+            <strong>Inicio de la biblioteca</strong>
+            <span>El centro de todo lo de abajo &rarr;</span>
+          </a>
+          <div class="nav-library-menu__col">
+            <h4>Aprende</h4>
+            <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
+            <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
+            <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span><!-- count:glossary.terms -->116<!-- /count --> términos en lenguaje claro</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Lee</h4>
+            <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
+            <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Haz</h4>
+            <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
+            <a href="/es/learn/checklists/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+          </div>
         </div>
       </div>
       <a href="/es/work/">Proyectos</a>
@@ -536,13 +548,16 @@
     <details class="mobile-library">
       <summary>Biblioteca</summary>
       <a href="/es/learn/">Inicio de la biblioteca</a>
+      <p class="mobile-library__group">Aprende</p>
       <a href="/es/learn/start-here/">Empieza aquí</a>
       <a href="/es/learn/topics/">Temas</a>
-      <a href="/es/blog/">Artículos</a>
-      <a href="/es/tools/">Herramientas gratis</a>
       <a href="/es/glossary/">Glosario</a>
+      <p class="mobile-library__group">Lee</p>
+      <a href="/es/blog/">Artículos</a>
       <a href="/es/learn/research/">Investigación</a>
-      <a href="/es/resources/">Listas y recursos</a>
+      <p class="mobile-library__group">Haz</p>
+      <a href="/es/tools/">Herramientas gratis</a>
+      <a href="/es/learn/checklists/">Listas y recursos</a>
     </details>
     <a href="/es/work/">Proyectos</a>
     <a href="/es/about/">Sobre Don</a>
@@ -747,10 +762,10 @@
         <li><span>Traspaso a pedidos en línea (Toast, Square, ChowNow)</span> <span class="price">+USD 400–1,000</span></li>
         <li><span>Configuración y optimización de Google Business Profile</span> <span class="price">+USD 200–500</span></li>
         <li><span>Dirección fotográfica (tú contratas al fotógrafo, nosotros la dirección de arte)</span> <span class="price">+USD 300–800</span></li>
-        <li><span><!-- LIBRARY:autolink:start --><a href="/es/glossary/brand-identity/">Identidad de marca</a><!-- LIBRARY:autolink:end --> (logo, colores, tipografía, brand board)</span> <span class="price">+USD 1,500–3,000</span></li>
+        <li><span><!-- LIBRARY:autolink:start --><a href="/es/glossary/brand-identity/" data-glossary-head="Identidad de marca" data-glossary-aka="el sistema visible completo alrededor de tu logo" data-glossary-blurb="El sistema visible completo que lleva a un negocio por cada punto de contacto — logo, colores, tipografía, voz y las reglas para usarlos.">Identidad de marca</a><!-- LIBRARY:autolink:end --> (logo, colores, tipografía, brand board)</span> <span class="price">+USD 1,500–3,000</span></li>
         <li><span>Enrutamiento multisucursal y localizador de locales</span> <span class="price">+USD 1,000–2,500</span></li>
         <li><span>Integración directa con POS (API de Toast, Square, Lightspeed)</span> <span class="price">+USD 1,500–3,500</span></li>
-        <li><span>Checkout de pedidos a medida (tu procesador de pago, tu <!-- LIBRARY:autolink:start --><a href="/es/glossary/margin/">margen</a><!-- LIBRARY:autolink:end -->)</span> <span class="price">+USD 2,000–4,500</span></li>
+        <li><span>Checkout de pedidos a medida (tu procesador de pago, tu <!-- LIBRARY:autolink:start --><a href="/es/glossary/margin/" data-glossary-head="Margen" data-glossary-aka="ventas menos costos; varios tipos" data-glossary-blurb="Ventas menos costos.">margen</a><!-- LIBRARY:autolink:end -->)</span> <span class="price">+USD 2,000–4,500</span></li>
       </ul>
 
       <p>Tres ejemplos reales, para que los rangos se sientan menos abstractos:</p>
@@ -807,7 +822,7 @@
       <p>Los sitios de plantilla asumen que tú ya escribiste tu copy. Probablemente no lo hiciste — y aunque lo hubieras hecho, probablemente fue escrito para el menú viejo que ya cambiaste. Los buenos estudios lo escriben por ti o editan el tuyo hasta convertirlo en algo que de verdad venda el salón.</p>
 
       <h3>Fundamentos de SEO</h3>
-      <p>Etiquetas de título, meta descripciones, <!-- LIBRARY:autolink:start --><a href="/es/glossary/schema/">marcado schema</a><!-- LIBRARY:autolink:end -->, un sitemap, <!-- LIBRARY:autolink:start --><a href="/es/glossary/https/">HTTPS</a><!-- LIBRARY:autolink:end -->, <!-- LIBRARY:autolink:start --><a href="/es/glossary/alt-text/">texto alternativo</a><!-- LIBRARY:autolink:end -->, un <!-- LIBRARY:autolink:start --><a href="/es/glossary/working-contact-form/">formulario de contacto que funciona</a><!-- LIBRARY:autolink:end -->, un Google Business Profile que cuadra con el sitio. Nada de esto aparece en un portafolio. Todo esto toma tiempo. Todo esto es la razón por la que apareces en Google en absoluto. (Si quieres ver cuántos de estos le faltan a tu sitio actual, el <a href="/es/tools/audits/restaurant/">Diagnóstico gratis de sitios de restaurante</a> los recorre en unos treinta segundos.)</p>
+      <p>Etiquetas de título, meta descripciones, <!-- LIBRARY:autolink:start --><a href="/es/glossary/schema/" data-glossary-head="Marcado schema" data-glossary-aka="JSON-LD, datos estructurados, schema.org" data-glossary-blurb="Etiquetas invisibles en tu página que le dicen a Google, en un formato que lee directo, exactamente qué tipo de negocio eres — &quot;soy un Restaurante, aquí está mi tipo de cocina, mi…">marcado schema</a><!-- LIBRARY:autolink:end -->, un sitemap, <!-- LIBRARY:autolink:start --><a href="/es/glossary/https/" data-glossary-head="HTTPS" data-glossary-aka="certificado SSL, el candado" data-glossary-blurb="El pequeño ícono de candado en la barra de direcciones del navegador.">HTTPS</a><!-- LIBRARY:autolink:end -->, <!-- LIBRARY:autolink:start --><a href="/es/glossary/alt-text/" data-glossary-head="Texto alternativo" data-glossary-aka="alt text, descripción de imagen" data-glossary-blurb="Una descripción escrita breve de cada imagen, puesta mediante el atributo alt=&quot;…&quot; en el HTML.">texto alternativo</a><!-- LIBRARY:autolink:end -->, un <!-- LIBRARY:autolink:start --><a href="/es/glossary/working-contact-form/" data-glossary-head="Formulario de contacto que funciona" data-glossary-blurb="Un formulario donde un visitante puede escribir una pregunta o una consulta y de verdad recibir respuesta. «Que funciona» es la palabra importante — el formulario envía, el correo…">formulario de contacto que funciona</a><!-- LIBRARY:autolink:end -->, un Google Business Profile que cuadra con el sitio. Nada de esto aparece en un portafolio. Todo esto toma tiempo. Todo esto es la razón por la que apareces en Google en absoluto. (Si quieres ver cuántos de estos le faltan a tu sitio actual, el <a href="/es/tools/audits/restaurant/">Diagnóstico gratis de sitios de restaurante</a> los recorre en unos treinta segundos.)</p>
 
       <h3>Pruebas en móvil</h3>
       <p>El Android de tu primo, el iPhone 12 de tu amiga, la tableta barata del host. Pruebas reales en dispositivos reales — no el "modo responsivo" del navegador de escritorio, que miente sobre la mitad de los bugs.</p>
@@ -979,7 +994,7 @@
         <h4 class="i18n">Muntin Digital para restaurantes</h4>
         <p>Tiers de servicio, precios, preguntas frecuentes, y cómo corre de verdad el proceso.</p>
       </a>
-      <a href="/es/resources/restaurant-website-checklist/">
+      <a href="/es/learn/checklists/restaurant-website-checklist/">
         <h4 class="i18n">El checklist para sitios de restaurante</h4>
         <p>Treinta cosas que tu sitio de restaurante debería hacer en 2026. Califica el tuyo en diez minutos.</p>
       </a>
@@ -1009,7 +1024,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de 97 t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->116<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -1033,7 +1048,7 @@
           <li><a href="/es/tools/">Herramientas gratis</a></li>
           <li><a href="/es/glossary/">Glosario</a></li>
           <li><a href="/es/learn/research/">Investigación</a></li>
-          <li><a href="/es/resources/">Listas y recursos</a></li>
+          <li><a href="/es/learn/checklists/">Listas y recursos</a></li>
         </ul>
       </nav>
 

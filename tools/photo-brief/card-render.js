@@ -167,9 +167,10 @@
   }
 
   // ------------------------------------------------------------
-  // Region A — surface coverage strip. A horizontal row of 80×80
-  // tiles, one per ticked destination surface. Each tile shows the
-  // 3:2 source frame with the destination's crop outlined.
+  // Region A — surface coverage strip. A horizontal row of tiles,
+  // one per ticked destination surface. Each tile shows the source
+  // frame (sized to opts.sourceRatio — 3:2 / 4:3 / 16:9) with the
+  // destination's crop outlined in teal.
   // ------------------------------------------------------------
   function drawCoverageStrip(ctx, opts, region) {
     var x0 = region.x, y0 = region.y, w = region.w;
@@ -191,8 +192,9 @@
       return;
     }
 
-    // Lay out tiles. Source frame is 3:2 — render as 96×64 source
-    // with destination crop overlaid in teal.
+    // Lay out tiles. Source-frame box is sized to opts.sourceRatio
+    // (default 3:2). Destination crop is overlaid in teal.
+    var srcRatio = (opts.sourceRatio && isFinite(opts.sourceRatio) && opts.sourceRatio > 0) ? opts.sourceRatio : 1.5;
     var tileW    = 156;
     var tileH    = 200;
     var tileGap  = 10;
@@ -214,17 +216,20 @@
       if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(tx + 0.5, ty + 0.5, tileW - 1, tileH - 1, 6); ctx.stroke(); }
       else ctx.strokeRect(tx + 0.5, ty + 0.5, tileW - 1, tileH - 1);
 
-      // Source frame outline (cream 3:2, 120×80, centred horizontally)
-      var srcW = 120, srcH = 80;
+      // Source frame outline — sized to opts.sourceRatio so 3:2 / 4:3
+      // / 16:9 cameras each see an accurate visualisation.
+      var maxW = 120, maxH = 90;
+      var srcW = Math.min(maxW, maxH * srcRatio);
+      var srcH = srcW / srcRatio;
+      if (srcH > maxH) { srcH = maxH; srcW = srcH * srcRatio; }
       var srcX = tx + (tileW - srcW) / 2;
-      var srcY = ty + 40;
+      var srcY = ty + 40 + (maxH - srcH) / 2;
       ctx.fillStyle = CREAM2;
       ctx.fillRect(srcX, srcY, srcW, srcH);
       ctx.strokeStyle = STONE; ctx.lineWidth = 1;
       ctx.strokeRect(srcX + 0.5, srcY + 0.5, srcW - 1, srcH - 1);
 
       // Destination crop overlay — compute crop rectangle from §2.1.
-      var srcRatio = srcW / srcH; // 1.5 = 3:2
       var dstRatio = (c.surface && c.surface.ratio) || 1;
       var cropW, cropH, cropX, cropY;
       if (Math.abs(srcRatio - dstRatio) < 1e-3) {
@@ -656,7 +661,7 @@
     cardEyebrow:       'For every shoot, every shooter',
     brand:             'Muntin Digital',
     date:              new Date().toISOString().slice(0, 10),
-    coverageTitle:     'Surface coverage · 3:2 source crops',
+    coverageTitle:     'Surface coverage · source-frame crops',
     shotListTitle:     'Shot list · invoice → shutter → surface',
     colNum:            '#',
     colDish:           'Dish',
@@ -685,7 +690,7 @@
     cardEyebrow:       'Para cada sesión, cada fotógrafo',
     brand:             'Muntin Digital',
     date:              new Date().toISOString().slice(0, 10),
-    coverageTitle:     'Cobertura de superficies · cortes desde 3:2',
+    coverageTitle:     'Cobertura de superficies · cortes de la toma fuente',
     shotListTitle:     'Lista de tomas · de la factura al obturador a la superficie',
     colNum:            '#',
     colDish:           'Plato',

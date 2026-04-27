@@ -2607,8 +2607,8 @@
   })();
 
   /* ============ PHASE M6: Checklist Learn-more popover ============
-   * Wires the .learn-more-btn buttons on /resources/restaurant-
-   * website-checklist/ to the single shared <dialog id="checklistPopover">
+   * Wires the .learn-more-btn buttons on /learn/checklists/
+   * restaurant-website-checklist/ to the single shared <dialog id="checklistPopover">
    * added in Sprint M5. Click a Learn-more button, the handler reads
    * the button's data-popover-* attributes, populates the dialog's
    * title / body / glossary link / optional audit link, and calls
@@ -2757,11 +2757,11 @@
     // than in Pagefind meta tags so it's trivial to extend.
     function classify(url) {
       const u = url.replace(/^https?:\/\/[^/]+/, '').replace(/^\/es\//, '/');
-      if (u.startsWith('/blog/'))      return i18n('search.kind_article',   'Article');
-      if (u.startsWith('/tools/'))     return i18n('search.kind_tool',      'Tool');
-      if (u.startsWith('/glossary/'))  return i18n('search.kind_term',      'Glossary');
-      if (u.startsWith('/resources/')) return i18n('search.kind_resource',  'Guide');
-      if (u.startsWith('/learn/'))     return i18n('search.kind_library',   'Library');
+      if (u.startsWith('/blog/'))            return i18n('search.kind_article',   'Article');
+      if (u.startsWith('/tools/'))           return i18n('search.kind_tool',      'Tool');
+      if (u.startsWith('/glossary/'))        return i18n('search.kind_term',      'Glossary');
+      if (u.startsWith('/learn/checklists/')) return i18n('search.kind_resource',  'Guide');
+      if (u.startsWith('/learn/'))           return i18n('search.kind_library',   'Library');
       if (u.startsWith('/work/'))      return i18n('search.kind_case',      'Case study');
       if (u.startsWith('/services/'))  return i18n('search.kind_service',   'Services');
       if (u.startsWith('/for/'))       return i18n('search.kind_industry',  'For you');
@@ -3178,5 +3178,338 @@
     document.addEventListener('DOMContentLoaded', stamp);
   } else {
     stamp();
+  }
+})();
+
+/* ============ Glossary inline popover ============
+ *
+ * Progressive enhancement for in-article glossary autolinks. The build
+ * step (autoLinkGlossary in scripts/build-library.mjs) stamps every
+ * inline /glossary/<term>/ link with three data attributes:
+ *   data-glossary-head   — the term's display headword
+ *   data-glossary-aka    — optional AKA / sub-head
+ *   data-glossary-blurb  — first sentence of the definition
+ *
+ * On hover or keyboard focus this script renders a small popover near
+ * the link with that content + a "read more" link. The link still
+ * works without JS — popover is decoration only. One reusable popover
+ * element is appended to <body>; positioned via getBoundingClientRect.
+ * Dismissal: mouseleave (with grace timer), blur, click outside,
+ * Escape, scroll. Respects prefers-reduced-motion (no fade transition).
+ */
+(function(){
+  if (typeof document === 'undefined') return;
+  var triggers = document.querySelectorAll('a[data-glossary-blurb]');
+  if (!triggers.length) return;
+
+  var popover     = null;
+  var hideTimer   = 0;
+  var activeLink  = null;
+  var prefersReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function ensurePopover(){
+    if (popover) return popover;
+    popover = document.createElement('div');
+    popover.className = 'glossary-popover';
+    popover.setAttribute('role', 'tooltip');
+    popover.setAttribute('aria-hidden', 'true');
+    popover.innerHTML =
+      '<p class="glossary-popover__head"></p>' +
+      '<p class="glossary-popover__aka"></p>' +
+      '<p class="glossary-popover__blurb"></p>' +
+      '<a class="glossary-popover__more" href="#"></a>';
+    document.body.appendChild(popover);
+
+    // Keep open while the cursor is on the popover itself, so the
+    // reader can move from the link to the popover to click "read more".
+    popover.addEventListener('mouseenter', function(){ window.clearTimeout(hideTimer); });
+    popover.addEventListener('mouseleave', scheduleHide);
+    return popover;
+  }
+
+  function show(link){
+    var head  = link.getAttribute('data-glossary-head')  || '';
+    var aka   = link.getAttribute('data-glossary-aka')   || '';
+    var blurb = link.getAttribute('data-glossary-blurb') || '';
+    var href  = link.getAttribute('href') || '';
+    if (!head || !blurb) return;
+
+    var p = ensurePopover();
+    p.querySelector('.glossary-popover__head').textContent = head;
+    var akaEl = p.querySelector('.glossary-popover__aka');
+    akaEl.textContent = aka;
+    akaEl.style.display = aka ? '' : 'none';
+    p.querySelector('.glossary-popover__blurb').textContent = blurb;
+    var more = p.querySelector('.glossary-popover__more');
+    more.setAttribute('href', href);
+    // Localised "read the full definition" label. Read once from the
+    // page's <html lang> attribute — no message bundle needed for one
+    // string used by one component.
+    var lang = (document.documentElement.getAttribute('lang') || 'en').slice(0, 2);
+    more.textContent = (lang === 'es' ? 'Leer la definición completa' : 'Read the full definition') + ' →';
+
+    var rect = link.getBoundingClientRect();
+    var popH = p.offsetHeight || 140;
+    var popW = Math.min(360, window.innerWidth - 24);
+    p.style.maxWidth = popW + 'px';
+    var preferAbove = rect.top > popH + 16;
+    var top  = preferAbove ? (rect.top - popH - 8) : (rect.bottom + 8);
+    var left = Math.max(12, Math.min(window.innerWidth - popW - 12, rect.left + (rect.width / 2) - (popW / 2)));
+    p.style.top  = (top + window.scrollY) + 'px';
+    p.style.left = (left + window.scrollX) + 'px';
+    p.setAttribute('data-position', preferAbove ? 'above' : 'below');
+    p.setAttribute('aria-hidden', 'false');
+    p.classList.add('is-visible');
+    activeLink = link;
+
+    if (window.plausible) {
+      window.plausible('Glossary Popover', { props: { term: href } });
+    }
+  }
+
+  function hide(){
+    if (!popover) return;
+    popover.classList.remove('is-visible');
+    popover.setAttribute('aria-hidden', 'true');
+    activeLink = null;
+  }
+
+  function scheduleHide(){
+    window.clearTimeout(hideTimer);
+    hideTimer = window.setTimeout(hide, prefersReduce ? 0 : 200);
+  }
+
+  for (var i = 0; i < triggers.length; i++) {
+    var link = triggers[i];
+    link.addEventListener('mouseenter', (function(L){ return function(){
+      window.clearTimeout(hideTimer);
+      show(L);
+    }; })(link));
+    link.addEventListener('mouseleave', scheduleHide);
+    link.addEventListener('focus', (function(L){ return function(){
+      window.clearTimeout(hideTimer);
+      show(L);
+    }; })(link));
+    link.addEventListener('blur', scheduleHide);
+  }
+
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && activeLink) {
+      hide();
+      activeLink && activeLink.blur();
+    }
+  });
+  // Hide on scroll (popover would otherwise drift away from its anchor).
+  window.addEventListener('scroll', function(){ if (activeLink) hide(); }, { passive: true });
+})();
+
+/* ============ Glossary explainer player ============
+ *
+ * Drives the 90-second narrated diagrams on the five flagship
+ * glossary term pages. Pure progressive enhancement; the captions
+ * (which are the narration script) are visible without JS, and the
+ * SVG renders the first scene as a static frame. JS adds the timed
+ * scene transitions, the play/pause/scrub chrome, and the active-
+ * caption highlight.
+ *
+ * Reads scene timing from data-duration-ms on each [data-scene-id]
+ * <g> in the SVG and on each <li data-scene-id> in the captions
+ * column. The runtime never invents timing; it just plays back what
+ * the data says.
+ *
+ * Future audio support: when an .audio_url is added to the data
+ * file, the wire script will append <audio src="..."> alongside the
+ * stage; this runtime detects it and switches to audio.currentTime
+ * as the source of truth instead of a setInterval. The visible
+ * chrome doesn't change; only the timing source.
+ */
+(function(){
+  if (typeof document === 'undefined') return;
+  var explainers = document.querySelectorAll('.term-explainer');
+  if (!explainers.length) return;
+
+  for (var i = 0; i < explainers.length; i++) {
+    initExplainer(explainers[i]);
+  }
+
+  function initExplainer(root){
+    var stage     = root.querySelector('.term-explainer__stage svg');
+    var sceneEls  = stage ? Array.prototype.slice.call(stage.querySelectorAll('g.explainer-scene')) : [];
+    var capEls    = Array.prototype.slice.call(root.querySelectorAll('.term-explainer__captions li[data-scene-id]'));
+    var capList   = root.querySelector('.term-explainer__captions ol');
+    var playBtn   = root.querySelector('.term-explainer__playpause');
+    var scrub     = root.querySelector('.term-explainer__scrub');
+    var scrubFill = root.querySelector('.term-explainer__scrub-fill');
+    var scrubDots = Array.prototype.slice.call(root.querySelectorAll('.term-explainer__scrub-dot'));
+    var timeEl    = root.querySelector('.term-explainer__time');
+    var restart   = root.querySelector('.term-explainer__restart');
+    var audio     = root.querySelector('audio');
+    if (!sceneEls.length || !capEls.length || !playBtn) return;
+
+    // Build the scene list from the caption order (which is the
+    // canonical script). Each scene gets {id, ms, start} where start
+    // is cumulative.
+    var scenes = [];
+    var total = 0;
+    for (var i = 0; i < capEls.length; i++) {
+      var li = capEls[i];
+      var id = li.getAttribute('data-scene-id');
+      var ms = parseInt(li.getAttribute('data-duration-ms') || '0', 10);
+      if (!id || ms <= 0) continue;
+      scenes.push({ id: id, ms: ms, start: total });
+      total += ms;
+    }
+    if (!scenes.length) return;
+
+    var elapsed = 0;
+    var playing = false;
+    var raf = 0;
+    var lastTick = 0;
+    var activeIdx = -1;
+    var prefersReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function setActive(idx){
+      if (idx === activeIdx) return;
+      activeIdx = idx;
+      var scene = scenes[idx];
+      // Toggle SVG scene layers.
+      for (var i = 0; i < sceneEls.length; i++) {
+        sceneEls[i].classList.toggle('is-active', sceneEls[i].getAttribute('data-scene-id') === scene.id);
+      }
+      // Toggle caption emphasis + scroll the active caption into view.
+      capEls.forEach(function(el, i){
+        el.classList.toggle('is-active', i === idx);
+        el.classList.toggle('is-past',   i <  idx);
+      });
+      scrubDots.forEach(function(d, i){ d.classList.toggle('is-passed', i <= idx); });
+      if (capList) {
+        var active = capEls[idx];
+        var listRect = capList.parentElement.getBoundingClientRect();
+        var elRect   = active.getBoundingClientRect();
+        var offset = (elRect.top - listRect.top) - (listRect.height / 2) + (elRect.height / 2);
+        // Translate the <ol> rather than using scrollTop so the
+        // animation feels intentional (smooth crossfade-style).
+        var current = parseFloat((capList.style.transform || '').replace(/[^-\d.]/g, '')) || 0;
+        capList.style.transform = 'translateY(' + (current - offset) + 'px)';
+      }
+    }
+
+    function tick(now){
+      if (!playing) return;
+      var dt = lastTick ? (now - lastTick) : 0;
+      lastTick = now;
+      if (audio && !audio.paused) {
+        elapsed = (audio.currentTime || 0) * 1000;
+      } else {
+        elapsed += dt;
+      }
+      if (elapsed >= total) {
+        elapsed = total;
+        pause();
+        // Auto-rewind to start so the next play press starts fresh.
+        window.setTimeout(function(){ if (!playing) seek(0); }, 1200);
+        renderProgress();
+        return;
+      }
+      renderProgress();
+      raf = window.requestAnimationFrame(tick);
+    }
+
+    function renderProgress(){
+      // Find the active scene by elapsed.
+      var idx = 0;
+      for (var i = 0; i < scenes.length; i++) {
+        if (elapsed >= scenes[i].start) idx = i;
+        else break;
+      }
+      setActive(idx);
+      if (scrubFill) scrubFill.style.width = (elapsed / total * 100).toFixed(2) + '%';
+      if (timeEl)    timeEl.textContent = formatTime(elapsed) + ' / ' + formatTime(total);
+    }
+
+    function play(){
+      playing = true;
+      root.classList.add('is-playing');
+      playBtn.setAttribute('aria-label', 'Pause');
+      if (audio) { try { audio.play(); } catch(_){} }
+      lastTick = 0;
+      raf = window.requestAnimationFrame(tick);
+    }
+    function pause(){
+      playing = false;
+      root.classList.remove('is-playing');
+      playBtn.setAttribute('aria-label', 'Play');
+      window.cancelAnimationFrame(raf);
+      if (audio) { try { audio.pause(); } catch(_){} }
+    }
+    function seek(ms){
+      elapsed = Math.max(0, Math.min(total, ms));
+      if (audio) { try { audio.currentTime = elapsed / 1000; } catch(_){} }
+      renderProgress();
+    }
+
+    playBtn.addEventListener('click', function(){
+      if (playing) pause(); else play();
+    });
+    if (restart) restart.addEventListener('click', function(){
+      seek(0);
+      if (!playing) play();
+    });
+    scrubDots.forEach(function(dot, i){
+      dot.addEventListener('click', function(){
+        seek(scenes[i].start);
+      });
+      dot.addEventListener('keydown', function(e){
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); seek(scenes[i].start); }
+      });
+    });
+    if (scrub) scrub.addEventListener('click', function(e){
+      // Ignore clicks on the dot children (handled separately).
+      if (e.target.classList && e.target.classList.contains('term-explainer__scrub-dot')) return;
+      var rect = scrub.getBoundingClientRect();
+      var pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      seek(Math.floor(pct * total));
+    });
+
+    // Keyboard: arrow keys when the player has focus step scenes.
+    root.addEventListener('keydown', function(e){
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.key === 'ArrowRight') { e.preventDefault(); seek(scenes[Math.min(scenes.length - 1, activeIdx + 1)].start); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); seek(scenes[Math.max(0, activeIdx - 1)].start); }
+      else if (e.key === ' ') { e.preventDefault(); if (playing) pause(); else play(); }
+    });
+
+    // Render the static first frame on init so the explainer reads as
+    // intentional (not blank) before the user presses play.
+    renderProgress();
+
+    // Auto-play once the explainer scrolls into view, but only if the
+    // user has expressed motion preference. Respect prefers-reduced-
+    // motion: stay paused until the user explicitly hits play.
+    if (!prefersReduce && 'IntersectionObserver' in window) {
+      var triggered = false;
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if (!en.isIntersecting || triggered || playing) return;
+          // Half visible — start.
+          if (en.intersectionRatio >= 0.55) {
+            triggered = true;
+            play();
+            io.disconnect();
+            if (window.plausible) {
+              window.plausible('Glossary Explainer Auto-play', { props: { term: root.getAttribute('data-term-slug') || '' } });
+            }
+          }
+        });
+      }, { threshold: [0.55] });
+      io.observe(root);
+    }
+
+    function formatTime(ms){
+      var s = Math.floor(ms / 1000);
+      var m = Math.floor(s / 60);
+      var ss = s - m * 60;
+      return m + ':' + (ss < 10 ? '0' : '') + ss;
+    }
   }
 })();

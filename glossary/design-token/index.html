@@ -38,6 +38,46 @@
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
 <link rel="stylesheet" href="/assets/site.css?v=20260425-mobile-library-fix">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "DefinedTerm",
+      "@id": "https://muntin.digital/glossary/design-token/#term",
+      "name": "Design token",
+      "description": "A named reference for a brand decision — a color, a font size, a corner radius, a spacing step — exported as a portable file (CSS variables, JSON, or a Figma library) so the same value lives in one place and every surface that uses it stays in sync.",
+      "url": "https://muntin.digital/glossary/design-token/",
+      "inLanguage": "en-US",
+      "inDefinedTermSet": "https://muntin.digital/glossary/#glossary",
+      "alternateName": "a name for a decision, not a value"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://muntin.digital/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Glossary",
+          "item": "https://muntin.digital/glossary/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Design token",
+          "item": "https://muntin.digital/glossary/design-token/"
+        }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -119,7 +159,7 @@
 <section class="term-page">
   <div class="container term-page-inner">
     <header class="term-head">
-      <span class="eyebrow"><a href="/glossary/#brand-design">Brand &amp;amp; design</a></span>
+      <span class="eyebrow"><a href="/glossary/brand-design/">Brand &amp; design</a></span>
       <h1 class="term-h1">Design token</h1>
       <p class="term-aka">a name for a decision, not a value</p>
       <div class="term-meta">
@@ -133,21 +173,26 @@
       <h2 class="term-why-h">Why it matters</h2>
       <p class="term-why">Hex codes scattered across a stylesheet are how a brand drifts. Tokens are how it doesn't. When the palette is named once (<code>--brand-primary</code>) and referenced everywhere, swapping rust for olive is a one-line change instead of a search-and-replace across forty files. <a href="/tools/brand-suite/">Brand Suite</a> exports a starter set of tokens from any logo.</p>
       
+      <!-- glossary-explainer-cue:start -->
+      <!-- glossary-explainer-cue:end -->
     </div>
   </div>
 </section>
 
+<!-- glossary-explainer:start -->
+<!-- glossary-explainer:end -->
+
 <section class="term-siblings">
   <div class="container">
     <header class="term-siblings-head">
-      <span class="eyebrow">More in Brand &amp;amp; design</span>
+      <span class="eyebrow">More in Brand &amp; design</span>
     </header>
     <ul class="term-siblings-list">
       <li><a href="/glossary/brand-identity/"><strong>Brand identity</strong><span> — the full visible system around your logo</span></a></li>
       <li><a href="/glossary/logo-lockup/"><strong>Logo lockup</strong><span> — mark + wordmark + optional tagline, as one unit</span></a></li>
       <li><a href="/glossary/clearspace/"><strong>Clearspace</strong><span> — the empty zone around a logo</span></a></li>
       <li><a href="/glossary/color-palette/"><strong>Color palette</strong><span> — the curated set of colors that belong to your brand</span></a></li>
-      <li><a href="/glossary/wcag-contrast/"><strong>WCAG contrast</strong><span> — how readable text is against its background</span></a></li>
+      <li><a href="/glossary/wcag-contrast/"><strong>WCAG AA contrast</strong><span> — accessible color contrast</span></a></li>
       <li><a href="/glossary/favicon/"><strong>Favicon</strong><span> — the small icon in the browser tab</span></a></li>
     </ul>
   </div>
@@ -161,12 +206,14 @@
       <p class="final-sub">Plain-English definitions for every term in your audit, organized by category.</p>
     </div>
     <div class="hero-ctas reveal hero-ctas-center">
-      <a class="btn btn-primary" href="/glossary/">Open the full glossary</a>
-      <a class="btn btn-ghost" href="/learn/">Back to the Library</a>
+      <a class="btn btn-primary" href="/tools/brand-suite/">Open Brand Suite</a>
+      <a class="btn btn-ghost" href="/glossary/">Open the full glossary</a>
     </div>
   </div>
 </section>
 
+<!-- glossary-knit -->
+<!-- /glossary-knit -->
 </main>
 
 <footer>
@@ -209,7 +256,7 @@
           <li><a href="/tools/">Free tools</a></li>
           <li><a href="/glossary/">Glossary</a></li>
           <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/resources/">Checklists &amp; guides</a></li>
+          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
         </ul>
       </nav>
 

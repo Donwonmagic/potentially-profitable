@@ -32,15 +32,21 @@
   // each photo is composed for. Pixel resolutions are the
   // platform-published current values; aspect ratios are the math.
   // ============================================================
+  // Specs reviewed: 2026-04. Sources: Meta Help Center (Instagram
+  // feed 4:5 best-practice), Google Business Profile help (cover
+  // image minimum 1200×675), Yelp partner guidance (featured image
+  // 1920×1280). Owner can still tick the 1:1 grid-square sub-option
+  // for grid-harmony with older 1:1 posts.
   var SURFACES = {
-    'web-hero':     { label: 'Web hero',          ratio: 16/9,    pixels: { w: 1920, h: 1080 }, negDefault: 'right'  },
-    'og-card':      { label: 'OG card',           ratio: 1.91,    pixels: { w: 1200, h: 630  }, negDefault: 'bottom' },
-    'yelp':         { label: 'Yelp featured',     ratio: 3/2,     pixels: { w: 1500, h: 1000 }, negDefault: 'none'   },
-    'gbp-cover':    { label: 'Google Business',   ratio: 16/9,    pixels: { w: 1080, h: 608  }, negDefault: 'none'   },
-    'ig-grid':      { label: 'Instagram grid',    ratio: 1,       pixels: { w: 1080, h: 1080 }, negDefault: 'none'   },
-    'ig-story':     { label: 'Instagram story',   ratio: 9/16,    pixels: { w: 1080, h: 1920 }, negDefault: 'top'    },
-    'menu-inline':  { label: 'Menu page inline',  ratio: 4/3,     pixels: { w: 1200, h: 900  }, negDefault: 'none'   },
-    'apple-maps':   { label: 'Apple Maps',        ratio: 4/3,     pixels: { w: 1024, h: 768  }, negDefault: 'none'   }
+    'web-hero':       { label: 'Web hero',         ratio: 16/9,    pixels: { w: 1920, h: 1080 }, negDefault: 'right'  },
+    'og-card':        { label: 'OG card',          ratio: 1.91,    pixels: { w: 1200, h: 630  }, negDefault: 'bottom' },
+    'yelp':           { label: 'Yelp featured',    ratio: 3/2,     pixels: { w: 1920, h: 1280 }, negDefault: 'none'   },
+    'gbp-cover':      { label: 'Google Business',  ratio: 16/9,    pixels: { w: 1200, h: 675  }, negDefault: 'none'   },
+    'ig-grid':        { label: 'Instagram feed',   ratio: 4/5,     pixels: { w: 1080, h: 1350 }, negDefault: 'none'   },
+    'ig-grid-square': { label: 'Instagram square', ratio: 1,       pixels: { w: 1080, h: 1080 }, negDefault: 'none'   },
+    'ig-story':       { label: 'Instagram story',  ratio: 9/16,    pixels: { w: 1080, h: 1920 }, negDefault: 'top'    },
+    'menu-inline':    { label: 'Menu page inline', ratio: 4/3,     pixels: { w: 1200, h: 900  }, negDefault: 'none'   },
+    'apple-maps':     { label: 'Apple Maps',       ratio: 4/3,     pixels: { w: 1024, h: 768  }, negDefault: 'none'   }
   };
 
   // Constrained vocabularies (the §3 Risk-1 mitigation: math, not text).
@@ -66,14 +72,15 @@
       case 'og-card':     base = { angle: '45deg',     lighting: 'warm-window' };  break;
       case 'yelp':        base = { angle: '45deg',     lighting: 'warm-window' };  break;
       case 'gbp-cover':   base = { angle: '45deg',     lighting: 'warm-window' };  break;
-      case 'ig-grid':     base = { angle: '45deg',     lighting: 'bright-table' }; break;
+      case 'ig-grid':
+      case 'ig-grid-square': base = { angle: '45deg', lighting: 'bright-table' }; break;
       case 'ig-story':    base = { angle: 'overhead',  lighting: 'bright-table' }; break;
       case 'menu-inline': base = { angle: 'overhead',  lighting: 'warm-window' };  break;
       case 'apple-maps':  base = { angle: 'room',      lighting: 'ambient' };      break;
       default:            base = { angle: '45deg',     lighting: 'warm-window' };
     }
     // Category nudges
-    if (category === 'dessert' && (surfaceKey === 'web-hero' || surfaceKey === 'ig-grid' || surfaceKey === 'menu-inline')) {
+    if (category === 'dessert' && (surfaceKey === 'web-hero' || surfaceKey === 'ig-grid' || surfaceKey === 'ig-grid-square' || surfaceKey === 'menu-inline')) {
       base.angle = 'overhead';
     }
     if (category === 'drink') {
@@ -286,6 +293,184 @@
   }
 
   // ============================================================
+  // Brief fragment encode/decode + quarterly ICS — the Reshoot
+  // Check-in (Muntin signature). Encodes the entire brief into the
+  // URL fragment of an iCalendar reminder so the operator's calendar
+  // pings them quarterly with a one-click link back to the same
+  // brief, ready to flag which dishes have changed and need a
+  // reshoot. Per the HTTP spec, the part of a URL after "#" is never
+  // sent to a server; the reminder lives only on the operator's
+  // device.
+  // ============================================================
+  var PB_FRAGMENT_VERSION = '1';
+
+  function encodeBriefField(s) {
+    return encodeURIComponent(String(s == null ? '' : s))
+      .replace(/\|/g, '%7C')
+      .replace(/;/g,  '%3B')
+      .replace(/&/g,  '%26')
+      .replace(/=/g,  '%3D');
+  }
+
+  function encodeBriefFragment(brief, options) {
+    if (!brief) return '';
+    options = options || {};
+    var dishes = (brief.dishes || []).filter(function(d){ return d && d.name; });
+    var parts = [];
+    parts.push('v=' + PB_FRAGMENT_VERSION);
+    if (brief.restaurant)   parts.push('n=' + encodeBriefField(brief.restaurant));
+    if (brief.photographer) parts.push('p=' + encodeBriefField(brief.photographer));
+    if (brief.dayRate)      parts.push('r=' + Number(brief.dayRate));
+    if (brief.sourceRatioLabel) parts.push('sr=' + encodeBriefField(brief.sourceRatioLabel));
+    if (brief.surfaces && brief.surfaces.length) {
+      parts.push('s=' + brief.surfaces.filter(function(k){ return SURFACES[k]; }).join(','));
+    }
+    if (dishes.length) {
+      parts.push('d=' + dishes.map(function(d){
+        return [
+          encodeBriefField(d.name),
+          d.category || 'main',
+          d.priority || 'standard'
+        ].join('|');
+      }).join(';'));
+    }
+    if (options.date) parts.push('bd=' + encodeBriefField(options.date));
+    if (options.mode) parts.push('mode=' + encodeBriefField(options.mode));
+    return parts.join('&');
+  }
+
+  function decodeBriefFragment(fragment) {
+    var s = String(fragment || '').replace(/^#/, '');
+    if (!s) return null;
+    // Honor a #brief=… key prefix as well as a bare fragment.
+    var idx = s.indexOf('brief=');
+    if (idx === 0) s = s.slice(6);
+    var raw = {};
+    s.split('&').forEach(function(pair){
+      var eq = pair.indexOf('=');
+      if (eq === -1) return;
+      raw[pair.slice(0, eq)] = pair.slice(eq + 1);
+    });
+    if (raw.v !== PB_FRAGMENT_VERSION) return null;
+    function dec(v) { try { return decodeURIComponent(v); } catch (e) { return v; } }
+    var dishes = [];
+    if (raw.d) {
+      raw.d.split(';').forEach(function(seg){
+        if (!seg) return;
+        var f = seg.split('|').map(dec);
+        if (!f[0]) return;
+        dishes.push({
+          name:     f[0],
+          category: normalizeCategory(f[1] || 'main'),
+          priority: normalizePriority(f[2] || 'standard')
+        });
+      });
+    }
+    var surfaces = raw.s
+      ? raw.s.split(',').filter(function(k){ return SURFACES[k]; })
+      : [];
+    return {
+      restaurant:       raw.n != null ? dec(raw.n) : '',
+      photographer:     raw.p != null ? dec(raw.p) : '',
+      dayRate:          Number(raw.r) || 1800,
+      sourceRatioLabel: raw.sr != null ? dec(raw.sr) : '3:2',
+      surfaces:         surfaces,
+      dishes:           dishes,
+      baselineDate:     raw.bd != null ? dec(raw.bd) : '',
+      mode:             raw.mode != null ? dec(raw.mode) : ''
+    };
+  }
+
+  // generateQuarterlyIcs — RFC 5545 calendar reminder. 8 events at
+  // 3-month intervals, mirroring Plate Cost's Cost Drift Check-in
+  // cadence. DTSTART is 90 days from today; URL field carries the
+  // rehydration link.
+  function generateQuarterlyIcs(scenarioUrl, options) {
+    options = options || {};
+    var locale = options.locale === 'es' ? 'es' : 'en';
+    var url = String(scenarioUrl || '');
+    var restaurant = String(options.restaurant || '').trim();
+    var summary = locale === 'es'
+      ? 'Brief de fotos — revisión trimestral' + (restaurant ? ' (' + restaurant + ')' : '')
+      : 'Photo brief — quarterly reshoot check' + (restaurant ? ' (' + restaurant + ')' : '');
+    var description = locale === 'es'
+      ? ('Camina el comedor, abre tu sitio y tu Google Business Profile. ¿Qué fotos se ven viejas? ' +
+         '¿Qué platos cambiaron? Marca solo esos en el brief — el Reshoot Ticket ' +
+         'lista únicamente las tomas pendientes. Reabre el escenario: ' + url)
+      : ('Walk the dining room, open your site and your Google Business Profile. ' +
+         'Which photos look stale? Which dishes changed? Tick only those in the brief — ' +
+         'the Reshoot Ticket lists only the frames actually due. Reopen the scenario: ' + url);
+    var alarmMsg = locale === 'es'
+      ? 'Recordatorio: revisar el brief de fotos mañana'
+      : 'Reminder: walk the photo brief tomorrow';
+
+    var p2 = function(n){ return (n < 10 ? '0' : '') + n; };
+    var icsDate = function(d){
+      return d.getUTCFullYear() + p2(d.getUTCMonth() + 1) + p2(d.getUTCDate()) +
+             'T' + p2(d.getUTCHours()) + p2(d.getUTCMinutes()) + p2(d.getUTCSeconds()) + 'Z';
+    };
+    var slug = (restaurant || 'photo-brief').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    var start = new Date();
+    start.setUTCDate(start.getUTCDate() + 90);
+    start.setUTCHours(15, 0, 0, 0);
+    var end = new Date(start.getTime() + 30 * 60 * 1000);
+    var uid = 'pb-quarterly-' + slug + '-' + start.getTime() + '@muntin.digital';
+
+    var lines = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Muntin Digital//Photo Brief Builder//' + (locale === 'es' ? 'ES' : 'EN'),
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      'UID:' + uid,
+      'DTSTAMP:' + icsDate(new Date()),
+      'DTSTART:' + icsDate(start),
+      'DTEND:' + icsDate(end),
+      'RRULE:FREQ=MONTHLY;INTERVAL=3;COUNT=8',
+      'SUMMARY:' + summary,
+      'DESCRIPTION:' + description.replace(/\n/g, '\\n'),
+      'URL:' + url,
+      'BEGIN:VALARM',
+      'TRIGGER:-P1D',
+      'ACTION:DISPLAY',
+      'DESCRIPTION:' + alarmMsg,
+      'END:VALARM',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ];
+    return lines.join('\r\n') + '\r\n';
+  }
+
+  // verdictForAge — returns the photo-lifecycle drift verdict given a
+  // baseline shoot date. Tones mirror plate-cost's: fresh / due /
+  // stale / cold. Honest copy, not alarm copy.
+  function verdictForAge(baselineDateStr, todayStr) {
+    var b = baselineDateStr ? new Date(baselineDateStr) : null;
+    var t = todayStr ? new Date(todayStr) : new Date();
+    if (!b || isNaN(b.getTime())) return { tone: 'unknown', months: 0, copyEN: '', copyES: '' };
+    var months = Math.max(0, Math.round((t.getTime() - b.getTime()) / (1000 * 60 * 60 * 24 * 30.44)));
+    if (months <= 6) {
+      return { tone: 'fresh', months: months,
+        copyEN: 'Photos are still fresh — last shoot ' + months + ' month' + (months === 1 ? '' : 's') + ' ago.',
+        copyES: 'Las fotos están frescas — última sesión hace ' + months + ' mes' + (months === 1 ? '' : 'es') + '.' };
+    }
+    if (months <= 12) {
+      return { tone: 'due', months: months,
+        copyEN: 'Time to walk the dining room. Last shoot was ' + months + ' months ago.',
+        copyES: 'Hora de caminar el comedor. Última sesión hace ' + months + ' meses.' };
+    }
+    if (months <= 18) {
+      return { tone: 'stale', months: months,
+        copyEN: 'Shoot is overdue at ' + months + ' months. Most operators are 18 months past their last refresh.',
+        copyES: 'La sesión está atrasada (' + months + ' meses). Muchos operadores llevan 18 meses sin refresco.' };
+    }
+    return { tone: 'cold', months: months,
+      copyEN: 'The site is showing its age — ' + months + ' months since the last shoot. Book the refresh.',
+      copyES: 'El sitio se ve viejo — ' + months + ' meses desde la última sesión. Agenda el refresco.' };
+  }
+
+  // ============================================================
   // Paste-from-spreadsheet parser. Owners with a recipe spreadsheet
   // or a Menu Engineering CSV paste it directly. Auto-detects
   // delimiter (CSV / TSV / pipe), auto-maps headers via an alias
@@ -407,20 +592,38 @@
                warnings: warnings.concat(['Could not find a Dish/Name column. Add a header row, or paste columns in this order: Dish, Category, Priority.']) };
     }
 
-    var rows = dataRows.map(function(cells){
+    // Track silent normalizations so the UI can surface them. Owners
+    // who paste "pizza" or "starter" deserve to know the tool re-
+    // bucketed those into 'main' / 'appetizer' before the brief renders.
+    var normalizations = [];
+    var rows = dataRows.map(function(cells, i){
       function pick(field){
         var idx = mapping[field];
         if (idx == null || idx >= cells.length) return '';
         return String(cells[idx] == null ? '' : cells[idx]).trim();
       }
-      return {
-        name:     pick('name'),
-        category: normalizeCategory(pick('category')),
-        priority: normalizePriority(pick('priority'))
-      };
+      var rawCat  = pick('category');
+      var rawPri  = pick('priority');
+      var category = normalizeCategory(rawCat);
+      var priority = normalizePriority(rawPri);
+      if (rawCat && category !== rawCat && CATEGORIES.indexOf(rawCat) === -1) {
+        normalizations.push({ rowIndex: i + 1, field: 'category', original: rawCat, normalized: category });
+      }
+      if (rawPri && priority !== rawPri.toLowerCase() && ['hero','standard','secondary'].indexOf(rawPri.toLowerCase()) === -1) {
+        normalizations.push({ rowIndex: i + 1, field: 'priority', original: rawPri, normalized: priority });
+      }
+      return { name: pick('name'), category: category, priority: priority };
     }).filter(function(r){ return r.name; });
 
-    return { rows: rows, mapping: mapping, headerRowDetected: headerRowDetected, warnings: warnings };
+    if (normalizations.length) {
+      var sample = normalizations.slice(0, 3).map(function(n){
+        return '"' + n.original + '" → ' + n.normalized;
+      }).join(', ');
+      var more = normalizations.length > 3 ? ' (+' + (normalizations.length - 3) + ' more)' : '';
+      warnings.push('Reinterpreted ' + normalizations.length + ' value(s): ' + sample + more + '. Edit the dropdowns if any of those are wrong.');
+    }
+
+    return { rows: rows, mapping: mapping, headerRowDetected: headerRowDetected, warnings: warnings, normalizations: normalizations };
   }
 
   // ============================================================
@@ -513,6 +716,10 @@
     decodePaletteFragment:  decodePaletteFragment,
     encodeMarginsFragment:  encodeMarginsFragment,
     decodeMarginsFragment:  decodeMarginsFragment,
+    encodeBriefFragment:    encodeBriefFragment,
+    decodeBriefFragment:    decodeBriefFragment,
+    generateQuarterlyIcs:   generateQuarterlyIcs,
+    verdictForAge:          verdictForAge,
     parseTabularText:       parseTabularText,
     normalizeCategory:      normalizeCategory,
     normalizePriority:      normalizePriority,

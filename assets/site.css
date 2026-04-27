@@ -169,15 +169,23 @@
 
      420px  — ultra-narrow phones. Used only when a layout still feels
               cramped at 640 → 1-col and needs one more squeeze.
-     820px  — nav-specific. The desktop .nav-links hide and the Calendly
-              button moves into the hamburger menu because the header
-              runs out of horizontal room. Not a general-purpose layout
-              breakpoint — do not add unrelated rules here.
+     820px  — nav-specific. The desktop .lang-switch hides because the
+              header is starting to feel tight even before the nav-links
+              and CTA collapse. Not a general-purpose layout breakpoint
+              — do not add unrelated rules here.
+     1100px — nav-specific. The desktop .nav-links and the Calendly CTA
+              collapse into the hamburger menu. The natural content
+              width of logo + 5 nav links + lang-switch + CTA pill is
+              ~1050px, and after container side padding (clamp 20–64px)
+              the nav overflows on iPad 10.2 / iPad Air / iPad Pro 11"
+              in landscape (1080–1194px viewports). iPad Pro 12.9"
+              (1366px → 1200px container) is the smallest viewport
+              that fits the desktop nav cleanly.
 
-   If a new rule needs a breakpoint other than 420, 640, 820, or 960,
-   re-tune the layout instead — the vast majority of "this element
-   squeezes at 760" problems are solved by auto-fit + minmax() or by
-   clamp() on padding/font-size, not by a new breakpoint. */
+   If a new rule needs a breakpoint other than 420, 640, 820, 960, or
+   1100, re-tune the layout instead — the vast majority of "this
+   element squeezes at 760" problems are solved by auto-fit + minmax()
+   or by clamp() on padding/font-size, not by a new breakpoint. */
 
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
@@ -263,7 +271,7 @@ p{margin:0}
 .nav-links a::after{content:'';position:absolute;left:0;right:0;bottom:-6px;height:1px;background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform var(--t-med) var(--ease-out)}
 .nav-links a:hover{color:var(--teal)}
 .nav-links a:hover::after{transform:scaleX(1)}
-@media (max-width:960px){.nav-links{display:none}
+@media (max-width:1100px){.nav-links{display:none}
 }
 
 /* Library dropdown — desktop only. The trigger is a real <a href="/learn/">,
@@ -803,7 +811,7 @@ br.br-lg{display:none}
    container width — the compression shoves the text against one side
    of the pill, which reads as "the text isn't centered". */
 .nav-inner .btn-primary{flex-shrink:0}
-@media (max-width:960px){.nav-inner .btn-primary{display:none}
+@media (max-width:1100px){.nav-inner .btn-primary{display:none}
 .nav-toggle{display:flex}
 .mobile-menu:not([hidden]){display:flex}
 .nav.menu-open{background:var(--cream);border-bottom-color:var(--line)}
@@ -1739,6 +1747,581 @@ br.br-lg{display:none}
 }
 .tool-card.soon .cta{ color:var(--stone-2); }
 .tool-card .cta svg{ width:16px; height:16px; }
+
+/* ---------- Tools-landing cluster layout (Phase 2 cohesion pass) -----
+   The /tools/ page is now grouped by the same 6-topic taxonomy used at
+   /learn/topics/. Generated from data/tools.json by
+   scripts/build-tools-index.mjs. Reuses .tool-card / .tool-grid above
+   for each card and adds containers + the goals launcher, chip nav,
+   walkaway line, and roadmap section. No new color tokens. */
+
+/* "Start with a goal" launcher — small framed list at the top of the
+   tools page. Three intent rows; each row links to 2–3 tool slugs. */
+.tool-goals{
+  margin-top:32px;
+  padding:24px 28px;
+  background:var(--cream-2);
+  border:1px solid var(--line);
+  border-radius:var(--r-md);
+}
+.tool-goals .eyebrow{ display:block; margin-bottom:6px; }
+.tool-goals h2{
+  font-family:var(--font-display);
+  font-size:clamp(20px,2vw,24px);
+  font-weight:500;
+  letter-spacing:-0.01em;
+  color:var(--ink);
+  margin:0 0 14px;
+}
+.tool-goals ul{ list-style:none; padding:0; margin:0; display:grid; gap:10px; }
+.tool-goals li{ font-size:15px; line-height:1.6; color:var(--stone); }
+.tool-goals strong{ color:var(--ink); font-weight:600; }
+.tool-goals a{ color:var(--teal); text-decoration:none; border-bottom:1px solid transparent; }
+.tool-goals a:hover{ border-bottom-color:var(--teal); }
+
+/* Chip nav — anchor row that jumps to each cluster section. Not sticky
+   (kept simple); cluster sections carry scroll-margin-top so the
+   anchor lands below the page nav. */
+.tool-chipnav{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:32px 0 8px;
+  padding:0;
+}
+.tool-chipnav a{
+  display:inline-flex;
+  align-items:center;
+  padding:8px 16px;
+  border-radius:999px;
+  background:var(--white);
+  border:1px solid var(--line);
+  font-family:var(--font-body);
+  font-size:13px;
+  font-weight:600;
+  color:var(--ink);
+  text-decoration:none;
+  transition:border-color var(--t-fast), background var(--t-fast), color var(--t-fast);
+}
+.tool-chipnav a:hover,
+.tool-chipnav a:focus-visible{
+  border-color:var(--teal);
+  color:var(--teal);
+  outline:none;
+}
+.tool-chipnav__roadmap{
+  background:var(--cream-2);
+  color:var(--stone);
+}
+
+/* Cluster section — header (title + blurb + "see full topic" link)
+   above its own .tool-grid. The grid inherits the 2-col layout already
+   defined above. Anchored by id matching topic slug. */
+.tool-cluster{
+  margin-top:64px;
+  scroll-margin-top:96px;
+}
+.tool-cluster:first-of-type{ margin-top:48px; }
+.tool-cluster__head{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:16px 32px;
+  align-items:end;
+  border-bottom:1px solid var(--line);
+  padding-bottom:20px;
+  margin-bottom:8px;
+}
+.tool-cluster__head h2{
+  font-family:var(--font-display);
+  font-size:clamp(28px,3vw,38px);
+  font-weight:500;
+  letter-spacing:-0.01em;
+  color:var(--ink);
+  margin:0;
+}
+.tool-cluster__head p{
+  grid-column:1 / -1;
+  font-size:15px;
+  line-height:1.6;
+  color:var(--stone);
+  margin:0;
+  max-width:62ch;
+}
+.tool-cluster__topic{
+  justify-self:end;
+  font-family:var(--font-body);
+  font-size:13px;
+  font-weight:600;
+  color:var(--teal);
+  text-decoration:none;
+  white-space:nowrap;
+}
+.tool-cluster__topic:hover{ text-decoration:underline; }
+.tool-cluster .tool-grid{ margin-top:24px; }
+@media (max-width:720px){
+  .tool-cluster__head{ grid-template-columns:1fr; align-items:start; }
+  .tool-cluster__topic{ justify-self:start; }
+}
+
+/* Compact tool-card variant — pads slightly tighter than .tool-card
+   because Phase 2 trimmed every summary to ≤ 220 chars and added a
+   single walkaway line. The visual weight stays consistent across
+   cards in a cluster regardless of summary length. */
+.tool-card--compact{
+  padding:28px 28px;
+}
+.tool-card--compact h3{
+  font-size:clamp(22px,2.2vw,26px);
+}
+.tool-card--compact p{
+  margin:0 0 12px;
+  flex:0 0 auto;
+}
+.tool-card__walkaway{
+  font-size:14px;
+  line-height:1.55;
+  color:var(--ink-soft);
+  margin:0 0 20px !important;
+  padding-top:12px;
+  border-top:1px dashed var(--line);
+  flex:1;
+}
+.tool-card__walkaway-label{
+  font-weight:600;
+  color:var(--ink);
+  letter-spacing:0.01em;
+}
+
+/* Roadmap section — coming-soon tools grouped by their target cluster.
+   Each group renders its own sub-heading + its own grid. The cards
+   inherit .tool-card.soon (above) and add a smaller variant. */
+.tool-roadmap{
+  margin-top:80px;
+  scroll-margin-top:96px;
+  padding:48px 0 8px;
+  border-top:1px solid var(--line);
+}
+.tool-roadmap__head{
+  text-align:center;
+  max-width:640px;
+  margin:0 auto 32px;
+}
+.tool-roadmap__head .eyebrow{ display:inline-block; margin-bottom:8px; }
+.tool-roadmap__head h2{
+  font-family:var(--font-display);
+  font-size:clamp(24px,2.6vw,32px);
+  font-weight:500;
+  letter-spacing:-0.01em;
+  color:var(--ink);
+  margin:0 0 12px;
+}
+.tool-roadmap__head p{
+  font-size:15px;
+  line-height:1.6;
+  color:var(--stone);
+  margin:0;
+}
+.tool-roadmap__group{ margin-top:36px; }
+.tool-roadmap__cluster{
+  font-family:var(--font-body);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--stone);
+  margin:0 0 14px;
+}
+.tool-card--roadmap{
+  padding:24px 26px;
+}
+.tool-card--roadmap h3{
+  font-size:clamp(18px,1.9vw,22px);
+}
+.tool-card--roadmap p{
+  font-size:14px;
+  line-height:1.55;
+  margin:0;
+}
+.tool-roadmap .tool-grid{
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+  margin-top:0;
+}
+@media (max-width:960px){ .tool-roadmap .tool-grid{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:560px){ .tool-roadmap .tool-grid{ grid-template-columns:1fr; } }
+
+/* ---------- Per-tool "Keep going" knit-in (Phase 3 cohesion pass) ----
+   Renders at the bottom of every live tool page (between
+   <!-- tool-knit -->...<!-- /tool-knit --> sentinels) by
+   scripts/inject-tool-knit.mjs. Four columns: topic, related tools,
+   articles, glossary terms. Closes the educational loop — every tool
+   now points back into the library. */
+.tool-knit{
+  margin-top:48px;
+  padding:48px 0 32px;
+  background:var(--cream-2);
+  border-top:1px solid var(--line);
+}
+.tool-knit__h{
+  font-family:var(--font-display);
+  font-size:clamp(22px,2.4vw,28px);
+  font-weight:500;
+  letter-spacing:-0.01em;
+  color:var(--ink);
+  margin:0 0 28px;
+}
+.tool-knit__grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:24px 32px;
+}
+.tool-knit__col h3{
+  font-family:var(--font-body);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--stone);
+  margin:0 0 12px;
+}
+.tool-knit__col ul{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:grid;
+  gap:8px;
+}
+.tool-knit__col a{
+  font-size:15px;
+  line-height:1.45;
+  color:var(--ink);
+  text-decoration:none;
+  border-bottom:1px solid var(--line);
+  padding-bottom:2px;
+  transition:color var(--t-fast), border-color var(--t-fast);
+}
+.tool-knit__col a:hover,
+.tool-knit__col a:focus-visible{
+  color:var(--teal);
+  border-bottom-color:var(--teal);
+  outline:none;
+}
+@media (max-width:900px){
+  .tool-knit__grid{ grid-template-columns:repeat(2,1fr); }
+}
+@media (max-width:520px){
+  .tool-knit__grid{ grid-template-columns:1fr; }
+}
+
+/* ---------- Glossary scannability (Phase 4 cohesion pass) ----------
+   Adds two new chip rows to the existing .gloss-filterbar:
+   1) topic-cluster filter (.gloss-topic-filter) using the same six
+      learn-topic slugs the rest of the site uses, and
+   2) A–Z jump bar (.gloss-az) — buttons that scroll to the first
+      visible term whose id starts with that letter.
+   Hide rules driven by data-active-topic on <main> + data-topics on
+   each .gloss-term (stamped by scripts/wire-glossary-topics.mjs from
+   data/library-tags.json). The page-local .gloss-filter and
+   .gloss-jump styles live in /glossary/index.html's inline <style>;
+   the new bits live here so both EN and ES inherit them automatically.
+*/
+
+/* Topic filter chips share the visual treatment of the existing
+   industry filter chips. Same active-state vocabulary. */
+.gloss-topic-filter{
+  font:inherit;
+  font-size:14px;
+  font-weight:500;
+  padding:8px 16px;
+  border:1px solid var(--line-dark);
+  border-radius:999px;
+  background:transparent;
+  color:var(--ink-soft);
+  cursor:pointer;
+  transition:background var(--t-fast) var(--ease), color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+  white-space:nowrap;
+}
+.gloss-topic-filter:hover{ border-color:var(--teal); color:var(--teal); }
+.gloss-topic-filter:focus-visible{ outline:2px solid var(--teal); outline-offset:2px; }
+.gloss-topic-filter[aria-pressed="true"]{
+  background:var(--teal);
+  border-color:var(--teal);
+  color:var(--cream);
+}
+
+/* Hide rules for the topic filter. Each .gloss-term may carry
+   data-topics="topic1 topic2 ..."; when <main> has data-active-topic
+   set, terms whose list does not include that topic disappear.
+   Six rules (one per topic) — verbose but trivial. */
+main[data-active-topic="speed-mobile"]      .gloss-term:not([data-topics~="speed-mobile"])      { display:none; }
+main[data-active-topic="conversions"]       .gloss-term:not([data-topics~="conversions"])       { display:none; }
+main[data-active-topic="local-seo"]         .gloss-term:not([data-topics~="local-seo"])         { display:none; }
+main[data-active-topic="operations-margin"] .gloss-term:not([data-topics~="operations-margin"]) { display:none; }
+main[data-active-topic="trust-reviews"]     .gloss-term:not([data-topics~="trust-reviews"])     { display:none; }
+main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand-design"])      { display:none; }
+
+/* A–Z jump bar — horizontal row of letter buttons. Clicks call
+   scrollIntoView() on the first visible term whose id starts with
+   the letter. JS toggles a real disabled attribute on letters with
+   no matching visible term so the bar stays honest under filters. */
+.gloss-az{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:4px;
+}
+.gloss-az-letter{
+  font:inherit;
+  font-size:13px;
+  font-weight:600;
+  width:28px;
+  height:28px;
+  padding:0;
+  border:1px solid transparent;
+  border-radius:6px;
+  background:transparent;
+  color:var(--ink-soft);
+  cursor:pointer;
+  text-align:center;
+  transition:background var(--t-fast) var(--ease), color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+.gloss-az-letter:hover:not([disabled]){
+  background:var(--teal-tint);
+  color:var(--teal);
+  border-color:var(--teal-tint);
+}
+.gloss-az-letter:focus-visible{
+  outline:2px solid var(--teal);
+  outline-offset:2px;
+}
+.gloss-az-letter[disabled],
+.gloss-az-letter[aria-disabled="true"]{
+  color:var(--stone-2, var(--ink-soft));
+  opacity:0.35;
+  cursor:default;
+}
+
+/* Per-entry knit-in module ("Keep going" footer) on each glossary
+   term page. Same shape as .tool-knit (Phase 3) so the two read as
+   members of one family. Three columns instead of four — glossary
+   entries don't have a "related tools" column unless the term maps
+   to one. */
+.glossary-knit{
+  margin-top:48px;
+  padding:48px 0 32px;
+  background:var(--cream-2);
+  border-top:1px solid var(--line);
+}
+.glossary-knit__h{
+  font-family:var(--font-display);
+  font-size:clamp(20px,2.2vw,26px);
+  font-weight:500;
+  letter-spacing:-0.01em;
+  color:var(--ink);
+  margin:0 0 24px;
+}
+.glossary-knit__grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:24px 32px;
+}
+.glossary-knit__col h3{
+  font-family:var(--font-body);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--stone);
+  margin:0 0 12px;
+}
+.glossary-knit__col ul{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:grid;
+  gap:8px;
+}
+.glossary-knit__col a{
+  font-size:15px;
+  line-height:1.45;
+  color:var(--ink);
+  text-decoration:none;
+  border-bottom:1px solid var(--line);
+  padding-bottom:2px;
+  transition:color var(--t-fast), border-color var(--t-fast);
+}
+.glossary-knit__col a:hover,
+.glossary-knit__col a:focus-visible{
+  color:var(--teal);
+  border-bottom-color:var(--teal);
+  outline:none;
+}
+.glossary-knit__col-empty{
+  font-size:14px;
+  color:var(--stone);
+  font-style:italic;
+}
+@media (max-width:900px){
+  .glossary-knit__grid{ grid-template-columns:repeat(2,1fr); }
+}
+@media (max-width:520px){
+  .glossary-knit__grid{ grid-template-columns:1fr; }
+}
+
+/* ---------- "Recently added" strip on /learn/ (Phase 5) -----------
+   Three-card row of the newest items across tools + articles, sorted
+   by date desc. Generated by scripts/build-library-recent.mjs from
+   data/tools.json (.added) + data/library-tags.json (.blog_posts.date).
+   Sits between the Start-here featured path and the Browse-by-topic
+   grid so returning visitors see momentum without crowding the page. */
+.recently-added__head{
+  text-align:center;
+  max-width:640px;
+  margin:0 auto 28px;
+}
+.recently-added__head .eyebrow{ display:inline-block; margin-bottom:8px; }
+.recently-added__head h2{
+  font-family:var(--font-display);
+  font-size:clamp(22px,2.4vw,28px);
+  font-weight:500;
+  letter-spacing:-0.01em;
+  color:var(--ink);
+  margin:0;
+}
+.recently-added__grid{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+.recently-added__card{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding:24px 24px 22px;
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:var(--r-md);
+  text-decoration:none;
+  color:inherit;
+  transition:transform var(--t-fast) var(--ease-out), border-color var(--t-fast), box-shadow var(--t-fast);
+}
+.recently-added__card:hover{
+  transform:translateY(-2px);
+  border-color:var(--teal);
+  box-shadow:var(--elev-1);
+}
+.recently-added__card:focus-visible{
+  outline:2px solid var(--teal);
+  outline-offset:2px;
+}
+.recently-added__eyebrow{
+  font-family:var(--font-body);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--teal);
+}
+.recently-added__card h3{
+  font-family:var(--font-display);
+  font-size:clamp(18px,2vw,22px);
+  font-weight:500;
+  letter-spacing:-0.01em;
+  color:var(--ink);
+  margin:0;
+  flex:1;
+}
+.recently-added__date{
+  font-family:var(--font-body);
+  font-size:13px;
+  font-variant-numeric:tabular-nums;
+  color:var(--stone);
+}
+@media (max-width:900px){ .recently-added__grid{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:560px){ .recently-added__grid{ grid-template-columns:1fr; } }
+
+/* ---------- Library nav-mega regroup (Phase 5) ---------------------
+   The Library dropdown was an 8-item linear list. Now grouped into
+   three labeled columns (Read / Do / Learn) with a "Library home →"
+   header on top. Mobile <details> uses the same structure but
+   collapsed vertically. Lives in _includes/nav.html so a single
+   sync-includes propagates it everywhere. */
+.nav-library-menu--mega{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(180px, 1fr));
+  gap:16px 28px;
+  min-width:680px;
+  padding:24px 28px 22px;
+}
+.nav-library-menu--mega .nav-library-menu__home{
+  grid-column:1 / -1;
+  margin:-4px 0 4px;
+  padding-bottom:14px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:16px;
+  text-decoration:none;
+  color:inherit;
+}
+.nav-library-menu--mega .nav-library-menu__home strong{
+  font-family:var(--font-display);
+  font-size:18px;
+  font-weight:500;
+  color:var(--ink);
+}
+.nav-library-menu--mega .nav-library-menu__home span{
+  font-family:var(--font-body);
+  font-size:12px;
+  color:var(--stone);
+}
+.nav-library-menu--mega .nav-library-menu__home:hover strong{ color:var(--teal); }
+.nav-library-menu__col h4{
+  font-family:var(--font-body);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--stone);
+  margin:0 0 10px;
+}
+.nav-library-menu__col a{
+  display:block;
+  padding:6px 0;
+  text-decoration:none;
+  color:inherit;
+}
+.nav-library-menu__col a strong{
+  font-family:var(--font-body);
+  font-size:14px;
+  font-weight:600;
+  color:var(--ink);
+}
+.nav-library-menu__col a span{
+  display:block;
+  font-family:var(--font-body);
+  font-size:12px;
+  color:var(--stone);
+  margin-top:1px;
+}
+.nav-library-menu__col a:hover strong{ color:var(--teal); }
+
+/* Mobile dropdown groups — adds subheadings between flat <a> children
+   inside <details class="mobile-library">. */
+.mobile-library__group{
+  font-family:var(--font-body);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--stone);
+  margin:14px 0 4px;
+  padding:0 4px;
+}
 
 /* Tool page hero — centered intro shared by all single-input tools. */
 .cmp-hero,
@@ -3282,4 +3865,473 @@ br.br-lg{display:none}
 .gloss-term-permalink a:hover,
 .gloss-term-permalink a:focus-visible{
   color:var(--teal);border-bottom-color:var(--teal);
+}
+
+/* ===== "Recently added" rail (under glossary hero) =====
+ * Surfaces newest terms to returning readers; populated by
+ * scripts/inject-glossary-recent.mjs from data/glossary-added.json.
+ * Three-up grid on desktop, single column on phones. */
+.gloss-recent{
+  margin:clamp(24px,3vw,40px) auto clamp(28px,4vw,48px);
+  padding:clamp(20px,2.4vw,28px);
+  background:var(--cream-2);
+  border:1px solid var(--line);
+  border-radius:var(--r-md);
+}
+.gloss-recent__head-row{
+  display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;
+  margin-bottom:clamp(16px,2vw,22px);
+}
+.gloss-recent__head-row .eyebrow{color:var(--teal)}
+.gloss-recent__head-row h2{
+  margin:0;
+  font-family:var(--font-display);
+  font-weight:500;
+  font-size:clamp(20px,2vw,24px);
+  letter-spacing:-0.01em;
+  color:var(--ink);
+}
+.gloss-recent__list{
+  list-style:none;padding:0;margin:0;
+  display:grid;gap:12px;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+@media (max-width:900px){.gloss-recent__list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.gloss-recent__list{grid-template-columns:1fr}}
+.gloss-recent__card{
+  display:flex;flex-direction:column;gap:4px;
+  padding:14px 16px;
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:var(--r-sm);
+  text-decoration:none;color:inherit;
+  transition:border-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease);
+}
+.gloss-recent__card:hover,
+.gloss-recent__card:focus-visible{
+  border-color:var(--teal);
+  box-shadow:0 0 0 3px var(--teal-tint);
+  outline:none;
+}
+.gloss-recent__date{
+  font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--stone);
+}
+.gloss-recent__head{
+  font-family:var(--font-display);font-weight:500;font-size:16px;
+  color:var(--ink);line-height:1.25;
+}
+.gloss-recent__note{
+  font-size:13px;line-height:1.45;color:var(--ink-soft);
+}
+
+/* ===== Glossary index "▶ 90s explainer" chip =====
+ * Variant of .gloss-tag (defined inline on glossary/index.html) used
+ * on the five flagship-term cards. Sits inside .gloss-tags next to
+ * the existing industry chip; clickable, jumps to the explainer
+ * anchor on the term page. */
+.gloss-tag--explainer{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--ink) !important;
+  color:var(--cream) !important;
+  text-decoration:none;
+  transition:background var(--t-fast) var(--ease,cubic-bezier(.22,.61,.36,1)),transform var(--t-fast) var(--ease,cubic-bezier(.22,.61,.36,1));
+}
+.gloss-tag--explainer:hover{
+  background:var(--teal-dark) !important;
+  transform:translateY(-1px);
+}
+.gloss-tag--explainer svg{
+  flex:none;
+  margin-right:1px;
+}
+
+/* ===== Glossary explainer (90-second narrated diagram) =====
+ * Inline-SVG explainer for the five flagship glossary terms (menu
+ * engineering, prime cost, plate cost, contribution margin, aspect
+ * ratio). Lives between <!-- glossary-explainer:start --> sentinels
+ * on the per-term page; populated by scripts/inject-glossary-
+ * explainers.mjs from data/glossary-explainers/<slug>.json.
+ *
+ * The whole experience is text + SVG + CSS animation. No video file,
+ * no external player — the captions ARE the narration script (the
+ * single source of truth that audio voiceover, when produced later,
+ * will sync against). Scenes are <g class="explainer-scene">
+ * children of one inline <svg>; the runtime advances scenes on a
+ * timer, toggling .is-active on each <g>. CSS opacity + transform
+ * handle the visual transition. Reduced-motion users get a flat
+ * crossfade with no movement.
+ *
+ * Anchored to the brand tokens already in use — no bespoke palette.
+ * --teal carries primary signal, --rust carries warning / "watch
+ * this" emphasis, --status-good marks healthy ranges. */
+
+.term-explainer{
+  margin:clamp(40px,5vw,64px) auto 0;
+  max-width:780px;
+  background:var(--surface-1, var(--white));
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  box-shadow:var(--elev-1, 0 1px 2px rgba(20,22,26,0.04));
+}
+
+.term-explainer__head{
+  padding:clamp(20px,2.6vw,28px) clamp(20px,2.6vw,32px) clamp(12px,1.6vw,18px);
+  border-bottom:1px solid var(--line);
+}
+.term-explainer__head .eyebrow{color:var(--teal)}
+.term-explainer__head h2{
+  margin:10px 0 4px;
+  font-family:var(--font-display);font-weight:500;font-size:clamp(22px,2.4vw,28px);
+  color:var(--ink);letter-spacing:-0.01em;
+}
+.term-explainer__sub{
+  margin:0;font-size:14px;color:var(--stone);
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.term-explainer__sub strong{color:var(--ink-soft);font-weight:500}
+
+/* Stage = 16:10 SVG canvas. Cream interior so the SVG ink reads
+   without competing with white. */
+.term-explainer__stage{
+  position:relative;
+  background:var(--cream-2);
+  aspect-ratio:8/5;
+  overflow:hidden;
+}
+.term-explainer__stage svg{
+  width:100%;height:100%;
+  display:block;
+  font-family:var(--font-display);
+}
+.term-explainer__stage .scene-label{
+  font-family:var(--font-body);font-weight:500;
+  letter-spacing:0.14em;text-transform:uppercase;font-size:12px;
+}
+.term-explainer__stage text{fill:var(--ink)}
+.term-explainer__stage .text-soft{fill:var(--ink-soft)}
+.term-explainer__stage .text-stone{fill:var(--stone)}
+.term-explainer__stage .text-teal{fill:var(--teal)}
+.term-explainer__stage .text-rust{fill:var(--rust)}
+.term-explainer__stage .text-good{fill:var(--status-good)}
+.term-explainer__stage .axis-line{stroke:var(--line-dark);stroke-width:1.25;fill:none}
+.term-explainer__stage .axis-line-strong{stroke:var(--ink-soft);stroke-width:1.5;fill:none}
+.term-explainer__stage .grid-line{stroke:var(--line);stroke-width:1;stroke-dasharray:3 4;fill:none}
+
+/* Scene layering: every scene is absolutely positioned over the
+   stage. Inactive scenes are display:none + opacity:0; the active
+   scene fades in with a small upward drift. */
+.explainer-scene{
+  opacity:0;
+  transform:translateY(8px);
+  transition:opacity 380ms var(--ease,cubic-bezier(.22,.61,.36,1)),
+             transform 380ms var(--ease,cubic-bezier(.22,.61,.36,1));
+  pointer-events:none;
+}
+.explainer-scene.is-active{
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+}
+/* SVG <g> elements can't honour display:none reliably across browsers
+   — drive visibility with opacity + visibility instead. */
+.term-explainer__stage g.explainer-scene{visibility:hidden}
+.term-explainer__stage g.explainer-scene.is-active{visibility:visible}
+
+/* Element-level animation. Authors mark elements with
+   data-anim="<name>"; CSS plays the named keyframe when the parent
+   scene becomes active. Five primitives are enough for these five
+   explainers. */
+.term-explainer__stage g.explainer-scene.is-active [data-anim="fade"]{
+  animation:exFade 600ms var(--ease,cubic-bezier(.22,.61,.36,1)) both;
+}
+.term-explainer__stage g.explainer-scene.is-active [data-anim="rise"]{
+  animation:exRise 700ms var(--ease,cubic-bezier(.22,.61,.36,1)) both;
+}
+.term-explainer__stage g.explainer-scene.is-active [data-anim="grow-x"]{
+  transform-box:fill-box;transform-origin:left center;
+  animation:exGrowX 900ms var(--ease,cubic-bezier(.22,.61,.36,1)) both;
+}
+.term-explainer__stage g.explainer-scene.is-active [data-anim="grow-y"]{
+  transform-box:fill-box;transform-origin:bottom center;
+  animation:exGrowY 900ms var(--ease,cubic-bezier(.22,.61,.36,1)) both;
+}
+.term-explainer__stage g.explainer-scene.is-active [data-anim="pop"]{
+  transform-box:fill-box;transform-origin:center;
+  animation:exPop 520ms var(--ease-spring,cubic-bezier(.2,.9,.25,1.2)) both;
+}
+/* Stagger via per-element animation-delay (set inline as
+   style="--delay:120ms"). Authors choose the rhythm; the runtime
+   doesn't have to. */
+.term-explainer__stage g.explainer-scene.is-active [data-anim]{
+  animation-delay:var(--delay,0ms);
+}
+@keyframes exFade { from { opacity:0 } to { opacity:1 } }
+@keyframes exRise {
+  from { opacity:0; transform:translateY(10px) }
+  to   { opacity:1; transform:translateY(0) }
+}
+@keyframes exGrowX { from { transform:scaleX(0) } to { transform:scaleX(1) } }
+@keyframes exGrowY { from { transform:scaleY(0) } to { transform:scaleY(1) } }
+@keyframes exPop {
+  0%   { opacity:0; transform:scale(.6) }
+  60%  { opacity:1; transform:scale(1.08) }
+  100% { transform:scale(1) }
+}
+
+/* Captions block — the script of the narration, scene-by-scene.
+   Active scene's caption is always visible; previous and upcoming
+   captions fade out. Auto-scrolls in a small viewport. */
+.term-explainer__captions{
+  padding:clamp(18px,2.4vw,28px) clamp(20px,2.6vw,32px);
+  background:var(--surface-1, var(--white));
+  border-top:1px solid var(--line);
+  /* No max-height: longer scenes (quadrants, recipe) need 4-5 lines
+     of script. The runtime translates the <ol> so the active caption
+     stays at the visual top; an overflow:hidden viewport with a
+     soft-fade mask hides scenes scrolled out of view. */
+  position:relative;
+  overflow:hidden;
+  min-height:120px;
+  max-height:240px;
+  mask-image:linear-gradient(to bottom, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+  -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+}
+.term-explainer__captions ol{
+  list-style:none;padding:0;margin:0;
+  display:flex;flex-direction:column;gap:10px;
+  transition:transform 420ms var(--ease,cubic-bezier(.22,.61,.36,1));
+}
+.term-explainer__captions li{
+  font-size:16px;line-height:1.55;
+  color:var(--stone);
+  transition:color 320ms var(--ease,cubic-bezier(.22,.61,.36,1));
+}
+.term-explainer__captions li.is-active{
+  color:var(--ink);
+  font-family:var(--font-display);font-weight:500;font-size:18px;line-height:1.45;
+}
+.term-explainer__captions li.is-past{
+  color:var(--stone-2,var(--stone));opacity:.55;
+}
+
+/* Player chrome — bottom strip with play/pause, scrub, scene dots,
+   and an optional "listen to the audio" button (hidden when no
+   audio file is wired). */
+.term-explainer__chrome{
+  display:flex;align-items:center;gap:12px;
+  padding:14px clamp(20px,2.6vw,32px);
+  background:var(--surface-inset,var(--cream-2));
+  border-top:1px solid var(--line);
+}
+.term-explainer__playpause{
+  width:42px;height:42px;border-radius:50%;
+  border:1px solid var(--ink);background:var(--ink);color:var(--cream);
+  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
+  transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease);
+}
+.term-explainer__playpause:hover{background:var(--teal-dark);border-color:var(--teal-dark)}
+.term-explainer__playpause:focus-visible{outline:none;box-shadow:var(--ring-focus,0 0 0 3px rgba(31,78,91,.22))}
+.term-explainer__playpause:active{transform:scale(.95)}
+.term-explainer__playpause svg{width:18px;height:18px}
+.term-explainer__playpause .icon-pause{display:none}
+.term-explainer.is-playing .term-explainer__playpause .icon-play{display:none}
+.term-explainer.is-playing .term-explainer__playpause .icon-pause{display:inline}
+
+.term-explainer__scrub{
+  flex:1;min-width:0;
+  height:6px;border-radius:999px;background:var(--line);
+  position:relative;cursor:pointer;
+}
+.term-explainer__scrub-fill{
+  position:absolute;top:0;left:0;bottom:0;
+  background:var(--teal);border-radius:999px;
+  width:0%;
+  transition:width 100ms linear;
+}
+.term-explainer__scrub-dots{
+  position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);
+  display:flex;justify-content:space-between;
+  pointer-events:none;
+}
+.term-explainer__scrub-dot{
+  width:9px;height:9px;border-radius:50%;
+  background:var(--white);border:1.5px solid var(--line-dark);
+  pointer-events:auto;cursor:pointer;
+}
+.term-explainer__scrub-dot.is-passed{background:var(--teal);border-color:var(--teal)}
+.term-explainer__scrub-dot:hover{transform:scale(1.2)}
+.term-explainer__scrub-dot:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+.term-explainer__time{
+  font-family:var(--font-body);font-variant-numeric:tabular-nums;
+  font-size:13px;color:var(--stone);min-width:64px;text-align:right;
+}
+
+.term-explainer__restart{
+  font:inherit;font-size:13px;font-weight:500;
+  background:transparent;border:0;color:var(--stone);cursor:pointer;
+  padding:6px 10px;border-radius:8px;
+}
+.term-explainer__restart:hover{color:var(--teal);background:var(--teal-tint)}
+
+/* Inline mention (under the term-page hero) that points at the
+   explainer for terms that have one. Subtle; doesn't compete with
+   the definition. */
+.term-explainer-cue{
+  margin:18px 0 0;
+  display:inline-flex;align-items:center;gap:10px;
+  padding:8px 14px;
+  background:var(--teal-tint);
+  border-radius:999px;
+  color:var(--teal);font-weight:500;font-size:13.5px;
+  text-decoration:none;
+  transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease);
+}
+.term-explainer-cue:hover{background:var(--teal);color:var(--cream);transform:translateY(-1px)}
+.term-explainer-cue svg{width:16px;height:16px}
+
+/* Reduced motion: kill the choreography but keep the scene transitions
+   so readers can still navigate. */
+@media (prefers-reduced-motion:reduce){
+  .term-explainer__stage g.explainer-scene.is-active [data-anim]{
+    animation-duration:1ms !important;animation-delay:0 !important;
+  }
+  .explainer-scene{transition:opacity 1ms linear; transform:none}
+  .term-explainer__captions ol{transition:none}
+}
+
+/* Print: collapse to the captions only. The SVG storyboards aren't
+   meaningful as a static print — but the script is. */
+@media print{
+  .term-explainer__stage,
+  .term-explainer__chrome{display:none}
+  .term-explainer__captions{max-height:none}
+  .term-explainer__captions li{color:#222 !important;font-size:11pt;line-height:1.45}
+  .term-explainer__captions li.is-active{font-size:12pt}
+}
+
+/* ===== Inline glossary popover =====
+ * Hover/focus tooltip rendered by site.js when a reader interacts with
+ * an in-article autolink (a[data-glossary-blurb]). Single shared popover
+ * positioned above or below the link based on viewport room. Decorative
+ * — the link works without JS; this just shows the definition without
+ * the reader leaving the article. */
+.glossary-popover{
+  position:absolute;
+  top:0;left:0;
+  z-index:120;
+  max-width:360px;
+  padding:14px 16px;
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:var(--r-md);
+  box-shadow:var(--elev-2,0 8px 24px rgba(20,22,26,0.08));
+  pointer-events:none;
+  opacity:0;
+  transform:translateY(4px);
+  transition:opacity var(--t-fast) var(--ease),transform var(--t-fast) var(--ease);
+}
+.glossary-popover.is-visible{
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+}
+.glossary-popover__head{
+  margin:0 0 4px;
+  font-family:var(--font-display);
+  font-weight:500;
+  font-size:16px;
+  color:var(--ink);
+  line-height:1.25;
+}
+.glossary-popover__aka{
+  margin:0 0 8px;
+  font-style:italic;
+  font-size:13px;
+  color:var(--stone);
+  line-height:1.35;
+}
+.glossary-popover__blurb{
+  margin:0 0 10px;
+  font-size:14px;
+  line-height:1.5;
+  color:var(--ink-soft);
+}
+.glossary-popover__more{
+  display:inline-block;
+  font-size:13px;
+  font-weight:500;
+  color:var(--teal);
+  text-decoration:none;
+  border-bottom:1px solid transparent;
+  transition:border-bottom-color var(--t-fast) var(--ease);
+}
+.glossary-popover__more:hover,
+.glossary-popover__more:focus-visible{
+  border-bottom-color:var(--teal);
+}
+@media (prefers-reduced-motion:reduce){
+  .glossary-popover{transition:none}
+}
+@media print{
+  .glossary-popover{display:none !important}
+}
+
+/* ===== Print view for glossary section landing pages =====
+ * Activates only on /glossary/<section>/ pages. Strips site chrome
+ * (nav, footer, CTAs, the print button itself) and reflows the
+ * .term-siblings-list term grid into a dense, two-column page-friendly
+ * card list — the artefact you can tape next to your P&L or hand to a
+ * bookkeeper. Lives behind a body-class predicate so it doesn't affect
+ * blog or term-page printing. */
+.gloss-section-page .nav,
+.gloss-section-page footer,
+.gloss-section-page .breadcrumb,
+.gloss-section-page .lang-hint{display:initial}
+
+@media print{
+  .gloss-section-page .nav,
+  .gloss-section-page footer,
+  .gloss-section-page .breadcrumb,
+  .gloss-section-page .hero-ctas,
+  .gloss-section-page .skip-link,
+  .gloss-section-page .lang-hint,
+  .gloss-section-page .nav-search-btn{display:none !important}
+
+  .gloss-section-page body{background:#fff;color:#000}
+  .gloss-section-page .hero-medium{padding:0 0 12pt}
+  .gloss-section-page .hero-medium h1{font-size:24pt;margin:0}
+  .gloss-section-page .hero-medium .hero-sub{font-size:11pt;color:#333}
+  .gloss-section-page .topic-section{padding:0}
+  .gloss-section-page .topic-section-head h2{font-size:14pt;margin-bottom:8pt}
+  .gloss-section-page .term-siblings-list{
+    grid-template-columns:1fr 1fr !important;
+    gap:6pt !important;
+    page-break-inside:auto;
+  }
+  .gloss-section-page .term-siblings-list a{
+    border:1pt solid #ccc !important;
+    background:#fff !important;
+    padding:6pt 8pt !important;
+    font-size:9.5pt !important;
+    line-height:1.35 !important;
+    page-break-inside:avoid;
+  }
+  .gloss-section-page .term-siblings-list strong{
+    font-size:10.5pt !important;
+    color:#000;
+  }
+  .gloss-section-page .term-siblings-list span{
+    color:#444;
+  }
+  /* Reveal each term URL after the headword for offline reference. */
+  .gloss-section-page .term-siblings-list a::after{
+    content:' — muntin.digital' attr(href);
+    display:block;
+    font-size:7.5pt;
+    color:#777;
+    margin-top:2pt;
+  }
 }

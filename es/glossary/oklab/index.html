@@ -38,6 +38,46 @@
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
 <link rel="stylesheet" href="/assets/site.css?v=20260425-mobile-library-fix">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "DefinedTerm",
+      "@id": "https://muntin.digital/es/glossary/oklab/#term",
+      "name": "OKLab",
+      "description": "Un espacio de color diseñado para que la distancia matemática entre dos colores coincida con la diferencia que un lector humano percibe. El RGB plano no tiene esa propiedad — dos colores cercanos en RGB pueden verse muy distintos, y al revés. OKLab lo arregla separando la luminosidad (L) de dos ejes opuestos de croma (a, b).",
+      "url": "https://muntin.digital/es/glossary/oklab/",
+      "inLanguage": "es-US",
+      "inDefinedTermSet": "https://muntin.digital/es/glossary/#glossary",
+      "alternateName": "un espacio de color perceptual — la distancia en él coincide con lo que ve el ojo"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://muntin.digital/es/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Glosario",
+          "item": "https://muntin.digital/es/glossary/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "OKLab",
+          "item": "https://muntin.digital/es/glossary/oklab/"
+        }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -119,7 +159,7 @@
 <section class="term-page">
   <div class="container term-page-inner">
     <header class="term-head">
-      <span class="eyebrow"><a href="/es/glossary/#brand-design">Marca y diseño</a></span>
+      <span class="eyebrow"><a href="/es/glossary/brand-design/">Marca y diseño</a></span>
       <h1 class="term-h1">OKLab</h1>
       <p class="term-aka">un espacio de color perceptual — la distancia en él coincide con lo que ve el ojo</p>
       <div class="term-meta">
@@ -133,9 +173,14 @@
       <h2 class="term-why-h">Por qué importa</h2>
       <p class="term-why">Cualquier decisión cromática fiable — agrupamiento k-means para extraer paletas, rotación de matices para generar armonía, puntuación de similitud para avisos de "estas dos muestras se sienten idénticas" — necesita un espacio perceptual para ser honesta. La <a href="/es/tools/brand-suite/">Suite de Marca</a> hace todas sus matemáticas de color en OKLab y solo vuelve a RGB para mostrar y exportar.</p>
       
+      <!-- glossary-explainer-cue:start -->
+      <!-- glossary-explainer-cue:end -->
     </div>
   </div>
 </section>
+
+<!-- glossary-explainer:start -->
+<!-- glossary-explainer:end -->
 
 <section class="term-siblings">
   <div class="container">
@@ -147,7 +192,7 @@
       <li><a href="/es/glossary/logo-lockup/"><strong>Composición de logo (lockup)</strong><span> — símbolo + logotipo + lema opcional, como una unidad</span></a></li>
       <li><a href="/es/glossary/clearspace/"><strong>Espacio de resguardo</strong><span> — la zona vacía alrededor del logo</span></a></li>
       <li><a href="/es/glossary/color-palette/"><strong>Paleta de colores</strong><span> — el conjunto curado de colores que le pertenecen a tu marca</span></a></li>
-      <li><a href="/es/glossary/wcag-contrast/"><strong>Contraste WCAG</strong><span> — qué tan legible es el texto contra su fondo</span></a></li>
+      <li><a href="/es/glossary/wcag-contrast/"><strong>Contraste WCAG AA</strong><span> — contraste de color accesible</span></a></li>
       <li><a href="/es/glossary/favicon/"><strong>Favicon</strong><span> — el pequeño ícono en la pestaña del navegador</span></a></li>
     </ul>
   </div>
@@ -161,12 +206,14 @@
       <p class="final-sub">Definiciones en lenguaje claro para cada término en tu auditoría, organizadas por categoría.</p>
     </div>
     <div class="hero-ctas reveal hero-ctas-center">
-      <a class="btn btn-primary" href="/es/glossary/">Abrir el glosario completo</a>
-      <a class="btn btn-ghost" href="/es/learn/">Volver a la biblioteca</a>
+      <a class="btn btn-primary" href="/es/tools/brand-suite/">Abrir Suite de Marca</a>
+      <a class="btn btn-ghost" href="/es/glossary/">Abrir el glosario completo</a>
     </div>
   </div>
 </section>
 
+<!-- glossary-knit -->
+<!-- /glossary-knit -->
 </main>
 
 <footer>
@@ -209,7 +256,7 @@
           <li><a href="/tools/">Free tools</a></li>
           <li><a href="/glossary/">Glossary</a></li>
           <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/resources/">Checklists &amp; guides</a></li>
+          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
         </ul>
       </nav>
 

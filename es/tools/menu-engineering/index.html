@@ -175,15 +175,27 @@
       <a href="/es/for/restaurants/">Restaurantes</a>
       <div class="nav-library-wrap">
         <a href="/es/learn/" class="nav-library-trigger" aria-haspopup="true">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <div class="nav-library-menu" role="menu" aria-label="Secciones de la biblioteca">
-          <a href="/es/learn/" role="menuitem"><strong>Inicio de la biblioteca</strong><span>El centro de todo lo de abajo</span></a>
-          <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
-          <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
-          <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
-          <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
-          <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span>97 términos en lenguaje claro</span></a>
-          <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
-          <a href="/es/resources/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+        <div class="nav-library-menu nav-library-menu--mega" role="menu" aria-label="Secciones de la biblioteca">
+          <a class="nav-library-menu__home" href="/es/learn/" role="menuitem">
+            <strong>Inicio de la biblioteca</strong>
+            <span>El centro de todo lo de abajo &rarr;</span>
+          </a>
+          <div class="nav-library-menu__col">
+            <h4>Aprende</h4>
+            <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
+            <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
+            <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span><!-- count:glossary.terms -->116<!-- /count --> términos en lenguaje claro</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Lee</h4>
+            <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
+            <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Haz</h4>
+            <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
+            <a href="/es/learn/checklists/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+          </div>
         </div>
       </div>
       <a href="/es/work/">Proyectos</a>
@@ -214,13 +226,16 @@
     <details class="mobile-library">
       <summary>Biblioteca</summary>
       <a href="/es/learn/">Inicio de la biblioteca</a>
+      <p class="mobile-library__group">Aprende</p>
       <a href="/es/learn/start-here/">Empieza aquí</a>
       <a href="/es/learn/topics/">Temas</a>
-      <a href="/es/blog/">Artículos</a>
-      <a href="/es/tools/">Herramientas gratis</a>
       <a href="/es/glossary/">Glosario</a>
+      <p class="mobile-library__group">Lee</p>
+      <a href="/es/blog/">Artículos</a>
       <a href="/es/learn/research/">Investigación</a>
-      <a href="/es/resources/">Listas y recursos</a>
+      <p class="mobile-library__group">Haz</p>
+      <a href="/es/tools/">Herramientas gratis</a>
+      <a href="/es/learn/checklists/">Listas y recursos</a>
     </details>
     <a href="/es/work/">Proyectos</a>
     <a href="/es/about/">Sobre Don</a>
@@ -477,7 +492,7 @@
           <span class="tool-deep-kind">Glosario</span>
           <h3>Ingeniería de menú</h3>
           <p class="tool-deep-aka">tratar cada plato como una decisión de portafolio, no como una línea de P&amp;L</p>
-          <p class="tool-deep-snippet">Un análisis clásico de la industria restaurantera (Kasavana &amp;amp; Smith, 1990) que grafica cada plato en un 2&amp;times;2 de margen de contribuc…</p>
+          <p class="tool-deep-snippet">Un análisis clásico de la industria restaurantera (Kasavana &amp; Smith, 1990) que grafica cada plato en un 2&amp;times;2 de margen de contribución …</p>
           <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
         </a>
       <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/contribution-margin/">
@@ -512,6 +527,42 @@
 </section>
 <!-- LIBRARY:tool-deep-links:end -->
 
+
+<!-- tool-knit -->
+<aside class="tool-knit" aria-labelledby="tool-knit-heading-menu-engineering">
+    <div class="container">
+      <h2 id="tool-knit-heading-menu-engineering" class="tool-knit__h">Sigue.</h2>
+      <div class="tool-knit__grid">
+      <div class="tool-knit__col">
+        <h3>Tema</h3>
+        <a href="/es/learn/topics/operations-margin/">Operaciones y margen</a>
+      </div>
+      <div class="tool-knit__col">
+        <h3>Herramientas relacionadas</h3>
+        <ul>
+          <li><a href="/es/tools/plate-cost/">Costo del Plato</a></li>
+          <li><a href="/es/tools/margin-math/">Cálculo de Margen</a></li>
+        </ul>
+      </div>
+      <div class="tool-knit__col">
+        <h3>Lee</h3>
+        <ul>
+          <li><a href="/es/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Subir precios sin perder reservas</a></li>
+          <li><a href="/es/blog/five-restaurant-website-changes-recover-one-percent-margin/">Cinco cambios de sitio que recuperan 1% de margen</a></li>
+        </ul>
+      </div>
+      <div class="tool-knit__col">
+        <h3>Palabras</h3>
+        <ul>
+          <li><a href="/es/glossary/menu-engineering/">Ingeniería de menú</a></li>
+          <li><a href="/es/glossary/menu-mix/">Cuota del menú</a></li>
+          <li><a href="/es/glossary/contribution-margin/">Margen de contribución</a></li>
+        </ul>
+      </div>
+      </div>
+    </div>
+  </aside>
+<!-- /tool-knit -->
 </main>
 <!-- FOOTER_PLACEHOLDER -->
 <footer class="foot">

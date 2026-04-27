@@ -31,9 +31,24 @@
 # link — search-engine index, bookmark, or published citation —
 # that points at the old paths lands on the restaurant-audit home
 # instead of a 404. The restaurant tool is the clear next best
-# action for anyone who was looking at the retired ones.
+# action for anyone who was looking at the retired ones. Pointed
+# directly at the post-Phase-5.5 /learn/checklists/ location so
+# chained redirects don't waste a hop.
 /tools/audits/wellness/             /tools/audits/restaurant/    301
 /tools/audits/wellness/*            /tools/audits/restaurant/    301
-/resources/wellness-website-checklist/      /resources/restaurant-website-checklist/    301
-/resources/wellness-website-checklist/*     /resources/restaurant-website-checklist/    301
+/resources/wellness-website-checklist/      /learn/checklists/restaurant-website-checklist/    301
+/resources/wellness-website-checklist/*     /learn/checklists/restaurant-website-checklist/    301
+
+# Third restructure (Phase 5.5 cohesion pass): /resources/ folded
+# into /learn/checklists/ as a sub-section of the Library so future
+# checklists/guides land in one obvious place. EN + ES pairs.
+# Specific item before wildcards so the exact mapping wins first.
+/resources/restaurant-website-checklist/        /learn/checklists/restaurant-website-checklist/        301
+/resources/restaurant-website-checklist/*       /learn/checklists/restaurant-website-checklist/:splat  301
+/resources/                                     /learn/checklists/                                     301
+/resources/*                                    /learn/checklists/:splat                               301
+/es/resources/restaurant-website-checklist/     /es/learn/checklists/restaurant-website-checklist/     301
+/es/resources/restaurant-website-checklist/*    /es/learn/checklists/restaurant-website-checklist/:splat 301
+/es/resources/                                  /es/learn/checklists/                                  301
+/es/resources/*                                 /es/learn/checklists/:splat                            301
 

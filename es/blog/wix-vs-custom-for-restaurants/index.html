@@ -509,15 +509,27 @@
       <a href="/es/for/restaurants/">Restaurantes</a>
       <div class="nav-library-wrap">
         <a href="/es/learn/" class="nav-library-trigger" aria-haspopup="true">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <div class="nav-library-menu" role="menu" aria-label="Secciones de la biblioteca">
-          <a href="/es/learn/" role="menuitem"><strong>Inicio de la biblioteca</strong><span>El centro de todo lo de abajo</span></a>
-          <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
-          <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
-          <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
-          <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
-          <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span>97 términos en lenguaje claro</span></a>
-          <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
-          <a href="/es/resources/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+        <div class="nav-library-menu nav-library-menu--mega" role="menu" aria-label="Secciones de la biblioteca">
+          <a class="nav-library-menu__home" href="/es/learn/" role="menuitem">
+            <strong>Inicio de la biblioteca</strong>
+            <span>El centro de todo lo de abajo &rarr;</span>
+          </a>
+          <div class="nav-library-menu__col">
+            <h4>Aprende</h4>
+            <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
+            <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
+            <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span><!-- count:glossary.terms -->116<!-- /count --> términos en lenguaje claro</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Lee</h4>
+            <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
+            <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Haz</h4>
+            <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
+            <a href="/es/learn/checklists/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+          </div>
         </div>
       </div>
       <a href="/es/work/">Proyectos</a>
@@ -548,13 +560,16 @@
     <details class="mobile-library">
       <summary>Biblioteca</summary>
       <a href="/es/learn/">Inicio de la biblioteca</a>
+      <p class="mobile-library__group">Aprende</p>
       <a href="/es/learn/start-here/">Empieza aquí</a>
       <a href="/es/learn/topics/">Temas</a>
-      <a href="/es/blog/">Artículos</a>
-      <a href="/es/tools/">Herramientas gratis</a>
       <a href="/es/glossary/">Glosario</a>
+      <p class="mobile-library__group">Lee</p>
+      <a href="/es/blog/">Artículos</a>
       <a href="/es/learn/research/">Investigación</a>
-      <a href="/es/resources/">Listas y recursos</a>
+      <p class="mobile-library__group">Haz</p>
+      <a href="/es/tools/">Herramientas gratis</a>
+      <a href="/es/learn/checklists/">Listas y recursos</a>
     </details>
     <a href="/es/work/">Proyectos</a>
     <a href="/es/about/">Sobre Don</a>
@@ -681,7 +696,7 @@
 
       <h2>Falla n.º 2 — La velocidad de carga en móvil siempre es más lenta de lo que debería</h2>
       <p>Esta es la que puedo probar con una URL: pasa cualquier sitio de restaurante en Wix por <a href="/es/tools/audits/restaurant/">el Diagnóstico gratis de sitios de restaurante</a> y mira el puntaje de Rendimiento. Casi siempre vas a ver algo en los 40 o 50 sobre 100. Eso no es culpa del restaurante — es de la plataforma.</p>
-      <p>Las plantillas de Wix traen mucho JavaScript por defecto — lo suficiente como para que, por lo que veo en mis diagnósticos, los puntajes de <!-- LIBRARY:autolink:start --><a href="/es/glossary/lighthouse/">Lighthouse</a><!-- LIBRARY:autolink:end --> en móvil para sitios de restaurante en Wix suelen caer por debajo de 60. En una conexión 4G afuera de tu restaurante, eso normalmente se traduce en un first-contentful-paint que corre cuatro segundos o más. La investigación de velocidad móvil de Google muestra consistentemente que <strong>la mayoría de los visitantes móviles abandona las páginas que tardan más de tres segundos en cargar</strong> — lo que significa que un sitio Wix lento está silenciosamente perdiendo una porción significativa de su tráfico móvil con hambre antes de que alguien vea el menú.</p>
+      <p>Las plantillas de Wix traen mucho JavaScript por defecto — lo suficiente como para que, por lo que veo en mis diagnósticos, los puntajes de <!-- LIBRARY:autolink:start --><a href="/es/glossary/lighthouse/" data-glossary-head="Lighthouse" data-glossary-aka="el motor de auditoría de Google" data-glossary-blurb="La herramienta de auditoría de código abierto que Google trae dentro de Chrome y dentro de PageSpeed Insights.">Lighthouse</a><!-- LIBRARY:autolink:end --> en móvil para sitios de restaurante en Wix suelen caer por debajo de 60. En una conexión 4G afuera de tu restaurante, eso normalmente se traduce en un first-contentful-paint que corre cuatro segundos o más. La investigación de velocidad móvil de Google muestra consistentemente que <strong>la mayoría de los visitantes móviles abandona las páginas que tardan más de tres segundos en cargar</strong> — lo que significa que un sitio Wix lento está silenciosamente perdiendo una porción significativa de su tráfico móvil con hambre antes de que alguien vea el menú.</p>
 
       <details class="cite">
         <summary>Fuente: Investigación de Google sobre velocidad móvil</summary>
@@ -734,9 +749,9 @@
       <p>Wix te va a decir que su SEO es fuerte. Técnicamente no se equivoca: las etiquetas de título existen, se genera un sitemap, las páginas se pueden indexar. Eso es el piso. No es el techo.</p>
       <p>Donde consistentemente veo a Wix quedarse corto en los diagnósticos de restaurantes:</p>
       <ul>
-        <li><strong>El <!-- LIBRARY:autolink:start --><a href="/es/glossary/schema/">marcado schema</a><!-- LIBRARY:autolink:end --> de Restaurant</strong> (el JSON-LD que le dice a Google tu cocina, horarios, rango de precios, URL del menú y reseñas), en la mayoría de las plantillas de restaurante de Wix que he auditado, o falta del todo o quedó con marcadores vacíos que el dueño no sabe cazar y rellenar.</li>
+        <li><strong>El <!-- LIBRARY:autolink:start --><a href="/es/glossary/schema/" data-glossary-head="Marcado schema" data-glossary-aka="JSON-LD, datos estructurados, schema.org" data-glossary-blurb="Etiquetas invisibles en tu página que le dicen a Google, en un formato que lee directo, exactamente qué tipo de negocio eres — &quot;soy un Restaurante, aquí está mi tipo de cocina, mi…">marcado schema</a><!-- LIBRARY:autolink:end --> de Restaurant</strong> (el JSON-LD que le dice a Google tu cocina, horarios, rango de precios, URL del menú y reseñas), en la mayoría de las plantillas de restaurante de Wix que he auditado, o falta del todo o quedó con marcadores vacíos que el dueño no sabe cazar y rellenar.</li>
         <li><strong>Las meta descripciones</strong> tienden a generarse solas a partir del copy de la página, salvo que sobreescribas manualmente cada página — y en la práctica, la mayoría de los dueños no lo hace. El resultado son fragmentos de búsqueda en Google que se leen como "Bienvenidos a nuestra página de inicio — estamos emocionados de compartir…"</li>
-        <li><strong>El <!-- LIBRARY:autolink:start --><a href="/es/glossary/alt-text/">texto alternativo</a><!-- LIBRARY:autolink:end --> de las imágenes</strong> a menudo cae al nombre del archivo si no lo configuras manualmente. Cada foto que subes entra como <code>IMG_2041.jpg</code> y se queda así, invisible para Google Imágenes.</li>
+        <li><strong>El <!-- LIBRARY:autolink:start --><a href="/es/glossary/alt-text/" data-glossary-head="Texto alternativo" data-glossary-aka="alt text, descripción de imagen" data-glossary-blurb="Una descripción escrita breve de cada imagen, puesta mediante el atributo alt=&quot;…&quot; en el HTML.">texto alternativo</a><!-- LIBRARY:autolink:end --> de las imágenes</strong> a menudo cae al nombre del archivo si no lo configuras manualmente. Cada foto que subes entra como <code>IMG_2041.jpg</code> y se queda así, invisible para Google Imágenes.</li>
         <li><strong>La velocidad del sitio</strong> — ya cubierta en la Falla n.º 2 — es en sí misma un factor de ranking, y los puntajes que veo en plantillas de restaurante de Wix normalmente son lo suficientemente bajos como para afectar el ranking mobile-first.</li>
       </ul>
       <p>El efecto neto: posicionas para el nombre propio de tu restaurante (lo que cualquiera puede hacer), y no posicionas para "[cocina] cerca de mí" ni "mejor [plato] en [ciudad]", que es de donde vienen los clientes nuevos.</p>
@@ -767,7 +782,7 @@
       </details>
 
       <p>La diferencia bruta es de unos USD 1,900 a dos años. Eso es plata real. Ahora súmale lo que la cuenta de Wix convenientemente deja afuera:</p>
-      <p>Un sitio Wix cargando lento en móvil, con schema flaco y un menú difícil de leer, en mi experiencia de diagnósticos puede fácilmente costarle a un restaurante <strong>varias reservas a la semana</strong> comparado con lo que un sitio bien construido convertiría — gente que tocó el enlace, esperó tres segundos, no pudo leer el menú en el teléfono, y reservó en otro lado. A un <!-- LIBRARY:autolink:start --><a href="/es/glossary/cover/">cubierto</a><!-- LIBRARY:autolink:end --> promedio de USD 55, incluso tres reservas perdidas a la semana suman alrededor de <strong>USD 8,500 al año</strong> en ingreso bruto que nunca cruzó la puerta. (Tus números reales van a depender de tu volumen y tu menú, pero la dirección siempre es la misma.)</p>
+      <p>Un sitio Wix cargando lento en móvil, con schema flaco y un menú difícil de leer, en mi experiencia de diagnósticos puede fácilmente costarle a un restaurante <strong>varias reservas a la semana</strong> comparado con lo que un sitio bien construido convertiría — gente que tocó el enlace, esperó tres segundos, no pudo leer el menú en el teléfono, y reservó en otro lado. A un <!-- LIBRARY:autolink:start --><a href="/es/glossary/cover/" data-glossary-head="Cubierto" data-glossary-aka="un cliente servido" data-glossary-blurb="Un cliente sentado y servido.">cubierto</a><!-- LIBRARY:autolink:end --> promedio de USD 55, incluso tres reservas perdidas a la semana suman alrededor de <strong>USD 8,500 al año</strong> en ingreso bruto que nunca cruzó la puerta. (Tus números reales van a depender de tu volumen y tu menú, pero la dirección siempre es la misma.)</p>
       <p>El sitio a medida se paga solo en algún momento de los primeros cuatro meses de reservas recuperadas. Todo lo que sigue después es delta puro.</p>
 
       <p class="pull-quote">El sitio a medida se paga solo en los primeros cuatro meses de reservas recuperadas. Todo lo que sigue después es delta puro.</p>
@@ -840,7 +855,7 @@
         <h4 class="i18n">¿Cuánto cuesta un sitio a medida para restaurante en 2026?</h4>
         <p>El desglose completo de precios — rubros reales, números reales, y lo que estás pagando que no aparece en la factura.</p>
       </a>
-      <a href="/es/resources/restaurant-website-checklist/">
+      <a href="/es/learn/checklists/restaurant-website-checklist/">
         <h4 class="i18n">El checklist para sitios de restaurante</h4>
         <p>Treinta cosas que tu sitio de restaurante debería hacer en 2026. Pásalo por tu propio sitio Wix en unos diez minutos — los ítems que fallen van a mapear directo con las seis fallas de arriba.</p>
       </a>
@@ -874,7 +889,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de 97 t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->116<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -898,7 +913,7 @@
           <li><a href="/es/tools/">Herramientas gratis</a></li>
           <li><a href="/es/glossary/">Glosario</a></li>
           <li><a href="/es/learn/research/">Investigación</a></li>
-          <li><a href="/es/resources/">Listas y recursos</a></li>
+          <li><a href="/es/learn/checklists/">Listas y recursos</a></li>
         </ul>
       </nav>
 

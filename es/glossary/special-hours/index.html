@@ -38,6 +38,46 @@
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
 <link rel="stylesheet" href="/assets/site.css?v=20260425-mobile-library-fix">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "DefinedTerm",
+      "@id": "https://muntin.digital/es/glossary/special-hours/#term",
+      "name": "Horarios especiales",
+      "description": "Una entidad aparte del horario regular en el modelo de datos de Google: excepciones por fecha para feriados, eventos privados, cierres por clima, y días con horario modificado (cierre temprano en la víspera de Navidad, sólo brunch en el Día de la Madre). En Schema.org se traduce a entradas OpeningHoursSpecification adicionales con fechas validFrom/validThrough.",
+      "url": "https://muntin.digital/es/glossary/special-hours/",
+      "inLanguage": "es-US",
+      "inDefinedTermSet": "https://muntin.digital/es/glossary/#glossary",
+      "alternateName": "la excepción para cualquier día que no sigue tu horario habitual"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://muntin.digital/es/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Glosario",
+          "item": "https://muntin.digital/es/glossary/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Horarios especiales",
+          "item": "https://muntin.digital/es/glossary/special-hours/"
+        }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -119,7 +159,7 @@
 <section class="term-page">
   <div class="container term-page-inner">
     <header class="term-head">
-      <span class="eyebrow"><a href="/es/glossary/#findability">Que te encuentren</a></span>
+      <span class="eyebrow"><a href="/es/glossary/findability/">Que te encuentren</a></span>
       <h1 class="term-h1">Horarios especiales</h1>
       <p class="term-aka">la excepción para cualquier día que no sigue tu horario habitual</p>
       <div class="term-meta">
@@ -132,10 +172,18 @@
       <p class="term-def">Una entidad aparte del horario regular en el modelo de datos de Google: excepciones por fecha para feriados, eventos privados, cierres por clima, y días con horario modificado (cierre temprano en la víspera de Navidad, sólo brunch en el Día de la Madre). En Schema.org se traduce a entradas <code>OpeningHoursSpecification</code> adicionales con fechas <code>validFrom</code>/<code>validThrough</code>.</p>
       <h2 class="term-why-h">Por qué importa</h2>
       <p class="term-why">La mayoría de los dueños llena el horario regular una vez y no vuelve a tocar el modelo de datos. Google marca como &ldquo;puede tener información imprecisa&rdquo; — una bajada suave en búsqueda local — las fichas donde el horario regular contradice un cierre conocido (&ldquo;Lun: 11–9&rdquo; saliendo en Navidad). Mantener los horarios especiales es la mitad de la administración de horarios que requiere un calendario, no un llenado de una sola vez.</p>
-      
+      <aside class="term-research">
+      <p class="term-research-label">Ver la investigación</p>
+      <p><a href="/es/learn/research/local-business-websites/">Usabilidad de sitios de negocios locales <span aria-hidden="true">↗</span></a></p>
+    </aside>
+      <!-- glossary-explainer-cue:start -->
+      <!-- glossary-explainer-cue:end -->
     </div>
   </div>
 </section>
+
+<!-- glossary-explainer:start -->
+<!-- glossary-explainer:end -->
 
 <section class="term-siblings">
   <div class="container">
@@ -161,12 +209,14 @@
       <p class="final-sub">Definiciones en lenguaje claro para cada término en tu auditoría, organizadas por categoría.</p>
     </div>
     <div class="hero-ctas reveal hero-ctas-center">
-      <a class="btn btn-primary" href="/es/glossary/">Abrir el glosario completo</a>
-      <a class="btn btn-ghost" href="/es/learn/">Volver a la biblioteca</a>
+      <a class="btn btn-primary" href="/es/tools/open-hours/">Abrir Horario Abierto</a>
+      <a class="btn btn-ghost" href="/es/glossary/">Abrir el glosario completo</a>
     </div>
   </div>
 </section>
 
+<!-- glossary-knit -->
+<!-- /glossary-knit -->
 </main>
 
 <footer>
@@ -209,7 +259,7 @@
           <li><a href="/tools/">Free tools</a></li>
           <li><a href="/glossary/">Glossary</a></li>
           <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/resources/">Checklists &amp; guides</a></li>
+          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
         </ul>
       </nav>
 

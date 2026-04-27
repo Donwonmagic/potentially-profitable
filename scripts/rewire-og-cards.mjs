@@ -22,7 +22,7 @@ const MAP = [
   ['es/work/irish-inn-glen-echo/index.html',               'brand/og/work-irish-inn-es.svg'],
   ['es/work/off-day-collective/index.html',                'brand/og/work-off-day-collective-es.svg'],
   ['es/work/tacombi/index.html',                           'brand/og/work-tacombi-es.svg'],
-  ['es/resources/restaurant-website-checklist/index.html', 'brand/og/checklist-es.svg'],
+  ['es/learn/checklists/restaurant-website-checklist/index.html', 'brand/og/checklist-es.svg'],
   ['es/tools/index.html',                                  'brand/og/audit-es.svg'],
   ['es/tools/audits/index.html',                           'brand/og/audit-es.svg'],
   ['es/tools/compare/index.html',                          'brand/og/tool-compare-es.svg'],

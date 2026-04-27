@@ -268,15 +268,27 @@
       <a href="/es/for/restaurants/">Restaurantes</a>
       <div class="nav-library-wrap">
         <a href="/es/learn/" class="nav-library-trigger" aria-haspopup="true">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <div class="nav-library-menu" role="menu" aria-label="Secciones de la biblioteca">
-          <a href="/es/learn/" role="menuitem"><strong>Inicio de la biblioteca</strong><span>El centro de todo lo de abajo</span></a>
-          <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
-          <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
-          <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
-          <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
-          <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span>97 términos en lenguaje claro</span></a>
-          <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
-          <a href="/es/resources/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+        <div class="nav-library-menu nav-library-menu--mega" role="menu" aria-label="Secciones de la biblioteca">
+          <a class="nav-library-menu__home" href="/es/learn/" role="menuitem">
+            <strong>Inicio de la biblioteca</strong>
+            <span>El centro de todo lo de abajo &rarr;</span>
+          </a>
+          <div class="nav-library-menu__col">
+            <h4>Aprende</h4>
+            <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
+            <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
+            <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span><!-- count:glossary.terms -->116<!-- /count --> términos en lenguaje claro</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Lee</h4>
+            <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
+            <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Haz</h4>
+            <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
+            <a href="/es/learn/checklists/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+          </div>
         </div>
       </div>
       <a href="/es/work/">Proyectos</a>
@@ -307,13 +319,16 @@
     <details class="mobile-library">
       <summary>Biblioteca</summary>
       <a href="/es/learn/">Inicio de la biblioteca</a>
+      <p class="mobile-library__group">Aprende</p>
       <a href="/es/learn/start-here/">Empieza aquí</a>
       <a href="/es/learn/topics/">Temas</a>
-      <a href="/es/blog/">Artículos</a>
-      <a href="/es/tools/">Herramientas gratis</a>
       <a href="/es/glossary/">Glosario</a>
+      <p class="mobile-library__group">Lee</p>
+      <a href="/es/blog/">Artículos</a>
       <a href="/es/learn/research/">Investigación</a>
-      <a href="/es/resources/">Listas y recursos</a>
+      <p class="mobile-library__group">Haz</p>
+      <a href="/es/tools/">Herramientas gratis</a>
+      <a href="/es/learn/checklists/">Listas y recursos</a>
     </details>
     <a href="/es/work/">Proyectos</a>
     <a href="/es/about/">Sobre Don</a>
@@ -390,7 +405,7 @@
   <a href="/es/tools/margin-math/" style="font-weight:700;font-size:14px;color:var(--teal);text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap;">Abrir la calculadora &rarr;</a>
 </aside>
 <p>Todos los operadores con los que hablo están haciendo alguna versión de la misma pregunta este año. "¿Sigo ganando dinero con DoorDash?" Normalmente la pregunta sale después de la segunda copa de vino, normalmente un martes tranquilo, normalmente unos seis meses después de la última vez que se prometieron a sí mismos que iban a hacer las cuentas de verdad.</p>
-<p>Así que hagamos la cuenta. La cuenta honesta. No como la presenta DoorDash en tu panel de control, ni como la presenta un consultor con una diapositiva a medida, sino como el dinero realmente se mueve desde el teléfono del cliente hasta tu cuenta bancaria. <strong>Tus números exactos van a variar</strong> — niveles de <!-- LIBRARY:autolink:start --><a href="/es/glossary/commission/">comisión</a><!-- LIBRARY:autolink:end -->, códigos promocionales, tu categoría específica del marketplace — pero la <em>forma</em> de la cuenta es universal, y es lo que determina si DoorDash es una fuente de ingresos, un canal de marketing, o una fuga lenta.</p>
+<p>Así que hagamos la cuenta. La cuenta honesta. No como la presenta DoorDash en tu panel de control, ni como la presenta un consultor con una diapositiva a medida, sino como el dinero realmente se mueve desde el teléfono del cliente hasta tu cuenta bancaria. <strong>Tus números exactos van a variar</strong> — niveles de <!-- LIBRARY:autolink:start --><a href="/es/glossary/commission/" data-glossary-head="Comisión" data-glossary-aka="el % que la plataforma se lleva por orden" data-glossary-blurb="El porcentaje que un agregador o plataforma de pago se queda por transacción.">comisión</a><!-- LIBRARY:autolink:end -->, códigos promocionales, tu categoría específica del marketplace — pero la <em>forma</em> de la cuenta es universal, y es lo que determina si DoorDash es una fuente de ingresos, un canal de marketing, o una fuga lenta.</p>
 <h2>En qu&eacute; se convierten realmente 100 d&oacute;lares de ingresos de DoorDash</h2>
 <p>Esto es lo que nadie quiere admitir. En un acuerdo estándar del marketplace de DoorDash para un restaurante independiente en 2026, un pedido de cien dólares viene con una comisión de entre el 15 % y el 30 %, según tu plan. Los niveles de "asociación" cuestan más; el nivel "básico" que la mayoría de los independientes usa por defecto se sitúa entre el 20 % y el 23 %.</p>
 <p>Después está el procesamiento de pagos (sí, de todos modos), porque el procesamiento de pagos de DoorDash tampoco es gratis, aunque la plataforma ya se lleve una comisión. Eso es más o menos otro 2 % que te descuentan sobre lo que queda.</p>
@@ -449,7 +464,7 @@
 <p>No estoy aqu&iacute; para decirte que te alejes de DoorDash ma&ntilde;ana. Hay tres situaciones en las que mantener la presencia de DoorDash sigue siendo claramente la decisi&oacute;n correcta.</p>
 <ul>
 <li><strong>Est&aacute;s realmente limitado por el descubrimiento.</strong> Restaurante m&aacute;s nuevo, escasa presencia en libras esterlinas, a&uacute;n no hay boca a boca establecida: DoorDash es un canal de marketing que se factura como una comisi&oacute;n. Pague el impuesto mientras construye la audiencia y luego vuelva a evaluar.</li>
-<li><strong>Su propio volumen de pedidos es inferior a 50 pedidos por semana.</strong> Por debajo de ese umbral, los <!-- LIBRARY:autolink:start --><a href="/es/glossary/fixed-costs/">costos fijos</a><!-- LIBRARY:autolink:end --> de una configuraci&oacute;n de pedidos propios (fotograf&iacute;a, mantenimiento del men&uacute;, servicio al cliente ocasional) consumen los ahorros de <!-- LIBRARY:autolink:start --><a href="/es/glossary/margin/">margen</a><!-- LIBRARY:autolink:end -->. Espere el volumen.</li>
+<li><strong>Su propio volumen de pedidos es inferior a 50 pedidos por semana.</strong> Por debajo de ese umbral, los <!-- LIBRARY:autolink:start --><a href="/es/glossary/fixed-costs/" data-glossary-head="Costos fijos" data-glossary-aka="costos que no escalan con las ventas" data-glossary-blurb="Costos que no cambian con el volumen de ventas: renta, seguro, pagos de préstamo, servicios básicos, suscripciones SaaS (POS, reservas, nómina, herramientas de marketing),…">costos fijos</a><!-- LIBRARY:autolink:end --> de una configuraci&oacute;n de pedidos propios (fotograf&iacute;a, mantenimiento del men&uacute;, servicio al cliente ocasional) consumen los ahorros de <!-- LIBRARY:autolink:start --><a href="/es/glossary/margin/" data-glossary-head="Margen" data-glossary-aka="ventas menos costos; varios tipos" data-glossary-blurb="Ventas menos costos.">margen</a><!-- LIBRARY:autolink:end -->. Espere el volumen.</li>
 <li><strong>Tiene un concepto de comida para llevar en un &aacute;rea de alto tr&aacute;nsito.</strong> Pedidos de almuerzo por parte de trabajadores de oficina, recogidas de cenas en el camino: los clientees en estos contextos utilizan mucho las aplicaciones de entrega a domicilio porque ah&iacute; es donde ya reside su rutina. Encu&eacute;ntralos donde est&aacute;n.</li>
 </ul>
 <p>Y hay una situaci&oacute;n en la que la respuesta no es "detener DoorDash", sino "<em>competir</em> con DoorDash." Si mantienes DoorDash <em>y</em> Si crea una p&aacute;gina s&oacute;lida de pedidos propios, les dar&aacute; a los clientes habituales la posibilidad de elegir. La mayor&iacute;a de los clientes habituales elegir&aacute;n su propia p&aacute;gina de pedidos una vez que sepan que existe, porque quieren que usted sobreviva y pueden ver la tarifa en el lado de DoorDash. No es necesario disparar la plataforma. Debes asegurarte de que tu propia p&aacute;gina sea visible y lo suficientemente buena como para que el invitado pueda <em>elegir</em> para saltarse el impuesto.</p>
@@ -558,7 +573,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de 97 t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->116<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -582,7 +597,7 @@
           <li><a href="/es/tools/">Herramientas gratis</a></li>
           <li><a href="/es/glossary/">Glosario</a></li>
           <li><a href="/es/learn/research/">Investigación</a></li>
-          <li><a href="/es/resources/">Listas y recursos</a></li>
+          <li><a href="/es/learn/checklists/">Listas y recursos</a></li>
         </ul>
       </nav>
 

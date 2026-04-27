@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <title>OpeningHoursSpecification — Muntin Digital glossary</title>
-<meta name="description" content="OpeningHoursSpecification: the Schema.org structured-data type Google reads to render a restaurant's hours in search results. The exact JSON-LD shape that turns &quot;hours vary&quot; into a full weekly grid in the rich snippet." />
+<meta name="description" content="OpeningHoursSpecification: A specific Schema.org structured-data type for representing when a place is open. Lives inside a Restaurant JSON-LD block as one or more entries with dayOf…" />
 <meta name="theme-color" content="#1F4E5B" />
 <link rel="canonical" href="https://muntin.digital/glossary/opening-hours-specification/" />
 <link rel="alternate" hreflang="en" href="https://muntin.digital/glossary/opening-hours-specification/" />
@@ -16,7 +16,7 @@
 
 <meta property="og:type" content="website" />
 <meta property="og:title" content="OpeningHoursSpecification — Muntin Digital glossary" />
-<meta property="og:description" content="OpeningHoursSpecification: the Schema.org structured-data type Google reads to render a restaurant's hours in search results." />
+<meta property="og:description" content="OpeningHoursSpecification: A specific Schema.org structured-data type for representing when a place is open. Lives inside a Restaurant JSON-LD block as one or more entries with dayOf…" />
 <meta property="og:url" content="https://muntin.digital/glossary/opening-hours-specification/" />
 <meta property="og:site_name" content="Muntin Digital" />
 <meta property="og:image" content="https://muntin.digital/brand/og/glossary.png" />
@@ -26,7 +26,7 @@
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="OpeningHoursSpecification — Muntin Digital glossary" />
-<meta name="twitter:description" content="OpeningHoursSpecification: the Schema.org structured-data type Google reads to render a restaurant's hours in search results." />
+<meta name="twitter:description" content="OpeningHoursSpecification: A specific Schema.org structured-data type for representing when a place is open. Lives inside a Restaurant JSON-LD block as one or more entries with dayOf…" />
 <meta name="twitter:image" content="https://muntin.digital/brand/og/glossary.png" />
 
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
@@ -37,7 +37,47 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260422-cohesion">
+<link rel="stylesheet" href="/assets/site.css?v=20260425-mobile-library-fix">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "DefinedTerm",
+      "@id": "https://muntin.digital/glossary/opening-hours-specification/#term",
+      "name": "OpeningHoursSpecification",
+      "description": "A specific Schema.org structured-data type for representing when a place is open. Lives inside a Restaurant JSON-LD block as one or more entries with dayOfWeek, opens, and closes fields. Holiday overrides use the same type via the parallel specialOpeningHoursSpecification property. The format Google's Rich Results parser actually consumes — the difference between \"hours vary\" and a full weekly grid in your search snippet.",
+      "url": "https://muntin.digital/glossary/opening-hours-specification/",
+      "inLanguage": "en-US",
+      "inDefinedTermSet": "https://muntin.digital/glossary/#glossary",
+      "alternateName": "the Schema.org type Google reads to render your hours in search results"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://muntin.digital/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Glossary",
+          "item": "https://muntin.digital/glossary/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "OpeningHoursSpecification",
+          "item": "https://muntin.digital/glossary/opening-hours-specification/"
+        }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -68,10 +108,10 @@
         <line x1="21" y1="21" x2="16.5" y2="16.5"/>
       </svg>
       <span class="nav-search-label">Search</span>
-      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">&#8984;</span>K</kbd>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
     </button>
     <nav class="lang-switch" aria-label="Language">
-      <a href="/es/glossary/opening-hours-specification/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Espa&ntilde;ol</a>
+      <a href="/es/glossary/opening-hours-specification/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
     <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span>
@@ -92,13 +132,13 @@
       <span>Search the library</span>
     </button>
     <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a>
-    <a href="/es/glossary/opening-hours-specification/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en espa&ntilde;ol</a>
+    <a href="/es/glossary/opening-hours-specification/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
   <aside class="lang-hint" id="langHint" role="complementary" aria-label="Sugerencia de idioma" lang="es" hidden>
     <div class="container lang-hint-inner">
-      <span class="lang-hint-text"><strong>&iquest;Prefieres este sitio en espa&ntilde;ol?</strong> Tenemos una versi&oacute;n completa.</span>
-      <a href="/es/glossary/opening-hours-specification/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en espa&ntilde;ol &rarr;</a>
+      <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
+      <a href="/es/glossary/opening-hours-specification/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
       <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
       </button>
@@ -110,33 +150,40 @@
 
 <nav class="breadcrumb container" aria-label="Breadcrumb">
   <a href="/">Home</a>
-  <span class="breadcrumb-sep" aria-hidden="true">&rsaquo;</span>
+  <span class="breadcrumb-sep" aria-hidden="true">›</span>
   <a href="/glossary/">Glossary</a>
-  <span class="breadcrumb-sep" aria-hidden="true">&rsaquo;</span>
+  <span class="breadcrumb-sep" aria-hidden="true">›</span>
   <span aria-current="page">OpeningHoursSpecification</span>
 </nav>
 
 <section class="term-page">
   <div class="container term-page-inner">
     <header class="term-head">
-      <span class="eyebrow"><a href="/glossary/#findability">Findability</a></span>
+      <span class="eyebrow"><a href="/glossary/findability/">Findability</a></span>
       <h1 class="term-h1">OpeningHoursSpecification</h1>
       <p class="term-aka">the Schema.org type Google reads to render your hours in search results</p>
       <div class="term-meta">
-        <div class="term-tags"><span class="gloss-tag">Restaurants</span><span class="gloss-tag">Schema</span></div>
+        <div class="term-tags"><span class="gloss-tag">Restaurants</span></div>
         <div class="term-topics"><a class="term-topic-chip" href="/learn/topics/local-seo/">Local SEO &amp; Discovery</a></div>
       </div>
     </header>
 
     <div class="term-body">
-      <p class="term-def">A specific Schema.org structured-data type for representing when a place is open. Lives inside a <a href="/glossary/schema/"><code>Restaurant</code></a> (or <code>LocalBusiness</code>) JSON-LD block as one or more entries with <code>dayOfWeek</code>, <code>opens</code>, and <code>closes</code> fields. Holiday overrides use the same type via the parallel <code>specialOpeningHoursSpecification</code> property with <code>validFrom</code>/<code>validThrough</code> dates. The format Google&rsquo;s Rich Results parser actually consumes &mdash; the difference between &ldquo;hours vary&rdquo; and a full weekly grid in your search snippet.</p>
+      <p class="term-def">A specific Schema.org structured-data type for representing when a place is open. Lives inside a <a href="/glossary/schema/"><code>Restaurant</code></a> JSON-LD block as one or more entries with <code>dayOfWeek</code>, <code>opens</code>, and <code>closes</code> fields. Holiday overrides use the same type via the parallel <code>specialOpeningHoursSpecification</code> property. The format Google's Rich Results parser actually consumes — the difference between "hours vary" and a full weekly grid in your search snippet.</p>
       <h2 class="term-why-h">Why it matters</h2>
-      <p class="term-why">The customer searching &ldquo;is [restaurant] open right now?&rdquo; doesn't open your website. They glance at the rich snippet and decide. Without an <code>OpeningHoursSpecification</code> block on every page, Google falls back to either &ldquo;hours vary&rdquo; or to whatever your Google Business Profile says &mdash; and when those two sources disagree, your listing inherits the lower confidence. The fix is a small JSON-LD block in your site&rsquo;s <code>&lt;head&gt;</code>; the alternative is leaving every &ldquo;open now&rdquo; query to chance.</p>
-      <p class="term-why">Two correctness traps cost most independents a snippet. First: a service that crosses midnight (5 PM &ndash; 1 AM) emitted as a single <code>OpeningHoursSpecification</code> with <code>opens: "17:00"</code> and <code>closes: "01:00"</code> is technically permitted but inconsistent in Google&rsquo;s parser. The defensive pattern is two consecutive entries (5 PM &ndash; 11:59 PM same day, 12:00 AM &ndash; 1 AM next day). Second: a closure picked in your calendar but never written into <code>specialOpeningHoursSpecification</code> means Google keeps showing standard hours on Thanksgiving until a customer reports the listing as wrong &mdash; soft demotion in local search.</p>
-      <p class="term-why"><a href="/tools/open-hours/">Open Hours</a> generates a complete <code>OpeningHoursSpecification</code> + <code>specialOpeningHoursSpecification</code> block (with the next-day defensive pattern handled correctly) for any week + closure schedule you enter. Validate the output at <a href="https://validator.schema.org/" target="_blank" rel="noopener">validator.schema.org</a> before shipping.</p>
+      <p class="term-why">The customer searching "is [restaurant] open right now?" doesn't open your website — they glance at the rich snippet and decide. Without an <code>OpeningHoursSpecification</code> block on every page, Google falls back to "hours vary" or to whatever your Google Business Profile says, and when those two sources disagree your listing inherits the lower confidence. <a href="/tools/open-hours/">Open Hours</a> generates a complete block (with the cross-midnight defensive pattern handled correctly) for any week + closure schedule you enter.</p>
+      <aside class="term-research">
+      <p class="term-research-label">See the research</p>
+      <p><a href="/learn/research/local-business-websites/">Usability of local business websites <span aria-hidden="true">↗</span></a></p>
+    </aside>
+      <!-- glossary-explainer-cue:start -->
+      <!-- glossary-explainer-cue:end -->
     </div>
   </div>
 </section>
+
+<!-- glossary-explainer:start -->
+<!-- glossary-explainer:end -->
 
 <section class="term-siblings">
   <div class="container">
@@ -144,12 +191,12 @@
       <span class="eyebrow">More in Findability</span>
     </header>
     <ul class="term-siblings-list">
-      <li><a href="/glossary/hours-of-operation/"><strong>Hours of operation</strong><span> &mdash; the human-facing form of the same data</span></a></li>
-      <li><a href="/glossary/special-hours/"><strong>Special hours</strong><span> &mdash; per-date overrides</span></a></li>
-      <li><a href="/glossary/holiday-hours/"><strong>Holiday hours</strong><span> &mdash; the recurring decision points</span></a></li>
-      <li><a href="/glossary/schema/"><strong>Schema markup</strong><span> &mdash; JSON-LD, structured data</span></a></li>
-      <li><a href="/glossary/gbp/"><strong>Google Business Profile</strong><span> &mdash; the other source Google reads</span></a></li>
-      <li><a href="/glossary/nap-consistency/"><strong>NAP consistency</strong><span> &mdash; name, address, phone alignment</span></a></li>
+      <li><a href="/glossary/gbp/"><strong>Google Business Profile</strong><span> — GBP, formerly Google My Business</span></a></li>
+      <li><a href="/glossary/title-tag/"><strong>Title tag</strong><span> — the page's &lt;title&gt;</span></a></li>
+      <li><a href="/glossary/meta-description/"><strong>Meta description</strong></a></li>
+      <li><a href="/glossary/schema/"><strong>Schema markup</strong><span> — JSON-LD, structured data, schema.org</span></a></li>
+      <li><a href="/glossary/alt-text/"><strong>Alt text</strong><span> — image descriptions</span></a></li>
+      <li><a href="/glossary/sitemap/"><strong>Sitemap</strong><span> — sitemap.xml</span></a></li>
     </ul>
   </div>
 </section>
@@ -158,7 +205,7 @@
   <div class="container">
     <div class="section-header reveal section-center">
       <span class="eyebrow">Glossary</span>
-      <h2>Browse all<br><span class="serif-italic">99 terms.</span></h2>
+      <h2>Browse all<br><span class="serif-italic">97 terms.</span></h2>
       <p class="final-sub">Plain-English definitions for every term in your audit, organized by category.</p>
     </div>
     <div class="hero-ctas reveal hero-ctas-center">
@@ -168,6 +215,8 @@
   </div>
 </section>
 
+<!-- glossary-knit -->
+<!-- /glossary-knit -->
 </main>
 
 <footer>
@@ -186,7 +235,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a 99-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a 97-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -210,7 +259,7 @@
           <li><a href="/tools/">Free tools</a></li>
           <li><a href="/glossary/">Glossary</a></li>
           <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/resources/">Checklists &amp; guides</a></li>
+          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
         </ul>
       </nav>
 

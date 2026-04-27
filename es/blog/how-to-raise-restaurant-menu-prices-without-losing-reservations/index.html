@@ -262,15 +262,27 @@
       <a href="/es/for/restaurants/">Restaurantes</a>
       <div class="nav-library-wrap">
         <a href="/es/learn/" class="nav-library-trigger" aria-haspopup="true">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <div class="nav-library-menu" role="menu" aria-label="Secciones de la biblioteca">
-          <a href="/es/learn/" role="menuitem"><strong>Inicio de la biblioteca</strong><span>El centro de todo lo de abajo</span></a>
-          <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
-          <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
-          <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
-          <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
-          <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span>97 términos en lenguaje claro</span></a>
-          <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
-          <a href="/es/resources/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+        <div class="nav-library-menu nav-library-menu--mega" role="menu" aria-label="Secciones de la biblioteca">
+          <a class="nav-library-menu__home" href="/es/learn/" role="menuitem">
+            <strong>Inicio de la biblioteca</strong>
+            <span>El centro de todo lo de abajo &rarr;</span>
+          </a>
+          <div class="nav-library-menu__col">
+            <h4>Aprende</h4>
+            <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
+            <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
+            <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span><!-- count:glossary.terms -->116<!-- /count --> términos en lenguaje claro</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Lee</h4>
+            <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
+            <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Haz</h4>
+            <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
+            <a href="/es/learn/checklists/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+          </div>
         </div>
       </div>
       <a href="/es/work/">Proyectos</a>
@@ -301,13 +313,16 @@
     <details class="mobile-library">
       <summary>Biblioteca</summary>
       <a href="/es/learn/">Inicio de la biblioteca</a>
+      <p class="mobile-library__group">Aprende</p>
       <a href="/es/learn/start-here/">Empieza aquí</a>
       <a href="/es/learn/topics/">Temas</a>
-      <a href="/es/blog/">Artículos</a>
-      <a href="/es/tools/">Herramientas gratis</a>
       <a href="/es/glossary/">Glosario</a>
+      <p class="mobile-library__group">Lee</p>
+      <a href="/es/blog/">Artículos</a>
       <a href="/es/learn/research/">Investigación</a>
-      <a href="/es/resources/">Listas y recursos</a>
+      <p class="mobile-library__group">Haz</p>
+      <a href="/es/tools/">Herramientas gratis</a>
+      <a href="/es/learn/checklists/">Listas y recursos</a>
     </details>
     <a href="/es/work/">Proyectos</a>
     <a href="/es/about/">Sobre Don</a>
@@ -384,7 +399,7 @@
   <span style="flex:1;min-width:220px;font-size:14px;line-height:1.55;color:var(--ink-soft);">¿Quieres probar <em>tu</em> base, tamaño de alza, elasticidad de pérdida de cubiertos y margen de contribución mientras lees? <strong style="color:var(--ink);">Abre el Simulador de alza de precios en otra pestaña.</strong> Tus números se quedan en tu navegador.</span>
   <a href="/es/tools/margin-math/" style="font-weight:700;font-size:14px;color:var(--teal);text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap;">Abrir el simulador &rarr;</a>
 </aside>
-<p>No quieres subir los precios. Tus costos ya subieron, los costos de tus proveedores ya subieron, y en algún rincón de la cabeza sabes que las cuentas dejaron de cerrar hace unos cuatro meses. Has estado aguantando los precios del menú porque te acuerdas de lo que le pasó al restaurante de enfrente la última vez que intentó una subida de golpe, y prefieres comerte el <!-- LIBRARY:autolink:start --><a href="/es/glossary/margin/">margen</a><!-- LIBRARY:autolink:end --> antes que perder a un cliente habitual.</p>
+<p>No quieres subir los precios. Tus costos ya subieron, los costos de tus proveedores ya subieron, y en algún rincón de la cabeza sabes que las cuentas dejaron de cerrar hace unos cuatro meses. Has estado aguantando los precios del menú porque te acuerdas de lo que le pasó al restaurante de enfrente la última vez que intentó una subida de golpe, y prefieres comerte el <!-- LIBRARY:autolink:start --><a href="/es/glossary/margin/" data-glossary-head="Margen" data-glossary-aka="ventas menos costos; varios tipos" data-glossary-blurb="Ventas menos costos.">margen</a><!-- LIBRARY:autolink:end --> antes que perder a un cliente habitual.</p>
 <p>Entiendo el miedo. También creo que normalmente el miedo te está protegiendo del riesgo equivocado. La pregunta no es <em>¿debería subir los precios?</em> &mdash; en algún punto, si sigues absorbiendo cada aumento de costos, cierras. La pregunta es <strong>qué platos, cuánto y en qué orden</strong>, para que los números del menú puedan subir sin que caigan las reservas.</p>
 <p>Este post es el manual que uso cuando ayudo a operadores de restaurantes a subir los precios del menú y actualizar su sitio web en la misma semana. Las cuentas son específicas del restaurante, la ejecución es específica del sitio, y las dos mitades solo funcionan juntas. <strong>Estos números son ilustrativos, salen de patrones que veo en los restaurantes independientes con los que trabajo — no de un conjunto de datos publicado.</strong> Tu propio menú va a variar. Lo que se generaliza es la forma de la jugada.</p>
 <h2>La cuenta incómoda que nadie quiere hacer</h2>
@@ -571,7 +586,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de 97 t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->116<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -595,7 +610,7 @@
           <li><a href="/es/tools/">Herramientas gratis</a></li>
           <li><a href="/es/glossary/">Glosario</a></li>
           <li><a href="/es/learn/research/">Investigación</a></li>
-          <li><a href="/es/resources/">Listas y recursos</a></li>
+          <li><a href="/es/learn/checklists/">Listas y recursos</a></li>
         </ul>
       </nav>
 
