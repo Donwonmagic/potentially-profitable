@@ -136,6 +136,101 @@
      menu rows, a reserve-a-table CTA, and an hours line. Colors are
      assigned per role via JS; deriveAccessiblePair enforces 4.5:1
      on every text run. */
+  /* Alternate entry paths — small opt-in chips beneath the dropzone
+     for owners without a logo and for owners with hex codes ready. */
+  .bs-entry-paths{margin:18px 0 0;display:flex;flex-direction:column;gap:8px;align-items:center}
+  .bs-entry-or{font-size:11px;color:var(--stone);font-weight:600;letter-spacing:0.05em;text-transform:uppercase}
+  .bs-entry-chips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%}
+  .bs-entry-chip{flex:1 1 220px;max-width:300px;display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px;border:1px dashed var(--line-dark);border-radius:var(--r-input);background:transparent;cursor:pointer;font:inherit;text-align:left;transition:border-color 140ms var(--ease-out),background 140ms var(--ease-out)}
+  .bs-entry-chip:hover{border-color:var(--teal);background:var(--white)}
+  .bs-entry-chip strong{font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.3}
+  .bs-entry-chip small{font-size:12px;color:var(--stone);line-height:1.45}
+
+  /* Manual hex entry — five inputs + apply button. */
+  .bs-manual-wrap{padding:24px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);display:flex;flex-direction:column;gap:14px}
+  .bs-manual-wrap h2{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0}
+  .bs-manual-wrap > p{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink-soft);max-width:580px}
+  .bs-manual-inputs{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+  .bs-manual-input{display:flex;flex-direction:column;gap:4px}
+  .bs-manual-input label{font-size:11px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--stone)}
+  .bs-manual-input-row{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:var(--r-input);padding:6px 8px;background:var(--white)}
+  .bs-manual-input-row:focus-within{border-color:var(--teal)}
+  .bs-manual-swatch{display:inline-block;width:28px;height:28px;border-radius:6px;border:1px solid var(--line);flex:0 0 auto;background:var(--cream-2)}
+  .bs-manual-input-row input{flex:1;border:0;outline:0;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;color:var(--ink);background:transparent;text-transform:uppercase;font-variant-numeric:tabular-nums}
+  .bs-manual-actions{display:flex;gap:10px;flex-wrap:wrap}
+  .bs-manual-apply{padding:9px 18px;border:1px solid var(--teal);border-radius:999px;background:var(--teal);color:var(--cream);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+  .bs-manual-apply:hover{background:var(--ink);border-color:var(--ink)}
+  .bs-manual-cancel{padding:9px 18px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--stone);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+  .bs-manual-cancel:hover{border-color:var(--rust);color:var(--rust)}
+  .bs-manual-error{font-size:12.5px;color:var(--rust);margin:0;line-height:1.45;min-height:1.45em}
+
+  /* Q0 anchor picker — only shown when the Workshop opens
+     unanchored. Curated grid of restaurant-typical anchor colours. */
+  .bs-anchor-strips{display:flex;flex-direction:column;gap:14px}
+  .bs-anchor-strip-label{font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--stone);margin:0}
+  .bs-anchor-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin:4px 0 0}
+  .bs-anchor-tile{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:6px 8px 8px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);cursor:pointer;font:inherit;text-align:left;transition:transform 140ms var(--ease-out),border-color 140ms var(--ease-out)}
+  .bs-anchor-tile:hover{transform:translateY(-2px);border-color:var(--teal)}
+  .bs-anchor-tile[aria-checked="true"]{border-color:var(--teal);box-shadow:0 0 0 2px var(--teal) inset}
+  .bs-anchor-swatch{display:block;width:100%;height:48px;border-radius:6px;border:1px solid rgba(20,22,26,0.10)}
+  .bs-anchor-tile strong{font-size:11.5px;font-weight:600;color:var(--ink);line-height:1.3}
+  .bs-anchor-tile small{font-size:10.5px;color:var(--stone);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;line-height:1.3}
+  .bs-anchor-custom{margin-top:4px;padding:10px 14px;border:1px dashed var(--line-dark);border-radius:var(--r-input);background:var(--cream-2);display:flex;align-items:center;gap:10px}
+  .bs-anchor-custom-row{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:var(--r-input);padding:5px 8px;background:var(--white);max-width:160px}
+  .bs-anchor-custom-row input{flex:1;border:0;outline:0;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;color:var(--ink);background:transparent;text-transform:uppercase;font-variant-numeric:tabular-nums;width:80px}
+  .bs-anchor-custom-row .bs-manual-swatch{width:22px;height:22px}
+  .bs-anchor-custom-apply{padding:6px 14px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12px;font-weight:600;cursor:pointer}
+  .bs-anchor-custom-apply:hover{background:var(--teal);color:var(--cream)}
+
+  /* Palette Workshop — guided builder for monochromatic logos and
+     for owners starting from scratch. Three small steps + a 3-card
+     candidate render. Education-rich; math-first. */
+  .bs-workshop-wrap{padding:28px 28px 24px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--cream-2);display:flex;flex-direction:column;gap:24px}
+  .bs-workshop-head .eyebrow{margin-bottom:6px}
+  .bs-workshop-head h2{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0 0 8px;line-height:1.2}
+  .bs-workshop-head p{margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);max-width:680px}
+  .bs-workshop-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:18px;counter-reset:bsws}
+  .bs-workshop-step{padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);transition:border-color 140ms var(--ease-out),box-shadow 140ms var(--ease-out)}
+  .bs-workshop-step[data-active="true"]{border-color:var(--teal);box-shadow:0 0 0 1px var(--teal) inset}
+  .bs-workshop-step[data-done="true"]{border-color:var(--status-good);background:var(--status-good-tint)}
+  .bs-workshop-step-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .bs-workshop-step-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--teal);color:var(--cream);font-family:var(--font-display);font-weight:500;font-size:15px}
+  .bs-workshop-step[data-done="true"] .bs-workshop-step-num{background:var(--status-good)}
+  .bs-workshop-step-head h3{font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0}
+  .bs-workshop-chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+  .bs-workshop-chip{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);cursor:pointer;font:inherit;text-align:left;transition:border-color 140ms var(--ease-out),background 140ms var(--ease-out)}
+  .bs-workshop-chip:hover{border-color:var(--teal)}
+  .bs-workshop-chip[aria-checked="true"]{border-color:var(--teal);background:rgba(31,78,91,0.06)}
+  .bs-workshop-chip strong{font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.3}
+  .bs-workshop-chip small{font-size:11.5px;color:var(--stone);line-height:1.4}
+  .bs-ground-chip{flex-direction:row;align-items:center;gap:10px}
+  .bs-ground-chip strong{flex:0 0 auto;min-width:70px}
+  .bs-ground-chip small{display:none}
+  @media(min-width:540px){.bs-ground-chip small{display:block;flex:1}}
+  .bs-ground-swatch{display:inline-block;width:30px;height:30px;border-radius:6px;flex:0 0 auto}
+  .bs-workshop-why{margin-top:10px;font-size:12.5px;color:var(--stone)}
+  .bs-workshop-why summary{cursor:pointer;color:var(--stone);text-decoration:underline;text-underline-offset:2px;list-style:none}
+  .bs-workshop-why summary::-webkit-details-marker{display:none}
+  .bs-workshop-why summary::before{content:"+ ";font-weight:700}
+  .bs-workshop-why[open] summary::before{content:"\2212  "}
+  .bs-workshop-why p{margin:8px 0 0;line-height:1.55;color:var(--ink-soft)}
+
+  .bs-workshop-candidates{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .bs-workshop-card{display:flex;flex-direction:column;gap:8px;padding:14px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);cursor:pointer;text-align:left;font:inherit;transition:border-color 140ms var(--ease-out),transform 140ms var(--ease-out)}
+  .bs-workshop-card:hover{border-color:var(--teal);transform:translateY(-2px)}
+  .bs-workshop-card-name{font-family:var(--font-display);font-size:14px;font-weight:600;color:var(--ink);margin:0}
+  .bs-workshop-card-strip{display:flex;height:38px;border-radius:4px;overflow:hidden}
+  .bs-workshop-card-strip-cell{flex:1}
+  .bs-workshop-card-meta{font-size:11.5px;color:var(--stone);line-height:1.45;font-variant-numeric:tabular-nums}
+  .bs-workshop-card-meta strong{color:var(--ink)}
+  .bs-workshop-card-pick{align-self:flex-start;font-size:12px;font-weight:600;color:var(--teal);text-decoration:underline;text-underline-offset:2px}
+
+  .bs-workshop-after{padding:16px 20px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+  .bs-workshop-after h3{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink);margin:0 0 6px}
+  .bs-workshop-after p{margin:0 0 12px;font-size:13.5px;line-height:1.55;color:var(--ink-soft)}
+  .bs-workshop-refine{padding:7px 14px;border:1px solid var(--teal);border-radius:999px;background:transparent;color:var(--teal);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
+  .bs-workshop-refine:hover{background:var(--teal);color:var(--cream)}
+
   .bs-fixture-wrap{display:flex;flex-direction:column;gap:10px}
   .bs-fixture-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
   .bs-fixture-head h2{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0}
@@ -488,6 +583,24 @@
     </div>
     <p style="margin:12px auto 0;text-align:center;font-size:13px;color:var(--ink-soft);">Not sure what to upload? <button type="button" id="bsDemoBtn" style="background:none;border:0;padding:0;font:inherit;color:var(--teal);border-bottom:1px dashed currentColor;cursor:pointer;">See the demo on our own logo &rarr;</button></p>
 
+    <!-- Alternative entry paths — for owners without a logo, or
+         owners who already have their hex codes in hand. The
+         dropzone above stays the primary path; these are quieter
+         opt-ins underneath. -->
+    <div class="bs-entry-paths" id="bsEntryPaths">
+      <span class="bs-entry-or">Or, if you don&rsquo;t have a logo handy:</span>
+      <div class="bs-entry-chips">
+        <button type="button" class="bs-entry-chip" id="bsEntryWorkshopCold">
+          <strong>Start from scratch</strong>
+          <small>Pick an anchor colour, build a palette around it. The Workshop walks you through it.</small>
+        </button>
+        <button type="button" class="bs-entry-chip" id="bsEntryManual">
+          <strong>I know my colours</strong>
+          <small>Paste five hex codes. Skip the Workshop, go straight to the deliverables.</small>
+        </button>
+      </div>
+    </div>
+
     <div class="bs-status" id="bsStatus" role="status" aria-live="polite"></div>
 
     <div class="bs-preview" id="bsPreview" hidden>
@@ -526,6 +639,161 @@
           </ol>
         </div>
       </details>
+    </div>
+
+    <!-- MANUAL HEX ENTRY — Entry 4. Five hex inputs + Apply. Skips
+         the Workshop entirely; the entered palette commits straight
+         into the existing fixture / contrast / export pipeline. -->
+    <div class="bs-manual-wrap" id="bsManualWrap" hidden>
+      <h2>Enter your colours</h2>
+      <p>Five hex codes (or fewer &mdash; leave blanks where you don&rsquo;t have one yet). Each input shows a live swatch as you type. The palette commits when you click <strong>Apply</strong> &mdash; you&rsquo;ll go straight to the contrast grid and exports.</p>
+      <div class="bs-manual-inputs" id="bsManualInputs"></div>
+      <p class="bs-manual-error" id="bsManualError" aria-live="polite"></p>
+      <div class="bs-manual-actions">
+        <button type="button" class="bs-manual-apply"  id="bsManualApply">Apply palette</button>
+        <button type="button" class="bs-manual-cancel" id="bsManualCancel">Cancel</button>
+      </div>
+    </div>
+
+    <!-- PALETTE WORKSHOP — opens automatically when the uploaded
+         logo is monochromatic, or manually via "Refine in Workshop".
+         Three short questions (mood, ground, count), three candidate
+         palettes generated, one click to commit. The committed
+         palette flows into the existing fixture / contrast / export
+         pipeline unchanged. -->
+    <div class="bs-workshop-wrap" id="bsWorkshopWrap" hidden>
+      <header class="bs-workshop-head">
+        <span class="eyebrow">Palette workshop</span>
+        <h2 id="bsWorkshopTitle">Your logo is one strong colour. Let's build the rest of the palette around it.</h2>
+        <p id="bsWorkshopDek">Three small choices &mdash; mood, ground, and how many colours &mdash; then pick the candidate palette that feels like your restaurant. The math (hue distance, WCAG contrast, OKLab gamut) runs as you click.</p>
+      </header>
+
+      <ol class="bs-workshop-steps" aria-label="Workshop steps">
+        <!-- Q0 — anchor picker. Only shown when the Workshop opens
+             without an anchor (Entry 3, "Start from scratch"). When
+             the Workshop auto-opens after a logo upload, this step
+             stays hidden and the existing anchor flows through. -->
+        <li class="bs-workshop-step" data-step="anchor" hidden>
+          <div class="bs-workshop-step-head">
+            <span class="bs-workshop-step-num">0</span>
+            <h3>Pick a starting colour</h3>
+          </div>
+          <p style="margin:0 0 14px;font-size:13px;color:var(--ink-soft);line-height:1.55;">A handful of restaurant-typical anchors to choose from. Hover any tile to see what it&rsquo;s often used for. None of these your style? Type a hex code at the bottom.</p>
+          <div class="bs-anchor-strips" role="radiogroup" aria-label="Anchor colour">
+            <div>
+              <p class="bs-anchor-strip-label">Warm spice &amp; earth</p>
+              <div class="bs-anchor-row">
+                <button type="button" class="bs-anchor-tile" data-anchor="#B8541A" role="radio" aria-checked="false" title="Warm, earthy — common in Italian and Mexican concepts"><span class="bs-anchor-swatch" style="background:#B8541A"></span><strong>Terracotta</strong><small>#B8541A</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#C68A2C" role="radio" aria-checked="false" title="Mustard yellow — bistro, deli, casual"><span class="bs-anchor-swatch" style="background:#C68A2C"></span><strong>Mustard</strong><small>#C68A2C</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#8B3A26" role="radio" aria-checked="false" title="Brick — pizzeria, neighbourhood Italian"><span class="bs-anchor-swatch" style="background:#8B3A26"></span><strong>Brick</strong><small>#8B3A26</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#D45D3A" role="radio" aria-checked="false" title="Paprika — bold warm accent"><span class="bs-anchor-swatch" style="background:#D45D3A"></span><strong>Paprika</strong><small>#D45D3A</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#C99230" role="radio" aria-checked="false" title="Ochre — old-world, traditional"><span class="bs-anchor-swatch" style="background:#C99230"></span><strong>Ochre</strong><small>#C99230</small></button>
+              </div>
+            </div>
+            <div>
+              <p class="bs-anchor-strip-label">Forest &amp; deep</p>
+              <div class="bs-anchor-row">
+                <button type="button" class="bs-anchor-tile" data-anchor="#1F4E5B" role="radio" aria-checked="false" title="Forest green — wine bars, farm-to-table"><span class="bs-anchor-swatch" style="background:#1F4E5B"></span><strong>Forest</strong><small>#1F4E5B</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#7A8B6A" role="radio" aria-checked="false" title="Sage — natural, herbal"><span class="bs-anchor-swatch" style="background:#7A8B6A"></span><strong>Sage</strong><small>#7A8B6A</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#6B7A3A" role="radio" aria-checked="false" title="Olive — Mediterranean, hearty"><span class="bs-anchor-swatch" style="background:#6B7A3A"></span><strong>Olive</strong><small>#6B7A3A</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#3A5945" role="radio" aria-checked="false" title="Juniper — botanical, cocktail bars"><span class="bs-anchor-swatch" style="background:#3A5945"></span><strong>Juniper</strong><small>#3A5945</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#2E4A3D" role="radio" aria-checked="false" title="Pine — moody, woodland"><span class="bs-anchor-swatch" style="background:#2E4A3D"></span><strong>Pine</strong><small>#2E4A3D</small></button>
+              </div>
+            </div>
+            <div>
+              <p class="bs-anchor-strip-label">Navy &amp; ink</p>
+              <div class="bs-anchor-row">
+                <button type="button" class="bs-anchor-tile" data-anchor="#1F2E5B" role="radio" aria-checked="false" title="Navy — fine dining, refined"><span class="bs-anchor-swatch" style="background:#1F2E5B"></span><strong>Navy</strong><small>#1F2E5B</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#4F5B6A" role="radio" aria-checked="false" title="Slate — modern, minimal"><span class="bs-anchor-swatch" style="background:#4F5B6A"></span><strong>Slate</strong><small>#4F5B6A</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#1A2236" role="radio" aria-checked="false" title="Midnight — cocktail bar, late-night"><span class="bs-anchor-swatch" style="background:#1A2236"></span><strong>Midnight</strong><small>#1A2236</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#2A2620" role="radio" aria-checked="false" title="Charcoal — chophouse, dark academia"><span class="bs-anchor-swatch" style="background:#2A2620"></span><strong>Charcoal</strong><small>#2A2620</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#4A6577" role="radio" aria-checked="false" title="Denim — casual, neighbourhood"><span class="bs-anchor-swatch" style="background:#4A6577"></span><strong>Denim</strong><small>#4A6577</small></button>
+              </div>
+            </div>
+            <div>
+              <p class="bs-anchor-strip-label">Vibrant &amp; expressive</p>
+              <div class="bs-anchor-row">
+                <button type="button" class="bs-anchor-tile" data-anchor="#E07050" role="radio" aria-checked="false" title="Coral — playful, brunchy"><span class="bs-anchor-swatch" style="background:#E07050"></span><strong>Coral</strong><small>#E07050</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#E8A93B" role="radio" aria-checked="false" title="Marigold — energetic, sunny"><span class="bs-anchor-swatch" style="background:#E8A93B"></span><strong>Marigold</strong><small>#E8A93B</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#B73F6A" role="radio" aria-checked="false" title="Fuchsia — bold, expressive"><span class="bs-anchor-swatch" style="background:#B73F6A"></span><strong>Fuchsia</strong><small>#B73F6A</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#3A8B6E" role="radio" aria-checked="false" title="Jade — fresh, modern Asian"><span class="bs-anchor-swatch" style="background:#3A8B6E"></span><strong>Jade</strong><small>#3A8B6E</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#A84080" role="radio" aria-checked="false" title="Magenta — daring, contemporary"><span class="bs-anchor-swatch" style="background:#A84080"></span><strong>Magenta</strong><small>#A84080</small></button>
+              </div>
+            </div>
+            <div class="bs-anchor-custom">
+              <span style="font-size:12.5px;color:var(--stone);">Or type a custom hex:</span>
+              <div class="bs-anchor-custom-row">
+                <span class="bs-manual-swatch" id="bsAnchorCustomSwatch"></span>
+                <input type="text" id="bsAnchorCustomInput" placeholder="#1F4E5B" maxlength="7" autocomplete="off" spellcheck="false" />
+              </div>
+              <button type="button" class="bs-anchor-custom-apply" id="bsAnchorCustomApply">Use this</button>
+            </div>
+          </div>
+          <details class="bs-workshop-why">
+            <summary>Why we asked this</summary>
+            <p>The anchor is the colour that anchors your brand &mdash; what your menu, signage, Instagram avatar, and the Workshop&rsquo;s candidates will all relate to. Pick the one closest to what you want; the Workshop will help you place it.</p>
+          </details>
+        </li>
+
+        <li class="bs-workshop-step" data-step="mood" data-active="true">
+          <div class="bs-workshop-step-head">
+            <span class="bs-workshop-step-num">1</span>
+            <h3>What's the mood you're after?</h3>
+          </div>
+          <div class="bs-workshop-chips" role="radiogroup" aria-label="Mood">
+            <button type="button" class="bs-workshop-chip" data-mood="calm"    role="radio" aria-checked="false"><strong>Calm &amp; considered</strong><small>Analogous &middot; neighbouring hues, low chroma</small></button>
+            <button type="button" class="bs-workshop-chip" data-mood="warm"    role="radio" aria-checked="false"><strong>Warm &amp; welcoming</strong><small>Earth-tone analogous &middot; hospitality default</small></button>
+            <button type="button" class="bs-workshop-chip" data-mood="bold"    role="radio" aria-checked="false"><strong>Bold &amp; energetic</strong><small>Complementary &middot; opposite hues for contrast</small></button>
+            <button type="button" class="bs-workshop-chip" data-mood="refined" role="radio" aria-checked="false"><strong>Refined &amp; restrained</strong><small>Monochromatic &middot; one hue, varied lightness</small></button>
+            <button type="button" class="bs-workshop-chip" data-mood="playful" role="radio" aria-checked="false"><strong>Playful &amp; rich</strong><small>Triadic / tetradic &middot; three or four hues balanced</small></button>
+          </div>
+          <details class="bs-workshop-why">
+            <summary>Why we asked this</summary>
+            <p>Mood maps to a colour-theory family. <em>Analogous</em> palettes use neighbouring hues (15&ndash;30&deg; apart) and feel quiet. <em>Complementary</em> palettes use opposite hues (180&deg; apart) and feel energetic. The math runs in <a href="/glossary/oklab/" style="color:inherit;border-bottom:1px dashed currentColor;">OKLab</a> &mdash; the same colour space your eyes use to judge similarity, not the same one your screen lives in.</p>
+          </details>
+        </li>
+
+        <li class="bs-workshop-step" data-step="ground">
+          <div class="bs-workshop-step-head">
+            <span class="bs-workshop-step-num">2</span>
+            <h3>What's the dominant ground?</h3>
+          </div>
+          <div class="bs-workshop-chips" role="radiogroup" aria-label="Ground">
+            <button type="button" class="bs-workshop-chip bs-ground-chip" data-ground="#FAF7F2" role="radio" aria-checked="false"><span class="bs-ground-swatch" style="background:#FAF7F2"></span><strong>Cream</strong><small>Warm, restaurant-classic</small></button>
+            <button type="button" class="bs-workshop-chip bs-ground-chip" data-ground="#FFFFFF" role="radio" aria-checked="false"><span class="bs-ground-swatch" style="background:#FFFFFF;border:1px solid var(--line)"></span><strong>White</strong><small>Crisp, modern</small></button>
+            <button type="button" class="bs-workshop-chip bs-ground-chip" data-ground="#2A2620" role="radio" aria-checked="false"><span class="bs-ground-swatch" style="background:#2A2620"></span><strong>Charcoal</strong><small>Moody, nighttime</small></button>
+            <button type="button" class="bs-workshop-chip bs-ground-chip" data-ground="#14161A" role="radio" aria-checked="false"><span class="bs-ground-swatch" style="background:#14161A"></span><strong>Ink</strong><small>Sophisticated, fine-dining</small></button>
+          </div>
+          <details class="bs-workshop-why">
+            <summary>Why we asked this</summary>
+            <p>The ground is the surface 80&#37; of your design lives on &mdash; the menu paper, the website background, the Instagram grid base. Your hero colour and accents need to read against it without effort. The math we run guarantees every accent meets WCAG AA contrast (4.5:1) against your chosen ground.</p>
+          </details>
+        </li>
+
+        <li class="bs-workshop-step" data-step="count">
+          <div class="bs-workshop-step-head">
+            <span class="bs-workshop-step-num">3</span>
+            <h3>How many accent colours?</h3>
+          </div>
+          <div class="bs-workshop-chips" role="radiogroup" aria-label="Count">
+            <button type="button" class="bs-workshop-chip" data-count="3" role="radio" aria-checked="false"><strong>One</strong><small>Anchor + ground + 1 accent. Minimal.</small></button>
+            <button type="button" class="bs-workshop-chip" data-count="4" role="radio" aria-checked="true"  aria-checked="false"><strong>A few</strong><small>Anchor + ground + 2 accents. Most common.</small></button>
+            <button type="button" class="bs-workshop-chip" data-count="5" role="radio" aria-checked="false"><strong>A rich set</strong><small>Anchor + ground + 2 accents + neutral. Full palette.</small></button>
+          </div>
+          <details class="bs-workshop-why">
+            <summary>Why we asked this</summary>
+            <p>Most restaurant brands use 3&ndash;5 colours total. Fewer feels stark; more makes design decisions harder. Pick the smallest set that still gives you what you need.</p>
+          </details>
+        </li>
+      </ol>
+
+      <div class="bs-workshop-candidates" id="bsWorkshopCandidates" hidden aria-live="polite"></div>
+
+      <div class="bs-workshop-after" id="bsWorkshopAfter" hidden>
+        <h3>About this palette</h3>
+        <p id="bsWorkshopAboutText"></p>
+        <button type="button" class="bs-workshop-refine" id="bsWorkshopRefineBtn">Refine again &rarr;</button>
+      </div>
     </div>
 
     <div class="bs-fixture-wrap" id="bsFixtureWrap" hidden>
@@ -593,6 +861,10 @@
         <button type="button" class="bs-export-btn bs-export-btn-primary" id="bsDownloadPane">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           Download Muntin Pane (PNG)
+        </button>
+        <button type="button" class="bs-export-btn" id="bsDownloadSheet">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg>
+          Download Palette Sheet (PNG)
         </button>
         <button type="button" class="bs-export-btn" id="bsCopyCss">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
@@ -960,6 +1232,13 @@
           <p class="tool-deep-snippet">A named reference for a brand decision — a color, a font size, a corner radius, a spacing step — exported as a portable file (CSS variables,…</p>
           <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
         </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/glossary/color-harmony/">
+          <span class="tool-deep-kind">Glossary</span>
+          <h3>Color harmony</h3>
+          <p class="tool-deep-aka">how the colors in a palette relate to each other on the hue wheel</p>
+          <p class="tool-deep-snippet">The relationship between the colors in a palette, measured by how far apart their hues sit on the color wheel. Named families — analogous, c…</p>
+          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
+        </a>
       <a class="tool-deep-card tool-deep-card-article" href="/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/">
           <span class="tool-deep-kind">Article</span>
           <h3>How Much Does a Custom Restaurant Website Cost in 2026?</h3>
@@ -1022,6 +1301,7 @@
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="./brand-suite.js?v=20260424-bs1"></script>
 <script src="./pane-render.js?v=20260425-bs2"></script>
+<script src="./palette-sheet-render.js?v=20260427-bs3"></script>
 <script>
 /* Brand Suite — upload + palette wiring.
  *
@@ -1085,6 +1365,17 @@
   var latestSimilarities = [];
   // Whether the source logo reads as effectively monochromatic.
   var latestMonochromatic = false;
+  // The detected background colour, if any. The Workshop uses this
+  // to default the "ground" choice in Q2 — if the user uploaded a
+  // logo on cream paper, we suggest cream as the ground.
+  var latestDetectedBackground = null;
+  // Optional metadata used by the Palette Sheet renderer. When the
+  // Workshop commits a candidate, these get populated; on auto-
+  // extracted palettes they stay null and the Sheet renders without
+  // a harmony chip.
+  var latestRestaurantName     = '';
+  var latestHarmonyLabel       = null;
+  var latestHarmonyDescription = null;
 
   // Spin up the worker lazily on first valid drop so the page's
   // initial load stays light. Falls back to main-thread extraction
@@ -1135,6 +1426,32 @@
       for (var j = 0; j < MAX_SAMPLED_PIXELS; j++) trimmed[j] = out[Math.floor(j * stride)];
       out = trimmed;
     }
+    return out;
+  }
+
+  // Sample the four edge bands (top + bottom rows, left + right cols)
+  // separately. The dominant colour among these pixels is almost
+  // certainly the background — a logo rarely fills its frame to the
+  // edges. Skipped if alpha < 128 (transparent edges contribute nothing).
+  function sampleEdgePixels(canvas){
+    var ctx = canvas.getContext('2d');
+    var w = canvas.width, h = canvas.height;
+    if (!w || !h) return [];
+    var top, bottom, left, right;
+    try {
+      top    = ctx.getImageData(0, 0, w, 1).data;
+      bottom = ctx.getImageData(0, h - 1, w, 1).data;
+      left   = ctx.getImageData(0, 0, 1, h).data;
+      right  = ctx.getImageData(w - 1, 0, 1, h).data;
+    } catch (_) { return []; }
+    var out = [];
+    function ingest(arr){
+      for (var i = 0; i < arr.length; i += 4) {
+        if (arr[i + 3] < 128) continue;
+        out.push([arr[i], arr[i + 1], arr[i + 2]]);
+      }
+    }
+    ingest(top); ingest(bottom); ingest(left); ingest(right);
     return out;
   }
 
@@ -1632,6 +1949,44 @@
       });
   }
 
+  // Palette Sheet — the focused "colours on paper" deliverable.
+  // Renders the palette + contrast grid + naming convention as a
+  // 1200×1500 PNG, built to the same first-impression bar as the
+  // Muntin Pane and the other six Cards.
+  function buildSheetOpts(palette){
+    return {
+      restaurant:          (latestRestaurantName || ''),
+      palette:             palette,
+      harmonyLabel:        latestHarmonyLabel || null,
+      harmonyDescription:  latestHarmonyDescription || null,
+      count:               palette.length,
+      strings:             window.BSPaletteSheet ? window.BSPaletteSheet.DEFAULT_STRINGS_EN : null
+    };
+  }
+  function sheetBlob(palette){
+    if (!window.BSPaletteSheet) return Promise.resolve(null);
+    return window.BSPaletteSheet.awaitFonts().then(function(){
+      var canvas = window.BSPaletteSheet.renderPaletteSheet(buildSheetOpts(palette));
+      if (!canvas) return null;
+      return window.BSPaletteSheet.canvasToPngBlob(canvas);
+    });
+  }
+  var downloadSheetBtn = document.getElementById('bsDownloadSheet');
+  if (downloadSheetBtn) downloadSheetBtn.addEventListener('click', function(){
+    if (!latestPalette) return;
+    sheetBlob(latestPalette).then(function(blob){
+      if (!blob) return;
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'palette-sheet.png';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+      if (window.plausible) window.plausible('Brand Suite Export', { props: { format: 'sheet-png' } });
+    });
+  });
+
   downloadPaneBtn.addEventListener('click', function(){
     if (!latestPalette) return;
     paneBlob(latestPalette).then(function(blob){
@@ -1654,9 +2009,15 @@
     var cssText = buildCssBlock(palette);
     var tokensText = buildTokensJson(palette);
     var readmeText = buildReadme(palette);
-    // Try to include the Pane PNG; if rendering fails (no logo loaded
-    // yet, no canvas support), the ZIP still ships the text artifacts.
-    paneBlob(palette).then(function(paneBytes){
+    // Render both PNGs in parallel — Pane and Palette Sheet — then
+    // include whichever succeed. Text artifacts ship even if both
+    // rendering paths fail.
+    Promise.all([
+      paneBlob(palette).catch(function(){ return null; }),
+      sheetBlob(palette).catch(function(){ return null; })
+    ]).then(function(blobs){
+      var paneBytes  = blobs[0];
+      var sheetBytes = blobs[1];
       var entries = [
         { name: 'palette.css',  data: strToBytes(cssText) },
         { name: 'tokens.json',  data: strToBytes(tokensText) },
@@ -1672,17 +2033,20 @@
         a.click();
         setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
       };
-      if (paneBytes) {
-        var reader = new FileReader();
-        reader.onload = function(){
-          entries.unshift({ name: 'brand-pane.png', data: new Uint8Array(reader.result) });
-          emit();
-        };
-        reader.onerror = function(){ emit(); };
-        reader.readAsArrayBuffer(paneBytes);
-      } else {
-        emit();
+      function readBlob(blob){
+        return new Promise(function(resolve){
+          if (!blob) return resolve(null);
+          var fr = new FileReader();
+          fr.onload  = function(){ resolve(new Uint8Array(fr.result)); };
+          fr.onerror = function(){ resolve(null); };
+          fr.readAsArrayBuffer(blob);
+        });
       }
+      Promise.all([readBlob(paneBytes), readBlob(sheetBytes)]).then(function(arrs){
+        if (arrs[1]) entries.unshift({ name: 'palette-sheet.png', data: arrs[1] });
+        if (arrs[0]) entries.unshift({ name: 'brand-pane.png',    data: arrs[0] });
+        emit();
+      });
     });
   }
 
@@ -1982,6 +2346,24 @@
           setStatus('Could not read any opaque pixels from that logo.', 'error');
           return;
         }
+        // Background detection — sample the edge bands separately;
+        // if 70%+ of edges share one colour, exclude that colour from
+        // the cluster sample so a black logo on white doesn't pull
+        // "white" into the palette as a Light Neutral.
+        var edges = sampleEdgePixels(canvas);
+        var bg = window.BS && window.BS.detectBackgroundColor
+          ? window.BS.detectBackgroundColor(edges)
+          : null;
+        if (bg && window.BS.stripBackground) {
+          var stripped = window.BS.stripBackground(pixels, bg.rgb);
+          // Only keep the strip if it didn't remove EVERYTHING (would
+          // happen on a colour-on-its-own-colour image — fall back to
+          // the original sample in that case).
+          if (stripped.length >= 30) {
+            pixels = stripped;
+            latestDetectedBackground = bg;
+          }
+        }
         extractAndRender(pixels, file);
       }, function(){
         // Image() failed. Try to fall back to the HEIC decoder if the
@@ -2072,6 +2454,393 @@
       });
     });
   }
+
+  // ============================================================
+  // Palette Workshop — guided builder for monochromatic logos and
+  // for owners starting from scratch. Three small steps + 3-card
+  // candidate render. Auto-opens when a monochromatic logo is
+  // detected; can also be opened manually via the "Refine" button.
+  // ============================================================
+  var workshopWrap        = document.getElementById('bsWorkshopWrap');
+  var workshopCandidates  = document.getElementById('bsWorkshopCandidates');
+  var workshopAfter       = document.getElementById('bsWorkshopAfter');
+  var workshopAboutText   = document.getElementById('bsWorkshopAboutText');
+  var workshopRefineBtn   = document.getElementById('bsWorkshopRefineBtn');
+
+  // Workshop session state — reset every time the workshop opens.
+  var wsState = {
+    anchor:  null,    // hex
+    ground:  null,    // hex
+    mood:    null,    // 'calm' | 'warm' | 'bold' | 'refined' | 'playful'
+    count:   4
+  };
+
+  // Map a detected background to the closest preset ground value
+  // (so a logo on cream paper auto-suggests the cream ground chip).
+  function snapBackgroundToGround(bgHex){
+    if (!bgHex) return null;
+    var presets = ['#FAF7F2', '#FFFFFF', '#2A2620', '#14161A'];
+    var best = null, bestD = Infinity;
+    var bgRgb = window.BS.hexToRgb(bgHex);
+    if (!bgRgb) return null;
+    var bgLab = window.BS.rgbToOklab(bgRgb.r, bgRgb.g, bgRgb.b);
+    presets.forEach(function(p){
+      var prgb = window.BS.hexToRgb(p);
+      var plab = window.BS.rgbToOklab(prgb.r, prgb.g, prgb.b);
+      var d = window.BS.oklabDistance(bgLab, plab);
+      if (d < bestD) { bestD = d; best = p; }
+    });
+    return bestD < 0.20 ? best : null;
+  }
+
+  function openWorkshop(opts){
+    opts = opts || {};
+    workshopWrap.hidden = false;
+    workshopCandidates.hidden = true;
+    workshopCandidates.innerHTML = '';
+    workshopAfter.hidden = true;
+    // Reset chip selection.
+    workshopWrap.querySelectorAll('.bs-workshop-chip[aria-checked="true"]').forEach(function(c){
+      c.setAttribute('aria-checked', 'false');
+    });
+    workshopWrap.querySelectorAll('.bs-anchor-tile[aria-checked="true"]').forEach(function(t){
+      t.setAttribute('aria-checked', 'false');
+    });
+    workshopWrap.querySelectorAll('.bs-workshop-step').forEach(function(s){
+      s.removeAttribute('data-done');
+      s.removeAttribute('data-active');
+    });
+    var anchorStep = workshopWrap.querySelector('.bs-workshop-step[data-step="anchor"]');
+    var moodStep   = workshopWrap.querySelector('.bs-workshop-step[data-step="mood"]');
+    // Q0 visibility — show only when no anchor was supplied. If an
+    // anchor came in (auto-open from a monochromatic logo upload),
+    // Q0 stays hidden and the mood step is the active first step.
+    var hasAnchor = !!opts.anchor;
+    if (anchorStep) {
+      anchorStep.hidden = hasAnchor;
+      if (!hasAnchor) anchorStep.setAttribute('data-active', 'true');
+    }
+    if (moodStep && hasAnchor) moodStep.setAttribute('data-active', 'true');
+
+    wsState.anchor = opts.anchor || null;
+    wsState.ground = null;
+    wsState.mood   = null;
+    wsState.count  = 4;
+
+    // Default-pick the snapped ground based on detected background.
+    var snapped = snapBackgroundToGround(latestDetectedBackground && latestDetectedBackground.hex);
+    if (snapped) {
+      var groundChip = workshopWrap.querySelector('.bs-ground-chip[data-ground="' + snapped + '"]');
+      if (groundChip) {
+        groundChip.setAttribute('aria-checked', 'true');
+        wsState.ground = snapped;
+      }
+    }
+    // Default-pick "a few" (count = 4) so the user only has to pick
+    // mood + ground for a complete brief.
+    var fewChip = workshopWrap.querySelector('.bs-workshop-chip[data-count="4"]');
+    if (fewChip) fewChip.setAttribute('aria-checked', 'true');
+
+    // Scroll the workshop into view.
+    requestAnimationFrame(function(){
+      workshopWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
+  // Step-completion logic — when all three answers are collected,
+  // render the candidate palettes.
+  function maybeRenderCandidates(){
+    if (!wsState.anchor || !wsState.ground || !wsState.mood || !wsState.count) return;
+    var candidates = window.BS.generateCandidatePalettes(
+      wsState.anchor, wsState.ground, wsState.mood, wsState.count
+    );
+    workshopCandidates.innerHTML = candidates.map(function(c, idx){
+      var palette = c.palette;
+      var stripCells = palette.map(function(e){
+        return '<div class="bs-workshop-card-strip-cell" style="background:' + e.hex + '"></div>';
+      }).join('');
+      // Compute critical contrast: anchor on ground.
+      var anchorHex = palette[0] ? palette[0].hex : wsState.anchor;
+      var contrastVsGround = window.BS.contrastRatio(anchorHex, wsState.ground).toFixed(1);
+      var hueDeg = palette[0] ? Math.round(palette[0].hueDeg || 0) : 0;
+      // Format harmony summary.
+      var hueDescription = '';
+      if (c.harmonyName === 'analogous')         hueDescription = 'neighbouring hues, ±15–30°';
+      else if (c.harmonyName === 'complementary')hueDescription = 'opposite hues, 180° offset';
+      else if (c.harmonyName === 'splitComplementary') hueDescription = 'split complement, ±150° / 210°';
+      else if (c.harmonyName === 'triadic')      hueDescription = 'three hues, 120° apart';
+      else if (c.harmonyName === 'tetradic')     hueDescription = 'four hues, 90° apart';
+      else if (c.harmonyName === 'monochromatic')hueDescription = 'one hue, varied lightness';
+      return '<button type="button" class="bs-workshop-card" data-candidate-idx="' + idx + '" aria-label="Pick ' + c.harmonyLabel + ' palette">' +
+        '<p class="bs-workshop-card-name">' + c.harmonyLabel + '</p>' +
+        '<div class="bs-workshop-card-strip" aria-hidden="true">' + stripCells + '</div>' +
+        '<p class="bs-workshop-card-meta">' + hueDescription + '<br>' +
+        '<strong>' + contrastVsGround + ':1</strong> primary vs ground · all accents ≥ 4.5:1</p>' +
+        '<span class="bs-workshop-card-pick">Pick this palette →</span>' +
+      '</button>';
+    }).join('');
+    workshopCandidates.hidden = false;
+    // Cache for click-handler.
+    workshopCandidates._candidates = candidates;
+  }
+
+  // Click handlers — chip selection, candidate selection.
+  workshopWrap.addEventListener('click', function(e){
+    var chip = e.target.closest('.bs-workshop-chip');
+    if (chip) {
+      var step = chip.closest('.bs-workshop-step');
+      if (!step) return;
+      // Single-select within this step.
+      step.querySelectorAll('.bs-workshop-chip').forEach(function(c){
+        c.setAttribute('aria-checked', 'false');
+      });
+      chip.setAttribute('aria-checked', 'true');
+      step.setAttribute('data-done', 'true');
+      step.removeAttribute('data-active');
+      // Activate the next undone step.
+      var nextStep = step.nextElementSibling;
+      while (nextStep && nextStep.getAttribute('data-done') === 'true') nextStep = nextStep.nextElementSibling;
+      if (nextStep && nextStep.classList.contains('bs-workshop-step')) {
+        nextStep.setAttribute('data-active', 'true');
+      }
+      // Persist the selection.
+      var stepKey = step.getAttribute('data-step');
+      if (stepKey === 'mood')   wsState.mood   = chip.getAttribute('data-mood');
+      if (stepKey === 'ground') wsState.ground = chip.getAttribute('data-ground');
+      if (stepKey === 'count')  wsState.count  = Number(chip.getAttribute('data-count')) || 4;
+      maybeRenderCandidates();
+      return;
+    }
+    var card = e.target.closest('.bs-workshop-card');
+    if (card && workshopCandidates._candidates) {
+      var idx = Number(card.getAttribute('data-candidate-idx')) || 0;
+      var picked = workshopCandidates._candidates[idx];
+      if (!picked) return;
+      // Commit the palette through the existing hydratePalette path
+      // so every downstream surface (fixture, contrast grid, exports,
+      // Pane PNG) re-renders with the chosen palette.
+      var paletteHex = picked.palette.map(function(e){
+        return { hex: e.hex, dominancePct: e.dominancePct };
+      });
+      var anchorHueDeg = picked.palette[0] && picked.palette[0].hueDeg ? Math.round(picked.palette[0].hueDeg) : 0;
+      var aboutLines = {
+        analogous:        'Analogous harmony — your accents sit at ±15–30° from your primary. Calm. All pairs meet WCAG AA contrast against your chosen ground.',
+        complementary:    'Complementary harmony — your accent sits at 180° from your primary. Energetic. The contrast feels lively without clashing.',
+        splitComplementary: 'Split-complementary harmony — accents at 150° and 210° from primary. Bold but softer than direct complementary.',
+        triadic:          'Triadic harmony — three hues 120° apart. Vibrant. Balanced; no single colour dominates.',
+        tetradic:         'Tetradic harmony — four hues 90° apart. Rich. Use one as dominant, the others as accents.',
+        monochromatic:    'Monochromatic harmony — one hue, varied lightness. Sophisticated and restrained.'
+      };
+      var aboutText = (aboutLines[picked.harmonyName] || picked.harmonyLabel) +
+        ' Primary at ' + anchorHueDeg + '°.';
+      // Capture harmony metadata so the Palette Sheet can render the
+      // chip + about-this-palette caption.
+      latestHarmonyLabel       = picked.harmonyLabel;
+      latestHarmonyDescription = aboutText;
+      hydratePalette(paletteHex, { source: 'workshop' });
+      // Show the "About this palette" panel.
+      workshopAboutText.textContent = aboutText;
+      workshopAfter.hidden = false;
+      workshopCandidates.hidden = true;
+      if (window.plausible) {
+        window.plausible('Brand Suite Workshop Pick', {
+          props: { harmony: picked.harmonyName, mood: wsState.mood }
+        });
+      }
+    }
+  });
+
+  // "Refine again" — re-open the workshop with the current state.
+  if (workshopRefineBtn) workshopRefineBtn.addEventListener('click', function(){
+    openWorkshop({ anchor: wsState.anchor });
+  });
+
+  // ============================================================
+  // Entry path 3 — "Start from scratch" — opens the Workshop with
+  // no anchor. The Q0 anchor-picker step shows; once an anchor is
+  // chosen the rest of the flow runs as normal.
+  // ============================================================
+  function openWorkshopUnanchored(){
+    // Reset state and reveal Q0.
+    var anchorStep = workshopWrap.querySelector('.bs-workshop-step[data-step="anchor"]');
+    if (anchorStep) {
+      anchorStep.hidden = false;
+      anchorStep.setAttribute('data-active', 'true');
+      anchorStep.removeAttribute('data-done');
+    }
+    var moodStep = workshopWrap.querySelector('.bs-workshop-step[data-step="mood"]');
+    if (moodStep) moodStep.removeAttribute('data-active');
+    // Open without an anchor; Q0's selection will populate it.
+    openWorkshop({ anchor: null });
+    // openWorkshop sets a sensible default anchor — clear it so the
+    // user has to actually pick one before the candidates render.
+    wsState.anchor = null;
+    workshopCandidates.hidden = true;
+    workshopCandidates.innerHTML = '';
+    if (window.plausible) window.plausible('Brand Suite Workshop Open', { props: { entry: 'cold' } });
+  }
+
+  // Anchor tile click → set the anchor + advance step.
+  workshopWrap.addEventListener('click', function(e){
+    var tile = e.target.closest('.bs-anchor-tile');
+    if (!tile) return;
+    var step = tile.closest('.bs-workshop-step');
+    if (!step) return;
+    step.querySelectorAll('.bs-anchor-tile').forEach(function(t){
+      t.setAttribute('aria-checked', 'false');
+    });
+    tile.setAttribute('aria-checked', 'true');
+    step.setAttribute('data-done', 'true');
+    step.removeAttribute('data-active');
+    wsState.anchor = tile.getAttribute('data-anchor');
+    // Activate the next step (mood).
+    var moodStep = workshopWrap.querySelector('.bs-workshop-step[data-step="mood"]');
+    if (moodStep && moodStep.getAttribute('data-done') !== 'true') {
+      moodStep.setAttribute('data-active', 'true');
+    }
+    maybeRenderCandidates();
+  });
+
+  // Custom-hex anchor input (Q0). Live-update the swatch as the
+  // user types; the "Use this" button sets it as the anchor.
+  var anchorCustomInput  = document.getElementById('bsAnchorCustomInput');
+  var anchorCustomSwatch = document.getElementById('bsAnchorCustomSwatch');
+  var anchorCustomApply  = document.getElementById('bsAnchorCustomApply');
+  function normaliseHexInput(raw){
+    var v = String(raw || '').trim().replace(/^#/, '').toUpperCase();
+    if (/^[0-9A-F]{3}$/.test(v)) v = v.split('').map(function(c){ return c + c; }).join('');
+    if (/^[0-9A-F]{6}$/.test(v)) return '#' + v;
+    return null;
+  }
+  if (anchorCustomInput) anchorCustomInput.addEventListener('input', function(){
+    var hex = normaliseHexInput(anchorCustomInput.value);
+    anchorCustomSwatch.style.background = hex || 'var(--cream-2)';
+  });
+  if (anchorCustomApply) anchorCustomApply.addEventListener('click', function(){
+    var hex = normaliseHexInput(anchorCustomInput.value);
+    if (!hex) return;
+    var anchorStep = workshopWrap.querySelector('.bs-workshop-step[data-step="anchor"]');
+    if (anchorStep) {
+      anchorStep.querySelectorAll('.bs-anchor-tile').forEach(function(t){
+        t.setAttribute('aria-checked', 'false');
+      });
+      anchorStep.setAttribute('data-done', 'true');
+      anchorStep.removeAttribute('data-active');
+    }
+    wsState.anchor = hex;
+    var moodStep = workshopWrap.querySelector('.bs-workshop-step[data-step="mood"]');
+    if (moodStep && moodStep.getAttribute('data-done') !== 'true') {
+      moodStep.setAttribute('data-active', 'true');
+    }
+    maybeRenderCandidates();
+  });
+
+  // Entry-routing chip handlers.
+  var entryWorkshopColdBtn = document.getElementById('bsEntryWorkshopCold');
+  var entryManualBtn       = document.getElementById('bsEntryManual');
+  if (entryWorkshopColdBtn) entryWorkshopColdBtn.addEventListener('click', function(){
+    openWorkshopUnanchored();
+  });
+
+  // ============================================================
+  // Entry path 4 — manual hex entry. Five hex inputs, Apply →
+  // hydratePalette directly, skip the Workshop.
+  // ============================================================
+  var manualWrap   = document.getElementById('bsManualWrap');
+  var manualInputs = document.getElementById('bsManualInputs');
+  var manualApply  = document.getElementById('bsManualApply');
+  var manualCancel = document.getElementById('bsManualCancel');
+  var manualError  = document.getElementById('bsManualError');
+
+  function buildManualInputs(){
+    if (!manualInputs) return;
+    var roleLabels = ['Primary', 'Ground / Secondary', 'Accent 1', 'Accent 2', 'Neutral'];
+    var defaults   = ['',          '#FAF7F2',            '',         '',         ''];
+    manualInputs.innerHTML = roleLabels.map(function(label, idx){
+      return '<div class="bs-manual-input">' +
+        '<label for="bsManualHex' + idx + '">' + label + '</label>' +
+        '<div class="bs-manual-input-row">' +
+          '<span class="bs-manual-swatch" data-manual-swatch="' + idx + '" style="background:' + (defaults[idx] || 'var(--cream-2)') + '"></span>' +
+          '<input type="text" id="bsManualHex' + idx + '" data-manual-hex="' + idx + '" value="' + defaults[idx] + '" placeholder="#1F4E5B" maxlength="7" autocomplete="off" spellcheck="false" />' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  if (manualInputs) {
+    manualInputs.addEventListener('input', function(e){
+      var input = e.target.closest('input[data-manual-hex]');
+      if (!input) return;
+      var idx = input.getAttribute('data-manual-hex');
+      var swatch = manualInputs.querySelector('[data-manual-swatch="' + idx + '"]');
+      var hex = normaliseHexInput(input.value);
+      if (swatch) swatch.style.background = hex || 'var(--cream-2)';
+    });
+  }
+
+  function openManualEntry(){
+    if (!manualWrap) return;
+    buildManualInputs();
+    manualWrap.hidden = false;
+    if (manualError) manualError.textContent = '';
+    requestAnimationFrame(function(){
+      manualWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      var first = manualInputs.querySelector('input[data-manual-hex="0"]');
+      if (first) first.focus();
+    });
+    if (window.plausible) window.plausible('Brand Suite Manual Open');
+  }
+
+  if (entryManualBtn) entryManualBtn.addEventListener('click', openManualEntry);
+  if (manualCancel)   manualCancel.addEventListener('click', function(){
+    if (manualWrap) manualWrap.hidden = true;
+  });
+  if (manualApply) manualApply.addEventListener('click', function(){
+    if (!manualInputs) return;
+    var inputs = manualInputs.querySelectorAll('input[data-manual-hex]');
+    var palette = [];
+    var invalidIdx = -1;
+    for (var i = 0; i < inputs.length; i++) {
+      var raw = inputs[i].value.trim();
+      if (!raw) continue; // blank = skip slot
+      var hex = normaliseHexInput(raw);
+      if (!hex) { invalidIdx = i; break; }
+      palette.push({ hex: hex, dominancePct: 0.20 });
+    }
+    if (invalidIdx >= 0) {
+      manualError.textContent = 'Slot ' + (invalidIdx + 1) + ' isn’t a valid hex code. Use #RRGGBB or #RGB.';
+      return;
+    }
+    if (palette.length < 2) {
+      manualError.textContent = 'Enter at least two hex codes (Primary + at least one more).';
+      return;
+    }
+    manualError.textContent = '';
+    manualWrap.hidden = true;
+    hydratePalette(palette, { source: 'manual' });
+    if (window.plausible) window.plausible('Brand Suite Manual Apply', { props: { count: palette.length } });
+  });
+
+  // Auto-open hook — when hydratePalette flagged the result as
+  // monochromatic, open the Workshop with the anchor pre-loaded.
+  // We poll latestMonochromatic since hydratePalette runs from
+  // multiple call sites.
+  var lastSeenMonoState = false;
+  function watchMonoFlag(){
+    if (latestMonochromatic && !lastSeenMonoState && latestPalette && latestPalette.length) {
+      lastSeenMonoState = true;
+      openWorkshop({ anchor: latestPalette[0].hex });
+    } else if (!latestMonochromatic) {
+      lastSeenMonoState = false;
+      // Hide the workshop if a multi-colour palette is now active.
+      if (workshopWrap && workshopWrap.hidden === false &&
+          workshopCandidates.hidden && workshopAfter.hidden) {
+        workshopWrap.hidden = true;
+      }
+    }
+    requestAnimationFrame(watchMonoFlag);
+  }
+  if (workshopWrap) requestAnimationFrame(watchMonoFlag);
 })();
 </script>
 </body>

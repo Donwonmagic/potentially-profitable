@@ -132,6 +132,96 @@
 
   /* Bloque de vista previa — tarjeta de un restaurante con la paleta aplicada.
      Los colores de texto pasan por deriveAccessiblePair para garantizar AA. */
+  /* Vías alternativas — chips opt-in debajo del dropzone. */
+  .bs-entry-paths{margin:18px 0 0;display:flex;flex-direction:column;gap:8px;align-items:center}
+  .bs-entry-or{font-size:11px;color:var(--stone);font-weight:600;letter-spacing:0.05em;text-transform:uppercase}
+  .bs-entry-chips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%}
+  .bs-entry-chip{flex:1 1 220px;max-width:300px;display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px;border:1px dashed var(--line-dark);border-radius:var(--r-input);background:transparent;cursor:pointer;font:inherit;text-align:left;transition:border-color 140ms var(--ease-out),background 140ms var(--ease-out)}
+  .bs-entry-chip:hover{border-color:var(--teal);background:var(--white)}
+  .bs-entry-chip strong{font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.3}
+  .bs-entry-chip small{font-size:12px;color:var(--stone);line-height:1.45}
+
+  /* Entrada manual de hex. */
+  .bs-manual-wrap{padding:24px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);display:flex;flex-direction:column;gap:14px}
+  .bs-manual-wrap h2{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0}
+  .bs-manual-wrap > p{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink-soft);max-width:580px}
+  .bs-manual-inputs{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+  .bs-manual-input{display:flex;flex-direction:column;gap:4px}
+  .bs-manual-input label{font-size:11px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--stone)}
+  .bs-manual-input-row{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:var(--r-input);padding:6px 8px;background:var(--white)}
+  .bs-manual-input-row:focus-within{border-color:var(--teal)}
+  .bs-manual-swatch{display:inline-block;width:28px;height:28px;border-radius:6px;border:1px solid var(--line);flex:0 0 auto;background:var(--cream-2)}
+  .bs-manual-input-row input{flex:1;border:0;outline:0;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;color:var(--ink);background:transparent;text-transform:uppercase;font-variant-numeric:tabular-nums}
+  .bs-manual-actions{display:flex;gap:10px;flex-wrap:wrap}
+  .bs-manual-apply{padding:9px 18px;border:1px solid var(--teal);border-radius:999px;background:var(--teal);color:var(--cream);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+  .bs-manual-apply:hover{background:var(--ink);border-color:var(--ink)}
+  .bs-manual-cancel{padding:9px 18px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--stone);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+  .bs-manual-cancel:hover{border-color:var(--rust);color:var(--rust)}
+  .bs-manual-error{font-size:12.5px;color:var(--rust);margin:0;line-height:1.45;min-height:1.45em}
+
+  /* Q0 — selector de color base. */
+  .bs-anchor-strips{display:flex;flex-direction:column;gap:14px}
+  .bs-anchor-strip-label{font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--stone);margin:0}
+  .bs-anchor-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin:4px 0 0}
+  .bs-anchor-tile{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:6px 8px 8px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);cursor:pointer;font:inherit;text-align:left;transition:transform 140ms var(--ease-out),border-color 140ms var(--ease-out)}
+  .bs-anchor-tile:hover{transform:translateY(-2px);border-color:var(--teal)}
+  .bs-anchor-tile[aria-checked="true"]{border-color:var(--teal);box-shadow:0 0 0 2px var(--teal) inset}
+  .bs-anchor-swatch{display:block;width:100%;height:48px;border-radius:6px;border:1px solid rgba(20,22,26,0.10)}
+  .bs-anchor-tile strong{font-size:11.5px;font-weight:600;color:var(--ink);line-height:1.3}
+  .bs-anchor-tile small{font-size:10.5px;color:var(--stone);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;line-height:1.3}
+  .bs-anchor-custom{margin-top:4px;padding:10px 14px;border:1px dashed var(--line-dark);border-radius:var(--r-input);background:var(--cream-2);display:flex;align-items:center;gap:10px}
+  .bs-anchor-custom-row{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:var(--r-input);padding:5px 8px;background:var(--white);max-width:160px}
+  .bs-anchor-custom-row input{flex:1;border:0;outline:0;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;color:var(--ink);background:transparent;text-transform:uppercase;font-variant-numeric:tabular-nums;width:80px}
+  .bs-anchor-custom-row .bs-manual-swatch{width:22px;height:22px}
+  .bs-anchor-custom-apply{padding:6px 14px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12px;font-weight:600;cursor:pointer}
+  .bs-anchor-custom-apply:hover{background:var(--teal);color:var(--cream)}
+
+  /* Taller de paleta — guía para logos monocromáticos y operadores
+     que arrancan de cero. Misma estética que el EN. */
+  .bs-workshop-wrap{padding:28px 28px 24px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--cream-2);display:flex;flex-direction:column;gap:24px}
+  .bs-workshop-head .eyebrow{margin-bottom:6px}
+  .bs-workshop-head h2{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0 0 8px;line-height:1.2}
+  .bs-workshop-head p{margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);max-width:680px}
+  .bs-workshop-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:18px;counter-reset:bsws}
+  .bs-workshop-step{padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);transition:border-color 140ms var(--ease-out),box-shadow 140ms var(--ease-out)}
+  .bs-workshop-step[data-active="true"]{border-color:var(--teal);box-shadow:0 0 0 1px var(--teal) inset}
+  .bs-workshop-step[data-done="true"]{border-color:var(--status-good);background:var(--status-good-tint)}
+  .bs-workshop-step-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .bs-workshop-step-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--teal);color:var(--cream);font-family:var(--font-display);font-weight:500;font-size:15px}
+  .bs-workshop-step[data-done="true"] .bs-workshop-step-num{background:var(--status-good)}
+  .bs-workshop-step-head h3{font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0}
+  .bs-workshop-chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+  .bs-workshop-chip{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);cursor:pointer;font:inherit;text-align:left;transition:border-color 140ms var(--ease-out),background 140ms var(--ease-out)}
+  .bs-workshop-chip:hover{border-color:var(--teal)}
+  .bs-workshop-chip[aria-checked="true"]{border-color:var(--teal);background:rgba(31,78,91,0.06)}
+  .bs-workshop-chip strong{font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.3}
+  .bs-workshop-chip small{font-size:11.5px;color:var(--stone);line-height:1.4}
+  .bs-ground-chip{flex-direction:row;align-items:center;gap:10px}
+  .bs-ground-chip strong{flex:0 0 auto;min-width:70px}
+  .bs-ground-chip small{display:none}
+  @media(min-width:540px){.bs-ground-chip small{display:block;flex:1}}
+  .bs-ground-swatch{display:inline-block;width:30px;height:30px;border-radius:6px;flex:0 0 auto}
+  .bs-workshop-why{margin-top:10px;font-size:12.5px;color:var(--stone)}
+  .bs-workshop-why summary{cursor:pointer;color:var(--stone);text-decoration:underline;text-underline-offset:2px;list-style:none}
+  .bs-workshop-why summary::-webkit-details-marker{display:none}
+  .bs-workshop-why summary::before{content:"+ ";font-weight:700}
+  .bs-workshop-why[open] summary::before{content:"\2212  "}
+  .bs-workshop-why p{margin:8px 0 0;line-height:1.55;color:var(--ink-soft)}
+  .bs-workshop-candidates{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .bs-workshop-card{display:flex;flex-direction:column;gap:8px;padding:14px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);cursor:pointer;text-align:left;font:inherit;transition:border-color 140ms var(--ease-out),transform 140ms var(--ease-out)}
+  .bs-workshop-card:hover{border-color:var(--teal);transform:translateY(-2px)}
+  .bs-workshop-card-name{font-family:var(--font-display);font-size:14px;font-weight:600;color:var(--ink);margin:0}
+  .bs-workshop-card-strip{display:flex;height:38px;border-radius:4px;overflow:hidden}
+  .bs-workshop-card-strip-cell{flex:1}
+  .bs-workshop-card-meta{font-size:11.5px;color:var(--stone);line-height:1.45;font-variant-numeric:tabular-nums}
+  .bs-workshop-card-meta strong{color:var(--ink)}
+  .bs-workshop-card-pick{align-self:flex-start;font-size:12px;font-weight:600;color:var(--teal);text-decoration:underline;text-underline-offset:2px}
+  .bs-workshop-after{padding:16px 20px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+  .bs-workshop-after h3{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink);margin:0 0 6px}
+  .bs-workshop-after p{margin:0 0 12px;font-size:13.5px;line-height:1.55;color:var(--ink-soft)}
+  .bs-workshop-refine{padding:7px 14px;border:1px solid var(--teal);border-radius:999px;background:transparent;color:var(--teal);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
+  .bs-workshop-refine:hover{background:var(--teal);color:var(--cream)}
+
   .bs-fixture-wrap{display:flex;flex-direction:column;gap:10px}
   .bs-fixture-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
   .bs-fixture-head h2{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0}
@@ -460,6 +550,22 @@
     </div>
     <p style="margin:12px auto 0;text-align:center;font-size:13px;color:var(--ink-soft);">¿No sabes qué subir? <button type="button" id="bsDemoBtn" style="background:none;border:0;padding:0;font:inherit;color:var(--teal);border-bottom:1px dashed currentColor;cursor:pointer;">Ver el demo con nuestro propio logo &rarr;</button></p>
 
+    <!-- Otras vías de entrada — para quienes aún no tienen logo y
+         para quienes ya tienen los hex en mano. -->
+    <div class="bs-entry-paths" id="bsEntryPaths">
+      <span class="bs-entry-or">O, si no tienes el logo a mano:</span>
+      <div class="bs-entry-chips">
+        <button type="button" class="bs-entry-chip" id="bsEntryWorkshopCold">
+          <strong>Empezar de cero</strong>
+          <small>Eliges un color base, armamos la paleta a su alrededor. El Taller te guía paso a paso.</small>
+        </button>
+        <button type="button" class="bs-entry-chip" id="bsEntryManual">
+          <strong>Ya sé mis colores</strong>
+          <small>Pegas cinco hex y vas directo a los entregables. Sin Taller.</small>
+        </button>
+      </div>
+    </div>
+
     <div class="bs-status" id="bsStatus" role="status" aria-live="polite"></div>
 
     <div class="bs-preview" id="bsPreview" hidden>
@@ -498,6 +604,154 @@
           </ol>
         </div>
       </details>
+    </div>
+
+    <!-- ENTRADA MANUAL DE HEX — Vía 4. Cinco hex + Aplicar. -->
+    <div class="bs-manual-wrap" id="bsManualWrap" hidden>
+      <h2>Escribe tus colores</h2>
+      <p>Cinco hex (o menos &mdash; deja en blanco lo que aún no tengas). Cada cuadro muestra un swatch en vivo mientras escribes. La paleta se aplica con <strong>Aplicar</strong> &mdash; vas directo a la cuadrícula de contraste y a las descargas.</p>
+      <div class="bs-manual-inputs" id="bsManualInputs"></div>
+      <p class="bs-manual-error" id="bsManualError" aria-live="polite"></p>
+      <div class="bs-manual-actions">
+        <button type="button" class="bs-manual-apply"  id="bsManualApply">Aplicar paleta</button>
+        <button type="button" class="bs-manual-cancel" id="bsManualCancel">Cancelar</button>
+      </div>
+    </div>
+
+    <!-- TALLER DE PALETA — se abre cuando el logo es monocromático,
+         o manualmente vía "Refinar de nuevo". Tres preguntas cortas
+         (estado de ánimo, fondo, conteo) + tres paletas candidatas. -->
+    <div class="bs-workshop-wrap" id="bsWorkshopWrap" hidden>
+      <header class="bs-workshop-head">
+        <span class="eyebrow">Taller de paleta</span>
+        <h2 id="bsWorkshopTitle">Tu logo lleva un solo color. Armemos la paleta alrededor de él.</h2>
+        <p id="bsWorkshopDek">Tres preguntas rápidas &mdash; carácter, fondo y cuántos colores &mdash; y eliges la paleta candidata que se vea como tu restaurante. La matemática (distancia de matiz, contraste WCAG, gama OKLab) corre mientras vas haciendo clic.</p>
+      </header>
+
+      <ol class="bs-workshop-steps" aria-label="Pasos del taller">
+        <!-- Q0 — selector de color base. Solo se muestra cuando el
+             Taller se abre sin un color de logo. -->
+        <li class="bs-workshop-step" data-step="anchor" hidden>
+          <div class="bs-workshop-step-head">
+            <span class="bs-workshop-step-num">0</span>
+            <h3>Elige un color base</h3>
+          </div>
+          <p style="margin:0 0 14px;font-size:13px;color:var(--ink-soft);line-height:1.55;">Algunos colores típicos de restaurante para empezar. Pasa el cursor sobre cada baldosa para ver para qué se usa. ¿No te convence ninguno? Escribe un hex propio abajo.</p>
+          <div class="bs-anchor-strips" role="radiogroup" aria-label="Color base">
+            <div>
+              <p class="bs-anchor-strip-label">Especias cálidas y tierra</p>
+              <div class="bs-anchor-row">
+                <button type="button" class="bs-anchor-tile" data-anchor="#B8541A" role="radio" aria-checked="false" title="Cálido y terroso — clásico italiano y mexicano"><span class="bs-anchor-swatch" style="background:#B8541A"></span><strong>Terracota</strong><small>#B8541A</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#C68A2C" role="radio" aria-checked="false" title="Mostaza — bistró, deli, casual"><span class="bs-anchor-swatch" style="background:#C68A2C"></span><strong>Mostaza</strong><small>#C68A2C</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#8B3A26" role="radio" aria-checked="false" title="Ladrillo — pizzería, italiano de barrio"><span class="bs-anchor-swatch" style="background:#8B3A26"></span><strong>Ladrillo</strong><small>#8B3A26</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#D45D3A" role="radio" aria-checked="false" title="Pimentón — acento cálido y audaz"><span class="bs-anchor-swatch" style="background:#D45D3A"></span><strong>Pimentón</strong><small>#D45D3A</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#C99230" role="radio" aria-checked="false" title="Ocre — tradicional, viejo continente"><span class="bs-anchor-swatch" style="background:#C99230"></span><strong>Ocre</strong><small>#C99230</small></button>
+              </div>
+            </div>
+            <div>
+              <p class="bs-anchor-strip-label">Bosque y profundos</p>
+              <div class="bs-anchor-row">
+                <button type="button" class="bs-anchor-tile" data-anchor="#1F4E5B" role="radio" aria-checked="false" title="Verde bosque — vinaterías, farm-to-table"><span class="bs-anchor-swatch" style="background:#1F4E5B"></span><strong>Bosque</strong><small>#1F4E5B</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#7A8B6A" role="radio" aria-checked="false" title="Salvia — natural, herbal"><span class="bs-anchor-swatch" style="background:#7A8B6A"></span><strong>Salvia</strong><small>#7A8B6A</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#6B7A3A" role="radio" aria-checked="false" title="Oliva — mediterráneo, contundente"><span class="bs-anchor-swatch" style="background:#6B7A3A"></span><strong>Oliva</strong><small>#6B7A3A</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#3A5945" role="radio" aria-checked="false" title="Enebro — botánico, coctelería"><span class="bs-anchor-swatch" style="background:#3A5945"></span><strong>Enebro</strong><small>#3A5945</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#2E4A3D" role="radio" aria-checked="false" title="Pino — atmósfera de bosque"><span class="bs-anchor-swatch" style="background:#2E4A3D"></span><strong>Pino</strong><small>#2E4A3D</small></button>
+              </div>
+            </div>
+            <div>
+              <p class="bs-anchor-strip-label">Marino y tinta</p>
+              <div class="bs-anchor-row">
+                <button type="button" class="bs-anchor-tile" data-anchor="#1F2E5B" role="radio" aria-checked="false" title="Marino — alta cocina, refinado"><span class="bs-anchor-swatch" style="background:#1F2E5B"></span><strong>Marino</strong><small>#1F2E5B</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#4F5B6A" role="radio" aria-checked="false" title="Pizarra — moderno, mínimo"><span class="bs-anchor-swatch" style="background:#4F5B6A"></span><strong>Pizarra</strong><small>#4F5B6A</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#1A2236" role="radio" aria-checked="false" title="Medianoche — coctelería, after"><span class="bs-anchor-swatch" style="background:#1A2236"></span><strong>Medianoche</strong><small>#1A2236</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#2A2620" role="radio" aria-checked="false" title="Carbón — chophouse, dark"><span class="bs-anchor-swatch" style="background:#2A2620"></span><strong>Carbón</strong><small>#2A2620</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#4A6577" role="radio" aria-checked="false" title="Mezclilla — casual, de barrio"><span class="bs-anchor-swatch" style="background:#4A6577"></span><strong>Mezclilla</strong><small>#4A6577</small></button>
+              </div>
+            </div>
+            <div>
+              <p class="bs-anchor-strip-label">Vibrantes y expresivos</p>
+              <div class="bs-anchor-row">
+                <button type="button" class="bs-anchor-tile" data-anchor="#E07050" role="radio" aria-checked="false" title="Coral — divertido, brunch"><span class="bs-anchor-swatch" style="background:#E07050"></span><strong>Coral</strong><small>#E07050</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#E8A93B" role="radio" aria-checked="false" title="Caléndula — energético, soleado"><span class="bs-anchor-swatch" style="background:#E8A93B"></span><strong>Caléndula</strong><small>#E8A93B</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#B73F6A" role="radio" aria-checked="false" title="Fucsia — atrevido, expresivo"><span class="bs-anchor-swatch" style="background:#B73F6A"></span><strong>Fucsia</strong><small>#B73F6A</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#3A8B6E" role="radio" aria-checked="false" title="Jade — fresco, asiático moderno"><span class="bs-anchor-swatch" style="background:#3A8B6E"></span><strong>Jade</strong><small>#3A8B6E</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#A84080" role="radio" aria-checked="false" title="Magenta — atrevido, contemporáneo"><span class="bs-anchor-swatch" style="background:#A84080"></span><strong>Magenta</strong><small>#A84080</small></button>
+              </div>
+            </div>
+            <div class="bs-anchor-custom">
+              <span style="font-size:12.5px;color:var(--stone);">O escribe un hex propio:</span>
+              <div class="bs-anchor-custom-row">
+                <span class="bs-manual-swatch" id="bsAnchorCustomSwatch"></span>
+                <input type="text" id="bsAnchorCustomInput" placeholder="#1F4E5B" maxlength="7" autocomplete="off" spellcheck="false" />
+              </div>
+              <button type="button" class="bs-anchor-custom-apply" id="bsAnchorCustomApply">Usar este</button>
+            </div>
+          </div>
+          <details class="bs-workshop-why">
+            <summary>Por qué preguntamos</summary>
+            <p>El color base es el ancla de tu marca &mdash; con él se relacionan tu menú, los letreros, el avatar de Instagram y los candidatos del Taller. Elige el más cercano a lo que quieres; el Taller te ayuda a ubicarlo.</p>
+          </details>
+        </li>
+
+        <li class="bs-workshop-step" data-step="mood" data-active="true">
+          <div class="bs-workshop-step-head">
+            <span class="bs-workshop-step-num">1</span>
+            <h3>¿Qué carácter buscas?</h3>
+          </div>
+          <div class="bs-workshop-chips" role="radiogroup" aria-label="Carácter">
+            <button type="button" class="bs-workshop-chip" data-mood="calm"    role="radio" aria-checked="false"><strong>Sereno y pensado</strong><small>Análogo · matices vecinos, croma bajo</small></button>
+            <button type="button" class="bs-workshop-chip" data-mood="warm"    role="radio" aria-checked="false"><strong>Cálido y acogedor</strong><small>Análogo en tonos tierra · clásico de restaurante</small></button>
+            <button type="button" class="bs-workshop-chip" data-mood="bold"    role="radio" aria-checked="false"><strong>Audaz y enérgico</strong><small>Complementario · matices opuestos, contraste fuerte</small></button>
+            <button type="button" class="bs-workshop-chip" data-mood="refined" role="radio" aria-checked="false"><strong>Refinado y sobrio</strong><small>Monocromático · un matiz, varias luminosidades</small></button>
+            <button type="button" class="bs-workshop-chip" data-mood="playful" role="radio" aria-checked="false"><strong>Vibrante y divertido</strong><small>Triádico / tetrádico · tres o cuatro matices en balance</small></button>
+          </div>
+          <details class="bs-workshop-why">
+            <summary>Por qué preguntamos</summary>
+            <p>El carácter de la paleta cae en una familia de la teoría del color. Las paletas <em>análogas</em> usan matices vecinos (15&ndash;30&deg; aparte) y se ven tranquilas. Las <em>complementarias</em> usan matices opuestos (180&deg;) y se ven con energía. La matemática corre en <a href="/es/glossary/oklab/" style="color:inherit;border-bottom:1px dashed currentColor;">OKLab</a> &mdash; el espacio de color con el que el ojo juzga similitud, no el de la pantalla.</p>
+          </details>
+        </li>
+
+        <li class="bs-workshop-step" data-step="ground">
+          <div class="bs-workshop-step-head">
+            <span class="bs-workshop-step-num">2</span>
+            <h3>¿Cuál es el fondo dominante?</h3>
+          </div>
+          <div class="bs-workshop-chips" role="radiogroup" aria-label="Fondo">
+            <button type="button" class="bs-workshop-chip bs-ground-chip" data-ground="#FAF7F2" role="radio" aria-checked="false"><span class="bs-ground-swatch" style="background:#FAF7F2"></span><strong>Crema</strong><small>Cálido, clásico de restaurante</small></button>
+            <button type="button" class="bs-workshop-chip bs-ground-chip" data-ground="#FFFFFF" role="radio" aria-checked="false"><span class="bs-ground-swatch" style="background:#FFFFFF;border:1px solid var(--line)"></span><strong>Blanco</strong><small>Limpio, moderno</small></button>
+            <button type="button" class="bs-workshop-chip bs-ground-chip" data-ground="#2A2620" role="radio" aria-checked="false"><span class="bs-ground-swatch" style="background:#2A2620"></span><strong>Carbón</strong><small>Atmósfera de noche</small></button>
+            <button type="button" class="bs-workshop-chip bs-ground-chip" data-ground="#14161A" role="radio" aria-checked="false"><span class="bs-ground-swatch" style="background:#14161A"></span><strong>Tinta</strong><small>Sofisticado, alta cocina</small></button>
+          </div>
+          <details class="bs-workshop-why">
+            <summary>Por qué preguntamos</summary>
+            <p>El fondo es la superficie donde vive el 80&#37; de tu diseño: el papel del menú, el fondo del sitio, el feed de Instagram. Tu color principal y los acentos tienen que leerse encima sin esfuerzo. La matemática asegura que cada acento cumpla con el contraste WCAG AA (4.5:1) contra el fondo elegido.</p>
+          </details>
+        </li>
+
+        <li class="bs-workshop-step" data-step="count">
+          <div class="bs-workshop-step-head">
+            <span class="bs-workshop-step-num">3</span>
+            <h3>¿Cuántos colores de acento?</h3>
+          </div>
+          <div class="bs-workshop-chips" role="radiogroup" aria-label="Cuántos colores">
+            <button type="button" class="bs-workshop-chip" data-count="3" role="radio" aria-checked="false"><strong>Uno</strong><small>Color base + fondo + 1 acento. Mínimo.</small></button>
+            <button type="button" class="bs-workshop-chip" data-count="4" role="radio" aria-checked="true"><strong>Unos pocos</strong><small>Color base + fondo + 2 acentos. Lo más común.</small></button>
+            <button type="button" class="bs-workshop-chip" data-count="5" role="radio" aria-checked="false"><strong>Paleta completa</strong><small>Color base + fondo + 2 acentos + neutro.</small></button>
+          </div>
+          <details class="bs-workshop-why">
+            <summary>Por qué preguntamos</summary>
+            <p>La mayoría de las marcas de restaurante usan de 3 a 5 colores. Menos se ve seco; más complica cualquier decisión de diseño. Elige el conjunto más chico que aún te dé lo que necesitas.</p>
+          </details>
+        </li>
+      </ol>
+
+      <div class="bs-workshop-candidates" id="bsWorkshopCandidates" hidden aria-live="polite"></div>
+
+      <div class="bs-workshop-after" id="bsWorkshopAfter" hidden>
+        <h3>Sobre esta paleta</h3>
+        <p id="bsWorkshopAboutText"></p>
+        <button type="button" class="bs-workshop-refine" id="bsWorkshopRefineBtn">Volver a ajustar &rarr;</button>
+      </div>
     </div>
 
     <div class="bs-fixture-wrap" id="bsFixtureWrap" hidden>
@@ -565,6 +819,10 @@
         <button type="button" class="bs-export-btn bs-export-btn-primary" id="bsDownloadPane">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           Descargar Panel Muntin (PNG)
+        </button>
+        <button type="button" class="bs-export-btn" id="bsDownloadSheet">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg>
+          Descargar Hoja de Paleta (PNG)
         </button>
         <button type="button" class="bs-export-btn" id="bsCopyCss">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
@@ -932,6 +1190,13 @@
           <p class="tool-deep-snippet">Una referencia con nombre para una decisión de marca — un color, un tamaño de fuente, un radio de borde, un paso de espaciado — exportada co…</p>
           <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
         </a>
+      <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/color-harmony/">
+          <span class="tool-deep-kind">Glosario</span>
+          <h3>Armonía cromática</h3>
+          <p class="tool-deep-aka">la relación entre los colores de una paleta sobre el círculo de matices</p>
+          <p class="tool-deep-snippet">La relación entre los colores de una paleta, medida por la distancia que separa sus matices en el círculo cromático. Hay familias con nombre…</p>
+          <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
+        </a>
       <a class="tool-deep-card tool-deep-card-article" href="/es/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/">
           <span class="tool-deep-kind">Artículo</span>
           <h3>¿Cuánto cuesta un sitio a medida para restaurante en 2026?</h3>
@@ -994,6 +1259,7 @@
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/brand-suite/brand-suite.js?v=20260424-bs1"></script>
 <script src="/tools/brand-suite/pane-render.js?v=20260425-bs2"></script>
+<script src="/tools/brand-suite/palette-sheet-render.js?v=20260427-bs3"></script>
 <script>
 /* Suite de Marca — cableado de subida + paleta.
  *
@@ -1050,6 +1316,14 @@
   var latestPalette = null;
   var latestSimilarities = [];
   var latestMonochromatic = false;
+  // El color de fondo detectado, si lo hay. El Taller lo usa para
+  // sugerir por defecto el "ground" en la pregunta 2.
+  var latestDetectedBackground = null;
+  // Metadatos opcionales que usa la Hoja de Paleta cuando el
+  // Taller compromete una candidata.
+  var latestRestaurantName     = '';
+  var latestHarmonyLabel       = null;
+  var latestHarmonyDescription = null;
 
   var worker = null;
   var requestCounter = 0;
@@ -1097,6 +1371,30 @@
       for (var j = 0; j < MAX_SAMPLED_PIXELS; j++) trimmed[j] = out[Math.floor(j * stride)];
       out = trimmed;
     }
+    return out;
+  }
+
+  // Muestrea las cuatro bandas de borde por separado. El color
+  // dominante entre estos píxeles es casi seguramente el fondo.
+  function sampleEdgePixels(canvas){
+    var ctx = canvas.getContext('2d');
+    var w = canvas.width, h = canvas.height;
+    if (!w || !h) return [];
+    var top, bottom, left, right;
+    try {
+      top    = ctx.getImageData(0, 0, w, 1).data;
+      bottom = ctx.getImageData(0, h - 1, w, 1).data;
+      left   = ctx.getImageData(0, 0, 1, h).data;
+      right  = ctx.getImageData(w - 1, 0, 1, h).data;
+    } catch (_) { return []; }
+    var out = [];
+    function ingest(arr){
+      for (var i = 0; i < arr.length; i += 4) {
+        if (arr[i + 3] < 128) continue;
+        out.push([arr[i], arr[i + 1], arr[i + 2]]);
+      }
+    }
+    ingest(top); ingest(bottom); ingest(left); ingest(right);
     return out;
   }
 
@@ -1546,6 +1844,41 @@
       });
   }
 
+  // Hoja de Paleta — el entregable enfocado en "los colores en papel".
+  function buildSheetOpts(palette){
+    return {
+      restaurant:          (latestRestaurantName || ''),
+      palette:             palette,
+      harmonyLabel:        latestHarmonyLabel || null,
+      harmonyDescription:  latestHarmonyDescription || null,
+      count:               palette.length,
+      strings:             window.BSPaletteSheet ? window.BSPaletteSheet.DEFAULT_STRINGS_ES : null
+    };
+  }
+  function sheetBlob(palette){
+    if (!window.BSPaletteSheet) return Promise.resolve(null);
+    return window.BSPaletteSheet.awaitFonts().then(function(){
+      var canvas = window.BSPaletteSheet.renderPaletteSheet(buildSheetOpts(palette));
+      if (!canvas) return null;
+      return window.BSPaletteSheet.canvasToPngBlob(canvas);
+    });
+  }
+  var downloadSheetBtn = document.getElementById('bsDownloadSheet');
+  if (downloadSheetBtn) downloadSheetBtn.addEventListener('click', function(){
+    if (!latestPalette) return;
+    sheetBlob(latestPalette).then(function(blob){
+      if (!blob) return;
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'hoja-paleta.png';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+      if (window.plausible) window.plausible('Brand Suite Export', { props: { format: 'sheet-png' } });
+    });
+  });
+
   downloadPaneBtn.addEventListener('click', function(){
     if (!latestPalette) return;
     paneBlob(latestPalette).then(function(blob){
@@ -1565,7 +1898,12 @@
     var cssText = buildCssBlock(palette);
     var tokensText = buildTokensJson(palette);
     var readmeText = buildReadme(palette);
-    paneBlob(palette).then(function(paneBytes){
+    Promise.all([
+      paneBlob(palette).catch(function(){ return null; }),
+      sheetBlob(palette).catch(function(){ return null; })
+    ]).then(function(blobs){
+      var paneBytes  = blobs[0];
+      var sheetBytes = blobs[1];
       var entries = [
         { name: 'palette.css',  data: strToBytes(cssText) },
         { name: 'tokens.json',  data: strToBytes(tokensText) },
@@ -1581,17 +1919,20 @@
         a.click();
         setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
       };
-      if (paneBytes) {
-        var reader = new FileReader();
-        reader.onload = function(){
-          entries.unshift({ name: 'panel-muntin.png', data: new Uint8Array(reader.result) });
-          emit();
-        };
-        reader.onerror = function(){ emit(); };
-        reader.readAsArrayBuffer(paneBytes);
-      } else {
-        emit();
+      function readBlob(blob){
+        return new Promise(function(resolve){
+          if (!blob) return resolve(null);
+          var fr = new FileReader();
+          fr.onload  = function(){ resolve(new Uint8Array(fr.result)); };
+          fr.onerror = function(){ resolve(null); };
+          fr.readAsArrayBuffer(blob);
+        });
       }
+      Promise.all([readBlob(paneBytes), readBlob(sheetBytes)]).then(function(arrs){
+        if (arrs[1]) entries.unshift({ name: 'hoja-paleta.png', data: arrs[1] });
+        if (arrs[0]) entries.unshift({ name: 'panel-muntin.png', data: arrs[0] });
+        emit();
+      });
     });
   }
 
@@ -1858,6 +2199,18 @@
           setStatus('No se pudo leer ningún píxel opaco de ese logo.', 'error');
           return;
         }
+        // Detección + extracción del fondo (mismo flujo que el EN).
+        var edges = sampleEdgePixels(canvas);
+        var bg = window.BS && window.BS.detectBackgroundColor
+          ? window.BS.detectBackgroundColor(edges)
+          : null;
+        if (bg && window.BS.stripBackground) {
+          var stripped = window.BS.stripBackground(pixels, bg.rgb);
+          if (stripped.length >= 30) {
+            pixels = stripped;
+            latestDetectedBackground = bg;
+          }
+        }
         extractAndRender(pixels, file);
       }, function(){
         detectHeicBytes(blob).then(function(byteSniffHeic){
@@ -1937,6 +2290,331 @@
       });
     });
   }
+
+  // ============================================================
+  // Taller de paleta — guía para logos monocromáticos.
+  // ============================================================
+  var workshopWrap        = document.getElementById('bsWorkshopWrap');
+  var workshopCandidates  = document.getElementById('bsWorkshopCandidates');
+  var workshopAfter       = document.getElementById('bsWorkshopAfter');
+  var workshopAboutText   = document.getElementById('bsWorkshopAboutText');
+  var workshopRefineBtn   = document.getElementById('bsWorkshopRefineBtn');
+
+  var wsState = { anchor: null, ground: null, mood: null, count: 4 };
+
+  function snapBackgroundToGround(bgHex){
+    if (!bgHex) return null;
+    var presets = ['#FAF7F2', '#FFFFFF', '#2A2620', '#14161A'];
+    var best = null, bestD = Infinity;
+    var bgRgb = window.BS.hexToRgb(bgHex);
+    if (!bgRgb) return null;
+    var bgLab = window.BS.rgbToOklab(bgRgb.r, bgRgb.g, bgRgb.b);
+    presets.forEach(function(p){
+      var prgb = window.BS.hexToRgb(p);
+      var plab = window.BS.rgbToOklab(prgb.r, prgb.g, prgb.b);
+      var d = window.BS.oklabDistance(bgLab, plab);
+      if (d < bestD) { bestD = d; best = p; }
+    });
+    return bestD < 0.20 ? best : null;
+  }
+
+  function openWorkshop(opts){
+    opts = opts || {};
+    workshopWrap.hidden = false;
+    workshopCandidates.hidden = true;
+    workshopCandidates.innerHTML = '';
+    workshopAfter.hidden = true;
+    workshopWrap.querySelectorAll('.bs-workshop-chip[aria-checked="true"]').forEach(function(c){
+      c.setAttribute('aria-checked', 'false');
+    });
+    workshopWrap.querySelectorAll('.bs-anchor-tile[aria-checked="true"]').forEach(function(t){
+      t.setAttribute('aria-checked', 'false');
+    });
+    workshopWrap.querySelectorAll('.bs-workshop-step').forEach(function(s){
+      s.removeAttribute('data-done');
+      s.removeAttribute('data-active');
+    });
+    var anchorStep = workshopWrap.querySelector('.bs-workshop-step[data-step="anchor"]');
+    var moodStep   = workshopWrap.querySelector('.bs-workshop-step[data-step="mood"]');
+    var hasAnchor = !!opts.anchor;
+    if (anchorStep) {
+      anchorStep.hidden = hasAnchor;
+      if (!hasAnchor) anchorStep.setAttribute('data-active', 'true');
+    }
+    if (moodStep && hasAnchor) moodStep.setAttribute('data-active', 'true');
+    wsState.anchor = opts.anchor || null;
+    wsState.ground = null; wsState.mood = null; wsState.count = 4;
+    var snapped = snapBackgroundToGround(latestDetectedBackground && latestDetectedBackground.hex);
+    if (snapped) {
+      var groundChip = workshopWrap.querySelector('.bs-ground-chip[data-ground="' + snapped + '"]');
+      if (groundChip) { groundChip.setAttribute('aria-checked', 'true'); wsState.ground = snapped; }
+    }
+    var fewChip = workshopWrap.querySelector('.bs-workshop-chip[data-count="4"]');
+    if (fewChip) fewChip.setAttribute('aria-checked', 'true');
+    requestAnimationFrame(function(){
+      workshopWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
+  function maybeRenderCandidates(){
+    if (!wsState.anchor || !wsState.ground || !wsState.mood || !wsState.count) return;
+    var candidates = window.BS.generateCandidatePalettes(
+      wsState.anchor, wsState.ground, wsState.mood, wsState.count
+    );
+    workshopCandidates.innerHTML = candidates.map(function(c, idx){
+      var palette = c.palette;
+      var stripCells = palette.map(function(e){
+        return '<div class="bs-workshop-card-strip-cell" style="background:' + e.hex + '"></div>';
+      }).join('');
+      var anchorHex = palette[0] ? palette[0].hex : wsState.anchor;
+      var contrastVsGround = window.BS.contrastRatio(anchorHex, wsState.ground).toFixed(1);
+      var hueDescriptions = {
+        analogous:        'matices vecinos, ±15–30°',
+        complementary:    'matices opuestos, 180°',
+        splitComplementary:'complemento partido, ±150° / 210°',
+        triadic:          'tres matices, separados 120°',
+        tetradic:         'cuatro matices, separados 90°',
+        monochromatic:    'un matiz, varias luminosidades'
+      };
+      var labels = {
+        analogous: 'Análogo', complementary: 'Complementario',
+        splitComplementary: 'Complemento partido', triadic: 'Triádico',
+        tetradic: 'Tetrádico', monochromatic: 'Monocromático'
+      };
+      return '<button type="button" class="bs-workshop-card" data-candidate-idx="' + idx + '" aria-label="Elegir paleta ' + (labels[c.harmonyName] || c.harmonyLabel) + '">' +
+        '<p class="bs-workshop-card-name">' + (labels[c.harmonyName] || c.harmonyLabel) + '</p>' +
+        '<div class="bs-workshop-card-strip" aria-hidden="true">' + stripCells + '</div>' +
+        '<p class="bs-workshop-card-meta">' + (hueDescriptions[c.harmonyName] || '') + '<br>' +
+        '<strong>' + contrastVsGround + ':1</strong> color base contra fondo · todos los acentos ≥ 4.5:1</p>' +
+        '<span class="bs-workshop-card-pick">Quedarme con esta →</span>' +
+      '</button>';
+    }).join('');
+    workshopCandidates.hidden = false;
+    workshopCandidates._candidates = candidates;
+  }
+
+  workshopWrap.addEventListener('click', function(e){
+    var chip = e.target.closest('.bs-workshop-chip');
+    if (chip) {
+      var step = chip.closest('.bs-workshop-step');
+      if (!step) return;
+      step.querySelectorAll('.bs-workshop-chip').forEach(function(c){ c.setAttribute('aria-checked', 'false'); });
+      chip.setAttribute('aria-checked', 'true');
+      step.setAttribute('data-done', 'true');
+      step.removeAttribute('data-active');
+      var nextStep = step.nextElementSibling;
+      while (nextStep && nextStep.getAttribute('data-done') === 'true') nextStep = nextStep.nextElementSibling;
+      if (nextStep && nextStep.classList.contains('bs-workshop-step')) nextStep.setAttribute('data-active', 'true');
+      var stepKey = step.getAttribute('data-step');
+      if (stepKey === 'mood')   wsState.mood   = chip.getAttribute('data-mood');
+      if (stepKey === 'ground') wsState.ground = chip.getAttribute('data-ground');
+      if (stepKey === 'count')  wsState.count  = Number(chip.getAttribute('data-count')) || 4;
+      maybeRenderCandidates();
+      return;
+    }
+    var card = e.target.closest('.bs-workshop-card');
+    if (card && workshopCandidates._candidates) {
+      var idx = Number(card.getAttribute('data-candidate-idx')) || 0;
+      var picked = workshopCandidates._candidates[idx];
+      if (!picked) return;
+      var paletteHex = picked.palette.map(function(e){ return { hex: e.hex, dominancePct: e.dominancePct }; });
+      var anchorHueDeg = picked.palette[0] && picked.palette[0].hueDeg ? Math.round(picked.palette[0].hueDeg) : 0;
+      var aboutLines = {
+        analogous:        'Armonía análoga: los acentos quedan a ±15–30° del color base. Tranquila. Todos los pares cumplen WCAG AA contra el fondo elegido.',
+        complementary:    'Armonía complementaria: el acento queda a 180° del color base. Con energía, pero el contraste se ve vivo sin gritar.',
+        splitComplementary: 'Complemento partido: acentos a 150° y 210° del color base. Es audaz, pero más suave que un complementario directo.',
+        triadic:          'Armonía triádica: tres matices separados 120°. Vibrante y equilibrada; ningún color manda.',
+        tetradic:         'Armonía tetrádica: cuatro matices separados 90°. Rica. Conviene usar uno como dominante y los otros como acentos.',
+        monochromatic:    'Armonía monocromática: un solo matiz con varias luminosidades. Sofisticada y sobria.'
+      };
+      var aboutText = (aboutLines[picked.harmonyName] || picked.harmonyLabel) + ' Color base a ' + anchorHueDeg + '°.';
+      // Capturar metadatos de armonía para la Hoja de Paleta.
+      latestHarmonyLabel       = picked.harmonyLabel;
+      latestHarmonyDescription = aboutText;
+      hydratePalette(paletteHex, { source: 'workshop' });
+      workshopAboutText.textContent = aboutText;
+      workshopAfter.hidden = false;
+      workshopCandidates.hidden = true;
+      if (window.plausible) {
+        window.plausible('Brand Suite Workshop Pick', { props: { harmony: picked.harmonyName, mood: wsState.mood } });
+      }
+    }
+  });
+
+  if (workshopRefineBtn) workshopRefineBtn.addEventListener('click', function(){
+    openWorkshop({ anchor: wsState.anchor });
+  });
+
+  // ============================================================
+  // Vía 3 — "Empezar de cero" — abre el Taller sin color base.
+  // ============================================================
+  function openWorkshopUnanchored(){
+    var anchorStep = workshopWrap.querySelector('.bs-workshop-step[data-step="anchor"]');
+    if (anchorStep) {
+      anchorStep.hidden = false;
+      anchorStep.setAttribute('data-active', 'true');
+      anchorStep.removeAttribute('data-done');
+    }
+    var moodStep = workshopWrap.querySelector('.bs-workshop-step[data-step="mood"]');
+    if (moodStep) moodStep.removeAttribute('data-active');
+    openWorkshop({ anchor: null });
+    wsState.anchor = null;
+    workshopCandidates.hidden = true;
+    workshopCandidates.innerHTML = '';
+    if (window.plausible) window.plausible('Brand Suite Workshop Open', { props: { entry: 'cold' } });
+  }
+
+  // Click en una baldosa de color base.
+  workshopWrap.addEventListener('click', function(e){
+    var tile = e.target.closest('.bs-anchor-tile');
+    if (!tile) return;
+    var step = tile.closest('.bs-workshop-step');
+    if (!step) return;
+    step.querySelectorAll('.bs-anchor-tile').forEach(function(t){
+      t.setAttribute('aria-checked', 'false');
+    });
+    tile.setAttribute('aria-checked', 'true');
+    step.setAttribute('data-done', 'true');
+    step.removeAttribute('data-active');
+    wsState.anchor = tile.getAttribute('data-anchor');
+    var moodStep = workshopWrap.querySelector('.bs-workshop-step[data-step="mood"]');
+    if (moodStep && moodStep.getAttribute('data-done') !== 'true') {
+      moodStep.setAttribute('data-active', 'true');
+    }
+    maybeRenderCandidates();
+  });
+
+  // Hex propio en Q0.
+  var anchorCustomInput  = document.getElementById('bsAnchorCustomInput');
+  var anchorCustomSwatch = document.getElementById('bsAnchorCustomSwatch');
+  var anchorCustomApply  = document.getElementById('bsAnchorCustomApply');
+  function normaliseHexInput(raw){
+    var v = String(raw || '').trim().replace(/^#/, '').toUpperCase();
+    if (/^[0-9A-F]{3}$/.test(v)) v = v.split('').map(function(c){ return c + c; }).join('');
+    if (/^[0-9A-F]{6}$/.test(v)) return '#' + v;
+    return null;
+  }
+  if (anchorCustomInput) anchorCustomInput.addEventListener('input', function(){
+    var hex = normaliseHexInput(anchorCustomInput.value);
+    anchorCustomSwatch.style.background = hex || 'var(--cream-2)';
+  });
+  if (anchorCustomApply) anchorCustomApply.addEventListener('click', function(){
+    var hex = normaliseHexInput(anchorCustomInput.value);
+    if (!hex) return;
+    var anchorStep = workshopWrap.querySelector('.bs-workshop-step[data-step="anchor"]');
+    if (anchorStep) {
+      anchorStep.querySelectorAll('.bs-anchor-tile').forEach(function(t){ t.setAttribute('aria-checked', 'false'); });
+      anchorStep.setAttribute('data-done', 'true');
+      anchorStep.removeAttribute('data-active');
+    }
+    wsState.anchor = hex;
+    var moodStep = workshopWrap.querySelector('.bs-workshop-step[data-step="mood"]');
+    if (moodStep && moodStep.getAttribute('data-done') !== 'true') {
+      moodStep.setAttribute('data-active', 'true');
+    }
+    maybeRenderCandidates();
+  });
+
+  // Chips de vías de entrada.
+  var entryWorkshopColdBtn = document.getElementById('bsEntryWorkshopCold');
+  var entryManualBtn       = document.getElementById('bsEntryManual');
+  if (entryWorkshopColdBtn) entryWorkshopColdBtn.addEventListener('click', function(){
+    openWorkshopUnanchored();
+  });
+
+  // ============================================================
+  // Vía 4 — entrada manual de hex.
+  // ============================================================
+  var manualWrap   = document.getElementById('bsManualWrap');
+  var manualInputs = document.getElementById('bsManualInputs');
+  var manualApply  = document.getElementById('bsManualApply');
+  var manualCancel = document.getElementById('bsManualCancel');
+  var manualError  = document.getElementById('bsManualError');
+
+  function buildManualInputs(){
+    if (!manualInputs) return;
+    var roleLabels = ['Color base', 'Fondo / secundario', 'Acento 1', 'Acento 2', 'Neutro'];
+    var defaults   = ['',           '#FAF7F2',             '',         '',         ''];
+    manualInputs.innerHTML = roleLabels.map(function(label, idx){
+      return '<div class="bs-manual-input">' +
+        '<label for="bsManualHex' + idx + '">' + label + '</label>' +
+        '<div class="bs-manual-input-row">' +
+          '<span class="bs-manual-swatch" data-manual-swatch="' + idx + '" style="background:' + (defaults[idx] || 'var(--cream-2)') + '"></span>' +
+          '<input type="text" id="bsManualHex' + idx + '" data-manual-hex="' + idx + '" value="' + defaults[idx] + '" placeholder="#1F4E5B" maxlength="7" autocomplete="off" spellcheck="false" />' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  if (manualInputs) {
+    manualInputs.addEventListener('input', function(e){
+      var input = e.target.closest('input[data-manual-hex]');
+      if (!input) return;
+      var idx = input.getAttribute('data-manual-hex');
+      var swatch = manualInputs.querySelector('[data-manual-swatch="' + idx + '"]');
+      var hex = normaliseHexInput(input.value);
+      if (swatch) swatch.style.background = hex || 'var(--cream-2)';
+    });
+  }
+
+  function openManualEntry(){
+    if (!manualWrap) return;
+    buildManualInputs();
+    manualWrap.hidden = false;
+    if (manualError) manualError.textContent = '';
+    requestAnimationFrame(function(){
+      manualWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      var first = manualInputs.querySelector('input[data-manual-hex="0"]');
+      if (first) first.focus();
+    });
+    if (window.plausible) window.plausible('Brand Suite Manual Open');
+  }
+
+  if (entryManualBtn) entryManualBtn.addEventListener('click', openManualEntry);
+  if (manualCancel)   manualCancel.addEventListener('click', function(){
+    if (manualWrap) manualWrap.hidden = true;
+  });
+  if (manualApply) manualApply.addEventListener('click', function(){
+    if (!manualInputs) return;
+    var inputs = manualInputs.querySelectorAll('input[data-manual-hex]');
+    var palette = [];
+    var invalidIdx = -1;
+    for (var i = 0; i < inputs.length; i++) {
+      var raw = inputs[i].value.trim();
+      if (!raw) continue;
+      var hex = normaliseHexInput(raw);
+      if (!hex) { invalidIdx = i; break; }
+      palette.push({ hex: hex, dominancePct: 0.20 });
+    }
+    if (invalidIdx >= 0) {
+      manualError.textContent = 'El espacio ' + (invalidIdx + 1) + ' no es un hex válido. Usa #RRGGBB o #RGB.';
+      return;
+    }
+    if (palette.length < 2) {
+      manualError.textContent = 'Escribe al menos dos hex (Color base + uno más).';
+      return;
+    }
+    manualError.textContent = '';
+    manualWrap.hidden = true;
+    hydratePalette(palette, { source: 'manual' });
+    if (window.plausible) window.plausible('Brand Suite Manual Apply', { props: { count: palette.length } });
+  });
+
+  var lastSeenMonoState = false;
+  function watchMonoFlag(){
+    if (latestMonochromatic && !lastSeenMonoState && latestPalette && latestPalette.length) {
+      lastSeenMonoState = true;
+      openWorkshop({ anchor: latestPalette[0].hex });
+    } else if (!latestMonochromatic) {
+      lastSeenMonoState = false;
+      if (workshopWrap && workshopWrap.hidden === false &&
+          workshopCandidates.hidden && workshopAfter.hidden) {
+        workshopWrap.hidden = true;
+      }
+    }
+    requestAnimationFrame(watchMonoFlag);
+  }
+  if (workshopWrap) requestAnimationFrame(watchMonoFlag);
 })();
 </script>
 </body>

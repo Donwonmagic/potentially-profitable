@@ -101,6 +101,14 @@ const RENDERERS = [
     renderEntries: ['renderPhotoBrief', 'renderBrandPhotoCard'],
     enToolName:   'Photo Brief Builder',
     esToolName:   'Constructor de Brief de Fotos'
+  },
+  {
+    label:        'Brand Suite — Palette Sheet',
+    modulePath:   'tools/brand-suite/palette-sheet-render.js',
+    moduleApi:    'BSPaletteSheet',
+    renderEntries: ['renderPaletteSheet'],
+    enToolName:   'Brand Suite',
+    esToolName:   'Suite de Marca'
   }
 ];
 
