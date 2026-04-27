@@ -1157,9 +1157,14 @@ ${navHeader(altUrl)}
       <h2 class="term-why-h">${esc(whyH)}</h2>
       <p class="term-why">${term.whyHtml}</p>
       ${researchBlock}
+      <!-- glossary-explainer-cue:start -->
+      <!-- glossary-explainer-cue:end -->
     </div>
   </div>
 </section>
+
+<!-- glossary-explainer:start -->
+<!-- glossary-explainer:end -->
 
 ${siblingsBlock}
 

@@ -173,9 +173,314 @@
       <h2 class="term-why-h">Why it matters</h2>
       <p class="term-why">An image at the wrong aspect ratio is either letterboxed or auto-cropped by the platform — neither is what the photographer composed for. Composing the source frame at 3:2 with awareness of how each destination will crop turns one shoot into eight usable images per dish, instead of one usable image and seven near-misses.</p>
       
+      <!-- glossary-explainer-cue:start -->
+<p style="margin-top:18px"><a class="term-explainer-cue" href="#aspect-ratio-explainer">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+  Watch the 90-second explainer
+</a></p>
+<!-- glossary-explainer-cue:end -->
     </div>
   </div>
 </section>
+
+<!-- glossary-explainer:start -->
+<aside id="aspect-ratio-explainer" class="term-explainer" data-term-slug="aspect-ratio" tabindex="0" aria-label="The 90-second explainer">
+  <header class="term-explainer__head">
+    <span class="eyebrow">The 90-second explainer</span>
+    <h2>Aspect ratio, in 90 seconds.</h2>
+    <p class="term-explainer__sub"><strong>One source frame · eight destinations.</strong> <span aria-hidden="true">·</span> 90s</p>
+  </header>
+  <div class="term-explainer__stage">
+    <svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of photo aspect ratios">
+  <defs>
+    <linearGradient id="ar-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>
+      <stop offset="100%" stop-color="var(--cream,#FAF7F2)"/>
+    </linearGradient>
+    <!-- A schematic "dish on a plate" used inside every crop. Lets the
+         same source content render at any aspect without bringing in a
+         real raster image. -->
+    <symbol id="dish-tile" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice">
+      <rect width="600" height="400" fill="#3a2a18"/>
+      <!-- table -->
+      <rect y="280" width="600" height="120" fill="#5a3f22"/>
+      <!-- plate -->
+      <ellipse cx="300" cy="240" rx="180" ry="40" fill="#000" opacity="0.18"/>
+      <ellipse cx="300" cy="232" rx="180" ry="50" fill="#f3eee3"/>
+      <ellipse cx="300" cy="226" rx="166" ry="44" fill="#fff"/>
+      <!-- food (warm-toned dish) -->
+      <ellipse cx="300" cy="222" rx="120" ry="28" fill="#b8541a"/>
+      <ellipse cx="280" cy="216" rx="90" ry="22" fill="#c28b2e"/>
+      <ellipse cx="320" cy="220" rx="60" ry="14" fill="#8a6018"/>
+      <!-- garnish -->
+      <circle cx="240" cy="210" r="6" fill="#1F6B3A"/>
+      <circle cx="360" cy="210" r="5" fill="#1F6B3A"/>
+      <circle cx="290" cy="206" r="4" fill="#fff"/>
+      <!-- hand on the right edge, just suggesting it -->
+      <path d="M 540 230 q 30 -10 50 0 q -10 20 -30 26 q -20 6 -30 -10 z" fill="#d8b496" opacity="0.5"/>
+    </symbol>
+  </defs>
+  <rect width="800" height="500" fill="url(#ar-bg)"/>
+
+  <!-- ============ FRAME ============ -->
+  <g class="explainer-scene is-active" data-scene-id="frame">
+    <text class="scene-label text-stone" x="40" y="46" data-anim="fade">One source frame · 3:2</text>
+    <!-- A 3:2 frame, centered. 480 × 320. -->
+    <g data-anim="rise" style="--delay:160ms">
+      <rect x="160" y="120" width="480" height="320" fill="var(--white,#fff)" stroke="var(--line-dark,#D4CCBC)"/>
+      <use href="#dish-tile" x="160" y="120" width="480" height="320"/>
+      <!-- corner ticks -->
+      <path d="M 160 110 l 0 -10 l 10 0" stroke="var(--ink,#14161A)" stroke-width="1.5" fill="none" data-anim="fade" style="--delay:600ms"/>
+      <path d="M 640 110 l 0 -10 l -10 0" stroke="var(--ink,#14161A)" stroke-width="1.5" fill="none" data-anim="fade" style="--delay:600ms"/>
+      <path d="M 160 450 l 0 10 l 10 0" stroke="var(--ink,#14161A)" stroke-width="1.5" fill="none" data-anim="fade" style="--delay:600ms"/>
+      <path d="M 640 450 l 0 10 l -10 0" stroke="var(--ink,#14161A)" stroke-width="1.5" fill="none" data-anim="fade" style="--delay:600ms"/>
+      <text class="text-stone" x="400" y="100" text-anchor="middle" font-size="11" letter-spacing="0.12em" data-anim="fade" style="--delay:780ms">SOURCE · 3 : 2</text>
+    </g>
+  </g>
+
+  <!-- ============ SURFACES ============ -->
+  <g class="explainer-scene" data-scene-id="surfaces">
+    <text class="scene-label text-stone" x="40" y="46" data-anim="fade">Eight destinations · canonical aspects</text>
+    <!-- Row of 8 small reference rectangles, each labelled with its ratio. -->
+    <!-- Row layout: 2 rows of 4, each tile ~140×72 with caption.   -->
+    
+      <g data-anim="pop" style="--delay:0ms">
+        <rect x="60" y="100" width="144" height="81" fill="var(--white,#fff)" stroke="var(--line-dark,#D4CCBC)"/>
+        <use href="#dish-tile" x="60" y="100" width="144" height="81"/>
+        <text x="132" y="199" text-anchor="middle" font-size="11" class="text-stone">Web hero</text>
+        <text x="132" y="213" text-anchor="middle" font-size="10" class="text-teal" font-weight="500">16 : 9</text>
+      </g>
+    
+      <g data-anim="pop" style="--delay:110ms">
+        <rect x="240" y="100" width="154" height="81" fill="var(--white,#fff)" stroke="var(--line-dark,#D4CCBC)"/>
+        <use href="#dish-tile" x="240" y="100" width="154" height="81"/>
+        <text x="317" y="199" text-anchor="middle" font-size="11" class="text-stone">Open Graph</text>
+        <text x="317" y="213" text-anchor="middle" font-size="10" class="text-teal" font-weight="500">1.91 : 1</text>
+      </g>
+    
+      <g data-anim="pop" style="--delay:220ms">
+        <rect x="430" y="100" width="121" height="81" fill="var(--white,#fff)" stroke="var(--line-dark,#D4CCBC)"/>
+        <use href="#dish-tile" x="430" y="100" width="121" height="81"/>
+        <text x="490.5" y="199" text-anchor="middle" font-size="11" class="text-stone">Yelp featured</text>
+        <text x="490.5" y="213" text-anchor="middle" font-size="10" class="text-teal" font-weight="500">3 : 2</text>
+      </g>
+    
+      <g data-anim="pop" style="--delay:330ms">
+        <rect x="590" y="100" width="144" height="81" fill="var(--white,#fff)" stroke="var(--line-dark,#D4CCBC)"/>
+        <use href="#dish-tile" x="590" y="100" width="144" height="81"/>
+        <text x="662" y="199" text-anchor="middle" font-size="11" class="text-stone">Google Business</text>
+        <text x="662" y="213" text-anchor="middle" font-size="10" class="text-teal" font-weight="500">16 : 9</text>
+      </g>
+    
+      <g data-anim="pop" style="--delay:440ms">
+        <rect x="60" y="260" width="100" height="100" fill="var(--white,#fff)" stroke="var(--line-dark,#D4CCBC)"/>
+        <use href="#dish-tile" x="60" y="260" width="100" height="100"/>
+        <text x="110" y="378" text-anchor="middle" font-size="11" class="text-stone">Instagram grid</text>
+        <text x="110" y="392" text-anchor="middle" font-size="10" class="text-teal" font-weight="500">1 : 1</text>
+      </g>
+    
+      <g data-anim="pop" style="--delay:550ms">
+        <rect x="200" y="260" width="56" height="100" fill="var(--white,#fff)" stroke="var(--line-dark,#D4CCBC)"/>
+        <use href="#dish-tile" x="200" y="260" width="56" height="100"/>
+        <text x="228" y="378" text-anchor="middle" font-size="11" class="text-stone">IG story</text>
+        <text x="228" y="392" text-anchor="middle" font-size="10" class="text-teal" font-weight="500">9 : 16</text>
+      </g>
+    
+      <g data-anim="pop" style="--delay:660ms">
+        <rect x="300" y="260" width="132" height="99" fill="var(--white,#fff)" stroke="var(--line-dark,#D4CCBC)"/>
+        <use href="#dish-tile" x="300" y="260" width="132" height="99"/>
+        <text x="366" y="377" text-anchor="middle" font-size="11" class="text-stone">Menu inline</text>
+        <text x="366" y="391" text-anchor="middle" font-size="10" class="text-teal" font-weight="500">4 : 3</text>
+      </g>
+    
+      <g data-anim="pop" style="--delay:770ms">
+        <rect x="480" y="260" width="132" height="99" fill="var(--white,#fff)" stroke="var(--line-dark,#D4CCBC)"/>
+        <use href="#dish-tile" x="480" y="260" width="132" height="99"/>
+        <text x="546" y="377" text-anchor="middle" font-size="11" class="text-stone">Apple Maps</text>
+        <text x="546" y="391" text-anchor="middle" font-size="10" class="text-teal" font-weight="500">4 : 3</text>
+      </g>
+    
+    <text class="text-soft" x="400" y="468" text-anchor="middle" font-size="14" data-anim="fade" style="--delay:1300ms" font-style="italic">No two surfaces want the same shape.</text>
+  </g>
+
+  <!-- ============ BAD ============ -->
+  <g class="explainer-scene" data-scene-id="bad">
+    <text class="scene-label text-stone" x="40" y="46" data-anim="fade">Push as-is · what breaks</text>
+    <!-- 4 mis-cropped surfaces -->
+    <!-- Web hero: top of plate cut off -->
+    <g data-anim="rise" style="--delay:160ms">
+      <rect x="60" y="100" width="320" height="180" fill="var(--white,#fff)" stroke="var(--line-dark,#D4CCBC)"/>
+      <svg x="60" y="100" width="320" height="180" viewBox="0 30 600 280" preserveAspectRatio="xMidYMid slice">
+        <use href="#dish-tile" x="0" y="0" width="600" height="400"/>
+      </svg>
+      <text class="text-stone" x="220" y="296" text-anchor="middle" font-size="11">Web hero · 16:9</text>
+      <text class="text-rust" x="220" y="312" text-anchor="middle" font-size="11" font-weight="500">top of plate cropped off</text>
+    </g>
+    <!-- OG: text overlay zone falls on the dish -->
+    <g data-anim="rise" style="--delay:340ms">
+      <rect x="420" y="100" width="320" height="167" fill="var(--white,#fff)" stroke="var(--line-dark,#D4CCBC)"/>
+      <use href="#dish-tile" x="420" y="100" width="320" height="167"/>
+      <rect x="420" y="220" width="320" height="47" fill="var(--ink,#14161A)" opacity="0.78"/>
+      <text x="436" y="252" font-size="13" fill="var(--cream,#FAF7F2)">muntin.digital — restaurant audit</text>
+      <text class="text-stone" x="580" y="280" text-anchor="middle" font-size="11">Open Graph · 1.91:1</text>
+      <text class="text-rust" x="580" y="296" text-anchor="middle" font-size="11" font-weight="500">caption bar lands on the food</text>
+    </g>
+    <!-- IG grid: sauce cropped -->
+    <g data-anim="rise" style="--delay:520ms">
+      <rect x="60" y="320" width="120" height="120" fill="var(--white,#fff)" stroke="var(--line-dark,#D4CCBC)"/>
+      <svg x="60" y="320" width="120" height="120" viewBox="80 0 440 400" preserveAspectRatio="xMidYMid slice">
+        <use href="#dish-tile" x="0" y="0" width="600" height="400"/>
+      </svg>
+      <text class="text-stone" x="120" y="456" text-anchor="middle" font-size="11">IG grid · 1:1</text>
+      <text class="text-rust" x="120" y="472" text-anchor="middle" font-size="11" font-weight="500">edges of plate gone</text>
+    </g>
+    <!-- Menu inline: 1/3 of plate empty -->
+    <g data-anim="rise" style="--delay:700ms">
+      <rect x="220" y="320" width="180" height="135" fill="var(--white,#fff)" stroke="var(--line-dark,#D4CCBC)"/>
+      <svg x="220" y="320" width="180" height="135" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
+        <use href="#dish-tile" x="100" y="100" width="600" height="400"/>
+      </svg>
+      <text class="text-stone" x="310" y="471" text-anchor="middle" font-size="11">Menu inline · 4:3</text>
+      <text class="text-rust" x="310" y="487" text-anchor="middle" font-size="11" font-weight="500">third of frame empty</text>
+    </g>
+    <!-- Apple Maps: cropped to a sliver -->
+    <g data-anim="rise" style="--delay:880ms">
+      <rect x="440" y="320" width="180" height="135" fill="var(--white,#fff)" stroke="var(--line-dark,#D4CCBC)"/>
+      <svg x="440" y="320" width="180" height="135" viewBox="200 100 400 200" preserveAspectRatio="xMidYMid slice">
+        <use href="#dish-tile" x="0" y="0" width="600" height="400"/>
+      </svg>
+      <text class="text-stone" x="530" y="471" text-anchor="middle" font-size="11">Apple Maps · 4:3</text>
+      <text class="text-rust" x="530" y="487" text-anchor="middle" font-size="11" font-weight="500">no context, just sauce</text>
+    </g>
+  </g>
+
+  <!-- ============ COMPOSE ============ -->
+  <g class="explainer-scene" data-scene-id="compose">
+    <text class="scene-label text-stone" x="40" y="46" data-anim="fade">Compose at 3:2 with breathing room</text>
+    <!-- Source frame -->
+    <g data-anim="rise" style="--delay:160ms">
+      <rect x="160" y="100" width="480" height="320" fill="var(--white,#fff)" stroke="var(--line-dark,#D4CCBC)"/>
+      <use href="#dish-tile" x="160" y="100" width="480" height="320"/>
+    </g>
+    <!-- Overlay outlines for each destination, anchored to dish -->
+    <!-- 16:9 hero -->
+    <rect x="160" y="160" width="480" height="200" fill="none" stroke="var(--teal,#1F4E5B)" stroke-width="2.5" stroke-dasharray="6 4" data-anim="grow-x" style="--delay:520ms"/>
+    <text x="652" y="262" font-size="11" class="text-teal" data-anim="fade" style="--delay:900ms">16:9 hero</text>
+    <!-- 1:1 IG -->
+    <rect x="280" y="100" width="240" height="240" fill="none" stroke="var(--rust,#B8541A)" stroke-width="2" stroke-dasharray="4 3" data-anim="pop" style="--delay:760ms"/>
+    <text x="528" y="116" font-size="11" class="text-rust" data-anim="fade" style="--delay:1100ms">1:1 IG</text>
+    <!-- 9:16 story (vertical) -->
+    <rect x="319" y="100" width="180" height="320" fill="none" stroke="#8A6018" stroke-width="2" stroke-dasharray="4 3" data-anim="pop" style="--delay:980ms"/>
+    <text x="328" y="116" font-size="11" fill="#8A6018" data-anim="fade" style="--delay:1240ms">9:16 story</text>
+    <!-- Headline -->
+    <text class="text-soft" x="400" y="460" text-anchor="middle" font-size="14" data-anim="fade" style="--delay:1500ms" font-style="italic">Every destination fits inside one mindful frame.</text>
+  </g>
+
+  <!-- ============ GOOD ============ -->
+  <g class="explainer-scene" data-scene-id="good">
+    <text class="scene-label text-stone" x="40" y="46" data-anim="fade">Same shot · eight clean crops</text>
+    
+      <g data-anim="pop" style="--delay:0ms">
+        <rect x="60" y="100" width="144" height="81" fill="var(--white,#fff)" stroke="var(--status-good,#1F6B3A)" stroke-width="1.5"/>
+        <use href="#dish-tile" x="60" y="100" width="144" height="81"/>
+        <text x="132" y="199" text-anchor="middle" font-size="11" class="text-stone">Web hero</text>
+        <text x="132" y="213" text-anchor="middle" font-size="10" class="text-good" font-weight="500">16:9 · ✓</text>
+      </g>
+    
+      <g data-anim="pop" style="--delay:90ms">
+        <rect x="240" y="100" width="154" height="81" fill="var(--white,#fff)" stroke="var(--status-good,#1F6B3A)" stroke-width="1.5"/>
+        <use href="#dish-tile" x="240" y="100" width="154" height="81"/>
+        <text x="317" y="199" text-anchor="middle" font-size="11" class="text-stone">Open Graph</text>
+        <text x="317" y="213" text-anchor="middle" font-size="10" class="text-good" font-weight="500">1.91:1 · ✓</text>
+      </g>
+    
+      <g data-anim="pop" style="--delay:180ms">
+        <rect x="430" y="100" width="121" height="81" fill="var(--white,#fff)" stroke="var(--status-good,#1F6B3A)" stroke-width="1.5"/>
+        <use href="#dish-tile" x="430" y="100" width="121" height="81"/>
+        <text x="490.5" y="199" text-anchor="middle" font-size="11" class="text-stone">Yelp featured</text>
+        <text x="490.5" y="213" text-anchor="middle" font-size="10" class="text-good" font-weight="500">3:2 · ✓</text>
+      </g>
+    
+      <g data-anim="pop" style="--delay:270ms">
+        <rect x="590" y="100" width="144" height="81" fill="var(--white,#fff)" stroke="var(--status-good,#1F6B3A)" stroke-width="1.5"/>
+        <use href="#dish-tile" x="590" y="100" width="144" height="81"/>
+        <text x="662" y="199" text-anchor="middle" font-size="11" class="text-stone">Google Business</text>
+        <text x="662" y="213" text-anchor="middle" font-size="10" class="text-good" font-weight="500">16:9 · ✓</text>
+      </g>
+    
+      <g data-anim="pop" style="--delay:360ms">
+        <rect x="60" y="260" width="100" height="100" fill="var(--white,#fff)" stroke="var(--status-good,#1F6B3A)" stroke-width="1.5"/>
+        <use href="#dish-tile" x="60" y="260" width="100" height="100"/>
+        <text x="110" y="378" text-anchor="middle" font-size="11" class="text-stone">IG grid</text>
+        <text x="110" y="392" text-anchor="middle" font-size="10" class="text-good" font-weight="500">1:1 · ✓</text>
+      </g>
+    
+      <g data-anim="pop" style="--delay:450ms">
+        <rect x="200" y="260" width="56" height="100" fill="var(--white,#fff)" stroke="var(--status-good,#1F6B3A)" stroke-width="1.5"/>
+        <use href="#dish-tile" x="200" y="260" width="56" height="100"/>
+        <text x="228" y="378" text-anchor="middle" font-size="11" class="text-stone">IG story</text>
+        <text x="228" y="392" text-anchor="middle" font-size="10" class="text-good" font-weight="500">9:16 · ✓</text>
+      </g>
+    
+      <g data-anim="pop" style="--delay:540ms">
+        <rect x="300" y="260" width="132" height="99" fill="var(--white,#fff)" stroke="var(--status-good,#1F6B3A)" stroke-width="1.5"/>
+        <use href="#dish-tile" x="300" y="260" width="132" height="99"/>
+        <text x="366" y="377" text-anchor="middle" font-size="11" class="text-stone">Menu inline</text>
+        <text x="366" y="391" text-anchor="middle" font-size="10" class="text-good" font-weight="500">4:3 · ✓</text>
+      </g>
+    
+      <g data-anim="pop" style="--delay:630ms">
+        <rect x="480" y="260" width="132" height="99" fill="var(--white,#fff)" stroke="var(--status-good,#1F6B3A)" stroke-width="1.5"/>
+        <use href="#dish-tile" x="480" y="260" width="132" height="99"/>
+        <text x="546" y="377" text-anchor="middle" font-size="11" class="text-stone">Apple Maps</text>
+        <text x="546" y="391" text-anchor="middle" font-size="10" class="text-good" font-weight="500">4:3 · ✓</text>
+      </g>
+    
+    <text class="text-good" x="400" y="468" text-anchor="middle" font-size="14" data-anim="fade" style="--delay:1100ms" font-weight="500">A five-minute pass on shoot day — not a second photo session.</text>
+  </g>
+
+  <!-- ============ LAND ============ -->
+  <g class="explainer-scene" data-scene-id="land">
+    <rect x="0" y="0" width="800" height="500" fill="var(--cream,#FAF7F2)" data-anim="fade"/>
+    <text data-anim="rise" style="--delay:200ms" class="scene-label text-teal" x="400" y="180" text-anchor="middle">Aspect ratio</text>
+    <text data-anim="rise" style="--delay:380ms" x="400" y="260" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="44" font-style="italic" fill="var(--ink,#14161A)">One frame, eight crops.</text>
+    <text data-anim="fade" style="--delay:780ms" class="text-stone" x="400" y="320" text-anchor="middle" font-size="14">Compose for the destinations, not the camera.</text>
+    <line data-anim="grow-x" style="--delay:980ms; transform-origin:center" x1="340" y1="350" x2="460" y2="350" stroke="var(--teal,#1F4E5B)" stroke-width="2"/>
+  </g>
+</svg>
+  </div>
+  <div class="term-explainer__chrome">
+    <button type="button" class="term-explainer__playpause" aria-label="Play">
+      <svg class="icon-play"  viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+      <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+    </button>
+    <div class="term-explainer__scrub" role="presentation">
+      <div class="term-explainer__scrub-fill"></div>
+      <div class="term-explainer__scrub-dots">
+        <button type="button" class="term-explainer__scrub-dot" aria-label="Scene 1 of 6"></button>
+        <button type="button" class="term-explainer__scrub-dot" aria-label="Scene 2 of 6"></button>
+        <button type="button" class="term-explainer__scrub-dot" aria-label="Scene 3 of 6"></button>
+        <button type="button" class="term-explainer__scrub-dot" aria-label="Scene 4 of 6"></button>
+        <button type="button" class="term-explainer__scrub-dot" aria-label="Scene 5 of 6"></button>
+        <button type="button" class="term-explainer__scrub-dot" aria-label="Scene 6 of 6"></button>
+      </div>
+    </div>
+    <span class="term-explainer__time">0:00 / 1:30</span>
+    <button type="button" class="term-explainer__restart">Restart</button>
+  </div>
+  <div class="term-explainer__captions">
+    <h3 class="sr-only">Transcript</h3>
+    <ol>
+        <li data-scene-id="frame" data-duration-ms="14000" class="is-active">One photograph. Well-lit, well-composed. The server steps into frame, turns the plate, the sous-chef sets the garnish. The camera fires at 3:2. One shot — this is what the restaurant uses everywhere.</li>
+        <li data-scene-id="surfaces" data-duration-ms="18000">Except "everywhere" isn’t one destination. It’s eight. Web hero at 16:9. Open Graph card at 1.91:1. Yelp featured at 3:2. Google Business cover at 16:9. Instagram grid at 1:1. Story at 9:16. Menu inline at 4:3. Apple Maps at 4:3.</li>
+        <li data-scene-id="bad" data-duration-ms="16000">Push it as-is and watch what breaks. The plate’s top cut off in the hero. Yelp featured with the logo where the garnish was. The menu inline with a third of the plate empty. The Instagram grid cropping the sauce.</li>
+        <li data-scene-id="compose" data-duration-ms="16000">The fix isn’t eight photos. It’s one photo, framed with eight crops in mind. Compose at 3:2, leave breathing room top and bottom, leave breathing room on the left. Every destination finds its shape inside.</li>
+        <li data-scene-id="good" data-duration-ms="14000">Same shot. Eight crops. The hero breathes. OG works. The Instagram grid lands square on the plate. The story has air for caption copy at the bottom. A five-minute pass on shoot day — not a second photo session.</li>
+        <li data-scene-id="land" data-duration-ms="12000">You’re not taking eight photos. You’re composing one photo aware of eight destinations. That’s the entire difference.</li>
+    </ol>
+  </div>
+</aside>
+<!-- glossary-explainer:end -->
 
 <section class="term-siblings">
   <div class="container">
