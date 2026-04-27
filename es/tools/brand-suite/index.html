@@ -132,6 +132,50 @@
 
   /* Bloque de vista previa — tarjeta de un restaurante con la paleta aplicada.
      Los colores de texto pasan por deriveAccessiblePair para garantizar AA. */
+  /* Vías alternativas — chips opt-in debajo del dropzone. */
+  .bs-entry-paths{margin:18px 0 0;display:flex;flex-direction:column;gap:8px;align-items:center}
+  .bs-entry-or{font-size:11px;color:var(--stone);font-weight:600;letter-spacing:0.05em;text-transform:uppercase}
+  .bs-entry-chips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%}
+  .bs-entry-chip{flex:1 1 220px;max-width:300px;display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px;border:1px dashed var(--line-dark);border-radius:var(--r-input);background:transparent;cursor:pointer;font:inherit;text-align:left;transition:border-color 140ms var(--ease-out),background 140ms var(--ease-out)}
+  .bs-entry-chip:hover{border-color:var(--teal);background:var(--white)}
+  .bs-entry-chip strong{font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.3}
+  .bs-entry-chip small{font-size:12px;color:var(--stone);line-height:1.45}
+
+  /* Entrada manual de hex. */
+  .bs-manual-wrap{padding:24px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);display:flex;flex-direction:column;gap:14px}
+  .bs-manual-wrap h2{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0}
+  .bs-manual-wrap > p{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink-soft);max-width:580px}
+  .bs-manual-inputs{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+  .bs-manual-input{display:flex;flex-direction:column;gap:4px}
+  .bs-manual-input label{font-size:11px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--stone)}
+  .bs-manual-input-row{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:var(--r-input);padding:6px 8px;background:var(--white)}
+  .bs-manual-input-row:focus-within{border-color:var(--teal)}
+  .bs-manual-swatch{display:inline-block;width:28px;height:28px;border-radius:6px;border:1px solid var(--line);flex:0 0 auto;background:var(--cream-2)}
+  .bs-manual-input-row input{flex:1;border:0;outline:0;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;color:var(--ink);background:transparent;text-transform:uppercase;font-variant-numeric:tabular-nums}
+  .bs-manual-actions{display:flex;gap:10px;flex-wrap:wrap}
+  .bs-manual-apply{padding:9px 18px;border:1px solid var(--teal);border-radius:999px;background:var(--teal);color:var(--cream);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+  .bs-manual-apply:hover{background:var(--ink);border-color:var(--ink)}
+  .bs-manual-cancel{padding:9px 18px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--stone);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+  .bs-manual-cancel:hover{border-color:var(--rust);color:var(--rust)}
+  .bs-manual-error{font-size:12.5px;color:var(--rust);margin:0;line-height:1.45;min-height:1.45em}
+
+  /* Q0 — selector de color base. */
+  .bs-anchor-strips{display:flex;flex-direction:column;gap:14px}
+  .bs-anchor-strip-label{font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--stone);margin:0}
+  .bs-anchor-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin:4px 0 0}
+  .bs-anchor-tile{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:6px 8px 8px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);cursor:pointer;font:inherit;text-align:left;transition:transform 140ms var(--ease-out),border-color 140ms var(--ease-out)}
+  .bs-anchor-tile:hover{transform:translateY(-2px);border-color:var(--teal)}
+  .bs-anchor-tile[aria-checked="true"]{border-color:var(--teal);box-shadow:0 0 0 2px var(--teal) inset}
+  .bs-anchor-swatch{display:block;width:100%;height:48px;border-radius:6px;border:1px solid rgba(20,22,26,0.10)}
+  .bs-anchor-tile strong{font-size:11.5px;font-weight:600;color:var(--ink);line-height:1.3}
+  .bs-anchor-tile small{font-size:10.5px;color:var(--stone);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;line-height:1.3}
+  .bs-anchor-custom{margin-top:4px;padding:10px 14px;border:1px dashed var(--line-dark);border-radius:var(--r-input);background:var(--cream-2);display:flex;align-items:center;gap:10px}
+  .bs-anchor-custom-row{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:var(--r-input);padding:5px 8px;background:var(--white);max-width:160px}
+  .bs-anchor-custom-row input{flex:1;border:0;outline:0;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;color:var(--ink);background:transparent;text-transform:uppercase;font-variant-numeric:tabular-nums;width:80px}
+  .bs-anchor-custom-row .bs-manual-swatch{width:22px;height:22px}
+  .bs-anchor-custom-apply{padding:6px 14px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12px;font-weight:600;cursor:pointer}
+  .bs-anchor-custom-apply:hover{background:var(--teal);color:var(--cream)}
+
   /* Taller de paleta — guía para logos monocromáticos y operadores
      que arrancan de cero. Misma estética que el EN. */
   .bs-workshop-wrap{padding:28px 28px 24px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--cream-2);display:flex;flex-direction:column;gap:24px}
@@ -491,6 +535,22 @@
     </div>
     <p style="margin:12px auto 0;text-align:center;font-size:13px;color:var(--ink-soft);">¿No sabes qué subir? <button type="button" id="bsDemoBtn" style="background:none;border:0;padding:0;font:inherit;color:var(--teal);border-bottom:1px dashed currentColor;cursor:pointer;">Ver el demo con nuestro propio logo &rarr;</button></p>
 
+    <!-- Otras vías de entrada — para quienes aún no tienen logo y
+         para quienes ya tienen los hex en mano. -->
+    <div class="bs-entry-paths" id="bsEntryPaths">
+      <span class="bs-entry-or">O, si no tienes el logo a mano:</span>
+      <div class="bs-entry-chips">
+        <button type="button" class="bs-entry-chip" id="bsEntryWorkshopCold">
+          <strong>Empezar de cero</strong>
+          <small>Eliges un color base, armamos la paleta a su alrededor. El Taller te guía paso a paso.</small>
+        </button>
+        <button type="button" class="bs-entry-chip" id="bsEntryManual">
+          <strong>Ya sé mis colores</strong>
+          <small>Pegas cinco hex y vas directo a los entregables. Sin Taller.</small>
+        </button>
+      </div>
+    </div>
+
     <div class="bs-status" id="bsStatus" role="status" aria-live="polite"></div>
 
     <div class="bs-preview" id="bsPreview" hidden>
@@ -531,6 +591,18 @@
       </details>
     </div>
 
+    <!-- ENTRADA MANUAL DE HEX — Vía 4. Cinco hex + Aplicar. -->
+    <div class="bs-manual-wrap" id="bsManualWrap" hidden>
+      <h2>Escribe tus colores</h2>
+      <p>Cinco hex (o menos &mdash; deja en blanco lo que aún no tengas). Cada cuadro muestra un swatch en vivo mientras escribes. La paleta se aplica con <strong>Aplicar</strong> &mdash; vas directo a la cuadrícula de contraste y a las descargas.</p>
+      <div class="bs-manual-inputs" id="bsManualInputs"></div>
+      <p class="bs-manual-error" id="bsManualError" aria-live="polite"></p>
+      <div class="bs-manual-actions">
+        <button type="button" class="bs-manual-apply"  id="bsManualApply">Aplicar paleta</button>
+        <button type="button" class="bs-manual-cancel" id="bsManualCancel">Cancelar</button>
+      </div>
+    </div>
+
     <!-- TALLER DE PALETA — se abre cuando el logo es monocromático,
          o manualmente vía "Refinar de nuevo". Tres preguntas cortas
          (estado de ánimo, fondo, conteo) + tres paletas candidatas. -->
@@ -542,6 +614,70 @@
       </header>
 
       <ol class="bs-workshop-steps" aria-label="Pasos del taller">
+        <!-- Q0 — selector de color base. Solo se muestra cuando el
+             Taller se abre sin un color de logo. -->
+        <li class="bs-workshop-step" data-step="anchor" hidden>
+          <div class="bs-workshop-step-head">
+            <span class="bs-workshop-step-num">0</span>
+            <h3>Elige un color base</h3>
+          </div>
+          <p style="margin:0 0 14px;font-size:13px;color:var(--ink-soft);line-height:1.55;">Algunos colores típicos de restaurante para empezar. Pasa el cursor sobre cada baldosa para ver para qué se usa. ¿No te convence ninguno? Escribe un hex propio abajo.</p>
+          <div class="bs-anchor-strips" role="radiogroup" aria-label="Color base">
+            <div>
+              <p class="bs-anchor-strip-label">Especias cálidas y tierra</p>
+              <div class="bs-anchor-row">
+                <button type="button" class="bs-anchor-tile" data-anchor="#B8541A" role="radio" aria-checked="false" title="Cálido y terroso — clásico italiano y mexicano"><span class="bs-anchor-swatch" style="background:#B8541A"></span><strong>Terracota</strong><small>#B8541A</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#C68A2C" role="radio" aria-checked="false" title="Mostaza — bistró, deli, casual"><span class="bs-anchor-swatch" style="background:#C68A2C"></span><strong>Mostaza</strong><small>#C68A2C</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#8B3A26" role="radio" aria-checked="false" title="Ladrillo — pizzería, italiano de barrio"><span class="bs-anchor-swatch" style="background:#8B3A26"></span><strong>Ladrillo</strong><small>#8B3A26</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#D45D3A" role="radio" aria-checked="false" title="Pimentón — acento cálido y audaz"><span class="bs-anchor-swatch" style="background:#D45D3A"></span><strong>Pimentón</strong><small>#D45D3A</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#C99230" role="radio" aria-checked="false" title="Ocre — tradicional, viejo continente"><span class="bs-anchor-swatch" style="background:#C99230"></span><strong>Ocre</strong><small>#C99230</small></button>
+              </div>
+            </div>
+            <div>
+              <p class="bs-anchor-strip-label">Bosque y profundos</p>
+              <div class="bs-anchor-row">
+                <button type="button" class="bs-anchor-tile" data-anchor="#1F4E5B" role="radio" aria-checked="false" title="Verde bosque — vinaterías, farm-to-table"><span class="bs-anchor-swatch" style="background:#1F4E5B"></span><strong>Bosque</strong><small>#1F4E5B</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#7A8B6A" role="radio" aria-checked="false" title="Salvia — natural, herbal"><span class="bs-anchor-swatch" style="background:#7A8B6A"></span><strong>Salvia</strong><small>#7A8B6A</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#6B7A3A" role="radio" aria-checked="false" title="Oliva — mediterráneo, contundente"><span class="bs-anchor-swatch" style="background:#6B7A3A"></span><strong>Oliva</strong><small>#6B7A3A</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#3A5945" role="radio" aria-checked="false" title="Enebro — botánico, coctelería"><span class="bs-anchor-swatch" style="background:#3A5945"></span><strong>Enebro</strong><small>#3A5945</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#2E4A3D" role="radio" aria-checked="false" title="Pino — atmósfera de bosque"><span class="bs-anchor-swatch" style="background:#2E4A3D"></span><strong>Pino</strong><small>#2E4A3D</small></button>
+              </div>
+            </div>
+            <div>
+              <p class="bs-anchor-strip-label">Marino y tinta</p>
+              <div class="bs-anchor-row">
+                <button type="button" class="bs-anchor-tile" data-anchor="#1F2E5B" role="radio" aria-checked="false" title="Marino — alta cocina, refinado"><span class="bs-anchor-swatch" style="background:#1F2E5B"></span><strong>Marino</strong><small>#1F2E5B</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#4F5B6A" role="radio" aria-checked="false" title="Pizarra — moderno, mínimo"><span class="bs-anchor-swatch" style="background:#4F5B6A"></span><strong>Pizarra</strong><small>#4F5B6A</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#1A2236" role="radio" aria-checked="false" title="Medianoche — coctelería, after"><span class="bs-anchor-swatch" style="background:#1A2236"></span><strong>Medianoche</strong><small>#1A2236</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#2A2620" role="radio" aria-checked="false" title="Carbón — chophouse, dark"><span class="bs-anchor-swatch" style="background:#2A2620"></span><strong>Carbón</strong><small>#2A2620</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#4A6577" role="radio" aria-checked="false" title="Mezclilla — casual, de barrio"><span class="bs-anchor-swatch" style="background:#4A6577"></span><strong>Mezclilla</strong><small>#4A6577</small></button>
+              </div>
+            </div>
+            <div>
+              <p class="bs-anchor-strip-label">Vibrantes y expresivos</p>
+              <div class="bs-anchor-row">
+                <button type="button" class="bs-anchor-tile" data-anchor="#E07050" role="radio" aria-checked="false" title="Coral — divertido, brunch"><span class="bs-anchor-swatch" style="background:#E07050"></span><strong>Coral</strong><small>#E07050</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#E8A93B" role="radio" aria-checked="false" title="Caléndula — energético, soleado"><span class="bs-anchor-swatch" style="background:#E8A93B"></span><strong>Caléndula</strong><small>#E8A93B</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#B73F6A" role="radio" aria-checked="false" title="Fucsia — atrevido, expresivo"><span class="bs-anchor-swatch" style="background:#B73F6A"></span><strong>Fucsia</strong><small>#B73F6A</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#3A8B6E" role="radio" aria-checked="false" title="Jade — fresco, asiático moderno"><span class="bs-anchor-swatch" style="background:#3A8B6E"></span><strong>Jade</strong><small>#3A8B6E</small></button>
+                <button type="button" class="bs-anchor-tile" data-anchor="#A84080" role="radio" aria-checked="false" title="Magenta — atrevido, contemporáneo"><span class="bs-anchor-swatch" style="background:#A84080"></span><strong>Magenta</strong><small>#A84080</small></button>
+              </div>
+            </div>
+            <div class="bs-anchor-custom">
+              <span style="font-size:12.5px;color:var(--stone);">O escribe un hex propio:</span>
+              <div class="bs-anchor-custom-row">
+                <span class="bs-manual-swatch" id="bsAnchorCustomSwatch"></span>
+                <input type="text" id="bsAnchorCustomInput" placeholder="#1F4E5B" maxlength="7" autocomplete="off" spellcheck="false" />
+              </div>
+              <button type="button" class="bs-anchor-custom-apply" id="bsAnchorCustomApply">Usar este</button>
+            </div>
+          </div>
+          <details class="bs-workshop-why">
+            <summary>Por qué preguntamos</summary>
+            <p>El color base es el ancla de tu marca &mdash; con él se relacionan tu menú, los letreros, el avatar de Instagram y los candidatos del Taller. Elige el más cercano a lo que quieres; el Taller te ayuda a ubicarlo.</p>
+          </details>
+        </li>
+
         <li class="bs-workshop-step" data-step="mood" data-active="true">
           <div class="bs-workshop-step-head">
             <span class="bs-workshop-step-num">1</span>
@@ -2080,12 +2216,22 @@
     workshopWrap.querySelectorAll('.bs-workshop-chip[aria-checked="true"]').forEach(function(c){
       c.setAttribute('aria-checked', 'false');
     });
+    workshopWrap.querySelectorAll('.bs-anchor-tile[aria-checked="true"]').forEach(function(t){
+      t.setAttribute('aria-checked', 'false');
+    });
     workshopWrap.querySelectorAll('.bs-workshop-step').forEach(function(s){
       s.removeAttribute('data-done');
+      s.removeAttribute('data-active');
     });
-    var firstStep = workshopWrap.querySelector('.bs-workshop-step[data-step="mood"]');
-    if (firstStep) firstStep.setAttribute('data-active', 'true');
-    wsState.anchor = opts.anchor || (latestPalette && latestPalette[0] && latestPalette[0].hex) || '#1F4E5B';
+    var anchorStep = workshopWrap.querySelector('.bs-workshop-step[data-step="anchor"]');
+    var moodStep   = workshopWrap.querySelector('.bs-workshop-step[data-step="mood"]');
+    var hasAnchor = !!opts.anchor;
+    if (anchorStep) {
+      anchorStep.hidden = hasAnchor;
+      if (!hasAnchor) anchorStep.setAttribute('data-active', 'true');
+    }
+    if (moodStep && hasAnchor) moodStep.setAttribute('data-active', 'true');
+    wsState.anchor = opts.anchor || null;
     wsState.ground = null; wsState.mood = null; wsState.count = 4;
     var snapped = snapBackgroundToGround(latestDetectedBackground && latestDetectedBackground.hex);
     if (snapped) {
@@ -2182,6 +2328,161 @@
 
   if (workshopRefineBtn) workshopRefineBtn.addEventListener('click', function(){
     openWorkshop({ anchor: wsState.anchor });
+  });
+
+  // ============================================================
+  // Vía 3 — "Empezar de cero" — abre el Taller sin color base.
+  // ============================================================
+  function openWorkshopUnanchored(){
+    var anchorStep = workshopWrap.querySelector('.bs-workshop-step[data-step="anchor"]');
+    if (anchorStep) {
+      anchorStep.hidden = false;
+      anchorStep.setAttribute('data-active', 'true');
+      anchorStep.removeAttribute('data-done');
+    }
+    var moodStep = workshopWrap.querySelector('.bs-workshop-step[data-step="mood"]');
+    if (moodStep) moodStep.removeAttribute('data-active');
+    openWorkshop({ anchor: null });
+    wsState.anchor = null;
+    workshopCandidates.hidden = true;
+    workshopCandidates.innerHTML = '';
+    if (window.plausible) window.plausible('Brand Suite Workshop Open', { props: { entry: 'cold' } });
+  }
+
+  // Click en una baldosa de color base.
+  workshopWrap.addEventListener('click', function(e){
+    var tile = e.target.closest('.bs-anchor-tile');
+    if (!tile) return;
+    var step = tile.closest('.bs-workshop-step');
+    if (!step) return;
+    step.querySelectorAll('.bs-anchor-tile').forEach(function(t){
+      t.setAttribute('aria-checked', 'false');
+    });
+    tile.setAttribute('aria-checked', 'true');
+    step.setAttribute('data-done', 'true');
+    step.removeAttribute('data-active');
+    wsState.anchor = tile.getAttribute('data-anchor');
+    var moodStep = workshopWrap.querySelector('.bs-workshop-step[data-step="mood"]');
+    if (moodStep && moodStep.getAttribute('data-done') !== 'true') {
+      moodStep.setAttribute('data-active', 'true');
+    }
+    maybeRenderCandidates();
+  });
+
+  // Hex propio en Q0.
+  var anchorCustomInput  = document.getElementById('bsAnchorCustomInput');
+  var anchorCustomSwatch = document.getElementById('bsAnchorCustomSwatch');
+  var anchorCustomApply  = document.getElementById('bsAnchorCustomApply');
+  function normaliseHexInput(raw){
+    var v = String(raw || '').trim().replace(/^#/, '').toUpperCase();
+    if (/^[0-9A-F]{3}$/.test(v)) v = v.split('').map(function(c){ return c + c; }).join('');
+    if (/^[0-9A-F]{6}$/.test(v)) return '#' + v;
+    return null;
+  }
+  if (anchorCustomInput) anchorCustomInput.addEventListener('input', function(){
+    var hex = normaliseHexInput(anchorCustomInput.value);
+    anchorCustomSwatch.style.background = hex || 'var(--cream-2)';
+  });
+  if (anchorCustomApply) anchorCustomApply.addEventListener('click', function(){
+    var hex = normaliseHexInput(anchorCustomInput.value);
+    if (!hex) return;
+    var anchorStep = workshopWrap.querySelector('.bs-workshop-step[data-step="anchor"]');
+    if (anchorStep) {
+      anchorStep.querySelectorAll('.bs-anchor-tile').forEach(function(t){ t.setAttribute('aria-checked', 'false'); });
+      anchorStep.setAttribute('data-done', 'true');
+      anchorStep.removeAttribute('data-active');
+    }
+    wsState.anchor = hex;
+    var moodStep = workshopWrap.querySelector('.bs-workshop-step[data-step="mood"]');
+    if (moodStep && moodStep.getAttribute('data-done') !== 'true') {
+      moodStep.setAttribute('data-active', 'true');
+    }
+    maybeRenderCandidates();
+  });
+
+  // Chips de vías de entrada.
+  var entryWorkshopColdBtn = document.getElementById('bsEntryWorkshopCold');
+  var entryManualBtn       = document.getElementById('bsEntryManual');
+  if (entryWorkshopColdBtn) entryWorkshopColdBtn.addEventListener('click', function(){
+    openWorkshopUnanchored();
+  });
+
+  // ============================================================
+  // Vía 4 — entrada manual de hex.
+  // ============================================================
+  var manualWrap   = document.getElementById('bsManualWrap');
+  var manualInputs = document.getElementById('bsManualInputs');
+  var manualApply  = document.getElementById('bsManualApply');
+  var manualCancel = document.getElementById('bsManualCancel');
+  var manualError  = document.getElementById('bsManualError');
+
+  function buildManualInputs(){
+    if (!manualInputs) return;
+    var roleLabels = ['Color base', 'Fondo / secundario', 'Acento 1', 'Acento 2', 'Neutro'];
+    var defaults   = ['',           '#FAF7F2',             '',         '',         ''];
+    manualInputs.innerHTML = roleLabels.map(function(label, idx){
+      return '<div class="bs-manual-input">' +
+        '<label for="bsManualHex' + idx + '">' + label + '</label>' +
+        '<div class="bs-manual-input-row">' +
+          '<span class="bs-manual-swatch" data-manual-swatch="' + idx + '" style="background:' + (defaults[idx] || 'var(--cream-2)') + '"></span>' +
+          '<input type="text" id="bsManualHex' + idx + '" data-manual-hex="' + idx + '" value="' + defaults[idx] + '" placeholder="#1F4E5B" maxlength="7" autocomplete="off" spellcheck="false" />' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  if (manualInputs) {
+    manualInputs.addEventListener('input', function(e){
+      var input = e.target.closest('input[data-manual-hex]');
+      if (!input) return;
+      var idx = input.getAttribute('data-manual-hex');
+      var swatch = manualInputs.querySelector('[data-manual-swatch="' + idx + '"]');
+      var hex = normaliseHexInput(input.value);
+      if (swatch) swatch.style.background = hex || 'var(--cream-2)';
+    });
+  }
+
+  function openManualEntry(){
+    if (!manualWrap) return;
+    buildManualInputs();
+    manualWrap.hidden = false;
+    if (manualError) manualError.textContent = '';
+    requestAnimationFrame(function(){
+      manualWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      var first = manualInputs.querySelector('input[data-manual-hex="0"]');
+      if (first) first.focus();
+    });
+    if (window.plausible) window.plausible('Brand Suite Manual Open');
+  }
+
+  if (entryManualBtn) entryManualBtn.addEventListener('click', openManualEntry);
+  if (manualCancel)   manualCancel.addEventListener('click', function(){
+    if (manualWrap) manualWrap.hidden = true;
+  });
+  if (manualApply) manualApply.addEventListener('click', function(){
+    if (!manualInputs) return;
+    var inputs = manualInputs.querySelectorAll('input[data-manual-hex]');
+    var palette = [];
+    var invalidIdx = -1;
+    for (var i = 0; i < inputs.length; i++) {
+      var raw = inputs[i].value.trim();
+      if (!raw) continue;
+      var hex = normaliseHexInput(raw);
+      if (!hex) { invalidIdx = i; break; }
+      palette.push({ hex: hex, dominancePct: 0.20 });
+    }
+    if (invalidIdx >= 0) {
+      manualError.textContent = 'El espacio ' + (invalidIdx + 1) + ' no es un hex válido. Usa #RRGGBB o #RGB.';
+      return;
+    }
+    if (palette.length < 2) {
+      manualError.textContent = 'Escribe al menos dos hex (Color base + uno más).';
+      return;
+    }
+    manualError.textContent = '';
+    manualWrap.hidden = true;
+    hydratePalette(palette, { source: 'manual' });
+    if (window.plausible) window.plausible('Brand Suite Manual Apply', { props: { count: palette.length } });
   });
 
   var lastSeenMonoState = false;
