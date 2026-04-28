@@ -57,7 +57,9 @@ expectedSurfaces.forEach(function(k){
 });
 
 // 3:2 source → 1:1 IG square: horizontal crop, fraction = 1/1.5 = 0.667
-const crop1 = PB.computeCropRectangle(3/2, 'ig-grid');
+// (Note: 'ig-grid' is the 4:5 modern Instagram feed; 'ig-grid-square'
+// is the 1:1 legacy square. Targeting square here for the 1:1 math.)
+const crop1 = PB.computeCropRectangle(3/2, 'ig-grid-square');
 assertEq('3:2 → 1:1 axis', crop1.axis, 'horizontal');
 near('3:2 → 1:1 cropFraction', crop1.cropFraction, 2/3, 1e-6);
 
@@ -84,7 +86,7 @@ assertEq('3:2 → 3:2 axis', crop5.axis, 'exact');
 near('3:2 → 3:2 cropFraction', crop5.cropFraction, 1);
 
 // 4:3 source (phone) → 1:1 IG: src=1.333, dst=1; src > dst → horizontal, frac=0.75
-const crop6 = PB.computeCropRectangle(4/3, 'ig-grid');
+const crop6 = PB.computeCropRectangle(4/3, 'ig-grid-square');
 assertEq('4:3 → 1:1 axis', crop6.axis, 'horizontal');
 near('4:3 → 1:1 cropFraction', crop6.cropFraction, 0.75, 1e-6);
 
@@ -354,6 +356,51 @@ poison.forEach(function(p){
   assert('no leak from bucketShotCount(' + JSON.stringify(p) + ')',
     SHOT_BUCKETS.indexOf(PB.bucketShotCount(p)) !== -1);
 });
+
+// ============================================================
+// T1f: cross-tool fragment fidelity. The audit-found bug — a dish
+// "Fish & Chips | Pan-Seared" round-tripping as TWO dishes through
+// the pre-T1f raw .split('|') path. Post-T1f the shared escaper
+// preserves the literal pipe inside the name; only the row-separator
+// pipe between the three fields actually splits.
+// ============================================================
+{
+  const dishes = [
+    { name: 'Fish & Chips | Pan-Seared', category: 'main',     priority: 'hero' },
+    { name: 'Butter | Cultured',         category: 'side',     priority: 'standard' },
+    { name: 'Tonnarelli',                category: 'pasta',    priority: 'hero' }
+  ];
+  const frag = PB.encodeStarsFragment(dishes);
+  const decoded = PB.decodeStarsFragment(frag);
+  assertEq('T1f: 3 dishes round-trip as 3 (not 6)', decoded.length, 3);
+  assertEq('T1f: pipe preserved in dish name',
+           decoded[0].name, 'Fish & Chips | Pan-Seared');
+  assertEq('T1f: pipe preserved in second dish',
+           decoded[1].name, 'Butter | Cultured');
+  assertEq('T1f: clean dish unchanged', decoded[2].name, 'Tonnarelli');
+}
+{
+  // Margins fragment — same fix
+  const items = [
+    { name: 'Fish & Chips | Pan-Seared', plateCost: 4.27, suggestedPrice: 14.95 }
+  ];
+  const frag = PB.encodeMarginsFragment(items);
+  const decoded = PB.decodeMarginsFragment(frag);
+  assertEq('T1f: margins round-trip count', decoded.length, 1);
+  assertEq('T1f: margins name preserved', decoded[0].name, 'Fish & Chips | Pan-Seared');
+}
+{
+  // Palette hex normalisation. #fff and #FFFFFF both encode as the
+  // canonical 6-char uppercase form so different tools display the
+  // same chip after a round-trip.
+  const palette = ['#fff', '#1F4E5B', '#abc', '#B8541A'];
+  const frag = PB.encodePaletteFragment(palette);
+  const decoded = PB.decodePaletteFragment(frag);
+  assertEq('T1f: palette length preserved', decoded.length, 4);
+  assertEq('T1f: 3-char hex expanded to 6-char', decoded[0], '#FFFFFF');
+  assertEq('T1f: 6-char hex stays uppercase', decoded[1], '#1F4E5B');
+  assertEq('T1f: 3-char abc → AABBCC', decoded[2], '#AABBCC');
+}
 
 // ============================================================
 console.log('\n' + (failures === 0

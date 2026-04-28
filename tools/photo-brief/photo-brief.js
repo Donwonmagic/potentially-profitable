@@ -27,6 +27,16 @@
 (function(){
   'use strict';
 
+  // Auto-require the shared URL-fragment escaper in Node so tests pick
+  // up the safe-encoding behaviour without per-test wiring. Browsers
+  // get MuntinFragment via the page-side <script> tag. When the
+  // shared module isn't present, the per-tool code falls back to its
+  // legacy "strip the reserved char" behaviour — lossy but no worse
+  // than the pre-T1f baseline.
+  if (typeof MuntinFragment === 'undefined' && typeof require !== 'undefined') {
+    try { var MuntinFragment = require('../_shared/url-fragment.js'); } catch (_) {}
+  }
+
   // ============================================================
   // Canonical destination surfaces — eight tickable destinations
   // each photo is composed for. Pixel resolutions are the
@@ -235,11 +245,33 @@
   // Suite / Plate Cost compose URLs with these fragments; the Photo
   // Brief page reads them on load and pre-fills the form.
   // ============================================================
+  // T1f: Photo Brief uses `|` as field separator and `~` as row
+  // separator, so it can only safely use a per-field escaper that
+  // touches THOSE two chars (and nothing else). The shared
+  // MuntinFragment escape token contains `~`, which would collide
+  // with our row separator on decode. So inline a 2-char escaper
+  // here, documented inline. Tools whose row separator isn't reserved
+  // can use the shared escaper directly.
+  function pbEscape(s) {
+    return String(s == null ? '' : s)
+      .replace(/\\/g, '\\\\')
+      .replace(/\|/g, '\\p')
+      .replace(/~/g, '\\t');
+  }
+  function pbUnescape(s) {
+    // Decode in reverse — handle the literal-backslash escape last so
+    // an input containing "\\p" stays as "\p" instead of decoding to
+    // a pipe.
+    return String(s == null ? '' : s)
+      .replace(/\\p/g, '|')
+      .replace(/\\t/g, '~')
+      .replace(/\\\\/g, '\\');
+  }
   function encodeStarsFragment(dishes) {
     if (!Array.isArray(dishes) || !dishes.length) return '';
     var lines = dishes.map(function(d){
       return [
-        String(d.name || '').replace(/\|/g, ''),
+        pbEscape(d.name || ''),
         d.category || 'main',
         d.priority || 'standard'
       ].join('|');
@@ -252,26 +284,35 @@
     try { s = decodeURIComponent(raw); } catch (_) { return []; }
     return s.split('~').map(function(line){
       var p = line.split('|');
-      return { name: p[0] || '', category: p[1] || 'main', priority: p[2] || 'standard' };
+      return { name: pbUnescape(p[0] || ''), category: p[1] || 'main', priority: p[2] || 'standard' };
     }).filter(function(d){ return d.name; });
   }
   function encodePaletteFragment(hexCodes) {
     if (!Array.isArray(hexCodes)) return '';
-    return hexCodes.filter(function(h){
-      return typeof h === 'string' && /^#?[0-9a-f]{3,8}$/i.test(h);
-    }).map(function(h){ return h.replace(/^#/, ''); }).join('-');
+    // T1f: route hex through the shared normaliser so #fff and #FFFFFF
+    // both encode as FFFFFF. Pre-T1f decoded form was inconsistent
+    // case across tools, producing visually-different chips after a
+    // round-trip even though the source colour was the same.
+    var norm = (typeof MuntinFragment !== 'undefined' && MuntinFragment.normaliseHex)
+      ? function(h){ var n = MuntinFragment.normaliseHex(h); return n ? n.replace(/^#/, '') : null; }
+      : function(h){
+          if (typeof h !== 'string' || !/^#?[0-9a-f]{3,8}$/i.test(h)) return null;
+          return h.replace(/^#/, '');
+        };
+    return hexCodes.map(norm).filter(function(h){ return h; }).join('-');
   }
   function decodePaletteFragment(raw) {
     if (!raw) return [];
-    return String(raw).split('-').filter(function(h){
-      return /^[0-9a-f]{3,8}$/i.test(h);
-    }).map(function(h){ return '#' + h.toUpperCase(); }).slice(0, 5);
+    var norm = (typeof MuntinFragment !== 'undefined' && MuntinFragment.normaliseHex)
+      ? function(h){ return MuntinFragment.normaliseHex(h); }
+      : function(h){ return /^[0-9a-f]{3,8}$/i.test(h) ? '#' + h.toUpperCase() : null; };
+    return String(raw).split('-').map(norm).filter(function(h){ return h; }).slice(0, 5);
   }
   function encodeMarginsFragment(items) {
     if (!Array.isArray(items)) return '';
     var lines = items.map(function(it){
       return [
-        String(it.name || '').replace(/\|/g, ''),
+        pbEscape(it.name || ''),
         Number(it.plateCost || 0).toFixed(2),
         Number(it.suggestedPrice || 0).toFixed(2)
       ].join('|');
@@ -285,7 +326,7 @@
     return s.split('~').map(function(line){
       var p = line.split('|');
       return {
-        name:           p[0] || '',
+        name:           pbUnescape(p[0] || ''),
         plateCost:      Number(p[1]) || 0,
         suggestedPrice: Number(p[2]) || 0
       };

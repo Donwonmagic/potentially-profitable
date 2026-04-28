@@ -582,7 +582,7 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
 </footer>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="/tools/photo-brief/photo-brief.js?v=20260426-pb1"></script>
+<script src="/tools/photo-brief/photo-brief.js?v=20260428-pb3"></script>
 <script src="/tools/photo-brief/card-render.js?v=20260426-pb2"></script>
 <script>
 (function(){
@@ -1391,7 +1391,21 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
     var palette = params.get('palette');
     var margins = params.get('margins');
     if (stars)   fragmentState.stars   = PB.decodeStarsFragment(stars);
-    if (palette) fragmentState.palette = PB.decodePaletteFragment(palette);
+    if (palette) {
+      fragmentState.palette = PB.decodePaletteFragment(palette);
+      // T4: surface dropped-hex count to console + window state so a
+      // corrupt shared link doesn't silently produce a too-small
+      // palette. A future render pass can also pick this up via
+      // window.__pbDecodeWarnings to render a UI banner; for now we
+      // log so a developer or curious owner can spot the silent loss.
+      var rawCount = palette.split('-').filter(function(s){ return s.length > 0; }).length;
+      var droppedHex = rawCount - fragmentState.palette.length;
+      if (droppedHex > 0) {
+        var msg = 'Photo Brief: ' + droppedHex + ' palette colour(s) from the shared link could not be parsed (invalid hex). Palette has ' + fragmentState.palette.length + ' instead of ' + rawCount + '.';
+        try { if (typeof console !== 'undefined' && console.warn) console.warn(msg); } catch (_) {}
+        window.__pbDecodeWarnings = (window.__pbDecodeWarnings || []).concat([{ kind: 'invalid-hex', dropped: droppedHex, total: rawCount, message: msg }]);
+      }
+    }
     if (margins) fragmentState.margins = PB.decodeMarginsFragment(margins);
     if (fragmentState.stars.length) {
       rerenderRows(fragmentState.stars.map(function(d){

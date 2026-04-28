@@ -906,9 +906,9 @@
         <span class="mm-step-num" aria-hidden="true">5</span>
         <div class="mm-step-body">
           <h3 class="mm-step-title">No third-party scripts touch the inputs.</h3>
-          <p class="mm-step-claim">This page loads exactly two JavaScript files: site-wide <code>site.js</code> (nav + language switch) and tool-specific <code>margin-math.js</code> (the math). Plus one analytics script (Plausible) that receives the bucket values. Glossary hover popovers read their definitions from <code>data-def</code> attributes in the HTML itself — no additional fetch fires when you hover.</p>
+          <p class="mm-step-claim">This page loads exactly three JavaScript files: site-wide <code>site.js</code> (nav + language switch), shared <code>_shared/parse-number.js</code> (toolkit-wide loose-number parser, handles European decimals + currency symbols + whitespace variants), and tool-specific <code>margin-math.js</code> (the math). Plus one analytics script (Plausible) that receives the bucket values. Glossary hover popovers read their definitions from <code>data-def</code> attributes in the HTML itself — no additional fetch fires when you hover.</p>
           <details class="mm-step-inspect"><summary>Inspect this</summary>
-            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filter <strong>JS</strong>. Reload. You should see <code>plausible.io/js/…</code>, <code>site.js</code>, and <code>margin-math.js</code>. Hover any underlined glossary term in a calculator — the request list does not grow. No Google Tag Manager, no Meta Pixel, no chat widget, no session replay.</div>
+            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filter <strong>JS</strong>. Reload. You should see <code>plausible.io/js/…</code>, <code>site.js</code>, <code>parse-number.js</code>, and <code>margin-math.js</code>. Hover any underlined glossary term in a calculator — the request list does not grow. No Google Tag Manager, no Meta Pixel, no chat widget, no session replay.</div>
           </details>
         </div>
       </div>
@@ -1165,7 +1165,8 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="./margin-math.js?v=20260424-mm4"></script>
+<script src="/tools/_shared/parse-number.js?v=20260428-shared1"></script>
+<script src="./margin-math.js?v=20260428-mm5"></script>
 <script>
 /* Shared scenario sync. Each calculator IIFE registers its own
  * getState() closure; on user interaction we re-encode the full

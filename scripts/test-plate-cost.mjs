@@ -604,6 +604,40 @@ assertEq('recommendedTier shelf-staples → high-volume', PC.recommendedTier(tHV
 assertEq('SAMPLE_RECIPE_ES is Tinga de pollo', PC.SAMPLE_RECIPE_ES.name, 'Tinga de pollo');
 
 // ============================================================
+// Loose-number parsing — verifies pcCoerceNumber routes through the
+// shared MuntinParse parser (T1d). A Spanish owner pasting €24,50 as
+// AP price for olive oil shouldn't lose the row to "invalid-numbers".
+// ============================================================
+{
+  // Row with European AP price + currency symbol
+  const row = {
+    ingredient: 'Olive oil',
+    apPrice: '€24,50',
+    apQty: 1,
+    apUnit: 'l',
+    usedQty: 50,
+    usedUnit: 'ml',
+    yieldPercent: '100%'
+  };
+  const r = PC.computeIngredientCost(row);
+  assertEq('EU AP price €24,50 parses (no invalid-numbers warning)', r.warning, null);
+  // €24.50/L → €0.0245/mL → 50 mL → €1.225
+  near('EU AP price → correct used cost', r.usedCost, 1.225, 0.005);
+}
+{
+  // Yield-resolver unification — manual entry "75" must be the same
+  // as paste-path "75%" and "0.75". All three give yield 0.75.
+  const base = { ingredient: 'Halibut', apPrice: 12, apQty: 1, apUnit: 'lb', usedQty: 1, usedUnit: 'lb' };
+  const a = PC.computeIngredientCost(Object.assign({}, base, { yieldPercent: '75%' }));
+  const b = PC.computeIngredientCost(Object.assign({}, base, { yieldPercent: '0.75' }));
+  const c = PC.computeIngredientCost(Object.assign({}, base, { yieldPercent: '75' }));   // the audit-found bug
+  near('yield "75%" → 0.75', a.yieldPercent, 0.75, 0.001);
+  near('yield "0.75" → 0.75', b.yieldPercent, 0.75, 0.001);
+  near('yield "75" (manual entry) → 0.75 (was 75 before T1d)', c.yieldPercent, 0.75, 0.001);
+  near('yield "75" → same usedCost as "75%"', c.usedCost, a.usedCost, 0.001);
+}
+
+// ============================================================
 console.log('\n' + (failures === 0
   ? '✓ all plate-cost assertions pass'
   : '✗ ' + failures + ' plate-cost assertion(s) failed'));

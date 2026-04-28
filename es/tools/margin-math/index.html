@@ -887,9 +887,9 @@
         <span class="mm-step-num" aria-hidden="true">5</span>
         <div class="mm-step-body">
           <h3 class="mm-step-title">Ningún script de terceros toca las entradas.</h3>
-          <p class="mm-step-claim">Esta página carga exactamente dos archivos JavaScript: el <code>site.js</code> del sitio (nav + switch de idioma) y <code>margin-math.js</code> específico de la herramienta (la matemática). Más un script de analítica (Plausible) que recibe los valores bucket. Los popovers del glosario leen las definiciones de atributos <code>data-def</code> en el HTML — no se dispara ningún fetch adicional al pasar el cursor.</p>
+          <p class="mm-step-claim">Esta página carga exactamente tres archivos JavaScript: el <code>site.js</code> del sitio (nav + switch de idioma), el compartido <code>_shared/parse-number.js</code> (parser de números laxo del toolkit, cubre decimales europeos + símbolos de moneda + variantes de espacio), y <code>margin-math.js</code> específico de la herramienta (la matemática). Más un script de analítica (Plausible) que recibe los valores bucket. Los popovers del glosario leen las definiciones de atributos <code>data-def</code> en el HTML — no se dispara ningún fetch adicional al pasar el cursor.</p>
           <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
-            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filtra <strong>JS</strong>. Recarga. Deberías ver <code>plausible.io/js/…</code>, <code>site.js</code>, y <code>margin-math.js</code>. Pasa el cursor sobre cualquier término subrayado dentro de una calculadora — la lista de solicitudes no crece. Sin Google Tag Manager, sin Meta Pixel, sin widget de chat, sin session replay.</div>
+            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filtra <strong>JS</strong>. Recarga. Deberías ver <code>plausible.io/js/…</code>, <code>site.js</code>, <code>parse-number.js</code>, y <code>margin-math.js</code>. Pasa el cursor sobre cualquier término subrayado dentro de una calculadora — la lista de solicitudes no crece. Sin Google Tag Manager, sin Meta Pixel, sin widget de chat, sin session replay.</div>
           </details>
         </div>
       </div>
@@ -1146,7 +1146,8 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/es/terms.html">Términos</a><a href="/es/privacy.html">Privacidad</a><a href="/es/accessibility.html">Accesibilidad</a><a href="/es/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="./margin-math.js?v=20260424-mm4"></script>
+<script src="/tools/_shared/parse-number.js?v=20260428-shared1"></script>
+<script src="./margin-math.js?v=20260428-mm5"></script>
 <script>
 /* Sincronía de escenario compartida. Cada IIFE de calculadora
  * registra su propia función getState(); al interactuar, re-codifica

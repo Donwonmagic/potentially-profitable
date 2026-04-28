@@ -345,6 +345,8 @@
 </footer>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
+<script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script>
 (function() {
   var form = document.getElementById('seoForm');
@@ -487,9 +489,29 @@
     // don't reliably expose the actual text when audits pass.
     var api = '/api/seo-check?url=' + encodeURIComponent(url);
 
-    fetch(api)
-      .then(function(r) { return r.json(); })
+    var pendingResponse = null;
+    fetch(api, { signal: AbortSignal.timeout(8000) })
+      .then(function(r) {
+        pendingResponse = r;
+        return r.json().catch(function(){ return {}; });
+      })
       .then(function(data) {
+        if (pendingResponse && !pendingResponse.ok) {
+          var bodySnip = data && data.error ? data.error : '';
+          var classified = (typeof MuntinFetchError !== 'undefined')
+            ? MuntinFetchError.classifyFetchError(null, {
+                status: pendingResponse.status,
+                headers: pendingResponse.headers,
+                bodySnippet: bodySnip
+              })
+            : { messageEn: 'Could not grade that URL. ' + bodySnip, messageEs: 'No se pudo calificar esa URL. ' + bodySnip };
+          var locale = document.documentElement.lang === 'en' ? 'en' : 'es';
+          throw Object.assign(new Error(
+            (typeof MuntinFetchError !== 'undefined')
+              ? MuntinFetchError.localizedMessage(classified, locale)
+              : classified.messageEs
+          ), { _classified: classified });
+        }
         if (!data.ok) throw new Error(data.error || 'No se pudo cargar la página');
 
         var titleResult = gradeTitle(data.title || '');
@@ -509,16 +531,19 @@
         result.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
         if (window.plausible) {
-          window.plausible('SEO Grader', { props: { titleScore: titleResult.pct, descScore: descResult.pct, url: url } });
+          window.plausible('SEO Grader', { props: { titleScore: titleResult.pct, descScore: descResult.pct, url: (typeof MuntinAnalytics !== 'undefined') ? MuntinAnalytics.redactUrlForAnalytics(url) : url } });
         }
       })
       .catch(function(err) {
-        var msg = err.message || '';
-        if (/522|timeout|abort/i.test(msg)) {
-          alert('El sitio tardó demasiado en responder. Algunos sitios bloquean escaneos automatizados o están detrás de la protección de Cloudflare. Prueba con otra URL o revisa el sitio a mano.');
-        } else {
-          alert('No se pudo calificar esa URL. ' + (msg || 'Revisa la dirección e intenta de nuevo.'));
-        }
+        var locale = document.documentElement.lang === 'en' ? 'en' : 'es';
+        var classified = err && err._classified
+          ? err._classified
+          : ((typeof MuntinFetchError !== 'undefined')
+              ? MuntinFetchError.classifyFetchError(err, null)
+              : { messageEn: err && err.message ? err.message : 'Could not grade that URL.', messageEs: err && err.message ? err.message : 'No se pudo calificar esa URL.' });
+        alert((typeof MuntinFetchError !== 'undefined')
+          ? MuntinFetchError.localizedMessage(classified, locale)
+          : classified.messageEs);
       })
       .finally(function() {
         btn.disabled = false;

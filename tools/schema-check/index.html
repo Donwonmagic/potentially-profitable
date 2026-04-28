@@ -260,6 +260,8 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
+<script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script>
 (function(){
   var form=document.getElementById('schForm');
@@ -372,7 +374,21 @@
     // our own Worker proxy if Lighthouse didn't return schema data.
     // This eliminates the false-negative where Lighthouse's
     // structured-data audit is absent from the response.
-    fetch(api).then(function(r){return r.json()}).then(function(data){
+    var pendingResponse=null;
+    fetch(api,{signal:AbortSignal.timeout(8000)}).then(function(r){
+      pendingResponse=r;
+      return r.json().catch(function(){return{}});
+    }).then(function(data){
+      if(pendingResponse&&!pendingResponse.ok){
+        var bodySnip=data&&data.error&&data.error.message?data.error.message:'';
+        var classified=(typeof MuntinFetchError!=='undefined')
+          ?MuntinFetchError.classifyFetchError(null,{status:pendingResponse.status,headers:pendingResponse.headers,bodySnippet:bodySnip})
+          :{messageEn:'Could not check that URL. '+bodySnip,messageEs:'Could not check that URL. '+bodySnip};
+        var locale=document.documentElement.lang==='es'?'es':'en';
+        throw Object.assign(new Error(
+          (typeof MuntinFetchError!=='undefined')?MuntinFetchError.localizedMessage(classified,locale):classified.messageEn
+        ),{_classified:classified});
+      }
       if(data.error)throw new Error(data.error.message||'API error');
 
       var audits=(data.lighthouseResult||{}).audits||{};
@@ -444,9 +460,15 @@
 
       result.classList.add('visible');
       result.scrollIntoView({behavior:'smooth',block:'start'});
-      if(window.plausible)window.plausible('Schema Check',{props:{types:foundTypes.join(','),url:url}});
+      if(window.plausible)window.plausible('Schema Check',{props:{types:foundTypes.join(','),url:(typeof MuntinAnalytics!=='undefined')?MuntinAnalytics.redactUrlForAnalytics(url):url}});
     }).catch(function(err){
-      alert('Could not check that URL. '+(err.message||'Please try again.'));
+      var locale=document.documentElement.lang==='es'?'es':'en';
+      var classified=err&&err._classified
+        ?err._classified
+        :((typeof MuntinFetchError!=='undefined')
+            ?MuntinFetchError.classifyFetchError(err,null)
+            :{messageEn:err&&err.message?err.message:'Could not check that URL.',messageEs:err&&err.message?err.message:'No se pudo revisar esa URL.'});
+      alert((typeof MuntinFetchError!=='undefined')?MuntinFetchError.localizedMessage(classified,locale):classified.messageEn);
     }).finally(function(){
       btn.disabled=false;btn.textContent='Check it';
     });

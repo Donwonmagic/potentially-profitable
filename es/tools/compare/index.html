@@ -242,6 +242,8 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; LLC de Maryland &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/es/terms.html">Términos</a><a href="/es/privacy.html">Privacidad</a><a href="/es/accessibility.html">Accesibilidad</a><a href="/es/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
+<script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script>
 (function(){
   var btn=document.getElementById('cmpSubmit');
@@ -256,7 +258,22 @@
 
   function fetchScores(url){
     var api='https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url='+encodeURIComponent(url)+'&strategy=mobile&category=performance&category=accessibility&category=seo&category=best-practices';
-    return fetch(api).then(function(r){return r.json()}).then(function(d){
+    var pendingResponse=null;
+    return fetch(api,{signal:AbortSignal.timeout(8000)}).then(function(r){
+      pendingResponse=r;
+      return r.json().catch(function(){return{}});
+    }).then(function(d){
+      if(pendingResponse&&!pendingResponse.ok){
+        var bodySnip=d&&d.error&&d.error.message?d.error.message:'';
+        var classified=(typeof MuntinFetchError!=='undefined')
+          ?MuntinFetchError.classifyFetchError(null,{status:pendingResponse.status,headers:pendingResponse.headers,bodySnippet:bodySnip})
+          :{messageEn:'Could not fetch '+short(url)+'. '+bodySnip,messageEs:'No se pudo cargar '+short(url)+'. '+bodySnip};
+        var locale=document.documentElement.lang==='en'?'en':'es';
+        var prefix=short(url)+': ';
+        throw Object.assign(new Error(prefix+(
+          (typeof MuntinFetchError!=='undefined')?MuntinFetchError.localizedMessage(classified,locale):classified.messageEs
+        )),{_classified:classified,_url:url});
+      }
       if(d.error)throw new Error(d.error.message);
       var c=d.lighthouseResult.categories;
       var a=d.lighthouseResult.audits||{};
@@ -332,9 +349,17 @@
       result.classList.add('visible');
       status.hidden=true;
       result.scrollIntoView({behavior:'smooth',block:'start'});
-      if(window.plausible)window.plausible('Compare',{props:{url1:u1,url2:u2}});
+      if(window.plausible)window.plausible('Compare',{props:{url1:(typeof MuntinAnalytics!=='undefined')?MuntinAnalytics.redactUrlForAnalytics(u1):u1,url2:(typeof MuntinAnalytics!=='undefined')?MuntinAnalytics.redactUrlForAnalytics(u2):u2}});
     }).catch(function(err){
-      alert('No se pudo comparar. '+(err.message||'Revisa ambas URLs e intenta de nuevo.'));
+      var locale=document.documentElement.lang==='en'?'en':'es';
+      if(err&&err._classified){
+        alert(err.message);
+      }else{
+        var classified=(typeof MuntinFetchError!=='undefined')
+          ?MuntinFetchError.classifyFetchError(err,null)
+          :{messageEn:err&&err.message?err.message:'Could not compare. Check both URLs.',messageEs:err&&err.message?err.message:'No se pudo comparar. Revisa ambas URLs.'};
+        alert((typeof MuntinFetchError!=='undefined')?MuntinFetchError.localizedMessage(classified,locale):classified.messageEs);
+      }
       status.hidden=true;
     }).finally(function(){btn.disabled=false;btn.textContent='Comparar'});
   });

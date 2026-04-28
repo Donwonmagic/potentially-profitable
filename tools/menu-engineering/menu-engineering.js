@@ -24,12 +24,28 @@
 // Item normalization + contribution margin
 // ------------------------------------------------------------
 
+// Auto-require the shared loose-number parser in Node so tests pick
+// up the EU-format / currency-symbol handling without per-test wiring.
+// Browsers get MuntinParse via the page-side <script> tag.
+if (typeof MuntinParse === 'undefined' && typeof require !== 'undefined') {
+  try { var MuntinParse = require('../_shared/parse-number.js'); } catch (_) {}
+}
+
 function meCoerceNumber(v) {
   // Accepts numbers, numeric strings ("$24.50", "24.50", "1,250"),
   // and returns a finite number or NaN. Null and empty string → 0
   // so empty rows in the manual-entry grid don't poison the totals.
   if (v == null || v === '') return 0;
   if (typeof v === 'number') return isFinite(v) ? v : NaN;
+  // Routes through the shared parser so EU decimals (1.234,56),
+  // currency symbols beyond $ (€ £ ¥), smart quotes from Word
+  // pastes, and NBSP whitespace all parse correctly. Was previously
+  // limited to $ + comma, so a UK owner pasting £1,234.50 got NaN.
+  if (typeof MuntinParse !== 'undefined' && MuntinParse.parseLooseNumberValue) {
+    var parsed = MuntinParse.parseLooseNumberValue(v);
+    return parsed == null ? NaN : parsed;
+  }
+  // Fallback when shared parser hasn't loaded — original behaviour.
   var s = String(v).trim().replace(/[$\s]/g, '').replace(/,/g, '');
   if (s === '') return 0;
   var n = parseFloat(s);

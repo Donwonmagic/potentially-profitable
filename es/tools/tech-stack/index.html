@@ -233,6 +233,8 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; LLC de Maryland &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/es/terms.html">Términos</a><a href="/es/privacy.html">Privacidad</a><a href="/es/accessibility.html">Accesibilidad</a><a href="/es/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
+<script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script>
 (function(){
   var form=document.getElementById('tsForm'),input=document.getElementById('tsUrl'),btn=document.getElementById('tsSubmit'),result=document.getElementById('tsResult');
@@ -309,7 +311,21 @@
 
     var api='https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url='+encodeURIComponent(url)+'&strategy=mobile&category=performance';
 
-    fetch(api).then(function(r){return r.json()}).then(function(data){
+    var pendingResponse=null;
+    fetch(api,{signal:AbortSignal.timeout(8000)}).then(function(r){
+      pendingResponse=r;
+      return r.json().catch(function(){return{}});
+    }).then(function(data){
+      if(pendingResponse&&!pendingResponse.ok){
+        var bodySnip=data&&data.error&&data.error.message?data.error.message:'';
+        var classified=(typeof MuntinFetchError!=='undefined')
+          ?MuntinFetchError.classifyFetchError(null,{status:pendingResponse.status,headers:pendingResponse.headers,bodySnippet:bodySnip})
+          :{messageEn:'Could not scan that URL. '+bodySnip,messageEs:'No se pudo escanear esa URL. '+bodySnip};
+        var locale=document.documentElement.lang==='en'?'en':'es';
+        throw Object.assign(new Error(
+          (typeof MuntinFetchError!=='undefined')?MuntinFetchError.localizedMessage(classified,locale):classified.messageEs
+        ),{_classified:classified});
+      }
       if(data.error)throw new Error(data.error.message||'Error de la API');
 
       // Collect all URLs from network requests
@@ -369,9 +385,15 @@
       result.innerHTML=html;
       result.classList.add('visible');
       result.scrollIntoView({behavior:'smooth',block:'start'});
-      if(window.plausible)window.plausible('Tech Stack',{props:{stack:groups.map(function(g){return g.items.join(',')}).join(';'),url:url}});
+      if(window.plausible)window.plausible('Tech Stack',{props:{stack:groups.map(function(g){return g.items.join(',')}).join(';'),url:(typeof MuntinAnalytics!=='undefined')?MuntinAnalytics.redactUrlForAnalytics(url):url}});
     }).catch(function(err){
-      alert('No se pudo escanear esa URL. '+(err.message||'Intenta de nuevo.'));
+      var locale=document.documentElement.lang==='en'?'en':'es';
+      var classified=err&&err._classified
+        ?err._classified
+        :((typeof MuntinFetchError!=='undefined')
+            ?MuntinFetchError.classifyFetchError(err,null)
+            :{messageEn:err&&err.message?err.message:'Could not scan that URL.',messageEs:err&&err.message?err.message:'No se pudo escanear esa URL.'});
+      alert((typeof MuntinFetchError!=='undefined')?MuntinFetchError.localizedMessage(classified,locale):classified.messageEs);
     }).finally(function(){btn.disabled=false;btn.textContent='Detectar'});
   });
 })();

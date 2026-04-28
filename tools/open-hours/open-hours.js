@@ -86,16 +86,24 @@ function ohMinutesToTime(min) {
 }
 
 // Display formatting for the user-facing UI + printable Sign.
-// Drops :00 minute tail when zero ("11 AM" not "11:00 AM"); keeps
-// minutes when present. Locale-aware: ES uses 24-hour "11:00".
+// Drops :00 minute tail when zero in BOTH locales (so the UI reads
+// "9 PM" / "21h" instead of "9:00 PM" / "21:00"). Locale-aware:
+//   EN → 12-hour with AM/PM ("9 PM", "9:30 PM")
+//   ES → 24-hour with the Spanish "h" suffix ("21h", "21:30")
+// Pre-T1e ES returned the raw "HH:MM" — uneven against EN, and the
+// audit flagged the inconsistency as a polish issue (an owner who
+// switches locales sees the layout shift). Now both locales drop :00
+// when zero and read uniformly.
 function ohFormatTime(hhmm, locale) {
   if (typeof hhmm !== 'string') return '';
   var min = ohTimeToMinutes(hhmm);
   if (min == null) return '';
-  if (locale === 'es') {
-    return hhmm; // 24-hour for Spanish-language menus
-  }
   var h = Math.floor(min / 60), m = min % 60;
+  if (locale === 'es') {
+    // 24-hour with "h" suffix — common Spanish-language convention.
+    // Drop minutes when zero ("21h" instead of "21:00").
+    return m === 0 ? (h + 'h') : (ohPad2(h) + ':' + ohPad2(m));
+  }
   var ampm = h >= 12 ? 'PM' : 'AM';
   var h12 = h === 0 ? 12 : (h > 12 ? h - 12 : h);
   return h12 + (m === 0 ? '' : ':' + ohPad2(m)) + ' ' + ampm;
@@ -171,8 +179,27 @@ function ohValidateDay(day, services) {
     }
 
     // Close before open without next-day flag.
+    // Two common owner intents — disambiguate by the close-time shape:
+    //   (a) Bare-number close in 1..11 range typed without AM/PM →
+    //       most likely a PM time the parser read as 24h. e.g.
+    //       "opens 9, closes 5" → really 9 AM – 5 PM. Suggest the
+    //       12-hour interpretation explicitly.
+    //   (b) Close reads as a real morning time (or PM-but-shorter
+    //       than open) → suggest the after-midnight flag.
     if (effectiveClose < openMin) {
-      warnings.push({ day: day, message: 'On ' + day + ', "' + (s.label || 'service') + '" closes (' + ohFormatTime(s.closes) + ') before it opens (' + ohFormatTime(s.opens) + '). If you meant to close after midnight, check the "closes next day" box.' });
+      var closeH = Math.floor(closeMin / 60);
+      var pmHint = '';
+      if (closeH >= 1 && closeH <= 11) {
+        var pmGuess = ohFormatTime(ohPad2(closeH + 12) + ':' + ohPad2(closeMin % 60));
+        pmHint = ' Did you mean ' + pmGuess + '?';
+      }
+      warnings.push({
+        day: day,
+        message: 'On ' + day + ', "' + (s.label || 'service') +
+                 '" closes (' + ohFormatTime(s.closes) +
+                 ') before it opens (' + ohFormatTime(s.opens) + ').' + pmHint +
+                 ' If you meant to close after midnight, check the "closes next day" box.'
+      });
       continue;
     }
 
