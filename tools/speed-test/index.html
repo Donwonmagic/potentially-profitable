@@ -405,6 +405,7 @@
 </footer>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script>
 (function() {
   var form = document.getElementById('speedForm');
@@ -470,9 +471,35 @@
     var api = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url='
       + encodeURIComponent(url) + '&strategy=mobile&category=performance';
 
-    fetch(api)
-      .then(function(r) { return r.json(); })
+    // T2 — 8-second AbortSignal timeout so a hung PSI doesn't strand
+    // the user with a permanently "Testing…" button.
+    var pendingResponse = null;
+    fetch(api, { signal: AbortSignal.timeout(8000) })
+      .then(function(r) {
+        pendingResponse = r;
+        return r.json().catch(function(){ return {}; });
+      })
       .then(function(data) {
+        // Surface non-OK responses through the shared classifier so a
+        // 429 / 5xx / 403 gets a kind-specific actionable message
+        // instead of the generic "could not test" alert. The body
+        // hint helps the classifier distinguish Cloudflare 403s.
+        if (pendingResponse && !pendingResponse.ok) {
+          var bodySnip = data && data.error && data.error.message ? data.error.message : '';
+          var classified = (typeof MuntinFetchError !== 'undefined')
+            ? MuntinFetchError.classifyFetchError(null, {
+                status: pendingResponse.status,
+                headers: pendingResponse.headers,
+                bodySnippet: bodySnip
+              })
+            : { messageEn: 'Could not test that URL. ' + bodySnip, messageEs: 'Could not test that URL. ' + bodySnip };
+          var locale = document.documentElement.lang === 'es' ? 'es' : 'en';
+          throw Object.assign(new Error(
+            (typeof MuntinFetchError !== 'undefined')
+              ? MuntinFetchError.localizedMessage(classified, locale)
+              : classified.messageEn
+          ), { _classified: classified });
+        }
         if (data.error) throw new Error(data.error.message || 'API error');
         if (!data.lighthouseResult) throw new Error('No Lighthouse data returned. The URL may be unreachable.');
 
@@ -513,7 +540,19 @@
         }
       })
       .catch(function(err) {
-        alert('Could not test that URL. ' + (err.message || 'Please check the address and try again.'));
+        // Route through the shared classifier when the throw didn't
+        // already attach one (network-level failures, AbortSignal
+        // timeouts). Show the locale-correct actionable message.
+        var locale = document.documentElement.lang === 'es' ? 'es' : 'en';
+        var classified = err && err._classified
+          ? err._classified
+          : ((typeof MuntinFetchError !== 'undefined')
+              ? MuntinFetchError.classifyFetchError(err, null)
+              : { kind: 'unknown', messageEn: err && err.message ? err.message : 'Please check the address and try again.', messageEs: 'Por favor verifica la dirección e inténtalo de nuevo.' });
+        var msg = (typeof MuntinFetchError !== 'undefined')
+          ? MuntinFetchError.localizedMessage(classified, locale)
+          : classified.messageEn;
+        alert(msg);
       })
       .finally(function() {
         btn.disabled = false;
