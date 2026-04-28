@@ -614,3 +614,45 @@ export function reauditReminder(body) {
   return { subject, html, text: txt };
 }
 
+
+// ============================================================
+// Sprint 0 (Workshop) \u2014 magic-link sign-in email (ES)
+// ============================================================
+//
+// Spanish peer of templates.js#magicLinkEmail. The dispatcher in
+// templates.js routes here when body.locale === 'es'.
+
+export function magicLinkEmail(body) {
+  const link = String(body.link || '').trim();
+  const subject = 'Tu enlace de acceso al Taller de Muntin';
+
+  const html = htmlShell(
+    'Acceder al Taller',
+    [
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Haz clic en el bot\u00f3n para iniciar sesi\u00f3n. El enlace funciona una sola vez y vence en <strong>15 minutos</strong>.</p>',
+      primaryCta(link, 'Iniciar sesi\u00f3n'),
+      '<div style="height:8px;line-height:8px;">&nbsp;</div>',
+      '<p style="margin:0 0 16px;font-size:14px;line-height:1.55;color:#6B6B6B;">Si el bot\u00f3n no funciona, pega este enlace en tu navegador:</p>',
+      '<p style="margin:0 0 16px;font-size:13px;line-height:1.5;color:#1F4E5B;word-break:break-all;"><a href="' + escapeHtml(link) + '" style="color:#1F4E5B;text-decoration:underline;">' + escapeHtml(link) + '</a></p>',
+      '<p style="margin:24px 0 0;font-size:14px;line-height:1.55;color:#6B6B6B;">Si no solicitaste este correo, puedes ignorarlo \u2014 no se realiza ninguna acci\u00f3n hasta que se haga clic en el enlace, y vence solo.</p>',
+      '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">\u2014 Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital \u00b7 Silver Spring, MD</span></p>',
+    ].join('\n'),
+    'Solicitaste un enlace de acceso desde muntin.digital.'
+  );
+
+  const txt = [
+    'Acceder al Taller de Muntin.',
+    '',
+    'Haz clic en el enlace para iniciar sesi\u00f3n. Funciona una sola vez y vence en 15 minutos.',
+    '',
+    link,
+    '',
+    'Si no solicitaste este correo, puedes ignorarlo \u2014 no se realiza ninguna acci\u00f3n hasta que se haga clic en el enlace, y vence solo.',
+    '',
+    '\u2014 Don',
+    'Muntin Digital',
+  ].join('\n');
+
+  return { subject, html, text: txt };
+}
+

@@ -1,5 +1,11 @@
 User-agent: *
 Allow: /
 Disallow: /blog/drafts/
+# Sprint 0 (Workshop) — private auth-gated landing. The worker
+# returns 404 for unauthenticated visitors, but defense-in-depth:
+# tell crawlers explicitly not to follow these paths even if a
+# stale link leaks somewhere.
+Disallow: /workbench/
+Disallow: /es/workbench/
 
 Sitemap: https://muntin.digital/sitemap.xml

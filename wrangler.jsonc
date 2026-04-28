@@ -164,15 +164,28 @@
   //
   // Other secrets consumed by the Worker (set via `wrangler secret
   // put X`; never committed):
-  //   PSI_API_KEY        — Google PageSpeed Insights proxy (/api/psi)
-  //   GOOGLE_PLACES_KEY  — Google Places v1 lookup (/api/gbp-lookup)
-  //   RESEND_API_KEY     — Resend transactional email (lib/email.js)
+  //   PSI_API_KEY         — Google PageSpeed Insights proxy (/api/psi)
+  //   GOOGLE_PLACES_KEY   — Google Places v1 lookup (/api/gbp-lookup)
+  //   RESEND_API_KEY      — Resend transactional email (lib/email.js)
+  //   AUTH_COOKIE_SECRET  — HMAC key for signed session cookies
+  //                          (src/lib/auth.js). Generate with
+  //                          `openssl rand -hex 32` and set via
+  //                          `wrangler secret put AUTH_COOKIE_SECRET`
+  //                          BEFORE first deploy that exposes the
+  //                          /api/auth/* routes. Sprint 0 keeps these
+  //                          routes private (no public sign-in UI),
+  //                          but they must still be plumbed before
+  //                          Phase 2 turns them on.
   //
   // /api/ping exposes a boolean for each configured secret so ops
   // can verify plumbing without exercising the upstream.
   "vars": {
-    "FROM_EMAIL":   "Don Goldstein <don@muntin.digital>",
-    "NOTIFY_EMAIL": "don@muntin.digital"
+    "FROM_EMAIL":          "Don Goldstein <don@muntin.digital>",
+    "NOTIFY_EMAIL":        "don@muntin.digital",
+    // Public origin used to build absolute magic-link URLs in the
+    // sign-in email. Same value across envs today; if a preview env
+    // ever needs to diverge, override here per environment.
+    "MAGIC_LINK_BASE_URL": "https://muntin.digital"
   },
 
   // ─────────────────────────────────────────────────────────────────
@@ -203,8 +216,24 @@
   // ~30-80 KB per snapshot, unlisted-resource security model
   // (token is the only gate). Powers both the restaurant audit's
   // share URLs and the GBP grader's share URLs.
+  //
+  // Sprint 0 (Workshop foundation) — AUTH_SESSIONS KV binding for
+  // magic-link sign-in (src/lib/auth.js). Two key prefixes:
+  //   magic:<TOKEN10>      — 15-min one-shot magic-link tokens
+  //   user:<sha256(email)> — lifetime user record { createdAt, lastSeenAt }
+  // Sessions are signed-cookie only (no session: keys), so this
+  // namespace stays small. Kept distinct from AUDIT_SNAPSHOTS
+  // because the TTL contracts are incompatible (15 min vs 90 days)
+  // and mixing would muddy ops dashboards. Replace the placeholder
+  // id below by running:
+  //   wrangler kv:namespace create AUTH_SESSIONS
+  // and pasting the returned id. Until then, the worker handler
+  // for /api/auth/* will see env.AUTH_SESSIONS === undefined and
+  // return 503 (binding-not-configured) rather than silently
+  // accepting requests it can't persist.
   "kv_namespaces": [
-    { "binding": "AUDIT_SNAPSHOTS", "id": "f661208f47644e32bfe965e46f42f88a" }
+    { "binding": "AUDIT_SNAPSHOTS", "id": "f661208f47644e32bfe965e46f42f88a" },
+    { "binding": "AUTH_SESSIONS",   "id": "REPLACE_WITH_AUTH_SESSIONS_ID_FROM_WRANGLER" }
   ]
 
   // ─────────────────────────────────────────────────────────────────

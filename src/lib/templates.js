@@ -731,3 +731,63 @@ function field(label, valueHtml) {
     '</div>'
   );
 }
+
+
+// ------------------------------------------------------------
+// Sprint 0 (Workshop) — magic-link sign-in email
+// ------------------------------------------------------------
+//
+// Sent by /api/auth/magic-link. Single CTA, 15-minute expiry note,
+// "if you didn't request this" reassurance. The link points at
+// /api/auth/verify?token=... which one-shot consumes the token in
+// AUTH_SESSIONS KV, sets the signed session cookie, and 302's to
+// the returnTo path (defaults to /workbench/).
+//
+// Body shape: { email, link, returnTo, locale }
+//   email     — display only (we already know it; never echoed back
+//               to the inbox owner since they obviously know their
+//               own address)
+//   link      — fully-qualified URL with the token query param.
+//               Caller is responsible for building it from
+//               env.MAGIC_LINK_BASE_URL + the token.
+//   returnTo  — informational, not used in the email itself; the
+//               link already encodes it. Caller logs / debugs with it.
+//   locale    — 'en' | 'es' (any other value falls back to 'en')
+
+export function magicLinkEmail(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.magicLinkEmail === 'function') {
+    return ES.magicLinkEmail(body);
+  }
+  const link = String(body.link || '').trim();
+  const subject = 'Your Muntin Workshop sign-in link';
+
+  const html = htmlShell(
+    'Sign in to the Workshop',
+    [
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Click the button to sign in. The link works once and expires in <strong>15 minutes</strong>.</p>',
+      primaryCta(link, 'Sign in'),
+      '<div style="height:8px;line-height:8px;">&nbsp;</div>',
+      '<p style="margin:0 0 16px;font-size:14px;line-height:1.55;color:#6B6B6B;">If the button doesn\'t work, paste this link into your browser:</p>',
+      '<p style="margin:0 0 16px;font-size:13px;line-height:1.5;color:#1F4E5B;word-break:break-all;"><a href="' + escapeHtml(link) + '" style="color:#1F4E5B;text-decoration:underline;">' + escapeHtml(link) + '</a></p>',
+      '<p style="margin:24px 0 0;font-size:14px;line-height:1.55;color:#6B6B6B;">If you didn\'t request this email, you can ignore it — no action is taken until the link is clicked, and it expires on its own.</p>',
+      '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">— Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital · Silver Spring, MD</span></p>',
+    ].join('\n'),
+    'You requested a sign-in link from muntin.digital.'
+  );
+
+  const txt = [
+    'Sign in to the Muntin Workshop.',
+    '',
+    'Click the link below to sign in. It works once and expires in 15 minutes.',
+    '',
+    link,
+    '',
+    "If you didn't request this email, you can ignore it — no action is taken until the link is clicked, and it expires on its own.",
+    '',
+    '— Don',
+    'Muntin Digital',
+  ].join('\n');
+
+  return { subject, html, text: txt };
+}

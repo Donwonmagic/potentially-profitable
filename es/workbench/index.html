@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!--
+  Sprint 0 (Workshop) — landing privado del taller.
+
+  Esta página tiene gate del lado del worker (src/worker.js): un
+  GET a /es/workbench/ desde un visitante sin cookie de sesión
+  firmada y válida devuelve 404 antes de servir este HTML. La
+  rama "Próximamente" solo se renderiza si la cookie pasa el
+  gate del worker pero falla el llamado de JS a /api/auth/me —
+  defensa, no flujo normal.
+
+  Postura de privacidad: noindex, nofollow, sin canonical, sin
+  alternates hreflang, sin JSON-LD, sin nav, sin footer. Página
+  independiente que existe solo para validar el contrato de
+  "encender el switch" de la fase 2.
+-->
+<meta name="robots" content="noindex, nofollow" />
+<title>El Taller — Muntin Digital</title>
+<meta name="theme-color" content="#1F4E5B" />
+
+<link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site.css?v=20260428-sprint0-tokens" fetchpriority="high">
+
+<style>
+  /* Mismo layout que /workbench/ — los selectores son universales. */
+  body[data-state="logged-in"]  .wb-state-out { display: none; }
+  body[data-state="logged-out"] .wb-state-in  { display: none; }
+  body:not([data-state]) .wb-state-out,
+  body:not([data-state]) .wb-state-in { visibility: hidden; }
+
+  .wb-shell  { min-height: 100vh; display: flex; flex-direction: column; background: var(--surface-0); }
+  .wb-top    { padding: 24px clamp(20px, 4vw, 64px); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .wb-mark   { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; }
+  .wb-mark svg { width: 28px; height: 28px; flex: 0 0 28px; }
+  .wb-signout { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid var(--line-dark); border-radius: 999px; background: transparent; color: var(--stone); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
+  .wb-signout:hover { border-color: var(--ink); color: var(--ink); }
+  .wb-main   { flex: 1; display: flex; align-items: center; justify-content: center; padding: clamp(40px, 8vh, 96px) clamp(20px, 4vw, 64px); }
+  .wb-card   { max-width: 560px; }
+  .wb-eyebrow{ font-family: var(--font-body); font-size: 13px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 14px; }
+  .wb-h1     { font-family: var(--font-display); font-size: clamp(36px, 5vw, 56px); font-weight: 500; line-height: 1.05; letter-spacing: -0.02em; color: var(--ink); margin: 0 0 18px; }
+  .wb-p      { font-size: var(--fs-lead); line-height: 1.55; color: var(--ink-soft); margin: 0; }
+  .wb-email  { font-family: var(--font-body); font-weight: 600; color: var(--teal); }
+</style>
+</head>
+<body>
+
+<div class="wb-shell">
+  <header class="wb-top">
+    <a href="/es/" class="wb-mark" aria-label="Muntin Digital — inicio">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital
+    </a>
+    <form class="wb-state-in" method="POST" action="/api/auth/signout" style="margin:0;">
+      <button type="submit" class="wb-signout">Cerrar sesión</button>
+    </form>
+  </header>
+
+  <main class="wb-main">
+    <div class="wb-card">
+      <div class="wb-state-in">
+        <p class="wb-eyebrow">El Taller</p>
+        <h1 class="wb-h1">Hola, <span class="wb-email" data-bind="email">amig@</span>.</h1>
+        <p class="wb-p">La fase 2 convierte esto en tu lista de auditorías guardadas, alertas y escenarios compartidos. Hoy es un marcador — la base de autenticación está cableada para que cuando salga la superficie pública, tu cuenta ya esté lista.</p>
+      </div>
+      <div class="wb-state-out">
+        <p class="wb-eyebrow">El Taller</p>
+        <h1 class="wb-h1">Próximamente.</h1>
+        <p class="wb-p">Una mesa de trabajo a la que un operador puede volver.</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  (function () {
+    var body = document.body;
+    fetch('/api/auth/me', { credentials: 'same-origin' })
+      .then(function (r) {
+        if (r.status === 200) return r.json();
+        throw new Error('unauthenticated');
+      })
+      .then(function (data) {
+        if (data && data.ok && data.email) {
+          var slot = document.querySelector('[data-bind="email"]');
+          if (slot) slot.textContent = data.email;
+          body.setAttribute('data-state', 'logged-in');
+        } else {
+          body.setAttribute('data-state', 'logged-out');
+        }
+      })
+      .catch(function () {
+        body.setAttribute('data-state', 'logged-out');
+      });
+  })();
+</script>
+
+</body>
+</html>
