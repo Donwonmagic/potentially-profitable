@@ -212,6 +212,17 @@
     page-break-inside:avoid;
   }
 }
+/* Phase 2 (Workshop) — Save-to-Workbench. Recipe: docs/workbench-save-pattern.md. */
+.oh-save{margin-top:24px;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.oh-save[hidden]{display:none}
+.oh-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1;min-width:200px}
+.oh-save-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+.oh-save-btn:hover{background:var(--teal);transform:translateY(-1px)}
+.oh-save-btn[disabled]{opacity:.6;cursor:wait}
+.oh-save-link{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--line-dark);border-radius:999px;color:var(--ink);font-size:14px;font-weight:500;text-decoration:none;transition:border-color var(--t-fast) var(--ease)}
+.oh-save-link:hover{border-color:var(--ink)}
+.oh-save-msg{font-size:13px;color:var(--status-good);font-weight:500}
+.oh-save-msg.error{color:var(--rust)}
 </style>
 </head>
 <body>
@@ -644,6 +655,16 @@
       </div>
     </article>
 
+    <div class="oh-save" id="ohSave" hidden>
+      <p class="oh-save-text" id="ohSaveText">Guarda estos horarios en tu Taller para que te sigan entre dispositivos.</p>
+      <button type="button" class="oh-save-btn" id="ohSaveBtn" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+        Guardar en mi Taller
+      </button>
+      <a class="oh-save-link" id="ohSaveLink" href="/es/sign-in/?returnTo=%2Fes%2Ftools%2Fopen-hours%2F" hidden>Acceder para guardar</a>
+      <span class="oh-save-msg" id="ohSaveMsg" hidden role="status"></span>
+    </div>
+
   </div>
 </div></section>
 
@@ -912,6 +933,7 @@
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/open-hours/open-hours.js?v=20260428-oh12"></script>
 <script src="/tools/open-hours/sign-render.js?v=20260426-oh12"></script>
+<script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 /* Open Hours — week-grid input + live output render.
  *
@@ -1996,10 +2018,74 @@
       history.replaceState(null, '', '#' + frag);
     } catch (_e) {}
   }
+  // Phase 2 (Workshop) — Save-to-Workbench via the shared helper.
+  // Recipe: docs/workbench-save-pattern.md. Payload mirrors the
+  // ohSyncFragment state — same fields, same shape — so a saved
+  // item rehydrates the same way a shared #fragment URL does.
+  var ohWb = (typeof MuntinWorkbench === 'object' && MuntinWorkbench && typeof MuntinWorkbench.attach === 'function')
+    ? MuntinWorkbench.attach({
+        elements: { box:'#ohSave', btn:'#ohSaveBtn', link:'#ohSaveLink', text:'#ohSaveText', msg:'#ohSaveMsg' },
+        locale: 'es',
+        kind:   'open-hours',
+        titleFor: function (p) { return 'Horarios — ' + (p && p.name ? p.name : 'sin título'); },
+        onRehydrate: function (p) {
+          if (!p) return;
+          if (nameEl) nameEl.value = p.name || '';
+          if (cityEl) cityEl.value = p.city || '';
+          var street = document.getElementById('ohStreet');
+          var region = document.getElementById('ohRegion');
+          var postal = document.getElementById('ohPostal');
+          if (street && p.street) {
+            street.value = p.street;
+            var det = document.querySelector('.oh-address-extra');
+            if (det) det.open = true;
+          }
+          if (region && p.region) region.value = p.region;
+          if (postal && p.postalCode) postal.value = p.postalCode;
+          DAYS.forEach(function(d){ week[d] = (p.week && p.week[d]) || []; });
+          selectedClosures = {};
+          (p.closures || []).forEach(function(c){
+            selectedClosures[c.id] = { name: c.name, date: c.date, source: c.source || 'preset' };
+            if (/^custom-/.test(c.id)) customCounter = Math.max(customCounter, 1);
+          });
+          renderWeek();
+          renderCustomClosures();
+          paintClosureCount();
+          rerender();
+          var out = document.getElementById('ohOutput');
+          if (out) out.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        },
+        workbenchUrl: '/es/workbench/',
+        signinUrl:    '/es/sign-in/?returnTo=%2Fes%2Ftools%2Fopen-hours%2F',
+      })
+    : null;
+
+  function ohBuildSavePayload(){
+    return {
+      name: nameEl ? nameEl.value : '',
+      city: cityEl ? cityEl.value : '',
+      street:     (document.getElementById('ohStreet') || {}).value || '',
+      region:     (document.getElementById('ohRegion') || {}).value || '',
+      postalCode: (document.getElementById('ohPostal') || {}).value || '',
+      week: week,
+      closures: getClosureList(),
+      savedAt: Date.now()
+    };
+  }
+  function ohHasMeaningfulState(p){
+    return !!(p && (p.name || p.city || p.street ||
+      DAYS.some(function(d){ return (p.week[d] || []).length; }) ||
+      (p.closures && p.closures.length)));
+  }
+
   var originalRerender = rerender;
   rerender = function(){
     originalRerender();
     requestAnimationFrame(ohSyncFragment);
+    if (ohWb) {
+      var p = ohBuildSavePayload();
+      if (ohHasMeaningfulState(p)) ohWb.showAffordance(p);
+    }
   };
   ['input','change','click'].forEach(function(evt){
     document.addEventListener(evt, function(){ ohUserInteracted = true; }, { once: true, passive: true });
