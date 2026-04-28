@@ -36,6 +36,13 @@
 (function(){
   'use strict';
 
+  // Auto-require the shared loose-number parser in Node so tests pick
+  // up EU-format / currency-symbol handling without per-test wiring.
+  // Browsers get MuntinParse via the page-side <script> tag.
+  if (typeof MuntinParse === 'undefined' && typeof require !== 'undefined') {
+    try { var MuntinParse = require('../_shared/parse-number.js'); } catch (_) {}
+  }
+
   // ============================================================
   // Constants
   // ============================================================
@@ -295,6 +302,43 @@
     return canonical / t.canonical;
   }
 
+  // Numeric coercion routed through the shared loose-number parser
+  // when present. Handles EU decimals, currency symbols beyond $,
+  // smart quotes from Word pastes, and NBSP whitespace — the audit-
+  // found failure modes that previously returned NaN and surfaced as
+  // an "invalid-numbers" warning the user couldn't act on. Returns
+  // a finite number or NaN.
+  function pcCoerceNumber(v) {
+    if (v == null || v === '') return NaN;
+    if (typeof v === 'number') return isFinite(v) ? v : NaN;
+    if (typeof MuntinParse !== 'undefined' && MuntinParse.parseLooseNumberValue) {
+      var parsed = MuntinParse.parseLooseNumberValue(v);
+      return parsed == null ? NaN : parsed;
+    }
+    var n = Number(v);
+    return isFinite(n) ? n : NaN;
+  }
+
+  // Yield resolver — single source of truth for both the paste path
+  // (via normalizeYieldInput) and the manual-entry path (called
+  // directly from computeIngredientCost). Returns a fraction (0..1]
+  // or null if unparseable. Disambiguates:
+  //   "75%" → 0.75 (explicit percent)
+  //   "0.75" → 0.75 (already a fraction)
+  //   "75"   → 0.75 (over-1 heuristic: treat as a percent)
+  //   "1.5"  → null (out-of-range — can't yield more than 100%)
+  //   "0"    → 0 (caller should error)
+  function pcResolveYield(raw) {
+    if (raw == null || raw === '') return null;
+    var hadPct = String(raw).indexOf('%') !== -1;
+    var n = pcCoerceNumber(String(raw).replace(/%/g, ''));
+    if (!isFinite(n) || n < 0) return null;
+    if (n === 0) return 0;
+    if (hadPct) return n / 100;
+    if (n > 1) return n / 100;   // "75" interpreted as 75%
+    return n;                     // already a fraction
+  }
+
   // Look up a canonical yield % for an ingredient name. Returns null
   // if no match is found — the caller should default to 1.0 in that
   // case but display a "unknown yield, assuming 100%" hint.
@@ -351,9 +395,9 @@
     };
     if (!row) return out;
 
-    var apPrice = Number(row.apPrice);
-    var apQty   = Number(row.apQty);
-    var usedQty = Number(row.usedQty);
+    var apPrice = pcCoerceNumber(row.apPrice);
+    var apQty   = pcCoerceNumber(row.apQty);
+    var usedQty = pcCoerceNumber(row.usedQty);
 
     if (!isFinite(apPrice) || !isFinite(apQty) || !isFinite(usedQty) ||
         apPrice < 0 || apQty <= 0 || usedQty < 0) {
@@ -361,10 +405,17 @@
       return out;
     }
 
-    // Resolve yield. null → lookup; missing → default to 1.0 with hint.
-    var y = (row.yieldPercent == null || row.yieldPercent === '')
-      ? lookupYield(row.ingredient)
-      : Number(row.yieldPercent);
+    // Resolve yield. null/empty → ingredient lookup. Otherwise route
+    // through pcResolveYield, which unifies the paste path
+    // (normalizeYieldInput already canonicalises to "0.75") with the
+    // manual-entry path (where users type "75" expecting 75 %, not
+    // 7500 %). Both now produce identical math.
+    var y;
+    if (row.yieldPercent == null || row.yieldPercent === '') {
+      y = lookupYield(row.ingredient);
+    } else {
+      y = pcResolveYield(row.yieldPercent);
+    }
     if (y == null || !isFinite(y)) {
       out.warning = 'unknown-yield';
       y = 1;
@@ -514,13 +565,14 @@
     if (!Array.isArray(recipe.rows) || recipe.rows.length === 0) {
       errors.push({ field: 'rows', message: 'Add at least one ingredient.' });
     }
-    if (!isFinite(Number(recipe.portions)) || Number(recipe.portions) <= 0) {
+    var portions = pcCoerceNumber(recipe.portions);
+    if (!isFinite(portions) || portions <= 0) {
       errors.push({ field: 'portions', message: 'Portions must be a positive number.' });
     }
     (recipe.rows || []).forEach(function(row, idx){
-      var apPrice = Number(row.apPrice);
-      var apQty   = Number(row.apQty);
-      var usedQty = Number(row.usedQty);
+      var apPrice = pcCoerceNumber(row.apPrice);
+      var apQty   = pcCoerceNumber(row.apQty);
+      var usedQty = pcCoerceNumber(row.usedQty);
       if (!row.ingredient || !String(row.ingredient).trim()) {
         warnings.push({ row: idx, field: 'ingredient', message: 'Name this ingredient.' });
       }

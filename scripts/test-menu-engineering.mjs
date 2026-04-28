@@ -507,6 +507,22 @@ assertEq('dogs ratio 6/20 → gt-25', M.bucketDogsRatio(20, 6), 'gt-25pct');
 }
 
 // ------------------------------------------------------------
+// Loose-number parsing — verifies meCoerceNumber routes through the
+// shared MuntinParse parser (T1d) so a Spanish owner pasting €24,50
+// or a UK owner pasting £1,234.50 doesn't lose their menu prices.
+// ------------------------------------------------------------
+{
+  assertEq('meCoerceNumber: EU "1.234,56" → 1234.56', M.coerceNumber('1.234,56'), 1234.56);
+  assertEq('meCoerceNumber: €24,50 → 24.5', M.coerceNumber('€24,50'), 24.5);
+  assertEq('meCoerceNumber: £1,234.50 → 1234.5', M.coerceNumber('£1,234.50'), 1234.5);
+  assertEq('meCoerceNumber: $24.50 → 24.5 (regression)', M.coerceNumber('$24.50'), 24.5);
+  assertEq('meCoerceNumber: smart-quoted "50" → 50', M.coerceNumber('“50”'), 50);
+  assertEq('meCoerceNumber: NBSP "1 234,56" → 1234.56', M.coerceNumber('1 234,56'), 1234.56);
+  assertEq('meCoerceNumber: empty → 0 (regression)', M.coerceNumber(''), 0);
+  assertEq('meCoerceNumber: garbage → NaN', M.coerceNumber('xyz'), NaN);
+}
+
+// ------------------------------------------------------------
 // Summary
 // ------------------------------------------------------------
 if (failures > 0) {
