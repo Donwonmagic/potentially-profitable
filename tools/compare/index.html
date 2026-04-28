@@ -254,7 +254,25 @@
 
   function fetchScores(url){
     var api='https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url='+encodeURIComponent(url)+'&strategy=mobile&category=performance&category=accessibility&category=seo&category=best-practices';
-    return fetch(api).then(function(r){return r.json()}).then(function(d){
+    // T2 — per-URL AbortSignal timeout so a slow site doesn't block
+    // both halves of the comparison; classify non-OK responses with
+    // host context so the error UI can name which URL failed.
+    var pendingResponse=null;
+    return fetch(api,{signal:AbortSignal.timeout(8000)}).then(function(r){
+      pendingResponse=r;
+      return r.json().catch(function(){return{}});
+    }).then(function(d){
+      if(pendingResponse&&!pendingResponse.ok){
+        var bodySnip=d&&d.error&&d.error.message?d.error.message:'';
+        var classified=(typeof MuntinFetchError!=='undefined')
+          ?MuntinFetchError.classifyFetchError(null,{status:pendingResponse.status,headers:pendingResponse.headers,bodySnippet:bodySnip})
+          :{messageEn:'Could not fetch '+short(url)+'. '+bodySnip,messageEs:'Could not fetch '+short(url)+'. '+bodySnip};
+        var locale=document.documentElement.lang==='es'?'es':'en';
+        var prefix=short(url)+': ';
+        throw Object.assign(new Error(prefix+(
+          (typeof MuntinFetchError!=='undefined')?MuntinFetchError.localizedMessage(classified,locale):classified.messageEn
+        )),{_classified:classified,_url:url});
+      }
       if(d.error)throw new Error(d.error.message);
       var c=d.lighthouseResult.categories;
       var a=d.lighthouseResult.audits||{};
@@ -332,7 +350,18 @@
       result.scrollIntoView({behavior:'smooth',block:'start'});
       if(window.plausible)window.plausible('Compare',{props:{url1:u1,url2:u2}});
     }).catch(function(err){
-      alert('Could not compare. '+(err.message||'Check both URLs and try again.'));
+      // The fetchScores helper throws errors with `_url` attached so
+      // the message names which URL failed (instead of the audit-
+      // found "Could not compare" generic that hid which side broke).
+      var locale=document.documentElement.lang==='es'?'es':'en';
+      if(err&&err._classified){
+        alert(err.message);
+      }else{
+        var classified=(typeof MuntinFetchError!=='undefined')
+          ?MuntinFetchError.classifyFetchError(err,null)
+          :{messageEn:err&&err.message?err.message:'Could not compare. Check both URLs.',messageEs:err&&err.message?err.message:'No se pudo comparar. Revisa ambas URLs.'};
+        alert((typeof MuntinFetchError!=='undefined')?MuntinFetchError.localizedMessage(classified,locale):classified.messageEn);
+      }
       status.hidden=true;
     }).finally(function(){btn.disabled=false;btn.textContent='Compare'});
   });

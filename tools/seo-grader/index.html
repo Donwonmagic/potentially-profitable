@@ -342,6 +342,7 @@
 </footer>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script>
 (function() {
   var form = document.getElementById('seoForm');
@@ -484,9 +485,29 @@
     // don't reliably expose the actual text when audits pass.
     var api = '/api/seo-check?url=' + encodeURIComponent(url);
 
-    fetch(api)
-      .then(function(r) { return r.json(); })
+    var pendingResponse = null;
+    fetch(api, { signal: AbortSignal.timeout(8000) })
+      .then(function(r) {
+        pendingResponse = r;
+        return r.json().catch(function(){ return {}; });
+      })
       .then(function(data) {
+        if (pendingResponse && !pendingResponse.ok) {
+          var bodySnip = data && data.error ? data.error : '';
+          var classified = (typeof MuntinFetchError !== 'undefined')
+            ? MuntinFetchError.classifyFetchError(null, {
+                status: pendingResponse.status,
+                headers: pendingResponse.headers,
+                bodySnippet: bodySnip
+              })
+            : { messageEn: 'Could not grade that URL. ' + bodySnip, messageEs: 'Could not grade that URL. ' + bodySnip };
+          var locale = document.documentElement.lang === 'es' ? 'es' : 'en';
+          throw Object.assign(new Error(
+            (typeof MuntinFetchError !== 'undefined')
+              ? MuntinFetchError.localizedMessage(classified, locale)
+              : classified.messageEn
+          ), { _classified: classified });
+        }
         if (!data.ok) throw new Error(data.error || 'Could not fetch the page');
 
         var titleResult = gradeTitle(data.title || '');
@@ -510,12 +531,15 @@
         }
       })
       .catch(function(err) {
-        var msg = err.message || '';
-        if (/522|timeout|abort/i.test(msg)) {
-          alert('The site took too long to respond. Some sites block automated scans or are behind Cloudflare protection. Try a different URL, or check the site manually.');
-        } else {
-          alert('Could not grade that URL. ' + (msg || 'Please check the address and try again.'));
-        }
+        var locale = document.documentElement.lang === 'es' ? 'es' : 'en';
+        var classified = err && err._classified
+          ? err._classified
+          : ((typeof MuntinFetchError !== 'undefined')
+              ? MuntinFetchError.classifyFetchError(err, null)
+              : { messageEn: err && err.message ? err.message : 'Could not grade that URL.', messageEs: err && err.message ? err.message : 'No se pudo evaluar esa URL.' });
+        alert((typeof MuntinFetchError !== 'undefined')
+          ? MuntinFetchError.localizedMessage(classified, locale)
+          : classified.messageEn);
       })
       .finally(function() {
         btn.disabled = false;
