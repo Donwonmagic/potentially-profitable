@@ -240,6 +240,8 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
+<script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script>
 (function(){
   var btn=document.getElementById('cmpSubmit');
@@ -348,7 +350,7 @@
       result.classList.add('visible');
       status.hidden=true;
       result.scrollIntoView({behavior:'smooth',block:'start'});
-      if(window.plausible)window.plausible('Compare',{props:{url1:u1,url2:u2}});
+      if(window.plausible)window.plausible('Compare',{props:{url1:(typeof MuntinAnalytics!=='undefined')?MuntinAnalytics.redactUrlForAnalytics(u1):u1,url2:(typeof MuntinAnalytics!=='undefined')?MuntinAnalytics.redactUrlForAnalytics(u2):u2}});
     }).catch(function(err){
       // The fetchScores helper throws errors with `_url` attached so
       // the message names which URL failed (instead of the audit-

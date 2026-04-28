@@ -296,6 +296,7 @@
 </footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
+<script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script>
 (function() {
   var form = document.getElementById('mobForm');
@@ -429,7 +430,7 @@
         result.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
         if (window.plausible) {
-          window.plausible('Mobile Check', { props: { passed: passCount, url: url } });
+          window.plausible('Mobile Check', { props: { passed: passCount, url: (typeof MuntinAnalytics !== 'undefined') ? MuntinAnalytics.redactUrlForAnalytics(url) : url } });
         }
       })
       .catch(function(err) {

@@ -234,6 +234,7 @@
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
+<script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script>
 (function(){
   var form=document.getElementById('tsForm'),input=document.getElementById('tsUrl'),btn=document.getElementById('tsSubmit'),result=document.getElementById('tsResult');
@@ -384,7 +385,7 @@
       result.innerHTML=html;
       result.classList.add('visible');
       result.scrollIntoView({behavior:'smooth',block:'start'});
-      if(window.plausible)window.plausible('Tech Stack',{props:{stack:groups.map(function(g){return g.items.join(',')}).join(';'),url:url}});
+      if(window.plausible)window.plausible('Tech Stack',{props:{stack:groups.map(function(g){return g.items.join(',')}).join(';'),url:(typeof MuntinAnalytics!=='undefined')?MuntinAnalytics.redactUrlForAnalytics(url):url}});
     }).catch(function(err){
       var locale=document.documentElement.lang==='en'?'en':'es';
       var classified=err&&err._classified
