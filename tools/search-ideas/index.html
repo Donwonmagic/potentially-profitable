@@ -53,7 +53,7 @@
 <script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260425-mobile-library-fix">
+<link rel="stylesheet" href="/assets/site.css?v=20260428-sprint0-tokens">
 </head>
 <style>
   /* Tool-specific result rendering. Form, hero, note, result container,
@@ -66,6 +66,19 @@
   .si-items strong{color:var(--teal)}
   .si-tip{font-size:14px;color:var(--ink-soft);line-height:1.6;padding:16px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-sm);margin-top:20px}
   .si-tip strong{color:var(--ink)}
+  /* Phase 2 (Workshop) — Save-to-Workbench. First adopter of the
+     shared assets/workbench-save.js helper; recipe lives at
+     docs/workbench-save-pattern.md. */
+  .si-save{margin-top:24px;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+  .si-save[hidden]{display:none}
+  .si-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1;min-width:200px}
+  .si-save-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+  .si-save-btn:hover{background:var(--teal);transform:translateY(-1px)}
+  .si-save-btn[disabled]{opacity:.6;cursor:wait}
+  .si-save-link{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--line-dark);border-radius:999px;color:var(--ink);font-size:14px;font-weight:500;text-decoration:none;transition:border-color var(--t-fast) var(--ease)}
+  .si-save-link:hover{border-color:var(--ink)}
+  .si-save-msg{font-size:13px;color:var(--status-good);font-weight:500}
+  .si-save-msg.error{color:var(--rust)}
 </style>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a>
@@ -124,6 +137,8 @@
       <a href="/es/tools/search-ideas/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
+    <a class="nav-auth js-nav-signin" href="/sign-in/" hidden>Sign in</a>
+    <a class="nav-auth js-nav-workshop" href="/workbench/" hidden>Workshop</a>
     <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
     </a>
@@ -155,6 +170,8 @@
       <span>Search the library</span>
     </button>
     <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a>
+    <a class="mobile-auth js-nav-signin" href="/sign-in/" hidden>Sign in</a>
+    <a class="mobile-auth js-nav-workshop" href="/workbench/" hidden>Workshop</a>
     <a href="/es/tools/search-ideas/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
@@ -174,6 +191,28 @@
       </button>
     </div>
   </aside>
+
+  <!-- Phase 2 (Workshop) — auth-state toggle for the nav.
+       Calls /api/auth/me and reveals either the "Sign in" or
+       "Workshop" link based on the response. Both links ship hidden
+       so anonymous visitors with JS disabled see neither (the
+       library + tools work fully without sign-in, so the missing
+       affordance is acceptable). The script runs once, fire-and-
+       forget; no observable side effects on a 401. -->
+  <script>
+    (function () {
+      var signin   = document.querySelectorAll('.js-nav-signin');
+      var workshop = document.querySelectorAll('.js-nav-workshop');
+      if (!signin.length && !workshop.length) return;
+      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 200) { show(workshop); return; }
+          show(signin);
+        })
+        .catch(function () { show(signin); });
+    })();
+  </script>
 </header>
 
 <main id="main">
@@ -191,6 +230,15 @@
   </div>
   <p class="si-note">Generates the most common search patterns for your business type + location. Instant — no API call needed.</p>
   <div class="si-result" id="siResult" aria-live="polite"></div>
+  <div class="si-save" id="siSave" hidden>
+    <p class="si-save-text" id="siSaveText">Save these searches to your Workbench so they follow you across devices.</p>
+    <button type="button" class="si-save-btn" id="siSaveBtn" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+      Save to my Workbench
+    </button>
+    <a class="si-save-link" id="siSaveLink" href="/sign-in/?returnTo=%2Ftools%2Fsearch-ideas%2F" hidden>Sign in to save</a>
+    <span class="si-save-msg" id="siSaveMsg" hidden role="status"></span>
+  </div>
 </div></div></section>
 <!-- LIBRARY:tool-deep-links:start -->
 <section class="tool-deep-links" aria-labelledby="tool-deep-h">
@@ -233,6 +281,7 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 (function(){
   var btn=document.getElementById('siSubmit');
@@ -297,6 +346,27 @@
     return html;
   }
 
+  // Phase 2 (Workshop) — Save-to-Workbench via the shared helper.
+  // First tool adopter of /assets/workbench-save.js; recipe is in
+  // docs/workbench-save-pattern.md. Ten lines of glue (vs ~80 inlined).
+  var wb = (typeof MuntinWorkbench === 'object' && MuntinWorkbench && typeof MuntinWorkbench.attach === 'function')
+    ? MuntinWorkbench.attach({
+        elements: { box:'#siSave', btn:'#siSaveBtn', link:'#siSaveLink', text:'#siSaveText', msg:'#siSaveMsg' },
+        locale: 'en',
+        kind:   'search-ideas',
+        titleFor: function (p) { return 'Search ideas — ' + (p.type || '?') + ' in ' + (p.city || '?'); },
+        onRehydrate: function (p) {
+          if (typeInput && p.type) typeInput.value = p.type;
+          if (cityInput && p.city) cityInput.value = p.city;
+          result.innerHTML = generate(p.type || '', p.city || '');
+          result.classList.add('visible');
+          result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        },
+        workbenchUrl: '/workbench/',
+        signinUrl:    '/sign-in/?returnTo=%2Ftools%2Fsearch-ideas%2F',
+      })
+    : null;
+
   btn.addEventListener('click',function(){
     var type=typeInput.value.trim().toLowerCase();
     var city=cityInput.value.trim();
@@ -305,6 +375,7 @@
     result.innerHTML=generate(type,city);
     result.classList.add('visible');
     result.scrollIntoView({behavior:'smooth',block:'start'});
+    if (wb) wb.showAffordance({ type: type, city: city, generatedAt: Date.now() });
     if(window.plausible)window.plausible('Search Ideas',{props:{type:type,city:city}});
   });
 

@@ -53,6 +53,34 @@ import { withAuditCache } from './lib/audit-cache.js';
 import { createRateLimiter, clientIpFromRequest } from './lib/rate-limit.js';
 import { RateLimiter, checkDurableRateLimit } from './lib/rate-limiter-do.js';
 import { saveSnapshot, getSnapshot, getSnapshotOg, isValidTokenShape } from './lib/audit-snapshots.js';
+import {
+  mintMagicLinkToken,
+  mintSessionToken,
+  isValidMagicLinkTokenShape,
+  signSession,
+  setSessionCookie,
+  clearSessionCookie,
+  getSessionFromRequest,
+  sha256Hex,
+  MAGIC_LINK_TTL_SECONDS,
+  SESSION_TTL_SECONDS,
+} from './lib/auth.js';
+import {
+  validateSaveBody,
+  saveItem,
+  listItemsForUser,
+  getItem,
+  deleteItem,
+  isValidSaveItemIdShape,
+  MAX_SAVES_PER_USER,
+  attachWatch,
+  listWatchesForUser,
+  detachWatch,
+  iterateAllWatches,
+  ALLOWED_SCHEDULES,
+  WATCHABLE_KINDS,
+  MAX_WATCHES_PER_USER,
+} from './lib/workbench.js';
 
 // Durable Object classes must be re-exported from the Worker entry
 // module so the runtime can instantiate them when the binding fires.
@@ -87,7 +115,12 @@ const FORM_RATE_LIMIT_PATHS = new Set([
   '/api/intake',
   '/api/checklist',
   '/api/audit-report',
-  '/api/schedule-reaudit'
+  '/api/schedule-reaudit',
+  // Sprint 0 (Workshop) — magic-link sign-in. Form-tier (10/IP/hour)
+  // is the right gate: each POST triggers a Resend email and a KV
+  // write. Verify + me + signout stay on the lighter API tier.
+  '/api/auth/magic-link',
+  '/api/auth/signout'
 ]);
 // D1: /api/audit-snapshot intentionally stays on the lighter
 // api-tier (30/min/IP) — a legit shared link might be opened by
@@ -103,6 +136,7 @@ import {
   auditDeepReportNotification,
   auditDeepReportAutoResponder,
   reauditReminder,
+  magicLinkEmail,
 } from './lib/templates.js';
 
 
@@ -130,6 +164,31 @@ const API_ROUTES = {
   '/api/brand-dossier': handleBrandDossier,
   '/api/dns-email-health': handleDnsEmailHealth,
   '/api/schedule-reaudit': handleScheduleReaudit,
+  // Sprint 0 (Workshop) — magic-link auth. Wired but private:
+  // there is no public sign-in page or nav link in this sprint. The
+  // /workbench/ gate (below) is the only thing that consumes a
+  // verified session. Phase 2 will turn on the public surface.
+  '/api/auth/magic-link': handleAuthMagicLink,
+  '/api/auth/verify':     handleAuthVerify,
+  '/api/auth/me':         handleAuthMe,
+  '/api/auth/signout':    handleAuthSignout,
+  // Phase 2 (Workshop) — saved-items library. All four require a
+  // valid session; anonymous calls return 401. Per-user scoping at
+  // the KV-key level (save:<sub>:...) means a missing IDOR check
+  // can't leak items across users.
+  '/api/workbench/save':   handleWorkbenchSave,
+  '/api/workbench/list':   handleWorkbenchList,
+  '/api/workbench/get':    handleWorkbenchGet,
+  '/api/workbench/delete': handleWorkbenchDelete,
+  // Phase 3 (Workshop) — Watch scaffolding. Endpoints are live now
+  // so the UI can let an operator opt in / out, but the cron that
+  // actually re-runs the underlying check is commented out in
+  // wrangler.jsonc until ops is ready to flip it on. Until then
+  // attaching a watch persists the intent without consuming any
+  // upstream API quota.
+  '/api/workbench/watch':         handleWorkbenchWatchAttach,
+  '/api/workbench/watch-list':    handleWorkbenchWatchList,
+  '/api/workbench/watch-delete':  handleWorkbenchWatchDelete,
 };
 
 
@@ -174,7 +233,7 @@ export default {
         if (request.method !== 'GET' && request.method !== 'POST') {
           return jsonResponse({ ok: false, error: 'Method not allowed — audit-snapshot accepts GET or POST' }, 405);
         }
-      } else if (pathname === '/api/og-snapshot' || pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details' || pathname === '/api/dns-email-health') {
+      } else if (pathname === '/api/og-snapshot' || pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details' || pathname === '/api/dns-email-health' || pathname === '/api/auth/verify' || pathname === '/api/auth/me' || pathname === '/api/workbench/list' || pathname === '/api/workbench/get' || pathname === '/api/workbench/watch-list') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
         }
@@ -344,8 +403,87 @@ export default {
       }
     }
 
+    // Sprint 0 (Workshop) — private /workbench/ gate. The static
+    // HTML for /workbench/ exists in dist/, but ASSETS.fetch only
+    // gets to serve it when the visitor presents a valid signed
+    // session cookie. Anonymous + tampered + expired cookies all
+    // get a 404 (not 401 or 302) so the route is indistinguishable
+    // from a non-existent path. /api/auth/verify mints the cookie
+    // and 302s here, so the FIRST request after a magic-link click
+    // is already authenticated and passes the gate.
+    //
+    // robots.txt also disallows these paths, but defense in depth:
+    // a misbehaving crawler that ignores robots still gets 404'd.
+    const workbenchPaths = [
+      '/workbench/', '/workbench/index.html',
+      '/es/workbench/', '/es/workbench/index.html',
+    ];
+    if (request.method === 'GET' && workbenchPaths.includes(pathname)) {
+      const session = await getSessionFromRequest(request, env);
+      if (!session) {
+        return new Response(null, { status: 404 });
+      }
+    }
+
     // Fall through to the static-asset server.
     return env.ASSETS.fetch(request);
+  },
+
+  // ============================================================
+  // Phase 3 (Workshop) — scheduled() Cron Trigger handler.
+  // ============================================================
+  //
+  // Wrangler.jsonc's `triggers.crons` stays commented out until
+  // ops is ready to flip on Watch. When that lands, this handler
+  // fires on the configured cadence (proposed: daily at 14:00 UTC).
+  //
+  // Today's behavior (cron disabled):
+  //   - The handler is exported but never invoked.
+  //   - Code below is the scaffold so a future flip-the-switch
+  //     change is one wrangler.jsonc edit, not a code release.
+  //
+  // Tomorrow's behavior (cron enabled):
+  //   1. iterateAllWatches(env) yields { sub, watch } for every
+  //      watch row in AUTH_SESSIONS.
+  //   2. For each, look up the underlying save:<sub>:<savedItemId>,
+  //      re-run the kind's check against the saved URL/query,
+  //      compare the new score to watch.lastScore + watch.baselineScore.
+  //   3. If the delta crosses a per-kind threshold, send a diff
+  //      email via Resend (the existing email.js pipeline).
+  //   4. recordWatchCheck(env, sub, savedItemId, newScore).
+  //
+  // Re-check functions live in src/lib/watch-checks.js (a Phase 3
+  // implementation file, not in this scaffolding sprint). Each
+  // function takes (env, savedItem) and returns a number 0..100.
+  //
+  // The handler is wrapped so a single watch's failure doesn't
+  // halt the run — log + continue.
+  async scheduled(controller, env, ctx) {
+    // Guard rails: refuse to run if the auth bindings aren't
+    // configured. The cron staying enabled with a missing namespace
+    // would otherwise log an error every tick.
+    if (!env || !env.AUTH_SESSIONS) {
+      console.warn('[cron] scheduled() invoked but AUTH_SESSIONS missing; skipping');
+      return;
+    }
+    // Phase 3 implementation hook lives here. For the scaffolding
+    // commit, just log the cron tick so ops can see it firing if
+    // they uncomment the trigger as a smoke test.
+    let count = 0;
+    try {
+      for await (const _entry of iterateAllWatches(env)) {
+        count++;
+        // Phase 3: dispatch to the per-kind re-check fn here.
+      }
+    } catch (err) {
+      console.warn('[cron] iterateAllWatches failed', err && err.message);
+    }
+    console.log(JSON.stringify({
+      event: 'cron.watch_tick',
+      cron: (controller && controller.cron) || null,
+      scheduledTime: (controller && controller.scheduledTime) || null,
+      watchCount: count,
+    }));
   },
 };
 
@@ -3500,6 +3638,514 @@ function escapeHtmlForEmail(s) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
 }
+
+
+// ============================================================
+// Sprint 0 (Workshop) — /api/auth/magic-link
+// ============================================================
+//
+// Privacy-first sign-in flow. Always returns 200 OK regardless of
+// whether the email exists, the body is malformed, or the rate
+// limit denied an upstream Resend send. Goal: an attacker can't
+// enumerate which emails are registered, can't probe for valid
+// origins, and can't fish for timing differences.
+//
+// Pipeline (silent-200 means "no observable signal to the caller"):
+//   1.  Origin allowlist  → 403 (intentional; off-allowlist is
+//       browser CORS abuse, not an unauthenticated user)
+//   2.  Body parse + length caps → 400 if malformed JSON / oversize
+//   3.  Honeypot _gotcha    → silent 200
+//   4.  Timestamp sanity    → silent 200
+//   5.  Threat-IP check     → silent 200
+//   6.  Email format        → silent 200 (never reveal validity)
+//   7.  returnTo allowlist  → fall through to /workbench/
+//   8.  Mint token + KV PUT (15-min TTL) with collision retry
+//   9.  Resend send         → log on failure but still return 200
+//                              (prevents email-bounce probing)
+//  10.  return { ok: true }
+//
+// AUTH_SESSIONS binding required: the handler 503's loud if it's
+// missing so ops sees the misconfig before users do.
+async function handleAuthMagicLink(request, env, ctx) {
+  // Origin allowlist FIRST — cheap, no body read, blocks the
+  // most common automated abuse pattern (curl from the wrong host).
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+
+  // Length caps — even silent-200 paths read body.email below, so
+  // make sure a megabyte payload doesn't exhaust isolate memory.
+  // The 30-char ts and 100-char honeypot caps mirror other forms.
+  const lenGate = enforceMaxLengths(body, {
+    email: 254, returnTo: 256, hp: 100, ts: 30, locale: 8,
+  });
+  if (!lenGate.ok) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+
+  // Silent-200 layer. Each gate returns the same shape so a
+  // network observer can't tell a real signin from spam.
+  const SILENT_OK = jsonResponse({ ok: true }, 200);
+
+  if (isSpamHoneypot(body))     return SILENT_OK;
+  if (!isTimestampSane(body))   return SILENT_OK;
+  if (isHighThreatIP(request))  return SILENT_OK;
+  const email = typeof body.email === 'string' ? body.email.trim() : '';
+  if (!isValidEmail(email))     return SILENT_OK;
+
+  // returnTo allowlist. Anything off-list collapses to the canonical
+  // /workbench/. Belt and suspenders against open-redirect class bugs.
+  const allowedReturnTo = new Set([
+    '/workbench/', '/workbench/index.html',
+    '/es/workbench/', '/es/workbench/index.html',
+  ]);
+  let returnTo = typeof body.returnTo === 'string' ? body.returnTo.trim() : '';
+  if (!returnTo || !allowedReturnTo.has(returnTo)) {
+    returnTo = '/workbench/';
+  }
+
+  // Locale dispatch for the email subject + body.
+  const bodyLang = typeof body.locale === 'string' ? body.locale.toLowerCase() : '';
+  const locale = (bodyLang === 'es' || bodyLang === 'en') ? bodyLang : pickLang(request);
+
+  // Hard-fail if AUTH_SESSIONS isn't bound — the handler can't
+  // store the token, so silently 200'ing would lie about success.
+  // 503 loud so ops finds the misconfig fast in logs.
+  if (!env || !env.AUTH_SESSIONS) {
+    console.warn('[auth/magic-link] AUTH_SESSIONS binding missing — 503');
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  }
+  if (!env.RESEND_API_KEY) {
+    console.warn('[auth/magic-link] RESEND_API_KEY missing — 503');
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  }
+
+  // Mint with collision retry. ~49 bits entropy means collisions
+  // are vanishingly rare even at the 1k-write daily quota; we still
+  // retry up to 3 times to make the failure mode loud rather than silent.
+  let token = null;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const candidate = mintMagicLinkToken();
+    const existing = await env.AUTH_SESSIONS.get('magic:' + candidate);
+    if (!existing) { token = candidate; break; }
+  }
+  if (!token) {
+    console.warn('[auth/magic-link] token collision retry exhausted');
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  }
+
+  const now = Date.now();
+  const payload = {
+    email,
+    returnTo,
+    createdAt: now,
+  };
+  await env.AUTH_SESSIONS.put('magic:' + token, JSON.stringify(payload), {
+    expirationTtl: MAGIC_LINK_TTL_SECONDS,
+  });
+
+  // Build the absolute verify URL. MAGIC_LINK_BASE_URL is set in
+  // wrangler.jsonc vars; fall back to the request origin for local
+  // dev where the var might be unset on a fresh wrangler.dev.
+  const baseUrl = (env.MAGIC_LINK_BASE_URL && String(env.MAGIC_LINK_BASE_URL))
+    || new URL(request.url).origin;
+  const link = baseUrl
+    + '/api/auth/verify?token=' + encodeURIComponent(token)
+    + '&returnTo=' + encodeURIComponent(returnTo);
+
+  const tpl = magicLinkEmail({ email, link, returnTo, locale });
+
+  const fromEmail = (env.FROM_EMAIL && String(env.FROM_EMAIL)) || 'Don Goldstein <don@muntin.digital>';
+  const sendRes = await sendEmail({
+    from: fromEmail,
+    to: email,
+    replyTo: 'don@muntin.digital',
+    subject: tpl.subject,
+    html: tpl.html,
+    text: tpl.text,
+  }, env.RESEND_API_KEY);
+
+  if (!sendRes.ok) {
+    // Don't leak the failure to the caller — a Resend hiccup
+    // shouldn't reveal "this email exists" to a probing attacker.
+    // Log loud for ops; user gets the same 200 they'd get on success.
+    console.warn('[auth/magic-link] resend failed:', sendRes.error);
+  }
+
+  return jsonResponse({ ok: true }, 200);
+}
+
+// ============================================================
+// Sprint 0 (Workshop) — /api/auth/verify
+// ============================================================
+//
+// Consumes a magic-link token (one-shot), creates a 30-day session,
+// and 302s the visitor to returnTo with the signed session cookie
+// already set. Token is deleted on first read so a stolen email
+// can't replay the link.
+//
+// Failure modes return locale-aware 410 Gone HTML pages (not 401 or
+// 404) so an honest visitor who clicked a stale link sees a clear
+// "this link expired or was already used" message rather than a
+// confusing 404.
+async function handleAuthVerify(request, env, ctx) {
+  const url = new URL(request.url);
+  const token = url.searchParams.get('token') || '';
+  let returnTo = url.searchParams.get('returnTo') || '/workbench/';
+
+  // returnTo allowlist — same set as the magic-link request side.
+  // Anything off-list collapses to /workbench/.
+  const allowedReturnTo = new Set([
+    '/workbench/', '/workbench/index.html',
+    '/es/workbench/', '/es/workbench/index.html',
+  ]);
+  if (!allowedReturnTo.has(returnTo)) returnTo = '/workbench/';
+
+  const lang = pickLang(request);
+  const goneTitle = lang === 'es'
+    ? 'Este enlace ya no funciona'
+    : 'This link no longer works';
+  const goneBody = lang === 'es'
+    ? 'El enlace de acceso vence después de 15 minutos o de un solo uso. Pide uno nuevo y vuelve a intentarlo.'
+    : 'Sign-in links expire after 15 minutes or a single use. Request a new one and try again.';
+  const goneHtml = (
+    '<!doctype html><html lang="' + lang + '"><head><meta charset="utf-8">' +
+    '<meta name="viewport" content="width=device-width,initial-scale=1">' +
+    '<meta name="robots" content="noindex">' +
+    '<title>' + goneTitle + ' — Muntin Digital</title>' +
+    '<link rel="stylesheet" href="/assets/site.css?v=20260428-sprint0-tokens">' +
+    '</head><body style="background:var(--cream);color:var(--ink);">' +
+    '<main style="max-width:560px;margin:80px auto;padding:0 20px;font-family:Inter,system-ui,sans-serif;">' +
+    '<p style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 16px;">Muntin Digital</p>' +
+    '<h1 style="font-family:Fraunces,Georgia,serif;font-size:32px;font-weight:500;margin:0 0 16px;line-height:1.2;">' + goneTitle + '</h1>' +
+    '<p style="font-size:17px;line-height:1.6;color:var(--ink-soft);margin:0;">' + goneBody + '</p>' +
+    '</main></body></html>'
+  );
+  const goneResponse = () => new Response(goneHtml, {
+    status: 410,
+    headers: { 'content-type': 'text/html; charset=utf-8' },
+  });
+
+  if (!isValidMagicLinkTokenShape(token)) return goneResponse();
+
+  if (!env || !env.AUTH_SESSIONS) {
+    console.warn('[auth/verify] AUTH_SESSIONS binding missing — 503');
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  }
+  if (!env.AUTH_COOKIE_SECRET) {
+    console.warn('[auth/verify] AUTH_COOKIE_SECRET missing — 503');
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  }
+
+  // KV.get the magic-link payload, then immediately delete. Order
+  // matters: if we delete first and the network blips, the token is
+  // gone with no session created. Get-then-delete leaves the user
+  // a clean retry window if the delete fails (token re-expires on
+  // its own after 15 min anyway).
+  const raw = await env.AUTH_SESSIONS.get('magic:' + token);
+  if (!raw) return goneResponse();
+
+  let parsed;
+  try { parsed = JSON.parse(raw); } catch { return goneResponse(); }
+  if (!parsed || typeof parsed.email !== 'string' || !parsed.email) {
+    return goneResponse();
+  }
+
+  // One-shot consumption — delete BEFORE we sign the cookie so a
+  // simultaneous double-click can't establish two sessions.
+  await env.AUTH_SESSIONS.delete('magic:' + token);
+
+  const email = parsed.email;
+  const sub = await sha256Hex(email);
+
+  // user:<sub> bookkeeping. First sign-in creates the row; later
+  // sign-ins refresh lastSeenAt. No TTL — the row is the lifetime
+  // record of "this email is known to the workshop." Conditional
+  // write keeps KV traffic minimal under hot-cache scenarios.
+  const userKey = 'user:' + sub;
+  const now = Date.now();
+  let userRow = null;
+  try {
+    const existing = await env.AUTH_SESSIONS.get(userKey);
+    if (existing) {
+      try { userRow = JSON.parse(existing); } catch { userRow = null; }
+    }
+  } catch (_) { /* fall through to fresh row */ }
+  const nextRow = userRow
+    ? { ...userRow, email, lastSeenAt: now }
+    : { email, createdAt: now, lastSeenAt: now };
+  await env.AUTH_SESSIONS.put(userKey, JSON.stringify(nextRow));
+
+  // Sign the session cookie. exp is 30 days out so the browser drops
+  // it at the same moment our verify call refuses it.
+  const nowSec = Math.floor(now / 1000);
+  const sessionPayload = {
+    sub,
+    email,
+    iat: nowSec,
+    exp: nowSec + SESSION_TTL_SECONDS,
+    jti: mintSessionToken(),
+  };
+  const cookieValue = await signSession(sessionPayload, env.AUTH_COOKIE_SECRET);
+
+  // Use returnTo from the magic-link payload if it's still
+  // allowlisted (it was at request time, but be defensive). The
+  // query param overrides only when it's also allowlisted.
+  const candidateReturnTo = (typeof parsed.returnTo === 'string' && allowedReturnTo.has(parsed.returnTo))
+    ? parsed.returnTo
+    : returnTo;
+
+  const headers = new Headers({ Location: candidateReturnTo });
+  setSessionCookie(headers, cookieValue);
+  return new Response(null, { status: 302, headers });
+}
+
+
+// ============================================================
+// Sprint 0 (Workshop) — /api/auth/me
+// ============================================================
+//
+// Returns the authenticated email or 401. The /workbench/ stub
+// page calls this client-side to toggle "Coming soon" vs. "Hello,
+// {email}" — the signed cookie is the source of truth, this just
+// surfaces it to the page render.
+//
+// Conditional lastSeenAt update: at most once per hour per user.
+// Keeps KV writes cheap on chatty pages without needing a
+// separate write throttle.
+async function handleAuthMe(request, env, ctx) {
+  const session = await getSessionFromRequest(request, env);
+  if (!session) {
+    return jsonResponse({ ok: false, error: 'unauthenticated' }, 401);
+  }
+
+  // Best-effort lastSeenAt refresh. Failures are silent — the
+  // session is still valid even if we can't update the row.
+  if (env && env.AUTH_SESSIONS) {
+    try {
+      const userKey = 'user:' + session.payload.sub;
+      const existing = await env.AUTH_SESSIONS.get(userKey);
+      if (existing) {
+        const row = JSON.parse(existing);
+        const now = Date.now();
+        const ONE_HOUR_MS = 60 * 60 * 1000;
+        if (!row.lastSeenAt || (now - row.lastSeenAt) > ONE_HOUR_MS) {
+          row.lastSeenAt = now;
+          await env.AUTH_SESSIONS.put(userKey, JSON.stringify(row));
+        }
+      }
+    } catch (err) {
+      console.warn('[auth/me] lastSeenAt refresh failed:', err && err.message);
+    }
+  }
+
+  return jsonResponse({ ok: true, email: session.email }, 200);
+}
+
+
+// ============================================================
+// Sprint 0 (Workshop) — /api/auth/signout
+// ============================================================
+//
+// Clears the signed session cookie and 302s to /. Form-tier rate
+// limit means an attacker can't churn through sign-outs to wear
+// down the cookie state — but the operation is idempotent anyway,
+// so the gate is mostly a courtesy.
+async function handleAuthSignout(request, env, ctx) {
+  // Origin allowlist — prevents an attacker from tricking another
+  // tab into hitting this from a third-party host (CSRF on a form
+  // POST without the right Origin header).
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+
+  const headers = new Headers({ Location: '/' });
+  clearSessionCookie(headers);
+  return new Response(null, { status: 302, headers });
+}
+
+
+// ============================================================
+// Phase 2 (Workshop) — /api/workbench/save | list | get | delete
+// ============================================================
+//
+// Saved-items library. Every endpoint authenticates via the signed
+// session cookie (no API key, no header auth) and scopes data by
+// the session's `sub` (sha256(email)). Per-user KV-key scoping
+// means a missing application-level check can't leak across users.
+//
+// Anonymous calls always 401. Configuration failures (missing
+// AUTH_SESSIONS binding, missing AUTH_COOKIE_SECRET) return 503
+// loud so ops sees the misconfig before users do.
+
+async function _requireWorkbenchSession(request, env) {
+  if (!env || !env.AUTH_SESSIONS) {
+    return { error: jsonResponse({ ok: false, error: 'service-unavailable' }, 503) };
+  }
+  const session = await getSessionFromRequest(request, env);
+  if (!session) {
+    return { error: jsonResponse({ ok: false, error: 'unauthenticated' }, 401) };
+  }
+  return { sub: session.payload.sub, email: session.email };
+}
+
+// POST /api/workbench/save
+//   body: { kind, title, payload }
+// Returns: { ok: true, id, createdAt } or { ok: false, error }
+async function handleWorkbenchSave(request, env, ctx) {
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const validated = validateSaveBody(body);
+  if (!validated.ok) {
+    return jsonResponse({ ok: false, error: validated.error }, 400);
+  }
+  const result = await saveItem(env, auth.sub, validated.item);
+  if (!result.ok) {
+    if (result.error === 'limit-reached') {
+      return jsonResponse({
+        ok: false,
+        error: 'limit-reached',
+        max: result.max,
+      }, 409);
+    }
+    return jsonResponse({ ok: false, error: result.error }, 500);
+  }
+  return jsonResponse({ ok: true, id: result.id, createdAt: result.createdAt }, 200);
+}
+
+// GET /api/workbench/list
+// Returns: { ok: true, items: [{ id, kind, title, createdAt }, ...] }
+async function handleWorkbenchList(request, env, ctx) {
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  const items = await listItemsForUser(env, auth.sub);
+  return jsonResponse({ ok: true, items, max: MAX_SAVES_PER_USER }, 200);
+}
+
+// GET /api/workbench/get?id=...
+// Returns: { ok: true, item: { id, kind, title, payload, createdAt } }
+async function handleWorkbenchGet(request, env, ctx) {
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  const url = new URL(request.url);
+  const id = url.searchParams.get('id') || '';
+  if (!isValidSaveItemIdShape(id)) {
+    return jsonResponse({ ok: false, error: 'invalid-id' }, 400);
+  }
+  const item = await getItem(env, auth.sub, id);
+  if (!item) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  return jsonResponse({ ok: true, item }, 200);
+}
+
+// POST /api/workbench/delete
+//   body: { id }
+// Returns: { ok: true, deleted: boolean }
+async function handleWorkbenchDelete(request, env, ctx) {
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const id = typeof body.id === 'string' ? body.id.trim() : '';
+  const result = await deleteItem(env, auth.sub, id);
+  if (!result.ok) {
+    return jsonResponse({ ok: false, error: result.error }, 400);
+  }
+  return jsonResponse({ ok: true, deleted: result.deleted }, 200);
+}
+
+
+// ============================================================
+// Phase 3 (Workshop) — /api/workbench/watch{-list,-delete}
+// ============================================================
+//
+// Attaches a re-check schedule to an existing saved item. The
+// underlying Cron Trigger that actually runs the re-checks is
+// commented out in wrangler.jsonc until ops is ready (see the
+// scheduled() export below — it ships as a no-op for now). So
+// these endpoints persist intent and let the UI render a Watch
+// list, but no upstream API quota burns until the cron flips on.
+
+// POST /api/workbench/watch
+//   body: { savedItemId, schedule }   schedule: 'daily' | 'weekly'
+// Returns: { ok: true, watch: {...} }
+async function handleWorkbenchWatchAttach(request, env, ctx) {
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const savedItemId = typeof body.savedItemId === 'string' ? body.savedItemId.trim() : '';
+  const schedule    = typeof body.schedule    === 'string' ? body.schedule.trim()    : '';
+  const result = await attachWatch(env, auth.sub, savedItemId, schedule);
+  if (!result.ok) {
+    if (result.error === 'limit-reached') {
+      return jsonResponse({ ok: false, error: 'limit-reached', max: result.max }, 409);
+    }
+    if (result.error === 'save-not-found') {
+      return jsonResponse({ ok: false, error: 'save-not-found' }, 404);
+    }
+    if (result.error === 'kind-not-watchable' || result.error === 'invalid-id' || result.error === 'invalid-schedule') {
+      return jsonResponse({ ok: false, error: result.error }, 400);
+    }
+    return jsonResponse({ ok: false, error: result.error }, 500);
+  }
+  return jsonResponse({ ok: true, watch: result.watch }, 200);
+}
+
+// GET /api/workbench/watch-list
+// Returns: { ok: true, items: [...], max }
+async function handleWorkbenchWatchList(request, env, ctx) {
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  const items = await listWatchesForUser(env, auth.sub);
+  return jsonResponse({ ok: true, items, max: MAX_WATCHES_PER_USER }, 200);
+}
+
+// POST /api/workbench/watch-delete
+//   body: { savedItemId }
+// Returns: { ok: true, detached: boolean }
+async function handleWorkbenchWatchDelete(request, env, ctx) {
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const savedItemId = typeof body.savedItemId === 'string' ? body.savedItemId.trim() : '';
+  const result = await detachWatch(env, auth.sub, savedItemId);
+  if (!result.ok) {
+    return jsonResponse({ ok: false, error: result.error }, 400);
+  }
+  return jsonResponse({ ok: true, detached: result.detached }, 200);
+}
+
 
 // ------------------------------------------------------------
 // /api/badge-snapshot — accept a score payload from the audit UI

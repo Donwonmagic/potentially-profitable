@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!--
+  Phase 2 (Workshop) — biblioteca de elementos guardados.
+
+  El worker (src/worker.js) sigue dando gate del lado servidor: un
+  GET a /es/workbench/ desde un visitante sin cookie de sesión
+  firmada y válida devuelve 404 antes de servir este HTML. Por eso
+  todo lo de abajo asume "logueado" — JS solo renderiza la lista de
+  items guardados y ofrece botones para eliminar. Si /api/auth/me
+  devuelve 401 inesperadamente (la cookie venció entre el gate y el
+  fetch), redirigimos a /es/sign-in/ en lugar de mostrar un estado
+  vacío confuso.
+
+  Postura de privacidad: noindex, nofollow. La página sigue sin
+  estar en el sitemap o en ningún enlace público — los operadores
+  llegan vía el enlace "El Taller" del nav (solo visible para
+  visitantes autenticados).
+-->
+<meta name="robots" content="noindex, nofollow" />
+<title>El Taller — Muntin Digital</title>
+<meta name="theme-color" content="#1F4E5B" />
+
+<link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site.css?v=20260428-sprint0-tokens" fetchpriority="high">
+
+<style>
+  body { background: var(--surface-0); }
+  .wb-shell { min-height: 100vh; display: flex; flex-direction: column; }
+  .wb-top { padding: 24px clamp(20px, 4vw, 64px); display: flex; justify-content: space-between; align-items: center; gap: 16px; border-bottom: 1px solid var(--line); }
+  .wb-mark { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; }
+  .wb-mark svg { width: 28px; height: 28px; flex: 0 0 28px; }
+  .wb-account { display: inline-flex; align-items: center; gap: 14px; font-size: 13px; color: var(--stone); }
+  .wb-account-email { color: var(--ink); font-weight: 500; }
+  .wb-signout { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid var(--line-dark); border-radius: 999px; background: transparent; color: var(--stone); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
+  .wb-signout:hover { border-color: var(--ink); color: var(--ink); }
+
+  .wb-main { flex: 1; padding: clamp(40px, 6vh, 64px) clamp(20px, 4vw, 64px); }
+  .wb-header { max-width: 720px; margin: 0 auto 36px; }
+  .wb-eyebrow { font-family: var(--font-body); font-size: 13px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 12px; }
+  .wb-h1 { font-family: var(--font-display); font-size: clamp(32px, 4.4vw, 48px); font-weight: 500; line-height: 1.1; letter-spacing: -0.02em; color: var(--ink); margin: 0 0 14px; }
+  .wb-sub { font-size: var(--fs-lead); line-height: 1.55; color: var(--ink-soft); margin: 0; }
+
+  .wb-list { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+
+  .wb-state { padding: 40px 28px; background: var(--surface-1); border: 1px solid var(--line); border-radius: var(--r-md); text-align: center; }
+  .wb-state h2 { font-family: var(--font-display); font-size: 24px; font-weight: 500; color: var(--ink); margin: 0 0 10px; }
+  .wb-state p { font-size: 15px; line-height: 1.55; color: var(--ink-soft); margin: 0; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .wb-state .wb-state-cta { margin-top: 20px; }
+
+  .wb-item { padding: 22px 24px; background: var(--surface-1); border: 1px solid var(--line); border-radius: var(--r-md); box-shadow: var(--elev-1); display: grid; grid-template-columns: 1fr auto; gap: 18px; align-items: start; }
+  .wb-item-body { min-width: 0; }
+  .wb-item-meta { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .wb-item-title { font-family: var(--font-display); font-size: 18px; font-weight: 500; color: var(--ink); margin: 0; line-height: 1.35; word-break: break-word; }
+  .wb-item-date { font-size: 12.5px; color: var(--stone); margin: 6px 0 0; font-variant-numeric: tabular-nums; }
+  .wb-item-actions { display: inline-flex; gap: 8px; flex-shrink: 0; }
+  .wb-item-action { display: inline-flex; align-items: center; padding: 8px 14px; border: 1px solid var(--line-dark); border-radius: 999px; background: transparent; color: var(--ink-soft); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); text-decoration: none; }
+  .wb-item-action:hover { border-color: var(--ink); color: var(--ink); }
+  .wb-item-action.danger { color: var(--rust); border-color: var(--status-bad-tint); }
+  .wb-item-action.danger:hover { background: var(--status-bad-tint); border-color: var(--rust); }
+
+  /* Phase 3 (Workshop) — toggle de Watch (Vigilar). */
+  .wb-watch-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border: 1px solid var(--line-dark); border-radius: 999px; background: transparent; color: var(--ink-soft); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
+  .wb-watch-btn:hover { border-color: var(--teal); color: var(--teal); }
+  .wb-watch-btn[disabled] { opacity: 0.6; cursor: wait; }
+  .wb-watch-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 6px 8px 14px; border-radius: 999px; background: var(--teal-tint); color: var(--teal); font: inherit; font-size: 13px; font-weight: 600; }
+  .wb-watch-pill button { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border: 0; border-radius: 50%; background: transparent; color: var(--teal); font: inherit; font-size: 16px; line-height: 1; cursor: pointer; padding: 0; transition: background var(--t-fast) var(--ease); }
+  .wb-watch-pill button:hover { background: rgba(31,78,91,0.12); }
+  .wb-watch-pill button[disabled] { opacity: 0.6; cursor: wait; }
+
+  @media (max-width: 640px) {
+    .wb-item { grid-template-columns: 1fr; }
+    .wb-item-actions { justify-content: flex-end; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Ir al contenido</a>
+
+<div class="wb-shell">
+  <header class="wb-top">
+    <a href="/es/" class="wb-mark" aria-label="Muntin Digital — inicio">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital
+    </a>
+    <div class="wb-account">
+      <span class="wb-account-email" data-bind="email">&nbsp;</span>
+      <form method="POST" action="/api/auth/signout" style="margin:0;">
+        <button type="submit" class="wb-signout">Cerrar sesión</button>
+      </form>
+    </div>
+  </header>
+
+  <main id="main" class="wb-main">
+    <div class="wb-header">
+      <p class="wb-eyebrow">El Taller</p>
+      <h1 class="wb-h1">Guardado de tu trabajo.</h1>
+      <p class="wb-sub">Auditorías, escenarios e instantáneas que has guardado desde las herramientas gratis. Todo se queda aquí hasta que lo elimines.</p>
+    </div>
+
+    <div class="wb-list" id="wbList" aria-live="polite">
+      <div class="wb-state" id="wbLoading">
+        <p>Cargando tus items guardados&hellip;</p>
+      </div>
+      <div class="wb-state" id="wbEmpty" hidden>
+        <h2>Aún no hay nada guardado.</h2>
+        <p>Ejecuta cualquier herramienta gratis y toca &ldquo;Guardar en mi Taller&rdquo; en un resultado. Aparecerá aquí, junto con todo lo demás.</p>
+        <p class="wb-state-cta"><a class="btn btn-ghost" href="/es/tools/">Ver las herramientas</a></p>
+      </div>
+      <div class="wb-state" id="wbError" hidden>
+        <h2>No pudimos cargar tus items guardados.</h2>
+        <p>Recarga la página o inténtalo de nuevo en un momento. Si esto sigue pasando, escribe a <a href="mailto:don@muntin.digital">don@muntin.digital</a>.</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  (function () {
+    var listEl    = document.getElementById('wbList');
+    var loadingEl = document.getElementById('wbLoading');
+    var emptyEl   = document.getElementById('wbEmpty');
+    var errorEl   = document.getElementById('wbError');
+    var emailSlot = document.querySelector('[data-bind="email"]');
+    if (!listEl) return;
+
+    var KIND_LABELS = {
+      audit: 'Auditoría',
+      seo: 'Calificador SEO',
+      gbp: 'GBP grader',
+      mobile: 'Revisión móvil',
+      schema: 'Revisión schema',
+      speed: 'Prueba de velocidad',
+      margin: 'Margin math',
+      plate: 'Plate cost',
+      photo: 'Photo brief',
+      menu: 'Menú',
+      brand: 'Brand suite',
+      'open-hours': 'Horarios',
+      compare: 'Comparar',
+      'tech-stack': 'Tech stack',
+      'search-ideas': 'Ideas de búsqueda'
+    };
+
+    var KIND_URLS = {
+      audit: '/es/tools/audits/restaurant/',
+      seo: '/es/tools/seo-grader/',
+      gbp: '/es/tools/gbp-grader/',
+      mobile: '/es/tools/mobile-check/',
+      schema: '/es/tools/schema-check/',
+      speed: '/es/tools/speed-test/',
+      margin: '/es/tools/margin-math/',
+      plate: '/es/tools/plate-cost/',
+      photo: '/es/tools/photo-brief/',
+      menu: '/es/tools/menu-engineering/',
+      brand: '/es/tools/brand-suite/',
+      'open-hours': '/es/tools/open-hours/',
+      compare: '/es/tools/compare/',
+      'tech-stack': '/es/tools/tech-stack/',
+      'search-ideas': '/es/tools/search-ideas/'
+    };
+
+    // Phase 3 — kinds vigilables.
+    var WATCHABLE_KINDS = { audit: 1, seo: 1, gbp: 1, mobile: 1, schema: 1, speed: 1 };
+    var watchIndex = {};
+
+    function escapeHtml(s) {
+      return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function fmtDate(ms) {
+      if (!ms) return '';
+      try {
+        var d = new Date(ms);
+        return d.toLocaleDateString('es', { year: 'numeric', month: 'short', day: 'numeric' });
+      } catch (_) { return ''; }
+    }
+
+    function showState(which) {
+      [loadingEl, emptyEl, errorEl].forEach(function (n) { if (n) n.hidden = true; });
+      if (which) which.hidden = false;
+    }
+
+    function renderWatchSlotHtml(itemId, watch) {
+      if (!watch) {
+        return (
+          '<span class="js-wb-watch-slot" data-id="' + escapeHtml(itemId) + '">' +
+            '<button type="button" class="wb-watch-btn js-wb-watch-attach" data-schedule="daily">+ Vigilar a diario</button>' +
+          '</span>'
+        );
+      }
+      var schedule = watch.schedule === 'weekly' ? 'weekly' : 'daily';
+      var label = schedule === 'weekly' ? 'Vigilando semanal' : 'Vigilando diario';
+      return (
+        '<span class="js-wb-watch-slot" data-id="' + escapeHtml(itemId) + '">' +
+          '<span class="wb-watch-pill">' +
+            escapeHtml(label) +
+            '<button type="button" class="js-wb-watch-detach" aria-label="Dejar de vigilar">×</button>' +
+          '</span>' +
+        '</span>'
+      );
+    }
+    function cssEscape(s) {
+      return String(s).replace(/[^A-Za-z0-9_-]/g, function (c) {
+        return '\\' + c.charCodeAt(0).toString(16) + ' ';
+      });
+    }
+    function replaceWatchSlot(itemId, watch) {
+      var slot = listEl.querySelector('.js-wb-watch-slot[data-id="' + cssEscape(itemId) + '"]');
+      if (!slot) return;
+      var holder = document.createElement('div');
+      holder.innerHTML = renderWatchSlotHtml(itemId, watch);
+      var fresh = holder.firstChild;
+      slot.parentNode.replaceChild(fresh, slot);
+      var attach = fresh.querySelector('.js-wb-watch-attach');
+      if (attach) attach.addEventListener('click', function () { onWatchAttach(attach); });
+      var detach = fresh.querySelector('.js-wb-watch-detach');
+      if (detach) detach.addEventListener('click', function () { onWatchDetach(detach); });
+    }
+    function onWatchAttach(btn) {
+      var slot = btn.closest('.js-wb-watch-slot');
+      if (!slot) return;
+      var itemId = slot.getAttribute('data-id');
+      if (!itemId) return;
+      var schedule = btn.getAttribute('data-schedule') || 'daily';
+      btn.disabled = true;
+      fetch('/api/workbench/watch', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ savedItemId: itemId, schedule: schedule }),
+      }).then(function (r) {
+        if (r.ok) {
+          return r.json().then(function (data) {
+            var watch = (data && data.watch) || { schedule: schedule };
+            watchIndex[itemId] = watch;
+            replaceWatchSlot(itemId, watch);
+          });
+        }
+        if (r.status === 409) {
+          alert('Llegaste al límite de items vigilados. Deja de vigilar algunos primero.');
+          btn.disabled = false;
+          return;
+        }
+        if (r.status === 401) {
+          window.location.href = '/es/sign-in/?returnTo=' + encodeURIComponent('/es/workbench/');
+          return;
+        }
+        alert('No se pudo empezar a vigilar este item. Inténtalo de nuevo en un momento.');
+        btn.disabled = false;
+      }).catch(function () {
+        alert('No pudimos conectar con el servidor. Revisa tu conexión e intenta de nuevo.');
+        btn.disabled = false;
+      });
+    }
+    function onWatchDetach(btn) {
+      var slot = btn.closest('.js-wb-watch-slot');
+      if (!slot) return;
+      var itemId = slot.getAttribute('data-id');
+      if (!itemId) return;
+      btn.disabled = true;
+      fetch('/api/workbench/watch-delete', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ savedItemId: itemId }),
+      }).then(function (r) {
+        if (r.ok) {
+          delete watchIndex[itemId];
+          replaceWatchSlot(itemId, null);
+        } else if (r.status === 401) {
+          window.location.href = '/es/sign-in/?returnTo=' + encodeURIComponent('/es/workbench/');
+        } else {
+          alert('No se pudo dejar de vigilar. Inténtalo de nuevo en un momento.');
+          btn.disabled = false;
+        }
+      }).catch(function () {
+        alert('No pudimos conectar con el servidor. Revisa tu conexión e intenta de nuevo.');
+        btn.disabled = false;
+      });
+    }
+
+    function renderItems(items) {
+      [loadingEl, emptyEl, errorEl].forEach(function (n) {
+        if (n && n.parentNode === listEl) listEl.removeChild(n);
+      });
+      var existing = listEl.querySelectorAll('.wb-item');
+      existing.forEach(function (n) { listEl.removeChild(n); });
+
+      items.forEach(function (item) {
+        var label = KIND_LABELS[item.kind] || item.kind;
+        var openBase = KIND_URLS[item.kind] || '/es/tools/';
+        var openUrl = openBase + '?saved=' + encodeURIComponent(item.id);
+        var watchSlot = '';
+        if (WATCHABLE_KINDS[item.kind]) {
+          watchSlot = renderWatchSlotHtml(item.id, watchIndex[item.id] || null);
+        }
+        var row = document.createElement('article');
+        row.className = 'wb-item';
+        row.setAttribute('data-id', item.id);
+        row.setAttribute('data-kind', item.kind);
+        row.innerHTML =
+          '<div class="wb-item-body">' +
+            '<div class="wb-item-meta">' +
+              '<span class="status-chip" data-band="solid" data-size="xs">' + escapeHtml(label) + '</span>' +
+            '</div>' +
+            '<h3 class="wb-item-title">' + escapeHtml(item.title) + '</h3>' +
+            '<p class="wb-item-date">Guardado ' + fmtDate(item.createdAt) + '</p>' +
+          '</div>' +
+          '<div class="wb-item-actions">' +
+            watchSlot +
+            '<a class="wb-item-action" href="' + openUrl + '">Abrir</a>' +
+            '<button type="button" class="wb-item-action danger js-wb-delete">Eliminar</button>' +
+          '</div>';
+        listEl.appendChild(row);
+      });
+      listEl.querySelectorAll('.js-wb-watch-attach').forEach(function (btn) {
+        btn.addEventListener('click', function () { onWatchAttach(btn); });
+      });
+      listEl.querySelectorAll('.js-wb-watch-detach').forEach(function (btn) {
+        btn.addEventListener('click', function () { onWatchDetach(btn); });
+      });
+
+      listEl.querySelectorAll('.js-wb-delete').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var row = btn.closest('.wb-item');
+          if (!row) return;
+          var id = row.getAttribute('data-id');
+          if (!id) return;
+          if (!confirm('¿Eliminar este item guardado? No se puede deshacer.')) return;
+          btn.disabled = true;
+          fetch('/api/workbench/delete', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            credentials: 'same-origin',
+            body: JSON.stringify({ id: id }),
+          }).then(function (r) {
+            if (r.ok) {
+              row.parentNode.removeChild(row);
+              if (!listEl.querySelector('.wb-item')) {
+                listEl.appendChild(emptyEl);
+                showState(emptyEl);
+              }
+            } else {
+              btn.disabled = false;
+              alert('No pudimos eliminar ese item. Inténtalo de nuevo en un momento.');
+            }
+          }).catch(function () {
+            btn.disabled = false;
+            alert('No pudimos conectar con el servidor. Revisa tu conexión e intenta de nuevo.');
+          });
+        });
+      });
+    }
+
+    function loadList() {
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 401) {
+            window.location.href = '/es/sign-in/?returnTo=' + encodeURIComponent('/es/workbench/');
+            throw new Error('redirect');
+          }
+          if (!r.ok) throw new Error('me-failed');
+          return r.json();
+        })
+        .then(function (me) {
+          if (emailSlot && me && me.email) emailSlot.textContent = me.email;
+          return Promise.all([
+            fetch('/api/workbench/list',       { credentials: 'same-origin' }),
+            fetch('/api/workbench/watch-list', { credentials: 'same-origin' }),
+          ]);
+        })
+        .then(function (responses) {
+          var listRes  = responses[0];
+          var watchRes = responses[1];
+          if (!listRes.ok) throw new Error('list-failed');
+          var watchPromise = watchRes.ok ? watchRes.json() : Promise.resolve({ items: [] });
+          return Promise.all([listRes.json(), watchPromise]);
+        })
+        .then(function (parsed) {
+          var listData  = parsed[0] || {};
+          var watchData = parsed[1] || {};
+          watchIndex = {};
+          (watchData.items || []).forEach(function (w) {
+            if (w && w.savedItemId) watchIndex[w.savedItemId] = w;
+          });
+          var items = listData.items || [];
+          if (items.length === 0) { showState(emptyEl); return; }
+          renderItems(items);
+        })
+        .catch(function (err) {
+          if (err && err.message === 'redirect') return;
+          showState(errorEl);
+        });
+    }
+
+    loadList();
+  })();
+</script>
+
+</body>
+</html>

@@ -140,7 +140,7 @@
      Without this, a slow stylesheet fetch briefly renders the raw
      'Home > Page' links at the top-left of the viewport. -->
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260425-mobile-library-fix">
+<link rel="stylesheet" href="/assets/site.css?v=20260428-sprint0-tokens">
 
 <style>
   /* ============ AUDIT TOOL STYLES ============ */
@@ -296,6 +296,18 @@
     padding: 0 4px;
   }
   .deep-scan-strip[hidden] { display: none; }
+  /* .deep-chip is the audit's bespoke variant of the global
+     .status-chip component (defined in /assets/site.css "Status
+     components" cluster). Differences from the global chip:
+       - Default is teal-tint (non-graded informational), not surface-inset
+       - 6px 12px padding (vs 4px 10px on .status-chip[data-size="sm"])
+       - Has a border + tabular-nums for numeric chip values
+     Security-band variants below already use --status-* tokens.
+     Future cleanup can collapse this into .status-chip with a
+     "deep" data-variant once the audit's bespoke geometry is no
+     longer needed. data-grade-band ("good"/"ok"/"bad") matches the
+     GBP-grader vocabulary; the cluster's data-band aliases bridge
+     to the canonical idle/failing/middling/solid/complete set. */
   .deep-chip {
     display: inline-flex;
     align-items: center;
@@ -4130,6 +4142,18 @@
   }
   .share-toast.visible { opacity: 1; }
 
+  /* Phase 2 (Workshop) — Guardar en mi Taller. */
+  .audit-save{margin-top:18px;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+  .audit-save[hidden]{display:none}
+  .audit-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1;min-width:200px}
+  .audit-save-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+  .audit-save-btn:hover{background:var(--teal);transform:translateY(-1px)}
+  .audit-save-btn[disabled]{opacity:.6;cursor:wait}
+  .audit-save-link{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--line-dark);border-radius:999px;color:var(--ink);font-size:14px;font-weight:500;text-decoration:none;transition:border-color var(--t-fast) var(--ease)}
+  .audit-save-link:hover{border-color:var(--ink)}
+  .audit-save-msg{font-size:13px;color:var(--status-good);font-weight:500}
+  .audit-save-msg.error{color:var(--rust)}
+
   .share-platforms {
     display: flex;
     gap: 8px;
@@ -4810,8 +4834,14 @@
 <a class="skip-link" href="#main" data-tr="crumb.skip">Saltar al contenido principal</a>
 
 <header class="nav" id="nav">
+  <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
+             Placed inside <header> so sync-includes replaces it atomically
+             along with the rest of the nav block on every build, keeping
+             the partial strictly idempotent. Valid HTML5: <script> may
+             appear in any flow-content context. */
+  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
   <div class="container nav-inner">
-    <a href="/" class="logo" aria-label="Muntin Digital home">
+    <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
       <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
         <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
           <rect x="18" y="18" width="92" height="92"/>
@@ -4821,99 +4851,107 @@
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
-    <nav class="nav-links" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/for/restaurants/">Restaurants</a>
+    <nav class="nav-links" aria-label="Principal">
+      <a href="/es/services/">Servicios</a>
+      <a href="/es/for/restaurants/">Restaurantes</a>
       <div class="nav-library-wrap">
-        <a href="/learn/" class="nav-library-trigger" aria-haspopup="true">Library<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <div class="nav-library-menu nav-library-menu--mega" role="menu" aria-label="Library sections">
-          <a class="nav-library-menu__home" href="/learn/" role="menuitem">
-            <strong>Library home</strong>
-            <span>The hub of everything below &rarr;</span>
+        <a href="/es/learn/" class="nav-library-trigger" aria-haspopup="true">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-library-menu nav-library-menu--mega" role="menu" aria-label="Secciones de la biblioteca">
+          <a class="nav-library-menu__home" href="/es/learn/" role="menuitem">
+            <strong>Inicio de la biblioteca</strong>
+            <span>El centro de todo lo de abajo &rarr;</span>
           </a>
           <div class="nav-library-menu__col">
-            <h4>Learn</h4>
-            <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
-            <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
-            <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span><!-- count:glossary.terms -->116<!-- /count --> terms in plain English</span></a>
+            <h4>Aprende</h4>
+            <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
+            <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
+            <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span><!-- count:glossary.terms -->116<!-- /count --> términos en lenguaje claro</span></a>
           </div>
           <div class="nav-library-menu__col">
-            <h4>Read</h4>
-            <a href="/blog/" role="menuitem"><strong>Articles</strong><span>The how-to playbooks</span></a>
-            <a href="/learn/research/" role="menuitem"><strong>Research</strong><span>The evidence behind the playbooks</span></a>
+            <h4>Lee</h4>
+            <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
+            <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
           </div>
           <div class="nav-library-menu__col">
-            <h4>Do</h4>
-            <a href="/tools/" role="menuitem"><strong>Free tools</strong><span>Run a check on your own site</span></a>
-            <a href="/learn/checklists/" role="menuitem"><strong>Checklists &amp; guides</strong><span>Workbooks you can save</span></a>
+            <h4>Haz</h4>
+            <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
+            <a href="/es/learn/checklists/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
           </div>
         </div>
       </div>
-      <a href="/work/">Work</a>
-      <a href="/about/">About</a>
+      <a href="/es/work/">Proyectos</a>
+      <a href="/es/about/">Sobre Don</a>
     </nav>
-    <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="11" cy="11" r="7"/>
         <line x1="21" y1="21" x2="16.5" y2="16.5"/>
       </svg>
-      <span class="nav-search-label">Search</span>
+      <span class="nav-search-label">Buscar</span>
       <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
     </button>
-    <nav class="lang-switch" aria-label="Language">
-      <a href="/es/tools/audits/restaurant/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
-      <span class="lang-switch-current" aria-current="true">EN</span>
+    <nav class="lang-switch" aria-label="Idioma">
+      <a href="/tools/audits/restaurant/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
+      <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
-    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (se abre en una pestaña nueva)</span>
+    <a class="nav-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="nav-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Agenda una llamada de 20 min<span class="sr-only"> (se abre en una pestaña nueva)</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
     </a>
-    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
-  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
-    <a href="/services/">Services</a>
-    <a href="/for/restaurants/">Restaurants</a>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
+    <a href="/es/services/">Servicios</a>
+    <a href="/es/for/restaurants/">Restaurantes</a>
     <details class="mobile-library">
-      <summary>Library</summary>
-      <a href="/learn/">Library home</a>
-      <p class="mobile-library__group">Learn</p>
-      <a href="/learn/start-here/">Start here</a>
-      <a href="/learn/topics/">Topics</a>
-      <a href="/glossary/">Glossary</a>
-      <p class="mobile-library__group">Read</p>
-      <a href="/blog/">Articles</a>
-      <a href="/learn/research/">Research</a>
-      <p class="mobile-library__group">Do</p>
-      <a href="/tools/">Free tools</a>
-      <a href="/learn/checklists/">Checklists &amp; guides</a>
+      <summary>Biblioteca</summary>
+      <a href="/es/learn/">Inicio de la biblioteca</a>
+      <p class="mobile-library__group">Aprende</p>
+      <a href="/es/learn/start-here/">Empieza aquí</a>
+      <a href="/es/learn/topics/">Temas</a>
+      <a href="/es/glossary/">Glosario</a>
+      <p class="mobile-library__group">Lee</p>
+      <a href="/es/blog/">Artículos</a>
+      <a href="/es/learn/research/">Investigación</a>
+      <p class="mobile-library__group">Haz</p>
+      <a href="/es/tools/">Herramientas gratis</a>
+      <a href="/es/learn/checklists/">Listas y recursos</a>
     </details>
-    <a href="/work/">Work</a>
-    <a href="/about/">About</a>
+    <a href="/es/work/">Proyectos</a>
+    <a href="/es/about/">Sobre Don</a>
     <button type="button" class="mobile-search js-open-search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
-      <span>Search the library</span>
+      <span>Buscar en la biblioteca</span>
     </button>
-    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (se abre en una pestaña nueva)</span></a>
-    <a href="/es/tools/audits/restaurant/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Agenda una llamada de 20 min<span class="sr-only"> (se abre en una pestaña nueva)</span></a>
+    <a class="mobile-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="mobile-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
+    <a href="/tools/audits/restaurant/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
 
-  <!-- Opt-in Spanish banner. Rendered hidden by default; site.js
-       removes the hidden attribute only when (a) the reader's browser
-       lists Spanish in navigator.languages, (b) no md_locale cookie
-       has been set yet, and (c) the banner hasn't been dismissed.
-       Speaks directly in Spanish because its audience, by definition,
-       is a Spanish-speaking visitor. Link target is the page's own
-       hreflang="es" alternate from <head>, read at runtime. -->
-  <aside class="lang-hint" id="langHint" role="complementary" aria-label="Sugerencia de idioma" lang="es" hidden>
-    <div class="container lang-hint-inner">
-      <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
-      <a href="/es/tools/audits/restaurant/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
-      <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
-      </button>
-    </div>
-  </aside>
+  <!-- Phase 2 (Workshop) — toggle del estado de auth para el nav.
+       Llama a /api/auth/me y revela el enlace "Acceder" o "El Taller"
+       según la respuesta. Ambos enlaces empiezan ocultos para que un
+       visitante anónimo sin JS no vea ninguno (la biblioteca y las
+       herramientas funcionan completas sin acceso, así que la
+       affordance ausente es aceptable). -->
+  <script>
+    (function () {
+      var signin   = document.querySelectorAll('.js-nav-signin');
+      var workshop = document.querySelectorAll('.js-nav-workshop');
+      if (!signin.length && !workshop.length) return;
+      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 200) { show(workshop); return; }
+          show(signin);
+        })
+        .catch(function () { show(signin); });
+    })();
+  </script>
 </header>
 
 <main id="main">
@@ -5256,6 +5294,16 @@
             <button type="button" class="share-platform" id="shareImage" aria-label="Download result card as image" title="Download image">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             </button>
+          </div>
+
+          <div class="audit-save" id="auditSave" hidden>
+            <p class="audit-save-text" id="auditSaveText">Guarda este diagnóstico en tu Taller para que te siga entre dispositivos.</p>
+            <button type="button" class="audit-save-btn" id="auditSaveBtn" hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Guardar en mi Taller
+            </button>
+            <a class="audit-save-link" id="auditSaveLink" href="/es/sign-in/?returnTo=%2Fes%2Ftools%2Faudits%2Frestaurant%2F" hidden>Acceder para guardar</a>
+            <span class="audit-save-msg" id="auditSaveMsg" hidden role="status"></span>
           </div>
         </div>
       </div>
@@ -5952,8 +6000,25 @@
 <script>window.__muntinLang = "es";</script>
 <script src="/tools/audits/restaurant/subtypes.js"></script>
 <script src="/tools/audits/restaurant/restaurant-checks.js"></script>
+<script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 (function(){
+  // Phase 2 (Workshop) — Save-to-Workbench handle.
+  var wbHandle = null;
+  function maybeShowSaveAffordance() {
+    if (!wbHandle) return;
+    var last = window.__auditLastResult;
+    if (!last) return;
+    try {
+      var payload = (typeof buildSnapshotPayload === 'function')
+        ? buildSnapshotPayload(last)
+        : null;
+      if (payload) wbHandle.showAffordance(payload);
+    } catch (err) {
+      try { console.warn('[workbench] showAffordance failed', err); } catch (_) {}
+    }
+  }
+
   var form          = document.getElementById('auditForm');
   var input         = document.getElementById('auditUrl');
   var submitBtn     = document.getElementById('auditSubmit');
@@ -13575,6 +13640,8 @@
       unverifiedCount: priorityResult.unverifiedCount || 0,
       unverifiedPenaltyApplied: (priorityResult.unverifiedWeight || 0) > 0
     };
+    // Phase 2 (Workshop) — surface the Guardar-en-Taller affordance.
+    maybeShowSaveAffordance();
 
     // Sprint H1: save a compact snapshot of this audit to
     // localStorage (per URL). The next time this URL is audited,
@@ -16014,6 +16081,33 @@
       }, 300);
     } catch (e) { /* no-op */ }
   })();
+
+  // Phase 2 (Workshop) — Guardar-en-Taller wiring (ES locale).
+  if (typeof MuntinWorkbench === 'object' && MuntinWorkbench && typeof MuntinWorkbench.attach === 'function') {
+    wbHandle = MuntinWorkbench.attach({
+      elements: {
+        box:  '#auditSave',
+        btn:  '#auditSaveBtn',
+        link: '#auditSaveLink',
+        text: '#auditSaveText',
+        msg:  '#auditSaveMsg',
+      },
+      locale: 'es',
+      kind:   'audit',
+      titleFor: function (p) {
+        var u = String((p && p.auditedUrl) || '').replace(/^https?:\/\//i, '').replace(/\/$/, '');
+        return 'Diagnóstico — ' + (u || 'sin título');
+      },
+      onRehydrate: function (payload) {
+        if (typeof renderSnapshotView === 'function' && payload) {
+          renderSnapshotView(payload);
+        }
+      },
+      workbenchUrl: '/es/workbench/',
+      signinUrl:    '/es/sign-in/?returnTo=%2Fes%2Ftools%2Faudits%2Frestaurant%2F',
+    });
+    maybeShowSaveAffordance();
+  }
 })();
 </script>
 

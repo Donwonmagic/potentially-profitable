@@ -87,7 +87,7 @@
 </script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260425-mobile-library-fix">
+<link rel="stylesheet" href="/assets/site.css?v=20260428-sprint0-tokens">
 
 <style>
   .speed-hero { max-width: 680px; margin: 0 auto; text-align: center; }
@@ -132,12 +132,23 @@
     font-size: 13px; font-weight: 600; text-transform: uppercase;
     letter-spacing: 0.1em; margin-top: 4px;
   }
-  .speed-grade-good .fill { stroke: #1f9d55; }
-  .speed-grade-good .score-label { color: #1f9d55; }
-  .speed-grade-mid .fill { stroke: #C28B2E; }
-  .speed-grade-mid .score-label { color: #8A6018; }
+  .speed-grade-good .fill { stroke: var(--status-good); }
+  .speed-grade-good .score-label { color: var(--status-good); }
+  .speed-grade-mid .fill { stroke: var(--status-warn-fill); }
+  .speed-grade-mid .score-label { color: var(--status-warn); }
   .speed-grade-bad .fill { stroke: var(--rust); }
   .speed-grade-bad .score-label { color: var(--rust); }
+  /* Phase 2 (Workshop) — afordancia "Guardar en mi Taller". */
+  .speed-save { margin-top: 24px; padding: 18px 22px; background: var(--surface-inset); border: 1px solid var(--line); border-radius: var(--r-md); display: flex; gap: 14px; align-items: center; flex-wrap: wrap; justify-content: space-between; text-align: left; }
+  .speed-save[hidden] { display: none; }
+  .speed-save-text { font-size: 14px; color: var(--ink-soft); margin: 0; line-height: 1.5; flex: 1; min-width: 200px; }
+  .speed-save-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border: 1px solid var(--ink); border-radius: 999px; background: var(--ink); color: var(--cream); font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; transition: background var(--t-fast) var(--ease), transform var(--t-fast) var(--ease); }
+  .speed-save-btn:hover { background: var(--teal); transform: translateY(-1px); }
+  .speed-save-btn[disabled] { opacity: 0.6; cursor: wait; }
+  .speed-save-link { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border: 1px solid var(--line-dark); border-radius: 999px; color: var(--ink); font-size: 14px; font-weight: 500; text-decoration: none; transition: border-color var(--t-fast) var(--ease); }
+  .speed-save-link:hover { border-color: var(--ink); }
+  .speed-save-msg { font-size: 13px; color: var(--status-good); font-weight: 500; }
+  .speed-save-msg.error { color: var(--rust); }
 
   .speed-explain { font-size: 18px; line-height: 1.65; color: var(--ink-soft); margin: 0 0 16px; }
   .speed-explain strong { color: var(--ink); }
@@ -224,6 +235,8 @@
       <a href="/tools/speed-test/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
+    <a class="nav-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="nav-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
     <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Agenda una llamada de 20 min<span class="sr-only"> (se abre en una pestaña nueva)</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
     </a>
@@ -255,8 +268,31 @@
       <span>Buscar en la biblioteca</span>
     </button>
     <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Agenda una llamada de 20 min<span class="sr-only"> (se abre en una pestaña nueva)</span></a>
+    <a class="mobile-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="mobile-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
     <a href="/tools/speed-test/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
+
+  <!-- Phase 2 (Workshop) — toggle del estado de auth para el nav.
+       Llama a /api/auth/me y revela el enlace "Acceder" o "El Taller"
+       según la respuesta. Ambos enlaces empiezan ocultos para que un
+       visitante anónimo sin JS no vea ninguno (la biblioteca y las
+       herramientas funcionan completas sin acceso, así que la
+       affordance ausente es aceptable). -->
+  <script>
+    (function () {
+      var signin   = document.querySelectorAll('.js-nav-signin');
+      var workshop = document.querySelectorAll('.js-nav-workshop');
+      if (!signin.length && !workshop.length) return;
+      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 200) { show(workshop); return; }
+          show(signin);
+        })
+        .catch(function () { show(signin); });
+    })();
+  </script>
 </header>
 
 <main id="main">
@@ -325,6 +361,16 @@
           <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
             <a class="btn btn-primary" href="/es/tools/audits/restaurant/">Diagnóstico de restaurante</a>
             </div>
+        </div>
+
+        <div class="speed-save" id="speedSave" hidden>
+          <p class="speed-save-text" id="speedSaveText">Guarda este resultado en tu Taller para que te siga entre dispositivos.</p>
+          <button type="button" class="speed-save-btn" id="speedSaveBtn" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Guardar en mi Taller
+          </button>
+          <a class="speed-save-link" id="speedSaveLink" href="/es/sign-in/?returnTo=%2Fes%2Ftools%2Fspeed-test%2F" hidden>Acceder para guardar</a>
+          <span class="speed-save-msg" id="speedSaveMsg" hidden role="status"></span>
         </div>
       </div>
     </div>
@@ -479,6 +525,87 @@
     return v.toFixed(3).replace('.', ',');
   }
 
+  // Phase 2 (Workshop) — render compartido entre fresh test y rehidratar.
+  function renderResult(p) {
+    var score = p.score;
+    scoreNum.textContent = score;
+    scoreLabel.textContent = gradeLabel(score);
+    dial.className = 'speed-dial ' + gradeClass(score);
+    fillEl.style.strokeDashoffset = String(CIRC * (1 - score / 100));
+    explain.innerHTML = explainScore(score, p.lcp);
+    document.getElementById('metricLCP').textContent = formatMs(p.lcp != null ? Math.round(p.lcp) : null);
+    document.getElementById('metricFCP').textContent = formatMs(p.fcp != null ? Math.round(p.fcp) : null);
+    document.getElementById('metricTBT').textContent = formatMs(p.tbt != null ? Math.round(p.tbt) : null);
+    document.getElementById('metricCLS').textContent = formatCls(p.cls);
+    result.classList.add('visible');
+    result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Phase 2 (Workshop) — auth + Guardar-en-Taller.
+  var authState = { checked: false, signedIn: false };
+  fetch('/api/auth/me', { credentials: 'same-origin' })
+    .then(function (r) { authState = { checked: true, signedIn: r.status === 200 }; })
+    .catch(function ()  { authState = { checked: true, signedIn: false }; });
+
+  var saveBox  = document.getElementById('speedSave');
+  var saveBtn  = document.getElementById('speedSaveBtn');
+  var saveLink = document.getElementById('speedSaveLink');
+  var saveText = document.getElementById('speedSaveText');
+  var saveMsg  = document.getElementById('speedSaveMsg');
+  var lastSavePayload = null;
+
+  function showSaveAffordance(payload) {
+    lastSavePayload = payload;
+    if (!saveBox) return;
+    if (saveMsg) { saveMsg.hidden = true; saveMsg.textContent = ''; saveMsg.classList.remove('error'); }
+    saveBox.hidden = false;
+    if (authState.signedIn) {
+      if (saveBtn)  saveBtn.hidden  = false;
+      if (saveLink) saveLink.hidden = true;
+      if (saveText) saveText.textContent = 'Guarda este resultado en tu Taller para que te siga entre dispositivos.';
+    } else {
+      if (saveBtn)  saveBtn.hidden  = true;
+      if (saveLink) saveLink.hidden = false;
+      if (saveText) saveText.textContent = 'Accede para guardar este resultado y que te siga entre dispositivos.';
+    }
+  }
+
+  if (saveBtn) {
+    saveBtn.addEventListener('click', function () {
+      if (!lastSavePayload) return;
+      saveBtn.disabled = true;
+      var pretty = String(lastSavePayload.url || '').replace(/^https?:\/\//i, '').replace(/\/$/, '');
+      var body = { kind: 'speed', title: 'Prueba de velocidad — ' + (pretty || 'sin título'), payload: lastSavePayload };
+      fetch('/api/workbench/save', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify(body),
+      }).then(function (r) {
+        if (r.ok) {
+          if (saveMsg) { saveMsg.textContent = '✓ Guardado en tu Taller.'; saveMsg.classList.remove('error'); saveMsg.hidden = false; }
+          saveBtn.hidden = true;
+          if (saveText) saveText.textContent = 'Tus items guardados viven en /es/workbench/. Abre El Taller para gestionarlos.';
+        } else if (r.status === 401) {
+          if (saveBtn)  saveBtn.hidden = true;
+          if (saveLink) saveLink.hidden = false;
+          if (saveText) saveText.textContent = 'Tu sesión venció. Accede para guardar este resultado.';
+        } else {
+          return r.json().catch(function () { return {}; }).then(function (data) {
+            var msg = data && data.error === 'limit-reached'
+              ? 'Llegaste al límite de items guardados. Elimina algunos en /es/workbench/ primero.'
+              : 'No se pudo guardar. Inténtalo de nuevo en un momento.';
+            if (saveMsg) { saveMsg.textContent = msg; saveMsg.classList.add('error'); saveMsg.hidden = false; }
+            saveBtn.disabled = false;
+          });
+        }
+      }).catch(function () {
+        if (saveMsg) { saveMsg.textContent = 'No pudimos conectar con el servidor. Intenta de nuevo en un momento.'; saveMsg.classList.add('error'); saveMsg.hidden = false; }
+        saveBtn.disabled = false;
+      });
+    });
+  }
+
   form.addEventListener('submit', function(e) {
     e.preventDefault();
     var url = normalizeUrl(input.value);
@@ -528,26 +655,10 @@
         var tbt = audits['total-blocking-time'] ? audits['total-blocking-time'].numericValue : null;
         var cls = audits['cumulative-layout-shift'] ? audits['cumulative-layout-shift'].numericValue : null;
 
-        // Animate dial
-        scoreNum.textContent = score;
-        scoreLabel.textContent = gradeLabel(score);
-        dial.classList.add(gradeClass(score));
-        var offset = CIRC * (1 - score / 100);
-        fillEl.style.strokeDashoffset = String(offset);
+        var payload = { url: url, score: score, lcp: lcp, fcp: fcp, tbt: tbt, cls: cls, testedAt: Date.now() };
+        renderResult(payload);
+        showSaveAffordance(payload);
 
-        // Explain
-        explain.innerHTML = explainScore(score, lcp);
-
-        // Metrics
-        document.getElementById('metricLCP').textContent = formatMs(lcp != null ? Math.round(lcp) : null);
-        document.getElementById('metricFCP').textContent = formatMs(fcp != null ? Math.round(fcp) : null);
-        document.getElementById('metricTBT').textContent = formatMs(tbt != null ? Math.round(tbt) : null);
-        document.getElementById('metricCLS').textContent = formatCls(cls);
-
-        result.classList.add('visible');
-        result.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        // Move focus to the results heading so keyboard + AT users land
-        // on the output instead of the bottom of the form.
         var resultHeading = document.getElementById('speedResultHeading');
         if (resultHeading) setTimeout(function(){ resultHeading.focus(); }, 300);
 
@@ -571,6 +682,38 @@
         btn.textContent = 'Probar velocidad';
       });
   });
+
+  // Phase 2 (Workshop) — rehidratar desde un item guardado.
+  function rehydrateFromSaved(id) {
+    fetch('/api/workbench/get?id=' + encodeURIComponent(id), { credentials: 'same-origin' })
+      .then(function (r) {
+        if (r.status === 401) {
+          window.location.href = '/es/sign-in/?returnTo=' + encodeURIComponent('/es/workbench/');
+          throw new Error('redirect');
+        }
+        if (!r.ok) throw new Error('not-found');
+        return r.json();
+      })
+      .then(function (data) {
+        if (!data || !data.ok || !data.item) return;
+        var p = data.item.payload || {};
+        if (input && p.url) input.value = p.url;
+        renderResult(p);
+        if (saveBox) saveBox.hidden = false;
+        if (saveBtn) saveBtn.hidden = true;
+        if (saveLink) saveLink.hidden = true;
+        if (saveText) saveText.textContent = 'Cargado desde tu Taller. Vuelve a probar arriba para actualizarlo.';
+        lastSavePayload = p;
+        try { history.replaceState(null, '', window.location.pathname); } catch (_) {}
+      })
+      .catch(function (err) { if (err && err.message === 'redirect') return; });
+  }
+
+  try {
+    var __sp = new URLSearchParams(window.location.search);
+    var __sid = __sp.get('saved');
+    if (__sid) rehydrateFromSaved(__sid);
+  } catch (_) { /* navegador antiguo */ }
 })();
 </script>
 </body>

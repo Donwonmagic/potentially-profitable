@@ -277,6 +277,8 @@
       <a href="/tools/open-hours/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
+    <a class="nav-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="nav-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
     <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Agenda una llamada de 20 min<span class="sr-only"> (se abre en una pestaña nueva)</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
     </a>
@@ -308,8 +310,31 @@
       <span>Buscar en la biblioteca</span>
     </button>
     <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Agenda una llamada de 20 min<span class="sr-only"> (se abre en una pestaña nueva)</span></a>
+    <a class="mobile-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="mobile-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
     <a href="/tools/open-hours/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
+
+  <!-- Phase 2 (Workshop) — toggle del estado de auth para el nav.
+       Llama a /api/auth/me y revela el enlace "Acceder" o "El Taller"
+       según la respuesta. Ambos enlaces empiezan ocultos para que un
+       visitante anónimo sin JS no vea ninguno (la biblioteca y las
+       herramientas funcionan completas sin acceso, así que la
+       affordance ausente es aceptable). -->
+  <script>
+    (function () {
+      var signin   = document.querySelectorAll('.js-nav-signin');
+      var workshop = document.querySelectorAll('.js-nav-workshop');
+      if (!signin.length && !workshop.length) return;
+      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 200) { show(workshop); return; }
+          show(signin);
+        })
+        .catch(function () { show(signin); });
+    })();
+  </script>
 </header>
 <nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/es/">Inicio</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><a href="/es/tools/">Herramientas</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><span aria-current="page">Horario Abierto</span></nav>
 
@@ -473,7 +498,7 @@
       <p style="margin:10px 0 0;font-size:12px;color:var(--stone);line-height:1.55;">El render real de Google varía (m&oacute;vil vs. escritorio, sesi&oacute;n iniciada, tu industria). La estructura, la cuadr&iacute;cula y el estado Abierto/Cerrado son lo que controlas v&iacute;a el bloque JSON-LD de arriba.</p>
     </article>
     <style>
-.oh-serp{border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);padding:18px 20px;font-size:14px;line-height:1.45;color:var(--ink);box-shadow:0 1px 2px rgba(20,22,26,0.04)}
+.oh-serp{border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);padding:18px 20px;font-size:14px;line-height:1.45;color:var(--ink);box-shadow:var(--elev-1)}
 .oh-serp-row1{font-size:11.5px;color:var(--stone);font-weight:500;letter-spacing:.02em;display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px}
 .oh-serp-row1 .oh-serp-stars{color:#E2A037;letter-spacing:1px}
 .oh-serp-row1 .oh-serp-sep{color:var(--line-dark)}

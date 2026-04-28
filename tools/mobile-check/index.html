@@ -86,22 +86,33 @@
 </script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260425-mobile-library-fix">
+<link rel="stylesheet" href="/assets/site.css?v=20260428-sprint0-tokens">
 <style>
   /* Tool-specific result rendering. Form, hero, note, result container,
      and CTA card live in site.css under "TOOL SHELL" — see /docs/. */
   .mob-verdict { text-align: center; margin-bottom: 32px; }
   .mob-verdict .icon { width: 80px; height: 80px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 40px; margin-bottom: 16px; }
-  .mob-verdict .icon.pass { background: rgba(31,157,85,0.1); color: #1f9d55; }
-  .mob-verdict .icon.fail { background: rgba(184,84,26,0.08); color: var(--rust); }
+  .mob-verdict .icon.pass { background: var(--status-good-tint); color: var(--status-pass); }
+  .mob-verdict .icon.fail { background: var(--status-bad-tint); color: var(--rust); }
   .mob-verdict h2 { font-family: var(--font-display); font-size: 28px; font-weight: 500; margin: 0 0 8px; }
   .mob-verdict p { font-size: 16px; color: var(--stone); margin: 0; }
 
   .mob-checks { display: flex; flex-direction: column; gap: 14px; }
-  .mob-check { display: flex; gap: 16px; padding: 22px; border: 1px solid var(--line); border-radius: var(--r-input); background: var(--white); align-items: flex-start; }
+  .mob-check { display: flex; gap: 16px; padding: 22px; border: 1px solid var(--line); border-radius: var(--r-input); background: var(--surface-1); box-shadow: var(--elev-1); align-items: flex-start; }
   .mob-check .mark { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex: 0 0 36px; font-size: 18px; font-weight: 700; }
-  .mob-check .mark.pass { background: rgba(31,157,85,0.1); color: #1f9d55; }
-  .mob-check .mark.fail { background: rgba(184,84,26,0.08); color: var(--rust); }
+  .mob-check .mark.pass { background: var(--status-good-tint); color: var(--status-pass); }
+  .mob-check .mark.fail { background: var(--status-bad-tint); color: var(--rust); }
+  /* Phase 2 (Workshop) — Save-to-Workbench. */
+  .mob-save { margin-top: 24px; padding: 18px 22px; background: var(--surface-inset); border: 1px solid var(--line); border-radius: var(--r-md); display: flex; gap: 14px; align-items: center; flex-wrap: wrap; justify-content: space-between; }
+  .mob-save[hidden] { display: none; }
+  .mob-save-text { font-size: 14px; color: var(--ink-soft); margin: 0; line-height: 1.5; flex: 1; min-width: 200px; }
+  .mob-save-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border: 1px solid var(--ink); border-radius: 999px; background: var(--ink); color: var(--cream); font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; transition: background var(--t-fast) var(--ease), transform var(--t-fast) var(--ease); }
+  .mob-save-btn:hover { background: var(--teal); transform: translateY(-1px); }
+  .mob-save-btn[disabled] { opacity: 0.6; cursor: wait; }
+  .mob-save-link { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border: 1px solid var(--line-dark); border-radius: 999px; color: var(--ink); font-size: 14px; font-weight: 500; text-decoration: none; transition: border-color var(--t-fast) var(--ease); }
+  .mob-save-link:hover { border-color: var(--ink); }
+  .mob-save-msg { font-size: 13px; color: var(--status-good); font-weight: 500; }
+  .mob-save-msg.error { color: var(--rust); }
   .mob-check .mark.unknown { background: var(--cream-2); color: var(--stone); }
   .mob-check h3 { font-family: var(--font-display); font-size: 18px; font-weight: 500; margin: 0 0 6px; color: var(--ink); }
   .mob-check p { font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); margin: 0; }
@@ -165,6 +176,8 @@
       <a href="/es/tools/mobile-check/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
+    <a class="nav-auth js-nav-signin" href="/sign-in/" hidden>Sign in</a>
+    <a class="nav-auth js-nav-workshop" href="/workbench/" hidden>Workshop</a>
     <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
     </a>
@@ -196,6 +209,8 @@
       <span>Search the library</span>
     </button>
     <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a>
+    <a class="mobile-auth js-nav-signin" href="/sign-in/" hidden>Sign in</a>
+    <a class="mobile-auth js-nav-workshop" href="/workbench/" hidden>Workshop</a>
     <a href="/es/tools/mobile-check/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
@@ -215,6 +230,28 @@
       </button>
     </div>
   </aside>
+
+  <!-- Phase 2 (Workshop) — auth-state toggle for the nav.
+       Calls /api/auth/me and reveals either the "Sign in" or
+       "Workshop" link based on the response. Both links ship hidden
+       so anonymous visitors with JS disabled see neither (the
+       library + tools work fully without sign-in, so the missing
+       affordance is acceptable). The script runs once, fire-and-
+       forget; no observable side effects on a 401. -->
+  <script>
+    (function () {
+      var signin   = document.querySelectorAll('.js-nav-signin');
+      var workshop = document.querySelectorAll('.js-nav-workshop');
+      if (!signin.length && !workshop.length) return;
+      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 200) { show(workshop); return; }
+          show(signin);
+        })
+        .catch(function () { show(signin); });
+    })();
+  </script>
 </header>
 
 <main id="main">
@@ -247,6 +284,16 @@
           <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
             <a class="btn btn-primary" href="/tools/audits/restaurant/">Restaurant audit</a>
             </div>
+        </div>
+
+        <div class="mob-save" id="mobSave" hidden>
+          <p class="mob-save-text" id="mobSaveText">Save this result to your Workbench so it follows you across devices.</p>
+          <button type="button" class="mob-save-btn" id="mobSaveBtn" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Save to my Workbench
+          </button>
+          <a class="mob-save-link" id="mobSaveLink" href="/sign-in/?returnTo=%2Ftools%2Fmobile-check%2F" hidden>Sign in to save</a>
+          <span class="mob-save-msg" id="mobSaveMsg" hidden role="status"></span>
         </div>
       </div>
     </div>
@@ -338,6 +385,104 @@
     }
   ];
 
+  // Phase 2 (Workshop) — render extracted so submit + rehydrate share it.
+  // payload: { url, results: [{title, passed, isNull, text}], passCount, failCount, unknownCount, checkedAt }
+  function renderResult(p) {
+    var passCount = p.passCount || 0;
+    var failCount = p.failCount || 0;
+    var unknownCount = p.unknownCount || 0;
+    var allPass = passCount === CHECKS.length && failCount === 0 && unknownCount === 0;
+    var verdictIcon = allPass ? 'pass' : 'fail';
+    var verdictMark = allPass ? '&#10003;' : '&#10005;';
+    var verdictTitle, verdictDesc;
+    if (allPass) {
+      verdictTitle = 'Yes — your site is mobile-friendly.';
+      verdictDesc = 'All three mobile checks passed. Your visitors can use your site on a phone without fighting it.';
+    } else if (failCount > 0) {
+      verdictTitle = 'Not yet — ' + failCount + ' of 3 checks failed.';
+      verdictDesc = 'Your site has mobile issues that are costing you visitors. The good news: every one of these is fixable.';
+      if (unknownCount > 0) verdictDesc += ' (' + unknownCount + ' check' + (unknownCount > 1 ? 's' : '') + ' couldn\'t be measured — see details below.)';
+    } else {
+      verdictTitle = 'We couldn\'t fully check your site.';
+      verdictDesc = unknownCount + ' of 3 checks returned inconclusive results. This sometimes happens with sites behind firewalls or aggressive bot protection. Try re-running the test.';
+      verdictIcon = 'fail'; verdictMark = '?';
+    }
+    verdict.innerHTML = '<div class="icon ' + verdictIcon + '">' + verdictMark + '</div><h2>' + verdictTitle + '</h2><p>' + verdictDesc + '</p>';
+    checksEl.innerHTML = '';
+    (p.results || []).forEach(function(r) {
+      var cls = r.isNull ? 'unknown' : (r.passed ? 'pass' : 'fail');
+      var mark = r.isNull ? '?' : (r.passed ? '&#10003;' : '&#10005;');
+      checksEl.innerHTML += '<div class="mob-check"><div class="mark ' + cls + '">' + mark + '</div><div><h3>' + r.title + '</h3><p>' + r.text + '</p></div></div>';
+    });
+    result.classList.add('visible');
+    result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Phase 2 (Workshop) — auth + Save-to-Workbench wiring.
+  var authState = { checked: false, signedIn: false };
+  fetch('/api/auth/me', { credentials: 'same-origin' })
+    .then(function (r) { authState = { checked: true, signedIn: r.status === 200 }; })
+    .catch(function ()  { authState = { checked: true, signedIn: false }; });
+
+  var saveBox  = document.getElementById('mobSave');
+  var saveBtn  = document.getElementById('mobSaveBtn');
+  var saveLink = document.getElementById('mobSaveLink');
+  var saveText = document.getElementById('mobSaveText');
+  var saveMsg  = document.getElementById('mobSaveMsg');
+  var lastSavePayload = null;
+
+  function showSaveAffordance(payload) {
+    lastSavePayload = payload;
+    if (!saveBox) return;
+    if (saveMsg) { saveMsg.hidden = true; saveMsg.textContent = ''; saveMsg.classList.remove('error'); }
+    saveBox.hidden = false;
+    if (authState.signedIn) {
+      if (saveBtn)  saveBtn.hidden  = false;
+      if (saveLink) saveLink.hidden = true;
+      if (saveText) saveText.textContent = 'Save this result to your Workbench so it follows you across devices.';
+    } else {
+      if (saveBtn)  saveBtn.hidden  = true;
+      if (saveLink) saveLink.hidden = false;
+      if (saveText) saveText.textContent = 'Sign in to save this result so it follows you across devices.';
+    }
+  }
+
+  if (saveBtn) {
+    saveBtn.addEventListener('click', function () {
+      if (!lastSavePayload) return;
+      saveBtn.disabled = true;
+      var pretty = String(lastSavePayload.url || '').replace(/^https?:\/\//i, '').replace(/\/$/, '');
+      var body = { kind: 'mobile', title: 'Mobile check — ' + (pretty || 'untitled'), payload: lastSavePayload };
+      fetch('/api/workbench/save', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify(body),
+      }).then(function (r) {
+        if (r.ok) {
+          if (saveMsg) { saveMsg.textContent = '✓ Saved to your Workbench.'; saveMsg.classList.remove('error'); saveMsg.hidden = false; }
+          saveBtn.hidden = true;
+          if (saveText) saveText.textContent = 'Your saved items live at /workbench/. Open the Workshop to manage them.';
+        } else if (r.status === 401) {
+          if (saveBtn) saveBtn.hidden = true;
+          if (saveLink) saveLink.hidden = false;
+          if (saveText) saveText.textContent = 'Your session expired. Sign in to save this result.';
+        } else {
+          return r.json().catch(function () { return {}; }).then(function (data) {
+            var msg = data && data.error === 'limit-reached'
+              ? 'You\'ve reached the saved-items limit. Delete some from /workbench/ first.'
+              : 'Could not save. Try again in a moment.';
+            if (saveMsg) { saveMsg.textContent = msg; saveMsg.classList.add('error'); saveMsg.hidden = false; }
+            saveBtn.disabled = false;
+          });
+        }
+      }).catch(function () {
+        if (saveMsg) { saveMsg.textContent = 'Could not reach the server. Try again in a moment.'; saveMsg.classList.add('error'); saveMsg.hidden = false; }
+        saveBtn.disabled = false;
+      });
+    });
+  }
+
   form.addEventListener('submit', function(e) {
     e.preventDefault();
     var url = normalizeUrl(input.value);
@@ -397,37 +542,9 @@
           });
         });
 
-        var allPass = passCount === CHECKS.length;
-        var verdictIcon = allPass ? 'pass' : 'fail';
-        var verdictMark = allPass ? '&#10003;' : '&#10005;';
-        var verdictTitle, verdictDesc;
-        if (allPass) {
-          verdictTitle = 'Yes — your site is mobile-friendly.';
-          verdictDesc = 'All three mobile checks passed. Your visitors can use your site on a phone without fighting it.';
-        } else if (failCount > 0) {
-          verdictTitle = 'Not yet — ' + failCount + ' of 3 checks failed.';
-          verdictDesc = 'Your site has mobile issues that are costing you visitors. The good news: every one of these is fixable.';
-          if (unknownCount > 0) verdictDesc += ' (' + unknownCount + ' check' + (unknownCount > 1 ? 's' : '') + ' couldn\'t be measured — see details below.)';
-        } else {
-          verdictTitle = 'We couldn\'t fully check your site.';
-          verdictDesc = unknownCount + ' of 3 checks returned inconclusive results. This sometimes happens with sites behind firewalls or aggressive bot protection. Try re-running the test.';
-          verdictIcon = 'fail'; verdictMark = '?';
-        }
-
-        verdict.innerHTML = '<div class="icon ' + verdictIcon + '">'
-          + verdictMark + '</div>'
-          + '<h2>' + verdictTitle + '</h2>'
-          + '<p>' + verdictDesc + '</p>';
-
-        checksEl.innerHTML = '';
-        results.forEach(function(r) {
-          var cls = r.isNull ? 'unknown' : (r.passed ? 'pass' : 'fail');
-          var mark = r.isNull ? '?' : (r.passed ? '&#10003;' : '&#10005;');
-          checksEl.innerHTML += '<div class="mob-check"><div class="mark ' + cls + '">' + mark + '</div><div><h3>' + r.title + '</h3><p>' + r.text + '</p></div></div>';
-        });
-
-        result.classList.add('visible');
-        result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        var payload = { url: url, results: results, passCount: passCount, failCount: failCount, unknownCount: unknownCount, checkedAt: Date.now() };
+        renderResult(payload);
+        showSaveAffordance(payload);
 
         if (window.plausible) {
           window.plausible('Mobile Check', { props: { passed: passCount, url: (typeof MuntinAnalytics !== 'undefined') ? MuntinAnalytics.redactUrlForAnalytics(url) : url } });
@@ -449,6 +566,38 @@
         btn.textContent = 'Check it';
       });
   });
+
+  // Phase 2 (Workshop) — rehydrate from a saved Workbench item.
+  function rehydrateFromSaved(id) {
+    fetch('/api/workbench/get?id=' + encodeURIComponent(id), { credentials: 'same-origin' })
+      .then(function (r) {
+        if (r.status === 401) {
+          window.location.href = '/sign-in/?returnTo=' + encodeURIComponent('/workbench/');
+          throw new Error('redirect');
+        }
+        if (!r.ok) throw new Error('not-found');
+        return r.json();
+      })
+      .then(function (data) {
+        if (!data || !data.ok || !data.item) return;
+        var p = data.item.payload || {};
+        if (input && p.url) input.value = p.url;
+        renderResult(p);
+        if (saveBox) saveBox.hidden = false;
+        if (saveBtn) saveBtn.hidden = true;
+        if (saveLink) saveLink.hidden = true;
+        if (saveText) saveText.textContent = 'Loaded from your Workbench. Run a fresh check above to update it.';
+        lastSavePayload = p;
+        try { history.replaceState(null, '', window.location.pathname); } catch (_) {}
+      })
+      .catch(function (err) { if (err && err.message === 'redirect') return; });
+  }
+
+  try {
+    var __sp = new URLSearchParams(window.location.search);
+    var __sid = __sp.get('saved');
+    if (__sid) rehydrateFromSaved(__sid);
+  } catch (_) { /* old browser */ }
 })();
 </script>
 </body>

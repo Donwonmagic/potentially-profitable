@@ -53,7 +53,7 @@
 <script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260425-mobile-library-fix">
+<link rel="stylesheet" href="/assets/site.css?v=20260428-sprint0-tokens">
 <style>
   .gbp-hero{max-width:680px;margin:0 auto;text-align:center}
   .gbp-form{display:flex;gap:10px;max-width:560px;margin:32px auto 0}
@@ -70,20 +70,31 @@
   .gbp-biz h2{font-family:var(--font-display);font-size:28px;font-weight:500;margin:0 0 4px;color:var(--ink)}
   .gbp-biz p{font-size:14px;color:var(--stone);margin:0}
   .gbp-stars{font-size:32px;margin:12px 0 4px;letter-spacing:2px}
-  .gbp-stars .filled{color:#C28B2E}
+  .gbp-stars .filled{color:var(--status-warn-fill)}
   .gbp-stars .empty{color:var(--line-dark)}
   .gbp-rating{font-family:var(--font-display);font-size:40px;font-weight:500;color:var(--ink)}
   .gbp-reviews{font-size:15px;color:var(--stone);margin-top:2px}
   .gbp-checks{display:flex;flex-direction:column;gap:10px;margin-top:24px}
   .gbp-check{display:flex;gap:14px;padding:18px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);align-items:flex-start}
   .gbp-check .mark{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 32px;font-size:16px;font-weight:700}
-  .gbp-check .mark.pass{background:rgba(31,157,85,.1);color:var(--status-pass)}
-  .gbp-check .mark.warn{background:rgba(194,139,46,.1);color:var(--status-warn)}
-  .gbp-check .mark.fail{background:rgba(184,84,26,.08);color:var(--rust)}
+  .gbp-check .mark.pass{background:var(--status-good-tint);color:var(--status-pass)}
+  .gbp-check .mark.warn{background:var(--status-warn-tint);color:var(--status-warn)}
+  .gbp-check .mark.fail{background:var(--status-bad-tint);color:var(--rust)}
   .gbp-check h3{font-size:15px;font-weight:600;color:var(--ink);margin:0 0 4px}
   .gbp-check p{font-size:13.5px;line-height:1.5;color:var(--ink-soft);margin:0}
   .gbp-cta{margin-top:28px;padding:28px 32px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-md);text-align:center}
   .gbp-cta p{font-size:15px;color:var(--stone);margin:0 0 16px}
+  /* Phase 2 (Workshop) — Guardar en mi Taller. */
+  .gbp-save{margin-top:24px;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+  .gbp-save[hidden]{display:none}
+  .gbp-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1;min-width:200px}
+  .gbp-save-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+  .gbp-save-btn:hover{background:var(--teal);transform:translateY(-1px)}
+  .gbp-save-btn[disabled]{opacity:.6;cursor:wait}
+  .gbp-save-link{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--line-dark);border-radius:999px;color:var(--ink);font-size:14px;font-weight:500;text-decoration:none;transition:border-color var(--t-fast) var(--ease)}
+  .gbp-save-link:hover{border-color:var(--ink)}
+  .gbp-save-msg{font-size:13px;color:var(--status-good);font-weight:500}
+  .gbp-save-msg.error{color:var(--rust)}
   /* Gauge principal — aro SVG con la calificación agregada.
      Accesible: envuelto en <figure role="img" aria-label="…"> para
      que los lectores de pantalla anuncien el grado sin recorrer el
@@ -93,7 +104,7 @@
   .gbp-gauge-track{stroke:var(--line);stroke-width:10;fill:none;stroke-linecap:round}
   .gbp-gauge-arc{stroke-width:10;fill:none;stroke-linecap:round;transition:stroke-dashoffset 600ms var(--ease-out)}
   .gbp-gauge[data-grade-band="good"] .gbp-gauge-arc{stroke:var(--status-good)}
-  .gbp-gauge[data-grade-band="ok"]   .gbp-gauge-arc{stroke:#8A6018}
+  .gbp-gauge[data-grade-band="ok"]   .gbp-gauge-arc{stroke:var(--status-warn)}
   .gbp-gauge[data-grade-band="bad"]  .gbp-gauge-arc{stroke:var(--rust)}
   .gbp-gauge-letter{font-family:var(--font-display);font-size:62px;font-weight:500;fill:var(--ink);dominant-baseline:central}
   .gbp-gauge-score{font-size:12px;fill:var(--stone);font-weight:500;letter-spacing:.04em}
@@ -254,6 +265,8 @@
       <a href="/tools/gbp-grader/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
+    <a class="nav-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="nav-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
     <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Agenda una llamada de 20 min<span class="sr-only"> (se abre en una pestaña nueva)</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
     </a>
@@ -285,8 +298,31 @@
       <span>Buscar en la biblioteca</span>
     </button>
     <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Agenda una llamada de 20 min<span class="sr-only"> (se abre en una pestaña nueva)</span></a>
+    <a class="mobile-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="mobile-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
     <a href="/tools/gbp-grader/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
+
+  <!-- Phase 2 (Workshop) — toggle del estado de auth para el nav.
+       Llama a /api/auth/me y revela el enlace "Acceder" o "El Taller"
+       según la respuesta. Ambos enlaces empiezan ocultos para que un
+       visitante anónimo sin JS no vea ninguno (la biblioteca y las
+       herramientas funcionan completas sin acceso, así que la
+       affordance ausente es aceptable). -->
+  <script>
+    (function () {
+      var signin   = document.querySelectorAll('.js-nav-signin');
+      var workshop = document.querySelectorAll('.js-nav-workshop');
+      if (!signin.length && !workshop.length) return;
+      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 200) { show(workshop); return; }
+          show(signin);
+        })
+        .catch(function () { show(signin); });
+    })();
+  </script>
 </header>
 
 <main id="main">
@@ -316,6 +352,15 @@
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
         <a class="btn btn-primary" id="gbpAuditLink" href="/es/tools/audits/restaurant/">Diagnóstico de restaurante</a>
         </div>
+    </div>
+    <div class="gbp-save" id="gbpSave" hidden>
+      <p class="gbp-save-text" id="gbpSaveText">Guarda esta calificación en tu Taller para que te siga entre dispositivos.</p>
+      <button type="button" class="gbp-save-btn" id="gbpSaveBtn" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+        Guardar en mi Taller
+      </button>
+      <a class="gbp-save-link" id="gbpSaveLink" href="/es/sign-in/?returnTo=%2Fes%2Ftools%2Fgbp-grader%2F" hidden>Acceder para guardar</a>
+      <span class="gbp-save-msg" id="gbpSaveMsg" hidden role="status"></span>
     </div>
   </div>
 </div></div></section>
@@ -560,7 +605,7 @@
       var closedBody=chosen.businessStatus==='CLOSED_TEMPORARILY'
         ?'Google muestra esta ficha como cerrada temporalmente. Reábrela en el panel de Business Profile antes de arreglar cualquier otra cosa — mientras esté marcada como cerrada, Maps la oculta en la mayoría de las búsquedas.'
         :'Google muestra esta ficha como cerrada permanentemente. Si el negocio sigue activo con otro nombre o dueño, reclámala en el panel de Business Profile — una ficha cerrada no aparece en los resultados locales.';
-      bannerHtml='<div class="gbp-check" style="background:rgba(184,84,26,.08);border-color:var(--rust);margin-bottom:20px"><div class="mark fail">&#10005;</div><div><h3>'+closedLabel+'</h3><p>'+closedBody+'</p></div></div>';
+      bannerHtml='<div class="gbp-check" style="background:var(--status-bad-tint);border-color:var(--rust);margin-bottom:20px"><div class="mark fail">&#10005;</div><div><h3>'+closedLabel+'</h3><p>'+closedBody+'</p></div></div>';
     }
     return bannerHtml
       +stars(chosen.rating)
@@ -1068,6 +1113,124 @@
       deepScanState.data=(resp.snapshot.results&&resp.snapshot.results.deepScan)||null;
       renderFor(chosen,peerMedians,resp.snapshot.meta&&resp.snapshot.meta.query||'',!!(resp.snapshot.meta&&resp.snapshot.meta.picked));
     }).catch(function(){});
+  })();
+
+  // ----- Phase 2 (Workshop) — Guardar en mi Taller + ?saved=<id>.
+  (function wireWorkshop(){
+    var saveBox  = document.getElementById('gbpSave');
+    var saveBtn  = document.getElementById('gbpSaveBtn');
+    var saveLink = document.getElementById('gbpSaveLink');
+    var saveText = document.getElementById('gbpSaveText');
+    var saveMsg  = document.getElementById('gbpSaveMsg');
+
+    var authState = { checked: false, signedIn: false };
+    fetch('/api/auth/me', { credentials: 'same-origin' })
+      .then(function (r) { authState = { checked: true, signedIn: r.status === 200 }; updateAffordance(); })
+      .catch(function ()  { authState = { checked: true, signedIn: false }; updateAffordance(); });
+
+    var resultEl = document.getElementById('gbpResult');
+    if (!resultEl || !saveBox) return;
+    var mo = new MutationObserver(function () {
+      if (resultEl.classList.contains('visible')) {
+        if (saveBox.hidden) saveBox.hidden = false;
+        updateAffordance();
+      } else {
+        saveBox.hidden = true;
+      }
+    });
+    mo.observe(resultEl, { attributes: true, attributeFilter: ['class'] });
+
+    function updateAffordance() {
+      if (saveMsg) { saveMsg.hidden = true; saveMsg.textContent = ''; saveMsg.classList.remove('error'); }
+      if (authState.signedIn) {
+        if (saveBtn)  saveBtn.hidden  = false;
+        if (saveLink) saveLink.hidden = true;
+        if (saveText) saveText.textContent = 'Guarda esta calificación en tu Taller para que te siga entre dispositivos.';
+      } else {
+        if (saveBtn)  saveBtn.hidden  = true;
+        if (saveLink) saveLink.hidden = false;
+        if (saveText) saveText.textContent = 'Accede para guardar esta calificación y que te siga entre dispositivos.';
+      }
+    }
+
+    if (saveBtn) {
+      saveBtn.addEventListener('click', function () {
+        var chosen = deepScanState.chosen;
+        if (!chosen) return;
+        saveBtn.disabled = true;
+        var pretty = chosen.displayName || chosen.title || (chosen.formattedAddress || 'Sin título');
+        var body = {
+          kind: 'gbp',
+          title: 'Calificación GBP — ' + pretty,
+          payload: {
+            chosen: chosen,
+            deepScan: deepScanState.data || null,
+            peerMedians: deepScanState.peerMedians || null,
+            query: deepScanState.query || '',
+            wasPicked: !!deepScanState.wasPicked,
+            savedAt: Date.now(),
+          },
+        };
+        fetch('/api/workbench/save', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          credentials: 'same-origin',
+          body: JSON.stringify(body),
+        }).then(function (r) {
+          if (r.ok) {
+            if (saveMsg) { saveMsg.textContent = '✓ Guardado en tu Taller.'; saveMsg.classList.remove('error'); saveMsg.hidden = false; }
+            saveBtn.hidden = true;
+            if (saveText) saveText.textContent = 'Tus items guardados viven en /es/workbench/. Abre El Taller para gestionarlos.';
+          } else if (r.status === 401) {
+            authState.signedIn = false;
+            updateAffordance();
+            if (saveText) saveText.textContent = 'Tu sesión venció. Accede para guardar esta calificación.';
+          } else {
+            return r.json().catch(function () { return {}; }).then(function (data) {
+              var msg = data && data.error === 'limit-reached'
+                ? 'Llegaste al límite de items guardados. Elimina algunos en /es/workbench/ primero.'
+                : 'No se pudo guardar. Inténtalo de nuevo en un momento.';
+              if (saveMsg) { saveMsg.textContent = msg; saveMsg.classList.add('error'); saveMsg.hidden = false; }
+              saveBtn.disabled = false;
+            });
+          }
+        }).catch(function () {
+          if (saveMsg) { saveMsg.textContent = 'No pudimos conectar con el servidor. Intenta de nuevo en un momento.'; saveMsg.classList.add('error'); saveMsg.hidden = false; }
+          saveBtn.disabled = false;
+        });
+      });
+    }
+
+    var __sp = null;
+    try { __sp = new URLSearchParams(window.location.search || ''); } catch (_) {}
+    var savedId = __sp ? __sp.get('saved') : null;
+    if (savedId) {
+      fetch('/api/workbench/get?id=' + encodeURIComponent(savedId), { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 401) {
+            window.location.href = '/es/sign-in/?returnTo=' + encodeURIComponent('/es/workbench/');
+            throw new Error('redirect');
+          }
+          if (!r.ok) throw new Error('not-found');
+          return r.json();
+        })
+        .then(function (data) {
+          if (!data || !data.ok || !data.item) return;
+          var p = data.item.payload || {};
+          var chosen = p.chosen;
+          if (!chosen) return;
+          deepScanState.data        = p.deepScan || null;
+          deepScanState.peerMedians = p.peerMedians || null;
+          deepScanState.query       = p.query || '';
+          deepScanState.wasPicked   = !!p.wasPicked;
+          renderFor(chosen, p.peerMedians || null, p.query || '', !!p.wasPicked);
+          if (saveText) saveText.textContent = 'Cargado desde tu Taller. Vuelve a buscar arriba para actualizarlo.';
+          if (saveBtn)  saveBtn.hidden = true;
+          if (saveLink) saveLink.hidden = true;
+          try { history.replaceState(null, '', window.location.pathname); } catch (_) {}
+        })
+        .catch(function (err) { if (err && err.message === 'redirect') return; });
+    }
   })();
 })();
 </script>

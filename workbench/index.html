@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!--
+  Phase 2 (Workshop) — saved-items library.
+
+  The page is still gated server-side by the worker (src/worker.js):
+  a GET to /workbench/ from a visitor without a valid signed session
+  cookie returns 404 before this HTML is ever served. So everything
+  below assumes "logged-in" — JS only renders the saved items list
+  and provides delete affordances. If /api/auth/me unexpectedly 401s
+  (cookie expired between the worker gate and the JS fetch), we
+  redirect to /sign-in/ rather than show a confusing empty state.
+
+  Privacy posture: noindex, nofollow. The page is still not in the
+  sitemap or any public link — operators arrive via the nav's
+  "Workshop" link (only visible to authenticated visitors).
+-->
+<meta name="robots" content="noindex, nofollow" />
+<title>The Workshop — Muntin Digital</title>
+<meta name="theme-color" content="#1F4E5B" />
+
+<link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site.css?v=20260428-sprint0-tokens" fetchpriority="high">
+
+<style>
+  /* Workshop layout — narrower than a full content page; the saved-
+     items list is the main affordance. */
+  body { background: var(--surface-0); }
+  .wb-shell { min-height: 100vh; display: flex; flex-direction: column; }
+  .wb-top { padding: 24px clamp(20px, 4vw, 64px); display: flex; justify-content: space-between; align-items: center; gap: 16px; border-bottom: 1px solid var(--line); }
+  .wb-mark { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; }
+  .wb-mark svg { width: 28px; height: 28px; flex: 0 0 28px; }
+  .wb-account { display: inline-flex; align-items: center; gap: 14px; font-size: 13px; color: var(--stone); }
+  .wb-account-email { color: var(--ink); font-weight: 500; }
+  .wb-signout { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid var(--line-dark); border-radius: 999px; background: transparent; color: var(--stone); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
+  .wb-signout:hover { border-color: var(--ink); color: var(--ink); }
+
+  .wb-main { flex: 1; padding: clamp(40px, 6vh, 64px) clamp(20px, 4vw, 64px); }
+  .wb-header { max-width: 720px; margin: 0 auto 36px; }
+  .wb-eyebrow { font-family: var(--font-body); font-size: 13px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 12px; }
+  .wb-h1 { font-family: var(--font-display); font-size: clamp(32px, 4.4vw, 48px); font-weight: 500; line-height: 1.1; letter-spacing: -0.02em; color: var(--ink); margin: 0 0 14px; }
+  .wb-sub { font-size: var(--fs-lead); line-height: 1.55; color: var(--ink-soft); margin: 0; }
+
+  .wb-list { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+
+  /* Loading + empty + error states are mutually exclusive; only one
+     is visible at a time, all start hidden until JS resolves. */
+  .wb-state { padding: 40px 28px; background: var(--surface-1); border: 1px solid var(--line); border-radius: var(--r-md); text-align: center; }
+  .wb-state h2 { font-family: var(--font-display); font-size: 24px; font-weight: 500; color: var(--ink); margin: 0 0 10px; }
+  .wb-state p { font-size: 15px; line-height: 1.55; color: var(--ink-soft); margin: 0; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .wb-state .wb-state-cta { margin-top: 20px; }
+
+  .wb-item { padding: 22px 24px; background: var(--surface-1); border: 1px solid var(--line); border-radius: var(--r-md); box-shadow: var(--elev-1); display: grid; grid-template-columns: 1fr auto; gap: 18px; align-items: start; }
+  .wb-item-body { min-width: 0; }
+  .wb-item-meta { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .wb-item-title { font-family: var(--font-display); font-size: 18px; font-weight: 500; color: var(--ink); margin: 0; line-height: 1.35; word-break: break-word; }
+  .wb-item-date { font-size: 12.5px; color: var(--stone); margin: 6px 0 0; font-variant-numeric: tabular-nums; }
+  .wb-item-actions { display: inline-flex; gap: 8px; flex-shrink: 0; }
+  .wb-item-action { display: inline-flex; align-items: center; padding: 8px 14px; border: 1px solid var(--line-dark); border-radius: 999px; background: transparent; color: var(--ink-soft); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); text-decoration: none; }
+  .wb-item-action:hover { border-color: var(--ink); color: var(--ink); }
+  .wb-item-action.danger { color: var(--rust); border-color: var(--status-bad-tint); }
+  .wb-item-action.danger:hover { background: var(--status-bad-tint); border-color: var(--rust); }
+
+  /* Phase 3 (Workshop) — Watch toggle. Two states for one slot:
+     not-watched → an "+ Watch daily" button; watched → a chip with
+     the schedule + an inline × to detach. Both compact enough to
+     sit in the .wb-item-actions row without crowding Open/Delete. */
+  .wb-watch-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border: 1px solid var(--line-dark); border-radius: 999px; background: transparent; color: var(--ink-soft); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
+  .wb-watch-btn:hover { border-color: var(--teal); color: var(--teal); }
+  .wb-watch-btn[disabled] { opacity: 0.6; cursor: wait; }
+  .wb-watch-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 6px 8px 14px; border-radius: 999px; background: var(--teal-tint); color: var(--teal); font: inherit; font-size: 13px; font-weight: 600; }
+  .wb-watch-pill button { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border: 0; border-radius: 50%; background: transparent; color: var(--teal); font: inherit; font-size: 16px; line-height: 1; cursor: pointer; padding: 0; transition: background var(--t-fast) var(--ease); }
+  .wb-watch-pill button:hover { background: rgba(31,78,91,0.12); }
+  .wb-watch-pill button[disabled] { opacity: 0.6; cursor: wait; }
+
+  @media (max-width: 640px) {
+    .wb-item { grid-template-columns: 1fr; }
+    .wb-item-actions { justify-content: flex-end; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="wb-shell">
+  <header class="wb-top">
+    <a href="/" class="wb-mark" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital
+    </a>
+    <div class="wb-account">
+      <span class="wb-account-email" data-bind="email">&nbsp;</span>
+      <form method="POST" action="/api/auth/signout" style="margin:0;">
+        <button type="submit" class="wb-signout">Sign out</button>
+      </form>
+    </div>
+  </header>
+
+  <main id="main" class="wb-main">
+    <div class="wb-header">
+      <p class="wb-eyebrow">The Workshop</p>
+      <h1 class="wb-h1">Saved from your work.</h1>
+      <p class="wb-sub">Audits, scenarios, and snapshots you&rsquo;ve saved across the free tools. Everything stays here until you delete it.</p>
+    </div>
+
+    <div class="wb-list" id="wbList" aria-live="polite">
+      <div class="wb-state" id="wbLoading">
+        <p>Loading your saved items&hellip;</p>
+      </div>
+      <div class="wb-state" id="wbEmpty" hidden>
+        <h2>Nothing saved yet.</h2>
+        <p>Run any of the free tools and tap &ldquo;Save to my Workbench&rdquo; on a result. It&rsquo;ll show up here, with everything else.</p>
+        <p class="wb-state-cta"><a class="btn btn-ghost" href="/tools/">Browse the tools</a></p>
+      </div>
+      <div class="wb-state" id="wbError" hidden>
+        <h2>Couldn&rsquo;t load your saved items.</h2>
+        <p>Refresh the page or try again in a moment. If this keeps happening, email <a href="mailto:don@muntin.digital">don@muntin.digital</a>.</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  (function () {
+    var listEl    = document.getElementById('wbList');
+    var loadingEl = document.getElementById('wbLoading');
+    var emptyEl   = document.getElementById('wbEmpty');
+    var errorEl   = document.getElementById('wbError');
+    var emailSlot = document.querySelector('[data-bind="email"]');
+    if (!listEl) return;
+
+    // Per-kind labels for the chip. Mirrors the ALLOWED_KINDS set
+    // in src/lib/workbench.js. Adding a kind: also append it here.
+    var KIND_LABELS = {
+      audit: 'Audit',
+      seo: 'SEO grader',
+      gbp: 'GBP grader',
+      mobile: 'Mobile check',
+      schema: 'Schema check',
+      speed: 'Speed test',
+      margin: 'Margin math',
+      plate: 'Plate cost',
+      photo: 'Photo brief',
+      menu: 'Menu',
+      brand: 'Brand suite',
+      'open-hours': 'Open hours',
+      compare: 'Compare',
+      'tech-stack': 'Tech stack',
+      'search-ideas': 'Search ideas'
+    };
+
+    // Per-kind landing URLs. Phase 2 just sends the user back to the
+    // tool root; Phase 3 will pass ?saved=<id> so the tool can
+    // re-hydrate state from the saved payload via /api/workbench/get.
+    var KIND_URLS = {
+      audit: '/tools/audits/restaurant/',
+      seo: '/tools/seo-grader/',
+      gbp: '/tools/gbp-grader/',
+      mobile: '/tools/mobile-check/',
+      schema: '/tools/schema-check/',
+      speed: '/tools/speed-test/',
+      margin: '/tools/margin-math/',
+      plate: '/tools/plate-cost/',
+      photo: '/tools/photo-brief/',
+      menu: '/tools/menu-engineering/',
+      brand: '/tools/brand-suite/',
+      'open-hours': '/tools/open-hours/',
+      compare: '/tools/compare/',
+      'tech-stack': '/tools/tech-stack/',
+      'search-ideas': '/tools/search-ideas/'
+    };
+
+    // Phase 3 (Workshop) — kinds that can be watched. Mirrors
+    // WATCHABLE_KINDS in src/lib/workbench.js. A "watch" attaches a
+    // re-check schedule; calculator-only kinds (margin, plate, etc.)
+    // can't be watched because there's no upstream API to re-run.
+    var WATCHABLE_KINDS = { audit: 1, seo: 1, gbp: 1, mobile: 1, schema: 1, speed: 1 };
+
+    // Populated from /api/workbench/watch-list on load. Maps
+    // savedItemId → { schedule, lastCheckedAt, lastScore }.
+    var watchIndex = {};
+
+    function escapeHtml(s) {
+      return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function fmtDate(ms) {
+      if (!ms) return '';
+      try {
+        var d = new Date(ms);
+        return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+      } catch (_) { return ''; }
+    }
+
+    function showState(which) {
+      [loadingEl, emptyEl, errorEl].forEach(function (n) { if (n) n.hidden = true; });
+      if (which) which.hidden = false;
+    }
+
+    // Phase 3 (Workshop) — Watch-toggle helpers.
+
+    function renderWatchSlotHtml(itemId, watch) {
+      // Two states: not-watched (a button), watched (a chip with × inline).
+      // Wrapped in .js-wb-watch-slot so onWatchAttach/Detach can
+      // replace just this slot in place when state flips.
+      if (!watch) {
+        return (
+          '<span class="js-wb-watch-slot" data-id="' + escapeHtml(itemId) + '">' +
+            '<button type="button" class="wb-watch-btn js-wb-watch-attach" data-schedule="daily">+ Watch daily</button>' +
+          '</span>'
+        );
+      }
+      var schedule = watch.schedule === 'weekly' ? 'weekly' : 'daily';
+      var label = schedule === 'weekly' ? 'Watching weekly' : 'Watching daily';
+      return (
+        '<span class="js-wb-watch-slot" data-id="' + escapeHtml(itemId) + '">' +
+          '<span class="wb-watch-pill">' +
+            escapeHtml(label) +
+            '<button type="button" class="js-wb-watch-detach" aria-label="Stop watching">×</button>' +
+          '</span>' +
+        '</span>'
+      );
+    }
+
+    function replaceWatchSlot(itemId, watch) {
+      var slot = listEl.querySelector('.js-wb-watch-slot[data-id="' + cssEscape(itemId) + '"]');
+      if (!slot) return;
+      var holder = document.createElement('div');
+      holder.innerHTML = renderWatchSlotHtml(itemId, watch);
+      var fresh = holder.firstChild;
+      slot.parentNode.replaceChild(fresh, slot);
+      // Re-wire the new button.
+      var attach = fresh.querySelector('.js-wb-watch-attach');
+      if (attach) attach.addEventListener('click', function () { onWatchAttach(attach); });
+      var detach = fresh.querySelector('.js-wb-watch-detach');
+      if (detach) detach.addEventListener('click', function () { onWatchDetach(detach); });
+    }
+
+    // Tiny CSS.escape() polyfill for older browsers — only handles
+    // the subset of chars our token alphabet produces (A-Z, 2-9).
+    function cssEscape(s) {
+      return String(s).replace(/[^A-Za-z0-9_-]/g, function (c) {
+        return '\\' + c.charCodeAt(0).toString(16) + ' ';
+      });
+    }
+
+    function onWatchAttach(btn) {
+      var slot = btn.closest('.js-wb-watch-slot');
+      if (!slot) return;
+      var itemId = slot.getAttribute('data-id');
+      if (!itemId) return;
+      var schedule = btn.getAttribute('data-schedule') || 'daily';
+      btn.disabled = true;
+      fetch('/api/workbench/watch', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ savedItemId: itemId, schedule: schedule }),
+      }).then(function (r) {
+        if (r.ok) {
+          return r.json().then(function (data) {
+            var watch = (data && data.watch) || { schedule: schedule };
+            watchIndex[itemId] = watch;
+            replaceWatchSlot(itemId, watch);
+          });
+        }
+        if (r.status === 409) {
+          alert('You’ve reached the watch-list limit. Stop watching some items first.');
+          btn.disabled = false;
+          return;
+        }
+        if (r.status === 401) {
+          window.location.href = '/sign-in/?returnTo=' + encodeURIComponent('/workbench/');
+          return;
+        }
+        alert('Could not start watching this item. Try again in a moment.');
+        btn.disabled = false;
+      }).catch(function () {
+        alert('Could not reach the server. Check your connection and try again.');
+        btn.disabled = false;
+      });
+    }
+
+    function onWatchDetach(btn) {
+      var slot = btn.closest('.js-wb-watch-slot');
+      if (!slot) return;
+      var itemId = slot.getAttribute('data-id');
+      if (!itemId) return;
+      btn.disabled = true;
+      fetch('/api/workbench/watch-delete', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ savedItemId: itemId }),
+      }).then(function (r) {
+        if (r.ok) {
+          delete watchIndex[itemId];
+          replaceWatchSlot(itemId, null);
+        } else if (r.status === 401) {
+          window.location.href = '/sign-in/?returnTo=' + encodeURIComponent('/workbench/');
+        } else {
+          alert('Could not stop watching. Try again in a moment.');
+          btn.disabled = false;
+        }
+      }).catch(function () {
+        alert('Could not reach the server. Check your connection and try again.');
+        btn.disabled = false;
+      });
+    }
+
+    function renderItems(items) {
+      // Remove any existing state cards before painting items.
+      [loadingEl, emptyEl, errorEl].forEach(function (n) {
+        if (n && n.parentNode === listEl) listEl.removeChild(n);
+      });
+      // Clear any prior items (paranoid; we only call this once).
+      var existing = listEl.querySelectorAll('.wb-item');
+      existing.forEach(function (n) { listEl.removeChild(n); });
+
+      items.forEach(function (item) {
+        var label = KIND_LABELS[item.kind] || item.kind;
+        var openBase = KIND_URLS[item.kind] || '/tools/';
+        // Pass ?saved=<id> so the tool can rehydrate the saved
+        // result without re-running its API call. Tools that don't
+        // implement rehydration yet will silently ignore the param
+        // and just open at the form (still useful — user lands
+        // somewhere reasonable).
+        var openUrl = openBase + '?saved=' + encodeURIComponent(item.id);
+        var watchSlot = '';
+        if (WATCHABLE_KINDS[item.kind]) {
+          watchSlot = renderWatchSlotHtml(item.id, watchIndex[item.id] || null);
+        }
+        var row = document.createElement('article');
+        row.className = 'wb-item';
+        row.setAttribute('data-id', item.id);
+        row.setAttribute('data-kind', item.kind);
+        row.innerHTML =
+          '<div class="wb-item-body">' +
+            '<div class="wb-item-meta">' +
+              '<span class="status-chip" data-band="solid" data-size="xs">' + escapeHtml(label) + '</span>' +
+            '</div>' +
+            '<h3 class="wb-item-title">' + escapeHtml(item.title) + '</h3>' +
+            '<p class="wb-item-date">Saved ' + fmtDate(item.createdAt) + '</p>' +
+          '</div>' +
+          '<div class="wb-item-actions">' +
+            watchSlot +
+            '<a class="wb-item-action" href="' + openUrl + '">Open</a>' +
+            '<button type="button" class="wb-item-action danger js-wb-delete">Delete</button>' +
+          '</div>';
+        listEl.appendChild(row);
+      });
+
+      // Wire watch toggle (attach + detach). Two click handlers
+      // share one container; the row is rebuilt in place when the
+      // state flips so we never accumulate stale listeners.
+      listEl.querySelectorAll('.js-wb-watch-attach').forEach(function (btn) {
+        btn.addEventListener('click', function () { onWatchAttach(btn); });
+      });
+      listEl.querySelectorAll('.js-wb-watch-detach').forEach(function (btn) {
+        btn.addEventListener('click', function () { onWatchDetach(btn); });
+      });
+
+      // Wire delete buttons.
+      listEl.querySelectorAll('.js-wb-delete').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var row = btn.closest('.wb-item');
+          if (!row) return;
+          var id = row.getAttribute('data-id');
+          if (!id) return;
+          if (!confirm('Delete this saved item? This cannot be undone.')) return;
+          btn.disabled = true;
+          fetch('/api/workbench/delete', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            credentials: 'same-origin',
+            body: JSON.stringify({ id: id }),
+          }).then(function (r) {
+            if (r.ok) {
+              row.parentNode.removeChild(row);
+              if (!listEl.querySelector('.wb-item')) {
+                listEl.appendChild(emptyEl);
+                showState(emptyEl);
+              }
+            } else {
+              btn.disabled = false;
+              alert('Could not delete that item. Try again in a moment.');
+            }
+          }).catch(function () {
+            btn.disabled = false;
+            alert('Could not reach the server. Check your connection and try again.');
+          });
+        });
+      });
+    }
+
+    function loadList() {
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 401) {
+            // Cookie expired between the worker gate and this fetch.
+            // Redirect rather than show a confusing empty state.
+            window.location.href = '/sign-in/?returnTo=' + encodeURIComponent('/workbench/');
+            throw new Error('redirect');
+          }
+          if (!r.ok) throw new Error('me-failed');
+          return r.json();
+        })
+        .then(function (me) {
+          if (emailSlot && me && me.email) emailSlot.textContent = me.email;
+          // Saves and watches load in parallel; watches are
+          // small and cheap, and rendering needs both before it
+          // can decide between the "Watch" button and the
+          // "Watching daily" pill per row.
+          return Promise.all([
+            fetch('/api/workbench/list',       { credentials: 'same-origin' }),
+            fetch('/api/workbench/watch-list', { credentials: 'same-origin' }),
+          ]);
+        })
+        .then(function (responses) {
+          var listRes  = responses[0];
+          var watchRes = responses[1];
+          if (!listRes.ok) throw new Error('list-failed');
+          // Watch fetch failure is non-fatal: degrade to "no watches"
+          // rather than blocking the whole page. The user can still
+          // see and manage saved items.
+          var watchPromise = watchRes.ok ? watchRes.json() : Promise.resolve({ items: [] });
+          return Promise.all([listRes.json(), watchPromise]);
+        })
+        .then(function (parsed) {
+          var listData  = parsed[0] || {};
+          var watchData = parsed[1] || {};
+          // Build the savedItemId → watch index before rendering.
+          watchIndex = {};
+          (watchData.items || []).forEach(function (w) {
+            if (w && w.savedItemId) watchIndex[w.savedItemId] = w;
+          });
+          var items = listData.items || [];
+          if (items.length === 0) { showState(emptyEl); return; }
+          renderItems(items);
+        })
+        .catch(function (err) {
+          if (err && err.message === 'redirect') return; // navigation in flight
+          showState(errorEl);
+        });
+    }
+
+    loadList();
+  })();
+</script>
+
+</body>
+</html>
