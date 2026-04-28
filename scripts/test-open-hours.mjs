@@ -63,7 +63,11 @@ assertEq('formatTime 09:00 EN', O.formatTime('09:00'),       '9 AM');
 assertEq('formatTime 21:30 EN', O.formatTime('21:30'),       '9:30 PM');
 assertEq('formatTime 12:00 EN', O.formatTime('12:00'),       '12 PM');
 assertEq('formatTime 00:00 EN', O.formatTime('00:00'),       '12 AM');
-assertEq('formatTime 09:00 ES', O.formatTime('09:00', 'es'), '09:00');
+// T1e: ES drops :00 ("9h") just like EN drops it ("9 AM"). Both
+// locales now read evenly. Pre-T1e ES returned the raw "09:00".
+assertEq('formatTime 09:00 ES (T1e: 9h short)', O.formatTime('09:00', 'es'), '9h');
+assertEq('formatTime 21:30 ES (minutes preserved)', O.formatTime('21:30', 'es'), '21:30');
+assertEq('formatTime 00:00 ES (midnight short)', O.formatTime('00:00', 'es'), '0h');
 
 // ------------------------------------------------------------
 // Validation — overlap, same-time, AM/PM mistakes
@@ -227,7 +231,8 @@ assertEq('formatTime 09:00 ES', O.formatTime('09:00', 'es'), '09:00');
 
   const es = O.generatePlatformCopy(input, 'google', 'es');
   assert('ES google uses lowercase day', /lunes:/.test(es) || /Lunes:/.test(es));
-  assert('ES google uses 24-hour times',  /17:00/.test(es));
+  // T1e: ES drops :00 → "17h" instead of "17:00". Still 24-hour format.
+  assert('ES google uses 24-hour times (T1e short form)', /17h/.test(es));
 }
 
 // ------------------------------------------------------------
@@ -646,6 +651,29 @@ assertEq('closures 12  → gt-8',  O.bucketClosureCount(12),  'gt-8');
 // ------------------------------------------------------------
 // Summary
 // ------------------------------------------------------------
+// ------------------------------------------------------------
+// T1e — AM/PM disambiguation in close-before-open warning. The
+// audit-found scenario: an owner enters "9 to 5" expecting 9 AM –
+// 5 PM. The parser reads both as 24h (09:00 and 05:00). The
+// pre-T1e warning suggested "check the closes-next-day box", which
+// is the wrong direction. Post-T1e the warning leads with "Did you
+// mean 5 PM?" because closeH=5 lands in the 1..11 PM-likely range.
+// ------------------------------------------------------------
+{
+  const w = O.validateDay('Mon', [{ label: 'Service', opens: '09:00', closes: '05:00', closesNextDay: false }]);
+  assert('close-before-open warning fires', w.length >= 1);
+  assert('warning suggests PM interpretation when close in 1..11',
+         /5 PM/.test(w[0].message));
+}
+{
+  // Boundary: close at 12 (noon) — the PM hint should NOT fire because
+  // the close is NOT in the 1..11 range. The after-midnight hint stays.
+  const w = O.validateDay('Mon', [{ label: 'Service', opens: '13:00', closes: '12:00', closesNextDay: false }]);
+  assert('boundary close=12 still warns', w.length >= 1);
+  assert('boundary close=12: no PM hint (out of 1..11 range)',
+         !/Did you mean.*PM/.test(w[0].message));
+}
+
 if (failures > 0) {
   console.error('\n' + failures + ' test(s) failed');
   process.exit(1);
