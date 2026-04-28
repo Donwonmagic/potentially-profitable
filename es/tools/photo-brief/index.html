@@ -564,7 +564,7 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
 </footer>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
-<script src="/tools/photo-brief/photo-brief.js?v=20260428-pb2"></script>
+<script src="/tools/photo-brief/photo-brief.js?v=20260428-pb3"></script>
 <script src="/tools/photo-brief/card-render.js?v=20260426-pb2"></script>
 <script>
 (function(){
@@ -1329,7 +1329,19 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
     var palette = params.get('palette');
     var margins = params.get('margins');
     if (stars)   fragmentState.stars   = PB.decodeStarsFragment(stars);
-    if (palette) fragmentState.palette = PB.decodePaletteFragment(palette);
+    if (palette) {
+      fragmentState.palette = PB.decodePaletteFragment(palette);
+      // T4: surface el conteo de hex descartados al console + window
+      // state. Un enlace corrompido ya no produce silenciosamente una
+      // paleta incompleta.
+      var rawCount = palette.split('-').filter(function(s){ return s.length > 0; }).length;
+      var droppedHex = rawCount - fragmentState.palette.length;
+      if (droppedHex > 0) {
+        var msg = 'Brief de fotos: ' + droppedHex + ' color(es) de la paleta del enlace no se pudieron interpretar (hex inválido). La paleta tiene ' + fragmentState.palette.length + ' en lugar de ' + rawCount + '.';
+        try { if (typeof console !== 'undefined' && console.warn) console.warn(msg); } catch (_) {}
+        window.__pbDecodeWarnings = (window.__pbDecodeWarnings || []).concat([{ kind: 'invalid-hex', dropped: droppedHex, total: rawCount, message: msg }]);
+      }
+    }
     if (margins) fragmentState.margins = PB.decodeMarginsFragment(margins);
     if (fragmentState.stars.length) {
       rerenderRows(fragmentState.stars.map(function(d){

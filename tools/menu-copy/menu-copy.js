@@ -282,8 +282,18 @@ var MC_PROVENANCE_REGIONS_ES = [
   'mediterráneo', 'atlántico'
 ];
 
+// Supported locales — explicit allow-list. Adding a third (e.g. 'fr')
+// requires adding the matching lexicon constants AND extending this
+// list, which forces a deliberate decision instead of silently mis-
+// scoring foreign menus against English hedges.
+var MC_SUPPORTED_LOCALES = ['en', 'es'];
+
 // Lexicon selector. EN is default; passing locale 'es' switches to
-// the Spanish lists. Other locales fall back to EN.
+// the Spanish lists. Unknown locales emit a one-time console warning
+// (so a future `locale: 'fr'` typo doesn't silently score French
+// copy as English) and fall back to EN. T4 — was previously a silent
+// fallback that the audit flagged as a real-user failure mode.
+var _mcWarnedLocales = {};
 function mcLexiconsFor(locale) {
   if (locale === 'es') {
     return {
@@ -296,6 +306,19 @@ function mcLexiconsFor(locale) {
       provenance_keywords: MC_PROVENANCE_KEYWORDS_ES,
       provenance_regions:  MC_PROVENANCE_REGIONS_ES
     };
+  }
+  if (locale && locale !== 'en' && MC_SUPPORTED_LOCALES.indexOf(locale) === -1) {
+    if (!_mcWarnedLocales[locale]) {
+      _mcWarnedLocales[locale] = true;
+      try {
+        // typeof console check protects Workers / minimal embeds
+        if (typeof console !== 'undefined' && console.warn) {
+          console.warn('Menu Copy: unknown locale "' + locale + '" — falling back to English lexicons. ' +
+                       'Supported locales: ' + MC_SUPPORTED_LOCALES.join(', ') + '. ' +
+                       'Scoring with the wrong locale produces nonsense results.');
+        }
+      } catch (_) {}
+    }
   }
   return {
     flavor:      MC_SENSORY_FLAVOR,
