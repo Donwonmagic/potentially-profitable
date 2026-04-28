@@ -800,7 +800,26 @@ br.br-lg{display:none}
 .nav.menu-open .nav-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .nav.menu-open .nav-toggle span:nth-child(2){opacity:0}
 .nav.menu-open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-.mobile-menu{display:none;flex-direction:column;gap:6px;padding:20px var(--pad-x) 28px;background:var(--cream);border-top:1px solid var(--line)}
+.mobile-menu{display:none;flex-direction:column;gap:6px;padding:20px var(--pad-x) 28px;background:var(--cream);border-top:1px solid var(--line);
+  /* When the menu is open and the library drawer is expanded, content
+     can exceed viewport height. .nav is position:fixed, which means
+     anything past the bottom of the viewport is unreachable unless
+     this container scrolls itself. Cap height to the viewport minus
+     the top nav-row, and let inner content scroll. -webkit-overflow-
+     scrolling for older iOS Safari momentum. */
+  max-height:calc(100dvh - 64px);
+  max-height:calc(100vh - 64px); /* fallback for browsers without dvh */
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+}
+.nav.scrolled .mobile-menu{
+  /* When the nav has shrunk on scroll its row is shorter (12px+12px
+     padding + ~40px controls ≈ 56px) — give the drawer those few px
+     back so the bottom isn't clipped. */
+  max-height:calc(100dvh - 56px);
+  max-height:calc(100vh - 56px);
+}
 .mobile-menu a{padding:14px 2px;font-size:18px;font-family:var(--font-display);font-weight:500;color:var(--ink);border-bottom:1px solid var(--line)}
 .mobile-menu a.btn-primary{margin-top:14px;border-bottom:0;justify-content:center;padding:15px 26px;font-family:var(--font-body);font-size:15px;background:var(--teal);color:var(--cream);border-radius:999px}
 .mobile-menu a.btn-primary:hover,.mobile-menu a.btn-primary:focus{background:var(--teal-dark);color:var(--cream)}
