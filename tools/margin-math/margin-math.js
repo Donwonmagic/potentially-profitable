@@ -22,10 +22,31 @@
 // Helpers — pure
 // ------------------------------------------------------------
 
+// In Node (test env) auto-require the shared loose-number parser if a
+// page-side <script> hasn't already set window.MuntinParse. This lets
+// `node scripts/test-margin-math.mjs` exercise the same EU-format,
+// currency-symbol, smart-quote handling that browsers get via the
+// `_shared/parse-number.js` script tag — without per-test plumbing.
+// In browsers the require branch is unreachable.
+if (typeof MuntinParse === 'undefined' && typeof require !== 'undefined') {
+  try { var MuntinParse = require('../_shared/parse-number.js'); } catch (_) {}
+}
+
 function mmNum(v) {
   // Parse any input into a finite non-negative number. Returns 0 on
   // NaN / null / undefined / negative — the calculator's inputs are
   // never meaningfully negative (no refund math here).
+  //
+  // Routes through the shared loose-number parser when available
+  // (handles European decimals, currency symbols, smart quotes,
+  // whitespace variants — the audit-found Argentinian / UK / Spanish
+  // failure cases). Falls back to plain parseFloat in environments
+  // where _shared/parse-number.js hasn't loaded so legacy tests and
+  // pages keep working without a hard dependency.
+  if (typeof MuntinParse !== 'undefined' && MuntinParse.parseLooseNumberValue) {
+    var parsed = MuntinParse.parseLooseNumberValue(v, { nonNegative: true });
+    return parsed == null ? 0 : parsed;
+  }
   var n = parseFloat(v);
   if (!isFinite(n) || n < 0) return 0;
   return n;
@@ -35,6 +56,16 @@ function mmClampPct(v) {
   // Accept either 0.25 (as a fraction) or 25 (as a percentage).
   // Clamp to [0, 1]. This lets the UI pass either shape without
   // every consumer needing to know which the current form uses.
+  //
+  // When the input has an explicit `%` (handled by the shared parser),
+  // we treat it as a percent value (25% → 0.25) — eliminating the
+  // historical ambiguity where "25" alone was guess-work.
+  if (typeof MuntinParse !== 'undefined' && MuntinParse.parseLooseNumber) {
+    var r = MuntinParse.parseLooseNumber(v);
+    if (r.value == null || r.value < 0) return 0;
+    var pct = r.wasPercent ? r.value / 100 : (r.value > 1 ? r.value / 100 : r.value);
+    return pct > 1 ? 1 : pct;
+  }
   var n = mmNum(v);
   if (n > 1) n = n / 100;
   return n > 1 ? 1 : n;

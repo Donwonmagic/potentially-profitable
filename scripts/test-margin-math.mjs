@@ -766,6 +766,35 @@ assert('CROSS_FILL_PAIRS is exposed', Array.isArray(CROSS_FILL_PAIRS) && CROSS_F
 }
 
 // ------------------------------------------------------------
+// Loose-number parsing — verifies mmNum / mmClampPct route through
+// the shared MuntinParse parser when present. Catches the audit-found
+// EU-format regression: an Argentinian owner pasting "1.234,56" used
+// to get NaN (then 0); now they get 1234.56.
+// ------------------------------------------------------------
+{
+  // EU thousands . + decimal , — the canonical audit fixture
+  assertEq('mmNum: EU "1.234,56" → 1234.56', num('1.234,56'), 1234.56);
+  // Currency symbols of every kind
+  assertEq('mmNum: $50 → 50', num('$50'), 50);
+  assertEq('mmNum: €24,50 → 24.5', num('€24,50'), 24.5);
+  assertEq('mmNum: £1,234.50 → 1234.5', num('£1,234.50'), 1234.5);
+  // Smart quotes from a Word paste
+  assertEq('mmNum: "50" smart-quoted → 50', num('“50”'), 50);
+  // Whitespace + NBSP
+  assertEq('mmNum: NBSP-separated 1 234,56 → 1234.56', num('1 234,56'), 1234.56);
+  // Negative still clamps to 0 (mmNum is non-negative by contract)
+  assertEq('mmNum: -50 stays clamped to 0', num('-50'), 0);
+
+  // Percent in clampPct: explicit % unambiguous, no more guess-work
+  assertEq('clampPct: "30%" → 0.30', clampPct('30%'), 0.30);
+  assertEq('clampPct: "0,30" EU → 0.30', clampPct('0,30'), 0.30);
+  assertEq('clampPct: "30" → 0.30 (over-1 heuristic)', clampPct('30'), 0.30);
+  assertEq('clampPct: "0.5" → 0.50', clampPct('0.5'), 0.5);
+  // Negative percent clamped (refunds belong elsewhere)
+  assertEq('clampPct: -5% → 0', clampPct('-5%'), 0);
+}
+
+// ------------------------------------------------------------
 // Summary
 // ------------------------------------------------------------
 if (failures > 0) {
