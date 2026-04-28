@@ -150,7 +150,8 @@
     // Bind the static-asset server to env.ASSETS so the Worker can
     // fall through to it for non-/api/* paths. Default binding name
     // is ASSETS but making it explicit for clarity.
-    "binding": "ASSETS"
+    "binding": "ASSETS",
+    "run_worker_first": true
   },
   // Non-secret environment variables consumed by the Sprint 7c form
   // handlers. FROM_EMAIL is the sender address that shows up in the
