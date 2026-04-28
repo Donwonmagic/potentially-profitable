@@ -66,6 +66,15 @@
   .wb-item-action.danger { color: var(--rust); border-color: var(--status-bad-tint); }
   .wb-item-action.danger:hover { background: var(--status-bad-tint); border-color: var(--rust); }
 
+  /* Phase 3 (Workshop) — toggle de Watch (Vigilar). */
+  .wb-watch-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border: 1px solid var(--line-dark); border-radius: 999px; background: transparent; color: var(--ink-soft); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
+  .wb-watch-btn:hover { border-color: var(--teal); color: var(--teal); }
+  .wb-watch-btn[disabled] { opacity: 0.6; cursor: wait; }
+  .wb-watch-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 6px 8px 14px; border-radius: 999px; background: var(--teal-tint); color: var(--teal); font: inherit; font-size: 13px; font-weight: 600; }
+  .wb-watch-pill button { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border: 0; border-radius: 50%; background: transparent; color: var(--teal); font: inherit; font-size: 16px; line-height: 1; cursor: pointer; padding: 0; transition: background var(--t-fast) var(--ease); }
+  .wb-watch-pill button:hover { background: rgba(31,78,91,0.12); }
+  .wb-watch-pill button[disabled] { opacity: 0.6; cursor: wait; }
+
   @media (max-width: 640px) {
     .wb-item { grid-template-columns: 1fr; }
     .wb-item-actions { justify-content: flex-end; }
@@ -165,6 +174,10 @@
       'search-ideas': '/es/tools/search-ideas/'
     };
 
+    // Phase 3 — kinds vigilables.
+    var WATCHABLE_KINDS = { audit: 1, seo: 1, gbp: 1, mobile: 1, schema: 1, speed: 1 };
+    var watchIndex = {};
+
     function escapeHtml(s) {
       return String(s == null ? '' : s)
         .replace(/&/g, '&amp;')
@@ -187,6 +200,105 @@
       if (which) which.hidden = false;
     }
 
+    function renderWatchSlotHtml(itemId, watch) {
+      if (!watch) {
+        return (
+          '<span class="js-wb-watch-slot" data-id="' + escapeHtml(itemId) + '">' +
+            '<button type="button" class="wb-watch-btn js-wb-watch-attach" data-schedule="daily">+ Vigilar a diario</button>' +
+          '</span>'
+        );
+      }
+      var schedule = watch.schedule === 'weekly' ? 'weekly' : 'daily';
+      var label = schedule === 'weekly' ? 'Vigilando semanal' : 'Vigilando diario';
+      return (
+        '<span class="js-wb-watch-slot" data-id="' + escapeHtml(itemId) + '">' +
+          '<span class="wb-watch-pill">' +
+            escapeHtml(label) +
+            '<button type="button" class="js-wb-watch-detach" aria-label="Dejar de vigilar">×</button>' +
+          '</span>' +
+        '</span>'
+      );
+    }
+    function cssEscape(s) {
+      return String(s).replace(/[^A-Za-z0-9_-]/g, function (c) {
+        return '\\' + c.charCodeAt(0).toString(16) + ' ';
+      });
+    }
+    function replaceWatchSlot(itemId, watch) {
+      var slot = listEl.querySelector('.js-wb-watch-slot[data-id="' + cssEscape(itemId) + '"]');
+      if (!slot) return;
+      var holder = document.createElement('div');
+      holder.innerHTML = renderWatchSlotHtml(itemId, watch);
+      var fresh = holder.firstChild;
+      slot.parentNode.replaceChild(fresh, slot);
+      var attach = fresh.querySelector('.js-wb-watch-attach');
+      if (attach) attach.addEventListener('click', function () { onWatchAttach(attach); });
+      var detach = fresh.querySelector('.js-wb-watch-detach');
+      if (detach) detach.addEventListener('click', function () { onWatchDetach(detach); });
+    }
+    function onWatchAttach(btn) {
+      var slot = btn.closest('.js-wb-watch-slot');
+      if (!slot) return;
+      var itemId = slot.getAttribute('data-id');
+      if (!itemId) return;
+      var schedule = btn.getAttribute('data-schedule') || 'daily';
+      btn.disabled = true;
+      fetch('/api/workbench/watch', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ savedItemId: itemId, schedule: schedule }),
+      }).then(function (r) {
+        if (r.ok) {
+          return r.json().then(function (data) {
+            var watch = (data && data.watch) || { schedule: schedule };
+            watchIndex[itemId] = watch;
+            replaceWatchSlot(itemId, watch);
+          });
+        }
+        if (r.status === 409) {
+          alert('Llegaste al límite de items vigilados. Deja de vigilar algunos primero.');
+          btn.disabled = false;
+          return;
+        }
+        if (r.status === 401) {
+          window.location.href = '/es/sign-in/?returnTo=' + encodeURIComponent('/es/workbench/');
+          return;
+        }
+        alert('No se pudo empezar a vigilar este item. Inténtalo de nuevo en un momento.');
+        btn.disabled = false;
+      }).catch(function () {
+        alert('No pudimos conectar con el servidor. Revisa tu conexión e intenta de nuevo.');
+        btn.disabled = false;
+      });
+    }
+    function onWatchDetach(btn) {
+      var slot = btn.closest('.js-wb-watch-slot');
+      if (!slot) return;
+      var itemId = slot.getAttribute('data-id');
+      if (!itemId) return;
+      btn.disabled = true;
+      fetch('/api/workbench/watch-delete', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ savedItemId: itemId }),
+      }).then(function (r) {
+        if (r.ok) {
+          delete watchIndex[itemId];
+          replaceWatchSlot(itemId, null);
+        } else if (r.status === 401) {
+          window.location.href = '/es/sign-in/?returnTo=' + encodeURIComponent('/es/workbench/');
+        } else {
+          alert('No se pudo dejar de vigilar. Inténtalo de nuevo en un momento.');
+          btn.disabled = false;
+        }
+      }).catch(function () {
+        alert('No pudimos conectar con el servidor. Revisa tu conexión e intenta de nuevo.');
+        btn.disabled = false;
+      });
+    }
+
     function renderItems(items) {
       [loadingEl, emptyEl, errorEl].forEach(function (n) {
         if (n && n.parentNode === listEl) listEl.removeChild(n);
@@ -198,9 +310,14 @@
         var label = KIND_LABELS[item.kind] || item.kind;
         var openBase = KIND_URLS[item.kind] || '/es/tools/';
         var openUrl = openBase + '?saved=' + encodeURIComponent(item.id);
+        var watchSlot = '';
+        if (WATCHABLE_KINDS[item.kind]) {
+          watchSlot = renderWatchSlotHtml(item.id, watchIndex[item.id] || null);
+        }
         var row = document.createElement('article');
         row.className = 'wb-item';
         row.setAttribute('data-id', item.id);
+        row.setAttribute('data-kind', item.kind);
         row.innerHTML =
           '<div class="wb-item-body">' +
             '<div class="wb-item-meta">' +
@@ -210,10 +327,17 @@
             '<p class="wb-item-date">Guardado ' + fmtDate(item.createdAt) + '</p>' +
           '</div>' +
           '<div class="wb-item-actions">' +
+            watchSlot +
             '<a class="wb-item-action" href="' + openUrl + '">Abrir</a>' +
             '<button type="button" class="wb-item-action danger js-wb-delete">Eliminar</button>' +
           '</div>';
         listEl.appendChild(row);
+      });
+      listEl.querySelectorAll('.js-wb-watch-attach').forEach(function (btn) {
+        btn.addEventListener('click', function () { onWatchAttach(btn); });
+      });
+      listEl.querySelectorAll('.js-wb-watch-detach').forEach(function (btn) {
+        btn.addEventListener('click', function () { onWatchDetach(btn); });
       });
 
       listEl.querySelectorAll('.js-wb-delete').forEach(function (btn) {
@@ -260,14 +384,26 @@
         })
         .then(function (me) {
           if (emailSlot && me && me.email) emailSlot.textContent = me.email;
-          return fetch('/api/workbench/list', { credentials: 'same-origin' });
+          return Promise.all([
+            fetch('/api/workbench/list',       { credentials: 'same-origin' }),
+            fetch('/api/workbench/watch-list', { credentials: 'same-origin' }),
+          ]);
         })
-        .then(function (r) {
-          if (!r.ok) throw new Error('list-failed');
-          return r.json();
+        .then(function (responses) {
+          var listRes  = responses[0];
+          var watchRes = responses[1];
+          if (!listRes.ok) throw new Error('list-failed');
+          var watchPromise = watchRes.ok ? watchRes.json() : Promise.resolve({ items: [] });
+          return Promise.all([listRes.json(), watchPromise]);
         })
-        .then(function (data) {
-          var items = (data && data.items) || [];
+        .then(function (parsed) {
+          var listData  = parsed[0] || {};
+          var watchData = parsed[1] || {};
+          watchIndex = {};
+          (watchData.items || []).forEach(function (w) {
+            if (w && w.savedItemId) watchIndex[w.savedItemId] = w;
+          });
+          var items = listData.items || [];
           if (items.length === 0) { showState(emptyEl); return; }
           renderItems(items);
         })

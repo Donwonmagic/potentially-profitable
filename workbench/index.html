@@ -68,6 +68,18 @@
   .wb-item-action.danger { color: var(--rust); border-color: var(--status-bad-tint); }
   .wb-item-action.danger:hover { background: var(--status-bad-tint); border-color: var(--rust); }
 
+  /* Phase 3 (Workshop) — Watch toggle. Two states for one slot:
+     not-watched → an "+ Watch daily" button; watched → a chip with
+     the schedule + an inline × to detach. Both compact enough to
+     sit in the .wb-item-actions row without crowding Open/Delete. */
+  .wb-watch-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border: 1px solid var(--line-dark); border-radius: 999px; background: transparent; color: var(--ink-soft); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
+  .wb-watch-btn:hover { border-color: var(--teal); color: var(--teal); }
+  .wb-watch-btn[disabled] { opacity: 0.6; cursor: wait; }
+  .wb-watch-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 6px 8px 14px; border-radius: 999px; background: var(--teal-tint); color: var(--teal); font: inherit; font-size: 13px; font-weight: 600; }
+  .wb-watch-pill button { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border: 0; border-radius: 50%; background: transparent; color: var(--teal); font: inherit; font-size: 16px; line-height: 1; cursor: pointer; padding: 0; transition: background var(--t-fast) var(--ease); }
+  .wb-watch-pill button:hover { background: rgba(31,78,91,0.12); }
+  .wb-watch-pill button[disabled] { opacity: 0.6; cursor: wait; }
+
   @media (max-width: 640px) {
     .wb-item { grid-template-columns: 1fr; }
     .wb-item-actions { justify-content: flex-end; }
@@ -172,6 +184,16 @@
       'search-ideas': '/tools/search-ideas/'
     };
 
+    // Phase 3 (Workshop) — kinds that can be watched. Mirrors
+    // WATCHABLE_KINDS in src/lib/workbench.js. A "watch" attaches a
+    // re-check schedule; calculator-only kinds (margin, plate, etc.)
+    // can't be watched because there's no upstream API to re-run.
+    var WATCHABLE_KINDS = { audit: 1, seo: 1, gbp: 1, mobile: 1, schema: 1, speed: 1 };
+
+    // Populated from /api/workbench/watch-list on load. Maps
+    // savedItemId → { schedule, lastCheckedAt, lastScore }.
+    var watchIndex = {};
+
     function escapeHtml(s) {
       return String(s == null ? '' : s)
         .replace(/&/g, '&amp;')
@@ -194,6 +216,117 @@
       if (which) which.hidden = false;
     }
 
+    // Phase 3 (Workshop) — Watch-toggle helpers.
+
+    function renderWatchSlotHtml(itemId, watch) {
+      // Two states: not-watched (a button), watched (a chip with × inline).
+      // Wrapped in .js-wb-watch-slot so onWatchAttach/Detach can
+      // replace just this slot in place when state flips.
+      if (!watch) {
+        return (
+          '<span class="js-wb-watch-slot" data-id="' + escapeHtml(itemId) + '">' +
+            '<button type="button" class="wb-watch-btn js-wb-watch-attach" data-schedule="daily">+ Watch daily</button>' +
+          '</span>'
+        );
+      }
+      var schedule = watch.schedule === 'weekly' ? 'weekly' : 'daily';
+      var label = schedule === 'weekly' ? 'Watching weekly' : 'Watching daily';
+      return (
+        '<span class="js-wb-watch-slot" data-id="' + escapeHtml(itemId) + '">' +
+          '<span class="wb-watch-pill">' +
+            escapeHtml(label) +
+            '<button type="button" class="js-wb-watch-detach" aria-label="Stop watching">×</button>' +
+          '</span>' +
+        '</span>'
+      );
+    }
+
+    function replaceWatchSlot(itemId, watch) {
+      var slot = listEl.querySelector('.js-wb-watch-slot[data-id="' + cssEscape(itemId) + '"]');
+      if (!slot) return;
+      var holder = document.createElement('div');
+      holder.innerHTML = renderWatchSlotHtml(itemId, watch);
+      var fresh = holder.firstChild;
+      slot.parentNode.replaceChild(fresh, slot);
+      // Re-wire the new button.
+      var attach = fresh.querySelector('.js-wb-watch-attach');
+      if (attach) attach.addEventListener('click', function () { onWatchAttach(attach); });
+      var detach = fresh.querySelector('.js-wb-watch-detach');
+      if (detach) detach.addEventListener('click', function () { onWatchDetach(detach); });
+    }
+
+    // Tiny CSS.escape() polyfill for older browsers — only handles
+    // the subset of chars our token alphabet produces (A-Z, 2-9).
+    function cssEscape(s) {
+      return String(s).replace(/[^A-Za-z0-9_-]/g, function (c) {
+        return '\\' + c.charCodeAt(0).toString(16) + ' ';
+      });
+    }
+
+    function onWatchAttach(btn) {
+      var slot = btn.closest('.js-wb-watch-slot');
+      if (!slot) return;
+      var itemId = slot.getAttribute('data-id');
+      if (!itemId) return;
+      var schedule = btn.getAttribute('data-schedule') || 'daily';
+      btn.disabled = true;
+      fetch('/api/workbench/watch', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ savedItemId: itemId, schedule: schedule }),
+      }).then(function (r) {
+        if (r.ok) {
+          return r.json().then(function (data) {
+            var watch = (data && data.watch) || { schedule: schedule };
+            watchIndex[itemId] = watch;
+            replaceWatchSlot(itemId, watch);
+          });
+        }
+        if (r.status === 409) {
+          alert('You’ve reached the watch-list limit. Stop watching some items first.');
+          btn.disabled = false;
+          return;
+        }
+        if (r.status === 401) {
+          window.location.href = '/sign-in/?returnTo=' + encodeURIComponent('/workbench/');
+          return;
+        }
+        alert('Could not start watching this item. Try again in a moment.');
+        btn.disabled = false;
+      }).catch(function () {
+        alert('Could not reach the server. Check your connection and try again.');
+        btn.disabled = false;
+      });
+    }
+
+    function onWatchDetach(btn) {
+      var slot = btn.closest('.js-wb-watch-slot');
+      if (!slot) return;
+      var itemId = slot.getAttribute('data-id');
+      if (!itemId) return;
+      btn.disabled = true;
+      fetch('/api/workbench/watch-delete', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ savedItemId: itemId }),
+      }).then(function (r) {
+        if (r.ok) {
+          delete watchIndex[itemId];
+          replaceWatchSlot(itemId, null);
+        } else if (r.status === 401) {
+          window.location.href = '/sign-in/?returnTo=' + encodeURIComponent('/workbench/');
+        } else {
+          alert('Could not stop watching. Try again in a moment.');
+          btn.disabled = false;
+        }
+      }).catch(function () {
+        alert('Could not reach the server. Check your connection and try again.');
+        btn.disabled = false;
+      });
+    }
+
     function renderItems(items) {
       // Remove any existing state cards before painting items.
       [loadingEl, emptyEl, errorEl].forEach(function (n) {
@@ -212,9 +345,14 @@
         // and just open at the form (still useful — user lands
         // somewhere reasonable).
         var openUrl = openBase + '?saved=' + encodeURIComponent(item.id);
+        var watchSlot = '';
+        if (WATCHABLE_KINDS[item.kind]) {
+          watchSlot = renderWatchSlotHtml(item.id, watchIndex[item.id] || null);
+        }
         var row = document.createElement('article');
         row.className = 'wb-item';
         row.setAttribute('data-id', item.id);
+        row.setAttribute('data-kind', item.kind);
         row.innerHTML =
           '<div class="wb-item-body">' +
             '<div class="wb-item-meta">' +
@@ -224,10 +362,21 @@
             '<p class="wb-item-date">Saved ' + fmtDate(item.createdAt) + '</p>' +
           '</div>' +
           '<div class="wb-item-actions">' +
+            watchSlot +
             '<a class="wb-item-action" href="' + openUrl + '">Open</a>' +
             '<button type="button" class="wb-item-action danger js-wb-delete">Delete</button>' +
           '</div>';
         listEl.appendChild(row);
+      });
+
+      // Wire watch toggle (attach + detach). Two click handlers
+      // share one container; the row is rebuilt in place when the
+      // state flips so we never accumulate stale listeners.
+      listEl.querySelectorAll('.js-wb-watch-attach').forEach(function (btn) {
+        btn.addEventListener('click', function () { onWatchAttach(btn); });
+      });
+      listEl.querySelectorAll('.js-wb-watch-detach').forEach(function (btn) {
+        btn.addEventListener('click', function () { onWatchDetach(btn); });
       });
 
       // Wire delete buttons.
@@ -277,14 +426,34 @@
         })
         .then(function (me) {
           if (emailSlot && me && me.email) emailSlot.textContent = me.email;
-          return fetch('/api/workbench/list', { credentials: 'same-origin' });
+          // Saves and watches load in parallel; watches are
+          // small and cheap, and rendering needs both before it
+          // can decide between the "Watch" button and the
+          // "Watching daily" pill per row.
+          return Promise.all([
+            fetch('/api/workbench/list',       { credentials: 'same-origin' }),
+            fetch('/api/workbench/watch-list', { credentials: 'same-origin' }),
+          ]);
         })
-        .then(function (r) {
-          if (!r.ok) throw new Error('list-failed');
-          return r.json();
+        .then(function (responses) {
+          var listRes  = responses[0];
+          var watchRes = responses[1];
+          if (!listRes.ok) throw new Error('list-failed');
+          // Watch fetch failure is non-fatal: degrade to "no watches"
+          // rather than blocking the whole page. The user can still
+          // see and manage saved items.
+          var watchPromise = watchRes.ok ? watchRes.json() : Promise.resolve({ items: [] });
+          return Promise.all([listRes.json(), watchPromise]);
         })
-        .then(function (data) {
-          var items = (data && data.items) || [];
+        .then(function (parsed) {
+          var listData  = parsed[0] || {};
+          var watchData = parsed[1] || {};
+          // Build the savedItemId → watch index before rendering.
+          watchIndex = {};
+          (watchData.items || []).forEach(function (w) {
+            if (w && w.savedItemId) watchIndex[w.savedItemId] = w;
+          });
+          var items = listData.items || [];
           if (items.length === 0) { showState(emptyEl); return; }
           renderItems(items);
         })
