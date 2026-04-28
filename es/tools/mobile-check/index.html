@@ -103,16 +103,16 @@
   .mob-result.visible { display: block; }
   .mob-verdict { text-align: center; margin-bottom: 32px; }
   .mob-verdict .icon { width: 80px; height: 80px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 40px; margin-bottom: 16px; }
-  .mob-verdict .icon.pass { background: rgba(31,157,85,0.1); color: #1f9d55; }
-  .mob-verdict .icon.fail { background: rgba(184,84,26,0.08); color: var(--rust); }
+  .mob-verdict .icon.pass { background: var(--status-good-tint); color: var(--status-pass); }
+  .mob-verdict .icon.fail { background: var(--status-bad-tint); color: var(--rust); }
   .mob-verdict h2 { font-family: var(--font-display); font-size: 28px; font-weight: 500; margin: 0 0 8px; }
   .mob-verdict p { font-size: 16px; color: var(--stone); margin: 0; }
 
   .mob-checks { display: flex; flex-direction: column; gap: 14px; }
-  .mob-check { display: flex; gap: 16px; padding: 22px; border: 1px solid var(--line); border-radius: 12px; background: var(--white); align-items: flex-start; }
+  .mob-check { display: flex; gap: 16px; padding: 22px; border: 1px solid var(--line); border-radius: var(--r-input); background: var(--surface-1); box-shadow: var(--elev-1); align-items: flex-start; }
   .mob-check .mark { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex: 0 0 36px; font-size: 18px; font-weight: 700; }
-  .mob-check .mark.pass { background: rgba(31,157,85,0.1); color: #1f9d55; }
-  .mob-check .mark.fail { background: rgba(184,84,26,0.08); color: var(--rust); }
+  .mob-check .mark.pass { background: var(--status-good-tint); color: var(--status-pass); }
+  .mob-check .mark.fail { background: var(--status-bad-tint); color: var(--rust); }
   .mob-check .mark.unknown { background: var(--cream-2); color: var(--stone); }
   .mob-check h3 { font-family: var(--font-display); font-size: 18px; font-weight: 500; margin: 0 0 6px; color: var(--ink); }
   .mob-check p { font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); margin: 0; }

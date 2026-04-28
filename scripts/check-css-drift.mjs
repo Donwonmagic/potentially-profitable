@@ -67,12 +67,38 @@ const ALLOWED_HEX = new Set([
   '#FCF7F3', // calculator panel "warn" tint
   '#FAFBF9', // calculator panel "ok" tint
   '#F8FBFB', // calculator panel "info" tint
+  // PNG card-render canvas constants (plate-cost, photo-brief). The
+  // rich-preview HTML strings inside index.html intentionally mirror
+  // the JS card-render.js constants byte-for-byte so the on-page
+  // mock matches the rendered PNG. Source of truth lives in the
+  // tools' card-render.js. Tokenizing here would require canvas to
+  // read CSS vars at PNG build time, which is more code than value.
+  '#14161A', // INK — matches --ink, used as canvas literal
+  '#FAF7F2', // CREAM — matches --cream, used as canvas literal
+  '#5A5752', // STONE — canvas tone (slightly different from --stone)
+  '#E5E0D8', // LINE — canvas tone (slightly different from --line)
+  '#C68A2C', // medium-confidence amber + photo warning border
+  '#956A1A', // depth-amber for sub/drift labels
+  // SERP-preview vocabulary in open-hours — Google's actual SERP
+  // chrome colors. These match what a diner sees on Google so the
+  // preview is honest. Not tokens because they're not Muntin colors.
+  '#1A0DAB', // Google SERP link blue
+  '#E2A037', // SERP rich-result star amber
+  '#1F7A33', // open-status fallback green (inside var(--status-good, ...) fallback)
+  // Open-hours archetype tier indicators — quick visual cue for
+  // brunch / late-bar / etc. tiers. Single-purpose vocabulary.
+  '#6E5DB3', // late-bar tier border-left (purple)
 ]);
 
-// Radii allowed as raw px — full pill (999) and circle (50%) only.
+// Radii allowed as raw px — full pill (999), circle (50%), zero, and
+// the canonical inline-code chip radius (3px).
 function isAllowedRadius(value) {
   const v = value.trim();
   if (v === '999px' || v === '50%' || v === '0' || v === '0px') return true;
+  // Inline-code chip radius — used by <code> tags across plate-cost,
+  // photo-brief, open-hours. 8px (--r-sm) is too round for a 1-line
+  // code chip; 3px is the canonical small-curve.
+  if (v === '3px') return true;
   // Tokens are fine
   if (v.startsWith('var(')) return true;
   return false;

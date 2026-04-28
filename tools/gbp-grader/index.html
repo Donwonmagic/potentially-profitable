@@ -77,9 +77,9 @@
   .gbp-checks{display:flex;flex-direction:column;gap:10px;margin-top:24px}
   .gbp-check{display:flex;gap:14px;padding:18px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);align-items:flex-start}
   .gbp-check .mark{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 32px;font-size:16px;font-weight:700}
-  .gbp-check .mark.pass{background:rgba(31,157,85,.1);color:var(--status-pass)}
-  .gbp-check .mark.warn{background:rgba(194,139,46,.1);color:var(--status-warn)}
-  .gbp-check .mark.fail{background:rgba(184,84,26,.08);color:var(--rust)}
+  .gbp-check .mark.pass{background:var(--status-good-tint);color:var(--status-pass)}
+  .gbp-check .mark.warn{background:var(--status-warn-tint);color:var(--status-warn)}
+  .gbp-check .mark.fail{background:var(--status-bad-tint);color:var(--rust)}
   .gbp-check h3{font-size:15px;font-weight:600;color:var(--ink);margin:0 0 4px}
   .gbp-check p{font-size:13.5px;line-height:1.5;color:var(--ink-soft);margin:0}
   .gbp-cta{margin-top:28px;padding:28px 32px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-md);text-align:center}
@@ -593,7 +593,7 @@
       var closedBody=chosen.businessStatus==='CLOSED_TEMPORARILY'
         ?'Google shows this listing as temporarily closed. Reopen it in your Business Profile dashboard before fixing anything else — while it\'s flagged closed, Maps hides the listing from most searches.'
         :'Google shows this listing as permanently closed. If the business is active under a new name or owner, reclaim it in the Business Profile dashboard — a closed listing will not show up in local results.';
-      bannerHtml='<div class="gbp-check" style="background:rgba(184,84,26,.08);border-color:var(--rust);margin-bottom:20px"><div class="mark fail">&#10005;</div><div><h3>'+closedLabel+'</h3><p>'+closedBody+'</p></div></div>';
+      bannerHtml='<div class="gbp-check" style="background:var(--status-bad-tint);border-color:var(--rust);margin-bottom:20px"><div class="mark fail">&#10005;</div><div><h3>'+closedLabel+'</h3><p>'+closedBody+'</p></div></div>';
     }
     return bannerHtml
       +stars(chosen.rating)

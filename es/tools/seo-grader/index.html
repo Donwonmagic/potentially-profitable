@@ -102,23 +102,23 @@
 
   .seo-result { display: none; max-width: 620px; margin: 48px auto 0; }
   .seo-result.visible { display: block; }
-  .seo-card { padding: 28px; border: 1px solid var(--line); border-radius: 14px; background: var(--white); margin-bottom: 20px; }
+  .seo-card { padding: 28px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface-1); box-shadow: var(--elev-1); margin-bottom: 20px; }
   .seo-card .card-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin: 0 0 8px; }
-  .seo-card .card-label.good { color: #1f9d55; }
-  .seo-card .card-label.warn { color: #8A6018; }
+  .seo-card .card-label.good { color: var(--status-good); }
+  .seo-card .card-label.warn { color: var(--status-warn); }
   .seo-card .card-label.bad { color: var(--rust); }
   .seo-card .card-value { font-family: var(--font-display); font-size: 20px; font-weight: 500; color: var(--ink); line-height: 1.35; margin: 0 0 12px; word-break: break-word; }
   .seo-card .card-value em { color: var(--teal); font-style: italic; }
-  .seo-bar { height: 6px; border-radius: 3px; background: var(--line); margin: 0 0 14px; overflow: hidden; }
-  .seo-bar .fill { height: 100%; border-radius: 3px; transition: width 0.6s ease-out; }
-  .seo-bar .fill.good { background: #1f9d55; }
-  .seo-bar .fill.warn { background: #C28B2E; }
+  .seo-bar { height: 6px; border-radius: 999px; background: var(--line); margin: 0 0 14px; overflow: hidden; }
+  .seo-bar .fill { height: 100%; border-radius: 999px; transition: width 0.6s ease-out; }
+  .seo-bar .fill.good { background: var(--status-good); }
+  .seo-bar .fill.warn { background: var(--status-warn-fill); }
   .seo-bar .fill.bad { background: var(--rust); }
   .seo-card .checks { list-style: none; padding: 0; margin: 0; }
   .seo-card .checks li { display: flex; gap: 10px; padding: 8px 0; border-top: 1px solid var(--line); font-size: 14.5px; color: var(--ink-soft); line-height: 1.5; }
   .seo-card .checks li:first-child { border-top: 0; }
   .seo-card .checks .mark { flex: 0 0 18px; font-weight: 700; }
-  .seo-card .checks .mark.pass { color: #1f9d55; }
+  .seo-card .checks .mark.pass { color: var(--status-pass); }
   .seo-card .checks .mark.fail { color: var(--rust); }
 
   .seo-cta { margin-top: 32px; padding: 28px 32px; background: var(--cream-2); border: 1px solid var(--line); border-radius: 14px; text-align: center; }

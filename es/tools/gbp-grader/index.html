@@ -70,16 +70,16 @@
   .gbp-biz h2{font-family:var(--font-display);font-size:28px;font-weight:500;margin:0 0 4px;color:var(--ink)}
   .gbp-biz p{font-size:14px;color:var(--stone);margin:0}
   .gbp-stars{font-size:32px;margin:12px 0 4px;letter-spacing:2px}
-  .gbp-stars .filled{color:#C28B2E}
+  .gbp-stars .filled{color:var(--status-warn-fill)}
   .gbp-stars .empty{color:var(--line-dark)}
   .gbp-rating{font-family:var(--font-display);font-size:40px;font-weight:500;color:var(--ink)}
   .gbp-reviews{font-size:15px;color:var(--stone);margin-top:2px}
   .gbp-checks{display:flex;flex-direction:column;gap:10px;margin-top:24px}
   .gbp-check{display:flex;gap:14px;padding:18px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);align-items:flex-start}
   .gbp-check .mark{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 32px;font-size:16px;font-weight:700}
-  .gbp-check .mark.pass{background:rgba(31,157,85,.1);color:var(--status-pass)}
-  .gbp-check .mark.warn{background:rgba(194,139,46,.1);color:var(--status-warn)}
-  .gbp-check .mark.fail{background:rgba(184,84,26,.08);color:var(--rust)}
+  .gbp-check .mark.pass{background:var(--status-good-tint);color:var(--status-pass)}
+  .gbp-check .mark.warn{background:var(--status-warn-tint);color:var(--status-warn)}
+  .gbp-check .mark.fail{background:var(--status-bad-tint);color:var(--rust)}
   .gbp-check h3{font-size:15px;font-weight:600;color:var(--ink);margin:0 0 4px}
   .gbp-check p{font-size:13.5px;line-height:1.5;color:var(--ink-soft);margin:0}
   .gbp-cta{margin-top:28px;padding:28px 32px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-md);text-align:center}
@@ -93,7 +93,7 @@
   .gbp-gauge-track{stroke:var(--line);stroke-width:10;fill:none;stroke-linecap:round}
   .gbp-gauge-arc{stroke-width:10;fill:none;stroke-linecap:round;transition:stroke-dashoffset 600ms var(--ease-out)}
   .gbp-gauge[data-grade-band="good"] .gbp-gauge-arc{stroke:var(--status-good)}
-  .gbp-gauge[data-grade-band="ok"]   .gbp-gauge-arc{stroke:#8A6018}
+  .gbp-gauge[data-grade-band="ok"]   .gbp-gauge-arc{stroke:var(--status-warn)}
   .gbp-gauge[data-grade-band="bad"]  .gbp-gauge-arc{stroke:var(--rust)}
   .gbp-gauge-letter{font-family:var(--font-display);font-size:62px;font-weight:500;fill:var(--ink);dominant-baseline:central}
   .gbp-gauge-score{font-size:12px;fill:var(--stone);font-weight:500;letter-spacing:.04em}
@@ -560,7 +560,7 @@
       var closedBody=chosen.businessStatus==='CLOSED_TEMPORARILY'
         ?'Google muestra esta ficha como cerrada temporalmente. Reábrela en el panel de Business Profile antes de arreglar cualquier otra cosa — mientras esté marcada como cerrada, Maps la oculta en la mayoría de las búsquedas.'
         :'Google muestra esta ficha como cerrada permanentemente. Si el negocio sigue activo con otro nombre o dueño, reclámala en el panel de Business Profile — una ficha cerrada no aparece en los resultados locales.';
-      bannerHtml='<div class="gbp-check" style="background:rgba(184,84,26,.08);border-color:var(--rust);margin-bottom:20px"><div class="mark fail">&#10005;</div><div><h3>'+closedLabel+'</h3><p>'+closedBody+'</p></div></div>';
+      bannerHtml='<div class="gbp-check" style="background:var(--status-bad-tint);border-color:var(--rust);margin-bottom:20px"><div class="mark fail">&#10005;</div><div><h3>'+closedLabel+'</h3><p>'+closedBody+'</p></div></div>';
     }
     return bannerHtml
       +stars(chosen.rating)

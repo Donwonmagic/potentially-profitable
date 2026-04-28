@@ -60,16 +60,16 @@
      and CTA card live in site.css under "TOOL SHELL" — see /docs/. */
   .sch-verdict{text-align:center;margin-bottom:28px}
   .sch-verdict .icon{width:80px;height:80px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:16px}
-  .sch-verdict .icon.found{background:rgba(31,157,85,.1);color:#1f9d55}
-  .sch-verdict .icon.missing{background:rgba(184,84,26,.08);color:var(--rust)}
+  .sch-verdict .icon.found{background:var(--status-good-tint);color:var(--status-pass)}
+  .sch-verdict .icon.missing{background:var(--status-bad-tint);color:var(--rust)}
   .sch-verdict h2{font-family:var(--font-display);font-size:28px;font-weight:500;margin:0 0 8px}
   .sch-verdict p{font-size:16px;color:var(--stone);margin:0}
   .sch-types{list-style:none;padding:0;margin:0 0 24px}
-  .sch-types li{display:flex;gap:12px;padding:16px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);margin-bottom:10px;align-items:flex-start}
+  .sch-types li{display:flex;gap:12px;padding:16px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--surface-1);box-shadow:var(--elev-1);margin-bottom:10px;align-items:flex-start}
   .sch-types .tag{padding:4px 10px;border-radius:var(--r-sm);font-size:13px;font-weight:600;white-space:nowrap;flex:0 0 auto}
-  .sch-types .tag.good{background:rgba(31,157,85,.1);color:#1f9d55}
-  .sch-types .tag.generic{background:rgba(194,139,46,.1);color:#8A6018}
-  .sch-types .tag.none{background:rgba(184,84,26,.08);color:var(--rust)}
+  .sch-types .tag.good{background:var(--status-good-tint);color:var(--status-pass)}
+  .sch-types .tag.generic{background:var(--status-warn-tint);color:var(--status-warn)}
+  .sch-types .tag.none{background:var(--status-bad-tint);color:var(--rust)}
   .sch-types .detail{font-size:14.5px;color:var(--ink-soft);line-height:1.5}
   .sch-types .detail strong{color:var(--ink)}
 </style>
