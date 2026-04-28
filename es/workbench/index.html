@@ -4,19 +4,21 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <!--
-  Sprint 0 (Workshop) — landing privado del taller.
+  Phase 2 (Workshop) — biblioteca de elementos guardados.
 
-  Esta página tiene gate del lado del worker (src/worker.js): un
+  El worker (src/worker.js) sigue dando gate del lado servidor: un
   GET a /es/workbench/ desde un visitante sin cookie de sesión
-  firmada y válida devuelve 404 antes de servir este HTML. La
-  rama "Próximamente" solo se renderiza si la cookie pasa el
-  gate del worker pero falla el llamado de JS a /api/auth/me —
-  defensa, no flujo normal.
+  firmada y válida devuelve 404 antes de servir este HTML. Por eso
+  todo lo de abajo asume "logueado" — JS solo renderiza la lista de
+  items guardados y ofrece botones para eliminar. Si /api/auth/me
+  devuelve 401 inesperadamente (la cookie venció entre el gate y el
+  fetch), redirigimos a /es/sign-in/ en lugar de mostrar un estado
+  vacío confuso.
 
-  Postura de privacidad: noindex, nofollow, sin canonical, sin
-  alternates hreflang, sin JSON-LD, sin nav, sin footer. Página
-  independiente que existe solo para validar el contrato de
-  "encender el switch" de la fase 2.
+  Postura de privacidad: noindex, nofollow. La página sigue sin
+  estar en el sitemap o en ningún enlace público — los operadores
+  llegan vía el enlace "El Taller" del nav (solo visible para
+  visitantes autenticados).
 -->
 <meta name="robots" content="noindex, nofollow" />
 <title>El Taller — Muntin Digital</title>
@@ -30,27 +32,49 @@
 <link rel="stylesheet" href="/assets/site.css?v=20260428-sprint0-tokens" fetchpriority="high">
 
 <style>
-  /* Mismo layout que /workbench/ — los selectores son universales. */
-  body[data-state="logged-in"]  .wb-state-out { display: none; }
-  body[data-state="logged-out"] .wb-state-in  { display: none; }
-  body:not([data-state]) .wb-state-out,
-  body:not([data-state]) .wb-state-in { visibility: hidden; }
-
-  .wb-shell  { min-height: 100vh; display: flex; flex-direction: column; background: var(--surface-0); }
-  .wb-top    { padding: 24px clamp(20px, 4vw, 64px); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-  .wb-mark   { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; }
+  body { background: var(--surface-0); }
+  .wb-shell { min-height: 100vh; display: flex; flex-direction: column; }
+  .wb-top { padding: 24px clamp(20px, 4vw, 64px); display: flex; justify-content: space-between; align-items: center; gap: 16px; border-bottom: 1px solid var(--line); }
+  .wb-mark { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; }
   .wb-mark svg { width: 28px; height: 28px; flex: 0 0 28px; }
+  .wb-account { display: inline-flex; align-items: center; gap: 14px; font-size: 13px; color: var(--stone); }
+  .wb-account-email { color: var(--ink); font-weight: 500; }
   .wb-signout { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid var(--line-dark); border-radius: 999px; background: transparent; color: var(--stone); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
   .wb-signout:hover { border-color: var(--ink); color: var(--ink); }
-  .wb-main   { flex: 1; display: flex; align-items: center; justify-content: center; padding: clamp(40px, 8vh, 96px) clamp(20px, 4vw, 64px); }
-  .wb-card   { max-width: 560px; }
-  .wb-eyebrow{ font-family: var(--font-body); font-size: 13px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 14px; }
-  .wb-h1     { font-family: var(--font-display); font-size: clamp(36px, 5vw, 56px); font-weight: 500; line-height: 1.05; letter-spacing: -0.02em; color: var(--ink); margin: 0 0 18px; }
-  .wb-p      { font-size: var(--fs-lead); line-height: 1.55; color: var(--ink-soft); margin: 0; }
-  .wb-email  { font-family: var(--font-body); font-weight: 600; color: var(--teal); }
+
+  .wb-main { flex: 1; padding: clamp(40px, 6vh, 64px) clamp(20px, 4vw, 64px); }
+  .wb-header { max-width: 720px; margin: 0 auto 36px; }
+  .wb-eyebrow { font-family: var(--font-body); font-size: 13px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 12px; }
+  .wb-h1 { font-family: var(--font-display); font-size: clamp(32px, 4.4vw, 48px); font-weight: 500; line-height: 1.1; letter-spacing: -0.02em; color: var(--ink); margin: 0 0 14px; }
+  .wb-sub { font-size: var(--fs-lead); line-height: 1.55; color: var(--ink-soft); margin: 0; }
+
+  .wb-list { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+
+  .wb-state { padding: 40px 28px; background: var(--surface-1); border: 1px solid var(--line); border-radius: var(--r-md); text-align: center; }
+  .wb-state h2 { font-family: var(--font-display); font-size: 24px; font-weight: 500; color: var(--ink); margin: 0 0 10px; }
+  .wb-state p { font-size: 15px; line-height: 1.55; color: var(--ink-soft); margin: 0; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .wb-state .wb-state-cta { margin-top: 20px; }
+
+  .wb-item { padding: 22px 24px; background: var(--surface-1); border: 1px solid var(--line); border-radius: var(--r-md); box-shadow: var(--elev-1); display: grid; grid-template-columns: 1fr auto; gap: 18px; align-items: start; }
+  .wb-item-body { min-width: 0; }
+  .wb-item-meta { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .wb-item-title { font-family: var(--font-display); font-size: 18px; font-weight: 500; color: var(--ink); margin: 0; line-height: 1.35; word-break: break-word; }
+  .wb-item-date { font-size: 12.5px; color: var(--stone); margin: 6px 0 0; font-variant-numeric: tabular-nums; }
+  .wb-item-actions { display: inline-flex; gap: 8px; flex-shrink: 0; }
+  .wb-item-action { display: inline-flex; align-items: center; padding: 8px 14px; border: 1px solid var(--line-dark); border-radius: 999px; background: transparent; color: var(--ink-soft); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); text-decoration: none; }
+  .wb-item-action:hover { border-color: var(--ink); color: var(--ink); }
+  .wb-item-action.danger { color: var(--rust); border-color: var(--status-bad-tint); }
+  .wb-item-action.danger:hover { background: var(--status-bad-tint); border-color: var(--rust); }
+
+  @media (max-width: 640px) {
+    .wb-item { grid-template-columns: 1fr; }
+    .wb-item-actions { justify-content: flex-end; }
+  }
 </style>
 </head>
 <body>
+
+<a class="skip-link" href="#main">Ir al contenido</a>
 
 <div class="wb-shell">
   <header class="wb-top">
@@ -64,22 +88,33 @@
       </svg>
       Muntin Digital
     </a>
-    <form class="wb-state-in" method="POST" action="/api/auth/signout" style="margin:0;">
-      <button type="submit" class="wb-signout">Cerrar sesión</button>
-    </form>
+    <div class="wb-account">
+      <span class="wb-account-email" data-bind="email">&nbsp;</span>
+      <form method="POST" action="/api/auth/signout" style="margin:0;">
+        <button type="submit" class="wb-signout">Cerrar sesión</button>
+      </form>
+    </div>
   </header>
 
-  <main class="wb-main">
-    <div class="wb-card">
-      <div class="wb-state-in">
-        <p class="wb-eyebrow">El Taller</p>
-        <h1 class="wb-h1">Hola, <span class="wb-email" data-bind="email">amig@</span>.</h1>
-        <p class="wb-p">La fase 2 convierte esto en tu lista de auditorías guardadas, alertas y escenarios compartidos. Hoy es un marcador — la base de autenticación está cableada para que cuando salga la superficie pública, tu cuenta ya esté lista.</p>
+  <main id="main" class="wb-main">
+    <div class="wb-header">
+      <p class="wb-eyebrow">El Taller</p>
+      <h1 class="wb-h1">Guardado de tu trabajo.</h1>
+      <p class="wb-sub">Auditorías, escenarios e instantáneas que has guardado desde las herramientas gratis. Todo se queda aquí hasta que lo elimines.</p>
+    </div>
+
+    <div class="wb-list" id="wbList" aria-live="polite">
+      <div class="wb-state" id="wbLoading">
+        <p>Cargando tus items guardados&hellip;</p>
       </div>
-      <div class="wb-state-out">
-        <p class="wb-eyebrow">El Taller</p>
-        <h1 class="wb-h1">Próximamente.</h1>
-        <p class="wb-p">Una mesa de trabajo a la que un operador puede volver.</p>
+      <div class="wb-state" id="wbEmpty" hidden>
+        <h2>Aún no hay nada guardado.</h2>
+        <p>Ejecuta cualquier herramienta gratis y toca &ldquo;Guardar en mi Taller&rdquo; en un resultado. Aparecerá aquí, junto con todo lo demás.</p>
+        <p class="wb-state-cta"><a class="btn btn-ghost" href="/es/tools/">Ver las herramientas</a></p>
+      </div>
+      <div class="wb-state" id="wbError" hidden>
+        <h2>No pudimos cargar tus items guardados.</h2>
+        <p>Recarga la página o inténtalo de nuevo en un momento. Si esto sigue pasando, escribe a <a href="mailto:don@muntin.digital">don@muntin.digital</a>.</p>
       </div>
     </div>
   </main>
@@ -87,24 +122,161 @@
 
 <script>
   (function () {
-    var body = document.body;
-    fetch('/api/auth/me', { credentials: 'same-origin' })
-      .then(function (r) {
-        if (r.status === 200) return r.json();
-        throw new Error('unauthenticated');
-      })
-      .then(function (data) {
-        if (data && data.ok && data.email) {
-          var slot = document.querySelector('[data-bind="email"]');
-          if (slot) slot.textContent = data.email;
-          body.setAttribute('data-state', 'logged-in');
-        } else {
-          body.setAttribute('data-state', 'logged-out');
-        }
-      })
-      .catch(function () {
-        body.setAttribute('data-state', 'logged-out');
+    var listEl    = document.getElementById('wbList');
+    var loadingEl = document.getElementById('wbLoading');
+    var emptyEl   = document.getElementById('wbEmpty');
+    var errorEl   = document.getElementById('wbError');
+    var emailSlot = document.querySelector('[data-bind="email"]');
+    if (!listEl) return;
+
+    var KIND_LABELS = {
+      audit: 'Auditoría',
+      seo: 'Calificador SEO',
+      gbp: 'GBP grader',
+      mobile: 'Revisión móvil',
+      schema: 'Revisión schema',
+      speed: 'Prueba de velocidad',
+      margin: 'Margin math',
+      plate: 'Plate cost',
+      photo: 'Photo brief',
+      menu: 'Menú',
+      brand: 'Brand suite',
+      'open-hours': 'Horarios',
+      compare: 'Comparar',
+      'tech-stack': 'Tech stack',
+      'search-ideas': 'Ideas de búsqueda'
+    };
+
+    var KIND_URLS = {
+      audit: '/es/tools/audits/restaurant/',
+      seo: '/es/tools/seo-grader/',
+      gbp: '/es/tools/gbp-grader/',
+      mobile: '/es/tools/mobile-check/',
+      schema: '/es/tools/schema-check/',
+      speed: '/es/tools/speed-test/',
+      margin: '/es/tools/margin-math/',
+      plate: '/es/tools/plate-cost/',
+      photo: '/es/tools/photo-brief/',
+      menu: '/es/tools/menu-engineering/',
+      brand: '/es/tools/brand-suite/',
+      'open-hours': '/es/tools/open-hours/',
+      compare: '/es/tools/compare/',
+      'tech-stack': '/es/tools/tech-stack/',
+      'search-ideas': '/es/tools/search-ideas/'
+    };
+
+    function escapeHtml(s) {
+      return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function fmtDate(ms) {
+      if (!ms) return '';
+      try {
+        var d = new Date(ms);
+        return d.toLocaleDateString('es', { year: 'numeric', month: 'short', day: 'numeric' });
+      } catch (_) { return ''; }
+    }
+
+    function showState(which) {
+      [loadingEl, emptyEl, errorEl].forEach(function (n) { if (n) n.hidden = true; });
+      if (which) which.hidden = false;
+    }
+
+    function renderItems(items) {
+      [loadingEl, emptyEl, errorEl].forEach(function (n) {
+        if (n && n.parentNode === listEl) listEl.removeChild(n);
       });
+      var existing = listEl.querySelectorAll('.wb-item');
+      existing.forEach(function (n) { listEl.removeChild(n); });
+
+      items.forEach(function (item) {
+        var label = KIND_LABELS[item.kind] || item.kind;
+        var openUrl = KIND_URLS[item.kind] || '/es/tools/';
+        var row = document.createElement('article');
+        row.className = 'wb-item';
+        row.setAttribute('data-id', item.id);
+        row.innerHTML =
+          '<div class="wb-item-body">' +
+            '<div class="wb-item-meta">' +
+              '<span class="status-chip" data-band="solid" data-size="xs">' + escapeHtml(label) + '</span>' +
+            '</div>' +
+            '<h3 class="wb-item-title">' + escapeHtml(item.title) + '</h3>' +
+            '<p class="wb-item-date">Guardado ' + fmtDate(item.createdAt) + '</p>' +
+          '</div>' +
+          '<div class="wb-item-actions">' +
+            '<a class="wb-item-action" href="' + openUrl + '">Abrir</a>' +
+            '<button type="button" class="wb-item-action danger js-wb-delete">Eliminar</button>' +
+          '</div>';
+        listEl.appendChild(row);
+      });
+
+      listEl.querySelectorAll('.js-wb-delete').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var row = btn.closest('.wb-item');
+          if (!row) return;
+          var id = row.getAttribute('data-id');
+          if (!id) return;
+          if (!confirm('¿Eliminar este item guardado? No se puede deshacer.')) return;
+          btn.disabled = true;
+          fetch('/api/workbench/delete', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            credentials: 'same-origin',
+            body: JSON.stringify({ id: id }),
+          }).then(function (r) {
+            if (r.ok) {
+              row.parentNode.removeChild(row);
+              if (!listEl.querySelector('.wb-item')) {
+                listEl.appendChild(emptyEl);
+                showState(emptyEl);
+              }
+            } else {
+              btn.disabled = false;
+              alert('No pudimos eliminar ese item. Inténtalo de nuevo en un momento.');
+            }
+          }).catch(function () {
+            btn.disabled = false;
+            alert('No pudimos conectar con el servidor. Revisa tu conexión e intenta de nuevo.');
+          });
+        });
+      });
+    }
+
+    function loadList() {
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 401) {
+            window.location.href = '/es/sign-in/?returnTo=' + encodeURIComponent('/es/workbench/');
+            throw new Error('redirect');
+          }
+          if (!r.ok) throw new Error('me-failed');
+          return r.json();
+        })
+        .then(function (me) {
+          if (emailSlot && me && me.email) emailSlot.textContent = me.email;
+          return fetch('/api/workbench/list', { credentials: 'same-origin' });
+        })
+        .then(function (r) {
+          if (!r.ok) throw new Error('list-failed');
+          return r.json();
+        })
+        .then(function (data) {
+          var items = (data && data.items) || [];
+          if (items.length === 0) { showState(emptyEl); return; }
+          renderItems(items);
+        })
+        .catch(function (err) {
+          if (err && err.message === 'redirect') return;
+          showState(errorEl);
+        });
+    }
+
+    loadList();
   })();
 </script>
 

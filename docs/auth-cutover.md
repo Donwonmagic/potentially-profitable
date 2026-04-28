@@ -275,9 +275,20 @@ This is a future-proof contract; no code changes needed for Sprint 0.
 ## Reference
 
 - Auth library: `src/lib/auth.js`
-- Worker handlers: `src/worker.js` (search for `handleAuth`)
+- Worker handlers: `src/worker.js` (search for `handleAuth`, `handleWorkbench`)
 - Email templates: `src/lib/templates.js` and `templates.es.js` (`magicLinkEmail`)
-- Privacy gate script: `scripts/check-workbench-private.mjs`
+- Saves library: `src/lib/workbench.js`
+- Public sign-in surface: `sign-in/index.html` + `es/sign-in/index.html`
+- Workshop UI: `workbench/index.html` + `es/workbench/index.html`
+- Nav auth toggle: lives in `_includes/nav.html` + `_includes/es/nav.html`
+  and propagates to all pages via `sync-includes.mjs`
 - Wrangler bindings: `wrangler.jsonc` (`kv_namespaces`, `vars`)
 - Smoke-test commands above match the adversarial test suite that
   passes locally via Node SubtleCrypto (see commit `0814b20e`).
+
+> Note on `scripts/check-workbench-private.mjs`: this Sprint 0 build-
+> time gate was retired in Phase 2 (the contract changed — `/workbench/`
+> is now a public surface reachable from every page's nav). The
+> `robots.txt` Disallow lines and the worker's session-gate are the
+> remaining defenses; the page itself stays `noindex, nofollow` and
+> stays out of the sitemap.

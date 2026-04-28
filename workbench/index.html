@@ -4,18 +4,19 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <!--
-  Sprint 0 (Workshop) — private workbench landing.
+  Phase 2 (Workshop) — saved-items library.
 
-  This page is gated server-side by the worker (src/worker.js): a
-  GET to /workbench/ from a visitor without a valid signed session
-  cookie returns 404 before this HTML is ever served. The "Coming
-  soon" branch below only ever renders if a logged-in visitor's
-  cookie passes the worker gate but fails the JS /api/auth/me call
-  — a defensive fallback, not a normal path.
+  The page is still gated server-side by the worker (src/worker.js):
+  a GET to /workbench/ from a visitor without a valid signed session
+  cookie returns 404 before this HTML is ever served. So everything
+  below assumes "logged-in" — JS only renders the saved items list
+  and provides delete affordances. If /api/auth/me unexpectedly 401s
+  (cookie expired between the worker gate and the JS fetch), we
+  redirect to /sign-in/ rather than show a confusing empty state.
 
-  Privacy posture: noindex, nofollow, no canonical URL, no hreflang
-  alternates, no JSON-LD, no nav, no footer. Standalone page that
-  exists only to validate Phase 2's flip-the-switch contract.
+  Privacy posture: noindex, nofollow. The page is still not in the
+  sitemap or any public link — operators arrive via the nav's
+  "Workshop" link (only visible to authenticated visitors).
 -->
 <meta name="robots" content="noindex, nofollow" />
 <title>The Workshop — Muntin Digital</title>
@@ -29,30 +30,53 @@
 <link rel="stylesheet" href="/assets/site.css?v=20260428-sprint0-tokens" fetchpriority="high">
 
 <style>
-  /* Workbench-specific layout. Two visibility-toggled hero blocks
-     so /api/auth/me can flip <body data-state="..."> at load. */
-  body[data-state="logged-in"]  .wb-state-out { display: none; }
-  body[data-state="logged-out"] .wb-state-in  { display: none; }
-  /* Default: hide both until JS picks one. Prevents a flash of
-     "Coming soon" for an authenticated visitor. */
-  body:not([data-state]) .wb-state-out,
-  body:not([data-state]) .wb-state-in { visibility: hidden; }
-
-  .wb-shell  { min-height: 100vh; display: flex; flex-direction: column; background: var(--surface-0); }
-  .wb-top    { padding: 24px clamp(20px, 4vw, 64px); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-  .wb-mark   { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; }
+  /* Workshop layout — narrower than a full content page; the saved-
+     items list is the main affordance. */
+  body { background: var(--surface-0); }
+  .wb-shell { min-height: 100vh; display: flex; flex-direction: column; }
+  .wb-top { padding: 24px clamp(20px, 4vw, 64px); display: flex; justify-content: space-between; align-items: center; gap: 16px; border-bottom: 1px solid var(--line); }
+  .wb-mark { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; }
   .wb-mark svg { width: 28px; height: 28px; flex: 0 0 28px; }
+  .wb-account { display: inline-flex; align-items: center; gap: 14px; font-size: 13px; color: var(--stone); }
+  .wb-account-email { color: var(--ink); font-weight: 500; }
   .wb-signout { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid var(--line-dark); border-radius: 999px; background: transparent; color: var(--stone); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
   .wb-signout:hover { border-color: var(--ink); color: var(--ink); }
-  .wb-main   { flex: 1; display: flex; align-items: center; justify-content: center; padding: clamp(40px, 8vh, 96px) clamp(20px, 4vw, 64px); }
-  .wb-card   { max-width: 560px; }
-  .wb-eyebrow{ font-family: var(--font-body); font-size: 13px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 14px; }
-  .wb-h1     { font-family: var(--font-display); font-size: clamp(36px, 5vw, 56px); font-weight: 500; line-height: 1.05; letter-spacing: -0.02em; color: var(--ink); margin: 0 0 18px; }
-  .wb-p      { font-size: var(--fs-lead); line-height: 1.55; color: var(--ink-soft); margin: 0; }
-  .wb-email  { font-family: var(--font-body); font-weight: 600; color: var(--teal); }
+
+  .wb-main { flex: 1; padding: clamp(40px, 6vh, 64px) clamp(20px, 4vw, 64px); }
+  .wb-header { max-width: 720px; margin: 0 auto 36px; }
+  .wb-eyebrow { font-family: var(--font-body); font-size: 13px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 12px; }
+  .wb-h1 { font-family: var(--font-display); font-size: clamp(32px, 4.4vw, 48px); font-weight: 500; line-height: 1.1; letter-spacing: -0.02em; color: var(--ink); margin: 0 0 14px; }
+  .wb-sub { font-size: var(--fs-lead); line-height: 1.55; color: var(--ink-soft); margin: 0; }
+
+  .wb-list { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+
+  /* Loading + empty + error states are mutually exclusive; only one
+     is visible at a time, all start hidden until JS resolves. */
+  .wb-state { padding: 40px 28px; background: var(--surface-1); border: 1px solid var(--line); border-radius: var(--r-md); text-align: center; }
+  .wb-state h2 { font-family: var(--font-display); font-size: 24px; font-weight: 500; color: var(--ink); margin: 0 0 10px; }
+  .wb-state p { font-size: 15px; line-height: 1.55; color: var(--ink-soft); margin: 0; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .wb-state .wb-state-cta { margin-top: 20px; }
+
+  .wb-item { padding: 22px 24px; background: var(--surface-1); border: 1px solid var(--line); border-radius: var(--r-md); box-shadow: var(--elev-1); display: grid; grid-template-columns: 1fr auto; gap: 18px; align-items: start; }
+  .wb-item-body { min-width: 0; }
+  .wb-item-meta { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .wb-item-title { font-family: var(--font-display); font-size: 18px; font-weight: 500; color: var(--ink); margin: 0; line-height: 1.35; word-break: break-word; }
+  .wb-item-date { font-size: 12.5px; color: var(--stone); margin: 6px 0 0; font-variant-numeric: tabular-nums; }
+  .wb-item-actions { display: inline-flex; gap: 8px; flex-shrink: 0; }
+  .wb-item-action { display: inline-flex; align-items: center; padding: 8px 14px; border: 1px solid var(--line-dark); border-radius: 999px; background: transparent; color: var(--ink-soft); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); text-decoration: none; }
+  .wb-item-action:hover { border-color: var(--ink); color: var(--ink); }
+  .wb-item-action.danger { color: var(--rust); border-color: var(--status-bad-tint); }
+  .wb-item-action.danger:hover { background: var(--status-bad-tint); border-color: var(--rust); }
+
+  @media (max-width: 640px) {
+    .wb-item { grid-template-columns: 1fr; }
+    .wb-item-actions { justify-content: flex-end; }
+  }
 </style>
 </head>
 <body>
+
+<a class="skip-link" href="#main">Skip to content</a>
 
 <div class="wb-shell">
   <header class="wb-top">
@@ -66,52 +90,205 @@
       </svg>
       Muntin Digital
     </a>
-    <form class="wb-state-in" method="POST" action="/api/auth/signout" style="margin:0;">
-      <button type="submit" class="wb-signout">Sign out</button>
-    </form>
+    <div class="wb-account">
+      <span class="wb-account-email" data-bind="email">&nbsp;</span>
+      <form method="POST" action="/api/auth/signout" style="margin:0;">
+        <button type="submit" class="wb-signout">Sign out</button>
+      </form>
+    </div>
   </header>
 
-  <main class="wb-main">
-    <div class="wb-card">
-      <div class="wb-state-in">
-        <p class="wb-eyebrow">The Workshop</p>
-        <h1 class="wb-h1">Hello, <span class="wb-email" data-bind="email">there</span>.</h1>
-        <p class="wb-p">Phase 2 will turn this into your saved-audits, watch-list, and shared scenarios. Today it's a placeholder — the auth foundation is wired so when the public surface ships, your account is ready.</p>
+  <main id="main" class="wb-main">
+    <div class="wb-header">
+      <p class="wb-eyebrow">The Workshop</p>
+      <h1 class="wb-h1">Saved from your work.</h1>
+      <p class="wb-sub">Audits, scenarios, and snapshots you&rsquo;ve saved across the free tools. Everything stays here until you delete it.</p>
+    </div>
+
+    <div class="wb-list" id="wbList" aria-live="polite">
+      <div class="wb-state" id="wbLoading">
+        <p>Loading your saved items&hellip;</p>
       </div>
-      <div class="wb-state-out">
-        <p class="wb-eyebrow">The Workshop</p>
-        <h1 class="wb-h1">Coming soon.</h1>
-        <p class="wb-p">A workbench an operator can come back to.</p>
+      <div class="wb-state" id="wbEmpty" hidden>
+        <h2>Nothing saved yet.</h2>
+        <p>Run any of the free tools and tap &ldquo;Save to my Workbench&rdquo; on a result. It&rsquo;ll show up here, with everything else.</p>
+        <p class="wb-state-cta"><a class="btn btn-ghost" href="/tools/">Browse the tools</a></p>
+      </div>
+      <div class="wb-state" id="wbError" hidden>
+        <h2>Couldn&rsquo;t load your saved items.</h2>
+        <p>Refresh the page or try again in a moment. If this keeps happening, email <a href="mailto:don@muntin.digital">don@muntin.digital</a>.</p>
       </div>
     </div>
   </main>
 </div>
 
 <script>
-  // Workshop auth-state boot. Calls /api/auth/me to learn whether
-  // the cookie is valid; toggles <body data-state="..."> so the CSS
-  // shows the right block. Failures fall through to "logged-out" —
-  // the worker's 404 gate means anonymous visitors never reach
-  // here, but defensive UX wins over a flash of unstyled state.
   (function () {
-    var body = document.body;
-    fetch('/api/auth/me', { credentials: 'same-origin' })
-      .then(function (r) {
-        if (r.status === 200) return r.json();
-        throw new Error('unauthenticated');
-      })
-      .then(function (data) {
-        if (data && data.ok && data.email) {
-          var slot = document.querySelector('[data-bind="email"]');
-          if (slot) slot.textContent = data.email;
-          body.setAttribute('data-state', 'logged-in');
-        } else {
-          body.setAttribute('data-state', 'logged-out');
-        }
-      })
-      .catch(function () {
-        body.setAttribute('data-state', 'logged-out');
+    var listEl    = document.getElementById('wbList');
+    var loadingEl = document.getElementById('wbLoading');
+    var emptyEl   = document.getElementById('wbEmpty');
+    var errorEl   = document.getElementById('wbError');
+    var emailSlot = document.querySelector('[data-bind="email"]');
+    if (!listEl) return;
+
+    // Per-kind labels for the chip. Mirrors the ALLOWED_KINDS set
+    // in src/lib/workbench.js. Adding a kind: also append it here.
+    var KIND_LABELS = {
+      audit: 'Audit',
+      seo: 'SEO grader',
+      gbp: 'GBP grader',
+      mobile: 'Mobile check',
+      schema: 'Schema check',
+      speed: 'Speed test',
+      margin: 'Margin math',
+      plate: 'Plate cost',
+      photo: 'Photo brief',
+      menu: 'Menu',
+      brand: 'Brand suite',
+      'open-hours': 'Open hours',
+      compare: 'Compare',
+      'tech-stack': 'Tech stack',
+      'search-ideas': 'Search ideas'
+    };
+
+    // Per-kind landing URLs. Phase 2 just sends the user back to the
+    // tool root; Phase 3 will pass ?saved=<id> so the tool can
+    // re-hydrate state from the saved payload via /api/workbench/get.
+    var KIND_URLS = {
+      audit: '/tools/audits/restaurant/',
+      seo: '/tools/seo-grader/',
+      gbp: '/tools/gbp-grader/',
+      mobile: '/tools/mobile-check/',
+      schema: '/tools/schema-check/',
+      speed: '/tools/speed-test/',
+      margin: '/tools/margin-math/',
+      plate: '/tools/plate-cost/',
+      photo: '/tools/photo-brief/',
+      menu: '/tools/menu-engineering/',
+      brand: '/tools/brand-suite/',
+      'open-hours': '/tools/open-hours/',
+      compare: '/tools/compare/',
+      'tech-stack': '/tools/tech-stack/',
+      'search-ideas': '/tools/search-ideas/'
+    };
+
+    function escapeHtml(s) {
+      return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function fmtDate(ms) {
+      if (!ms) return '';
+      try {
+        var d = new Date(ms);
+        return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+      } catch (_) { return ''; }
+    }
+
+    function showState(which) {
+      [loadingEl, emptyEl, errorEl].forEach(function (n) { if (n) n.hidden = true; });
+      if (which) which.hidden = false;
+    }
+
+    function renderItems(items) {
+      // Remove any existing state cards before painting items.
+      [loadingEl, emptyEl, errorEl].forEach(function (n) {
+        if (n && n.parentNode === listEl) listEl.removeChild(n);
       });
+      // Clear any prior items (paranoid; we only call this once).
+      var existing = listEl.querySelectorAll('.wb-item');
+      existing.forEach(function (n) { listEl.removeChild(n); });
+
+      items.forEach(function (item) {
+        var label = KIND_LABELS[item.kind] || item.kind;
+        var openUrl = KIND_URLS[item.kind] || '/tools/';
+        var row = document.createElement('article');
+        row.className = 'wb-item';
+        row.setAttribute('data-id', item.id);
+        row.innerHTML =
+          '<div class="wb-item-body">' +
+            '<div class="wb-item-meta">' +
+              '<span class="status-chip" data-band="solid" data-size="xs">' + escapeHtml(label) + '</span>' +
+            '</div>' +
+            '<h3 class="wb-item-title">' + escapeHtml(item.title) + '</h3>' +
+            '<p class="wb-item-date">Saved ' + fmtDate(item.createdAt) + '</p>' +
+          '</div>' +
+          '<div class="wb-item-actions">' +
+            '<a class="wb-item-action" href="' + openUrl + '">Open</a>' +
+            '<button type="button" class="wb-item-action danger js-wb-delete">Delete</button>' +
+          '</div>';
+        listEl.appendChild(row);
+      });
+
+      // Wire delete buttons.
+      listEl.querySelectorAll('.js-wb-delete').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var row = btn.closest('.wb-item');
+          if (!row) return;
+          var id = row.getAttribute('data-id');
+          if (!id) return;
+          if (!confirm('Delete this saved item? This cannot be undone.')) return;
+          btn.disabled = true;
+          fetch('/api/workbench/delete', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            credentials: 'same-origin',
+            body: JSON.stringify({ id: id }),
+          }).then(function (r) {
+            if (r.ok) {
+              row.parentNode.removeChild(row);
+              if (!listEl.querySelector('.wb-item')) {
+                listEl.appendChild(emptyEl);
+                showState(emptyEl);
+              }
+            } else {
+              btn.disabled = false;
+              alert('Could not delete that item. Try again in a moment.');
+            }
+          }).catch(function () {
+            btn.disabled = false;
+            alert('Could not reach the server. Check your connection and try again.');
+          });
+        });
+      });
+    }
+
+    function loadList() {
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 401) {
+            // Cookie expired between the worker gate and this fetch.
+            // Redirect rather than show a confusing empty state.
+            window.location.href = '/sign-in/?returnTo=' + encodeURIComponent('/workbench/');
+            throw new Error('redirect');
+          }
+          if (!r.ok) throw new Error('me-failed');
+          return r.json();
+        })
+        .then(function (me) {
+          if (emailSlot && me && me.email) emailSlot.textContent = me.email;
+          return fetch('/api/workbench/list', { credentials: 'same-origin' });
+        })
+        .then(function (r) {
+          if (!r.ok) throw new Error('list-failed');
+          return r.json();
+        })
+        .then(function (data) {
+          var items = (data && data.items) || [];
+          if (items.length === 0) { showState(emptyEl); return; }
+          renderItems(items);
+        })
+        .catch(function (err) {
+          if (err && err.message === 'redirect') return; // navigation in flight
+          showState(errorEl);
+        });
+    }
+
+    loadList();
   })();
 </script>
 

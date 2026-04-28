@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!--
+  Phase 2 (Workshop) — public sign-in page.
+
+  Form posts to /api/auth/magic-link with returnTo, ts, hp, and locale.
+  The handler is privacy-first (always returns 200) so we can show a
+  generic "check your inbox" success state regardless of whether the
+  email is real, on the rate-limit list, or got blocked by spam
+  signals. No authoritative response → no leak.
+
+  Sprint 0 was indexed-but-private; Phase 2 makes the page public
+  but keeps it noindex (we don't want the marketing version of the
+  site competing with the auth surface in search). Magic-link auth
+  is for repeat visitors who've already used the free tools and want
+  cross-device persistence — they arrive here from a CTA inside a
+  tool, not from a Google search.
+-->
+<meta name="robots" content="noindex, nofollow" />
+<title>Sign in — Muntin Workshop</title>
+<meta name="description" content="One-tap sign-in for the Muntin Workshop. We'll email you a magic link — no password to remember." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/sign-in/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/sign-in/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/sign-in/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/sign-in/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="es_US" />
+
+<link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/brand/favicons/favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<link rel="shortcut icon" href="/favicon.ico" />
+
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+
+<link rel="preload" as="style" href="/assets/site.css?v=20260428-sprint0-tokens">
+<link rel="stylesheet" href="/assets/site.css?v=20260428-sprint0-tokens" fetchpriority="high">
+
+<style>
+  /* Sign-in shell — narrow column, generous breathing room. */
+  .signin-main { padding: clamp(80px, 12vh, 140px) clamp(20px, 4vw, 64px) clamp(60px, 10vh, 100px); }
+  .signin-card { max-width: 460px; margin: 0 auto; }
+  .signin-eyebrow { font-family: var(--font-body); font-size: 13px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 14px; display: inline-flex; align-items: center; gap: 10px; }
+  .signin-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--teal); }
+  .signin-h1 { font-family: var(--font-display); font-size: clamp(36px, 5vw, 52px); font-weight: 500; line-height: 1.05; letter-spacing: -0.02em; color: var(--ink); margin: 0 0 18px; }
+  .signin-sub { font-size: var(--fs-lead); line-height: 1.55; color: var(--ink-soft); margin: 0 0 32px; }
+  .signin-form { display: flex; flex-direction: column; gap: 14px; }
+  .signin-form label { font-size: 13px; font-weight: 600; color: var(--ink); display: flex; flex-direction: column; gap: 6px; }
+  .signin-form input[type="email"] { width: 100%; padding: 14px 16px; border: 1px solid var(--line-input); border-radius: var(--r-input); background: var(--surface-2); color: var(--ink); font: inherit; font-size: 16px; min-height: 44px; transition: border-color var(--t-fast) var(--ease); }
+  .signin-form input[type="email"]:focus { border-color: var(--teal); outline: none; }
+  .signin-form .btn { align-self: flex-start; min-height: 44px; }
+  .signin-note { font-size: 13.5px; line-height: 1.55; color: var(--stone); margin: 18px 0 0; }
+  .signin-success { padding: 24px 28px; background: var(--status-good-tint); border: 1px solid var(--status-good); border-radius: var(--r-md); }
+  .signin-success h2 { font-family: var(--font-display); font-size: 22px; font-weight: 500; color: var(--status-good); margin: 0 0 8px; }
+  .signin-success p { font-size: 15px; line-height: 1.55; color: var(--ink-soft); margin: 0; }
+  .signin-success strong { color: var(--ink); }
+  .signin-error { padding: 14px 18px; background: var(--status-bad-tint); border: 1px solid var(--rust); border-radius: var(--r-input); color: var(--rust); font-size: 14px; line-height: 1.5; }
+  /* Honeypot — visually hidden but not display:none so bots fill it. */
+  .signin-form .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/for/restaurants/">Restaurants</a>
+      <div class="nav-library-wrap">
+        <a href="/learn/" class="nav-library-trigger" aria-haspopup="true">Library<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-library-menu nav-library-menu--mega" role="menu" aria-label="Library sections">
+          <a class="nav-library-menu__home" href="/learn/" role="menuitem">
+            <strong>Library home</strong>
+            <span>The hub of everything below &rarr;</span>
+          </a>
+          <div class="nav-library-menu__col">
+            <h4>Learn</h4>
+            <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
+            <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
+            <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span><!-- count:glossary.terms -->116<!-- /count --> terms in plain English</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Read</h4>
+            <a href="/blog/" role="menuitem"><strong>Articles</strong><span>The how-to playbooks</span></a>
+            <a href="/learn/research/" role="menuitem"><strong>Research</strong><span>The evidence behind the playbooks</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Do</h4>
+            <a href="/tools/" role="menuitem"><strong>Free tools</strong><span>Run a check on your own site</span></a>
+            <a href="/learn/checklists/" role="menuitem"><strong>Checklists &amp; guides</strong><span>Workbooks you can save</span></a>
+          </div>
+        </div>
+      </div>
+      <a href="/work/">Work</a>
+      <a href="/about/">About</a>
+    </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Search</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+    </button>
+    <nav class="lang-switch" aria-label="Language">
+      <a href="/es/sign-in/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
+      <span class="lang-switch-current" aria-current="true">EN</span>
+    </nav>
+    <a class="nav-auth js-nav-signin" href="/sign-in/" hidden>Sign in</a>
+    <a class="nav-auth js-nav-workshop" href="/workbench/" hidden>Workshop</a>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/services/">Services</a>
+    <a href="/for/restaurants/">Restaurants</a>
+    <details class="mobile-library">
+      <summary>Library</summary>
+      <a href="/learn/">Library home</a>
+      <p class="mobile-library__group">Learn</p>
+      <a href="/learn/start-here/">Start here</a>
+      <a href="/learn/topics/">Topics</a>
+      <a href="/glossary/">Glossary</a>
+      <p class="mobile-library__group">Read</p>
+      <a href="/blog/">Articles</a>
+      <a href="/learn/research/">Research</a>
+      <p class="mobile-library__group">Do</p>
+      <a href="/tools/">Free tools</a>
+      <a href="/learn/checklists/">Checklists &amp; guides</a>
+    </details>
+    <a href="/work/">Work</a>
+    <a href="/about/">About</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Search the library</span>
+    </button>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a>
+    <a class="mobile-auth js-nav-signin" href="/sign-in/" hidden>Sign in</a>
+    <a class="mobile-auth js-nav-workshop" href="/workbench/" hidden>Workshop</a>
+    <a href="/es/sign-in/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
+  </nav>
+
+  <!-- Opt-in Spanish banner. Rendered hidden by default; site.js
+       removes the hidden attribute only when (a) the reader's browser
+       lists Spanish in navigator.languages, (b) no md_locale cookie
+       has been set yet, and (c) the banner hasn't been dismissed.
+       Speaks directly in Spanish because its audience, by definition,
+       is a Spanish-speaking visitor. Link target is the page's own
+       hreflang="es" alternate from <head>, read at runtime. -->
+  <aside class="lang-hint" id="langHint" role="complementary" aria-label="Sugerencia de idioma" lang="es" hidden>
+    <div class="container lang-hint-inner">
+      <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
+      <a href="/es/sign-in/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
+      <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Phase 2 (Workshop) — auth-state toggle for the nav.
+       Calls /api/auth/me and reveals either the "Sign in" or
+       "Workshop" link based on the response. Both links ship hidden
+       so anonymous visitors with JS disabled see neither (the
+       library + tools work fully without sign-in, so the missing
+       affordance is acceptable). The script runs once, fire-and-
+       forget; no observable side effects on a 401. -->
+  <script>
+    (function () {
+      var signin   = document.querySelectorAll('.js-nav-signin');
+      var workshop = document.querySelectorAll('.js-nav-workshop');
+      if (!signin.length && !workshop.length) return;
+      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 200) { show(workshop); return; }
+          show(signin);
+        })
+        .catch(function () { show(signin); });
+    })();
+  </script>
+</header>
+
+<main id="main" class="signin-main">
+  <div class="signin-card">
+    <p class="signin-eyebrow">The Workshop</p>
+    <h1 class="signin-h1">Sign in to your Workshop.</h1>
+    <p class="signin-sub">Enter your email and we&rsquo;ll send a one-tap sign-in link. No password to remember.</p>
+
+    <form id="signinForm" class="signin-form" novalidate>
+      <label for="signinEmail">
+        Email
+        <input type="email" id="signinEmail" name="email" autocomplete="email" required placeholder="you@example.com" />
+      </label>
+      <input type="text" name="hp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <input type="hidden" name="ts" id="signinTs" />
+      <input type="hidden" name="returnTo" id="signinReturnTo" value="/workbench/" />
+      <input type="hidden" name="locale" value="en" />
+      <button type="submit" class="btn btn-primary" id="signinSubmit">
+        <span class="btn-text">Send sign-in link</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      </button>
+      <div class="signin-error" id="signinError" hidden role="alert"></div>
+    </form>
+
+    <div class="signin-success" id="signinSuccess" hidden>
+      <h2>Check your inbox.</h2>
+      <p>If <strong id="signinSuccessEmail">that address</strong> has access to the Workshop, a sign-in link is on its way. The link expires in 15 minutes and works once.</p>
+    </div>
+
+    <p class="signin-note">The Workshop is a small private space for operators who&rsquo;ve used the free tools and want their work to follow them across devices. Reading the library, running the tools, and downloading checklists never requires a sign-in.</p>
+  </div>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="container">
+    <div class="foot-grid"></div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var form = document.getElementById('signinForm');
+    if (!form) return;
+    var ts = document.getElementById('signinTs');
+    var returnToInput = document.getElementById('signinReturnTo');
+    var emailInput = document.getElementById('signinEmail');
+    var submit = document.getElementById('signinSubmit');
+    var errorBox = document.getElementById('signinError');
+    var successBox = document.getElementById('signinSuccess');
+    var successEmail = document.getElementById('signinSuccessEmail');
+
+    // Stamp the timestamp at page load so the form passes
+    // isTimestampSane on the server (must be < 24h old).
+    if (ts) ts.value = String(Date.now());
+
+    // Honor a ?returnTo= query param so we can deep-link from a
+    // tool's "Save to my Workbench" CTA into the sign-in flow and
+    // come back to the right place. Allowlisted server-side, so
+    // anything off-list collapses to /workbench/ regardless.
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var rt = params.get('returnTo');
+      if (rt && (rt === '/workbench/' || rt === '/es/workbench/')) {
+        if (returnToInput) returnToInput.value = rt;
+      }
+    } catch (e) { /* old browser, fall through */ }
+
+    form.addEventListener('submit', async function (ev) {
+      ev.preventDefault();
+      if (errorBox) { errorBox.hidden = true; errorBox.textContent = ''; }
+      var email = emailInput && emailInput.value ? emailInput.value.trim() : '';
+      if (!email || email.indexOf('@') === -1) {
+        if (errorBox) {
+          errorBox.textContent = 'Please enter a valid email address.';
+          errorBox.hidden = false;
+        }
+        if (emailInput) emailInput.focus();
+        return;
+      }
+      if (submit) submit.disabled = true;
+      var body = {
+        email: email,
+        returnTo: returnToInput ? returnToInput.value : '/workbench/',
+        ts: ts ? ts.value : String(Date.now()),
+        hp: '',
+        locale: 'en',
+      };
+      try {
+        var res = await fetch('/api/auth/magic-link', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(body),
+          credentials: 'same-origin',
+        });
+        // Handler always returns 200 on the privacy-friendly path.
+        // Anything else (4xx/5xx network error) is a real failure.
+        if (res.ok) {
+          if (successEmail) successEmail.textContent = email;
+          form.hidden = true;
+          if (successBox) successBox.hidden = false;
+        } else {
+          if (errorBox) {
+            errorBox.textContent = 'Something went wrong. Try again in a moment.';
+            errorBox.hidden = false;
+          }
+          if (submit) submit.disabled = false;
+        }
+      } catch (err) {
+        if (errorBox) {
+          errorBox.textContent = 'Could not reach the server. Check your connection and try again.';
+          errorBox.hidden = false;
+        }
+        if (submit) submit.disabled = false;
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

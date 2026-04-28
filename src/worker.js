@@ -65,6 +65,15 @@ import {
   MAGIC_LINK_TTL_SECONDS,
   SESSION_TTL_SECONDS,
 } from './lib/auth.js';
+import {
+  validateSaveBody,
+  saveItem,
+  listItemsForUser,
+  getItem,
+  deleteItem,
+  isValidSaveItemIdShape,
+  MAX_SAVES_PER_USER,
+} from './lib/workbench.js';
 
 // Durable Object classes must be re-exported from the Worker entry
 // module so the runtime can instantiate them when the binding fires.
@@ -156,6 +165,14 @@ const API_ROUTES = {
   '/api/auth/verify':     handleAuthVerify,
   '/api/auth/me':         handleAuthMe,
   '/api/auth/signout':    handleAuthSignout,
+  // Phase 2 (Workshop) — saved-items library. All four require a
+  // valid session; anonymous calls return 401. Per-user scoping at
+  // the KV-key level (save:<sub>:...) means a missing IDOR check
+  // can't leak items across users.
+  '/api/workbench/save':   handleWorkbenchSave,
+  '/api/workbench/list':   handleWorkbenchList,
+  '/api/workbench/get':    handleWorkbenchGet,
+  '/api/workbench/delete': handleWorkbenchDelete,
 };
 
 
@@ -200,7 +217,7 @@ export default {
         if (request.method !== 'GET' && request.method !== 'POST') {
           return jsonResponse({ ok: false, error: 'Method not allowed — audit-snapshot accepts GET or POST' }, 405);
         }
-      } else if (pathname === '/api/og-snapshot' || pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details' || pathname === '/api/dns-email-health' || pathname === '/api/auth/verify' || pathname === '/api/auth/me') {
+      } else if (pathname === '/api/og-snapshot' || pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details' || pathname === '/api/dns-email-health' || pathname === '/api/auth/verify' || pathname === '/api/auth/me' || pathname === '/api/workbench/list' || pathname === '/api/workbench/get') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
         }
@@ -3877,6 +3894,110 @@ async function handleAuthSignout(request, env, ctx) {
   const headers = new Headers({ Location: '/' });
   clearSessionCookie(headers);
   return new Response(null, { status: 302, headers });
+}
+
+
+// ============================================================
+// Phase 2 (Workshop) — /api/workbench/save | list | get | delete
+// ============================================================
+//
+// Saved-items library. Every endpoint authenticates via the signed
+// session cookie (no API key, no header auth) and scopes data by
+// the session's `sub` (sha256(email)). Per-user KV-key scoping
+// means a missing application-level check can't leak across users.
+//
+// Anonymous calls always 401. Configuration failures (missing
+// AUTH_SESSIONS binding, missing AUTH_COOKIE_SECRET) return 503
+// loud so ops sees the misconfig before users do.
+
+async function _requireWorkbenchSession(request, env) {
+  if (!env || !env.AUTH_SESSIONS) {
+    return { error: jsonResponse({ ok: false, error: 'service-unavailable' }, 503) };
+  }
+  const session = await getSessionFromRequest(request, env);
+  if (!session) {
+    return { error: jsonResponse({ ok: false, error: 'unauthenticated' }, 401) };
+  }
+  return { sub: session.payload.sub, email: session.email };
+}
+
+// POST /api/workbench/save
+//   body: { kind, title, payload }
+// Returns: { ok: true, id, createdAt } or { ok: false, error }
+async function handleWorkbenchSave(request, env, ctx) {
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const validated = validateSaveBody(body);
+  if (!validated.ok) {
+    return jsonResponse({ ok: false, error: validated.error }, 400);
+  }
+  const result = await saveItem(env, auth.sub, validated.item);
+  if (!result.ok) {
+    if (result.error === 'limit-reached') {
+      return jsonResponse({
+        ok: false,
+        error: 'limit-reached',
+        max: result.max,
+      }, 409);
+    }
+    return jsonResponse({ ok: false, error: result.error }, 500);
+  }
+  return jsonResponse({ ok: true, id: result.id, createdAt: result.createdAt }, 200);
+}
+
+// GET /api/workbench/list
+// Returns: { ok: true, items: [{ id, kind, title, createdAt }, ...] }
+async function handleWorkbenchList(request, env, ctx) {
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  const items = await listItemsForUser(env, auth.sub);
+  return jsonResponse({ ok: true, items, max: MAX_SAVES_PER_USER }, 200);
+}
+
+// GET /api/workbench/get?id=...
+// Returns: { ok: true, item: { id, kind, title, payload, createdAt } }
+async function handleWorkbenchGet(request, env, ctx) {
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  const url = new URL(request.url);
+  const id = url.searchParams.get('id') || '';
+  if (!isValidSaveItemIdShape(id)) {
+    return jsonResponse({ ok: false, error: 'invalid-id' }, 400);
+  }
+  const item = await getItem(env, auth.sub, id);
+  if (!item) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  return jsonResponse({ ok: true, item }, 200);
+}
+
+// POST /api/workbench/delete
+//   body: { id }
+// Returns: { ok: true, deleted: boolean }
+async function handleWorkbenchDelete(request, env, ctx) {
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const id = typeof body.id === 'string' ? body.id.trim() : '';
+  const result = await deleteItem(env, auth.sub, id);
+  if (!result.ok) {
+    return jsonResponse({ ok: false, error: result.error }, 400);
+  }
+  return jsonResponse({ ok: true, deleted: result.deleted }, 200);
 }
 
 
