@@ -83,6 +83,17 @@
   .cmp-winner p{font-size:14px;color:var(--stone);margin:0}
   .cmp-cta{margin-top:28px;padding:28px 32px;background:var(--cream-2);border:1px solid var(--line);border-radius:14px;text-align:center}
   .cmp-cta p{font-size:15px;color:var(--stone);margin:0 0 16px}
+  /* Phase 2 (Workshop) — Save-to-Workbench. Recipe: docs/workbench-save-pattern.md. */
+  .cmp-save{margin-top:24px;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+  .cmp-save[hidden]{display:none}
+  .cmp-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1;min-width:200px}
+  .cmp-save-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+  .cmp-save-btn:hover{background:var(--teal);transform:translateY(-1px)}
+  .cmp-save-btn[disabled]{opacity:.6;cursor:wait}
+  .cmp-save-link{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--line-dark);border-radius:999px;color:var(--ink);font-size:14px;font-weight:500;text-decoration:none;transition:border-color var(--t-fast) var(--ease)}
+  .cmp-save-link:hover{border-color:var(--ink)}
+  .cmp-save-msg{font-size:13px;color:var(--status-good);font-weight:500}
+  .cmp-save-msg.error{color:var(--rust)}
 </style>
 </head>
 <body>
@@ -225,6 +236,15 @@
   <p class="cmp-note">Corre dos diagnósticos de Google PageSpeed en paralelo. Toma unos 20 a 30 segundos.</p>
   <p class="cmp-status" id="cmpStatus" hidden></p>
   <div class="cmp-result" id="cmpResult" aria-live="polite"></div>
+  <div class="cmp-save" id="cmpSave" hidden>
+    <p class="cmp-save-text" id="cmpSaveText">Guarda esta comparación en tu Taller para que te siga entre dispositivos.</p>
+    <button type="button" class="cmp-save-btn" id="cmpSaveBtn" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+      Guardar en mi Taller
+    </button>
+    <a class="cmp-save-link" id="cmpSaveLink" href="/es/sign-in/?returnTo=%2Fes%2Ftools%2Fcompare%2F" hidden>Acceder para guardar</a>
+    <span class="cmp-save-msg" id="cmpSaveMsg" hidden role="status"></span>
+  </div>
 </div></div></section>
 <!-- LIBRARY:tool-deep-links:start -->
 <section class="tool-deep-links" aria-labelledby="tool-deep-h">
@@ -269,6 +289,7 @@
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
+<script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 (function(){
   var btn=document.getElementById('cmpSubmit');
@@ -333,6 +354,60 @@
   url1.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();btn.click()}});
   url2.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();btn.click()}});
 
+  function renderResult(payload){
+    if(!payload||!payload.a||!payload.b)return;
+    var a=payload.a, b=payload.b;
+    var html='<table class="cmp-table"><thead><tr><th>Métrica</th><th>'+a.host+'</th><th>'+b.host+'</th></tr></thead><tbody>';
+    html+=row('Rendimiento',a.perf,b.perf,'/100');
+    html+=row('Accesibilidad',a.a11y,b.a11y,'/100');
+    html+=row('SEO',a.seo,b.seo,'/100');
+    html+=row('Buenas prácticas',a.bp,b.bp,'/100');
+    html+=row('Tiempo de carga (LCP)',a.lcp,b.lcp,' ms',false);
+    html+='</tbody></table>';
+    var cats=['perf','a11y','seo','bp'];
+    var aTotal=0,bTotal=0,compared=0;
+    cats.forEach(function(k){
+      if(a[k]!=null&&b[k]!=null){aTotal+=a[k];bTotal+=b[k];compared++}
+    });
+    if(compared===0){
+      html+='<div class="cmp-winner"><h3>No hay datos suficientes para declarar un ganador.</h3><p>Uno o ambos sitios no devolvieron suficientes puntuaciones para una comparación justa. Revisa las filas de arriba.</p></div>';
+    }else if(aTotal>bTotal){
+      html+='<div class="cmp-winner"><h3>'+a.host+' gana en general</h3><p>Comparado en '+compared+' categorías: '+aTotal+' vs '+bTotal+'. Pero revisa las filas — podrías estar perdiendo en la métrica que más importa.</p></div>';
+    }else if(bTotal>aTotal){
+      html+='<div class="cmp-winner"><h3>'+b.host+' gana en general</h3><p>Comparado en '+compared+' categorías: '+bTotal+' vs '+aTotal+'. La diferencia puede estar en una categoría que arregles rápido.</p></div>';
+    }else{
+      html+='<div class="cmp-winner"><h3>Empate.</h3><p>Las puntuaciones son iguales en '+compared+' categorías. Mira las filas individuales para encontrar dónde puedes sacar ventaja.</p></div>';
+    }
+    html+='<div class="cmp-cta"><p>¿Quieres profundizar? Los diagnósticos específicos por rubro revisan 9 ítems adicionales.</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><a class="btn btn-primary" href="/es/tools/audits/restaurant/">Diagnóstico de restaurante</a></div></div>';
+    result.innerHTML=html;
+    result.classList.add('visible');
+    if(status)status.hidden=true;
+    result.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  // Phase 2 (Workshop) — Save-to-Workbench via the shared helper.
+  var wb=(typeof MuntinWorkbench==='object'&&MuntinWorkbench&&typeof MuntinWorkbench.attach==='function')
+    ?MuntinWorkbench.attach({
+        elements:{box:'#cmpSave',btn:'#cmpSaveBtn',link:'#cmpSaveLink',text:'#cmpSaveText',msg:'#cmpSaveMsg'},
+        locale:'es',
+        kind:'compare',
+        titleFor:function(p){
+          if(!p)return 'Comparación — sin título';
+          var h1=(p.a&&p.a.host)||p.url1||'?';
+          var h2=(p.b&&p.b.host)||p.url2||'?';
+          return 'Comparación — '+h1+' vs '+h2;
+        },
+        onRehydrate:function(p){
+          if(!p)return;
+          if(url1&&p.url1)url1.value=p.url1;
+          if(url2&&p.url2)url2.value=p.url2;
+          renderResult(p);
+        },
+        workbenchUrl:'/es/workbench/',
+        signinUrl:'/es/sign-in/?returnTo=%2Fes%2Ftools%2Fcompare%2F',
+      })
+    :null;
+
   btn.addEventListener('click',function(){
     var u1=norm(url1.value),u2=norm(url2.value);
     if(!u1){url1.focus();return}
@@ -343,37 +418,9 @@
 
     Promise.all([fetchScores(u1),fetchScores(u2)]).then(function(r){
       var a=r[0],b=r[1];
-      var html='<table class="cmp-table"><thead><tr><th>Métrica</th><th>'+a.host+'</th><th>'+b.host+'</th></tr></thead><tbody>';
-      html+=row('Rendimiento',a.perf,b.perf,'/100');
-      html+=row('Accesibilidad',a.a11y,b.a11y,'/100');
-      html+=row('SEO',a.seo,b.seo,'/100');
-      html+=row('Buenas prácticas',a.bp,b.bp,'/100');
-      html+=row('Tiempo de carga (LCP)',a.lcp,b.lcp,' ms',false);
-      html+='</tbody></table>';
-
-      // Overall winner — only compare categories where BOTH sites
-      // returned a score. Prevents a null category from being counted
-      // as 0 and unfairly penalizing one site.
-      var cats=['perf','a11y','seo','bp'];
-      var aTotal=0,bTotal=0,compared=0;
-      cats.forEach(function(k){
-        if(a[k]!=null&&b[k]!=null){aTotal+=a[k];bTotal+=b[k];compared++}
-      });
-      if(compared===0){
-        html+='<div class="cmp-winner"><h3>No hay datos suficientes para declarar un ganador.</h3><p>Uno o ambos sitios no devolvieron suficientes puntuaciones para una comparación justa. Revisa las filas de arriba.</p></div>';
-      }else if(aTotal>bTotal){
-        html+='<div class="cmp-winner"><h3>'+a.host+' gana en general</h3><p>Comparado en '+compared+' categorías: '+aTotal+' vs '+bTotal+'. Pero revisa las filas — podrías estar perdiendo en la métrica que más importa.</p></div>';
-      }else if(bTotal>aTotal){
-        html+='<div class="cmp-winner"><h3>'+b.host+' gana en general</h3><p>Comparado en '+compared+' categorías: '+bTotal+' vs '+aTotal+'. La diferencia puede estar en una categoría que arregles rápido.</p></div>';
-      }else{
-        html+='<div class="cmp-winner"><h3>Empate.</h3><p>Las puntuaciones son iguales en '+compared+' categorías. Mira las filas individuales para encontrar dónde puedes sacar ventaja.</p></div>';
-      }
-      html+='<div class="cmp-cta"><p>¿Quieres profundizar? Los diagnósticos específicos por rubro revisan 9 ítems adicionales.</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><a class="btn btn-primary" href="/es/tools/audits/restaurant/">Diagnóstico de restaurante</a></div></div>';
-
-      result.innerHTML=html;
-      result.classList.add('visible');
-      status.hidden=true;
-      result.scrollIntoView({behavior:'smooth',block:'start'});
+      var payload={url1:u1,url2:u2,a:a,b:b,comparedAt:Date.now()};
+      renderResult(payload);
+      if(wb)wb.showAffordance(payload);
       if(window.plausible)window.plausible('Compare',{props:{url1:(typeof MuntinAnalytics!=='undefined')?MuntinAnalytics.redactUrlForAnalytics(u1):u1,url2:(typeof MuntinAnalytics!=='undefined')?MuntinAnalytics.redactUrlForAnalytics(u2):u2}});
     }).catch(function(err){
       var locale=document.documentElement.lang==='en'?'en':'es';
